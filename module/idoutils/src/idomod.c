@@ -28,6 +28,7 @@
 #include "../../../include/comments.h"
 #include "../../../include/macros.h"
 
+
 /* specify event broker API version (required) */
 NEB_API_VERSION(CURRENT_NEB_API_VERSION)
 
@@ -53,7 +54,7 @@ int idomod_sink_rotation_timeout = 60;
 int idomod_allow_sink_activity = IDO_TRUE;
 unsigned long idomod_process_options = IDOMOD_PROCESS_EVERYTHING;
 int idomod_config_output_options = IDOMOD_CONFIG_DUMP_ALL;
-unsigned long idomod_sink_buffer_slots = 5000;
+unsigned long idomod_sink_buffer_slots = IDOMOD_SINK_BUFFER_SLOTS;
 idomod_sink_buffer sinkbuf;
 
 char *idomod_debug_file = NULL;
@@ -64,6 +65,11 @@ unsigned long idomod_max_debug_file_size = 0L;
 
 int idomod_open_debug_log(void);
 int idomod_close_debug_log(void);
+
+/* threading for buffer */
+pthread_t queue_thread;
+int cancel_queue;
+int cancel_threads = 1;
 
 extern int errno;
 
@@ -190,12 +196,14 @@ int idomod_init(void) {
 	/* initialize data sink buffer */
 	idomod_sink_buffer_init(&sinkbuf, idomod_sink_buffer_slots);
 
+	/* the queue thread will be created on NEBTYPE_PROCESS_EVENTLOOPSTART, see idomod_init_event_loop_start() */
+	pthread_mutex_init(&sinkbuf.buffer_lock, NULL);
+
 	/* read unprocessed data from buffer file */
 	idomod_load_unprocessed_data(idomod_buffer_file);
 
 	/* open data sink and say hello */
-	/* 05/04/06 - modified to flush buffer items that may have been read in from file */
-	idomod_write_to_sink("\n", IDO_FALSE, IDO_TRUE);
+	idomod_write_to_sink_queue("\n");
 
 	/* register callbacks */
 	if (idomod_register_callbacks() == IDO_ERROR)
@@ -225,8 +233,46 @@ int idomod_init(void) {
 }
 
 
+int idomod_init_event_loop_start(void *data) {
+	int result;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init_event_loop_start() start\n");
+
+	/*
+	 * we can't immediately start the queue thread
+	 * because the daemon needs to daemonize
+	 * first. running gdb without daemonizing
+	 * would run perfect, but in fact the daemon
+	 * will drop the thread and the buffer will grow
+	 * til full, and then blocking the core with retries
+	 * all over.
+	 * therefore this function is called when the first
+	 * callback on PROCESS_DATA happens, telling that
+	 * NEBTYPE_PROCESS_EVENTLOOPSTART happened.
+	 * this requires a valuable amount of buffer size
+	 * in the first place to allow the main thread to
+	 * dump everything without the running queue thread.
+	 */
+
+        /* create the queue thread and let it poll all data for the sink */
+        result = pthread_create(&queue_thread, NULL, idomod_read_from_sink_queue, (void *)0);
+
+        if (result) {
+                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init() failed to create queue thread: %s\n", strerror(result));
+		return IDO_ERROR;
+        } else {
+                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init() Successfully created queue thread with thread id %ld\n", queue_thread);
+		return IDO_OK;
+        }
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init_event_loop_start() end\n");
+
+	return IDO_OK;
+}
+
 /* performs some shutdown stuff */
 int idomod_deinit(void) {
+	int result;
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_deinit() start\n");
 
@@ -235,6 +281,20 @@ int idomod_deinit(void) {
 
 	/* save unprocessed data to buffer file */
 	idomod_save_unprocessed_data(idomod_buffer_file);
+
+        if (queue_thread) {
+                result = pthread_cancel(queue_thread);
+		if (result == 0) {
+	                result = pthread_join(queue_thread, NULL);
+		}
+                if (result) {
+			idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_deinit() Failed to join queue thread: %s\n", strerror(errno));
+                } else {
+			idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_deinit() Sucessfully joined queue thread\n");
+                }
+        } else {
+		idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_deinit() No queue thread running. Check for possible file descriptor leaks.\n");
+        }
 
 	/* clear sink buffer */
 	idomod_sink_buffer_deinit(&sinkbuf);
@@ -409,8 +469,13 @@ int idomod_process_config_var(char *arg) {
 	else if (!strcmp(var, "tcp_port"))
 		idomod_sink_tcp_port = atoi(val);
 
-	else if (!strcmp(var, "output_buffer_items"))
+	else if (!strcmp(var, "output_buffer_items")) {
 		idomod_sink_buffer_slots = strtoul(val, NULL, 0);
+
+		/* do not allow smaller buffers */
+		if(idomod_sink_buffer_slots < IDOMOD_SINK_BUFFER_SLOTS)
+			idomod_sink_buffer_slots = IDOMOD_SINK_BUFFER_SLOTS;
+	}
 
 	else if (!strcmp(var, "reconnect_interval"))
 		idomod_sink_reconnect_interval = strtoul(val, NULL, 0);
@@ -590,7 +655,7 @@ int idomod_hello_sink(int reconnect, int problem_disconnect) {
 
 	temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 
-	idomod_write_to_sink(temp_buffer, IDO_FALSE, IDO_FALSE);
+	idomod_write_to_sink_queue(temp_buffer);
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_hello_sink() end\n");
 
@@ -614,7 +679,7 @@ int idomod_goodbye_sink(void) {
 
 	temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 
-	idomod_write_to_sink(temp_buffer, IDO_FALSE, IDO_TRUE);
+	idomod_write_to_sink_queue(temp_buffer);
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_goodbye_sink() end\n");
 
@@ -668,9 +733,127 @@ int idomod_rotate_sink_file(void *args) {
 	return IDO_OK;
 }
 
+/* write data to queue for sink */
+int idomod_write_to_sink_queue(char *buf) {
+	int buffer_items = 0;
+	struct timespec delay;
+	int retry = 0;
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() start\n");
+
+	/* don't process empty buffer */
+	if (buf == NULL)
+		return IDO_ERROR;
+
+	while(1) { /* we need looping in order to retry if buffer was full */
+
+		idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() buf: %s\n", buf);
+
+                /* get number of items in the buffer */
+                pthread_mutex_lock(&sinkbuf.buffer_lock);
+                buffer_items = sinkbuf.items;
+                pthread_mutex_unlock(&sinkbuf.buffer_lock);
+
+                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() buffer items: %d/%d\n", buffer_items, idomod_sink_buffer_slots);
+
+                /* process all data if there's some space in the buffer */
+		if (idomod_sink_buffer_push(&sinkbuf, buf) == IDO_OK) {
+			/* write was successful, don't retry */
+			idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() success\n");
+			retry = IDOMOD_SINK_RETRY_ON_ERROR;
+	        } else {
+			/* write was not successful, retry */
+			idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() no success, retry\n");
+			retry++;
+		}
+
+		/*
+                 * We should wait for the sink queuing to catch up some data
+                 * from the buffer if for this atomic run the buffer is filled completely or
+                 * is overrun
+                 */
+                /* wait a bit */
+                delay.tv_sec = 0;
+                delay.tv_nsec = 500000;
+                nanosleep(&delay, NULL);
+
+		/* don't retry too often */
+		/* FIXME - this should be dumped to disk then */
+		if (retry == IDOMOD_SINK_RETRY_ON_ERROR)
+			break;
+	}
+
+	return OK;
+}
+
+void cleanup_queue_thread(void *arg) {
+
+	/* sinkbuf cleanup happens in main thread, deinit module */
+	return;
+}
+
+/* read data from queue for sink as seperate consumer thread */
+void * idomod_read_from_sink_queue(void * data) {
+	char *buffer = NULL;
+	int result = 0;
+	int buffer_items = 0;
+	struct timeval tv;
+	struct timespec delay;
+
+	/* specify cleanup routine */
+	pthread_cleanup_push(cleanup_queue_thread, NULL);
+
+	/* set cancellation info */
+	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, NULL);
+	pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, NULL);
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_read_from_sink_queue() started with thread id %ld\n", pthread_self());
+
+	while (1) {
+
+                /* get number of items in the buffer */
+                pthread_mutex_lock(&sinkbuf.buffer_lock);
+                buffer_items = sinkbuf.items;
+                pthread_mutex_unlock(&sinkbuf.buffer_lock);
+
+		/* make sure we shouldn't bail out early */
+		pthread_testcancel();
+
+		/* if no items present, continue looping */
+		if (buffer_items == 0) {
+		        delay.tv_sec = 0;
+		        delay.tv_nsec = 50000;
+			nanosleep(&delay, NULL);
+			continue;
+		}
+
+                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_read_from_sink_queue() buffer items: %d/%d\n", buffer_items, idomod_sink_buffer_slots);
+
+		buffer = idomod_sink_buffer_pop(&sinkbuf);
+
+		idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_read_from_sink_queue() buffer: %s\n", buffer);
+
+		/* write the data to the sink */
+		result = idomod_write_to_sink(buffer);
+
+		idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_read_from_sink_queue() write_to_sink result: %d\n", result);
+
+		/* free memory */
+		my_free(buffer);
+
+                /* wait a bit */
+                delay.tv_sec = 0;
+                delay.tv_nsec = 50000;
+                nanosleep(&delay, NULL);
+	}
+
+        /* removes cleanup handler - this should never be reached */
+        pthread_cleanup_pop(0);
+}
+
 
 /* writes data to sink */
-int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer) {
+int idomod_write_to_sink(char *buf) {
 	char *temp_buffer = NULL;
 	char *sbuf = NULL;
 	int buflen = 0;
@@ -701,7 +884,7 @@ int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer) {
 			reconnect = IDO_TRUE;
 
 		/* (re)connect to the sink if its time */
-		if ((unsigned long)((unsigned long)current_time - idomod_sink_reconnect_interval) > (unsigned long)idomod_sink_last_reconnect_attempt) {
+		if ((unsigned long)((unsigned long)current_time - 1) > (unsigned long)idomod_sink_last_reconnect_attempt) {
 
 			result = idomod_open_sink();
 
@@ -763,70 +946,11 @@ int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer) {
 	}
 
 	/* we weren't able to (re)connect */
-	if (idomod_sink_is_open == IDO_FALSE) {
-
-		/***** BUFFER OUTPUT FOR LATER *****/
-
-		if (buffer_write == IDO_TRUE)
-			idomod_sink_buffer_push(&sinkbuf, buf);
+	if(idomod_sink_is_open==IDO_FALSE){
+		idomod_sink_buffer_push(&sinkbuf,buf);
 
 		return IDO_ERROR;
 	}
-
-
-	/***** FLUSH BUFFERED DATA FIRST *****/
-
-	if (flush_buffer == IDO_TRUE && (items_to_flush = idomod_sink_buffer_items(&sinkbuf)) > 0) {
-
-		while (idomod_sink_buffer_items(&sinkbuf) > 0) {
-
-			/* get next item from buffer */
-			sbuf = idomod_sink_buffer_peek(&sinkbuf);
-
-			buflen = strlen(sbuf);
-			result = ido_sink_write(idomod_sink_fd, sbuf, buflen);
-
-			/* an error occurred... */
-			if (result < 0) {
-
-				/* sink problem! */
-				if (errno != EAGAIN) {
-
-					/* close the sink */
-					idomod_close_sink();
-
-					if (asprintf(&temp_buffer, "idomod: Error writing to data sink!  Some output may get lost.  %lu queued items to flush.", sinkbuf.items) == -1)
-						temp_buffer = NULL;
-
-					idomod_write_to_logs(temp_buffer, NSLOG_INFO_MESSAGE);
-					free(temp_buffer);
-					temp_buffer = NULL;
-
-					time(&current_time);
-					idomod_sink_last_reconnect_attempt = current_time;
-					idomod_sink_last_reconnect_warning = current_time;
-				}
-
-				/***** BUFFER ORIGINAL OUTPUT FOR LATER *****/
-
-				if (buffer_write == IDO_TRUE)
-					idomod_sink_buffer_push(&sinkbuf, buf);
-
-				return IDO_ERROR;
-			}
-
-			/* buffer was written okay, so remove it from buffer */
-			idomod_sink_buffer_pop(&sinkbuf);
-		}
-
-		if (asprintf(&temp_buffer, "idomod: Successfully flushed %lu queued items to data sink.", items_to_flush) == -1)
-			temp_buffer = NULL;
-
-		idomod_write_to_logs(temp_buffer, NSLOG_INFO_MESSAGE);
-		free(temp_buffer);
-		temp_buffer = NULL;
-	}
-
 
 	/***** WRITE ORIGINAL DATA *****/
 
@@ -863,8 +987,7 @@ int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer) {
 
 		/***** BUFFER OUTPUT FOR LATER *****/
 
-		if (buffer_write == IDO_TRUE)
-			idomod_sink_buffer_push(&sinkbuf, buf);
+		idomod_sink_buffer_push(&sinkbuf, buf);
 
 		return IDO_ERROR;
 	}
@@ -958,6 +1081,9 @@ int idomod_load_unprocessed_data(char *f) {
 }
 
 
+/****************************************************************************/
+/* SINKBUFFERFUNCTIONS                                                      */
+/****************************************************************************/
 
 /* initializes sink buffer */
 int idomod_sink_buffer_init(idomod_sink_buffer *sbuf, unsigned long maxitems) {
@@ -1014,12 +1140,18 @@ int idomod_sink_buffer_push(idomod_sink_buffer *sbuf, char *buf) {
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_push() start\n");
 
-	if (sbuf == NULL || buf == NULL)
+	/* get a lock on the buffer */
+	pthread_mutex_lock(&sinkbuf.buffer_lock);
+
+	if (sbuf == NULL || buf == NULL) {
+		pthread_mutex_unlock(&sinkbuf.buffer_lock);
 		return IDO_ERROR;
+	}
 
 	/* no space to store buffer */
 	if (sbuf->buffer == NULL || sbuf->items == sbuf->maxitems) {
 		sbuf->overflow++;
+		pthread_mutex_unlock(&sinkbuf.buffer_lock);
 		return IDO_ERROR;
 	}
 
@@ -1027,6 +1159,9 @@ int idomod_sink_buffer_push(idomod_sink_buffer *sbuf, char *buf) {
 	sbuf->buffer[sbuf->head] = strdup(buf);
 	sbuf->head = (sbuf->head + 1) % sbuf->maxitems;
 	sbuf->items++;
+
+	/* release the lock on the buffer */
+	pthread_mutex_unlock(&sinkbuf.buffer_lock);
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_push() end\n");
 
@@ -1040,20 +1175,32 @@ char *idomod_sink_buffer_pop(idomod_sink_buffer *sbuf) {
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_pop() start\n");
 
-	if (sbuf == NULL)
-		return NULL;
+        /* get a lock on the buffer */
+        pthread_mutex_lock(&sinkbuf.buffer_lock);
 
-	if (sbuf->buffer == NULL)
+	if (sbuf == NULL) {
+        	pthread_mutex_unlock(&sinkbuf.buffer_lock);
 		return NULL;
+	}
 
-	if (sbuf->items == 0)
+	if (sbuf->buffer == NULL) {
+        	pthread_mutex_unlock(&sinkbuf.buffer_lock);
 		return NULL;
+	}
+
+	if (sbuf->items == 0) {
+        	pthread_mutex_unlock(&sinkbuf.buffer_lock);
+		return NULL;
+	}
 
 	/* remove item from buffer */
 	buf = sbuf->buffer[sbuf->tail];
 	sbuf->buffer[sbuf->tail] = NULL;
 	sbuf->tail = (sbuf->tail + 1) % sbuf->maxitems;
 	sbuf->items--;
+
+        /* release the lock on the buffer */
+        pthread_mutex_unlock(&sinkbuf.buffer_lock);
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_pop() end\n");
 
@@ -1067,13 +1214,23 @@ char *idomod_sink_buffer_peek(idomod_sink_buffer *sbuf) {
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_peek() start\n");
 
-	if (sbuf == NULL)
-		return NULL;
+        /* get a lock on the buffer */
+        pthread_mutex_lock(&sinkbuf.buffer_lock);
 
-	if (sbuf->buffer == NULL)
+	if (sbuf == NULL) {
+        	pthread_mutex_unlock(&sinkbuf.buffer_lock);
 		return NULL;
+	}
+
+	if (sbuf->buffer == NULL) {
+        	pthread_mutex_unlock(&sinkbuf.buffer_lock);
+		return NULL;
+	}
 
 	buf = sbuf->buffer[sbuf->tail];
+
+        /* release the lock on the buffer */
+        pthread_mutex_unlock(&sinkbuf.buffer_lock);
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_peek() end\n");
 
@@ -1083,40 +1240,73 @@ char *idomod_sink_buffer_peek(idomod_sink_buffer *sbuf) {
 
 /* returns number of items buffered */
 int idomod_sink_buffer_items(idomod_sink_buffer *sbuf) {
+	int items = 0;
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_items()\n");
 
+        /* get a lock on the buffer */
+        pthread_mutex_lock(&sinkbuf.buffer_lock);
+
 	if (sbuf == NULL)
-		return 0;
+		items = 0;
 	else
-		return sbuf->items;
+		items = sbuf->items;
+
+        /* release the lock on the buffer */
+        pthread_mutex_unlock(&sinkbuf.buffer_lock);
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_items() items: %d\n", items);
+
+	return items;
 }
 
 
 
 /* gets number of items lost due to buffer overflow */
 unsigned long idomod_sink_buffer_get_overflow(idomod_sink_buffer *sbuf) {
+	int overflow = 0;
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_get_overflow()\n");
 
+        /* get a lock on the buffer */
+        pthread_mutex_lock(&sinkbuf.buffer_lock);
+
 	if (sbuf == NULL)
-		return 0;
+		overflow = 0;
 	else
-		return sbuf->overflow;
+		overflow = sbuf->overflow;
+
+        /* release the lock on the buffer */
+        pthread_mutex_unlock(&sinkbuf.buffer_lock);
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_get_overflow() overflow: %d\n", overflow);
+
+	return overflow;
 }
 
 
 /* sets number of items lost due to buffer overflow */
 int idomod_sink_buffer_set_overflow(idomod_sink_buffer *sbuf, unsigned long num) {
+	int overflow = 0;
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_set_overflow()\n");
 
-	if (sbuf == NULL)
-		return 0;
-	else
-		sbuf->overflow = num;
+        /* get a lock on the buffer */
+        pthread_mutex_lock(&sinkbuf.buffer_lock);
 
-	return sbuf->overflow;
+	if (sbuf == NULL) {
+		overflow = 0;
+	} else {
+		sbuf->overflow = num;
+		overflow = num;
+	}
+
+        /* release the lock on the buffer */
+        pthread_mutex_unlock(&sinkbuf.buffer_lock);
+
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_sink_buffer_set_overflow() overflow: %d\n", overflow);
+
+	return overflow;
 }
 
 
@@ -1281,7 +1471,7 @@ int idomod_broker_data(int event_type, void *data) {
 
 	customvariablesmember *temp_customvar = NULL;
 
-	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_broker_data() start\n");
+	//idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_broker_data() start\n");
 
 	if (data == NULL)
 		return 0;
@@ -1405,6 +1595,7 @@ int idomod_broker_data(int event_type, void *data) {
 	/* initialize dynamic buffer (2KB chunk size) */
 	ido_dbuf_init(&dbuf, 2048);
 
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_broker_data() handle event\n");
 
 	/* handle the event */
 	switch (event_type) {
@@ -1412,6 +1603,11 @@ int idomod_broker_data(int event_type, void *data) {
 	case NEBCALLBACK_PROCESS_DATA:
 
 		procdata = (nebstruct_process_data *)data;
+
+		/* after daemonizing, we can start our queue thread */
+		if (procdata->type == NEBTYPE_PROCESS_EVENTLOOPSTART) {
+			idomod_init_event_loop_start(data);
+		}
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
 		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%lu\n%d\n\n"
@@ -3089,7 +3285,7 @@ int idomod_broker_data(int event_type, void *data) {
 
 	/* write data to sink */
 	if (write_to_sink == IDO_TRUE)
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 	/* free dynamic buffer */
 	ido_dbuf_free(&dbuf);
@@ -3104,14 +3300,11 @@ int idomod_broker_data(int event_type, void *data) {
 
 		procdata = (nebstruct_process_data *)data;
 
-		/* process has passed pre-launch config verification, so dump original config */
-		if (procdata->type == NEBTYPE_PROCESS_START) {
+		/* dump everything on event loop start if applicable */
+		if (procdata->type == NEBTYPE_PROCESS_EVENTLOOPSTART) {
 			idomod_write_config_files();
 			idomod_write_config(IDOMOD_CONFIG_DUMP_ORIGINAL);
-		}
-
-		/* process is starting the event loop, so dump runtime vars */
-		if (procdata->type == NEBTYPE_PROCESS_EVENTLOOPSTART) {
+			idomod_write_config(IDOMOD_CONFIG_DUMP_RETAINED);
 			idomod_write_runtime_variables();
 		}
 
@@ -3120,10 +3313,6 @@ int idomod_broker_data(int event_type, void *data) {
 	case NEBCALLBACK_RETENTION_DATA:
 
 		rdata = (nebstruct_retention_data *)data;
-
-		/* retained config was just read, so dump it */
-		if (rdata->type == NEBTYPE_RETENTIONDATA_ENDLOAD)
-			idomod_write_config(IDOMOD_CONFIG_DUMP_RETAINED);
 
 		break;
 
@@ -3167,7 +3356,7 @@ int idomod_write_config(int config_type) {
 	         , IDO_API_ENDDATA
 	        );
 	temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-	idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
+	idomod_write_to_sink_queue(temp_buffer);
 
 	/* dump object config info */
 	result = idomod_write_object_config(config_type);
@@ -3184,7 +3373,7 @@ int idomod_write_config(int config_type) {
 	         , IDO_API_ENDDATA
 	        );
 	temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-	idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
+	idomod_write_to_sink_queue(temp_buffer);
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_config() end\n");
 
@@ -3281,7 +3470,7 @@ int idomod_write_object_config(int config_type) {
 
 		/* write data to sink */
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(temp_buffer);
 	}
 
 	/* free buffers */
@@ -3333,7 +3522,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -3495,7 +3684,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -3554,7 +3743,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -3804,7 +3993,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -3863,7 +4052,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -4069,7 +4258,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -4134,7 +4323,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -4222,7 +4411,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -4315,7 +4504,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -4368,7 +4557,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -4429,7 +4618,7 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		idomod_write_to_sink(dbuf.buf, IDO_TRUE, IDO_TRUE);
+		idomod_write_to_sink_queue(dbuf.buf);
 
 		ido_dbuf_free(&dbuf);
 	}
@@ -4492,7 +4681,7 @@ int idomod_write_main_config_file(void) {
 	            ) == -1)
 		temp_buffer = NULL;
 
-	idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
+	idomod_write_to_sink_queue(temp_buffer);
 	free(temp_buffer);
 	temp_buffer = NULL;
 
@@ -4523,7 +4712,7 @@ int idomod_write_main_config_file(void) {
 			            ) == -1)
 				temp_buffer = NULL;
 
-			idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
+			idomod_write_to_sink_queue(temp_buffer);
 			free(temp_buffer);
 			temp_buffer = NULL;
 		}
@@ -4537,7 +4726,7 @@ int idomod_write_main_config_file(void) {
 	            ) == -1)
 		temp_buffer = NULL;
 
-	idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
+	idomod_write_to_sink_queue(temp_buffer);
 	free(temp_buffer);
 	temp_buffer = NULL;
 
@@ -4599,7 +4788,7 @@ int idomod_write_runtime_variables(void) {
 	            ) == -1)
 		temp_buffer = NULL;
 
-	idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
+	idomod_write_to_sink_queue(temp_buffer);
 	free(temp_buffer);
 	temp_buffer = NULL;
 
@@ -4612,7 +4801,7 @@ int idomod_write_runtime_variables(void) {
 	            ) == -1)
 		temp_buffer = NULL;
 
-	idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
+	idomod_write_to_sink_queue(temp_buffer);
 	free(temp_buffer);
 	temp_buffer = NULL;
 
@@ -4673,7 +4862,7 @@ int idomod_write_runtime_variables(void) {
 	            ) == -1)
 		temp_buffer = NULL;
 
-	idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
+	idomod_write_to_sink_queue(temp_buffer);
 	free(temp_buffer);
 	temp_buffer = NULL;
 
@@ -4683,7 +4872,7 @@ int idomod_write_runtime_variables(void) {
 	            ) == -1)
 		temp_buffer = NULL;
 
-	idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
+	idomod_write_to_sink_queue(temp_buffer);
 	free(temp_buffer);
 	temp_buffer = NULL;
 

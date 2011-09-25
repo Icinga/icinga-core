@@ -65,10 +65,20 @@ use_ssl=0
 # OUTPUT BUFFER
 # This option determines the size of the output buffer, which will help
 # prevent data from getting lost if there is a temporary disconnect from
-# the data sink.  The number of items specified here is the number of
+# the data sink. The number of items specified here is the number of
 # lines (each of variable size) of output that will be buffered.
+# Furthermore, the buffer is also used for asynchronous communication
+# between Core callbacks and the socket, secured by an internal mutex.
+#
+# Assign the number according to the overall amount of # of objects
+# and/or available memory ressources. A lower value than 50k will be
+# ignored by the module.
+# Hint: idomod will tell on startup how many items will be flushed on
+# the socket from the buffer. If this value exceeds output_buffer_items,
+# increase it over here and restart the core.
 
-output_buffer_items=5000
+#output_buffer_items=50000
+output_buffer_items=65535
 
 
 
