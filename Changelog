@@ -8,6 +8,7 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 
 ENHANCEMENTS
 * core: acknowledgements can now expire by providing an end_time through commands #770
+* core: add icinga startup delay checks to example configs, including perfdata  #1937
 
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
 
