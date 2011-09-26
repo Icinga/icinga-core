@@ -222,6 +222,8 @@ int main(int argc, char **argv) {
 		printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
 
 		numdrivers = dbi_initialize(NULL);
+		if (numdrivers == -1)
+			numdrivers = 0;
 
 		fprintf(stderr, "%d drivers available: ", numdrivers);
 		while ((driver = dbi_driver_list(driver)) != NULL) {
