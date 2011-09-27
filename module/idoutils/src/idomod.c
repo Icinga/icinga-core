@@ -801,10 +801,11 @@ int idomod_write_to_sink_queue(char *buf) {
 
 		/* don't retry too often */
 		/* FIXME - this should be dumped to disk then */
-		if (retry == IDOMOD_SINK_RETRY_ON_ERROR) {
+		/*if (retry == IDOMOD_SINK_RETRY_ON_ERROR) {
 	                idomod_write_to_logs("idomod: Unable to write to buffer. Maybe increase output_buffer_items?\n", NSLOG_INFO_MESSAGE);
 			break;
-        	}
+        	}*/
+		/* this will loop or block */
 	}
 
 	return OK;
