@@ -1395,6 +1395,26 @@ CREATE TABLE  icinga_timeperiod_timeranges (
   CONSTRAINT PK_timeperiod_timerange_id PRIMARY KEY (timeperiod_timerange_id)
 ) ;
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table icinga_slahistory
+--
+                                                                                
+CREATE TABLE icinga_slahistory (
+  slahistory_id serial,
+  instance_id bigint default 0,
+  start_time timestamp default '1970-01-01 00:00:00',
+  end_time timestamp default '1970-01-01 00:00:00',
+  acknowledgement_time timestamp default '1970-01-01 00:00:00',
+  object_id bigint default 0,
+  state INTEGER default 0,
+  state_type INTEGER default '0',
+  scheduled_downtime INTEGER default 0,
+  CONSTRAINT PK_slahistory_id PRIMARY KEY (slahistory_id)
+) ;
+
+
 
 -- -----------------------------------------
 -- add index (delete)
@@ -1574,6 +1594,8 @@ CREATE INDEX loge_inst_id_time_idx on icinga_logentries (instance_id, logentry_t
 -- statehistory
 CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on icinga_statehistory(instance_id, object_id, state_type, state_time);
 
+-- SLA statehistory
+CREATE INDEX slahist_i_id_o_id_s_ti_s_s_ti_e on icinga_slahistory(instance_id,object_id,start_time,end_time);
 
 -- -----------------------------------------
 -- set dbversion

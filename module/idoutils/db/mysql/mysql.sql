@@ -1367,6 +1367,25 @@ CREATE TABLE IF NOT EXISTS icinga_timeperiod_timeranges (
   PRIMARY KEY  (timeperiod_timerange_id)
 ) ENGINE=InnoDB  COMMENT='Timeperiod definitions';
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table icinga_slahistory
+--
+
+CREATE TABLE IF NOT EXISTS icinga_slahistory (
+  slahistory_id serial,
+  instance_id bigint unsigned default 0,
+  start_time datetime default '0000-00-00 00:00:00',
+  end_time datetime default '0000-00-00 00:00:00',
+  acknowledgement_time datetime default NULL,
+  object_id bigint unsigned default 0,
+  state smallint default 0,
+  state_type smallint default '0',
+  scheduled_downtime tinyint(1) default 0,
+  PRIMARY KEY (slahistory_id)
+) ENGINE=InnoDB COMMENT='SLA statehistory';
+
 
 -- -----------------------------------------
 -- add index (delete)
@@ -1544,6 +1563,9 @@ CREATE INDEX loge_inst_id_time_idx on icinga_logentries (instance_id ASC, logent
 
 -- statehistory
 CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on icinga_statehistory(instance_id, object_id, state_type, state_time);
+
+-- SLA statehistory
+CREATE INDEX slahist_i_id_o_id_s_ti_s_s_ti_e on icinga_slahistory(instance_id,object_id,start_time,end_time);
 
 -- -----------------------------------------
 -- set dbversion

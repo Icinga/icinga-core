@@ -35,6 +35,35 @@ spool oracle-upgrade-&&ICINGA_VERSION..log
 -- -----------------------------------------
 alter table acknowledgements add end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS');
 
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table timeperiods
+-- 
+
+CREATE TABLE slahistory (
+  id_id integer ,
+  instance_id integer default 0 ,
+  start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  acknowledgement_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  object_id integer default 0 ,
+  state integer default 0 ,
+  state_type integer default 0 ,
+  scheduled_downtime integer default 0
+)tablespace &&DATATBS;
+
+alter table slahistory add constraint slahistory_pk PRIMARY KEY  (id)
+	using index tablespace &&IDXTBS;
+
+-- slahistory
+CREATE INDEX slahist_idx on slahistory(instance_id,object_id,start_time,end_time) tablespace &&IDXTBS;
+
+CREATE SEQUENCE seq_slahistory
+   start with 1
+   increment by 1
+   nocache nomaxvalue;
+
 -- -----------------------------------------
 -- finally update dbversion
 -- -----------------------------------------
