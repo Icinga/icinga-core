@@ -66,6 +66,35 @@ use_ssl=0
 
 
 
+# OUTPUT BUFFER
+# This option determines the size of the output buffer, which will help
+# prevent data from getting lost if there is a temporary disconnect from
+# the data sink. The number of items specified here is the number of
+# lines (each of variable size) of output that will be buffered.
+# Furthermore, the buffer is also used for asynchronous communication
+# between the socket and actual database, secured by an internal mutex.
+#
+# Assign the number according to the overall amount of # of objects
+# and/or available memory ressources. A lower value than 50k will be
+# ignored by ido2db.
+
+#output_buffer_items=50000
+output_buffer_items=65535
+
+
+
+# BUFFER FILE
+# This option is used to specify a file which will be used to store the
+# contents of buffered data which could not be sent to database
+# before ido2db shuts down.  Prior to shutting down, the IDO2DB daemon
+# will write all buffered data to this file for later processing.  When
+# ido2db (re)starts, it will read the contents of this
+# file and send it to the database for processing.
+
+buffer_file=@localstatedir@/ido2db.tmp
+
+
+
 # DATABASE SERVER TYPE
 # This option determines what type of DB server the daemon should
 # connect to.
