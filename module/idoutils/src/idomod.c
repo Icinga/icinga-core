@@ -71,6 +71,9 @@ pthread_t queue_thread;
 int cancel_queue;
 int cancel_threads = 1;
 
+/* lock for the logs */
+pthread_mutex_t log_lock;
+
 extern int errno;
 
 /**** Icinga VARIABLES ****/
@@ -198,6 +201,7 @@ int idomod_init(void) {
 
 	/* the queue thread will be created on NEBTYPE_PROCESS_EVENTLOOPSTART, see idomod_init_event_loop_start() */
 	pthread_mutex_init(&sinkbuf.buffer_lock, NULL);
+	pthread_mutex_init(&log_lock, NULL);
 
 	/* read unprocessed data from buffer file */
 	idomod_load_unprocessed_data(idomod_buffer_file);
@@ -4931,6 +4935,9 @@ int idomod_log_debug_info(int level, int verbosity, const char *fmt, ...) {
 	if (idomod_debug_file_fp == NULL)
 		return IDO_ERROR;
 
+	/* lock the mutex so only one thread can write */
+	pthread_mutex_lock(&log_lock);
+
 	/* write the timestamp */
 	gettimeofday(&current_time, NULL);
 	fprintf(idomod_debug_file_fp, "[%lu.%06lu] [%03d.%d] [pid=%lu] ", current_time.tv_sec, current_time.tv_usec, level, verbosity, (unsigned long)getpid());
@@ -4968,6 +4975,9 @@ int idomod_log_debug_info(int level, int verbosity, const char *fmt, ...) {
 		/* open a new file */
 		idomod_open_debug_log();
 	}
+
+	/* unlock the mutex so only one thread can write */
+	pthread_mutex_unlock(&log_lock);
 
 	return IDO_OK;
 }
