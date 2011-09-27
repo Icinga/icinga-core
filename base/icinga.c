@@ -829,6 +829,11 @@ int main(int argc, char **argv, char **env) {
 				exit(ERROR);
 			}
 
+#ifdef USE_EVENT_BROKER
+                        /* send program data to broker */
+                        broker_program_state(NEBTYPE_PROCESS_INITSTART, NEBFLAG_NONE, NEBATTR_NONE, NULL);
+#endif
+
 			/* initialize status data unless we're starting */
 			if (sigrestart == FALSE)
 				initialize_status_data(config_file);
@@ -852,6 +857,11 @@ int main(int argc, char **argv, char **env) {
 
 			/* initialize check statistics */
 			init_check_stats();
+
+#ifdef USE_EVENT_BROKER
+                        /* send program data to broker */
+                        broker_program_state(NEBTYPE_PROCESS_INITEND, NEBFLAG_NONE, NEBATTR_NONE, NULL);
+#endif
 
 			/* update all status data (with retained information) */
 			update_all_status_data();

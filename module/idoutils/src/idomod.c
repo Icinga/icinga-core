@@ -199,7 +199,7 @@ int idomod_init(void) {
 	/* initialize data sink buffer */
 	idomod_sink_buffer_init(&sinkbuf, idomod_sink_buffer_slots);
 
-	/* the queue thread will be created on NEBTYPE_PROCESS_EVENTLOOPSTART, see idomod_init_event_loop_start() */
+	/* the queue thread will be created on NEBTYPE_PROCESS_INITSTART, see idomod_init_event_loop_start() */
 	pthread_mutex_init(&sinkbuf.buffer_lock, NULL);
 	pthread_mutex_init(&log_lock, NULL);
 
@@ -237,10 +237,10 @@ int idomod_init(void) {
 }
 
 
-int idomod_init_event_loop_start(void *data) {
+int idomod_init_post(void *data) {
 	int result;
 
-	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init_event_loop_start() start\n");
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init_post() start\n");
 
 	/*
 	 * we can't immediately start the queue thread
@@ -252,7 +252,7 @@ int idomod_init_event_loop_start(void *data) {
 	 * all over.
 	 * therefore this function is called when the first
 	 * callback on PROCESS_DATA happens, telling that
-	 * NEBTYPE_PROCESS_EVENTLOOPSTART happened.
+	 * NEBTYPE_PROCESS_INITSTART happened.
 	 * this requires a valuable amount of buffer size
 	 * in the first place to allow the main thread to
 	 * dump everything without the running queue thread.
@@ -262,14 +262,14 @@ int idomod_init_event_loop_start(void *data) {
         result = pthread_create(&queue_thread, NULL, idomod_read_from_sink_queue, (void *)0);
 
         if (result) {
-                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init() failed to create queue thread: %s\n", strerror(result));
+                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init_post() failed to create queue thread: %s\n", strerror(result));
 		return IDO_ERROR;
         } else {
-                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init() Successfully created queue thread with thread id %ld\n", queue_thread);
+                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init_post() Successfully created queue thread with thread id %ld\n", queue_thread);
 		return IDO_OK;
         }
 
-	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init_event_loop_start() end\n");
+	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_init_post() end\n");
 
 	return IDO_OK;
 }
@@ -546,13 +546,16 @@ int idomod_process_config_var(char *arg) {
 /* UTILITY FUNCTIONS                                                        */
 /****************************************************************************/
 
-/* writes a string to Icinga logs */
+/* writes a string to syslog logs */
 int idomod_write_to_logs(char *buf, int flags) {
 
 	if (buf == NULL)
 		return IDO_ERROR;
 
-	return write_to_all_logs(buf, flags);
+	syslog(LOG_USER | LOG_INFO, "%s", buf);
+
+	return IDO_OK;
+	//return write_to_all_logs(buf, flags);
 }
 
 
@@ -739,9 +742,10 @@ int idomod_rotate_sink_file(void *args) {
 
 /* write data to queue for sink */
 int idomod_write_to_sink_queue(char *buf) {
-	int buffer_items = 0;
+	int buffer_items, head, tail = 0;
 	struct timespec delay;
 	int retry = 0;
+        char temp_buffer[IDOMOD_MAX_BUFLEN];
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() start\n");
 
@@ -756,18 +760,32 @@ int idomod_write_to_sink_queue(char *buf) {
                 /* get number of items in the buffer */
                 pthread_mutex_lock(&sinkbuf.buffer_lock);
                 buffer_items = sinkbuf.items;
+		head = sinkbuf.head;
+		tail = sinkbuf.tail;
                 pthread_mutex_unlock(&sinkbuf.buffer_lock);
 
-                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() buffer items: %d/%d\n", buffer_items, idomod_sink_buffer_slots);
+                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() buffer items: %d/%d head: %d tail: %d\n", buffer_items, idomod_sink_buffer_slots, head, tail);
 
                 /* process all data if there's some space in the buffer */
 		if (idomod_sink_buffer_push(&sinkbuf, buf) == IDO_OK) {
 			/* write was successful, don't retry */
 			idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() success\n");
-			retry = IDOMOD_SINK_RETRY_ON_ERROR;
+
+	                /*
+        	         * We should wait for the sink queuing to catch up some data
+	                 * from the buffer if for this atomic run the buffer is filled completely or
+	                 * is overrun
+	                 */
+	                /* wait a bit */
+	                delay.tv_sec = 0;
+	                delay.tv_nsec = 500000;
+	                nanosleep(&delay, NULL);
+
+			return IDO_OK;
+
 	        } else {
 			/* write was not successful, retry */
-			idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() no success, retry\n");
+			idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_to_sink_queue() no success, retry: %d/%d\n", retry, IDOMOD_SINK_RETRY_ON_ERROR);
 			retry++;
 		}
 
@@ -783,8 +801,10 @@ int idomod_write_to_sink_queue(char *buf) {
 
 		/* don't retry too often */
 		/* FIXME - this should be dumped to disk then */
-		if (retry == IDOMOD_SINK_RETRY_ON_ERROR)
+		if (retry == IDOMOD_SINK_RETRY_ON_ERROR) {
+	                idomod_write_to_logs("idomod: Unable to write to buffer. Maybe increase output_buffer_items?\n", NSLOG_INFO_MESSAGE);
 			break;
+        	}
 	}
 
 	return OK;
@@ -800,7 +820,7 @@ void cleanup_queue_thread(void *arg) {
 void * idomod_read_from_sink_queue(void * data) {
 	char *buffer = NULL;
 	int result = 0;
-	int buffer_items = 0;
+	int buffer_items, head, tail = 0;
 	struct timeval tv;
 	struct timespec delay;
 
@@ -818,6 +838,8 @@ void * idomod_read_from_sink_queue(void * data) {
                 /* get number of items in the buffer */
                 pthread_mutex_lock(&sinkbuf.buffer_lock);
                 buffer_items = sinkbuf.items;
+                head = sinkbuf.head;
+                tail = sinkbuf.tail;
                 pthread_mutex_unlock(&sinkbuf.buffer_lock);
 
 		/* make sure we shouldn't bail out early */
@@ -831,7 +853,7 @@ void * idomod_read_from_sink_queue(void * data) {
 			continue;
 		}
 
-                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_read_from_sink_queue() buffer items: %d/%d\n", buffer_items, idomod_sink_buffer_slots);
+                idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_read_from_sink_queue() buffer items: %d/%d head: %d tail: %d\n", buffer_items, idomod_sink_buffer_slots, head, tail);
 
 		buffer = idomod_sink_buffer_pop(&sinkbuf);
 
@@ -1604,13 +1626,15 @@ int idomod_broker_data(int event_type, void *data) {
 	/* handle the event */
 	switch (event_type) {
 
+	/*******************************************************************/
 	case NEBCALLBACK_PROCESS_DATA:
+	/*******************************************************************/
 
 		procdata = (nebstruct_process_data *)data;
 
 		/* after daemonizing, we can start our queue thread */
-		if (procdata->type == NEBTYPE_PROCESS_EVENTLOOPSTART) {
-			idomod_init_event_loop_start(data);
+		if (procdata->type == NEBTYPE_PROCESS_INITSTART) {
+			idomod_init_post(data);
 		}
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
@@ -1641,13 +1665,17 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_TIMED_EVENT_DATA:
+	/*******************************************************************/
 
 		eventdata = (nebstruct_timed_event_data *)data;
 
 		switch (eventdata->event_type) {
 
+		/*******************************************************************/
 		case EVENT_SERVICE_CHECK:
+		/*******************************************************************/
 			temp_service = (service *)eventdata->event_data;
 
 			es[0] = ido_escape_buffer(temp_service->host_name);
@@ -1680,7 +1708,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 			break;
 
+		/*******************************************************************/
 		case EVENT_HOST_CHECK:
+		/*******************************************************************/
 			temp_host = (host *)eventdata->event_data;
 
 			es[0] = ido_escape_buffer(temp_host->name);
@@ -1710,7 +1740,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 			break;
 
+		/*******************************************************************/
 		case EVENT_SCHEDULED_DOWNTIME:
+		/*******************************************************************/
 			temp_downtime = find_downtime(ANY_DOWNTIME, (unsigned long)eventdata->event_data);
 
 			if (temp_downtime != NULL) {
@@ -1774,7 +1806,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_LOG_DATA:
+	/*******************************************************************/
 
 		logdata = (nebstruct_log_data *)data;
 
@@ -1804,7 +1838,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_SYSTEM_COMMAND_DATA:
+	/*******************************************************************/
 
 		cmddata = (nebstruct_system_command_data *)data;
 
@@ -1852,7 +1888,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_EVENT_HANDLER_DATA:
+	/*******************************************************************/
 
 		ehanddata = (nebstruct_event_handler_data *)data;
 
@@ -1917,7 +1955,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_NOTIFICATION_DATA:
+	/*******************************************************************/
 
 		notdata = (nebstruct_notification_data *)data;
 
@@ -1977,7 +2017,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_SERVICE_CHECK_DATA:
+	/*******************************************************************/
 
 		scdata = (nebstruct_service_check_data *)data;
 
@@ -2056,7 +2098,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_HOST_CHECK_DATA:
+	/*******************************************************************/
 
 		hcdata = (nebstruct_host_check_data *)data;
 
@@ -2132,7 +2176,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_COMMENT_DATA:
+	/*******************************************************************/
 
 		comdata = (nebstruct_comment_data *)data;
 
@@ -2185,7 +2231,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_DOWNTIME_DATA:
+	/*******************************************************************/
 
 		downdata = (nebstruct_downtime_data *)data;
 
@@ -2238,7 +2286,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_FLAPPING_DATA:
+	/*******************************************************************/
 
 		flapdata = (nebstruct_flapping_data *)data;
 
@@ -2286,7 +2336,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_PROGRAM_STATUS_DATA:
+	/*******************************************************************/
 
 		psdata = (nebstruct_program_status_data *)data;
 
@@ -2353,7 +2405,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_HOST_STATUS_DATA:
+	/*******************************************************************/
 
 		hsdata = (nebstruct_host_status_data *)data;
 
@@ -2511,7 +2565,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_SERVICE_STATUS_DATA:
+	/*******************************************************************/
 
 		ssdata = (nebstruct_service_status_data *)data;
 
@@ -2672,7 +2728,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_CONTACT_STATUS_DATA:
+	/*******************************************************************/
 
 		csdata = (nebstruct_contact_status_data *)data;
 
@@ -2750,7 +2808,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_ADAPTIVE_PROGRAM_DATA:
+	/*******************************************************************/
 
 		apdata = (nebstruct_adaptive_program_data *)data;
 
@@ -2790,7 +2850,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_ADAPTIVE_HOST_DATA:
+	/*******************************************************************/
 
 		ahdata = (nebstruct_adaptive_host_data *)data;
 
@@ -2843,7 +2905,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_ADAPTIVE_SERVICE_DATA:
+	/*******************************************************************/
 
 		asdata = (nebstruct_adaptive_service_data *)data;
 
@@ -2897,7 +2961,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_ADAPTIVE_CONTACT_DATA:
+	/*******************************************************************/
 
 		acdata = (nebstruct_adaptive_contact_data *)data;
 
@@ -2948,7 +3014,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_EXTERNAL_COMMAND_DATA:
+	/*******************************************************************/
 
 		ecdata = (nebstruct_external_command_data *)data;
 
@@ -2983,7 +3051,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_AGGREGATED_STATUS_DATA:
+	/*******************************************************************/
 
 		agsdata = (nebstruct_aggregated_status_data *)data;
 
@@ -3007,7 +3077,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_RETENTION_DATA:
+	/*******************************************************************/
 
 		rdata = (nebstruct_retention_data *)data;
 
@@ -3031,7 +3103,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_CONTACT_NOTIFICATION_DATA:
+	/*******************************************************************/
 
 		cnotdata = (nebstruct_contact_notification_data *)data;
 
@@ -3090,7 +3164,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_CONTACT_NOTIFICATION_METHOD_DATA:
+	/*******************************************************************/
 
 		cnotmdata = (nebstruct_contact_notification_method_data *)data;
 
@@ -3155,7 +3231,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_ACKNOWLEDGEMENT_DATA:
+	/*******************************************************************/
 
 		ackdata = (nebstruct_acknowledgement_data *)data;
 
@@ -3204,7 +3282,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_STATE_CHANGE_DATA:
+	/*******************************************************************/
 
 		schangedata = (nebstruct_statechange_data *)data;
 
@@ -3275,7 +3355,9 @@ int idomod_broker_data(int event_type, void *data) {
 
 		break;
 
+	/*******************************************************************/
 	default:
+	/*******************************************************************/
 		ido_dbuf_free(&dbuf);
 		return 0;
 		break;
@@ -3300,23 +3382,34 @@ int idomod_broker_data(int event_type, void *data) {
 
 	switch (event_type) {
 
+	/*******************************************************************/
 	case NEBCALLBACK_PROCESS_DATA:
+	/*******************************************************************/
 
 		procdata = (nebstruct_process_data *)data;
 
-		/* dump everything on event loop start if applicable */
-		if (procdata->type == NEBTYPE_PROCESS_EVENTLOOPSTART) {
+		/* dump configs after daemonizing and init start if applicable */
+		if (procdata->type == NEBTYPE_PROCESS_INITSTART) {
 			idomod_write_config_files();
 			idomod_write_config(IDOMOD_CONFIG_DUMP_ORIGINAL);
-			idomod_write_config(IDOMOD_CONFIG_DUMP_RETAINED);
+		}
+
+		/* process is starting the event loop, so dump runtime vars */
+		if (procdata->type == NEBTYPE_PROCESS_EVENTLOOPSTART) {
 			idomod_write_runtime_variables();
 		}
 
 		break;
 
+	/*******************************************************************/
 	case NEBCALLBACK_RETENTION_DATA:
+	/*******************************************************************/
 
 		rdata = (nebstruct_retention_data *)data;
+
+		/* retained config was just read, so dump it */
+		if (rdata->type == NEBTYPE_RETENTIONDATA_ENDLOAD)
+			idomod_write_config(IDOMOD_CONFIG_DUMP_RETAINED);
 
 		break;
 

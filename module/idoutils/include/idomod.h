@@ -96,7 +96,7 @@ int nebmodule_init(int,char *,void *);
 int nebmodule_deinit(int,int);
 
 int idomod_init(void);
-int idomod_init_event_loop_start(void *);
+int idomod_init_post(void *);
 int idomod_deinit(void);
 
 int idomod_check_icinga_object_version(void);

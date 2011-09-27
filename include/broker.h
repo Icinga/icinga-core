@@ -75,6 +75,8 @@
 #define NEBTYPE_PROCESS_PRELAUNCH                104   /* before objects are read or verified */
 #define NEBTYPE_PROCESS_EVENTLOOPSTART           105
 #define NEBTYPE_PROCESS_EVENTLOOPEND             106
+#define NEBTYPE_PROCESS_INITSTART                107
+#define NEBTYPE_PROCESS_INITEND                  108
 
 #define NEBTYPE_TIMEDEVENT_ADD                   200
 #define NEBTYPE_TIMEDEVENT_REMOVE                201
