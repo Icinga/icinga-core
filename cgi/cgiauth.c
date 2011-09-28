@@ -372,9 +372,6 @@ int is_authorized_for_host(host *hst, authdata *authinfo) {
 	int ok = FALSE;
 	int is_ok = FALSE;
 
-	if (hst == NULL)
-		return FALSE;
-
 	/* if we're not using authentication, fake it */
 	if (use_authentication == FALSE)
 		return TRUE;
@@ -386,6 +383,10 @@ int is_authorized_for_host(host *hst, authdata *authinfo) {
 	/* if this user is authorized for all hosts, they are for this one... */
 	if (is_authorized_for_all_hosts(authinfo) == TRUE)
 		return TRUE;
+
+	/* see if we have a host to check */
+	if (hst == NULL)
+		return FALSE;
 
 	/* find the contact */
 	temp_contact = find_contact(authinfo->username);
@@ -570,9 +571,6 @@ int is_authorized_for_service(service *svc, authdata *authinfo) {
 	int is_ok2 = FALSE;
 	char permission[2];
 
-	if (svc == NULL)
-		return FALSE;
-
 	/* if we're not using authentication, fake it */
 	if (use_authentication == FALSE)
 		return TRUE;
@@ -584,6 +582,10 @@ int is_authorized_for_service(service *svc, authdata *authinfo) {
 	/* if this user is authorized for all services, they are for this one... */
 	if (is_authorized_for_all_services(authinfo) == TRUE)
 		return TRUE;
+
+	/* see if we have a service to check */
+	if (svc == NULL)
+		return FALSE;
 
 	/* find the host */
 	temp_host = find_host(svc->host_name);
