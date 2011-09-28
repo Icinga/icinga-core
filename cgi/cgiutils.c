@@ -65,7 +65,7 @@ char            *ping_syntax = NULL;
 char		*csv_delimiter = CSV_DELIMITER;
 char		*csv_data_enclosure = CSV_DATA_ENCLOSURE;
 
-char		highlight_table_rows = FALSE;
+char		highlight_table_rows = TRUE;
 
 char            nagios_check_command[MAX_INPUT_BUFFER] = "";
 char            nagios_process_info[MAX_INPUT_BUFFER] = "";
@@ -1045,10 +1045,6 @@ void document_header(int cgi_id, int use_stylesheet) {
 
 		/* functions to handle the checkboxes and dropdown menus */
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, CHECKBOX_FUNCTIONS_JS);
-
-		/* include code for highlight table rows */
-		if (highlight_table_rows == TRUE)
-			printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, HIGHLIGHT_TABLE_JS);
 	}
 
 	if (cgi_id == STATUSMAP_CGI_ID || cgi_id == TRENDS_CGI_ID) {

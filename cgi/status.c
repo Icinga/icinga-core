@@ -416,6 +416,27 @@ int main(void) {
 	}
 
 	if (show_dropdown != NO_STATUS && content_type == HTML_CONTENT) {
+
+		if(highlight_table_rows==TRUE) {
+			printf("<script type = \"text/javascript\">\n");
+			printf("\t$(document).ready(function(){\n");
+			printf("\t\t$(\"table.status tr\").hover(function( e ) {\n");
+			printf("\t\t\t$(this).find(\"td\").each(function(){\n");
+			printf("\t\t\t\tif($(this).attr(\"class\")) {\n");
+			printf("\t\t\t\t\t$(this).addClass(\"highlightRow\");\n");
+			printf("\t\t\t\t}\n");
+			printf("\t\t\t});\n");
+			printf("\t\t}, function(){\n");
+			printf("\t\t\t$(this).find(\"td\").each(function(){\n");
+			printf("\t\t\t\tif($(this).attr(\"class\")) {\n");
+			printf("\t\t\t\t\t$(this).removeClass(\"highlightRow\");\n");
+			printf("\t\t\t\t}\n");
+			printf("\t\t\t});\n");
+			printf("\t\t});\n");
+			printf("\t});\n");
+			printf("</script>\n");
+		}
+
 		printf("<form name='tableform%s' id='tableform%s' action='%s' method='POST' style='margin:0px'>\n", (show_dropdown == HOST_STATUS) ? "host" : "service", (show_dropdown == HOST_STATUS) ? "host" : "service", CMD_CGI);
 		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
 	}
@@ -1526,10 +1547,7 @@ void show_service_detail(void) {
 	} else {
 		/* the main list of services */
 		printf("<DIV ALIGN='center'>\n");
-		if (highlight_table_rows == TRUE)
-			printf("<TABLE BORDER=0 width=100%% CLASS='status'%s>\n", HIGHLIGHT_TABLE_JS_CODE);
-		else
-			printf("<TABLE BORDER=0 width=100%% CLASS='status'>\n");
+		printf("<TABLE BORDER=0 width=100%% CLASS='status'>\n");
 
 		printf("<TR>\n");
 
@@ -2070,10 +2088,7 @@ void show_host_detail(void) {
 	} else {
 		/* the main list of hosts */
 		printf("<DIV ALIGN='center'>\n");
-		if (highlight_table_rows == TRUE)
-			printf("<TABLE BORDER=0 CLASS='status' WIDTH=100%%%s>\n", HIGHLIGHT_TABLE_JS_CODE);
-		else
-			printf("<TABLE BORDER=0 CLASS='status' WIDTH=100%%>\n");
+		printf("<TABLE BORDER=0 width=100%% CLASS='status'>\n");
 
 		printf("<TR>\n");
 
