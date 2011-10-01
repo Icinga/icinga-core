@@ -5044,6 +5044,9 @@ int idomod_log_debug_info(int level, int verbosity, const char *fmt, ...) {
 	/* flush, so we don't have problems tailing or when fork()ing */
 	fflush(idomod_debug_file_fp);
 
+	/* unlock the mutex so only one thread can write */
+	pthread_mutex_unlock(&log_lock);
+
 	/* if file has grown beyond max, rotate it */
 	if ((unsigned long)ftell(idomod_debug_file_fp) > idomod_max_debug_file_size && idomod_max_debug_file_size > 0L) {
 
@@ -5069,9 +5072,6 @@ int idomod_log_debug_info(int level, int verbosity, const char *fmt, ...) {
 		/* open a new file */
 		idomod_open_debug_log();
 	}
-
-	/* unlock the mutex so only one thread can write */
-	pthread_mutex_unlock(&log_lock);
 
 	return IDO_OK;
 }
