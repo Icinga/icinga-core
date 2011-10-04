@@ -1,10 +1,10 @@
 #######################
-Icinga 1.5.x Change Log
+Icinga 1.6.x Change Log
 #######################
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
-1.6.0 - XX/XX/2011
+1.6.0 - 30/11/2011
 
 ENHANCEMENTS
 * core: acknowledgements can now expire by providing an end_time through commands #770
@@ -24,6 +24,8 @@ FIXES
 * classic ui: fix Localization: Form validation message could be improved (thx Mario Rimann) #1849
 * classic ui: fix wrong titles in list of scheduled downtimes (thx Mario Rimann) #1848
 * classic ui: fix host and service names are not allowed to have a '+' included #1843
+* claasic ui: fix service overview for single hostgroups when show_partial_hostgroups is switched on #1013
+* claasic ui: fix authorized_for_all_hosts/authorized_for_all_services retruns true for historical data #1166
 
 * idoutils: idomod: change stacked memory allocation for broker_data IDO_MAX_BUFLEN #1879
 * idoutils: fix idomod should log more verbose on errors, asking for a running ido2db process #1885
