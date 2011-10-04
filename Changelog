@@ -4,6 +4,16 @@ Icinga 1.5.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+1.6.0 - XX/XX/2011
+
+ENHANCEMENTS
+* core: acknowledgements can now expire by providing an end_time through commands #770
+
+* classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
+
+* idoutils: added end_time column for acknowledgelemts expiry #770
+
+
 1.5.1 - 09/09/2011
 
 ENHANCEMENTS

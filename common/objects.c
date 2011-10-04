@@ -788,6 +788,7 @@ host *add_host(char *name, char *display_name, char *alias, char *address, char 
 	new_host->is_being_freshened = FALSE;
 	new_host->problem_has_been_acknowledged = FALSE;
 	new_host->acknowledgement_type = ACKNOWLEDGEMENT_NONE;
+	new_host->acknowledgement_end_time = (time_t)0;
 	new_host->notifications_enabled = (notifications_enabled > 0) ? TRUE : FALSE;
 	new_host->notified_on_down = FALSE;
 	new_host->notified_on_unreachable = FALSE;
@@ -1690,6 +1691,7 @@ service *add_service(char *host_name, char *description, char *display_name, cha
 #ifdef NSCORE
 	new_service->problem_has_been_acknowledged = FALSE;
 	new_service->acknowledgement_type = ACKNOWLEDGEMENT_NONE;
+	new_service->acknowledgement_end_time = (time_t)0;
 	new_service->check_type = SERVICE_CHECK_ACTIVE;
 	new_service->current_attempt = (initial_state == STATE_OK) ? 1 : max_attempts;
 	new_service->current_state = initial_state;

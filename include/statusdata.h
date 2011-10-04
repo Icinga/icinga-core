@@ -102,6 +102,7 @@ typedef struct hoststatus_struct{
 	int     obsess_over_host;
 	struct  hoststatus_struct *next;
 	struct  hoststatus_struct *nexthash;
+	time_t  acknowledgement_end_time;
         }hoststatus;
 
 
@@ -156,6 +157,7 @@ typedef struct servicestatus_struct{
 	int     obsess_over_service;
 	struct  servicestatus_struct *next;
 	struct  servicestatus_struct *nexthash;
+	time_t  acknowledgement_end_time;
         }servicestatus;
 
 
