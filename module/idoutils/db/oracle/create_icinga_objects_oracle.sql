@@ -248,7 +248,8 @@ CREATE TABLE acknowledgements (
   comment_data varchar2(2048),
   is_sticky integer default 0 ,
   persistent_comment integer default 0 ,
-  notify_contacts integer default 0 
+  notify_contacts integer default 0,
+  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS')
 )tablespace &&DATATBS ;
 
 alter table acknowledgements add constraint acknowledgements_pk PRIMARY KEY  (id)

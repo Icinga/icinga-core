@@ -3809,9 +3809,9 @@ int ido2db_oci_prepared_statement_acknowledgements(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "INSERT INTO %s (id, instance_id, entry_time, entry_time_usec, "
 	             "acknowledgement_type, object_id, state, author_name, comment_data, "
-	             "is_sticky, persistent_comment, notify_contacts) "
+	             "is_sticky, persistent_comment, notify_contacts, end_time) "
 	             "VALUES (seq_acknowledgements.nextval, :X1, unixts2date(:X2), :X3, "
-	             ":X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11)",
+	             ":X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, unixts2date(:X12))",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_ACKNOWLEDGEMENTS]) == -1) {
 		buf = NULL;
 	}

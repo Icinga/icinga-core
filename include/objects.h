@@ -408,6 +408,7 @@ struct host_struct{
 	/* 2011-02-07 MF: added for dualstack IPv6 support as
 	   $HOSTADDRESS6$ macro  */
 	char    *address6;
+	time_t	acknowledgement_end_time;
         };
 
 
@@ -547,6 +548,7 @@ struct service_struct{
 	/* 2011-02-07 MF: added for keeping the command for NEB callback
 	   PROCESSED state on host|service checks  */
 	char	*processed_command;
+	time_t	acknowledgement_end_time;
 	};
 
 /* ESCALATION CONDITION STRUCTURE 

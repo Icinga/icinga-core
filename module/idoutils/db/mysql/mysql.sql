@@ -38,6 +38,7 @@ CREATE TABLE IF NOT EXISTS icinga_acknowledgements (
   is_sticky smallint default 0,
   persistent_comment smallint default 0,
   notify_contacts smallint default 0,
+  end_time datetime default '0000-00-00 00:00:00',
   PRIMARY KEY  (acknowledgement_id)
 ) ENGINE=InnoDB COMMENT='Current and historical host and service acknowledgements';
 

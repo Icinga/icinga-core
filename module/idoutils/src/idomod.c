@@ -2965,7 +2965,7 @@ int idomod_broker_data(int event_type, void *data) {
 		es[3] = ido_escape_buffer(ackdata->comment_data);
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d\n\n"
+		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%ld\n%d\n\n"
 		         , IDO_API_ACKNOWLEDGEMENTDATA
 		         , IDO_DATA_TYPE
 		         , ackdata->type
@@ -2994,6 +2994,8 @@ int idomod_broker_data(int event_type, void *data) {
 		         , ackdata->persistent_comment
 		         , IDO_DATA_NOTIFYCONTACTS
 		         , ackdata->notify_contacts
+			 , IDO_DATA_END_TIME
+			 , ackdata->end_time
 		         , IDO_API_ENDDATA
 		        );
 
