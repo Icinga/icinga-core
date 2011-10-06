@@ -13,6 +13,9 @@ ENHANCEMENTS
 
 * idoutils: added end_time column for acknowledgelemts expiry #770
 
+FIXES
+* core: fix downtime and comments delete with wrong loop pointers causing segfaults #1979
+
 
 1.5.1 - 09/09/2011
 
