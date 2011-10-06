@@ -7,6 +7,7 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 1.6.0 - 30/11/2011
 
 ENHANCEMENTS
+* claasic ui: Acknowledge child hosts from on blocking outages #1858
 
 FIXES
 * core: free memory allocated notification macros right after sending the notification, not in next notification
