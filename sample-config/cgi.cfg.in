@@ -486,6 +486,16 @@ status_show_long_plugin_output=0
 tac_show_only_hard_state=0
 
 
+
+# SHOW CHILD HOSTS IN EXTINFO OPTION
+# This Option allows you to specify if the extended host information
+# cgi will show all direct child hosts.
+# By default disabled, as this could be a performance killer.
+
+extinfo_show_child_hosts=0
+
+
+
 # SUPPRESS MAINTENANCE DOWNTIME
 # This options suppresses the state coloring of hosts and services
 # that are in a scheduled downtime. It sets their coloring to gray,

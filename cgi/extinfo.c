@@ -69,6 +69,7 @@ extern int              buffer_stats[1][3];
 extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 
 extern int              suppress_maintenance_downtime;
+extern int		extinfo_show_child_hosts;
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
@@ -83,6 +84,11 @@ extern int              enable_splunk_integration;
 
 extern char             *notes_url_target;
 extern char             *action_url_target;
+
+extern host *host_list;
+extern service *service_list;
+extern hoststatus *hoststatus_list;
+extern servicestatus *servicestatus_list;
 
 extern comment           *comment_list;
 extern scheduled_downtime  *scheduled_downtime_list;
@@ -393,6 +399,29 @@ int main(void) {
 					printf("No hostgroups");
 
 				printf("</DIV>\n");
+
+                                /* Child Hosts */
+				if (extinfo_show_child_hosts == TRUE) {
+					found = FALSE;
+
+	                                printf("<DIV CLASS='data'>Child Hosts</DIV><DIV CLASS='dataTitle'>");
+
+					host * child_host;
+ 	                               	for (child_host = host_list; child_host != NULL; child_host = child_host->next) {
+						if (is_host_immediate_child_of_host(temp_host, child_host) == TRUE) {
+	                                                if (found == TRUE)
+        	                                                printf(", ");
+
+	                                                printf("<A HREF='%s?host=%s&nostatusheader'>%s</A>", STATUS_CGI, url_encode(child_host->name), html_encode(child_host->name, TRUE));
+	                                                found = TRUE;
+        	                                }
+	                                }
+
+        	                        if (found == FALSE)
+                	                        printf("None");
+				}
+
+                                printf("</DIV>\n");
 
 				/* Host Dependencies */
 				found = FALSE;

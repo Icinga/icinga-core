@@ -7,6 +7,8 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 1.6.0 - 30/11/2011
 
 ENHANCEMENTS
+* classic ui: add opt-in extinfo_show_child_hosts to show child hosts in extinfo.cgi #1820
+
 
 FIXES
 * core: free memory allocated notification macros right after sending the notification, not in next notification
@@ -22,6 +24,7 @@ FIXES
 * spec file: re-add processing headers
 
 CHANGES
+* cgi.cfg: extinfo_show_child_hosts=0
 
 
 1.5.0 - 24/08/2011

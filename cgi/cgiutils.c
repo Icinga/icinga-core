@@ -134,6 +134,7 @@ int		color_transparency_index_b = 255;
 
 int		status_show_long_plugin_output = FALSE;
 int		tac_show_only_hard_state = FALSE;
+int		extinfo_show_child_hosts = FALSE;
 int		suppress_maintenance_downtime = FALSE;
 int		show_tac_header = TRUE;
 int		show_tac_header_pending = TRUE;
@@ -569,6 +570,9 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "tac_show_only_hard_state"))
 			tac_show_only_hard_state = (atoi(val) > 0) ? TRUE : FALSE;
+
+		else if (!strcmp(var, "extinfo_show_child_hosts"))
+			extinfo_show_child_hosts = (atoi(val) > 0) ? TRUE : FALSE;
 
 		else if (!strcmp(var, "suppress_maintenance_downtime"))
 			suppress_maintenance_downtime = (atoi(val) > 0) ? TRUE : FALSE;
