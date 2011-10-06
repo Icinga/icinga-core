@@ -23,6 +23,7 @@ FIXES
 * spec file: re-add processing headers
 
 CHANGES
+* classic-ui: "showlog_initial_states" and "showlog_current_states" are now disabled by default to prevent browser freezes #1172
 
 
 1.5.0 - 24/08/2011
