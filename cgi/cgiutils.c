@@ -25,6 +25,7 @@
 #include "../include/common.h"
 #include "../include/locations.h"
 #include "../include/objects.h"
+#include "../include/macros.h"
 #include "../include/statusdata.h"
 
 #include "../include/cgiutils.h"
@@ -88,6 +89,10 @@ extern int      process_performance_data;
 extern time_t   last_command_check;
 extern time_t   last_log_rotation;
 extern time_t	status_file_creation_time;
+
+/* resource file */
+char		resource_file[MAX_INPUT_BUFFER];
+extern char 	*macro_user[MAX_USER_MACROS];
 
 /** readlogs.c **/
 int		log_rotation_method = LOG_ROTATION_NONE;
@@ -646,7 +651,15 @@ int read_main_config_file(char *filename) {
 
 		strip(input);
 
-		if (strstr(input, "interval_length=") == input) {
+                if (strstr(input, "resource_file=") == input) {
+                        temp_buffer = strtok(input, "=");
+                        temp_buffer = strtok(NULL, "\x0");
+                        strncpy(resource_file, (temp_buffer == NULL) ? "" : temp_buffer, sizeof(resource_file));
+                        resource_file[sizeof(resource_file)-1] = '\x0';
+                        strip(resource_file);
+                }
+
+		else if (strstr(input, "interval_length=") == input) {
 			temp_buffer = strtok(input, "=");
 			temp_buffer = strtok(NULL, "\x0");
 			interval_length = (temp_buffer == NULL) ? 60 : atoi(temp_buffer);
@@ -772,6 +785,86 @@ int read_all_status_data(char *config_file, int options) {
 		service_status_has_been_read = TRUE;
 
 	return result;
+}
+
+
+/* processes macros in resource file */
+int read_icinga_resource_file(char *resource_file) {
+        char *input = NULL;
+        char *variable = NULL;
+        char *value = NULL;
+        char *temp_ptr = NULL;
+        mmapfile *thefile = NULL;
+        int current_line = 1;
+        int error = FALSE;
+        int user_index = 0;
+
+        if ((thefile = mmap_fopen(resource_file)) == NULL) {
+                return ERROR;
+        }
+
+        /* process all lines in the resource file */
+        while (1) {
+
+                /* free memory */
+                my_free(input);
+
+                /* read the next line */
+                if ((input = mmap_fgets_multiline(thefile)) == NULL)
+                        break;
+
+                current_line = thefile->current_line;
+
+                /* skip blank lines and comments */
+                if (input[0] == '#' || input[0] == '\x0' || input[0] == '\n' || input[0] == '\r')
+                        continue;
+
+                strip(input);
+
+                /* get the variable name */
+                if ((temp_ptr = my_strtok(input, "=")) == NULL) {
+                        error = TRUE;
+                        break;
+                }
+                if ((variable = (char *)strdup(temp_ptr)) == NULL) {
+                        error = TRUE;
+                        break;
+                }
+
+                /* get the value */
+                if ((temp_ptr = my_strtok(NULL, "\n")) == NULL) {
+                        error = TRUE;
+                        break;
+                }
+                if ((value = (char *)strdup(temp_ptr)) == NULL) {
+                        error = TRUE;
+                        break;
+                }
+
+                /* what should we do with the variable/value pair? */
+
+                /* check for macro declarations */
+                if (variable[0] == '$' && variable[strlen(variable)-1] == '$') {
+
+                        /* $USERx$ macro declarations */
+                        if (strstr(variable, "$USER") == variable  && strlen(variable) > 5) {
+                                user_index = atoi(variable + 5) - 1;
+                                if (user_index >= 0 && user_index < MAX_USER_MACROS) {
+                                        my_free(macro_user[user_index]);
+                                        macro_user[user_index] = (char *)strdup(value);
+                                }
+                        }
+                }
+        }
+
+        /* free leftover memory and close the file */
+        my_free(input);
+        mmap_fclose(thefile);
+
+        if (error == TRUE)
+                return ERROR;
+
+        return OK;
 }
 
 
@@ -1785,6 +1878,11 @@ void display_info_table(char *title, int refresh, authdata *current_authdata, in
 			printf("<DIV CLASS='infoBoxBadProcStatus'>- Service checks are disabled</DIV>");
 	}
 
+	if (CGI_ID == CONFIG_CGI_ID) {
+		if (access(resource_file, R_OK) != 0) 
+			printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Could not read resource file, raw command line could be incomplete!</DIV>");
+	}
+
 	/* must have missed 2 update intervals */
 	if (status_file_creation_time < (current_time - (2 * status_update_interval)))
 		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Status data OUTDATED! Last status data update was %d seconds ago!</DIV>", (int)(current_time - status_file_creation_time));
@@ -2098,6 +2196,35 @@ void main_config_file_error(char *config_file) {
 	return;
 }
 
+/* displays an error if resource file could not be read */
+void icinga_resource_file_error(char *config_file) {
+
+        printf("<H1>Whoops!</H1>\n");
+
+        printf("<P><STRONG><FONT COLOR='RED'>Error: Could not open resource file '%s' for reading!</FONT></STRONG></P>\n", config_file);
+
+        printf("<P>\n");
+        printf("It seems that you enabled the cgis to read your local resource file (verify that in your cgi.cfg)\n");
+        printf("Here are some things you should check in order to resolve this error:\n");
+        printf("</P>\n");
+
+        printf("<P>\n");
+        printf("<OL>\n");
+
+        printf("<LI>Make sure you've installed the resource file in its proper location, defined in main config. A sample resource file (named <b>resource.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
+        printf("<LI>Make sure the user your web server is running as has permission to read the resource file.\n");
+        printf("<LI>If you don't want to read your resource file (used e.g. for command expander in config.cgi) then disable it in cgi.cfg.\n");
+
+        printf("</OL>\n");
+        printf("</P>\n");
+
+        printf("<P>\n");
+        printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
+        printf("</P>\n");
+
+        return;
+}
+
 /* displays an error if object data could not be read */
 void object_data_error(void) {
 
@@ -2189,6 +2316,9 @@ void print_error(char *config_file, int error_type) {
 		break;
 	case ERROR_CGI_MAIN_CFG:
 		main_config_file_error(config_file);
+		break;
+	case ERROR_CGI_RESOURCE_CFG:
+		icinga_resource_file_error(config_file);
 		break;
 	}
 

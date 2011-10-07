@@ -99,6 +99,7 @@ extern "C" {
 #define ERROR_CGI_OBJECT_DATA	2
 #define ERROR_CGI_CFG_FILE	3
 #define ERROR_CGI_MAIN_CFG	4
+#define ERROR_CGI_RESOURCE_CFG	5
 
 
 /**************************** STYLE SHEET NAMES ******************************/
@@ -602,6 +603,7 @@ char * get_cmd_file_location(void);				/* gets location of external command file
 
 int read_cgi_config_file(char *);
 int read_main_config_file(char *);
+int read_icinga_resource_file(char *);
 int read_all_object_configuration_data(char *,int);
 int read_all_status_data(char *,int);
 
@@ -633,6 +635,7 @@ void include_ssi_file(char *);					/* include user-defined SSI footer/header */
 
 void cgi_config_file_error(char *);
 void main_config_file_error(char *);
+void icinga_resource_file_error(char *);
 void object_data_error(void);
 void status_data_error(void);
 void print_error(char*, int);

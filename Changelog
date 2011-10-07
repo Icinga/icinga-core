@@ -8,7 +8,9 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 
 ENHANCEMENTS
 * classic ui: add opt-in extinfo_show_child_hosts to show child hosts in extinfo.cgi #1820
-
+* classic ui: add complete command line to config.cgi #1329
+	** if resource.cfg readable by webserver for $USERn$ macros
+	** adds host/service params to config.cgi to process their macros
 
 FIXES
 * core: free memory allocated notification macros right after sending the notification, not in next notification
