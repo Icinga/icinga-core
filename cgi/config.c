@@ -1937,7 +1937,7 @@ void display_services(void) {
 
 				printf("<TD CLASS='%s'>%s</TD>\n", bg_class, time_string[1]);
 
-				printf("<TD CLASS='%s'><A HREF='%s?type=command&host=5s&service=%s&expand=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(command_line), html_encode(command_line, FALSE));
+				printf("<TD CLASS='%s'><A HREF='%s?type=command&host=%s&service=%s&expand=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(command_line), html_encode(command_line, FALSE));
 
 				printf("<TD CLASS='%s'>", bg_class);
 				if (temp_service->check_period == NULL)
