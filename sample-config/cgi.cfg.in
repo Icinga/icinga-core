@@ -489,7 +489,12 @@ tac_show_only_hard_state=0
 
 # SHOW CHILD HOSTS IN EXTINFO OPTION
 # This Option allows you to specify if the extended host information
-# cgi will show all direct child hosts.
+# cgi will show child hosts for the selected host.
+#	0 = disabled
+#	1 = only show immediate child hosts
+#	2 = show immediate and all child hosts
+# NOTE: Option 2 could be a real performance killer in
+# large installations, so use with care.
 # By default disabled, as this could be a performance killer.
 
 extinfo_show_child_hosts=0

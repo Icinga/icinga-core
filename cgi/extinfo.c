@@ -139,6 +139,8 @@ int sort_data(int, int);
 int compare_sortdata_entries(int, int, sortdata *, sortdata *);
 void free_sortdata_list(void);
 
+int is_host_child_of_host(host *, host *);
+
 authdata current_authdata;
 
 sortdata *sortdata_list = NULL;
@@ -401,27 +403,53 @@ int main(void) {
 				printf("</DIV>\n");
 
                                 /* Child Hosts */
-				if (extinfo_show_child_hosts == TRUE) {
+				if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_IMMEDIATE || extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL) {
 					found = FALSE;
-
-	                                printf("<DIV CLASS='data'>Child Hosts</DIV><DIV CLASS='dataTitle'>");
-
 					host * child_host;
+
+					printf("<DIV CLASS='data'>Immediate Child Hosts ");
+					printf("<img id='expand_image_immediate' src='%s%s' border=0 onClick=\"if (document.getElementById('immediate_child_hosts').style.display == 'none') { document.getElementById('immediate_child_hosts').style.display = ''; document.getElementById('immediate_child_hosts_gap').style.display = 'none'; document.getElementById('expand_image_immediate').src = '%s%s'; } else { document.getElementById('immediate_child_hosts').style.display = 'none'; document.getElementById('immediate_child_hosts_gap').style.display = ''; document.getElementById('expand_image_immediate').src = '%s%s'; }\">", url_images_path, EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
+					printf("</DIV><DIV CLASS='dataTitle' id='immediate_child_hosts_gap' style='display:;'>&nbsp;</DIV><DIV CLASS='dataTitle' id='immediate_child_hosts' style='display:none;'>");
+
  	                               	for (child_host = host_list; child_host != NULL; child_host = child_host->next) {
 						if (is_host_immediate_child_of_host(temp_host, child_host) == TRUE) {
 	                                                if (found == TRUE)
         	                                                printf(", ");
 
-	                                                printf("<A HREF='%s?host=%s&nostatusheader'>%s</A>", STATUS_CGI, url_encode(child_host->name), html_encode(child_host->name, TRUE));
+	                                                printf("<A HREF='%s?type=%d&host=%s&nostatusheader'>%s</A>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(child_host->name), html_encode(child_host->name, TRUE));
 	                                                found = TRUE;
-        	                                }
+						}
 	                                }
 
         	                        if (found == FALSE)
                 	                        printf("None");
-				}
 
-                                printf("</DIV>\n");
+					printf("</DIV>\n");
+
+					if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL) {
+						found = FALSE;
+
+						printf("<DIV CLASS='data'>All Child Hosts ");
+						printf("<img id='expand_image_all' src='%s%s' border=0 onClick=\"if (document.getElementById('all_child_hosts').style.display == 'none') { document.getElementById('all_child_hosts').style.display = ''; document.getElementById('all_child_hosts_gap').style.display = 'none'; document.getElementById('expand_image_all').src = '%s%s'; } else { document.getElementById('all_child_hosts').style.display = 'none'; document.getElementById('all_child_hosts_gap').style.display = ''; document.getElementById('expand_image_all').src = '%s%s'; }\">", url_images_path, EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
+						printf("</DIV><DIV CLASS='dataTitle' id='all_child_hosts_gap' style='display:;'>&nbsp;</DIV><DIV CLASS='dataTitle' id='all_child_hosts' style='display:none;'>");
+
+						for (child_host = host_list; child_host != NULL; child_host = child_host->next) {
+							if (is_host_child_of_host(temp_host, child_host) == TRUE) {
+								if (found == TRUE)
+									printf(", ");
+
+								printf("<A HREF='%s?type=%d&host=%s&nostatusheader'>%s</A>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(child_host->name), html_encode(child_host->name, TRUE));
+
+								found = TRUE;
+							}
+						}
+
+						if (found == FALSE)
+							printf("None");
+
+						printf("</DIV>\n");
+					}
+				}
 
 				/* Host Dependencies */
 				found = FALSE;
@@ -3790,5 +3818,43 @@ void free_sortdata_list(void) {
 	}
 
 	return;
+}
+
+/* determines whether or not a specific host is an child of another host */
+/* NOTE: this could be expensive in large installations, so use with care! */
+int is_host_child_of_host(host *parent_host, host *child_host) {
+	host *temp_host;
+
+	/* not enough data */
+	if (child_host == NULL)
+		return FALSE;
+
+	/* root/top-level hosts */
+	if (parent_host == NULL) {
+		if (child_host->parent_hosts == NULL)
+			return TRUE;
+
+	/* mid-level/bottom hosts */
+	} else {
+
+		for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
+
+			/* skip this host if it is not a child */
+			if (is_host_immediate_child_of_host(parent_host, temp_host) == FALSE)
+				continue;
+			else {
+				if (!strcmp(temp_host->name, child_host->name))
+					return TRUE;
+				else {
+					if (is_host_child_of_host(temp_host, child_host) == FALSE)
+						continue;
+
+					return TRUE;
+				}
+			}
+		}
+	}
+
+	return FALSE;
 }
 

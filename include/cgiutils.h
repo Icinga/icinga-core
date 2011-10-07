@@ -592,6 +592,12 @@ extern "C" {
 #define TIMEPERIOD_SINGLE_DAY	14
 #define TIMEPERIOD_NEXTPROBLEM	15
 
+/********************* CHILD HOST DISPLAY *********************************/
+
+#define SHOW_CHILD_HOSTS_NONE		0
+#define SHOW_CHILD_HOSTS_IMMEDIATE	1
+#define SHOW_CHILD_HOSTS_ALL		2
+
 /******************************** FUNCTIONS *******************************/
 
 void reset_cgi_vars(void);
