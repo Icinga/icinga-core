@@ -27,12 +27,12 @@ FIXES
 * spec file: re-add processing headers
 
 CHANGES
-<<<<<<< HEAD
 * classic-ui: "showlog_initial_states" and "showlog_current_states" are now disabled by default to prevent browser freezes #1172
 * classic-ui: highlight_table_rows is now enabled by default #1777
-=======
-* cgi.cfg: extinfo_show_child_hosts=0
->>>>>>> e902cef22a3814c255853c5ae3ba50a396b6bcb3
+
+* cgi.cfg: extinfo_show_child_hosts=0 added
+* cgi.cfg: authorized_for_full_command_resolution and authorized_contactgroup_for_full_command_resolution added
+
 
 
 1.5.0 - 24/08/2011

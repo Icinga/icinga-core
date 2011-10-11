@@ -3511,6 +3511,7 @@ void display_command_expansion(void) {
 	int i, j;
 	char *c, *cc;
 	char commandline[MAX_COMMAND_BUFFER];
+	char commandline_pre_processed[MAX_COMMAND_BUFFER];
 	char *command_args[MAX_COMMAND_ARGUMENTS];
 	int arg_count[MAX_COMMAND_ARGUMENTS];
 	int lead_space[MAX_COMMAND_ARGUMENTS];
@@ -3594,6 +3595,7 @@ void display_command_expansion(void) {
 				for (c = commandline; c && (cc = strstr(c, "$"));) {
 					(*(cc++)) = '\0';
 					printf("%s", html_encode(c, FALSE));
+					strcat(commandline_pre_processed,c);
 					if ((*cc) == '$') {
 						/* Escaped '$' */
 						printf("<FONT COLOR='#444444'>$</FONT>");
@@ -3603,6 +3605,9 @@ void display_command_expansion(void) {
 						c = strstr(cc, "$");
 						if (c)(*(c++)) = '\0';
 						printf("<FONT COLOR='#777777'>$%s%s</FONT>", html_encode(cc, FALSE), (c ? "$" : ""));
+						strcat(commandline_pre_processed,"$");
+						strcat(commandline_pre_processed,cc);
+						if (c) strcat(commandline_pre_processed,"$");
 						if (!c) printf("<FONT COLOR='#FF0000'> (not properly terminated)</FONT>");
 					} else {
 						/* $ARGn$ macro */
@@ -3613,10 +3618,12 @@ void display_command_expansion(void) {
 							if ((i > 0) && (i <= MAX_COMMAND_ARGUMENTS)) {
 								arg_count[i]++;
 								if (command_args[i]) {
-									if (*(command_args[i]) != '\0') printf("<FONT COLOR='%s'><B>%s%s%s</B></FONT>",
-										                                       hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<U>&zwj;" : ""),
-										                                       escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</U>" : ""));
-									else printf("<FONT COLOR='#0000FF'>(empty)</FONT>");
+									if (*(command_args[i]) != '\0') {
+										printf("<FONT COLOR='%s'><B>%s%s%s</B></FONT>",
+											hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<U>&zwj;" : ""),
+											escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</U>" : ""));
+										strcat(commandline_pre_processed,command_args[i]);
+									} else printf("<FONT COLOR='#0000FF'>(empty)</FONT>");
 								} else printf("<FONT COLOR='#0000FF'>(undefined)</FONT>");
 							} else printf("<FONT COLOR='#FF0000'>(not a valid $ARGn$ index: %u)</FONT>", i);
 							if ((*c) != '\0') c++;
@@ -3629,7 +3636,11 @@ void display_command_expansion(void) {
 						}
 					}
 				}
-				if (c) printf("%s", html_encode(c, FALSE));
+				if (c) {
+					printf("%s", html_encode(c, FALSE));
+					strcat(commandline_pre_processed,c);
+				}
+				commandline_pre_processed[MAX_COMMAND_BUFFER-1] = '\0';
 
 				printf("</TD></TR>\n");
 
@@ -3671,21 +3682,19 @@ void display_command_expansion(void) {
 					}
 				}
 
-                                printf("<TR CLASS='%s'>\n", bg_class);
-
 				/* host command */
-				if (hst != NULL && svc == NULL) {
+				if (hst != NULL && svc == NULL && authorized_for_full_command_resolution(&current_authdata)) {
 					grab_host_macros_r(mac,hst);
-					process_macros_r(mac,temp_command->command_line, &processed_command, 0);
+					process_macros_r(mac,commandline_pre_processed, &processed_command, 0);
 					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
                                 	printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
 				}
 
 				/* service command */
-				if (hst != NULL && svc != NULL) {
+				if (hst != NULL && svc != NULL && authorized_for_full_command_resolution(&current_authdata)) {
 					grab_host_macros_r(mac,hst);
 					grab_service_macros_r(mac,svc);
-					process_macros_r(mac, temp_command->command_line, &processed_command, 0);
+					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
 					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
                                 	printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
 				}
@@ -3703,9 +3712,14 @@ void display_command_expansion(void) {
 	}
 
 	printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>To expand:</TD><TD CLASS='dataEven'><FORM\n");
-	printf("METHOD='GET' ACTION='%s'><INPUT TYPE='HIDDEN' NAME='type' VALUE='command'><INPUT\n", CONFIG_CGI);
+	printf("METHOD='GET' ACTION='%s'><INPUT TYPE='HIDDEN' NAME='type' VALUE='command'>\n", CONFIG_CGI);
 	
-	printf("TYPE='text' NAME='expand' SIZE='100%%' VALUE='%s'>\n", escape_string(to_expand));
+	if (hst != NULL)
+		printf("<INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>\n", host_name);
+	if (svc != NULL)
+		printf("<INPUT TYPE='HIDDEN' NAME='service' VALUE='%s'>\n", service_desc);
+
+	printf("<INPUT TYPE='text' NAME='expand' SIZE='100%%' VALUE='%s'>\n", escape_string(to_expand));
 	printf("<INPUT TYPE='SUBMIT' VALUE='Go'></FORM></TD></TR>\n");
 
 	printf("</TABLE>\n");

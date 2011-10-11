@@ -218,6 +218,19 @@ authorized_for_configuration_information=icingaadmin
 #authorized_contactgroup_for_configuration_information=
 
 
+# RAW COMMANDLINE CONFIGURATION INFORMATION ACCESS
+# This option is a comma-delimited list of all usernames that
+# can view a command in config command expander as icinga would
+# execute it. To resolve all MACROS it is necessary to allow
+# read access to the web server for resource.cfg .
+# CAUTION: $USERXX$ vars and custom vars can contain sensitive
+# data.
+# Alternatively you can specify contactgroups too.
+
+authorized_for_full_command_resolution=icingaadmin
+#authorized_contactgroup_for_full_command_resolution=
+
+
 # SYSTEM/PROCESS COMMAND ACCESS
 # This option is a comma-delimited list of all usernames that
 # can issue shutdown and restart commands to Icinga via the
