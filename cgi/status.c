@@ -1915,6 +1915,13 @@ void show_service_detail(void) {
 			printf("\"last_check\": \"%s\", ", temp_status->last_check);
 			printf("\"duration\": \"%s\", ", temp_status->state_duration);
 			printf("\"attempts\": \"%s\", ", temp_status->attempts);
+			printf("\"is_flapping\": %s, ", (temp_status->is_flapping == TRUE) ? "true" : "false");
+			printf("\"in_scheduled_downtime\": %s, ", (temp_status->scheduled_downtime_depth > 0) ? "true" : "false");
+			printf("\"active_checks_enabled\": %s, ", (temp_status->checks_enabled == TRUE) ? "true" : "false");
+			printf("\"passive_checks_enabled\": %s, ", (temp_status->accept_passive_checks == TRUE) ? "true" : "false");
+			printf("\"notifications_enabled\": %s, ", (temp_status->notifications_enabled == TRUE) ? "true" : "false");
+			printf("\"has_been_acknowledged\": %s, ", (temp_status->problem_has_been_acknowledged == TRUE) ? "true" : "false");
+
 			if (temp_status->plugin_output == NULL)
 				printf("\"status_information\": null }");
 			else
@@ -2316,6 +2323,13 @@ void show_host_detail(void) {
 				printf("\"last_check\": \"%s\", ", temp_statusdata->last_check);
 				printf("\"duration\": \"%s\", ", temp_statusdata->state_duration);
 				printf("\"attempts\": \"%s\", ", temp_statusdata->attempts);
+				printf("\"is_flapping\": %s, ", (temp_statusdata->is_flapping == TRUE) ? "true" : "false");
+				printf("\"in_scheduled_downtime\": %s, ", (temp_statusdata->scheduled_downtime_depth > 0) ? "true" : "false");
+				printf("\"active_checks_enabled\": %s, ", (temp_statusdata->checks_enabled == TRUE) ? "true" : "false");
+				printf("\"passive_checks_enabled\": %s, ", (temp_statusdata->accept_passive_checks == TRUE) ? "true" : "false");
+				printf("\"notifications_enabled\": %s, ", (temp_statusdata->notifications_enabled == TRUE) ? "true" : "false");
+				printf("\"has_been_acknowledged\": %s, ", (temp_statusdata->problem_has_been_acknowledged == TRUE) ? "true" : "false");
+
 				if (temp_statusdata->plugin_output == NULL)
 					printf("\"status_information\": null }");
 				else

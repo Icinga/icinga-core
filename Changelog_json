@@ -2,6 +2,8 @@
 Classic-UI JSON Change Log
 #######################
 
+1.6.0 - only values added, no existing values changed
+* add more info of (ack, downtime, ... ) status to json export in status.cgi (ivo) #1988
 
 1.5.0 - only values added, no existing values changed
 * added service breakdowns in hosts to avail.cgi

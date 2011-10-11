@@ -12,6 +12,7 @@ ENHANCEMENTS
 * classic ui: add complete command line to config.cgi #1329
 	** if resource.cfg readable by webserver for $USERn$ macros
 	** adds host/service params to config.cgi to process their macros
+* classic ui: Add more info of (ack, downtime, ... ) status to json export in status.cgi (ivo) #1988
 
 FIXES
 * core: free memory allocated notification macros right after sending the notification, not in next notification
