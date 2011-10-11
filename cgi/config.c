@@ -2525,7 +2525,7 @@ void display_timeperiods(void) {
 						printf("%s%s%s%s", csv_data_enclosure, days[day], csv_data_enclosure, csv_delimiter);
 						printf("%s", csv_data_enclosure);
 					} else
-						printf("<TR><TD COLSPAN='3'></TD>\n<TD CLASS='%s'>", bg_class);
+						printf("<TR><TD COLSPAN='3'></TD><TD CLASS='%s'>%s</TD><TD CLASS='%s'>", bg_class, days[day], bg_class);
 				} else {
 					if (content_type == JSON_CONTENT)
 						printf("{ \"days_date\": \"%s\",  \"time\": [ ", days[day]);

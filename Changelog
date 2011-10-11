@@ -21,6 +21,7 @@ FIXES
 * classic ui: fix host and service names are not allowed to have a '+' included #1843
 * claasic ui: fix service overview for single hostgroups when show_partial_hostgroups is switched on #1013
 * claasic ui: fix authorized_for_all_hosts/authorized_for_all_services retruns true for historical data #1166
+* classic ui: fix for Classic-UI displays bad timeperiods #1989
 
 * idoutils: idomod: change stacked memory allocation for broker_data IDO_MAX_BUFLEN #1879
 
