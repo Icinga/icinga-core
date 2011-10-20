@@ -1229,8 +1229,10 @@ int process_host_command(int cmd, time_t entry_time, char *args) {
 		return ERROR;
 
 	/* find the host */
-	if ((temp_host = find_host(host_name)) == NULL)
+	if ((temp_host = find_host(host_name)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 		return ERROR;
+	}
 
 	switch (cmd) {
 
@@ -1364,8 +1366,10 @@ int process_hostgroup_command(int cmd, time_t entry_time, char *args) {
 		return ERROR;
 
 	/* find the hostgroup */
-	if ((temp_hostgroup = find_hostgroup(hostgroup_name)) == NULL)
+	if ((temp_hostgroup = find_hostgroup(hostgroup_name)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find hostgroup '%s' provided in external command!\n", hostgroup_name);
 		return ERROR;
+	}
 
 	/* loop through all hosts in the hostgroup */
 	for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
@@ -1465,8 +1469,10 @@ int process_service_command(int cmd, time_t entry_time, char *args) {
 		return ERROR;
 
 	/* find the service */
-	if ((temp_service = find_service(host_name, svc_description)) == NULL)
+	if ((temp_service = find_service(host_name, svc_description)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' and service '%s' provided in external command!\n", host_name, svc_description);
 		return ERROR;
+	}
 
 	switch (cmd) {
 
@@ -1560,8 +1566,10 @@ int process_servicegroup_command(int cmd, time_t entry_time, char *args) {
 		return ERROR;
 
 	/* find the servicegroup */
-	if ((temp_servicegroup = find_servicegroup(servicegroup_name)) == NULL)
+	if ((temp_servicegroup = find_servicegroup(servicegroup_name)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find servicegroup '%s' provided in external command!\n", servicegroup_name);
 		return ERROR;
+	}
 
 	switch (cmd) {
 
@@ -1683,8 +1691,10 @@ int process_contact_command(int cmd, time_t entry_time, char *args) {
 		return ERROR;
 
 	/* find the contact */
-	if ((temp_contact = find_contact(contact_name)) == NULL)
+	if ((temp_contact = find_contact(contact_name)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find contact '%s' provided in external command!\n", contact_name);
 		return ERROR;
+	}
 
 	switch (cmd) {
 
@@ -1724,8 +1734,10 @@ int process_contactgroup_command(int cmd, time_t entry_time, char *args) {
 		return ERROR;
 
 	/* find the contactgroup */
-	if ((temp_contactgroup = find_contactgroup(contactgroup_name)) == NULL)
+	if ((temp_contactgroup = find_contactgroup(contactgroup_name)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find contactgroup '%s' provided in external command!\n", contactgroup_name);
 		return ERROR;
+	}
 
 	switch (cmd) {
 
@@ -1802,13 +1814,17 @@ int cmd_add_comment(int cmd, time_t entry_time, char *args) {
 			return ERROR;
 
 		/* verify that the service is valid */
-		if ((temp_service = find_service(host_name, svc_description)) == NULL)
+		if ((temp_service = find_service(host_name, svc_description)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' and service '%s' provided in external command!\n", host_name, svc_description);
 			return ERROR;
+		}
 	}
 
 	/* else verify that the host is valid */
-	if ((temp_host = find_host(host_name)) == NULL)
+	if ((temp_host = find_host(host_name)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 		return ERROR;
+	}
 
 	/* get the persistent flag */
 	if ((temp_ptr = my_strtok(NULL, ";")) == NULL)
@@ -1876,13 +1892,17 @@ int cmd_delete_all_comments(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the service is valid */
-		if ((temp_service = find_service(host_name, svc_description)) == NULL)
+		if ((temp_service = find_service(host_name, svc_description)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' and service '%s' provided in external command!\n", host_name, svc_description);
 			return ERROR;
+		}
 	}
 
 	/* else verify that the host is valid */
-	if ((temp_host = find_host(host_name)) == NULL)
+	if ((temp_host = find_host(host_name)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 		return ERROR;
+	}
 
 	/* delete comments */
 	delete_all_comments((cmd == CMD_DEL_ALL_HOST_COMMENTS) ? HOST_COMMENT : SERVICE_COMMENT, host_name, svc_description);
@@ -1913,15 +1933,19 @@ int cmd_delay_notification(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the service is valid */
-		if ((temp_service = find_service(host_name, svc_description)) == NULL)
+		if ((temp_service = find_service(host_name, svc_description)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' and service '%s' provided in external command!\n", host_name, svc_description);
 			return ERROR;
+		}
 	}
 
 	/* else verify that the host is valid */
 	else {
 
-		if ((temp_host = find_host(host_name)) == NULL)
+		if ((temp_host = find_host(host_name)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 			return ERROR;
+		}
 	}
 
 	/* get the time that we should delay until... */
@@ -1957,8 +1981,10 @@ int cmd_schedule_check(int cmd, char *args) {
 	if (cmd == CMD_SCHEDULE_HOST_CHECK || cmd == CMD_SCHEDULE_FORCED_HOST_CHECK || cmd == CMD_SCHEDULE_HOST_SVC_CHECKS || cmd == CMD_SCHEDULE_FORCED_HOST_SVC_CHECKS) {
 
 		/* verify that the host is valid */
-		if ((temp_host = find_host(host_name)) == NULL)
+		if ((temp_host = find_host(host_name)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 			return ERROR;
+		}
 	} else {
 
 		/* get the service description */
@@ -1966,8 +1992,10 @@ int cmd_schedule_check(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the service is valid */
-		if ((temp_service = find_service(host_name, svc_description)) == NULL)
+		if ((temp_service = find_service(host_name, svc_description)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' and service '%s' provided in external command!\n", host_name, svc_description);
 			return ERROR;
+		}
 	}
 
 	/* get the next check time */
@@ -2008,8 +2036,10 @@ int cmd_schedule_host_service_checks(int cmd, char *args, int force) {
 		return ERROR;
 
 	/* verify that the host is valid */
-	if ((temp_host = find_host(host_name)) == NULL)
+	if ((temp_host = find_host(host_name)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 		return ERROR;
+	}
 
 	/* get the next check time */
 	if ((temp_ptr = my_strtok(NULL, "\n")) == NULL)
@@ -2356,8 +2386,10 @@ int cmd_acknowledge_problem(int cmd, char *args) {
 		return ERROR;
 
 	/* verify that the host is valid */
-	if ((temp_host = find_host(host_name)) == NULL)
+	if ((temp_host = find_host(host_name)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 		return ERROR;
+	}
 
 	/* this is a service acknowledgement */
 	if (cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM || cmd == CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE) {
@@ -2367,8 +2399,10 @@ int cmd_acknowledge_problem(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the service is valid */
-		if ((temp_service = find_service(temp_host->name, svc_description)) == NULL)
+		if ((temp_service = find_service(temp_host->name, svc_description)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' and service '%s' provided in external command!\n", host_name, svc_description);
 			return ERROR;
+		}
 	}
 
 	/* get the type */
@@ -2435,8 +2469,10 @@ int cmd_remove_acknowledgement(int cmd, char *args) {
 		return ERROR;
 
 	/* verify that the host is valid */
-	if ((temp_host = find_host(host_name)) == NULL)
+	if ((temp_host = find_host(host_name)) == NULL) {
+		logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 		return ERROR;
+	}
 
 	/* we are removing a service acknowledgement */
 	if (cmd == CMD_REMOVE_SVC_ACKNOWLEDGEMENT) {
@@ -2446,8 +2482,10 @@ int cmd_remove_acknowledgement(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the service is valid */
-		if ((temp_service = find_service(temp_host->name, svc_description)) == NULL)
+		if ((temp_service = find_service(temp_host->name, svc_description)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' and service '%s' provided in external command!\n", host_name, svc_description);
 			return ERROR;
+		}
 	}
 
 	/* acknowledge the host problem */
@@ -2494,8 +2532,10 @@ int cmd_schedule_downtime(int cmd, time_t entry_time, char *args) {
 			return ERROR;
 
 		/* verify that the hostgroup is valid */
-		if ((temp_hostgroup = find_hostgroup(hostgroup_name)) == NULL)
+		if ((temp_hostgroup = find_hostgroup(hostgroup_name)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find hostgroup '%s' provided in external command!\n", hostgroup_name);
 			return ERROR;
+		}
 	}
 
 	else if (cmd == CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME || cmd == CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME) {
@@ -2505,8 +2545,10 @@ int cmd_schedule_downtime(int cmd, time_t entry_time, char *args) {
 			return ERROR;
 
 		/* verify that the servicegroup is valid */
-		if ((temp_servicegroup = find_servicegroup(servicegroup_name)) == NULL)
+		if ((temp_servicegroup = find_servicegroup(servicegroup_name)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find servicegroup '%s' provided in external command!\n", servicegroup_name);
 			return ERROR;
+		}
 	}
 
 	else {
@@ -2516,8 +2558,10 @@ int cmd_schedule_downtime(int cmd, time_t entry_time, char *args) {
 			return ERROR;
 
 		/* verify that the host is valid */
-		if ((temp_host = find_host(host_name)) == NULL)
+		if ((temp_host = find_host(host_name)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 			return ERROR;
+		}
 
 		/* this is a service downtime */
 		if (cmd == CMD_SCHEDULE_SVC_DOWNTIME) {
@@ -2881,8 +2925,10 @@ int cmd_change_object_int_var(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the service is valid */
-		if ((temp_service = find_service(host_name, svc_description)) == NULL)
+		if ((temp_service = find_service(host_name, svc_description)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' and service '%s' provided in external command!\n", host_name, svc_description);
 			return ERROR;
+		}
 
 		break;
 
@@ -2896,8 +2942,10 @@ int cmd_change_object_int_var(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the host is valid */
-		if ((temp_host = find_host(host_name)) == NULL)
+		if ((temp_host = find_host(host_name)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 			return ERROR;
+		}
 		break;
 
 	case CMD_CHANGE_CONTACT_MODATTR:
@@ -2909,8 +2957,10 @@ int cmd_change_object_int_var(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the contact is valid */
-		if ((temp_contact = find_contact(contact_name)) == NULL)
+		if ((temp_contact = find_contact(contact_name)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find contact '%s' provided in external command!\n", contact_name);
 			return ERROR;
+		}
 		break;
 
 	default:
@@ -3180,8 +3230,10 @@ int cmd_change_object_char_var(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the host is valid */
-		if ((temp_host = find_host(host_name)) == NULL)
+		if ((temp_host = find_host(host_name)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' provided in external command!\n", host_name);
 			return ERROR;
+		}
 
 		if ((charval = my_strtok(NULL, "\n")) == NULL)
 			return ERROR;
@@ -3202,8 +3254,10 @@ int cmd_change_object_char_var(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the service is valid */
-		if ((temp_service = find_service(host_name, svc_description)) == NULL)
+		if ((temp_service = find_service(host_name, svc_description)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find host '%s' and service '%s' provided in external command!\n", host_name, svc_description);
 			return ERROR;
+		}
 
 		if ((charval = my_strtok(NULL, "\n")) == NULL)
 			return ERROR;
@@ -3219,8 +3273,10 @@ int cmd_change_object_char_var(int cmd, char *args) {
 			return ERROR;
 
 		/* verify that the contact is valid */
-		if ((temp_contact = find_contact(contact_name)) == NULL)
+		if ((temp_contact = find_contact(contact_name)) == NULL) {
+			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Could not find contact '%s' provided in external command!\n", contact_name);
 			return ERROR;
+		}
 
 		if ((charval = my_strtok(NULL, "\n")) == NULL)
 			return ERROR;
