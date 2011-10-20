@@ -13,13 +13,6 @@ ENHANCEMENTS
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
 
 * idoutils: added end_time column for acknowledgelemts expiry #770
-* idoutils: idomod: change output_buffer to asynchrounous circular buffer between core and data sink, removing core blocking #1259
-** main thread writes circular buffer, protected by a mutex
-** client thread is started after event loop is starting, reading from circular buffer
-** the config dump starts when the event loop starts, minimizing the overall startup delay
-** on event loop start, idomod will now tell how many items to flush - please adjust this value in idomod.cfg accordinly
-** default minimal output_buffer_items is now 50000 (see idomod.cfg)
-** core blocking is removed, even if the database backend is slow / ido2db not responding
 
 * config: add config examples for local monitoring - check_procs for ido2db #1870
 
