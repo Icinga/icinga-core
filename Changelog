@@ -8,6 +8,7 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 
 ENHANCEMENTS
 * core: acknowledgements can now expire by providing an end_time through commands #770
+* core: allow startup with no hosts/services/contacts defined, only warn #2015
 
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
 
