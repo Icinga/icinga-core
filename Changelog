@@ -21,6 +21,13 @@ ENHANCEMENTS
 ** default minimal output_buffer_items is now 50000 (see idomod.cfg)
 ** core blocking is removed, even if the database backend is slow / ido2db not responding
 
+* config: add config examples for local monitoring - check_procs for ido2db #1870
+
+FIXES
+
+CHANGES
+* add modules/ido2db_check_proc.cfg # 1870
+
 
 1.5.1 - 09/09/2011
 
