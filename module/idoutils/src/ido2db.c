@@ -21,6 +21,7 @@
 #include "../include/ido2db.h"
 #include "../include/db.h"
 #include "../include/dbhandlers.h"
+#include "../include/sla.h"
 
 
 #ifdef HAVE_SSL
@@ -589,6 +590,8 @@ int ido2db_process_config_var(char *arg) {
 		ido2db_db_settings.oci_errors_to_syslog = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "oracle_trace_level")) {
 		ido2db_db_settings.oracle_trace_level = atoi(val);
+	} else if (strcmp(var, "enable_sla") == 0) {
+		enable_sla = strtoul(val, NULL, 0);
 	}
         else if (!strcmp(var, "output_buffer_items")) {
                 ido2db_sink_buffer_slots = strtoul(val, NULL, 0);

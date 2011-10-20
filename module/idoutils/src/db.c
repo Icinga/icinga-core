@@ -115,6 +115,13 @@ int ido2db_oci_prepared_statement_instances_delete_time(ido2db_idi *idi);
 /* db version stuff */
 int ido2db_oci_prepared_statement_dbversion_select(ido2db_idi *idi);
 
+/* SLA */
+int ido2db_oci_prepared_statement_sla_services_select(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_sla_history_select(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_sla_downtime_select(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_sla_history_merge(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_sla_history_delete(ido2db_idi *idi);
+
 #endif
 
 extern ido2db_dbconfig ido2db_db_settings;
@@ -193,7 +200,8 @@ char *ido2db_db_rawtablenames[IDO2DB_MAX_DBTABLES] = {
 #else /* everything else will be libdbi */
 	"serviceescalation_contactgroups",
 #endif /* Oracle ocilib specific */
-	"dbversion"
+	"dbversion",
+	"slahistory"
 };
 
 char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
@@ -1077,6 +1085,33 @@ int ido2db_db_connect(ido2db_idi *idi) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_dbversion_select() failed\n");
 		return IDO_ERROR;
 	}
+
+	/* SLA */
+	if (ido2db_oci_prepared_statement_sla_services_select(idi) == IDO_ERROR) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_sla_services_select() failed\n");
+		return IDO_ERROR;
+	}
+
+	if (ido2db_oci_prepared_statement_sla_downtime_select(idi) == IDO_ERROR) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_sla_downtime_select() failed\n");
+		return IDO_ERROR;
+	}
+
+	if (ido2db_oci_prepared_statement_sla_history_select(idi) == IDO_ERROR) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_sla_history_select() failed\n");
+		return IDO_ERROR;
+	}
+
+	if (ido2db_oci_prepared_statement_sla_history_merge(idi) == IDO_ERROR) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_sla_history_insert() failed\n");
+		return IDO_ERROR;
+	}
+
+	if (ido2db_oci_prepared_statement_sla_history_delete(idi) == IDO_ERROR) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_sla_history_delete() failed\n");
+		return IDO_ERROR;
+	}
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_dbversion_select() prepare statements end\n");
 
 	/* start oracle trace if activated */
@@ -1248,6 +1283,12 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_dbversion_select, "oci_statement_dbversion_select");
 
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_sla_services_select, "oci_statement_sla_services_select");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_sla_downtime_select, "oci_statement_sla_downtime_select");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_sla_history_select, "oci_statement_sla_history_select");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_sla_history_merge, "oci_statement_sla_history_merge");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_sla_history_delete, "oci_statement_sla_history_delete");
+
 	syslog(LOG_USER | LOG_INFO, "Successfully freed prepared statements");
 
 	/* close db connection */
@@ -1326,6 +1367,7 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 		idi->dbinfo.dbversion = strdup(OCI_GetString(idi->dbinfo.oci_resultset, 1));
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(version=%s)\n", idi->dbinfo.dbversion);
 	} else {
+		idi->dbinfo.dbversion = NULL;
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() fetchnext not ok\n");
 	}
 
@@ -7045,6 +7087,220 @@ int ido2db_oci_prepared_statement_instances_delete_time(ido2db_idi *idi) {
 		OCI_AllowRebinding(idi->dbinfo.oci_statement_instances_delete_time, 1);
 
 		if (!OCI_Prepare(idi->dbinfo.oci_statement_instances_delete_time, MT(buf))) {
+			free(buf);
+			return IDO_ERROR;
+		}
+	} else {
+		free(buf);
+		return IDO_ERROR;
+	}
+	free(buf);
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+	return IDO_OK;
+}
+
+int ido2db_oci_prepared_statement_sla_history_merge(ido2db_idi *idi) {
+
+	char *buf = NULL;
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+	if (asprintf(&buf, "MERGE INTO %s USING DUAL "
+	             "ON (id=:X1) "
+	             "WHEN MATCHED THEN "
+	             "UPDATE SET start_time=unixts2date(:X3), "
+	             "end_time=unixts2date(:X4), "
+	             "acknowledgement_time=unixts2date(:X5), "
+	             "state=:X7, state_type=:X8, scheduled_downtime=:X9 "
+	             "WHEN NOT MATCHED THEN "
+	             "INSERT (id, instance_id, start_time, end_time, "
+		     "acknowledgement_time, object_id, state, "
+		     "state_type, scheduled_downtime) "
+	             "VALUES (seq_slahistory.nextval, :X2, "
+		     "unixts2date(:X3), unixts2date(:X4), unixts2date(:X5), "
+	             ":X6, :X7, :X8, :X9)",
+	             ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY]) == -1) {
+		buf = NULL;
+	}
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+	if (idi->dbinfo.oci_connection) {
+
+		idi->dbinfo.oci_statement_sla_history_merge = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+		/* allow rebinding values */
+		OCI_AllowRebinding(idi->dbinfo.oci_statement_sla_history_merge, 1);
+
+		if (!OCI_Prepare(idi->dbinfo.oci_statement_sla_history_merge, MT(buf))) {
+			free(buf);
+			return IDO_ERROR;
+		}
+		
+		OCI_RegisterInt(idi->dbinfo.oci_statement_sla_history_merge, ":id");
+	} else {
+		free(buf);
+		return IDO_ERROR;
+	}
+	free(buf);
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+	return IDO_OK;
+}
+
+int ido2db_oci_prepared_statement_sla_history_delete(ido2db_idi *idi) {
+
+	char *buf = NULL;
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+	if (asprintf(&buf,
+	             "DELETE FROM %s "
+	             "WHERE slahistory_id=:X1",
+	             ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY]) == -1) {
+		buf = NULL;
+	}
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+	if (idi->dbinfo.oci_connection) {
+
+		idi->dbinfo.oci_statement_sla_history_delete = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+		/* allow rebinding values */
+		OCI_AllowRebinding(idi->dbinfo.oci_statement_sla_history_delete, 1);
+
+		if (!OCI_Prepare(idi->dbinfo.oci_statement_sla_history_delete, MT(buf))) {
+			free(buf);
+			return IDO_ERROR;
+		}
+	} else {
+		free(buf);
+		return IDO_ERROR;
+	}
+	free(buf);
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+	return IDO_OK;
+}
+
+int ido2db_oci_prepared_statement_sla_services_select(ido2db_idi *idi) {
+
+	char *buf = NULL;
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+	if (asprintf(&buf,
+	             "SELECT service_object_id FROM %s "
+	             "WHERE instance_id = :X1 AND host_object_id = :X2",
+	             ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES]) == -1) {
+		buf = NULL;
+	}
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+	if (idi->dbinfo.oci_connection) {
+
+		idi->dbinfo.oci_statement_sla_services_select = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+		/* allow rebinding values */
+		OCI_AllowRebinding(idi->dbinfo.oci_statement_sla_services_select, 1);
+
+		if (!OCI_Prepare(idi->dbinfo.oci_statement_sla_services_select, MT(buf))) {
+			free(buf);
+			return IDO_ERROR;
+		}
+	} else {
+		free(buf);
+		return IDO_ERROR;
+	}
+	free(buf);
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+	return IDO_OK;
+}
+
+int ido2db_oci_prepared_statement_sla_history_select(ido2db_idi *idi) {
+
+	char *buf = NULL;
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+	if (asprintf(&buf,
+	             "SELECT id AS slahistory_id,\n"
+		     "date2unixts(start_time) AS start_time, date2unixts(end_time) AS end_time, "
+		     "date2unixts(acknowledgement_time) AS acknowledgement_time,\n"
+		     "state, state_type, scheduled_downtime\n"
+		     "FROM %s\n"
+		     "WHERE instance_id = :X1 AND object_id = :X2 AND\n"
+		     "((start_time > unixts2date(:X3) AND start_time < unixts2date(:X4)) OR"
+		     " (end_time > unixts2date(:X3) AND end_time < unixts2date(:X4)) OR"
+		     " (start_time < unixts2date(:X3) AND end_time > unixts2date(:X4)) OR"
+		     " (end_time = unixts2date(0)))",
+	             ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY]) == -1) {
+		buf = NULL;
+	}
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+	if (idi->dbinfo.oci_connection) {
+
+		idi->dbinfo.oci_statement_sla_history_select = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+		/* allow rebinding values */
+		OCI_AllowRebinding(idi->dbinfo.oci_statement_sla_history_select, 1);
+
+		if (!OCI_Prepare(idi->dbinfo.oci_statement_sla_history_select, MT(buf))) {
+			free(buf);
+			return IDO_ERROR;
+		}
+	} else {
+		free(buf);
+		return IDO_ERROR;
+	}
+	free(buf);
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+	return IDO_OK;
+}
+
+int ido2db_oci_prepared_statement_sla_downtime_select(ido2db_idi *idi) {
+
+	char *buf = NULL;
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+	if (asprintf(&buf,
+		     "SELECT id AS downtimehistory_id,\n"
+		     "date2unixts(actual_start_time) AS actual_start_time, date2unixts(actual_end_time) AS actual_end_time,\n"
+		     "date2unixts(scheduled_start_time) AS scheduled_start_time, date2unixts(scheduled_end_time) AS scheduled_end_time,\n"
+		     "is_fixed, duration\n"
+		     "FROM %s\n"
+		     "WHERE instance_id = :X1 AND object_id = :X2 AND\n"
+		     "((actual_start_time > :X3 AND actual_start_time < :X4) OR"
+		     " (actual_end_time > :X3 AND actual_end_time < :X4) OR"
+		     " (actual_start_time < :X3 AND actual_end_time > :X4) OR"
+		     " (actual_end_time = unixts2date(0)))",
+	             ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY]) == -1) {
+		buf = NULL;
+	}
+
+	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+	if (idi->dbinfo.oci_connection) {
+
+		idi->dbinfo.oci_statement_sla_downtime_select = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+		/* allow rebinding values */
+		OCI_AllowRebinding(idi->dbinfo.oci_statement_sla_downtime_select, 1);
+
+		if (!OCI_Prepare(idi->dbinfo.oci_statement_sla_downtime_select, MT(buf))) {
 			free(buf);
 			return IDO_ERROR;
 		}

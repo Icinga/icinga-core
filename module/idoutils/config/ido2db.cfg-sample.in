@@ -329,3 +329,7 @@ oci_errors_to_syslog=1
 
 oracle_trace_level=0
 
+# SLA feature
+# This setting enables collection of SLA data in the icinga_slahistory table
+
+enable_sla=0

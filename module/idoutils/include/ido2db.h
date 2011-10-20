@@ -207,6 +207,13 @@ typedef struct ido2db_dbconninfo_struct{
 	/* dbversion */
 	OCI_Statement* oci_statement_dbversion_select;
 
+        /* SLA */
+	OCI_Statement* oci_statement_sla_services_select;
+	OCI_Statement* oci_statement_sla_downtime_select;
+	OCI_Statement* oci_statement_sla_history_select;
+	OCI_Statement* oci_statement_sla_history_merge;
+	OCI_Statement* oci_statement_sla_history_delete;
+
 #endif /* Oracle ocilib specific */
 	unsigned long instance_id;
 	unsigned long conninfo_id;
