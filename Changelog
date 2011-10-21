@@ -10,6 +10,7 @@ ENHANCEMENTS
 * core: acknowledgements can now expire by providing an end_time through commands #770
 * core: allow startup with no hosts/services/contacts defined, only warn #2015
 * core: log error on non-existing host/service/contact/*group when sending a command to the core #1737
+* core: reduce notification load by moving notification viability check into notification list creation (Opsview Team) #1744
 
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
 
@@ -17,6 +18,7 @@ ENHANCEMENTS
 
 FIXES
 * core: fix downtime and comments delete with wrong loop pointers causing segfaults #1979
+* core: fix $NOTIFICATIONRECIPIENTS$ macro contains all contacts assigned to host|service, not only notified contacts #2023
 
 
 1.5.1 - 09/09/2011
