@@ -19,6 +19,7 @@ ENHANCEMENTS
 FIXES
 * core: fix downtime and comments delete with wrong loop pointers causing segfaults #1979
 * core: fix $NOTIFICATIONRECIPIENTS$ macro contains all contacts assigned to host|service, not only notified contacts #2023
+* core: plug memory leak in downtimes comment add (Dorian Guillois) #1979
 
 
 1.5.1 - 09/09/2011

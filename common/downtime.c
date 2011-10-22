@@ -299,6 +299,8 @@ int register_downtime(int type, unsigned long downtime_id) {
 	else
 		add_new_comment(HOST_COMMENT, DOWNTIME_COMMENT, hst->name, NULL, time(NULL), "(Icinga Process)", temp_buffer, 0, COMMENTSOURCE_INTERNAL, FALSE, (time_t)0, &(temp_downtime->comment_id));
 
+	/* free comment buffer */
+	my_free(temp_buffer);
 
 	/*** SCHEDULE DOWNTIME - FLEXIBLE (NON-FIXED) DOWNTIME IS HANDLED AT A LATER POINT ***/
 
