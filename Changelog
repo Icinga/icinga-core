@@ -13,6 +13,7 @@ ENHANCEMENTS
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
 
 * idoutils: added end_time column for acknowledgelemts expiry #770
+* idoutils: add Indices for notification queries for Icinga Web #1964
 
 * config: add config examples for local monitoring - check_procs for ido2db #1870
 

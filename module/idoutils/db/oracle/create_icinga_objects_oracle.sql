@@ -1970,6 +1970,15 @@ CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on statehistory(instance_id, object_i
 -- slahistory
 CREATE INDEX slahist_idx on slahistory(instance_id,object_id,start_time,end_time) tablespace &&IDXTBS;
 
+-- Icinga Web Notifications
+CREATE INDEX notification_idx ON notifications(notification_type, object_id, start_time) tablespace &&IDXTBS;
+CREATE INDEX notification_object_id_idx ON notifications(object_id) tablespace &&IDXTBS;
+CREATE INDEX contact_notification_idx ON contactnotifications(notification_id, contact_object_id) tablespace &&IDXTBS;
+CREATE INDEX contact_object_id_idx ON contacts(contact_object_id) tablespace &&IDXTBS;
+CREATE INDEX contact_notif_meth_notif_idx ON contactnotificationmethods(contactnotification_id, command_object_id) tablespace &&IDXTBS;
+CREATE INDEX command_object_idx ON commands(object_id) tablespace &&IDXTBS;
+CREATE INDEX services_combined_object_idx ON services(service_object_id, host_object_id) tablespace &&IDXTBS;
+
 -- -----------------------------------------
 -- sequences
 -- -----------------------------------------
