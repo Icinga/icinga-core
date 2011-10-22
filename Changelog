@@ -1,10 +1,10 @@
 #######################
-Icinga 1.5.x Change Log
+Icinga 1.6.x Change Log
 #######################
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
-1.6.0 - XX/XX/2011
+1.6.0 - 30/11/2011
 
 ENHANCEMENTS
 * core: acknowledgements can now expire by providing an end_time through commands #770
