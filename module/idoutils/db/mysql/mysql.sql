@@ -1579,6 +1579,6 @@ CREATE INDEX services_combined_idx ON icinga_services(service_object_id, host_ob
 -- -----------------------------------------
 -- set dbversion
 -- -----------------------------------------
-INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.5.0') ON DUPLICATE KEY UPDATE version='1.5.0';
+INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.6.0') ON DUPLICATE KEY UPDATE version='1.6.0';
 
 
