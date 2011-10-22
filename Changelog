@@ -11,6 +11,7 @@ ENHANCEMENTS
 * core: allow startup with no hosts/services/contacts defined, only warn #2015
 * core: log error on non-existing host/service/contact/*group when sending a command to the core #1737
 * core: reduce notification load by moving notification viability check into notification list creation (Opsview Team) #1744
+* core: protect downtime and comment list modification with a lock (Andreas Ericsson) #2025
 
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
 
