@@ -142,6 +142,7 @@ int             additional_freshness_latency = DEFAULT_ADDITIONAL_FRESHNESS_LATE
 time_t          last_command_check = 0L;
 time_t          last_command_status_update = 0L;
 time_t          last_log_rotation = 0L;
+time_t          last_program_stop = 0L;
 
 int             use_aggressive_host_checking = DEFAULT_AGGRESSIVE_HOST_CHECKING;
 unsigned long   cached_host_check_horizon = DEFAULT_CACHED_HOST_CHECK_HORIZON;

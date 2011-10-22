@@ -12,6 +12,7 @@ ENHANCEMENTS
 * core: log error on non-existing host/service/contact/*group when sending a command to the core #1737
 * core: reduce notification load by moving notification viability check into notification list creation (Opsview Team) #1744
 * core: protect downtime and comment list modification with a lock (Andreas Ericsson) #2025
+* core: determine last_program_stop from creation of retention.dat and use that for decision if passive checks are fresh or not (Andreas Ericsson) #2027
 
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
 
