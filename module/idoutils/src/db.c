@@ -15,6 +15,7 @@
 #include "../include/ido2db.h"
 #include "../include/dbhandlers.h"
 #include "../include/db.h"
+#include "../include/logging.h"
 
 extern int errno;
 

@@ -444,9 +444,6 @@ int ido2db_convert_string_to_long(char *,long *);
 int ido2db_convert_string_to_unsignedlong(char *,unsigned long *);
 int ido2db_convert_string_to_timeval(char *,struct timeval *);
 
-/* logging */
-int ido2db_log_debug_info(int , int , const char *, ...);
-
 /* threads */
 void *ido2db_thread_cleanup(void *);
 void *ido2db_thread_worker(void *);
