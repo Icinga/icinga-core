@@ -279,6 +279,15 @@ max_debug_file_size=100000000
 
 
 
+# DEBUG READABLE TIMESTAMP
+# This option will allow you to set a readable timestamp instead of the
+# default unix timestamp.
+# Values: 0 = disabled, 1 = enabled
+
+debug_readable_timestamp=0
+
+
+
 # OCI ERRORS TO SYSLOG
 # ido2db registers an error handler in ocilib which spits all msg
 # into debug and syslog by default. Setting this option to 0,

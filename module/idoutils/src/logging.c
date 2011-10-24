@@ -29,6 +29,8 @@ extern unsigned long ido2db_max_debug_file_size;
 
 extern pthread_mutex_t log_lock;
 
+extern int ido2db_debug_readable_timestamp;
+
 /****************************************************************************/
 /* LOGGING ROUTINES                                                         */
 /****************************************************************************/
@@ -89,8 +91,10 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...) {
         tm=localtime(&t);
         strftime(temp_time, 80, "%c", tm);
 
-        fprintf(ido2db_debug_file_fp, "%s .%06lu [%03d.%d] [pid=%lu] [tid=%llu] ", temp_time, current_time.tv_usec, level, verbosity, (unsigned long)getpid(), (unsigned long int)pthread_self());
-        //fprintf(ido2db_debug_file_fp, "[%lu.%06lu] [%03d.%d] [pid=%lu] [tid=%llu] ", current_time.tv_sec, current_time.tv_usec, level, verbosity, (unsigned long)getpid(), (unsigned long int)pthread_self());
+	if (ido2db_debug_readable_timestamp)
+	        fprintf(ido2db_debug_file_fp, "%s .%06lu [%03d.%d] [pid=%lu] [tid=%lld] ", temp_time, current_time.tv_usec, level, verbosity, (unsigned long)getpid(), (unsigned long int)pthread_self());
+	else
+        	fprintf(ido2db_debug_file_fp, "[%lu.%06lu] [%03d.%d] [pid=%lu] [tid=%ld] ", current_time.tv_sec, current_time.tv_usec, level, verbosity, (unsigned long)getpid(), (unsigned long int)pthread_self());
 
         /* write the data */
         va_start(ap, fmt);
