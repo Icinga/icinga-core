@@ -64,9 +64,6 @@
 
 #define IDO2DB_MAX_BUFLEN				16384
 
-#define IDO2DB_SINK_BUFFER_SLOTS			50000
-
-#define IDO2DB_SINK_RETRY_ON_ERROR      		5
 
 /***************** structures *****************/
 
@@ -76,16 +73,6 @@ typedef struct ido2db_mbuf_struct{
 	char **buffer;
         }ido2db_mbuf;
 
-typedef struct ido2db_sink_buffer_struct{
-        char **buffer;
-        unsigned long size;
-        unsigned long head;
-        unsigned long tail;
-        unsigned long items;
-        unsigned long maxitems;
-        unsigned long overflow;
-        pthread_mutex_t buffer_lock;
-        }ido2db_sink_buffer;
 
 typedef struct ido2db_dbobject_struct{
 	char *name1;
@@ -441,21 +428,6 @@ int ido2db_idi_init(ido2db_idi *);
 int ido2db_check_for_client_input(ido2db_idi *);
 int ido2db_handle_client_input(ido2db_idi *,char *);
 
-/* sinkbuf */
-int ido2db_write_to_sink_queue(char *);
-void * ido2db_read_from_sink_queue(void *);
-int ido2db_sink_buffer_init(ido2db_sink_buffer *sbuf,unsigned long);
-int ido2db_sink_buffer_deinit(ido2db_sink_buffer *sbuf);
-int ido2db_sink_buffer_push(ido2db_sink_buffer *sbuf,char *);
-char *ido2db_sink_buffer_peek(ido2db_sink_buffer *sbuf);
-char *ido2db_sink_buffer_pop(ido2db_sink_buffer *sbuf);
-int ido2db_sink_buffer_items(ido2db_sink_buffer *sbuf);
-unsigned long ido2db_sink_buffer_get_overflow(ido2db_sink_buffer *sbuf);
-int ido2db_sink_buffer_set_overflow(ido2db_sink_buffer *sbuf,unsigned long);
-int ido2db_load_unprocessed_data(char *);
-int ido2db_save_unprocessed_data(char *);
-
-
 /* data handling */
 int ido2db_start_input_data(ido2db_idi *);
 int ido2db_end_input_data(ido2db_idi *);
@@ -477,11 +449,9 @@ int ido2db_log_debug_info(int , int , const char *, ...);
 
 /* threads */
 void *ido2db_thread_cleanup(void *);
-//void *ido2db_thread_queue(void *);
 void *ido2db_thread_worker(void *);
 int ido2db_terminate_threads(void);
 int terminate_worker_thread(void);
 int terminate_cleanup_thread(void);
-int terminate_queue_thread(void);
 
 #endif

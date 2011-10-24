@@ -668,7 +668,6 @@ int idomod_rotate_sink_file(void *args) {
 	return IDO_OK;
 }
 
-
 /* writes data to sink */
 int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer) {
 	char *temp_buffer = NULL;
