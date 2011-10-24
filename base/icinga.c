@@ -873,6 +873,11 @@ int main(int argc, char **argv, char **env) {
 			my_free(mac->x[MACRO_EVENTSTARTTIME]);
 			dummy = asprintf(&mac->x[MACRO_EVENTSTARTTIME], "%lu", (unsigned long)event_start);
 
+			/* print event loop start */
+			dummy = asprintf(&buffer, "Event loop started...\n");
+			write_to_all_logs(buffer, NSLOG_PROCESS_INFO);
+			my_free(buffer);
+
 			/***** start monitoring all services *****/
 			/* (doesn't return until a restart or shutdown signal is encountered) */
 			event_execution_loop();
