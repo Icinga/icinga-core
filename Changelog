@@ -32,9 +32,17 @@ FIXES
 * classic ui: fix for Classic-UI displays bad timeperiods #1989
 
 CHANGES
-* classic-ui: "showlog_initial_states" and "showlog_current_states" are now disabled by default to prevent browser freezes #1172
-* classic-ui: highlight_table_rows is now enabled by default #1777
+* core: new commands and event
+	** CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE    174
+	** CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE     175
+	** EVENT_EXPIRE_ACKNOWLEDGEMENT
 
+* classic ui: "showlog_initial_states" and "showlog_current_states" are now disabled by default to prevent browser freezes #1172
+* classic ui: highlight_table_rows is now enabled by default #1777
+* classic ui: removed unused javascript libraries
+	** html/js/: builder.js, controls.js, dragdrop.js, effects.js, slider.js, sound.js, mootools.js
+
+* cgi.cfg: default_expiring_acknowledgement_duration=86400
 * cgi.cfg: extinfo_show_child_hosts=0 added
 * cgi.cfg: authorized_for_full_command_resolution and authorized_contactgroup_for_full_command_resolution added
 
