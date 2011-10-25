@@ -43,9 +43,11 @@ THREADLIBS=@THREADLIBS@
 SNPRINTF_O_IDO=@SNPRINTF_O_IDO@
 
 
-COMMON_INC=$(CORE_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/io.h $(SRC_INCLUDE)/protoapi.h $(SRC_INCLUDE)/utils.h
+COMMON_INC=$(CORE_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/io.h $(SRC_INCLUDE)/protoapi.h $(SRC_INCLUDE)/utils.h $(SRC_INCLUDE)/sla.h $(SRC_INCLUDE)/logging.h
 COMMON_SRC=io.c utils.c
 COMMON_OBJS=io.o utils.o ${SNPRINTF_O_IDO}
+
+IDO2DB_OBJS=dbhandlers.o dbqueries.o sla.o logging.o
 
 IDO_INC=$(SRC_INCLUDE)/ido2db.h $(SRC_INCLUDE)/db.h
 IDO_SRC=db.c
@@ -62,8 +64,8 @@ file2sock: file2sock.c $(COMMON_INC) $(COMMON_OBJS)
 log2ido: log2ido.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ log2ido.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
 
-ido2db: ido2db.c $(IDO_INC) $(IDO_OBJS) $(COMMON_INC) $(COMMON_OBJS) dbhandlers.o dbqueries.o
-	$(CC) $(CFLAGS) $(DBCFLAGS) -o ido2db ido2db.c dbhandlers.o dbqueries.o $(COMMON_OBJS) $(IDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(THREADLIBS) $(MATHLIBS) $(OTHERLIBS)
+ido2db: ido2db.c $(IDO_INC) $(IDO_OBJS) $(COMMON_INC) $(COMMON_OBJS) $(IDO2DB_OBJS)
+	$(CC) $(CFLAGS) $(DBCFLAGS) -o ido2db ido2db.c $(IDO2DB_OBJS) $(COMMON_OBJS) $(IDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(THREADLIBS) $(MATHLIBS) $(OTHERLIBS)
 
 idomod.o: idomod.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(MOD_CFLAGS) $(CFLAGS) -o idomod.o idomod.c $(COMMON_OBJS) $(MOD_LDFLAGS) $(LDFLAGS) $(LIBS) $(SOCKETLIBS) $(OTHERLIBS)
@@ -85,6 +87,12 @@ dbhandlers.o: dbhandlers.c $(SRC_INCLUDE)/dbhandlers.h
 
 dbqueries.o: dbqueries.c $(SRC_INCLUDE)/dbqueries.h
 	$(CC) $(CFLAGS) -c -o $@ dbqueries.c
+
+sla.o: sla.c $(COMMON_INC)
+	$(CC) $(CFLAGS) -c -o $@ sla.c
+
+logging.o: logging.c $(COMMON_INC)
+	$(CC) $(CFLAGS) -c -o $@ logging.c
 
 clean:
 	rm -f core file2sock log2ido ido2db sockdebug *.o

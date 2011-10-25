@@ -194,6 +194,13 @@ typedef struct ido2db_dbconninfo_struct{
 	/* dbversion */
 	OCI_Statement* oci_statement_dbversion_select;
 
+        /* SLA */
+	OCI_Statement* oci_statement_sla_services_select;
+	OCI_Statement* oci_statement_sla_downtime_select;
+	OCI_Statement* oci_statement_sla_history_select;
+	OCI_Statement* oci_statement_sla_history_merge;
+	OCI_Statement* oci_statement_sla_history_delete;
+
 #endif /* Oracle ocilib specific */
 	unsigned long instance_id;
 	unsigned long conninfo_id;
@@ -436,9 +443,6 @@ int ido2db_convert_string_to_double(char *,double *);
 int ido2db_convert_string_to_long(char *,long *);
 int ido2db_convert_string_to_unsignedlong(char *,unsigned long *);
 int ido2db_convert_string_to_timeval(char *,struct timeval *);
-
-/* logging */
-int ido2db_log_debug_info(int , int , const char *, ...);
 
 /* threads */
 void *ido2db_thread_cleanup(void *);
