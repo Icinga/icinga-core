@@ -733,6 +733,8 @@ char *get_program_version(void);
 char *get_program_modification_date(void);
 int has_shell_metachars(const char *);
 
+extern pthread_mutex_t icinga_eventloop_lock;
+
 
 #ifdef __cplusplus
 }
