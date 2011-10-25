@@ -7,12 +7,20 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 1.6.0 - 30/11/2011
 
 ENHANCEMENTS
+
 * core: acknowledgements can now expire by providing an end_time through commands #770
 * core: allow startup with no hosts/services/contacts defined, only warn #2015
 * core: log error on non-existing host/service/contact/*group when sending a command to the core #1737
 * core: reduce notification load by moving notification viability check into notification list creation (Opsview Team) #1744
 
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
+* classic ui: Acknowledge child hosts from on blocking outages #1858
+* classic ui: add opt-in extinfo_show_child_hosts to show child hosts in extinfo.cgi #1820
+* classic ui: add complete command line to config.cgi #1329
+	** if resource.cfg readable by webserver for $USERn$ macros
+	** adds host/service params to config.cgi to process their macros
+* classic ui: Add more info of (ack, downtime, ... ) status to json export in status.cgi (ivo) #1988
+* classic ui: add hostgroup and servicegroup summary to menu.html #2007
 
 * idoutils: added end_time column for acknowledgelemts expiry #770
 
@@ -21,10 +29,17 @@ FIXES
 * core: fix $NOTIFICATIONRECIPIENTS$ macro contains all contacts assigned to host|service, not only notified contacts #2023
 * core: plug memory leak in downtimes comment add (Dorian Guillois) #1979
 
+* classic ui: fix for Classic-UI displays bad timeperiods #1989
+
+CHANGES
+* classic-ui: "showlog_initial_states" and "showlog_current_states" are now disabled by default to prevent browser freezes #1172
+* classic-ui: highlight_table_rows is now enabled by default #1777
+
+* cgi.cfg: extinfo_show_child_hosts=0 added
+* cgi.cfg: authorized_for_full_command_resolution and authorized_contactgroup_for_full_command_resolution added
+
 
 1.5.1 - 09/09/2011
-
-ENHANCEMENTS
 
 FIXES
 * core: free memory allocated notification macros right after sending the notification, not in next notification
@@ -41,6 +56,7 @@ FIXES
 * spec file: re-add processing headers
 
 CHANGES
+
 
 
 1.5.0 - 24/08/2011

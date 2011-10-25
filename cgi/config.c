@@ -97,6 +97,9 @@ char hashed_color[8];
 extern int embedded;
 extern int daemon_check;
 
+extern char resource_file[MAX_INPUT_BUFFER];
+extern char *macro_user[MAX_USER_MACROS];
+
 int CGI_ID = CONFIG_CGI_ID;
 
 int main(void) {
@@ -136,6 +139,9 @@ int main(void) {
 		document_footer(CGI_ID);
 		return ERROR;
 	}
+
+        /* read resource file if possible. if not, ignore error at this time */
+        read_icinga_resource_file(resource_file);
 
 	/* initialize macros */
 	init_macros();
@@ -380,6 +386,34 @@ int process_cgivars(void) {
 			x++;
 			continue;
 		}
+
+		/* we found the host name */
+                else if (!strcmp(variables[x], "host")) {
+                        x++;
+                        if (variables[x] == NULL) {
+                                error=TRUE;
+                                break;
+                        }
+
+                        host_name = strdup(variables[x]);
+                        if(host_name == NULL)
+                                host_name = "";
+                        strip_html_brackets(host_name);
+                }
+
+                /* we found the service name */
+                else if (!strcmp(variables[x], "service")) {
+                        x++;
+                        if (variables[x] == NULL) {
+                                error=TRUE;
+                                break;
+                        }
+
+                        service_desc = strdup(variables[x]);
+                        if(service_desc == NULL)
+                                service_desc = "";
+                        strip_html_brackets(service_desc);
+                }
 
 		/* we found the configuration type argument */
 		else if (!strcmp(variables[x], "type")) {
@@ -693,7 +727,7 @@ void display_hosts(void) {
 				if (temp_host->host_check_command == NULL)
 					printf("&nbsp;");
 				else
-					printf("<a href='%s?type=command&expand=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->host_check_command), html_encode(temp_host->host_check_command, FALSE));
+					printf("<a href='%s?type=command&host=%s&expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->host_check_command), html_encode(temp_host->host_check_command, FALSE));
 				printf("</TD>\n");
 
 				printf("<TD CLASS='%s'>", bg_class);
@@ -830,7 +864,7 @@ void display_hosts(void) {
 					printf("&nbsp");
 				else
 					/* printf("<a href='%s?type=commands&expand=%s'>%s</a></TD>\n",CONFIG_CGI,url_encode(strtok(temp_host->event_handler,"!")),html_encode(temp_host->event_handler,FALSE)); */
-					printf("<a href='%s?type=command&expand=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->event_handler), html_encode(temp_host->event_handler, FALSE));
+					printf("<a href='%s?type=command&host=%s&expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->event_handler), html_encode(temp_host->event_handler, FALSE));
 
 				printf("</TD>\n");
 
@@ -1903,7 +1937,7 @@ void display_services(void) {
 
 				printf("<TD CLASS='%s'>%s</TD>\n", bg_class, time_string[1]);
 
-				printf("<TD CLASS='%s'><A HREF='%s?type=command&expand=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(command_line), html_encode(command_line, FALSE));
+				printf("<TD CLASS='%s'><A HREF='%s?type=command&host=%s&service=%s&expand=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(command_line), html_encode(command_line, FALSE));
 
 				printf("<TD CLASS='%s'>", bg_class);
 				if (temp_service->check_period == NULL)
@@ -2046,7 +2080,7 @@ void display_services(void) {
 				if (temp_service->event_handler == NULL)
 					printf("&nbsp;");
 				else
-					printf("<A HREF='%s?type=command&expand=%s'>%s</A>", CONFIG_CGI, url_encode(temp_service->event_handler), html_encode(temp_service->event_handler, FALSE));
+					printf("<A HREF='%s?type=command&host=%s&service=%s&expand=%s'>%s</A>", CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(temp_service->event_handler), html_encode(temp_service->event_handler, FALSE));
 				printf("</TD>\n");
 
 				printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->event_handler_enabled == TRUE) ? "Yes" : "No");
@@ -2491,7 +2525,7 @@ void display_timeperiods(void) {
 						printf("%s%s%s%s", csv_data_enclosure, days[day], csv_data_enclosure, csv_delimiter);
 						printf("%s", csv_data_enclosure);
 					} else
-						printf("<TR><TD COLSPAN='3'></TD>\n<TD CLASS='%s'>", bg_class);
+						printf("<TR><TD COLSPAN='3'></TD><TD CLASS='%s'>%s</TD><TD CLASS='%s'>", bg_class, days[day], bg_class);
 				} else {
 					if (content_type == JSON_CONTENT)
 						printf("{ \"days_date\": \"%s\",  \"time\": [ ", days[day]);
@@ -3477,12 +3511,26 @@ void display_command_expansion(void) {
 	int i, j;
 	char *c, *cc;
 	char commandline[MAX_COMMAND_BUFFER];
+	char commandline_pre_processed[MAX_COMMAND_BUFFER];
 	char *command_args[MAX_COMMAND_ARGUMENTS];
 	int arg_count[MAX_COMMAND_ARGUMENTS];
 	int lead_space[MAX_COMMAND_ARGUMENTS];
 	int trail_space[MAX_COMMAND_ARGUMENTS];
+	/* for host and service targets */
+	host *hst = NULL;
+	service *svc = NULL;
+	char *processed_command;
 
-	printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Command Expansion</DIV></P>\n");
+	/* show host and/or service related raw command */
+	hst = find_host(host_name);
+	svc = find_service(host_name, service_desc);
+
+	if (hst != NULL && svc == NULL)
+		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Command Expansion for host '%s'</DIV></P>\n", host_name);
+	else if (hst != NULL && svc != NULL)
+		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Command Expansion for service '%s' on host '%s'</DIV></P>\n", service_desc, host_name);
+	else
+		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Command Expansion</DIV></P>\n");
 
 	/* Parse to_expand into parts */
 	for (i = 0; i < MAX_COMMAND_ARGUMENTS; i++) command_args[i] = NULL;
@@ -3547,6 +3595,7 @@ void display_command_expansion(void) {
 				for (c = commandline; c && (cc = strstr(c, "$"));) {
 					(*(cc++)) = '\0';
 					printf("%s", html_encode(c, FALSE));
+					strcat(commandline_pre_processed,c);
 					if ((*cc) == '$') {
 						/* Escaped '$' */
 						printf("<FONT COLOR='#444444'>$</FONT>");
@@ -3556,6 +3605,9 @@ void display_command_expansion(void) {
 						c = strstr(cc, "$");
 						if (c)(*(c++)) = '\0';
 						printf("<FONT COLOR='#777777'>$%s%s</FONT>", html_encode(cc, FALSE), (c ? "$" : ""));
+						strcat(commandline_pre_processed,"$");
+						strcat(commandline_pre_processed,cc);
+						if (c) strcat(commandline_pre_processed,"$");
 						if (!c) printf("<FONT COLOR='#FF0000'> (not properly terminated)</FONT>");
 					} else {
 						/* $ARGn$ macro */
@@ -3566,10 +3618,12 @@ void display_command_expansion(void) {
 							if ((i > 0) && (i <= MAX_COMMAND_ARGUMENTS)) {
 								arg_count[i]++;
 								if (command_args[i]) {
-									if (*(command_args[i]) != '\0') printf("<FONT COLOR='%s'><B>%s%s%s</B></FONT>",
-										                                       hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<U>&zwj;" : ""),
-										                                       escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</U>" : ""));
-									else printf("<FONT COLOR='#0000FF'>(empty)</FONT>");
+									if (*(command_args[i]) != '\0') {
+										printf("<FONT COLOR='%s'><B>%s%s%s</B></FONT>",
+											hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<U>&zwj;" : ""),
+											escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</U>" : ""));
+										strcat(commandline_pre_processed,command_args[i]);
+									} else printf("<FONT COLOR='#0000FF'>(empty)</FONT>");
 								} else printf("<FONT COLOR='#0000FF'>(undefined)</FONT>");
 							} else printf("<FONT COLOR='#FF0000'>(not a valid $ARGn$ index: %u)</FONT>", i);
 							if ((*c) != '\0') c++;
@@ -3582,7 +3636,11 @@ void display_command_expansion(void) {
 						}
 					}
 				}
-				if (c) printf("%s", html_encode(c, FALSE));
+				if (c) {
+					printf("%s", html_encode(c, FALSE));
+					strcat(commandline_pre_processed,c);
+				}
+				commandline_pre_processed[MAX_COMMAND_BUFFER-1] = '\0';
 
 				printf("</TD></TR>\n");
 
@@ -3623,6 +3681,32 @@ void display_command_expansion(void) {
 						printf("</FONT></TD></TR>\n");
 					}
 				}
+
+				/* host command */
+				if (hst != NULL && svc == NULL && authorized_for_full_command_resolution(&current_authdata)) {
+					grab_host_macros_r(mac,hst);
+					process_macros_r(mac,commandline_pre_processed, &processed_command, 0);
+					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
+                                	printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
+				}
+
+				/* service command */
+				if (hst != NULL && svc != NULL && authorized_for_full_command_resolution(&current_authdata)) {
+					grab_host_macros_r(mac,hst);
+					grab_service_macros_r(mac,svc);
+					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
+					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
+                                	printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
+				}
+
+				/* only command expansion w/o hosts and services given */
+				if (hst == NULL && svc == NULL && authorized_for_full_command_resolution(&current_authdata)) {
+					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
+					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
+                                	printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
+				}
+
+                                printf("</TR>\n<TR CLASS='%s'>\n", bg_class);
 			}
 
 		}
@@ -3635,8 +3719,14 @@ void display_command_expansion(void) {
 	}
 
 	printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>To expand:</TD><TD CLASS='dataEven'><FORM\n");
-	printf("METHOD='GET' ACTION='%s'><INPUT TYPE='HIDDEN' NAME='type' VALUE='command'><INPUT\n", CONFIG_CGI);
-	printf("TYPE='text' NAME='expand' SIZE='100%%' VALUE='%s'>\n", escape_string(to_expand));
+	printf("METHOD='GET' ACTION='%s'><INPUT TYPE='HIDDEN' NAME='type' VALUE='command'>\n", CONFIG_CGI);
+	
+	if (hst != NULL)
+		printf("<INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>\n", host_name);
+	if (svc != NULL)
+		printf("<INPUT TYPE='HIDDEN' NAME='service' VALUE='%s'>\n", service_desc);
+
+	printf("<INPUT TYPE='text' NAME='expand' SIZE='100%%' VALUE='%s'>\n", escape_string(to_expand));
 	printf("<INPUT TYPE='SUBMIT' VALUE='Go'></FORM></TD></TR>\n");
 
 	printf("</TABLE>\n");

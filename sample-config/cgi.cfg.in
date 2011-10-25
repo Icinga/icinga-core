@@ -71,11 +71,10 @@ show_context_help=0
 # HIGHLIGHT TABLE ROWS
 # This option allows you to define if table rows in status.cgi
 # will be highlighted or not.
-# THIS IS EXPERIMENTAL. Will be reworked in version 1.6.
 # Values: 0 = disables row highlighting
-#	  1 = enables row hhighlighting
+#	  1 = enables row highlighting
 
-highlight_table_rows=0
+highlight_table_rows=1
 
 
 
@@ -217,6 +216,19 @@ authorized_for_system_information=icingaadmin
 
 authorized_for_configuration_information=icingaadmin
 #authorized_contactgroup_for_configuration_information=
+
+
+# RAW COMMANDLINE CONFIGURATION INFORMATION ACCESS
+# This option is a comma-delimited list of all usernames that
+# can view a command in config command expander as icinga would
+# execute it. To resolve all MACROS it is necessary to allow
+# read access to the web server for resource.cfg .
+# CAUTION: $USERXX$ vars and custom vars can contain sensitive
+# data.
+# Alternatively you can specify contactgroups too.
+
+authorized_for_full_command_resolution=icingaadmin
+#authorized_contactgroup_for_full_command_resolution=
 
 
 # SYSTEM/PROCESS COMMAND ACCESS
@@ -494,6 +506,21 @@ status_show_long_plugin_output=0
 tac_show_only_hard_state=0
 
 
+
+# SHOW CHILD HOSTS IN EXTINFO OPTION
+# This Option allows you to specify if the extended host information
+# cgi will show child hosts for the selected host.
+#	0 = disabled
+#	1 = only show immediate child hosts
+#	2 = show immediate and all child hosts
+# NOTE: Option 2 could be a real performance killer in
+# large installations, so use with care.
+# By default disabled, as this could be a performance killer.
+
+extinfo_show_child_hosts=0
+
+
+
 # SUPPRESS MAINTENANCE DOWNTIME
 # This options suppresses the state coloring of hosts and services
 # that are in a scheduled downtime. It sets their coloring to gray,
@@ -528,9 +555,9 @@ show_tac_header_pending=1
 # of hosts and services should be shown in showlog.cgi
 # Note: This Option only works if the option
 # "log_initial_states" in icinga.cfg is set to 1.
-# By default it's enabled. Default is 1.
+# By default it's enabled. Default is 0.
 
-#showlog_initial_states=1
+#showlog_initial_states=0
 
 
 
@@ -539,9 +566,9 @@ show_tac_header_pending=1
 # of hosts and services should be shown in showlog.cgi
 # Note: This Option only works if the option
 # "log_current_states" in icinga.cfg is set to 1.
-# By default it's enabled. Default is 1.
+# By default it's enabled. Default is 0.
 
-#showlog_current_states=1
+#showlog_current_states=0
 
 
 
