@@ -14,7 +14,7 @@
 
 #define IDO2DB_NAME "IDO2DB"
 #define IDO2DB_DATE "11-30-2011"
-#define IDO2DB_VERSION "1.6.0"
+#define IDO2DB_VERSION "1.6.0-dev"
 
 #define IDO2DB_SCHEMA_VERSION "1.6.0"
 
