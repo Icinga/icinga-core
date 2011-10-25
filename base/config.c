@@ -1886,8 +1886,8 @@ int pre_flight_object_check(int *w, int *e) {
 	if (verify_config == TRUE)
 		printf("Checking services...\n");
 	if (get_service_count() == 0) {
-		logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: There are no services defined!");
-		errors++;
+		logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: There are no services defined!");
+		warnings++;
 	}
 	total_objects = 0;
 	for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
@@ -2050,8 +2050,8 @@ int pre_flight_object_check(int *w, int *e) {
 		printf("Checking hosts...\n");
 
 	if (get_host_count() == 0) {
-		logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: There are no hosts defined!");
-		errors++;
+		logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: There are no hosts defined!");
+		warnings++;
 	}
 
 	total_objects = 0;
@@ -2296,8 +2296,8 @@ int pre_flight_object_check(int *w, int *e) {
 	if (verify_config == TRUE)
 		printf("Checking contacts...\n");
 	if (contact_list == NULL) {
-		logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: There are no contacts defined!");
-		errors++;
+		logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: There are no contacts defined!");
+		warnings++;
 	}
 	for (temp_contact = contact_list, total_objects = 0; temp_contact != NULL; temp_contact = temp_contact->next, total_objects++) {
 

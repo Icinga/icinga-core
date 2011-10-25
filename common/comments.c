@@ -281,12 +281,14 @@ int delete_all_comments(int type, char *host_name, char *svc_description) {
 int delete_all_host_comments(char *host_name) {
 	int result = OK;
 	comment *temp_comment = NULL;
+	comment *next_comment = NULL;
 
 	if (host_name == NULL)
 		return ERROR;
 
 	/* delete host comments from memory */
-	for (temp_comment = get_first_comment_by_host(host_name); temp_comment != NULL; temp_comment = get_next_comment_by_host(host_name, temp_comment)) {
+	for (temp_comment = get_first_comment_by_host(host_name); temp_comment != NULL; temp_comment = next_comment) {
+		next_comment = get_next_comment_by_host(host_name, temp_comment);
 		if (temp_comment->comment_type == HOST_COMMENT)
 			delete_comment(HOST_COMMENT, temp_comment->comment_id);
 	}
@@ -299,12 +301,14 @@ int delete_all_host_comments(char *host_name) {
 int delete_host_acknowledgement_comments(host *hst) {
 	int result = OK;
 	comment *temp_comment = NULL;
+	comment *next_comment = NULL;
 
 	if (hst == NULL)
 		return ERROR;
 
 	/* delete comments from memory */
-	for (temp_comment = get_first_comment_by_host(hst->name); temp_comment != NULL; temp_comment = get_next_comment_by_host(hst->name, temp_comment)) {
+	for (temp_comment = get_first_comment_by_host(hst->name); temp_comment != NULL; temp_comment = next_comment) {
+		next_comment = get_next_comment_by_host(hst->name, temp_comment);
 		if (temp_comment->comment_type == HOST_COMMENT && temp_comment->entry_type == ACKNOWLEDGEMENT_COMMENT && temp_comment->persistent == FALSE)
 			delete_comment(HOST_COMMENT, temp_comment->comment_id);
 	}
