@@ -123,6 +123,7 @@ int schedule_downtime(int type, char *host_name, char *service_description, time
 /* unschedules a host or service downtime */
 int unschedule_downtime(int type, unsigned long downtime_id) {
 	scheduled_downtime *temp_downtime = NULL;
+	scheduled_downtime *next_downtime = NULL;
 	host *hst = NULL;
 	service *svc = NULL;
 	timed_event *temp_event = NULL;
@@ -212,7 +213,8 @@ int unschedule_downtime(int type, unsigned long downtime_id) {
 	/* unschedule all downtime entries that were triggered by this one */
 	while (1) {
 
-		for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = temp_downtime->next) {
+		for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = next_downtime) {
+			next_downtime = temp_downtime->next;
 			if (temp_downtime->triggered_by == downtime_id) {
 				unschedule_downtime(ANY_DOWNTIME, temp_downtime->downtime_id);
 				break;
@@ -297,6 +299,8 @@ int register_downtime(int type, unsigned long downtime_id) {
 	else
 		add_new_comment(HOST_COMMENT, DOWNTIME_COMMENT, hst->name, NULL, time(NULL), "(Icinga Process)", temp_buffer, 0, COMMENTSOURCE_INTERNAL, FALSE, (time_t)0, &(temp_downtime->comment_id));
 
+	/* free comment buffer */
+	my_free(temp_buffer);
 
 	/*** SCHEDULE DOWNTIME - FLEXIBLE (NON-FIXED) DOWNTIME IS HANDLED AT A LATER POINT ***/
 
@@ -844,13 +848,15 @@ Returns number deleted
 */
 int delete_downtime_by_hostname_service_description_start_time_comment(char *hostname, char *service_description, time_t start_time, char *comment) {
 	scheduled_downtime *temp_downtime;
+	scheduled_downtime *next_downtime;
 	int deleted = 0;
 
 	/* Do not allow deletion of everything - must have at least 1 filter on */
 	if (hostname == NULL && service_description == NULL && start_time == 0 && comment == NULL)
 		return deleted;
 
-	for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = temp_downtime->next) {
+	for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = next_downtime) {
+		next_downtime = temp_downtime->next;
 		if (start_time != 0 && temp_downtime->start_time != start_time) {
 			continue;
 		}

@@ -215,6 +215,11 @@ define command{
         command_line    $USER1$/check_dummy $ARG1$
         }
 
+# 'check_icinga_startup_delay' command definition
+define command {
+	command_name 	check_icinga_startup_delay
+	command_line 	$USER1$/check_dummy 0 "Icinga started with $$(($EVENTSTARTTIME$-$PROCESSSTARTTIME$)) seconds delay | delay=$$(($EVENTSTARTTIME$-$PROCESSSTARTTIME$))"
+}
 
 
 ################################################################################

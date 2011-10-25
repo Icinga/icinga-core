@@ -668,7 +668,6 @@ int idomod_rotate_sink_file(void *args) {
 	return IDO_OK;
 }
 
-
 /* writes data to sink */
 int idomod_write_to_sink(char *buf, int buffer_write, int flush_buffer) {
 	char *temp_buffer = NULL;
@@ -3015,7 +3014,7 @@ int idomod_broker_data(int event_type, void *data) {
 				return 0;
 			}
 			last_state = temp_host->last_state;
-			last_state = temp_host->last_hard_state;
+			last_hard_state = temp_host->last_hard_state;
 		} else {
 			if ((temp_service = (service *)schangedata->object_ptr) == NULL) {
 				ido_dbuf_free(&dbuf);

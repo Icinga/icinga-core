@@ -7,16 +7,61 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 1.6.0 - 30/11/2011
 
 ENHANCEMENTS
+
 * core: acknowledgements can now expire by providing an end_time through commands #770
+* core: allow startup with no hosts/services/contacts defined, only warn #2015
+* core: log error on non-existing host/service/contact/*group when sending a command to the core #1737
+* core: reduce notification load by moving notification viability check into notification list creation (Opsview Team) #1744
+* core: add icinga startup delay checks to example configs, including perfdata  #1937
+* core: indicate event loop start in logs #2036
 
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
+* classic ui: Acknowledge child hosts from on blocking outages #1858
+* classic ui: add opt-in extinfo_show_child_hosts to show child hosts in extinfo.cgi #1820
+* classic ui: add complete command line to config.cgi #1329
+	** if resource.cfg readable by webserver for $USERn$ macros
+	** adds host/service params to config.cgi to process their macros
+* classic ui: Add more info of (ack, downtime, ... ) status to json export in status.cgi (ivo) #1988
+* classic ui: add hostgroup and servicegroup summary to menu.html #2007
 
+* idoutils: add SLA monitoring via opt-in enable_sla cfg option #2037
 * idoutils: added end_time column for acknowledgelemts expiry #770
+* idoutils: add Indices for notification queries for Icinga Web #1964
+* idoutils: add option to format debug log timestamp like locale %c (debug_readable_timestamp) #2033
+
+* config: add config examples for local monitoring - check_procs for ido2db #1870
+
+FIXES
+* core: fix downtime and comments delete with wrong loop pointers causing segfaults #1979
+* core: fix $NOTIFICATIONRECIPIENTS$ macro contains all contacts assigned to host|service, not only notified contacts #2023
+* core: plug memory leak in downtimes comment add (Dorian Guillois) #1979
+
+* classic ui: fix for Classic-UI displays bad timeperiods #1989
+
+* idoutils: host state change last_hard_state overrides last_state, last_hard_state always -1 #1932
+
+CHANGES
+* core: new commands and event
+	** CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE    174
+	** CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE     175
+	** EVENT_EXPIRE_ACKNOWLEDGEMENT
+
+* classic ui: "showlog_initial_states" and "showlog_current_states" are now disabled by default to prevent browser freezes #1172
+* classic ui: highlight_table_rows is now enabled by default #1777
+* classic ui: removed unused javascript libraries
+	** html/js/: builder.js, controls.js, dragdrop.js, effects.js, slider.js, sound.js, mootools.js
+
+* cgi.cfg: default_expiring_acknowledgement_duration=86400
+* cgi.cfg: extinfo_show_child_hosts=0 added
+* cgi.cfg: authorized_for_full_command_resolution and authorized_contactgroup_for_full_command_resolution added
+
+* add modules/ido2db_check_proc.cfg # 1870
+* ido2db.cfg
+	** enable_sla=0
+	** debug_readable_timestamp=0
 
 
 1.5.1 - 09/09/2011
-
-ENHANCEMENTS
 
 FIXES
 * core: free memory allocated notification macros right after sending the notification, not in next notification
@@ -33,6 +78,7 @@ FIXES
 * spec file: re-add processing headers
 
 CHANGES
+
 
 
 1.5.0 - 24/08/2011

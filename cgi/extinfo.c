@@ -69,6 +69,7 @@ extern int              buffer_stats[1][3];
 extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 
 extern int              suppress_maintenance_downtime;
+extern int		extinfo_show_child_hosts;
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
@@ -83,6 +84,11 @@ extern int              enable_splunk_integration;
 
 extern char             *notes_url_target;
 extern char             *action_url_target;
+
+extern host *host_list;
+extern service *service_list;
+extern hoststatus *hoststatus_list;
+extern servicestatus *servicestatus_list;
 
 extern comment           *comment_list;
 extern scheduled_downtime  *scheduled_downtime_list;
@@ -132,6 +138,8 @@ void show_comments(int);
 int sort_data(int, int);
 int compare_sortdata_entries(int, int, sortdata *, sortdata *);
 void free_sortdata_list(void);
+
+int is_host_child_of_host(host *, host *);
 
 authdata current_authdata;
 
@@ -393,6 +401,55 @@ int main(void) {
 					printf("No hostgroups");
 
 				printf("</DIV>\n");
+
+                                /* Child Hosts */
+				if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_IMMEDIATE || extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL) {
+					found = FALSE;
+					host * child_host;
+
+					printf("<DIV CLASS='data'>Immediate Child Hosts ");
+					printf("<img id='expand_image_immediate' src='%s%s' border=0 onClick=\"if (document.getElementById('immediate_child_hosts').style.display == 'none') { document.getElementById('immediate_child_hosts').style.display = ''; document.getElementById('immediate_child_hosts_gap').style.display = 'none'; document.getElementById('expand_image_immediate').src = '%s%s'; } else { document.getElementById('immediate_child_hosts').style.display = 'none'; document.getElementById('immediate_child_hosts_gap').style.display = ''; document.getElementById('expand_image_immediate').src = '%s%s'; }\">", url_images_path, EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
+					printf("</DIV><DIV CLASS='dataTitle' id='immediate_child_hosts_gap' style='display:;'>&nbsp;</DIV><DIV CLASS='dataTitle' id='immediate_child_hosts' style='display:none;'>");
+
+ 	                               	for (child_host = host_list; child_host != NULL; child_host = child_host->next) {
+						if (is_host_immediate_child_of_host(temp_host, child_host) == TRUE) {
+	                                                if (found == TRUE)
+        	                                                printf(", ");
+
+	                                                printf("<A HREF='%s?type=%d&host=%s&nostatusheader'>%s</A>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(child_host->name), html_encode(child_host->name, TRUE));
+	                                                found = TRUE;
+						}
+	                                }
+
+        	                        if (found == FALSE)
+                	                        printf("None");
+
+					printf("</DIV>\n");
+
+					if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL) {
+						found = FALSE;
+
+						printf("<DIV CLASS='data'>All Child Hosts ");
+						printf("<img id='expand_image_all' src='%s%s' border=0 onClick=\"if (document.getElementById('all_child_hosts').style.display == 'none') { document.getElementById('all_child_hosts').style.display = ''; document.getElementById('all_child_hosts_gap').style.display = 'none'; document.getElementById('expand_image_all').src = '%s%s'; } else { document.getElementById('all_child_hosts').style.display = 'none'; document.getElementById('all_child_hosts_gap').style.display = ''; document.getElementById('expand_image_all').src = '%s%s'; }\">", url_images_path, EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
+						printf("</DIV><DIV CLASS='dataTitle' id='all_child_hosts_gap' style='display:;'>&nbsp;</DIV><DIV CLASS='dataTitle' id='all_child_hosts' style='display:none;'>");
+
+						for (child_host = host_list; child_host != NULL; child_host = child_host->next) {
+							if (is_host_child_of_host(temp_host, child_host) == TRUE) {
+								if (found == TRUE)
+									printf(", ");
+
+								printf("<A HREF='%s?type=%d&host=%s&nostatusheader'>%s</A>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(child_host->name), html_encode(child_host->name, TRUE));
+
+								found = TRUE;
+							}
+						}
+
+						if (found == FALSE)
+							printf("None");
+
+						printf("</DIV>\n");
+					}
+				}
 
 				/* Host Dependencies */
 				found = FALSE;
@@ -1464,7 +1521,7 @@ void show_host_info(void) {
 			printf("<TR><TD CLASS='dataVar'>Last Check Time:</td><td CLASS='dataVal'>%s</td></tr>\n", date_time);
 
 			if (temp_hoststatus->checks_enabled == TRUE)
-				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&expand=%s'>ACTIVE</A></TD></TR>\n", CONFIG_CGI, url_encode(temp_host->host_check_command));
+				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&expand=%s'>ACTIVE</A></TD></TR>\n", CONFIG_CGI, host_name, url_encode(temp_host->host_check_command));
 			else if (temp_hoststatus->accept_passive_host_checks == TRUE)
 				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>PASSIVE</TD></TR>\n");
 			else
@@ -1879,8 +1936,8 @@ void show_service_info(void) {
 			printf("<TR><TD CLASS='dataVar'>Last Check Time:</TD><TD CLASS='dataVal'>%s</TD></TR>\n", date_time);
 
 			if (temp_svcstatus->checks_enabled == TRUE)
-				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&expand=%s'>ACTIVE</A></TD></TR>\n",
-				       CONFIG_CGI, url_encode(temp_service->service_check_command));
+				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&service=%s&expand=%s'>ACTIVE</A></TD></TR>\n",
+				       CONFIG_CGI, host_name, service_desc, url_encode(temp_service->service_check_command));
 			else if (temp_svcstatus->accept_passive_service_checks == TRUE)
 				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>PASSIVE</TD></TR>\n");
 			else
@@ -3761,5 +3818,43 @@ void free_sortdata_list(void) {
 	}
 
 	return;
+}
+
+/* determines whether or not a specific host is an child of another host */
+/* NOTE: this could be expensive in large installations, so use with care! */
+int is_host_child_of_host(host *parent_host, host *child_host) {
+	host *temp_host;
+
+	/* not enough data */
+	if (child_host == NULL)
+		return FALSE;
+
+	/* root/top-level hosts */
+	if (parent_host == NULL) {
+		if (child_host->parent_hosts == NULL)
+			return TRUE;
+
+	/* mid-level/bottom hosts */
+	} else {
+
+		for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
+
+			/* skip this host if it is not a child */
+			if (is_host_immediate_child_of_host(parent_host, temp_host) == FALSE)
+				continue;
+			else {
+				if (!strcmp(temp_host->name, child_host->name))
+					return TRUE;
+				else {
+					if (is_host_child_of_host(temp_host, child_host) == FALSE)
+						continue;
+
+					return TRUE;
+				}
+			}
+		}
+	}
+
+	return FALSE;
 }
 

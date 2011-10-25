@@ -153,3 +153,15 @@ define service{
 	notifications_enabled		0
         }
 
+
+# Define a service to check current startup delay of the Icinga core daemon.
+# Disable notifications for this service by default, as no thresholds are defined.
+
+define service{
+        use                             local-service         ; Name of service template to use
+        host_name                       localhost
+        service_description             Icinga Startup Delay
+        check_command                   check_icinga_startup_delay
+        notifications_enabled           0
+        }
+
