@@ -150,22 +150,24 @@ authdata current_authdata;
 
 extern int content_type;
 
-gdImagePtr unknown_logo_image = NULL;
-gdImagePtr logo_image = NULL;
-gdImagePtr map_image = NULL;
-gdImagePtr background_image = NULL;
-int color_white = 0;
-int color_black = 0;
-int color_red = 0;
-int color_lightred = 0;
-int color_green = 0;
-int color_lightgreen = 0;
-int color_blue = 0;
-int color_yellow = 0;
-int color_orange = 0;
-int color_grey = 0;
-int color_lightgrey = 0;
-int color_transparency_index = 0;
+gdImagePtr unknown_logo_image=NULL;
+gdImagePtr logo_image=NULL;
+gdImagePtr map_image=NULL;
+gdImagePtr background_image=NULL;
+int color_white=0;
+int color_black=0;
+int color_red=0;
+int color_lightred=0;
+int color_green=0;
+int color_lightgreen=0;
+int color_pink=0;
+int color_blue=0;
+int color_yellow=0;
+int color_orange=0;
+int color_grey=0;
+int color_lightgrey=0;
+int color_transparency_index=0;
+
 extern int color_transparency_index_r;
 extern int color_transparency_index_g;
 extern int color_transparency_index_b;
@@ -1398,10 +1400,12 @@ void draw_host_links(void) {
 		/* this is a child of the main host we're drawing in auto-layout mode... */
 		if (layout_method != LAYOUT_USER_SUPPLIED && draw_child_links == TRUE && number_of_immediate_child_hosts(this_host) > 0 && is_host_immediate_child_of_host(main_host, this_host) == TRUE) {
 			/* determine color to use when drawing links to children  */
-			this_hoststatus = find_hoststatus(this_host->name);
-			if (this_hoststatus != NULL) {
-				if (this_hoststatus->status == HOST_DOWN || this_hoststatus->status == HOST_UNREACHABLE)
-					status_color = color_red;
+			this_hoststatus=find_hoststatus(this_host->name);
+			if(this_hoststatus!=NULL){
+				if(this_hoststatus->status==HOST_DOWN)
+					status_color=color_red;
+				else if(this_hoststatus->status==HOST_UNREACHABLE)
+					status_color=color_pink;
 				else
 					status_color = color_black;
 			} else
@@ -1462,10 +1466,12 @@ void draw_host_links(void) {
 				dotted_line = FALSE;
 
 			/* determine color to use when drawing links to parent host */
-			parent_hoststatus = find_hoststatus(parent_host->name);
-			if (parent_hoststatus != NULL) {
-				if (parent_hoststatus->status == HOST_DOWN || parent_hoststatus->status == HOST_UNREACHABLE)
-					status_color = color_red;
+			parent_hoststatus=find_hoststatus(parent_host->name);
+			if(parent_hoststatus!=NULL){
+				if(parent_hoststatus->status==HOST_DOWN)
+					status_color=color_red;
+				else if(parent_hoststatus->status==HOST_UNREACHABLE)
+					status_color=color_pink;
 				else
 					status_color = color_black;
 			} else
@@ -1586,7 +1592,7 @@ void draw_hosts(void) {
 				else if (temp_hoststatus->status == HOST_DOWN)
 					status_color = color_red;
 				else if (temp_hoststatus->status == HOST_UNREACHABLE)
-					status_color = color_red;
+					status_color=color_pink;
 				else if (temp_hoststatus->status == HOST_UP)
 					status_color = color_green;
 				else if (temp_hoststatus->status == HOST_PENDING)
@@ -1812,7 +1818,7 @@ void draw_host_text(char *name, int x, int y) {
 			status_color = color_red;
 		} else if (temp_hoststatus->status == HOST_UNREACHABLE) {
 			strncpy(temp_buffer, "Unreachable", sizeof(temp_buffer));
-			status_color = color_red;
+			status_color=color_pink;
 		} else if (temp_hoststatus->status == HOST_UP) {
 			strncpy(temp_buffer, "Up", sizeof(temp_buffer));
 			status_color = color_green;
@@ -1909,7 +1915,7 @@ void write_host_popup_text(host *hst) {
 			printf(" (Acknowledged)");
 		printf("</font>");
 	} else if (temp_status->status == HOST_UNREACHABLE) {
-		printf("<font color=red>Unreachable");
+		printf("<font color=pink>Unreachable");
 		if (temp_status->problem_has_been_acknowledged == TRUE)
 			printf(" (Acknowledged)");
 		printf("</font>");
@@ -2061,18 +2067,19 @@ int initialize_graphics(void) {
 		return ERROR;
 
 	/* allocate colors used for drawing */
-	color_white = gdImageColorAllocate(map_image, 255, 255, 255);
-	color_black = gdImageColorAllocate(map_image, 0, 0, 0);
-	color_grey = gdImageColorAllocate(map_image, 128, 128, 128);
-	color_lightgrey = gdImageColorAllocate(map_image, 210, 210, 210);
-	color_red = gdImageColorAllocate(map_image, 255, 0, 0);
-	color_lightred = gdImageColorAllocate(map_image, 215, 175, 175);
-	color_green = gdImageColorAllocate(map_image, 0, 175, 0);
-	color_lightgreen = gdImageColorAllocate(map_image, 210, 255, 215);
-	color_blue = gdImageColorAllocate(map_image, 0, 0, 255);
-	color_yellow = gdImageColorAllocate(map_image, 255, 255, 0);
-	color_orange = gdImageColorAllocate(map_image, 255, 100, 25);
-	color_transparency_index = gdImageColorAllocate(map_image, color_transparency_index_r, color_transparency_index_g, color_transparency_index_b);
+	color_white=gdImageColorAllocate(map_image,255,255,255);
+	color_black=gdImageColorAllocate(map_image,0,0,0);
+	color_grey=gdImageColorAllocate(map_image,128,128,128);
+	color_lightgrey=gdImageColorAllocate(map_image,210,210,210);
+	color_red=gdImageColorAllocate(map_image,255,0,0);
+	color_lightred=gdImageColorAllocate(map_image,215,175,175);
+	color_green=gdImageColorAllocate(map_image,0,175,0);
+	color_lightgreen=gdImageColorAllocate(map_image,210,255,215);
+	color_pink=gdImageColorAllocate(map_image,224,102,255);
+	color_blue=gdImageColorAllocate(map_image,0,0,255);
+	color_yellow=gdImageColorAllocate(map_image,255,255,0);
+	color_orange=gdImageColorAllocate(map_image,255,100,25);
+	color_transparency_index=gdImageColorAllocate(map_image,color_transparency_index_r,color_transparency_index_g,color_transparency_index_b);
 
 	/* set transparency index */
 #ifndef HAVE_GDIMAGECREATETRUECOLOR
@@ -2695,6 +2702,7 @@ void draw_circular_layer_markup(host *parent, double start_angle, double useable
 					bgcolor = color_lightgrey;
 				else if (suppress_maintenance_downtime == TRUE && temp_hoststatus->scheduled_downtime_depth > 0)
 					bgcolor = color_lightgrey;
+				/* lightred for both DOWN and UNREACHABLE for visual continuity and since UNREACHABLE is still a problem */
 				else if (temp_hoststatus->status == HOST_DOWN || temp_hoststatus->status == HOST_UNREACHABLE)
 					bgcolor = color_lightred;
 				else
