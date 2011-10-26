@@ -655,6 +655,7 @@ int main(void) {
 			show_host_detail();
 		else if (group_style_type == STYLE_HOST_SERVICE_DETAIL) {
 
+			group_style_type = STYLE_HOST_DETAIL;
 			show_host_detail();
 
 			/* only show service problems of Hosts which are
@@ -670,6 +671,7 @@ int main(void) {
 				printf("</td></tr></table>\n");
 			}
 
+			group_style_type = STYLE_SERVICE_DETAIL;
 			show_service_detail();
 		} else
 			show_service_detail();
@@ -5166,7 +5168,7 @@ void grab_statusdata(void) {
 	temp_hostgroup = find_hostgroup(hostgroup_name);
 	temp_servicegroup = find_servicegroup(servicegroup_name);
 
-	if (group_style_type == STYLE_HOST_DETAIL || group_style_type == STYLE_HOST_SERVICE_DETAIL) {
+	if (group_style_type == STYLE_HOST_DETAIL) {
 
 		for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
 
@@ -5207,7 +5209,7 @@ void grab_statusdata(void) {
 
 		}
 	}
-	if (group_style_type != STYLE_HOST_DETAIL || group_style_type == STYLE_HOST_SERVICE_DETAIL) {
+	if (group_style_type != STYLE_HOST_DETAIL) {
 		if (service_filter != NULL)
 			regcomp(&preg, service_filter, 0);
 		if (host_filter != NULL)
