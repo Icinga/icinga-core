@@ -39,6 +39,7 @@ FIXES
 * core: plug memory leak in downtimes comment add (Dorian Guillois) #1979
 
 * classic ui: fix for Classic-UI displays bad timeperiods #1989
+* classic ui: fixed wrong color in histogram and trends for unknown/unreachable #2042
 
 * idoutils: host state change last_hard_state overrides last_state, last_hard_state always -1 #1932
 
