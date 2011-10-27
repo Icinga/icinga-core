@@ -19,7 +19,7 @@
 
 extern int errno;
 
-extern int ido2db_log_debug_info(int , int , const char *, ...);
+//extern int ido2db_log_debug_info(int , int , const char *, ...);
 
 int dummy;	/* reduce compiler warnings */
 
@@ -1544,6 +1544,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 	/* insert new instance if necessary */
 	if (have_instance == IDO_FALSE) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(instance_id=%lu)->insert new db entry\n", idi->dbinfo.instance_id);
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		if (asprintf(&buf, "INSERT INTO %s (instance_name) VALUES ('%s')", ido2db_db_tablenames[IDO2DB_DBTABLE_INSTANCES], idi->instance_name) == -1)
 			buf = NULL;
@@ -1626,12 +1627,42 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 	}
 
+#ifdef USE_LIBDBI
+	/* set session time zone to utc */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() set session timezone\n");
+	switch (idi->dbinfo.server_type) {
+	       case IDO2DB_DBSERVER_MYSQL:
+		       if (asprintf(&buf, "SET SESSION TIME_ZONE='+00:00'")==-1) buf=NULL;
+		       break;
+	       case IDO2DB_DBSERVER_PGSQL:
+		       if (asprintf(&buf, "SET SESSION TIMEZONE='UTC'")==-1) buf=NULL;
+		       break;
+           default:
+	           break;
+	}
+	if (buf !=NULL) {
+		//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(timezone) execute %s\n",buf);
+		if (ido2db_db_query(idi, buf)== IDO_OK){
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(timezone) UTC set OK\n");
+		}else{
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(timezone) Error: TimeZone Set to UTC failed\n");
+		}
+		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
+	}else{
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(timezone) Error: buffer allocation failed\n");
+	}
+
+#endif
+
 	/* record initial connection information */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-
+	//FIXME why we need ts here?
 	ts = ido2db_db_timet_to_sql(idi, idi->data_start_time);
 
-	if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES (%lu, NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, "
+			"agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) "
+			"VALUES (%lu, NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_CONNINFO],
 	             idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
 	             idi->disposition, idi->connect_source, idi->connect_type) == -1)
@@ -1775,8 +1806,8 @@ int ido2db_db_hello(ido2db_idi *idi) {
 	}
 
 	/* do not free statement yet! */
-	/* set oracle session application info fields */
-	ido2db_oci_set_appinfo(idi->dbinfo.oci_connection, idi->agent_name);
+	/* set oracle session application info fields and Timezone*/
+	ido2db_oci_set_session_info(idi->dbinfo.oci_connection, idi->agent_name);
 #endif /* Oracle ocilib specific */
 
 
@@ -1956,15 +1987,44 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 		return IDO_ERROR;
 	}
 
+#ifdef USE_LIBDBI
+	/* set session time zone to utc */
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() set session timezone\n");
+	switch (idi->dbinfo.server_type) {
+		   case IDO2DB_DBSERVER_MYSQL:
+			   if (asprintf(&buf, "SET SESSION TIME_ZONE='+00:00'")==-1) buf=NULL;
+			   break;
+		   case IDO2DB_DBSERVER_PGSQL:
+			   if (asprintf(&buf, "SET SESSION TIMEZONE='UTC'")==-1) buf=NULL;
+			   break;
+		   default:
+					break;
+	}
+	if (buf !=NULL) {
+		//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(timezone) execute %s\n",buf);
+		if (ido2db_db_query(idi, buf)== IDO_OK){
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(timezone) UTC set OK\n");
+		}else{
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(timezone) Error: TimeZone Set to UTC failed\n");
+		}
+		dbi_result_free(idi->dbinfo.dbi_result);
+		free(buf);
+	}else{
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(timezone) Error: buffer allocation failed\n");
+	}
+
+#endif
+
 	/* record initial connection information */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-
+	//Fixme No ts needed!
 	ts = ido2db_db_timet_to_sql(idi, idi->data_start_time);
 
-	if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) VALUES (%lu, NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",
-	             ido2db_db_tablenames[IDO2DB_DBTABLE_CONNINFO],
-	             idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
-	             idi->disposition, idi->connect_source, idi->connect_type) == -1)
+	if (asprintf(&buf, "INSERT INTO %s (instance_id, connect_time, last_checkin_time, bytes_processed, lines_processed, entries_processed, "
+	      		"agent_name, agent_version, disposition, connect_source, connect_type, data_start_time) "
+	       		"VALUES (%lu, NOW(), NOW(), '0', '0', '0', '%s', '%s', '%s', '%s', '%s', NOW())",	             ido2db_db_tablenames[IDO2DB_DBTABLE_CONNINFO],
+	       	idi->dbinfo.instance_id, idi->agent_name, idi->agent_version,
+	        idi->disposition, idi->connect_source, idi->connect_type) == -1)
 		buf = NULL;
 
 	if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
@@ -2019,9 +2079,11 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 	n_zero = 0;
 
 	data[0] = (void *) &idi->dbinfo.instance_id;
+	/* already in sql
 	data[1] = (void *) &n_zero;
 	data[2] = (void *) &n_zero;
 	data[3] = (void *) &n_zero;
+	*/
 	data[4] = (void *) &idi->agent_name;
 	data[5] = (void *) &idi->agent_version;
 	data[6] = (void *) &idi->disposition;
@@ -2107,8 +2169,8 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 
 	/* do not free statement yet! */
 
-	/* set oracle session application info fields */
-	ido2db_oci_set_appinfo(idi->dbinfo.oci_connection, idi->agent_name);
+	/* set oracle session application info fields and Timezone */
+	ido2db_oci_set_session_info(idi->dbinfo.oci_connection, idi->agent_name);
 
 #endif /* Oracle ocilib specific */
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() get cached object ids\n");
@@ -2748,7 +2810,7 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 	instance_id = idi->dbinfo.instance_id;
 
 	idi->dbinfo.oci_statement = OCI_StatementCreate(idi->dbinfo.oci_connection);
-	if (asprintf(&buf, "select max(date2unixts(%s)) from %s where instance_id=:ID", field_name, table_name) == -1) {
+	if (asprintf(&buf, "select max(localts2unixts(%s)) from %s where instance_id=:ID", field_name, table_name) == -1) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s() Error:Memory allocation SQL failed\n", fname);
 		free(buf);
 		return IDO_ERROR;
@@ -3298,10 +3360,10 @@ int ido2db_oci_prepared_statement_conninfo(ido2db_idi *idi) {
 	             "bytes_processed, lines_processed, entries_processed, "
 	             "agent_name, agent_version, disposition, connect_source, "
 	             "connect_type, data_start_time) "
-	             "VALUES (seq_conninfo.nextval, :X1, SYSDATE, SYSDATE, "
+	             "VALUES (seq_conninfo.nextval, :X1, LOCALTIMESTAMP, LOCALTIMESTAMP, "
 	             "0, 0, 0, "
 	             ":X5, :X6, :X7, :X8, "
-	             ":X9, SYSDATE) RETURNING id INTO :id",
+	             ":X9, LOCALTIMESTAMP) RETURNING id INTO :id",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_CONNINFO]) == -1) {
 		buf = NULL;
 	}
@@ -3338,9 +3400,9 @@ int ido2db_oci_prepared_statement_conninfo_update(ido2db_idi *idi) {
 
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_conninfo_update() start\n");
 
-	if (asprintf(&buf, "UPDATE %s SET disconnect_time=SYSDATE, "
-	             "last_checkin_time=SYSDATE, "
-	             "data_end_time=unixts2date(:X1), "
+	if (asprintf(&buf, "UPDATE %s SET disconnect_time=LOCALTIMESTAMP, "
+	             "last_checkin_time=LOCALTIMESTAMP, "
+	             "data_end_time=unixts2localts(:X1), "
 	             "bytes_processed=:X2, "
 	             "lines_processed=:X3, "
 	             "entries_processed=:X4 WHERE id=:X5",
@@ -3379,7 +3441,7 @@ int ido2db_oci_prepared_statement_conninfo_update_checkin(ido2db_idi *idi) {
 
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
-	if (asprintf(&buf, "UPDATE %s SET last_checkin_time=SYSDATE, "
+	if (asprintf(&buf, "UPDATE %s SET last_checkin_time=LOCALTIMESTAMP, "
 	             "bytes_processed=:X1, "
 	             "lines_processed=:X2, "
 	             "entries_processed=:X3 WHERE id=:X4",
@@ -3632,7 +3694,7 @@ int ido2db_oci_prepared_statement_logentries_insert(ido2db_idi *idi) {
 	             "INSERT INTO %s (id, instance_id, logentry_time, "
 	             "entry_time, entry_time_usec, logentry_type, "
 	             "logentry_data,realtime_data, inferred_data_extracted) "
-	             "VALUES (seq_logentries.nextval, :X1, unixts2date(:X2), unixts2date(:X3), "
+	             "VALUES (seq_logentries.nextval, :X1, unixts2localts(:X2), unixts2localts(:X3), "
 	             ":X4, :X5, :X6, :X7, :X8)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES]) == -1) {
 		buf = NULL;
@@ -3671,7 +3733,7 @@ int ido2db_oci_prepared_statement_logentries_select(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "SELECT id FROM %s "
 	             "WHERE instance_id=:X1 "
-	             "AND logentry_time=unixts2date(:X2) "
+	             "AND logentry_time=unixts2localts(:X2) "
 	             "AND logentry_data=:X3",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES]) == -1) {
 		buf = NULL;
@@ -3717,7 +3779,7 @@ int ido2db_oci_prepared_statement_process_events(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "INSERT INTO %s (id, instance_id, event_type, event_time, "
 	             "event_time_usec, process_id, program_name, program_version, program_date) "
-	             "VALUES (seq_processevents.nextval, :X1, :X2, unixts2date(:X3) , "
+	             "VALUES (seq_processevents.nextval, :X1, :X2, unixts2localts(:X3) , "
 	             ":X4, :X5, :X6, :X7, :X8)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_PROCESSEVENTS]) == -1) {
 		buf = NULL;
@@ -3763,9 +3825,9 @@ int ido2db_oci_prepared_statement_flappinghistory(ido2db_idi *idi) {
 	             "event_type, reason_type, flapping_type, object_id, "
 	             "percent_state_change, low_threshold, high_threshold, "
 	             "comment_time, internal_comment_id) "
-	             "VALUES (seq_flappinghistory.nextval, :X1, unixts2date(:X2) , :X3, "
+	             "VALUES (seq_flappinghistory.nextval, :X1, unixts2localts(:X2) , :X3, "
 	             ":X4, :X5, :X6, :X7, :X8, :X9, :X10, "
-	             "unixts2date(:X11), :X12)",
+	             "unixts2localts(:X11), :X12)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_FLAPPINGHISTORY]) == -1) {
 		buf = NULL;
 	}
@@ -3808,7 +3870,7 @@ int ido2db_oci_prepared_statement_external_commands(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "INSERT INTO %s (id, instance_id, command_type, entry_time, "
 	             "command_name, command_args) "
-	             "VALUES (seq_externalcommands.nextval, :X1, :X2, unixts2date(:X3), "
+	             "VALUES (seq_externalcommands.nextval, :X1, :X2, unixts2localts(:X3), "
 	             ":X4, :X5)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_EXTERNALCOMMANDS]) == -1) {
 		buf = NULL;
@@ -3853,8 +3915,8 @@ int ido2db_oci_prepared_statement_acknowledgements(ido2db_idi *idi) {
 	             "INSERT INTO %s (id, instance_id, entry_time, entry_time_usec, "
 	             "acknowledgement_type, object_id, state, author_name, comment_data, "
 	             "is_sticky, persistent_comment, notify_contacts, end_time) "
-	             "VALUES (seq_acknowledgements.nextval, :X1, unixts2date(:X2), :X3, "
-	             ":X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, unixts2date(:X12))",
+	             "VALUES (seq_acknowledgements.nextval, :X1, unixts2localts(:X2), :X3, "
+	             ":X4, :X5, :X6, :X7, :X8, :X9, :X10, :X11, unixts2localts(:X12))",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_ACKNOWLEDGEMENTS]) == -1) {
 		buf = NULL;
 	}
@@ -3899,7 +3961,7 @@ int ido2db_oci_prepared_statement_statehistory(ido2db_idi *idi) {
 	             "object_id, state_change, state, state_type, "
 	             "current_check_attempt, max_check_attempts, last_state, "
 	             "last_hard_state, output, long_output) "
-	             "VALUES (seq_statehistory.nextval, :X1, unixts2date(:X2), :X3, "
+	             "VALUES (seq_statehistory.nextval, :X1, unixts2localts(:X2), :X3, "
 	             ":X4, :X5, :X6, :X7, "
 	             ":X8, :X9, :X10, :X11, :X12, :X13)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_STATEHISTORY]) == -1) {
@@ -3945,17 +4007,17 @@ int ido2db_oci_prepared_statement_timedevents_queue(ido2db_idi *idi) {
 	if (asprintf(&buf, "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1 "
 	             "AND event_type=:X2 "
-	             "AND scheduled_time=unixts2date(:X5) "
+	             "AND scheduled_time=unixts2localts(:X5) "
 	             "AND object_id=:X7) "
 	             "WHEN MATCHED THEN "
-	             "UPDATE SET queued_time=unixts2date(:X3), "
+	             "UPDATE SET queued_time=unixts2localts(:X3), "
 	             "queued_time_usec=:X4, "
 	             "recurring_event=:X6 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, event_type, queued_time, queued_time_usec, "
 	             "scheduled_time, recurring_event, object_id) "
-	             "VALUES (seq_timedevents.nextval, :X1, :X2, unixts2date(:X3), :X4, "
-	             "unixts2date(:X5), :X6, :X7)",
+	             "VALUES (seq_timedevents.nextval, :X1, :X2, unixts2localts(:X3), :X4, "
+	             "unixts2localts(:X5), :X6, :X7)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
 		buf = NULL;
 	}
@@ -3994,10 +4056,10 @@ int ido2db_oci_prepared_statement_timedeventqueue(ido2db_idi *idi) {
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1 "
 	             "AND event_type=:X2 "
-	             "AND scheduled_time=unixts2date(:X5)"
+	             "AND scheduled_time=unixts2localts(:X5)"
 	             "AND object_id=:X7) "
 	             "WHEN MATCHED THEN "
-	             "UPDATE SET queued_time=unixts2date(:X3), "
+	             "UPDATE SET queued_time=unixts2localts(:X3), "
 	             "queued_time_usec=:X4, "
 	             "recurring_event=:X6 "
 	             "WHEN NOT MATCHED THEN "
@@ -4005,7 +4067,7 @@ int ido2db_oci_prepared_statement_timedeventqueue(ido2db_idi *idi) {
 	             "queued_time, queued_time_usec, scheduled_time, "
 	             "recurring_event, object_id) "
 	             "VALUES (seq_timedeventqueue.nextval, :X1, :X2, "
-	             "unixts2date(:X3), :X4, unixts2date(:X5), :X6, :X7)",
+	             "unixts2localts(:X3), :X4, unixts2localts(:X5), :X6, :X7)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE]) == -1) {
 		buf = NULL;
 	}
@@ -4044,10 +4106,10 @@ int ido2db_oci_prepared_statement_timedevents(ido2db_idi *idi) {
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1 "
 	             "AND event_type=:X2 "
-	             "AND scheduled_time=unixts2date(:X5) "
+	             "AND scheduled_time=unixts2localts(:X5) "
 	             "AND object_id=:X7) "
 	             "WHEN MATCHED THEN "
-	             "UPDATE SET event_time=unixts2date(:X3), "
+	             "UPDATE SET event_time=unixts2localts(:X3), "
 	             "event_time_usec=:X4, "
 	             "recurring_event=:X6 "
 	             "WHEN NOT MATCHED THEN "
@@ -4055,7 +4117,7 @@ int ido2db_oci_prepared_statement_timedevents(ido2db_idi *idi) {
 	             "event_time, event_time_usec, scheduled_time, "
 	             "recurring_event, object_id) "
 	             "VALUES (seq_timedevents.nextval, :X1, :X2, "
-	             "unixts2date(:X3), :X4, unixts2date(:X5), :X6, :X7)",
+	             "unixts2localts(:X3), :X4, unixts2localts(:X5), :X6, :X7)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
 		buf = NULL;
 	}
@@ -4091,11 +4153,11 @@ int ido2db_oci_prepared_statement_timedevents_update(ido2db_idi *idi) {
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
 	if (asprintf(&buf,
-	             "UPDATE %s SET deletion_time=unixts2date(:X1), "
+	             "UPDATE %s SET deletion_time=unixts2localts(:X1), "
 	             "deletion_time_usec=:X2 "
 	             "WHERE instance_id=:X3 "
 	             "AND event_type=:X4 "
-	             "AND scheduled_time=unixts2date(:X5) "
+	             "AND scheduled_time=unixts2localts(:X5) "
 	             "AND recurring_event=:X6 "
 	             "AND object_id=:X7",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS]) == -1) {
@@ -4140,16 +4202,16 @@ int ido2db_oci_prepared_statement_hoststatus(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "MERGE INTO %s USING DUAL ON (host_object_id=:X2) "
 	             "WHEN MATCHED THEN "
-	             "UPDATE SET instance_id=:X1, status_update_time=unixts2date(:X3), "
+	             "UPDATE SET instance_id=:X1, status_update_time=unixts2localts(:X3), "
 	             "output=:X4, long_output=:X5u, perfdata=:X6u, "
 	             "current_state=:X7, has_been_checked=:X8, should_be_scheduled=:X9, "
 	             "current_check_attempt=:X10, max_check_attempts=:X11, "
-	             "last_check=unixts2date(:X12), next_check=unixts2date(:X13), check_type=:X14, "
-	             "last_state_change=unixts2date(:X15), last_hard_state_change=unixts2date(:X16), "
-	             "last_hard_state=:X17, last_time_up=unixts2date(:X18), "
-	             "last_time_down=unixts2date(:X19), last_time_unreachable=unixts2date(:X20), "
-	             "state_type=:X21, last_notification=unixts2date(:X22), "
-	             "next_notification=unixts2date(:X23), no_more_notifications=:X24, "
+	             "last_check=unixts2localts(:X12), next_check=unixts2localts(:X13), check_type=:X14, "
+	             "last_state_change=unixts2localts(:X15), last_hard_state_change=unixts2localts(:X16), "
+	             "last_hard_state=:X17, last_time_up=unixts2localts(:X18), "
+	             "last_time_down=unixts2localts(:X19), last_time_unreachable=unixts2localts(:X20), "
+	             "state_type=:X21, last_notification=unixts2localts(:X22), "
+	             "next_notification=unixts2localts(:X23), no_more_notifications=:X24, "
 	             "notifications_enabled=:X25, problem_has_been_acknowledged=:X26, "
 	             "acknowledgement_type=:X27, current_notification_number=:X28, "
 	             "passive_checks_enabled=:X29, active_checks_enabled=:X30, "
@@ -4174,12 +4236,12 @@ int ido2db_oci_prepared_statement_hoststatus(ido2db_idi *idi) {
 	             "failure_prediction_enabled, process_performance_data, obsess_over_host, "
 	             "modified_host_attributes, event_handler, check_command, normal_check_interval, "
 	             "retry_check_interval, check_timeperiod_object_id) "
-	             "VALUES (seq_hoststatus.nextval, :X1, :X2, unixts2date(:X3), :X4, :X5i, :X6i, "
+	             "VALUES (seq_hoststatus.nextval, :X1, :X2, unixts2localts(:X3), :X4, :X5i, :X6i, "
 	             ":X7, :X8, :X9, :X10, "
-	             ":X11, unixts2date(:X12), unixts2date(:X13), :X14, "
-	             "unixts2date(:X15), unixts2date(:X16), :X17, "
-	             "unixts2date(:X18), unixts2date(:X19), unixts2date(:X20), "
-	             ":X21, unixts2date(:X22), unixts2date(:X23), "
+	             ":X11, unixts2localts(:X12), unixts2localts(:X13), :X14, "
+	             "unixts2localts(:X15), unixts2localts(:X16), :X17, "
+	             "unixts2localts(:X18), unixts2localts(:X19), unixts2localts(:X20), "
+	             ":X21, unixts2localts(:X22), unixts2localts(:X23), "
 	             ":X24, :X25, :X26, "
 	             ":X27, :X28, :X29, "
 	             ":X30, :X31, :X32, :X33, "
@@ -4232,7 +4294,7 @@ int ido2db_oci_prepared_statement_hostchecks(ido2db_idi *idi) {
 	             "VALUES (seq_hostchecks.nextval, :X1, :X2, :X3, "
 	             ":X4, :X5, :X6, :X7, "
 	             ":X8, :X9, :X10, :X11, "
-	             "unixts2date(:X12), :X13, unixts2date(:X14), :X15, :X16, "
+	             "unixts2localts(:X12), :X13, unixts2localts(:X14), :X15, :X16, "
 	             ":X17, :X18, :X19, "
 	             ":X20, :X21, :X22, :X23)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCHECKS]) == -1) {
@@ -4276,17 +4338,17 @@ int ido2db_oci_prepared_statement_servicestatus(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "MERGE INTO %s USING DUAL ON (service_object_id=:X2) "
 	             "WHEN MATCHED THEN "
-	             "UPDATE SET instance_id=:X1, status_update_time=unixts2date(:X3), "
+	             "UPDATE SET instance_id=:X1, status_update_time=unixts2localts(:X3), "
 	             "output=:X4, long_output=:X5u, perfdata=:X6u, current_state=:X7, "
 	             "has_been_checked=:X8, should_be_scheduled=:X9, "
 	             "current_check_attempt=:X10, max_check_attempts=:X11, "
-	             "last_check=unixts2date(:X12), next_check=unixts2date(:X13), "
-	             "check_type=:X14, last_state_change=unixts2date(:X15), "
-	             "last_hard_state_change=unixts2date(:X16), last_hard_state=:X17, "
-	             "last_time_ok=unixts2date(:X18), last_time_warning=unixts2date(:X19), "
-	             "last_time_unknown=unixts2date(:X20), last_time_critical=unixts2date(:X21), "
-	             "state_type=:X22, last_notification=unixts2date(:X23), "
-	             "next_notification=unixts2date(:X24), no_more_notifications=:X25, "
+	             "last_check=unixts2localts(:X12), next_check=unixts2localts(:X13), "
+	             "check_type=:X14, last_state_change=unixts2localts(:X15), "
+	             "last_hard_state_change=unixts2localts(:X16), last_hard_state=:X17, "
+	             "last_time_ok=unixts2localts(:X18), last_time_warning=unixts2localts(:X19), "
+	             "last_time_unknown=unixts2localts(:X20), last_time_critical=unixts2localts(:X21), "
+	             "state_type=:X22, last_notification=unixts2localts(:X23), "
+	             "next_notification=unixts2localts(:X24), no_more_notifications=:X25, "
 	             "notifications_enabled=:X26, problem_has_been_acknowledged=:X27, "
 	             "acknowledgement_type=:X28, current_notification_number=:X29, "
 	             "passive_checks_enabled=:X30, active_checks_enabled=:X31, "
@@ -4314,12 +4376,12 @@ int ido2db_oci_prepared_statement_servicestatus(ido2db_idi *idi) {
 	             "modified_service_attributes, event_handler, check_command, "
 	             "normal_check_interval, retry_check_interval, check_timeperiod_object_id) "
 	             "VALUES "
-	             "(seq_servicestatus.nextval, :X1, :X2, unixts2date(:X3), "
+	             "(seq_servicestatus.nextval, :X1, :X2, unixts2localts(:X3), "
 	             ":X4, :X5i, :X6i, :X7, :X8, :X9, :X10, :X11, "
-	             "unixts2date(:X12), unixts2date(:X13), :X14, unixts2date(:X15), "
-	             "unixts2date(:X16), :X17, unixts2date(:X18), "
-	             "unixts2date(:X19), unixts2date(:X20), unixts2date(:X21), "
-	             ":X22, unixts2date(:X23), unixts2date(:X24), :X25, "
+	             "unixts2localts(:X12), unixts2localts(:X13), :X14, unixts2localts(:X15), "
+	             "unixts2localts(:X16), :X17, unixts2localts(:X18), "
+	             "unixts2localts(:X19), unixts2localts(:X20), unixts2localts(:X21), "
+	             ":X22, unixts2localts(:X23), unixts2localts(:X24), :X25, "
 	             ":X26, :X27, :X28, :X29, :X30, :X31, :X32, :X33, "
 	             ":X34, :X35, :X36, :X37, :X38, :X39, :X40, :X41, :X42, "
 	             ":X43, :X44, :X45, :X46, :X47)",
@@ -4368,7 +4430,7 @@ int ido2db_oci_prepared_statement_servicechecks(ido2db_idi *idi) {
 	             "long_output, perfdata ) "
 	             "VALUES (seq_servicechecks.nextval, :X1, :X2, :X3, "
 	             ":X4, :X5, :X6, "
-	             ":X7, unixts2date(:X8), :X9, unixts2date(:X10), "
+	             ":X7, unixts2localts(:X8), :X9, unixts2localts(:X10), "
 	             ":X11, :X12, :X13, "
 	             ":X14, :X15, :X16, :X17, "
 	             ":X20, :X21, :X22,"
@@ -4465,12 +4527,12 @@ int ido2db_oci_prepared_statement_programstatus(ido2db_idi *idi) {
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1) "
 	             "WHEN MATCHED THEN "
-	             "UPDATE SET status_update_time=unixts2date(:X2), "
-	             "program_start_time=unixts2date(:X3) , "
+	             "UPDATE SET status_update_time=unixts2localts(:X2), "
+	             "program_start_time=unixts2localts(:X3) , "
 	             "is_currently_running=1, process_id=:X4, "
 	             "daemon_mode=:X5, "
-	             "last_command_check=unixts2date(:X6), "
-	             "last_log_rotation=unixts2date(:X7), "
+	             "last_command_check=unixts2localts(:X6), "
+	             "last_log_rotation=unixts2localts(:X7), "
 	             "notifications_enabled=:X8, active_service_checks_enabled=:X9, "
 	             "passive_service_checks_enabled=:X10, active_host_checks_enabled=:X11, "
 	             "passive_host_checks_enabled=:X12, event_handlers_enabled=:X13, "
@@ -4491,9 +4553,9 @@ int ido2db_oci_prepared_statement_programstatus(ido2db_idi *idi) {
 	             "obsess_over_hosts, obsess_over_services, "
 	             "modified_host_attributes, modified_service_attributes, "
 	             "global_host_event_handler, global_service_event_handler) "
-	             "VALUES (seq_programstatus.nextval, :X1, unixts2date(:X2) , "
-	             "unixts2date(:X3) , '1', :X4, :X5, "
-	             "unixts2date(:X6), unixts2date(:X7) , :X8, :X9, :X10, :X11, "
+	             "VALUES (seq_programstatus.nextval, :X1, unixts2localts(:X2) , "
+	             "unixts2localts(:X3) , '1', :X4, :X5, "
+	             "unixts2localts(:X6), unixts2localts(:X7) , :X8, :X9, :X10, :X11, "
 	             ":X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS]) == -1) {
 		buf = NULL;
@@ -4530,7 +4592,7 @@ int ido2db_oci_prepared_statement_programstatus_update(ido2db_idi *idi) {
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
 	if (asprintf(&buf,
-	             "UPDATE %s SET program_end_time=unixts2date(:X1), "
+	             "UPDATE %s SET program_end_time=unixts2localts(:X1), "
 	             "is_currently_running=:X2 "
 	             "WHERE instance_id=:X3",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS]) == -1) {
@@ -4576,18 +4638,18 @@ int ido2db_oci_prepared_statement_systemcommanddata(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1 "
-	             "AND start_time=unixts2date(:X2) "
+	             "AND start_time=unixts2localts(:X2) "
 	             "AND start_time_usec=:X3) "
 	             "WHEN MATCHED THEN "
-	             "UPDATE SET end_time=unixts2date(:X4), end_time_usec=:X5, "
+	             "UPDATE SET end_time=unixts2localts(:X4), end_time_usec=:X5, "
 	             "command_line=:X6, timeout=:X7, early_timeout=:X8, "
 	             "execution_time=:X9, return_code=:X10, output=:X11, long_output=:X12u "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, start_time, start_time_usec, "
 	             "end_time, end_time_usec, command_line, timeout, early_timeout, "
 	             "execution_time, return_code, output, long_output) "
-	             "VALUES (seq_systemcommands.nextval, :X1, unixts2date(:X2), :X3, "
-	             "unixts2date(:X4), :X5, :X6, :X7, :X8, "
+	             "VALUES (seq_systemcommands.nextval, :X1, unixts2localts(:X2), :X3, "
+	             "unixts2localts(:X4), :X5, :X6, :X7, :X8, "
 	             ":X9, :X10, :X11, :X12i)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SYSTEMCOMMANDS]) == -1) {
 		buf = NULL;
@@ -4631,7 +4693,7 @@ int ido2db_oci_prepared_statement_eventhandlerdata(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1 "
-	             "AND start_time=unixts2date(:X6)"
+	             "AND start_time=unixts2localts(:X6)"
 	             "AND start_time_usec=:X7) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET eventhandler_type=:X2, object_id=:X3, "
@@ -4648,8 +4710,8 @@ int ido2db_oci_prepared_statement_eventhandlerdata(ido2db_idi *idi) {
 	             "timeout, early_timeout, execution_time, "
 	             "return_code, output, long_output) "
 	             "VALUES (seq_eventhandlers.nextval, :X1, :X2, "
-	             ":X3, :X4, :X5, unixts2date(:X6), :X7, "
-	             "unixts2date(:X8), :X9, :X10, :X11, :X12, "
+	             ":X3, :X4, :X5, unixts2localts(:X6), :X7, "
+	             "unixts2localts(:X8), :X9, :X10, :X11, :X12, "
 	             ":X13, :X14, :X15, :X16, :X17, :X18i)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_EVENTHANDLERS]) == -1) {
 		buf = NULL;
@@ -4694,19 +4756,19 @@ int ido2db_oci_prepared_statement_notificationdata(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1 "
-	             "AND start_time=unixts2date(:X4) "
+	             "AND start_time=unixts2localts(:X4) "
 	             "AND start_time_usec=:X5 "
 	             "AND object_id=:X8) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET notification_type=:X2, notification_reason=:X3, "
-	             "end_time=unixts2date(:X6), end_time_usec=:X7, state=:X9, "
+	             "end_time=unixts2localts(:X6), end_time_usec=:X7, state=:X9, "
 	             "output=:X10, long_output=:X11u, escalated=:X12, contacts_notified=:X13 "
 	             "WHEN NOT MATCHED "
 	             "THEN INSERT (id, instance_id, notification_type, notification_reason, "
 	             "start_time, start_time_usec, end_time, end_time_usec, object_id, state, "
 	             "output, long_output, escalated, contacts_notified) "
 	             "VALUES (seq_notifications.nextval, :X1, :X2, :X3, "
-	             "unixts2date(:X4), :X5, unixts2date(:X6), :X7, :X8, :X9, "
+	             "unixts2localts(:X4), :X5, unixts2localts(:X6), :X7, :X8, :X9, "
 	             ":X10, :X11i, :X12, :X13)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS]) == -1) {
 		buf = NULL;
@@ -4746,18 +4808,18 @@ int ido2db_oci_prepared_statement_contactnotificationdata(ido2db_idi *idi) {
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1 "
 	             "AND contact_object_id=:X7 "
-	             "AND start_time=unixts2date(:X3) "
+	             "AND start_time=unixts2localts(:X3) "
 	             "AND start_time_usec=:X4) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET notification_id=:X2, "
-	             "end_time= unixts2date(:X5), "
+	             "end_time= unixts2localts(:X5), "
 	             "end_time_usec=:X6 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, notification_id, "
 	             "start_time, start_time_usec, "
 	             "end_time, end_time_usec, contact_object_id) "
 	             "VALUES (seq_contactnotifications.nextval, :X1, :X2, "
-	             "unixts2date(:X3), :X4, unixts2date(:X5), :X6, :X7)",
+	             "unixts2localts(:X3), :X4, unixts2localts(:X5), :X6, :X7)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONS]) == -1) {
 		buf = NULL;
 	}
@@ -4795,18 +4857,18 @@ int ido2db_oci_prepared_statement_contactnotificationmethoddata(ido2db_idi *idi)
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1 "
 	             "AND contactnotification_id=:X2 "
-	             "AND start_time=unixts2date(:X3)"
+	             "AND start_time=unixts2localts(:X3)"
 	             "AND start_time_usec=:X4) "
 	             "WHEN MATCHED THEN "
-	             "UPDATE SET end_time=unixts2date(:X5), "
+	             "UPDATE SET end_time=unixts2localts(:X5), "
 	             "end_time_usec=:X6, command_object_id=:X7, command_args=:X8 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, contactnotification_id, "
 	             "start_time, start_time_usec, "
 	             "end_time, end_time_usec, command_object_id, command_args) "
 	             "VALUES (seq_contactnotifmethods.nextval, :X1, :X2, "
-	             "unixts2date(:X3), :X4, "
-	             "unixts2date(:X5), :X6, :X7, :X8)",
+	             "unixts2localts(:X3), :X4, "
+	             "unixts2localts(:X5), :X6, :X7, :X8)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS]) == -1) {
 		buf = NULL;
 	}
@@ -4850,24 +4912,24 @@ int ido2db_oci_prepared_statement_commentdata(ido2db_idi *idi) {
 
 	if (asprintf(&buf, "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X3 "
-	             "AND comment_time=unixts2date(:X7) "
+	             "AND comment_time=unixts2localts(:X7) "
 	             "AND internal_comment_id=:X8) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET comment_type=:X4, entry_type=:X5, "
 	             "object_id=:X6, author_name=:X9, comment_data=:X10, "
 	             "is_persistent=:X11, comment_source=:X12, "
-	             "expires=:X13, expiration_time=unixts2date(:X14) "
+	             "expires=:X13, expiration_time=unixts2localts(:X14) "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, entry_time, entry_time_usec, instance_id, "
 	             "comment_type, entry_type, object_id, "
 	             "comment_time, internal_comment_id, author_name, "
 	             "comment_data, is_persistent, comment_source, "
 	             "expires, expiration_time) "
-	             "VALUES (seq_comments.nextval, unixts2date(:X1), :X2, :X3, "
+	             "VALUES (seq_comments.nextval, unixts2localts(:X1), :X2, :X3, "
 	             ":X4, :X5, :X6, "
-	             "unixts2date(:X7), :X8, :X9, "
+	             "unixts2localts(:X7), :X8, :X9, "
 	             ":X10, :X11, :X12, "
-	             ":X13, unixts2date(:X14))",
+	             ":X13, unixts2localts(:X14))",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS]) == -1) {
 		buf = NULL;
 	}
@@ -4904,24 +4966,24 @@ int ido2db_oci_prepared_statement_commentdata_history(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X3 "
-	             "AND comment_time=unixts2date(:X7) "
+	             "AND comment_time=unixts2localts(:X7) "
 	             "AND internal_comment_id=:X8) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET comment_type=:X4, entry_type=:X5, object_id=:X6, "
 	             "author_name=:X9, comment_data=:X10, is_persistent=:X11, "
 	             "comment_source=:X12, expires=:X13, "
-	             "expiration_time=unixts2date(:X14) "
+	             "expiration_time=unixts2localts(:X14) "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, entry_time, entry_time_usec, "
 	             "instance_id, comment_type, entry_type, object_id, "
 	             "comment_time, internal_comment_id, author_name, "
 	             "comment_data, is_persistent, comment_source, "
 	             "expires, expiration_time) "
-	             "VALUES (seq_commenthistory.nextval, unixts2date(:X1), :X2, "
+	             "VALUES (seq_commenthistory.nextval, unixts2localts(:X1), :X2, "
 	             ":X3, :X4, :X5, :X6, "
-	             "unixts2date(:X7), :X8, :X9, "
+	             "unixts2localts(:X7), :X8, :X9, "
 	             ":X10, :X11, :X12, "
-	             ":X13, unixts2date(:X14))",
+	             ":X13, unixts2localts(:X14))",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTHISTORY]) == -1) {
 		buf = NULL;
 	}
@@ -4957,10 +5019,10 @@ int ido2db_oci_prepared_statement_comment_history_update(ido2db_idi *idi) {
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
 	if (asprintf(&buf,
-	             "UPDATE %s SET deletion_time=unixts2date(:X1), "
+	             "UPDATE %s SET deletion_time=unixts2localts(:X1), "
 	             "deletion_time_usec=:X2 "
 	             "WHERE instance_id=:X3 "
-	             "AND comment_time=unixts2date(:X4) "
+	             "AND comment_time=unixts2localts(:X4) "
 	             "AND internal_comment_id=:X5",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTHISTORY]) == -1) {
 		buf = NULL;
@@ -5005,22 +5067,22 @@ int ido2db_oci_prepared_statement_downtimedata_scheduled_downtime(ido2db_idi *id
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1 "
 	             "AND object_id=:X3 "
-	             "AND entry_time=unixts2date(:X4) "
+	             "AND entry_time=unixts2localts(:X4) "
 	             "AND internal_downtime_id=:X7) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET downtime_type=:X2, author_name=:X5, "
 	             "comment_data=:X6, triggered_by_id=:X8, "
 	             "is_fixed=:X9, duration=:X10, "
-	             "scheduled_start_time=unixts2date(:X11) , "
-	             "scheduled_end_time=unixts2date(:X12) "
+	             "scheduled_start_time=unixts2localts(:X11) , "
+	             "scheduled_end_time=unixts2localts(:X12) "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, downtime_type, object_id, "
 	             "entry_time, author_name, comment_data, "
 	             "internal_downtime_id, triggered_by_id, "
 	             "is_fixed, duration, scheduled_start_time, scheduled_end_time) "
 	             "VALUES (seq_scheduleddowntime.nextval, :X1, :X2, :X3, "
-	             "unixts2date(:X4), :X5, :X6, "
-	             ":X7, :X8, :X9, :X10, unixts2date(:X11),unixts2date(:X12))",
+	             "unixts2localts(:X4), :X5, :X6, "
+	             ":X7, :X8, :X9, :X10, unixts2localts(:X11),unixts2localts(:X12))",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]) == -1) {
 		buf = NULL;
 	}
@@ -5058,21 +5120,21 @@ int ido2db_oci_prepared_statement_downtimedata_downtime_history(ido2db_idi *idi)
 	             "MERGE INTO %s USING DUAL "
 	             "ON (instance_id=:X1 "
 	             "AND object_id=:X3 "
-	             "AND entry_time=unixts2date(:X4) "
+	             "AND entry_time=unixts2localts(:X4) "
 	             "AND internal_downtime_id=:X7) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET downtime_type=:X2, author_name=:X5, "
 	             "comment_data=:X6, triggered_by_id=:X8, is_fixed=:X9, "
-	             "duration=:X10, scheduled_start_time=unixts2date(:X11), "
-	             "scheduled_end_time=unixts2date(:X12) "
+	             "duration=:X10, scheduled_start_time=unixts2localts(:X11), "
+	             "scheduled_end_time=unixts2localts(:X12) "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, downtime_type, object_id, "
 	             "entry_time, author_name, comment_data, internal_downtime_id, "
 	             "triggered_by_id, is_fixed, duration, "
 	             "scheduled_start_time, scheduled_end_time) "
 	             "VALUES (seq_downtimehistory.nextval, :X1, :X2, :X3, "
-	             "unixts2date(:X4), :X5, :X6, :X7, :X8, :X9, :X10, "
-	             "unixts2date(:X11), unixts2date(:X12))",
+	             "unixts2localts(:X4), :X5, :X6, :X7, :X8, :X9, :X10, "
+	             "unixts2localts(:X11), unixts2localts(:X12))",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
 		buf = NULL;
 	}
@@ -5107,14 +5169,14 @@ int ido2db_oci_prepared_statement_downtimehistory_update_start(ido2db_idi *idi) 
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
 	if (asprintf(&buf,
-	             "UPDATE %s SET actual_start_time=unixts2date(:X1) , "
+	             "UPDATE %s SET actual_start_time=unixts2localts(:X1) , "
 	             "actual_start_time_usec=:X2, was_started=:X3 "
 	             "WHERE instance_id=:X4 "
 	             "AND downtime_type=:X5 "
 	             "AND object_id=:X6 "
-	             "AND entry_time=unixts2date(:X7) "
-	             "AND scheduled_start_time=unixts2date(:X8) "
-	             "AND scheduled_end_time=unixts2date(:X9) "
+	             "AND entry_time=unixts2localts(:X7) "
+	             "AND scheduled_start_time=unixts2localts(:X8) "
+	             "AND scheduled_end_time=unixts2localts(:X9) "
 	             "AND was_started=0",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
 		buf = NULL;
@@ -5151,14 +5213,14 @@ int ido2db_oci_prepared_statement_scheduleddowntime_update_start(ido2db_idi *idi
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
 
 	if (asprintf(&buf,
-	             "UPDATE %s SET actual_start_time=unixts2date(:X1), "
+	             "UPDATE %s SET actual_start_time=unixts2localts(:X1), "
 	             "actual_start_time_usec=:X2, was_started=:X3 "
 	             "WHERE instance_id=:X4 "
 	             "AND downtime_type=:X5 "
 	             "AND object_id=:X6 "
-	             "AND entry_time=unixts2date(:X7) "
-	             "AND scheduled_start_time=unixts2date(:X8) "
-	             "AND scheduled_end_time=unixts2date(:X9) "
+	             "AND entry_time=unixts2localts(:X7) "
+	             "AND scheduled_start_time=unixts2localts(:X8) "
+	             "AND scheduled_end_time=unixts2localts(:X9) "
 	             "AND was_started=0",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]) == -1) {
 		buf = NULL;
@@ -5197,14 +5259,14 @@ int ido2db_oci_prepared_statement_downtimehistory_update_stop(ido2db_idi *idi) {
 
 	if (asprintf(&buf,
 	             "UPDATE %s SET "
-	             "actual_end_time=unixts2date(:X1) , "
+	             "actual_end_time=unixts2localts(:X1) , "
 	             "actual_end_time_usec=:X2, was_cancelled=:X3 "
 	             "WHERE instance_id=:X4 "
 	             "AND downtime_type=:X5 "
 	             "AND object_id=:X6 "
-	             "AND entry_time= unixts2date(:X7) "
-	             "AND scheduled_start_time=unixts2date(:X8) "
-	             "AND scheduled_end_time=unixts2date(:X9) ",
+	             "AND entry_time= unixts2localts(:X7) "
+	             "AND scheduled_start_time=unixts2localts(:X8) "
+	             "AND scheduled_end_time=unixts2localts(:X9) ",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
 		buf = NULL;
 	}
@@ -5248,10 +5310,10 @@ int ido2db_oci_prepared_statement_contactstatusdata(ido2db_idi *idi) {
 	             "MERGE INTO %s USING DUAL "
 	             "ON (contact_object_id=:X2) "
 	             "WHEN MATCHED THEN "
-	             "UPDATE SET instance_id=:X1, status_update_time=unixts2date(:X3), "
+	             "UPDATE SET instance_id=:X1, status_update_time=unixts2localts(:X3), "
 	             "host_notifications_enabled=:X4, service_notifications_enabled=:X5, "
-	             "last_host_notification=unixts2date(:X6), "
-	             "last_service_notification=unixts2date(:X7), modified_attributes=:X8, "
+	             "last_host_notification=unixts2localts(:X6), "
+	             "last_service_notification=unixts2localts(:X7), modified_attributes=:X8, "
 	             "modified_host_attributes=:X9, modified_service_attributes=:X10 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, contact_object_id, status_update_time, "
@@ -5259,8 +5321,8 @@ int ido2db_oci_prepared_statement_contactstatusdata(ido2db_idi *idi) {
 	             "last_host_notification, last_service_notification, "
 	             "modified_attributes, modified_host_attributes, "
 	             "modified_service_attributes) "
-	             "VALUES (seq_contactstatus.nextval, :X1, :X2, unixts2date(:X3), "
-	             ":X4, :X5,unixts2date(:X6), unixts2date(:X7) , "
+	             "VALUES (seq_contactstatus.nextval, :X1, :X2, unixts2localts(:X3), "
+	             ":X4, :X5,unixts2localts(:X6), unixts2localts(:X7) , "
 	             ":X8, :X9, :X10)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTSTATUS]) == -1) {
 		buf = NULL;
@@ -6741,13 +6803,13 @@ int ido2db_oci_prepared_statement_save_custom_variables_customvariablestatus(ido
 	             "ON (object_id=:X2 AND varname=:X5) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET instance_id=:X1, "
-	             "status_update_time= unixts2date(:X3) , "
+	             "status_update_time= unixts2localts(:X3) , "
 	             "has_been_modified=:X4, varvalue=:X6 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, object_id, status_update_time, "
 	             "has_been_modified, varname, varvalue) "
 	             "VALUES "
-	             "(seq_customvariablestatus.nextval, :X1, :X2, unixts2date(:X3), "
+	             "(seq_customvariablestatus.nextval, :X1, :X2, unixts2localts(:X3), "
 	             ":X4, :X5, :X6)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS]) == -1) {
 		buf = NULL;
@@ -6880,7 +6942,7 @@ int ido2db_oci_prepared_statement_timedeventqueue_delete(ido2db_idi *idi) {
 	if (asprintf(&buf, ""
 	             "DELETE FROM %s "
 	             "WHERE instance_id=:X1 "
-	             "AND scheduled_time<= unixts2date(:X2)",
+	             "AND scheduled_time<= unixts2localts(:X2)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE]) == -1) {
 		buf = NULL;
 	}
@@ -6919,7 +6981,7 @@ int ido2db_oci_prepared_statement_timedeventqueue_delete_more(ido2db_idi *idi) {
 	             "DELETE FROM %s "
 	             "WHERE instance_id=:X1 "
 	             "AND event_type=:X2 "
-	             "AND scheduled_time= unixts2date(:X3) "
+	             "AND scheduled_time= unixts2localts(:X3) "
 	             "AND recurring_event=:X4 "
 	             "AND object_id=:X5",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE]) == -1) {
@@ -6960,7 +7022,7 @@ int ido2db_oci_prepared_statement_comments_delete(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "DELETE FROM %s "
 	             "WHERE instance_id=:X1 "
-	             "AND comment_time=unixts2date(:X2) "
+	             "AND comment_time=unixts2localts(:X2) "
 	             "AND internal_comment_id=:X3",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS]) == -1) {
 		buf = NULL;
@@ -7002,9 +7064,9 @@ int ido2db_oci_prepared_statement_downtime_delete(ido2db_idi *idi) {
 	             "WHERE instance_id=:X1 "
 	             "AND downtime_type=:X2 "
 	             "AND object_id=:X3 "
-	             "AND entry_time= unixts2date(:X4) "
-	             "AND scheduled_start_time=unixts2date(:X5) "
-	             "AND scheduled_end_time=unixts2date(:X6)",
+	             "AND entry_time= unixts2localts(:X4) "
+	             "AND scheduled_start_time=unixts2localts(:X5) "
+	             "AND scheduled_end_time=unixts2localts(:X6)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]) == -1) {
 		buf = NULL;
 	}
@@ -7111,16 +7173,16 @@ int ido2db_oci_prepared_statement_sla_history_merge(ido2db_idi *idi) {
 	if (asprintf(&buf, "MERGE INTO %s USING DUAL "
 	             "ON (id=:X1) "
 	             "WHEN MATCHED THEN "
-	             "UPDATE SET start_time=unixts2date(:X3), "
-	             "end_time=unixts2date(:X4), "
-	             "acknowledgement_time=unixts2date(:X5), "
+	             "UPDATE SET start_time=unixts2localts(:X3), "
+	             "end_time=unixts2localts(:X4), "
+	             "acknowledgement_time=unixts2localts(:X5), "
 	             "state=:X7, state_type=:X8, scheduled_downtime=:X9 "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, start_time, end_time, "
 		     "acknowledgement_time, object_id, state, "
 		     "state_type, scheduled_downtime) "
 	             "VALUES (seq_slahistory.nextval, :X2, "
-		     "unixts2date(:X3), unixts2date(:X4), unixts2date(:X5), "
+		     "unixts2localts(:X3), unixts2localts(:X4), unixts2localts(:X5), "
 	             ":X6, :X7, :X8, :X9)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY]) == -1) {
 		buf = NULL;
@@ -7234,15 +7296,15 @@ int ido2db_oci_prepared_statement_sla_history_select(ido2db_idi *idi) {
 
 	if (asprintf(&buf,
 	             "SELECT id AS slahistory_id,\n"
-		     "date2unixts(start_time) AS start_time, date2unixts(end_time) AS end_time, "
-		     "date2unixts(acknowledgement_time) AS acknowledgement_time,\n"
+		     "localts2unixts(start_time) AS start_time, localts2unixts(end_time) AS end_time, "
+		     "localts2unixts(acknowledgement_time) AS acknowledgement_time,\n"
 		     "state, state_type, scheduled_downtime\n"
 		     "FROM %s\n"
 		     "WHERE instance_id = :X1 AND object_id = :X2 AND\n"
-		     "((start_time > unixts2date(:X3) AND start_time < unixts2date(:X4)) OR"
-		     " (end_time > unixts2date(:X3) AND end_time < unixts2date(:X4)) OR"
-		     " (start_time < unixts2date(:X3) AND end_time > unixts2date(:X4)) OR"
-		     " (end_time = unixts2date(0)))",
+		     "((start_time > unixts2localts(:X3) AND start_time < unixts2localts(:X4)) OR"
+		     " (end_time > unixts2localts(:X3) AND end_time < unixts2localts(:X4)) OR"
+		     " (start_time < unixts2localts(:X3) AND end_time > unixts2localts(:X4)) OR"
+		     " (end_time = unixts2localts(0)))",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY]) == -1) {
 		buf = NULL;
 	}
@@ -7279,15 +7341,15 @@ int ido2db_oci_prepared_statement_sla_downtime_select(ido2db_idi *idi) {
 
 	if (asprintf(&buf,
 		     "SELECT id AS downtimehistory_id,\n"
-		     "date2unixts(actual_start_time) AS actual_start_time, date2unixts(actual_end_time) AS actual_end_time,\n"
-		     "date2unixts(scheduled_start_time) AS scheduled_start_time, date2unixts(scheduled_end_time) AS scheduled_end_time,\n"
+		     "localts2unixts(actual_start_time) AS actual_start_time, localts2unixts(actual_end_time) AS actual_end_time,\n"
+		     "localts2unixts(scheduled_start_time) AS scheduled_start_time, localts2unixts(scheduled_end_time) AS scheduled_end_time,\n"
 		     "is_fixed, duration\n"
 		     "FROM %s\n"
 		     "WHERE instance_id = :X1 AND object_id = :X2 AND\n"
 		     "((actual_start_time > :X3 AND actual_start_time < :X4) OR"
 		     " (actual_end_time > :X3 AND actual_end_time < :X4) OR"
 		     " (actual_start_time < :X3 AND actual_end_time > :X4) OR"
-		     " (actual_end_time = unixts2date(0)))",
+		     " (actual_end_time = unixts2localts(0)))",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY]) == -1) {
 		buf = NULL;
 	}
@@ -7442,20 +7504,20 @@ int ido2db_oci_execute_out(OCI_Statement *st, char * fname) {
 	return IDO_OK;
 }
 /**
- * set oracle session application info details
+ * set oracle session application info details and Time Zone
  * @param OCI_Connection
  * @param action string (agent_name)
  * @return IDO_OK
  */
-int ido2db_oci_set_appinfo(OCI_Connection *cn, char * action) {
+int ido2db_oci_set_session_info(OCI_Connection *cn, char * action) {
 	/* set oracle session application info module*/
-	char * fname = "ido2db_oci_set_appinfo";
+	char * fname = "ido2db_oci_set_session_info";
 	char * module = "IDO2DB";
 	char * app_info;
 	OCI_Statement *st;
 	int ret;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:set Application Info to %s\n", fname, action);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Set Session Info to %s\n", fname, action);
 	if (!(cn)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:No Connection\n", fname);
 		return IDO_ERROR;
@@ -7486,9 +7548,19 @@ int ido2db_oci_set_appinfo(OCI_Connection *cn, char * action) {
 	/* execute statement */
 	ret = ido2db_oci_execute_out(st, fname);
 	if (ret != IDO_OK) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:AppInfo execute failed\n", fname);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s: Session Info Module execute failed\n", fname);
 	}
-	ido2db_oci_statement_free(st, fname);
+	ido2db_oci_statement_free(st,fname);
+
+	/* set session time zone to UTC */
+	st=OCI_StatementCreate(cn);
+	if (OCI_ExecuteStmt(st,"alter session set time_zone='UTC'")) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s: TimeZone Set to UTC OK\n",fname);
+	}else{
+		 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s Error: TimeZone Set to UTC failed\n",fname);
+	}
+	ido2db_oci_statement_free(st,fname);
+
 	if (app_info) free(app_info);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s end\n", fname);
 	return ret;
