@@ -57,8 +57,6 @@ typedef struct sla_downtime_list_s {
 	sla_downtime_t downtimes[0];
 } sla_downtime_list_t;
 
-extern int enable_sla;
-
 sla_state_t *sla_alloc_state(unsigned long instance_id,
                              unsigned long object_id);
 void sla_free_state(sla_state_t *state);

@@ -23,7 +23,7 @@
 #include "../../../include/broker.h"
 #include "../../../include/comments.h"
 
-int enable_sla = 0;
+extern int enable_sla;
 
 /**
  * Allocates and initializes a new SLA state history entry.
@@ -182,11 +182,11 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 		return -1;
 	}
 
-	rc = asprintf(&query, "SELECT slahistory_id,\n"
-	              "%s AS start_time, %s AS end_time, %s AS acknowledgement_time,\n"
-	              "state, state_type, scheduled_downtime\n"
-	              "FROM %s\n"
-	              "WHERE instance_id = '%lu' AND object_id = '%lu' AND\n"
+	rc = asprintf(&query, "SELECT slahistory_id,"
+	              "%s AS start_time, %s AS end_time, %s AS acknowledgement_time,"
+	              "state, state_type, scheduled_downtime"
+	              "FROM %s"
+	              "WHERE instance_id = '%lu' AND object_id = '%lu' AND"
 	              "((start_time > %s AND start_time < %s) OR"
 	              " (end_time > %s AND end_time < %s) OR"
 	              " (start_time < %s AND end_time > %s) OR"
@@ -398,12 +398,12 @@ int sla_save_state(ido2db_idi *idi, sla_state_t *state) {
 	}
 
 	if (state->persistent) {
-		rc = asprintf(&query, "UPDATE %s\n"
-		              "SET start_time = %s,\n"
-		              "end_time = %s,\n"
-		              "acknowledgement_time = %s,\n"
-		              "state = %d, state_type = %d,\n"
-		              "scheduled_downtime = %d\n"
+		rc = asprintf(&query, "UPDATE %s"
+		              "SET start_time = %s,"
+		              "end_time = %s,"
+		              "acknowledgement_time = %s,"
+		              "state = %d, state_type = %d,"
+		              "scheduled_downtime = %d"
 		              "WHERE slahistory_id = '%lu'",
 		              ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY],
 		              (start_time_str != NULL) ? start_time_str : "NULL",
@@ -420,16 +420,16 @@ int sla_save_state(ido2db_idi *idi, sla_state_t *state) {
 		if (rc < 0)
 			return -1;
 	} else {
-		rc = asprintf(&query, "INSERT INTO %s\n"
-		              "(instance_id,\n"
-		              " start_time,\n"
-		              " end_time,\n"
-		              " acknowledgement_time,\n"
-		              " object_id, state,\n"
-		              " state_type, scheduled_downtime)\n"
-		              "VALUES\n"
-		              "('%lu', %s, %s,\n"
-		              " %s, '%lu', '%d',\n"
+		rc = asprintf(&query, "INSERT INTO %s"
+		              "(instance_id,"
+		              " start_time,"
+		              " end_time,"
+		              " acknowledgement_time,"
+		              " object_id, state,"
+		              " state_type, scheduled_downtime)"
+		              "VALUES"
+		              "('%lu', %s, %s,"
+		              " %s, '%lu', '%d',"
 		              " '%d', '%d')",
 		              ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY],
 		              state->instance_id,
@@ -746,12 +746,12 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 		return -1;
 	}
 
-	rc = asprintf(&query, "SELECT downtimehistory_id,\n"
-	              "%s AS actual_start_time, %s AS actual_end_time,\n"
-	              "%s AS scheduled_start_time, %s AS scheduled_end_time,\n"
-	              "is_fixed, duration\n"
-	              "FROM %s\n"
-	              "WHERE instance_id = '%lu' AND object_id = '%lu' AND\n"
+	rc = asprintf(&query, "SELECT downtimehistory_id,"
+	              "%s AS actual_start_time, %s AS actual_end_time,"
+	              "%s AS scheduled_start_time, %s AS scheduled_end_time,"
+	              "is_fixed, duration"
+	              "FROM %s"
+	              "WHERE instance_id = '%lu' AND object_id = '%lu' AND"
 	              "((actual_start_time > %s AND actual_start_time < %s) OR"
 	              " (actual_end_time > %s AND actual_end_time < %s) OR"
 	              " (actual_start_time < %s AND actual_end_time > %s) OR"
@@ -1044,8 +1044,8 @@ static int sla_query_dependent_services(ido2db_idi *idi,
 
 #ifdef USE_LIBDBI
 
-	rc = asprintf(&query, "SELECT service_object_id\n"
-	              "FROM %s\n"
+	rc = asprintf(&query, "SELECT service_object_id"
+	              "FROM %s"
 	              "WHERE instance_id = '%lu' AND host_object_id = '%lu'",
 	              ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
 	              idi->dbinfo.instance_id, parent_object_id);

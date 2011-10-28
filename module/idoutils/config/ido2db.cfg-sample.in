@@ -296,6 +296,8 @@ debug_readable_timestamp=0
 
 oci_errors_to_syslog=1
 
+
+
 # ORACLE TRACE LEVEL
 # This setting activates oracle session trace for each ido2db connection using trace event
 # Level value must be one of the currently supported values (1,4,8,12) or 0 for off 
@@ -309,7 +311,10 @@ oci_errors_to_syslog=1
 
 oracle_trace_level=0
 
-# SLA feature
-# This setting enables collection of SLA data in the icinga_slahistory table
+
+
+# ENABLE SLA
+# This setting enables collection of SLA data in the slahistory table
+# Values: 0 = disabled, 1 = enabled
 
 enable_sla=0
