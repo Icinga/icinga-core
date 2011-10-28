@@ -14,7 +14,6 @@
 -- -----------------------------------------
 -- set sqlplus parameter
 -- -----------------------------------------
-define ICINGA_VERSION=1.5.0
 
 set sqlprompt "&&_USER@&&_CONNECT_IDENTIFIER SQL>"
 /* drop all objects  if called seperately*/
