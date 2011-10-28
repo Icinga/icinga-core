@@ -33,15 +33,15 @@ int enable_sla = 0;
  * @return a new SLA state history entry
  */
 sla_state_t *sla_alloc_state(unsigned long instance_id,
-    unsigned long object_id) {
+                             unsigned long object_id) {
 	sla_state_t *state;
 
-	state = (sla_state_t *)malloc(sizeof (sla_state_t));
+	state = (sla_state_t *)malloc(sizeof(sla_state_t));
 
 	if (state == NULL)
 		return NULL;
 
-	memset(state, 0, sizeof (sla_state_t));
+	memset(state, 0, sizeof(sla_state_t));
 
 	state->instance_id = instance_id;
 	state->start_time = time(NULL);
@@ -66,13 +66,13 @@ void sla_free_state(sla_state_t *state) {
  * @return a list of SLA state history entries, NULL on failure
  */
 sla_state_list_t *sla_realloc_state_list(sla_state_list_t *ptr,
-    unsigned int count) {
+        unsigned int count) {
 	sla_state_list_t *list;
 	int changed_count, changed_offset;
 
 	list = (sla_state_list_t *)realloc(ptr,
-	    offsetof(sla_state_list_t, states) +
-	    count * sizeof (sla_state_t));
+	                                   offsetof(sla_state_list_t, states) +
+	                                   count * sizeof(sla_state_t));
 
 	if (list == NULL)
 		return NULL;
@@ -88,7 +88,7 @@ sla_state_list_t *sla_realloc_state_list(sla_state_list_t *ptr,
 
 	list->count = count;
 	memset(&(list->states[changed_offset]), 0, changed_count *
-	    sizeof (sla_state_t));
+	       sizeof(sla_state_t));
 
 	return list;
 }
@@ -123,7 +123,7 @@ void sla_free_state_list(sla_state_list_t *list) {
  * @return 0 on success, negative value on failure
  */
 int sla_query_states(ido2db_idi *idi, unsigned long object_id,
-    time_t start_time, time_t end_time, sla_state_list_t **list) {
+                     time_t start_time, time_t end_time, sla_state_list_t **list) {
 	int count, i;
 	sla_state_t *state;
 #ifndef USE_ORACLE
@@ -136,7 +136,7 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 #endif /* !USE_ORACLE */
 
 	if (idi == NULL || idi->dbinfo.connected == IDO_FALSE ||
-	    list == NULL)
+	        list == NULL)
 		return -1;
 
 #ifdef USE_LIBDBI
@@ -153,7 +153,7 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	start_time_sql = ido2db_db_sql_to_timet(idi,
-	    "start_time");
+	                                        "start_time");
 
 	if (start_time_sql == NULL) {
 		free(start_time_str);
@@ -162,7 +162,7 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	end_time_sql = ido2db_db_sql_to_timet(idi,
-	    "end_time");
+	                                      "end_time");
 
 	if (end_time_sql == NULL) {
 		free(start_time_str);
@@ -172,7 +172,7 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	ack_time_sql = ido2db_db_sql_to_timet(idi,
-	    "acknowledgement_time");
+	                                      "acknowledgement_time");
 
 	if (ack_time_sql == NULL) {
 		free(start_time_str);
@@ -183,20 +183,20 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	rc = asprintf(&query, "SELECT slahistory_id,\n"
-	    "%s AS start_time, %s AS end_time, %s AS acknowledgement_time,\n"
-	    "state, state_type, scheduled_downtime\n"
-	    "FROM %s\n"
-	    "WHERE instance_id = '%lu' AND object_id = '%lu' AND\n"
-	    "((start_time > %s AND start_time < %s) OR"
-	    " (end_time > %s AND end_time < %s) OR"
-	    " (start_time < %s AND end_time > %s) OR"
-	    " (end_time IS NULL))",
-	    start_time_sql, end_time_sql, ack_time_sql,
-	    ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY],
-	    idi->dbinfo.instance_id, object_id,
-	    start_time_str, end_time_str,
-	    start_time_str, end_time_str,
-	    start_time_str, end_time_str);
+	              "%s AS start_time, %s AS end_time, %s AS acknowledgement_time,\n"
+	              "state, state_type, scheduled_downtime\n"
+	              "FROM %s\n"
+	              "WHERE instance_id = '%lu' AND object_id = '%lu' AND\n"
+	              "((start_time > %s AND start_time < %s) OR"
+	              " (end_time > %s AND end_time < %s) OR"
+	              " (start_time < %s AND end_time > %s) OR"
+	              " (end_time IS NULL))",
+	              start_time_sql, end_time_sql, ack_time_sql,
+	              ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY],
+	              idi->dbinfo.instance_id, object_id,
+	              start_time_str, end_time_str,
+	              start_time_str, end_time_str,
+	              start_time_str, end_time_str);
 
 	free(start_time_str);
 	free(end_time_str);
@@ -237,19 +237,19 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 		state->object_id = object_id;
 
 		state->slahistory_id = dbi_result_get_ulonglong(
-		    idi->dbinfo.dbi_result, "slahistory_id");
+		                           idi->dbinfo.dbi_result, "slahistory_id");
 		state->start_time = (time_t)dbi_result_get_ulonglong(
-		    idi->dbinfo.dbi_result, "start_time");
+		                        idi->dbinfo.dbi_result, "start_time");
 		state->end_time = (time_t)dbi_result_get_ulonglong(
-		    idi->dbinfo.dbi_result, "end_time");
+		                      idi->dbinfo.dbi_result, "end_time");
 		state->acknowledgement_time = (time_t)dbi_result_get_ulonglong(
-		    idi->dbinfo.dbi_result, "acknowledgement_time");
+		                                  idi->dbinfo.dbi_result, "acknowledgement_time");
 		state->state = dbi_result_get_int(idi->dbinfo.dbi_result,
-		    "state");
+		                                  "state");
 		state->state_type = dbi_result_get_int(idi->dbinfo.dbi_result,
-		    "state_type");
+		                                       "state_type");
 		state->scheduled_downtime = (int)dbi_result_get_int(
-		    idi->dbinfo.dbi_result, "scheduled_downtime");
+		                                idi->dbinfo.dbi_result, "scheduled_downtime");
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -266,38 +266,38 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 	data[3] = end_time;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_select,
-	    MT(":X1"), (uint *)&(data[0]))) {
+	                         MT(":X1"), (uint *) & (data[0]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_select,
-	    MT(":X2"), (uint *)&(data[1]))) {
+	                         MT(":X2"), (uint *) & (data[1]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_select,
-	    MT(":X3"), (uint *)&(data[2]))) {
+	                         MT(":X3"), (uint *) & (data[2]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_select,
-	    MT(":X4"), (uint *)&(data[3]))) {
+	                         MT(":X4"), (uint *) & (data[3]))) {
 		return -1;
 	}
 
 	if (!OCI_Execute(idi->dbinfo.oci_statement_sla_history_select)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-		    "sla_query_states() execute error\n");
+		                      "sla_query_states() execute error\n");
 		return -1;
 	}
 
 	OCI_Commit(idi->dbinfo.oci_connection);
 
 	idi->dbinfo.oci_resultset = OCI_GetResultset(
-	    idi->dbinfo.oci_statement_sla_history_select);
+	                                idi->dbinfo.oci_statement_sla_history_select);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-	    "sla_query_states() query ok\n");
+	                      "sla_query_states() query ok\n");
 
 	count = OCI_GetRowCount(idi->dbinfo.oci_resultset);
 	*list = sla_alloc_state_list(count);
@@ -308,15 +308,15 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 	for (i = 0; i < count; i++) {
 		if (OCI_FetchNext(idi->dbinfo.oci_resultset)) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-			    "sla_query_states() fetchnext not ok\n");
+			                      "sla_query_states() fetchnext not ok\n");
 
 			sla_free_state_list(*list);
 			*list = NULL;
 			return -1;
 		}
-		
+
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-		    "sla_query_states() fetchnext ok\n");
+		                      "sla_query_states() fetchnext ok\n");
 
 		state = &((*list)->states[i]);
 
@@ -325,24 +325,24 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 		state->object_id = object_id;
 
 		state->slahistory_id = OCI_GetUnsignedInt(
-		    idi->dbinfo.oci_resultset, 1);
+		                           idi->dbinfo.oci_resultset, 1);
 		state->start_time = OCI_GetUnsignedInt(
-		    idi->dbinfo.oci_resultset, 2);
+		                        idi->dbinfo.oci_resultset, 2);
 		state->end_time = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset,
-		    3);
+		                                     3);
 		state->acknowledgement_time = OCI_GetUnsignedInt(
-		    idi->dbinfo.oci_resultset, 4);
+		                                  idi->dbinfo.oci_resultset, 4);
 		state->state = OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 5);
 		state->state_type = OCI_GetUnsignedInt(
-		    idi->dbinfo.oci_resultset, 6);
+		                        idi->dbinfo.oci_resultset, 6);
 		state->scheduled_downtime = OCI_GetUnsignedInt(
-		    idi->dbinfo.oci_resultset, 7);
+		                                idi->dbinfo.oci_resultset, 7);
 	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-	    "sla_query_states(instance_id=%lu, object_id=%llu, start_time=%llu"
-	    ", end_time=%llu)\n", idi->dbinfo.instance_id, object_id,
-	    start_time, end_time);
+	                      "sla_query_states(instance_id=%lu, object_id=%llu, start_time=%llu"
+	                      ", end_time=%llu)\n", idi->dbinfo.instance_id, object_id,
+	                      start_time, end_time);
 #endif /* USE_ORACLE */
 
 	return 0;
@@ -374,7 +374,7 @@ int sla_save_state(ido2db_idi *idi, sla_state_t *state) {
 		if (start_time_str == NULL)
 			return -1;
 	}
-	
+
 	if (state->end_time != 0) {
 		end_time_str = ido2db_db_timet_to_sql(idi, state->end_time);
 
@@ -384,10 +384,10 @@ int sla_save_state(ido2db_idi *idi, sla_state_t *state) {
 			return -1;
 		}
 	}
-	
+
 	if (state->acknowledgement_time != 0) {
 		ack_time_str = ido2db_db_timet_to_sql(idi,
-		    state->acknowledgement_time);
+		                                      state->acknowledgement_time);
 
 		if (ack_time_str == NULL) {
 			free(start_time_str);
@@ -399,19 +399,19 @@ int sla_save_state(ido2db_idi *idi, sla_state_t *state) {
 
 	if (state->persistent) {
 		rc = asprintf(&query, "UPDATE %s\n"
-		    "SET start_time = %s,\n"
-		    "end_time = %s,\n"
-		    "acknowledgement_time = %s,\n"
-		    "state = %d, state_type = %d,\n"
-		    "scheduled_downtime = %d\n"
-		    "WHERE slahistory_id = '%lu'",
-		    ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY],
-		    (start_time_str != NULL) ? start_time_str : "NULL",
-		    (end_time_str != NULL) ? end_time_str : "NULL",
-		    (ack_time_str != NULL) ? ack_time_str : "NULL",
-		    state->state, state->state_type,
-		    (int)state->scheduled_downtime,
-		    state->slahistory_id);
+		              "SET start_time = %s,\n"
+		              "end_time = %s,\n"
+		              "acknowledgement_time = %s,\n"
+		              "state = %d, state_type = %d,\n"
+		              "scheduled_downtime = %d\n"
+		              "WHERE slahistory_id = '%lu'",
+		              ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY],
+		              (start_time_str != NULL) ? start_time_str : "NULL",
+		              (end_time_str != NULL) ? end_time_str : "NULL",
+		              (ack_time_str != NULL) ? ack_time_str : "NULL",
+		              state->state, state->state_type,
+		              (int)state->scheduled_downtime,
+		              state->slahistory_id);
 
 		free(start_time_str);
 		free(end_time_str);
@@ -421,23 +421,23 @@ int sla_save_state(ido2db_idi *idi, sla_state_t *state) {
 			return -1;
 	} else {
 		rc = asprintf(&query, "INSERT INTO %s\n"
-		    "(instance_id,\n"
-		    " start_time,\n"
-		    " end_time,\n"
-		    " acknowledgement_time,\n"
-		    " object_id, state,\n"
-		    " state_type, scheduled_downtime)\n"
-		    "VALUES\n"
-		    "('%lu', %s, %s,\n"
-		    " %s, '%lu', '%d',\n"
-		    " '%d', '%d')",
-		    ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY],
-		    state->instance_id,
-		    (start_time_str != NULL) ? start_time_str : "NULL",
-		    (end_time_str != NULL) ? end_time_str : "NULL",
-		    (ack_time_str != NULL) ? ack_time_str : "NULL",
-		    state->object_id, state->state,
-		    state->state_type, (int)state->scheduled_downtime);
+		              "(instance_id,\n"
+		              " start_time,\n"
+		              " end_time,\n"
+		              " acknowledgement_time,\n"
+		              " object_id, state,\n"
+		              " state_type, scheduled_downtime)\n"
+		              "VALUES\n"
+		              "('%lu', %s, %s,\n"
+		              " %s, '%lu', '%d',\n"
+		              " '%d', '%d')",
+		              ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY],
+		              state->instance_id,
+		              (start_time_str != NULL) ? start_time_str : "NULL",
+		              (end_time_str != NULL) ? end_time_str : "NULL",
+		              (ack_time_str != NULL) ? ack_time_str : "NULL",
+		              state->object_id, state->state,
+		              state->state_type, (int)state->scheduled_downtime);
 
 		free(start_time_str);
 		free(end_time_str);
@@ -474,55 +474,55 @@ int sla_save_state(ido2db_idi *idi, sla_state_t *state) {
 	data[6] = state->state;
 	data[7] = state->state_type;
 	data[8] = state->scheduled_downtime;
-	
+
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_merge,
-	    MT(":X1"), (uint *)&(data[0]))) {
+	                         MT(":X1"), (uint *) & (data[0]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_merge,
-	    MT(":X2"), (uint *)&(data[1]))) {
+	                         MT(":X2"), (uint *) & (data[1]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_merge,
-	    MT(":X3"), (uint *)&(data[2]))) {
+	                         MT(":X3"), (uint *) & (data[2]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_merge,
-	    MT(":X4"), (uint *)&(data[3]))) {
+	                         MT(":X4"), (uint *) & (data[3]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_merge,
-	    MT(":X5"), (uint *)&(data[4]))) {
+	                         MT(":X5"), (uint *) & (data[4]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_merge,
-	    MT(":X6"), (uint *)&(data[5]))) {
+	                         MT(":X6"), (uint *) & (data[5]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_merge,
-	    MT(":X7"), (uint *)&(data[6]))) {
+	                         MT(":X7"), (uint *) & (data[6]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_merge,
-	    MT(":X8"), (uint *)&(data[7]))) {
+	                         MT(":X8"), (uint *) & (data[7]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_merge,
-	    MT(":X9"), (uint *)&(data[8]))) {
+	                         MT(":X9"), (uint *) & (data[8]))) {
 		return -1;
 	}
 
 	if (!OCI_Execute(idi->dbinfo.oci_statement_sla_history_merge)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-		    "sla_save_state() execute error\n");
+		                      "sla_save_state() execute error\n");
 		return -1;
 	}
 
@@ -560,8 +560,8 @@ int sla_delete_state(ido2db_idi *idi, sla_state_t *state) {
 
 #ifdef USE_LIBDBI
 	rc = asprintf(&query, "DELETE FROM %s WHERE slahistory_id = '%lu'",
-	    ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY],
-	    state->slahistory_id);
+	              ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY],
+	              state->slahistory_id);
 
 	if (rc < 0)
 		return -1;
@@ -584,13 +584,13 @@ int sla_delete_state(ido2db_idi *idi, sla_state_t *state) {
 	data[0] = state->slahistory_id;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_history_delete,
-	    MT(":X1"), (uint *)&(data[0]))) {
+	                         MT(":X1"), (uint *) & (data[0]))) {
 		return -1;
 	}
 
 	if (!OCI_Execute(idi->dbinfo.oci_statement_sla_history_delete)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-		    "sla_delete_state() execute error\n");
+		                      "sla_delete_state() execute error\n");
 		return -1;
 	}
 
@@ -610,15 +610,15 @@ int sla_delete_state(ido2db_idi *idi, sla_state_t *state) {
  * @return a new SLA state history entry
  */
 sla_downtime_t *sla_alloc_downtime(unsigned long instance_id,
-    unsigned long object_id) {
+                                   unsigned long object_id) {
 	sla_downtime_t *downtime;
 
-	downtime = (sla_downtime_t *)malloc(sizeof (sla_downtime_t));
+	downtime = (sla_downtime_t *)malloc(sizeof(sla_downtime_t));
 
 	if (downtime == NULL)
 		return NULL;
 
-	memset(downtime, 0, sizeof (sla_downtime_t));
+	memset(downtime, 0, sizeof(sla_downtime_t));
 
 	downtime->instance_id = instance_id;
 	downtime->object_id = object_id;
@@ -644,14 +644,14 @@ sla_downtime_list_t *sla_alloc_downtime_list(unsigned int count) {
 	sla_downtime_list_t *list;
 
 	list = (sla_downtime_list_t *)malloc(
-	    offsetof(sla_downtime_list_t, downtimes) +
-	    count * sizeof (sla_downtime_t));
+	           offsetof(sla_downtime_list_t, downtimes) +
+	           count * sizeof(sla_downtime_t));
 
 	if (list == NULL)
 		return NULL;
 
 	list->count = count;
-	memset(&(list->downtimes), 0, count * sizeof (sla_downtime_t));
+	memset(&(list->downtimes), 0, count * sizeof(sla_downtime_t));
 
 	return list;
 }
@@ -674,7 +674,7 @@ void sla_free_downtime_list(sla_downtime_list_t *list) {
  * @return 1 if the host/service had scheduled downtime, 0 otherwise
  */
 int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
-    time_t start_time, time_t end_time, sla_downtime_list_t **list) {
+                       time_t start_time, time_t end_time, sla_downtime_list_t **list) {
 	int count, i;
 	sla_downtime_t *downtime;
 #ifndef USE_ORACLE
@@ -688,7 +688,7 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 #endif /* USE_ORACLE */
 
 	if (idi == NULL || idi->dbinfo.connected == IDO_FALSE ||
-	    list == NULL)
+	        list == NULL)
 		return -1;
 
 #ifdef USE_LIBDBI
@@ -705,7 +705,7 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	scheduled_start_sql = ido2db_db_sql_to_timet(idi,
-	    "scheduled_start_time");
+	                      "scheduled_start_time");
 
 	if (scheduled_start_sql == NULL) {
 		free(start_time_str);
@@ -714,7 +714,7 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	scheduled_end_sql = ido2db_db_sql_to_timet(idi,
-	    "scheduled_end_time");
+	                    "scheduled_end_time");
 
 	if (scheduled_end_sql == NULL) {
 		free(start_time_str);
@@ -724,7 +724,7 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	actual_start_sql = ido2db_db_sql_to_timet(idi,
-	    "actual_start_time");
+	                   "actual_start_time");
 
 	if (actual_start_sql == NULL) {
 		free(start_time_str);
@@ -735,7 +735,7 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	actual_end_sql = ido2db_db_sql_to_timet(idi,
-	    "actual_end_time");
+	                                        "actual_end_time");
 
 	if (actual_end_sql == NULL) {
 		free(start_time_str);
@@ -747,22 +747,22 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	rc = asprintf(&query, "SELECT downtimehistory_id,\n"
-	    "%s AS actual_start_time, %s AS actual_end_time,\n"
-	    "%s AS scheduled_start_time, %s AS scheduled_end_time,\n"
-	    "is_fixed, duration\n"
-	    "FROM %s\n"
-	    "WHERE instance_id = '%lu' AND object_id = '%lu' AND\n"
-	    "((actual_start_time > %s AND actual_start_time < %s) OR"
-	    " (actual_end_time > %s AND actual_end_time < %s) OR"
-	    " (actual_start_time < %s AND actual_end_time > %s) OR"
-	    " (actual_end_time IS NULL))",
-	    actual_start_sql, actual_end_sql,
-	    scheduled_start_sql, scheduled_end_sql,
-	    ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY],
-	    idi->dbinfo.instance_id, object_id,
-	    start_time_str, end_time_str,
-	    start_time_str, end_time_str,
-	    start_time_str, end_time_str);
+	              "%s AS actual_start_time, %s AS actual_end_time,\n"
+	              "%s AS scheduled_start_time, %s AS scheduled_end_time,\n"
+	              "is_fixed, duration\n"
+	              "FROM %s\n"
+	              "WHERE instance_id = '%lu' AND object_id = '%lu' AND\n"
+	              "((actual_start_time > %s AND actual_start_time < %s) OR"
+	              " (actual_end_time > %s AND actual_end_time < %s) OR"
+	              " (actual_start_time < %s AND actual_end_time > %s) OR"
+	              " (actual_end_time IS NULL))",
+	              actual_start_sql, actual_end_sql,
+	              scheduled_start_sql, scheduled_end_sql,
+	              ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY],
+	              idi->dbinfo.instance_id, object_id,
+	              start_time_str, end_time_str,
+	              start_time_str, end_time_str,
+	              start_time_str, end_time_str);
 
 	free(start_time_str);
 	free(end_time_str);
@@ -803,19 +803,19 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 		downtime->object_id = object_id;
 
 		downtime->downtimehistory_id = dbi_result_get_ulonglong(
-		    idi->dbinfo.dbi_result, "downtimehistory_id");
+		                                   idi->dbinfo.dbi_result, "downtimehistory_id");
 		downtime->is_fixed = dbi_result_get_int(
-		    idi->dbinfo.dbi_result, "is_fixed");
+		                         idi->dbinfo.dbi_result, "is_fixed");
 		downtime->duration = dbi_result_get_int(
-		    idi->dbinfo.dbi_result, "duration");
+		                         idi->dbinfo.dbi_result, "duration");
 		downtime->actual_start_time = (time_t)dbi_result_get_ulonglong(
-		    idi->dbinfo.dbi_result, "actual_start_time");
+		                                  idi->dbinfo.dbi_result, "actual_start_time");
 		downtime->actual_end_time = (time_t)dbi_result_get_ulonglong(
-		    idi->dbinfo.dbi_result, "actual_end_time");
+		                                idi->dbinfo.dbi_result, "actual_end_time");
 		downtime->scheduled_start_time = (time_t)dbi_result_get_ulonglong(
-		    idi->dbinfo.dbi_result, "scheduled_start_time");
+		                                     idi->dbinfo.dbi_result, "scheduled_start_time");
 		downtime->scheduled_end_time = (time_t)dbi_result_get_ulonglong(
-		    idi->dbinfo.dbi_result, "scheduled_end_time");
+		                                   idi->dbinfo.dbi_result, "scheduled_end_time");
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -832,38 +832,38 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	data[3] = end_time;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_downtime_select,
-	    MT(":X1"), (uint *)&(data[0]))) {
+	                         MT(":X1"), (uint *) & (data[0]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_downtime_select,
-	    MT(":X2"), (uint *)&(data[1]))) {
+	                         MT(":X2"), (uint *) & (data[1]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_downtime_select,
-	    MT(":X3"), (uint *)&(data[2]))) {
+	                         MT(":X3"), (uint *) & (data[2]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_downtime_select,
-	    MT(":X4"), (uint *)&(data[3]))) {
+	                         MT(":X4"), (uint *) & (data[3]))) {
 		return -1;
 	}
 
 	if (!OCI_Execute(idi->dbinfo.oci_statement_sla_downtime_select)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-		    "sla_query_downtime() execute error\n");
+		                      "sla_query_downtime() execute error\n");
 		return -1;
 	}
 
 	OCI_Commit(idi->dbinfo.oci_connection);
 
 	idi->dbinfo.oci_resultset = OCI_GetResultset(
-	    idi->dbinfo.oci_statement_sla_services_select);
+	                                idi->dbinfo.oci_statement_sla_services_select);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-	    "sla_query_downtime() query ok\n");
+	                      "sla_query_downtime() query ok\n");
 
 	count = OCI_GetRowCount(idi->dbinfo.oci_resultset);
 	*list = sla_alloc_downtime_list(count);
@@ -874,15 +874,15 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	for (i = 0; i < count; i++) {
 		if (OCI_FetchNext(idi->dbinfo.oci_resultset)) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-			    "sla_query_downtime() fetchnext not ok\n");
+			                      "sla_query_downtime() fetchnext not ok\n");
 
 			sla_free_downtime_list(*list);
 			*list = NULL;
 			return -1;
 		}
-		
+
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-		    "sla_query_downtime() fetchnext ok\n");
+		                      "sla_query_downtime() fetchnext ok\n");
 
 		downtime = &((*list)->downtimes[i]);
 
@@ -906,9 +906,9 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-	    "sla_query_downtime(instance_id=%lu, object_id=%llu,"
-	    " start_time=%llu, end_time=%llu)\n", idi->dbinfo.instance_id,
-	    object_id, start_time, end_time);
+	                      "sla_query_downtime(instance_id=%lu, object_id=%llu,"
+	                      " start_time=%llu, end_time=%llu)\n", idi->dbinfo.instance_id,
+	                      object_id, start_time, end_time);
 #endif /* USE_ORACLE */
 
 	return 0;
@@ -923,7 +923,7 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
  * @return 0 on success, negative value on failure
  */
 int sla_apply_downtime(ido2db_idi *idi, sla_state_list_t **state_list_ptr,
-    sla_downtime_list_t *downtime_list) {
+                       sla_downtime_list_t *downtime_list) {
 	sla_state_list_t *state_list = *state_list_ptr;
 	sla_state_t *state, *clone_state;
 	sla_downtime_t *downtime;
@@ -945,7 +945,7 @@ int sla_apply_downtime(ido2db_idi *idi, sla_state_list_t **state_list_ptr,
 			 * isn't over already.
 			 */
 			if (downtime->actual_start_time == 0 ||
-			    downtime->actual_end_time == 0) {
+			        downtime->actual_end_time == 0) {
 				continue;
 			}
 
@@ -955,7 +955,7 @@ int sla_apply_downtime(ido2db_idi *idi, sla_state_list_t **state_list_ptr,
 			} else {
 				dt_start_time = downtime->actual_start_time;
 				dt_end_time = dt_start_time +
-				    downtime->duration;
+				              downtime->duration;
 			}
 
 			/*
@@ -963,13 +963,13 @@ int sla_apply_downtime(ido2db_idi *idi, sla_state_list_t **state_list_ptr,
 			 * time interval
 			 */
 			if (dt_start_time > state->end_time ||
-			    dt_end_time < state->start_time) {
+			        dt_end_time < state->start_time) {
 				continue;
 			}
 
 			/* is the state fully contained in the downtime? */
 			if (dt_start_time <= state->start_time &&
-			    dt_end_time >= state->end_time) {
+			        dt_end_time >= state->end_time) {
 				state->scheduled_downtime = IDO_TRUE;
 				sla_save_state(idi, state);
 
@@ -977,7 +977,7 @@ int sla_apply_downtime(ido2db_idi *idi, sla_state_list_t **state_list_ptr,
 			}
 
 			state_list = sla_realloc_state_list(state_list,
-			    state_list->count + 1);
+			                                    state_list->count + 1);
 
 			if (state_list == NULL)
 				return -1;
@@ -988,7 +988,7 @@ int sla_apply_downtime(ido2db_idi *idi, sla_state_list_t **state_list_ptr,
 			clone_state =
 			    &(state_list->states[state_list->count - 1]);
 
-			memcpy(clone_state, state, sizeof (sla_state_t));
+			memcpy(clone_state, state, sizeof(sla_state_t));
 			clone_state->slahistory_id = 0;
 			clone_state->persistent = IDO_FALSE;
 
@@ -1029,7 +1029,7 @@ int sla_apply_downtime(ido2db_idi *idi, sla_state_list_t **state_list_ptr,
  * @return the number of services or a negative value in case of an error
  */
 static int sla_query_dependent_services(ido2db_idi *idi,
-    unsigned long parent_object_id, int **service_object_ids) {
+                                        unsigned long parent_object_id, int **service_object_ids) {
 	int count, i;
 #ifndef USE_ORACLE
 	char *query;
@@ -1039,16 +1039,16 @@ static int sla_query_dependent_services(ido2db_idi *idi,
 #endif /* !USE_ORACLE */
 
 	if (idi == NULL || idi->dbinfo.connected == IDO_FALSE ||
-	    service_object_ids == NULL)
+	        service_object_ids == NULL)
 		return -1;
 
 #ifdef USE_LIBDBI
 
 	rc = asprintf(&query, "SELECT service_object_id\n"
-	    "FROM %s\n"
-	    "WHERE instance_id = '%lu' AND host_object_id = '%lu'",
-	    ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
-	    idi->dbinfo.instance_id, parent_object_id);
+	              "FROM %s\n"
+	              "WHERE instance_id = '%lu' AND host_object_id = '%lu'",
+	              ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
+	              idi->dbinfo.instance_id, parent_object_id);
 
 	if (rc < 0) {
 		*service_object_ids = NULL;
@@ -1083,7 +1083,7 @@ static int sla_query_dependent_services(ido2db_idi *idi,
 		}
 
 		(*service_object_ids)[i] = dbi_result_get_ulonglong(
-			idi->dbinfo.dbi_result, "service_object_id");
+		                               idi->dbinfo.dbi_result, "service_object_id");
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -1098,18 +1098,18 @@ static int sla_query_dependent_services(ido2db_idi *idi,
 	data[1] = parent_object_id;
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_services_select,
-	    MT(":X1"), (uint *)&(data[0]))) {
+	                         MT(":X1"), (uint *) & (data[0]))) {
 		return -1;
 	}
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_sla_services_select,
-	    MT(":X2"), (uint *)&(data[1]))) {
+	                         MT(":X2"), (uint *) & (data[1]))) {
 		return -1;
 	}
 
 	if (!OCI_Execute(idi->dbinfo.oci_statement_sla_services_select)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-		    "sla_query_dependent_services() execute error\n");
+		                      "sla_query_dependent_services() execute error\n");
 		return -1;
 	}
 
@@ -1119,7 +1119,7 @@ static int sla_query_dependent_services(ido2db_idi *idi,
 	    OCI_GetResultset(idi->dbinfo.oci_statement_sla_services_select);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-	    "sla_query_dependent_services() query ok\n");
+	                      "sla_query_dependent_services() query ok\n");
 
 	count = OCI_GetRowCount(idi->dbinfo.oci_resultset);
 	*service_object_ids = malloc(count * sizeof(int));
@@ -1130,25 +1130,25 @@ static int sla_query_dependent_services(ido2db_idi *idi,
 	for (i = 0; i < count; i++) {
 		if (OCI_FetchNext(idi->dbinfo.oci_resultset)) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-			    "sla_query_dependent_services()"
-			    " fetchnext not ok\n");
+			                      "sla_query_dependent_services()"
+			                      " fetchnext not ok\n");
 
 			free(*service_object_ids);
 			*service_object_ids = NULL;
 			return -1;
 		}
-		
+
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-		    "sla_query_dependent_services() fetchnext ok\n");
+		                      "sla_query_dependent_services() fetchnext ok\n");
 
 		(*service_object_ids)[i] =
 		    OCI_GetUnsignedInt(idi->dbinfo.oci_resultset, 1);
 	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-	    "sla_query_dependent_services(instance_id=%lu,"
-	    " parent_object_id=%llu)\n", idi->dbinfo.instance_id,
-	    parent_object_id);
+	                      "sla_query_dependent_services(instance_id=%lu,"
+	                      " parent_object_id=%llu)\n", idi->dbinfo.instance_id,
+	                      parent_object_id);
 #endif /* USE_ORACLE */
 
 	return count;
@@ -1160,8 +1160,8 @@ static int sla_query_dependent_services(ido2db_idi *idi,
  * @return 0 on success, negative value on failure
  */
 static int sla_process_statechange_one(ido2db_idi *idi, unsigned long object_id,
-    time_t start_time, time_t end_time, const int *pstate_value,
-    const int *pstate_type, const int *pdowntime) {
+                                       time_t start_time, time_t end_time, const int *pstate_value,
+                                       const int *pstate_type, const int *pdowntime) {
 	sla_state_t *state, *previous_state, *new_state;
 	sla_state_list_t *state_list;
 	sla_downtime_list_t *downtime_list;
@@ -1169,10 +1169,10 @@ static int sla_process_statechange_one(ido2db_idi *idi, unsigned long object_id,
 	int rc, i;
 
 	fprintf(stderr, "sla_process_statechange(%p, %lu, %lu, %lu, %p, %p)\n",
-	    idi, object_id, start_time, end_time, pstate_value, pstate_type);
+	        idi, object_id, start_time, end_time, pstate_value, pstate_type);
 
 	rc = sla_query_states(idi, object_id, start_time, end_time,
-	    &state_list);
+	                      &state_list);
 
 	fprintf(stderr, "sla_query_states(): %d\n", rc);
 
@@ -1182,7 +1182,7 @@ static int sla_process_statechange_one(ido2db_idi *idi, unsigned long object_id,
 	/* there should only ever be at most one result */
 	if (state_list->count > 1)
 		fprintf(stderr, "Error: more than one state entry with "
-		    "end_time set to NULL.");
+		        "end_time set to NULL.");
 
 	previous_state = NULL;
 
@@ -1192,7 +1192,7 @@ static int sla_process_statechange_one(ido2db_idi *idi, unsigned long object_id,
 		state = &(state_list->states[i]);
 
 		if (state->end_time == 0 && (previous_state == NULL ||
-		    previous_state->start_time > state->state))
+		                             previous_state->start_time > state->state))
 			previous_state = state;
 
 		if (state->start_time < earliest_start_time)
@@ -1200,12 +1200,12 @@ static int sla_process_statechange_one(ido2db_idi *idi, unsigned long object_id,
 
 		/* Only update end time when the state has changed. */
 		if ((pstate_value != NULL && pstate_type != NULL) ||
-		    pdowntime != NULL)
+		        pdowntime != NULL)
 			state->end_time = end_time;
 	}
 
 	rc = sla_query_downtime(idi, object_id, earliest_start_time, end_time,
-	    &downtime_list);
+	                        &downtime_list);
 
 	if (rc >= 0) {
 		/*
@@ -1231,7 +1231,7 @@ static int sla_process_statechange_one(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	if (previous_state == NULL &&
-	    (pstate_value == NULL || pstate_value == NULL))
+	        (pstate_value == NULL || pstate_value == NULL))
 		return -1;
 
 	new_state->start_time = end_time;
@@ -1274,8 +1274,8 @@ static int sla_process_statechange_one(ido2db_idi *idi, unsigned long object_id,
  * @return 0 on success, negative value on failure
  */
 int sla_process_statechange(ido2db_idi *idi, unsigned long object_id,
-    time_t start_time, time_t end_time, const int *pstate_value,
-    const int *pstate_type, const int *pdowntime) {
+                            time_t start_time, time_t end_time, const int *pstate_value,
+                            const int *pstate_type, const int *pdowntime) {
 	int *dependent_services = NULL;
 	int rc, i, service_state;
 	int *pservice_state = NULL;
@@ -1291,7 +1291,7 @@ int sla_process_statechange(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	rc = sla_query_dependent_services(idi, object_id,
-	    &dependent_services);
+	                                  &dependent_services);
 
 	if (rc >= 0) {
 		for (i = 0; i < rc; i++) {
@@ -1302,15 +1302,15 @@ int sla_process_statechange(ido2db_idi *idi, unsigned long object_id,
 			 * event.
 			 */
 			(void) sla_process_statechange_one(idi,
-			    dependent_services[i], start_time, end_time,
-			    pservice_state, pstate_type, pdowntime);
+			                                   dependent_services[i], start_time, end_time,
+			                                   pservice_state, pstate_type, pdowntime);
 		}
 
 		free(dependent_services);
 	}
 
 	return sla_process_statechange_one(idi, object_id, start_time, end_time,
-	    pstate_value, pstate_type, pdowntime);
+	                                   pstate_value, pstate_type, pdowntime);
 
 }
 
@@ -1319,16 +1319,16 @@ int sla_process_statechange(ido2db_idi *idi, unsigned long object_id,
  * @return 0 on success, negative value on failure
  */
 int sla_process_acknowledgement(ido2db_idi *idi, unsigned long object_id,
-    time_t state_time, int is_acknowledged) {
+                                time_t state_time, int is_acknowledged) {
 	sla_state_t *state;
 	sla_state_list_t *state_list;
 	int rc, i;
 
 	fprintf(stderr, "sla_process_acknowledgement(%p, %lu, %lu, %d)\n",
-	    idi, object_id, state_time, is_acknowledged);
+	        idi, object_id, state_time, is_acknowledged);
 
 	rc = sla_query_states(idi, object_id, state_time, state_time,
-	    &state_list);
+	                      &state_list);
 
 	fprintf(stderr, "sla_query_states(): %d\n", rc);
 
@@ -1340,7 +1340,7 @@ int sla_process_acknowledgement(ido2db_idi *idi, unsigned long object_id,
 
 		if (is_acknowledged) {
 			if ((state_time < state->acknowledgement_time) ||
-			    (state->acknowledgement_time == 0))
+			        (state->acknowledgement_time == 0))
 				state->acknowledgement_time = state_time;
 		} else {
 			state->acknowledgement_time = 0;
@@ -1359,17 +1359,17 @@ int sla_process_acknowledgement(ido2db_idi *idi, unsigned long object_id,
  * @return 0 on success, negative value on failure
  */
 int sla_process_downtime(ido2db_idi *idi, unsigned long object_id,
-    time_t state_time, int event_type) {
+                         time_t state_time, int event_type) {
 	int downtime;
 
 	downtime = (event_type == NEBTYPE_DOWNTIME_START);
 
 	return sla_process_statechange(idi, object_id, state_time, state_time,
-	    NULL, NULL, &downtime);
+	                               NULL, NULL, &downtime);
 }
 
 int sla_process_downtime_history(ido2db_idi *idi, unsigned long object_id,
-    time_t start_time, time_t end_time) {
+                                 time_t start_time, time_t end_time) {
 	return sla_process_statechange_one(idi, object_id, start_time, end_time,
-	    NULL, NULL, NULL);
+	                                   NULL, NULL, NULL);
 }
