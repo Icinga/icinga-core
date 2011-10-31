@@ -86,6 +86,7 @@ int ido2db_debug_verbosity = IDO2DB_DEBUGV_BASIC;
 FILE *ido2db_debug_file_fp = NULL;
 unsigned long ido2db_max_debug_file_size = 0L;
 
+int enable_sla = IDO_FALSE;
 int ido2db_debug_readable_timestamp = IDO_FALSE;
 
 int stop_signal_detected = IDO_FALSE;
@@ -584,8 +585,8 @@ int ido2db_process_config_var(char *arg) {
 		ido2db_db_settings.oci_errors_to_syslog = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "oracle_trace_level")) {
 		ido2db_db_settings.oracle_trace_level = atoi(val);
-	} else if (strcmp(var, "enable_sla") == 0) {
-		enable_sla = strtoul(val, NULL, 0);
+	} else if (!strcmp(var, "enable_sla")) {
+		enable_sla = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "debug_readable_timestamp")) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	}

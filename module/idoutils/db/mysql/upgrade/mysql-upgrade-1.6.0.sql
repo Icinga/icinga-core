@@ -11,7 +11,7 @@
 -- add end_time for acknowledgements
 -- -----------------------------------------
 
-ALTER TABLE icinga_acknowledgements ADD end_time datetime default '0000-00-00 00:00:00';
+ALTER TABLE icinga_acknowledgements ADD end_time timestamp default '0000-00-00 00:00:00';
 
 -- -----------------------------------------
 -- Table structure for table icinga_slahistory
@@ -20,9 +20,9 @@ ALTER TABLE icinga_acknowledgements ADD end_time datetime default '0000-00-00 00
 CREATE TABLE IF NOT EXISTS icinga_slahistory (
   slahistory_id serial,
   instance_id bigint unsigned default 0,
-  start_time datetime default '0000-00-00 00:00:00',
-  end_time datetime default '0000-00-00 00:00:00',
-  acknowledgement_time datetime default NULL,
+  start_time timestamp default '0000-00-00 00:00:00',
+  end_time timestamp default '0000-00-00 00:00:00',
+  acknowledgement_time timestamp default NULL,
   object_id bigint unsigned default 0,
   state smallint default 0,
   state_type smallint default '0',
@@ -48,6 +48,92 @@ CREATE INDEX notification_idx ON icinga_contactnotificationmethods(contactnotifi
 CREATE INDEX command_object_idx ON icinga_commands(object_id);                         
 CREATE INDEX services_combined_idx ON icinga_services(service_object_id, host_object_id);
 
+
+-- --------------------------------------------------------
+-- move datetimes to timestamps, storing all in UTC
+-- implements #1954
+-- https://dev.icinga.org/issues/1954
+-- --------------------------------------------------------
+
+alter table  icinga_acknowledgements  modify  entry_time  timestamp default 0;
+alter table  icinga_commenthistory  modify  entry_time  timestamp default 0;
+alter table  icinga_commenthistory  modify  comment_time  timestamp default 0;
+alter table  icinga_commenthistory  modify  expiration_time  timestamp default 0;
+alter table  icinga_commenthistory  modify  deletion_time  timestamp default 0;
+alter table  icinga_comments  modify  entry_time  timestamp default 0;
+alter table  icinga_comments  modify  comment_time  timestamp default 0;
+alter table  icinga_comments  modify  expiration_time  timestamp default 0;
+alter table  icinga_conninfo  modify  connect_time  timestamp default 0;
+alter table  icinga_conninfo  modify  disconnect_time  timestamp default 0;
+alter table  icinga_conninfo  modify  last_checkin_time  timestamp default 0;
+alter table  icinga_conninfo  modify  data_start_time  timestamp default 0;
+alter table  icinga_conninfo  modify  data_end_time  timestamp default 0;
+alter table  icinga_contactnotificationmethods  modify  start_time  timestamp default 0;
+alter table  icinga_contactnotificationmethods  modify  end_time  timestamp default 0;
+alter table  icinga_contactnotifications  modify  start_time  timestamp default 0;
+alter table  icinga_contactnotifications  modify  end_time  timestamp default 0;
+alter table  icinga_contactstatus  modify  status_update_time  timestamp default 0;
+alter table  icinga_contactstatus  modify  last_host_notification  timestamp default 0;
+alter table  icinga_contactstatus  modify  last_service_notification  timestamp default 0;
+alter table  icinga_customvariablestatus  modify  status_update_time  timestamp default 0;
+alter table  icinga_downtimehistory  modify  entry_time  timestamp default 0;
+alter table  icinga_downtimehistory  modify  scheduled_start_time  timestamp default 0;
+alter table  icinga_downtimehistory  modify  scheduled_end_time  timestamp default 0;
+alter table  icinga_downtimehistory  modify  actual_start_time  timestamp default 0;
+alter table  icinga_downtimehistory  modify  actual_end_time  timestamp default 0;
+alter table  icinga_eventhandlers  modify  start_time  timestamp default 0;
+alter table  icinga_eventhandlers  modify  end_time  timestamp default 0;
+alter table  icinga_externalcommands  modify  entry_time  timestamp default 0;
+alter table  icinga_flappinghistory  modify  event_time  timestamp default 0;
+alter table  icinga_flappinghistory  modify  comment_time  timestamp default 0;
+alter table  icinga_hostchecks  modify  start_time  timestamp default 0;
+alter table  icinga_hostchecks  modify  end_time  timestamp default 0;
+alter table  icinga_hoststatus  modify  status_update_time  timestamp default 0;
+alter table  icinga_hoststatus  modify  last_check  timestamp default 0;
+alter table  icinga_hoststatus  modify  next_check  timestamp default 0;
+alter table  icinga_hoststatus  modify  last_state_change  timestamp default 0;
+alter table  icinga_hoststatus  modify  last_hard_state_change  timestamp default 0;
+alter table  icinga_hoststatus  modify  last_time_up  timestamp default 0;
+alter table  icinga_hoststatus  modify  last_time_down  timestamp default 0;
+alter table  icinga_hoststatus  modify  last_time_unreachable  timestamp default 0;
+alter table  icinga_hoststatus  modify  last_notification  timestamp default 0;
+alter table  icinga_hoststatus  modify  next_notification  timestamp default 0;
+alter table  icinga_logentries  modify  logentry_time  timestamp default 0;
+alter table  icinga_logentries  modify  entry_time  timestamp default 0;
+alter table  icinga_notifications  modify  start_time  timestamp default 0;
+alter table  icinga_notifications  modify  end_time  timestamp default 0;
+alter table  icinga_processevents  modify  event_time  timestamp default 0;
+alter table  icinga_programstatus  modify  status_update_time  timestamp default 0;
+alter table  icinga_programstatus  modify  program_start_time  timestamp default 0;
+alter table  icinga_programstatus  modify  program_end_time  timestamp default 0;
+alter table  icinga_programstatus  modify  last_command_check  timestamp default 0;
+alter table  icinga_programstatus  modify  last_log_rotation  timestamp default 0;
+alter table  icinga_scheduleddowntime  modify  entry_time  timestamp default 0;
+alter table  icinga_scheduleddowntime  modify  scheduled_start_time  timestamp default 0;
+alter table  icinga_scheduleddowntime  modify  scheduled_end_time  timestamp default 0;
+alter table  icinga_scheduleddowntime  modify  actual_start_time  timestamp default 0;
+alter table  icinga_servicechecks  modify  start_time  timestamp default 0;
+alter table  icinga_servicechecks  modify  end_time  timestamp default 0;
+alter table  icinga_servicestatus  modify  status_update_time  timestamp default 0;
+alter table  icinga_servicestatus  modify  last_check  timestamp default 0;
+alter table  icinga_servicestatus  modify  next_check  timestamp default 0;
+alter table  icinga_servicestatus  modify  last_state_change  timestamp default 0;
+alter table  icinga_servicestatus  modify  last_hard_state_change  timestamp default 0;
+alter table  icinga_servicestatus  modify  last_time_ok  timestamp default 0;
+alter table  icinga_servicestatus  modify  last_time_warning  timestamp default 0;
+alter table  icinga_servicestatus  modify  last_time_unknown  timestamp default 0;
+alter table  icinga_servicestatus  modify  last_time_critical  timestamp default 0;
+alter table  icinga_servicestatus  modify  last_notification  timestamp default 0;
+alter table  icinga_servicestatus  modify  next_notification  timestamp default 0;
+alter table  icinga_statehistory  modify  state_time  timestamp default 0;
+alter table  icinga_systemcommands  modify  start_time  timestamp default 0;
+alter table  icinga_systemcommands  modify  end_time  timestamp default 0;
+alter table  icinga_timedeventqueue  modify  queued_time  timestamp default 0;
+alter table  icinga_timedeventqueue  modify  scheduled_time  timestamp default 0;
+alter table  icinga_timedevents  modify  queued_time  timestamp default 0;
+alter table  icinga_timedevents  modify  event_time  timestamp default 0;
+alter table  icinga_timedevents  modify  scheduled_time  timestamp default 0;
+alter table  icinga_timedevents  modify  deletion_time  timestamp default 0;
 
 -- -----------------------------------------
 -- update dbversion
