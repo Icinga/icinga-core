@@ -204,7 +204,8 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 	free(end_time_sql);
 	free(ack_time_sql);
 
-	fprintf(stderr, "query: %s\n", query);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "sla_query_states(): %s\n",
+	                      query);
 
 	rc = ido2db_db_query(idi, query);
 
@@ -340,9 +341,10 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-	                      "sla_query_states(instance_id=%lu, object_id=%llu, start_time=%llu"
-	                      ", end_time=%llu)\n", idi->dbinfo.instance_id, object_id,
-	                      start_time, end_time);
+	                      "sla_query_states(instance_id=%lu,"
+	                      " object_id=%llu, start_time=%llu"
+	                      ", end_time=%llu)\n", idi->dbinfo.instance_id,
+	                      object_id, start_time, end_time);
 #endif /* USE_ORACLE */
 
 	return 0;
@@ -771,7 +773,8 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	free(scheduled_start_sql);
 	free(scheduled_end_sql);
 
-	fprintf(stderr, "query: %s\n", query);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2,
+	                      "sla_query_downtime(): %s\n", query);
 
 	rc = ido2db_db_query(idi, query);
 
@@ -1055,7 +1058,8 @@ static int sla_query_dependent_services(ido2db_idi *idi,
 		return -1;
 	}
 
-	fprintf(stderr, "query: %s\n", query);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2,
+	                      "sla_query_dependent_services(): %s\n", query);
 
 	rc = ido2db_db_query(idi, query);
 
@@ -1168,21 +1172,25 @@ static int sla_process_statechange_one(ido2db_idi *idi, unsigned long object_id,
 	time_t earliest_start_time;
 	int rc, i;
 
-	fprintf(stderr, "sla_process_statechange(%p, %lu, %lu, %lu, %p, %p)\n",
-	        idi, object_id, start_time, end_time, pstate_value, pstate_type);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
+	                       "sla_process_statechange(%p, %lu, %lu, %lu, "
+	                       "%p, %p)\n", idi, object_id, start_time,
+	                       end_time, pstate_value, pstate_type);
 
 	rc = sla_query_states(idi, object_id, start_time, end_time,
 	                      &state_list);
 
-	fprintf(stderr, "sla_query_states(): %d\n", rc);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
+	                     "sla_query_states(): %d\n", rc);
 
 	if (rc < 0)
 		return rc;
 
 	/* there should only ever be at most one result */
 	if (state_list->count > 1)
-		fprintf(stderr, "Error: more than one state entry with "
-		        "end_time set to NULL.");
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
+		                      "Error: more than one state entry with "
+		                      "end_time set to NULL.");
 
 	previous_state = NULL;
 
@@ -1324,13 +1332,15 @@ int sla_process_acknowledgement(ido2db_idi *idi, unsigned long object_id,
 	sla_state_list_t *state_list;
 	int rc, i;
 
-	fprintf(stderr, "sla_process_acknowledgement(%p, %lu, %lu, %d)\n",
-	        idi, object_id, state_time, is_acknowledged);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
+	                      "sla_process_acknowledgement(%p, %lu, %lu, %d)\n",
+	                      idi, object_id, state_time, is_acknowledged);
 
 	rc = sla_query_states(idi, object_id, state_time, state_time,
 	                      &state_list);
 
-	fprintf(stderr, "sla_query_states(): %d\n", rc);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
+	                      "sla_query_states(): %d\n", rc);
 
 	if (rc < 0)
 		return rc;
