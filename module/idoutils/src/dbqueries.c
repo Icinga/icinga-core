@@ -14,6 +14,7 @@
 #include "../include/ido2db.h"
 #include "../include/db.h"
 #include "../include/dbqueries.h"
+#include "../include/logging.h"
 
 /* Icinga header files */
 #include "../../../include/icinga.h"

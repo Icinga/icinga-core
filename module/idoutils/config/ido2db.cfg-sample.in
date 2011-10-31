@@ -279,6 +279,15 @@ max_debug_file_size=100000000
 
 
 
+# DEBUG READABLE TIMESTAMP
+# This option will allow you to set a readable timestamp instead of the
+# default unix timestamp.
+# Values: 0 = disabled, 1 = enabled
+
+debug_readable_timestamp=0
+
+
+
 # OCI ERRORS TO SYSLOG
 # ido2db registers an error handler in ocilib which spits all msg
 # into debug and syslog by default. Setting this option to 0,
@@ -286,6 +295,8 @@ max_debug_file_size=100000000
 # appropriate debug_level is set).
 
 oci_errors_to_syslog=1
+
+
 
 # ORACLE TRACE LEVEL
 # This setting activates oracle session trace for each ido2db connection using trace event
@@ -300,3 +311,10 @@ oci_errors_to_syslog=1
 
 oracle_trace_level=0
 
+
+
+# ENABLE SLA
+# This setting enables collection of SLA data in the slahistory table
+# Values: 0 = disabled, 1 = enabled
+
+enable_sla=0
