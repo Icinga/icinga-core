@@ -8,13 +8,12 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 --                  2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-06-10 Thomas Dressler
+-- current version: 2011-10-27 Thomas Dressler
 -- -- --------------------------------------------------------
 */
 -- -----------------------------------------
 -- set sqlplus parameter
 -- -----------------------------------------
-define ICINGA_VERSION=1.5.0
 
 set sqlprompt "&&_USER@&&_CONNECT_IDENTIFIER SQL>"
 /* drop all objects  if called seperately*/
@@ -56,17 +55,16 @@ spool create_icinga_objects_oracle.log
 prompt Installing Icinga Objects Version &&ICINGA_VERSION
 
 -- --------------------------------------------------------
--- unix timestamp to oracle date function
+-- unix timestamp to oracle timestamp function
 -- --------------------------------------------------------
-
-CREATE OR REPLACE FUNCTION unixts2date( n_seconds   IN    integer) RETURN    DATE
+CREATE OR REPLACE FUNCTION unixts2localts( n_seconds   IN    integer) return timestamp
 IS
-        unix_start  DATE    := TO_DATE('01.01.1970','DD.MM.YYYY');
+        unix_start  timestamp    := TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR');
         unix_max    INTEGER  := 2145916799;
         unix_min    INTEGER     := -2114380800;
 
 BEGIN
-				 if n_seconds is null then
+        if n_seconds is null then
           return unix_start;
         end if;
         IF n_seconds > unix_max THEN
@@ -75,31 +73,35 @@ BEGIN
                 RAISE_APPLICATION_ERROR( -20902, 'UNIX timestamp too small for 32 bit limit' );
        END IF;
        RETURN unix_start + NUMTODSINTERVAL( n_seconds, 'SECOND' );
-/* no exception handling, all errors goes to application */        
+       /* no exception handling, all errors goes to application */
 END;
 /
 
 -- --------------------------------------------------------
--- oracle date to unix timestamp function
+-- oracle local timestamp to unix timestamp function
 -- --------------------------------------------------------
 
-CREATE OR REPLACE FUNCTION date2unixts( d in date) RETURN    INTEGER
+CREATE OR REPLACE FUNCTION localts2unixts( ts in TIMESTAMP ) RETURN    INTEGER
 IS
-        unix_start  DATE    := TO_DATE('01.01.1970','DD.MM.YYYY');
+        unix_start TIMESTAMP    := TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR');
         n_seconds   integer;
         unix_max    INTEGER  := 2145916799;
         unix_min    INTEGER     := -2114380800;
+        diff        interval day(9) to second(0);
 
 BEGIN
-				if d is null then
+        if ts is null then
           return 0;
         end if;
-        
-				n_seconds:=(d-unix_start)*60*60*24;
+        diff:=ts-unix_start;
+        n_seconds:=floor(extract(second from diff))
+                +extract(minute from diff)*60
+                +extract(hour from diff)*3600
+                +extract(day from diff)*86400;
         IF n_seconds > unix_max THEN
-                RAISE_APPLICATION_ERROR( -20901, 'UNIX timestamp too large for 32 bit limit' );
+          RAISE_APPLICATION_ERROR( -20901, 'UNIX timestamp too large for 32 bit limit' );
         ELSIF n_seconds < unix_min THEN
-                RAISE_APPLICATION_ERROR( -20902, 'UNIX timestamp too small for 32 bit limit' );
+          RAISE_APPLICATION_ERROR( -20902, 'UNIX timestamp too small for 32 bit limit' );
         END IF;
         return n_seconds;
 /* no exception handling, all errors goes to application */
@@ -138,7 +140,7 @@ BEGIN
         || p_id
 	|| ' AND '
 	|| p_field_name
-	|| '<unixts2date('
+	|| '<unixts2localts('
 	|| p_time
 	|| ')';
         EXECUTE IMMEDIATE v_stmt_str;
@@ -239,7 +241,7 @@ END set_trace_event;
 CREATE TABLE acknowledgements (
   id integer ,
   instance_id integer default 0 ,
-  entry_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  entry_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   entry_time_usec integer default 0 ,
   acknowledgement_type integer default 0 ,
   object_id integer default 0 ,
@@ -249,8 +251,8 @@ CREATE TABLE acknowledgements (
   is_sticky integer default 0 ,
   persistent_comment integer default 0 ,
   notify_contacts integer default 0,
-  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS')
-)tablespace &&DATATBS ;
+  end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') 
+) tablespace &&DATATBS ;
 
 alter table acknowledgements add constraint acknowledgements_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;
@@ -281,20 +283,20 @@ alter table commands add constraint  commands_uq UNIQUE (instance_id,object_id,c
 CREATE TABLE commenthistory (
   id integer ,
   instance_id integer default 0 ,
-  entry_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  entry_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   entry_time_usec integer default 0 ,
   comment_type integer default 0 ,
   entry_type integer default 0 ,
   object_id integer default 0 ,
-  comment_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  comment_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   internal_comment_id integer default 0 ,
   author_name varchar2(64),
   comment_data varchar2(2048),
   is_persistent integer default 0 ,
   comment_source integer default 0 ,
   expires integer default 0 ,
-  expiration_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  deletion_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  expiration_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  deletion_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   deletion_time_usec integer default 0 
 )tablespace &&DATATBS;
 
@@ -311,19 +313,19 @@ alter table commenthistory add constraint commenthist_uq  UNIQUE (instance_id,co
 CREATE TABLE comments (
   id integer ,
   instance_id integer default 0 ,
-  entry_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  entry_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   entry_time_usec integer default 0 ,
   comment_type integer default 0 ,
   entry_type integer default 0 ,
   object_id integer default 0 ,
-  comment_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  comment_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   internal_comment_id integer default 0 ,
   author_name varchar2(64),
   comment_data varchar2(2048),
   is_persistent integer default 0 ,
   comment_source integer default 0 ,
   expires integer default 0 ,
-  expiration_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') 
+  expiration_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') 
 )tablespace &&DATATBS;
 
 alter table comments add constraint comments_pk PRIMARY KEY  (id)
@@ -381,11 +383,11 @@ CREATE TABLE conninfo (
   disposition varchar2(16),
   connect_source varchar2(16),
   connect_type varchar2(16),
-  connect_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  disconnect_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  last_checkin_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  data_start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  data_end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  connect_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  disconnect_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  last_checkin_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  data_start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  data_end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   bytes_processed integer default 0 ,
   lines_processed integer default 0 ,
   entries_processed integer default 0 
@@ -478,9 +480,9 @@ CREATE TABLE contactnotificationmethods (
   id integer ,
   instance_id integer default 0 ,
   contactnotification_id integer default 0 ,
-  start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   start_time_usec integer default 0 ,
-  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   end_time_usec integer default 0 ,
   command_object_id integer default 0 ,
   command_args varchar2(1024)  
@@ -503,9 +505,9 @@ CREATE TABLE contactnotifications (
   instance_id integer default 0 ,
   notification_id integer default 0 ,
   contact_object_id integer default 0 ,
-  start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   start_time_usec integer default 0 ,
-  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   end_time_usec integer default 0 
 )tablespace &&DATATBS;
 
@@ -563,11 +565,11 @@ CREATE TABLE contactstatus (
   id integer ,
   instance_id integer default 0 ,
   contact_object_id integer default 0 ,
-  status_update_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  status_update_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   host_notifications_enabled integer default 0 ,
   service_notifications_enabled integer default 0 ,
-  last_host_notification date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  last_service_notification date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  last_host_notification TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  last_service_notification TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   modified_attributes integer default 0 ,
   modified_host_attributes integer default 0 ,
   modified_service_attributes integer default 0 
@@ -613,7 +615,7 @@ CREATE TABLE customvariablestatus (
   id integer ,
   instance_id integer default 0 ,
   object_id integer default 0 ,
-  status_update_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  status_update_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   has_been_modified integer default 0 ,
   varname varchar2(1024),
   varvalue varchar2(1024)
@@ -655,19 +657,19 @@ CREATE TABLE downtimehistory (
   instance_id integer default 0 ,
   downtime_type integer default 0 ,
   object_id integer default 0 ,
-  entry_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  entry_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   author_name varchar2(64),
   comment_data varchar2(2048),
   internal_downtime_id integer default 0 ,
   triggered_by_id integer default 0 ,
   is_fixed integer default 0 ,
   duration integer default 0 ,
-  scheduled_start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  scheduled_end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  scheduled_start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  scheduled_end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   was_started integer default 0 ,
-  actual_start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  actual_start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   actual_start_time_usec integer default 0 ,
-  actual_end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  actual_end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   actual_end_time_usec integer default 0 ,
   was_cancelled integer default 0 
 )tablespace &&DATATBS;
@@ -691,9 +693,9 @@ CREATE TABLE eventhandlers (
   object_id integer default 0 ,
   state integer default 0 ,
   state_type integer default 0 ,
-  start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   start_time_usec integer default 0 ,
-  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   end_time_usec integer default 0 ,
   command_object_id integer default 0 ,
   command_args varchar2(1024),
@@ -722,7 +724,7 @@ alter table eventhandlers add CONSTRAINT eventhandlers_uq UNIQUE (instance_id,ob
 CREATE TABLE externalcommands (
   id integer ,
   instance_id integer default 0 ,
-  entry_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  entry_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   command_type integer default 0 ,
   command_name varchar2(128),
   command_args varchar2(1024)
@@ -742,7 +744,7 @@ alter table externalcommands add constraint externalcommands_pk PRIMARY KEY  (id
 CREATE TABLE flappinghistory (
   id integer ,
   instance_id integer default 0 ,
-  event_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  event_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   event_time_usec integer default 0 ,
   event_type integer default 0 ,
   reason_type integer default 0 ,
@@ -751,7 +753,7 @@ CREATE TABLE flappinghistory (
   percent_state_change number default 0 ,
   low_threshold number default 0 ,
   high_threshold number default 0 ,
-  comment_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  comment_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   internal_comment_id integer default 0 
 )
 tablespace &&DATATBS;
@@ -826,9 +828,9 @@ CREATE TABLE hostchecks (
   max_check_attempts integer default 0 ,
   state integer default 0 ,
   state_type integer default 0 ,
-  start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   start_time_usec integer default 0 ,
-  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   end_time_usec integer default 0 ,
   command_object_id integer default 0 ,
   command_args varchar2(1024),
@@ -1059,7 +1061,7 @@ CREATE TABLE hoststatus (
   id integer ,
   instance_id integer default 0 ,
   host_object_id integer default 0 ,
-  status_update_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  status_update_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   output varchar2(2048),
   long_output clob,
   perfdata clob,
@@ -1068,18 +1070,18 @@ CREATE TABLE hoststatus (
   should_be_scheduled integer default 0 ,
   current_check_attempt integer default 0 ,
   max_check_attempts integer default 0 ,
-  last_check date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  next_check date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  last_check TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  next_check TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   check_type integer default 0 ,
-  last_state_change date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  last_hard_state_change date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  last_state_change TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  last_hard_state_change TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   last_hard_state integer default 0 ,
-  last_time_up date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  last_time_down date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  last_time_unreachable date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  last_time_up TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  last_time_down TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  last_time_unreachable TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   state_type integer default 0 ,
-  last_notification date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  next_notification date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  last_notification TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  next_notification TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   no_more_notifications integer default 0 ,
   notifications_enabled integer default 0 ,
   problem_has_been_acknowledged integer default 0 ,
@@ -1140,8 +1142,8 @@ alter table instances add constraint instances_pk PRIMARY KEY  (id)
 CREATE TABLE logentries (
   id integer ,
   instance_id integer default 0 ,
-  logentry_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  entry_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  logentry_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  entry_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   entry_time_usec integer default 0 ,
   logentry_type integer default 0 ,
   logentry_data clob,
@@ -1167,9 +1169,9 @@ CREATE TABLE notifications (
   notification_type integer default 0 ,
   notification_reason integer default 0 ,
   object_id integer default 0 ,
-  start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   start_time_usec integer default 0 ,
-  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   end_time_usec integer default 0 ,
   state integer default 0 ,
   output varchar2(2048),
@@ -1219,7 +1221,7 @@ CREATE TABLE processevents (
   id integer ,
   instance_id integer default 0 ,
   event_type integer default 0 ,
-  event_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  event_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   event_time_usec integer default 0 ,
   process_id integer default 0 ,
   program_name varchar2(16),
@@ -1241,14 +1243,14 @@ alter table processevents add constraint processevents_pk PRIMARY KEY  (id)
 CREATE TABLE programstatus (
   id integer ,
   instance_id integer default 0 ,
-  status_update_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  program_start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  program_end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  status_update_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  program_start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  program_end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   is_currently_running integer default 0 ,
   process_id integer default 0 ,
   daemon_mode integer default 0 ,
-  last_command_check date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  last_log_rotation date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  last_command_check TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  last_log_rotation TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   notifications_enabled integer default 0 ,
   active_service_checks_enabled integer default 0 ,
   passive_service_checks_enabled integer default 0 ,
@@ -1300,17 +1302,17 @@ CREATE TABLE scheduleddowntime (
   instance_id integer default 0 ,
   downtime_type integer default 0 ,
   object_id integer default 0 ,
-  entry_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  entry_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   author_name varchar2(64),
   comment_data varchar2(2048),
   internal_downtime_id integer default 0 ,
   triggered_by_id integer default 0 ,
   is_fixed integer default 0 ,
   duration integer default 0 ,
-  scheduled_start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  scheduled_end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  scheduled_start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  scheduled_end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   was_started integer default 0 ,
-  actual_start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  actual_start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   actual_start_time_usec integer default 0 
 )tablespace &&DATATBS;
 
@@ -1370,9 +1372,9 @@ CREATE TABLE servicechecks (
   max_check_attempts integer default 0 ,
   state integer default 0 ,
   state_type integer default 0 ,
-  start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   start_time_usec integer default 0 ,
-  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   end_time_usec integer default 0 ,
   command_object_id integer default 0 ,
   command_args varchar2(1024),
@@ -1596,7 +1598,7 @@ CREATE TABLE servicestatus (
   id integer ,
   instance_id integer default 0 ,
   service_object_id integer default 0 ,
-  status_update_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  status_update_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   output varchar2(2048),
   long_output clob,
   perfdata clob,
@@ -1605,19 +1607,19 @@ CREATE TABLE servicestatus (
   should_be_scheduled integer default 0 ,
   current_check_attempt integer default 0 ,
   max_check_attempts integer default 0 ,
-  last_check date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  next_check date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  last_check TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  next_check TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   check_type integer default 0 ,
-  last_state_change date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  last_hard_state_change date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  last_state_change TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  last_hard_state_change TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   last_hard_state integer default 0 ,
-  last_time_ok date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  last_time_warning date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  last_time_unknown date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  last_time_critical date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  last_time_ok TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  last_time_warning TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  last_time_unknown TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  last_time_critical TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   state_type integer default 0 ,
-  last_notification date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  next_notification date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  last_notification TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  next_notification TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   no_more_notifications integer default 0 ,
   notifications_enabled integer default 0 ,
   problem_has_been_acknowledged integer default 0 ,
@@ -1661,7 +1663,7 @@ alter table servicestatus add CONSTRAINT servicestatus_uq UNIQUE (service_object
 CREATE TABLE statehistory (
   id integer ,
   instance_id integer default 0 ,
-  state_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  state_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   state_time_usec integer default 0 ,
   object_id integer default 0 ,
   state_change integer default 0 ,
@@ -1690,9 +1692,9 @@ alter table statehistory add constraint statehistory_pk PRIMARY KEY  (id)
 CREATE TABLE systemcommands (
   id integer ,
   instance_id integer default 0 ,
-  start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   start_time_usec integer default 0 ,
-  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   end_time_usec integer default 0 ,
   command_line varchar2(2048),
   timeout integer default 0 ,
@@ -1721,9 +1723,9 @@ CREATE TABLE timedeventqueue (
   id integer ,
   instance_id integer default 0 ,
   event_type integer default 0 ,
-  queued_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  queued_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   queued_time_usec integer default 0 ,
-  scheduled_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  scheduled_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   recurring_event integer default 0 ,
   object_id integer default 0 
 )tablespace &&DATATBS;
@@ -1742,14 +1744,14 @@ CREATE TABLE timedevents (
   id integer ,
   instance_id integer default 0 ,
   event_type integer default 0 ,
-  queued_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  queued_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   queued_time_usec integer default 0 ,
-  event_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  event_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   event_time_usec integer default 0 ,
-  scheduled_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  scheduled_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   recurring_event integer default 0 ,
   object_id integer default 0 ,
-  deletion_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  deletion_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   deletion_time_usec integer default 0 
 )tablespace &&DATATBS;
 alter table timedevents add constraint timedevents_pk PRIMARY KEY  (id)
@@ -1802,11 +1804,11 @@ alter table timeperiods add CONSTRAINT timeperiods_uq UNIQUE (instance_id,config
 -- 
 
 CREATE TABLE slahistory (
-  id_id integer ,
+  id integer ,
   instance_id integer default 0 ,
-  start_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  end_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
-  acknowledgement_time date default TO_DATE('1970-01-01 00:00:00','YYYY-MM-DD HH24:MI:SS') ,
+  start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  acknowledgement_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   object_id integer default 0 ,
   state integer default 0 ,
   state_type integer default 0 ,
