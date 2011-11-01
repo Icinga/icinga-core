@@ -16,6 +16,7 @@ ENHANCEMENTS
 * core: determine last_program_stop from creation of retention.dat and use that for decision if passive checks are fresh or not (Andreas Ericsson) #2027
 * core: add icinga startup delay checks to example configs, including perfdata  #1937
 * core: indicate event loop start in logs #2036
+* core: add notifications to stalking hosts/services, not only logging/event handlers #1367
 
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
 * classic ui: Acknowledge child hosts from on blocking outages #1858
@@ -47,11 +48,15 @@ CHANGES
 	** CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE    174
 	** CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE     175
 	** EVENT_EXPIRE_ACKNOWLEDGEMENT
+* core: new notification type (internal and macros)
+	** NOTIFICATION_STALKING
 
 * classic ui: "showlog_initial_states" and "showlog_current_states" are now disabled by default to prevent browser freezes #1172
 * classic ui: highlight_table_rows is now enabled by default #1777
 * classic ui: removed unused javascript libraries
 	** html/js/: builder.js, controls.js, dragdrop.js, effects.js, slider.js, sound.js, mootools.js
+
+* icinga.cfg: stalking_notifications_for_hosts=0 stalking_notifications_for_services=0
 
 * cgi.cfg: default_expiring_acknowledgement_duration=86400
 * cgi.cfg: extinfo_show_child_hosts=0 added

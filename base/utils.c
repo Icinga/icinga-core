@@ -232,6 +232,8 @@ extern int      use_embedded_perl_implicitly;
 
 extern int      stalking_event_handlers_for_hosts;
 extern int      stalking_event_handlers_for_services;
+extern int      stalking_notifications_for_hosts;
+extern int      stalking_notifications_for_services;
 
 extern int      date_format;
 
@@ -4494,6 +4496,8 @@ int reset_variables(void) {
 
 	stalking_event_handlers_for_hosts = DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS;
 	stalking_event_handlers_for_services = DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES;
+	stalking_notifications_for_hosts = DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS;
+	stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES;
 
 	external_command_buffer_slots = DEFAULT_EXTERNAL_COMMAND_BUFFER_SLOTS;
 

@@ -1277,6 +1277,17 @@ stalking_event_handlers_for_services=0
 
 
 
+# NOTIFICATIONS FOR STALKED HOSTS/SERVICES
+# Allow notifications for stalked hosts/services globally
+# for all contacts in order to notify about a stalking
+# alert.
+# Values: 0 = disabled (default), 1 = enabled
+
+stalking_notifications_for_hosts=0
+stalking_notifications_for_services=0
+
+
+
 # ILLEGAL OBJECT NAME CHARACTERS
 # This option allows you to specify illegal characters that cannot
 # be used in host names, service descriptions, or names of other

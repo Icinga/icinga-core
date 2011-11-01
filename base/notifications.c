@@ -227,6 +227,8 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("DOWNTIMECANCELLED");
 		else if (type == NOTIFICATION_CUSTOM)
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("CUSTOM");
+		else if (type == NOTIFICATION_STALKING)
+			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("STALKING");
 		else if (svc->current_state == STATE_OK)
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("RECOVERY");
 		else
@@ -454,6 +456,14 @@ int check_service_notification_viability(service *svc, int type, int options) {
 		return OK;
 	}
 
+	/***********************************************/
+	/*** SPECIAL CASE FOR STALKING NOTIFICATIONS ***/
+	/***********************************************/
+	
+	/* stalking notifications are good to go at this point, if enabled (this is done before reaching notifications) */
+	if (type == NOTIFICATION_STALKING) {
+		return OK;
+	}
 
 	/****************************************/
 	/*** SPECIAL CASE FOR ACKNOWLEGEMENTS ***/
@@ -674,6 +684,15 @@ int check_contact_service_notification_viability(contact *cntct, service *svc, i
 	/* custom notifications are good to go at this point... */
 	if (type == NOTIFICATION_CUSTOM)
 		return OK;
+
+	/***********************************************/
+	/*** SPECIAL CASE FOR STALKING NOTIFICATIONS ***/
+	/***********************************************/
+	
+	/* stalking notifications are good to go at this point, if enabled (this is done before reaching notifications) */
+	if (type == NOTIFICATION_STALKING) {
+		return OK;
+	}
 
 
 	/****************************************/
@@ -1384,6 +1403,8 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("DOWNTIMECANCELLED");
 		else if (type == NOTIFICATION_CUSTOM)
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("CUSTOM");
+		else if (type == NOTIFICATION_STALKING)
+			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("STALKING");
 		else if (hst->current_state == HOST_UP)
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("RECOVERY");
 		else

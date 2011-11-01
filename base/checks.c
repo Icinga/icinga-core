@@ -100,6 +100,8 @@ extern int      child_processes_fork_twice;
 
 extern int      stalking_event_handlers_for_hosts;
 extern int      stalking_event_handlers_for_services;
+extern int      stalking_notifications_for_hosts;
+extern int      stalking_notifications_for_services;
 
 extern time_t   last_program_stop;
 extern time_t   program_start;
@@ -1739,9 +1741,16 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			schedule_service_check(temp_service, temp_service->next_check, CHECK_OPTION_NONE);
 	}
 
-	/* if we're stalking this state type and state was not already logged AND the plugin output changed since last check, log it now.. */
+	
+	/* STALKING
+	 * if we're stalking this state type and state was
+	 * not already logged AND the plugin output changed
+	 * since last check, log it or run event handlers or
+	 * notify now..
+	 */
 	if (temp_service->state_type == HARD_STATE && state_change == FALSE && state_was_logged == FALSE && compare_strings(old_plugin_output, temp_service->plugin_output)) {
 
+		/* OK */
 		if ((temp_service->current_state == STATE_OK && temp_service->stalk_on_ok == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1750,6 +1759,11 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+
+		/* WARNING */
 		} else if ((temp_service->current_state == STATE_WARNING && temp_service->stalk_on_warning == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1758,6 +1772,10 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+		/* UNKNOWN */
 		} else if ((temp_service->current_state == STATE_UNKNOWN && temp_service->stalk_on_unknown == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1766,6 +1784,10 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+		/* CRITICAL */
 		} else if ((temp_service->current_state == STATE_CRITICAL && temp_service->stalk_on_critical == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1774,6 +1796,9 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
 		}
 	}
 
@@ -4011,9 +4036,16 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 
 	/******************** POST-PROCESSING STUFF *********************/
 
-	/* if the plugin output differs from previous check and no state change, log the current state/output if state stalking is enabled */
+        /* STALKING
+         * if we're stalking this state type and state was
+         * not already logged AND the plugin output changed
+         * since last check, log it or run event handlers or
+         * notify now..
+         */
+
 	if (hst->last_state == hst->current_state && compare_strings(old_plugin_output, hst->plugin_output)) {
 
+		/* UP */
 		if (hst->current_state == HOST_UP && hst->stalk_on_up == TRUE) {
 
 			log_host_event(hst);
@@ -4022,6 +4054,11 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 			if (stalking_event_handlers_for_hosts == TRUE)
 				handle_host_event(hst);
 
+			/* should we notify all contacts ? */
+			if (stalking_notifications_for_hosts == TRUE)
+				host_notification(hst, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+				
+		/* DOWN */
 		} else if (hst->current_state == HOST_DOWN && hst->stalk_on_down == TRUE) {
 
 			log_host_event(hst);
@@ -4030,6 +4067,11 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 			if (stalking_event_handlers_for_hosts == TRUE)
 				handle_host_event(hst);
 
+			/* should we notify all contacts ? */
+			if (stalking_notifications_for_hosts == TRUE)
+				host_notification(hst, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+				
+		/* UNREACHABLE */
 		} else if (hst->current_state == HOST_UNREACHABLE && hst->stalk_on_unreachable == TRUE) {
 
 			log_host_event(hst);
@@ -4037,6 +4079,10 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 			/* should we run event handlers ? */
 			if (stalking_event_handlers_for_hosts == TRUE)
 				handle_host_event(hst);
+
+			/* should we notify all contacts ? */
+			if (stalking_notifications_for_hosts == TRUE)
+				host_notification(hst, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
 		}
 	}
 
