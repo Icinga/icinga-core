@@ -1468,7 +1468,9 @@ void draw_host_links(void) {
 			/* determine color to use when drawing links to parent host */
 			parent_hoststatus = find_hoststatus(parent_host->name);
 			if (parent_hoststatus != NULL) {
-				if (parent_hoststatus->status == HOST_DOWN || parent_hoststatus->status == HOST_UNREACHABLE)
+				if (parent_hoststatus->status == HOST_DOWN)
+					status_color = color_red;
+				else if (parent_hoststatus->status == HOST_UNREACHABLE)
 					status_color = color_pink;
 				else
 					status_color = color_black;
