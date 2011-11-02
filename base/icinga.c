@@ -3,7 +3,7 @@
  * ICINGA.C - Core Program Code For Icinga
  *
  * Program: Icinga
- * Version: 1.5.0
+ * Version: 1.6.0
  * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
  * Copyright (c) 2009-2011 Nagios Core Development Team and Community Contributors
@@ -829,11 +829,6 @@ int main(int argc, char **argv, char **env) {
 				exit(ERROR);
 			}
 
-#ifdef USE_EVENT_BROKER
-                        /* send program data to broker */
-                        broker_program_state(NEBTYPE_PROCESS_INITSTART, NEBFLAG_NONE, NEBATTR_NONE, NULL);
-#endif
-
 			/* initialize status data unless we're starting */
 			if (sigrestart == FALSE)
 				initialize_status_data(config_file);
@@ -858,11 +853,6 @@ int main(int argc, char **argv, char **env) {
 			/* initialize check statistics */
 			init_check_stats();
 
-#ifdef USE_EVENT_BROKER
-                        /* send program data to broker */
-                        broker_program_state(NEBTYPE_PROCESS_INITEND, NEBFLAG_NONE, NEBATTR_NONE, NULL);
-#endif
-
 			/* update all status data (with retained information) */
 			update_all_status_data();
 
@@ -882,6 +872,11 @@ int main(int argc, char **argv, char **env) {
 			event_start = time(NULL);
 			my_free(mac->x[MACRO_EVENTSTARTTIME]);
 			dummy = asprintf(&mac->x[MACRO_EVENTSTARTTIME], "%lu", (unsigned long)event_start);
+
+			/* print event loop start */
+			dummy = asprintf(&buffer, "Event loop started...\n");
+			write_to_all_logs(buffer, NSLOG_PROCESS_INFO);
+			my_free(buffer);
 
 			/***** start monitoring all services *****/
 			/* (doesn't return until a restart or shutdown signal is encountered) */

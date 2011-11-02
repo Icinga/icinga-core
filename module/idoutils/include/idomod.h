@@ -9,20 +9,16 @@
 #ifndef _NDBXT_IDOMOD_H
 #define _NDBXT_IDOMOD_H
 
-#define IDOMOD_VERSION "1.5.0"
+#define IDOMOD_VERSION "1.6.0"
 #define IDOMOD_NAME "IDOMOD"
-#define IDOMOD_DATE "08-24-2011"
+#define IDOMOD_DATE "11-30-2011"
 
 /************** misc definitions *************/
 
 /* this is needed for access to daemon's internal data */
 #define NSCORE 1
 
-#define IDOMOD_MAX_BUFLEN		16384
-
-#define IDOMOD_SINK_BUFFER_SLOTS	50000
-
-#define IDOMOD_SINK_RETRY_ON_ERROR	5
+#define IDOMOD_MAX_BUFLEN   49152
 
 /************** structures *******************/
 
@@ -34,7 +30,6 @@ typedef struct idomod_sink_buffer_struct{
 	unsigned long items;
 	unsigned long maxitems;
 	unsigned long overflow;
-        pthread_mutex_t buffer_lock;
         }idomod_sink_buffer;
 
 
@@ -96,7 +91,6 @@ int nebmodule_init(int,char *,void *);
 int nebmodule_deinit(int,int);
 
 int idomod_init(void);
-int idomod_init_post(void *);
 int idomod_deinit(void);
 
 int idomod_check_icinga_object_version(void);
@@ -109,9 +103,7 @@ int idomod_process_config_file(char *);
 
 int idomod_open_sink(void);
 int idomod_close_sink(void);
-int idomod_write_to_sink(char *);
-int idomod_write_to_sink_queue(char *);
-void * idomod_read_from_sink_queue(void *);
+int idomod_write_to_sink(char *,int,int);
 int idomod_rotate_sink_file(void *);
 int idomod_hello_sink(int,int);
 int idomod_goodbye_sink(void);
