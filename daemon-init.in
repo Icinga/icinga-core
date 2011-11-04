@@ -95,6 +95,7 @@ kill9proc_icinga()
 
 pid_icinga ()
 {
+    IcingaPID=`head -n 1 $IcingaRunFile`
 
 	if test ! -f $IcingaRunFile; then
 		echo "Icinga not running. No lock file found in $IcingaRunFile"
@@ -109,7 +110,7 @@ pid_icinga ()
         fi
         exit 1
 
-	IcingaPID=`head -n 1 $IcingaRunFile`
+	
 }
 
 
