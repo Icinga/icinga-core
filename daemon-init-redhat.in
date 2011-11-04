@@ -28,6 +28,19 @@ user="@icinga_user@"
 
 lockfile=/var/lock/subsys/$prog
 
+pid_lock() {
+    if [ -e $pidfile ] ; then 
+	pproc=`ps -ef |grep (cat "$pidfile") |grep -v grep `
+	echo "Icinga Process PID file present"
+	 if [ -z $pproc ] ; then 
+	    rm -f $pidfile
+	    echo "PID file removed and $pidfile process is not active on system"
+	fi 
+    fi 
+    exit 
+}
+
+
 start() {
     [ -x $exec ] || exit 5
     [ -f $config ] || exit 6
@@ -78,6 +91,7 @@ check_config() {
 
 case "$1" in
     start)
+	pid_lock
         status $prog && exit 0
 	check_config
         $1
