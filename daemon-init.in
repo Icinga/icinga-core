@@ -103,7 +103,7 @@ pid_icinga ()
 	elif [ -e $IcingaRunFile ] ; then
     	    pproc=`ps -ef |grep $IcingaPID |grep -v grep `
     	    echo "Icinga Process PID file present"
-    	     if [ -z $pproc ] ; then
+    	     if [ -z "$pproc" ] ; then
         	rm -f $IcingaRunFile
     		echo "PID file removed and $IcingaPID process is not active on system"
 	     fi
