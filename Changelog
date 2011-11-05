@@ -40,6 +40,7 @@ FIXES
 
 * classic ui: fix for Classic-UI displays bad timeperiods #1989
 * classic ui: fixed wrong color in histogram and trends for unknown/unreachable #2042
+* classic ui: fixed search not returning all results, only first match (without * at the end) #844
 
 * idoutils: host state change last_hard_state overrides last_state, last_hard_state always -1 #1932
 

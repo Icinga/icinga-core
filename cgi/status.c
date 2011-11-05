@@ -91,8 +91,7 @@ extern int show_partial_hostgroups;
 
 #define HOST_STATUS			0
 #define SERVICE_STATUS			1
-#define NO_STATUS			2	/* only used to determine which
-drop down menu to present */
+#define NO_STATUS			2	/* only used to determine which drop down menu to present */
 
 /*  Status data for all Elements */
 typedef struct statusdata_struct {
@@ -175,11 +174,10 @@ time_t current_time;
 
 char alert_message[MAX_MESSAGE_BUFFER];
 char *host_name = NULL;
-char *host_filter = NULL;
+char *service_desc = NULL;
 char *hostgroup_name = NULL;
 char *servicegroup_name = NULL;
-char *service_desc = NULL;
-char *service_filter = NULL;
+char *search_string = NULL;
 
 int host_alert = FALSE;
 int show_all_hosts = TRUE;
@@ -189,7 +187,8 @@ int display_type = DISPLAY_HOSTS;
 int overview_columns = 3;
 int max_grid_width = 8;
 int group_style_type = STYLE_OVERVIEW;
-int navbar_search = FALSE;
+int host_items_found = FALSE;
+int service_items_found = FALSE;
 int user_is_authorized_for_statusdata = FALSE;
 
 int service_status_types = SERVICE_PENDING | SERVICE_OK | SERVICE_UNKNOWN | SERVICE_WARNING | SERVICE_CRITICAL;
@@ -234,14 +233,18 @@ int CGI_ID = STATUS_CGI_ID;
 int main(void) {
 	int result = OK;
 	char *sound = NULL;
+	char *search_regex = NULL;
+	char host_service_name[MAX_INPUT_BUFFER];
 	host *temp_host = NULL;
+	service *temp_service = NULL;
 	hostgroup *temp_hostgroup = NULL;
 	servicegroup *temp_servicegroup = NULL;
+	hoststatus *temp_hoststatus = NULL;
 	servicestatus *temp_servicestatus = NULL;
-	int regex_i = 1, i = 0;
+	int regex_i = 0, i = 0;
 	int len;
-	int host_has_no_service = TRUE;
 	int show_dropdown = NO_STATUS;
+	regex_t preg;
 
 	mac = get_global_macros();
 
@@ -298,84 +301,85 @@ int main(void) {
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
-	/* if a navbar search was performed, find the host by name, address or partial name */
-	if (navbar_search == TRUE) {
-		if (host_name != NULL && NULL != strstr(host_name, "*")) {
-			/* allocate for 3 extra chars, ^, $ and \0 */
-			host_filter = malloc(sizeof(char) * (strlen(host_name) * 2 + 3));
-			len = strlen(host_name);
-			for (i = 0; i < len; i++, regex_i++) {
-				if (host_name[i] == '*') {
-					host_filter[regex_i++] = '.';
-					host_filter[regex_i] = '*';
-				} else
-					host_filter[regex_i] = host_name[i];
-			}
-			host_filter[0] = '^';
-			host_filter[regex_i++] = '$';
-			host_filter[regex_i] = '\0';
-		} else {
-			if ((temp_host = find_host(host_name)) == NULL) {
-				for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
-					if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-						continue;
-					/* address */
-					if (!strcmp(host_name, temp_host->address)) {
-						free(host_name);
-						host_name = strdup(temp_host->name);
-						break;
-					}
-					/* address6 */
-					if (!strcmp(host_name, temp_host->address6)) {
-						free(host_name);
-						host_name = strdup(temp_host->name);
-						break;
-					}
-					/* display_name */
-					if (!strcmp(host_name, temp_host->display_name)) {
-						free(host_name);
-						host_name = strdup(temp_host->name);
-						break;
-					}
-				}
-				if (temp_host == NULL) {
-					for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
-						if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-							continue;
-						/* host_name */
-						if ((strstr(temp_host->name, host_name) == temp_host->name) || !strncasecmp(temp_host->name, host_name, strlen(host_name))) {
-							free(host_name);
-							host_name = strdup(temp_host->name);
-							break;
-						}
-						/* display_name, use host_name as found identifier */
-						else if ((strstr(temp_host->display_name, host_name) == temp_host->display_name) || !strncasecmp(temp_host->display_name, host_name, strlen(host_name))) {
-							free(host_name);
-							host_name = strdup(temp_host->name);
-							break;
-						}
-					}
+	/* see if user tried searching something */
+	if (search_string != NULL) {
+
+		/* build regex string */
+
+		/* allocate for 3 extra chars, ^, $ and \0 */
+		search_regex = malloc(sizeof(char) * (strlen(search_string) * 2 + 3));
+		len = strlen(search_string);
+		for (i = 0; i < len; i++, regex_i++) {
+			if (search_string[i] == '*') {
+				search_regex[regex_i++] = '.';
+				search_regex[regex_i] = '*';
+			} else
+				search_regex[regex_i] = search_string[i];
+		}
+
+		search_regex[regex_i] = '\0';
+
+		/* check and compile regex */
+		if (regcomp(&preg, search_regex, REG_ICASE | REG_NOSUB) == 0) {
+
+			/* regular expression is valid */
+
+			/* now look through all hosts to see which one matches */
+			for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
+				temp_hoststatus->search_matched = FALSE;
+
+				if ((temp_host = find_host(temp_hoststatus->host_name)) == NULL)
+					continue;
+
+				/* try to find a match */
+				if (regexec(&preg, temp_host->name, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_host->display_name, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_host->alias, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_host->address, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_host->address6, 0, NULL, 0) == 0) {
+
+					temp_hoststatus->search_matched = TRUE;
+					host_items_found = TRUE;
 				}
 			}
-			/* if host has no services attached, show host status detail */
-			if (temp_host != NULL) {
-				for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
-					if (!strcmp(temp_servicestatus->host_name, temp_host->name)) {
-						host_has_no_service = FALSE;
-						break;
-					}
+
+			for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
+				temp_servicestatus->search_matched = FALSE;
+
+				/* find the service  */
+				temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
+
+				if (temp_service == NULL)
+					continue;
+
+				/* try to match on combination of host name and service description */
+				snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_service->host_name, temp_service->display_name);
+				host_service_name[sizeof(host_service_name)-1] = '\x0';
+
+				/* try to find a match */
+				if (regexec(&preg, temp_service->description, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_service->display_name, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_service->host_name, 0, NULL, 0) == 0 || \
+				        regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+
+					temp_servicestatus->search_matched = TRUE;
+					service_items_found = TRUE;
 				}
-				if (host_has_no_service)
-					group_style_type = STYLE_HOST_DETAIL;
 			}
-			/* last effort, search hostgroups then servicegroups */
-			if (temp_host == NULL) {
-				if ((temp_hostgroup = find_hostgroup(host_name)) != NULL) {
+
+
+			/* if didn't found anything until now we start looking for hostgroups and servicegroups */
+			/*
+				FIXME: This needs to be changed in furhter reworks.
+				Add the possibility to allow more then one hostgroup / servicegroup
+			*/
+			if (host_items_found == FALSE && service_items_found == FALSE) {
+				if ((temp_hostgroup = find_hostgroup(search_string)) != NULL) {
 					display_type = DISPLAY_HOSTGROUPS;
 					show_all_hostgroups = FALSE;
 					free(host_name);
 					hostgroup_name = strdup(temp_hostgroup->group_name);
-				} else if ((temp_servicegroup = find_servicegroup(host_name)) != NULL) {
+				} else if ((temp_servicegroup = find_servicegroup(search_string)) != NULL) {
 					display_type = DISPLAY_SERVICEGROUPS;
 					show_all_servicegroups = FALSE;
 					free(host_name);
@@ -383,6 +387,17 @@ int main(void) {
 				}
 			}
 		}
+
+		/* free regular expression */
+		regfree(&preg);
+
+		user_is_authorized_for_statusdata = TRUE;
+
+		/* check the search result and trigger the desired view */
+		if (host_items_found == TRUE && service_items_found == FALSE)
+			group_style_type = STYLE_HOST_DETAIL;
+		else if (host_items_found == FALSE && service_items_found == TRUE)
+			group_style_type = STYLE_SERVICE_DETAIL;
 	}
 
 	// determine which dropdown menu to show
@@ -417,7 +432,7 @@ int main(void) {
 
 	if (show_dropdown != NO_STATUS && content_type == HTML_CONTENT) {
 
-		if(highlight_table_rows==TRUE) {
+		if (highlight_table_rows == TRUE) {
 			printf("<script type = \"text/javascript\">\n");
 			printf("\t$(document).ready(function(){\n");
 			printf("\t\t$(\"table.status tr\").hover(function( e ) {\n");
@@ -446,7 +461,11 @@ int main(void) {
 		/* begin top table */
 		/* network status, hosts/service status totals */
 
-		if (display_status_header == TRUE && group_style_type != STYLE_HOST_SERVICE_DETAIL) {
+		/* FIXME
+			This needs a fix as well. If we show combined host and service list, it should
+			be possible to see status totals as well.
+		*/
+		if (display_status_header == TRUE && group_style_type != STYLE_HOST_SERVICE_DETAIL && search_string == NULL) {
 			printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
 			printf("<tr>\n");
 
@@ -636,7 +655,7 @@ int main(void) {
 		sound = service_unknown_sound;
 	else if (problem_services_unknown == 0 && problem_services_warning == 0 && problem_services_critical == 0 && problem_hosts_down == 0 && problem_hosts_unreachable == 0 && normal_sound != NULL)
 		sound = normal_sound;
-	if (sound != NULL) {
+	if (sound != NULL && content_type == HTML_CONTENT) {
 		printf("<object type=\"audio/x-wav\" data=\"%s%s\" height=\"0\" width=\"0\">", url_media_path, sound);
 		printf("<param name=\"filename\" value=\"%s%s\">", url_media_path, sound);
 		printf("<param name=\"autostart\" value=\"true\">");
@@ -660,7 +679,12 @@ int main(void) {
 
 			/* only show service problems of Hosts which are
 			   _NOT_ DOWN or UNREACHABLE */
-			host_status_types = 3;
+
+			/* FIXME
+				mark that this apllies only for "All Unhandled Problems"
+			*/
+			if (host_status_types == (HOST_DOWN + HOST_UNREACHABLE))
+				host_status_types = HOST_PENDING | HOST_UP;
 
 			if (content_type == HTML_CONTENT) {
 				printf("<form name='tableformservice' id='tableformservice' action='%s' method='POST' style='margin:0px'>\n", CMD_CGI);
@@ -727,14 +751,16 @@ int process_cgivars(void) {
 			continue;
 		}
 
-		/* we found the navbar search argument */
-		else if (!strcmp(variables[x], "navbarsearch")) {
+		/* we found the search_string argument */
+		else if (!strcmp(variables[x], "search_string") || !strcmp(variables[x], "servicefilter")) {
 			x++;
 			if (variables[x] == NULL) {
 				error = TRUE;
 				break;
 			}
-			navbar_search = TRUE;
+
+			search_string = strdup(variables[x]);
+			strip_html_brackets(search_string);
 		}
 
 		/* we found the hostgroup argument */
@@ -925,17 +951,6 @@ int process_cgivars(void) {
 		/* we found the nodaemoncheck option */
 		else if (!strcmp(variables[x], "nodaemoncheck"))
 			daemon_check = FALSE;
-
-		/* servicefilter cgi var */
-		else if (!strcmp(variables[x], "servicefilter")) {
-			x++;
-			if (variables[x] == NULL) {
-				error = TRUE;
-				break;
-			}
-			service_filter = strdup(variables[x]);
-			strip_html_brackets(service_filter);
-		}
 	}
 
 	/* free memory allocated to the CGI variables */
@@ -1480,8 +1495,8 @@ void show_service_detail(void) {
 			printf("</DIV>\n");
 		}
 
-		if (service_filter != NULL)
-			printf("<DIV ALIGN=CENTER CLASS='statusSort'>Filtered By Services Matching \'%s\'</DIV>", service_filter);
+		if (search_string != NULL)
+			printf("<DIV ALIGN=CENTER CLASS='statusSort'>Filtered By Hosts/Services Matching \'%s\'</DIV>", search_string);
 
 		printf("</td>\n");
 
@@ -2034,7 +2049,11 @@ void show_host_detail(void) {
 				printf("state duration");
 			printf("</b> (%s)\n", (sort_type == SORT_ASCENDING) ? "ascending" : "descending");
 			printf("</DIV>\n");
+
 		}
+
+		if (search_string != NULL)
+			printf("<DIV ALIGN=CENTER CLASS='statusSort'>Filtered By Hosts Matching \'%s\'</DIV>", search_string);
 
 		printf("</td>\n");
 
@@ -3605,7 +3624,7 @@ void show_hostgroup_overviews(void) {
 				if (json_start == FALSE)
 					printf(",\n");
 
-				if(show_hostgroup_overview(temp_hostgroup) == FALSE)
+				if (show_hostgroup_overview(temp_hostgroup) == FALSE)
 					continue;
 
 				json_start = FALSE;
@@ -5161,8 +5180,6 @@ void grab_statusdata(void) {
 	service *temp_service = NULL;
 	hostgroup *temp_hostgroup = NULL;
 	servicegroup *temp_servicegroup = NULL;
-	int grab_service = FALSE;
-	regex_t preg, preg_hostname;
 
 	/* get requested groups */
 	temp_hostgroup = find_hostgroup(hostgroup_name);
@@ -5172,15 +5189,15 @@ void grab_statusdata(void) {
 
 		for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
 
+			/* if user is doing a search and host didn't match try next one */
+			if (search_string != NULL && temp_hoststatus->search_matched == FALSE && temp_hostgroup == NULL)
+				continue;
+
 			/* find the host  */
 			temp_host = find_host(temp_hoststatus->host_name);
 
 			/* if we couldn't find the host, go to the next status entry */
 			if (temp_host == NULL)
-				continue;
-
-			/* If user searched for a single host without any services then show only this one */
-			if (show_all_hosts == FALSE && strcmp(host_name, temp_hoststatus->host_name))
 				continue;
 
 			/* make sure user has rights to see this... */
@@ -5197,6 +5214,7 @@ void grab_statusdata(void) {
 			if (passes_host_properties_filter(temp_hoststatus) == FALSE)
 				continue;
 
+
 			/* see if this host is a member of the hostgroup */
 			if (show_all_hostgroups == FALSE) {
 				if (temp_hostgroup == NULL)
@@ -5206,16 +5224,16 @@ void grab_statusdata(void) {
 			}
 
 			add_status_data(HOST_STATUS, temp_hoststatus, NULL);
-
 		}
 	}
 	if (group_style_type != STYLE_HOST_DETAIL) {
-		if (service_filter != NULL)
-			regcomp(&preg, service_filter, 0);
-		if (host_filter != NULL)
-			regcomp(&preg_hostname, host_filter, REG_ICASE);
 
 		for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
+
+			/* if user is doing a search and service didn't match try next one */
+			if (search_string != NULL && temp_servicestatus->search_matched == FALSE && \
+			        display_type != DISPLAY_HOSTGROUPS && display_type != DISPLAY_SERVICEGROUPS)
+				continue;
 
 			/* find the service  */
 			temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
@@ -5252,44 +5270,27 @@ void grab_statusdata(void) {
 			if (passes_service_properties_filter(temp_servicestatus) == FALSE)
 				continue;
 
-			/* servicefilter cgi var */
-			if (service_filter != NULL)
-				if (regexec(&preg, temp_servicestatus->description, 0, NULL, 0))
-					continue;
-
-			grab_service = FALSE;
-
+			/* see if only one host should be shown */
 			if (display_type == DISPLAY_HOSTS) {
-				if (show_all_hosts == TRUE)
-					grab_service = TRUE;
-				/* for the host_name ... */
-				else if (host_filter != NULL && 0 == regexec(&preg_hostname, temp_servicestatus->host_name, 0, NULL, 0))
-					grab_service = TRUE;
-				else if (!strcmp(host_name, temp_servicestatus->host_name))
-					grab_service = TRUE;
-				/* and for the display_name */
-				else if (host_filter != NULL && 0 == regexec(&preg_hostname, temp_host->display_name, 0, NULL, 0))
-					grab_service = TRUE;
-				else if (!strcmp(host_name, temp_host->display_name))
-					grab_service = TRUE;
+				if (show_all_hosts == FALSE) {
+					if (strcmp(host_name, temp_servicestatus->host_name) && strcmp(host_name, temp_host->display_name) && search_string == NULL)
+						continue;
+				}
 			}
 
-			else if (display_type == DISPLAY_HOSTGROUPS) {
-				if (show_all_hostgroups == TRUE)
-					grab_service = TRUE;
-				else if (temp_hostgroup != NULL && is_host_member_of_hostgroup(temp_hostgroup, temp_host) == TRUE)
-					grab_service = TRUE;
+			/* see if we should display a hostgroup */
+			else if (display_type == DISPLAY_HOSTGROUPS && show_all_hostgroups == FALSE) {
+				if (temp_hostgroup == NULL || is_host_member_of_hostgroup(temp_hostgroup, temp_host) == FALSE)
+					continue;
 			}
 
-			else if (display_type == DISPLAY_SERVICEGROUPS) {
-				if (show_all_servicegroups == TRUE)
-					grab_service = TRUE;
-				else if (temp_servicegroup != NULL && is_service_member_of_servicegroup(temp_servicegroup, temp_service) == TRUE)
-					grab_service = TRUE;
+			/* see if we should display a servicegroup */
+			else if (display_type == DISPLAY_SERVICEGROUPS && show_all_servicegroups == FALSE) {
+				if (temp_servicegroup == NULL || is_service_member_of_servicegroup(temp_servicegroup, temp_service) == FALSE)
+					continue;
 			}
 
-			if (grab_service == TRUE)
-				add_status_data(SERVICE_STATUS, NULL, temp_servicestatus);
+			add_status_data(SERVICE_STATUS, NULL, temp_servicestatus);
 		}
 	}
 
