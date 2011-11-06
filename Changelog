@@ -62,7 +62,7 @@ CHANGES
 * cgi.cfg: extinfo_show_child_hosts=0 added
 * cgi.cfg: authorized_for_full_command_resolution and authorized_contactgroup_for_full_command_resolution added
 
-* add modules/ido2db_check_proc.cfg # 1870
+* add objects/ido2db_check_proc.cfg (not included by default) #1870
 * ido2db.cfg
 	** enable_sla=0
 	** debug_readable_timestamp=0
