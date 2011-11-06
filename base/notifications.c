@@ -1232,11 +1232,11 @@ int create_notification_list_from_service(icinga_macros *mac, service *svc, int 
 			for (temp_contactsmember = temp_contactgroup->members; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {
 				if ((temp_contact = temp_contactsmember->contact_ptr) == NULL)
 					continue;
-                        /* check now if the contact can be notified */
-                        if (check_contact_service_notification_viability(temp_contact, svc, type, options) == OK)
-                                add_notification(mac, temp_contact);
-                        else
-                                log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n",temp_contact->name);
+                        	/* check now if the contact can be notified */
+	                        if (check_contact_service_notification_viability(temp_contact, svc, type, options) == OK)
+	                                add_notification(mac, temp_contact);
+	                        else
+	                                log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n",temp_contact->name);
 			}
 		}
 	}
