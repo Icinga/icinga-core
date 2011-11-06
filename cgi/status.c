@@ -189,6 +189,7 @@ int max_grid_width = 8;
 int group_style_type = STYLE_OVERVIEW;
 int host_items_found = FALSE;
 int service_items_found = FALSE;
+int navbar_search = FALSE;
 int user_is_authorized_for_statusdata = FALSE;
 
 int service_status_types = SERVICE_PENDING | SERVICE_OK | SERVICE_UNKNOWN | SERVICE_WARNING | SERVICE_CRITICAL;
@@ -301,6 +302,13 @@ int main(void) {
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
+	/* keeps backwards compatibility with old search method */
+	if (navbar_search == TRUE && search_string == NULL && host_name != NULL) {
+		group_style_type = STYLE_HOST_SERVICE_DETAIL;
+		search_string = strdup(host_name);
+		free(host_name);
+	}
+
 	/* see if user tried searching something */
 	if (search_string != NULL) {
 
@@ -394,9 +402,9 @@ int main(void) {
 		user_is_authorized_for_statusdata = TRUE;
 
 		/* check the search result and trigger the desired view */
-		if (host_items_found == TRUE && service_items_found == FALSE)
+		if (host_items_found == TRUE && service_items_found == FALSE && group_style_type == STYLE_HOST_SERVICE_DETAIL)
 			group_style_type = STYLE_HOST_DETAIL;
-		else if (host_items_found == FALSE && service_items_found == TRUE)
+		else if (host_items_found == FALSE && service_items_found == TRUE && group_style_type == STYLE_HOST_SERVICE_DETAIL)
 			group_style_type = STYLE_SERVICE_DETAIL;
 	}
 
@@ -693,7 +701,8 @@ int main(void) {
 				printf("<table border=0 width=100%% cellspacing=0 cellpadding=0><tr><td align=right width=50%%></td><td align=right width=50%%>\n");
 				show_servicecommand_table();
 				printf("</td></tr></table>\n");
-			}
+			} else if (content_type == JSON_CONTENT)
+				printf(",\n");
 
 			group_style_type = STYLE_SERVICE_DETAIL;
 			show_service_detail();
@@ -761,6 +770,17 @@ int process_cgivars(void) {
 
 			search_string = strdup(variables[x]);
 			strip_html_brackets(search_string);
+		}
+
+		/* we found the navbar search argument */
+		/* kept for backwards compatibility */
+		else if (!strcmp(variables[x], "navbarsearch")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+			navbar_search = TRUE;
 		}
 
 		/* we found the hostgroup argument */
