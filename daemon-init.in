@@ -100,7 +100,7 @@ pid_icinga ()
 		echo "Icinga not running. No lock file found in $IcingaRunFile"
 		exit 1
 	elif [ -e $IcingaRunFile ] ; then
-    	    pproc=`ps -ef |grep $IcingaPID |grep -v grep `
+    	    pproc=`ps auxww |grep $IcingaPID `
     	    echo "Icinga Process PID file present"
     	     if [ -z "$pproc" ] ; then
         	rm -f $IcingaRunFile

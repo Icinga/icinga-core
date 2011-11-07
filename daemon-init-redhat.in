@@ -30,7 +30,7 @@ lockfile=/var/lock/subsys/$prog
 
 pid_lock() {
     if [ -e $pidfile ] ; then 
-	pproc=`ps -ef |grep (cat "$pidfile") |grep -v grep `
+	pproc=`ps auxww |grep (cat "$pidfile") `
 	echo "Icinga Process PID file present"
 	 if [ -z $pproc ] ; then 
 	    rm -f $pidfile

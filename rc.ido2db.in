@@ -101,9 +101,9 @@ status_ido2db ()
 ido2db_procs ()
 {
         pid_ido2db
-#	        PARENT=`ps -ef |grep pid_ido2db |grep -v grep`
-	PCHILD=`ps -ef |grep ido2db |grep -v grep |grep \_ |wc -l`
-	PID_LIST=`ps -ef |grep ido2db |grep -v grep |grep \_ |awk {'print $2'}| tr '\n' ' '`
+#	        PARENT=`ps ef |grep pid_ido2db |grep -v grep`
+	PCHILD=`ps auxf |grep ido2db |grep -v grep |grep \_ |wc -l`
+	PID_LIST=`ps auxf |grep ido2db |grep -v grep |grep \_ |awk {'print $2'}| tr '\n' ' '`
 }
 		
 
