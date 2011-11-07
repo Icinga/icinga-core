@@ -1378,7 +1378,7 @@ CREATE TABLE IF NOT EXISTS icinga_slahistory (
   instance_id bigint unsigned default 0,
   start_time timestamp default '0000-00-00 00:00:00',
   end_time timestamp default '0000-00-00 00:00:00',
-  acknowledgement_time timestamp default NULL,
+  acknowledgement_time timestamp default '0000-00-00 00:00:00',
   object_id bigint unsigned default 0,
   state smallint default 0,
   state_type smallint default '0',
