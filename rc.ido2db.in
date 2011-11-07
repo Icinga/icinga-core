@@ -35,8 +35,7 @@
 #  - Updated su syntax (Gary Miller)
 # 2009-07-11 Hendrik Bäcker <andurin@process-zero.de>
 #  - Rewrite ido2db init script, inspired by Sascha Runschke
-# 2011-09-27 Assaf Flatto (icinga@flatto.net)
-# - add PID and Child proc detection for status call 
+#
 #
 
 servicename=@ido2db_name@
@@ -98,21 +97,10 @@ status_ido2db ()
         return 1
 }
 
-ido2db_procs ()
-{
-        pid_ido2db
-#	        PARENT=`ps ef |grep pid_ido2db |grep -v grep`
-	PCHILD=`ps auxf |grep ido2db |grep -v grep |grep \_ |wc -l`
-	PID_LIST=`ps auxf |grep ido2db |grep -v grep |grep \_ |awk {'print $2'}| tr '\n' ' '`
-}
-		
-
-
 printstatus_ido2db()
 {
-     if status_ido2db $1 $2; then
-        ido2db_procs
-	echo "$servicename (pid $ido2dbPID) is running with $PCHILD child procs $PID_LIST..."
+	if status_ido2db $1 $2; then
+		echo "$servicename (pid $Ido2dbPID) is running..."
 	elif test $? == 2; then
 		echo "$servicename is not running but subsystem locked"
 	else
