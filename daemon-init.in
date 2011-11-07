@@ -99,15 +99,7 @@ pid_icinga ()
 	if test ! -f $IcingaRunFile; then
 		echo "Icinga not running. No lock file found in $IcingaRunFile"
 		exit 1
-	elif [ -e $IcingaRunFile ] ; then
-    	    pproc=`ps auxww |grep $IcingaPID `
-    	    echo "Icinga Process PID file present"
-    	     if [ -z "$pproc" ] ; then
-        	rm -f $IcingaRunFile
-    		echo "PID file removed and $IcingaPID process is not active on system"
-	     fi
-        fi
-        exit 1
+	fi
 
 	IcingaPID=`head -n 1 $IcingaRunFile`
 }
