@@ -23,6 +23,8 @@ ENHANCEMENTS
 	** adds host/service params to config.cgi to process their macros
 * classic ui: Add more info of (ack, downtime, ... ) status to json export in status.cgi (ivo) #1988
 * classic ui: add hostgroup and servicegroup summary to menu.html #2007
+* classic ui: Change markup color for unreachable hosts in statusmap.c #1464
+
 
 * idoutils: add SLA monitoring via opt-in enable_sla cfg option #2037
 * idoutils: added end_time column for acknowledgelemts expiry #770
@@ -37,6 +39,9 @@ FIXES
 * core: plug memory leak in downtimes comment add (Dorian Guillois) #1979
 
 * classic ui: fix for Classic-UI displays bad timeperiods #1989
+* classic ui: fixed wrong color in histogram and trends for unknown/unreachable #2042
+* classic ui: fixed search not returning all results, only first match (without * at the end) #844
+* classic ui: fixed wrong output from status.cgi with option hostservicedetail #2019
 
 * idoutils: host state change last_hard_state overrides last_state, last_hard_state always -1 #1932
 

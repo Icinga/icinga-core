@@ -21,12 +21,11 @@
 				</div>
 			</li>
 			<!-- classic search -->
-			<li class="menuli_style3">Show Host:</li>
+			<li class="menuli_style3">Search:</li>
 			<li class="menuli_style2">
 			<div class="navbarsearch">
 			<form method="get" action="@cgiurl@/status.cgi" target="main">
-			<input type='hidden' name='navbarsearch' value='1'>
-			<input type='text' name='host' size='20' class="NavBarSearchItem">
+			<input type='text' name='search_string' size='20' class="NavBarSearchItem">
 			</form>
 			</div>
 			</li>
