@@ -42,6 +42,8 @@ cfg_file=@sysconfdir@/objects/localhost.cfg
 # Definitions for monitoring a network printer
 #cfg_file=@sysconfdir@/objects/printer.cfg
 
+# Definitions for ido2db process checks
+#cfg_file=@sysconfdir@/objects/ido2db_check_proc.cfg
 
 # You can also tell Icinga to process all config files (with a .cfg
 # extension) in a particular directory by using the cfg_dir
@@ -1274,6 +1276,17 @@ use_embedded_perl_implicitly=1
 
 stalking_event_handlers_for_hosts=0
 stalking_event_handlers_for_services=0
+
+
+
+# NOTIFICATIONS FOR STALKED HOSTS/SERVICES
+# Allow notifications for stalked hosts/services globally
+# for all contacts in order to notify about a stalking
+# alert.
+# Values: 0 = disabled (default), 1 = enabled
+
+stalking_notifications_for_hosts=0
+stalking_notifications_for_services=0
 
 
 

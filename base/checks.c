@@ -100,7 +100,10 @@ extern int      child_processes_fork_twice;
 
 extern int      stalking_event_handlers_for_hosts;
 extern int      stalking_event_handlers_for_services;
+extern int      stalking_notifications_for_hosts;
+extern int      stalking_notifications_for_services;
 
+extern time_t   last_program_stop;
 extern time_t   program_start;
 extern time_t   event_start;
 
@@ -1738,9 +1741,16 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			schedule_service_check(temp_service, temp_service->next_check, CHECK_OPTION_NONE);
 	}
 
-	/* if we're stalking this state type and state was not already logged AND the plugin output changed since last check, log it now.. */
+	
+	/* STALKING
+	 * if we're stalking this state type and state was
+	 * not already logged AND the plugin output changed
+	 * since last check, log it or run event handlers or
+	 * notify now..
+	 */
 	if (temp_service->state_type == HARD_STATE && state_change == FALSE && state_was_logged == FALSE && compare_strings(old_plugin_output, temp_service->plugin_output)) {
 
+		/* OK */
 		if ((temp_service->current_state == STATE_OK && temp_service->stalk_on_ok == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1749,6 +1759,11 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+
+		/* WARNING */
 		} else if ((temp_service->current_state == STATE_WARNING && temp_service->stalk_on_warning == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1757,6 +1772,10 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+		/* UNKNOWN */
 		} else if ((temp_service->current_state == STATE_UNKNOWN && temp_service->stalk_on_unknown == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1765,6 +1784,10 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+		/* CRITICAL */
 		} else if ((temp_service->current_state == STATE_CRITICAL && temp_service->stalk_on_critical == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1773,6 +1796,9 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
 		}
 	}
 
@@ -2225,17 +2251,57 @@ int is_service_result_fresh(service *temp_service, time_t current_time, int log_
 	log_debug_info(DEBUGL_CHECKS, 2, "Freshness thresholds: service=%d, use=%d\n", temp_service->freshness_threshold, freshness_threshold);
 
 	/* calculate expiration time */
-	/* CHANGED 11/10/05 EG - program start is only used in expiration time calculation if > last check AND active checks are enabled, so active checks can become stale immediately upon program startup */
-	/* CHANGED 02/25/06 SG - passive checks also become stale, so remove dependence on active check logic */
+	/* 
+	 * CHANGED 11/10/05 EG
+	 * program start is only used in expiration time calculation
+	 * if > last check AND active checks are enabled, so active checks
+	 * can become stale immediately upon program startup 
+	 */
+	/*
+	 * CHANGED 02/25/06 SG
+	 * passive checks also become stale, so remove dependence on active
+	 * check logic 
+	 */
 	if (temp_service->has_been_checked == FALSE)
 		expiration_time = (time_t)(event_start + freshness_threshold);
-	/* CHANGED 06/19/07 EG - Per Ton's suggestion (and user requests), only use program start time over last check if no specific threshold has been set by user.  Otheriwse use it.  Problems can occur if Icinga is restarted more frequently that freshness threshold intervals (services never go stale). */
-	/* CHANGED 10/07/07 EG - Only match next condition for services that have active checks enabled... */
-	/* CHANGED 10/07/07 EG - Added max_service_check_spread to expiration time as suggested by Altinity */
+	/*
+	 * CHANGED 06/19/07 EG 
+	 * Per Ton's suggestion (and user requests), only use program start
+	 * time over last check if no specific threshold has been set by user.
+	 * Otheriwse use it.  Problems can occur if Icinga is restarted more
+	 * frequently that freshness threshold intervals (services never go stale).
+	 */
+	/* 
+	 * CHANGED 10/07/07 EG 
+	 * Only match next condition for services that have active checks
+	 * enabled... 
+	 */
+	/* 
+	 * CHANGED 10/07/07 EG
+	 * Added max_service_check_spread to expiration time as suggested
+	 * by Altinity 
+	 */
 	else if (temp_service->checks_enabled == TRUE && event_start > temp_service->last_check && temp_service->freshness_threshold == 0)
 		expiration_time = (time_t)(event_start + freshness_threshold + (max_service_check_spread * interval_length));
 	else
 		expiration_time = (time_t)(temp_service->last_check + freshness_threshold);
+
+	/*
+	 * ADDED 22-10-2011 MF, Patch by Andreas Ericsson
+	 * If the check was last done passively, we assume it's going
+	 * to continue that way and we need to handle the fact that
+	 * Icinga might have been shut off for quite a long time. If so,
+	 * we mustn't spam freshness notifications but use program_start_time
+	 * instead of last_check to determine freshness expiration time.
+	 * The threshold for "long time" is determined as 61.8% of the normal
+	 * freshness threshold based on vast heuristical research (ie, "some
+	 * guy once told me the golden ratio is good for loads of stuff").
+	 */
+	if (temp_service->check_type == SERVICE_CHECK_PASSIVE) {
+		if (event_start < program_start + 60 &&	event_start - last_program_stop < (freshness_threshold * 0.618)) {
+			expiration_time = event_start + freshness_threshold;
+		}
+	}
 
 	log_debug_info(DEBUGL_CHECKS, 2, "HBC: %d, PS: %lu, ES: %lu, LC: %lu, CT: %lu, ET: %lu\n", temp_service->has_been_checked, (unsigned long)program_start, (unsigned long)event_start, (unsigned long)temp_service->last_check, (unsigned long)current_time, (unsigned long)expiration_time);
 
@@ -2615,15 +2681,49 @@ int is_host_result_fresh(host *temp_host, time_t current_time, int log_this) {
 	log_debug_info(DEBUGL_CHECKS, 2, "Freshness thresholds: host=%d, use=%d\n", temp_host->freshness_threshold, freshness_threshold);
 
 	/* calculate expiration time */
-	/* CHANGED 11/10/05 EG - program start is only used in expiration time calculation if > last check AND active checks are enabled, so active checks can become stale immediately upon program startup */
+	/* 
+	 * CHANGED 11/10/05 EG 
+	 * program start is only used in expiration time calculation
+	 * if > last check AND active checks are enabled, so active checks
+	 * can become stale immediately upon program startup
+	 */
 	if (temp_host->has_been_checked == FALSE)
 		expiration_time = (time_t)(event_start + freshness_threshold);
-	/* CHANGED 06/19/07 EG - Per Ton's suggestion (and user requests), only use program start time over last check if no specific threshold has been set by user.  Otheriwse use it.  Problems can occur if Icinga is restarted more frequently that freshness threshold intervals (hosts never go stale). */
-	/* CHANGED 10/07/07 EG - Added max_host_check_spread to expiration time as suggested by Altinity */
+	/*
+	 * CHANGED 06/19/07 EG 
+	 * Per Ton's suggestion (and user requests), only use program start
+	 * time over last check if no specific threshold has been set by user.
+	 * Otheriwse use it.  Problems can occur if Icinga is restarted more
+	 * frequently that freshness threshold intervals (hosts never go stale).
+	 */
+	/* 
+	 * CHANGED 10/07/07 EG 
+	 * Added max_host_check_spread to expiration time as suggested by 
+	 * Altinity 
+	 */
 	else if (temp_host->checks_enabled == TRUE && event_start > temp_host->last_check && temp_host->freshness_threshold == 0)
 		expiration_time = (time_t)(event_start + freshness_threshold + (max_host_check_spread * interval_length));
 	else
 		expiration_time = (time_t)(temp_host->last_check + freshness_threshold);
+
+        /*
+         * ADDED 22-10-2011 MF, Patch by Andreas Ericsson
+         * If the check was last done passively, we assume it's going
+         * to continue that way and we need to handle the fact that
+         * Icinga might have been shut off for quite a long time. If so,
+         * we mustn't spam freshness notifications but use program_start_time
+         * instead of last_check to determine freshness expiration time.
+         * The threshold for "long time" is determined as 61.8% of the normal
+         * freshness threshold based on vast heuristical research (ie, "some
+         * guy once told me the golden ratio is good for loads of stuff").
+         */
+	if (temp_host->check_type == HOST_CHECK_PASSIVE) {
+		if (event_start < program_start + 60 &&
+			event_start - last_program_stop < (freshness_threshold * 0.618))
+		{
+			expiration_time = event_start + freshness_threshold;
+		}
+	}
 
 	log_debug_info(DEBUGL_CHECKS, 2, "HBC: %d, PS: %lu, ES: %lu, LC: %lu, CT: %lu, ET: %lu\n", temp_host->has_been_checked, (unsigned long)program_start, (unsigned long)event_start, (unsigned long)temp_host->last_check, (unsigned long)current_time, (unsigned long)expiration_time);
 
@@ -3936,9 +4036,16 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 
 	/******************** POST-PROCESSING STUFF *********************/
 
-	/* if the plugin output differs from previous check and no state change, log the current state/output if state stalking is enabled */
+        /* STALKING
+         * if we're stalking this state type and state was
+         * not already logged AND the plugin output changed
+         * since last check, log it or run event handlers or
+         * notify now..
+         */
+
 	if (hst->last_state == hst->current_state && compare_strings(old_plugin_output, hst->plugin_output)) {
 
+		/* UP */
 		if (hst->current_state == HOST_UP && hst->stalk_on_up == TRUE) {
 
 			log_host_event(hst);
@@ -3947,6 +4054,11 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 			if (stalking_event_handlers_for_hosts == TRUE)
 				handle_host_event(hst);
 
+			/* should we notify all contacts ? */
+			if (stalking_notifications_for_hosts == TRUE)
+				host_notification(hst, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+				
+		/* DOWN */
 		} else if (hst->current_state == HOST_DOWN && hst->stalk_on_down == TRUE) {
 
 			log_host_event(hst);
@@ -3955,6 +4067,11 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 			if (stalking_event_handlers_for_hosts == TRUE)
 				handle_host_event(hst);
 
+			/* should we notify all contacts ? */
+			if (stalking_notifications_for_hosts == TRUE)
+				host_notification(hst, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+				
+		/* UNREACHABLE */
 		} else if (hst->current_state == HOST_UNREACHABLE && hst->stalk_on_unreachable == TRUE) {
 
 			log_host_event(hst);
@@ -3962,6 +4079,10 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 			/* should we run event handlers ? */
 			if (stalking_event_handlers_for_hosts == TRUE)
 				handle_host_event(hst);
+
+			/* should we notify all contacts ? */
+			if (stalking_notifications_for_hosts == TRUE)
+				host_notification(hst, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
 		}
 	}
 

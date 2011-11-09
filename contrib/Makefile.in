@@ -25,7 +25,7 @@ BINDIR=@bindir@
 CGIS=traceroute.cgi daemonchk.cgi
 UTILS=mini_epn new_mini_epn convertcfg
 ALL=$(CGIS) $(UTILS)
-
+DST=dst
 
 CGI_C=$(SRC_CGI)/getcgi.c
 CGI_O=$(SRC_CGI)/getcgi.o $(SNPRINTF_O)
@@ -38,7 +38,7 @@ COMMON_H=$(SRC_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/location
 all: $(ALL)
 
 clean:
-	rm -f convertcfg daemonchk.cgi mini_epn new_mini_epn core *.o
+	rm -f convertcfg daemonchk.cgi mini_epn new_mini_epn core dst *.o
 	rm -f */*/*~
 	rm -f */*~
 	rm -f *~
@@ -76,6 +76,9 @@ new_mini_epn: new_mini_epn.c
 	$(CC) $(CFLAGS) -c perlxsi.c  `perl -MExtUtils::Embed -e ccopts`
 	$(CC) $(CFLAGS) -c new_mini_epn.c `perl -MExtUtils::Embed -e ccopts`
 	$(CC) $(CFLAGS) $(LDFLAGS) perlxsi.o new_mini_epn.o `perl -MExtUtils::Embed -e ccopts -e ldopts` -o $@
+dst: dst.c
+	$(CC) $(CFLAGS) -o $@ $< 
+
 
 ##############################################################################
 # dependencies
