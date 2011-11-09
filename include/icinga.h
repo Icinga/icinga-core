@@ -140,6 +140,8 @@ extern "C" {
 
 #define DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS               0       /* by default do not run event handlers for stalked hosts */
 #define DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES            0       /* by default do not run event handlers for stalked services */
+#define DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS               	0       /* by default do not run notifications for stalked hosts */
+#define DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES            	0       /* by default do not run notifications for stalked services */
 
 #define DEFAULT_ADDITIONAL_FRESHNESS_LATENCY			15	/* seconds to be added to freshness thresholds when automatically calculated by Icinga */
 
@@ -209,6 +211,7 @@ extern "C" {
 #define NOTIFICATION_DOWNTIMEEND        6
 #define NOTIFICATION_DOWNTIMECANCELLED  7
 #define NOTIFICATION_CUSTOM             99
+#define NOTIFICATION_STALKING		16211	
 
 
 
@@ -729,6 +732,8 @@ int submit_raw_external_command(char *,time_t *,int *);
 char *get_program_version(void);
 char *get_program_modification_date(void);
 int has_shell_metachars(const char *);
+
+extern pthread_mutex_t icinga_eventloop_lock;
 
 
 #ifdef __cplusplus

@@ -227,6 +227,8 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("DOWNTIMECANCELLED");
 		else if (type == NOTIFICATION_CUSTOM)
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("CUSTOM");
+		else if (type == NOTIFICATION_STALKING)
+			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("STALKING");
 		else if (svc->current_state == STATE_OK)
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("RECOVERY");
 		else
@@ -454,6 +456,14 @@ int check_service_notification_viability(service *svc, int type, int options) {
 		return OK;
 	}
 
+	/***********************************************/
+	/*** SPECIAL CASE FOR STALKING NOTIFICATIONS ***/
+	/***********************************************/
+	
+	/* stalking notifications are good to go at this point, if enabled (this is done before reaching notifications) */
+	if (type == NOTIFICATION_STALKING) {
+		return OK;
+	}
 
 	/****************************************/
 	/*** SPECIAL CASE FOR ACKNOWLEGEMENTS ***/
@@ -581,12 +591,8 @@ int check_service_notification_viability(service *svc, int type, int options) {
 		/* determine the time to use of the first problem point */
 		first_problem_time = svc->last_time_ok; /* not accurate, but its the earliest time we could use in the comparison */
 
-		if ((svc->last_time_warning < first_problem_time) && (svc->last_time_warning > svc->last_time_ok))
-			first_problem_time = svc->last_time_warning;
-		if ((svc->last_time_unknown < first_problem_time) && (svc->last_time_unknown > svc->last_time_ok))
-			first_problem_time = svc->last_time_unknown;
-		if ((svc->last_time_critical < first_problem_time) && (svc->last_time_critical > svc->last_time_ok))
-			first_problem_time = svc->last_time_critical;
+		if ((svc->last_hard_state_change > svc->last_time_ok))
+			first_problem_time = svc->last_hard_state_change;
 
 		if (current_time < (time_t)((first_problem_time == (time_t)0L) ? program_start : first_problem_time) + (time_t)(svc->first_notification_delay * interval_length)) {
 			log_debug_info(DEBUGL_NOTIFICATIONS, 1, "Not enough time has elapsed since the service changed to a non-OK state, so we should not notify about this problem yet\n");
@@ -674,6 +680,15 @@ int check_contact_service_notification_viability(contact *cntct, service *svc, i
 	/* custom notifications are good to go at this point... */
 	if (type == NOTIFICATION_CUSTOM)
 		return OK;
+
+	/***********************************************/
+	/*** SPECIAL CASE FOR STALKING NOTIFICATIONS ***/
+	/***********************************************/
+	
+	/* stalking notifications are good to go at this point, if enabled (this is done before reaching notifications) */
+	if (type == NOTIFICATION_STALKING) {
+		return OK;
+	}
 
 
 	/****************************************/
@@ -1213,11 +1228,11 @@ int create_notification_list_from_service(icinga_macros *mac, service *svc, int 
 			for (temp_contactsmember = temp_contactgroup->members; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {
 				if ((temp_contact = temp_contactsmember->contact_ptr) == NULL)
 					continue;
-                        /* check now if the contact can be notified */
-                        if (check_contact_service_notification_viability(temp_contact, svc, type, options) == OK)
-                                add_notification(mac, temp_contact);
-                        else
-                                log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n",temp_contact->name);
+                        	/* check now if the contact can be notified */
+	                        if (check_contact_service_notification_viability(temp_contact, svc, type, options) == OK)
+	                                add_notification(mac, temp_contact);
+	                        else
+	                                log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n",temp_contact->name);
 			}
 		}
 	}
@@ -1384,6 +1399,8 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("DOWNTIMECANCELLED");
 		else if (type == NOTIFICATION_CUSTOM)
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("CUSTOM");
+		else if (type == NOTIFICATION_STALKING)
+			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("STALKING");
 		else if (hst->current_state == HOST_UP)
 			mac.x[MACRO_NOTIFICATIONTYPE] = (char *)strdup("RECOVERY");
 		else
@@ -1698,10 +1715,8 @@ int check_host_notification_viability(host *hst, int type, int options) {
 		/* determine the time to use of the first problem point */
 		first_problem_time = hst->last_time_up; /* not accurate, but its the earliest time we could use in the comparison */
 
-		if ((hst->last_time_down < first_problem_time) && (hst->last_time_down > hst->last_time_up))
-			first_problem_time = hst->last_time_down;
-		if ((hst->last_time_unreachable < first_problem_time) && (hst->last_time_unreachable > hst->last_time_unreachable))
-			first_problem_time = hst->last_time_unreachable;
+		if ((hst->last_hard_state_change > hst->last_time_up))
+			first_problem_time = hst->last_hard_state_change;
 
 		if (current_time < (time_t)((first_problem_time == (time_t)0L) ? program_start : first_problem_time) + (time_t)(hst->first_notification_delay * interval_length)) {
 			log_debug_info(DEBUGL_NOTIFICATIONS, 1, "Not enough time has elapsed since the host changed to a non-UP state (or since program start), so we shouldn't notify about this problem yet.\n");
