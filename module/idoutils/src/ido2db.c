@@ -541,6 +541,12 @@ int ido2db_process_config_var(char *arg) {
 		ido2db_db_settings.max_logentries_age = strtoul(val, NULL, 0) * 60;
 	else if (!strcmp(var, "max_acknowledgements_age"))
 		ido2db_db_settings.max_acknowledgements_age = strtoul(val, NULL, 0) * 60;
+	else if (!strcmp(var, "max_notifications_age"))
+		ido2db_db_settings.max_notifications_age = strtoul(val, NULL, 0) * 60;
+	else if (!strcmp(var, "max_contactnotifications_age"))
+		ido2db_db_settings.max_contactnotifications_age = strtoul(val, NULL, 0) * 60;
+	else if (!strcmp(var, "max_contactnotificationmethods_age"))
+		ido2db_db_settings.max_contactnotificationmethods_age = strtoul(val, NULL, 0) * 60;
 
 	else if (!strcmp(var, "trim_db_interval"))
 		ido2db_db_settings.trim_db_interval = strtoul(val, NULL, 0);
@@ -619,6 +625,9 @@ int ido2db_initialize_variables(void) {
 	ido2db_db_settings.max_externalcommands_age = 0L;
 	ido2db_db_settings.max_logentries_age = 0L;
 	ido2db_db_settings.max_acknowledgements_age = 0L;
+	ido2db_db_settings.max_notifications_age = 0L;
+	ido2db_db_settings.max_contactnotifications_age = 0L;
+	ido2db_db_settings.max_contactnotificationmethods_age = 0L;
 	ido2db_db_settings.trim_db_interval = (unsigned long)DEFAULT_TRIM_DB_INTERVAL; /* set the default if missing in ido2db.cfg */
 	ido2db_db_settings.housekeeping_thread_startup_delay = (unsigned long)DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY; /* set the default if missing in ido2db.cfg */
 	ido2db_db_settings.clean_realtime_tables_on_core_startup = IDO_TRUE; /* default is cleaning on startup */
