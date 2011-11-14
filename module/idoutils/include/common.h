@@ -21,10 +21,11 @@
 #define SOCKDEBUG_NAME 		"SOCKDEBUG"
 #define LOG2IDO_NAME 		"LOG2IDO"
 
-#define IDO_DATE 		"11-30-2011"
-#define IDO_VERSION 		"1.6.0"
+/* only one space for update-version matching */
+#define IDO_DATE "11-30-2011"
+#define IDO_VERSION "1.6.0"
 
-#define IDO_SCHEMA_VERSION 	"1.6.0"
+#define IDO_SCHEMA_VERSION "1.6.0"
 
 #define IDO_COPYRIGHT 		"Copyright(c) 2005-2008 Ethan Galstad, Copyright(c) 2009-2011 Icinga Development Team (https://www.icinga.org)"
 #define IDO_LICENSE 		"License: GPL v2"
