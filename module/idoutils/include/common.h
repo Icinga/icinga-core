@@ -23,7 +23,7 @@
 
 /* only one space for update-version matching */
 #define IDO_DATE "11-30-2011"
-#define IDO_VERSION "1.6.0"
+#define IDO_VERSION "1.6.0-dev"
 
 #define IDO_SCHEMA_VERSION "1.6.0"
 
