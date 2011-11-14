@@ -194,6 +194,15 @@ max_logentries_age=44640
 # Keep acknowledgements for 31 days
 max_acknowledgements_age=44640
 
+# Keep notifications for 31 days
+max_notifications_age=44640
+
+# Keep contactnotifications for 31 days
+max_contactnotifications_age=44640
+
+# Keep contactnotificationmethods for 31 days
+max_contactnotificationmethods_age=44640
+
 
 ## CLEAN REALTIME TABLES AT CORE STARTUP
 # If you don't want to clean all those tables, set this option to 0.

@@ -191,6 +191,8 @@ extern int      use_embedded_perl_implicitly;
 
 extern int      stalking_event_handlers_for_hosts;
 extern int      stalking_event_handlers_for_services;
+extern int      stalking_notifications_for_hosts;
+extern int      stalking_notifications_for_services;
 
 extern int      date_format;
 extern char     *use_timezone;
@@ -1409,6 +1411,28 @@ int read_main_config_file(char *main_config_file) {
 			stalking_event_handlers_for_services = (atoi(value) > 0) ? TRUE : FALSE;
 		}
 
+                else if (!strcmp(variable, "stalking_notifications_for_hosts")) {
+
+                        if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+                                dummy = asprintf(&error_message, "stalking_notifications_for_hosts");
+                                error = TRUE;
+                                break;
+                        }
+
+                        stalking_notifications_for_hosts = (atoi(value) > 0) ? TRUE : FALSE;
+                }
+
+                else if (!strcmp(variable, "stalking_notifications_for_services")) {
+
+                        if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+                                dummy = asprintf(&error_message, "stalking_notifications_for_services");
+                                error = TRUE;
+                                break;
+                        }
+
+                        stalking_notifications_for_services = (atoi(value) > 0) ? TRUE : FALSE;
+                }
+
 		else if (!strcmp(variable, "external_command_buffer_slots"))
 			external_command_buffer_slots = atoi(value);
 
@@ -1886,8 +1910,8 @@ int pre_flight_object_check(int *w, int *e) {
 	if (verify_config == TRUE)
 		printf("Checking services...\n");
 	if (get_service_count() == 0) {
-		logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: There are no services defined!");
-		errors++;
+		logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: There are no services defined!");
+		warnings++;
 	}
 	total_objects = 0;
 	for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
@@ -2050,8 +2074,8 @@ int pre_flight_object_check(int *w, int *e) {
 		printf("Checking hosts...\n");
 
 	if (get_host_count() == 0) {
-		logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: There are no hosts defined!");
-		errors++;
+		logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: There are no hosts defined!");
+		warnings++;
 	}
 
 	total_objects = 0;
@@ -2296,8 +2320,8 @@ int pre_flight_object_check(int *w, int *e) {
 	if (verify_config == TRUE)
 		printf("Checking contacts...\n");
 	if (contact_list == NULL) {
-		logit(NSLOG_VERIFICATION_ERROR, TRUE, "Error: There are no contacts defined!");
-		errors++;
+		logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: There are no contacts defined!");
+		warnings++;
 	}
 	for (temp_contact = contact_list, total_objects = 0; temp_contact != NULL; temp_contact = temp_contact->next, total_objects++) {
 

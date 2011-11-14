@@ -129,3 +129,5 @@ hostTotalsCommands a:hover { color: #fff; }
 
 .serviceImportantProblem { background-color: #ff3300; color: #000; }
 .serviceUnimportantProblem { background-color: #ffcccc; color: #000; }
+
+.highlightRow { background-color: #BBC3BB; }

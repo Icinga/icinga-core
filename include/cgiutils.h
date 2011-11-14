@@ -99,6 +99,7 @@ extern "C" {
 #define ERROR_CGI_OBJECT_DATA	2
 #define ERROR_CGI_CFG_FILE	3
 #define ERROR_CGI_MAIN_CFG	4
+#define ERROR_CGI_RESOURCE_CFG	5
 
 
 /**************************** STYLE SHEET NAMES ******************************/
@@ -133,8 +134,6 @@ extern "C" {
 #define JQUERY_MAIN_JS		"jquery-1.6.2.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
 #define SKINNYTIP_JS		"skinnytip.js"
-#define HIGHLIGHT_TABLE_JS	"htable.js"
-#define HIGHLIGHT_TABLE_JS_CODE	" onMouseOver=\"javascript:trackTableHighlight(event, '#BBC3BB');\" onMouseOut=\"javascript:highlightTableRow(0);\""
 
 /********************************* ICONS ************************************/
 
@@ -525,7 +524,7 @@ extern "C" {
 
 /************************** JSON OUTPUT VERSION ************************/
 
-#define JSON_OUTPUT_VERSION "1.5.0"
+#define JSON_OUTPUT_VERSION "1.6.0"
 
 
 /************************** BUFFER  ***************************************/
@@ -594,6 +593,12 @@ extern "C" {
 #define TIMEPERIOD_SINGLE_DAY	14
 #define TIMEPERIOD_NEXTPROBLEM	15
 
+/********************* CHILD HOST DISPLAY *********************************/
+
+#define SHOW_CHILD_HOSTS_NONE		0
+#define SHOW_CHILD_HOSTS_IMMEDIATE	1
+#define SHOW_CHILD_HOSTS_ALL		2
+
 /******************************** FUNCTIONS *******************************/
 
 void reset_cgi_vars(void);
@@ -604,6 +609,7 @@ char * get_cmd_file_location(void);				/* gets location of external command file
 
 int read_cgi_config_file(char *);
 int read_main_config_file(char *);
+int read_icinga_resource_file(char *);
 int read_all_object_configuration_data(char *,int);
 int read_all_status_data(char *,int);
 
@@ -635,6 +641,7 @@ void include_ssi_file(char *);					/* include user-defined SSI footer/header */
 
 void cgi_config_file_error(char *);
 void main_config_file_error(char *);
+void icinga_resource_file_error(char *);
 void object_data_error(void);
 void status_data_error(void);
 void print_error(char*, int);

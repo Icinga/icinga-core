@@ -7,7 +7,7 @@
 	<meta name="robots" content="noindex, nofollow" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/interface/menu.css" media="screen, projection" />
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
-	<script type="text/javascript" src="js/mootools.js"></script>
+	<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
 	<script type="text/javascript" src="js/menu.js"></script>
 </head>
 <body>
@@ -21,12 +21,11 @@
 				</div>
 			</li>
 			<!-- classic search -->
-			<li class="menuli_style3">Show Host:</li>
+			<li class="menuli_style3">Search:</li>
 			<li class="menuli_style2">
 			<div class="navbarsearch">
 			<form method="get" action="@cgiurl@/status.cgi" target="main">
-			<input type='hidden' name='navbarsearch' value='1'>
-			<input type='text' name='host' size='20' class="NavBarSearchItem">
+			<input type='text' name='search_string' size='20' class="NavBarSearchItem">
 			</form>
 			</div>
 			</li>
@@ -37,7 +36,9 @@
 			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&style=hostdetail&nostatusheader" target="main">Host Detail</a></li>
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?host=all&nostatusheader" target="main">Service Detail</a></li>
 			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&style=overview&nostatusheader" target="main">Hostgroup Overview</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&style=summary&nostatusheader" target="main">Hostgroup Summary</a></li>
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&style=overview&nostatusheader" target="main">Servicegroup Overview</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&style=summary&nostatusheader" target="main">Servicegroup Summary</a></li>
 			<li class="menuli_style2"><a href="@cgiurl@/statusmap.cgi?host=all" target="main">Status Map</a></li>
 			<!-- <li class="menuli_style1"><a href="@cgiurl@/statuswrl.cgi?host=all" target="main">3-D Status Map</a></li> -->
 		</ul>

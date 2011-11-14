@@ -73,6 +73,8 @@ extern int	      dump_retained_host_service_states_to_neb;
 extern int            use_retained_scheduling_info;
 extern int            retention_scheduling_horizon;
 
+extern time_t         last_program_stop;
+
 extern unsigned long  next_comment_id;
 extern unsigned long  next_downtime_id;
 extern unsigned long  next_event_id;
@@ -1119,6 +1121,8 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 						scheduling_info_is_ok = TRUE;
 					else
 						scheduling_info_is_ok = FALSE;
+					/* save that for determining freshness of checkresults on startup */
+					last_program_stop = creation_time;
 				} else if (!strcmp(var, "version")) {
 				}
 				break;

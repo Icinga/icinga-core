@@ -58,6 +58,12 @@ char *servicegroup_name = NULL;
 char *service_desc = NULL;
 char *service_filter = NULL;
 
+/* AFFECTEDHOSTS structure */
+typedef struct affected_host {
+	char *host_name;
+	struct affected_host *next;
+} affected_host;
+
 /* HOSTOUTAGE structure */
 typedef struct hostoutage_struct {
 	host *hst;
@@ -71,6 +77,7 @@ typedef struct hostoutage_struct {
 	float percent_time_down;
 	unsigned long time_unreachable;
 	float percent_time_unreachable;
+	struct affected_host *affected_hosts;
 	struct hostoutage_struct *next;
 } hostoutage;
 
@@ -93,12 +100,14 @@ void add_hostoutage(host *);
 void sort_hostoutages(void);
 void free_hostoutage_list(void);
 void free_hostoutagesort_list(void);
+void add_affected_host(char *);
 
 
 authdata current_authdata;
 
 hostoutage *hostoutage_list = NULL;
 hostoutagesort *hostoutagesort_list = NULL;
+hostoutage *currently_checked_host = NULL;
 
 int service_severity_divisor = 4;          /* default = services are 1/4 as important as hosts */
 
@@ -280,6 +289,7 @@ void display_network_outages(void) {
 	hostoutagesort *temp_hostoutagesort;
 	hostoutage *temp_hostoutage;
 	hoststatus *temp_hoststatus;
+	affected_host * temp_affected_host;
 	int odd = 0;
 	char *bg_class = "";
 	char *status = "";
@@ -442,6 +452,13 @@ void display_network_outages(void) {
 #endif
 			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View alert history for this host' TITLE='View alert history for this host'></A>\n", HISTORY_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, HISTORY_ICON);
 			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View notifications for this host' TITLE='View notifications for this host'></A>\n", NOTIFICATIONS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, NOTIFICATION_ICON);
+
+			/* add Link to acknowledge all affected hosts */
+			printf("<a href='%s?cmd_typ=%d&host=%s", CMD_CGI, CMD_ACKNOWLEDGE_HOST_PROBLEM, url_encode(temp_hostoutage->hst->name));
+			for (temp_affected_host = temp_hostoutage->affected_hosts; temp_affected_host != NULL; temp_affected_host = temp_affected_host->next)
+				printf("&host=%s", url_encode(temp_affected_host->host_name));
+			printf("'><img src='%s%s' border=0 ALT='Acknowledge All Affected Hosts' TITLE='Acknowledge All Affected Hosts'></a>\n", url_images_path, ACKNOWLEDGEMENT_ICON);
+
 			printf("</TD>\n");
 
 			printf("</TR>\n");
@@ -509,6 +526,7 @@ void add_hostoutage(host *hst) {
 	new_hostoutage->severity = 0;
 	new_hostoutage->affected_child_hosts = 0;
 	new_hostoutage->affected_child_services = 0;
+	new_hostoutage->affected_hosts = NULL;
 
 	/* add the structure to the head of the list in memory */
 	new_hostoutage->next = hostoutage_list;
@@ -521,11 +539,20 @@ void add_hostoutage(host *hst) {
 void free_hostoutage_list(void) {
 	hostoutage *this_hostoutage;
 	hostoutage *next_hostoutage;
+	affected_host *this_affected_host;
+	affected_host *next_affected_host;
 
 	/* free all list members */
 	for (this_hostoutage = hostoutage_list; this_hostoutage != NULL; this_hostoutage = next_hostoutage) {
 		next_hostoutage = this_hostoutage->next;
-		free(this_hostoutage);
+
+		/* free affected host list */
+		for (this_affected_host = this_hostoutage->affected_hosts; this_affected_host != NULL; this_affected_host = next_affected_host) {
+			next_affected_host = this_affected_host->next;
+			my_free(this_affected_host->host_name);
+			my_free(this_affected_host);
+		}
+		my_free(this_hostoutage);
 	}
 
 	/* reset list pointer */
@@ -542,7 +569,7 @@ void free_hostoutagesort_list(void) {
 	/* free all list members */
 	for (this_hostoutagesort = hostoutagesort_list; this_hostoutagesort != NULL; this_hostoutagesort = next_hostoutagesort) {
 		next_hostoutagesort = this_hostoutagesort->next;
-		free(this_hostoutagesort);
+		my_free(this_hostoutagesort);
 	}
 
 	/* reset list pointer */
@@ -557,6 +584,8 @@ void calculate_outage_effects(void) {
 
 	/* check all hosts causing problems */
 	for (temp_hostoutage = hostoutage_list; temp_hostoutage != NULL; temp_hostoutage = temp_hostoutage->next) {
+
+		currently_checked_host = temp_hostoutage;
 
 		/* calculate the outage effect of this particular hosts */
 		calculate_outage_effect_of_host(temp_hostoutage->hst, &temp_hostoutage->affected_child_hosts, &temp_hostoutage->affected_child_services);
@@ -589,6 +618,8 @@ void calculate_outage_effect_of_host(host *hst, int *affected_hosts, int *affect
 		/* keep a running total of outage effects */
 		total_child_hosts_affected += temp_child_hosts_affected;
 		total_child_services_affected += temp_child_services_affected;
+
+		add_affected_host(temp_host->name);
 	}
 
 	*affected_hosts = total_child_hosts_affected + 1;
@@ -615,7 +646,7 @@ int is_route_to_host_blocked(host *hst) {
 		if (temp_hoststatus == NULL)
 			continue;
 
-		/* at least one parent it up (or pending), so this host is not blocked */
+		/* at least one parent is up (or pending), so this host is not blocked */
 		if (temp_hoststatus->status == HOST_UP || temp_hoststatus->status == HOST_PENDING)
 			return FALSE;
 	}
@@ -680,6 +711,32 @@ void sort_hostoutages(void) {
 			last_hostoutagesort->next = new_hostoutagesort;
 		}
 	}
+
+	return;
+}
+
+void add_affected_host(char *host_name) {
+	affected_host *new_affected_host;
+	affected_host *temp_affected_host;
+
+	if (currently_checked_host->affected_hosts!=NULL) {
+		for (temp_affected_host = currently_checked_host->affected_hosts; temp_affected_host != NULL; temp_affected_host = temp_affected_host->next) {
+			if (!strcmp(temp_affected_host->host_name, host_name))
+				return;
+		}
+	}
+
+	/* allocate memory for a new structure */
+	new_affected_host = (affected_host *)malloc(sizeof(affected_host));
+
+	if (new_affected_host == NULL)
+		return;
+
+	new_affected_host->host_name = host_name;
+
+	/* add the structure to the head of the list in memory */
+	new_affected_host->next = currently_checked_host->affected_hosts;
+	currently_checked_host->affected_hosts = new_affected_host;
 
 	return;
 }
