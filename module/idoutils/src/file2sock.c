@@ -12,11 +12,6 @@
 #include "../include/common.h"
 #include "../include/io.h"
 
-#define FILE2SOCK_VERSION "1.6.0"
-#define FILE2SOCK_NAME "FILE2SOCK"
-#define FILE2SOCK_DATE "11-30-2011"
-
-
 int process_arguments(int, char **);
 
 
@@ -43,11 +38,10 @@ int main(int argc, char **argv) {
 			printf("Incorrect command line arguments supplied\n");
 
 		printf("\n");
-		printf("%s %s\n", FILE2SOCK_NAME, FILE2SOCK_VERSION);
-		printf("Copyright(c) 2009-2011 Icinga Development Team (http://www.icinga.org)\n");
-		printf("Copyright(c) 2005-2007 Ethan Galstad (nagios@nagios.org)\n");
-		printf("Last Modified: %s\n", FILE2SOCK_DATE);
-		printf("License: GPL v2\n");
+		printf("%s %s\n", FILE2SOCK_NAME, IDO_VERSION);
+		printf("%s\n", IDO_COPYRIGHT);
+		printf("Last Modified: %s\n", IDO_DATE);
+		printf("%s\n", IDO_LICENSE);
 		printf("\n");
 		printf("Sends the contents of a file to a TCP or UNIX domain socket.  The contents of\n");
 		printf("the file are sent in their original format - no conversion, encapsulation, or\n");

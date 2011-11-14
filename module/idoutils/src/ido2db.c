@@ -122,11 +122,10 @@ int main(int argc, char **argv) {
 			printf("Incorrect command line arguments supplied\n");
 
 		printf("\n");
-		printf("%s %s\n", IDO2DB_NAME, IDO2DB_VERSION);
-		printf("Copyright(c) 2005-2008 Ethan Galstad (nagios@nagios.org)\n");
-		printf("Copyright(c) 2009-2011 Icinga Development Team (http://www.icinga.org)\n");
-		printf("Last Modified: %s\n", IDO2DB_DATE);
-		printf("License: GPL v2\n");
+		printf("%s %s\n", IDO2DB_NAME, IDO_VERSION);
+		printf("%s\n", IDO_COPYRIGHT);
+		printf("Last Modified: %s\n", IDO_DATE);
+		printf("%s\n", IDO_LICENSE);
 #ifdef HAVE_SSL
 		printf("SSL/TLS Available: Anonymous DH Mode, OpenSSL 0.9.6 or higher required\n");
 #endif
@@ -153,8 +152,8 @@ int main(int argc, char **argv) {
 	}
 
 	/* print starting info to syslog */
-	syslog(LOG_USER | LOG_INFO, "%s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org))", IDO2DB_NAME, IDO2DB_VERSION, IDO2DB_DATE);
-	syslog(LOG_USER | LOG_INFO, "%s %s starting... (PID=%d)\n", IDO2DB_NAME, IDO2DB_VERSION, (int)getpid());
+	syslog(LOG_USER | LOG_INFO, "%s %s (%s) %s", IDO2DB_NAME, IDO_VERSION, IDO_DATE, IDO_COPYRIGHT);
+	syslog(LOG_USER | LOG_INFO, "%s %s starting... (PID=%d)\n", IDO2DB_NAME, IDO_VERSION, (int)getpid());
 
 	if (ido2db_socket_type == IDO_SINK_UNIXSOCKET && use_ssl == IDO_TRUE) {
 		printf("SSL is not allowed on socket_type=unix\n");

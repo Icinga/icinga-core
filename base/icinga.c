@@ -2,9 +2,6 @@
  *
  * ICINGA.C - Core Program Code For Icinga
  *
- * Program: Icinga
- * Version: 1.6.0
- * License: GPL
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
  * Copyright (c) 2009-2011 Nagios Core Development Team and Community Contributors
  * Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
