@@ -47,6 +47,7 @@ FIXES
 * classic ui: fixed wrong color in histogram and trends for unknown/unreachable #2042
 * classic ui: fixed search not returning all results, only first match (without * at the end) #844
 * classic ui: fixed wrong output from status.cgi with option hostservicedetail #2019
+* classic ui: fix typo in histogram.c (thanks Sven-Göran Bergh)
 
 * idoutils: host state change last_hard_state overrides last_state, last_hard_state always -1 #1932
 
