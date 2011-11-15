@@ -51,7 +51,7 @@
   outweigh the security difference. SSL can be actived though if you need a more secure connection.</p>
 
   <div class="figure">
-<a name="id2750811"></a><p class="title"><b>Figure 10.1. NRPE</b></p>
+<a name="id3595720"></a><p class="title"><b>Figure 10.1. NRPE</b></p>
 <div class="figure-contents">
     
 
@@ -77,7 +77,7 @@
   The machine running the NRPE daemon is acting as a relay in this case.</p>
 
   <div class="figure">
-<a name="id2750849"></a><p class="title"><b>Figure 10.2. NRPE remote</b></p>
+<a name="id3595758"></a><p class="title"><b>Figure 10.2. NRPE remote</b></p>
 <div class="figure-contents">
     
 
@@ -111,13 +111,27 @@
 
   <p><span class="bold"><strong>Download</strong></span></p>
 
-  <p>Download the software from the <a class="link" href="https://git.icinga.org/?p=icinga.nrpe.git;a=tree" target="_top">Icinga git
-  repository</a> by clicking on "tar.gz" or use</p>
-<pre class="programlisting"> #&gt; cd /usr/src
- #&gt; wget "https://git.icinga.org/?p=icinga-nrpe.git;a=snapshot;h=HEAD;sf=tgz" -O nrpe.tgz
- #&gt; tar xzf nrpe.tgz</pre>
-<p>or use the current version from the git repository </p>
-<pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-nrpe.git</pre>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>Instead of installing NRPE from scratch you may want to use a package which might be available for your OS. Please
+    take a look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.
+    </p>
+    <p>If you are planning to install from source then please use the official release tarball.</p>
+  </td></tr>
+</table></div>
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
+  </td></tr>
+</table></div>
 
   <p><span class="bold"><strong>Optional changes</strong></span></p>
 
@@ -645,9 +659,9 @@
     </li>
 </ul></div>
 
-  <a class="indexterm" name="id2752079"></a>
+  <a class="indexterm" name="id3596996"></a>
 
-  <a class="indexterm" name="id2752091"></a>
+  <a class="indexterm" name="id3597008"></a>
 </div>
 <div class="navfooter">
 <hr>
