@@ -1250,8 +1250,7 @@ int ido2db_handle_client_connection(int sd) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() idi.dbinfo.connected is '%d'\n", idi.dbinfo.connected);
 
 			/* terminate threads */
-			/*terminate_worker_thread();*/
-			terminate_cleanup_thread();
+			ido2db_terminate_threads();
 
 			/* free memory allocated to dynamic buffer */
 			ido_dbuf_free(&dbuf);
@@ -1369,8 +1368,7 @@ int ido2db_handle_client_connection(int sd) {
 #endif
 
 	/* terminate threads */
-	/*terminate_worker_thread();*/
-	terminate_cleanup_thread();
+	ido2db_terminate_threads();
 
 	/* free memory allocated to dynamic buffer */
 	ido_dbuf_free(&dbuf);
