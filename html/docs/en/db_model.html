@@ -29,13 +29,32 @@
 <a name="db_model"></a>IDOUtils Database Model</h2></div></div></div>
   
 
-  <p>This documentation is based on the NDOUtils database model documentation by Ethan Galstad.</p>
+  <p>This documentation is based on the NDOUtils database model documentation by Ethan Galstad and altered to fit
+  the changes necessary in IDOUtils.</p>
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
 
   <p>This documentation is still in flux, and there are undoubtably errors present, so take everything you find here with a grain of
   salt. If you have suggestions, changes, etc. for the documentation, please let us know.</p>
 
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>Although we took care to be accurate there may be alterations in the current code which aren't reflected here so if in
+  doubt please take a look at the actual code.</p></td></tr>
+</table></div>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>The data types and field lenghts mentioned throughout the following documentation show the definitions for MySQL.
+    Oracle and PostgreSQL use other data types and field lengths.</p></td></tr>
+</table></div>
+ 
   <p><span class="bold"><strong>Table Names</strong></span></p>
 
   <p>The IDOUtils addon allows users to specify a custom prefix to each table name in the database. By default, this prefix is set to
@@ -75,10 +94,10 @@
         <p><a class="link" href="db_model.html#dbm_dt">Debugging Tables</a></p>
       </li>
 <li class="listitem">
-        <p><a class="link" href="db_model.html#dbm_cf">Historical Tables</a></p>
+        <p><a class="link" href="db_model.html#dbm_ht">Historical Tables</a></p>
       </li>
 <li class="listitem">
-        <p><a class="link" href="db_model.html#dbm_cf">Current Status Tables</a></p>
+        <p><a class="link" href="db_model.html#dbm_cu">Current Status Tables</a></p>
       </li>
 <li class="listitem">
         <p><a class="link" href="db_model.html#dbm_cf">Configuration Tables</a></p>
@@ -87,10 +106,10 @@
 
   <div class="section" title="Central Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2762411"></a><a name="dbm_ct"></a>Central Tables</h3></div></div></div>
+<a name="id3613205"></a><a name="dbm_ct"></a>Central Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="id2762423"></a>
+    <a class="indexterm" name="id3613254"></a>
 
     <p>There are two "core" or "central" tables, described below, that are referenced by nearly every table in the database. Read below
     for more information.</p>
@@ -109,7 +128,7 @@
     <p><span class="emphasis"><em>Relationship Diagram</em></span></p>
 
     <div class="figure">
-<a name="id2762464"></a><p class="title"><b>Figure 12.14. Relationship of Central Tables</b></p>
+<a name="id3613309"></a><p class="title"><b>Figure 12.14. Relationship of Central Tables</b></p>
 <div class="figure-contents">
       
 
@@ -120,7 +139,7 @@
 
     <a name="dbm_instances"></a>
 
-    <a class="indexterm" name="id2762498"></a>
+    <a class="indexterm" name="id3613332"></a>
 
     <p><span class="emphasis"><em>Instance Table</em></span></p>
 
@@ -147,7 +166,7 @@
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>SERIAL</td>
 <td>Unique number identifying a distinct instance of Icinga</td>
 <td>PK</td>
 </tr>
@@ -169,7 +188,7 @@
 
     <a name="dbm_objects"></a>
 
-    <a class="indexterm" name="id2762619"></a>
+    <a class="indexterm" name="id3613453"></a>
 
     <p><span class="emphasis"><em>Objects Table</em></span></p>
 
@@ -199,21 +218,21 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>A unique number identifying the object</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>A number indicating the instance of Icinga to which the object belongs</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>objecttype_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>A number indicating what type of object this is</td>
 <td>1 = Host; 2 = Service; 3 = Host group; 4 = Service group; 5 = Host escalation; 6 = Service escalation; 7 = Host
               dependency; 8 = Service dependency; 9 = Timeperiod; 10 = Contact; 11 = Contact group; 12 = Command; 13 = Extended host info
@@ -271,10 +290,10 @@
 
   <div class="section" title="Debugging Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2762827"></a><a name="dbm_dt"></a> Debugging Tables</h3></div></div></div>
+<a name="id3613247"></a><a name="dbm_dt"></a> Debugging Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="id2762868"></a>
+    <a class="indexterm" name="id3613704"></a>
 
     <p>There is currently only one table in the database that is used to hold information that might be useful for debugging purposes.
     Read below for more information.</p>
@@ -288,7 +307,7 @@
     <p>Relationship Diagram</p>
 
     <div class="figure">
-<a name="id2762911"></a><p class="title"><b>Figure 12.15. Relationship of Debugging Tables</b></p>
+<a name="id3613746"></a><p class="title"><b>Figure 12.15. Relationship of Debugging Tables</b></p>
 <div class="figure-contents">
       
 
@@ -299,7 +318,7 @@
 
     <a name="dbm_conninfo"></a>
 
-    <a class="indexterm" name="id2762935"></a>
+    <a class="indexterm" name="id3613770"></a>
 
     <p><span class="emphasis"><em>Conninfo Table</em></span></p>
 
@@ -327,14 +346,14 @@
 </tr>
 <tr>
 <td>conninfo_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the connection info record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga for which data is being transmitted/processed</td>
 <td> </td>
 <td> </td>
@@ -378,21 +397,21 @@
 </tr>
 <tr>
 <td>connect_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The initial time the user agent connected to the daemon</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>disconnect_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The time (if any) the user agent disconnect from the daemon</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>last_checkin_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The time that the user agent last checked in with the daemon to indicate that it was still alive and sending
               data</td>
 <td> </td>
@@ -400,35 +419,35 @@
 </tr>
 <tr>
 <td>data_start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The timestamp of the first data that the user agent sent to the daemon</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>data_end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The timestamp of the last (or latest) data that the user agent sent to the daemon</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>bytes_processed</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The number of bytes of data that have been sent by the user agent and processed by the daemon</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>lines_processed</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The number of lines of data that have been sent by the user agent and processed by the daemon</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>entries_processed</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The number of data entries that have been sent by the user agent and processed by the daemon</td>
 <td> </td>
 <td> </td>
@@ -460,10 +479,10 @@
 
   <div class="section" title="Historical Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2762967"></a><a name="dbm_ht"></a>Historical Tables</h3></div></div></div>
+<a name="id3613695"></a><a name="dbm_ht"></a>Historical Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="id2763386"></a>
+    <a class="indexterm" name="id3614218"></a>
 
     <p><span class="bold"><strong>Historical Data Tables</strong></span></p>
 
@@ -484,6 +503,9 @@
       </li>
 <li class="listitem">
         <p><a class="link" href="db_model.html#dbm_contactnotifications">contactnotifications</a></p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="db_model.html#dbm_dbversion">dbversion</a></p>
       </li>
 <li class="listitem">
         <p><a class="link" href="db_model.html#dbm_downtimehistory">downtimehistory</a></p>
@@ -521,6 +543,9 @@
 <li class="listitem">
         <p><a class="link" href="db_model.html#dbm_timedevents">timedevents</a></p>
       </li>
+<li class="listitem">
+        <p><a class="link" href="db_model.html#dbm_slahistory">slahistory</a></p>
+      </li>
 </ul></div>
 
     <p><span class="emphasis"><em>Relationship Diagram</em></span></p>
@@ -529,7 +554,7 @@
     please excuse the mess. :-)</p>
 
     <div class="figure">
-<a name="id2763600"></a><p class="title"><b>Figure 12.16. Relationship of Historical Tables</b></p>
+<a name="id3614458"></a><p class="title"><b>Figure 12.16. Relationship of Historical Tables</b></p>
 <div class="figure-contents">
       
 
@@ -540,7 +565,7 @@
 
     <a name="dbm_acknowledgements"></a>
 
-    <a class="indexterm" name="id2763623"></a>
+    <a class="indexterm" name="id3614482"></a>
 
     <p><span class="emphasis"><em>Acknowledgements Table</em></span></p>
 
@@ -566,21 +591,21 @@
 </tr>
 <tr>
 <td>acknowledgement_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the acknowledgement record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>entry_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the acknowledgement was entered</td>
 <td> </td>
 <td> </td>
@@ -601,7 +626,7 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The object id of the host or service this acknowledgement applies to</td>
 <td> </td>
 <td> </td>
@@ -648,6 +673,13 @@
 <td>0 = Don't notify; 1 = Notify</td>
 <td> </td>
 </tr>
+<tr>
+<td>end_time</td>
+<td>TIMESTAMP</td>
+<td>Date and time the acknowledgement was deleted</td>
+<td> </td>
+<td> </td>
+</tr>
 </tbody>
 </table>
       </div>
@@ -678,7 +710,7 @@
 
     <a name="dbm_commenthistory"></a>
 
-    <a class="indexterm" name="id2763994"></a>
+    <a class="indexterm" name="id3614871"></a>
 
     <p><span class="emphasis"><em>Commenthistory Table</em></span></p>
 
@@ -705,21 +737,21 @@
 </tr>
 <tr>
 <td>commenthistory_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the comment record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>entry_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the comment was entered</td>
 <td> </td>
 <td> </td>
@@ -747,21 +779,21 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The object id of the host or service this acknowledgement applies to</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>comment_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time associated with the comment</td>
 <td> </td>
 <td>UK2</td>
 </tr>
 <tr>
 <td>Internal_comment_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The comment ID internal to the Icinga daemon, which may no longer be valid or present</td>
 <td> </td>
 <td>UK3</td>
@@ -803,14 +835,14 @@
 </tr>
 <tr>
 <td>expiration_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time at which the comment expires</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>deletion_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time (if any) when the comment was deleted</td>
 <td> </td>
 <td> </td>
@@ -852,7 +884,7 @@
 
     <a name="dbm_contactnotifications"></a>
 
-    <a class="indexterm" name="id2764468"></a>
+    <a class="indexterm" name="id3615345"></a>
 
     <p><span class="emphasis"><em>Contactnotifications Table</em></span></p>
 
@@ -879,35 +911,35 @@
 </tr>
 <tr>
 <td>contactnotification_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>notification_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the notification this record is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>contact_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The object id of the contact this notification was send to</td>
 <td> </td>
 <td>UK2</td>
 </tr>
 <tr>
 <td>start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the notification to this contact was started</td>
 <td> </td>
 <td>UK3</td>
@@ -921,7 +953,7 @@
 </tr>
 <tr>
 <td>end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the notification to this contact ended</td>
 <td> </td>
 <td> </td>
@@ -930,6 +962,57 @@
 <td>end_time_usec</td>
 <td>INT</td>
 <td>The microsecond portion of the time the notification ended</td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+      </div>
+
+    <a name="dbm_dbversion"></a>
+
+    <a class="indexterm" name="id3615581"></a>
+
+    <p><span class="emphasis"><em>Dbversion Table</em></span></p>
+
+    <p>Description: This table is used to store version information about the DB.</p>
+
+    <p>Structure: </p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td>Field</td>
+<td>Type</td>
+<td>Notes</td>
+<td>Values</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>dbversion_id</td>
+<td>SERIAL</td>
+<td>Unique number identifying the record</td>
+<td> </td>
+<td>PK</td>
+</tr>
+<tr>
+<td>name</td>
+<td>VARCHAR(10)</td>
+<td>Name of the database</td>
+<td> </td>
+<td>UK</td>
+</tr>
+<tr>
+<td>version</td>
+<td>VARCHAR(10)</td>
+<td>Version number of the database</td>
 <td> </td>
 <td> </td>
 </tr>
@@ -967,7 +1050,7 @@
 
     <a name="dbm_contactnotificationsmethods"></a>
 
-    <a class="indexterm" name="id2764765"></a>
+    <a class="indexterm" name="id3615771"></a>
 
     <p><span class="emphasis"><em>Contactnotificationmethods Table</em></span></p>
 
@@ -1001,7 +1084,7 @@
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -1015,7 +1098,7 @@
 </tr>
 <tr>
 <td>start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the notification command started</td>
 <td> </td>
 <td>UK3</td>
@@ -1029,7 +1112,7 @@
 </tr>
 <tr>
 <td>end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the notification command ended</td>
 <td> </td>
 <td> </td>
@@ -1089,7 +1172,7 @@
 
     <a name="dbm_downtimehistory"></a>
 
-    <a class="indexterm" name="id2765083"></a>
+    <a class="indexterm" name="id3616089"></a>
 
     <p><span class="emphasis"><em>Downtimehistory Table</em></span></p>
 
@@ -1115,14 +1198,14 @@
 </tr>
 <tr>
 <td>downtimehistory_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -1136,42 +1219,42 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The object id of the host or service this scheduled downtime is associated with</td>
 <td> </td>
 <td>UK2</td>
 </tr>
 <tr>
 <td>entry_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the scheduled downtime was entered/submitted</td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>author_name</td>
-<td>VARCHAR</td>
+<td>VARCHAR(64)</td>
 <td>The name of the person who scheduled this downtime</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>comment_data</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>A comment, as entered by the author, associated with the scheduled downtime</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>internal_downtime_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>A number (internal to the Icinga daemon) associated with the scheduled downtime</td>
 <td> </td>
 <td>UK4</td>
 </tr>
 <tr>
 <td>triggered_by_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of another scheduled downtime entry that scheduled downtime is optionally triggered by. Non-triggered downtimes
               will have a value of 0 in this field</td>
 <td> </td>
@@ -1195,7 +1278,7 @@
 </tr>
 <tr>
 <td>scheduled_start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the scheduled downtime is supposed to start. If this is a flexible (non-fixed) downtime, this refers to
               the earliest possible time that the downtime can start</td>
 <td> </td>
@@ -1203,7 +1286,7 @@
 </tr>
 <tr>
 <td>scheduled_end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the scheduled downtime is supposed to end. If this is a flexible (non-fixed) downtime, this refers to the
               last possible time that the downtime can start</td>
 <td> </td>
@@ -1219,7 +1302,7 @@
 </tr>
 <tr>
 <td>actual_start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the scheduled downtime was actually started (if applicable)</td>
 <td> </td>
 <td> </td>
@@ -1233,7 +1316,7 @@
 </tr>
 <tr>
 <td>actual_end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the scheduled downtime actually ended</td>
 <td> </td>
 <td> </td>
@@ -1286,7 +1369,7 @@
 
     <a name="dbm_eventhandlers"></a>
 
-    <a class="indexterm" name="id2765617"></a>
+    <a class="indexterm" name="id3616623"></a>
 
     <p><span class="emphasis"><em>Eventhandlers Table</em></span></p>
 
@@ -1313,14 +1396,14 @@
 </tr>
 <tr>
 <td>eventhandler_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -1335,7 +1418,7 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The object id of the host or service associated with this event handler</td>
 <td> </td>
 <td>UK2</td>
@@ -1357,7 +1440,7 @@
 </tr>
 <tr>
 <td>start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the event handler started</td>
 <td> </td>
 <td>UK3</td>
@@ -1371,7 +1454,7 @@
 </tr>
 <tr>
 <td>end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the event handler ended</td>
 <td> </td>
 <td> </td>
@@ -1385,21 +1468,21 @@
 </tr>
 <tr>
 <td>command_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the command that was run</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>command_args</td>
-<td>ARGS</td>
+<td>VARCHAR(255)</td>
 <td>Arguments to the event handler command that was run</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>command_line</td>
-<td>ARGS</td>
+<td>VARCHAR(1024)</td>
 <td>Fully expanded command line of the event handler that was run</td>
 <td> </td>
 <td> </td>
@@ -1434,7 +1517,7 @@
 </tr>
 <tr>
 <td>output</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>The first line of text output (if any) from the event handler command</td>
 <td> </td>
 <td> </td>
@@ -1473,7 +1556,7 @@
 
     <a name="dbm_externalcommands"></a>
 
-    <a class="indexterm" name="id2766127"></a>
+    <a class="indexterm" name="id3617133"></a>
 
     <p><span class="emphasis"><em>Externalcommands Table</em></span></p>
 
@@ -1500,21 +1583,21 @@
 </tr>
 <tr>
 <td>externalcommand_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>entry_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the external command was processed</td>
 <td> </td>
 <td> </td>
@@ -1528,14 +1611,14 @@
 </tr>
 <tr>
 <td>command_name</td>
-<td>VARCHAR</td>
+<td>VARCHAR(128)</td>
 <td>The name of the command that was processed</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>command_args</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>Optional arguments that were specified with the command.</td>
 <td> </td>
 <td> </td>
@@ -1566,7 +1649,7 @@
 
     <a name="dbm_flappinghistory"></a>
 
-    <a class="indexterm" name="id2766358"></a>
+    <a class="indexterm" name="id3617363"></a>
 
     <p><span class="emphasis"><em>Flappinghistory Table</em></span></p>
 
@@ -1592,21 +1675,21 @@
 </tr>
 <tr>
 <td>flappinghistory_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>event_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time of the flapping event</td>
 <td> </td>
 <td> </td>
@@ -1642,7 +1725,7 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the host or service associated with the flapping event</td>
 <td> </td>
 <td> </td>
@@ -1670,14 +1753,14 @@
 </tr>
 <tr>
 <td>comment_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time of the comment associated with the flapping event</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>internal_comment_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The number (internal to the Icinga daemon) of the comment associated with the flapping event.</td>
 <td> </td>
 <td> </td>
@@ -1712,7 +1795,7 @@
 
     <a name="dbm_hostchecks"></a>
 
-    <a class="indexterm" name="id2766745"></a>
+    <a class="indexterm" name="id3617751"></a>
 
     <p><span class="emphasis"><em>Hostchecks Table</em></span></p>
 
@@ -1744,21 +1827,21 @@
 </tr>
 <tr>
 <td>hostcheck_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>host_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the host this check applies to</td>
 <td> </td>
 <td>UK2</td>
@@ -1807,7 +1890,7 @@
 </tr>
 <tr>
 <td>start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the host check was started</td>
 <td> </td>
 <td>UK3</td>
@@ -1821,7 +1904,7 @@
 </tr>
 <tr>
 <td>end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the host check was completed</td>
 <td> </td>
 <td> </td>
@@ -1835,21 +1918,21 @@
 </tr>
 <tr>
 <td>command_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the command that was used to perform the host check</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>command_args</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>The arguments that were passed to the host check command</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>command_line</td>
-<td>VARCHAR</td>
+<td>VARCHAR(1024)</td>
 <td>The fully expanded command line that was used to check the host</td>
 <td> </td>
 <td> </td>
@@ -1894,14 +1977,21 @@
 </tr>
 <tr>
 <td>output</td>
-<td>VARCHAR</td>
-<td>Status text output from the host check command</td>
+<td>VARCHAR(255)</td>
+<td>Status text output from the host check command (first line)</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>long_output</td>
+<td>TEXT</td>
+<td>Status text output from the host check command (consecutive lines)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>perfdata</td>
-<td>VARCHAR</td>
+<td>TEXT</td>
 <td>Optional performance data returned from the host check command.</td>
 <td> </td>
 <td> </td>
@@ -1940,7 +2030,7 @@
 
     <a name="dbm_logentries"></a>
 
-    <a class="indexterm" name="id2767365"></a>
+    <a class="indexterm" name="id3618391"></a>
 
     <p><span class="emphasis"><em>Logentries Table</em></span></p>
 
@@ -1966,21 +2056,21 @@
 </tr>
 <tr>
 <td>logentry_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>logentry_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time associated with the log entry. This is NOT necessarily the same as the date/time that Icinga wrote
               the log entry to the log file (see below)</td>
 <td> </td>
@@ -1988,7 +2078,7 @@
 </tr>
 <tr>
 <td>entry_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time that Icinga wrote this log entry to the log file</td>
 <td> </td>
 <td> </td>
@@ -2009,7 +2099,7 @@
 </tr>
 <tr>
 <td>logentry_data</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>The log entry that was written out to the log file</td>
 <td> </td>
 <td> </td>
@@ -2054,7 +2144,7 @@
 
     <a name="dbm_notifications"></a>
 
-    <a class="indexterm" name="id2767656"></a>
+    <a class="indexterm" name="id3618682"></a>
 
     <p><span class="emphasis"><em>Notifications Table</em></span></p>
 
@@ -2082,14 +2172,14 @@
 </tr>
 <tr>
 <td>notification_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -2111,14 +2201,14 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the host or service this notification applies to</td>
 <td> </td>
 <td>UK2</td>
 </tr>
 <tr>
 <td>start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the notification was started</td>
 <td> </td>
 <td>UK3</td>
@@ -2132,7 +2222,7 @@
 </tr>
 <tr>
 <td>end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the notification ended</td>
 <td> </td>
 <td> </td>
@@ -2154,8 +2244,15 @@
 </tr>
 <tr>
 <td>output</td>
-<td>VARCHAR</td>
-<td>The current plugin (text) output of the host or service when the notification was sent out</td>
+<td>VARCHAR(255)</td>
+<td>The current plugin (text) output of the host or service when the notification was sent out (first line)</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>long_output</td>
+<td>TEXT</td>
+<td>The current plugin (text) output of the host or service when the notification was sent out (consecutive lines)</td>
 <td> </td>
 <td> </td>
 </tr>
@@ -2167,7 +2264,7 @@
 <td> </td>
 </tr>
 <tr>
-<td>contacts_notifified</td>
+<td>contacts_notified</td>
 <td>SMALLINT</td>
 <td>Number of contacts that were notified about the host or service as part of this notification.</td>
 <td> </td>
@@ -2203,7 +2300,7 @@
 
     <a name="dbm_processevents"></a>
 
-    <a class="indexterm" name="id2768055"></a>
+    <a class="indexterm" name="id3619101"></a>
 
     <p><span class="emphasis"><em>Processevents Table</em></span></p>
 
@@ -2230,14 +2327,14 @@
 </tr>
 <tr>
 <td>processevent_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
@@ -2252,7 +2349,7 @@
 </tr>
 <tr>
 <td>event_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time that the event occurred</td>
 <td> </td>
 <td> </td>
@@ -2273,21 +2370,21 @@
 </tr>
 <tr>
 <td>program_name</td>
-<td>VARCHAR</td>
+<td>VARCHAR(16)</td>
 <td>"Icinga"</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>program_version</td>
-<td>VARCHAR</td>
+<td>VARCHAR(20)</td>
 <td>Version of Icinga that is running (e.g. "1.0")</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>program_date</td>
-<td>VARCHAR</td>
+<td>VARCHAR(10)</td>
 <td>Release date of Icinga</td>
 <td> </td>
 <td> </td>
@@ -2318,7 +2415,7 @@
 
     <a name="dbm_servicechecks"></a>
 
-    <a class="indexterm" name="id2768345"></a>
+    <a class="indexterm" name="id3619392"></a>
 
     <p><span class="emphasis"><em>Servicechecks Table</em></span></p>
 
@@ -2345,21 +2442,21 @@
 </tr>
 <tr>
 <td>servicecheck_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>service_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the service this record refers to</td>
 <td> </td>
 <td>UK2</td>
@@ -2401,7 +2498,7 @@
 </tr>
 <tr>
 <td>start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the service check was started</td>
 <td> </td>
 <td>UK3</td>
@@ -2415,7 +2512,7 @@
 </tr>
 <tr>
 <td>end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the service check ended</td>
 <td> </td>
 <td> </td>
@@ -2429,21 +2526,21 @@
 </tr>
 <tr>
 <td>command_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the command that was run to perform the service check</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>command_args</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>The arguments passed to the command that was run to perform the service check</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>command_line</td>
-<td>VARCHAR</td>
+<td>VARCHAR(1024)</td>
 <td>The fully expanded command line that was executed to perform the service check</td>
 <td> </td>
 <td> </td>
@@ -2488,14 +2585,21 @@
 </tr>
 <tr>
 <td>output</td>
-<td>VARCHAR</td>
-<td>The status output that was returned from the service check command</td>
+<td>VARCHAR(255)</td>
+<td>The status output that was returned from the service check command (first line)</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>long_output</td>
+<td>TEXT</td>
+<td>The status output that was returned from the service check command (consecutive lines)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>perfdata</td>
-<td>VARCHAR</td>
+<td>TEXT</td>
 <td>Optional performance data that was returned from the service check command</td>
 <td> </td>
 <td> </td>
@@ -2534,7 +2638,7 @@
 
     <a name="dbm_statehistory"></a>
 
-    <a class="indexterm" name="id2768936"></a>
+    <a class="indexterm" name="id3620003"></a>
 
     <p><span class="emphasis"><em>Statehistory Table</em></span></p>
 
@@ -2560,21 +2664,21 @@
 </tr>
 <tr>
 <td>statehistory_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>state_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time that the state change occurred</td>
 <td> </td>
 <td> </td>
@@ -2588,7 +2692,7 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the host or service object this state change applies to</td>
 <td> </td>
 <td> </td>
@@ -2646,8 +2750,15 @@
 </tr>
 <tr>
 <td>output</td>
-<td>VARCHAR</td>
-<td>The current plugin/status output of the host or service</td>
+<td>VARCHAR(255)</td>
+<td>The current plugin/status output of the host or service (first line)</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>long_output</td>
+<td>TEXT</td>
+<td>The current plugin/status output of the host or service (consecutive lines)</td>
 <td> </td>
 <td> </td>
 </tr>
@@ -2681,7 +2792,7 @@
 
     <a name="dbm_systemcommands"></a>
 
-    <a class="indexterm" name="id2769332"></a>
+    <a class="indexterm" name="id3620418"></a>
 
     <p><span class="emphasis"><em>Systemcommands Table</em></span></p>
 
@@ -2709,21 +2820,21 @@
 </tr>
 <tr>
 <td>systemcommand_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the command was executed</td>
 <td> </td>
 <td>UK2</td>
@@ -2737,7 +2848,7 @@
 </tr>
 <tr>
 <td>end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the command finished executing</td>
 <td> </td>
 <td> </td>
@@ -2751,7 +2862,7 @@
 </tr>
 <tr>
 <td>command_line</td>
-<td>VARCHAR</td>
+<td>VARCHAR(1024)</td>
 <td>Fully expanded command line that was executed</td>
 <td> </td>
 <td> </td>
@@ -2786,8 +2897,15 @@
 </tr>
 <tr>
 <td>output</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>First line of text output (if available) that was returned from the command</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>long_output</td>
+<td>TEXT</td>
+<td>Consecutive lines of text output (if available) that were returned from the command</td>
 <td> </td>
 <td> </td>
 </tr>
@@ -2817,7 +2935,7 @@
 
     <a name="dbm_timedevents"></a>
 
-    <a class="indexterm" name="id2769687"></a>
+    <a class="indexterm" name="id3620796"></a>
 
     <p><span class="emphasis"><em>Timedevents Table</em></span></p>
 
@@ -2846,14 +2964,14 @@
 </tr>
 <tr>
 <td>systemcommand_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -2867,7 +2985,7 @@
 </tr>
 <tr>
 <td>queued_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the event was added to the event queue</td>
 <td> </td>
 <td> </td>
@@ -2881,7 +2999,7 @@
 </tr>
 <tr>
 <td>event_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the event was handled</td>
 <td> </td>
 <td> </td>
@@ -2895,7 +3013,7 @@
 </tr>
 <tr>
 <td>scheduled_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the event was scheduled to be handled/run</td>
 <td> </td>
 <td>UK3</td>
@@ -2909,11 +3027,18 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the host or service that the event applies to. Not all events apply to hosts or services - in these cases the
-              value of this field will be 0. deletion_time DATETIME The date/time the event was deleted/removed from the event queue</td>
+              value of this field will be 0.</td>
 <td> </td>
 <td>UK4</td>
+</tr>
+<tr>
+<td>deletion_time</td>
+<td>TIMESTAMP</td>
+<td>The date/time the event was deleted/removed from the event queue</td>
+<td> </td>
+<td> </td>
 </tr>
 <tr>
 <td>deletion_time_usec</td>
@@ -2949,14 +3074,144 @@
 </tbody>
 </table>
       </div>
+
+    <a name="dbm_slahistory"></a>
+
+    <a class="indexterm" name="id3621169"></a>
+
+    <p><span class="emphasis"><em>SLA-History Table</em></span></p>
+
+    <p>Description: This table is used to keep track of host/service availability statistics in a separate history table.
+    A configuration flag (enable_sla) is used to enable/disable SLA data collection; it defaults to 0 (disabled).</p>
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>This table is introduced with Icinga 1.6.</p></td></tr>
+</table></div>
+
+    <p>Structure: </p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td>Field</td>
+<td>Type</td>
+<td>Notes</td>
+<td>Values</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>slahistory_id</td>
+<td>SERIAL</td>
+<td>unique ID for a SLA history entry</td>
+<td> </td>
+<td>PK</td>
+</tr>
+<tr>
+<td>instance_id</td>
+<td>BIGINT unsigned</td>
+<td>Icinga instance ID</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>start_time</td>
+<td>TIMESTAMP</td>
+<td>Time interval for the history entry (default '0000-00-00 00:00:00')</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>end_time</td>
+<td>TIMESTAMP</td>
+<td>Time interval for the history entry (default '0000-00-00 00:00:00')</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>acknowledgement_time</td>
+<td>TIMESTAMP</td>
+<td>Time the state was acknowledged (default NULL)</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>object_id</td>
+<td>BIGINT unsigned</td>
+<td>The host/service ID this history entry is related to (default 0)</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>state</td>
+<td>SMALLINT</td>
+<td>Number indicating the state of host or service</td>
+<td>For hosts: 0 = UP; 1 = DOWN; 2 = UNREACHABLE; For services:; 0 = OK; 1 = WARNING; 2 =
+              CRITICAL; 3 = UNKNOWN</td>
+<td> </td>
+</tr>
+<tr>
+<td>state_type</td>
+<td>SMALLINT</td>
+<td>Number indicating the state type of the host or service</td>
+<td>0 = SOFT state; 1 = HARD state</td>
+<td> </td>
+</tr>
+<tr>
+<td>scheduled_downtime</td>
+<td>TINYINT(1)</td>
+<td>whether the whole time interval was in scheduled downtime (a history entry are split into several entries if only a
+              fraction of the time interval was in scheduled downtime)</td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+      </div>
+<p>
+    </p>
+
+    <p>Relationships:</p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td>Field</td>
+<td>Foreign Key</td>
+</tr>
+<tr>
+<td>instance_id</td>
+<td>instances.instance_id</td>
+</tr>
+<tr>
+<td>object_id</td>
+<td>objects.object_id</td>
+</tr>
+</tbody>
+</table>
+      </div>
+
   </div>
 
   <div class="section" title="Current Status Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2769996"></a><a name="dbm_cu"></a> Current Status Tables</h3></div></div></div>
+<a name="id3621456"></a><a name="dbm_cu"></a> Current Status Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="id2763378"></a>
+    <a class="indexterm" name="id3614210"></a>
 
     <p>There are several tables in the database which are used to hold current status information on the Icinga process and all
     hosts and services that it is monitoring. Entries in these tables are cleared whenever the Icinga daemon (belonging to the same
@@ -2987,6 +3242,9 @@
         <p><a class="link" href="db_model.html#dbm_servicestatus">servicestatus</a></p>
       </li>
 <li class="listitem">
+        <p><a class="link" href="db_model.html#dbm_contactstatus">contactstatus</a></p>
+      </li>
+<li class="listitem">
         <p><a class="link" href="db_model.html#dbm_timedeventqueue">timedeventqueue</a></p>
       </li>
 </ul></div>
@@ -2995,7 +3253,7 @@
     related) is not shown.</p>
 
     <div class="figure">
-<a name="id2770166"></a><p class="title"><b>Figure 12.17. Relationship of Current Status Tables</b></p>
+<a name="id3621614"></a><p class="title"><b>Figure 12.17. Relationship of Current Status Tables</b></p>
 <div class="figure-contents">
       
 
@@ -3006,7 +3264,7 @@
 
     <a name="dbm_comments"></a>
 
-    <a class="indexterm" name="id2770190"></a>
+    <a class="indexterm" name="id3621638"></a>
 
     <p><span class="emphasis"><em>Comments Table</em></span></p>
 
@@ -3033,21 +3291,21 @@
 </tr>
 <tr>
 <td>comment_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the comment record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>entry_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the comment was entered</td>
 <td> </td>
 <td> </td>
@@ -3075,14 +3333,14 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The object id of the host or service this acknowledgement applies to</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>comment_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time associated with the comment</td>
 <td> </td>
 <td>UK2</td>
@@ -3131,7 +3389,7 @@
 </tr>
 <tr>
 <td>expiration_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time at which the comment expires.</td>
 <td> </td>
 <td> </td>
@@ -3166,7 +3424,7 @@
 
     <a name="dbm_customvariablestatus"></a>
 
-    <a class="indexterm" name="id2770620"></a>
+    <a class="indexterm" name="id3622069"></a>
 
     <p><span class="emphasis"><em>Customvariablestatus Table</em></span></p>
 
@@ -3193,35 +3451,35 @@
 </tr>
 <tr>
 <td>customvariablestatus_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The object id of the host or service this acknowledgement applies to</td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>status_update_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the status of the custom variable was last updated</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>has_been_modified</td>
-<td>INT</td>
+<td>SMALLINT</td>
 <td>Indiciates whether the value of the custom variable has been modified (during runtime) from its original value in the
               config files</td>
 <td>0 = Has not been modified; 1 = Has been modified</td>
@@ -3271,7 +3529,7 @@
 
     <a name="dbm_hoststatus"></a>
 
-    <a class="indexterm" name="id2770884"></a>
+    <a class="indexterm" name="id3622335"></a>
 
     <p><span class="emphasis"><em>Hoststatus Table</em></span></p>
 
@@ -3297,42 +3555,49 @@
 </tr>
 <tr>
 <td>hoststatus_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>host_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The object id of the host this status entry is associated with</td>
 <td> </td>
 <td>U1</td>
 </tr>
 <tr>
 <td>status_update_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the status data was updated</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>output</td>
-<td>VARCHAR</td>
-<td>Plugin output from the latest host check</td>
+<td>VARCHAR(255)</td>
+<td>Plugin output from the latest host check (first line)</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>long_output</td>
+<td>TEXT</td>
+<td>Plugin output from the latest host check (consecutive lines)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>perfdata</td>
-<td>VARCHAR</td>
+<td>TEXT</td>
 <td>Performance data from the latest host check</td>
 <td> </td>
 <td> </td>
@@ -3374,14 +3639,14 @@
 </tr>
 <tr>
 <td>last_check</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Time the host was last checked</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>next_check</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The host is scheduled to be checked next. Will be set to the epoch if the host is not scheduled for another
               check</td>
 <td> </td>
@@ -3396,35 +3661,35 @@
 </tr>
 <tr>
 <td>last_state_change</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Time the host last had a hard or soft state change. Will be set to the epoch if the host has not changed state</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>last_hard_state_change</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The host last had a hard state change. Will be setup to the epoch if the host has not changed state</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>last_time_up</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Time the host was last in an UP state (if ever)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>last_time_down</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Time the host was last in a DOWN state (if ever)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>last_time_unreachable</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Time the host was last in an UNREACHABLE state (if ever)</td>
 <td> </td>
 <td> </td>
@@ -3438,14 +3703,14 @@
 </tr>
 <tr>
 <td>last_notification</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Time a notification was last sent out for the host (if ever)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>next_notification</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Next possible time that a notification can be sent out for the host</td>
 <td> </td>
 <td> </td>
@@ -3609,7 +3874,7 @@
 </tr>
 <tr>
 <td>check_timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number of the timeperiod object currently used for determining times the host can be checked</td>
 <td> </td>
 <td> </td>
@@ -3648,7 +3913,7 @@
 
     <a name="dbm_programstatus"></a>
 
-    <a class="indexterm" name="id2771962"></a>
+    <a class="indexterm" name="id3623431"></a>
 
     <p><span class="emphasis"><em>Programstatus Table</em></span></p>
 
@@ -3674,35 +3939,35 @@
 </tr>
 <tr>
 <td>programstatus_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>U1</td>
 </tr>
 <tr>
 <td>status_update_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the status of the process was last updated</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>program_start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the Icinga process was started</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>program_end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the Icinga process as stopped (if currently not running)</td>
 <td> </td>
 <td> </td>
@@ -3716,7 +3981,7 @@
 </tr>
 <tr>
 <td>process_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The processed ID (PID) of the Icinga process</td>
 <td> </td>
 <td> </td>
@@ -3730,14 +3995,14 @@
 </tr>
 <tr>
 <td>last_command_check</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the Icinga process last checked external commands</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>last_log_rotation</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the log file was last rotated (if at all)</td>
 <td> </td>
 <td> </td>
@@ -3873,7 +4138,7 @@
 
     <a name="dbm_runtimevariables"></a>
 
-    <a class="indexterm" name="id2772599"></a>
+    <a class="indexterm" name="id3624070"></a>
 
     <p><span class="emphasis"><em>Runtimevariables Table</em></span></p>
 
@@ -3901,14 +4166,14 @@
 </tr>
 <tr>
 <td>runtimevariable_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -3953,7 +4218,7 @@
 
     <a name="dbm_scheduleddowntime"></a>
 
-    <a class="indexterm" name="id2772792"></a>
+    <a class="indexterm" name="id3624261"></a>
 
     <p><span class="emphasis"><em>Scheduleddowntime Table</em></span></p>
 
@@ -3980,14 +4245,14 @@
 </tr>
 <tr>
 <td>scheduleddowntime_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -4001,14 +4266,14 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The object id of the host or service this downtime applies to</td>
 <td> </td>
 <td>UK2</td>
 </tr>
 <tr>
 <td>entry_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time this downtime was entered</td>
 <td> </td>
 <td>UK3</td>
@@ -4029,14 +4294,14 @@
 </tr>
 <tr>
 <td>internal_downtime_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The ID number (internal to the Icinga daemon) associated with this scheduled downtime entry</td>
 <td> </td>
 <td>UK4</td>
 </tr>
 <tr>
 <td>triggered_by_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The internal Icinga ID number (if any) of another scheduled downtime entry that this downtime is "triggered"
               (started) by. If this field is nonzero, this is a triggered downtime entry, otherwise it is not</td>
 <td> </td>
@@ -4060,7 +4325,7 @@
 </tr>
 <tr>
 <td>scheduled_start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time that the downtime is scheduled to start if it is "fixed" dowtime. If this is a "flexible" downtime entry,
               this is the first possible time the downtime can start</td>
 <td> </td>
@@ -4068,7 +4333,7 @@
 </tr>
 <tr>
 <td>scheduled_end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the downtime is scheduled to end if it is "fixed" downtime. If this is a "flexible" downtime entry, this
               is the last possible time the downtime can start</td>
 <td> </td>
@@ -4083,7 +4348,7 @@
 </tr>
 <tr>
 <td>actual_start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the scheduled downtime was actually started</td>
 <td> </td>
 <td> </td>
@@ -4129,7 +4394,7 @@
 
     <a name="dbm_servicestatus"></a>
 
-    <a class="indexterm" name="id2773257"></a>
+    <a class="indexterm" name="id3624726"></a>
 
     <p><span class="emphasis"><em>Servicestatus Table</em></span></p>
 
@@ -4155,42 +4420,49 @@
 </tr>
 <tr>
 <td>servicestatus_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>service_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The id of the service this record is associated with</td>
 <td> </td>
 <td>U1</td>
 </tr>
 <tr>
 <td>status_update_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the status record was updated</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>output</td>
-<td>VARCHAR</td>
-<td>The text output from the most current service check</td>
+<td>VARCHAR(255)</td>
+<td>The text output from the most current service check (first line)</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>long_output</td>
+<td>TEXT</td>
+<td>The text output from the most current service check (consecutive lines)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>perfdata</td>
-<td>VARCHAR</td>
+<td>TEXT</td>
 <td>Optional performance data from the most current service check</td>
 <td> </td>
 <td> </td>
@@ -4232,14 +4504,14 @@
 </tr>
 <tr>
 <td>last_check</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the service was last checked. Set to the epoch if the service has not been checked yet</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>next_check</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the service is scheduled to be checked next</td>
 <td> </td>
 <td> </td>
@@ -4253,7 +4525,7 @@
 </tr>
 <tr>
 <td>last_state_change</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the service last changed state (if at all). This gets updated for both HARD and SOFT state
               changes</td>
 <td> </td>
@@ -4261,35 +4533,42 @@
 </tr>
 <tr>
 <td>last_hard_state_change</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the service last changed HARD states (if at all)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
+<td>last_hard_state</td>
+<td>SMALLINT</td>
+<td>0 = OK 1 = WARNING; 2 = CRITICAL; 3 = UNKNOWN</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
 <td>last_time_ok</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the service was last in an OK state (if at all)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>last_time_warning</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the service was last in a WARNING state (if at all)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>last_time_unknown</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the service was last in an UNKNOWN state (if at all)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>last_time_critical</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time the service was last in a CRITICAL state (if at all).</td>
 <td> </td>
 <td> </td>
@@ -4303,14 +4582,14 @@
 </tr>
 <tr>
 <td>state last_notification</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The date/time that a notification was last sent out for the current service problem (if applicable)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>next_notification</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>The earliest date/time that the next notification can be sent out for the current service problem (if
               applicable)</td>
 <td> </td>
@@ -4404,6 +4683,13 @@
 <td> </td>
 </tr>
 <tr>
+<td>execution_time</td>
+<td>DOUBLE</td>
+<td>Number of seconds it took to execute the service check</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
 <td>scheduled_downtime_depth</td>
 <td>SMALLINT</td>
 <td>Number indicating how many periods of scheduled downtime are currently in effect for the service. A value of 0
@@ -4442,27 +4728,27 @@
 </tr>
 <tr>
 <td>event_handler</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>The current event handler command that is associated with the service</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>check_command</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>The current check command that is used to check the status of the service</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
-<td>check_interval</td>
+<td>normal_check_interval</td>
 <td>DOUBLE</td>
 <td>The current normal check interval for the service (in seconds)</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
-<td>retry_interval</td>
+<td>retry_check_interval</td>
 <td>DOUBLE</td>
 <td>The current retry check interval for the service (in seconds)</td>
 <td> </td>
@@ -4470,7 +4756,7 @@
 </tr>
 <tr>
 <td>check_timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The currently timeperiod that is used to determine when the service can be checked.</td>
 <td> </td>
 <td> </td>
@@ -4507,9 +4793,136 @@
 </table>
       </div>
 
+    <a name="dbm_contactstatus"></a>
+
+    <a class="indexterm" name="id3625867"></a>
+
+    <p><span class="emphasis"><em>Contactstatus Table</em></span></p>
+
+    <p>Description: This table is used to store current status information for all contacts that are being used.</p>
+
+    <p>Structure: </p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td>Field</td>
+<td>Type</td>
+<td>Notes</td>
+<td>Values</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>contactstatus_id</td>
+<td>SERIAL</td>
+<td>Unique number identifying the record</td>
+<td> </td>
+<td>PK</td>
+</tr>
+<tr>
+<td>instance_id</td>
+<td>BIGINT unsigned</td>
+<td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>contact_object_id</td>
+<td>BIGINT unsigned</td>
+<td>The id of the service this record is associated with</td>
+<td> </td>
+<td>U1</td>
+</tr>
+<tr>
+<td>status_update_time</td>
+<td>TIMESTAMP</td>
+<td>The date/time the status record was updated</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>hostnotifications_enabled</td>
+<td>SMALLINT</td>
+<td>Number indicating whether or not host notifications are enabled for this contact</td>
+<td>0 = Notifications disabled; 1 = Notifications enabled</td>
+<td> </td>
+</tr>
+<tr>
+<td>servicenotifications_enabled</td>
+<td>SMALLINT</td>
+<td>Number indicating whether or not service notifications are enabled for this contact</td>
+<td>0 = Notifications disabled; 1 = Notifications enabled</td>
+<td> </td>
+</tr>
+<tr>
+<td>last_hostnotification</td>
+<td>TIMESTAMP</td>
+<td>Time the last host notification was sent</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>last_servicenotification</td>
+<td>TIMESTAMP</td>
+<td>Time the last service notification was sent</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>modified_attributes</td>
+<td>INT</td>
+<td>Default = 0</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>modified_host_attributes</td>
+<td>INT</td>
+<td>Default = 0</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>modified_service_attributes</td>
+<td>INT</td>
+<td>Default = 0</td>
+<td> </td>
+<td> </td>
+</tr>
+</tbody>
+</table>
+      </div>
+
+    <p>Relationships:</p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td>Field</td>
+<td>Foreign Key</td>
+</tr>
+<tr>
+<td>instance_id</td>
+<td>instances.instance_id</td>
+</tr>
+</tbody>
+</table>
+      </div>
+
     <a name="dbm_timedeventqueue"></a>
 
-    <a class="indexterm" name="id2774337"></a>
+    <a class="indexterm" name="id3626203"></a>
 
     <p><span class="emphasis"><em>Timedeventqueue Table</em></span></p>
 
@@ -4536,14 +4949,14 @@
 </tr>
 <tr>
 <td>timedeventqueue_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -4557,7 +4970,7 @@
 </tr>
 <tr>
 <td>queued_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td>Date and time the event was originally placed into the timed event queue</td>
 <td> </td>
 <td> </td>
@@ -4571,7 +4984,7 @@
 </tr>
 <tr>
 <td>scheduled_time</td>
-<td>INT</td>
+<td>TIMESTAMP</td>
 <td>Date and time the event is scheduled to be executed</td>
 <td> </td>
 <td>UK3</td>
@@ -4585,7 +4998,7 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td>The object id of the host, service, contact, etc. that this scheduled event applies to (if applicable). If the event is
               not associated with any particular object, this field will have a value of zero (0)</td>
 <td> </td>
@@ -4622,10 +5035,10 @@
 
   <div class="section" title="Configuration Tables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id2774613"></a><a name="dbm_cf"></a> Configuration Tables</h3></div></div></div>
+<a name="id3626235"></a><a name="dbm_cf"></a> Configuration Tables</h3></div></div></div>
     
 
-    <a class="indexterm" name="id2774645"></a>
+    <a class="indexterm" name="id3626532"></a>
 
     <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -4679,6 +5092,9 @@
         <p><a class="link" href="db_model.html#dbm_host_contactgroups">host_contactgroups</a></p>
       </li>
 <li class="listitem">
+        <p><a class="link" href="db_model.html#dbm_host_contacts">host_contactgroups</a></p>
+      </li>
+<li class="listitem">
         <p><a class="link" href="db_model.html#dbm_host_parenthosts">host_parenthosts</a></p>
       </li>
 <li class="listitem">
@@ -4686,6 +5102,9 @@
       </li>
 <li class="listitem">
         <p><a class="link" href="db_model.html#dbm_hostescalation_contactgroups">hostescalation_contactgroups</a></p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="db_model.html#dbm_hostescalation_contacts">hostescalation_contacts</a></p>
       </li>
 <li class="listitem">
         <p><a class="link" href="db_model.html#dbm_hostescalations">hostescalations</a></p>
@@ -4703,10 +5122,16 @@
         <p><a class="link" href="db_model.html#dbm_service_contactgroups">service_contactgroups</a></p>
       </li>
 <li class="listitem">
+        <p><a class="link" href="db_model.html#dbm_service_contacts">service_contacts</a></p>
+      </li>
+<li class="listitem">
         <p><a class="link" href="db_model.html#dbm_servicedependencies">servicedependencies</a></p>
       </li>
 <li class="listitem">
         <p><a class="link" href="db_model.html#dbm_serviceescalation_contactgroups">serviceescalation_contactgroups</a></p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="db_model.html#dbm_serviceescalation_contacts">serviceescalation_contacts</a></p>
       </li>
 <li class="listitem">
         <p><a class="link" href="db_model.html#dbm_serviceescalations">serviceescalations</a></p>
@@ -4729,7 +5154,7 @@
 </ul></div>
 
     <div class="figure">
-<a name="id2774988"></a><p class="title"><b>Figure 12.18. Relationship of Configuration Tables</b></p>
+<a name="id3626916"></a><p class="title"><b>Figure 12.18. Relationship of Configuration Tables</b></p>
 <div class="figure-contents">
       
 
@@ -4740,7 +5165,7 @@
 
     <a name="dbm_commands"></a>
 
-    <a class="indexterm" name="id2775005"></a>
+    <a class="indexterm" name="id3626937"></a>
 
     <p><span class="emphasis"><em>Commands Table</em></span></p>
 
@@ -4766,14 +5191,14 @@
 </tr>
 <tr>
 <td>command_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -4787,14 +5212,14 @@
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
 </tr>
 <tr>
 <td>command_line</td>
-<td>VARCHAR</td>
+<td>VARCHAR(1024)</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -4805,7 +5230,7 @@
 
     <a name="dbm_configfiles"></a>
 
-    <a class="indexterm" name="id2775172"></a>
+    <a class="indexterm" name="id3627102"></a>
 
     <p><span class="emphasis"><em>Configfiles Table</em></span></p>
 
@@ -4831,14 +5256,14 @@
 </tr>
 <tr>
 <td>configfile_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -4852,7 +5277,7 @@
 </tr>
 <tr>
 <td>configfile_path</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
@@ -4863,7 +5288,7 @@
 
     <a name="dbm_configfilevariables"></a>
 
-    <a class="indexterm" name="id2775321"></a>
+    <a class="indexterm" name="id3627251"></a>
 
     <p><span class="emphasis"><em>Configfilevariables Table</em></span></p>
 
@@ -4889,35 +5314,35 @@
 </tr>
 <tr>
 <td>configfilevariable_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>configfile_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>varname</td>
-<td>VARCHAR</td>
+<td>VARCHAR(64)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>varvalue</td>
-<td>VARCHAR</td>
+<td>VARCHAR(1024)</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -4928,7 +5353,7 @@
 
     <a name="dbm_contact_addresses"></a>
 
-    <a class="indexterm" name="id2775483"></a>
+    <a class="indexterm" name="id3627415"></a>
 
     <p><span class="emphasis"><em>Contact_addresses Table</em></span></p>
 
@@ -4954,21 +5379,21 @@
 </tr>
 <tr>
 <td>contact_address_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>contact_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
@@ -4982,7 +5407,7 @@
 </tr>
 <tr>
 <td>address</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -4993,7 +5418,7 @@
 
     <a name="dbm_contact_notificationcommands"></a>
 
-    <a class="indexterm" name="id2775650"></a>
+    <a class="indexterm" name="id3627581"></a>
 
     <p><span class="emphasis"><em>Contact_notificationcommands Table</em></span></p>
 
@@ -5019,21 +5444,21 @@
 </tr>
 <tr>
 <td>contact_notficationcommand_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>contact_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
@@ -5047,14 +5472,14 @@
 </tr>
 <tr>
 <td>command_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>command_args</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td>UK4</td>
@@ -5065,7 +5490,7 @@
 
     <a name="dbm_contactgroup_members"></a>
 
-    <a class="indexterm" name="id2775838"></a>
+    <a class="indexterm" name="id3627769"></a>
 
     <p><span class="emphasis"><em>Contactgroup_members Table</em></span></p>
 
@@ -5091,28 +5516,28 @@
 </tr>
 <tr>
 <td>contactgroup_member_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>contactgroup_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>contact_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
@@ -5123,7 +5548,7 @@
 
     <a name="dbm_contactgroups"></a>
 
-    <a class="indexterm" name="id2775985"></a>
+    <a class="indexterm" name="id3627916"></a>
 
     <p><span class="emphasis"><em>Contactgroups Table</em></span></p>
 
@@ -5149,14 +5574,14 @@
 </tr>
 <tr>
 <td>contactgroup_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -5170,14 +5595,14 @@
 </tr>
 <tr>
 <td>contactgroup_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>alias</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -5188,7 +5613,7 @@
 
     <a name="dbm_contactnotificationmethods"></a>
 
-    <a class="indexterm" name="id2776154"></a>
+    <a class="indexterm" name="id3628085"></a>
 
     <p><span class="emphasis"><em>Contactnotificationmethods Table</em></span></p>
 
@@ -5214,28 +5639,28 @@
 </tr>
 <tr>
 <td>contactnotificationmethod_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>contactnotification_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
 </tr>
 <tr>
 <td>start_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
@@ -5249,7 +5674,7 @@
 </tr>
 <tr>
 <td>end_time</td>
-<td>DATETIME</td>
+<td>TIMESTAMP</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -5263,14 +5688,14 @@
 </tr>
 <tr>
 <td>command_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>command_args</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -5281,7 +5706,7 @@
 
     <a name="dbm_contacts"></a>
 
-    <a class="indexterm" name="id2776397"></a>
+    <a class="indexterm" name="id3628328"></a>
 
     <p><span class="emphasis"><em>Contacts Table</em></span></p>
 
@@ -5307,14 +5732,14 @@
 </tr>
 <tr>
 <td>contact_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -5328,42 +5753,42 @@
 </tr>
 <tr>
 <td>contact_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>alias</td>
-<td>VARCHAR</td>
+<td>VARCHAR(64)</td>
 <td>String describing the contact</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>email_address</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>String containing the e-mail address of the contact</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>pager_address</td>
-<td>VARCHAR</td>
+<td>VARCHAR(64)</td>
 <td>String containing the pager address of the contact</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>host_timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>service_timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -5472,7 +5897,7 @@
 
     <a name="dbm_customvariables"></a>
 
-    <a class="indexterm" name="id2776437"></a>
+    <a class="indexterm" name="id3628882"></a>
 
     <p><span class="emphasis"><em>customvariables Table</em></span></p>
 
@@ -5498,21 +5923,21 @@
 </tr>
 <tr>
 <td>customvariable_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
@@ -5533,14 +5958,14 @@
 </tr>
 <tr>
 <td>varname</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>String containing the name of the custom variable</td>
 <td> </td>
 <td>UK3,NK</td>
 </tr>
 <tr>
 <td>varvalue</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>String containing the value of the custom variable</td>
 <td> </td>
 <td> </td>
@@ -5551,7 +5976,7 @@
 
     <a name="dbm_host_contactgroups"></a>
 
-    <a class="indexterm" name="id2777160"></a>
+    <a class="indexterm" name="id3629089"></a>
 
     <p><span class="emphasis"><em>Host_contactgroups Table</em></span></p>
 
@@ -5577,28 +6002,86 @@
 </tr>
 <tr>
 <td>host_contactgroup_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>host_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>contactgroup_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
+<td> </td>
+<td> </td>
+<td>UK2</td>
+</tr>
+</tbody>
+</table>
+      </div>
+
+    <a name="dbm_host_contacts"></a>
+
+    <a class="indexterm" name="id3629239"></a>
+
+    <p><span class="emphasis"><em>Host_contacts Table</em></span></p>
+
+    <p>Description: .</p>
+
+    <p>Structure: </p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td>Field</td>
+<td>Type</td>
+<td>Notes</td>
+<td>Values</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>host_contact_id</td>
+<td>SERIAL</td>
+<td>Unique number identifying the record</td>
+<td> </td>
+<td>PK</td>
+</tr>
+<tr>
+<td>instance_id</td>
+<td>BIGINT unsigned</td>
+<td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>host_id</td>
+<td>BIGINT unsigned</td>
+<td> </td>
+<td> </td>
+<td>UK1</td>
+</tr>
+<tr>
+<td>contact_object_id</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
@@ -5609,7 +6092,7 @@
 
     <a name="dbm_hostescalation_contactgroups"></a>
 
-    <a class="indexterm" name="id2777308"></a>
+    <a class="indexterm" name="id3629386"></a>
 
     <p><span class="emphasis"><em>Hostescalation_contactgroups Table</em></span></p>
 
@@ -5634,29 +6117,87 @@
 <td>Key</td>
 </tr>
 <tr>
-<td>hostescalation_contact_id</td>
-<td>INT</td>
+<td>hostescalation_contactgroup_id</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>hostescalation_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>contactgroup_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
+<td> </td>
+<td> </td>
+<td>UK2</td>
+</tr>
+</tbody>
+</table>
+      </div>
+
+    <a name="dbm_hostescalation_contacts"></a>
+
+    <a class="indexterm" name="id3629534"></a>
+
+    <p><span class="emphasis"><em>Hostescalation_contacts Table</em></span></p>
+
+    <p>Description: .</p>
+
+    <p>Structure: </p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td>Field</td>
+<td>Type</td>
+<td>Notes</td>
+<td>Values</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>hostescalation_contact_id</td>
+<td>SERIAL</td>
+<td>Unique number identifying the record</td>
+<td> </td>
+<td>PK</td>
+</tr>
+<tr>
+<td>instance_id</td>
+<td>BIGINT unsigned</td>
+<td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>hostescalation_id</td>
+<td>BIGINT unsigned</td>
+<td> </td>
+<td> </td>
+<td>UK1</td>
+</tr>
+<tr>
+<td>contact_object_id</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
@@ -5667,7 +6208,7 @@
 
     <a name="dbm_host_parenthosts"></a>
 
-    <a class="indexterm" name="id2777457"></a>
+    <a class="indexterm" name="id3629682"></a>
 
     <p><span class="emphasis"><em>Host_parenthosts Table</em></span></p>
 
@@ -5693,28 +6234,28 @@
 </tr>
 <tr>
 <td>host_parenthost_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>host_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>parent_host_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
@@ -5725,7 +6266,7 @@
 
     <a name="dbm_hostdependencies"></a>
 
-    <a class="indexterm" name="id2777604"></a>
+    <a class="indexterm" name="id3629830"></a>
 
     <p><span class="emphasis"><em>Hostdependencies Table</em></span></p>
 
@@ -5751,14 +6292,14 @@
 </tr>
 <tr>
 <td>hostdependency_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -5772,14 +6313,14 @@
 </tr>
 <tr>
 <td>host_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>dependent_host_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK4</td>
@@ -5800,7 +6341,7 @@
 </tr>
 <tr>
 <td>timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -5832,7 +6373,7 @@
 
     <a name="dbm_hostescalations"></a>
 
-    <a class="indexterm" name="id2777907"></a>
+    <a class="indexterm" name="id3630131"></a>
 
     <p><span class="emphasis"><em>Hostescalations Table</em></span></p>
 
@@ -5858,14 +6399,14 @@
 </tr>
 <tr>
 <td>hostescalation_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -5879,14 +6420,14 @@
 </tr>
 <tr>
 <td>host_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK4</td>
@@ -5939,7 +6480,7 @@
 
     <a name="dbm_hostgroup_members"></a>
 
-    <a class="indexterm" name="id2778192"></a>
+    <a class="indexterm" name="id3630418"></a>
 
     <p><span class="emphasis"><em>Hostgroup_members Table</em></span></p>
 
@@ -5965,28 +6506,28 @@
 </tr>
 <tr>
 <td>hostgroup_member_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>hostgroup_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>host_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
@@ -5997,7 +6538,7 @@
 
     <a name="dbm_hostgroups"></a>
 
-    <a class="indexterm" name="id2778339"></a>
+    <a class="indexterm" name="id3630565"></a>
 
     <p><span class="emphasis"><em>Hostgroups Table</em></span></p>
 
@@ -6023,14 +6564,14 @@
 </tr>
 <tr>
 <td>hostgroup_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td> </td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -6044,14 +6585,14 @@
 </tr>
 <tr>
 <td>hostgroup_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
 </tr>
 <tr>
 <td>alias</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>String describing the hostgroup</td>
 <td> </td>
 <td> </td>
@@ -6062,7 +6603,7 @@
 
     <a name="dbm_hosts"></a>
 
-    <a class="indexterm" name="id2778506"></a>
+    <a class="indexterm" name="id3630730"></a>
 
     <p><span class="emphasis"><em>Hosts Table</em></span></p>
 
@@ -6088,14 +6629,14 @@
 </tr>
 <tr>
 <td>host_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -6109,77 +6650,84 @@
 </tr>
 <tr>
 <td>host_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>alias</td>
-<td>VARCHAR</td>
+<td>VARCHAR(64)</td>
 <td>String describing the host</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>display_name</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>address</td>
-<td>VARCHAR</td>
+<td>VARCHAR(128)</td>
+<td>IP-address</td>
 <td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>address6</td>
+<td>VARCHAR(128)</td>
+<td>IPv6-address</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>check_command_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>check_command_args</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>eventhandler_command_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>eventhandler_command_args</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>notification_timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>check_timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>failure_prediction_options</td>
-<td>VARCHAR</td>
+<td>VARCHAR(64)</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -6396,55 +6944,55 @@
 </tr>
 <tr>
 <td>notes</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>notes_url</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>action_url</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>icon_image</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>icon_image_alt</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>vrml_image</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>statusmap_image</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
-<td>have_2d_ccords</td>
+<td>have_2d_coords</td>
 <td>SMALLINT</td>
 <td> </td>
 <td> </td>
@@ -6498,7 +7046,7 @@
 
     <a name="dbm_service_contactgroups"></a>
 
-    <a class="indexterm" name="id2778556"></a>
+    <a class="indexterm" name="id3630782"></a>
 
     <p><span class="emphasis"><em>Service_contactgroups Table</em></span></p>
 
@@ -6524,28 +7072,86 @@
 </tr>
 <tr>
 <td>service_contactgroup_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>service_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
 </tr>
 <tr>
 <td>contactgroup_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
+<td> </td>
+<td> </td>
+<td>UK3</td>
+</tr>
+</tbody>
+</table>
+      </div>
+
+    <a name="dbm_service_contacts"></a>
+
+    <a class="indexterm" name="id3632058"></a>
+
+    <p><span class="emphasis"><em>Service_contacts Table</em></span></p>
+
+    <p>Description: .</p>
+
+    <p>Structure: </p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td>Field</td>
+<td>Type</td>
+<td>Notes</td>
+<td>Values</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>service_contact_id</td>
+<td>SERIAL</td>
+<td>Unique number identifying the record</td>
+<td> </td>
+<td>PK</td>
+</tr>
+<tr>
+<td>instance_id</td>
+<td>BIGINT unsigned</td>
+<td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
+<td> </td>
+<td>UK1</td>
+</tr>
+<tr>
+<td>service_id</td>
+<td>BIGINT unsigned</td>
+<td> </td>
+<td> </td>
+<td>UK2</td>
+</tr>
+<tr>
+<td>contact_object_id</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
@@ -6556,7 +7162,7 @@
 
     <a name="dbm_servicedependencies"></a>
 
-    <a class="indexterm" name="id2779809"></a>
+    <a class="indexterm" name="id3632206"></a>
 
     <p><span class="emphasis"><em>Servicedependencies Table</em></span></p>
 
@@ -6582,14 +7188,14 @@
 </tr>
 <tr>
 <td>servicedependency_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -6603,14 +7209,14 @@
 </tr>
 <tr>
 <td>service_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>dependent_service_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK4</td>
@@ -6631,7 +7237,7 @@
 </tr>
 <tr>
 <td>timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -6670,7 +7276,7 @@
 
     <a name="dbm_serviceescalation_contactgroups"></a>
 
-    <a class="indexterm" name="id2780118"></a>
+    <a class="indexterm" name="id3632514"></a>
 
     <p><span class="emphasis"><em>Serviceescalation_contactgroups Table</em></span></p>
 
@@ -6696,28 +7302,86 @@
 </tr>
 <tr>
 <td>serviceescalation_contactgroup_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>serviceescalation_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>contactgroup_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
+<td> </td>
+<td> </td>
+<td>UK2</td>
+</tr>
+</tbody>
+</table>
+      </div>
+
+    <a name="dbm_serviceescalation_contacts"></a>
+
+    <a class="indexterm" name="id3632660"></a>
+
+    <p><span class="emphasis"><em>Serviceescalation_contacts Table</em></span></p>
+
+    <p>Description: .</p>
+
+    <p>Structure: </p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td>Field</td>
+<td>Type</td>
+<td>Notes</td>
+<td>Values</td>
+<td>Key</td>
+</tr>
+<tr>
+<td>serviceescalation_contact_id</td>
+<td>SERIAL</td>
+<td>Unique number identifying the record</td>
+<td> </td>
+<td>PK</td>
+</tr>
+<tr>
+<td>instance_id</td>
+<td>BIGINT unsigned</td>
+<td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>serviceescalation_id</td>
+<td>BIGINT unsigned</td>
+<td> </td>
+<td> </td>
+<td>UK1</td>
+</tr>
+<tr>
+<td>contact_object_id</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
@@ -6728,7 +7392,7 @@
 
     <a name="dbm_serviceescalations"></a>
 
-    <a class="indexterm" name="id2780267"></a>
+    <a class="indexterm" name="id3632809"></a>
 
     <p><span class="emphasis"><em>Serviceescalations Table</em></span></p>
 
@@ -6754,14 +7418,14 @@
 </tr>
 <tr>
 <td>serviceescalation_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -6775,14 +7439,14 @@
 </tr>
 <tr>
 <td>service_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK4</td>
@@ -6842,7 +7506,7 @@
 
     <a name="dbm_servicegroup_members"></a>
 
-    <a class="indexterm" name="id2780569"></a>
+    <a class="indexterm" name="id3633111"></a>
 
     <p><span class="emphasis"><em>Servicegroup_members Table</em></span></p>
 
@@ -6868,28 +7532,28 @@
 </tr>
 <tr>
 <td>servicegroup_member_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>servicegroup_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
 </tr>
 <tr>
 <td>service_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK2</td>
@@ -6900,7 +7564,7 @@
 
     <a name="dbm_servicegroups"></a>
 
-    <a class="indexterm" name="id2780717"></a>
+    <a class="indexterm" name="id3633259"></a>
 
     <p><span class="emphasis"><em>Servicegroups Table</em></span></p>
 
@@ -6926,14 +7590,14 @@
 </tr>
 <tr>
 <td>servicegroup_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -6947,14 +7611,14 @@
 </tr>
 <tr>
 <td>servicegroup_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>alias</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>String describing the servicegroup</td>
 <td> </td>
 <td> </td>
@@ -6965,7 +7629,7 @@
 
     <a name="dbm_services"></a>
 
-    <a class="indexterm" name="id2780884"></a>
+    <a class="indexterm" name="id3633427"></a>
 
     <p><span class="emphasis"><em>Services Table</em></span></p>
 
@@ -6991,14 +7655,14 @@
 </tr>
 <tr>
 <td>service_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -7012,70 +7676,70 @@
 </tr>
 <tr>
 <td>host_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>service_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>display_name</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>check_command_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>check_command_args</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>eventhandler_command_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>eventhandler_command_args</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>notification_timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>check_timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>failure_prediction_options</td>
-<td>VARCHAR</td>
+<td>VARCHAR(64)</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -7180,6 +7844,13 @@
 </tr>
 <tr>
 <td>stalk_on_critical</td>
+<td>SMALLINT</td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>is_volatile</td>
 <td>SMALLINT</td>
 <td> </td>
 <td> </td>
@@ -7313,35 +7984,35 @@
 </tr>
 <tr>
 <td>notes</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>notes_url</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>action_url</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>icon_image</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>icon_image_alt</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -7352,7 +8023,7 @@
 
     <a name="dbm_timeperiod_timeranges"></a>
 
-    <a class="indexterm" name="id2780936"></a>
+    <a class="indexterm" name="id3633478"></a>
 
     <p><span class="emphasis"><em>Timeperiod_timeranges Table</em></span></p>
 
@@ -7378,21 +8049,21 @@
 </tr>
 <tr>
 <td>timeperiod_timerange_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td> </td>
 </tr>
 <tr>
 <td>timeperiod_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK1</td>
@@ -7424,7 +8095,7 @@
 
     <a name="dbm_timeperiods"></a>
 
-    <a class="indexterm" name="id2782097"></a>
+    <a class="indexterm" name="id3634656"></a>
 
     <p><span class="emphasis"><em>Timeperiods Table</em></span></p>
 
@@ -7450,14 +8121,14 @@
 </tr>
 <tr>
 <td>timeperiod_id</td>
-<td>INT</td>
+<td>SERIAL</td>
 <td>Unique number identifying the record</td>
 <td> </td>
 <td>PK</td>
 </tr>
 <tr>
 <td>instance_id</td>
-<td>SMALLINT</td>
+<td>BIGINT unsigned</td>
 <td>Unique number identifying the distinct instance of Icinga which this entry is associated with</td>
 <td> </td>
 <td>UK1</td>
@@ -7471,14 +8142,14 @@
 </tr>
 <tr>
 <td>timeperiod_object_id</td>
-<td>INT</td>
+<td>BIGINT unsigned</td>
 <td> </td>
 <td> </td>
 <td>UK3</td>
 </tr>
 <tr>
 <td>alias</td>
-<td>VARCHAR</td>
+<td>VARCHAR(255)</td>
 <td>String describing the timeperiod</td>
 <td> </td>
 <td> </td>

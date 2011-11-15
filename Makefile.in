@@ -19,7 +19,6 @@ SRC_IDOUTILS=@srcdir@/module/idoutils
 SRC_TTAP=@srcdir@/t-tap
 SRC_TAP=@srcdir@/tap
 SRC_T=@srcdir@/t
-SRC_ICINGAAPI=@srcdir@/module/icinga-api
 SRC_DOCBOOK=@srcdir@/docbook
 SRC_DOCBOOK_DE=@srcdir@/docbook/de
 SRC_DOCBOOK_EN=@srcdir@/docbook/en
@@ -104,7 +103,7 @@ none:
 	@printf "\t%-23s - %s\n" "idoutils" "icinga idoutils"
 
 	@printf "\nInstall targets:\n"
-	@printf "\t%-23s - %s\n" "install" "install core, cgis, api, html"
+	@printf "\t%-23s - %s\n" "install" "install core, cgis, html"
 	@printf "\t%-23s - %s\n" "install-base" "install core"
 	@printf "\t%-23s - %s\n" "install-cgis" "install classical web"
 	@printf "\t%-23s - %s\n" "install-html" "install html files"
@@ -113,7 +112,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-init" "install init script"
 	@printf "\t%-23s - %s\n" "install-commandmode" "install external command file"
 	@printf "\t%-23s - %s\n" "install-idoutils" "install idoutils module"
-	@printf "\t%-23s - %s\n" "install-api" "install php api"
+	@printf "\t%-23s - %s\n" "install-api" "install php api !!DEPRECATED!!" # FIXME remove in 1.7.0
 	@printf "\t%-23s - %s\n" "install-dev-docu" "install doxygen development documentation"
 
 
@@ -145,7 +144,7 @@ all:
 	@echo ""
 	@echo "  make install"
 	@echo "     - This installs the main program (Icinga Core), CGIs"
-	@echo "       (Classical Web), API, and HTML files"
+	@echo "       (Classical Web), and HTML files"
 	@echo ""
 	@echo "  make install-init"
 	@echo "     - This installs the init script in $(DESTDIR)$(INIT_DIR)"
@@ -159,7 +158,7 @@ all:
 	@echo "       destination directory"
 	@echo ""
 	@echo "  make install-api"
-	@echo "     - This installs the Icinga API in $(DESTDIR)$(HTMLDIR)"
+	@echo "     - This installs the Icinga API !!DEPRECATED!!" # FIXME remove in 1.7.0
 	@echo ""
 	@echo "  make install-config"
 	@echo "     - This installs *SAMPLE* config files in $(DESTDIR)$(CFGDIR)"
@@ -252,9 +251,6 @@ clean:
 	@if [ x$(USE_LIBTAP) = xyes ]; then \
 		cd $(SRC_TAP) && $(MAKE) $@; \
 	fi
-	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
-		cd $(SRC_ICINGAAPI) && $(MAKE) $@; \
-	fi
 
 	rm -f *.cfg core
 	rm -f *~ *.*~ */*~ */*.*~ */*/*.*~
@@ -273,9 +269,6 @@ distclean: clean
 	cd $(SRC_T) && $(MAKE) $@
 	@if [ x$(USE_LIBTAP) = xyes ]; then \
 		cd $(SRC_TAP) && $(MAKE) $@; \
-	fi
-	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
-		cd $(SRC_ICINGAAPI) && $(MAKE) $@; \
 	fi
 
 	rm -f sample-config/*.cfg sample-config/*.conf sample-config/template-object/*.cfg
@@ -338,15 +331,13 @@ create-doxygen:
 
 submodule-init:
 	git submodule init docbook
-	git submodule init module/icinga-api
 
 submodule-update:
 	git submodule update
 
 submodule-update-latest:
 	cd ${SRC_DOCBOOK} && git checkout master && git pull origin master
-	cd ${SRC_ICINGAAPI} && git checkout master && git pull origin master
-	@echo "pulled latest docbook & icinga-api :)"
+	@echo "pulled latest docbook :)"
 
 
 ###############################
@@ -371,7 +362,6 @@ install:
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_HTM) && $(MAKE) $@
 
-	$(MAKE) install-api
 	$(MAKE) install-basic
 
 install-unstripped:
@@ -379,7 +369,6 @@ install-unstripped:
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_HTM) && $(MAKE) $@
 
-	$(MAKE) install-api
 	$(MAKE) install-basic
 
 install-basic:
@@ -467,18 +456,10 @@ install-idoutils:
 	fi
 
 install-api:
-	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
-		cd $(SRC_ICINGAAPI) && $(MAKE) install; \
-                echo "" ;\
-                echo "*** API installed ***" ;\
-		echo "" ;\
-	else \
-		echo "" ;\
-		echo "Sorry, Icinga API not available!" ;\
-		echo "Check md5 and source in $(SRC_ICINGAAPI)" ;\
-		echo "If using GIT, try # git submodule init ; git submodule update" ;\
-		echo "" ;\
-        fi
+	echo "Sorry, Icinga PHP API was removed from package prior 1.6.0!" ;\
+	echo "Please keep in mind that Icinga-Web uses its own db layer starting with 1.5.0" ;\
+	echo "In case please look for a seperated package and/or icinga-api.git" ;\
+	echo "" ;\
 
 install-init: install-daemoninit
 

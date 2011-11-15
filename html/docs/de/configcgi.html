@@ -1652,7 +1652,7 @@
   aktive Prüfungen dargestellt werden.</p>
 
   <div class="figure">
-<a name="id3319574"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
+<a name="id5035402"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
 <div class="figure-contents">
     
 
@@ -1866,109 +1866,261 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id3320196"></a>
+  <p><a name="configcgi-default_expiring_acknowledgement_duration"></a> <span class="bold"><strong>Verfallszeit von Bestätigungen setzen</strong></span></p>
 
-  <a class="indexterm" name="id3320208"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>default_expiring_acknowledgement_duration=&lt;n&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_expiring_acknowledgement_duration=86400</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id3320222"></a>
+  <p>Mit dieser Option kann die Verfallszeit von Bestätigungen (acknowledgements) festgelegt werden. Nach Ablauf dieser Zeit werden
+  Bestätigungen automatisch gelöscht. Default ist 86.400 Sekunden (ein Tag).</p>
 
-  <a class="indexterm" name="id3320233"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id3320246"></a>
+  <p><a name="configcgi-extinfo_show_child_hosts"></a> <span class="bold"><strong>Child-Host(s) zeigen</strong></span></p>
 
-  <a class="indexterm" name="id3320259"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p> <span class="bold"><strong>extinfo_show_child_hosts=&lt;0|1|2&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>extinfo_show_child_hosts=1</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id3320273"></a>
+  <p>Mit dieser Option wird festgelegt, ob Child-Host(s) für den ausgewählten Host im Hostextinfo-CGI angezeigt werden.</p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = deaktiviert (Default)</p>
+    </li>
+<li class="listitem">
+      <p>1 = nur direkte Child-Hosts anzeigen</p>
+    </li>
+<li class="listitem">
+      <p>2 = direkte und darunter liegende Child-Hosts anzeigen</p>
+    </li>
+</ul></div>
 
-  <a class="indexterm" name="id3320260"></a>
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Option 2 kann ein richtiger Performance-Killer in großen Installationen sein, deshalb bitte mit Vorsicht einsetzen.</p>
+</td></tr>
+</table></div>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Diese Option ist per Default deaktiviert, da sie die gesamte Performance beeinträchtigen kann.</p></td></tr>
+</table></div>
 
-  <a class="indexterm" name="id3320302"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id3320316"></a>
+  <p><a name="configcgi-authorized_for_full_command_resolution"></a> <span class="bold"><strong>Benutzer(n) VOLLEN Zugriff auf Kommandozeilenanzeigen erlauben</strong></span></p>
 
-  <a class="indexterm" name="id3320330"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p>
+            <span class="bold"><strong>authorized_for_full_command_resolution=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;
+            </strong></span>
+          </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_full_command_resolution=icingaadmin</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id3320343"></a>
+  <p>Diese Option ist eine kommaseparierte Liste von Benutzern, die im "Config Command Expander" den Befehl so sehen, wie er von
+  Icinga ausgeführt würde. Damit alle MACROS aufgelöst werden können, benötigt der Web-Server zusätzlich Lesezugriff auf 
+  <code class="filename">resource.cfg</code>.</p>
+  <p>Alternativ können Sie auch Kontaktgruppen angeben.</p>
 
-  <a class="indexterm" name="id3320358"></a>
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top"><p>$USERn$- und benutzerdefinierte Variable können sensible Daten enthalten, so dass Sie den Zugriff strikt begrenzen
+  sollten.</p></td></tr>
+</table></div>
 
-  <a class="indexterm" name="id3320373"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id3320385"></a>
+  <a class="indexterm" name="id5036416"></a>
 
-  <a class="indexterm" name="id3320387"></a>
+  <a class="indexterm" name="id5036428"></a>
 
-  <a class="indexterm" name="id3320414"></a>
+  <a class="indexterm" name="id5036440"></a>
 
-  <a class="indexterm" name="id3320430"></a>
+  <a class="indexterm" name="id5036453"></a>
 
-  <a class="indexterm" name="id3320415"></a>
+  <a class="indexterm" name="id5036465"></a>
 
-  <a class="indexterm" name="id3320458"></a>
+  <a class="indexterm" name="id5036479"></a>
 
-  <a class="indexterm" name="id3320473"></a>
+  <a class="indexterm" name="id5036492"></a>
 
-  <a class="indexterm" name="id3320487"></a>
+  <a class="indexterm" name="id5036506"></a>
 
-  <a class="indexterm" name="id3320498"></a>
+  <a class="indexterm" name="id5036493"></a>
 
-  <a class="indexterm" name="id3320515"></a>
+  <a class="indexterm" name="id5036534"></a>
 
-  <a class="indexterm" name="id3320500"></a>
+  <a class="indexterm" name="id5036520"></a>
 
-  <a class="indexterm" name="id3320542"></a>
+  <a class="indexterm" name="id5036563"></a>
 
-  <a class="indexterm" name="id3320556"></a>
+  <a class="indexterm" name="id5036576"></a>
 
-  <a class="indexterm" name="id3320528"></a>
+  <a class="indexterm" name="id5036590"></a>
 
-  <a class="indexterm" name="id3320584"></a>
+  <a class="indexterm" name="id5036605"></a>
 
-  <a class="indexterm" name="id3320597"></a>
+  <a class="indexterm" name="id5036619"></a>
 
-  <a class="indexterm" name="id3320611"></a>
+  <a class="indexterm" name="id5036632"></a>
 
-  <a class="indexterm" name="id3320624"></a>
+  <a class="indexterm" name="id5036620"></a>
 
-  <a class="indexterm" name="id3320638"></a>
+  <a class="indexterm" name="id5036661"></a>
 
-  <a class="indexterm" name="id3320651"></a>
+  <a class="indexterm" name="id5036674"></a>
 
-  <a class="indexterm" name="id3320667"></a>
+  <a class="indexterm" name="id5036691"></a>
 
-  <a class="indexterm" name="id3320652"></a>
+  <a class="indexterm" name="id5036676"></a>
 
-  <a class="indexterm" name="id3320694"></a>
+  <a class="indexterm" name="id5036717"></a>
 
-  <a class="indexterm" name="id3320706"></a>
+  <a class="indexterm" name="id5036720"></a>
 
-  <a class="indexterm" name="id3320680"></a>
+  <a class="indexterm" name="id5036746"></a>
 
-  <a class="indexterm" name="id3320707"></a>
+  <a class="indexterm" name="id5036760"></a>
 
-  <a class="indexterm" name="id3320748"></a>
+  <a class="indexterm" name="id5036747"></a>
 
-  <a class="indexterm" name="id3320751"></a>
+  <a class="indexterm" name="id5036788"></a>
 
-  <a class="indexterm" name="id3320773"></a>
+  <a class="indexterm" name="id5036802"></a>
 
-  <a class="indexterm" name="id3320758"></a>
+  <a class="indexterm" name="id5036816"></a>
 
-  <a class="indexterm" name="id3320802"></a>
+  <a class="indexterm" name="id5036803"></a>
 
-  <a class="indexterm" name="id3320812"></a>
+  <a class="indexterm" name="id5036844"></a>
 
-  <a class="indexterm" name="id3320827"></a>
+  <a class="indexterm" name="id5036827"></a>
 
-  <a class="indexterm" name="id3320813"></a>
+  <a class="indexterm" name="id5036870"></a>
 
-  <a class="indexterm" name="id3320855"></a>
+  <a class="indexterm" name="id5036885"></a>
 
-  <a class="indexterm" name="id3320841"></a>
+  <a class="indexterm" name="id5036896"></a>
 
-  <a class="indexterm" name="id3320882"></a>
+  <a class="indexterm" name="id5036911"></a>
 
-  <a class="indexterm" name="id3320894"></a>
+  <a class="indexterm" name="id5036925"></a>
+
+  <a class="indexterm" name="id5036912"></a>
+
+  <a class="indexterm" name="id5036897"></a>
+
+  <a class="indexterm" name="id5036940"></a>
+
+  <a class="indexterm" name="id5036969"></a>
+
+  <a class="indexterm" name="id5036994"></a>
+
+  <a class="indexterm" name="id5037005"></a>
+
+  <a class="indexterm" name="id5037020"></a>
+
+  <a class="indexterm" name="id5036968"></a>
+
+  <a class="indexterm" name="id5037046"></a>
+
+  <a class="indexterm" name="id5037059"></a>
+
+  <a class="indexterm" name="id5037075"></a>
+
+  <a class="indexterm" name="id5037061"></a>
+
+  <a class="indexterm" name="id5037102"></a>
+
+  <a class="indexterm" name="id5037115"></a>
+
+  <a class="indexterm" name="id5037128"></a>
+
+  <a class="indexterm" name="id5037142"></a>
+
+  <a class="indexterm" name="id5037157"></a>
 </div>
 <div class="navfooter">
 <hr>
