@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS icinga_slahistory (
   state smallint default 0,
   state_type smallint default '0',
   scheduled_downtime tinyint(1) default 0,
-  PRIMARY KEY (slahistory_id),
+  PRIMARY KEY (slahistory_id)
 ) ENGINE=InnoDB COMMENT='SLA statehistory';
 
 -- -----------------------------------------
