@@ -27,8 +27,6 @@ extern int ido2db_debug_verbosity;
 extern FILE *ido2db_debug_file_fp;
 extern unsigned long ido2db_max_debug_file_size;
 
-extern pthread_mutex_t log_lock;
-
 extern int ido2db_debug_readable_timestamp;
 
 /****************************************************************************/
