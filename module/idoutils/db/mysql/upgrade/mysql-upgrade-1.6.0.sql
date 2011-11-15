@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS icinga_slahistory (
   state smallint default 0,
   state_type smallint default '0',
   scheduled_downtime tinyint(1) default 0,
-  PRIMARY KEY (slahistory_id),
+  PRIMARY KEY (slahistory_id)
 ) ENGINE=InnoDB COMMENT='SLA statehistory';
 
 -- -----------------------------------------
@@ -139,5 +139,5 @@ alter table  icinga_timedevents  modify  deletion_time  timestamp default 0;
 -- update dbversion
 -- -----------------------------------------
 
-INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.5.0') ON DUPLICATE KEY UPDATE version='1.5.0';
+INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.6.0') ON DUPLICATE KEY UPDATE version='1.6.0';
 

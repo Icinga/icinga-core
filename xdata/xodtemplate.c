@@ -282,8 +282,10 @@ int xodtemplate_read_config_data(char *main_config_file, int options, int cache,
 			if (!strcmp(var, "xodtemplate_config_file") || !strcmp(var, "cfg_file")) {
 
 				temp_buffer = (char *)strdup(val);
-				if (config_base_dir != NULL && val[0] != '/')
+				if (config_base_dir != NULL && val[0] != '/') {
 					dummy = asprintf(&config_file, "%s/%s", config_base_dir, temp_buffer);
+					my_free(temp_buffer);
+				}
 				else
 					config_file = temp_buffer;
 
@@ -301,8 +303,10 @@ int xodtemplate_read_config_data(char *main_config_file, int options, int cache,
 			else if (!strcmp(var, "xodtemplate_config_dir") || !strcmp(var, "cfg_dir")) {
 
 				temp_buffer = (char *)strdup(val);
-				if (config_base_dir != NULL && val[0] != '/')
+				if (config_base_dir != NULL && val[0] != '/') {
 					dummy = asprintf(&config_file, "%s/%s", config_base_dir, temp_buffer);
+					my_free(temp_buffer);
+				}
 				else
 					config_file = temp_buffer;
 

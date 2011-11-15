@@ -42,11 +42,13 @@ FIXES
 * core: fix $NOTIFICATIONRECIPIENTS$ macro contains all contacts assigned to host|service, not only notified contacts #2023
 * core: plug memory leak in downtimes comment add (Dorian Guillois) #1979
 * core: make first_notification_delay depend on the first !OK hard state change and don't reset timer for new hard states which would replace it (Rogerio F Cunha) #1918
+* core: fix memory leak in xodtemplate.c (thx Dorian Guillois)
 
 * classic ui: fix for Classic-UI displays bad timeperiods #1989
 * classic ui: fixed wrong color in histogram and trends for unknown/unreachable #2042
 * classic ui: fixed search not returning all results, only first match (without * at the end) #844
 * classic ui: fixed wrong output from status.cgi with option hostservicedetail #2019
+* classic ui: fix typo in histogram.c (thanks Sven-Göran Bergh)
 
 * idoutils: host state change last_hard_state overrides last_state, last_hard_state always -1 #1932
 
