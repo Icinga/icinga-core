@@ -55,5 +55,5 @@ CREATE INDEX services_combined_idx ON icinga_services(service_object_id, host_ob
 -- update dbversion
 -- -----------------------------------------
 
-SELECT updatedbversion('1.5.0');
+SELECT updatedbversion('1.6.0');
 
