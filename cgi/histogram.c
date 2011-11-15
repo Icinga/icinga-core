@@ -187,10 +187,10 @@ gdImagePtr histogram_image = 0;
 int color_white = 0;
 int color_black = 0;
 int color_red = 0;
-int color_darkred = 0;
 int color_green = 0;
 int color_yellow = 0;
-int color_orange = 0;
+int color_pink = 0;
+int color_darkpink = 0;
 int color_lightgray = 0;
 FILE *image_file = NULL;
 
@@ -625,11 +625,10 @@ int main(int argc, char **argv) {
 			color_white = gdImageColorAllocate(histogram_image, 255, 255, 255);
 			color_black = gdImageColorAllocate(histogram_image, 0, 0, 0);
 			color_red = gdImageColorAllocate(histogram_image, 255, 0, 0);
-			color_darkred = gdImageColorAllocate(histogram_image, 128, 0, 0);
 			color_green = gdImageColorAllocate(histogram_image, 0, 128, 0);
 			color_yellow = gdImageColorAllocate(histogram_image, 176, 178, 20);
-			color_orange = gdImageColorAllocate(histogram_image, 255, 100, 25);
-			color_lightgray = gdImageColorAllocate(histogram_image, 192, 192, 192);
+			color_pink = gdImageColorAllocate(histogram_image, 224, 102, 255);
+			color_darkpink = gdImageColorAllocate(histogram_image, 166, 75, 189);
 
 			/* set transparency index */
 			gdImageColorTransparent(histogram_image, color_white);
@@ -1731,7 +1730,7 @@ void graph_all_histogram_data(void) {
 				pixel_y = (int)(tsdata[actual_bucket].host_unreachable * y_scaling_factor);
 
 				if (current_bucket > 0 && !(last_pixel_y == 0 && pixel_y == 0))
-					draw_line(DRAWING_X_OFFSET + pixel_x - (int)x_scaling_factor, DRAWING_Y_OFFSET - last_pixel_y, DRAWING_X_OFFSET + pixel_x, DRAWING_Y_OFFSET - pixel_y, color_darkred);
+					draw_line(DRAWING_X_OFFSET + pixel_x - (int)x_scaling_factor, DRAWING_Y_OFFSET - last_pixel_y, DRAWING_X_OFFSET + pixel_x, DRAWING_Y_OFFSET - pixel_y, color_pink);
 
 				last_pixel_y = pixel_y;
 
@@ -1830,7 +1829,7 @@ void graph_all_histogram_data(void) {
 				pixel_y = (int)(tsdata[actual_bucket].service_unknown * y_scaling_factor);
 
 				if (current_bucket > 0 && !(last_pixel_y == 0 && pixel_y == 0))
-					draw_line(DRAWING_X_OFFSET + pixel_x - (int)x_scaling_factor, DRAWING_Y_OFFSET - last_pixel_y, DRAWING_X_OFFSET + pixel_x, DRAWING_Y_OFFSET - pixel_y, color_orange);
+					draw_line(DRAWING_X_OFFSET + pixel_x - (int)x_scaling_factor, DRAWING_Y_OFFSET - last_pixel_y, DRAWING_X_OFFSET + pixel_x, DRAWING_Y_OFFSET - pixel_y, color_pink);
 
 				last_pixel_y = pixel_y;
 
@@ -1925,7 +1924,7 @@ void graph_all_histogram_data(void) {
 	snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s:", (display_type == DISPLAY_SERVICE_HISTOGRAM) ? "Unknown" : "Unreachable");
 	temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 	string_width = gdFontSmall->w * strlen(temp_buffer);
-	gdImageString(histogram_image, gdFontSmall, DRAWING_X_OFFSET + DRAWING_WIDTH + 15, DRAWING_Y_OFFSET - DRAWING_HEIGHT + ((string_height + 5) * 3), (unsigned char *)temp_buffer, (display_type == DISPLAY_SERVICE_HISTOGRAM) ? color_orange : color_darkred);
+	gdImageString(histogram_image, gdFontSmall, DRAWING_X_OFFSET + DRAWING_WIDTH + 15, DRAWING_Y_OFFSET - DRAWING_HEIGHT + ((string_height + 5) * 3), (unsigned char *)temp_buffer, color_darkpink);
 
 	state3_avg = (double)((double)state3_sum / (double)total_buckets);
 	snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%5lu %5lu %5lu   %.2f", state3_min, state3_max, state3_sum, state3_avg);

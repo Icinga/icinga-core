@@ -288,6 +288,9 @@ int ido2db_db_init(ido2db_idi *idi) {
 	idi->dbinfo.max_externalcommands_age = ido2db_db_settings.max_externalcommands_age;
 	idi->dbinfo.max_logentries_age = ido2db_db_settings.max_logentries_age;
 	idi->dbinfo.max_acknowledgements_age = ido2db_db_settings.max_acknowledgements_age;
+	idi->dbinfo.max_notifications_age = ido2db_db_settings.max_notifications_age;
+	idi->dbinfo.max_contactnotifications_age = ido2db_db_settings.max_contactnotifications_age;
+	idi->dbinfo.max_contactnotificationmethods_age = ido2db_db_settings.max_contactnotificationmethods_age;
 	idi->dbinfo.trim_db_interval = ido2db_db_settings.trim_db_interval;
 	idi->dbinfo.housekeeping_thread_startup_delay = ido2db_db_settings.housekeeping_thread_startup_delay;
 	idi->dbinfo.last_table_trim_time = (time_t) 0L;
@@ -2967,6 +2970,12 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 			ido2db_db_trim_data_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_LOGENTRIES], "logentry_time", (time_t)((unsigned long)current_time - idi->dbinfo.max_logentries_age));
 		if (idi->dbinfo.max_acknowledgements_age > 0L)
 			ido2db_db_trim_data_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_ACKNOWLEDGEMENTS], "entry_time", (time_t)((unsigned long)current_time - idi->dbinfo.max_acknowledgements_age));
+		if (idi->dbinfo.max_notifications_age > 0L)
+			ido2db_db_trim_data_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS], "start_time", (time_t)((unsigned long) current_time - idi->dbinfo.max_notifications_age));
+		if (idi->dbinfo.max_contactnotifications_age > 0L)
+			ido2db_db_trim_data_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONS], "start_time", (time_t)((unsigned long) current_time - idi->dbinfo.max_contactnotifications_age));
+		if (idi->dbinfo.max_contactnotificationmethods_age > 0L)
+			ido2db_db_trim_data_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS], "start_time", (time_t)((unsigned long) current_time - idi->dbinfo.max_contactnotificationmethods_age));
 		idi->dbinfo.last_table_trim_time = current_time;
 	}
 

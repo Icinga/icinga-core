@@ -163,11 +163,11 @@ gdImagePtr trends_image = 0;
 int color_white = 0;
 int color_black = 0;
 int color_red = 0;
-int color_darkred = 0;
 int color_green = 0;
 int color_darkgreen = 0;
 int color_yellow = 0;
-int color_orange = 0;
+int color_pink = 0;
+int color_darkpink = 0;
 FILE *image_file = NULL;
 
 int image_width = 900;
@@ -750,11 +750,11 @@ int main(int argc, char **argv) {
 		color_white = gdImageColorAllocate(trends_image, 255, 255, 255);
 		color_black = gdImageColorAllocate(trends_image, 0, 0, 0);
 		color_red = gdImageColorAllocate(trends_image, 255, 0, 0);
-		color_darkred = gdImageColorAllocate(trends_image, 128, 0, 0);
 		color_green = gdImageColorAllocate(trends_image, 0, 210, 0);
 		color_darkgreen = gdImageColorAllocate(trends_image, 0, 128, 0);
 		color_yellow = gdImageColorAllocate(trends_image, 176, 178, 20);
-		color_orange = gdImageColorAllocate(trends_image, 255, 100, 25);
+		color_pink = gdImageColorAllocate(trends_image, 224, 102, 255);
+		color_darkpink = gdImageColorAllocate(trends_image, 166, 75, 189);
 
 		/* set transparency index */
 		gdImageColorTransparent(trends_image, color_white);
@@ -2090,7 +2090,7 @@ void graph_trend_data(int first_state, int last_state, time_t real_start_time, t
 			height = 40;
 			break;
 		case AS_HOST_UNREACHABLE:
-			color_to_use = color_darkred;
+			color_to_use = color_pink;
 			height = 20;
 			break;
 		case AS_SVC_OK:
@@ -2102,7 +2102,7 @@ void graph_trend_data(int first_state, int last_state, time_t real_start_time, t
 			height = 60;
 			break;
 		case AS_SVC_UNKNOWN:
-			color_to_use = color_orange;
+			color_to_use = color_pink;
 			height = 40;
 			break;
 		case AS_SVC_CRITICAL:
@@ -2686,8 +2686,8 @@ void draw_time_breakdowns(void) {
 		gdImageString(trends_image, gdFontSmall, drawing_x_offset - 10 - (gdFontSmall->w * 4), drawing_y_offset + 25, (unsigned char *)"Down", color_red);
 
 		get_time_breakdown_string(total_time, time_unreachable, "Unreachable", &temp_buffer[0], sizeof(temp_buffer));
-		gdImageString(trends_image, gdFontSmall, drawing_x_offset + drawing_width + 20, drawing_y_offset + 45, (unsigned char *)temp_buffer, color_darkred);
-		gdImageString(trends_image, gdFontSmall, drawing_x_offset - 10 - (gdFontSmall->w * 11), drawing_y_offset + 45, (unsigned char *)"Unreachable", color_darkred);
+		gdImageString(trends_image, gdFontSmall, drawing_x_offset + drawing_width + 20, drawing_y_offset + 45, (unsigned char *)temp_buffer, color_darkpink);
+		gdImageString(trends_image, gdFontSmall, drawing_x_offset - 10 - (gdFontSmall->w * 11), drawing_y_offset + 45, (unsigned char *)"Unreachable", color_darkpink);
 
 		get_time_breakdown_string(total_time, time_indeterminate, "Indeterminate", &temp_buffer[0], sizeof(temp_buffer));
 		gdImageString(trends_image, gdFontSmall, drawing_x_offset + drawing_width + 20, drawing_y_offset + 65, (unsigned char *)temp_buffer, color_black);
@@ -2702,8 +2702,8 @@ void draw_time_breakdowns(void) {
 		gdImageString(trends_image, gdFontSmall, drawing_x_offset - 10 - (gdFontSmall->w * 7), drawing_y_offset + 25, (unsigned char *)"Warning", color_yellow);
 
 		get_time_breakdown_string(total_time, time_unknown, "Unknown", &temp_buffer[0], sizeof(temp_buffer));
-		gdImageString(trends_image, gdFontSmall, drawing_x_offset + drawing_width + 20, drawing_y_offset + 45, (unsigned char *)temp_buffer, color_orange);
-		gdImageString(trends_image, gdFontSmall, drawing_x_offset - 10 - (gdFontSmall->w * 7), drawing_y_offset + 45, (unsigned char *)"Unknown", color_orange);
+		gdImageString(trends_image, gdFontSmall, drawing_x_offset + drawing_width + 20, drawing_y_offset + 45, (unsigned char *)temp_buffer, color_darkpink);
+		gdImageString(trends_image, gdFontSmall, drawing_x_offset - 10 - (gdFontSmall->w * 7), drawing_y_offset + 45, (unsigned char *)"Unknown", color_darkpink);
 
 		get_time_breakdown_string(total_time, time_critical, "Critical", &temp_buffer[0], sizeof(temp_buffer));
 		gdImageString(trends_image, gdFontSmall, drawing_x_offset + drawing_width + 20, drawing_y_offset + 65, (unsigned char *)temp_buffer, color_red);

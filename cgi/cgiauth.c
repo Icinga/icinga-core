@@ -58,6 +58,7 @@ int get_authentication_information(authdata *authinfo) {
 	authinfo->authorized_for_system_information = FALSE;
 	authinfo->authorized_for_system_commands = FALSE;
 	authinfo->authorized_for_configuration_information = FALSE;
+	authinfo->authorized_for_full_command_resolution = FALSE;
 	authinfo->authorized_for_read_only = FALSE;
 	authinfo->number_of_authentication_rules = 0;
 	authinfo->authentication_rules = NULL;
@@ -143,6 +144,12 @@ int get_authentication_information(authdata *authinfo) {
 					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
 						authinfo->authorized_for_configuration_information = TRUE;
 				}
+			} else if (strstr(input, "authorized_for_full_command_resolution=") == input) {
+				temp_ptr = strtok(input, "=");
+				while ((temp_ptr = strtok(NULL, ","))) {
+					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
+						authinfo->authorized_for_full_command_resolution = TRUE;
+				}
 			} else if (strstr(input, "authorized_for_all_host_commands=") == input) {
 				temp_ptr = strtok(input, "=");
 				while ((temp_ptr = strtok(NULL, ","))) {
@@ -200,6 +207,13 @@ int get_authentication_information(authdata *authinfo) {
 						temp_contactgroup = find_contactgroup(temp_ptr);
 						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
 							authinfo->authorized_for_configuration_information = TRUE;
+					}
+				} else if (strstr(input, "authorized_contactgroup_for_full_command_resolution=") == input) {
+					temp_ptr = strtok(input, "=");
+					while ((temp_ptr = strtok(NULL, ","))) {
+						temp_contactgroup = find_contactgroup(temp_ptr);
+						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
+							authinfo->authorized_for_full_command_resolution = TRUE;
 					}
 				} else if (strstr(input, "authorized_contactgroup_for_all_host_commands=") == input) {
 					temp_ptr = strtok(input, "=");
@@ -372,9 +386,6 @@ int is_authorized_for_host(host *hst, authdata *authinfo) {
 	int ok = FALSE;
 	int is_ok = FALSE;
 
-	if (hst == NULL)
-		return FALSE;
-
 	/* if we're not using authentication, fake it */
 	if (use_authentication == FALSE)
 		return TRUE;
@@ -386,6 +397,10 @@ int is_authorized_for_host(host *hst, authdata *authinfo) {
 	/* if this user is authorized for all hosts, they are for this one... */
 	if (is_authorized_for_all_hosts(authinfo) == TRUE)
 		return TRUE;
+
+	/* see if we have a host to check */
+	if (hst == NULL)
+		return FALSE;
 
 	/* find the contact */
 	temp_contact = find_contact(authinfo->username);
@@ -570,9 +585,6 @@ int is_authorized_for_service(service *svc, authdata *authinfo) {
 	int is_ok2 = FALSE;
 	char permission[2];
 
-	if (svc == NULL)
-		return FALSE;
-
 	/* if we're not using authentication, fake it */
 	if (use_authentication == FALSE)
 		return TRUE;
@@ -584,6 +596,10 @@ int is_authorized_for_service(service *svc, authdata *authinfo) {
 	/* if this user is authorized for all services, they are for this one... */
 	if (is_authorized_for_all_services(authinfo) == TRUE)
 		return TRUE;
+
+	/* see if we have a service to check */
+	if (svc == NULL)
+		return FALSE;
 
 	/* find the host */
 	temp_host = find_host(svc->host_name);
@@ -791,6 +807,21 @@ int is_authorized_for_configuration_information(authdata *authinfo) {
 		return FALSE;
 
 	return authinfo->authorized_for_configuration_information;
+}
+
+
+/* check if current user is authorized to view raw commandline configuration information */
+int authorized_for_full_command_resolution(authdata *authinfo) {
+
+	/* if we're not using authentication, fake it */
+	if (use_authentication == FALSE)
+		return TRUE;
+
+	/* if this user has not authenticated return error */
+	if (authinfo->authenticated == FALSE)
+		return FALSE;
+
+	return authinfo->authorized_for_full_command_resolution;
 }
 
 

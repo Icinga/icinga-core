@@ -52,6 +52,7 @@ int		   defer_downtime_sorting = 0;
 #ifdef NSCORE
 extern timed_event *event_list_high;
 extern timed_event *event_list_high_tail;
+pthread_mutex_t icinga_downtime_lock = PTHREAD_MUTEX_INITIALIZER;
 #endif
 
 int dummy;	/* reduce compiler warnings */
@@ -123,6 +124,7 @@ int schedule_downtime(int type, char *host_name, char *service_description, time
 /* unschedules a host or service downtime */
 int unschedule_downtime(int type, unsigned long downtime_id) {
 	scheduled_downtime *temp_downtime = NULL;
+	scheduled_downtime *next_downtime = NULL;
 	host *hst = NULL;
 	service *svc = NULL;
 	timed_event *temp_event = NULL;
@@ -212,7 +214,8 @@ int unschedule_downtime(int type, unsigned long downtime_id) {
 	/* unschedule all downtime entries that were triggered by this one */
 	while (1) {
 
-		for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = temp_downtime->next) {
+		for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = next_downtime) {
+			next_downtime = temp_downtime->next;
 			if (temp_downtime->triggered_by == downtime_id) {
 				unschedule_downtime(ANY_DOWNTIME, temp_downtime->downtime_id);
 				break;
@@ -297,6 +300,8 @@ int register_downtime(int type, unsigned long downtime_id) {
 	else
 		add_new_comment(HOST_COMMENT, DOWNTIME_COMMENT, hst->name, NULL, time(NULL), "(Icinga Process)", temp_buffer, 0, COMMENTSOURCE_INTERNAL, FALSE, (time_t)0, &(temp_downtime->comment_id));
 
+	/* free comment buffer */
+	my_free(temp_buffer);
 
 	/*** SCHEDULE DOWNTIME - FLEXIBLE (NON-FIXED) DOWNTIME IS HANDLED AT A LATER POINT ***/
 
@@ -761,6 +766,10 @@ int delete_downtime(int type, unsigned long downtime_id) {
 	scheduled_downtime *last_downtime = NULL;
 	scheduled_downtime *next_downtime = NULL;
 
+#ifdef NSCORE
+	pthread_mutex_lock(&icinga_downtime_lock);
+#endif
+
 	/* find the downtime we should remove */
 	for (this_downtime = scheduled_downtime_list, last_downtime = scheduled_downtime_list; this_downtime != NULL; this_downtime = next_downtime) {
 		next_downtime = this_downtime->next;
@@ -801,6 +810,10 @@ int delete_downtime(int type, unsigned long downtime_id) {
 		result = OK;
 	} else
 		result = ERROR;
+
+#ifdef NSCORE
+	pthread_mutex_unlock(&icinga_downtime_lock);
+#endif
 
 	return result;
 }
@@ -844,13 +857,15 @@ Returns number deleted
 */
 int delete_downtime_by_hostname_service_description_start_time_comment(char *hostname, char *service_description, time_t start_time, char *comment) {
 	scheduled_downtime *temp_downtime;
+	scheduled_downtime *next_downtime;
 	int deleted = 0;
 
 	/* Do not allow deletion of everything - must have at least 1 filter on */
 	if (hostname == NULL && service_description == NULL && start_time == 0 && comment == NULL)
 		return deleted;
 
-	for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = temp_downtime->next) {
+	for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = next_downtime) {
+		next_downtime = temp_downtime->next;
 		if (start_time != 0 && temp_downtime->start_time != start_time) {
 			continue;
 		}
@@ -964,7 +979,14 @@ int add_downtime(int downtime_type, char *host_name, char *svc_description, time
 		new_downtime->next = scheduled_downtime_list;
 		scheduled_downtime_list = new_downtime;
 	} else {
-		/* add new downtime to downtime list, sorted by start time */
+		/*
+		 * add new downtime to downtime list, sorted by start time,
+		 * but lock the lists first so broker modules fiddling
+		 * with them at the same time doesn't crash out.
+		 */
+#ifdef NSCORE
+		pthread_mutex_lock(&icinga_downtime_lock);
+#endif
 		last_downtime = scheduled_downtime_list;
 		for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = temp_downtime->next) {
 			if (new_downtime->start_time < temp_downtime->start_time) {
@@ -977,6 +999,7 @@ int add_downtime(int downtime_type, char *host_name, char *svc_description, time
 			} else
 				last_downtime = temp_downtime;
 		}
+
 		if (scheduled_downtime_list == NULL) {
 			new_downtime->next = NULL;
 			scheduled_downtime_list = new_downtime;
@@ -984,6 +1007,9 @@ int add_downtime(int downtime_type, char *host_name, char *svc_description, time
 			new_downtime->next = NULL;
 			last_downtime->next = new_downtime;
 		}
+#ifdef NSCORE
+		pthread_mutex_unlock(&icinga_downtime_lock);
+#endif
 	}
 #ifdef NSCORE
 #ifdef USE_EVENT_BROKER

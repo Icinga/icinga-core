@@ -160,12 +160,14 @@ int color_red = 0;
 int color_lightred = 0;
 int color_green = 0;
 int color_lightgreen = 0;
+int color_pink = 0;
 int color_blue = 0;
 int color_yellow = 0;
 int color_orange = 0;
 int color_grey = 0;
 int color_lightgrey = 0;
 int color_transparency_index = 0;
+
 extern int color_transparency_index_r;
 extern int color_transparency_index_g;
 extern int color_transparency_index_b;
@@ -543,7 +545,7 @@ void display_page_header(void) {
 			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Network Map For All Hosts");
 		else
 			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Network Map For Host <I>%s</I>", host_name);
-		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
 		display_info_table(temp_buffer, refresh, &current_authdata, daemon_check);
 
 		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
@@ -1294,7 +1296,7 @@ void load_background_image(void) {
 		return;
 
 	snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s%s", physical_images_path, statusmap_background_image);
-	temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+	temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
 
 	/* read the background image into memory */
 	background_image = load_image_from_file(temp_buffer);
@@ -1400,8 +1402,10 @@ void draw_host_links(void) {
 			/* determine color to use when drawing links to children  */
 			this_hoststatus = find_hoststatus(this_host->name);
 			if (this_hoststatus != NULL) {
-				if (this_hoststatus->status == HOST_DOWN || this_hoststatus->status == HOST_UNREACHABLE)
+				if (this_hoststatus->status == HOST_DOWN)
 					status_color = color_red;
+				else if (this_hoststatus->status == HOST_UNREACHABLE)
+					status_color = color_pink;
 				else
 					status_color = color_black;
 			} else
@@ -1464,8 +1468,10 @@ void draw_host_links(void) {
 			/* determine color to use when drawing links to parent host */
 			parent_hoststatus = find_hoststatus(parent_host->name);
 			if (parent_hoststatus != NULL) {
-				if (parent_hoststatus->status == HOST_DOWN || parent_hoststatus->status == HOST_UNREACHABLE)
+				if (parent_hoststatus->status == HOST_DOWN)
 					status_color = color_red;
+				else if (parent_hoststatus->status == HOST_UNREACHABLE)
+					status_color = color_pink;
 				else
 					status_color = color_black;
 			} else
@@ -1529,7 +1535,7 @@ void draw_hosts(void) {
 
 		/* get the name of the image file to open for the logo */
 		snprintf(image_input_file, sizeof(image_input_file) - 1, "%s%s", physical_logo_images_path, ICINGA_GD2_ICON);
-		image_input_file[sizeof(image_input_file)-1] = '\x0';
+		image_input_file[sizeof(image_input_file) - 1] = '\x0';
 
 		/* read in the image from file... */
 		logo_image = load_image_from_file(image_input_file);
@@ -1586,7 +1592,7 @@ void draw_hosts(void) {
 				else if (temp_hoststatus->status == HOST_DOWN)
 					status_color = color_red;
 				else if (temp_hoststatus->status == HOST_UNREACHABLE)
-					status_color = color_red;
+					status_color = color_pink;
 				else if (temp_hoststatus->status == HOST_UP)
 					status_color = color_green;
 				else if (temp_hoststatus->status == HOST_PENDING)
@@ -1690,7 +1696,7 @@ void draw_hosts(void) {
 
 					/* get the name of the image file to open for the logo */
 					snprintf(image_input_file, sizeof(image_input_file) - 1, "%s%s", physical_logo_images_path, temp_host->statusmap_image);
-					image_input_file[sizeof(image_input_file)-1] = '\x0';
+					image_input_file[sizeof(image_input_file) - 1] = '\x0';
 
 					/* read in the logo image from file... */
 					logo_image = load_image_from_file(image_input_file);
@@ -1786,7 +1792,7 @@ void draw_host_text(char *name, int x, int y) {
 		return;
 
 	strncpy(temp_buffer, name, sizeof(temp_buffer) - 1);
-	temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+	temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
 
 	/* write the host status string to the generated image... */
 	draw_text(temp_buffer, x, y, color_black);
@@ -1812,7 +1818,7 @@ void draw_host_text(char *name, int x, int y) {
 			status_color = color_red;
 		} else if (temp_hoststatus->status == HOST_UNREACHABLE) {
 			strncpy(temp_buffer, "Unreachable", sizeof(temp_buffer));
-			status_color = color_red;
+			status_color = color_pink;
 		} else if (temp_hoststatus->status == HOST_UP) {
 			strncpy(temp_buffer, "Up", sizeof(temp_buffer));
 			status_color = color_green;
@@ -1824,7 +1830,7 @@ void draw_host_text(char *name, int x, int y) {
 			status_color = color_orange;
 		}
 
-		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
 
 		/* write the host status string to the generated image... */
 		draw_text(temp_buffer, x, y + gdFontSmall->h, status_color);
@@ -1909,7 +1915,7 @@ void write_host_popup_text(host *hst) {
 			printf(" (Acknowledged)");
 		printf("</font>");
 	} else if (temp_status->status == HOST_UNREACHABLE) {
-		printf("<font color=red>Unreachable");
+		printf("<font color=pink>Unreachable");
 		if (temp_status->problem_has_been_acknowledged == TRUE)
 			printf(" (Acknowledged)");
 		printf("</font>");
@@ -1928,7 +1934,7 @@ void write_host_popup_text(host *hst) {
 		t = current_time - temp_status->last_state_change;
 	get_time_breakdown((unsigned long)t, &days, &hours, &minutes, &seconds);
 	snprintf(state_duration, sizeof(state_duration) - 1, "%2dd %2dh %2dm %2ds%s", days, hours, minutes, seconds, (temp_status->last_state_change == (time_t)0) ? "+" : "");
-	state_duration[sizeof(state_duration)-1] = '\x0';
+	state_duration[sizeof(state_duration) - 1] = '\x0';
 	printf("<tr><td class=\\\"popupText\\\">State Duration:</td><td class=\\\"popupText\\\"><b>%s</b></td></tr>", state_duration);
 
 	get_time_string(&temp_status->last_check, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
@@ -2069,6 +2075,7 @@ int initialize_graphics(void) {
 	color_lightred = gdImageColorAllocate(map_image, 215, 175, 175);
 	color_green = gdImageColorAllocate(map_image, 0, 175, 0);
 	color_lightgreen = gdImageColorAllocate(map_image, 210, 255, 215);
+	color_pink = gdImageColorAllocate(map_image, 224, 102, 255);
 	color_blue = gdImageColorAllocate(map_image, 0, 0, 255);
 	color_yellow = gdImageColorAllocate(map_image, 255, 255, 0);
 	color_orange = gdImageColorAllocate(map_image, 255, 100, 25);
@@ -2089,11 +2096,11 @@ int initialize_graphics(void) {
 
 	/* get the path where we will be reading logo images from (GD2 format)... */
 	snprintf(physical_logo_images_path, sizeof(physical_logo_images_path) - 1, "%slogos/", physical_images_path);
-	physical_logo_images_path[sizeof(physical_logo_images_path)-1] = '\x0';
+	physical_logo_images_path[sizeof(physical_logo_images_path) - 1] = '\x0';
 
 	/* load the unknown icon to use for hosts that don't have pretty images associated with them... */
 	snprintf(image_input_file, sizeof(image_input_file) - 1, "%s%s", physical_logo_images_path, UNKNOWN_GD2_ICON);
-	image_input_file[sizeof(image_input_file)-1] = '\x0';
+	image_input_file[sizeof(image_input_file) - 1] = '\x0';
 	unknown_logo_image = load_image_from_file(image_input_file);
 
 	return OK;
@@ -2695,6 +2702,7 @@ void draw_circular_layer_markup(host *parent, double start_angle, double useable
 					bgcolor = color_lightgrey;
 				else if (suppress_maintenance_downtime == TRUE && temp_hoststatus->scheduled_downtime_depth > 0)
 					bgcolor = color_lightgrey;
+				/* lightred for both DOWN and UNREACHABLE for visual continuity and since UNREACHABLE is still a problem */
 				else if (temp_hoststatus->status == HOST_DOWN || temp_hoststatus->status == HOST_UNREACHABLE)
 					bgcolor = color_lightred;
 				else

@@ -52,6 +52,7 @@ comment     **comment_hashlist = NULL;
 
 
 #ifdef NSCORE
+pthread_mutex_t icinga_comment_lock = PTHREAD_MUTEX_INITIALIZER;
 
 /******************************************************************/
 /**************** INITIALIZATION/CLEANUP FUNCTIONS ****************/
@@ -174,6 +175,11 @@ int delete_comment(int type, unsigned long comment_id) {
 	comment *this_hash = NULL;
 	comment *last_hash = NULL;
 
+	/* lock the comments so we can modify them safely */
+#ifdef NSCORE
+	pthread_mutex_lock(&icinga_comment_lock);
+#endif
+
 	/* find the comment we should remove */
 	for (this_comment = comment_list, last_comment = comment_list; this_comment != NULL; this_comment = next_comment) {
 		next_comment = this_comment->next;
@@ -237,6 +243,10 @@ int delete_comment(int type, unsigned long comment_id) {
 		result = xcddefault_delete_service_comment(comment_id);
 #endif
 
+#ifdef NSCORE
+	pthread_mutex_unlock(&icinga_comment_lock);
+#endif
+
 	return result;
 }
 
@@ -281,12 +291,14 @@ int delete_all_comments(int type, char *host_name, char *svc_description) {
 int delete_all_host_comments(char *host_name) {
 	int result = OK;
 	comment *temp_comment = NULL;
+	comment *next_comment = NULL;
 
 	if (host_name == NULL)
 		return ERROR;
 
 	/* delete host comments from memory */
-	for (temp_comment = get_first_comment_by_host(host_name); temp_comment != NULL; temp_comment = get_next_comment_by_host(host_name, temp_comment)) {
+	for (temp_comment = get_first_comment_by_host(host_name); temp_comment != NULL; temp_comment = next_comment) {
+		next_comment = get_next_comment_by_host(host_name, temp_comment);
 		if (temp_comment->comment_type == HOST_COMMENT)
 			delete_comment(HOST_COMMENT, temp_comment->comment_id);
 	}
@@ -299,12 +311,14 @@ int delete_all_host_comments(char *host_name) {
 int delete_host_acknowledgement_comments(host *hst) {
 	int result = OK;
 	comment *temp_comment = NULL;
+	comment *next_comment = NULL;
 
 	if (hst == NULL)
 		return ERROR;
 
 	/* delete comments from memory */
-	for (temp_comment = get_first_comment_by_host(hst->name); temp_comment != NULL; temp_comment = get_next_comment_by_host(hst->name, temp_comment)) {
+	for (temp_comment = get_first_comment_by_host(hst->name); temp_comment != NULL; temp_comment = next_comment) {
+		next_comment = get_next_comment_by_host(hst->name, temp_comment);
 		if (temp_comment->comment_type == HOST_COMMENT && temp_comment->entry_type == ACKNOWLEDGEMENT_COMMENT && temp_comment->persistent == FALSE)
 			delete_comment(HOST_COMMENT, temp_comment->comment_id);
 	}
@@ -505,7 +519,13 @@ int add_comment(int comment_type, int entry_type, char *host_name, char *svc_des
 		new_comment->next = comment_list;
 		comment_list = new_comment;
 	} else {
-		/* add new comment to comment list, sorted by comment id */
+		/* add new comment to comment list, sorted by comment id,
+		 * but lock the list first so broker threads doesn't crash
+		 * out in case they're modifying this list too
+		 */
+#ifdef NSCORE
+		pthread_mutex_lock(&icinga_comment_lock);
+#endif
 		last_comment = comment_list;
 		for (temp_comment = comment_list; temp_comment != NULL; temp_comment = temp_comment->next) {
 			if (new_comment->comment_id < temp_comment->comment_id) {
@@ -525,6 +545,9 @@ int add_comment(int comment_type, int entry_type, char *host_name, char *svc_des
 			new_comment->next = NULL;
 			last_comment->next = new_comment;
 		}
+#ifdef NSCORE
+		pthread_mutex_unlock(&icinga_comment_lock);
+#endif
 	}
 
 #ifdef NSCORE
