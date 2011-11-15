@@ -467,18 +467,10 @@ install-idoutils:
 	fi
 
 install-api:
-	@if [ x$(USE_ICINGAAPI) = xyes ]; then \
-		cd $(SRC_ICINGAAPI) && $(MAKE) install; \
-                echo "" ;\
-                echo "*** API installed ***" ;\
-		echo "" ;\
-	else \
-		echo "" ;\
-		echo "Sorry, Icinga API not available!" ;\
-		echo "Check md5 and source in $(SRC_ICINGAAPI)" ;\
-		echo "If using GIT, try # git submodule init ; git submodule update" ;\
-		echo "" ;\
-        fi
+	echo "Sorry, Icinga PHP API was removed from package prior 1.5.0!" ;\
+	echo "Please keep in mind that Icinga-Web uses its own db layer starting with 1.5.0" ;\
+	echo "In case please look for a seperated package and/or icinga-api.git" ;\
+	echo "" ;\
 
 install-init: install-daemoninit
 

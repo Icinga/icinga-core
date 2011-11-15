@@ -1,6 +1,3 @@
-[submodule "module/icinga-api"]
-	path = module/icinga-api
-	url = git://git.icinga.org/icinga-api.git
 [submodule "docbook"]
 	path = docbook
 	url = git://git.icinga.org/icinga-doc.git
