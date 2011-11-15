@@ -42,7 +42,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>MIt Hilfe von <a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a> anstatt NRPE auf dem entfernten Host
+      <p>Mit Hilfe von <a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a> anstatt NRPE auf dem entfernten Host
       können Sie auch Prüfungen auf Windows-Maschinen ausführen.</p>
     </td></tr>
 </table></div>
@@ -53,7 +53,7 @@
   bei der Sicherheit überwiegen. SSL kann übrigens aktiviert werden, wenn Sie eine sicherere Verbindung benötigen.</p>
 
   <div class="figure">
-<a name="id3387469"></a><p class="title"><b>Abbildung 10.1. NRPE</b></p>
+<a name="id5103750"></a><p class="title"><b>Abbildung 10.1. NRPE</b></p>
 <div class="figure-contents">
     
 
@@ -82,7 +82,7 @@
   Relais.</p>
 
   <div class="figure">
-<a name="id3387509"></a><p class="title"><b>Abbildung 10.2. NRPE remote</b></p>
+<a name="id5103789"></a><p class="title"><b>Abbildung 10.2. NRPE remote</b></p>
 <div class="figure-contents">
     
 
@@ -117,13 +117,29 @@
 
   <p><span class="bold"><strong>Download</strong></span></p>
 
-  <p>Laden Sie die Software vom <a class="link" href="https://git.icinga.org/?p=icinga.nrpe.git;a=tree" target="_top">Icinga git-Repository</a>
-  durch Klick auf "tar.gz" oder benutzen Sie</p>
-<pre class="programlisting"> #&gt; cd /usr/src
- #&gt; wget "https://git.icinga.org/?p=icinga-nrpe.git;a=snapshot;h=HEAD;sf=tgz" -O nrpe.tgz
- #&gt; tar xzf nrpe.tgz</pre>
-<p>oder die aktuelle Version aus dem git-Repository </p>
-<pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-nrpe.git</pre>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>Anstatt NRPE von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
+    Betriebssystem gibt. Bitte werfen Sie einen Blick auf die
+    <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der Pakete</a>.
+    </p>
+    <p>Falls Sie aus den Sourcen installieren möchten, dann benutzen Sie bitte die offiziellen Release-Tarballs.</p>
+  </td></tr>
+</table></div>
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf.
+    gelöst ist.</p>
+  </td></tr>
+</table></div>
 
   <p><span class="bold"><strong>Optionale Anpassungen</strong></span></p>
 
@@ -660,9 +676,9 @@
     </li>
 </ul></div>
 
-  <a class="indexterm" name="id3388753"></a>
+  <a class="indexterm" name="id5105019"></a>
 
-  <a class="indexterm" name="id3388691"></a>
+  <a class="indexterm" name="id5105050"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -66,14 +66,6 @@ Requires: %{name} = %{version}-%{release}
 This package contains the idoutils broker module for %{name} which provides
 database storage via libdbi.
 
-%package api
-Summary: PHP api for %{name}
-Group: Applications/System
-Requires: php
-
-%description api
-PHP api for %{name}
-
 %package doc
 Summary: documentation %{name}
 Group: Documentation
@@ -116,7 +108,6 @@ Documentation for %{name}
     --with-init-dir=%{_initrddir} \
     --with-log-dir=%{logdir} \
     --with-cgi-log-dir=%{logdir}/gui \
-    --with-phpapi-log-dir=%{logdir}/api \
     --with-p1-file-dir="%{_libdir}/icinga"
 %{__make} %{?_smp_mflags} all
 
@@ -129,7 +120,6 @@ Documentation for %{name}
     install-config \
     install-webconf \
     install-idoutils \
-    install-api \
     DESTDIR="%{buildroot}" \
     INSTALL_OPTS="" \
     INSTALL_OPTS_WEB="" \
@@ -248,19 +238,10 @@ fi
 %{_bindir}/log2ido
 %{_bindir}/idomod.o
 
-%files api
-%defattr(-,icinga,icinga,-)
-%dir %{_datadir}/icinga/icinga-api
-%{_datadir}/icinga/icinga-api/IcingaApi.php
-%{_datadir}/icinga/icinga-api/contrib
-%{_datadir}/icinga/icinga-api/objects
-%{_datadir}/icinga/icinga-api/tests
-%attr(2775,icinga,icingacmd) %dir %{logdir}/api
-
-
 %changelog
 * Sun Nov 06 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.0-1
 - set to 1.6.0 target, add --with-web-user/group, add objects/ido2db_check_proc.cfg
+- drop api package as this is now deprecated and not shipped anymore with icinga package
 
 * Wed Jun 29 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.5.0-1
 - set to 1.5.0 target, remove provides nagios version, set idoutils.cfg-sample

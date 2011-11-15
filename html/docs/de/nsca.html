@@ -36,7 +36,7 @@
   des Namens werden auch Host-Prüfergebnisse übertragen.</p>
 
   <div class="figure">
-<a name="id3388808"></a><p class="title"><b>Abbildung 10.3. NSCA</b></p>
+<a name="id5105091"></a><p class="title"><b>Abbildung 10.3. NSCA</b></p>
 <div class="figure-contents">
     
 
@@ -84,15 +84,29 @@
 
   <p><span class="bold"><strong>Download und Compile</strong></span></p>
 
-  <p>Laden Sie die Software vom <a class="link" href="https://git.icinga.org/?p=icinga-nsca.git;a=tree" target="_top">Icinga-git-Repository</a>,
-  indem Sie auf "tar.gz" klicken oder benutzen Sie</p>
-
-  <pre class="programlisting"> #&gt; wget "https://git.icinga.org/?p=icinga-nsca.git;a=snapshot;h=HEAD;sf=tgz" -O nsca.tgz
- #&gt; tar xzf nsca.tgz</pre>
-
-  <p>oder benutzen Sie die aktuelle Version auf dem git-Repository</p>
-
-  <pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-nsca.git</pre>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>Anstatt NSCA von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
+    Betriebssystem gibt. Bitte werfen Sie einen Blick auf die
+    <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der Pakete</a>.
+    </p>
+    <p>Falls Sie aus den Sourcen installieren möchten, dann benutzen Sie bitte die offiziellen Release-Tarballs.</p>
+  </td></tr>
+</table></div>
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf.
+    gelöst ist.</p>
+  </td></tr>
+</table></div>
 
   <p>Die maximale Länge der zu übertragenen Daten ist auf 2.048 Bytes begrenzt, die maximale Länge von Plugin-Ausgaben auf 512 Bytes.
   Falls das nicht ausreicht, dann müssen Sie den entsprechenden Wert in <code class="filename">icinga-nsca/include/common.h</code> anpassen.</p>
@@ -382,9 +396,9 @@
   sollten die Daten dann auch im klassischen Web-Interface sehen sowie feststellen, dass der Service-Status von "Pending" auf "OK"
   gewechselt ist und die Ausgabe die Daten enthält, die Sie versandt haben.</p>
 
-  <a class="indexterm" name="id3389563"></a>
+  <a class="indexterm" name="id5105852"></a>
 
-  <a class="indexterm" name="id3389577"></a>
+  <a class="indexterm" name="id5105866"></a>
 </div>
 <div class="navfooter">
 <hr>
