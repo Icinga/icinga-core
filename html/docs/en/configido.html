@@ -1,0 +1,1827 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Configuration of IDOUtils</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.5 Documentation">
+<link rel="up" href="ch12.html" title="Chapter 12. IDOUtils">
+<link rel="prev" href="db_components.html" title="Components">
+<link rel="next" href="db_example-configs.html" title="Example Configurations">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Configuration of IDOUtils</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="db_components.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 12. IDOUtils</th>
+<td width="20%" align="right"> <a accesskey="n" href="db_example-configs.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Configuration of IDOUtils">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="configido"></a><a name="configido_"></a>Configuration of IDOUtils</h2></div></div></div>
+  
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This is to be considered "work in progress".</p>
+  </td></tr>
+</table></div>
+
+  <p><a class="link" href="configido.html#configido_">Changes to core files</a></p>
+
+  <p><a class="link" href="configido.html#configido-idomod">Changes in idomod.cfg </a></p>
+
+  <p><a class="link" href="configido.html#configido-hints">Hints on performance and troubleshooting</a></p>
+
+  <p><a class="link" href="configido.html#configido-ido2db">Changes in ido2db.cfg</a></p>
+
+  <p><a class="link" href="configido.html#configido-idomod_options">idomod.cfg config options</a></p>
+
+  <p><a class="link" href="configido.html#configido-ido2db_options">ido2db.cfg config options</a></p>
+
+  <p><span class="bold"><strong>Core</strong></span></p>
+
+  <p>The configuration starts with setting up the directive "broker_options" in <code class="filename">icinga.cfg</code>. In most cases this value
+  is already present in the file but may have to be activated (by removing the leading hash sign).</p>
+
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Keep in mind that this setting affects <span class="bold"><strong>all</strong></span> event broker modules! (for details see <a class="link" href="http://www.mail-archive.com/nagios-users@lists.sourceforge.net/msg24002.html)" target="_top">http://www.mail-archive.com/nagios-users@lists.sourceforge.net/msg24002.html).</a></p>
+  </td></tr>
+</table></div>
+
+  <p>Enable the idomod event broker module. Please note that under normal circumstances the following module definition is already
+  present in the <code class="filename">modules</code> subdirectory so there is no need to edit the main config file.</p>
+
+  <p>If not the definition of the broker module can be done using a <a class="link" href="objectdefinitions.html#objectdefinitions-module">module definition</a>
+  similar to the following:</p>
+
+  <pre class="programlisting"> define module {
+    module_name   ido_mod
+    path          /usr/local/icinga/bin/idomod.o
+    module_type   neb
+    args          config_file=/usr/local/icinga/etc/idomod.cfg
+ }</pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This also means that a broker_module entry in <code class="filename">icinga.cfg</code> must not be enabled at the same time! "define
+    module" is available starting with Icinga 1.4.</p>
+  </td></tr>
+</table></div>
+
+  <p><a name="configido-idomod"></a><span class="bold"><strong>idomod.cfg</strong></span></p>
+
+  <p>Please review the settings before actually (re)starting Icinga.</p>
+
+  <p>The directive "output_type" should be set to "unixsocket" (default) or "tcpsocket" depending on whether you try access the IDO2DB
+  daemon remote. Please set the value of "output" accordingly (and "tcp_port" as well if applicable). The other options are set to values
+  suitable for starters. If you encounter difficulties during operation you might want to take a look at the following lines:</p>
+
+  <p><a name="configido-hints"></a><span class="bold"><strong>Some hints on performance and troubleshooting</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="emphasis"><em>Buffer</em></span></p>
+
+      <p>Increasing the buffer size will help in case of a slow ido2db daemon or RDBMS on the other side, dropping out. But keep in mind
+      that setting this value too high will cause more load on core handling live and cached data in sync. For performance reasons, it is a
+      good idea to put the buffer into a ramdisk reducing file I/O. If using a virtual environment, do not put it on the same volume as the
+      checkresults / logs are located. Side by side to <code class="filename">status.dat</code> will fit probably.</p>
+
+      <pre class="programlisting"> output_buffer_items=
+ buffer_file=</pre>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>Reconnect</em></span></p>
+
+      <p>It may happen that a slow ido2db daemon or RDBMS will disconnect the client after timing out on insert/update/delete. The output
+      buffer will then being filled while waiting for a reconnect. In order to allow faster reconnect, you can decrease the default value of
+      reconnecting. But keep in mind, that too less and large values can create performance issues. Play around a bit yourself.
+      </p>
+<pre class="programlisting"> reconnect_interval=15
+ reconnect_warning_interval=15</pre>
+<p><span class="emphasis"><em>Data Processing Options</em></span></p>
+
+      <p>Decide what you need. Do you want to keep historical data or is it just a status database containing only current data?</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>Normal operation</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square"><li class="listitem">
+              <p>drop *TIMED_EVENT_DATA (default)</p>
+            </li></ul></div>
+        </li>
+<li class="listitem">
+          <p>Icinga Web requirements</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square">
+<li class="listitem">
+              <p>drop *TIMED_EVENT_DATA</p>
+            </li>
+<li class="listitem">
+              <p>drop *CHECK_DATA</p>
+            </li>
+<li class="listitem">
+              <p>keep *LOG_DATA</p>
+            </li>
+<li class="listitem">
+              <p>keep *STATUS_DATA</p>
+            </li>
+<li class="listitem">
+              <p>keep *STATE_HISTORY</p>
+            </li>
+<li class="listitem">
+              <p>Config tables</p>
+            </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          <p>Only status data</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square">
+<li class="listitem">
+              <p>drop *CHECK_DATA</p>
+            </li>
+<li class="listitem">
+              <p>drop *TIMED_EVENT_DATA</p>
+            </li>
+<li class="listitem">
+              <p>drop *LOG_DATA</p>
+            </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          <p>Historical data</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square">
+<li class="listitem">
+              <p>watch *LOG_DATA</p>
+            </li>
+<li class="listitem">
+              <p>watch *CHECK_DATA</p>
+
+              <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                  <p>archive older, static data into separated tables</p>
+                </li>
+<li class="listitem">
+                  <p>use the housekeeping cycles in <code class="filename">ido2db.cfg</code></p>
+                </li>
+</ul></div>
+            </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          <p>Only performance data</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square">
+<li class="listitem">
+              <p>drop *LOG_DATA</p>
+            </li>
+<li class="listitem">
+              <p>keep *CHECK_DATA</p>
+            </li>
+</ul></div>
+        </li>
+</ul></div>
+
+      <p>Use the <a class="link" href="http://labs.consol.de/nagios/ndo-data-processing-options" target="_top">calculator by Consol</a> to calculate the
+      correct value in an easy way.</p>
+
+      <p>Have a look at the <a class="link" href="configido.html#configido-data_processing_options">"data_processing_options"</a> directive for
+      details.</p>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>Config Output Options</em></span></p>
+
+      <p>This determines what happens on start/restart/reload of the Core, dumping the configuration (main and object, to be separated in
+      the data processing options). Keep in mind that a reload is just a SIGHUP restart, not dropping memory and values. Internally IDOMOD
+      will handle this the same way fetching the data from the NEB API.</p>
+
+      <p>Using Icinga-Web, the default is currently "2" (retained config data), which requires to have retention data to be enabled (by
+      default) and at least being able to read the data once (so start, and reload then, dumping the configs at this stage). This won't take
+      as long as the original config dump because the config is already compiled/assembled into its respective resulting object data.</p>
+
+      <p>Taking the original configs, this will add a hook to the core config parser and add each single directive to IDOMOD too,
+      acquiring cpu cycles and generating much data upon (re)start. Icinga-Web can be set to use that data too.</p>
+
+      <p>Within the database itself, the icinga_hosts and icinga_services table defines the config_type column, where</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>config_type=1 &lt;==&gt; config_output_options=2 (retained)</p>
+        </li>
+<li class="listitem">
+          <p>config_type=0 &lt;==&gt; config_output_options=1 (original)</p>
+        </li>
+</ul></div>
+
+      <p>config_type itself can be used for Icinga-Web config as XML attribute.</p>
+
+      <p>See <a class="link" href="configido.html#configido-config_output_options">"config_output_options"</a> for details.</p>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>Debug</em></span></p>
+
+      <p>Keep in mind that writing a debug file may slow down the module processing data. But it will help in order to analyze what data
+      runs from the core through idomod onto the socket against ido2db.</p>
+    </li>
+</ul></div>
+
+  <p><a name="configido-ido2db"></a><span class="bold"><strong>ido2db.cfg</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="emphasis"><em>table trimming options</em></span></p>
+
+      <p>By default timed events are not processed, because the remaining data would be rather useless. The rest can be set to be
+      cleaned, and holding only the current data, defined by the max age.</p>
+
+      <p>It might be a good idea to reduce this especially for logentries because this table can grow very fast.</p>
+
+      <p><span class="bold"><strong>Please keep in mind:</strong></span> If you change the instance_name in <code class="filename">idomod.cfg</code> the
+      historical data will stay within the database. The housekeeping process will only catch columns targetted against the current active
+      instance_id (which will be read from IDOMOD and DB on ido2db startup).</p>
+
+      <pre class="programlisting"> ## TABLE TRIMMING OPTIONS
+ # Several database tables containing Icinga event data can become quite large
+ # over time.  Most admins will want to trim these tables and keep only a
+ # certain amount of data in them.  The options below are used to specify the
+ # age (in MINUTES) that data should be allowd to remain in various tables
+ # before it is deleted.  Using a value of zero (0) for any value means that
+ # that particular table should NOT be automatically trimmed.
+ #
+ # Remember: There are no optimized settings, it depends on your rdbm install,
+ # number/checkinterval of host/service-checks and your desired time of data
+ # savings - historical vs live-data. Please keep in mind that low delete
+ # intervals may interfere with insert/update data from Icinga.
+
+ # ***DEFAULT***
+
+ # Keep timed events for 1 hour
+ max_timedevents_age=60
+
+ # Keep system commands for 1 day
+ max_systemcommands_age=1440
+
+ # Keep service checks for 1 day
+ max_servicechecks_age=1440
+
+ # Keep host checks for 1 day
+ max_hostchecks_age=1440
+
+ # Keep event handlers for 1 week
+ max_eventhandlers_age=10080
+
+ # Keep external commands for 1 week
+ max_externalcommands_age=10080
+
+ # Keep logentries for 31 days
+ max_logentries_age=44640
+
+ # Keep acknowledgements for 31 days
+ max_acknowledgements_age=44640</pre>
+
+      <p>Starting with Icinga 1.6 housekeeping was extended on the notification tables so the following directives were
+      introduced.</p>
+
+      <pre class="programlisting"> # Keep notifications for 31 days
+ max_notifications_age=44640
+
+ # Keep contactnotifications for 31 days
+ max_contactnotifications_age=44640
+
+ # Keep contactnotificationmethods for 31 days
+ max_contactnotificationmethods_age=44640</pre>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>db trim interval</em></span></p>
+
+      <p>This option can be used to adjust the overall trimming interval (the time between the dates when the table trimming delete
+      queries are actually run against the database). This value has been increased from 60 to 3600 seconds in Icinga 1.4 in order to only
+      run that every hour (and not to stress the database every minute for performance reasons).</p>
+
+      <p>Please keep in mind that the table trimming options go hand in hand with that value, so setting e.g. max_logentries_age to 30
+      minutes will also require the trimming interval to be set to less than 30*60 seconds.</p>
+
+      <pre class="programlisting"> trim_db_interval=3600</pre>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>clear tables on startup</em></span></p>
+
+      <p>By default, host/service status and downtimes are not covered by these settings as they remain in the database itself. The rest
+      will be cleaned either way - if you require various data surviving a core restart/reload, you can disable these
+      settings:</p>
+<pre class="programlisting"> clean_realtime_tables_on_core_startup=1
+ clean_config_tables_on_core_startup=1</pre>
+    </li>
+</ul></div>
+
+  <div class="section" title="IDOMOD config options">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id3607542"></a><a name="configido-idomod_options"></a>IDOMOD config options</h3></div></div></div>
+    
+
+    <p><a name="configido-instance_name"></a><span class="bold"><strong>Instance name</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>instance_name=&lt;name&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>instance_name=default</strong></span> </font></span>
+            </p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option identifies the "name" associated with this particular instance of Icinga and is used to separate data coming from
+    multiple instances. Defaults to 'default' (without quotes).</p>
+
+    <p><a name="configido-output_type"></a><span class="bold"><strong>Output type</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>output_type<span class="bold"><strong>=</strong></span>&lt;file&gt;|&lt;tcpsocket&gt;|&lt;unixsocket&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="bold"><strong>output_type=unixsocket</strong></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines what type of output sink the IDO NEB module should use for data output.</p>
+
+    <p>Possible values are:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>file = standard text file</p>
+      </li>
+<li class="listitem">
+        <p>tcpsocket = TCP socket</p>
+      </li>
+<li class="listitem">
+        <p>unixsocket = UNIX domain socket (default)</p>
+      </li>
+</ul></div>
+
+    <p><a name="configido-output"></a><span class="bold"><strong>Output</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>output=</strong></span><span class="bold"><strong>&lt;ip address&gt;|&lt;file name&gt;</strong></span>
+            </p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>output=/usr/local/icinga/var/ido.sock</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines the name and path of the file or UNIX domain socket to which output will be sent if the output type option
+    specified above is "file" or "unixsocket", respectively. If the output type option is "tcpsocket", this option is used to specify the IP
+    address or fully qualified domain name of the host that the module should connect to for sending output.</p>
+
+    <p><a name="configido-tcp_port"></a><span class="bold"><strong>TCP-port</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>tcp_port=&lt;n&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>tcp_port=5668</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines which port the module will connect to in order to send output. This option is only valid if the output type
+    option specified above is "tcpsocket".</p>
+
+    <p><a name="configido-use_ssl"></a><span class="bold"><strong>Use encryption</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>use_ssl=</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>use_ssl=0</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines if the module will use SSL to encrypt the network traffic between module and ido2db daemon. Both sides have
+    to enable this feature which depends on SSL libraries like openssl or kerberos.</p>
+
+    <p>This option is only valid if the output type option specified above is "tcpsocket".</p>
+
+    <p><a name="configido-output_buffer_items"></a><span class="bold"><strong>Output buffer size</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>output_buffer_items=&lt;n&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>output_buffer_items=5000</strong></span> </font></span>
+            </p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines the size of the output buffer, which will help prevent data from getting lost if there is a temporary
+    disconnect from the data sink. The number of items specified here is the number of lines (each of variable size) of output that will be
+    buffered.</p>
+
+    <p><a name="configido-buffer_file"></a><span class="bold"><strong>Buffer file</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>buffer_file=&lt;file name&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>buffer_file=/usr/local/icinga/var/idomod.tmp</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option is used to specify a file which will be used to store the contents of buffered data which could not be sent to the
+    IDO2DB daemon before Icinga shuts down. Prior to shutting down, the IDO NEB module will write all buffered data to this file for
+    later processing. When Icinga (re)starts, the IDO NEB module will read the contents of this file and send it to the IDO2DB daemon
+    for processing.</p>
+
+    <p><a name="configido-file_rotation_interval"></a><span class="bold"><strong>File rotation interval</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>file_rotation_interval=&lt;seconds&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>file_rotation_interval=14400</strong></span> </font></span>
+            </p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines how often (in seconds) the output file is rotated by Icinga. File rotation is handled by
+    Icinga by executing the command defined by the file_rotation_command option. This option has no effect if the output_type option
+    is a socket.</p>
+
+    <p><a name="configido-file_rotation_command"></a><span class="bold"><strong>File rotation command</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>file_rotation_command=&lt;command&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>file_rotation_command=rotate_ido_log</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option specified the command (as defined in Icinga) that is used to rotate the output file at the interval specified
+    by the file_rotation_interval option. This option has no effect if the output_type option is a socket.</p>
+
+    <p>See the file 'misccommands.cfg' for an example command definition that you can use to rotate the log file.</p>
+
+    <p><a name="configido-file_rotation_timeout"></a><span class="bold"><strong>File rotation timeout</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>file_rotation_timeout=&lt;seconds&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>file_rotation_timeout=60</strong></span> </font></span>
+            </p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option specified the maximum number of seconds that the file rotation command should be allowed to run before being
+    terminated prematurely.</p>
+
+    <p><a name="configido-reconnect_interval"></a><span class="bold"><strong>Reconnect interval</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>reconnect_interval=&lt;seconds&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>reconnect_interval=15</strong></span> </font></span>
+            </p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines how often (in seconds) the IDO NEB module will attempt to re-connect to the output file or socket if a
+    connection to it is lost.</p>
+
+    <p><a name="configido-reconnect_warning_interval"></a><span class="bold"><strong>Reconnect warning interval</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>reconnect_warning_interval=&lt;seconds&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>reconnect_warning_interval=15</strong></span> </font></span>
+            </p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines how often (in seconds) a warning message will be logged to the Icinga log file if a connection to
+    the output file or socket cannot be re-established.</p>
+
+    <p><a name="configido-data_processing_options"></a> <span class="bold"><strong>Data processing options</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>data_processing_options=&lt;n&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>data_processing_options=-1</strong></span> </font></span>
+            </p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Do not mess with this option unless you know what you're doing!!!</p>
+    </td></tr>
+</table></div>
+
+    <p>This option determines what data the IDO NEB module will process.</p>
+
+    <p>Read the source code (<code class="filename">module/idoutils/include/idomod.h</code>) and look for "IDOMOD_PROCESS_" to determine what
+    values to use here.</p>
+
+    <p>Values from source code should be OR'ed to get the value to use here. A value of -1 will cause all data to be processed.</p>
+
+    <p>Basically you have to calculate from the following values</p>
+
+    <pre class="programlisting"> #define IDOMOD_PROCESS_PROCESS_DATA                   1
+ #define IDOMOD_PROCESS_TIMED_EVENT_DATA               2
+ #define IDOMOD_PROCESS_LOG_DATA                       4
+ #define IDOMOD_PROCESS_SYSTEM_COMMAND_DATA            8
+ #define IDOMOD_PROCESS_EVENT_HANDLER_DATA             16
+ #define IDOMOD_PROCESS_NOTIFICATION_DATA              32
+ #define IDOMOD_PROCESS_SERVICE_CHECK_DATA             64
+ #define IDOMOD_PROCESS_HOST_CHECK_DATA                128
+ #define IDOMOD_PROCESS_COMMENT_DATA                   256
+ #define IDOMOD_PROCESS_DOWNTIME_DATA                  512
+ #define IDOMOD_PROCESS_FLAPPING_DATA                  1024
+ #define IDOMOD_PROCESS_PROGRAM_STATUS_DATA            2048
+ #define IDOMOD_PROCESS_HOST_STATUS_DATA               4096
+ #define IDOMOD_PROCESS_SERVICE_STATUS_DATA            8192
+ #define IDOMOD_PROCESS_ADAPTIVE_PROGRAM_DATA          16384
+ #define IDOMOD_PROCESS_ADAPTIVE_HOST_DATA             32768
+ #define IDOMOD_PROCESS_ADAPTIVE_SERVICE_DATA          65536
+ #define IDOMOD_PROCESS_EXTERNAL_COMMAND_DATA          131072
+ #define IDOMOD_PROCESS_OBJECT_CONFIG_DATA             262144
+ #define IDOMOD_PROCESS_MAIN_CONFIG_DATA               524288
+ #define IDOMOD_PROCESS_AGGREGATED_STATUS_DATA         1048576
+ #define IDOMOD_PROCESS_RETENTION_DATA                 2097152
+ #define IDOMOD_PROCESS_ACKNOWLEDGEMENT_DATA           4194304
+ #define IDOMOD_PROCESS_STATECHANGE_DATA               8388608
+ #define IDOMOD_PROCESS_CONTACT_STATUS_DATA            16777216
+ #define IDOMOD_PROCESS_ADAPTIVE_CONTACT_DATA          33554432
+ #
+ #define IDOMOD_PROCESS_EVERYTHING                     67108863
+ #
+ # You may use the Online Calculator by Gerhard Lausser:
+ # http://labs.consol.de/nagios/ndo-data-processing-options/
+ # (please note that there is a checkbox for everything!)
+ #
+ # The default setting will remove everything not used by default.
+ #       TIMED_EVENT_DATA        (-2)
+ #       SERVICE_CHECK_DATA      (-64)
+ #       HOST_CHECK_DATA         (-128)
+ #
+ # 67108863-(2+64+128) = 67108863-194 = 67108669
+
+ data_processing_options=67108669
+
+ # If you are planning to use NagVis you may want to use the following setting:
+ #
+ #data_processing_options=4061953
+ #
+ # You may have to experiment in your environment and find the best value yourself! </pre>
+
+    <p><a name="configido-config_output_options"></a> <span class="bold"><strong>Config output options</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>config_output_options=&lt;0|1|2|3&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>config_output_options=2</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines what types of configuration data from Icinga the IDO NEB module will dump. Values can be OR'ed
+    together. Hint: "2" is the preferred value, doing a restart after initial startup.</p>
+
+    <p>Possible values are:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>0 = Don't dump any configuration information</p>
+        </li>
+<li class="listitem">
+          <p>1 = Dump only original config (from config files)</p>
+        </li>
+<li class="listitem">
+          <p>2 = Dump config only after retained information has been restored</p>
+        </li>
+<li class="listitem">
+          <p>3 = Dump both original and retained configuration</p>
+        </li>
+</ul></div>
+
+    <p><a name="configido-debug_level"></a> <span class="bold"><strong>Debug level</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>debug_level=&lt;-1|0|1|2&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>debug_level=0</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines how much (if any) debugging information will be written to the debug file. OR values together to log
+    multiple types of information.</p>
+
+    <p>Possible values are:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>-1 = Everything</p>
+        </li>
+<li class="listitem">
+          <p>0 = Nothing</p>
+        </li>
+<li class="listitem">
+          <p>1 = Process info</p>
+        </li>
+<li class="listitem">
+          <p>2 = SQL queries</p>
+        </li>
+</ul></div>
+
+    <p><a name="configido-debug_verbosity"></a> <span class="bold"><strong>Debug verbosity</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>debug_verbosity=&lt;0|1|2&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>debug_verbosity=1</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines how verbose the debug log output will be.</p>
+
+    <p>Possible values are:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>0 = Brief output</p>
+        </li>
+<li class="listitem">
+          <p>1 = More detailed</p>
+        </li>
+<li class="listitem">
+          <p>2 = Very detailed</p>
+        </li>
+</ul></div>
+
+    <p><a name="configido-debug_file"></a> <span class="bold"><strong>Debug file name</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>debug_file=&lt;file name&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>debug_file=/usr/local/icinga/var/idomod.debug&gt;</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines where the daemon should write debugging information.</p>
+
+    <p><a name="configido-max_debug_file_size"></a> <span class="bold"><strong>Maximum debug file size</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>max_debug_file_size=&lt;bytes&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>max_debug_file_size=100000000</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines the maximum size (in bytes) of the debug file. If the file grows larger than this size, it will be renamed
+    with a .old extension. If a file already exists with a .old extension it will be deleted automatically. This helps to ensure that your
+    disk space usage doesn't get out of control when debugging.</p>
+  </div>
+
+  <div class="section" title="IDO2DB config options">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="id3607544"></a><a name="configido-ido2db_options"></a>IDO2DB config options</h3></div></div></div>
+    
+
+    <p><a name="configido-lock_file"></a> <span class="bold"><strong>Lock file</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>lock_file=&lt;file name&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>lock_file=ido2db.lock</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This is the lockfile that IDO2DB will use to store its PID number in when it is running in daemon mode.</p>
+
+    <p><a name="configido-ido2db_user"></a><a name="configido-ido2db_group"></a> <span class="bold"><strong>IDO2DB
+    user/group</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td>
+<p>
+                 
+
+                <span class="bold"><strong>ido2db_user=&lt;user name&gt;</strong></span>
+
+                 
+              </p> <p>
+                 
+
+                <span class="bold"><strong>ido2db_group=&lt;group name&gt;</strong></span>
+
+                 
+              </p>
+</td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>ido2db_user=icinga</strong></span> <span class="bold"><strong>ido2db_group=icinga-cmd</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>These options determine the user/group that the daemon should run as. You can specify a number (uid/gid) or a name for either
+    option.</p>
+
+    <p><a name="configido-socket_type"></a> <span class="bold"><strong>Socket type</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>socket_type=&lt;unix|tcp&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>socket_type=unix</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines what type of socket the daemon will create and accept connections from.</p>
+
+    <p><a name="configido-socket_name"></a> <span class="bold"><strong>Socket name</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>socket_name=&lt;file name&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>socket_name=/usr/local/icinga/rw/ido.sock</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines the name and path of the UNIX domain socket that the daemon will create and accept connections from. This
+    option is only valid if the socket type specified above is "unix".</p>
+
+    <p><a name="configido-tcp_port2"></a><span class="bold"><strong>TCP-port</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>tcp_port=&lt;n&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>tcp_port=5668</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines which port the module will connect to in order to send output. This option is only valid if the output type
+    option specified above is "tcp".</p>
+
+    <p><a name="configido-use_ssl2"></a> <span class="bold"><strong>Use encryption</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>use_ssl=</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>use_ssl=0</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines if the module will use SSL to encrypt the network traffic between module and ido2db daemon. Both sides have
+    to enable this feature which depends on SSL libraries like openssl or kerberos.</p>
+
+    <p>This option is only valid if the output type option specified above is "tcp".</p>
+
+    <p><a name="configido-db_servertype"></a> <span class="bold"><strong>Database server type</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>db_servertype=&lt;type&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>db_servertype=mysql</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines what type of DB server the daemon should connect to. Supported databases are MySQL, PostgreSQL,
+    and Oracle</p>
+
+    <p>Possible values are:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>mysql (uses libdbi)</p>
+        </li>
+<li class="listitem">
+          <p>pqsql (uses libdbi)</p>
+        </li>
+<li class="listitem">
+          <p>oracle (uses ocilib)</p>
+        </li>
+</ul></div>
+
+    <p><a name="configido-db_host"></a> <span class="bold"><strong>Database host</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>db_host=&lt;host name|ip address&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>db_host=localhost</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option specifies what host the DB server is running on. <span class="bold"><strong>Note:</strong></span> Oracle will ignore this
+    setting.</p>
+
+    <p><a name="configido-db_port"></a> <span class="bold"><strong>Database port</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>db_port=&lt;n&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>db_port=3306</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option specifies the port that the DB server is running on.</p>
+
+    <p>Common values are:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>3306 (default MySQL port)</p>
+      </li>
+<li class="listitem">
+        <p>5432 (default PostgreSQL port)</p>
+      </li>
+<li class="listitem">
+        <p>1521 (default Oracle port)</p>
+      </li>
+</ul></div>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>ocilib will ignore this, you have to modify your <code class="filename">tnsnames.ora</code>.</p>
+    </td></tr>
+</table></div>
+
+    <p><a name="configido-db_socket"></a> <span class="bold"><strong>Database socket</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>db_socket=&lt;file name&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>db_socket=/var/lib/mysql/mysql.sock</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>Optional db_socket allows to specify a different socket location. This will be passed to libdbi MySQL as mysql_unix_socket,
+    while PostgreSQL overrides the port, ocilib Oracle ignores this setting.</p>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>This setting overrules db_port, making it useless!</p>
+    </td></tr>
+</table></div>
+
+    <p><a name="configido-db_name"></a> <span class="bold"><strong>Database name</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>db_name=&lt;name&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>db_name=icinga</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option specifies the name of the database that should be used.</p>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Oracle with ocilib requires <code class="filename">tnsnames.ora</code> filled with host, port and database information. Then you
+      can use one of the following: </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            <p>//DBSERVER/SID</p>
+          </li>
+<li class="listitem">
+            <p>SID</p>
+          </li>
+</ul></div>
+    </td></tr>
+</table></div>
+
+    <p><a name="configido-db_prefix"></a> <span class="bold"><strong>Database prefix</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>db_prefix=&lt;name&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>db_prefix=icinga_</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>Determines the prefix (if any) that should be prepended to table names. If you modify the table prefix, you'll need to modify the
+    SQL script for creating the database as well!</p>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Oracle will ignore this prefix since the tablename length will exceed 30 characters.</p>
+    </td></tr>
+</table></div>
+
+    <p><a name="configido-db_user"></a><a name="configido-db_pass"></a> <span class="bold"><strong>Database
+    user/password</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td>
+<p>
+                 
+
+                <span class="bold"><strong>db_user=&lt;user name&gt;</strong></span>
+
+                 
+              </p> <p>
+                 
+
+                <span class="bold"><strong>db_pass=&lt;password&gt;</strong></span>
+
+                 
+              </p>
+</td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>db_user=icinga</strong></span> <span class="bold"><strong>db_pass=icinga</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This is the username/password that will be used to authenticate to the DB. The user needs at least SELECT, INSERT, UPDATE, and
+    DELETE privileges on the database.</p>
+
+    <p><a name="configido-debug_level2"></a> <span class="bold"><strong>Debug level</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>debug_level=&lt;-1|0|1|2&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>debug_level=0</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines how much (if any) debugging information will be written to the debug file. OR values together to log
+    multiple types of information.</p>
+
+    <p>Possible values are:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>-1 = Everything</p>
+        </li>
+<li class="listitem">
+          <p>0 = Nothing</p>
+        </li>
+<li class="listitem">
+          <p>1 = Process info</p>
+        </li>
+<li class="listitem">
+          <p>2 = SQL queries</p>
+        </li>
+</ul></div>
+
+    <p><a name="configido-debug_verbosity2"></a> <span class="bold"><strong>Debug verbosity</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>debug_verbosity=&lt;0|1|2&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>debug_verbosity=1</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines how verbose the debug log out will be.</p>
+
+    <p>Possible values are:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>0 = Brief output</p>
+        </li>
+<li class="listitem">
+          <p>1 = More detailed</p>
+        </li>
+<li class="listitem">
+          <p>2 = Very detailed</p>
+        </li>
+</ul></div>
+
+    <p><a name="configido-debug_file2"></a> <span class="bold"><strong>Debug file name</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>debug_file=&lt;file name&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>debug_file=/usr/local/icinga/var/idomod.debug&gt;</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines where the daemon should write debugging information.</p>
+
+    <p><a name="configido-max_debug_file_size2"></a> <span class="bold"><strong>Maximum debug file size</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>max_debug_file_size=&lt;bytes&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>max_debug_file_size=100000000</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option determines the maximum size (in bytes) of the debug file. If the file grows larger than this size, it will be renamed
+    with a .old extension. If a file already exists with a .old extension it will automatically be deleted. This helps ensure your disk
+    space usage doesn't get out of control when debugging.</p>
+
+    <p><a name="configido-debug_readable_timestamp"></a> <span class="bold"><strong>Readable debug timestamp</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>debug_readable_timestamp=&lt;0|1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>debug_readable_timestamp=0</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This option will allow you to set a readable timestamp instead of the default unix timestamp.</p>
+
+    <p>Possible values are:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>0 = disabled (unix timestamp)</p>
+        </li>
+<li class="listitem">
+          <p>1 = enabled (human readable timestamp)</p>
+        </li>
+</ul></div>
+
+    <p><a name="configido-oci_errors_to_syslog"></a> <span class="bold"><strong>OCI errors to syslog</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>oci_errors_to_syslog=&lt;0|1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>oci_errors_to_syslog=0</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>ido2db registers an error handler in ocilib which spits all messages into debug and syslog by default. Setting this option to 0,
+    syslog output will be disabled, only debug log will be used (if appropriate debug_level is set).</p>
+
+    <p><a name="configido-oracle_trace_level"></a> <span class="bold"><strong>Oracle trace level</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>oracle_trace_level=&lt;0|1|4|8|12&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>oracle_trace_level=0</strong></span>
+            </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This setting activates oracle session trace for each ido2db connection using trace event. Level value must be one of the currently
+    supported values (1,4,8,12) or 0 for off. This requires explicit "alter session" privilege, select rights to v$session and v$process are
+    recommended.</p>
+
+    <p>Possible values are:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>0 = pseudo level TRACE OFF</p>
+        </li>
+<li class="listitem">
+          <p>1 = standard SQL trace, no wait events, or bind variables</p>
+        </li>
+<li class="listitem">
+          <p>4 = bind variables only</p>
+        </li>
+<li class="listitem">
+          <p>8 = wait events only</p>
+        </li>
+<li class="listitem">
+          <p>12 = bind variables and wait events</p>
+        </li>
+</ul></div>
+
+    <p><a name="configido-enable_sla"></a> <span class="bold"><strong>Enable SLA data collection</strong></span></p>
+
+    <div class="informaltable">
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>enable_sla=&lt;0|1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>enable_sla=0</strong></span> </font></span></p></td>
+</tr>
+</tbody>
+</table>
+    </div>
+
+    <p>This setting enables collection of SLA data in the slahistory table</p>
+
+    <p>Possible values are:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>0 = disabled</p>
+        </li>
+<li class="listitem">
+          <p>1 = enabled</p>
+        </li>
+</ul></div>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>This option is available starting with Icinga 1.6</p>
+    </td></tr>
+</table></div>
+
+    <a class="indexterm" name="id3611547"></a>
+
+    <a class="indexterm" name="id3611560"></a>
+
+    <a class="indexterm" name="id3611573"></a>
+
+    <a class="indexterm" name="id3611587"></a>
+
+    <a class="indexterm" name="id3611600"></a>
+
+    <a class="indexterm" name="id3611612"></a>
+
+    <a class="indexterm" name="id3611625"></a>
+
+    <a class="indexterm" name="id3611639"></a>
+
+    <a class="indexterm" name="id3611654"></a>
+
+    <a class="indexterm" name="id3611668"></a>
+
+    <a class="indexterm" name="id3611681"></a>
+
+    <a class="indexterm" name="id3611695"></a>
+
+    <a class="indexterm" name="id3611709"></a>
+
+    <a class="indexterm" name="id3611723"></a>
+
+    <a class="indexterm" name="id3611737"></a>
+
+    <a class="indexterm" name="id3611751"></a>
+
+    <a class="indexterm" name="id3611765"></a>
+
+    <a class="indexterm" name="id3611778"></a>
+
+    <a class="indexterm" name="id3611792"></a>
+
+    <a class="indexterm" name="id3611805"></a>
+
+    <a class="indexterm" name="id3611819"></a>
+
+    <a class="indexterm" name="id3611833"></a>
+
+    <a class="indexterm" name="id3611846"></a>
+
+    <a class="indexterm" name="id3611860"></a>
+
+    <a class="indexterm" name="id3611873"></a>
+
+    <a class="indexterm" name="id3611887"></a>
+
+    <a class="indexterm" name="id3611901"></a>
+
+    <a class="indexterm" name="id3611913"></a>
+
+    <a class="indexterm" name="id3611927"></a>
+
+    <a class="indexterm" name="id3611941"></a>
+
+    <a class="indexterm" name="id3611955"></a>
+
+    <a class="indexterm" name="id3611968"></a>
+
+    <a class="indexterm" name="id3611982"></a>
+
+    <a class="indexterm" name="id3611995"></a>
+
+    <a class="indexterm" name="id3612009"></a>
+
+    <a class="indexterm" name="id3612023"></a>
+
+    <a class="indexterm" name="id3612036"></a>
+
+    <a class="indexterm" name="id3612050"></a>
+
+    <a class="indexterm" name="id3612063"></a>
+
+    <a class="indexterm" name="id3612077"></a>
+
+    <a class="indexterm" name="id3612091"></a>
+
+    <a class="indexterm" name="id3612104"></a>
+
+    <a class="indexterm" name="id3612118"></a>
+
+    <a class="indexterm" name="id3612131"></a>
+
+    <a class="indexterm" name="id3612145"></a>
+
+    <a class="indexterm" name="id3612159"></a>
+
+    <a class="indexterm" name="id3612172"></a>
+
+    <a class="indexterm" name="id3612186"></a>
+
+    <a class="indexterm" name="id3612198"></a>
+
+    <a class="indexterm" name="id3612213"></a>
+
+    <a class="indexterm" name="id3612227"></a>
+
+    <a class="indexterm" name="id3612240"></a>
+
+    <a class="indexterm" name="id3612255"></a>
+
+    <a class="indexterm" name="id3612267"></a>
+
+    <a class="indexterm" name="id3612281"></a>
+
+    <a class="indexterm" name="id3612295"></a>
+
+    <a class="indexterm" name="id3612308"></a>
+
+    <a class="indexterm" name="id3612322"></a>
+
+    <a class="indexterm" name="id3612335"></a>
+
+    <a class="indexterm" name="id3612349"></a>
+
+    <a class="indexterm" name="id3612363"></a>
+
+    <a class="indexterm" name="id3612376"></a>
+
+    <a class="indexterm" name="id3612390"></a>
+
+    <a class="indexterm" name="id3612403"></a>
+
+    <a class="indexterm" name="id3612416"></a>
+
+    <a class="indexterm" name="id3612430"></a>
+
+    <a class="indexterm" name="id3612444"></a>
+
+    <a class="indexterm" name="id3612431"></a>
+
+    <a class="indexterm" name="id3612472"></a>
+
+    <a class="indexterm" name="id3612458"></a>
+
+    <a class="indexterm" name="id3612499"></a>
+
+    <a class="indexterm" name="id3612513"></a>
+
+    <a class="indexterm" name="id3612527"></a>
+
+    <a class="indexterm" name="id3612540"></a>
+
+    <a class="indexterm" name="id3612554"></a>
+
+    <a class="indexterm" name="id3612568"></a>
+
+    <a class="indexterm" name="id3612581"></a>
+
+    <a class="indexterm" name="id3612595"></a>
+
+    <a class="indexterm" name="id3612608"></a>
+
+    <a class="indexterm" name="id3612622"></a>
+
+    <a class="indexterm" name="id3612636"></a>
+
+    <a class="indexterm" name="id3612649"></a>
+
+    <a class="indexterm" name="id3612663"></a>
+
+    <a class="indexterm" name="id3612676"></a>
+
+    <a class="indexterm" name="id3612690"></a>
+
+    <a class="indexterm" name="id3612704"></a>
+
+    <a class="indexterm" name="id3612717"></a>
+
+    <a class="indexterm" name="id3612731"></a>
+
+    <a class="indexterm" name="id3612744"></a>
+
+    <a class="indexterm" name="id3612758"></a>
+
+    <a class="indexterm" name="id3612772"></a>
+
+    <a class="indexterm" name="id3612785"></a>
+  </div>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="db_components.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch12.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="db_example-configs.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Components </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Example Configurations</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
