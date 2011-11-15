@@ -105,6 +105,8 @@ extern service  *service_list;
 
 sched_info scheduling_info;
 
+pthread_mutex_t icinga_eventloop_lock = PTHREAD_MUTEX_INITIALIZER;
+
 
 
 /******************************************************************/
@@ -1093,6 +1095,8 @@ int event_execution_loop(void) {
 
 	time(&last_time);
 
+	pthread_mutex_lock(&icinga_eventloop_lock);
+
 	/* initialize fake "sleep" event */
 	sleep_event.event_type = EVENT_SLEEP;
 	sleep_event.run_time = last_time;
@@ -1361,12 +1365,16 @@ int event_execution_loop(void) {
 			broker_timed_event(NEBTYPE_TIMEDEVENT_SLEEP, NEBFLAG_NONE, NEBATTR_NONE, &sleep_event, NULL);
 #endif
 
+			pthread_mutex_unlock(&icinga_eventloop_lock);
+
 			/* wait a while so we don't hog the CPU... */
 #ifdef USE_NANOSLEEP
 			nanosleep(&delay, NULL);
 #else
 			sleep((unsigned int)delay.tv_sec);
 #endif
+
+			pthread_mutex_lock(&icinga_eventloop_lock);
 		}
 
 		/* update status information occassionally - NagVis watches the NDOUtils DB to see if Icinga is alive */
@@ -1384,6 +1392,8 @@ int event_execution_loop(void) {
 	}
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "event_execution_loop() end\n");
+
+	pthread_mutex_unlock(&icinga_eventloop_lock);
 
 	return OK;
 }

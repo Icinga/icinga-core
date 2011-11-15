@@ -102,7 +102,7 @@ int nebmodule_init(int flags, char *args, void *handle) {
 	idomod_module_handle = handle;
 
 	/* log module info to the Icinga log file */
-	snprintf(temp_buffer, sizeof(temp_buffer) - 1, "idomod: %s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org))", IDOMOD_NAME, IDOMOD_VERSION, IDOMOD_DATE);
+	snprintf(temp_buffer, sizeof(temp_buffer) - 1, "idomod: %s %s (%s) %s", IDOMOD_NAME, IDO_VERSION, IDO_DATE, IDO_COPYRIGHT);
 	temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 	idomod_write_to_logs(temp_buffer, NSLOG_INFO_MESSAGE);
 
@@ -574,7 +574,7 @@ int idomod_hello_sink(int reconnect, int problem_disconnect) {
 	         , IDO_API_AGENT
 	         , IDOMOD_NAME
 	         , IDO_API_AGENTVERSION
-	         , IDOMOD_VERSION
+	         , IDO_VERSION
 	         , IDO_API_STARTTIME
 	         , (unsigned long)time(NULL)
 	         , IDO_API_DISPOSITION
@@ -4752,6 +4752,9 @@ int idomod_log_debug_info(int level, int verbosity, const char *fmt, ...) {
 
 	/* flush, so we don't have problems tailing or when fork()ing */
 	fflush(idomod_debug_file_fp);
+
+	/* unlock the mutex so only one thread can write */
+	pthread_mutex_unlock(&log_lock);
 
 	/* if file has grown beyond max, rotate it */
 	if ((unsigned long)ftell(idomod_debug_file_fp) > idomod_max_debug_file_size && idomod_max_debug_file_size > 0L) {

@@ -7,12 +7,8 @@
  **************************************************************/
 
 #include "../../../include/config.h"
+#include "../include/common.h"
 #include "../include/io.h"
-
-#define SOCKDEBUG_VERSION "1.6.0-dev"
-#define SOCKDEBUG_NAME "SOCKDEBUG"
-#define SOCKDEBUG_DATE "11-30-2011"
-
 
 int cleanup_socket(int, char *);
 void sighandler(int);
@@ -32,11 +28,10 @@ int main(int argc, char **argv) {
 
 
 	if (argc < 2) {
-		printf("%s %s\n", SOCKDEBUG_NAME, SOCKDEBUG_VERSION);
-		printf("Copyright(c) 2009-2011 Icinga Development Team (http://www.icinga.org)\n");
-		printf("Copyright(c) 2005-2007 Ethan Galstad\n");
-		printf("Last Modified: %s\n", SOCKDEBUG_DATE);
-		printf("License: GPL v2\n");
+		printf("%s %s\n", SOCKDEBUG_NAME, IDO_VERSION);
+		printf("%s\n", IDO_COPYRIGHT);
+		printf("Last Modified: %s\n", IDO_DATE);
+		printf("%s\n", IDO_LICENSE);
 		printf("\n");
 		printf("Usage: %s <socketname>\n", argv[0]);
 		printf("\n");

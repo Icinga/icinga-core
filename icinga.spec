@@ -10,10 +10,11 @@
 
 %define apacheconfdir  %{_sysconfdir}/httpd/conf.d
 %define apacheuser apache
+%define apachegroup apache
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.6.0-dev
+Version: 1.6.0
 Release: 1%{?dist}
 License: GPLv2
 Group: Applications/System
@@ -96,6 +97,8 @@ Documentation for %{name}
     --with-cgiurl="/icinga/cgi-bin" \
     --with-command-user="icinga" \
     --with-command-group="icingacmd" \
+    --with-web-user=%{apacheuser} \
+    --with-web-group=%{apachegroup} \
     --with-gd-lib="%{_libdir}" \
     --with-gd-inc="%{_includedir}" \
     --with-htmurl="/icinga" \
@@ -239,6 +242,7 @@ fi
 %config(noreplace) %{_sysconfdir}/icinga/ido2db.cfg
 %config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
 %config(noreplace) %{_sysconfdir}/icinga/modules/idoutils.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/ido2db_check_proc.cfg
 %{_sysconfdir}/icinga/idoutils
 %{_bindir}/ido2db
 %{_bindir}/log2ido
@@ -255,6 +259,9 @@ fi
 
 
 %changelog
+* Sun Nov 06 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.0-1
+- set to 1.6.0 target, add --with-web-user/group, add objects/ido2db_check_proc.cfg
+
 * Wed Jun 29 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.5.0-1
 - set to 1.5.0 target, remove provides nagios version, set idoutils.cfg-sample
 - move all logging to one location https://bugzilla.redhat.com/show_bug.cgi?id=693608
