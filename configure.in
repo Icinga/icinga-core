@@ -338,23 +338,10 @@ fi
 AC_SUBST(CGILOGDIR)
 
 dnl ################
-dnl PHPAPI DIRS
+dnl PHPAPI DIRS - DEPRECATED, REMOVE WITH 1.7.0 FIXME
 dnl ################
 dnl Location of phpapi logging path
-PHPAPILOGDIR=no
-AC_ARG_WITH(phpapi-log-dir,AC_HELP_STRING([--with-phpapi-log-dir=<path>],[sets path to php api logging directory]),PHPAPILOGDIR=$withval,PHPAPILOGDIR=no)
-if test x$PHPAPILOGDIR = xno; then
-        PHPAPILOGDIR="$datarootdir/icinga-api/log"
-fi
-AC_SUBST(PHPAPILOGDIR)
-
-dnl Location of phpapi icinga.cmd path
-dnl PHPAPIEXTCMDDIR=no
-dnl AC_ARG_WITH(phpapi-ext-cmd-dir,AC_HELP_STRING([--with-phpapi-ext-cmd-dir=<path>],[sets path to php api ext cmd directory]),PHPAPIEXTCMDDIR=$withval,PHPAPIEXTCMDDIR=no)
-dnl if test x$PHPAPIEXTCMDDIR = xno; then
-dnl        PHPAPIEXTCMDDIR="$localstatedir/rw"
-dnl fi
-dnl AC_SUBST(PHPAPIEXTCMDDIR)
+AC_ARG_WITH(phpapi-log-dir,AC_HELP_STRING([--with-phpapi-log-dir=<path>],[!!deprecated, removed from package!!]),[],[])
 
 
 dnl ################
@@ -1226,20 +1213,6 @@ if test x$check_for_ssl = xyes; then
 	fi
 fi
 
-if test -e "module/icinga-api/IcingaApi.php"; then
-        echo "Configuring Icinga-API ..."
-        USE_ICINGAAPI="yes"
-        AC_SUBST(USE_ICINGAAPI)
-        dnl AC_CONFIG_SUBDIRS([module/icinga-api])
-        AC_OUTPUT(module/icinga-api/Makefile)
-        echo "done..."
-else
-        USE_ICINGAAPI="no"
-        echo "You didn't checked out the git submodule for IcingaApi."
-        echo "I'll not be able to install it."
-        echo ""
-fi
-
 
 TESTS_CFLAGS="$CFLAGS"
 AC_SUBST(TESTS_CFLAGS)
@@ -1280,12 +1253,6 @@ perl subst $srcdir/contrib/eventhandlers/enable_notifications
 
 perl subst $srcdir/html/index.html
 perl subst $srcdir/html/menu.html
-
-if test x$USE_ICINGAAPI = xyes; then
-	perl subst module/icinga-api/contrib/ido2dbparser/Ido2dbParser.php
-        perl subst module/icinga-api/objects/debug/debugTargets/icingaApiFileDebugger.php
-        perl subst module/icinga-api/objects/command/IcingaApiCommandSendSsh.php
-fi
 
 echo ""
 echo "Creating sample config files in sample-config/ ..."
@@ -1362,9 +1329,6 @@ AC_MSG_RESULT([        Install \${prefix}:  $prefix])
 AC_MSG_RESULT([                Lock file:  $lockfile])
 AC_MSG_RESULT([            Log directory:  $LOGDIR])
 AC_MSG_RESULT([        cgi log directory:  $CGILOGDIR])
-if test x$USE_ICINGAAPI = xyes; then
-AC_MSG_RESULT([     phpapi log directory:  $PHPAPILOGDIR])
-fi
 AC_MSG_RESULT([   Check result directory:  $CHECKRESULTDIR])
 AC_MSG_RESULT([   Ext Cmd file directory:  $EXTCMDFILEDIR])
 AC_MSG_RESULT([           Init directory:  $init_dir])
