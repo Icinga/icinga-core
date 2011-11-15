@@ -46,6 +46,14 @@ FIXES
 * idoutils: host state change last_hard_state overrides last_state, last_hard_state always -1 #1932
 
 CHANGES
+* package: complete remove icinga-api as module #1935
+	** Development is being discontinued for now, 1.5.0 was last combined release.
+	** remove files in module/icinga-api
+	** update configure and mark options deprecated
+	** mark as deprecated in Makefile, install-api spits out warning
+	** remove build from icinga.spec
+	** add module/icinga-api/README for further instructions for non Changelog readers
+
 * core: new commands and event
 	** CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE    174
 	** CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE     175
