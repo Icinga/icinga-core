@@ -161,7 +161,7 @@ BEGIN
         || p_id
         || ' AND '
         || p_field_name
-        || '<unixts2ilocalts('
+        || '<unixts2localts('
         || p_time
         || ')';
         EXECUTE IMMEDIATE v_stmt_str;
