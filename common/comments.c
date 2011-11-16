@@ -370,9 +370,11 @@ int delete_service_acknowledgement_comments(service *svc) {
 /* checks for an expired comment (and removes it) */
 int check_for_expired_comment(unsigned long comment_id) {
 	comment *temp_comment = NULL;
+	comment *next_comment = NULL;
 
 	/* check all comments */
-	for (temp_comment = comment_list; temp_comment != NULL; temp_comment = temp_comment->next) {
+	for (temp_comment = comment_list; temp_comment != NULL; temp_comment = next_comment) {
+		next_comment = temp_comment->next;
 
 		/* delete the now expired comment */
 		if (temp_comment->comment_id == comment_id && temp_comment->expires == TRUE && temp_comment->expire_time < time(NULL)) {
