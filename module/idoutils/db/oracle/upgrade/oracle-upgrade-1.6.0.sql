@@ -33,7 +33,7 @@ spool oracle-upgrade-&&ICINGA_VERSION..log
 -- -----------------------------------------
 -- add end_time for acknowledgments
 -- -----------------------------------------
-alter table acknowledgements add end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+alter table acknowledgements add end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR'); 
 
 -- --------------------------------------------------------
 
