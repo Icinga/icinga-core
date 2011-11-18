@@ -28,8 +28,6 @@ while ($f = shift @ARGV) {
 		s|\@sysconfdir\@|@sysconfdir@|g;
 		s|\@LOGDIR\@|@LOGDIR@|g;
 		s|\@CGILOGDIR\@|@CGILOGDIR@|g;
-		s|\@PHPAPILOGDIR\@|@PHPAPILOGDIR@|g;
-		s|\@PHPAPIEXTCMDDIR\@|@PHPAPIEXTCMDDIR@|g;
 		s|\@TMPDIR\@|@TMPDIR@|g;
 		s|\@EXTCMDFILEDIR\@|@EXTCMDFILEDIR@|g;
 		s|\@P1FILELOC\@|@P1FILELOC@|g;

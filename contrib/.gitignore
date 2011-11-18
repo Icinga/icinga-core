@@ -8,3 +8,5 @@ new_mini_epn.o
 perlxsi.o
 daemonchk.cgi
 daemonchk.o
+dst.o
+dst

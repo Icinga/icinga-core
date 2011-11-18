@@ -17,6 +17,7 @@
 #include "../include/dbhandlers.h"
 #include "../include/dbqueries.h"
 #include "../include/sla.h"
+#include "../include/logging.h"
 
 /* Icinga header files */
 #include "../../../include/icinga.h"
@@ -28,6 +29,8 @@ extern int errno;
 extern char *ido2db_db_tablenames[IDO2DB_MAX_DBTABLES];
 
 extern ido2db_dbconfig ido2db_db_settings; /* for tables cleanup settings */
+
+extern int enable_sla;
 
 int dummy;	/* reduce compiler warnings */
 

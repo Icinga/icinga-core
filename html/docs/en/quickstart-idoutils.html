@@ -36,8 +36,21 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Meanwhile there are Icinga packages for most Linux distributions. Unless you need a feature only available in the 
-  current source tree you should consider installing one of these packages.</p></td></tr>
+<tr><td align="left" valign="top">
+<p>Instead of installing Icinga from scratch you may want to use a package which might be available for your OS. Please
+    take a look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.
+    </p>
+    <p>If you are planning to install from source then please use the official release tarball.</p>
+  </td></tr>
+</table></div>
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
+  </td></tr>
 </table></div>
 
   <p>This guide is intended to provide you with simple instructions on how to install Icinga from source (code) and have it
@@ -94,6 +107,14 @@
     </li>
 <li class="listitem">
       <p>libdbi/libdbi-drivers, database like MySQL or PostgreSQL</p>
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>PostgreSQL: Due to changes on insert statements PostgreSQL 8.1 does no longer work (and is already <a class="link" href="http://wiki.postgresql.org/wiki/PostgreSQL_Release_Support_Policy" target="_top">end-of-life</a> since November 2010) so please use
+        8.2 or even better 8.4. String escaping in PostgreSQL 9.x is still in an experimental state (refer to <a class="link" href="https://dev.icinga.org/issues/1974" target="_top">issue #1974</a>).</p></td></tr>
+</table></div>
     </li>
 </ul></div>
 
@@ -505,20 +526,14 @@
 
   <p><span class="bold"><strong>Enable the idomod event broker module</strong></span></p>
 
-  <p>Edit the main config file, search for broker_module and uncomment the example or edit it matching your filenames in:</p>
-
-  <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/icinga.cfg</pre>
-
-  <pre class="programlisting"> broker_module=/usr/local/icinga/bin/idomod.o config_file=/usr/local/icinga/etc/idomod.cfg</pre>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.4 you can use the new module definition in one of your object configuration files instead of
-    specifying a broker_module entry:</p>
+    <p>Under normal circumstances the following module definition is already present in the <code class="filename">modules</code> subdirectory so
+    there is no need to edit the main config file</p>
 
     <pre class="screen"> define module{
         module_name    ido_mod
@@ -526,6 +541,7 @@
         module_type    neb
         args           config_file=/usr/local/icinga/etc/idomod.cfg
         }</pre>
+	 This also means that a broker_module entry must not be enabled!
   </td></tr>
 </table></div>
 
@@ -809,7 +825,7 @@
   no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a>
   about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id2635160"></a>
+  <a class="indexterm" name="id3479811"></a>
 </div>
 <div class="navfooter">
 <hr>

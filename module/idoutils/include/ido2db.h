@@ -12,12 +12,6 @@
 #include "../../../include/config.h"
 #include "utils.h"
 
-#define IDO2DB_NAME "IDO2DB"
-#define IDO2DB_DATE "11-30-2011"
-#define IDO2DB_VERSION "1.6.0-dev"
-
-#define IDO2DB_SCHEMA_VERSION "1.6.0"
-
 /*************** RDBMS headers *************/
 
 /* oracle */
@@ -222,6 +216,9 @@ typedef struct ido2db_dbconninfo_struct{
 	unsigned long max_externalcommands_age;
 	unsigned long max_logentries_age;
 	unsigned long max_acknowledgements_age;
+	unsigned long max_notifications_age;
+	unsigned long max_contactnotifications_age;
+	unsigned long max_contactnotificationmethods_age;
 	unsigned long trim_db_interval;
 	unsigned long housekeeping_thread_startup_delay;
 	unsigned long clean_realtime_tables_on_core_startup;

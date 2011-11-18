@@ -11,12 +11,6 @@
 #include "../include/io.h"
 #include "../include/protoapi.h"
 
-#define LOG2IDO_VERSION "1.6.0-dev"
-#define LOG2IDO_NAME "LOG2IDO"
-#define LOG2IDO_DATE "11-30-2011"
-
-
-
 int process_arguments(int, char **);
 
 char *source_name = NULL;
@@ -47,11 +41,10 @@ int main(int argc, char **argv) {
 			printf("Incorrect command line arguments supplied\n");
 
 		printf("\n");
-		printf("%s %s\n", LOG2IDO_NAME, LOG2IDO_VERSION);
-		printf("Copyright(c) 2009-2011 Icinga Development Team (http://www.icinga.org)\n");
-		printf("Copyright(c) 2005-2007 Ethan Galstad (nagios@nagios.org)\n");
-		printf("Last Mofieid: %s\n", LOG2IDO_DATE);
-		printf("License: GPL v2\n");
+		printf("%s %s\n", LOG2IDO_NAME, IDO_VERSION);
+		printf("%s\n", IDO_COPYRIGHT);
+		printf("Last Modified: %s\n", IDO_DATE);
+		printf("%s\n", IDO_LICENSE);
 		printf("\n");
 		printf("Sends the contents of an archived Icinga log file to STDOUT,\n");
 		printf("a TCP socket, or a Unix domain socket in a format that is understood by the\n");
@@ -109,7 +102,7 @@ int main(int argc, char **argv) {
 	         , IDO_API_AGENT
 	         , LOG2IDO_NAME
 	         , IDO_API_AGENTVERSION
-	         , LOG2IDO_VERSION
+	         , IDO_VERSION
 	         , IDO_API_STARTTIME
 	         , (unsigned long)time(NULL)
 	         , IDO_API_DISPOSITION

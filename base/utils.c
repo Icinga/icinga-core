@@ -232,6 +232,8 @@ extern int      use_embedded_perl_implicitly;
 
 extern int      stalking_event_handlers_for_hosts;
 extern int      stalking_event_handlers_for_services;
+extern int      stalking_notifications_for_hosts;
+extern int      stalking_notifications_for_services;
 
 extern int      date_format;
 
@@ -1114,13 +1116,35 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod) {
 
 void _get_next_valid_time(time_t pref_time, time_t current_time, time_t *valid_time, timeperiod *tperiod) {
 	time_t preferred_time = (time_t)0L;
+
+	/*
+	 * Moving checks at the top with preferred time
+	 * in Nagios, all is done within _get_next_valid_time
+	 */
+
+	/*
+	 * preferred time must be now or in the future 
+	 */
 	preferred_time = (pref_time < current_time) ? current_time : pref_time;
 
+	/*
+	 * if no timeperiod, go with the preferred time
+	 */
 	if (tperiod == NULL) {
 		*valid_time = preferred_time;
 		return;
 	}
 
+	/*
+	 * if the preferred time is valid in timeperiod, go with it
+	 * ithis is necessary because the code below won't catch 
+	 * exceptions where peferred day is last (or only) date in
+	 * timeperiod (date range) and last valid time has already
+	 * passed.
+	 * performing this check and bailing out early allows us to
+	 * skip having to check the next instance of a date range
+	 * exception or weekday to determine the next valid time
+	 */
 	if (check_time_against_period(preferred_time, tperiod) == OK) {
 #ifdef TEST_TIMEPERIODS_B
 		printf("PREF TIME IS VALID\n");
@@ -1129,22 +1153,38 @@ void _get_next_valid_time(time_t pref_time, time_t current_time, time_t *valid_t
 		return;
 	}
 
+	/*
+	 * first check for possible timeperiod excuslions before getting a valid_time
+	 */
 	get_earliest_time(preferred_time, valid_time, current_time, tperiod, 0);
 }
 
+/*
+ * calculate the earliest time possible including checks for timepriod exclusion
+ */
 void get_earliest_time(time_t pref_time, time_t *valid_time, time_t current_time, timeperiod *tperiod, int level) {
 
 	time_t earliest_time;
 	timeperiodexclusion *temp_timeperiodexclusion = NULL;
 	timeperiodexclusion *first_timeperiodexclusion = NULL;
 
+	/*
+	 * function can get called recursivly, pushing alternating level
+	 * see below in timeperiod exclusion loop
+	 */
 	if ((level % 2) == 0) {
+		/*
+		 * initial hit here, and then alternating by 2 the timeperiod exclusions
+		 */
 		_get_next_valid_time_per_timeperiod(pref_time, &earliest_time, current_time, tperiod);
 		if (*valid_time == 0)
 			*valid_time = earliest_time;
 		else if (earliest_time < *valid_time)
 			*valid_time = earliest_time;
 	} else {
+		/*
+		 * first timeperiod exclusion hits here, alternating by 2 
+		 */
 		get_min_invalid_time_per_timeperiod(pref_time, &earliest_time, current_time, tperiod);
 		if (*valid_time == 0)
 			*valid_time = earliest_time;
@@ -1152,6 +1192,9 @@ void get_earliest_time(time_t pref_time, time_t *valid_time, time_t current_time
 			*valid_time = earliest_time + 1;
 	}
 
+	/*
+	 * loop through all available exclusions in this timeperiod and alternate level
+	 */
 	first_timeperiodexclusion = tperiod->exclusions;
 	tperiod->exclusions = NULL;
 	for (temp_timeperiodexclusion = first_timeperiodexclusion; temp_timeperiodexclusion != NULL; temp_timeperiodexclusion = temp_timeperiodexclusion->next) {
@@ -1159,7 +1202,10 @@ void get_earliest_time(time_t pref_time, time_t *valid_time, time_t current_time
 	}
 	tperiod->exclusions = first_timeperiodexclusion;
 }
-
+	
+/*
+ * _get_next_valid_time in Nagios
+ */
 void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, time_t current_time, timeperiod *tperiod) {
 	time_t preferred_time = (time_t)0L;
 	timerange *temp_timerange;
@@ -1193,6 +1239,8 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	int current_time_mday = 0;
 	int current_time_wday = 0;
 	int shift;
+
+	log_debug_info(DEBUGL_FUNCTIONS, 0, "get_next_valid_time_per_timeperiod()\n");
 
 	/* preferred time must be now or in the future */
 	preferred_time = pref_time;
@@ -1334,6 +1382,12 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 				break;
 			case DATERANGE_MONTH_DAY:
 				/* use same year and month as was calculated for start time above */
+				/*
+				 * 2011-10-22 MF
+				 * original implementation uses
+				 * end_time=calculate_time_from_day_of_month(year,month,temp_daterange->emday);
+				 * so why +1 ?
+				 */
 				end_time = calculate_time_from_day_of_month(year, month, temp_daterange->emday + 1);
 				break;
 			case DATERANGE_MONTH_WEEK_DAY:
@@ -1556,6 +1610,9 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	return;
 }
 
+/*
+ * for timeperiod exclusions, Icinga special from #459 
+ */
 void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, time_t current_time, timeperiod *tperiod) {
 	time_t preferred_time = (time_t)0L;
 	timerange *temp_timerange;
@@ -1590,8 +1647,9 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	int current_time_wday = 0;
 	int shift;
 
-	log_debug_info(DEBUGL_FUNCTIONS, 0, "get_next_valid_time_per_timeperiod()\n");
+	log_debug_info(DEBUGL_FUNCTIONS, 0, "get_min_valid_time_per_timeperiod()\n");
 
+	/* preferred time passed as pameter */
 	preferred_time = pref_time;
 
 	/* if no timeperiod, go with preferred time */
@@ -1605,7 +1663,6 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	t->tm_sec = 0;
 	t->tm_min = 0;
 	t->tm_hour = 0;
-	t->tm_isdst = -1;
 	midnight = (unsigned long)mktime(t);
 
 	/* save pref time values for later */
@@ -1621,8 +1678,19 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	current_time_mday = t->tm_mday;
 	current_time_wday = t->tm_wday;
 
+#ifdef TEST_TIMEPERIODS_B
+	printf("PREF TIME:    %lu = %s",(unsigned long)preferred_time,ctime(&preferred_time));
+	printf("CURRENT TIME: %lu = %s",(unsigned long)current_time,ctime(&current_time));
+	printf("PREF YEAR:    %d, MON: %d, MDAY: %d, WDAY: %d\n",pref_time_year,pref_time_mon,pref_time_mday,pref_time_wday);
+	printf("CURRENT YEAR: %d, MON: %d, MDAY: %d, WDAY: %d\n",current_time_year,current_time_mon,current_time_mday,current_time_wday);
+#endif
+
 	/**** check exceptions (in this timeperiod definition) first ****/
 	for (daterange_type = 0; daterange_type < DATERANGE_TYPES; daterange_type++) {
+
+#ifdef TEST_TIMEPERIODS_B
+		printf("TYPE: %d\n",daterange_type);
+#endif
 
 		for (temp_daterange = tperiod->exceptions[daterange_type]; temp_daterange != NULL; temp_daterange = temp_daterange->next) {
 
@@ -1737,6 +1805,11 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 				break;
 			}
 
+#ifdef TEST_TIMEPERIODS_B
+			printf("STARTTIME: %lu = %s",(unsigned long)start_time,ctime(&start_time));
+			printf("ENDTIME1: %lu = %s",(unsigned long)end_time,ctime(&end_time));
+#endif
+
 			/* start date was bad, so skip this date range */
 			if ((unsigned long)start_time == 0L)
 				continue;
@@ -1823,22 +1896,48 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 			for (day_start = start_time; day_start <= end_time; day_start += (advance_interval * 3600 * 24)) {
 
 				/* we already found a time from a higher-precendence date range exception */
+				/*
+				 * here we use have_latest_time instead of have_earliest_time
+				 */
 				if (day_start >= earliest_day && have_latest_time == TRUE)
 					continue;
 
 				for (temp_timerange = temp_daterange->times; temp_timerange != NULL; temp_timerange = temp_timerange->next) {
+					
+					/* REMOVED
+					 * ranges with start/end of zero mean exlude this day
+					 * if(temp_timerange->range_start==0 && temp_timerange->range_end==0)
+					 *    continue;
+					 */
 
 					day_range_start = (time_t)(day_start + temp_timerange->range_start);
 					day_range_end = (time_t)(day_start + temp_timerange->range_end);
+
+#ifdef TEST_TIMEPERIODS_B
+					printf("  RANGE START: %lu (%lu) = %s",temp_timerange->range_start,(unsigned long)day_range_start,ctime(&day_range_start));
+					printf("  RANGE END:   %lu (%lu) = %s",temp_timerange->range_end,(unsigned long)day_range_end,ctime(&day_range_end));
+#endif
 
 					/* range is out of bounds */
 					if (day_range_end < preferred_time)
 						continue;
 
+					/* REMOVED
+                                         * preferred time occurs before range start, so use range start time as earliest potential time 
+                                         * if(day_range_start>=preferred_time)
+                                         *        potential_time=day_range_start;
+                                         * preferred time occurs between range start/end, so use preferred time as earliest potential time 
+                                         *else if(day_range_end>=preferred_time)
+                                         *        potential_time=preferred_time;
+					 */
+
 					potential_time = day_range_end;
 
 					/* is this the earliest time found thus far? */
 					if (have_latest_time == FALSE || potential_time < latest_time) {
+						/*
+						 * save it as latest_time instead of earliest_time
+						 */
 						have_latest_time = TRUE;
 						latest_time = potential_time;
 						earliest_day = day_start;
@@ -1877,6 +1976,9 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 
 			/* calculate the time for the start of this time range */
 			day_range_start = (time_t)(day_start + temp_timerange->range_start);
+			/*
+			 * also calculate day_range_end to assign to lastest_time again
+			 */
 			day_range_end = (time_t)(day_start + temp_timerange->range_end);
 
 			if ((have_latest_time == FALSE || day_range_end < latest_time) && day_range_end >= preferred_time) {
@@ -4394,6 +4496,8 @@ int reset_variables(void) {
 
 	stalking_event_handlers_for_hosts = DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS;
 	stalking_event_handlers_for_services = DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES;
+	stalking_notifications_for_hosts = DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS;
+	stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES;
 
 	external_command_buffer_slots = DEFAULT_EXTERNAL_COMMAND_BUFFER_SLOTS;
 

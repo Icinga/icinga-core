@@ -9,10 +9,6 @@
 #ifndef _NDBXT_IDOMOD_H
 #define _NDBXT_IDOMOD_H
 
-#define IDOMOD_VERSION "1.6.0-dev"
-#define IDOMOD_NAME "IDOMOD"
-#define IDOMOD_DATE "11-30-2011"
-
 /************** misc definitions *************/
 
 /* this is needed for access to daemon's internal data */

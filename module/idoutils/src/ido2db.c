@@ -86,6 +86,7 @@ int ido2db_debug_verbosity = IDO2DB_DEBUGV_BASIC;
 FILE *ido2db_debug_file_fp = NULL;
 unsigned long ido2db_max_debug_file_size = 0L;
 
+int enable_sla = IDO_FALSE;
 int ido2db_debug_readable_timestamp = IDO_FALSE;
 
 int stop_signal_detected = IDO_FALSE;
@@ -121,11 +122,10 @@ int main(int argc, char **argv) {
 			printf("Incorrect command line arguments supplied\n");
 
 		printf("\n");
-		printf("%s %s\n", IDO2DB_NAME, IDO2DB_VERSION);
-		printf("Copyright(c) 2005-2008 Ethan Galstad (nagios@nagios.org)\n");
-		printf("Copyright(c) 2009-2011 Icinga Development Team (http://www.icinga.org)\n");
-		printf("Last Modified: %s\n", IDO2DB_DATE);
-		printf("License: GPL v2\n");
+		printf("%s %s\n", IDO2DB_NAME, IDO_VERSION);
+		printf("%s\n", IDO_COPYRIGHT);
+		printf("Last Modified: %s\n", IDO_DATE);
+		printf("%s\n", IDO_LICENSE);
 #ifdef HAVE_SSL
 		printf("SSL/TLS Available: Anonymous DH Mode, OpenSSL 0.9.6 or higher required\n");
 #endif
@@ -152,8 +152,8 @@ int main(int argc, char **argv) {
 	}
 
 	/* print starting info to syslog */
-	syslog(LOG_USER | LOG_INFO, "%s %s (%s) Copyright (c) 2005-2008 Ethan Galstad (nagios@nagios.org), Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org))", IDO2DB_NAME, IDO2DB_VERSION, IDO2DB_DATE);
-	syslog(LOG_USER | LOG_INFO, "%s %s starting... (PID=%d)\n", IDO2DB_NAME, IDO2DB_VERSION, (int)getpid());
+	syslog(LOG_USER | LOG_INFO, "%s %s (%s) %s", IDO2DB_NAME, IDO_VERSION, IDO_DATE, IDO_COPYRIGHT);
+	syslog(LOG_USER | LOG_INFO, "%s %s starting... (PID=%d)\n", IDO2DB_NAME, IDO_VERSION, (int)getpid());
 
 	if (ido2db_socket_type == IDO_SINK_UNIXSOCKET && use_ssl == IDO_TRUE) {
 		printf("SSL is not allowed on socket_type=unix\n");
@@ -540,6 +540,12 @@ int ido2db_process_config_var(char *arg) {
 		ido2db_db_settings.max_logentries_age = strtoul(val, NULL, 0) * 60;
 	else if (!strcmp(var, "max_acknowledgements_age"))
 		ido2db_db_settings.max_acknowledgements_age = strtoul(val, NULL, 0) * 60;
+	else if (!strcmp(var, "max_notifications_age"))
+		ido2db_db_settings.max_notifications_age = strtoul(val, NULL, 0) * 60;
+	else if (!strcmp(var, "max_contactnotifications_age"))
+		ido2db_db_settings.max_contactnotifications_age = strtoul(val, NULL, 0) * 60;
+	else if (!strcmp(var, "max_contactnotificationmethods_age"))
+		ido2db_db_settings.max_contactnotificationmethods_age = strtoul(val, NULL, 0) * 60;
 
 	else if (!strcmp(var, "trim_db_interval"))
 		ido2db_db_settings.trim_db_interval = strtoul(val, NULL, 0);
@@ -584,8 +590,8 @@ int ido2db_process_config_var(char *arg) {
 		ido2db_db_settings.oci_errors_to_syslog = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "oracle_trace_level")) {
 		ido2db_db_settings.oracle_trace_level = atoi(val);
-	} else if (strcmp(var, "enable_sla") == 0) {
-		enable_sla = strtoul(val, NULL, 0);
+	} else if (!strcmp(var, "enable_sla")) {
+		enable_sla = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "debug_readable_timestamp")) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	}
@@ -618,6 +624,9 @@ int ido2db_initialize_variables(void) {
 	ido2db_db_settings.max_externalcommands_age = 0L;
 	ido2db_db_settings.max_logentries_age = 0L;
 	ido2db_db_settings.max_acknowledgements_age = 0L;
+	ido2db_db_settings.max_notifications_age = 0L;
+	ido2db_db_settings.max_contactnotifications_age = 0L;
+	ido2db_db_settings.max_contactnotificationmethods_age = 0L;
 	ido2db_db_settings.trim_db_interval = (unsigned long)DEFAULT_TRIM_DB_INTERVAL; /* set the default if missing in ido2db.cfg */
 	ido2db_db_settings.housekeeping_thread_startup_delay = (unsigned long)DEFAULT_HOUSEKEEPING_THREAD_STARTUP_DELAY; /* set the default if missing in ido2db.cfg */
 	ido2db_db_settings.clean_realtime_tables_on_core_startup = IDO_TRUE; /* default is cleaning on startup */
@@ -1241,8 +1250,7 @@ int ido2db_handle_client_connection(int sd) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_connection() idi.dbinfo.connected is '%d'\n", idi.dbinfo.connected);
 
 			/* terminate threads */
-			/*terminate_worker_thread();*/
-			terminate_cleanup_thread();
+			ido2db_terminate_threads();
 
 			/* free memory allocated to dynamic buffer */
 			ido_dbuf_free(&dbuf);
@@ -1360,8 +1368,7 @@ int ido2db_handle_client_connection(int sd) {
 #endif
 
 	/* terminate threads */
-	/*terminate_worker_thread();*/
-	terminate_cleanup_thread();
+	ido2db_terminate_threads();
 
 	/* free memory allocated to dynamic buffer */
 	ido_dbuf_free(&dbuf);
