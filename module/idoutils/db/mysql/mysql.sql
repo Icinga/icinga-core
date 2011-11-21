@@ -1376,9 +1376,9 @@ CREATE TABLE IF NOT EXISTS icinga_timeperiod_timeranges (
 CREATE TABLE IF NOT EXISTS icinga_slahistory (
   slahistory_id serial,
   instance_id bigint unsigned default 0,
-  start_time timestamp default '0000-00-00 00:00:00',
-  end_time timestamp default '0000-00-00 00:00:00',
-  acknowledgement_time timestamp default '0000-00-00 00:00:00',
+  start_time timestamp null default NULL,
+  end_time timestamp null default NULL,
+  acknowledgement_time timestamp null default NULL,
   object_id bigint unsigned default 0,
   state smallint default 0,
   state_type smallint default '0',
