@@ -765,13 +765,6 @@ int main(void) {
 				printf("<DIV CLASS='commentNav'>[&nbsp;<A HREF='#HOSTCOMMENTS' CLASS='commentNav'>Host Comments</A>&nbsp;|&nbsp;<A HREF='#SERVICECOMMENTS' CLASS='commentNav'>Service Comments</A>&nbsp;]</DIV>\n");
 				printf("<BR />\n");
 
-				/* add export to csv, json, link */
-				printf("<div class='csv_export_link'>");
-				print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=comment");
-				print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
-				print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
-				printf("</div>");
-
 				show_comments(HOST_COMMENT);
 				printf("<BR />\n");
 				show_comments(SERVICE_COMMENT);
@@ -788,13 +781,6 @@ int main(void) {
 				printf("<BR />\n");
 				printf("<DIV CLASS='downtimeNav'>[&nbsp;<A HREF='#HOSTDOWNTIME' CLASS='downtimeNav'>Host Downtime</A>&nbsp;|&nbsp;<A HREF='#SERVICEDOWNTIME' CLASS='downtimeNav'>Service Downtime</A>&nbsp;]</DIV>\n");
 				printf("<BR />\n");
-
-				/* add export to csv, json, link */
-				printf("<div class='csv_export_link'>");
-				print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=downtime");
-				print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
-				print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
-				printf("</div>");
 
 				show_downtime(HOST_DOWNTIME);
 				printf("<BR />\n");
@@ -2911,12 +2897,16 @@ void show_comments(int type) {
 		printf("<A NAME=%sCOMMENTS></A>\n", (type == HOST_COMMENT) ? "HOST" : "SERVICE");
 		printf("<TABLE BORDER=0 CLASS='comment' style='padding:0px;margin-bottom: -6px;'><TR><TD width='33%%'></TD><TD width='33%%'><DIV CLASS='commentTitle'>%s Comments</DIV></TD><TD width='33%%'>", (type == HOST_COMMENT) ? "Host" : "Service");
 
-		/* add export to csv link */
-		if (display_type != DISPLAY_COMMENTS) {
-			printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+		/* add export to csv, json, link */
+		printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+		if (display_type != DISPLAY_COMMENTS)
 			print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=comment");
-			printf("</DIV>");
+		else if (type == HOST_COMMENT) {
+			print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=comment");
+			print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
+			print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
 		}
+		printf("</div>");
 
 		printf("</TD></TR></TABLE>\n");
 
@@ -3120,12 +3110,16 @@ void show_downtime(int type) {
 		printf("<A NAME=%sDOWNTIME></A>\n", (type == HOST_DOWNTIME) ? "HOST" : "SERVICE");
 		printf("<TABLE BORDER=0 CLASS='comment' style='padding:0px;margin-bottom: -6px;'><TR><TD width='33%%'></TD><TD width='33%%'><DIV CLASS='commentTitle'>Scheduled %s Downtime</DIV></TD><TD width='33%%'>", (type == HOST_DOWNTIME) ? "Host" : "Service");
 
-		/* add export to csv link */
-		if (display_type != DISPLAY_COMMENTS) {
-			printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+		/* add export to csv, json, link */
+		printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+		if (display_type != DISPLAY_DOWNTIME)
 			print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=downtime");
-			printf("</DIV>");
+		else if (type == HOST_DOWNTIME) {
+			print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=downtime");
+			print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
+			print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
 		}
+		printf("</div>");
 
 		printf("</TD></TR></TABLE>\n");
 
