@@ -14,6 +14,11 @@
 ALTER TABLE icinga_acknowledgements ADD end_time timestamp default '0000-00-00 00:00:00';
 
 -- -----------------------------------------
+-- extend conninfo.agent_version #2104
+-- -----------------------------------------
+ALTER TABLE icinga_conninfo modify agent_version varchar(16) default '';
+
+-- -----------------------------------------
 -- Table structure for table icinga_slahistory
 -- -----------------------------------------
 

@@ -379,7 +379,7 @@ CREATE TABLE conninfo (
   id integer ,
   instance_id integer default 0 ,
   agent_name varchar2(32),
-  agent_version varchar2(8),
+  agent_version varchar2(16),
   disposition varchar2(16),
   connect_source varchar2(16),
   connect_type varchar2(16),

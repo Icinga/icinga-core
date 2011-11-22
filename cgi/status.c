@@ -306,7 +306,6 @@ int main(void) {
 	if (navbar_search == TRUE && search_string == NULL && host_name != NULL) {
 		group_style_type = STYLE_HOST_SERVICE_DETAIL;
 		search_string = strdup(host_name);
-		free(host_name);
 	}
 
 	/* see if user tried searching something */
@@ -550,7 +549,7 @@ int main(void) {
 		printf("<table border=1 cellpading=0 cellspacing=0 class='linkBox'>\n");
 		printf("<tr><td class='linkBox'>\n");
 
-		if (display_type == DISPLAY_HOSTS && group_style_type != STYLE_HOST_SERVICE_DETAIL) {
+		if (display_type == DISPLAY_HOSTS && group_style_type != STYLE_HOST_SERVICE_DETAIL && search_string == NULL) {
 			printf("<a href='%s?host=%s'>View History For %s</a><br>\n", HISTORY_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "all hosts" : "This Host");
 			printf("<a href='%s?host=%s'>View Notifications For %s</a>\n", NOTIFICATIONS_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
 			if (show_all_hosts == FALSE)
@@ -995,6 +994,8 @@ void show_service_status_totals(void) {
 	hoststatus *temp_hoststatus;
 	int count_service;
 
+	if (search_string != NULL)
+		return;
 
 	/* check the status of all services... */
 	for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
@@ -1202,6 +1203,8 @@ void show_host_status_totals(void) {
 	int count_host;
 	int host_has_service;
 
+	if (search_string != NULL)
+		return;
 
 	/* check the status of all hosts... */
 	for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
@@ -1471,7 +1474,7 @@ void show_service_detail(void) {
 
 		printf("<td valign=top align=left width=33%%>\n");
 
-		if (display_header == TRUE && group_style_type != STYLE_HOST_SERVICE_DETAIL)
+		if (display_header == TRUE && group_style_type != STYLE_HOST_SERVICE_DETAIL && search_string == NULL)
 			show_filters();
 
 		printf("</td>");
@@ -1480,7 +1483,9 @@ void show_service_detail(void) {
 
 		printf("<DIV ALIGN=CENTER CLASS='statusTitle'>Service Status Details For ");
 		if (display_type == DISPLAY_HOSTS) {
-			if (show_all_hosts == TRUE)
+			if (search_string != NULL)
+				printf("Host/Services matching '%s'", search_string);
+			else if (show_all_hosts == TRUE)
 				printf("All Hosts");
 			else
 				printf("Host '%s'", host_name);
@@ -1514,9 +1519,6 @@ void show_service_detail(void) {
 			printf("</b> (%s)\n", (sort_type == SORT_ASCENDING) ? "ascending" : "descending");
 			printf("</DIV>\n");
 		}
-
-		if (search_string != NULL)
-			printf("<DIV ALIGN=CENTER CLASS='statusSort'>Filtered By Hosts/Services Matching \'%s\'</DIV>", search_string);
 
 		printf("</td>\n");
 
@@ -2044,13 +2046,19 @@ void show_host_detail(void) {
 		printf("<td valign=top align=center width=33%%>\n");
 
 		printf("<DIV ALIGN=CENTER CLASS='statusTitle'>Host Status Details For ");
-
-		if (show_all_hosts == FALSE)
-			printf("Host '%s'", host_name);
-		else if (show_all_hostgroups == TRUE)
-			printf("All Host Groups");
-		else
-			printf("Host Group '%s'", hostgroup_name);
+		if (display_type == DISPLAY_HOSTS) {
+			if (search_string != NULL)
+				printf("Hosts matching '%s'", search_string);
+			else if (show_all_hosts == TRUE)
+				printf("All Hosts");
+			else
+				printf("Host '%s'", host_name);
+		} else {
+			if (show_all_hostgroups == TRUE)
+				printf("All Host Groups");
+			else
+				printf("Host Group '%s'", hostgroup_name);
+		}
 		printf("</DIV>\n");
 
 		if (use_sort == TRUE) {
@@ -2071,9 +2079,6 @@ void show_host_detail(void) {
 			printf("</DIV>\n");
 
 		}
-
-		if (search_string != NULL)
-			printf("<DIV ALIGN=CENTER CLASS='statusSort'>Filtered By Hosts Matching \'%s\'</DIV>", search_string);
 
 		printf("</td>\n");
 

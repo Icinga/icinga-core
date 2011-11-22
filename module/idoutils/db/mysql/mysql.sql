@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS icinga_conninfo (
   conninfo_id serial,
   instance_id bigint unsigned default 0,
   agent_name varchar(32) character set latin1  default '',
-  agent_version varchar(8) character set latin1  default '',
+  agent_version varchar(16) character set latin1  default '',
   disposition varchar(16) character set latin1  default '',
   connect_source varchar(16) character set latin1  default '',
   connect_type varchar(16) character set latin1  default '',
