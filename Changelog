@@ -34,6 +34,8 @@ ENHANCEMENTS
 * idoutils: add Indices for notification queries for Icinga Web #1964
 * idoutils: add option to format debug log timestamp like locale %c (debug_readable_timestamp) #2033
 * idoutils: add max_notifications_age, max_contactnotifications_age, max_contactnotificationmethods_age as housekeeping for notification tables #2051
+* idoutils: use local timestamp datatype instead of date/datetime, store icinga timestamps as UTC #1954
+* idoutils: change timestamp to use time zone by default in postgresql (thx Florian Helmberger) #2106
 
 * config: add config examples for local monitoring - check_procs for ido2db #1870
 
@@ -51,6 +53,7 @@ FIXES
 * classic ui: fix typo in histogram.c (thanks Sven-Göran Bergh)
 
 * idoutils: host state change last_hard_state overrides last_state, last_hard_state always -1 #1932
+* idoutils: extend conninfo.agent_version field  to varchar(16) #2104
 
 CHANGES
 * package: complete remove icinga-api as module #1935

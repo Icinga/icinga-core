@@ -35,6 +35,11 @@ spool oracle-upgrade-&&ICINGA_VERSION..log
 -- -----------------------------------------
 alter table acknowledgements add end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR'); 
 
+-- -----------------------------------------
+-- extend conninfo.agent_version #2104
+-- -----------------------------------------
+alter table conninfo modify (agent_version varchar2(16));
+
 -- --------------------------------------------------------
 
 -- -----------------------------------------
