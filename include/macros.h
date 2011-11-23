@@ -38,7 +38,7 @@
 
 /****************** MACRO DEFINITIONS *****************/
 
-#define MACRO_ENV_VAR_PREFIX			"ICINGA_"
+#define MACRO_ENV_VAR_PREFIX			ENV_PREFIX
 
 #define MAX_USER_MACROS				256	/* maximum number of $USERx$ macros */
 

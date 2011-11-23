@@ -378,4 +378,12 @@
 #define HAVE_ORACLE 1
 #endif
 
+/* Environment Prefix */
+#undef USE_NAGIOS_ENV
+#ifdef USE_NAGIOS_ENV
+#define ENV_PREFIX	"NAGIOS_"
+#else
+#define ENV_PREFIX	"ICINGA_"
+#endif
+
 #endif

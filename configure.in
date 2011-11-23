@@ -1055,6 +1055,15 @@ else
 	USE_LIBTAP=no
 fi
 
+dnl Environment Prefix
+env_prefix="ICINGA_"
+AC_ARG_ENABLE(nagiosenv,
+ 	AC_HELP_STRING([--enable-nagiosenv],[expose Icinga Environment variables as NAGIOS_*)]))
+AS_IF([ test "x$enable_nagiosenv" = "xyes"],[
+ 	env_prefix="NAGIOS_"
+ 	AC_DEFINE(USE_NAGIOS_ENV,"1",[use NAGIOS_ as EnvVar Prefix])
+ 	])
+ 
 
 AC_SUBST(USE_LIBTAP)
 AC_SUBST(CGIEXTRAS)
@@ -1335,6 +1344,7 @@ AC_MSG_RESULT([           Init directory:  $init_dir])
 AC_MSG_RESULT([  Apache conf.d directory:  $HTTPD_CONF])
 AC_MSG_RESULT([             Mail program:  $MAIL_PROG])
 AC_MSG_RESULT([                  Host OS:  $host_os])
+AC_MSG_RESULT([       Environment Prefix:  $env_prefix])
 
 echo ""
 echo " Web Interface Options:"
