@@ -4,7 +4,7 @@
 <title>Installation des Icinga-Web Frontend</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.5 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="cgicmd.html" title="Ausführen von CGIs auf der Kommandzeile">
 <link rel="next" href="icinga-web-config.html" title="Konfigurationsübersicht Icinga-Web">
@@ -32,84 +32,167 @@
   <p><span class="bold"><strong>Einleitung</strong></span></p>
 
   <p>Das neue Icinga-Web wird aktuell sehr stark weiterentwickelt, sodass sich diese Dokumentation unter Umständen noch ändern kann/wird.
-  Falls Sie eine detaillierte Installationsanleitung benötigen, konsultieren Sie bitte doc/INSTALL aus dem Source-Paket. Mehr Informationen
-  über die gesamte Architektur können Sie auf unserer Webseite nachlesen: <a class="link" href="http://www.icinga.org/architecture/" target="_top">http://www.icinga.org/architecture/</a> Falls Sie mehr über das Icinga-Web-Development und die
+  Falls Sie eine detaillierte Installationsanleitung benötigen, konsultieren Sie bitte <code class="filename">doc/INSTALL</code> aus dem
+  Source-Paket. Mehr Informationen über die gesamte Architektur können Sie auf unserer Webseite nachlesen: <a class="link" href="http://www.icinga.org/architecture/" target="_top">http://www.icinga.org/architecture/</a> Falls Sie mehr über das Icinga-Web-Development und die
   Modularchitektur wissen wollen, verfolgen Sie bitte stetig aktualisierte Einträge im Development-Wiki von Icinga-Web: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki#24-Icinga-Web" target="_top">Icinga-Wiki</a></p>
 
-  <p>Diese Installationsanleitung beschreibt die Installation von Icinga-Web mit MySQL als verwendeter Datenbank, weitere
-  unterstütze Datenbanken sind Oracle und PostgreSQL..</p>
+  <p>Diese Installationsanleitung beschreibt die Installation von Icinga-Web mit MySQL bzw. PostgreSQL als verwendeter
+  Datenbank, außerdem wird Oracle unterstützt.</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
       <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
 
-      <p>Die Pakete mysql und php5 sind installiert (mit PEAR und CLI), Icinga samt IDOUtils läuft, dann ab zu
-      2., ansonsten bitte:</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p><span class="bold"><strong>MySQL</strong></span></p>
 
-      <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
+          <p>Die Pakete mysql und php5 sind installiert (mit PEAR und CLI), Icinga samt IDOUtils läuft, dann ab zu 2., ansonsten
+          bitte:</p>
 
-      <pre class="programlisting"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-ldap php5-gd php5-mysql</pre>
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+              <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
-      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+              <pre class="programlisting"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-ldap php5-soap php5-gd php5-mysql</pre>
+
+              <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Für Ubuntu gibt es kein php5-pdo-Paket, die benötigten PDO-Extensions sind in den Paketen php5 und php5-mysql
-        enthalten!</p>
-      </td></tr>
+                <p>Für Ubuntu gibt es kein php5-pdo-Paket, die benötigten PDO-Extensions sind in den Paketen php5 und php5-mysql
+                enthalten!</p>
+              </td></tr>
 </table></div>
+            </li>
+<li class="listitem">
+              <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
 
-      <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
+              <p>Stellen Sie sicher, dass Sie ein Repository bzw. Pakete für PHP 5.2.3 und PCRE 7.6 haben - RHEL/CentOS &lt;= 5.x
+              enthalten bisher lediglich PHP 5.1.6 und PCRE 6.6.</p>
 
-      <p>Stellen Sie sicher, dass Sie ein Repository bzw. Pakete für PHP 5.2.3 und PCRE 7.6 haben - RHEL/CentOS enthalten bisher
-      lediglich PHP 5.1.6 und PCRE 6.6.</p>
+              <pre class="programlisting"> #&gt; yum install php php-cli php-pear php-xmlrpc php-xsl php-pdo php-ldap php-soap php-gd php-mysql</pre>
 
-      <pre class="programlisting"> #&gt; yum install php php-cli php-pear php-xmlrpc php-xsl php-pdo php-ldap php-gd php-mysql</pre>
-
-      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+              <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Aktuelle Pakete für PHP und PRCE finden Sie beispielsweise unter: <a class="link" href="http://blog.famillecollet.com/pages/Config-en" target="_top">Les RPM de Remi</a> oder <a class="link" href="http://www.jasonlitka.com/category/yum-repo-news" target="_top">http://www.jasonlitka.com/category/yum-repo-news/</a></p>
-      </td></tr>
+                <p>Aktuelle Pakete für PHP und PRCE finden Sie beispielsweise unter: <a class="link" href="http://blog.famillecollet.com/pages/Config-en" target="_top">Les RPM de Remi</a> oder <a class="link" href="http://www.jasonlitka.com/category/yum-repo-news" target="_top">http://www.jasonlitka.com/category/yum-repo-news/</a></p>
+              </td></tr>
 </table></div>
+            </li>
+<li class="listitem">
+              <p><span class="bold"><strong>OpenSuSE</strong></span></p>
 
-      <p><span class="bold"><strong>OpenSuSE</strong></span></p>
+              <p>Benutzen Sie yast, um die Pakete "php5", "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-mysql", "php5-soap",
+              "php5-gettext", "php5-pdo", "php5-ldap", "php5-gd" und "apache2-mod_php5" zu installieren. Die CLI ist im php5-Paket
+              enthalten.</p>
 
-      <p>Benutzen Sie yast, um die Pakete "php5", "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-&lt;rdbm&gt;", "php5-soap",
-      "php5-gettext", "php5-pdo", "php5-ldap", "php5-gd" und "apache2-mod_php5" zu installieren. Die CLI ist im php5-Paket enthalten.</p>
-
-      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+              <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Zumindest bei SLES10 SP2 fehlt die Funktion hash_hmac.</p>
-      </td></tr>
+                <p>Zumindest bei SLES10 SP2 fehlt die Funktion hash_hmac.</p>
+              </td></tr>
 </table></div>
 
-      <p>Die Installation von Icinga mit den IDOUtil ist in der <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">Icinga-Schnellstartanleitung</a> bescrieben</p>
+              <p>Alternativ können Sie auch zypper verwenden</p>
+
+              <pre class="programlisting"> #&gt; zypper install php5 php5-pear php5-xmlrpc php5-xsl php5-mysql php5-soap \
+    php5-gettext php5-pdo php5-ldap php5-gd apache2-mod_php5</pre>
+            </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          <p><span class="bold"><strong>PostgreSQL</strong></span></p>
+
+          <p>Die Pakete pgsql und php5 sind installiert (mit PEAR und CLI), Icinga samt IDOUtils läuft, dann ab zu 2., ansonsten
+          bitte:</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+              <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
+
+              <pre class="programlisting"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-ldap php5-gd php5-pqsql</pre>
+
+              <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Für Ubuntu gibt es kein php5-pdo-Paket, die benötigten PDO-Extensions sind in den Paketen php5 und php5-pqsql
+                enthalten!</p>
+              </td></tr>
+</table></div>
+            </li>
+<li class="listitem">
+              <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span></p>
+
+              <p>Stellen Sie sicher, dass Sie ein Repository bzw. Pakete für PHP 5.2.3 und PCRE 7.6 haben - RHEL/CentOS &lt;= 5.x
+              enthalten bisher lediglich PHP 5.1.6 und PCRE 6.6.</p>
+
+              <pre class="programlisting"> #&gt; yum install php php-cli php-pear php-xmlrpc php-xsl php-pdo php-ldap php-gd php-pqsql</pre>
+
+              <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Aktuelle Pakete für PHP und PRCE finden Sie beispielsweise unter: <a class="link" href="http://blog.famillecollet.com/pages/Config-en" target="_top">Les RPM de Remi</a> oder <a class="link" href="http://www.jasonlitka.com/category/yum-repo-news" target="_top">http://www.jasonlitka.com/category/yum-repo-news/</a></p>
+              </td></tr>
+</table></div>
+            </li>
+<li class="listitem">
+              <p><span class="bold"><strong>OpenSuSE</strong></span></p>
+
+              <p>Benutzen Sie yast, um die Pakete "php5", "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-pgsql", "php5-soap",
+              "php5-gettext", "php5-pdo", "php5-ldap", "php5-gd" und "apache2-mod_php5" zu installieren. Die CLI ist im php5-Paket
+              enthalten.</p>
+
+              <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Zumindest bei SLES10 SP2 fehlt die Funktion hash_hmac.</p>
+              </td></tr>
+</table></div>
+
+              <p>Alternativ können Sie auch zypper verwenden</p>
+
+              <pre class="programlisting"> #&gt; zypper install php5 php5-pear php5-xmlrpc php5-xsl php5-mysql php5-soap \
+    php5-gettext php5-pdo php5-ldap php5-gd apache2-mod_php5</pre>
+            </li>
+</ul></div>
+        </li>
+</ul></div>
+
+      <p>Die Installation von Icinga mit den IDOUtils ist in der <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">Icinga-Schnellstartanleitung</a> bescrieben</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Die Installation</strong></span></p>
 
-      <p>Laden Sie das Archiv herunter von <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">http://sourceforge.net/projects/icinga/files/</a> oder klonen Sie von
-      icinga-web.git, um mit der aktuellsten Version zu arbeiten:</p>
+      <p>Laden Sie das Archiv herunter von <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">http://sourceforge.net/projects/icinga/files/</a>. Falls Sie eine
+      Funktion benötigen, die nur in der aktuellen Entwicklerversion vorhanden ist, dann klonen Sie von icinga-web.git:</p>
 
       <pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-web.git</pre>
 
       <p>Extrahieren Sie das Archiv (tarball) wie folgt:</p>
 
-      <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.5.0.tar.gz</pre>
+      <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.6.0.tar.gz</pre>
 
       <p>Wechseln Sie in das Verzeichnis:</p>
 
-      <pre class="programlisting"> #&gt; cd icinga-web-1.5.0</pre>
+      <pre class="programlisting"> #&gt; cd icinga-web-1.6.0</pre>
 
       <p>Icinga-Web stellt verschiedene configure Optionen zur Verfügung z.B.</p>
 
@@ -147,33 +230,43 @@
 
       <pre class="programlisting"> #&gt; ./configure --help</pre>
 
+      <p>Um Icinga-Web für PostgreSQL zu konfigurieren, führen Sie folgenden Befehl aus:</p>
+
+      <pre class="programlisting"> #&gt; ./configure --with-db-type=pgsql --with-db-port=5432</pre>
+
+      <p>Falls auch Icinga mit pqsql läuft, sind die api-Optionen mit anzugeben:</p>
+
+      <pre class="programlisting"> #&gt; ./configure --with-db-type=pgsql --with-db-port=5432 \
+ --with-api-subtype=pgsql --with-api-port=5432</pre>
+
       <p>Ohne weitere Optionen wird das Icinga-Webinterface mit:</p>
 
       <pre class="programlisting"> #&gt; ./configure
  #&gt; make install</pre>
 
-      <p>unter /usr/local/icinga-web installiert.</p>
+      <p>unter <code class="filename">/usr/local/icinga-web</code> installiert. Das kann eine Weile dauern, also bitte nicht ungeduldig werden ;-)
+      </p>
 
-      <p>Installation der neuen Apache Konfiguration</p>
+      <p>Installation der neuen Apache-Konfiguration</p>
 
-      <pre class="programlisting">#&gt; make install-apache-config</pre>
+      <pre class="programlisting"> #&gt; make install-apache-config</pre>
 
       <p>Wenn Sie das nicht möchten, können Sie das bisherige Verfahren nutzen, durch die Eingabe von:</p>
 
-      <pre class="programlisting">#&gt; make install-javascript</pre>
+      <pre class="programlisting"> #&gt; make install-javascript</pre>
 
       <p>Dies installiert die bisherigen Symlinks.</p>
 
       <p>Erzeugen des Installationsberichtes:</p>
 
-      <pre class="programlisting">#&gt; make install-done
+      <pre class="programlisting"> #&gt; make install-done
 
-Installation of icinga-web succeeded.
-Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
+ Installation of icinga-web succeeded.
+ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
       <p>Passwort zurücksetzen:</p>
 
-      <pre class="programlisting">#&gt; make icinga-reset-password</pre>
+      <pre class="programlisting"> #&gt; make icinga-reset-password</pre>
 
       <p>Setzt das Passwort für jeden Account auf icinga-web zurück.</p>
     </li>
@@ -184,10 +277,10 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
       <pre class="programlisting"> #&gt; make testdeps</pre>
 
-      <p>Alle "require"-Tests sollten erfolgreich sein. Eventuell müssen Sie die php.ini anpassen:</p>
+      <p>Alle "require"-Tests sollten erfolgreich sein. Eventuell müssen Sie die <code class="filename">php.ini</code> anpassen:</p>
 
-      <p>Die "magic_quote_gpc" in der Apache- und der CLI-php.ini auf "Off" setzen! Evtl. müssen Sie auch "safe_mode" auf "off" setzen
-      (php&lt; 5.3.0). Bitte beachten Sie, dass die Pfade von der Distribution abhängig sind.</p>
+      <p>Die "magic_quote_gpc" in der Apache- und der CLI-<code class="filename">php.ini</code> auf "Off" setzen! Evtl. müssen Sie auch
+      "safe_mode" auf "off" setzen (PHP &lt; 5.3.0). Bitte beachten Sie, dass die Pfade von der Distribution abhängig sind.</p>
 
       <pre class="programlisting"> #&gt; vi /etc/php5/apache/php.ini
    magic_quotes_gpc = off
@@ -209,7 +302,7 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 <li class="listitem">
       <p><span class="bold"><strong>Datenbank-Installation</strong></span></p>
 
-      <p>Icinga-Web benötigt eine eigene Datenbank z.B. icinga_web. Sie können die Datenbank von IDOUtils mitverwenden, dies wird
+      <p>Icinga-Web benötigt eine eigene Datenbank, z.B. icinga_web. Sie können die Datenbank von IDOUtils mitverwenden, dies wird
       allerdings nicht empfohlen, um bei Upgrades keine Probleme zu haben.</p>
 
       <p><span class="bold"><strong>Anlegen des Datenbankbenutzers:</strong></span></p>
@@ -218,34 +311,59 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
       <pre class="programlisting"> SQL&gt; GRANT USAGE ON *.* TO 'icinga_web'@'localhost' IDENTIFIED BY 'icinga_web';
 
- SQL&gt; GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX ON icinga_web.* TO 'icinga_web'@'localhost';</pre>
+ SQL&gt; GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX
+     ON icinga_web.* TO 'icinga_web'@'localhost';</pre>
 
-      <p><span class="bold"><strong>MySQL</strong></span></p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p><span class="bold"><strong>MySQL</strong></span></p>
 
-      <pre class="programlisting"> #&gt; mysql -u root -p
+          <pre class="programlisting"> #&gt; mysql -u root -p
 
- mysql&gt; GRANT USAGE ON icinga_web.* TO 'icinga_web'@'localhost' IDENTIFIED BY 'icinga_web' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
+ mysql&gt; GRANT USAGE ON icinga_web.* TO 'icinga_web'@'localhost'
+        IDENTIFIED BY 'icinga_web'
+        WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0;
 
-        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX ON icinga_web.* TO 'icinga_web'@'localhost';
+        GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX
+        ON icinga_web.* TO 'icinga_web'@'localhost';
 
         quit</pre>
+        </li>
+<li class="listitem">
+          <p><span class="bold"><strong>PostgreSQL</strong></span></p>
+
+          <pre class="programlisting"> #&gt; su - postgres
+
+ $ psql
+
+ postgres=# CREATE USER icinga_web;
+
+ postgres=# ALTER USER icinga_web WITH PASSWORD 'icinga_web' CREATEDB;
+
+ &lt;Ctrl&gt;+&lt;D&gt;</pre>
+        </li>
+</ul></div>
 
       <p><span class="bold"><strong>Anlegen der Datenbank</strong></span></p>
 
       <p>Icinga-Web bringt Doctrine mit, womit in Zukunft die Datenbank verwaltet wird. Mittels 'make' kann diese initialisiert oder
       gelöscht werden.</p>
 
-      <pre class="programlisting"> #&gt; make db-initialize      - legt eine Icinga Web Datenbank an und füllt diese mit initialen Werten</pre>
+      <pre class="programlisting"> #&gt; make db-initialize      - legt eine Icinga Web Datenbank an
+                            - und füllt diese mit initialen Werten</pre>
 
-      <pre class="programlisting"> #&gt; make db-drop            - löscht die komplette Datenbank, inklusive Securityabfrage um ungewolltes Löschen zu verhindern</pre>
+      <pre class="programlisting"> #&gt; make db-drop            - löscht die komplette Datenbank, inklusive
+                            - Security-Abfrage, um ungewolltes Löschen zu verhindern</pre>
 
-      <pre class="programlisting"> #&gt; make db-doc2sql         - falls Sie SQL scripts beispielsweise für Packaging oder manuelles Setup benötigen, können Sie diese Option verwenden um die SQL scripts aus Doctrine zu extrahieren
-</pre>
+      <pre class="programlisting"> #&gt; make db-doc2sql         - falls Sie SQL scripts beispielsweise für Packaging oder
+                            - manuelles Setup benötigen, können Sie diese Option verwenden,
+                            - verwenden, um die SQL-Scripts aus Doctrine zu extrahieren</pre>
 
-      <p>Um die Datenbankanlege-Befehle nutzen zu können, müssen Sie dem Benutzer der diese DB Befehle ausführen soll, auch die
-      entsprechenden Privilegien zuordnen. Falls derjenige Benutzer, der für das Icinga Web in configure vorgesehen wurde, zu wenig
-      Berechtigungen hat, gibt es in 'make' eine Abfrage, ob Sie einen anderen Benutzer mit mehr Privilegien verwenden wollen. Falls dies
-      nicht funktioniert, sollten sie etc/build.properties editieren und einen root Benutzer einfuegen</p>
+      <p>Um die Datenbankanlege-Befehle nutzen zu können, müssen Sie dem Benutzer, der diese DB-Befehle ausführen soll, auch die
+      entsprechenden Privilegien zuordnen. Falls derjenige Benutzer, der für das Icinga-Web in <code class="filename">configure</code> vorgesehen
+      wurde, zu wenig Berechtigungen hat, gibt es in 'make' eine Abfrage, ob Sie einen anderen Benutzer mit mehr Privilegien verwenden
+      wollen. Falls dies nicht funktioniert, sollten Sie <code class="filename">etc/build.properties</code> editieren und einen root-Benutzer
+      einfügen.</p>
 
       <p>Das Installieren der Datenbank funktioniert mittels:</p>
 
@@ -253,18 +371,44 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
       <p><span class="bold"><strong>Manuelles Anlegen der Datenbank</strong></span></p>
 
-      <p>Sofern Sie die Datenbank manuell installieren wollen z.B. für Package building, können Sie mit diesem Befehl die SQL Scripts
+      <p>Sofern Sie die Datenbank manuell installieren wollen, z.B. für Package building, können Sie mit diesem Befehl die SQL-Scripts
       extrahieren</p>
 
       <pre class="programlisting"> #&gt; make db-doc2sql</pre>
 
-      <p>und dann diese in die frisch angelegte Datenbank importieren.</p>
+      <p>und diese dann in die frisch angelegte Datenbank importieren.</p>
+
+      <p><span class="emphasis"><em>PostgreSQL</em></span></p>
+
+      <p>Bitte editieren Sie die Datei <code class="filename">pg_hba.conf</code> und tragen Sie die folgenden Zeilen ein:</p>
+
+      <pre class="programlisting"> #&gt; vi /etc/postgresql/9.x/main/pg_hba.conf
+
+ # database administrative login by UNIX sockets
+ local all postgres ident
+
+ # TYPE DATABASE USER CIDR-ADDRESS METHOD
+ #icinga_web
+ local icinga_web icinga_web trust
+
+ # "local" is for Unix domain socket connections only
+ local all all trust
+
+ # IPv4 local connections
+ host all all 127.0.0.1/32 trust
+
+ # IPV6 local connections
+ host all all ::1/128 trust</pre>
+
+      <p>Denken Sie anschließend daran, PostgreSQL neu zu laden:</p>
+
+      <pre class="programlisting"> #&gt; /etc/init.d/postgresql reload</pre>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Icinga-Web Konfiguration</strong></span></p>
+      <p><span class="bold"><strong>Icinga-Web-Konfiguration</strong></span></p>
 
-      <p>Im Normalfall können Sie die Datenbankeinstellungen während configure vornehmen. Sollten Sie diese allerdings anpassen wollen
-      oder nachsehen wollen im Fehlerfall, öffnen Sie folgende Datei mit einem Editor Ihrer Wahl.</p>
+      <p>Im Normalfall können Sie die Datenbankeinstellungen während <code class="filename">configure</code> vornehmen. Sollten Sie diese
+      allerdings anpassen oder im Fehlerfall kontrollieren wollen, öffnen Sie folgende Datei mit einem Editor Ihrer Wahl.</p>
 
       <pre class="programlisting"> #&gt; vi app/config/databases.xml</pre>
 
@@ -274,15 +418,14 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Optional: Ihre spezifischen Icinga Datenbankeinstellungen können Sie vornehmen in etc/conf.d/database.xml (oder dem web-conf-folder Ziel). Es gibts zwei
-         Datenbanken: icinga_web (welche für die interne Verwaltung von icinga_web verwendet wird) und icinga, welche auf die Datenbank zeigt, in die ido2db schreibt.
-        Diese Informationen bleiben während eines Update-Prozesses erhalten.</p>
+        <p>Optional: Ihre spezifischen Icinga Datenbankeinstellungen können Sie vornehmen in
+        <code class="filename">etc/conf.d/database.xml</code> (oder dem web-conf-folder Ziel). Es gibt zwei Datenbanken: icinga_web (welche für die
+        interne Verwaltung von icinga_web verwendet wird) und icinga, welche auf die Datenbank zeigt, in die ido2db schreibt. Diese
+        Informationen bleiben während eines Update-Prozesses erhalten.</p>
       </td></tr>
 </table></div>
 
-      <p>
-        </p>
-<pre class="programlisting">    &lt;databases default="icinga_web"&gt;
+      <pre class="programlisting">    &lt;databases default="icinga_web"&gt;
                         &lt;database name="icinga_web" class="AgaviDoctrineDatabase"&gt;
 
                                 &lt;!--
@@ -290,7 +433,10 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
                                         http://www.doctrine-project.org/documentation/manual/1_1/en/introduction-to-connections
                                 --&gt;
+                                &lt;!-- ##### MySQL ##### --&gt;
                                 &lt;ae:parameter name="dsn"&gt;mysql://icinga_web:icinga_web@127.0.0.1:3306/icinga_web&lt;/ae:parameter&gt;
+                                &lt;!-- ##### PostgreSQL ##### --&gt;
+                                &lt;ae:parameter name="dsn"&gt;pgsql://icinga_web:icinga_web@localhost:5432/icinga_web&lt;/ae:parameter&gt;
 
                                 &lt;!-- Generic credentials  --&gt;
                                 &lt;!-- &lt;ae:parameter name="username"&gt;icinga_web&lt;/ae:parameter&gt; --&gt;
@@ -313,7 +459,7 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
                         &lt;/database&gt;
 
-                        &lt;-- Die Icinga Datenbanek für ido2db --&gt;
+                        &lt;-- Die Icinga Datenbank für ido2db --&gt;
                         &lt;database name="icinga" class="AgaviDoctrineDatabase"&gt;
 
                                 &lt;!--
@@ -321,7 +467,10 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
 
                                         http://www.doctrine-project.org/documentation/manual/1_1/en/introduction-to-connections
                                 --&gt;
+                                &lt;!-- ##### MySQL ##### --&gt;
                                 &lt;ae:parameter name="dsn"&gt;mysql://icinga:icinga@127.0.0.1:3306/icinga&lt;/ae:parameter&gt;
+                                &lt;!-- ##### PostgreSQL ##### --&gt;
+                                &lt;ae:parameter name="dsn"&gt;pgsql://icinga:icinga@localhost:5432/icinga&lt;/ae:parameter&gt;
 
                                 &lt;!-- Generic credentials  --&gt;
                                 &lt;!-- &lt;ae:parameter name="username"&gt;icinga&lt;/ae:parameter&gt; --&gt;
@@ -345,10 +494,10 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
                         &lt;/database&gt;
                     &lt;/databases&gt;
             </pre>
-<p>
-      </p>
 
-      <p>In the access.xml you can specify the locations of your command pipe and the access credentials and method (ssh or via local console). Also you define here, which icinga instance is mapped to which host.</p>
+      <p>In der <code class="filename">access.xml</code> können Sie die Informationen zu Ihrer command-pipe, den Zugangsdaten und der
+      Zugriffmethode (ssh oder via local console) angeben. Außerdem legen Sie fest, welche Icinga-Instanz welchem Host zugeordnet
+      ist.</p>
 
       <pre class="programlisting">
         &lt;!-- Map your instances to hosts here --&gt;
@@ -417,20 +566,22 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
       <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
           <p>mod_rewrite, vielleicht müssen Sie einen Verweis erstellen:</p>
+
           <pre class="programlisting"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
 
-          <p>Bei OpenSuSE und SLES können Sie das Modul mit "a2enmod rewrite" aktivieren. Falls das nicht funktioniert, gibt es in der Datei
-          /etc/sysconfig/apache2 die Zeile "APACHE_MODULES=...", der das Modul "rewrite" hinzugefügt werden muss.</p>
+          <p>Bei OpenSuSE und SLES können Sie das Modul mit "a2enmod rewrite" aktivieren. Falls das nicht funktioniert, gibt es in der
+          Datei <code class="filename">/etc/sysconfig/apache2</code> die Zeile "APACHE_MODULES=...", der das Modul "rewrite" hinzugefügt werden
+          muss.</p>
 
           <p>Bei Debian und Ubuntu können Sie das Modul ebenfalls mit "a2enmod rewrite" aktivieren.</p>
 
           <p>Bei RHEL/Fedora/CentOS ist die Unterstützung bereits im httpd enthalten.</p>
-
         </li>
 <li class="listitem">
           <p>Über htaccess aktivierte Einstellungen</p>
 
-          <p>Editieren Sie die .htaccess unter /usr/local/icinga-web/pub und ändern Sie die RewriteBase (ab Zeile 14): </p>
+          <p>Editieren Sie die <code class="filename">.htaccess</code> unter <code class="filename">/usr/local/icinga-web/pub</code> und ändern Sie die
+          RewriteBase (ab Zeile 14): </p>
 <pre class="programlisting"> DirectoryIndex index.php
 
  Options -MultiViews -Indexes +FollowSymLinks
@@ -477,16 +628,16 @@ Please check the new Apache2 configuration (etc/apache2/icinga-web.conf).</pre>
         </li>
 </ul></div>
 
-      <p>Bitte wechseln Sie in das Konfigurationsverzeichnis Ihres Webservers. Überprüfen Sie, ob die, mit <span class="bold"><strong>make
+      <p>Bitte wechseln Sie in das Konfigurationsverzeichnis Ihres Webservers. Überprüfen Sie, ob die mit <span class="bold"><strong>make
       install-apache-config</strong></span> erstellte Konfiguration Ihren Anforderungen entspricht, oder erstellen Sie noch einen neuen Alias im
-      Konfigurationsverzeichnis des Webservers (hier in der icinga-web.conf):</p>
+      Konfigurationsverzeichnis des Webservers (hier in der <code class="filename">icinga-web.conf</code>):</p>
 
       <pre class="programlisting">#&gt; vi /etc/apache2/conf.d/icinga-web.conf
-#&gt;
-#&gt; icinga-web apache configuration
-#&gt; - Enable all options .htaccess
-#&gt; - Add extjs library to alias
-#&gt;
+#
+# icinga-web apache configuration
+# - Enable all options .htaccess
+# - Add extjs library to alias
+#
 
 Alias /icinga-web/js/ext3 /usr/local/icinga-web/lib/ext3
 Alias /icinga-web /usr/local/icinga-web/pub
@@ -505,7 +656,7 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p>oder /path/to/clearcache.sh</p>
 
-      <pre class="programlisting">#&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
+      <pre class="programlisting"> #&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
 
       <p>und starten Sie den Webserver neu:</p>
 
@@ -532,16 +683,16 @@ Alias /icinga-web /usr/local/icinga-web/pub
       </td></tr>
 </table></div>
 
-      <p>Öffnen Sie im Webbrowser http://localhost/icinga-web. Überprüfen Sie, ob das Webinterface ohne Fehler "exceptions" startet, und
-      loggen Sie sich mit dem User 'root' und dem Passwort 'password' ein.</p>
+      <p>Öffnen Sie im Webbrowser http://localhost/icinga-web. Überprüfen Sie, ob das Webinterface ohne Fehler ("exceptions") startet,
+      und loggen Sie sich mit dem User 'root' und dem Passwort 'password' ein.</p>
 
       <p>Viel Spaß :-)</p>
     </li>
 <li class="listitem">
       <p><a name="icinga-web-scratch-errors"></a> <span class="bold"><strong>Test &amp; Fehler?</strong></span></p>
 
-      <p>Diese Sammlung beinhaltet einige nützliche Informationen, wie Sie Fehler finden und lösen können. Ebenso wird darauf
-      hingewiesen, welche Informationen Sie im Fehlerfall angeben sollen, wenn Sie eine Frage auf den Mailinglisten oder auf <a class="link" href="http://www.icinga-portal.org" target="_top">http://www.icinga-portal.org</a> stellen.</p>
+      <p>Diese Sammlung enthält einige nützliche Informationen, wie Sie Fehler finden und lösen können. Ebenso wird darauf hingewiesen,
+      welche Informationen Sie im Fehlerfall angeben sollten, wenn Sie eine Frage auf den Mailinglisten oder auf <a class="link" href="http://www.icinga-portal.org" target="_top">http://www.icinga-portal.org</a> stellen.</p>
 
       <p>* Geben Sie immer die verwendete Version an - tar.gz oder GIT?</p>
 
@@ -553,15 +704,15 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p>* Apache Error Logs, PHP Errors, PHP Dateien können nicht gefunden werden</p>
 
-      <p>* /var/log/messages, /path/to/icinga/var/icinga.log</p>
+      <p>* <code class="filename">/var/log/messages</code>, /path/to/icinga/var/icinga.log</p>
 
       <p>Änderungen an der Icinga-Web-Konfiguration (z.B. API/IDOUtils-Einstellungen geändert) werden nicht aktualisiert?</p>
 
       <p>* Löschen Sie den Konfigurationscache in app/cache/config/*.php</p>
 
-      <pre class="programlisting">/usr/local/icinga-web/bin/clearcache.sh</pre>
+      <pre class="programlisting"> /usr/local/icinga-web/bin/clearcache.sh</pre>
 
-      <p>Icinga Web zeigt eine leere Seite?</p>
+      <p>Icinga-Web zeigt eine leere Seite?</p>
 
       <p>* Apache Errors Logs =&gt; mod_rewrite enabled, PHP-Abhängigkeiten ok? 'make testdeps'. Bei Debian gibt es u.a. die folgende
       Fehlermeldung: ".htaccess: Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server
@@ -576,14 +727,13 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
       <p>* Datenbankzugriff verweigert =&gt; Überprüfen Sie, ob die Datenbankeinstellungen für Icinga-Web korrekt sind.</p>
 
-      <p>IDOUtils Datenbank wird nicht gefüllt?</p>
+      <p>IDOUtils-Datenbank wird nicht gefüllt?</p>
 
-      <p>* "Error writing to data sink" =&gt; Überprüfen Sie die IDOUtils (ido2db runs 2x - ok?), ido2db.cfg debug_level=-1,
-      debug_verbosity=2, restarten Sie IDOUtils und suchen Sie Fehler in ido2db.debug</p>
+      <p>* "Error writing to data sink" =&gt; Überprüfen Sie die IDOUtils (ido2db läuft 2x - ok?), ido2db.cfg debug_level=-1,
+      debug_verbosity=2, restarten Sie IDOUtils und suchen Sie Fehler in <code class="filename">ido2db.debug</code></p>
 
-      <p>* Keine Daten vorhanden =&gt; Überprüfen Sie icinga.log, ob IDOMOD zu Beginn geladen wird. Falls nicht, enablen Sie das Event
-      Broker Modul in icinga.cfg so wie im Icinga Core im <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">IDOUtils Quickstart Guide</a>
-      beschrieben.</p>
+      <p>* Keine Daten vorhanden =&gt; Überprüfen Sie <code class="filename">icinga.log</code>, ob IDOMOD zu Beginn geladen wird. Falls nicht,
+      enablen Sie das Event Broker Modul in <code class="filename">icinga.cfg</code> so wie im Icinga Core im <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">IDOUtils Quickstart Guide</a> beschrieben.</p>
 
       <p>* IDOUtils DB-Schema ist die aktuellste Version? =&gt; Falls nicht, überprüfen Sie mögliche Upgrades anhand der Docs
       dafür.</p>
@@ -600,44 +750,55 @@ Alias /icinga-web /usr/local/icinga-web/pub
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Falls Sie Ihren root- Benutzer zum Testen benutzen, dann stellen Sie vorher sicher, dass für den angegebenen Web-Benutzer eine
-        gültige Shell eingetragen ist. Anderenfalls werden verschiedene Tests fehlschlagen. Abhängig von der verwendeten Icinga-Web-Version
-        kann es sein, dass die Berechtigungen für die Dateien in /usr/local/icinga-web/log falsch gesetzt sind, so dass Icinga-Web
-        mit der Meldung "Loading" stehenbleibt.</p>
+        <p>Falls Sie Ihren root-Benutzer zum Testen benutzen, dann stellen Sie vorher sicher, dass für den angegebenen Web-Benutzer in
+        der <code class="filename">/etc/passwd</code> eine gültige Shell eingetragen ist. Anderenfalls werden verschiedene Tests fehlschlagen.
+        Abhängig von der verwendeten Icinga-Web-Version kann es sein, dass die Berechtigungen für die Dateien in
+        <code class="filename">/usr/local/icinga-web/log</code> falsch gesetzt sind, so dass Icinga-Web mit der Meldung "Loading"
+        stehenbleibt.</p>
       </td></tr>
 </table></div>
+
       <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Nicht vergessen - Ändern von PHP-Einstellungen in der php.ini erfordert einen Apache reload/restart!</p>
+        <p>Nicht vergessen - Ändern von PHP-Einstellungen in der <code class="filename">php.ini</code> erfordert einen Apache
+        reload/restart!</p>
       </td></tr>
 </table></div>
 
-      <p>* PHP Fatal error: Allowed memory size of ... bytes exhausted (tried to allocate ... bytes) =&gt; Überprüfen Sie Ihre php.ini
-      (apache2 und cli) und setzen Sie den Wert memory_limit auf 128M oder höher.</p>
+      <p>* PHP Fatal error: Allowed memory size of ... bytes exhausted (tried to allocate ... bytes) =&gt; Überprüfen Sie Ihre
+      <code class="filename">php.ini</code> (apache2 und cli) und setzen Sie den Wert memory_limit auf 128M oder höher.</p>
 
       <p>* PHP Fatal error: Uncaught exception 'AgaviCacheException' with message 'Failed to write cache file
       /usr/local/icinga-web/app/cache/config/config_handlers.xml_development__xxxx.php" generated from configuration file
       /usr/local/icinga-web/app/config/config_handlers.xml". Please make sure you have set correct write permissions for directory
-      /usr/local/icinga-web/app/cache.... = &gt; Setzen von safe_mode = off in /etc/php5/apache/php.ini.</p>
+      /usr/local/icinga-web/app/cache.... =&gt; Setzen von safe_mode = off in /etc/php5/apache/php.ini.</p>
+      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Das kann auch ein Hinweis auf ein aktiviertes SELinux sein.</p></td></tr>
+</table></div>
 
       <p>* [PHP Error] strtotime(): It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone
-      setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you most likely misspelled the timezone identifier. We selected 'Europe/Berlin' for 'CEST/2.0/DST' instead [line 1548 of /home/xxx/icinga/icinga-web/lib/doctrine/lib/Doctrine/Record.php] = &gt; Sie muessen date.timezone in der php.ini definieren.</p>
+      setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you
+      most likely misspelled the timezone identifier. We selected 'Europe/Berlin' for 'CEST/2.0/DST' instead [line 1548 of
+      /home/xxx/icinga/icinga-web/lib/doctrine/lib/Doctrine/Record.php] =&gt; Sie müssen date.timezone in der <code class="filename">php.ini</code>
+      definieren.</p>
 
-      <p>* -&gt; 500 internal server error!
-      Uncaught exception AgaviException thrown!
-      Your default timezone is 'System/Localtime', ...
-      = &gt; Sie muessen date.timezone in der php.ini definieren.</p>
+      <p>* -&gt; 500 internal server error! Uncaught exception AgaviException thrown! Your default timezone is 'System/Localtime', ... =
+      &gt; Sie müssen date.timezone in der <code class="filename">php.ini</code> definieren.</p>
 
       <p>* Keine Verbindung zur API. The API Connector returned the following message: getConnection failed: Database connection failed:
       SQLSTATE[28000] [1045] Access denied for user 'icinga'@'localhost' (using password: YES))</p>
 
-      <p>=&gt; Überprüfen Sie Ihre IDOUtils DB-Referenzen in der ido2db.cfg und fügen Sie diese in Ihre Icinga-Web- Konfiguration als
-      bevorzugte DB- Referenzen für Ihre IDO hinzu (siehe Konfiguration der Icinga-API). Ab Icinga-Web1.0.3 können die Werte direkt während
-      des configure gesetzt werden.</p>
+      <p>=&gt; Überprüfen Sie Ihre IDOUtils DB-Referenzen in der <code class="filename">ido2db.cfg</code> und fügen Sie diese in Ihre
+      Icinga-Web-Konfiguration als bevorzugte DB-Referenzen für Ihre IDO hinzu (siehe Konfiguration der Icinga-API). Ab Icinga-Web1.0.3
+      können die Werte direkt während des configure gesetzt werden.</p>
 
       <p>* touch: cannot touch `/usr/local/icinga-web/.../cache/testfile.txt': Permission denied</p>
 
@@ -648,10 +809,10 @@ Alias /icinga-web /usr/local/icinga-web/pub
       <p>* PHP Fatal error: Uncaught exception '...' with message 'Couldn't locate driver named mysql' =&gt; Stellen Sie sicher, dass php
       pdo installiert und geladen ist, auch wenn testdeps sagt, dass alles in Ordnung ist.</p>
 
-      <p>* Das Login wird nicht angezeigt =&gt; Aktivieren Sie short_open_tag in Ihrer php.ini</p>
+      <p>* Das Login wird nicht angezeigt =&gt; Aktivieren Sie short_open_tag in Ihrer <code class="filename">php.ini</code>.</p>
 
-      <p>=&gt; Editieren Sie open_basedir in Ihrer php.ini und fügen Sie die Installationsverzeichnisse von Icinga-Web und von Icinga-API
-      (z.B. /usr/local/icinga/share/) hinzu.</p>
+      <p>=&gt; Editieren Sie open_basedir in Ihrer <code class="filename">php.ini</code> und fügen Sie die Installationsverzeichnisse von
+      Icinga-Web und von Icinga-API (z.B. <code class="filename">/usr/local/icinga/share/</code>) hinzu.</p>
 
       <p>* Leeres Icinga-Web? =&gt; Wenn mod_rewrite aktiviert ist und 'index.php' erscheint in der angefragten URL, dann funktioniert
       das Portal nicht. Entfernen Sie index.php aus Ihrer URL und alles sollte funktionieren</p>
@@ -659,16 +820,17 @@ Alias /icinga-web /usr/local/icinga-web/pub
       <p>* Die Ergebnisse in den Status Cronks passen nicht zu Ihrer Konfiguration? =&gt; Überprüfen Sie in Ihrem Backend, d.h. IDOUtils
       DB, welche Werte für die Status-Tabellen selektiert werden.</p>
 
-      <p>* Keine Daten in den Cronks ? =&gt; Überprüfen Sie ob alle Berechtigungen korrekt gesetzt sind, insbesondere von log/. Weiters können
-      Sie die angezeigten Daten in Ihrem Browser dbuggen. Ausführliche Informationen dazu finden Sie im Icinga Wiki https://wiki.icinga.org/display/Dev/Icinga+Web+Testing</p>
+      <p>* Keine Daten in den Cronks ? =&gt; Überprüfen Sie ob alle Berechtigungen korrekt gesetzt sind, insbesondere von log/. Weiterhin
+      können Sie die angezeigten Daten in Ihrem Browser debuggen. Ausführliche Informationen dazu finden Sie im Icinga Wiki
+      https://wiki.icinga.org/display/Dev/Icinga+Web+Testing</p>
 
       <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id5079372"></a>
+  <a class="indexterm" name="idp11332352"></a>
 
-  <a class="indexterm" name="id5079609"></a>
+  <a class="indexterm" name="idp11368048"></a>
 </div>
 <div class="navfooter">
 <hr>
