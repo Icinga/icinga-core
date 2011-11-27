@@ -17,6 +17,7 @@ ENHANCEMENTS
 * core: add icinga startup delay checks to example configs, including perfdata  #1937
 * core: indicate event loop start in logs #2036
 * core: add notifications to stalking hosts/services, not only logging/event handlers #1367
+* core: add eventloop mutex, will be used by IcingaMQ #2040
 
 * classic ui: add expiry option and end_time to acknowledgements on cmd.cgi #770
 * classic ui: Acknowledge child hosts from on blocking outages #1858
@@ -28,16 +29,18 @@ ENHANCEMENTS
 * classic ui: add hostgroup and servicegroup summary to menu.html #2007
 * classic ui: Change markup color for unreachable hosts in statusmap.c #1464
 
-
 * idoutils: add SLA monitoring via opt-in enable_sla cfg option #2037
+	** pgsql timestamp with timezone changes remain experimental in SLA table
 * idoutils: added end_time column for acknowledgelemts expiry #770
 * idoutils: add Indices for notification queries for Icinga Web #1964
-* idoutils: add option to format debug log timestamp like locale %c (debug_readable_timestamp) #2033
+* idoutils: add option to format debug log timestamp like locale %c (debug_readable_timestamp in ido2db.cfg) #2033
 * idoutils: add max_notifications_age, max_contactnotifications_age, max_contactnotificationmethods_age as housekeeping for notification tables #2051
 * idoutils: use local timestamp datatype instead of date/datetime, store icinga timestamps as UTC #1954
 * idoutils: change timestamp to use time zone by default in postgresql (thx Florian Helmberger) #2106
 
 * config: add config examples for local monitoring - check_procs for ido2db #1870
+
+* icinga.spec: enable cmd.cgi logging by default #2124
 
 FIXES
 * core: fix downtime and comments delete with wrong loop pointers causing segfaults #1979
@@ -54,6 +57,11 @@ FIXES
 
 * idoutils: host state change last_hard_state overrides last_state, last_hard_state always -1 #1932
 * idoutils: extend conninfo.agent_version field  to varchar(16) #2104
+* idoutils: terminate threads cleanly, including db connection
+
+* install: rework the version updates in icinga and idoutils
+
+* icinga.spec: --libexecdir does not point to possible location of nagios-plugins in resource.cfg:$USER1$ #2123
 
 CHANGES
 * package: complete remove icinga-api as module #1935
@@ -75,6 +83,7 @@ CHANGES
 * classic ui: highlight_table_rows is now enabled by default #1777
 * classic ui: removed unused javascript libraries
 	** html/js/: builder.js, controls.js, dragdrop.js, effects.js, slider.js, sound.js, mootools.js
+* classicui: new regex search uses 'search_string' instead of 'navbarsearch=1&host=', both are kept for compatibility reasons #844
 
 * icinga.cfg: stalking_notifications_for_hosts=0 stalking_notifications_for_services=0
 
@@ -88,6 +97,8 @@ CHANGES
 	** debug_readable_timestamp=0
 	** max_notifications_age, max_contactnotifications_age, max_contactnotificationmethods_age
 
+* icinga.spec
+	** enable cmd.cgi logging by default in rpm
 
 1.5.1 - 09/09/2011
 
