@@ -4,7 +4,7 @@
 <title>Icinga Quickstart</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.5 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.6 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="quickstart.html" title="Quickstart Installation Guides">
 <link rel="next" href="quickstart-icinga-freebsd.html" title="Icinga Quickstart FreeBSD">
@@ -113,13 +113,45 @@
 
   <p><span class="bold"><strong>Install packages</strong></span></p>
 
-  <p>You can install these packages by running the following commands (as root or sudo):</p>
+  <p>You can install these packages by running the following commands (as root or using <code class="filename">sudo</code>).</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+<p>Unfortunately sometimes the names of packages change between different releases of the same distribution so if you get a
+  message that one of the packages cannot be found then please use the search option of your package manager to get the new name:
+    </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <code class="literal">yum search &lt;package name&gt;</code> (<span class="emphasis"><em>Fedora/RHEL/CentOS</em></span>)
+      </li>
+<li class="listitem">
+        <code class="literal">apt-cache search &lt;package name&gt;</code> (<span class="emphasis"><em>Debian/Ubuntu</em></span>)
+      </li>
+<li class="listitem">
+        <code class="literal">zypper search &lt;package name&gt;</code> (<span class="emphasis"><em>openSuSE/SLES</em></span>)
+      </li>
+</ul></div>
+<p>
+  </p>
+</td></tr>
+</table></div>
 
   <p><span class="emphasis"><em>Fedora/RHEL/CentOS</em></span></p>
 
   <pre class="programlisting"> #&gt; yum install httpd gcc glibc glibc-common gd gd-devel
  #&gt; yum install libjpeg libjpeg-devel libpng libpng-devel
  #&gt; yum install net-snmp net-snmp-devel net-snmp-utils</pre>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top"><p>You may have to use libjpeg-turbo and libjpeg-turbo-devel instead</p></td></tr>
+</table></div>
 
   <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
 
@@ -141,6 +173,9 @@
 
   <p>Please use YaST to install at least the packages gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel and, optionally,
   net-snmp, net-snmp-devel and perl-Net-SNMP.</p>
+  <p>Using zypper should work as well:</p>
+  <pre class="programlisting"> #&gt; zypper install gd gd-devel libjpeg libjpeg-devel libpng libpng-devel
+ #&gt; zypper install net-snmp net-snmp-devel perl-Net-SNMP</pre> 
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -212,8 +247,8 @@
   <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
 
   <pre class="programlisting"> #&gt; cd /usr/src/ 
- #&gt; tar xvzf icinga-1.5.tar.gz 
- #&gt; cd icinga-1.5</pre>
+ #&gt; tar xvzf icinga-1.6.tar.gz 
+ #&gt; cd icinga-1.6</pre>
 
   <p>Run the Icinga configure script. You will get help by using the --help flag.</p>
 
@@ -408,7 +443,7 @@
   <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
   Started"</a> about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id3477581"></a>
+  <a class="indexterm" name="idp310848"></a>
 </div>
 <div class="navfooter">
 <hr>

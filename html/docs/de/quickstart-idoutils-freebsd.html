@@ -4,7 +4,7 @@
 <title>Icinga-Schnellstart mit IDOUtils auf FreeBSD</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.5 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">
 <link rel="next" href="howtos.html" title="Links zu weiteren Howtos">
@@ -154,6 +154,28 @@
 
   <p>Wenn Sie Oracle als RDBMS einsetzen möchten, dann ist das unter FreeBSD leider nicht so ohne weiteres möglich.</p>
 
+  <p><a name="quickstart-idoutils_timezone-support"></a><span class="bold"><strong>Zeitzonenunterstützung</strong></span></p>
+  <p>Ab Icinga 1.6 werden alle Zeit-/Datumsinformationen als lokale Zeitstempel in der Datenbank gespeichert. Vorher gab es für
+  jedes Datenbanksystem unterschiedliche Vorgehensweisen beim Speichern und Abrufen der Daten, was schwierig für Frontend-Applikationen war.
+  Deshalb wurden die Datentypen geändert: für MySQL von DATETIME in TIMESTAMP und für Oracle von DATE in LOCAL TIMESTAMP (0).
+  PostgreSQL benutzt bereits TIMESTAMP, es wurde aber in TIMESTAMP WITH TIME ZONE geändert. IDO2DB wird die Sitzungszeitzone auf UTC
+  setzen und alle Unix-Timestamps (die per Definition UTC sind) als UTC-basierte Werte speichern. Bitte stellen Sie sicher, dass Ihr System
+  Unix-Timestamps als UTC-basierte Werte ausgibt (wie "date -u '+%s'").</p>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"><p>Stellen Sie sicher, dass Ihre Datenbanksitzung in der gleichen Zeitzone läuft, in der die existierenden
+  Zeit-/Datumsinformationen gespeichert wurden (überprüfen Sie Ihre lokale Zeitzone, z.B. Oracle: "select sessiontimezone from
+  dual;"), wenn Sie das Upgrade-Script laufen lassen.
+  Zusätzlich für Ihre Bequemlichkeit sollten Sie in Oracle das Format der Sitzungszeitstempel auf den Wert zu setzen, den Sie
+  wünschen, z.B. "alter session set nls_timestamp_format='YYYY-MM-DD HH24:MI:SS'; oder etwas ähnliches.
+  Nun können Sie Einträge von verschiedenen Icinga-Installationen in unterschiedlichen Zeitzonen ansehen, die in der gleichen
+  Datenbank gespeichert wurden, und unabhängig davon, von woher Sie darauf zugreifen, werden sie in Ihrer lokalen Zeitzone angezeigt.
+  </p></td></tr>
+</table></div>
+
   <p><span class="bold"><strong>Installation der Pakete</strong></span></p>
 
   <p>Sie können diese Pakete aus den ports installieren oder Sie nehmen fertige und evtl. ältere packages (siehe
@@ -233,8 +255,8 @@
   <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT-Snapshot)</p>
 
   <pre class="programlisting"> #&gt; cd ~/src/ 
- #&gt; tar xvzf icinga-1.5.tar.gz 
- #&gt; cd icinga-1.5</pre>
+ #&gt; tar xvzf icinga-1.6.tar.gz 
+ #&gt; cd icinga-1.6</pre>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -315,11 +337,16 @@
   enthalten, um ein versehentliches Überschreiben der Konfigurationsdateien zu verhindern.</p></td></tr>
 </table></div>
 
-  <p>Die Icinga-API wird beim Aufruf von "gmake install" installiert, wenn Sie nur die Icinga-API (nach)installieren möchten, nutzen Sie:
-  </p>
-<pre class="programlisting"> #&gt; gmake install-api</pre>
-<p>Die Icinga-API ist Voraussetzung für das Icinga Web-Interface (nicht für die
-  klassische Ansicht!).</p>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Die Icinga-API diente als eine in PHP geschriebene Datenbank-Abstraktionsschicht. Seit Icinga ist sie durch eine 
+    interne Datenbank-Abstraktionsschicht ersetzt worden, so dass Icinga-API nicht mehr installiert werden muss.</p>
+  </td></tr>
+</table></div>
 
   <p>Starten Sie Icinga noch nicht - es gibt noch ein paar Dinge zu tun...</p>
 
@@ -568,7 +595,9 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="id4991019"></a>
+  <a class="indexterm" name="idp747040"></a>
+
+  <a class="indexterm" name="idp748784"></a>
 </div>
 <div class="navfooter">
 <hr>

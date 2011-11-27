@@ -152,7 +152,7 @@ CREATE TABLE IF NOT EXISTS icinga_conninfo (
   conninfo_id serial,
   instance_id bigint unsigned default 0,
   agent_name varchar(32) character set latin1  default '',
-  agent_version varchar(8) character set latin1  default '',
+  agent_version varchar(16) character set latin1  default '',
   disposition varchar(16) character set latin1  default '',
   connect_source varchar(16) character set latin1  default '',
   connect_type varchar(16) character set latin1  default '',
@@ -1376,9 +1376,9 @@ CREATE TABLE IF NOT EXISTS icinga_timeperiod_timeranges (
 CREATE TABLE IF NOT EXISTS icinga_slahistory (
   slahistory_id serial,
   instance_id bigint unsigned default 0,
-  start_time timestamp default '0000-00-00 00:00:00',
-  end_time timestamp default '0000-00-00 00:00:00',
-  acknowledgement_time timestamp default '0000-00-00 00:00:00',
+  start_time timestamp null default NULL,
+  end_time timestamp null default NULL,
+  acknowledgement_time timestamp null default NULL,
   object_id bigint unsigned default 0,
   state smallint default 0,
   state_type smallint default '0',
@@ -1570,11 +1570,11 @@ CREATE INDEX slahist_i_id_o_id_s_ti_s_s_ti_e on icinga_slahistory(instance_id,ob
 -- Icinga Web Notifications
 CREATE INDEX notification_idx ON icinga_notifications(notification_type, object_id, start_time);
 CREATE INDEX notification_object_id_idx ON icinga_notifications(object_id);
-CREATE INDEX notification_idx ON icinga_contactnotifications(notification_id, contact_object_id);
+CREATE INDEX contact_notification_idx ON icinga_contactnotifications(notification_id, contact_object_id);
 CREATE INDEX contacts_object_id_idx ON icinga_contacts(contact_object_id);
-CREATE INDEX notification_idx ON icinga_contactnotificationmethods(contactnotification_id, command_object_id);
+CREATE INDEX contact_notif_meth_notif_idx ON icinga_contactnotificationmethods(contactnotification_id, command_object_id);
 CREATE INDEX command_object_idx ON icinga_commands(object_id); 
-CREATE INDEX services_combined_idx ON icinga_services(service_object_id, host_object_id);
+CREATE INDEX services_combined_object_idx ON icinga_services(service_object_id, host_object_id);
 
 -- -----------------------------------------
 -- set dbversion
