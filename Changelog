@@ -40,6 +40,8 @@ ENHANCEMENTS
 
 * config: add config examples for local monitoring - check_procs for ido2db #1870
 
+* icinga.spec: enable cmd.cgi logging by default #2124
+
 FIXES
 * core: fix downtime and comments delete with wrong loop pointers causing segfaults #1979
 * core: fix $NOTIFICATIONRECIPIENTS$ macro contains all contacts assigned to host|service, not only notified contacts #2023
@@ -58,6 +60,8 @@ FIXES
 * idoutils: terminate threads cleanly, including db connection
 
 * install: rework the version updates in icinga and idoutils
+
+* icinga.spec: --libexecdir does not point to possible location of nagios-plugins in resource.cfg:$USER1$ #2123
 
 CHANGES
 * package: complete remove icinga-api as module #1935
@@ -93,6 +97,8 @@ CHANGES
 	** debug_readable_timestamp=0
 	** max_notifications_age, max_contactnotifications_age, max_contactnotificationmethods_age
 
+* icinga.spec
+	** enable cmd.cgi logging by default in rpm
 
 1.5.1 - 09/09/2011
 
