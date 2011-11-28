@@ -456,10 +456,11 @@ install-idoutils:
 	fi
 
 install-api:
-	echo "Sorry, Icinga PHP API was removed from package prior 1.6.0!" ;\
-	echo "Please keep in mind that Icinga-Web uses its own db layer starting with 1.5.0" ;\
-	echo "In case please look for a seperated package and/or icinga-api.git" ;\
-	echo "" ;\
+	@echo "Sorry, Icinga PHP API was removed from package prior 1.6.0!"
+	@echo "Please keep in mind that Icinga-Web uses its own db layer starting with 1.5.0"
+	@echo "In case please look for a seperated package and/or icinga-api.git"
+	@echo ""
+
 
 install-init: install-daemoninit
 
