@@ -41,14 +41,46 @@
   Ihre alte Icinga-Web-Version wiederherstellen.</p>
 
   <p>Bitte denken Sie daran, dass <code class="code">configure</code> mit den gleichen Optionen wie bei der vorherigen Installation aufzurufen ist!
-  Die verwendeten Optionen sehen Sie im <code class="code">config.log</code></p>
+  Die verwendeten Optionen sehen Sie im <code class="code">config.log.</code></p>
 
-  <p>Stellen Sie sicher, dass Sie die passende Icinga-API Version installiert haben. Die Installation der Icinga-API ist in der <a class="link" href="icinga-api.html" title="Installation und Benutzung der Icinga-API">Icinga-API</a> Section beschrieben.</p>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Bitte beachten Sie, dass es einige wesentliche Änderungen mit Icinga 1.5 gab, die ggf. zusätzliche Aktionen erfordern
+    könnten:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>Die <code class="filename">*.site.xml</code>-Datei für lokale Konfigurationsanpassungen wurden entfernt, Konfigurationen werden nun
+        unter <code class="filename">etc/conf.d/</code> abgelegt (oder dem Pfad, der während der Installation mit --with-conf-folder angegeben
+        wurde)</p>
+      </li>
+<li class="listitem">
+        <p>Das Log-Verzeichnis befindet sich nun unter <code class="filename">log/</code> (oder dem Pfad, der während der Installation mit
+        --with-log-folder angegeben wurde)</p>
+      </li>
+<li class="listitem">
+        <p>Die Icinga-API wurde entfernt und nun wird Doctrine für alle Datenbank-Transaktionen benutzt
+        (<code class="filename">icinga-io.xml</code> ist nun <code class="filename">databases.xml</code>)</p>
+      </li>
+<li class="listitem">
+        <p>Befehle werden nun durch den internen Console-Handler versandt (weil die Icinga-API entfernt wurde)</p>
+      </li>
+</ul></div>
+
+    <p>Falls Sie Icinga-Web &lt;= 1.4x benutzen, dann empfehlen wir eine Neuinstallation anstatt einer Aktualisierung. Es ist besser,
+    Ihre alten Konfigurationsdateien in die neue Struktur zu kopieren, weil es viele geänderte und gelöschte Dateien gibt, um die wir uns
+    bei einer Aktualisierung ggf. nicht kümmern.</p>
+  </td></tr>
+</table></div>
 
   <p><span class="bold"><strong>Die Aktualisierung von Icinga-Web</strong></span></p>
 
-  <p>Bitte laden Sie das Archiv von <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">http://sourceforge.net/projects/icinga/files/</a> herunter oder klonen Sie
-  den aktuellsten git- Branch mit :</p>
+  <p>Bitte laden Sie das Archiv von <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">http://sourceforge.net/projects/icinga/files/</a> herunter. Falls Sie ein
+  Problem haben, das in der aktuellen Entwicklerversion behoben ist, dann klonen Sie den aktuellsten git- Branch mit :</p>
 
   <pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-web.git</pre>
 
@@ -144,8 +176,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Abhängig von den Änderungen und der Größe Ihrer Datenbank kann es eine Weile dauern, die Anpassungen durchzuführen. Bitte
-  haben Sie ein wenig Geduld und brechen Sie das Script nicht ab, weil sonst ggf. Ihre Daten unbrauchbar sind.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Abhängig von den Änderungen und der Größe Ihrer Datenbank kann es eine Weile dauern, die Anpassungen durchzuführen. Bitte haben
+    Sie ein wenig Geduld und brechen Sie das Script nicht ab, weil sonst ggf. Ihre Daten unbrauchbar sind.</p>
+  </td></tr>
 </table></div>
 
   <p>Die Update-Dateien finden Sie zusammen mit den Datenbank-Installationsdateien in
@@ -194,13 +228,13 @@
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle_&lt;alteVersion&gt;_to_&lt;neueVersion&gt;.sql</pre>
 
-  <a class="indexterm" name="idp11493392"></a>
+  <a class="indexterm" name="id1460318"></a>
 
-  <a class="indexterm" name="idp11494704"></a>
+  <a class="indexterm" name="id1460328"></a>
 
-  <a class="indexterm" name="idp11496336"></a>
+  <a class="indexterm" name="id1460341"></a>
 
-  <a class="indexterm" name="idp11497616"></a>
+  <a class="indexterm" name="id1460351"></a>
 </div>
 <div class="navfooter">
 <hr>
