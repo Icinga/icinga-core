@@ -33,7 +33,7 @@
 
   <p>If there's a new Icinga-Web version available on http://www.icinga.org/ you should consider updating. Newer versions contain bugfixes, minor
   or major, which makes it even more important to get the latest and the greatest. If you already installed Icinga-Web; using the installing
-  guide it's rather easy to install newer version.</p>
+  guide it should be rather easy to install newer version.</p>
 
   <p>Make sure you'll have a safe backup of your Icinga-Web installation and your configs (if you stored your customised configuration in
   *.site.xml- Files, they won't be overwritten during the upgrade process!). If anything goes wrong you can restore your old setup rather
@@ -42,13 +42,41 @@
   <p>Regular updates of Icinga-Web are possible by just by re-installing Icinga-Web. Please keep in mind that <code class="code">configure</code>
   requires the same parameters as before - look it up in <code class="code">config.log</code> and save that in a safe location.</p>
 
-  <p>Please make sure, that you have already installed the appropriate Icinga-API version. Installing the Icinga-API is described in the
-  <a class="link" href="icinga-api.html" title="Installation and use of the Icinga API">Icinga-API</a> section.</p>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Please note that there were some major changes starting with Icinga 1.5 that may require some additional actions:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>The <code class="filename">*.site.xml</code> files for local configuration changes were removed, configurations are now in
+        <code class="filename">etc/conf.d/</code> (or defined during installation with --with-conf-folder</p>
+      </li>
+<li class="listitem">
+        <p>The log folder is now under <code class="filename">log/</code> (or defined during installation with the --with-log-folder)</p>
+      </li>
+<li class="listitem">
+        <p>The icinga-api was removed, doctrine is now used for all database transactions (<code class="filename">icinga-io.xml</code> is now
+        <code class="filename">databases.xml</code>)</p>
+      </li>
+<li class="listitem">
+        <p>Commands are now sent through the internal console-handler (because the icinga-api has been removed)</p>
+      </li>
+</ul></div>
+
+    <p>If you are using Icinga-Web &lt;= 1.4x then we suggest to do a fresh installation instead of an upgrade. It's better to copy your
+    old configuration files into the new structure because there are many changed and removed files we might not care about while
+    upgrading.</p>
+  </td></tr>
+</table></div>
 
   <p><span class="bold"><strong>The Upgrade</strong></span></p>
 
-  <p>Please download the archive from <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">http://sourceforge.net/projects/icinga/files/</a> or take your clone from
-  the icinga-web.git to get the freshest branch:</p>
+  <p>Please download the archive from <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">http://sourceforge.net/projects/icinga/files/</a>. If you have an issue
+  fixed in the current developer version then please take your clone from the icinga-web.git to get the freshest branch:</p>
 
   <pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-web.git</pre>
 
@@ -87,7 +115,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Keep in mind that you configure the Icinga Web database not the Icinga IDOUtils database! User and group name of the web process
+    <p>Keep in mind that you configure the Icinga-Web database not the Icinga IDOUtils database! User and group name of the web process
     depend on the distribution used.</p>
   </td></tr>
 </table></div>
@@ -108,7 +136,7 @@
   </td></tr>
 </table></div>
 
-  <p>Per default the Icinga-Web will be updated to /usr/local/icinga-web using:</p>
+  <p>Per default the Icinga-Web will be updated to <code class="filename">/usr/local/icinga-web</code> using:</p>
 
   <pre class="programlisting"> #&gt; ./configure
  #&gt; make upgrade</pre>
@@ -128,7 +156,8 @@
   <p>or /path/to/clearcache.sh</p>
 
   <pre class="programlisting"> #&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
-<p>Any errors? Take a look <a class="link" href="icinga-web-scratch.html#icinga-web-scratch-errors"> here.</a></p>
+
+  <p>Any errors? Take a look <a class="link" href="icinga-web-scratch.html#icinga-web-scratch-errors"> here.</a></p>
 
   <p><span class="bold"><strong>Upgrading the Icinga-Web Database</strong></span></p>
 
@@ -141,8 +170,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Depending on the changes to be done and the size of your database it may take a while to update your database. Please try to
-  be patient and don't abort the script as it may leave the data being corrupt.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Depending on the changes to be done and the size of your database it may take a while to update your database. Please try to be
+    patient and don't abort the script as it may leave the data being corrupt.</p>
+  </td></tr>
 </table></div>
 
   <p>The upgrade files can be found next to the database install files in <code class="literal">/path/to/icinga-web/etc/schema/updates/</code>. The
@@ -190,15 +221,13 @@
 
   <p>That's all.</p>
 
+  <a class="indexterm" name="idp11670784"></a>
 
-  <a class="indexterm" name="idp11662832"></a>
+  <a class="indexterm" name="idp11672016"></a>
 
-  <a class="indexterm" name="idp11664064"></a>
+  <a class="indexterm" name="idp11673616"></a>
 
-  <a class="indexterm" name="idp11665664"></a>
-
-  <a class="indexterm" name="idp11666912"></a>
-
+  <a class="indexterm" name="idp11674864"></a>
 </div>
 <div class="navfooter">
 <hr>

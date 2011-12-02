@@ -757,7 +757,8 @@
 
   <p>Erstellen Sie ein Datenbank-Schema und eine username/password-Kombination (lesen Sie dazu die Oracle-Dokumentation unter
   http://www.oracle.com oder fragen Sie Ihren DBA). Importieren Sie das Datenbank-Schema mit sqlplus (oder Ihrer bevorzugten Methode). Kopieren Sie
-  module/idoutils/db/oracle/oracle.sql nach $ORACLE_HOME</p>
+  <code class="filename">module/idoutils/db/oracle/*</code> nach $ORACLE_HOME und ändern Sie in <code class="filename">icinga_defines.sql</code> die
+  Werte zu Tablespace-Namen und Benutzerdaten.</p>
 
   <pre class="programlisting"> #&gt; su - oracle
  $ sqlplus dbuser/dbpass
@@ -1006,9 +1007,9 @@
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="idp620928"></a>
+  <a class="indexterm" name="idp621872"></a>
 
-  <a class="indexterm" name="idp622576"></a>
+  <a class="indexterm" name="idp623520"></a>
 </div>
 <div class="navfooter">
 <hr>

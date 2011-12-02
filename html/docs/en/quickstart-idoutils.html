@@ -734,8 +734,8 @@
   <p><span class="bold"><strong>Oracle:</strong></span></p>
 
   <p>Create a database schema and username/password (refer to the Oracle documentation at http://www.oracle.com or consult your DBA).
-  Import the database scheme with sqlplus (or your preferred method). Copy <code class="filename">module/idoutils/db/oracle/oracle.sql</code> to
-  $ORACLE_HOME</p>
+  Import the database scheme with sqlplus (or your preferred method). Copy <code class="filename">module/idoutils/db/oracle/*</code> to
+  $ORACLE_HOME and edit <code class="filename">icinga_defines.sql</code> to match tablespace and user credential information.</p>
 
   <pre class="programlisting"> #&gt; su - oracle
  $&gt; sqlplus dbuser/dbpass
@@ -921,9 +921,9 @@
   no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a>
   about "Monitoring ..."</p>
 
-  <a class="indexterm" name="idp599984"></a>
+  <a class="indexterm" name="idp600416"></a>
 
-  <a class="indexterm" name="idp601472"></a>
+  <a class="indexterm" name="idp601904"></a>
 </div>
 <div class="navfooter">
 <hr>
