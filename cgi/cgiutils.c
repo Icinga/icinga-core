@@ -155,6 +155,8 @@ int		show_partial_hostgroups = FALSE;
 int		default_downtime_duration = 7200;
 int		default_expiring_acknowledgement_duration = 86400;
 
+int		default_num_displayed_log_entries = 10000;
+
 extern hostgroup       *hostgroup_list;
 extern contactgroup    *contactgroup_list;
 extern command         *command_list;
@@ -571,6 +573,9 @@ int read_cgi_config_file(char *filename) {
 		else if (!strcmp(var, "default_downtime_duration"))
 			default_downtime_duration = atoi(val);
 
+		else if (!strcmp(var, "default_num_displayed_log_entries"))
+			default_num_displayed_log_entries = atoi(val);
+
 		else if (!strcmp(var, "use_ssl_authentication"))
 			use_ssl_authentication = (atoi(val) > 0) ? TRUE : FALSE;
 
@@ -585,8 +590,7 @@ int read_cgi_config_file(char *filename) {
 				extinfo_show_child_hosts = SHOW_CHILD_HOSTS_IMMEDIATE;
 			else if (atoi(val) == SHOW_CHILD_HOSTS_ALL)
 				extinfo_show_child_hosts = SHOW_CHILD_HOSTS_ALL;
-		}
-		else if (!strcmp(var, "suppress_maintenance_downtime"))
+		} else if (!strcmp(var, "suppress_maintenance_downtime"))
 			suppress_maintenance_downtime = (atoi(val) > 0) ? TRUE : FALSE;
 
 		else if (!strcmp(var, "show_tac_header"))
@@ -658,13 +662,13 @@ int read_main_config_file(char *filename) {
 
 		strip(input);
 
-                if (strstr(input, "resource_file=") == input) {
-                        temp_buffer = strtok(input, "=");
-                        temp_buffer = strtok(NULL, "\x0");
-                        strncpy(resource_file, (temp_buffer == NULL) ? "" : temp_buffer, sizeof(resource_file));
-                        resource_file[sizeof(resource_file)-1] = '\x0';
-                        strip(resource_file);
-                }
+		if (strstr(input, "resource_file=") == input) {
+			temp_buffer = strtok(input, "=");
+			temp_buffer = strtok(NULL, "\x0");
+			strncpy(resource_file, (temp_buffer == NULL) ? "" : temp_buffer, sizeof(resource_file));
+			resource_file[sizeof(resource_file)-1] = '\x0';
+			strip(resource_file);
+		}
 
 		else if (strstr(input, "interval_length=") == input) {
 			temp_buffer = strtok(input, "=");
@@ -797,81 +801,81 @@ int read_all_status_data(char *config_file, int options) {
 
 /* processes macros in resource file */
 int read_icinga_resource_file(char *resource_file) {
-        char *input = NULL;
-        char *variable = NULL;
-        char *value = NULL;
-        char *temp_ptr = NULL;
-        mmapfile *thefile = NULL;
-        int current_line = 1;
-        int error = FALSE;
-        int user_index = 0;
+	char *input = NULL;
+	char *variable = NULL;
+	char *value = NULL;
+	char *temp_ptr = NULL;
+	mmapfile *thefile = NULL;
+	int current_line = 1;
+	int error = FALSE;
+	int user_index = 0;
 
-        if ((thefile = mmap_fopen(resource_file)) == NULL) {
-                return ERROR;
-        }
+	if ((thefile = mmap_fopen(resource_file)) == NULL) {
+		return ERROR;
+	}
 
-        /* process all lines in the resource file */
-        while (1) {
+	/* process all lines in the resource file */
+	while (1) {
 
-                /* free memory */
-                my_free(input);
+		/* free memory */
+		my_free(input);
 
-                /* read the next line */
-                if ((input = mmap_fgets_multiline(thefile)) == NULL)
-                        break;
+		/* read the next line */
+		if ((input = mmap_fgets_multiline(thefile)) == NULL)
+			break;
 
-                current_line = thefile->current_line;
+		current_line = thefile->current_line;
 
-                /* skip blank lines and comments */
-                if (input[0] == '#' || input[0] == '\x0' || input[0] == '\n' || input[0] == '\r')
-                        continue;
+		/* skip blank lines and comments */
+		if (input[0] == '#' || input[0] == '\x0' || input[0] == '\n' || input[0] == '\r')
+			continue;
 
-                strip(input);
+		strip(input);
 
-                /* get the variable name */
-                if ((temp_ptr = my_strtok(input, "=")) == NULL) {
-                        error = TRUE;
-                        break;
-                }
-                if ((variable = (char *)strdup(temp_ptr)) == NULL) {
-                        error = TRUE;
-                        break;
-                }
+		/* get the variable name */
+		if ((temp_ptr = my_strtok(input, "=")) == NULL) {
+			error = TRUE;
+			break;
+		}
+		if ((variable = (char *)strdup(temp_ptr)) == NULL) {
+			error = TRUE;
+			break;
+		}
 
-                /* get the value */
-                if ((temp_ptr = my_strtok(NULL, "\n")) == NULL) {
-                        error = TRUE;
-                        break;
-                }
-                if ((value = (char *)strdup(temp_ptr)) == NULL) {
-                        error = TRUE;
-                        break;
-                }
+		/* get the value */
+		if ((temp_ptr = my_strtok(NULL, "\n")) == NULL) {
+			error = TRUE;
+			break;
+		}
+		if ((value = (char *)strdup(temp_ptr)) == NULL) {
+			error = TRUE;
+			break;
+		}
 
-                /* what should we do with the variable/value pair? */
+		/* what should we do with the variable/value pair? */
 
-                /* check for macro declarations */
-                if (variable[0] == '$' && variable[strlen(variable)-1] == '$') {
+		/* check for macro declarations */
+		if (variable[0] == '$' && variable[strlen(variable)-1] == '$') {
 
-                        /* $USERx$ macro declarations */
-                        if (strstr(variable, "$USER") == variable  && strlen(variable) > 5) {
-                                user_index = atoi(variable + 5) - 1;
-                                if (user_index >= 0 && user_index < MAX_USER_MACROS) {
-                                        my_free(macro_user[user_index]);
-                                        macro_user[user_index] = (char *)strdup(value);
-                                }
-                        }
-                }
-        }
+			/* $USERx$ macro declarations */
+			if (strstr(variable, "$USER") == variable  && strlen(variable) > 5) {
+				user_index = atoi(variable + 5) - 1;
+				if (user_index >= 0 && user_index < MAX_USER_MACROS) {
+					my_free(macro_user[user_index]);
+					macro_user[user_index] = (char *)strdup(value);
+				}
+			}
+		}
+	}
 
-        /* free leftover memory and close the file */
-        my_free(input);
-        mmap_fclose(thefile);
+	/* free leftover memory and close the file */
+	my_free(input);
+	mmap_fclose(thefile);
 
-        if (error == TRUE)
-                return ERROR;
+	if (error == TRUE)
+		return ERROR;
 
-        return OK;
+	return OK;
 }
 
 
@@ -1886,7 +1890,7 @@ void display_info_table(char *title, int refresh, authdata *current_authdata, in
 	}
 
 	if (CGI_ID == CONFIG_CGI_ID && authorized_for_full_command_resolution(current_authdata)) {
-		if (access(resource_file, R_OK) != 0) 
+		if (access(resource_file, R_OK) != 0)
 			printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Could not read resource file, raw command line could be incomplete!</DIV>");
 	}
 
@@ -2206,30 +2210,30 @@ void main_config_file_error(char *config_file) {
 /* displays an error if resource file could not be read */
 void icinga_resource_file_error(char *config_file) {
 
-        printf("<H1>Whoops!</H1>\n");
+	printf("<H1>Whoops!</H1>\n");
 
-        printf("<P><STRONG><FONT COLOR='RED'>Error: Could not open resource file '%s' for reading!</FONT></STRONG></P>\n", config_file);
+	printf("<P><STRONG><FONT COLOR='RED'>Error: Could not open resource file '%s' for reading!</FONT></STRONG></P>\n", config_file);
 
-        printf("<P>\n");
-        printf("It seems that you enabled the cgis to read your local resource file (verify that in your cgi.cfg)\n");
-        printf("Here are some things you should check in order to resolve this error:\n");
-        printf("</P>\n");
+	printf("<P>\n");
+	printf("It seems that you enabled the cgis to read your local resource file (verify that in your cgi.cfg)\n");
+	printf("Here are some things you should check in order to resolve this error:\n");
+	printf("</P>\n");
 
-        printf("<P>\n");
-        printf("<OL>\n");
+	printf("<P>\n");
+	printf("<OL>\n");
 
-        printf("<LI>Make sure you've installed the resource file in its proper location, defined in main config. A sample resource file (named <b>resource.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
-        printf("<LI>Make sure the user your web server is running as has permission to read the resource file.\n");
-        printf("<LI>If you don't want to read your resource file (used e.g. for command expander in config.cgi) then disable it in cgi.cfg.\n");
+	printf("<LI>Make sure you've installed the resource file in its proper location, defined in main config. A sample resource file (named <b>resource.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
+	printf("<LI>Make sure the user your web server is running as has permission to read the resource file.\n");
+	printf("<LI>If you don't want to read your resource file (used e.g. for command expander in config.cgi) then disable it in cgi.cfg.\n");
 
-        printf("</OL>\n");
-        printf("</P>\n");
+	printf("</OL>\n");
+	printf("</P>\n");
 
-        printf("<P>\n");
-        printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
-        printf("</P>\n");
+	printf("<P>\n");
+	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
+	printf("</P>\n");
 
-        return;
+	return;
 }
 
 /* displays an error if object data could not be read */
