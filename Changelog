@@ -14,6 +14,8 @@ ENHANCEMENTS
 FIXES
 * core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
 
+* classic ui: fixed invalid json output for tac.cgi #2160
+
 CHANGES
 
 
