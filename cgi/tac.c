@@ -1710,8 +1710,8 @@ void display_tac_overview(void) {
 		printf("\"total_active_host_checks_with_passive_disabled\": %d,\n", total_active_host_checks_with_passive_disabled);
 
 		printf("\"total_active_service_checks\": %d,\n", total_active_service_checks);
-		printf("\"total_passive_service_checks\": %d\n", total_passive_service_checks);
-		printf("\"total_disabled_service_checks\": %d\n", total_disabled_service_checks);
+		printf("\"total_passive_service_checks\": %d,\n", total_passive_service_checks);
+		printf("\"total_disabled_service_checks\": %d,\n", total_disabled_service_checks);
 		printf("\"total_active_service_checks_with_passive_disabled\": %d\n", total_active_service_checks_with_passive_disabled);
 
 		printf(" }\n");
