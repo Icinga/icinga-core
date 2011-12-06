@@ -4,11 +4,19 @@ Icinga 1.6.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+
 1.7.0 - 01/03/2012
 
 FIXES
 * classic ui: fixed invalid json output for tac.cgi #2160
 
+
+1.6.1 - 02/12/2011
+
+FIXES
+* core: fix freshness checks are generating stale alerts, even if result was received in time #2136
+
+CHANGES
 
 
 1.6.0 - 30/11/2011
