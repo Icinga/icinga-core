@@ -182,6 +182,7 @@ extern char     *tzname[2];
 int content_type = HTML_CONTENT;
 int embedded = FALSE;
 int display_header = TRUE;
+int display_status_totals = TRUE;
 int refresh = TRUE;
 int daemon_check = TRUE;
 int tac_header = FALSE;
@@ -621,6 +622,9 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "highlight_table_rows"))
 			highlight_table_rows = (atoi(val) > 0) ? TRUE : FALSE;
+
+		else if (!strcmp(var, "display_status_totals"))
+			display_status_totals = (atoi(val) > 0) ? TRUE : FALSE;
 
 	}
 

@@ -9,6 +9,7 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 ENHANCEMENTS
 
 * classic ui: Added option for max log entries displayed in showlog.cgi #2145
+* classic ui: Added config option for status totals in status.cgi #2018
 
 FIXES
 * classic ui: Fixed status totals are wrong when searching #1524

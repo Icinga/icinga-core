@@ -498,6 +498,16 @@ status_show_long_plugin_output=0
 
 
 
+# DISPLAY STATUS TOTAL
+# This option allows you to specify if the
+# Host Status Totals and Service Status Totals
+# should be displayed.
+# Default value is 1.
+
+display_status_totals=0
+
+
+
 # SHOW ONLY HARD STATES IN TAC OPTION
 # This options allows you to specify if the tactical overview
 # should only show hard states on hosts and services.
