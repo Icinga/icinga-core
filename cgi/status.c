@@ -128,7 +128,6 @@ typedef struct sort_struct {
 
 sort *statussort_list = NULL;
 
-void grab_statusdata(void);
 int sort_status_data(int , int , int);
 int compare_sort_entries(int, int, int, sort *, sort *);			/* compares service sort entries */
 void free_sort_list(void);
@@ -191,6 +190,7 @@ int host_items_found = FALSE;
 int service_items_found = FALSE;
 int navbar_search = FALSE;
 int user_is_authorized_for_statusdata = FALSE;
+int display_status_header = TRUE;
 
 int service_status_types = SERVICE_PENDING | SERVICE_OK | SERVICE_UNKNOWN | SERVICE_WARNING | SERVICE_CRITICAL;
 int all_service_status_types = SERVICE_PENDING | SERVICE_OK | SERVICE_UNKNOWN | SERVICE_WARNING | SERVICE_CRITICAL;
@@ -213,10 +213,20 @@ int problem_services_critical = 0;
 int problem_services_warning = 0;
 int problem_services_unknown = 0;
 
+int num_hosts_up = 0;
+int num_hosts_down = 0;
+int num_hosts_unreachable = 0;
+int num_hosts_pending = 0;
+
+int num_services_ok = 0;
+int num_services_warning = 0;
+int num_services_critical = 0;
+int num_services_unknown = 0;
+int num_services_pending = 0;
+
 extern int refresh;
 extern int embedded;
 extern int display_header;
-extern int display_status_header;
 extern int daemon_check;
 extern int content_type;
 extern int escape_html_tags;
@@ -407,6 +417,200 @@ int main(void) {
 			group_style_type = STYLE_SERVICE_DETAIL;
 	}
 
+	/* get requested groups */
+	temp_hostgroup = find_hostgroup(hostgroup_name);
+	temp_servicegroup = find_servicegroup(servicegroup_name);
+
+	if (group_style_type == STYLE_HOST_DETAIL || group_style_type == STYLE_HOST_SERVICE_DETAIL) {
+
+		for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
+
+			/* if user is doing a search and host didn't match try next one */
+			if (search_string != NULL && temp_hoststatus->search_matched == FALSE && temp_hostgroup == NULL)
+				continue;
+
+			/* find the host  */
+			temp_host = find_host(temp_hoststatus->host_name);
+
+			/* if we couldn't find the host, go to the next status entry */
+			if (temp_host == NULL)
+				continue;
+
+			/* make sure user has rights to see this... */
+			if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+				continue;
+
+			user_is_authorized_for_statusdata = TRUE;
+
+			/* see if we should display services for hosts with this type of status */
+			if (!(host_status_types & temp_hoststatus->status))
+				continue;
+
+			/* check host properties filter */
+			if (passes_host_properties_filter(temp_hoststatus) == FALSE)
+				continue;
+
+
+			/* see if this host is a member of the hostgroup */
+			if (show_all_hostgroups == FALSE) {
+				if (temp_hostgroup == NULL)
+					continue;
+				if (is_host_member_of_hostgroup(temp_hostgroup, temp_host) == FALSE)
+					continue;
+			}
+
+			/* FIXME:
+				should we count hosts without services attached?
+
+				this is confusing for the user
+			*/
+
+			/* Skip hosts with no serivces attached in service detail view */
+			/*
+			if (group_style_type == STYLE_SERVICE_DETAIL) {
+				host_has_service = FALSE;
+				for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
+					if (!strcmp(temp_host->name, temp_servicestatus->host_name)) {
+						host_has_service = TRUE;
+						break;
+					}
+				}
+				if (host_has_service == FALSE)
+					continue;
+			}
+			*/
+
+			/* check if host triggers sound */
+			if (temp_hoststatus->problem_has_been_acknowledged == FALSE && \
+			   (temp_hoststatus->checks_enabled == TRUE || \
+			    temp_hoststatus->accept_passive_host_checks == TRUE) && \
+			    temp_hoststatus->notifications_enabled == TRUE && \
+			    temp_hoststatus->scheduled_downtime_depth == 0) {
+				if (temp_hoststatus->status == HOST_DOWN)
+					problem_hosts_down++;
+				if (temp_hoststatus->status == HOST_UNREACHABLE)
+					problem_hosts_unreachable++;
+			}
+
+			/* count host for status totals */
+			if (temp_hoststatus->status == HOST_DOWN)
+				num_hosts_down++;
+			else if (temp_hoststatus->status == HOST_UNREACHABLE)
+				num_hosts_unreachable++;
+			else if (temp_hoststatus->status == HOST_PENDING)
+				num_hosts_pending++;
+			else
+				num_hosts_up++;
+
+			add_status_data(HOST_STATUS, temp_hoststatus, NULL);
+		}
+	}
+
+	/* only show service problems of Hosts which are
+	   _NOT_ DOWN or UNREACHABLE */
+
+	/* FIXME
+		mark that this apllies only for "All Unhandled Problems"
+	*/
+	if (host_status_types == (HOST_DOWN + HOST_UNREACHABLE) && group_style_type == STYLE_HOST_SERVICE_DETAIL && search_string == NULL)
+		host_status_types = HOST_PENDING | HOST_UP;
+
+	if (group_style_type != STYLE_HOST_DETAIL) {
+
+		for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
+
+			/* if user is doing a search and service didn't match try next one */
+			if (search_string != NULL && temp_servicestatus->search_matched == FALSE && \
+			        display_type != DISPLAY_HOSTGROUPS && display_type != DISPLAY_SERVICEGROUPS)
+				continue;
+
+			/* find the service  */
+			temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
+
+			/* if we couldn't find the service, go to the next service */
+			if (temp_service == NULL)
+				continue;
+
+			/* find the host */
+			temp_host = find_host(temp_service->host_name);
+
+			/* make sure user has rights to see this... */
+			if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
+				continue;
+
+			user_is_authorized_for_statusdata = TRUE;
+
+			/* get the host status information */
+			temp_hoststatus = find_hoststatus(temp_service->host_name);
+
+			/* see if we should display services for hosts with tis type of status */
+			if (!(host_status_types & temp_hoststatus->status))
+				continue;
+
+			/* see if we should display this type of service status */
+			if (!(service_status_types & temp_servicestatus->status))
+				continue;
+
+			/* check host properties filter */
+			if (passes_host_properties_filter(temp_hoststatus) == FALSE)
+				continue;
+
+			/* check service properties filter */
+			if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+				continue;
+
+			/* see if only one host should be shown */
+			if (display_type == DISPLAY_HOSTS) {
+				if (show_all_hosts == FALSE) {
+					if (strcmp(host_name, temp_servicestatus->host_name) && strcmp(host_name, temp_host->display_name) && search_string == NULL)
+						continue;
+				}
+			}
+
+			/* see if we should display a hostgroup */
+			else if (display_type == DISPLAY_HOSTGROUPS && show_all_hostgroups == FALSE) {
+				if (temp_hostgroup == NULL || is_host_member_of_hostgroup(temp_hostgroup, temp_host) == FALSE)
+					continue;
+			}
+
+			/* see if we should display a servicegroup */
+			else if (display_type == DISPLAY_SERVICEGROUPS && show_all_servicegroups == FALSE) {
+				if (temp_servicegroup == NULL || is_service_member_of_servicegroup(temp_servicegroup, temp_service) == FALSE)
+					continue;
+			}
+
+			/* FIXME:
+				include passive checks as well
+			*/
+			/* check if service triggers sound */
+			if (temp_servicestatus->problem_has_been_acknowledged == FALSE && \
+			   (temp_servicestatus->checks_enabled == TRUE || \
+			    temp_servicestatus->accept_passive_service_checks == TRUE) && \
+			    temp_servicestatus->notifications_enabled == TRUE && \
+			    temp_servicestatus->scheduled_downtime_depth == 0) {
+				if (temp_servicestatus->status == SERVICE_CRITICAL)
+					problem_services_critical++;
+				else if (temp_servicestatus->status == SERVICE_WARNING)
+					problem_services_warning++;
+				else if (temp_servicestatus->status == SERVICE_UNKNOWN)
+					problem_services_unknown++;
+			}
+
+			if (temp_servicestatus->status == SERVICE_CRITICAL)
+				num_services_critical++;
+			else if (temp_servicestatus->status == SERVICE_WARNING)
+				num_services_warning++;
+			else if (temp_servicestatus->status == SERVICE_UNKNOWN)
+				num_services_unknown++;
+			else if (temp_servicestatus->status == SERVICE_PENDING)
+				num_services_pending++;
+			else
+				num_services_ok++;
+
+			add_status_data(SERVICE_STATUS, NULL, temp_servicestatus);
+		}
+	}
+
 	// determine which dropdown menu to show
 	if (display_type == DISPLAY_HOSTS) {
 		if (group_style_type == STYLE_HOST_DETAIL || group_style_type == STYLE_HOST_SERVICE_DETAIL)
@@ -467,74 +671,54 @@ int main(void) {
 
 		/* begin top table */
 		/* network status, hosts/service status totals */
+		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+		printf("<tr>\n");
 
-		/* FIXME
-			This needs a fix as well. If we show combined host and service list, it should
-			be possible to see status totals as well.
-		*/
-		if (display_status_header == TRUE && group_style_type != STYLE_HOST_SERVICE_DETAIL && search_string == NULL) {
-			printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
-			printf("<tr>\n");
+		/* left column of the first row */
+		printf("<td align=left valign=top width=33%%>\n");
+		/* info table */
+		display_info_table("Current Network Status", refresh, &current_authdata, daemon_check);
+		printf("</td>\n");
 
-			/* left column of the first row */
-			printf("<td align=left valign=top width=33%%>\n");
-			/* info table */
-			display_info_table("Current Network Status", refresh, &current_authdata, daemon_check);
-			printf("</td>\n");
+		/* middle column of top row */
+		printf("<td align=center valign=top width=33%%>\n");
+		show_host_status_totals();
+		printf("</td>\n");
 
-			/* middle column of top row */
-			printf("<td align=center valign=top width=33%%>\n");
-			show_host_status_totals();
-			printf("</td>\n");
+		/* right hand column of top row */
+		printf("<td align=center valign=top width=33%%>\n");
+		show_service_status_totals();
+		printf("</td>\n");
 
-			/* right hand column of top row */
-			printf("<td align=center valign=top width=33%%>\n");
-			show_service_status_totals();
-			printf("</td>\n");
-
-			/* display context-sensitive help */
-			printf("<td align=right valign=bottom>\n");
-			if (display_type == DISPLAY_HOSTS)
-				if (group_style_type == STYLE_HOST_DETAIL)
-					display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
-				else
-					display_context_help(CONTEXTHELP_STATUS_DETAIL);
-			else if (display_type == DISPLAY_SERVICEGROUPS) {
-				if (group_style_type == STYLE_HOST_DETAIL)
-					display_context_help(CONTEXTHELP_STATUS_DETAIL);
-				else if (group_style_type == STYLE_OVERVIEW)
-					display_context_help(CONTEXTHELP_STATUS_SGOVERVIEW);
-				else if (group_style_type == STYLE_SUMMARY)
-					display_context_help(CONTEXTHELP_STATUS_SGSUMMARY);
-				else if (group_style_type == STYLE_GRID)
-					display_context_help(CONTEXTHELP_STATUS_SGGRID);
-			} else {
-				if (group_style_type == STYLE_HOST_DETAIL)
-					display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
-				else if (group_style_type == STYLE_OVERVIEW)
-					display_context_help(CONTEXTHELP_STATUS_HGOVERVIEW);
-				else if (group_style_type == STYLE_SUMMARY)
-					display_context_help(CONTEXTHELP_STATUS_HGSUMMARY);
-				else if (group_style_type == STYLE_GRID)
-					display_context_help(CONTEXTHELP_STATUS_HGGRID);
-			}
-			printf("</td>\n");
-			printf("</tr>\n");
-			printf("</table>\n");
+		/* display context-sensitive help */
+		printf("<td align=right valign=bottom>\n");
+		if (display_type == DISPLAY_HOSTS)
+			if (group_style_type == STYLE_HOST_DETAIL)
+				display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
+			else
+				display_context_help(CONTEXTHELP_STATUS_DETAIL);
+		else if (display_type == DISPLAY_SERVICEGROUPS) {
+			if (group_style_type == STYLE_HOST_DETAIL)
+				display_context_help(CONTEXTHELP_STATUS_DETAIL);
+			else if (group_style_type == STYLE_OVERVIEW)
+				display_context_help(CONTEXTHELP_STATUS_SGOVERVIEW);
+			else if (group_style_type == STYLE_SUMMARY)
+				display_context_help(CONTEXTHELP_STATUS_SGSUMMARY);
+			else if (group_style_type == STYLE_GRID)
+				display_context_help(CONTEXTHELP_STATUS_SGGRID);
 		} else {
-			/* only display basic information */
-			printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
-			printf("<tr>\n");
-
-			printf("<td align=left valign=top>\n");
-			/* info table */
-			display_info_table("Current Network Status", refresh, &current_authdata, daemon_check);
-			printf("</td>\n");
-
-			printf("</tr>\n");
-			printf("</table>\n");
-
+			if (group_style_type == STYLE_HOST_DETAIL)
+				display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
+			else if (group_style_type == STYLE_OVERVIEW)
+				display_context_help(CONTEXTHELP_STATUS_HGOVERVIEW);
+			else if (group_style_type == STYLE_SUMMARY)
+				display_context_help(CONTEXTHELP_STATUS_HGSUMMARY);
+			else if (group_style_type == STYLE_GRID)
+				display_context_help(CONTEXTHELP_STATUS_HGGRID);
 		}
+		printf("</td>\n");
+		printf("</tr>\n");
+		printf("</table>\n");
 
 		/* second table below */
 		printf("<br>\n");
@@ -648,7 +832,6 @@ int main(void) {
 		printf("</table>\n");
 	}
 
-
 	/* embed sound tag if necessary... */
 	if (problem_hosts_unreachable > 0 && host_unreachable_sound != NULL)
 		sound = host_unreachable_sound;
@@ -681,17 +864,7 @@ int main(void) {
 			show_host_detail();
 		else if (group_style_type == STYLE_HOST_SERVICE_DETAIL) {
 
-			group_style_type = STYLE_HOST_DETAIL;
 			show_host_detail();
-
-			/* only show service problems of Hosts which are
-			   _NOT_ DOWN or UNREACHABLE */
-
-			/* FIXME
-				mark that this apllies only for "All Unhandled Problems"
-			*/
-			if (host_status_types == (HOST_DOWN + HOST_UNREACHABLE))
-				host_status_types = HOST_PENDING | HOST_UP;
 
 			if (content_type == HTML_CONTENT) {
 				printf("<form name='tableformservice' id='tableformservice' action='%s' method='POST' style='margin:0px'>\n", CMD_CGI);
@@ -703,7 +876,6 @@ int main(void) {
 			} else if (content_type == JSON_CONTENT)
 				printf(",\n");
 
-			group_style_type = STYLE_SERVICE_DETAIL;
 			show_service_detail();
 		} else
 			show_service_detail();
@@ -767,6 +939,7 @@ int process_cgivars(void) {
 				break;
 			}
 
+			group_style_type = STYLE_HOST_SERVICE_DETAIL;
 			search_string = strdup(variables[x]);
 			strip_html_brackets(search_string);
 		}
@@ -981,73 +1154,14 @@ int process_cgivars(void) {
 
 /* display table with service status totals... */
 void show_service_status_totals(void) {
-	int total_ok = 0;
-	int total_warning = 0;
-	int total_unknown = 0;
-	int total_critical = 0;
-	int total_pending = 0;
 	int total_services = 0;
 	int total_problems = 0;
-	servicestatus *temp_servicestatus;
-	service *temp_service;
-	host *temp_host;
-	hoststatus *temp_hoststatus;
-	int count_service;
 
-	if (search_string != NULL)
+	if (display_status_header == FALSE)
 		return;
 
-	/* check the status of all services... */
-	for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
-
-		/* find the host and service... */
-		temp_host = find_host(temp_servicestatus->host_name);
-
-		/* only get count services from hosts witch fit into filter specified */
-		temp_hoststatus = find_hoststatus(temp_host->name);
-		if (!(host_status_types & temp_hoststatus->status))
-			continue;
-
-		temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
-
-		/* make sure user has rights to see this service... */
-		if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
-			continue;
-
-		count_service = FALSE;
-
-		if (display_type == DISPLAY_HOSTS && (show_all_hosts == TRUE || !strcmp(host_name, temp_servicestatus->host_name)))
-			count_service = TRUE;
-		else if (display_type == DISPLAY_SERVICEGROUPS && (show_all_servicegroups == TRUE || (is_service_member_of_servicegroup(find_servicegroup(servicegroup_name), temp_service) == TRUE)))
-			count_service = TRUE;
-		else if (display_type == DISPLAY_HOSTGROUPS && (show_all_hostgroups == TRUE || (is_host_member_of_hostgroup(find_hostgroup(hostgroup_name), temp_host) == TRUE)))
-			count_service = TRUE;
-
-		if (count_service) {
-
-			if (temp_servicestatus->status == SERVICE_CRITICAL) {
-				total_critical++;
-				if (temp_servicestatus->problem_has_been_acknowledged == FALSE && (temp_servicestatus->checks_enabled == TRUE || temp_servicestatus->accept_passive_service_checks == TRUE) && temp_servicestatus->notifications_enabled == TRUE && temp_servicestatus->scheduled_downtime_depth == 0)
-					problem_services_critical++;
-			} else if (temp_servicestatus->status == SERVICE_WARNING) {
-				total_warning++;
-				if (temp_servicestatus->problem_has_been_acknowledged == FALSE && (temp_servicestatus->checks_enabled == TRUE || temp_servicestatus->accept_passive_service_checks == TRUE) && temp_servicestatus->notifications_enabled == TRUE && temp_servicestatus->scheduled_downtime_depth == 0)
-					problem_services_warning++;
-			} else if (temp_servicestatus->status == SERVICE_UNKNOWN) {
-				total_unknown++;
-				if (temp_servicestatus->problem_has_been_acknowledged == FALSE && (temp_servicestatus->checks_enabled == TRUE || temp_servicestatus->accept_passive_service_checks == TRUE) && temp_servicestatus->notifications_enabled == TRUE && temp_servicestatus->scheduled_downtime_depth == 0)
-					problem_services_unknown++;
-			} else if (temp_servicestatus->status == SERVICE_OK)
-				total_ok++;
-			else if (temp_servicestatus->status == SERVICE_PENDING)
-				total_pending++;
-			else
-				total_ok++;
-		}
-	}
-
-	total_services = total_ok + total_unknown + total_warning + total_critical + total_pending;
-	total_problems = total_unknown + total_warning + total_critical;
+	total_services = num_services_ok + num_services_unknown + num_services_warning + num_services_critical + num_services_pending;
+	total_problems = num_services_unknown + num_services_warning + num_services_critical;
 
 
 	printf("<DIV CLASS='serviceTotals'>Service Status Totals</DIV>\n");
@@ -1124,19 +1238,19 @@ void show_service_status_totals(void) {
 
 
 	/* total services ok */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (total_ok > 0) ? "OK" : "", total_ok);
+	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_ok > 0) ? "OK" : "", num_services_ok);
 
 	/* total services in warning state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (total_warning > 0) ? "WARNING" : "", total_warning);
+	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_warning > 0) ? "WARNING" : "", num_services_warning);
 
 	/* total services in unknown state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (total_unknown > 0) ? "UNKNOWN" : "", total_unknown);
+	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_unknown > 0) ? "UNKNOWN" : "", num_services_unknown);
 
 	/* total services in critical state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (total_critical > 0) ? "CRITICAL" : "", total_critical);
+	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_critical > 0) ? "CRITICAL" : "", num_services_critical);
 
 	/* total services in pending state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (total_pending > 0) ? "PENDING" : "", total_pending);
+	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_pending > 0) ? "PENDING" : "", num_services_pending);
 
 
 	printf("</TR>\n");
@@ -1191,84 +1305,14 @@ void show_service_status_totals(void) {
 
 /* display a table with host status totals... */
 void show_host_status_totals(void) {
-	int total_up = 0;
-	int total_down = 0;
-	int total_unreachable = 0;
-	int total_pending = 0;
 	int total_hosts = 0;
 	int total_problems = 0;
-	hoststatus *temp_hoststatus;
-	host *temp_host;
-	servicestatus *temp_servicestatus;
-	int count_host;
-	int host_has_service;
 
-	if (search_string != NULL)
+	if (display_status_header == FALSE)
 		return;
 
-	/* check the status of all hosts... */
-	for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
-
-		/* find the host... */
-		temp_host = find_host(temp_hoststatus->host_name);
-
-		/* Skip hosts with no serivces attached in service detail view */
-		if (group_style_type == STYLE_SERVICE_DETAIL) {
-			host_has_service = FALSE;
-			for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
-				if (!strcmp(temp_host->name, temp_servicestatus->host_name)) {
-					host_has_service = TRUE;
-					break;
-				}
-			}
-			if (host_has_service == FALSE)
-				continue;
-		}
-
-		/* make sure user has rights to view this host */
-		if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-			continue;
-
-		count_host = 0;
-
-		if (display_type == DISPLAY_HOSTS && (show_all_hosts == TRUE || !strcmp(host_name, temp_hoststatus->host_name)))
-			count_host = 1;
-
-		else if (display_type == DISPLAY_SERVICEGROUPS) {
-
-			if (show_all_servicegroups == TRUE) {
-				count_host = 1;
-			} else if (is_host_member_of_servicegroup(find_servicegroup(servicegroup_name), temp_host) == TRUE) {
-				count_host = 1;
-			}
-		} else if (display_type == DISPLAY_HOSTGROUPS && (show_all_hostgroups == TRUE || (is_host_member_of_hostgroup(find_hostgroup(hostgroup_name), temp_host) == TRUE)))
-			count_host = 1;
-
-		if (count_host) {
-
-			if (temp_hoststatus->status == HOST_UP)
-				total_up++;
-
-			else if (temp_hoststatus->status == HOST_DOWN) {
-				total_down++;
-
-				if (temp_hoststatus->problem_has_been_acknowledged == FALSE && temp_hoststatus->notifications_enabled == TRUE && temp_hoststatus->checks_enabled == TRUE && temp_hoststatus->scheduled_downtime_depth == 0)
-					problem_hosts_down++;
-			} else if (temp_hoststatus->status == HOST_UNREACHABLE) {
-				total_unreachable++;
-				if (temp_hoststatus->problem_has_been_acknowledged == FALSE && temp_hoststatus->notifications_enabled == TRUE && temp_hoststatus->checks_enabled == TRUE && temp_hoststatus->scheduled_downtime_depth == 0)
-					problem_hosts_unreachable++;
-			}
-
-			else if (temp_hoststatus->status == HOST_PENDING)
-				total_pending++;
-			else
-				total_up++;
-		}
-	}
-
-	total_hosts = total_up + total_down + total_unreachable + total_pending;
-	total_problems = total_down + total_unreachable;
+	total_hosts = num_hosts_up + num_hosts_down + num_hosts_unreachable + num_hosts_pending;
+	total_problems = num_hosts_down + num_hosts_unreachable;
 
 	printf("<DIV CLASS='hostTotals'>Host Status Totals</DIV>\n");
 
@@ -1357,16 +1401,16 @@ void show_host_status_totals(void) {
 	printf("<TR>\n");
 
 	/* total hosts up */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (total_up > 0) ? "UP" : "", total_up);
+	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_up > 0) ? "UP" : "", num_hosts_up);
 
 	/* total hosts down */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (total_down > 0) ? "DOWN" : "", total_down);
+	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_down > 0) ? "DOWN" : "", num_hosts_down);
 
 	/* total hosts unreachable */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (total_unreachable > 0) ? "UNREACHABLE" : "", total_unreachable);
+	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_unreachable > 0) ? "UNREACHABLE" : "", num_hosts_unreachable);
 
 	/* total hosts pending */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (total_pending > 0) ? "PENDING" : "", total_pending);
+	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_pending > 0) ? "PENDING" : "", num_hosts_pending);
 
 	printf("</TR>\n");
 	printf("</TABLE>\n");
@@ -1453,9 +1497,6 @@ void show_service_detail(void) {
 	int total_entries = 0;
 	statusdata *temp_status = NULL;
 	int json_start = TRUE;
-
-	/* grap requested data */
-	grab_statusdata();
 
 	/* sort status data if necessary */
 	if (sort_type != SORT_NONE) {
@@ -1635,6 +1676,9 @@ void show_service_detail(void) {
 			break;
 
 		first_entry = FALSE;
+
+		if (temp_status->type != SERVICE_STATUS)
+			continue;
 
 		/* find the host */
 		temp_host = find_host(temp_status->host_name);
@@ -2018,9 +2062,6 @@ void show_host_detail(void) {
 	int json_start = TRUE;
 
 
-	/* grap requested data */
-	grab_statusdata();
-
 	/* sort status data if necessary */
 	if (sort_type != SORT_NONE) {
 		result = sort_status_data(HOST_STATUS, sort_type, sort_option);
@@ -2193,6 +2234,9 @@ void show_host_detail(void) {
 				break;
 
 			first_entry = FALSE;
+
+			if (temp_statusdata->type != HOST_STATUS)
+				continue;
 
 			temp_host = find_host(temp_statusdata->host_name);
 
@@ -5197,130 +5241,6 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 /******************************************************************/
 /**********  SERVICE SORTING & FILTERING FUNCTIONS  ***************/
 /******************************************************************/
-
-void grab_statusdata(void) {
-	hoststatus *temp_hoststatus = NULL;
-	servicestatus *temp_servicestatus = NULL;
-	host *temp_host = NULL;
-	service *temp_service = NULL;
-	hostgroup *temp_hostgroup = NULL;
-	servicegroup *temp_servicegroup = NULL;
-
-	/* get requested groups */
-	temp_hostgroup = find_hostgroup(hostgroup_name);
-	temp_servicegroup = find_servicegroup(servicegroup_name);
-
-	if (group_style_type == STYLE_HOST_DETAIL) {
-
-		for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
-
-			/* if user is doing a search and host didn't match try next one */
-			if (search_string != NULL && temp_hoststatus->search_matched == FALSE && temp_hostgroup == NULL)
-				continue;
-
-			/* find the host  */
-			temp_host = find_host(temp_hoststatus->host_name);
-
-			/* if we couldn't find the host, go to the next status entry */
-			if (temp_host == NULL)
-				continue;
-
-			/* make sure user has rights to see this... */
-			if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-				continue;
-
-			user_is_authorized_for_statusdata = TRUE;
-
-			/* see if we should display services for hosts with this type of status */
-			if (!(host_status_types & temp_hoststatus->status))
-				continue;
-
-			/* check host properties filter */
-			if (passes_host_properties_filter(temp_hoststatus) == FALSE)
-				continue;
-
-
-			/* see if this host is a member of the hostgroup */
-			if (show_all_hostgroups == FALSE) {
-				if (temp_hostgroup == NULL)
-					continue;
-				if (is_host_member_of_hostgroup(temp_hostgroup, temp_host) == FALSE)
-					continue;
-			}
-
-			add_status_data(HOST_STATUS, temp_hoststatus, NULL);
-		}
-	}
-	if (group_style_type != STYLE_HOST_DETAIL) {
-
-		for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
-
-			/* if user is doing a search and service didn't match try next one */
-			if (search_string != NULL && temp_servicestatus->search_matched == FALSE && \
-			        display_type != DISPLAY_HOSTGROUPS && display_type != DISPLAY_SERVICEGROUPS)
-				continue;
-
-			/* find the service  */
-			temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
-
-			/* if we couldn't find the service, go to the next service */
-			if (temp_service == NULL)
-				continue;
-
-			/* find the host */
-			temp_host = find_host(temp_service->host_name);
-
-			/* make sure user has rights to see this... */
-			if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
-				continue;
-
-			user_is_authorized_for_statusdata = TRUE;
-
-			/* get the host status information */
-			temp_hoststatus = find_hoststatus(temp_service->host_name);
-
-			/* see if we should display services for hosts with tis type of status */
-			if (!(host_status_types & temp_hoststatus->status))
-				continue;
-
-			/* see if we should display this type of service status */
-			if (!(service_status_types & temp_servicestatus->status))
-				continue;
-
-			/* check host properties filter */
-			if (passes_host_properties_filter(temp_hoststatus) == FALSE)
-				continue;
-
-			/* check service properties filter */
-			if (passes_service_properties_filter(temp_servicestatus) == FALSE)
-				continue;
-
-			/* see if only one host should be shown */
-			if (display_type == DISPLAY_HOSTS) {
-				if (show_all_hosts == FALSE) {
-					if (strcmp(host_name, temp_servicestatus->host_name) && strcmp(host_name, temp_host->display_name) && search_string == NULL)
-						continue;
-				}
-			}
-
-			/* see if we should display a hostgroup */
-			else if (display_type == DISPLAY_HOSTGROUPS && show_all_hostgroups == FALSE) {
-				if (temp_hostgroup == NULL || is_host_member_of_hostgroup(temp_hostgroup, temp_host) == FALSE)
-					continue;
-			}
-
-			/* see if we should display a servicegroup */
-			else if (display_type == DISPLAY_SERVICEGROUPS && show_all_servicegroups == FALSE) {
-				if (temp_servicegroup == NULL || is_service_member_of_servicegroup(temp_servicegroup, temp_service) == FALSE)
-					continue;
-			}
-
-			add_status_data(SERVICE_STATUS, NULL, temp_servicestatus);
-		}
-	}
-
-	return;
-}
 
 int add_status_data(int status_type, hoststatus *host_status, servicestatus *service_status) {
 	statusdata *new_statusdata = NULL;
