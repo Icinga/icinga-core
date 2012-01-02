@@ -10,9 +10,13 @@ ENHANCEMENTS
 
 * classic ui: Added option for max log entries displayed in showlog.cgi #2145
 * classic ui: Added config option for status totals in status.cgi #2018
+* classic ui: Added multiple hosts/services to status.cgi GET #1981
+* classic ui: Added nostatusheader in status.cgi as config option #2018
 
 FIXES
 * classic ui: Fixed status totals are wrong when searching #1524
+* classic ui: Fixed wrong URLs for status.cgi overview #2173
+* classic ui: Fixed Host staus sorting in status.cgi not working #2220
 
  
 1.6.0 - 30/11/2011
