@@ -17,6 +17,7 @@ FIXES
 * classic ui: Fixed status totals are wrong when searching #1524
 * classic ui: Fixed wrong URLs for status.cgi overview #2173
 * classic ui: Fixed Host staus sorting in status.cgi not working #2220
+* classic ui: Fixed notifications.cgi - memory access error #2234
 
  
 1.6.0 - 30/11/2011

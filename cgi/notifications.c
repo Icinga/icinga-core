@@ -434,6 +434,8 @@ void display_notifications(void) {
 	char host_name[MAX_INPUT_BUFFER];
 	char method_name[MAX_INPUT_BUFFER];
 	char error_text[MAX_INPUT_BUFFER];
+	char displayed_host_name[MAX_INPUT_BUFFER];
+	char displayed_service_desc[MAX_INPUT_BUFFER];
 	int show_entry, status;
 	int total_notifications = 0;
 	int notification_detail_type = NOTIFICATION_SERVICE_CRITICAL;
@@ -641,15 +643,46 @@ void display_notifications(void) {
 			}
 
 			/* make sure user has authorization to view this notification */
-			if (temp_entry->type == LOGENTRY_HOST_NOTIFICATION) {
-				temp_host = find_host(host_name);
-				if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
-					show_entry = FALSE;
-			} else {
-				temp_host = find_host(host_name);
+			temp_host = find_host(host_name);
+			if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION)
 				temp_service = find_service(host_name, service_name);
-				if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
-					show_entry = FALSE;
+
+			if (temp_host != NULL) {
+				snprintf(displayed_host_name, sizeof(displayed_host_name), "%s", (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+				displayed_host_name[sizeof(displayed_host_name)-1] = '\x0';
+
+				if (temp_entry->type == LOGENTRY_HOST_NOTIFICATION) {
+					if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+						show_entry = FALSE;
+				} else {
+					if (temp_service != NULL) {
+						snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
+						displayed_service_desc[sizeof(displayed_service_desc)-1] = '\x0';
+
+						if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
+							show_entry = FALSE;
+					} else {
+						if (is_authorized_for_all_services(&current_authdata) == FALSE)
+							show_entry = FALSE;
+
+						snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", service_name);
+						displayed_service_desc[sizeof(displayed_service_desc)-1] = '\x0';
+					}
+				}
+			} else {
+				if (temp_entry->type == LOGENTRY_HOST_NOTIFICATION) {
+					if (is_authorized_for_all_hosts(&current_authdata) == FALSE)
+						show_entry = FALSE;
+				} else {
+					if (is_authorized_for_all_services(&current_authdata) == FALSE)
+						show_entry = FALSE;
+
+					snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", service_name);
+					displayed_service_desc[sizeof(displayed_service_desc)-1] = '\x0';
+				}
+
+				snprintf(displayed_host_name, sizeof(displayed_host_name), "%s", host_name);
+				displayed_host_name[sizeof(displayed_host_name)-1] = '\x0';
 			}
 
 			if (show_entry == TRUE) {
@@ -664,9 +697,9 @@ void display_notifications(void) {
 				if (content_type == JSON_CONTENT) {
 					if (json_start == FALSE)
 						printf(",\n");
-					printf("{\"host\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+					printf("{\"host\": \"%s\", ", json_encode(displayed_host_name));
 					if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION)
-						printf("\"service\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+						printf("\"service\": \"%s\", ", json_encode(displayed_service_desc));
 					else
 						printf("\"service\": null, ");
 					printf("\"type\": \"%s\", ", alert_level);
@@ -675,9 +708,9 @@ void display_notifications(void) {
 					printf("\"notification_command\": \"%s\", ", json_encode(method_name));
 					printf("\"information\": \"%s\"}", json_encode(escape_newlines(temp_buffer)));
 				} else if (content_type == CSV_CONTENT) {
-					printf("%s%s%s%s", csv_data_enclosure, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, csv_data_enclosure, csv_delimiter);
+					printf("%s%s%s%s", csv_data_enclosure, displayed_host_name, csv_data_enclosure, csv_delimiter);
 					if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION)
-						printf("%s%s%s%s", csv_data_enclosure, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description, csv_data_enclosure, csv_delimiter);
+						printf("%s%s%s%s", csv_data_enclosure, displayed_service_desc, csv_data_enclosure, csv_delimiter);
 					else
 						printf("%sN/A%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 					printf("%s%s%s%s", csv_data_enclosure, alert_level, csv_data_enclosure, csv_delimiter);
@@ -687,10 +720,17 @@ void display_notifications(void) {
 					printf("%s%s%s\n", csv_data_enclosure, escape_newlines(temp_buffer), csv_data_enclosure);
 				} else {
 					printf("<tr CLASS='notifications%s'>\n", (odd) ? "Even" : "Odd");
-					printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s'>%s</a></td>\n", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+					if (temp_host != NULL)
+						printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s'>%s</a></td>\n", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name), displayed_host_name);
+					else
+						printf("<td CLASS='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", displayed_host_name);
 					if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION) {
-						printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
-						printf("&service=%s'>%s</a></td>\n", url_encode(service_name), (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
+						if (temp_service != NULL) {
+							printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
+							printf("&service=%s'>%s</a></td>\n", url_encode(service_name), displayed_service_desc);
+						} else
+							printf("<td CLASS='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", displayed_service_desc);
+
 					} else
 						printf("<td CLASS='notifications%s'>N/A</td>\n", (odd) ? "Even" : "Odd");
 					printf("<td CLASS='notifications%s'>%s</td>\n", alert_level_class, alert_level);
