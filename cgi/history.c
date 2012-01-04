@@ -174,7 +174,7 @@ int main(void) {
 		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 		printf("<TR><TD CLASS='linkBox'>\n");
 		if (display_type == DISPLAY_HOSTS) {
-			printf("<A HREF='%s?host=%s&nostatusheader'>View Status Detail For %s</A><BR />\n", STATUS_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
+			printf("<A HREF='%s?host=%s'>View Status Detail For %s</A><BR />\n", STATUS_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
 			printf("<A HREF='%s?host=%s'>View Notifications For %s</A><BR />\n", NOTIFICATIONS_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
 #ifdef USE_TRENDS
 			if (show_all_hosts == FALSE)

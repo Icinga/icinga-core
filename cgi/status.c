@@ -340,10 +340,6 @@ int main(void) {
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
-	/* FIXME:
-			* correct all links to status.cgi
-			  * hostgroup=all -> delete if all hosts are meant
-	*/
 
 	/* determine display of hosts */
 	if (req_hosts[0].entry != NULL) {

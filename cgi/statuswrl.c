@@ -957,7 +957,7 @@ void draw_host(host *temp_host) {
 
 	printf("]\n");
 	printf("description \"View status details for host '%s' (%s)\"\n", (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, temp_host->alias);
-	printf("url \"%s?host=%s&nostatusheader\"\n", STATUS_CGI, temp_host->name);
+	printf("url \"%s?host=%s\"\n", STATUS_CGI, temp_host->name);
 	printf("}\n");
 
 
