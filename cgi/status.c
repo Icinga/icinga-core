@@ -40,8 +40,6 @@ extern time_t	       program_start;
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
-extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
 extern char url_media_path[MAX_FILENAME_LENGTH];
 
@@ -62,6 +60,7 @@ extern int enable_splunk_integration;
 extern int status_show_long_plugin_output;
 extern int suppress_maintenance_downtime;
 extern int highlight_table_rows;
+extern int tab_friendly_titles;
 
 extern int refresh;
 extern int embedded;
@@ -203,13 +202,6 @@ char *url_hosts_part = NULL;
 char *url_hostgroups_part = NULL;
 char *url_servicegroups_part = NULL;
 
-/* >> now only needed for tab friendly view in document_header() */
-char *host_name = NULL;
-char *service_desc = NULL;
-char *hostgroup_name = NULL;
-char *servicegroup_name = NULL;
-/* << */
-
 char *search_string = NULL;
 
 int show_all_hosts = TRUE;
@@ -264,6 +256,7 @@ int main(void) {
 	char *sound = NULL;
 	char *search_regex = NULL;
 	char *group_url = NULL;
+	char *cgi_title = NULL;
 	char host_service_name[MAX_INPUT_BUFFER];
 	char temp_buffer[MAX_INPUT_BUFFER];
 	host *temp_host = NULL;
@@ -294,7 +287,7 @@ int main(void) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -303,7 +296,7 @@ int main(void) {
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -312,7 +305,7 @@ int main(void) {
 	/* read all object configuration data */
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -321,7 +314,7 @@ int main(void) {
 	/* read all status data */
 	result = read_all_status_data(get_cgi_config_location(), READ_ALL_STATUS_DATA);
 	if (result == ERROR && daemon_check == TRUE) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_STATUS_DATA);
 		document_footer(CGI_ID);
 		free_memory();
@@ -335,8 +328,6 @@ int main(void) {
 	/* initialize macros */
 	init_macros();
 
-	document_header(CGI_ID, TRUE);
-
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
@@ -348,9 +339,16 @@ int main(void) {
 			if (!strcmp(req_hosts[i].entry, "all")) {
 				show_all_hosts = TRUE;
 				my_free(url_hosts_part);
+				my_free(cgi_title);
 				dummy = asprintf(&url_hosts_part, "host=all");
 				break;
 			} else {
+				if (i != 0) {
+					strncpy(temp_buffer, cgi_title, sizeof(temp_buffer));
+					my_free(cgi_title);
+				}
+				dummy = asprintf(&cgi_title, "%s%s[%s]", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_hosts[i].entry, FALSE));
+
 				if (i == 0)
 					dummy = asprintf(&url_hosts_part, "host=%s", url_encode(req_hosts[i].entry));
 				else {
@@ -373,9 +371,16 @@ int main(void) {
 			if (!strcmp(req_hostgroups[i].entry, "all")) {
 				show_all_hostgroups = TRUE;
 				my_free(url_hostgroups_part);
+				my_free(cgi_title);
 				dummy = asprintf(&url_hostgroups_part, "hostgroup=all");
 				break;
 			} else {
+				if (i != 0) {
+					strncpy(temp_buffer, cgi_title, sizeof(temp_buffer));
+					my_free(cgi_title);
+				}
+				dummy = asprintf(&cgi_title, "%s%s{%s}", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_hostgroups[i].entry, FALSE));
+
 				if (i == 0)
 					dummy = asprintf(&url_hostgroups_part, "hostgroup=%s", url_encode(req_hostgroups[i].entry));
 				else {
@@ -398,9 +403,16 @@ int main(void) {
 			if (!strcmp(req_servicegroups[i].entry, "all")) {
 				show_all_servicegroups = TRUE;
 				my_free(url_servicegroups_part);
+				my_free(cgi_title);
 				dummy = asprintf(&url_servicegroups_part, "servicegroup=all");
 				break;
 			} else {
+				if (i != 0) {
+					strncpy(temp_buffer, cgi_title, sizeof(temp_buffer));
+					my_free(cgi_title);
+				}
+				dummy = asprintf(&cgi_title, "%s%s(%s)", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_servicegroups[i].entry, FALSE));
+
 				if (i == 0)
 					dummy = asprintf(&url_servicegroups_part, "servicegroup=%s", url_encode(req_servicegroups[i].entry));
 				else {
@@ -416,6 +428,9 @@ int main(void) {
 		dummy = asprintf(&url_servicegroups_part, "servicegroup=all");
 	}
 
+	document_header(CGI_ID, TRUE, (tab_friendly_titles && cgi_title != NULL) ? cgi_title : "Current Network Status");
+
+	my_free(cgi_title);
 
 	/* keeps backwards compatibility with old search method */
 	if (navbar_search == TRUE && search_string == NULL && req_hosts[0].entry != NULL) {

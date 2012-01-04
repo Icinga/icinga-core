@@ -39,10 +39,7 @@
 /** @name External vars
     @{ **/
 extern char main_config_file[MAX_FILENAME_LENGTH];
-extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
-extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern char *csv_delimiter;
 extern char *csv_data_enclosure;
@@ -57,26 +54,10 @@ extern int default_num_displayed_log_entries;
 extern int embedded;
 extern int display_header;
 extern int daemon_check;
-extern int date_format;
 extern int content_type;
 extern int refresh;
 
 extern logentry *entry_list;
-/** @} */
-
-/** @name Vars which are imported for cgiutils
- *  @warning these wars should be all extern, @n
- *	then they could get deleted, because they aren't used here.
- *	@n cgiutils.c , needs them
-    @{ **/
-int display_type = DISPLAY_HOSTS;
-int show_all_hosts = TRUE;
-int show_all_hostgroups = TRUE;
-int show_all_servicegroups = TRUE;
-char *host_name = NULL;
-char *hostgroup_name = NULL;
-char *servicegroup_name = NULL;
-char *service_desc = NULL;
 /** @} */
 
 /** @name Internal vars
@@ -154,7 +135,7 @@ int main(void) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -163,7 +144,7 @@ int main(void) {
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -172,7 +153,7 @@ int main(void) {
 	/* read all object configuration data */
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -191,7 +172,7 @@ int main(void) {
 	if (num_displayed == -1)
 		num_displayed = default_num_displayed_log_entries;
 
-	document_header(CGI_ID, TRUE);
+	document_header(CGI_ID, TRUE, "Log File");
 
 	/* calculate timestamps for reading logs */
 	convert_timeperiod_to_times(timeperiod_type, &ts_start, &ts_end);

@@ -187,22 +187,6 @@ int refresh = TRUE;
 int daemon_check = TRUE;
 int tac_header = FALSE;
 
-extern char alert_message;
-extern char *host_name;
-extern char *host_filter;
-extern char *hostgroup_name;
-extern char *service_desc;
-extern char *servicegroup_name;
-extern char *service_filter;
-extern int host_alert;
-extern int show_all_hosts;
-extern int show_all_hostgroups;
-extern int show_all_servicegroups;
-extern int display_type;
-extern int overview_columns;
-extern int max_grid_width;
-extern int group_style_type;
-extern int navbar_search;
 extern int CGI_ID;
 
 /* used for logging function */
@@ -886,11 +870,10 @@ int read_icinga_resource_file(char *resource_file) {
  *************** COMMON HEADER AND FOOTER *****************
  **********************************************************/
 
-void document_header(int cgi_id, int use_stylesheet) {
+void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	char date_time[MAX_DATETIME_LENGTH];
 	char *cgi_name = NULL;
 	char *cgi_css = NULL;
-	char *cgi_title = NULL;
 	char *cgi_body_class = NULL;
 	time_t expire_time;
 	time_t current_time;
@@ -899,85 +882,72 @@ void document_header(int cgi_id, int use_stylesheet) {
 	case STATUS_CGI_ID:
 		cgi_name        = STATUS_CGI;
 		cgi_css         = STATUS_CSS;
-		cgi_title       = "Current Network Status";
 		cgi_body_class  = "status";
 		break;
 	case AVAIL_CGI_ID:
 		cgi_name        = AVAIL_CGI;
 		cgi_css         = AVAIL_CSS;
-		cgi_title       = "Availability";
 		cgi_body_class  = "avail";
 		refresh         = FALSE;
 		break;
 	case CMD_CGI_ID:
 		cgi_name        = CMD_CGI;
 		cgi_css         = CMD_CSS;
-		cgi_title       = "External Command Interface";
 		cgi_body_class  = "cmd";
 		refresh         = FALSE;
 		break;
 	case CONFIG_CGI_ID:
 		cgi_name        = CONFIG_CGI;
 		cgi_css         = CONFIG_CSS;
-		cgi_title       = "Configuration";
 		cgi_body_class  = "config";
 		break;
 	case EXTINFO_CGI_ID:
 		cgi_name        = EXTINFO_CGI;
 		cgi_css         = EXTINFO_CSS;
-		cgi_title       = "Extended Information";
 		cgi_body_class  = "extinfo";
 		break;
 	case HISTOGRAM_CGI_ID:
 		cgi_name        = HISTOGRAM_CGI;
 		cgi_css         = HISTOGRAM_CSS;
-		cgi_title       = "Histogram";
 		cgi_body_class  = "histogram";
 		refresh         = FALSE;
 		break;
 	case HISTORY_CGI_ID:
 		cgi_name        = HISTORY_CGI;
 		cgi_css         = HISTORY_CSS;
-		cgi_title       = "History";
 		cgi_body_class  = "history";
 		refresh         = FALSE;
 		break;
 	case NOTIFICATIONS_CGI_ID:
 		cgi_name        = NOTIFICATIONS_CGI;
 		cgi_css         = NOTIFICATIONS_CSS;
-		cgi_title       = "Alert Notifications";
 		cgi_body_class  = "notifications";
 		break;
 	case OUTAGES_CGI_ID:
 		cgi_name        = OUTAGES_CGI;
 		cgi_css         = OUTAGES_CSS;
-		cgi_title       = "Network Outages";
 		cgi_body_class  = "outages";
 		break;
 	case SHOWLOG_CGI_ID:
 		cgi_name        = SHOWLOG_CGI;
 		cgi_css         = SHOWLOG_CSS;
-		cgi_title       = "Log File";
 		cgi_body_class  = "showlog";
 		refresh         = FALSE;
 		break;
 	case STATUSMAP_CGI_ID:
 		cgi_name        = STATUSMAP_CGI;
 		cgi_css         = STATUSMAP_CSS;
-		cgi_title       = "Network Map";
 		cgi_body_class  = "statusmap";
 		break;
 	case SUMMARY_CGI_ID:
 		cgi_name        = SUMMARY_CGI;
 		cgi_css         = SUMMARY_CSS;
-		cgi_title       = "Event Summary";
 		cgi_body_class  = "summary";
 		refresh         = FALSE;
 		break;
 	case TAC_CGI_ID:
 		cgi_name        = TAC_CGI;
 		cgi_css         = TAC_CSS;
-		cgi_title       = "Tactical Monitoring Overview";
 		cgi_body_class  = "tac";
 		if (tac_header == TRUE && show_tac_header == FALSE)
 			refresh = FALSE;
@@ -985,14 +955,12 @@ void document_header(int cgi_id, int use_stylesheet) {
 	case TRENDS_CGI_ID:
 		cgi_name        = TRENDS_CGI;
 		cgi_css         = TRENDS_CSS;
-		cgi_title       = "Trends";
 		cgi_body_class  = "trends";
 		refresh         = FALSE;
 		break;
 	case ERROR_CGI_ID:
 		cgi_name        = "";
 		cgi_css         = CMD_CSS;
-		cgi_title       = "ERROR";
 		cgi_body_class  = "error";
 		break;
 	}
@@ -1023,6 +991,7 @@ void document_header(int cgi_id, int use_stylesheet) {
 		if (refresh == TRUE)
 			printf("Refresh: %d\r\n", refresh_rate);
 
+		time(&current_time);
 		get_time_string(&current_time, date_time, (int)sizeof(date_time), HTTP_DATE_TIME);
 		printf("Last-Modified: %s\r\n", date_time);
 
@@ -1108,38 +1077,7 @@ void document_header(int cgi_id, int use_stylesheet) {
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n", url_images_path);
 	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
 	printf("<meta http-equiv=\"content-type\" content=\"text/html; charset=%s\">", http_charset);
-	printf("<title>\n");
-
-	if (cgi_id == STATUS_CGI_ID) {
-		if (tab_friendly_titles) {
-			if ((display_type == DISPLAY_HOSTS) && (!show_all_hosts) && host_name && (*host_name != '\0'))
-				printf("[%s]\n", html_encode(host_name, FALSE));
-			else if ((display_type == DISPLAY_HOSTGROUPS) && (!show_all_hostgroups) && hostgroup_name && (*hostgroup_name != '\0'))
-				printf("{%s}\n", html_encode(hostgroup_name, FALSE));
-			else if ((display_type == DISPLAY_SERVICEGROUPS) && (!show_all_servicegroups) && servicegroup_name && (*servicegroup_name != '\0'))
-				printf("(%s)\n", html_encode(servicegroup_name, FALSE));
-			else
-				printf("%s\n", cgi_title);
-		} else printf("%s\n", cgi_title);
-	} else if (cgi_id == EXTINFO_CGI_ID) {
-		if (tab_friendly_titles) {
-			if ((display_type == DISPLAY_HOST_INFO) && host_name && (*host_name != '\0'))
-				printf("[%s]\n", html_encode(host_name, FALSE));
-			else if ((display_type == DISPLAY_SERVICE_INFO) && service_desc && (*service_desc != '\0')) {
-				printf("%s\n", service_desc);
-				if (host_name && (*host_name != '\0'))
-					printf("@ %s\n", html_encode(host_name, FALSE));
-			} else if ((display_type == DISPLAY_HOSTGROUP_INFO) && hostgroup_name && (*hostgroup_name != '\0'))
-				printf("{%s}\n", html_encode(hostgroup_name, FALSE));
-			else if ((display_type == DISPLAY_SERVICEGROUP_INFO) && servicegroup_name && (*servicegroup_name != '\0'))
-				printf("(%s)\n", html_encode(servicegroup_name, FALSE));
-			else
-				printf("%s\n", cgi_title);
-		} else printf("%s\n", cgi_title);
-	} else {
-		printf("%s\n", cgi_title);
-	}
-	printf("</title>\n");
+	printf("<title>%s</title>\n", cgi_title);
 
 	if (use_stylesheet) {
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, COMMON_CSS);
@@ -2304,7 +2242,7 @@ void print_error(char *config_file, int error_type) {
 
 	/* if cgi.cfg is missing, we don't know which fancy style to use, take our own */
 	if (error_type != ERROR_CGI_CFG_FILE) {
-		document_header(ERROR_CGI_ID, TRUE);
+		document_header(ERROR_CGI_ID, TRUE, "Error");
 	}
 
 	/* Giving credits to stop.png image source */

@@ -33,11 +33,6 @@
 #include "../include/readlogs.h"
 
 extern char 	main_config_file[MAX_FILENAME_LENGTH];
-extern char 	url_html_path[MAX_FILENAME_LENGTH];
-extern char 	url_images_path[MAX_FILENAME_LENGTH];
-extern char 	url_docs_path[MAX_FILENAME_LENGTH];
-extern char 	url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char 	url_js_path[MAX_FILENAME_LENGTH];
 
 extern int	log_rotation_method;
 
@@ -63,20 +58,11 @@ int find_all = TRUE;
 int notification_options = NOTIFICATION_ALL;
 int reverse = FALSE;
 int display_type = DISPLAY_HOSTS;
-int show_all_hosts = TRUE;
-int show_all_hostgroups = TRUE;
-int show_all_servicegroups = TRUE;
 
 char log_file_to_use[MAX_FILENAME_LENGTH];
 char *query_contact_name = "";
 char *query_host_name = "";
 char *query_svc_description = "";
-char *host_name = NULL;
-char *host_filter = NULL;
-char *hostgroup_name = NULL;
-char *servicegroup_name = NULL;
-char *service_desc = NULL;
-char *service_filter = NULL;
 
 int CGI_ID = NOTIFICATIONS_CGI_ID;
 
@@ -97,7 +83,7 @@ int main(void) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -106,7 +92,7 @@ int main(void) {
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -115,13 +101,13 @@ int main(void) {
 	/* read all object configuration data */
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
 
-	document_header(CGI_ID, TRUE);
+	document_header(CGI_ID, TRUE, "Alert Notifications");
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);

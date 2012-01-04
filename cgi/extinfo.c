@@ -70,15 +70,11 @@ extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 
 extern int              suppress_maintenance_downtime;
 extern int		extinfo_show_child_hosts;
+extern int		tab_friendly_titles;
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
-extern char url_html_path[MAX_FILENAME_LENGTH];
-extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
-extern char url_docs_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
-extern char log_file[MAX_FILENAME_LENGTH];
 
 extern int              enable_splunk_integration;
 
@@ -151,13 +147,8 @@ char *servicegroup_name = "";
 char *service_desc = "";
 
 int display_type = DISPLAY_PROCESS_INFO;
-int show_all_hosts = TRUE;
-int show_all_hostgroups = TRUE;
-int show_all_servicegroups = TRUE;
-
 int sort_type = SORT_ASCENDING;
 int sort_option = SORT_NEXTCHECKTIME;
-
 int csv_type = CSV_DEFAULT;
 
 int dummy;	/* reduce compiler warnings */
@@ -178,6 +169,7 @@ int main(void) {
 	int found = FALSE;
 	char temp_buffer[MAX_INPUT_BUFFER] = "";
 	char *processed_string = NULL;
+	char *cgi_title = NULL;
 	host *temp_host = NULL;
 	hostsmember *temp_parenthost = NULL;
 	hostgroup *temp_hostgroup = NULL;
@@ -197,7 +189,7 @@ int main(void) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -206,7 +198,7 @@ int main(void) {
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -215,7 +207,7 @@ int main(void) {
 	/* read all object configuration data */
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -224,7 +216,7 @@ int main(void) {
 	/* read all status data */
 	result = read_all_status_data(get_cgi_config_location(), READ_ALL_STATUS_DATA);
 	if (result == ERROR && daemon_check == TRUE) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_STATUS_DATA);
 		document_footer(CGI_ID);
 		free_memory();
@@ -234,7 +226,20 @@ int main(void) {
 	/* initialize macros */
 	init_macros();
 
-	document_header(CGI_ID, TRUE);
+	if (tab_friendly_titles == TRUE) {
+		if (display_type == DISPLAY_HOST_INFO && host_name && (*host_name != '\0'))
+			dummy = asprintf(&cgi_title, "[%s]", html_encode(host_name, FALSE));
+		else if (display_type == DISPLAY_SERVICE_INFO && service_desc && *service_desc != '\0' && host_name && *host_name != '\0')
+			dummy = asprintf(&cgi_title, "%s @ %s", html_encode(service_desc, FALSE), html_encode(host_name, FALSE));
+		else if (display_type == DISPLAY_HOSTGROUP_INFO && hostgroup_name && *hostgroup_name != '\0')
+			dummy = asprintf(&cgi_title, "{%s}", html_encode(hostgroup_name, FALSE));
+		else if (display_type == DISPLAY_SERVICEGROUP_INFO && servicegroup_name && *servicegroup_name != '\0')
+			dummy = asprintf(&cgi_title, "(%s)", html_encode(servicegroup_name, FALSE));
+	}
+
+	document_header(CGI_ID, TRUE, (tab_friendly_titles == TRUE && cgi_title != NULL) ? cgi_title : "Extended Information");
+
+	my_free(cgi_title);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -402,7 +407,7 @@ int main(void) {
 
 				printf("</DIV>\n");
 
-                                /* Child Hosts */
+				/* Child Hosts */
 				if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_IMMEDIATE || extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL) {
 					found = FALSE;
 					host * child_host;
@@ -411,18 +416,18 @@ int main(void) {
 					printf("<img id='expand_image_immediate' src='%s%s' border=0 onClick=\"if (document.getElementById('immediate_child_hosts').style.display == 'none') { document.getElementById('immediate_child_hosts').style.display = ''; document.getElementById('immediate_child_hosts_gap').style.display = 'none'; document.getElementById('expand_image_immediate').src = '%s%s'; } else { document.getElementById('immediate_child_hosts').style.display = 'none'; document.getElementById('immediate_child_hosts_gap').style.display = ''; document.getElementById('expand_image_immediate').src = '%s%s'; }\">", url_images_path, EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
 					printf("</DIV><DIV CLASS='dataTitle' id='immediate_child_hosts_gap' style='display:;'>&nbsp;</DIV><DIV CLASS='dataTitle' id='immediate_child_hosts' style='display:none;'>");
 
- 	                               	for (child_host = host_list; child_host != NULL; child_host = child_host->next) {
+					for (child_host = host_list; child_host != NULL; child_host = child_host->next) {
 						if (is_host_immediate_child_of_host(temp_host, child_host) == TRUE) {
-	                                                if (found == TRUE)
-        	                                                printf(", ");
+							if (found == TRUE)
+								printf(", ");
 
-	                                                printf("<A HREF='%s?type=%d&host=%s'>%s</A>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(child_host->name), html_encode(child_host->name, TRUE));
-	                                                found = TRUE;
+							printf("<A HREF='%s?type=%d&host=%s'>%s</A>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(child_host->name), html_encode(child_host->name, TRUE));
+							found = TRUE;
 						}
-	                                }
+					}
 
-        	                        if (found == FALSE)
-                	                        printf("None");
+					if (found == FALSE)
+						printf("None");
 
 					printf("</DIV>\n");
 

@@ -48,12 +48,9 @@ static icinga_macros *mac;
 #define ICINGA_GD2_ICON       "icinga.gd2"
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
-extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char physical_images_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
-extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern host *host_list;
 extern hostgroup *hostgroup_list;
@@ -223,18 +220,9 @@ extern time_t program_start;
 layer *layer_list = NULL;
 int exclude_layers = TRUE;
 int all_layers = FALSE;
-
-int display_type = DISPLAY_HOSTS;
 int show_all_hosts = TRUE;
-int show_all_hostgroups = TRUE;
-int show_all_servicegroups = TRUE;
 
 char *host_name = "all";
-char *host_filter = NULL;
-char *hostgroup_name = NULL;
-char *servicegroup_name = NULL;
-char *service_desc = NULL;
-char *service_filter = NULL;
 
 int CGI_ID = STATUSMAP_CGI_ID;
 
@@ -249,7 +237,7 @@ int main(int argc, char **argv) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		if (content_type == HTML_CONTENT)
 			print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
@@ -265,7 +253,7 @@ int main(int argc, char **argv) {
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		if (content_type == HTML_CONTENT)
 			print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
@@ -275,7 +263,7 @@ int main(int argc, char **argv) {
 	/* read all object configuration data */
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		if (content_type == HTML_CONTENT)
 			print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
@@ -285,7 +273,7 @@ int main(int argc, char **argv) {
 	/* read all status data */
 	result = read_all_status_data(get_cgi_config_location(), READ_ALL_STATUS_DATA);
 	if (result == ERROR && daemon_check == TRUE) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		if (content_type == HTML_CONTENT)
 			print_error(NULL, ERROR_CGI_STATUS_DATA);
 		document_footer(CGI_ID);
@@ -297,7 +285,7 @@ int main(int argc, char **argv) {
 	init_macros();
 
 
-	document_header(CGI_ID, TRUE);
+	document_header(CGI_ID, TRUE, "Network Map");
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
