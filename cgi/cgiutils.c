@@ -168,7 +168,7 @@ extern hoststatus      *hoststatus_list;
 extern servicestatus   *servicestatus_list;
 
 
-char encoded_url_string[2][MAX_INPUT_BUFFER]; // 2 to be able use url_encode twice
+char encoded_url_string[4][MAX_INPUT_BUFFER]; // 2 to be able use url_encode 4 times
 char *encoded_html_string = NULL;
 
 #ifdef HAVE_TZNAME
@@ -1524,8 +1524,8 @@ char * url_encode(char *input) {
 	int len, output_len;
 	int x, y;
 	char temp_expansion[4];
-	static int i = 0;
-	char* str = encoded_url_string[i];
+	static int num_encoded_url = 0;
+	char* str = encoded_url_string[num_encoded_url];
 
 	/* initialize return string */
 	strcpy(str, "");
@@ -1534,7 +1534,7 @@ char * url_encode(char *input) {
 		return str;
 
 	len = (int)strlen(input);
-	output_len = (int)sizeof(encoded_url_string[0]);
+	output_len = (int)sizeof(encoded_url_string[num_encoded_url]);
 
 	str[0] = '\x0';
 
@@ -1574,8 +1574,13 @@ char * url_encode(char *input) {
 			}
 		}
 	}
+	
+	str[ sizeof(encoded_url_string[num_encoded_url]) - 1] = '\x0';
 
-	str[sizeof(encoded_url_string[0]) - 1] = '\x0';
+	if (num_encoded_url >= 3)
+		num_encoded_url = 0;
+	else
+		num_encoded_url++;
 
 	return str;
 }
