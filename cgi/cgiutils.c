@@ -169,7 +169,7 @@ extern servicestatus   *servicestatus_list;
 
 
 char encoded_url_string[4][MAX_INPUT_BUFFER]; // 2 to be able use url_encode 4 times
-char *encoded_html_string = NULL;
+char encoded_html_string[2][(MAX_COMMAND_BUFFER*6)]; // 2 to be able use html_encode twice
 
 #ifdef HAVE_TZNAME
 #ifdef CYGWIN
@@ -1590,36 +1590,38 @@ char * html_encode(char *input, int escape_newlines) {
 	int len, output_len;
 	int x, y;
 	char temp_expansion[10];
+	static int num_encoded_html = 0;
+	char* str = encoded_html_string[num_encoded_html];
+
+	/* initialize return string */
+	strcpy(str, "");
 
 	if (input == NULL)
-		return "";
+		return str;
 
-	/* we need up to six times the space to do the conversion */
 	len = (int)strlen(input);
-	output_len = len * 6;
-	if ((encoded_html_string = (char *)malloc(output_len + 1)) == NULL)
-		return "";
+	output_len = (int)sizeof(encoded_html_string[num_encoded_html]);
 
-	strcpy(encoded_html_string, "");
+	str[0] = '\x0';
 
-	for (x = 0, y = 0; x <= len; x++) {
+	for (x = 0, y = 0; x <= len && y < output_len - 1; x++) {
 
 		/* end of string */
 		if ((char)input[x] == (char)'\x0') {
-			encoded_html_string[y] = '\x0';
+			str[y] = '\x0';
 			break;
 		}
 
 		/* alpha-numeric characters and spaces don't get encoded */
 		else if (((char)input[x] == (char)' ') || ((char)input[x] >= '0' && (char)input[x] <= '9') || ((char)input[x] >= 'A' && (char)input[x] <= 'Z') || ((char)input[x] >= (char)'a' && (char)input[x] <= (char)'z'))
-			encoded_html_string[y++] = input[x];
+			str[y++] = input[x];
 
 		/* newlines turn to <BR> tags */
 		else if (escape_newlines == TRUE && (char)input[x] == (char)'\n') {
-			strcpy(&encoded_html_string[y], "<BR>");
+			strcpy(&str[y], "<BR>");
 			y += 4;
 		} else if (escape_newlines == TRUE && (char)input[x] == (char)'\\' && (char)input[x+1] == (char)'n') {
-			strcpy(&encoded_html_string[y], "<BR>");
+			strcpy(&str[y], "<BR>");
 			y += 4;
 			x++;
 		}
@@ -1629,11 +1631,11 @@ char * html_encode(char *input, int escape_newlines) {
 		else if ((char)input[x] == (char)'<') {
 
 			if (escape_html_tags == FALSE)
-				encoded_html_string[y++] = input[x];
+				str[y++] = input[x];
 			else {
-				encoded_html_string[y] = '\x0';
-				if ((int)strlen(encoded_html_string) < (output_len - 4)) {
-					strcat(encoded_html_string, "&lt;");
+				str[y] = '\x0';
+				if ((int)strlen(str) < (output_len - 4)) {
+					strcat(str, "&lt;");
 					y += 4;
 				}
 			}
@@ -1642,11 +1644,11 @@ char * html_encode(char *input, int escape_newlines) {
 		else if ((char)input[x] == (char)'>') {
 
 			if (escape_html_tags == FALSE)
-				encoded_html_string[y++] = input[x];
+				str[y++] = input[x];
 			else {
-				encoded_html_string[y] = '\x0';
-				if ((int)strlen(encoded_html_string) < (output_len - 4)) {
-					strcat(encoded_html_string, "&gt;");
+				str[y] = '\x0';
+				if ((int)strlen(str) < (output_len - 4)) {
+					strcat(str, "&gt;");
 					y += 4;
 				}
 			}
@@ -1654,26 +1656,28 @@ char * html_encode(char *input, int escape_newlines) {
 
 		/* high bit chars don't get encoded, so we won't be breaking utf8 characters */
 		else if ((unsigned char)input[x] >= 0x7f)
-			encoded_html_string[y++] = input[x];
+			str[y++] = input[x];
 
 		/* for simplicity, all other chars represented by their numeric value */
 		else {
 			if (escape_html_tags == FALSE)
-				encoded_html_string[y++] = input[x];
+				str[y++] = input[x];
 			else {
-				encoded_html_string[y] = '\x0';
+				str[y] = '\x0';
 				sprintf(temp_expansion, "&#%d;", (unsigned char)input[x]);
-				if ((int)strlen(encoded_html_string) < (output_len - strlen(temp_expansion))) {
-					strcat(encoded_html_string, temp_expansion);
+				if ((int)strlen(str) < (output_len - strlen(temp_expansion))) {
+					strcat(str, temp_expansion);
 					y += strlen(temp_expansion);
 				}
 			}
 		}
 	}
 
-	encoded_html_string[y++] = '\x0';
+	str[y++] = '\x0';
 
-	return encoded_html_string;
+	num_encoded_html = (num_encoded_html == 0) ? 1 : 0;
+
+	return str;
 }
 
 /* strip > and < from string */
@@ -1702,49 +1706,56 @@ char * escape_string(char *input) {
 	int len, output_len;
 	int x, y;
 	char temp_expansion[10];
+	static int num_encoded_html = 0;
+	char* str = encoded_html_string[num_encoded_html];
 
-	/* we need up to six times the space to do the conversion */
+	/* initialize return string */
+	strcpy(str, "");
+
+	if (input == NULL)
+		return str;
+
 	len = (int)strlen(input);
-	output_len = len * 6;
-	if ((encoded_html_string = (char *)malloc(output_len + 1)) == NULL)
-		return "";
+	output_len = (int)sizeof(encoded_html_string[num_encoded_html]);
 
-	strcpy(encoded_html_string, "");
+	str[0] = '\x0';
 
-	for (x = 0, y = 0; x <= len; x++) {
+	for (x = 0, y = 0; x <= len && y < output_len - 1; x++) {
 
 		/* end of string */
 		if ((char)input[x] == (char)'\x0') {
-			encoded_html_string[y] = '\x0';
+			str[y] = '\x0';
 			break;
 		}
 
 		/* alpha-numeric characters don't get encoded */
 		else if (((char)input[x] >= '0' && (char)input[x] <= '9') || ((char)input[x] >= 'A' && (char)input[x] <= 'Z') || ((char)input[x] >= (char)'a' && (char)input[x] <= (char)'z'))
-			encoded_html_string[y++] = input[x];
+			str[y++] = input[x];
 
 		/* spaces, hyphens, periods, underscores and colons don't get encoded */
 		else if (((char)input[x] == (char)' ') || ((char)input[x] == (char)'-') || ((char)input[x] == (char)'.') || ((char)input[x] == (char)'_') || ((char)input[x] == (char)':'))
-			encoded_html_string[y++] = input[x];
+			str[y++] = input[x];
 
 		/* high bit characters don't get encoded */
 		else if ((unsigned char)input[x] >= 0x7f)
-			encoded_html_string[y++] = input[x];
+			str[y++] = input[x];
 
 		/* for simplicity, all other chars represented by their numeric value */
 		else {
-			encoded_html_string[y] = '\x0';
+			str[y] = '\x0';
 			sprintf(temp_expansion, "&#%d;", (unsigned char)input[x]);
-			if ((int)strlen(encoded_html_string) < (output_len - strlen(temp_expansion))) {
-				strcat(encoded_html_string, temp_expansion);
+			if ((int)strlen(str) < (output_len - strlen(temp_expansion))) {
+				strcat(str, temp_expansion);
 				y += strlen(temp_expansion);
 			}
 		}
 	}
 
-	encoded_html_string[y++] = '\x0';
+	str[y++] = '\x0';
 
-	return encoded_html_string;
+	num_encoded_html = (num_encoded_html == 0) ? 1 : 0;
+
+	return str;
 }
 
 
