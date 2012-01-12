@@ -5,10 +5,11 @@ Icinga 1.6.x Change Log
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
 
-1.7.0 - 01/03/2012
+1.6.2 - ??/??/2012
 
 FIXES
 * classic ui: fixed invalid json output for tac.cgi #2160
+* classic ui: Fixed Invalid json data if field value is multiline #2263
 
 
 1.6.1 - 02/12/2011

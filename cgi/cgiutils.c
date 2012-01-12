@@ -2983,9 +2983,16 @@ char *json_encode(char *input) {
 
 	for (i = 0, j = 0; i < len; i++) {
 
+		/* escape quotes */
 		if ((char)input[i] == (char)'"') {
 			encoded_string[j++] = '\\';
 			encoded_string[j++] = input[i];
+
+		/* escape newlines */
+		} else if ((char)input[i] == (char)'\n') {
+			encoded_string[j++] = '\\';
+			encoded_string[j++] = 'n';
+
 		} else
 			encoded_string[j++] = input[i];
 	}
