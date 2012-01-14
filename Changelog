@@ -18,7 +18,8 @@ FIXES
 * classic ui: Fixed wrong URLs for status.cgi overview #2173
 * classic ui: Fixed Host staus sorting in status.cgi not working #2220
 * classic ui: Fixed notifications.cgi - memory access error #2234
-* classic ui: Done clean up document_header() and unused vars in cgi's #2252 
+* classic ui: Done clean up document_header() and unused vars in cgi's #2252
+* classic ui: Fixed status.cgi: host param not honoured with servicefilter #2262
 
  
 1.6.0 - 30/11/2011

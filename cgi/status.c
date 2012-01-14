@@ -204,6 +204,7 @@ char *url_hostgroups_part = NULL;
 char *url_servicegroups_part = NULL;
 
 char *search_string = NULL;
+char *service_filter = NULL;
 
 int show_all_hosts = TRUE;
 int show_all_hostgroups = TRUE;
@@ -442,6 +443,10 @@ int main(void) {
 		search_string = strdup(req_hosts[0].entry);
 	}
 
+	/* allow service_filter only for status lists */
+	if (group_style_type == STYLE_SUMMARY || group_style_type == STYLE_GRID || group_style_type == STYLE_OVERVIEW)
+		my_free(service_filter);
+
 	/* see if user tried searching something */
 	if (search_string != NULL) {
 
@@ -563,6 +568,9 @@ int main(void) {
 		/* if user is doing a search and service didn't match try next one */
 		if (search_string != NULL && temp_servicestatus->search_matched == FALSE && \
 		        show_all_hostgroups == TRUE && show_all_servicegroups == TRUE)
+			continue;
+
+		if (service_filter != NULL && strcmp(service_filter, temp_servicestatus->description))
 			continue;
 
 		/* find the service  */
@@ -1099,6 +1107,7 @@ int main(void) {
 	my_free(url_hostgroups_part);
 	my_free(url_servicegroups_part);
 	my_free(search_string);
+	my_free(service_filter);
 
 	return OK;
 }
@@ -1120,7 +1129,7 @@ int process_cgivars(void) {
 		}
 
 		/* we found the search_string argument */
-		else if (!strcmp(variables[x], "search_string") || !strcmp(variables[x], "servicefilter")) {
+		else if (!strcmp(variables[x], "search_string")) {
 			x++;
 			if (variables[x] == NULL) {
 				error = TRUE;
@@ -1129,6 +1138,17 @@ int process_cgivars(void) {
 
 			group_style_type = STYLE_HOST_SERVICE_DETAIL;
 			search_string = strdup(variables[x]);
+		}
+
+		/* we found the servicefilter argument */
+		else if (!strcmp(variables[x], "servicefilter")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			service_filter = (char *)strdup(variables[x]);
 		}
 
 		/* we found the navbar search argument */
@@ -1391,11 +1411,11 @@ void show_service_status_totals(void) {
 	else if (display_all_unhandled_problems == TRUE)
 		snprintf(status_url, sizeof(status_url) - 1, "%s?hoststatustypes=%d&serviceprops=%d&style=%s", STATUS_CGI, HOST_UP | HOST_PENDING, service_problems_unhandled, style);
 	else if (display_type == DISPLAY_HOSTS)
-		snprintf(status_url, sizeof(status_url) - 1, "%s?%s&style=%s&hoststatustypes=%d", STATUS_CGI, url_hosts_part, style, host_status_types);
+		snprintf(status_url, sizeof(status_url) - 1, "%s?%s%s%s&style=%s&hoststatustypes=%d", STATUS_CGI, url_hosts_part, (service_filter != NULL) ? "&servicefilter=" : "", (service_filter != NULL) ? url_encode(service_filter) : "", style, host_status_types);
 	else if (display_type == DISPLAY_SERVICEGROUPS)
-		snprintf(status_url, sizeof(status_url) - 1, "%s?%s&style=%s&hoststatustypes=%d", STATUS_CGI, url_servicegroups_part, style, host_status_types);
+		snprintf(status_url, sizeof(status_url) - 1, "%s?%s%s%s&style=%s&hoststatustypes=%d", STATUS_CGI, url_servicegroups_part, (service_filter != NULL) ? "&servicefilter=" : "", (service_filter != NULL) ? url_encode(service_filter) : "", style, host_status_types);
 	else
-		snprintf(status_url, sizeof(status_url) - 1, "%s?%s&style=%s&hoststatustypes=%d", STATUS_CGI, url_hostgroups_part, style, host_status_types);
+		snprintf(status_url, sizeof(status_url) - 1, "%s?%s%s%s&style=%s&hoststatustypes=%d", STATUS_CGI, url_hostgroups_part, (service_filter != NULL) ? "&servicefilter=" : "", (service_filter != NULL) ? url_encode(service_filter) : "", style, host_status_types);
 
 	status_url[sizeof(status_url)-1] = '\x0';
 
@@ -1556,11 +1576,11 @@ void show_host_status_totals(void) {
 	else if (display_all_unhandled_problems == TRUE)
 		snprintf(status_url, sizeof(status_url) - 1, "%s?hoststatustypes=%d&hostprops=%d&style=%s", STATUS_CGI, all_host_problems, host_problems_unhandled, style);
 	else if (display_type == DISPLAY_HOSTS)
-		snprintf(status_url, sizeof(status_url) - 1, "%s?%s&style=%s", STATUS_CGI, url_hosts_part, style);
+		snprintf(status_url, sizeof(status_url) - 1, "%s?%s%s%s&style=%s", STATUS_CGI, url_hosts_part, (service_filter != NULL) ? "&servicefilter=" : "", (service_filter != NULL) ? url_encode(service_filter) : "", style);
 	else if (display_type == DISPLAY_SERVICEGROUPS)
-		snprintf(status_url, sizeof(status_url) - 1, "%s?%s&style=%s", STATUS_CGI, url_servicegroups_part, style);
+		snprintf(status_url, sizeof(status_url) - 1, "%s?%s%s%s&style=%s", STATUS_CGI, url_servicegroups_part, (service_filter != NULL) ? "&servicefilter=" : "", (service_filter != NULL) ? url_encode(service_filter) : "", style);
 	else
-		snprintf(status_url, sizeof(status_url) - 1, "%s?%s&style=%s", STATUS_CGI, url_hostgroups_part, style);
+		snprintf(status_url, sizeof(status_url) - 1, "%s?%s%s%s&style=%s", STATUS_CGI, url_hostgroups_part, (service_filter != NULL) ? "&servicefilter=" : "", (service_filter != NULL) ? url_encode(service_filter) : "", style);
 
 	my_free(style);
 
@@ -1810,6 +1830,11 @@ void show_service_detail(void) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
 				dummy = asprintf(&temp_url, "%s&hostprops=%lu", temp_buffer, host_properties);
+			}
+			if (service_filter != NULL) {
+				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+				my_free(temp_url);
+				dummy = asprintf(&temp_url, "%s&servicefilter=%s", temp_buffer, url_encode(service_filter));
 			}
 		}
 
@@ -2359,6 +2384,11 @@ void show_host_detail(void) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
 				dummy = asprintf(&temp_url, "%s&hostprops=%lu", temp_buffer, host_properties);
+			}
+			if (service_filter != NULL) {
+				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+				my_free(temp_url);
+				dummy = asprintf(&temp_url, "%s&servicefilter=%s", temp_buffer, url_encode(service_filter));
 			}
 		}
 
@@ -4336,7 +4366,7 @@ void show_hostgroup_summaries(void) {
 
 				/* check if there are any services to display */
 				if (service_status_types != all_service_status_types && found == FALSE) {
-					
+
 					/* check all services... */
 					for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
 
