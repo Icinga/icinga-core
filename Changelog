@@ -12,6 +12,7 @@ ENHANCEMENTS
 * classic ui: Added config option for status totals in status.cgi #2018
 * classic ui: Added multiple hosts/services to status.cgi GET #1981
 * classic ui: Added nostatusheader in status.cgi as config option #2018
+* classic ui: Added statusmap resizing with exclude/include button #2186
 
 FIXES
 * classic ui: Fixed status totals are wrong when searching #1524

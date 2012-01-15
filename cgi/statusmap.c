@@ -132,6 +132,7 @@ int max_child_host_layer_members(host *);
 int host_child_depth_separation(host *, host *);
 int max_child_host_drawing_width(host *);
 int number_of_host_services(host *);
+int has_host_childs_in_visible_layer(host *);
 
 void calculate_balanced_tree_coords(host *, int, int);
 void calculate_circular_coords(void);
@@ -200,6 +201,10 @@ double scaling_factor = 1.0;     /* scaling factor to use */
 double user_scaling_factor = 1.0; /* user-supplied scaling factor */
 int background_image_width = 0;
 int background_image_height = 0;
+int max_circular_markup_x = 0;
+int min_circular_markup_x = 0;
+int max_circular_markup_y = 0;
+int min_circular_markup_y = 0;
 
 int canvas_x = 0;                   /* upper left coords of drawing canvas */
 int canvas_y = 0;
@@ -1085,23 +1090,32 @@ void calculate_total_image_bounds(void) {
 	total_image_width = 0;
 	total_image_height = 0;
 
-	/* check all extended host information entries... */
-	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
 
-		/* only check entries that have 2-D coords specified */
-		if (temp_host->have_2d_coords == FALSE)
-			continue;
 
-		/* skip hosts we shouldn't be drawing */
-		if (temp_host->should_be_drawn == FALSE)
-			continue;
-
-		if (temp_host->x_2d > total_image_width)
-			total_image_width = temp_host->x_2d;
-		if (temp_host->y_2d > total_image_height)
-			total_image_height = temp_host->y_2d;
-
+	if (layout_method == LAYOUT_CIRCULAR_MARKUP) {
 		coordinates_were_specified = TRUE;
+		total_image_width = max_circular_markup_x - min_circular_markup_x;
+		total_image_height = max_circular_markup_y - min_circular_markup_y;
+	} else {
+		/* check all extended host information entries... */
+		for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
+
+			/* only check entries that have 2-D coords specified */
+			if (temp_host->have_2d_coords == FALSE)
+				continue;
+
+			/* skip hosts we shouldn't be drawing */
+			if (temp_host->should_be_drawn == FALSE)
+				continue;
+
+			if (temp_host->x_2d > total_image_width)
+				total_image_width = temp_host->x_2d;
+			if (temp_host->y_2d > total_image_height)
+				total_image_height = temp_host->y_2d;
+
+			coordinates_were_specified = TRUE;
+		}
+
 	}
 
 	/* add some space for icon size and overlapping text... */
@@ -1342,6 +1356,25 @@ void draw_background_extras(void) {
 	return;
 }
 
+int has_host_childs_in_visible_layer(host *hst) {
+	host *child_host;
+	int in_layer_list = FALSE;
+
+	for (child_host = host_list; child_host != NULL; child_host = child_host->next) {
+		if (child_host == hst)
+			continue;
+		if (is_host_immediate_child_of_host(hst, child_host) == TRUE) {
+			in_layer_list = is_host_in_layer_list(child_host);
+			if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE)) {
+				if (has_host_childs_in_visible_layer(child_host))
+					return TRUE;
+			} else
+				return TRUE;
+		}
+	}
+
+	return FALSE;
+}
 
 /* draws host links */
 void draw_host_links(void) {
@@ -1357,6 +1390,7 @@ void draw_host_links(void) {
 	int dotted_line = FALSE;
 	int x = 0;
 	int y = 0;
+	int in_layer_list = FALSE;
 
 	if (content_type == HTML_CONTENT)
 		return;
@@ -1376,6 +1410,13 @@ void draw_host_links(void) {
 		if (is_authorized_for_host(this_host, &current_authdata) == FALSE)
 			continue;
 
+		in_layer_list = is_host_in_layer_list(this_host);
+
+		if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE)) {
+			if (has_host_childs_in_visible_layer(this_host) == FALSE)
+				continue;
+		}
+
 		/* this is a "root" host, so draw link to Icinga process icon if using auto-layout mode */
 		if (this_host->parent_hosts == NULL && layout_method != LAYOUT_USER_SUPPLIED && draw_nagios_icon == TRUE) {
 
@@ -1394,7 +1435,12 @@ void draw_host_links(void) {
 					status_color = color_red;
 				else if (this_hoststatus->status == HOST_UNREACHABLE)
 					status_color = color_pink;
-				else
+				else if ((get_servicestatus_count(this_host->name, SERVICE_CRITICAL) > 0) || (get_servicestatus_count(this_host->name, SERVICE_WARNING) > 0)) {
+					if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE))
+						status_color = color_black;
+					else
+						status_color = color_orange;
+				} else
 					status_color = color_black;
 			} else
 				status_color = color_black;
@@ -1460,7 +1506,12 @@ void draw_host_links(void) {
 					status_color = color_red;
 				else if (parent_hoststatus->status == HOST_UNREACHABLE)
 					status_color = color_pink;
-				else
+				else if ((get_servicestatus_count(parent_host->name, SERVICE_CRITICAL) > 0) || (get_servicestatus_count(parent_host->name, SERVICE_WARNING) > 0)) {
+					if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE))
+						status_color = color_black;
+					else
+						status_color = color_orange;
+				} else
 					status_color = color_black;
 			} else
 				status_color = color_black;
@@ -1558,8 +1609,10 @@ void draw_hosts(void) {
 
 		/* is this host in the layer inclusion/exclusion list? */
 		in_layer_list = is_host_in_layer_list(temp_host);
-		if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE))
+		if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE)) {
+			/* if (has_host_childs_in_visible_layer(temp_host)==FALSE) */
 			continue;
+		}
 
 		/* get coords of host bounding box */
 		x1 = temp_host->x_2d - canvas_x;
@@ -1581,9 +1634,15 @@ void draw_hosts(void) {
 					status_color = color_red;
 				else if (temp_hoststatus->status == HOST_UNREACHABLE)
 					status_color = color_pink;
-				else if (temp_hoststatus->status == HOST_UP)
-					status_color = color_green;
-				else if (temp_hoststatus->status == HOST_PENDING)
+				else if (temp_hoststatus->status == HOST_UP) {
+					if ((get_servicestatus_count(temp_host->name, SERVICE_CRITICAL) > 0) || (get_servicestatus_count(temp_host->name, SERVICE_WARNING) > 0)) {
+						if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE))
+							status_color = color_black;
+						else
+							status_color = color_orange;
+					} else
+						status_color = color_green;
+				} else if (temp_hoststatus->status == HOST_PENDING)
 					status_color = color_grey;
 			} else
 				status_color = color_black;
@@ -1809,7 +1868,10 @@ void draw_host_text(char *name, int x, int y) {
 			status_color = color_pink;
 		} else if (temp_hoststatus->status == HOST_UP) {
 			strncpy(temp_buffer, "Up", sizeof(temp_buffer));
-			status_color = color_green;
+			if ((get_servicestatus_count(name, SERVICE_CRITICAL) > 0) || (get_servicestatus_count(name, SERVICE_WARNING) > 0))
+				status_color = color_orange;
+			else
+				status_color = color_green;
 		} else if (temp_hoststatus->status == HOST_PENDING) {
 			strncpy(temp_buffer, "Pending", sizeof(temp_buffer));
 			status_color = color_grey;
@@ -2357,20 +2419,26 @@ int max_child_host_layer_members(host *parent) {
 int max_child_host_drawing_width(host *parent) {
 	host *temp_host;
 	int child_width = 0;
-
+	int in_layer_list = FALSE;
 
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
+
+		in_layer_list = is_host_in_layer_list(temp_host);
+
+		if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE)) {
+			if (has_host_childs_in_visible_layer(temp_host) == FALSE)
+				continue;
+		}
 
 		if (is_host_immediate_child_of_host(parent, temp_host) == TRUE)
 			child_width += max_child_host_drawing_width(temp_host);
 	}
 
 	/* no children, so set width to 1 for this host */
-	if (child_width == 0)
+	if (child_width <= 0)
 		return 1;
 
-	else
-		return child_width;
+	return child_width;
 }
 
 
@@ -2443,25 +2511,26 @@ void calculate_balanced_tree_coords(host *parent, int x, int y) {
 void calculate_circular_coords(void) {
 	int min_x = 0;
 	int min_y = 0;
-	int have_min_x = FALSE;
-	int have_min_y = FALSE;
 	host *temp_host;
 
 	/* calculate all host coords, starting with first layer */
+	max_circular_markup_x = 0;
+	min_circular_markup_x = 0;
+	max_circular_markup_y = 0;
+	min_circular_markup_y = 0;
 	calculate_circular_layer_coords(NULL, 0.0, 360.0, 1, CIRCULAR_DRAWING_RADIUS);
+	min_x = min_circular_markup_x;
+	min_y = min_circular_markup_y;
 
 	/* adjust all calculated coords so none are negative in x or y axis... */
 
 	/* calculate min x, y coords */
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
-		if (have_min_x == FALSE || temp_host->x_2d < min_x) {
-			have_min_x = TRUE;
+		if (temp_host->x_2d < min_x)
 			min_x = temp_host->x_2d;
-		}
-		if (have_min_y == FALSE || temp_host->y_2d < min_y) {
-			have_min_y = TRUE;
+
+		if (temp_host->y_2d < min_y)
 			min_y = temp_host->y_2d;
-		}
 	}
 
 	/* offset all drawing coords by the min x,y coords we found */
@@ -2500,14 +2569,34 @@ void calculate_circular_layer_coords(host *parent, double start_angle, double us
 	double average_child_angle = 0.0;
 	double x_coord = 0.0;
 	double y_coord = 0.0;
+	double tmp_x_coord;
+	double tmp_y_coord;
+	double sampling = 0.0;
+	int i = 0;
 	host *temp_host;
+	int in_layer_list = FALSE;
 
 
 	/* get the total number of immediate children to this host */
 	immediate_children = number_of_immediate_child_hosts(parent);
 
+	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
+
+		if (parent == temp_host)
+			continue;
+
+		if (is_host_immediate_child_of_host(parent, temp_host) == TRUE) {
+			in_layer_list = is_host_in_layer_list(temp_host);
+
+			if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE)) {
+				if (has_host_childs_in_visible_layer(temp_host) == FALSE)
+					immediate_children--;
+			}
+		}
+	}
+
 	/* bail out if we're done */
-	if (immediate_children == 0)
+	if (immediate_children <= 0)
 		return;
 
 	/* calculate total drawing "width" of parent host */
@@ -2524,6 +2613,12 @@ void calculate_circular_layer_coords(host *parent, double start_angle, double us
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
 
 		if (is_host_immediate_child_of_host(parent, temp_host) == TRUE) {
+
+			in_layer_list = is_host_in_layer_list(temp_host);
+			if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE)) {
+				if (has_host_childs_in_visible_layer(temp_host) == FALSE)
+					continue;
+			}
 
 			/* get drawing width of child host */
 			this_drawing_width = max_child_host_drawing_width(temp_host);
@@ -2554,6 +2649,23 @@ void calculate_circular_layer_coords(host *parent, double start_angle, double us
 			temp_host->y_2d = (int)y_coord;
 			temp_host->have_2d_coords = TRUE;
 			temp_host->should_be_drawn = TRUE;
+
+			/* calculate drawing coords of "leftmost" divider using good ol' geometry... */
+			for (sampling = 0; sampling <= 1; sampling += 0.5) {
+				for (i = -1; i < 2; i += 2) {
+					tmp_x_coord = -(sin((-(current_drawing_angle + (sampling * available_angle))) * (M_PI / 180.0)) * (radius + i * (CIRCULAR_DRAWING_RADIUS / 2)));
+					tmp_y_coord = -(sin((90 + current_drawing_angle + (sampling * available_angle)) * (M_PI / 180.0)) * (radius + i * (CIRCULAR_DRAWING_RADIUS / 2)));
+
+					if (tmp_x_coord < min_circular_markup_x)
+						min_circular_markup_x = tmp_x_coord;
+					if (tmp_x_coord > max_circular_markup_x)
+						max_circular_markup_x = tmp_x_coord;
+					if (tmp_y_coord < min_circular_markup_y)
+						min_circular_markup_y = tmp_y_coord;
+					if (tmp_y_coord > max_circular_markup_y)
+						max_circular_markup_y = tmp_y_coord;
+				}
+			}
 
 			/* recurse into child host ... */
 			calculate_circular_layer_coords(temp_host, current_drawing_angle + ((available_angle - clipped_available_angle) / 2), clipped_available_angle, layer + 1, radius + CIRCULAR_DRAWING_RADIUS);
@@ -2600,12 +2712,28 @@ void draw_circular_layer_markup(host *parent, double start_angle, double useable
 	double arc_end_angle = 0.0;
 	int translated_x = 0;
 	int translated_y = 0;
+	int in_layer_list = FALSE;
 
 	/* get the total number of immediate children to this host */
 	immediate_children = number_of_immediate_child_hosts(parent);
 
+	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
+
+		if (parent == temp_host)
+			continue;
+
+		if (is_host_immediate_child_of_host(parent, temp_host) == TRUE) {
+			in_layer_list = is_host_in_layer_list(temp_host);
+			if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE)) {
+				if (has_host_childs_in_visible_layer(temp_host) == FALSE)
+					immediate_children--;
+			}
+		}
+	}
+
+
 	/* bail out if we're done */
-	if (immediate_children == 0)
+	if (immediate_children <= 0)
 		return;
 
 	/* calculate total drawing "width" of parent host */
@@ -2621,6 +2749,12 @@ void draw_circular_layer_markup(host *parent, double start_angle, double useable
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
 
 		if (is_host_immediate_child_of_host(parent, temp_host) == TRUE) {
+
+			in_layer_list = is_host_in_layer_list(temp_host);
+			if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE)) {
+				if (has_host_childs_in_visible_layer(temp_host) == FALSE)
+					continue;
+			}
 
 			/* get drawing width of child host */
 			this_drawing_width = max_child_host_drawing_width(temp_host);
@@ -2693,7 +2827,12 @@ void draw_circular_layer_markup(host *parent, double start_angle, double useable
 				/* lightred for both DOWN and UNREACHABLE for visual continuity and since UNREACHABLE is still a problem */
 				else if (temp_hoststatus->status == HOST_DOWN || temp_hoststatus->status == HOST_UNREACHABLE)
 					bgcolor = color_lightred;
-				else
+				else if ((get_servicestatus_count(temp_host->name, SERVICE_CRITICAL) > 0) || (get_servicestatus_count(temp_host->name, SERVICE_WARNING) > 0)) {
+					if ((in_layer_list == TRUE && exclude_layers == TRUE) || (in_layer_list == FALSE && exclude_layers == FALSE))
+						bgcolor = color_lightgreen;
+					else
+						bgcolor = color_yellow;
+				} else
 					bgcolor = color_lightgreen;
 
 
