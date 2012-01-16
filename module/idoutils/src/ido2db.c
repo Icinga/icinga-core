@@ -1507,7 +1507,7 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf) {
 	int data_type = IDO_DATA_NONE;
 	int input_type = IDO2DB_INPUT_DATA_NONE;
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_input(instance_name=%s) start\n", idi->instance_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_input start\n");
 
 #ifdef DEBUG_IDO2DB2
 	printf("HANDLING: '%s'\n", buf);
@@ -1515,6 +1515,8 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf) {
 
 	if (buf == NULL || idi == NULL)
 		return IDO_ERROR;
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_client_input instance_name=%s\n", (idi->instance_name == NULL) ? "(null)" : idi->instance_name);
 
 	/* we're ignoring client data because of wrong protocol version, etc...  */
 	if (idi->ignore_client_data == IDO_TRUE)
