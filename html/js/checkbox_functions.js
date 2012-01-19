@@ -130,3 +130,16 @@ function checkAll(form) {
 		}
 	}
 }
+
+function toggle_checkbox(id, form) {
+	var x = document.getElementById(id);
+	if ( x.checked == true ) {
+		x.checked=false;
+	} else {
+		x.checked=true;
+	}
+
+	isValidForSubmit(form);
+
+	return true;
+}
