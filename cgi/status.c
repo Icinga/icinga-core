@@ -1958,7 +1958,7 @@ void show_service_detail(void) {
 
 		if (content_type == HTML_CONTENT) {
 
-			printf("<TR>\n");
+			printf("<TR onClick=\"toggle_checkbox('service_%d','tableformservice');\">\n", total_entries);
 
 			/* host name column */
 			if (new_host == TRUE) {
@@ -2191,8 +2191,8 @@ void show_service_detail(void) {
 
 			/* Checkbox for service(s) */
 			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
-				printf("<TD CLASS='status%s' nowrap align='center' onClick=\"x=document.getElementById('service_%d'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableformservice');\">", status_bg_class, total_entries);
-				printf("<input onClick=\"x=document.getElementById('service_%d'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableformservice');\" type='checkbox' id='service_%d' name='hostservice' value='%s^%s'></TD>\n", total_entries, total_entries, temp_status->host_name, temp_status->svc_description);
+				printf("<TD CLASS='status%s' nowrap align='center'>", status_bg_class);
+				printf("<input onClick=\"toggle_checkbox('service_%d','tableformservice');\" type='checkbox' id='service_%d' name='hostservice' value='%s^%s'></TD>\n", total_entries, total_entries, temp_status->host_name, temp_status->svc_description);
 			}
 
 			if (enable_splunk_integration == TRUE)
@@ -2498,7 +2498,7 @@ void show_host_detail(void) {
 
 		if (content_type == HTML_CONTENT) {
 
-			printf("<TR>\n");
+			printf("<TR onClick=\"toggle_checkbox('host_%d','tableformhost');\">\n", total_entries);
 
 
 			/**** host name column ****/
@@ -2605,8 +2605,8 @@ void show_host_detail(void) {
 
 			/* Checkbox for host(s) */
 			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
-				printf("<TD CLASS='status%s' nowrap align='center' onClick=\"x=document.getElementById('host_%d'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableformhost');\">", status_bg_class, total_entries);
-				printf("<input onClick=\"x=document.getElementById('host_%d'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableformhost');\" type='checkbox' id='host_%d' name='host' value='%s'></TD>\n", total_entries, total_entries, temp_statusdata->host_name);
+				printf("<TD CLASS='status%s' nowrap align='center'>", status_bg_class);
+				printf("<input onClick=\"toggle_checkbox('host_%d','tableformhost');\" type='checkbox' id='host_%d' name='host' value='%s'></TD>\n", total_entries, total_entries, temp_statusdata->host_name);
 			}
 
 			if (enable_splunk_integration == TRUE)

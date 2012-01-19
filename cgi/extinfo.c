@@ -3034,7 +3034,7 @@ void show_comments(int type) {
 			printf("%s%s%s%s", csv_data_enclosure, comment_type, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s\n", csv_data_enclosure, (temp_comment->expires == TRUE) ? expire_time : "N/A", csv_data_enclosure);
 		} else {
-			printf("<tr CLASS='%s'>", bg_class);
+			printf("<tr CLASS='%s' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\">", bg_class, temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service");
 			if (display_type == DISPLAY_COMMENTS) {
 				printf("<td><A HREF='%s?type=%d&host=%s'>%s</A></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_comment->host_name), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
 				if (type == SERVICE_COMMENT) {
@@ -3043,8 +3043,8 @@ void show_comments(int type) {
 				}
 			}
 			printf("<td name='comment_time'>%s</td><td name='comment_author'>%s</td><td name='comment_data'>%s</td><td name='comment_id'>%lu</td><td name='comment_persist'>%s</td><td name='comment_type'>%s</td><td name='comment_expire'>%s</td>", date_time, temp_comment->author, temp_comment->comment_data, temp_comment->comment_id, (temp_comment->persistent) ? "Yes" : "No", comment_type, (temp_comment->expires == TRUE) ? expire_time : "N/A");
-			printf("<td align='center' onClick=\"x=document.getElementById('comment_%lu'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableform%scomment');\"><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
-			printf("<input onClick=\"x=document.getElementById('comment_%lu'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableform%scomment');\" type='checkbox' name='checkbox' id='comment_%lu' value='&com_id=%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
+			printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
+			printf("<input type='checkbox' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\" name='checkbox' id='comment_%lu' value='&com_id=%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
 			printf("</td></tr>\n");
 		}
 		total_comments++;
@@ -3210,7 +3210,8 @@ void show_downtime(int type) {
 					printf("%s%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			}
 		} else {
-			printf("<tr CLASS='%s'>", bg_class);
+			printf("<tr CLASS='%s' onClick=\"toggle_checkbox('downtime_%lu','tableform%sdowntime');\">", bg_class, temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service");
+			//printf("<tr CLASS='%s'>", bg_class);
 			if (display_type == DISPLAY_DOWNTIME) {
 				printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>", bg_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_downtime->host_name), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
 				if (type == SERVICE_DOWNTIME) {
@@ -3289,13 +3290,13 @@ void show_downtime(int type) {
 			printf("%s\n", csv_data_enclosure);
 		} else {
 			printf("</td>\n");
-			printf("<td align='center' CLASS='%s' onClick=\"x=document.getElementById('downtime_%lu'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableform%sdowntime');\">", bg_class, temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service");
+			printf("<td align='center' CLASS='%s'>", bg_class);
 			if (type == HOST_DOWNTIME)
 				printf("<a href='%s?cmd_typ=%d", CMD_CGI, CMD_DEL_HOST_DOWNTIME);
 			else
 				printf("<a href='%s?cmd_typ=%d", CMD_CGI, CMD_DEL_SVC_DOWNTIME);
 			printf("&down_id=%lu'><img src='%s%s' border=0 ALT='Delete/Cancel This Scheduled Downtime Entry' TITLE='Delete/Cancel This Scheduled Downtime Entry'></a>", temp_downtime->downtime_id, url_images_path, DELETE_ICON);
-			printf("<input onClick=\"x=document.getElementById('downtime_%lu'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableform%sdowntime');\" type='checkbox' name='checkbox' id='downtime_%lu' value='&down_id=%lu'></td>", temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service", temp_downtime->downtime_id, temp_downtime->downtime_id);
+			printf("<input type='checkbox' name='checkbox' id='downtime_%lu' value='&down_id=%lu'></td>", temp_downtime->downtime_id, temp_downtime->downtime_id);
 			printf("</td></tr>\n");
 		}
 		total_downtime++;

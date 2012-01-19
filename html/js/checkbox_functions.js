@@ -130,3 +130,21 @@ function checkAll(form) {
 		}
 	}
 }
+
+function toggle_checkbox(id, form) {
+	var x = document.getElementById(id);
+	if ( x.checked == true ) {
+		x.checked=false;
+	} else {
+		x.checked=true;
+	}
+
+//	if ( id.indexOf("host") >= 0) {
+		isValidForSubmit(form);
+/*	if ( id.indexOf("host") >= 0) {
+	} else {
+		isValidForSubmit('tableformservice');
+	} */
+
+	return true;
+}
