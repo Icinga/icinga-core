@@ -7,12 +7,15 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 1.7.0 - XX/YY/2012
 
 ENHANCEMENTS
+* core: notifications: Create contact list after eventbroker callbacks (Andreas Ericsson) #2110
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
 * install: Fix notification template installation (Todd Zullinger) #2235
 
 CHANGES
+* neb api: move creation of notification contact list AFTER event broker callback NEBTYPE_NOTIFICATION_START #2110
+	** allows neb modules to cancel/override notification list creation on notification start
 * debug: set debug_verbosity=2 by default
 
 
