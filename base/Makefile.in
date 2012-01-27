@@ -12,7 +12,8 @@ CC=@CC@
 CFLAGS=@CFLAGS@ @DEFS@ -DNSCORE
 
 # Compiler flags for use with gprof
-#CFLAGS=-pg -DHAVE_CONFIG_H -DNSCORE
+# when running prof, make sure to remove drop_privilegues when running!
+#CFLAGS=@CFLAGS@ -pg @DEFS@ -DNSCORE
 
 # Compiler flags for use with Valgrind
 #CFLAGS=-O0 -g -DHAVE_CONFIG_H -DNSCORE
