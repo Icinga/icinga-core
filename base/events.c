@@ -1031,9 +1031,12 @@ void add_event(timed_event *event, timed_event **event_list, timed_event **event
 
 /* remove an event from the queue */
 void remove_event(timed_event *event, timed_event **event_list, timed_event **event_list_tail) {
-	timed_event *temp_event = NULL;
+	timed_event *prev_event, *next_event;
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "remove_event()\n");
+
+	if (!event)
+		return;
 
 #ifdef USE_EVENT_BROKER
 	/* send event data to broker */
@@ -1043,31 +1046,38 @@ void remove_event(timed_event *event, timed_event **event_list, timed_event **ev
 	if (*event_list == NULL)
 		return;
 
-	if (*event_list == event) {
-		event->prev = NULL;
-		*event_list = event->next;
-		if (*event_list == NULL)
-			*event_list_tail = NULL;
+	/*
+	 * the event struct already holds next+prev ptrs
+	 * for the doubly linked list, so fetch them
+	 * and reassign previous with next, and reverse
+	 * check #2183 for a detailed description
+	 */
+	prev_event = event->prev;
+	next_event = event->next;
+
+	if (prev_event) {
+		prev_event->next = next_event;
+	}
+	if (next_event) {
+		next_event->prev = prev_event;
 	}
 
-	else {
-
-		for (temp_event = *event_list; temp_event != NULL; temp_event = temp_event->next) {
-			if (temp_event->next == event) {
-				temp_event->next = temp_event->next->next;
-				if (temp_event->next == NULL)
-					*event_list_tail = temp_event;
-				else
-					temp_event->next->prev = temp_event;
-				event->next = NULL;
-				event->prev = NULL;
-				break;
-			}
-		}
+	/* re-assign head and tail */
+	if (!prev_event) {
+		/* no previous event, so "next" is now first in list */
+		*event_list = next_event;
+	}
+	if (!next_event) {
+		/* no following event, so "prev" is now last in list */
+		*event_list_tail = prev_event;
 	}
 
-
-	return;
+	/*
+	 * If there was only one event in the list,
+	 * it's done just as if there were events before
+	 * and after the deleted event.
+	 * head and tail pointers are now NULL in this case
+	 */
 }
 
 
