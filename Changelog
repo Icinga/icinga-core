@@ -9,6 +9,7 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 ENHANCEMENTS
 
 FIXES
+* core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
 * install: Fix notification template installation (Todd Zullinger) #2235
 
 CHANGES
