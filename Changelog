@@ -1,8 +1,20 @@
 #######################
-Icinga 1.6.x Change Log
+Icinga 1.7.x Change Log
 #######################
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
+
+1.7.0 - XX/YY/2012
+
+ENHANCEMENTS
+
+FIXES
+* install: Fix notification template installation (Todd Zullinger) #2235
+
+CHANGES
+* debug: set debug_verbosity=2 by default
+
+
 
 1.6.1 - 02/12/2011
 
