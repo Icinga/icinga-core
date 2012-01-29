@@ -72,6 +72,7 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...) {
         struct tm *tm;
         char temp_time[80];
         struct timeval current_time;
+        unsigned long tid;
 
         if (!(ido2db_debug_level == IDO2DB_DEBUGL_ALL || (level & ido2db_debug_level)))
                 return IDO_OK;
@@ -88,11 +89,11 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...) {
         time(&t);
         tm=localtime(&t);
         strftime(temp_time, 80, "%c", tm);
-
+        tid=(unsigned long)pthread_self();
 	if (ido2db_debug_readable_timestamp)
-	        fprintf(ido2db_debug_file_fp, "%s .%06lu [%03d.%d] [pid=%lu] [tid=%lld] ", temp_time, current_time.tv_usec, level, verbosity, (unsigned long)getpid(), (unsigned long int)pthread_self());
+	        fprintf(ido2db_debug_file_fp, "%s .%06lu [%03d.%d] [pid=%lu] [tid=%lu] ", temp_time, current_time.tv_usec, level, verbosity, (unsigned long)getpid(), tid);
 	else
-        	fprintf(ido2db_debug_file_fp, "[%lu.%06lu] [%03d.%d] [pid=%lu] [tid=%ld] ", current_time.tv_sec, current_time.tv_usec, level, verbosity, (unsigned long)getpid(), (unsigned long int)pthread_self());
+        	fprintf(ido2db_debug_file_fp, "[%lu.%06lu] [%03d.%d] [pid=%lu] [tid=%lu] ", current_time.tv_sec, current_time.tv_usec, level, verbosity, (unsigned long)getpid(), tid);
 
         /* write the data */
         va_start(ap, fmt);
