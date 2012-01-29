@@ -256,7 +256,8 @@ int main(int argc, char **argv) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db with ocilib() driver check\n");
-	if (OCI_GetOCIRuntimeVersion == OCI_UNKNOWN) {
+	dummy=OCI_GetOCIRuntimeVersion();
+	if (dummy == OCI_UNKNOWN) {
 		printf("Unknown ocilib runtime version detected. Exiting...\n");
 
 #ifdef HAVE_SSL
