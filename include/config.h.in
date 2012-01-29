@@ -386,4 +386,6 @@
 #define ENV_PREFIX	"ICINGA_"
 #endif
 
+/*snprintf workaround*/
+#undef SNPRINTF_BROKEN
 #endif

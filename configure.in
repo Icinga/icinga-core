@@ -68,10 +68,10 @@ AC_CHECK_FUNC(asprintf,,SNPRINTF_O=../common/snprintf.o)
 AC_CHECK_FUNC(vasprintf,,SNPRINTF_O=../common/snprintf.o)
 
 dnl module/idoutils/src/Makefile.in
-AC_CHECK_FUNC(vsnprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
-AC_CHECK_FUNC(snprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
-AC_CHECK_FUNC(asprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
-AC_CHECK_FUNC(vasprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
+AC_CHECK_FUNC(vsnprintf,,SNPRINTF_O_IDO=snprintf.o)
+AC_CHECK_FUNC(snprintf,,SNPRINTF_O_IDO=snprintf.o)
+AC_CHECK_FUNC(asprintf,,SNPRINTF_O_IDO=snprintf.o)
+AC_CHECK_FUNC(vasprintf,,SNPRINTF_O_IDO=snprintf.o)
 
 AC_CACHE_CHECK([for C99 vsnprintf],ac_cv_HAVE_C99_VSNPRINTF,[
 AC_TRY_RUN([
@@ -717,8 +717,10 @@ if test x$USE_EVENTBROKER = xyes; then
 	AC_MSG_CHECKING(for linker flags for loadable modules)
 	case $host_os in
 		solaris2*|sysv4*)
-			MOD_LDFLAGS="-G"
+			MOD_LDFLAGS="-G -fPIC"
+			MOD_CFLAGS="-fPIC"
 			INIT_OPTS="-o root -g root"
+			SNPRINTF_BROKEN="yes"
 		;;
 		aix4*|aix5*)
 			#MOD_LDFLAGS="-G -bnoentry -bexpall"
@@ -764,6 +766,15 @@ if test x$USE_EVENTBROKER = xyes; then
 	AC_SUBST(BROKER_O)
 	BROKER_H="../include/broker.h ../include/nebmods.h ../include/nebmodules.h ../include/nebcallbacks.h ../include/neberrors.h"
 	AC_SUBST(BROKER_H)
+fi
+
+dnl workaround for broken printf implementations (like solaris)
+if test x$SNPRINTF_BROKEN = xyes; then
+	AC_DEFINE(SNPRINTF_BROKEN,"1")
+	SNPRINTF_O=../common/snprintf.o
+	SNPRINTF_O_IDO=snprintf.o
+	AC_SUBST(SNPRINTF_O)
+	AC_SUBST(SNPRINTF_O_IDO)
 fi
 
 dnl Configure state based escalation ranges

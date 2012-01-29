@@ -5645,7 +5645,7 @@ $as_echo "$ac_cv_func_vsnprintf" >&6; }
 if test "x$ac_cv_func_vsnprintf" = x""yes; then
   :
 else
-  SNPRINTF_O_IDO=../../../common/snprintf.o
+  SNPRINTF_O_IDO=snprintf.o
 fi
 
 { $as_echo "$as_me:$LINENO: checking for snprintf" >&5
@@ -5736,7 +5736,7 @@ $as_echo "$ac_cv_func_snprintf" >&6; }
 if test "x$ac_cv_func_snprintf" = x""yes; then
   :
 else
-  SNPRINTF_O_IDO=../../../common/snprintf.o
+  SNPRINTF_O_IDO=snprintf.o
 fi
 
 { $as_echo "$as_me:$LINENO: checking for asprintf" >&5
@@ -5827,7 +5827,7 @@ $as_echo "$ac_cv_func_asprintf" >&6; }
 if test "x$ac_cv_func_asprintf" = x""yes; then
   :
 else
-  SNPRINTF_O_IDO=../../../common/snprintf.o
+  SNPRINTF_O_IDO=snprintf.o
 fi
 
 { $as_echo "$as_me:$LINENO: checking for vasprintf" >&5
@@ -5918,7 +5918,7 @@ $as_echo "$ac_cv_func_vasprintf" >&6; }
 if test "x$ac_cv_func_vasprintf" = x""yes; then
   :
 else
-  SNPRINTF_O_IDO=../../../common/snprintf.o
+  SNPRINTF_O_IDO=snprintf.o
 fi
 
 
@@ -8757,8 +8757,10 @@ $as_echo "$BROKER_LDFLAGS" >&6; }
 $as_echo_n "checking for linker flags for loadable modules... " >&6; }
 	case $host_os in
 		solaris2*|sysv4*)
-			MOD_LDFLAGS="-G"
+			MOD_LDFLAGS="-G -fPIC"
+			MOD_CFLAGS="-fPIC"
 			INIT_OPTS="-o root -g root"
+			SNPRINTF_BROKEN="yes"
 		;;
 		aix4*|aix5*)
 			#MOD_LDFLAGS="-G -bnoentry -bexpall"
@@ -8808,6 +8810,17 @@ _ACEOF
 	BROKER_O="broker.o nebmods.o"
 
 	BROKER_H="../include/broker.h ../include/nebmods.h ../include/nebmodules.h ../include/nebcallbacks.h ../include/neberrors.h"
+
+fi
+
+if test x$SNPRINTF_BROKEN = xyes; then
+	cat >>confdefs.h <<\_ACEOF
+#define SNPRINTF_BROKEN "1"
+_ACEOF
+
+	SNPRINTF_O=../common/snprintf.o
+	SNPRINTF_O_IDO=snprintf.o
+
 
 fi
 
