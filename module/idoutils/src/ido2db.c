@@ -114,6 +114,10 @@ int main(int argc, char **argv) {
 
 	driver = NULL;
 #endif
+#ifdef USE_ORACLE
+	unsigned int v1,v2;
+#endif
+
 	result = ido2db_process_arguments(argc, argv);
 
 	if (result != IDO_OK || ido2db_show_help == IDO_TRUE || ido2db_show_license == IDO_TRUE || ido2db_show_version == IDO_TRUE) {
@@ -255,18 +259,22 @@ int main(int argc, char **argv) {
 	/******************************/
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db with ocilib() driver check\n");
-	dummy=OCI_GetOCIRuntimeVersion();
-	if (dummy == OCI_UNKNOWN) {
-		printf("Unknown ocilib runtime version detected. Exiting...\n");
-
-#ifdef HAVE_SSL
-		if (use_ssl == IDO_TRUE)
-			SSL_CTX_free(ctx);
-#endif
-
-		exit(1);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db with ocilib() driver compiled\n");
+	/* at this stage, is oci driver not loaded, but loading will be later in db_init.
+	 * check will try to init,read variables and cleanup afterwards
+	 */
+	if (OCI_Initialize(NULL,NULL,OCI_ENV_DEFAULT)) {
+	    v1=OCI_GetOCIRuntimeVersion();
+	    v2=OCI_GetOCICompileVersion();
+	    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ocilib() driver check OK(Runtime:%u,CompileTime:%u)\n",
+	        v1,v2);
+	    /* we need to cleanup to succeed ido2db_db_init */
+	        OCI_Cleanup();
+	}else{
+	        printf("Cannot initialize ocilib, exit!\n");
+	        exit (1);
 	}
+
 
 #endif /* Oracle ocilib specific */
 	/******************************/
