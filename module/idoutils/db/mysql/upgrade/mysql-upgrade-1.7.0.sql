@@ -10,7 +10,7 @@
 -- -----------------------------------------
 --#2274
 -- -----------------------------------------
-create index statehist_state_idx on icinga_statehistory(objectid,state);
+create index statehist_state_idx on icinga_statehistory(object_id,state);
 
 -- -----------------------------------------
 -- update dbversion
