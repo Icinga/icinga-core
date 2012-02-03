@@ -1966,7 +1966,7 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-ac_config_headers="$ac_config_headers include/config.h include/snprintf.h"
+ac_config_headers="$ac_config_headers include/config.h"
 
 
 
@@ -10721,7 +10721,6 @@ for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
     "include/config.h") CONFIG_HEADERS="$CONFIG_HEADERS include/config.h" ;;
-    "include/snprintf.h") CONFIG_HEADERS="$CONFIG_HEADERS include/snprintf.h" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "subst") CONFIG_FILES="$CONFIG_FILES subst" ;;
     "solaris/pkginfo") CONFIG_FILES="$CONFIG_FILES solaris/pkginfo" ;;

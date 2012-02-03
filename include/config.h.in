@@ -388,4 +388,5 @@
 
 /*snprintf workaround*/
 #undef SNPRINTF_BROKEN
+#include "snprintf.h"
 #endif
