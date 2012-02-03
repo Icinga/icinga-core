@@ -1,8 +1,8 @@
 -- -----------------------------------------
 -- upgrade path for Icinga IDOUtils 1.7.0
 --
--- run it as icinga database user whithin  current directory
--- sqlplus icinga@<instance> @ oracle-upgrade.1-6.0.sql
+-- run it as icinga database user from directory of this file
+-- sqlplus icinga@<instance> @ oracle-upgrade.1-7.0.sql
 -- -----------------------------------------
 -- Copyright (c) 2010-2011 Icinga Development Team (http://www.icinga.org)
 --
@@ -26,6 +26,9 @@ define DATATBS='ICINGA_DATA1';
 define LOBTBS='ICINGA_LOB1';
 define IDXTBS='ICINGA_IDX1';
 
+/* load defines from file, if any */
+@../icinga_defines.sql
+
 /* script will be terminated on the first error */
 whenever sqlerror exit failure
 spool oracle-upgrade-&&ICINGA_VERSION..log
@@ -33,7 +36,7 @@ spool oracle-upgrade-&&ICINGA_VERSION..log
 -- -----------------------------------------
 -- index for BP Addon #2274
 -- -----------------------------------------
-create index statehistory_state_idx on statehistory(objectid,state)
+create index statehistory_state_idx on statehistory(object_id,state)
 tablespace &IDXTBS;
 
 -- -----------------------------------------
