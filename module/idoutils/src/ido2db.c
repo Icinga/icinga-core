@@ -259,19 +259,20 @@ int main(int argc, char **argv) {
 	/******************************/
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db with ocilib() driver compiled\n");
+
 	/* at this stage, is oci driver not loaded, but loading will be later in db_init.
 	 * check will try to init,read variables and cleanup afterwards
 	 */
 	if (OCI_Initialize(NULL,NULL,OCI_ENV_DEFAULT)) {
 	    v1=OCI_GetOCIRuntimeVersion();
 	    v2=OCI_GetOCICompileVersion();
-	    ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ocilib() driver check OK(Runtime:%u,CompileTime:%u)\n",
+	    syslog(LOG_INFO, "OCILIB driver check OK(OCI Version:%u,CompileTime:%u)",
 	        v1,v2);
 	    /* we need to cleanup to succeed ido2db_db_init */
 	        OCI_Cleanup();
 	}else{
-	        printf("Cannot initialize ocilib, exit!\n");
+	        printf("Cannot initialize OCILIB, exiting!\n");
+	        syslog(LOG_ERR,"Cannot initialize OCILIB, exiting!");
 	        exit (1);
 	}
 
