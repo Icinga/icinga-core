@@ -11,6 +11,7 @@ ENHANCEMENTS
 * core: fix event removal from queues with O(1) removal from doubly linked lists (Andreas Ericsson) #2183
 * core: avoid senseless looping when free()'ing macros (Andreas Ericsson) #2184
 * core: avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182
+* core: allow empty host groups in service and host dependencies if allow_empty_hostgroup_assignment flag is set (Daniel Wittenberg) #2255
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
