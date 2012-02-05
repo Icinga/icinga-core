@@ -14,8 +14,8 @@
 #undef HAVE_VA_COPY
 #endif
 
-/* yes this really must be a ||. Don't muck with this (tridge) */
-#if !defined(HAVE_SNPRINTF) || !defined(HAVE_C99_VSNPRINTF)
+/* prototypes  */
+#if !defined(HAVE_C99_VSNPRINTF)
 int smb_vsnprintf(char *str, size_t count, const char *fmt, va_list args);
 #define vsnprintf smb_vsnprintf
 int smb_snprintf(char *str, size_t count, const char *fmt, ...);
