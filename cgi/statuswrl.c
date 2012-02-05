@@ -40,7 +40,6 @@ extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern char *statuswrl_include;
 
@@ -128,17 +127,9 @@ int coordinates_were_specified = FALSE; /* were drawing coordinates specified wi
 
 extern int daemon_check;
 
-int display_type = DISPLAY_HOSTS;
 int show_all_hosts = TRUE;
-int show_all_hostgroups = TRUE;
-int show_all_servicegroups = TRUE;
 
 char *host_name = "all";
-char *host_filter = NULL;
-char *hostgroup_name = NULL;
-char *servicegroup_name = NULL;
-char *service_desc = NULL;
-char *service_filter = NULL;
 
 int CGI_ID = STATUSWRL_CGI_ID;
 
@@ -151,7 +142,7 @@ int main(int argc, char **argv) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		document_header(CGI_ID, TRUE);
+		document_header(CGI_ID, TRUE, "Error");
 		return ERROR;
 	}
 
@@ -161,7 +152,7 @@ int main(int argc, char **argv) {
 	/* get the arguments passed in the URL */
 	process_cgivars();
 
-	document_header(CGI_ID, TRUE);
+	document_header(CGI_ID, TRUE, "Status WRML");
 
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
@@ -957,7 +948,7 @@ void draw_host(host *temp_host) {
 
 	printf("]\n");
 	printf("description \"View status details for host '%s' (%s)\"\n", (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, temp_host->alias);
-	printf("url \"%s?host=%s&nostatusheader\"\n", STATUS_CGI, temp_host->name);
+	printf("url \"%s?host=%s\"\n", STATUS_CGI, temp_host->name);
 	printf("}\n");
 
 

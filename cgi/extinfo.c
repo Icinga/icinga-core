@@ -70,15 +70,11 @@ extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 
 extern int              suppress_maintenance_downtime;
 extern int		extinfo_show_child_hosts;
+extern int		tab_friendly_titles;
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
-extern char url_html_path[MAX_FILENAME_LENGTH];
-extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
-extern char url_docs_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
-extern char log_file[MAX_FILENAME_LENGTH];
 
 extern int              enable_splunk_integration;
 
@@ -151,13 +147,8 @@ char *servicegroup_name = "";
 char *service_desc = "";
 
 int display_type = DISPLAY_PROCESS_INFO;
-int show_all_hosts = TRUE;
-int show_all_hostgroups = TRUE;
-int show_all_servicegroups = TRUE;
-
 int sort_type = SORT_ASCENDING;
 int sort_option = SORT_NEXTCHECKTIME;
-
 int csv_type = CSV_DEFAULT;
 
 int dummy;	/* reduce compiler warnings */
@@ -178,6 +169,7 @@ int main(void) {
 	int found = FALSE;
 	char temp_buffer[MAX_INPUT_BUFFER] = "";
 	char *processed_string = NULL;
+	char *cgi_title = NULL;
 	host *temp_host = NULL;
 	hostsmember *temp_parenthost = NULL;
 	hostgroup *temp_hostgroup = NULL;
@@ -197,7 +189,7 @@ int main(void) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -206,7 +198,7 @@ int main(void) {
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -215,7 +207,7 @@ int main(void) {
 	/* read all object configuration data */
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -224,7 +216,7 @@ int main(void) {
 	/* read all status data */
 	result = read_all_status_data(get_cgi_config_location(), READ_ALL_STATUS_DATA);
 	if (result == ERROR && daemon_check == TRUE) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_STATUS_DATA);
 		document_footer(CGI_ID);
 		free_memory();
@@ -234,7 +226,20 @@ int main(void) {
 	/* initialize macros */
 	init_macros();
 
-	document_header(CGI_ID, TRUE);
+	if (tab_friendly_titles == TRUE) {
+		if (display_type == DISPLAY_HOST_INFO && host_name && (*host_name != '\0'))
+			dummy = asprintf(&cgi_title, "[%s]", html_encode(host_name, FALSE));
+		else if (display_type == DISPLAY_SERVICE_INFO && service_desc && *service_desc != '\0' && host_name && *host_name != '\0')
+			dummy = asprintf(&cgi_title, "%s @ %s", html_encode(service_desc, FALSE), html_encode(host_name, FALSE));
+		else if (display_type == DISPLAY_HOSTGROUP_INFO && hostgroup_name && *hostgroup_name != '\0')
+			dummy = asprintf(&cgi_title, "{%s}", html_encode(hostgroup_name, FALSE));
+		else if (display_type == DISPLAY_SERVICEGROUP_INFO && servicegroup_name && *servicegroup_name != '\0')
+			dummy = asprintf(&cgi_title, "(%s)", html_encode(servicegroup_name, FALSE));
+	}
+
+	document_header(CGI_ID, TRUE, (tab_friendly_titles == TRUE && cgi_title != NULL) ? cgi_title : "Extended Information");
+
+	my_free(cgi_title);
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -323,7 +328,7 @@ int main(void) {
 			if (display_type == DISPLAY_SERVICE_INFO)
 				printf("<A HREF='%s?type=%d&host=%s'>View Information For This Host</A><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
 			if (display_type == DISPLAY_SERVICE_INFO || display_type == DISPLAY_HOST_INFO)
-				printf("<A HREF='%s?host=%s&nostatusheader'>View Status Detail For This Host</A><BR>\n", STATUS_CGI, url_encode(host_name));
+				printf("<A HREF='%s?host=%s'>View Status Detail For This Host</A><BR>\n", STATUS_CGI, url_encode(host_name));
 			if (display_type == DISPLAY_HOST_INFO) {
 				printf("<A HREF='%s?host=%s'>View Alert History For This Host</A><BR>\n", HISTORY_CGI, url_encode(host_name));
 #ifdef USE_TRENDS
@@ -350,14 +355,14 @@ int main(void) {
 				printf("<A HREF='%s?host=%s&", NOTIFICATIONS_CGI, url_encode(host_name));
 				printf("service=%s'>View Notifications For This Service</A>\n", url_encode(service_desc));
 			} else if (display_type == DISPLAY_HOSTGROUP_INFO) {
-				printf("<A HREF='%s?hostgroup=%s&style=detail&nostatusheader'>View Status Detail For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
-				printf("<A HREF='%s?hostgroup=%s&style=overview&nostatusheader'>View Status Overview For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
-				printf("<A HREF='%s?hostgroup=%s&style=grid&nostatusheader'>View Status Grid For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
+				printf("<A HREF='%s?hostgroup=%s&style=detail'>View Status Detail For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
+				printf("<A HREF='%s?hostgroup=%s&style=overview'>View Status Overview For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
+				printf("<A HREF='%s?hostgroup=%s&style=grid'>View Status Grid For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
 				printf("<A HREF='%s?hostgroup=%s'>View Availability For This Hostgroup</A><BR>\n", AVAIL_CGI, url_encode(hostgroup_name));
 			} else if (display_type == DISPLAY_SERVICEGROUP_INFO) {
-				printf("<A HREF='%s?servicegroup=%s&style=detail&nostatusheader'>View Status Detail For This Servicegroup</A><BR>\n", STATUS_CGI, url_encode(servicegroup_name));
-				printf("<A HREF='%s?servicegroup=%s&style=overview&nostatusheader'>View Status Overview For This Servicegroup</A><BR>\n", STATUS_CGI, url_encode(servicegroup_name));
-				printf("<A HREF='%s?servicegroup=%s&style=grid&nostatusheader'>View Status Grid For This Servicegroup</A><BR>\n", STATUS_CGI, url_encode(servicegroup_name));
+				printf("<A HREF='%s?servicegroup=%s&style=detail'>View Status Detail For This Servicegroup</A><BR>\n", STATUS_CGI, url_encode(servicegroup_name));
+				printf("<A HREF='%s?servicegroup=%s&style=overview'>View Status Overview For This Servicegroup</A><BR>\n", STATUS_CGI, url_encode(servicegroup_name));
+				printf("<A HREF='%s?servicegroup=%s&style=grid'>View Status Grid For This Servicegroup</A><BR>\n", STATUS_CGI, url_encode(servicegroup_name));
 				printf("<A HREF='%s?servicegroup=%s'>View Availability For This Servicegroup</A><BR>\n", AVAIL_CGI, url_encode(servicegroup_name));
 			}
 			printf("</TD></TR>\n");
@@ -381,7 +386,7 @@ int main(void) {
 					/* print all parent hosts */
 					printf("<DIV CLASS='data'>Parents:</DIV>\n");
 					for (temp_parenthost = temp_host->parent_hosts; temp_parenthost != NULL; temp_parenthost = temp_parenthost->next)
-						printf("<DIV CLASS='dataTitle'><A HREF='%s?host=%s&nostatusheader'>%s</A></DIV>\n", STATUS_CGI, url_encode(temp_parenthost->host_name), temp_parenthost->host_name);
+						printf("<DIV CLASS='dataTitle'><A HREF='%s?host=%s'>%s</A></DIV>\n", STATUS_CGI, url_encode(temp_parenthost->host_name), temp_parenthost->host_name);
 				}
 
 				/* Hostgroups */
@@ -392,7 +397,7 @@ int main(void) {
 						if (found == TRUE)
 							printf(", ");
 
-						printf("<A HREF='%s?hostgroup=%s&style=overview&nostatusheader'>%s</A>", STATUS_CGI, url_encode(temp_hostgroup->group_name), html_encode((temp_hostgroup->alias != NULL) ? temp_hostgroup->alias : temp_hostgroup->group_name, TRUE));
+						printf("<A HREF='%s?hostgroup=%s&style=overview'>%s</A>", STATUS_CGI, url_encode(temp_hostgroup->group_name), html_encode((temp_hostgroup->alias != NULL) ? temp_hostgroup->alias : temp_hostgroup->group_name, TRUE));
 						found = TRUE;
 					}
 				}
@@ -402,7 +407,7 @@ int main(void) {
 
 				printf("</DIV>\n");
 
-                                /* Child Hosts */
+				/* Child Hosts */
 				if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_IMMEDIATE || extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL) {
 					found = FALSE;
 					host * child_host;
@@ -411,18 +416,18 @@ int main(void) {
 					printf("<img id='expand_image_immediate' src='%s%s' border=0 onClick=\"if (document.getElementById('immediate_child_hosts').style.display == 'none') { document.getElementById('immediate_child_hosts').style.display = ''; document.getElementById('immediate_child_hosts_gap').style.display = 'none'; document.getElementById('expand_image_immediate').src = '%s%s'; } else { document.getElementById('immediate_child_hosts').style.display = 'none'; document.getElementById('immediate_child_hosts_gap').style.display = ''; document.getElementById('expand_image_immediate').src = '%s%s'; }\">", url_images_path, EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
 					printf("</DIV><DIV CLASS='dataTitle' id='immediate_child_hosts_gap' style='display:;'>&nbsp;</DIV><DIV CLASS='dataTitle' id='immediate_child_hosts' style='display:none;'>");
 
- 	                               	for (child_host = host_list; child_host != NULL; child_host = child_host->next) {
+					for (child_host = host_list; child_host != NULL; child_host = child_host->next) {
 						if (is_host_immediate_child_of_host(temp_host, child_host) == TRUE) {
-	                                                if (found == TRUE)
-        	                                                printf(", ");
+							if (found == TRUE)
+								printf(", ");
 
-	                                                printf("<A HREF='%s?type=%d&host=%s&nostatusheader'>%s</A>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(child_host->name), html_encode(child_host->name, TRUE));
-	                                                found = TRUE;
+							printf("<A HREF='%s?type=%d&host=%s'>%s</A>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(child_host->name), html_encode(child_host->name, TRUE));
+							found = TRUE;
 						}
-	                                }
+					}
 
-        	                        if (found == FALSE)
-                	                        printf("None");
+					if (found == FALSE)
+						printf("None");
 
 					printf("</DIV>\n");
 
@@ -438,7 +443,7 @@ int main(void) {
 								if (found == TRUE)
 									printf(", ");
 
-								printf("<A HREF='%s?type=%d&host=%s&nostatusheader'>%s</A>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(child_host->name), html_encode(child_host->name, TRUE));
+								printf("<A HREF='%s?type=%d&host=%s'>%s</A>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(child_host->name), html_encode(child_host->name, TRUE));
 
 								found = TRUE;
 							}
@@ -493,7 +498,7 @@ int main(void) {
 						if (found == TRUE)
 							printf(", ");
 
-						printf("<A HREF='%s?servicegroup=%s&style=overview&nostatusheader'>%s</A>", STATUS_CGI, url_encode(temp_servicegroup->group_name), html_encode((temp_servicegroup->alias != NULL) ? temp_servicegroup->alias : temp_servicegroup->group_name, TRUE));
+						printf("<A HREF='%s?servicegroup=%s&style=overview'>%s</A>", STATUS_CGI, url_encode(temp_servicegroup->group_name), html_encode((temp_servicegroup->alias != NULL) ? temp_servicegroup->alias : temp_servicegroup->group_name, TRUE));
 						found = TRUE;
 					}
 				}
@@ -765,13 +770,6 @@ int main(void) {
 				printf("<DIV CLASS='commentNav'>[&nbsp;<A HREF='#HOSTCOMMENTS' CLASS='commentNav'>Host Comments</A>&nbsp;|&nbsp;<A HREF='#SERVICECOMMENTS' CLASS='commentNav'>Service Comments</A>&nbsp;]</DIV>\n");
 				printf("<BR />\n");
 
-				/* add export to csv, json, link */
-				printf("<div class='csv_export_link'>");
-				print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=comment");
-				print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
-				print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
-				printf("</div>");
-
 				show_comments(HOST_COMMENT);
 				printf("<BR />\n");
 				show_comments(SERVICE_COMMENT);
@@ -788,13 +786,6 @@ int main(void) {
 				printf("<BR />\n");
 				printf("<DIV CLASS='downtimeNav'>[&nbsp;<A HREF='#HOSTDOWNTIME' CLASS='downtimeNav'>Host Downtime</A>&nbsp;|&nbsp;<A HREF='#SERVICEDOWNTIME' CLASS='downtimeNav'>Service Downtime</A>&nbsp;]</DIV>\n");
 				printf("<BR />\n");
-
-				/* add export to csv, json, link */
-				printf("<div class='csv_export_link'>");
-				print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=downtime");
-				print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
-				print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
-				printf("</div>");
 
 				show_downtime(HOST_DOWNTIME);
 				printf("<BR />\n");
@@ -2911,12 +2902,16 @@ void show_comments(int type) {
 		printf("<A NAME=%sCOMMENTS></A>\n", (type == HOST_COMMENT) ? "HOST" : "SERVICE");
 		printf("<TABLE BORDER=0 CLASS='comment' style='padding:0px;margin-bottom: -6px;'><TR><TD width='33%%'></TD><TD width='33%%'><DIV CLASS='commentTitle'>%s Comments</DIV></TD><TD width='33%%'>", (type == HOST_COMMENT) ? "Host" : "Service");
 
-		/* add export to csv link */
-		if (display_type != DISPLAY_COMMENTS) {
-			printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+		/* add export to csv, json, link */
+		printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+		if (display_type != DISPLAY_COMMENTS)
 			print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=comment");
-			printf("</DIV>");
+		else if (type == HOST_COMMENT) {
+			print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=comment");
+			print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
+			print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
 		}
+		printf("</div>");
 
 		printf("</TD></TR></TABLE>\n");
 
@@ -3039,7 +3034,7 @@ void show_comments(int type) {
 			printf("%s%s%s%s", csv_data_enclosure, comment_type, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s\n", csv_data_enclosure, (temp_comment->expires == TRUE) ? expire_time : "N/A", csv_data_enclosure);
 		} else {
-			printf("<tr CLASS='%s'>", bg_class);
+			printf("<tr CLASS='%s' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\">", bg_class, temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service");
 			if (display_type == DISPLAY_COMMENTS) {
 				printf("<td><A HREF='%s?type=%d&host=%s'>%s</A></td>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_comment->host_name), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
 				if (type == SERVICE_COMMENT) {
@@ -3048,8 +3043,8 @@ void show_comments(int type) {
 				}
 			}
 			printf("<td name='comment_time'>%s</td><td name='comment_author'>%s</td><td name='comment_data'>%s</td><td name='comment_id'>%lu</td><td name='comment_persist'>%s</td><td name='comment_type'>%s</td><td name='comment_expire'>%s</td>", date_time, temp_comment->author, temp_comment->comment_data, temp_comment->comment_id, (temp_comment->persistent) ? "Yes" : "No", comment_type, (temp_comment->expires == TRUE) ? expire_time : "N/A");
-			printf("<td align='center' onClick=\"x=document.getElementById('comment_%lu'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableform%scomment');\"><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
-			printf("<input onClick=\"x=document.getElementById('comment_%lu'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableform%scomment');\" type='checkbox' name='checkbox' id='comment_%lu' value='&com_id=%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
+			printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
+			printf("<input type='checkbox' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\" name='checkbox' id='comment_%lu' value='&com_id=%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
 			printf("</td></tr>\n");
 		}
 		total_comments++;
@@ -3120,12 +3115,16 @@ void show_downtime(int type) {
 		printf("<A NAME=%sDOWNTIME></A>\n", (type == HOST_DOWNTIME) ? "HOST" : "SERVICE");
 		printf("<TABLE BORDER=0 CLASS='comment' style='padding:0px;margin-bottom: -6px;'><TR><TD width='33%%'></TD><TD width='33%%'><DIV CLASS='commentTitle'>Scheduled %s Downtime</DIV></TD><TD width='33%%'>", (type == HOST_DOWNTIME) ? "Host" : "Service");
 
-		/* add export to csv link */
-		if (display_type != DISPLAY_COMMENTS) {
-			printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+		/* add export to csv, json, link */
+		printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+		if (display_type != DISPLAY_DOWNTIME)
 			print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=downtime");
-			printf("</DIV>");
+		else if (type == HOST_DOWNTIME) {
+			print_export_link(CSV_CONTENT, EXTINFO_CGI, "csvtype=downtime");
+			print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
+			print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
 		}
+		printf("</div>");
 
 		printf("</TD></TR></TABLE>\n");
 
@@ -3211,7 +3210,8 @@ void show_downtime(int type) {
 					printf("%s%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			}
 		} else {
-			printf("<tr CLASS='%s'>", bg_class);
+			printf("<tr CLASS='%s' onClick=\"toggle_checkbox('downtime_%lu','tableform%sdowntime');\">", bg_class, temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service");
+			//printf("<tr CLASS='%s'>", bg_class);
 			if (display_type == DISPLAY_DOWNTIME) {
 				printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>", bg_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_downtime->host_name), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
 				if (type == SERVICE_DOWNTIME) {
@@ -3290,13 +3290,13 @@ void show_downtime(int type) {
 			printf("%s\n", csv_data_enclosure);
 		} else {
 			printf("</td>\n");
-			printf("<td align='center' CLASS='%s' onClick=\"x=document.getElementById('downtime_%lu'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableform%sdowntime');\">", bg_class, temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service");
+			printf("<td align='center' CLASS='%s'>", bg_class);
 			if (type == HOST_DOWNTIME)
 				printf("<a href='%s?cmd_typ=%d", CMD_CGI, CMD_DEL_HOST_DOWNTIME);
 			else
 				printf("<a href='%s?cmd_typ=%d", CMD_CGI, CMD_DEL_SVC_DOWNTIME);
 			printf("&down_id=%lu'><img src='%s%s' border=0 ALT='Delete/Cancel This Scheduled Downtime Entry' TITLE='Delete/Cancel This Scheduled Downtime Entry'></a>", temp_downtime->downtime_id, url_images_path, DELETE_ICON);
-			printf("<input onClick=\"x=document.getElementById('downtime_%lu'); if(x.checked==true) { x.checked=false; } else { x.checked=true; } isValidForSubmit('tableform%sdowntime');\" type='checkbox' name='checkbox' id='downtime_%lu' value='&down_id=%lu'></td>", temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service", temp_downtime->downtime_id, temp_downtime->downtime_id);
+			printf("<input type='checkbox' name='checkbox' id='downtime_%lu' value='&down_id=%lu'></td>", temp_downtime->downtime_id, temp_downtime->downtime_id);
 			printf("</td></tr>\n");
 		}
 		total_downtime++;

@@ -1,13 +1,33 @@
-Here you can find the following:
+Icinga IDOUtils Database Scripts
+================================
+
+This collection contains the full db schema sqls, as well as the
+upgrade scripts. Please be aware that upgrades need to be run
+in incremental steps, one by one. 
+
+If you happen to have installed packages (rpm, deb, etc) and there
+is not an automated way of installing the SQL scripts, please follow
+the online instructions at
+
+http://docs.icinga.org/latest/en/quickstart-idoutils.html - "Creation of Database"
+http://docs.icinga.org/latest/en/upgrading_idoutils.html
+
+========================================================================
+
+The following scripts are available:
 
 mysql/
 	- mysql.sql for installing IDOUtils MySQL
+
+mysql/upgrade/
 	- mysql-upgrade-$version.sql for upgrading IDOUtils MySQL
 	  Please read the docs for upgrading information!
 
 
 pgsql/
 	- pqsql.sql for installing IDOUtils Postgresql
+
+pgsql/upgrade/
 	- pgsql-upgrade-$version.sql for upgrading IDOUtils Postgresql
 	  Please read the docs for upgrading information!
 
@@ -15,6 +35,8 @@ pgsql/
 oracle/
 	- oracle.sql for installing IDOUtils Oracle
 	- oracle-drop.sql for dropping all tables
+
+oracle/upgrade/
 	- oracle-upgrade-$version.sql for upgrading IDOUtils Oracle
 	  Please read the docs for upgrading information!
 
@@ -23,15 +45,8 @@ scripts/
 	- Install Scripts for IDOUtils MySQL,Oracle and Postgresql
 	- edit defines within these scripts for your needs before running!
 
+
 queries/
 	- Example queries for selecting data
 
 ========================================================================
-
-Please refer to 
-
-http://docs.icinga.org 
-or 
-/path/to/icinga-src/docs/ 
-
-and read carefully!

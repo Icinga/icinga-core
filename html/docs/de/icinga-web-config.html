@@ -4,7 +4,7 @@
 <title>Konfigurationsübersicht Icinga-Web</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.5 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="icinga-web-scratch.html" title="Installation des Icinga-Web Frontend">
 <link rel="next" href="upgrading_icingaweb.html" title="Aktualisierung von Icinga-Web und Icinga-Web Datenbank">
@@ -31,26 +31,40 @@
 
   <p><span class="bold"><strong>Wo sind meine Konfigurationsdateien? </strong></span></p>
 
-  <p>Wir versuchen die Verwendung von globalen Konfigurationsdateien zu minimieren. Icinga-Web arbeitet mit Modulen und jedes Modul hat
-  seine eigene Konfiguration. Das gilt ebenfalls für die Libraries. Wenn Sie weitere Informationen zu den Cronk Libraries benötigen, schauen
-  Sie in <code class="filename">app/modules/Cronks/lib</code> (für js in <code class="filename">app/modules/Cronks/lib/js</code>).</p>
+  <p>Wir versuchen die Verwendung von globalen Konfigurationsdateien zu minimieren. Die Icinga-Web-Konfigurationseinstellungen für die
+  Icinga-API, die Authentifizierung und die Datenbank werden in <code class="filename">etc/conf.d/</code> gespeichert. Diese Dateien werden bei einer
+  Aktualisierung von Icinga-Web nicht überschrieben. Das Verzeichnis kann bei der Installation mit --with-conf-folder geändert
+  werden.</p>
 
-  <p>Ein Modul von Icinga-Web ist wie folgt aufgebaut: </p>
-<pre class="programlisting">tree -d -L 1 app/modules/AppKit/
-app/modules/AppKit/
-|-- actions
-|-- config
-|-- lib
-|-- models
-|-- templates
-|-- validate
-|-- views</pre>
+  <p>Icinga-Web arbeitet mit Modulen und jedes Modul hat seine eigene Konfiguration. Das gilt ebenfalls für die Libraries. Wenn Sie
+  weitere Informationen zu den Cronk-Libraries benötigen, schauen Sie in <code class="filename">app/modules/Cronks/lib</code> (für js in
+  <code class="filename">app/modules/Cronks/lib/js</code>).</p>
+
+  <p>Ein Modul von Icinga-Web ist wie folgt aufgebaut:</p>
+<pre class="programlisting"> tree -d -L 1 app/modules/AppKit/
+ app/modules/AppKit/
+ |-- actions
+ |-- config
+ |-- lib
+ |-- models
+ |-- templates
+ |-- validate
+ |-- views</pre>
 
   <p><span class="bold"><strong>Index</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><a class="link" href="icinga-web-config.html#configweb-globalconfig">Globale Konfiguration</a></p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><a class="link" href="icinga-web-config.html#configweb-databases">databases.xml</a></p>
+        </li>
+<li class="listitem">
+          <p><a class="link" href="icinga-web-config.html#configweb-access">access.xml</a></p>
+        </li>
+</ul></div>
     </li>
 <li class="listitem">
       <p><a class="link" href="icinga-web-config.html#configweb-session-lifetime">Session Cookie Lifetime</a></p>
@@ -59,7 +73,7 @@ app/modules/AppKit/
       <p><a class="link" href="icinga-web-config.html#configweb-timezone">Zeitzone</a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="icinga-web-config.html#configweb-module">Module Konfiguration</a></p>
+      <p><a class="link" href="icinga-web-config.html#configweb-module">Module-Konfiguration</a></p>
     </li>
 <li class="listitem">
       <p><a class="link" href="icinga-web-config.html#configweb-auth">Authentifizierung</a></p>
@@ -76,20 +90,569 @@ app/modules/AppKit/
 
   <p><span class="bold"><strong>app/config</strong></span></p>
 
-  <p>Hier finden Sie die globalen Konfigurationsdateien für z.B. die Web Session, den Icinga Web Pfad und die
+  <p>Hier finden Sie die globalen Konfigurationsdateien für z.B. die Web-Session, den Icinga-Web-Pfad und die
   Datenbankinformationen.</p>
 
   <p>Die wichtigsten Dateien:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><code class="filename">database.xml</code> - enthält die Verbindungseinstellungen für Ihre Icinga-Web Datenbank</p>
+      <p><a name="configweb-databases"></a><code class="filename">databases.xml</code> - enthält die Verbindungseinstellungen für Ihre
+      Icinga-Web-Datenbank</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><a name="configweb-general"></a><span class="emphasis"><em>Allgemeine Einstellungen</em></span></p>
+
+          <p>Die folgenden Einstellungen gelten für jede in Icinga-Web definierte Datenbank.</p>
+
+          <p>Wenn Sie sich die Standarddefinition der icinga_web-Datenbank ansehen, dann finden Sie dort die meisten Einstellungen einer
+          generischen Datenbankverbindung:</p>
+
+          <pre class="screen">&lt;db:database name="icinga_web" class="AppKitDoctrineDatabase"&gt;
+    &lt;ae:parameter name="dsn"&gt;mysql://icinga_web:icinga_web@localhost:3306/icinga_web&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="charset"&gt;utf8&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="manager_attributes"&gt;
+        &lt;ae:parameter name="Doctrine_Core::ATTR_MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
+    &lt;/ae:parameter&gt;
+
+    &lt;ae:parameter name="load_models"&gt;%core.module_dir%/AppKit/lib/database/models/generated&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="models_directory"&gt;%core.module_dir%/AppKit/lib/database/models&lt;/ae:parameter&gt;
+    &lt;ae:parameter name="date_format"&gt;&lt;![CDATA[YYYY-MM-DD HH24:MI:SS]]&gt;&lt;/ae:parameter&gt;
+
+
+    &lt;ae:parameter name="caching"&gt;
+        &lt;ae:parameter name="enabled"&gt;false&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="driver"&gt;apc&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="use_query_cache"&gt;true&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="use_result_cache"&gt;true&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="result_cache_lifespan"&gt;60&lt;/ae:parameter&gt;
+    &lt;/ae:parameter&gt;
+
+&lt;/db:database&gt;</pre>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square">
+<li class="listitem">
+              <p>Datenbank-Identifier</p>
+
+              <pre class="screen">&lt;db:database name="%Database name%" class="%Handler%"&gt;
+   ...
+&lt;/db:database&gt;</pre>
+
+              <p>Mit dem db:database-Tag informieren Sie Icinga-Web, dass es sich um eine Datenbankdefinition handelt. Dieses Tag muss
+              zwei Attribute haben:</p>
+
+              <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                  <p>name: Der Name für Ihre Datenbank. Zu dieser Zeit (&gt;= v1.5) ist 'icinga-web' für die interne Icinga-Web-Datenbank
+                  reserviert, die Benutzer- und Anmeldeinformationen, Persistenz-Einstellungen usw. enthält, und 'icinga' für die Datenbank,
+                  die von ido2db genutzt wird, um die Informationen von Icinga zu speichern.</p>
+                </li>
+<li class="listitem">
+                  <p>class: Benutzen Sie immer "AppKitDoctrineDatabase", nur die 'icinga'-Datenbank erfordert 'IcingaDoctrineDatabase'
+                  (siehe unten)</p>
+                </li>
+</ul></div>
+            </li>
+<li class="listitem">
+              <p>dsn (Data Source Name):</p>
+
+              <p>Definiert die Anmeldeinformationen, den Typ und Standort der Datenbank:</p>
+
+              <p>Für MySQL, PostgreSQL und Oracle:</p>
+
+              <pre class="screen">&lt;db:database ...&gt;
+    ...
+    &lt;ae:parameter name="dsn"&gt;%driver%://%username%:%password%@%host%:%port%/%database name%&lt;/ae:parameter&gt;
+    ...
+&lt;/db:database&gt;</pre>
+
+              <p>Für sqlite3:</p>
+
+              <pre class="screen">&lt;db:database ...&gt;
+    ...
+    &lt;ae:parameter name="dsn"&gt;sqlite:///%path to your db file%&lt;/ae:parameter&gt;
+    ...
+&lt;/db:database&gt;</pre>
+
+              <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>SQLite-Datenbanken müssen für den Webserver-Benutzern les- und beschreibbar sein, außerdem das Verzeichnis, in dem
+                sich die Datei befindet.</p>
+              </td></tr>
+</table></div>
+
+              <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                  <p>%driver%: Das zu benutzende Datenbank-Backend</p>
+
+                  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                      <p>mysql: Eine MySQL-Datenbank</p>
+                    </li>
+<li class="listitem">
+                      <p>pgsql: Eine PostgreSQL-Datenbank</p>
+                    </li>
+<li class="listitem">
+                      <p>oracle: Eine Oracle-Datenbank, auf die über den <a class="link" href="http://www.php.net/manual/de/book.oci8.php" target="_top">oci8</a>-Treiber zugegriffen wird</p>
+
+                      <p>Benutzen Sie nicht den PDO-Treiber, denn dieser ist weit von produktiver Nutzung entfernt.</p>
+                    </li>
+<li class="listitem">
+                      <p>icingaOracle: Eine spezielle Implementation, die genutzt werden muss, wenn eine Icinga-Datenbank verwendet wird
+                      (einige Tabellennamen sind unterschiedlich und die Längen von Bezeichnern muss automatisch berücksichtigt werden, um
+                      sicherzustellen, dass sich kein Entwickler während der Entwicklung umbringt).</p>
+                    </li>
+</ul></div>
+                </li>
+<li class="listitem">
+                  <p>%username%: Der Benutzername zur DB-Authentifizierung</p>
+                </li>
+<li class="listitem">
+                  <p>%password%: Das Passwort zur DB-Authentifizierung</p>
+                </li>
+<li class="listitem">
+                  <p>%host%: Der Host Ihres DB-Servers</p>
+                </li>
+<li class="listitem">
+                  <p>%port%: Der Port Ihres DB-Servers</p>
+
+                  <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+                      <p>mysql-default: 3306</p>
+                    </li>
+<li class="listitem">
+                      <p>postgresql-default: 5432</p>
+                    </li>
+<li class="listitem">
+                      <p>oracle-default: 1521</p>
+                    </li>
+</ul></div>
+                </li>
+<li class="listitem">
+                  <p>%database name%: Der Name Ihrer Datenbank</p>
+                </li>
+</ul></div>
+            </li>
+<li class="listitem">
+              <p>charset</p>
+
+              <pre class="screen">&lt;db:database ...&gt;
+    ...
+    &lt;ae:parameter name="charset"&gt;utf8&lt;/ae:parameter&gt;
+    ...
+&lt;/db:database&gt;</pre>
+
+              <p>Im Allgemeinen sollte Ihr Datenbank-Zeichensatz utf8 sein.</p>
+            </li>
+<li class="listitem">
+              <p>manager_attributes, load_models, models_directory</p>
+
+              <pre class="screen">&lt;db:database ...&gt;
+    ...
+    &lt;ae:parameter name="manager_attributes"&gt;
+        &lt;ae:parameter name="Doctrine_Core::ATTR_MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
+    &lt;/ae:parameter&gt;
+    ...
+&lt;/db:database&gt;</pre>
+
+              <p>Sie können beruhigt diesen Abschnitt ignorieren und ihn einfach kopieren. Er enthält lediglich Doctrine-spezifische
+              Einstellungen (insbesondere wie Datenbankmodelle geladen werden und wo sie zu finden sind. Wenn Sie mehr wissen möchten, dann
+              schauen Sie in die <a class="link" href="http://www.doctrine-project.org/projects/orm/1.2/docs/manual/introduction-to-models/en#autoloading-models" target="_top">doctrine
+              documentation</a>).</p>
+            </li>
+<li class="listitem">
+              <p>date_formate</p>
+
+              <p>Dies ist erforderlich, um sauber auf Oracle-Datenbanken zuzugreifen. Es setzt das für die Datenbank zu benutzende
+              Datumsformat.</p>
+
+              <pre class="screen">&lt;db:database ...&gt;
+    ...
+    &lt;ae:parameter name="date_format"&gt;&lt;![CDATA[YYYY-MM-DD HH24:MI:SS]]&gt;&lt;/ae:parameter&gt;
+    ...
+&lt;/db:database&gt;</pre>
+            </li>
+<li class="listitem">
+              <p>Caching</p>
+
+              <pre class="screen">&lt;db:database ...&gt;
+    ...
+    &lt;ae:parameter name="caching"&gt;
+        &lt;ae:parameter name="enabled"&gt;false&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="driver"&gt;apc&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="use_query_cache"&gt;true&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="use_result_cache"&gt;true&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="result_cache_lifespan"&gt;60&lt;/ae:parameter&gt;
+    &lt;/ae:parameter&gt;
+&lt;db:database&gt;</pre>
+
+              <p>Wenn Sie apc oder memcache benutzen, dann können Sie entweder Datenbankabfragen oder -ergebnisse zwischenspeichern.
+              Während das Zwischenspeichern von Abfragen eigentlich nie eine schlechte Sache ist (solange Sie nicht entwickeln), ist das
+              Zwischenspeichern von Ergebnissen ein ziemlich spezieller Fall - denn Sie könnten veraltete Daten aus Ihrer Datenbank
+              bekommen. <span class="bold"><strong>Also benutzen Sie es bitte nie für Ihre Icinga-Datenbank!</strong></span> </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+                    <p>enabled: Caching für diese Datenbank ein- oder ausschalten</p>
+                  </li>
+<li class="listitem">
+                    <p>driver: apc oder memcache, wobei memcache experimentell ist (also probieren Sie es aus !)</p>
+                  </li>
+<li class="listitem">
+                    <p>use_query_cache: Abfragen zwischenspeichern (nur die SQL-Abfragen, nicht die Ergebnisse)</p>
+                  </li>
+<li class="listitem">
+                    <p>use_result_cache: Datenbankergebnisse zwischenspeichern (<span class="bold"><strong>Gefahr!</strong></span>)</p>
+                  </li>
+<li class="listitem">
+                    <p>result_cache_lifespan: Wie lange Ergebnisse zwischengespeichert werden sollen (in Sekunden), wenn use_result_cache
+                    benutzt wird</p>
+                  </li>
+</ul></div>
+            </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          <p><span class="emphasis"><em>Die "icinga_web"-Datenbank</em></span></p>
+
+          <p>Sie müssen eine Icinga-Web-Datenbank haben, die Informationen über Benutzer, Anmeldeinformationen, View-Persistenz, etc.
+          enthält. Diese Datenbank muss 'icinga_web' heißen. Alle Einstellungen sind im vorigen Abschnitt beschrieben.</p>
+        </li>
+<li class="listitem">
+          <p><span class="emphasis"><em>Die "icinga"-Datenbank</em></span></p>
+
+          <p>Ab Icinga-Web v1.5 wird die Icinga-API über Doctrine angesprochen (vorher gab es ein eigenes Projekt, die 'icinga-api'). Im
+          Folgenden werden nur spezielle bzw. zusätzliche Einstellungen erklärt. Solange nicht anders erwähnt, gelten alle Regeln aus <a class="link" href="icinga-web-config.html#configweb-general">"Allgemeine Einstellungen"</a>.</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square">
+<li class="listitem">
+              <p>Datenbank-Identifier</p>
+
+              <p>Der Icinga-Datenbank-Identifier muss "IcingaDoctrineDatabase" als 'class'-Attribut und 'icinga' als Datenbankname
+              benutzen, also:</p>
+
+              <pre class="screen">&lt;db:database name="icinga" class="IcingaDoctrineDatabase"&gt;
+...
+&lt;/db:database&gt;</pre>
+            </li>
+<li class="listitem">
+              <p>dsn</p>
+
+              <p>Sie können die gleichen Anmeldeinformationen wie in der <code class="filename">ido2db.cfg</code> benutzen, aber als
+              Sicherheitsgründen ist es sehr ratsam, einen Benutzer nur mit Leserechten für Icinga-Web anzulegen. Nachfolgend ein Beispiel,
+              welche Werte aus der <code class="filename">ido2db.cfg</code> passen.</p>
+
+              <pre class="screen">    &lt;ae:parameter name="dsn"&gt;mysql://db_user:db_pass@db_host:db_port/db_name&lt;/ae:parameter&gt;</pre>
+            </li>
+<li class="listitem">
+              <p>prefix</p>
+
+              <p>Definiert den Präfix wie in <code class="filename">ido2db.cfg</code> angegeben</p>
+
+              <pre class="screen">&lt;db:database name="icinga" class="IcingaDoctrineDatabase"&gt;
+...
+    &lt;ae:parameter name="prefix"&gt;icinga_&lt;/ae:parameter&gt;
+...
+&lt;/db:database&gt;</pre>
+
+              <p>Für Oracle benutzen Sie einen leeren Wert</p>
+
+              <pre class="screen">&lt;db:database name="icinga" class="IcingaDoctrineDatabase"&gt;
+...
+    &lt;ae:parameter name="prefix"&gt;&lt;/ae:parameter&gt;
+...
+&lt;/db:database&gt;</pre>
+            </li>
+<li class="listitem">
+              <p>use_retained</p>
+
+              <p>Whether to use retained or original data dumps (see the value in idomod.cfg)</p>
+
+              <pre class="screen">&lt;db:database name="icinga" class="IcingaDoctrineDatabase"&gt;
+...
+     &lt;ae:parameter name="use_retained"&gt;true&lt;/ae:parameter&gt;
+&lt;/db:database&gt;</pre>
+            </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          <p><span class="emphasis"><em>Komplettes Listing</em></span></p>
+
+          <pre class="screen">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+ 
+&lt;databases xmlns:db="http://agavi.org/agavi/config/parts/databases/1.0" xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0"&gt;
+    
+    &lt;db:database name="icinga_web" class="AppKitDoctrineDatabase"&gt;
+        &lt;ae:parameter name="dsn"&gt;mysql://icinga_web:icinga_web@localhost:3306/icinga_web&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="charset"&gt;utf8&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="manager_attributes"&gt;
+            &lt;ae:parameter name="Doctrine_Core::ATTR_MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
+        &lt;/ae:parameter&gt;
+
+        &lt;ae:parameter name="load_models"&gt;%core.module_dir%/AppKit/lib/database/models/generated&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="models_directory"&gt;%core.module_dir%/AppKit/lib/database/models&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="date_format"&gt;&lt;![CDATA[YYYY-MM-DD HH24:MI:SS]]&gt;&lt;/ae:parameter&gt;
+
+        &lt;ae:parameter name="caching"&gt;
+            &lt;ae:parameter name="enabled"&gt;false&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="driver"&gt;apc&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="use_query_cache"&gt;true&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="use_result_cache"&gt;true&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="result_cache_lifespan"&gt;60&lt;/ae:parameter&gt;
+        &lt;/ae:parameter&gt;
+
+    &lt;/db:database&gt;
+    
+    &lt;db:database xmlns="http://agavi.org/agavi/config/parts/databases/1.0" name="icinga" class="IcingaDoctrineDatabase"&gt;
+        &lt;ae:parameter name="dsn"&gt;mysql://icinga:icinga@localhost:3306/icinga&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="prefix"&gt;icinga_&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="charset"&gt;utf8&lt;/ae:parameter&gt;
+         &lt;ae:parameter name="use_retained"&gt;true&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="manager_attributes"&gt;
+            &lt;ae:parameter name="Doctrine_Core::ATTR_MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
+        &lt;/ae:parameter&gt;
+        &lt;ae:parameter name="load_models"&gt;%core.module_dir%/Api/lib/database/models/generated&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="models_directory"&gt;%core.module_dir%/Api/lib/database/models&lt;/ae:parameter&gt;
+        &lt;ae:parameter name="caching"&gt;
+            &lt;ae:parameter name="enabled"&gt;false&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="driver"&gt;apc&lt;/ae:parameter&gt;
+            &lt;ae:parameter name="use_query_cache"&gt;true&lt;/ae:parameter&gt;
+        &lt;/ae:parameter&gt;
+
+    &lt;/db:database&gt;
+
+&lt;/databases&gt;</pre>
+        </li>
+</ul></div>
+    </li>
+<li class="listitem">
+      <p><a name="configweb-access"></a>access.xml</p>
+
+      <p>Die Konfigurationsdatei <code class="filename">access.xml</code> hat zwei Hauptzwecke:</p>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+            <p>definieren von Hosts, auf die von Icinga-Web (via System oder ssh) zugegriffen werden kann und definieren von Dateien, auf
+            die lesend/schreibend zugegriffen werden kann bzw. auszuführenden Programmen</p>
+          </li>
+<li class="listitem">
+            <p>zuordnen von Icinga-Instanzen zu diesen Hosts</p>
+          </li>
+</ul></div>
+<p>Die <code class="filename">access.xml</code>-Konfiguration wird von Icinga-Webs Console-Handler-Implementation genutzt und
+      bietet zusätzliche Sicherheit, weil sie willkürliche Ausführung/Manipulation von Dateien in letzter Instanz verhindert.</p>
+
+      <p><span class="bold"><strong>Abschnitte</strong></span></p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><span class="emphasis"><em>Instanzen</em></span></p>
+
+          <p>Das Einrichten von Instanzen erfolgt im &lt;instances&gt;-Abschnitt:</p>
+
+          <p>Beispiel: Zuordnen der Instanz 'default' zum Host 'localhost' </p>
+<pre class="screen">&lt;!-- Map your instances to hosts here --&gt;
+ &lt;instances&gt;
+    &lt;instance name="default"&gt;localhost&lt;/instance&gt;
+ &lt;/instances&gt;</pre>
+
+          <p>Zulässige Unterelemente</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square"><li class="listitem">
+              <p>instance: Nur "instance" ist als Unterelement zulässig. Dieser Knoten ordnet einem Host (s.u.) einen Instanznamen zu,
+              der durch den Wert des Attributs "name" festgelegt ist: </p>
+<pre class="screen"> &lt;instance name="%icinga instance name%"&gt;%host name%&lt;/instance&gt;</pre>
+            </li></ul></div>
+        </li>
+<li class="listitem">
+          <p><span class="emphasis"><em>Standardwerte</em></span></p>
+
+          <p>Der "default"-Abschnitt definiert Standardwerte für Host-Einstellungen, z.B. auf welche Dateien schreibend/lesend
+          zugegriffen werden bzw. welche ausgeführt werden können. Auch der Standard-Host, der von Icinga-Web benutzt werden soll, wird hier
+          definiert.</p>
+
+          <p>Zulässige Unterelemente</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square">
+<li class="listitem">
+              <p>defaultHost: definiert den Hos, der für Aktionen benutzt wird, wenn kein Host angegeben ist. Momentan (v1.6) ist dies
+              nur für einige Module wichtig und es betrifft nicht Icinga-Webs Standardleistungsumfang. </p>
+<pre class="screen"> &lt;defaultHost&gt;localhost&lt;/defaultHost&gt;</pre>
+<p>Der
+              Host muss im hosts-Abschnitt definiert werden.</p>
+            </li>
+<li class="listitem">
+              <p>access: Icinga-Web (und Module, wenn sie korrekt geschrieben sind) greifen nicht direkt auf System-Ressourcen zu,
+              sondern über ein Console-Interface, das sich um die Sicherheit kümmert. Im Zugriffsabschnitt definieren Sie, welche
+              System-Ressources von dieser Behandlungsroutine aufgerufen werden dürfen und wo sie sich befinden. Außerdem geben Sie
+              System-Ressourcen einen Ressourcen-Namen. Der Console-Handler bspw. greift auf die Icinga-Pipe nur über den Ressource-Namen
+              "icinga_pipe" zu.</p>
+
+              <p>Der Zugriffsabschnitt hat vier zulässige Unterelemente: 'readwrite', 'read', 'write' und 'execute', die die
+              Zugriffsebene für darunterliegende Ressourcen definieren. Ressourcen selbst werden unter den Tags 'folders' oder 'files'
+              definiert und mit 'resource' eingeschlossen: Das folgende Beispiel erlaubt Schreib-/Lesezugriff auf Icingas
+              <code class="filename">objects</code>-Ordner. Schreiben, Lesen und Ausführen funktionieren analog, das 'readwrite'-Tag wird jeweils
+              durch das entsprechende Tag ausgetauscht.</p>
+            </li>
+</ul></div>
+
+          <pre class="screen"> &lt;readwrite&gt;
+    &lt;folders&gt;
+       &lt;resource name="icinga_objects"&gt;/usr/local/icinga/etc/objects&lt;/resource&gt;
+    &lt;/folders&gt;
+    &lt;files&gt;
+       &lt;resource name="icinga_cfg"&gt;/usr/local/icinga/etc/icinga.cfg&lt;/resource&gt;
+    &lt;/files&gt;
+ &lt;/readwrite&gt;</pre>
+<p>Wie oben erwähnt ordnet jede Ressource ein Ressourcen-Symbol (Name) einem Pfad zu. Dies ist optional, wird aber
+          empfohlen. Wenn ein Symbol mehrfach existiert, dann wird das letzte benutzt.</p>
+
+          <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+            <p><span class="emphasis"><em>Eigene Default-Definitionen in Ihrem Konfigurationsordner</em></span></p>
+
+            <p>If you override a custom section, like readwrite, all previously set definitions will be ignored and must be redefined if
+            you want to use them. Das betrifft nicht Modul-KonfigurationenThis doesn't affect module configurations.</p>
+          </td></tr>
+</table></div>
+        </li>
+<li class="listitem">
+          <p><span class="emphasis"><em>Hosts</em></span></p>
+
+          <p>Im host-Abschnitt werden Zugriffsmethoden und Anmeldeinformation, aber auch spezifische Rechte für Hosts definiert.</p>
+
+          <p>Zulässige Unterelemente:</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square">
+<li class="listitem">
+              <p>host: definiert einen einzelnen Host und gibt ihm einen Namen, der benutzt werden kann, um auf diesen Host zu
+              referenzieren (wie z.B. im "instance"-Abschnitt). </p>
+<pre class="screen"> &lt;!-- Example for ssh connection with user/password auth --&gt;
+ &lt;host name="vm_host1"&gt;
+    &lt;type&gt;ssh&lt;/type&gt;
+    &lt;ssh-config&gt;
+       &lt;host&gt;localhost&lt;/host&gt;
+       &lt;port&gt;22&lt;/port&gt;
+       &lt;auth&gt;
+          &lt;type&gt;password&lt;/type&gt;
+          &lt;user&gt;john_doe&lt;/user&gt;
+          &lt;password&gt;foobar&lt;/password&gt;
+       &lt;/auth&gt;
+    &lt;/ssh-config&gt;
+
+    &lt;access useDefaults="true" /&gt;
+ &lt;/host&gt;</pre>
+<p> Das 'host'-Tag hat eine Reihe von Unterelementen:</p>
+            </li>
+<li class="listitem">
+              <p>type: Entweder "local" oder "ssh". Definiert, ob Befehl direkt auf der Maschine ausgeführt werden, auf der Icinga-Web
+              läuft, oder via ssh.</p>
+            </li>
+<li class="listitem">
+              <p>access: sh. den "access"-Abschnitt weiter oben. Zusätzlich kann 'useDefaults' gesetzt werden, um dem Command-Interface
+              mitzuteilen, dass alle Standardzugriffsdefinitionen benutzt werden sollen (wenn sie nicht in diesem Abschnitt überschrieben
+              werden).</p>
+            </li>
+<li class="listitem">
+              <p>ssh-config: (nur falls type:ssh) Dies legt fest, wie auf den Host per ssh zugegriffen werden soll. Es gibt drei
+              Authentifizierungsmethoden für ssh: 'none', 'password' oder 'key', die im folgenden Abschnitt erläutert werden. Unabhängig
+              davon, welche Methode Sie wählen, müssen die 'host'- und 'port'-Einträge für jeden Host gesetzt werden.</p>
+            </li>
+</ul></div>
+        </li>
+<li class="listitem">
+          <p><span class="emphasis"><em>SSH-Config auth</em></span></p>
+
+          <p>Dieser Abschnitt erklärt den Authentifizierungsblock der ssh-Konfigurationseinstellungen, die wir im vorigen Anschnitt
+          angesprochen haben. Die Elemente unterhalb des 'auth'-Tags sind abhängig vom ausgewählten Authentifizierungstyp.</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square">
+<li class="listitem">
+              <p>Auth type: none</p>
+
+              <p>Dies teilt der Console-Verbindung mit, dass nur ein Benutzername für die Authentifizierung verwendet wird:</p>
+<pre class="screen"> &lt;ssh-config&gt;
+    &lt;host&gt;localhost&lt;/host&gt;
+    &lt;port&gt;22&lt;/port&gt;
+    &lt;auth&gt;
+       &lt;type&gt;none&lt;/type&gt;
+       &lt;user&gt;john_doe&lt;/user&gt;
+    &lt;/auth&gt;
+ &lt;/ssh-config&gt;</pre>
+<p>In diesem Beispiel wird nur der Benutzername 'john_doe' für die Authentifizierung geliefert. Dies kann sinnvoll
+              sein, wenn Ihre Maschinen automatische Schlüssel-Authentifizierung benutzen.</p>
+            </li>
+<li class="listitem">
+              <p>Auth type: password</p>
+
+              <p>Dies teilt der Console-Verbindung mit, dass Benutzername und Passwort für die Authentifizierung verwendet
+              werden:</p>
+<pre class="screen"> &lt;ssh-config&gt;
+    &lt;host&gt;localhost&lt;/host&gt;
+    &lt;port&gt;22&lt;/port&gt;
+    &lt;auth&gt;
+       &lt;type&gt;password&lt;/type&gt;
+       &lt;user&gt;john_doe&lt;/user&gt;
+       &lt;password&gt;foobar&lt;/password&gt;
+    &lt;/auth&gt;
+ &lt;/ssh-config&gt;</pre>
+<p>In diesem Beispiel werden nur der Benutzername 'john_doe' und das Passwort 'foobar' für die Authentifizierung
+              verwendet.</p>
+            </li>
+<li class="listitem">
+              <p>Auth type: key</p>
+
+              <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top">
+                <p>Experimentell! Probieren Sie es aus und öffnen Sie ein Ticket, wenn Sie Probleme haben!</p>
+              </td></tr>
+</table></div>
+
+              <p>Dies teilt der Console-Verbindung mit, eine Schlüsseldatei für die Authentifizierung zu benutzen, die optional mit einem
+              Password geschützt ist</p>
+<pre class="screen"> &lt;ssh-config&gt;
+    &lt;host&gt;localhost&lt;/host&gt;
+    &lt;port&gt;22&lt;/port&gt;
+    &lt;auth&gt;
+       &lt;type&gt;key&lt;/type&gt;
+       &lt;user&gt;testuser&lt;/user&gt;
+       &lt;private-key&gt;/usr/local/icinga-web/app/modules/Api/lib/.ssh/host1_rsa&lt;/private-key&gt;
+       &lt;password&gt;secret123&lt;/password&gt;
+    &lt;/auth&gt;
+ &lt;/ssh-config&gt;</pre>
+<p> Hier wird der private Schlüssel benutzt, der im 'private-key'-Tag definiert wird. Sie sollten und müssen
+              diesen Pfad <span class="emphasis"><em>nicht</em></span> im host-Zugriffsabschnitt definieren!</p>
+            </li>
+</ul></div>
+        </li>
+</ul></div>
+
+      <p><span class="bold"><strong>Fehlersuche</strong></span></p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+          <p>Ich kann keine Befehle senden/ausführen!</p>
+
+          <p>Stellen Sie sicher, dass der WebServer-Benutzer Schreibberechtigung auf die Icinga-Pipe besitzt und dass das
+          "icinga_pipe"-Symbol im "readwrite"- oder "write"-Abschnitt Ihres Host (oder im default-Abschnitt) vorhanden ist. Stellen Sie
+          sicher, dass der Pfad korrekt ist.</p>
+        </li></ul></div>
     </li>
 <li class="listitem">
       <p><code class="filename">factories.xml</code> - enthält die Konfiguration für Ihre Web Session</p>
     </li>
 <li class="listitem">
-      <p><code class="filename">icinga.xml</code> - enthält die Konfiguration für Ihr Icinga-Web ROOT-Verzeichnis und den Icinga Web Pfad.</p>
+      <p><code class="filename">icinga.xml</code> - enthält die Konfiguration für Ihr Icinga-Web ROOT-Verzeichnis und den Icinga-Web Pfad.</p>
     </li>
 </ul></div>
 
@@ -116,21 +679,23 @@ app/modules/AppKit/
   <pre class="programlisting">#&gt; vi app/modules/AppKit/config/module.xml
 &lt;ae:parameter name="date.timezone"&gt;GMT&lt;/ae:parameter&gt;</pre>
 
-  <p><a name="configweb-module"></a> <span class="bold"><strong>Modul Konfiguration:</strong></span></p>
+  <p><a name="configweb-module"></a> <span class="bold"><strong>Modul-Konfiguration:</strong></span></p>
 
-  <p><span class="bold"><strong>app/modules/AppKit</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="bold"><strong>app/modules/AppKit</strong></span></p>
 
-  <p>Hier "lebt" das Framework: Authentifikation, Menüs und weiteres.</p>
+      <p>Hier "lebt" das Framework: Authentifikation, Menüs und weiteres.</p>
 
-  <p><a name="configweb-auth"></a> <span class="bold"><strong>Authentifizierung</strong></span></p>
+      <p><a name="configweb-auth"></a> <span class="bold"><strong>Authentifizierung</strong></span></p>
 
-  <p>Beispiel: LDAP-Authentifizierung</p>
+      <p>Beispiel: LDAP-Authentifizierung</p>
 
-  <p>Öffnen Sie <code class="filename">app/modules/AppKit/config/auth.xml</code>.</p>
+      <p>Öffnen Sie <code class="filename">app/modules/AppKit/config/auth.xml</code>.</p>
 
-  <p>Ein Anbieter ist wie folgt aufgebaut:</p>
+      <p>Ein Anbieter ist wie folgt aufgebaut:</p>
 
-  <pre class="programlisting"> &lt;ae:parameter name="msad-ldap1"&gt;
+      <pre class="programlisting"> &lt;ae:parameter name="msad-ldap1"&gt;
             &lt;ae:parameter name="auth_module"&gt;AppKit&lt;/ae:parameter&gt;
             &lt;ae:parameter name="auth_provider"&gt;Auth.Provider.LDAP&lt;/ae:parameter&gt;
             &lt;ae:parameter name="auth_enable"&gt;true&lt;/ae:parameter&gt;
@@ -152,52 +717,50 @@ app/modules/AppKit/
             &lt;ae:parameter name="ldap_filter_user"&gt;&lt;![CDATA[(&amp;(sAmAccountName=__USERNAME__))]]&gt;&lt;/ae:parameter&gt;
         &lt;/ae:parameter&gt;</pre>
 
-  <p>Die <code class="filename">auth.xml</code> hält die Dokumentation für die globale Konfiguration. Die LDAP-Authentifizierung sollte mit
-  einigen grundlegenden LDAP- Kenntnissen möglich sein.</p>
+      <p>Die <code class="filename">auth.xml</code> hält die Dokumentation für die globale Konfiguration. Die LDAP-Authentifizierung sollte mit
+      einigen grundlegenden LDAP-Kenntnissen möglich sein.</p>
 
-  <p>Sie können die Anbieter duplizieren und so Ihre Authentifizierungs-Basis vergrössern.</p>
+      <p>Sie können die Anbieter duplizieren und so Ihre Authentifizierungs-Basis vergrößern.</p>
 
-  <p>Bitte speichern Sie Ihre Konfiguration in <code class="filename">auth.site.xml</code> !</p>
+      <p>Bitte speichern Sie Ihre Konfiguration in <code class="filename">auth.site.xml</code> !</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>app/modules/Cronks</strong></span></p>
 
-  <p><span class="bold"><strong>app/modules/Cronks</strong></span></p>
+      <p>Alle Cronks werden hier implementiert: Grids und iframes. Sie sind einfache HTML-Seiten, die ExtJS-Komponenten-Code enthalten.
+      Wenn Sie einen neuen Cronk hinzufügen möchten, wird dieses Modul Ihr Freund sein.</p>
 
-  <p>Alle Cronks werden hier implementiert: Grids und iframes. Sie sind einfache HTML-Seiten, die ExtJS Komponenten Code enthalten. Wenn
-  Sie einen neuen Cronk hinzufügen möchten, wird dieses Modul Ihr Freund sein.</p>
+      <p>Wenn Sie einen neuen Cronk entwickeln möchten, schauen Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/HowToDevelopCronks" target="_top">HowToDevelopCronks</a></p>
 
-  <p>Wenn Sie einen neuen Cronk entwickeln möchten, schauen Sie hier: <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/HowToDevelopCronks" target="_top">HowToDevelopCronks</a></p>
+      <p>Die Konfiguration können Sie im Cronk-Module ändern:</p>
 
-  <p>Die Konfiguration können Sie im Cronk-Module ändern:</p>
-
-  <pre class="programlisting">#&gt; ls app/modules/Cronks/config
+      <pre class="programlisting">#&gt; ls app/modules/Cronks/config
 autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-      <p><code class="filename">module.xml</code> - definieren von neuen Kategorien in denen die Cronks erscheinen, die Datei
-      <code class="filename">module.xml</code> hält dazu alle Informationen</p>
-    </li>
+          <p><code class="filename">module.xml</code> - definieren von neuen Kategorien in denen die Cronks erscheinen, die Datei
+          <code class="filename">module.xml</code> hält dazu alle Informationen</p>
+        </li>
 <li class="listitem">
-      <p><code class="filename">cronks.xml</code> - um auf neue Cronks zu zugreifen, definieren von neuen iframe Cronks</p>
-
-      <p></p>
-    </li>
+          <p><code class="filename">cronks.xml</code> - um auf neue Cronks zu zugreifen, definieren von neuen iframe Cronks</p>
+        </li>
 </ul></div>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>app/modules/Web</strong></span></p>
 
-  <p><span class="bold"><strong>app/modules/Web</strong></span></p>
+      <p>Oder besser:<span class="bold"><strong> Icinga</strong></span>. Dieses Modul enthält alle Icinga relevanten Dinge wie IcingaAPI2Json und
+      die Statusinformationen. Auch die Icinga-API-Verbindungseinstellungen werden hier konfiguriert.</p>
 
-  <p>Oder besser:<span class="bold"><strong> Icinga</strong></span>. Dieses Modul enthält alle Icinga relevanten Dinge wie IcingaAPI2Json und die
-  Statusinformationen. Auch die Icinga-API-Verbindungseinstellungen werden hier konfiguriert.</p>
+      <p><a name="configweb-api"></a> <span class="bold"><strong>Icinga-API Verbindungseinstellungen</strong></span></p>
 
-  <p></p>
+      <p>Beispiel: Ändern der Icinga-API-Verbindungseinstellungen</p>
 
-  <p><a name="configweb-api"></a> <span class="bold"><strong>Icinga-API Verbindungseinstellungen</strong></span></p>
+      <p>Sehen Sie in <code class="filename">app/modules/Web/config/icinga-io.xml</code>, hier finden Sie die Standardeinstellungen für die
+      Icinga-API-Verbindung.</p>
 
-  <p>Beispiel: Ändern der Icinga-API-Verbindungseinstellungen</p>
-
-  <p>Sehen Sie in <code class="filename">app/modules/Web/config/icinga-io.xml</code>, hier finden Sie die Standardeinstellungen für die
-  Icinga-API-Verbindung.</p>
-
-  <pre class="programlisting">#&gt; vi app/modules/Web/config/icinga-io.xml
+      <pre class="programlisting">#&gt; vi app/modules/Web/config/icinga-io.xml
 
           &lt;setting name="api.interfaces.data"&gt;
                                         &lt;!-- IcingaApi connection interface --&gt;
@@ -216,8 +779,10 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
                                         &lt;ae:parameter name="config_table_prefix"&gt;icinga_&lt;/ae:parameter&gt;
                                         &lt;!-- ###END_CONNECTION_IDO### --&gt;</pre>
 
-  <p>Wenn Sie diese Einstellungen ändern möchten, editieren Sie bitte
-  <code class="filename">app/modules/Web/config/icinga-io.site.xml</code>.</p>
+      <p>Wenn Sie diese Einstellungen ändern möchten, editieren Sie bitte
+      <code class="filename">app/modules/Web/config/icinga-io.site.xml</code>.</p>
+    </li>
+</ul></div>
 
   <p><a name="configweb-customconfig"></a><span class="bold"><strong>Benutzerdefinierte Konfiguration</strong></span></p>
 
@@ -225,7 +790,7 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
   <p>Wenn Sie Konfigurationsdateien ändern oder erstellen, denken Sie bitte an folgendes:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>Zeilen die mit &lt;!-- beginnen und enden mit --&gt; werden als Kommentare interpretiert.</p>
     </li>
@@ -233,56 +798,12 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
       <p>Variablennamen sind case-sensitive</p>
     </li>
 <li class="listitem">
-      <p>Ihre benutzerdefinierten Icinga-Web-Konfigurationseinstellungen für die Icinga-API, die Authentifizierung und die Datenbank
-      können Sie in den app/modules/Appkit(/Cronks/Web)/config/*.site.xml- Dateien vornehmen. Diese Dateien werden bei einer Aktualisierung
-      von Icinga-Web nicht überschrieben.</p>
-
-      <p>Folgende Dateien sind dafür vorgesehen:</p>
-
-      <p><code class="filename">app/modules/Cronks/config/cronks.site.xml</code></p>
-
-      <p><code class="filename">app/modules/Web/config/icinga-io.site.xml</code></p>
-
-      <p><code class="filename">app/modules/AppKit/config/auth.site.xml</code></p>
-
-      <p><code class="filename">app/config/icinga.site.xml</code></p>
-
-      <p><code class="filename">app/config/databases.site.xml</code></p>
-
-      <p><code class="filename">app/config/settings.site.xml</code></p>
-
-      <p><code class="filename">app/config/translation.site.xml</code></p>
-
-      <p><code class="filename">app/config/factories.site.xml</code></p>
-
-      <p></p>
-
-      <p>Die Templates für Grids und TO's (tactical overview) können in ihrem Verzeichnis zu *.site.xml- Dateien kopiert werden:</p>
-
-      <p><span class="bold"><strong>Die Grids:</strong></span></p>
-
-      <p><code class="filename">app/modules/Cronks/data/xml/grid/icinga-hostgroup-summary-template.xml</code></p>
-
-      <p><code class="filename">app/modules/Cronks/data/xml/grid/icinga-host-history-template.xml</code></p>
-
-      <p><code class="filename">app/modules/Cronks/data/xml/grid/icinga-host-template.xml</code></p>
-
-      <p>...</p>
-
-      <p><span class="bold"><strong>und die TO's:</strong></span></p>
-
-      <p><code class="filename">app/modules/Cronks/data/xml/to/icinga-tactical-overview-groupstat.xml</code></p>
-
-      <p><code class="filename">app/modules/Cronks/data/xml/to/icinga-tactical-overview-presets.xml</code></p>
-
-      <p><code class="filename">app/modules/Cronks/data/xml/to/icinga-tactical-overview-template-charts.xml</code></p>
-
-      <p>...</p>
-
-      <p>Um auf Ihre *.site.xml- Grids/Cronks zugreifen zu können, müssen Sie diese in
-      <code class="filename">app/modules/Cronks/config/cronks.xml</code> hinterlegen.</p>
+      <p>Die Icinga-Web-Konfigurationseinstellungen für die Icinga-API, die Authentifizierung und die Datenbank werden in
+      <code class="filename">etc/conf.d/</code> gespeichert (vor v1.5 waren sie in app/modules/Appkit(/Cronks/Web)/config/abgelegt). Diese Dateien
+      werden bei einer Aktualisierung von Icinga-Web nicht überschrieben. Das Verzeichnis kann bei der Installation mit --with-conf-folder
+      geändert werden.</p>
     </li>
-</ol></div>
+</ul></div>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -302,19 +823,19 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
   <p>Benötigen Sie weitere Informationen? Schauen Sie bitte in unserem<a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top"> Development Wiki.</a></p>
 
-  <a class="indexterm" name="id5080287"></a>
+  <a class="indexterm" name="idp11552032"></a>
 
-  <a class="indexterm" name="id5080301"></a>
+  <a class="indexterm" name="idp11553264"></a>
 
-  <a class="indexterm" name="id5080302"></a>
+  <a class="indexterm" name="idp11554480"></a>
 
-  <a class="indexterm" name="id5080311"></a>
+  <a class="indexterm" name="idp11555664"></a>
 
-  <a class="indexterm" name="id5080285"></a>
+  <a class="indexterm" name="idp11556912"></a>
 
-  <a class="indexterm" name="id5080346"></a>
+  <a class="indexterm" name="idp11558480"></a>
 
-  <a class="indexterm" name="id5080332"></a>
+  <a class="indexterm" name="idp11560064"></a>
 </div>
 <div class="navfooter">
 <hr>

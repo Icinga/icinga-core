@@ -104,6 +104,7 @@ typedef struct hoststatus_struct{
 	struct  hoststatus_struct *nexthash;
 	time_t  acknowledgement_end_time;
 	int	search_matched;
+	int	added;
         }hoststatus;
 
 
@@ -160,6 +161,7 @@ typedef struct servicestatus_struct{
 	struct  servicestatus_struct *nexthash;
 	time_t  acknowledgement_end_time;
 	int	search_matched;
+	int	added;
         }servicestatus;
 
 

@@ -63,10 +63,12 @@ extern comment *comment_list;
 /* initialize comment data */
 int xcddefault_initialize_comment_data(char *main_config_file) {
 	comment *temp_comment = NULL;
+	comment *next_comment = NULL;
 
 	/* find the new starting index for comment id if its missing*/
 	if (next_comment_id == 0L) {
-		for (temp_comment = comment_list; temp_comment != NULL; temp_comment = temp_comment->next) {
+		for (temp_comment = comment_list; temp_comment != NULL; temp_comment = next_comment) {
+			next_comment = temp_comment->next;
 			if (temp_comment->comment_id >= next_comment_id)
 				next_comment_id = temp_comment->comment_id + 1;
 		}

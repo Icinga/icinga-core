@@ -4,7 +4,7 @@
 <title>Custom Object Variables</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.5 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.6 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="objectdefinitions.html" title="Object Definitions">
 <link rel="next" href="configcgi.html" title="CGI Configuration File Options">
@@ -137,37 +137,37 @@ define contact{
 <td><p>Host</p></td>
 <td><p>MAC_ADDRESS</p></td>
 <td><p>$_HOSTMAC_ADDRESS$</p></td>
-<td><p>NAGIOS__HOSTMAC_ADDRESS</p></td>
+<td><p>ICINGA__HOSTMAC_ADDRESS</p></td>
 </tr>
 <tr>
 <td><p>Host</p></td>
 <td><p>RACK_NUMBER</p></td>
 <td><p>$_HOSTRACK_NUMBER$</p></td>
-<td><p>NAGIOS__HOSTRACK_NUMBER</p></td>
+<td><p>ICINGA__HOSTRACK_NUMBER</p></td>
 </tr>
 <tr>
 <td><p>Service</p></td>
 <td><p>SNMP_COMMUNITY</p></td>
 <td><p>$_SERVICESNMP_COMMUNITY$</p></td>
-<td><p>NAGIOS__SERVICESNMP_COMMUNITY</p></td>
+<td><p>ICINGA__SERVICESNMP_COMMUNITY</p></td>
 </tr>
 <tr>
 <td><p>Service</p></td>
 <td><p>TECHCONTACT</p></td>
 <td><p>$_SERVICETECHCONTACT$</p></td>
-<td><p>NAGIOS__SERVICETECHCONTACT</p></td>
+<td><p>ICINGA__SERVICETECHCONTACT</p></td>
 </tr>
 <tr>
 <td><p>Contact</p></td>
 <td><p>AIM_USERNAME</p></td>
 <td><p>$_CONTACTAIM_USERNAME$</p></td>
-<td><p>NAGIOS__CONTACTAIM_USERNAME</p></td>
+<td><p>ICINGA__CONTACTAIM_USERNAME</p></td>
 </tr>
 <tr>
 <td><p>Contact</p></td>
 <td><p>YAHOOID</p></td>
 <td><p>$_CONTACTYAHOOID$</p></td>
-<td><p>NAGIOS__CONTACTYAHOOID</p></td>
+<td><p>ICINGA__CONTACTYAHOOID</p></td>
 </tr>
 </tbody>
 </table>
@@ -177,8 +177,8 @@ define contact{
 
   <p>Custom object variables are <a class="link" href="objectinheritance.html" title="Object Inheritance">inherited</a> just like standard host, service, or
   contact variables.</p>
-  <a class="indexterm" name="id3521666"></a>
-  <a class="indexterm" name="id3521680"></a>
+  <a class="indexterm" name="idp5607776"></a>
+  <a class="indexterm" name="idp5608752"></a>
 </div>
 <div class="navfooter">
 <hr>

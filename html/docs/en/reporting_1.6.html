@@ -1,0 +1,251 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Installation of the Icinga-Reporting with JasperServer</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.6 Documentation">
+<link rel="up" href="ch09.html" title="Chapter 9. Integration With Other Software">
+<link rel="prev" href="int-mklivestatus.html" title="MKLiveStatus Integration">
+<link rel="next" href="ch10.html" title="Chapter 10. Additional software">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Installation of the Icinga-Reporting with JasperServer</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="int-mklivestatus.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 9. Integration With Other Software</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch10.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Installation of the Icinga-Reporting with JasperServer">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="reporting_1.6"></a>Installation of the Icinga-Reporting with JasperServer</h2></div></div></div>
+  
+
+  <p>The Icinga-Reporting is based on the IDOUtils backend and just like the Icinga-Core, it will support all major database
+  platforms.</p>
+
+  <p>Here we'll give you some instructions on how to install the Icinga-Reporting with JasperServer.</p>
+
+  <p><span class="bold"><strong>Official Docs</strong></span></p>
+
+  <p>For more information, please refer to <a class="link" href="http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.2.1/JasperReports-Server-CP-Install-Guide.pdf" target="_top">http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.2.1/JasperReports-Server-CP-Install-Guide.pdf</a>
+  or <a class="link" href="http://jasperforge.org/espdocs/espbrowse.php?id=86&amp;type=folder&amp;group_id=112&amp;parent=86" target="_top">http://jasperforge.org/espdocs/espbrowse.php?id=86&amp;type=folder&amp;group_id=112&amp;parent=86</a></p>
+
+  <p><span class="bold"><strong>Requirements</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Apache Tomcat</p>
+
+      <p>Only if you don't want to use the bundled one from JasperServer</p>
+
+      <pre class="screen"> #&gt; apt-get install tomcat6</pre>
+    </li>
+<li class="listitem">
+      <p>PostgreSQL</p>
+
+      <p>Only if you don't want to use the bundled one from JasperServer. PostgreSQL is required for JasperServer's internal
+      storage.</p>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>JasperServer changed their backend from MySQL to PostgreSQL in 4.2.1! <a class="link" href="http://jasperforge.org/plugins/espnews/browse.php?group_id=112&amp;news_id=292" target="_top">Source</a></p>
+      </td></tr>
+</table></div>
+    </li>
+<li class="listitem">
+      <p>JasperServer</p>
+
+      <p>Depending on your architecture (<code class="code">uname -a</code>), fetch the appropriate installer - below is x64</p>
+<pre class="screen"> $&gt; wget http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.2.1/jasperreports-server-cp-4.2.1-linux-x64-installer.run
+
+ $&gt; chmod +x jasperreports-server-cp-4.2.1-linux-x64-installer.run
+ $&gt; sudo ./jasperreports-server-cp-4.2.1-linux-x64-installer.run</pre>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>Agree to license</p>
+        </li>
+<li class="listitem">
+          <p>select bundled tomcat</p>
+        </li>
+<li class="listitem">
+          <p>select bundled postgresql</p>
+
+          <div class="itemizedlist"><ul class="itemizedlist" type="square"><li class="listitem">
+              <p>select a different postgresql port, like 5433, not to interfere with existing setups</p>
+            </li></ul></div>
+        </li>
+<li class="listitem">
+          <p>install sample reports and ireports</p>
+        </li>
+</ul></div>
+
+      <p>The installer will automatically create the needed database, create the schema and install samples.</p>
+
+      <p><span class="emphasis"><em>Start</em></span></p>
+
+      <pre class="screen"> #&gt; cd /opt/jasperreports-server-cp-4.2.1/
+ #&gt; ./ctlscript.sh start</pre>
+<p>For individual components</p>
+<pre class="screen"> #&gt; ./ctlscript.sh postgresql start|stop
+ #&gt; ./ctlscript.sh tomcat start|stop</pre>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Icinga Reporting</strong></span></p>
+
+  <p>As from Icinga 1.6 on, the package provides configure and make scripts.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Sources</p>
+
+      <p>Download from sourceforge and extract. If you have an issue which might be solved in the developer version then get the latest
+      developer snapshot from git </p>
+<pre class="screen"> $&gt; wget http://sourceforge.net/projects/icinga/files/icinga-reporting/1.6.0/icinga-reports-1.6.0.tar.gz; \
+    tar xzf icinga-reports-1.6.0.tar.gz; \
+    cd icinga-reports-1.6.0</pre>
+<p>or </p>
+<pre class="screen"> $&gt; git clone git://git.icinga.org/icinga-reports.git ; \
+    cd icinga-reports</pre>
+
+      <p>If a developer told you to use his/her branch, check that out with</p>
+
+      <pre class="screen"> $&gt; git branch localbranch origin/devhead/devbranch
+ $&gt; git checkout localbranch
+ $&gt; git log</pre>
+    </li>
+<li class="listitem">
+      <p>Configure</p>
+
+      <p>If you did not install the JasperServer into the default prefix before, you need to tell configure the location. </p>
+<pre class="screen"> $&gt; ./configure --with-jasper-server=/opt/jasperreports-server-cp-4.2.1</pre>
+    </li>
+<li class="listitem">
+      <p>Make</p>
+
+      <p>Invoke 'make' without params to get a full list of available options.</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>MySQL Connector</p>
+
+          <p>JasperServer natively ships with the PostgreSQL Connector, but if you require MySQL, the Icinga Reporting
+          package provides one for install.</p>
+<pre class="screen"> #&gt; make install-mysql-connector</pre>
+<p>Restart the Tomcat server</p>
+<pre class="screen"> #&gt; cd /opt/jasperreports-server-cp-4.2.1
+ #&gt; ./ctlscript.sh stop tomcat
+ #&gt; ./ctlscript.sh start tomcat</pre>
+        </li>
+<li class="listitem">
+          <p>Install</p>
+<pre class="screen"> #&gt; make install</pre>
+<p>Restart the Tomcat server</p>
+<pre class="screen"> #&gt; cd /opt/jasperreports-server-cp-4.2.1
+ #&gt; ./ctlscript.sh stop tomcat
+ #&gt; ./ctlscript.sh start tomcat</pre>
+        </li>
+</ul></div>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Configuration</strong></span></p>
+
+  <p>Open the webinterface, default credentials are jasperadmin:jasperadmin</p>
+
+  <p><code class="uri">http://127.0.0.1:8080/jasperserver</code></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>IDO</p>
+
+      <p>Go to <code class="uri">/root/Icinga/datasource</code> (be sure that Refine contains "changed by anyone").</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>edit the existing datasource and configure your values.</p>
+        </li>
+<li class="listitem">
+          <p>test the configuration and save the connection.</p>
+        </li>
+<li class="listitem">
+          <p>all reports in our package point to this datasource and should be able to run.</p>
+        </li>
+</ul></div>
+    </li></ul></div>
+
+  <p><span class="bold"><strong>Reports</strong></span></p>
+
+  <p>Verify that the reports are available and working.</p>
+
+  <div class="figure">
+<a name="idp14206608"></a><p class="title"><b>Figure 9.1. Icinga reporting</b></p>
+<div class="figure-contents">
+    
+    <div class="screenshot">
+
+      <div class="mediaobject"><img src="../images/icinga-reporting_1.6.png" alt="Icinga reporting"></div>
+    </div>
+  </div>
+</div>
+<br class="figure-break">
+
+  <p><span class="bold"><strong>Errors</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Display Errors</p>
+
+      <pre class="screen"> org.springframework.web.util.NestedServletException: Handler processing failed; nested exception is java.lang.InternalError: Can't connect to X11 window server using ':0' as the value of the DISPLAY variable.</pre>
+<p>The
+      tomcat being run as root, trying to access the users x11 display. Allow it for everyone locally.</p>
+<pre class="screen"> $&gt; xhost +local:all</pre>
+    </li>
+<li class="listitem">
+      <p>Generation Errors</p>
+
+      <pre class="screen"> org.springframework.web.util.NestedServletException: Handler processing failed; nested exception is java.lang.NoClassDefFoundError: Could not initialize class net.sf.jasperreports.engine.util.JRStyledTextParser</pre>
+<p>It
+      could be Sun AWT trying to connect to X11 classes, but actually it's the PDF generation on a report.</p>
+<pre class="screen"> $&gt; sudo apt-get install msttcorefonts
+ $&gt; cd /opt/jasperreports-server-cp-4.2.1
+ $&gt; sudo sh ctlscript.sh stop
+ $&gt; sudo sh ctlscript.sh start</pre>
+    </li>
+</ul></div>
+
+  <a class="indexterm" name="idp14215616"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="int-mklivestatus.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch10.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">MKLiveStatus Integration </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Chapter 10. Additional software</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>
