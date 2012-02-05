@@ -401,7 +401,11 @@ struct host_struct{
 	objectlist *hostgroups_ptr;
 #endif
 	struct  host_struct *next;
-	struct  host_struct *nexthash;
+	/* recycle this currently unused attribute
+		struct  host_struct *nexthash;
+	 * see #2182 for more info
+	 */
+	void *next_check_event;
 	/* 2011-02-07 MF: added for keeping the command for NEB callback
 	   PROCESSED state on host|service checks  */
 	char	*processed_command;
@@ -544,7 +548,11 @@ struct service_struct{
 	objectlist *servicegroups_ptr;
 #endif
 	struct service_struct *next;
-	struct service_struct *nexthash;
+	/* recycle this currently unused attribute
+		struct service_struct *nexthash;
+	 * see #2182 for more info
+	 */
+	 void *next_check_event;
 	/* 2011-02-07 MF: added for keeping the command for NEB callback
 	   PROCESSED state on host|service checks  */
 	char	*processed_command;

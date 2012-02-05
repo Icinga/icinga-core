@@ -1,8 +1,30 @@
 #######################
-Icinga 1.6.x Change Log
+Icinga 1.7.x Change Log
 #######################
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
+
+1.7.0 - XX/YY/2012
+
+ENHANCEMENTS
+* core: notifications: Create contact list after eventbroker callbacks (Andreas Ericsson) #2110
+* core: fix event removal from queues with O(1) removal from doubly linked lists (Andreas Ericsson) #2183
+* core: avoid senseless looping when free()'ing macros (Andreas Ericsson) #2184
+* core: avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182
+* core: allow empty host groups in service and host dependencies if allow_empty_hostgroup_assignment flag is set (Daniel Wittenberg) #2255
+
+FIXES
+* core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
+* core: mark services as executing only when we know we will actually run them (Andreas Ericsson) #2302
+
+* install: Fix notification template installation (Todd Zullinger) #2235
+
+CHANGES
+* neb api: move creation of notification contact list AFTER event broker callback NEBTYPE_NOTIFICATION_START #2110
+	** allows neb modules to cancel/override notification list creation on notification start
+* debug: set debug_verbosity=2 by default
+
+
 
 1.6.1 - 02/12/2011
 
