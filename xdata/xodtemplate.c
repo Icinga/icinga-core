@@ -4128,8 +4128,14 @@ int xodtemplate_duplicate_services(void) {
 		/* skip service definitions without enough data */
 		/* make host_name optional for services, only warn */
 		if (temp_service->host_name == NULL) {
-			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: No host_name found for service definition or used template (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_service->_config_file), temp_service->_start_line);
-			result = ERROR;
+			/* allow_empty_hostgroup_assignment is not set, so actually warn the user about missing hostname attribute */
+			if(allow_empty_hostgroup_assignment == 0) {
+				logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: No host_name found for service definition or used template (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_service->_config_file), temp_service->_start_line);
+				return ERROR;
+			} else {
+				/* we can't let the object being added to skiplist and then erroring out with NULL'ed host_name in common/objects.c add_service() */
+				continue;
+			}
 		}
 
 		if (temp_service->service_description == NULL) {
@@ -4169,9 +4175,16 @@ int xodtemplate_duplicate_services(void) {
 		xodtemplate_unset_service_is_from_hostgroup(temp_service);
 
 		/* skip service definitions without enough data */
-		if (temp_service->host_name == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: No host_name found for service definition or used template (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_service->_config_file), temp_service->_start_line);
-			return ERROR;
+                /* make host_name optional for services, only warn */
+                if (temp_service->host_name == NULL) {
+                        /* allow_empty_hostgroup_assignment is not set, so actually warn the user about missing hostname attribute */
+                        if(allow_empty_hostgroup_assignment == 0) {
+                                logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: No host_name found for service definition or used template (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_service->_config_file), temp_service->_start_line);
+                                return ERROR;
+                        } else {
+                                /* we can't let the object being added to skiplist and then erroring out with NULL'ed host_name in common/objects.c add_service() */
+				continue;
+                        }
 		}
 
 		if (temp_service->service_description == NULL) {
