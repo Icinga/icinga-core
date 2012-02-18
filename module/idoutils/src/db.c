@@ -4712,7 +4712,7 @@ int ido2db_oci_prepared_statement_eventhandlerdata(ido2db_idi *idi) {
 	             "timeout=:X13, early_timeout=:X14, execution_time=:X15, "
 	             "return_code=:X16, output=:X17, long_output=:X18u "
 	             "WHEN NOT MATCHED THEN "
-	             "INSERT (instance_id, eventhandler_type, object_id, "
+	             "INSERT (id, instance_id, eventhandler_type, object_id, "
 	             "state, state_type, start_time, start_time_usec, "
 	             "end_time, end_time_usec, command_object_id, "
 	             "command_args, command_line, "
