@@ -10,6 +10,7 @@ ENHANCEMENTS
 
 FIXES
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
+* idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
 
 CHANGES
 * debug: set debug_verbosity=2 by default
