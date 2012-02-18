@@ -9,6 +9,7 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 ENHANCEMENTS
 
 FIXES
+* idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
 
 CHANGES
 * debug: set debug_verbosity=2 by default
