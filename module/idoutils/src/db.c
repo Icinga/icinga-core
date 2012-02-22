@@ -4706,7 +4706,7 @@ int ido2db_oci_prepared_statement_eventhandlerdata(ido2db_idi *idi) {
 	             "AND start_time_usec=:X7) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET eventhandler_type=:X2, object_id=:X3, "
-	             "state=:X4, state_type=:X5, end_time=:X8, "
+	             "state=:X4, state_type=:X5, end_time=unixts2localts(:X8), "
 	             "end_time_usec=:X9, command_object_id=:X10, "
 	             "command_args=:X11, command_line=:X12, "
 	             "timeout=:X13, early_timeout=:X14, execution_time=:X15, "
