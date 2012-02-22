@@ -206,7 +206,7 @@ void commit_command_data(int);
  *  @return success / fail
  *
  *  Here the command get formatted properly to be readable by icinga
- *  core. It passes the data to @ref cmd_submitf .
+ *  core. It passes the data to @c cmd_submitf .
 **/
 int commit_command(int);
 
