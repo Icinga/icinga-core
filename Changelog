@@ -19,6 +19,7 @@ ENHANCEMENTS
 * classic ui: Added nostatusheader in status.cgi as config option #2018
 * classic ui: Added statusmap resizing with exclude/include button #2186
 * classic ui: Added Select hosts or services by clicking on line instead of box #2118
+* classic ui: include graph icons by default in logos #2222
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
