@@ -32,7 +32,7 @@ BuildRequires: libjpeg-devel
 BuildRequires: libdbi-devel
 BuildRequires: perl(ExtUtils::Embed)
 ### Requires: nagios-plugins
-### Provides: nagios
+Provides: nagios
 
 %description
 Icinga is an application, system and network monitoring application.
@@ -247,6 +247,9 @@ fi
 %{_bindir}/idomod.o
 
 %changelog
+* Wed Feb 22 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-2
+- re-add provides nagios for compatibility reasons
+
 * Fri Dec 02 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-1
 - bump to 1.6.1
 
