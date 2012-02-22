@@ -139,7 +139,12 @@ function toggle_checkbox(id, form) {
 		x.checked=true;
 	}
 
-	isValidForSubmit(form);
+//	if ( id.indexOf("host") >= 0) {
+		isValidForSubmit(form);
+/*	if ( id.indexOf("host") >= 0) {
+	} else {
+		isValidForSubmit('tableformservice');
+	} */
 
 	return true;
 }
