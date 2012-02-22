@@ -33,6 +33,9 @@ FIXES
 * classic ui: Fixed status.cgi: host param not honoured with servicefilter #2262
 * classic ui: fixed Tooltip from action_url interfering with pnp4nagios integration #2198
 
+* idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
+* idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
+
 * install: Fix notification template installation (Todd Zullinger) #2235
 
 CHANGES
