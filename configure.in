@@ -1346,6 +1346,8 @@ fi
 AC_MSG_RESULT([        Install \${prefix}:  $prefix])
 AC_MSG_RESULT([                Lock file:  $lockfile])
 AC_MSG_RESULT([                Temp file:  $TMPFILE])
+AC_MSG_RESULT([            Lib directory:  $libdir])
+AC_MSG_RESULT([            Bin directory:  $bindir])
 AC_MSG_RESULT([         Plugin directory:  $PLUGINDIR])
 AC_MSG_RESULT([            Log directory:  $LOGDIR])
 AC_MSG_RESULT([        cgi log directory:  $CGILOGDIR])

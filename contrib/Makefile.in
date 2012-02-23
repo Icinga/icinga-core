@@ -21,6 +21,7 @@ prefix=@prefix@
 exec_prefix=@exec_prefix@
 CGIDIR=@sbindir@
 BINDIR=@bindir@
+LIBDIR=@libdir@
 
 CGIS=traceroute.cgi daemonchk.cgi
 UTILS=mini_epn new_mini_epn convertcfg

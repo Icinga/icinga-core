@@ -6,6 +6,8 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 
 1.7.0 - XX/YY/2012
 
+!!! ATTENTION - idomod.o will now be installed to $libdir instead of $bindir !!!
+
 ENHANCEMENTS
 * core: notifications: Create contact list after eventbroker callbacks (Andreas Ericsson) #2110
 * core: fix event removal from queues with O(1) removal from doubly linked lists (Andreas Ericsson) #2183
@@ -15,6 +17,9 @@ ENHANCEMENTS
 
 * install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121
 * install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344
+* install: change default target location of idomod.o from $bindir to $libdir #2346
+	** packagers dreams come finally true! :)
+* install: introduce "lib/" in default prefix install for modules #2347
 
 * icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
 
@@ -29,11 +34,19 @@ FIXES
 CHANGES
 * neb api: move creation of notification contact list AFTER event broker callback NEBTYPE_NOTIFICATION_START #2110
 	** allows neb modules to cancel/override notification list creation on notification start
+
 * debug: set debug_verbosity=2 by default
+
 * install: --with-temp-file=<filepath> #2121
 	** sets path to an Icinga exclusive update temp file i.e. /tmp/icinga.tmp
+
 * install: --with-plugin-dir=<path> #2344
 	** sets path to plugins directory path i.e. $prefix/libexec
+
+* install: change default target location of idomod.o from $bindir to $libdir #2346
+	** make sure to UPDATE the location in your CONFIG !!!
+
+* install: introduce "lib/" in default prefix install for modules #2347
 
 
 

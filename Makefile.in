@@ -39,6 +39,7 @@ EXTCMDFILEDIR=@EXTCMDFILEDIR@
 P1FILELOC=@P1FILELOC@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
+LIBDIR=@libdir@
 CGIDIR=@sbindir@
 LIBEXECDIR=@libexecdir@
 HTMLDIR=@datarootdir@

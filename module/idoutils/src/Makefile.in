@@ -12,6 +12,7 @@ exec_prefix=@exec_prefix@
 LOGDIR=@localstatedir@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
+LIBDIR=@libdir@
 LIBEXECDIR=@libexecdir@
 CGIDIR=@sbindir@
 INSTALL=@INSTALL@
@@ -105,7 +106,8 @@ devclean: distclean
 
 install:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LIBDIR)
 	$(INSTALL) -m 774 $(INSTALL_OPTS) ido2db $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 774 $(INSTALL_OPTS) log2ido $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) idomod.o $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 774 $(INSTALL_OPTS) idomod.o $(DESTDIR)$(LIBDIR)
 

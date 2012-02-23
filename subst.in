@@ -38,6 +38,7 @@ while ($f = shift @ARGV) {
 		s|\@datadir\@|@datarootdir@|g;
 		s|\@sbindir\@|@sbindir@|g;
 		s|\@bindir\@|@bindir@|g;
+		s|\@libdir\@|@libdir@|g;
 		s|\@htmurl\@|@htmurl@|g;
 		s|\@cgiurl\@|@cgiurl@|g;
 		s|\@MAIL_PROG\@|@MAIL_PROG@|g;

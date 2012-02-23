@@ -8526,6 +8526,10 @@ $as_echo "        Install \${prefix}:  $prefix" >&6; }
 $as_echo "                Lock file:  $lockfile" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:                 Temp file:  $TMPFILE" >&5
 $as_echo "                Temp file:  $TMPFILE" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:             Lib directory:  $libdir" >&5
+$as_echo "            Lib directory:  $libdir" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:             Bin directory:  $bindir" >&5
+$as_echo "            Bin directory:  $bindir" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:          Plugin directory:  $PLUGINDIR" >&5
 $as_echo "         Plugin directory:  $PLUGINDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:             Log directory:  $LOGDIR" >&5
