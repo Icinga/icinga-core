@@ -651,6 +651,7 @@ PHPAPIEXTCMDDIR
 EXTCMDFILEDIR
 CGILOGDIR
 LOGDIR
+PLUGINDIR
 TMPFILE
 TMPDIR
 CHECKRESULTDIR
@@ -746,6 +747,7 @@ with_httpd_conf
 with_checkresult_dir
 with_temp_dir
 with_temp_file
+with_plugin_dir
 with_log_dir
 with_cgi_log_dir
 with_phpapi_log_dir
@@ -1447,6 +1449,9 @@ Optional Packages:
   --with-temp-file=<filepath>
                           sets path to an Icinga exclusive update temp file
                           i.e. /tmp/icinga.tmp
+  --with-plugin-dir=<path>
+                          sets path to plugins directory path i.e.
+                          $prefix/libexec
   --with-log-dir=<path>   sets path to logging directory
   --with-cgi-log-dir=<path>
                           sets path to cgi logging directory
@@ -5355,6 +5360,21 @@ if test x$TMPFILE = xno; then
 
 
 
+PLUGINDIR=no
+
+# Check whether --with-plugin-dir was given.
+if test "${with_plugin_dir+set}" = set; then :
+  withval=$with_plugin_dir; PLUGINDIR=$withval
+else
+  PLUGINDIR=no
+fi
+
+if test x$PLUGINDIR = xno; then
+	        PLUGINDIR="$libexecdir"
+	fi
+
+
+
 
 LOGDIR=no
 
@@ -8506,6 +8526,8 @@ $as_echo "        Install \${prefix}:  $prefix" >&6; }
 $as_echo "                Lock file:  $lockfile" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:                 Temp file:  $TMPFILE" >&5
 $as_echo "                Temp file:  $TMPFILE" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:          Plugin directory:  $PLUGINDIR" >&5
+$as_echo "         Plugin directory:  $PLUGINDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:             Log directory:  $LOGDIR" >&5
 $as_echo "            Log directory:  $LOGDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:         cgi log directory:  $CGILOGDIR" >&5

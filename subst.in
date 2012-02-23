@@ -28,6 +28,7 @@ while ($f = shift @ARGV) {
 		s|\@sysconfdir\@|@sysconfdir@|g;
 		s|\@LOGDIR\@|@LOGDIR@|g;
 		s|\@CGILOGDIR\@|@CGILOGDIR@|g;
+		s|\@PLUGINDIR\@|@PLUGINDIR@|g;
 		s|\@TMPDIR\@|@TMPDIR@|g;
 		s|\@TMPFILE\@|@TMPFILE@|g;
 		s|\@EXTCMDFILEDIR\@|@EXTCMDFILEDIR@|g;

@@ -326,6 +326,15 @@ if test x$TMPFILE = xno; then
 AC_SUBST(TMPFILE)
 
 
+dnl Location of plugin path
+PLUGINDIR=no
+AC_ARG_WITH(plugin-dir,AC_HELP_STRING([--with-plugin-dir=<path>],[sets path to plugins directory path i.e. $prefix/libexec]),PLUGINDIR=$withval,PLUGINDIR=no)
+if test x$PLUGINDIR = xno; then
+	        PLUGINDIR="$libexecdir"
+	fi
+AC_SUBST(PLUGINDIR)
+
+
 
 dnl ################
 dnl LOG DIRS
@@ -1337,6 +1346,7 @@ fi
 AC_MSG_RESULT([        Install \${prefix}:  $prefix])
 AC_MSG_RESULT([                Lock file:  $lockfile])
 AC_MSG_RESULT([                Temp file:  $TMPFILE])
+AC_MSG_RESULT([         Plugin directory:  $PLUGINDIR])
 AC_MSG_RESULT([            Log directory:  $LOGDIR])
 AC_MSG_RESULT([        cgi log directory:  $CGILOGDIR])
 AC_MSG_RESULT([   Check result directory:  $CHECKRESULTDIR])
