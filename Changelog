@@ -16,6 +16,8 @@ ENHANCEMENTS
 * install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121
 * install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344
 
+* icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
+
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
 * core: mark services as executing only when we know we will actually run them (Andreas Ericsson) #2302

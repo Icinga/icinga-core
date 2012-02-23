@@ -108,6 +108,7 @@ Documentation for %{name}
     --with-init-dir=%{_initrddir} \
     --with-log-dir=%{logdir} \
     --with-cgi-log-dir=%{logdir}/gui \
+    --with-plugin-dir="%{_libdir}/nagios/plugins" \
     --with-p1-file-dir="%{_libdir}/icinga"
 %{__make} %{?_smp_mflags} all
 
@@ -247,6 +248,9 @@ fi
 %{_bindir}/idomod.o
 
 %changelog
+* Thu Feb 23 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-3
+- use --with-plugin-dir instead of --libexexdir for nagios plugins dir introduced in #2344
+
 * Wed Feb 22 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-2
 - re-add provides nagios for compatibility reasons
 
