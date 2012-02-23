@@ -247,7 +247,7 @@ fi
 %{_bindir}/idomod.o
 
 %changelog
-* Wed Feb 22 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-2
+* Wed Feb 22 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-2
 - re-add provides nagios for compatibility reasons
 
 * Fri Dec 02 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-1
