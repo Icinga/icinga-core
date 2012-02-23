@@ -20,6 +20,7 @@ ENHANCEMENTS
 * install: change default target location of idomod.o from $bindir to $libdir #2346
 	** packagers dreams come finally true! :)
 * install: introduce "lib/" in default prefix install for modules #2347
+* install: revamp the broker_module entry in icinga.cfg pointing to new module definition #2348
 
 * icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
 
