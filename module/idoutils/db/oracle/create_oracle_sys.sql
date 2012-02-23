@@ -4,7 +4,7 @@
 -- Create icinga tablespace and user (SYS User part)
 -- called and defines set from oracle.sql
 --
--- Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
 --
 -- works with Oracle10+ and sqlplus
 -- for because of grants on v$ views this must run as sys 
