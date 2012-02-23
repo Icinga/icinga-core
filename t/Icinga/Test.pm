@@ -17,8 +17,7 @@ my $cgi_dir = "$topdir/cgi";
 my $cgi = "$cgi_dir/status.cgi";
 
 sub run_cgi ($$$$) {
-    my ($config, $method, $query_string, $cgi) = @_; 
-    my @cmd = qw ( sh -c );
+    my ($config, $method, $query_string, $cgi) = @_;
     chdir $Bin or die "Cannot chdir";
 
     my $cmd = sprintf("ICINGA_CGI_CONFIG=%s REMOTE_USER=icingaadmin REQUEST_METHOD=%s QUERY_STRING=%s %s",
