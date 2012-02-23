@@ -17,6 +17,7 @@ FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
 * core: mark services as executing only when we know we will actually run them (Andreas Ericsson) #2302
 * core: fix handling of allow_empty_hostgroup_assignment when hitting NULL'edhost_name attribute, now properly finishing #949
+* core: drop abbreviations in debug log and make them more telling #2138
 
 * install: Fix notification template installation (Todd Zullinger) #2235
 
