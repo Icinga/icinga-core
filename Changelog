@@ -13,6 +13,8 @@ ENHANCEMENTS
 * core: avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182
 * core: allow empty host groups in service and host dependencies if allow_empty_hostgroup_assignment flag is set (Daniel Wittenberg) #2255
 
+* install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121
+
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
 * core: mark services as executing only when we know we will actually run them (Andreas Ericsson) #2302
@@ -25,6 +27,9 @@ CHANGES
 * neb api: move creation of notification contact list AFTER event broker callback NEBTYPE_NOTIFICATION_START #2110
 	** allows neb modules to cancel/override notification list creation on notification start
 * debug: set debug_verbosity=2 by default
+* install: --with-temp-file=<filepath> #2121
+	** sets path to an Icinga exclusive update temp file i.e. /tmp/icinga.tmp
+
 
 
 

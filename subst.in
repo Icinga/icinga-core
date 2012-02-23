@@ -29,6 +29,7 @@ while ($f = shift @ARGV) {
 		s|\@LOGDIR\@|@LOGDIR@|g;
 		s|\@CGILOGDIR\@|@CGILOGDIR@|g;
 		s|\@TMPDIR\@|@TMPDIR@|g;
+		s|\@TMPFILE\@|@TMPFILE@|g;
 		s|\@EXTCMDFILEDIR\@|@EXTCMDFILEDIR@|g;
 		s|\@P1FILELOC\@|@P1FILELOC@|g;
 		s|\@IDO_INSTANCE_NAME\@|@IDO_INSTANCE_NAME@|g;

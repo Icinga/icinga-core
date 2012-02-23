@@ -205,7 +205,7 @@ lock_file=@lockfile@
 # is created, used, and deleted throughout the time that Icinga is
 # running.
 
-temp_file=@localstatedir@/icinga.tmp
+temp_file=@TMPFILE@
 
 
 
