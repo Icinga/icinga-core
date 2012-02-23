@@ -1,10 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Installation and use of the Icinga API</title>
+<title>No Icinga-API to install anymore</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch11.html" title="Chapter 11. Development">
 <link rel="prev" href="extcommands2.html" title="List of External Commands">
 <link rel="next" href="icinga-web-api.html" title="The Icinga-Web REST API">
@@ -13,7 +13,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Installation and use of the Icinga API</th></tr>
+<tr><th colspan="3" align="center">No Icinga-API to install anymore</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="extcommands2.html">Prev</a> </td>
@@ -24,11 +24,77 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Installation and use of the Icinga API">
+<div class="section" title="No Icinga-API to install anymore">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-api"></a>Installation and use of the Icinga API</h2></div></div></div>
+<a name="icinga-api"></a>No Icinga-API to install anymore</h2></div></div></div>
     
 
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>In the days leading up to the v1.5 release, we bid our Icinga-API goodbye and usher in a new API and Web concept.</p>
+
+      <p>You may ask yourself, what was this API anyway? Indeed, if you weren&#8217;t developing or adapting extensions for the new web
+        interface, you wouldn&#8217;t have had much contact with this important project component. When Icinga was conceived, one of the
+        main missions was to facilitate the development of addons and plugins. The API provided a set of commonly used request operations,
+        removing the need to write sql-queries and generally a lot of excess code.</p>
+
+      <p>All was well until we decided to offer some extra database flexibility. When we added support for Oracle and 
+        PostgreSQL on top of MySQL, we also gave our Icinga-API team some extra work. With each change, bug fix or new feature,
+        Marius, Michael L and Jannis had to edit the queries for each database back-end separately. This process was not only complicated
+        and error-prone, but also a sign that we needed a more flexible architecture.</p>
+
+      <p>As of Icinga 1.5, the external Icinga-API was replaced by an internal database layer Doctrine, and merged into 
+        Icinga-Web. Much like before, queries will run through this layer between the database (IDOUtils) and the web interface.
+        However, with Doctrine we can use several database back-ends and querying the database is now much easier. In contrast to SQL, its
+        object relational mapper (ORM) uses Doctrine Query Language, so we now have the flexibility minus the code duplication.</p>
+
+      <p><span class="inlinemediaobject"><img src="../images/Architecture_1.5_800px.png"></span></p>
+
+      <p>That being said, queries from the old API still exist, thanks to the &#8216;legacy layer&#8217; which will transform old API queries into
+        this new ORM type. In this way, we maintain compatibility with addons designed for older Icinga versions. The Rest API is
+        also still there as part of Icinga-Web, extending on our Doctrine layer with HTTP for addons that require only certain bits of
+        monitoring info.</p>
+
+      <p>With the departure of a standalone API, the average Icinga user will barely notice a change, apart from the fact that
+        the configuration has now been moved to the <code class="filename">databases.xml</code>. Best of all, every module developer can now easily
+        access the Icinga database without much code overhead&#8211; so addon developers get hacking and let us know how you go!</p>
+
+      <p>For more information see our Wiki:
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+            <p>
+              <a class="link" href="https://wiki.icinga.org/display/Dev/Development+guide+for+Icinga-Web" target="_top">Development Guide for Icinga-Web</a>
+            </p>
+          </li>
+<li class="listitem">
+            <p>
+              <a class="link" href="https://wiki.icinga.org/display/Dev/Icinga+Database+essentials" target="_top">Icinga Database Essentials</a>
+            </p>
+          </li>
+<li class="listitem">
+            <p>
+              <a class="link" href="https://wiki.icinga.org/display/Dev/Icinga-Web+REST+API" target="_top">Icinga-Web REST API</a>
+            </p>
+          </li>
+</ul></div>
+<p>
+      </p>
+    </td></tr>
+</table></div>
+
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top"><p>The following is deprecated and only kept for reference</p></td></tr>
+</table></div>
+    <p><span class="bold"><strong>Installation and use of the Icinga API</strong></span></p>
     <p><span class="bold"><strong>Prerequisites</strong></span></p>
 
     <p>You need Icinga Core and IDOUtils or <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">MKLiveStatus</a>
@@ -269,9 +335,9 @@
         </li>
 </ol></div>
 
-    <a class="indexterm" name="idp15513216"></a>
+    <a class="indexterm" name="id1652429"></a>
 
-    <a class="indexterm" name="idp15514560"></a>
+    <a class="indexterm" name="id1652440"></a>
 </div>
 <div class="navfooter">
 <hr>

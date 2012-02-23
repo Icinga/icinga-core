@@ -4,7 +4,7 @@
 <title>Icinga für maximale Leistung optimieren</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
 <link rel="prev" href="cgisecurity.html" title="Verbesserte CGI-Sicherheit und Authentifizierung">
 <link rel="next" href="faststartup.html" title="Schnellstart-Optionen">
@@ -44,7 +44,7 @@
       <p><span class="bold"><strong>Stellen Sie Performance-Statistiken mit PNP4Nagios dar</strong></span>. Um zu verfolgen, wie die Last Ihrer
       Icinga-Installation aussieht und welche Auswirkungen Ihre Konfigurationsänderungen darauf haben, sollten Sie verschiedene
       wichtige Statistiken mit PNP4Nagios darstellen. Das ist wirklich sehr, sehr sinnvoll, wenn es um die Leistungsoptimierung einer
-      Icinga-Installation geht. Informationen, wie das zu tun ist, finden Sie <a class="link" href="perfgraphs.html" title="grafische Darstellung von Performance-Informationen mit PNP4Nagios">hier</a>.</p>
+      Icinga-Installation geht. Informationen, wie das zu tun ist, finden Sie <a class="link" href="perfgraphs.html" title="Grafische Darstellung von Performance-Informationen mit PNP4Nagios">hier</a>.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Benutzen Sie "Verbesserungen für große Installationen"</strong></span> (large installation tweaks). Das
@@ -70,12 +70,12 @@
       Icinga-Daemon für die Verarbeitung der Ergebnisse von Host- und Service-Prüfungen verbringen darf, bevor er sich anderen Dingen
       zuwendet - wie z.B. dem Ausführen von neuen Host- und Service-Prüfungen. Ein zu hoher Wert kann zu hohen Latenzzeiten bei Ihren Host-
       und Service-Prüfungen führen. Ein zu niedriger Wert kann den gleichen Effekt haben. Wenn Sie zu hohe Latenzzeiten haben, dann passen
-      Sie diesen Wert an und sehen Sie, welchen Effekt das hat. <a class="link" href="perfgraphs.html" title="grafische Darstellung von Performance-Informationen mit PNP4Nagios">Graphisch dargestellte Statistiken</a> helfen
+      Sie diesen Wert an und sehen Sie, welchen Effekt das hat. <a class="link" href="perfgraphs.html" title="Grafische Darstellung von Performance-Informationen mit PNP4Nagios">Graphisch dargestellte Statistiken</a> helfen
       Ihnen bei der Auswertung der Auswirkungen.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Anpassen der Pufferwerte</strong></span>. Gegebenenfalls müssen Sie den Wert der <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external_command_buffer_slots</a>-Option anpassen. Die graphische Analyse mit
-      <a class="link" href="perfgraphs.html" title="grafische Darstellung von Performance-Informationen mit PNP4Nagios">PNP4Nagios</a> (siehe oben) zeigt Ihnen, welche Werte Sie für diese Option nutzen sollten.</p>
+      <a class="link" href="perfgraphs.html" title="Grafische Darstellung von Performance-Informationen mit PNP4Nagios">PNP4Nagios</a> (siehe oben) zeigt Ihnen, welche Werte Sie für diese Option nutzen sollten.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Prüfen Sie Service-Latenzzeiten, um den besten Wert für die maximale Anzahl von gleichzeitigen Prüfungen
@@ -154,7 +154,7 @@
       externen Befehlen empfängt, dann könnten Sie in eine Situation kommen, in der immer alle Puffer voll sind. Das führt zu blockierenden
       Kind-Prozessen (externe Scripte, NSCA-Daemon usw.), wenn sie versuchen, in das "external command file" zu schreiben. Wir würden
       sehr empfehlen, dass Sie die Nutzung von externen Befehlspuffern graphisch mit Hilfe von PNP4Nagios und dem icingastats-Utility
-      darstellen, wie es <a class="link" href="perfgraphs.html" title="grafische Darstellung von Performance-Informationen mit PNP4Nagios">hier</a> beschrieben ist, so dass Sie die typische externe Befehlspuffernutzung Ihrer
+      darstellen, wie es <a class="link" href="perfgraphs.html" title="Grafische Darstellung von Performance-Informationen mit PNP4Nagios">hier</a> beschrieben ist, so dass Sie die typische externe Befehlspuffernutzung Ihrer
       Icinga-Installation sehen.</p>
     </li>
 <li class="listitem">
@@ -179,7 +179,7 @@
     </li>
 </ol></div>
 
-  <a class="indexterm" name="idp13580704"></a>
+  <a class="indexterm" name="id1564529"></a>
 </div>
 <div class="navfooter">
 <hr>

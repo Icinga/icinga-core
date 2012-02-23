@@ -4,7 +4,7 @@
 <title>Objektvererbung</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="cgiincludes.html" title="Angepasste CGI-Kopf- und Fußzeilen">
 <link rel="next" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">
@@ -231,7 +231,7 @@
         }</pre>
 
   <p>Der Host <span class="emphasis"><em>bighost1</em></span> wird die eigenen Host-Variablen <span class="emphasis"><em>_customvar1</em></span> und
-  <span class="emphasis"><em>_snmp_commnity</em></span> von der <span class="emphasis"><em>generichosttemplate</em></span>-Definition erben, zusammen mit den
+  <span class="emphasis"><em>_snmp_community</em></span> von der <span class="emphasis"><em>generichosttemplate</em></span>-Definition erben, zusammen mit den
   entsprechenden Werten. Die daraus resultierende Definition für <span class="emphasis"><em>bighost1</em></span> sieht wie folgt aus:</p>
 
   <pre class="screen"> define host{
@@ -324,9 +324,13 @@
 <td><p> <span class="bold"><strong>implizite Quelle</strong></span> </p></td>
 </tr>
 <tr>
-<td rowspan="3" align="center" valign="middle"><p> <span class="bold"><strong>Services</strong></span> </p></td>
+<td rowspan="4" align="center" valign="middle"><p> <span class="bold"><strong>Services</strong></span> </p></td>
 <td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
 <td><p><span class="emphasis"><em>contact_groups</em></span> in der verbundenen Host-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><p><span class="emphasis"><em>contacts</em></span> in der verbundenen Host-Definition</p></td>
 </tr>
 <tr>
 <td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td>
@@ -337,10 +341,14 @@
 <td><p><span class="emphasis"><em>notification_period</em></span> in der verbundenen Host-Definition</p></td>
 </tr>
 <tr>
-<td rowspan="3" align="center" valign="middle"><p> <span class="bold"><strong>Host Escalations</strong></span>
+<td rowspan="4" align="center" valign="middle"><p> <span class="bold"><strong>Host Escalations</strong></span>
           </p></td>
 <td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
 <td><p><span class="emphasis"><em>contact_groups</em></span> in der verbundenen Host-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><p><span class="emphasis"><em>contacts</em></span> in der verbundenen Host-Definition</p></td>
 </tr>
 <tr>
 <td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td>
@@ -351,10 +359,14 @@
 <td><p><span class="emphasis"><em>notification_period</em></span> in der verbundenen Host-Definition</p></td>
 </tr>
 <tr>
-<td rowspan="3" align="center" valign="middle"><p> <span class="bold"><strong>Service Escalations</strong></span>
+<td rowspan="4" align="center" valign="middle"><p> <span class="bold"><strong>Service Escalations</strong></span>
           </p></td>
 <td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
 <td><p><span class="emphasis"><em>contact_groups</em></span> in der verbundenen Service-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><p><span class="emphasis"><em>contacts</em></span> in der verbundenen Service-Definition</p></td>
 </tr>
 <tr>
 <td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td>
@@ -537,12 +549,12 @@ define service {
 </tr></tbody>
 </table>
   </div>
-  <a class="indexterm" name="idp13196432"></a>
-  <a class="indexterm" name="idp13197184"></a>
-  <a class="indexterm" name="idp13198192"></a>
-  <a class="indexterm" name="idp13199200"></a>
-  <a class="indexterm" name="idp13200208"></a>
-  <a class="indexterm" name="idp13201216"></a>
+  <a class="indexterm" name="id1561759"></a>
+  <a class="indexterm" name="id1561820"></a>
+  <a class="indexterm" name="id1561829"></a>
+  <a class="indexterm" name="id1561837"></a>
+  <a class="indexterm" name="id1561845"></a>
+  <a class="indexterm" name="id1561856"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -4,7 +4,7 @@
 <title>Icinga Plugins</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="prev" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="next" href="macros.html" title="Makros verstehen und wie sie arbeiten">
@@ -122,12 +122,74 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Führen Sie Plugins immer mit dem Icinga-Benutzer aus, denn einige Plugins erstellen temporäre Dateien. Wenn Sie Plugins mit
-    einem anderen Benutzer ausführen, dann kann der Icinga-Benutzer diese Dateien ggf. nicht überschreiben.</p>
+    einem anderen Benutzer ausführen, dann kann der Icinga-Benutzer diese Dateien ggf. nicht überschreiben. Wenn Sie einen anderen
+    Benutzer verwenden, werden Sie nicht feststellen, ob ist der Icinga-Benutzer überhaupt berechtigt ist, auf bestimmte Dateien
+    (z.B. Shared Libraries) zuzugreifen.</p>
 
     <p>Rufen Sie das Plugin nicht mit einem relativen Pfad auf (z.B. <span class="emphasis"><em>./check_test_plugin</em></span>). Benutzen Sie immer
     absolute Pfade, denn so macht es auch Icinga (z.B. <span class="emphasis"><em>/usr/local/icinga/libexec/check_test_plugin</em></span>).</p>
+
+    <p>Bitte beachten Sie, dass der Icinga-<span class="emphasis"><em>Benutzer</em></span> eine andere Umgebung als der
+    Icinga-<span class="emphasis"><em>Prozess</em></span> hat. Beim Benutzer wurden Login-Skripte durchlaufen und es ist ein Terminal mit der
+    Benutzer-Sitzung verbunden, so dass die erfolgreiche Ausführung eines Plugins von der Kommandozeile aus nicht (notwendigerweise)
+    bedeutet, dass es funktioniert, wenn es vom Prozess ausgeführt wird. Außerdem wird der Prozess per Default keine Shell benutzen, sondern
+    Aufrufe von popen/execvp ausführen, abhängig vom Befehl (popen falls die Kommandozeile Metazeichen enthält, die Bedeutung für die Shell
+    haben wie z.B. <code class="literal">!$^&amp;*()~[]\|{};&lt;&gt;?'"</code>, execvp falls keine Metazeichen vorhanden sind).</p>
   </td></tr>
 </table></div>
+
+  <p><span class="bold"><strong>Zum Icinga-Benutzer wechseln</strong></span></p>
+
+  <p>Wechseln Sie zum Icinga-Benutzer, der in <code class="filename">icinga.cfg</code> definiert ist, falls noch nicht geschehen, und
+  bereinigen Sie die Umgebung</p>
+
+  <pre class="screen"> #&gt; su - icinga
+ #&gt; env -i</pre>
+
+  <p>Wenn Sie jetzt angemeldet sind, dann springen Sie zum Punkt "Anpassen der Umgebung".</p>
+
+  <p>Bedingt durch das Sicherheitsbewusstsein des Packagers / Systemadministrators könnte dies fehlschlagen, weil der Account für
+  Anmeldungen gesperrt ist. Bitten Sie Ihren Systemadministrator, das vorübergehend zu ändern oder führen Sie einen der folgenden Punkte
+  aus</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>ermitteln Sie die aktuelle Shell aus <code class="filename">/etc/passwd</code> und ändern Sie diese durch Ausführen von </p>
+<pre class="screen"> #&gt; OLD_SHELL=`grep icinga /etc/passwd | sed 's/.*://'`
+ #&gt; usermod -s /bin/sh icinga</pre>
+<p>führen Sie die Befehle aus, nachdem Sie zum Icinga-Benutzer gewechselt sind und die Umgebung
+      wie oben beschrieben bereinigt haben</p>
+
+      <p>vergessen Sie nicht, die Shell-Einstellung nach dem Testen und verlassen der Sitzung wiederherzustellen</p>
+<pre class="screen"> #&gt; usermod -s $OLD_SHELL icinga</pre>
+    </li>
+<li class="listitem">
+      <p>führen Sie den Befehl über "sudo -u icinga" aus</p>
+
+      <pre class="screen"> #&gt; sudo -u icinga /usr/local/icinga/libexec/sample-plugin.pl ...</pre>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Anpassen der Umgebung</strong></span></p>
+
+  <p>Einige Prüfungen (wie check_oracle_health) hängen davon ab, dass verschiedene Umgebungsvariablen gesetzt sind. Setzen Sie diese
+  nicht in <code class="filename">.bashrc</code> oder anderen benutzerabhängigen Dateien, sondern wählen Sie dafür eine zentrale Stelle. Das
+  Default-Init-Skript durchläuft die Datei <code class="filename">/etc/sysconfig/icinga</code> (wenn sie vorhanden ist), so dass es ein idealer Platz
+  wäre. Benutzen Sie dafür nicht das Init-Skript selbst, weil Ihre Änderungen sonst bei Updates ggf. verloren gehen.</p>
+
+  <p>Beispiel für <code class="filename">/etc/sysconfig/icinga</code></p>
+
+  <pre class="screen"> export ORACLE_HOME=/usr/lib/oracle/11.2/client64
+ export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+ export PATH=$PATH:$ORACLE_HOME</pre>
+<p>Nachdem Sie sich angemeldet haben, sind diese Variablen noch nicht verfügbar, aber das ist ziemlich
+  einfach</p>
+
+  <pre class="screen"> $&gt; . /etc/sysconfig/icinga</pre>
+<p>Bitte überprüfen Sie die Einstellungen</p>
+<pre class="screen"> $&gt; echo $ORACLE_HOME
+ $&gt; echo $LD_LIBRARY_PATH
+ $&gt; echo $PATH</pre>
 
   <p><span class="bold"><strong>Integration eines neuen Plugins</strong></span></p>
 
@@ -140,7 +202,9 @@
   Compile-Vorgangs (meistens "make" oder "make all"). In den meisten Fällen wird das Plugin durch den Aufruf von "make install" in das
   Plugins-Verzeichnis (z.B. <span class="emphasis"><em>/usr/local/icinga/libexec</em></span>) kopiert.</p>
 
-  <p>Manchmal müssen Sie das Plugin auf Ihre Umgebung anpassen (z.B. den Pfad zu "utils.pm").</p>
+  <p>Manchmal müssen Sie das Plugin auf Ihre Umgebung anpassen (z.B. den Pfad zu "utils.pm"). Sie können stattdessen einen logischen Link
+  erzeugen, der auf das Plugin-Verzeichnis weist, so dass Sie nicht das Plugin ändern müssen, um diese Änderung zu umgehen und spätere
+  Updates zu vereinfachen.</p>
 
   <p>Nach der Installation des Plugins rufen Sie es mit den nötigen Optionen von der Kommandozeile aus auf. Wenn dies funktioniert,
   können Sie es in Icinga integrieren.</p>
@@ -203,6 +267,24 @@
       wird mit zwei "D" geschrieben</p>
     </li>
 </ul></div>
+
+  <p><span class="bold"><strong>Raw command line</strong></span></p>
+
+  <p>Beginnend mit Icinga 1.6 ermöglicht das klassische UI die Anzeige der Kommandozeile mit aufgelösten Variablen einschließlich
+  der Werte aus <code class="filename">resource.cfg</code>. Der Klick auf "ACTIVE" neben "Check type" in den Host-/Service Check Details gibt Ihnen
+  Zugriff auf diese Informationen. Wenn Sie noch keine Prüfung definiert haben, dann wählen Sie "View Config" aus den Hauptmenü auf der
+  linken Seite und dann "Command expansion". Bitte beachten Sie, dass der Benutzer über die Direktive <a class="link" href="configcgi.html#configcgi-authorized_for_full_command_resolution">authorized_for_full_command_resolution</a> in <code class="filename">cgi.cfg</code>
+  explizit dazu berechtigt sein muss, die Werte der Variable aus <code class="filename">resource.cfg</code> sehen zu dürfen. Außerdem muss der
+  Benutzer, unter dem der Web-Server läuft, Leseberechtigung auf diese Datei besitzen.</p>
+
+  <p>Wenn Sie die Kommandozeile protokollieren möchten, dann müssen Sie einige Direktiven in <code class="filename">icinga.cfg</code> auf die
+  folgenden Werte ändern</p>
+
+  <pre class="screen"> #  16 = Host/service checks
+ # 256 = Commands
+ debug_level=272
+ debug_verbosity=2
+ max_debug_file_size=1000000000</pre>
 
   <p><span class="bold"><strong>Schwellwert und Bereiche</strong></span></p>
 
@@ -336,7 +418,8 @@
 </tr>
 <tr>
 <td>check_stuff -w20:30 -c10:40</td>
-<td>warnen, wenn "stuff" kleiner als 20 oder größer als 30, kritisch, wenn "stuff" kleiner als 10 oder größer als 40 <span class="bold"><strong>[2]</strong></span>
+<td>warnen, wenn "stuff" kleiner als 20 oder größer als 30, kritisch, wenn "stuff" kleiner als 10 oder größer als 40
+            <span class="bold"><strong>[2]</strong></span>
 </td>
 </tr>
 </tbody>
@@ -365,12 +448,18 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>"...resulted in a return code of 127"</p>
+      <p>"...resulted in a return code of 127" / "out of bounds"</p>
 
       <p>Das bedeutet, dass das Plugin nicht an der angegebenen Position gefunden wurde oder innerhalb des Plugins eine Datei aufgerufen
       wurde, die nicht gefunden wurde. Wenn Sie $USERn$-Makros beim Aufruf des Plugins benutzen, dann stellen Sie sicher, dass das Makros
       wirklich auf die Position verweist, wo das Plugin zu finden ist (ist das Makro in resource.cfg definiert?). Benachrichtigungsbefehle
       rufen oft ein Mail-Programm auf. Stellen Sie sicher, dass der Pfad zum Mail-Programm korrekt ist.</p>
+    </li>
+<li class="listitem">
+      <p>"...resulted in a return code of 126"</p>
+
+      <p>Meistens handelt es sich um ein Berechtigungsproblem. Der Benutzer kann ggf. das Plugin nicht ausführen bzw. darauf und/oder auf
+      zugehörige Dateien zugreifen.</p>
     </li>
 <li class="listitem">
       <p>"...resulted in a return code of 13"</p>
@@ -379,21 +468,26 @@
       zugehörige Dateien zugreifen. Das kann passieren, wenn Sie als root ein Plugin ausgeführt haben, das temporäre Dateien anlegt. Der
       Icinga-Benutzer ist nicht berechtigt, diese Dateien zu überschreiben.</p>
     </li>
+<li class="listitem">
+      <p>(null)</p>
+
+      <p>Der interne Aufruf von execvp lieferte nichts zurück.</p>
+    </li>
 </ul></div>
 
   <p><span class="bold"><strong>Plugin API</strong></span></p>
 
   <p>Informationen zu technischen Aspekten von Plugins sowie zur Erstellung Ihrer eigenen Plugins finden Sie <a class="link" href="pluginapi.html" title="Nagios Plugin API">hier</a>.</p>
 
-  <a class="indexterm" name="idp6538048"></a>
+  <a class="indexterm" name="id1505428"></a>
 
-  <a class="indexterm" name="idp6539696"></a>
+  <a class="indexterm" name="id1505441"></a>
 
-  <a class="indexterm" name="idp6540928"></a>
+  <a class="indexterm" name="id1505451"></a>
 
-  <a class="indexterm" name="idp6542528"></a>
+  <a class="indexterm" name="id1505465"></a>
 
-  <a class="indexterm" name="idp6544160"></a>
+  <a class="indexterm" name="id1505478"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -1,10 +1,10 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Installation und Benutzung der Icinga-API</title>
+<title>Keine Icinga-API mehr zu installieren</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch11.html" title="Kapitel 11. Entwicklung">
 <link rel="prev" href="extcommands2.html" title="Liste der externen Befehle">
 <link rel="next" href="icinga-web-api.html" title="Die Icinga-Web REST API">
@@ -13,7 +13,7 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Installation und Benutzung der Icinga-API</th></tr>
+<tr><th colspan="3" align="center">Keine Icinga-API mehr zu installieren</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="extcommands2.html">Zurück</a> </td>
@@ -24,11 +24,81 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Installation und Benutzung der Icinga-API">
+<div class="section" title="Keine Icinga-API mehr zu installieren">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-api"></a>Installation und Benutzung der Icinga-API</h2></div></div></div>
+<a name="icinga-api"></a>Keine Icinga-API mehr zu installieren</h2></div></div></div>
   
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>In der Zeit vor dem Release der Version 1.5 sagten wir unserer Icinga-API "Tschüss" und führten ein neues API- und Web-Konzept
+      ein.</p>
 
+    <p>Sie fragen sich vielleicht, was war diese API überhaupt? In der Tat, wenn Sie keine Erweiterungen oder Anpassungen für das neue
+      Web-Interface entwickelt haben, dann hatten Sie wahrscheinlich wenig Kontakt mit dieser wichtigen Projektkomponente. Als Icinga
+      konzipiert wurde, war eines der Hauptziele die Unterstützung der Entwicklung von Addons und Plugins. Die API stellte einen Satz von
+      allgemein verwendbaren Abfragebefehlen zur Verfügung, um die Notwendigkeit zu beseitigen, SQL-Abfragen und generell eine Menge
+      überflüssigen Code zu schreiben.</p>
+
+    <p>Alles war in Ordnung, bis wir uns entschieden, etwas mehr zusätzliche Datenbankflexibilität anzubieten. Als wir neben MySQL
+      Unterstützung für Oracle and PostgreSQL hinzufügten, gaben wir auch dem Icinga-API-Team etwas zusätzliche Arbeit. Mit
+      jeder Änderung, jedem Bugfix oder neuer Funktionalität mussten Marius, Michael L und Jannis die Abfragen für jedes Datenbank-Backend
+      separat anpassen. Dieser Prozess war nicht nur kompliziert und fehlerbehaftet, sondern auch ein Zeichen dafür, dass wir eine neue
+      flexiblere Architektur benötigten.</p>
+
+    <p>Mit Icinga 1.5 wurde die externe Icinga-API durch eine interne Datenbankschicht namens Doctrine ersetzt und mit Icinga-Web
+      verschmolzen. Ähnlich wie vorher laufen Abfragen durch diese Schicht zwischen der Datenbank (IDOUtils) und dem Web-Interface. 
+      Trotzdem können wir dank Doctrine mehrere Datenbank-Backends benutzen und das Abfragen der Datenbank ist nun viel einfacher. Im
+      Gegensatz zu SQL nutzt der "object relational mapper" (ORM) die Doctrine Query Language, so dass wir nun die Flexibilität ohne die
+      Code-Duplizierung haben.</p>
+
+    <p><span class="inlinemediaobject"><img src="../images/Architecture_1.5_800px.png"></span></p>
+
+    <p>Allerdings funktionieren Abfragen mit der alten API nach wie vor, dank des 'Legacy Layer', der alte API-Abfragen in diesen neuen
+      ORM-Typ umwandelt. Auf diese Weise erhalten wir die Kompatibilität mit Addons, die für ältere Icinga-Versionen erstellt wurden.
+      Das Rest-API ist also weiterhin vorhanden als ein Teil von Icinga-Web, und erweitert unsere Doctrine-Schicht mit HTTP für Addons, die
+      nur bestimmte Teile der Überwachungsinformationen benötigen.</p>
+
+    <p>Durch den Wegfall einer eigenständigen API wird der durchschnittliche Icinga-Benutzer kaum einen Unterschied bemerken,
+      außer der Tatsache, dass die Konfiguration nun in die <code class="filename">databases.xml</code> verschoben wurde. Das Beste daran ist, dass
+      jeder Modul-Entwickler nun einfach, ohne viel Code-Overhead, auf die Icinga-Datenbank zugreifen kann- also Adddon-Entwickler,
+      legt los!</p>
+
+    <p>Mehr (englischsprachige) Informationen gibt es in unserem Wiki:
+      </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>
+            <a class="link" href="https://wiki.icinga.org/display/Dev/Development+guide+for+Icinga-Web" target="_top">Development Guide for Icinga-Web</a>
+          </p>
+        </li>
+<li class="listitem">
+          <p>
+          <a class="link" href="https://wiki.icinga.org/display/Dev/Icinga+Database+essentials" target="_top">Icinga Database Essentials</a>
+          </p>
+        </li>
+<li class="listitem">
+          <p>
+            <a class="link" href="https://wiki.icinga.org/display/Dev/Icinga-Web+REST+API" target="_top">Icinga-Web REST API</a>
+          </p>
+        </li>
+</ul></div>
+<p>
+    </p>
+  </td></tr>
+</table></div>
+
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top"><p>Das Folgende ist veraltet</p></td></tr>
+</table></div>
+  <p><span class="bold"><strong>Installation und Benutzung der Icinga API</strong></span></p>
   <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
 
   <p>Sie benötigen installierte und lauffähige Versionen von Icinga und IDOUtils oder MKLiveStatus, um die Icinga-API
@@ -285,9 +355,9 @@
     </li>
 </ol></div>
 
-  <a class="indexterm" name="idp15299216"></a>
+  <a class="indexterm" name="id1579526"></a>
 
-  <a class="indexterm" name="idp15300480"></a>
+  <a class="indexterm" name="id1579536"></a>
 </div>
 <div class="navfooter">
 <hr>

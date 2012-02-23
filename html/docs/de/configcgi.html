@@ -4,7 +4,7 @@
 <title>Optionen CGI-Konfigurationsdatei</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
 <link rel="prev" href="customobjectvars.html" title="Maßgeschneiderte Objektvariablen">
 <link rel="next" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">
@@ -1652,7 +1652,7 @@
   aktive Prüfungen dargestellt werden.</p>
 
   <div class="figure">
-<a name="idp6048672"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
+<a name="id1500904"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
 <div class="figure-contents">
     
 
@@ -2012,115 +2012,197 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp6169168"></a>
+  <p><a name="configcgi-display_status_totals"></a> <span class="bold"><strong>Host-/Service-Status-Gesamtanzahlen anzeigen</strong></span></p>
 
-  <a class="indexterm" name="idp6170560"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p>
+            <span class="bold"><strong>display_status_totals=0|1
+            </strong></span>
+          </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>display_status_totals=0</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="idp6172272"></a>
+  <p>Diese Option legt fest, ob die Gesamtanzahlen von Host-/Service-Zuständen angezeigt werden sollen. Default ist 1.
+  </p>
 
-  <a class="indexterm" name="idp6173840"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.7.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="idp6175472"></a>
+  <p><a name="configcgi-default_num_displayed_log_entries"></a> <span class="bold"><strong>Anzahl anzuzeigender Protokolleinträge beschränken</strong></span></p>
 
-  <a class="indexterm" name="idp6176944"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p>
+            <span class="bold"><strong>default_num_displayed_log_entries=&lt;n&gt;
+            </strong></span>
+          </p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Beispiel:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_num_displayed_log_entries=10000</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="idp6178816"></a>
+  <p>Diese Option legt die Anzahl der Protokolleinträge fest, die durch showlog.cgi maximal angezeigt werden. Um alle Einträge 
+    anzuzeigen, setzen Sie den Wert auf 0.
+    Default ist 10000.
+  </p>
 
-  <a class="indexterm" name="idp6180416"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Diese Option ist verfügbar ab Icinga 1.7.</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="idp6182064"></a>
+  <a class="indexterm" name="id1502132"></a>
 
-  <a class="indexterm" name="idp6183792"></a>
+  <a class="indexterm" name="id1502143"></a>
 
-  <a class="indexterm" name="idp6185520"></a>
+  <a class="indexterm" name="id1502157"></a>
 
-  <a class="indexterm" name="idp6187344"></a>
+  <a class="indexterm" name="id1502170"></a>
 
-  <a class="indexterm" name="idp6188896"></a>
+  <a class="indexterm" name="id1502184"></a>
 
-  <a class="indexterm" name="idp6190096"></a>
+  <a class="indexterm" name="id1502197"></a>
 
-  <a class="indexterm" name="idp6192256"></a>
+  <a class="indexterm" name="id1502211"></a>
 
-  <a class="indexterm" name="idp6193344"></a>
+  <a class="indexterm" name="id1502225"></a>
 
-  <a class="indexterm" name="idp6195600"></a>
+  <a class="indexterm" name="id1502239"></a>
 
-  <a class="indexterm" name="idp6196704"></a>
+  <a class="indexterm" name="id1502249"></a>
 
-  <a class="indexterm" name="idp6198992"></a>
+  <a class="indexterm" name="id1502267"></a>
 
-  <a class="indexterm" name="idp6200192"></a>
+  <a class="indexterm" name="id1502282"></a>
 
-  <a class="indexterm" name="idp6202384"></a>
+  <a class="indexterm" name="id1502296"></a>
 
-  <a class="indexterm" name="idp6203584"></a>
+  <a class="indexterm" name="id1502310"></a>
 
-  <a class="indexterm" name="idp6205840"></a>
+  <a class="indexterm" name="id1502324"></a>
 
-  <a class="indexterm" name="idp6207504"></a>
+  <a class="indexterm" name="id1502338"></a>
 
-  <a class="indexterm" name="idp6209168"></a>
+  <a class="indexterm" name="id1502352"></a>
 
-  <a class="indexterm" name="idp6210816"></a>
+  <a class="indexterm" name="id1502366"></a>
 
-  <a class="indexterm" name="idp6212448"></a>
+  <a class="indexterm" name="id1502381"></a>
 
-  <a class="indexterm" name="idp6214144"></a>
+  <a class="indexterm" name="id1502395"></a>
 
-  <a class="indexterm" name="idp6215840"></a>
+  <a class="indexterm" name="id1502409"></a>
 
-  <a class="indexterm" name="idp6217424"></a>
+  <a class="indexterm" name="id1502423"></a>
 
-  <a class="indexterm" name="idp6219024"></a>
+  <a class="indexterm" name="id1502437"></a>
 
-  <a class="indexterm" name="idp6220656"></a>
+  <a class="indexterm" name="id1502451"></a>
 
-  <a class="indexterm" name="idp6222288"></a>
+  <a class="indexterm" name="id1502464"></a>
 
-  <a class="indexterm" name="idp6223888"></a>
+  <a class="indexterm" name="id1502478"></a>
 
-  <a class="indexterm" name="idp6225568"></a>
+  <a class="indexterm" name="id1502491"></a>
 
-  <a class="indexterm" name="idp6227248"></a>
+  <a class="indexterm" name="id1502505"></a>
 
-  <a class="indexterm" name="idp6228912"></a>
+  <a class="indexterm" name="id1502519"></a>
 
-  <a class="indexterm" name="idp6230560"></a>
+  <a class="indexterm" name="id1502533"></a>
 
-  <a class="indexterm" name="idp6232208"></a>
+  <a class="indexterm" name="id1502546"></a>
 
-  <a class="indexterm" name="idp6233840"></a>
+  <a class="indexterm" name="id1502560"></a>
 
-  <a class="indexterm" name="idp6235552"></a>
+  <a class="indexterm" name="id1502574"></a>
 
-  <a class="indexterm" name="idp6236880"></a>
+  <a class="indexterm" name="id1502587"></a>
 
-  <a class="indexterm" name="idp6238512"></a>
+  <a class="indexterm" name="id1502600"></a>
 
-  <a class="indexterm" name="idp6240032"></a>
+  <a class="indexterm" name="id1502614"></a>
 
-  <a class="indexterm" name="idp6241664"></a>
+  <a class="indexterm" name="id1502628"></a>
 
-  <a class="indexterm" name="idp6243264"></a>
+  <a class="indexterm" name="id1502642"></a>
 
-  <a class="indexterm" name="idp6244928"></a>
+  <a class="indexterm" name="id1502656"></a>
 
-  <a class="indexterm" name="idp6246576"></a>
+  <a class="indexterm" name="id1502669"></a>
 
-  <a class="indexterm" name="idp6248240"></a>
+  <a class="indexterm" name="id1502684"></a>
 
-  <a class="indexterm" name="idp6249888"></a>
+  <a class="indexterm" name="id1502695"></a>
 
-  <a class="indexterm" name="idp6251568"></a>
+  <a class="indexterm" name="id1502708"></a>
 
-  <a class="indexterm" name="idp6253232"></a>
+  <a class="indexterm" name="id1502721"></a>
 
-  <a class="indexterm" name="idp6254896"></a>
+  <a class="indexterm" name="id1502734"></a>
 
-  <a class="indexterm" name="idp6256528"></a>
+  <a class="indexterm" name="id1502748"></a>
 
-  <a class="indexterm" name="idp6258288"></a>
+  <a class="indexterm" name="id1502762"></a>
+
+  <a class="indexterm" name="id1502775"></a>
+
+  <a class="indexterm" name="id1502789"></a>
+
+  <a class="indexterm" name="id1502803"></a>
+
+  <a class="indexterm" name="id1502817"></a>
+
+  <a class="indexterm" name="id1502831"></a>
+
+  <a class="indexterm" name="id1502845"></a>
+
+  <a class="indexterm" name="id1502858"></a>
+
+  <a class="indexterm" name="id1502868"></a>
+
+  <a class="indexterm" name="id1502882"></a>
+
+  <a class="indexterm" name="id1502902"></a>
 </div>
 <div class="navfooter">
 <hr>

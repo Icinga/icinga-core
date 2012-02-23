@@ -4,7 +4,7 @@
 <title>Integration of PNP4Nagios into Icinga-Web</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
 <link rel="prev" href="icinga-web-introduction.html" title="Introduction to Icinga-Web">
 <link rel="next" href="ch07.html" title="Chapter 7. Advanced Topics">
@@ -29,11 +29,11 @@
 <a name="icinga-web-pnp"></a>Integration of PNP4Nagios into Icinga-Web</h2></div></div></div>
   
 
-  <p>Here we'll give you some instructions on how to integrate PNP4Nagios into the Icinga-Web frontend. If you want to integrate PNP4Nagios
-  into the Icinga Classic UI please follow the PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">documentation</a>.</p>
+  <p>Here we'll give you some instructions on how to integrate PNP4Nagios into the Icinga-Web frontend. If you want to integrate
+  PNP4Nagios into the Icinga Classic UI please follow the PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">documentation</a>.</p>
 
   <div class="figure">
-<a name="idp12009008"></a><p class="title"><b>Figure 6.30. PNP4Nagios integrated in Icinga-Web</b></p>
+<a name="id1622650"></a><p class="title"><b>Figure 6.30. PNP4Nagios integrated in Icinga-Web</b></p>
 <div class="figure-contents">
       
 
@@ -59,14 +59,69 @@
     perfdata_file = /var/icinga/perfdata.dump</pre>
 <p> </p>
 <pre class="programlisting">#&gt; vi process_perfdata.cfg
-LOG_FILE = /var/log/icinga/perfdata.log</pre>
+    LOG_FILE = /var/log/icinga/perfdata.log
+    XML_ENC = ISO-8859-1  # use if encountering national character issues</pre>
 <p> </p>
 <pre class="programlisting">#&gt; vi config.php 
-$conf['nagios_base'] = "/icinga/cgi-bin";</pre>
+    $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Be sure to use existing paths, create them if necessary, and/or adapt the settings to your distribution.</p>
+
+        <p>Please verify that the Icinga command definitions for "process-host-perfdata-file" and "process-service-perfdata-file"
+        (probably in <code class="filename">etc/objects/commands.cfg</code>) point to the same target directory as specified in
+        perfdata_spool_dir.</p>
+      </td></tr>
+</table></div>
     </li>
 </ol></div>
 
+  <p><span class="bold"><strong>Templates Extension</strong></span></p>
+
+  <p>Since version 1.5 you can leave the grid templates untouched because we integrated XML extension to customize grid templates with
+  simple snippets. PNP integration is made with these extensions to be upgrade safe.</p>
+
+  <p>Excerpt from the <code class="filename">INSTALL</code> in <code class="filename">contrib/PNP_Integration/</code></p>
+
+  <pre class="screen">#&gt; cat contrib/PNP_Integration/INSTALL
+    ************************
+    * INSTALLATION
+    ************************
+
+    * To install this addon, simply copy both xml files under templateExtensions
+    * to your icinga-webs app/modules/Cronks/data/xml/extensions folder
+    * and clear the app/cache/CronkTemplates folder
+    * To remove it, just delete the extension files and clear the cache folder again</pre>
+<p><span class="emphasis"><em>Install Script</em></span> </p>
+<pre class="screen"> $&gt; cd etc/contrib/PNP_Integration
+ $&gt; sh install.sh</pre>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Please note that you will have to reinstall the addon after Icinga-Web upgrade.</p>
+    </td></tr>
+</table></div>
+
   <p><span class="bold"><strong>Create a configuration to include PNP4Nagios host pages in Icinga-Web</strong></span></p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>The following lines describing the manual integration are for version 1.4 and below</p>
+    </td></tr>
+</table></div>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -76,8 +131,8 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
       example: </p>
 <pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml \
     /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-host-template.xml</pre>
-<p>
-      In the new file we just created add a new field definition: </p>
+<p> In the new file we just created add
+      a new field definition: </p>
 <pre class="programlisting">        &lt;field name="pnp4nagios_host_link"&gt;
             &lt;!-- datasource maps a data field from api call --&gt;
             &lt;datasource&gt;
@@ -153,6 +208,16 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 </ol></div>
 
   <p><span class="bold"><strong>Create a configuration to include pnp4nagios service pages in icinga-web</strong></span></p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>The following lines describing the manual integration are for version 1.4 and below</p>
+    </td></tr>
+</table></div>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -247,10 +312,12 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 <p>
       then </p>
 <pre class="programlisting">#&gt; cp data/xml/grid/icinga-my-service-template.xml data/xml/grid/icinga-service-template.xml</pre>
-<p> Clear
+<p>Clear
       the cache, like described below. Performance graphs are now in your default "serviceStatus" Cronk!</p>
     </li>
 </ol></div>
+
+  <p><span class="bold"><strong>Clearing the cache</strong></span></p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -258,11 +325,11 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>If you edit any *.xml-file you have to clear the cache afterwards!</p>
+    <p>If you edit any *.xml file you have to clear the cache afterwards!</p>
   </td></tr>
 </table></div>
 
-  <pre class="programlisting"> #&gt; rm -f app/cache/config/*.php</pre>
+  <pre class="programlisting">#&gt; rm -f app/cache/config/*.php</pre>
 
   <p>or /path/to/clearcache.sh</p>
 
@@ -270,7 +337,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
   <p>That's all, you're done!</p>
 
-  <a class="indexterm" name="idp12041184"></a>
+  <a class="indexterm" name="id1623007"></a>
 </div>
 <div class="navfooter">
 <hr>

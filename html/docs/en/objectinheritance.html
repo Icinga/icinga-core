@@ -4,7 +4,7 @@
 <title>Object Inheritance</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
 <link rel="prev" href="cgiincludes.html" title="Custom CGI Headers and Footers">
 <link rel="next" href="objecttricks.html" title="Time-Saving Tricks For Object Definitions">
@@ -349,9 +349,13 @@
 <td><p> <span class="bold"><strong>Implied Source</strong></span> </p></td>
 </tr>
 <tr>
-<td rowspan="3" align="left" valign="middle"><p> <span class="bold"><strong>Services</strong></span> </p></td>
+<td rowspan="4" align="left" valign="middle"><p> <span class="bold"><strong>Services</strong></span> </p></td>
 <td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
 <td><p><span class="emphasis"><em>contact_groups</em></span> in the associated host definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><p><span class="emphasis"><em>contacts</em></span> in the associated host definition</p></td>
 </tr>
 <tr>
 <td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td>
@@ -362,9 +366,13 @@
 <td><p><span class="emphasis"><em>notification_period</em></span> in the associated host definition</p></td>
 </tr>
 <tr>
-<td rowspan="3" align="left" valign="middle"><p> <span class="bold"><strong>Host Escalations</strong></span> </p></td>
+<td rowspan="4" align="left" valign="middle"><p> <span class="bold"><strong>Host Escalations</strong></span> </p></td>
 <td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
 <td><p><span class="emphasis"><em>contact_groups</em></span> in the associated host definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><p><span class="emphasis"><em>contacts</em></span> in the associated host definition</p></td>
 </tr>
 <tr>
 <td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td>
@@ -375,9 +383,13 @@
 <td><p><span class="emphasis"><em>notification_period</em></span> in the associated host definition</p></td>
 </tr>
 <tr>
-<td rowspan="3" align="left" valign="middle"><p> <span class="bold"><strong>Service Escalations</strong></span> </p></td>
+<td rowspan="4" align="left" valign="middle"><p> <span class="bold"><strong>Service Escalations</strong></span> </p></td>
 <td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
 <td><p><span class="emphasis"><em>contact_groups</em></span> in the associated service definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><p><span class="emphasis"><em>contacts</em></span> in the associated service definition</p></td>
 </tr>
 <tr>
 <td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td>
@@ -559,19 +571,19 @@ define host{
 </table>
     </div>
 
-    <a class="indexterm" name="idp13434240"></a>
+    <a class="indexterm" name="id1634896"></a>
 
-    <a class="indexterm" name="idp13435488"></a>
+    <a class="indexterm" name="id1634922"></a>
 
-    <a class="indexterm" name="idp13437120"></a>
+    <a class="indexterm" name="id1634933"></a>
 
-    <a class="indexterm" name="idp13438608"></a>
+    <a class="indexterm" name="id1634945"></a>
 
-    <a class="indexterm" name="idp13440176"></a>
+    <a class="indexterm" name="id1634958"></a>
 
-    <a class="indexterm" name="idp13441824"></a>
+    <a class="indexterm" name="id1634970"></a>
 
-    <a class="indexterm" name="idp13443408"></a>
+    <a class="indexterm" name="id1634986"></a>
 </div>
 <div class="navfooter">
 <hr>
