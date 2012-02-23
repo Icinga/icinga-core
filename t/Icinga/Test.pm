@@ -20,13 +20,13 @@ sub run_cgi ($$$$) {
     my ($config, $method, $query_string, $cgi) = @_;
     chdir $Bin or die "Cannot chdir";
 
-    my $cmd = sprintf("ICINGA_CGI_CONFIG=%s REMOTE_USER=icingaadmin REQUEST_METHOD=%s QUERY_STRING=%s %s",
+    my $cmd = sprintf("ICINGA_CGI_CONFIG='%s' REMOTE_USER=icingaadmin REQUEST_METHOD='%s' QUERY_STRING='%s' %s",
         $config,
         $method,
         $query_string,
         "$cgi_dir/$cgi"
     );
-    my @test = qw ( date );
+    warn $cmd . '\n';
     my ($in, $out, $err) = '';
     run3 ($cmd, \$in, \$out, \$err) or die "cat: $? - $! - $err";
     return $out;
