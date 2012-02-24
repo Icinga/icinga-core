@@ -1,5 +1,5 @@
 #######################
-Icinga 1.6.x Change Log
+Icinga 1.7.x Change Log
 #######################
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
@@ -7,7 +7,6 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 1.7.0 - 01/03/2012
 
 ENHANCEMENTS
-
 * classic ui: Added option for max log entries displayed in showlog.cgi #2145
 * classic ui: Added config option for status totals in status.cgi #2018
 * classic ui: Added multiple hosts/services to status.cgi GET #1981
@@ -20,6 +19,7 @@ FIXES
 * core: fix freshness checks are generating stale alerts, even if result was received in time #2136
 
 * classic ui: fixed invalid json output for tac.cgi #2160
+* classic ui: Fixed Invalid json data if field value is multiline #2263
 * classic ui: Fixed status totals are wrong when searching #1524
 * classic ui: Fixed wrong URLs for status.cgi overview #2173
 * classic ui: Fixed Host staus sorting in status.cgi not working #2220

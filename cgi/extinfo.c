@@ -1400,9 +1400,11 @@ void show_host_info(void) {
 				printf("\"status_duration\": \"%s\",\n", state_duration);
 			printf("\"status_duration_in_seconds\": %lu,\n", (unsigned long)ts_state_duration);
 			if (temp_hoststatus->long_plugin_output != NULL)
-				printf("\"status_information\": \"%s %s\",\n", json_encode(temp_hoststatus->long_plugin_output), json_encode(temp_hoststatus->plugin_output));
-			else
+				printf("\"status_information\": \"%s\\n%s\",\n", json_encode(temp_hoststatus->plugin_output), json_encode(temp_hoststatus->long_plugin_output));
+			else if (temp_hoststatus->plugin_output != NULL)
 				printf("\"status_information\": \"%s\",\n", json_encode(temp_hoststatus->plugin_output));
+			else
+				printf("\"status_information\": null,\n");
 			if (temp_hoststatus->perf_data == NULL)
 				printf("\"performance_data\": null,\n");
 			else
@@ -1816,9 +1818,11 @@ void show_service_info(void) {
 				printf("\"status_duration\": \"%s\",\n", state_duration);
 			printf("\"status_duration_in_seconds\": %lu,\n", (unsigned long)ts_state_duration);
 			if (temp_svcstatus->long_plugin_output != NULL)
-				printf("\"status_information\": \"%s %s\",\n", json_encode(temp_svcstatus->long_plugin_output), json_encode(temp_svcstatus->plugin_output));
-			else
+				printf("\"status_information\": \"%s\\n%s\",\n", json_encode(temp_svcstatus->plugin_output), json_encode(temp_svcstatus->long_plugin_output));
+			else if (temp_svcstatus->plugin_output != NULL)
 				printf("\"status_information\": \"%s\",\n", json_encode(temp_svcstatus->plugin_output));
+			else
+				printf("\"status_information\": null,\n");
 			if (temp_svcstatus->perf_data == NULL)
 				printf("\"performance_data\": null,\n");
 			else
