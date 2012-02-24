@@ -17,6 +17,9 @@ ENHANCEMENTS
 * classic ui: include graph icons by default in logos #2222
 
 FIXES
+* core: fix freshness checks are generating stale alerts, even if result was received in time #2136
+
+* classic ui: fixed invalid json output for tac.cgi #2160
 * classic ui: Fixed status totals are wrong when searching #1524
 * classic ui: Fixed wrong URLs for status.cgi overview #2173
 * classic ui: Fixed Host staus sorting in status.cgi not working #2220

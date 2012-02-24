@@ -14,7 +14,7 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.6.0
+Version: 1.6.1
 Release: 1%{?dist}
 License: GPLv2
 Group: Applications/System
@@ -247,6 +247,9 @@ fi
 %{_bindir}/idomod.o
 
 %changelog
+* Fri Dec 02 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-1
+- bump to 1.6.1
+
 * Sun Nov 27 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.0-1
 - set to 1.6.0 target
 - add --with-web-user/group
@@ -255,6 +258,9 @@ fi
 - remove provides nagios, inaccurate
 - enable cmd.cgi logging by default, %{logdir}/gui used
 - fix --libexecdir to point to possible location of nagios-plugins in resource.cfg:$USER1$
+
+* Fri Sep 09 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.5.1-1
+- bump to 1.5.1
 
 * Wed Jun 29 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.5.0-1
 - set to 1.5.0 target, remove provides nagios version, set idoutils.cfg-sample
