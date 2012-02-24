@@ -4,6 +4,9 @@ Classic-UI JSON Change Log
 
 1.6.2 
 * add is_in_effect and trigger_time to downtime output #2538
+- array names changed!!!! #2343
+	comments  -> host_comments  / service_comments
+	downtimes -> host_downtimes / service_downtimes
 
 1.6.0 - only values added, no existing values changed
 * add more info of (ack, downtime, ... ) status to json export in status.cgi (ivo) #1988
