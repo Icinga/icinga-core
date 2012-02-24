@@ -6,6 +6,8 @@
 #
 # ExclusiveDist: el5 el6
 
+%define revision 4
+
 %define logdir %{_localstatedir}/log/icinga
 
 %define apacheconfdir  %{_sysconfdir}/httpd/conf.d
@@ -15,7 +17,7 @@
 Summary: Open Source host, service and network monitoring program
 Name: icinga
 Version: 1.6.1
-Release: 1%{?dist}
+Release: %{revision}%{?dist}
 License: GPLv2
 Group: Applications/System
 URL: http://www.icinga.org/
@@ -268,6 +270,7 @@ fi
 - use --libdir={_libdir}/icinga to install idomod.so instead of {_bindir} - see #2346
 - list {_libdir}/icinga/cgi/ cgis one by one, removing build warnings
 - remove macros in changelog warnings from rpmlint
+- use custom revision macro, don't forget that on spec updates
 
 * Thu Feb 23 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-3
 - use --with-plugin-dir instead of --libexexdir for nagios plugins dir introduced in #2344
