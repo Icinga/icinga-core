@@ -327,3 +327,9 @@ define service {
 	retain_nonstatus_information	1
 	}
 
+define hostgroup {
+    hostgroup_name  all
+        alias   All Servers
+        members host1,host2,host3,host4
+}
+
