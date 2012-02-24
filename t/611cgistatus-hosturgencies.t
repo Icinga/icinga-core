@@ -32,7 +32,3 @@ like( $output, '/host4.*host1.*host2.*host3/mxs', "List of hosts sorted by ascen
 $output = run_cgi('etc/cgi-hosturgencies.cfg', 'GET',
     'hostgroup=all&style=hostdetail&sortobject=hosts&sorttype=2&sortoption=9', 'status.cgi');
 like( $output, '/host2.*host3.*host4.*host1/mxs', "List of hosts sorted by descending urgency" );
-
-
-open (my $fh, '>', '/tmp/test.html');
-print $fh $output;
