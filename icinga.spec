@@ -92,8 +92,6 @@ Documentation for %{name}
     --with-cgiurl="/icinga/cgi-bin" \
     --with-command-user="icinga" \
     --with-command-group="icingacmd" \
-    --with-web-user=%{apacheuser} \
-    --with-web-group=%{apachegroup} \
     --with-gd-lib="%{_libdir}" \
     --with-gd-inc="%{_includedir}" \
     --with-htmurl="/icinga" \
@@ -271,6 +269,7 @@ fi
 - list {_libdir}/icinga/cgi/ cgis one by one, removing build warnings
 - remove macros in changelog warnings from rpmlint
 - use custom revision macro, don't forget that on spec updates
+- drop webuser/group, was used only by deprecated icinga-api (thx Michael Gruener) #2356
 
 * Thu Feb 23 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-3
 - use --with-plugin-dir instead of --libexexdir for nagios plugins dir introduced in #2344
