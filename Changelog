@@ -24,6 +24,7 @@ FIXES
 * classic ui: Done clean up document_header() and unused vars in cgi's #2252
 * classic ui: Fixed status.cgi: host param not honoured with servicefilter #2262
 * classic ui: fixed Tooltip from action_url interfering with pnp4nagios integration #2198
+* classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343
 
  
 1.6.0 - 30/11/2011

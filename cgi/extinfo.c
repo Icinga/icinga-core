@@ -764,6 +764,8 @@ int main(void) {
 		else {
 			if (content_type == CSV_CONTENT || content_type == JSON_CONTENT) {
 				show_comments(HOST_COMMENT);
+				if (content_type == JSON_CONTENT)
+					printf(",\n");
 				show_comments(SERVICE_COMMENT);
 			} else {
 				printf("<BR />\n");
@@ -781,6 +783,8 @@ int main(void) {
 		else {
 			if (content_type == CSV_CONTENT || content_type == JSON_CONTENT) {
 				show_downtime(HOST_DOWNTIME);
+				if (content_type == JSON_CONTENT)
+					printf(",\n");
 				show_downtime(SERVICE_DOWNTIME);
 			} else {
 				printf("<BR />\n");
@@ -1458,13 +1462,14 @@ void show_host_info(void) {
 			printf("\"event_handler_enabled\": %s,\n", (temp_hoststatus->event_handler_enabled == TRUE) ? "true" : "false");
 			printf("\"flap_detection_enabled\": %s\n", (temp_hoststatus->flap_detection_enabled == TRUE) ? "true" : "false");
 			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+
 				/* display comments */
-				printf(", \"comments\": [\n");
+				printf(",\n");
 				show_comments(HOST_COMMENT);
-				printf("], \"downtimes\": [\n");
+
 				/* display downtimes */
+				printf(",\n");
 				show_downtime(HOST_DOWNTIME);
-				printf("]\n");
 			}
 			printf(" }\n");
 		}
@@ -1872,13 +1877,14 @@ void show_service_info(void) {
 			printf("\"event_handler_enabled\": %s,\n", (temp_svcstatus->event_handler_enabled == TRUE) ? "true" : "false");
 			printf("\"flap_detection_enabled\": %s\n", (temp_svcstatus->flap_detection_enabled == TRUE) ? "true" : "false");
 			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+
 				/* display comments */
-				printf(", \"comments\": [\n");
+				printf(",\n");
 				show_comments(SERVICE_COMMENT);
-				printf("], \"downtimes\": [\n");
+
 				/* display downtimes */
+				printf(",\n");
 				show_downtime(SERVICE_DOWNTIME);
-				printf("]\n");
 			}
 			printf(" }\n");
 		}
@@ -2874,15 +2880,14 @@ void show_comments(int type) {
 	int json_start = TRUE;
 
 	/* define colspan */
-	if (display_type == DISPLAY_COMMENTS) {
+	if (display_type == DISPLAY_COMMENTS)
 		colspan = (type != SERVICE_COMMENT) ? 9 : 10;
-	}
 
 	if (content_type == JSON_CONTENT) {
-		if (display_type == DISPLAY_COMMENTS && type == HOST_COMMENT)
-			printf("\"comments\": [\n");
-		if (display_type == DISPLAY_COMMENTS && type == SERVICE_COMMENT)
-			json_start = FALSE;
+		if (type == HOST_COMMENT)
+			printf("\"host_comments\": [\n");
+		if (type == SERVICE_COMMENT)
+			printf("\"service_comments\": [\n");
 	} else if (content_type == CSV_CONTENT) {
 		/* csv header */
 		if (display_type == DISPLAY_COMMENTS && type == HOST_COMMENT) {
@@ -3006,7 +3011,6 @@ void show_comments(int type) {
 				printf("\"host_name\": \"%s\", ", json_encode(temp_host->name));
 				if (type == SERVICE_COMMENT)
 					printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
-				printf("\"comment_type\": \"%s\", ", (type == HOST_COMMENT) ? "HOST" : "SERVICE");
 			}
 			printf("\"entry_time\": \"%s\", ", date_time);
 			printf("\"author\": \"%s\", ", json_encode(temp_comment->author));
@@ -3062,8 +3066,8 @@ void show_comments(int type) {
 		}
 		printf("</TABLE></FORM></DIV>\n");
 	}
-	if (content_type == JSON_CONTENT && display_type == DISPLAY_COMMENTS && type == SERVICE_COMMENT)
-		printf("\n]\n");
+	if (content_type == JSON_CONTENT)
+		printf("]");
 
 	return;
 }
@@ -3085,15 +3089,14 @@ void show_downtime(int type) {
 	int json_start = TRUE;
 
 	/* define colspan */
-	if (display_type == DISPLAY_DOWNTIME) {
+	if (display_type == DISPLAY_DOWNTIME)
 		colspan = (type != SERVICE_DOWNTIME) ? 11 : 12;
-	}
 
 	if (content_type == JSON_CONTENT) {
-		if (display_type == DISPLAY_DOWNTIME && type == HOST_DOWNTIME)
-			printf("\"downtimes\": [\n");
-		if (display_type == DISPLAY_DOWNTIME && type == SERVICE_DOWNTIME)
-			json_start = FALSE;
+		if (type == HOST_DOWNTIME)
+			printf("\"host_downtimes\": [\n");
+		if (type == SERVICE_DOWNTIME)
+			printf("\"service_downtimes\": [\n");
 	} else if (content_type == CSV_CONTENT) {
 		/* csv header */
 		if (display_type == DISPLAY_DOWNTIME && type == HOST_DOWNTIME) {
@@ -3199,7 +3202,6 @@ void show_downtime(int type) {
 				printf("\"host_name\": \"%s\", ", json_encode(temp_host->name));
 				if (type == SERVICE_DOWNTIME)
 					printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
-				printf("\"downtime_type\": \"%s\", ", (type == HOST_DOWNTIME) ? "HOST" : "SERVICE");
 			}
 		} else if (content_type == CSV_CONTENT) {
 			if (display_type == DISPLAY_DOWNTIME) {
@@ -3313,8 +3315,8 @@ void show_downtime(int type) {
 		}
 		printf("</TABLE></FORM></DIV>\n");
 	}
-	if (content_type == JSON_CONTENT && display_type == DISPLAY_DOWNTIME && type == SERVICE_DOWNTIME)
-		printf("\n]\n");
+	if (content_type == JSON_CONTENT)
+		printf("]");
 
 	return;
 }
