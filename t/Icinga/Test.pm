@@ -26,7 +26,6 @@ sub run_cgi ($$$$) {
         $query_string,
         "$cgi_dir/$cgi"
     );
-    warn $cmd . '\n';
     my ($in, $out, $err) = '';
     run3 ($cmd, \$in, \$out, \$err) or die "cat: $? - $! - $err";
     return $out;
