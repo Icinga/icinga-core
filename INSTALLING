@@ -1,17 +1,34 @@
 Icinga Installation Instructions
 --------------------------------
 
+Tip: Instead of compiling sources, check if your distribution
+provides Icinga packages. Such will make your upgrade life
+easier :-)
+https://www.icinga.org/download/packages/
+
 A quickstart installation guide can now be found in the HTML
-documentation.  You can find the quickstart guide (quickstart.html)
+documentation.  You can find the quickstart guides
 in the following subdirectory:
 
 	html/docs/
 
-The quickstart covers all the basic steps you need to follow
+The quickstart guides cover all the basic steps you need to follow
 to install Icinga, the Icinga plugins, and start out monitoring
 the machine that Icinga is installed on.
 
-Good luck!
+
+Get online on https://www.icinga.org and find the following as well
+
+* Docs, by version or latest, as well as PDFs
+http://docs.icinga.org
+
+* Wiki, user contributed howtos, test & debug hints, package installs
+https://wiki.icinga.org
+
+If you happen to have questions on the install, you can get onto the
+various community channels: https://www.icinga.org/support/
+
+Good luck! :-)
 
 
 
