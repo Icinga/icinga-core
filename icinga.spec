@@ -265,8 +265,9 @@ fi
 %changelog
 * Fri Feb 24 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-4
 - rename idomod.o to idomod.so - see #2354
-- use --libdir=%{_libdir}/icinga to install idomod.so instead of %{_bindir} - see #2346
-- list %{_libdir}/icinga/cgi/ cgis one by one, removing build warnings
+- use --libdir={_libdir}/icinga to install idomod.so instead of {_bindir} - see #2346
+- list {_libdir}/icinga/cgi/ cgis one by one, removing build warnings
+- remove macros in changelog warnings from rpmlint
 
 * Thu Feb 23 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-3
 - use --with-plugin-dir instead of --libexexdir for nagios plugins dir introduced in #2344
@@ -283,7 +284,7 @@ fi
 - add objects/ido2db_check_proc.cfg
 - drop api package as this is now deprecated and not shipped anymore with icinga package
 - remove provides nagios, inaccurate
-- enable cmd.cgi logging by default, %{logdir}/gui used
+- enable cmd.cgi logging by default, {logdir}/gui used
 - fix --libexecdir to point to possible location of nagios-plugins in resource.cfg:$USER1$
 
 * Fri Sep 09 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.5.1-1
