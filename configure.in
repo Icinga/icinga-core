@@ -1296,7 +1296,6 @@ perl subst $srcdir/sample-config/template-object/switch.cfg
 echo ""
 echo "Creating sample config files in module/idoutils/config/ ..."
 
-perl subst $srcdir/module/idoutils/config/icinga.cfg
 perl subst $srcdir/module/idoutils/config/idoutils.cfg-sample
 perl subst $srcdir/module/idoutils/config/ido2db.cfg-sample
 perl subst $srcdir/module/idoutils/config/idomod.cfg-sample

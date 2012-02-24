@@ -250,7 +250,7 @@ event_broker_options=-1
 # WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #
-# IDOUtils idomod.o should be enabled using the module definition,
+# IDOUtils idomod.so should be enabled using the module definition,
 # i.e. using a package. First check that, and if not, you can
 # enable it here. 
 #
@@ -260,7 +260,7 @@ event_broker_options=-1
 # Example:
 #   broker_module=<modulepath> [moduleargs]
 
-#broker_module=@libdir@/idomod.o config_file=@sysconfdir@/idomod.cfg
+#broker_module=@libdir@/idomod.so config_file=@sysconfdir@/idomod.cfg
 
 
 

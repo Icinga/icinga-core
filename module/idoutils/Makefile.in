@@ -36,7 +36,7 @@ distclean: clean
 	rm -f Makefile
 	rm -f init-script.suse subst
 	rm -f db/scripts/prepsql db/scripts/installdb db/scripts/upgradedb
-	rm -f config/ido2db.cfg-sample config/idomod.cfg-sample config/icinga.cfg config/idoutils.cfg-sample
+	rm -f config/ido2db.cfg-sample config/idomod.cfg-sample config/idoutils.cfg-sample
 
 devclean: distclean
 

@@ -26,6 +26,6 @@
 define module{
         module_name     idomod
         module_type     neb
-        path            @libdir@/idomod.o
+        path            @libdir@/idomod.so
         args            config_file=@sysconfdir@/idomod.cfg
 	}

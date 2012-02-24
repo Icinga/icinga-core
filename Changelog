@@ -6,7 +6,10 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 
 1.7.0 - XX/YY/2012
 
-!!! ATTENTION - idomod.o will now be installed to $libdir instead of $bindir !!!
+!!! ATTENTION !!!
+	idomod.o was renamed to idomod.so, module extension is now .so
+	idomod.so will now be installed to $libdir instead of $bindir
+!!! ATTENTION !!!
 
 ENHANCEMENTS
 * core: notifications: Create contact list after eventbroker callbacks (Andreas Ericsson) #2110
@@ -17,10 +20,11 @@ ENHANCEMENTS
 
 * install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121
 * install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344
-* install: change default target location of idomod.o from $bindir to $libdir #2346
+* install: change default target location of idomod.so from $bindir to $libdir #2346
 	** packagers dreams come finally true! :)
 * install: introduce "lib/" in default prefix install for modules #2347
 * install: revamp the broker_module entry in icinga.cfg pointing to new module definition #2348
+* install: change idomod extension from .o to .so, make .so the default extension for modules #2354
 
 * icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
 
@@ -44,7 +48,8 @@ CHANGES
 * install: --with-plugin-dir=<path> #2344
 	** sets path to plugins directory path i.e. $prefix/libexec
 
-* install: change default target location of idomod.o from $bindir to $libdir #2346
+* install: change default target location of idomod.so from $bindir to $libdir #2346
+* install: change idomod extension from .o to .so, make .so the default extension for modules #2354
 	** make sure to UPDATE the location in your CONFIG !!!
 
 * install: introduce "lib/" in default prefix install for modules #2347
