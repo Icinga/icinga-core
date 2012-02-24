@@ -3,7 +3,7 @@
 all:
 
 test:
-	prove -v *.t 2>&1 |tee tests.log
+	@perl -I. -MTest::Harness -e '$$Test::Harness::verbose=1; runtests @ARGV;' *.t
 
 clean:
 	rm -f tests.log
