@@ -24,6 +24,12 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  ***********************************************************************/
 
+/** @file tac.c
+ *  @brief display a tactical monitoring overview and the tac header 
+**/
+
+/* #define DEBUG 1*/
+
 #include "../include/config.h"
 #include "../include/common.h"
 #include "../include/objects.h"
@@ -33,22 +39,11 @@
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
 
-
-#define HEALTH_WARNING_PERCENTAGE	90
-#define HEALTH_CRITICAL_PERCENTAGE	75
-
-
-/* HOSTOUTAGE structure */
-typedef struct hostoutage_struct {
-	host *hst;
-	int  affected_child_hosts;
-	struct hostoutage_struct *next;
-} hostoutage;
-
-
-extern char   main_config_file[MAX_FILENAME_LENGTH];
-extern char   url_images_path[MAX_FILENAME_LENGTH];
-extern char   url_media_path[MAX_FILENAME_LENGTH];
+/** @name external vars
+    @{ **/
+extern char main_config_file[MAX_FILENAME_LENGTH];
+extern char url_images_path[MAX_FILENAME_LENGTH];
+extern char url_media_path[MAX_FILENAME_LENGTH];
 
 extern char *service_critical_sound;
 extern char *service_warning_sound;
@@ -69,60 +64,59 @@ extern int accept_passive_service_checks;
 extern int accept_passive_host_checks;
 extern int enable_event_handlers;
 extern int enable_flap_detection;
-
 extern int nagios_process_state;
-
 extern int tac_show_only_hard_state;
 extern int show_tac_header;
 extern int show_tac_header_pending;
-
-
-void analyze_status_data(void);
-void display_tac_overview(void);
-
-void find_hosts_causing_outages(void);
-void calculate_outage_effect_of_host(host *, int *);
-int is_route_to_host_blocked(host *);
-int number_of_host_services(host *);
-void add_hostoutage(host *);
-void free_hostoutage_list(void);
-
-int process_cgivars(void);
-
-authdata current_authdata;
-
 extern int embedded;
 extern int refresh;
 extern int display_header;
 extern int daemon_check;
 extern int tac_header;
 extern int content_type;
+/** @} */
 
-hostoutage *hostoutage_list = NULL;
 
+/** @name TAC WARNING/CRITICAL PERCENTAGE
+ @{**/
+#define HEALTH_WARNING_PERCENTAGE	90			/**< health below this value is considered as in warning state */
+#define HEALTH_CRITICAL_PERCENTAGE	75			/**< health below this value is considered as in critical state */
+/** @} */
+
+
+/** @brief host outage struct
+ *
+ * holds a list hosts causing network outages
+**/
+typedef struct hostoutage_struct {
+	host *hst;						/**< pointer to host element which cuase outage */
+	int  affected_child_hosts;				/**< number of affected hosts */
+	struct hostoutage_struct *next;				/**< pointer to next host outage element */
+} hostoutage;
+
+hostoutage *hostoutage_list = NULL;				/**< list of all host outage elements */
+
+authdata current_authdata;					/**< struct to hold current authentication data */
+int CGI_ID = TAC_CGI_ID;					/**< ID to identify the cgi for functions in cgiutils.c */
+
+/** @name outages counters
+ @{**/
 int total_blocking_outages = 0;
 int total_nonblocking_outages = 0;
+/** @} */
 
+/** @name health counters
+ @{**/
 int total_service_health = 0;
 int total_host_health = 0;
 int potential_service_health = 0;
 int potential_host_health = 0;
 double percent_service_health = 0.0;
 double percent_host_health = 0.0;
+/** @} */
 
-int total_hosts = 0;
-int total_services = 0;
-
-int total_active_host_checks = 0;
-int total_passive_host_checks = 0;
-int total_disabled_host_checks = 0;
-int total_active_host_checks_with_passive_disabled = 0;
-
-int total_active_service_checks = 0;
-int total_passive_service_checks = 0;
-int total_disabled_service_checks = 0;
-int total_active_service_checks_with_passive_disabled = 0;
-
+/** @name statistics counters
+ @{**/
 double min_service_execution_time = -1.0;
 double max_service_execution_time = -1.0;
 double total_service_execution_time = 0.0;
@@ -139,7 +133,24 @@ double min_host_latency = -1.0;
 double max_host_latency = -1.0;
 double total_host_latency = 0.0;
 double average_host_latency = -1.0;
+/** @} */
 
+/** @name total counters
+ @{**/
+int total_hosts = 0;
+int total_services = 0;
+int total_active_host_checks = 0;
+int total_passive_host_checks = 0;
+int total_disabled_host_checks = 0;
+int total_active_host_checks_with_passive_disabled = 0;
+int total_active_service_checks = 0;
+int total_passive_service_checks = 0;
+int total_disabled_service_checks = 0;
+int total_active_service_checks_with_passive_disabled = 0;
+/** @} */
+
+/** @name flapping and disabled counters
+ @{**/
 int flapping_services = 0;
 int flapping_hosts = 0;
 int flap_disabled_services = 0;
@@ -148,8 +159,10 @@ int notification_disabled_services = 0;
 int notification_disabled_hosts = 0;
 int event_handler_disabled_services = 0;
 int event_handler_disabled_hosts = 0;
+/** @} */
 
-// host status counting
+/** @name host status counters
+ @{**/
 int hosts_pending = 0;
 int hosts_pending_active = 0;
 int hosts_pending_passive = 0;
@@ -199,8 +212,10 @@ int hosts_unreachable_unacknowledged = 0;
 int hosts_unreachable_active_unacknowledged = 0;
 int hosts_unreachable_passive_unacknowledged = 0;
 int hosts_unreachable_disabled_unacknowledged = 0;
+/** @} */
 
-// service status counting
+/** @name service status counters
+ @{**/
 int services_pending = 0;
 int services_pending_host_down = 0;
 int services_pending_active = 0;
@@ -326,11 +341,74 @@ int services_critical_passive_unacknowledged = 0;
 int services_critical_passive_unacknowledged_host_down = 0;
 int services_critical_disabled_unacknowledged = 0;
 int services_critical_disabled_unacknowledged_host_down = 0;
+/** @} */
 
-int CGI_ID = TAC_CGI_ID;
 
-/* #define DEBUG 1*/
+/** @brief Parses the requested GET/POST variables
+ *  @retval TRUE
+ *  @retval FALSE
+ *  @return wether parsing was successful or not
+ *
+ *  @n This function parses the request and set's the necessary variables
+**/
+int process_cgivars(void);
 
+
+/** @brief fills all the counters
+ *
+ *  Iterates through @ref servicestatus_list and @ref hoststatus_list to count all host and service states
+**/
+void analyze_status_data(void);
+
+/** @brief displays all data
+ *
+ *  After we calculated all data we have to display it.
+ *  This functions is also responsible for the "tac header".
+**/
+void display_tac_overview(void);
+
+/** @brief find all hosts that are causing network outages
+ *
+ *  Function tries to find hosts causig outages and calculates how many child hosts are affected by that.
+ *
+ *  Loops through @ref hoststatus_list and looks for hosts which are DOWN or UNREACHABLE and haven't been
+ *  blocked by other DOWN/UNREACHABLE hosts (@ref is_route_to_host_blocked).
+ *  These hosts get added to @ref hostoutage_list via @ref add_hostoutage
+ *
+ *  Then it loops through @ref hostoutage_list and calls @ref calculate_outage_effect_of_host to find
+ *  out how many hosts are affected by this outage.
+**/
+void find_hosts_causing_outages(void);
+
+/** @brief calculates network outage effect of a particular host being down or unreachable
+ *  @param [in] hst host element to calculate outage for
+ *  @param [out] affected_hosts returns number of affected hosts
+ *
+ *  Finds immediate childs of "hst" and calls itself again to finaly find all child hosts and sums them up to affected_hosts.
+ *  This is a recursice function.
+**/
+void calculate_outage_effect_of_host(host *, int *);
+
+/** @brief tests whether or not a host is "blocked" by upstream parents (host is already assumed to be down or unreachable)
+ *  @param [in] hst host element to see if this host is blocked
+ *	@retval TRUE
+ *	@retval FALSE
+ *  @return wether host is completely blocked or not
+ *
+ *  Loops through all parent hosts of "hst" and tries to find a parent in state UP or PENDING. If it finds a parent in UP or
+ *  PENDING state the function returns FALSE otherwise TRUE
+**/
+int is_route_to_host_blocked(host *);
+
+/** @brief adds a host to @ref hostoutage_list
+ *  @param [in] hst host element to add to hostoutage_list
+**/
+void add_hostoutage(host *);
+
+/** @brief frees all memory allocated to @ref hostoutage_list entries in memory **/
+void free_hostoutage_list(void);
+
+/** @brief Yes we need a main function **/
 int main(void) {
 	int result = OK;
 	char *sound = NULL;
@@ -528,7 +606,6 @@ int process_cgivars(void) {
 
 	return error;
 }
-
 
 void analyze_status_data(void) {
 	servicestatus *temp_servicestatus;
@@ -990,7 +1067,6 @@ void analyze_status_data(void) {
 	return;
 }
 
-
 /* determine what hosts are causing network outages */
 void find_hosts_causing_outages(void) {
 	hoststatus *temp_hoststatus;
@@ -1034,7 +1110,6 @@ void find_hosts_causing_outages(void) {
 	return;
 }
 
-
 /* adds a host outage entry */
 void add_hostoutage(host *hst) {
 	hostoutage *new_hostoutage;
@@ -1055,7 +1130,6 @@ void add_hostoutage(host *hst) {
 	return;
 }
 
-
 /* frees all memory allocated to the host outage list */
 void free_hostoutage_list(void) {
 	hostoutage *this_hostoutage;
@@ -1069,14 +1143,11 @@ void free_hostoutage_list(void) {
 	return;
 }
 
-
-
 /* calculates network outage effect of a particular host being down or unreachable */
 void calculate_outage_effect_of_host(host *hst, int *affected_hosts) {
 	int total_child_hosts_affected = 0;
 	int temp_child_hosts_affected = 0;
 	host *temp_host;
-
 
 	/* find all child hosts of this host */
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
@@ -1096,8 +1167,6 @@ void calculate_outage_effect_of_host(host *hst, int *affected_hosts) {
 
 	return;
 }
-
-
 
 /* tests whether or not a host is "blocked" by upstream parents (host is already assumed to be down or unreachable) */
 int is_route_to_host_blocked(host *hst) {
@@ -1124,7 +1193,6 @@ int is_route_to_host_blocked(host *hst) {
 
 	return TRUE;
 }
-
 
 void display_tac_overview(void) {
 	char host_health_image[16];
