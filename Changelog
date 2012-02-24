@@ -27,6 +27,7 @@ ENHANCEMENTS
 * install: change idomod extension from .o to .so, make .so the default extension for modules #2354
 
 * icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
+* icinga.spec: make aware of the change of idomod.o location and changed extension (now .so) #2350
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109

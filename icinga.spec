@@ -84,6 +84,7 @@ Documentation for %{name}
     --libexecdir="%{_libdir}/nagios/plugins" \
     --localstatedir="%{_localstatedir}/icinga" \
     --with-checkresult-dir="%{_localstatedir}/icinga/checkresults" \
+    --libdir="%{_libdir}/icinga" \
     --sbindir="%{_libdir}/icinga/cgi" \
     --sysconfdir="%{_sysconfdir}/icinga" \
     --with-cgiurl="/icinga/cgi-bin" \
@@ -217,8 +218,22 @@ fi
 %config(noreplace) %attr(-,root,root) %{apacheconfdir}/icinga.conf
 %config(noreplace) %{_sysconfdir}/icinga/cgi.cfg
 %config(noreplace) %{_sysconfdir}/icinga/cgiauth.cfg
-%{_libdir}/icinga
-%{_libdir}/icinga/cgi
+%{_libdir}/icinga/cgi/avail.cgi
+%{_libdir}/icinga/cgi/cmd.cgi
+%{_libdir}/icinga/cgi/config.cgi
+%{_libdir}/icinga/cgi/extinfo.cgi
+%{_libdir}/icinga/cgi/histogram.cgi
+%{_libdir}/icinga/cgi/history.cgi
+%{_libdir}/icinga/cgi/notifications.cgi
+%{_libdir}/icinga/cgi/outages.cgi
+%{_libdir}/icinga/cgi/showlog.cgi
+%{_libdir}/icinga/cgi/status.cgi
+%{_libdir}/icinga/cgi/statusmap.cgi
+%{_libdir}/icinga/cgi/statuswml.cgi
+%{_libdir}/icinga/cgi/statuswrl.cgi
+%{_libdir}/icinga/cgi/summary.cgi
+%{_libdir}/icinga/cgi/tac.cgi
+%{_libdir}/icinga/cgi/trends.cgi
 %dir %{_datadir}/icinga
 %{_datadir}/icinga/contexthelp
 %{_datadir}/icinga/images
@@ -245,9 +260,14 @@ fi
 %{_sysconfdir}/icinga/idoutils
 %{_bindir}/ido2db
 %{_bindir}/log2ido
-%{_bindir}/idomod.o
+%{_libdir}/icinga/idomod.so
 
 %changelog
+* Fri Feb 24 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-4
+- rename idomod.o to idomod.so - see #2354
+- use --libdir=%{_libdir}/icinga to install idomod.so instead of %{_bindir} - see #2346
+- list %{_libdir}/icinga/cgi/ cgis one by one, removing build warnings
+
 * Thu Feb 23 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-3
 - use --with-plugin-dir instead of --libexexdir for nagios plugins dir introduced in #2344
 
