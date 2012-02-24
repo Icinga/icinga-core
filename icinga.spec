@@ -144,9 +144,6 @@ mv %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg-sample %{buildroot}%{_sysconfdir
 mv %{buildroot}%{_sysconfdir}/icinga/idomod.cfg-sample %{buildroot}%{_sysconfdir}/icinga/idomod.cfg
 mv %{buildroot}%{_sysconfdir}/icinga/modules/idoutils.cfg-sample %{buildroot}%{_sysconfdir}/icinga/modules/idoutils.cfg
 
-### copy idoutils db-script
-cp -r module/idoutils/db %{buildroot}%{_sysconfdir}/icinga/idoutils
-
 ### remove icinga-api
 %{__rm} -rf %{buildroot}%{_datadir}/icinga/icinga-api
 
@@ -184,8 +181,9 @@ fi
 %{__rm} -rf %{buildroot}
 
 %files
-%defattr(-,icinga,icinga,-)
-%attr(755,root,root) %{_initrddir}/icinga
+%defattr(-,root,root,-)
+%doc README LICENSE Changelog UPGRADING
+%attr(755,-,-) %{_initrddir}/icinga
 %dir %{_sysconfdir}/icinga
 %dir %{_sysconfdir}/icinga/modules
 %config(noreplace) %{_sysconfdir}/icinga/icinga.cfg
@@ -199,23 +197,26 @@ fi
 %config(noreplace) %{_sysconfdir}/icinga/objects/templates.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/timeperiods.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/windows.cfg
-%config(noreplace) %{_sysconfdir}/icinga/resource.cfg
-%{_bindir}/icinga
-%{_bindir}/icingastats
-%{_libdir}/icinga/p1.pl
+%config(noreplace) %attr(640,icinga,icinga) %{_sysconfdir}/icinga/resource.cfg
+%attr(755,-,-) %{_bindir}/icinga
+%attr(755,-,-) %{_bindir}/icingastats
+%attr(755,-,-) %{_libdir}/icinga/p1.pl
+%defattr(-,icinga,icinga,-)
+%{logdir}
+%{logdir}/archives
 %dir %{_localstatedir}/icinga
 %dir %{_localstatedir}/icinga/checkresults
 %attr(2755,icinga,icingacmd) %{_localstatedir}/icinga/rw/
-%{logdir}
-%{logdir}/archives
 
 %files doc
-%defattr(-,icinga,icinga,-)
+%defattr(-,root,root,-)
+%doc README LICENSE Changelog UPGRADING
 %{_datadir}/icinga/docs
 
 %files gui
-%defattr(-,icinga,icinga,-)
-%config(noreplace) %attr(-,root,root) %{apacheconfdir}/icinga.conf
+%defattr(-,root,root,-)
+%doc README LICENSE Changelog UPGRADING
+%config(noreplace) %{apacheconfdir}/icinga.conf
 %config(noreplace) %{_sysconfdir}/icinga/cgi.cfg
 %config(noreplace) %{_sysconfdir}/icinga/cgiauth.cfg
 %{_libdir}/icinga/cgi/avail.cgi
@@ -251,13 +252,13 @@ fi
 %attr(664,icinga,icingacmd) %{logdir}/gui/.htaccess
 
 %files idoutils
-%defattr(-,icinga,icinga,-)
-%attr(755,root,root) %{_initrddir}/ido2db
+%defattr(-,root,root,-)
+%doc README LICENSE Changelog UPGRADING module/idoutils/db
+%attr(755,-,-) %{_initrddir}/ido2db
 %config(noreplace) %{_sysconfdir}/icinga/ido2db.cfg
 %config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
 %config(noreplace) %{_sysconfdir}/icinga/modules/idoutils.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/ido2db_check_proc.cfg
-%{_sysconfdir}/icinga/idoutils
 %{_bindir}/ido2db
 %{_bindir}/log2ido
 %{_libdir}/icinga/idomod.so
@@ -270,6 +271,12 @@ fi
 - remove macros in changelog warnings from rpmlint
 - use custom revision macro, don't forget that on spec updates
 - drop webuser/group, was used only by deprecated icinga-api (thx Michael Gruener) #2356
+- change ownership of docs to root (thx Michael Gruener)
+- add "README LICENSE Changelog UPGRADING" to all packages as docs (thx Michael Gruener) #2212
+- change permissions of resource.cfg to icinga:icinga 640 (thx Michael Gruener)
+- users who use cgi.cfg authorized_for_full_command_resolution must add apache user to group themselves (security risk)
+- put module/idoutils/db into docs instead of manually copying to /etc/icinga/idoutils (thx Michael Gruener) #2357
+- revamp the file permissions based on proposals by Michael Gruener <michael.gruener@topalis.com>
 
 * Thu Feb 23 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-3
 - use --with-plugin-dir instead of --libexexdir for nagios plugins dir introduced in #2344
