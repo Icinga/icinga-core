@@ -45,6 +45,7 @@ ENHANCEMENTS
 * icinga.spec: add README.RHEL README.RHEL.idoutils to upstream, being installed as docs (thx Michael Gruener, Stefan Marx) #2212
 * icinga.spec: use eventhandler configure/make in package creation from #2352 #2363
 * icinga.spec: use --enable-cgi-log from upstream instead of manual sed #2365
+* icinga.spec: introduce conf.d as place for own configs #2367
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109

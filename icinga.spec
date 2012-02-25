@@ -184,6 +184,7 @@ fi
 %dir %{_sysconfdir}/icinga/modules
 %config(noreplace) %{_sysconfdir}/icinga/icinga.cfg
 %dir %{_sysconfdir}/icinga/objects
+%dir %{_sysconfdir}/icinga/conf.d
 %config(noreplace) %{_sysconfdir}/icinga/objects/commands.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/contacts.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/notifications.cfg
@@ -266,6 +267,7 @@ fi
 - use newly introduced --with-eventhandler-dir and make install-eventhandlers
 - install sample eventhandlers to {_libdir}/icinga/eventhandlers
 - use --enable-cgi-log from upstream instead of manual sed
+- add {_sysconfdir}/icinga/conf.d because upstream will include that with cfg_dir
 
 * Fri Feb 24 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-4
 - rename idomod.o to idomod.so - see #2354
