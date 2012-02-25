@@ -3,7 +3,7 @@
  * READLOGS.C - Functions for reading Log files in Icinga CGIs
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -48,9 +48,9 @@ extern char	log_archive_path[MAX_FILENAME_LENGTH];	/**< the full path to the arc
 
 /** @name vars for log archive determination
     @{ **/
-extern time_t		this_scheduled_log_rotation = 0L;		/**< timestamp of current log rotation*/
-extern time_t		last_scheduled_log_rotation = 0L;		/**< timestamp of last log rotation */
-extern time_t		next_scheduled_log_rotation = 0L;		/**< timestamp of next log rotation */
+extern time_t		this_scheduled_log_rotation;		/**< timestamp of current log rotation*/
+extern time_t		last_scheduled_log_rotation;		/**< timestamp of last log rotation */
+extern time_t		next_scheduled_log_rotation;		/**< timestamp of next log rotation */
 /** @} */
 
 

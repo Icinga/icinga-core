@@ -4,7 +4,7 @@
 <title>Graphing Performance Info With PNP4Nagios</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
 <link rel="prev" href="icingastats.html" title="Using The Icingastats Utility">
 <link rel="next" href="temp_data.html" title="Temporary Data">
@@ -53,8 +53,9 @@
   along with further links to download the software can be found at <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">http://docs.pnp4nagios.org/pnp-0.6/start</a>.</p>
 
   <p><a class="link" href="https://www.monitoringexchange.org/inventory/Check-Plugins/Software/Nagios/check_nagiostats" target="_top">check_nagiostats</a> was
-  published by <a class="link" href="http://www.nagios-portal.org/wbb/index.php?page=User&amp;userID=7773" target="_top">Jochen Bern</a> and will be called
-  via crontab to submit passive check results. Despite its name it can be use for Icinga as well.</p>
+  published by <a class="link" href="http://www.nagios-portal.org/wbb/index.php?page=User&amp;userID=7773" target="_top">Jochen Bern</a> and can be called
+  as an active service check or via crontab to submit passive check results. Despite its name it can be used for Icinga as
+  well.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -78,7 +79,31 @@
 </ul></div>
     </li>
 <li class="listitem">
-      <p>Make sure that your object configuration files contain a matching service definition such as</p>
+      <p>You can call the plugin using active or passive checks</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>Active</p>
+
+          <p>Make sure that your object configuration files contain a matching service definition such as</p>
+<pre class="programlisting"> define service{
+    host_name               &lt;the Icinga server&gt;
+    service_description     icingastats # (or something appropriate)
+    check_command           check_icingastats
+    check_interval          1
+    retry_interval          1
+    ...
+ }</pre>
+<p>and a command definition</p>
+<pre class="programlisting"> define command{
+    command_name            check_icingastats
+    command_line            $USER1$/check_nagiostats</pre>
+<p>Don't forget to restart Icinga after these changes.</p>
+        </li>
+<li class="listitem">
+          <p>Passive</p>
+
+          <p>Make sure that your object configuration files contain a matching service definition such as</p>
 <pre class="programlisting"> define service{
     host_name               &lt;the Icinga server&gt;
     service_description     icingastats # (or something appropriate)
@@ -87,6 +112,14 @@
     ...
  }</pre>
 <p>Don't forget to restart Icinga after this change.</p>
+
+          <p>Add a line to the crontab of the Icinga user which will call the <code class="filename">icingastats</code> binary and submit
+          the results to the command pipe</p>
+<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; &lt;service&gt; &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
+<p>
+          This way the values are updated in regular intervals.</p>
+        </li>
+</ul></div>
     </li>
 <li class="listitem">
       <p>Create a symbolic link in the templates folder of PNP4Nagios</p>
@@ -95,13 +128,6 @@
       sure that <span class="emphasis"><em>icingastats</em></span> (without the extension .php) matches the value you specified for the service description.
       Blanks in the service description have to be replaced by underscores in the filename (e.g. "Icinga Stats" --&gt;
       "Icinga_Stats.php")</p>
-    </li>
-<li class="listitem">
-      <p>Add a line to the crontab of the Icinga user which will call the <code class="filename">icingastats</code> binary and submit the
-      results to the command pipe</p>
-<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; &lt;service&gt; &gt;&gt; /usr/local/icinga/var/icinga.cmd</pre>
-<p>
-      This way the values are updated in regular intervals.</p>
     </li>
 </ul></div>
 
@@ -112,7 +138,7 @@
   <p><span class="bold"><strong>Average Host / Service Check Latency</strong></span></p>
 
   <div class="figure">
-<a name="idp13972736"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p>
+<a name="id1639433"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p>
 <div class="figure-contents">
     
 
@@ -159,7 +185,7 @@
   <p><span class="bold"><strong>Service Statistics</strong></span></p>
 
   <div class="figure">
-<a name="idp13988816"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p>
+<a name="id1639569"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p>
 <div class="figure-contents">
     
 
@@ -189,7 +215,7 @@
   <p><span class="bold"><strong>Host Statistics</strong></span></p>
 
   <div class="figure">
-<a name="idp13998208"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p>
+<a name="id1639650"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p>
 <div class="figure-contents">
     
 
@@ -219,7 +245,7 @@
   <p><span class="bold"><strong>Average Execution Times</strong></span></p>
 
   <div class="figure">
-<a name="idp14008128"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p>
+<a name="id1639732"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p>
 <div class="figure-contents">
     
 
@@ -262,7 +288,7 @@
   <p><span class="bold"><strong>External Commands</strong></span></p>
 
   <div class="figure">
-<a name="idp14020288"></a><p class="title"><b>Figure 8.5. External Commands</b></p>
+<a name="id1639836"></a><p class="title"><b>Figure 8.5. External Commands</b></p>
 <div class="figure-contents">
     
 
@@ -290,7 +316,7 @@
   <p><span class="bold"><strong>External Command Buffers</strong></span></p>
 
   <div class="figure">
-<a name="idp14028960"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p>
+<a name="id1639910"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p>
 <div class="figure-contents">
     
 
@@ -308,7 +334,7 @@
   <p><span class="bold"><strong>Cached Host and Service Checks</strong></span></p>
 
   <div class="figure">
-<a name="idp14034992"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p>
+<a name="id1639962"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p>
 <div class="figure-contents">
     
 
@@ -331,7 +357,7 @@
   <p><span class="bold"><strong>Average State Changes</strong></span></p>
 
   <div class="figure">
-<a name="idp14040608"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p>
+<a name="id1640021"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p>
 <div class="figure-contents">
     
 
@@ -347,7 +373,7 @@
       <p><a class="link" href="flapping.html" title="Detection and Handling of State Flapping">Flap detection</a></p>
     </li></ul></div>
 
-  <a class="indexterm" name="idp14047504"></a>
+  <a class="indexterm" name="id1640064"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -366,6 +392,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

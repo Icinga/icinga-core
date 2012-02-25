@@ -3,10 +3,29 @@
 # In order to have Icinga run the IDOMOD event broker module, you'll need
 # to place a file like this into modules/ by default, and include that
 # directory in your icinga.cfg
+#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# Do NOT overwrite modules while they are being used by Icinga or Icinga
+# will crash in a fiery display of SEGFAULT glory.
+#
+# The correct/safe way of updating a module is by using one of these methods:
+#    1. Shutdown Icinga, replace the module file, restart Icinga
+#    2. Delete the original module file, move the new module file into place, restart Icinga
+#
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+#
+# ATTENTION: DO NOT load the same module here AND via broker_module in icinga.cfg
+# This can lead into problems with races on ressources.
+
 
 define module{
         module_name     idomod
         module_type     neb
-        path            @bindir@/idomod.o
+        path            @libdir@/idomod.so
         args            config_file=@sysconfdir@/idomod.cfg
 	}

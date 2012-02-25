@@ -27,8 +27,12 @@ while ($f = shift @ARGV) {
 		s|\@localstatedir\@|@localstatedir@|g;
 		s|\@sysconfdir\@|@sysconfdir@|g;
 		s|\@LOGDIR\@|@LOGDIR@|g;
+		s|\@ENABLECGILOG\@|@ENABLECGILOG@|g;
 		s|\@CGILOGDIR\@|@CGILOGDIR@|g;
+		s|\@PLUGINDIR\@|@PLUGINDIR@|g;
+		s|\@EVENTHANDLERDIR\@|@EVENTHANDLERDIR@|g;
 		s|\@TMPDIR\@|@TMPDIR@|g;
+		s|\@TMPFILE\@|@TMPFILE@|g;
 		s|\@EXTCMDFILEDIR\@|@EXTCMDFILEDIR@|g;
 		s|\@P1FILELOC\@|@P1FILELOC@|g;
 		s|\@IDO_INSTANCE_NAME\@|@IDO_INSTANCE_NAME@|g;
@@ -36,6 +40,7 @@ while ($f = shift @ARGV) {
 		s|\@datadir\@|@datarootdir@|g;
 		s|\@sbindir\@|@sbindir@|g;
 		s|\@bindir\@|@bindir@|g;
+		s|\@libdir\@|@libdir@|g;
 		s|\@htmurl\@|@htmurl@|g;
 		s|\@cgiurl\@|@cgiurl@|g;
 		s|\@MAIL_PROG\@|@MAIL_PROG@|g;

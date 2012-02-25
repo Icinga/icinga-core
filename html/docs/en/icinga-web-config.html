@@ -4,7 +4,7 @@
 <title>Configuration Overview of Icinga-Web</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
 <link rel="prev" href="upgrading_icingaweb.html" title="Upgrading Icinga-Web and Icinga-Web Database">
 <link rel="next" href="icinga-web-introduction.html" title="Introduction to Icinga-Web">
@@ -33,7 +33,8 @@
 
   <p>We're trying to reduce global configuration files. Icinga operates in modules, every module has its own configuration. The
   Icinga-Web configuration settings like api, authentication and database settings are stored in <code class="filename">etc/conf.d/</code>. They
-  won't get overwritten during the next upgrade process. The folder may be changed during installation using --with-conf-folder.</p>
+  won't get overwritten during the next upgrade process. The folder may be changed during installation using --with-conf-dir 
+  (--with-conf-folder up to Icinga 1.6.x).</p>
 
   <p>This is also done with the libraries. If you need information about the cronk library, take a look into
   <code class="filename">app/modules/Cronks/lib</code> (for js things <code class="filename">app/modules/Cronks/lib/js</code>).</p>
@@ -786,7 +787,8 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 <li class="listitem">
       <p>The Icinga-Web configuration settings like api, authentication and database settings are stored in
       <code class="filename">etc/conf.d/</code> (prior to v1.5 they were located in app/modules/Appkit(/Cronks/Web)/config/). They won't get
-      overwritten during the next upgrade process. The folder may be changed during installation using --with-conf-folder.</p>
+      overwritten during the next upgrade process. The folder may be changed during installation using --with-conf-dir (--with-conf-folder
+      up to Icinga 1.6.x).</p>
     </li>
 </ul></div>
 
@@ -808,19 +810,19 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
   <p>You need more information? Please have a look at our <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top">Development Wiki.</a></p>
 
-  <a class="indexterm" name="idp11854848"></a>
+  <a class="indexterm" name="id1621363"></a>
 
-  <a class="indexterm" name="idp11856368"></a>
+  <a class="indexterm" name="id1621376"></a>
 
-  <a class="indexterm" name="idp11858016"></a>
+  <a class="indexterm" name="id1621388"></a>
 
-  <a class="indexterm" name="idp11859584"></a>
+  <a class="indexterm" name="id1621403"></a>
 
-  <a class="indexterm" name="idp11861408"></a>
+  <a class="indexterm" name="id1621416"></a>
 
-  <a class="indexterm" name="idp11862928"></a>
+  <a class="indexterm" name="id1621430"></a>
 
-  <a class="indexterm" name="idp11864624"></a>
+  <a class="indexterm" name="id1621444"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -839,6 +841,6 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

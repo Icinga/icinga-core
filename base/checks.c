@@ -3,8 +3,8 @@
  * CHECKS.C - Service and host check functions for Icinga
  *
  * Copyright (c) 1999-2010 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2011 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -1248,7 +1248,7 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 		temp_service->current_attempt = temp_service->current_attempt + 1;
 
 
-	log_debug_info(DEBUGL_CHECKS, 2, "ST: %s  CA: %d  MA: %d  CS: %d  LS: %d  LHS: %d\n", (temp_service->state_type == SOFT_STATE) ? "SOFT" : "HARD", temp_service->current_attempt, temp_service->max_attempts, temp_service->current_state, temp_service->last_state, temp_service->last_hard_state);
+	log_debug_info(DEBUGL_CHECKS, 2, "SERVICE: ST (state_type): %s  CA (current_attempt): %d  MA (max_attempt): %d  CS (current_state): %d  LS (last_state): %d  LHS (last_hard_state): %d\n", (temp_service->state_type == SOFT_STATE) ? "SOFT" : "HARD", temp_service->current_attempt, temp_service->max_attempts, temp_service->current_state, temp_service->last_state, temp_service->last_hard_state);
 
 	/* check for a state change (either soft or hard) */
 	if (temp_service->current_state != temp_service->last_state) {
@@ -2287,7 +2287,7 @@ int is_service_result_fresh(service *temp_service, time_t current_time, int log_
 	else
 		expiration_time = (time_t)(temp_service->last_check + freshness_threshold);
 
-	log_debug_info(DEBUGL_CHECKS, 2, "HBC: %d, PS: %lu, ES: %lu, LC: %lu, CT: %lu, ET: %lu\n", temp_service->has_been_checked, (unsigned long)program_start, (unsigned long)event_start, (unsigned long)temp_service->last_check, (unsigned long)current_time, (unsigned long)expiration_time);
+	log_debug_info(DEBUGL_CHECKS, 2, "SERVICE: HBC (has_been_checked): %d, PS (program_start): %lu, ES (event_start): %lu, LC (last_check): %lu, CT (current_time): %lu, ET (expiration_time): %lu\n", temp_service->has_been_checked, (unsigned long)program_start, (unsigned long)event_start, (unsigned long)temp_service->last_check, (unsigned long)current_time, (unsigned long)expiration_time);
 
 	/* the results for the last check of this service are stale */
 	if (expiration_time < current_time) {
@@ -2684,7 +2684,7 @@ int is_host_result_fresh(host *temp_host, time_t current_time, int log_this) {
 	else
 		expiration_time = (time_t)(temp_host->last_check + freshness_threshold);
 
-	log_debug_info(DEBUGL_CHECKS, 2, "HBC: %d, PS: %lu, ES: %lu, LC: %lu, CT: %lu, ET: %lu\n", temp_host->has_been_checked, (unsigned long)program_start, (unsigned long)event_start, (unsigned long)temp_host->last_check, (unsigned long)current_time, (unsigned long)expiration_time);
+	log_debug_info(DEBUGL_CHECKS, 2, "HOST: HBC (has_been_checked): %d, PS (program_start): %lu, ES (event_start): %lu, LC (last_check): %lu, CT (current_time): %lu, ET (expiration_time): %lu\n", temp_host->has_been_checked, (unsigned long)program_start, (unsigned long)event_start, (unsigned long)temp_host->last_check, (unsigned long)current_time, (unsigned long)expiration_time);
 
 	/* the results for the last check of this host are stale */
 	if (expiration_time < current_time) {

@@ -43,6 +43,7 @@ exec_prefix=@exec_prefix@
 LOGDIR=@localstatedir@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
+LIBDIR=@libdir@
 CGIDIR=@sbindir@
 HTMLDIR=@datarootdir@
 INSTALL=@INSTALL@

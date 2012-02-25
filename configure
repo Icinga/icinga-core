@@ -650,7 +650,11 @@ P1FILELOC
 PHPAPIEXTCMDDIR
 EXTCMDFILEDIR
 CGILOGDIR
+ENABLECGILOG
 LOGDIR
+EVENTHANDLERDIR
+PLUGINDIR
+TMPFILE
 TMPDIR
 CHECKRESULTDIR
 HTTPD_CONF
@@ -744,9 +748,12 @@ with_mail
 with_httpd_conf
 with_checkresult_dir
 with_temp_dir
+with_temp_file
+with_plugin_dir
+with_eventhandler_dir
 with_log_dir
+enable_enable_cgi_log
 with_cgi_log_dir
-with_phpapi_log_dir
 with_ext_cmd_file_dir
 with_p1_file_dir
 with_init_dir
@@ -1404,6 +1411,7 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-cgi-log        enables cgi logging - experimental!!
   --disable-statusmap     disables compilation of statusmap CGI
   --disable-statuswrl     disables compilation of statuswrl (VRML) CGI
   --enable-nanosleep      enables use of nanosleep (instead sleep) in event
@@ -1442,12 +1450,20 @@ Optional Packages:
                           sets path to Apache conf.d directory
   --with-checkresult-dir=<path>
                           sets path to check results spool directory
-  --with-temp-dir=<path>  sets path to temp directory
+  --with-temp-dir=<path>  sets path to temp directory path where Icinga can
+                          create temp files for service/host check results
+  --with-temp-file=<filepath>
+                          sets path to an Icinga exclusive update temp file
+                          i.e. /tmp/icinga.tmp
+  --with-plugin-dir=<path>
+                          sets path to plugins directory path i.e.
+                          $prefix/libexec
+  --with-eventhandler-dir=<path>
+                          sets path to eventhandlers directory path i.e.
+                          $prefix/libexec/eventhandlers
   --with-log-dir=<path>   sets path to logging directory
   --with-cgi-log-dir=<path>
                           sets path to cgi logging directory
-  --with-phpapi-log-dir=<path>
-                          !!deprecated, removed from package!!
   --with-ext-cmd-file-dir=<path>
                           sets path to external command file directory
   --with-p1-file-dir=<path>
@@ -5336,6 +5352,50 @@ if test x$TMPDIR = xno; then
 fi
 
 
+TMPFILE=no
+
+# Check whether --with-temp-file was given.
+if test "${with_temp_file+set}" = set; then :
+  withval=$with_temp_file; TMPFILE=$withval
+else
+  TMPFILE=no
+fi
+
+if test x$TMPFILE = xno; then
+	        TMPFILE="/tmp/icinga.tmp"
+	fi
+
+
+
+PLUGINDIR=no
+
+# Check whether --with-plugin-dir was given.
+if test "${with_plugin_dir+set}" = set; then :
+  withval=$with_plugin_dir; PLUGINDIR=$withval
+else
+  PLUGINDIR=no
+fi
+
+if test x$PLUGINDIR = xno; then
+	        PLUGINDIR="$libexecdir"
+	fi
+
+
+EVENTHANDLERDIR=no
+
+# Check whether --with-eventhandler-dir was given.
+if test "${with_eventhandler_dir+set}" = set; then :
+  withval=$with_eventhandler_dir; EVENTHANDLERDIR=$withval
+else
+  EVENTHANDLERDIR=no
+fi
+
+if test x$EVENTHANDLERDIR = xno; then
+                EVENTHANDLERDIR="$libexecdir/eventhandlers"
+        fi
+
+
+
 
 LOGDIR=no
 
@@ -5351,6 +5411,21 @@ if test x$LOGDIR = xno; then
 fi
 
 
+ENABLE_CGILOG=no
+# Check whether --enable-enable-cgi-log was given.
+if test "${enable_enable_cgi_log+set}" = set; then :
+  enableval=$enable_enable_cgi_log; ENABLE_CGILOG=$enableval
+else
+  ENABLE_CGILOG=yes
+fi
+
+if test x$ENABLE_CGILOG = xyes; then
+        ENABLECGILOG=1
+else
+        ENABLECGILOG=0
+fi
+
+
 CGILOGDIR=no
 
 # Check whether --with-cgi-log-dir was given.
@@ -5363,14 +5438,6 @@ fi
 if test x$CGILOGDIR = xno; then
         CGILOGDIR="$datarootdir/log"
 fi
-
-
-
-# Check whether --with-phpapi-log-dir was given.
-if test "${with_phpapi_log_dir+set}" = set; then :
-  withval=$with_phpapi_log_dir;
-fi
-
 
 
 EXTCMDFILEDIR=no
@@ -8451,7 +8518,6 @@ perl subst $srcdir/sample-config/template-object/switch.cfg
 echo ""
 echo "Creating sample config files in module/idoutils/config/ ..."
 
-perl subst $srcdir/module/idoutils/config/icinga.cfg
 perl subst $srcdir/module/idoutils/config/idoutils.cfg-sample
 perl subst $srcdir/module/idoutils/config/ido2db.cfg-sample
 perl subst $srcdir/module/idoutils/config/idomod.cfg-sample
@@ -8510,12 +8576,26 @@ fi
 $as_echo "        Install \${prefix}:  $prefix" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:                 Lock file:  $lockfile" >&5
 $as_echo "                Lock file:  $lockfile" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:                 Temp file:  $TMPFILE" >&5
+$as_echo "                Temp file:  $TMPFILE" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:             Lib directory:  $libdir" >&5
+$as_echo "            Lib directory:  $libdir" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:             Bin directory:  $bindir" >&5
+$as_echo "            Bin directory:  $bindir" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:          Plugin directory:  $PLUGINDIR" >&5
+$as_echo "         Plugin directory:  $PLUGINDIR" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:    Eventhandler directory:  $EVENTHANDLERDIR" >&5
+$as_echo "   Eventhandler directory:  $EVENTHANDLERDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:             Log directory:  $LOGDIR" >&5
 $as_echo "            Log directory:  $LOGDIR" >&6; }
+if test x$ENABLE_CGILOG = xyes; then
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:         cgi log directory:  $CGILOGDIR" >&5
 $as_echo "        cgi log directory:  $CGILOGDIR" >&6; }
+fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:    Check result directory:  $CHECKRESULTDIR" >&5
 $as_echo "   Check result directory:  $CHECKRESULTDIR" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:            Temp directory:  $TMPDIR" >&5
+$as_echo "           Temp directory:  $TMPDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:    Ext Cmd file directory:  $EXTCMDFILEDIR" >&5
 $as_echo "   Ext Cmd file directory:  $EXTCMDFILEDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:            Init directory:  $init_dir" >&5

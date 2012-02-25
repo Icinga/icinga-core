@@ -4,7 +4,7 @@
 <title>Icinga Plugins</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="prev" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="next" href="macros.html" title="Understanding Macros and How They Work">
@@ -97,14 +97,15 @@
       <p>Nagios Downloads Page: <a class="link" href="http://www.nagios.org/download/" target="_top">http://www.nagios.org/download/</a></p>
     </li>
 <li class="listitem">
-      <p>IcingaExchange.org: <a class="link" href="http://www.monitoringexchange.org" target="_top">http://www.monitoringexchange.org</a></p>
+      <p>Icinga Exchange.org: <a class="link" href="http://www.monitoringexchange.org" target="_top">http://www.monitoringexchange.org</a></p>
     </li>
 </ul></div>
 
   <p><a name="plugins-howto"></a><span class="bold"><strong>How Do I Use Plugin X?</strong></span></p>
 
-  <p>Most all plugins will display basic usage information when you execute them using '-h' or '--help' on the command line. For example,
-  if you want to know how the check_http plugin works or what options it accepts, you should try executing the following command:</p>
+  <p>Nearly all plugins will display basic usage information when you execute them using '-h' or '--help' on the command line. For
+  example, if you want to know how the check_http plugin works or what options it accepts, you should try executing the following
+  command:</p>
 
   <pre class="screen"> $&gt; ./check_http --help</pre>
 
@@ -116,13 +117,72 @@
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Always execute the plugin using the Icinga user because some plugins will create temporary files. If you're testing plugins
-    with another user then the Icinga user may not have the permissions to overwrite existing files later on.</p>
+    <p>Always execute the plugin using the Icinga user (specified using the directive icinga_user in
+    <code class="filename">icinga.cfg</code>) because some plugins will create temporary files. If you're testing plugins with another user then the
+    Icinga user may not have the permissions to overwrite existing files later on. Using another user you will not be able to find
+    out if the Icinga user is allowed to access several files (e.g. shared libraries) at all.</p>
 
     <p>When testing it don't call the plugin using relative paths (i.e <span class="emphasis"><em>./check_test_plugin</em></span>). Always use absolute
     paths because that's the way Icinga does it (i.e. <span class="emphasis"><em>/usr/local/icinga/libexec/check_test_plugin</em></span>).</p>
+
+    <p>Please note that the Icinga <span class="emphasis"><em>user</em></span> has a different environment than the Icinga
+    <span class="emphasis"><em>process</em></span>. Using the first the logins script have been executed and there is a terminal connected to the user session
+    so successfully running the plugin from the command line doesn't (necessarly) mean that it will run when executed by the process.
+    Furthermore the process will not use a shell per default but execute calls to popen/execvp instead depending on the command (popen in
+    case the command line contains meta characters meaningful to the shell like <code class="literal">!$^&amp;*()~[]\|{};&lt;&gt;?'"</code>, execvp if
+    no meta characters are present).</p>
   </td></tr>
 </table></div>
+
+  <p><span class="bold"><strong>Switch to the Icinga user</strong></span></p>
+
+  <p>Switch to the Icinga user as defined in <code class="filename">icinga.cfg</code> unless already done and clear the environment</p>
+
+  <pre class="screen"> #&gt; su - icinga
+ #&gt; env -i</pre>
+
+  <p>If you are logged in now then skip to "Extending the environment"</p>
+
+  <p>Due to security awareness of the packager / sys admin this might fail because the account is not allowed to login. Please ask your
+  sys admin to change that temporarily or do one of the following</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>get the current shell from <code class="filename">/etc/passwd</code> and change it by issuing something similar to </p>
+<pre class="screen"> #&gt; OLD_SHELL=`grep icinga /etc/passwd | sed 's/.*://'`
+ #&gt; usermod -s /bin/sh icinga</pre>
+<p>execute the command(s) after switching to the Icinga user and clearing the environment as
+      described above</p>
+
+      <p>don't forget to restore the shell setting after testing and leaving the session </p>
+<pre class="screen"> #&gt; usermod -s $OLD_SHELL icinga</pre>
+    </li>
+<li class="listitem">
+      <p>execute the command using "sudo -u icinga"</p>
+
+      <pre class="screen"> #&gt; sudo -u icinga /usr/local/icinga/libexec/sample-plugin.pl ...</pre>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Extending the environment</strong></span></p>
+
+  <p>Several checks (like check_oracle_health) depend on various environment variables to be set. Don't put these in
+  <code class="filename">.bashrc</code> or similar user dependent files but choose a central location. The default init script sources the file
+  <code class="filename">/etc/sysconfig/icinga</code> so that would be an ideal place. Don't use the init script itself because your changes might be
+  lost during updates.</p>
+
+  <p>Example of <code class="filename">/etc/sysconfig/icinga</code></p>
+
+  <pre class="screen"> export ORACLE_HOME=/usr/lib/oracle/11.2/client64
+ export LD_LIBRARY_PATH=$ORACLE_HOME/lib
+ export PATH=$PATH:$ORACLE_HOME</pre>
+<p>After you logged in these variables are not set but doing so is pretty easy</p>
+
+  <pre class="screen"> $&gt; . /etc/sysconfig/icinga</pre>
+<p>Please verify the settings</p>
+<pre class="screen"> $&gt; echo $ORACLE_HOME
+ $&gt; echo $LD_LIBRARY_PATH
+ $&gt; echo $PATH</pre>
 
   <p><span class="bold"><strong>Integrating a new plugin</strong></span></p>
 
@@ -134,14 +194,16 @@
   file config.log for errors regarding missing (devel) packages before issuing the actual compile command (mostly "make" or "make all"). In
   most cases the plugin is copied to the plugins directory (i.e. <span class="emphasis"><em>/usr/local/icinga/libexec</em></span>) during "make install".</p>
 
-  <p>Sometimes you have to alter the plugin to reflect your environment (i.e. path to "utils.pm", ...).</p>
+  <p>Sometimes you have to alter the plugin to reflect your environment (i.e. path to "utils.pm", ...). You may create a logical link
+  pointing to the plugin directory instead so you don't have to change the plugin to circumvent this issue easing plugin updates later
+  on.</p>
 
   <p>After the installation of the plugin call it from the command line using the appropriate options. If this works then you can
   integrate it into Icinga.</p>
 
   <p>Let's imagine you used the following call on the command line</p>
 
-  <pre class="programlisting"> /usr/local/icinga/libexec/sample-plugin.pl -H 192.168.1.2 -a argument1 -p parameter -n 5</pre>
+  <pre class="programlisting"> $&gt; /usr/local/icinga/libexec/sample-plugin.pl -H 192.168.1.2 -a argument1 -p parameter -n 5</pre>
 
   <p>The command definition has to contain two directives</p>
 
@@ -193,6 +255,24 @@
       a double "D"</p>
     </li>
 </ul></div>
+
+  <p><span class="bold"><strong>Raw command line</strong></span></p>
+
+  <p>Starting with Icinga 1.6 the classic UI allows to inspect the raw command line including values from
+  <code class="filename">resource.cfg</code>. Clicking on "ACTIVE" next to "Check type" within host/service check details will give access to this
+  information. If you don't have defined a check yet choose "View Config" from the main menu on the left, then "Command expansion". Please
+  note that the user has to be permitted explicitly using the directive <a class="link" href="configcgi.html#configcgi-authorized_for_full_command_resolution">authorized_for_full_command_resolution</a> in
+  <code class="filename">cgi.cfg</code> to see the values of variables from <code class="filename">resource.cfg</code>. The user running the web server must
+  have read access on this file, too.</p>
+
+  <p>If you intend to log the raw command line then change some directives in <code class="filename">icinga.cfg</code> to the following
+  values</p>
+
+  <pre class="screen"> #  16 = Host/service checks
+ # 256 = Commands
+ debug_level=272
+ debug_verbosity=2
+ max_debug_file_size=1000000000</pre>
 
   <p><span class="bold"><strong>Threshold and ranges</strong></span></p>
 
@@ -350,7 +430,7 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>"...resulted in a return code of 127"</p>
+      <p>"...resulted in a return code of 127" / "out of bounds"</p>
 
       <p>This means the plugin was not found at the specified location or that a file called from within the plugin was not found. If you
       use $USERn$ macros calling the plugin then make sure that the macro really points to the location where the plugin is (is the macro
@@ -358,11 +438,22 @@
       correct.</p>
     </li>
 <li class="listitem">
-      <p>"...resulted in a return code of 13"</p>
+      <p>"...resulted in a return code of 126"</p>
+
+      <p>Mostly this indicates a permissions problem. The process might not be able to access / execute the plugin and/or other related
+      files.</p>
+    </li>
+<li class="listitem">
+      <p>"...resulted in a return code of 13".</p>
 
       <p>Mostly this indicates a permissions problem. The user might not be able to access / execute the plugin and/or other related
       files. This might happen if you tested a plugin as root which creates temporary files. The Icinga user is not allowed to
       overwrite these files.</p>
+    </li>
+<li class="listitem">
+      <p>"(null)"</p>
+
+      <p>The internal call to execvp didn't return anything.</p>
     </li>
 </ul></div>
 
@@ -370,13 +461,13 @@
 
   <p>You can find information on the technical aspects of plugins, as well as how to go about creating your own custom plugins <a class="link" href="pluginapi.html" title="Icinga Plugin API">here</a>.</p>
 
-  <a class="indexterm" name="idp6805936"></a>
+  <a class="indexterm" name="id1578761"></a>
 
-  <a class="indexterm" name="idp6807520"></a>
+  <a class="indexterm" name="id1578744"></a>
 
-  <a class="indexterm" name="idp6808752"></a>
+  <a class="indexterm" name="id1578784"></a>
 
-  <a class="indexterm" name="idp6810384"></a>
+  <a class="indexterm" name="id1578799"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -395,6 +486,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>
