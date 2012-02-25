@@ -31,6 +31,6 @@ is($?, 0, "No error with working config");
 like($output, qr/Icinga PID.*48451\s/, 'Should include icinga pid');
 
 like($output, qr/Total Hosts.*2\s/, 'We have two hosts in this config');
-like($output, qr/Total Services.*2\s/, 'We have two hosts in this config');
+like($output, qr/Total Services.*2\s/, 'We have two services in this config');
 
 
