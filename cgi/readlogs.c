@@ -48,9 +48,9 @@ extern char	log_archive_path[MAX_FILENAME_LENGTH];	/**< the full path to the arc
 
 /** @name vars for log archive determination
     @{ **/
-extern time_t		this_scheduled_log_rotation = 0L;		/**< timestamp of current log rotation*/
-extern time_t		last_scheduled_log_rotation = 0L;		/**< timestamp of last log rotation */
-extern time_t		next_scheduled_log_rotation = 0L;		/**< timestamp of next log rotation */
+time_t		this_scheduled_log_rotation = 0L;		/**< timestamp of current log rotation*/
+time_t		last_scheduled_log_rotation = 0L;		/**< timestamp of last log rotation */
+time_t		next_scheduled_log_rotation = 0L;		/**< timestamp of next log rotation */
 /** @} */
 
 
