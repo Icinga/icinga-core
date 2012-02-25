@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 use Exporter 'import';
-our @EXPORT_OK = qw( run_cgi);
+our @EXPORT_OK = qw( run_cgi get_body );
 
 use IPC::Run3 qw( run3 );
 
@@ -32,6 +32,18 @@ sub run_cgi ($$$$) {
     run3 ($cmd, \$in, \$out, \$err) or die "cat: $? - $! - $err";
     print STDERR "\nError executing $cmd: \n $err\n" if $err;
     return $out;
+}
+
+sub get_body ($) {
+    my $output = shift;
+    # remove cr from output
+    $output =~ s/\r//g;
+    my $body; my $flag = 0;
+    foreach my $line (split("\n", $output)) {
+        $flag = 1 if $line =~ /^$/;
+        $body .= $line if $flag;
+    }
+    return $body;
 }
 
 1;
