@@ -1004,6 +1004,11 @@ process_performance_data=0
 # This boolean option determines whether services assigned to empty
 # host groups (host groups with no host members) will cause Icinga to
 # exit with error on start up (or during a configuration check) or not.
+# It's useful to be able to assign services to empty hostgroups when
+# configuration files or pre-cached object files are distributed to
+# various pollers, or when the process of generating Icinga config is
+# automated, or when a set of services is slowly being phased out but
+# should be kept around.
 # The default behavior if the option is not present in the main
 # configuration file is for Icinga to exit with error if services are
 # associated with host groups that have no hosts associated with them.
@@ -1452,7 +1457,7 @@ debug_level=0
 #         1 = More detailed
 #         2 = Very detailed
 
-debug_verbosity=1
+debug_verbosity=2
 
 
 

@@ -404,6 +404,13 @@ int run_scheduled_service_check(service *svc, int check_options, double latency)
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "run_scheduled_service_check() start\n");
 	log_debug_info(DEBUGL_CHECKS, 0, "Attempting to run scheduled check of service '%s' on host '%s': check options=%d, latency=%lf\n", svc->description, svc->host_name, check_options, latency);
 
+	/*
+	 * reset the next_check_event so we know it's
+	 * no longer in the scheduling queue
+	 * and can't conflict
+	 */
+	svc->next_check_event = NULL;
+	
 	/* attempt to run the check */
 	result = run_async_service_check(svc, check_options, latency, TRUE, TRUE, &time_is_valid, &preferred_time);
 
@@ -502,6 +509,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	char *temp_buffer = NULL;
 	char *args3 = NULL;
 	SV *plugin_hndlr_cr = NULL; /* perl.h holds typedef struct */
+	STRLEN n_a;
 	int count;
 	int use_epn = FALSE;
 #ifdef aTHX
@@ -593,6 +601,23 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	/* get the command start time */
 	gettimeofday(&start_time, NULL);
 
+#ifdef USE_EVENT_BROKER
+	/* send data to event broker */
+	neb_result = broker_service_check(NEBTYPE_SERVICECHECK_INITIATE, NEBFLAG_NONE, NEBATTR_NONE, svc, SERVICE_CHECK_ACTIVE, start_time, end_time, svc->service_check_command, svc->latency, 0.0, service_check_timeout, FALSE, 0, processed_command, NULL);
+
+	my_free(svc->processed_command);
+	svc->processed_command = strdup(processed_command);
+
+	/* neb module wants to override the service check - perhaps it will check the service itself */
+	if (neb_result == NEBERROR_CALLBACKOVERRIDE) {
+		clear_volatile_macros_r(&mac);
+		svc->latency = old_latency;
+		my_free(processed_command);
+		my_free(raw_command);
+		return OK;
+	}
+#endif
+
 	/* increment number of service checks that are currently running... */
 	currently_running_service_checks++;
 
@@ -611,23 +636,6 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	check_result_info.exited_ok = TRUE;
 	check_result_info.return_code = STATE_OK;
 	check_result_info.output = NULL;
-
-#ifdef USE_EVENT_BROKER
-	/* send data to event broker */
-	neb_result = broker_service_check(NEBTYPE_SERVICECHECK_INITIATE, NEBFLAG_NONE, NEBATTR_NONE, svc, SERVICE_CHECK_ACTIVE, start_time, end_time, svc->service_check_command, svc->latency, 0.0, service_check_timeout, FALSE, 0, processed_command, NULL);
-
-	my_free(svc->processed_command);
-	svc->processed_command = strdup(processed_command);
-
-	/* neb module wants to override the service check - perhaps it will check the service itself */
-	if (neb_result == NEBERROR_CALLBACKOVERRIDE) {
-		clear_volatile_macros_r(&mac);
-		svc->latency = old_latency;
-		my_free(processed_command);
-		my_free(raw_command);
-		return OK;
-	}
-#endif
 
 	/* open a temp file for storing check output */
 	old_umask = umask(new_umask);
@@ -1858,7 +1866,6 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 void schedule_service_check(service *svc, time_t check_time, int options) {
 	timed_event *temp_event = NULL;
 	timed_event *new_event = NULL;
-	int found = FALSE;
 	int use_original_event = TRUE;
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "schedule_service_check()\n");
@@ -1885,24 +1892,16 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 
 	/* default is to use the new event */
 	use_original_event = FALSE;
-	found = FALSE;
 
-#ifdef PERFORMANCE_INCREASE_BUT_VERY_BAD_IDEA_INDEED
-	/* WARNING! 1/19/07 on-demand async service checks will end up causing mutliple scheduled checks of a service to appear in the queue if the code below is skipped */
-	/* if(use_large_installation_tweaks==FALSE)... skip code below */
-#endif
+	/* fetch possible saved next check event */
+	temp_event = (timed_event *)svc->next_check_event;
 
-	/* see if there are any other scheduled checks of this service in the queue */
-	for (temp_event = event_list_low; temp_event != NULL; temp_event = temp_event->next) {
-
-		if (temp_event->event_type == EVENT_SERVICE_CHECK && svc == (service *)temp_event->event_data) {
-			found = TRUE;
-			break;
-		}
-	}
-
-	/* we found another service check event for this service in the queue - what should we do? */
-	if (found == TRUE && temp_event != NULL) {
+	/*
+	 * if the service already has a check scheduled
+	 * we need to decide wether the original or the
+	 * new event will be used
+	 */
+	if (temp_event != NULL) {
 
 		log_debug_info(DEBUGL_CHECKS, 2, "Found another service check event for this service @ %s", ctime(&temp_event->run_time));
 
@@ -1948,6 +1947,8 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 		/* else we're using the new event, so remove the old one */
 		else {
 			remove_event(temp_event, &event_list_low, &event_list_low_tail);
+			/* save new event for later */
+			svc->next_check_event = new_event;
 			my_free(temp_event);
 		}
 	}
@@ -2343,7 +2344,6 @@ int perform_scheduled_host_check(host *hst, int check_options, double latency) {
 void schedule_host_check(host *hst, time_t check_time, int options) {
 	timed_event *temp_event = NULL;
 	timed_event *new_event = NULL;
-	int found = FALSE;
 	int use_original_event = TRUE;
 
 
@@ -2370,23 +2370,16 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 
 	/* default is to use the new event */
 	use_original_event = FALSE;
-	found = FALSE;
 
-#ifdef PERFORMANCE_INCREASE_BUT_VERY_BAD_IDEA_INDEED
-	/* WARNING! 1/19/07 on-demand async host checks will end up causing mutliple scheduled checks of a host to appear in the queue if the code below is skipped */
-	/* if(use_large_installation_tweaks==FALSE)... skip code below */
-#endif
+        /* fetch possible saved next check event */
+	temp_event = (timed_event *)hst->next_check_event;
 
-	/* see if there are any other scheduled checks of this host in the queue */
-	for (temp_event = event_list_low; temp_event != NULL; temp_event = temp_event->next) {
-		if (temp_event->event_type == EVENT_HOST_CHECK && hst == (host *)temp_event->event_data) {
-			found = TRUE;
-			break;
-		}
-	}
-
-	/* we found another host check event for this host in the queue - what should we do? */
-	if (found == TRUE && temp_event != NULL) {
+	/*
+	 * if the service already has a check scheduled
+	 * we need to decide wether the original or the
+	 * new event will be used
+	 */
+	if (temp_event != NULL) {
 
 		log_debug_info(DEBUGL_CHECKS, 2, "Found another host check event for this host @ %s", ctime(&temp_event->run_time));
 
@@ -2432,6 +2425,8 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 		/* else use the new event, so remove the old */
 		else {
 			remove_event(temp_event, &event_list_low, &event_list_low_tail);
+			/* save new event for later */
+			hst->next_check_event = new_event;
 			my_free(temp_event);
 		}
 	}
@@ -3037,6 +3032,13 @@ int run_scheduled_host_check_3x(host *hst, int check_options, double latency) {
 
 	log_debug_info(DEBUGL_CHECKS, 0, "Attempting to run scheduled check of host '%s': check options=%d, latency=%lf\n", hst->name, check_options, latency);
 
+	/*
+	 * reset the next_check_event so we know it's
+	 * no longer in the scheduling queue
+	 * and can't conflict
+	 */
+	hst->next_check_event = NULL;
+	
 	/* attempt to run the check */
 	result = run_async_host_check_3x(hst, check_options, latency, TRUE, TRUE, &time_is_valid, &preferred_time);
 

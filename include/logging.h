@@ -89,10 +89,16 @@
 
 
 /**** Logging Functions ****/
+/* __printf__ etc. are gnu specific,not usable with cc */
+#if __GNUC__ > 2 || (__GNUC__ == 2 && __GNUC_MINOR__ > 4)
 void logit(int,int,const char *, ...)
 	__attribute__((__format__(__printf__, 3, 4)));
 int log_debug_info(int,int,const char *,...)
 	__attribute__((__format__(__printf__, 3, 4)));
+#else
+	void logit(int,int,const char *, ...);
+	int log_debug_info(int,int,const char *,...);
+#endif /* gnu */
 
 #ifndef NSCGI
 int write_to_all_logs(char *,unsigned long);            /* writes a string to main log file and syslog facility */

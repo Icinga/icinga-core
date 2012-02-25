@@ -68,10 +68,13 @@ int ido2db_close_debug_log(void) {
 int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...) {
         va_list ap;
         char *temp_path = NULL;
+		char *buf=NULL;
         time_t t;
         struct tm *tm;
         char temp_time[80];
         struct timeval current_time;
+        unsigned long tid;
+        unsigned long pid;
 
         if (!(ido2db_debug_level == IDO2DB_DEBUGL_ALL || (level & ido2db_debug_level)))
                 return IDO_OK;
@@ -88,16 +91,22 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...) {
         time(&t);
         tm=localtime(&t);
         strftime(temp_time, 80, "%c", tm);
-
+        tid=pthread_self();
+        pid=getpid();
 	if (ido2db_debug_readable_timestamp)
-	        fprintf(ido2db_debug_file_fp, "%s .%06lu [%03d.%d] [pid=%lu] [tid=%lld] ", temp_time, current_time.tv_usec, level, verbosity, (unsigned long)getpid(), (unsigned long int)pthread_self());
+	        fprintf(ido2db_debug_file_fp, "%s .%06lu [%03d.%d] [pid=%lu] [tid=%lu] ", temp_time, current_time.tv_usec, level, verbosity, pid, tid);
 	else
-        	fprintf(ido2db_debug_file_fp, "[%lu.%06lu] [%03d.%d] [pid=%lu] [tid=%ld] ", current_time.tv_sec, current_time.tv_usec, level, verbosity, (unsigned long)getpid(), (unsigned long int)pthread_self());
+        	fprintf(ido2db_debug_file_fp, "[%lu.%06lu] [%03d.%d] [pid=%lu] [tid=%lu] ", current_time.tv_sec, current_time.tv_usec, level, verbosity, pid, tid);
 
         /* write the data */
         va_start(ap, fmt);
-        vfprintf(ido2db_debug_file_fp, fmt, ap);
+		/* use gnu asprintf to take care about null pointer data*/
+        vasprintf(&buf, fmt, ap);
         va_end(ap);
+		if (buf) {
+        	fprintf(ido2db_debug_file_fp, "%s", buf);
+			my_free(buf);
+		}
 
         /* flush, so we don't have problems tailing or when fork()ing */
         fflush(ido2db_debug_file_fp);

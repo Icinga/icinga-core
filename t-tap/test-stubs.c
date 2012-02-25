@@ -119,6 +119,11 @@ int use_syslog_local_facility;
 int syslog_local_facility;
 int log_current_states;
 int log_long_plugin_output;
+int dump_retained_host_service_states_to_neb = TRUE;
+int stalking_notifications_for_hosts = DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS;
+int stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES;
+
+time_t last_program_stop = 0L;
 
 int grab_host_macros(host *hst) {}
 int grab_host_macros_r(icinga_macros *mac, host *hst) {}
@@ -218,6 +223,9 @@ int	event_profiling_enabled = FALSE;
 void 	profiler_update(int event, struct timeval start) {}
 
 int has_shell_metachars(const char *s) {}
+
+void remove_host_acknowledgement(host * hst) {}
+void remove_service_acknowledgement(service * svc) {}
 
 
 /* Icinga CGIs */

@@ -19,10 +19,11 @@ TESTS += test_strtoul
 TESTS += test_commands
 TESTS += test_downtime
 
+# these objects must be the same as defined in cgi/Makefile.in as CGILIBS!
 XSD_OBJS = $(SRC_CGI)/statusdata-cgi.o $(SRC_CGI)/xstatusdata-cgi.o
 XSD_OBJS += $(SRC_CGI)/objects-cgi.o $(SRC_CGI)/xobjects-cgi.o
 XSD_OBJS += $(SRC_CGI)/comments-cgi.o $(SRC_CGI)/downtime-cgi.o
-XSD_OBJS += $(SRC_CGI)/cgiutils.o $(SRC_CGI)/skiplist.o ../common/shared.o
+XSD_OBJS += $(SRC_COMMON)/shared.o $(SRC_CGI)/getcgi.o $(SRC_CGI)/cgiutils.o $(SRC_CGI)/cgiauth.o $(SRC_CGI)/readlogs.o $(SRC_CGI)/macros-cgi.o  $(SRC_CGI)/skiplist.o
 
 TP_OBJS = $(SRC_BASE)/utils.o $(SRC_BASE)/config.o $(SRC_BASE)/macros-base.o
 TP_OBJS += $(SRC_BASE)/objects-base.o $(SRC_BASE)/xobjects-base.o

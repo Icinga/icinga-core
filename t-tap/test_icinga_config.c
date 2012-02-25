@@ -268,6 +268,11 @@ int             service_check_timeout_state = STATE_CRITICAL;
 int             stalking_event_handlers_for_hosts = DEFAULT_STALKING_EVENT_HANDLERS_FOR_HOSTS;
 int             stalking_event_handlers_for_services = DEFAULT_STALKING_EVENT_HANDLERS_FOR_SERVICES;
 
+int dump_retained_host_service_states_to_neb = TRUE;
+int stalking_notifications_for_hosts = DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS;
+int stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES;
+
+time_t          last_program_stop = 0L;
 
 /* Dummy variables */
 sched_info scheduling_info;
@@ -317,6 +322,8 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 int     event_profiling_enabled = FALSE;
 void    profiler_update(int event, struct timeval start) {}
 
+void remove_host_acknowledgement(host * hst) {}
+void remove_service_acknowledgement(service * svc) {}
 
 int main(int argc, char **argv) {
 	int result;
