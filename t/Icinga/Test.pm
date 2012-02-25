@@ -6,7 +6,7 @@ use strict;
 use warnings;
 
 use Exporter 'import';
-our @EXPORT_OK = qw( run_cgi get_body );
+our @EXPORT_OK = qw( run_cgi get_body run_cmd );
 
 use IPC::Run3 qw( run3 );
 
@@ -29,6 +29,16 @@ sub run_cgi ($$$$) {
     );
     print STDERR "\nDEBUG: execute $cmd\n", if $DEBUG;
     my ($in, $out, $err) = '';
+    run3 ($cmd, \$in, \$out, \$err) or die "cat: $? - $! - $err";
+    print STDERR "\nError executing $cmd: \n $err\n" if $err;
+    return $out;
+}
+
+sub run_cmd (@) {
+    my $cmd = shift;
+
+    my ($in, $out, $err) = '';
+    print STDERR "\nDEBUG: execute '". join(" ", @$cmd) . "'\n", if $DEBUG;
     run3 ($cmd, \$in, \$out, \$err) or die "cat: $? - $! - $err";
     print STDERR "\nError executing $cmd: \n $err\n" if $err;
     return $out;
