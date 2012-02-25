@@ -8,7 +8,7 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 --                  2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-10-27 Thomas Dressler
+-- current version: 2012-01-29 Thomas Dressler
 -- -- --------------------------------------------------------
 */
 -- -----------------------------------------
@@ -1967,7 +1967,11 @@ CREATE INDEX objects_inst_id_idx ON objects(instance_id) tablespace &&IDXTBS;
 CREATE INDEX loge_time_idx on logentries(logentry_time) tablespace &&IDXTBS;
 
 -- statehistory
-CREATE INDEX statehist_i_id_o_id_s_ty_s_ti on statehistory(instance_id, object_id, state_type, state_time) tablespace &&IDXTBS;
+CREATE INDEX statehist_time_idx on statehistory(instance_id, object_id, state_type, state_time) tablespace &&IDXTBS;
+-- #2274
+create index statehistory_state_idx on statehistory(object_id,state)
+tablespace &&IDXTBS;
+
 
 -- slahistory
 CREATE INDEX slahist_idx on slahistory(instance_id,object_id,start_time,end_time) tablespace &&IDXTBS;

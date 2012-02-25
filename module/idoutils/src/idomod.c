@@ -1267,6 +1267,7 @@ int idomod_broker_data(int event_type, void *data) {
 	nebstruct_statechange_data *schangedata = NULL;
 	nebstruct_contact_status_data *csdata = NULL;
 	nebstruct_adaptive_contact_data *acdata = NULL;
+	customvariablesmember *temp_customvar = NULL;
 
 	double retry_interval = 0.0;
 	int last_state = -1;
@@ -1278,7 +1279,6 @@ int idomod_broker_data(int event_type, void *data) {
 			return 0;
 	}
 
-	customvariablesmember *temp_customvar = NULL;
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_broker_data() start\n");
 

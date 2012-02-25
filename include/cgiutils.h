@@ -648,7 +648,7 @@ void print_error(char*, int);
 
 void display_context_help(char *);				/* displays context-sensitive help window */
 
-void document_header(int,int);					/* print document header */
+void document_header(int,int, char *);				/* print document header */
 void document_footer(int);					/* print document footer */
 
 void write_popup_code(int);					/* PopUp's for graphics */

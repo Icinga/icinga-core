@@ -5,13 +5,13 @@ define([AC_CACHE_LOAD],)
 define([AC_CACHE_SAVE],)
 
 AC_INIT(base/icinga.c)
-AC_CONFIG_HEADER(include/config.h include/snprintf.h)
+AC_CONFIG_HEADER(include/config.h)
 AC_PREFIX_DEFAULT(/usr/local/icinga)
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.6.1"
+PKG_VERSION="1.7.0-dev"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="12-02-2011"
+PKG_REL_DATE="03-01-2012"
 
 dnl Figure out how to invoke "install" and what install options to use.
 AC_PROG_INSTALL
@@ -68,10 +68,10 @@ AC_CHECK_FUNC(asprintf,,SNPRINTF_O=../common/snprintf.o)
 AC_CHECK_FUNC(vasprintf,,SNPRINTF_O=../common/snprintf.o)
 
 dnl module/idoutils/src/Makefile.in
-AC_CHECK_FUNC(vsnprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
-AC_CHECK_FUNC(snprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
-AC_CHECK_FUNC(asprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
-AC_CHECK_FUNC(vasprintf,,SNPRINTF_O_IDO=../../../common/snprintf.o)
+AC_CHECK_FUNC(vsnprintf,,SNPRINTF_O_IDO=snprintf.o)
+AC_CHECK_FUNC(snprintf,,SNPRINTF_O_IDO=snprintf.o)
+AC_CHECK_FUNC(asprintf,,SNPRINTF_O_IDO=snprintf.o)
+AC_CHECK_FUNC(vasprintf,,SNPRINTF_O_IDO=snprintf.o)
 
 AC_CACHE_CHECK([for C99 vsnprintf],ac_cv_HAVE_C99_VSNPRINTF,[
 AC_TRY_RUN([
@@ -735,8 +735,10 @@ if test x$USE_EVENTBROKER = xyes; then
 	AC_MSG_CHECKING(for linker flags for loadable modules)
 	case $host_os in
 		solaris2*|sysv4*)
-			MOD_LDFLAGS="-G"
+			MOD_LDFLAGS="-G -fPIC"
+			MOD_CFLAGS="-fPIC"
 			INIT_OPTS="-o root -g root"
+			SNPRINTF_BROKEN="yes"
 		;;
 		aix4*|aix5*)
 			#MOD_LDFLAGS="-G -bnoentry -bexpall"
@@ -782,6 +784,15 @@ if test x$USE_EVENTBROKER = xyes; then
 	AC_SUBST(BROKER_O)
 	BROKER_H="../include/broker.h ../include/nebmods.h ../include/nebmodules.h ../include/nebcallbacks.h ../include/neberrors.h"
 	AC_SUBST(BROKER_H)
+fi
+
+dnl workaround for broken printf implementations (like solaris)
+if test x$SNPRINTF_BROKEN = xyes; then
+	AC_DEFINE(SNPRINTF_BROKEN,"1")
+	SNPRINTF_O=../common/snprintf.o
+	SNPRINTF_O_IDO=snprintf.o
+	AC_SUBST(SNPRINTF_O)
+	AC_SUBST(SNPRINTF_O_IDO)
 fi
 
 dnl Configure state based escalation ranges
@@ -1073,6 +1084,15 @@ else
 	USE_LIBTAP=no
 fi
 
+dnl Environment Prefix
+env_prefix="ICINGA_"
+AC_ARG_ENABLE(nagiosenv,
+ 	AC_HELP_STRING([--enable-nagiosenv],[expose Icinga Environment variables as NAGIOS_*)]))
+AS_IF([ test "x$enable_nagiosenv" = "xyes"],[
+ 	env_prefix="NAGIOS_"
+ 	AC_DEFINE(USE_NAGIOS_ENV,"1",[use NAGIOS_ as EnvVar Prefix])
+ 	])
+ 
 
 AC_SUBST(USE_LIBTAP)
 AC_SUBST(CGIEXTRAS)
@@ -1357,6 +1377,7 @@ AC_MSG_RESULT([           Init directory:  $init_dir])
 AC_MSG_RESULT([  Apache conf.d directory:  $HTTPD_CONF])
 AC_MSG_RESULT([             Mail program:  $MAIL_PROG])
 AC_MSG_RESULT([                  Host OS:  $host_os])
+AC_MSG_RESULT([       Environment Prefix:  $env_prefix])
 
 echo ""
 echo " Web Interface Options:"

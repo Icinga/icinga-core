@@ -39,10 +39,7 @@
 /** @name External vars
     @{ **/
 extern char main_config_file[MAX_FILENAME_LENGTH];
-extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
-extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
 
 extern char *csv_delimiter;
 extern char *csv_data_enclosure;
@@ -52,30 +49,15 @@ extern int enable_splunk_integration;
 extern int showlog_initial_states;
 extern int showlog_current_states;
 extern int escape_html_tags;
+extern int default_num_displayed_log_entries;
 
 extern int embedded;
 extern int display_header;
 extern int daemon_check;
-extern int date_format;
 extern int content_type;
 extern int refresh;
 
 extern logentry *entry_list;
-/** @} */
-
-/** @name Vars which are imported for cgiutils
- *  @warning these wars should be all extern, @n
- *	then they could get deleted, because they aren't used here.
- *	@n cgiutils.c , needs them
-    @{ **/
-int display_type = DISPLAY_HOSTS;
-int show_all_hosts = TRUE;
-int show_all_hostgroups = TRUE;
-int show_all_servicegroups = TRUE;
-char *host_name = NULL;
-char *hostgroup_name = NULL;
-char *servicegroup_name = NULL;
-char *service_desc = NULL;
 /** @} */
 
 /** @name Internal vars
@@ -84,15 +66,17 @@ int display_frills = TRUE;			/**< determine if icons should be shown in listing 
 int display_timebreaks = TRUE;			/**< determine if time breaks should be shown */
 int reverse = FALSE;				/**< determine if log should be viewed in reverse order */
 int timeperiod_type = TIMEPERIOD_SINGLE_DAY;	/**< determines the time period to view see cgiutils.h */
+int num_displayed = -1;				/**< holds amount of displayed log entries */
 
+int display_filter = FALSE;			/**< show filter */
 int show_notifications = TRUE;			/**< filter option */
 int show_host_status = TRUE;			/**< filter option */
 int show_service_status = TRUE;			/**< filter option */
 int show_external_commands = TRUE;		/**< filter option */
-int show_system_messages = TRUE;			/**< filter option */
+int show_system_messages = TRUE;		/**< filter option */
 int show_event_handler = TRUE;			/**< filter option */
-int show_flapping = TRUE;				/**< filter option */
-int show_downtime = TRUE;				/**< filter option */
+int show_flapping = TRUE;			/**< filter option */
+int show_downtime = TRUE;			/**< filter option */
 
 char *query_string = NULL;			/**< the request query string */
 char *start_time_string = "";			/**< the requested start time */
@@ -100,7 +84,7 @@ char *end_time_string = "";			/**< the requested end time */
 
 time_t ts_start = 0L;				/**< start time as unix timestamp */
 time_t ts_end = 0L;				/**< end time as unix timestamp */
-time_t ts_midnight = 0L;				/**< current midnight unix timestamp */
+time_t ts_midnight = 0L;			/**< current midnight unix timestamp */
 
 authdata current_authdata;			/**< struct to hold current authentication data */
 
@@ -151,7 +135,7 @@ int main(void) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -160,7 +144,7 @@ int main(void) {
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -169,7 +153,7 @@ int main(void) {
 	/* read all object configuration data */
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
@@ -184,7 +168,11 @@ int main(void) {
 			string_to_time(end_time_string, &ts_end);
 	}
 
-	document_header(CGI_ID, TRUE);
+	/* set default displayed entries */
+	if (num_displayed == -1)
+		num_displayed = default_num_displayed_log_entries;
+
+	document_header(CGI_ID, TRUE, "Log File");
 
 	/* calculate timestamps for reading logs */
 	convert_timeperiod_to_times(timeperiod_type, &ts_start, &ts_end);
@@ -205,6 +193,11 @@ int main(void) {
 	ts_midnight = mktime(t);
 
 	if (display_header == TRUE) {
+
+		/* start input form */
+		printf("<form method='GET' style='margin:0;' action='%s'>\n", SHOWLOG_CGI);
+		printf("<input type='hidden' name='ts_start' value='%lu'>\n", ts_start);
+		printf("<input type='hidden' name='ts_end' value='%lu'>\n", ts_end);
 
 		/* begin top table */
 		printf("<table border=0 width=100%% cellpadding=0 cellspacing=0>\n");
@@ -242,6 +235,8 @@ int main(void) {
 		/* end of top table */
 		printf("</tr>\n");
 		printf("</table>\n");
+
+		printf("</form>\n");
 	}
 
 	/* check to see if the user is authorized to view the log file */
@@ -393,6 +388,18 @@ int process_cgivars(void) {
 				reverse = TRUE;
 		}
 
+		/* show filter */
+		else if (!strcmp(variables[x], "display_filter")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			if (!strcmp(variables[x], "true"))
+				display_filter = TRUE;
+		}
+
 		/* notification filter */
 		else if (!strcmp(variables[x], "noti")) {
 			x++;
@@ -487,6 +494,17 @@ int process_cgivars(void) {
 
 			if (!strcmp(variables[x], "off"))
 				show_downtime = FALSE;
+		}
+
+		/* number of displayed entries */
+		else if (!strcmp(variables[x], "num_displayed")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			num_displayed = atoi(variables[x]);
 		}
 
 		/* we found the CSV output option */
@@ -881,6 +899,10 @@ void display_logentries() {
 
 			user_has_seen_something = TRUE;
 			count++;
+
+			/* stop if max amount is reached */
+			if (num_displayed != 0 && count >= num_displayed)
+				break;
 		}
 
 		if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
@@ -905,16 +927,23 @@ void show_filter(void) {
 	// escape all characters, otherwise they won't show up in search box
 	escape_html_tags = TRUE;
 
-	printf("<form method='GET' action='%s'>\n", SHOWLOG_CGI);
-	printf("<input type='hidden' name='ts_start' value='%lu'>\n", ts_start);
-	printf("<input type='hidden' name='ts_end' value='%lu'>\n", ts_end);
+	printf("<table border=0 cellspacing=0 cellpadding=0 width='100%%'>\n");
+	printf("<tr><td valign=top align=right style='padding-right:21.5em;'>Filters:&nbsp;&nbsp;");
+	printf("<img id='expand_image' src='%s%s' border=0 onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('display_filter').value = 'true'; document.getElementById('filters').style.display = ''; document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('display_filter').value = 'false'; document.getElementById('filters').style.display = 'none'; document.getElementById('expand_image').src = '%s%s'; }\">", url_images_path, (display_filter == TRUE) ? COLLAPSE_ICON : EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
+	printf("<input type='hidden' name='display_filter' id='display_filter' value='true'>\n");
+	printf("</td></tr></table>");
 
-	printf("<table id='filters' border=0 cellspacing=2 cellpadding=2>\n");
+	printf("<table id='filters' border=0 cellspacing=2 cellpadding=2 style='margin-bottom:0.5em;display:%s;'>\n", (display_filter == TRUE) ? "" : "none");
 
 	/* search box */
 	printf("<tr><td align=right width='10%%'>Search:</td>");
 	printf("<td nowrap><input type='text' name='query_string' id='query_string' size='15' class='NavBarSearchItem' value='%s'>", (query_string == NULL) ? "" : html_encode(query_string, TRUE));
 	printf("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='Clear' onClick=\"document.getElementById('query_string').value = '';\"></td></tr>");
+
+	/* displayed entries */
+	printf("<tr><td align=right>Entries:</td>");
+	printf("<td nowrap><input type='text' name='num_displayed' id='num_displayed' size='15' class='NavBarSearchItem' value='%d'>", num_displayed);
+	printf("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='Reset' onClick=\"document.getElementById('num_displayed').value = '%d';\"></td></tr>", default_num_displayed_log_entries);
 
 	/* Order */
 	printf("<tr><td align=right>Order:</td>");
@@ -970,8 +999,6 @@ void show_filter(void) {
 
 	printf("</table>\n");
 
-	printf("</form>\n");
-
 	escape_html_tags = temp_htmlencode;
 	return;
 }
@@ -984,6 +1011,8 @@ void display_own_nav_table() {
 
 	/* construct url */
 	dummy = asprintf(&url, "%s?timeperiod=singleday&order=%s", SHOWLOG_CGI, (reverse == TRUE) ? "old2new" : "new2old");
+	strncpy(temp_buffer, url, sizeof(temp_buffer));
+	dummy = asprintf(&url, "%s&num_displayed=%d", temp_buffer, num_displayed);
 
 	if (query_string != NULL) {
 		strncpy(temp_buffer, url, sizeof(temp_buffer));

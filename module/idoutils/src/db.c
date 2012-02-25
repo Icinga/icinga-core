@@ -4712,7 +4712,7 @@ int ido2db_oci_prepared_statement_eventhandlerdata(ido2db_idi *idi) {
 	             "timeout=:X13, early_timeout=:X14, execution_time=:X15, "
 	             "return_code=:X16, output=:X17, long_output=:X18u "
 	             "WHEN NOT MATCHED THEN "
-	             "INSERT (instance_id, eventhandler_type, object_id, "
+	             "INSERT (id, instance_id, eventhandler_type, object_id, "
 	             "state, state_type, start_time, start_time_usec, "
 	             "end_time, end_time_usec, command_object_id, "
 	             "command_args, command_line, "
@@ -7826,11 +7826,12 @@ void ido2db_oci_statement_free(OCI_Statement *st, char * stname) {
 int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lob ** lobp) {
 	char * fname = "ido2db_oci_bind_clob";
 	unsigned long len = 0;
-	unsigned int cb = 0;
-	unsigned int bb = 0;
-	unsigned long rc = 0;
-	const int chunk = 1024;
-
+	unsigned int cb = 0; //char byte
+	unsigned int bb = 0; //bin�r byte
+	unsigned long rc = 0; //recent position
+	const int chunk = 1024; //max chunk size
+	char * buffer =NULL; //temporary buffer
+	int code=0;
 
 	if (st == NULL) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Statement handle is null\n", fname);
@@ -7849,6 +7850,8 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lo
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s failed\n", fname, bindname);
 		return IDO_ERROR;
 	}
+
+
 	len = text ? strlen(text) : 0;
 	if (len == 0) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Null or empty\n", fname, bindname);
@@ -7856,31 +7859,48 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lo
 		return IDO_OK;
 	}
 
-
+	buffer = malloc(chunk+1);
+	if (buffer == NULL) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Buffer allocation error\n", fname);
+		return IDO_ERROR;
+	}
+	//reset lob
+	rc=0; //stream position
+	OCI_LobTruncate(*lobp,rc);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,%lu Bytes requested\n", fname, bindname, len);
+
 	while ((len - rc) > 0) {
 		if ((len - rc) > chunk) {
-			cb = chunk;
+			bb = chunk;
 		} else {
-			cb = len - rc;
+			bb = len - rc;
 		}
-		if (OCI_LobWrite2(*lobp, text + rc, &cb, &bb)) {
-			rc = rc + cb;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,%d Bytes(total %lu/%lu)   appended\n", fname, bindname, cb, rc, len);
+		if (bb < 1) break; //should not happens
+		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Next chunk %lu bytes from pos %lu (total %lu) \n", fname, bindname,bb,rc, len);
+
+		memset(buffer,0,chunk+1);
+		memcpy(buffer,text+rc,bb);
+
+		if (OCI_LobWrite2(*lobp, buffer, &cb, &bb)) {
+			rc = rc + bb;
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,%d Bytes(total %lu/%lu)   appended\n", fname, bindname, bb, rc, len);
 		} else {
-			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Last append failed: %d Bytes(total %lu/%lu)\n", fname, bindname, cb, rc, len);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Last append failed: %d Bytes(total %lu/%lu):'%s'\n", fname, bindname, bb, rc, len,buffer);
+			code=1; //this is an error
 			break;
 		}
 
 	}
+	//final length check
 	cb = OCI_LobGetLength(*lobp);
 	if (cb == len) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Lob appended:%lu bytes \n", fname, bindname, len);
-
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Lob successfully written:%lu bytes \n", fname, bindname, len);
 	} else {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Lob append failed:len %lu!= %lu written \n", fname, bindname, len, cb);
-		return IDO_ERROR;
+		//final size differs, but only an error if write failed
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Lob write warning:len %lu, but lob size %lu (last chunk '%s')\n", fname, bindname, len, cb,buffer);
 	}
+	free(buffer);
+	if (code == 1) return IDO_ERROR;
 	return IDO_OK;
 }
 /*

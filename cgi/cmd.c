@@ -122,17 +122,6 @@ struct errorlist {
 };
 
 
-/** @name Vars which are imported for cgiutils
- *  @warning these wars should be all extern, @n
- *	then they could get deleted, because they aren't used here.
- *	@n cgiutils.c , needs them
-    @{ **/
-int show_all_hosts = TRUE;			/**< */
-int show_all_hostgroups = TRUE;			/**< */
-int show_all_servicegroups = TRUE;		/**< */
-int display_type = DISPLAY_HOSTS;			/**< */
-/** @}*/
-
 /** @name Internal vars
     @{ **/
 char *host_name = "";				/**< requested host name */
@@ -302,7 +291,7 @@ int main(void) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		if (content_type == WML_CONTENT)
 			printf("<p>Error: Could not open CGI config file!</p>\n");
 		else
@@ -314,7 +303,7 @@ int main(void) {
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		if (content_type == WML_CONTENT)
 			printf("<p>Error: Could not open main config file!</p>\n");
 		else
@@ -334,7 +323,7 @@ int main(void) {
 	/* read all object configuration data */
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
-		document_header(CGI_ID, FALSE);
+		document_header(CGI_ID, FALSE, "Error");
 		if (content_type == WML_CONTENT)
 			printf("<p>Error: Could not read object config data!</p>\n");
 		else
@@ -343,7 +332,7 @@ int main(void) {
 		return ERROR;
 	}
 
-	document_header(CGI_ID, TRUE);
+	document_header(CGI_ID, TRUE, "External Command Interface");
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);

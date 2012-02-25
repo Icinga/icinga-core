@@ -6,6 +6,6 @@ clean:
 	rm -f *~
 
 distclean: clean
-	rm -f config.h locations.h snprintf.h dh.h
+	rm -f config.h locations.h dh.h
 
 devclean: distclean

@@ -779,6 +779,7 @@ enable_embedded_perl
 with_perlcache
 enable_cygwin
 enable_libtap
+enable_nagiosenv
 enable_ssl
 with_ssl
 with_ssl_inc
@@ -1423,6 +1424,7 @@ Optional Features:
   --enable-cygwin         enables building under the CYGWIN environment
   --enable-libtap         Enable built-in libtap for unit-testing (default:
                           no).
+  --enable-nagiosenv      expose Icinga Environment variables as NAGIOS_*)
   --enable-ssl            enables native SSL support
 
 Optional Packages:
@@ -2419,14 +2421,14 @@ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $
 ac_compiler_gnu=$ac_cv_c_compiler_gnu
 
 
-ac_config_headers="$ac_config_headers include/config.h include/snprintf.h"
+ac_config_headers="$ac_config_headers include/config.h"
 
 
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.6.1"
+PKG_VERSION="1.7.0-dev"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="12-02-2011"
+PKG_REL_DATE="03-01-2012"
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -4423,28 +4425,28 @@ ac_fn_c_check_func "$LINENO" "vsnprintf" "ac_cv_func_vsnprintf"
 if test "x$ac_cv_func_vsnprintf" = x""yes; then :
 
 else
-  SNPRINTF_O_IDO=../../../common/snprintf.o
+  SNPRINTF_O_IDO=snprintf.o
 fi
 
 ac_fn_c_check_func "$LINENO" "snprintf" "ac_cv_func_snprintf"
 if test "x$ac_cv_func_snprintf" = x""yes; then :
 
 else
-  SNPRINTF_O_IDO=../../../common/snprintf.o
+  SNPRINTF_O_IDO=snprintf.o
 fi
 
 ac_fn_c_check_func "$LINENO" "asprintf" "ac_cv_func_asprintf"
 if test "x$ac_cv_func_asprintf" = x""yes; then :
 
 else
-  SNPRINTF_O_IDO=../../../common/snprintf.o
+  SNPRINTF_O_IDO=snprintf.o
 fi
 
 ac_fn_c_check_func "$LINENO" "vasprintf" "ac_cv_func_vasprintf"
 if test "x$ac_cv_func_vasprintf" = x""yes; then :
 
 else
-  SNPRINTF_O_IDO=../../../common/snprintf.o
+  SNPRINTF_O_IDO=snprintf.o
 fi
 
 
@@ -6190,8 +6192,10 @@ $as_echo "$BROKER_LDFLAGS" >&6; }
 $as_echo_n "checking for linker flags for loadable modules... " >&6; }
 	case $host_os in
 		solaris2*|sysv4*)
-			MOD_LDFLAGS="-G"
+			MOD_LDFLAGS="-G -fPIC"
+			MOD_CFLAGS="-fPIC"
 			INIT_OPTS="-o root -g root"
+			SNPRINTF_BROKEN="yes"
 		;;
 		aix4*|aix5*)
 			#MOD_LDFLAGS="-G -bnoentry -bexpall"
@@ -6241,6 +6245,15 @@ _ACEOF
 	BROKER_O="broker.o nebmods.o"
 
 	BROKER_H="../include/broker.h ../include/nebmods.h ../include/nebmodules.h ../include/nebcallbacks.h ../include/neberrors.h"
+
+fi
+
+if test x$SNPRINTF_BROKEN = xyes; then
+	$as_echo "#define SNPRINTF_BROKEN \"1\"" >>confdefs.h
+
+	SNPRINTF_O=../common/snprintf.o
+	SNPRINTF_O_IDO=snprintf.o
+
 
 fi
 
@@ -6808,6 +6821,21 @@ subdirs="$subdirs tap"
 	USE_LIBTAP=yes
 else
 	USE_LIBTAP=no
+fi
+
+env_prefix="ICINGA_"
+# Check whether --enable-nagiosenv was given.
+if test "${enable_nagiosenv+set}" = set; then :
+  enableval=$enable_nagiosenv;
+fi
+
+if  test "x$enable_nagiosenv" = "xyes"; then :
+
+ 	env_prefix="NAGIOS_"
+
+$as_echo "#define USE_NAGIOS_ENV \"1\"" >>confdefs.h
+
+
 fi
 
 
@@ -7679,7 +7707,6 @@ for ac_config_target in $ac_config_targets
 do
   case $ac_config_target in
     "include/config.h") CONFIG_HEADERS="$CONFIG_HEADERS include/config.h" ;;
-    "include/snprintf.h") CONFIG_HEADERS="$CONFIG_HEADERS include/snprintf.h" ;;
     "Makefile") CONFIG_FILES="$CONFIG_FILES Makefile" ;;
     "subst") CONFIG_FILES="$CONFIG_FILES subst" ;;
     "solaris/pkginfo") CONFIG_FILES="$CONFIG_FILES solaris/pkginfo" ;;
@@ -8549,6 +8576,8 @@ $as_echo "  Apache conf.d directory:  $HTTPD_CONF" >&6; }
 $as_echo "             Mail program:  $MAIL_PROG" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:                   Host OS:  $host_os" >&5
 $as_echo "                  Host OS:  $host_os" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:        Environment Prefix:  $env_prefix" >&5
+$as_echo "       Environment Prefix:  $env_prefix" >&6; }
 
 echo ""
 echo " Web Interface Options:"

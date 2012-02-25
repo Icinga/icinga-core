@@ -122,6 +122,19 @@
 #  include <math.h>
 #endif /* TEST_SNPRINTF */
 
+#ifdef SNPRINTF_BROKEN
+/* snprintf and friends are known broken at least in solaris
+ * we assume functions are not there to take local one
+ */
+#undef HAVE_SNPRINTF
+#undef HAVE_VSNPRINTF
+#undef HAVE_C99_VSNPRINTF
+#undef HAVE_ASPRINTF
+#undef HAVE_VASPRINTF
+#undef HAVE_VA_COPY 
+#endif
+
+
 #ifdef HAVE_STRING_H
 #include <string.h>
 #endif

@@ -42,6 +42,7 @@ THREADLIBS=@THREADLIBS@
 
 # asprintf for Solaris friends ;) 
 SNPRINTF_O_IDO=@SNPRINTF_O_IDO@
+SNPRINTF_C=../../../common/snprintf.c
 
 
 COMMON_INC=$(CORE_INCLUDE)/config.h $(SRC_INCLUDE)/common.h $(SRC_INCLUDE)/io.h $(SRC_INCLUDE)/protoapi.h $(SRC_INCLUDE)/utils.h $(SRC_INCLUDE)/sla.h $(SRC_INCLUDE)/logging.h
@@ -75,10 +76,10 @@ sockdebug: sockdebug.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ sockdebug.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
 
 io.o: io.c $(SRC_INCLUDE)/io.h
-	$(CC) $(MOD_CFLAGS) $(CFLAGS) -c -o $@ io.c
+	$(CC) $(MOD_CFLAGS) $(CFLAGS) -c -o $@ io.c $(MOD_LDFLAGS)
 
 utils.o: utils.c $(SRC_INCLUDE)/utils.h
-	$(CC) $(MOD_CFLAGS) $(CFLAGS) -c -o $@ utils.c
+	$(CC) $(MOD_CFLAGS) $(CFLAGS) -c -o $@ utils.c $(MOD_LDFLAGS)
 
 db.o: db.c $(SRC_INCLUDE)/db.h
 	$(CC) $(CFLAGS) -c -o $@ db.c
@@ -94,6 +95,9 @@ sla.o: sla.c $(COMMON_INC)
 
 logging.o: logging.c $(COMMON_INC)
 	$(CC) $(CFLAGS) -c -o $@ logging.c
+
+snprintf.o: $(SNPRINTF_C) $(CORE_INCLUDE)/snprintf.h
+	$(CC) $(MOD_CFLAGS) $(CFLAGS) -c -o $@ $(SNPRINTF_C) $(MOD_LDFLAGS)
 
 clean:
 	rm -f core file2sock log2ido ido2db sockdebug *.o *.so
