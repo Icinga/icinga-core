@@ -1043,9 +1043,9 @@ dnl From Nagios Plugins
 dnl Have disabled autodetection of system library until later
 AC_ARG_ENABLE(libtap,
   AC_HELP_STRING([--enable-libtap],
-                [Enable built-in libtap for unit-testing (default: no).]),
+                [Enable built-in libtap for unit-testing (default: yes).]),
         [enable_libtap=$enableval],
-        [enable_libtap=no])
+        [enable_libtap=yes])
 #Disabled for moment
 #AM_CONDITIONAL([USE_LIBTAP_LOCAL],[test "$enable_libtap" = "yes"])
 

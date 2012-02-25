@@ -1419,7 +1419,7 @@ Optional Features:
   --enable-embedded-perl  will enable embedded Perl interpreter
   --enable-cygwin         enables building under the CYGWIN environment
   --enable-libtap         Enable built-in libtap for unit-testing (default:
-                          no).
+                          yes).
   --enable-nagiosenv      expose Icinga Environment variables as NAGIOS_*)
   --enable-ssl            enables native SSL support
 
@@ -6756,7 +6756,7 @@ rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 if test "${enable_libtap+set}" = set; then :
   enableval=$enable_libtap; enable_libtap=$enableval
 else
-  enable_libtap=no
+  enable_libtap=yes
 fi
 
 #Disabled for moment
