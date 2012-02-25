@@ -95,7 +95,7 @@ use_pending_states=1
 # WARNING:
 # This log is highly experimental and changes may occure without notice. Use at your own risk!!
 
-use_logging=0
+use_logging=@ENABLECGILOG@
 
 
 # CGI LOG FILE

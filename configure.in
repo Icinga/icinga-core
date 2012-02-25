@@ -355,6 +355,16 @@ if test x$LOGDIR = xno; then
 fi
 AC_SUBST(LOGDIR)
 
+dnl Enable cgi logging
+ENABLE_CGILOG=no
+AC_ARG_ENABLE(enable-cgi-log,AC_HELP_STRING([--enable-cgi-log],[enables cgi logging - experimental!!]),ENABLE_CGILOG=$enableval,ENABLE_CGILOG=yes)
+if test x$ENABLE_CGILOG = xyes; then
+        ENABLECGILOG=1
+else
+        ENABLECGILOG=0
+fi
+AC_SUBST(ENABLECGILOG)
+
 dnl Location of cgi logging path
 CGILOGDIR=no
 AC_ARG_WITH(cgi-log-dir,AC_HELP_STRING([--with-cgi-log-dir=<path>],[sets path to cgi logging directory]),CGILOGDIR=$withval,CGILOGDIR=no)
@@ -1371,7 +1381,9 @@ AC_MSG_RESULT([            Bin directory:  $bindir])
 AC_MSG_RESULT([         Plugin directory:  $PLUGINDIR])
 AC_MSG_RESULT([   Eventhandler directory:  $EVENTHANDLERDIR])
 AC_MSG_RESULT([            Log directory:  $LOGDIR])
+if test x$ENABLE_CGILOG = xyes; then
 AC_MSG_RESULT([        cgi log directory:  $CGILOGDIR])
+fi
 AC_MSG_RESULT([   Check result directory:  $CHECKRESULTDIR])
 AC_MSG_RESULT([           Temp directory:  $TMPDIR])
 AC_MSG_RESULT([   Ext Cmd file directory:  $EXTCMDFILEDIR])

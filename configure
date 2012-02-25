@@ -650,6 +650,7 @@ P1FILELOC
 PHPAPIEXTCMDDIR
 EXTCMDFILEDIR
 CGILOGDIR
+ENABLECGILOG
 LOGDIR
 EVENTHANDLERDIR
 PLUGINDIR
@@ -751,6 +752,7 @@ with_temp_file
 with_plugin_dir
 with_eventhandler_dir
 with_log_dir
+enable_enable_cgi_log
 with_cgi_log_dir
 with_ext_cmd_file_dir
 with_p1_file_dir
@@ -1409,6 +1411,7 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
+  --enable-cgi-log        enables cgi logging - experimental!!
   --disable-statusmap     disables compilation of statusmap CGI
   --disable-statuswrl     disables compilation of statuswrl (VRML) CGI
   --enable-nanosleep      enables use of nanosleep (instead sleep) in event
@@ -5408,6 +5411,21 @@ if test x$LOGDIR = xno; then
 fi
 
 
+ENABLE_CGILOG=no
+# Check whether --enable-enable-cgi-log was given.
+if test "${enable_enable_cgi_log+set}" = set; then :
+  enableval=$enable_enable_cgi_log; ENABLE_CGILOG=$enableval
+else
+  ENABLE_CGILOG=yes
+fi
+
+if test x$ENABLE_CGILOG = xyes; then
+        ENABLECGILOG=1
+else
+        ENABLECGILOG=0
+fi
+
+
 CGILOGDIR=no
 
 # Check whether --with-cgi-log-dir was given.
@@ -8570,8 +8588,10 @@ $as_echo "         Plugin directory:  $PLUGINDIR" >&6; }
 $as_echo "   Eventhandler directory:  $EVENTHANDLERDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:             Log directory:  $LOGDIR" >&5
 $as_echo "            Log directory:  $LOGDIR" >&6; }
+if test x$ENABLE_CGILOG = xyes; then
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:         cgi log directory:  $CGILOGDIR" >&5
 $as_echo "        cgi log directory:  $CGILOGDIR" >&6; }
+fi
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:    Check result directory:  $CHECKRESULTDIR" >&5
 $as_echo "   Check result directory:  $CHECKRESULTDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:            Temp directory:  $TMPDIR" >&5
