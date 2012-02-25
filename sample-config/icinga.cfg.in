@@ -21,8 +21,23 @@ log_file=@LOGDIR@/icinga.log
 # OBJECT CONFIGURATION FILE(S)
 # These are the object configuration files in which you define hosts,
 # host groups, contacts, contact groups, services, etc.
-# You can split your object definitions across several config files
-# if you wish (as shown below), or keep them all in a single config file.
+# Hint: Check the docs/wiki on how to monitor remote hosts with different
+# transport methods and plugins
+
+# You can tell Icinga to process all config files (with a .cfg
+# extension) in a particular directory recursively by using the
+# cfg_dir directive as shown below with conf.d
+
+cfg_dir=@sysconfdir@/conf.d
+
+# or you can split your object definitions across several config files
+# and include them one by one - see the provided sample config
+# in objects/
+#
+# ATTENTION: do not mix cfg_file and cfg_dir such as
+# cfg_file=foo/bar.cfg
+# cfg_dir=foo
+# this will include bar.cfg 2 times and lead to config verification errors.
 
 # You can specify individual object config files as shown below:
 cfg_file=@sysconfdir@/objects/commands.cfg
@@ -44,15 +59,6 @@ cfg_file=@sysconfdir@/objects/localhost.cfg
 
 # Definitions for ido2db process checks
 #cfg_file=@sysconfdir@/objects/ido2db_check_proc.cfg
-
-# You can also tell Icinga to process all config files (with a .cfg
-# extension) in a particular directory by using the cfg_dir
-# directive as shown below:
-
-#cfg_dir=@sysconfdir@/servers
-#cfg_dir=@sysconfdir@/printers
-#cfg_dir=@sysconfdir@/switches
-#cfg_dir=@sysconfdir@/routers
 
 # Definitions for broker modules like idoutils.cfg
 cfg_dir=@sysconfdir@/modules
