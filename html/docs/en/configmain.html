@@ -4,7 +4,7 @@
 <title>Main Configuration File Options</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="config.html" title="Configuration Overview">
 <link rel="next" href="configobject.html" title="Object Configuration Overview">
@@ -1936,7 +1936,7 @@
 <tbody>
 <tr>
 <td><p>Format:</p></td>
-<td><p> <span class="bold"><strong>use_local_syslog_facility=&lt;0/1&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>use_syslog_local_facility=&lt;0/1&gt;</strong></span> </p></td>
 </tr>
 <tr>
 <td><p>Example:</p></td>
@@ -2349,11 +2349,11 @@
 <tbody>
 <tr>
 <td><p>Format:</p></td>
-<td><p> <span class="bold"><strong>log_current_states=&lt;0/1&gt;</strong></span> </p></td>
+<td><p> <span class="bold"><strong>log_long_plugin_output=&lt;0/1&gt;</strong></span> </p></td>
 </tr>
 <tr>
 <td><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>log_current_states=1</strong></span> </font></span>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>log_long_plugin_output=1</strong></span> </font></span>
           </p></td>
 </tr>
 </tbody>
@@ -5143,10 +5143,27 @@
 </table>
   </div>
 
-  <p>This boolean option determines whether services assigned to empty host groups (host groups with no host members) will cause
-  Icinga to exit with error on startup (or during a configuration check) or not. The default behaviour if the option is not present
-  (or set to "0") in the main configuration file is for Icinga to exit with error if services are associated with host groups whose
-  hostgroup definitions have no host_members associated with them.</p>
+  <p>This boolean option determines whether services, service dependencies, or host dependencies assigned to empty host groups (host
+  groups with no host members) will cause Icinga to exit with error on startup (or during a configuration check) or not. The default
+  behaviour if the option is not present (or set to "0") in the main configuration file is for Icinga to exit with error if any of
+  these objects are associated with host groups whose hostgroup definitions have no host_members associated with them.</p>
+
+  <p>Enabling this option can be useful when:</p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Configuration files or pre-cached object files are distributed across many Icinga pollers.</p>
+    </li>
+<li class="listitem">
+      <p>Automation is used to generate an Icinga configuration file tree.</p>
+    </li>
+<li class="listitem">
+      <p>There is one set of services, service dependencies, or host dependencies maintained by administrators for which users may add
+        hosts through host group membership for convenience (e.g. a suite of checks associated with a remote monitoring agent) but for
+        which there is no guarantee that users will use the services associated with the host group or that the hosts will exists (e.g. a
+        remote agent that is being deprecated over time or hosts that are being decommissioned).</p>
+    </li>
+</ul></div>
+
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -5202,281 +5219,281 @@
 </table></div>
 
 
-  <a class="indexterm" name="idp3529744"></a>
+  <a class="indexterm" name="id1551015"></a>
 
-  <a class="indexterm" name="idp3530944"></a>
+  <a class="indexterm" name="id1551025"></a>
 
-  <a class="indexterm" name="idp3532528"></a>
+  <a class="indexterm" name="id1551038"></a>
 
-  <a class="indexterm" name="idp3534144"></a>
+  <a class="indexterm" name="id1551052"></a>
 
-  <a class="indexterm" name="idp3535728"></a>
+  <a class="indexterm" name="id1551065"></a>
 
-  <a class="indexterm" name="idp3537312"></a>
+  <a class="indexterm" name="id1551078"></a>
 
-  <a class="indexterm" name="idp3538896"></a>
+  <a class="indexterm" name="id1551091"></a>
 
-  <a class="indexterm" name="idp3540480"></a>
+  <a class="indexterm" name="id1551106"></a>
 
-  <a class="indexterm" name="idp3542064"></a>
+  <a class="indexterm" name="id1551119"></a>
 
-  <a class="indexterm" name="idp3543680"></a>
+  <a class="indexterm" name="id1551133"></a>
 
-  <a class="indexterm" name="idp3545296"></a>
+  <a class="indexterm" name="id1551147"></a>
 
-  <a class="indexterm" name="idp3546912"></a>
+  <a class="indexterm" name="id1551161"></a>
 
-  <a class="indexterm" name="idp3548704"></a>
+  <a class="indexterm" name="id1551175"></a>
 
-  <a class="indexterm" name="idp3550272"></a>
+  <a class="indexterm" name="id1551188"></a>
 
-  <a class="indexterm" name="idp3552032"></a>
+  <a class="indexterm" name="id1551202"></a>
 
-  <a class="indexterm" name="idp3553664"></a>
+  <a class="indexterm" name="id1551216"></a>
 
-  <a class="indexterm" name="idp3555296"></a>
+  <a class="indexterm" name="id1551229"></a>
 
-  <a class="indexterm" name="idp3556896"></a>
+  <a class="indexterm" name="id1551243"></a>
 
-  <a class="indexterm" name="idp3558464"></a>
+  <a class="indexterm" name="id1551257"></a>
 
-  <a class="indexterm" name="idp3560112"></a>
+  <a class="indexterm" name="id1551269"></a>
 
-  <a class="indexterm" name="idp3561776"></a>
+  <a class="indexterm" name="id1551283"></a>
 
-  <a class="indexterm" name="idp3563408"></a>
+  <a class="indexterm" name="id1551297"></a>
 
-  <a class="indexterm" name="idp3565040"></a>
+  <a class="indexterm" name="id1551310"></a>
 
-  <a class="indexterm" name="idp3566672"></a>
+  <a class="indexterm" name="id1551324"></a>
 
-  <a class="indexterm" name="idp3568320"></a>
+  <a class="indexterm" name="id1551337"></a>
 
-  <a class="indexterm" name="idp3569984"></a>
+  <a class="indexterm" name="id1551350"></a>
 
-  <a class="indexterm" name="idp3571680"></a>
+  <a class="indexterm" name="id1551365"></a>
 
-  <a class="indexterm" name="idp3573312"></a>
+  <a class="indexterm" name="id1551378"></a>
 
-  <a class="indexterm" name="idp3574944"></a>
+  <a class="indexterm" name="id1551392"></a>
 
-  <a class="indexterm" name="idp3576512"></a>
+  <a class="indexterm" name="id1551405"></a>
 
-  <a class="indexterm" name="idp3578096"></a>
+  <a class="indexterm" name="id1551418"></a>
 
-  <a class="indexterm" name="idp3579792"></a>
+  <a class="indexterm" name="id1550880"></a>
 
-  <a class="indexterm" name="idp3581456"></a>
+  <a class="indexterm" name="id1551441"></a>
 
-  <a class="indexterm" name="idp3583120"></a>
+  <a class="indexterm" name="id1551454"></a>
 
-  <a class="indexterm" name="idp3584448"></a>
+  <a class="indexterm" name="id1551463"></a>
 
-  <a class="indexterm" name="idp3585840"></a>
+  <a class="indexterm" name="id1551482"></a>
 
-  <a class="indexterm" name="idp3587488"></a>
+  <a class="indexterm" name="id1551496"></a>
 
-  <a class="indexterm" name="idp3589200"></a>
+  <a class="indexterm" name="id1551510"></a>
 
-  <a class="indexterm" name="idp3590848"></a>
+  <a class="indexterm" name="id1551524"></a>
 
-  <a class="indexterm" name="idp3592560"></a>
+  <a class="indexterm" name="id1551538"></a>
 
-  <a class="indexterm" name="idp3594224"></a>
+  <a class="indexterm" name="id1551552"></a>
 
-  <a class="indexterm" name="idp3595872"></a>
+  <a class="indexterm" name="id1551566"></a>
 
-  <a class="indexterm" name="idp3597504"></a>
+  <a class="indexterm" name="id1551580"></a>
 
-  <a class="indexterm" name="idp3599152"></a>
+  <a class="indexterm" name="id1551593"></a>
 
-  <a class="indexterm" name="idp3600800"></a>
+  <a class="indexterm" name="id1551607"></a>
 
-  <a class="indexterm" name="idp3602448"></a>
+  <a class="indexterm" name="id1551621"></a>
 
-  <a class="indexterm" name="idp3604096"></a>
+  <a class="indexterm" name="id1551634"></a>
 
-  <a class="indexterm" name="idp3605744"></a>
+  <a class="indexterm" name="id1551648"></a>
 
-  <a class="indexterm" name="idp3607392"></a>
+  <a class="indexterm" name="id1551662"></a>
 
-  <a class="indexterm" name="idp3608448"></a>
+  <a class="indexterm" name="id1551671"></a>
 
-  <a class="indexterm" name="idp3610128"></a>
+  <a class="indexterm" name="id1551685"></a>
 
-  <a class="indexterm" name="idp3612368"></a>
+  <a class="indexterm" name="id1551703"></a>
 
-  <a class="indexterm" name="idp3614080"></a>
+  <a class="indexterm" name="id1551718"></a>
 
-  <a class="indexterm" name="idp3615776"></a>
+  <a class="indexterm" name="id1551732"></a>
 
-  <a class="indexterm" name="idp3617440"></a>
+  <a class="indexterm" name="id1551746"></a>
 
-  <a class="indexterm" name="idp3619072"></a>
+  <a class="indexterm" name="id1551759"></a>
 
-  <a class="indexterm" name="idp3620208"></a>
+  <a class="indexterm" name="id1551769"></a>
 
-  <a class="indexterm" name="idp3622400"></a>
+  <a class="indexterm" name="id1551787"></a>
 
-  <a class="indexterm" name="idp3624064"></a>
+  <a class="indexterm" name="id1551801"></a>
 
-  <a class="indexterm" name="idp3625712"></a>
+  <a class="indexterm" name="id1551815"></a>
 
-  <a class="indexterm" name="idp3627376"></a>
+  <a class="indexterm" name="id1551828"></a>
 
-  <a class="indexterm" name="idp3628416"></a>
+  <a class="indexterm" name="id1551837"></a>
 
-  <a class="indexterm" name="idp3630688"></a>
+  <a class="indexterm" name="id1551856"></a>
 
-  <a class="indexterm" name="idp3632352"></a>
+  <a class="indexterm" name="id1551870"></a>
 
-  <a class="indexterm" name="idp3633824"></a>
+  <a class="indexterm" name="id1551882"></a>
 
-  <a class="indexterm" name="idp3633984"></a>
+  <a class="indexterm" name="id1551884"></a>
 
-  <a class="indexterm" name="idp3637296"></a>
+  <a class="indexterm" name="id1551911"></a>
 
-  <a class="indexterm" name="idp3638928"></a>
+  <a class="indexterm" name="id1551925"></a>
 
-  <a class="indexterm" name="idp3640576"></a>
+  <a class="indexterm" name="id1551938"></a>
 
-  <a class="indexterm" name="idp3641632"></a>
+  <a class="indexterm" name="id1551947"></a>
 
-  <a class="indexterm" name="idp3643312"></a>
+  <a class="indexterm" name="id1551961"></a>
 
-  <a class="indexterm" name="idp3644992"></a>
+  <a class="indexterm" name="id1551975"></a>
 
-  <a class="indexterm" name="idp3647232"></a>
+  <a class="indexterm" name="id1551994"></a>
 
-  <a class="indexterm" name="idp3648832"></a>
+  <a class="indexterm" name="id1552007"></a>
 
-  <a class="indexterm" name="idp3650640"></a>
+  <a class="indexterm" name="id1552022"></a>
 
-  <a class="indexterm" name="idp3652352"></a>
+  <a class="indexterm" name="id1552037"></a>
 
-  <a class="indexterm" name="idp3654064"></a>
+  <a class="indexterm" name="id1552052"></a>
 
-  <a class="indexterm" name="idp3655744"></a>
+  <a class="indexterm" name="id1552066"></a>
 
-  <a class="indexterm" name="idp3657456"></a>
+  <a class="indexterm" name="id1552079"></a>
 
-  <a class="indexterm" name="idp3659152"></a>
+  <a class="indexterm" name="id1552093"></a>
 
-  <a class="indexterm" name="idp3660800"></a>
+  <a class="indexterm" name="id1552107"></a>
 
-  <a class="indexterm" name="idp3662448"></a>
+  <a class="indexterm" name="id1552121"></a>
 
-  <a class="indexterm" name="idp3664112"></a>
+  <a class="indexterm" name="id1552135"></a>
 
-  <a class="indexterm" name="idp3665744"></a>
+  <a class="indexterm" name="id1552148"></a>
 
-  <a class="indexterm" name="idp3667392"></a>
+  <a class="indexterm" name="id1552162"></a>
 
-  <a class="indexterm" name="idp3669040"></a>
+  <a class="indexterm" name="id1552176"></a>
 
-  <a class="indexterm" name="idp3670688"></a>
+  <a class="indexterm" name="id1552189"></a>
 
-  <a class="indexterm" name="idp3672352"></a>
+  <a class="indexterm" name="id1552203"></a>
 
-  <a class="indexterm" name="idp3674000"></a>
+  <a class="indexterm" name="id1552217"></a>
 
-  <a class="indexterm" name="idp3675632"></a>
+  <a class="indexterm" name="id1552231"></a>
 
-  <a class="indexterm" name="idp3677296"></a>
+  <a class="indexterm" name="id1552244"></a>
 
-  <a class="indexterm" name="idp3678928"></a>
+  <a class="indexterm" name="id1552258"></a>
 
-  <a class="indexterm" name="idp3680560"></a>
+  <a class="indexterm" name="id1552272"></a>
 
-  <a class="indexterm" name="idp3682224"></a>
+  <a class="indexterm" name="id1552286"></a>
 
-  <a class="indexterm" name="idp3683856"></a>
+  <a class="indexterm" name="id1552299"></a>
 
-  <a class="indexterm" name="idp3685456"></a>
+  <a class="indexterm" name="id1552312"></a>
 
-  <a class="indexterm" name="idp3687104"></a>
+  <a class="indexterm" name="id1552326"></a>
 
-  <a class="indexterm" name="idp3688736"></a>
+  <a class="indexterm" name="id1552340"></a>
 
-  <a class="indexterm" name="idp3690384"></a>
+  <a class="indexterm" name="id1552354"></a>
 
-  <a class="indexterm" name="idp3692016"></a>
+  <a class="indexterm" name="id1552367"></a>
 
-  <a class="indexterm" name="idp3693664"></a>
+  <a class="indexterm" name="id1552381"></a>
 
-  <a class="indexterm" name="idp3695328"></a>
+  <a class="indexterm" name="id1552395"></a>
 
-  <a class="indexterm" name="idp3696976"></a>
+  <a class="indexterm" name="id1552408"></a>
 
-  <a class="indexterm" name="idp3698640"></a>
+  <a class="indexterm" name="id1552422"></a>
 
-  <a class="indexterm" name="idp3700288"></a>
+  <a class="indexterm" name="id1552436"></a>
 
-  <a class="indexterm" name="idp3701936"></a>
+  <a class="indexterm" name="id1552450"></a>
 
-  <a class="indexterm" name="idp3703568"></a>
+  <a class="indexterm" name="id1552463"></a>
 
-  <a class="indexterm" name="idp3705328"></a>
+  <a class="indexterm" name="id1552478"></a>
 
-  <a class="indexterm" name="idp3706976"></a>
+  <a class="indexterm" name="id1552492"></a>
 
-  <a class="indexterm" name="idp3708560"></a>
+  <a class="indexterm" name="id1552505"></a>
 
-  <a class="indexterm" name="idp3710288"></a>
+  <a class="indexterm" name="id1552519"></a>
 
-  <a class="indexterm" name="idp3711968"></a>
+  <a class="indexterm" name="id1552533"></a>
 
-  <a class="indexterm" name="idp3713664"></a>
+  <a class="indexterm" name="id1552548"></a>
 
-  <a class="indexterm" name="idp3715424"></a>
+  <a class="indexterm" name="id1552561"></a>
 
-  <a class="indexterm" name="idp3717040"></a>
+  <a class="indexterm" name="id1552570"></a>
 
-  <a class="indexterm" name="idp3718704"></a>
+  <a class="indexterm" name="id1552584"></a>
 
-  <a class="indexterm" name="idp3720096"></a>
+  <a class="indexterm" name="id1552603"></a>
 
-  <a class="indexterm" name="idp3721952"></a>
+  <a class="indexterm" name="id1552617"></a>
 
-  <a class="indexterm" name="idp3723616"></a>
+  <a class="indexterm" name="id1552628"></a>
 
-  <a class="indexterm" name="idp3724672"></a>
+  <a class="indexterm" name="id1552639"></a>
 
-  <a class="indexterm" name="idp3726944"></a>
+  <a class="indexterm" name="id1552658"></a>
 
-  <a class="indexterm" name="idp3728000"></a>
+  <a class="indexterm" name="id1552667"></a>
 
-  <a class="indexterm" name="idp3730208"></a>
+  <a class="indexterm" name="id1552686"></a>
 
-  <a class="indexterm" name="idp3731872"></a>
+  <a class="indexterm" name="id1552700"></a>
 
-  <a class="indexterm" name="idp3733504"></a>
+  <a class="indexterm" name="id1552713"></a>
 
-  <a class="indexterm" name="idp3735152"></a>
+  <a class="indexterm" name="id1552725"></a>
 
-  <a class="indexterm" name="idp3736800"></a>
+  <a class="indexterm" name="id1552741"></a>
 
-  <a class="indexterm" name="idp3737856"></a>
+  <a class="indexterm" name="id1552749"></a>
 
-  <a class="indexterm" name="idp3740064"></a>
+  <a class="indexterm" name="id1552768"></a>
 
-  <a class="indexterm" name="idp3741456"></a>
+  <a class="indexterm" name="id1552782"></a>
 
-  <a class="indexterm" name="idp3741616"></a>
+  <a class="indexterm" name="id1552796"></a>
 
-  <a class="indexterm" name="idp3744992"></a>
+  <a class="indexterm" name="id1552807"></a>
 
-  <a class="indexterm" name="idp3746688"></a>
+  <a class="indexterm" name="id1552808"></a>
 
-  <a class="indexterm" name="idp3748384"></a>
+  <a class="indexterm" name="id1552837"></a>
 
-  <a class="indexterm" name="idp3749968"></a>
+  <a class="indexterm" name="id1552850"></a>
 
-  <a class="indexterm" name="idp3751568"></a>
+  <a class="indexterm" name="id1552864"></a>
 
-  <a class="indexterm" name="idp3753248"></a>
+  <a class="indexterm" name="id1552878"></a>
 
-  <a class="indexterm" name="idp3754208"></a>
+  <a class="indexterm" name="id1552886"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -5495,6 +5512,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -13,6 +13,7 @@ exec_prefix=@exec_prefix@
 LOGDIR=@CGILOGDIR@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
+LIBDIR=@libdir@
 CGIDIR=@sbindir@
 HTMLDIR=@datarootdir@
 CGILOGDIR=@CGILOGDIR@

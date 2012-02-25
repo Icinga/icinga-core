@@ -4,7 +4,7 @@
 <title>Installation des Icinga-Web Frontend</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="cgicmd.html" title="Ausführen von CGIs auf der Kommandzeile">
 <link rel="next" href="icinga-web-config.html" title="Konfigurationsübersicht Icinga-Web">
@@ -188,32 +188,32 @@
 
       <p>Extrahieren Sie das Archiv (tarball) wie folgt:</p>
 
-      <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.6.0.tar.gz</pre>
+      <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.7.0.tar.gz</pre>
 
       <p>Wechseln Sie in das Verzeichnis:</p>
 
-      <pre class="programlisting"> #&gt; cd icinga-web-1.6.0</pre>
+      <pre class="programlisting"> #&gt; cd icinga-web-1.7.0</pre>
 
-      <p>Icinga-Web stellt verschiedene configure Optionen zur Verfügung z.B.</p>
+      <p>Icinga-Web stellt verschiedene configure-Optionen zur Verfügung z.B.</p>
 
       <pre class="programlisting"> #&gt; ./configure
-                        --prefix=/usr/local/icinga-web
-                        --with-web-user=www-data
-                        --with-web-group=www-data
-                        --with-web-path=/icinga-web
-                        --with-web-apache-path=/etc/apache2/conf.d
-                        --with-db-type=mysql
-                        --with-db-host=localhost
-                        --with-db-port=3306
-                        --with-db-name=icinga_web
-                        --with-db-user=icinga_web
-                        --with-db-pass=icinga_web
-                        --with-conf-folder=etc/conf.d
-                        --with-log-folder=log
-                        --with-api-subtype=TYPE DB driver or network connection
-                        --with-api-host=HOST Host to connect (DB or other) (default localhost)
-                        --with-api-port=PORT Port for connection (default 3306)
-                        --with-api-socket=PATH Path to socket (default none)</pre>
+               --prefix=/usr/local/icinga-web
+               --with-web-user=www-data
+               --with-web-group=www-data
+               --with-web-path=/icinga-web
+               --with-web-apache-path=/etc/apache2/conf.d
+               --with-db-type=mysql
+               --with-db-host=localhost
+               --with-db-port=3306
+               --with-db-name=icinga_web
+               --with-db-user=icinga_web
+               --with-db-pass=icinga_web
+               --with-conf-dir=etc/conf.d
+               --with-log-folder=log
+               --with-api-subtype=TYPE DB driver or network connection
+               --with-api-host=HOST Host to connect (DB or other) (default localhost)
+               --with-api-port=PORT Port for connection (default 3306)
+               --with-api-socket=PATH Path to socket (default none)</pre>
 
       <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -410,6 +410,27 @@
       <p>Im Normalfall können Sie die Datenbankeinstellungen während <code class="filename">configure</code> vornehmen. Sollten Sie diese
       allerdings anpassen oder im Fehlerfall kontrollieren wollen, öffnen Sie folgende Datei mit einem Editor Ihrer Wahl.</p>
 
+      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Möglicherweise finden Sie es einfacher, beim Editieren von XML-Strukturen Syntax-Hightlighting zu benutzen, um zwischen
+        Kommentaren und XML-Tags zu unterscheiden.</p>
+        <p> Editieren Sie <code class="filename">/etc/vim/vimrc</code>
+          </p>
+<pre class="screen"> " Vim5 and later versions support syntax highlighting. Uncommenting the next
+ " line enables syntax highlighting by default.
+ syntax on</pre>
+<p> oder <code class="filename">/etc/nanorc</code></p>
+<pre class="screen"> ## HTML
+ include "/usr/share/nano/html.nanorc"</pre>
+<p>
+        </p>
+      </td></tr>
+</table></div>
+
       <pre class="programlisting"> #&gt; vi app/config/databases.xml</pre>
 
       <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -425,75 +446,75 @@
       </td></tr>
 </table></div>
 
-      <pre class="programlisting">    &lt;databases default="icinga_web"&gt;
-                        &lt;database name="icinga_web" class="AgaviDoctrineDatabase"&gt;
+      <pre class="programlisting">   &lt;databases default="icinga_web"&gt;
+      &lt;database name="icinga_web" class="AgaviDoctrineDatabase"&gt;
 
-                                &lt;!--
-                                        Doctrine dsn strings:
+         &lt;!--
+            Doctrine dsn strings:
 
-                                        http://www.doctrine-project.org/documentation/manual/1_1/en/introduction-to-connections
-                                --&gt;
-                                &lt;!-- ##### MySQL ##### --&gt;
-                                &lt;ae:parameter name="dsn"&gt;mysql://icinga_web:icinga_web@127.0.0.1:3306/icinga_web&lt;/ae:parameter&gt;
-                                &lt;!-- ##### PostgreSQL ##### --&gt;
-                                &lt;ae:parameter name="dsn"&gt;pgsql://icinga_web:icinga_web@localhost:5432/icinga_web&lt;/ae:parameter&gt;
+            http://www.doctrine-project.org/documentation/manual/1_1/en/introduction-to-connections
+         --&gt;
+         &lt;!-- ##### MySQL ##### --&gt;
+         &lt;ae:parameter name="dsn"&gt;mysql://icinga_web:icinga_web@127.0.0.1:3306/icinga_web&lt;/ae:parameter&gt;
+         &lt;!-- ##### PostgreSQL ##### --&gt;
+         &lt;ae:parameter name="dsn"&gt;pgsql://icinga_web:icinga_web@localhost:5432/icinga_web&lt;/ae:parameter&gt;
 
-                                &lt;!-- Generic credentials  --&gt;
-                                &lt;!-- &lt;ae:parameter name="username"&gt;icinga_web&lt;/ae:parameter&gt; --&gt;
-                                &lt;!-- &lt;ae:parameter name="password"&gt;icinga_web&lt;/ae:parameter&gt; --&gt;
+         &lt;!-- Generic credentials  --&gt;
+         &lt;!-- &lt;ae:parameter name="username"&gt;icinga_web&lt;/ae:parameter&gt; --&gt;
+         &lt;!-- &lt;ae:parameter name="password"&gt;icinga_web&lt;/ae:parameter&gt; --&gt;
 
-                                &lt;!-- DB encoding type --&gt;
-                                &lt;ae:parameter name="charset"&gt;utf8&lt;/ae:parameter&gt;
+         &lt;!-- DB encoding type --&gt;
+         &lt;ae:parameter name="charset"&gt;utf8&lt;/ae:parameter&gt;
 
-                                &lt;!--
-                                        Doctrine_Manager configuration
-                                --&gt;
-                                &lt;ae:parameter name="manager_attributes"&gt;
-                                        &lt;!-- This allows lazy loading of the models --&gt;
-                                        &lt;ae:parameter name="Doctrine_Core::ATTR_MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
-                                &lt;/ae:parameter&gt;
+         &lt;!--
+            Doctrine_Manager configuration
+         --&gt;
+         &lt;ae:parameter name="manager_attributes"&gt;
+            &lt;!-- This allows lazy loading of the models --&gt;
+            &lt;ae:parameter name="Doctrine_Core::ATTR_MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
+         &lt;/ae:parameter&gt;
 
-                                &lt;!-- The path to our models --&gt;
-                                &lt;ae:parameter name="load_models"&gt;%core.module_dir%/AppKit/lib/database/models/generated&lt;/ae:parameter&gt;
-                                &lt;ae:parameter name="models_directory"&gt;%core.module_dir%/AppKit/lib/database/models&lt;/ae:parameter&gt;
+         &lt;!-- The path to our models --&gt;
+         &lt;ae:parameter name="load_models"&gt;%core.module_dir%/AppKit/lib/database/models/generated&lt;/ae:parameter&gt;
+         &lt;ae:parameter name="models_directory"&gt;%core.module_dir%/AppKit/lib/database/models&lt;/ae:parameter&gt;
 
-                        &lt;/database&gt;
+      &lt;/database&gt;
 
-                        &lt;-- Die Icinga Datenbank für ido2db --&gt;
-                        &lt;database name="icinga" class="AgaviDoctrineDatabase"&gt;
+      &lt;-- Die Icinga Datenbank für ido2db --&gt;
+      &lt;database name="icinga" class="AgaviDoctrineDatabase"&gt;
 
-                                &lt;!--
-                                        Doctrine dsn strings:
+         &lt;!--
+            Doctrine dsn strings:
 
-                                        http://www.doctrine-project.org/documentation/manual/1_1/en/introduction-to-connections
-                                --&gt;
-                                &lt;!-- ##### MySQL ##### --&gt;
-                                &lt;ae:parameter name="dsn"&gt;mysql://icinga:icinga@127.0.0.1:3306/icinga&lt;/ae:parameter&gt;
-                                &lt;!-- ##### PostgreSQL ##### --&gt;
-                                &lt;ae:parameter name="dsn"&gt;pgsql://icinga:icinga@localhost:5432/icinga&lt;/ae:parameter&gt;
+            http://www.doctrine-project.org/documentation/manual/1_1/en/introduction-to-connections
+         --&gt;
+         &lt;!-- ##### MySQL ##### --&gt;
+         &lt;ae:parameter name="dsn"&gt;mysql://icinga:icinga@127.0.0.1:3306/icinga&lt;/ae:parameter&gt;
+         &lt;!-- ##### PostgreSQL ##### --&gt;
+         &lt;ae:parameter name="dsn"&gt;pgsql://icinga:icinga@localhost:5432/icinga&lt;/ae:parameter&gt;
 
-                                &lt;!-- Generic credentials  --&gt;
-                                &lt;!-- &lt;ae:parameter name="username"&gt;icinga&lt;/ae:parameter&gt; --&gt;
-                                &lt;!-- &lt;ae:parameter name="password"&gt;icinga&lt;/ae:parameter&gt; --&gt;
+         &lt;!-- Generic credentials  --&gt;
+         &lt;!-- &lt;ae:parameter name="username"&gt;icinga&lt;/ae:parameter&gt; --&gt;
+         &lt;!-- &lt;ae:parameter name="password"&gt;icinga&lt;/ae:parameter&gt; --&gt;
 
-                                &lt;!-- DB encoding type --&gt;
-                                &lt;ae:parameter name="charset"&gt;utf8&lt;/ae:parameter&gt;
+         &lt;!-- DB encoding type --&gt;
+         &lt;ae:parameter name="charset"&gt;utf8&lt;/ae:parameter&gt;
 
-                                &lt;!--
-                                        Doctrine_Manager configuration
-                                --&gt;
-                                &lt;ae:parameter name="manager_attributes"&gt;
-                                        &lt;!-- This allows lazy loading of the models --&gt;
-                                        &lt;ae:parameter name="Doctrine_Core::ATTR_MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
-                                &lt;/ae:parameter&gt;
+         &lt;!--
+            Doctrine_Manager configuration
+         --&gt;
+         &lt;ae:parameter name="manager_attributes"&gt;
+            &lt;!-- This allows lazy loading of the models --&gt;
+            &lt;ae:parameter name="Doctrine_Core::ATTR_MODEL_LOADING"&gt;CONSERVATIVE&lt;/ae:parameter&gt;
+         &lt;/ae:parameter&gt;
 
-                                &lt;!-- The path to our models --&gt;
-                                &lt;ae:parameter name="load_models"&gt;%core.module_dir%/Api/lib/database/models/generated&lt;/ae:parameter&gt;
-                                &lt;ae:parameter name="models_directory"&gt;%core.module_dir%/Api/lib/database/models&lt;/ae:parameter&gt;
+         &lt;!-- The path to our models --&gt;
+         &lt;ae:parameter name="load_models"&gt;%core.module_dir%/Api/lib/database/models/generated&lt;/ae:parameter&gt;
+         &lt;ae:parameter name="models_directory"&gt;%core.module_dir%/Api/lib/database/models&lt;/ae:parameter&gt;
 
-                        &lt;/database&gt;
-                    &lt;/databases&gt;
-            </pre>
+      &lt;/database&gt;
+   &lt;/databases&gt;
+      </pre>
 
       <p>In der <code class="filename">access.xml</code> können Sie die Informationen zu Ihrer command-pipe, den Zugangsdaten und der
       Zugriffmethode (ssh oder via local console) angeben. Außerdem legen Sie fest, welche Icinga-Instanz welchem Host zugeordnet
@@ -510,8 +531,9 @@
                 &lt;write&gt;
                     &lt;files&gt;
                         &lt;resource name="icinga_pipe"&gt;/usr/local/icinga/var/rw/icinga.cmd&lt;/resource&gt;
-                &lt;/files&gt;
-            &lt;/write&gt;
+                    &lt;/files&gt;
+                &lt;/write&gt;
+            &lt;/access&gt;
         &lt;/defaults&gt;
 
         &lt;!-- Hosts that can be accessed via the console interface --&gt;
@@ -733,7 +755,7 @@ Alias /icinga-web /usr/local/icinga-web/pub
       debug_verbosity=2, restarten Sie IDOUtils und suchen Sie Fehler in <code class="filename">ido2db.debug</code></p>
 
       <p>* Keine Daten vorhanden =&gt; Überprüfen Sie <code class="filename">icinga.log</code>, ob IDOMOD zu Beginn geladen wird. Falls nicht,
-      enablen Sie das Event Broker Modul in <code class="filename">icinga.cfg</code> so wie im Icinga Core im <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">IDOUtils Quickstart Guide</a> beschrieben.</p>
+      aktivieren Sie das Event Broker Modul in <code class="filename">icinga.cfg</code> so wie im Icinga Core im <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">IDOUtils Quickstart Guide</a> beschrieben.</p>
 
       <p>* IDOUtils DB-Schema ist die aktuellste Version? =&gt; Falls nicht, überprüfen Sie mögliche Upgrades anhand der Docs
       dafür.</p>
@@ -828,9 +850,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
     </li>
 </ol></div>
 
-  <a class="indexterm" name="idp11333776"></a>
+  <a class="indexterm" name="id1545874"></a>
 
-  <a class="indexterm" name="idp11369472"></a>
+  <a class="indexterm" name="id1546167"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -849,6 +871,6 @@ Alias /icinga-web /usr/local/icinga-web/pub
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

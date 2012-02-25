@@ -3,8 +3,8 @@
  * EVENTS.C - Timed event functions for Icinga
  *
  * Copyright (c) 1999-2010 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2011 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -367,7 +367,8 @@ void init_timing_loop(void) {
 
 			mult_factor = current_interleave_block + (interleave_block_index * total_interleave_blocks);
 
-			log_debug_info(DEBUGL_EVENTS, 2, "CIB: %d, IBI: %d, TIB: %d, SIF: %d\n", current_interleave_block, interleave_block_index, total_interleave_blocks, scheduling_info.service_interleave_factor);
+			log_debug_info(DEBUGL_EVENTS, 2, "CIB (current_interleave_block): %d, IBI (interleave_block_index): %d, TIB (total_interleave_blocks): %d, SIF (service_interleave_factor): %d\n",
+					current_interleave_block, interleave_block_index, total_interleave_blocks, scheduling_info.service_interleave_factor);
 			log_debug_info(DEBUGL_EVENTS, 2, "Mult factor: %d\n", mult_factor);
 
 			/* set the preferred next check time for the service */

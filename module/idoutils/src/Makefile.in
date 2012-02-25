@@ -12,6 +12,7 @@ exec_prefix=@exec_prefix@
 LOGDIR=@localstatedir@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
+LIBDIR=@libdir@
 LIBEXECDIR=@libexecdir@
 CGIDIR=@sbindir@
 INSTALL=@INSTALL@
@@ -57,7 +58,7 @@ IDO_OBJS=db.o
 CP=@CP@
 
 
-all: file2sock log2ido ido2db idomod.o sockdebug
+all: file2sock log2ido ido2db idomod.so sockdebug
 
 file2sock: file2sock.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ file2sock.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
@@ -68,9 +69,8 @@ log2ido: log2ido.c $(COMMON_INC) $(COMMON_OBJS)
 ido2db: ido2db.c $(IDO_INC) $(IDO_OBJS) $(COMMON_INC) $(COMMON_OBJS) $(IDO2DB_OBJS)
 	$(CC) $(CFLAGS) $(DBCFLAGS) -o ido2db ido2db.c $(IDO2DB_OBJS) $(COMMON_OBJS) $(IDO_OBJS) $(LDFLAGS) $(DBLDFLAGS) $(LIBS) $(SOCKETLIBS) $(DBLIBS) $(THREADLIBS) $(MATHLIBS) $(OTHERLIBS)
 
-idomod.o: idomod.c $(COMMON_INC) $(COMMON_OBJS)
+idomod.so: idomod.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(MOD_CFLAGS) $(CFLAGS) -o idomod.so idomod.c $(COMMON_OBJS) $(MOD_LDFLAGS) $(LDFLAGS) $(LIBS) $(SOCKETLIBS) $(OTHERLIBS)
-	mv idomod.so idomod.o
 
 sockdebug: sockdebug.c $(COMMON_INC) $(COMMON_OBJS)
 	$(CC) $(CFLAGS) -o $@ sockdebug.c $(COMMON_OBJS) $(LDFLAGS) $(LIBS) $(MATHLIBS) $(SOCKETLIBS) $(OTHERLIBS)
@@ -110,7 +110,8 @@ devclean: distclean
 
 install:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LIBDIR)
 	$(INSTALL) -m 774 $(INSTALL_OPTS) ido2db $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 774 $(INSTALL_OPTS) log2ido $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) idomod.o $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 774 $(INSTALL_OPTS) idomod.so $(DESTDIR)$(LIBDIR)
 

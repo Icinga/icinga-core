@@ -4,7 +4,7 @@
 <title>Integration von PNP4Nagios in das Icinga-Web Frontend</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="icinga-web-introduction.html" title="Einführung in Icinga-Web">
 <link rel="next" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
@@ -33,7 +33,7 @@
   integrieren möchten, lesen Sie bitte die PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">Dokumentation.</a></p>
 
   <div class="figure">
-<a name="idp11757008"></a><p class="title"><b>Abbildung 6.31. PNP4Nagios integriert in Icinga-Web</b></p>
+<a name="id1549401"></a><p class="title"><b>Abbildung 6.31. PNP4Nagios integriert in Icinga-Web</b></p>
 <div class="figure-contents">
       
 
@@ -59,26 +59,82 @@
     perfdata_file = /var/icinga/perfdata.dump</pre>
 <p> </p>
 <pre class="programlisting">#&gt; vi process_perfdata.cfg
-LOG_FILE = /var/log/icinga/perfdata.log</pre>
+    LOG_FILE = /var/log/icinga/perfdata.log
+    XML_ENC = ISO-8859-1   # falls Sie Probleme mit Umlauten haben</pre>
 <p> </p>
 <pre class="programlisting">#&gt; vi config.php 
-$conf['nagios_base'] = "/icinga/cgi-bin";</pre>
+    $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
+
+      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Stellen Sie sicher, dass Sie bestehende Pfade benutzen, legen Sie sie an, falls notwendig, und/oder passen Sie die Angaben an
+        Ihre Distribution an.</p>
+
+        <p>Bitte überprüfen Sie, dass die command-Definitionen für "process-host-perfdata-file" und "process-service-perfdata-file"
+        (wahrscheinlich in <code class="filename">etc/objects/commands.cfg</code>) auf das gleiche Zielverzeichnis zeigen, das in perfdata_spool_dir
+        angegeben wurde.</p>
+      </td></tr>
+</table></div>
     </li>
 </ol></div>
 
+  <p><span class="bold"><strong>Template-Extensions</strong></span></p>
+
+  <p>Seit Version 1.5 können die Grid-Templates unberührt bleiben, weil wir XML-Extensions integriert haben, um Grid-Template mit
+  einfachen Schnipseln anzupassen. Die PNP-Integration wurde mit diesen Extensions upgrade-sicher gemacht.</p>
+
+  <p>Ausschnitt aus <code class="filename">INSTALL</code> in <code class="filename">contrib/PNP_Integration/</code></p>
+
+  <pre class="screen">#&gt; cat contrib/PNP_Integration/INSTALL
+    ************************
+    * INSTALLATION
+    ************************
+
+    * To install this addon, simply copy both xml files under templateExtensions
+    * to your icinga-webs app/modules/Cronks/data/xml/extensions folder
+    * and clear the app/cache/CronkTemplates folder
+    * To remove it, just delete the extension files and clear the cache folder again</pre>
+<p><span class="emphasis"><em>Install Script</em></span> </p>
+<pre class="screen"> $&gt; cd etc/contrib/PNP_Integration
+ $&gt; sh install.sh</pre>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Bitte beachten Sie, dass Sie das Addon nach einem Icinga-Web-Upgrade erneut installieren müssen.</p>
+    </td></tr>
+</table></div>
+
   <p><span class="bold"><strong>Erstellen Sie die Konfiguration, um die PNP4Nagios Host-Seiten in das Icinga-Web zu
   integrieren</strong></span></p>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Die folgenden Zeilen beschreiben die manuelle Integration für Version 1.4 und früher</p>
+    </td></tr>
+</table></div>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
       <p>Erstellen einer neuen Host-Grid-Ansicht:</p>
 
-      <p>Bitte erstellen Sie eine Kopie von icinga-host-template.xml in app/modules/Cronks/data/xml/grid unter Ihrem icinga-web
-      Installationspfad: </p>
+      <p>Bitte erstellen Sie eine Kopie von <code class="filename">icinga-host-template.xml</code> in
+      <code class="filename">app/modules/Cronks/data/xml/grid</code> unter Ihrem Icinga-web-Installationspfad: </p>
 <pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml \
     /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-host-template.xml</pre>
-<p>
-      In der neuen Datei legen wir eine zusätzliche Feld- (field) Definition an: </p>
+<p> In der neuen Datei legen wir eine
+      zusätzliche Feld- (field) Definition an: </p>
 <pre class="programlisting">        &lt;field name="pnp4nagios_host_link"&gt;
             &lt;!-- datasource maps a data field from api call --&gt;
             &lt;datasource&gt;
@@ -137,7 +193,8 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 <li class="listitem">
       <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
 
-      <p>Editieren von cronks.xml im Unterverzeichnis app/modules/Cronks/config/ unter Icinga-Web und hinzufügen von: </p>
+      <p>Editieren von <code class="filename">cronks.xml</code> im Unterverzeichnis <code class="filename">app/modules/Cronks/config/</code> unter
+      Icinga-Web und hinzufügen von: </p>
 <pre class="programlisting">&lt;cronk name="gridMyHostView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
     &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
@@ -155,12 +212,22 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
   <p><span class="bold"><strong>Integrieren von PNP4Nagios in Icinga-Web-Serviceansichten</strong></span></p>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Die folgenden Zeilen beschreiben die manuelle Integration für Version 1.4 und früher</p>
+    </td></tr>
+</table></div>
+
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
       <p>Erstellen einer neuen Service-Grid-Ansicht</p>
 
-      <p>Kopieren Sie das Standardtemplate "icinga-service-template.xml" von app/modules/Cronks/data/xml/grid in Ihren Icinga-Web-
-      Installationspfad:</p>
+      <p>Kopieren Sie das Standard-Template "<code class="filename">icinga-service-template.xml</code>" von
+      <code class="filename">app/modules/Cronks/data/xml/grid</code> in Ihren Icinga-Web-Installationspfad:</p>
 
       <pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-service-template.xml \
     /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-service-template.xml</pre>
@@ -225,7 +292,8 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 <li class="listitem">
       <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
 
-      <p>Editieren von cronks.xml im Unterverzeichnis app/modules/Cronks/config/ unter Icinga-Web und hinzufügen von:</p>
+      <p>Editieren von <code class="filename">cronks.xml</code> im Unterverzeichnis <code class="filename">app/modules/Cronks/config/</code> unter
+      Icinga-Web und hinzufügen von:</p>
 
       <pre class="programlisting">&lt;cronk name="gridMyServiceView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
@@ -241,17 +309,19 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 &lt;/cronk&gt;</pre>
     </li>
 <li class="listitem">
-      <p>Verwenden der neuen Grid-Ansicht als Standard-Serviceansicht</p>
+      <p>Verwenden der neuen Grid-Ansicht als Standard-Service-Ansicht</p>
 
       <p>Bitte sichern Sie zuerst Ihre originale Ansicht: </p>
 <pre class="programlisting">#&gt; cp data/xml/grid/icinga-service-template.xml data/xml/grid/icinga-service-template.bak</pre>
 <p>
-      dann </p>
+      dann</p>
 <pre class="programlisting">#&gt; cp data/xml/grid/icinga-my-service-template.xml data/xml/grid/icinga-service-template.xml</pre>
-<p>
-      Leeren Sie den Cache wie unten beschrieben. Die Performancegraphen sind nun in Ihren "serviceStatus"-Cronk integriert!</p>
+<p>Leeren
+      Sie den Cache wie unten beschrieben. Die Performancegraphen sind nun in Ihren "serviceStatus"-Cronk integriert!</p>
     </li>
 </ol></div>
+
+  <p><span class="bold"><strong>Löschen des Cache</strong></span></p>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -259,7 +329,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Bitte denken Sie daran, wenn Sie eine *.xml-Datei editieren, müssen Sie danach den Cache bereinigen!</p>
+    <p>Bitte denken Sie daran, dass Sie nach dem Editieren von *.xml-Dateien den Cache bereinigen müssen!</p>
   </td></tr>
 </table></div>
 
@@ -271,7 +341,7 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
   <p>Das war es auch schon, Sie sind fertig!</p>
 
-  <a class="indexterm" name="idp11789504"></a>
+  <a class="indexterm" name="id1549790"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -290,6 +360,6 @@ $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -16,6 +16,7 @@ LIBS=@LIBS@
 prefix=@prefix@
 exec_prefix=@exec_prefix@
 BINDIR=@bindir@
+LIBDIR=@libdir@
 INSTALL=@INSTALL@
 INSTALL_OPTS=@INSTALL_OPTS@
 COMMAND_OPTS=@COMMAND_OPTS@
@@ -23,11 +24,10 @@ STRIP=@STRIP@
 
 CP=@CP@
 
-all:	helloworld.o
+all:	helloworld.so
 
-helloworld.o: helloworld.c
+helloworld.so: helloworld.c
 	$(CC) $(MOD_CFLAGS) $(CFLAGS) -o helloworld.so helloworld.c $(MOD_LDFLAGS) $(LDFLAGS) $(LIBS)
-	mv helloworld.so helloworld.o
 
 clean:
 	rm -f helloworld.o

@@ -36,9 +36,11 @@ LOGDIR=@LOGDIR@
 CGILOGDIR=@CGILOGDIR@
 CHECKRESULTDIR=@CHECKRESULTDIR@
 EXTCMDFILEDIR=@EXTCMDFILEDIR@
+EVENTHANDLERDIR=@EVENTHANDLERDIR@
 P1FILELOC=@P1FILELOC@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
+LIBDIR=@libdir@
 CGIDIR=@sbindir@
 LIBEXECDIR=@libexecdir@
 HTMLDIR=@datarootdir@
@@ -112,7 +114,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-init" "install init script"
 	@printf "\t%-23s - %s\n" "install-commandmode" "install external command file"
 	@printf "\t%-23s - %s\n" "install-idoutils" "install idoutils module"
-	@printf "\t%-23s - %s\n" "install-api" "install php api !!DEPRECATED!!" # FIXME remove in 1.7.0
+	@printf "\t%-23s - %s\n" "install-eventhandlers" "install sample eventhandlers"
 	@printf "\t%-23s - %s\n" "install-dev-docu" "install doxygen development documentation"
 
 
@@ -156,9 +158,6 @@ all:
 	@echo "  make install-idoutils"
 	@echo "     - This installs the database addon IDOUtils into the"
 	@echo "       destination directory"
-	@echo ""
-	@echo "  make install-api"
-	@echo "     - This installs the Icinga API !!DEPRECATED!!" # FIXME remove in 1.7.0
 	@echo ""
 	@echo "  make install-config"
 	@echo "     - This installs *SAMPLE* config files in $(DESTDIR)$(CFGDIR)"
@@ -394,6 +393,9 @@ install-basic:
 	@echo "     - This installs and configures permissions on the"
 	@echo "       directory for holding the external command file"
 	@echo ""
+	@echo "  make install-eventhandlers"
+	@echo "     - This installs the sample eventhandlers in $(DESTDIR)$(EVENTHANDLERDIR)"
+	@echo ""
 	@echo "  make install-idoutils"
 	@echo "     - This installs the database addon IDOUtils into the"
 	@echo "       destination directory"
@@ -409,6 +411,7 @@ install-basic:
 install-config:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/objects
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/conf.d
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/modules
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/icinga.cfg $(DESTDIR)$(CFGDIR)/icinga.cfg
 	$(INSTALL) -b -m 660 $(INSTALL_OPTS) sample-config/resource.cfg $(DESTDIR)$(CFGDIR)/resource.cfg
@@ -455,13 +458,6 @@ install-idoutils:
 		echo "" ;\
 	fi
 
-install-api:
-	@echo "Sorry, Icinga PHP API was removed from package prior 1.6.0!"
-	@echo "Please keep in mind that Icinga-Web uses its own db layer starting with 1.5.0"
-	@echo "In case please look for a seperated package and/or icinga-api.git"
-	@echo ""
-
-
 install-init: install-daemoninit
 
 install-daemoninit:
@@ -485,10 +481,28 @@ install-commandmode:
 	@echo "*** External command directory configured ***"
 	@echo ""
 
+install-eventhandlers:
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(EVENTHANDLERDIR)
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(EVENTHANDLERDIR)/distributed-monitoring
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(EVENTHANDLERDIR)/redundancy-scenario1
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/submit_check_result $(DESTDIR)$(EVENTHANDLERDIR)/submit_check_result
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/disable_active_service_checks $(DESTDIR)$(EVENTHANDLERDIR)/disable_active_service_checks
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/enable_active_service_checks $(DESTDIR)$(EVENTHANDLERDIR)/enable_active_service_checks
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/disable_notifications $(DESTDIR)$(EVENTHANDLERDIR)/disable_notifications
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/enable_notifications $(DESTDIR)$(EVENTHANDLERDIR)/enable_notifications
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/distributed-monitoring/obsessive_svc_handler $(DESTDIR)$(EVENTHANDLERDIR)/distributed-monitoring/obsessive_svc_handler
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/distributed-monitoring/submit_check_result_via_nsca $(DESTDIR)$(EVENTHANDLERDIR)/distributed-monitoring/submit_check_result_via_nsca
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/redundancy-scenario1/handle-master-host-event $(DESTDIR)$(EVENTHANDLERDIR)/redundancy-scenario1/handle-master-host-event
+	$(INSTALL) -b -m 774 $(INSTALL_OPTS) contrib/eventhandlers/redundancy-scenario1/handle-master-proc-event $(DESTDIR)$(EVENTHANDLERDIR)/redundancy-scenario1/handle-master-proc-event
+
+	@echo ""
+	@echo "*** Sample Eventhandlers installed ***"
+	@echo ""
+
 
 fullinstall:
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
-		${MAKE} install install-init install-commandmode install-webconf install-idoutils ;\
+		${MAKE} install install-init install-commandmode install-webconf install-idoutils install-eventhandlers;\
 		echo "Run make install-config for installing/overwriting the configs..." ;\
         else \
 		${MAKE} install install-init install-commandmode install-webconf ;\

@@ -6,6 +6,11 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 
 1.7.0 - XX/YY/2012
 
+!!! ATTENTION !!!
+	idomod.o was renamed to idomod.so, module extension is now .so
+	idomod.so will now be installed to $libdir instead of $bindir
+!!! ATTENTION !!!
+
 ENHANCEMENTS
 * core: notifications: Create contact list after eventbroker callbacks (Andreas Ericsson) #2110
 * core: fix event removal from queues with O(1) removal from doubly linked lists (Andreas Ericsson) #2183
@@ -21,10 +26,32 @@ ENHANCEMENTS
 * classic ui: Added Select hosts or services by clicking on line instead of box #2118
 * classic ui: include graph icons by default in logos #2222
 
+* install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121
+* install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344
+* install: change default target location of idomod.so from $bindir to $libdir #2346
+	** packagers dreams come finally true! :)
+* install: introduce "lib/" in default prefix install for modules #2347
+* install: revamp the broker_module entry in icinga.cfg pointing to new module definition #2348
+* install: change idomod extension from .o to .so, make .so the default extension for modules #2354
+* install: add configure target --with-eventhandler-dir and "make install-eventhandlers" for contrib/eventhandlers #2352
+* install: add --enable-cgi-log to configure to enable cgi logging during build #2364
+
+* config: introduce conf.d as place for own configs #2360
+
+* icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
+* icinga.spec: make aware of the change of idomod.o location and changed extension (now .so) #2350
+* icinga.spec: add "README LICENSE Changelog UPGRADING" to all packages as docs (thx Michael Gruener) #2212
+* icinga.spec: put module/idoutils/db into docs instead of manually copying to /etc/icinga/idoutils (thx Michael Gruener) #2357
+* icinga.spec: add README.RHEL README.RHEL.idoutils to upstream, being installed as docs (thx Michael Gruener, Stefan Marx) #2212
+* icinga.spec: use eventhandler configure/make in package creation from #2352 #2363
+* icinga.spec: use --enable-cgi-log from upstream instead of manual sed #2365
+* icinga.spec: introduce conf.d as place for own configs #2367
+
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
 * core: mark services as executing only when we know we will actually run them (Andreas Ericsson) #2302
 * core: fix handling of allow_empty_hostgroup_assignment when hitting NULL'edhost_name attribute, now properly finishing #949
+* core: drop abbreviations in debug log and make them more telling #2138
 
 * classic ui: Fixed status totals are wrong when searching #1524
 * classic ui: Fixed wrong URLs for status.cgi overview #2173
@@ -45,8 +72,32 @@ FIXES
 CHANGES
 * neb api: move creation of notification contact list AFTER event broker callback NEBTYPE_NOTIFICATION_START #2110
 	** allows neb modules to cancel/override notification list creation on notification start
+
 * debug: set debug_verbosity=2 by default
 * configure: --enable-libtap=yes by default for builtin 'make test-tap'
+
+* install: --with-temp-file=<filepath> #2121
+	** sets path to an Icinga exclusive update temp file i.e. /tmp/icinga.tmp
+
+* install: --with-plugin-dir=<path> #2344
+	** sets path to plugins directory path i.e. $prefix/libexec
+
+* install: change default target location of idomod.so from $bindir to $libdir #2346
+* install: change idomod extension from .o to .so, make .so the default extension for modules #2354
+	** make sure to UPDATE the location in your CONFIG !!!
+
+* install: introduce "lib/" in default prefix install for modules #2347
+
+* install: --with-eventhandler-dir=<path> #2352
+	** sets path to eventhandler directory path i.e. $prefix/libexec/eventhandlers
+
+* install: make install-eventhandlers #2352
+	** install sample eventhandlers to defined location
+
+* install: --enable-cgi-log #2364
+	** enables cgi logging (EXPERIMENTAL)
+
+* config: $sysconfdir/conf.d #2360
 
 
 1.6.1 - 02/12/2011

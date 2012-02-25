@@ -2,16 +2,17 @@
  *
  * test_xsddefault.c - Test configuration loading
  *
- * Program: Nagios Core Testing
+ * Program: Icinga Core Testing
  * License: GPL
- * Copyright (c) 2009-2011 Nagios Core Development Team and Community Contributors
  * Copyright (c) 1999-2009 Ethan Galstad
+ * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
  *
  * First Written:   06-01-2010, based on test_nagios_config.c
  *
  * Description:
  *
- * Tests Nagios status file reading
+ * Tests Icinga status file reading
  *
  * License:
  *

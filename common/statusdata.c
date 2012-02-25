@@ -3,7 +3,7 @@
  * STATUSDATA.C - External status data for Icinga CGIs
  *
  * Copyright (c) 2000-2008 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *

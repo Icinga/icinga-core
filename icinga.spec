@@ -6,6 +6,8 @@
 #
 # ExclusiveDist: el5 el6
 
+%define revision 5
+
 %define logdir %{_localstatedir}/log/icinga
 
 %define apacheconfdir  %{_sysconfdir}/httpd/conf.d
@@ -14,8 +16,8 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.7.0-dev
-Release: 1%{?dist}
+Version: 1.6.1
+Release: %{revision}%{?dist}
 License: GPLv2
 Group: Applications/System
 URL: http://www.icinga.org/
@@ -32,7 +34,7 @@ BuildRequires: libjpeg-devel
 BuildRequires: libdbi-devel
 BuildRequires: perl(ExtUtils::Embed)
 ### Requires: nagios-plugins
-### Provides: nagios
+Provides: nagios
 
 %description
 Icinga is an application, system and network monitoring application.
@@ -84,13 +86,12 @@ Documentation for %{name}
     --libexecdir="%{_libdir}/nagios/plugins" \
     --localstatedir="%{_localstatedir}/icinga" \
     --with-checkresult-dir="%{_localstatedir}/icinga/checkresults" \
+    --libdir="%{_libdir}/icinga" \
     --sbindir="%{_libdir}/icinga/cgi" \
     --sysconfdir="%{_sysconfdir}/icinga" \
     --with-cgiurl="/icinga/cgi-bin" \
     --with-command-user="icinga" \
     --with-command-group="icingacmd" \
-    --with-web-user=%{apacheuser} \
-    --with-web-group=%{apachegroup} \
     --with-gd-lib="%{_libdir}" \
     --with-gd-inc="%{_includedir}" \
     --with-htmurl="/icinga" \
@@ -107,7 +108,10 @@ Documentation for %{name}
     --with-httpd-conf=%{apacheconfdir} \
     --with-init-dir=%{_initrddir} \
     --with-log-dir=%{logdir} \
+    --enable-cgi-log \
     --with-cgi-log-dir=%{logdir}/gui \
+    --with-plugin-dir="%{_libdir}/nagios/plugins" \
+    --with-eventhandler-dir="%{_libdir}/icinga/eventhandlers" \
     --with-p1-file-dir="%{_libdir}/icinga"
 %{__make} %{?_smp_mflags} all
 
@@ -120,6 +124,7 @@ Documentation for %{name}
     install-config \
     install-webconf \
     install-idoutils \
+    install-eventhandlers \
     DESTDIR="%{buildroot}" \
     INSTALL_OPTS="" \
     INSTALL_OPTS_WEB="" \
@@ -130,20 +135,10 @@ Documentation for %{name}
 %{__strip} %{buildroot}%{_bindir}/{icinga,icingastats,log2ido,ido2db}
 %{__strip} %{buildroot}%{_libdir}/icinga/cgi/*.cgi
 
-### enable cmd.cgi logging by default
-%{__perl} -pi -e '
-        s|use_logging.*|use_logging=1|;
-        s|cgi_log_file.*|cgi_log_file=%{logdir}/gui/icinga-cgi.log|;
-        s|cgi_log_archive_path=.*|cgi_log_archive_path=%{logdir}/gui|;
-   ' %{buildroot}%{_sysconfdir}/icinga/cgi.cfg
-
 ### move idoutils sample configs to final name
 mv %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg-sample %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg
 mv %{buildroot}%{_sysconfdir}/icinga/idomod.cfg-sample %{buildroot}%{_sysconfdir}/icinga/idomod.cfg
 mv %{buildroot}%{_sysconfdir}/icinga/modules/idoutils.cfg-sample %{buildroot}%{_sysconfdir}/icinga/modules/idoutils.cfg
-
-### copy idoutils db-script
-cp -r module/idoutils/db %{buildroot}%{_sysconfdir}/icinga/idoutils
 
 ### remove icinga-api
 %{__rm} -rf %{buildroot}%{_datadir}/icinga/icinga-api
@@ -182,12 +177,14 @@ fi
 %{__rm} -rf %{buildroot}
 
 %files
-%defattr(-,icinga,icinga,-)
-%attr(755,root,root) %{_initrddir}/icinga
+%defattr(-,root,root,-)
+%doc README LICENSE Changelog UPGRADING README.RHEL
+%attr(755,-,-) %{_initrddir}/icinga
 %dir %{_sysconfdir}/icinga
 %dir %{_sysconfdir}/icinga/modules
 %config(noreplace) %{_sysconfdir}/icinga/icinga.cfg
 %dir %{_sysconfdir}/icinga/objects
+%dir %{_sysconfdir}/icinga/conf.d
 %config(noreplace) %{_sysconfdir}/icinga/objects/commands.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/contacts.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/notifications.cfg
@@ -197,27 +194,45 @@ fi
 %config(noreplace) %{_sysconfdir}/icinga/objects/templates.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/timeperiods.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/windows.cfg
-%config(noreplace) %{_sysconfdir}/icinga/resource.cfg
-%{_bindir}/icinga
-%{_bindir}/icingastats
-%{_libdir}/icinga/p1.pl
+%config(noreplace) %attr(640,icinga,icinga) %{_sysconfdir}/icinga/resource.cfg
+%attr(755,-,-) %{_bindir}/icinga
+%attr(755,-,-) %{_bindir}/icingastats
+%attr(755,-,-) %{_libdir}/icinga/p1.pl
+%{_libdir}/icinga/eventhandlers
+%defattr(-,icinga,icinga,-)
+%{logdir}
+%{logdir}/archives
 %dir %{_localstatedir}/icinga
 %dir %{_localstatedir}/icinga/checkresults
 %attr(2755,icinga,icingacmd) %{_localstatedir}/icinga/rw/
-%{logdir}
-%{logdir}/archives
 
 %files doc
-%defattr(-,icinga,icinga,-)
+%defattr(-,root,root,-)
+%doc README LICENSE Changelog UPGRADING README.RHEL
 %{_datadir}/icinga/docs
 
 %files gui
-%defattr(-,icinga,icinga,-)
-%config(noreplace) %attr(-,root,root) %{apacheconfdir}/icinga.conf
+%defattr(-,root,root,-)
+%doc README LICENSE Changelog UPGRADING README.RHEL
+%config(noreplace) %{apacheconfdir}/icinga.conf
 %config(noreplace) %{_sysconfdir}/icinga/cgi.cfg
 %config(noreplace) %{_sysconfdir}/icinga/cgiauth.cfg
-%{_libdir}/icinga
-%{_libdir}/icinga/cgi
+%{_libdir}/icinga/cgi/avail.cgi
+%{_libdir}/icinga/cgi/cmd.cgi
+%{_libdir}/icinga/cgi/config.cgi
+%{_libdir}/icinga/cgi/extinfo.cgi
+%{_libdir}/icinga/cgi/histogram.cgi
+%{_libdir}/icinga/cgi/history.cgi
+%{_libdir}/icinga/cgi/notifications.cgi
+%{_libdir}/icinga/cgi/outages.cgi
+%{_libdir}/icinga/cgi/showlog.cgi
+%{_libdir}/icinga/cgi/status.cgi
+%{_libdir}/icinga/cgi/statusmap.cgi
+%{_libdir}/icinga/cgi/statuswml.cgi
+%{_libdir}/icinga/cgi/statuswrl.cgi
+%{_libdir}/icinga/cgi/summary.cgi
+%{_libdir}/icinga/cgi/tac.cgi
+%{_libdir}/icinga/cgi/trends.cgi
 %dir %{_datadir}/icinga
 %{_datadir}/icinga/contexthelp
 %{_datadir}/icinga/images
@@ -235,18 +250,45 @@ fi
 %attr(664,icinga,icingacmd) %{logdir}/gui/.htaccess
 
 %files idoutils
-%defattr(-,icinga,icinga,-)
-%attr(755,root,root) %{_initrddir}/ido2db
+%defattr(-,root,root,-)
+%doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
+%attr(755,-,-) %{_initrddir}/ido2db
 %config(noreplace) %{_sysconfdir}/icinga/ido2db.cfg
 %config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
 %config(noreplace) %{_sysconfdir}/icinga/modules/idoutils.cfg
 %config(noreplace) %{_sysconfdir}/icinga/objects/ido2db_check_proc.cfg
-%{_sysconfdir}/icinga/idoutils
 %{_bindir}/ido2db
 %{_bindir}/log2ido
-%{_bindir}/idomod.o
+%{_libdir}/icinga/idomod.so
 
 %changelog
+* Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
+- add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
+- use newly introduced --with-eventhandler-dir and make install-eventhandlers
+- install sample eventhandlers to {_libdir}/icinga/eventhandlers
+- use --enable-cgi-log from upstream instead of manual sed
+- add {_sysconfdir}/icinga/conf.d because upstream will include that with cfg_dir
+
+* Fri Feb 24 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-4
+- rename idomod.o to idomod.so - see #2354
+- use --libdir={_libdir}/icinga to install idomod.so instead of {_bindir} - see #2346
+- list {_libdir}/icinga/cgi/ cgis one by one, removing build warnings
+- remove macros in changelog warnings from rpmlint
+- use custom revision macro, don't forget that on spec updates
+- drop webuser/group, was used only by deprecated icinga-api (thx Michael Gruener) #2356
+- change ownership of docs to root (thx Michael Gruener)
+- add "README LICENSE Changelog UPGRADING" to all packages as docs (thx Michael Gruener) #2212
+- change permissions of resource.cfg to icinga:icinga 640 (thx Michael Gruener)
+- users who use cgi.cfg authorized_for_full_command_resolution must add apache user to group themselves (security risk)
+- put module/idoutils/db into docs instead of manually copying to /etc/icinga/idoutils (thx Michael Gruener) #2357
+- revamp the file permissions based on proposals by Michael Gruener <michael.gruener@topalis.com>
+
+* Thu Feb 23 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-3
+- use --with-plugin-dir instead of --libexexdir for nagios plugins dir introduced in #2344
+
+* Wed Feb 22 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-2
+- re-add provides nagios for compatibility reasons
+
 * Fri Dec 02 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-1
 - bump to 1.6.1
 
@@ -256,7 +298,7 @@ fi
 - add objects/ido2db_check_proc.cfg
 - drop api package as this is now deprecated and not shipped anymore with icinga package
 - remove provides nagios, inaccurate
-- enable cmd.cgi logging by default, %{logdir}/gui used
+- enable cmd.cgi logging by default, {logdir}/gui used
 - fix --libexecdir to point to possible location of nagios-plugins in resource.cfg:$USER1$
 
 * Fri Sep 09 2011 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.5.1-1

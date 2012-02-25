@@ -21,8 +21,23 @@ log_file=@LOGDIR@/icinga.log
 # OBJECT CONFIGURATION FILE(S)
 # These are the object configuration files in which you define hosts,
 # host groups, contacts, contact groups, services, etc.
-# You can split your object definitions across several config files
-# if you wish (as shown below), or keep them all in a single config file.
+# Hint: Check the docs/wiki on how to monitor remote hosts with different
+# transport methods and plugins
+
+# You can tell Icinga to process all config files (with a .cfg
+# extension) in a particular directory recursively by using the
+# cfg_dir directive as shown below with conf.d
+
+cfg_dir=@sysconfdir@/conf.d
+
+# or you can split your object definitions across several config files
+# and include them one by one - see the provided sample config
+# in objects/
+#
+# ATTENTION: do not mix cfg_file and cfg_dir such as
+# cfg_file=foo/bar.cfg
+# cfg_dir=foo
+# this will include bar.cfg 2 times and lead to config verification errors.
 
 # You can specify individual object config files as shown below:
 cfg_file=@sysconfdir@/objects/commands.cfg
@@ -44,15 +59,6 @@ cfg_file=@sysconfdir@/objects/localhost.cfg
 
 # Definitions for ido2db process checks
 #cfg_file=@sysconfdir@/objects/ido2db_check_proc.cfg
-
-# You can also tell Icinga to process all config files (with a .cfg
-# extension) in a particular directory by using the cfg_dir
-# directive as shown below:
-
-#cfg_dir=@sysconfdir@/servers
-#cfg_dir=@sysconfdir@/printers
-#cfg_dir=@sysconfdir@/switches
-#cfg_dir=@sysconfdir@/routers
 
 # Definitions for broker modules like idoutils.cfg
 cfg_dir=@sysconfdir@/modules
@@ -205,7 +211,7 @@ lock_file=@lockfile@
 # is created, used, and deleted throughout the time that Icinga is
 # running.
 
-temp_file=@localstatedir@/icinga.tmp
+temp_file=@TMPFILE@
 
 
 
@@ -228,7 +234,10 @@ event_broker_options=-1
 
 
 # EVENT BROKER MODULE(S)
-# This directive is used to specify an event broker module that should
+# ----> use the new *module definition* instead:
+# ----> http://docs.icinga.org/latest/en/objectdefinitions.html
+#
+# This directive can be used to specify an event broker module that should
 # by loaded by Icinga at startup.  Use multiple directives if you want
 # to load more than one module.  Arguments that should be passed to
 # the module at startup are seperated from the module path by a space.
@@ -236,24 +245,28 @@ event_broker_options=-1
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 # WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING
 #!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#
 # Do NOT overwrite modules while they are being used by Icinga or Icinga
-# will crash in a fiery display of SEGFAULT glory.  This is a bug/limitation
-# either in dlopen(), the kernel, and/or the filesystem.  And maybe Icinga...
+# will crash in a fiery display of SEGFAULT glory.
 #
 # The correct/safe way of updating a module is by using one of these methods:
 #    1. Shutdown Icinga, replace the module file, restart Icinga
 #    2. Delete the original module file, move the new module file into place, restart Icinga
 #
-# Example:
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+# WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING !!! WARNING
+#!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #
+# IDOUtils idomod.so should be enabled using the module definition,
+# i.e. using a package. First check that, and if not, you can
+# enable it here. 
+#
+# ATTENTION: DO NOT load the same module here AND as a module definition.
+# This can lead into problems with races on ressources.
+#
+# Example:
 #   broker_module=<modulepath> [moduleargs]
 
-#broker_module=/somewhere/module1.o
-#broker_module=/somewhere/module2.o arg1 arg2=3 debug=0
-
-# Uncomment this to enable idomod.o
-#broker_module=@bindir@/idomod.o config_file=@sysconfdir@/idomod.cfg
+#broker_module=@libdir@/idomod.so config_file=@sysconfdir@/idomod.cfg
 
 
 

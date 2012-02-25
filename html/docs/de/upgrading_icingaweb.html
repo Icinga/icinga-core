@@ -4,7 +4,7 @@
 <title>Aktualisierung von Icinga-Web und Icinga-Web Datenbank</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.6 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
 <link rel="prev" href="icinga-web-config.html" title="Konfigurationsübersicht Icinga-Web">
 <link rel="next" href="icinga-web-introduction.html" title="Einführung in Icinga-Web">
@@ -55,8 +55,8 @@
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
         <p>Die <code class="filename">*.site.xml</code>-Datei für lokale Konfigurationsanpassungen wurden entfernt, Konfigurationen werden nun
-        unter <code class="filename">etc/conf.d/</code> abgelegt (oder dem Pfad, der während der Installation mit --with-conf-folder angegeben
-        wurde)</p>
+        unter <code class="filename">etc/conf.d/</code> abgelegt (oder dem Pfad, der während der Installation mit --with-conf-dir 
+        (--with-conf-folder bis Icinga 1.6.x) angegeben wurde)</p>
       </li>
 <li class="listitem">
         <p>Das Log-Verzeichnis befindet sich nun unter <code class="filename">log/</code> (oder dem Pfad, der während der Installation mit
@@ -86,11 +86,11 @@
 
   <p>Entpacken Sie das Archiv (tarball):</p>
 
-  <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.6.0.tar.gz</pre>
+  <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.7.0.tar.gz</pre>
 
   <p>Wechseln Sie in das Verzeichnis</p>
 
-  <pre class="programlisting"> #&gt; cd icinga-web-1.6.0</pre>
+  <pre class="programlisting"> #&gt; cd icinga-web-1.7.0</pre>
 
   <p>Icinga-Web bietet diverse Konfigurationsoptionen an:</p>
 
@@ -228,13 +228,13 @@
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle_&lt;alteVersion&gt;_to_&lt;neueVersion&gt;.sql</pre>
 
-  <a class="indexterm" name="idp11603920"></a>
+  <a class="indexterm" name="id1548126"></a>
 
-  <a class="indexterm" name="idp11605200"></a>
+  <a class="indexterm" name="id1548136"></a>
 
-  <a class="indexterm" name="idp11606768"></a>
+  <a class="indexterm" name="id1548150"></a>
 
-  <a class="indexterm" name="idp11607904"></a>
+  <a class="indexterm" name="id1548160"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -253,6 +253,6 @@
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2011 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

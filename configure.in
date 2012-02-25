@@ -309,13 +309,39 @@ if test x$CHECKRESULTDIR = xno; then
 fi
 AC_SUBST(CHECKRESULTDIR)
 
-dnl Location of check result path
+dnl Location of temp path
 TMPDIR=no
-AC_ARG_WITH(temp-dir,AC_HELP_STRING([--with-temp-dir=<path>],[sets path to temp directory]),TMPDIR=$withval,TMPDIR=no)
+AC_ARG_WITH(temp-dir,AC_HELP_STRING([--with-temp-dir=<path>],[sets path to temp directory path where Icinga can create temp files for service/host check results]),TMPDIR=$withval,TMPDIR=no)
 if test x$TMPDIR = xno; then
 	TMPDIR="/tmp"
 fi
 AC_SUBST(TMPDIR)
+
+dnl Location of temp file
+TMPFILE=no
+AC_ARG_WITH(temp-file,AC_HELP_STRING([--with-temp-file=<filepath>],[sets path to an Icinga exclusive update temp file i.e. /tmp/icinga.tmp]),TMPFILE=$withval,TMPFILE=no)
+if test x$TMPFILE = xno; then
+	        TMPFILE="/tmp/icinga.tmp"
+	fi
+AC_SUBST(TMPFILE)
+
+
+dnl Location of plugin path
+PLUGINDIR=no
+AC_ARG_WITH(plugin-dir,AC_HELP_STRING([--with-plugin-dir=<path>],[sets path to plugins directory path i.e. $prefix/libexec]),PLUGINDIR=$withval,PLUGINDIR=no)
+if test x$PLUGINDIR = xno; then
+	        PLUGINDIR="$libexecdir"
+	fi
+AC_SUBST(PLUGINDIR)
+
+dnl Location of eventhandler path
+EVENTHANDLERDIR=no
+AC_ARG_WITH(eventhandler-dir,AC_HELP_STRING([--with-eventhandler-dir=<path>],[sets path to eventhandlers directory path i.e. $prefix/libexec/eventhandlers]),EVENTHANDLERDIR=$withval,EVENTHANDLERDIR=no)
+if test x$EVENTHANDLERDIR = xno; then
+                EVENTHANDLERDIR="$libexecdir/eventhandlers"
+        fi
+AC_SUBST(EVENTHANDLERDIR)
+
 
 
 dnl ################
@@ -329,6 +355,16 @@ if test x$LOGDIR = xno; then
 fi
 AC_SUBST(LOGDIR)
 
+dnl Enable cgi logging
+ENABLE_CGILOG=no
+AC_ARG_ENABLE(enable-cgi-log,AC_HELP_STRING([--enable-cgi-log],[enables cgi logging - experimental!!]),ENABLE_CGILOG=$enableval,ENABLE_CGILOG=yes)
+if test x$ENABLE_CGILOG = xyes; then
+        ENABLECGILOG=1
+else
+        ENABLECGILOG=0
+fi
+AC_SUBST(ENABLECGILOG)
+
 dnl Location of cgi logging path
 CGILOGDIR=no
 AC_ARG_WITH(cgi-log-dir,AC_HELP_STRING([--with-cgi-log-dir=<path>],[sets path to cgi logging directory]),CGILOGDIR=$withval,CGILOGDIR=no)
@@ -336,13 +372,6 @@ if test x$CGILOGDIR = xno; then
         CGILOGDIR="$datarootdir/log"
 fi
 AC_SUBST(CGILOGDIR)
-
-dnl ################
-dnl PHPAPI DIRS - DEPRECATED, REMOVE WITH 1.7.0 FIXME
-dnl ################
-dnl Location of phpapi logging path
-AC_ARG_WITH(phpapi-log-dir,AC_HELP_STRING([--with-phpapi-log-dir=<path>],[!!deprecated, removed from package!!]),[],[])
-
 
 dnl ################
 dnl OTHER DIRS
@@ -1298,7 +1327,6 @@ perl subst $srcdir/sample-config/template-object/switch.cfg
 echo ""
 echo "Creating sample config files in module/idoutils/config/ ..."
 
-perl subst $srcdir/module/idoutils/config/icinga.cfg
 perl subst $srcdir/module/idoutils/config/idoutils.cfg-sample
 perl subst $srcdir/module/idoutils/config/ido2db.cfg-sample
 perl subst $srcdir/module/idoutils/config/idomod.cfg-sample
@@ -1347,9 +1375,17 @@ AC_MSG_RESULT([           Build IDOUtils:  no])
 fi
 AC_MSG_RESULT([        Install \${prefix}:  $prefix])
 AC_MSG_RESULT([                Lock file:  $lockfile])
+AC_MSG_RESULT([                Temp file:  $TMPFILE])
+AC_MSG_RESULT([            Lib directory:  $libdir])
+AC_MSG_RESULT([            Bin directory:  $bindir])
+AC_MSG_RESULT([         Plugin directory:  $PLUGINDIR])
+AC_MSG_RESULT([   Eventhandler directory:  $EVENTHANDLERDIR])
 AC_MSG_RESULT([            Log directory:  $LOGDIR])
+if test x$ENABLE_CGILOG = xyes; then
 AC_MSG_RESULT([        cgi log directory:  $CGILOGDIR])
+fi
 AC_MSG_RESULT([   Check result directory:  $CHECKRESULTDIR])
+AC_MSG_RESULT([           Temp directory:  $TMPDIR])
 AC_MSG_RESULT([   Ext Cmd file directory:  $EXTCMDFILEDIR])
 AC_MSG_RESULT([           Init directory:  $init_dir])
 AC_MSG_RESULT([  Apache conf.d directory:  $HTTPD_CONF])

@@ -1,0 +1,76 @@
+Introduction
+------------
+
+The packages are made as little dependend on each other as possible, to get the
+maximum flexibility in setting up distributed monitoring environments. This
+means, that you may have to install some additional packages manually. Yum is
+your friend.
+
+Recommended OS Installation
+---------------------------
+
+Repositories:
+* Fedora EPEL repository (http://fedoraproject.org/wiki/EPEL)
+* RHN Channel "Red Hat Optional Server" if using RHEL
+* Repoforge repository if needed (http://wiki.centos.org/AdditionalResources/Repositories/RPMForge)
+
+It is also recommended to switch SELinux to "disabled" or develop a proper policy
+for icinga et al (if you have it, share it ;-)).
+
+Order of Installation
+---------------------
+
+Keeping a certain order of installation will lead you to a working monitoring
+setup in a relatively short time. Use yum to pull the proper dependencies
+automatically.
+
+1. Install icinga
+
+2. Install the needed nagios-plugins (either Fedora EPEL repository or Repoforge
+   "yum search nagios-plugins" gives you a list)
+
+3. If you need or want the classic gui, install icinga-gui. If you want plain
+   monitoring with icinga core and configure everything else by hand, you are done.
+
+4. Optional: install icinga-idoutils. Icinga Data Output Utils are necessary for
+   various database backed guis such as Icinga Web or Icinga Reporting. IDOUtils
+   use the libdbi database abstraction layer and can use MySQL or Postgresql with
+   this package.
+
+4.1 Create the idoutils database. For details see the README.idoutils of the
+    icinga-idoutils package.
+    Detailed information can be found in the "Creation of Database and IDOUtils" section
+    in the official docs as well as the wiki howtos.
+    http://docs.icinga.org/latest/en/quickstart-idoutils.html
+    https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils
+
+5. Optional: install additional Icinga guis like Icinga Web or Icinga Reporting as well
+   as addons such as PNP4Nagios, Check_MK or NagVis. For a suggested list please
+   either consult the docs or the wiki, or ask community members at icinga-portal.org
+
+
+Troubleshooting
+---------------
+
+- check if you have set SELinux to "disabled" mode
+- check that your local firewall rules contain appropriate rules for the
+  webserver and non-local database-connections
+- start the components in the rigth order: database, ido2db, icinga, httpd
+- check if idomod loads correctly
+  (/var/log/icinga/icinga.log: idomod: Successfully connected to data sink)
+- check the httpd error.log, the icinga.log and the syslog
+- in case of possible bugs, turn on debugging and refer to the debug logs
+
+Recommended Reading
+-------------------
+
+http://docs.icinga.org
+http://wiki.icinga.org
+http://www.icinga-portal.org
+
+Suggestions and Bugreports
+--------------------------
+
+If you want to make suggestions for the way this software is packaged or want
+to report bugs related to the packaging of this software, please report to
+the Icinga bug tracker located at https://dev.icinga.org - Core
