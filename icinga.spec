@@ -110,6 +110,7 @@ Documentation for %{name}
     --with-log-dir=%{logdir} \
     --with-cgi-log-dir=%{logdir}/gui \
     --with-plugin-dir="%{_libdir}/nagios/plugins" \
+    --with-eventhandler-dir="%{_libdir}/icinga/eventhandlers" \
     --with-p1-file-dir="%{_libdir}/icinga"
 %{__make} %{?_smp_mflags} all
 
@@ -122,6 +123,7 @@ Documentation for %{name}
     install-config \
     install-webconf \
     install-idoutils \
+    install-eventhandlers \
     DESTDIR="%{buildroot}" \
     INSTALL_OPTS="" \
     INSTALL_OPTS_WEB="" \
@@ -201,6 +203,7 @@ fi
 %attr(755,-,-) %{_bindir}/icinga
 %attr(755,-,-) %{_bindir}/icingastats
 %attr(755,-,-) %{_libdir}/icinga/p1.pl
+%{_libdir}/icinga/eventhandlers
 %defattr(-,icinga,icinga,-)
 %{logdir}
 %{logdir}/archives
@@ -266,6 +269,8 @@ fi
 %changelog
 * Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
 - add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
+- use newly introduced --with-eventhandler-dir and make install-eventhandlers
+- install sample eventhandlers to {_libdir}/icinga/eventhandlers
 
 * Fri Feb 24 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-4
 - rename idomod.o to idomod.so - see #2354
