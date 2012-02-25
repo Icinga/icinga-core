@@ -27,9 +27,10 @@ sub run_cgi ($$$$) {
         $query_string,
         "$cgi_dir/$cgi"
     );
-    print STDERR "DEBUG: execute $cmd\n", if $DEBUG;
+    print STDERR "\nDEBUG: execute $cmd\n", if $DEBUG;
     my ($in, $out, $err) = '';
     run3 ($cmd, \$in, \$out, \$err) or die "cat: $? - $! - $err";
+    print STDERR "\nError executing $cmd: \n $err\n" if $err;
     return $out;
 }
 
