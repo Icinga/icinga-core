@@ -752,7 +752,6 @@ with_plugin_dir
 with_eventhandler_dir
 with_log_dir
 with_cgi_log_dir
-with_phpapi_log_dir
 with_ext_cmd_file_dir
 with_p1_file_dir
 with_init_dir
@@ -1462,8 +1461,6 @@ Optional Packages:
   --with-log-dir=<path>   sets path to logging directory
   --with-cgi-log-dir=<path>
                           sets path to cgi logging directory
-  --with-phpapi-log-dir=<path>
-                          !!deprecated, removed from package!!
   --with-ext-cmd-file-dir=<path>
                           sets path to external command file directory
   --with-p1-file-dir=<path>
@@ -5423,14 +5420,6 @@ fi
 if test x$CGILOGDIR = xno; then
         CGILOGDIR="$datarootdir/log"
 fi
-
-
-
-# Check whether --with-phpapi-log-dir was given.
-if test "${with_phpapi_log_dir+set}" = set; then :
-  withval=$with_phpapi_log_dir;
-fi
-
 
 
 EXTCMDFILEDIR=no

@@ -364,13 +364,6 @@ fi
 AC_SUBST(CGILOGDIR)
 
 dnl ################
-dnl PHPAPI DIRS - DEPRECATED, REMOVE WITH 1.7.0 FIXME
-dnl ################
-dnl Location of phpapi logging path
-AC_ARG_WITH(phpapi-log-dir,AC_HELP_STRING([--with-phpapi-log-dir=<path>],[!!deprecated, removed from package!!]),[],[])
-
-
-dnl ################
 dnl OTHER DIRS
 dnl ################
 dnl Location of the external command file path

@@ -114,7 +114,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-init" "install init script"
 	@printf "\t%-23s - %s\n" "install-commandmode" "install external command file"
 	@printf "\t%-23s - %s\n" "install-idoutils" "install idoutils module"
-	@printf "\t%-23s - %s\n" "install-api" "install php api !!DEPRECATED!!" # FIXME remove in 1.7.0
+	@printf "\t%-23s - %s\n" "install-eventhandlers" "install sample eventhandlers"
 	@printf "\t%-23s - %s\n" "install-dev-docu" "install doxygen development documentation"
 
 
@@ -158,9 +158,6 @@ all:
 	@echo "  make install-idoutils"
 	@echo "     - This installs the database addon IDOUtils into the"
 	@echo "       destination directory"
-	@echo ""
-	@echo "  make install-api"
-	@echo "     - This installs the Icinga API !!DEPRECATED!!" # FIXME remove in 1.7.0
 	@echo ""
 	@echo "  make install-config"
 	@echo "     - This installs *SAMPLE* config files in $(DESTDIR)$(CFGDIR)"
@@ -459,13 +456,6 @@ install-idoutils:
 		echo "Try again with ./configure --enable-idoutils" ;\
 		echo "" ;\
 	fi
-
-install-api:
-	@echo "Sorry, Icinga PHP API was removed from package prior 1.6.0!"
-	@echo "Please keep in mind that Icinga-Web uses its own db layer starting with 1.5.0"
-	@echo "In case please look for a seperated package and/or icinga-api.git"
-	@echo ""
-
 
 install-init: install-daemoninit
 
