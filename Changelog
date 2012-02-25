@@ -30,6 +30,7 @@ ENHANCEMENTS
 * icinga.spec: make aware of the change of idomod.o location and changed extension (now .so) #2350
 * icinga.spec: add "README LICENSE Changelog UPGRADING" to all packages as docs (thx Michael Gruener) #2212
 * icinga.spec: put module/idoutils/db into docs instead of manually copying to /etc/icinga/idoutils (thx Michael Gruener) #2357
+* icinga.spec: add README.RHEL README.RHEL.idoutils to upstream, being installed as docs (thx Michael Gruener, Stefan Marx) #2212
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
