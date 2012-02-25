@@ -108,6 +108,7 @@ Documentation for %{name}
     --with-httpd-conf=%{apacheconfdir} \
     --with-init-dir=%{_initrddir} \
     --with-log-dir=%{logdir} \
+    --enable-cgi-log \
     --with-cgi-log-dir=%{logdir}/gui \
     --with-plugin-dir="%{_libdir}/nagios/plugins" \
     --with-eventhandler-dir="%{_libdir}/icinga/eventhandlers" \
@@ -133,13 +134,6 @@ Documentation for %{name}
 ### strip binary
 %{__strip} %{buildroot}%{_bindir}/{icinga,icingastats,log2ido,ido2db}
 %{__strip} %{buildroot}%{_libdir}/icinga/cgi/*.cgi
-
-### enable cmd.cgi logging by default
-%{__perl} -pi -e '
-        s|use_logging.*|use_logging=1|;
-        s|cgi_log_file.*|cgi_log_file=%{logdir}/gui/icinga-cgi.log|;
-        s|cgi_log_archive_path=.*|cgi_log_archive_path=%{logdir}/gui|;
-   ' %{buildroot}%{_sysconfdir}/icinga/cgi.cfg
 
 ### move idoutils sample configs to final name
 mv %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg-sample %{buildroot}%{_sysconfdir}/icinga/ido2db.cfg
@@ -271,6 +265,7 @@ fi
 - add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
 - use newly introduced --with-eventhandler-dir and make install-eventhandlers
 - install sample eventhandlers to {_libdir}/icinga/eventhandlers
+- use --enable-cgi-log from upstream instead of manual sed
 
 * Fri Feb 24 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-4
 - rename idomod.o to idomod.so - see #2354
