@@ -11,6 +11,7 @@ our @EXPORT_OK = qw( run_cgi);
 use IPC::Run3 qw( run3 );
 
 use FindBin qw($Bin);
+use Env qw( DEBUG );
 
 my $topdir = "$Bin/..";
 my $cgi_dir = "$topdir/cgi";
@@ -26,6 +27,7 @@ sub run_cgi ($$$$) {
         $query_string,
         "$cgi_dir/$cgi"
     );
+    print STDERR "DEBUG: execute $cmd\n", if $DEBUG;
     my ($in, $out, $err) = '';
     run3 ($cmd, \$in, \$out, \$err) or die "cat: $? - $! - $err";
     return $out;
