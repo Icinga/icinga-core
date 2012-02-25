@@ -6,7 +6,7 @@
 #
 # ExclusiveDist: el5 el6
 
-%define revision 4
+%define revision 5
 
 %define logdir %{_localstatedir}/log/icinga
 
@@ -182,7 +182,7 @@ fi
 
 %files
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING
+%doc README LICENSE Changelog UPGRADING README.RHEL
 %attr(755,-,-) %{_initrddir}/icinga
 %dir %{_sysconfdir}/icinga
 %dir %{_sysconfdir}/icinga/modules
@@ -210,12 +210,12 @@ fi
 
 %files doc
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING
+%doc README LICENSE Changelog UPGRADING README.RHEL
 %{_datadir}/icinga/docs
 
 %files gui
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING
+%doc README LICENSE Changelog UPGRADING README.RHEL
 %config(noreplace) %{apacheconfdir}/icinga.conf
 %config(noreplace) %{_sysconfdir}/icinga/cgi.cfg
 %config(noreplace) %{_sysconfdir}/icinga/cgiauth.cfg
@@ -253,7 +253,7 @@ fi
 
 %files idoutils
 %defattr(-,root,root,-)
-%doc README LICENSE Changelog UPGRADING module/idoutils/db
+%doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
 %attr(755,-,-) %{_initrddir}/ido2db
 %config(noreplace) %{_sysconfdir}/icinga/ido2db.cfg
 %config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
@@ -264,6 +264,9 @@ fi
 %{_libdir}/icinga/idomod.so
 
 %changelog
+* Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
+- add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
+
 * Fri Feb 24 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-4
 - rename idomod.o to idomod.so - see #2354
 - use --libdir={_libdir}/icinga to install idomod.so instead of {_bindir} - see #2346
