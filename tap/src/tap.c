@@ -44,8 +44,7 @@ static int test_died = 0;
 
 /* Encapsulate the pthread code in a conditional.  In the absence of
    libpthread the code does nothing */
-/* Ton: Remove LIBPTHREAD as locking occurs */
-#ifdef HAVE_LIBPTHREAD_REMOVED
+#ifdef HAVE_LIBPTHREAD
 #include <pthread.h>
 static pthread_mutex_t M = PTHREAD_MUTEX_INITIALIZER;
 # define LOCK pthread_mutex_lock(&M);
@@ -67,8 +66,9 @@ static void _cleanup(void);
  * test_comment -- a comment to print afterwards, may be NULL
  */
 unsigned int
-_gen_result(int ok, const char *func, char *file, unsigned int line,
-            char *test_name, ...) {
+_gen_result(int ok, const char *func, char *file, unsigned int line, 
+	    char *test_name, ...)
+{
 	va_list ap;
 	char *local_test_name = NULL;
 	char *c;
@@ -80,7 +80,7 @@ _gen_result(int ok, const char *func, char *file, unsigned int line,
 
 	/* Start by taking the test name and performing any printf()
 	   expansions on it */
-	if (test_name != NULL) {
+	if(test_name != NULL) {
 		va_start(ap, test_name);
 		vasprintf(&local_test_name, test_name, ap);
 		va_end(ap);
@@ -88,38 +88,38 @@ _gen_result(int ok, const char *func, char *file, unsigned int line,
 		/* Make sure the test name contains more than digits
 		   and spaces.  Emit an error message and exit if it
 		   does */
-		if (local_test_name) {
+		if(local_test_name) {
 			name_is_digits = 1;
-			for (c = local_test_name; *c != '\0'; c++) {
-				if (!isdigit(*c) && !isspace(*c)) {
+			for(c = local_test_name; *c != '\0'; c++) {
+				if(!isdigit(*c) && !isspace(*c)) {
 					name_is_digits = 0;
 					break;
 				}
 			}
 
-			if (name_is_digits) {
+			if(name_is_digits) {
 				diag("    You named your test '%s'.  You shouldn't use numbers for your test names.", local_test_name);
 				diag("    Very confusing.");
 			}
 		}
 	}
 
-	if (!ok) {
+	if(!ok) {
 		printf("not ");
 		failures++;
 	}
 
 	printf("ok %d", test_count);
 
-	if (test_name != NULL) {
+	if(test_name != NULL) {
 		printf(" - ");
 
 		/* Print the test name, escaping any '#' characters it
 		   might contain */
-		if (local_test_name != NULL) {
+		if(local_test_name != NULL) {
 			flockfile(stdout);
-			for (c = local_test_name; *c != '\0'; c++) {
-				if (*c == '#')
+			for(c = local_test_name; *c != '\0'; c++) {
+				if(*c == '#')
 					fputc('\\', stdout);
 				fputc((int)*c, stdout);
 			}
@@ -136,16 +136,16 @@ _gen_result(int ok, const char *func, char *file, unsigned int line,
 
 	   This is not counted as a failure, so decrement the counter if
 	   the test failed. */
-	if (todo) {
+	if(todo) {
 		printf(" # TODO %s", todo_msg ? todo_msg : todo_msg_fixed);
-		if (!ok)
+		if(!ok)
 			failures--;
 	}
 
 	printf("\n");
 
-	if (!ok)
-		diag("    Failed %stest (%s:%s() at line %d)",
+	if(!ok)
+		diag("    Failed %stest (%s:%s() at line %d)", 
 		     todo ? "(TODO) " : "", file, func, line);
 
 	free(local_test_name);
@@ -162,16 +162,17 @@ _gen_result(int ok, const char *func, char *file, unsigned int line,
  * called.
  */
 void
-_tap_init(void) {
+_tap_init(void)
+{
 	static int run_once = 0;
 
 	LOCK;
 
-	if (!run_once) {
+	if(!run_once) {
 		atexit(_cleanup);
 
 		/* stdout needs to be unbuffered so that the output appears
-		   in the same place relative to stderr output as it does
+		   in the same place relative to stderr output as it does 
 		   with Test::Harness */
 		setbuf(stdout, 0);
 		run_once = 1;
@@ -184,13 +185,14 @@ _tap_init(void) {
  * Note that there's no plan.
  */
 int
-plan_no_plan(void) {
+plan_no_plan(void)
+{
 
 	LOCK;
 
 	_tap_init();
 
-	if (have_plan != 0) {
+	if(have_plan != 0) {
 		fprintf(stderr, "You tried to plan twice!\n");
 		test_died = 1;
 		UNLOCK;
@@ -209,7 +211,8 @@ plan_no_plan(void) {
  * Note that the plan is to skip all tests
  */
 int
-plan_skip_all(char *reason) {
+plan_skip_all(char *reason)
+{
 
 	LOCK;
 
@@ -219,7 +222,7 @@ plan_skip_all(char *reason) {
 
 	printf("1..0");
 
-	if (reason != NULL)
+	if(reason != NULL)
 		printf(" # Skip %s", reason);
 
 	printf("\n");
@@ -233,20 +236,21 @@ plan_skip_all(char *reason) {
  * Note the number of tests that will be run.
  */
 int
-plan_tests(unsigned int tests) {
+plan_tests(unsigned int tests)
+{
 
 	LOCK;
 
 	_tap_init();
 
-	if (have_plan != 0) {
+	if(have_plan != 0) {
 		fprintf(stderr, "You tried to plan twice!\n");
 		test_died = 1;
 		UNLOCK;
 		exit(255);
 	}
 
-	if (tests == 0) {
+	if(tests == 0) {
 		fprintf(stderr, "You said to run 0 tests!  You've got to run something.\n");
 		test_died = 1;
 		UNLOCK;
@@ -263,7 +267,8 @@ plan_tests(unsigned int tests) {
 }
 
 unsigned int
-diag(char *fmt, ...) {
+diag(char *fmt, ...)
+{
 	va_list ap;
 
 	LOCK;
@@ -282,7 +287,8 @@ diag(char *fmt, ...) {
 }
 
 void
-_expected_tests(unsigned int tests) {
+_expected_tests(unsigned int tests)
+{
 
 	LOCK;
 
@@ -293,7 +299,8 @@ _expected_tests(unsigned int tests) {
 }
 
 int
-skip(unsigned int n, char *fmt, ...) {
+skip(unsigned int n, char *fmt, ...)
+{
 	va_list ap;
 	char *skip_msg;
 
@@ -303,10 +310,10 @@ skip(unsigned int n, char *fmt, ...) {
 	asprintf(&skip_msg, fmt, ap);
 	va_end(ap);
 
-	while (n-- > 0) {
+	while(n-- > 0) {
 		test_count++;
-		printf("ok %d # skip %s\n", test_count,
-		       skip_msg != NULL ?
+		printf("ok %d # skip %s\n", test_count, 
+		       skip_msg != NULL ? 
 		       skip_msg : "libtap():malloc() failed");
 	}
 
@@ -318,7 +325,8 @@ skip(unsigned int n, char *fmt, ...) {
 }
 
 void
-todo_start(char *fmt, ...) {
+todo_start(char *fmt, ...)
+{
 	va_list ap;
 
 	LOCK;
@@ -333,7 +341,8 @@ todo_start(char *fmt, ...) {
 }
 
 void
-todo_end(void) {
+todo_end(void)
+{
 
 	LOCK;
 
@@ -344,26 +353,27 @@ todo_end(void) {
 }
 
 int
-exit_status(void) {
+exit_status(void)
+{
 	int r;
 
 	LOCK;
 
 	/* If there's no plan, just return the number of failures */
-	if (no_plan || !have_plan) {
+	if(no_plan || !have_plan) {
 		UNLOCK;
 		return failures;
 	}
 
 	/* Ran too many tests?  Return the number of tests that were run
 	   that shouldn't have been */
-	if (e_tests < test_count) {
+	if(e_tests < test_count) {
 		r = test_count - e_tests;
 		UNLOCK;
 		return r;
 	}
 
-	/* Return the number of tests that failed + the number of tests
+	/* Return the number of tests that failed + the number of tests 
 	   that weren't run */
 	r = failures + e_tests - test_count;
 	UNLOCK;
@@ -376,20 +386,21 @@ exit_status(void) {
  * required.
  */
 void
-_cleanup(void) {
+_cleanup(void)
+{
 
 	LOCK;
 
 	/* If plan_no_plan() wasn't called, and we don't have a plan,
 	   and we're not skipping everything, then something happened
 	   before we could produce any output */
-	if (!no_plan && !have_plan && !skip_all) {
+	if(!no_plan && !have_plan && !skip_all) {
 		diag("Looks like your test died before it could output anything.");
 		UNLOCK;
 		return;
 	}
 
-	if (test_died) {
+	if(test_died) {
 		diag("Looks like your test died just after %d.", test_count);
 		UNLOCK;
 		return;
@@ -398,26 +409,26 @@ _cleanup(void) {
 
 	/* No plan provided, but now we know how many tests were run, and can
 	   print the header at the end */
-	if (!skip_all && (no_plan || !have_plan)) {
+	if(!skip_all && (no_plan || !have_plan)) {
 		printf("1..%d\n", test_count);
 	}
 
-	if ((have_plan && !no_plan) && e_tests < test_count) {
+	if((have_plan && !no_plan) && e_tests < test_count) {
 		diag("Looks like you planned %d tests but ran %d extra.",
 		     e_tests, test_count - e_tests);
 		UNLOCK;
 		return;
 	}
 
-	if ((have_plan || !no_plan) && e_tests > test_count) {
+	if((have_plan || !no_plan) && e_tests > test_count) {
 		diag("Looks like you planned %d tests but only ran %d.",
 		     e_tests, test_count);
 		UNLOCK;
 		return;
 	}
 
-	if (failures)
-		diag("Looks like you failed %d tests of %d.",
+	if(failures)
+		diag("Looks like you failed %d tests of %d.", 
 		     failures, test_count);
 
 	UNLOCK;
