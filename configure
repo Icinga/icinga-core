@@ -651,6 +651,7 @@ PHPAPIEXTCMDDIR
 EXTCMDFILEDIR
 CGILOGDIR
 LOGDIR
+EVENTHANDLERDIR
 PLUGINDIR
 TMPFILE
 TMPDIR
@@ -748,6 +749,7 @@ with_checkresult_dir
 with_temp_dir
 with_temp_file
 with_plugin_dir
+with_eventhandler_dir
 with_log_dir
 with_cgi_log_dir
 with_phpapi_log_dir
@@ -1454,6 +1456,9 @@ Optional Packages:
   --with-plugin-dir=<path>
                           sets path to plugins directory path i.e.
                           $prefix/libexec
+  --with-eventhandler-dir=<path>
+                          sets path to eventhandlers directory path i.e.
+                          $prefix/libexec/eventhandlers
   --with-log-dir=<path>   sets path to logging directory
   --with-cgi-log-dir=<path>
                           sets path to cgi logging directory
@@ -5376,6 +5381,20 @@ if test x$PLUGINDIR = xno; then
 	fi
 
 
+EVENTHANDLERDIR=no
+
+# Check whether --with-eventhandler-dir was given.
+if test "${with_eventhandler_dir+set}" = set; then :
+  withval=$with_eventhandler_dir; EVENTHANDLERDIR=$withval
+else
+  EVENTHANDLERDIR=no
+fi
+
+if test x$EVENTHANDLERDIR = xno; then
+                EVENTHANDLERDIR="$libexecdir/eventhandlers"
+        fi
+
+
 
 
 LOGDIR=no
@@ -8558,6 +8577,8 @@ $as_echo "            Lib directory:  $libdir" >&6; }
 $as_echo "            Bin directory:  $bindir" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:          Plugin directory:  $PLUGINDIR" >&5
 $as_echo "         Plugin directory:  $PLUGINDIR" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:    Eventhandler directory:  $EVENTHANDLERDIR" >&5
+$as_echo "   Eventhandler directory:  $EVENTHANDLERDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:             Log directory:  $LOGDIR" >&5
 $as_echo "            Log directory:  $LOGDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:         cgi log directory:  $CGILOGDIR" >&5

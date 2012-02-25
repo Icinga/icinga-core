@@ -33,6 +33,7 @@ ENHANCEMENTS
 * install: introduce "lib/" in default prefix install for modules #2347
 * install: revamp the broker_module entry in icinga.cfg pointing to new module definition #2348
 * install: change idomod extension from .o to .so, make .so the default extension for modules #2354
+* install: add configure target --with-eventhandler-dir and "make install-eventhandlers" for contrib/eventhandlers #2352
 
 * icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
 * icinga.spec: make aware of the change of idomod.o location and changed extension (now .so) #2350
@@ -77,7 +78,11 @@ CHANGES
 
 * install: introduce "lib/" in default prefix install for modules #2347
 
+* install: --with-eventhandler-dir=<path> #2352
+	** sets path to eventhandler directory path i.e. $prefix/libexec/eventhandlers
 
+* install: make install-eventhandlers #2352
+	** install sample eventhandlers to defined location
 
 
 1.6.1 - 02/12/2011

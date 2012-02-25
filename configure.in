@@ -334,6 +334,14 @@ if test x$PLUGINDIR = xno; then
 	fi
 AC_SUBST(PLUGINDIR)
 
+dnl Location of eventhandler path
+EVENTHANDLERDIR=no
+AC_ARG_WITH(eventhandler-dir,AC_HELP_STRING([--with-eventhandler-dir=<path>],[sets path to eventhandlers directory path i.e. $prefix/libexec/eventhandlers]),EVENTHANDLERDIR=$withval,EVENTHANDLERDIR=no)
+if test x$EVENTHANDLERDIR = xno; then
+                EVENTHANDLERDIR="$libexecdir/eventhandlers"
+        fi
+AC_SUBST(EVENTHANDLERDIR)
+
 
 
 dnl ################
@@ -1368,6 +1376,7 @@ AC_MSG_RESULT([                Temp file:  $TMPFILE])
 AC_MSG_RESULT([            Lib directory:  $libdir])
 AC_MSG_RESULT([            Bin directory:  $bindir])
 AC_MSG_RESULT([         Plugin directory:  $PLUGINDIR])
+AC_MSG_RESULT([   Eventhandler directory:  $EVENTHANDLERDIR])
 AC_MSG_RESULT([            Log directory:  $LOGDIR])
 AC_MSG_RESULT([        cgi log directory:  $CGILOGDIR])
 AC_MSG_RESULT([   Check result directory:  $CHECKRESULTDIR])
