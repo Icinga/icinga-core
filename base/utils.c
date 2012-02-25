@@ -309,6 +309,7 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 	char fname[512] = "";
 	char *args[5] = {"", DO_CLEAN, "", "", NULL };
 	SV *plugin_hndlr_cr = NULL; /* perl.h holds typedef struct */
+	STRLEN n_a;
 	char *perl_output = NULL;
 	int count;
 	int use_epn = FALSE;

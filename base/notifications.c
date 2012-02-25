@@ -134,6 +134,20 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 
 	/* create the contact notification list for this service */
 
+#ifdef USE_EVENT_BROKER
+	/* send data to event broker */
+	end_time.tv_sec = 0L;
+	end_time.tv_usec = 0L;
+	neb_result = broker_notification_data(NEBTYPE_NOTIFICATION_START, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_NOTIFICATION, type, start_time, end_time, (void *)svc, not_author, not_data, escalated, 0, NULL);
+	if (NEBERROR_CALLBACKCANCEL == neb_result) {
+		free_notification_list();
+		return ERROR;
+	} else if (NEBERROR_CALLBACKOVERRIDE == neb_result) {
+		free_notification_list();
+		return OK;
+	}
+#endif
+
 	/* 2011-10-21 MF:  
 	   check viability before adding a contact
 	   to the notification list, requires type
@@ -150,20 +164,6 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 	   original patch by Opsview Team
 	*/
 	create_notification_list_from_service(&mac, svc, options, &escalated, type);
-
-#ifdef USE_EVENT_BROKER
-	/* send data to event broker */
-	end_time.tv_sec = 0L;
-	end_time.tv_usec = 0L;
-	neb_result = broker_notification_data(NEBTYPE_NOTIFICATION_START, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_NOTIFICATION, type, start_time, end_time, (void *)svc, not_author, not_data, escalated, 0, NULL);
-	if (NEBERROR_CALLBACKCANCEL == neb_result) {
-		free_notification_list();
-		return ERROR;
-	} else if (NEBERROR_CALLBACKOVERRIDE == neb_result) {
-		free_notification_list();
-		return OK;
-	}
-#endif
 
 	/* XXX: crazy indent */
 	/* we have contacts to notify... */
@@ -281,8 +281,17 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
                 /* this gets set in add_notification() */
                 my_free(mac.x[MACRO_NOTIFICATIONRECIPIENTS]);
 
-		/* clear summary macros so they will be regenerated without contact filters when needed next */
-		clear_summary_macros_r(&mac);
+                /*
+                 * Clear all macros customized per contact that will
+                 * otherwise linger in memory now that we're done with
+                 * the notifications.
+                 */
+                clear_summary_macros_r(&mac);
+                clear_contact_macros_r(&mac);
+                clear_argv_macros_r(&mac);
+
+                /* this gets set in create_notification_list_from_service() */
+                my_free(mac.x[MACRO_NOTIFICATIONISESCALATED]);
 
 		if (type == NOTIFICATION_NORMAL) {
 
@@ -1307,6 +1316,20 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 
 	/* create the contact notification list for this host */
 
+#ifdef USE_EVENT_BROKER
+	/* send data to event broker */
+	end_time.tv_sec = 0L;
+	end_time.tv_usec = 0L;
+	neb_result = broker_notification_data(NEBTYPE_NOTIFICATION_START, NEBFLAG_NONE, NEBATTR_NONE, HOST_NOTIFICATION, type, start_time, end_time, (void *)hst, not_author, not_data, escalated, 0, NULL);
+	if (NEBERROR_CALLBACKCANCEL == neb_result) {
+		free_notification_list();
+		return ERROR;
+	} else if (NEBERROR_CALLBACKOVERRIDE == neb_result) {
+		free_notification_list();
+		return OK;
+	}
+#endif
+
         /* 2011-10-21 MF:  
            check viability before adding a contact
            to the notification list, requires type
@@ -1323,20 +1346,6 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
            original patch by Opsview Team
         */
 	create_notification_list_from_host(&mac, hst, options, &escalated, type);
-
-#ifdef USE_EVENT_BROKER
-	/* send data to event broker */
-	end_time.tv_sec = 0L;
-	end_time.tv_usec = 0L;
-	neb_result = broker_notification_data(NEBTYPE_NOTIFICATION_START, NEBFLAG_NONE, NEBATTR_NONE, HOST_NOTIFICATION, type, start_time, end_time, (void *)hst, not_author, not_data, escalated, 0, NULL);
-	if (NEBERROR_CALLBACKCANCEL == neb_result) {
-		free_notification_list();
-		return ERROR;
-	} else if (NEBERROR_CALLBACKOVERRIDE == neb_result) {
-		free_notification_list();
-		return OK;
-	}
-#endif
 
 	/* XXX: crazy indent */
 	/* there are contacts to be notified... */
@@ -1453,8 +1462,17 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 		/* this gets set in add_notification() */
 		my_free(mac.x[MACRO_NOTIFICATIONRECIPIENTS]);
 
-		/* clear summary macros so they will be regenerated without contact filters when needednext */
+		/*
+		 * Clear all macros customized per contact that will
+		 * otherwise linger in memory now that we're done with
+		 * the notifications.
+		 */
 		clear_summary_macros_r(&mac);
+		clear_contact_macros_r(&mac);
+		clear_argv_macros_r(&mac);
+
+		/* this gets set in create_notification_list_from_service() */
+		my_free(mac.x[MACRO_NOTIFICATIONISESCALATED]);
 
 		if (type == NOTIFICATION_NORMAL) {
 

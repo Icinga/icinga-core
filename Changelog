@@ -7,12 +7,41 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 1.7.0 - XX/YY/2012
 
 ENHANCEMENTS
+* core: notifications: Create contact list after eventbroker callbacks (Andreas Ericsson) #2110
+* core: fix event removal from queues with O(1) removal from doubly linked lists (Andreas Ericsson) #2183
+* core: avoid senseless looping when free()'ing macros (Andreas Ericsson) #2184
+* core: avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182
+* core: allow empty host groups in service and host dependencies if allow_empty_hostgroup_assignment flag is set (Daniel Wittenberg) #2255
+
+* classic ui: Added option for max log entries displayed in showlog.cgi #2145
+* classic ui: Added config option for status totals in status.cgi #2018
+* classic ui: Added multiple hosts/services to status.cgi GET #1981
+* classic ui: Added nostatusheader in status.cgi as config option #2018
+* classic ui: Added statusmap resizing with exclude/include button #2186
+* classic ui: Added Select hosts or services by clicking on line instead of box #2118
+* classic ui: include graph icons by default in logos #2222
 
 FIXES
+* core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
+* core: mark services as executing only when we know we will actually run them (Andreas Ericsson) #2302
+* core: fix handling of allow_empty_hostgroup_assignment when hitting NULL'edhost_name attribute, now properly finishing #949
+
+* classic ui: Fixed status totals are wrong when searching #1524
+* classic ui: Fixed wrong URLs for status.cgi overview #2173
+* classic ui: Fixed Host staus sorting in status.cgi not working #2220
+* classic ui: Fixed notifications.cgi - memory access error #2234
+* classic ui: Done clean up document_header() and unused vars in cgi's #2252
+* classic ui: Fixed status.cgi: host param not honoured with servicefilter #2262
+* classic ui: fixed Tooltip from action_url interfering with pnp4nagios integration #2198
+
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
 
+* install: Fix notification template installation (Todd Zullinger) #2235
+
 CHANGES
+* neb api: move creation of notification contact list AFTER event broker callback NEBTYPE_NOTIFICATION_START #2110
+	** allows neb modules to cancel/override notification list creation on notification start
 * debug: set debug_verbosity=2 by default
 
 

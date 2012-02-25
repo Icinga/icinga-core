@@ -32,19 +32,15 @@
 #include "../include/cgiutils.h"
 #include "../include/getcgi.h"
 #include "../include/cgiauth.h"
+#include "../include/skiplist.h"
 
 #include <gd.h>			/* Boutell's GD library function */
 #include <gdfonts.h>		/* GD library small font definition */
 
-
 /*#define DEBUG			1*/
 
-
 extern char main_config_file[MAX_FILENAME_LENGTH];
-extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
-extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
-extern char url_js_path[MAX_FILENAME_LENGTH];
 extern char physical_images_path[MAX_FILENAME_LENGTH];
 
 extern int     log_rotation_method;
@@ -53,7 +49,6 @@ extern host *host_list;
 extern service *service_list;
 extern logentry *entry_list;
 
-#include "../include/skiplist.h"
 extern skiplist *object_skiplists[NUM_OBJECT_SKIPLISTS];
 
 /* archived state types */
@@ -120,7 +115,6 @@ int end_day = 1;
 int end_month = 1;
 int end_year = 2000;
 
-extern int content_type;
 int input_type = GET_INPUT_NONE;
 int timeperiod_type = TIMEPERIOD_LAST24HOURS;
 int compute_time_from_parts = FALSE;
@@ -131,6 +125,7 @@ int small_image = FALSE;
 extern int embedded;
 extern int display_header;
 extern int daemon_check;
+extern int content_type;
 
 int assume_initial_states = TRUE;
 int assume_state_retention = TRUE;
@@ -220,19 +215,10 @@ unsigned long time_warning = 0L;
 unsigned long time_unknown = 0L;
 unsigned long time_critical = 0L;
 
-int problem_found;
-
 int display_type = DISPLAY_NO_TRENDS;
-int show_all_hosts = TRUE;
-int show_all_hostgroups = TRUE;
-int show_all_servicegroups = TRUE;
 
 char *host_name = "";
-char *host_filter = NULL;
-char *hostgroup_name = NULL;
-char *servicegroup_name = NULL;
 char *service_desc = "";
-char *service_filter = NULL;
 
 int CGI_ID = TRENDS_CGI_ID;
 
@@ -250,6 +236,7 @@ int main(int argc, char **argv) {
 	service *temp_service = NULL;
 	int is_authorized = TRUE;
 	int found = FALSE;
+	int problem_found = FALSE;
 	int days, hours, minutes, seconds;
 	char *first_service = NULL;
 	time_t t3;
@@ -269,7 +256,7 @@ int main(int argc, char **argv) {
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
 		if (content_type == HTML_CONTENT) {
-			document_header(CGI_ID, FALSE);
+			document_header(CGI_ID, FALSE, "Error");
 			print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 			document_footer(CGI_ID);
 		}
@@ -280,7 +267,7 @@ int main(int argc, char **argv) {
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
 		if (content_type == HTML_CONTENT) {
-			document_header(CGI_ID, FALSE);
+			document_header(CGI_ID, FALSE, "Error");
 			print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 			document_footer(CGI_ID);
 		}
@@ -321,7 +308,7 @@ int main(int argc, char **argv) {
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
 		if (content_type == HTML_CONTENT) {
-			document_header(CGI_ID, FALSE);
+			document_header(CGI_ID, FALSE, "Error");
 			print_error(NULL, ERROR_CGI_OBJECT_DATA);
 			document_footer(CGI_ID);
 		}
@@ -332,14 +319,14 @@ int main(int argc, char **argv) {
 	result = read_all_status_data(get_cgi_config_location(), READ_ALL_STATUS_DATA);
 	if (result == ERROR && daemon_check == TRUE) {
 		if (content_type == HTML_CONTENT) {
-			document_header(CGI_ID, FALSE);
+			document_header(CGI_ID, FALSE, "Error");
 			print_error(NULL, ERROR_CGI_STATUS_DATA);
 			document_footer(CGI_ID);
 		}
 		return ERROR;
 	}
 
-	document_header(CGI_ID, TRUE);
+	document_header(CGI_ID, TRUE, "Trends");
 
 	if (compute_time_from_parts == TRUE)
 		compute_report_times();
@@ -386,7 +373,6 @@ int main(int argc, char **argv) {
 			t1 = t2;
 			t2 = current_time;
 			read_archived_state_data();
-			problem_found = FALSE;
 
 			if (display_type == DISPLAY_HOST_TRENDS) {
 				for (temp_as = as_list; temp_as != NULL; temp_as = temp_as->next) {
@@ -452,7 +438,7 @@ int main(int argc, char **argv) {
 #ifdef USE_HISTROGRAM
 				printf("<a href='%s?host=%s&t1=%lu&t2=%lu&assumestateretention=%s'>View Alert Histogram For This Host</a><BR>\n", HISTOGRAM_CGI, url_encode(host_name), t1, t2, (assume_state_retention == TRUE) ? "yes" : "no");
 #endif
-				printf("<a href='%s?host=%s&nostatusheader'>View Status Detail For This Host</a><BR>\n", STATUS_CGI, url_encode(host_name));
+				printf("<a href='%s?host=%s'>View Status Detail For This Host</a><BR>\n", STATUS_CGI, url_encode(host_name));
 				printf("<a href='%s?host=%s'>View Alert History For This Host</a><BR>\n", HISTORY_CGI, url_encode(host_name));
 				printf("<a href='%s?host=%s'>View Notifications For This Host</a><BR>\n", NOTIFICATIONS_CGI, url_encode(host_name));
 			} else {

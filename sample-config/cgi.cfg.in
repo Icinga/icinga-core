@@ -498,6 +498,16 @@ status_show_long_plugin_output=0
 
 
 
+# DISPLAY STATUS TOTAL
+# This option allows you to specify if the
+# Host Status Totals and Service Status Totals
+# should be displayed.
+# Default value is 1.
+
+display_status_totals=0
+
+
+
 # SHOW ONLY HARD STATES IN TAC OPTION
 # This options allows you to specify if the tactical overview
 # should only show hard states on hosts and services.
@@ -569,6 +579,16 @@ show_tac_header_pending=1
 # By default it's enabled. Default is 0.
 
 #showlog_current_states=0
+
+
+
+# DEFAULT NUM DISPLAYED LOG ENTRIES OPTION
+# This options specifies the number of log entries
+# displayed by default in showlog.cgi. To display
+# all log entries by default set this value to 0.
+# Default is 10000.
+
+#default_num_displayed_log_entries=10000
 
 
 

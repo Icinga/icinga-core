@@ -147,6 +147,12 @@ int update_host_status(host *hst, int aggregated_dump) {}
 int     event_profiling_enabled = FALSE;
 void    profiler_update(int event, struct timeval start) {}
 
+void remove_host_acknowledgement(host * hst) {}
+void remove_service_acknowledgement(service * svc) {}
+
+int dump_retained_host_service_states_to_neb = TRUE;
+int stalking_notifications_for_hosts = DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS;
+int stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES;
 
 /* Test variables */
 service *svc1 = NULL, *svc2 = NULL, *svc3 = NULL;
