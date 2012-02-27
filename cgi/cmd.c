@@ -811,16 +811,24 @@ void print_object_list(int list_type) {
 
 		printf("<tr class=\"status%s\"><td width=\"50%%\"", (row_color == 0) ? "Even" : "Odd ");
 		if (list_type == PRINT_SERVICE_LIST) {
-			/* if hostname is empty print inputbox instead */
-			if (!strcmp(commands[x].host_name, ""))
-				printf("><INPUT TYPE='TEXT' NAME='host' SIZE=30></td>");
-			else
-				printf("><INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>%s</td>", escape_string(commands[x].host_name), escape_string(commands[x].host_name));
-			/* if service description is empty print inputbox instead */
-			if (!strcmp(commands[x].description, ""))
-				printf("<td><INPUT TYPE='TEXT' NAME='service' SIZE=30></td></tr>\n");
-			else
-				printf("<td><INPUT TYPE='HIDDEN' NAME='service' VALUE='%s'>%s</td></tr>\n", escape_string(commands[x].description), escape_string(commands[x].description));
+			/* hostname and service description are present */
+			if (strlen(commands[x].host_name) != 0  && strlen(commands[x].description) != 0) {
+				printf(">%s</td>", escape_string(commands[x].host_name));
+				/* we can use "escape_string" only twice in one line */
+				printf("<td><INPUT TYPE='HIDDEN' NAME='hostservice' VALUE='%s^%s'>", escape_string(commands[x].host_name), escape_string(commands[x].description));
+				printf("%s</td></tr>\n", escape_string(commands[x].description));
+			} else {
+				/* if hostname is empty print inputbox instead */
+				if (!strcmp(commands[x].host_name, ""))
+					printf("><INPUT TYPE='TEXT' NAME='host' SIZE=30></td>");
+				else
+					printf("><INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>%s</td>", escape_string(commands[x].host_name), escape_string(commands[x].host_name));
+				/* if service description is empty print inputbox instead */
+				if (!strcmp(commands[x].description, ""))
+					printf("<td><INPUT TYPE='TEXT' NAME='service' SIZE=30></td></tr>\n");
+				else
+					printf("<td><INPUT TYPE='HIDDEN' NAME='service' VALUE='%s'>%s</td></tr>\n", escape_string(commands[x].description), escape_string(commands[x].description));
+			}
 		} else if (list_type == PRINT_HOST_LIST) {
 			/* if hostname is empty print inputbox instead */
 			if (!strcmp(commands[x].host_name, ""))
