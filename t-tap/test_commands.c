@@ -112,7 +112,7 @@ int
 main() {
 	time_t now = 0L;
 
-	plan_tests(62);
+	plan(62);
 
 	ok(test_start_time == 0L, "Start time is empty");
 	ok(test_comment == NULL, "And test_comment is blank");

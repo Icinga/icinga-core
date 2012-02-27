@@ -269,7 +269,7 @@ int
 main(int argc, char **argv) {
 	time_t now = 0L;
 
-	plan_tests(10);
+	plan(10);
 
 	time(&now);
 

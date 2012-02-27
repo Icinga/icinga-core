@@ -38,6 +38,8 @@ ENHANCEMENTS
 
 * config: introduce conf.d as place for own configs #2360
 
+* tests: replace libtap with an actively developed version #1192
+
 * icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
 * icinga.spec: make aware of the change of idomod.o location and changed extension (now .so) #2350
 * icinga.spec: add "README LICENSE Changelog UPGRADING" to all packages as docs (thx Michael Gruener) #2212
@@ -98,6 +100,9 @@ CHANGES
 	** enables cgi logging (EXPERIMENTAL)
 
 * config: $sysconfdir/conf.d #2360
+
+* install: --enable-libtap is now deprecated, new libtap does not require configure anymore #1192
+
 
 
 1.6.1 - 02/12/2011

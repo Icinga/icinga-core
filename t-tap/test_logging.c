@@ -53,7 +53,7 @@ main(int argc, char **argv) {
 	char *temp_command = NULL;
 	struct tm *t;
 
-	plan_tests(14);
+	plan(14);
 
 	rotation_time = (time_t)1242949698;
 	t = localtime(&rotation_time);

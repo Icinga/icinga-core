@@ -79,7 +79,7 @@ int main(int argc, char **argv) {
 	comment *temp_comment;
 	scheduled_downtime *temp_downtime;
 
-	plan_tests(7);
+	plan(7);
 
 	chdir("../t");
 
