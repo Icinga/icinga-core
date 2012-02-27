@@ -101,7 +101,7 @@ main(int argc, char **argv) {
 	ok(i == 1, "Deleted 1 by unique comment: %d", i);
 
 	for (temp_downtime = scheduled_downtime_list, i = 0; temp_downtime != NULL; temp_downtime = temp_downtime->next, i++) {
-		diag("downtime id: %d", temp_downtime->downtime_id);
+		//diag("downtime id: %d", temp_downtime->downtime_id);
 	}
 	ok(i == 3, "Got 3 downtimes left: %d", i);
 
@@ -160,7 +160,7 @@ main(int argc, char **argv) {
 	ok(i == 0, "Deleted 0") || diag("Actually deleted: %d", i);
 
 	for (temp_downtime = scheduled_downtime_list, i = 0; temp_downtime != NULL; temp_downtime = temp_downtime->next, i++) {
-		diag("downtime id: %d", temp_downtime->downtime_id);
+		//diag("downtime id: %d", temp_downtime->downtime_id);
 	}
 	ok(i == 4, "Got 4 downtimes left: %d", i);
 

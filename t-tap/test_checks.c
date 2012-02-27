@@ -34,6 +34,9 @@
 #include "stub_downtime.c"
 #include "../common/shared.c"
 
+//change to 1 to add verbose debug logging of handle_?sync_*_check
+#define DEBUG 0
+
 int log_host_retries = 0;
 int date_format;
 
@@ -52,16 +55,24 @@ void setup_check_result() {
 	finish_time.tv_usec = 0L;
 
 	tmp_check_result = (check_result *)calloc(1, sizeof(check_result));
+
+	tmp_check_result->object_check_type = SERVICE_CHECK;
+        tmp_check_result->host_name = NULL;
+	tmp_check_result->service_description = NULL;
 	tmp_check_result->check_type = SERVICE_CHECK_ACTIVE;
 	tmp_check_result->check_options = 0;
 	tmp_check_result->scheduled_check = TRUE;
 	tmp_check_result->reschedule_check = TRUE;
-	tmp_check_result->exited_ok = TRUE;
-	tmp_check_result->return_code = 0;
-	tmp_check_result->output = strdup("Fake result");
+	tmp_check_result->output_file_fp = NULL;
+	tmp_check_result->output_file_fd = -1;
 	tmp_check_result->latency = 0.6969;
 	tmp_check_result->start_time = start_time;
 	tmp_check_result->finish_time = finish_time;
+	tmp_check_result->early_timeout = FALSE;
+	tmp_check_result->exited_ok = TRUE;
+	tmp_check_result->return_code = 0;
+	tmp_check_result->output = strdup("Fake result");
+	tmp_check_result->next = NULL;
 }
 
 int c = 0;
@@ -82,6 +93,7 @@ int log_debug_info(int level, int verbosity, const char *fmt, ...) {
 
 	va_start(ap, fmt);
 	/* vprintf( fmt, ap ); */
+
 	vasprintf(&buffer, fmt, ap);
 	if (strcmp(buffer, "Service wobbled between non-OK states, so we'll recheck the host state...\n") == 0) {
 		found_log_rechecking_host_when_service_wobbles++;
@@ -89,6 +101,8 @@ int log_debug_info(int level, int verbosity, const char *fmt, ...) {
 	if (strcmp(buffer, "run_async_host_check_3x()\n") == 0) {
 		found_log_run_async_host_check_3x++;
 	}
+	if(1==DEBUG)
+		printf(buffer);
 	free(buffer);
 	va_end(ap);
 }
@@ -111,6 +125,9 @@ setup_objects(time_t time) {
 	host1->has_been_checked = TRUE;
 	host1->last_check = time;
 	host1->next_check = time;
+	host1->plugin_output = strdup("Initial state");
+	host1->long_plugin_output = strdup("Initial state");
+	host1->perf_data = NULL;
 
 	/* First service is a normal one */
 	svc1 = (service *)calloc(1, sizeof(service));
@@ -149,15 +166,15 @@ int
 main(int argc, char **argv) {
 	time_t now = 0L;
 
-
-	plan(30);
-	//plan(42);
+	plan(42);
 
 	time(&now);
 
-	/* Test to confirm that if a service is warning, the notified_on_critical is reset */
+	/*
+	 * Test to confirm that if a service is warning, the notified_on_critical is reset
+	 */
 	setup_check_result();
-	//tmp_check_result=(check_result *)calloc(1, sizeof(check_result));
+
 	tmp_check_result->host_name = strdup("host1");
 	tmp_check_result->service_description = strdup("Normal service");
 	tmp_check_result->object_check_type = SERVICE_CHECK;
@@ -184,7 +201,8 @@ main(int argc, char **argv) {
 	svc1->next_notification = (time_t)22222;
 	svc1->no_more_notifications = TRUE;
 
-	handle_async_service_check_result(svc1, tmp_check_result);
+	handle_async_service_check_result(svc1,	tmp_check_result);
+	//handle_async_service_check_result(NULL,	tmp_check_result);
 
 	/* This has been taken out because it is not required
 	ok( svc1->notified_on_critical==FALSE, "notified_on_critical reset" );
@@ -194,10 +212,17 @@ main(int argc, char **argv) {
 	ok(svc1->no_more_notifications == FALSE, "no_more_notifications reset due to state change");
 	ok(svc1->current_notification_number == 999, "notification number NOT reset");
 
-	/* Test case:
-		service that transitions from OK to CRITICAL (where its host is set to DOWN) will get set to a hard state
-		even though check attempts = 1 of 4
-	*/
+	/* free allocated memory */
+        free_check_result(tmp_check_result);
+        my_free(tmp_check_result);
+
+
+	/*
+	 * Test case:
+	 * service that transitions from OK to CRITICAL (where its host is set to DOWN) will get set to a hard state
+	 * even though check attempts = 1 of 4
+	 */
+
 	setup_objects((time_t) 1234567800L);
 
 	host1->current_state = HOST_DOWN;
@@ -220,10 +245,13 @@ main(int argc, char **argv) {
 	ok(svc1->state_type == HARD_STATE, "This should be a HARD state since the host is in a failure state");
 	ok(svc1->current_attempt == 1, "Previous status was OK, so this failure should show current_attempt=1") || diag("Current attempt=%d", svc1->current_attempt);
 
-	/* Test case:
-		OK -> WARNING 1/4 -> ack -> WARNING 2/4 -> OK transition
-		Tests that the ack is left for 2/4
-	*/
+
+	/*
+	 * Test case:
+	 * OK -> WARNING 1/4 -> ack -> WARNING 2/4 -> OK transition
+	 * Tests that the ack is left for 2/4
+	 */
+
 	setup_objects(now);
 
 	host1->current_state = HOST_UP;
@@ -266,10 +294,13 @@ main(int argc, char **argv) {
 
 	ok(svc1->acknowledgement_type == ACKNOWLEDGEMENT_NONE, "Ack reset to none");
 
-	/* Test case:
-	   OK -> WARNING 1/4 -> ack -> WARNING 2/4 -> WARNING 3/4 -> WARNING 4/4 -> WARNING 4/4 -> OK transition
-	   Tests that the ack is not removed on hard state change
-	*/
+
+	/*
+	 * Test case:
+	 * OK -> WARNING 1/4 -> ack -> WARNING 2/4 -> WARNING 3/4 -> WARNING 4/4 -> WARNING 4/4 -> OK transition
+	 * Tests that the ack is not removed on hard state change
+	 */
+
 	setup_objects(now);
 
 	host1->current_state = HOST_UP;
@@ -338,10 +369,13 @@ main(int argc, char **argv) {
 
 	ok(svc1->acknowledgement_type == ACKNOWLEDGEMENT_NONE, "Ack removed");
 
-	/* Test case:
-	   OK -> WARNING 1/1 -> ack -> WARNING -> OK transition
-	   Tests that the ack is not removed on 2nd warning, but is on OK
-	*/
+
+	/*
+	 * Test case:
+	 * OK -> WARNING 1/1 -> ack -> WARNING -> OK transition
+	 * Tests that the ack is not removed on 2nd warning, but is on OK
+	 */
+
 	setup_objects(now);
 
 	host1->current_state = HOST_UP;
@@ -382,63 +416,64 @@ main(int argc, char **argv) {
 
 	ok(svc1->acknowledgement_type == ACKNOWLEDGEMENT_NONE, "Ack removed");
 
-	/* Test case:
-	   UP -> DOWN 1/4 -> ack -> DOWN 2/4 -> DOWN 3/4 -> DOWN 4/4 -> UP transition
-	   Tests that the ack is not removed on 2nd DOWN, but is on UP
-	*/
 	/*
-		setup_objects(now);
+	 * Test case:
+	 * UP -> DOWN 1/4 -> ack -> DOWN 2/4 -> DOWN 3/4 -> DOWN 4/4 -> UP transition
+	 * Tests that the ack is not removed on 2nd DOWN, but is on UP
+	 */
 
-		host1->current_state=HOST_UP;
-		host1->last_state=HOST_UP;
-		host1->last_hard_state=HOST_UP;
-		host1->state_type=SOFT_STATE;
-		host1->current_attempt=1;
-		host1->max_attempts=4;
-		host1->acknowledgement_type=ACKNOWLEDGEMENT_NONE;
-		host1->host_check_command=strdup("Dummy command required");
-		host1->accept_passive_host_checks=TRUE;
-		passive_host_checks_are_soft=TRUE;
+	setup_objects(now);
 
-		setup_check_result();
+	host1->current_state=HOST_UP;
+	host1->last_state=HOST_UP;
+	host1->last_hard_state=HOST_UP;
+	host1->state_type=SOFT_STATE;
+	host1->current_attempt=1;
+	host1->max_attempts=4;
+	host1->acknowledgement_type=ACKNOWLEDGEMENT_NONE;
+	host1->host_check_command=strdup("Dummy command required");
+	host1->accept_passive_host_checks=TRUE;
+	passive_host_checks_are_soft=TRUE;
 
-		tmp_check_result->return_code=STATE_CRITICAL;
-		tmp_check_result->output=strdup("DOWN failure 2");
-		tmp_check_result->check_type=HOST_CHECK_PASSIVE;
+	setup_check_result();
 
-		handle_async_host_check_result_3x(host1, tmp_check_result);
+	tmp_check_result->service_description=NULL;
+	tmp_check_result->return_code=STATE_CRITICAL;
+	tmp_check_result->output=strdup("DOWN failure 2");
+	tmp_check_result->check_type=HOST_CHECK_PASSIVE;
 
-		ok( host1->acknowledgement_type==ACKNOWLEDGEMENT_NONE, "No ack set" );
-		ok( host1->current_attempt==2, "Attempts right (not sure why this goes into 2 and not 1)") || diag("current_attempt=%d", host1->current_attempt);
-		ok( strcmp(host1->plugin_output,"DOWN failure 2")==0, "output set" ) || diag("plugin_output=%s", host1->plugin_output);
+	handle_async_host_check_result_3x(host1, tmp_check_result);
 
-		host1->acknowledgement_type=ACKNOWLEDGEMENT_NORMAL;
+	ok( host1->acknowledgement_type==ACKNOWLEDGEMENT_NONE, "No ack set" );
+	ok( host1->current_attempt==2, "Attempts right (not sure why this goes into 2 and not 1)") || diag("current_attempt=%d", host1->current_attempt);
+	ok( strcmp(host1->plugin_output,"DOWN failure 2")==0, "output set" ) || diag("plugin_output=%s", host1->plugin_output);
 
-		tmp_check_result->output=strdup("DOWN failure 3");
+	host1->acknowledgement_type=ACKNOWLEDGEMENT_NORMAL;
 
-		handle_async_host_check_result_3x(host1, tmp_check_result);
+	tmp_check_result->output=strdup("DOWN failure 3");
 
-		ok( host1->acknowledgement_type==ACKNOWLEDGEMENT_NORMAL, "Ack should be retained as in soft state" );
-		ok( host1->current_attempt==3, "Attempts incremented") || diag("current_attempt=%d", host1->current_attempt);
-		ok( strcmp(host1->plugin_output,"DOWN failure 3")==0, "output set" ) || diag("plugin_output=%s", host1->plugin_output);
+	handle_async_host_check_result_3x(host1, tmp_check_result);
 
-		tmp_check_result->output=strdup("DOWN failure 4");
+	ok( host1->acknowledgement_type==ACKNOWLEDGEMENT_NORMAL, "Ack should be retained as in soft state" );
+	ok( host1->current_attempt==3, "Attempts incremented") || diag("current_attempt=%d", host1->current_attempt);
+	ok( strcmp(host1->plugin_output,"DOWN failure 3")==0, "output set" ) || diag("plugin_output=%s", host1->plugin_output);
 
-		handle_async_host_check_result_3x(host1, tmp_check_result);
+	tmp_check_result->output=strdup("DOWN failure 4");
 
-		ok( host1->acknowledgement_type==ACKNOWLEDGEMENT_NORMAL, "Ack should be retained as in soft state" );
-		ok( host1->current_attempt==4, "Attempts incremented") || diag("current_attempt=%d", host1->current_attempt);
-		ok( strcmp(host1->plugin_output,"DOWN failure 4")==0, "output set" ) || diag("plugin_output=%s", host1->plugin_output);
+	handle_async_host_check_result_3x(host1, tmp_check_result);
 
-		tmp_check_result->return_code=STATE_OK;
-		tmp_check_result->output=strdup("UP again");
+	ok( host1->acknowledgement_type==ACKNOWLEDGEMENT_NORMAL, "Ack should be retained as in soft state" );
+	ok( host1->current_attempt==4, "Attempts incremented") || diag("current_attempt=%d", host1->current_attempt);
+	ok( strcmp(host1->plugin_output,"DOWN failure 4")==0, "output set" ) || diag("plugin_output=%s", host1->plugin_output);
 
-		handle_async_host_check_result_3x(host1, tmp_check_result);
+	tmp_check_result->return_code=STATE_OK;
+	tmp_check_result->output=strdup("UP again");
 
-		ok( host1->acknowledgement_type==ACKNOWLEDGEMENT_NONE, "Ack reset due to state change" );
-		ok( host1->current_attempt==1, "Attempts reset") || diag("current_attempt=%d", host1->current_attempt);
-		ok( strcmp(host1->plugin_output,"UP again")==0, "output set" ) || diag("plugin_output=%s", host1->plugin_output);
-	*/
+	handle_async_host_check_result_3x(host1, tmp_check_result);
+
+	ok( host1->acknowledgement_type==ACKNOWLEDGEMENT_NONE, "Ack reset due to state change" );
+	ok( host1->current_attempt==1, "Attempts reset") || diag("current_attempt=%d", host1->current_attempt);
+	ok( strcmp(host1->plugin_output,"UP again")==0, "output set" ) || diag("plugin_output=%s", host1->plugin_output);
 
 	return exit_status();
 }
