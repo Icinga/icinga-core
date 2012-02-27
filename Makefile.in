@@ -17,7 +17,7 @@ SRC_XDATA=@srcdir@/xdata
 SRC_CONTRIB=@srcdir@/contrib
 SRC_IDOUTILS=@srcdir@/module/idoutils
 SRC_TTAP=@srcdir@/t-tap
-SRC_TAP=@srcdir@/tap
+SRC_TAP=@srcdir@/tools/libtap
 SRC_T=@srcdir@/t
 SRC_DOCBOOK=@srcdir@/docbook
 SRC_DOCBOOK_DE=@srcdir@/docbook/de
@@ -60,7 +60,6 @@ PERLDIR=@PERLDIR@
 USE_EVENTBROKER=@USE_EVENTBROKER@
 USE_IDOUTILS=@USE_IDOUTILS@
 USE_ICINGAAPI=@USE_ICINGAAPI@
-USE_LIBTAP=@USE_LIBTAP@
 
 INSTALLPERLSTUFF=@INSTALLPERLSTUFF@
 
@@ -247,9 +246,7 @@ clean:
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	cd $(SRC_TTAP) && $(MAKE) $@
 	cd $(SRC_T) && $(MAKE) $@
-	@if [ x$(USE_LIBTAP) = xyes ]; then \
-		cd $(SRC_TAP) && $(MAKE) $@; \
-	fi
+	cd $(SRC_TAP) && $(MAKE) $@; \
 
 	rm -f *.cfg core
 	rm -f *~ *.*~ */*~ */*.*~ */*/*.*~
@@ -266,9 +263,7 @@ distclean: clean
 	cd $(SRC_IDOUTILS) && $(MAKE) $@
 	cd $(SRC_TTAP) && $(MAKE) $@
 	cd $(SRC_T) && $(MAKE) $@
-	@if [ x$(USE_LIBTAP) = xyes ]; then \
-		cd $(SRC_TAP) && $(MAKE) $@; \
-	fi
+	cd $(SRC_TAP) && $(MAKE) $@; \
 
 	rm -f sample-config/*.cfg sample-config/*.conf sample-config/template-object/*.cfg
 	rm -f daemon-init pkginfo rc.ido2db daemon-init-redhat
@@ -287,17 +282,13 @@ test:
 	$(MAKE) test-perl
 	$(MAKE) test-tap
 
-test-tap: tap/src/tap.o icinga cgis
-	@if [ x$(USE_LIBTAP) = xyes ]; then \
-		cd $(SRC_TTAP) && $(MAKE) test; \
-	else \
-		echo "NOTE: You must run configure with --enable-libtap to run the C tap tests"; \
-	fi
+test-tap: tools/libtap/tap.o icinga cgis
+	cd $(SRC_TTAP) && $(MAKE) test;
 
-tap/src/tap.o:
-	cd tap && $(MAKE)
+tools/libtap/tap.o:
+	cd tools/libtap && $(MAKE)
 
-test-perl: cgis
+test-perl: icinga cgis
 	cd t && $(MAKE) test
 
 ###############################

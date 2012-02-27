@@ -19,7 +19,7 @@ if ($@) {
 my $lint;
 eval '$lint = HTML::Lint->new( only_types => HTML::Lint::Error::STRUCTURE )';
 
-plan tests => 3;
+plan tests => 4;
 
 chdir $Bin or die "Cannot chdir";
 
@@ -33,7 +33,9 @@ $mech->cgi_application("$cgi_dir/history.cgi");
 
 $mech->get_ok("http://localhost/");
 
-$mech->title_is("History");
+$mech->title_is("History", 'Title is \'History\'');
 
+$mech->content_contains('[05-15-2009 00:56:31]  Icinga 1&#46;2&#46;1 starting&#46;&#46;&#46; &#40;PID&#61;48451&#41;',
+    'Contains Icinga startup message');
 html_ok( $lint, $mech->content, "HTML correct" );
 

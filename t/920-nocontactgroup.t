@@ -4,17 +4,18 @@
 
 use warnings;
 use strict;
-use Test::More qw(no_plan);
+use Icinga::Test qw ( run_cmd );
+use Test::More;
 use FindBin qw($Bin);
 
-chdir $Bin or die "Cannot chdir";
-
+my $etc = "$Bin/etc";
 my $topdir = "$Bin/..";
 my $icinga = "$topdir/base/icinga";
-my $etc = "$Bin/etc";
-my $precache = "$Bin/var/objects.precache";
 
+plan tests => 2;
 
-my $output = `$icinga -v "$etc/icinga-no-contactgroup.cfg"`;
-like( $output, "/Error: Could not find any contactgroup matching 'nonexistantone'/", "Correct error for no contactgroup" );
+# icinga run without existing contactgroup should raise an exeception
+
+my $output = run_cmd([$icinga, '-v', "$etc/icinga-no-contactgroup.cfg"]);
 isnt($?, 0, "And get return code error" );
+like( $output, "/Error: Could not find any contactgroup matching 'nonexistantone'/", "Correct error for no contactgroup" );

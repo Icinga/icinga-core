@@ -1,42 +1,44 @@
 #!/usr/bin/perl
-# 
+
 # Checks for status.cgi
 
 use warnings;
 use strict;
 use Test::More;
-use FindBin qw($Bin);
-
-chdir $Bin or die "Cannot chdir";
-
-my $topdir = "$Bin/..";
-my $cgi_dir = "$topdir/cgi";
-my $cgi = "$cgi_dir/status.cgi";
-
-my $output;
+use Icinga::Test qw ( run_cgi );
 
 plan tests => 8;
 
+my $expected_hosts = 2;
 my $numhosts;
 
-$output = `ICINGA_CGI_CONFIG=etc/cgi.cfg REMOTE_USER=icingaadmin REQUEST_METHOD=GET QUERY_STRING=host=all $cgi`;
-like( $output, '/status.cgi\?host=all&sorttype=1&sortoption=1/', "Host value should be set to all if host=all passed in" );
+# pass host=all and checks if its included in the output
+my $output = run_cgi('etc/cgi.cfg', 'GET', 'host=all', 'status.cgi');
 
-# Bit of a hacky way to count number of hosts
-$numhosts = grep /title=/, split("\n", $output);
+like( $output, '/status.cgi\?host=all/', "Host value should be set to all if host=all passed in" );
 
-ok( $numhosts > 1, "Got $numhosts hosts, which is more than 1");
+# count the number of hosts included, we don't care about mouseovers
+$numhosts = grep /extinfo.cgi\?type=1&host=(?!.*onMouseOver)/, split("\n", $output);
 
-$output = `ICINGA_CGI_CONFIG=etc/cgi.cfg REMOTE_USER=icingaadmin REQUEST_METHOD=GET QUERY_STRING=host=host1 $cgi`;
-like( $output, '/status.cgi\?host=host1&sorttype=1&sortoption=1/', "Host value should be set to specific host if passed in" );
+ok( $numhosts == $expected_hosts, "Expected 2 hosts, but we got $numhosts");
+
+# run with set host argument
+$output = run_cgi('etc/cgi.cfg', 'GET', 'host=host1', 'status.cgi');
+
+# check if setting the filter works
+like( $output, '/status.cgi\?host=host1/', "Host value should be set to specific host if passed in" );
 like( $output, '/1 Matching Service Entries Displayed/', "Found the one host" );
 
-$output = `ICINGA_CGI_CONFIG=etc/cgi.cfg REMOTE_USER=icingaadmin REQUEST_METHOD=GET QUERY_STRING=host= $cgi`;
-like( $output, '/status.cgi\?host=&sorttype=1&sortoption=1/', "Host value kept as blank if set to blank" );
+# run with empty host argument and see if nothing matches
+$output = run_cgi('etc/cgi.cfg', 'GET', 'host=', 'status.cgi');
+
+like( $output, '/status.cgi\?host=&/', "Host value kept as blank if set to blank" );
 like( $output, '/0 Matching Service Entries Displayed/', "Got no hosts because looking for a blank name" );
 
-$output = `ICINGA_CGI_CONFIG=etc/cgi.cfg REMOTE_USER=icingaadmin REQUEST_METHOD=GET $cgi`;
-like( $output, '/status.cgi\?host=all&sorttype=1&sortoption=1/', "Host value should be set to all if nothing set initially" );
+$output = run_cgi('etc/cgi.cfg', 'GET', '', 'status.cgi');
+like( $output, '/status.cgi\?host=all&/', "Host value should be set to all if nothing set initially" );
 
-$_ = grep /title=/, split("\n", $output);
-is( $_, $numhosts, "Same number of hosts" );
+my $hosts_found = grep /extinfo.cgi\?type=1&host=(?!.*onMouseOver)/, split("\n", $output);
+
+# we expect the same number of hosts as with hosts=all
+is( $hosts_found, $numhosts, "Same number of hosts as with hosts=all" );

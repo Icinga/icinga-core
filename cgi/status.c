@@ -23,6 +23,10 @@
  * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
  *************************************************************************/
 
+/** @file status.c
+ *  @brief display host and service status data in list format. Also host and service groups
+**/
+
 #include "../include/config.h"
 #include "../include/common.h"
 #include "../include/objects.h"
@@ -34,8 +38,13 @@
 #include "../include/getcgi.h"
 #include "../include/cgiauth.h"
 
+/** @name initializing macros
+    @{ **/
 static icinga_macros *mac;
+/** @} */
 
+/** @name external vars
+    @{ **/
 extern time_t	       program_start;
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
@@ -69,6 +78,7 @@ extern int display_status_totals;
 extern int daemon_check;
 extern int content_type;
 extern int escape_html_tags;
+extern int show_partial_hostgroups;			/**< show any hosts in hostgroups the user is authorized for */
 
 extern int add_notif_num_hard;
 extern int add_notif_num_soft;
@@ -79,108 +89,77 @@ extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
 extern hoststatus *hoststatus_list;
 extern servicestatus *servicestatus_list;
+/** @} */
 
-extern int show_partial_hostgroups;			/**< show any hosts in hostgroups the user is authorized for */
+/** @name DISPLAY TYPES
+ @{**/
+#define DISPLAY_HOSTS			0		/**< use the standard view */
+#define DISPLAY_HOSTGROUPS		1		/**< output is filtered by hostgroup(s)  */
+#define DISPLAY_SERVICEGROUPS		2		/**< output is filtered by servicegroup(s)  */
+/** @} */
 
-#define MAX_MESSAGE_BUFFER		4096
+/** @name STYLES
+ @{**/
+#define STYLE_OVERVIEW			0		/**< host/service group status overview (no status list) */
+#define STYLE_SERVICE_DETAIL		1		/**< display service status list */
+#define STYLE_SUMMARY			2		/**< host/service group status summary (no status list) */
+#define STYLE_GRID			3		/**< host/service group status grid (no status list) */
+#define STYLE_HOST_DETAIL		4		/**< display host status list */
+#define STYLE_HOST_SERVICE_DETAIL	5		/**< display combined hast and service status list */
+/** @} */
 
-#define DISPLAY_HOSTS			0
-#define DISPLAY_HOSTGROUPS		1
-#define DISPLAY_SERVICEGROUPS		2
-
-#define STYLE_OVERVIEW			0
-#define STYLE_SERVICE_DETAIL		1
-#define STYLE_SUMMARY			2
-#define STYLE_GRID			3
-#define STYLE_HOST_DETAIL		4
-#define STYLE_HOST_SERVICE_DETAIL	5
-
+/** @name STATUS TYPES
+ *	used in statusdata_struct and to determine which dropdown menu to display
+ @{**/
 #define HOST_STATUS			0
 #define SERVICE_STATUS			1
-#define NO_STATUS			2		/**< only used to determine which drop down menu to present */
+#define NO_STATUS			2
+/** @} */
 
-#define NUM_NAMED_ENTRIES		1000
+/** @name NUMBER OF NAMED OBJECTS
+ @{**/
+#define NUM_NAMED_ENTRIES		1000		/**< max number of elements (hosts/hostgroups/servicegroups) submitted  vie GET/POST */
+/** @} */
 
-/*  Status data for all Elements */
+/** @brief status data struct
+ *
+ *  structure to hold host AND service status data
+**/
 typedef struct statusdata_struct {
-	int		type;
-	char		*host_name;
-	char		*svc_description;
-	int		status;
-	char		*status_string;
-	char		*last_check;
-	time_t		ts_last_check;
-	char		*state_duration;
-	time_t		ts_state_duration;
-	char		*attempts;
-	int		current_attempt;
-	int		last_state_change;
-	char		*plugin_output;
-	int		problem_has_been_acknowledged;
-	int		scheduled_downtime_depth;
-	int		notifications_enabled;
-	int		checks_enabled;
-	int		accept_passive_checks;
-	int		is_flapping;
-	struct statusdata_struct *next;
+	int		type;				/**< HOST_STATUS / SERVICE_STATUS */
+	char		*host_name;			/**< holds host name */
+	char		*svc_description;		/**< holds service description */
+	int		status;				/**< the actual status OK / UP / CRITICAL / DOWN ... */
+	char		*status_string;			/**< the status as strting depending if host or service status */
+	char		*last_check;			/**< last time status is checked as string */
+	time_t		ts_last_check;			/**< last time status is checked as timestamp */
+	char		*state_duration;		/**< duration of this status as string */
+	time_t		ts_state_duration;		/**< duration of this status as timestamp */
+	char		*attempts;			/**< attempts as string */
+	int		current_attempt;		/**< attempts as integer */
+	char		*plugin_output;			/**< full processed plugin output */
+	int		problem_has_been_acknowledged;	/**< bool if problem is acknowledged */
+	int		scheduled_downtime_depth;	/**< int of downtime depth */
+	int		notifications_enabled;		/**< bool if notifications are enabled */
+	int		checks_enabled;			/**< bool if active checks are enabled */
+	int		accept_passive_checks;		/**< bool if passive checks are enabled */
+	int		is_flapping;			/**< bool if status is flapping */
+	struct statusdata_struct *next;			/**< next statusdata */
 } statusdata;
 
-statusdata *statusdata_list = NULL;
-statusdata *last_statusdata = NULL;
+statusdata *statusdata_list = NULL;			/**< list of all status data elements */
+statusdata *last_statusdata = NULL;			/**< last element of status data list (needed to add new elments) */
 
-/* SERVICESORT structure */
+/** @brief status sort structure
+ *
+ *  holds pointers to status data in a sorted order
+**/
 typedef struct sort_struct {
-	statusdata *status;
-	struct sort_struct *next;
+	statusdata *status;				/**< pointer to status data element */
+	struct sort_struct *next;			/**< next sort entry */
 } sort;
 
-sort *statussort_list = NULL;
-
-int sort_status_data(int , int , int);
-int compare_sort_entries(int, int, int, sort *, sort *);			/**< compares service sort entries */
-void free_sort_list(void);
-int add_status_data(int, void *);
-void free_local_status_data(void);
-
-void show_host_status_totals(void);
-void show_service_status_totals(void);
-void show_service_detail(void);
-void show_host_detail(void);
-void show_servicegroup_overviews(void);
-void show_servicegroup_overview(servicegroup *);
-void show_servicegroup_summaries(void);
-void show_servicegroup_summary(servicegroup *, int);
-void show_servicegroup_host_totals_summary(servicegroup *);
-void show_servicegroup_service_totals_summary(servicegroup *);
-void show_servicegroup_grids(void);
-void show_servicegroup_grid(servicegroup *);
-void show_hostgroup_overviews(void);
-int show_hostgroup_overview(hostgroup *);
-void show_servicegroup_hostgroup_member_overview(hoststatus *, int, void *);
-void show_servicegroup_hostgroup_member_service_status_totals(char *, void *);
-void show_hostgroup_summaries(void);
-void show_hostgroup_summary(hostgroup *, int);
-void show_hostgroup_host_totals_summary(hostgroup *);
-void show_hostgroup_service_totals_summary(hostgroup *);
-void show_hostgroup_grids(void);
-int show_hostgroup_grid(hostgroup *);
-
-void show_servicecommand_table(void);
-void show_hostcommand_table(void);
-
-void show_filters(void);
-
-int passes_host_properties_filter(hoststatus *);
-int passes_service_properties_filter(servicestatus *);
-
-int process_cgivars(void);
-
-void print_comment_icon(char *, char *);
-
-void print_displayed_names(int style);
-
-authdata current_authdata;
-time_t current_time;
+sort *statussort_list = NULL;				/**< list of all sorted elements */
 
 /** @brief named list structure
  *
@@ -190,72 +169,380 @@ struct namedlist {
 	char *entry;
 };
 
-struct namedlist req_hosts[NUM_NAMED_ENTRIES];
-struct namedlist req_hostgroups[NUM_NAMED_ENTRIES];
-struct namedlist req_servicegroups[NUM_NAMED_ENTRIES];
+/** @name Internal vars
+    @{ **/
+int num_req_hosts = 0;					/**< number of requestes hosts GET/POST */
+int num_req_hostgroups = 0;				/**< number of requestes hostgroups GET/POST */
+int num_req_servicegroups = 0;				/**< number of requestes servicegroups GET/POST */
+int dummy = 0;						/**< dummy to catch asprintf return value */
 
-int num_req_hosts = 0;
-int num_req_hostgroups = 0;
-int num_req_servicegroups = 0;
-int dummy = 0;
+int show_all_hosts = TRUE;				/**< define if ALL hosts should be displayed */
+int show_all_hostgroups = TRUE;				/**< define if ALL hostgroups should be displayed */
+int show_all_servicegroups = TRUE;			/**< define if ALL servicegroups should be displayed */
+int display_type = DISPLAY_HOSTS;			/**< set default @c "DISPLAY TYPES" */
+int overview_columns = 3;				/**< set default num of columns in OVERVIEW */
+int max_grid_width = 8;					/**< set default grid width for OVERVIEW */
+int group_style_type = STYLE_SERVICE_DETAIL;		/**< set default @c "STYLES" type */
+int navbar_search = FALSE;				/**< set if user used search via menu (legacy) */
+int user_is_authorized_for_statusdata = FALSE;		/**< used to see if we return a no autorised or no data error message if no data is found after filtering */
+int nostatusheader_option = FALSE;			/**< define of status header should be displayed or not */
+int display_all_unhandled_problems = FALSE;		/**< special view of all unhandled problems */
 
-char *url_hosts_part = NULL;
-char *url_hostgroups_part = NULL;
-char *url_servicegroups_part = NULL;
-
-char *search_string = NULL;
-char *service_filter = NULL;
-
-int show_all_hosts = TRUE;
-int show_all_hostgroups = TRUE;
-int show_all_servicegroups = TRUE;
-int display_type = DISPLAY_HOSTS;
-int overview_columns = 3;
-int max_grid_width = 8;
-int group_style_type = STYLE_SERVICE_DETAIL;
-int navbar_search = FALSE;
-int user_is_authorized_for_statusdata = FALSE;
-int nostatusheader_option = FALSE;
-int display_all_unhandled_problems = FALSE;
-
+/** bitmask of all service status types which are used to filter services, changed via GET/POST */
 int service_status_types = SERVICE_PENDING | SERVICE_OK | SERVICE_UNKNOWN | SERVICE_WARNING | SERVICE_CRITICAL;
+
+/** bitmask of all service status types to compare with filter (won't get changed) */
 int all_service_status_types = SERVICE_PENDING | SERVICE_OK | SERVICE_UNKNOWN | SERVICE_WARNING | SERVICE_CRITICAL;
 
+/** bitmask of all host status types which are used to filter hosts, changed via GET/POST */
 int host_status_types = HOST_PENDING | HOST_UP | HOST_DOWN | HOST_UNREACHABLE;
+
+/** bitmask of all host status types to compare with filter (won't get changed) */
 int all_host_status_types = HOST_PENDING | HOST_UP | HOST_DOWN | HOST_UNREACHABLE;
 
+/** bitmask of all problem service status types to compare with filter */
 int all_service_problems = SERVICE_UNKNOWN | SERVICE_WARNING | SERVICE_CRITICAL;
+
+/** bitmask of all problem host status types to compare with filter */
 int all_host_problems = HOST_DOWN | HOST_UNREACHABLE;
 
+/** bitmask of all unhandled problem host status types to compare with filter */
 int host_problems_unhandled = HOST_NO_SCHEDULED_DOWNTIME | HOST_NOT_ALL_CHECKS_DISABLED | HOST_STATE_UNACKNOWLEDGED;
+
+/** bitmask of all unhandled problem service status types to compare with filter */
 int service_problems_unhandled = SERVICE_NO_SCHEDULED_DOWNTIME | SERVICE_NOT_ALL_CHECKS_DISABLED | SERVICE_STATE_UNACKNOWLEDGED;
 
-unsigned long host_properties = 0L;
-unsigned long service_properties = 0L;
+unsigned long host_properties = 0L;			/**< bitmask of host property filter */
+unsigned long service_properties = 0L;			/**< bitmask of service property filter */
 
-int sort_type = SORT_NONE;
-int sort_option = SORT_HOSTNAME;
-int sort_object = SERVICE_STATUS;
+int sort_type = SORT_NONE;				/**< defines sort order  */
+int sort_option = SORT_HOSTNAME;			/**< defines after which column is sorted */
+int sort_object = SERVICE_STATUS;			/**< defines if service or hoststatus is sorted */
 
-int problem_hosts_down = 0;
-int problem_hosts_unreachable = 0;
-int problem_services_critical = 0;
-int problem_services_warning = 0;
-int problem_services_unknown = 0;
+/** @name status data counters vars
+    @{ **/
+int problem_hosts_down = 0;				/**< num of hosts down which are not already handled to determine if sound shoud be played */
+int problem_hosts_unreachable = 0;			/**< num of hosts unreachable which are not already handled to determine if sound shoud be played */
+int problem_services_critical = 0;			/**< num of services critical which are not already handled to determine if sound shoud be played */
+int problem_services_warning = 0;			/**< num of services warning which are not already handled to determine if sound shoud be played */
+int problem_services_unknown = 0;			/**< num of services unknown which are not already handled to determine if sound shoud be played */
 
-int num_hosts_up = 0;
-int num_hosts_down = 0;
-int num_hosts_unreachable = 0;
-int num_hosts_pending = 0;
+int num_hosts_up = 0;					/**< num of hosts up (for @ref show_host_status_totals) */
+int num_hosts_down = 0;					/**< num of hosts down (for @ref show_host_status_totals) */
+int num_hosts_unreachable = 0;				/**< num of hosts unreachable (for @ref show_host_status_totals) */
+int num_hosts_pending = 0;				/**< num of hosts pending (for @ref show_host_status_totals) */
 
-int num_services_ok = 0;
-int num_services_warning = 0;
-int num_services_critical = 0;
-int num_services_unknown = 0;
-int num_services_pending = 0;
+int num_services_ok = 0;				/**< num of services ok (for @ref show_host_status_totals) */
+int num_services_warning = 0;				/**< num of services warning (for @ref show_host_status_totals) */
+int num_services_critical = 0;				/**< num of services critical (for @ref show_host_status_totals) */
+int num_services_unknown = 0;				/**< num of services unknown (for @ref show_host_status_totals) */
+int num_services_pending = 0;				/**< num of services pending (for @ref show_host_status_totals) */
+/** @} */
 
-int CGI_ID = STATUS_CGI_ID;
+int CGI_ID = STATUS_CGI_ID;				/**< ID to identify the cgi for functions in cgiutils.c */
 
+char *url_hosts_part = NULL;				/**< url containing all requested hosts (host=localhost&host=host1&host=...) */
+char *url_hostgroups_part = NULL;			/**< url containing all requested hostgroups */
+char *url_servicegroups_part = NULL;			/**< url containing all requested servicegroups */
+
+char *search_string = NULL;				/**< contains search string if user searched something */
+char *service_filter = NULL;				/**< contains service filter if user wants to filter service status list by a certain service */
+
+time_t current_time;					/**< current timestamp (calculated once in main) */
+
+authdata current_authdata;				/**< struct to hold current authentication data */
+
+struct namedlist req_hosts[NUM_NAMED_ENTRIES];		/**< initialze list of requested hosts */
+struct namedlist req_hostgroups[NUM_NAMED_ENTRIES];	/**< initialze list of requested hostgroups */
+struct namedlist req_servicegroups[NUM_NAMED_ENTRIES];	/**< initialze list of requested servicegroups */
+/** @} */
+
+
+/** @name handling status data
+    @{ **/
+
+/** @brief adds status data to internal status data struct
+ *  @param [in] status_type type of statusdata in 2. argument
+ *	@arg HOST_STATUS
+ *	@arg SERVICE_STATUS
+ *  @param [in] data hoststatus/servicestatus datastruct pointer
+ *	@retval OK
+ *	@retval ERROR
+ *  @return wether adding of status data was successfull or not
+ *
+ *  @n This function parses host/servicedata and uses one data structure for both types.
+ *  Data get's added to @ref statusdata_list . It also fills the global status data counters.
+**/
+int add_status_data(int , void *);
+
+/** @brief frees all memory allocated to @ref statusdata_list entries in memory **/
+void free_local_status_data(void);
+
+/** @brief sorts status data by type and option
+ *  @param [in] status_type type of statusdata in 2. argument
+ *	@arg HOST_STATUS
+ *	@arg SERVICE_STATUS
+ *  @param [in] sort_type defines sort direction
+ *	@arg SORT_ASCENDING
+ *	@arg SORT_DESCENDING
+ *  @param [in] sort_option the field data is sorted after, see SORT OPTIONS in cgiutils.h
+ *
+ *	@retval OK
+ *	@retval ERROR
+ *  @return wether adding of status data was successfull or not
+ *
+ *  @n It fills @ref statussort_list with pointers of @ref statusdata_list elements in desired order.
+**/
+int sort_status_data(int, int, int);
+
+/** @brief compares two status data elements by type and option
+ *  @param [in] status_type type of statusdata
+ *	@arg HOST_STATUS
+ *	@arg SERVICE_STATUS
+ *  @param [in] sort_type defines sort direction
+ *	@arg SORT_ASCENDING
+ *	@arg SORT_DESCENDING
+ *  @param [in] sort_option the field data is sorted after, see SORT OPTIONS in cgiutils.h
+ *  @param [in] new_sort first status of two to comapre
+ *  @param [in] temp_sort second status of two to comapre
+ *
+ *	@retval TRUE
+ *	@retval FALSE
+ *  @return wether adding of status data was successfull or not
+ *
+ *  @n Is only used by @ref sort_status_data . Compares first satatus with second one
+ *  and retruns TRUE or FALSE depending on sort_type and sort_option
+**/
+int compare_sort_entries(int, int, int, sort *, sort *);
+
+/** @brief frees all memory allocated to @ref statussort_list entries in memory **/
+void free_sort_list(void);
+
+/** @brief check if submited host property filters matches hoststatus
+ *  @param [in] temp_hoststatus to check current filter settings against
+ *	@retval TRUE
+ *	@retval FALSE
+ *  @return wether filter was passed or not
+**/
+int passes_host_properties_filter(hoststatus *);
+
+/** @brief check if submited service property filters matches servicestatus
+ *  @param [in] temp_servicestatus to check current filter settings against
+ *	@retval TRUE
+ *	@retval FALSE
+ *  @return wether filter was passed or not
+**/
+int passes_service_properties_filter(servicestatus *);
+/** @} */
+
+
+/** @name status counter tables
+    @{ **/
+
+/** @brief shows table with status counters for hosts **/
+void show_host_status_totals(void);
+
+/** @brief shows table with status counters for services **/
+void show_service_status_totals(void);
+/** @} */
+
+
+/** @name functions to display the actual status data
+    @{ **/
+
+/** @brief Display a detailed listing of all services states
+ *
+ *  This is the service status list which is the default view.
+ *  A list of services and their state.
+**/
+void show_service_detail(void);
+
+/** @brief Display a detailed listing of all hosts states
+ *
+ *  This is the host status list. A list of hosts and their state.
+**/
+void show_host_detail(void);
+
+
+/** @brief Display's a overview of some/all servicegroups
+ *
+ *  Iterates through all/selected servicegroups and calls @ref show_servicegroup_overview to display them.
+**/
+void show_servicegroup_overviews(void);
+
+/** @brief Display's a overview entry of a specific servicegroup
+ *  @param [in] temp_servicegroup element to display
+ *
+ *  Checks if servicegroup members pass all filters and calls @ref show_servicegroup_hostgroup_member_overview to display every member.
+**/
+void show_servicegroup_overview(servicegroup *);
+
+
+/** @brief Display's a summary of some/all servicegroups
+ *
+ *  Iterates through all/selected servicegroups and calls @ref show_servicegroup_summary to display them.
+**/
+void show_servicegroup_summaries(void);
+
+/** @brief Displays status summary information for a specific servicegroup
+ *  @param [in] temp_servicegroup element to display
+ *  @param [in] odd can be 1 or 0 to determine which row colour to use
+ *
+ *  Prints some html code and calls @ref show_servicegroup_host_totals_summary and @ref show_servicegroup_service_totals_summary to display every member.
+**/
+void show_servicegroup_summary(servicegroup *, int);
+
+/** @brief Displays host total summary information for a specific servicegroup
+ *  @param [in] temp_servicegroup element to display
+ *
+ *  Prints a colour coded numbered list of hosts belonging to this servicegroup in different states
+**/
+void show_servicegroup_host_totals_summary(servicegroup *);
+
+/** @brief Displays service total summary information for a specific servicegroup
+ *  @param [in] temp_servicegroup element to display
+ *
+ *  Prints a colour coded numbered list of services belonging to this servicegroup in different states
+**/
+void show_servicegroup_service_totals_summary(servicegroup *);
+
+
+/** @brief Display's a grid of some/all servicegroups
+ *
+ *  Iterates through all/selected servicegroups and calls @ref show_servicegroup_grid to display them.
+**/
+void show_servicegroup_grids(void);
+
+/** @brief Display's a overview entry of a specific servicegroup
+ *  @param [in] temp_servicegroup element to display
+ *
+ *  Checks if servicegroup members pass all filters and displays an entry of every member for host and servicestatus.
+**/
+void show_servicegroup_grid(servicegroup *);
+
+
+/** @brief Display's a overview of some/all hostgroups
+ *
+ *  Iterates through all/selected hostgroups and calls @ref show_hostgroup_overview to display them.
+**/
+void show_hostgroup_overviews(void);
+
+/** @brief Display's a overview entry of a specific hostgroup
+ *  @param [in] hstgrp hostgroup element to display
+ *  @retval TRUE
+ *  @retval FALSE
+ *  @return wether something got displayed or not
+ *
+ *  Checks if hostgroups members pass all filters and calls @ref show_servicegroup_hostgroup_member_overview to display every member.
+**/
+int show_hostgroup_overview(hostgroup *);
+
+/** @brief Display's a summary of some/all hostgroups
+ *
+ *  Iterates through all/selected hostgroups and calls @ref show_hostgroup_summary to display them.
+**/
+void show_hostgroup_summaries(void);
+
+/** @brief Displays status summary information for a specific hostgroup
+ *  @param [in] temp_hostgroup element to display
+ *  @param [in] odd can be 1 or 0 to determine which row colour to use
+ *
+ *  Prints some html code and calls @ref show_hostgroup_host_totals_summary and @ref show_hostgroup_service_totals_summary to display every member.
+**/
+void show_hostgroup_summary(hostgroup *, int);
+
+/** @brief Displays host total summary information for a specific hostgroup
+ *  @param [in] temp_hostgroup element to display
+ *
+ *  Prints a colour coded numbered list of hosts belonging to this hostgroup in different states
+**/
+void show_hostgroup_host_totals_summary(hostgroup *);
+
+/** @brief Displays service total summary information for a specific hostgroup
+ *  @param [in] temp_hostgroup element to display
+ *
+ *  Prints a colour coded numbered list of services belonging to this hostgroup in different states
+**/
+void show_hostgroup_service_totals_summary(hostgroup *);
+
+
+/** @brief Display's a grid of some/all hostgroups
+ *
+ *  Iterates through all/selected hostgroups and calls @ref show_hostgroup_grid to display them.
+**/
+void show_hostgroup_grids(void);
+
+/** @brief Display's a grid entry of a specific hostgroup
+ *  @param [in] temp_hostgroup element to display
+ *  @retval TRUE
+ *  @retval FALSE
+ *  @return wether something got displayed or not
+ *
+ *  Checks if hostgroup members pass all filters and displays an entry of every member for host and servicestatus.
+**/
+int show_hostgroup_grid(hostgroup *);
+
+
+/** @brief Display's a single overview entry of a single host
+ *  @param [in] hststatus element to display
+ *  @param [in] odd can be 1 or 0 to determione which row colour to user
+ *  @param [in] data is a servicegroup element which gets passed on to @ref show_servicegroup_hostgroup_member_service_status_totals (only needed when displaying servicegroups)
+ *
+ *  Prints one line depending on host status and also calls @ref show_servicegroup_hostgroup_member_service_status_totals to print the states of the services for this host.
+**/
+void show_servicegroup_hostgroup_member_overview(hoststatus *, int, void *);
+
+/** @brief Display's service status totals for host/service group overview
+ *  @param [in] host_name of host whom services should be displayed
+ *  @param [in] data is a servicegroup element (only needed when displaying servicegroups)
+ *
+ *  Prints services part of @ show_servicegroup_hostgroup_member_overview
+**/
+void show_servicegroup_hostgroup_member_service_status_totals(char *, void *);
+/** @} */
+
+/** @name command drop down menus
+    @{ **/
+
+/** @brief Generates the drop down menu for service commands in service status list **/
+void show_servicecommand_table(void);
+
+/** @brief Generates the drop down menu for host commands in host status list **/
+void show_hostcommand_table(void);
+/** @} */
+
+
+/** @brief Displays the filter box if host or service status filters are set **/
+void show_filters(void);
+
+
+/** @brief Parses the requested GET/POST variables
+ *  @retval TRUE
+ *  @retval FALSE
+ *  @return wether parsing was successful or not
+ *
+ *  @n This function parses the request and set's the necessary variables
+**/
+int process_cgivars(void);
+
+/** @brief print's a little comment icon in status lists
+ *  @param [in] host_name of host to display comments
+ *  @param [in] svc_description if comment's for service is requested
+ *
+ *  This function print's a little comment icon and generates html code
+ *  to display a tooltip box which pops up on mouse over.
+**/
+void print_comment_icon(char *, char *);
+
+/** @brief print's the table header for differnt styles
+ *  @param [in] style id of style type
+ *
+ *  This function print's the table header depending on style type
+**/
+void print_displayed_names(int);
+
+
+/** @brief Yes we need a main function **/
 int main(void) {
 	int result = OK;
 	char *sound = NULL;
@@ -279,9 +566,10 @@ int main(void) {
 	int service_items_found = FALSE;
 	regex_t preg;
 
-	mac = get_global_macros();
 
-	time(&current_time);
+	/**
+	 *	gather data
+	**/
 
 	/* get the arguments passed in the URL */
 	process_cgivars();
@@ -326,15 +614,28 @@ int main(void) {
 		return ERROR;
 	}
 
-	/* keep backwards compatibility */
-	if (nostatusheader_option == TRUE)
-		display_status_totals = FALSE;
+	/**
+	 *	Initialize some vars
+	**/
+
+	mac = get_global_macros();
+
+	time(&current_time);
 
 	/* initialize macros */
 	init_macros();
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
+
+
+	/**
+	 *	check submitted data and create cgi_title
+	**/
+
+	/* keep backwards compatibility */
+	if (nostatusheader_option == TRUE)
+		display_status_totals = FALSE;
 
 
 	/* determine display of hosts */
@@ -433,9 +734,19 @@ int main(void) {
 		dummy = asprintf(&url_servicegroups_part, "servicegroup=all");
 	}
 
+
+	/**
+	 *	send HTML header
+	**/
+
 	document_header(CGI_ID, TRUE, (tab_friendly_titles && cgi_title != NULL) ? cgi_title : "Current Network Status");
 
 	my_free(cgi_title);
+
+
+	/**
+	 *	check some more submitted data
+	**/
 
 	/* keeps backwards compatibility with old search method */
 	if (navbar_search == TRUE && search_string == NULL && req_hosts[0].entry != NULL) {
@@ -446,6 +757,11 @@ int main(void) {
 	/* allow service_filter only for status lists */
 	if (group_style_type == STYLE_SUMMARY || group_style_type == STYLE_GRID || group_style_type == STYLE_OVERVIEW)
 		my_free(service_filter);
+
+
+	/**
+	 *	filter status data if user searched for something
+	**/
 
 	/* see if user tried searching something */
 	if (search_string != NULL) {
@@ -553,6 +869,12 @@ int main(void) {
 		else if (host_items_found == FALSE && service_items_found == TRUE && group_style_type == STYLE_HOST_SERVICE_DETAIL)
 			group_style_type = STYLE_SERVICE_DETAIL;
 	}
+
+
+	/**
+	 *	Now iterate through servicestatus_list and hoststatus_list to find all hosts/services we need to display
+	 *	All filtering and authorization is done here
+	**/
 
 	/* if user just want's to see all unhandled problems */
 	/* prepare for services */
@@ -782,11 +1104,14 @@ int main(void) {
 					continue;
 			}
 
-
 			add_status_data(HOST_STATUS, temp_hoststatus);
 		}
 	}
 
+
+	/**
+	 *	Now as we have all necessary data we start displaying the page
+	**/
 
 	// determine which dropdown menu to show
 	if (group_style_type == STYLE_OVERVIEW || group_style_type == STYLE_SUMMARY || group_style_type == STYLE_GRID)
@@ -798,7 +1123,7 @@ int main(void) {
 			show_dropdown = SERVICE_STATUS;
 	}
 
-
+	/* add highlight table row and form elementes (drop down) to page */
 	if (show_dropdown != NO_STATUS && content_type == HTML_CONTENT) {
 
 		if (highlight_table_rows == TRUE) {
@@ -824,6 +1149,10 @@ int main(void) {
 		printf("<form name='tableform%s' id='tableform%s' action='%s' method='POST' style='margin:0px'>\n", (show_dropdown == HOST_STATUS) ? "host" : "service", (show_dropdown == HOST_STATUS) ? "host" : "service", CMD_CGI);
 		printf("<input type=hidden name=hiddenforcefield><input type=hidden name=hiddencmdfield><input type=hidden name=buttonValidChoice><input type=hidden name=buttonCheckboxChecked><input type=hidden name=force_check>\n");
 	}
+
+	/**
+	 *	display the page header
+	**/
 
 	if (display_header == TRUE) {
 
@@ -891,6 +1220,7 @@ int main(void) {
 		printf("<table border=1 cellpading=0 cellspacing=0 class='linkBox'>\n");
 		printf("<tr><td class='linkBox'>\n");
 
+		/* Display all links */
 		if (display_type == DISPLAY_HOSTS) {
 
 			if (search_string == NULL && (show_all_hosts == TRUE || num_req_hosts <= 1)) {
@@ -978,7 +1308,11 @@ int main(void) {
 		printf("</table>\n");
 	}
 
-	/* embed sound tag if necessary... */
+
+	/**
+	 *	embed sound tag if necessary...
+	**/
+
 	if (problem_hosts_unreachable > 0 && host_unreachable_sound != NULL)
 		sound = host_unreachable_sound;
 	else if (problem_hosts_down > 0 && host_down_sound != NULL)
@@ -999,13 +1333,17 @@ int main(void) {
 		printf("</object>");
 	}
 
-
 	// flush the data we allready have
 	printf(" ");
 	fflush(NULL);
 
-	/* bottom portion of screen */
-	/* print common header for Overview, Summary and Grid */
+
+	/**
+	 *	Top part of page is now over
+	 *	From here we print the bottom with all the lists
+	 *	now print common header for Overview, Summary and Grid
+	**/
+
 	if ((group_style_type == STYLE_OVERVIEW || group_style_type == STYLE_SUMMARY || group_style_type == STYLE_GRID) && content_type == HTML_CONTENT) {
 		printf("<P>\n");
 
@@ -1045,7 +1383,11 @@ int main(void) {
 		printf("</P>\n");
 	}
 
-	/* print data */
+	/**
+	 *	Finally Print all the data we talk about the whole time
+	 *	This of course depends on the chosen style
+	**/
+
 	if (group_style_type == STYLE_OVERVIEW) {
 		if (display_type == DISPLAY_SERVICEGROUPS)
 			show_servicegroup_overviews();
@@ -1082,6 +1424,11 @@ int main(void) {
 		} else
 			show_service_detail();
 	}
+
+
+	/**
+	 *	print document footer and free all allocated data
+	**/
 
 	document_footer(CGI_ID);
 
@@ -4195,7 +4542,7 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus, int odd,
 	return;
 }
 
-
+/* shows services to a host status overview... */
 void show_servicegroup_hostgroup_member_service_status_totals(char *host_name, void *data) {
 	int total_ok = 0;
 	int total_warning = 0;

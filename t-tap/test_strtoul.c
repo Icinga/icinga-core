@@ -45,7 +45,7 @@ unsigned long downtime_id = 0L;
 
 int main(int argc, char **argv) {
 
-	plan_tests(8);
+	plan(8);
 
 	downtime_id = strtoul(svr_hostname, &end_ptr, 10);
 	ok(downtime_id == 0, "hostname downtime_id is 0");

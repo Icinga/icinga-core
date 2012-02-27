@@ -1,0 +1,14 @@
+diff --git a/Makefile b/Makefile
+index 750ae44..f5978b7 100644
+--- a/Makefile
++++ b/Makefile
+@@ -35,6 +35,9 @@ $(patsubst %, %.o, $(TESTS)): %.o: %.c tap.h
+ clean:
+ 	rm -rf *.o t/*.o libtap.a $(TESTS)
+ 
++distclean:
++	rm -rf *.o t/*.o libtap.a $(TESTS)
++
+ install: libtap.a tap.h
+ 	sudo cp libtap.a /usr/lib
+ 	sudo cp tap.h /usr/include

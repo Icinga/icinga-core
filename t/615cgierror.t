@@ -1,10 +1,13 @@
 #!/usr/bin/perl
-# 
-# Check that you get an appropriate error when the CGI config file does not exist
+
+# Check against all cgis that you get an appropriate error is raised when the CGI config file does not exist
+
 
 use warnings;
 use strict;
 use Test::More;
+use Icinga::Test qw ( run_cgi );
+
 use FindBin qw($Bin);
 
 chdir $Bin or die "Cannot chdir";
@@ -12,26 +15,20 @@ chdir $Bin or die "Cannot chdir";
 my $topdir = "$Bin/..";
 my $cgi_dir = "$topdir/cgi";
 
-opendir(DIR, $cgi_dir) or die "Cannot opendir $cgi_dir: $!";
-my %cgis = map { ( $_ => 1 ) } grep /\.cgi$/, readdir DIR;
-closedir DIR;
+# get all cgis from our bindir
+opendir(my $dh, $cgi_dir) or die "Cannot opendir $cgi_dir: $!";
+my %cgis = map { ( $_ => 1 ) } grep /\.cgi$/, readdir $dh;
+closedir $dh;
+
+
+# statuswrl does not output an appropriate error
+delete $cgis{'statuswrl.cgi'};
 
 plan tests => scalar keys %cgis;
 
-# Remove these two because the output is different
-my @todos = qw(statuswml.cgi statuswrl.cgi);
-
-TODO: {
-	local $TODO = "Output is different for these CGIs";
-	foreach my $cgi (@todos) {
-		delete $cgis{$cgi};
-		my $output = `ICINGA_CGI_CONFIG=etc/cgi.nonexistant REQUEST_METHOD=GET $cgi_dir/$cgi`;
-		like( $output, "/Error: Could not open CGI config file 'etc/cgi.nonexistant' for reading/", "Found error for $cgi" );
-	}
-}
-		
+# loop over all cgis and see if they return an error
 foreach my $cgi (sort keys %cgis) {
 	my $output = `ICINGA_CGI_CONFIG=etc/cgi.nonexistant REQUEST_METHOD=GET $cgi_dir/$cgi`;
-	like( $output, "/Error: Could not open CGI config file 'etc/cgi.nonexistant' for reading/", "Found error for $cgi" );
+	like( $output, "/Error: Could not open CGI (config|configuration) file 'etc/cgi.nonexistant' for reading/", "Found error for $cgi" );
 }
 

@@ -54,7 +54,7 @@ main(int argc, char **argv) {
 	scheduled_downtime *temp_downtime;
 	int i = 0;
 
-	plan_tests(38);
+	plan(38);
 
 	time(&now);
 

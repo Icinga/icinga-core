@@ -8,6 +8,7 @@ use warnings;
 use strict;
 use Test::More;
 use FindBin qw($Bin);
+use Icinga::Test qw ( run_cmd );
 
 chdir $Bin or die "Cannot chdir";
 
@@ -17,12 +18,12 @@ my $etc = "$Bin/etc";
 
 plan tests => 1;
 
-my @output = `$icinga -v "$etc/icinga-empty-groups.cfg"`;
+my $output = run_cmd([$icinga, '-v', "$etc/icinga-empty-groups.cfg"]);
 if ($? == 0) {
 	pass("Icinga validated empty host/service-group successfully");
 } else {
-	@output = grep(/^Error: .+$/g, @output);
-	fail("Icinga validation failed:\n@output");
+	$output =~ /^Error: .+$/g;
+	fail("Icinga validation failed:\n$output");
 }
 
 
