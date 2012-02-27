@@ -4,9 +4,10 @@ package Icinga::Test;
 
 use strict;
 use warnings;
+use Carp;
 
 use Exporter 'import';
-our @EXPORT_OK = qw( run_cgi get_body run_cmd );
+our @EXPORT_OK = qw( run_cgi get_body run_cmd slurp_file );
 
 use IPC::Run3 qw( run3 );
 
@@ -56,4 +57,13 @@ sub get_body ($) {
     return $body;
 }
 
+sub slurp_file ($) {
+    my $filename = shift;
+    carp "Filename $filename not found" unless -f $filename;
+    open (my $fh, '<', $filename) 
+        or carp "Could not open $filename for reading: $!";
+    my $content = do { local $/; <$fh> };
+    close($fh);
+    return $content;
+}
 1;
