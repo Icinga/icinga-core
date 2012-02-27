@@ -39,6 +39,7 @@ ENHANCEMENTS
 * config: introduce conf.d as place for own configs #2360
 
 * tests: replace libtap with an actively developed version #1192
+* tests: fix and rewrite perl tests in t/ #2369
 
 * icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
 * icinga.spec: make aware of the change of idomod.o location and changed extension (now .so) #2350
@@ -102,6 +103,8 @@ CHANGES
 * config: $sysconfdir/conf.d #2360
 
 * install: --enable-libtap is now deprecated, new libtap does not require configure anymore #1192
+
+* tests: you can now test with pleasure: $ make distclean ; ./configure ; make test #2369 #1192
 
 
 

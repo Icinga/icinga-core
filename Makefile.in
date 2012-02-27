@@ -288,7 +288,7 @@ test-tap: tools/libtap/tap.o icinga cgis
 tools/libtap/tap.o:
 	cd tools/libtap && $(MAKE)
 
-test-perl: cgis
+test-perl: icinga cgis
 	cd t && $(MAKE) test
 
 ###############################
