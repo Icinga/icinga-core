@@ -57,6 +57,7 @@
 #define IDO2DB_MAX_MBUF_ITEMS                           14
 
 #define IDO2DB_MAX_BUFLEN				16384
+#define IDO2DB_MYSQL_MAX_TEXT_LEN		32768
 
 
 /***************** structures *****************/

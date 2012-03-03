@@ -486,7 +486,18 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, start_time, start_time_usec, end_time, end_time_usec, command_line, timeout, early_timeout, execution_time, return_code, output, long_output) VALUES (%lu, %s, %lu, %s, %lu, '%s', %d, %d, %lf, %d, '%s', '%s') ON DUPLICATE KEY UPDATE end_time=%s, end_time_usec=%lu, command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s'",
+		/* truncate long_output #2342 */
+		if (strlen(*(char **) data[11]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+			(*(char **) data[11])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() Warning:long_output truncated\n");
+		}
+		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, start_time, start_time_usec, "
+					"end_time, end_time_usec, command_line, timeout, early_timeout, "
+					"execution_time, return_code, output, long_output) "
+					"VALUES (%lu, %s, %lu, %s, %lu, '%s', %d, %d, %lf, %d, '%s', '%s') "
+					"ON DUPLICATE KEY UPDATE end_time=%s, end_time_usec=%lu, "
+					"command_line='%s', timeout=%d, early_timeout=%d, "
+					"execution_time=%lf, return_code=%d, output='%s', long_output='%s'",
 		                 ido2db_db_tablenames[IDO2DB_DBTABLE_SYSTEMCOMMANDS],
 		                 *(unsigned long *) data[0],     /* insert start */
 		                 *(char **) data[1],
@@ -695,7 +706,20 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, eventhandler_type, object_id, state, state_type, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args, command_line, timeout, early_timeout, execution_time, return_code, output, long_output) VALUES (%lu, %d, %lu, %d, %d, %s, %lu, %s, %lu, %lu, '%s', '%s', %d, %d, %lf, %d, '%s', '%s') ON DUPLICATE KEY UPDATE eventhandler_type=%d, object_id=%lu, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s', command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s'",
+		/* truncate long_output #2342 */
+		if (strlen(*(char **) data[17]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+			(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() Warning:long_output truncated\n");
+		}
+		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, eventhandler_type, object_id, "
+						"state, state_type, start_time, start_time_usec, end_time, end_time_usec, "
+						"command_object_id, command_args, command_line, timeout, early_timeout, "
+						"execution_time, return_code, output, long_output) "
+						"VALUES (%lu, %d, %lu, %d, %d, %s, %lu, %s, %lu, %lu, '%s', '%s', %d, %d, %lf, %d, '%s', '%s') "
+						"ON DUPLICATE KEY UPDATE eventhandler_type=%d, object_id=%lu, "
+						"state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, "
+						"command_object_id=%lu, command_args='%s', command_line='%s', timeout=%d, early_timeout=%d, "
+						"execution_time=%lf, return_code=%d, output='%s', long_output='%s'",
 		                 ido2db_db_tablenames[IDO2DB_DBTABLE_EVENTHANDLERS],
 		                 *(unsigned long *) data[0],     /* insert start */
 		                 *(int *) data[1],
@@ -949,8 +973,19 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, notification_type, notification_reason, start_time, start_time_usec, end_time, end_time_usec, object_id, state, output, long_output, escalated, contacts_notified) VALUES (%lu, %d, %d, %s, %lu, %s, %lu, %lu, %d, '%s', '%s', %d, %d) ON DUPLICATE KEY UPDATE notification_type=%d, notification_reason=%d, end_time=%s, end_time_usec=%lu, state=%d, output='%s', long_output='%s', escalated=%d, contacts_notified=%d",
-		                 ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS],
+		/* truncate long_output #2342 */
+		if (strlen(*(char **) data[10]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+			(*(char **) data[10])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() Warning:long_output truncated\n");
+		}
+		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, notification_type, notification_reason, "
+						"start_time, start_time_usec, end_time, end_time_usec, object_id, state, "
+						"output, long_output, escalated, contacts_notified) "
+						"VALUES (%lu, %d, %d, %s, %lu, %s, %lu, %lu, %d, '%s', '%s', %d, %d) "
+						"ON DUPLICATE KEY UPDATE notification_type=%d, notification_reason=%d, "
+						"end_time=%s, end_time_usec=%lu, state=%d, "
+						"output='%s', long_output='%s', escalated=%d, contacts_notified=%d",
+		                ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS],
 		                 *(unsigned long *) data[0],     /* insert start */
 		                 *(int *) data[1],
 		                 *(int *) data[2],
@@ -1451,7 +1486,22 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-                dummy = asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (%lu, %lu, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s', '%s', %lu, '%s', '%s')",
+				/* truncate long_output #2342 */
+				if (strlen(*(char **) data[17]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+					(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:long_output truncated\n");
+				}
+				if (strlen(*(char **) data[18]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+									(*(char **) data[18])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+									ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:perfdata truncated\n");
+				}
+                dummy = asprintf(&query1,
+                		"INSERT INTO %s (instance_id, service_object_id, check_type, "
+                		"current_check_attempt, max_check_attempts, state, state_type, "
+                		"start_time, start_time_usec, end_time, end_time_usec, timeout, "
+                		"early_timeout, execution_time, latency, return_code, output, "
+                		"long_output, perfdata, command_object_id, command_args, command_line) "
+                		"VALUES (%lu, %lu, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s', '%s', %lu, '%s', '%s')",
                                  ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECHECKS],
                                  *(unsigned long *) data[0],     /* insert start */
                                  *(unsigned long *) data[1],
@@ -1681,7 +1731,21 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-                dummy = asprintf(&query1, "INSERT INTO %s (command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (%lu, '%s', '%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s', '%s')",
+		/* truncate long_output #2342 */
+				if (strlen(*(char **) data[21]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+						(*(char **) data[21])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+						ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:long_output truncated\n");
+				}
+				if (strlen(*(char **) data[22]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+						(*(char **) data[22])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+						ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:perfdata truncated\n");
+				}
+                dummy = asprintf(&query1, "INSERT INTO %s (command_object_id, command_args, command_line, "
+                				"instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, "
+                				"max_check_attempts, state, state_type, start_time, start_time_usec, end_time, "
+                				"end_time_usec, timeout, early_timeout, execution_time, latency, return_code, "
+                				"output, long_output, perfdata) "
+                				"VALUES (%lu, '%s', '%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, '%s', '%s', '%s')",
                                  ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCHECKS],
                                  *(unsigned long *) data[0],     /* insert start */
                                  *(char **) data[1],
@@ -2951,7 +3015,52 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, host_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, '%s', '%s', %lf, %lf, %lu) ON DUPLICATE KEY UPDATE instance_id=%lu, host_object_id=%lu, status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type=%d, last_notification=%s, next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_host=%d, modified_host_attributes=%lu, event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id=%lu",
+		/* truncate long_output #2342 */
+		if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+			(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:long_output truncated\n");
+		}
+		if (strlen(*(char **) data[5]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+			(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:perfdata truncated\n");
+		}
+		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, host_object_id, status_update_time, "
+							"output, long_output, perfdata, current_state, "
+							"has_been_checked, should_be_scheduled, current_check_attempt, "
+							"max_check_attempts, last_check, next_check, "
+							"check_type, last_state_change, last_hard_state_change, "
+							"last_hard_state, last_time_up, last_time_down, "
+							"last_time_unreachable, state_type, last_notification, "
+							"next_notification, no_more_notifications, "
+							"notifications_enabled, problem_has_been_acknowledged, "
+							"acknowledgement_type, current_notification_number, "
+							"passive_checks_enabled, active_checks_enabled, "
+							"event_handler_enabled, flap_detection_enabled, "
+							"is_flapping, percent_state_change, latency, "
+							"execution_time, scheduled_downtime_depth, "
+							"failure_prediction_enabled, process_performance_data, "
+							"obsess_over_host, modified_host_attributes, event_handler, "
+							"check_command, normal_check_interval, retry_check_interval, "
+							"check_timeperiod_object_id) "
+							"VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, '%s', '%s', %lf, %lf, %lu) "
+							"ON DUPLICATE KEY UPDATE instance_id=%lu, host_object_id=%lu, status_update_time=%s, "
+							"output='%s', long_output='%s', perfdata='%s', current_state=%d, "
+							"has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, "
+							"max_check_attempts=%d, last_check=%s, next_check=%s, "
+							"check_type=%d, last_state_change=%s, last_hard_state_change=%s, "
+							"last_hard_state=%d, last_time_up=%s, last_time_down=%s, "
+							"last_time_unreachable=%s, state_type=%d, last_notification=%s, "
+							"next_notification=%s, no_more_notifications=%d, "
+							"notifications_enabled=%d, problem_has_been_acknowledged=%d, "
+							"acknowledgement_type=%d, current_notification_number=%d, "
+							"passive_checks_enabled=%d, active_checks_enabled=%d, "
+							"event_handler_enabled=%d, flap_detection_enabled=%d, "
+							"is_flapping=%d, percent_state_change='%lf', latency='%lf', "
+							"execution_time='%lf', scheduled_downtime_depth=%d, "
+							"failure_prediction_enabled=%d, process_performance_data=%d, "
+							"obsess_over_host=%d, modified_host_attributes=%lu, event_handler='%s', "
+							"check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', "
+							"check_timeperiod_object_id=%lu",
 		                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS],
 		                 *(unsigned long *) data[0],     /* insert start */
 		                 *(unsigned long *) data[1],
@@ -3411,7 +3520,38 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%lf', '%lf', '%lf', %d, %d, %d, %d, %lu, '%s', '%s', '%lf', '%lf', %lu) ON DUPLICATE KEY UPDATE instance_id=%lu, service_object_id=%lu, status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type=%d, last_notification=%s, next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_service=%d, modified_service_attributes=%lu, event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id=%lu",
+		/* truncate long_output #2342 */
+		if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+			(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:long_output truncated\n");
+		}
+		if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+			(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:perfdata truncated\n");
+		}
+		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, status_update_time, "
+					"output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, "
+					"current_check_attempt, max_check_attempts, last_check, next_check, check_type, "
+					"last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, "
+					"last_time_unknown, last_time_critical, state_type, last_notification, "
+					"next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, "
+					"acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, "
+					"event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, "
+					"execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, "
+					"obsess_over_service, modified_service_attributes, event_handler, check_command, "
+					"normal_check_interval, retry_check_interval, check_timeperiod_object_id) "
+					"VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%lf', '%lf', '%lf', %d, %d, %d, %d, %lu, '%s', '%s', '%lf', '%lf', %lu) "
+					"ON DUPLICATE KEY UPDATE instance_id=%lu, service_object_id=%lu, status_update_time=%s, "
+					"output='%s', long_output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, "
+					"current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, "
+					"last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_ok=%s, last_time_warning=%s, "
+					"last_time_unknown=%s, last_time_critical=%s, state_type=%d, last_notification=%s, "
+					"next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, "
+					"acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, "
+					"event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change='%lf', latency='%lf', "
+					"execution_time='%lf', scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, "
+					"obsess_over_service=%d, modified_service_attributes=%lu, event_handler='%s', check_command='%s', "
+					"normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id=%lu",
 		                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICESTATUS],
 		                 *(unsigned long *) data[0],     /* insert start */
 		                 *(unsigned long *) data[1],
