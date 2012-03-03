@@ -1612,5 +1612,5 @@ CREATE INDEX slahist_i_id_o_id_s_ti_s_s_ti_e on icinga_slahistory(instance_id,ob
 -- set dbversion
 -- -----------------------------------------
 
-SELECT updatedbversion('1.6.0');
+SELECT updatedbversion('1.7.0');
 

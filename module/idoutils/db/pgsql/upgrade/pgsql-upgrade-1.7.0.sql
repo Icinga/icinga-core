@@ -16,5 +16,5 @@ create index statehist_state_idx on icinga_statehistory(object_id,state);
 -- update dbversion
 -- -----------------------------------------
 
-INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.6.0') ON DUPLICATE KEY UPDATE version='1.6.0';
+INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.7.0') ON DUPLICATE KEY UPDATE version='1.7.0';
 

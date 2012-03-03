@@ -15,7 +15,7 @@ set heading on;
 set echo on;
 set feedback on;
 
-define ICINGA_VERSION=1.6.0
+define ICINGA_VERSION=1.7.0
 
 -- --------------------------------------------------------
 -- warning:edit this script to define existing tablespaces
