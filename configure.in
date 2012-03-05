@@ -357,7 +357,12 @@ AC_SUBST(LOGDIR)
 
 dnl Enable cgi logging
 ENABLE_CGILOG=no
-AC_ARG_ENABLE(enable-cgi-log,AC_HELP_STRING([--enable-cgi-log],[enables cgi logging - experimental!!]),ENABLE_CGILOG=$enableval,ENABLE_CGILOG=yes)
+AC_ARG_ENABLE(cgi-log,--enable-cgi-log enables cgi logging - experimental!!,[
+        if test x$enableval = xyes; then
+		ENABLE_CGILOG=yes
+	fi
+	],ENABLE_CGILOG=no)
+
 if test x$ENABLE_CGILOG = xyes; then
         ENABLECGILOG=1
 else
