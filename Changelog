@@ -35,6 +35,7 @@ ENHANCEMENTS
 * install: change idomod extension from .o to .so, make .so the default extension for modules #2354
 * install: add configure target --with-eventhandler-dir and "make install-eventhandlers" for contrib/eventhandlers #2352
 * install: add --enable-cgi-log to configure to enable cgi logging during build #2364
+* install: fix configure --ido-instance-name is incorrect, missing 'with' (thx Marco) #2407
 
 * config: introduce conf.d as place for own configs #2360
 

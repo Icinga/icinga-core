@@ -1473,8 +1473,8 @@ Optional Packages:
                           slash)
   --with-htmurl=<local-url>
                           sets URL for public html
-  --ido-instance-name=<instancename>
-                          sets instance_name for IDOUtils
+  --with-ido-instance-name=<instancename>
+                          sets instance_name for IDOUtils in idomod.cfg
   --with-ocilib-lib=DIR   sets location of the ocilib library
   --with-ocilib-inc=DIR   sets location of the ocilib include files,
   --with-oracle-lib=DIR   sets location of the oracle library

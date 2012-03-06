@@ -833,7 +833,7 @@ if test x$USE_IDOUTILS = xyes; then
 
 	dnl instance name
 	IDO_INSTANCE_NAME=no
-	AC_ARG_WITH(ido-instance-name,AC_HELP_STRING([--ido-instance-name=<instancename>],[sets instance_name for IDOUtils]),IDO_INSTANCE_NAME=$withval,IDO_INSTANCE_NAME=no)
+	AC_ARG_WITH(ido-instance-name,AC_HELP_STRING([--with-ido-instance-name=<instancename>],[sets instance_name for IDOUtils in idomod.cfg]),IDO_INSTANCE_NAME=$withval,IDO_INSTANCE_NAME=no)
 	if test x$IDO_INSTANCE_NAME = xno; then
 	        IDO_INSTANCE_NAME="default"
 	fi
