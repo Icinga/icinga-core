@@ -670,6 +670,15 @@ int string_to_time(char *, time_t *);				/* converts a defined formated string t
 int is_dlst_time(time_t *);
 char *json_encode(char *);
 
+/** @brief print's a little comment icon in status lists
+ *  @param [in] host_name of host to display comments
+ *  @param [in] svc_description if comment's for service is requested
+ *
+ *  This function print's a little comment icon and generates html code
+ *  to display a tooltip box which pops up on mouse over.
+**/
+void print_comment_icon(char *, char *);
+
 /******************************** MULTIURL PATCH *******************************/
 
 #ifndef DISABLE_MULTIURL

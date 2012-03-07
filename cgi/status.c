@@ -525,14 +525,6 @@ void show_filters(void);
 **/
 int process_cgivars(void);
 
-/** @brief print's a little comment icon in status lists
- *  @param [in] host_name of host to display comments
- *  @param [in] svc_description if comment's for service is requested
- *
- *  This function print's a little comment icon and generates html code
- *  to display a tooltip box which pops up on mouse over.
-**/
-void print_comment_icon(char *, char *);
 
 /** @brief print's the table header for differnt styles
  *  @param [in] style id of style type
@@ -6603,111 +6595,6 @@ void show_hostcommand_table(void) {
 }
 /* The cake is a lie! */
 
-/******************************************************************/
-/*********  print a tooltip to show comments  *********************/
-/******************************************************************/
-void print_comment_icon(char *host_name, char *svc_description) {
-	comment *temp_comment = NULL;
-	char *comment_entry_type = "";
-	char comment_data[MAX_INPUT_BUFFER] = "";
-	char entry_time[MAX_DATETIME_LENGTH];
-	int len, output_len;
-	int x, y;
-	char *escaped_output_string = NULL;
-	int saved_escape_html_tags_var = FALSE;
-
-	if (svc_description == NULL)
-		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
-	else {
-		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
-		printf("&service=%s#comments'", url_encode(svc_description));
-	}
-	/* possible to implement a config option to show and hide comments tooltip in status.cgi */
-	/* but who wouldn't like to have these fancy tooltips ;-) */
-	if (TRUE) {
-		printf(" onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%% cellpadding=3>");
-		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td width=12%%>Time</td><td>Author / Comment</td></tr>");
-		for (temp_comment = get_first_comment_by_host(host_name); temp_comment != NULL; temp_comment = get_next_comment_by_host(host_name, temp_comment)) {
-			if ((svc_description == NULL && temp_comment->comment_type == HOST_COMMENT) || \
-			        (svc_description != NULL && temp_comment->comment_type == SERVICE_COMMENT && !strcmp(temp_comment->service_description, svc_description))) {
-				switch (temp_comment->entry_type) {
-				case USER_COMMENT:
-					comment_entry_type = "User";
-					break;
-				case DOWNTIME_COMMENT:
-					comment_entry_type = "Downtime";
-					break;
-				case FLAPPING_COMMENT:
-					comment_entry_type = "Flapping";
-					break;
-				case ACKNOWLEDGEMENT_COMMENT:
-					comment_entry_type = "Ack";
-					break;
-				}
-				snprintf(comment_data, sizeof(comment_data) - 1, "%s", temp_comment->comment_data);
-				comment_data[sizeof(comment_data)-1] = '\x0';
-
-				/* we need up to twice the space to do the conversion of single, double quotes and back slash's */
-				len = (int)strlen(comment_data);
-				output_len = len * 2;
-				if ((escaped_output_string = (char *)malloc(output_len + 1)) != NULL) {
-
-					strcpy(escaped_output_string, "");
-
-					for (x = 0, y = 0; x <= len; x++) {
-						/* end of string */
-						if ((char)comment_data[x] == (char)'\x0') {
-							escaped_output_string[y] = '\x0';
-							break;
-						} else if ((char)comment_data[x] == (char)'\n' || (char)comment_data[x] == (char)'\r') {
-							escaped_output_string[y] = ' ';
-						} else if ((char)comment_data[x] == (char)'\'') {
-							escaped_output_string[y] = '\x0';
-							if ((int)strlen(escaped_output_string) < (output_len - 2)) {
-								strcat(escaped_output_string, "\\'");
-								y += 2;
-							}
-						} else if ((char)comment_data[x] == (char)'"') {
-							escaped_output_string[y] = '\x0';
-							if ((int)strlen(escaped_output_string) < (output_len - 2)) {
-								strcat(escaped_output_string, "\\\"");
-								y += 2;
-							}
-						} else if ((char)comment_data[x] == (char)'\\') {
-							escaped_output_string[y] = '\x0';
-							if ((int)strlen(escaped_output_string) < (output_len - 2)) {
-								strcat(escaped_output_string, "\\\\");
-								y += 2;
-							}
-						} else
-							escaped_output_string[y++] = comment_data[x];
-
-					}
-					escaped_output_string[++y] = '\x0';
-				} else
-					strcpy(escaped_output_string, comment_data);
-
-				/* get entry time */
-				get_time_string(&temp_comment->entry_time, entry_time, (int)sizeof(entry_time), SHORT_DATE_TIME);
-
-				/* in the tooltips we have to escape all characters */
-				saved_escape_html_tags_var = escape_html_tags;
-				escape_html_tags = TRUE;
-
-				printf("<tr><td nowrap>%s</td><td nowrap>%s</td><td><span style=font-weight:bold;>%s</span><br>%s</td></tr>", comment_entry_type, entry_time, html_encode(temp_comment->author, TRUE), html_encode(escaped_output_string, TRUE));
-
-				escape_html_tags = saved_escape_html_tags_var;
-
-				free(escaped_output_string);
-			}
-		}
-		/* under http://www.ebrueggeman.com/skinnytip/documentation.php#reference you can find the config options of skinnytip */
-		printf("</table>', '&nbsp;&nbsp;&nbsp;Comments', 'border:1, width:600, bordercolor:#333399, title_padding:2px, titletextcolor:#FFFFFF, backcolor:#CCCCFF');\" onMouseOut=\"return hideTip()\"");
-	}
-	printf("><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d></A></TD>", url_images_path, COMMENT_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
-
-	return;
-}
 
 /******************************************************************/
 /*************  print name for displayed list *********************/

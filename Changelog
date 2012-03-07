@@ -20,6 +20,7 @@ ENHANCEMENTS
 * classic ui: Added statusmap resizing with exclude/include button #2186
 * classic ui: Added Select hosts or services by clicking on line instead of box #2118
 * classic ui: include graph icons by default in logos #2222
+* classic ui: added missing comment tool tip box to outages.cgi #2396
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
