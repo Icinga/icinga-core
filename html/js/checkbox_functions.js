@@ -2,40 +2,6 @@
 // Modified by Ricardo Bartels
 // For Icinga
 
-function replaceCGIString(string,status_cgi,cmd_cgi) {
-	sInString = string.replace( status_cgi, cmd_cgi );
-	return sInString;
-}
-
-function replaceArgString(string) {
-	ToBeStripped = location.search;
-	sInString = string.replace( ToBeStripped, '' );
-	return sInString;
-}
-
-function cmd_submit(form) {
-	command_arguments = get_check_value(form);
-	cmd_typ = 'cmd_typ=' + document.forms[form].hiddencmdfield.value
-
-	arguments = cmd_typ + command_arguments;
-	if (form=="tableform") {
-		if (document.forms[form].hiddenforcefield.value == 'yes') {
-			arguments = arguments + '&force_check';
-		}
-	}
-
-	bazinga = '?' + arguments;
-	fullurl = replaceCGIString(location.href,'status.cgi','cmd.cgi');
-	fullurl = replaceCGIString(fullurl,'extinfo.cgi','cmd.cgi');
-	fullurl = replaceCGIString(fullurl,'#comments','');
-	fullurl = replaceArgString(fullurl);
-	fullurl = fullurl + bazinga;
-	self.location.assign(fullurl);
-	// Remove comment below for debugging of the URL
-	//alert(fullurl);
-	return fullurl;
-}
-
 function isValidForSubmit(form) {
 	var group = document.getElementById(form);
 	var x, len = group.length;
@@ -45,19 +11,16 @@ function isValidForSubmit(form) {
 			break;
 		}
 	}
-	if(x < len) {
+	if(x < len)
 		checkboxvalue = "true";
-	}
 
-	if (document.forms[form].CommandButton) {
+	if (document.forms[form].CommandButton)
 		document.forms[form].buttonCheckboxChecked.value=checkboxvalue;
-	}
 
 	enableDisableButton(form);
 
-	if (checkboxvalue=="false") {
+	if (checkboxvalue=="false")
 		return false;
-	}
 
 	return true;
 }
@@ -76,25 +39,8 @@ function enableDisableButton(form) {
 		}
 	}
 	
-	if (document.forms[form].CommandButton) {
+	if (document.forms[form].CommandButton)
 		document.forms[form].CommandButton.disabled=disabled;
-	}
-}
-
-function get_check_value(form) {
-	var check_value = '';
-	var checkboxes = document.getElementById(form);
-
-	for (var i =0; i < checkboxes.elements.length; i++) {
-		if (checkboxes.elements[i].checked==true){
-			if (checkboxes.elements[i].type=="checkbox" && checkboxes.elements[i].value!="all"){
-				check_value = check_value + checkboxes.elements[i].value;
-			}
-		}
-	}
-	//Remove comment below for debugging
-	//alert(check_value);
-	return check_value;
 }
 
 function showValue(form,arg,schedule_host_check,schedule_host_svc_check) {
@@ -103,11 +49,11 @@ function showValue(form,arg,schedule_host_check,schedule_host_svc_check) {
 		// Set the value to true.
 		document.forms[form].buttonValidChoice.value = 'true';
 
-		if (arg==schedule_host_check || arg==schedule_host_svc_check) {
+		if (arg==schedule_host_check || arg==schedule_host_svc_check)
 			document.forms[form].hiddenforcefield.value = 'yes';
-		} else {
+		else
 			document.forms[form].hiddenforcefield.value = 'no';
-		}
+
 		enableDisableButton(form);
 	} else {
 		// Set the value to false, cant submit
@@ -119,11 +65,11 @@ function showValue(form,arg,schedule_host_check,schedule_host_svc_check) {
 checked=false;
 function checkAll(form) {
 	var checkboxes = document.getElementById(form);
-	if (checked == false) {
-		checked = true
-	} else {
-		checked = false
-	}
+	if (checked == false)
+		checked = true;
+	else
+		checked = false;
+
 	for (var i=0; i < checkboxes.elements.length; i++) {
 		if (checkboxes.elements[i].type == "checkbox" ) {
 			checkboxes.elements[i].checked = checked;
@@ -133,18 +79,13 @@ function checkAll(form) {
 
 function toggle_checkbox(id, form) {
 	var x = document.getElementById(id);
-	if ( x.checked == true ) {
-		x.checked=false;
-	} else {
-		x.checked=true;
-	}
 
-//	if ( id.indexOf("host") >= 0) {
-		isValidForSubmit(form);
-/*	if ( id.indexOf("host") >= 0) {
-	} else {
-		isValidForSubmit('tableformservice');
-	} */
+	if ( x.checked == true )
+		x.checked=false;
+	else
+		x.checked=true;
+
+	isValidForSubmit(form);
 
 	return true;
 }

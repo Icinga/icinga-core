@@ -6535,6 +6535,13 @@ void show_servicecommand_table(void) {
 		/* Print out the activator for the dropdown (which must be between the body tags */
 		printf("<script language='javascript'>\n");
 		printf("$(document).ready(function() { \n");
+		printf("document.tableformservice.cmd_typ.selectedIndex = 0;\n");
+		printf("document.tableformservice.cmd_typ.options[0].selected = true;\n");
+		printf("document.tableformservice.buttonValidChoice.value = 'false';\n");
+		printf("document.tableformservice.buttonCheckboxChecked.value = 'false';\n");
+		printf("checked = true;\n");
+		printf("checkAll(\"tableformservice\");\n");
+		printf("checked = false;\n");
 		printf("try { \n$(\".DropDownService\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
 		printf("alert(\"Error: \"+e.message);\n}\n");
@@ -6584,6 +6591,13 @@ void show_hostcommand_table(void) {
 		/* Print out the activator for the dropdown (which must be between the body tags */
 		printf("<script language='javascript'>\n");
 		printf("$(document).ready(function() { \n");
+		printf("document.tableformhost.cmd_typ.selectedIndex = 0;\n");
+		printf("document.tableformhost.cmd_typ.options[0].selected = true;\n");
+		printf("document.tableformhost.buttonValidChoice.value = 'false';\n");
+		printf("document.tableformhost.buttonCheckboxChecked.value = 'false';\n");
+		printf("checked = true;\n");
+		printf("checkAll(\"tableformhost\");\n");
+		printf("checked = false;\n");
 		printf("try { \n$(\".DropDownHost\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
 		printf("alert(\"Error: \"+e.message);\n}\n");

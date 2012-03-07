@@ -38,6 +38,7 @@ FIXES
 * classic ui: fixed invalid json output for tac.cgi #2160
 * classic ui: Fixed Invalid json data if field value is multiline #2263
 * classic ui: fixed Commit commands with more then 500 multiple pairs of hosts and services #2373
+* classic ui: fixed reset forms on return after submitting command #2117
 
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974

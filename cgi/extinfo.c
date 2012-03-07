@@ -2924,13 +2924,13 @@ void show_comments(int type) {
 
 		printf("</TD></TR></TABLE>\n");
 
-		printf("<form name='tableform%scomment' id='tableform%scomment'>", (type == HOST_COMMENT) ? "host" : "service", (type == HOST_COMMENT) ? "host" : "service");
+		printf("<form name='tableform%scomment' id='tableform%scomment' action='%s' method='POST'>", (type == HOST_COMMENT) ? "host" : "service", (type == HOST_COMMENT) ? "host" : "service", CMD_CGI);
 		printf("<input type=hidden name=buttonCheckboxChecked>");
-		printf("<input type=hidden name='hiddencmdfield' value=%d>", (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT);
+		printf("<input type=hidden name='cmd_typ' value=%d>", (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT);
 		printf("<DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='comment'>\n");
 
-		printf("<TR><TD colspan='%d' align='right'><input type='button' name='CommandButton' value='Delete Comments' onClick=cmd_submit(\'tableform%scomment\') disabled=\"disabled\"></TD></TR>\n", colspan, (type == HOST_COMMENT) ? "host" : "service");
+		printf("<TR><TD colspan='%d' align='right'><input type='submit' name='CommandButton' value='Delete Comments' disabled=\"disabled\"></TD></TR>\n", colspan);
 
 		printf("<TR CLASS='comment'>");
 		if (display_type == DISPLAY_COMMENTS) {
@@ -3052,7 +3052,7 @@ void show_comments(int type) {
 			}
 			printf("<td name='comment_time'>%s</td><td name='comment_author'>%s</td><td name='comment_data'>%s</td><td name='comment_id'>%lu</td><td name='comment_persist'>%s</td><td name='comment_type'>%s</td><td name='comment_expire'>%s</td>", date_time, temp_comment->author, temp_comment->comment_data, temp_comment->comment_id, (temp_comment->persistent) ? "Yes" : "No", comment_type, (temp_comment->expires == TRUE) ? expire_time : "N/A");
 			printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
-			printf("<input type='checkbox' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\" name='checkbox' id='comment_%lu' value='&com_id=%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
+			printf("<input type='checkbox' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\" name='com_id' id='comment_%lu' value='%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
 			printf("</td></tr>\n");
 		}
 		total_comments++;
@@ -3068,7 +3068,14 @@ void show_comments(int type) {
 				printf("This %s has no comments associated with it", (type == HOST_COMMENT) ? "host" : "service");
 			printf("</TD></TR>\n");
 		}
-		printf("</TABLE></FORM></DIV>\n");
+		printf("</TABLE>\n");
+		printf("<script language='javascript'>\n");
+		printf("document.tableform%scomment.buttonCheckboxChecked.value = 'false';\n", (type == HOST_COMMENT) ? "host" : "service");
+		printf("checked = true;\n");
+		printf("checkAll(\"tableform%scomment\");\n", (type == HOST_COMMENT) ? "host" : "service");
+		printf("checked = false;\n");
+		printf("</script>\n");
+		printf("</FORM></DIV>\n");
 	}
 	if (content_type == JSON_CONTENT)
 		printf("]");
@@ -3135,13 +3142,13 @@ void show_downtime(int type) {
 
 		printf("</TD></TR></TABLE>\n");
 
-		printf("<form name='tableform%sdowntime' id='tableform%sdowntime'>", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
+		printf("<form name='tableform%sdowntime' id='tableform%sdowntime' action='%s' method='POST'>", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service", CMD_CGI);
 		printf("<input type=hidden name=buttonCheckboxChecked>");
-		printf("<input type=hidden name='hiddencmdfield' value=%d>", (type == HOST_DOWNTIME) ? CMD_DEL_HOST_DOWNTIME : CMD_DEL_SVC_DOWNTIME);
+		printf("<input type=hidden name='cmd_typ' value=%d>", (type == HOST_DOWNTIME) ? CMD_DEL_HOST_DOWNTIME : CMD_DEL_SVC_DOWNTIME);
 
 		printf("<TABLE BORDER=0 CLASS='downtime'>\n");
 
-		printf("<TR><TD colspan='%d' align='right'><input type='button' name='CommandButton' value='Delete Downtimes' onClick=cmd_submit(\'tableform%sdowntime\') disabled=\"disabled\"></TD></TR>\n", colspan, (type == HOST_DOWNTIME) ? "host" : "service");
+		printf("<TR><TD colspan='%d' align='right'><input type='submit' name='CommandButton' value='Delete Downtimes' disabled=\"disabled\"></TD></TR>\n", colspan);
 
 		printf("<TR CLASS='downtime'>");
 		if (display_type == DISPLAY_DOWNTIME) {
@@ -3217,7 +3224,6 @@ void show_downtime(int type) {
 			}
 		} else {
 			printf("<tr CLASS='%s' onClick=\"toggle_checkbox('downtime_%lu','tableform%sdowntime');\">", bg_class, temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service");
-			//printf("<tr CLASS='%s'>", bg_class);
 			if (display_type == DISPLAY_DOWNTIME) {
 				printf("<td CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></td>", bg_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_downtime->host_name), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
 				if (type == SERVICE_DOWNTIME) {
@@ -3302,7 +3308,7 @@ void show_downtime(int type) {
 			else
 				printf("<a href='%s?cmd_typ=%d", CMD_CGI, CMD_DEL_SVC_DOWNTIME);
 			printf("&down_id=%lu'><img src='%s%s' border=0 ALT='Delete/Cancel This Scheduled Downtime Entry' TITLE='Delete/Cancel This Scheduled Downtime Entry'></a>", temp_downtime->downtime_id, url_images_path, DELETE_ICON);
-			printf("<input type='checkbox' name='checkbox' id='downtime_%lu' value='&down_id=%lu'></td>", temp_downtime->downtime_id, temp_downtime->downtime_id);
+			printf("<input type='checkbox' onClick=\"toggle_checkbox('downtime_%lu','tableform%sdowntime');\" name='down_id' id='downtime_%lu' value='%lu'></td>", temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service", temp_downtime->downtime_id, temp_downtime->downtime_id);
 			printf("</td></tr>\n");
 		}
 		total_downtime++;
@@ -3317,7 +3323,14 @@ void show_downtime(int type) {
 				printf("This %s has no scheduled downtime associated with it", (type == HOST_DOWNTIME) ? "host" : "service");
 			printf("</TD></TR>\n");
 		}
-		printf("</TABLE></FORM></DIV>\n");
+		printf("</TABLE>\n");
+		printf("<script language='javascript'>\n");
+		printf("document.tableform%sdowntime.buttonCheckboxChecked.value = 'false';\n", (type == HOST_DOWNTIME) ? "host" : "service");
+		printf("checked = true;\n");
+		printf("checkAll(\"tableform%sdowntime\");\n", (type == HOST_DOWNTIME) ? "host" : "service");
+		printf("checked = false;\n");
+		printf("</script>\n");
+		printf("</FORM></DIV>\n");
 	}
 	if (content_type == JSON_CONTENT)
 		printf("]");
