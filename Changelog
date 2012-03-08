@@ -40,6 +40,7 @@ FIXES
 * classic ui: fixed Commit commands with more then 500 multiple pairs of hosts and services #2373
 * classic ui: fixed reset forms on return after submitting command #2117
 * classic ui: Change Excel icon to odf spreadsheet icon #2391
+* classic ui: fixed Availability Records Break if JavaScript is disabled #2412
 
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974

@@ -266,7 +266,6 @@ int main(int argc, char **argv) {
 	time_t t3;
 	time_t current_time;
 	struct tm *t;
-	char *firsthostpointer;
 
 	/* reset internal CGI variables */
 	reset_cgi_vars();
@@ -600,7 +599,8 @@ int main(int argc, char **argv) {
 		printf("</table>\n");
 		printf("</form>\n");
 
-		print_export_link(HTML_CONTENT, AVAIL_CGI, NULL);
+		if (display_type == DISPLAY_NO_AVAIL || get_date_parts == TRUE)
+			print_export_link(HTML_CONTENT, AVAIL_CGI, NULL);
 
 		printf("</td>\n");
 
@@ -631,10 +631,10 @@ int main(int argc, char **argv) {
 		printf("<input type='hidden' name='show_log_entries' value=''>\n");
 		if (display_type == DISPLAY_HOSTGROUP_AVAIL)
 			printf("<input type='hidden' name='hostgroup' value='%s'>\n", escape_string(hostgroup_name));
-		if (display_type == DISPLAY_HOST_AVAIL || display_type == DISPLAY_SERVICE_AVAIL)
+		if (display_type == DISPLAY_HOST_AVAIL)
 			printf("<input type='hidden' name='host' value='%s'>\n", escape_string(host_name));
 		if (display_type == DISPLAY_SERVICE_AVAIL)
-			printf("<input type='hidden' name='service' value='%s'>\n", escape_string(service_desc));
+			printf("<input type='hidden' name='hostservice' value='%s^%s'>\n", escape_string(host_name), escape_string(service_desc));
 		if (display_type == DISPLAY_SERVICEGROUP_AVAIL)
 			printf("<input type='hidden' name='servicegroup' value='%s'>\n", escape_string(servicegroup_name));
 
@@ -903,40 +903,21 @@ int main(int argc, char **argv) {
 	/* step 2 - the user wants to select a service */
 	else if (select_services == TRUE) {
 
-		printf("<SCRIPT LANGUAGE='JavaScript'>\n");
-		printf("function gethostname(hostindex){\n");
-		printf("hostnames=[\"all\"");
-
-		firsthostpointer = NULL;
-		for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
-			if (is_authorized_for_service(temp_service, &current_authdata) == TRUE) {
-				if (!firsthostpointer)
-					firsthostpointer = temp_service->host_name;
-				printf(", \"%s\"", temp_service->host_name);
-			}
-		}
-
-		printf(" ]\n");
-		printf("return hostnames[hostindex];\n");
-		printf("}\n");
-		printf("</SCRIPT>\n");
-
 		printf("<p><div align=center class='reportSelectTitle'>Step 2: Select Service</div></p>\n");
 
 		printf("<p><div align=center>\n");
 
-		printf("<form method=\"get\" action=\"%s\" name='serviceform'>\n", AVAIL_CGI);
+		printf("<form method=\"post\" action=\"%s\" name='serviceform'>\n", AVAIL_CGI);
 		printf("<input type='hidden' name='get_date_parts'>\n");
-		printf("<input type='hidden' name='host' value='%s'>\n", (firsthostpointer == NULL) ? "unknown" : (char *)escape_string(firsthostpointer));
 
 		printf("<table border=0 cellpadding=5>\n");
 
 		printf("<tr><td class='reportSelectSubTitle' valign=center>Service(s):</td><td align=left valign=center class='reportSelectItem'>\n");
-		printf("<select name='service' onFocus='document.serviceform.host.value=gethostname(this.selectedIndex);' onChange='document.serviceform.host.value=gethostname(this.selectedIndex);'>\n");
-		printf("<option value='all'>** ALL SERVICES **\n");
+		printf("<select name='hostservice' >\n");
+		printf("<option value='all^all'>** ALL SERVICES **\n");
 		for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
 			if (is_authorized_for_service(temp_service, &current_authdata) == TRUE)
-				printf("<option value='%s'>%s;%s\n", escape_string(temp_service->description), temp_service->host_name, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
+				printf("<option value='%s^%s'>%s;%s\n", escape_string(temp_service->host_name), escape_string(temp_service->description), temp_service->host_name, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
 		}
 
 		printf("</select>\n");
@@ -1171,6 +1152,7 @@ int main(int argc, char **argv) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *temp_buffer = NULL;
 	int error = FALSE;
 	int x;
 
@@ -1245,6 +1227,32 @@ int process_cgivars(void) {
 			if ((service_desc = (char *)strdup(variables[x])) == NULL)
 				service_desc = "";
 			strip_html_brackets(service_desc);
+
+			display_type = DISPLAY_SERVICE_AVAIL;
+			show_all_services = (strcmp(service_desc, "all")) ? FALSE : TRUE;
+		}
+
+		/* we found a combined host/service */
+		else if (!strcmp(variables[x], "hostservice")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			temp_buffer = strtok(variables[x], "^");
+
+			if ((host_name = (char *)strdup(temp_buffer)) == NULL)
+				host_name = "";
+			else
+				strip_html_brackets(host_name);
+
+			temp_buffer = strtok(NULL, "");
+
+			if ((service_desc = (char *)strdup(temp_buffer)) == NULL)
+				service_desc = "";
+			else
+				strip_html_brackets(service_desc);
 
 			display_type = DISPLAY_SERVICE_AVAIL;
 			show_all_services = (strcmp(service_desc, "all")) ? FALSE : TRUE;
@@ -1442,7 +1450,7 @@ int process_cgivars(void) {
 			content_type = XML_CONTENT;
 		}
 
-		/* we found the standard timeperiod argument */
+		/* we found the content type argument */
 		else if (!strcmp(variables[x], "content_type")) {
 			x++;
 			if (variables[x] == NULL) {
@@ -1458,11 +1466,11 @@ int process_cgivars(void) {
 				content_type = JSON_CONTENT;
 			else if (!strcmp(variables[x], "html"))
 				content_type = HTML_CONTENT;
-
 			else
 				continue;
 
-			display_header = FALSE;
+			if (content_type != HTML_CONTENT)
+				display_header = FALSE;
 		}
 
 		/* we found the log entries option  */
