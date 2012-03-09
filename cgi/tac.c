@@ -1782,7 +1782,7 @@ void display_tac_overview(void) {
 		/* left column */
 		printf("<td align=left valign=top width=50%%>\n");
 
-		display_info_table("Tactical Monitoring Overview", refresh, &current_authdata, daemon_check);
+		display_info_table("Tactical Monitoring Overview", &current_authdata, daemon_check);
 
 		printf("</td>\n");
 

@@ -275,7 +275,7 @@ int main(void) {
 
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 
-		display_info_table(temp_buffer, refresh, &current_authdata, daemon_check);
+		display_info_table(temp_buffer, &current_authdata, daemon_check);
 
 		/* find the host */
 		if (display_type == DISPLAY_HOST_INFO || display_type == DISPLAY_SERVICE_INFO) {

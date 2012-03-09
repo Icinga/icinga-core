@@ -41,6 +41,9 @@ function enableDisableButton(form) {
 	
 	if (document.forms[form].CommandButton)
 		document.forms[form].CommandButton.disabled=disabled;
+
+	// update refresh counter
+	update_refresh_counter(true);
 }
 
 function showValue(form,arg,schedule_host_check,schedule_host_svc_check) {

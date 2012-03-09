@@ -348,7 +348,7 @@ int main(void) {
 
 		/* left column of the first row */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table("External Command Interface", FALSE, &current_authdata, daemon_check);
+		display_info_table("External Command Interface", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* center column of the first row */

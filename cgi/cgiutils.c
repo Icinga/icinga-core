@@ -124,6 +124,7 @@ int             service_status_has_been_read = FALSE;
 int             program_status_has_been_read = FALSE;
 
 int             refresh_rate = DEFAULT_REFRESH_RATE;
+int             refresh_type = JAVASCRIPT_REFRESH;
 
 int             escape_html_tags = FALSE;
 
@@ -250,6 +251,7 @@ void reset_cgi_vars(void) {
 	interval_length = 60;
 
 	refresh_rate = DEFAULT_REFRESH_RATE;
+	refresh_type = JAVASCRIPT_REFRESH;
 
 	default_statusmap_layout_method = 0;
 	default_statusmap_layout_method = 0;
@@ -395,6 +397,9 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "refresh_rate"))
 			refresh_rate = atoi(val);
+
+		else if (!strcmp(var, "refresh_type"))
+			refresh_type = (atoi(val) > 0) ? JAVASCRIPT_REFRESH : HTTPHEADER_REFRESH;
 
 		else if (!strcmp(var, "physical_html_path")) {
 			strncpy(physical_html_path, val, sizeof(physical_html_path));
@@ -901,6 +906,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		cgi_name        = CONFIG_CGI;
 		cgi_css         = CONFIG_CSS;
 		cgi_body_class  = "config";
+		refresh         = FALSE;
 		break;
 	case EXTINFO_CGI_ID:
 		cgi_name        = EXTINFO_CGI;
@@ -923,6 +929,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		cgi_name        = NOTIFICATIONS_CGI;
 		cgi_css         = NOTIFICATIONS_CSS;
 		cgi_body_class  = "notifications";
+		refresh         = FALSE;
 		break;
 	case OUTAGES_CGI_ID:
 		cgi_name        = OUTAGES_CGI;
@@ -989,7 +996,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("Cache-Control: no-store\r\n");
 		printf("Pragma: no-cache\r\n");
 
-		if (refresh == TRUE)
+		if (((cgi_id == TAC_CGI_ID && show_tac_header == TRUE) || refresh_type == HTTPHEADER_REFRESH) && refresh == TRUE)
 			printf("Refresh: %d\r\n", refresh_rate);
 
 		time(&current_time);
@@ -1083,6 +1090,56 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	if (use_stylesheet) {
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, COMMON_CSS);
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, cgi_css);
+	}
+
+	// javascript refresh
+	if (refresh_type == JAVASCRIPT_REFRESH) {
+		printf("<script type=\"text/javascript\">\n");
+		printf("var refresh_rate=%d;\n", refresh_rate);
+		printf("var do_refresh=%s;\n",(refresh == TRUE) ? "true" : "false");
+		printf("var counter_seconds=refresh_rate;\n\n");
+
+		printf("function update_text(id,text) {\n");
+		printf("\tif (document.getElementById(id) != null )\n");
+		printf("\t\tdocument.getElementById(id).innerHTML = text;\n");
+		printf("}\n\n");
+
+		printf("function update_refresh_counter(reset) {\n");
+		printf("\tif (reset)\n");
+		printf("\t\tcounter_seconds=refresh_rate;\n");
+		printf("\tif (!do_refresh) {\n");
+		printf("\t\tupdate_text('refresh_text','- Update is PAUSED');\n");
+		printf("\t\tupdate_text('refresh_button','[continue]');\n");
+		printf("\t\treturn;\n");
+		printf("\t} else\n");
+		printf("\tupdate_text('refresh_button','[pause]');\n");
+		printf("\ts = (counter_seconds != 1) ? 's':'' ;\n");
+		printf("\tif (counter_seconds<=0) {\n");
+		printf("\t\tupdate_text('refresh_text','- Updating now');\n");
+		printf("\t\twindow.location.href=window.location.href;\n");
+		printf("\t} else\n");
+		printf("\t\tupdate_text('refresh_text','- Update in '+counter_seconds+' second'+s);\n");
+		printf("\tcounter_seconds--;\n");
+		printf("}\n\n");
+
+		printf("function toggle_refresh() {\n");
+		printf("\tif (do_refresh) {\n");
+		printf("\t\tdo_refresh = false;\n");
+		printf("\t\tupdate_refresh_counter(true);\n");
+		printf("\t} else {\n");
+		printf("\t\tdo_refresh = true;\n");
+		printf("\t\tupdate_refresh_counter(true);\n");
+		printf("\t}\n");
+		printf("}\n\n");
+
+		printf("function counter_loop(){\n");
+		printf("\tupdate_refresh_counter(false)\n");
+		printf("\tsetTimeout(\"counter_loop()\",1000);\n");
+		printf("}\n\n");
+
+		printf("counter_loop();\n");
+
+		printf("</script>\n");
 	}
 
 	if (cgi_id == STATUS_CGI_ID || cgi_id == EXTINFO_CGI_ID) {
@@ -1764,7 +1821,7 @@ char * escape_string(char *input) {
  *************** COMMON HTML FUNCTIONS ********************
  **********************************************************/
 
-void display_info_table(char *title, int refresh, authdata *current_authdata, int daemon_check) {
+void display_info_table(char *title, authdata *current_authdata, int daemon_check) {
 	char date_time[MAX_DATETIME_LENGTH];
 	char *dir_to_check = NULL;
 	time_t current_time;
@@ -1781,19 +1838,14 @@ void display_info_table(char *title, int refresh, authdata *current_authdata, in
 	time(&current_time);
 	get_time_string(&current_time, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
 
-	printf("Last Updated: %s - \n", date_time);
+	printf("Last Updated: %s ", date_time);
 
-
-	/* don't show in historical (long) listings */
-	if (CGI_ID != SHOWLOG_CGI_ID && CGI_ID != TRENDS_CGI_ID && CGI_ID != HISTOGRAM_CGI_ID && CGI_ID != HISTORY_CGI_ID && CGI_ID != AVAIL_CGI_ID) {
-		/* decide if refresh is paused or not */
-		if (refresh == TRUE) {
-			/* if refresh, add paused query to url and set location.href */
-			printf("Updated every %d seconds <small>[<a href=\"javascript:window.location.href += ((window.location.toString().indexOf('?') != -1) ? '&' : '?') + 'paused'\">pause</a>]</small><br>\n", refresh_rate);
-		} else {
-			/* if no refresh, remove the paused query from url and set location.href */
-			printf("Update is paused <small>[<a href=\"javascript:window.location.href = window.location.href.replace(/[\?&]paused/,'')\">continue</a>]</small><br>\n");
-		}
+	/* display only if refresh is supported */
+	if (CGI_ID == EXTINFO_CGI_ID || CGI_ID == OUTAGES_CGI_ID || CGI_ID == STATUS_CGI_ID || CGI_ID == STATUSMAP_CGI_ID || CGI_ID == TAC_CGI_ID) {
+		if (refresh_type == JAVASCRIPT_REFRESH)
+			printf("<span id='refresh_text'></span> <small> <a href='#' onClick='toggle_refresh(); return false;'><span id='refresh_button'></span></a></small><br>\n");
+		else
+			printf("- Update every %d seconds<br>\n", refresh_rate);
 	}
 
 	printf("<A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>%s %s</A> -\n", PROGRAM_NAME, PROGRAM_VERSION);

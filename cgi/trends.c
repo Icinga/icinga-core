@@ -364,7 +364,7 @@ int main(int argc, char **argv) {
 		else
 			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Host and Service State Trends");
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		display_info_table(temp_buffer, FALSE, &current_authdata, daemon_check);
+		display_info_table(temp_buffer, &current_authdata, daemon_check);
 
 		if (timeperiod_type == TIMEPERIOD_NEXTPROBLEM) {
 			problem_t1 = 0;

@@ -35,9 +35,12 @@ extern "C" {
 #endif
 
 
-/**************************** CGI REFRESH RATE ******************************/
+/**************************** CGI REFRESH ******************************/
 
 #define DEFAULT_REFRESH_RATE	60	/* 60 second refresh rate for CGIs */
+
+#define HTTPHEADER_REFRESH	0
+#define JAVASCRIPT_REFRESH	1
 
 
 /******************************* CGI NAMES **********************************/
@@ -628,7 +631,7 @@ char * escape_string(char *);					/* escape string for html form usage */
 void print_extra_hostgroup_url(char *,char *);
 void print_extra_servicegroup_url(char *,char *);
 
-void display_info_table(char *,int,authdata *, int);
+void display_info_table(char *,authdata *, int);
 void display_nav_table(char *,int);
 
 void display_splunk_host_url(host *);

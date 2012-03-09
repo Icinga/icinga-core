@@ -55,7 +55,6 @@ extern int embedded;
 extern int display_header;
 extern int daemon_check;
 extern int content_type;
-extern int refresh;
 
 extern logentry *entry_list;
 /** @} */
@@ -205,7 +204,7 @@ int main(void) {
 
 		/* left column of top table - info box */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table((ts_end > ts_midnight) ? "Current Event Log" : "Archived Event Log", FALSE, &current_authdata, daemon_check);
+		display_info_table((ts_end > ts_midnight) ? "Current Event Log" : "Archived Event Log", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top table - log file navigation options */
@@ -522,10 +521,6 @@ int process_cgivars(void) {
 		/* we found the embed option */
 		else if (!strcmp(variables[x], "embedded"))
 			embedded = TRUE;
-
-		/* we found the pause option */
-		else if (!strcmp(variables[x], "paused"))
-			refresh = FALSE;
 
 		/* we found the noheader option */
 		else if (!strcmp(variables[x], "noheader"))

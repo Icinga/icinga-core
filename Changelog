@@ -21,6 +21,7 @@ ENHANCEMENTS
 * classic ui: Added Select hosts or services by clicking on line instead of box #2118
 * classic ui: include graph icons by default in logos #2222
 * classic ui: added missing comment tool tip box to outages.cgi #2396
+* classic ui: add javascript to refresh page/pause easier #2119
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109

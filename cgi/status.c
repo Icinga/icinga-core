@@ -1156,7 +1156,7 @@ int main(void) {
 		/* left column of the first row */
 		printf("<td align=left valign=top width=33%%>\n");
 		/* info table */
-		display_info_table("Current Network Status", refresh, &current_authdata, daemon_check);
+		display_info_table("Current Network Status", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top row */
@@ -1298,6 +1298,19 @@ int main(void) {
 
 		/* end of second table */
 		printf("</table>\n");
+
+	} else if ( show_dropdown != NO_STATUS && content_type == HTML_CONTENT) {
+
+		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+		printf("<tr><td align=right width=100%%>\n");
+
+		if (show_dropdown == HOST_STATUS)
+			show_hostcommand_table();
+		else if (show_dropdown == SERVICE_STATUS)
+			show_servicecommand_table();
+
+		/* end of second table */
+		printf("</td></tr></table>\n");
 	}
 
 

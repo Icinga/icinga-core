@@ -400,10 +400,18 @@ ping_syntax=/bin/ping -n -U -c 5 $HOSTADDRESS$
 
 # REFRESH RATE
 # This option allows you to specify the refresh rate in seconds
-# of various CGIs (status, statusmap, extinfo, and outages).
+# of various CGIs (extinfo, outages, status, statusmap and tac).
 
 refresh_rate=90
 
+
+# REFRESH TYPE
+# This option determines what type of refresh should be used.
+# You can choose between http header and javascript. By
+# default javascript (1) is activated. If you have trouble
+# using javascript then try refresh via http header (0).
+
+refresh_type=1
 
 
 # ESCAPE HTML TAGS
