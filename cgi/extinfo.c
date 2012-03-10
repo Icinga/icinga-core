@@ -289,6 +289,9 @@ int main(void) {
 			}
 
 			/* write some Javascript helper functions */
+			/*
+				WHAT IS THIS FOR  ?????
+			*/
 			if (temp_host != NULL) {
 				printf("<SCRIPT LANGUAGE=\"JavaScript\">\n<!--\n");
 				printf("function nagios_get_host_name()\n{\n");
@@ -338,22 +341,19 @@ int main(void) {
 				printf("<A HREF='%s?host=%s'>View Alert Histogram For This Host</A><BR>\n", HISTOGRAM_CGI, url_encode(host_name));
 #endif
 				printf("<A HREF='%s?host=%s&show_log_entries'>View Availability Report For This Host</A><BR>\n", AVAIL_CGI, url_encode(host_name));
-				printf("<A HREF='%s?host=%s'>View Notifications For This Host</A>\n", NOTIFICATIONS_CGI, url_encode(host_name));
+				printf("<A HREF='%s?host=%s'>View Notifications For This Host</A><BR>\n", NOTIFICATIONS_CGI, url_encode(host_name));
+				printf("<A HREF='%s?type=%d&host=%s'>View Scheduling Queue For This Host</A>\n", EXTINFO_CGI, DISPLAY_SCHEDULING_QUEUE, url_encode(host_name));
 			} else if (display_type == DISPLAY_SERVICE_INFO) {
-				printf("<A HREF='%s?host=%s&", HISTORY_CGI, url_encode(host_name));
-				printf("service=%s'>View Alert History For This Service</A><BR>\n", url_encode(service_desc));
+				printf("<A HREF='%s?host=%s&service=%s'>View Alert History For This Service</A><BR>\n", HISTORY_CGI, url_encode(host_name), url_encode(service_desc));
 #ifdef USE_TRENDS
-				printf("<A HREF='%s?host=%s&", TRENDS_CGI, url_encode(host_name));
-				printf("service=%s'>View Trends For This Service</A><BR>\n", url_encode(service_desc));
+				printf("<A HREF='%s?host=%s&service=%s'>View Trends For This Service</A><BR>\n", TRENDS_CGI, url_encode(host_name), url_encode(service_desc));
 #endif
 #ifdef USE_HISTOGRAM
-				printf("<A HREF='%s?host=%s&", HISTOGRAM_CGI, url_encode(host_name));
-				printf("service=%s'>View Alert Histogram For This Service</A><BR>\n", url_encode(service_desc));
+				printf("<A HREF='%s?host=%s&service=%s'>View Alert Histogram For This Service</A><BR>\n", HISTOGRAM_CGI, url_encode(host_name), url_encode(service_desc));
 #endif
-				printf("<A HREF='%s?host=%s&", AVAIL_CGI, url_encode(host_name));
-				printf("service=%s&show_log_entries'>View Availability Report For This Service</A><BR>\n", url_encode(service_desc));
-				printf("<A HREF='%s?host=%s&", NOTIFICATIONS_CGI, url_encode(host_name));
-				printf("service=%s'>View Notifications For This Service</A>\n", url_encode(service_desc));
+				printf("<A HREF='%s?host=%s&service=%s&show_log_entries'>View Availability Report For This Service</A><BR>\n", AVAIL_CGI, url_encode(host_name), url_encode(service_desc));
+				printf("<A HREF='%s?host=%s&service=%s'>View Notifications For This Service</A><BR>\n", NOTIFICATIONS_CGI, url_encode(host_name), url_encode(service_desc));
+				printf("<A HREF='%s?type=%d&host=%s&service=%s'>View Scheduling Queue For This Service</A>\n", EXTINFO_CGI, DISPLAY_SCHEDULING_QUEUE, url_encode(host_name), url_encode(service_desc));
 			} else if (display_type == DISPLAY_HOSTGROUP_INFO) {
 				printf("<A HREF='%s?hostgroup=%s&style=detail'>View Status Detail For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
 				printf("<A HREF='%s?hostgroup=%s&style=overview'>View Status Overview For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
@@ -3354,17 +3354,12 @@ void show_scheduling_queue(void) {
 	char display_service[MAX_INPUT_BUFFER];
 	char url_encoded_service[MAX_INPUT_BUFFER];
 	char url_encoded_host[MAX_INPUT_BUFFER];
+	char temp_buffer[MAX_INPUT_BUFFER];
 	char *last_check = "", *next_check = "", *type = "";
 	int checks_enabled = FALSE;
 	int odd = 0;
 	char *bgclass = "";
 	int json_start = TRUE;
-
-	/* make sure the user has rights to view system information */
-	if (is_authorized_for_system_information(&current_authdata) == FALSE) {
-		print_generic_error_message("It appears as though you do not have permission to view cheduling queue...", "If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.", 0);
-		return;
-	}
 
 	/* sort hosts and services */
 	sort_data(sort_type, sort_option);
@@ -3409,6 +3404,18 @@ void show_scheduling_queue(void) {
 		snprintf(temp_url, sizeof(temp_url) - 1, "%s?type=%d", EXTINFO_CGI, DISPLAY_SCHEDULING_QUEUE);
 		temp_url[sizeof(temp_url)-1] = '\x0';
 
+		if (host_name && *host_name != '\0') {
+			strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+			snprintf(temp_url, sizeof(temp_url) - 1, "%s&host=%s", temp_buffer, url_encode(host_name));
+			temp_url[sizeof(temp_url)-1] = '\x0';
+		}
+
+		if (service_desc && *service_desc != '\0') {
+			strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
+			snprintf(temp_url, sizeof(temp_url) - 1, "%s&service=%s", temp_buffer, url_encode(service_desc));
+			temp_url[sizeof(temp_url)-1] = '\x0';
+		}
+
 		printf("<TH CLASS='queue'>Host&nbsp;<A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by host name (ascending)' TITLE='Sort by host name (ascending)'></A><A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by host name (descending)' TITLE='Sort by host name (descending)'></A></TH>", temp_url, SORT_ASCENDING, SORT_HOSTNAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_HOSTNAME, url_images_path, DOWN_ARROW_ICON);
 		printf("<TH CLASS='queue'>Service&nbsp;<A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by service name (ascending)' TITLE='Sort by service name (ascending)'></A><A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by service name (descending)' TITLE='Sort by service name (descending)'></A></TH>", temp_url, SORT_ASCENDING, SORT_SERVICENAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_SERVICENAME, url_images_path, DOWN_ARROW_ICON);
 		printf("<TH CLASS='queue'>Last Check&nbsp;<A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by last check time (ascending)' TITLE='Sort by last check time (ascending)'></A><A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by last check time (descending)' TITLE='Sort by last check time (descending)'></A></TH>", temp_url, SORT_ASCENDING, SORT_LASTCHECKTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_LASTCHECKTIME, url_images_path, DOWN_ARROW_ICON);
@@ -3427,6 +3434,12 @@ void show_scheduling_queue(void) {
 				if (!(temp_svcstatus->checks_enabled == FALSE && temp_svcstatus->next_check != (time_t)0L && (temp_svcstatus->check_options & CHECK_OPTION_FORCE_EXECUTION)))
 					continue;
 			}
+			if (host_name && *host_name != '\0' && strcmp(host_name, temp_svcstatus->host_name))
+				continue;
+
+			if (service_desc && *service_desc != '\0' && strcmp(service_desc, temp_svcstatus->description))
+				continue;
+
 		} else {
 			temp_hststatus = temp_sortdata->hststatus;
 			if (temp_hststatus->should_be_scheduled == FALSE) {
@@ -3434,25 +3447,40 @@ void show_scheduling_queue(void) {
 				if (!(temp_hststatus->checks_enabled == FALSE && temp_hststatus->next_check != (time_t)0L && (temp_hststatus->check_options & CHECK_OPTION_FORCE_EXECUTION)))
 					continue;
 			}
-		}
+			if (host_name && *host_name != '\0' && strcmp(host_name, temp_hststatus->host_name))
+				continue;
 
-		if (odd) {
-			odd = 0;
-			bgclass = "Even";
-		} else {
-			odd = 1;
-			bgclass = "Odd";
+			if (host_name && *host_name == '\0' && service_desc && *service_desc != '\0')
+				continue;
 		}
 
 		/* get the service status */
 		if (temp_sortdata->is_service == TRUE) {
+
 			/* find the host */
 			temp_host = find_host(temp_svcstatus->host_name);
+
+			if (temp_host == NULL)
+				continue;
+
+			/* make sure user has rights to see this... */
+			if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+				continue;
+
 			snprintf(url_encoded_host, sizeof(url_encoded_host) - 1, "%s", url_encode(temp_svcstatus->host_name));
 			url_encoded_host[sizeof(url_encoded_host)-1] = '\x0';
 
 			/* find the service */
 			temp_service = find_service(temp_svcstatus->host_name, temp_svcstatus->description);
+
+			/* if we couldn't find the service, go to the next service */
+			if (temp_service == NULL)
+				continue;
+
+			/* make sure user has rights to see this... */
+			if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
+				continue;
+
 			snprintf(url_encoded_service, sizeof(url_encoded_service) - 1, "%s", url_encode(temp_svcstatus->description));
 			url_encoded_service[sizeof(url_encoded_service)-1] = '\x0';
 
@@ -3511,6 +3539,14 @@ void show_scheduling_queue(void) {
 		} else {
 			/* find the host */
 			temp_host = find_host(temp_hststatus->host_name);
+
+			if (temp_host == NULL)
+				continue;
+
+			/* make sure user has rights to see this... */
+			if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+				continue;
+
 			snprintf(url_encoded_host, sizeof(url_encoded_host) - 1, "%s", url_encode(temp_hststatus->host_name));
 			url_encoded_host[sizeof(url_encoded_host)-1] = '\x0';
 
@@ -3553,6 +3589,14 @@ void show_scheduling_queue(void) {
 
 			snprintf(action_link_schedule, sizeof(action_link_schedule) - 1, "%s?cmd_typ=%d&host=%s%s", CMD_CGI, CMD_SCHEDULE_HOST_CHECK, url_encoded_host, (temp_hststatus->checks_enabled == TRUE) ? "&force_check" : "");
 			action_link_schedule[sizeof(action_link_schedule)-1] = '\x0';
+		}
+
+		if (odd) {
+			odd = 0;
+			bgclass = "Even";
+		} else {
+			odd = 1;
+			bgclass = "Odd";
 		}
 
 		if (content_type == JSON_CONTENT) {
