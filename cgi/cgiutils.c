@@ -992,11 +992,12 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		return;
 	}
 
+	// send top http header
 	if (cgi_id != ERROR_CGI_ID) {
 		printf("Cache-Control: no-store\r\n");
 		printf("Pragma: no-cache\r\n");
 
-		if (((cgi_id == TAC_CGI_ID && show_tac_header == TRUE) || refresh_type == HTTPHEADER_REFRESH) && refresh == TRUE)
+		if (refresh_type == HTTPHEADER_REFRESH && refresh == TRUE)
 			printf("Refresh: %d\r\n", refresh_rate);
 
 		time(&current_time);
@@ -1050,31 +1051,9 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		return;
 	}
 
-
 	if (cgi_id != ERROR_CGI_ID) {
 		// send HTML CONTENT
 		printf("Content-type: text/html; charset=\"%s\"\r\n\r\n", http_charset);
-	}
-
-	/* is this tac.cgi?tac_header */
-	if (cgi_id == TAC_CGI_ID && tac_header == TRUE) {
-
-		printf("<html>\n");
-		printf("<head>\n");
-		printf("<title>Icinga</title>\n");
-		printf("<meta name='robots' content='noindex, nofollow' />\n");
-
-		/* is show_tac_header=1 in cgi.cfg? */
-		if (show_tac_header == TRUE)
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, TAC_HEADER_CSS);
-		else //no? show the classic header as the default
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%sinterface/common.css'>\n", url_stylesheets_path);
-
-		printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n", url_images_path);
-		printf("</head>\n");
-		printf("<body>\n");
-
-		return; //safely return
 	}
 
 	if (embedded == TRUE)
@@ -1084,10 +1063,16 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n", url_images_path);
 	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
-	printf("<meta http-equiv=\"content-type\" content=\"text/html; charset=%s\">", http_charset);
+	printf("<meta http-equiv=\"content-type\" content=\"text/html; charset=%s\">\n", http_charset);
+//	printf("<meta http-equiv=\"refresh\" content=\"%d\" />\n", refresh_rate);
 	printf("<title>%s</title>\n", cgi_title);
 
-	if (use_stylesheet) {
+	if (cgi_id == TAC_CGI_ID && tac_header == TRUE) {
+		if (show_tac_header == TRUE)
+			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, TAC_HEADER_CSS);
+		else //no? show the classic header as the default
+			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%sinterface/common.css'>\n", url_stylesheets_path);
+	} else if (use_stylesheet) {
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, COMMON_CSS);
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, cgi_css);
 	}
@@ -1116,7 +1101,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("\ts = (counter_seconds != 1) ? 's':'' ;\n");
 		printf("\tif (counter_seconds<=0) {\n");
 		printf("\t\tupdate_text('refresh_text','- Updating now');\n");
-		printf("\t\twindow.location.href=window.location.href;\n");
+		printf("\t\twindow.location.reload(false);\n");
 		printf("\t} else\n");
 		printf("\t\tupdate_text('refresh_text','- Update in '+counter_seconds+' second'+s);\n");
 		printf("\tcounter_seconds--;\n");
@@ -1163,13 +1148,14 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 
 	if (cgi_id == STATUSMAP_CGI_ID)
 		printf("<body CLASS='%s' name='mappage' id='mappage'>\n", cgi_body_class);
-	else if (cgi_id == TAC_CGI_ID)
+	else if (cgi_id == TAC_CGI_ID && tac_header == FALSE)
 		printf("<body CLASS='%s' marginwidth=2 marginheight=2 topmargin=0 leftmargin=0 rightmargin=0>\n", cgi_body_class);
 	else
 		printf("<body CLASS='%s'>\n", cgi_body_class);
 
 	/* include user SSI header */
-	include_ssi_files(cgi_name, SSI_HEADER);
+	if (tac_header == FALSE)
+		include_ssi_files(cgi_name, SSI_HEADER);
 
 	/* this line was also in histogram.c, is this necessary??? */
 	if (cgi_id == HISTOGRAM_CGI_ID || cgi_id == STATUSMAP_CGI_ID || cgi_id == TRENDS_CGI_ID)
@@ -1251,7 +1237,7 @@ void document_footer(int cgi_id) {
 	   top is embedded, so if this is top we don't want to return
 	   otherwise if embedded or HTML_CONTENT we do want to return
 	*/
-	if ((embedded || content_type != HTML_CONTENT) && tac_header == FALSE)
+	if (embedded || content_type != HTML_CONTENT)
 		return;
 
 	if (cgi_id == STATUSWML_CGI_ID) {
@@ -1260,7 +1246,8 @@ void document_footer(int cgi_id) {
 	}
 
 	/* include user SSI footer */
-	include_ssi_files(cgi_name, SSI_FOOTER);
+	if (tac_header == FALSE)
+		include_ssi_files(cgi_name, SSI_FOOTER);
 
 	printf("</body>\n");
 	printf("</html>\n");
@@ -1843,7 +1830,7 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 	/* display only if refresh is supported */
 	if (CGI_ID == EXTINFO_CGI_ID || CGI_ID == OUTAGES_CGI_ID || CGI_ID == STATUS_CGI_ID || CGI_ID == STATUSMAP_CGI_ID || CGI_ID == TAC_CGI_ID) {
 		if (refresh_type == JAVASCRIPT_REFRESH)
-			printf("<span id='refresh_text'></span> <small> <a href='#' onClick='toggle_refresh(); return false;'><span id='refresh_button'></span></a></small><br>\n");
+			printf("<span id='refresh_text'></span>&nbsp;<small><a href='#' onClick='toggle_refresh(); return false;'><span id='refresh_button'></span></a></small><br>\n");
 		else
 			printf("- Update every %d seconds<br>\n", refresh_rate);
 	}

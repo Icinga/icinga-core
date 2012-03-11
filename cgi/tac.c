@@ -480,7 +480,10 @@ int main(void) {
 	time(&t5);
 #endif
 
-	document_header(CGI_ID, TRUE, "Tactical Monitoring Overview");
+	if (tac_header == TRUE)
+		document_header(CGI_ID, TRUE, "Icinga");
+	else
+		document_header(CGI_ID, TRUE, "Tactical Monitoring Overview");
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -584,10 +587,8 @@ int process_cgivars(void) {
 			daemon_check = FALSE;
 
 		/* we found the tac_header option */
-		else if (!strcmp(variables[x], "tac_header")) {
+		else if (!strcmp(variables[x], "tac_header"))
 			tac_header = TRUE;
-			embedded = TRUE;
-		}
 
 		/* we found the JSON output option */
 		else if (!strcmp(variables[x], "jsonoutput")) {
