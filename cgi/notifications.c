@@ -134,7 +134,7 @@ int main(void) {
 		} else
 			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Contact Notifications");
 
-		display_info_table(temp_buffer, FALSE, &current_authdata, daemon_check);
+		display_info_table(temp_buffer, &current_authdata, daemon_check);
 
 		if (query_type == FIND_HOST || query_type == FIND_SERVICE) {
 			printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");

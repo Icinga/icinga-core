@@ -153,7 +153,7 @@ int main(void) {
 
 		/* left column of the first row */
 		printf("<td align=left valign=top width=50%%>\n");
-		display_info_table("Configuration", FALSE, &current_authdata, daemon_check);
+		display_info_table("Configuration", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* right hand column of top row */

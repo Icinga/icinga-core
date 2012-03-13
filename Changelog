@@ -25,6 +25,9 @@ ENHANCEMENTS
 * classic ui: Added statusmap resizing with exclude/include button #2186
 * classic ui: Added Select hosts or services by clicking on line instead of box #2118
 * classic ui: include graph icons by default in logos #2222
+* classic ui: added missing comment tool tip box to outages.cgi #2396
+* classic ui: add javascript to refresh page/pause easier #2119
+* classic ui: Added Scheduling queue filter for specific host or service #2421
 
 * install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121
 * install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344
@@ -66,6 +69,11 @@ FIXES
 * classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343
 * classic ui: fixed invalid json output for tac.cgi #2160
 * classic ui: Fixed Invalid json data if field value is multiline #2263
+* classic ui: fixed Commit commands with more then 500 multiple pairs of hosts and services #2373
+* classic ui: fixed reset forms on return after submitting command #2117
+* classic ui: Change Excel icon to odf spreadsheet icon #2391
+* classic ui: fixed Availability Records Break if JavaScript is disabled #2412
+* classic ui: fixed Truncated HTML table when displaying outages in outages.cgi #2323
 
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
