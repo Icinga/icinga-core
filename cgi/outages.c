@@ -711,7 +711,7 @@ void add_affected_host(char *host_name) {
 	if (new_affected_host == NULL)
 		return;
 
-	new_affected_host->host_name = host_name;
+	new_affected_host->host_name = strdup(host_name);
 
 	/* add the structure to the head of the list in memory */
 	new_affected_host->next = currently_checked_host->affected_hosts;
