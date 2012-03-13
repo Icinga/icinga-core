@@ -16,6 +16,7 @@ FIXES
 
 * classic ui: fixed invalid json output for tac.cgi #2160
 * classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343
+* classic ui: fixed Truncated HTML table when displaying outages in outages.cgi #2323
 
 CHANGES
 
