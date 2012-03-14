@@ -510,7 +510,7 @@ status_show_long_plugin_output=0
 # This option allows you to specify if the
 # Host Status Totals and Service Status Totals
 # should be displayed.
-# Default value is 1.
+# Default value is 0.
 
 display_status_totals=0
 

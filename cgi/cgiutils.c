@@ -184,7 +184,7 @@ extern char     *tzname[2];
 int content_type = HTML_CONTENT;
 int embedded = FALSE;
 int display_header = TRUE;
-int display_status_totals = TRUE;
+int display_status_totals = FALSE;
 int refresh = TRUE;
 int daemon_check = TRUE;
 int tac_header = FALSE;

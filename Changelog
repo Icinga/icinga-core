@@ -28,6 +28,7 @@ ENHANCEMENTS
 * classic ui: added missing comment tool tip box to outages.cgi #2396
 * classic ui: add javascript to refresh page/pause easier #2119
 * classic ui: Added Scheduling queue filter for specific host or service #2421
+* classic ui: add display_status_totals as cgi.cfg option in order to allow the status totals to be shown again #2443
 
 * install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121
 * install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344
