@@ -116,6 +116,15 @@ extern servicestatus *servicestatus_list;
 #define NO_STATUS			2
 /** @} */
 
+/** @name STATUS ADDED / COUNTED
+ *	used in statusdata to see if this antry has been added to statusdata_struct or counted for status totals
+ @{**/
+#define STATUS_NOT_DISPLAYED		0
+#define STATUS_ADDED			1
+#define STATUS_COUNTED_UNFILTERED	2
+#define STATUS_COUNTED_FILTERED		4
+/** @} */
+
 /** @name NUMBER OF NAMED OBJECTS
  @{**/
 #define NUM_NAMED_ENTRIES		1000		/**< max number of elements (hosts/hostgroups/servicegroups) submitted  vie GET/POST */
@@ -232,11 +241,22 @@ int num_hosts_down = 0;					/**< num of hosts down (for @ref show_host_status_to
 int num_hosts_unreachable = 0;				/**< num of hosts unreachable (for @ref show_host_status_totals) */
 int num_hosts_pending = 0;				/**< num of hosts pending (for @ref show_host_status_totals) */
 
+int num_total_hosts_up = 0;				/**< num of total hosts up (for @ref show_host_status_totals) */
+int num_total_hosts_down = 0;				/**< num of total hosts down (for @ref show_host_status_totals) */
+int num_total_hosts_unreachable = 0;			/**< num of total hosts unreachable (for @ref show_host_status_totals) */
+int num_total_hosts_pending = 0;			/**< num of total hosts pending (for @ref show_host_status_totals) */
+
 int num_services_ok = 0;				/**< num of services ok (for @ref show_host_status_totals) */
 int num_services_warning = 0;				/**< num of services warning (for @ref show_host_status_totals) */
 int num_services_critical = 0;				/**< num of services critical (for @ref show_host_status_totals) */
 int num_services_unknown = 0;				/**< num of services unknown (for @ref show_host_status_totals) */
 int num_services_pending = 0;				/**< num of services pending (for @ref show_host_status_totals) */
+
+int num_total_services_ok = 0;				/**< num of total services ok (for @ref show_host_status_totals) */
+int num_total_services_warning = 0;			/**< num of total services warning (for @ref show_host_status_totals) */
+int num_total_services_critical = 0;			/**< num of total services critical (for @ref show_host_status_totals) */
+int num_total_services_unknown = 0;			/**< num of total services unknown (for @ref show_host_status_totals) */
+int num_total_services_pending = 0;			/**< num of total services pending (for @ref show_host_status_totals) */
 /** @} */
 
 int CGI_ID = STATUS_CGI_ID;				/**< ID to identify the cgi for functions in cgiutils.c */
@@ -874,7 +894,7 @@ int main(void) {
 		host_status_types = HOST_UP | HOST_PENDING;
 		service_status_types = all_service_problems;
 		group_style_type = STYLE_HOST_SERVICE_DETAIL;
-		service_properties = service_problems_unhandled;
+		service_properties |= service_problems_unhandled;
 	}
 
 	for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
@@ -902,14 +922,6 @@ int main(void) {
 
 		/* get the host status information */
 		temp_hoststatus = find_hoststatus(temp_service->host_name);
-
-		/* see if we should display services for hosts with tis type of status */
-		if (!(host_status_types & temp_hoststatus->status))
-			continue;
-
-		/* see if we should display this type of service status */
-		if (!(service_status_types & temp_servicestatus->status))
-			continue;
 
 		/* check host properties filter */
 		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
@@ -987,6 +999,43 @@ int main(void) {
 				continue;
 		}
 
+		if (!(temp_servicestatus->added & STATUS_COUNTED_UNFILTERED)) {
+			if (temp_servicestatus->status == SERVICE_CRITICAL)
+				num_total_services_critical++;
+			else if (temp_servicestatus->status == SERVICE_WARNING)
+				num_total_services_warning++;
+			else if (temp_servicestatus->status == SERVICE_UNKNOWN)
+				num_total_services_unknown++;
+			else if (temp_servicestatus->status == SERVICE_PENDING)
+				num_total_services_pending++;
+			else
+				num_total_services_ok++;
+
+			temp_servicestatus->added |= STATUS_COUNTED_UNFILTERED;
+		}
+
+		if (!(temp_hoststatus->added & STATUS_COUNTED_UNFILTERED)) {
+			/* count host for status totals */
+			if (temp_hoststatus->status == HOST_DOWN)
+				num_total_hosts_down++;
+			else if (temp_hoststatus->status == HOST_UNREACHABLE)
+				num_total_hosts_unreachable++;
+			else if (temp_hoststatus->status == HOST_PENDING)
+				num_total_hosts_pending++;
+			else
+				num_total_hosts_up++;
+
+			temp_hoststatus->added |= STATUS_COUNTED_UNFILTERED;
+		}
+
+		/* see if we should display services for hosts with tis type of status */
+		if (!(host_status_types & temp_hoststatus->status))
+			continue;
+
+		/* see if we should display this type of service status */
+		if (!(service_status_types & temp_servicestatus->status))
+			continue;
+
 		if (display_all_unhandled_problems == FALSE)
 			add_status_data(HOST_STATUS, temp_hoststatus);
 		add_status_data(SERVICE_STATUS, temp_servicestatus);
@@ -996,15 +1045,16 @@ int main(void) {
 	/* prepare for hosts */
 	if (display_all_unhandled_problems == TRUE) {
 		host_status_types = all_host_problems;
-		host_properties = host_problems_unhandled;
+		host_properties |= host_problems_unhandled;
 	}
+
 
 	/* this is only for hosts with no services attached */
 	if (group_style_type != STYLE_SERVICE_DETAIL) {
 		for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
 
 			/* see if hoststatus is already recorded */
-			if (temp_hoststatus->added == TRUE)
+			if (temp_hoststatus->added & STATUS_ADDED)
 				continue;
 
 			/* if user is doing a search and host didn't match try next one */
@@ -1023,10 +1073,6 @@ int main(void) {
 				continue;
 
 			user_is_authorized_for_statusdata = TRUE;
-
-			/* see if we should display services for hosts with this type of status */
-			if (!(host_status_types & temp_hoststatus->status))
-				continue;
 
 			/* check host properties filter */
 			if (passes_host_properties_filter(temp_hoststatus) == FALSE)
@@ -1095,6 +1141,24 @@ int main(void) {
 				if (found == FALSE)
 					continue;
 			}
+
+			if (!(temp_hoststatus->added & STATUS_COUNTED_UNFILTERED)) {
+				/* count host for status totals */
+				if (temp_hoststatus->status == HOST_DOWN)
+					num_total_hosts_down++;
+				else if (temp_hoststatus->status == HOST_UNREACHABLE)
+					num_total_hosts_unreachable++;
+				else if (temp_hoststatus->status == HOST_PENDING)
+					num_total_hosts_pending++;
+				else
+					num_total_hosts_up++;
+
+				temp_hoststatus->added |= STATUS_COUNTED_UNFILTERED;
+			}
+
+			/* see if we should display services for hosts with this type of status */
+			if (!(host_status_types & temp_hoststatus->status))
+				continue;
 
 			add_status_data(HOST_STATUS, temp_hoststatus);
 		}
@@ -1735,18 +1799,21 @@ int process_cgivars(void) {
 
 /* display table with service status totals... */
 void show_service_status_totals(void) {
-	int total_services = 0;
-	int total_problems = 0;
-	int problem_service_status_types = 0;
-	int total_service_status_types = 0;
+	int num_services_filtered = 0;
+	int num_problems_filtered = 0;
+	int num_services_unfiltered = 0;
+	int num_problems_unfiltered = 0;
 	char status_url[MAX_INPUT_BUFFER];
 	char *style = NULL;
 
-	if (display_status_totals == FALSE)
+	if (display_status_totals == FALSE || group_style_type == STYLE_HOST_DETAIL)
 		return;
 
-	total_services = num_services_ok + num_services_unknown + num_services_warning + num_services_critical + num_services_pending;
-	total_problems = num_services_unknown + num_services_warning + num_services_critical;
+	num_services_filtered = num_services_ok + num_services_unknown + num_services_warning + num_services_critical + num_services_pending;
+	num_problems_filtered = num_services_unknown + num_services_warning + num_services_critical;
+
+	num_services_unfiltered = num_total_services_ok + num_total_services_unknown + num_total_services_warning + num_total_services_critical + num_total_services_pending;
+	num_problems_unfiltered = num_total_services_unknown + num_total_services_warning + num_total_services_critical;
 
 	/* construct url start */
 	if (group_style_type == STYLE_OVERVIEW)
@@ -1782,60 +1849,28 @@ void show_service_status_totals(void) {
 	printf("<TABLE BORDER=1 CLASS='serviceTotals'>\n");
 	printf("<TR>\n");
 
-	printf("<TH CLASS='serviceTotals'>");
-	if (num_services_ok > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Ok</A>", status_url, SERVICE_OK);
-	else
-		printf("<DIV CLASS='serviceTotals'>Ok</DIV>");
-	printf("</TH>\n");
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Ok</A></TH>\n", status_url, SERVICE_OK);
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Warning</A></TH>\n", status_url, SERVICE_WARNING);
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Unknown</A></TH>\n", status_url, SERVICE_UNKNOWN);
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Critical</A></TH>\n", status_url, SERVICE_CRITICAL);
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Pending</A></TH>\n", status_url, SERVICE_PENDING);
 
-	printf("<TH CLASS='serviceTotals'>");
-	if (num_services_warning > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Warning</A>", status_url, SERVICE_WARNING);
-	else
-		printf("<DIV CLASS='serviceTotals'>Warning</DIV>");
-	printf("</TH>\n");
-
-	printf("<TH CLASS='serviceTotals'>");
-	if (num_services_unknown > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Unknown</A>", status_url, SERVICE_UNKNOWN);
-	else
-		printf("<DIV CLASS='serviceTotals'>Unknown</DIV>");
-	printf("</TH>\n");
-
-	printf("<TH CLASS='serviceTotals'>");
-	if (num_services_critical > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Critical</A>", status_url, SERVICE_CRITICAL);
-	else
-		printf("<DIV CLASS='serviceTotals'>Critical</DIV>");
-	printf("</TH>\n");
-
-	printf("<TH CLASS='serviceTotals'>");
-	if (num_services_pending > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Pending</A>", status_url, SERVICE_PENDING);
-	else
-		printf("<DIV CLASS='serviceTotals'>Pending</DIV>");
-	printf("</TH>\n");
-
-	printf("</TR>\n");
-
-	printf("<TR>\n");
-
+	printf("</TR><TR>\n");
 
 	/* total services ok */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_ok > 0) ? "OK" : "", num_services_ok);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_services_ok > 0) ? "OK" : "", (num_total_services_ok > 0) ? "serviceTotalsBGOK" : "", num_services_ok, num_total_services_ok);
 
 	/* total services in warning state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_warning > 0) ? "WARNING" : "", num_services_warning);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_services_warning > 0) ? "WARNING" : "", (num_total_services_warning > 0) ? "serviceTotalsBGWARNING" : "", num_services_warning, num_total_services_warning);
 
 	/* total services in unknown state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_unknown > 0) ? "UNKNOWN" : "", num_services_unknown);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_services_unknown > 0) ? "UNKNOWN" : "", (num_total_services_unknown > 0) ? "serviceTotalsBGUNKNOWN" : "", num_services_unknown, num_total_services_unknown);
 
 	/* total services in critical state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_critical > 0) ? "CRITICAL" : "", num_services_critical);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_services_critical > 0) ? "CRITICAL" : "", (num_total_services_critical > 0) ? "serviceTotalsBGCRITICAL" : "", num_services_critical, num_total_services_critical);
 
 	/* total services in pending state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_pending > 0) ? "PENDING" : "", num_services_pending);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_services_pending > 0) ? "PENDING" : "", (num_total_services_pending > 0) ? "serviceTotalsBGPENDING" : "", num_services_pending, num_total_services_pending);
 
 
 	printf("</TR>\n");
@@ -1846,42 +1881,16 @@ void show_service_status_totals(void) {
 	printf("<TABLE BORDER=1 CLASS='serviceTotals'>\n");
 	printf("<TR>\n");
 
-	/* determine which type of problem services should be viewed */
-	if (num_services_warning > 0)
-		problem_service_status_types = problem_service_status_types | SERVICE_WARNING;
-	if (num_services_critical > 0)
-		problem_service_status_types = problem_service_status_types | SERVICE_CRITICAL;
-	if (num_services_unknown > 0)
-		problem_service_status_types = problem_service_status_types | SERVICE_UNKNOWN;
-
-	printf("<TH CLASS='serviceTotals'>");
-	if (problem_service_status_types > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'><I>All Problems</I></A>", status_url, problem_service_status_types);
-	else
-		printf("<DIV CLASS='serviceTotals'><I>All Problems</I></DIV>");
-	printf("</TH>\n");
-
-	/* determine which states states are included in total view */
-	total_service_status_types = problem_service_status_types;
-	if (num_services_ok > 0)
-		total_service_status_types = total_service_status_types | SERVICE_OK;
-	if (num_services_pending > 0)
-		total_service_status_types = total_service_status_types | SERVICE_PENDING;
-
-	printf("<TH CLASS='serviceTotals'>");
-	if (total_service_status_types > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'><I>All Types</I></A>", status_url, total_service_status_types);
-	else
-		printf("<DIV CLASS='serviceTotals'><I>All Types</I></DIV>");
-	printf("</TH>\n");
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'><I>All Problems</I></A></TH>\n", status_url, all_service_problems);
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'><I>All Types</I></A></TH>\n", status_url, all_service_status_types);
 
 	printf("</TR><TR>\n");
 
 	/* total service problems */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (total_problems > 0) ? "PROBLEMS" : "", total_problems);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_problems_filtered > 0) ? "PROBLEMS" : "", (num_problems_unfiltered > 0) ? "serviceTotalsBGPROBLEMS" : "", num_problems_filtered, num_problems_unfiltered);
 
 	/* total services */
-	printf("<TD CLASS='serviceTotals'>%d</TD>\n", total_services);
+	printf("<TD CLASS='serviceTotals' text='filtered/unfiltered'>&nbsp;%d / %d&nbsp;</TD>\n", num_services_filtered, num_services_unfiltered);
 
 	printf("</TR>\n");
 	printf("</TABLE>\n");
@@ -1895,10 +1904,10 @@ void show_service_status_totals(void) {
 
 /* display a table with host status totals... */
 void show_host_status_totals(void) {
-	int total_hosts = 0;
-	int total_problems = 0;
-	int problem_host_status_types = 0;
-	int total_host_status_types = 0;
+	int num_hosts_filtered = 0;
+	int num_problems_filtered = 0;
+	int num_hosts_unfiltered = 0;
+	int num_problems_unfiltered = 0;
 	char status_url[MAX_INPUT_BUFFER];
 	char temp_buffer[MAX_INPUT_BUFFER];
 	char *style = NULL;
@@ -1906,8 +1915,11 @@ void show_host_status_totals(void) {
 	if (display_status_totals == FALSE)
 		return;
 
-	total_hosts = num_hosts_up + num_hosts_down + num_hosts_unreachable + num_hosts_pending;
-	total_problems = num_hosts_down + num_hosts_unreachable;
+	num_hosts_filtered = num_hosts_up + num_hosts_down + num_hosts_unreachable + num_hosts_pending;
+	num_problems_filtered = num_hosts_down + num_hosts_unreachable;
+
+	num_hosts_unfiltered = num_total_hosts_up + num_total_hosts_down + num_total_hosts_unreachable + num_total_hosts_pending;
+	num_problems_unfiltered = num_total_hosts_down + num_total_hosts_unreachable;
 
 	/* construct url start */
 	if (group_style_type == STYLE_HOST_SERVICE_DETAIL && display_all_unhandled_problems == FALSE)
@@ -1955,50 +1967,24 @@ void show_host_status_totals(void) {
 	printf("<TABLE BORDER=1 CLASS='hostTotals'>\n");
 	printf("<TR>\n");
 
-	printf("<TH CLASS='hostTotals'>");
-	if (num_hosts_up > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Up</A>", status_url, HOST_UP);
-	else
-		printf("<DIV CLASS='hostTotals'>Up</DIV>");
-	printf("</TH>\n");
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Up</A></TH>\n", status_url, HOST_UP);
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Down</A></TH>\n", status_url, HOST_DOWN);
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Unreachable</A></TH>\n", status_url, HOST_UNREACHABLE);
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Pending</A></TH>\n", status_url, HOST_PENDING);
 
-	printf("<TH CLASS='hostTotals'>");
-	if (num_hosts_down > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Down</A>", status_url, HOST_DOWN);
-	else
-		printf("<DIV CLASS='hostTotals'>Down</DIV>");
-	printf("</TH>\n");
-
-	printf("<TH CLASS='hostTotals'>");
-	if (num_hosts_unreachable > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Unreachable</A>", status_url, HOST_UNREACHABLE);
-	else
-		printf("<DIV CLASS='hostTotals'>Unreachable</DIV>");
-	printf("</TH>\n");
-
-	printf("<TH CLASS='hostTotals'>");
-	if (num_hosts_pending > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Pending</A>", status_url, HOST_PENDING);
-	else
-		printf("<DIV CLASS='hostTotals'>Pending</DIV>");
-	printf("</TH>\n");
-
-	printf("</TR>\n");
-
-
-	printf("<TR>\n");
+	printf("</TR><TR>\n");
 
 	/* total hosts up */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_up > 0) ? "UP" : "", num_hosts_up);
+	printf("<TD CLASS='hostTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_hosts_up > 0) ? "UP" : "", (num_total_hosts_up > 0) ? "hostTotalsBGUP" : "", num_hosts_up, num_total_hosts_up);
 
 	/* total hosts down */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_down > 0) ? "DOWN" : "", num_hosts_down);
+	printf("<TD CLASS='hostTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_hosts_down > 0) ? "DOWN" : "", (num_total_hosts_down > 0) ? "hostTotalsBGDOWN" : "", num_hosts_down, num_total_hosts_down);
 
 	/* total hosts unreachable */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_unreachable > 0) ? "UNREACHABLE" : "", num_hosts_unreachable);
+	printf("<TD CLASS='hostTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_hosts_unreachable > 0) ? "UNREACHABLE" : "", (num_total_hosts_unreachable > 0) ? "hostTotalsBGUNREACHABLE" : "", num_hosts_unreachable, num_total_hosts_unreachable);
 
 	/* total hosts pending */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_pending > 0) ? "PENDING" : "", num_hosts_pending);
+	printf("<TD CLASS='hostTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_hosts_pending > 0) ? "PENDING" : "", (num_total_hosts_pending > 0) ? "hostTotalsBGPENDING" : "", num_hosts_pending, num_total_hosts_pending);
 
 	printf("</TR>\n");
 	printf("</TABLE>\n");
@@ -2008,39 +1994,16 @@ void show_host_status_totals(void) {
 	printf("<TABLE BORDER=1 CLASS='hostTotals'>\n");
 	printf("<TR>\n");
 
-	/* determine which type of problem hosts should be viewed */
-	if (num_hosts_down > 0)
-		problem_host_status_types = problem_host_status_types | HOST_DOWN;
-	if (num_hosts_unreachable > 0)
-		problem_host_status_types = problem_host_status_types | HOST_UNREACHABLE;
-	printf("<TH CLASS='hostTotals'>");
-	if (problem_host_status_types > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'><I>All Problems</I></A>", status_url, problem_host_status_types);
-	else
-		printf("<DIV CLASS='hostTotals'><I>All Problems</I></DIV>");
-	printf("</TH>\n");
-
-	/* determine which host states are included in total view */
-	total_host_status_types = problem_host_status_types;
-	if (num_hosts_up > 0)
-		total_host_status_types = total_host_status_types | HOST_UP;
-	if (num_hosts_pending > 0)
-		total_host_status_types = total_host_status_types | HOST_PENDING;
-
-	printf("<TH CLASS='hostTotals'>");
-	if (total_host_status_types > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'><I>All Types</I></A>", status_url, total_host_status_types);
-	else
-		printf("<DIV CLASS='hostTotals'><I>All Types</I></DIV>");
-	printf("</TH>\n");
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'><I>All Problems</I></A></TH>\n", status_url, all_host_problems);
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'><I>All Types</I></A></TH>\n", status_url, all_host_status_types);
 
 	printf("</TR><TR>\n");
 
 	/* total hosts with problems */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (total_problems > 0) ? "PROBLEMS" : "", total_problems);
+	printf("<TD CLASS='hostTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_problems_filtered > 0) ? "PROBLEMS" : "", (num_problems_unfiltered > 0) ? "hostTotalsBGPROBLEMS" : "", num_problems_filtered, num_problems_unfiltered);
 
 	/* total hosts */
-	printf("<TD CLASS='hostTotals'>%d</TD>\n", total_hosts);
+	printf("<TD CLASS='hostTotals'>&nbsp;%d / %d&nbsp;</TD>\n", num_hosts_filtered, num_hosts_unfiltered);
 
 	printf("</TR>\n");
 	printf("</TABLE>\n");
@@ -5676,7 +5639,7 @@ int add_status_data(int status_type, void *data) {
 		if (host_status == NULL)
 			return ERROR;
 
-		if (host_status->added == TRUE)
+		if (host_status->added & STATUS_ADDED)
 			return OK;
 
 		status = host_status->status;
@@ -5715,7 +5678,7 @@ int add_status_data(int status_type, void *data) {
 		if (service_status == NULL)
 			return ERROR;
 
-		if (service_status->added == TRUE)
+		if (service_status->added & STATUS_ADDED)
 			return OK;
 
 		status = service_status->status;
@@ -5869,7 +5832,7 @@ int add_status_data(int status_type, void *data) {
 		else
 			num_hosts_up++;
 
-		host_status->added = TRUE;
+		host_status->added |= STATUS_ADDED | STATUS_COUNTED_FILTERED;
 	} else {
 		/* check if service triggers sound */
 		if (service_status->problem_has_been_acknowledged == FALSE && \
@@ -5896,7 +5859,7 @@ int add_status_data(int status_type, void *data) {
 		else
 			num_services_ok++;
 
-		service_status->added = TRUE;
+		service_status->added |= STATUS_ADDED | STATUS_COUNTED_FILTERED;
 	}
 
 	return OK;

@@ -74,15 +74,21 @@ div.status { font-size: 10pt; text-align: center; }
 div.serviceTotals { text-align: center; font-weight: bold; font-size: 10pt; }
 table.serviceTotals { font-size: 10pt; background-color: #fff; padding: 2px; border: 0; }
 th.serviceTotals,A.serviceTotals { text-align: center; font-size: 10pt; background-color: #707677; color: #fff; border: 0; }
-td.serviceTotals { text-align: center; background-color: #e9e9e9; border: 0; }
+td.serviceTotals { text-align: center; background-color: #e9e9e9; }
 a.serviceTotals:hover { color: #000; }
 
 .serviceTotalsOK { text-align: center; background-color: #00CC33; color: #fff; border: 0 }
+.serviceTotalsBGOK { border: 1px #00CC33 solid; }
 .serviceTotalsWARNING { text-align: center; background-color: #ffa500; color: #fff; border: 0 }
+.serviceTotalsBGWARNING { border: 1px #ffa500 solid; }
 .serviceTotalsUNKNOWN { text-align: center; background-color: #E066FF; color: #fff; border: 0 }
+.serviceTotalsBGUNKNOWN { border: 1px #E066FF solid; }
 .serviceTotalsCRITICAL { text-align: center; background-color: #ff3300; color: #fff; border: 0 }
+.serviceTotalsBGCRITICAL { border: 1px #ff3300 solid; }
 .serviceTotalsPENDING { text-align: center; background-color: #acacac; color: #fff; border: 0 }
+.serviceTotalsBGPENDING { border: 1px #acacac solid; }
 .serviceTotalsPROBLEMS { text-align: center; background-color: #6ec2fd; color: #fff; border: 0 }
+.serviceTotalsBGPROBLEMS { border: 1px #6ec2fd solid; }
 
 div.serviceTotalsCommands { text-align: right; font-weight: bold; font-size: 10pt; }
 table.serviceTotalsCommands { font-size: 10pt; background-color: #fff; padding: 2px; border: 0; }
@@ -94,14 +100,19 @@ serviceTotalsCommands a:hover { color: #fff; }
 div.hostTotals { text-align: center; font-weight: bold; font-size: 10pt; }
 table.hostTotals { font-size: 10pt; background-color: #fff; padding: 2px; border: 0; }
 th.hostTotals,A.hostTotals { text-align: center; font-size: 10pt; background-color: #707677; color: #fff; border: 0; }
-td.hostTotals { text-align: center; background-color: #e9e9e9; border: 0; }
+td.hostTotals { text-align: center; background-color: #e9e9e9; }
 a.hostTotals:hover { color: #000; }
 
 .hostTotalsUP { text-align: center; background-color: #00cc33; color: #fff; border: 0 }
+.hostTotalsBGUP { border: 1px #00cc33 solid; }
 .hostTotalsDOWN { text-align: center; background-color: #ff3300; color: #fff; border: 0 }
+.hostTotalsBGDOWN { border: 1px #ff3300 solid; }
 .hostTotalsUNREACHABLE { text-align: center; background-color: #E066FF; color: #fff; border: 0 }
+.hostTotalsBGUNREACHABLE { border: 1px #E066FF solid; }
 .hostTotalsPENDING { text-align: center; background-color: #acacac; color: #fff; border: 0 }
+.hostTotalsBGPENDING { border: 1px #acacac solid; }
 .hostTotalsPROBLEMS { text-align: center; background-color: #6ec2fd; color: #fff; border: 0 }
+.hostTotalsBGPROBLEMS { border: 1px #6ec2fd solid; }
 
 div.hostTotalsCommands { text-align: right; font-weight: bold; font-size: 10pt; }
 table.hostTotalsCommands { font-size: 10pt; background-color: #fff; padding: 2px; border: 0; }
