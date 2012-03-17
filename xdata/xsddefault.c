@@ -871,13 +871,13 @@ int xsddefault_read_status_data(char *config_file, int options) {
 				break;
 
 			case XSDDEFAULT_HOSTSTATUS_DATA:
-				temp_hoststatus->added = FALSE;
+				temp_hoststatus->added = 0;
 				add_host_status(temp_hoststatus);
 				temp_hoststatus = NULL;
 				break;
 
 			case XSDDEFAULT_SERVICESTATUS_DATA:
-				temp_servicestatus->added = FALSE;
+				temp_servicestatus->added = 0;
 				add_service_status(temp_servicestatus);
 				temp_servicestatus = NULL;
 				break;
