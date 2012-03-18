@@ -1101,7 +1101,8 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("\ts = (counter_seconds != 1) ? 's':'' ;\n");
 		printf("\tif (counter_seconds<=0) {\n");
 		printf("\t\tupdate_text('refresh_text','- Updating now');\n");
-		printf("\t\twindow.location.reload(false);\n");
+		printf("\t\twindow.location.href=window.location.href;\n");
+		printf("\t\treturn false;\n");
 		printf("\t} else\n");
 		printf("\t\tupdate_text('refresh_text','- Update in '+counter_seconds+' second'+s);\n");
 		printf("\tcounter_seconds--;\n");
