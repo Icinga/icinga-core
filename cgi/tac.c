@@ -1967,11 +1967,11 @@ void display_tac_overview(void) {
 	printf("<table border=0 cellspacing=4 cellspadding=0>\n");
 	printf("<tr>\n");
 	printf("<td align=left valign=center class='healthItem'>Host Health:</td>");
-	printf("<td valign=top width=100 class='healthBar'><img src='%s%s' border=0 width=%d height=20 alt='%2.1f%% Health' title='%2.1f%% Health'></td>\n", url_images_path, host_health_image, (percent_host_health < 5.0) ? 5 : (int)percent_host_health, percent_host_health, percent_host_health);
+	printf("<td valign=top width=100 class='healthBar'><a href='%s?host=all&style=hostdetail&hoststatustypes=%d'><img src='%s%s' border=0 width=%d height=20 alt='%2.1f%% Health' title='%2.1f%% Health'></a></td>\n", STATUS_CGI, HOST_DOWN | HOST_UNREACHABLE, url_images_path, host_health_image, (percent_host_health < 5.0) ? 5 : (int)percent_host_health, percent_host_health, percent_host_health);
 	printf("</tr>\n");
 	printf("<tr>\n");
 	printf("<td align=left valign=center class='healthItem'>Service Health:</td>");
-	printf("<td valign=top width=100 class='healthBar'><img src='%s%s' border=0 width=%d height=20 alt='%2.1f%% Health' title='%2.1f%% Health'></td>\n", url_images_path, service_health_image, (percent_service_health < 5.0) ? 5 : (int)percent_service_health, percent_service_health, percent_service_health);
+	printf("<td valign=top width=100 class='healthBar'><a href='%s?host=all&style=detail&servicestatustypes=%d'><img src='%s%s' border=0 width=%d height=20 alt='%2.1f%% Health' title='%2.1f%% Health'></td>\n", STATUS_CGI, SERVICE_CRITICAL | SERVICE_WARNING | SERVICE_PENDING, url_images_path, service_health_image, (percent_service_health < 5.0) ? 5 : (int)percent_service_health, percent_service_health, percent_service_health);
 	printf("</tr>\n");
 	printf("</table>\n");
 	printf("</td>\n");
