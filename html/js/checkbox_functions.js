@@ -1,6 +1,6 @@
 // Written by Rune Darrud
 // Modified by Ricardo Bartels
-// For Icinga
+// Copyright (c) 2009-2011 Icinga Development Team (http://www.icinga.org)
 
 function isValidForSubmit(form) {
 	var group = document.getElementById(form);
@@ -43,7 +43,7 @@ function enableDisableButton(form) {
 		document.forms[form].CommandButton.disabled=disabled;
 
 	// update refresh counter
-	update_refresh_counter(true);
+	reset_counter();
 }
 
 function showValue(form,arg,schedule_host_check,schedule_host_svc_check) {

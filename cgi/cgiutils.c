@@ -1082,50 +1082,9 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("<script type=\"text/javascript\">\n");
 		printf("var refresh_rate=%d;\n", refresh_rate);
 		printf("var do_refresh=%s;\n",(refresh == TRUE) ? "true" : "false");
-		printf("var counter_seconds=refresh_rate;\n\n");
-
-		printf("function update_text(id,text) {\n");
-		printf("\tif (document.getElementById(id) != null )\n");
-		printf("\t\tdocument.getElementById(id).innerHTML = text;\n");
-		printf("}\n\n");
-
-		printf("function update_refresh_counter(reset) {\n");
-		printf("\tif (reset)\n");
-		printf("\t\tcounter_seconds=refresh_rate;\n");
-		printf("\tif (!do_refresh) {\n");
-		printf("\t\tupdate_text('refresh_text','- Update is PAUSED');\n");
-		printf("\t\tupdate_text('refresh_button','[continue]');\n");
-		printf("\t\treturn;\n");
-		printf("\t} else\n");
-		printf("\tupdate_text('refresh_button','[pause]');\n");
-		printf("\ts = (counter_seconds != 1) ? 's':'' ;\n");
-		printf("\tif (counter_seconds<=0) {\n");
-		printf("\t\tupdate_text('refresh_text','- Updating now');\n");
-		printf("\t\twindow.location.href=window.location.href;\n");
-		printf("\t\treturn false;\n");
-		printf("\t} else\n");
-		printf("\t\tupdate_text('refresh_text','- Update in '+counter_seconds+' second'+s);\n");
-		printf("\tcounter_seconds--;\n");
-		printf("}\n\n");
-
-		printf("function toggle_refresh() {\n");
-		printf("\tif (do_refresh) {\n");
-		printf("\t\tdo_refresh = false;\n");
-		printf("\t\tupdate_refresh_counter(true);\n");
-		printf("\t} else {\n");
-		printf("\t\tdo_refresh = true;\n");
-		printf("\t\tupdate_refresh_counter(true);\n");
-		printf("\t}\n");
-		printf("}\n\n");
-
-		printf("function counter_loop(){\n");
-		printf("\tupdate_refresh_counter(false)\n");
-		printf("\tsetTimeout(\"counter_loop()\",1000);\n");
-		printf("}\n\n");
-
-		printf("counter_loop();\n");
-
+		printf("var counter_seconds=refresh_rate;\n");
 		printf("</script>\n");
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, PAGE_REFRESH_JS);
 	}
 
 	if (cgi_id == STATUS_CGI_ID || cgi_id == EXTINFO_CGI_ID) {
