@@ -137,6 +137,7 @@ extern "C" {
 #define JQUERY_MAIN_JS		"jquery-1.6.2.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
 #define SKINNYTIP_JS		"skinnytip.js"
+#define PAGE_REFRESH_JS		"page_refresh.js"
 
 /********************************* ICONS ************************************/
 
