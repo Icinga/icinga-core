@@ -1804,6 +1804,7 @@ void show_service_status_totals(void) {
 	int num_services_unfiltered = 0;
 	int num_problems_unfiltered = 0;
 	char status_url[MAX_INPUT_BUFFER];
+	char temp_buffer[MAX_INPUT_BUFFER];
 	char *style = NULL;
 
 	if (display_status_totals == FALSE || group_style_type == STYLE_HOST_DETAIL)
@@ -1836,9 +1837,23 @@ void show_service_status_totals(void) {
 	else
 		snprintf(status_url, sizeof(status_url) - 1, "%s?%s%s%s&style=%s&hoststatustypes=%d", STATUS_CGI, url_hostgroups_part, (service_filter != NULL) ? "&servicefilter=" : "", (service_filter != NULL) ? url_encode(service_filter) : "", style, host_status_types);
 
+	my_free(style);
+
 	status_url[sizeof(status_url)-1] = '\x0';
 
-	my_free(style);
+	if (service_properties != 0 && display_all_unhandled_problems == FALSE) {
+		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&serviceprops=%lu", service_properties);
+		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+		status_url[sizeof(status_url)-1] = '\x0';
+	}
+
+	if (host_properties != 0) {
+		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&hostprops=%lu", host_properties);
+		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+		status_url[sizeof(status_url)-1] = '\x0';
+	}
 
 	/* display status totals */
 	printf("<DIV CLASS='serviceTotals'>Service Status Totals</DIV>\n");
@@ -1952,6 +1967,20 @@ void show_host_status_totals(void) {
 
 	if (service_status_types != all_service_status_types) {
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&servicestatustypes=%d", service_status_types);
+		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+		status_url[sizeof(status_url)-1] = '\x0';
+	}
+
+	if (service_properties != 0) {
+		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&serviceprops=%lu", service_properties);
+		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+		status_url[sizeof(status_url)-1] = '\x0';
+	}
+
+	if (host_properties != 0 && display_all_unhandled_problems == FALSE) {
+		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&hostprops=%lu", host_properties);
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
 		status_url[sizeof(status_url)-1] = '\x0';
