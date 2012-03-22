@@ -27,6 +27,7 @@
 # 2012.03.05:  0.02 Easter based holidays, local holidays, examine mode
 # 2012.03.14:  0.03 reworked calculation of start / end dates, changed hash key
 # 2012.03.15:  0.04 add "-t" to specify deviating date/time
+# 2012.03.19:  0.05 bugfix: enable no blank before opening brace, missing srv
 
 use strict;
 use Getopt::Long qw(:config no_ignore_case bundling);
@@ -45,7 +46,7 @@ EOT
 #
 
 my $creator = "2012 Icinga Team";
-my $version = "0.04";
+my $version = "0.05";
 my $script  = "sched_down.pl";
 
 my $cFile = "/usr/local/icinga/etc/icinga.cfg";
@@ -247,7 +248,7 @@ sub read_object_file {
 		s/^\s+//;
 		s/\s+$//;
 		next if (/^$/);
-		if (/^define\s+(\S+)\s+{/) {
+		if (/^define\s+(\S+)\s*{/) {
 			$tmp->{object} = $1;
 			$ok = 1 if ($1 =~ /hostgroup|service/);
 			next;
@@ -738,7 +739,7 @@ sub plan_downtimes {
 				 			$extcmd = "SCHEDULE_SVC_DOWNTIME;$h;$s;$data";
 						}	
 						push @cmd, $extcmd;
-						$pDowntimes{"$h;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
+						$pDowntimes{"$h;$s;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
 					}	
 				}
 				for (0..$#cmd) {
