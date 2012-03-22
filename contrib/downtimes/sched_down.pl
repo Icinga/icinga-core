@@ -26,6 +26,7 @@
 # 2011.11.18:  0.01 Initial version
 # 2012.03.05:  0.02 Easter based holidays, local holidays, examine mode
 # 2012.03.14:  0.03 reworked calculation of start / end dates, changed hash key
+# 2012.03.15:  0.04 add "-t" to specify deviating date/time
 
 use strict;
 use Getopt::Long qw(:config no_ignore_case bundling);
@@ -44,7 +45,7 @@ EOT
 #
 
 my $creator = "2012 Icinga Team";
-my $version = "0.03";
+my $version = "0.04";
 my $script  = "sched_down.pl";
 
 my $cFile = "/usr/local/icinga/etc/icinga.cfg";
@@ -66,6 +67,7 @@ my %tmp        = ();
 my %sObject    = ();	# srv per host
 my $dt         = "";	# date/time info
 my $cTime      = time();
+my $timestamp  = "";
 my %hg         = ();	# hosts per hostgroup
 my %sg         = ();	# hosts per servicegroup
 my %holiday    = ();	# contains holiday definitions using names
@@ -84,6 +86,7 @@ GetOptions(
     "m|max_ahead=s" => \$max_ahead,
     "e|examine=s"   => \$examine,
     "f|forecast"    => \$forecast,
+    "t|timestamp=s" => \$timestamp,
 );
 
 if ($help) {
@@ -967,6 +970,25 @@ sub set_date_time {
 		($hour,$min) = $ENV{FAKE_TIME} =~ /(\d\d)(\d\d)/;
 		print "FAKE_TIME set to $hour:$min:00\n";
 	}	
+	if ($timestamp) {
+		if (length($timestamp) > 8) { # YYYYMMDDHHMI
+			($year,$mon,$mday,$hour,$min) = $timestamp =~ /(\d\d\d\d)(\d\d)(\d\d)(\d\d)(\d\d)/;
+			my $dow = Day_of_Week ($year,$mon,$mday);
+			my $txt = Day_of_Week_to_Text ($dow);
+			print "TIMESTAMP set to $txt $year.$mon.$mday $hour:$min\n";
+		} elsif (length($timestamp) > 4) { # YYYYMMDD
+			($year,$mon,$mday) = $timestamp =~ /(\d\d\d\d)(\d\d)(\d\d)/;
+			my $dow = Day_of_Week ($year,$mon,$mday);
+			my $txt = Day_of_Week_to_Text ($dow);
+			print "TIMESTAMP set to $txt $year.$mon.$mday\n";
+		} elsif (length($timestamp) == 4) { # HHMI
+			($hour,$min) = $timestamp =~ /(\d\d)(\d\d)/;
+			print "TIMESTAMP set to $hour:$min:00\n";
+		} else {
+			print "Timestamp is incorrect";
+			return;
+		}
+	}
 	# calculate unix timestamp based on given data
 	$cTime = Mktime($year,$mon,$mday,$hour,$min,0);
 }
@@ -1046,8 +1068,8 @@ This script schedules downtimes based on several files:
 
 Usage:
 $script [options]
-   -c | --config=s     Icinga main config (/usr/local/icinga/etc/icinga.cfg) 
-   -s | --schedule=s   schedule definitions (/usr/local/icinga/etc/downtime.cfg)
+   -c | --config=s     Icinga main config ($cFile) 
+   -s | --schedule=s   schedule definitions ($dFile)
    -l | --local=s      local holiday definitions
    -m | --max_ahead=s  plan max. days ahead (default = 2)
    -f | --forecast=s   forecast next schedules
