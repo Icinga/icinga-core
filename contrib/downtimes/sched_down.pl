@@ -28,6 +28,7 @@
 # 2012.03.14:  0.03 reworked calculation of start / end dates, changed hash key
 # 2012.03.15:  0.04 add "-t" to specify deviating date/time
 # 2012.03.19:  0.05 bugfix: enable no blank before opening brace, missing srv
+# 2012.03.20:  0.06 set name for local holiday file, add some perfdata
 
 use strict;
 use Getopt::Long qw(:config no_ignore_case bundling);
@@ -46,11 +47,12 @@ EOT
 #
 
 my $creator = "2012 Icinga Team";
-my $version = "0.05";
+my $version = "0.06";
 my $script  = "sched_down.pl";
 
 my $cFile = "/usr/local/icinga/etc/icinga.cfg";
-my $dFile = "/usr/local/icinga/etc/downtime.cfg";
+my $dFile = "/usr/local/icinga/etc/downtime.cfg"; # downtime definition
+my $lFile = "/usr/local/icinga/etc/holiday.cfg";  # local holiday definitions
 
 my $max_ahead  = 2;	# plan schedules max. days ahead 
 my $debug      = $ENV{DEBUG} || 1;
@@ -59,7 +61,6 @@ my $forecast   = 0;	# forecast schedule
 my $help       = 0;
 my $sFile      = "";	# status file
 my $oFile      = "";	# objects cache
-my $lFile      = "";	# local holiday definition
 my $cPipe      = "";	# command pipe
 my %cDowntimes = ();	# current downtimes
 my @sDowntimes = ();	# schedule definitions
@@ -69,6 +70,7 @@ my %sObject    = ();	# srv per host
 my $dt         = "";	# date/time info
 my $cTime      = time();
 my $timestamp  = "";
+my %numbers    = (scheduled =>0, defined => 0, new => 0);
 my %hg         = ();	# hosts per hostgroup
 my %sg         = ();	# hosts per servicegroup
 my %holiday    = ();	# contains holiday definitions using names
@@ -113,12 +115,18 @@ if ($examine) {
 	@sDowntimes = read_downtimes ($dFile,4);
 }
 plan_downtimes ();
+select STDOUT;
+printf "Already scheduled: %d, Definitions: %d, newly planned: %d | Existing=%d defined=%d new=%d\n",
+	$numbers{scheduled},$numbers{defined},$numbers{new},$numbers{scheduled},$numbers{defined},$numbers{new};
 exit 0;
 
 #
 # Subroutines
 #
 
+#
+# init entry for scheduled / defined downtimes
+#
 sub init_entry {
 	my $self = {
 		object              => "",
@@ -140,7 +148,9 @@ sub init_entry {
 	return $self;
 }
 
-# entry for hostgroups / servicegroups
+#
+# init entry for hostgroups / servicegroups
+#
 sub init_entry2 {
 	my $self = {
 		object              => "",
@@ -151,6 +161,9 @@ sub init_entry2 {
 	return $self;
 }
 
+#
+# init entry for date/time definition
+#
 sub init_dt {
 	my $self = {
 		start_ts => -1,
@@ -211,6 +224,7 @@ sub read_status_file {
 		}
 		if (/}/) {
 			if ($tmp->{object} =~ /hostdowntime|servicedowntime/) {
+				$numbers{scheduled}++;
 				$Downtimes {"$tmp->{host_name};$tmp->{service_description};$tmp->{start_time};$tmp->{end_time}"} = $tmp;
 			}
 			if ($tmp->{object} =~ /hoststatus|servicestatus/) {
@@ -316,6 +330,7 @@ sub read_downtimes {
 		}
 		next unless ($ok);
 		if (/}/) {
+			$numbers{defined}++;
 			$tmp->{host_name} = $tmp->{hostgroups} if ($tmp->{hostgroups});
 			$tmp->{host_name} = $tmp->{servicegroups} if ($tmp->{servicegroups});
 			push @Downtimes, $tmp;
@@ -642,7 +657,7 @@ sub plan_downtimes {
 				my $data = "$dt->{start_ts};$dt->{end_ts};$f;$t;".($duration*60).";$a;$c";
 				my $key2 = "$s;$c;$dt->{start_ts};$dt->{end_ts}";
 				my $extcmd = "";
-				info (1, "planned: $key: ".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
+				info (1, "possibly on: ".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
 				if ("$h;$s" =~ /;$/) {	# no service_description
 					if ($hg) {	# host_groups defined
 						my @member = split (/,/,$hg{$hg}->{members});
@@ -791,6 +806,7 @@ sub plan_downtimes {
 		if ($old ne $key) {
 			print "CMD: [$cTime] $pDowntimes{$key}\n";
 			unless ($debug or $examine or $forecast) {
+				$numbers{new}++;
 				open (CMD,">$cPipe") || info (0,"Error opening $cPipe, RC=$!") && exit 5;
 				print CMD "[$cTime] $pDowntimes{$key}\n";
 				close (CMD);
@@ -881,6 +897,8 @@ sub analyse_period {
 
 sub info {
 	my ($lvl,$line) = @_;
+	select STDOUT;
+	select STDERR if ($lvl);
 	print "  "x$lvl."$lvl: $line\n" if ($lvl <= $debug);
 }
 
@@ -958,7 +976,7 @@ sub flexible_holidays {
 sub set_date_time {
 	# current time
 	$cTime = time ();
-	my ($year,$mon,$mday,$hour,$min,$sec,$yday,$wday,$isdst) = Localtime($cTime);
+	my ($year,$mon,$mday,$hour,$min) = (Localtime($cTime))[0..4];
 	# use other date if specified using environment variable FAKE_DATE
 	if ($ENV{FAKE_DATE}) {
 		($year,$mon,$mday) = $ENV{FAKE_DATE} =~ /(\d\d\d\d)(\d\d)(\d\d)/;
@@ -1066,17 +1084,23 @@ $script $version - Copyright $creator
 This script schedules downtimes based on several files:
 - icinga.cfg (used to get command_file, status_file and objects_cache_file)
 - downtime.cfg (downtime definitions)
+- holiday.cfg (local holiday definitions, if present)
 
 Usage:
 $script [options]
-   -c | --config=s     Icinga main config ($cFile) 
-   -s | --schedule=s   schedule definitions ($dFile)
+   -c | --config=s     Icinga main config
+                       default: $cFile
+   -s | --schedule=s   schedule definitions
+                       default: $dFile
    -l | --local=s      local holiday definitions
+                       default: $lFile
    -m | --max_ahead=s  plan max. days ahead (default = 2)
    -f | --forecast=s   forecast next schedules
    -e | --examine=s    examine period and show next schedule
                        specify date and time instead like in downtime_period
    -d | --debug=s      0|1|2|3 (default = 1)
+   -t | --timestamp=s  specify deviating time/date
+                       YYYYMMDDHHMI, YYYYMMDD, or HHMI
    -h | --help         display this help
 
 Note: Enabled debugging, forecasting, and/or examine will prevent that schedules
@@ -1089,8 +1113,8 @@ Setting environment variables influences the behaviour:
   0 = no debugging / cmds are sent to external command pipe!
   Note: the command line option take precedence over the environment variable
 
-For details on timeperiod definition please take a look at
-https://dev.icinga.org/issues/1867.
+For details on timeperiod definitions please take a look at the documentation
+or https://dev.icinga.org/issues/1867.
 
 EOD
 }
