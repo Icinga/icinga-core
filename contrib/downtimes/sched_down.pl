@@ -29,6 +29,7 @@
 # 2012.03.15:  0.04 add "-t" to specify deviating date/time
 # 2012.03.19:  0.05 bugfix: enable no blank before opening brace, missing srv
 # 2012.03.20:  0.06 set name for local holiday file, add some perfdata
+# 2012.03.21:  0.07 bugfix: fix end date check; splitted code
 
 use strict;
 use Getopt::Long qw(:config no_ignore_case bundling);
@@ -47,7 +48,7 @@ EOT
 #
 
 my $creator = "2012 Icinga Team";
-my $version = "0.06";
+my $version = "0.07";
 my $script  = "sched_down.pl";
 
 my $cFile = "/usr/local/icinga/etc/icinga.cfg";
@@ -55,6 +56,7 @@ my $dFile = "/usr/local/icinga/etc/downtime.cfg"; # downtime definition
 my $lFile = "/usr/local/icinga/etc/holiday.cfg";  # local holiday definitions
 
 my $max_ahead  = 2;	# plan schedules max. days ahead 
+my $max_ahead2 = 7;	# schedules must end within n day
 my $debug      = $ENV{DEBUG} || 1;
 my $examine    = "";	# only examine schedules
 my $forecast   = 0;	# forecast schedule
@@ -97,7 +99,6 @@ if ($help) {
 	exit 0;
 }
 
-my $txt_ahead = " is more than $max_ahead day".(($max_ahead > 1) ? "s" : "")." away";
 set_date_time ();
 flexible_holidays ();
 local_holidays ($lFile,5) if (-f "$lFile");
@@ -110,7 +111,7 @@ if ($examine) {
 	push @sDowntimes, $tmp;
 } else {
 	read_config_file ($cFile,1);
-	%cDowntimes = read_status_file ($sFile,2);
+ 	%cDowntimes = read_status_file ($sFile,2);
 	(%hg,%sg) = read_object_file ($oFile,3);
 	@sDowntimes = read_downtimes ($dFile,4);
 }
@@ -374,22 +375,17 @@ sub local_holidays {
 				if ($calc =~ /\(([+|-]?\d+)\)/) {
 					$holiday{$var} = date_easter ("$1");
 					info (2, "$var ".localtime($holiday{$var})." added to holidays");
-				} else {
-					info (0, "Format of $calc seems to be wrong");
+					next;
 				}
-			} elsif ($calc =~ /date_in_week_of_month/i) {
+			} elsif ($calc =~ /day_in_week_of_month/i) {
 				if ($calc =~ /\((\d+),(\d),([+|-]?\d).*\)/) {
 					$holiday{$var} = date_in_week_of_month ("$1","$2","$3");
 					info (2, "$var ".localtime($holiday{$var})." added to holidays");
-				} else {
-					info (0, "Format of $calc seems to be wrong");
+					next;
 				}
-			} else {	
-				info (0, "Format of $_ seems to be wrong");
 			}
-		} else {
-			info (0, "Format of $_ seems to be wrong");
 		}
+		info (0, "Format of $_ seems to be wrong");
 	}
 	close (IFILE);
 }
@@ -401,8 +397,9 @@ sub plan_downtimes {
 # loop through downtime definitions
 	for my $index (0..$#sDowntimes) {
 		next unless ($sDowntimes[$index]{register});
-		my $h = $sDowntimes[$index]{host_name};
-		my $s = $sDowntimes[$index]{service_description};
+		my @hst = split(/,/,$sDowntimes[$index]{host_name});
+		my @srv = split (/,/,$sDowntimes[$index]{service_description});
+		push @srv, "" unless @srv;
 		my $c = $sDowntimes[$index]{comment};
 		my $duration = $sDowntimes[$index]{duration};
 		my $a = $sDowntimes[$index]{author};
@@ -413,369 +410,107 @@ sub plan_downtimes {
 		my $p = $sDowntimes[$index]{propagate};
 		my $t = 0;
 		my $diff = 0;
-		my $key = "$h;$s;$c";
- 		info (2,"-- Entry $key: $sDowntimes[$index]{duration} mins on: $sDowntimes[$index]{period}");
-		unless (exists ($sObject{"$h;$s"})) {
-			info (2, "object $h;$s does not exist");
-			next;
-		}
-# loop through date/time definitions
-		for my $i (0..$#r) {
-			my @cmd = ();
-			$dt = init_dt ();
-			info (1, "planning $key: $r[$i]");
-			my ($ds, $ts) = $r[$i] =~ /^(.*?)\s(\d+:.*)/;
-			unless (defined ($ts)) {
-				info (0, "no timeperiod HH:MM-HH:MM defined");
-				exit 11;
-			}
-			unless (defined ($ds)) {
-				info (0, "no dates defined");
-				exit 12;
-			}
-			my @ts = split(",",$ts.",");
-			my ($year,$mon,$mday,$hour,$min,$sec,$yday,$wday,$isdst) = Localtime($cTime);
-			info (2, sprintf "--- curr date/time: %04d-%02d-%02d %02d:%02d, yday: %03d, weekday %d (%s), DST: %s",
-				$year,$mon,$mday,$hour,$min, $yday, $wday, substr(Day_of_Week_to_Text($wday),0,3), ($isdst) ? "yes" : "no");
-			info (2, "DS:$ds / TS:$ts");
-			if ($ds =~ m#(.*)/\s*(\d+)#) {
-				($ds,$dt->{every}) = ($1,$2);
-			}
-# start and end defined
-			if ($ds =~ m#(\S.*)\s+-\s+(\S.*)#) {
-				next if analyse_period ("start",$1);
-				next if analyse_period ("end",$2);
-			}
-			else {
-# set end to start if no end definition present
-				next if analyse_period ("start",$1);
-				if ($dt->{every} < 0) {
-					$dt->{end_y} = $dt->{start_y};
-					$dt->{end_m} = $dt->{start_m};
-					$dt->{end_w} = $dt->{start_w};
-					$dt->{end_d} = $dt->{start_d};
-					$dt->{end_ts} = $dt->{start_ts};
-				}
-			}
-				
-# loop through time definitions
-			for my $j (0..$#ts) {
-				info (2, "Y/M/D/W Y/M/D/W E TS/Dur: $dt->{start_y}/$dt->{start_m}/$dt->{start_d}/$dt->{start_w} $dt->{end_y}/$dt->{end_m}/$dt->{end_d}/$dt->{end_w} $dt->{every} $ts[$j]/$duration");
-				if ($ts[$j] =~ /(\d+):(\d+)\s*-\s*(\d+):(\d+)/) {
-					$dt->{start_hh} = $1;
-					$dt->{start_mm} = $2;
-					$dt->{end_hh} = $3;
-					$dt->{end_mm} = $4;
-				} elsif ($ts[$j] =~ /(\d+):(\d+)/) {
-					$dt->{start_hh} = $1;
-					$dt->{start_mm} = $2;
-					$dt->{end_hh} = $dt->{start_hh};
-					$dt->{end_mm} = $dt->{start_mm} + $duration % 60;
-					if ($dt->{end_mm} > 59) {
-						$dt->{end_mm} -= 60;
-						$dt->{end_hh}++;
-					}
-					$dt->{end_hh} = $dt->{start_hh} + int($duration / 60);
-					if ($dt->{end_hh} > 23) {
-						$dt->{end_hh} -= 24;
-					}
-				} else {
-					info (1, "$ts[$j] is invalid");
+		for (0..$#hst) {
+			my $h = $hst[$_];
+			my $exclude = ($h =~ /^!/);
+			$h = substr($h,1) if ($exclude);
+			for (0..$#srv) {
+				my $s = $srv[$_];
+				my $key = "$h;$s;$c";
+	 			info (2,"-- Entry $key: $sDowntimes[$index]{duration} mins on: $sDowntimes[$index]{period}");
+				unless (exists ($sObject{"$h;$s"})) {
+					info (2, "object $h;$s does not exist");
 					next;
 				}
-				if (($dt->{end_y} > 0) and ($dt->{end_m} > 0) and ($dt->{end_d} > 0)) {
-					if (Mktime ($dt->{end_y},$dt->{end_m},$dt->{end_d},23,59,59) < $cTime) {
-						info (1, "end already passed");
-						next;
+	# loop through date/time definitions
+				for my $i (0..$#r) {
+					my @cmd = ();
+					$dt = init_dt ();
+					info (1, "planning $key: $r[$i]");
+					my ($ds, $ts) = $r[$i] =~ /^(.*?)\s(\d+:.*)/;
+					unless (defined ($ts)) {
+						info (0, "no timeperiod HH:MM-HH:MM defined");
+						exit 11;
 					}
-				}
-
-# try to set the earliest date
-				if ($dt->{start_y} > 0) {
-					if ($dt->{start_m} > 0) {
-						if ($dt->{start_d} > 0) {
-							$dt->{start_ts} = Mktime ($dt->{start_y}, $dt->{start_m}, $dt->{start_d}, $dt->{start_hh},$dt->{start_mm},0);
-						}
-					}	
-				} else { # y <= 0
-					if ($dt->{start_m} > 0) {
-						if ($dt->{start_w} > 0) {
-							if ($dt->{start_d} != 0) {
-								$dt->{start_ts} = date_in_week_of_month ($dt->{start_m}, $dt->{start_w}, $dt->{start_d},$dt->{start_hh},$dt->{start_mm});
-							}
-						} else { # w <= 0
-							if ($dt->{start_d} > 0) {
-								$dt->{start_ts} = Mktime ($year, $dt->{start_m}, $dt->{start_d},$dt->{start_hh},$dt->{start_mm},0);
-								if ($dt->{start_ts} < $cTime) {
-									$dt->{start_ts} = Mktime (Add_Delta_YMD($year,$dt->{start_m},$dt->{start_d},1,0,0),$dt->{start_hh},$dt->{start_mm},0);
-								}
-							} elsif ($dt->{start_d} < 0) {
-								my $dim = Days_in_Month ($year, $dt->{start_m});
-								$dt->{start_ts} = Mktime ($year, $dt->{start_m}, $dim+1+$dt->{start_d},$dt->{start_hh},$dt->{start_mm},0);
-								if ($dt->{start_ts} < $cTime) {
-									$dim = Days_in_Month ($year+1, $dt->{start_m});
-									$dt->{start_ts} = Mktime ($year+1, $dt->{start_m}, $dim+1+$dt->{start_d},$dt->{start_hh},$dt->{start_mm},0);
-								}
-							}
-						}
-					} else {	# m <= 0
-						if ($dt->{start_w} > 0) {
-							if ($dt->{start_d} > 0) {
-								$dt->{start_ts} = date_in_week_of_month ($mon, $dt->{start_w},$dt->{start_d},$dt->{start_hh},$dt->{start_mm});
-							} else {
-								if ($dt->{start_w} == $dt->{end_w}) {
-									$dt->{start_ts} = date_in_week_of_month ($mon, $dt->{start_w},$dt->{start_d},$dt->{start_hh},$dt->{start_mm});
-								} else {	
-									$dt->{start_ts} = Mktime ($year,$mon,$mday,$dt->{start_hh},$dt->{start_mm},0);
-								}
-							}
-						} else { # w <= 0
-							if ($dt->{start_d} > 0) {
-#								$dt->{start_ts} = Mktime ($year, $mon, $dt->{start_d},$dt->{start_hh},$dt->{start_mm},0);
-								$dt->{start_ts} = Mktime ($year, $mon, $mday, $dt->{start_hh},$dt->{start_mm},0);
-							} elsif ($dt->{start_d} == 0) {
-								$dt->{start_ts} = Mktime ($year, $mon, 1,$dt->{start_hh},$dt->{start_mm},0);
-							} else {
-								my $dim = Days_in_Month ($year, $mon);
-								$dt->{start_ts} = Mktime ($year, $mon, $dim+1+$dt->{start_d},$dt->{start_hh},$dt->{start_mm},0);
-							}
+					unless (defined ($ds)) {
+						info (0, "no dates defined");
+						exit 12;
+					}
+					my @ts = split(",",$ts.",");
+					my ($year,$mon,$mday,$hour,$min,$sec,$yday,$wday,$isdst) = Localtime($cTime);
+					info (2, sprintf "--- curr date/time: %04d-%02d-%02d %02d:%02d, yday: %03d, weekday %d (%s), DST: %s",
+						$year,$mon,$mday,$hour,$min, $yday, $wday, substr(Day_of_Week_to_Text($wday),0,3), ($isdst) ? "yes" : "no");
+					info (2, "DS:$ds / TS:$ts");
+					if ($ds =~ m#(.*)/\s*(\d+)#) {
+						($ds,$dt->{every}) = ($1,$2);
+					}
+		# start and end defined
+					if ($ds =~ m#(\S.*)\s+-\s+(\S.*)#) {
+						next if analyse_period ("start",$1);
+						next if analyse_period ("end",$2);
+					}
+					else {
+		# set end to start if no end definition present
+						next if analyse_period ("start",$1);
+						if ($dt->{every} < 0) {
+							$dt->{end_y} = $dt->{start_y};
+							$dt->{end_m} = $dt->{start_m};
+							$dt->{end_w} = $dt->{start_w};
+							$dt->{end_d} = $dt->{start_d};
+							$dt->{end_ts} = $dt->{start_ts};
 						}
 					}
-				}
-				if ($dt->{start_ts} > $cTime + $max_ahead*86400) {
-					info (1, "Rejected: ==> start" . $txt_ahead);
-					next;
-				}
-				my $offs = 0;
-				my $midnight = ($dt->{start_hh}*60+$dt->{start_mm} >= $dt->{end_hh}*60+$dt->{end_mm});	# across midnight?
-				if ($dt->{end_hh} == 24) {	# end time 24:00?
-					$dt->{end_hh} = 0;
-					$midnight = 1;
-				}
-				info (2, "F ".localtime($dt->{start_ts}));	
-				my $count = 0;
-				my $loop = 1;
-				my $last = 0;
-				while (($loop) and ($count <= $max_ahead)) {
-					my ($year,$mon,$mday,$hour,$min,$sec,$yday,$wday,$isdst) = Localtime($dt->{start_ts});
-					if ($dt->{every} < 0) {
-						if (($dt->{start_w} > 0) and ($dt->{start_d} != 0)) {
-							if ($dt->{start_d} > 0) {
-								$dt->{start_ts} = date_in_week_of_month ($mon, $dt->{start_w}, $dt->{start_d}, $dt->{start_hh}, $dt->{start_mm}) + $count * 86400;
-							} else {
-								$dt->{start_ts} = date_in_week_of_month ($mon, $dt->{start_w}, $dt->{start_d}, $dt->{start_hh}, $dt->{start_mm});
-							}
-							($year,$mon,$mday,$hour,$min,$sec,$yday,$wday,$isdst) = Localtime($dt->{start_ts});
-						}
-						info (2, "S ".localtime($dt->{start_ts}));	
-						if ($dt->{start_y} > 0) {
-							$loop *= (($year >= $dt->{start_y}) and ($year <= $dt->{end_y}));
-							info (3, "SY $loop");
-						}
-						if ($dt->{start_m} > 0) {
-							$loop &= (($mon >= $dt->{start_m}) and ($mon <= $dt->{end_m}));
-							info (3, "SM $loop");
-						}
-						if ($dt->{start_d} > 0) {
-							if ($dt->{start_w} < 1) {
-								$loop &= ($mday >= $dt->{start_d});
-								$loop &= ($mday <= $dt->{end_d}) if ($dt->{end_d} > 0);
-							}
-							info (3, "SD $loop");
-						}
-						if (($dt->{start_w} > 0) and ($dt->{start_d} == 0)) {
-							$loop &= (($wday >= $dt->{start_w}) and ($wday <= $dt->{end_w}));
-							info (3, "SW $loop");
-						}
-					} else {
-						info (2, "S. ".localtime($dt->{start_ts}));	
-					}	
-					$loop &= ($dt->{start_ts} >= $cTime);
-					$count++ if ($dt->{every} < 0);
-					$loop = not($loop);
-					info (3, "ST $loop / $count");
-					if ($loop) {
-						$last = $dt->{start_ts};
-						if (($dt->{start_d} > 0) and ($dt->{start_d} == $dt->{end_d})) {
-							$dt->{start_ts} = Mktime (Add_Delta_YMD ($year,$mon,$mday,0,1,0),$dt->{start_hh},$dt->{start_mm},0);
-						} else {
-							$dt->{start_ts} = Mktime (Add_Delta_YMD ($year,$mon,$mday,0,0,abs($dt->{every})),$dt->{start_hh},$dt->{start_mm},0);
-						}
-					}
-				}
-				if (($count > $max_ahead) or ($dt->{start_ts} > $cTime + $max_ahead*86400)) {
-					info (1, "Rejected: ==> start" . $txt_ahead);
-					next;
-				}
-				# adjust possible DST change
-				$dt->{start_ts} = Mktime ((Localtime($dt->{start_ts}))[0..2],$dt->{start_hh},$dt->{start_mm},0);
 	
-				$dt->{end_ts} = $dt->{start_ts};
-				$count = 0;
-				$loop = 1;
-				while (($loop) and ($count <= $max_ahead)) {
-					my ($year,$mon,$mday,$hour,$min,$sec,$yday,$wday,$isdst) = Localtime($dt->{end_ts});
-					info (2, "E ".localtime($dt->{end_ts}));	
-					if ($dt->{end_y} > 0) {
-						$loop *= (($year >= $dt->{start_y}) and ($year <= $dt->{end_y}));
-						info (3, "EY $loop");
-					}
-					if ($dt->{end_m} > 0) {
-						$loop *= (($mon >= $dt->{start_m}) and ($mon <= $dt->{end_m}));
-						info (3, "EM $loop");
-					}
-					if ($dt->{end_d} > 0) {
-						if ($dt->{end_w} < 0) {
-							$loop *= (($mday >= $dt->{start_d}) and ($mday <= $dt->{end_d}));
+		# loop through time definitions
+					for my $j (0..$#ts) {
+						next if (check_ts ($dt, $ts[$j], $duration));
+						next if (set_start ($dt, $cTime, $year, $mon, $mday));
+	
+						my $offs = 0;
+						my $midnight = ($dt->{start_hh}*60+$dt->{start_mm} >= $dt->{end_hh}*60+$dt->{end_mm});	# across midnight?
+						if ($dt->{end_hh} == 24) {	# end time 24:00?
+							$dt->{end_hh} = 0;
+							$midnight = 1;
 						}
-						info (3, "ED $loop");
-					}
-					if (($dt->{end_w} > 0) and ($dt->{end_m} < 0)) {
-						$loop *= (($wday >= $dt->{start_w}) and ($wday <= $dt->{end_w}));
-						info (3, "EW $loop");
-					}
-					$loop &= ($dt->{end_ts} >= $cTime);
-					info (3, "ET $loop");
-					$count++ if ($dt->{every} < 0);
-					$loop = not($loop);
-					$dt->{end_ts} = Mktime (Add_Delta_YMD ($year,$mon,$mday,0,0,abs($dt->{every})),$dt->{end_hh},$dt->{end_mm},0) if ($loop);
-				}
-				if ($count > $max_ahead) {
-					info (1, "Rejected: ==> end" . $txt_ahead);
-					next;
-				}
-				info (2, "E1:".localtime($dt->{end_ts})." midnight: $midnight");
-				($year,$mon,$mday) = Add_Delta_YMD ((Localtime($dt->{end_ts}))[0..2],0,0,$midnight);
-				$dt->{end_ts} = Mktime ($year,$mon,$mday,$dt->{end_hh},$dt->{end_mm},0);
-
-				if (exists($cDowntimes{"$key;$dt->{start_ts};$dt->{end_ts}"})) {
-					info (1,"Rejected: ==> already planned $key:".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
-					next;
-				}
-				$f = ($dt->{end_ts} - $dt->{start_ts} == $duration * 60) ? 1 : 0;
-
-				my $data = "$dt->{start_ts};$dt->{end_ts};$f;$t;".($duration*60).";$a;$c";
-				my $key2 = "$s;$c;$dt->{start_ts};$dt->{end_ts}";
-				my $extcmd = "";
-				info (1, "possibly on: ".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
-				if ("$h;$s" =~ /;$/) {	# no service_description
-					if ($hg) {	# host_groups defined
-						my @member = split (/,/,$hg{$hg}->{members});
-						next if (already_planned (\@member,"HG",1,$key,$key2,$duration));
-						$extcmd = "SCHEDULE_HOSTGROUP_HOST_DOWNTIME;$hg;$data";
-						push @cmd, $extcmd;
-						$pDowntimes{"$hg;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
-					} elsif ($sg) {
-						my @mem = split (/,/,$sg{$sg}->{members});
-						my @member = ();
-						for (my $idx = 0; $idx <= $#mem; $idx+=2) {
-							push @member, $mem[$idx];
-						}
-						next if (already_planned (\@member,"SG",2,$key,$key2,$duration));
-						$extcmd = "SCHEDULE_SERVICEGROUP_HOST_DOWNTIME;$sg;$data";
-						push @cmd, $extcmd;
-						$pDowntimes{"$sg;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
-					} else {			# host_name defined
-						if (exists($cDowntimes{"$h;;$dt->{start_ts};$dt->{end_ts}"})) {
-							info (1, "Rejected: ==> already planned $key");
+						info (2, "F ".localtime($dt->{start_ts}));	
+						next if (check_start ($dt));
+						# adjust possible DST change
+						$dt->{start_ts} = Mktime ((Localtime($dt->{start_ts}))[0..2],$dt->{start_hh},$dt->{start_mm},0);
+			
+						$dt->{end_ts} = $dt->{start_ts};
+						next if (check_end ($dt));
+						info (2, "E1:".localtime($dt->{end_ts})." midnight: $midnight");
+						($year,$mon,$mday) = Add_Delta_YMD ((Localtime($dt->{end_ts}))[0..2],0,0,$midnight);
+						$dt->{end_ts} = Mktime ($year,$mon,$mday,$dt->{end_hh},$dt->{end_mm},0);
+		
+						if (exists($cDowntimes{"$key;$dt->{start_ts};$dt->{end_ts}"})) {
+							info (1,"Rejected: ==> already planned $key:".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
 							next;
 						}
-						if ($p) {
-					 		$extcmd = "SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME;$h;$data";
-						} else {
-					 		$extcmd = "SCHEDULE_HOST_DOWNTIME;$h;$data";
+						my $data = "$dt->{start_ts};$dt->{end_ts};$f;$t;".($duration*60).";$a;$c";
+						next if (set_cmd(\@cmd,$dt,$key,$data,$hg,$sg,$h,$s,$c,$p,$duration,$exclude));
+	
+						for (0..$#cmd) {
+							info (0,"CMD:$cmd[$_]");
+							my @f = split (/;/,$cmd[$_]);
+							my $srv = $f[2];
+							my $start = $f[3];
+							my $end = $f[4];
+							if ($f[0] =~ /HOST/) {
+								$start = $f[2];
+								$end = $f[3];
+								$srv = "";
+							}
+							my ($yy1,$mm1,$dd1,$hh1,$mi1) = (Localtime($start))[0..5];
+							my ($yy2,$mm2,$dd2,$hh2,$mi2) = (Localtime($end))[0..5];
+							$f[0] = sprintf "%04d.%02d.%02d %02d:%02d - %04d.%02d.%02d %02d:%02d %s",
+								$yy1,$mm1,$dd1,$hh1,$mi1,$yy2,$mm2,$dd2,$hh2,$mi2,$f[1];
+							$f[0] .= ";".$srv if ($srv);
+							$tmp{"$f[0]"}++;
 						}
-						push @cmd, $extcmd;
-						$pDowntimes{"$h;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
+						$cDowntimes{"$h;$s;$dt->{start_ts};$dt->{end_ts}"}++;
 					}
-				} else {					# service_description defined
-					if ($hg) {			# hostgroups defined
-						my @member = split (/,/,$hg{$hg}->{members});
-						my $cnt = 0;
-						if ($s =~ /^all$/i) {
-							for my $idx (0..$#member) {
-								my %srv = $sObject{$member[$idx]};
-								foreach my $idy (keys %srv) {
-									$cnt++ if (exists($cDowntimes{"$member[$idx];$srv{$idy};$dt->{start_ts};$dt->{end_ts}"}));
-								}
-							}
-							if ($cnt) {
-								info (1,"Rejected: ==> already planned HGs $key:".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
-								next;
-							}
-							$extcmd = "SCHEDULE_HOSTGROUP_SVC_DOWNTIME;$hg;$data";
-							push @cmd, $extcmd;
-							$pDowntimes{"$hg;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
-						} else {
-							next if (already_planned (\@member,"HG",1,$key,$key2,$duration));
-							for my $idx (0..$#member) {
-								if (exists $sObject{"$member[$idx]"}->{lc($s)}) {
-									$extcmd = "SCHEDULE_SVC_DOWNTIME;$member[$idx];$s;$data";
-									push @cmd, $extcmd;
-									$pDowntimes{"$member[$idx];$s;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
-								}
-							}	
-							next;
-						}
-					} elsif ($sg) {	# servicegroups defined
-						my @member = split (/,/,$sg{$sg}->{members});
-						if ($s =~ /^all$/i) {
-							next if (already_planned (\@member,"SG",2,$key,$key2,$duration));
-							$extcmd = "SCHEDULE_SERVICEGROUP_SVC_DOWNTIME;$hg;$data";
-							push @cmd, $extcmd;
-							$pDowntimes{"$sg;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
-						} else {
-							next if (already_planned (\@member,"SG",2,$key,$key2,$duration));
-							for my $idx (0..$#member) {
-								if (exists $sObject{$member[$idx]}->{$s}) {
-									$extcmd = "SCHEDULE_SVC_DOWNTIME;$member[$idx];$s;$data";
-									push @cmd, $extcmd;
-									$pDowntimes{"$member[$idx];$s;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
-								}
-							}	
-						}
-					} else {				# host_name defined
-						if ($s =~ /^all$/i) {
-							my %srv = $sObject{$h};
-							my $cnt = 0;
-							foreach my $idy (keys %srv) {
-								$cnt++ if (exists($cDowntimes{"$h;$srv{$idy};$dt->{start_ts};$dt->{end_ts}"}));
-							}
-							if ($cnt) {
-								info (1,"Rejected: ==> already planned Hs $key:".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
-								next;
-							}
-				 			$extcmd = "SCHEDULE_HOST_SVC_DOWNTIME;$h;$data";
-						} else {
-							if (exists($cDowntimes{"$h;$s;$dt->{start_ts};$dt->{end_ts}"})) {
-								info (1, "Rejected: ==> already planned $key");
-								next;
-							}
-				 			$extcmd = "SCHEDULE_SVC_DOWNTIME;$h;$s;$data";
-						}	
-						push @cmd, $extcmd;
-						$pDowntimes{"$h;$s;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
-					}	
 				}
-				for (0..$#cmd) {
-					info (0,"CMD:$cmd[$_]");
-					my @f = split (/;/,$cmd[$_]);
-					my $srv = $f[2];
-					my $start = $f[3];
-					my $end = $f[4];
-					if ($f[0] =~ /HOST/) {
-						$start = $f[2];
-						$end = $f[3];
-						$srv = "";
-					}
-					my ($yy1,$mm1,$dd1,$hh1,$mi1) = (Localtime($start))[0..5];
-					my ($yy2,$mm2,$dd2,$hh2,$mi2) = (Localtime($end))[0..5];
-					$f[0] = sprintf "%04d.%02d.%02d %02d:%02d - %04d.%02d.%02d %02d:%02d %s",
-						$yy1,$mm1,$dd1,$hh1,$mi1,$yy2,$mm2,$dd2,$hh2,$mi2,$f[1];
-					$f[0] .= ";".$srv if ($srv);
-					$tmp{"$f[0]"}++;
-				}
-				$cDowntimes{"$h;$s;$dt->{start_ts};$dt->{end_ts}"}++;
 			}
 		}
 	}
@@ -895,6 +630,316 @@ sub analyse_period {
 	return 0;
 }
 
+# check time definition, check if end date already passed
+sub check_ts {
+	my ($dt,$ts,$duration) = @_;
+	info (2, "Y/M/D/W Y/M/D/W E TS/Dur: $dt->{start_y}/$dt->{start_m}/$dt->{start_d}/$dt->{start_w} $dt->{end_y}/$dt->{end_m}/$dt->{end_d}/$dt->{end_w} $dt->{every} $ts/$duration");
+	if ($ts =~ /(\d+):(\d+)\s*-\s*(\d+):(\d+)/) {
+		$dt->{start_hh} = $1;
+		$dt->{start_mm} = $2;
+		$dt->{end_hh} = $3;
+		$dt->{end_mm} = $4;
+	} elsif ($ts =~ /(\d+):(\d+)/) {
+		$dt->{start_hh} = $1;
+		$dt->{start_mm} = $2;
+		$dt->{end_hh} = $dt->{start_hh};
+		$dt->{end_mm} = $dt->{start_mm} + $duration % 60;
+		if ($dt->{end_mm} > 59) {
+			$dt->{end_mm} -= 60;
+			$dt->{end_hh}++;
+		}
+		$dt->{end_hh} = $dt->{start_hh} + int($duration / 60);
+		if ($dt->{end_hh} > 23) {
+			$dt->{end_hh} -= 24;
+		}
+	} else {
+		info (1, "$ts is invalid");
+		return 1;
+	}
+	if (($dt->{end_y} > 0) and ($dt->{end_m} > 0) and ($dt->{end_d} > 0)) {
+		if (Mktime ($dt->{end_y},$dt->{end_m},$dt->{end_d},23,59,59) < $cTime) {
+			info (1, "end already passed");
+			return 1;
+		}
+	}
+	return 0;
+}
+
+# try to set the earliest date
+sub set_start {
+	my ($dt,$cTime,$year,$mon,$mday) = @_;
+	if ($dt->{start_y} > 0) {
+		if ($dt->{start_m} > 0) {
+			if ($dt->{start_d} > 0) {
+				$dt->{start_ts} = Mktime ($dt->{start_y}, $dt->{start_m}, $dt->{start_d}, $dt->{start_hh},$dt->{start_mm},0);
+			}
+		}	
+	} else { # y <= 0
+		if ($dt->{start_m} > 0) {
+			if ($dt->{start_w} > 0) {
+				if ($dt->{start_d} != 0) {
+					$dt->{start_ts} = date_in_week_of_month ($dt->{start_m}, $dt->{start_w}, $dt->{start_d},$dt->{start_hh},$dt->{start_mm});
+				}
+			} else { # w <= 0
+				if ($dt->{start_d} > 0) {
+					$dt->{start_ts} = Mktime ($year, $dt->{start_m}, $dt->{start_d},$dt->{start_hh},$dt->{start_mm},0);
+					if ($dt->{start_ts} < $cTime) {
+						$dt->{start_ts} = Mktime (Add_Delta_YMD($year,$dt->{start_m},$dt->{start_d},1,0,0),$dt->{start_hh},$dt->{start_mm},0);
+					}
+				} elsif ($dt->{start_d} < 0) {
+					my $dim = Days_in_Month ($year, $dt->{start_m});
+					$dt->{start_ts} = Mktime ($year, $dt->{start_m}, $dim+1+$dt->{start_d},$dt->{start_hh},$dt->{start_mm},0);
+					if ($dt->{start_ts} < $cTime) {
+						$dim = Days_in_Month ($year+1, $dt->{start_m});
+						$dt->{start_ts} = Mktime ($year+1, $dt->{start_m}, $dim+1+$dt->{start_d},$dt->{start_hh},$dt->{start_mm},0);
+					}
+				}
+			}
+		} else {	# m <= 0
+			if ($dt->{start_w} > 0) {
+				if ($dt->{start_d} > 0) {
+					$dt->{start_ts} = date_in_week_of_month ($mon, $dt->{start_w},$dt->{start_d},$dt->{start_hh},$dt->{start_mm});
+				} else {
+					if ($dt->{start_w} == $dt->{end_w}) {
+						$dt->{start_ts} = date_in_week_of_month ($mon, $dt->{start_w},$dt->{start_d},$dt->{start_hh},$dt->{start_mm});
+					} else {	
+						$dt->{start_ts} = Mktime ($year,$mon,$mday,$dt->{start_hh},$dt->{start_mm},0);
+					}
+				}
+			} else { # w <= 0
+				if ($dt->{start_d} > 0) {
+						$dt->{start_ts} = Mktime ($year, $mon, $dt->{start_d},$dt->{start_hh},$dt->{start_mm},0);
+					$dt->{start_ts} = Mktime ($year, $mon, $mday, $dt->{start_hh},$dt->{start_mm},0);
+				} elsif ($dt->{start_d} == 0) {
+					$dt->{start_ts} = Mktime ($year, $mon, 1,$dt->{start_hh},$dt->{start_mm},0);
+				} else {
+					my $dim = Days_in_Month ($year, $mon);
+					$dt->{start_ts} = Mktime ($year, $mon, $dim+1+$dt->{start_d},$dt->{start_hh},$dt->{start_mm},0);
+				}
+			}
+		}
+	}
+	if ($dt->{start_ts} > $cTime + $max_ahead*86400) {
+		my $txt_ahead = " is more than $max_ahead day".(($max_ahead > 1) ? "s" : "")." away";
+		info (1, "Rejected: ==> start" . $txt_ahead);
+		return 1;
+	}
+	return 0;
+}
+
+# check start date (current date < start < current date+max_ahead)
+sub check_start {
+	my $txt_ahead = " is more than $max_ahead day".(($max_ahead > 1) ? "s" : "")." away";
+	my ($dt) = @_;
+	my $count = 0;
+	my $loop = 1;
+	my $last = 0;
+	while (($loop) and ($count <= $max_ahead)) {
+		my ($year,$mon,$mday,$hour,$min,$sec,$yday,$wday,$isdst) = Localtime($dt->{start_ts});
+		if ($dt->{every} < 0) {
+			if (($dt->{start_w} > 0) and ($dt->{start_d} != 0)) {
+				if ($dt->{start_d} > 0) {
+					$dt->{start_ts} = date_in_week_of_month ($mon, $dt->{start_w}, $dt->{start_d}, $dt->{start_hh}, $dt->{start_mm}) + $count * 86400;
+				} else {
+					$dt->{start_ts} = date_in_week_of_month ($mon, $dt->{start_w}, $dt->{start_d}, $dt->{start_hh}, $dt->{start_mm});
+				}
+				($year,$mon,$mday,$hour,$min,$sec,$yday,$wday,$isdst) = Localtime($dt->{start_ts});
+			}
+			info (2, "S ".localtime($dt->{start_ts}));	
+			if ($dt->{start_y} > 0) {
+				$loop *= (($year >= $dt->{start_y}) and ($year <= $dt->{end_y}));
+				info (3, "SY $loop");
+			}
+			if ($dt->{start_m} > 0) {
+				$loop &= (($mon >= $dt->{start_m}) and ($mon <= $dt->{end_m}));
+				info (3, "SM $loop");
+			}
+			if ($dt->{start_d} > 0) {
+				if ($dt->{start_w} < 1) {
+					$loop &= ($mday >= $dt->{start_d});
+					$loop &= ($mday <= $dt->{end_d}) if ($dt->{end_d} > 0);
+				}
+				info (3, "SD $loop");
+			}
+			if (($dt->{start_w} > 0) and ($dt->{start_d} == 0)) {
+				$loop &= (($wday >= $dt->{start_w}) and ($wday <= $dt->{end_w}));
+				info (3, "SW $loop");
+			}
+		} else {
+			info (2, "S. ".localtime($dt->{start_ts}));	
+		}	
+		$loop &= ($dt->{start_ts} >= $cTime);
+		$count++ if ($dt->{every} < 0);
+		$loop = not($loop);
+		info (3, "ST $loop / $count");
+		if ($loop) {
+			$last = $dt->{start_ts};
+			if (($dt->{start_d} > 0) and ($dt->{start_d} == $dt->{end_d})) {
+				$dt->{start_ts} = Mktime (Add_Delta_YMD ($year,$mon,$mday,0,1,0),$dt->{start_hh},$dt->{start_mm},0);
+			} else {
+				$dt->{start_ts} = Mktime (Add_Delta_YMD ($year,$mon,$mday,0,0,abs($dt->{every})),$dt->{start_hh},$dt->{start_mm},0);
+			}
+		}
+	}
+	if (($count > $max_ahead) or ($dt->{start_ts} > $cTime + $max_ahead*86400)) {
+		info (1, "Rejected: ==> start" . $txt_ahead);
+		return 1;
+	}
+	return 0;
+}
+
+# check end date (current date < end < current date+max_ahead2)
+sub check_end {
+	my $txt_ahead = " is more than $max_ahead2 day".(($max_ahead2 > 1) ? "s" : "")." away";
+	my ($dt) = @_;
+	my $count = 0;
+	my $loop = 1;
+	while (($loop) and ($count <= $max_ahead)) {
+		my ($year,$mon,$mday,$hour,$min,$sec,$yday,$wday,$isdst) = Localtime($dt->{end_ts});
+		info (2, "E ".localtime($dt->{end_ts}));	
+		if ($dt->{end_y} > 0) {
+			$loop *= (($year >= $dt->{start_y}) and ($year <= $dt->{end_y}));
+			info (3, "EY $loop");
+		}
+		if ($dt->{end_m} > 0) {
+			$loop *= (($mon >= $dt->{start_m}) and ($mon <= $dt->{end_m}));
+			info (3, "EM $loop");
+		}
+		if ($dt->{end_d} > 0) {
+			if ($dt->{end_w} < 0) {
+				$loop *= (($mday >= $dt->{start_d}) and ($mday <= $dt->{end_d}));
+			}
+			info (3, "ED $loop");
+		}
+		if (($dt->{end_w} > 0) and ($dt->{end_m} < 0)) {
+			$loop *= (($wday >= $dt->{start_w}) and ($wday <= $dt->{end_w}));
+			info (3, "EW $loop");
+		}
+		$loop &= ($dt->{end_ts} >= $cTime);
+		info (3, "ET $loop");
+		$count++ if ($dt->{every} < 0);
+		$loop = not($loop);
+		$dt->{end_ts} = Mktime (Add_Delta_YMD ($year,$mon,$mday,0,0,abs($dt->{every})),$dt->{end_hh},$dt->{end_mm},0) if ($loop);
+	}
+	if ($count > $max_ahead2) {
+		info (1, "Rejected: ==> end" . $txt_ahead);
+		next;
+	}
+}
+
+sub set_cmd {
+	my ($cmd,$dt,$key,$data,$hg,$sg,$h,$s,$c,$p,$duration,$exclude) = @_;
+	my $extcmd = "";
+	my $f = ($dt->{end_ts} - $dt->{start_ts} == $duration * 60) ? 1 : 0;
+	my $key2 = "$s;$c;$dt->{start_ts};$dt->{end_ts}";
+	info (1, "possibly on: ".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
+	if ("$h;$s" =~ /;$/) {	# no service_description
+		if ($hg) {	# host_groups defined
+			my @member = split (/,/,$hg{$hg}->{members});
+			next if (already_planned (\@member,"HG",1,$key,$key2,$duration));
+			$extcmd = "SCHEDULE_HOSTGROUP_HOST_DOWNTIME;$hg;$data";
+			push @$cmd, $extcmd;
+			$pDowntimes{"$hg;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
+		} elsif ($sg) {
+			my @mem = split (/,/,$sg{$sg}->{members});
+			my @member = ();
+			for (my $idx = 0; $idx <= $#mem; $idx+=2) {
+				push @member, $mem[$idx];
+			}
+			return 1 if (already_planned (\@member,"SG",2,$key,$key2,$duration));
+			$extcmd = "SCHEDULE_SERVICEGROUP_HOST_DOWNTIME;$sg;$data";
+			push @$cmd, $extcmd;
+			$pDowntimes{"$sg;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
+		} else {			# host_name defined
+			if ($exclude) {
+				info (1, "Rejected: ==> host is excluded");
+				return 1;
+			}
+			if (exists($cDowntimes{"$h;;$dt->{start_ts};$dt->{end_ts}"})) {
+				info (1, "Rejected: ==> already planned $key");
+				return 1;
+			}
+			if ($p) {
+		 		$extcmd = "SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME;$h;$data";
+			} else {
+		 		$extcmd = "SCHEDULE_HOST_DOWNTIME;$h;$data";
+			}
+			push @$cmd, $extcmd;
+			$pDowntimes{"$h;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
+		}
+	} else {					# service_description defined
+		if ($hg) {			# hostgroups defined
+			my @member = split (/,/,$hg{$hg}->{members});
+			my $cnt = 0;
+			if ($s =~ /^all$/i) {
+				for my $idx (0..$#member) {
+					my %srv = $sObject{$member[$idx]};
+					foreach my $idy (keys %srv) {
+						$cnt++ if (exists($cDowntimes{"$member[$idx];$srv{$idy};$dt->{start_ts};$dt->{end_ts}"}));
+					}
+				}
+				if ($cnt) {
+					info (1,"Rejected: ==> already planned HGs $key:".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
+					return 1;
+				}
+				$extcmd = "SCHEDULE_HOSTGROUP_SVC_DOWNTIME;$hg;$data";
+				push @$cmd, $extcmd;
+				$pDowntimes{"$hg;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
+			} else { # one or more services defined
+				next if (already_planned (\@member,"HG",1,$key,$key2,$duration));
+				for my $idx (0..$#member) {
+					if (exists $sObject{"$member[$idx]"}->{lc($s)}) {
+						$extcmd = "SCHEDULE_SVC_DOWNTIME;$member[$idx];$s;$data";
+						push @$cmd, $extcmd;
+						$pDowntimes{"$member[$idx];$s;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
+					}
+				}	
+				return 1;
+			}
+		} elsif ($sg) {	# servicegroups defined
+			my @member = split (/,/,$sg{$sg}->{members});
+			if ($s =~ /^all$/i) {
+				return 1 if (already_planned (\@member,"SG",2,$key,$key2,$duration));
+				$extcmd = "SCHEDULE_SERVICEGROUP_SVC_DOWNTIME;$hg;$data";
+				push @$cmd, $extcmd;
+				$pDowntimes{"$sg;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
+			} else {
+				return 1 if (already_planned (\@member,"SG",2,$key,$key2,$duration));
+				for my $idx (0..$#member) {
+					if (exists $sObject{$member[$idx]}->{$s}) {
+						$extcmd = "SCHEDULE_SVC_DOWNTIME;$member[$idx];$s;$data";
+						push @$cmd, $extcmd;
+						$pDowntimes{"$member[$idx];$s;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
+					}
+				}	
+			}
+		} else {				# host_name defined
+			if ($s =~ /^all$/i) {
+				my %srv = $sObject{$h};
+				my $cnt = 0;
+				foreach my $idy (keys %srv) {
+					$cnt++ if (exists($cDowntimes{"$h;$srv{$idy};$dt->{start_ts};$dt->{end_ts}"}));
+				}
+				if ($cnt) {
+					info (1,"Rejected: ==> already planned Hs $key:".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
+					return 1;
+				}
+	 			$extcmd = "SCHEDULE_HOST_SVC_DOWNTIME;$h;$data";
+			} else {
+				if (exists($cDowntimes{"$h;$s;$dt->{start_ts};$dt->{end_ts}"})) {
+					info (1, "Rejected: ==> already planned $key");
+					return 1;
+				}
+	 			$extcmd = "SCHEDULE_SVC_DOWNTIME;$h;$s;$data";
+			}	
+			push @$cmd, $extcmd;
+			$pDowntimes{"$h;$s;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
+		}	
+	}
+	return 0;
+}
+
+# print information line
 sub info {
 	my ($lvl,$line) = @_;
 	select STDOUT;
@@ -926,10 +971,6 @@ sub flexible_holidays {
 	$holiday{penance_day}            = Mktime ($year,11,22,0,0,0) - $dow * 86400;
 	$holiday{christmas_day}          = Mktime ($year,12,25,0,0,0);
 	$holiday{boxing_day}             = Mktime ($year,12,26,0,0,0);
-	
-	# some holidays based on weekday within week
-	$holiday{presidents_day}         = date_in_week_of_month (2,1,3);
-	$holiday{spring_bank_holiday}    = date_in_week_of_month (5,1,-1);
 	
 	# translation for the german speaking people ;-)
 	$holiday{heilige_drei_koenige}   = $holiday{twelfth_day};
@@ -1100,7 +1141,7 @@ $script [options]
                        specify date and time instead like in downtime_period
    -d | --debug=s      0|1|2|3 (default = 1)
    -t | --timestamp=s  specify deviating time/date
-                       YYYYMMDDHHMI, YYYYMMDD, or HHMI
+                       YYYYMMDDhhmi, YYYYMMDD, or hhmi
    -h | --help         display this help
 
 Note: Enabled debugging, forecasting, and/or examine will prevent that schedules
