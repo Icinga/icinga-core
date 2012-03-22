@@ -30,6 +30,8 @@
 # 2012.03.19:  0.05 bugfix: enable no blank before opening brace, missing srv
 # 2012.03.20:  0.06 set name for local holiday file, add some perfdata
 # 2012.03.21:  0.07 bugfix: fix end date check; splitted code
+# 2012.03.22:  0.08 bugfix: set author/comment if blank
+#                   enable no blank before opening brace (2nd try)
 
 use strict;
 use Getopt::Long qw(:config no_ignore_case bundling);
@@ -48,7 +50,7 @@ EOT
 #
 
 my $creator = "2012 Icinga Team";
-my $version = "0.07";
+my $version = "0.08";
 my $script  = "sched_down.pl";
 
 my $cFile = "/usr/local/icinga/etc/icinga.cfg";
@@ -72,13 +74,14 @@ my %sObject    = ();	# srv per host
 my $dt         = "";	# date/time info
 my $cTime      = time();
 my $timestamp  = "";
-my %numbers    = (scheduled =>0, defined => 0, new => 0);
+my %numbers    = (scheduled => 0, defined => 0, new => 0);
 my %hg         = ();	# hosts per hostgroup
 my %sg         = ();	# hosts per servicegroup
 my %holiday    = ();	# contains holiday definitions using names
 my %days       = (mon => 1, tue => 2, wed => 3, thu => 4, fri => 5, sat => 6, sun => 7);
 my %months     = (jan => 1, feb => 2, mar => 3, apr => 4, may => 5, jun => 6,
                   jul => 7, aug => 8, sep => 9, 'oct' => 10, nov => 11, dec => 12);
+my @fixed      = ("flex","fixed");
 
 # process command line parameters
 Getopt::Long::Configure('bundling');
@@ -141,8 +144,8 @@ sub init_entry {
 		period              => "",
 		duration            => 0,
 		fixed               => 1,
-		author              => "",
-		comment             => "",
+		author              => "icingaadmin",
+		comment             => "$script $version",
 		propagate           => 0,
 		register            => 1,
 	};
@@ -324,7 +327,7 @@ sub read_downtimes {
 		s/\s+/ /g;
 		s/\s*;.*//;
 		next if /^$/;
-		if (/define\s+(\S+)\s+{/) {
+		if (/define\s+(\S+)\s*{/) {
 			$tmp->{object} = $1;
 			$ok = 1 if ($1 =~ /downtime/);
 			next;
@@ -349,7 +352,7 @@ sub read_downtimes {
 	close (IFILE);
 	info (2, "--- current entries from $iFile ---");
 	for my $key (0..$#Downtimes) {
-		info (2,"Schedule: $Downtimes[$key]{host_name},$Downtimes[$key]{service_description},$Downtimes[$key]{start_time},$Downtimes[$key]{duration},$Downtimes[$key]{fixed}");
+		info (2,"Schedule: $Downtimes[$key]{host_name};$Downtimes[$key]{service_description};$Downtimes[$key]{duration} mins,$fixed[$Downtimes[$key]{fixed}]");
 	}
 	return @Downtimes;
 }
@@ -400,9 +403,9 @@ sub plan_downtimes {
 		my @hst = split(/,/,$sDowntimes[$index]{host_name});
 		my @srv = split (/,/,$sDowntimes[$index]{service_description});
 		push @srv, "" unless @srv;
-		my $c = $sDowntimes[$index]{comment};
+		my $c = $sDowntimes[$index]{comment} || "recurring downtime";
 		my $duration = $sDowntimes[$index]{duration};
-		my $a = $sDowntimes[$index]{author};
+		my $a = $sDowntimes[$index]{author} || "$script $version";
 		my @r = split(/;/,$sDowntimes[$index]{period});
 		my $f = $sDowntimes[$index]{fixed};
 		my $hg = $sDowntimes[$index]{hostgroups};
@@ -412,15 +415,25 @@ sub plan_downtimes {
 		my $diff = 0;
 		for (0..$#hst) {
 			my $h = $hst[$_];
-			my $exclude = ($h =~ /^!/);
-			$h = substr($h,1) if ($exclude);
 			for (0..$#srv) {
 				my $s = $srv[$_];
 				my $key = "$h;$s;$c";
 	 			info (2,"-- Entry $key: $sDowntimes[$index]{duration} mins on: $sDowntimes[$index]{period}");
-				unless (exists ($sObject{"$h;$s"})) {
-					info (2, "object $h;$s does not exist");
-					next;
+				if ($hg) {
+					unless (exists ($hg{"$h"})) {
+						info (2, "object $h does not exist");
+						next;
+					}
+				} elsif ($sg) {
+					unless (exists ($sg{"$h"})) {
+						info (2, "object $h does not exist");
+						next;
+					}
+				} else  {
+					unless (exists ($sObject{"$h;$s"})) {
+						info (2, "object $h;$s does not exist");
+						next;
+					}
 				}
 	# loop through date/time definitions
 				for my $i (0..$#r) {
@@ -438,8 +451,6 @@ sub plan_downtimes {
 					}
 					my @ts = split(",",$ts.",");
 					my ($year,$mon,$mday,$hour,$min,$sec,$yday,$wday,$isdst) = Localtime($cTime);
-					info (2, sprintf "--- curr date/time: %04d-%02d-%02d %02d:%02d, yday: %03d, weekday %d (%s), DST: %s",
-						$year,$mon,$mday,$hour,$min, $yday, $wday, substr(Day_of_Week_to_Text($wday),0,3), ($isdst) ? "yes" : "no");
 					info (2, "DS:$ds / TS:$ts");
 					if ($ds =~ m#(.*)/\s*(\d+)#) {
 						($ds,$dt->{every}) = ($1,$2);
@@ -488,7 +499,7 @@ sub plan_downtimes {
 							next;
 						}
 						my $data = "$dt->{start_ts};$dt->{end_ts};$f;$t;".($duration*60).";$a;$c";
-						next if (set_cmd(\@cmd,$dt,$key,$data,$hg,$sg,$h,$s,$c,$p,$duration,$exclude));
+						next if (set_cmd(\@cmd,$dt,$key,$data,$hg,$sg,$h,$s,$c,$p,$duration));
 	
 						for (0..$#cmd) {
 							info (0,"CMD:$cmd[$_]");
@@ -828,7 +839,7 @@ sub check_end {
 }
 
 sub set_cmd {
-	my ($cmd,$dt,$key,$data,$hg,$sg,$h,$s,$c,$p,$duration,$exclude) = @_;
+	my ($cmd,$dt,$key,$data,$hg,$sg,$h,$s,$c,$p,$duration) = @_;
 	my $extcmd = "";
 	my $f = ($dt->{end_ts} - $dt->{start_ts} == $duration * 60) ? 1 : 0;
 	my $key2 = "$s;$c;$dt->{start_ts};$dt->{end_ts}";
@@ -851,10 +862,6 @@ sub set_cmd {
 			push @$cmd, $extcmd;
 			$pDowntimes{"$sg;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
 		} else {			# host_name defined
-			if ($exclude) {
-				info (1, "Rejected: ==> host is excluded");
-				return 1;
-			}
 			if (exists($cDowntimes{"$h;;$dt->{start_ts};$dt->{end_ts}"})) {
 				info (1, "Rejected: ==> already planned $key");
 				return 1;
@@ -1035,22 +1042,21 @@ sub set_date_time {
 			($year,$mon,$mday,$hour,$min) = $timestamp =~ /(\d\d\d\d)(\d\d)(\d\d)(\d\d)(\d\d)/;
 			my $dow = Day_of_Week ($year,$mon,$mday);
 			my $txt = Day_of_Week_to_Text ($dow);
-			print "TIMESTAMP set to $txt $year.$mon.$mday $hour:$min\n";
 		} elsif (length($timestamp) > 4) { # YYYYMMDD
 			($year,$mon,$mday) = $timestamp =~ /(\d\d\d\d)(\d\d)(\d\d)/;
-			my $dow = Day_of_Week ($year,$mon,$mday);
-			my $txt = Day_of_Week_to_Text ($dow);
-			print "TIMESTAMP set to $txt $year.$mon.$mday\n";
 		} elsif (length($timestamp) == 4) { # HHMI
 			($hour,$min) = $timestamp =~ /(\d\d)(\d\d)/;
-			print "TIMESTAMP set to $hour:$min:00\n";
 		} else {
 			print "Timestamp is incorrect";
-			return;
+			return 1;
 		}
 	}
 	# calculate unix timestamp based on given data
 	$cTime = Mktime($year,$mon,$mday,$hour,$min,0);
+	my ($yday,$wday,$isdst) = (Localtime($cTime))[6..8];
+	info (2, sprintf "--- curr date/time: %04d-%02d-%02d %02d:%02d, yday: %03d, weekday %d (%s), DST: %s",
+		$year,$mon,$mday,$hour,$min, $yday, $wday, substr(Day_of_Week_to_Text($wday),0,3), ($isdst) ? "yes" : "no");
+	return 0;
 }
 
 # the dates are calculated based on easter sunday
