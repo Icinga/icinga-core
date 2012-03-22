@@ -4,7 +4,7 @@
 #
 # sched_conv.pl - Convert downtime definitions to Icinga format
 #
-# Copyright (c) 2011 Icinga Development Team (http://www.icinga.org)
+# Copyright (c) 2011-2012 Icinga Development Team (http://www.icinga.org)
 #
 # License:
 #
@@ -24,12 +24,13 @@
 #****************************************************************************/
 #
 # 2011.11.15:  0.01 Initial version
+# 2012.03.07:  0.02 "compress" weekdays to one definition line
 
 use strict;
 
-my $creator = "2011 Icinga Team";
-my $version = "0.01";
-my $script  = "sched_conv";
+my $creator = "2012 Icinga Team";
+my $version = "0.02";
+my $script  = "sched_conv.pl";
 
 if ((defined @ARGV) and ($ARGV[0] =~ m/-h/)) {
 	help();
@@ -39,7 +40,8 @@ my $iFile = $ARGV[0] || "schedule.cfg";
 my $oFile = $ARGV[1] || "downtime.cfg";
 my $h = my $s = my $a = my $c = my $r = my $hg = my $sg = "";
 	my $b = my $e = my $f = my $d = my $m = 0;
-
+my %day = (mon => 1, tue => 2, wed => 3, thu => 4, fri => 5, sat => 6, sun => 7);
+my @day = ('','monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday');
 open (IFILE, "$iFile") || die "Error opening $iFile, RC=$!";
 open (OFILE, ">$oFile") || die "Error creating $oFile, RC=$!";
 while (<IFILE>) {
@@ -49,11 +51,6 @@ while (<IFILE>) {
 	s/\s+$//g;
 	my ($o,$v) = /(.*?)\s+(.*)/;
 	if (defined($v)) {
-		$v =~ s/(sun|mon|fri)/${1}day/gi;
-		$v =~ s/tue/tuesday/i;
-		$v =~ s/wed/wednesday/i;
-		$v =~ s/thu/thursday/i;
-		$v =~ s/sat/saturday/i;
 		$h = $v if (/^host_name/);
 		$hg = $v if (/^hostgroup_name/);
 		$sg = $v if (/^servicegroup_name/);
@@ -64,7 +61,7 @@ while (<IFILE>) {
 		$f = $v if (/^fixed/);
 		$a = $v if (/^user/);
 		$c = $v if (/^comment/);
-		$r = $v if (/^days_of_week/);
+		$r = lc($v) if (/^days_of_week/);
 		$m = $v if (/^days_of_month/);
 	}	
 	if (/}/) {
@@ -78,6 +75,18 @@ while (<IFILE>) {
 		print OFILE "   fixed               $f\n" if ($f);
 		print OFILE "   duration            $d\n" if ($d);
 		if ($r) {
+			# convert names to numbers
+			for (keys %day) {
+				$r =~ s/$_/$day{$_}/;
+			}
+			my @w = sort (split(/,/,$r));
+			$r = $day[$w[0]];
+			for (1..$#w) {
+				if ($w[$_-1]+1 != $w[$_]) {
+					$r .= " - $day[$w[$_-1]],$day[$w[$_]]";
+				}
+			}
+			$r .= " - $day[$w[$#w]]" if ($r ne $day[$w[$#w]]);
 			my @r = split(/,/,$r);
 			for my $i (0..$#r) {
 				print OFILE "   downtime_period     $r[$i] $b";
@@ -87,10 +96,29 @@ while (<IFILE>) {
 		}
 		if ($m) {
 			my @m = split(/,/,$m);
+			$m = $m[0];
+			for (1..$#m) {
+				if ($m[$_-1]+1 != $m[$_]) {
+					$m .= " - $m[$_-1],$m[$_]";
+				}
+			}
+			$m .= " - $m[$#m]" if ($m ne $m[$#m]);
+			@m = split(/,/,$m);
 			for my $i (0..$#m) {
 				print OFILE "   downtime_period     day $m[$i] $b";
+				print OFILE "-$e" if ($e);
 				print OFILE "\n";
 			}
+		}
+		if ($r and $m) {
+			print "--- $h,$s: ---\n";
+			print "days_of_week and days_of_month in one definition\n";
+			print "This will work different now!!!\n";
+		}
+		if ((! $r) and (! $m)) {
+			print OFILE "   downtime_period     monday - sunday $b";
+			print OFILE "-$e" if ($e);
+			print OFILE "\n";
 		}
 		print OFILE "}\n";
 		$h = $s = $a = $c = $r = $m = "";
@@ -108,10 +136,9 @@ $script $version - Copyright $creator
 The script may be used to convert downtime definitions created by Steve
 Shipway's script which are written to "schedule.cfg".
 It might be used as well to convert definitions written by NagiosXI to
-the file "recurringdowntime.cfg". Please note that the latter is NOT able
-to schedule flexible downtimes ;-).
+the file "recurringdowntime.cfg".
  
-sched_conv [input file [output file]]
+$script [input file [output file]]
 
 Called without any arguments the script sets
 input file := schedule.cfg
