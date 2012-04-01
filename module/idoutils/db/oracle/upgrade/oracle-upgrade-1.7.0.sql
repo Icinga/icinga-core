@@ -40,6 +40,11 @@ create index statehistory_state_idx on statehistory(object_id,state)
 tablespace &IDXTBS;
 
 -- -----------------------------------------
+-- enlarge FAILURE_PREDICTION_OPTIONS #2479
+-- -----------------------------------------
+alter table hosts modify (FAILURE_PREDICTION_OPTIONS varchar2(128));
+
+-- -----------------------------------------
 -- finally update dbversion
 -- -----------------------------------------
 

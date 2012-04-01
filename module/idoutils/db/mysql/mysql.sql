@@ -635,7 +635,7 @@ CREATE TABLE IF NOT EXISTS icinga_hosts (
   eventhandler_command_args varchar(255) character set latin1  default '',
   notification_timeperiod_object_id bigint unsigned default 0,
   check_timeperiod_object_id bigint unsigned default 0,
-  failure_prediction_options varchar(64) character set latin1  default '',
+  failure_prediction_options varchar(128) character set latin1  default '',
   check_interval double  default '0',
   retry_interval double  default '0',
   max_check_attempts smallint default 0,

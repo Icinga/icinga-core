@@ -13,6 +13,11 @@
 create index statehist_state_idx on icinga_statehistory(object_id,state);
 
 -- -----------------------------------------
+--#2479
+-- -----------------------------------------
+alter table icinga_hosts modify FAILURE_PREDICTION_OPTIONS varchar(128) ;
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 

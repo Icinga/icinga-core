@@ -998,7 +998,7 @@ CREATE TABLE hosts (
   eventhandler_command_args varchar2(1024),
   notif_timeperiod_object_id integer default 0 , 
   check_timeperiod_object_id integer default 0 ,
-  failure_prediction_options varchar2(64),
+  failure_prediction_options varchar2(128),
   check_interval number default 0 ,
   retry_interval number default 0 ,
   max_check_attempts integer default 0 ,
