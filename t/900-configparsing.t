@@ -1,11 +1,12 @@
 #!/usr/bin/perl
-# 
+#
 # Taking a known icinga configuration directory, will check that the objects.cache is as expected
 
 use warnings;
 use strict;
-use Test::More;
+use Test::Most;
 use FindBin qw($Bin);
+use Icinga::Test qw ( run_cmd slurp_file );
 
 chdir $Bin or die "Cannot chdir";
 
@@ -14,23 +15,29 @@ my $icinga = "$topdir/base/icinga";
 my $etc = "$Bin/etc";
 my $precache = "$Bin/var/objects.precache";
 
-plan tests => 2;
+plan tests => 3;
 
-my $output = `$icinga -v "$etc/icinga.cfg"`;
+my $output = run_cmd([$icinga, '-v', "$etc/icinga.cfg"]);
 if ($? == 0) {
 	pass("Icinga validated test configuration successfully");
 } else {
 	fail("Icinga validation failed:\n$output");
 }
 
-system("$icinga -vp '$etc/icinga.cfg' > /dev/null") == 0 or die "Cannot create precached objects file";
-system("grep -v 'Created:' $precache > '$precache.generated'");
-
-my $diff = "diff -u $precache.expected $precache.generated";
-system("$diff > /dev/null");
+unlink $precache if -e $precache ;
+$output = run_cmd ([ $icinga, '-vp', "$etc/icinga.cfg" ]);
 if ($? == 0) {
-	pass( "Icinga precached objects file matches expected" );
+	pass("Icinga precache generated successfully");
 } else {
-	fail( "Icinga precached objects discrepency!!!\nTest with: $diff\nCopy with: cp $precache.generated $precache.expected" );
+	fail("Could not create Icinga precache:\n$output");
 }
 
+system("grep -v 'Created:' $precache > '$precache.generated'");
+
+my $generated = slurp_file("$precache.generated");
+my $expected = slurp_file("$precache.expected");
+eq_or_diff($generated, $expected,'Icinga precached objects file matches expected');
+
+#cleanup
+unlink("$precache.generated") if -e "$precache.generated";
+unlink $precache if -e $precache;

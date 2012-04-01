@@ -339,7 +339,7 @@ int main(int argc, char **argv) {
 	hostgroup *temp_hostgroup = NULL;
 	hostsmember *temp_member = NULL;
 
-	plan_tests(4);
+	plan(4);
 
 	/* reset program variables */
 	reset_variables();

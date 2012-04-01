@@ -1,0 +1,18 @@
+libtap in Icinga
+----------------
+
+The original libtap implementation from http://jc.ngo.org.uk/trac-bin/trac.cgi/wiki/LibTap
+seems to have stopped development (last release 2005, autoconf 2.59. no --datarootdir).
+
+Icinga now steps onto https://github.com/zorgnax/libtap which provides active development
+as well as more flexibility on build systems (no configure, but plain make).
+
+This will also be placed in tools/libtap as bundled library, not to confuse with the main
+package.
+
+For further questions on testing, please refer to the official Icinga support channels at
+https://www.icinga.org/support/
+
+More information on testing strategies can be found in the Icinga wiki
+https://wiki.icinga.org
+

@@ -2432,9 +2432,9 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
 }
 
 /** @brief prints export link with little icons
- *  @param [in] can be \c CSV_CONTENT , \c JSON_CONTENT \c XML_CONTENT or \c HTML_CONTENT
- *  @param [in] name of cgi as defined in include/cgiutils.h
- *  @param [in] additional string to add to url (set to NULL if nothing should be added)
+ *  @param [in] content_type can be \c CSV_CONTENT , \c JSON_CONTENT , \c XML_CONTENT or \c HTML_CONTENT
+ *  @param [in] cgi name of cgi as defined in include/cgiutils.h
+ *  @param [in] add_to_url is additional string to add to url (set to NULL if nothing should be added)
  *  @note takes care that each link is XSS save #1275
  *
  *  This function prints a little icon, depending on @ref content_type, which points to
@@ -2944,9 +2944,16 @@ char *json_encode(char *input) {
 
 	for (i = 0, j = 0; i < len; i++) {
 
+		/* escape quotes */
 		if ((char)input[i] == (char)'"') {
 			encoded_string[j++] = '\\';
 			encoded_string[j++] = input[i];
+
+		/* escape newlines */
+		} else if ((char)input[i] == (char)'\n') {
+			encoded_string[j++] = '\\';
+			encoded_string[j++] = 'n';
+
 		} else
 			encoded_string[j++] = input[i];
 	}

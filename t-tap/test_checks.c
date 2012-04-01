@@ -150,8 +150,8 @@ main(int argc, char **argv) {
 	time_t now = 0L;
 
 
-	plan_tests(30);
-	//plan_tests(42);
+	plan(30);
+	//plan(42);
 
 	time(&now);
 

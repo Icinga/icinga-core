@@ -38,6 +38,9 @@ ENHANCEMENTS
 
 * config: introduce conf.d as place for own configs #2360
 
+* tests: replace libtap with an actively developed version #1192
+* tests: fix and rewrite perl tests in t/ #2369
+
 * icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
 * icinga.spec: make aware of the change of idomod.o location and changed extension (now .so) #2350
 * icinga.spec: add "README LICENSE Changelog UPGRADING" to all packages as docs (thx Michael Gruener) #2212
@@ -60,6 +63,9 @@ FIXES
 * classic ui: Done clean up document_header() and unused vars in cgi's #2252
 * classic ui: Fixed status.cgi: host param not honoured with servicefilter #2262
 * classic ui: fixed Tooltip from action_url interfering with pnp4nagios integration #2198
+* classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343
+* classic ui: fixed invalid json output for tac.cgi #2160
+* classic ui: Fixed Invalid json data if field value is multiline #2263
 
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
@@ -71,6 +77,7 @@ CHANGES
 	** allows neb modules to cancel/override notification list creation on notification start
 
 * debug: set debug_verbosity=2 by default
+* configure: --enable-libtap=yes by default for builtin 'make test-tap'
 
 * install: --with-temp-file=<filepath> #2121
 	** sets path to an Icinga exclusive update temp file i.e. /tmp/icinga.tmp
@@ -95,6 +102,10 @@ CHANGES
 
 * config: $sysconfdir/conf.d #2360
 
+* install: --enable-libtap is now deprecated, new libtap does not require configure anymore #1192
+
+* tests: you can now test with pleasure: $ make distclean ; ./configure ; make test #2369 #1192
+
 
 
 1.6.1 - 02/12/2011
@@ -105,6 +116,7 @@ FIXES
 CHANGES
 
 
+>>>>>>> test/cgis
 1.6.0 - 30/11/2011
 
 ENHANCEMENTS

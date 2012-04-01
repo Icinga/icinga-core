@@ -9,8 +9,8 @@ SRC_BASE=../base
 SRC_CGI=../cgi
 
 CC=@CC@
-CFLAGS=@TESTS_CFLAGS@ @DEFS@ -DNSCORE -I../include -I../tap/src
-TAPOBJ=../tap/src/tap.o
+CFLAGS=@TESTS_CFLAGS@ @DEFS@ -DNSCORE -I../include -I../tools/libtap
+TAPOBJ=../tools/libtap/tap.o
 
 TESTS = test_logging test_events test_timeperiods test_icinga_config
 TESTS += test_xsddefault
@@ -87,7 +87,7 @@ SNPRINTF_O=@SNPRINTF_O@
 BROKER_O=@BROKER_O@
 BROKER_H=@BROKER_H@
 
-TAPOBJ=../tap/src/tap.o $(SNPRINTF_O)
+TAPOBJ += $(SNPRINTF_O)
 
 all: $(TESTS)
 
