@@ -1,13 +1,12 @@
 #!/usr/bin/perl
-# 
+#
 # Taking a known icinga configuration directory, will check that the objects.cache is as expected
 
 use warnings;
 use strict;
 use Test::Most;
 use FindBin qw($Bin);
-use Icinga::Test qw ( run_cmd );
-use Perl6::Slurp;
+use Icinga::Test qw ( run_cmd slurp_file );
 
 chdir $Bin or die "Cannot chdir";
 
@@ -35,8 +34,8 @@ if ($? == 0) {
 
 system("grep -v 'Created:' $precache > '$precache.generated'");
 
-my $generated = slurp("$precache.generated");
-my $expected = slurp("$precache.expected");
+my $generated = slurp_file("$precache.generated");
+my $expected = slurp_file("$precache.expected");
 eq_or_diff($generated, $expected,'Icinga precached objects file matches expected');
 
 #cleanup
