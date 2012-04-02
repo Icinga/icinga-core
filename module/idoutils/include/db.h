@@ -167,6 +167,8 @@ int ido2db_db_trim_data_table(ido2db_idi *,char *,char *,unsigned long);
 #define OCI_STR_SIZE 256 /* default small string buffer size */
 #define OCI_BINDARRAY_MAX_SIZE 5000 /* default array buffer and commit size for bulk ops */
 #define OCI_OUTPUT_BUFFER_SIZE 32000 /* Buffer size for dbms_output calls */
+#define OCI_LOB_CHUNK_SIZE 16 /* Buffer size for LOB operations */
+
 void ido2db_ocilib_err_handler(OCI_Error *);
 unsigned long ido2db_oci_sequence_lastid(ido2db_idi *, char *);
 int ido2db_oci_prepared_statement_bind_null_param(OCI_Statement *, char *);
@@ -176,6 +178,8 @@ int ido2db_oci_execute_out(OCI_Statement *,char *);
 int ido2db_oci_set_session_info(OCI_Connection *, char *);
 void ido2db_oci_print_binds(OCI_Statement *,int,char **);
 void ido2db_oci_statement_free(OCI_Statement *,char *);
+/* Helper */
+int ido2db_oci_StringUTF8Length(const char *str);
 #endif /* Oracle ocilib specific */
 
 #endif

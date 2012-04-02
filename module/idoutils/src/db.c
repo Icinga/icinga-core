@@ -7826,10 +7826,11 @@ void ido2db_oci_statement_free(OCI_Statement *st, char * stname) {
 int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lob ** lobp) {
 	char * fname = "ido2db_oci_bind_clob";
 	unsigned long len = 0;
+	unsigned long slen = 0;
 	unsigned int cb = 0; //char byte
 	unsigned int bb = 0; //bin�r byte
 	unsigned long rc = 0; //recent position
-	const int chunk = 1024; //max chunk size
+	const int chunk = OCI_LOB_CHUNK_SIZE; //max chunk size
 	char * buffer =NULL; //temporary buffer
 	int code=0;
 
@@ -7853,6 +7854,7 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lo
 
 
 	len = text ? strlen(text) : 0;
+	slen= text ? ido2db_oci_StringUTF8Length(text):0;
 	if (len == 0) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Null or empty\n", fname, bindname);
 		OCI_BindSetNull(OCI_GetBind2(st, bindname));
@@ -7870,22 +7872,23 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lo
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,%lu Bytes requested\n", fname, bindname, len);
 
 	while ((len - rc) > 0) {
+
 		if ((len - rc) > chunk) {
-			bb = chunk;
+			bb = chunk; //buffer full size
 		} else {
-			bb = len - rc;
+			bb = len - rc; //remaining bytes
 		}
 		if (bb < 1) break; //should not happens
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Next chunk %lu bytes from pos %lu (total %lu) \n", fname, bindname,bb,rc, len);
 
 		memset(buffer,0,chunk+1);
 		memcpy(buffer,text+rc,bb);
-
+		cb=0;//reset character pointer, we will work with bytes
 		if (OCI_LobWrite2(*lobp, buffer, &cb, &bb)) {
 			rc = rc + bb;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,%d Bytes(total %lu/%lu)   appended\n", fname, bindname, bb, rc, len);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,%d Bytes=%d Chars (total %lu/%lu)   appended\n", fname, bindname, bb, cb,rc, len);
 		} else {
-			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Last append failed: %d Bytes(total %lu/%lu):'%s'\n", fname, bindname, bb, rc, len,buffer);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s:Bind %s,Last append failed: %d Bytes=%d Chars(total %lu/%lu):'%s'\n", fname, bindname, bb, cb, rc, len,buffer);
 			code=1; //this is an error
 			break;
 		}
@@ -7893,15 +7896,37 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text, OCI_Lo
 	}
 	//final length check
 	cb = OCI_LobGetLength(*lobp);
-	if (cb == len) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Lob successfully written:%lu bytes \n", fname, bindname, len);
+	if (cb == slen) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Lob successfully written:%lu bytes=%lu chars \n", fname, bindname, len,slen);
 	} else {
 		//final size differs, but only an error if write failed
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Lob write warning:len %lu, but lob size %lu (last chunk '%s')\n", fname, bindname, len, cb,buffer);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "%s:Bind %s,Lob write warning:len %lu, but lob size %lu bytes=%lu chars (last chunk '%s')\n", fname, bindname, len,slen, cb,buffer);
 	}
 	free(buffer);
 	if (code == 1) return IDO_ERROR;
 	return IDO_OK;
+}
+/* UTF8 ready string length function,
+ * taken from http://sourceforge.net/projects/orclib/forums/forum/470801/topic/5000325
+ */
+int ido2db_oci_StringUTF8Length
+(
+    const char *str
+)
+{
+    int size = 0;
+
+    while (*str)
+    {
+        if ((*str & 0xc0) != 0x80)
+        {
+            size++;
+        }
+
+        str++;
+    }
+
+    return size;
 }
 /*
 int ido2db_oci_bind_bigint(OCI_Statement *st, char * bindname, void ** data) {
