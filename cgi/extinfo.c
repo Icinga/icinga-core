@@ -177,6 +177,7 @@ int main(void) {
 	servicegroup *temp_servicegroup = NULL;
 	servicedependency *temp_sd = NULL;
 	hostdependency *temp_hd = NULL;
+	host * child_host;
 
 	mac = get_global_macros();
 
@@ -410,7 +411,6 @@ int main(void) {
 				/* Child Hosts */
 				if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_IMMEDIATE || extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL) {
 					found = FALSE;
-					host * child_host;
 
 					printf("<DIV CLASS='data'>Immediate Child Hosts ");
 					printf("<img id='expand_image_immediate' src='%s%s' border=0 onClick=\"if (document.getElementById('immediate_child_hosts').style.display == 'none') { document.getElementById('immediate_child_hosts').style.display = ''; document.getElementById('immediate_child_hosts_gap').style.display = 'none'; document.getElementById('expand_image_immediate').src = '%s%s'; } else { document.getElementById('immediate_child_hosts').style.display = 'none'; document.getElementById('immediate_child_hosts_gap').style.display = ''; document.getElementById('expand_image_immediate').src = '%s%s'; }\">", url_images_path, EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
