@@ -3461,8 +3461,8 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 	lob_pi = OCI_LobCreate(idi->dbinfo.oci_connection, OCI_CLOB);
 	lob_pu = OCI_LobCreate(idi->dbinfo.oci_connection, OCI_CLOB);
 
-	result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hoststatus, ":X5i", *(char **)data[4], &lob_pi);
-	if (result == IDO_OK) result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hoststatus, ":X5u", *(char **)data[4], &lob_pu);
+	result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hoststatus, ":X5i", *(char **)data[4], &lob_li);
+	if (result == IDO_OK) result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hoststatus, ":X5u", *(char **)data[4], &lob_lu);
 	if (result == IDO_OK) result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hoststatus, ":X6i", *(char **)data[5], &lob_pi);
 	if (result == IDO_OK) result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_hoststatus, ":X6u", *(char **)data[5], &lob_pu);
 	if (result == IDO_OK) {
@@ -3960,8 +3960,8 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 	lob_pu = OCI_LobCreate(idi->dbinfo.oci_connection, OCI_CLOB);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatus() bind clobs\n");
-	result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_servicestatus, ":X5i", *(char **)data[4], &lob_pi);
-	if (result == IDO_OK) result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_servicestatus, ":X5u", *(char **)data[4], &lob_pu);
+	result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_servicestatus, ":X5i", *(char **)data[4], &lob_li);
+	if (result == IDO_OK) result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_servicestatus, ":X5u", *(char **)data[4], &lob_lu);
 	if (result == IDO_OK) result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_servicestatus, ":X6i", *(char **)data[5], &lob_pi);
 	if (result == IDO_OK) result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_servicestatus, ":X6u", *(char **)data[5], &lob_pu);
 
