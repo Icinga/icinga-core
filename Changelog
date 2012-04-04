@@ -35,6 +35,7 @@ ENHANCEMENTS
 * install: change idomod extension from .o to .so, make .so the default extension for modules #2354
 * install: add configure target --with-eventhandler-dir and "make install-eventhandlers" for contrib/eventhandlers #2352
 * install: add --enable-cgi-log to configure to enable cgi logging during build #2364
+* install: add --enable-nagiosenv to configure to expose custom variables with prefix NAGIOS_ instead of ICINGA_ for easier reuse of well known check scripts #2083
 
 * config: introduce conf.d as place for own configs #2360
 
@@ -49,6 +50,7 @@ ENHANCEMENTS
 * icinga.spec: use eventhandler configure/make in package creation from #2352 #2363
 * icinga.spec: use --enable-cgi-log from upstream instead of manual sed #2365
 * icinga.spec: introduce conf.d as place for own configs #2367
+* idoutils: add new index for state in table statehistory #2274
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
@@ -69,6 +71,10 @@ FIXES
 
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
+* idoutils: fix several build problems in solaris: use supplied sprintf functions in preference over local one, build .so instead of .o shared librarys, use explicit -fPIC compiler switch  #524,#1772,#2354
+* idoutils: fix core dumps in solaris when using os supplied printf functions #2271,#1253
+* idoutils: fix lob handling in Oracle #2303,#2342
+* idoutils: fix sample shell db create script for mysql #2358
 
 * install: Fix notification template installation (Todd Zullinger) #2235
 
@@ -106,6 +112,8 @@ CHANGES
 
 * tests: you can now test with pleasure: $ make distclean ; ./configure ; make test #2369 #1192
 
+* idoutils: limit long_output and perfdata database storage in mysql to 32k #2342
+* idoutils: enlarge field "FAILURE_PREDICTION_OPTIONS" in table hosts from 64 to 128 Bytes #2479
 
 
 1.6.1 - 02/12/2011
