@@ -1790,12 +1790,12 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 	/* display only if refresh is supported */
 	if (CGI_ID == EXTINFO_CGI_ID || CGI_ID == OUTAGES_CGI_ID || CGI_ID == STATUS_CGI_ID || CGI_ID == STATUSMAP_CGI_ID || CGI_ID == TAC_CGI_ID) {
 		if (refresh_type == JAVASCRIPT_REFRESH)
-			printf("<span id='refresh_text'></span>&nbsp;<small><a href='#' onClick='toggle_refresh(); return false;'><span id='refresh_button'></span></a></small><br>\n");
+			printf("<span id='refresh_text'></span>&nbsp;<small><a href='#' onClick='toggle_refresh(); return false;'><span id='refresh_button'></span></a></small>\n");
 		else
-			printf("- Update every %d seconds<br>\n", refresh_rate);
+			printf("- Update every %d seconds\n", refresh_rate);
 	}
 
-	printf("<A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>%s %s</A> -\n", PROGRAM_NAME, PROGRAM_VERSION);
+	printf("<br><A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>%s %s</A> -\n", PROGRAM_NAME, PROGRAM_VERSION);
 
 	if (current_authdata != NULL)
 		printf("Logged in as <i>%s</i>\n", (!strcmp(current_authdata->username, "")) ? "?" : current_authdata->username);
