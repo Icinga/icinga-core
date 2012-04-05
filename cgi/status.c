@@ -123,6 +123,7 @@ extern servicestatus *servicestatus_list;
 #define STATUS_ADDED			1
 #define STATUS_COUNTED_UNFILTERED	2
 #define STATUS_COUNTED_FILTERED		4
+#define STATUS_BELONGS_TO_SG		8
 /** @} */
 
 /** @name NUMBER OF NAMED OBJECTS
@@ -569,6 +570,7 @@ int main(void) {
 	servicegroup *temp_servicegroup = NULL;
 	hoststatus *temp_hoststatus = NULL;
 	servicestatus *temp_servicestatus = NULL;
+	servicesmember *temp_sg_member = NULL;
 	int regex_i = 0, i = 0;
 	int len;
 	int show_dropdown = NO_STATUS;
@@ -658,6 +660,8 @@ int main(void) {
 				show_all_hosts = TRUE;
 				my_free(url_hosts_part);
 				my_free(cgi_title);
+				req_hosts[0].entry = strdup("all");
+				req_hosts[1].entry = NULL;
 				dummy = asprintf(&url_hosts_part, "host=all");
 				break;
 			} else {
@@ -690,6 +694,8 @@ int main(void) {
 				show_all_hostgroups = TRUE;
 				my_free(url_hostgroups_part);
 				my_free(cgi_title);
+				req_hostgroups[0].entry = strdup("all");
+				req_hostgroups[1].entry = NULL;
 				dummy = asprintf(&url_hostgroups_part, "hostgroup=all");
 				break;
 			} else {
@@ -722,6 +728,8 @@ int main(void) {
 				show_all_servicegroups = TRUE;
 				my_free(url_servicegroups_part);
 				my_free(cgi_title);
+				req_servicegroups[0].entry = strdup("all");
+				req_servicegroups[1].entry = NULL;
 				dummy = asprintf(&url_servicegroups_part, "servicegroup=all");
 				break;
 			} else {
@@ -769,7 +777,6 @@ int main(void) {
 	/* allow service_filter only for status lists */
 	if (group_style_type == STYLE_SUMMARY || group_style_type == STYLE_GRID || group_style_type == STYLE_OVERVIEW)
 		my_free(service_filter);
-
 
 	/**
 	 *	filter status data if user searched for something
@@ -882,6 +889,38 @@ int main(void) {
 			group_style_type = STYLE_SERVICE_DETAIL;
 	}
 
+	/* pre filter for service groups
+	   this way we mark all services which belong to a servicegroup we want to see once.
+	   otherwise we would have to check every service if it belongs to a servicegroup we want to see
+	   and this is very expensive
+	*/
+	if (display_type == DISPLAY_SERVICEGROUPS) {
+		if (show_all_servicegroups == FALSE) {
+			for (i = 0; req_servicegroups[i].entry != NULL; i++) {
+				temp_servicegroup = find_servicegroup(req_servicegroups[i].entry);
+				if (temp_servicegroup != NULL && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
+					for (temp_sg_member = temp_servicegroup->members; temp_sg_member != NULL; temp_sg_member = temp_sg_member->next) {
+						temp_hoststatus = find_hoststatus(temp_sg_member->host_name);
+						temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
+						temp_servicestatus = find_servicestatus(temp_sg_member->host_name, temp_sg_member->service_description);
+						temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
+					}
+				}
+			}
+		} else {
+			for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
+				if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
+					for (temp_sg_member = temp_servicegroup->members; temp_sg_member != NULL; temp_sg_member = temp_sg_member->next) {
+						temp_hoststatus = find_hoststatus(temp_sg_member->host_name);
+						temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
+						temp_servicestatus = find_servicestatus(temp_sg_member->host_name, temp_sg_member->service_description);
+						temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
+					}
+				}
+			}
+		}
+	}
+
 
 	/**
 	 *	Now iterate through servicestatus_list and hoststatus_list to find all hosts/services we need to display
@@ -975,43 +1014,8 @@ int main(void) {
 
 		/* see if we should display a servicegroup */
 		else if (display_type == DISPLAY_SERVICEGROUPS) {
-			found = FALSE;
-			if (show_all_servicegroups == FALSE) {
-				for (i = 0; req_servicegroups[i].entry != NULL; i++) {
-					temp_servicegroup = find_servicegroup(req_servicegroups[i].entry);
-					if (temp_servicegroup != NULL && \
-					        is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE && \
-					        is_service_member_of_servicegroup(temp_servicegroup, temp_service) == TRUE) {
-						found = TRUE;
-						break;
-					}
-				}
-			} else {
-				for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
-					if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE && \
-					        is_service_member_of_servicegroup(temp_servicegroup, temp_service) == TRUE) {
-						found = TRUE;
-						break;
-					}
-				}
-			}
-			if (found == FALSE)
+			if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
 				continue;
-		}
-
-		if (!(temp_servicestatus->added & STATUS_COUNTED_UNFILTERED)) {
-			if (temp_servicestatus->status == SERVICE_CRITICAL)
-				num_total_services_critical++;
-			else if (temp_servicestatus->status == SERVICE_WARNING)
-				num_total_services_warning++;
-			else if (temp_servicestatus->status == SERVICE_UNKNOWN)
-				num_total_services_unknown++;
-			else if (temp_servicestatus->status == SERVICE_PENDING)
-				num_total_services_pending++;
-			else
-				num_total_services_ok++;
-
-			temp_servicestatus->added |= STATUS_COUNTED_UNFILTERED;
 		}
 
 		if (!(temp_hoststatus->added & STATUS_COUNTED_UNFILTERED)) {
@@ -1031,6 +1035,22 @@ int main(void) {
 		/* see if we should display services for hosts with tis type of status */
 		if (!(host_status_types & temp_hoststatus->status))
 			continue;
+
+
+		if (!(temp_servicestatus->added & STATUS_COUNTED_UNFILTERED)) {
+			if (temp_servicestatus->status == SERVICE_CRITICAL)
+				num_total_services_critical++;
+			else if (temp_servicestatus->status == SERVICE_WARNING)
+				num_total_services_warning++;
+			else if (temp_servicestatus->status == SERVICE_UNKNOWN)
+				num_total_services_unknown++;
+			else if (temp_servicestatus->status == SERVICE_PENDING)
+				num_total_services_pending++;
+			else
+				num_total_services_ok++;
+
+			temp_servicestatus->added |= STATUS_COUNTED_UNFILTERED;
+		}
 
 		/* see if we should display this type of service status */
 		if (!(service_status_types & temp_servicestatus->status))
@@ -1118,27 +1138,7 @@ int main(void) {
 
 				/* see if we should display a servicegroup */
 			} else if (display_type == DISPLAY_SERVICEGROUPS) {
-				found = FALSE;
-				if (show_all_servicegroups == FALSE) {
-					for (i = 0; req_servicegroups[i].entry != NULL; i++) {
-						temp_servicegroup = find_servicegroup(req_servicegroups[i].entry);
-						if (temp_servicegroup != NULL && \
-						        is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE && \
-						        is_host_member_of_servicegroup(temp_servicegroup, temp_host) == TRUE) {
-							found = TRUE;
-							break;
-						}
-					}
-				} else {
-					for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
-						if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE && \
-						        is_host_member_of_servicegroup(temp_servicegroup, temp_host) == TRUE) {
-							found = TRUE;
-							break;
-						}
-					}
-				}
-				if (found == FALSE)
+				if (!(temp_hoststatus->added & STATUS_BELONGS_TO_SG))
 					continue;
 			}
 
@@ -3113,10 +3113,11 @@ void show_servicegroup_overviews(void) {
 /* shows an overview of a specific servicegroup... */
 void show_servicegroup_overview(servicegroup *temp_servicegroup) {
 	servicesmember *temp_member;
+	servicesmember *temp_member2;
 	host *temp_host;
 	host *last_host;
 	hoststatus *temp_hoststatus = NULL;
-	statusdata *temp_status = NULL;
+	servicestatus *temp_servicestatus = NULL;
 	int odd = 0;
 	int json_start = TRUE;
 	int service_found = FALSE;
@@ -3173,16 +3174,25 @@ void show_servicegroup_overview(servicegroup *temp_servicegroup) {
 		if (service_status_types != all_service_status_types) {
 			service_found = FALSE;
 
-			/* check all services... */
-			for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
+			/* check members if there is anything to display for this host */
+			for (temp_member2 = temp_member; temp_member2 != NULL; temp_member2 = temp_member2->next) {
 
-				if (temp_status->type != SERVICE_STATUS)
+				if (strcmp(temp_member2->host_name, temp_host->name))
+					break;
+
+				/* get the status of the service */
+				temp_servicestatus = find_servicestatus(temp_member2->host_name, temp_member2->service_description);
+
+				/* make sure we only display services of the specified status levels */
+				if (!(service_status_types & temp_servicestatus->status))
 					continue;
 
-				if (!strcmp(temp_host->name, temp_status->host_name)) {
-					service_found = TRUE;
-					break;
-				}
+				/* make sure we only display services that have the desired properties */
+				if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+					continue;
+
+				service_found = TRUE;
+				break;
 			}
 			if (service_found == FALSE)
 				continue;
@@ -3257,6 +3267,7 @@ void show_servicegroup_summaries(void) {
 		if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
 			continue;
 
+		user_has_seen_something = TRUE;
 
 		/* find all the hosts that belong to the servicegroup */
 		if (host_status_types != all_host_status_types || service_status_types != all_service_status_types) {
@@ -3314,8 +3325,6 @@ void show_servicegroup_summaries(void) {
 
 		/* show summary for this servicegroup */
 		show_servicegroup_summary(temp_servicegroup, odd);
-
-		user_has_seen_something = TRUE;
 	}
 
 	if (content_type == JSON_CONTENT)
@@ -3898,7 +3907,6 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 	host *last_host;
 	hoststatus *temp_hoststatus;
 	servicestatus *temp_servicestatus;
-	statusdata *temp_status = NULL;
 	int odd = 0;
 	int current_item;
 	int json_start = TRUE;
@@ -3928,8 +3936,8 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 		if (temp_host == NULL)
 			continue;
 
-		/* only show in partial hostgroups if user is authorized to view this host */
-		if (show_partial_hostgroups == TRUE && is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+		/* only show if user is authorized to view this host */
+		if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
 			continue;
 
 		/* find the host status */
@@ -3949,18 +3957,26 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 		if (service_status_types != all_service_status_types) {
 			service_found = FALSE;
 
-			/* check all services... */
-			for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
+			/* check members if there is anything to display for this host */
+			for (temp_member2 = temp_member; temp_member2 != NULL; temp_member2 = temp_member2->next) {
 
-				if (temp_status->type != SERVICE_STATUS)
+				if (strcmp(temp_member2->host_name, temp_host->name))
+					break;
+
+				/* get the status of the service */
+				temp_servicestatus = find_servicestatus(temp_member2->host_name, temp_member2->service_description);
+
+				/* make sure we only display services of the specified status levels */
+				if (!(service_status_types & temp_servicestatus->status))
 					continue;
 
-				if (!strcmp(temp_host->name, temp_status->host_name)) {
-					service_found = TRUE;
-					break;
-				}
-			}
+				/* make sure we only display services that have the desired properties */
+				if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+					continue;
 
+				service_found = TRUE;
+				break;
+			}
 			if (service_found == FALSE)
 				continue;
 		}
@@ -4229,6 +4245,8 @@ void show_hostgroup_overviews(void) {
 					continue;
 
 				partial_hosts = TRUE;
+
+				break;
 			}
 		}
 
@@ -4333,6 +4351,8 @@ int show_hostgroup_overview(hostgroup *hstgrp) {
 				continue;
 
 			partial_hosts = TRUE;
+
+			break;
 		}
 	}
 
@@ -4548,60 +4568,76 @@ void show_servicegroup_hostgroup_member_service_status_totals(char *host_name, v
 	int total_pending = 0;
 	servicestatus *temp_servicestatus;
 	statusdata *temp_status = NULL;
-	service *temp_service;
 	servicegroup *temp_servicegroup = NULL;
+	servicesmember *temp_member = NULL;
 	char temp_buffer[MAX_INPUT_BUFFER];
+	int service_found = FALSE;
 
 
-	if (display_type == DISPLAY_SERVICEGROUPS)
+	if (display_type == DISPLAY_SERVICEGROUPS) {
 		temp_servicegroup = (servicegroup *)data;
 
-	/* check all services... */
-	for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
+		for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
-		if (temp_status->type != SERVICE_STATUS)
-			continue;
+			if (!strcmp(host_name, temp_member->host_name)) {
 
-		if (!strcmp(host_name, temp_status->host_name)) {
-
-			/* make sure the user is authorized to see this service... */
-			temp_service = find_service(temp_status->host_name, temp_status->svc_description);
-			if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
-				continue;
-
-			if (display_type == DISPLAY_SERVICEGROUPS) {
-
-				/* is this service a member of the servicegroup? */
-				if (is_service_member_of_servicegroup(temp_servicegroup, temp_service) == FALSE)
+				if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
 					continue;
+
+				/* make sure we only display services of the specified status levels */
+				if (!(service_status_types & temp_servicestatus->status))
+					continue;
+
+				/* make sure we only display services that have the desired properties */
+				if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+					continue;
+
+				if (temp_servicestatus->status == SERVICE_CRITICAL)
+					total_critical++;
+				else if (temp_servicestatus->status == SERVICE_WARNING)
+					total_warning++;
+				else if (temp_servicestatus->status == SERVICE_UNKNOWN)
+					total_unknown++;
+				else if (temp_servicestatus->status == SERVICE_OK)
+					total_ok++;
+				else if (temp_servicestatus->status == SERVICE_PENDING)
+					total_pending++;
+				else
+					total_ok++;
 			}
+		}
+	} else {
+		/* check all services... */
+		for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
 
-			/* make sure we only display services of the specified status levels */
-			if (!(service_status_types & temp_status->status))
+			if (temp_status->type != SERVICE_STATUS)
 				continue;
 
-			if ((temp_servicestatus = find_servicestatus(temp_status->host_name, temp_status->svc_description)) == NULL)
-				continue;
+			if (!strcmp(host_name, temp_status->host_name)) {
 
-			/* make sure we only display services that have the desired properties */
-			if (passes_service_properties_filter(temp_servicestatus) == FALSE)
-				continue;
+				service_found = TRUE;
 
-			if (temp_servicestatus->status == SERVICE_CRITICAL)
-				total_critical++;
-			else if (temp_servicestatus->status == SERVICE_WARNING)
-				total_warning++;
-			else if (temp_servicestatus->status == SERVICE_UNKNOWN)
-				total_unknown++;
-			else if (temp_servicestatus->status == SERVICE_OK)
-				total_ok++;
-			else if (temp_servicestatus->status == SERVICE_PENDING)
-				total_pending++;
-			else
-				total_ok++;
+				if (temp_status->status == SERVICE_CRITICAL)
+					total_critical++;
+				else if (temp_status->status == SERVICE_WARNING)
+					total_warning++;
+				else if (temp_status->status == SERVICE_UNKNOWN)
+					total_unknown++;
+				else if (temp_status->status == SERVICE_OK)
+					total_ok++;
+				else if (temp_status->status == SERVICE_PENDING)
+					total_pending++;
+				else
+					total_ok++;
+
+			/* list is in alphabetic order
+			   therefore all services for this host appear in a row
+			   if host doesn't match anymore we are done
+			*/
+			} else if (service_found == TRUE)
+				break;
 		}
 	}
-
 
 	if (content_type == JSON_CONTENT) {
 		printf("\"services_status_ok\": %d, ", total_ok);
@@ -4685,6 +4721,7 @@ void show_hostgroup_summaries(void) {
 			continue;
 
 		/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
+		/* or if we have to filter for service status types*/
 		if (show_partial_hostgroups == TRUE || service_status_types != all_service_status_types) {
 			found = FALSE;
 			for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
@@ -4728,12 +4765,16 @@ void show_hostgroup_summaries(void) {
 				}
 
 				partial_hosts = TRUE;
+
+				break;
 			}
 		}
 
 		/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
 		if (show_partial_hostgroups == TRUE && partial_hosts == FALSE)
 			continue;
+
+		user_has_seen_something = TRUE;
 
 		/* if there are no services to display try next hostgroup */
 		if (service_status_types != all_service_status_types && found == FALSE)
@@ -4753,8 +4794,6 @@ void show_hostgroup_summaries(void) {
 
 		/* show summary for this hostgroup */
 		show_hostgroup_summary(temp_hostgroup, odd);
-
-		user_has_seen_something = TRUE;
 	}
 
 	if (content_type == JSON_CONTENT)
@@ -5376,6 +5415,8 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 				continue;
 
 			partial_hosts = TRUE;
+
+			break;
 		}
 	}
 
@@ -5521,49 +5562,59 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 		/* display all services on the host */
 		current_item = 1;
 		json_start2 = TRUE;
+		service_found = FALSE;
 		for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
 
 			if (temp_status->type != SERVICE_STATUS)
 				continue;
 
-			if (strcmp(temp_host->name, temp_status->host_name))
-				continue;
+			if (!strcmp(temp_host->name, temp_status->host_name)) {
 
-			if (temp_status == NULL)
-				service_status_class = "NULL";
-			else if (temp_status->status == SERVICE_OK)
-				service_status_class = "OK";
-			else if (temp_status->status == SERVICE_WARNING)
-				service_status_class = "WARNING";
-			else if (temp_status->status == SERVICE_UNKNOWN)
-				service_status_class = "UNKNOWN";
-			else if (temp_status->status == SERVICE_CRITICAL)
-				service_status_class = "CRITICAL";
-			else
-				service_status_class = "PENDING";
+				service_found = TRUE;
 
-			if (content_type == JSON_CONTENT) {
-				if (json_start2 == FALSE)
-					printf(",\n");
-				json_start2 = FALSE;
-
-				printf("{ \"service_description\": \"%s\",\n", json_encode(temp_status->svc_description));
 				if (temp_status == NULL)
-					printf("\"service_status\": null } ");
+					service_status_class = "NULL";
+				else if (temp_status->status == SERVICE_OK)
+					service_status_class = "OK";
+				else if (temp_status->status == SERVICE_WARNING)
+					service_status_class = "WARNING";
+				else if (temp_status->status == SERVICE_UNKNOWN)
+					service_status_class = "UNKNOWN";
+				else if (temp_status->status == SERVICE_CRITICAL)
+					service_status_class = "CRITICAL";
 				else
-					printf("\"service_status\": \"%s\" } ", service_status_class);
-			} else {
-				if (current_item > max_grid_width && max_grid_width > 0) {
-					printf("<BR>\n");
-					current_item = 1;
+					service_status_class = "PENDING";
+
+				if (content_type == JSON_CONTENT) {
+					if (json_start2 == FALSE)
+						printf(",\n");
+					json_start2 = FALSE;
+
+					printf("{ \"service_description\": \"%s\",\n", json_encode(temp_status->svc_description));
+					if (temp_status == NULL)
+						printf("\"service_status\": null } ");
+					else
+						printf("\"service_status\": \"%s\" } ", service_status_class);
+				} else {
+					if (current_item > max_grid_width && max_grid_width > 0) {
+						printf("<BR>\n");
+						current_item = 1;
+					}
+
+					printf("<A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_status->host_name));
+					printf("&service=%s' CLASS='status%s'>%s</A>&nbsp;", url_encode(temp_status->svc_description), service_status_class, html_encode(temp_status->svc_description, TRUE));
+
+					current_item++;
 				}
 
-				printf("<A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_status->host_name));
-				printf("&service=%s' CLASS='status%s'>%s</A>&nbsp;", url_encode(temp_status->svc_description), service_status_class, html_encode(temp_status->svc_description, TRUE));
-
-				current_item++;
-			}
+			/* list is in alphabetic order
+			   therefore all services for this host appear in a row
+			   if host doesn't match anymore we are done
+			*/
+			} else if (service_found == TRUE)
+				break;
 		}
+
 		/* Print no matching in case of no services */
 		if (current_item == 1 && content_type != JSON_CONTENT)
 			printf("No matching services");
