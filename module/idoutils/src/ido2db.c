@@ -7,6 +7,7 @@
  **************************************************************/
 
 /*#define DEBUG_MEMORY 1*/
+/*#define DEBUG_IDO2DB2 1*/
 
 #ifdef DEBUG_MEMORY
 #include <mcheck.h>
@@ -1464,7 +1465,7 @@ int ido2db_check_for_client_input(ido2db_idi *idi) {
 
 #ifdef DEBUG_IDO2DB2
 	printf("RAWBUF: %s\n", dbuf.buf);
-	printf("  USED1: %lu, BYTES: %lu, LINES: %lu\n", dbuf->used_size, idi->bytes_processed, idi->lines_processed);
+	printf("  USED1: %lu, BYTES: %lu, LINES: %lu\n", dbuf.used_size, idi->bytes_processed, idi->lines_processed);
 #endif
 
 	/* search for complete lines of input */
