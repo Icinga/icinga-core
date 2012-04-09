@@ -329,7 +329,7 @@ int ido2db_db_init(ido2db_idi *idi) {
 	}
 
 	/* register error handler and init oci */
-	if (!OCI_Initialize(ido2db_ocilib_err_handler, NULL, OCI_ENV_CONTEXT)) {
+	if (!OCI_Initialize(ido2db_ocilib_err_handler, NULL, OCI_ENV_THREADED|OCI_ENV_CONTEXT)) {
 		syslog(LOG_USER | LOG_INFO, "Error:  OCI_Initialize() failed\n");
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "OCI_Initialize() failed\n");
 		return IDO_ERROR;

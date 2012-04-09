@@ -75,6 +75,7 @@ FIXES
 * idoutils: fix core dumps in solaris when using os supplied printf functions #2271,#1253
 * idoutils: fix lob handling in Oracle #2303,#2342
 * idoutils: fix sample shell db create script for mysql #2358
+* idoutils: fix OCI-21500 when freeing lobs #2509
 
 * install: Fix notification template installation (Todd Zullinger) #2235
 
