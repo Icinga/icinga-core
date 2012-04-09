@@ -22,6 +22,7 @@ FIXES
 
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
+* idoutils: partly cherry-pick fixes for solaris segfaults from #2271
 
 CHANGES
 
