@@ -176,7 +176,6 @@ typedef struct ido2db_dbconninfo_struct{
 	/* select */
 	OCI_Statement* oci_statement_logentries_select;
 	OCI_Statement* oci_statement_instances_select;
-	OCI_Statement* oci_statement_sequence_select;
 
 	/* delete */
 	OCI_Statement* oci_statement_timedeventqueue_delete;

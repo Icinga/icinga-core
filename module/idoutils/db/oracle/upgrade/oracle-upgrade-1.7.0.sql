@@ -45,6 +45,69 @@ tablespace &IDXTBS;
 alter table hosts modify (FAILURE_PREDICTION_OPTIONS varchar2(128));
 
 -- -----------------------------------------
+-- add default individual caching sizes to the sequences #2510
+-- should be adjusted for your environment 
+-- -----------------------------------------
+alter sequence SEQ_ACKNOWLEDGEMENTS cache 10;
+alter sequence SEQ_COMMANDS cache 5; 
+alter sequence SEQ_COMMENTHISTORY cache 20; 
+alter sequence SEQ_COMMENTS cache 20; 
+alter sequence SEQ_CONFIGFILES cache 5; 
+alter sequence SEQ_CONFIGFILEVARIABLES cache 10; 
+alter sequence SEQ_CONNINFO nocache; 
+alter sequence SEQ_CONTACTGROUPS nocache; 
+alter sequence SEQ_CONTACTGROUP_MEMBERS cache 5; 
+alter sequence SEQ_CONTACTNOTIFICATIONS cache 10; 
+alter sequence SEQ_CONTACTNOTIFMETHODS cache 5; 
+alter sequence SEQ_CONTACTS cache 20; 
+alter sequence SEQ_CONTACTSTATUS cache 10; 
+alter sequence SEQ_CONTACT_ADDRESSES cache 5; 
+alter sequence SEQ_CONTACT_NOTIFCOMMANDS cache 5; 
+alter sequence SEQ_CUSTOMVARIABLES cache 20; 
+alter sequence SEQ_CUSTOMVARIABLESTATUS cache 20; 
+alter sequence SEQ_DOWNTIMEHISTORY cache 10; 
+alter sequence SEQ_EVENTHANDLERS cache 10; 
+alter sequence SEQ_EXTERNALCOMMANDS cache 5; 
+alter sequence SEQ_FLAPPINGHISTORY cache 20; 
+alter sequence SEQ_HOSTCHECKS cache 100; 
+alter sequence SEQ_HOSTDEPENDENCIES cache 5; 
+alter sequence SEQ_HOSTESCALATIONS cache 20; 
+alter sequence SEQ_HOSTESC_CONTACTGROUPS nocache; 
+alter sequence SEQ_HOSTESC_CONTACTS cache 5; 
+alter sequence SEQ_HOSTGROUPS nocache; 
+alter sequence SEQ_HOSTGROUP_MEMBERS cache 5; 
+alter sequence SEQ_HOSTS cache 20; 
+alter sequence SEQ_HOSTSTATUS cache 20; 
+alter sequence SEQ_HOST_CONTACTGROUPS nocache;
+alter sequence SEQ_HOST_CONTACTS cache 5; 
+alter sequence SEQ_HOST_PARENTHOSTS cache 5; 
+alter sequence SEQ_INSTANCES nocache; 
+alter sequence SEQ_LOGENTRIES cache 50;
+alter sequence SEQ_NOTIFICATIONS cache 20; 
+alter sequence SEQ_OBJECTS cache 20; 
+alter sequence SEQ_PROCESSEVENTS cache 20;
+alter sequence SEQ_PROGRAMSTATUS cache 50;
+alter sequence SEQ_RUNTIMEVARIABLES cache 10; 
+alter sequence SEQ_SCHEDULEDDOWNTIME cache 5;
+alter sequence SEQ_SERVICECHECKS cache 100;
+alter sequence SEQ_SERVICEDEPENDENCIES cache 10; 
+alter sequence SEQ_SERVICEESCALATIONS cache 5; 
+alter sequence SEQ_SERVICEESCCONTACTGROUPS nocache; 
+alter sequence SEQ_SERVICEESC_CONTACTS cache 5; 
+alter sequence SEQ_SERVICEGROUPS nocache; 
+alter sequence SEQ_SERVICEGROUP_MEMBERS cache 5;
+alter sequence SEQ_SERVICES cache 20; 
+alter sequence SEQ_SERVICESTATUS cache 20;
+alter sequence SEQ_SERVICE_CONTACTGROUPS nocache;
+alter sequence SEQ_SERVICE_CONTACTS cache 5;
+alter sequence SEQ_SLAHISTORY cache 20;
+alter sequence SEQ_STATEHISTORY cache 50; 
+alter sequence SEQ_SYSTEMCOMMANDS cache 5; 
+alter sequence SEQ_TIMEDEVENTQUEUE cache 10;
+alter sequence SEQ_TIMEDEVENTS cache 10; 
+alter sequence SEQ_TIMEPERIODS nocache; 
+alter sequence SEQ_TIMEP_TIMER cache 5;
+-- -----------------------------------------
 -- finally update dbversion
 -- -----------------------------------------
 

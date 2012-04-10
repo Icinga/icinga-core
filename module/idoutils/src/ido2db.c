@@ -24,7 +24,6 @@
 #include "../include/dbhandlers.h"
 #include "../include/sla.h"
 #include "../include/logging.h"
-
 #ifdef HAVE_SSL
 #include "../../../include/dh.h"
 #endif
