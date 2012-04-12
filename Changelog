@@ -115,7 +115,10 @@ CHANGES
 * tests: you can now test with pleasure: $ make distclean ; ./configure ; make test #2369 #1192
 
 * idoutils: limit long_output and perfdata database storage in mysql to 32k #2342
+
 * idoutils: enlarge field "FAILURE_PREDICTION_OPTIONS" in table hosts from 64 to 128 Bytes #2479
+
+* idoutils: Oracle only->change method retrieving lastid, introduce individual sequence caching sizes #2510 
 
 
 1.6.1 - 02/12/2011
