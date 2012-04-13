@@ -3450,7 +3450,8 @@ void show_scheduling_queue(void) {
 			if (host_name && *host_name != '\0' && strcmp(host_name, temp_hststatus->host_name))
 				continue;
 
-			if (host_name && *host_name == '\0' && service_desc && *service_desc != '\0')
+			/* skip host if users just want to see a service */
+			if (service_desc && *service_desc != '\0')
 				continue;
 		}
 
