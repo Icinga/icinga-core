@@ -1870,13 +1870,8 @@ void display_nav_table(char *url, int archive) {
 		printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='navBox'>\n");
 		printf("<tr>\n");
 		printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-		if (archive == 0) {
-			printf("Latest Archive<br>");
-			printf("<a href='%sarchive=1'><img src='%s%s' border=0 alt='Latest Archive' title='Latest Archive'></a>", url, url_images_path, LEFT_ARROW_ICON);
-		} else {
-			printf("Earlier Archive<br>");
-			printf("<a href='%sarchive=%d'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, archive + 1, url_images_path, LEFT_ARROW_ICON);
-		}
+		printf("Earlier Archive<br>");
+		printf("<a href='%sarchive=%d'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, archive + 1, url_images_path, LEFT_ARROW_ICON);
 		printf("</td>\n");
 
 		printf("<td width=15></td>\n");
@@ -1889,6 +1884,7 @@ void display_nav_table(char *url, int archive) {
 		if (archive == 0)
 			printf("Present..");
 		else {
+			this_scheduled_log_rotation--;
 			get_time_string(&this_scheduled_log_rotation, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
 			printf("%s", date_time);
 		}
@@ -1896,7 +1892,6 @@ void display_nav_table(char *url, int archive) {
 
 		printf("<td width=15></td>\n");
 		if (archive != 0) {
-
 			printf("<td align=center valign=center CLASS='navBoxItem'>\n");
 			if (archive == 1) {
 				printf("Current Log<br>");
@@ -1906,11 +1901,12 @@ void display_nav_table(char *url, int archive) {
 				printf("<a href='%sarchive=%d'><img src='%s%s' border=0 alt='More Recent Archive' title='More Recent Archive'></a>", url, archive - 1, url_images_path, RIGHT_ARROW_ICON);
 			}
 			printf("</td>\n");
-		} else
-			printf("<td><img src='%s%s' border=0 width=75 height=1></td>\n", url_images_path, EMPTY_ICON);
+		} else {
+			printf("<td align=center valign=center CLASS='navBoxItem'>Current Log<br>\n");
+			printf("<img src='%s%s' border=0 width=75 height=16></td>\n", url_images_path, EMPTY_ICON);
+		}
 
 		printf("</tr>\n");
-
 		printf("</table>\n");
 	}
 
