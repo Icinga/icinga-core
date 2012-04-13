@@ -176,6 +176,8 @@ int main(void) {
 	service *temp_service = NULL;
 	servicegroup *temp_servicegroup = NULL;
 	servicedependency *temp_sd = NULL;
+	char *last_sd_svc_desc = "";
+	char *last_sd_hostname = "";
 	hostdependency *temp_hd = NULL;
 
 	mac = get_global_macros();
@@ -515,7 +517,8 @@ int main(void) {
 
 				for (temp_sd = servicedependency_list; temp_sd != NULL; temp_sd = temp_sd->next) {
 
-					if (!strcmp(temp_sd->dependent_service_description, temp_service->description) && !strcmp(temp_sd->dependent_host_name, temp_host->name)) {
+					if (!strcmp(temp_sd->dependent_service_description, temp_service->description) && !strcmp(temp_sd->dependent_host_name, temp_host->name) && \
+					  !(!strcmp(temp_sd->service_description, last_sd_svc_desc) && !strcmp(temp_sd->host_name, last_sd_hostname))) {
 						if (found == TRUE)
 							printf(", ");
 
@@ -523,6 +526,8 @@ int main(void) {
 						printf("&service=%s'>%s on %s</A>\n", url_encode(temp_sd->service_description), html_encode(temp_sd->service_description, FALSE), html_encode(temp_sd->host_name, FALSE));
 						found = TRUE;
 					}
+					last_sd_svc_desc=temp_sd->service_description;
+					last_sd_hostname=temp_sd->host_name;
 				}
 
 				if (found == FALSE)
