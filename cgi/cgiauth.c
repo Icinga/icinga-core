@@ -29,20 +29,37 @@
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
 
-extern char            main_config_file[MAX_FILENAME_LENGTH];
 
-extern hostgroup       *hostgroup_list;
-extern servicegroup    *servicegroup_list;
+extern hostgroup	*hostgroup_list;
+extern servicegroup	*servicegroup_list;
 
-extern int             use_authentication;
-extern int             use_ssl_authentication;
+extern char		*authorization_config_file;
+extern char		*authorized_for_all_host_commands;
+extern char		*authorized_for_all_hosts;
+extern char		*authorized_for_all_service_commands;
+extern char		*authorized_for_all_services;
+extern char		*authorized_for_configuration_information;
+extern char		*authorized_for_full_command_resolution;
+extern char		*authorized_for_read_only;
+extern char		*authorized_for_system_commands;
+extern char		*authorized_for_system_information;
+extern char		*authorized_contactgroup_for_all_host_commands;
+extern char		*authorized_contactgroup_for_all_hosts;
+extern char		*authorized_contactgroup_for_all_service_commands;
+extern char		*authorized_contactgroup_for_all_services;
+extern char		*authorized_contactgroup_for_configuration_information;
+extern char		*authorized_contactgroup_for_full_command_resolution;
+extern char		*authorized_contactgroup_for_read_only;
+extern char		*authorized_contactgroup_for_system_commands;
+extern char		*authorized_contactgroup_for_system_information;
+extern char		*default_user_name;
 
-extern int	       show_all_services_host_is_authorized_for;
+extern int		use_authentication;
+extern int		use_ssl_authentication;
+extern int		show_all_services_host_is_authorized_for;
 
 /* get current authentication information */
 int get_authentication_information(authdata *authinfo) {
-	mmapfile *thefile;
-	char *input = NULL;
 	char *temp_ptr;
 	contact *temp_contact;
 	contactgroup *temp_contactgroup;
@@ -63,199 +80,199 @@ int get_authentication_information(authdata *authinfo) {
 	authinfo->number_of_authentication_rules = 0;
 	authinfo->authentication_rules = NULL;
 
+	/* set empty default_user_name if uninitialized */
+	if (default_user_name == NULL)
+		default_user_name = "";
+
 	/* grab username from the environment... */
-	if (use_ssl_authentication) {
-		/* patch by Pawl Zuzelski - 7/22/08 */
-		temp_ptr = getenv("SSL_CLIENT_S_DN_CN");
-	} else {
+	if (use_ssl_authentication)
+		temp_ptr = getenv("SSL_CLIENT_S_DN_CN");	/* patch by Pawl Zuzelski - 7/22/08 */
+	else
 		temp_ptr = getenv("REMOTE_USER");
-	}
-	if (temp_ptr == NULL) {
+
+	/* if we don't have a username yet, then fake the authentication if we find a default username defined */
+	if (temp_ptr == NULL || (!strcmp(temp_ptr, "") && strcmp(default_user_name, "")))
+		temp_ptr = default_user_name;
+
+	authinfo->username = (char *)malloc(strlen(temp_ptr) + 1);
+
+	if (authinfo->username == NULL)
 		authinfo->username = "";
+	else
+		strcpy(authinfo->username, temp_ptr);
+
+	if (!strcmp(authinfo->username, "")) {
+
 		authinfo->authenticated = FALSE;
-	} else {
-		authinfo->username = (char *)malloc(strlen(temp_ptr) + 1);
-		if (authinfo->username == NULL)
-			authinfo->username = "";
-		else
-			strcpy(authinfo->username, temp_ptr);
-		if (!strcmp(authinfo->username, ""))
-			authinfo->authenticated = FALSE;
-		else
-			authinfo->authenticated = TRUE;
+
+		/* Nothing to do here */
+		return ERROR;
+
+	} else
+		authinfo->authenticated = TRUE;
+
+	/* parse all auth vars */
+
+	if (authorization_config_file != NULL)
+		parse_authorization_config_file(authorization_config_file, authinfo);
+
+	for (temp_ptr = strtok(authorized_for_all_host_commands, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+		if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+			authinfo->authorized_for_all_host_commands = TRUE;
+			break;
+		}
 	}
 
-	/* read in authorization override vars from config file... */
-	if ((thefile = mmap_fopen(get_cgi_config_location())) != NULL) {
+	for (temp_ptr = strtok(authorized_for_all_hosts, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+		if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+			authinfo->authorized_for_all_hosts = TRUE;
+			break;
+		}
+	}
 
-		while (1) {
+	for (temp_ptr = strtok(authorized_for_all_service_commands, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+		if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+			authinfo->authorized_for_all_service_commands = TRUE;
+			break;
+		}
+	}
 
-			/* free memory */
-			free(input);
+	for (temp_ptr = strtok(authorized_for_all_services, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+		if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+			authinfo->authorized_for_all_services = TRUE;
+			break;
+		}
+	}
 
-			/* read the next line */
-			if ((input = mmap_fgets_multiline(thefile)) == NULL)
-				break;
+	for (temp_ptr = strtok(authorized_for_configuration_information, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+		if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+			authinfo->authorized_for_configuration_information = TRUE;
+			break;
+		}
+	}
 
-			strip(input);
+	for (temp_ptr = strtok(authorized_for_full_command_resolution, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+		if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+			authinfo->authorized_for_full_command_resolution = TRUE;
+			break;
+		}
+	}
 
-			/* we don't have a username yet, so fake the authentication if we find a default username defined */
-			if (!strcmp(authinfo->username, "") && strstr(input, "default_user_name=") == input) {
-				temp_ptr = strtok(input, "=");
-				temp_ptr = strtok(NULL, ",");
+	for (temp_ptr = strtok(authorized_for_read_only, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+		if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+			authinfo->authorized_for_read_only = TRUE;
+			break;
+		}
+	}
 
-				if (temp_ptr == NULL) {
-					authinfo->username = "";
-					authinfo->authenticated = FALSE;
-				} else {
-					authinfo->username = (char *)malloc(strlen(temp_ptr) + 1);
-					if (authinfo->username == NULL)
-						authinfo->username = "";
-					else
-						strcpy(authinfo->username, temp_ptr);
-					if (!strcmp(authinfo->username, ""))
-						authinfo->authenticated = FALSE;
-					else
-						authinfo->authenticated = TRUE;
-				}
-			}
+	for (temp_ptr = strtok(authorized_for_system_commands, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+		if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+			authinfo->authorized_for_system_commands = TRUE;
+			break;
+		}
+	}
 
-			else if (strstr(input, "authorized_for_all_hosts=") == input) {
-				temp_ptr = strtok(input, "=");
-				while ((temp_ptr = strtok(NULL, ","))) {
-					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
-						authinfo->authorized_for_all_hosts = TRUE;
-				}
-			} else if (strstr(input, "authorized_for_all_services=") == input) {
-				temp_ptr = strtok(input, "=");
-				while ((temp_ptr = strtok(NULL, ","))) {
-					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
-						authinfo->authorized_for_all_services = TRUE;
-				}
-			} else if (strstr(input, "authorized_for_system_information=") == input) {
-				temp_ptr = strtok(input, "=");
-				while ((temp_ptr = strtok(NULL, ","))) {
-					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
-						authinfo->authorized_for_system_information = TRUE;
-				}
-			} else if (strstr(input, "authorized_for_configuration_information=") == input) {
-				temp_ptr = strtok(input, "=");
-				while ((temp_ptr = strtok(NULL, ","))) {
-					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
-						authinfo->authorized_for_configuration_information = TRUE;
-				}
-			} else if (strstr(input, "authorized_for_full_command_resolution=") == input) {
-				temp_ptr = strtok(input, "=");
-				while ((temp_ptr = strtok(NULL, ","))) {
-					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
-						authinfo->authorized_for_full_command_resolution = TRUE;
-				}
-			} else if (strstr(input, "authorized_for_all_host_commands=") == input) {
-				temp_ptr = strtok(input, "=");
-				while ((temp_ptr = strtok(NULL, ","))) {
-					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
-						authinfo->authorized_for_all_host_commands = TRUE;
-				}
-			} else if (strstr(input, "authorized_for_all_service_commands=") == input) {
-				temp_ptr = strtok(input, "=");
-				while ((temp_ptr = strtok(NULL, ","))) {
-					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
-						authinfo->authorized_for_all_service_commands = TRUE;
-				}
-			} else if (strstr(input, "authorized_for_system_commands=") == input) {
-				temp_ptr = strtok(input, "=");
-				while ((temp_ptr = strtok(NULL, ","))) {
-					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
-						authinfo->authorized_for_system_commands = TRUE;
-				}
-			} else if (strstr(input, "authorized_for_read_only=") == input) {
-				temp_ptr = strtok(input, "=");
-				while ((temp_ptr = strtok(NULL, ","))) {
-					if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*"))
-						authinfo->authorized_for_read_only = TRUE;
-				}
-			} else if (strstr(input, "authorization_config_file=") == input) {
-				temp_ptr = strtok(input, "=");
-				temp_ptr = strtok(NULL, "\n");
-				if (temp_ptr != NULL)
-					parse_authorization_config_file(temp_ptr, authinfo);
-			} else if ((temp_contact = find_contact(authinfo->username)) != NULL) {
-				if (strstr(input, "authorized_contactgroup_for_all_hosts=") == input) {
-					temp_ptr = strtok(input, "=");
-					while ((temp_ptr = strtok(NULL, ","))) {
-						temp_contactgroup = find_contactgroup(temp_ptr);
-						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
-							authinfo->authorized_for_all_hosts = TRUE;
-					}
-				} else if (strstr(input, "authorized_contactgroup_for_all_services=") == input) {
-					temp_ptr = strtok(input, "=");
-					while ((temp_ptr = strtok(NULL, ","))) {
-						temp_contactgroup = find_contactgroup(temp_ptr);
-						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
-							authinfo->authorized_for_all_services = TRUE;
-					}
-				} else if (strstr(input, "authorized_contactgroup_for_system_information=") == input) {
-					temp_ptr = strtok(input, "=");
-					while ((temp_ptr = strtok(NULL, ","))) {
-						temp_contactgroup = find_contactgroup(temp_ptr);
-						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
-							authinfo->authorized_for_system_information = TRUE;
-					}
-				} else if (strstr(input, "authorized_contactgroup_for_configuration_information=") == input) {
-					temp_ptr = strtok(input, "=");
-					while ((temp_ptr = strtok(NULL, ","))) {
-						temp_contactgroup = find_contactgroup(temp_ptr);
-						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
-							authinfo->authorized_for_configuration_information = TRUE;
-					}
-				} else if (strstr(input, "authorized_contactgroup_for_full_command_resolution=") == input) {
-					temp_ptr = strtok(input, "=");
-					while ((temp_ptr = strtok(NULL, ","))) {
-						temp_contactgroup = find_contactgroup(temp_ptr);
-						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
-							authinfo->authorized_for_full_command_resolution = TRUE;
-					}
-				} else if (strstr(input, "authorized_contactgroup_for_all_host_commands=") == input) {
-					temp_ptr = strtok(input, "=");
-					while ((temp_ptr = strtok(NULL, ","))) {
-						temp_contactgroup = find_contactgroup(temp_ptr);
-						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
-							authinfo->authorized_for_all_host_commands = TRUE;
-					}
-				} else if (strstr(input, "authorized_contactgroup_for_all_service_commands=") == input) {
-					temp_ptr = strtok(input, "=");
-					while ((temp_ptr = strtok(NULL, ","))) {
-						temp_contactgroup = find_contactgroup(temp_ptr);
-						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
-							authinfo->authorized_for_all_service_commands = TRUE;
-					}
-				} else if (strstr(input, "authorized_contactgroup_for_system_commands=") == input) {
-					temp_ptr = strtok(input, "=");
-					while ((temp_ptr = strtok(NULL, ","))) {
-						temp_contactgroup = find_contactgroup(temp_ptr);
-						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
-							authinfo->authorized_for_system_commands = TRUE;
-					}
-				} else if (strstr(input, "authorized_contactgroup_for_read_only=") == input) {
-					temp_ptr = strtok(input, "=");
-					while ((temp_ptr = strtok(NULL, ","))) {
-						temp_contactgroup = find_contactgroup(temp_ptr);
-						if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact))
-							authinfo->authorized_for_read_only = TRUE;
-					}
+	for (temp_ptr = strtok(authorized_for_system_information, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+		if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+			authinfo->authorized_for_system_information = TRUE;
+			break;
+		}
+	}
+
+	if ((temp_contact = find_contact(authinfo->username)) != NULL) {
+
+		for (temp_ptr = strtok(authorized_contactgroup_for_all_host_commands, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+			if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+				temp_contactgroup = find_contactgroup(temp_ptr);
+				if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact)) {
+					authinfo->authorized_for_all_host_commands = TRUE;
+					break;
 				}
 			}
 		}
 
-		/* free memory and close the file */
-		free(input);
-		mmap_fclose(thefile);
+		for (temp_ptr = strtok(authorized_contactgroup_for_all_hosts, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+			if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+				temp_contactgroup = find_contactgroup(temp_ptr);
+				if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact)) {
+					authinfo->authorized_for_all_hosts = TRUE;
+					break;
+				}
+			}
+		}
+
+		for (temp_ptr = strtok(authorized_contactgroup_for_all_service_commands, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+			if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+				temp_contactgroup = find_contactgroup(temp_ptr);
+				if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact)) {
+					authinfo->authorized_for_all_service_commands = TRUE;
+					break;
+				}
+			}
+		}
+
+		for (temp_ptr = strtok(authorized_contactgroup_for_all_services, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+			if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+				temp_contactgroup = find_contactgroup(temp_ptr);
+				if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact)) {
+					authinfo->authorized_for_all_services = TRUE;
+					break;
+				}
+			}
+		}
+
+		for (temp_ptr = strtok(authorized_contactgroup_for_configuration_information, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+			if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+				temp_contactgroup = find_contactgroup(temp_ptr);
+				if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact)) {
+					authinfo->authorized_for_configuration_information = TRUE;
+					break;
+				}
+			}
+		}
+
+		for (temp_ptr = strtok(authorized_contactgroup_for_full_command_resolution, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+			if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+				temp_contactgroup = find_contactgroup(temp_ptr);
+				if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact)) {
+					authinfo->authorized_for_full_command_resolution = TRUE;
+					break;
+				}
+			}
+		}
+
+		for (temp_ptr = strtok(authorized_contactgroup_for_read_only, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+			if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+				temp_contactgroup = find_contactgroup(temp_ptr);
+				if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact)) {
+					authinfo->authorized_for_read_only = TRUE;
+					break;
+				}
+			}
+		}
+
+		for (temp_ptr = strtok(authorized_contactgroup_for_system_commands, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+			if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+				temp_contactgroup = find_contactgroup(temp_ptr);
+				if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact)) {
+					authinfo->authorized_for_system_commands = TRUE;
+					break;
+				}
+			}
+		}
+
+		for (temp_ptr = strtok(authorized_contactgroup_for_system_information, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) {
+			if (!strcmp(temp_ptr, authinfo->username) || !strcmp(temp_ptr, "*")) {
+				temp_contactgroup = find_contactgroup(temp_ptr);
+				if (is_contact_member_of_contactgroup(temp_contactgroup, temp_contact)) {
+					authinfo->authorized_for_system_information = TRUE;
+					break;
+				}
+			}
+		}
 	}
 
-	if (authinfo->authenticated == TRUE)
-		return OK;
-	else
-		return ERROR;
+	return OK;
 }
 
 /* parsing authorization configuration file */
@@ -272,7 +289,7 @@ int parse_authorization_config_file(char* filename, authdata* authinfo) {
 
 	/* Shibboleth environment variable */
 	if (getenv("entitlement") == NULL) {
-		printf("<P><DIV CLASS='errorMessage'>Authorization information: entitlement variable is empty</DIV></P>");
+		//printf("<P><DIV CLASS='errorMessage'>Authorization information: entitlement variable is empty</DIV></P>");
 		return ERROR;
 	}
 
@@ -811,7 +828,7 @@ int is_authorized_for_configuration_information(authdata *authinfo) {
 
 
 /* check if current user is authorized to view raw commandline configuration information */
-int authorized_for_full_command_resolution(authdata *authinfo) {
+int is_authorized_for_full_command_resolution(authdata *authinfo) {
 
 	/* if we're not using authentication, fake it */
 	if (use_authentication == FALSE)

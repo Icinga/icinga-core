@@ -3671,7 +3671,7 @@ void display_command_expansion(void) {
 				}
 
 				/* host command */
-				if (hst != NULL && svc == NULL && authorized_for_full_command_resolution(&current_authdata)) {
+				if (hst != NULL && svc == NULL && is_authorized_for_full_command_resolution(&current_authdata)) {
 					grab_host_macros_r(mac,hst);
 					process_macros_r(mac,commandline_pre_processed, &processed_command, 0);
 					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
@@ -3679,7 +3679,7 @@ void display_command_expansion(void) {
 				}
 
 				/* service command */
-				if (hst != NULL && svc != NULL && authorized_for_full_command_resolution(&current_authdata)) {
+				if (hst != NULL && svc != NULL && is_authorized_for_full_command_resolution(&current_authdata)) {
 					grab_host_macros_r(mac,hst);
 					grab_service_macros_r(mac,svc);
 					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
@@ -3688,7 +3688,7 @@ void display_command_expansion(void) {
 				}
 
 				/* only command expansion w/o hosts and services given */
-				if (hst == NULL && svc == NULL && authorized_for_full_command_resolution(&current_authdata)) {
+				if (hst == NULL && svc == NULL && is_authorized_for_full_command_resolution(&current_authdata)) {
 					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
 					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
                                 	printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));

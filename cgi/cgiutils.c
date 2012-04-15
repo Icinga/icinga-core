@@ -77,6 +77,27 @@ int             enable_splunk_integration = FALSE;
 char            *splunk_url = NULL;
 int             lock_author_names = TRUE;
 
+char		*authorization_config_file = NULL;
+char		*authorized_for_all_host_commands = NULL;
+char		*authorized_for_all_hosts = NULL;
+char		*authorized_for_all_service_commands = NULL;
+char		*authorized_for_all_services = NULL;
+char		*authorized_for_configuration_information = NULL;
+char		*authorized_for_full_command_resolution = NULL;
+char		*authorized_for_read_only = NULL;
+char		*authorized_for_system_commands = NULL;
+char		*authorized_for_system_information = NULL;
+char		*authorized_contactgroup_for_all_host_commands = NULL;
+char		*authorized_contactgroup_for_all_hosts = NULL;
+char		*authorized_contactgroup_for_all_service_commands = NULL;
+char		*authorized_contactgroup_for_all_services = NULL;
+char		*authorized_contactgroup_for_configuration_information = NULL;
+char		*authorized_contactgroup_for_full_command_resolution = NULL;
+char		*authorized_contactgroup_for_read_only = NULL;
+char		*authorized_contactgroup_for_system_commands = NULL;
+char		*authorized_contactgroup_for_system_information = NULL;
+char		*default_user_name = NULL;
+
 extern time_t   program_start;
 extern int      nagios_pid;
 extern int      daemon_mode;
@@ -470,6 +491,8 @@ int read_cgi_config_file(char *filename) {
 
 			strncpy(cgi_log_file, val, sizeof(cgi_log_file));
 			cgi_log_file[sizeof(cgi_log_file)-1] = '\x0';
+			strip(cgi_log_file);
+
 		} else if (!strcmp(var, "cgi_log_rotation_method")) {
 			if (!strcmp(val, "h"))
 				cgi_log_rotation_method = LOG_ROTATION_HOURLY;
@@ -616,6 +639,86 @@ int read_cgi_config_file(char *filename) {
 		else if (!strcmp(var, "display_status_totals"))
 			display_status_totals = (atoi(val) > 0) ? TRUE : FALSE;
 
+		else if (!strcmp(var, "authorization_config_file")) {
+			authorization_config_file = strdup(val);
+			strip(authorization_config_file);
+
+		} else if (!strcmp(var, "authorized_for_all_host_commands")) {
+			authorized_for_all_host_commands = strdup(val);
+			strip(authorized_for_all_host_commands);
+
+		} else if (!strcmp(var, "authorized_for_all_hosts")) {
+			authorized_for_all_hosts = strdup(val);
+			strip(authorized_for_all_hosts);
+
+		} else if (!strcmp(var, "authorized_for_all_service_commands")) {
+			authorized_for_all_service_commands = strdup(val);
+			strip(authorized_for_all_service_commands);
+
+		} else if (!strcmp(var, "authorized_for_all_services")) {
+			authorized_for_all_services = strdup(val);
+			strip(authorized_for_all_services);
+
+		} else if (!strcmp(var, "authorized_for_configuration_information")) {
+			authorized_for_configuration_information = strdup(val);
+			strip(authorized_for_configuration_information);
+
+		} else if (!strcmp(var, "authorized_for_full_command_resolution")) {
+			authorized_for_full_command_resolution = strdup(val);
+			strip(authorized_for_full_command_resolution);
+
+		} else if (!strcmp(var, "authorized_for_read_only")) {
+			authorized_for_read_only = strdup(val);
+			strip(authorized_for_read_only);
+
+		} else if (!strcmp(var, "authorized_for_system_commands")) {
+			authorized_for_system_commands = strdup(val);
+			strip(authorized_for_system_commands);
+
+		} else if (!strcmp(var, "authorized_for_system_information")) {
+			authorized_for_system_information = strdup(val);
+			strip(authorized_for_system_information);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_host_commands")) {
+			authorized_contactgroup_for_all_host_commands = strdup(val);
+			strip(authorized_contactgroup_for_all_host_commands);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_hosts")) {
+			authorized_contactgroup_for_all_hosts = strdup(val);
+			strip(authorized_contactgroup_for_all_hosts);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_service_commands")) {
+			authorized_contactgroup_for_all_service_commands = strdup(val);
+			strip(authorized_contactgroup_for_all_service_commands);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_services")) {
+			authorized_contactgroup_for_all_services = strdup(val);
+			strip(authorized_contactgroup_for_all_services);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_configuration_information")) {
+			authorized_contactgroup_for_configuration_information = strdup(val);
+			strip(authorized_contactgroup_for_configuration_information);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_full_command_resolution")) {
+			authorized_contactgroup_for_full_command_resolution = strdup(val);
+			strip(authorized_contactgroup_for_full_command_resolution);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_read_only")) {
+			authorized_contactgroup_for_read_only = strdup(val);
+			strip(authorized_contactgroup_for_read_only);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_system_commands")) {
+			authorized_contactgroup_for_system_commands = strdup(val);
+			strip(authorized_contactgroup_for_system_commands);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_system_information")) {
+			authorized_contactgroup_for_system_information = strdup(val);
+			strip(authorized_contactgroup_for_system_information);
+
+		} else if (!strcmp(var, "default_user_name")) {
+			default_user_name = strdup(val);
+			strip(default_user_name);
+		}
 	}
 
 	/* free memory and close the file */
@@ -1846,7 +1949,7 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 			printf("<DIV CLASS='infoBoxBadProcStatus'>- Service checks are disabled</DIV>");
 	}
 
-	if (CGI_ID == CONFIG_CGI_ID && authorized_for_full_command_resolution(current_authdata)) {
+	if (CGI_ID == CONFIG_CGI_ID && is_authorized_for_full_command_resolution(current_authdata)) {
 		if (access(resource_file, R_OK) != 0)
 			printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Could not read resource file, raw command line could be incomplete!</DIV>");
 	}
