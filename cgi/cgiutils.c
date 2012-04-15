@@ -77,6 +77,27 @@ int             enable_splunk_integration = FALSE;
 char            *splunk_url = NULL;
 int             lock_author_names = TRUE;
 
+char		*authorization_config_file = NULL;
+char		*authorized_for_all_host_commands = NULL;
+char		*authorized_for_all_hosts = NULL;
+char		*authorized_for_all_service_commands = NULL;
+char		*authorized_for_all_services = NULL;
+char		*authorized_for_configuration_information = NULL;
+char		*authorized_for_full_command_resolution = NULL;
+char		*authorized_for_read_only = NULL;
+char		*authorized_for_system_commands = NULL;
+char		*authorized_for_system_information = NULL;
+char		*authorized_contactgroup_for_all_host_commands = NULL;
+char		*authorized_contactgroup_for_all_hosts = NULL;
+char		*authorized_contactgroup_for_all_service_commands = NULL;
+char		*authorized_contactgroup_for_all_services = NULL;
+char		*authorized_contactgroup_for_configuration_information = NULL;
+char		*authorized_contactgroup_for_full_command_resolution = NULL;
+char		*authorized_contactgroup_for_read_only = NULL;
+char		*authorized_contactgroup_for_system_commands = NULL;
+char		*authorized_contactgroup_for_system_information = NULL;
+char		*default_user_name = NULL;
+
 extern time_t   program_start;
 extern int      nagios_pid;
 extern int      daemon_mode;
@@ -470,6 +491,8 @@ int read_cgi_config_file(char *filename) {
 
 			strncpy(cgi_log_file, val, sizeof(cgi_log_file));
 			cgi_log_file[sizeof(cgi_log_file)-1] = '\x0';
+			strip(cgi_log_file);
+
 		} else if (!strcmp(var, "cgi_log_rotation_method")) {
 			if (!strcmp(val, "h"))
 				cgi_log_rotation_method = LOG_ROTATION_HOURLY;
@@ -616,6 +639,86 @@ int read_cgi_config_file(char *filename) {
 		else if (!strcmp(var, "display_status_totals"))
 			display_status_totals = (atoi(val) > 0) ? TRUE : FALSE;
 
+		else if (!strcmp(var, "authorization_config_file")) {
+			authorization_config_file = strdup(val);
+			strip(authorization_config_file);
+
+		} else if (!strcmp(var, "authorized_for_all_host_commands")) {
+			authorized_for_all_host_commands = strdup(val);
+			strip(authorized_for_all_host_commands);
+
+		} else if (!strcmp(var, "authorized_for_all_hosts")) {
+			authorized_for_all_hosts = strdup(val);
+			strip(authorized_for_all_hosts);
+
+		} else if (!strcmp(var, "authorized_for_all_service_commands")) {
+			authorized_for_all_service_commands = strdup(val);
+			strip(authorized_for_all_service_commands);
+
+		} else if (!strcmp(var, "authorized_for_all_services")) {
+			authorized_for_all_services = strdup(val);
+			strip(authorized_for_all_services);
+
+		} else if (!strcmp(var, "authorized_for_configuration_information")) {
+			authorized_for_configuration_information = strdup(val);
+			strip(authorized_for_configuration_information);
+
+		} else if (!strcmp(var, "authorized_for_full_command_resolution")) {
+			authorized_for_full_command_resolution = strdup(val);
+			strip(authorized_for_full_command_resolution);
+
+		} else if (!strcmp(var, "authorized_for_read_only")) {
+			authorized_for_read_only = strdup(val);
+			strip(authorized_for_read_only);
+
+		} else if (!strcmp(var, "authorized_for_system_commands")) {
+			authorized_for_system_commands = strdup(val);
+			strip(authorized_for_system_commands);
+
+		} else if (!strcmp(var, "authorized_for_system_information")) {
+			authorized_for_system_information = strdup(val);
+			strip(authorized_for_system_information);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_host_commands")) {
+			authorized_contactgroup_for_all_host_commands = strdup(val);
+			strip(authorized_contactgroup_for_all_host_commands);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_hosts")) {
+			authorized_contactgroup_for_all_hosts = strdup(val);
+			strip(authorized_contactgroup_for_all_hosts);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_service_commands")) {
+			authorized_contactgroup_for_all_service_commands = strdup(val);
+			strip(authorized_contactgroup_for_all_service_commands);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_services")) {
+			authorized_contactgroup_for_all_services = strdup(val);
+			strip(authorized_contactgroup_for_all_services);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_configuration_information")) {
+			authorized_contactgroup_for_configuration_information = strdup(val);
+			strip(authorized_contactgroup_for_configuration_information);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_full_command_resolution")) {
+			authorized_contactgroup_for_full_command_resolution = strdup(val);
+			strip(authorized_contactgroup_for_full_command_resolution);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_read_only")) {
+			authorized_contactgroup_for_read_only = strdup(val);
+			strip(authorized_contactgroup_for_read_only);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_system_commands")) {
+			authorized_contactgroup_for_system_commands = strdup(val);
+			strip(authorized_contactgroup_for_system_commands);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_system_information")) {
+			authorized_contactgroup_for_system_information = strdup(val);
+			strip(authorized_contactgroup_for_system_information);
+
+		} else if (!strcmp(var, "default_user_name")) {
+			default_user_name = strdup(val);
+			strip(default_user_name);
+		}
 	}
 
 	/* free memory and close the file */
@@ -859,7 +962,12 @@ int read_icinga_resource_file(char *resource_file) {
 				}
 			}
 		}
+		my_free(variable);
+		my_free(value);
 	}
+
+	my_free(variable);
+	my_free(value);
 
 	/* free leftover memory and close the file */
 	my_free(input);
@@ -1846,7 +1954,7 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 			printf("<DIV CLASS='infoBoxBadProcStatus'>- Service checks are disabled</DIV>");
 	}
 
-	if (CGI_ID == CONFIG_CGI_ID && authorized_for_full_command_resolution(current_authdata)) {
+	if (CGI_ID == CONFIG_CGI_ID && is_authorized_for_full_command_resolution(current_authdata)) {
 		if (access(resource_file, R_OK) != 0)
 			printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Could not read resource file, raw command line could be incomplete!</DIV>");
 	}
@@ -1870,13 +1978,8 @@ void display_nav_table(char *url, int archive) {
 		printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='navBox'>\n");
 		printf("<tr>\n");
 		printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-		if (archive == 0) {
-			printf("Latest Archive<br>");
-			printf("<a href='%sarchive=1'><img src='%s%s' border=0 alt='Latest Archive' title='Latest Archive'></a>", url, url_images_path, LEFT_ARROW_ICON);
-		} else {
-			printf("Earlier Archive<br>");
-			printf("<a href='%sarchive=%d'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, archive + 1, url_images_path, LEFT_ARROW_ICON);
-		}
+		printf("Earlier Archive<br>");
+		printf("<a href='%sarchive=%d'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, archive + 1, url_images_path, LEFT_ARROW_ICON);
 		printf("</td>\n");
 
 		printf("<td width=15></td>\n");
@@ -1889,6 +1992,7 @@ void display_nav_table(char *url, int archive) {
 		if (archive == 0)
 			printf("Present..");
 		else {
+			this_scheduled_log_rotation--;
 			get_time_string(&this_scheduled_log_rotation, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
 			printf("%s", date_time);
 		}
@@ -1896,7 +2000,6 @@ void display_nav_table(char *url, int archive) {
 
 		printf("<td width=15></td>\n");
 		if (archive != 0) {
-
 			printf("<td align=center valign=center CLASS='navBoxItem'>\n");
 			if (archive == 1) {
 				printf("Current Log<br>");
@@ -1906,11 +2009,12 @@ void display_nav_table(char *url, int archive) {
 				printf("<a href='%sarchive=%d'><img src='%s%s' border=0 alt='More Recent Archive' title='More Recent Archive'></a>", url, archive - 1, url_images_path, RIGHT_ARROW_ICON);
 			}
 			printf("</td>\n");
-		} else
-			printf("<td><img src='%s%s' border=0 width=75 height=1></td>\n", url_images_path, EMPTY_ICON);
+		} else {
+			printf("<td align=center valign=center CLASS='navBoxItem'>Current Log<br>\n");
+			printf("<img src='%s%s' border=0 width=75 height=16></td>\n", url_images_path, EMPTY_ICON);
+		}
 
 		printf("</tr>\n");
-
 		printf("</table>\n");
 	}
 
