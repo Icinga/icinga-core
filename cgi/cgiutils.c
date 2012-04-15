@@ -962,7 +962,12 @@ int read_icinga_resource_file(char *resource_file) {
 				}
 			}
 		}
+		my_free(variable);
+		my_free(value);
 	}
+
+	my_free(variable);
+	my_free(value);
 
 	/* free leftover memory and close the file */
 	my_free(input);

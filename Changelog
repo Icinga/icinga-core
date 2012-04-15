@@ -24,6 +24,7 @@ ENHANCEMENTS
 * classic ui: add javascript to refresh page/pause easier #2119
 * classic ui: Added Scheduling queue filter for specific host or service #2421
 * classic ui: Changed reading of auth information from cgiauth.c to cgiutils.c #2524
+* classic ui: Added readonly cgi.cfg view into the config section #1776
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
@@ -112,6 +113,9 @@ CHANGES
 * classic ui: Added Scheduling queue filter for specific host or service #2421
 	** now everyone who is authorized for can see hosts/services in scheduling queue
 	** added links to host/service extinfo
+
+* classic ui: Added readonly cgi.cfg view into the config section #1776
+	** New Option in config.cgi to view all cgi config options and their current values
 
 * classic ui: statuswml.cgi and statuswrl.cgi are DEPRECATED now !!!!!!!!!
 	** both will be removed in Icinga 1.8 !!!!!!
