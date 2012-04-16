@@ -3643,6 +3643,7 @@ void display_modules(void) {
 void display_cgiconfig(void) {
 	int odd = 0;
 	int json_start = TRUE;
+	char *temp_ptr;
 
 	/** BEGIN MACRO declaration */
 
@@ -3710,13 +3711,40 @@ void display_cgiconfig(void) {
 		printf("\"current_setting\": \"%s\" }", (strlen(var) == 0) ? "" : json_encode(var)); \
 	} else if (content_type == CSV_CONTENT) { \
 		printf("%s%s%s%s", csv_data_enclosure, #org_var + 4, csv_data_enclosure, csv_delimiter); \
-		printf("%s%s%s%s", csv_data_enclosure, var, csv_data_enclosure, csv_delimiter); \
-		printf("%s%s%s\n", csv_data_enclosure, org_var, csv_data_enclosure); \
+		printf("%s%s%s%s", csv_data_enclosure, org_var, csv_data_enclosure, csv_delimiter); \
+		printf("%s%s%s\n", csv_data_enclosure, var, csv_data_enclosure); \
 	} else { \
 		odd = (odd == 0) ? 1 : 0; \
 		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%s&nbsp;</TD><TD %s>&nbsp;%s&nbsp;</TD><TR>\n", \
 		(odd == 0) ? "dataEven" : "dataOdd", #org_var + 4, (strlen(org_var) == 0) ? "&lt;EMPTY&gt;" : html_encode(org_var, FALSE), \
 		(!strcmp(var, org_var)) ? "" : "CLASS='dataDiff'", (strlen(var) == 0) ? "&lt;EMPTY&gt;" : html_encode(var, FALSE)); \
+	}
+
+	/** @brief Macro to expand a config line with authentication information
+	 *
+	 *  this macro creates links to the contact and contactgroup information
+	**/
+#define PRINT_CONFIG_LINE_AUTH(var,org_var) \
+	/* prints a config line with type char and authorization information */ \
+	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) { \
+		PRINT_CONFIG_LINE_STRING(var,org_var) \
+	} else { \
+		odd = (odd == 0) ? 1 : 0; \
+		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%s&nbsp;</TD><TD %s>&nbsp;", (odd == 0) ? "dataEven" : "dataOdd", \
+		#org_var + 4, (strlen(org_var) == 0) ? "&lt;EMPTY&gt;" : html_encode(org_var, FALSE), (!strcmp(var, org_var)) ? "" : "CLASS='dataDiff'"); \
+		if (strlen(var) == 0) { \
+			printf("&lt;EMPTY&gt;"); \
+		} else { \
+			json_start = TRUE; \
+			for (temp_ptr = strtok(var, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) { \
+				if (json_start == FALSE) \
+					printf(", "); \
+				json_start = FALSE; \
+				printf("<A HREF='%s?type=contact%ss&expand=%s'>%s</A>", CONFIG_CGI, (strstr(#org_var, "contactgroup")) ? "group" : "", \
+				(!strcmp(temp_ptr, "*")) ? "" : url_encode(temp_ptr), html_encode(temp_ptr, FALSE)); \
+			} \
+		} \
+		printf("&nbsp;</TD><TR>\n"); \
 	}
 
 	/** END MACRO declaration */
@@ -3743,24 +3771,24 @@ void display_cgiconfig(void) {
 
 	PRINT_CONFIG_LINE_STRING(action_url_target, org_action_url_target)
 	PRINT_CONFIG_LINE_STRING(authorization_config_file, org_authorization_config_file)
-	PRINT_CONFIG_LINE_STRING(authorized_for_all_host_commands, org_authorized_for_all_host_commands)
-	PRINT_CONFIG_LINE_STRING(authorized_for_all_hosts, org_authorized_for_all_hosts)
-	PRINT_CONFIG_LINE_STRING(authorized_for_all_service_commands, org_authorized_for_all_service_commands)
-	PRINT_CONFIG_LINE_STRING(authorized_for_all_services, org_authorized_for_all_services)
-	PRINT_CONFIG_LINE_STRING(authorized_for_configuration_information, org_authorized_for_configuration_information)
-	PRINT_CONFIG_LINE_STRING(authorized_for_full_command_resolution, org_authorized_for_full_command_resolution)
-	PRINT_CONFIG_LINE_STRING(authorized_for_read_only, org_authorized_for_read_only)
-	PRINT_CONFIG_LINE_STRING(authorized_for_system_commands, org_authorized_for_system_commands)
-	PRINT_CONFIG_LINE_STRING(authorized_for_system_information, org_authorized_for_system_information)
-	PRINT_CONFIG_LINE_STRING(authorized_contactgroup_for_all_host_commands, org_authorized_contactgroup_for_all_host_commands)
-	PRINT_CONFIG_LINE_STRING(authorized_contactgroup_for_all_hosts, org_authorized_contactgroup_for_all_hosts)
-	PRINT_CONFIG_LINE_STRING(authorized_contactgroup_for_all_service_commands, org_authorized_contactgroup_for_all_service_commands)
-	PRINT_CONFIG_LINE_STRING(authorized_contactgroup_for_all_services, org_authorized_contactgroup_for_all_services)
-	PRINT_CONFIG_LINE_STRING(authorized_contactgroup_for_configuration_information, org_authorized_contactgroup_for_configuration_information)
-	PRINT_CONFIG_LINE_STRING(authorized_contactgroup_for_full_command_resolution, org_authorized_contactgroup_for_full_command_resolution)
-	PRINT_CONFIG_LINE_STRING(authorized_contactgroup_for_read_only, org_authorized_contactgroup_for_read_only)
-	PRINT_CONFIG_LINE_STRING(authorized_contactgroup_for_system_commands, org_authorized_contactgroup_for_system_commands)
-	PRINT_CONFIG_LINE_STRING(authorized_contactgroup_for_system_information, org_authorized_contactgroup_for_system_information)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_all_host_commands, org_authorized_for_all_host_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_all_hosts, org_authorized_for_all_hosts)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_all_service_commands, org_authorized_for_all_service_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_all_services, org_authorized_for_all_services)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_configuration_information, org_authorized_for_configuration_information)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_full_command_resolution, org_authorized_for_full_command_resolution)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_read_only, org_authorized_for_read_only)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_system_commands, org_authorized_for_system_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_system_information, org_authorized_for_system_information)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_all_host_commands, org_authorized_contactgroup_for_all_host_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_all_hosts, org_authorized_contactgroup_for_all_hosts)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_all_service_commands, org_authorized_contactgroup_for_all_service_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_all_services, org_authorized_contactgroup_for_all_services)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_configuration_information, org_authorized_contactgroup_for_configuration_information)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_full_command_resolution, org_authorized_contactgroup_for_full_command_resolution)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_read_only, org_authorized_contactgroup_for_read_only)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_system_commands, org_authorized_contactgroup_for_system_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_system_information, org_authorized_contactgroup_for_system_information)
 	PRINT_CONFIG_LINE_INT(add_notif_num_hard, org_add_notif_num_hard, "int")
 	PRINT_CONFIG_LINE_INT(add_notif_num_soft, org_add_notif_num_soft, "int")
 	PRINT_CONFIG_LINE_INT(color_transparency_index_b, org_color_transparency_index_b, "int")
@@ -3783,10 +3811,10 @@ void display_cgiconfig(void) {
 		else printf("NO ROTATION");
 		printf(")&nbsp;</TD><TD %s>", (org_cgi_log_rotation_method != cgi_log_rotation_method) ? "CLASS='dataDiff'" : "");
 		printf("&nbsp;%d (", cgi_log_rotation_method);
-		if (extinfo_show_child_hosts == LOG_ROTATION_HOURLY)       printf("HOURLY");
-		else if (extinfo_show_child_hosts == LOG_ROTATION_DAILY)   printf("DAILY");
-		else if (extinfo_show_child_hosts == LOG_ROTATION_WEEKLY)  printf("WEEKLY");
-		else if (extinfo_show_child_hosts == LOG_ROTATION_MONTHLY) printf("MONTHLY");
+		if (cgi_log_rotation_method == LOG_ROTATION_HOURLY)       printf("HOURLY");
+		else if (cgi_log_rotation_method == LOG_ROTATION_DAILY)   printf("DAILY");
+		else if (cgi_log_rotation_method == LOG_ROTATION_WEEKLY)  printf("WEEKLY");
+		else if (cgi_log_rotation_method == LOG_ROTATION_MONTHLY) printf("MONTHLY");
 		else printf("NO ROTATION");
 		printf(")&nbsp;</TD><TR>\n");
 	}
@@ -3830,7 +3858,7 @@ void display_cgiconfig(void) {
 		PRINT_CONFIG_LINE_INT(default_statuswrl_layout_method, org_default_statuswrl_layout, "int")
 	} else {
 		odd = (odd == 0) ? 1 : 0;
-		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD>", (odd == 0) ? "dataEven" : "dataOdd", "default_statusmap_layout");
+		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD>", (odd == 0) ? "dataEven" : "dataOdd", "default_statuswrl_layout");
 		printf("<TD>&nbsp;%d (", org_default_statuswrl_layout);
 		if (org_default_statuswrl_layout == 0)      printf("User-defined coordinates");
 		else if (org_default_statuswrl_layout == 2) printf("Collapsed tree");
@@ -3923,7 +3951,6 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_INT(tac_show_only_hard_state, org_tac_show_only_hard_state, "bool")
 	PRINT_CONFIG_LINE_STRING(url_html_path, org_url_html_path)
 	PRINT_CONFIG_LINE_STRING(url_stylesheets_path, org_url_stylesheets_path)
-	PRINT_CONFIG_LINE_INT(use_authentication, org_use_authentication, "bool")
 	PRINT_CONFIG_LINE_INT(use_authentication, org_use_authentication, "bool")
 	PRINT_CONFIG_LINE_INT(use_logging, org_use_logging, "bool")
 	PRINT_CONFIG_LINE_INT(use_pending_states, org_use_pending_states, "bool")
