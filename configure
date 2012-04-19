@@ -2439,7 +2439,7 @@ ac_config_headers="$ac_config_headers include/config.h"
 
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.7.0-dev"
+PKG_VERSION="1.7.0"
 PKG_HOME_URL="http://www.icinga.org/"
 PKG_REL_DATE="05-15-2012"
 
