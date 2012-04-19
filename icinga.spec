@@ -263,6 +263,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/objects/timeperiods.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/objects/windows.cfg
 %config(noreplace) %attr(640,icinga,icinga) %{_sysconfdir}/%{name}/resource.cfg
+%config(noreplace) %{_sysconfdir}/logrotate.d/%{name}
 %attr(755,-,-) %{_bindir}/icinga
 %attr(755,-,-) %{_bindir}/icingastats
 %attr(755,-,-) %{_libdir}/icinga/p1.pl
@@ -270,7 +271,6 @@ fi
 %defattr(-,icinga,icinga,-)
 %{logdir}
 %{logdir}/archives
-%dir %{_localstatedir}/%{name}
 %dir %{_localstatedir}/spool/%{name}
 %dir %{_localstatedir}/spool/%{name}/checkresults
 %attr(2755,icinga,icingacmd) %{_localstatedir}/spool/%{name}/cmd
