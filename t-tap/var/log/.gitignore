@@ -1,0 +1,4 @@
+valgrind-*.log
+icinga_test-*.log
+suppressions-*.log
+

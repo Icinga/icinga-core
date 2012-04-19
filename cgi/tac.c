@@ -480,7 +480,10 @@ int main(void) {
 	time(&t5);
 #endif
 
-	document_header(CGI_ID, TRUE, "Tactical Monitoring Overview");
+	if (tac_header == TRUE)
+		document_header(CGI_ID, TRUE, "Icinga");
+	else
+		document_header(CGI_ID, TRUE, "Tactical Monitoring Overview");
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
@@ -584,10 +587,8 @@ int process_cgivars(void) {
 			daemon_check = FALSE;
 
 		/* we found the tac_header option */
-		else if (!strcmp(variables[x], "tac_header")) {
+		else if (!strcmp(variables[x], "tac_header"))
 			tac_header = TRUE;
-			embedded = TRUE;
-		}
 
 		/* we found the JSON output option */
 		else if (!strcmp(variables[x], "jsonoutput")) {
@@ -1782,7 +1783,7 @@ void display_tac_overview(void) {
 		/* left column */
 		printf("<td align=left valign=top width=50%%>\n");
 
-		display_info_table("Tactical Monitoring Overview", refresh, &current_authdata, daemon_check);
+		display_info_table("Tactical Monitoring Overview", &current_authdata, daemon_check);
 
 		printf("</td>\n");
 
@@ -1966,11 +1967,11 @@ void display_tac_overview(void) {
 	printf("<table border=0 cellspacing=4 cellspadding=0>\n");
 	printf("<tr>\n");
 	printf("<td align=left valign=center class='healthItem'>Host Health:</td>");
-	printf("<td valign=top width=100 class='healthBar'><img src='%s%s' border=0 width=%d height=20 alt='%2.1f%% Health' title='%2.1f%% Health'></td>\n", url_images_path, host_health_image, (percent_host_health < 5.0) ? 5 : (int)percent_host_health, percent_host_health, percent_host_health);
+	printf("<td valign=top width=100 class='healthBar'><a href='%s?host=all&style=hostdetail&hoststatustypes=%d'><img src='%s%s' border=0 width=%d height=20 alt='%2.1f%% Health' title='%2.1f%% Health'></a></td>\n", STATUS_CGI, HOST_DOWN | HOST_UNREACHABLE, url_images_path, host_health_image, (percent_host_health < 5.0) ? 5 : (int)percent_host_health, percent_host_health, percent_host_health);
 	printf("</tr>\n");
 	printf("<tr>\n");
 	printf("<td align=left valign=center class='healthItem'>Service Health:</td>");
-	printf("<td valign=top width=100 class='healthBar'><img src='%s%s' border=0 width=%d height=20 alt='%2.1f%% Health' title='%2.1f%% Health'></td>\n", url_images_path, service_health_image, (percent_service_health < 5.0) ? 5 : (int)percent_service_health, percent_service_health, percent_service_health);
+	printf("<td valign=top width=100 class='healthBar'><a href='%s?host=all&style=detail&servicestatustypes=%d'><img src='%s%s' border=0 width=%d height=20 alt='%2.1f%% Health' title='%2.1f%% Health'></td>\n", STATUS_CGI, SERVICE_CRITICAL | SERVICE_WARNING | SERVICE_PENDING, url_images_path, service_health_image, (percent_service_health < 5.0) ? 5 : (int)percent_service_health, percent_service_health, percent_service_health);
 	printf("</tr>\n");
 	printf("</table>\n");
 	printf("</td>\n");

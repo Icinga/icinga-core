@@ -235,10 +235,8 @@ int main(int argc, char **argv) {
 	host *temp_host = NULL;
 	service *temp_service = NULL;
 	int is_authorized = TRUE;
-	int found = FALSE;
 	int problem_found = FALSE;
 	int days, hours, minutes, seconds;
-	char *first_service = NULL;
 	time_t t3;
 	time_t current_time;
 	struct tm *t;
@@ -364,7 +362,7 @@ int main(int argc, char **argv) {
 		else
 			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Host and Service State Trends");
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		display_info_table(temp_buffer, FALSE, &current_authdata, daemon_check);
+		display_info_table(temp_buffer, &current_authdata, daemon_check);
 
 		if (timeperiod_type == TIMEPERIOD_NEXTPROBLEM) {
 			problem_t1 = 0;
@@ -900,46 +898,24 @@ int main(int argc, char **argv) {
 		/* ask the user for what service they want a report for */
 		else if (input_type == GET_INPUT_SERVICE_TARGET) {
 
-			printf("<SCRIPT LANGUAGE='JavaScript'>\n");
-			printf("function gethostname(hostindex){\n");
-			printf("hostnames=[");
-
-			for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
-				if (is_authorized_for_service(temp_service, &current_authdata) == TRUE) {
-					if (found == TRUE)
-						printf(",");
-					else
-						first_service = temp_service->host_name;
-					printf(" \"%s\"", temp_service->host_name);
-					found = TRUE;
-				}
-			}
-
-			printf(" ]\n");
-			printf("return hostnames[hostindex];\n");
-			printf("}\n");
-			printf("</SCRIPT>\n");
-
-
 			printf("<P><DIV ALIGN=CENTER>\n");
 			printf("<DIV CLASS='reportSelectTitle'>Step 2: Select Service</DIV>\n");
 			printf("</DIV></P>\n");
 
 			printf("<P><DIV ALIGN=CENTER>\n");
 
-			printf("<form method=\"GET\" action=\"%s\" name=\"serviceform\">\n", TRENDS_CGI);
+			printf("<form method=\"POST\" action=\"%s\" name=\"serviceform\">\n", TRENDS_CGI);
 			printf("<input type='hidden' name='input' value='getoptions'>\n");
-			printf("<input type='hidden' name='host' value='%s'>\n", (first_service == NULL) ? "unknown" : (char *)escape_string(first_service));
 
 			printf("<TABLE BORDER=0 cellpadding=5>\n");
 			printf("<tr><td class='reportSelectSubTitle'>Service:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
-			printf("<select name='service' onFocus='document.serviceform.host.value=gethostname(this.selectedIndex);' onChange='document.serviceform.host.value=gethostname(this.selectedIndex);'>\n");
+			printf("<select name='hostservice'>\n");
 
 			for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
 				if (is_authorized_for_service(temp_service, &current_authdata) == TRUE)
 					temp_host = find_host(temp_service->host_name);
-				printf("<option value='%s'>%s;%s\n", escape_string(temp_service->description), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
+				printf("<option value='%s^%s'>%s;%s\n", escape_string(temp_service->host_name), escape_string(temp_service->description), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
 			}
 
 			printf("</select>\n");
@@ -1171,6 +1147,7 @@ int main(int argc, char **argv) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *temp_buffer = NULL;
 	int error = FALSE;
 	int x;
 
@@ -1210,6 +1187,31 @@ int process_cgivars(void) {
 			if ((service_desc = (char *)strdup(variables[x])) == NULL)
 				service_desc = "";
 			strip_html_brackets(service_desc);
+
+			display_type = DISPLAY_SERVICE_TRENDS;
+		}
+
+		/* we found a combined host/service */
+		else if (!strcmp(variables[x], "hostservice")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			temp_buffer = strtok(variables[x], "^");
+
+			if ((host_name = (char *)strdup(temp_buffer)) == NULL)
+				host_name = "";
+			else
+				strip_html_brackets(host_name);
+
+			temp_buffer = strtok(NULL, "");
+
+			if ((service_desc = (char *)strdup(temp_buffer)) == NULL)
+				service_desc = "";
+			else
+				strip_html_brackets(service_desc);
 
 			display_type = DISPLAY_SERVICE_TRENDS;
 		}

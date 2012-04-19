@@ -258,7 +258,7 @@ int main(int argc, char **argv) {
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Alert Summary Report");
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		display_info_table(temp_buffer, FALSE, &current_authdata, daemon_check);
+		display_info_table(temp_buffer, &current_authdata, daemon_check);
 
 		printf("</td>\n");
 

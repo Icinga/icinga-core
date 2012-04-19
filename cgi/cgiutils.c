@@ -27,6 +27,7 @@
 #include "../include/objects.h"
 #include "../include/macros.h"
 #include "../include/statusdata.h"
+#include "../include/comments.h"
 
 #include "../include/cgiutils.h"
 
@@ -76,6 +77,27 @@ int             enable_splunk_integration = FALSE;
 char            *splunk_url = NULL;
 int             lock_author_names = TRUE;
 
+char		*authorization_config_file = NULL;
+char		*authorized_for_all_host_commands = NULL;
+char		*authorized_for_all_hosts = NULL;
+char		*authorized_for_all_service_commands = NULL;
+char		*authorized_for_all_services = NULL;
+char		*authorized_for_configuration_information = NULL;
+char		*authorized_for_full_command_resolution = NULL;
+char		*authorized_for_read_only = NULL;
+char		*authorized_for_system_commands = NULL;
+char		*authorized_for_system_information = NULL;
+char		*authorized_contactgroup_for_all_host_commands = NULL;
+char		*authorized_contactgroup_for_all_hosts = NULL;
+char		*authorized_contactgroup_for_all_service_commands = NULL;
+char		*authorized_contactgroup_for_all_services = NULL;
+char		*authorized_contactgroup_for_configuration_information = NULL;
+char		*authorized_contactgroup_for_full_command_resolution = NULL;
+char		*authorized_contactgroup_for_read_only = NULL;
+char		*authorized_contactgroup_for_system_commands = NULL;
+char		*authorized_contactgroup_for_system_information = NULL;
+char		*default_user_name = NULL;
+
 extern time_t   program_start;
 extern int      nagios_pid;
 extern int      daemon_mode;
@@ -96,9 +118,9 @@ extern char 	*macro_user[MAX_USER_MACROS];
 
 /** readlogs.c **/
 int		log_rotation_method = LOG_ROTATION_NONE;
-time_t		this_scheduled_log_rotation = 0L;
-time_t		last_scheduled_log_rotation = 0L;
-time_t		next_scheduled_log_rotation = 0L;
+extern time_t	this_scheduled_log_rotation;
+extern time_t	last_scheduled_log_rotation;
+extern time_t	next_scheduled_log_rotation;
 char		log_file[MAX_INPUT_BUFFER];
 char		log_archive_path[MAX_INPUT_BUFFER];
 
@@ -123,6 +145,7 @@ int             service_status_has_been_read = FALSE;
 int             program_status_has_been_read = FALSE;
 
 int             refresh_rate = DEFAULT_REFRESH_RATE;
+int             refresh_type = JAVASCRIPT_REFRESH;
 
 int             escape_html_tags = FALSE;
 
@@ -182,7 +205,7 @@ extern char     *tzname[2];
 int content_type = HTML_CONTENT;
 int embedded = FALSE;
 int display_header = TRUE;
-int display_status_totals = TRUE;
+int display_status_totals = FALSE;
 int refresh = TRUE;
 int daemon_check = TRUE;
 int tac_header = FALSE;
@@ -249,6 +272,7 @@ void reset_cgi_vars(void) {
 	interval_length = 60;
 
 	refresh_rate = DEFAULT_REFRESH_RATE;
+	refresh_type = JAVASCRIPT_REFRESH;
 
 	default_statusmap_layout_method = 0;
 	default_statusmap_layout_method = 0;
@@ -395,6 +419,9 @@ int read_cgi_config_file(char *filename) {
 		else if (!strcmp(var, "refresh_rate"))
 			refresh_rate = atoi(val);
 
+		else if (!strcmp(var, "refresh_type"))
+			refresh_type = (atoi(val) > 0) ? JAVASCRIPT_REFRESH : HTTPHEADER_REFRESH;
+
 		else if (!strcmp(var, "physical_html_path")) {
 			strncpy(physical_html_path, val, sizeof(physical_html_path));
 			physical_html_path[sizeof(physical_html_path)-1] = '\x0';
@@ -464,6 +491,8 @@ int read_cgi_config_file(char *filename) {
 
 			strncpy(cgi_log_file, val, sizeof(cgi_log_file));
 			cgi_log_file[sizeof(cgi_log_file)-1] = '\x0';
+			strip(cgi_log_file);
+
 		} else if (!strcmp(var, "cgi_log_rotation_method")) {
 			if (!strcmp(val, "h"))
 				cgi_log_rotation_method = LOG_ROTATION_HOURLY;
@@ -610,6 +639,86 @@ int read_cgi_config_file(char *filename) {
 		else if (!strcmp(var, "display_status_totals"))
 			display_status_totals = (atoi(val) > 0) ? TRUE : FALSE;
 
+		else if (!strcmp(var, "authorization_config_file")) {
+			authorization_config_file = strdup(val);
+			strip(authorization_config_file);
+
+		} else if (!strcmp(var, "authorized_for_all_host_commands")) {
+			authorized_for_all_host_commands = strdup(val);
+			strip(authorized_for_all_host_commands);
+
+		} else if (!strcmp(var, "authorized_for_all_hosts")) {
+			authorized_for_all_hosts = strdup(val);
+			strip(authorized_for_all_hosts);
+
+		} else if (!strcmp(var, "authorized_for_all_service_commands")) {
+			authorized_for_all_service_commands = strdup(val);
+			strip(authorized_for_all_service_commands);
+
+		} else if (!strcmp(var, "authorized_for_all_services")) {
+			authorized_for_all_services = strdup(val);
+			strip(authorized_for_all_services);
+
+		} else if (!strcmp(var, "authorized_for_configuration_information")) {
+			authorized_for_configuration_information = strdup(val);
+			strip(authorized_for_configuration_information);
+
+		} else if (!strcmp(var, "authorized_for_full_command_resolution")) {
+			authorized_for_full_command_resolution = strdup(val);
+			strip(authorized_for_full_command_resolution);
+
+		} else if (!strcmp(var, "authorized_for_read_only")) {
+			authorized_for_read_only = strdup(val);
+			strip(authorized_for_read_only);
+
+		} else if (!strcmp(var, "authorized_for_system_commands")) {
+			authorized_for_system_commands = strdup(val);
+			strip(authorized_for_system_commands);
+
+		} else if (!strcmp(var, "authorized_for_system_information")) {
+			authorized_for_system_information = strdup(val);
+			strip(authorized_for_system_information);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_host_commands")) {
+			authorized_contactgroup_for_all_host_commands = strdup(val);
+			strip(authorized_contactgroup_for_all_host_commands);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_hosts")) {
+			authorized_contactgroup_for_all_hosts = strdup(val);
+			strip(authorized_contactgroup_for_all_hosts);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_service_commands")) {
+			authorized_contactgroup_for_all_service_commands = strdup(val);
+			strip(authorized_contactgroup_for_all_service_commands);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_all_services")) {
+			authorized_contactgroup_for_all_services = strdup(val);
+			strip(authorized_contactgroup_for_all_services);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_configuration_information")) {
+			authorized_contactgroup_for_configuration_information = strdup(val);
+			strip(authorized_contactgroup_for_configuration_information);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_full_command_resolution")) {
+			authorized_contactgroup_for_full_command_resolution = strdup(val);
+			strip(authorized_contactgroup_for_full_command_resolution);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_read_only")) {
+			authorized_contactgroup_for_read_only = strdup(val);
+			strip(authorized_contactgroup_for_read_only);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_system_commands")) {
+			authorized_contactgroup_for_system_commands = strdup(val);
+			strip(authorized_contactgroup_for_system_commands);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_system_information")) {
+			authorized_contactgroup_for_system_information = strdup(val);
+			strip(authorized_contactgroup_for_system_information);
+
+		} else if (!strcmp(var, "default_user_name")) {
+			default_user_name = strdup(val);
+			strip(default_user_name);
+		}
 	}
 
 	/* free memory and close the file */
@@ -853,7 +962,12 @@ int read_icinga_resource_file(char *resource_file) {
 				}
 			}
 		}
+		my_free(variable);
+		my_free(value);
 	}
+
+	my_free(variable);
+	my_free(value);
 
 	/* free leftover memory and close the file */
 	my_free(input);
@@ -900,6 +1014,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		cgi_name        = CONFIG_CGI;
 		cgi_css         = CONFIG_CSS;
 		cgi_body_class  = "config";
+		refresh         = FALSE;
 		break;
 	case EXTINFO_CGI_ID:
 		cgi_name        = EXTINFO_CGI;
@@ -922,6 +1037,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		cgi_name        = NOTIFICATIONS_CGI;
 		cgi_css         = NOTIFICATIONS_CSS;
 		cgi_body_class  = "notifications";
+		refresh         = FALSE;
 		break;
 	case OUTAGES_CGI_ID:
 		cgi_name        = OUTAGES_CGI;
@@ -984,11 +1100,12 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		return;
 	}
 
+	// send top http header
 	if (cgi_id != ERROR_CGI_ID) {
 		printf("Cache-Control: no-store\r\n");
 		printf("Pragma: no-cache\r\n");
 
-		if (refresh == TRUE)
+		if (refresh_type == HTTPHEADER_REFRESH && refresh == TRUE)
 			printf("Refresh: %d\r\n", refresh_rate);
 
 		time(&current_time);
@@ -1042,31 +1159,9 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		return;
 	}
 
-
 	if (cgi_id != ERROR_CGI_ID) {
 		// send HTML CONTENT
 		printf("Content-type: text/html; charset=\"%s\"\r\n\r\n", http_charset);
-	}
-
-	/* is this tac.cgi?tac_header */
-	if (cgi_id == TAC_CGI_ID && tac_header == TRUE) {
-
-		printf("<html>\n");
-		printf("<head>\n");
-		printf("<title>Icinga</title>\n");
-		printf("<meta name='robots' content='noindex, nofollow' />\n");
-
-		/* is show_tac_header=1 in cgi.cfg? */
-		if (show_tac_header == TRUE)
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, TAC_HEADER_CSS);
-		else //no? show the classic header as the default
-			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%sinterface/common.css'>\n", url_stylesheets_path);
-
-		printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n", url_images_path);
-		printf("</head>\n");
-		printf("<body>\n");
-
-		return; //safely return
 	}
 
 	if (embedded == TRUE)
@@ -1076,12 +1171,28 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n", url_images_path);
 	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
-	printf("<meta http-equiv=\"content-type\" content=\"text/html; charset=%s\">", http_charset);
+	printf("<meta http-equiv=\"content-type\" content=\"text/html; charset=%s\">\n", http_charset);
+//	printf("<meta http-equiv=\"refresh\" content=\"%d\" />\n", refresh_rate);
 	printf("<title>%s</title>\n", cgi_title);
 
-	if (use_stylesheet) {
+	if (cgi_id == TAC_CGI_ID && tac_header == TRUE) {
+		if (show_tac_header == TRUE)
+			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, TAC_HEADER_CSS);
+		else //no? show the classic header as the default
+			printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%sinterface/common.css'>\n", url_stylesheets_path);
+	} else if (use_stylesheet) {
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, COMMON_CSS);
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, cgi_css);
+	}
+
+	// javascript refresh
+	if (refresh_type == JAVASCRIPT_REFRESH) {
+		printf("<script type=\"text/javascript\">\n");
+		printf("var refresh_rate=%d;\n", refresh_rate);
+		printf("var do_refresh=%s;\n",(refresh == TRUE) ? "true" : "false");
+		printf("var counter_seconds=refresh_rate;\n");
+		printf("</script>\n");
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, PAGE_REFRESH_JS);
 	}
 
 	if (cgi_id == STATUS_CGI_ID || cgi_id == EXTINFO_CGI_ID) {
@@ -1105,19 +1216,20 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 
 	if (cgi_id == STATUSMAP_CGI_ID)
 		printf("<body CLASS='%s' name='mappage' id='mappage'>\n", cgi_body_class);
-	else if (cgi_id == TAC_CGI_ID)
+	else if (cgi_id == TAC_CGI_ID && tac_header == FALSE)
 		printf("<body CLASS='%s' marginwidth=2 marginheight=2 topmargin=0 leftmargin=0 rightmargin=0>\n", cgi_body_class);
 	else
 		printf("<body CLASS='%s'>\n", cgi_body_class);
 
 	/* include user SSI header */
-	include_ssi_files(cgi_name, SSI_HEADER);
+	if (tac_header == FALSE)
+		include_ssi_files(cgi_name, SSI_HEADER);
 
 	/* this line was also in histogram.c, is this necessary??? */
 	if (cgi_id == HISTOGRAM_CGI_ID || cgi_id == STATUSMAP_CGI_ID || cgi_id == TRENDS_CGI_ID)
 		printf("<div id=\"popup\" style=\"position:absolute; z-index:1; visibility: hidden\"></div>\n");
 
-	if (cgi_id == STATUS_CGI_ID || cgi_id == CMD_CGI_ID) {
+	if (cgi_id == STATUS_CGI_ID || cgi_id == CMD_CGI_ID || cgi_id == OUTAGES_CGI_ID) {
 		printf("\n<script type='text/javascript' src='%s%s'>\n<!-- SkinnyTip (c) Elliott Brueggeman -->\n</script>\n", url_js_path, SKINNYTIP_JS);
 		printf("<div id='tiplayer' style='position:absolute; visibility:hidden; z-index:1000;'></div>\n");
 	}
@@ -1193,7 +1305,7 @@ void document_footer(int cgi_id) {
 	   top is embedded, so if this is top we don't want to return
 	   otherwise if embedded or HTML_CONTENT we do want to return
 	*/
-	if ((embedded || content_type != HTML_CONTENT) && tac_header == FALSE)
+	if (embedded || content_type != HTML_CONTENT)
 		return;
 
 	if (cgi_id == STATUSWML_CGI_ID) {
@@ -1202,7 +1314,8 @@ void document_footer(int cgi_id) {
 	}
 
 	/* include user SSI footer */
-	include_ssi_files(cgi_name, SSI_FOOTER);
+	if (tac_header == FALSE)
+		include_ssi_files(cgi_name, SSI_FOOTER);
 
 	printf("</body>\n");
 	printf("</html>\n");
@@ -1763,7 +1876,7 @@ char * escape_string(char *input) {
  *************** COMMON HTML FUNCTIONS ********************
  **********************************************************/
 
-void display_info_table(char *title, int refresh, authdata *current_authdata, int daemon_check) {
+void display_info_table(char *title, authdata *current_authdata, int daemon_check) {
 	char date_time[MAX_DATETIME_LENGTH];
 	char *dir_to_check = NULL;
 	time_t current_time;
@@ -1780,22 +1893,17 @@ void display_info_table(char *title, int refresh, authdata *current_authdata, in
 	time(&current_time);
 	get_time_string(&current_time, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
 
-	printf("Last Updated: %s - \n", date_time);
+	printf("Last Updated: %s ", date_time);
 
-
-	/* don't show in historical (long) listings */
-	if (CGI_ID != SHOWLOG_CGI_ID && CGI_ID != TRENDS_CGI_ID && CGI_ID != HISTOGRAM_CGI_ID && CGI_ID != HISTORY_CGI_ID && CGI_ID != AVAIL_CGI_ID) {
-		/* decide if refresh is paused or not */
-		if (refresh == TRUE) {
-			/* if refresh, add paused query to url and set location.href */
-			printf("Updated every %d seconds <small>[<a href=\"javascript:window.location.href += ((window.location.toString().indexOf('?') != -1) ? '&' : '?') + 'paused'\">pause</a>]</small><br>\n", refresh_rate);
-		} else {
-			/* if no refresh, remove the paused query from url and set location.href */
-			printf("Update is paused <small>[<a href=\"javascript:window.location.href = window.location.href.replace(/[\?&]paused/,'')\">continue</a>]</small><br>\n");
-		}
+	/* display only if refresh is supported */
+	if (CGI_ID == EXTINFO_CGI_ID || CGI_ID == OUTAGES_CGI_ID || CGI_ID == STATUS_CGI_ID || CGI_ID == STATUSMAP_CGI_ID || CGI_ID == TAC_CGI_ID) {
+		if (refresh_type == JAVASCRIPT_REFRESH)
+			printf("<span id='refresh_text'></span>&nbsp;<small><a href='#' onClick='toggle_refresh(); return false;'><span id='refresh_button'></span></a></small>\n");
+		else
+			printf("- Update every %d seconds\n", refresh_rate);
 	}
 
-	printf("<A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>%s %s</A> -\n", PROGRAM_NAME, PROGRAM_VERSION);
+	printf("<br><A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>%s %s</A> -\n", PROGRAM_NAME, PROGRAM_VERSION);
 
 	if (current_authdata != NULL)
 		printf("Logged in as <i>%s</i>\n", (!strcmp(current_authdata->username, "")) ? "?" : current_authdata->username);
@@ -1846,7 +1954,7 @@ void display_info_table(char *title, int refresh, authdata *current_authdata, in
 			printf("<DIV CLASS='infoBoxBadProcStatus'>- Service checks are disabled</DIV>");
 	}
 
-	if (CGI_ID == CONFIG_CGI_ID && authorized_for_full_command_resolution(current_authdata)) {
+	if (CGI_ID == CONFIG_CGI_ID && is_authorized_for_full_command_resolution(current_authdata)) {
 		if (access(resource_file, R_OK) != 0)
 			printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Could not read resource file, raw command line could be incomplete!</DIV>");
 	}
@@ -1870,13 +1978,8 @@ void display_nav_table(char *url, int archive) {
 		printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='navBox'>\n");
 		printf("<tr>\n");
 		printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-		if (archive == 0) {
-			printf("Latest Archive<br>");
-			printf("<a href='%sarchive=1'><img src='%s%s' border=0 alt='Latest Archive' title='Latest Archive'></a>", url, url_images_path, LEFT_ARROW_ICON);
-		} else {
-			printf("Earlier Archive<br>");
-			printf("<a href='%sarchive=%d'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, archive + 1, url_images_path, LEFT_ARROW_ICON);
-		}
+		printf("Earlier Archive<br>");
+		printf("<a href='%sarchive=%d'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, archive + 1, url_images_path, LEFT_ARROW_ICON);
 		printf("</td>\n");
 
 		printf("<td width=15></td>\n");
@@ -1889,6 +1992,7 @@ void display_nav_table(char *url, int archive) {
 		if (archive == 0)
 			printf("Present..");
 		else {
+			this_scheduled_log_rotation--;
 			get_time_string(&this_scheduled_log_rotation, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
 			printf("%s", date_time);
 		}
@@ -1896,7 +2000,6 @@ void display_nav_table(char *url, int archive) {
 
 		printf("<td width=15></td>\n");
 		if (archive != 0) {
-
 			printf("<td align=center valign=center CLASS='navBoxItem'>\n");
 			if (archive == 1) {
 				printf("Current Log<br>");
@@ -1906,11 +2009,12 @@ void display_nav_table(char *url, int archive) {
 				printf("<a href='%sarchive=%d'><img src='%s%s' border=0 alt='More Recent Archive' title='More Recent Archive'></a>", url, archive - 1, url_images_path, RIGHT_ARROW_ICON);
 			}
 			printf("</td>\n");
-		} else
-			printf("<td><img src='%s%s' border=0 width=75 height=1></td>\n", url_images_path, EMPTY_ICON);
+		} else {
+			printf("<td align=center valign=center CLASS='navBoxItem'>Current Log<br>\n");
+			printf("<img src='%s%s' border=0 width=75 height=16></td>\n", url_images_path, EMPTY_ICON);
+		}
 
 		printf("</tr>\n");
-
 		printf("</table>\n");
 	}
 
@@ -2961,4 +3065,110 @@ char *json_encode(char *input) {
 	encoded_string[j] = '\x0';
 
 	return encoded_string;
+}
+
+/******************************************************************/
+/*********  print a tooltip to show comments  *********************/
+/******************************************************************/
+void print_comment_icon(char *host_name, char *svc_description) {
+	comment *temp_comment = NULL;
+	char *comment_entry_type = "";
+	char comment_data[MAX_INPUT_BUFFER] = "";
+	char entry_time[MAX_DATETIME_LENGTH];
+	int len, output_len;
+	int x, y;
+	char *escaped_output_string = NULL;
+	int saved_escape_html_tags_var = FALSE;
+
+	if (svc_description == NULL)
+		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
+	else {
+		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
+		printf("&service=%s#comments'", url_encode(svc_description));
+	}
+	/* possible to implement a config option to show and hide comments tooltip in status.cgi */
+	/* but who wouldn't like to have these fancy tooltips ;-) */
+	if (TRUE) {
+		printf(" onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%% cellpadding=3>");
+		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td width=12%%>Time</td><td>Author / Comment</td></tr>");
+		for (temp_comment = get_first_comment_by_host(host_name); temp_comment != NULL; temp_comment = get_next_comment_by_host(host_name, temp_comment)) {
+			if ((svc_description == NULL && temp_comment->comment_type == HOST_COMMENT) || \
+			        (svc_description != NULL && temp_comment->comment_type == SERVICE_COMMENT && !strcmp(temp_comment->service_description, svc_description))) {
+				switch (temp_comment->entry_type) {
+				case USER_COMMENT:
+					comment_entry_type = "User";
+					break;
+				case DOWNTIME_COMMENT:
+					comment_entry_type = "Downtime";
+					break;
+				case FLAPPING_COMMENT:
+					comment_entry_type = "Flapping";
+					break;
+				case ACKNOWLEDGEMENT_COMMENT:
+					comment_entry_type = "Ack";
+					break;
+				}
+				snprintf(comment_data, sizeof(comment_data) - 1, "%s", temp_comment->comment_data);
+				comment_data[sizeof(comment_data)-1] = '\x0';
+
+				/* we need up to twice the space to do the conversion of single, double quotes and back slash's */
+				len = (int)strlen(comment_data);
+				output_len = len * 2;
+				if ((escaped_output_string = (char *)malloc(output_len + 1)) != NULL) {
+
+					strcpy(escaped_output_string, "");
+
+					for (x = 0, y = 0; x <= len; x++) {
+						/* end of string */
+						if ((char)comment_data[x] == (char)'\x0') {
+							escaped_output_string[y] = '\x0';
+							break;
+						} else if ((char)comment_data[x] == (char)'\n' || (char)comment_data[x] == (char)'\r') {
+							escaped_output_string[y] = ' ';
+						} else if ((char)comment_data[x] == (char)'\'') {
+							escaped_output_string[y] = '\x0';
+							if ((int)strlen(escaped_output_string) < (output_len - 2)) {
+								strcat(escaped_output_string, "\\'");
+								y += 2;
+							}
+						} else if ((char)comment_data[x] == (char)'"') {
+							escaped_output_string[y] = '\x0';
+							if ((int)strlen(escaped_output_string) < (output_len - 2)) {
+								strcat(escaped_output_string, "\\\"");
+								y += 2;
+							}
+						} else if ((char)comment_data[x] == (char)'\\') {
+							escaped_output_string[y] = '\x0';
+							if ((int)strlen(escaped_output_string) < (output_len - 2)) {
+								strcat(escaped_output_string, "\\\\");
+								y += 2;
+							}
+						} else
+							escaped_output_string[y++] = comment_data[x];
+
+					}
+					escaped_output_string[++y] = '\x0';
+				} else
+					strcpy(escaped_output_string, comment_data);
+
+				/* get entry time */
+				get_time_string(&temp_comment->entry_time, entry_time, (int)sizeof(entry_time), SHORT_DATE_TIME);
+
+				/* in the tooltips we have to escape all characters */
+				saved_escape_html_tags_var = escape_html_tags;
+				escape_html_tags = TRUE;
+
+				printf("<tr><td nowrap>%s</td><td nowrap>%s</td><td><span style=font-weight:bold;>%s</span><br>%s</td></tr>", comment_entry_type, entry_time, html_encode(temp_comment->author, TRUE), html_encode(escaped_output_string, TRUE));
+
+				escape_html_tags = saved_escape_html_tags_var;
+
+				free(escaped_output_string);
+			}
+		}
+		/* under http://www.ebrueggeman.com/skinnytip/documentation.php#reference you can find the config options of skinnytip */
+		printf("</table>', '&nbsp;&nbsp;&nbsp;Comments', 'border:1, width:600, bordercolor:#333399, title_padding:2px, titletextcolor:#FFFFFF, backcolor:#CCCCFF');\" onMouseOut=\"return hideTip()\"");
+	}
+	printf("><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d></A></TD>", url_images_path, COMMENT_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+
+	return;
 }

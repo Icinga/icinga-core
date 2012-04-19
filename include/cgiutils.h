@@ -35,9 +35,12 @@ extern "C" {
 #endif
 
 
-/**************************** CGI REFRESH RATE ******************************/
+/**************************** CGI REFRESH ******************************/
 
 #define DEFAULT_REFRESH_RATE	60	/* 60 second refresh rate for CGIs */
+
+#define HTTPHEADER_REFRESH	0
+#define JAVASCRIPT_REFRESH	1
 
 
 /******************************* CGI NAMES **********************************/
@@ -134,6 +137,7 @@ extern "C" {
 #define JQUERY_MAIN_JS		"jquery-1.6.2.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
 #define SKINNYTIP_JS		"skinnytip.js"
+#define PAGE_REFRESH_JS		"page_refresh.js"
 
 /********************************* ICONS ************************************/
 
@@ -551,6 +555,7 @@ extern "C" {
 #define DISPLAY_HOSTESCALATIONS         12
 #define DISPLAY_ALL			13
 #define DISPLAY_MODULES			14
+#define DISPLAY_CGICONFIG		15
 #define DISPLAY_COMMAND_EXPANSION       16211
 
 #define STYLE_OVERVIEW                  0
@@ -628,7 +633,7 @@ char * escape_string(char *);					/* escape string for html form usage */
 void print_extra_hostgroup_url(char *,char *);
 void print_extra_servicegroup_url(char *,char *);
 
-void display_info_table(char *,int,authdata *, int);
+void display_info_table(char *,authdata *, int);
 void display_nav_table(char *,int);
 
 void display_splunk_host_url(host *);
@@ -669,6 +674,15 @@ int string_to_time(char *, time_t *);				/* converts a defined formated string t
 
 int is_dlst_time(time_t *);
 char *json_encode(char *);
+
+/** @brief print's a little comment icon in status lists
+ *  @param [in] host_name of host to display comments
+ *  @param [in] svc_description if comment's for service is requested
+ *
+ *  This function print's a little comment icon and generates html code
+ *  to display a tooltip box which pops up on mouse over.
+**/
+void print_comment_icon(char *, char *);
 
 /******************************** MULTIURL PATCH *******************************/
 

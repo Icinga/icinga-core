@@ -7,7 +7,7 @@ use strict;
 use Test::Most;
 use Icinga::Test qw ( run_cgi get_body );
 
-my $tests = 2;
+my $tests = 4;
 
 my $output = run_cgi('etc/cgi.cfg', 'GET', '', 'extinfo.cgi');
 like( $output, "/Process Information/", "extinfo.cgi without params show the process information" );
@@ -21,7 +21,6 @@ SKIP: {
     skip "Test::JSON not installed", 2 if $@;
 
     use Test::JSON;
-    $tests += 2;
     $output = run_cgi('etc/cgi.cfg', 'GET', 'jsonoutput', 'extinfo.cgi');
 
     is_valid_json(get_body($output), 'json output should be well formed');

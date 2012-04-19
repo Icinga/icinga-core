@@ -164,7 +164,7 @@ int main(void) {
 
 		/* left column of the first row */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table("Network Outages", TRUE, &current_authdata, daemon_check);
+		display_info_table("Network Outages", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top row */
@@ -265,7 +265,6 @@ int process_cgivars(void) {
 
 /* shows all hosts that are causing network outages */
 void display_network_outages(void) {
-	char temp_buffer[MAX_INPUT_BUFFER];
 	int number_of_problem_hosts = 0;
 	int number_of_blocking_problem_hosts = 0;
 	hostoutagesort *temp_hostoutagesort;
@@ -390,11 +389,9 @@ void display_network_outages(void) {
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%d%s%s", csv_data_enclosure, total_comments, csv_data_enclosure, csv_delimiter);
 		} else {
-			if (total_comments > 0) {
-				snprintf(temp_buffer, sizeof(temp_buffer) - 1, "This host has %d comment%s associated with it", total_comments, (total_comments == 1) ? "" : "s");
-				temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-				printf("<TD CLASS='%s'><A HREF='%s?type=%d&host=%s#comments'><IMG SRC='%s%s' BORDER=0 ALT='%s' TITLE='%s'></A></TD>\n", bg_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_hostoutage->hst->name), url_images_path, COMMENT_ICON, temp_buffer, temp_buffer);
-			} else
+			if (total_comments > 0)
+				print_comment_icon(temp_hostoutage->hst->name, NULL);
+			else
 				printf("<TD CLASS='%s'>N/A</TD>\n", bg_class);
 		}
 
@@ -714,7 +711,7 @@ void add_affected_host(char *host_name) {
 	if (new_affected_host == NULL)
 		return;
 
-	new_affected_host->host_name = host_name;
+	new_affected_host->host_name = strdup(host_name);
 
 	/* add the structure to the head of the list in memory */
 	new_affected_host->next = currently_checked_host->affected_hosts;

@@ -216,7 +216,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 		}
 	} else {
 		if (!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X3"), *(char **) data[2], 0)) {
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id Bind name1=%s failed\n", data[2]);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id Bind name1=%s failed\n", (es[0]==NULL)?"(null)":es[0]);
 			return IDO_ERROR;
 		}
 	}
@@ -229,7 +229,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 		}
 	} else {
 		if (!OCI_BindString(idi->dbinfo.oci_statement_objects_select_name1_name2, MT(":X4"), *(char **) data[3], 0)) {
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id Bind name2=%s failed\n", data[3]);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id Bind name2=%s failed\n", (es[1]==NULL)?"(null)":es[1]);
 			return IDO_ERROR;
 		}
 	}
@@ -237,7 +237,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 
 	/* execute statement */
 	if (!OCI_Execute(idi->dbinfo.oci_statement_objects_select_name1_name2)) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) execute error\n", es[0], es[1]);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) execute error\n", (es[0]==NULL)?"(null)":es[0], (es[1]==NULL)?"(null)":es[1]);
 		return IDO_ERROR;
 	}
 
@@ -245,9 +245,9 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 	idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_name1_name2);
 	if (OCI_FetchNext(idi->dbinfo.oci_resultset)) {
 		*object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) object id=%lu selected\n", es[0], es[1], *object_id);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) object id=%lu selected\n", (es[0]==NULL)?"(null)":es[0], (es[1]==NULL)?"(null)":es[1], *object_id);
 	} else {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) object id could not be found\n", es[0], es[1]);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_select_name1_name2(%s,%s) object id could not be found\n", (es[0]==NULL)?"(null)":es[0], (es[1]==NULL)?"(null)":es[1]);
 		result = IDO_ERROR;
 	}
 
@@ -403,10 +403,10 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 	es[0] = ido2db_db_escape_string(idi, name1);
 	es[1] = ido2db_db_escape_string(idi, name2);
 
-	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() name1=%s, name2=%s\n", es[0], es[1]);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() name1=%s, name2=%s\n", (es[0]==NULL)?"(null)":es[0], (es[1]==NULL)?"(null)":es[1]);
 
 #ifdef DEBUG_IDO2DB
-	syslog(LOG_USER | LOG_INFO, "name1=%s, name2=%s\n", es[0], es[1]);
+	syslog(LOG_USER | LOG_INFO, "name1=%s, name2=%s\n", (es[0]==NULL)?"(null)":es[0], (es[1]==NULL)?"(null)":es[1]);
 #endif
 
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -455,7 +455,7 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 		}
 	} else {
 		if (!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X3"), *(char **) data[2], 0)) {
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind name1=%s failed\n", data[2]);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind name1=%s failed\n", (es[0]==NULL)?"(null)":es[0]);
 			return IDO_ERROR;
 		}
 	}
@@ -469,7 +469,7 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 		}
 	} else {
 		if (!OCI_BindString(idi->dbinfo.oci_statement_objects_insert, MT(":X4"), *(char **) data[3], 0)) {
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind name2=%s failed\n", data[3]);
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert() Bind name2=%s failed\n", (es[1]==NULL)?"(null)":es[1]);
 			return IDO_ERROR;
 		}
 	}

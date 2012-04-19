@@ -749,7 +749,7 @@ with_temp_file
 with_plugin_dir
 with_eventhandler_dir
 with_log_dir
-enable_enable_cgi_log
+enable_cgi_log
 with_cgi_log_dir
 with_ext_cmd_file_dir
 with_p1_file_dir
@@ -1408,7 +1408,7 @@ Optional Features:
   --disable-option-checking  ignore unrecognized --enable/--with options
   --disable-FEATURE       do not include FEATURE (same as --enable-FEATURE=no)
   --enable-FEATURE[=ARG]  include FEATURE [ARG=yes]
-  --enable-cgi-log        enables cgi logging - experimental!!
+--enable-cgi-log enables cgi logging - experimental!!
   --disable-statusmap     disables compilation of statusmap CGI
   --disable-statuswrl     disables compilation of statuswrl (VRML) CGI
   --enable-nanosleep      enables use of nanosleep (instead sleep) in event
@@ -1473,8 +1473,8 @@ Optional Packages:
                           slash)
   --with-htmurl=<local-url>
                           sets URL for public html
-  --ido-instance-name=<instancename>
-                          sets instance_name for IDOUtils
+  --with-ido-instance-name=<instancename>
+                          sets instance_name for IDOUtils in idomod.cfg
   --with-ocilib-lib=DIR   sets location of the ocilib library
   --with-ocilib-inc=DIR   sets location of the ocilib include files,
   --with-oracle-lib=DIR   sets location of the oracle library
@@ -2429,7 +2429,7 @@ ac_config_headers="$ac_config_headers include/config.h"
 PKG_NAME=icinga-core
 PKG_VERSION="1.7.0-dev"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="03-01-2012"
+PKG_REL_DATE="02-29-2012"
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -5408,12 +5408,17 @@ fi
 
 
 ENABLE_CGILOG=no
-# Check whether --enable-enable-cgi-log was given.
-if test "${enable_enable_cgi_log+set}" = set; then :
-  enableval=$enable_enable_cgi_log; ENABLE_CGILOG=$enableval
+# Check whether --enable-cgi-log was given.
+if test "${enable_cgi_log+set}" = set; then :
+  enableval=$enable_cgi_log;
+        if test x$enableval = xyes; then
+		ENABLE_CGILOG=yes
+	fi
+
 else
-  ENABLE_CGILOG=yes
+  ENABLE_CGILOG=no
 fi
+
 
 if test x$ENABLE_CGILOG = xyes; then
         ENABLECGILOG=1

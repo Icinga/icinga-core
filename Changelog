@@ -17,14 +17,21 @@ ENHANCEMENTS
 * core: avoid senseless looping when free()'ing macros (Andreas Ericsson) #2184
 * core: avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182
 * core: allow empty host groups in service and host dependencies if allow_empty_hostgroup_assignment flag is set (Daniel Wittenberg) #2255
+* core: fix compatibility problems on solaris 10 (affects core, cgis, ido) (Carl R. Friend) #2292
 
 * classic ui: Added option for max log entries displayed in showlog.cgi #2145
 * classic ui: Added config option for status totals in status.cgi #2018
 * classic ui: Added multiple hosts/services to status.cgi GET #1981
 * classic ui: Added nostatusheader in status.cgi as config option #2018
-* classic ui: Added statusmap resizing with exclude/include button #2186
+* classic ui: Added statusmap resizing with exclude/include button (thanks to Mat) #2186
 * classic ui: Added Select hosts or services by clicking on line instead of box #2118
 * classic ui: include graph icons by default in logos #2222
+* classic ui: added missing comment tool tip box to outages.cgi #2396
+* classic ui: add javascript to refresh page/pause easier #2119
+* classic ui: Added Scheduling queue filter for specific host or service #2421
+* classic ui: add display_status_totals as cgi.cfg option in order to allow the status totals to be shown again #2443
+* classic ui: Changed reading of auth information from cgiauth.c to cgiutils.c #2524
+* classic ui: Added readonly cgi.cfg view into the config section #1776
 
 * install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121
 * install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344
@@ -35,6 +42,11 @@ ENHANCEMENTS
 * install: change idomod extension from .o to .so, make .so the default extension for modules #2354
 * install: add configure target --with-eventhandler-dir and "make install-eventhandlers" for contrib/eventhandlers #2352
 * install: add --enable-cgi-log to configure to enable cgi logging during build #2364
+<<<<<<< HEAD
+* install: fix configure --ido-instance-name is incorrect, missing 'with' (thx Marco) #2407
+=======
+* install: add --enable-nagiosenv to configure to expose custom variables with prefix NAGIOS_ instead of ICINGA_ for easier reuse of well known check scripts #2083
+>>>>>>> test/ido
 
 * config: introduce conf.d as place for own configs #2360
 
@@ -49,6 +61,7 @@ ENHANCEMENTS
 * icinga.spec: use eventhandler configure/make in package creation from #2352 #2363
 * icinga.spec: use --enable-cgi-log from upstream instead of manual sed #2365
 * icinga.spec: introduce conf.d as place for own configs #2367
+* idoutils: add new index for state in table statehistory #2274
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
@@ -66,9 +79,23 @@ FIXES
 * classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343
 * classic ui: fixed invalid json output for tac.cgi #2160
 * classic ui: Fixed Invalid json data if field value is multiline #2263
+* classic ui: fixed Commit commands with more then 500 multiple pairs of hosts and services #2373
+* classic ui: fixed reset forms on return after submitting command #2117
+* classic ui: Change Excel icon to odf spreadsheet icon #2391
+* classic ui: fixed Availability Records Break if JavaScript is disabled #2412
+* classic ui: fixed Truncated HTML table when displaying outages in outages.cgi #2323
+* classic ui: fixed Log File Navigation in current/ealier/recent archive clarification #2441
 
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
+* idoutils: fix several build problems in solaris: use supplied sprintf functions in preference over local one, build .so instead of .o shared librarys, use explicit -fPIC compiler switch  #524,#1772,#2354
+* idoutils: fix core dumps in solaris when using os supplied printf functions
+#2271,#1253,#2503,#2292
+* idoutils: fix lob handling in Oracle #2303,#2342
+* idoutils: fix sample shell db create script for mysql #2358
+* idoutils: fix OCI-21500 when freeing lobs #2509
+* idoutils: add note to "if process data is not dumped via idomod, ido2db won't clean tables and set objects inactive" #2237
+* idoutils: fix pgsql unix_timestamp cannot handle timstamp with timezone #2203
 
 * install: Fix notification template installation (Todd Zullinger) #2235
 
@@ -106,6 +133,75 @@ CHANGES
 
 * tests: you can now test with pleasure: $ make distclean ; ./configure ; make test #2369 #1192
 
+* classic ui: Added option for max log entries displayed in showlog.cgi #2145
+	** added new config option "default_num_displayed_log_entries"
+	** added new input field to redefine amount of displayed log entries
+	** added "switch" to show/hide filters in showlog.cgi
+
+* classic ui: status.cgi
+	** added new config option "display_status_totals"
+	** you can define more then one object to display
+	 ** host=hostA&host=hostB&host=...
+	 ** same with hostgroups and servicegroups
+	** nostatusheader is still available as URL param
+	** hostgroup=all now only shows hosts which are in a host groups
+	** host sorting is working now
+	** added 2 new cgi vars
+	 ** sortobject = determine if to sort host or service list (host_service_view)
+	 ** allunhandledproblems = to display ALL unhanded problems
+	** fixed and reorganized the links in status totals
+	** searching returns more then one hostgroup/servicegroup if group name matches
+	** combined Host/Service view now properly supported
+	** dropped "ALT" and "TITLE" tag from action url image in host and service status list
+	** status totals are now split into "displayed/all" for filtering
+	** filtering host/services/hostgroups/servicegroups is now possible via status totals
+
+* classic ui: add javascript to refresh page/pause easier #2119
+	** DO A FULL PAGE RELOAD AFTER UPGRADING
+	** no reload necessary to pause refresh
+	** selecting item in status.cgi/extinfo.cgi resets' refresh counter
+	** added cgi config option "refresh_type" to choose between http header refresh and javascript refresh
+
+* classic ui: Added statusmap resizing with exclude/include button #2186
+	** now statusmap get's displayed much better (thanks to Mat)
+
+* classic ui: Added Select hosts or services by clicking on line instead of box #2118
+	** selecting a host/service/downtime/comment checkbox now works also by clicking the row
+
+* classic ui: fixed reset forms on return after submitting command #2117
+	** forms getting reset on page load
+	** fixed problem with downtime checkbox selection
+	** changed all forms to POST request
+
+* classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343
+	** changes array names in json output of extinfo.cgi
+	 ** comments  -> host_comments  / service_comments
+	 ** downtimes -> host_downtimes / service_downtimes
+
+* classic ui: fixed Commit commands with more then 500 multiple pairs of hosts and services #2373
+	** now it's possible to submit ~990 commands at the same time
+
+* classic ui: outages.cgi
+	** added missing comment tool tip box
+	** fixed truncating of outages list
+
+* classic ui: Added Scheduling queue filter for specific host or service #2421
+	** now everyone who is authorized for can see hosts/services in scheduling queue
+	** added links to host/service extinfo
+
+* classic ui: Added readonly cgi.cfg view into the config section #1776
+	** New Option in config.cgi to view all cgi config options and their current values
+
+* classic ui: statuswml.cgi and statuswrl.cgi are DEPRECATED now !!!!!!!!!
+	** both will be removed in Icinga 1.8 !!!!!!
+
+* idoutils: limit long_output and perfdata database storage in mysql to 32k #2342
+
+* idoutils: enlarge field "FAILURE_PREDICTION_OPTIONS" in table hosts from 64 to 128 Bytes #2479
+
+* idoutils: Oracle only->change method retrieving lastid, introduce individual sequence caching sizes #2510
+
+* idoutils: fix pgsql unix_timestamp cannot handle timstamp with timezone #2203
 
 
 1.6.1 - 02/12/2011
@@ -116,7 +212,7 @@ FIXES
 CHANGES
 
 
->>>>>>> test/cgis
+
 1.6.0 - 30/11/2011
 
 ENHANCEMENTS
