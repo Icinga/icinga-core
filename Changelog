@@ -33,6 +33,8 @@ ENHANCEMENTS
 * classic ui: Changed reading of auth information from cgiauth.c to cgiutils.c #2524
 * classic ui: Added readonly cgi.cfg view into the config section #1776
 
+* idoutils: add new index for state in table statehistory #2274
+
 * install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121
 * install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344
 * install: change default target location of idomod.so from $bindir to $libdir #2346
@@ -42,11 +44,8 @@ ENHANCEMENTS
 * install: change idomod extension from .o to .so, make .so the default extension for modules #2354
 * install: add configure target --with-eventhandler-dir and "make install-eventhandlers" for contrib/eventhandlers #2352
 * install: add --enable-cgi-log to configure to enable cgi logging during build #2364
-<<<<<<< HEAD
 * install: fix configure --ido-instance-name is incorrect, missing 'with' (thx Marco) #2407
-=======
 * install: add --enable-nagiosenv to configure to expose custom variables with prefix NAGIOS_ instead of ICINGA_ for easier reuse of well known check scripts #2083
->>>>>>> test/ido
 
 * config: introduce conf.d as place for own configs #2360
 
@@ -62,7 +61,6 @@ ENHANCEMENTS
 * icinga.spec: use --enable-cgi-log from upstream instead of manual sed #2365
 * icinga.spec: introduce conf.d as place for own configs #2367
 * icinga.spec: introduce icinga-idoutils-libdbi-mysql|pgsql as seperate packages #2361
-* idoutils: add new index for state in table statehistory #2274
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
