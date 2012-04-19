@@ -25,7 +25,7 @@ cd ../mysql
 
 echo "Enter password for mysql user '$DBADMIN' or <enter> if none"
 read ROOTPASS
-if [ -s "ROOTPASS" ];then
+if [ -n "ROOTPASS" ];then
 	P=-p$ROOTPASS
 fi
 echo "drop existing DB $DB and user $DBUSER..."

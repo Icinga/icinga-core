@@ -29,6 +29,37 @@ extern unsigned long ido2db_max_debug_file_size;
 
 extern int ido2db_debug_readable_timestamp;
 
+static pthread_mutex_t ido2db_debug_fp_lock;
+
+/*
+ * since we don't want child processes to hang indefinitely
+ * in case they inherit a locked lock, we use soft-locking
+ * here, which basically tries to acquire the lock for a
+ * short while and then gives up, returning -1 to signal
+ * the error
+ */
+static inline int soft_lock(pthread_mutex_t *lock) {
+        int i;
+
+        for (i = 0; i < 5; i++) {
+                if (!pthread_mutex_trylock(lock)) {
+                        /* success */
+                        return 0;
+                }
+
+                if (errno == EDEADLK) {
+                        /* we already have the lock */
+                        return 0;
+                }
+
+                /* sleep briefly */
+                usleep(30);
+        }
+
+        return -1; /* we failed to get the lock. Nothing to do */
+}
+
+
 /****************************************************************************/
 /* LOGGING ROUTINES                                                         */
 /****************************************************************************/
@@ -68,9 +99,8 @@ int ido2db_close_debug_log(void) {
 int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...) {
         va_list ap;
         char *temp_path = NULL;
-		char *buf=NULL;
         time_t t;
-        struct tm *tm;
+        struct tm *tm, tm_s;
         char temp_time[80];
         struct timeval current_time;
         unsigned long tid;
@@ -86,12 +116,24 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...) {
         if (ido2db_debug_file_fp == NULL)
                 return IDO_ERROR;
 
+        /*
+         * lock it so concurrent threads don't stomp on each other's
+         * writings. We maintain the lock until we've (optionally)
+         * renamed the file.
+         * If soft_lock() fails we return early.
+         */
+        if (soft_lock(&ido2db_debug_fp_lock) < 0)
+                return ERROR;
+
         /* write the timestamp */
         gettimeofday(&current_time, NULL);
 
         time(&t);
-        tm=localtime(&t);
+
+        tm=localtime_r(&t, &tm_s);
+
         strftime(temp_time, 80, "%c", tm);
+
         tid=pthread_self();
         pid=getpid();
 	if (ido2db_debug_readable_timestamp)
@@ -101,13 +143,8 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...) {
 
         /* write the data */
         va_start(ap, fmt);
-		/* use gnu asprintf to take care about null pointer data*/
-        dummy = vasprintf(&buf, fmt, ap);
+	vfprintf(ido2db_debug_file_fp, fmt, ap);
         va_end(ap);
-		if (buf) {
-        	fprintf(ido2db_debug_file_fp, "%s", buf);
-			my_free(buf);
-		}
 
         /* flush, so we don't have problems tailing or when fork()ing */
         fflush(ido2db_debug_file_fp);
@@ -137,6 +174,8 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...) {
                 /* open a new file */
                 ido2db_open_debug_log();
         }
+
+	pthread_mutex_unlock(&ido2db_debug_fp_lock);
 
         return IDO_OK;
 }

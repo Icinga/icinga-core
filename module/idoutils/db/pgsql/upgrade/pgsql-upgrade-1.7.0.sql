@@ -13,8 +13,21 @@
 create index statehist_state_idx on icinga_statehistory(object_id,state);
 
 -- -----------------------------------------
+--#2203 cannot handle timstamp with timezone
+-- -----------------------------------------
+
+DROP FUNCTION from_unixtime(integer);
+CREATE OR REPLACE FUNCTION from_unixtime(integer) RETURNS timestamp with time zone AS '
+         SELECT to_timestamp($1) AS result
+' LANGUAGE 'SQL';
+
+CREATE OR REPLACE FUNCTION unix_timestamp(timestamp with time zone) RETURNS bigint AS '
+        SELECT EXTRACT(EPOCH FROM $1)::bigint AS result;
+' LANGUAGE 'SQL';
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 
-INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.6.0') ON DUPLICATE KEY UPDATE version='1.6.0';
+INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.7.0') ON DUPLICATE KEY UPDATE version='1.7.0';
 

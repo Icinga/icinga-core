@@ -57,6 +57,7 @@
 #define IDO2DB_MAX_MBUF_ITEMS                           14
 
 #define IDO2DB_MAX_BUFLEN				16384
+#define IDO2DB_MYSQL_MAX_TEXT_LEN		32768
 
 
 /***************** structures *****************/
@@ -175,7 +176,6 @@ typedef struct ido2db_dbconninfo_struct{
 	/* select */
 	OCI_Statement* oci_statement_logentries_select;
 	OCI_Statement* oci_statement_instances_select;
-	OCI_Statement* oci_statement_sequence_select;
 
 	/* delete */
 	OCI_Statement* oci_statement_timedeventqueue_delete;

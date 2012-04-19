@@ -175,6 +175,9 @@ reconnect_warning_interval=15
 #
 #define IDOMOD_PROCESS_EVERYTHING                     67108863
 #
+# ATTENTION: if process data is not dumped via idomod, ido2db won't
+#            clean tables and set objects inactive!!!
+#
 # You may use the Online Calculator by Gerhard Lausser:
 # http://labs.consol.de/nagios/ndo-data-processing-options/
 # (please note that there is a checkbox for everything!)

@@ -16,12 +16,12 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 -- 		    2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2011-06-10 Thomas Dressler
+-- current version: 2012-03-03 Thomas Dressler
 --
 -- -- --------------------------------------------------------
 */
 
-DEFINE ICINGA_VERSION=1.6.0
+DEFINE ICINGA_VERSION=1.7.0
 
 -- -----------------------------------------
 -- set defines
