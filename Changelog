@@ -77,6 +77,7 @@ FIXES
 * idoutils: fix lob handling in Oracle #2303,#2342
 * idoutils: fix sample shell db create script for mysql #2358
 * idoutils: fix OCI-21500 when freeing lobs #2509
+* idoutils: add note to "if process data is not dumped via idomod, ido2db won't clean tables and set objects inactive" #2237
 
 * install: Fix notification template installation (Todd Zullinger) #2235
 
