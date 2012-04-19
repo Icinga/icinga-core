@@ -4,7 +4,7 @@ Icinga 1.7.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
-1.7.0 - XX/YY/2012
+1.7.0 - 15/05/2012
 
 !!! ATTENTION !!!
 	idomod.o was renamed to idomod.so, module extension is now .so
