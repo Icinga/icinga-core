@@ -32,9 +32,6 @@
 
 static icinga_macros *mac;
 
-extern char   main_config_file[MAX_FILENAME_LENGTH];
-extern char   url_logo_images_path[MAX_FILENAME_LENGTH];
-
 extern host *host_list;
 extern service *service_list;
 extern hostgroup *hostgroup_list;
@@ -49,16 +46,99 @@ extern hostdependency *hostdependency_list;
 extern hostescalation *hostescalation_list;
 extern module *module_list;
 
+extern char *action_url_target;
+extern char *authorization_config_file;
+extern char *authorized_for_all_host_commands;
+extern char *authorized_for_all_hosts;
+extern char *authorized_for_all_service_commands;
+extern char *authorized_for_all_services;
+extern char *authorized_for_configuration_information;
+extern char *authorized_for_full_command_resolution;
+extern char *authorized_for_read_only;
+extern char *authorized_for_system_commands;
+extern char *authorized_for_system_information;
+extern char *authorized_contactgroup_for_all_host_commands;
+extern char *authorized_contactgroup_for_all_hosts;
+extern char *authorized_contactgroup_for_all_service_commands;
+extern char *authorized_contactgroup_for_all_services;
+extern char *authorized_contactgroup_for_configuration_information;
+extern char *authorized_contactgroup_for_full_command_resolution;
+extern char *authorized_contactgroup_for_read_only;
+extern char *authorized_contactgroup_for_system_commands;
+extern char *authorized_contactgroup_for_system_information;
+extern char cgi_log_archive_path[MAX_FILENAME_LENGTH];
+extern char cgi_log_file[MAX_FILENAME_LENGTH];
+extern char *csv_data_enclosure;
+extern char *csv_delimiter;
+extern char *default_user_name;
+extern char *host_down_sound;
+extern char *host_unreachable_sound;
+extern char *http_charset;
+extern char *illegal_output_chars;
+extern char *macro_user[MAX_USER_MACROS];
+extern char main_config_file[MAX_FILENAME_LENGTH];
+extern char nagios_check_command[MAX_INPUT_BUFFER];
+extern char *normal_sound;
+extern char *notes_url_target;
+extern char physical_html_path[MAX_FILENAME_LENGTH];
+extern char *ping_syntax;
+extern char resource_file[MAX_INPUT_BUFFER];
+extern char *service_critical_sound;
+extern char *service_unknown_sound;
+extern char *service_warning_sound;
+extern char *splunk_url;
+extern char *statusmap_background_image;
+extern char *statuswrl_include;
+extern char url_html_path[MAX_FILENAME_LENGTH];
+extern char url_logo_images_path[MAX_FILENAME_LENGTH];
+extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
+
 extern int display_header;
 extern int content_type;
+extern int embedded;
+extern int daemon_check;
+extern int add_notif_num_hard;
+extern int add_notif_num_soft;
+extern int color_transparency_index_b;
+extern int color_transparency_index_g;
+extern int color_transparency_index_r;
+extern int cgi_log_rotation_method;
+extern int default_downtime_duration;
+extern int default_expiring_acknowledgement_duration;
+extern int default_num_displayed_log_entries;
+extern int display_status_totals;
+extern int default_statusmap_layout_method;
+extern int default_statuswrl_layout_method;
+extern int enable_splunk_integration;
+extern int enforce_comments_on_actions;
+extern int escape_html_tags;
+extern int extinfo_show_child_hosts;
+extern int highlight_table_rows;
+extern int lock_author_names;
+extern int persistent_ack_comments;
+extern int refresh_rate;
+extern int refresh_type;
+extern int show_all_services_host_is_authorized_for;
+extern int show_context_help;
+extern int show_partial_hostgroups;
+extern int show_tac_header;
+extern int show_tac_header_pending;
+extern int showlog_current_states;
+extern int showlog_initial_states;
+extern int status_show_long_plugin_output;
+extern int suppress_maintenance_downtime;
+extern int tab_friendly_titles;
+extern int tac_show_only_hard_state;
+extern int use_authentication;
+extern int use_authentication;
+extern int use_logging;
+extern int use_pending_states;
+extern int use_ssl_authentication;
+extern int week_starts_on_monday;
 
-extern char *csv_delimiter;
-extern char *csv_data_enclosure;
 
 int process_cgivars(void);
-
 void display_options(void);
-
 void display_hosts(void);
 void display_hostgroups(void);
 void display_servicegroups(void);
@@ -73,6 +153,8 @@ void display_hostdependencies(void);
 void display_hostescalations(void);
 void display_command_expansion(void);
 void display_modules(void);
+void display_cgiconfig(void);
+void store_default_settings(void);
 
 authdata current_authdata;
 
@@ -82,11 +164,89 @@ char *service_desc = NULL;
 char to_expand[MAX_COMMAND_BUFFER];
 char hashed_color[8];
 
-extern int embedded;
-extern int daemon_check;
+char *org_action_url_target = "";
+char *org_authorization_config_file = "";
+char *org_authorized_for_all_host_commands = "";
+char *org_authorized_for_all_hosts = "";
+char *org_authorized_for_all_service_commands = "";
+char *org_authorized_for_all_services = "";
+char *org_authorized_for_configuration_information = "";
+char *org_authorized_for_full_command_resolution = "";
+char *org_authorized_for_read_only = "";
+char *org_authorized_for_system_commands = "";
+char *org_authorized_for_system_information = "";
+char *org_authorized_contactgroup_for_all_host_commands = "";
+char *org_authorized_contactgroup_for_all_hosts = "";
+char *org_authorized_contactgroup_for_all_service_commands = "";
+char *org_authorized_contactgroup_for_all_services = "";
+char *org_authorized_contactgroup_for_configuration_information = "";
+char *org_authorized_contactgroup_for_full_command_resolution = "";
+char *org_authorized_contactgroup_for_read_only = "";
+char *org_authorized_contactgroup_for_system_commands = "";
+char *org_authorized_contactgroup_for_system_information = "";
+char *org_cgi_log_archive_path = "";
+char *org_cgi_log_file = "";
+char *org_csv_data_enclosure = "";
+char *org_csv_delimiter = "";
+char *org_default_user_name = "";
+char *org_host_down_sound = "";
+char *org_host_unreachable_sound = "";
+char *org_http_charset = "";
+char *org_illegal_macro_output_chars = "";
+char *org_main_config_file = "";
+char *org_nagios_check_command = "";
+char *org_normal_sound = "";
+char *org_notes_url_target = "";
+char *org_physical_html_path = "";
+char *org_ping_syntax = "";
+char *org_service_critical_sound = "";
+char *org_service_unknown_sound = "";
+char *org_service_warning_sound = "";
+char *org_splunk_url = "";
+char *org_statusmap_background_image = "";
+char *org_statuswrl_include = "";
+char *org_url_html_path = "";
+char *org_url_stylesheets_path = "";
 
-extern char resource_file[MAX_INPUT_BUFFER];
-extern char *macro_user[MAX_USER_MACROS];
+int org_add_notif_num_hard;
+int org_add_notif_num_soft;
+int org_color_transparency_index_b;
+int org_color_transparency_index_g;
+int org_color_transparency_index_r;
+int org_cgi_log_rotation_method;
+int org_default_downtime_duration;
+int org_default_expiring_acknowledgement_duration;
+int org_default_num_displayed_log_entries;
+int org_display_status_totals;
+int org_default_statusmap_layout;
+int org_default_statuswrl_layout;
+int org_enable_splunk_integration;
+int org_enforce_comments_on_actions;
+int org_escape_html_tags;
+int org_extinfo_show_child_hosts;
+int org_first_day_of_week;
+int org_highlight_table_rows;
+int org_lock_author_names;
+int org_persistent_ack_comments;
+int org_refresh_rate;
+int org_refresh_type;
+int org_show_all_services_host_is_authorized_for;
+int org_show_context_help;
+int org_show_partial_hostgroups;
+int org_show_tac_header;
+int org_show_tac_header_pending;
+int org_showlog_current_states;
+int org_showlog_initial_states;
+int org_status_show_long_plugin_output;
+int org_suppress_maintenance_downtime;
+int org_tab_friendly_titles;
+int org_tac_show_only_hard_state;
+int org_use_authentication;
+int org_use_authentication;
+int org_use_logging;
+int org_use_pending_states;
+int org_use_ssl_authentication;
+
 
 int CGI_ID = CONFIG_CGI_ID;
 
@@ -100,6 +260,9 @@ int main(void) {
 
 	/* reset internal variables */
 	reset_cgi_vars();
+
+	/* store default cgi config vars*/
+	store_default_settings();
 
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
@@ -128,8 +291,8 @@ int main(void) {
 		return ERROR;
 	}
 
-        /* read resource file if possible. if not, ignore error at this time */
-        read_icinga_resource_file(resource_file);
+	/* read resource file if possible. if not, ignore error at this time */
+	read_icinga_resource_file(resource_file);
 
 	/* initialize macros */
 	init_macros();
@@ -139,13 +302,6 @@ int main(void) {
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
-	/* see if user is authorized to view contact information... */
-	if (is_authorized_for_configuration_information(&current_authdata) == FALSE) {
-		print_generic_error_message("It appears as though you do not have permission to view the configuration information you requested...", "If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.", 0);
-		document_footer(CGI_ID);
-		return OK;
-	}
-
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		/* begin top table */
 		printf("<table border=0 width=100%%>\n");
@@ -153,36 +309,18 @@ int main(void) {
 
 		/* left column of the first row */
 		printf("<td align=left valign=top width=50%%>\n");
-		display_info_table("Configuration", FALSE, &current_authdata, daemon_check);
+		display_info_table("Configuration", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* right hand column of top row */
 		printf("<td align=right valign=bottom width=50%%>\n");
 
-		if (display_type != DISPLAY_NONE) {
+		if (display_type != DISPLAY_NONE && is_authorized_for_configuration_information(&current_authdata)) {
 
 			printf("<table border=0>\n");
 			printf("<form method=\"get\" action=\"%s\">\n", CONFIG_CGI);
 
-			printf("<tr><td align=left class='reportSelectSubTitle'>Object Type:</td></tr>\n");
-			printf("<tr><td align=left class='reportSelectItem'>");
-			printf("<select name='type'>\n");
-			printf("<option value='hosts' %s>Hosts\n", (display_type == DISPLAY_HOSTS) ? "SELECTED" : "");
-			printf("<option value='hostdependencies' %s>Host Dependencies\n", (display_type == DISPLAY_HOSTDEPENDENCIES) ? "SELECTED" : "");
-			printf("<option value='hostescalations' %s>Host Escalations\n", (display_type == DISPLAY_HOSTESCALATIONS) ? "SELECTED" : "");
-			printf("<option value='hostgroups' %s>Host Groups\n", (display_type == DISPLAY_HOSTGROUPS) ? "SELECTED" : "");
-			printf("<option value='services' %s>Services\n", (display_type == DISPLAY_SERVICES) ? "SELECTED" : "");
-			printf("<option value='servicegroups' %s>Service Groups\n", (display_type == DISPLAY_SERVICEGROUPS) ? "SELECTED" : "");
-			printf("<option value='servicedependencies' %s>Service Dependencies\n", (display_type == DISPLAY_SERVICEDEPENDENCIES) ? "SELECTED" : "");
-			printf("<option value='serviceescalations' %s>Service Escalations\n", (display_type == DISPLAY_SERVICEESCALATIONS) ? "SELECTED" : "");
-			printf("<option value='contacts' %s>Contacts\n", (display_type == DISPLAY_CONTACTS) ? "SELECTED" : "");
-			printf("<option value='contactgroups' %s>Contact Groups\n", (display_type == DISPLAY_CONTACTGROUPS) ? "SELECTED" : "");
-			printf("<option value='timeperiods' %s>Timeperiods\n", (display_type == DISPLAY_TIMEPERIODS) ? "SELECTED" : "");
-			printf("<option value='modules' %s>Modules\n", (display_type == DISPLAY_MODULES) ? "SELECTED" : "");
-			printf("<option value='commands' %s>Commands\n", (display_type == DISPLAY_COMMANDS) ? "SELECTED" : "");
-			printf("<option value='command' %s>Command Expansion\n", (display_type == DISPLAY_COMMAND_EXPANSION) ? "SELECTED" : "");
-			printf("</select>\n");
-			printf("</td></tr>\n");
+			display_options();
 
 			if (display_type != DISPLAY_COMMAND_EXPANSION) {
 				if (display_type == DISPLAY_SERVICES) {
@@ -261,6 +399,10 @@ int main(void) {
 		/* reuse commands context help */
 		display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
 		break;
+	case DISPLAY_CGICONFIG:
+		/* reuse commands context help */
+		display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
+		break;
 	case DISPLAY_ALL:
 		break;
 	default:
@@ -274,6 +416,13 @@ int main(void) {
 		/* end of top table */
 		printf("</tr>\n");
 		printf("</table>\n");
+	}
+
+	/* see if user is authorized to view configuration information... */
+	if (is_authorized_for_configuration_information(&current_authdata) == FALSE) {
+		print_generic_error_message("It appears as though you do not have permission to view the configuration information you requested...", "If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.", 0);
+		document_footer(CGI_ID);
+		return OK;
 	}
 
 
@@ -320,6 +469,9 @@ int main(void) {
 	case DISPLAY_MODULES:
 		display_modules();
 		break;
+	case DISPLAY_CGICONFIG:
+		display_cgiconfig();
+		break;
 	case DISPLAY_ALL:
 		if (content_type == JSON_CONTENT) {
 			display_hosts();
@@ -347,10 +499,34 @@ int main(void) {
 			display_hostescalations();
 			printf(",\n");
 			display_modules();
+			printf(",\n");
+			display_cgiconfig();
 			break;
 		}
 	default:
-		display_options();
+
+		if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+
+			printf("<br><br>\n");
+
+			printf("<div align=center class='reportSelectTitle'>Select Type of Config Data You Wish To View</div>\n");
+
+			printf("<br><br>\n");
+
+			printf("<form method=\"get\" action=\"%s\">\n", CONFIG_CGI);
+
+			printf("<div align=center>\n");
+			printf("<table border=0>\n");
+
+			display_options();
+
+			printf("<tr><td class='reportSelectItem'><input type='submit' value='Continue'></td></tr>\n");
+			printf("</table>\n");
+			printf("</div>\n");
+
+			printf("</form>\n");
+		}
+
 		break;
 	}
 
@@ -376,32 +552,32 @@ int process_cgivars(void) {
 		}
 
 		/* we found the host name */
-                else if (!strcmp(variables[x], "host")) {
-                        x++;
-                        if (variables[x] == NULL) {
-                                error=TRUE;
-                                break;
-                        }
+		else if (!strcmp(variables[x], "host")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
 
-                        host_name = strdup(variables[x]);
-                        if(host_name == NULL)
-                                host_name = "";
-                        strip_html_brackets(host_name);
-                }
+			host_name = strdup(variables[x]);
+			if (host_name == NULL)
+				host_name = "";
+			strip_html_brackets(host_name);
+		}
 
-                /* we found the service name */
-                else if (!strcmp(variables[x], "service")) {
-                        x++;
-                        if (variables[x] == NULL) {
-                                error=TRUE;
-                                break;
-                        }
+		/* we found the service name */
+		else if (!strcmp(variables[x], "service")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
 
-                        service_desc = strdup(variables[x]);
-                        if(service_desc == NULL)
-                                service_desc = "";
-                        strip_html_brackets(service_desc);
-                }
+			service_desc = strdup(variables[x]);
+			if (service_desc == NULL)
+				service_desc = "";
+			strip_html_brackets(service_desc);
+		}
 
 		/* we found the configuration type argument */
 		else if (!strcmp(variables[x], "type")) {
@@ -440,6 +616,8 @@ int process_cgivars(void) {
 				display_type = DISPLAY_COMMAND_EXPANSION;
 			else if (!strcmp(variables[x], "modules"))
 				display_type = DISPLAY_MODULES;
+			else if (!strcmp(variables[x], "cgiconfig"))
+				display_type = DISPLAY_CGICONFIG;
 			else if (!strcmp(variables[x], "all"))
 				display_type = DISPLAY_ALL;
 
@@ -460,7 +638,7 @@ int process_cgivars(void) {
 				break;
 			}
 			strncpy(to_expand, variables[x], MAX_COMMAND_BUFFER);
-			to_expand[MAX_COMMAND_BUFFER-1] = '\0';
+			to_expand[MAX_COMMAND_BUFFER - 1] = '\0';
 		}
 
 		/* we found the CSV output option */
@@ -1846,7 +2024,7 @@ void display_services(void) {
 			get_interval_time_string(temp_service->check_interval, time_string[0], sizeof(time_string[0]));
 			get_interval_time_string(temp_service->retry_interval, time_string[1], sizeof(time_string[1]));
 			strncpy(command_line, temp_service->service_check_command, sizeof(command_line));
-			command_line[sizeof(command_line)-1] = '\x0';
+			command_line[sizeof(command_line) - 1] = '\x0';
 
 			/* print list in json format */
 			if (content_type == JSON_CONTENT) {
@@ -2475,14 +2653,14 @@ void display_timeperiods(void) {
 						minutes = (temp_timerange->range_start - (hours * 3600)) / 60;
 						seconds = temp_timerange->range_start - (hours * 3600) - (minutes * 60);
 						snprintf(timestring, sizeof(timestring) - 1, "%02d:%02d:%02d", hours, minutes, seconds);
-						timestring[sizeof(timestring)-1] = '\x0';
+						timestring[sizeof(timestring) - 1] = '\x0';
 						printf("%s%s - ", (content_type == JSON_CONTENT) ? "\"" : "", timestring);
 
 						hours = temp_timerange->range_end / 3600;
 						minutes = (temp_timerange->range_end - (hours * 3600)) / 60;
 						seconds = temp_timerange->range_end - (hours * 3600) - (minutes * 60);
 						snprintf(timestring, sizeof(timestring) - 1, "%02d:%02d:%02d", hours, minutes, seconds);
-						timestring[sizeof(timestring)-1] = '\x0';
+						timestring[sizeof(timestring) - 1] = '\x0';
 						printf("%s%s", timestring, (content_type == JSON_CONTENT) ? "\"" : "");
 					}
 
@@ -2534,14 +2712,14 @@ void display_timeperiods(void) {
 					minutes = (temp_timerange->range_start - (hours * 3600)) / 60;
 					seconds = temp_timerange->range_start - (hours * 3600) - (minutes * 60);
 					snprintf(timestring, sizeof(timestring) - 1, "%02d:%02d:%02d", hours, minutes, seconds);
-					timestring[sizeof(timestring)-1] = '\x0';
+					timestring[sizeof(timestring) - 1] = '\x0';
 					printf("%s%s - ", (content_type == JSON_CONTENT) ? "\"" : "", timestring);
 
 					hours = temp_timerange->range_end / 3600;
 					minutes = (temp_timerange->range_end - (hours * 3600)) / 60;
 					seconds = temp_timerange->range_end - (hours * 3600) - (minutes * 60);
 					snprintf(timestring, sizeof(timestring) - 1, "%02d:%02d:%02d", hours, minutes, seconds);
-					timestring[sizeof(timestring)-1] = '\x0';
+					timestring[sizeof(timestring) - 1] = '\x0';
 					printf("%s%s", timestring, (content_type == JSON_CONTENT) ? "\"" : "");
 				}
 
@@ -3388,7 +3566,6 @@ void display_hostescalations(void) {
 	return;
 }
 
-
 void display_modules(void) {
 	module *temp_module;
 	int odd = 0;
@@ -3463,7 +3640,331 @@ void display_modules(void) {
 	return;
 }
 
+void display_cgiconfig(void) {
+	int odd = 0;
+	int json_start = TRUE;
+	char *temp_ptr;
 
+	/** BEGIN MACRO declaration */
+
+	/** @brief Macro to expand a config line with an integer value
+	 *  @param [in] var        the var name with the value AFTER config file was parsed
+	 *  @param [in] org_var    the var name with the value BEFORE config file was parsed
+	 *			   name of org_var also determines the option name
+	 *  @param [in] type       can be "int" or "bool"
+	 *  @warning It is important  that the org_var var name is a concatenation of "org_"
+	 *	     and the option name. i.E. option is called "foo_bar", then org_var
+	 *	     MUST be named "org_foo_bar".
+	 *
+	 *  Macro to print one config option of type int. "bool" adds TRUE & FALSE to HTML output
+	 *  and "int" prints just plain numbers
+	**/
+#define PRINT_CONFIG_LINE_INT(var,org_var,type) \
+	/* prints a config line with type int */ \
+	if (content_type == JSON_CONTENT) { \
+		/* always add a comma, except for the first line */ \
+		if (json_start == FALSE) \
+			printf(",\n"); \
+		json_start = FALSE; \
+		printf("{ \"config_option_name\": \"%s\", ", json_encode(#org_var + 4)); \
+		if (!strcmp(type, "bool")) { \
+			printf("\"default_setting\": %s, ", (org_var == 1) ? "true" : "false"); \
+			printf("\"current_setting\": %s }", (var == 1) ? "true" : "false"); \
+		} else \
+			printf("\"default_setting\": %d, \"current_setting\": %d }", org_var, var); \
+	} else if (content_type == CSV_CONTENT) { \
+		printf("%s%s%s%s", csv_data_enclosure, #org_var + 4, csv_data_enclosure, csv_delimiter); \
+		printf("%s%d%s%s", csv_data_enclosure, org_var, csv_data_enclosure, csv_delimiter); \
+		printf("%s%d%s\n", csv_data_enclosure, var, csv_data_enclosure); \
+	} else { \
+		odd = (odd == 0) ? 1 : 0; \
+		if (!strcmp(type, "bool")) { \
+			printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%d (%s)&nbsp;</TD><TD %s>&nbsp;%d (%s)&nbsp;</TD><TR>\n", \
+			(odd == 0) ? "dataEven" : "dataOdd", #org_var + 4 , org_var, (org_var == 1) ? "TRUE" : "FALSE", \
+			(var != org_var) ? "CLASS='dataDiff'" : "" , var, (var == 1) ? "TRUE" : "FALSE"); \
+		} else { \
+			printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%d&nbsp;</TD><TD %s>&nbsp;%d&nbsp;</TD><TR>\n", \
+			(odd == 0) ? "dataEven" : "dataOdd", #org_var + 4, org_var, (var != org_var) ? "CLASS='dataDiff'" : "" , var); \
+		} \
+	}
+
+	/** @brief Macro to expand a config line with an char/string value
+	 *  @param [in] var        the var name with the value AFTER config file was parsed
+	 *  @param [in] org_var    the var name with the value BEFORE config file was parsed
+	 *			   name of org_var also determines the option name
+	 *  @warning It is important  that the org_var var name is a concatenation of "org_"
+	 *	     and the option name. i.E. option is called "foo_bar", then org_var
+	 *	     MUST be named "org_foo_bar".
+	 *
+	 *  Macro to print one config option of type char.
+	**/
+
+#define PRINT_CONFIG_LINE_STRING(var,org_var) \
+	/* prints a config line with type char */ \
+	if (content_type == JSON_CONTENT) { \
+		/* always add a comma, except for the first line */ \
+		if (json_start == FALSE) \
+			printf(",\n"); \
+		json_start = FALSE; \
+		printf("{ \"config_option_name\": \"%s\", ", json_encode(#org_var + 4)); \
+		printf("\"default_setting\": \"%s\", ", (strlen(org_var) == 0) ? "" : json_encode(org_var)); \
+		printf("\"current_setting\": \"%s\" }", (strlen(var) == 0) ? "" : json_encode(var)); \
+	} else if (content_type == CSV_CONTENT) { \
+		printf("%s%s%s%s", csv_data_enclosure, #org_var + 4, csv_data_enclosure, csv_delimiter); \
+		printf("%s%s%s%s", csv_data_enclosure, org_var, csv_data_enclosure, csv_delimiter); \
+		printf("%s%s%s\n", csv_data_enclosure, var, csv_data_enclosure); \
+	} else { \
+		odd = (odd == 0) ? 1 : 0; \
+		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%s&nbsp;</TD><TD %s>&nbsp;%s&nbsp;</TD><TR>\n", \
+		(odd == 0) ? "dataEven" : "dataOdd", #org_var + 4, (strlen(org_var) == 0) ? "&lt;EMPTY&gt;" : html_encode(org_var, FALSE), \
+		(!strcmp(var, org_var)) ? "" : "CLASS='dataDiff'", (strlen(var) == 0) ? "&lt;EMPTY&gt;" : html_encode(var, FALSE)); \
+	}
+
+	/** @brief Macro to expand a config line with authentication information
+	 *
+	 *  this macro creates links to the contact and contactgroup information
+	**/
+#define PRINT_CONFIG_LINE_AUTH(var,org_var) \
+	/* prints a config line with type char and authorization information */ \
+	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) { \
+		PRINT_CONFIG_LINE_STRING(var,org_var) \
+	} else { \
+		odd = (odd == 0) ? 1 : 0; \
+		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%s&nbsp;</TD><TD %s>&nbsp;", (odd == 0) ? "dataEven" : "dataOdd", \
+		#org_var + 4, (strlen(org_var) == 0) ? "&lt;EMPTY&gt;" : html_encode(org_var, FALSE), (!strcmp(var, org_var)) ? "" : "CLASS='dataDiff'"); \
+		if (strlen(var) == 0) { \
+			printf("&lt;EMPTY&gt;"); \
+		} else { \
+			json_start = TRUE; \
+			for (temp_ptr = strtok(var, ","); temp_ptr != NULL; temp_ptr = strtok(NULL, ",")) { \
+				if (json_start == FALSE) \
+					printf(", "); \
+				json_start = FALSE; \
+				printf("<A HREF='%s?type=contact%ss&expand=%s'>%s</A>", CONFIG_CGI, (strstr(#org_var, "contactgroup")) ? "group" : "", \
+				(!strcmp(temp_ptr, "*")) ? "" : url_encode(temp_ptr), html_encode(temp_ptr, FALSE)); \
+			} \
+		} \
+		printf("&nbsp;</TD><TR>\n"); \
+	}
+
+	/** END MACRO declaration */
+
+
+	if (content_type == JSON_CONTENT) {
+		printf("\"cgi_config\": [\n");
+	} else if (content_type == CSV_CONTENT) {
+		printf("%sConfig Option Name%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sDefault Setting%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sCurrent Setting%s", csv_data_enclosure, csv_data_enclosure);
+		printf("\n");
+	} else {
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>CGI Config Setings</DIV>\n");
+		printf("<DIV ALIGN=CENTER>\n");
+		printf("<TABLE BORDER=0 CLASS='data' cellpadding=2>\n");
+		printf("<TR><TH CLASS='data'>Config Option Name</TH><TH CLASS='data'>Default Setting</TH><TH CLASS='data'>Current Setting</TH></TR>\n");
+	}
+
+
+	/* print all supported config vars
+	   some options are printed differently to represent the value which is set
+	*/
+
+	PRINT_CONFIG_LINE_STRING(action_url_target, org_action_url_target)
+	PRINT_CONFIG_LINE_STRING(authorization_config_file, org_authorization_config_file)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_all_host_commands, org_authorized_for_all_host_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_all_hosts, org_authorized_for_all_hosts)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_all_service_commands, org_authorized_for_all_service_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_all_services, org_authorized_for_all_services)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_configuration_information, org_authorized_for_configuration_information)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_full_command_resolution, org_authorized_for_full_command_resolution)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_read_only, org_authorized_for_read_only)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_system_commands, org_authorized_for_system_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_system_information, org_authorized_for_system_information)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_all_host_commands, org_authorized_contactgroup_for_all_host_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_all_hosts, org_authorized_contactgroup_for_all_hosts)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_all_service_commands, org_authorized_contactgroup_for_all_service_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_all_services, org_authorized_contactgroup_for_all_services)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_configuration_information, org_authorized_contactgroup_for_configuration_information)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_full_command_resolution, org_authorized_contactgroup_for_full_command_resolution)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_read_only, org_authorized_contactgroup_for_read_only)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_system_commands, org_authorized_contactgroup_for_system_commands)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_system_information, org_authorized_contactgroup_for_system_information)
+	PRINT_CONFIG_LINE_INT(add_notif_num_hard, org_add_notif_num_hard, "int")
+	PRINT_CONFIG_LINE_INT(add_notif_num_soft, org_add_notif_num_soft, "int")
+	PRINT_CONFIG_LINE_INT(color_transparency_index_b, org_color_transparency_index_b, "int")
+	PRINT_CONFIG_LINE_INT(color_transparency_index_g, org_color_transparency_index_g, "int")
+	PRINT_CONFIG_LINE_INT(color_transparency_index_r, org_color_transparency_index_r, "int")
+	PRINT_CONFIG_LINE_STRING(cgi_log_archive_path, org_cgi_log_archive_path)
+	PRINT_CONFIG_LINE_STRING(cgi_log_file, org_cgi_log_file)
+
+	// cgi_log_rotation_method
+	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) {
+		PRINT_CONFIG_LINE_INT(cgi_log_rotation_method, org_cgi_log_rotation_method, "int")
+	} else {
+		odd = (odd == 0) ? 1 : 0;
+		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD>", (odd == 0) ? "dataEven" : "dataOdd", "cgi_log_rotation_method");
+		printf("<TD>&nbsp;%d (", org_cgi_log_rotation_method);
+		if (org_cgi_log_rotation_method == LOG_ROTATION_HOURLY)       printf("HOURLY");
+		else if (org_cgi_log_rotation_method == LOG_ROTATION_DAILY)   printf("DAILY");
+		else if (org_cgi_log_rotation_method == LOG_ROTATION_WEEKLY)  printf("WEEKLY");
+		else if (org_cgi_log_rotation_method == LOG_ROTATION_MONTHLY) printf("MONTHLY");
+		else printf("NO ROTATION");
+		printf(")&nbsp;</TD><TD %s>", (org_cgi_log_rotation_method != cgi_log_rotation_method) ? "CLASS='dataDiff'" : "");
+		printf("&nbsp;%d (", cgi_log_rotation_method);
+		if (cgi_log_rotation_method == LOG_ROTATION_HOURLY)       printf("HOURLY");
+		else if (cgi_log_rotation_method == LOG_ROTATION_DAILY)   printf("DAILY");
+		else if (cgi_log_rotation_method == LOG_ROTATION_WEEKLY)  printf("WEEKLY");
+		else if (cgi_log_rotation_method == LOG_ROTATION_MONTHLY) printf("MONTHLY");
+		else printf("NO ROTATION");
+		printf(")&nbsp;</TD><TR>\n");
+	}
+
+	PRINT_CONFIG_LINE_STRING(csv_delimiter, org_csv_delimiter)
+	PRINT_CONFIG_LINE_STRING(csv_data_enclosure, org_csv_data_enclosure)
+	PRINT_CONFIG_LINE_STRING(default_user_name, org_default_user_name)
+	PRINT_CONFIG_LINE_INT(default_downtime_duration, org_default_downtime_duration, "int")
+	PRINT_CONFIG_LINE_INT(default_expiring_acknowledgement_duration, org_default_expiring_acknowledgement_duration, "int")
+	PRINT_CONFIG_LINE_INT(default_num_displayed_log_entries, org_default_num_displayed_log_entries, "int")
+	PRINT_CONFIG_LINE_INT(display_status_totals, org_display_status_totals, "bool")
+
+	// default_statusmap_layout
+	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) {
+		PRINT_CONFIG_LINE_INT(default_statusmap_layout_method, org_default_statusmap_layout, "int")
+	} else {
+		odd = (odd == 0) ? 1 : 0;
+		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD>", (odd == 0) ? "dataEven" : "dataOdd", "default_statusmap_layout");
+		printf("<TD>&nbsp;%d (", org_default_statusmap_layout);
+		if (org_default_statusmap_layout == 0)      printf("User-defined coordinates");
+		else if (org_default_statusmap_layout == 1) printf("Depth layers");
+		else if (org_default_statusmap_layout == 2) printf("Collapsed tree");
+		else if (org_default_statusmap_layout == 3) printf("Balanced tree");
+		else if (org_default_statusmap_layout == 4) printf("Circular");
+		else if (org_default_statusmap_layout == 5) printf("Circular (Marked Up)");
+		else printf("INVALID");
+		printf(")&nbsp;</TD><TD %s>", (org_default_statusmap_layout != default_statusmap_layout_method) ? "CLASS='dataDiff'" : "");
+		printf("&nbsp;%d (", default_statusmap_layout_method);
+		if (default_statusmap_layout_method == 0)      printf("User-defined coordinates");
+		else if (default_statusmap_layout_method == 1) printf("Depth layers");
+		else if (default_statusmap_layout_method == 2) printf("Collapsed tree");
+		else if (default_statusmap_layout_method == 3) printf("Balanced tree");
+		else if (default_statusmap_layout_method == 4) printf("Circular");
+		else if (default_statusmap_layout_method == 5) printf("Circular (Marked Up)");
+		else printf("INVALID");
+		printf(")&nbsp;</TD><TR>\n");
+	}
+
+	// default_statuswrl_layout
+	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) {
+		PRINT_CONFIG_LINE_INT(default_statuswrl_layout_method, org_default_statuswrl_layout, "int")
+	} else {
+		odd = (odd == 0) ? 1 : 0;
+		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD>", (odd == 0) ? "dataEven" : "dataOdd", "default_statuswrl_layout");
+		printf("<TD>&nbsp;%d (", org_default_statuswrl_layout);
+		if (org_default_statuswrl_layout == 0)      printf("User-defined coordinates");
+		else if (org_default_statuswrl_layout == 2) printf("Collapsed tree");
+		else if (org_default_statuswrl_layout == 3) printf("Balanced tree");
+		else if (org_default_statuswrl_layout == 4) printf("Circular");
+		else printf("INVALID");
+		printf(")&nbsp;</TD><TD %s>", (org_default_statuswrl_layout != default_statuswrl_layout_method) ? "CLASS='dataDiff'" : "");
+		printf("&nbsp;%d (", default_statuswrl_layout_method);
+		if (default_statuswrl_layout_method == 0)      printf("User-defined coordinates");
+		else if (default_statuswrl_layout_method == 2) printf("Collapsed tree");
+		else if (default_statuswrl_layout_method == 3) printf("Balanced tree");
+		else if (default_statuswrl_layout_method == 4) printf("Circular");
+		else printf("INVALID");
+		printf(")&nbsp;</TD><TR>\n");
+	}
+
+	PRINT_CONFIG_LINE_INT(enable_splunk_integration, org_enable_splunk_integration, "bool")
+	PRINT_CONFIG_LINE_INT(enforce_comments_on_actions, org_enforce_comments_on_actions, "bool")
+	PRINT_CONFIG_LINE_INT(escape_html_tags, org_escape_html_tags, "bool")
+
+	// extinfo_show_child_hosts
+	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) {
+		PRINT_CONFIG_LINE_INT(extinfo_show_child_hosts, org_extinfo_show_child_hosts, "int")
+	} else {
+		odd = (odd == 0) ? 1 : 0;
+		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD>", (odd == 0) ? "dataEven" : "dataOdd", "extinfo_show_child_hosts");
+		printf("<TD>&nbsp;%d (", org_extinfo_show_child_hosts);
+		if (org_extinfo_show_child_hosts == SHOW_CHILD_HOSTS_IMMEDIATE) printf("IMMEDIATE ONLY");
+		else if (org_extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL)  printf("ALL");
+		else printf("NONE");
+		printf(")&nbsp;</TD><TD %s>", (org_extinfo_show_child_hosts != extinfo_show_child_hosts) ? "CLASS='dataDiff'" : "");
+		printf("&nbsp;%d (", extinfo_show_child_hosts);
+		if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_IMMEDIATE) printf("IMMEDIATE ONLY");
+		else if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL)  printf("ALL");
+		else printf("NONE");
+		printf(")&nbsp;</TD><TR>\n");
+	}
+
+	// first_day_of_week
+	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) {
+		PRINT_CONFIG_LINE_INT(week_starts_on_monday, org_first_day_of_week, "int")
+	} else {
+		odd = (odd == 0) ? 1 : 0;
+		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%d (%s)&nbsp;</TD><TD %s>&nbsp;%d (%s)&nbsp;</TD><TR>\n", \
+		       (odd == 0) ? "dataEven" : "dataOdd", "first_day_of_week" , org_first_day_of_week, (org_first_day_of_week > 0) ? "MONDAY" : "SUNDAY", \
+		       (week_starts_on_monday != org_first_day_of_week) ? "CLASS='dataDiff'" : "" , week_starts_on_monday, (week_starts_on_monday == TRUE) ? "MONDAY" : "SUNDAY");
+	}
+
+	PRINT_CONFIG_LINE_INT(highlight_table_rows, org_highlight_table_rows, "bool")
+	PRINT_CONFIG_LINE_STRING(host_down_sound, org_host_down_sound)
+	PRINT_CONFIG_LINE_STRING(host_unreachable_sound, org_host_unreachable_sound)
+	PRINT_CONFIG_LINE_STRING(http_charset, org_http_charset)
+	PRINT_CONFIG_LINE_STRING(illegal_output_chars, org_illegal_macro_output_chars)
+	PRINT_CONFIG_LINE_INT(lock_author_names, org_lock_author_names, "bool")
+	PRINT_CONFIG_LINE_STRING(main_config_file, org_main_config_file)
+	PRINT_CONFIG_LINE_STRING(nagios_check_command, org_nagios_check_command)
+	PRINT_CONFIG_LINE_STRING(normal_sound, org_normal_sound)
+	PRINT_CONFIG_LINE_STRING(notes_url_target, org_notes_url_target)
+	PRINT_CONFIG_LINE_INT(persistent_ack_comments, org_persistent_ack_comments, "bool")
+	PRINT_CONFIG_LINE_STRING(ping_syntax, org_ping_syntax)
+	PRINT_CONFIG_LINE_STRING(physical_html_path, org_physical_html_path)
+	PRINT_CONFIG_LINE_INT(refresh_rate, org_refresh_rate, "int")
+
+	// refresh_type
+	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) {
+		PRINT_CONFIG_LINE_INT(refresh_type, org_refresh_type,  "int")
+	} else {
+		odd = (odd == 0) ? 1 : 0;
+		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%d (%s)&nbsp;</TD><TD %s>&nbsp;%d (%s)&nbsp;</TD><TR>\n", \
+		       (odd == 0) ? "dataEven" : "dataOdd", "refresh_type" , org_refresh_type, (org_refresh_type > 0) ? "JAVASCRIPT_REFRESH" : "HTTPHEADER_REFRESH", \
+		       (refresh_type != org_refresh_type) ? "CLASS='dataDiff'" : "" , refresh_type, (refresh_type > 0) ? "JAVASCRIPT_REFRESH" : "HTTPHEADER_REFRESH");
+	}
+
+	PRINT_CONFIG_LINE_STRING(service_critical_sound, org_service_critical_sound)
+	PRINT_CONFIG_LINE_STRING(service_unknown_sound, org_service_unknown_sound)
+	PRINT_CONFIG_LINE_STRING(service_warning_sound, org_service_warning_sound)
+	PRINT_CONFIG_LINE_INT(show_all_services_host_is_authorized_for, org_show_all_services_host_is_authorized_for, "bool")
+	PRINT_CONFIG_LINE_INT(show_context_help, org_show_context_help, "bool")
+	PRINT_CONFIG_LINE_INT(show_partial_hostgroups, org_show_partial_hostgroups, "bool")
+	PRINT_CONFIG_LINE_INT(show_tac_header, org_show_tac_header, "bool")
+	PRINT_CONFIG_LINE_INT(show_tac_header_pending, org_show_tac_header_pending, "bool")
+	PRINT_CONFIG_LINE_INT(showlog_current_states, org_showlog_current_states, "bool")
+	PRINT_CONFIG_LINE_INT(showlog_initial_states, org_showlog_initial_states, "bool")
+	PRINT_CONFIG_LINE_STRING(splunk_url, org_splunk_url)
+	PRINT_CONFIG_LINE_INT(status_show_long_plugin_output, org_status_show_long_plugin_output, "bool")
+	PRINT_CONFIG_LINE_STRING(statusmap_background_image, org_statusmap_background_image)
+	PRINT_CONFIG_LINE_STRING(statuswrl_include, org_statuswrl_include)
+	PRINT_CONFIG_LINE_INT(suppress_maintenance_downtime, org_suppress_maintenance_downtime, "bool")
+	PRINT_CONFIG_LINE_INT(tab_friendly_titles, org_tab_friendly_titles, "bool")
+	PRINT_CONFIG_LINE_INT(tac_show_only_hard_state, org_tac_show_only_hard_state, "bool")
+	PRINT_CONFIG_LINE_STRING(url_html_path, org_url_html_path)
+	PRINT_CONFIG_LINE_STRING(url_stylesheets_path, org_url_stylesheets_path)
+	PRINT_CONFIG_LINE_INT(use_authentication, org_use_authentication, "bool")
+	PRINT_CONFIG_LINE_INT(use_logging, org_use_logging, "bool")
+	PRINT_CONFIG_LINE_INT(use_pending_states, org_use_pending_states, "bool")
+	PRINT_CONFIG_LINE_INT(use_ssl_authentication, org_use_ssl_authentication, "bool")
+
+
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+		printf("</TABLE>\n");
+		printf("</DIV>\n");
+	} else if (content_type == JSON_CONTENT)
+		printf("\n]\n");
+
+	return;
+}
 
 char *hash_color(int i) {
 	char c;
@@ -3579,11 +4080,11 @@ void display_command_expansion(void) {
 				printf("<TD CLASS='%s' ALIGN='right'>-&gt;</TD>\n", bg_class);
 				printf("<TD CLASS='%s'>", bg_class);
 				strncpy(commandline, temp_command->command_line, MAX_COMMAND_BUFFER);
-				commandline[MAX_COMMAND_BUFFER-1] = '\0';
+				commandline[MAX_COMMAND_BUFFER - 1] = '\0';
 				for (c = commandline; c && (cc = strstr(c, "$"));) {
 					(*(cc++)) = '\0';
 					printf("%s", html_encode(c, FALSE));
-					strcat(commandline_pre_processed,c);
+					strcat(commandline_pre_processed, c);
 					if ((*cc) == '$') {
 						/* Escaped '$' */
 						printf("<FONT COLOR='#444444'>$</FONT>");
@@ -3593,9 +4094,9 @@ void display_command_expansion(void) {
 						c = strstr(cc, "$");
 						if (c)(*(c++)) = '\0';
 						printf("<FONT COLOR='#777777'>$%s%s</FONT>", html_encode(cc, FALSE), (c ? "$" : ""));
-						strcat(commandline_pre_processed,"$");
-						strcat(commandline_pre_processed,cc);
-						if (c) strcat(commandline_pre_processed,"$");
+						strcat(commandline_pre_processed, "$");
+						strcat(commandline_pre_processed, cc);
+						if (c) strcat(commandline_pre_processed, "$");
 						if (!c) printf("<FONT COLOR='#FF0000'> (not properly terminated)</FONT>");
 					} else {
 						/* $ARGn$ macro */
@@ -3608,9 +4109,9 @@ void display_command_expansion(void) {
 								if (command_args[i]) {
 									if (*(command_args[i]) != '\0') {
 										printf("<FONT COLOR='%s'><B>%s%s%s</B></FONT>",
-											hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<U>&zwj;" : ""),
-											escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</U>" : ""));
-										strcat(commandline_pre_processed,command_args[i]);
+										       hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<U>&zwj;" : ""),
+										       escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</U>" : ""));
+										strcat(commandline_pre_processed, command_args[i]);
 									} else printf("<FONT COLOR='#0000FF'>(empty)</FONT>");
 								} else printf("<FONT COLOR='#0000FF'>(undefined)</FONT>");
 							} else printf("<FONT COLOR='#FF0000'>(not a valid $ARGn$ index: %u)</FONT>", i);
@@ -3626,9 +4127,9 @@ void display_command_expansion(void) {
 				}
 				if (c) {
 					printf("%s", html_encode(c, FALSE));
-					strcat(commandline_pre_processed,c);
+					strcat(commandline_pre_processed, c);
 				}
-				commandline_pre_processed[MAX_COMMAND_BUFFER-1] = '\0';
+				commandline_pre_processed[MAX_COMMAND_BUFFER - 1] = '\0';
 
 				printf("</TD></TR>\n");
 
@@ -3648,7 +4149,7 @@ void display_command_expansion(void) {
 						printf("<TR CLASS='%s'><TD CLASS='%s' ALIGN='right'><FONT COLOR='#0000FF'>dangling whitespace:</FONT></TD>\n", bg_class, bg_class);
 						printf("<TD CLASS='%s'>$ARG%u$=<FONT COLOR='#0000FF'>", bg_class, i);
 						for (c = command_args[i], j = 0; c && isspace(*c); c++, j++)
-							if ((*c) == ' ')		printf("[SP]");
+							if ((*c) == ' ')	printf("[SP]");
 							else if ((*c) == '\f')	printf("[FF]");
 							else if ((*c) == '\n')	printf("[LF]");
 							else if ((*c) == '\r')	printf("[CR]");
@@ -3659,7 +4160,7 @@ void display_command_expansion(void) {
 						for (; c && ((*c) != '\0') && (j < strlen(command_args[i]) - trail_space[i]); c++, j++) putchar(*c);
 						printf("</FONT><FONT COLOR='#0000FF'>");
 						for (; c && ((*c) != '\0'); c++)
-							if ((*c) == ' ')		printf("[SP]");
+							if ((*c) == ' ')	printf("[SP]");
 							else if ((*c) == '\f')	printf("[FF]");
 							else if ((*c) == '\n')	printf("[LF]");
 							else if ((*c) == '\r')	printf("[CR]");
@@ -3671,30 +4172,30 @@ void display_command_expansion(void) {
 				}
 
 				/* host command */
-				if (hst != NULL && svc == NULL && authorized_for_full_command_resolution(&current_authdata)) {
-					grab_host_macros_r(mac,hst);
-					process_macros_r(mac,commandline_pre_processed, &processed_command, 0);
+				if (hst != NULL && svc == NULL && is_authorized_for_full_command_resolution(&current_authdata)) {
+					grab_host_macros_r(mac, hst);
+					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
 					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
-                                	printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
+					printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
 				}
 
 				/* service command */
-				if (hst != NULL && svc != NULL && authorized_for_full_command_resolution(&current_authdata)) {
-					grab_host_macros_r(mac,hst);
-					grab_service_macros_r(mac,svc);
+				if (hst != NULL && svc != NULL && is_authorized_for_full_command_resolution(&current_authdata)) {
+					grab_host_macros_r(mac, hst);
+					grab_service_macros_r(mac, svc);
 					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
 					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
-                                	printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
+					printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
 				}
 
 				/* only command expansion w/o hosts and services given */
-				if (hst == NULL && svc == NULL && authorized_for_full_command_resolution(&current_authdata)) {
+				if (hst == NULL && svc == NULL && is_authorized_for_full_command_resolution(&current_authdata)) {
 					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
 					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
-                                	printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
+					printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
 				}
 
-                                printf("</TR>\n<TR CLASS='%s'>\n", bg_class);
+				printf("</TR>\n<TR CLASS='%s'>\n", bg_class);
 			}
 
 		}
@@ -3708,7 +4209,7 @@ void display_command_expansion(void) {
 
 	printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>To expand:</TD><TD CLASS='dataEven'><FORM\n");
 	printf("METHOD='GET' ACTION='%s'><INPUT TYPE='HIDDEN' NAME='type' VALUE='command'>\n", CONFIG_CGI);
-	
+
 	if (hst != NULL)
 		printf("<INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>\n", host_name);
 	if (svc != NULL)
@@ -3724,17 +4225,6 @@ void display_command_expansion(void) {
 }
 
 void display_options(void) {
-
-	printf("<br><br>\n");
-
-	printf("<div align=center class='reportSelectTitle'>Select Type of Config Data You Wish To View</div>\n");
-
-	printf("<br><br>\n");
-
-	printf("<form method=\"get\" action=\"%s\">\n", CONFIG_CGI);
-
-	printf("<div align=center>\n");
-	printf("<table border=0>\n");
 
 	printf("<tr><td align=left class='reportSelectSubTitle'>Object Type:</td></tr>\n");
 	printf("<tr><td align=left class='reportSelectItem'>");
@@ -3753,14 +4243,134 @@ void display_options(void) {
 	printf("<option value='modules' %s>Modules\n", (display_type == DISPLAY_MODULES) ? "SELECTED" : "");
 	printf("<option value='commands' %s>Commands\n", (display_type == DISPLAY_COMMANDS) ? "SELECTED" : "");
 	printf("<option value='command' %s>Command Expansion\n", (display_type == DISPLAY_COMMAND_EXPANSION) ? "SELECTED" : "");
+	printf("<option value='cgiconfig' %s>CGI Config\n", (display_type == DISPLAY_CGICONFIG) ? "SELECTED" : "");
 	printf("</select>\n");
 	printf("</td></tr>\n");
 
-	printf("<tr><td class='reportSelectItem'><input type='submit' value='Continue'></td></tr>\n");
-	printf("</table>\n");
-	printf("</div>\n");
-
-	printf("</form>\n");
-
 	return;
+}
+
+void store_default_settings(void) {
+
+	/* fill all NULL pointers with an empty string */
+	action_url_target = (action_url_target == NULL) ? "" : action_url_target;
+	authorization_config_file = (authorization_config_file == NULL) ? "" : authorization_config_file;
+	authorized_for_all_host_commands = (authorized_for_all_host_commands == NULL) ? "" : authorized_for_all_host_commands;
+	authorized_for_all_hosts = (authorized_for_all_hosts == NULL) ? "" : authorized_for_all_hosts;
+	authorized_for_all_service_commands = (authorized_for_all_service_commands == NULL) ? "" : authorized_for_all_service_commands;
+	authorized_for_all_services = (authorized_for_all_services == NULL) ? "" : authorized_for_all_services;
+	authorized_for_configuration_information = (authorized_for_configuration_information == NULL) ? "" : authorized_for_configuration_information;
+	authorized_for_full_command_resolution = (authorized_for_full_command_resolution == NULL) ? "" : authorized_for_full_command_resolution;
+	authorized_for_read_only = (authorized_for_read_only == NULL) ? "" : authorized_for_read_only;
+	authorized_for_system_commands = (authorized_for_system_commands == NULL) ? "" : authorized_for_system_commands;
+	authorized_for_system_information = (authorized_for_system_information == NULL) ? "" : authorized_for_system_information;
+	authorized_contactgroup_for_all_host_commands = (authorized_contactgroup_for_all_host_commands == NULL) ? "" : authorized_contactgroup_for_all_host_commands;
+	authorized_contactgroup_for_all_hosts = (authorized_contactgroup_for_all_hosts == NULL) ? "" : authorized_contactgroup_for_all_hosts;
+	authorized_contactgroup_for_all_service_commands = (authorized_contactgroup_for_all_service_commands == NULL) ? "" : authorized_contactgroup_for_all_service_commands;
+	authorized_contactgroup_for_all_services = (authorized_contactgroup_for_all_services == NULL) ? "" : authorized_contactgroup_for_all_services;
+	authorized_contactgroup_for_configuration_information = (authorized_contactgroup_for_configuration_information == NULL) ? "" : authorized_contactgroup_for_configuration_information;
+	authorized_contactgroup_for_full_command_resolution = (authorized_contactgroup_for_full_command_resolution == NULL) ? "" : authorized_contactgroup_for_full_command_resolution;
+	authorized_contactgroup_for_read_only = (authorized_contactgroup_for_read_only == NULL) ? "" : authorized_contactgroup_for_read_only;
+	authorized_contactgroup_for_system_commands = (authorized_contactgroup_for_system_commands == NULL) ? "" : authorized_contactgroup_for_system_commands;
+	authorized_contactgroup_for_system_information = (authorized_contactgroup_for_system_information == NULL) ? "" : authorized_contactgroup_for_system_information;
+	csv_delimiter = (csv_delimiter == NULL) ? "" : csv_delimiter;
+	csv_data_enclosure = (csv_data_enclosure == NULL) ? "" : csv_data_enclosure;
+	default_user_name = (default_user_name == NULL) ? "" : default_user_name;
+	host_down_sound = (host_down_sound == NULL) ? "" : host_down_sound;
+	host_unreachable_sound = (host_unreachable_sound == NULL) ? "" : host_unreachable_sound;
+	http_charset = (http_charset == NULL) ? "" : http_charset;
+	illegal_output_chars = (illegal_output_chars == NULL) ? "" : illegal_output_chars;
+	normal_sound = (normal_sound == NULL) ? "" : normal_sound;
+	notes_url_target = (notes_url_target == NULL) ? "" : notes_url_target;
+	ping_syntax = (ping_syntax == NULL) ? "" : ping_syntax;
+	service_critical_sound = (service_critical_sound == NULL) ? "" : service_critical_sound;
+	service_unknown_sound = (service_unknown_sound == NULL) ? "" : service_unknown_sound;
+	service_warning_sound = (service_warning_sound == NULL) ? "" : service_warning_sound;
+	splunk_url = (splunk_url == NULL) ? "" : splunk_url;
+	statusmap_background_image = (statusmap_background_image == NULL) ? "" : statusmap_background_image;
+	statuswrl_include = (statuswrl_include == NULL) ? "" : statuswrl_include;
+
+	/* copy vars to org_vars*/
+	org_action_url_target = strdup(action_url_target);
+	org_authorization_config_file = strdup(authorization_config_file);
+	org_authorized_for_all_host_commands = strdup(authorized_for_all_host_commands);
+	org_authorized_for_all_hosts = strdup(authorized_for_all_hosts);
+	org_authorized_for_all_service_commands = strdup(authorized_for_all_service_commands);
+	org_authorized_for_all_services = strdup(authorized_for_all_services);
+	org_authorized_for_configuration_information = strdup(authorized_for_configuration_information);
+	org_authorized_for_full_command_resolution = strdup(authorized_for_full_command_resolution);
+	org_authorized_for_read_only = strdup(authorized_for_read_only);
+	org_authorized_for_system_commands = strdup(authorized_for_system_commands);
+	org_authorized_for_system_information = strdup(authorized_for_system_information);
+	org_authorized_contactgroup_for_all_host_commands = strdup(authorized_contactgroup_for_all_host_commands);
+	org_authorized_contactgroup_for_all_hosts = strdup(authorized_contactgroup_for_all_hosts);
+	org_authorized_contactgroup_for_all_service_commands = strdup(authorized_contactgroup_for_all_service_commands);
+	org_authorized_contactgroup_for_all_services = strdup(authorized_contactgroup_for_all_services);
+	org_authorized_contactgroup_for_configuration_information = strdup(authorized_contactgroup_for_configuration_information);
+	org_authorized_contactgroup_for_full_command_resolution = strdup(authorized_contactgroup_for_full_command_resolution);
+	org_authorized_contactgroup_for_read_only = strdup(authorized_contactgroup_for_read_only);
+	org_authorized_contactgroup_for_system_commands = strdup(authorized_contactgroup_for_system_commands);
+	org_authorized_contactgroup_for_system_information = strdup(authorized_contactgroup_for_system_information);
+	org_cgi_log_archive_path = strdup(cgi_log_archive_path);
+	org_cgi_log_file = strdup(cgi_log_file);
+	org_csv_data_enclosure = strdup(csv_data_enclosure);
+	org_csv_delimiter = strdup(csv_delimiter);
+	org_default_user_name = strdup(default_user_name);
+	org_host_down_sound = strdup(host_down_sound);
+	org_host_unreachable_sound = strdup(host_unreachable_sound);
+	org_http_charset = strdup(http_charset);
+	org_illegal_macro_output_chars = strdup(illegal_output_chars);
+	org_main_config_file = strdup(main_config_file);
+	org_nagios_check_command = strdup(nagios_check_command);
+	org_normal_sound = strdup(normal_sound);
+	org_notes_url_target = strdup(notes_url_target);
+	org_physical_html_path = strdup(physical_html_path);
+	org_ping_syntax = strdup(ping_syntax);
+	org_service_critical_sound = strdup(service_critical_sound);
+	org_service_unknown_sound = strdup(service_unknown_sound);
+	org_service_warning_sound = strdup(service_warning_sound);
+	org_splunk_url = strdup(splunk_url);
+	org_statusmap_background_image = strdup(statusmap_background_image);
+	org_statuswrl_include = strdup(statuswrl_include);
+	org_url_html_path = strdup(url_html_path);
+	org_url_stylesheets_path = strdup(url_stylesheets_path);
+
+	org_add_notif_num_hard = add_notif_num_hard;
+	org_add_notif_num_soft = add_notif_num_soft;
+	org_color_transparency_index_b = color_transparency_index_b;
+	org_color_transparency_index_g = color_transparency_index_g;
+	org_color_transparency_index_r = color_transparency_index_r;
+	org_cgi_log_rotation_method = org_cgi_log_rotation_method;
+	org_default_downtime_duration = default_downtime_duration;
+	org_default_expiring_acknowledgement_duration = default_expiring_acknowledgement_duration;
+	org_default_num_displayed_log_entries = default_num_displayed_log_entries;
+	org_display_status_totals = display_status_totals;
+	org_default_statusmap_layout = default_statusmap_layout_method;
+	org_default_statuswrl_layout = default_statuswrl_layout_method;
+	org_enable_splunk_integration = enable_splunk_integration;
+	org_enforce_comments_on_actions = enforce_comments_on_actions;
+	org_escape_html_tags = escape_html_tags;
+	org_extinfo_show_child_hosts = extinfo_show_child_hosts;
+	org_first_day_of_week = week_starts_on_monday;
+	org_highlight_table_rows = highlight_table_rows;
+	org_lock_author_names = lock_author_names;
+	org_persistent_ack_comments = persistent_ack_comments;
+	org_refresh_rate = refresh_rate;
+	org_refresh_type = refresh_type;
+	org_show_tac_header = show_tac_header;
+	org_show_tac_header_pending = show_tac_header_pending;
+	org_showlog_current_states = showlog_current_states;
+	org_showlog_initial_states = showlog_initial_states;
+	org_status_show_long_plugin_output = status_show_long_plugin_output;
+	org_suppress_maintenance_downtime = suppress_maintenance_downtime;
+	org_tab_friendly_titles = tab_friendly_titles;
+	org_tac_show_only_hard_state = tac_show_only_hard_state;
+	org_use_authentication = use_authentication;
+	org_use_authentication = use_authentication;
+	org_use_logging = use_logging;
+	org_use_ssl_authentication = use_ssl_authentication;
+	org_show_context_help = show_context_help;
+	org_show_all_services_host_is_authorized_for = show_all_services_host_is_authorized_for;
+	org_show_partial_hostgroups = show_partial_hostgroups;
+	org_use_pending_states = use_pending_states;
 }

@@ -116,6 +116,16 @@ extern servicestatus *servicestatus_list;
 #define NO_STATUS			2
 /** @} */
 
+/** @name STATUS ADDED / COUNTED
+ *	used in statusdata to see if this antry has been added to statusdata_struct or counted for status totals
+ @{**/
+#define STATUS_NOT_DISPLAYED		0
+#define STATUS_ADDED			1
+#define STATUS_COUNTED_UNFILTERED	2
+#define STATUS_COUNTED_FILTERED		4
+#define STATUS_BELONGS_TO_SG		8
+/** @} */
+
 /** @name NUMBER OF NAMED OBJECTS
  @{**/
 #define NUM_NAMED_ENTRIES		1000		/**< max number of elements (hosts/hostgroups/servicegroups) submitted  vie GET/POST */
@@ -232,11 +242,22 @@ int num_hosts_down = 0;					/**< num of hosts down (for @ref show_host_status_to
 int num_hosts_unreachable = 0;				/**< num of hosts unreachable (for @ref show_host_status_totals) */
 int num_hosts_pending = 0;				/**< num of hosts pending (for @ref show_host_status_totals) */
 
+int num_total_hosts_up = 0;				/**< num of total hosts up (for @ref show_host_status_totals) */
+int num_total_hosts_down = 0;				/**< num of total hosts down (for @ref show_host_status_totals) */
+int num_total_hosts_unreachable = 0;			/**< num of total hosts unreachable (for @ref show_host_status_totals) */
+int num_total_hosts_pending = 0;			/**< num of total hosts pending (for @ref show_host_status_totals) */
+
 int num_services_ok = 0;				/**< num of services ok (for @ref show_host_status_totals) */
 int num_services_warning = 0;				/**< num of services warning (for @ref show_host_status_totals) */
 int num_services_critical = 0;				/**< num of services critical (for @ref show_host_status_totals) */
 int num_services_unknown = 0;				/**< num of services unknown (for @ref show_host_status_totals) */
 int num_services_pending = 0;				/**< num of services pending (for @ref show_host_status_totals) */
+
+int num_total_services_ok = 0;				/**< num of total services ok (for @ref show_host_status_totals) */
+int num_total_services_warning = 0;			/**< num of total services warning (for @ref show_host_status_totals) */
+int num_total_services_critical = 0;			/**< num of total services critical (for @ref show_host_status_totals) */
+int num_total_services_unknown = 0;			/**< num of total services unknown (for @ref show_host_status_totals) */
+int num_total_services_pending = 0;			/**< num of total services pending (for @ref show_host_status_totals) */
 /** @} */
 
 int CGI_ID = STATUS_CGI_ID;				/**< ID to identify the cgi for functions in cgiutils.c */
@@ -525,14 +546,6 @@ void show_filters(void);
 **/
 int process_cgivars(void);
 
-/** @brief print's a little comment icon in status lists
- *  @param [in] host_name of host to display comments
- *  @param [in] svc_description if comment's for service is requested
- *
- *  This function print's a little comment icon and generates html code
- *  to display a tooltip box which pops up on mouse over.
-**/
-void print_comment_icon(char *, char *);
 
 /** @brief print's the table header for differnt styles
  *  @param [in] style id of style type
@@ -557,6 +570,7 @@ int main(void) {
 	servicegroup *temp_servicegroup = NULL;
 	hoststatus *temp_hoststatus = NULL;
 	servicestatus *temp_servicestatus = NULL;
+	servicesmember *temp_sg_member = NULL;
 	int regex_i = 0, i = 0;
 	int len;
 	int show_dropdown = NO_STATUS;
@@ -646,6 +660,8 @@ int main(void) {
 				show_all_hosts = TRUE;
 				my_free(url_hosts_part);
 				my_free(cgi_title);
+				req_hosts[0].entry = strdup("all");
+				req_hosts[1].entry = NULL;
 				dummy = asprintf(&url_hosts_part, "host=all");
 				break;
 			} else {
@@ -678,6 +694,8 @@ int main(void) {
 				show_all_hostgroups = TRUE;
 				my_free(url_hostgroups_part);
 				my_free(cgi_title);
+				req_hostgroups[0].entry = strdup("all");
+				req_hostgroups[1].entry = NULL;
 				dummy = asprintf(&url_hostgroups_part, "hostgroup=all");
 				break;
 			} else {
@@ -710,6 +728,8 @@ int main(void) {
 				show_all_servicegroups = TRUE;
 				my_free(url_servicegroups_part);
 				my_free(cgi_title);
+				req_servicegroups[0].entry = strdup("all");
+				req_servicegroups[1].entry = NULL;
 				dummy = asprintf(&url_servicegroups_part, "servicegroup=all");
 				break;
 			} else {
@@ -757,7 +777,6 @@ int main(void) {
 	/* allow service_filter only for status lists */
 	if (group_style_type == STYLE_SUMMARY || group_style_type == STYLE_GRID || group_style_type == STYLE_OVERVIEW)
 		my_free(service_filter);
-
 
 	/**
 	 *	filter status data if user searched for something
@@ -870,6 +889,38 @@ int main(void) {
 			group_style_type = STYLE_SERVICE_DETAIL;
 	}
 
+	/* pre filter for service groups
+	   this way we mark all services which belong to a servicegroup we want to see once.
+	   otherwise we would have to check every service if it belongs to a servicegroup we want to see
+	   and this is very expensive
+	*/
+	if (display_type == DISPLAY_SERVICEGROUPS) {
+		if (show_all_servicegroups == FALSE) {
+			for (i = 0; req_servicegroups[i].entry != NULL; i++) {
+				temp_servicegroup = find_servicegroup(req_servicegroups[i].entry);
+				if (temp_servicegroup != NULL && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
+					for (temp_sg_member = temp_servicegroup->members; temp_sg_member != NULL; temp_sg_member = temp_sg_member->next) {
+						temp_hoststatus = find_hoststatus(temp_sg_member->host_name);
+						temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
+						temp_servicestatus = find_servicestatus(temp_sg_member->host_name, temp_sg_member->service_description);
+						temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
+					}
+				}
+			}
+		} else {
+			for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
+				if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
+					for (temp_sg_member = temp_servicegroup->members; temp_sg_member != NULL; temp_sg_member = temp_sg_member->next) {
+						temp_hoststatus = find_hoststatus(temp_sg_member->host_name);
+						temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
+						temp_servicestatus = find_servicestatus(temp_sg_member->host_name, temp_sg_member->service_description);
+						temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
+					}
+				}
+			}
+		}
+	}
+
 
 	/**
 	 *	Now iterate through servicestatus_list and hoststatus_list to find all hosts/services we need to display
@@ -882,7 +933,7 @@ int main(void) {
 		host_status_types = HOST_UP | HOST_PENDING;
 		service_status_types = all_service_problems;
 		group_style_type = STYLE_HOST_SERVICE_DETAIL;
-		service_properties = service_problems_unhandled;
+		service_properties |= service_problems_unhandled;
 	}
 
 	for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
@@ -910,14 +961,6 @@ int main(void) {
 
 		/* get the host status information */
 		temp_hoststatus = find_hoststatus(temp_service->host_name);
-
-		/* see if we should display services for hosts with tis type of status */
-		if (!(host_status_types & temp_hoststatus->status))
-			continue;
-
-		/* see if we should display this type of service status */
-		if (!(service_status_types & temp_servicestatus->status))
-			continue;
 
 		/* check host properties filter */
 		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
@@ -971,29 +1014,47 @@ int main(void) {
 
 		/* see if we should display a servicegroup */
 		else if (display_type == DISPLAY_SERVICEGROUPS) {
-			found = FALSE;
-			if (show_all_servicegroups == FALSE) {
-				for (i = 0; req_servicegroups[i].entry != NULL; i++) {
-					temp_servicegroup = find_servicegroup(req_servicegroups[i].entry);
-					if (temp_servicegroup != NULL && \
-					        is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE && \
-					        is_service_member_of_servicegroup(temp_servicegroup, temp_service) == TRUE) {
-						found = TRUE;
-						break;
-					}
-				}
-			} else {
-				for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
-					if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE && \
-					        is_service_member_of_servicegroup(temp_servicegroup, temp_service) == TRUE) {
-						found = TRUE;
-						break;
-					}
-				}
-			}
-			if (found == FALSE)
+			if (!(temp_servicestatus->added & STATUS_BELONGS_TO_SG))
 				continue;
 		}
+
+		if (!(temp_hoststatus->added & STATUS_COUNTED_UNFILTERED)) {
+			/* count host for status totals */
+			if (temp_hoststatus->status == HOST_DOWN)
+				num_total_hosts_down++;
+			else if (temp_hoststatus->status == HOST_UNREACHABLE)
+				num_total_hosts_unreachable++;
+			else if (temp_hoststatus->status == HOST_PENDING)
+				num_total_hosts_pending++;
+			else
+				num_total_hosts_up++;
+
+			temp_hoststatus->added |= STATUS_COUNTED_UNFILTERED;
+		}
+
+		/* see if we should display services for hosts with tis type of status */
+		if (!(host_status_types & temp_hoststatus->status))
+			continue;
+
+
+		if (!(temp_servicestatus->added & STATUS_COUNTED_UNFILTERED)) {
+			if (temp_servicestatus->status == SERVICE_CRITICAL)
+				num_total_services_critical++;
+			else if (temp_servicestatus->status == SERVICE_WARNING)
+				num_total_services_warning++;
+			else if (temp_servicestatus->status == SERVICE_UNKNOWN)
+				num_total_services_unknown++;
+			else if (temp_servicestatus->status == SERVICE_PENDING)
+				num_total_services_pending++;
+			else
+				num_total_services_ok++;
+
+			temp_servicestatus->added |= STATUS_COUNTED_UNFILTERED;
+		}
+
+		/* see if we should display this type of service status */
+		if (!(service_status_types & temp_servicestatus->status))
+			continue;
 
 		if (display_all_unhandled_problems == FALSE)
 			add_status_data(HOST_STATUS, temp_hoststatus);
@@ -1004,15 +1065,16 @@ int main(void) {
 	/* prepare for hosts */
 	if (display_all_unhandled_problems == TRUE) {
 		host_status_types = all_host_problems;
-		host_properties = host_problems_unhandled;
+		host_properties |= host_problems_unhandled;
 	}
+
 
 	/* this is only for hosts with no services attached */
 	if (group_style_type != STYLE_SERVICE_DETAIL) {
 		for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
 
 			/* see if hoststatus is already recorded */
-			if (temp_hoststatus->added == TRUE)
+			if (temp_hoststatus->added & STATUS_ADDED)
 				continue;
 
 			/* if user is doing a search and host didn't match try next one */
@@ -1031,10 +1093,6 @@ int main(void) {
 				continue;
 
 			user_is_authorized_for_statusdata = TRUE;
-
-			/* see if we should display services for hosts with this type of status */
-			if (!(host_status_types & temp_hoststatus->status))
-				continue;
 
 			/* check host properties filter */
 			if (passes_host_properties_filter(temp_hoststatus) == FALSE)
@@ -1080,29 +1138,27 @@ int main(void) {
 
 				/* see if we should display a servicegroup */
 			} else if (display_type == DISPLAY_SERVICEGROUPS) {
-				found = FALSE;
-				if (show_all_servicegroups == FALSE) {
-					for (i = 0; req_servicegroups[i].entry != NULL; i++) {
-						temp_servicegroup = find_servicegroup(req_servicegroups[i].entry);
-						if (temp_servicegroup != NULL && \
-						        is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE && \
-						        is_host_member_of_servicegroup(temp_servicegroup, temp_host) == TRUE) {
-							found = TRUE;
-							break;
-						}
-					}
-				} else {
-					for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
-						if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE && \
-						        is_host_member_of_servicegroup(temp_servicegroup, temp_host) == TRUE) {
-							found = TRUE;
-							break;
-						}
-					}
-				}
-				if (found == FALSE)
+				if (!(temp_hoststatus->added & STATUS_BELONGS_TO_SG))
 					continue;
 			}
+
+			if (!(temp_hoststatus->added & STATUS_COUNTED_UNFILTERED)) {
+				/* count host for status totals */
+				if (temp_hoststatus->status == HOST_DOWN)
+					num_total_hosts_down++;
+				else if (temp_hoststatus->status == HOST_UNREACHABLE)
+					num_total_hosts_unreachable++;
+				else if (temp_hoststatus->status == HOST_PENDING)
+					num_total_hosts_pending++;
+				else
+					num_total_hosts_up++;
+
+				temp_hoststatus->added |= STATUS_COUNTED_UNFILTERED;
+			}
+
+			/* see if we should display services for hosts with this type of status */
+			if (!(host_status_types & temp_hoststatus->status))
+				continue;
 
 			add_status_data(HOST_STATUS, temp_hoststatus);
 		}
@@ -1164,7 +1220,7 @@ int main(void) {
 		/* left column of the first row */
 		printf("<td align=left valign=top width=33%%>\n");
 		/* info table */
-		display_info_table("Current Network Status", refresh, &current_authdata, daemon_check);
+		display_info_table("Current Network Status", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top row */
@@ -1306,6 +1362,19 @@ int main(void) {
 
 		/* end of second table */
 		printf("</table>\n");
+
+	} else if ( show_dropdown != NO_STATUS && content_type == HTML_CONTENT) {
+
+		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+		printf("<tr><td align=right width=100%%>\n");
+
+		if (show_dropdown == HOST_STATUS)
+			show_hostcommand_table();
+		else if (show_dropdown == SERVICE_STATUS)
+			show_servicecommand_table();
+
+		/* end of second table */
+		printf("</td></tr></table>\n");
 	}
 
 
@@ -1730,18 +1799,22 @@ int process_cgivars(void) {
 
 /* display table with service status totals... */
 void show_service_status_totals(void) {
-	int total_services = 0;
-	int total_problems = 0;
-	int problem_service_status_types = 0;
-	int total_service_status_types = 0;
+	int num_services_filtered = 0;
+	int num_problems_filtered = 0;
+	int num_services_unfiltered = 0;
+	int num_problems_unfiltered = 0;
 	char status_url[MAX_INPUT_BUFFER];
+	char temp_buffer[MAX_INPUT_BUFFER];
 	char *style = NULL;
 
-	if (display_status_totals == FALSE)
+	if (display_status_totals == FALSE || group_style_type == STYLE_HOST_DETAIL)
 		return;
 
-	total_services = num_services_ok + num_services_unknown + num_services_warning + num_services_critical + num_services_pending;
-	total_problems = num_services_unknown + num_services_warning + num_services_critical;
+	num_services_filtered = num_services_ok + num_services_unknown + num_services_warning + num_services_critical + num_services_pending;
+	num_problems_filtered = num_services_unknown + num_services_warning + num_services_critical;
+
+	num_services_unfiltered = num_total_services_ok + num_total_services_unknown + num_total_services_warning + num_total_services_critical + num_total_services_pending;
+	num_problems_unfiltered = num_total_services_unknown + num_total_services_warning + num_total_services_critical;
 
 	/* construct url start */
 	if (group_style_type == STYLE_OVERVIEW)
@@ -1764,9 +1837,23 @@ void show_service_status_totals(void) {
 	else
 		snprintf(status_url, sizeof(status_url) - 1, "%s?%s%s%s&style=%s&hoststatustypes=%d", STATUS_CGI, url_hostgroups_part, (service_filter != NULL) ? "&servicefilter=" : "", (service_filter != NULL) ? url_encode(service_filter) : "", style, host_status_types);
 
+	my_free(style);
+
 	status_url[sizeof(status_url)-1] = '\x0';
 
-	my_free(style);
+	if (service_properties != 0 && display_all_unhandled_problems == FALSE) {
+		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&serviceprops=%lu", service_properties);
+		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+		status_url[sizeof(status_url)-1] = '\x0';
+	}
+
+	if (host_properties != 0) {
+		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&hostprops=%lu", host_properties);
+		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+		status_url[sizeof(status_url)-1] = '\x0';
+	}
 
 	/* display status totals */
 	printf("<DIV CLASS='serviceTotals'>Service Status Totals</DIV>\n");
@@ -1777,60 +1864,28 @@ void show_service_status_totals(void) {
 	printf("<TABLE BORDER=1 CLASS='serviceTotals'>\n");
 	printf("<TR>\n");
 
-	printf("<TH CLASS='serviceTotals'>");
-	if (num_services_ok > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Ok</A>", status_url, SERVICE_OK);
-	else
-		printf("<DIV CLASS='serviceTotals'>Ok</DIV>");
-	printf("</TH>\n");
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Ok</A></TH>\n", status_url, SERVICE_OK);
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Warning</A></TH>\n", status_url, SERVICE_WARNING);
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Unknown</A></TH>\n", status_url, SERVICE_UNKNOWN);
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Critical</A></TH>\n", status_url, SERVICE_CRITICAL);
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Pending</A></TH>\n", status_url, SERVICE_PENDING);
 
-	printf("<TH CLASS='serviceTotals'>");
-	if (num_services_warning > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Warning</A>", status_url, SERVICE_WARNING);
-	else
-		printf("<DIV CLASS='serviceTotals'>Warning</DIV>");
-	printf("</TH>\n");
-
-	printf("<TH CLASS='serviceTotals'>");
-	if (num_services_unknown > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Unknown</A>", status_url, SERVICE_UNKNOWN);
-	else
-		printf("<DIV CLASS='serviceTotals'>Unknown</DIV>");
-	printf("</TH>\n");
-
-	printf("<TH CLASS='serviceTotals'>");
-	if (num_services_critical > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Critical</A>", status_url, SERVICE_CRITICAL);
-	else
-		printf("<DIV CLASS='serviceTotals'>Critical</DIV>");
-	printf("</TH>\n");
-
-	printf("<TH CLASS='serviceTotals'>");
-	if (num_services_pending > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'>Pending</A>", status_url, SERVICE_PENDING);
-	else
-		printf("<DIV CLASS='serviceTotals'>Pending</DIV>");
-	printf("</TH>\n");
-
-	printf("</TR>\n");
-
-	printf("<TR>\n");
-
+	printf("</TR><TR>\n");
 
 	/* total services ok */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_ok > 0) ? "OK" : "", num_services_ok);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_services_ok > 0) ? "OK" : "", (num_total_services_ok > 0) ? "serviceTotalsBGOK" : "", num_services_ok, num_total_services_ok);
 
 	/* total services in warning state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_warning > 0) ? "WARNING" : "", num_services_warning);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_services_warning > 0) ? "WARNING" : "", (num_total_services_warning > 0) ? "serviceTotalsBGWARNING" : "", num_services_warning, num_total_services_warning);
 
 	/* total services in unknown state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_unknown > 0) ? "UNKNOWN" : "", num_services_unknown);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_services_unknown > 0) ? "UNKNOWN" : "", (num_total_services_unknown > 0) ? "serviceTotalsBGUNKNOWN" : "", num_services_unknown, num_total_services_unknown);
 
 	/* total services in critical state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_critical > 0) ? "CRITICAL" : "", num_services_critical);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_services_critical > 0) ? "CRITICAL" : "", (num_total_services_critical > 0) ? "serviceTotalsBGCRITICAL" : "", num_services_critical, num_total_services_critical);
 
 	/* total services in pending state */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (num_services_pending > 0) ? "PENDING" : "", num_services_pending);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_services_pending > 0) ? "PENDING" : "", (num_total_services_pending > 0) ? "serviceTotalsBGPENDING" : "", num_services_pending, num_total_services_pending);
 
 
 	printf("</TR>\n");
@@ -1841,42 +1896,16 @@ void show_service_status_totals(void) {
 	printf("<TABLE BORDER=1 CLASS='serviceTotals'>\n");
 	printf("<TR>\n");
 
-	/* determine which type of problem services should be viewed */
-	if (num_services_warning > 0)
-		problem_service_status_types = problem_service_status_types | SERVICE_WARNING;
-	if (num_services_critical > 0)
-		problem_service_status_types = problem_service_status_types | SERVICE_CRITICAL;
-	if (num_services_unknown > 0)
-		problem_service_status_types = problem_service_status_types | SERVICE_UNKNOWN;
-
-	printf("<TH CLASS='serviceTotals'>");
-	if (problem_service_status_types > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'><I>All Problems</I></A>", status_url, problem_service_status_types);
-	else
-		printf("<DIV CLASS='serviceTotals'><I>All Problems</I></DIV>");
-	printf("</TH>\n");
-
-	/* determine which states states are included in total view */
-	total_service_status_types = problem_service_status_types;
-	if (num_services_ok > 0)
-		total_service_status_types = total_service_status_types | SERVICE_OK;
-	if (num_services_pending > 0)
-		total_service_status_types = total_service_status_types | SERVICE_PENDING;
-
-	printf("<TH CLASS='serviceTotals'>");
-	if (total_service_status_types > 0)
-		printf("<A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'><I>All Types</I></A>", status_url, total_service_status_types);
-	else
-		printf("<DIV CLASS='serviceTotals'><I>All Types</I></DIV>");
-	printf("</TH>\n");
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'><I>All Problems</I></A></TH>\n", status_url, all_service_problems);
+	printf("<TH CLASS='serviceTotals'><A CLASS='serviceTotals' HREF='%s&servicestatustypes=%d'><I>All Types</I></A></TH>\n", status_url, all_service_status_types);
 
 	printf("</TR><TR>\n");
 
 	/* total service problems */
-	printf("<TD CLASS='serviceTotals%s'>%d</TD>\n", (total_problems > 0) ? "PROBLEMS" : "", total_problems);
+	printf("<TD CLASS='serviceTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_problems_filtered > 0) ? "PROBLEMS" : "", (num_problems_unfiltered > 0) ? "serviceTotalsBGPROBLEMS" : "", num_problems_filtered, num_problems_unfiltered);
 
 	/* total services */
-	printf("<TD CLASS='serviceTotals'>%d</TD>\n", total_services);
+	printf("<TD CLASS='serviceTotals' text='filtered/unfiltered'>&nbsp;%d / %d&nbsp;</TD>\n", num_services_filtered, num_services_unfiltered);
 
 	printf("</TR>\n");
 	printf("</TABLE>\n");
@@ -1890,10 +1919,10 @@ void show_service_status_totals(void) {
 
 /* display a table with host status totals... */
 void show_host_status_totals(void) {
-	int total_hosts = 0;
-	int total_problems = 0;
-	int problem_host_status_types = 0;
-	int total_host_status_types = 0;
+	int num_hosts_filtered = 0;
+	int num_problems_filtered = 0;
+	int num_hosts_unfiltered = 0;
+	int num_problems_unfiltered = 0;
 	char status_url[MAX_INPUT_BUFFER];
 	char temp_buffer[MAX_INPUT_BUFFER];
 	char *style = NULL;
@@ -1901,8 +1930,11 @@ void show_host_status_totals(void) {
 	if (display_status_totals == FALSE)
 		return;
 
-	total_hosts = num_hosts_up + num_hosts_down + num_hosts_unreachable + num_hosts_pending;
-	total_problems = num_hosts_down + num_hosts_unreachable;
+	num_hosts_filtered = num_hosts_up + num_hosts_down + num_hosts_unreachable + num_hosts_pending;
+	num_problems_filtered = num_hosts_down + num_hosts_unreachable;
+
+	num_hosts_unfiltered = num_total_hosts_up + num_total_hosts_down + num_total_hosts_unreachable + num_total_hosts_pending;
+	num_problems_unfiltered = num_total_hosts_down + num_total_hosts_unreachable;
 
 	/* construct url start */
 	if (group_style_type == STYLE_HOST_SERVICE_DETAIL && display_all_unhandled_problems == FALSE)
@@ -1940,6 +1972,20 @@ void show_host_status_totals(void) {
 		status_url[sizeof(status_url)-1] = '\x0';
 	}
 
+	if (service_properties != 0) {
+		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&serviceprops=%lu", service_properties);
+		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+		status_url[sizeof(status_url)-1] = '\x0';
+	}
+
+	if (host_properties != 0 && display_all_unhandled_problems == FALSE) {
+		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "&hostprops=%lu", host_properties);
+		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		strncat(status_url, temp_buffer, sizeof(status_url) - strlen(status_url) - 1);
+		status_url[sizeof(status_url)-1] = '\x0';
+	}
+
 	/* display status totals */
 	printf("<DIV CLASS='hostTotals'>Host Status Totals</DIV>\n");
 
@@ -1950,50 +1996,24 @@ void show_host_status_totals(void) {
 	printf("<TABLE BORDER=1 CLASS='hostTotals'>\n");
 	printf("<TR>\n");
 
-	printf("<TH CLASS='hostTotals'>");
-	if (num_hosts_up > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Up</A>", status_url, HOST_UP);
-	else
-		printf("<DIV CLASS='hostTotals'>Up</DIV>");
-	printf("</TH>\n");
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Up</A></TH>\n", status_url, HOST_UP);
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Down</A></TH>\n", status_url, HOST_DOWN);
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Unreachable</A></TH>\n", status_url, HOST_UNREACHABLE);
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Pending</A></TH>\n", status_url, HOST_PENDING);
 
-	printf("<TH CLASS='hostTotals'>");
-	if (num_hosts_down > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Down</A>", status_url, HOST_DOWN);
-	else
-		printf("<DIV CLASS='hostTotals'>Down</DIV>");
-	printf("</TH>\n");
-
-	printf("<TH CLASS='hostTotals'>");
-	if (num_hosts_unreachable > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Unreachable</A>", status_url, HOST_UNREACHABLE);
-	else
-		printf("<DIV CLASS='hostTotals'>Unreachable</DIV>");
-	printf("</TH>\n");
-
-	printf("<TH CLASS='hostTotals'>");
-	if (num_hosts_pending > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'>Pending</A>", status_url, HOST_PENDING);
-	else
-		printf("<DIV CLASS='hostTotals'>Pending</DIV>");
-	printf("</TH>\n");
-
-	printf("</TR>\n");
-
-
-	printf("<TR>\n");
+	printf("</TR><TR>\n");
 
 	/* total hosts up */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_up > 0) ? "UP" : "", num_hosts_up);
+	printf("<TD CLASS='hostTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_hosts_up > 0) ? "UP" : "", (num_total_hosts_up > 0) ? "hostTotalsBGUP" : "", num_hosts_up, num_total_hosts_up);
 
 	/* total hosts down */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_down > 0) ? "DOWN" : "", num_hosts_down);
+	printf("<TD CLASS='hostTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_hosts_down > 0) ? "DOWN" : "", (num_total_hosts_down > 0) ? "hostTotalsBGDOWN" : "", num_hosts_down, num_total_hosts_down);
 
 	/* total hosts unreachable */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_unreachable > 0) ? "UNREACHABLE" : "", num_hosts_unreachable);
+	printf("<TD CLASS='hostTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_hosts_unreachable > 0) ? "UNREACHABLE" : "", (num_total_hosts_unreachable > 0) ? "hostTotalsBGUNREACHABLE" : "", num_hosts_unreachable, num_total_hosts_unreachable);
 
 	/* total hosts pending */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (num_hosts_pending > 0) ? "PENDING" : "", num_hosts_pending);
+	printf("<TD CLASS='hostTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_hosts_pending > 0) ? "PENDING" : "", (num_total_hosts_pending > 0) ? "hostTotalsBGPENDING" : "", num_hosts_pending, num_total_hosts_pending);
 
 	printf("</TR>\n");
 	printf("</TABLE>\n");
@@ -2003,39 +2023,16 @@ void show_host_status_totals(void) {
 	printf("<TABLE BORDER=1 CLASS='hostTotals'>\n");
 	printf("<TR>\n");
 
-	/* determine which type of problem hosts should be viewed */
-	if (num_hosts_down > 0)
-		problem_host_status_types = problem_host_status_types | HOST_DOWN;
-	if (num_hosts_unreachable > 0)
-		problem_host_status_types = problem_host_status_types | HOST_UNREACHABLE;
-	printf("<TH CLASS='hostTotals'>");
-	if (problem_host_status_types > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'><I>All Problems</I></A>", status_url, problem_host_status_types);
-	else
-		printf("<DIV CLASS='hostTotals'><I>All Problems</I></DIV>");
-	printf("</TH>\n");
-
-	/* determine which host states are included in total view */
-	total_host_status_types = problem_host_status_types;
-	if (num_hosts_up > 0)
-		total_host_status_types = total_host_status_types | HOST_UP;
-	if (num_hosts_pending > 0)
-		total_host_status_types = total_host_status_types | HOST_PENDING;
-
-	printf("<TH CLASS='hostTotals'>");
-	if (total_host_status_types > 0)
-		printf("<A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'><I>All Types</I></A>", status_url, total_host_status_types);
-	else
-		printf("<DIV CLASS='hostTotals'><I>All Types</I></DIV>");
-	printf("</TH>\n");
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'><I>All Problems</I></A></TH>\n", status_url, all_host_problems);
+	printf("<TH CLASS='hostTotals'><A CLASS='hostTotals' HREF='%s&hoststatustypes=%d'><I>All Types</I></A></TH>\n", status_url, all_host_status_types);
 
 	printf("</TR><TR>\n");
 
 	/* total hosts with problems */
-	printf("<TD CLASS='hostTotals%s'>%d</TD>\n", (total_problems > 0) ? "PROBLEMS" : "", total_problems);
+	printf("<TD CLASS='hostTotals%s %s'>&nbsp;%d / %d&nbsp;</TD>\n", (num_problems_filtered > 0) ? "PROBLEMS" : "", (num_problems_unfiltered > 0) ? "hostTotalsBGPROBLEMS" : "", num_problems_filtered, num_problems_unfiltered);
 
 	/* total hosts */
-	printf("<TD CLASS='hostTotals'>%d</TD>\n", total_hosts);
+	printf("<TD CLASS='hostTotals'>&nbsp;%d / %d&nbsp;</TD>\n", num_hosts_filtered, num_hosts_unfiltered);
 
 	printf("</TR>\n");
 	printf("</TABLE>\n");
@@ -2497,7 +2494,6 @@ void show_service_detail(void) {
 				printf("<A HREF='");
 				printf("%s", processed_string);
 				printf("' TARGET='%s'>", (action_url_target == NULL) ? "_blank" : action_url_target);
-//				printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>", url_images_path, MU_iconstr, ACTION_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT, "Perform Extra Service Actions", "Perform Extra Service Actions");
 				printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d>", url_images_path, MU_iconstr, ACTION_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 				printf("</A>");
 				printf("</TD>\n");
@@ -2909,7 +2905,6 @@ void show_host_detail(void) {
 				printf("<A HREF='");
 				printf("%s", processed_string);
 				printf("' TARGET='%s'>", (action_url_target == NULL) ? "_blank" : action_url_target);
-//				printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='%s' TITLE='%s'>", url_images_path, MU_iconstr, ACTION_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT, "Perform Extra Host Actions", "Perform Extra Host Actions");
 				printf("<IMG SRC='%s%s%s' BORDER=0 WIDTH=%d HEIGHT=%d>", url_images_path, MU_iconstr, ACTION_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 				printf("</A>");
 				printf("</TD>\n");
@@ -3116,10 +3111,11 @@ void show_servicegroup_overviews(void) {
 /* shows an overview of a specific servicegroup... */
 void show_servicegroup_overview(servicegroup *temp_servicegroup) {
 	servicesmember *temp_member;
+	servicesmember *temp_member2;
 	host *temp_host;
 	host *last_host;
 	hoststatus *temp_hoststatus = NULL;
-	statusdata *temp_status = NULL;
+	servicestatus *temp_servicestatus = NULL;
 	int odd = 0;
 	int json_start = TRUE;
 	int service_found = FALSE;
@@ -3176,16 +3172,25 @@ void show_servicegroup_overview(servicegroup *temp_servicegroup) {
 		if (service_status_types != all_service_status_types) {
 			service_found = FALSE;
 
-			/* check all services... */
-			for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
+			/* check members if there is anything to display for this host */
+			for (temp_member2 = temp_member; temp_member2 != NULL; temp_member2 = temp_member2->next) {
 
-				if (temp_status->type != SERVICE_STATUS)
+				if (strcmp(temp_member2->host_name, temp_host->name))
+					break;
+
+				/* get the status of the service */
+				temp_servicestatus = find_servicestatus(temp_member2->host_name, temp_member2->service_description);
+
+				/* make sure we only display services of the specified status levels */
+				if (!(service_status_types & temp_servicestatus->status))
 					continue;
 
-				if (!strcmp(temp_host->name, temp_status->host_name)) {
-					service_found = TRUE;
-					break;
-				}
+				/* make sure we only display services that have the desired properties */
+				if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+					continue;
+
+				service_found = TRUE;
+				break;
 			}
 			if (service_found == FALSE)
 				continue;
@@ -3260,6 +3265,7 @@ void show_servicegroup_summaries(void) {
 		if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE)
 			continue;
 
+		user_has_seen_something = TRUE;
 
 		/* find all the hosts that belong to the servicegroup */
 		if (host_status_types != all_host_status_types || service_status_types != all_service_status_types) {
@@ -3317,8 +3323,6 @@ void show_servicegroup_summaries(void) {
 
 		/* show summary for this servicegroup */
 		show_servicegroup_summary(temp_servicegroup, odd);
-
-		user_has_seen_something = TRUE;
 	}
 
 	if (content_type == JSON_CONTENT)
@@ -3901,7 +3905,6 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 	host *last_host;
 	hoststatus *temp_hoststatus;
 	servicestatus *temp_servicestatus;
-	statusdata *temp_status = NULL;
 	int odd = 0;
 	int current_item;
 	int json_start = TRUE;
@@ -3931,8 +3934,8 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 		if (temp_host == NULL)
 			continue;
 
-		/* only show in partial hostgroups if user is authorized to view this host */
-		if (show_partial_hostgroups == TRUE && is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+		/* only show if user is authorized to view this host */
+		if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
 			continue;
 
 		/* find the host status */
@@ -3952,18 +3955,26 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 		if (service_status_types != all_service_status_types) {
 			service_found = FALSE;
 
-			/* check all services... */
-			for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
+			/* check members if there is anything to display for this host */
+			for (temp_member2 = temp_member; temp_member2 != NULL; temp_member2 = temp_member2->next) {
 
-				if (temp_status->type != SERVICE_STATUS)
+				if (strcmp(temp_member2->host_name, temp_host->name))
+					break;
+
+				/* get the status of the service */
+				temp_servicestatus = find_servicestatus(temp_member2->host_name, temp_member2->service_description);
+
+				/* make sure we only display services of the specified status levels */
+				if (!(service_status_types & temp_servicestatus->status))
 					continue;
 
-				if (!strcmp(temp_host->name, temp_status->host_name)) {
-					service_found = TRUE;
-					break;
-				}
-			}
+				/* make sure we only display services that have the desired properties */
+				if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+					continue;
 
+				service_found = TRUE;
+				break;
+			}
 			if (service_found == FALSE)
 				continue;
 		}
@@ -4232,6 +4243,8 @@ void show_hostgroup_overviews(void) {
 					continue;
 
 				partial_hosts = TRUE;
+
+				break;
 			}
 		}
 
@@ -4336,6 +4349,8 @@ int show_hostgroup_overview(hostgroup *hstgrp) {
 				continue;
 
 			partial_hosts = TRUE;
+
+			break;
 		}
 	}
 
@@ -4551,60 +4566,76 @@ void show_servicegroup_hostgroup_member_service_status_totals(char *host_name, v
 	int total_pending = 0;
 	servicestatus *temp_servicestatus;
 	statusdata *temp_status = NULL;
-	service *temp_service;
 	servicegroup *temp_servicegroup = NULL;
+	servicesmember *temp_member = NULL;
 	char temp_buffer[MAX_INPUT_BUFFER];
+	int service_found = FALSE;
 
 
-	if (display_type == DISPLAY_SERVICEGROUPS)
+	if (display_type == DISPLAY_SERVICEGROUPS) {
 		temp_servicegroup = (servicegroup *)data;
 
-	/* check all services... */
-	for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
+		for (temp_member = temp_servicegroup->members; temp_member != NULL; temp_member = temp_member->next) {
 
-		if (temp_status->type != SERVICE_STATUS)
-			continue;
+			if (!strcmp(host_name, temp_member->host_name)) {
 
-		if (!strcmp(host_name, temp_status->host_name)) {
-
-			/* make sure the user is authorized to see this service... */
-			temp_service = find_service(temp_status->host_name, temp_status->svc_description);
-			if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
-				continue;
-
-			if (display_type == DISPLAY_SERVICEGROUPS) {
-
-				/* is this service a member of the servicegroup? */
-				if (is_service_member_of_servicegroup(temp_servicegroup, temp_service) == FALSE)
+				if ((temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description)) == NULL)
 					continue;
+
+				/* make sure we only display services of the specified status levels */
+				if (!(service_status_types & temp_servicestatus->status))
+					continue;
+
+				/* make sure we only display services that have the desired properties */
+				if (passes_service_properties_filter(temp_servicestatus) == FALSE)
+					continue;
+
+				if (temp_servicestatus->status == SERVICE_CRITICAL)
+					total_critical++;
+				else if (temp_servicestatus->status == SERVICE_WARNING)
+					total_warning++;
+				else if (temp_servicestatus->status == SERVICE_UNKNOWN)
+					total_unknown++;
+				else if (temp_servicestatus->status == SERVICE_OK)
+					total_ok++;
+				else if (temp_servicestatus->status == SERVICE_PENDING)
+					total_pending++;
+				else
+					total_ok++;
 			}
+		}
+	} else {
+		/* check all services... */
+		for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
 
-			/* make sure we only display services of the specified status levels */
-			if (!(service_status_types & temp_status->status))
+			if (temp_status->type != SERVICE_STATUS)
 				continue;
 
-			if ((temp_servicestatus = find_servicestatus(temp_status->host_name, temp_status->svc_description)) == NULL)
-				continue;
+			if (!strcmp(host_name, temp_status->host_name)) {
 
-			/* make sure we only display services that have the desired properties */
-			if (passes_service_properties_filter(temp_servicestatus) == FALSE)
-				continue;
+				service_found = TRUE;
 
-			if (temp_servicestatus->status == SERVICE_CRITICAL)
-				total_critical++;
-			else if (temp_servicestatus->status == SERVICE_WARNING)
-				total_warning++;
-			else if (temp_servicestatus->status == SERVICE_UNKNOWN)
-				total_unknown++;
-			else if (temp_servicestatus->status == SERVICE_OK)
-				total_ok++;
-			else if (temp_servicestatus->status == SERVICE_PENDING)
-				total_pending++;
-			else
-				total_ok++;
+				if (temp_status->status == SERVICE_CRITICAL)
+					total_critical++;
+				else if (temp_status->status == SERVICE_WARNING)
+					total_warning++;
+				else if (temp_status->status == SERVICE_UNKNOWN)
+					total_unknown++;
+				else if (temp_status->status == SERVICE_OK)
+					total_ok++;
+				else if (temp_status->status == SERVICE_PENDING)
+					total_pending++;
+				else
+					total_ok++;
+
+			/* list is in alphabetic order
+			   therefore all services for this host appear in a row
+			   if host doesn't match anymore we are done
+			*/
+			} else if (service_found == TRUE)
+				break;
 		}
 	}
-
 
 	if (content_type == JSON_CONTENT) {
 		printf("\"services_status_ok\": %d, ", total_ok);
@@ -4688,6 +4719,7 @@ void show_hostgroup_summaries(void) {
 			continue;
 
 		/* if we're showing partial hostgroups, find out if there will be any hosts that belong to the hostgroup */
+		/* or if we have to filter for service status types*/
 		if (show_partial_hostgroups == TRUE || service_status_types != all_service_status_types) {
 			found = FALSE;
 			for (temp_member = temp_hostgroup->members; temp_member != NULL; temp_member = temp_member->next) {
@@ -4731,12 +4763,16 @@ void show_hostgroup_summaries(void) {
 				}
 
 				partial_hosts = TRUE;
+
+				break;
 			}
 		}
 
 		/* if we're showing partial hostgroups, but there are no hosts to display, there's nothing to see here */
 		if (show_partial_hostgroups == TRUE && partial_hosts == FALSE)
 			continue;
+
+		user_has_seen_something = TRUE;
 
 		/* if there are no services to display try next hostgroup */
 		if (service_status_types != all_service_status_types && found == FALSE)
@@ -4756,8 +4792,6 @@ void show_hostgroup_summaries(void) {
 
 		/* show summary for this hostgroup */
 		show_hostgroup_summary(temp_hostgroup, odd);
-
-		user_has_seen_something = TRUE;
 	}
 
 	if (content_type == JSON_CONTENT)
@@ -5379,6 +5413,8 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 				continue;
 
 			partial_hosts = TRUE;
+
+			break;
 		}
 	}
 
@@ -5524,49 +5560,59 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 		/* display all services on the host */
 		current_item = 1;
 		json_start2 = TRUE;
+		service_found = FALSE;
 		for (temp_status = statusdata_list; temp_status != NULL; temp_status = temp_status->next) {
 
 			if (temp_status->type != SERVICE_STATUS)
 				continue;
 
-			if (strcmp(temp_host->name, temp_status->host_name))
-				continue;
+			if (!strcmp(temp_host->name, temp_status->host_name)) {
 
-			if (temp_status == NULL)
-				service_status_class = "NULL";
-			else if (temp_status->status == SERVICE_OK)
-				service_status_class = "OK";
-			else if (temp_status->status == SERVICE_WARNING)
-				service_status_class = "WARNING";
-			else if (temp_status->status == SERVICE_UNKNOWN)
-				service_status_class = "UNKNOWN";
-			else if (temp_status->status == SERVICE_CRITICAL)
-				service_status_class = "CRITICAL";
-			else
-				service_status_class = "PENDING";
+				service_found = TRUE;
 
-			if (content_type == JSON_CONTENT) {
-				if (json_start2 == FALSE)
-					printf(",\n");
-				json_start2 = FALSE;
-
-				printf("{ \"service_description\": \"%s\",\n", json_encode(temp_status->svc_description));
 				if (temp_status == NULL)
-					printf("\"service_status\": null } ");
+					service_status_class = "NULL";
+				else if (temp_status->status == SERVICE_OK)
+					service_status_class = "OK";
+				else if (temp_status->status == SERVICE_WARNING)
+					service_status_class = "WARNING";
+				else if (temp_status->status == SERVICE_UNKNOWN)
+					service_status_class = "UNKNOWN";
+				else if (temp_status->status == SERVICE_CRITICAL)
+					service_status_class = "CRITICAL";
 				else
-					printf("\"service_status\": \"%s\" } ", service_status_class);
-			} else {
-				if (current_item > max_grid_width && max_grid_width > 0) {
-					printf("<BR>\n");
-					current_item = 1;
+					service_status_class = "PENDING";
+
+				if (content_type == JSON_CONTENT) {
+					if (json_start2 == FALSE)
+						printf(",\n");
+					json_start2 = FALSE;
+
+					printf("{ \"service_description\": \"%s\",\n", json_encode(temp_status->svc_description));
+					if (temp_status == NULL)
+						printf("\"service_status\": null } ");
+					else
+						printf("\"service_status\": \"%s\" } ", service_status_class);
+				} else {
+					if (current_item > max_grid_width && max_grid_width > 0) {
+						printf("<BR>\n");
+						current_item = 1;
+					}
+
+					printf("<A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_status->host_name));
+					printf("&service=%s' CLASS='status%s'>%s</A>&nbsp;", url_encode(temp_status->svc_description), service_status_class, html_encode(temp_status->svc_description, TRUE));
+
+					current_item++;
 				}
 
-				printf("<A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_status->host_name));
-				printf("&service=%s' CLASS='status%s'>%s</A>&nbsp;", url_encode(temp_status->svc_description), service_status_class, html_encode(temp_status->svc_description, TRUE));
-
-				current_item++;
-			}
+			/* list is in alphabetic order
+			   therefore all services for this host appear in a row
+			   if host doesn't match anymore we are done
+			*/
+			} else if (service_found == TRUE)
+				break;
 		}
+
 		/* Print no matching in case of no services */
 		if (current_item == 1 && content_type != JSON_CONTENT)
 			printf("No matching services");
@@ -5671,7 +5717,7 @@ int add_status_data(int status_type, void *data) {
 		if (host_status == NULL)
 			return ERROR;
 
-		if (host_status->added == TRUE)
+		if (host_status->added & STATUS_ADDED)
 			return OK;
 
 		status = host_status->status;
@@ -5710,7 +5756,7 @@ int add_status_data(int status_type, void *data) {
 		if (service_status == NULL)
 			return ERROR;
 
-		if (service_status->added == TRUE)
+		if (service_status->added & STATUS_ADDED)
 			return OK;
 
 		status = service_status->status;
@@ -5864,7 +5910,7 @@ int add_status_data(int status_type, void *data) {
 		else
 			num_hosts_up++;
 
-		host_status->added = TRUE;
+		host_status->added |= STATUS_ADDED | STATUS_COUNTED_FILTERED;
 	} else {
 		/* check if service triggers sound */
 		if (service_status->problem_has_been_acknowledged == FALSE && \
@@ -5891,7 +5937,7 @@ int add_status_data(int status_type, void *data) {
 		else
 			num_services_ok++;
 
-		service_status->added = TRUE;
+		service_status->added |= STATUS_ADDED | STATUS_COUNTED_FILTERED;
 	}
 
 	return OK;
@@ -6516,36 +6562,43 @@ void show_servicecommand_table(void) {
 		/* A new div for the command table */
 		printf("<DIV CLASS='serviceTotalsCommands'>Commands for checked services</DIV>\n");
 		/* DropDown menu */
-		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ_service' onchange='showValue(\"tableformservice\",this.value,%d,%d)' CLASS='DropDownService'>", CMD_SCHEDULE_HOST_CHECK, CMD_SCHEDULE_SVC_CHECK);
-		printf("<option value='nothing'>Select command</option>");
-		printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>", CMD_ADD_SVC_COMMENT, url_images_path, COMMENT_ICON);
-		printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>", CMD_DISABLE_SVC_CHECK, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Enable Active Checks Of Checked Service(s)</option>", CMD_ENABLE_SVC_CHECK, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Re-schedule Next Service Check</option>", CMD_SCHEDULE_SVC_CHECK, url_images_path, DELAY_ICON);
-		printf("<option value='%d' title='%s%s'>Submit Passive Check Result For Checked Service(s)</option>", CMD_PROCESS_SERVICE_CHECK_RESULT, url_images_path, PASSIVE_ICON);
-		printf("<option value='%d' title='%s%s'>Stop Accepting Passive Checks For Checked Service(s)</option>", CMD_DISABLE_PASSIVE_SVC_CHECKS, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Start Accepting Passive Checks For Checked Service(s)</option>", CMD_ENABLE_PASSIVE_SVC_CHECKS, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Stop Obsessing Over Checked Service(s)</option>", CMD_STOP_OBSESSING_OVER_SVC, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Start Obsessing Over Checked Service(s)</option>", CMD_START_OBSESSING_OVER_SVC, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Acknowledge Checked Service(s) Problem</option>", CMD_ACKNOWLEDGE_SVC_PROBLEM, url_images_path, ACKNOWLEDGEMENT_ICON);
-		printf("<option value='%d' title='%s%s'>Remove Problem Acknowledgement for Checked Service(s)</option>", CMD_REMOVE_SVC_ACKNOWLEDGEMENT, url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON);
-		printf("<option value='%d' title='%s%s'>Disable Notifications For Checked Service(s)</option>", CMD_DISABLE_SVC_NOTIFICATIONS, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Enable Notifications For Checked Service(s)</option>", CMD_ENABLE_SVC_NOTIFICATIONS, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Send Custom Notification For Checked Service(s)</option>", CMD_SEND_CUSTOM_SVC_NOTIFICATION, url_images_path, NOTIFICATION_ICON);
-		printf("<option value='%d' title='%s%s'>Delay Next Notification For Checked Service(s)</option>", CMD_DELAY_SVC_NOTIFICATION, url_images_path, DELAY_ICON);
-		printf("<option value='%d' title='%s%s'>Schedule Downtime For Checked Service(s)</option>", CMD_SCHEDULE_SVC_DOWNTIME, url_images_path, DOWNTIME_ICON);
-		printf("<option value='%d' title='%s%s'>Disable Event Handler For Checked Service(s)</option>", CMD_DISABLE_SVC_EVENT_HANDLER, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Enable Event Handler For Checked Service(s)</option>", CMD_ENABLE_SVC_EVENT_HANDLER, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Disable Flap Detection For Checked Service(s)</option>", CMD_DISABLE_SVC_FLAP_DETECTION, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s'>Enable Flap Detection For Checked Service(s)</option>", CMD_ENABLE_SVC_FLAP_DETECTION, url_images_path, ENABLED_ICON);
-		printf("</select>");
+		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ_service' onchange='showValue(\"tableformservice\",this.value,%d,%d)' CLASS='DropDownService'>\n", CMD_SCHEDULE_HOST_CHECK, CMD_SCHEDULE_SVC_CHECK);
+		printf("<option value='nothing'>Select command</option>\n");
+		printf("<option value='%d' title='%s%s' >Add a Comment to Checked Service(s)</option>\n", CMD_ADD_SVC_COMMENT, url_images_path, COMMENT_ICON);
+		printf("<option value='%d' title='%s%s'>Disable Active Checks Of Checked Service(s)</option>\n", CMD_DISABLE_SVC_CHECK, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Enable Active Checks Of Checked Service(s)</option>\n", CMD_ENABLE_SVC_CHECK, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Re-schedule Next Service Check</option>\n", CMD_SCHEDULE_SVC_CHECK, url_images_path, DELAY_ICON);
+		printf("<option value='%d' title='%s%s'>Submit Passive Check Result For Checked Service(s)</option>\n", CMD_PROCESS_SERVICE_CHECK_RESULT, url_images_path, PASSIVE_ICON);
+		printf("<option value='%d' title='%s%s'>Stop Accepting Passive Checks For Checked Service(s)</option>\n", CMD_DISABLE_PASSIVE_SVC_CHECKS, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Start Accepting Passive Checks For Checked Service(s)</option>\n", CMD_ENABLE_PASSIVE_SVC_CHECKS, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Stop Obsessing Over Checked Service(s)</option>\n", CMD_STOP_OBSESSING_OVER_SVC, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Start Obsessing Over Checked Service(s)</option>\n", CMD_START_OBSESSING_OVER_SVC, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Acknowledge Checked Service(s) Problem</option>\n", CMD_ACKNOWLEDGE_SVC_PROBLEM, url_images_path, ACKNOWLEDGEMENT_ICON);
+		printf("<option value='%d' title='%s%s'>Remove Problem Acknowledgement for Checked Service(s)</option>\n", CMD_REMOVE_SVC_ACKNOWLEDGEMENT, url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON);
+		printf("<option value='%d' title='%s%s'>Disable Notifications For Checked Service(s)</option>\n", CMD_DISABLE_SVC_NOTIFICATIONS, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Enable Notifications For Checked Service(s)</option>\n", CMD_ENABLE_SVC_NOTIFICATIONS, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Send Custom Notification For Checked Service(s)</option>\n", CMD_SEND_CUSTOM_SVC_NOTIFICATION, url_images_path, NOTIFICATION_ICON);
+		printf("<option value='%d' title='%s%s'>Delay Next Notification For Checked Service(s)</option>\n", CMD_DELAY_SVC_NOTIFICATION, url_images_path, DELAY_ICON);
+		printf("<option value='%d' title='%s%s'>Schedule Downtime For Checked Service(s)</option>\n", CMD_SCHEDULE_SVC_DOWNTIME, url_images_path, DOWNTIME_ICON);
+		printf("<option value='%d' title='%s%s'>Disable Event Handler For Checked Service(s)</option>\n", CMD_DISABLE_SVC_EVENT_HANDLER, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Enable Event Handler For Checked Service(s)</option>\n", CMD_ENABLE_SVC_EVENT_HANDLER, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Disable Flap Detection For Checked Service(s)</option>\n", CMD_DISABLE_SVC_FLAP_DETECTION, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Enable Flap Detection For Checked Service(s)</option>\n", CMD_ENABLE_SVC_FLAP_DETECTION, url_images_path, ENABLED_ICON);
+		printf("</select>\n");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
 		printf("<script language='javascript'>\n");
 		printf("$(document).ready(function() { \n");
+		printf("document.tableformservice.cmd_typ.selectedIndex = 0;\n");
+		printf("document.tableformservice.cmd_typ.options[0].selected = true;\n");
+		printf("document.tableformservice.buttonValidChoice.value = 'false';\n");
+		printf("document.tableformservice.buttonCheckboxChecked.value = 'false';\n");
+		printf("checked = true;\n");
+		printf("checkAll(\"tableformservice\");\n");
+		printf("checked = false;\n");
 		printf("try { \n$(\".DropDownService\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
-		printf("alert(\"Error: \"+e.message);\n}\n");
+		printf("if (console) { console.log(e); }\n}\n");
 		printf("});\n");
 		printf("</script>\n");
 
@@ -6559,42 +6612,49 @@ void show_hostcommand_table(void) {
 		/* A new div for the command table */
 		printf("<DIV CLASS='hostTotalsCommands'>Commands for checked host(s)</DIV>\n");
 		/* DropDown menu */
-		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ_host' onchange='showValue(\"tableformhost\",this.value,%d,%d)' CLASS='DropDownHost'>", CMD_SCHEDULE_HOST_CHECK, CMD_SCHEDULE_SVC_CHECK);
-		printf("<option value='nothing'>Select command</option>");
-		printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>", CMD_ADD_HOST_COMMENT, url_images_path, COMMENT_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>", CMD_DISABLE_HOST_CHECK, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Active Checks Of Checked Host(s)</option>", CMD_ENABLE_HOST_CHECK, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Re-schedule Next Host Check</option>", CMD_SCHEDULE_HOST_CHECK, url_images_path, DELAY_ICON);
-		printf("<option value='%d' title='%s%s' >Submit Passive Check Result For Checked Host(s)</option>", CMD_PROCESS_HOST_CHECK_RESULT, url_images_path, PASSIVE_ICON);
-		printf("<option value='%d' title='%s%s' >Stop Accepting Passive Checks For Checked Host(s)</option>", CMD_DISABLE_PASSIVE_HOST_CHECKS, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Start Accepting Passive Checks For Checked Host(s)</option>", CMD_ENABLE_PASSIVE_HOST_CHECKS, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Stop Obsessing Over Checked Host(s)</option>", CMD_STOP_OBSESSING_OVER_HOST, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Start Obsessing Over Checked Host(s)</option>", CMD_START_OBSESSING_OVER_HOST, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Acknowledge Checked Host(s) Problem</option>", CMD_ACKNOWLEDGE_HOST_PROBLEM, url_images_path, ACKNOWLEDGEMENT_ICON);
-		printf("<option value='%d' title='%s%s' >Remove Problem Acknowledgement</option>", CMD_REMOVE_HOST_ACKNOWLEDGEMENT, url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Notifications For Checked Host(s)</option>", CMD_DISABLE_HOST_NOTIFICATIONS, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Notifications For Checked Host(s)</option>", CMD_ENABLE_HOST_NOTIFICATIONS, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Send Custom Notification</option>", CMD_SEND_CUSTOM_HOST_NOTIFICATION, url_images_path, NOTIFICATION_ICON);
-		printf("<option value='%d' title='%s%s' >Delay Next Host Notification</option>", CMD_DELAY_HOST_NOTIFICATION, url_images_path, DELAY_ICON);
-		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s)</option>", CMD_SCHEDULE_HOST_DOWNTIME, url_images_path, DOWNTIME_ICON);
-		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s) and All Services</option>", CMD_SCHEDULE_HOST_SVC_DOWNTIME, url_images_path, DOWNTIME_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Notifications For All Services On Checked Host(s)</option>", CMD_DISABLE_HOST_SVC_NOTIFICATIONS, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Notifications For All Services On Checked Host(s)</option>", CMD_ENABLE_HOST_SVC_NOTIFICATIONS, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Schedule A Check Of All Services On Checked Host(s)</option>", CMD_SCHEDULE_HOST_SVC_CHECKS, url_images_path, DELAY_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Checks Of All Services On Checked Host(s)</option>", CMD_DISABLE_HOST_SVC_CHECKS, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Checks Of All Services On Checked Host(s)</option>", CMD_ENABLE_HOST_SVC_CHECKS, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Event Handler For Checked Host(s)</option>", CMD_DISABLE_HOST_EVENT_HANDLER, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Event Handler For Checked Host(s)</option>", CMD_ENABLE_HOST_EVENT_HANDLER, url_images_path, ENABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Disable Flap Detection For Checked Host(s)</option>", CMD_DISABLE_HOST_FLAP_DETECTION, url_images_path, DISABLED_ICON);
-		printf("<option value='%d' title='%s%s' >Enable Flap Detection For Checked Host(s)</option>", CMD_ENABLE_HOST_FLAP_DETECTION, url_images_path, ENABLED_ICON);
-		printf("</select>");
+		printf("<select style='display:none;width:400px' name='cmd_typ' id='cmd_typ_host' onchange='showValue(\"tableformhost\",this.value,%d,%d)' CLASS='DropDownHost'>\n", CMD_SCHEDULE_HOST_CHECK, CMD_SCHEDULE_SVC_CHECK);
+		printf("<option value='nothing'>Select command</option>\n");
+		printf("<option value='%d' title='%s%s' >Add a Comment to Checked Host(s)</option>\n", CMD_ADD_HOST_COMMENT, url_images_path, COMMENT_ICON);
+		printf("<option value='%d' title='%s%s' >Disable Active Checks Of Checked Host(s)</option>\n", CMD_DISABLE_HOST_CHECK, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Enable Active Checks Of Checked Host(s)</option>\n", CMD_ENABLE_HOST_CHECK, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Re-schedule Next Host Check</option>\n", CMD_SCHEDULE_HOST_CHECK, url_images_path, DELAY_ICON);
+		printf("<option value='%d' title='%s%s' >Submit Passive Check Result For Checked Host(s)</option>\n", CMD_PROCESS_HOST_CHECK_RESULT, url_images_path, PASSIVE_ICON);
+		printf("<option value='%d' title='%s%s' >Stop Accepting Passive Checks For Checked Host(s)</option>\n", CMD_DISABLE_PASSIVE_HOST_CHECKS, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Start Accepting Passive Checks For Checked Host(s)</option>\n", CMD_ENABLE_PASSIVE_HOST_CHECKS, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Stop Obsessing Over Checked Host(s)</option>\n", CMD_STOP_OBSESSING_OVER_HOST, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Start Obsessing Over Checked Host(s)</option>\n", CMD_START_OBSESSING_OVER_HOST, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Acknowledge Checked Host(s) Problem</option>\n", CMD_ACKNOWLEDGE_HOST_PROBLEM, url_images_path, ACKNOWLEDGEMENT_ICON);
+		printf("<option value='%d' title='%s%s' >Remove Problem Acknowledgement</option>\n", CMD_REMOVE_HOST_ACKNOWLEDGEMENT, url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON);
+		printf("<option value='%d' title='%s%s' >Disable Notifications For Checked Host(s)</option>\n", CMD_DISABLE_HOST_NOTIFICATIONS, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Enable Notifications For Checked Host(s)</option>\n", CMD_ENABLE_HOST_NOTIFICATIONS, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Send Custom Notification</option>\n", CMD_SEND_CUSTOM_HOST_NOTIFICATION, url_images_path, NOTIFICATION_ICON);
+		printf("<option value='%d' title='%s%s' >Delay Next Host Notification</option>\n", CMD_DELAY_HOST_NOTIFICATION, url_images_path, DELAY_ICON);
+		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s)</option>\n", CMD_SCHEDULE_HOST_DOWNTIME, url_images_path, DOWNTIME_ICON);
+		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s) and All Services</option>\n", CMD_SCHEDULE_HOST_SVC_DOWNTIME, url_images_path, DOWNTIME_ICON);
+		printf("<option value='%d' title='%s%s' >Disable Notifications For All Services On Checked Host(s)</option>\n", CMD_DISABLE_HOST_SVC_NOTIFICATIONS, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Enable Notifications For All Services On Checked Host(s)</option>\n", CMD_ENABLE_HOST_SVC_NOTIFICATIONS, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Schedule A Check Of All Services On Checked Host(s)</option>\n", CMD_SCHEDULE_HOST_SVC_CHECKS, url_images_path, DELAY_ICON);
+		printf("<option value='%d' title='%s%s' >Disable Checks Of All Services On Checked Host(s)</option>\n", CMD_DISABLE_HOST_SVC_CHECKS, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Enable Checks Of All Services On Checked Host(s)</option>\n", CMD_ENABLE_HOST_SVC_CHECKS, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Disable Event Handler For Checked Host(s)</option>\n", CMD_DISABLE_HOST_EVENT_HANDLER, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Enable Event Handler For Checked Host(s)</option>\n", CMD_ENABLE_HOST_EVENT_HANDLER, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Disable Flap Detection For Checked Host(s)</option>\n", CMD_DISABLE_HOST_FLAP_DETECTION, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Enable Flap Detection For Checked Host(s)</option>\n", CMD_ENABLE_HOST_FLAP_DETECTION, url_images_path, ENABLED_ICON);
+		printf("</select>\n");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
 		printf("<script language='javascript'>\n");
 		printf("$(document).ready(function() { \n");
+		printf("document.tableformhost.cmd_typ.selectedIndex = 0;\n");
+		printf("document.tableformhost.cmd_typ.options[0].selected = true;\n");
+		printf("document.tableformhost.buttonValidChoice.value = 'false';\n");
+		printf("document.tableformhost.buttonCheckboxChecked.value = 'false';\n");
+		printf("checked = true;\n");
+		printf("checkAll(\"tableformhost\");\n");
+		printf("checked = false;\n");
 		printf("try { \n$(\".DropDownHost\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
-		printf("alert(\"Error: \"+e.message);\n}\n");
+		printf("if (console) { console.log(e); }\n}\n");
 		printf("});\n");
 		printf("</script>\n");
 
@@ -6603,111 +6663,6 @@ void show_hostcommand_table(void) {
 }
 /* The cake is a lie! */
 
-/******************************************************************/
-/*********  print a tooltip to show comments  *********************/
-/******************************************************************/
-void print_comment_icon(char *host_name, char *svc_description) {
-	comment *temp_comment = NULL;
-	char *comment_entry_type = "";
-	char comment_data[MAX_INPUT_BUFFER] = "";
-	char entry_time[MAX_DATETIME_LENGTH];
-	int len, output_len;
-	int x, y;
-	char *escaped_output_string = NULL;
-	int saved_escape_html_tags_var = FALSE;
-
-	if (svc_description == NULL)
-		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
-	else {
-		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
-		printf("&service=%s#comments'", url_encode(svc_description));
-	}
-	/* possible to implement a config option to show and hide comments tooltip in status.cgi */
-	/* but who wouldn't like to have these fancy tooltips ;-) */
-	if (TRUE) {
-		printf(" onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%% cellpadding=3>");
-		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td width=12%%>Time</td><td>Author / Comment</td></tr>");
-		for (temp_comment = get_first_comment_by_host(host_name); temp_comment != NULL; temp_comment = get_next_comment_by_host(host_name, temp_comment)) {
-			if ((svc_description == NULL && temp_comment->comment_type == HOST_COMMENT) || \
-			        (svc_description != NULL && temp_comment->comment_type == SERVICE_COMMENT && !strcmp(temp_comment->service_description, svc_description))) {
-				switch (temp_comment->entry_type) {
-				case USER_COMMENT:
-					comment_entry_type = "User";
-					break;
-				case DOWNTIME_COMMENT:
-					comment_entry_type = "Downtime";
-					break;
-				case FLAPPING_COMMENT:
-					comment_entry_type = "Flapping";
-					break;
-				case ACKNOWLEDGEMENT_COMMENT:
-					comment_entry_type = "Ack";
-					break;
-				}
-				snprintf(comment_data, sizeof(comment_data) - 1, "%s", temp_comment->comment_data);
-				comment_data[sizeof(comment_data)-1] = '\x0';
-
-				/* we need up to twice the space to do the conversion of single, double quotes and back slash's */
-				len = (int)strlen(comment_data);
-				output_len = len * 2;
-				if ((escaped_output_string = (char *)malloc(output_len + 1)) != NULL) {
-
-					strcpy(escaped_output_string, "");
-
-					for (x = 0, y = 0; x <= len; x++) {
-						/* end of string */
-						if ((char)comment_data[x] == (char)'\x0') {
-							escaped_output_string[y] = '\x0';
-							break;
-						} else if ((char)comment_data[x] == (char)'\n' || (char)comment_data[x] == (char)'\r') {
-							escaped_output_string[y] = ' ';
-						} else if ((char)comment_data[x] == (char)'\'') {
-							escaped_output_string[y] = '\x0';
-							if ((int)strlen(escaped_output_string) < (output_len - 2)) {
-								strcat(escaped_output_string, "\\'");
-								y += 2;
-							}
-						} else if ((char)comment_data[x] == (char)'"') {
-							escaped_output_string[y] = '\x0';
-							if ((int)strlen(escaped_output_string) < (output_len - 2)) {
-								strcat(escaped_output_string, "\\\"");
-								y += 2;
-							}
-						} else if ((char)comment_data[x] == (char)'\\') {
-							escaped_output_string[y] = '\x0';
-							if ((int)strlen(escaped_output_string) < (output_len - 2)) {
-								strcat(escaped_output_string, "\\\\");
-								y += 2;
-							}
-						} else
-							escaped_output_string[y++] = comment_data[x];
-
-					}
-					escaped_output_string[++y] = '\x0';
-				} else
-					strcpy(escaped_output_string, comment_data);
-
-				/* get entry time */
-				get_time_string(&temp_comment->entry_time, entry_time, (int)sizeof(entry_time), SHORT_DATE_TIME);
-
-				/* in the tooltips we have to escape all characters */
-				saved_escape_html_tags_var = escape_html_tags;
-				escape_html_tags = TRUE;
-
-				printf("<tr><td nowrap>%s</td><td nowrap>%s</td><td><span style=font-weight:bold;>%s</span><br>%s</td></tr>", comment_entry_type, entry_time, html_encode(temp_comment->author, TRUE), html_encode(escaped_output_string, TRUE));
-
-				escape_html_tags = saved_escape_html_tags_var;
-
-				free(escaped_output_string);
-			}
-		}
-		/* under http://www.ebrueggeman.com/skinnytip/documentation.php#reference you can find the config options of skinnytip */
-		printf("</table>', '&nbsp;&nbsp;&nbsp;Comments', 'border:1, width:600, bordercolor:#333399, title_padding:2px, titletextcolor:#FFFFFF, backcolor:#CCCCFF');\" onMouseOut=\"return hideTip()\"");
-	}
-	printf("><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d></A></TD>", url_images_path, COMMENT_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
-
-	return;
-}
 
 /******************************************************************/
 /*************  print name for displayed list *********************/
