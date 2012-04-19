@@ -12,57 +12,57 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 !!! ATTENTION !!!
 
 ENHANCEMENTS
-* core: notifications: Create contact list after eventbroker callbacks (Andreas Ericsson) #2110
-* core: fix event removal from queues with O(1) removal from doubly linked lists (Andreas Ericsson) #2183
-* core: avoid senseless looping when free()'ing macros (Andreas Ericsson) #2184
-* core: avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182
-* core: allow empty host groups in service and host dependencies if allow_empty_hostgroup_assignment flag is set (Daniel Wittenberg) #2255
-* core: fix compatibility problems on solaris 10 (affects core, cgis, ido) (Carl R. Friend) #2292
+* core: notifications: Create contact list after eventbroker callbacks (Andreas Ericsson) #2110 - MF
+* core: fix event removal from queues with O(1) removal from doubly linked lists (Andreas Ericsson) #2183 - MF
+* core: avoid senseless looping when free()'ing macros (Andreas Ericsson) #2184 - MF
+* core: avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182 - MF
+* core: allow empty host groups in service and host dependencies if allow_empty_hostgroup_assignment flag is set (Daniel Wittenberg) #2255 - MF
+* core: fix compatibility problems on solaris 10 (affects core, cgis, ido) (Carl R. Friend) #2292 - MF/RB/TD
 
-* classic ui: Added option for max log entries displayed in showlog.cgi #2145
-* classic ui: Added config option for status totals in status.cgi #2018
-* classic ui: Added multiple hosts/services to status.cgi GET #1981
-* classic ui: Added nostatusheader in status.cgi as config option #2018
-* classic ui: Added statusmap resizing with exclude/include button (thanks to Mat) #2186
-* classic ui: Added Select hosts or services by clicking on line instead of box #2118
-* classic ui: include graph icons by default in logos #2222
-* classic ui: added missing comment tool tip box to outages.cgi #2396
-* classic ui: add javascript to refresh page/pause easier #2119
-* classic ui: Added Scheduling queue filter for specific host or service #2421
-* classic ui: add display_status_totals as cgi.cfg option in order to allow the status totals to be shown again #2443
-* classic ui: Changed reading of auth information from cgiauth.c to cgiutils.c #2524
-* classic ui: Added readonly cgi.cfg view into the config section #1776
+* classic ui: Added option for max log entries displayed in showlog.cgi #2145 - RB
+* classic ui: Added config option for status totals in status.cgi #2018 - RB
+* classic ui: Added multiple hosts/services to status.cgi GET #1981 - RB
+* classic ui: Added nostatusheader in status.cgi as config option #2018 - RB
+* classic ui: Added statusmap resizing with exclude/include button (thanks to Mat) #2186 - RB
+* classic ui: Added Select hosts or services by clicking on line instead of box #2118 - RB
+* classic ui: include graph icons by default in logos #2222 - MF
+* classic ui: added missing comment tool tip box to outages.cgi #2396 - RB
+* classic ui: add javascript to refresh page/pause easier #2119 - RB
+* classic ui: Added Scheduling queue filter for specific host or service #2421 - RB
+* classic ui: add display_status_totals as cgi.cfg option in order to allow the status totals to be shown again #2443 - RB
+* classic ui: Changed reading of auth information from cgiauth.c to cgiutils.c #2524 - RB
+* classic ui: Added readonly cgi.cfg view into the config section #1776 - RB
 
-* idoutils: add new index for state in table statehistory #2274
+* idoutils: add new index for state in table statehistory #2274 - TD
 
-* install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121
-* install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344
-* install: change default target location of idomod.so from $bindir to $libdir #2346
+* install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121 - MF
+* install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344 - MF
+* install: change default target location of idomod.so from $bindir to $libdir #2346 - MF
 	** packagers dreams come finally true! :)
-* install: introduce "lib/" in default prefix install for modules #2347
-* install: revamp the broker_module entry in icinga.cfg pointing to new module definition #2348
-* install: change idomod extension from .o to .so, make .so the default extension for modules #2354
-* install: add configure target --with-eventhandler-dir and "make install-eventhandlers" for contrib/eventhandlers #2352
-* install: add --enable-cgi-log to configure to enable cgi logging during build #2364
-* install: fix configure --ido-instance-name is incorrect, missing 'with' (thx Marco) #2407
-* install: add --enable-nagiosenv to configure to expose custom variables with prefix NAGIOS_ instead of ICINGA_ for easier reuse of well known check scripts #2083
-* install: add --with-http-auth-file to allow different file/loc of htpasswd.users #2533
+* install: introduce "lib/" in default prefix install for modules #2347 - MF
+* install: revamp the broker_module entry in icinga.cfg pointing to new module definition #2348 - MF
+* install: change idomod extension from .o to .so, make .so the default extension for modules #2354 - MF
+* install: add configure target --with-eventhandler-dir and "make install-eventhandlers" for contrib/eventhandlers #2352 - MF
+* install: add --enable-cgi-log to configure to enable cgi logging during build #2364 - MF
+* install: fix configure --ido-instance-name is incorrect, missing 'with' (thx Marco) #2407 - MF
+* install: add --enable-nagiosenv to configure to expose custom variables with prefix NAGIOS_ instead of ICINGA_ for easier reuse of well known check scripts #2083 - TD
+* install: add --with-http-auth-file to allow different file/loc of htpasswd.users #2533 - MF
 
-* config: introduce conf.d as place for own configs #2360
+* config: introduce conf.d as place for own configs #2360 - MF
 
-* tests: replace libtap with an actively developed version #1192
-* tests: fix and rewrite perl tests in t/ #2369
+* tests: replace libtap with an actively developed version #1192 - MF
+* tests: fix and rewrite perl tests in t/ #2369 - AW
 
-* icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344
-* icinga.spec: make aware of the change of idomod.o location and changed extension (now .so) #2350
-* icinga.spec: add "README LICENSE Changelog UPGRADING" to all packages as docs (thx Michael Gruener) #2212
-* icinga.spec: put module/idoutils/db into docs instead of manually copying to /etc/icinga/idoutils (thx Michael Gruener) #2357
-* icinga.spec: add README.RHEL README.RHEL.idoutils to upstream, being installed as docs (thx Michael Gruener, Stefan Marx) #2212
-* icinga.spec: use eventhandler configure/make in package creation from #2352 #2363
-* icinga.spec: use --enable-cgi-log from upstream instead of manual sed #2365
-* icinga.spec: introduce conf.d as place for own configs #2367
-* icinga.spec: introduce icinga-idoutils-libdbi-mysql|pgsql as seperate packages #2361
-* icinga.spec: updates from rhel bug #1666
+* icinga.spec: use --with-plugin-dir instead of --libexexdir for nagios plugins dir #2344 - MF
+* icinga.spec: make aware of the change of idomod.o location and changed extension (now .so) #2350 - MF
+* icinga.spec: add "README LICENSE Changelog UPGRADING" to all packages as docs (thx Michael Gruener) #2212 - MF
+* icinga.spec: put module/idoutils/db into docs instead of manually copying to /etc/icinga/idoutils (thx Michael Gruener) #2357 - MF
+* icinga.spec: add README.RHEL README.RHEL.idoutils to upstream, being installed as docs (thx Michael Gruener, Stefan Marx) #2212 - MF
+* icinga.spec: use eventhandler configure/make in package creation from #2352 #2363 - MF
+* icinga.spec: use --enable-cgi-log from upstream instead of manual sed #2365 - MF
+* icinga.spec: introduce conf.d as place for own configs #2367 - MF
+* icinga.spec: introduce icinga-idoutils-libdbi-mysql|pgsql as seperate packages #2361 - MF
+* icinga.spec: updates from rhel bug #1666 - MF
 	** move pid file to _localstatedir/run/icinga.pid
 	** install icinga.logrotate example
 	** move ext cmd file location to _localstatedir/spool/icinga/cmd/icinga.cmd
@@ -72,40 +72,39 @@ ENHANCEMENTS
 	** add default /etc/icinga/passwd with icingaadmin:icingaadmin default login
 
 FIXES
-* core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109
-* core: mark services as executing only when we know we will actually run them (Andreas Ericsson) #2302
-* core: fix handling of allow_empty_hostgroup_assignment when hitting NULL'edhost_name attribute, now properly finishing #949
-* core: drop abbreviations in debug log and make them more telling #2138
+* core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109 - MF
+* core: mark services as executing only when we know we will actually run them (Andreas Ericsson) #2302 - MF
+* core: fix handling of allow_empty_hostgroup_assignment when hitting NULL'edhost_name attribute, now properly finishing #949 - MF
+* core: drop abbreviations in debug log and make them more telling #2138 - MF
 
-* classic ui: Fixed status totals are wrong when searching #1524
-* classic ui: Fixed wrong URLs for status.cgi overview #2173
-* classic ui: Fixed Host staus sorting in status.cgi not working #2220
-* classic ui: Fixed notifications.cgi - memory access error #2234
-* classic ui: Done clean up document_header() and unused vars in cgi's #2252
-* classic ui: Fixed status.cgi: host param not honoured with servicefilter #2262
-* classic ui: fixed Tooltip from action_url interfering with pnp4nagios integration #2198
-* classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343
-* classic ui: fixed invalid json output for tac.cgi #2160
-* classic ui: Fixed Invalid json data if field value is multiline #2263
-* classic ui: fixed Commit commands with more then 500 multiple pairs of hosts and services #2373
-* classic ui: fixed reset forms on return after submitting command #2117
-* classic ui: Change Excel icon to odf spreadsheet icon #2391
-* classic ui: fixed Availability Records Break if JavaScript is disabled #2412
-* classic ui: fixed Truncated HTML table when displaying outages in outages.cgi #2323
-* classic ui: fixed Log File Navigation in current/ealier/recent archive clarification #2441
+* classic ui: Fixed status totals are wrong when searching #1524 - RB
+* classic ui: Fixed wrong URLs for status.cgi overview #2173 - RB
+* classic ui: Fixed Host status sorting in status.cgi not working #2220 - RB
+* classic ui: Fixed notifications.cgi - memory access error #2234 - RB
+* classic ui: Done clean up document_header() and unused vars in cgi's #2252 - RB
+* classic ui: Fixed status.cgi: host param not honoured with servicefilter #2262 - RB
+* classic ui: fixed Tooltip from action_url interfering with pnp4nagios integration #2198 - RB
+* classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343 - RB
+* classic ui: fixed invalid json output for tac.cgi #2160 - RB
+* classic ui: Fixed Invalid json data if field value is multiline #2263 - RB
+* classic ui: fixed Commit commands with more then 500 multiple pairs of hosts and services #2373 - RB
+* classic ui: fixed reset forms on return after submitting command #2117 - RB
+* classic ui: Change Excel icon to odf spreadsheet icon #2391 - RB
+* classic ui: fixed Availability Records Break if JavaScript is disabled #2412 - RB
+* classic ui: fixed Truncated HTML table when displaying outages in outages.cgi #2323 - RB
+* classic ui: fixed Log File Navigation in current/ealier/recent archive clarification #2441 - RB
 
-* idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
-* idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
-* idoutils: fix several build problems in solaris: use supplied sprintf functions in preference over local one, build .so instead of .o shared librarys, use explicit -fPIC compiler switch  #524,#1772,#2354
-* idoutils: fix core dumps in solaris when using os supplied printf functions
-#2271,#1253,#2503,#2292
-* idoutils: fix lob handling in Oracle #2303,#2342
-* idoutils: fix sample shell db create script for mysql #2358
-* idoutils: fix OCI-21500 when freeing lobs #2509
-* idoutils: add note to "if process data is not dumped via idomod, ido2db won't clean tables and set objects inactive" #2237
-* idoutils: fix pgsql unix_timestamp cannot handle timstamp with timezone #2203
+* idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319 - MF
+* idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974 - MF
+* idoutils: fix several build problems in solaris: use supplied sprintf functions in preference over local one, build .so instead of .o shared librarys, use explicit -fPIC compiler switch  #524,#1772,#2354 - TD
+* idoutils: fix core dumps in solaris when using os supplied printf functions #2271,#1253,#2503,#2292 - TD
+* idoutils: fix lob handling in Oracle #2303,#2342 - TD
+* idoutils: fix sample shell db create script for mysql #2358 - TD
+* idoutils: fix OCI-21500 when freeing lobs #2509 - TD
+* idoutils: add note to "if process data is not dumped via idomod, ido2db won't clean tables and set objects inactive" #2237 - MF
+* idoutils: fix pgsql unix_timestamp cannot handle timstamp with timezone #2203 - MF
 
-* install: Fix notification template installation (Todd Zullinger) #2235
+* install: Fix notification template installation (Todd Zullinger) #2235 - MF
 
 CHANGES
 * neb api: move creation of notification contact list AFTER event broker callback NEBTYPE_NOTIFICATION_START #2110
