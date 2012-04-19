@@ -18,7 +18,7 @@ ScriptAlias @cgiurl@ "@sbindir@"
 #  Allow from 127.0.0.1
    AuthName "Icinga Access"
    AuthType Basic
-   AuthUserFile @sysconfdir@/htpasswd.users
+   AuthUserFile @HTTPAUTHFILE@
    Require valid-user
 </Directory>
 
@@ -35,7 +35,7 @@ Alias @htmurl@ "@datadir@/"
 #  Allow from 127.0.0.1
    AuthName "Icinga Access"
    AuthType Basic
-   AuthUserFile @sysconfdir@/htpasswd.users
+   AuthUserFile @HTTPAUTHFILE@
    Require valid-user
 </Directory>
 

@@ -326,6 +326,15 @@ if test x$TMPFILE = xno; then
 AC_SUBST(TMPFILE)
 
 
+dnl Location of http auth file
+HTTPAUTHFILE=no
+AC_ARG_WITH(http-auth-file,AC_HELP_STRING([--with-http-auth-file=<filepath>],[sets path to an Icinga HTTP auth file]),HTTPAUTHFILE=$withval,HTTPAUTHFILE=no)
+if test x$HTTPAUTHFILE = xno; then
+                HTTPAUTHFILE="$sysconfdir/htpasswd.users"
+        fi
+AC_SUBST(HTTPAUTHFILE)
+
+
 dnl Location of plugin path
 PLUGINDIR=no
 AC_ARG_WITH(plugin-dir,AC_HELP_STRING([--with-plugin-dir=<path>],[sets path to plugins directory path i.e. $prefix/libexec]),PLUGINDIR=$withval,PLUGINDIR=no)
@@ -1359,6 +1368,7 @@ fi
 AC_MSG_RESULT([        Install \${prefix}:  $prefix])
 AC_MSG_RESULT([                Lock file:  $lockfile])
 AC_MSG_RESULT([                Temp file:  $TMPFILE])
+AC_MSG_RESULT([           HTTP auth file:  $HTTPAUTHFILE])
 AC_MSG_RESULT([            Lib directory:  $libdir])
 AC_MSG_RESULT([            Bin directory:  $bindir])
 AC_MSG_RESULT([         Plugin directory:  $PLUGINDIR])

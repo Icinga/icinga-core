@@ -46,6 +46,7 @@ ENHANCEMENTS
 * install: add --enable-cgi-log to configure to enable cgi logging during build #2364
 * install: fix configure --ido-instance-name is incorrect, missing 'with' (thx Marco) #2407
 * install: add --enable-nagiosenv to configure to expose custom variables with prefix NAGIOS_ instead of ICINGA_ for easier reuse of well known check scripts #2083
+* install: add --with-http-auth-file to allow different file/loc of htpasswd.users #2533
 
 * config: introduce conf.d as place for own configs #2360
 
@@ -125,6 +126,9 @@ CHANGES
 
 * install: --enable-cgi-log #2364
 	** enables cgi logging (EXPERIMENTAL)
+
+* install: --with-http-auth-file #2533
+	** sets location/name of htpasswd.users
 
 * config: $sysconfdir/conf.d #2360
 
