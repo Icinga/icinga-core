@@ -78,6 +78,7 @@ FIXES
 * idoutils: fix sample shell db create script for mysql #2358
 * idoutils: fix OCI-21500 when freeing lobs #2509
 * idoutils: add note to "if process data is not dumped via idomod, ido2db won't clean tables and set objects inactive" #2237
+* idoutils: fix pgsql unix_timestamp cannot handle timstamp with timezone #2203
 
 * install: Fix notification template installation (Todd Zullinger) #2235
 
@@ -120,6 +121,8 @@ CHANGES
 * idoutils: enlarge field "FAILURE_PREDICTION_OPTIONS" in table hosts from 64 to 128 Bytes #2479
 
 * idoutils: Oracle only->change method retrieving lastid, introduce individual sequence caching sizes #2510 
+
+* idoutils: fix pgsql unix_timestamp cannot handle timstamp with timezone #2203
 
 
 1.6.1 - 02/12/2011

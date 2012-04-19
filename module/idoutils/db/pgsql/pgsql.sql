@@ -5,7 +5,7 @@
 -- Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
 --
 -- initial version: 2009-05-13 Markus Manzke
--- current version: 2010-07-20 Michael Friedrich <michael.friedrich@univie.ac.at>
+-- current version: 2012-04-19 Michael Friedrich <michael.friedrich@univie.ac.at>
 --
 -- --------------------------------------------------------
 
@@ -13,13 +13,12 @@
 -- Functions
 --
 
-CREATE OR REPLACE FUNCTION from_unixtime(integer) RETURNS timestamp AS '
-	 SELECT to_timestamp($1)::timestamp AS result
+CREATE OR REPLACE FUNCTION from_unixtime(integer) RETURNS timestamp with time zone AS '
+         SELECT to_timestamp($1) AS result
 ' LANGUAGE 'SQL';
 
--- timestamp without time zone (i.e. 1973-11-29 21:33:09)
-CREATE OR REPLACE FUNCTION unix_timestamp(timestamp) RETURNS bigint AS '
-	SELECT EXTRACT(EPOCH FROM $1)::bigint AS result;
+CREATE OR REPLACE FUNCTION unix_timestamp(timestamp with time zone) RETURNS bigint AS '
+        SELECT EXTRACT(EPOCH FROM $1)::bigint AS result;
 ' LANGUAGE 'SQL';
 
 
