@@ -6,7 +6,7 @@
 #
 # ExclusiveDist: el5 el6
 
-%define revision 5
+%define revision 1
 
 %define logdir %{_localstatedir}/log/icinga
 
