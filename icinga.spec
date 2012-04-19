@@ -8,6 +8,8 @@
 
 %define revision 1
 
+%define logmsg logger -t %{name}/rpm
+
 %define logdir %{_localstatedir}/log/icinga
 
 %define apacheconfdir  %{_sysconfdir}/httpd/conf.d
@@ -16,7 +18,7 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.7.0-dev
+Version: 1.7.0
 Release: %{revision}%{?dist}
 License: GPLv2
 Group: Applications/System
@@ -59,14 +61,28 @@ Requires: %{name}-doc
 %description gui
 This package contains the webgui (html,css,cgi etc.) for %{name}
 
-%package idoutils
+%package idoutils-libdbi-mysql
 Summary: database broker module for %{name}
 Group: Applications/System
 Requires: %{name} = %{version}-%{release}
+Requires: libdbi-dbd-mysql
+Conflicts: %{name}-idoutils-libdbi-pgsql
 
-%description idoutils
+%description idoutils-libdbi-mysql
 This package contains the idoutils broker module for %{name} which provides
-database storage via libdbi.
+database storage via libdbi and mysql.
+
+%package idoutils-libdbi-pgsql
+Summary: database broker module for %{name}
+Group: Applications/System
+Requires: %{name} = %{version}-%{release}
+Requires: libdbi-dbd-pgsql
+Conflicts: %{name}-idoutils-libdbi-mysql
+
+%description idoutils-libdbi-pgsql
+This package contains the idoutils broker module for %{name} which provides
+database storage via libdbi and pgsql.
+
 
 %package doc
 Summary: documentation %{name}
@@ -163,12 +179,46 @@ fi
 # Add apacheuser in the icingacmd group
   /usr/sbin/usermod -a -G icingacmd %{apacheuser}
 
-%post idoutils
+
+%post idoutils-libdbi-mysql
 /sbin/chkconfig --add ido2db
 
-%preun idoutils
+%logmsg "idoutils-libdbi-mysql installed. don't forget to install/upgrade db schema, check README.RHEL.idoutils"
+
+%preun idoutils-libdbi-mysql
 if [ $1 -eq 0 ]; then
-    /sbin/service idoutils stop &>/dev/null || :
+    /sbin/service ido2db stop &>/dev/null || :
+    /sbin/chkconfig --del ido2db
+fi
+
+%post idoutils-libdbi-pgsql
+/sbin/chkconfig --add ido2db
+### change ido2db.cfg to match pgsql config
+# check if this is an upgrade
+if [ $1 -eq 2 ]
+then
+	%{__cp} %{_sysconfdir}/icinga/ido2db.cfg %{_sysconfdir}/icinga/ido2db.cfg.pgsql
+	%{__perl} -pi -e '
+        	s|db_servertype=mysql|db_servertype=pgsql|;
+	        s|db_port=3306|db_port=5432|;
+	   ' %{_sysconfdir}/icinga/ido2db.cfg.pgsql
+	%logmsg "Warning: upgrade, pgsql config written to ido2db.cfg.pgsql"
+fi
+# install
+if [ $1 -eq 1 ]
+then
+	%{__perl} -pi -e '
+        	s|db_servertype=mysql|db_servertype=pgsql|;
+	        s|db_port=3306|db_port=5432|;
+	   ' %{_sysconfdir}/icinga/ido2db.cfg
+fi
+
+%logmsg "idoutils-libdbi-pgsql installed. don't forget to install/upgrade db schema, check README.RHEL.idoutils"
+
+
+%preun idoutils-libdbi-pgsql
+if [ $1 -eq 0 ]; then
+    /sbin/service ido2db stop &>/dev/null || :
     /sbin/chkconfig --del ido2db
 fi
 
@@ -249,7 +299,7 @@ fi
 %attr(664,icinga,icingacmd) %{logdir}/gui/index.htm
 %attr(664,icinga,icingacmd) %{logdir}/gui/.htaccess
 
-%files idoutils
+%files idoutils-libdbi-mysql
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
 %attr(755,-,-) %{_initrddir}/ido2db
@@ -261,7 +311,27 @@ fi
 %{_bindir}/log2ido
 %{_libdir}/icinga/idomod.so
 
+%files idoutils-libdbi-pgsql
+%defattr(-,root,root,-)
+%doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
+%attr(755,-,-) %{_initrddir}/ido2db
+%config(noreplace) %{_sysconfdir}/icinga/ido2db.cfg
+%config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
+%config(noreplace) %{_sysconfdir}/icinga/modules/idoutils.cfg
+%config(noreplace) %{_sysconfdir}/icinga/objects/ido2db_check_proc.cfg
+%{_bindir}/ido2db
+%{_bindir}/log2ido
+%{_libdir}/icinga/idomod.so
+
+
 %changelog
+* Thu Apr 19 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.0-1
+- drop idoutils, add idoutils-libdbi-mysql and idoutils-libdbi-pgsql
+- add requires for libdbi drivers mysql and pgsql
+- add conflicts vice versa to mysql and pgsql libdbi package
+- sed ido2db.cfg for idoutils-libdbi-pgsql to match pgsql config on upgrade
+- log info message for idoutils to create db
+
 * Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
 - add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
 - use newly introduced --with-eventhandler-dir and make install-eventhandlers

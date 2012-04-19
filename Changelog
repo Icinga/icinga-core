@@ -61,6 +61,7 @@ ENHANCEMENTS
 * icinga.spec: use eventhandler configure/make in package creation from #2352 #2363
 * icinga.spec: use --enable-cgi-log from upstream instead of manual sed #2365
 * icinga.spec: introduce conf.d as place for own configs #2367
+* icinga.spec: introduce icinga-idoutils-libdbi-mysql|pgsql as seperate packages #2361
 * idoutils: add new index for state in table statehistory #2274
 
 FIXES
