@@ -32,16 +32,21 @@ automatically.
 3. If you need or want the classic gui, install icinga-gui. If you want plain
    monitoring with icinga core and configure everything else by hand, you are done.
 
+3.1 An example user icingaadmin with password icingaadmin is installed to
+	/etc/icinga/passwd
+
 3.1 Add a new basic auth user for apache:
-	# htpasswd -c /etc/icinga/htpasswd.users icingaadmin
+	# htpasswd /etc/icinga/passwd youradmin
 
 4. Optional: install icinga-idoutils. Icinga Data Output Utils are necessary for
    various database backed guis such as Icinga Web or Icinga Reporting. IDOUtils
    use the libdbi database abstraction layer and can use MySQL or Postgresql with
    this package.
+	- icinga-idoutils-libdbi-mysql
+	- icinga-idoutils-libdbi-pgsql
 
 4.1 Create the idoutils database. For details see the README.RHEL.idoutils of the
-    icinga-idoutils package.
+    icinga-idoutils-libdbi-* package.
     Detailed information can be found in the "Creation of Database and IDOUtils" section
     in the official docs as well as the wiki howtos.
     http://docs.icinga.org/latest/en/quickstart-idoutils.html
