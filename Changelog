@@ -62,6 +62,14 @@ ENHANCEMENTS
 * icinga.spec: use --enable-cgi-log from upstream instead of manual sed #2365
 * icinga.spec: introduce conf.d as place for own configs #2367
 * icinga.spec: introduce icinga-idoutils-libdbi-mysql|pgsql as seperate packages #2361
+* icinga.spec: updates from rhel bug #1666
+	** move pid file to _localstatedir/run/icinga.pid
+	** install icinga.logrotate example
+	** move ext cmd file location to _localstatedir/spool/icinga/cmd/icinga.cmd
+	** set icinga user's home to _localstatedir/spool/icinga
+	** move checkresults to _localstatedir/spool/icinga/checkresults
+	** use --with-http-auth-file from #2533
+	** add default /etc/icinga/passwd with icingaadmin:icingaadmin default login
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109

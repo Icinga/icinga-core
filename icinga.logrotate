@@ -1,0 +1,15 @@
+# Important! Icinga rotates its own logs.  Only enable this logrotate if you
+# know what you are doing!
+# This example is made for RHEL/Fedora packages.
+
+# For more information please see "log_rotate_method" in:
+# /etc/icinga/icinga.cfg
+
+# ----- logrotate config -------------
+#/var/log/icinga/*.log {
+#       missingok
+#       weekly
+#       notifempty
+#       nocompress
+#       create 644 icinga icinga
+#}

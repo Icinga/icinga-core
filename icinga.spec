@@ -10,7 +10,8 @@
 
 %define logmsg logger -t %{name}/rpm
 
-%define logdir %{_localstatedir}/log/icinga
+%define logdir %{_localstatedir}/log/%{name}
+%define plugindir %{_libdir}/nagios/plugins
 
 %define apacheconfdir  %{_sysconfdir}/httpd/conf.d
 %define apacheuser apache
@@ -97,22 +98,23 @@ Documentation for %{name}
 
 %build
 %configure \
-    --datadir="%{_datadir}/icinga" \
-    --datarootdir="%{_datadir}/icinga" \
-    --libexecdir="%{_libdir}/nagios/plugins" \
-    --localstatedir="%{_localstatedir}/icinga" \
-    --with-checkresult-dir="%{_localstatedir}/icinga/checkresults" \
-    --libdir="%{_libdir}/icinga" \
-    --sbindir="%{_libdir}/icinga/cgi" \
-    --sysconfdir="%{_sysconfdir}/icinga" \
-    --with-cgiurl="/icinga/cgi-bin" \
+    --prefix=%{_datadir}/%{name} \
+    --exec-prefix=%{_localstatedir}/lib/%{name} \
+    --datadir="%{_datadir}/%{name}" \
+    --datarootdir="%{_datadir}/%{name}" \
+    --libexecdir="%{plugindir}" \
+    --localstatedir="%{_localstatedir}/%{name}" \
+    --libdir="%{_libdir}/%{name}" \
+    --sbindir="%{_libdir}/%{name}/cgi" \
+    --sysconfdir="%{_sysconfdir}/%{name}" \
+    --with-cgiurl="/%{name}/cgi-bin" \
     --with-command-user="icinga" \
     --with-command-group="icingacmd" \
     --with-gd-lib="%{_libdir}" \
     --with-gd-inc="%{_includedir}" \
     --with-htmurl="/icinga" \
     --with-init-dir="%{_initrddir}" \
-    --with-lockfile="%{_localstatedir}/icinga/icinga.pid" \
+    --with-lockfile="%{_localstatedir}/run/%{name}.pid" \
     --with-mail="/bin/mail" \
     --with-icinga-user="icinga" \
     --with-icinga-group="icinga" \
@@ -126,9 +128,13 @@ Documentation for %{name}
     --with-log-dir=%{logdir} \
     --enable-cgi-log \
     --with-cgi-log-dir=%{logdir}/gui \
-    --with-plugin-dir="%{_libdir}/nagios/plugins" \
-    --with-eventhandler-dir="%{_libdir}/icinga/eventhandlers" \
-    --with-p1-file-dir="%{_libdir}/icinga"
+    --with-plugin-dir="%{plugindir}" \
+    --with-eventhandler-dir="%{_libdir}/%{name}/eventhandlers" \
+    --with-p1-file-dir="%{_libdir}/%{name}" \
+    --with-checkresult-dir="%{_localstatedir}/spool/%{name}/checkresults" \
+    --with-ext-cmd-file-dir="%{_localstatedir}/spool/%{name}/cmd" \
+    --with-http-auth-file="%{_sysconfdir}/%{name}/passwd"
+
 %{__make} %{?_smp_mflags} all
 
 %install
@@ -159,15 +165,24 @@ mv %{buildroot}%{_sysconfdir}/icinga/modules/idoutils.cfg-sample %{buildroot}%{_
 ### remove icinga-api
 %{__rm} -rf %{buildroot}%{_datadir}/icinga/icinga-api
 
+# install logrotate rule
+install -D -m 0644 icinga.logrotate %{buildroot}%{_sysconfdir}/logrotate.d/%{name}
+
+# install sample htpasswd file
+install -D -m 0644 icinga.htpasswd %{buildroot}%{_sysconfdir}/%{name}/passwd
+
 %pre
 # Add icinga user
-/usr/sbin/groupadd icinga 2> /dev/null || :
-/usr/sbin/groupadd icingacmd 2> /dev/null || :
-/usr/sbin/useradd -c "icinga" -s /sbin/nologin -r -d /var/icinga -G icingacmd -g icinga icinga 2> /dev/null || :
+%{_sbindir}/groupadd icinga 2> /dev/null || :
+%{_sbindir}/groupadd icingacmd 2> /dev/null || :
+%{_sbindir}/useradd -c "icinga" -s /sbin/nologin -r -d %{_localstatedir}/spool/%{name} -G icingacmd -g icinga icinga 2> /dev/null || :
 
 
 %post
 /sbin/chkconfig --add icinga
+# restart httpd for auth change
+/sbin/service httpd condrestart > /dev/null 2>&1 || :
+
 
 %preun
 if [ $1 -eq 0 ]; then
@@ -175,9 +190,12 @@ if [ $1 -eq 0 ]; then
     /sbin/chkconfig --del icinga
 fi
 
+%postun
+/sbin/service httpd condrestart > /dev/null 2>&1 || :
+
 %pre gui
 # Add apacheuser in the icingacmd group
-  /usr/sbin/usermod -a -G icingacmd %{apacheuser}
+  %{_sbindir}/usermod -a -G icingacmd %{apacheuser}
 
 
 %post idoutils-libdbi-mysql
@@ -199,18 +217,18 @@ if [ $1 -eq 2 ]
 then
 	%{__cp} %{_sysconfdir}/icinga/ido2db.cfg %{_sysconfdir}/icinga/ido2db.cfg.pgsql
 	%{__perl} -pi -e '
-        	s|db_servertype=mysql|db_servertype=pgsql|;
-	        s|db_port=3306|db_port=5432|;
-	   ' %{_sysconfdir}/icinga/ido2db.cfg.pgsql
+		s|db_servertype=mysql|db_servertype=pgsql|;
+		s|db_port=3306|db_port=5432|;
+		' %{_sysconfdir}/icinga/ido2db.cfg.pgsql
 	%logmsg "Warning: upgrade, pgsql config written to ido2db.cfg.pgsql"
 fi
 # install
 if [ $1 -eq 1 ]
 then
 	%{__perl} -pi -e '
-        	s|db_servertype=mysql|db_servertype=pgsql|;
-	        s|db_port=3306|db_port=5432|;
-	   ' %{_sysconfdir}/icinga/ido2db.cfg
+		s|db_servertype=mysql|db_servertype=pgsql|;
+		s|db_port=3306|db_port=5432|;
+		' %{_sysconfdir}/icinga/ido2db.cfg
 fi
 
 %logmsg "idoutils-libdbi-pgsql installed. don't forget to install/upgrade db schema, check README.RHEL.idoutils"
@@ -230,98 +248,101 @@ fi
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING README.RHEL
 %attr(755,-,-) %{_initrddir}/icinga
-%dir %{_sysconfdir}/icinga
-%dir %{_sysconfdir}/icinga/modules
-%config(noreplace) %{_sysconfdir}/icinga/icinga.cfg
-%dir %{_sysconfdir}/icinga/objects
-%dir %{_sysconfdir}/icinga/conf.d
-%config(noreplace) %{_sysconfdir}/icinga/objects/commands.cfg
-%config(noreplace) %{_sysconfdir}/icinga/objects/contacts.cfg
-%config(noreplace) %{_sysconfdir}/icinga/objects/notifications.cfg
-%config(noreplace) %{_sysconfdir}/icinga/objects/localhost.cfg
-%config(noreplace) %{_sysconfdir}/icinga/objects/printer.cfg
-%config(noreplace) %{_sysconfdir}/icinga/objects/switch.cfg
-%config(noreplace) %{_sysconfdir}/icinga/objects/templates.cfg
-%config(noreplace) %{_sysconfdir}/icinga/objects/timeperiods.cfg
-%config(noreplace) %{_sysconfdir}/icinga/objects/windows.cfg
-%config(noreplace) %attr(640,icinga,icinga) %{_sysconfdir}/icinga/resource.cfg
+%dir %{_sysconfdir}/%{name}
+%dir %{_sysconfdir}/%{name}/modules
+%config(noreplace) %{_sysconfdir}/%{name}/icinga.cfg
+%dir %{_sysconfdir}/%{name}/objects
+%dir %{_sysconfdir}/%{name}/conf.d
+%config(noreplace) %{_sysconfdir}/%{name}/objects/commands.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/objects/contacts.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/objects/notifications.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/objects/localhost.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/objects/printer.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/objects/switch.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/objects/templates.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/objects/timeperiods.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/objects/windows.cfg
+%config(noreplace) %attr(640,icinga,icinga) %{_sysconfdir}/%{name}/resource.cfg
 %attr(755,-,-) %{_bindir}/icinga
 %attr(755,-,-) %{_bindir}/icingastats
 %attr(755,-,-) %{_libdir}/icinga/p1.pl
-%{_libdir}/icinga/eventhandlers
+%{_libdir}/%{name}/eventhandlers
 %defattr(-,icinga,icinga,-)
 %{logdir}
 %{logdir}/archives
-%dir %{_localstatedir}/icinga
-%dir %{_localstatedir}/icinga/checkresults
-%attr(2755,icinga,icingacmd) %{_localstatedir}/icinga/rw/
+%dir %{_localstatedir}/%{name}
+%dir %{_localstatedir}/spool/%{name}
+%dir %{_localstatedir}/spool/%{name}/checkresults
+%attr(2755,icinga,icingacmd) %{_localstatedir}/spool/%{name}/cmd
 
 %files doc
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING README.RHEL
-%{_datadir}/icinga/docs
+%{_datadir}/%{name}/docs
 
 %files gui
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING README.RHEL
 %config(noreplace) %{apacheconfdir}/icinga.conf
-%config(noreplace) %{_sysconfdir}/icinga/cgi.cfg
-%config(noreplace) %{_sysconfdir}/icinga/cgiauth.cfg
-%{_libdir}/icinga/cgi/avail.cgi
-%{_libdir}/icinga/cgi/cmd.cgi
-%{_libdir}/icinga/cgi/config.cgi
-%{_libdir}/icinga/cgi/extinfo.cgi
-%{_libdir}/icinga/cgi/histogram.cgi
-%{_libdir}/icinga/cgi/history.cgi
-%{_libdir}/icinga/cgi/notifications.cgi
-%{_libdir}/icinga/cgi/outages.cgi
-%{_libdir}/icinga/cgi/showlog.cgi
-%{_libdir}/icinga/cgi/status.cgi
-%{_libdir}/icinga/cgi/statusmap.cgi
-%{_libdir}/icinga/cgi/statuswml.cgi
-%{_libdir}/icinga/cgi/statuswrl.cgi
-%{_libdir}/icinga/cgi/summary.cgi
-%{_libdir}/icinga/cgi/tac.cgi
-%{_libdir}/icinga/cgi/trends.cgi
-%dir %{_datadir}/icinga
-%{_datadir}/icinga/contexthelp
-%{_datadir}/icinga/images
-%{_datadir}/icinga/index.html
-%{_datadir}/icinga/js
-%{_datadir}/icinga/main.html
-%{_datadir}/icinga/media
-%{_datadir}/icinga/menu.html
-%{_datadir}/icinga/robots.txt
-%{_datadir}/icinga/sidebar.html
-%{_datadir}/icinga/ssi
-%{_datadir}/icinga/stylesheets
+%config(noreplace) %{_sysconfdir}/%{name}/cgi.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/cgiauth.cfg
+%attr(0640,root,apache) %config(noreplace) %{_sysconfdir}/%{name}/passwd
+%{_libdir}/%{name}/cgi/avail.cgi
+%{_libdir}/%{name}/cgi/cmd.cgi
+%{_libdir}/%{name}/cgi/config.cgi
+%{_libdir}/%{name}/cgi/extinfo.cgi
+%{_libdir}/%{name}/cgi/histogram.cgi
+%{_libdir}/%{name}/cgi/history.cgi
+%{_libdir}/%{name}/cgi/notifications.cgi
+%{_libdir}/%{name}/cgi/outages.cgi
+%{_libdir}/%{name}/cgi/showlog.cgi
+%{_libdir}/%{name}/cgi/status.cgi
+%{_libdir}/%{name}/cgi/statusmap.cgi
+%{_libdir}/%{name}/cgi/statuswml.cgi
+%{_libdir}/%{name}/cgi/statuswrl.cgi
+%{_libdir}/%{name}/cgi/summary.cgi
+%{_libdir}/%{name}/cgi/tac.cgi
+%{_libdir}/%{name}/cgi/trends.cgi
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/contexthelp
+%{_datadir}/%{name}/images
+%{_datadir}/%{name}/index.html
+%{_datadir}/%{name}/js
+%{_datadir}/%{name}/main.html
+%{_datadir}/%{name}/media
+%{_datadir}/%{name}/menu.html
+%{_datadir}/%{name}/robots.txt
+%{_datadir}/%{name}/sidebar.html
+%{_datadir}/%{name}/ssi
+%{_datadir}/%{name}/stylesheets
 %attr(2775,icinga,icingacmd) %dir %{logdir}/gui
 %attr(664,icinga,icingacmd) %{logdir}/gui/index.htm
 %attr(664,icinga,icingacmd) %{logdir}/gui/.htaccess
+
 
 %files idoutils-libdbi-mysql
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
 %attr(755,-,-) %{_initrddir}/ido2db
-%config(noreplace) %{_sysconfdir}/icinga/ido2db.cfg
-%config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
-%config(noreplace) %{_sysconfdir}/icinga/modules/idoutils.cfg
-%config(noreplace) %{_sysconfdir}/icinga/objects/ido2db_check_proc.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/idomod.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/modules/idoutils.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/objects/ido2db_check_proc.cfg
 %{_bindir}/ido2db
 %{_bindir}/log2ido
-%{_libdir}/icinga/idomod.so
+%{_libdir}/%{name}/idomod.so
 
 %files idoutils-libdbi-pgsql
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
 %attr(755,-,-) %{_initrddir}/ido2db
-%config(noreplace) %{_sysconfdir}/icinga/ido2db.cfg
-%config(noreplace) %{_sysconfdir}/icinga/idomod.cfg
-%config(noreplace) %{_sysconfdir}/icinga/modules/idoutils.cfg
-%config(noreplace) %{_sysconfdir}/icinga/objects/ido2db_check_proc.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/idomod.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/modules/idoutils.cfg
+%config(noreplace) %{_sysconfdir}/%{name}/objects/ido2db_check_proc.cfg
 %{_bindir}/ido2db
 %{_bindir}/log2ido
-%{_libdir}/icinga/idomod.so
+%{_libdir}/%{name}/idomod.so
 
 
 %changelog
@@ -331,6 +352,16 @@ fi
 - add conflicts vice versa to mysql and pgsql libdbi package
 - sed ido2db.cfg for idoutils-libdbi-pgsql to match pgsql config on upgrade
 - log info message for idoutils to create db
+- use the _sbindir macro instead of hardcoded /usr/sbin
+- move pid file to _localstatedir/run/icinga.pid
+- use name macro instead of hardcoded "icinga" everywhere
+- introduce plugindir macro for global usage
+- install icinga.logrotate example
+- move ext cmd file location to _localstatedir/spool/icinga/cmd/icinga.cmd
+- set icinga user's home to _localstatedir/spool/icinga
+- move checkresults to _localstatedir/spool/icinga/checkresults
+- use --with-http-auth-file from #2533
+- add default /etc/icinga/passwd with icingaadmin:icingaadmin default login
 
 * Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
 - add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
