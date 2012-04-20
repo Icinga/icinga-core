@@ -76,6 +76,7 @@ FIXES
 * core: mark services as executing only when we know we will actually run them (Andreas Ericsson) #2302 - MF
 * core: fix handling of allow_empty_hostgroup_assignment when hitting NULL'edhost_name attribute, now properly finishing #949 - MF
 * core: drop abbreviations in debug log and make them more telling #2138 - MF
+* core: remove deprecated code for log_external_commands_user #1619 - MF
 
 * classic ui: Fixed status totals are wrong when searching #1524 - RB
 * classic ui: Fixed wrong URLs for status.cgi overview #2173 - RB

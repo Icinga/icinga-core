@@ -127,8 +127,6 @@ char		log_archive_path[MAX_INPUT_BUFFER];
 int		status_update_interval = 60;
 int             check_external_commands = 0;
 
-int             log_external_commands_user = FALSE;
-
 int             date_format = DATE_FORMAT_US;
 
 int             use_authentication = TRUE;
@@ -823,12 +821,6 @@ int read_main_config_file(char *filename) {
 			temp_buffer = strtok(input, "=");
 			temp_buffer = strtok(NULL, "\x0");
 			check_external_commands = (temp_buffer == NULL) ? 0 : atoi(temp_buffer);
-		}
-
-		else if (strstr(input, "log_external_commands_user=") == input) {
-			temp_buffer = strtok(input, "=");
-			temp_buffer = strtok(NULL, "\x0");
-			log_external_commands_user = (temp_buffer == NULL) ? 0 : atoi(temp_buffer);
 		}
 
 		else if (strstr(input, "date_format=") == input) {

@@ -263,8 +263,6 @@ int             syslog_local_facility = DEFAULT_SYSLOG_LOCAL_FACILITY;
 
 int             log_current_states = DEFAULT_LOG_CURRENT_STATES;
 
-int             log_external_commands_user = DEFAULT_LOG_EXTERNAL_COMMANDS_USER;
-
 int             log_long_plugin_output = DEFAULT_LOG_LONG_PLUGIN_OUTPUT;
 
 int             service_check_timeout_state = STATE_CRITICAL;
