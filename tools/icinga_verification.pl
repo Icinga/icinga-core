@@ -29,6 +29,8 @@ use Term::ANSIColor;
 use Env qw (LANG);
 use Getopt::Long;
 
+# sub stubs
+sub get_key_from_ini ($$);
 ################################
 # Option parsing
 ################################
@@ -119,10 +121,10 @@ my $date = localtime();
 
 #Apache Info
 #FIXME we need a way of testing several binarynames. on debian this is apache2
-my $apacheinfo = (qx(httpd -V))[0,2,3,5,6,7,8];
+my @apacheinfo = (qx(httpd -V))[0,2,3,5,6,7,8];
 
 #Mysql Info
-my $mysqlver = (split(",", qx(mysql -V)))[0]
+my $mysqlver = (split(",", qx(mysql -V)))[0];
 
 ######ADD JAVA HOMES, ORCALE HOMES, PATH -> via env | grep ######
 
@@ -278,3 +280,24 @@ my @services = ('httpd', 'mysqld', 'snmptt', 'icinga', 'ido2db');
 print " ############################################################\n";
 
 exit;
+
+sub get_key_from_ini ($$) {
+        my ($file, $key) = @_; 
+
+        if (! -f $file) {
+                print STDERR "Inifile $file does not exist\n";
+                return;
+        }   
+
+        if (open(my $fh, '<', $file)) {
+                while (my $line = <$fh>) {
+                        chmod($line);
+                        if ($line =~ /^\s*$key=([^\s]+)/) {
+                                print "$key = $1\n";
+                        }   
+                }   
+        } else {
+                print STDERR "Could not open initfile $file: $!\n";
+        }   
+}
+
