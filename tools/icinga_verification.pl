@@ -121,8 +121,7 @@ my @apacheinfo = `httpd -V`;
 chomp(@apacheinfo);
 
 #Mysql Info
-my $mysqlver = `mysql -V`;
-my @mysqlver_split = split(',', $mysqlver);
+my $mysqlver = (split(",", qx(mysql -V)))[0]
 
 ######ADD JAVA HOMES, ORCALE HOMES, PATH -> via env | grep ######
 
@@ -253,7 +252,7 @@ print " Environment-$LANG";
 print "\n Webserver Information:\n";
 print " $apacheinfo[0] \n $apacheinfo[2] \n $apacheinfo[3] \n $apacheinfo[5] \n $apacheinfo[6] \n $apacheinfo[7] \n $apacheinfo[8] \n";
 print "\n PHP Information:\n $phpversion[0]";
-print "\n MySQL Information:\n $mysqlver_split[0]\n";
+print "\n MySQL Information:\n $mysqlver\n";
 print "\n Icinga Informations:\n";
 print " idomod Connections: $idocheck\n";
 print " Icinga DB-Version: $result_icingadb[0]\n";
