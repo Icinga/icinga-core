@@ -27,6 +27,15 @@ use warnings;
 use DBI;
 use Term::ANSIColor;
 use Env qw (LANG);
+use Getopt::Long;
+
+################################
+# Option parsing
+################################
+
+my $mysqldb = "icinga";
+
+my $result = GetOptions ("icingadb=s" => \$mysqldb);
 
 ################################
 # Script Config
@@ -41,13 +50,12 @@ if( $oscheck eq 'MSWin32' ){
 
 # MySQL Config if MySQL is used
 my $mysqlcheck = qx(which mysql);
-my ( $mysqldb, $mysqlserver, $mysqluser, $mysqlpw ) = '';
+my ( $mysqlserver, $mysqluser, $mysqlpw ) = '';
 
 if (!$mysqlcheck ){
 	print "no Mysql Server Found, skip Config\n";
 } else {
 
-	$mysqldb = "icinga";
 	print "\nMysql Found! - start Config Script\n";
 	print "Values in '< >' are standarts! Confirm with [Enter]\n";
 	print "\nEnter your MYSQL Server <localhost>: ";
