@@ -38,37 +38,37 @@ if( $oscheck eq 'MSWin32' ){
 	print "We are on Windows, will quit now!";
 	exit 1;
 }
+
 # MySQL Config if MySQL is used
 my $mysqlcheck = qx(which mysql);
 my ( $mysqldb, $mysqlserver, $mysqluser, $mysqlpw ) = '';
 
 if (!$mysqlcheck ){
 	print "no Mysql Server Found, skip Config";
-}
-else{
+} else {
 
-$mysqldb = "icinga";
-print "\nMysql Found! - start Config Script\n";
-print "Values in '< >' are standarts! Confirm with [Enter]\n";
-print "\nEnter your MYSQL Server <localhost>: ";
-$mysqlserver = <STDIN>;
-chomp($mysqlserver);
-if (!$mysqlserver){
-	$mysqlserver = 'localhost';
-}
+	$mysqldb = "icinga";
+	print "\nMysql Found! - start Config Script\n";
+	print "Values in '< >' are standarts! Confirm with [Enter]\n";
+	print "\nEnter your MYSQL Server <localhost>: ";
+	$mysqlserver = <STDIN>;
+	chomp($mysqlserver);
+	if (!$mysqlserver){
+		$mysqlserver = 'localhost';
+	}
 
-print "Enter your MYSQL User <root>: ";
-$mysqluser = <STDIN>;
-chomp($mysqluser);
-if (!$mysqluser){
-	$mysqluser = 'root';
-}
+	print "Enter your MYSQL User <root>: ";
+	$mysqluser = <STDIN>;
+	chomp($mysqluser);
+	if (!$mysqluser){
+		$mysqluser = 'root';
+	}
 
-system('stty','-echo');
-print "Enter your MYSQL Password: ";
-$mysqlpw = <STDIN>;
-chomp($mysqlpw);
-system('stty','echo');
+	system('stty','-echo');
+	print "Enter your MYSQL Password: ";
+	$mysqlpw = <STDIN>;
+	chomp($mysqlpw);
+	system('stty','echo');
 }
 
 #Icinga Base Set
