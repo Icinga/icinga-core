@@ -39,7 +39,7 @@ if( $oscheck eq 'MSWin32' ){
 	exit;
 }
 # MySQL Config if MySQL is used
-my $mysqlcheck = `find /usr/bin -name mysql`;
+my $mysqlcheck = qx(which mysql);
 my $mysqldb = '';
 my $mysqlserver = '';
 my $mysqluser = '';
