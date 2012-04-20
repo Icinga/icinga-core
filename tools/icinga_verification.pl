@@ -57,7 +57,7 @@ if (!$mysqlcheck ){
 } else {
 
 	print "\nMysql Found! - start Config Script\n";
-	print "Values in '< >' are standarts! Confirm with [Enter]\n";
+	print "Values in '< >' are default parameters! Confirm with [Enter]\n";
 	print "\nEnter your MYSQL Server <localhost>: ";
 	$mysqlserver = <STDIN>;
 	chomp($mysqlserver);
