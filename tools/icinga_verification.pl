@@ -26,6 +26,7 @@ use strict;
 use warnings;
 use DBI;
 use Term::ANSIColor;
+use Env qw (LANG);
 
 ################################
 # Script Config
@@ -106,9 +107,6 @@ if (@files == 0) {
 
 # PHP Version
 my @phpversion = `php -v`;
-
-#environment Language
-my $envlang = `env | grep LANG`;
 
 #Current Time/Date
 my $date = `date`;
@@ -246,7 +244,7 @@ print " Current Date/Time on Server: $date";
 print "\n OS Information:\n";
 print " OS Name: @distriinfo";
 print " Kernel Version: $osversion";
-print " Environment-$envlang";
+print " Environment-$LANG";
 print "\n Webserver Information:\n";
 print " $apacheinfo[0] \n $apacheinfo[2] \n $apacheinfo[3] \n $apacheinfo[5] \n $apacheinfo[6] \n $apacheinfo[7] \n $apacheinfo[8] \n";
 print "\n PHP Information:\n $phpversion[0]";
