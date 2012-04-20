@@ -99,12 +99,6 @@ my $perlversion = $^V;
 # Kernel version
 my $osversion = qx(uname -rp) ;
 
-# lets try to find out what distribution we have.. 
-# that isn't as easy as it sounds. 
-
-# first try: LSB
-
-
 # search for OS Information Files
 my @files = `find /etc -maxdepth 1 -name *-release 2>/dev/null`;
 my @distriinfo;
