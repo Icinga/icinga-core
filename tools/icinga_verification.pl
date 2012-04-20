@@ -97,7 +97,13 @@ if (!$icinga_base){
 my $perlversion = $^V;
 
 # Kernel version
-my $osversion = `uname -rp` ;
+my $osversion = qx(uname -rp) ;
+
+# lets try to find out what distribution we have.. 
+# that isn't as easy as it sounds. 
+
+# first try: LSB
+
 
 # search for OS Information Files
 my @files = `find /etc -maxdepth 1 -name *-release 2>/dev/null`;
@@ -111,10 +117,10 @@ if (@files == 0) {
 }
 
 # PHP Version
-my @phpversion = `php -v`;
+my @phpversion = qx(php -v);
 
 #Current Time/Date
-my $date = `date`;
+my $date = localtime();
 
 #Apache Info
 my @apacheinfo = `httpd -V`;
