@@ -111,7 +111,8 @@ if (@files == 0) {
 }
 
 # PHP Version
-my @phpversion = qx(php -v);
+my $phpversion = (qx(php -v))[0];
+chomp($phpversion);
 
 #Current Time/Date
 my $date = localtime();
@@ -251,7 +252,7 @@ print " Kernel Version: $osversion";
 print " Environment-$LANG";
 print "\n Webserver Information:\n";
 print @apacheinfo, "\n";
-print "\n PHP Information:\n $phpversion[0]";
+print "\n PHP Information:\n $phpversion";
 print "\n MySQL Information:\n $mysqlver\n";
 print "\n Icinga Informations:\n";
 print " idomod Connections: $idocheck\n";
