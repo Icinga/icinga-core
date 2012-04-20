@@ -94,7 +94,7 @@ if (!$icinga_base){
 ################################
 
 # Perl Version
-my @perlversion = `perl -v`;
+my $perlversion = $^V;
 
 # Kernel version
 my $osversion = `uname -rp` ;
@@ -244,7 +244,7 @@ print "\n ############################################################";
 print "\n ######   Icinga Verification and Reporting Script     ######";
 print "\n ######  by Frankstar / Team Quality Assurance & VM    ######";
 print "\n ############################################################";
-print "\n $perlversion[1]";
+print "\n $perlversion";
 print " Current Date/Time on Server: $date";
 print "\n OS Information:\n";
 print " OS Name: @distriinfo";
