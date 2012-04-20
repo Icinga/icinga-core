@@ -36,14 +36,11 @@ use Env qw (LANG);
 my $oscheck = $^O;
 if( $oscheck eq 'MSWin32' ){
 	print "We are on Windows, will quit now!";
-	exit;
+	exit 1;
 }
 # MySQL Config if MySQL is used
 my $mysqlcheck = qx(which mysql);
 my ( $mysqldb, $mysqlserver, $mysqluser, $mysqlpw ) = '';
-my $mysqlserver = '';
-my $mysqluser = '';
-my $mysqlpw = '';
 
 if (!$mysqlcheck ){
 	print "no Mysql Server Found, skip Config";
