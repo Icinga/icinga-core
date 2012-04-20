@@ -26,11 +26,13 @@ use strict;
 use warnings;
 use DBI;
 use Term::ANSIColor;
-use Env qw (LANG);
+use Env qw (LANG PATH);
 use Getopt::Long;
 
 # sub stubs
 sub get_key_from_ini ($$);
+sub which($);
+
 ################################
 # Option parsing
 ################################
@@ -301,3 +303,9 @@ sub get_key_from_ini ($$) {
         }
 }
 
+
+sub which ($) {
+    my $binary = shift;
+    map { -x "$_/$binary" && return "$_/$binary" } reverse(split(':', $PATH));
+    return undef;
+}
