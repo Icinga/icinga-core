@@ -40,7 +40,7 @@ if( $oscheck eq 'MSWin32' ){
 }
 # MySQL Config if MySQL is used
 my $mysqlcheck = qx(which mysql);
-my $mysqldb = '';
+my ( $mysqldb, $mysqlserver, $mysqluser, $mysqlpw ) = '';
 my $mysqlserver = '';
 my $mysqluser = '';
 my $mysqlpw = '';
