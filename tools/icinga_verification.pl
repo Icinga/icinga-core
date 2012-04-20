@@ -282,22 +282,22 @@ print " ############################################################\n";
 exit;
 
 sub get_key_from_ini ($$) {
-        my ($file, $key) = @_; 
+        my ($file, $key) = @_;
 
         if (! -f $file) {
                 print STDERR "Inifile $file does not exist\n";
                 return;
-        }   
+        }
 
         if (open(my $fh, '<', $file)) {
                 while (my $line = <$fh>) {
                         chmod($line);
                         if ($line =~ /^\s*$key=([^\s]+)/) {
                                 print "$key = $1\n";
-                        }   
-                }   
+                        }
+                }
         } else {
                 print STDERR "Could not open initfile $file: $!\n";
-        }   
+        }
 }
 
