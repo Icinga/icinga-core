@@ -32,22 +32,12 @@ use Term::ANSIColor;
 ################################
 
 #Check if we are on Windows
-<<<<<<< HEAD
-=======
-
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 my $oscheck = $^O;
 if( $oscheck eq 'MSWin32' ){
 	print "We are on Windows, will quit now!";
 	exit;
 }
-<<<<<<< HEAD
 # MySQL Config if MySQL is used
-=======
-
-# MySQL Config if MySQL is used
-
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 my $mysqlcheck = `find /usr/bin -name mysql`;
 my $mysqldb = '';
 my $mysqlserver = '';
@@ -55,7 +45,6 @@ my $mysqluser = '';
 my $mysqlpw = '';
 
 if (!$mysqlcheck ){
-<<<<<<< HEAD
 	print "no Mysql Server Found, skip Config";
 }
 else{
@@ -69,26 +58,13 @@ chomp($mysqlserver);
 if (!$mysqlserver){
 	$mysqlserver = 'localhost';
 }
-=======
-	print "no Mysql Found, skip Config";
-}
-else{
-$mysqldb = "icinga";
-print "\nMysql Found! - start Config Script\n";
-print "\nEnter your MYSQL Server <localhost>: ";
-$mysqlserver = <STDIN>;
-chomp($mysqlserver);
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 
 print "Enter your MYSQL User <root>: ";
 $mysqluser = <STDIN>;
 chomp($mysqluser);
-<<<<<<< HEAD
 if (!$mysqluser){
 	$mysqluser = 'root';
 }
-=======
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 
 system('stty','-echo');
 print "Enter your MYSQL Password: ";
@@ -97,7 +73,6 @@ chomp($mysqlpw);
 system('stty','echo');
 }
 
-<<<<<<< HEAD
 #Icinga Base Set
 my $icinga_base = '';
 
@@ -108,13 +83,6 @@ chomp($icinga_base);
 if (!$icinga_base){
 	$icinga_base = '/usr/local/icinga';
 }
-=======
-if (!$mysqlserver || !$mysqluser){
-	print "\n\nNo MYSQL Server or User specified - will exit now\n";
-	exit;
-}
-
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 ################################
 # Environment Checks 
 ################################
@@ -149,28 +117,20 @@ my $date = `date`;
 my @apacheinfo = `httpd -V`;
 chomp(@apacheinfo);
 
-<<<<<<< HEAD
 #Mysql Info
 my $mysqlver = `mysql -V`;
 my @mysqlver_split = split(',', $mysqlver);
 
-=======
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 ######ADD JAVA HOMES, ORCALE HOMES, PATH -> via env | grep ######
 
 ################################
 # Icinga Checks 
 ################################
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 # verify that idomod connected via socket to ido2db
 my $idocheck = `ps aux | grep ido2db | grep -v grep | wc -l`;
 chomp($idocheck);
 
-<<<<<<< HEAD
 #ido2db socket type
 my $ido2dbsocket = `cat $icinga_base/etc/ido2db.cfg | grep ^socket_type=`;
 chomp($ido2dbsocket);
@@ -219,25 +179,14 @@ my $dbh_cfg_error = '';
 my $icinga_dbversion = '';
 my $sth_user = '';
 my $sth1_user = '';
-=======
-# MySQL Connect
-my $dbh = '';
-my $icinga_dbversion = '';
-my $sth = '';
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 my @result_icingadb = ();
 my @row;
 my @result_icingaconninfo = ();
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 if (!$mysqlcheck ){
 	print "no Mysql Found, skip Querys";
 }
 else{
-<<<<<<< HEAD
 # User Input Connect
 $dbh_user = DBI->connect("dbi:mysql:database=$mysqldb; host=$mysqlserver:mysql_server_prepare=1", "$mysqluser", "$mysqlpw", {
 	PrintError => 0,
@@ -285,36 +234,6 @@ if (!$dbh_cfg_error){
 # Test Print Out
 # later create a fileout with the output
 
-=======
-$dbh = DBI->connect("dbi:mysql:database=$mysqldb; host=$mysqlserver:mysql_server_prepare=1", "$mysqluser", "$mysqlpw")
-	or die "\n$DBI::errstr";
-
-# Query icinga DB Version
-$icinga_dbversion = 'SELECT version FROM icinga_dbversion';
-$sth = $dbh->prepare($icinga_dbversion) or die $DBI::errstr;
-
-$sth->execute() or die $DBI::errstr;
-
-
-while(@row = $sth->fetchrow_array()){
-	push(@result_icingadb,@row);
-}
-
-# Query icinga_conninfo
-my $icinga_conninfo = 'select conninfo_id, last_checkin_time from icinga_conninfo order by connect_time desc limit 2';
-my $sth1 = $dbh->prepare($icinga_conninfo) or die $DBI::errstr;
-
-$sth1->execute() or die $DBI::errstr;
-
-while(@row = $sth1->fetchrow_array()){
-	push(@result_icingaconninfo,"id:",@row,"\n");
-}
-# MySQL Disconnect
-$dbh->disconnect();
-}
-
-# Test Print Out
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 print "\n ############################################################";
 print "\n ######   Icinga Verification and Reporting Script     ######";
 print "\n ######  by Frankstar / Team Quality Assurance & VM    ######";
@@ -328,29 +247,18 @@ print " Environment-$envlang";
 print "\n Webserver Information:\n";
 print " $apacheinfo[0] \n $apacheinfo[2] \n $apacheinfo[3] \n $apacheinfo[5] \n $apacheinfo[6] \n $apacheinfo[7] \n $apacheinfo[8] \n";
 print "\n PHP Information:\n $phpversion[0]";
-<<<<<<< HEAD
 print "\n MySQL Information:\n $mysqlver_split[0]\n";
-=======
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
 print "\n Icinga Informations:\n";
 print " idomod Connections: $idocheck\n";
 print " Icinga DB-Version: $result_icingadb[0]\n";
 print "\n ido2db last Connection Info:\n";
 print " @result_icingaconninfo";
-<<<<<<< HEAD
 # ido2db.cfg mysql Test Connection
 print color("red"), "\n $dbh_cfg_error\n", color("reset");
 #Check Services
 print " Process Status:\n";
 
 my @services = ('httpd', 'mysqld', 'snmptt', 'icinga', 'ido2db');
-=======
-
-#Check Services
-print "\n Process Status:\n";
-
-my @services = ( 'blub', 'httpd', 'mysqld', 'snmptt', 'icinga', 'ido2db');
->>>>>>> 2b7090541074346ba5ff12add9c42708c55928bf
  
  foreach my $service (@services) {
  my $status = `/bin/ps cax | /bin/grep $service`;
