@@ -131,6 +131,9 @@ my @mysqlver_split = split(',', $mysqlver);
 my $idocheck = `ps aux | grep ido2db | grep -v grep | wc -l`;
 chomp($idocheck);
 
+# ido2db.cfg parsing
+######## read in complete file and write needed values in an Array !##################
+
 #ido2db socket type
 my $ido2dbsocket = `cat $icinga_base/etc/ido2db.cfg | grep ^socket_type=`;
 chomp($ido2dbsocket);
