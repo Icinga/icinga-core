@@ -117,8 +117,8 @@ my @phpversion = qx(php -v);
 my $date = localtime();
 
 #Apache Info
-my @apacheinfo = `httpd -V`;
-chomp(@apacheinfo);
+#FIXME we need a way of testing several binarynames. on debian this is apache2
+my $apacheinfo = (qx(httpd -V))[0,2,3,5,6,7,8];
 
 #Mysql Info
 my $mysqlver = (split(",", qx(mysql -V)))[0]
@@ -250,7 +250,7 @@ print " OS Name: @distriinfo";
 print " Kernel Version: $osversion";
 print " Environment-$LANG";
 print "\n Webserver Information:\n";
-print " $apacheinfo[0] \n $apacheinfo[2] \n $apacheinfo[3] \n $apacheinfo[5] \n $apacheinfo[6] \n $apacheinfo[7] \n $apacheinfo[8] \n";
+print @apacheinfo, "\n";
 print "\n PHP Information:\n $phpversion[0]";
 print "\n MySQL Information:\n $mysqlver\n";
 print "\n Icinga Informations:\n";
