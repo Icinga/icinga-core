@@ -1,0 +1,26 @@
+(15:28:02) dnsmichi: noch was
+(15:28:19) dnsmichi: idomod und ido2db vergleich des sockets
+(15:28:36) dnsmichi: grade einen pfosten im forum, der idomod auf nen unixsocket schreiben lasst und ido2db listen auf tcp hat
+
+mysql checks
+Env checks
+
+
+
+(11:07:38) dnsmichi|home_: rather run a "env" call and pass that to the output as well
+(11:07:41) dnsmichi|home_: if you did not already
+(11:07:52) dnsmichi|home_: or, yet better, the one from the icinga user
+(11:08:06) dnsmichi|home_: best would be to 1. grep icinga.cfg for icinga_user
+(11:08:18) dnsmichi|home_: 2. use that string and get its env, and information
+(11:10:30) SeLLeRoNe: mysql updated
+(11:10:32) SeLLeRoNe: rebuild php
+(11:10:37) SeLLeRoNe: *rebuilding
+(11:12:42) kmil: in icinga.cfg
+(11:12:44) kmil: icinga_user=nagios
+(11:12:52) kmil: in env command
+(11:13:01) kmil: USER=icinga
+
+
+(11:51:31) dnsmichi|home_: is the core running with that icinga.cfg?
+(11:51:38) dnsmichi|home_: ps aux | grep icinga
+(11:52:07) SeLLeRoNe: icinga     984  0.0  0.0  98392  1708 ?        Ssl  01:23   0:03 /usr/local/icinga/bin/icinga -d /usr/local/icinga/etc/icinga.cfg
