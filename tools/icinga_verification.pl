@@ -44,7 +44,7 @@ my $mysqlcheck = qx(which mysql);
 my ( $mysqldb, $mysqlserver, $mysqluser, $mysqlpw ) = '';
 
 if (!$mysqlcheck ){
-	print "no Mysql Server Found, skip Config";
+	print "no Mysql Server Found, skip Config\n";
 } else {
 
 	$mysqldb = "icinga";
