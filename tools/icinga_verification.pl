@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 #
-# Copyright (c) 2012 Icinga Developer Team 
-# Holzer Franz / Team Quality Assurance & VM 
+# Copyright (c) 2012 Icinga Developer Team
+# Holzer Franz / Team Quality Assurance & VM
 # http://www.icinga.org
 #
 # This program is free software; you can redistribute it and/or
@@ -41,7 +41,7 @@ sub get_distribution;
 
 my $mysqldb = "icinga";
 
-my $result = GetOptions ("icingadb=s" => \$mysqldb);
+my $result = GetOptions( "icingadb=s" => \$mysqldb );
 
 ################################
 # Script Config
@@ -49,40 +49,40 @@ my $result = GetOptions ("icingadb=s" => \$mysqldb);
 
 #Check if we are on Windows
 my $oscheck = $^O;
-if( $oscheck eq 'MSWin32' ){
-	print "We are on Windows, will quit now!";
-	exit 1;
+if ( $oscheck eq 'MSWin32' ) {
+    print "We are on Windows, will quit now!";
+    exit 1;
 }
 
 # MySQL Config if MySQL is used
 my $mysqlcheck = which('mysql');
 my ( $mysqlserver, $mysqluser, $mysqlpw ) = '';
 
-if (!$mysqlcheck ){
-	print "mysql not found, skipping\n";
+if ( !$mysqlcheck ) {
+    print "mysql not found, skipping\n";
 } else {
 
-	print "\nMysql Found! - start Config Script\n";
-	print "Values in '< >' are default parameters! Confirm with [Enter]\n";
-	print "\nEnter your MYSQL Server <localhost>: ";
-	$mysqlserver = <STDIN>;
-	chomp($mysqlserver);
-	if (!$mysqlserver){
-		$mysqlserver = 'localhost';
-	}
+    print "\nMysql Found! - start Config Script\n";
+    print "Values in '< >' are default parameters! Confirm with [Enter]\n";
+    print "\nEnter your MYSQL Server <localhost>: ";
+    $mysqlserver = <STDIN>;
+    chomp($mysqlserver);
+    if ( !$mysqlserver ) {
+        $mysqlserver = 'localhost';
+    }
 
-	print "Enter your MYSQL User <root>: ";
-	$mysqluser = <STDIN>;
-	chomp($mysqluser);
-	if (!$mysqluser){
-		$mysqluser = 'root';
-	}
+    print "Enter your MYSQL User <root>: ";
+    $mysqluser = <STDIN>;
+    chomp($mysqluser);
+    if ( !$mysqluser ) {
+        $mysqluser = 'root';
+    }
 
-	system('stty','-echo');
-	print "Enter your MYSQL Password: ";
-	$mysqlpw = <STDIN>;
-	chomp($mysqlpw);
-	system('stty','echo');
+    system( 'stty', '-echo' );
+    print "Enter your MYSQL Password: ";
+    $mysqlpw = <STDIN>;
+    chomp($mysqlpw);
+    system( 'stty', 'echo' );
 }
 
 #Icinga Base Set
@@ -92,11 +92,11 @@ print "\nEnter your Icinga base </usr/local/icinga>: ";
 $icinga_base = <STDIN>;
 chomp($icinga_base);
 
-if (!$icinga_base){
-	$icinga_base = '/usr/local/icinga';
+if ( !$icinga_base ) {
+    $icinga_base = '/usr/local/icinga';
 }
 ################################
-# Environment Checks 
+# Environment Checks
 ################################
 
 # Perl Version
@@ -114,13 +114,19 @@ my $date = localtime();
 
 #Apache Info
 my $bin;
-my $apacheinfo =  join('  ', ( $bin = which ('httpd', 'apache2') ) ? ( qx($bin -V))[0,2,3,5,6,7,8] : 'apache binary not found' );
+my $apacheinfo = join( '  ',
+      ( $bin = which( 'httpd', 'apache2' ) )
+    ? (qx($bin -V))[ 0, 2, 3, 5, 6, 7, 8 ]
+    : 'apache binary not found' );
 
 #Mysql Info
-my $mysqlver = which('mysql') ? (split(",", qx(mysql -V)))[0] : 'mysql binary not found';
+my $mysqlver =
+    which('mysql')
+    ? ( split( ",", qx(mysql -V) ) )[0]
+    : 'mysql binary not found';
 
 ################################
-# Icinga Checks 
+# Icinga Checks
 ################################
 
 # verify that idomod connected via socket to ido2db
@@ -147,7 +153,7 @@ chomp($ido2dbtcpport);
 #ido2db Server Host Name
 my $mysqlserver_cfg = `cat $icinga_base/etc/ido2db.cfg | grep ^db_host=`;
 chomp($mysqlserver_cfg);
-my @mysqlserver_cfg_split = split('=', $mysqlserver_cfg);
+my @mysqlserver_cfg_split = split( '=', $mysqlserver_cfg );
 
 #ido2db Server port
 #db_port=
@@ -158,76 +164,89 @@ my @mysqlserver_cfg_split = split('=', $mysqlserver_cfg);
 #ido2db DB User
 my $mysqluser_cfg = `cat $icinga_base/etc/ido2db.cfg | grep ^db_user=`;
 chomp($mysqluser_cfg);
-my @mysqluser_cfg_split = split('=', $mysqluser_cfg);
+my @mysqluser_cfg_split = split( '=', $mysqluser_cfg );
 
 #ido2db DB Name
 my $mysqldb_cfg = `cat $icinga_base/etc/ido2db.cfg | grep ^db_name=`;
 chomp($mysqldb_cfg);
-my @mysqldb_cfg_split = split('=', $mysqldb_cfg);
+my @mysqldb_cfg_split = split( '=', $mysqldb_cfg );
 
 #ido2db Password
 my $mysqlpw_cfg = `cat $icinga_base/etc/ido2db.cfg | grep ^db_pass=`;
 chomp($mysqlpw_cfg);
-my @mysqlpw_cfg_split = split('=', $mysqlpw_cfg);
+my @mysqlpw_cfg_split = split( '=', $mysqlpw_cfg );
 
 # MySQL Checks#
-my $dbh_user = '';
-my $dbh_user_error = '';
-my $dbh_cfg = '';
-my $dbh_cfg_error = '';
+my $dbh_user         = '';
+my $dbh_user_error   = '';
+my $dbh_cfg          = '';
+my $dbh_cfg_error    = '';
 my $icinga_dbversion = '';
-my $sth_user = '';
-my $sth1_user = '';
-my @result_icingadb = ();
+my $sth_user         = '';
+my $sth1_user        = '';
+my @result_icingadb  = ();
 my @row;
 my @result_icingaconninfo = ();
 
-if (!$mysqlcheck ){
-	print "no Mysql Found, skip Querys";
+if ( !$mysqlcheck ) {
+    print "no Mysql Found, skip Querys";
+} else {
+
+    # User Input Connect
+    $dbh_user = DBI->connect(
+        "dbi:mysql:database=$mysqldb; host=$mysqlserver:mysql_server_prepare=1",
+        "$mysqluser",
+        "$mysqlpw",
+        {   PrintError => 0,
+            RaiseError => 0
+        }
+        )
+        or die color("red"),
+        "\nMySQL Connect Failed. - check your input or MySQL Process\n",
+        color("reset");
+
+    chomp($dbh_user_error);
+
+    # Query icinga DB Version
+    $icinga_dbversion = 'SELECT version FROM icinga_dbversion';
+    $sth_user = $dbh_user->prepare($icinga_dbversion) or warn $DBI::errstr;
+
+    $sth_user->execute() or warn $DBI::errstr;
+
+    while ( @row = $sth_user->fetchrow_array() ) {
+        push( @result_icingadb, @row );
+    }
+
+    # Query icinga_conninfo
+    my $icinga_conninfo =
+        'select conninfo_id, last_checkin_time from icinga_conninfo order by connect_time desc limit 2';
+    $sth1_user = $dbh_user->prepare($icinga_conninfo) or warn $DBI::errstr;
+
+    $sth1_user->execute() or warn $DBI::errstr;
+
+    while ( @row = $sth1_user->fetchrow_array() ) {
+        push( @result_icingaconninfo, "id:", @row, "\n" );
+    }
+
+    $dbh_user->disconnect();
+
+    # ido2db.cfg Connection test
+    $dbh_cfg = DBI->connect(
+        "dbi:mysql:database=$mysqldb_cfg_split[1]; host=$mysqlserver_cfg_split[1]:mysql_server_prepare=1",
+        "$mysqluser_cfg_split[1]",
+        "$mysqlpw_cfg_split[1]",
+        {   PrintError => 0,
+            RaiseError => 0
+        }
+        )
+        or $dbh_cfg_error =
+        "ido2db.cfg - MySQL Connect Failed. - check your config";
+
+    chomp($dbh_cfg_error);
 }
-else{
-# User Input Connect
-$dbh_user = DBI->connect("dbi:mysql:database=$mysqldb; host=$mysqlserver:mysql_server_prepare=1", "$mysqluser", "$mysqlpw", {
-	PrintError => 0,
-    RaiseError => 0
-}) or die color("red"), "\nMySQL Connect Failed. - check your input or MySQL Process\n", color("reset");
 
-chomp($dbh_user_error);	
-	
-# Query icinga DB Version
-$icinga_dbversion = 'SELECT version FROM icinga_dbversion';
-$sth_user = $dbh_user->prepare($icinga_dbversion) or warn $DBI::errstr;
-
-$sth_user->execute() or warn $DBI::errstr;
-
-
-	while(@row = $sth_user->fetchrow_array()){
-		push(@result_icingadb,@row);
-	}
-
-# Query icinga_conninfo
-my $icinga_conninfo = 'select conninfo_id, last_checkin_time from icinga_conninfo order by connect_time desc limit 2';
-$sth1_user = $dbh_user->prepare($icinga_conninfo) or warn $DBI::errstr;
-
-$sth1_user->execute() or warn $DBI::errstr;
-
-	while(@row = $sth1_user->fetchrow_array()){
-		push(@result_icingaconninfo,"id:",@row,"\n");
-	}
-	
-$dbh_user->disconnect();	
-
-# ido2db.cfg Connection test
-$dbh_cfg = DBI->connect("dbi:mysql:database=$mysqldb_cfg_split[1]; host=$mysqlserver_cfg_split[1]:mysql_server_prepare=1", "$mysqluser_cfg_split[1]", "$mysqlpw_cfg_split[1]", {
-	PrintError => 0,
-    RaiseError => 0
-}) or $dbh_cfg_error = "ido2db.cfg - MySQL Connect Failed. - check your config";	
-
-chomp($dbh_cfg_error);		
-}
-
-if (!$dbh_cfg_error){
-	$dbh_cfg->disconnect();
+if ( !$dbh_cfg_error ) {
+    $dbh_cfg->disconnect();
 }
 
 # Test Print Out
@@ -263,14 +282,15 @@ print <<EOF;
 Process Status:
 EOF
 
-my @services = ('httpd', 'mysqld', 'snmptt', 'icinga', 'ido2db');
+my @services = ( 'httpd', 'mysqld', 'snmptt', 'icinga', 'ido2db' );
 foreach my $service (@services) {
     my $status = `/bin/ps cax | /bin/grep $service`;
-    if (!$status) {
-        print color("red"), " [$service]", color("reset"), " not found or started\n";
-    }
-    else{
-        print color("green"), " [$service]", color("reset"), " found and started\n";
+    if ( !$status ) {
+        print color("red"), " [$service]", color("reset"),
+            " not found or started\n";
+    } else {
+        print color("green"), " [$service]", color("reset"),
+            " found and started\n";
     }
 }
 print " ############################################################\n";
@@ -278,39 +298,39 @@ print " ############################################################\n";
 exit;
 
 sub get_key_from_ini ($$) {
-        my ($file, $key) = @_;
+    my ( $file, $key ) = @_;
 
-        if (! -f $file) {
-                print STDERR "Inifile $file does not exist\n";
-                return;
-        }
+    if ( !-f $file ) {
+        print STDERR "Inifile $file does not exist\n";
+        return;
+    }
 
-        if (open(my $fh, '<', $file)) {
-                while (my $line = <$fh>) {
-                        chmod($line);
-                        if ($line =~ /^\s*$key=([^\s]+)/) {
-                                print "$key = $1\n";
-                        }
-                }
-        } else {
-                print STDERR "Could not open initfile $file: $!\n";
+    if ( open( my $fh, '<', $file ) ) {
+        while ( my $line = <$fh> ) {
+            chmod($line);
+            if ( $line =~ /^\s*$key=([^\s]+)/ ) {
+                print "$key = $1\n";
+            }
         }
+    } else {
+        print STDERR "Could not open initfile $file: $!\n";
+    }
 }
-
 
 sub which (@) {
     my @binaries = @_;
     foreach my $binary (@binaries) {
-        map { -x "$_/$binary" && return "$_/$binary" } reverse(split(':', $PATH));
+        map { -x "$_/$binary" && return "$_/$binary" }
+            reverse( split( ':', $PATH ) );
     }
     return undef;
 }
 
 sub slurp($) {
     my $file = shift;
-    if (-f $file) {
-        open (my $fh, '<', $file)
-          or die "Could not open $file: $!";
+    if ( -f $file ) {
+        open( my $fh, '<', $file )
+            or die "Could not open $file: $!";
         return do { local $/; <$fh> };
     } else {
         die "$file does not exist";
@@ -318,14 +338,14 @@ sub slurp($) {
 }
 
 sub get_distribution {
+
     #first try: lsb
-    if (-x which('lsb_release') ) {
-        open (my $fh, '-|', "lsb_release -d -c -r ");
+    if ( -x which('lsb_release') ) {
+        open( my $fh, '-|', "lsb_release -d -c -r " );
         my $version = do { local $/; <$fh> };
         close($fh);
-        $version = join(", ", split ("\n", $version));
-        $version =~ s/\s+/ /g,
-        return $version;
+        $version = join( ", ", split( "\n", $version ) );
+        $version =~ s/\s+/ /g, return $version;
     } elsif ( -f '/etc/debian_version' ) {
         my $version = slurp('/etc/debian_version');
         chomp($version);
