@@ -266,16 +266,15 @@ Process Status:
 EOF
 
 my @services = ('httpd', 'mysqld', 'snmptt', 'icinga', 'ido2db');
- 
- foreach my $service (@services) {
- my $status = `/bin/ps cax | /bin/grep $service`;
-	if (!$status) {
-		print color("red"), " [$service]", color("reset"), " not found or started\n";
-	}
-	else{
-		print color("green"), " [$service]", color("reset"), " found and started\n";
-	}
- }
+foreach my $service (@services) {
+    my $status = `/bin/ps cax | /bin/grep $service`;
+    if (!$status) {
+        print color("red"), " [$service]", color("reset"), " not found or started\n";
+    }
+    else{
+        print color("green"), " [$service]", color("reset"), " found and started\n";
+    }
+}
 print " ############################################################\n";
 
 exit;
