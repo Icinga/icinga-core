@@ -113,8 +113,8 @@ chomp($phpversion);
 my $date = localtime();
 
 #Apache Info
-#FIXME we need a way of testing several binarynames. on debian this is apache2
-my @apacheinfo = which ('httpd') ? (qx(httpd -V))[0,2,3,5,6,7,8] : 'httpd binary not found';
+my $bin;
+my $apacheinfo =  join('  ', ( $bin = which ('httpd', 'apache2') ) ? ( qx($bin -V))[0,2,3,5,6,7,8] : 'apache binary not found' );
 
 #Mysql Info
 my $mysqlver = which('mysql') ? (split(",", qx(mysql -V)))[0] : 'mysql binary not found';
@@ -247,7 +247,7 @@ OS Information:
   Kernel Version: $osversion";
   LC_LANG: $LANG
 Webserver Information: ";
-  @apacheinfo
+  $apacheinfo
 PHP Information: $phpversion
 MySQL Information:
  $mysqlver
