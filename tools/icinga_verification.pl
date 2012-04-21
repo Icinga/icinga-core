@@ -32,6 +32,8 @@ use Getopt::Long;
 # sub stubs
 sub get_key_from_ini ($$);
 sub which($);
+sub slurp($);
+sub get_distribution;
 
 ################################
 # Option parsing
@@ -102,17 +104,6 @@ my $perlversion = $^V;
 
 # Kernel version
 my $osversion = qx(uname -rp) ;
-
-# search for OS Information Files
-my @files = `find /etc -maxdepth 1 -name *-release 2>/dev/null`;
-my @distriinfo;
-
-if (@files == 0) {
-	print "no release info File found in /etc/";
-	exit -1;
-} else {
-	@distriinfo = `cat $files[0]`;
-}
 
 # PHP Version
 my $phpversion = (qx(php -v))[0];
@@ -318,6 +309,28 @@ sub slurp($) {
         return do { local $/; <$fh> };
     } else {
         die "$file does not exist";
+    }
+}
+
+sub get_distribution {
+    #first try: lsb
+    if (-x which('lsb_release') ) {
+        open (my $fh, '-|', "lsb_release -d -c -r ");
+        my $version = do { local $/; <$fh> };
+        close($fh);
+        $version = join(", ", split ("\n", $version));
+        $version =~ s/\s+/ /g,
+        return $version;
+    } elsif ( -f '/etc/debian_version' ) {
+        my $version = slurp('/etc/debian_version');
+        chomp($version);
+        return "Debian GNU/Linux $version";
+    } elsif ( -f '/etc/redhat-release' ) {
+        my $version = slurp('/etc/redhat-release');
+        chomp($version);
+        return $version;
+    } else {
+        return "unknown";
     }
 }
 
