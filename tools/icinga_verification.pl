@@ -31,7 +31,7 @@ use Getopt::Long;
 
 # sub stubs
 sub get_key_from_ini ($$);
-sub which($);
+sub which(@);
 sub slurp($);
 sub get_distribution;
 
@@ -300,9 +300,11 @@ sub get_key_from_ini ($$) {
 }
 
 
-sub which ($) {
-    my $binary = shift;
-    map { -x "$_/$binary" && return "$_/$binary" } reverse(split(':', $PATH));
+sub which (@) {
+    my @binaries = @_;
+    foreach my $binary (@binaries) {
+        map { -x "$_/$binary" && return "$_/$binary" } reverse(split(':', $PATH));
+    }
     return undef;
 }
 
