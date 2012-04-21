@@ -103,10 +103,10 @@ if (!$icinga_base){
 my $perlversion = $^V;
 
 # Kernel version
-my $osversion = qx(uname -rp) ;
+my $osversion = which('uname') ? qx(uname -rp) : 'uname binary not found';
 
 # PHP Version
-my $phpversion = (qx(php -v))[0];
+my $phpversion = which('php') ? (qx(php -v))[0] : 'php binary not found';
 chomp($phpversion);
 
 #Current Time/Date
@@ -114,10 +114,10 @@ my $date = localtime();
 
 #Apache Info
 #FIXME we need a way of testing several binarynames. on debian this is apache2
-my @apacheinfo = (qx(httpd -V))[0,2,3,5,6,7,8];
+my @apacheinfo = which ('httpd') ? (qx(httpd -V))[0,2,3,5,6,7,8] : 'httpd binary not found';
 
 #Mysql Info
-my $mysqlver = (split(",", qx(mysql -V)))[0];
+my $mysqlver = which('mysql') ? (split(",", qx(mysql -V)))[0] : 'mysql binary not found';
 
 ######ADD JAVA HOMES, ORCALE HOMES, PATH -> via env | grep ######
 
