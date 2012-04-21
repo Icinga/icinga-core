@@ -235,29 +235,35 @@ if (!$dbh_cfg_error){
 # Test Print Out
 # later create a fileout with the output
 
-print "\n ############################################################";
-print "\n ######   Icinga Verification and Reporting Script     ######";
-print "\n ######  by Frankstar / Team Quality Assurance & VM    ######";
-print "\n ############################################################";
-print "\n $perlversion";
-print " Current Date/Time on Server: $date";
-print "\n OS Information:\n";
-print " OS Name: @distriinfo";
-print " Kernel Version: $osversion";
-print " Environment-$LANG";
-print "\n Webserver Information:\n";
-print @apacheinfo, "\n";
-print "\n PHP Information:\n $phpversion";
-print "\n MySQL Information:\n $mysqlver\n";
-print "\n Icinga Informations:\n";
-print " idomod Connections: $idocheck\n";
-print " Icinga DB-Version: $result_icingadb[0]\n";
-print "\n ido2db last Connection Info:\n";
-print " @result_icingaconninfo";
-# ido2db.cfg mysql Test Connection
+print <<EOF;
+############################################################
+######   Icinga Verification and Reporting Script     ######
+######  by Frankstar / Team Quality Assurance & VM    ######
+############################################################
+Perlversion: $perlversion
+Current Date/Time on Server: $date
+OS Information:
+  OS Name: ", get_distribution,
+  Kernel Version: $osversion";
+  LC_LANG: $LANG
+Webserver Information: ";
+  @apacheinfo
+PHP Information: $phpversion
+MySQL Information:
+ $mysqlver
+Icinga Informations:
+ idomod Connections: $idocheck
+ Icinga DB-Version: $result_icingadb[0]
+ ido2db last Connection Info:
+ @result_icingaconninfo
+ido2db.cfg mysql Test Connection
+EOF
+
 print color("red"), "\n $dbh_cfg_error\n", color("reset");
+print <<EOF;
 #Check Services
-print " Process Status:\n";
+Process Status:
+EOF
 
 my @services = ('httpd', 'mysqld', 'snmptt', 'icinga', 'ido2db');
  
