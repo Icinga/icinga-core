@@ -309,3 +309,15 @@ sub which ($) {
     map { -x "$_/$binary" && return "$_/$binary" } reverse(split(':', $PATH));
     return undef;
 }
+
+sub slurp($) {
+    my $file = shift;
+    if (-f $file) {
+        open (my $fh, '<', $file)
+          or die "Could not open $file: $!";
+        return do { local $/; <$fh> };
+    } else {
+        die "$file does not exist";
+    }
+}
+
