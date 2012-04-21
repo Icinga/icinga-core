@@ -1402,9 +1402,13 @@ int main(void) {
 		printf("</object>");
 	}
 
-	// flush the data we allready have
-	printf(" ");
-	fflush(NULL);
+	/* flush the data we allready have
+	   but do this only if we display HTML content
+	*/
+	if (content_type == HTML_CONTENT) {
+		printf(" ");
+		fflush(NULL);
+	}
 
 
 	/**
