@@ -55,11 +55,11 @@ if( $oscheck eq 'MSWin32' ){
 }
 
 # MySQL Config if MySQL is used
-my $mysqlcheck = qx(which mysql);
+my $mysqlcheck = which('mysql');
 my ( $mysqlserver, $mysqluser, $mysqlpw ) = '';
 
 if (!$mysqlcheck ){
-	print "no Mysql Server Found, skip Config\n";
+	print "mysql not found, skipping\n";
 } else {
 
 	print "\nMysql Found! - start Config Script\n";
