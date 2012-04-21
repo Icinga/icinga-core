@@ -119,8 +119,6 @@ my $apacheinfo =  join('  ', ( $bin = which ('httpd', 'apache2') ) ? ( qx($bin -
 #Mysql Info
 my $mysqlver = which('mysql') ? (split(",", qx(mysql -V)))[0] : 'mysql binary not found';
 
-######ADD JAVA HOMES, ORCALE HOMES, PATH -> via env | grep ######
-
 ################################
 # Icinga Checks 
 ################################
