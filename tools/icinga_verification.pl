@@ -34,6 +34,7 @@ sub get_key_from_ini ($$);
 sub which(@);
 sub slurp($);
 sub get_distribution;
+sub find_icinga_dir;
 
 ################################
 # Option parsing
@@ -86,15 +87,18 @@ if ( !$mysqlcheck ) {
 }
 
 #Icinga Base Set
-my $icinga_base = '';
+my $icinga_base = find_icinga_dir();
 
-print "\nEnter your Icinga base </usr/local/icinga>: ";
-$icinga_base = <STDIN>;
-chomp($icinga_base);
-
-if ( !$icinga_base ) {
-    $icinga_base = '/usr/local/icinga';
+if (! $icinga_base ) {
+    print "\nIcinga base not found.\nPlease enter your Icinga base: ";
+    $icinga_base = <STDIN>;
+    chomp($icinga_base);
+    if (! -d $icinga_base) {
+        print STDERR "Couldn't find icinga.cfg.";
+        exit 1;
+    }
 }
+
 ################################
 # Environment Checks
 ################################
@@ -359,3 +363,10 @@ sub get_distribution {
     }
 }
 
+sub find_icinga_dir {
+    my @locations = qw ( /etc/icinga/ /opt/icinga/etc/ /usr/local/icinga/etc/ );
+    foreach my $location (@locations) {
+        return $location if -e "$location/icinga.cfg";
+    }
+    return undef;
+}
