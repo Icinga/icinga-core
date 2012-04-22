@@ -129,6 +129,9 @@ my $mysqlver =
     ? ( split( ",", qx(mysql -V) ) )[0]
     : 'mysql binary not found';
 
+
+# distribution
+my $distribution = get_distribution();
 ################################
 # Icinga Checks
 ################################
@@ -255,7 +258,7 @@ print <<EOF;
 Perlversion: $perlversion
 Current Date/Time on Server: $date
 OS Information:
-  OS Name: ", get_distribution,
+  OS Name: $distribution,
   Kernel Version: $osversion
   LC_LANG: $LANG
 Webserver Information:
