@@ -227,6 +227,8 @@ typedef struct nebstruct_downtime_struct{
 	unsigned long   downtime_id;
 
 	void            *object_ptr; /* not implemented yet */
+	int		is_in_effect;
+	time_t		trigger_time;
         }nebstruct_downtime_data;
 
 

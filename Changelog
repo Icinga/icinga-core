@@ -18,6 +18,7 @@ ENHANCEMENTS
 * core: avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182 - MF
 * core: allow empty host groups in service and host dependencies if allow_empty_hostgroup_assignment flag is set (Daniel Wittenberg) #2255 - MF
 * core: fix compatibility problems on solaris 10 (affects core, cgis, ido) (Carl R. Friend) #2292 - MF/RB/TD
+* core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537
 
 * classic ui: Added option for max log entries displayed in showlog.cgi #2145 - RB
 * classic ui: Added config option for status totals in status.cgi #2018 - RB
@@ -143,6 +144,10 @@ CHANGES
 * install: --enable-libtap is now deprecated, new libtap does not require configure anymore #1192
 
 * tests: you can now test with pleasure: $ make distclean ; ./configure ; make test #2369 #1192
+
+* core: add trigger_time to downtimes #2537
+	** downtimes in status.dat/retention.dat now holding trigger_time
+	** nebstruct and event broker api now passing trigger_time and is_in_effect
 
 * classic ui: Added option for max log entries displayed in showlog.cgi #2145
 	** added new config option "default_num_displayed_log_entries"
