@@ -28,6 +28,7 @@ use DBI;
 use Term::ANSIColor;
 use Env qw (LANG PATH);
 use Getopt::Long;
+use File::Basename qw ( basename );
 
 # sub stubs
 sub get_key_from_ini ($$);
@@ -37,6 +38,16 @@ sub get_distribution;
 sub find_icinga_dir;
 sub get_icinga_version;
 sub get_ido2db_version;
+
+# preconfiguration
+my $config_ref = {
+    services => {
+        apache2 => { binaries => [ 'httpd', 'apache2' ] },
+        mysql => { binaries => [ 'mysqld' ] },
+        icinga => { binaries => [ 'icinga' ] },
+        ido2db => { binaries => [ 'snmptt' ] },
+    }
+};
 
 ################################
 # Option parsing
@@ -122,7 +133,7 @@ my $date = localtime();
 #Apache Info
 my $bin;
 my $apacheinfo = join( '  ',
-      ( $bin = which( 'httpd', 'apache2' ) )
+      ( $bin = which( @{ $config_ref->{'services'}->{'apache2'}->{'binaries'} }) )
     ? (qx($bin -V))[ 0, 2, 3, 5, 6, 7, 8 ]
     : 'apache binary not found' );
 
@@ -292,18 +303,24 @@ print <<EOF;
 Process Status:
 EOF
 
-my @services = ( 'httpd', 'mysqld', 'snmptt', 'icinga', 'ido2db' );
-foreach my $service (@services) {
-    my $status = `/bin/ps cax | /bin/grep $service`;
-    if ( !$status ) {
-        print color("red"), " [$service]", color("reset"),
-            " not found or started\n";
+
+foreach my $service (keys($config_ref->{'services'})) {
+    my $binary = which (@{ $config_ref->{'services'}->{$service}->{'binaries'} });
+    if (! $binary ) {
+        print color("red"), " [$service]",color("reset"), " no binary found.\n";
     } else {
-        print color("green"), " [$service]", color("reset"),
-            " found and started\n";
+        my $binary = basename($binary);
+        my $status = qx(/bin/ps cax | /bin/grep $binary);
+        if ( !$status ) {
+            print color("red"), " [$service]", color("reset"),
+                " found but not running\n";
+        } else {
+            print color("green"), " [$service]", color("reset"),
+                " found and started\n";
+        }
     }
 }
-print " ############################################################\n";
+print "############################################################\n";
 
 exit;
 
