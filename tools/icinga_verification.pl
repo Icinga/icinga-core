@@ -133,8 +133,8 @@ my $mysqlver =
 # Icinga Checks
 ################################
 
-# verify that idomod connected via socket to ido2db
-my $idocheck = `ps aux | grep ido2db | grep -v grep | wc -l`;
+#check if ido2db is running
+my $idocheck = qx( ps aux | grep [i]do2db | wc -l );
 chomp($idocheck);
 
 # ido2db.cfg parsing
