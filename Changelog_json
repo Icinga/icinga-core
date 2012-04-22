@@ -2,6 +2,9 @@
 Classic-UI JSON Change Log
 #######################
 
+1.6.2 
+* add is_in_effect and trigger_time to downtime output #2538
+
 1.6.0 - only values added, no existing values changed
 * add more info of (ack, downtime, ... ) status to json export in status.cgi (ivo) #1988
 

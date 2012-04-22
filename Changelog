@@ -9,6 +9,8 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 ENHANCEMENTS
 * core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
 
+* classic ui: add is_in_effect and trigger_time to downtime view for html, csv, json #2538 - MF
+
 FIXES
 * core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
 
