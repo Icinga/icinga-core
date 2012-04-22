@@ -237,11 +237,12 @@ if ( !$mysqlcheck ) {
         "ido2db.cfg - MySQL Connect Failed. - check your config";
 
     chomp($dbh_cfg_error);
+
+    if ( !$dbh_cfg_error ) {
+        $dbh_cfg->disconnect();
+    }
 }
 
-if ( !$dbh_cfg_error ) {
-    $dbh_cfg->disconnect();
-}
 
 # Test Print Out
 # later create a fileout with the output
