@@ -51,7 +51,7 @@ my $result = GetOptions( "icingadb=s" => \$mysqldb );
 #Check if we are on Windows
 my $oscheck = $^O;
 if ( $oscheck eq 'MSWin32' ) {
-    print "We are on Windows, will quit now!";
+    print STDERR "We are on Windows, will quit now!";
     exit 1;
 }
 
@@ -63,16 +63,16 @@ if ( !$mysqlcheck ) {
     print "mysql not found, skipping\n";
 } else {
 
-    print "\nMysql Found! - start Config Script\n";
-    print "Values in '< >' are default parameters! Confirm with [Enter]\n";
-    print "\nEnter your MYSQL Server <localhost>: ";
+    print STDERR "\nMysql Found! - start Config Script\n";
+    print STDERR "Values in '< >' are default parameters! Confirm with [Enter]\n";
+    print STDERR "\nEnter your MYSQL Server <localhost>: ";
     $mysqlserver = <STDIN>;
     chomp($mysqlserver);
     if ( !$mysqlserver ) {
         $mysqlserver = 'localhost';
     }
 
-    print "Enter your MYSQL User <root>: ";
+    print STDERR "Enter your MYSQL User <root>: ";
     $mysqluser = <STDIN>;
     chomp($mysqluser);
     if ( !$mysqluser ) {
@@ -80,7 +80,7 @@ if ( !$mysqlcheck ) {
     }
 
     system( 'stty', '-echo' );
-    print "Enter your MYSQL Password: ";
+    print STDERR "Enter your MYSQL Password: ";
     $mysqlpw = <STDIN>;
     chomp($mysqlpw);
     system( 'stty', 'echo' );
@@ -90,7 +90,7 @@ if ( !$mysqlcheck ) {
 my $icinga_base = find_icinga_dir();
 
 if (! $icinga_base ) {
-    print "\nIcinga base not found.\nPlease enter your Icinga base: ";
+    print STDERR "\nIcinga base not found.\nPlease enter your Icinga base: ";
     $icinga_base = <STDIN>;
     chomp($icinga_base);
     if (! -d $icinga_base) {
@@ -187,7 +187,7 @@ my @row;
 my @result_icingaconninfo = ();
 
 if ( !$mysqlcheck ) {
-    print "no Mysql Found, skip Querys";
+    print STDERR "no Mysql Found, skip Querys\n";
 } else {
 
     # User Input Connect
