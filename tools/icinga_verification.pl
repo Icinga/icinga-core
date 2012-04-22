@@ -384,4 +384,3 @@ sub get_icinga_version {
         return 'icinga binary not found in PATH';
     }
 }
-}
