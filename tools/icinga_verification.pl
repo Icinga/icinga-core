@@ -108,6 +108,7 @@ my $perlversion = $^V;
 
 # Kernel version
 my $osversion = which('uname') ? qx(uname -rp) : 'uname binary not found';
+chomp($osversion);
 
 # PHP Version
 my $phpversion = which('php') ? (qx(php -v))[0] : 'php binary not found';
