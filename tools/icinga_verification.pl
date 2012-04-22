@@ -256,9 +256,9 @@ Perlversion: $perlversion
 Current Date/Time on Server: $date
 OS Information:
   OS Name: ", get_distribution,
-  Kernel Version: $osversion";
+  Kernel Version: $osversion
   LC_LANG: $LANG
-Webserver Information: ";
+Webserver Information:
   $apacheinfo
 PHP Information: $phpversion
 MySQL Information:
@@ -268,7 +268,7 @@ Icinga Informations:
  Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
  @result_icingaconninfo
-ido2db.cfg mysql Test Connection
+ ido2db.cfg mysql Test Connection
 EOF
 
 print color("red"), "\n $dbh_cfg_error\n", color("reset");
