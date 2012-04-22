@@ -403,6 +403,12 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime) {
 	/* have we come to the end of the scheduled downtime? */
 	if (temp_downtime->is_in_effect == TRUE && current_time >= temp_downtime->end_time) {
 
+		if (temp_downtime->type == HOST_DOWNTIME)
+			log_debug_info(DEBUGL_DOWNTIME, 0, "Host '%s' ending %s scheduled downtime (id=%lu) with depth=%lu, starttime=%lu, entrytime=%lu, endtime=%lu, duration=%lu.\n", hst->name, (temp_downtime->fixed == TRUE) ? "fixed" : "flexible", temp_downtime->downtime_id, hst->scheduled_downtime_depth, temp_downtime->end_time, temp_downtime->duration);
+		else
+			log_debug_info(DEBUGL_DOWNTIME, 0, "Service '%s' on host '%s' ending %s scheduled downtime (id=%lu) with depth=%lu, starttime=%lu, entrytime=%lu, endtime=%lu, duration=%lu.\n", svc->description, svc->host_name, (temp_downtime->fixed == TRUE) ? "fixed" : "flexible", temp_downtime->downtime_id, svc->scheduled_downtime_depth, temp_downtime->end_time, temp_downtime->duration);
+
+
 #ifdef USE_EVENT_BROKER
 		/* send data to event broker */
 		attr = NEBATTR_DOWNTIME_STOP_NORMAL;
@@ -479,6 +485,10 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime) {
 
 	/* else we are just starting the scheduled downtime */
 	else {
+		if (temp_downtime->type == HOST_DOWNTIME)
+			log_debug_info(DEBUGL_DOWNTIME, 0, "Host '%s' starting %s scheduled downtime (id=%lu) with depth=%lu, starttime=%lu, entrytime=%lu, endtime=%lu, duration=%lu.\n", hst->name, (temp_downtime->fixed == TRUE) ? "fixed" : "flexible", temp_downtime->downtime_id, hst->scheduled_downtime_depth, temp_downtime->start_time, temp_downtime->entry_time, temp_downtime->end_time, temp_downtime->duration);
+		else
+			log_debug_info(DEBUGL_DOWNTIME, 0, "Service '%s' on host '%s' starting %s scheduled downtime (id=%lu) with depth=%lu, starttime=%lu, entrytime=%lu, endtime=%lu, duration=%lu.\n", svc->description, svc->host_name, (temp_downtime->fixed == TRUE) ? "fixed" : "flexible", temp_downtime->downtime_id, svc->scheduled_downtime_depth, temp_downtime->start_time, temp_downtime->entry_time, temp_downtime->end_time, temp_downtime->duration);
 
 #ifdef USE_EVENT_BROKER
 		/* send data to event broker */
