@@ -35,6 +35,7 @@ sub which(@);
 sub slurp($);
 sub get_distribution;
 sub find_icinga_dir;
+sub get_icinga_version($);
 
 ################################
 # Option parsing
@@ -133,6 +134,9 @@ my $mysqlver =
 
 # distribution
 my $distribution = get_distribution();
+
+# icinga version
+my $icingaversion = get_icinga_version();
 ################################
 # Icinga Checks
 ################################
@@ -268,6 +272,7 @@ PHP Information: $phpversion
 MySQL Information:
  $mysqlver
 Icinga Informations:
+ icinga version: $icingaversion
  idomod Connections: $idocheck
  Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
@@ -364,4 +369,19 @@ sub find_icinga_dir {
         return $location if -e "$location/icinga.cfg";
     }
     return undef;
+}
+
+sub get_icinga_version {
+    if (which('icinga')) {
+        open( my $fh, '-|', "icinga --help" );
+        while (my $line = <$fh>) {
+            if ($line =~ /^Icinga (.*)/) {
+                return $1;
+            }
+        }
+        close($fh);
+    } else {
+        return 'icinga binary not found in PATH';
+    }
+}
 }
