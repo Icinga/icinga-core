@@ -570,6 +570,7 @@ int xrddefault_save_state_information(void) {
 		fprintf(fp, "is_in_effect=%d\n", temp_downtime->is_in_effect);
 		fprintf(fp, "author=%s\n", temp_downtime->author);
 		fprintf(fp, "comment=%s\n", temp_downtime->comment);
+		fprintf(fp, "trigger_time=%lu\n", temp_downtime->trigger_time);
 		fprintf(fp, "}\n");
 	}
 
@@ -681,6 +682,7 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 	time_t last_check = 0L;
 	int add_object;
 	int is_in_effect = FALSE;
+	time_t trigger_time = 0L;
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "xrddefault_read_state_information() start\n");
 
@@ -1066,9 +1068,9 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 
 					/* add the downtime */
 					if (data_type == XRDDEFAULT_HOSTDOWNTIME_DATA) {
-						add_host_downtime(host_name, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, downtime_id, is_in_effect);
+						add_host_downtime(host_name, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, downtime_id, is_in_effect, trigger_time);
 					} else {
-						add_service_downtime(host_name, service_description, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, downtime_id, is_in_effect);
+						add_service_downtime(host_name, service_description, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, downtime_id, is_in_effect, trigger_time);
 					}
 
 					/* must register the downtime with Icinga so it can schedule it, add comments, etc. */
@@ -1887,6 +1889,8 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 					author = (char *)strdup(val);
 				else if (!strcmp(var, "comment"))
 					comment_data = (char *)strdup(val);
+				else if (!strcmp(var, "trigger_time"))
+					trigger_time = strtoul(val, NULL, 10);
 				break;
 
 			default:

@@ -4,6 +4,16 @@ Icinga 1.6.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+1.6.2 - XX/05/2012
+
+ENHANCEMENTS
+* core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
+
+FIXES
+
+CHANGES
+
+
 1.6.1 - 02/12/2011
 
 FIXES

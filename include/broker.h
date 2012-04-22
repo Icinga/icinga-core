@@ -195,7 +195,7 @@ void broker_system_command(int,int,int,struct timeval,struct timeval,double,int,
 int broker_host_check(int,int,int,host *,int,int,int,struct timeval,struct timeval,char *,double,double,int,int,int,char *,char *,char *,char *,struct timeval *);
 int broker_service_check(int,int,int,service *,int,struct timeval,struct timeval,char *,double,double,int,int,int,char *,struct timeval *);
 void broker_comment_data(int,int,int,int,int,char *,char *,time_t,char *,char *,int,int,int,time_t,unsigned long,struct timeval *);
-void broker_downtime_data(int,int,int,int,char *,char *,time_t,char *,char *,time_t,time_t,int,unsigned long,unsigned long,unsigned long,struct timeval *);
+void broker_downtime_data(int,int,int,int,char *,char *,time_t,char *,char *,time_t,time_t,int,unsigned long,unsigned long,unsigned long,struct timeval *,int,time_t);
 void broker_flapping_data(int,int,int,int,void *,double,double,double,struct timeval *);
 void broker_program_status(int,int,int,struct timeval *);
 void broker_host_status(int,int,int,host *,struct timeval *);
