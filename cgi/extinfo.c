@@ -3126,7 +3126,9 @@ void show_downtime(int type) {
 			printf("%sSTART_TIME%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sEND_TIME%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sTYPE%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+			printf("%sTRIGGER_TIME%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sDURATION%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+			printf("%sIS_IN_EFFECT%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sDOWNTIME_ID%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sTRIGGER_ID%s\n", csv_data_enclosure, csv_data_enclosure);
 		}
@@ -3161,7 +3163,7 @@ void show_downtime(int type) {
 			if (type == SERVICE_DOWNTIME)
 				printf("<TH CLASS='downtime'>Service</TH>");
 		}
-		printf("<TH CLASS='downtime'>Entry Time</TH><TH CLASS='downtime'>Author</TH><TH CLASS='downtime'>Comment</TH><TH CLASS='downtime'>Start Time</TH><TH CLASS='downtime'>End Time</TH><TH CLASS='downtime'>Type</TH><TH CLASS='downtime'>Duration</TH><TH CLASS='downtime'>Downtime ID</TH><TH CLASS='downtime'>Trigger ID</TH><TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%sdowntime\');isValidForSubmit(\'tableform%sdowntime\');\"></TH></TR>\n", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
+		printf("<TH CLASS='downtime'>Entry Time</TH><TH CLASS='downtime'>Author</TH><TH CLASS='downtime'>Comment</TH><TH CLASS='downtime'>Start Time</TH><TH CLASS='downtime'>End Time</TH><TH CLASS='downtime'>Type</TH><TH CLASS='downtime'>Trigger Time</TH><TH CLASS='downtime'>Duration</TH><TH CLASS='downtime'>Is in effect</TH><TH CLASS='downtime'>Downtime ID</TH><TH CLASS='downtime'>Trigger ID</TH><TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%sdowntime\');isValidForSubmit(\'tableform%sdowntime\');\"></TH></TR>\n", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
 	}
 
 	/* display all the downtime */
@@ -3279,17 +3281,29 @@ void show_downtime(int type) {
 			printf("<td CLASS='%s'>%s</td>", bg_class, (temp_downtime->fixed == TRUE) ? "Fixed" : "Flexible");
 		}
 
+                get_time_string(&temp_downtime->trigger_time, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
+                if (content_type == JSON_CONTENT) {
+                        printf("\"trigger_time\": \"%s\", ", date_time);
+                } else if (content_type == CSV_CONTENT) {
+                        printf("%s%s%s%s", csv_data_enclosure, date_time, csv_data_enclosure, csv_delimiter);
+                } else {
+                        printf("<td CLASS='%s'>%s</td>", bg_class, date_time);
+                }
+
 		get_time_breakdown(temp_downtime->duration, &days, &hours, &minutes, &seconds);
 		if (content_type == JSON_CONTENT) {
 			printf("\"duration\": \"%dd %dh %dm %ds\", ", days, hours, minutes, seconds);
+			printf("\"is_in_effect\": %lu, ", temp_downtime->is_in_effect);
 			printf("\"downtime_id\": %lu, ", temp_downtime->downtime_id);
 			printf("\"trigger_id\": \"");
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%dd %dh %dm %ds%s%s", csv_data_enclosure, days, hours, minutes, seconds, csv_data_enclosure, csv_delimiter);
+			printf("%s%lu%s%s", csv_data_enclosure, temp_downtime->is_in_effect, csv_data_enclosure, csv_delimiter);
 			printf("%s%lu%s%s", csv_data_enclosure, temp_downtime->downtime_id, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
 			printf("<td CLASS='%s'>%dd %dh %dm %ds</td>", bg_class, days, hours, minutes, seconds);
+			printf("<td CLASS='%s'>%lu</td>", bg_class, temp_downtime->is_in_effect);
 			printf("<td CLASS='%s'>%lu</td>", bg_class, temp_downtime->downtime_id);
 			printf("<td CLASS='%s'>", bg_class);
 		}
