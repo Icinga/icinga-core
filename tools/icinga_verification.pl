@@ -36,6 +36,7 @@ sub slurp($);
 sub get_distribution;
 sub find_icinga_dir;
 sub get_icinga_version;
+sub get_ido2db_version;
 
 ################################
 # Option parsing
@@ -137,6 +138,10 @@ my $distribution = get_distribution();
 
 # icinga version
 my $icingaversion = get_icinga_version();
+
+# ido2db version
+my $ido2dbversion = get_ido2db_version();
+
 ################################
 # Icinga Checks
 ################################
@@ -273,6 +278,7 @@ MySQL Information:
  $mysqlver
 Icinga Informations:
  icinga version: $icingaversion
+ ido2db version: $ido2dbversion
  idomod Connections: $idocheck
  Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
@@ -382,5 +388,19 @@ sub get_icinga_version {
         close($fh);
     } else {
         return 'icinga binary not found in PATH';
+    }
+}
+
+sub get_ido2db_version {
+    if (which('ido2db')) {
+        open( my $fh, '-|', "ido2db --help" );
+        while (my $line = <$fh>) {
+            if ($line =~ /^IDO2DB (.*)/) {
+                return $1;
+            }
+        }
+        close($fh);
+    } else {
+        return 'ido2db binary not found in PATH';
     }
 }
