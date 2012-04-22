@@ -141,12 +141,10 @@ chomp($idocheck);
 ######## read in complete file and write needed values in an Array !##################
 
 #ido2db socket type
-my $ido2dbsocket = `cat $icinga_base/etc/ido2db.cfg | grep ^socket_type=`;
-chomp($ido2dbsocket);
+my $ido2dbsocket = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_type');
 
 #ido2db TCP Port
-my $ido2dbtcpport = `cat $icinga_base/etc/ido2db.cfg | grep ^tcp_port=`;
-chomp($ido2dbtcpport);
+my $ido2dbtcpport = get_key_from_ini("$icinga_base/ido2db.cfg", 'tcp_port');
 
 #ido2db SSL Status
 #use_ssl=
@@ -155,9 +153,7 @@ chomp($ido2dbtcpport);
 #db_servertype=
 
 #ido2db Server Host Name
-my $mysqlserver_cfg = `cat $icinga_base/etc/ido2db.cfg | grep ^db_host=`;
-chomp($mysqlserver_cfg);
-my @mysqlserver_cfg_split = split( '=', $mysqlserver_cfg );
+my $mysqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
 
 #ido2db Server port
 #db_port=
@@ -166,19 +162,13 @@ my @mysqlserver_cfg_split = split( '=', $mysqlserver_cfg );
 #db_socket=
 
 #ido2db DB User
-my $mysqluser_cfg = `cat $icinga_base/etc/ido2db.cfg | grep ^db_user=`;
-chomp($mysqluser_cfg);
-my @mysqluser_cfg_split = split( '=', $mysqluser_cfg );
+my $mysqluser_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_user');
 
 #ido2db DB Name
-my $mysqldb_cfg = `cat $icinga_base/etc/ido2db.cfg | grep ^db_name=`;
-chomp($mysqldb_cfg);
-my @mysqldb_cfg_split = split( '=', $mysqldb_cfg );
+my $mysqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
 
 #ido2db Password
-my $mysqlpw_cfg = `cat $icinga_base/etc/ido2db.cfg | grep ^db_pass=`;
-chomp($mysqlpw_cfg);
-my @mysqlpw_cfg_split = split( '=', $mysqlpw_cfg );
+my $mysqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
 
 # MySQL Checks#
 my $dbh_user         = '';
@@ -236,9 +226,9 @@ if ( !$mysqlcheck ) {
 
     # ido2db.cfg Connection test
     $dbh_cfg = DBI->connect(
-        "dbi:mysql:database=$mysqldb_cfg_split[1]; host=$mysqlserver_cfg_split[1]:mysql_server_prepare=1",
-        "$mysqluser_cfg_split[1]",
-        "$mysqlpw_cfg_split[1]",
+        "dbi:mysql:database=$mysqldb_cfg; host=$mysqlserver_cfg:mysql_server_prepare=1",
+        "$mysqluser_cfg",
+        "$mysqlpw_cfg",
         {   PrintError => 0,
             RaiseError => 0
         }
