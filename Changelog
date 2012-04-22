@@ -10,6 +10,7 @@ ENHANCEMENTS
 * core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
 
 FIXES
+* core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
 
 CHANGES
 

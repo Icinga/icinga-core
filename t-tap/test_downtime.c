@@ -45,6 +45,61 @@ unsigned long next_downtime_id = 1L;
 
 extern scheduled_downtime *scheduled_downtime_list;
 
+/*
+service *svc1 = NULL, *svc2 = NULL;
+host *host1 = NULL;
+
+void
+setup_objects(time_t time) {
+        timed_event *new_event = NULL;
+
+        host1 = (host *)calloc(1, sizeof(host));
+        host1->name = strdup("Host1");
+        host1->address = strdup("127.0.0.1");
+        host1->retry_interval = 1;
+        host1->check_interval = 5;
+        host1->check_options = 0;
+        host1->state_type = SOFT_STATE;
+        host1->current_state = HOST_DOWN;
+        host1->has_been_checked = TRUE;
+        host1->last_check = time;
+        host1->next_check = time;
+        host1->plugin_output = strdup("Initial state");
+        host1->long_plugin_output = strdup("Initial state");
+        host1->perf_data = NULL;
+
+        svc1 = (service *)calloc(1, sizeof(service));
+        svc1->host_name = strdup("Host1");
+        svc1->host_ptr = host1;
+        svc1->description = strdup("Normal service");
+        svc1->check_options = 0;
+        svc1->next_check = time;
+        svc1->state_type = SOFT_STATE;
+        svc1->current_state = STATE_CRITICAL;
+        svc1->retry_interval = 1;
+        svc1->check_interval = 5;
+        svc1->current_attempt = 1;
+        svc1->max_attempts = 4;
+        svc1->last_state_change = 0;
+        svc1->last_state_change = 0;
+        svc1->last_check = (time_t)1234560000;
+        svc1->host_problem_at_last_check = FALSE;
+        svc1->plugin_output = strdup("Initial state");
+        svc1->last_hard_state_change = (time_t)1111111111;
+
+        svc2 = (service *)calloc(1, sizeof(service));
+        svc2->host_name = strdup("Host1");
+        svc2->description = strdup("To be nudged");
+        svc2->check_options = 0;
+        svc2->next_check = time;
+        svc2->state_type = SOFT_STATE;
+        svc2->current_state = STATE_OK;
+        svc2->retry_interval = 1;
+        svc2->check_interval = 5;
+
+}
+*/
+
 int
 main(int argc, char **argv) {
 	time_t now = 0L;
@@ -172,7 +227,32 @@ main(int argc, char **argv) {
 	for (temp_downtime = scheduled_downtime_list, i = 0; temp_downtime != NULL; temp_downtime = temp_downtime->next, i++) {}
 	ok(i == 0, "No downtimes left") || diag("Left: %d", i);
 
+	/* add tests for #2536 */
+	/*
+	setup_objects(now);
+	*/
 
+	/* int schedule_downtime(int type, char *host_name, char *service_description, time_t entry_time, char *author, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long triggered_by, unsigned long duration, unsigned long *new_downtime_id) { */
+	/*
+        schedule_downtime(HOST_DOWNTIME, "host1", NULL, now, "user", "test comment", now, now+20, 0, 0, 10, &downtime_id);
+	ok(downtime_id == 21L, "Got host1 downtime: %lu", downtime_id);
+	*/
+
+	/* now set the host to down */
+	/*
+	host1->current_state = HOST_DOWN;
+	*/
+	/* FIXME how to pass the host object to the test function? it will bail early if the downtime->hst|svc entry cannot be found */
+
+	/* handle the downtime, as this would be in events.c */
+	/*
+	handle_scheduled_downtime_by_id(downtime_id);
+	temp_downtime = scheduled_downtime_list;
+
+	printf("id: %lu, in_effect: %lu", temp_downtime->downtime_id, temp_downtime->is_in_effect);
+
+	ok(temp_downtime->is_in_effect == 1, "host1 downtime in effect with trigger_time: %lu", temp_downtime->trigger_time);
+	*/
 
 	return exit_status();
 }

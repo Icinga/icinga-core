@@ -402,7 +402,10 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime) {
 	time(&current_time);
 
 	/* have we come to the end of the scheduled downtime? */
-	if (temp_downtime->is_in_effect == TRUE && current_time >= temp_downtime->end_time) {
+	if (temp_downtime->is_in_effect == TRUE && ( /* downtime needs to be in effect and ... */
+		(temp_downtime->fixed == TRUE && current_time >= temp_downtime->end_time) || /* fixed downtime, endtime means end of downtime */
+		(temp_downtime->fixed == FALSE && current_time >= (temp_downtime->trigger_time+temp_downtime->duration)) /* flexible downtime, endtime of downtime is trigger_time+duration */
+	)){
 
 		if (temp_downtime->type == HOST_DOWNTIME)
 			log_debug_info(DEBUGL_DOWNTIME, 0, "Host '%s' ending %s scheduled downtime (id=%lu) with depth=%lu, starttime=%lu, entrytime=%lu, triggertime=%lu, endtime=%lu, duration=%lu.\n", hst->name, (temp_downtime->fixed == TRUE) ? "fixed" : "flexible", temp_downtime->downtime_id, hst->scheduled_downtime_depth, temp_downtime->start_time, temp_downtime->entry_time, temp_downtime->trigger_time, temp_downtime->end_time, temp_downtime->duration);
