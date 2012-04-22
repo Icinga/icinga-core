@@ -1337,7 +1337,7 @@ int xsddefault_read_status_data(char *config_file, int options) {
 				else if (!strcmp(var, "comment"))
 					comment_data = (char *)strdup(val);
 				else if (!strcmp(var, "trigger_time"))
-					end_time = strtoul(val, NULL, 10);
+					trigger_time = strtoul(val, NULL, 10);
 				break;
 
 			default:
