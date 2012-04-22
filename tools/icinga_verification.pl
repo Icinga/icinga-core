@@ -302,9 +302,9 @@ sub get_key_from_ini ($$) {
 
     if ( open( my $fh, '<', $file ) ) {
         while ( my $line = <$fh> ) {
-            chmod($line);
+            chomp($line);
             if ( $line =~ /^\s*$key=([^\s]+)/ ) {
-                print "$key = $1\n";
+                return $1;
             }
         }
     } else {
