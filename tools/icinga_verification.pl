@@ -339,7 +339,7 @@ sub slurp($) {
 sub get_distribution {
 
     #first try: lsb
-    if ( -x which('lsb_release') ) {
+    if ( which('lsb_release') ) {
         open( my $fh, '-|', "lsb_release -d -c -r " );
         my $version = do { local $/; <$fh> };
         close($fh);
