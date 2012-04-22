@@ -35,7 +35,7 @@ sub which(@);
 sub slurp($);
 sub get_distribution;
 sub find_icinga_dir;
-sub get_icinga_version($);
+sub get_icinga_version;
 
 ################################
 # Option parsing
