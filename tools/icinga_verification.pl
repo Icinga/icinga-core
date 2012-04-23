@@ -194,6 +194,10 @@ my $icingaversion = get_icinga_version();
 # ido2db version
 my $ido2dbversion = get_ido2db_version();
 
+# Selinux Check | selinuxenabled
+my $selinux = which('selinuxenabled') ? qx(getenforce) : 'selinux binary not found';
+chomp($selinux);
+
 ################################
 # Icinga Checks
 ################################
@@ -294,6 +298,9 @@ PHP Information:
  
 MySQL Information:
  $mysqlver
+
+Selinux Status:
+ $selinux 
  
 Icinga Informations:
  icinga version: $icingaversion
