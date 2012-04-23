@@ -45,15 +45,13 @@ my $config_ref = {
         apache2 => { binaries => [ 'httpd', 'apache2' ] },
         mysql => { binaries => [ 'mysqld' ] },
         icinga => { binaries => [ 'icinga' ] },
-        ido2db => { binaries => [ 'snmptt' ] },
+        ido2db => { binaries => [ 'ido2db' ] },
     }
 };
 
 ################################
 # Option parsing
 ################################
-my $mysqldb = '';
-#my $result = GetOptions( "icingadb=s" => \$mysqldb );
 
 ################################
 # Script Config
@@ -95,7 +93,7 @@ my $mysqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
 #Mysql Server Check
 my $mysqlcheck = which('mysql');
 
-my ($dbh_cfg, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1) = '';
+my ($dbh_cfg, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1, $mysqldb) = '';
 
 if ( !$mysqlcheck ) {
     print "mysql not found, skipping\n";
@@ -365,8 +363,7 @@ sub which (@) {
     push @path, $icinga_path;
 
     foreach my $binary (@binaries) {
-        map { -x "$_/$binary" && return "$_/$binary" }
-            @path );
+        map { -x "$_/$binary" && return "$_/$binary" }@path;
     }
     return undef;
 }
