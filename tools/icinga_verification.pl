@@ -52,10 +52,8 @@ my $config_ref = {
 ################################
 # Option parsing
 ################################
-
-my $mysqldb = "icinga";
-
-my $result = GetOptions( "icingadb=s" => \$mysqldb );
+my $mysqldb = '';
+#my $result = GetOptions( "icingadb=s" => \$mysqldb );
 
 ################################
 # Script Config
@@ -66,37 +64,6 @@ my $oscheck = $^O;
 if ( $oscheck eq 'MSWin32' ) {
     print STDERR "We are on Windows, will quit now!";
     exit 1;
-}
-
-# MySQL Config if MySQL is used
-my $mysqlcheck = which('mysql');
-my ( $mysqlserver, $mysqluser, $mysqlpw ) = '';
-
-if ( !$mysqlcheck ) {
-    print "mysql not found, skipping\n";
-} else {
-
-    print STDERR "\nMysql Found! - start Config Script\n";
-    print STDERR "Values in '< >' are default parameters! Confirm with [Enter]\n";
-    print STDERR "\nEnter your MYSQL Server <localhost>: ";
-    $mysqlserver = <STDIN>;
-    chomp($mysqlserver);
-    if ( !$mysqlserver ) {
-        $mysqlserver = 'localhost';
-    }
-
-    print STDERR "Enter your MYSQL User <root>: ";
-    $mysqluser = <STDIN>;
-    chomp($mysqluser);
-    if ( !$mysqluser ) {
-        $mysqluser = 'root';
-    }
-
-    system( 'stty', '-echo' );
-    print STDERR "Enter your MYSQL Password: ";
-    $mysqlpw = <STDIN>;
-    chomp($mysqlpw);
-    system( 'stty', 'echo' );
 }
 
 #Icinga Base Set
@@ -110,6 +77,76 @@ if (! $icinga_base ) {
         print STDERR "Couldn't find icinga.cfg.";
         exit 1;
     }
+}
+
+# MySQL Config if MySQL is used
+
+#ido2db Mysql Config
+#ido2db Server Host Name
+my $mysqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
+#ido2db DB User
+my $mysqluser_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_user');
+#ido2db DB Name
+my $mysqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
+#ido2db Password
+my $mysqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
+
+#Mysql Server Check
+my $mysqlcheck = which('mysql');
+
+my ($dbh_cfg, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1) = '';
+
+if ( !$mysqlcheck ) {
+    print "mysql not found, skipping\n";
+} else {
+
+    print STDERR "\nMysql Found! - Try to connect via ido2db.cfg\n";
+	
+	# ido2db.cfg Connection test
+    $dbh_cfg = DBI->connect(
+        "dbi:mysql:database=$mysqldb_cfg; host=$mysqlserver_cfg:mysql_server_prepare=1",
+        "$mysqluser_cfg",
+        "$mysqlpw_cfg",
+        {   PrintError => 0,
+            RaiseError => 0
+        }
+        )
+        or $dbh_cfg_error =
+        "ido2db.cfg - MySQL Connect Failed.";
+
+    if ( !$dbh_cfg_error ) {
+	    print "ido2db.cfg Mysql Connection Test OK!\n";
+        $dbh_cfg->disconnect();
+    } else {
+	
+		print STDERR "Values in '< >' are default parameters! Confirm with [Enter]\n";
+		print STDERR "\nEnter your MYSQL Server <localhost>: ";
+		$$mysqlserver_cfg = <STDIN>;
+		chomp($mysqlserver_cfg);
+		if ( !$mysqlserver_cfg ) {
+		$mysqlserver_cfg = 'localhost';
+		}
+
+		print STDERR "Enter your MYSQL User <root>: ";
+		$mysqluser_cfg = <STDIN>;
+		chomp($mysqluser_cfg);
+		if ( !$mysqluser_cfg ) {
+        $mysqluser_cfg = 'root';
+		}
+	
+		print STDERR "Enter your Icinga Database <icinga>: ";
+		$mysqldb_cfg = <STDIN>;
+		chomp($mysqldb_cfg);
+		if ( !$mysqldb_cfg ) {
+        $mysqldb_cfg = 'icinga';
+		}
+
+		system( 'stty', '-echo' );
+		print STDERR "Enter your MYSQL Password: ";
+		$mysqlpw_cfg = <STDIN>;
+		chomp($mysqlpw_cfg);
+		system( 'stty', 'echo' );
+	}
 }
 
 ################################
@@ -161,8 +198,7 @@ my $ido2dbversion = get_ido2db_version();
 my $idocheck = qx( ps aux | grep [i]do2db | wc -l );
 chomp($idocheck);
 
-# ido2db.cfg parsing
-
+#ido2db.cfg parsing
 #ido2db socket type
 my $ido2dbsocket = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_type');
 
@@ -170,11 +206,10 @@ my $ido2dbsocket = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_type');
 my $ido2dbtcpport = get_key_from_ini("$icinga_base/ido2db.cfg", 'tcp_port');
 
 #ido2db SSL Status
-#use_ssl=
+my $ido2dbssl = get_key_from_ini("$icinga_base/ido2db.cfg", 'use_ssl');
 
 #ido2db Servertype
-#db_servertype=
-
+my $ido2dbservertype = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertype');
 
 #ido2db Server port
 #db_port=
@@ -182,21 +217,8 @@ my $ido2dbtcpport = get_key_from_ini("$icinga_base/ido2db.cfg", 'tcp_port');
 #ido2db Server Socket
 #db_socket=
 
-#ido2db Mysql Config
-#ido2db Server Host Name
-my $mysqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
-
-#ido2db DB User
-my $mysqluser_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_user');
-
-#ido2db DB Name
-my $mysqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
-
-#ido2db Password
-my $mysqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
 
 # MySQL Checks #
-my ($dbh_user, $dbh_user_error, $dbh_cfg, $dbh_cfg_error, $icinga_dbversion, $sth_user, $sth1_user) = '';
 my @result_icingadb  = ();
 my @row;
 my @result_icingaconninfo = ();
@@ -205,45 +227,7 @@ if ( !$mysqlcheck ) {
     print STDERR "no Mysql Found, skip Querys\n";
 } else {
 
-    # User Input Connect
-    $dbh_user = DBI->connect(
-        "dbi:mysql:database=$mysqldb; host=$mysqlserver:mysql_server_prepare=1",
-        "$mysqluser",
-        "$mysqlpw",
-        {   PrintError => 0,
-            RaiseError => 0
-        }
-        )
-        or die color("red"),
-        "\nMySQL Connect Failed. - check your input or MySQL Process\n",
-        color("reset");
-
-    chomp($dbh_user_error);
-
-    # Query icinga DB Version
-    $icinga_dbversion = 'SELECT version FROM icinga_dbversion';
-    $sth_user = $dbh_user->prepare($icinga_dbversion) or warn $DBI::errstr;
-
-    $sth_user->execute() or warn $DBI::errstr;
-
-    while ( @row = $sth_user->fetchrow_array() ) {
-        push( @result_icingadb, @row );
-    }
-
-    # Query icinga_conninfo
-    my $icinga_conninfo =
-        'select conninfo_id, last_checkin_time from icinga_conninfo order by connect_time desc limit 2';
-    $sth1_user = $dbh_user->prepare($icinga_conninfo) or warn $DBI::errstr;
-
-    $sth1_user->execute() or warn $DBI::errstr;
-
-    while ( @row = $sth1_user->fetchrow_array() ) {
-        push( @result_icingaconninfo, "id:", @row, "\n" );
-    }
-
-    $dbh_user->disconnect();
-
-    # ido2db.cfg Connection test
+    # Connect to Database
     $dbh_cfg = DBI->connect(
         "dbi:mysql:database=$mysqldb_cfg; host=$mysqlserver_cfg:mysql_server_prepare=1",
         "$mysqluser_cfg",
@@ -252,14 +236,50 @@ if ( !$mysqlcheck ) {
             RaiseError => 0
         }
         )
-        or $dbh_cfg_error =
-        "ido2db.cfg - MySQL Connect Failed. - check your config";
+        or die color("red"),
+        "\nMySQL Connect Failed. - check your input or MySQL Process\n",
+        color("reset");
 
-    chomp($dbh_cfg_error);
+    # Query icinga DB Version
+    $icinga_dbversion = 'SELECT version FROM icinga_dbversion';
+    $sth = $dbh_cfg->prepare($icinga_dbversion) or warn $DBI::errstr;
 
-    if ( !$dbh_cfg_error ) {
-        $dbh_cfg->disconnect();
+    $sth->execute() or warn $DBI::errstr;
+
+    while ( @row = $sth->fetchrow_array() ) {
+        push( @result_icingadb, @row );
     }
+
+    # Query icinga_conninfo
+    my $icinga_conninfo =
+        'select conninfo_id, last_checkin_time from icinga_conninfo order by connect_time desc limit 2';
+    $sth1 = $dbh_cfg->prepare($icinga_conninfo) or warn $DBI::errstr;
+
+    $sth1->execute() or warn $DBI::errstr;
+
+    while ( @row = $sth1->fetchrow_array() ) {
+        push( @result_icingaconninfo, "id:", @row, "\n" );
+    }
+
+    $dbh_cfg->disconnect();
+
+    # ido2db.cfg Connection test
+#    $dbh_cfg = DBI->connect(
+#       "dbi:mysql:database=$mysqldb_cfg; host=$mysqlserver_cfg:mysql_server_prepare=1",
+#        "$mysqluser_cfg",
+#        "$mysqlpw_cfg",
+#        {   PrintError => 0,
+#            RaiseError => 0
+#        }
+#        )
+#        or $dbh_cfg_error =
+#        "ido2db.cfg - MySQL Connect Failed. - check your config";
+#
+#    chomp($dbh_cfg_error);
+
+#    if ( !$dbh_cfg_error ) {
+#        $dbh_cfg->disconnect();
+#    }
 }
 
 
@@ -293,7 +313,11 @@ Icinga Informations:
  idomod Connections: $idocheck
  Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
- @result_icingaconninfo
+ @result_icingaconninfo 
+ ido2db Options:
+ Server Type: $ido2dbservertype
+ SSL Status: $ido2dbssl
+ 
  Testing Mysql Connection with ido2db.cfg:
 EOF
 
@@ -313,7 +337,7 @@ EOF
 foreach my $service (keys(%{ $config_ref->{'services'} })) {
     my $binary = which (@{ $config_ref->{'services'}->{$service}->{'binaries'} });
     if (! $binary ) {
-        print color("red"), " [$service]",color("reset"), " no binary found.\n";
+        print color("yellow"), " [$service]",color("reset"), " no binary found.\n";
     } else {
         my $binary = basename($binary);
         my $status = qx(/bin/ps cax | /bin/grep $binary);
