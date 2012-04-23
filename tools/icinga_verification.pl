@@ -206,6 +206,10 @@ chomp($selinux);
 my $idocheck = qx( ps aux | grep [i]do2db | wc -l );
 chomp($idocheck);
 
+#icinga.cfg parsing
+#icinga external commands
+my $icingaextcmd = get_key_from_ini("$icinga_base/icinga.cfg", 'check_external_commands');
+
 #ido2db.cfg parsing
 #ido2db socket type
 my $ido2dbsocket = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_type');
@@ -319,6 +323,9 @@ Icinga Informations:
  Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
  @result_icingaconninfo 
+ Icinga.cfg Information:
+ External Commands(1=on,0=off): $icingaextcmd
+ 
  ido2db Information:
  Server Type: $ido2dbservertype
  SSL Status: $ido2dbssl
