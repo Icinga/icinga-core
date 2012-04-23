@@ -312,6 +312,7 @@ Icinga Informations:
  ido2db Options:
  Server Type: $ido2dbservertype
  SSL Status: $ido2dbssl
+ Socket Type: $ido2dbsocket
  
  Testing Mysql Connection with ido2db.cfg:
 EOF
