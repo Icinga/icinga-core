@@ -46,6 +46,7 @@ my $config_ref = {
         mysql => { binaries => [ 'mysqld' ] },
         icinga => { binaries => [ 'icinga' ] },
         ido2db => { binaries => [ 'ido2db' ] },
+		snmptt => { binaries => [ 'snmptt' ] },
     }
 };
 
