@@ -81,7 +81,8 @@ if (! $icinga_base ) {
 
 # MySQL Config if MySQL is used
 
-#ido2db Mysql Config
+#ido2db Mysql Config parsing
+
 #ido2db Server Host Name
 my $mysqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
 #ido2db DB User
@@ -263,26 +264,7 @@ if ( !$mysqlcheck ) {
     }
 
     $dbh_cfg->disconnect();
-
-    # ido2db.cfg Connection test
-#    $dbh_cfg = DBI->connect(
-#       "dbi:mysql:database=$mysqldb_cfg; host=$mysqlserver_cfg:mysql_server_prepare=1",
-#        "$mysqluser_cfg",
-#        "$mysqlpw_cfg",
-#        {   PrintError => 0,
-#            RaiseError => 0
-#        }
-#        )
-#        or $dbh_cfg_error =
-#        "ido2db.cfg - MySQL Connect Failed. - check your config";
-#
-#    chomp($dbh_cfg_error);
-
-#    if ( !$dbh_cfg_error ) {
-#        $dbh_cfg->disconnect();
-#    }
 }
-
 
 # Test Print Out
 # later create a fileout with the output
