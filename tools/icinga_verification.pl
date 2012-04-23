@@ -365,8 +365,7 @@ sub which (@) {
     push @path, $icinga_path;
 
     foreach my $binary (@binaries) {
-        map { -x "$_/$binary" && return "$_/$binary" }
-            @path );
+        map { -x "$_/$binary" && return "$_/$binary" } @path;
     }
     return undef;
 }
