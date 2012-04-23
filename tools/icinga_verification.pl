@@ -53,7 +53,8 @@ my $config_ref = {
 # Option parsing
 ################################
 my $mysqldb = '';
-#my $result = GetOptions( "icingadb=s" => \$mysqldb );
+my $verbose; 
+my $result = GetOptions( "verbose" => \$verbose );
 
 ################################
 # Script Config
@@ -363,6 +364,7 @@ sub which (@) {
     my $icinga_path = "$icinga_base/../bin";
     my $icinga_path = "$icinga_base/../sbin";
     push @path, $icinga_path;
+    print "looking for binaries in ", join(",", @path), "\n" if $verbose;
 
     foreach my $binary (@binaries) {
         map { -x "$_/$binary" && return "$_/$binary" } @path;
