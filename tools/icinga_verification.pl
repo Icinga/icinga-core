@@ -239,10 +239,8 @@ if ( !$mysqlcheck ) {
             RaiseError => 0
         }
         )
-        or warn color("red"),
-        "\nMySQL Connect Failed. - Skip Mysql Querys.\n",
+        "\nMySQL Connect Failed. - check your input or MySQL Process\n",
         color("reset");
-
 
     # Query icinga DB Version
     $icinga_dbversion = 'SELECT version FROM icinga_dbversion';
