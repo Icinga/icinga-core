@@ -222,6 +222,7 @@ my $ido2dbservertype = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertyp
 
 
 # MySQL Checks #
+my $dbh_conn_error = '';
 my @result_icingadb  = ();
 my @row;
 my @result_icingaconninfo = ();
@@ -229,7 +230,6 @@ my @result_icingaconninfo = ();
 if ( !$mysqlcheck ) {
     print STDERR "no Mysql Found, skip Querys\n";
 } else {
-
     # Connect to Database
     $dbh_cfg = DBI->connect(
         "dbi:mysql:database=$mysqldb_cfg; host=$mysqlserver_cfg:mysql_server_prepare=1",
@@ -239,31 +239,34 @@ if ( !$mysqlcheck ) {
             RaiseError => 0
         }
         )
-        "\nMySQL Connect Failed. - check your input or MySQL Process\n",
-        color("reset");
+        or $dbh_conn_error = "\nMySQL Connect Failed. - check your input or MySQL Process\n";
+		
+	if(!$dbh_conn_error){
+		# Query icinga DB Version
+		$icinga_dbversion = 'SELECT version FROM icinga_dbversion';
+		$sth = $dbh_cfg->prepare($icinga_dbversion) or warn $DBI::errstr;
 
-    # Query icinga DB Version
-    $icinga_dbversion = 'SELECT version FROM icinga_dbversion';
-    $sth = $dbh_cfg->prepare($icinga_dbversion) or warn $DBI::errstr;
+		$sth->execute() or warn $DBI::errstr;
 
-    $sth->execute() or warn $DBI::errstr;
+		while ( @row = $sth->fetchrow_array() ) {
+			push( @result_icingadb, @row );
+		}
 
-    while ( @row = $sth->fetchrow_array() ) {
-        push( @result_icingadb, @row );
-    }
-
-    # Query icinga_conninfo
-    my $icinga_conninfo =
+		# Query icinga_conninfo
+		my $icinga_conninfo =
         'select conninfo_id, last_checkin_time from icinga_conninfo order by connect_time desc limit 2';
-    $sth1 = $dbh_cfg->prepare($icinga_conninfo) or warn $DBI::errstr;
+		$sth1 = $dbh_cfg->prepare($icinga_conninfo) or warn $DBI::errstr;
 
-    $sth1->execute() or warn $DBI::errstr;
+		$sth1->execute() or warn $DBI::errstr;
 
-    while ( @row = $sth1->fetchrow_array() ) {
-        push( @result_icingaconninfo, "id:", @row, "\n" );
-    }
+		while ( @row = $sth1->fetchrow_array() ) {
+			push( @result_icingaconninfo, "id:", @row, "\n" );
+		}
 
     $dbh_cfg->disconnect();
+	} else {
+		print STDERR $dbh_conn_error;
+	}   
 }
 
 # Test Print Out
