@@ -360,7 +360,8 @@ sub get_key_from_ini ($$) {
 sub which (@) {
     my @binaries = @_;
     my @path = reverse( split( ':', $PATH ));
-    my $icinga_path = "$icinga_base/../";
+    my $icinga_path = "$icinga_base/../bin";
+    my $icinga_path = "$icinga_base/../sbin";
     push @path, $icinga_path;
 
     foreach my $binary (@binaries) {
