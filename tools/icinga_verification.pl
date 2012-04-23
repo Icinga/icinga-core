@@ -52,6 +52,12 @@ my $config_ref = {
 ################################
 # Option parsing
 ################################
+<<<<<<< HEAD
+=======
+my $mysqldb = '';
+my $verbose; 
+my $result = GetOptions( "verbose" => \$verbose );
+>>>>>>> fholzer/core-formorer
 
 ################################
 # Script Config
@@ -358,9 +364,9 @@ sub get_key_from_ini ($$) {
 sub which (@) {
     my @binaries = @_;
     my @path = reverse( split( ':', $PATH ));
-    my $icinga_path = "$icinga_base/../bin";
-    my $icinga_path = "$icinga_base/../sbin";
-    push @path, $icinga_path;
+    push @path, "$icinga_base/../bin";
+    push @path, "$icinga_base/../sbin";
+    print "looking for binaries in ", join(",", @path), "\n" if $verbose;
 
     foreach my $binary (@binaries) {
         map { -x "$_/$binary" && return "$_/$binary" }@path;
