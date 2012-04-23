@@ -163,6 +163,8 @@ time_t end_time = 0L;				/**< end time as unix timestamp */
 
 int CGI_ID = CMD_CGI_ID;				/**< ID to identify the cgi for functions in cgiutils.c */
 
+unsigned long attr = MODATTR_NONE;		/**< default modified_attributes */
+
 authdata current_authdata;			/**< struct to hold current authentication data */
 
 /** Initialize the struct */
@@ -426,6 +428,17 @@ int process_cgivars(void) {
 
 			command_type = atoi(variables[x]);
 		}
+
+                /* we found the attr */
+                else if (!strcmp(variables[x], "attr")) {
+                        x++;
+                        if (variables[x] == NULL) {
+                                error = TRUE;
+                                break;
+                        }
+
+                        attr = strtoul(variables[x], NULL, 10);
+                }
 
 		/* we found the command mode */
 		else if (!strcmp(variables[x], "cmd_mod")) {
@@ -1384,6 +1397,14 @@ void request_command_data(int cmd) {
 		snprintf(action, sizeof(action), "Send a custom %s notification", (cmd == CMD_SEND_CUSTOM_HOST_NOTIFICATION) ? "host" : "service");
 		break;
 
+        case CMD_CHANGE_HOST_MODATTR:
+		snprintf(action, sizeof(action), "Reset modified attributes for Host(s).");
+		break;
+
+        case CMD_CHANGE_SVC_MODATTR:
+		snprintf(action, sizeof(action), "Reset modified attributes for Service(s).");
+		break;
+
 	default:
 		print_generic_error_message("Sorry Dave, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
 
@@ -1849,6 +1870,20 @@ void request_command_data(int cmd) {
 
 		break;
 
+        case CMD_CHANGE_HOST_MODATTR:
+		print_object_list(PRINT_HOST_LIST);
+		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">Modified Attributes:</td>");
+		printf("<td><INPUT TYPE='HIDDEN' NAME='attr' VALUE='%lu'>%lu</td></tr>\n", attr, attr);
+		break;
+
+        case CMD_CHANGE_SVC_MODATTR:
+		print_object_list(PRINT_SERVICE_LIST);
+		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">Modified Attributes:</td>");
+		printf("<td><INPUT TYPE='HIDDEN' NAME='attr' VALUE='%lu'>%lu</td></tr>\n", attr, attr);
+		break;
+
 	default:
 		printf("<tr><td CLASS='objectDescription' COLSPAN=\"2\">This should not be happening... :-(</td></tr>\n");
 	}
@@ -2254,6 +2289,36 @@ void commit_command_data(int cmd) {
 
 		break;
 
+	case CMD_CHANGE_HOST_MODATTR:
+	case CMD_CHANGE_SVC_MODATTR:
+
+                for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
+
+                        cmd_has_objects = TRUE;
+
+                        if (commands[x].host_name == NULL)
+                                continue;
+
+                        /* see if the user is authorized to issue a command... */
+                        is_authorized[x] = FALSE;
+                        if (cmd == CMD_CHANGE_HOST_MODATTR) {
+                                temp_host = find_host(commands[x].host_name);
+                                if (is_authorized_for_host_commands(temp_host, &current_authdata) == TRUE)
+                                        is_authorized[x] = TRUE;
+                        } else {
+                                temp_service = find_service(commands[x].host_name, commands[x].description);
+                                if (is_authorized_for_service_commands(temp_service, &current_authdata) == TRUE)
+                                        is_authorized[x] = TRUE;
+                        }
+
+			/* do not allow other attributes than reset (0) */
+			if (attr != MODATTR_NONE) {
+				error[e++].message = strdup("You cannot change modified attributes other than reset them!");
+			}
+                }
+
+		break;
+
 	default:
 		print_generic_error_message("Sorry Dave, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
 
@@ -2437,13 +2502,17 @@ static int cmd_submitf(int id, const char *fmt, ...) {
 	va_list ap;
 
 	command = extcmd_get_name(id);
+
 	/*
 	 * We disallow sending 'CHANGE' commands from the cgi's
 	 * until we do proper session handling to prevent cross-site
 	 * request forgery
+	 * 2012-04-23 MF: Allow those and do proper checks on the cmds
+	 * for changed mod attr
 	 */
-	if (!command || (strlen(command) > 6 && !memcmp("CHANGE", command, 6)))
+	/*if (!command || (strlen(command) > 6 && !memcmp("CHANGE", command, 6)))
 		return ERROR;
+	*/
 
 	if (log_external_commands_user == TRUE) {
 		get_authentication_information(&current_authdata);
@@ -2882,6 +2951,26 @@ int commit_command(int cmd) {
 		if (affect_host_and_services == TRUE) {
 			if (is_authorized[x])
 				submit_result[x] |= cmd_submitf(CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME, "%s;%lu;%lu;%d;0;%lu;%s;%s", servicegroup_name, start_time, end_time, fixed, duration, comment_author, comment_data);
+		}
+		break;
+
+        case CMD_CHANGE_HOST_MODATTR:
+                for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd, "%s;%lu", commands[x].host_name, attr);
+		}
+		break;
+
+        case CMD_CHANGE_SVC_MODATTR:
+                for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
+                        if (commands[x].host_name == NULL)
+                                continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd, "%s;%s;%lu", commands[x].host_name, commands[x].description, attr);
+		printf("hst: %s, svc: %s, attr: %lu x: %d", commands[x].host_name, commands[x].description, attr, x);
 		}
 		break;
 
