@@ -52,12 +52,10 @@ my $config_ref = {
 ################################
 # Option parsing
 ################################
-<<<<<<< HEAD
-=======
+
 my $mysqldb = '';
 my $verbose; 
 my $result = GetOptions( "verbose" => \$verbose );
->>>>>>> fholzer/core-formorer
 
 ################################
 # Script Config
