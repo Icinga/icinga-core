@@ -307,7 +307,7 @@ EOF
 foreach my $service (keys(%{ $config_ref->{'services'} })) {
     my $binary = which (@{ $config_ref->{'services'}->{$service}->{'binaries'} });
     if (! $binary ) {
-        print color("red"), " [$service]",color("reset"), " no binary found.\n";
+        print color("yellow"), " [$service]",color("reset"), " no binary found.\n";
     } else {
         my $binary = basename($binary);
         my $status = qx(/bin/ps cax | /bin/grep $binary);
