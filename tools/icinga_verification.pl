@@ -43,7 +43,7 @@ sub get_ido2db_version;
 my $config_ref = {
     services => {
         apache2 => { binaries => [ 'httpd', 'apache2' ] },
-        mysql => { binaries => [ 'mysqld' ] },
+        mysql => { binaries => [ 'mysqld', 'mysql' ] },
         icinga => { binaries => [ 'icinga' ] },
         ido2db => { binaries => [ 'snmptt' ] },
     }
