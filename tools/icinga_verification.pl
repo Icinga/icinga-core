@@ -263,8 +263,10 @@ if ( !$mysqlcheck ) {
 
     if ( !$dbh_cfg_error ) {
         $dbh_cfg->disconnect();
-		$dbh_cfg_error = "Connection OK!"
     }
+	else{
+		$dbh_cfg->disconnect();
+	}
 }
 
 
@@ -300,15 +302,20 @@ Icinga Informations:
  ido2db last Connection Info:
  @result_icingaconninfo
  Testing Mysql Connection with ido2db.cfg:
- $dbh_cfg_error
 EOF
 
-print color("red"), "\n $dbh_cfg_error\n", color("reset");
+if (!$dbh_cfg_error){
+	print color("green"), " Connection OK!\n", color("reset");	
+}
+else{
+	print color("red"), " $dbh_cfg_error\n\n", color("reset");
+}
+
+print "\n";
 print <<EOF;
 #Check Services
 Process Status:
 EOF
-
 
 foreach my $service (keys(%{ $config_ref->{'services'} })) {
     my $binary = which (@{ $config_ref->{'services'}->{$service}->{'binaries'} });
