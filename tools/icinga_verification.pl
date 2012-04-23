@@ -175,14 +175,16 @@ my $ido2dbtcpport = get_key_from_ini("$icinga_base/ido2db.cfg", 'tcp_port');
 #ido2db Servertype
 #db_servertype=
 
-#ido2db Server Host Name
-my $mysqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
 
 #ido2db Server port
 #db_port=
 
 #ido2db Server Socket
 #db_socket=
+
+#ido2db Mysql Config
+#ido2db Server Host Name
+my $mysqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
 
 #ido2db DB User
 my $mysqluser_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_user');
@@ -193,14 +195,8 @@ my $mysqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
 #ido2db Password
 my $mysqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
 
-# MySQL Checks#
-my $dbh_user         = '';
-my $dbh_user_error   = '';
-my $dbh_cfg          = '';
-my $dbh_cfg_error    = '';
-my $icinga_dbversion = '';
-my $sth_user         = '';
-my $sth1_user        = '';
+# MySQL Checks #
+my ($dbh_user, $dbh_user_error, $dbh_cfg, $dbh_cfg_error, $icinga_dbversion, $sth_user, $sth1_user) = '';
 my @result_icingadb  = ();
 my @row;
 my @result_icingaconninfo = ();
@@ -264,9 +260,6 @@ if ( !$mysqlcheck ) {
     if ( !$dbh_cfg_error ) {
         $dbh_cfg->disconnect();
     }
-	else{
-		$dbh_cfg->disconnect();
-	}
 }
 
 
