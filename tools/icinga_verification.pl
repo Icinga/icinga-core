@@ -162,7 +162,6 @@ my $idocheck = qx( ps aux | grep [i]do2db | wc -l );
 chomp($idocheck);
 
 # ido2db.cfg parsing
-######## read in complete file and write needed values in an Array !##################
 
 #ido2db socket type
 my $ido2dbsocket = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_type');
@@ -264,6 +263,7 @@ if ( !$mysqlcheck ) {
 
     if ( !$dbh_cfg_error ) {
         $dbh_cfg->disconnect();
+		$dbh_cfg_error = "Connection OK!"
     }
 }
 
