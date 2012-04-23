@@ -219,12 +219,22 @@ my $ido2dbssl = get_key_from_ini("$icinga_base/ido2db.cfg", 'use_ssl');
 #ido2db Servertype
 my $ido2dbservertype = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertype');
 
-#ido2db Server port
-#db_port=
+#ido2db Socket Name
+my $ido2dbsocketname = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_name');
 
-#ido2db Server Socket
-#db_socket=
 
+#IDOMOD.cfg parsing
+#Output Socket
+my $idomodsocket = get_key_from_ini("$icinga_base/idomod.cfg", 'output_type');
+
+#Output
+my $idomodoutput = get_key_from_ini("$icinga_base/idomod.cfg", 'output');
+
+#idomod SSL Status
+my $idomodssl = get_key_from_ini("$icinga_base/idomod.cfg", 'use_ssl');
+
+#idomod SSL Status
+my $idomodtcpport = get_key_from_ini("$icinga_base/idomod.cfg", 'tcp_port');
 
 # MySQL Checks #
 my $dbh_conn_error = '';
@@ -309,10 +319,18 @@ Icinga Informations:
  Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
  @result_icingaconninfo 
- ido2db Options:
+ ido2db Information:
  Server Type: $ido2dbservertype
  SSL Status: $ido2dbssl
  Socket Type: $ido2dbsocket
+ Socket Name: $ido2dbsocketname
+ TCP Port: $ido2dbtcpport
+ 
+ idomod Information:
+ Output Type: $idomodsocket
+ Output: $idomodoutput
+ SSL Status: $idomodssl
+ TCP Port: $idomodtcpport
  
  Testing Mysql Connection with ido2db.cfg:
 EOF
