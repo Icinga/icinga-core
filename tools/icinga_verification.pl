@@ -278,15 +278,20 @@ print <<EOF;
 ############################################################
 Perlversion: $perlversion
 Current Date/Time on Server: $date
+
 OS Information:
   OS Name: $distribution,
   Kernel Version: $osversion
   LC_LANG: $LANG
+  
 Webserver Information:
   $apacheinfo
-PHP Information: $phpversion
+PHP Information: 
+ $phpversion
+ 
 MySQL Information:
  $mysqlver
+ 
 Icinga Informations:
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
@@ -294,7 +299,8 @@ Icinga Informations:
  Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
  @result_icingaconninfo
- ido2db.cfg mysql Test Connection
+ Testing Mysql Connection with ido2db.cfg:
+ $dbh_cfg_error
 EOF
 
 print color("red"), "\n $dbh_cfg_error\n", color("reset");
