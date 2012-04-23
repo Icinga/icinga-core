@@ -53,7 +53,6 @@ my $config_ref = {
 # Option parsing
 ################################
 
-my $mysqldb = '';
 my $verbose; 
 my $result = GetOptions( "verbose" => \$verbose );
 
