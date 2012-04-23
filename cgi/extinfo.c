@@ -3293,17 +3293,17 @@ void show_downtime(int type) {
 		get_time_breakdown(temp_downtime->duration, &days, &hours, &minutes, &seconds);
 		if (content_type == JSON_CONTENT) {
 			printf("\"duration\": \"%dd %dh %dm %ds\", ", days, hours, minutes, seconds);
-			printf("\"is_in_effect\": %lu, ", temp_downtime->is_in_effect);
+			printf("\"is_in_effect\": %d, ", temp_downtime->is_in_effect);
 			printf("\"downtime_id\": %lu, ", temp_downtime->downtime_id);
 			printf("\"trigger_id\": \"");
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%dd %dh %dm %ds%s%s", csv_data_enclosure, days, hours, minutes, seconds, csv_data_enclosure, csv_delimiter);
-			printf("%s%lu%s%s", csv_data_enclosure, temp_downtime->is_in_effect, csv_data_enclosure, csv_delimiter);
+			printf("%s%d%s%s", csv_data_enclosure, temp_downtime->is_in_effect, csv_data_enclosure, csv_delimiter);
 			printf("%s%lu%s%s", csv_data_enclosure, temp_downtime->downtime_id, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
 			printf("<td CLASS='%s'>%dd %dh %dm %ds</td>", bg_class, days, hours, minutes, seconds);
-			printf("<td CLASS='%s'>%lu</td>", bg_class, temp_downtime->is_in_effect);
+			printf("<td CLASS='%s'>%d</td>", bg_class, temp_downtime->is_in_effect);
 			printf("<td CLASS='%s'>%lu</td>", bg_class, temp_downtime->downtime_id);
 			printf("<td CLASS='%s'>", bg_class);
 		}
