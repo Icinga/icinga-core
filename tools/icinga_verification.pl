@@ -414,7 +414,7 @@ sub find_icinga_dir {
 
 sub get_icinga_version {
     if (which('icinga')) {
-        open( my $fh, '-|', "icinga --help" );
+		open( my $fh, '-|', which('icinga') . " --help")
         while (my $line = <$fh>) {
             if ($line =~ /^Icinga (.*)/) {
                 return $1;
@@ -428,7 +428,7 @@ sub get_icinga_version {
 
 sub get_ido2db_version {
     if (which('ido2db')) {
-        open( my $fh, '-|', "ido2db --help" );
+        open( my $fh, '-|', which('ido2db') . " --help")
         while (my $line = <$fh>) {
             if ($line =~ /^IDO2DB (.*)/) {
                 return $1;
