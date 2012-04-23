@@ -304,7 +304,7 @@ Process Status:
 EOF
 
 
-foreach my $service (keys($config_ref->{'services'})) {
+foreach my $service (keys(%{ $config_ref->{'services'} })) {
     my $binary = which (@{ $config_ref->{'services'}->{$service}->{'binaries'} });
     if (! $binary ) {
         print color("red"), " [$service]",color("reset"), " no binary found.\n";
