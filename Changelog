@@ -36,6 +36,7 @@ ENHANCEMENTS
 * classic ui: add is_in_effect and trigger_time to downtime view for html, csv, json #2538 - MF
 
 * idoutils: add new index for state in table statehistory #2274 - TD
+* idoutils: add is_in_effect and trigger_time to scheduleddowntime and downtimehistory tables #2539 - MF
 
 * install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121 - MF
 * install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344 - MF
@@ -150,6 +151,8 @@ CHANGES
 * core: add trigger_time to downtimes #2537
 	** downtimes in status.dat/retention.dat now holding trigger_time
 	** nebstruct and event broker api now passing trigger_time and is_in_effect
+* core: nebcallback for downtime start now happens *after* setting "in effect" attributes #2539
+	** needed to pass is_in_effect and trigger_time to neb modules
 
 * classic ui: Added option for max log entries displayed in showlog.cgi #2145
 	** added new config option "default_num_displayed_log_entries"

@@ -26,6 +26,15 @@ CREATE OR REPLACE FUNCTION unix_timestamp(timestamp with time zone) RETURNS bigi
 ' LANGUAGE 'SQL';
 
 -- -----------------------------------------
+-- #2537
+-- -----------------------------------------
+
+alter table icinga_downtimehistory add is_in_effect INTEGER  default 0;
+alter table icinga_downtimehistory add trigger_time timestamp with time zone default '1970-01-01 00:00:00';
+alter table icinga_scheduleddowntime add is_in_effect INTEGER  default 0;
+alter table icinga_scheduleddowntime add trigger_time timestamp with time zone default '1970-01-01 00:00:00';
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 

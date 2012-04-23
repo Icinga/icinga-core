@@ -494,10 +494,6 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime) {
 		else
 			log_debug_info(DEBUGL_DOWNTIME, 0, "Service '%s' on host '%s' starting %s scheduled downtime (id=%lu) with depth=%lu, starttime=%lu, entrytime=%lu, endtime=%lu, duration=%lu.\n", svc->description, svc->host_name, (temp_downtime->fixed == TRUE) ? "fixed" : "flexible", temp_downtime->downtime_id, svc->scheduled_downtime_depth, temp_downtime->start_time, temp_downtime->entry_time, temp_downtime->end_time, temp_downtime->duration);
 
-#ifdef USE_EVENT_BROKER
-		/* send data to event broker */
-		broker_downtime_data(NEBTYPE_DOWNTIME_START, NEBFLAG_NONE, NEBATTR_NONE, temp_downtime->type, temp_downtime->host_name, temp_downtime->service_description, temp_downtime->entry_time, temp_downtime->author, temp_downtime->comment, temp_downtime->start_time, temp_downtime->end_time, temp_downtime->fixed, temp_downtime->triggered_by, temp_downtime->duration, temp_downtime->downtime_id, NULL, temp_downtime->is_in_effect, temp_downtime->trigger_time);
-#endif
 		/* this happens after restart of icinga */
 		if (temp_downtime->is_in_effect != TRUE) {
 			if (temp_downtime->type == HOST_DOWNTIME && hst->scheduled_downtime_depth == 0) {
@@ -538,6 +534,10 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime) {
 		/* set the in effect flag */
 		temp_downtime->is_in_effect = TRUE;
 
+#ifdef USE_EVENT_BROKER
+		/* send data to broker AFTER we know trigger_time, is_in_effect, and downtime_depth */
+		broker_downtime_data(NEBTYPE_DOWNTIME_START, NEBFLAG_NONE, NEBATTR_NONE, temp_downtime->type, temp_downtime->host_name, temp_downtime->service_description, temp_downtime->entry_time, temp_downtime->author, temp_downtime->comment, temp_downtime->start_time, temp_downtime->end_time, temp_downtime->fixed, temp_downtime->triggered_by, temp_downtime->duration, temp_downtime->downtime_id, NULL, temp_downtime->is_in_effect, temp_downtime->trigger_time);
+#endif
 		/* update the status data */
 		if (temp_downtime->type == HOST_DOWNTIME)
 			update_host_status(hst, FALSE);

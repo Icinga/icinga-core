@@ -5067,15 +5067,18 @@ int ido2db_oci_prepared_statement_downtimedata_scheduled_downtime(ido2db_idi *id
 	             "comment_data=:X6, triggered_by_id=:X8, "
 	             "is_fixed=:X9, duration=:X10, "
 	             "scheduled_start_time=unixts2localts(:X11) , "
-	             "scheduled_end_time=unixts2localts(:X12) "
+	             "scheduled_end_time=unixts2localts(:X12), "
+		     "is_in_effect=:X13, trigger_time=unixts2localts(:X14) "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, downtime_type, object_id, "
 	             "entry_time, author_name, comment_data, "
 	             "internal_downtime_id, triggered_by_id, "
-	             "is_fixed, duration, scheduled_start_time, scheduled_end_time) "
+	             "is_fixed, duration, scheduled_start_time, scheduled_end_time "
+		     "is_in_effect, trigger_time) "
 	             "VALUES (seq_scheduleddowntime.nextval, :X1, :X2, :X3, "
 	             "unixts2localts(:X4), :X5, :X6, "
-	             ":X7, :X8, :X9, :X10, unixts2localts(:X11),unixts2localts(:X12))",
+	             ":X7, :X8, :X9, :X10, unixts2localts(:X11),unixts2localts(:X12), "
+		     ":X13, unixts2localts(:X14))",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]) == -1) {
 		buf = NULL;
 	}
@@ -5119,15 +5122,18 @@ int ido2db_oci_prepared_statement_downtimedata_downtime_history(ido2db_idi *idi)
 	             "UPDATE SET downtime_type=:X2, author_name=:X5, "
 	             "comment_data=:X6, triggered_by_id=:X8, is_fixed=:X9, "
 	             "duration=:X10, scheduled_start_time=unixts2localts(:X11), "
-	             "scheduled_end_time=unixts2localts(:X12) "
+	             "scheduled_end_time=unixts2localts(:X12), "
+		     "is_in_effect=:X13, trigger_time=unixts2localts(:X14) "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, downtime_type, object_id, "
 	             "entry_time, author_name, comment_data, internal_downtime_id, "
 	             "triggered_by_id, is_fixed, duration, "
-	             "scheduled_start_time, scheduled_end_time) "
+	             "scheduled_start_time, scheduled_end_time, "
+		     "is_in_effect, trigger_time)"
 	             "VALUES (seq_downtimehistory.nextval, :X1, :X2, :X3, "
 	             "unixts2localts(:X4), :X5, :X6, :X7, :X8, :X9, :X10, "
-	             "unixts2localts(:X11), unixts2localts(:X12))",
+	             "unixts2localts(:X11), unixts2localts(:X12), "
+		     ":X13, unixts2localts(:X14))",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
 		buf = NULL;
 	}
@@ -5163,7 +5169,8 @@ int ido2db_oci_prepared_statement_downtimehistory_update_start(ido2db_idi *idi) 
 
 	if (asprintf(&buf,
 	             "UPDATE %s SET actual_start_time=unixts2localts(:X1) , "
-	             "actual_start_time_usec=:X2, was_started=:X3 "
+	             "actual_start_time_usec=:X2, was_started=:X3, "
+		     "is_in_effect=:X10, trigger_time=unixts2localts(:X11) "
 	             "WHERE instance_id=:X4 "
 	             "AND downtime_type=:X5 "
 	             "AND object_id=:X6 "
@@ -5207,7 +5214,8 @@ int ido2db_oci_prepared_statement_scheduleddowntime_update_start(ido2db_idi *idi
 
 	if (asprintf(&buf,
 	             "UPDATE %s SET actual_start_time=unixts2localts(:X1), "
-	             "actual_start_time_usec=:X2, was_started=:X3 "
+	             "actual_start_time_usec=:X2, was_started=:X3, "
+		     "is_in_effect=:X10, trigger_time=unixts2localts(:X11) "
 	             "WHERE instance_id=:X4 "
 	             "AND downtime_type=:X5 "
 	             "AND object_id=:X6 "
@@ -5253,7 +5261,8 @@ int ido2db_oci_prepared_statement_downtimehistory_update_stop(ido2db_idi *idi) {
 	if (asprintf(&buf,
 	             "UPDATE %s SET "
 	             "actual_end_time=unixts2localts(:X1) , "
-	             "actual_end_time_usec=:X2, was_cancelled=:X3 "
+	             "actual_end_time_usec=:X2, was_cancelled=:X3, "
+		     "is_in_effect=:X10, trigger_time=unixts2localts(:X11) "
 	             "WHERE instance_id=:X4 "
 	             "AND downtime_type=:X5 "
 	             "AND object_id=:X6 "

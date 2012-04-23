@@ -1994,7 +1994,7 @@ int idomod_broker_data(int event_type, void *data) {
 		es[3] = ido_escape_buffer(downdata->comment_data);
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
-		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%s\n%d=%lu\n%d=%s\n%d=%s\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d\n\n"
+		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%s\n%d=%lu\n%d=%s\n%d=%s\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d\n\n"
 		         , IDO_API_DOWNTIMEDATA
 		         , IDO_DATA_TYPE
 		         , downdata->type
@@ -2029,6 +2029,10 @@ int idomod_broker_data(int event_type, void *data) {
 		         , (unsigned long)downdata->triggered_by
 		         , IDO_DATA_DOWNTIMEID
 		         , (unsigned long)downdata->downtime_id
+		         , IDO_DATA_DOWNTIMEISINEFFECT
+		         , (int)downdata->is_in_effect
+		         , IDO_DATA_DOWNTIMETRIGGERTIME
+		         , (unsigned long)downdata->trigger_time
 		         , IDO_API_ENDDATA
 		        );
 

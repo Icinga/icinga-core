@@ -671,7 +671,9 @@ CREATE TABLE downtimehistory (
   actual_start_time_usec integer default 0 ,
   actual_end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   actual_end_time_usec integer default 0 ,
-  was_cancelled integer default 0 
+  was_cancelled integer default 0, 
+  is_in_effect integer default 0,
+  trigger_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') 
 )tablespace &&DATATBS;
 
 alter table downtimehistory add constraint downtimehistory_pk PRIMARY KEY  (id)
@@ -1313,7 +1315,9 @@ CREATE TABLE scheduleddowntime (
   scheduled_end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   was_started integer default 0 ,
   actual_start_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  actual_start_time_usec integer default 0 
+  actual_start_time_usec integer default 0,
+  is_in_effect integer default 0,
+  trigger_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR')
 )tablespace &&DATATBS;
 
 alter table scheduleddowntime add constraint scheduleddowntime_pk PRIMARY KEY  (id)

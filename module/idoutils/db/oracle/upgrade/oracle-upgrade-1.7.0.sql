@@ -107,6 +107,16 @@ alter sequence SEQ_TIMEDEVENTQUEUE cache 10;
 alter sequence SEQ_TIMEDEVENTS cache 10; 
 alter sequence SEQ_TIMEPERIODS nocache; 
 alter sequence SEQ_TIMEP_TIMER cache 5;
+
+-- -----------------------------------------
+-- #2537
+-- -----------------------------------------
+
+alter table downtimehistory add is_in_effect integer default 0;
+alter table downtimehistory add trigger_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR');
+alter table scheduleddowntime add is_in_effect integer default 0;
+alter table scheduleddowntime add trigger_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR');
+
 -- -----------------------------------------
 -- finally update dbversion
 -- -----------------------------------------
