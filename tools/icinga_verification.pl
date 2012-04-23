@@ -239,7 +239,8 @@ if ( !$mysqlcheck ) {
             RaiseError => 0
         }
         )
-        or $dbh_conn_error = "\nMySQL Connect Failed. - check your input or MySQL Process\n";
+        or $dbh_conn_error = 
+		"MySQL Connect Failed. - Check your input or the MySQL Process!";
 		
 	if(!$dbh_conn_error){
 		# Query icinga DB Version
@@ -265,7 +266,7 @@ if ( !$mysqlcheck ) {
 
     $dbh_cfg->disconnect();
 	} else {
-		print STDERR $dbh_conn_error;
+		print color("red"), "\n\n$dbh_conn_error\n\n", color("reset");
 	}   
 }
 
@@ -311,9 +312,10 @@ if (!$dbh_cfg_error){
 	print color("green"), " Connection OK!\n", color("reset");	
 }
 else{
-	print color("red"), " $dbh_cfg_error\n\n", color("reset");
+	print color("red"), " $dbh_cfg_error\n", color("reset");
 }
-
+# MYSQL User Input Error
+print color("red"), " $dbh_conn_error\n", color("reset");
 print "\n";
 print <<EOF;
 #Check Services
