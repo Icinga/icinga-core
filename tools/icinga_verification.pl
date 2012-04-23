@@ -366,7 +366,7 @@ sub which (@) {
 
     foreach my $binary (@binaries) {
         map { -x "$_/$binary" && return "$_/$binary" }
-            reverse( split( ':', $PATH ) );
+            @path );
     }
     return undef;
 }
