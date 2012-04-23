@@ -117,11 +117,12 @@ if ( !$mysqlcheck ) {
     if ( !$dbh_cfg_error ) {
 	    print "ido2db.cfg Mysql Connection Test OK!\n";
         $dbh_cfg->disconnect();
-    } else {
-	
-		print STDERR "Values in '< >' are default parameters! Confirm with [Enter]\n";
+    } else {        
+		print color("red"), "ido2db.cfg - MySQL Connect FAILED. Start Config Script", color("reset");
+		print "\n";
+		print STDERR "\nValues in '< >' are default parameters! Confirm with [Enter]\n";
 		print STDERR "\nEnter your MYSQL Server <localhost>: ";
-		$$mysqlserver_cfg = <STDIN>;
+		$mysqlserver_cfg = <STDIN>;
 		chomp($mysqlserver_cfg);
 		if ( !$mysqlserver_cfg ) {
 		$mysqlserver_cfg = 'localhost';
