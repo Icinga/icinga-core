@@ -230,7 +230,7 @@ my $ido2dbsocketname = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_name'
 #IDOMOD.cfg parsing
 #Output Socket
 my $idomodsocket = get_key_from_ini("$icinga_base/idomod.cfg", 'output_type');
-if ($idomodsocket == 'unixsocket'){
+if ($idomodsocket eq 'unixsocket'){
 	$idomodsocket = 'unix';
 }
 
