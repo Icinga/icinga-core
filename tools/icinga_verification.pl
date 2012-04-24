@@ -201,7 +201,7 @@ chomp($selinux);
 
 #log file test
 #FIXME - PATH to syslog not hardcoded
-my $idolog = get_error_from_log("/var/log/messages", 'ido2db');
+my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
 
 ################################
 # Icinga Checks
@@ -347,7 +347,7 @@ idomod Information:
  SSL Status: $idomodssl
  TCP Port: $idomodtcpport
  
- $idolog
+ @idolog
 ##################### Test Results: ########################
 
 Mysql Connection with ido2db.cfg:
@@ -512,10 +512,11 @@ sub get_error_from_log ($$) {
 
     if ( open( my $fh, '<', $file ) ) {
         while ( my $line = <$fh> ) {
-            chomp($line);
-			print "\nread error:\n $line \nfrom $file","\n", if $verbose;
-            if ( $line =~ /\$key/ ) {
+            chomp($line);		
+            if ( $line =~ /\s+$key: (.*)/) {
+				print "\nFound error log in:","\n$file for key '$key':","\n$1 ", "\n" if $verbose;
                 return $1;
+				
             }
         }
     } else {
