@@ -230,6 +230,9 @@ my $ido2dbsocketname = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_name'
 #IDOMOD.cfg parsing
 #Output Socket
 my $idomodsocket = get_key_from_ini("$icinga_base/idomod.cfg", 'output_type');
+if ($idomodsocket == 'unixsocket'){
+	$idomodsocket = 'unix';
+}
 
 #Output
 my $idomodoutput = get_key_from_ini("$icinga_base/idomod.cfg", 'output');
@@ -237,8 +240,12 @@ my $idomodoutput = get_key_from_ini("$icinga_base/idomod.cfg", 'output');
 #idomod SSL Status
 my $idomodssl = get_key_from_ini("$icinga_base/idomod.cfg", 'use_ssl');
 
-#idomod SSL Status
+#idomod TCP port
 my $idomodtcpport = get_key_from_ini("$icinga_base/idomod.cfg", 'tcp_port');
+
+
+#ido2db - idomod socket compare
+
 
 # MySQL Checks #
 my $dbh_conn_error = '';
@@ -339,11 +346,12 @@ Icinga Informations:
  SSL Status: $idomodssl
  TCP Port: $idomodtcpport
  
- Testing Mysql Connection with ido2db.cfg:
-EOF
+##################### Test Results: ########################
 
+Mysql Connection with ido2db.cfg:
+EOF
 if (!$dbh_cfg_error){
-	print color("green"), " Connection OK!\n", color("reset");	
+	print color("green"), " Connection OK!", color("reset");	
 }
 else{
 	print color("red"), " $dbh_cfg_error\n", color("reset");
@@ -351,11 +359,22 @@ else{
 # MYSQL User Input Error
 print color("red"), " $dbh_conn_error\n", color("reset");
 print "\n";
+
 print <<EOF;
-#Check Services
+ido2db - idomod Socket:
+EOF
+# ido2db -> idomod socket
+if ($ido2dbsocket eq $idomodsocket){
+	print color("green"), " ido2db/idomod writing/listen to the same socket", color("reset");
+} else {
+	print color("red"), " ido2db/idomod sockets are different", color("reset");
+}
+
+print <<EOF;
+
+
 Process Status:
 EOF
-
 foreach my $service (keys(%{ $config_ref->{'services'} })) {
     my $binary = which (@{ $config_ref->{'services'}->{$service}->{'binaries'} });
     if (! $binary ) {
