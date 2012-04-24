@@ -432,6 +432,8 @@ CREATE TABLE  icinga_downtimehistory (
   actual_end_time timestamp with time zone default '1970-01-01 00:00:00',
   actual_end_time_usec INTEGER  default 0,
   was_cancelled INTEGER  default 0,
+  is_in_effect INTEGER  default 0,
+  trigger_time timestamp with time zone default '1970-01-01 00:00:00',
   CONSTRAINT PK_downtimehistory_id PRIMARY KEY (downtimehistory_id) ,
   CONSTRAINT UQ_downtimehistory UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
 ) ;
@@ -980,6 +982,8 @@ CREATE TABLE  icinga_scheduleddowntime (
   was_started INTEGER  default 0,
   actual_start_time timestamp with time zone default '1970-01-01 00:00:00',
   actual_start_time_usec INTEGER  default 0,
+  is_in_effect INTEGER  default 0,
+  trigger_time timestamp with time zone default '1970-01-01 00:00:00',
   CONSTRAINT PK_scheduleddowntime_id PRIMARY KEY (scheduleddowntime_id) ,
   CONSTRAINT UQ_scheduleddowntime UNIQUE (instance_id,object_id,entry_time,internal_downtime_id)
 ) ;

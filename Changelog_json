@@ -5,6 +5,7 @@ Classic-UI JSON Change Log
 1.7.0 - array names changed!!!! #2343
 	comments  -> host_comments  / service_comments
 	downtimes -> host_downtimes / service_downtimes
+* add is_in_effect and trigger_time to downtime output #2538
 * add modified_attributes to extinfo.cgi #2473
 
 1.6.0 - only values added, no existing values changed

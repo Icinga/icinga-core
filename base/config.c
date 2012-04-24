@@ -73,7 +73,6 @@ extern int      log_service_retries;
 extern int      log_host_retries;
 extern int      log_event_handlers;
 extern int      log_external_commands;
-extern int      log_external_commands_user;
 extern int      log_passive_checks;
 extern int      log_long_plugin_output;
 
@@ -630,14 +629,7 @@ int read_main_config_file(char *main_config_file) {
 		}
 
 		else if (!strcmp(variable, "log_external_commands_user")) {
-
-			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for log_external_commands_user");
-				error = TRUE;
-				break;
-			}
-
-			log_external_commands_user = (atoi(value) > 0) ? TRUE : FALSE;
+			logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: log_external_commands_user variable ignored. This has been deprecated.");
 		}
 
 		else if (!strcmp(variable, "log_passive_checks")) {

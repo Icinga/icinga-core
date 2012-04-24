@@ -403,6 +403,8 @@ CREATE TABLE IF NOT EXISTS icinga_downtimehistory (
   actual_end_time timestamp  default '0000-00-00 00:00:00',
   actual_end_time_usec  int default 0,
   was_cancelled smallint default 0,
+  is_in_effect smallint default 0,
+  trigger_time timestamp  default '0000-00-00 00:00:00',
   PRIMARY KEY  (downtimehistory_id),
   UNIQUE KEY instance_id (instance_id,object_id,entry_time,internal_downtime_id)
 ) ENGINE=InnoDB  COMMENT='Historical scheduled host and service downtime';
@@ -951,6 +953,8 @@ CREATE TABLE IF NOT EXISTS icinga_scheduleddowntime (
   was_started smallint default 0,
   actual_start_time timestamp  default '0000-00-00 00:00:00',
   actual_start_time_usec  int default 0,
+  is_in_effect smallint default 0,
+  trigger_time timestamp  default '0000-00-00 00:00:00',
   PRIMARY KEY  (scheduleddowntime_id),
   UNIQUE KEY instance_id (instance_id,object_id,entry_time,internal_downtime_id)
 ) ENGINE=InnoDB COMMENT='Current scheduled host and service downtime';

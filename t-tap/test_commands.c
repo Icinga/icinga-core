@@ -75,7 +75,6 @@ command *global_host_event_handler_ptr;
 
 /* Icinga special */
 int sync_state_information(void) {}
-int log_external_commands_user = DEFAULT_LOG_EXTERNAL_COMMANDS_USER;
 int log_passive_checks = DEFAULT_LOG_PASSIVE_CHECKS;
 int log_external_commands = DEFAULT_LOG_EXTERNAL_COMMANDS;
 /* Catch lower calls through these stubs */

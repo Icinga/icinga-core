@@ -53,7 +53,6 @@ extern int  use_authentication;
 extern int  lock_author_names;
 extern int  persistent_ack_comments;
 extern int  default_expiring_acknowledgement_duration;
-extern int  log_external_commands_user;
 
 extern int  content_type;
 extern int  display_header;
@@ -2518,12 +2517,7 @@ static int cmd_submitf(int id, const char *fmt, ...) {
 		return ERROR;
 	*/
 
-	if (log_external_commands_user == TRUE) {
-		get_authentication_information(&current_authdata);
-		len = snprintf(cmd, sizeof(cmd) - 1, "[%lu] %s;%s;", time(NULL), command, current_authdata.username);
-	} else {
-		len = snprintf(cmd, sizeof(cmd) - 1, "[%lu] %s;", time(NULL), command);
-	}
+	len = snprintf(cmd, sizeof(cmd) - 1, "[%lu] %s;", time(NULL), command);
 
 	if (len < 0)
 		return ERROR;

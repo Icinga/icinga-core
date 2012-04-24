@@ -259,8 +259,6 @@ int             syslog_local_facility = DEFAULT_SYSLOG_LOCAL_FACILITY;
 
 int             log_current_states = DEFAULT_LOG_CURRENT_STATES;
 
-int             log_external_commands_user = DEFAULT_LOG_EXTERNAL_COMMANDS_USER;
-
 int             log_long_plugin_output = DEFAULT_LOG_LONG_PLUGIN_OUTPUT;
 
 int             service_check_timeout_state = STATE_CRITICAL;
@@ -311,7 +309,7 @@ int update_contact_status(contact *cntct, int aggregated_dump) {}
 time_t get_next_service_notification_time(service *temp_service, time_t time_t1) {}
 void broker_retention_data(int type, int flags, int attr, struct timeval *timestamp) {}
 int host_notification(host *hst, int type, char *not_author, char *not_data, int options) {}
-void broker_downtime_data(int type, int flags, int attr, int downtime_type, char *host_name, char *svc_description, time_t entry_time, char *author_name, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long triggered_by, unsigned long duration, unsigned long downtime_id, struct timeval *timestamp) {}
+void broker_downtime_data(int type, int flags, int attr, int downtime_type, char *host_name, char *svc_description, time_t entry_time, char *author_name, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long triggered_by, unsigned long duration, unsigned long downtime_id, struct timeval *timestamp, int is_in_effect, time_t trigger_time) {}
 int update_service_status(service *svc, int aggregated_dump) {}
 time_t get_next_host_notification_time(host *temp_host, time_t time_t1) {}
 void check_for_host_flapping(host *hst, int update, int actual_check, int allow_flapstart_notification) {}

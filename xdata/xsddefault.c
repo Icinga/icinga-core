@@ -698,6 +698,7 @@ int xsddefault_save_status_data(void) {
 		fprintf(fp, "\tis_in_effect=%d\n", temp_downtime->is_in_effect);
 		fprintf(fp, "\tauthor=%s\n", temp_downtime->author);
 		fprintf(fp, "\tcomment=%s\n", temp_downtime->comment);
+		fprintf(fp, "\ttrigger_time=%lu\n", temp_downtime->trigger_time);
 		fprintf(fp, "\t}\n\n");
 	}
 
@@ -789,6 +790,7 @@ int xsddefault_read_status_data(char *config_file, int options) {
 	unsigned long duration = 0L;
 	int x = 0;
 	int is_in_effect = FALSE;
+	time_t trigger_time = 0L;
 
 
 	/* initialize some vars */
@@ -914,9 +916,9 @@ int xsddefault_read_status_data(char *config_file, int options) {
 
 				/* add the downtime */
 				if (data_type == XSDDEFAULT_HOSTDOWNTIME_DATA)
-					add_host_downtime(host_name, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, downtime_id, is_in_effect);
+					add_host_downtime(host_name, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, downtime_id, is_in_effect, trigger_time);
 				else
-					add_service_downtime(host_name, service_description, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, downtime_id, is_in_effect);
+					add_service_downtime(host_name, service_description, entry_time, author, comment_data, start_time, end_time, fixed, triggered_by, duration, downtime_id, is_in_effect, trigger_time);
 
 				/* free temp memory */
 				my_free(host_name);
@@ -1338,6 +1340,8 @@ int xsddefault_read_status_data(char *config_file, int options) {
 					author = (char *)strdup(val);
 				else if (!strcmp(var, "comment"))
 					comment_data = (char *)strdup(val);
+				else if (!strcmp(var, "trigger_time"))
+					trigger_time = strtoul(val, NULL, 10);
 				break;
 
 			default:
