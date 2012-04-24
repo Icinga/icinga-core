@@ -29,6 +29,9 @@ use Term::ANSIColor;
 use Env qw (LANG PATH);
 use Getopt::Long;
 use File::Basename qw ( basename );
+use FindBin qw($Bin);
+use lib $Bin;
+use Mysql;
 
 # sub stubs
 sub get_key_from_ini ($$);
