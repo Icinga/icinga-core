@@ -684,6 +684,16 @@ char *json_encode(char *);
 **/
 void print_comment_icon(char *, char *);
 
+/** @brief prints modified attributes as string, by line seperator
+ *  @param [in] content_type can be \c CSV_CONTENT , \c JSON_CONTENT , \c XML_CONTENT or \c HTML_CONTENT
+ *  @param [in] cgi name of cgi as defined in include/cgiutils.h
+ *  @param [in] modified_attributes is the number to compare with
+ *  @note takes care that modified_attributes is represented as string
+ *
+ *  This function prints modified_attributes as string
+**/
+void print_modified_attributes(int , char *, unsigned long);
+
 /******************************** MULTIURL PATCH *******************************/
 
 #ifndef DISABLE_MULTIURL

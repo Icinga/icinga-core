@@ -1462,6 +1462,10 @@ void show_host_info(void) {
 			get_time_string(&temp_hoststatus->last_update, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
 			printf("\"last_update\": \"%s\",\n", date_time);
 
+			printf("\"modified_attributes\": \"");
+			print_modified_attributes(JSON_CONTENT, EXTINFO_CGI, temp_hoststatus->modified_attributes);
+			printf("\",\n");
+
 			printf("\"active_checks_enabled\": %s,\n", (temp_hoststatus->checks_enabled == TRUE) ? "true" : "false");
 			printf("\"passive_checks_enabled\": %s,\n", (temp_hoststatus->accept_passive_host_checks == TRUE) ? "true" : "false");
 			printf("\"obsess_over_host\": %s,\n", (temp_hoststatus->obsess_over_host == TRUE) ? "true" : "false");
@@ -1559,6 +1563,10 @@ void show_host_info(void) {
 
 			get_time_string(&temp_hoststatus->last_update, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
 			printf("<TR><TD CLASS='dataVar'>Last Update:</td><td CLASS='dataVal'>%s&nbsp;&nbsp;(%s ago)</td></tr>\n", (temp_hoststatus->last_update == (time_t)0) ? "N/A" : date_time, status_age);
+
+			printf("<TR><TD CLASS='dataVar'>Modified Attributes:</td><td CLASS='dataVal'>");
+			print_modified_attributes(HTML_CONTENT, EXTINFO_CGI, temp_hoststatus->modified_attributes);
+			printf("</td></tr>\n");
 
 			printf("</TABLE>\n");
 			printf("</TD></TR>\n");
@@ -1673,6 +1681,9 @@ void show_host_info(void) {
 			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Add a new Host comment' TITLE='Add a new Host comment'></td><td CLASS='command'><a href='%s?cmd_typ=%d&host=%s'>", url_images_path, COMMENT_ICON, CMD_CGI, CMD_ADD_HOST_COMMENT, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("Add a new Host comment</a></td>");
 
+                        /* allow modified attributes to be reset */
+                        printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Reset Modified Attributes' TITLE='Reset Modified Attributes'></td><td CLASS='command'><a href='%s?cmd_typ=%d&attr=%d&host=%s'>", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_HOST_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+                        printf("Reset Modified Attributes</a></td>");
 
 			printf("</TABLE>\n");
 		} else if (is_authorized_for_read_only(&current_authdata) == TRUE) {
@@ -1879,6 +1890,10 @@ void show_service_info(void) {
 			get_time_string(&temp_svcstatus->last_update, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
 			printf("\"last_update\": \"%s\",\n", date_time);
 
+			printf("\"modified_attributes\": \"");
+			print_modified_attributes(JSON_CONTENT, EXTINFO_CGI, temp_svcstatus->modified_attributes);
+			printf("\",\n");
+
 			printf("\"active_checks_enabled\": %s,\n", (temp_svcstatus->checks_enabled == TRUE) ? "true" : "false");
 			printf("\"passive_checks_enabled\": %s,\n", (temp_svcstatus->accept_passive_service_checks == TRUE) ? "true" : "false");
 			printf("\"obsess_over_service\": %s,\n", (temp_svcstatus->obsess_over_service == TRUE) ? "true" : "false");
@@ -1979,6 +1994,9 @@ void show_service_info(void) {
 			get_time_string(&temp_svcstatus->last_update, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
 			printf("<TR><TD CLASS='dataVar'>Last Update:</TD><TD CLASS='dataVal'>%s&nbsp;&nbsp;(%s ago)</TD></TR>\n", (temp_svcstatus->last_update == (time_t)0) ? "N/A" : date_time, status_age);
 
+			printf("<TR><TD CLASS='dataVar'>Modified Attributes:</td><td CLASS='dataVal'>");
+			print_modified_attributes(HTML_CONTENT, EXTINFO_CGI, temp_svcstatus->modified_attributes);
+			printf("</td></tr>\n");
 
 			printf("</TABLE>\n");
 			printf("</TD></TR>\n");
@@ -2115,6 +2133,11 @@ void show_service_info(void) {
 			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Add a new Service comment' TITLE='Add a new Service comment'></td><td CLASS='command'><a href='%s?cmd_typ=%d&host=%s&", url_images_path, COMMENT_ICON, CMD_CGI, CMD_ADD_SVC_COMMENT, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("service=%s'>", (display_type == DISPLAY_COMMENTS) ? "" : url_encode(service_desc));
 			printf("Add a new Service comment</a></td>");
+
+			/* allow modified attributes to be reset */
+			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Reset Modified Attributes' TITLE='Reset Modified Attributes'></td><td CLASS='command'><a href='%s?cmd_typ=%d&attr=%d&host=%s&", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_SVC_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+			printf("service=%s'>", (display_type == DISPLAY_COMMENTS) ? "" : url_encode(service_desc));
+			printf("Reset Modified Attributes</a></td>");
 
 
 			printf("</table>\n");
@@ -3126,7 +3149,9 @@ void show_downtime(int type) {
 			printf("%sSTART_TIME%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sEND_TIME%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sTYPE%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+			printf("%sTRIGGER_TIME%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sDURATION%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+			printf("%sIS_IN_EFFECT%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sDOWNTIME_ID%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sTRIGGER_ID%s\n", csv_data_enclosure, csv_data_enclosure);
 		}
@@ -3161,7 +3186,7 @@ void show_downtime(int type) {
 			if (type == SERVICE_DOWNTIME)
 				printf("<TH CLASS='downtime'>Service</TH>");
 		}
-		printf("<TH CLASS='downtime'>Entry Time</TH><TH CLASS='downtime'>Author</TH><TH CLASS='downtime'>Comment</TH><TH CLASS='downtime'>Start Time</TH><TH CLASS='downtime'>End Time</TH><TH CLASS='downtime'>Type</TH><TH CLASS='downtime'>Duration</TH><TH CLASS='downtime'>Downtime ID</TH><TH CLASS='downtime'>Trigger ID</TH><TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%sdowntime\');isValidForSubmit(\'tableform%sdowntime\');\"></TH></TR>\n", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
+		printf("<TH CLASS='downtime'>Entry Time</TH><TH CLASS='downtime'>Author</TH><TH CLASS='downtime'>Comment</TH><TH CLASS='downtime'>Start Time</TH><TH CLASS='downtime'>End Time</TH><TH CLASS='downtime'>Type</TH><TH CLASS='downtime'>Trigger Time</TH><TH CLASS='downtime'>Duration</TH><TH CLASS='downtime'>Is in effect</TH><TH CLASS='downtime'>Downtime ID</TH><TH CLASS='downtime'>Trigger ID</TH><TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%sdowntime\');isValidForSubmit(\'tableform%sdowntime\');\"></TH></TR>\n", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
 	}
 
 	/* display all the downtime */
@@ -3279,17 +3304,29 @@ void show_downtime(int type) {
 			printf("<td CLASS='%s'>%s</td>", bg_class, (temp_downtime->fixed == TRUE) ? "Fixed" : "Flexible");
 		}
 
+                get_time_string(&temp_downtime->trigger_time, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
+                if (content_type == JSON_CONTENT) {
+                        printf("\"trigger_time\": \"%s\", ", date_time);
+                } else if (content_type == CSV_CONTENT) {
+                        printf("%s%s%s%s", csv_data_enclosure, date_time, csv_data_enclosure, csv_delimiter);
+                } else {
+                        printf("<td CLASS='%s'>%s</td>", bg_class, date_time);
+                }
+
 		get_time_breakdown(temp_downtime->duration, &days, &hours, &minutes, &seconds);
 		if (content_type == JSON_CONTENT) {
 			printf("\"duration\": \"%dd %dh %dm %ds\", ", days, hours, minutes, seconds);
+			printf("\"is_in_effect\": %d, ", temp_downtime->is_in_effect);
 			printf("\"downtime_id\": %lu, ", temp_downtime->downtime_id);
 			printf("\"trigger_id\": \"");
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%dd %dh %dm %ds%s%s", csv_data_enclosure, days, hours, minutes, seconds, csv_data_enclosure, csv_delimiter);
+			printf("%s%d%s%s", csv_data_enclosure, temp_downtime->is_in_effect, csv_data_enclosure, csv_delimiter);
 			printf("%s%lu%s%s", csv_data_enclosure, temp_downtime->downtime_id, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
 			printf("<td CLASS='%s'>%dd %dh %dm %ds</td>", bg_class, days, hours, minutes, seconds);
+			printf("<td CLASS='%s'>%d</td>", bg_class, temp_downtime->is_in_effect);
 			printf("<td CLASS='%s'>%lu</td>", bg_class, temp_downtime->downtime_id);
 			printf("<td CLASS='%s'>", bg_class);
 		}

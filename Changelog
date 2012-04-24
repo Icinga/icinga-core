@@ -18,6 +18,7 @@ ENHANCEMENTS
 * core: avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182 - MF
 * core: allow empty host groups in service and host dependencies if allow_empty_hostgroup_assignment flag is set (Daniel Wittenberg) #2255 - MF
 * core: fix compatibility problems on solaris 10 (affects core, cgis, ido) (Carl R. Friend) #2292 - MF/RB/TD
+* core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
 
 * classic ui: Added option for max log entries displayed in showlog.cgi #2145 - RB
 * classic ui: Added config option for status totals in status.cgi #2018 - RB
@@ -32,8 +33,12 @@ ENHANCEMENTS
 * classic ui: add display_status_totals as cgi.cfg option in order to allow the status totals to be shown again #2443 - RB
 * classic ui: Changed reading of auth information from cgiauth.c to cgiutils.c #2524 - RB
 * classic ui: Added readonly cgi.cfg view into the config section #1776 - RB
+* classic ui: add is_in_effect and trigger_time to downtime view for html, csv, json #2538 - MF
+* classic ui: add modified attributes row to extinfo.cgi showing diffs to original config (thx Sven Nierlein for the idea) #2473 - MF
+* classic ui: add modified attributes reset command to extinfo.cgi allowing to reset to original config #2474 - MF
 
 * idoutils: add new index for state in table statehistory #2274 - TD
+* idoutils: add is_in_effect and trigger_time to scheduleddowntime and downtimehistory tables #2539 - MF
 
 * install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121 - MF
 * install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344 - MF
@@ -76,6 +81,8 @@ FIXES
 * core: mark services as executing only when we know we will actually run them (Andreas Ericsson) #2302 - MF
 * core: fix handling of allow_empty_hostgroup_assignment when hitting NULL'edhost_name attribute, now properly finishing #949 - MF
 * core: drop abbreviations in debug log and make them more telling #2138 - MF
+* core: remove deprecated code for log_external_commands_user #1619 - MF
+* core: fix scheduled_downtime_depth falsely incremented if in flexible downtime with duration < end-starttime window #2536 - MF
 
 * classic ui: Fixed status totals are wrong when searching #1524 - RB
 * classic ui: Fixed wrong URLs for status.cgi overview #2173 - RB
@@ -93,6 +100,7 @@ FIXES
 * classic ui: fixed Availability Records Break if JavaScript is disabled #2412 - RB
 * classic ui: fixed Truncated HTML table when displaying outages in outages.cgi #2323 - RB
 * classic ui: fixed Log File Navigation in current/ealier/recent archive clarification #2441 - RB
+* classic ui: fixed Extra leading space in status.cgi CSV output #2535 - RB
 
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319 - MF
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974 - MF
@@ -142,6 +150,12 @@ CHANGES
 * install: --enable-libtap is now deprecated, new libtap does not require configure anymore #1192
 
 * tests: you can now test with pleasure: $ make distclean ; ./configure ; make test #2369 #1192
+
+* core: add trigger_time to downtimes #2537
+	** downtimes in status.dat/retention.dat now holding trigger_time
+	** nebstruct and event broker api now passing trigger_time and is_in_effect
+* core: nebcallback for downtime start now happens *after* setting "in effect" attributes #2539
+	** needed to pass is_in_effect and trigger_time to neb modules
 
 * classic ui: Added option for max log entries displayed in showlog.cgi #2145
 	** added new config option "default_num_displayed_log_entries"
@@ -204,6 +218,10 @@ CHANGES
 
 * classic ui: statuswml.cgi and statuswrl.cgi are DEPRECATED now !!!!!!!!!
 	** both will be removed in Icinga 1.8 !!!!!!
+
+* classic ui: cmd.cgi now accepts change commands with attr command #2474
+	** CHANGE_HOST_MODATTR, CHANGE_SVC_MODATTR
+	** but ONLY 0 = reset, other values will trigger an error
 
 * idoutils: limit long_output and perfdata database storage in mysql to 32k #2342
 

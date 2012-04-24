@@ -96,7 +96,6 @@ int             log_event_handlers = DEFAULT_LOG_EVENT_HANDLERS;
 int             log_initial_states = DEFAULT_LOG_INITIAL_STATES;
 int             log_current_states = DEFAULT_LOG_CURRENT_STATES;
 int             log_external_commands = DEFAULT_LOG_EXTERNAL_COMMANDS;
-int             log_external_commands_user = DEFAULT_LOG_EXTERNAL_COMMANDS_USER;
 int             log_passive_checks = DEFAULT_LOG_PASSIVE_CHECKS;
 int             log_long_plugin_output = DEFAULT_LOG_LONG_PLUGIN_OUTPUT;
 

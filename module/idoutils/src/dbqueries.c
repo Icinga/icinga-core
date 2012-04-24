@@ -2370,48 +2370,59 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s) ON DUPLICATE KEY UPDATE downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s ",
-		                 ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME],
-		                 *(unsigned long *) data[0],     /* insert start */
-		                 *(int *) data[1],
-		                 *(unsigned long *) data[2],
-		                 *(char **) data[3],
-		                 *(char **) data[4],
-		                 *(char **) data[5],
-		                 *(unsigned long *) data[6],
-		                 *(unsigned long *) data[7],
-		                 *(int *) data[8],
-		                 *(unsigned long *) data[9],
-		                 *(char **) data[10],
-		                 *(char **) data[11],     	/* insert end */
-		                 *(int *) data[1],               /* update start */
-		                 *(char **) data[4],
-		                 *(char **) data[5],
-		                 *(unsigned long *) data[7],
-		                 *(int *) data[8],
-		                 *(unsigned long *) data[9],
-		                 *(char **) data[10],
-		                 *(char **) data[11]             /* update end */
+		dummy = asprintf(&query1, "INSERT INTO %s "
+						"(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time, is_in_effect, trigger_time) "
+						"VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s, %d, %s) "
+						"ON DUPLICATE KEY UPDATE downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s, is_in_effect=%d, trigger_time=%s "
+		                 ,ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]
+		                 ,*(unsigned long *) data[0]     /* insert start */
+		                 ,*(int *) data[1]
+		                 ,*(unsigned long *) data[2]
+		                 ,*(char **) data[3]
+		                 ,*(char **) data[4]
+		                 ,*(char **) data[5]
+		                 ,*(unsigned long *) data[6]
+		                 ,*(unsigned long *) data[7]
+		                 ,*(int *) data[8]
+		                 ,*(unsigned long *) data[9]
+		                 ,*(char **) data[10]
+		                 ,*(char **) data[11]
+				 ,*(int *) data[15]
+				 ,*(char **) data[16]		 /* insert end */
+		                 ,*(int *) data[1]               /* update start */
+		                 ,*(char **) data[4]
+		                 ,*(char **) data[5]
+		                 ,*(unsigned long *) data[7]
+		                 ,*(int *) data[8]
+		                 ,*(unsigned long *) data[9]
+		                 ,*(char **) data[10]
+		                 ,*(char **) data[11]             
+				 ,*(int *) data[15]
+				 ,*(char **) data[16]		 /* update end */
 		                );
 		/* send query to db */
 		result = ido2db_db_query(idi, query1);
 		free(query1);
 		break;
 	case IDO2DB_DBSERVER_PGSQL:
-		dummy = asprintf(&query1, "UPDATE %s SET downtime_type=%d, author_name=E'%s', comment_data=E'%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
-		                 ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME],
-		                 *(int *) data[1],               /* update start */
-		                 *(char **) data[4],
-		                 *(char **) data[5],
-		                 *(unsigned long *) data[7],
-		                 *(int *) data[8],
-		                 *(unsigned long *) data[9],
-		                 *(char **) data[10],
-		                 *(char **) data[11],            /* update end */
-		                 *(unsigned long *) data[0],     /* unique constraint start */
-		                 *(unsigned long *) data[2],
-		                 *(char **) data[3],
-		                 *(unsigned long *) data[6]      /* unique constraint end */
+		dummy = asprintf(&query1, "UPDATE %s "
+						"SET downtime_type=%d, author_name=E'%s', comment_data=E'%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s, is_in_effect=%d, trigger_time=%s "
+						"WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu"
+		                 ,ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]
+		                 ,*(int *) data[1]               /* update start */
+		                 ,*(char **) data[4]
+		                 ,*(char **) data[5]
+		                 ,*(unsigned long *) data[7]
+		                 ,*(int *) data[8]
+		                 ,*(unsigned long *) data[9]
+		                 ,*(char **) data[10]
+		                 ,*(char **) data[11]
+				 ,*(int *) data[15]
+				 ,*(char **) data[16]		 /* update end */
+		                 ,*(unsigned long *) data[0]     /* unique constraint start */
+		                 ,*(unsigned long *) data[2]
+		                 ,*(char **) data[3]
+		                 ,*(unsigned long *) data[6]      /* unique constraint end */
 		                );
 		/* send query to db */
 		result = ido2db_db_query(idi, query1);
@@ -2420,20 +2431,24 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
 			/* try insert instead */
-			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, E'%s', E'%s', %lu, %lu, %d, %lu, %s, %s)",
-			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME],
-			                 *(unsigned long *) data[0],     /* insert start */
-			                 *(int *) data[1],
-			                 *(unsigned long *) data[2],
-			                 *(char **) data[3],
-			                 *(char **) data[4],
-			                 *(char **) data[5],
-			                 *(unsigned long *) data[6],
-			                 *(unsigned long *) data[7],
-			                 *(int *) data[8],
-			                 *(unsigned long *) data[9],
-			                 *(char **) data[10],
-			                 *(char **) data[11]             /* insert end */
+			dummy = asprintf(&query2, "INSERT INTO %s "
+							"(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time, is_in_effect, trigger_time) "
+							"VALUES (%lu, %d, %lu, %s, E'%s', E'%s', %lu, %lu, %d, %lu, %s, %s, %d, %s)"
+			                 ,ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]
+			                 ,*(unsigned long *) data[0]     /* insert start */
+			                 ,*(int *) data[1]
+			                 ,*(unsigned long *) data[2]
+			                 ,*(char **) data[3]
+			                 ,*(char **) data[4]
+			                 ,*(char **) data[5]
+			                 ,*(unsigned long *) data[6]
+			                 ,*(unsigned long *) data[7]
+			                 ,*(int *) data[8]
+			                 ,*(unsigned long *) data[9]
+			                 ,*(char **) data[10]
+					 ,*(char **) data[11]
+				 	 ,*(int *) data[15]
+					 ,*(char **) data[16]		 /* insert end */
 			                );
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
@@ -2520,6 +2535,12 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, MT(":X12"), (uint *) data[14])) { /* unixtimestamp instead of time2sql */
 		return IDO_ERROR;
 	}
+	if (!OCI_BindInt(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, MT(":X13"), (int *) data[15])) {
+		return IDO_ERROR;
+	}
+	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime, MT(":X14"), (uint *) data[17])) { /* unixtimestamp instead of time2sql */
+		return IDO_ERROR;
+	}
 
 	/* execute statement */
 	if (!OCI_Execute(idi->dbinfo.oci_statement_downtimedata_scheduled_downtime)) {
@@ -2554,48 +2575,63 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s) ON DUPLICATE KEY UPDATE downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s ",
-		                 ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY],
-		                 *(unsigned long *) data[0],     /* insert start */
-		                 *(int *) data[1],
-		                 *(unsigned long *) data[2],
-		                 *(char **) data[3],
-		                 *(char **) data[4],
-		                 *(char **) data[5],
-		                 *(unsigned long *) data[6],
-		                 *(unsigned long *) data[7],
-		                 *(int *) data[8],
-		                 *(unsigned long *) data[9],
-		                 *(char **) data[10],
-		                 *(char **) data[11],            /* insert end */
-		                 *(int *) data[1],               /* update start */
-		                 *(char **) data[4],
-		                 *(char **) data[5],
-		                 *(unsigned long *) data[7],
-		                 *(int *) data[8],
-		                 *(unsigned long *) data[9],
-		                 *(char **) data[10],
-		                 *(char **) data[11]             /* update end */
+		dummy = asprintf(&query1, "INSERT INTO %s "
+						"(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time, is_in_effect, trigger_time) "
+						"VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s, %d, %s) "
+						" ON DUPLICATE KEY UPDATE "
+						"downtime_type=%d, author_name='%s', comment_data='%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s, is_in_effect=%d, trigger_time=%s "
+		                 ,ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]
+		                 ,*(unsigned long *) data[0]     /* insert start */
+		                 ,*(int *) data[1]
+		                 ,*(unsigned long *) data[2]
+		                 ,*(char **) data[3]
+		                 ,*(char **) data[4]
+		                 ,*(char **) data[5]
+		                 ,*(unsigned long *) data[6]
+		                 ,*(unsigned long *) data[7]
+		                 ,*(int *) data[8]
+		                 ,*(unsigned long *) data[9]
+		                 ,*(char **) data[10]
+		                 ,*(char **) data[11]
+				 ,*(int *) data[15] /* is_in_effect */
+				 ,*(char **) data[16] /* trigger_time as sql string */
+				 				 /* insert end */
+		                 ,*(int *) data[1]               /* update start */
+		                 ,*(char **) data[4]
+		                 ,*(char **) data[5]
+		                 ,*(unsigned long *) data[7]
+		                 ,*(int *) data[8]
+		                 ,*(unsigned long *) data[9]
+		                 ,*(char **) data[10]
+		                 ,*(char **) data[11]
+				 ,*(int *) data[15] /* is_in_effect */
+				 ,*(char **) data[16] /* trigger_time as sql string */
+				 				/* update end */
 		                );
 		/* send query to db */
 		result = ido2db_db_query(idi, query1);
 		free(query1);
 		break;
 	case IDO2DB_DBSERVER_PGSQL:
-		dummy = asprintf(&query1, "UPDATE %s SET downtime_type=%d, author_name=E'%s', comment_data=E'%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
-		                 ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY],
-		                 *(int *) data[1],               /* update start */
-		                 *(char **) data[4],
-		                 *(char **) data[5],
-		                 *(unsigned long *) data[7],
-		                 *(int *) data[8],
-		                 *(unsigned long *) data[9],
-		                 *(char **) data[10],
-		                 *(char **) data[11],            /* update end */
-		                 *(unsigned long *) data[0],     /* unique constraint start */
-		                 *(unsigned long *) data[2],
-		                 *(char **) data[3],
-		                 *(unsigned long *) data[6]      /* unique constraint end */
+		dummy = asprintf(&query1, "UPDATE %s "
+						"SET downtime_type=%d, author_name=E'%s', comment_data=E'%s', triggered_by_id=%lu, is_fixed=%d, duration=%lu, scheduled_start_time=%s, scheduled_end_time=%s, is_in_effect=%d, trigger_time=%s "
+						"WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu"
+		                 ,ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]
+		                 ,*(int *) data[1]               /* update start */
+		                 ,*(char **) data[4]
+		                 ,*(char **) data[5]
+		                 ,*(unsigned long *) data[7]
+		                 ,*(int *) data[8]
+		                 ,*(unsigned long *) data[9]
+		                 ,*(char **) data[10]
+		                 ,*(char **) data[11]
+				 ,*(int *) data[15] /* is_in_effect */
+				 ,*(char **) data[16] /* trigger_time as sql string */
+				 				/* update end */
+		                 ,*(unsigned long *) data[0]     /* unique constraint start */
+		                 ,*(unsigned long *) data[2]
+		                 ,*(char **) data[3]
+		                 ,*(unsigned long *) data[6]      /* unique constraint end */
 		                );
 
 		/* send query to db */
@@ -2605,20 +2641,26 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
 			/* try insert instead */
-			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time) VALUES (%lu, %d, %lu, %s, E'%s', E'%s', %lu, %lu, %d, %lu, %s, %s)",
-			                 ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY],
-			                 *(unsigned long *) data[0],     /* insert start */
-			                 *(int *) data[1],
-			                 *(unsigned long *) data[2],
-			                 *(char **) data[3],
-			                 *(char **) data[4],
-			                 *(char **) data[5],
-			                 *(unsigned long *) data[6],
-			                 *(unsigned long *) data[7],
-			                 *(int *) data[8],
-			                 *(unsigned long *) data[9],
-			                 *(char **) data[10],
-			                 *(char **) data[11]             /* insert end */
+			dummy = asprintf(&query2, "INSERT INTO %s "
+							"(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time, is_in_effect, trigger_time) "
+							"VALUES (%lu, %d, %lu, %s, E'%s', E'%s', %lu, %lu, %d, %lu, %s, %s, %d, %s)"
+			                 ,ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]
+					 ,*(unsigned long *) data[0]     /* insert start */
+			                 ,*(int *) data[1]
+			                 ,*(unsigned long *) data[2]
+			                 ,*(char **) data[3]
+			                 ,*(char **) data[4]
+			                 ,*(char **) data[5]
+			                 ,*(unsigned long *) data[6]
+			                 ,*(unsigned long *) data[7]
+			                 ,*(int *) data[8]
+			                 ,*(unsigned long *) data[9]
+			                 ,*(char **) data[10]
+			                 ,*(char **) data[11]             
+				 	 ,*(int *) data[15] /* is_in_effect */
+					 ,*(char **) data[16] /* trigger_time as sql string */
+
+					 /* insert end */
 			                );
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
@@ -2703,6 +2745,12 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 		return IDO_ERROR;
 	}
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_downtimedata_downtime_history, MT(":X12"), (uint *) data[14])) { /* unixtimestamp instead of time2sql */
+		return IDO_ERROR;
+	}
+	if (!OCI_BindInt(idi->dbinfo.oci_statement_downtimedata_downtime_history, MT(":X13"), (int *) data[15])) {
+		return IDO_ERROR;
+	}
+	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_downtimedata_downtime_history, MT(":X14"), (uint *) data[17])) { /* unixtimestamp instead of time2sql */
 		return IDO_ERROR;
 	}
 

@@ -394,7 +394,7 @@ void broker_comment_data(int type, int flags, int attr, int comment_type, int en
 
 
 /* send downtime data to broker */
-void broker_downtime_data(int type, int flags, int attr, int downtime_type, char *host_name, char *svc_description, time_t entry_time, char *author_name, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long triggered_by, unsigned long duration, unsigned long downtime_id, struct timeval *timestamp) {
+void broker_downtime_data(int type, int flags, int attr, int downtime_type, char *host_name, char *svc_description, time_t entry_time, char *author_name, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long triggered_by, unsigned long duration, unsigned long downtime_id, struct timeval *timestamp, int is_in_effect, time_t trigger_time) {
 	nebstruct_downtime_data ds;
 
 	if (!(event_broker_options & BROKER_DOWNTIME_DATA))
@@ -419,6 +419,9 @@ void broker_downtime_data(int type, int flags, int attr, int downtime_type, char
 	ds.duration = duration;
 	ds.triggered_by = triggered_by;
 	ds.downtime_id = downtime_id;
+
+	ds.is_in_effect = is_in_effect;
+	ds.trigger_time = trigger_time;
 
 	/* make callbacks */
 	neb_make_callbacks(NEBCALLBACK_DOWNTIME_DATA, (void *)&ds);

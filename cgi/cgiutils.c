@@ -127,8 +127,6 @@ char		log_archive_path[MAX_INPUT_BUFFER];
 int		status_update_interval = 60;
 int             check_external_commands = 0;
 
-int             log_external_commands_user = FALSE;
-
 int             date_format = DATE_FORMAT_US;
 
 int             use_authentication = TRUE;
@@ -823,12 +821,6 @@ int read_main_config_file(char *filename) {
 			temp_buffer = strtok(input, "=");
 			temp_buffer = strtok(NULL, "\x0");
 			check_external_commands = (temp_buffer == NULL) ? 0 : atoi(temp_buffer);
-		}
-
-		else if (strstr(input, "log_external_commands_user=") == input) {
-			temp_buffer = strtok(input, "=");
-			temp_buffer = strtok(NULL, "\x0");
-			log_external_commands_user = (temp_buffer == NULL) ? 0 : atoi(temp_buffer);
 		}
 
 		else if (strstr(input, "date_format=") == input) {
@@ -3172,3 +3164,159 @@ void print_comment_icon(char *host_name, char *svc_description) {
 
 	return;
 }
+
+/** @brief prints modified attributes as string, by line seperator
+ *  @param [in] content_type can be \c CSV_CONTENT , \c JSON_CONTENT , \c XML_CONTENT or \c HTML_CONTENT
+ *  @param [in] cgi name of cgi as defined in include/cgiutils.h
+ *  @param [in] modified_attributes is the number to compare with
+ *  @note takes care that modified_attributes is represented as string
+ *
+ *  This function prints modified_attributes as string
+ *
+#define MODATTR_NONE                            0
+#define MODATTR_NOTIFICATIONS_ENABLED           1
+#define MODATTR_ACTIVE_CHECKS_ENABLED           2
+#define MODATTR_PASSIVE_CHECKS_ENABLED          4
+#define MODATTR_EVENT_HANDLER_ENABLED           8
+#define MODATTR_FLAP_DETECTION_ENABLED          16
+#define MODATTR_FAILURE_PREDICTION_ENABLED      32
+#define MODATTR_PERFORMANCE_DATA_ENABLED        64
+#define MODATTR_OBSESSIVE_HANDLER_ENABLED       128
+#define MODATTR_EVENT_HANDLER_COMMAND           256
+#define MODATTR_CHECK_COMMAND                   512
+#define MODATTR_NORMAL_CHECK_INTERVAL           1024
+#define MODATTR_RETRY_CHECK_INTERVAL            2048
+#define MODATTR_MAX_CHECK_ATTEMPTS              4096
+#define MODATTR_FRESHNESS_CHECKS_ENABLED        8192
+#define MODATTR_CHECK_TIMEPERIOD                16384
+#define MODATTR_CUSTOM_VARIABLE                 32768
+#define MODATTR_NOTIFICATION_TIMEPERIOD         65536
+ *
+**/
+void print_modified_attributes(int content_type, char *cgi, unsigned long modified_attributes) {
+	char attr[MAX_INPUT_BUFFER] = "";
+
+	if (cgi == NULL)
+		return;
+
+	if (modified_attributes == MODATTR_NONE) {
+		/* nothing modified, return early */
+		printf("None");
+		return;
+	}
+
+	/* loop until no more attributes matched */
+	while(modified_attributes != MODATTR_NONE) {
+		if(modified_attributes & MODATTR_NOTIFICATIONS_ENABLED) {
+			strcat(attr, "notifications_enabled");
+			modified_attributes -= MODATTR_NOTIFICATIONS_ENABLED;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_ACTIVE_CHECKS_ENABLED) {
+			strcat(attr, "active_checks_enabled");
+			modified_attributes -= MODATTR_ACTIVE_CHECKS_ENABLED;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_PASSIVE_CHECKS_ENABLED) {
+			strcat(attr, "passive_checks_enabled");
+			modified_attributes -= MODATTR_PASSIVE_CHECKS_ENABLED;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_EVENT_HANDLER_ENABLED) {
+			strcat(attr, "event_handler_enabled");
+			modified_attributes -= MODATTR_EVENT_HANDLER_ENABLED;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_FLAP_DETECTION_ENABLED) {
+			strcat(attr, "flap_detection_enabled");
+			modified_attributes -= MODATTR_FLAP_DETECTION_ENABLED;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_FAILURE_PREDICTION_ENABLED) {
+			strcat(attr, "failure_prediction_enabled");
+			modified_attributes -= MODATTR_FAILURE_PREDICTION_ENABLED;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_PERFORMANCE_DATA_ENABLED) {
+			strcat(attr, "performance_data_enabled");
+			modified_attributes -= MODATTR_PERFORMANCE_DATA_ENABLED;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_OBSESSIVE_HANDLER_ENABLED) {
+			strcat(attr, "obsessive_handler_enabled");
+			modified_attributes -= MODATTR_OBSESSIVE_HANDLER_ENABLED;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_EVENT_HANDLER_COMMAND) {
+			strcat(attr, "event_handler_command");
+			modified_attributes -= MODATTR_EVENT_HANDLER_COMMAND;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_CHECK_COMMAND) {
+			strcat(attr, "check_command");
+			modified_attributes -= MODATTR_CHECK_COMMAND;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_NORMAL_CHECK_INTERVAL) {
+			strcat(attr, "check_interval");
+			modified_attributes -= MODATTR_NORMAL_CHECK_INTERVAL;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_RETRY_CHECK_INTERVAL) {
+			strcat(attr, "retry_interval");
+			modified_attributes -= MODATTR_RETRY_CHECK_INTERVAL;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_MAX_CHECK_ATTEMPTS) {
+			strcat(attr, "max_check_attemps");
+			modified_attributes -= MODATTR_MAX_CHECK_ATTEMPTS;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_FRESHNESS_CHECKS_ENABLED) {
+			strcat(attr, "freshness_checks_enabled");
+			modified_attributes -= MODATTR_FRESHNESS_CHECKS_ENABLED;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_CHECK_TIMEPERIOD) {
+			strcat(attr, "check_timeperiod");
+			modified_attributes -= MODATTR_CHECK_TIMEPERIOD;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_CUSTOM_VARIABLE) {
+			strcat(attr, "custom_variable");
+			modified_attributes -= MODATTR_CUSTOM_VARIABLE;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+		if(modified_attributes & MODATTR_NOTIFICATION_TIMEPERIOD) {
+			strcat(attr, "Notification Timeperiod");
+			modified_attributes -= MODATTR_NOTIFICATION_TIMEPERIOD;
+			if (modified_attributes != MODATTR_NONE)
+				strcat(attr, ", ");
+		}
+	}
+
+	if (content_type == HTML_CONTENT) {
+		printf("<div class=\"serviceWARNING\">%s</div>", attr);
+	}
+	else if (content_type == JSON_CONTENT) {
+		printf("%s", attr);
+	}
+	return;
+}
+

@@ -65,7 +65,6 @@ extern int      enable_failure_prediction;
 extern int      process_performance_data;
 
 extern int      log_external_commands;
-extern int	log_external_commands_user;
 extern int      log_passive_checks;
 
 extern unsigned long    modified_host_process_attributes;
@@ -244,38 +243,11 @@ int process_external_command1(char *cmd) {
 	if ((command_id = (char *)strdup(temp_ptr + 1)) == NULL)
 		return ERROR;
 
-	if (log_external_commands_user == TRUE) {
-		/* get the command arguments incl username */
-		if ((temp_ptr = my_strtok(NULL, "\n")) == NULL)
-			temp_buffer = (char *)strdup("");
-		else
-			temp_buffer = (char *)strdup(temp_ptr);
-
-		/* get the command username */
-		if ((temp_ptr = my_strtok(temp_buffer, ";")) == NULL)
-			username = (char *)strdup("");
-		else
-			username = (char *)strdup(temp_ptr);
-
-		//logit(NSLOG_EXTERNAL_COMMAND | NSLOG_RUNTIME_WARNING,TRUE,"external command username: %s\n",username);
-
-		/* get the command args */
-		if ((temp_ptr = my_strtok(NULL, "\n")) == NULL)
-			args = (char *)strdup("");
-		else
-			args = (char *)strdup(temp_ptr);
-
-		//logit(NSLOG_EXTERNAL_COMMAND | NSLOG_RUNTIME_WARNING,TRUE,"external command args: %s\n",args);
-
-		my_free(temp_buffer);
-	} else {
-		/* get the command arguments */
-		if ((temp_ptr = my_strtok(NULL, "\n")) == NULL)
-			args = (char *)strdup("");
-		else
-			args = (char *)strdup(temp_ptr);
-	}
-
+	/* get the command arguments */
+	if ((temp_ptr = my_strtok(NULL, "\n")) == NULL)
+		args = (char *)strdup("");
+	else
+		args = (char *)strdup(temp_ptr);
 
 	if (args == NULL) {
 		my_free(command_id);
@@ -763,11 +735,7 @@ int process_external_command1(char *cmd) {
 	update_check_stats(EXTERNAL_COMMAND_STATS, time(NULL));
 
 	/* log the external command */
-	if (log_external_commands_user == TRUE) {
-		dummy = asprintf(&temp_buffer, "EXTERNAL COMMAND: %s;%s;%s\n", command_id, username, args);
-	} else {
-		dummy = asprintf(&temp_buffer, "EXTERNAL COMMAND: %s;%s\n", command_id, args);
-	}
+	dummy = asprintf(&temp_buffer, "EXTERNAL COMMAND: %s;%s\n", command_id, args);
 
 	if (command_type == CMD_PROCESS_SERVICE_CHECK_RESULT || command_type == CMD_PROCESS_HOST_CHECK_RESULT) {
 		/* passive checks are logged in checks.c as well, as some my bypass external commands by getting dropped in checkresults dir */
