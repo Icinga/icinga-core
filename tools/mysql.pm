@@ -21,6 +21,6 @@
 ######   Icinga Verification and Reporting Script     ######";
 ######  by Frankstar / Team Quality Assurance & VM    ######";
 ############################################################";
-package Mysql;
+package mysql;
 
-$testvar = 'im the text from mysql.pm';
+1;
