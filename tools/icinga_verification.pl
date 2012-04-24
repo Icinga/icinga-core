@@ -346,7 +346,8 @@ idomod Information:
  Output: $idomodoutput
  SSL Status: $idomodssl
  TCP Port: $idomodtcpport
- 
+
+ido2db Errors in Syslog: 
  @idolog
 ##################### Test Results: ########################
 
