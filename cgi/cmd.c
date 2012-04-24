@@ -1872,16 +1872,20 @@ void request_command_data(int cmd) {
 
         case CMD_CHANGE_HOST_MODATTR:
 		print_object_list(PRINT_HOST_LIST);
-		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		print_form_element(PRINT_COMMON_HEADER, cmd);
 		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">Modified Attributes:</td>");
-		printf("<td><INPUT TYPE='HIDDEN' NAME='attr' VALUE='%lu'>%lu</td></tr>\n", attr, attr);
+		printf("<td><INPUT TYPE='HIDDEN' NAME='attr' VALUE='%lu'>", attr);
+		print_modified_attributes(HTML_CONTENT, CMD_CGI, attr);
+		printf("</td></tr>\n");
 		break;
 
         case CMD_CHANGE_SVC_MODATTR:
 		print_object_list(PRINT_SERVICE_LIST);
-		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		print_form_element(PRINT_COMMON_HEADER, cmd);
 		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">Modified Attributes:</td>");
-		printf("<td><INPUT TYPE='HIDDEN' NAME='attr' VALUE='%lu'>%lu</td></tr>\n", attr, attr);
+		printf("<td><INPUT TYPE='HIDDEN' NAME='attr' VALUE='%lu'>", attr);
+		print_modified_attributes(HTML_CONTENT, CMD_CGI, attr);
+		printf("</td></tr>\n");
 		break;
 
 	default:
@@ -2970,7 +2974,6 @@ int commit_command(int cmd) {
                                 continue;
 			if (is_authorized[x])
 				submit_result[x] = cmd_submitf(cmd, "%s;%s;%lu", commands[x].host_name, commands[x].description, attr);
-		printf("hst: %s, svc: %s, attr: %lu x: %d", commands[x].host_name, commands[x].description, attr, x);
 		}
 		break;
 

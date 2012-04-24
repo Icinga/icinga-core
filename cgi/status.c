@@ -6588,6 +6588,7 @@ void show_servicecommand_table(void) {
 		printf("<option value='%d' title='%s%s'>Enable Event Handler For Checked Service(s)</option>\n", CMD_ENABLE_SVC_EVENT_HANDLER, url_images_path, ENABLED_ICON);
 		printf("<option value='%d' title='%s%s'>Disable Flap Detection For Checked Service(s)</option>\n", CMD_DISABLE_SVC_FLAP_DETECTION, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s'>Enable Flap Detection For Checked Service(s)</option>\n", CMD_ENABLE_SVC_FLAP_DETECTION, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s'>Reset Modified Attributes For Checked Service(s)</option>\n", CMD_CHANGE_SVC_MODATTR, url_images_path, DISABLED_ICON);
 		printf("</select>\n");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
@@ -6644,6 +6645,7 @@ void show_hostcommand_table(void) {
 		printf("<option value='%d' title='%s%s' >Enable Event Handler For Checked Host(s)</option>\n", CMD_ENABLE_HOST_EVENT_HANDLER, url_images_path, ENABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Disable Flap Detection For Checked Host(s)</option>\n", CMD_DISABLE_HOST_FLAP_DETECTION, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Enable Flap Detection For Checked Host(s)</option>\n", CMD_ENABLE_HOST_FLAP_DETECTION, url_images_path, ENABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Reset Modified Attributes For Checked Host(s)</option>\n", CMD_CHANGE_HOST_MODATTR, url_images_path, DISABLED_ICON);
 		printf("</select>\n");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */

@@ -105,7 +105,6 @@ int ido2db_log_debug_info(int level, int verbosity, const char *fmt, ...) {
         struct timeval current_time;
         unsigned long tid;
         unsigned long pid;
-	int dummy = 0;
 
         if (!(ido2db_debug_level == IDO2DB_DEBUGL_ALL || (level & ido2db_debug_level)))
                 return IDO_OK;

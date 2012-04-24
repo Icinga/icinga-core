@@ -95,6 +95,7 @@ FIXES
 * classic ui: fixed Availability Records Break if JavaScript is disabled #2412 - RB
 * classic ui: fixed Truncated HTML table when displaying outages in outages.cgi #2323 - RB
 * classic ui: fixed Log File Navigation in current/ealier/recent archive clarification #2441 - RB
+* classic ui: fixed Extra leading space in status.cgi CSV output #2535 - RB
 
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319 - MF
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974 - MF

@@ -1682,7 +1682,7 @@ void show_host_info(void) {
 			printf("Add a new Host comment</a></td>");
 
                         /* allow modified attributes to be reset */
-                        printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Reset Modified Attributes' TITLE='Reset Modified Attributes'></td><td CLASS='command'><a href='%s?cmd_typ=%d&attr=%lu&host=%s'>", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_HOST_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+                        printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Reset Modified Attributes' TITLE='Reset Modified Attributes'></td><td CLASS='command'><a href='%s?cmd_typ=%d&attr=%d&host=%s'>", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_HOST_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
                         printf("Reset Modified Attributes</a></td>");
 
 			printf("</TABLE>\n");
@@ -2135,7 +2135,7 @@ void show_service_info(void) {
 			printf("Add a new Service comment</a></td>");
 
 			/* allow modified attributes to be reset */
-			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Reset Modified Attributes' TITLE='Reset Modified Attributes'></td><td CLASS='command'><a href='%s?cmd_typ=%d&attr=%lu&host=%s&", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_SVC_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Reset Modified Attributes' TITLE='Reset Modified Attributes'></td><td CLASS='command'><a href='%s?cmd_typ=%d&attr=%d&host=%s&", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_SVC_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("service=%s'>", (display_type == DISPLAY_COMMENTS) ? "" : url_encode(service_desc));
 			printf("Reset Modified Attributes</a></td>");
 
