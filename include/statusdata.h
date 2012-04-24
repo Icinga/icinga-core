@@ -105,6 +105,7 @@ typedef struct hoststatus_struct{
 	time_t  acknowledgement_end_time;
 	int	search_matched;
 	int	added;
+	unsigned long modified_attributes;
         }hoststatus;
 
 
@@ -162,6 +163,7 @@ typedef struct servicestatus_struct{
 	time_t  acknowledgement_end_time;
 	int	search_matched;
 	int	added;
+	unsigned long modified_attributes;
         }servicestatus;
 
 

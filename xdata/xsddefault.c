@@ -1157,6 +1157,8 @@ int xsddefault_read_status_data(char *config_file, int options) {
 						temp_hoststatus->percent_state_change = strtod(val, NULL);
 					else if (!strcmp(var, "scheduled_downtime_depth"))
 						temp_hoststatus->scheduled_downtime_depth = atoi(val);
+					else if (!strcmp(var, "modified_attributes"))
+						temp_hoststatus->modified_attributes = strtoul(val, NULL, 10);
 					/*
 					else if(!strcmp(var,"state_history")){
 						temp_ptr=val;
@@ -1267,6 +1269,8 @@ int xsddefault_read_status_data(char *config_file, int options) {
 						temp_servicestatus->percent_state_change = strtod(val, NULL);
 					else if (!strcmp(var, "scheduled_downtime_depth"))
 						temp_servicestatus->scheduled_downtime_depth = atoi(val);
+					else if (!strcmp(var, "modified_attributes"))
+						temp_servicestatus->modified_attributes = strtoul(val, NULL, 10);
 					/*
 					else if(!strcmp(var,"state_history")){
 						temp_ptr=val;
