@@ -200,6 +200,7 @@ my $selinux = which('selinuxenabled') ? qx(getenforce) : 'selinux binary not fou
 chomp($selinux);
 
 #log file test
+#FIXME - PATH to syslog not hardcoded
 my $idolog = get_error_from_log("/var/log/messages", 'ido2db');
 
 ################################
@@ -513,7 +514,7 @@ sub get_error_from_log ($$) {
         while ( my $line = <$fh> ) {
             chomp($line);
 			print "\nread error:\n $line \nfrom $file","\n", if $verbose;
-            if ( $line =~ /\$key:/ ) {
+            if ( $line =~ /\$key/ ) {
                 return $1;
             }
         }
