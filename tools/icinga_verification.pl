@@ -38,6 +38,7 @@ sub get_distribution;
 sub find_icinga_dir;
 sub get_icinga_version;
 sub get_ido2db_version;
+sub get_error_from_log;
 
 # preconfiguration
 my $config_ref = {
@@ -198,6 +199,9 @@ my $ido2dbversion = get_ido2db_version();
 my $selinux = which('selinuxenabled') ? qx(getenforce) : 'selinux binary not found';
 chomp($selinux);
 
+#log file test
+my $idolog = get_error_from_log("/var/log/messages", 'ido2db');
+
 ################################
 # Icinga Checks
 ################################
@@ -242,10 +246,6 @@ my $idomodssl = get_key_from_ini("$icinga_base/idomod.cfg", 'use_ssl');
 
 #idomod TCP port
 my $idomodtcpport = get_key_from_ini("$icinga_base/idomod.cfg", 'tcp_port');
-
-
-#ido2db - idomod socket compare
-
 
 # MySQL Checks #
 my $dbh_conn_error = '';
@@ -346,6 +346,7 @@ idomod Information:
  SSL Status: $idomodssl
  TCP Port: $idomodtcpport
  
+ $idolog
 ##################### Test Results: ########################
 
 Mysql Connection with ido2db.cfg:
@@ -497,5 +498,26 @@ sub get_ido2db_version {
         close($fh);
     } else {
         return 'ido2db binary not found in PATH';
+    }
+}
+
+sub get_error_from_log ($$) {
+    my ( $file, $key ) = @_;
+
+    if ( !-f $file ) {
+        print STDERR "logfile $file does not exist\n";
+        return;
+    }
+
+    if ( open( my $fh, '<', $file ) ) {
+        while ( my $line = <$fh> ) {
+            chomp($line);
+			print "\nread error:\n $line \nfrom $file","\n", if $verbose;
+            if ( $line =~ /\$key:/ ) {
+                return $1;
+            }
+        }
+    } else {
+        print STDERR "Could not open logfile $file: $!\n";
     }
 }
