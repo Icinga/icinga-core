@@ -323,24 +323,24 @@ MySQL Information:
 Selinux Status:
  $selinux 
  
-Icinga Informations:
+Icinga General Informations:
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
  idomod Connections: $idocheck
  Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
  @result_icingaconninfo 
- Icinga.cfg Information:
+Icinga.cfg Information:
  External Commands(1=on,0=off): $icingaextcmd
  
- ido2db Information:
+ido2db Information:
  Server Type: $ido2dbservertype
  SSL Status: $ido2dbssl
  Socket Type: $ido2dbsocket
  Socket Name: $ido2dbsocketname
  TCP Port: $ido2dbtcpport
  
- idomod Information:
+idomod Information:
  Output Type: $idomodsocket
  Output: $idomodoutput
  SSL Status: $idomodssl
@@ -365,9 +365,9 @@ ido2db - idomod Socket:
 EOF
 # ido2db -> idomod socket
 if ($ido2dbsocket eq $idomodsocket){
-	print color("green"), " ido2db/idomod writing/listen to the same socket", color("reset");
+	print color("green"), " ido2db/idomod - listen/write to the same socket", color("reset");
 } else {
-	print color("red"), " ido2db/idomod sockets are different", color("reset");
+	print color("red"), " ido2db/idomod sockets are different!", color("reset");
 }
 
 print <<EOF;
@@ -391,7 +391,10 @@ foreach my $service (keys(%{ $config_ref->{'services'} })) {
         }
     }
 }
-print "############################################################\n";
+print <<EOF;
+
+############################################################
+EOF
 
 exit;
 
