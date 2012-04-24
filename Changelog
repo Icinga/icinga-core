@@ -32,7 +32,7 @@ ENHANCEMENTS
 * classic ui: add display_status_totals as cgi.cfg option in order to allow the status totals to be shown again #2443 - RB
 * classic ui: Changed reading of auth information from cgiauth.c to cgiutils.c #2524 - RB
 * classic ui: Added readonly cgi.cfg view into the config section #1776 - RB
-* classic ui: add modified attributes row to extinfo.cgi showing diffs to original config #2473 - MF
+* classic ui: add modified attributes row to extinfo.cgi showing diffs to original config (thx Sven Nierlein for the idea) #2473 - MF
 * classic ui: add modified attributes reset command to extinfo.cgi allowing to reset to original config #2474 - MF
 
 * idoutils: add new index for state in table statehistory #2274 - TD
