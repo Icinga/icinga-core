@@ -55,8 +55,8 @@ my $config_ref = {
 # Option parsing
 ################################
 
-my $verbose; 
-my $result = GetOptions( "verbose" => \$verbose );
+my ($verbose, $reporting, $sanitycheck) = ''; 
+my $result = GetOptions( "verbose" => \$verbose, "reporting" => \$reporting, "sanitycheck" => \$sanitycheck);
 
 ################################
 # Script Config
@@ -232,13 +232,12 @@ my $ido2dbservertype = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertyp
 my $ido2dbsocketname = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_name');
 
 
-#IDOMOD.cfg parsing
+#####IDOMOD.cfg parsing######
 #Output Socket
 my $idomodsocket = get_key_from_ini("$icinga_base/idomod.cfg", 'output_type');
 if ($idomodsocket eq 'unixsocket'){
 	$idomodsocket = 'unix';
 }
-
 #Output
 my $idomodoutput = get_key_from_ini("$icinga_base/idomod.cfg", 'output');
 
@@ -299,7 +298,6 @@ if ( !$mysqlcheck ) {
 
 # Test Print Out
 # later create a fileout with the output
-
 print <<EOF;
 ############################################################
 ######   Icinga Verification and Reporting Script     ######
