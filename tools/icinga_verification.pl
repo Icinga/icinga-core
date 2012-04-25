@@ -17,10 +17,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
-############################################################";
-######   Icinga Verification and Reporting Script     ######";
-######  by Frankstar / Team Quality Assurance & VM    ######";
-############################################################";
+############################################################
+######   Icinga Verification and Reporting Script     ######
+######  by Frankstar / Team Quality Assurance & VM    ######
+############################################################
 
 use strict;
 use warnings;
@@ -61,6 +61,12 @@ my $result = GetOptions( "verbose" => \$verbose, "reporting" => \$reporting, "sa
 ################################
 # Script Config
 ################################
+print <<EOF;
+############################################################
+######    Icinga Sanitycheck and Reporting Script     ######
+######  by Frankstar / Team Quality Assurance & VM    ######
+############################################################
+EOF
 
 #Check if we are on Windows
 my $oscheck = $^O;
@@ -105,7 +111,7 @@ if ( !$mysqlcheck ) {
     print "mysql not found, skipping\n";
 } else {
 
-    print STDERR "\nMysql Found! - Try to connect via ido2db.cfg\n";
+    print STDERR " Mysql Found! - Try to connect via ido2db.cfg\n";
 	
 	# ido2db.cfg Connection test
     $dbh_cfg = DBI->connect(
@@ -120,7 +126,7 @@ if ( !$mysqlcheck ) {
         "ido2db.cfg - MySQL Connect Failed.";
 
     if ( !$dbh_cfg_error ) {
-	    print "ido2db.cfg Mysql Connection Test OK!\n";
+	    print " ido2db.cfg Mysql Connection Test OK!\n";
         $dbh_cfg->disconnect();
     } else {        
 		print color("red"), "ido2db.cfg - MySQL Connect FAILED. Start Config Script", color("reset");
@@ -305,8 +311,7 @@ if ($reporting or (!$reporting and not ($sanitycheck or $issuereport))){
 
 print <<EOF;
 ############################################################
-######           Icinga Reporting Script              ######
-######  by Frankstar / Team Quality Assurance & VM    ######
+######              Verbose Informations              ######
 ############################################################
 Perlversion: $perlversion
 Current Date/Time on Server: $date
@@ -360,8 +365,7 @@ EOF
 if ($sanitycheck){
 print <<EOF;
 ############################################################
-######           Icinga Verification Script           ######
-######  by Frankstar / Team Quality Assurance & VM    ######
+######                 Sanity Check                   ######
 ############################################################
 
 Mysql Connection with ido2db.cfg:
@@ -417,8 +421,7 @@ EOF
 if ($issuereport){
 print <<EOF;
 ############################################################
-######  Icinga Reporting with Issue Tracker Tags      ######
-######  by Frankstar / Team Quality Assurance & VM    ######
+### Copy the following Output and paste it to your Issue ###
 ############################################################
 *Perlversion:* $perlversion
 *Current Date/Time on Server:* $date
