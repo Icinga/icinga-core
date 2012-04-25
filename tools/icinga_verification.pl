@@ -55,8 +55,19 @@ my $config_ref = {
 # Option parsing
 ################################
 
-my ($verbose, $reporting, $sanitycheck, $issuereport) = ''; 
-my $result = GetOptions( "verbose" => \$verbose, "reporting" => \$reporting, "sanitycheck" => \$sanitycheck, "issuereport" => \$issuereport);
+my ($verbose, $reporting, $sanitycheck, $issuereport, $help) = ''; 
+my $result = GetOptions( 
+					"verbose" => \$verbose, 
+					"reporting" => \$reporting, 
+					"sanitycheck" => \$sanitycheck, 
+					"issuereport" => \$issuereport,
+					"help" => \$help
+					);
+
+if ($help){
+	usage();
+	exit;
+}
 
 ################################
 # Script Config
@@ -617,4 +628,19 @@ sub get_error_from_log ($$) {
     } else {
         print STDERR "Could not open logfile $file: $!\n";
     }
+}
+
+sub usage{
+print <<EOF;
+
+icinga_verification -r|--reporting=[Shows the Verbose Reporting Output]
+                    -s|--sanitycheck=[Shows the Sanity Checks]
+                    -i|--issuereport=[Shows a Issue Tracker prepared Output]
+		    no option=[Shows only the Verbose Reporting Output]
+
+This script will check certain settings/entries of your OS environ-
+ment and Icinga Config to assist you in finding problems when you 
+are using Icinga. 
+
+EOF
 }
