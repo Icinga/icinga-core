@@ -322,8 +322,12 @@ oracle_trace_level=0
 
 
 
-# ENABLE SLA
+# ENABLE SLA - EXPERIMENTAL!
 # This setting enables collection of SLA data in the slahistory table
 # Values: 0 = disabled, 1 = enabled
+#
+# WARNING: This setting is highly experimantal and may harm your
+# systems performance. Enable at your own risk, and if any problems
+# occur, remark that you are explicitely using it. You've been warned.
 
 enable_sla=0
