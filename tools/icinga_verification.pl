@@ -82,9 +82,9 @@ if (! $icinga_base ) {
     }
 }
 
-# MySQL Config if MySQL is used
+#### MySQL Config if MySQL is used ####
 
-#ido2db Mysql Config parsing
+#ido2db.cfg Mysql Config parsing
 
 #ido2db Server Host Name
 my $mysqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
@@ -95,9 +95,10 @@ my $mysqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
 #ido2db Password
 my $mysqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
 
-#Mysql Server Check
+#Mysql Server Check, is a mysql serverrunning?
 my $mysqlcheck = which('mysql');
 
+#Mysql Connection Testing
 my ($dbh_cfg, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1, $mysqldb) = '';
 
 if ( !$mysqlcheck ) {
@@ -155,7 +156,7 @@ if ( !$mysqlcheck ) {
 }
 
 ################################
-# Environment Checks
+# Environment Checks, Reporting
 ################################
 
 # Perl Version
@@ -204,7 +205,7 @@ chomp($selinux);
 my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
 
 ################################
-# Icinga Checks
+# Icinga Checks / Reporting
 ################################
 
 #check if ido2db is running
@@ -232,12 +233,14 @@ my $ido2dbservertype = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertyp
 my $ido2dbsocketname = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_name');
 
 
-#####IDOMOD.cfg parsing######
+#### IDOMOD.cfg parsing ####
+
 #Output Socket
 my $idomodsocket = get_key_from_ini("$icinga_base/idomod.cfg", 'output_type');
 if ($idomodsocket eq 'unixsocket'){
 	$idomodsocket = 'unix';
 }
+
 #Output
 my $idomodoutput = get_key_from_ini("$icinga_base/idomod.cfg", 'output');
 
@@ -247,7 +250,7 @@ my $idomodssl = get_key_from_ini("$icinga_base/idomod.cfg", 'use_ssl');
 #idomod TCP port
 my $idomodtcpport = get_key_from_ini("$icinga_base/idomod.cfg", 'tcp_port');
 
-# MySQL Checks #
+#### MySQL Querys ####
 my $dbh_conn_error = '';
 my @result_icingadb  = ();
 my @row;
@@ -347,7 +350,8 @@ idomod Information:
 
 ido2db Errors in Syslog: 
  @idolog
- 
+
+############################################################ 
 EOF
 if ($sanitycheck){
 print <<EOF;
@@ -407,6 +411,7 @@ EOF
 
 exit;
 
+#### SUBs ####
 sub get_key_from_ini ($$) {
     my ( $file, $key ) = @_;
 
