@@ -300,7 +300,7 @@ if ( !$mysqlcheck ) {
 # later create a fileout with the output
 print <<EOF;
 ############################################################
-######   Icinga Verification and Reporting Script     ######
+######           Icinga Reporting Script              ######
 ######  by Frankstar / Team Quality Assurance & VM    ######
 ############################################################
 Perlversion: $perlversion
@@ -347,7 +347,14 @@ idomod Information:
 
 ido2db Errors in Syslog: 
  @idolog
-##################### Test Results: ########################
+ 
+EOF
+if ($sanitycheck){
+print <<EOF;
+############################################################
+######           Icinga Verification Script           ######
+######  by Frankstar / Team Quality Assurance & VM    ######
+############################################################
 
 Mysql Connection with ido2db.cfg:
 EOF
@@ -396,6 +403,7 @@ print <<EOF;
 
 ############################################################
 EOF
+}
 
 exit;
 
