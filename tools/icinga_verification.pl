@@ -232,11 +232,18 @@ chomp($ido2dbproc);
 #check idomod Connections
 my $idocon = ($ido2dbproc - '1');
 
-#icinga.cfg parsing
+### icinga.cfg parsing ###
 #icinga external commands
 my $icingaextcmd = get_key_from_ini("$icinga_base/icinga.cfg", 'check_external_commands');
 
-#ido2db.cfg parsing
+#icinga user
+my $icingacfguser = get_key_from_ini("$icinga_base/icinga.cfg", 'icinga_user');
+chomp($icingacfguser);
+
+#icinga group
+my $icingacfggroup = get_key_from_ini("$icinga_base/icinga.cfg", 'icinga_group');
+
+### ido2db.cfg parsing ###
 #ido2db socket type
 my $ido2dbsocket = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_type');
 
@@ -252,14 +259,13 @@ my $ido2dbservertype = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertyp
 #ido2db Socket Name
 my $ido2dbsocketname = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_name');
 
-
-#### IDOMOD.cfg parsing ####
+#### ido2db.cfg parsing ####
 
 #Output Socket
 my $idomodsocket = get_key_from_ini("$icinga_base/idomod.cfg", 'output_type');
-if ($idomodsocket eq 'unixsocket'){
-	$idomodsocket = 'unix';
-}
+	if ($idomodsocket eq 'unixsocket'){
+		$idomodsocket = 'unix';
+	}
 
 #Output
 my $idomodoutput = get_key_from_ini("$icinga_base/idomod.cfg", 'output');
@@ -319,8 +325,10 @@ if ( !$mysqlcheck ) {
 	}   
 }
 
-# Output Reporting 
-# later create a fileout with the output
+###########################
+# Output Verbose Reporting
+###########################
+
 if ($reporting or (!$reporting and not ($sanitycheck or $issuereport))){
 
 print <<EOF;
@@ -356,6 +364,8 @@ Icinga General Informations:
  @result_icingaconninfo 
 Icinga.cfg Information:
  External Commands(1=on,0=off): $icingaextcmd
+ Icinga User: $icingacfguser
+ Icinga Group: $icingacfggroup
  
 ido2db Information:
  Server Type: $ido2dbservertype
@@ -376,7 +386,11 @@ ido2db Errors in Syslog:
 ############################################################ 
 EOF
 }
-# Output Sanity Check
+
+#####################
+# Output Sanitycheck
+#####################
+
 if ($sanitycheck){
 print <<EOF;
 ############################################################
@@ -396,7 +410,7 @@ print color("red"), " $dbh_conn_error\n", color("reset");
 print "\n";
 
 print <<EOF;
-ido2db - idomod Socket:
+ido2db/idomod Checks:
 EOF
 # ido2db -> idomod socket
 if ($ido2dbsocket eq $idomodsocket){
@@ -404,7 +418,21 @@ if ($ido2dbsocket eq $idomodsocket){
 } else {
 	print color("red"), " ido2db/idomod sockets are different!", color("reset");
 }
+print "\n";
 
+### icinga.cfg checks ###
+print <<EOF;
+
+icinga.cfg Checks:
+EOF
+
+if ($icingacfguser eq 'root'){
+	print " icinga_user =", color("red"), " $icingacfguser", color("reset");
+} else {
+	print " icinga_user =", color("green"), " $icingacfguser", color("reset");
+}
+
+### proccess status ###
 print <<EOF;
 
 
@@ -432,7 +460,10 @@ print <<EOF;
 EOF
 }
 
+#############################################
 # Output Reporting with Issue Tracker Tags
+#############################################
+
 if ($issuereport){
 print <<EOF;
 ############################################################
@@ -480,6 +511,8 @@ print <<EOF;
 *Icinga.cfg Information:*
  <pre>
  External Commands(1=on,0=off): $icingaextcmd
+ Icinga User: $icingacfguser
+ Icinga Group: $icingacfggroup
  </pre>
  
 *ido2db Information:*
