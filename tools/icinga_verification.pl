@@ -226,8 +226,11 @@ my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
 ################################
 
 #check if ido2db is running
-my $idocheck = qx( ps aux | grep [i]do2db | wc -l );
-chomp($idocheck);
+my $ido2dbproc = qx( ps aux | grep [i]do2db | wc -l );
+chomp($ido2dbproc);
+
+#check idomod Connections
+my $idocon = ($ido2dbproc - '1');
 
 #icinga.cfg parsing
 #icinga external commands
@@ -346,7 +349,8 @@ Selinux Status:
 Icinga General Informations:
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
- idomod Connections: $idocheck
+ ido2db Processes: $ido2dbproc
+ idomod Connections: $idocon
  Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
  @result_icingaconninfo 
@@ -467,7 +471,8 @@ print <<EOF;
  <pre>
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
- idomod Connections: $idocheck
+ ido2db Processes: $ido2dbproc
+ idomod Connections: $idocon
  Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
  @result_icingaconninfo 
