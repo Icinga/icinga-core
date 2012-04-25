@@ -347,11 +347,11 @@ Selinux Status:
  $selinux 
  
 Icinga General Informations:
+ Icinga DB-Version: $result_icingadb[0]
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
  ido2db Processes: $ido2dbproc
  idomod Connections: $idocon
- Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
  @result_icingaconninfo 
 Icinga.cfg Information:
@@ -469,11 +469,11 @@ print <<EOF;
  
 *Icinga General Informations:*
  <pre>
+ Icinga DB-Version: $result_icingadb[0]
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
  ido2db Processes: $ido2dbproc
  idomod Connections: $idocon
- Icinga DB-Version: $result_icingadb[0]
  ido2db last Connection Info:
  @result_icingaconninfo 
  </pre>
