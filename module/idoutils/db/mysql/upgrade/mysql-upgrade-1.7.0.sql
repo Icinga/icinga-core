@@ -27,6 +27,128 @@ alter table icinga_scheduleddowntime add is_in_effect smallint default 0;
 alter table icinga_scheduleddowntime add trigger_time timestamp  default '0000-00-00 00:00:00';
 
 -- -----------------------------------------
+-- #2181
+-- -----------------------------------------
+
+-- acknowledgements
+alter table icinga_acknowledgements modify comment_data TEXT;
+
+-- commands
+alter table icinga_commands modify command_line TEXT;
+
+-- commenthistory
+alter table icinga_commenthistory modify comment_data TEXT;
+
+-- comments
+alter table icinga_comments modify comment_data TEXT;
+
+-- configfiles
+alter table icinga_configfiles modify configfile_path TEXT;
+
+-- configfilevariables
+alter table icinga_configfilevariables modify varvalue TEXT;
+
+-- contactgroups
+alter table icinga_contactgroups modify alias TEXT;
+
+-- contactnotificationmethods
+alter table icinga_contactnotificationmethods modify command_args TEXT;
+
+-- contact_notificationcommands
+alter table icinga_contact_notificationcommands modify command_args TEXT;
+
+-- customvariables
+alter table icinga_customvariables modify varname TEXT;
+alter table icinga_customvariables modify varvalue TEXT;
+
+-- customvariablestatus
+alter table icinga_customvariablestatus modify varname TEXT;
+alter table icinga_customvariablestatus modify varvalue TEXT;
+
+-- downtimehistory
+alter table icinga_downtimehistory modify comment_data TEXT;
+
+-- eventhandlers
+alter table icinga_eventhandlers modify command_args TEXT;
+alter table icinga_eventhandlers modify command_line TEXT;
+alter table icinga_eventhandlers modify output TEXT;
+
+-- externalcommands
+alter table icinga_externalcommands modify command_args TEXT;
+
+-- hostchecks
+alter table icinga_hostchecks modify command_args TEXT;
+alter table icinga_hostchecks modify command_line TEXT;
+alter table icinga_hostchecks modify output TEXT;
+
+-- hostgroups
+alter table icinga_hostgroups modify alias TEXT;
+
+-- hosts
+alter table icinga_hosts modify check_command_args TEXT;
+alter table icinga_hosts modify eventhandler_command_args TEXT;
+alter table icinga_hosts modify notes TEXT;
+alter table icinga_hosts modify notes_url TEXT;
+alter table icinga_hosts modify action_url TEXT;
+alter table icinga_hosts modify icon_image TEXT;
+alter table icinga_hosts modify icon_image_alt TEXT;
+alter table icinga_hosts modify vrml_image TEXT;
+alter table icinga_hosts modify statusmap_image TEXT;
+
+-- hoststatus
+alter table icinga_hoststatus modify output TEXT;
+alter table icinga_hoststatus modify event_handler TEXT;
+alter table icinga_hoststatus modify check_command TEXT;
+
+-- logentries
+alter table icinga_logentries modify logentry_data TEXT;
+
+-- notifications
+alter table icinga_notifications modify output TEXT;
+
+-- programstatus
+alter table icinga_programstatus modify global_host_event_handler TEXT;
+alter table icinga_programstatus modify global_service_event_handler TEXT;
+
+-- runtimevariables
+alter table icinga_runtimevariables modify varvalue TEXT;
+
+-- scheduleddowntime
+alter table icinga_scheduleddowntime modify comment_data TEXT;
+
+-- servicechecks
+alter table icinga_servicechecks modify command_args TEXT;
+alter table icinga_servicechecks modify command_line TEXT;
+alter table icinga_servicechecks modify output TEXT;
+
+-- servicegroups
+alter table icinga_servicegroups modify alias TEXT;
+
+-- services
+alter table icinga_services modify check_command_args TEXT;
+alter table icinga_services modify eventhandler_command_args TEXT;
+alter table icinga_services modify notes TEXT;
+alter table icinga_services modify notes_url TEXT;
+alter table icinga_services modify action_url TEXT;
+alter table icinga_services modify icon_image TEXT;
+alter table icinga_services modify icon_image_alt TEXT;
+
+-- servicestatus
+alter table icinga_servicestatus modify output TEXT;
+alter table icinga_servicestatus modify event_handler TEXT;
+alter table icinga_servicestatus modify check_command TEXT;
+
+-- statehistory
+alter table icinga_statehistory modify output TEXT;
+
+-- systemcommands
+alter table icinga_systemcommands modify command_line TEXT;
+alter table icinga_systemcommands modify output TEXT;
+
+-- timeperiods
+alter table icinga_timeperiods modify alias TEXT;
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 
