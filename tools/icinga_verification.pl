@@ -301,6 +301,7 @@ if ( !$mysqlcheck ) {
 
 # Test Print Out
 # later create a fileout with the output
+if (!$sanitycheck){
 print <<EOF;
 ############################################################
 ######           Icinga Reporting Script              ######
@@ -353,6 +354,7 @@ ido2db Errors in Syslog:
 
 ############################################################ 
 EOF
+}
 if ($sanitycheck){
 print <<EOF;
 ############################################################
