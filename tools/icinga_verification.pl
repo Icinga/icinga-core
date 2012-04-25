@@ -55,8 +55,8 @@ my $config_ref = {
 # Option parsing
 ################################
 
-my ($verbose, $reporting, $sanitycheck) = ''; 
-my $result = GetOptions( "verbose" => \$verbose, "reporting" => \$reporting, "sanitycheck" => \$sanitycheck);
+my ($verbose, $reporting, $sanitycheck, $issuereport) = ''; 
+my $result = GetOptions( "verbose" => \$verbose, "reporting" => \$reporting, "sanitycheck" => \$sanitycheck, "issuereport" => \$issuereport);
 
 ################################
 # Script Config
@@ -299,9 +299,10 @@ if ( !$mysqlcheck ) {
 	}   
 }
 
-# Test Print Out
+# Output Reporting 
 # later create a fileout with the output
-if (!$sanitycheck){
+if ($reporting or (!$reporting and not ($sanitycheck or $issuereport))){
+
 print <<EOF;
 ############################################################
 ######           Icinga Reporting Script              ######
@@ -355,6 +356,7 @@ ido2db Errors in Syslog:
 ############################################################ 
 EOF
 }
+# Output Sanity Check
 if ($sanitycheck){
 print <<EOF;
 ############################################################
@@ -410,6 +412,82 @@ print <<EOF;
 ############################################################
 EOF
 }
+
+# Output Reporting with Issue Tracker Tags
+if ($issuereport){
+print <<EOF;
+############################################################
+######  Icinga Reporting with Issue Tracker Tags      ######
+######  by Frankstar / Team Quality Assurance & VM    ######
+############################################################
+*Perlversion:* $perlversion
+*Current Date/Time on Server:* $date
+
+*OS Information:*
+  <pre>
+  OS Name: $distribution,
+  Kernel Version: $osversion
+  LC_LANG: $LANG
+  </pre>
+  
+*Webserver Information:*
+  <pre>
+  $apacheinfo
+  </pre>
+*PHP Information:*
+ <pre>
+ $phpversion
+ </pre>
+ 
+*MySQL Information:*
+ <pre>
+ $mysqlver
+ </pre>
+
+*Selinux Status:*
+ <pre>
+ $selinux
+ </pre> 
+ 
+*Icinga General Informations:*
+ <pre>
+ icinga version: $icingaversion
+ ido2db version: $ido2dbversion
+ idomod Connections: $idocheck
+ Icinga DB-Version: $result_icingadb[0]
+ ido2db last Connection Info:
+ @result_icingaconninfo 
+ </pre>
+*Icinga.cfg Information:*
+ <pre>
+ External Commands(1=on,0=off): $icingaextcmd
+ </pre>
+ 
+*ido2db Information:*
+ <pre>
+ Server Type: $ido2dbservertype
+ SSL Status: $ido2dbssl
+ Socket Type: $ido2dbsocket
+ Socket Name: $ido2dbsocketname
+ TCP Port: $ido2dbtcpport
+ </pre>
+ 
+*idomod Information:*
+ <pre>
+ Output Type: $idomodsocket
+ Output: $idomodoutput
+ SSL Status: $idomodssl
+ TCP Port: $idomodtcpport
+ </pre>
+
+*ido2db Errors in Syslog:*
+ <pre>
+ @idolog
+ </pre>
+
+EOF
+}
+
 
 exit;
 
