@@ -393,9 +393,9 @@ ido2db Errors in Syslog:
 EOF
 }
 
-#####################
+##########################
 # Output Sanitycheck
-#####################
+##########################
 # Color config
 my $colorgreen = color('green');
 my $colorred = color('red');
@@ -416,6 +416,7 @@ print <<EOF;
 
 Database Tests:
 EOF
+#Connection via ido2db.cfg
 if (!$dbh_cfg_error){
 	print $statusok,"Connection to DB via ido2db.cfg";
 }
@@ -438,14 +439,12 @@ if ($ido2dbsocket eq $idomodsocket){
 } else {
 	print $statuscrit,"ido2db/idomod Sockets are different configured";
 }
-
-### icinga.cfg checks ###
 print <<EOF;
 
 
 icinga.cfg Checks:
 EOF
-
+# checks for a defined root user
 if ($icingacfguser eq 'root'){
 	print $statuswarn, " icinga_user = $icingacfguser";
 } else {
@@ -718,9 +717,10 @@ ment and Icinga Config to assist you in finding problems when you
 are using Icinga.
 
 Sanity Check States:
-Output starts with a letter with the following meaning: 
+
 [OK  ] ok message.
 [WARN] warning message, might effect the operation of Icinga
 [CRIT] error message: Icinga will not work without resolving the problem(s)
+
 EOF
 }
