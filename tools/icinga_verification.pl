@@ -198,8 +198,8 @@ my $date = localtime();
 #Apache Info
 my $bin;
 my $apacheinfo = join( '  ',
-      ( $bin = which( @{ $config_ref->{'services'}->{'apache2'}->{'binaries'} }) )
-    ? (qx($bin -V))[ 0, 2, 3, 5, 6, 7, 8 ]
+      ( $bin = which( @{ $config_ref->{'critical_services'}->{'apache2'}->{'binaries'} }) )
+    ? (qx($bin -V))[ 0, 2, 3, 5 ]
     : 'apache binary not found' );
 
 #Mysql Info
@@ -362,6 +362,7 @@ OS Information:
   OS Name: $distribution,
   Kernel Version: $osversion
   LC_LANG: $LANG
+  Selinux Status: $selinux
   
 Webserver Information:
   $apacheinfo
@@ -370,9 +371,6 @@ PHP Information:
  
 MySQL Information:
  $mysqlver
-
-Selinux Status:
- $selinux 
  
 Icinga General Informations:
  Icinga DB-Version: $result_icingadb[0]
@@ -526,72 +524,31 @@ print <<EOF;
 ############################################################
 ### Copy the following Output and paste it to your Issue ###
 ############################################################
-*Perlversion:* $perlversion
-*Current Date/Time on Server:* $date
-
 *OS Information:*
   <pre>
   OS Name: $distribution,
   Kernel Version: $osversion
   LC_LANG: $LANG
+  Selinux Status: $selinux
   </pre>
   
-*Webserver Information:*
+*Webserver Informations:*
   <pre>
+  Apache:
   $apacheinfo
+  PHP Information:
+  $phpversion
+  
+  MySQL Information:
+  $mysqlver
+  
   </pre>
-*PHP Information:*
- <pre>
- $phpversion
- </pre>
- 
-*MySQL Information:*
- <pre>
- $mysqlver
- </pre>
-
-*Selinux Status:*
- <pre>
- $selinux
- </pre> 
  
 *Icinga General Informations:*
  <pre>
  Icinga DB-Version: $result_icingadb[0]
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
- ido2db Processes: $ido2dbproc
- idomod Connections: $idocon
- ido2db last Connection Info:
- @result_icingaconninfo 
- </pre>
-*Icinga.cfg Information:*
- <pre>
- External Commands(1=on,0=off): $icingaextcmd
- Icinga User: $icingacfguser
- Icinga Group: $icingacfggroup
- </pre>
- 
-*ido2db Information:*
- <pre>
- Server Type: $ido2dbservertype
- SSL Status: $ido2dbssl
- Socket Type: $ido2dbsocket
- Socket Name: $ido2dbsocketname
- TCP Port: $ido2dbtcpport
- </pre>
- 
-*idomod Information:*
- <pre>
- Output Type: $idomodsocket
- Output: $idomodoutput
- SSL Status: $idomodssl
- TCP Port: $idomodtcpport
- </pre>
-
-*ido2db Errors in Syslog:*
- <pre>
- @idolog
  </pre>
 
 EOF
