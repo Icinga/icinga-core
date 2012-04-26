@@ -397,6 +397,9 @@ install-basic:
 	@echo "  make install-webconf"
 	@echo "     - This installs the Apache config file for the web interface"
 	@echo ""
+	@echo ""
+	@echo "*** Make sure to check Changelog for introduced changes! ***"
+	@echo ""
 
 
 install-config:
@@ -441,6 +444,13 @@ install-idoutils:
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
 		echo "" ;\
 		echo "*** IDOUtils installed ***" ;\
+		echo "" ;\
+		echo "!!! ATTENTION !!!" ; \
+        	echo "	idomod.o was renamed to idomod.so, module extension is now .so" ;\
+		echo "	idomod.so will now be installed to $(DESTDIR)$(LIBDIR) " ;\
+		echo "!!! ATTENTION !!!" ;\
+		echo "" ;\
+		echo "Please check Changelog - CHANGES for more information!" ;\
 		echo "" ;\
 	else \
 		echo "" ;\
