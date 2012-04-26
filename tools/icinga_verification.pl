@@ -292,7 +292,7 @@ chomp($raw_plugin_path);
 if ($raw_plugin_path){
 	$plugin_path = $raw_plugin_path if -e "$raw_plugin_path/check_ping";
 } if (!$plugin_path){
-	$plugin_path = "\$USER1\$ is no Path!";
+	$plugin_path = "\$USER1\$ is no Path or an incorrect Path";
 }
 
 
@@ -466,10 +466,11 @@ if ($icingacfguser eq 'root'){
 	print $statusok, "icinga.cfg - icinga_user = $icingacfguser";
 }
 print "\n";
-if ($plugin_path){
-	print $statuswarn, "resource.cfg - \$USER1\$ is no Path";
-} else {	
-	print $statusok, "resource.cfg - Plugin Path $plugin_path";
+# check resource.cfg for $user1$
+if ($raw_plugin_path eq $plugin_path){
+	print $statusok, "resource.cfg - Plugin Path: $plugin_path";
+} else {		
+	print $statuswarn, "resource.cfg - \$USER1\$ is no Path or an incorrect Path";
 }
 ### Service Status ###
 print <<EOF;
