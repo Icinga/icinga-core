@@ -53,11 +53,6 @@ my $config_ref = {
 		snmptt => { binaries => [ 'snmptt' ] },
 	}   
 };
-#Non Critical System Services
-#my $config_ref_noncrit = {
-#    services => {		
-#    }
-#};
 
 ################################
 # Option parsing
