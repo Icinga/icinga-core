@@ -79,6 +79,7 @@ if ($help){
 # Script Config
 ################################
 print <<EOF;
+
 ############################################################
 ######    Icinga Sanitycheck and Reporting Script     ######
 ######  by Frankstar / Team Quality Assurance & VM    ######
@@ -225,6 +226,9 @@ chomp($selinux);
 
 #log file test
 #FIXME - PATH to syslog not hardcoded
+#IDEA, read in /etc/rsyslog.config
+#get line with "*.info;mail.none;authpriv.none;cron.none" and save path to variable (centos ie. /var/log/messages
+
 my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
 
 ################################
@@ -703,7 +707,7 @@ sub get_error_from_log ($$) {
         print STDERR "Could not open logfile $file: $!\n";
     }
 }
-
+  
 sub usage{
 print <<EOF;
 
