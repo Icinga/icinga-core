@@ -541,7 +541,6 @@ print <<EOF;
   
   MySQL Information:
   $mysqlver
-  
   </pre>
  
 *Icinga General Informations:*
