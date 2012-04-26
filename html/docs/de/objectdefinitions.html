@@ -57,9 +57,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Bitte vermeiden Sie die Verwendung von Sonderzeichen in den Objektdefinitionen. Im Moment (Icinga &lt;= 1.5.0) gibt es
-    einen Fehler, der die Ausführung von "forced reschedules" im Classic UI verhindert, wobei als Meldung ein "not authorized" angezeigt
-    wird.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Bitte vermeiden Sie die Verwendung von Sonderzeichen in den Objektdefinitionen. In Icinga &lt;= 1.5.0 gab es einen Fehler,
+    der die Ausführung von "forced reschedules" im Classic UI verhinderte, wobei als Meldung ein "not authorized" angezeigt wurde.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="objectdefinitions-retention_notes"></a><span class="bold"><strong>Anmerkungen zur Aufbewahrung</strong></span> (Retention
@@ -113,13 +114,13 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-serviceextinfo">erweiterte Service-Informationsdefinitionen</a></p>
 
-  <a class="indexterm" name="id1481387"></a>
+  <a class="indexterm" name="id1527068"></a>
 
-  <a class="indexterm" name="id1481398"></a>
+  <a class="indexterm" name="id1527078"></a>
 
   <div class="section" title="Host-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1481411"></a><a name="objectdefinitions-host"></a>Host-Definition</h3></div></div></div>
+<a name="id1527092"></a><a name="objectdefinitions-host"></a>Host-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -129,7 +130,8 @@
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
-    <p>Anmerkung: <span class="color"><font color="red">"Direktiven"</font></span> werden benötigt, die anderen sind optional.</p>
+    <p>Anmerkung: <span class="color"><font color="red">"Direktiven"</font></span> werden benötigt, die anderen sind optional. <span class="color"><font color="red">Lesen Sie auf jeden Fall die Anmerkungen zur "address"-, "contacts"- und "contact_groups"-Direktive
+    .</font></span></p>
 
     <div class="informaltable">
       <table border="0">
@@ -157,7 +159,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">address</font></span></td>
+<td>address</td>
 <td>address</td>
 </tr>
 <tr>
@@ -262,6 +264,11 @@
 </tr>
 <tr>
 <td><p></p></td>
+<td><p>failure_prediction_enabled</p></td>
+<td><p>[0/1]</p></td>
+</tr>
+<tr>
+<td><p></p></td>
 <td><p>process_perf_data</p></td>
 <td><p>[0/1]</p></td>
 </tr>
@@ -277,12 +284,12 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">contacts</font></span></td>
+<td>contacts</td>
 <td>contacts</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">contact_groups</font></span></td>
+<td>contact_groups</td>
 <td>contact_groups</td>
 </tr>
 <tr>
@@ -415,19 +422,19 @@
             Hosts, obwohl es eigentlich alles sein kann, was Sie wollen (solange es genutzt werden kann, um den Status des Hosts zu prüfen).
             Sie können einen vollqualifizierten Domänennamen (FQDN) statt einer IP-Adresse benutzen, um den Host zu identifizieren, aber
             wenn keine DNS-Dienste verfügbar sind, kann dies zu Problemen führen. Bei korrekter Anwendung wird das $HOSTADDRESS$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a> diese Adresse enthalten. <span class="bold"><strong>Anmerkung:</strong></span> Wenn Sie keine
-            Adress-Direktive in einer Host-Definition benutzen, wird der Name des Hosts statt der Adresse benutzt. Trotzdem ein Wort der
-            Warnung: wenn DNS ausfällt, werden die meisten Ihrer Service-Prüfungen fehlschlagen, weil die Plugins nicht in der Lage sind,
-            den Host-Namen aufzulösen.</p></td>
+            Adress-Direktive in einer Host-Definition benutzen, wird der Name des Hosts statt der Adresse benutzt. <span class="color"><font color="red">Trotzdem ein Wort der Warnung: wenn DNS ausfällt, werden die meisten Ihrer Service-Prüfungen fehlschlagen, weil die
+            Plugins nicht in der Lage sind, den Host-Namen aufzulösen.</font></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>address6</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um eine zweite Adresse des Hosts zu definieren. Normalerweise ist dies die IPv6-Adresse des
-            Hosts, obwohl es eigentlich alles sein kann, was Sie wollen (solange es genutzt werden kann, um den Status des Hosts zu prüfen).
-            Sie können einen vollqualifizierten Domänennamen (FQDN) statt einer IP-Adresse benutzen, um den Host zu identifizieren, aber
-            wenn keine DNS-Dienste verfügbar sind, kann dies zu Problemen führen. Bei korrekter Anwendung wird das $HOSTADDRESS6$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a> diese Adresse enthalten. <span class="bold"><strong>Anmerkung:</strong></span> Wenn Sie keine
-            Adress6-Direktive in einer Host-Definition benutzen, wird der Name des Hosts statt der Adresse benutzt. Trotzdem ein Wort der
-            Warnung: wenn DNS ausfällt, werden die meisten Ihrer Service-Prüfungen fehlschlagen, weil die Plugins nicht in der Lage sind,
-            den Host-Namen aufzulösen (verfügbar ab Icinga 1.3).</p></td>
+<td><p>Diese Direktive wird benutzt, um eine zweite Adresse des Hosts zu definieren. Normalerweise ist dies die
+            IPv6-Adresse des Hosts, obwohl es eigentlich alles sein kann, was Sie wollen (solange es genutzt werden kann, um den Status des
+            Hosts zu prüfen). Sie können einen vollqualifizierten Domänennamen (FQDN) statt einer IP-Adresse benutzen, um den Host zu
+            identifizieren, aber wenn keine DNS-Dienste verfügbar sind, kann dies zu Problemen führen. Bei korrekter Anwendung wird das
+            $HOSTADDRESS6$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a> diese Adresse enthalten. <span class="bold"><strong>Anmerkung:</strong></span> Wenn Sie
+            keine Adress6-Direktive in einer Host-Definition benutzen, wird der Name des Hosts statt der Adresse benutzt. Trotzdem ein Wort
+            der Warnung: wenn DNS ausfällt, werden die meisten Ihrer Service-Prüfungen fehlschlagen, weil die Plugins nicht in der Lage
+            sind, den Host-Namen aufzulösen (verfügbar ab Icinga 1.3).</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>display_name</strong></span>:</p></td>
@@ -556,6 +563,11 @@
             DOWN-Zustände, <span class="bold"><strong>u</strong></span> = UNREACHABLE-Zustände.</p></td>
 </tr>
 <tr>
+<td><p><span class="bold"><strong>failure_prediction_enabled</strong></span>:</p></td>
+<td><p>Diese Direktive wird benutzt, um festzulegen, ob Fehlervorhersage für diesen Host aktiviert ist. Werte: 0 =
+            Fehlervorhersage deaktivieren, 1 = Fehlervorhersage aktivieren.</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>process_perf_data *</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob die Verarbeitung von Performance-Daten für diesen Host aktiviert
             ist. Werte: 0 = Verarbeitung von Performance-Daten deaktiviert, 1 = Verarbeitung von Performance-Daten aktiviert.</p></td>
@@ -576,14 +588,16 @@
 <td align="left" valign="top"><p><span class="bold"><strong>contacts</strong></span>:</p></td>
 <td><p>Dies ist eine Liste der <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakte</a>, die über Probleme (oder Erholungen) dieses Hosts informiert werden sollen.
             Mehrere Kontakte werden jeweils durch ein Komma voneinander getrennt. Nützlich, wenn Benachrichtigungen nur an ein paar Leute
-            gehen sollen und Sie dafür keine <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">Kontaktgruppen</a> definieren wollen. Sie
-            müssen mindestens einen Kontakt oder eine Kontaktgruppe in jeder Host-Definition angeben.</p></td>
+            gehen sollen und Sie dafür keine <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">Kontaktgruppen</a> definieren wollen.
+            <span class="color"><font color="red">Sie müssen mindestens einen Kontakt oder eine Kontaktgruppe in jeder Host-Definition
+            angeben, andernfalls wird nie jemand benachrichtigt</font></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>contact_groups</strong></span>:</p></td>
 <td><p>Dies ist eine Liste der <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">Kontaktgruppen</a>, die über Probleme (oder Erholungen) dieses Hosts informiert
-            werden sollen. Mehrere Kontaktgruppen werden durch ein Komma voneinander getrennt. Sie müssen mindestens einen Kontakt oder eine
-            Kontaktgruppe in jeder Host-Definition angeben.</p></td>
+            werden sollen. Mehrere Kontaktgruppen werden durch ein Komma voneinander getrennt. <span class="color"><font color="red">Sie
+            müssen mindestens einen Kontakt oder eine Kontaktgruppe in jeder Host-Definition angeben, andernfalls wird nie jemand
+            benachrichtigt</font></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notification_interval</strong></span>:</p></td>
@@ -615,11 +629,11 @@
             bei einem DOWN-Zustand versenden, <span class="bold"><strong>u</strong></span> = Benachrichtigungen bei einem UNREACHABLE-Zustand
             versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei Erholungen (OK-Zustand) versenden, <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Host mit <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt bzw.
             aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante
-            Ausfallzeit</a> anfängt oder aufhört. Wenn Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine
-            Host-Benachrichtigungen versandt. Wenn Sie keine Benachrichtigungsoptionen angeben, geht Icinga davon aus, dass Sie
-            Benachrichtigungen zu allen möglichen Zuständen haben möchten. Beispiel: wenn Sie <span class="bold"><strong>d,r</strong></span> in diesem
-            Feld angeben, werden Benachrichtigungen nur dann versandt, wenn der Host in einen DOWN-Zustand geht und sich wieder von einem
-            DOWN-Zustand erholt.</p></td>
+            Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn Sie <span class="bold"><strong>n</strong></span>
+            (none) als Option angeben, werden keine Host-Benachrichtigungen versandt.</font></span> Wenn Sie keine Benachrichtigungsoptionen
+            angeben, geht Icinga davon aus, dass Sie Benachrichtigungen zu allen möglichen Zuständen haben möchten. Beispiel: wenn
+            Sie <span class="bold"><strong>d,r</strong></span> in diesem Feld angeben, werden Benachrichtigungen nur dann versandt, wenn der Host in
+            einen DOWN-Zustand geht und sich wieder von einem DOWN-Zustand erholt.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notifications_enabled *</strong></span>:</p></td>
@@ -687,6 +701,10 @@
             das durch das <span class="emphasis"><em>&lt;icon_image&gt;</em></span>-Argument angegeben wurde.</p></td>
 </tr>
 <tr>
+<td align="left" valign="top"><p><span class="bold"><strong>vrml_image</strong></span>:</p></td>
+<td><p>Diese Direktive wird in Icinga nicht unterstützt.</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>statusmap_image</strong></span>:</p></td>
 <td><p>Diese Variable wird benutzt, um den Namen eines Bildes anzugeben, das mit diesem Host im <a class="link" href="cgis-statusmap_cgi" target="_top">statusmap</a>-CGI verbunden werden soll. Sie können ein JPG-, PNG- oder GIF-Bild angeben,
             aber wir würden zu einem Bild im GD2-Format raten, weil andere Bildformate zu hohen CPU-Belastungen führen können, wenn
@@ -707,18 +725,22 @@
             benutzen können. Das CGI wird automatisch die maximale Größe des zu erstellenden Bildes aufgrund der größten X- und
             Y-Koordinaten festlegen, die Sie angegeben haben.</p></td>
 </tr>
+<tr>
+<td align="left" valign="top"><p><span class="bold"><strong>3d_coords</strong></span>:</p></td>
+<td><p>Diese Direktive wird in Icinga nicht unterstützt.</p></td>
+</tr>
 </tbody>
 </table>
     </div>
 
-    <a class="indexterm" name="id1482345"></a>
+    <a class="indexterm" name="id1528027"></a>
 
-    <a class="indexterm" name="id1483872"></a>
+    <a class="indexterm" name="id1529676"></a>
   </div>
 
   <div class="section" title="Hostgruppen-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1481413"></a><a name="objectdefinitions-hostgroup"></a>Hostgruppen-Definition</h3></div></div></div>
+<a name="id1527094"></a><a name="objectdefinitions-hostgroup"></a>Hostgruppen-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -846,14 +868,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1484408"></a>
+    <a class="indexterm" name="id1530195"></a>
 
-    <a class="indexterm" name="id1484418"></a>
+    <a class="indexterm" name="id1530205"></a>
   </div>
 
   <div class="section" title="Service-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1483901"></a><a name="objectdefinitions-service"></a>Service-Definition</h3></div></div></div>
+<a name="id1529689"></a><a name="objectdefinitions-service"></a>Service-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -865,7 +887,7 @@
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
-    <p>Anmerkung: <span class="color"><font color="red">"Direktiven"</font></span> werden benötigt, die anderen sind optional.</p>
+    <p>Anmerkung: <span class="color"><font color="red">"Direktiven"</font></span> werden benötigt, die anderen sind optional. <span class="color"><font color="red">Lesen Sie auf jeden Fall die Anmerkungen zur "contacts"- und "contact_groups"-Direktive</font></span>.</p>
 
     <div class="informaltable">
       <table border="0">
@@ -993,6 +1015,11 @@
 </tr>
 <tr>
 <td><p></p></td>
+<td><p>failure_prediction_enabled</p></td>
+<td><p>[0/1]</p></td>
+</tr>
+<tr>
+<td><p></p></td>
 <td><p>process_perf_data</p></td>
 <td><p>[0/1]</p></td>
 </tr>
@@ -1033,12 +1060,12 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">contacts</font></span></td>
+<td>contacts</td>
 <td>contacts</td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">contact_groups</font></span></td>
+<td>contact_groups</td>
 <td>contact_groups</td>
 </tr>
 <tr>
@@ -1247,6 +1274,11 @@
             UNKNOWN-Zustände.</p></td>
 </tr>
 <tr>
+<td><p><span class="bold"><strong>failure_prediction_enabled</strong></span>:</p></td>
+<td><p>Diese Direktive wird benutzt, um festzulegen, ob Fehlervorhersage für diesen Service aktiviert ist. Werte: 0 =
+            Fehlervorhersage deaktivieren, 1 = Fehlervorhersage aktivieren.</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>process_perf_data *</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob die Verarbeitung von Performance-Daten für diesen Service
             aktiviert ist. Werte: 0 = Verarbeitung von Performance-Daten deaktiviert, 1 = Verarbeitung von Performance-Daten
@@ -1293,11 +1325,11 @@
             bei einem WARNING-Zustand versenden, <span class="bold"><strong>u</strong></span> = Benachrichtigungen bei einem UNKNOWN-Zustand
             versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei Erholungen (OK-Zustand) versenden, <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Service mit <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt
             bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante
-            Ausfallzeit</a> anfängt oder aufhört. Wenn Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine
-            Service-Benachrichtigungen versandt. Wenn Sie keine Benachrichtigungsoptionen angeben, geht Icinga davon aus, dass Sie
-            Benachrichtigungen zu allen möglichen Zuständen haben möchten. Beispiel: wenn Sie <span class="bold"><strong>w,r</strong></span> in diesem
-            Feld angeben, werden Benachrichtigungen nur dann versandt, wenn der Service in einen WARNING-Zustand geht und sich wieder von
-            einem WARNING-Zustand erholt.</p></td>
+            Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn Sie <span class="bold"><strong>n</strong></span>
+            (none) als Option angeben, werden keine Service-Benachrichtigungen versandt.</font></span> Wenn Sie keine Benachrichtigungsoptionen
+            angeben, geht Icinga davon aus, dass Sie Benachrichtigungen zu allen möglichen Zuständen haben möchten. Beispiel: wenn
+            Sie <span class="bold"><strong>w,r</strong></span> in diesem Feld angeben, werden Benachrichtigungen nur dann versandt, wenn der Service
+            in einen WARNING-Zustand geht und sich wieder von einem WARNING-Zustand erholt.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notifications_enabled *</strong></span>:</p></td>
@@ -1309,13 +1341,15 @@
 <td><p>Dies ist eine Liste der <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakte</a>, die über Probleme (oder Erholungen) dieses Service informiert werden
             sollen. Mehrere Kontakte werden jeweils durch Kommata voneinander getrennt. Nützlich, wenn Benachrichtigungen nur an ein paar
             Leute gehen sollen und Sie dafür keine <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">Kontaktgruppen</a> definieren wollen.
-            Sie müssen mindestens einen Kontakt oder eine Kontaktgruppe in jeder Service-Definition angeben.</p></td>
+            <span class="color"><font color="red">Sie müssen mindestens einen Kontakt oder eine Kontaktgruppe in jeder Service-Definition
+            angeben, andernfalls wird nie jemand benachrichtigt</font></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>contact_groups</strong></span>:</p></td>
 <td><p>Dies ist eine Liste der <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">Kontaktgruppen</a>, die über Probleme (oder Erholungen) dieses Service informiert
-            werden sollen. Mehrere Kontaktgruppen werden durch Kommata voneinander getrennt. Sie müssen mindestens einen Kontakt oder eine
-            Kontaktgruppe in jeder Service-Definition angeben.</p></td>
+            werden sollen. Mehrere Kontaktgruppen werden durch Kommata voneinander getrennt. <span class="color"><font color="red">Sie
+            müssen mindestens einen Kontakt oder eine Kontaktgruppe in jeder Service-Definition angeben, andernfalls wird nie jemand
+            benachrichtigt</font></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>stalking_options</strong></span>:</p></td>
@@ -1382,14 +1416,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1485289"></a>
+    <a class="indexterm" name="id1531086"></a>
 
-    <a class="indexterm" name="id1486717"></a>
+    <a class="indexterm" name="id1532563"></a>
   </div>
 
   <div class="section" title="Servicegruppen-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1484432"></a><a name="objectdefinitions-servicegroup"></a>Servicegruppen-Definition</h3></div></div></div>
+<a name="id1530220"></a><a name="objectdefinitions-servicegroup"></a>Servicegruppen-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -1523,14 +1557,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1487255"></a>
+    <a class="indexterm" name="id1533100"></a>
 
-    <a class="indexterm" name="id1487263"></a>
+    <a class="indexterm" name="id1533108"></a>
   </div>
 
   <div class="section" title="Kontakt-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1486733"></a><a name="objectdefinitions-contact"></a>Kontakt-Definition</h3></div></div></div>
+<a name="id1532578"></a><a name="objectdefinitions-contact"></a>Kontakt-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -1728,8 +1762,9 @@
             versandt werden. Gültige Optionen sind eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>d</strong></span> = Benachrichtigungen bei einem DOWN-Zustand versenden, <span class="bold"><strong>u</strong></span> =
             Benachrichtigungen bei einem UNREACHABLE-Zustand versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei
             Erholungen (UP-Zustand) versenden, <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Host mit <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden,
-            wenn eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. Wenn Sie <span class="bold"><strong>n</strong></span>
-            (none) als Option angeben, werden keine Host-Benachrichtigungen versandt.</p></td>
+            wenn eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn
+            Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine Host-Benachrichtigungen
+            versandt.</font></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notification_options</strong></span>:</p></td>
@@ -1738,8 +1773,7 @@
             Benachrichtigungen bei einem CRITICAL-Zustand versenden, <span class="bold"><strong>u</strong></span> = Benachrichtigungen bei einem
             UNKNOWN-Zustand versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei Erholungen (OK-Zustand) versenden,
             <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Service mit <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattern</a>
-            anfängt bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. Wenn Sie <span class="bold"><strong>n</strong></span> (none) als
-            Option angeben, werden keine Service-Benachrichtigungen versandt.</p></td>
+            anfängt bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine Service-Benachrichtigungen versandt.</font></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notification_commands</strong></span>:</p></td>
@@ -1790,14 +1824,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1488452"></a>
+    <a class="indexterm" name="id1534312"></a>
 
-    <a class="indexterm" name="id1488442"></a>
+    <a class="indexterm" name="id1534321"></a>
   </div>
 
   <div class="section" title="Kontaktgruppen-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1487276"></a><a name="objectdefinitions-contactgroup"></a>Kontaktgruppen-Definition</h3></div></div></div>
+<a name="id1533121"></a><a name="objectdefinitions-contactgroup"></a>Kontaktgruppen-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -1889,14 +1923,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1488840"></a>
+    <a class="indexterm" name="id1534700"></a>
 
-    <a class="indexterm" name="id1488850"></a>
+    <a class="indexterm" name="id1534709"></a>
   </div>
 
   <div class="section" title="Zeitfenster-Definition (timeperiod)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1488472"></a><a name="objectdefinitions-timeperiod"></a>Zeitfenster-Definition (timeperiod)</h3></div></div></div>
+<a name="id1534333"></a><a name="objectdefinitions-timeperiod"></a>Zeitfenster-Definition (timeperiod)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2044,14 +2078,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1489292"></a>
+    <a class="indexterm" name="id1535148"></a>
 
-    <a class="indexterm" name="id1489301"></a>
+    <a class="indexterm" name="id1535156"></a>
   </div>
 
   <div class="section" title="Befehls-Definition (command)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1488864"></a><a name="objectdefinitions-command"></a>Befehls-Definition (command)</h3></div></div></div>
+<a name="id1534722"></a><a name="objectdefinitions-command"></a>Befehls-Definition (command)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2143,14 +2177,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1489684"></a>
+    <a class="indexterm" name="id1535543"></a>
 
-    <a class="indexterm" name="id1489693"></a>
+    <a class="indexterm" name="id1535552"></a>
   </div>
 
   <div class="section" title="Service-Abhängigkeits-Definition (servicedependency)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1489315"></a><a name="objectdefinitions-servicedependency"></a>Service-Abhängigkeits-Definition (servicedependency)</h3></div></div></div>
+<a name="id1535169"></a><a name="objectdefinitions-servicedependency"></a>Service-Abhängigkeits-Definition (servicedependency)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2162,8 +2196,8 @@
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
-    <p>Anmerkung: <span class="color"><font color="red">"Direktiven"</font></span> werden benötigt, die anderen sind optional. Trotz allem müssen Sie mindestens ein
-    Kriterium angeben, damit die Definition von Nutzen ist.</p>
+    <p>Anmerkung: <span class="color"><font color="red">"Direktiven"</font></span> werden benötigt, die anderen sind optional. Trotz allem
+    müssen Sie mindestens ein Kriterium angeben, damit die Definition von Nutzen ist.</p>
 
     <div class="informaltable">
       <table border="0">
@@ -2328,14 +2362,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1490526"></a>
+    <a class="indexterm" name="id1536385"></a>
 
-    <a class="indexterm" name="id1490535"></a>
+    <a class="indexterm" name="id1536363"></a>
   </div>
 
   <div class="section" title="Serviceeskalations-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1489706"></a><a name="objectdefinitions-serviceescalation"></a>Serviceeskalations-Definition</h3></div></div></div>
+<a name="id1535564"></a><a name="objectdefinitions-serviceescalation"></a>Serviceeskalations-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2600,14 +2634,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1491664"></a>
+    <a class="indexterm" name="id1537522"></a>
 
-    <a class="indexterm" name="id1491672"></a>
+    <a class="indexterm" name="id1537530"></a>
   </div>
 
   <div class="section" title="Host-Abhängigkeits-Definition (hostdependency)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1490547"></a><a name="objectdefinitions-hostdependency"></a>Host-Abhängigkeits-Definition (hostdependency)</h3></div></div></div>
+<a name="id1536406"></a><a name="objectdefinitions-hostdependency"></a>Host-Abhängigkeits-Definition (hostdependency)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2755,14 +2789,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1492363"></a>
+    <a class="indexterm" name="id1538222"></a>
 
-    <a class="indexterm" name="id1492372"></a>
+    <a class="indexterm" name="id1538231"></a>
   </div>
 
   <div class="section" title="Host-Eskalations-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1491685"></a><a name="objectdefinitions-hostescalation"></a>Host-Eskalations-Definition</h3></div></div></div>
+<a name="id1537543"></a><a name="objectdefinitions-hostescalation"></a>Host-Eskalations-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2979,14 +3013,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1493278"></a>
+    <a class="indexterm" name="id1539137"></a>
 
-    <a class="indexterm" name="id1493287"></a>
+    <a class="indexterm" name="id1539146"></a>
   </div>
 
   <div class="section" title="erweiterte Hostinformations-Definition (hostextinfo)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1492387"></a><a name="objectdefinitions-hostextinfo"></a>erweiterte Hostinformations-Definition (hostextinfo)</h3></div></div></div>
+<a name="id1538245"></a><a name="objectdefinitions-hostextinfo"></a>erweiterte Hostinformations-Definition (hostextinfo)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -3000,8 +3034,8 @@
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
-    <p>Anmerkung: <span class="color"><font color="red">"Direktiven"</font></span> werden benötigt, die anderen sind optional. Trotz allem müssen Sie mindestens ein
-    Kriterium angeben, damit die Definition von Nutzen ist.</p>
+    <p>Anmerkung: <span class="color"><font color="red">"Direktiven"</font></span> werden benötigt, die anderen sind optional. Trotz allem
+    müssen Sie mindestens ein Kriterium angeben, damit die Definition von Nutzen ist.</p>
 
     <div class="informaltable">
       <table border="0">
@@ -3016,6 +3050,11 @@
 <td><p></p></td>
 <td><span class="color"><font color="red">host_name</font></span></td>
 <td><p>host_name</p></td>
+</tr>
+<tr>
+<td><p></p></td>
+<td><p>hostgroup_name</p></td>
+<td>hostgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -3097,6 +3136,12 @@
 <td><p>Diese Variable wird benutzt, um den/die <span class="emphasis"><em>Kurznamen</em></span> des/der <a class="link" href="objectdefinitions.html#objectdefinitions-host">Hosts</a> zu identifizieren, mit dem/denen diese Daten verbunden sind.</p></td>
 </tr>
 <tr>
+<td align="left" valign="top"><p><span class="bold"><strong>hostgroup_name</strong></span>:</p></td>
+<td><p>Diese Direktive wird benutzt, um den/die <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-host">Hostgruppen</a> anzugeben, für den diese Definition gilt. Mehrere Hostgruppen werden durch
+            Kommata von einander getrennt. Wenn diese Direktive benutzt wird, trifft die Definition auf alle Hosts zu, die Mitglied der
+            angegebenen Hostgruppe(n) sind.</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notes</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um eine optionale Zeichenkette mit Anmerkungen zu definieren, die den Host betreffen.
             Wenn Sie hier eine Anmerkung angeben, werden Sie diese im <a class="link" href="cgis.html#cgis-extinfo_cgi">extended Information</a>-CGI sehen
@@ -3176,14 +3221,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1494046"></a>
+    <a class="indexterm" name="id1539955"></a>
 
-    <a class="indexterm" name="id1494056"></a>
+    <a class="indexterm" name="id1539964"></a>
   </div>
 
   <div class="section" title="erweiterte Serviceinformations-Definition (serviceextinfo)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1493300"></a><a name="objectdefinitions-serviceextinfo"></a>erweiterte Serviceinformations-Definition (serviceextinfo)</h3></div></div></div>
+<a name="id1539162"></a><a name="objectdefinitions-serviceextinfo"></a>erweiterte Serviceinformations-Definition (serviceextinfo)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -3191,15 +3236,14 @@
     <p>Einträge für erweiterte Serviceinformationen sind grundsätzlich dazu gedacht, die Ausgaben der <a class="link" href="cgis.html#cgis-status_cgi">status</a>- und <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a>-CGIs schöner aussehen zu lassen. Sie haben
     keinen Einfluss auf die Überwachung und sind vollständig optional.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Alle Direktiven der erweiterten Serviceinformations-Definition sind auch in den
-    <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service-Definitionen</a> verfügbar. Dadurch können Sie entscheiden, die nachstehenden
-    Direktiven in Ihren Service-Definitionen zu benutzen, wenn es Ihre Konfigurationen vereinfacht. Separate erweiterte
+    <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Alle Direktiven der erweiterten Serviceinformations-Definition sind auch in den <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service-Definitionen</a> verfügbar. Dadurch können Sie entscheiden, die nachstehenden Direktiven
+    in Ihren Service-Definitionen zu benutzen, wenn es Ihre Konfigurationen vereinfacht. Separate erweiterte
     Serviceinformations-Definitionen werden weiterhin unterstützt, um Rückwärtskompatibilität zu gewährleisten.</p>
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
-    <p>Anmerkung: <span class="color"><font color="red">"Direktiven"</font></span> werden benötigt, die anderen sind optional. Trotz allem müssen Sie mindestens ein
-    Kriterium angeben, damit die Definition von Nutzen ist.</p>
+    <p>Anmerkung: <span class="color"><font color="red">"Direktiven"</font></span> werden benötigt, die anderen sind optional. Trotz allem
+    müssen Sie mindestens ein Kriterium angeben, damit die Definition von Nutzen ist.</p>
 
     <div class="informaltable">
       <table border="0">
@@ -3219,6 +3263,11 @@
 <td><p></p></td>
 <td><span class="color"><font color="red">service_description</font></span></td>
 <td>service_description</td>
+</tr>
+<tr>
+<td><p></p></td>
+<td><p>hostgroup_name</p></td>
+<td>hostgroup_name</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -3283,6 +3332,12 @@
             verbunden sind.</p></td>
 </tr>
 <tr>
+<td align="left" valign="top"><p><span class="bold"><strong>hostgroup_name</strong></span>:</p></td>
+<td><p>Diese Direktive wird benutzt, um den/die <span class="emphasis"><em>Kurznamen</em></span> der <a class="link" href="objectdefinitions.html#objectdefinitions-host">Hostgruppen</a> anzugeben, für den diese Definition gilt. Mehrere Hostgruppen werden durch
+            Kommata von einander getrennt. Wenn diese Direktive benutzt wird, trifft die Definition auf alle Hosts zu, die Mitglied der
+            angegebenen Hostgruppe(n) sind.</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notes</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um eine optionale Zeichenkette mit Anmerkungen zu definieren, die den Service
             betreffen. Wenn Sie hier eine Anmerkung angeben, werden Sie diese im <a class="link" href="cgis.html#cgis-extinfo_cgi">extended
@@ -3341,19 +3396,21 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1494676"></a>
+    <a class="indexterm" name="id1540639"></a>
 
-    <a class="indexterm" name="id1494686"></a>
+    <a class="indexterm" name="id1540650"></a>
   </div>
 
   <div class="section" title="Module-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1494068"></a><a name="objectdefinitions-module"></a>Module-Definition</h3></div></div></div>
+<a name="id1539977"></a><a name="objectdefinitions-module"></a>Module-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
-    <p>Eine Module-Definition wird benutzt, um Informationen zu einem Modul anzugeben. Sie kann anstatt eines broker_module-Eintrags in der Hauptkonfigurationsdatei verwendet werden und ist deshalb flexibler (Sie können cfg_file/cfg_dir-Einträge benutzen, um sie einzuschließen).</p>
+    <p>Eine Module-Definition wird benutzt, um Informationen zu einem Modul anzugeben. Sie kann anstatt eines broker_module-Eintrags in
+    der Hauptkonfigurationsdatei verwendet werden und ist deshalb flexibler (Sie können cfg_file/cfg_dir-Einträge benutzen, um sie
+    einzuschließen).</p>
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -3379,8 +3436,7 @@
 <tbody>
 <tr><td colspan="3" align="left" valign="middle"><p>define module{</p></td></tr>
 <tr>
-<td><p>
-            </p></td>
+<td><p> </p></td>
 <td><p><span class="color"><font color="red">module_name</font></span></p></td>
 <td><p>module name</p></td>
 </tr>
@@ -3416,8 +3472,8 @@
         args           config_file=/usr/local/icinga/etc/idomod.cfg
         }</pre>
 
-    <p>Basierend auf der <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">MKLiveStatus</a>-Dokumentation könnte die module-Definition wie folgt
-    aussehen:</p>
+    <p>Basierend auf der <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">MKLiveStatus</a>-Dokumentation könnte
+    die module-Definition wie folgt aussehen:</p>
 
     <pre class="screen"> define module{
         module_name    mklivestatus
@@ -3425,7 +3481,6 @@
         module_type    neb
         args           /var/lib/nagios/rw/live
         }</pre>
-
 
     <p><span class="emphasis"><em>Beschreibung der Direktiven:</em></span></p>
 
@@ -3439,7 +3494,7 @@
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>module_name</strong></span>:</p></td>
 <td><p>Diese Direktive legt den eindeutigen Namen des Moduls fest, so dass Sie den Modulnamen nicht mehrfach vergeben
-             können. Die Direktive ist notwendig, anderenfalls wird die Konfiguration nicht akzeptiert und das Modul nicht geladen.
+            können. Die Direktive ist notwendig, anderenfalls wird die Konfiguration nicht akzeptiert und das Modul nicht geladen.
             </p></td>
 </tr>
 <tr>
@@ -3472,9 +3527,8 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="id1495064"></a>
+    <a class="indexterm" name="id1541025"></a>
   </div>
-
 </div>
 <div class="navfooter">
 <hr>

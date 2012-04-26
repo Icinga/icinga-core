@@ -37,22 +37,23 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Instead of installing Icinga from scratch you may want to use a package which might be available for your OS. Please
-    take a look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.
-    </p>
+    <p>Instead of installing Icinga from scratch you may want to use a package which might be available for your OS. Please take a
+    look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.</p>
+
     <p>If you are planning to install from source then please use the official release tarball.</p>
   </td></tr>
 </table></div>
+
   <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
+    <p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
   </td></tr>
 </table></div>
- 
+
   <p>This guide is intended to provide you with simple instructions on how to install Icinga from source (code) and have it
   monitoring your local machine within 20 minutes.</p>
 
@@ -121,23 +122,44 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Unfortunately sometimes the names of packages change between different releases of the same distribution so if you get a
-  message that one of the packages cannot be found then please use the search option of your package manager to get the new name:
-    </p>
+    <p>Unfortunately sometimes the names of packages change between different releases of the same distribution so if you get a message
+    that one of the packages cannot be found then please use the search option of your package manager to get the new name: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <code class="literal">yum search &lt;package name&gt;</code> (<span class="emphasis"><em>Fedora/RHEL/CentOS</em></span>)
-      </li>
+           
+
+          <code class="literal">yum search &lt;package name&gt;</code>
+
+           ( 
+
+          <span class="emphasis"><em>Fedora/RHEL/CentOS</em></span>
+
+           ) 
+        </li>
 <li class="listitem">
-        <code class="literal">apt-cache search &lt;package name&gt;</code> (<span class="emphasis"><em>Debian/Ubuntu</em></span>)
-      </li>
+           
+
+          <code class="literal">apt-cache search &lt;package name&gt;</code>
+
+           ( 
+
+          <span class="emphasis"><em>Debian/Ubuntu</em></span>
+
+           ) 
+        </li>
 <li class="listitem">
-        <code class="literal">zypper search &lt;package name&gt;</code> (<span class="emphasis"><em>openSuSE/SLES</em></span>)
-      </li>
+           
+
+          <code class="literal">zypper search &lt;package name&gt;</code>
+
+           ( 
+
+          <span class="emphasis"><em>openSuSE/SLES</em></span>
+
+           ) 
+        </li>
 </ul></div>
-<p>
-  </p>
-</td></tr>
+  </td></tr>
 </table></div>
 
   <p><span class="emphasis"><em>Fedora/RHEL/CentOS</em></span></p>
@@ -145,12 +167,15 @@
   <pre class="programlisting"> #&gt; yum install httpd gcc glibc glibc-common gd gd-devel
  #&gt; yum install libjpeg libjpeg-devel libpng libpng-devel
  #&gt; yum install net-snmp net-snmp-devel net-snmp-utils</pre>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>You may have to use libjpeg-turbo and libjpeg-turbo-devel instead</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>You may have to use libjpeg-turbo and libjpeg-turbo-devel instead</p>
+  </td></tr>
 </table></div>
 
   <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
@@ -169,13 +194,26 @@
   </td></tr>
 </table></div>
 
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Debian 6.0 / Ubuntu 10.10 the package is called libpng-12-0, the name of the dev-package hasn't
+    changed.</p>
+  </td></tr>
+</table></div>
+
   <p><span class="emphasis"><em>openSuSE/SLES</em></span></p>
 
   <p>Please use YaST to install at least the packages gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel and, optionally,
   net-snmp, net-snmp-devel and perl-Net-SNMP.</p>
+
   <p>Using zypper should work as well:</p>
+
   <pre class="programlisting"> #&gt; zypper install gd gd-devel libjpeg libjpeg-devel libpng libpng-devel
- #&gt; zypper install net-snmp net-snmp-devel perl-Net-SNMP</pre> 
+ #&gt; zypper install net-snmp net-snmp-devel perl-Net-SNMP</pre>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -209,6 +247,7 @@
   <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga-cmd
  #&gt; /usr/sbin/usermod -a -G icinga-cmd icinga
  #&gt; /usr/sbin/usermod -a -G icinga-cmd www-data</pre>
+
   <p>(or www, wwwrun, apache, depending on the distribution)</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -258,10 +297,12 @@
 
   <pre class="programlisting"> #&gt; make all</pre>
 
-  <p>Install binaries, init script, sample config files and set permissions on the external command directory. </p>
+  <p>Install binaries, init script, sample config files, some eventhandlers, and set permissions on the external command directory.
+  </p>
 <pre class="programlisting"> #&gt; make install 
  #&gt; make install-init 
  #&gt; make install-config 
+ #&gt; make install-eventhandlers
  #&gt; make install-commandmode </pre>
 <p> or shorter </p>
 <pre class="programlisting"> #&gt; make fullinstall
@@ -272,8 +313,21 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
-  </code> anymore to avoid accidently overwriting of your config files.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
+    </code>anymore to avoid accidently overwriting of your config files.</p>
+  </td></tr>
+</table></div>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.7.0 <code class="literal">make install-eventhandlers</code> will install some event handler routines. To
+    prevent undesired behaviour it is only included when you use <code class="literal">make fullinstall</code>.</p>
+  </td></tr>
 </table></div>
 
   <p>Don't start Icinga yet - there's still more that needs to be done...</p>
@@ -282,7 +336,7 @@
 
   <p>Sample configuration files have been installed by using </p>
 <pre class="programlisting"> #&gt; make install-config</pre>
-<p> into
+<p>into
   /usr/local/icinga/etc/. You'll need to make just one change before you proceed...</p>
 
   <p>Edit the <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span> config file with your favourite editor and change the email
@@ -353,8 +407,9 @@
 
   <p><span class="bold"><strong>Adjusting the SELinux settings</strong></span></p>
 
-  <p>RHEL and derived distributions like Fedora and CentOS are shipped with activated SELinux (Security Enhanced 
-  Linux) running in "enforcing" mode. This may lead to "Internal Server Error" messages when you try to invoke the Icinga-CGIs.</p>
+  <p>RHEL and derived distributions like Fedora and CentOS are shipped with activated SELinux (Security
+  Enhanced Linux) running in "enforcing" mode. This may lead to "Internal Server Error" messages when you try to invoke the
+  Icinga-CGIs.</p>
 
   <p>Check if SELinux runs in enforcing mode</p>
 
@@ -443,7 +498,7 @@
   <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
   Started"</a> about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id1524155"></a>
+  <a class="indexterm" name="id1435744"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -37,21 +37,22 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Anstatt Icinga von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
-    Betriebssystem gibt. Bitte werfen Sie einen Blick auf die
-    <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der Pakete</a>.
-    </p>
+    <p>Anstatt Icinga von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
+    Betriebssystem gibt. Bitte werfen Sie einen Blick auf die <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der
+    Pakete</a>.</p>
+
     <p>Falls Sie aus den Sourcen installieren möchten, dann benutzen Sie bitte die offiziellen Release-Tarballs.</p>
   </td></tr>
 </table></div>
+
   <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf.
-    gelöst ist.</p>
+    <p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf. gelöst
+    ist.</p>
   </td></tr>
 </table></div>
 
@@ -122,23 +123,45 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Unglücklicherweise ändern sich manchmal die Paketnamen zwischen verschiedenen Ausgaben der gleichen Distribution, so dass Sie
-  die Suchoption Ihres Paket-Managers nutzen sollten, falls Sie die Fehlermeldung bekommen, dass eins der Pakete nicht gefunden wurde.
+    <p>Unglücklicherweise ändern sich manchmal die Paketnamen zwischen verschiedenen Ausgaben der gleichen Distribution, so dass Sie die
+    Suchoption Ihres Paket-Managers nutzen sollten, falls Sie die Fehlermeldung bekommen, dass eins der Pakete nicht gefunden wurde.
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <code class="literal">yum search &lt;package name&gt;</code> (<span class="emphasis"><em>Fedora/RHEL/CentOS</em></span>)
-      </li>
+           
+
+          <code class="literal">yum search &lt;package name&gt;</code>
+
+           ( 
+
+          <span class="emphasis"><em>Fedora/RHEL/CentOS</em></span>
+
+           ) 
+        </li>
 <li class="listitem">
-        <code class="literal">apt-cache search &lt;package name&gt;</code> (<span class="emphasis"><em>Debian/Ubuntu</em></span>)
-      </li>
+           
+
+          <code class="literal">apt-cache search &lt;package name&gt;</code>
+
+           ( 
+
+          <span class="emphasis"><em>Debian/Ubuntu</em></span>
+
+           ) 
+        </li>
 <li class="listitem">
-        <code class="literal">zypper search &lt;package name&gt;</code> (<span class="emphasis"><em>openSuSE/SLES</em></span>)
-      </li>
+           
+
+          <code class="literal">zypper search &lt;package name&gt;</code>
+
+           ( 
+
+          <span class="emphasis"><em>openSuSE/SLES</em></span>
+
+           ) 
+        </li>
 </ul></div>
-<p>
-  </p>
-</td></tr>
+  </td></tr>
 </table></div>
 
   <p><span class="emphasis"><em>Fedora / RedHat / CentOS</em></span></p>
@@ -146,12 +169,15 @@
   <pre class="programlisting"> #&gt; yum install httpd gcc glibc glibc-common gd gd-devel
  #&gt; yum install libjpeg libjpeg-devel libpng libpng-devel
  #&gt; yum install net-snmp net-snmp-devel net-snmp-utils</pre>
+
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>ggf. sind libjpeg-turbo bzw. libjpeg-turbo-devel zu installieren</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>ggf. sind libjpeg-turbo bzw. libjpeg-turbo-devel zu installieren</p>
+  </td></tr>
 </table></div>
 
   <p><span class="emphasis"><em>Debian / Ubuntu</em></span></p>
@@ -176,7 +202,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Ab Ubuntu 10.10 heißt das Paket libpng12-0, der Name des dev-Pakets ändert sich nicht.</p>
+    <p>Ab Debian 6.0/Ubuntu 10.10 heißt das Paket libpng12-0, der Name des dev-Pakets ändert sich nicht.</p>
   </td></tr>
 </table></div>
 
@@ -184,7 +210,9 @@
 
   <p>Bitte nutzen Sie YaST für die Installation der Pakete gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel und -optional-
   net-snmp, net-snmp-devel und perl-Net-SNMP.</p>
+
   <p>Die Nutzung von zypper sollte ebenfalls funktionieren:</p>
+
   <pre class="programlisting"> #&gt; zypper install gd gd-devel libjpeg libjpeg-devel libpng libpng-devel
  #&gt; zypper install net-snmp net-snmp-devel perl-Net-SNMP</pre>
 
@@ -220,6 +248,7 @@
   <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga-cmd
  #&gt; /usr/sbin/usermod -a -G icinga-cmd icinga
  #&gt; /usr/sbin/usermod -a -G icinga-cmd www-data</pre>
+
   <p>(oder www, wwwrun, apache je nach Distribution)</p>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -268,11 +297,12 @@
 
   <pre class="programlisting"> #&gt; make all</pre>
 
-  <p>Installieren Sie die Binaries, das Init-Script, Beispiel-Konfigurationsdateien und setzen Sie die Berechtigungen für das
-  External-Command-Verzeichnis. </p>
-<pre class="programlisting"> #&gt; make install 
- #&gt; make install-init 
- #&gt; make install-config 
+  <p>Installieren Sie die Binaries, das Init-Script, Beispiel-Konfigurationsdateien, Beispiel-Eventhandler und setzen Sie die
+  Berechtigungen für das External-Command-Verzeichnis. </p>
+<pre class="programlisting"> #&gt; make install
+ #&gt; make install-init
+ #&gt; make install-config
+ #&gt; make install-eventhandlers
  #&gt; make install-commandmode </pre>
 <p> oder kürzer </p>
 <pre class="programlisting"> #&gt; make fullinstall
@@ -283,15 +313,27 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 ist <code class="literal">make install-config</code> NICHT mehr in <code class="literal">make fullinstall </code>
-  enthalten, um ein versehentliches Überschreiben der Konfigurationsdateien zu verhindern.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Ab Icinga 1.5.0 ist <code class="literal">make install-config</code> NICHT mehr in <code class="literal">make fullinstall </code>enthalten, um
+    ein versehentliches Überschreiben der Konfigurationsdateien zu verhindern.</p>
+  </td></tr>
 </table></div>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Ab Icinga 1.7.0 werden mit <code class="literal">make install-eventhandlers</code> einige Beispiel-Eventhandler installiert. Das ist
+    lediglich in <code class="literal">make fullinstall</code> enthalten, um ein versehentliches Überschreiben der Dateien zu verhindern.</p>
+  </td></tr>
+</table></div>
 
-  <p>Die Icinga-API wird beim Aufruf von "make install" installiert, wenn Sie nur die Icinga-Api (nach)installieren möchten, nutzen Sie:
+  <p>Die Icinga-API wird beim Aufruf von "make install" installiert, wenn Sie nur die Icinga-API (nach)installieren möchten, nutzen Sie:
   </p>
 <pre class="programlisting"> # make install-api</pre>
-<p> Die Icinga-API ist Voraussetzung für das Icinga-Web-Interface (nicht für die
+<p>Die Icinga-API ist Voraussetzung für das Icinga-Web-Interface (nicht für die
   klassische Ansicht!).</p>
 
   <p>Bitte starten Sie Icinga noch nicht - es gibt noch ein paar Dinge zu tun...</p>
@@ -383,8 +425,9 @@
 
   <p><span class="bold"><strong>Anpassen der SELinux-Einstellungen</strong></span></p>
 
-  <p>RHEL und ähnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security Enhanced 
-  Linux) ausgeliefert und laufen im "Enforcing"-Modus. Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie versuchen, die  Icinga-CGIs aufzurufen.</p>
+  <p>RHEL und ähnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security
+  Enhanced Linux) ausgeliefert und laufen im "Enforcing"-Modus. Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie
+  versuchen, die Icinga-CGIs aufzurufen.</p>
 
   <p>Schauen Sie, ob SELinux im Enforcing-Modus läuft.</p>
 
@@ -475,9 +518,9 @@
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="id1453043"></a>
+  <a class="indexterm" name="id1498776"></a>
 
-  <a class="indexterm" name="id1453025"></a>
+  <a class="indexterm" name="id1498758"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -53,7 +53,8 @@
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>A sample CGI configuration file (<span class="emphasis"><em>cgi.cfg;</em></span>) is installed for you when you follow the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart installation guide</a>.</p>
+    <p>A sample CGI configuration file (<span class="emphasis"><em>/usr/local/icinga/etc/cgi.cfg</em></span>) is installed for you when you follow the
+    <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart installation guide</a>.</p>
   </td></tr>
 </table></div>
 
@@ -79,12 +80,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>main_config_file=&lt;file_name&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>main_config_file=&lt;file_name&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>main_config_file=/usr/local/icinga/etc/icinga.cfg</strong></span>
-          </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>main_config_file=/usr/local/icinga/etc/icinga.cfg</strong></span>
+          </font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -104,12 +105,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>physical_html_path=&lt;path&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>physical_html_path=&lt;path&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>physical_html_path=/usr/local/icinga/share</strong></span>
-          </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>physical_html_path=/usr/local/icinga/share</strong></span>
+          </font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -130,11 +131,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>url_html_path=&lt;path&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>url_html_path=&lt;path&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>url_html_path=/icinga</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>url_html_path=/icinga</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -155,11 +156,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>url_stylesheet_path=&lt;path&gt;/stylesheets</strong></span> </p></td>
+<td><p><span class="bold"><strong>url_stylesheet_path=&lt;path&gt;/stylesheets</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>url_stylesheet_path=/icinga/stylesheets</strong></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>url_stylesheet_path=/icinga/stylesheets</strong></span>
           </font></span></p></td>
 </tr>
 </tbody>
@@ -180,11 +181,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>use_authentication=[0/1]</strong></span> </p></td>
+<td><p><span class="bold"><strong>use_authentication=[0/1]</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>use_authentication=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>use_authentication=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -207,6 +208,45 @@
     </li>
 </ul></div>
 
+  <p><a name="configcgi-use_ssl_authentication"></a> <span class="bold"><strong>Use Client Certificates</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>use_ssl_authentication=[0/1]</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>use_ssl_authentication=0</strong></span></font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>This option controls whether the value of the web server environment variable <code class="literal">REMOTE_USER</code> or
+  <code class="literal">SSL_CLIENT_S_DN_CN</code> will be used. The name of the directive is a bit misleading because unless you set up the use of
+  client certificates the value has to be set to zero (0). Setting the value to one (1) requires "<code class="literal">SSLUserName
+  SSL_CLIENT_S_DN_CN</code>" and several other options in your web server config. Please consult your web server configuration
+  documentation for details.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = Use web server environment variable <code class="literal">REMOTE_USER</code> to get the user logged in. Don't use client certificates
+      (default)</p>
+    </li>
+<li class="listitem">
+      <p>1 = Use web server environment variable <code class="literal">SSL_CLIENT_S_DN_CN</code> to get the user logged in. Use client
+      certificates</p>
+    </li>
+</ul></div>
+
   <p><a name="configcgi-default_user_name"></a> <span class="bold"><strong>Default User Name</strong></span></p>
 
   <div class="informaltable">
@@ -218,11 +258,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>default_user_name=&lt;username&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>default_user_name=&lt;username&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_user_name=guest</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>default_user_name=guest</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -250,12 +290,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>authorized_for_system_information=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+<td><p><span class="bold"><strong>authorized_for_system_information=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
           </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_system_information=icingaadmin,theboss</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_system_information=icingaadmin,theboss</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -271,8 +311,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_system_information
-  </code> to authorise a contactgroup instead of a contact.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_system_information </code>
+    to authorise a contactgroup instead of a contact.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="configcgi-authorized_for_system_commands"></a> <span class="bold"><strong>System/Process Command Access</strong></span></p>
@@ -286,12 +328,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>authorized_for_system_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>authorized_for_system_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_system_commands=icingaadmin</strong></span>
-          </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_system_commands=icingaadmin</strong></span>
+          </font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -307,8 +349,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_system_commands
-  </code> to authorise a contactgroup instead of a contact.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_system_commands </code> to
+    authorise a contactgroup instead of a contact.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="configcgi-authorized_for_configuration_information"></a> <span class="bold"><strong>Configuration Information
@@ -323,12 +367,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>authorized_for_configuration_information=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+<td><p><span class="bold"><strong>authorized_for_configuration_information=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
           </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_configuration_information=icingaadmin</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_configuration_information=icingaadmin</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -344,8 +388,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_configuration_information
-  </code> to authorise a contactgroup instead of a contact.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_configuration_information
+    </code> to authorise a contactgroup instead of a contact.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="configcgi-authorized_for_all_hosts"></a> <span class="bold"><strong>Global Host Information Access</strong></span></p>
@@ -359,12 +405,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>authorized_for_all_hosts=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+<td><p><span class="bold"><strong>authorized_for_all_hosts=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
           </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_all_hosts=icingaadmin,theboss</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_all_hosts=icingaadmin,theboss</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -381,8 +427,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_hosts</code> to
-  authorise a contactgroup instead of a contact.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_hosts</code> to
+    authorise a contactgroup instead of a contact.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="configcgi-authorized_for_all_host_commands"></a> <span class="bold"><strong>Global Host Command Access</strong></span></p>
@@ -396,11 +444,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>authorized_for_all_host_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>authorized_for_all_host_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_all_host_commands=icingaadmin</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_all_host_commands=icingaadmin</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -418,8 +466,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_host_commands
-  </code> to authorise a contactgroup instead of a contact.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_host_commands </code>
+    to authorise a contactgroup instead of a contact.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="configcgi-authorized_for_all_services"></a> <span class="bold"><strong>Global Service Information Access</strong></span></p>
@@ -433,11 +483,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>authorized_for_all_services=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>authorized_for_all_services=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_all_services=icingaadmin,theboss</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_all_services=icingaadmin,theboss</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -454,8 +504,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_services</code> to
-  authorise a contactgroup instead of a contact.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_services</code> to
+    authorise a contactgroup instead of a contact.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="configcgi-authorized_for_all_service_commands"></a> <span class="bold"><strong>Global Service Command Access
@@ -470,12 +522,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>authorized_for_all_service_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+<td><p><span class="bold"><strong>authorized_for_all_service_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
           </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_all_service_commands=icingaadmin</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_all_service_commands=icingaadmin</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -493,8 +545,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_service_commands
-  </code> to authorise a contactgroup instead of a contact.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_all_service_commands
+    </code> to authorise a contactgroup instead of a contact.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="configcgi-show_all_services_host_is_authorized_for"></a> <span class="bold"><strong>Show All Services A Host Is Authorized
@@ -509,12 +563,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>show_all_services_host_is_authorized_for=[0|1]</strong></span> </p></td>
+<td><p><span class="bold"><strong>show_all_services_host_is_authorized_for=[0|1]</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>show_all_services_host_is_authorized_for=1</strong></span>
-          </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>show_all_services_host_is_authorized_for=1</strong></span>
+          </font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -524,8 +578,7 @@
   the user must be an authorised contact for the service too in order to view it. Keep in mind that setting the user in
   authorized_for_all_services obsoletes this option (included starting with Icinga 1.0.2)</p>
 
-  <p><a name="configcgi-authorized_for_read_only"></a> <span class="bold"><strong>Deny access to commands and comments</strong></span>
-  </p>
+  <p><a name="configcgi-authorized_for_read_only"></a> <span class="bold"><strong>Deny access to commands and comments</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -536,13 +589,13 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>authorized_for_read_only=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+<td><p><span class="bold"><strong>authorized_for_read_only=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
           </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_read_only=icingalook</strong></span>
-          </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_read_only=icingalook</strong></span>
+          </font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -551,8 +604,7 @@
   <p>This is a comma-delimited list of names of <span class="emphasis"><em>authenticated users</em></span> who have read-only rights in the CGIs. This will
   block any host or service commands. It will also block comments from being shown to read-only users. Users in this list are
   <span class="emphasis"><em>not</em></span> automatically authorised to view status or configuration information for all hosts. If you want users able to
-  view status and configuration information for all services as well, you must add them to the
-  <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a> variable. More information on how to setup
+  view status and configuration information for all services as well, you must add them to the <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a> variable. More information on how to setup
   authentication and configure authorisation for the CGIs can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -560,8 +612,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_read_only</code> to
-  authorise a contactgroup instead of a contact.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 you can alternatively specify <code class="literal">authorized_contactgroup_for_read_only</code> to
+    authorise a contactgroup instead of a contact.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="configcgi-lock_author_names"></a> <span class="bold"><strong>Lock Author Names</strong></span></p>
@@ -575,11 +629,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>lock_author_names=[0/1]</strong></span> </p></td>
+<td><p><span class="bold"><strong>lock_author_names=[0/1]</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>lock_author_names=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>lock_author_names=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -610,12 +664,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>status_show_long_plugin_output=[0/1]</strong></span> </p></td>
+<td><p><span class="bold"><strong>status_show_long_plugin_output=[0/1]</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>status_show_long_plugin_output=1</strong></span>
-          </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>status_show_long_plugin_output=1</strong></span>
+          </font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -654,12 +708,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>statusmap_background_image=&lt;image_file&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>statusmap_background_image=&lt;image_file&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>statusmap_background_image=smbackground.gd2</strong></span>
-          </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>statusmap_background_image=smbackground.gd2</strong></span>
+          </font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -692,11 +746,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>default_statusmap_layout=&lt;layout_number&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>default_statusmap_layout=&lt;layout_number&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_statusmap_layout=4</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>default_statusmap_layout=4</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -714,8 +768,8 @@
 </colgroup>
 <tbody>
 <tr>
-<td><p> <span class="bold"><strong>&lt;layout_number&gt; Value</strong></span> </p></td>
-<td><p> <span class="bold"><strong>Layout Method</strong></span> </p></td>
+<td><p><span class="bold"><strong>&lt;layout_number&gt; Value</strong></span></p></td>
+<td><p><span class="bold"><strong>Layout Method</strong></span></p></td>
 </tr>
 <tr>
 <td><p>0</p></td>
@@ -760,11 +814,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>statuswrl_include=&lt;vrml_file&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>statuswrl_include=&lt;vrml_file&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>statuswrl_include=myworld.wrl</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>statuswrl_include=myworld.wrl</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -780,7 +834,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>This file must be a fully qualified VRML world (i.e. you can view it by itself in a VRML browser).</p>
+    <p>This option has no effect in Icinga.</p>
   </td></tr>
 </table></div>
 
@@ -795,11 +849,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>default_statuswrl_layout=&lt;layout_number&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>default_statuswrl_layout=&lt;layout_number&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_statuswrl_layout=4</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>default_statuswrl_layout=4</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -817,8 +871,8 @@
 </colgroup>
 <tbody>
 <tr>
-<td><p> <span class="bold"><strong>&lt;layout_number&gt; Value</strong></span> </p></td>
-<td><p> <span class="bold"><strong>Layout Method</strong></span> </p></td>
+<td><p><span class="bold"><strong>&lt;layout_number&gt; Value</strong></span></p></td>
+<td><p><span class="bold"><strong>Layout Method</strong></span></p></td>
 </tr>
 <tr>
 <td><p>0</p></td>
@@ -840,6 +894,16 @@
 </table>
   </div>
 
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option has no effect in Icinga.</p>
+  </td></tr>
+</table></div>
+
   <p><a name="configcgi-refresh_rate"></a> <span class="bold"><strong>CGI Refresh Rate</strong></span></p>
 
   <div class="informaltable">
@@ -851,17 +915,51 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>refresh_rate=&lt;rate_in_seconds&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>refresh_rate=&lt;rate_in_seconds&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>refresh_rate=90</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>refresh_rate=90</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
   <p>This option allows you to specify the number of seconds between page refreshes for the <a class="link" href="cgis.html#cgis-status_cgi">status</a>, <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>, and <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a> CGIs.</p>
+
+  <p><a name="configcgi-refresh_type"></a> <span class="bold"><strong>CGI Refresh Type</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>refresh_type=&lt;0|1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>refresh_type=1</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>This option determines what type of refresh should be used. You can choose between http header and javascript. By default javascript
+  (1) is activated. If you have trouble using javascript then try refresh via http header (0).</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.7</p>
+  </td></tr>
+</table></div>
 
   <p><a name="configcgi-audio_alerts"></a> <span class="bold"><strong>Audio Alerts</strong></span></p>
 
@@ -875,103 +973,21 @@
 <tr>
 <td align="left" valign="top"><p>Formats:</p></td>
 <td>
-<p>
-               
-
-              <span class="bold"><strong>host_unreachable_sound=&lt;sound_file&gt;</strong></span>
-
-               
-            </p> <p>
-               
-
-              <span class="bold"><strong>host_down_sound=&lt;sound_file&gt;</strong></span>
-
-               
-            </p> <p>
-               
-
-              <span class="bold"><strong>service_critical_sound=&lt;sound_file&gt;</strong></span>
-
-               
-            </p> <p>
-               
-
-              <span class="bold"><strong>service_warning_sound=&lt;sound_file&gt;</strong></span>
-
-               
-            </p> <p>
-               
-
-              <span class="bold"><strong>service_unknown_sound=&lt;sound_file&gt;</strong></span>
-
-               
-            </p>
+<p><span class="bold"><strong>host_unreachable_sound=&lt;sound_file&gt;</strong></span></p>
+<p><span class="bold"><strong>host_down_sound=&lt;sound_file&gt;</strong></span></p>
+<p><span class="bold"><strong>service_critical_sound=&lt;sound_file&gt;</strong></span></p>
+<p><span class="bold"><strong>service_warning_sound=&lt;sound_file&gt;</strong></span></p>
+<p><span class="bold"><strong>service_unknown_sound=&lt;sound_file&gt;</strong></span></p>
 </td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Examples:</p></td>
 <td>
-<p>
-               
-
-              <span class="color"><font color="red">
-                 
-
-                <span class="bold"><strong>host_unreachable_sound=hostu.wav</strong></span>
-
-                 
-              </font></span>
-
-               
-            </p> <p>
-               
-
-              <span class="color"><font color="red">
-                 
-
-                <span class="bold"><strong>host_down_sound=hostd.wav</strong></span>
-
-                 
-              </font></span>
-
-               
-            </p> <p>
-               
-
-              <span class="color"><font color="red">
-                 
-
-                <span class="bold"><strong>service_critical_sound=critical.wav</strong></span>
-
-                 
-              </font></span>
-
-               
-            </p> <p>
-               
-
-              <span class="color"><font color="red">
-                 
-
-                <span class="bold"><strong>service_warning_sound=warning.wav</strong></span>
-
-                 
-              </font></span>
-
-               
-            </p> <p>
-               
-
-              <span class="color"><font color="red">
-                 
-
-                <span class="bold"><strong>service_unknown_sound=unknown.wav</strong></span>
-
-                 
-              </font></span>
-
-               
-            </p>
+<p><span class="color"><font color="red"><span class="bold"><strong>host_unreachable_sound=hostu.wav</strong></span></font></span></p>
+<p><span class="color"><font color="red"><span class="bold"><strong>host_down_sound=hostd.wav</strong></span></font></span></p>
+<p><span class="color"><font color="red"><span class="bold"><strong>service_critical_sound=critical.wav</strong></span></font></span></p>
+<p><span class="color"><font color="red"><span class="bold"><strong>service_warning_sound=warning.wav</strong></span></font></span></p>
+<p><span class="color"><font color="red"><span class="bold"><strong>service_unknown_sound=unknown.wav</strong></span></font></span></p>
 </td>
 </tr>
 </tbody>
@@ -995,12 +1011,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>ping_syntax=&lt;command&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>ping_syntax=&lt;command&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>ping_syntax=/bin/ping -n -U -c 5
-          $HOSTADDRESS$</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>ping_syntax=/bin/ping -n -U -c 5
+          $HOSTADDRESS$</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -1020,12 +1036,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>escape_html_tags=[0/1]</strong></span> </p></td>
+<td><p><span class="bold"><strong>escape_html_tags=[0/1]</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>escape_html_tags=1</strong></span> </font></span>
-          </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>escape_html_tags=1</strong></span></font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -1045,11 +1060,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>notes_url_target=[target]</strong></span> </p></td>
+<td><p><span class="bold"><strong>notes_url_target=[target]</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>notes_url_target=_blank</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>notes_url_target=_blank</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1071,11 +1086,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>action_url_target=[target]</strong></span> </p></td>
+<td><p><span class="bold"><strong>action_url_target=[target]</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>action_url_target=_blank</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>action_url_target=_blank</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1097,11 +1112,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>tac_show_only_hard_state=[0/1]</strong></span> </p></td>
+<td><p><span class="bold"><strong>tac_show_only_hard_state=[0/1]</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>tac_show_only_hard_state=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>tac_show_only_hard_state=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1122,11 +1137,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>enable_splunk_integration=[0/1]</strong></span> </p></td>
+<td><p><span class="bold"><strong>enable_splunk_integration=[0/1]</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>enable_splunk_integration=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>enable_splunk_integration=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1148,12 +1163,12 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>splunk_url=&lt;path&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>splunk_url=&lt;path&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>splunk_url=http://127.0.0.1:8000/</strong></span>
-          </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>splunk_url=http://127.0.0.1:8000/</strong></span>
+          </font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -1172,11 +1187,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>persistent_ack_comments=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>persistent_ack_comments=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>persistent_ack_comments=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>persistent_ack_comments=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1216,11 +1231,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>showlog_initial_states=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>showlog_initial_states=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>showlog_initial_states=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>showlog_initial_states=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1269,11 +1284,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>showlog_current_states=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>showlog_current_states=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>showlog_current_states=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>showlog_current_states=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1322,11 +1337,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>tab_friendly_titles=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>tab_friendly_titles=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>tab_friendly_titles=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>tab_friendly_titles=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1385,15 +1400,15 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>add_notif_num_hard=n</strong></span> </p></td>
+<td><p><span class="bold"><strong>add_notif_num_hard=n</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p></p></td>
-<td><p> <span class="bold"><strong>add_notif_num_soft=n</strong></span> </p></td>
+<td><p><span class="bold"><strong>add_notif_num_soft=n</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>add_notif_num_hard=28</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>add_notif_num_hard=28</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1437,12 +1452,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>http_charset=&lt;char-set&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>http_charset=&lt;char-set&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>http_charset=utf-8</strong></span> </font></span>
-          </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>http_charset=utf-8</strong></span></font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -1471,11 +1485,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>first_day_of_week=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>first_day_of_week=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>first_day_of_week=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>first_day_of_week=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1506,11 +1520,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>use_logging=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>use_logging=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>use_logging=1</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>use_logging=1</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -1539,11 +1553,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>cgi_log_file=&lt;file_name&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>cgi_log_file=&lt;file_name&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>cgi_log_file=/usr/local/icinga/share/log/icinga-cgi.log</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>cgi_log_file=/usr/local/icinga/share/log/icinga-cgi.log</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -1572,11 +1586,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>log file rotation method=&lt;d|w|m&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>log file rotation method=&lt;d|w|m&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>cgi_log_rotation_method=d</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>cgi_log_rotation_method=d</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1618,11 +1632,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>cgi_log_archive_path=&lt;archive directory&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>cgi_log_archive_path=&lt;archive directory&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>cgi_log_archive_path=/usr/local/icinga/share/log</strong></span> </font></span> </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>cgi_log_archive_path=/usr/local/icinga/share/log</strong></span></font></span></p></td>
 </tr>
 </tbody>
 </table>
@@ -1652,11 +1666,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>enforce_comments_on_actions=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>enforce_comments_on_actions=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>enforce_comments_on_actions=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>enforce_comments_on_actions=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1697,12 +1711,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>show_tac_header=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>show_tac_header=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>show_tac_header=0</strong></span> </font></span>
-          </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>show_tac_header=0</strong></span></font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -1743,7 +1756,7 @@
   colouring as active checks.</p>
 
   <div class="figure">
-<a name="id1574256"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
+<a name="id1485367"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
 <div class="figure-contents">
     
 
@@ -1773,19 +1786,19 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>show_tac_header_pending=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>show_tac_header_pending=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>show_tac_header_pending=0</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>show_tac_header_pending=0</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option enables the display of pending counts in the tac header. If your display is less than 1024x768 and this is enabled,
-  the tactical information may not fit well in the top frame. By default it is disabled.</p>
+  <p>This option enables the display of pending counts in the tac header. If your display is less than 1024x768 and this is enabled, the
+  tactical information may not fit well in the top frame. By default it is disabled.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1808,11 +1821,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>default_downtime_duration=n</strong></span> </p></td>
+<td><p><span class="bold"><strong>default_downtime_duration=n</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_downtime_duration=7200</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>default_downtime_duration=7200</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1843,11 +1856,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>suppress_maintenance_downtime=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>suppress_maintenance_downtime=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>suppress_maintenance_downtime=0</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>suppress_maintenance_downtime=0</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1855,13 +1868,12 @@
   </div>
 
   <p>The current Classic UI view shows the state of hosts including attention grabbing colours even if the host/service is scheduled for
-  downtime. This tends to distract from discerning which problems really exist between those which were planned or expected.
-  It is disabled by default to maintain the old behaviour, however those wishing to enable it will note that rather than displaying issues
-  in their regular colour, they will be grey (similar to the pending state). The status, however will still display the actual state and
-  this is intended behaviour. This is so the user can use icinga to see what the state is in before the downtime ends. A useful example for
-  this is so it can be seen that a host/service that was being worked on actually came back online.
-
-  In addition, hosts in scheduled downtime will be grey in the statusmap.cgi.</p>
+  downtime. This tends to distract from discerning which problems really exist between those which were planned or expected. It is disabled
+  by default to maintain the old behaviour, however those wishing to enable it will note that rather than displaying issues in their regular
+  colour, they will be grey (similar to the pending state). The status, however will still display the actual state and this is intended
+  behaviour. This is so the user can use icinga to see what the state is in before the downtime ends. A useful example for this is so it can
+  be seen that a host/service that was being worked on actually came back online. In addition, hosts in scheduled downtime will be grey in
+  the statusmap.cgi.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1884,11 +1896,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>show_partial_hostgroups=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>show_partial_hostgroups=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>show_partial_hostgroups=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>show_partial_hostgroups=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1896,19 +1908,19 @@
   </div>
 
   <p>By default (meaning the directive is not present or disabled), a user only sees a hostgroup and the hosts within it if they are an
-  authorised contact for <span class="emphasis"><em>all</em></span> of the hosts of the group. The behaviour can be changed using the directive 
+  authorised contact for <span class="emphasis"><em>all</em></span> of the hosts of the group. The behaviour can be changed using the directive
   <code class="code">show_partial_hostgroups=1</code>.</p>
 
   <p>When enabled, the hostgroups overview will show a partial listing of hosts that the user is an authorised contact for within each
   hostgroup.</p>
 
   <p>It will also add the string "(Partial Hostgroups Enabled)" to the top of the Hostgroup Overview to help prevent any confusion over
-  whether the option is in use or not. However for privacy reasons, hostgroups that are only showing a partial listing are not
-  specifically indicated.</p>
+  whether the option is in use or not. However for privacy reasons, hostgroups that are only showing a partial listing are not specifically
+  indicated.</p>
 
   <p>COMPATIBILITY NOTICE: As with any tweak made to the output of the CGIs, enabling this option may adversely impact third party
-  programs that rely on 'screen scraping' to get their information.  If you encounter such a problem, turn this option back to its
-  default of off and encourage the developer(s) of the program to use JSON for their data needs instead.</p>
+  programs that rely on 'screen scraping' to get their information. If you encounter such a problem, turn this option back to its default of
+  off and encourage the developer(s) of the program to use JSON for their data needs instead.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1931,11 +1943,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>highlight_table_rows=&lt;0|1&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>highlight_table_rows=&lt;0|1&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>highlight_table_rows=0</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>highlight_table_rows=0</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -1956,7 +1968,8 @@
   </td></tr>
 </table></div>
 
-  <p><a name="configcgi-default_expiring_acknowledgement_duration"></a> <span class="bold"><strong>Set expiration period of acknowledgements</strong></span></p>
+  <p><a name="configcgi-default_expiring_acknowledgement_duration"></a> <span class="bold"><strong>Set expiration period of
+  acknowledgements</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -1967,12 +1980,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>default_expiring_acknowledgement_duration=&lt;n&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>default_expiring_acknowledgement_duration=&lt;n&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_expiring_acknowledgement_duration=86400</strong></span> </font></span>
-          </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>default_expiring_acknowledgement_duration=86400</strong></span></font></span> </p></td>
 </tr>
 </tbody>
 </table>
@@ -2002,11 +2014,11 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p> <span class="bold"><strong>extinfo_show_child_hosts=&lt;0|1|2&gt;</strong></span> </p></td>
+<td><p><span class="bold"><strong>extinfo_show_child_hosts=&lt;0|1|2&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>extinfo_show_child_hosts=1</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>extinfo_show_child_hosts=1</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
@@ -2014,6 +2026,7 @@
   </div>
 
   <p>This option allows you to specify if the extended host information cgi will show child hosts for the selected host.</p>
+
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>0 = disabled (default)</p>
@@ -2031,14 +2044,19 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
-<tr><td align="left" valign="top"><p>Option 2 could be a real performance killer in large installations, so use with care.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Option 2 could be a real performance killer in large installations, so use with care.</p>
+  </td></tr>
 </table></div>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>This option is disabled by default as it can degrade overall performance.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>This option is disabled by default as it can degrade overall performance.</p>
+  </td></tr>
 </table></div>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -2051,7 +2069,8 @@
   </td></tr>
 </table></div>
 
-  <p><a name="configcgi-authorized_for_full_command_resolution"></a> <span class="bold"><strong>Allow user(s) for FULL command line view</strong></span></p>
+  <p><a name="configcgi-authorized_for_full_command_resolution"></a> <span class="bold"><strong>Allow user(s) for FULL command line
+  view</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -2062,23 +2081,21 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p>
-            <span class="bold"><strong>authorized_for_full_command_resolution=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;
-            </strong></span>
+<td><p> <span class="bold"><strong>authorized_for_full_command_resolution=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt; </strong></span>
           </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>authorized_for_full_command_resolution=icingaadmin</strong></span> </font></span>
-          </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_full_command_resolution=icingaadmin</strong></span></font></span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
   <p>This option is a comma-delimited list of all usernames that can view a command in config command expander as Icinga would
-    execute it. To resolve all MACROS it is necessary to allow read access to the web server for <code class="filename">resource.cfg</code> as well.
-  </p>
+  execute it. To resolve all MACROS it is necessary to allow read access to the web server for <code class="filename">resource.cfg</code> as
+  well.</p>
+
   <p>Alternatively you can specify contactgroups, too.</p>
 
   <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
@@ -2086,7 +2103,9 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
-<tr><td align="left" valign="top"><p>$USERXX$ vars and custom vars can contain sensitive data so access should be strictly limited.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>$USERXX$ vars and custom vars can contain sensitive data so access should be strictly limited.</p>
+  </td></tr>
 </table></div>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -2110,22 +2129,19 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p>
-            <span class="bold"><strong>display_status_totals=0|1
-            </strong></span>
-          </p></td>
+<td><p> <span class="bold"><strong>display_status_totals=0|1 </strong></span> </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>display_status_totals=0</strong></span> </font></span>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>display_status_totals=0</strong></span></font></span>
           </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
-  <p>This option allows you to specify if the Host Status Totals and Service Status Totals should be displayed. Default value is 1.
-  </p>
+  <p>This option allows you to specify if the Host Status Totals and Service Status Totals should be displayed. Default value is
+  1.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -2137,7 +2153,8 @@
   </td></tr>
 </table></div>
 
-  <p><a name="configcgi-default_num_displayed_log_entries"></a> <span class="bold"><strong>Limit number of log entries to be displayed</strong></span></p>
+  <p><a name="configcgi-default_num_displayed_log_entries"></a> <span class="bold"><strong>Limit number of log entries to be
+  displayed</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -2148,24 +2165,18 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p>
-            <span class="bold"><strong>default_num_displayed_log_entries=&lt;n&gt;
-            </strong></span>
-          </p></td>
+<td><p> <span class="bold"><strong>default_num_displayed_log_entries=&lt;n&gt; </strong></span> </p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
-<td><p> <span class="color"><font color="red"> <span class="bold"><strong>default_num_displayed_log_entries=10000</strong></span> </font></span>
-          </p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>default_num_displayed_log_entries=10000</strong></span></font></span> </p></td>
 </tr>
 </tbody>
 </table>
   </div>
 
   <p>This options specifies the number of log entries displayed by default in showlog.cgi. To display all log entries by default set this
-    value to 0.
-    Default is 10000.
-  </p>
+  value to 0. Default is 10000.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -2177,121 +2188,125 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id1575478"></a>
+  <a class="indexterm" name="id1486541"></a>
 
-  <a class="indexterm" name="id1575486"></a>
+  <a class="indexterm" name="id1486551"></a>
 
-  <a class="indexterm" name="id1575498"></a>
+  <a class="indexterm" name="id1486564"></a>
 
-  <a class="indexterm" name="id1575511"></a>
+  <a class="indexterm" name="id1486577"></a>
 
-  <a class="indexterm" name="id1575525"></a>
+  <a class="indexterm" name="id1486590"></a>
 
-  <a class="indexterm" name="id1575538"></a>
+  <a class="indexterm" name="id1486604"></a>
 
-  <a class="indexterm" name="id1575552"></a>
+  <a class="indexterm" name="id1486617"></a>
 
-  <a class="indexterm" name="id1575562"></a>
+  <a class="indexterm" name="id1486630"></a>
 
-  <a class="indexterm" name="id1575580"></a>
+  <a class="indexterm" name="id1486643"></a>
 
-  <a class="indexterm" name="id1575590"></a>
+  <a class="indexterm" name="id1486658"></a>
 
-  <a class="indexterm" name="id1575608"></a>
+  <a class="indexterm" name="id1486671"></a>
 
-  <a class="indexterm" name="id1575622"></a>
+  <a class="indexterm" name="id1486124"></a>
 
-  <a class="indexterm" name="id1575636"></a>
+  <a class="indexterm" name="id1486694"></a>
 
-  <a class="indexterm" name="id1575646"></a>
+  <a class="indexterm" name="id1486706"></a>
 
-  <a class="indexterm" name="id1575665"></a>
+  <a class="indexterm" name="id1486715"></a>
 
-  <a class="indexterm" name="id1575678"></a>
+  <a class="indexterm" name="id1486733"></a>
 
-  <a class="indexterm" name="id1575693"></a>
+  <a class="indexterm" name="id1486742"></a>
 
-  <a class="indexterm" name="id1575707"></a>
+  <a class="indexterm" name="id1486760"></a>
 
-  <a class="indexterm" name="id1575721"></a>
+  <a class="indexterm" name="id1486774"></a>
 
-  <a class="indexterm" name="id1575735"></a>
+  <a class="indexterm" name="id1486789"></a>
 
-  <a class="indexterm" name="id1575749"></a>
+  <a class="indexterm" name="id1486803"></a>
 
-  <a class="indexterm" name="id1575763"></a>
+  <a class="indexterm" name="id1486817"></a>
 
-  <a class="indexterm" name="id1575777"></a>
+  <a class="indexterm" name="id1486831"></a>
 
-  <a class="indexterm" name="id1575791"></a>
+  <a class="indexterm" name="id1486844"></a>
 
-  <a class="indexterm" name="id1575805"></a>
+  <a class="indexterm" name="id1486859"></a>
 
-  <a class="indexterm" name="id1575819"></a>
+  <a class="indexterm" name="id1486873"></a>
 
-  <a class="indexterm" name="id1575832"></a>
+  <a class="indexterm" name="id1486887"></a>
 
-  <a class="indexterm" name="id1575846"></a>
+  <a class="indexterm" name="id1486900"></a>
 
-  <a class="indexterm" name="id1575860"></a>
+  <a class="indexterm" name="id1486914"></a>
 
-  <a class="indexterm" name="id1575873"></a>
+  <a class="indexterm" name="id1486929"></a>
 
-  <a class="indexterm" name="id1575887"></a>
+  <a class="indexterm" name="id1486942"></a>
 
-  <a class="indexterm" name="id1575900"></a>
+  <a class="indexterm" name="id1486955"></a>
 
-  <a class="indexterm" name="id1575914"></a>
+  <a class="indexterm" name="id1486968"></a>
 
-  <a class="indexterm" name="id1575928"></a>
+  <a class="indexterm" name="id1486982"></a>
 
-  <a class="indexterm" name="id1575941"></a>
+  <a class="indexterm" name="id1486995"></a>
 
-  <a class="indexterm" name="id1575955"></a>
+  <a class="indexterm" name="id1487004"></a>
 
-  <a class="indexterm" name="id1575969"></a>
+  <a class="indexterm" name="id1487023"></a>
 
-  <a class="indexterm" name="id1575982"></a>
+  <a class="indexterm" name="id1487036"></a>
 
-  <a class="indexterm" name="id1575996"></a>
+  <a class="indexterm" name="id1487051"></a>
 
-  <a class="indexterm" name="id1576010"></a>
+  <a class="indexterm" name="id1487064"></a>
 
-  <a class="indexterm" name="id1576024"></a>
+  <a class="indexterm" name="id1487078"></a>
 
-  <a class="indexterm" name="id1576035"></a>
+  <a class="indexterm" name="id1487092"></a>
 
-  <a class="indexterm" name="id1576048"></a>
+  <a class="indexterm" name="id1487105"></a>
 
-  <a class="indexterm" name="id1576062"></a>
+  <a class="indexterm" name="id1487116"></a>
 
-  <a class="indexterm" name="id1576075"></a>
+  <a class="indexterm" name="id1487129"></a>
 
-  <a class="indexterm" name="id1576088"></a>
+  <a class="indexterm" name="id1487143"></a>
 
-  <a class="indexterm" name="id1576102"></a>
+  <a class="indexterm" name="id1487156"></a>
 
-  <a class="indexterm" name="id1576117"></a>
+  <a class="indexterm" name="id1487165"></a>
 
-  <a class="indexterm" name="id1576131"></a>
+  <a class="indexterm" name="id1487184"></a>
 
-  <a class="indexterm" name="id1576144"></a>
+  <a class="indexterm" name="id1487193"></a>
 
-  <a class="indexterm" name="id1576158"></a>
+  <a class="indexterm" name="id1487212"></a>
 
-  <a class="indexterm" name="id1576172"></a>
+  <a class="indexterm" name="id1487220"></a>
 
-  <a class="indexterm" name="id1576186"></a>
+  <a class="indexterm" name="id1487234"></a>
 
-  <a class="indexterm" name="id1576200"></a>
+  <a class="indexterm" name="id1487248"></a>
 
-  <a class="indexterm" name="id1576212"></a>
+  <a class="indexterm" name="id1487267"></a>
 
-  <a class="indexterm" name="id1576227"></a>
+  <a class="indexterm" name="id1487281"></a>
 
-  <a class="indexterm" name="id1576236"></a>
+  <a class="indexterm" name="id1487295"></a>
 
-  <a class="indexterm" name="id1576255"></a>
+  <a class="indexterm" name="id1487308"></a>
+
+  <a class="indexterm" name="id1487323"></a>
+
+  <a class="indexterm" name="id1487338"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -244,8 +244,8 @@
       <pre class="programlisting"> #&gt; ./configure
  #&gt; make install</pre>
 
-      <p>unter <code class="filename">/usr/local/icinga-web</code> installiert. Das kann eine Weile dauern, also bitte nicht ungeduldig werden ;-)
-      </p>
+      <p>unter <code class="filename">/usr/local/icinga-web</code> installiert. Das kann eine Weile dauern, also bitte nicht ungeduldig werden
+      ;-)</p>
 
       <p>Installation der neuen Apache-Konfiguration</p>
 
@@ -326,6 +326,8 @@
 
         GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX
         ON icinga_web.* TO 'icinga_web'@'localhost';
+
+        FLUSH PRIVILEGES;
 
         quit</pre>
         </li>
@@ -418,16 +420,14 @@
 <tr><td align="left" valign="top">
         <p>Möglicherweise finden Sie es einfacher, beim Editieren von XML-Strukturen Syntax-Hightlighting zu benutzen, um zwischen
         Kommentaren und XML-Tags zu unterscheiden.</p>
-        <p> Editieren Sie <code class="filename">/etc/vim/vimrc</code>
-          </p>
+
+        <p>Editieren Sie <code class="filename">/etc/vim/vimrc</code> </p>
 <pre class="screen"> " Vim5 and later versions support syntax highlighting. Uncommenting the next
  " line enables syntax highlighting by default.
  syntax on</pre>
 <p> oder <code class="filename">/etc/nanorc</code></p>
 <pre class="screen"> ## HTML
  include "/usr/share/nano/html.nanorc"</pre>
-<p>
-        </p>
       </td></tr>
 </table></div>
 
@@ -713,54 +713,94 @@ Alias /icinga-web /usr/local/icinga-web/pub
 <li class="listitem">
       <p><a name="icinga-web-scratch-errors"></a> <span class="bold"><strong>Test &amp; Fehler?</strong></span></p>
 
-      <p>Diese Sammlung enthält einige nützliche Informationen, wie Sie Fehler finden und lösen können. Ebenso wird darauf hingewiesen,
-      welche Informationen Sie im Fehlerfall angeben sollten, wenn Sie eine Frage auf den Mailinglisten oder auf <a class="link" href="http://www.icinga-portal.org" target="_top">http://www.icinga-portal.org</a> stellen.</p>
+      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+          <p>Der folgende Abschnitt versucht, einige Hinweise zu üblichen Problemen zu geben, aber aufgrund der Natur von "geschriebenem"
+          Material wird die Wiki-Seite <code class="uri">https://wiki.icinga.org/display/testing/Icinga+Web+Testing</code> höchstwahrscheinlich aktueller
+          sein, so dass es dort ggf. eine Lösung gibt, die Sie hier nicht finden.</p>
+        </td></tr>
+</table></div>
+<p>Diese Sammlung enthält einige nützliche Informationen, wie Sie Fehler finden und lösen können. Ebenso wird darauf
+      hingewiesen, welche Informationen Sie im Fehlerfall angeben sollten, wenn Sie eine Frage auf den Mailinglisten oder auf <a class="link" href="http://www.icinga-portal.org" target="_top">http://www.icinga-portal.org</a> stellen.</p>
 
-      <p>* Geben Sie immer die verwendete Version an - tar.gz oder GIT?</p>
-
-      <p>* Browser, Version</p>
-
-      <p>* Falls das Problem mit der Datenquelle besteht: Ausführliche Informationen zu API, IDOUtils, Core (Version, Debug Logs).</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>Geben Sie immer die verwendete Version an - Paket, tar.gz oder GIT?</p>
+        </li>
+<li class="listitem">
+          <p>Browser, Version</p>
+        </li>
+<li class="listitem">
+          <p>Falls das Problem mit der Datenquelle besteht: Ausführliche Informationen zu API, IDOUtils, Core (Version, Debug
+          Logs).</p>
+        </li>
+</ul></div>
 
       <p>Wo können Sie nachsehen?</p>
 
-      <p>* Apache Error Logs, PHP Errors, PHP Dateien können nicht gefunden werden</p>
-
-      <p>* <code class="filename">/var/log/messages</code>, /path/to/icinga/var/icinga.log</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>Apache Error Logs, PHP Errors, PHP Dateien können nicht gefunden werden</p>
+        </li>
+<li class="listitem">
+          <p><code class="filename">/var/log/messages</code>, /path/to/icinga/var/icinga.log</p>
+        </li>
+</ul></div>
 
       <p>Änderungen an der Icinga-Web-Konfiguration (z.B. API/IDOUtils-Einstellungen geändert) werden nicht aktualisiert?</p>
 
-      <p>* Löschen Sie den Konfigurationscache in app/cache/config/*.php</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>Löschen Sie den Konfigurationscache in app/cache/config/*.php</p>
+        </li></ul></div>
 
       <pre class="programlisting"> /usr/local/icinga-web/bin/clearcache.sh</pre>
 
       <p>Icinga-Web zeigt eine leere Seite?</p>
 
-      <p>* Apache Errors Logs =&gt; mod_rewrite enabled, PHP-Abhängigkeiten ok? 'make testdeps'. Bei Debian gibt es u.a. die folgende
-      Fehlermeldung: ".htaccess: Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server
-      configuration"</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+          <p>Apache Errors Logs =&gt; mod_rewrite enabled, PHP-Abhängigkeiten ok? 'make testdeps'. Bei Debian gibt es u.a. die folgende
+          Fehlermeldung: ".htaccess: Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server
+          configuration"</p>
+        </li></ul></div>
 
       <p>Icinga Web - Login erfolgt- aber die Seite lädt und lädt...</p>
 
-      <p>* Request failed, Ressource /icinga-web/appkit/ext/application State could not be loaded - is the url correct? =&gt; mod_rewrite
-      enabled ?</p>
-
-      <p>* .htaccess/VHost-Konfiguration =&gt; Pfade nicht korrekt? Icinga-Web zeigt keine Daten?</p>
-
-      <p>* Datenbankzugriff verweigert =&gt; Überprüfen Sie, ob die Datenbankeinstellungen für Icinga-Web korrekt sind.</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>Request failed, Ressource /icinga-web/appkit/ext/application State could not be loaded - is the url correct? =&gt;
+          mod_rewrite enabled ?</p>
+        </li>
+<li class="listitem">
+          <p>.htaccess/VHost-Konfiguration =&gt; Pfade nicht korrekt? Icinga-Web zeigt keine Daten?</p>
+        </li>
+<li class="listitem">
+          <p>Datenbankzugriff verweigert =&gt; Überprüfen Sie, ob die Datenbankeinstellungen für Icinga-Web korrekt sind.</p>
+        </li>
+</ul></div>
 
       <p>IDOUtils-Datenbank wird nicht gefüllt?</p>
 
-      <p>* "Error writing to data sink" =&gt; Überprüfen Sie die IDOUtils (ido2db läuft 2x - ok?), ido2db.cfg debug_level=-1,
-      debug_verbosity=2, restarten Sie IDOUtils und suchen Sie Fehler in <code class="filename">ido2db.debug</code></p>
-
-      <p>* Keine Daten vorhanden =&gt; Überprüfen Sie <code class="filename">icinga.log</code>, ob IDOMOD zu Beginn geladen wird. Falls nicht,
-      aktivieren Sie das Event Broker Modul in <code class="filename">icinga.cfg</code> so wie im Icinga Core im <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">IDOUtils Quickstart Guide</a> beschrieben.</p>
-
-      <p>* IDOUtils DB-Schema ist die aktuellste Version? =&gt; Falls nicht, überprüfen Sie mögliche Upgrades anhand der Docs
-      dafür.</p>
-
-      <p>* Sockets sind korrekt definiert? =&gt; Unix oder TCP Socket, TCP wahlweise mit oder ohne SSL</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>"Error writing to data sink" =&gt; Überprüfen Sie die IDOUtils (ido2db läuft 2x - ok?), ido2db.cfg debug_level=-1,
+          debug_verbosity=2, restarten Sie IDOUtils und suchen Sie Fehler in <code class="filename">ido2db.debug</code></p>
+        </li>
+<li class="listitem">
+          <p>Keine Daten vorhanden =&gt; Überprüfen Sie <code class="filename">icinga.log</code>, ob IDOMOD zu Beginn geladen wird. Falls nicht,
+          aktivieren Sie das Event Broker Modul in <code class="filename">icinga.cfg</code> so wie im Icinga Core im <a class="link" href="quickstart-idoutils.html" title="Icinga-Schnellstart mit IDOUtils">IDOUtils Quickstart Guide</a> beschrieben.</p>
+        </li>
+<li class="listitem">
+          <p>IDOUtils DB-Schema ist die aktuellste Version? =&gt; Falls nicht, überprüfen Sie mögliche Upgrades anhand der Docs
+          dafür.</p>
+        </li>
+<li class="listitem">
+          <p>Sockets sind korrekt definiert? =&gt; Unix oder TCP Socket, TCP wahlweise mit oder ohne SSL</p>
+        </li>
+</ul></div>
 
       <p><span class="bold"><strong>Testing the Web (stellen Sie sicher, dass PHPUnit installiert ist): </strong></span></p>
 
@@ -791,68 +831,82 @@ Alias /icinga-web /usr/local/icinga-web/pub
       </td></tr>
 </table></div>
 
-      <p>* PHP Fatal error: Allowed memory size of ... bytes exhausted (tried to allocate ... bytes) =&gt; Überprüfen Sie Ihre
-      <code class="filename">php.ini</code> (apache2 und cli) und setzen Sie den Wert memory_limit auf 128M oder höher.</p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+          <p>PHP Fatal error: Allowed memory size of ... bytes exhausted (tried to allocate ... bytes) =&gt; Überprüfen Sie Ihre
+          <code class="filename">php.ini</code> (apache2 und cli) und setzen Sie den Wert memory_limit auf 128M oder höher</p>
+        </li>
+<li class="listitem">
+          <p>PHP Fatal error: Uncaught exception 'AgaviCacheException' with message 'Failed to write cache file
+          /usr/local/icinga-web/app/cache/config/config_handlers.xml_development__xxxx.php" generated from configuration file
+          /usr/local/icinga-web/app/config/config_handlers.xml". Please make sure you have set correct write permissions for directory
+          /usr/local/icinga-web/app/cache.... =&gt; Setzen von safe_mode = off in /etc/php5/apache/php.ini.</p>
 
-      <p>* PHP Fatal error: Uncaught exception 'AgaviCacheException' with message 'Failed to write cache file
-      /usr/local/icinga-web/app/cache/config/config_handlers.xml_development__xxxx.php" generated from configuration file
-      /usr/local/icinga-web/app/config/config_handlers.xml". Please make sure you have set correct write permissions for directory
-      /usr/local/icinga-web/app/cache.... =&gt; Setzen von safe_mode = off in /etc/php5/apache/php.ini.</p>
-      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+          <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Das kann auch ein Hinweis auf ein aktiviertes SELinux sein.</p></td></tr>
+<tr><td align="left" valign="top">
+            <p>Das kann auch ein Hinweis auf ein aktiviertes SELinux sein.</p>
+          </td></tr>
 </table></div>
-
-      <p>* [PHP Error] strtotime(): It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone
-      setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you
-      most likely misspelled the timezone identifier. We selected 'Europe/Berlin' for 'CEST/2.0/DST' instead [line 1548 of
-      /home/xxx/icinga/icinga-web/lib/doctrine/lib/Doctrine/Record.php] =&gt; Sie müssen date.timezone in der <code class="filename">php.ini</code>
-      definieren.</p>
-
-      <p>* -&gt; 500 internal server error! Uncaught exception AgaviException thrown! Your default timezone is 'System/Localtime', ... =
-      &gt; Sie müssen date.timezone in der <code class="filename">php.ini</code> definieren.</p>
-
-      <p>* Keine Verbindung zur API. The API Connector returned the following message: getConnection failed: Database connection failed:
-      SQLSTATE[28000] [1045] Access denied for user 'icinga'@'localhost' (using password: YES))</p>
-
-      <p>=&gt; Überprüfen Sie Ihre IDOUtils DB-Referenzen in der <code class="filename">ido2db.cfg</code> und fügen Sie diese in Ihre
-      Icinga-Web-Konfiguration als bevorzugte DB-Referenzen für Ihre IDO hinzu (siehe Konfiguration der Icinga-API). Ab Icinga-Web1.0.3
-      können die Werte direkt während des configure gesetzt werden.</p>
-
-      <p>* touch: cannot touch `/usr/local/icinga-web/.../cache/testfile.txt': Permission denied</p>
-
-      <p>=&gt; Die Konfiguration in den xml-Dateien wird vom Framework ge-'pre-cached'. Daher müssen spezielle Berechtigungen für die
-      Caching-Verzeichnisse gesetzt werden. Durch die Ausführung von icingaWebTesting.php in etc/tests können die richtigen Berechtigungen
-      automatisch gesetzt werden.</p>
-
-      <p>* PHP Fatal error: Uncaught exception '...' with message 'Couldn't locate driver named mysql' =&gt; Stellen Sie sicher, dass php
-      pdo installiert und geladen ist, auch wenn testdeps sagt, dass alles in Ordnung ist.</p>
-
-      <p>* Das Login wird nicht angezeigt =&gt; Aktivieren Sie short_open_tag in Ihrer <code class="filename">php.ini</code>.</p>
-
-      <p>=&gt; Editieren Sie open_basedir in Ihrer <code class="filename">php.ini</code> und fügen Sie die Installationsverzeichnisse von
-      Icinga-Web und von Icinga-API (z.B. <code class="filename">/usr/local/icinga/share/</code>) hinzu.</p>
-
-      <p>* Leeres Icinga-Web? =&gt; Wenn mod_rewrite aktiviert ist und 'index.php' erscheint in der angefragten URL, dann funktioniert
-      das Portal nicht. Entfernen Sie index.php aus Ihrer URL und alles sollte funktionieren</p>
-
-      <p>* Die Ergebnisse in den Status Cronks passen nicht zu Ihrer Konfiguration? =&gt; Überprüfen Sie in Ihrem Backend, d.h. IDOUtils
-      DB, welche Werte für die Status-Tabellen selektiert werden.</p>
-
-      <p>* Keine Daten in den Cronks ? =&gt; Überprüfen Sie ob alle Berechtigungen korrekt gesetzt sind, insbesondere von log/. Weiterhin
-      können Sie die angezeigten Daten in Ihrem Browser debuggen. Ausführliche Informationen dazu finden Sie im Icinga Wiki
-      https://wiki.icinga.org/display/Dev/Icinga+Web+Testing</p>
+        </li>
+<li class="listitem">
+          <p>[PHP Error] strtotime(): It is not safe to rely on the system's timezone settings. You are *required* to use the
+          date.timezone setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting
+          this warning, you most likely misspelled the timezone identifier. We selected 'Europe/Berlin' for 'CEST/2.0/DST' instead [line
+          1548 of /home/xxx/icinga/icinga-web/lib/doctrine/lib/Doctrine/Record.php] =&gt; Sie müssen date.timezone in der
+          <code class="filename">php.ini</code> definieren.</p>
+        </li>
+<li class="listitem">
+          <p>-&gt; 500 internal server error! Uncaught exception AgaviException thrown! Your default timezone is 'System/Localtime', ...
+          = &gt; Sie müssen date.timezone in der <code class="filename">php.ini</code> definieren.</p>
+        </li>
+<li class="listitem">
+          <p>Keine Verbindung zur API. The API Connector returned the following message: getConnection failed: Database connection
+          failed: SQLSTATE[28000] [1045] Access denied for user 'icinga'@'localhost' (using password: YES)) =&gt; Überprüfen Sie Ihre
+          IDOUtils DB-Referenzen in der <code class="filename">ido2db.cfg</code> und fügen Sie diese in Ihre Icinga-Web-Konfiguration als bevorzugte
+          DB-Referenzen für Ihre IDO hinzu (siehe Konfiguration der Icinga-API). Ab Icinga-Web1.0.3 können die Werte direkt während des
+          configure gesetzt werden.</p>
+        </li>
+<li class="listitem">
+          <p>touch: cannot touch `/usr/local/icinga-web/.../cache/testfile.txt': Permission denied =&gt; Die Konfiguration in den
+          xml-Dateien wird vom Framework ge-'pre-cached'. Daher müssen spezielle Berechtigungen für die Caching-Verzeichnisse gesetzt
+          werden. Durch die Ausführung von icingaWebTesting.php in etc/tests können die richtigen Berechtigungen automatisch gesetzt
+          werden.</p>
+        </li>
+<li class="listitem">
+          <p>PHP Fatal error: Uncaught exception '...' with message 'Couldn't locate driver named mysql' =&gt; Stellen Sie sicher, dass
+          php pdo installiert und geladen ist, auch wenn testdeps sagt, dass alles in Ordnung ist.</p>
+        </li>
+<li class="listitem">
+          <p>Das Login wird nicht angezeigt =&gt; Aktivieren Sie short_open_tag in Ihrer <code class="filename">php.ini</code>. =&gt; Editieren
+          Sie open_basedir in Ihrer <code class="filename">php.ini</code> und fügen Sie die Installationsverzeichnisse von Icinga-Web und von
+          Icinga-API (z.B. <code class="filename">/usr/local/icinga/share/</code>) hinzu.</p>
+        </li>
+<li class="listitem">
+          <p>Leeres Icinga-Web? =&gt; Wenn mod_rewrite aktiviert ist und 'index.php' erscheint in der angefragten URL, dann funktioniert
+          das Portal nicht. Entfernen Sie index.php aus Ihrer URL und alles sollte funktionieren</p>
+        </li>
+<li class="listitem">
+          <p>Die Ergebnisse in den Status Cronks passen nicht zu Ihrer Konfiguration? =&gt; Überprüfen Sie in Ihrem Backend, d.h.
+          IDOUtils DB, welche Werte für die Status-Tabellen selektiert werden.</p>
+        </li>
+<li class="listitem">
+          <p>Keine Daten in den Cronks ? =&gt; Überprüfen Sie ob alle Berechtigungen korrekt gesetzt sind, insbesondere von log/.
+          Weiterhin können Sie die angezeigten Daten in Ihrem Browser debuggen. Ausführliche Informationen dazu finden Sie im Icinga-Wiki
+          <code class="uri">https://wiki.icinga.org/display/Dev/Icinga+Web+Testing</code></p>
+        </li>
+</ul></div>
 
       <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id1545874"></a>
+  <a class="indexterm" name="id1592072"></a>
 
-  <a class="indexterm" name="id1546167"></a>
+  <a class="indexterm" name="id1592504"></a>
 </div>
 <div class="navfooter">
 <hr>

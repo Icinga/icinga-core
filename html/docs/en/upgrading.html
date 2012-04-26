@@ -91,10 +91,10 @@
 <p> Please make sure that you don't overwrite your configs - always make
   a backup! Don't use <code class="code">make install-config</code> and/or <code class="code">make install-webconf</code> if you want to manually diff the config
   files. </p>
-<pre class="programlisting"> #&gt; make install install-base install-cgis install-html install-init install-commandmode install-idoutils</pre>
-<p>
-  or decide what you want to upgrade by just typing 'make' which shows all available options. Check your config and restart Icinga.
-  </p>
+<pre class="programlisting"> #&gt; make install install-base install-cgis install-html install-init \
+    install-commandmode install-idoutils</pre>
+<p> or decide what you want to upgrade by just typing 'make' which shows all available
+  options. Check your config and restart Icinga. </p>
 <pre class="programlisting"> #&gt; /etc/init.d/icinga checkconfig
  #&gt; /etc/init.d/icinga restart</pre>
 <p>That's it!</p>
@@ -189,15 +189,20 @@
  #&gt; make install
  #&gt; make install-cgis
  #&gt; make install-init</pre>
+
   <p>or simply</p>
-<pre class="screen"> #&gt; make fullinstall</pre>
+
+  <pre class="screen"> #&gt; make fullinstall</pre>
+
   <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
-<tr><td align="left" valign="top"><p>Not till Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall</code> 
-  anymore to avoid accidental overwriting of your config files.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Not till Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall</code> anymore
+    to avoid accidental overwriting of your config files.</p>
+  </td></tr>
 </table></div>
 
   <p>Instead of using "<code class="code">make install-config</code>" copy your configuration files from <code class="filename">&lt;Nagios-path&gt;/etc/</code>
@@ -358,17 +363,17 @@
   backed up all your critical Nagios files before removing the original RPM or APT package, so you can revert back if you encounter
   problems.</p>
 
-  <a class="indexterm" name="id1528959"></a>
+  <a class="indexterm" name="id1440651"></a>
 
-  <a class="indexterm" name="id1528988"></a>
+  <a class="indexterm" name="id1440680"></a>
 
-  <a class="indexterm" name="id1529003"></a>
+  <a class="indexterm" name="id1440648"></a>
 
-  <a class="indexterm" name="id1529016"></a>
+  <a class="indexterm" name="id1440708"></a>
 
-  <a class="indexterm" name="id1529030"></a>
+  <a class="indexterm" name="id1440721"></a>
 
-  <a class="indexterm" name="id1529044"></a>
+  <a class="indexterm" name="id1440735"></a>
 </div>
 <div class="navfooter">
 <hr>
