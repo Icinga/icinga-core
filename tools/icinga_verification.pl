@@ -390,6 +390,17 @@ EOF
 #####################
 # Output Sanitycheck
 #####################
+# Color config
+my $colorgreen = color('green');
+my $colorred = color('red');
+my $coloryellow = color('yellow');
+my $colorreset = color("reset");
+my $ok = "[OK  ]";
+my $warn = "[WARN]";
+my $crit = "[CRIT]";
+my $statusok = "$colorgreen $ok $colorreset";
+my $statuswarn = "$coloryellow $warn $colorreset";
+my $statuscrit = "$colorred $crit $colorreset";
 
 if ($sanitycheck){
 print <<EOF;
@@ -397,39 +408,42 @@ print <<EOF;
 ######                 Sanity Check                   ######
 ############################################################
 
-Mysql Connection with ido2db.cfg:
+Database Tests:
 EOF
 if (!$dbh_cfg_error){
-	print color("green"), " Connection OK!", color("reset");	
+	print $statusok,"Connection to DB via ido2db.cfg";
 }
 else{
-	print color("red"), " $dbh_cfg_error\n", color("reset");
+	print $statuscrit,"$dbh_cfg_error\n";
 }
 # MYSQL User Input Error
-print color("red"), " $dbh_conn_error\n", color("reset");
-print "\n";
+if ($dbh_conn_error){
+	print $statuscrit,"$dbh_conn_error\n";
+}
 
 print <<EOF;
-ido2db/idomod Checks:
+
+
+ido2db/idomod Tests:
 EOF
 # ido2db -> idomod socket
 if ($ido2dbsocket eq $idomodsocket){
-	print color("green"), " ido2db/idomod - listen/write to the same socket", color("reset");
+	print $statusok,"ido2db/idomod Socket - same socket configured";
 } else {
-	print color("red"), " ido2db/idomod sockets are different!", color("reset");
+	print $statuscrit,"ido2db/idomod Sockets are different configured";
 }
-print "\n";
 
 ### icinga.cfg checks ###
 print <<EOF;
+
 
 icinga.cfg Checks:
 EOF
 
 if ($icingacfguser eq 'root'){
-	print " icinga_user =", color("red"), " $icingacfguser", color("reset");
+	print $statuswarn, " icinga_user = $icingacfguser";
 } else {
-	print " icinga_user =", color("green"), " $icingacfguser", color("reset");
+	print $statusok, " icinga_user = $icingacfguser";
 }
 
 ### proccess status ###
@@ -441,16 +455,14 @@ EOF
 foreach my $service (keys(%{ $config_ref->{'services'} })) {
     my $binary = which (@{ $config_ref->{'services'}->{$service}->{'binaries'} });
     if (! $binary ) {
-        print color("yellow"), " [$service]",color("reset"), " no binary found.\n";
+        print $statuswarn, "$service - no binary found.\n";
     } else {
         my $binary = basename($binary);
         my $status = qx(/bin/ps cax | /bin/grep $binary);
         if ( !$status ) {
-            print color("red"), " [$service]", color("reset"),
-                " found but not running\n";
+            print $statuscrit, "$service - found but not running\n";
         } else {
-            print color("green"), " [$service]", color("reset"),
-                " found and started\n";
+            print $statusok, "$service - found and started\n";
         }
     }
 }
@@ -678,7 +690,12 @@ icinga_verification -r|--reporting=[Shows the Verbose Reporting Output]
 
 This script will check certain settings/entries of your OS environ-
 ment and Icinga Config to assist you in finding problems when you 
-are using Icinga. 
+are using Icinga.
 
+Sanity Check States:
+Output starts with a letter with the following meaning: 
+[OK  ] ok message.
+[WARN] warning message, might effect the operation of Icinga
+[CRIT] error message: Icinga will not work without resolving the problem(s)
 EOF
 }
