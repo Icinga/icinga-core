@@ -43,19 +43,21 @@ sub get_error_from_log;
 ### preconfiguration ###
 #Critical System Services
 my $config_ref = {
-    services => {
+    critical_services => {
         apache2 => { binaries => [ 'httpd', 'apache2' ] },
         mysql => { binaries => [ 'mysqld' ] },
         icinga => { binaries => [ 'icinga' ] },
         ido2db => { binaries => [ 'ido2db' ] },
-    }
+    },
+	noncritical_services => {
+		snmptt => { binaries => [ 'snmptt' ] },
+	}   
 };
 #Non Critical System Services
-my $config_ref_noncrit = {
-    services => {
-		snmptt => { binaries => [ 'snmptt' ] },
-    }
-};
+#my $config_ref_noncrit = {
+#    services => {		
+#    }
+#};
 
 ################################
 # Option parsing
@@ -461,8 +463,8 @@ print <<EOF;
 
 Icinga essential Services:
 EOF
-foreach my $service (keys(%{ $config_ref->{'services'} })) {
-    my $binary = which (@{ $config_ref->{'services'}->{$service}->{'binaries'} });
+foreach my $service (keys(%{ $config_ref->{'critical_services'} })) {
+    my $binary = which (@{ $config_ref->{'critical_services'}->{$service}->{'binaries'} });
     if (! $binary ) {
         print $statuswarn, "$service - no binary found.\n";
     } else {
@@ -475,13 +477,12 @@ foreach my $service (keys(%{ $config_ref->{'services'} })) {
         }
     }
 }
-
 print <<EOF;
 
-Non-Critical Services:
+non-critical Services:
 EOF
-foreach my $service (keys(%{ $config_ref_noncrit->{'services'} })) {
-    my $binary = which (@{ $config_ref_noncrit->{'services'}->{$service}->{'binaries'} });
+foreach my $service (keys(%{ $config_ref->{'noncritical_services'} })) {
+    my $binary = which (@{ $config_ref->{'noncritical_services'}->{$service}->{'binaries'} });
     if (! $binary ) {
         print $statuswarn, "$service - no binary found.\n";
     } else {
@@ -494,6 +495,7 @@ foreach my $service (keys(%{ $config_ref_noncrit->{'services'} })) {
         }
     }
 }
+
 print <<EOF;
 
 ############################################################
