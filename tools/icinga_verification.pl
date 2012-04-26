@@ -83,6 +83,7 @@ print <<EOF;
 ############################################################
 EOF
 
+
 #Check if we are on Windows
 my $oscheck = $^O;
 if ( $oscheck eq 'MSWin32' ) {
@@ -283,6 +284,18 @@ my $idomodssl = get_key_from_ini("$icinga_base/idomod.cfg", 'use_ssl');
 #idomod TCP port
 my $idomodtcpport = get_key_from_ini("$icinga_base/idomod.cfg", 'tcp_port');
 
+#### ressource.cfg / check user1 for correct Plugin Path####
+my $plugin_path = '';
+my $raw_plugin_path = get_key_from_ini("$icinga_base/resource.cfg", '\$USER1\$');
+chomp($raw_plugin_path);
+#only show path if the plugin check_ping was found
+if ($raw_plugin_path){
+	$plugin_path = $raw_plugin_path if -e "$raw_plugin_path/check_ping";
+} if (!$plugin_path){
+	$plugin_path = "\$USER1\$ is no Path!";
+}
+
+
 #### MySQL Querys ####
 my $dbh_conn_error = '';
 my @result_icingadb  = ();
@@ -369,10 +382,11 @@ Icinga General Informations:
  idomod Connections: $idocon
  ido2db last Connection Info:
  @result_icingaconninfo 
-Icinga.cfg Information:
+Icinga.cfg/resource.cfg Information:
  External Commands(1=on,0=off): $icingaextcmd
  Icinga User: $icingacfguser
  Icinga Group: $icingacfggroup
+ Plugin Path: $plugin_path
  
 ido2db Information:
  Server Type: $ido2dbservertype
@@ -443,15 +457,20 @@ if ($ido2dbsocket eq $idomodsocket){
 print <<EOF;
 
 
-icinga.cfg Checks:
+Config File Checks:
 EOF
 # checks for a defined root user
 if ($icingacfguser eq 'root'){
-	print $statuswarn, " icinga_user = $icingacfguser";
+	print $statuswarn, "icinga.cfg - icinga_user = $icingacfguser";
 } else {
-	print $statusok, " icinga_user = $icingacfguser";
+	print $statusok, "icinga.cfg - icinga_user = $icingacfguser";
 }
-
+print "\n";
+if ($plugin_path){
+	print $statuswarn, "resource.cfg - \$USER1\$ is no Path";
+} else {	
+	print $statusok, "resource.cfg - Plugin Path $plugin_path";
+}
 ### Service Status ###
 print <<EOF;
 
