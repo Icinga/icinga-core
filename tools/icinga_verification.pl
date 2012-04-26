@@ -40,13 +40,19 @@ sub get_icinga_version;
 sub get_ido2db_version;
 sub get_error_from_log;
 
-# preconfiguration
+### preconfiguration ###
+#Critical System Services
 my $config_ref = {
     services => {
         apache2 => { binaries => [ 'httpd', 'apache2' ] },
         mysql => { binaries => [ 'mysqld' ] },
         icinga => { binaries => [ 'icinga' ] },
         ido2db => { binaries => [ 'ido2db' ] },
+    }
+};
+#Non Critical System Services
+my $config_ref_noncrit = {
+    services => {
 		snmptt => { binaries => [ 'snmptt' ] },
     }
 };
@@ -446,14 +452,33 @@ if ($icingacfguser eq 'root'){
 	print $statusok, " icinga_user = $icingacfguser";
 }
 
-### proccess status ###
+### Service Status ###
 print <<EOF;
 
 
-Process Status:
+Icinga essential Services:
 EOF
 foreach my $service (keys(%{ $config_ref->{'services'} })) {
     my $binary = which (@{ $config_ref->{'services'}->{$service}->{'binaries'} });
+    if (! $binary ) {
+        print $statuswarn, "$service - no binary found.\n";
+    } else {
+        my $binary = basename($binary);
+        my $status = qx(/bin/ps cax | /bin/grep $binary);
+        if ( !$status ) {
+            print $statuscrit, "$service - found but not running\n";
+        } else {
+            print $statusok, "$service - found and started\n";
+        }
+    }
+}
+
+print <<EOF;
+
+Non-Critical Services:
+EOF
+foreach my $service (keys(%{ $config_ref_noncrit->{'services'} })) {
+    my $binary = which (@{ $config_ref_noncrit->{'services'}->{$service}->{'binaries'} });
     if (! $binary ) {
         print $statuswarn, "$service - no binary found.\n";
     } else {
