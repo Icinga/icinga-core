@@ -442,6 +442,13 @@ install-idoutils:
 		echo "" ;\
 		echo "*** IDOUtils installed ***" ;\
 		echo "" ;\
+		echo "!!! ATTENTION !!!" ; \
+        	echo "	idomod.o was renamed to idomod.so, module extension is now .so" ;\
+		echo "	idomod.so will now be installed to $(DESTDIR)$(LIBDIR) " ;\
+		echo "!!! ATTENTION !!!" ;\
+		echo "" ;\
+		echo "Please check Changelog - CHANGES for more information!" ;\
+		echo "" ;\
 	else \
 		echo "" ;\
 		echo "Sorry, IDOUtils not enabled!" ;\
