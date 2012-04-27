@@ -39,6 +39,7 @@ ENHANCEMENTS
 
 * idoutils: add new index for state in table statehistory #2274 - TD
 * idoutils: add is_in_effect and trigger_time to scheduleddowntime and downtimehistory tables #2539 - MF
+* idoutils: change varchar(255) to TEXT in mysql (not cs and address rfc columns) #2181 - MF
 
 * install: add configure option --with-temp-file=<filepath> to set temp_file for icinga.cfg #2121 - MF
 * install: add --with-plugin-dir to configure for setting the plugins path accordingly #2344 - MF
@@ -230,6 +231,8 @@ CHANGES
 * idoutils: Oracle only->change method retrieving lastid, introduce individual sequence caching sizes #2510
 
 * idoutils: fix pgsql unix_timestamp cannot handle timstamp with timezone #2203
+
+* idoutils change varchar(255) to TEXT in mysql # 2181
 
 
 1.6.1 - 02/12/2011

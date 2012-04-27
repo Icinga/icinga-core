@@ -218,7 +218,6 @@ int process_external_command1(char *cmd) {
 	time_t entry_time = 0L;
 	int command_type = CMD_NONE;
 	char *temp_ptr = NULL;
-	char *username = NULL;
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "process_external_command1()\n");
 
