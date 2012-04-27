@@ -42,9 +42,6 @@ alter table icinga_commenthistory modify comment_data TEXT;
 -- comments
 alter table icinga_comments modify comment_data TEXT;
 
--- configfiles
-alter table icinga_configfiles modify configfile_path TEXT;
-
 -- configfilevariables
 alter table icinga_configfilevariables modify varvalue TEXT;
 

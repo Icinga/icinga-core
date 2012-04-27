@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS icinga_configfiles (
   configfile_id serial,
   instance_id bigint unsigned default 0,
   configfile_type smallint default 0,
-  configfile_path TEXT character set latin1  default '',
+  configfile_path varchar(255) character set latin1  default '',
   PRIMARY KEY  (configfile_id),
   UNIQUE KEY instance_id (instance_id,configfile_type,configfile_path)
 ) ENGINE=InnoDB  COMMENT='Configuration files';
