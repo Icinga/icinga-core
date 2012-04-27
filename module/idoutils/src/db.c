@@ -2381,6 +2381,15 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 		return NULL;
 	}
 
+#ifdef USE_ORACLE
+	/* oracle doesnt need escaping because of bind variables,
+	 * but we need to allocate the buffer #2534
+	 * */
+	strcpy(newbuf,buf);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string oracle changed string ('%s')\n", newbuf);
+	return newbuf;
+#endif
+
 
 	/* escape characters */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
@@ -2426,17 +2435,6 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 	newbuf[y] = '\0';
 
 #endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-	for (x = 0, y = 0; x < z; x++) {
-
-		if (buf[x] == '\'')
-			newbuf[y++] = '\'';
-
-		newbuf[y++] = buf[x];
-	}
-#endif /* Oracle ocilib specific */
 
 	/* terminate escape string */
 	newbuf[y] = '\0';
