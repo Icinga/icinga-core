@@ -638,7 +638,9 @@ CREATE INDEX customvariablest_idx ON customvariablestatus(varname)
 CREATE TABLE dbversion (
   id integer ,
   name varchar2(10),
-  version varchar2(10)
+  version varchar2(10),
+  create_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
+  modify_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR')
 )tablespace &&DATATBS;
 alter table dbversion add constraint dbversion_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;

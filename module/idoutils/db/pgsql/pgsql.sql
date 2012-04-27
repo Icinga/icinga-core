@@ -31,9 +31,10 @@ BEGIN
         IF EXISTS( SELECT * FROM icinga_dbversion WHERE name='idoutils')
         THEN
                 UPDATE icinga_dbversion
-                SET version=version_i WHERE name='idoutils';
+                SET version=version_i, modify_time=NOW()
+		WHERE name='idoutils';
         ELSE
-                INSERT INTO icinga_dbversion (dbversion_id, name, version) VALUES ('1', 'idoutils', version_i);
+                INSERT INTO icinga_dbversion (dbversion_id, name, version, create_time, modify_time) VALUES ('1', 'idoutils', version_i, NOW(), NOW());
         END IF;
 
         RETURN;
@@ -402,6 +403,8 @@ CREATE TABLE  icinga_dbversion (
   dbversion_id bigserial,
   name TEXT  default '',
   version TEXT  default '',
+  create_time timestamp with time zone default '1970-01-01 00:00:00',
+  modify_time timestamp with time zone default '1970-01-01 00:00:00',
   CONSTRAINT PK_dbversion_id PRIMARY KEY (dbversion_id) ,
   CONSTRAINT UQ_dbversion UNIQUE (name)
 ) ;

@@ -146,8 +146,15 @@ alter table icinga_systemcommands modify output TEXT;
 alter table icinga_timeperiods modify alias TEXT;
 
 -- -----------------------------------------
+-- #2562
+-- -----------------------------------------
+
+alter table icinga_dbversion add create_time timestamp NOT NULL DEFAULT '0000-00-00 00:00:00';
+alter table icinga_dbversion add modify_time timestamp NOT NULL DEFAULT '0000-00-00 00:00:00';
+
+-- -----------------------------------------
 -- update dbversion
 -- -----------------------------------------
 
-INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.7.0') ON DUPLICATE KEY UPDATE version='1.7.0';
+INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '1.7.0', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='1.7.0', modify_time=NOW();
 
