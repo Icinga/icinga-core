@@ -84,6 +84,7 @@ FIXES
 * core: drop abbreviations in debug log and make them more telling #2138 - MF
 * core: remove deprecated code for log_external_commands_user #1619 - MF
 * core: fix scheduled_downtime_depth falsely incremented if in flexible downtime with duration < end-starttime window #2536 - MF
+* core: log error reason when failing to create the status file (Ulf Lange) #2560 - MF
 
 * classic ui: Fixed status totals are wrong when searching #1524 - RB
 * classic ui: Fixed wrong URLs for status.cgi overview #2173 - RB
