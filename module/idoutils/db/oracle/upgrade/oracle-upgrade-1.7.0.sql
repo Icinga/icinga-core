@@ -4,7 +4,7 @@
 -- run it as icinga database user from directory of this file
 -- sqlplus icinga@<instance> @ oracle-upgrade.1-7.0.sql
 -- -----------------------------------------
--- Copyright (c) 2010-2011 Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2010-2012 Icinga Development Team (http://www.icinga.org)
 --
 -- Please check http://docs.icinga.org for upgrading information!
 -- -----------------------------------------
@@ -118,15 +118,21 @@ alter table scheduleddowntime add is_in_effect integer default 0;
 alter table scheduleddowntime add trigger_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR');
 
 -- -----------------------------------------
+-- #2562
+-- -----------------------------------------
+alter table dbversion add create_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR');
+alter table dbversion add modify_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR');
+
+-- -----------------------------------------
 -- finally update dbversion
 -- -----------------------------------------
 
 MERGE INTO dbversion
 	USING DUAL ON (name='idoutils')
 	WHEN MATCHED THEN
-		UPDATE SET version='&&ICINGA_VERSION'
+		UPDATE SET version='&&ICINGA_VERSION', modify_time=CURRENT_TIMESTAMP
 	WHEN NOT MATCHED THEN
-		INSERT (id, name, version) VALUES ('1', 'idoutils', '&&ICINGA_VERSION');
+		INSERT (id, name, version, create_time, modify_time) VALUES ('1', 'idoutils', '&&ICINGA_VERSION', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 /* last check */
 select object_name,object_type,status  from user_objects where status !='VALID';

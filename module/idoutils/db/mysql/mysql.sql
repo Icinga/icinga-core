@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS icinga_configfiles (
   configfile_id serial,
   instance_id bigint unsigned default 0,
   configfile_type smallint default 0,
-  configfile_path TEXT character set latin1  default '',
+  configfile_path varchar(255) character set latin1  default '',
   PRIMARY KEY  (configfile_id),
   UNIQUE KEY instance_id (instance_id,configfile_type,configfile_path)
 ) ENGINE=InnoDB  COMMENT='Configuration files';
@@ -373,6 +373,8 @@ CREATE TABLE IF NOT EXISTS icinga_dbversion (
   dbversion_id serial,
   name varchar(10) character set latin1  default '',
   version varchar(10) character set latin1  default '',
+  create_time timestamp default '0000-00-00 00:00:00',
+  modify_time timestamp default '0000-00-00 00:00:00',
   PRIMARY KEY (dbversion_id),
   UNIQUE KEY dbversion (name)
 ) ENGINE=InnoDB;
@@ -1586,6 +1588,6 @@ CREATE INDEX services_combined_object_idx ON icinga_services(service_object_id, 
 -- -----------------------------------------
 -- set dbversion
 -- -----------------------------------------
-INSERT INTO icinga_dbversion (name, version) VALUES ('idoutils', '1.7.0') ON DUPLICATE KEY UPDATE version='1.7.0';
+INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '1.7.0', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='1.7.0', modify_time=NOW();
 
 

@@ -63,7 +63,7 @@ SET ESCAPE \
 -- -----------------------------------------
 -- set dbversion
 -- -----------------------------------------
-INSERT INTO dbversion (id, name, version) VALUES ('1', 'idoutils', '&&ICINGA_VERSION');
+INSERT INTO dbversion (id, name, version, create_time, modify_time) VALUES ('1', 'idoutils', '&&ICINGA_VERSION', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 commit;
 /*goodbye */
 exit;
