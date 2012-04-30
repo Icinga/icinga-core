@@ -64,6 +64,7 @@
 #define NEBMODULE_ERROR_NO_INIT     3    /* _module_init() function was not found in module */
 #define NEBMODULE_ERROR_BAD_INIT    4    /* _module_init() function returned a bad code */
 #define NEBMODULE_ERROR_API_VERSION 5    /* module version is incompatible with current api */
+#define NEBMODULE_ERROR_IDO_VERSION 6    /* ido module version is incompatible with current core */
 
 
 

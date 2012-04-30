@@ -184,8 +184,13 @@ int neb_load_module(nebmodule *mod) {
 		return ERROR;
 
 	/* add a compatibility check for 1.7 change of idomod.o -> idomod.so */
-	if (strstr(mod->filename, "idomod.o") != NULL)
-		logit(NSLOG_RUNTIME_ERROR, FALSE, "Error: trying to load module '%s' which has been deprecated! Check Changelog and upgrade docs!\n", mod->filename);
+	/* FIXME - drop in 1.8 */
+	if (strstr(mod->filename, "idomod.o") != NULL) {
+		logit(NSLOG_RUNTIME_ERROR, FALSE, "Error: trying to load module '%s' which has been moved to libdir/idomod.so in Icinga 1.7!\n", mod->filename);
+		logit(NSLOG_RUNTIME_ERROR, FALSE, "Check Changelog and upgrade docs to update the broker module entry!\n");
+		neb_unload_module(mod, NEBMODULE_FORCE_UNLOAD, NEBMODULE_ERROR_IDO_VERSION);
+		return ERROR;
+	}
 
 	/**********
 	   Using dlopen() is great, but a real danger as-is.  The problem with loaded modules is that if you overwrite the original file (e.g. using 'mv'),
@@ -275,7 +280,24 @@ int neb_load_module(nebmodule *mod) {
 		return ERROR;
 	}
 
-	logit(NSLOG_INFO_MESSAGE, FALSE, "Event broker module '%s' initialized successfully.\n", mod->filename);
+	/* locate the specific modules we know about (idomod, ...) and require minimum version, after calling nebmodule_init, this should be set */
+	/* check if module exports its title? */
+	if(mod->info[NEBMODULE_MODINFO_TITLE] != NULL) {
+		/* check if we are going to load idomod, which we know about */
+		if(strstr(mod->info[NEBMODULE_MODINFO_TITLE], "IDOMOD") != NULL) {
+			/* check if the version complies with the core's version, as they are tied together */
+			if(strcmp(mod->info[NEBMODULE_MODINFO_VERSION], PROGRAM_VERSION) != 0) {
+				logit(NSLOG_RUNTIME_ERROR, FALSE, "Error: Module '%s' exports version '%s' different to core version '%s'.  Module will be unloaded.\n", mod->filename, mod->info[NEBMODULE_MODINFO_VERSION], PROGRAM_VERSION);
+				neb_unload_module(mod, NEBMODULE_FORCE_UNLOAD, NEBMODULE_ERROR_IDO_VERSION);
+				return ERROR;
+			}
+			logit(NSLOG_INFO_MESSAGE, FALSE, "Event broker module '%s' version '%s' from '%s' initialized successfully.\n", mod->info[NEBMODULE_MODINFO_TITLE], mod->info[NEBMODULE_MODINFO_VERSION], mod->filename);
+		} else {
+			logit(NSLOG_INFO_MESSAGE, FALSE, "Event broker module '%s' from '%s' initialized successfully.\n", mod->info[NEBMODULE_MODINFO_TITLE], mod->filename);
+		}
+	} else {
+		logit(NSLOG_INFO_MESSAGE, FALSE, "Event broker module '%s' initialized successfully.\n", mod->filename);
+	}
 
 	/* locate the de-initialization function (may or may not be present) */
 #ifdef USE_LTDL
