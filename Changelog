@@ -119,6 +119,7 @@ FIXES
 * idoutils: fix pgsql unix_timestamp cannot handle timstamp with timezone #2203 - MF
 
 * install: Fix notification template installation (Todd Zullinger) #2235 - MF
+* install: uninstall old idomod.o #2570 - MF
 
 CHANGES
 * neb api: move creation of notification contact list AFTER event broker callback NEBTYPE_NOTIFICATION_START #2110
