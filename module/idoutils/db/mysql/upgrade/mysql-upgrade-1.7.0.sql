@@ -51,9 +51,6 @@ alter table icinga_contactgroups modify alias TEXT;
 -- contactnotificationmethods
 alter table icinga_contactnotificationmethods modify command_args TEXT;
 
--- contact_notificationcommands
-alter table icinga_contact_notificationcommands modify command_args TEXT;
-
 -- customvariables
 alter table icinga_customvariables modify varname TEXT;
 alter table icinga_customvariables modify varvalue TEXT;
