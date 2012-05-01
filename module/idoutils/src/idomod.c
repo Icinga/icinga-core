@@ -101,6 +101,13 @@ int nebmodule_init(int flags, char *args, void *handle) {
 	/* save our handle */
 	idomod_module_handle = handle;
 
+	/* set some info for the core to be checked */
+	neb_set_module_info(idomod_module_handle, NEBMODULE_MODINFO_TITLE, IDOMOD_NAME);
+	neb_set_module_info(idomod_module_handle, NEBMODULE_MODINFO_AUTHOR, "Ethan Galstad, Icinga Development Team");
+	neb_set_module_info(idomod_module_handle, NEBMODULE_MODINFO_VERSION, IDO_VERSION);
+	neb_set_module_info(idomod_module_handle, NEBMODULE_MODINFO_LICENSE, "GPL v2");
+	neb_set_module_info(idomod_module_handle, NEBMODULE_MODINFO_DESC, "Icinga Data Out Module, sends data to socket for ido2db");
+
 	/* log module info to the Icinga log file */
 	snprintf(temp_buffer, sizeof(temp_buffer) - 1, "idomod: %s %s (%s) %s", IDOMOD_NAME, IDO_VERSION, IDO_DATE, IDO_COPYRIGHT);
 	temp_buffer[sizeof(temp_buffer)-1] = '\x0';
