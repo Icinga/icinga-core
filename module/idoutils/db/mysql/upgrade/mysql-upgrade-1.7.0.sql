@@ -52,11 +52,9 @@ alter table icinga_contactgroups modify alias TEXT;
 alter table icinga_contactnotificationmethods modify command_args TEXT;
 
 -- customvariables
-alter table icinga_customvariables modify varname TEXT;
 alter table icinga_customvariables modify varvalue TEXT;
 
 -- customvariablestatus
-alter table icinga_customvariablestatus modify varname TEXT;
 alter table icinga_customvariablestatus modify varvalue TEXT;
 
 -- downtimehistory
