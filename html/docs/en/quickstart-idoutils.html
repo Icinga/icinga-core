@@ -607,7 +607,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Install IDOUtils and applicable event broker modules only using the primary "make install" target. Do not manually copy and
-    overwrite the existing module as this will result in a segfault on icinga core which is using <code class="filename">idomod.o</code> directly
+    overwrite the existing module as this will result in a segfault on icinga core which is using <code class="filename">idomod.so</code> directly
     preventing usage of a temporary copy explicitly. This is useful for <a class="link" href="http://omdistro.org/" target="_top">OMD.</a></p>
   </td></tr>
 </table></div>
@@ -680,7 +680,7 @@
 
     <pre class="screen"> define module{
         module_name    ido_mod
-        path           /usr/local/icinga/bin/idomod.o
+        path           /usr/local/icinga/bin/idomod.so
         module_type    neb
         args           config_file=/usr/local/icinga/etc/idomod.cfg
         }</pre>
@@ -990,9 +990,9 @@
   no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a>
   about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id1438225"></a>
+  <a class="indexterm" name="idp612368"></a>
 
-  <a class="indexterm" name="id1438238"></a>
+  <a class="indexterm" name="idp613856"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -626,7 +626,7 @@
 <tr><td align="left" valign="top">
     <p>Installieren Sie die IDOUtils und andere Ereignis-Broker-Module nur mit dem primären Ziel <span class="bold"><strong>make
     instal</strong></span><span class="bold"><strong>l</strong></span>. Manuelles Kopieren und Überschreiben des vorhandenen Moduls erzeugt einen Segfault
-    des Icinga Kerns mit Hilfe von idomod.o, da eine Verwendung einer temporären Kopie explizit verhindert werden soll. Dies ist nützlich
+    des Icinga-Kerns mit Hilfe von idomod.so, da eine Verwendung einer temporären Kopie explizit verhindert werden soll. Dies ist nützlich
     für <a class="link" href="http://omdistro.org/" target="_top">OMD</a></p>
   </td></tr>
 </table></div>
@@ -700,7 +700,7 @@
 
     <pre class="screen"> define module{
         module_name    ido_mod
-        path           /usr/local/icinga/bin/idomod.o
+        path           /usr/local/icinga/bin/idomod.so
         module_type    neb
         args           config_file=/usr/local/icinga/etc/idomod.cfg
         }</pre>
@@ -1072,9 +1072,9 @@
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="id1501449"></a>
+  <a class="indexterm" name="idp632928"></a>
 
-  <a class="indexterm" name="id1501462"></a>
+  <a class="indexterm" name="idp634576"></a>
 </div>
 <div class="navfooter">
 <hr>
