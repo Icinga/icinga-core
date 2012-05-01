@@ -320,7 +320,7 @@ CREATE TABLE IF NOT EXISTS icinga_contact_notificationcommands (
   contact_id bigint unsigned default 0,
   notification_type smallint default 0,
   command_object_id bigint unsigned default 0,
-  command_args TEXT character set latin1  default '',
+  command_args varchar(255) character set latin1  default '',
   PRIMARY KEY  (contact_notificationcommand_id),
   UNIQUE KEY contact_id (contact_id,notification_type,command_object_id,command_args)
 ) ENGINE=InnoDB  COMMENT='Contact host and service notification commands';
