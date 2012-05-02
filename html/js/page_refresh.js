@@ -6,35 +6,51 @@ var refresh_rate=60;
 var do_refresh=true;
 */
 
-function update_text(id,text) {
+function icinga_update_text(id,text) {
 	if (document.getElementById(id) != null )
 		document.getElementById(id).innerHTML = text;
 }
 
-function update_refresh_counter() {
+function icinga_update_refresh_counter() {
 	if (counter_seconds<=0) {
-		update_text('refresh_text','- Updating now');
+		icinga_update_text('refresh_text','Updating now');
 		window.location.href=window.location.href;
-	} else if(do_refresh){ 
-		update_text('refresh_text','- Update in '+counter_seconds+' second'+((counter_seconds != 1) ? 's':''));
-		update_text('refresh_button','[pause]');
+	} else if(do_refresh) {
+		icinga_update_text('refresh_text','Update in '+counter_seconds+' second'+((counter_seconds != 1) ? 's':''));
+		icinga_update_text('refresh_button','[pause]');
 		counter_seconds--;
-		setTimeout("update_refresh_counter()",1000);
+		setTimeout("icinga_update_refresh_counter()",1000);
 	} else {
-		update_text('refresh_text','- Update is PAUSED');
-		update_text('refresh_button','[continue]');
+		icinga_update_text('refresh_text','Update is PAUSED');
+		icinga_update_text('refresh_button','[continue]');
 	}
 }
 
-function reset_counter() {
-	counter_seconds=refresh_rate;
+function icinga_reset_counter() {
+	counter_seconds = refresh_rate;
 }
 
-function toggle_refresh() {
+function icinga_toggle_refresh() {
 	do_refresh = (do_refresh) ? false : true;
-	reset_counter();
-	update_refresh_counter();
+	icinga_reset_counter();
+	icinga_update_refresh_counter();
 }
 
-reset_counter();
-update_refresh_counter();
+function icinga_do_refresh() {
+	do_refresh = true;
+	counter_seconds = 0;
+	icinga_update_refresh_counter();
+}
+
+function icinga_stop_refresh() {
+	do_refresh = false;
+	icinga_update_refresh_counter();
+}
+
+function icinga_start_refresh() {
+	do_refresh = true;
+	icinga_update_refresh_counter();
+}
+
+setTimeout("icinga_reset_counter()",100);
+setTimeout("icinga_update_refresh_counter()",100);
