@@ -300,9 +300,6 @@ int main(int argc, char **argv) {
 	/* get the arguments passed in the URL */
 	process_cgivars();
 
-	/* get authentication information */
-	get_authentication_information(&current_authdata);
-
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
 		if (content_type == HTML_CONTENT) {
@@ -325,6 +322,9 @@ int main(int argc, char **argv) {
 	}
 
 	document_header(CGI_ID, TRUE, "Trends");
+
+	/* get authentication information */
+	get_authentication_information(&current_authdata);
 
 	if (compute_time_from_parts == TRUE)
 		compute_report_times();
