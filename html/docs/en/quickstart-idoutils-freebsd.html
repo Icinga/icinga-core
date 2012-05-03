@@ -293,9 +293,9 @@
 <tr><td align="left" valign="top">
     <p>You should include <code class="literal">CFLAGS=..."</code> like specified above. Otherwise you might get the following lines in
     <code class="filename">icinga.log</code>: </p>
-<pre class="screen"> Error: Module &#8216;/usr/local/icinga/bin/idomod.so&#8217; is using an old or unspecified version
+<pre class="screen"> Error: Module &#8216;/usr/local/icinga/lib/idomod.so&#8217; is using an old or unspecified version
  of the event broker API. Module will be unloaded.
- Event broker module &#8216;/usr/local/icinga/bin/idomod.so&#8217; deinitialized successfully.</pre>
+ Event broker module &#8216;/usr/local/icinga/lib/idomod.so&#8217; deinitialized successfully.</pre>
 <p> More details on this error can be found <a class="link" href="http://www.mazej.net/icinga-idomod-o-is-using-an-old-or-unspecified-version-of-the-event-broker-api/" target="_top"> here</a>.</p>
   </td></tr>
 </table></div>
@@ -413,7 +413,7 @@
 
     <pre class="screen"> define module{
         module_name    ido_mod
-        path           /usr/local/icinga/bin/idomod.so
+        path           /usr/local/icinga/lib/idomod.so
         module_type    neb
         args           config_file=/usr/local/icinga/etc/idomod.cfg
         }</pre>
@@ -621,9 +621,9 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="idp745648"></a>
+  <a class="indexterm" name="idp743328"></a>
 
-  <a class="indexterm" name="idp747424"></a>
+  <a class="indexterm" name="idp745104"></a>
 </div>
 <div class="navfooter">
 <hr>
