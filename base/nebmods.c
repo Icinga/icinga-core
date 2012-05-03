@@ -183,15 +183,6 @@ int neb_load_module(nebmodule *mod) {
 	if (mod->should_be_loaded == FALSE)
 		return ERROR;
 
-	/* add a compatibility check for 1.7 change of idomod.o -> idomod.so */
-	/* FIXME - drop in 1.8 */
-	if (strstr(mod->filename, "idomod.o") != NULL) {
-		logit(NSLOG_RUNTIME_ERROR, FALSE, "Error: trying to load module '%s' which has been moved to libdir/idomod.so in Icinga 1.7!\n", mod->filename);
-		logit(NSLOG_RUNTIME_ERROR, FALSE, "Check Changelog and upgrade docs to update the broker module entry!\n");
-		neb_unload_module(mod, NEBMODULE_FORCE_UNLOAD, NEBMODULE_ERROR_IDO_VERSION);
-		return ERROR;
-	}
-
 	/**********
 	   Using dlopen() is great, but a real danger as-is.  The problem with loaded modules is that if you overwrite the original file (e.g. using 'mv'),
 	   you do not alter the inode of the original file.  Since the original file/module is memory-mapped in some fashion, Icinga will segfault the next
@@ -226,6 +217,15 @@ int neb_load_module(nebmodule *mod) {
 		logit(NSLOG_RUNTIME_ERROR, FALSE, "Error: Could not load module '%s' -> %s\n", mod->filename, dlerror());
 #endif
 
+		return ERROR;
+	}
+
+	/* add a compatibility check for 1.7 change of idomod.o -> idomod.so */
+	/* FIXME - drop in 1.8 */
+	if (strstr(mod->filename, "idomod.o") != NULL) {
+		logit(NSLOG_RUNTIME_ERROR, FALSE, "Error: trying to load module '%s' which has been moved to libdir/idomod.so in Icinga 1.7!\n", mod->filename);
+		logit(NSLOG_RUNTIME_ERROR, FALSE, "Check Changelog and upgrade docs to update the broker module entry!\n");
+		neb_unload_module(mod, NEBMODULE_FORCE_UNLOAD, NEBMODULE_ERROR_IDO_VERSION);
 		return ERROR;
 	}
 
