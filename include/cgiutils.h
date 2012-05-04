@@ -244,6 +244,7 @@ extern "C" {
 #define AUTOSAVE_ICON			"save.gif"
 #define DAEMON_WARNING_ICON		"warning_triangle.gif"
 #define STATS_ICON			"stats.gif"
+#define RELOAD_ICON			"icon_reload.png"
 
 #define TAC_HEADER_DEFAULT_LOGO		"Icinga_Header_Webinterface.jpg"
 #define TAC_HEADER_DEFAULT_LOGO_ALT	"Icinga"

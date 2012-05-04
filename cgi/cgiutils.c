@@ -1164,7 +1164,6 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n", url_images_path);
 	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
 	printf("<meta http-equiv=\"content-type\" content=\"text/html; charset=%s\">\n", http_charset);
-//	printf("<meta http-equiv=\"refresh\" content=\"%d\" />\n", refresh_rate);
 	printf("<title>%s</title>\n", cgi_title);
 
 	if (cgi_id == TAC_CGI_ID && tac_header == TRUE) {
@@ -1879,7 +1878,7 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 	result = read_all_status_data(get_cgi_config_location(), READ_PROGRAM_STATUS);
 
 	printf("<TABLE CLASS='infoBox' BORDER=1 CELLSPACING=0 CELLPADDING=0>\n");
-	printf("<TR><TD CLASS='infoBox'>\n");
+	printf("<TR><TD CLASS='infoBox' nowrap>\n");
 	printf("<DIV CLASS='infoBoxTitle'>%s</DIV>\n", title);
 
 	time(&current_time);
@@ -1889,10 +1888,14 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 
 	/* display only if refresh is supported */
 	if (CGI_ID == EXTINFO_CGI_ID || CGI_ID == OUTAGES_CGI_ID || CGI_ID == STATUS_CGI_ID || CGI_ID == STATUSMAP_CGI_ID || CGI_ID == TAC_CGI_ID) {
-		if (refresh_type == JAVASCRIPT_REFRESH)
-			printf("<span id='refresh_text'></span>&nbsp;<small><a href='#' onClick='toggle_refresh(); return false;'><span id='refresh_button'></span></a></small>\n");
+		if (CGI_ID == STATUS_CGI_ID && display_status_totals == TRUE)
+			printf("<BR>");
 		else
-			printf("- Update every %d seconds\n", refresh_rate);
+			printf("- ");
+		if (refresh_type == JAVASCRIPT_REFRESH)
+			printf("<span id='refresh_text'>Refresh done......</span>&nbsp;<small><a href='#' onClick='icinga_toggle_refresh(); return false;'><span id='refresh_button'></span></a> <a href='#' onClick='icinga_do_refresh(); return false;'><img src='%s%s' border=0 style='margin-bottom:-2px;'></a></small>\n", url_images_path, RELOAD_ICON);
+		else
+			printf("Update every %d seconds\n", refresh_rate);
 	}
 
 	printf("<br><A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>%s %s</A> -\n", PROGRAM_NAME, PROGRAM_VERSION);
