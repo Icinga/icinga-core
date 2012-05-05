@@ -97,7 +97,8 @@
 <p>and a command definition</p>
 <pre class="programlisting"> define command{
     command_name            check_icingastats
-    command_line            $USER1$/check_nagiostats</pre>
+    command_line            $USER1$/check_nagiostats
+ }</pre>
 <p>Don't forget to restart Icinga after these changes.</p>
         </li>
 <li class="listitem">
@@ -108,21 +109,28 @@
     host_name               &lt;the Icinga server&gt;
     service_description     icingastats # (or something appropriate)
     active_checks_enabled   0
-    check_command           check_dummy!0
+    check_command           check_stats!3!Freshness threshold exceeded
+    check_freshness         1
+    freshness_threshold     180         # check interval + x seconds
     ...
  }</pre>
-<p>Don't forget to restart Icinga after this change.</p>
+<p>and a command definition</p>
+<pre class="programlisting"> define command{
+    command_name            check_stats
+    command_line            $USER1$/check_dummy $ARG1$ $ARG2$
+ }</pre>
+<p>Don't forget to restart Icinga after these changes.</p>
 
           <p>Add a line to the crontab of the Icinga user which will call the <code class="filename">icingastats</code> binary and submit
           the results to the command pipe</p>
-<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; &lt;service&gt; &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
+<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; icingastats &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
 <p>
           This way the values are updated in regular intervals.</p>
         </li>
 </ul></div>
     </li>
 <li class="listitem">
-      <p>Create a symbolic link in the templates folder of PNP4Nagios</p>
+      <p>Create a symbolic link in the (user) templates folder of PNP4Nagios</p>
 <pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php icingastats.php</pre>
 <p>Make
       sure that <span class="emphasis"><em>icingastats</em></span> (without the extension .php) matches the value you specified for the service description.
@@ -138,7 +146,7 @@
   <p><span class="bold"><strong>Average Host / Service Check Latency</strong></span></p>
 
   <div class="figure">
-<a name="idp14220336"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p>
+<a name="idp14223360"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p>
 <div class="figure-contents">
     
 
@@ -185,7 +193,7 @@
   <p><span class="bold"><strong>Service Statistics</strong></span></p>
 
   <div class="figure">
-<a name="idp14236416"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p>
+<a name="idp14239424"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p>
 <div class="figure-contents">
     
 
@@ -215,7 +223,7 @@
   <p><span class="bold"><strong>Host Statistics</strong></span></p>
 
   <div class="figure">
-<a name="idp14246240"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p>
+<a name="idp14249248"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p>
 <div class="figure-contents">
     
 
@@ -245,7 +253,7 @@
   <p><span class="bold"><strong>Average Execution Times</strong></span></p>
 
   <div class="figure">
-<a name="idp14256080"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p>
+<a name="idp14259088"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p>
 <div class="figure-contents">
     
 
@@ -288,7 +296,7 @@
   <p><span class="bold"><strong>External Commands</strong></span></p>
 
   <div class="figure">
-<a name="idp14268112"></a><p class="title"><b>Figure 8.5. External Commands</b></p>
+<a name="idp14270976"></a><p class="title"><b>Figure 8.5. External Commands</b></p>
 <div class="figure-contents">
     
 
@@ -316,7 +324,7 @@
   <p><span class="bold"><strong>External Command Buffers</strong></span></p>
 
   <div class="figure">
-<a name="idp14276544"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p>
+<a name="idp14279568"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p>
 <div class="figure-contents">
     
 
@@ -334,7 +342,7 @@
   <p><span class="bold"><strong>Cached Host and Service Checks</strong></span></p>
 
   <div class="figure">
-<a name="idp14282752"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p>
+<a name="idp14285792"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p>
 <div class="figure-contents">
     
 
@@ -357,7 +365,7 @@
   <p><span class="bold"><strong>Average State Changes</strong></span></p>
 
   <div class="figure">
-<a name="idp14290240"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p>
+<a name="idp14290000"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p>
 <div class="figure-contents">
     
 
@@ -373,7 +381,7 @@
       <p><a class="link" href="flapping.html" title="Detection and Handling of State Flapping">Flap detection</a></p>
     </li></ul></div>
 
-  <a class="indexterm" name="idp14295296"></a>
+  <a class="indexterm" name="idp14298304"></a>
 </div>
 <div class="navfooter">
 <hr>
