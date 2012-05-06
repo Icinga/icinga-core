@@ -133,7 +133,11 @@ Documentation for %{name}
     --with-p1-file-dir="%{_libdir}/%{name}" \
     --with-checkresult-dir="%{_localstatedir}/spool/%{name}/checkresults" \
     --with-ext-cmd-file-dir="%{_localstatedir}/spool/%{name}/cmd" \
-    --with-http-auth-file="%{_sysconfdir}/%{name}/passwd"
+    --with-http-auth-file="%{_sysconfdir}/%{name}/passwd" \
+    --with-icinga-chkfile="%{_localstatedir}/spool/%{name}/icinga.chk" \
+    --with-ido2db-lockfile="%{_localstatedir}/run/ido2db.pid" \
+    --with-ido-sockfile="%{_localstatedir}/spool/%{name}/ido.sock" \
+    --with-idomod-tmpfile="%{_localstatedir}/spool/%{name}/idomod.tmp"
 
 %{__make} %{?_smp_mflags} all
 
@@ -346,7 +350,7 @@ fi
 
 
 %changelog
-* Thu Apr 19 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.0-1
+* Sun May 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.0-1
 - drop idoutils, add idoutils-libdbi-mysql and idoutils-libdbi-pgsql
 - add requires for libdbi drivers mysql and pgsql
 - add conflicts vice versa to mysql and pgsql libdbi package
@@ -362,6 +366,7 @@ fi
 - move checkresults to _localstatedir/spool/icinga/checkresults
 - use --with-http-auth-file from #2533
 - add default /etc/icinga/passwd with icingaadmin:icingaadmin default login
+- use ido2db.lock, ido.sock, idomod.tmp, icinga.chk location change from configure params #1856
 
 * Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
 - add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
