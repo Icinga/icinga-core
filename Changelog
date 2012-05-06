@@ -82,6 +82,7 @@ ENHANCEMENTS
 	** use --with-http-auth-file from #2533
 	** add default /etc/icinga/passwd with icingaadmin:icingaadmin default login
 * icinga.spec: use ido2db.lock, ido.sock, idomod.tmp, icinga.chk configure params #1856 - MF
+* icinga.spec: use --with-state-dir for spool dir #2583 - MF
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109 - MF

@@ -138,7 +138,8 @@ Documentation for %{name}
     --with-icinga-chkfile="%{spooldir}/icinga.chk" \
     --with-ido2db-lockfile="%{_localstatedir}/run/ido2db.pid" \
     --with-ido-sockfile="%{spooldir}/ido.sock" \
-    --with-idomod-tmpfile="%{spooldir}/idomod.tmp"
+    --with-idomod-tmpfile="%{spooldir}/idomod.tmp" \
+    --with-state-dir="%{spooldir}"
 
 %{__make} %{?_smp_mflags} all
 
@@ -368,6 +369,7 @@ fi
 - use --with-http-auth-file from #2533
 - add default /etc/icinga/passwd with icingaadmin:icingaadmin default login
 - use ido2db.lock, ido.sock, idomod.tmp, icinga.chk location change from configure params #1856
+- use --with-state-dir=$spooldir for status.dat, objects.cache etc
 
 * Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
 - add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
