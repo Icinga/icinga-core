@@ -649,6 +649,10 @@ XCDH
 XCDC
 XSDH
 XSDC
+IDOMODTMPFILE
+IDOSOCKFILE
+IDO2DBLOCKFILE
+ICINGACHKFILE
 lockfile
 init_dir
 P1FILELOC
@@ -765,6 +769,10 @@ with_ext_cmd_file_dir
 with_p1_file_dir
 with_init_dir
 with_lockfile
+with_icinga_chkfile
+with_ido2db_lockfile
+with_ido_sockfile
+with_idomod_tmpfile
 with_gd_lib
 with_gd_inc
 enable_statusmap
@@ -1478,6 +1486,15 @@ Optional Packages:
                           sets path to embedded perl p1.pl directory
   --with-init-dir=<path>  sets directory to place init script into
   --with-lockfile=<path>  sets path and file name for lock file
+  --with-icinga-chkfile=<path>
+                          sets path and file name for icinga initscript error
+                          file
+  --with-ido2db-lockfile=<path>
+                          sets path and file name for ido2db lock file
+  --with-ido-sockfile=<path>
+                          sets path and file name for ido sock file
+  --with-idomod-tmpfile=<path>
+                          sets path and file name for idomod tmp file
   --with-gd-lib=DIR       sets location of the gd library
   --with-gd-inc=DIR       sets location of the gd include files
   --with-cgiurl=<local-url>
@@ -5533,6 +5550,63 @@ fi
 
 
 
+ICINGACHKFILE=no
+
+# Check whether --with-icinga-chkfile was given.
+if test "${with_icinga_chkfile+set}" = set; then :
+  withval=$with_icinga_chkfile; ICINGACHKFILE=$withval
+else
+  ICINGACHKFILE=no
+fi
+
+if test x$ICINGACHKFILE = xno; then
+        ICINGACHKFILE="$localstatedir/icinga.chk"
+fi
+
+
+IDO2DBLOCKFILE=no
+
+# Check whether --with-ido2db-lockfile was given.
+if test "${with_ido2db_lockfile+set}" = set; then :
+  withval=$with_ido2db_lockfile; IDO2DBLOCKFILE=$withval
+else
+  IDO2DBLOCKFILE=no
+fi
+
+if test x$IDO2DBLOCKFILE = xno; then
+        IDO2DBLOCKFILE="$localstatedir/ido2db.lock"
+fi
+
+
+
+IDOSOCKFILE=no
+
+# Check whether --with-ido-sockfile was given.
+if test "${with_ido_sockfile+set}" = set; then :
+  withval=$with_ido_sockfile; IDOSOCKFILE=$withval
+else
+  IDOSOCKFILE=no
+fi
+
+if test x$IDOSOCKFILE = xno; then
+        IDO2SOCKFILE="$localstatedir/ido.sock"
+fi
+
+
+IDOMODTMPFILE=no
+
+# Check whether --with-idomod-tmpfile was given.
+if test "${with_idomod_tmpfile+set}" = set; then :
+  withval=$with_idomod_tmpfile; IDOMODTMPFILE=$withval
+else
+  IDOMODTMPFILE=no
+fi
+
+if test x$IDOMODTMPFILE = xno; then
+        IDOMODTMPFILE="$localstatedir/idomod.tmp"
+fi
+
+
 
 XSDTYPE=default
 XCDTYPE=default
@@ -8425,6 +8499,12 @@ else
 $as_echo "             Event Broker:  no" >&6; }
 fi
 if test x$USE_IDOUTILS = xyes; then
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:           ido2db lockfile:  $IDO2DBLOCKFILE" >&5
+$as_echo "          ido2db lockfile:  $IDO2DBLOCKFILE" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:              ido sockfile:  $IDOSOCKFILE" >&5
+$as_echo "             ido sockfile:  $IDOSOCKFILE" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:           idomod tempfile:  $IDOMODTMPFILE" >&5
+$as_echo "          idomod tempfile:  $IDOMODTMPFILE" >&6; }
 if test x$USE_IDOUTILS_ORACLE = xyes; then
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:            Build IDOUtils:  ocilib, instance_name=$IDO_INSTANCE_NAME" >&5
 $as_echo "           Build IDOUtils:  ocilib, instance_name=$IDO_INSTANCE_NAME" >&6; }
@@ -8442,6 +8522,8 @@ $as_echo "        Install \${prefix}:  $prefix" >&6; }
 $as_echo "                Lock file:  $lockfile" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:                 Temp file:  $TMPFILE" >&5
 $as_echo "                Temp file:  $TMPFILE" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:                  Chk file:  $ICINGACHKFILE" >&5
+$as_echo "                 Chk file:  $ICINGACHKFILE" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:            HTTP auth file:  $HTTPAUTHFILE" >&5
 $as_echo "           HTTP auth file:  $HTTPAUTHFILE" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:             Lib directory:  $libdir" >&5

@@ -434,6 +434,39 @@ AC_ARG_WITH(lockfile,AC_HELP_STRING([--with-lockfile=<path>],[sets path and file
 AC_SUBST(lockfile)
 
 
+dnl Location of icinga.chk (error log on initscript)
+ICINGACHKFILE=no
+AC_ARG_WITH(icinga-chkfile,AC_HELP_STRING([--with-icinga-chkfile=<path>],[sets path and file name for icinga initscript error file]),ICINGACHKFILE=$withval,ICINGACHKFILE=no)
+if test x$ICINGACHKFILE = xno; then
+        ICINGACHKFILE="$localstatedir/icinga.chk"
+fi
+AC_SUBST(ICINGACHKFILE)
+
+dnl Location of ido2db.lock
+IDO2DBLOCKFILE=no
+AC_ARG_WITH(ido2db-lockfile,AC_HELP_STRING([--with-ido2db-lockfile=<path>],[sets path and file name for ido2db lock file]),IDO2DBLOCKFILE=$withval,IDO2DBLOCKFILE=no)
+if test x$IDO2DBLOCKFILE = xno; then
+        IDO2DBLOCKFILE="$localstatedir/ido2db.lock"
+fi
+AC_SUBST(IDO2DBLOCKFILE)
+
+
+dnl Location of ido.sock
+IDOSOCKFILE=no
+AC_ARG_WITH(ido-sockfile,AC_HELP_STRING([--with-ido-sockfile=<path>],[sets path and file name for ido sock file]),IDOSOCKFILE=$withval,IDOSOCKFILE=no)
+if test x$IDOSOCKFILE = xno; then
+        IDO2SOCKFILE="$localstatedir/ido.sock"
+fi
+AC_SUBST(IDOSOCKFILE)
+
+dnl Location of idomod.tmp
+IDOMODTMPFILE=no
+AC_ARG_WITH(idomod-tmpfile,AC_HELP_STRING([--with-idomod-tmpfile=<path>],[sets path and file name for idomod tmp file]),IDOMODTMPFILE=$withval,IDOMODTMPFILE=no)
+if test x$IDOMODTMPFILE = xno; then
+        IDOMODTMPFILE="$localstatedir/idomod.tmp"
+fi
+AC_SUBST(IDOMODTMPFILE)
+
 
 dnl Default xdata routines...
 XSDTYPE=default
@@ -1357,6 +1390,9 @@ else
 AC_MSG_RESULT([             Event Broker:  no])
 fi
 if test x$USE_IDOUTILS = xyes; then
+AC_MSG_RESULT([          ido2db lockfile:  $IDO2DBLOCKFILE])
+AC_MSG_RESULT([             ido sockfile:  $IDOSOCKFILE])
+AC_MSG_RESULT([          idomod tempfile:  $IDOMODTMPFILE])
 if test x$USE_IDOUTILS_ORACLE = xyes; then
 AC_MSG_RESULT([           Build IDOUtils:  ocilib, instance_name=$IDO_INSTANCE_NAME])
 else
@@ -1368,6 +1404,7 @@ fi
 AC_MSG_RESULT([        Install \${prefix}:  $prefix])
 AC_MSG_RESULT([                Lock file:  $lockfile])
 AC_MSG_RESULT([                Temp file:  $TMPFILE])
+AC_MSG_RESULT([                 Chk file:  $ICINGACHKFILE])
 AC_MSG_RESULT([           HTTP auth file:  $HTTPAUTHFILE])
 AC_MSG_RESULT([            Lib directory:  $libdir])
 AC_MSG_RESULT([            Bin directory:  $bindir])
