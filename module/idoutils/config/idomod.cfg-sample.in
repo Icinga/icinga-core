@@ -35,7 +35,7 @@ output_type=unixsocket
 
 #output=@localstatedir@/ido.dat
 #output=127.0.0.1
-output=@localstatedir@/ido.sock
+output=@IDOSOCKFILE@
 
 
 
@@ -80,7 +80,7 @@ output_buffer_items=5000
 # Icinga (re)starts, the IDO NEB module will read the contents of this
 # file and send it to the IDO2DB daemon for processing.
 
-buffer_file=@localstatedir@/idomod.tmp
+buffer_file=@IDOMODTMPFILE@
 
 
 

@@ -56,6 +56,7 @@ ENHANCEMENTS
 * install: fix configure --ido-instance-name is incorrect, missing 'with' (thx Marco) #2407 - MF
 * install: add --enable-nagiosenv to configure to expose custom variables with prefix NAGIOS_ instead of ICINGA_ for easier reuse of well known check scripts #2083 - TD
 * install: add --with-http-auth-file to allow different file/loc of htpasswd.users #2533 - MF
+* install: make the location of the ido.sock, ido2db.lock, icinga.chk, idomod.tmp configurable #1856 - MF
 
 * config: introduce conf.d as place for own configs #2360 - MF
 
@@ -152,6 +153,12 @@ CHANGES
 
 * install: --with-http-auth-file #2533
 	** sets location/name of htpasswd.users
+
+* install: ido2db lockfile, ido.sock file, icinga.chk, idomod.tmp as configure params #1856
+	** --with-icinga-chkfile=<path>
+	** --with-ido2db-lockfile=<path>
+	** --with-ido-sockfile=<path>
+	** --with-idomod-tmpfile=<path>
 
 * config: $sysconfdir/conf.d #2360
 

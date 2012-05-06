@@ -8,7 +8,7 @@
 # This is the lockfile that IDO2DB will use to store its PID number
 # in when it is running in daemon mode.
 
-lock_file=@localstatedir@/ido2db.lock
+lock_file=@IDO2DBLOCKFILE@
 
 
 
@@ -39,7 +39,7 @@ socket_type=unix
 # This option is only valid if the socket type specified above
 # is "unix".
 
-socket_name=@localstatedir@/ido.sock
+socket_name=@IDOSOCKFILE@
 
 
 
@@ -272,7 +272,7 @@ debug_verbosity=2
 # DEBUG FILE
 # This option determines where the daemon should write debugging information.
 
-debug_file=@localstatedir@/ido2db.debug
+debug_file=@LOGDIR@/ido2db.debug
 
 
 
