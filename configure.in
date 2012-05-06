@@ -326,6 +326,15 @@ if test x$TMPFILE = xno; then
 AC_SUBST(TMPFILE)
 
 
+dnl Location of state dir
+STATEDIR=no
+AC_ARG_WITH(state-dir,AC_HELP_STRING([--with-state-dir=<filepath>],[sets path to custom localstate dir e.g. /var/spool/icinga]),STATEDIR=$withval,STATEDIR=no)
+if test x$STATEDIR = xno; then
+                STATEDIR="$localstatedir"
+        fi
+AC_SUBST(STATEDIR)
+
+
 dnl Location of http auth file
 HTTPAUTHFILE=no
 AC_ARG_WITH(http-auth-file,AC_HELP_STRING([--with-http-auth-file=<filepath>],[sets path to an Icinga HTTP auth file]),HTTPAUTHFILE=$withval,HTTPAUTHFILE=no)
@@ -1416,6 +1425,7 @@ AC_MSG_RESULT([        cgi log directory:  $CGILOGDIR])
 fi
 AC_MSG_RESULT([   Check result directory:  $CHECKRESULTDIR])
 AC_MSG_RESULT([           Temp directory:  $TMPDIR])
+AC_MSG_RESULT([          State directory:  $STATEDIR])
 AC_MSG_RESULT([   Ext Cmd file directory:  $EXTCMDFILEDIR])
 AC_MSG_RESULT([           Init directory:  $init_dir])
 AC_MSG_RESULT([  Apache conf.d directory:  $HTTPD_CONF])

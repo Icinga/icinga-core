@@ -11,6 +11,7 @@
 %define logmsg logger -t %{name}/rpm
 
 %define logdir %{_localstatedir}/log/%{name}
+%define spooldir %{_localstatedir}/spool/%{name}
 %define plugindir %{_libdir}/nagios/plugins
 
 %define apacheconfdir  %{_sysconfdir}/httpd/conf.d
@@ -131,13 +132,13 @@ Documentation for %{name}
     --with-plugin-dir="%{plugindir}" \
     --with-eventhandler-dir="%{_libdir}/%{name}/eventhandlers" \
     --with-p1-file-dir="%{_libdir}/%{name}" \
-    --with-checkresult-dir="%{_localstatedir}/spool/%{name}/checkresults" \
-    --with-ext-cmd-file-dir="%{_localstatedir}/spool/%{name}/cmd" \
+    --with-checkresult-dir="%{spooldir}/checkresults" \
+    --with-ext-cmd-file-dir="%{spooldir}/cmd" \
     --with-http-auth-file="%{_sysconfdir}/%{name}/passwd" \
-    --with-icinga-chkfile="%{_localstatedir}/spool/%{name}/icinga.chk" \
+    --with-icinga-chkfile="%{spooldir}/icinga.chk" \
     --with-ido2db-lockfile="%{_localstatedir}/run/ido2db.pid" \
-    --with-ido-sockfile="%{_localstatedir}/spool/%{name}/ido.sock" \
-    --with-idomod-tmpfile="%{_localstatedir}/spool/%{name}/idomod.tmp"
+    --with-ido-sockfile="%{spooldir}/ido.sock" \
+    --with-idomod-tmpfile="%{spooldir}/idomod.tmp"
 
 %{__make} %{?_smp_mflags} all
 

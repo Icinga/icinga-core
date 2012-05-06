@@ -664,6 +664,7 @@ LOGDIR
 EVENTHANDLERDIR
 PLUGINDIR
 HTTPAUTHFILE
+STATEDIR
 TMPFILE
 TMPDIR
 CHECKRESULTDIR
@@ -759,6 +760,7 @@ with_httpd_conf
 with_checkresult_dir
 with_temp_dir
 with_temp_file
+with_state_dir
 with_http_auth_file
 with_plugin_dir
 with_eventhandler_dir
@@ -1469,6 +1471,9 @@ Optional Packages:
   --with-temp-file=<filepath>
                           sets path to an Icinga exclusive update temp file
                           i.e. /tmp/icinga.tmp
+  --with-state-dir=<filepath>
+                          sets path to custom localstate dir e.g.
+                          /var/spool/icinga
   --with-http-auth-file=<filepath>
                           sets path to an Icinga HTTP auth file
   --with-plugin-dir=<path>
@@ -5392,6 +5397,21 @@ if test x$TMPFILE = xno; then
 
 
 
+STATEDIR=no
+
+# Check whether --with-state-dir was given.
+if test "${with_state_dir+set}" = set; then :
+  withval=$with_state_dir; STATEDIR=$withval
+else
+  STATEDIR=no
+fi
+
+if test x$STATEDIR = xno; then
+                STATEDIR="$localstatedir"
+        fi
+
+
+
 HTTPAUTHFILE=no
 
 # Check whether --with-http-auth-file was given.
@@ -8544,6 +8564,8 @@ fi
 $as_echo "   Check result directory:  $CHECKRESULTDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:            Temp directory:  $TMPDIR" >&5
 $as_echo "           Temp directory:  $TMPDIR" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:           State directory:  $STATEDIR" >&5
+$as_echo "          State directory:  $STATEDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:    Ext Cmd file directory:  $EXTCMDFILEDIR" >&5
 $as_echo "   Ext Cmd file directory:  $EXTCMDFILEDIR" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:            Init directory:  $init_dir" >&5
