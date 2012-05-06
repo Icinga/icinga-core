@@ -57,6 +57,7 @@ ENHANCEMENTS
 * install: add --enable-nagiosenv to configure to expose custom variables with prefix NAGIOS_ instead of ICINGA_ for easier reuse of well known check scripts #2083 - TD
 * install: add --with-http-auth-file to allow different file/loc of htpasswd.users #2533 - MF
 * install: make the location of the ido.sock, ido2db.lock, icinga.chk, idomod.tmp configurable #1856 - MF
+* install: use custom state dir instead of hardcoded localstatedir #2583 - MF
 
 * config: introduce conf.d as place for own configs #2360 - MF
 
@@ -81,6 +82,7 @@ ENHANCEMENTS
 	** use --with-http-auth-file from #2533
 	** add default /etc/icinga/passwd with icingaadmin:icingaadmin default login
 * icinga.spec: use ido2db.lock, ido.sock, idomod.tmp, icinga.chk configure params #1856 - MF
+* icinga.spec: use --with-state-dir for spool dir #2583 - MF
 
 FIXES
 * core: Plug some macro leaks triggered when sending notifications (Andreas Ericsson) #2109 - MF
@@ -160,6 +162,8 @@ CHANGES
 	** --with-ido2db-lockfile=<path>
 	** --with-ido-sockfile=<path>
 	** --with-idomod-tmpfile=<path>
+
+* install: use custom state dir --with-state-dir #2583
 
 * config: $sysconfdir/conf.d #2360
 

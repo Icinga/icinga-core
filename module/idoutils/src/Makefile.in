@@ -9,7 +9,7 @@ SRC_INCLUDE=../include
 
 prefix=@prefix@
 exec_prefix=@exec_prefix@
-LOGDIR=@localstatedir@
+LOGDIR=@LOGDIR@
 CFGDIR=@sysconfdir@
 BINDIR=@bindir@
 LIBDIR=@libdir@

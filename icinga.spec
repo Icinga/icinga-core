@@ -11,6 +11,7 @@
 %define logmsg logger -t %{name}/rpm
 
 %define logdir %{_localstatedir}/log/%{name}
+%define spooldir %{_localstatedir}/spool/%{name}
 %define plugindir %{_libdir}/nagios/plugins
 
 %define apacheconfdir  %{_sysconfdir}/httpd/conf.d
@@ -131,13 +132,14 @@ Documentation for %{name}
     --with-plugin-dir="%{plugindir}" \
     --with-eventhandler-dir="%{_libdir}/%{name}/eventhandlers" \
     --with-p1-file-dir="%{_libdir}/%{name}" \
-    --with-checkresult-dir="%{_localstatedir}/spool/%{name}/checkresults" \
-    --with-ext-cmd-file-dir="%{_localstatedir}/spool/%{name}/cmd" \
+    --with-checkresult-dir="%{spooldir}/checkresults" \
+    --with-ext-cmd-file-dir="%{spooldir}/cmd" \
     --with-http-auth-file="%{_sysconfdir}/%{name}/passwd" \
-    --with-icinga-chkfile="%{_localstatedir}/spool/%{name}/icinga.chk" \
+    --with-icinga-chkfile="%{spooldir}/icinga.chk" \
     --with-ido2db-lockfile="%{_localstatedir}/run/ido2db.pid" \
-    --with-ido-sockfile="%{_localstatedir}/spool/%{name}/ido.sock" \
-    --with-idomod-tmpfile="%{_localstatedir}/spool/%{name}/idomod.tmp"
+    --with-ido-sockfile="%{spooldir}/ido.sock" \
+    --with-idomod-tmpfile="%{spooldir}/idomod.tmp" \
+    --with-state-dir="%{spooldir}"
 
 %{__make} %{?_smp_mflags} all
 
@@ -367,6 +369,7 @@ fi
 - use --with-http-auth-file from #2533
 - add default /etc/icinga/passwd with icingaadmin:icingaadmin default login
 - use ido2db.lock, ido.sock, idomod.tmp, icinga.chk location change from configure params #1856
+- use --with-state-dir=$spooldir for status.dat, objects.cache etc
 
 * Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
 - add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212

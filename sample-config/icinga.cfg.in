@@ -72,7 +72,7 @@ cfg_dir=@sysconfdir@/modules
 # directly) in order to prevent inconsistencies that can occur
 # when the config files are modified after Icinga starts.
 
-object_cache_file=@localstatedir@/objects.cache
+object_cache_file=@STATEDIR@/objects.cache
 
 
 
@@ -88,7 +88,7 @@ object_cache_file=@localstatedir@/objects.cache
 # Read the documentation section on optimizing Icinga to find our more
 # about how this feature works.
 
-precached_object_file=@localstatedir@/objects.precache
+precached_object_file=@STATEDIR@/objects.precache
 
 
 
@@ -111,7 +111,7 @@ resource_file=@sysconfdir@/resource.cfg
 # The contents of the status file are deleted every time Icinga
 #  restarts.
 
-status_file=@localstatedir@/status.dat
+status_file=@STATEDIR@/status.dat
 
 
 
@@ -710,7 +710,7 @@ retain_state_information=1
 # This file is used only if the retain_state_information
 # variable is set to 1.
 
-state_retention_file=@localstatedir@/retention.dat
+state_retention_file=@STATEDIR@/retention.dat
 
 
 
@@ -736,7 +736,7 @@ state_retention_file=@localstatedir@/retention.dat
 # If the file does not exist, no error will appear.
 # There is also an API that will force a read of the sync file.
 
-#sync_retention_file=@localstatedir@/sync.dat
+#sync_retention_file=@STATEDIR@/sync.dat
 
 
 
