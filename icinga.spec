@@ -226,6 +226,12 @@ fi
 %post idoutils-libdbi-mysql
 /sbin/chkconfig --add ido2db
 
+# delete old bindir/idomod.o if it exists
+if [ -f %{_bindir}/idomod.o ]
+then
+    rm -f %{_bindir}/idomod.o
+fi
+
 %logmsg "idoutils-libdbi-mysql installed. don't forget to install/upgrade db schema, check README.RHEL.idoutils"
 
 %preun idoutils-libdbi-mysql
@@ -236,6 +242,11 @@ fi
 
 %post idoutils-libdbi-pgsql
 /sbin/chkconfig --add ido2db
+# delete old bindir/idomod.o if it exists
+if [ -f %{_bindir}/idomod.o ]
+then
+    rm -f %{_bindir}/idomod.o
+fi
 ### change ido2db.cfg to match pgsql config
 # check if this is an upgrade
 if [ $1 -eq 2 ]
@@ -391,6 +402,8 @@ fi
 - use --with-state-dir=$spooldir for status.dat, objects.cache etc
 - kick provides: nagios again, as this will cause dependency problems. addons must be fixed.
 - copy old retention.dat and objects.precache if found #2585
+- add most valuable changes to README.RHEL*
+- delete old bindir/idomod.o if found
 
 * Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
 - add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
