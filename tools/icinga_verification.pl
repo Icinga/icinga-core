@@ -51,6 +51,7 @@ my $config_ref = {
     },
 	noncritical_services => {
 		snmptt => { binaries => [ 'snmptt' ] },
+		npcd => { binaries => [ 'npcd' ] },
 	}   
 };
 
@@ -103,6 +104,9 @@ if (! $icinga_base ) {
         exit 1;
     }
 }
+#Icinga/Nagios Plugins Base Set
+
+my $pnp4nagios_base = find_pnp4nagios_dir();
 
 #### MySQL Config if MySQL is used ####
 
@@ -582,6 +586,8 @@ sub which (@) {
     my @path = reverse( split( ':', $PATH ));
     push @path, "$icinga_base/../bin";
     push @path, "$icinga_base/../sbin";
+	push @path, "$pnp4nagios_base/../bin";
+	push @path, "$pnp4nagios_base/../sbin";
     print "looking for binaries in ", join(",", @path), "\n" if $verbose;
 
     foreach my $binary (@binaries) {
@@ -627,6 +633,14 @@ sub find_icinga_dir {
     my @locations = qw ( /etc/icinga/ /opt/icinga/etc/ /usr/local/icinga/etc/ );
     foreach my $location (@locations) {
         return $location if -e "$location/icinga.cfg";
+    }
+    return undef;
+}
+
+sub find_pnp4nagios_dir {
+    my @locations = qw ( /etc/pnp4nagios/ /opt/pnp4nagios/etc/ /usr/local/pnp4nagios/etc/ );
+    foreach my $location (@locations) {
+        return $location if -e "$location/pnp4nagios_release";
     }
     return undef;
 }
