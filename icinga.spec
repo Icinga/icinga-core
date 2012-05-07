@@ -38,7 +38,6 @@ BuildRequires: libjpeg-devel
 BuildRequires: libdbi-devel
 BuildRequires: perl(ExtUtils::Embed)
 ### Requires: nagios-plugins
-Provides: nagios
 
 %description
 Icinga is an application, system and network monitoring application.
@@ -370,6 +369,7 @@ fi
 - add default /etc/icinga/passwd with icingaadmin:icingaadmin default login
 - use ido2db.lock, ido.sock, idomod.tmp, icinga.chk location change from configure params #1856
 - use --with-state-dir=$spooldir for status.dat, objects.cache etc
+- kick provides: nagios again, as this will cause dependency problems. addons must be fixed.
 
 * Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
 - add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
