@@ -1,6 +1,11 @@
 IDOUtils Notes for RHEL packages
 ================================
 
+CHANGES for 1.7
+* bindir/idomod.o => libdir/idomod.so
+* /var/icinga => /var/spool/icinga
+* icinga-idoutils => icinga-idoutils-libdbi-mysql and icinga-idoutils-libdbi-pgsql
+
 
 * IDOMOD Setup
 
