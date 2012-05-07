@@ -188,6 +188,26 @@ install -D -m 0644 icinga.htpasswd %{buildroot}%{_sysconfdir}/%{name}/passwd
 # restart httpd for auth change
 /sbin/service httpd condrestart > /dev/null 2>&1 || :
 
+# if this is an upgrade, and we found an old retention.dat, copy it to new location before starting icinga
+if [ $1 -eq 2 ]
+then
+# stop icinga
+/sbin/service icinga stop &>/dev/null || :
+# check for retention.dat
+if [ -f /var/icinga/retention.dat ]
+then
+    cp /var/icinga/retention.dat %{spooldir}/retention.dat
+    rm /var/icinga/retention.dat
+fi
+# same for objects.precache
+if [ -f /var/icinga/objects.precache ]
+then
+    cp /var/icinga/objects.precache %{spooldir}/objects.precache
+    rm /var/icinga/objects.precache
+fi
+# start icinga
+/sbin/service icinga start &>/dev/null || :
+fi
 
 %preun
 if [ $1 -eq 0 ]; then
@@ -370,6 +390,7 @@ fi
 - use ido2db.lock, ido.sock, idomod.tmp, icinga.chk location change from configure params #1856
 - use --with-state-dir=$spooldir for status.dat, objects.cache etc
 - kick provides: nagios again, as this will cause dependency problems. addons must be fixed.
+- copy old retention.dat and objects.precache if found #2585
 
 * Sat Feb 25 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.6.1-5
 - add README.RHEL README.RHEL.idoutils to docs, thx Michael Gruener, Stefan Marx #2212
