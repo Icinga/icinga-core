@@ -299,6 +299,8 @@ if ($raw_plugin_path){
 	$plugin_path = "\$USER1\$ is no Path or an incorrect Path";
 }
 
+#Check_disk / Check for free disk space AND check Plugin test
+my $check_disk = (split(";", qx(su $icingacfguser -c '$plugin_path/check_disk -c 5%')))[0];
 
 #### MySQL Querys ####
 my $dbh_conn_error = '';
@@ -406,6 +408,10 @@ idomod Information:
 ido2db Errors in Syslog: 
  @idolog
 
+Plugin Check with User Rights:
+(check_disk - Checks local HDD for free Space)
+ $check_disk
+ 
 ############################################################ 
 EOF
 }
