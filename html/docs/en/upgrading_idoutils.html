@@ -38,8 +38,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Depending on the changes to be done and the size of your database it may take a while to update your database. Please try to
-  be patient and don't abort the script as it may leave the data being corrupt.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Depending on the changes to be done and the size of your database it may take a while to update your database. Please try to be
+    patient and don't abort the script as it may leave the data being corrupt.</p>
+  </td></tr>
 </table></div>
 
   <p>The upgrade files can be found next to the database install files in
@@ -91,6 +93,16 @@
 
   <a name="upgrading_idoutils_1.5"></a>
 
+  <p><span class="bold"><strong>Upgrading IDOUtils to 1.7</strong></span></p>
+
+  <p>Starting with Icinga 1.7 the location of the idomod shared library changed from <code class="filename">$bindir/idomod.o</code> to
+  <code class="filename">$libdir/idomod.so</code>. Please note that the extension ".o" changed to ".so" as well. Depending on the method you are
+  using you have to alter the "broker_module" entry in <code class="filename">icinga.cfg</code> OR the module definition in
+  <code class="filename">module/idomod.cfg</code> to reflect the changes. The old file <code class="filename">idomod.o</code> will be removed if found. You
+  will receive a warning during "make install-idoutils" about this change.</p>
+
+  <p>Please have a look at the section "CHANGES for users" in the <code class="filename">changelog</code> as well.</p>
+
   <p><span class="bold"><strong>Upgrading IDOUtils to 1.5</strong></span></p>
 
   <p><span class="bold"><strong>Oracle</strong></span></p>
@@ -100,13 +112,14 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Using IDOUtils 1.5.0 with Oracle requires at least OCILIB 3.9.2 - don't install 3.9.0 or 3.9.1 as they
-  remain buggy.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Using IDOUtils 1.5.0 with Oracle requires at least OCILIB 3.9.2 - don't install 3.9.0 or 3.9.1 as they remain
+    buggy.</p>
+  </td></tr>
 </table></div>
 
   <p>Modify <code class="filename">oracle-upgrade-1.5.0.sql</code> and set the tablespaces for DATA, LOB, and IXT similar to the following lines.
-  You can provide your existing tablespace names for all defines.
-  </p>
+  You can provide your existing tablespace names for all defines. </p>
 <pre class="programlisting"> /* set real TBS names on which you have quota, no checks are implemented!*/
  define DATATBS='icinga';
  define LOBTBS='icinga';
@@ -117,8 +130,9 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>More detailed instructions using IDOUtils with Oracle you can find in our wiki howto series about
-  <a class="link" href="https://wiki.icinga.org/display/howtos/Icinga+and+Oracle" target="_top">Oracle</a>.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>More detailed instructions using IDOUtils with Oracle you can find in our wiki howto series about <a class="link" href="https://wiki.icinga.org/display/howtos/Icinga+and+Oracle" target="_top">Oracle</a>.</p>
+  </td></tr>
 </table></div>
 
   <a name="upgrading_idoutils_1.4"></a>
@@ -386,7 +400,7 @@
   <p>If you changed something on the keys before please make sure you'll have the same database scheme applied as in 1.0RC otherwise the
   script will fail.</p>
 
-  <a class="indexterm" name="id1519268"></a>
+  <a class="indexterm" name="idp993072"></a>
 </div>
 <div class="navfooter">
 <hr>
