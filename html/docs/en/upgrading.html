@@ -47,6 +47,14 @@
 <tr><td align="left" valign="top">
     <p>If you are using IDOUtils then you have to update it, too. Please take a look at <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">
     upgrading_idoutils</a> as well.</p>
+
+    <p><span class="color"><font color="red">Starting with Icinga 1.7 the location of the idomod shared library changed from
+    <code class="filename">$bindir/idomod.o</code> to <code class="filename">$libdir/idomod.so</code>. Please note that the extension ".o" changed to ".so" as
+    well. Depending on the method you are using you have to alter the "broker_module" entry in <code class="filename">icinga.cfg</code> OR the module
+    definition in <code class="filename">module/idomod.cfg</code> to reflect the changes.</font></span> The old file <code class="filename">idomod.o</code> will
+    be removed if found. You will receive a warning during "make install-idoutils" about this change.</p>
+
+    <p>Please have a look at the section "CHANGES for users" in the <code class="filename">changelog</code> as well.</p>
   </td></tr>
 </table></div>
 
@@ -363,17 +371,17 @@
   backed up all your critical Nagios files before removing the original RPM or APT package, so you can revert back if you encounter
   problems.</p>
 
-  <a class="indexterm" name="idp887632"></a>
+  <a class="indexterm" name="idp892208"></a>
 
-  <a class="indexterm" name="idp891056"></a>
+  <a class="indexterm" name="idp895632"></a>
 
-  <a class="indexterm" name="idp887312"></a>
+  <a class="indexterm" name="idp891888"></a>
 
-  <a class="indexterm" name="idp894448"></a>
+  <a class="indexterm" name="idp899024"></a>
 
-  <a class="indexterm" name="idp896080"></a>
+  <a class="indexterm" name="idp900656"></a>
 
-  <a class="indexterm" name="idp897744"></a>
+  <a class="indexterm" name="idp902320"></a>
 </div>
 <div class="navfooter">
 <hr>

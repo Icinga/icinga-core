@@ -91,19 +91,17 @@
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
 
-  <a name="upgrading_idoutils_1.5"></a>
+  <p><a name="upgrading_idoutils_1.7"></a><span class="bold"><strong>Upgrading IDOUtils to 1.7</strong></span></p>
 
-  <p><span class="bold"><strong>Upgrading IDOUtils to 1.7</strong></span></p>
-
-  <p>Starting with Icinga 1.7 the location of the idomod shared library changed from <code class="filename">$bindir/idomod.o</code> to
-  <code class="filename">$libdir/idomod.so</code>. Please note that the extension ".o" changed to ".so" as well. Depending on the method you are
-  using you have to alter the "broker_module" entry in <code class="filename">icinga.cfg</code> OR the module definition in
-  <code class="filename">module/idomod.cfg</code> to reflect the changes. The old file <code class="filename">idomod.o</code> will be removed if found. You
-  will receive a warning during "make install-idoutils" about this change.</p>
+  <p><span class="color"><font color="red">Starting with Icinga 1.7 the location of the idomod shared library changed from
+  <code class="filename">$bindir/idomod.o</code> to <code class="filename">$libdir/idomod.so</code>. Please note that the extension ".o" changed to ".so" as
+  well. Depending on the method you are using you have to alter the "broker_module" entry in <code class="filename">icinga.cfg</code> OR the module
+  definition in <code class="filename">module/idomod.cfg</code> to reflect the changes.</font></span> The old file <code class="filename">idomod.o</code> will be
+  removed if found. You will receive a warning during "make install-idoutils" about this change.</p>
 
   <p>Please have a look at the section "CHANGES for users" in the <code class="filename">changelog</code> as well.</p>
 
-  <p><span class="bold"><strong>Upgrading IDOUtils to 1.5</strong></span></p>
+  <p><a name="upgrading_idoutils_1.5"></a><span class="bold"><strong>Upgrading IDOUtils to 1.5</strong></span></p>
 
   <p><span class="bold"><strong>Oracle</strong></span></p>
 
@@ -400,7 +398,7 @@
   <p>If you changed something on the keys before please make sure you'll have the same database scheme applied as in 1.0RC otherwise the
   script will fail.</p>
 
-  <a class="indexterm" name="idp993072"></a>
+  <a class="indexterm" name="idp998720"></a>
 </div>
 <div class="navfooter">
 <hr>

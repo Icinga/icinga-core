@@ -93,19 +93,18 @@
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
 
-  <p><span class="bold"><strong>Aktualisierung der IDOUtils auf 1.7</strong></span></p>
+  <p><a name="upgrading_idoutils_1.7"></a><span class="bold"><strong>Aktualisierung der IDOUtils auf 1.7</strong></span></p>
 
-  <p>Beginnend mit Icinga 1.7 wurden Ort und Name der idomod shared-Library von <code class="filename">$bindir/idomod.o</code> in
-  <code class="filename">$libdir/idomod.so</code> geändert. Bitte beachten Sie, dass auch die Endung ".o" in ".so" geändert wurde. Abhängig von der
-  verwendeten Methode müssen Sie entweder den Aufruf im "broker_module"-Eintrag in <code class="filename">icinga.cfg</code> ODER die Moduldefinition
-  in <code class="filename">module/idomod.cfg</code> anpassen. Die alte Datei <code class="filename">idomod.o</code> wird entfernt, falls sie gefunden wird.
-  Sie erhalten auch eine Warnung beim Aufruf von "make install-idoutils" über diese Änderung.</p>
+  <p><span class="color"><font color="red">Beginnend mit Icinga 1.7 wurden Ort und Name der idomod shared-Library von
+  <code class="filename">$bindir/idomod.o</code> in <code class="filename">$libdir/idomod.so</code> geändert. Bitte beachten Sie, dass auch die Endung ".o" in
+  ".so" geändert wurde. Abhängig von der verwendeten Methode müssen Sie entweder den Aufruf im "broker_module"-Eintrag in
+  <code class="filename">icinga.cfg</code> ODER die Moduldefinition in <code class="filename">module/idomod.cfg</code> anpassen.</font></span> Die alte Datei
+  <code class="filename">idomod.o</code> wird entfernt, falls sie gefunden wird. Sie erhalten auch eine Warnung beim Aufruf von "make
+  install-idoutils" über diese Änderung.</p>
 
   <p>Bitte lesen Sie auch den Abschnitt "CHANGES for users" in <code class="filename">changelog</code>.</p>
 
-  <a name="upgrading_idoutils_1.5"></a>
-
-  <p><span class="bold"><strong>Aktualisierung der IDOUtils auf 1.5</strong></span></p>
+  <p><a name="upgrading_idoutils_1.5"></a><span class="bold"><strong>Aktualisierung der IDOUtils auf 1.5</strong></span></p>
 
   <p><span class="bold"><strong>Oracle</strong></span></p>
 
@@ -423,7 +422,7 @@
   <p>Falls Sie vorher etwas an den Keys verändert haben, dann stellen Sie sicher, dass Sie das gleiche DB-Schema wie in IDOUtils
   1.0RC benutzen, andernfalls wird das Script fehlschlagen.</p>
 
-  <a class="indexterm" name="idp1031248"></a>
+  <a class="indexterm" name="idp1033152"></a>
 </div>
 <div class="navfooter">
 <hr>
