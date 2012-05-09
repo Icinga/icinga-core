@@ -43,7 +43,7 @@ function enableDisableButton(form) {
 		document.forms[form].CommandButton.disabled=disabled;
 
 	// update refresh counter
-	reset_counter();
+	icinga_reset_counter();
 }
 
 function showValue(form,arg,schedule_host_check,schedule_host_svc_check) {
