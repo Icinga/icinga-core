@@ -29,171 +29,110 @@
 <a name="whatsnew"></a>What's New in Icinga 1.7</h2></div></div></div>
   
 
+  <p>As usual this is only a brief overview. Please take a look at the Changelog as well if you are missing something.</p>
+
   <p><span class="bold"><strong>CHANGES</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>you can now use new configure flags</p>
-
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
-          <p>--with-temp-file=&lt;filepath&gt;</p>
-        </li>
-<li class="listitem">
-          <p>--with-plugin-dir=&lt;path&gt;</p>
-        </li>
-<li class="listitem">
-          <p>--with-eventhandler-dir=&lt;path&gt;</p>
-        </li>
-<li class="listitem">
-          <p>--enable-cgi-log</p>
-        </li>
-<li class="listitem">
-          <p>--with-http-auth-file</p>
-        </li>
-</ul></div>
+      <p><span class="color"><font color="red">move bindir/idomod.o to libdir/idomod.so - make sure to update your configs after
+      upgrade!</font></span></p>
     </li>
 <li class="listitem">
-      <p>--enable-libtap is now deprecated</p>
+      <p>move from /var/icinga to /var/spool/icinga in icinga.spec (upgrade safe)</p>
     </li>
 <li class="listitem">
-      <p>you can now use new make targets</p>
-
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p>make install-eventhandlers</p>
-        </li></ul></div>
+      <p>rename icinga-idoutils rpm to icinga-idoutils-libdbi-mysql|pgsql in icinga.spec</p>
+    </li>
+<li class="listitem">
+      <p>--enable-libtap is deprecated, make test now works out-of-the-box with rewritten tests core</p>
     </li>
 </ul></div>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>put your own configs into <code class="filename">etc/conf.d</code></p>
-    </li></ul></div>
-
-  <p><span class="bold"><strong> IDOUtils Special</strong></span></p>
+  <p><span class="bold"><strong>Core</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>change default target location of idomod.so from $bindir to $libdir</p>
+      <p>avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182</p>
     </li>
 <li class="listitem">
-      <p>change idomod extension from .o to .so, make .so the default extension for modules</p>
-
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p>make sure to UPDATE the location in your CONFIG !!!</p>
-        </li></ul></div>
+      <p>add a lot of configure params to allow easier packaging (see CHANGES)</p>
     </li>
 <li class="listitem">
-      <p>limit long_output and perfdata database storage in mysql to 32k</p>
+      <p>introduce lib/ for modules with new .so extension</p>
     </li>
 <li class="listitem">
-      <p>enlarge field "FAILURE_PREDICTION_OPTIONS" in table hosts from 64 to 128 Bytes</p>
+      <p>add nebmodule version/name check for idomod (this allows future version dependencies) #2569</p>
     </li>
 <li class="listitem">
-      <p>Oracle only-&gt;change method retrieving lastid, introduce individual sequence caching sizes</p>
+      <p>add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537</p>
     </li>
 <li class="listitem">
-      <p>pgsql unix_timestamp cannot handle timestamp with timezone</p>
-    </li>
-<li class="listitem">
-      <p>change varchar(255) to TEXT in mysql</p>
+      <p>* fix scheduled_downtime_depth falsely incremented if in flexible downtime with duration &lt; end-starttime window #2536</p>
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Core Special</strong></span></p>
+  <p><span class="bold"><strong>Classic UI </strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>add trigger_time to downtimes (see backends)</p>
+      <p>add option for max log entries displayed in showlog.cgi #2145</p>
     </li></ul></div>
-
-  <p><span class="bold"><strong>Classic UI Special</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>statuswml.cgi and statuswrl.cgi are DEPRECATED</p>
+      <p>add statusmap resizing with exclude/include button (thanks to Mat) #2186</p>
     </li>
 <li class="listitem">
       <p>add javascript to refresh page/pause easier #2119</p>
-
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
-          <p>DO A FULL PAGE RELOAD AFTER UPGRADING</p>
-        </li>
-<li class="listitem">
-          <p>no reload necessary to pause refresh</p>
-        </li>
-<li class="listitem">
-          <p>selecting item in status.cgi/extinfo.cgi resets' refresh counter</p>
-        </li>
-<li class="listitem">
-          <p>added cgi config option "refresh_type" to choose between http header refresh and javascript refresh</p>
-        </li>
-</ul></div>
     </li>
 <li class="listitem">
-      <p>fixed Commit commands with more then 500 multiple pairs of hosts and services</p>
-
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p>now it's possible to submit ~990 commands at the same time</p>
-        </li></ul></div>
+      <p>add display_status_totals as cgi.cfg option in order to allow the status totals to be shown again #2443</p>
     </li>
 <li class="listitem">
-      <p>new cgi.cfg options</p>
-
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
-          <p>default_num_displayed_log_entries</p>
-        </li>
-<li class="listitem">
-          <p>display_status_totals</p>
-        </li>
-<li class="listitem">
-          <p>refresh_type</p>
-        </li>
-</ul></div>
+      <p>add readonly cgi.cfg view into the config section #1776</p>
     </li>
 <li class="listitem">
-      <p>statusmap resizing with exclude/include button</p>
+      <p>add is_in_effect and trigger_time to downtime view for html, csv, json #2538</p>
     </li>
 <li class="listitem">
-      <p>changed all forms to POST request</p>
+      <p>add modified attributes view and reset cmd #2473 #2474</p>
     </li>
 <li class="listitem">
-      <p>readonly cgi.cfg view into the config section</p>
+      <p>fix status totals are wrong when searching #1524</p>
     </li>
 <li class="listitem">
-      <p>cmd.cgi now accepts change commands with attr command</p>
-
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p>but ONLY 0 = reset, other values will trigger an error</p>
-        </li></ul></div>
+      <p>fix reset forms on return after submitting command #2117</p>
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>CGI JSON Special</strong></span></p>
+  <p><span class="bold"><strong>IDOutils</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>fixed json output for comments and downtimes in extinfo.cgi sometimes invalid</p>
+      <p>change varchar(255) to TEXT in mysql (not cs and address rfc columns) #2181</p>
+    </li>
+<li class="listitem">
+      <p>set module info in idomod, to be checked on neb module load in future versions #2569</p>
+    </li>
+<li class="listitem">
+      <p>change standard string escaping for postgresql queries to use the E'foo' notation #1974</p>
+    </li>
+<li class="listitem">
+      <p>fix lob handling in Oracle #2303,#2342</p>
+    </li>
+<li class="listitem">
+      <p>fix OCI-21500 when freeing lobs #2509</p>
+    </li>
+<li class="listitem">
+      <p>fix pgsql unix_timestamp cannot handle timstamp with timezone #2203</p>
+    </li>
+</ul></div>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
-          <p>changes array names in json output of extinfo.cgi</p>
-        </li>
-<li class="listitem">
-          <p>comments -&gt; host_comments / service_comments</p>
-        </li>
-<li class="listitem">
-          <p>downtimes -&gt; host_downtimes / service_downtimes</p>
-        </li>
-</ul></div>
-    </li>
-<li class="listitem">
-      <p>add is_in_effect and trigger_time to downtime output</p>
-    </li>
-<li class="listitem">
-      <p>add modified_attributes to extinfo.cgi</p>
-    </li>
-</ul></div>
+  <p><span class="bold"><strong>Docs</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>Hints how to use recurring downtimes #1867</p>
+    </li></ul></div>
 
   <p><a class="link" href="https://wiki.icinga.org/display/Dev/Releases" target="_top">More at Icinga Wiki</a></p>
 
@@ -209,7 +148,7 @@
 
   <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga-Docs</a></p>
 
-  <a class="indexterm" name="idp146816"></a>
+  <a class="indexterm" name="id1536521"></a>
 </div>
 <div class="navfooter">
 <hr>
