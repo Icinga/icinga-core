@@ -5609,7 +5609,7 @@ else
 fi
 
 if test x$IDOSOCKFILE = xno; then
-        IDO2SOCKFILE="$localstatedir/ido.sock"
+        IDOSOCKFILE="$localstatedir/ido.sock"
 fi
 
 

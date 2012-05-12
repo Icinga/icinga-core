@@ -464,7 +464,7 @@ dnl Location of ido.sock
 IDOSOCKFILE=no
 AC_ARG_WITH(ido-sockfile,AC_HELP_STRING([--with-ido-sockfile=<path>],[sets path and file name for ido sock file]),IDOSOCKFILE=$withval,IDOSOCKFILE=no)
 if test x$IDOSOCKFILE = xno; then
-        IDO2SOCKFILE="$localstatedir/ido.sock"
+        IDOSOCKFILE="$localstatedir/ido.sock"
 fi
 AC_SUBST(IDOSOCKFILE)
 
