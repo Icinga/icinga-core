@@ -131,11 +131,10 @@
     </li>
 <li class="listitem">
       <p>Create a symbolic link in the (user) templates folder of PNP4Nagios</p>
-<pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php icingastats.php</pre>
+<pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php check_stats.php</pre>
 <p>Make
-      sure that <span class="emphasis"><em>icingastats</em></span> (without the extension .php) matches the value you specified for the service description.
-      Blanks in the service description have to be replaced by underscores in the filename (e.g. "Icinga Stats" --&gt;
-      "Icinga_Stats.php")</p>
+      sure that <span class="emphasis"><em>check_stats</em></span> (without the extension .php) matches the value you specified as first parameter in the
+      check_command.</p>
     </li>
 </ul></div>
 
@@ -146,7 +145,7 @@
   <p><span class="bold"><strong>Average Host / Service Check Latency</strong></span></p>
 
   <div class="figure">
-<a name="id1432317"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p>
+<a name="idp14242416"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p>
 <div class="figure-contents">
     
 
@@ -193,7 +192,7 @@
   <p><span class="bold"><strong>Service Statistics</strong></span></p>
 
   <div class="figure">
-<a name="id1432451"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p>
+<a name="idp14258480"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p>
 <div class="figure-contents">
     
 
@@ -223,7 +222,7 @@
   <p><span class="bold"><strong>Host Statistics</strong></span></p>
 
   <div class="figure">
-<a name="id1432533"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p>
+<a name="idp14267952"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p>
 <div class="figure-contents">
     
 
@@ -253,7 +252,7 @@
   <p><span class="bold"><strong>Average Execution Times</strong></span></p>
 
   <div class="figure">
-<a name="id1432612"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p>
+<a name="idp14277856"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p>
 <div class="figure-contents">
     
 
@@ -296,7 +295,7 @@
   <p><span class="bold"><strong>External Commands</strong></span></p>
 
   <div class="figure">
-<a name="id1432715"></a><p class="title"><b>Figure 8.5. External Commands</b></p>
+<a name="idp14290080"></a><p class="title"><b>Figure 8.5. External Commands</b></p>
 <div class="figure-contents">
     
 
@@ -324,7 +323,7 @@
   <p><span class="bold"><strong>External Command Buffers</strong></span></p>
 
   <div class="figure">
-<a name="id1432787"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p>
+<a name="idp14298656"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p>
 <div class="figure-contents">
     
 
@@ -342,7 +341,7 @@
   <p><span class="bold"><strong>Cached Host and Service Checks</strong></span></p>
 
   <div class="figure">
-<a name="id1432839"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p>
+<a name="idp14304784"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p>
 <div class="figure-contents">
     
 
@@ -365,7 +364,7 @@
   <p><span class="bold"><strong>Average State Changes</strong></span></p>
 
   <div class="figure">
-<a name="id1432874"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p>
+<a name="idp14310352"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p>
 <div class="figure-contents">
     
 
@@ -381,7 +380,7 @@
       <p><a class="link" href="flapping.html" title="Detection and Handling of State Flapping">Flap detection</a></p>
     </li></ul></div>
 
-  <a class="indexterm" name="id1432943"></a>
+  <a class="indexterm" name="idp14317200"></a>
 </div>
 <div class="navfooter">
 <hr>
