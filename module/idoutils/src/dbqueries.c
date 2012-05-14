@@ -3570,11 +3570,11 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 	case IDO2DB_DBSERVER_MYSQL:
 		/* truncate long_output #2342 */
 		if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-			(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+			(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:long_output truncated\n");
 		}
-		if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-			(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+		if (strlen(*(char **) data[5]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+			(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:perfdata truncated\n");
 		}
 		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, status_update_time, "
