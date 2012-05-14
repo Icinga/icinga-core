@@ -56,7 +56,7 @@
 
   <p><span class="bold"><strong>Index</strong></span></p>
 
-  <table border="1" id="idp11560576">
+  <table border="1" id="id1485734">
     <caption>Tabelle 6.1. Konfigurationsdateien</caption>
 
     <tr>
@@ -232,28 +232,7 @@
 
   <p>Die wichtigsten Dateien:</p>
 
-  <div class="itemizedlist">
-<p>
-      <span class="bold"><strong>Fehlersuche</strong></span>
-    </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-        <p>Ich kann keine Befehle senden/ausführen!</p>
-
-        <p>Stellen Sie sicher, dass der WebServer-Benutzer Schreibberechtigung auf die Icinga-Pipe besitzt und dass das
-        "icinga_pipe"-Symbol im "readwrite"- oder "write"-Abschnitt Ihres Host (oder im default-Abschnitt) vorhanden ist. Stellen Sie
-        sicher, dass der Pfad korrekt ist.</p>
-      </li></ul></div>
-<p>
-      <a name="configweb-timezone"></a>
-
-      <span class="bold"><strong>Icinga-Web-Zeitzone</strong></span>
-    </p>
-<p>Beispiel: Ändern der Zeitzone für Icinga-Web</p>
-<p>Wenn die Zeitzone von Icinga-Web von Ihrer lokalen Zeitzone abweicht, überprüfen Sie bitte den Parameter "date.timezone" in
-    <code class="filename">app/modules/AppKit/config/module.xml</code> (z.B. 'Europe/Berlin')</p>
-<pre class="programlisting">#&gt; vi app/modules/AppKit/config/module.xml
-&lt;ae:parameter name="date.timezone"&gt;GMT&lt;/ae:parameter&gt;</pre>
-<ul class="itemizedlist" type="disc">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><a name="configweb-access"></a>access.xml</p>
 
@@ -270,15 +249,11 @@
 <p>Die <code class="filename">access.xml</code>-Konfiguration wird von Icinga-Webs Console-Handler-Implementation genutzt und
       bietet zusätzliche Sicherheit, weil sie willkürliche Ausführung/Manipulation von Dateien in letzter Instanz verhindert.</p>
 
-      <p>
-        <span class="bold"><strong>Abschnitte</strong></span>
-      </p>
+      <p><span class="bold"><strong>Abschnitte</strong></span></p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p>
-            <span class="emphasis"><em>Instanzen</em></span>
-          </p>
+          <p><span class="emphasis"><em>Instanzen</em></span></p>
 
           <p>Das Einrichten von Instanzen erfolgt im &lt;instances&gt;-Abschnitt:</p>
 
@@ -297,9 +272,7 @@
             </li></ul></div>
         </li>
 <li class="listitem">
-          <p>
-            <span class="emphasis"><em>Standardwerte</em></span>
-          </p>
+          <p><span class="emphasis"><em>Standardwerte</em></span></p>
 
           <p>Der "default"-Abschnitt definiert Standardwerte für Host-Einstellungen, z.B. auf welche Dateien schreibend/lesend
           zugegriffen werden bzw. welche ausgeführt werden können. Auch der Standard-Host, der von Icinga-Web benutzt werden soll, wird hier
@@ -347,9 +320,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-            <p>
-              <span class="emphasis"><em>Eigene Default-Definitionen in Ihrem Konfigurationsordner</em></span>
-            </p>
+            <p><span class="emphasis"><em>Eigene Default-Definitionen in Ihrem Konfigurationsordner</em></span></p>
 
             <p>If you override a custom section, like readwrite, all previously set definitions will be ignored and must be redefined if
             you want to use them. Das betrifft nicht Modul-KonfigurationenThis doesn't affect module configurations.</p>
@@ -357,9 +328,7 @@
 </table></div>
         </li>
 <li class="listitem">
-          <p>
-            <span class="emphasis"><em>Hosts</em></span>
-          </p>
+          <p><span class="emphasis"><em>Hosts</em></span></p>
 
           <p>Im host-Abschnitt werden Zugriffsmethoden und Anmeldeinformation, aber auch spezifische Rechte für Hosts definiert.</p>
 
@@ -403,9 +372,7 @@
 </ul></div>
         </li>
 <li class="listitem">
-          <p>
-            <span class="emphasis"><em>SSH-Config auth</em></span>
-          </p>
+          <p><span class="emphasis"><em>SSH-Config auth</em></span></p>
 
           <p>Dieser Abschnitt erklärt den Authentifizierungsblock der ssh-Konfigurationseinstellungen, die wir im vorigen Anschnitt
           angesprochen haben. Die Elemente unterhalb des 'auth'-Tags sind abhängig vom ausgewählten Authentifizierungstyp.</p>
@@ -481,11 +448,7 @@
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p>
-            <a name="configweb-general"></a>
-
-            <span class="emphasis"><em>Allgemeine Einstellungen</em></span>
-          </p>
+          <p><a name="configweb-general"></a> <span class="emphasis"><em>Allgemeine Einstellungen</em></span></p>
 
           <p>Die folgenden Einstellungen gelten für jede in Icinga-Web definierte Datenbank.</p>
 
@@ -700,17 +663,13 @@
 </ul></div>
         </li>
 <li class="listitem">
-          <p>
-            <span class="emphasis"><em>Die "icinga_web"-Datenbank</em></span>
-          </p>
+          <p><span class="emphasis"><em>Die "icinga_web"-Datenbank</em></span></p>
 
           <p>Sie müssen eine Icinga-Web-Datenbank haben, die Informationen über Benutzer, Anmeldeinformationen, View-Persistenz, etc.
           enthält. Diese Datenbank muss 'icinga_web' heißen. Alle Einstellungen sind im vorigen Abschnitt beschrieben.</p>
         </li>
 <li class="listitem">
-          <p>
-            <span class="emphasis"><em>Die "icinga"-Datenbank</em></span>
-          </p>
+          <p><span class="emphasis"><em>Die "icinga"-Datenbank</em></span></p>
 
           <p>Ab Icinga-Web v1.5 wird die Icinga-API über Doctrine angesprochen (vorher gab es ein eigenes Projekt, die 'icinga-api'). Im
           Folgenden werden nur spezielle bzw. zusätzliche Einstellungen erklärt. Solange nicht anders erwähnt, gelten alle Regeln aus <a class="link" href="icinga-web-config.html#configweb-general">"Allgemeine Einstellungen"</a>.</p>
@@ -767,9 +726,7 @@
 </ul></div>
         </li>
 <li class="listitem">
-          <p>
-            <span class="emphasis"><em>Komplettes Listing</em></span>
-          </p>
+          <p><span class="emphasis"><em>Komplettes Listing</em></span></p>
 
           <pre class="screen">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
  
@@ -824,11 +781,7 @@
 
       <p>holds the config for your web session, e.g. the session_cookie_lifetime-parameter</p>
 
-      <p>
-        <a name="configweb-session-lifetime"></a>
-
-        <span class="bold"><strong>Session Cookie Lifetime</strong></span>
-      </p>
+      <p><a name="configweb-session-lifetime"></a> <span class="bold"><strong>Session Cookie Lifetime</strong></span></p>
 
       <p>Beispiel: Ändern von session_cookie_lifetime</p>
 
@@ -855,8 +808,27 @@
       <p><a name="configweb-translation"></a><code class="filename">translation.xml</code> - Default-Sprache, Datum- und Zeitformate und
       Einstellungen</p>
     </li>
-</ul>
-</div>
+</ul></div>
+
+  <p><span class="bold"><strong>Fehlersuche</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p>Ich kann keine Befehle senden/ausführen!</p>
+
+      <p>Stellen Sie sicher, dass der WebServer-Benutzer Schreibberechtigung auf die Icinga-Pipe besitzt und dass das
+      "icinga_pipe"-Symbol im "readwrite"- oder "write"-Abschnitt Ihres Host (oder im default-Abschnitt) vorhanden ist. Stellen Sie sicher,
+      dass der Pfad korrekt ist.</p>
+    </li></ul></div>
+
+  <p><a name="configweb-timezone"></a> <span class="bold"><strong>Icinga-Web-Zeitzone</strong></span></p>
+
+  <p>Beispiel: Ändern der Zeitzone für Icinga-Web</p>
+
+  <p>Wenn die Zeitzone von Icinga-Web von Ihrer lokalen Zeitzone abweicht, überprüfen Sie bitte den Parameter "date.timezone" in
+  <code class="filename">app/modules/AppKit/config/module.xml</code> (z.B. 'Europe/Berlin')</p>
+
+  <pre class="programlisting">#&gt; vi app/modules/AppKit/config/module.xml
+&lt;ae:parameter name="date.timezone"&gt;GMT&lt;/ae:parameter&gt;</pre>
 
   <p><a name="configweb-module"></a> <span class="bold"><strong>Modul-Konfiguration:</strong></span></p>
 
@@ -967,17 +939,17 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
   <p>Benötigen Sie weitere Informationen? Schauen Sie bitte in unserem<a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top"> Development Wiki.</a></p>
 
-  <a class="indexterm" name="idp11773968"></a>
+  <a class="indexterm" name="id1487478"></a>
 
-  <a class="indexterm" name="idp11775232"></a>
+  <a class="indexterm" name="id1487488"></a>
 
-  <a class="indexterm" name="idp11776448"></a>
+  <a class="indexterm" name="id1487498"></a>
 
-  <a class="indexterm" name="idp11777632"></a>
+  <a class="indexterm" name="id1487508"></a>
 
-  <a class="indexterm" name="idp11778880"></a>
+  <a class="indexterm" name="id1487519"></a>
 
-  <a class="indexterm" name="idp11780448"></a>
+  <a class="indexterm" name="id1487532"></a>
 </div>
 <div class="navfooter">
 <hr>

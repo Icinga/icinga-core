@@ -126,105 +126,87 @@
     that one of the packages cannot be found then please use the search option of your package manager to get the new name: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-           
-
-          <code class="literal">yum search &lt;package name&gt;</code>
-
-           ( 
-
-          <span class="emphasis"><em>Fedora/RHEL/CentOS</em></span>
-
-           ) 
+          <p><code class="code">yum search &lt;package name&gt;</code> (<span class="emphasis"><em>Fedora/RHEL/CentOS</em></span>)</p>
         </li>
 <li class="listitem">
-           
-
-          <code class="literal">apt-cache search &lt;package name&gt;</code>
-
-           ( 
-
-          <span class="emphasis"><em>Debian/Ubuntu</em></span>
-
-           ) 
+          <p><code class="code">apt-cache search &lt;package name&gt;</code> (<span class="emphasis"><em>Debian/Ubuntu</em></span>)</p>
         </li>
 <li class="listitem">
-           
-
-          <code class="literal">zypper search &lt;package name&gt;</code>
-
-           ( 
-
-          <span class="emphasis"><em>openSuSE/SLES</em></span>
-
-           ) 
+          <p><code class="code">zypper search &lt;package name&gt;</code> (<span class="emphasis"><em>openSuSE/SLES</em></span>)</p>
         </li>
 </ul></div>
   </td></tr>
 </table></div>
 
-  <p><span class="emphasis"><em>Fedora/RHEL/CentOS</em></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="emphasis"><em>Fedora/RHEL/CentOS</em></span></p>
 
-  <pre class="programlisting"> #&gt; yum install httpd gcc glibc glibc-common gd gd-devel
+      <pre class="programlisting"> #&gt; yum install httpd gcc glibc glibc-common gd gd-devel
  #&gt; yum install libjpeg libjpeg-devel libpng libpng-devel
  #&gt; yum install net-snmp net-snmp-devel net-snmp-utils</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>You may have to use libjpeg-turbo and libjpeg-turbo-devel instead</p>
-  </td></tr>
+        <p>You may have to use libjpeg-turbo and libjpeg-turbo-devel instead</p>
+      </td></tr>
 </table></div>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
 
-  <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
-
-  <pre class="programlisting"> #&gt; apt-get install apache2 build-essential libgd2-xpm-dev
+      <pre class="programlisting"> #&gt; apt-get install apache2 build-essential libgd2-xpm-dev
  #&gt; apt-get install libjpeg62 libjpeg62-dev libpng12 libpng12-dev
  #&gt; apt-get install snmp libsnmp5-dev</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>The numbers &lt;62/12&gt; might differ, depending on your distribution</p>
-  </td></tr>
+        <p>The numbers &lt;62/12&gt; might differ, depending on your distribution</p>
+      </td></tr>
 </table></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Starting with Debian 6.0 / Ubuntu 10.10 the package is called libpng-12-0, the name of the dev-package hasn't
-    changed.</p>
-  </td></tr>
+        <p>Starting with Debian 6.0 / Ubuntu 10.10 the package is called libpng-12-0, the name of the dev-package hasn't
+        changed.</p>
+      </td></tr>
 </table></div>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>openSuSE/SLES</em></span></p>
 
-  <p><span class="emphasis"><em>openSuSE/SLES</em></span></p>
+      <p>Please use YaST to install at least the packages gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel and, optionally,
+      net-snmp, net-snmp-devel and perl-Net-SNMP.</p>
 
-  <p>Please use YaST to install at least the packages gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel and, optionally,
-  net-snmp, net-snmp-devel and perl-Net-SNMP.</p>
+      <p>Using zypper should work as well:</p>
 
-  <p>Using zypper should work as well:</p>
-
-  <pre class="programlisting"> #&gt; zypper install gd gd-devel libjpeg libjpeg-devel libpng libpng-devel
+      <pre class="programlisting"> #&gt; zypper install gd gd-devel libjpeg libjpeg-devel libpng libpng-devel
  #&gt; zypper install net-snmp net-snmp-devel perl-Net-SNMP</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Depending on the software selection during the installation of the OS you may need to install additional packages (i.e. apache2,
-    gcc). The devel packages might be placed on the SDK DVDs.</p>
-  </td></tr>
+        <p>Depending on the software selection during the installation of the OS you may need to install additional packages (i.e.
+        apache2, gcc). The devel packages might be placed on the SDK DVDs.</p>
+      </td></tr>
 </table></div>
+    </li>
+</ul></div>
 
   <p><span class="bold"><strong>Create Account Information</strong></span></p>
 
@@ -285,8 +267,8 @@
 
   <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
 
-  <pre class="programlisting"> #&gt; cd /usr/src/ 
- #&gt; tar xvzf icinga-1.7.tar.gz 
+  <pre class="programlisting"> #&gt; cd /usr/src/
+ #&gt; tar xvzf icinga-1.7.tar.gz
  #&gt; cd icinga-1.7</pre>
 
   <p>Run the Icinga configure script. You will get help by using the --help flag.</p>
@@ -299,11 +281,11 @@
 
   <p>Install binaries, init script, sample config files, some eventhandlers, and set permissions on the external command directory.
   </p>
-<pre class="programlisting"> #&gt; make install 
- #&gt; make install-init 
- #&gt; make install-config 
+<pre class="programlisting"> #&gt; make install
+ #&gt; make install-init
+ #&gt; make install-config
  #&gt; make install-eventhandlers
- #&gt; make install-commandmode </pre>
+ #&gt; make install-commandmode</pre>
 <p> or shorter </p>
 <pre class="programlisting"> #&gt; make fullinstall
  #&gt; make install-config</pre>
@@ -381,19 +363,24 @@
 
   <p>Reload/Restart Apache to make the new settings take effect.</p>
 
-  <p><span class="emphasis"><em>Fedora/RHEL/CentOS</em></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="emphasis"><em>Fedora/RHEL/CentOS</em></span></p>
 
-  <pre class="programlisting"> #&gt; service httpd restart</pre>
+      <pre class="programlisting"> #&gt; service httpd restart</pre>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>Debian/Ubuntu/openSuSE</em></span></p>
 
-  <p><span class="emphasis"><em>Debian/Ubuntu/openSuSE</em></span></p>
-
-  <pre class="programlisting"> #&gt; /etc/init.d/apache2 reload</pre>
+      <pre class="programlisting"> #&gt; /etc/init.d/apache2 reload</pre>
+    </li>
+</ul></div>
 
   <p><span class="bold"><strong>Compile and Install the Nagios Plugins</strong></span></p>
 
   <p>Extract the Nagios plugins source code tarball.</p>
 
-  <pre class="programlisting"> #&gt; cd /usr/src 
+  <pre class="programlisting"> #&gt; cd /usr/src
  #&gt; tar xvzf nagios-plugins-1.4.15.tar.gz
  #&gt; cd nagios-plugins-1.4.15 </pre>
 
@@ -402,8 +389,8 @@
   <pre class="programlisting"> #&gt; ./configure \
     --prefix=/usr/local/icinga --with-cgiurl=/icinga/cgi-bin --with-htmurl=/icinga \
     --with-nagios-user=icinga --with-nagios-group=icinga
- #&gt; make 
- #&gt; make install </pre>
+ #&gt; make
+ #&gt; make install</pre>
 
   <p><span class="bold"><strong>Adjusting the SELinux settings</strong></span></p>
 
@@ -427,7 +414,7 @@
 
   <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
- #&gt; chcon -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/icinga.cmd</pre>
+ #&gt; chcon -R -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/</pre>
 
   <p>Visit the NagiosCommunity.org-Wiki at <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a> to
   get information how to run the Icinga-CGIs in enforcing mode with a targeted policy.</p>
@@ -437,33 +424,40 @@
   <p>Add Icinga to the list of system services and have it automatically start when the system boots (make sure you have installed
   the init script before).</p>
 
-  <p><span class="emphasis"><em>Fedora/RHEL/CentOS/openSuSE</em></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="emphasis"><em>Fedora/RHEL/CentOS/openSuSE</em></span></p>
 
-  <pre class="programlisting"> #&gt; chkconfig --add icinga 
+      <pre class="programlisting"> #&gt; chkconfig --add icinga 
  #&gt; chkconfig icinga on </pre>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
 
-  <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
+      <pre class="programlisting"> #&gt; update-rc.d icinga defaults</pre>
 
-  <pre class="programlisting"> #&gt; update-rc.d icinga defaults</pre>
+      <p>Verify the sample Icinga configuration files.</p>
 
-  <p>Verify the sample Icinga configuration files.</p>
+      <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
 
-  <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
-
-  <p>Instead of specifying the paths to binary and config file you can issue </p>
+      <p>Instead of specifying the paths to binary and config file you can issue </p>
 <pre class="programlisting"> #&gt; /etc/init.d/icinga show-errors</pre>
 <p>which
-  results in an OK message if everything is fine or several lines which show the location of the error(s).</p>
+      results in an OK message if everything is fine or several lines which show the location of the error(s).</p>
 
-  <p>If there are no errors, start Icinga.</p>
+      <p>If there are no errors, start Icinga.</p>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>Fedora/RHEL/CentOS/Ubuntu</em></span></p>
 
-  <p><span class="emphasis"><em>Fedora/RHEL/CentOS/Ubuntu</em></span></p>
+      <pre class="programlisting"> #&gt; service icinga start</pre>
+    </li>
+<li class="listitem">
+      <p><span class="emphasis"><em>Debian/openSuSE</em></span></p>
 
-  <pre class="programlisting"> #&gt; service icinga start</pre>
-
-  <p><span class="emphasis"><em>Debian/openSuSE</em></span></p>
-
-  <pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
+      <pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
+    </li>
+</ul></div>
 
   <p><span class="bold"><strong>Login to the Classic Web Interface</strong></span></p>
 
@@ -498,7 +492,7 @@
   <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
   Started"</a> about "Monitoring ..."</p>
 
-  <a class="indexterm" name="idp288304"></a>
+  <a class="indexterm" name="id1438780"></a>
 </div>
 <div class="navfooter">
 <hr>

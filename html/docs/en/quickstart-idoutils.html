@@ -234,37 +234,13 @@
     that one of the packages cannot be found then please use the search option of your package manager to get the new name: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-           
-
-          <code class="literal">yum search &lt;package name&gt;</code>
-
-           ( 
-
-          <span class="emphasis"><em>Fedora/RHEL/CentOS</em></span>
-
-           ) 
+          <p><code class="code">yum search &lt;package name&gt;</code> ( <span class="emphasis"><em>Fedora/RHEL/CentOS</em></span> )</p>
         </li>
 <li class="listitem">
-           
-
-          <code class="literal">apt-cache search &lt;package name&gt;</code>
-
-           ( 
-
-          <span class="emphasis"><em>Debian/Ubuntu</em></span>
-
-           ) 
+          <p><code class="code">apt-cache search &lt;package name&gt;</code> ( <span class="emphasis"><em>Debian/Ubuntu</em></span> )</p>
         </li>
 <li class="listitem">
-           
-
-          <code class="literal">zypper search &lt;package name&gt;</code>
-
-           ( 
-
-          <span class="emphasis"><em>openSuSE/SLES</em></span>
-
-           ) 
+          <p><code class="code">zypper search &lt;package name&gt;</code> ( <span class="emphasis"><em>openSuSE/SLES</em></span> )</p>
         </li>
 </ul></div>
   </td></tr>
@@ -671,21 +647,15 @@
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-     
-
     <p>Under normal circumstances the following module definition is already present in the <code class="filename">modules</code> subdirectory so
-    there is no need to edit the main config file</p>
-
-     
-
-    <pre class="screen"> define module{
+    there is no need to edit the main config file </p>
+<pre class="screen"> define module{
         module_name    ido_mod
         path           /usr/local/icinga/lib/idomod.so
         module_type    neb
         args           config_file=/usr/local/icinga/etc/idomod.cfg
         }</pre>
-
-     This also means that a broker_module entry must not be enabled! 
+<p> This also means that a broker_module entry must not be enabled!</p>
   </td></tr>
 </table></div>
 
@@ -990,9 +960,9 @@
   no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a>
   about "Monitoring ..."</p>
 
-  <a class="indexterm" name="idp586112"></a>
+  <a class="indexterm" name="id1441268"></a>
 
-  <a class="indexterm" name="idp587600"></a>
+  <a class="indexterm" name="id1441281"></a>
 </div>
 <div class="navfooter">
 <hr>
