@@ -133,7 +133,7 @@ if ($sqlservertype_cfg eq 'mysql') {
 
 #Mysql Connection Testing
 	if ( !$mysqlcheck ) {
-		print "mysql not found, check your ido2db.cfg or mysql Server\n";
+		print "mysql service not found, check your ido2db.cfg or mysql Server\n";
 	} else {
 
 		print STDERR " Mysql Found! - Try to connect via ido2db.cfg\n";
@@ -188,9 +188,11 @@ if ($sqlservertype_cfg eq 'mysql') {
 } elsif ($sqlservertype_cfg eq 'psql') {
 #Postgresql Connection Testing
 	if ( !$psqlcheck) {
-		print "postgresql not found, skipping\n";
+		print "postgresql not found, check your ido2db.cfg or PostgreSQL Server\n";
 	} else {
-		print STDERR " Postgresql not found, check your ido2db.cfg or Postgresql Server\n";
+		print STDERR " Postgresql found! - Try to connect via ido2db.cfg\n";
+		#FIXME
+		#PSQL CONNECTION TEST, Same as for Mysql
 	}
 }
 
