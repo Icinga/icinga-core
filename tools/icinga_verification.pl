@@ -109,76 +109,87 @@ if (! $icinga_base ) {
 
 my $pnp4nagios_base = find_pnp4nagios_dir();
 
-#### MySQL Config if MySQL is used ####
+#### DATABASE BACKEND ####
 
-#ido2db.cfg Mysql Config parsing
+#SQL Server Check
+my $mysqlcheck = which('mysql');
+my $psqlcheck = which('psql');
+
+#ido2db.cfg SQL Server Parsing
+my $sqlservertype_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertype');
 
 #ido2db Server Host Name
-my $mysqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
+my $sqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
 #ido2db DB User
-my $mysqluser_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_user');
+my $sqluser_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_user');
 #ido2db DB Name
-my $mysqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
+my $sqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
 #ido2db Password
-my $mysqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
+my $sqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
 
-#Mysql Server Check, is a mysql serverrunning?
-my $mysqlcheck = which('mysql');
+my ($dbh_cfg, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1) = '';
+
+if ($sqlservertype_cfg eq 'mysql') {
 
 #Mysql Connection Testing
-my ($dbh_cfg, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1, $mysqldb) = '';
+	if ( !$mysqlcheck ) {
+		print "mysql not found, check your ido2db.cfg or mysql Server\n";
+	} else {
 
-if ( !$mysqlcheck ) {
-    print "mysql not found, skipping\n";
-} else {
-
-    print STDERR " Mysql Found! - Try to connect via ido2db.cfg\n";
+		print STDERR " Mysql Found! - Try to connect via ido2db.cfg\n";
 	
-	# ido2db.cfg Connection test
-    $dbh_cfg = DBI->connect(
-        "dbi:mysql:database=$mysqldb_cfg; host=$mysqlserver_cfg:mysql_server_prepare=1",
-        "$mysqluser_cfg",
-        "$mysqlpw_cfg",
-        {   PrintError => 0,
-            RaiseError => 0
-        }
-        )
-        or $dbh_cfg_error =
-        "ido2db.cfg - MySQL Connect Failed.";
+		# ido2db.cfg Connection test
+		$dbh_cfg = DBI->connect(
+			"dbi:mysql:database=$sqldb_cfg; host=$sqlserver_cfg:mysql_server_prepare=1",
+			"$sqluser_cfg",
+			"$sqlpw_cfg",
+			{   PrintError => 0,
+				RaiseError => 0
+			}
+			)
+			or $dbh_cfg_error =
+			"ido2db.cfg - MySQL Connect Failed.";
 
-    if ( !$dbh_cfg_error ) {
-	    print " ido2db.cfg Mysql Connection Test OK!\n";
-        $dbh_cfg->disconnect();
-    } else {        
-		print color("red"), "ido2db.cfg - MySQL Connect FAILED. Start Config Script", color("reset");
-		print "\n";
-		print STDERR "\nValues in '< >' are default parameters! Confirm with [Enter]\n";
-		print STDERR "\nEnter your MYSQL Server <localhost>: ";
-		$mysqlserver_cfg = <STDIN>;
-		chomp($mysqlserver_cfg);
-		if ( !$mysqlserver_cfg ) {
-		$mysqlserver_cfg = 'localhost';
-		}
+		if ( !$dbh_cfg_error ) {
+			print " ido2db.cfg Mysql Connection Test OK!\n";
+			$dbh_cfg->disconnect();
+		} else {        
+			print color("red"), "ido2db.cfg - MySQL Connect FAILED. Start Config Script", color("reset");
+			print "\n";
+			print STDERR "\nValues in '< >' are default parameters! Confirm with [Enter]\n";
+			print STDERR "\nEnter your MYSQL Server <localhost>: ";
+			$sqlserver_cfg = <STDIN>;
+			chomp($sqlserver_cfg);
+			if ( !$sqlserver_cfg ) {
+			$sqlserver_cfg = 'localhost';
+			}
 
-		print STDERR "Enter your MYSQL User <root>: ";
-		$mysqluser_cfg = <STDIN>;
-		chomp($mysqluser_cfg);
-		if ( !$mysqluser_cfg ) {
-        $mysqluser_cfg = 'root';
-		}
+			print STDERR "Enter your MYSQL User <root>: ";
+			$sqluser_cfg = <STDIN>;
+			chomp($sqluser_cfg);
+			if ( !$sqluser_cfg ) {
+			$sqluser_cfg = 'root';
+			}
 	
-		print STDERR "Enter your Icinga Database <icinga>: ";
-		$mysqldb_cfg = <STDIN>;
-		chomp($mysqldb_cfg);
-		if ( !$mysqldb_cfg ) {
-        $mysqldb_cfg = 'icinga';
-		}
+			print STDERR "Enter your Icinga Database <icinga>: ";
+			$sqldb_cfg = <STDIN>;
+			chomp($sqldb_cfg);
+			if ( !$sqldb_cfg ) {
+			$sqldb_cfg = 'icinga';
+			}
 
-		system( 'stty', '-echo' );
-		print STDERR "Enter your MYSQL Password: ";
-		$mysqlpw_cfg = <STDIN>;
-		chomp($mysqlpw_cfg);
-		system( 'stty', 'echo' );
+			system( 'stty', '-echo' );
+			print STDERR "Enter your MYSQL Password: ";
+			$sqlpw_cfg = <STDIN>;
+			chomp($sqlpw_cfg);
+			system( 'stty', 'echo' );
+			}
+		}
+} elsif ($sqlservertype_cfg eq 'psql') {
+	if ( !$psqlcheck) {
+		print "postgresql not found, skipping\n";
+	} else {
+		print STDERR " Postgresql not found, check your ido2db.cfg or mysql Server\n";
 	}
 }
 
@@ -314,9 +325,9 @@ if ( !$mysqlcheck ) {
 } else {
     # Connect to Database
     $dbh_cfg = DBI->connect(
-        "dbi:mysql:database=$mysqldb_cfg; host=$mysqlserver_cfg:mysql_server_prepare=1",
-        "$mysqluser_cfg",
-        "$mysqlpw_cfg",
+        "dbi:mysql:database=$sqldb_cfg; host=$sqlserver_cfg:mysql_server_prepare=1",
+        "$sqluser_cfg",
+        "$sqlpw_cfg",
         {   PrintError => 0,
             RaiseError => 0
         }
