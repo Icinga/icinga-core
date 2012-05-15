@@ -186,10 +186,11 @@ if ($sqlservertype_cfg eq 'mysql') {
 			}
 		}
 } elsif ($sqlservertype_cfg eq 'psql') {
+#Postgresql Connection Testing
 	if ( !$psqlcheck) {
 		print "postgresql not found, skipping\n";
 	} else {
-		print STDERR " Postgresql not found, check your ido2db.cfg or mysql Server\n";
+		print STDERR " Postgresql not found, check your ido2db.cfg or Postgresql Server\n";
 	}
 }
 
@@ -259,6 +260,7 @@ my $idocon = ($ido2dbproc - '1');
 ### icinga.cfg parsing ###
 #icinga external commands
 my $icingaextcmd = get_key_from_ini("$icinga_base/icinga.cfg", 'check_external_commands');
+my $icingaextcmdlog = get_key_from_ini("$icinga_base/icinga.cfg", 'log_external_commands');
 
 #icinga user
 my $icingacfguser = get_key_from_ini("$icinga_base/icinga.cfg", 'icinga_user');
@@ -400,6 +402,7 @@ Icinga General Informations:
  @result_icingaconninfo 
 Icinga.cfg/resource.cfg Information:
  External Commands(1=on,0=off): $icingaextcmd
+ Log External Commands(1=on,0=off): $icingaextcmdlog
  Icinga User: $icingacfguser
  Icinga Group: $icingacfggroup
  Plugin Path: $plugin_path
