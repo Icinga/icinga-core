@@ -229,7 +229,7 @@ my $mysqlver =
 
 
 # distribution
-my $distribution = get_distribution();
+my $distribution = (split( ",", get_distribution() ))[0];
 
 # icinga version
 my $icingaversion = get_icinga_version();
@@ -392,7 +392,7 @@ Perlversion: $perlversion
 Current Date/Time on Server: $date
 
 OS Information:
-  OS Name: $distribution,
+  $distribution
   Kernel Version: $osversion
   LC_LANG: $LANG
   Selinux Status: $selinux
