@@ -9,6 +9,7 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 !!! ATTENTION !!!
 	idomod.o was renamed to idomod.so, module extension is now .so
 	idomod.so will now be installed to $libdir instead of $bindir
+	Check the upgrade docs: http://docs.icinga.org/latest/en/upgrading.html
 !!! ATTENTION !!!
 
 ENHANCEMENTS
@@ -112,7 +113,7 @@ FIXES
 * classic ui: fixed Log File Navigation in current/ealier/recent archive clarification #2441 - RB
 * classic ui: fixed Extra leading space in status.cgi CSV output #2535 - RB
 * classic ui: fixed Authentication in trends.cgi not working correctly #2209 - RB
-* classic ui: fixed Reuse of a buffer causes incorrect results in scheduling queue display (extinfo.cgi) #2603 - crfriend
+* classic ui: fixed Reuse of a buffer causes incorrect results in scheduling queue display (extinfo.cgi) #2603 - CF
 
 * idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319 - MF
 * idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974 - MF
@@ -123,6 +124,7 @@ FIXES
 * idoutils: fix OCI-21500 when freeing lobs #2509 - TD
 * idoutils: add note to "if process data is not dumped via idomod, ido2db won't clean tables and set objects inactive" #2237 - MF
 * idoutils: fix pgsql unix_timestamp cannot handle timstamp with timezone #2203 - MF
+* idoutils: fix ido2db forks endless if database is not available, race condition on unclosed socket #2458 - MF/TD/CF
 
 * install: Fix notification template installation (Todd Zullinger) #2235 - MF
 * install: uninstall old idomod.o #2570 - MF
