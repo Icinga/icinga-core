@@ -127,7 +127,14 @@ my $sqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
 #ido2db Password
 my $sqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
 
-my ($dbh_cfg, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1) = '';
+my ($dbh_cfg,$dbh_web, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1) = '';
+
+#Icinga Web DB USER1
+#FIXME
+#parse options from
+#/icinga-web/app/config/databases.xml
+my $sqluser_web = "icinga_web";
+my $sqlpw_web = "icinga_web";
 
 if ($sqlservertype_cfg eq 'mysql') {
 
@@ -338,6 +345,7 @@ my $dbh_conn_error = '';
 my @result_icingadb  = ();
 my @row;
 my @result_icingaconninfo = ();
+my @result_icingawebdb  = ();
 
 if ( !$mysqlcheck ) {
     print STDERR "no Mysql Found, skip Querys\n";
@@ -347,6 +355,18 @@ if ( !$mysqlcheck ) {
         "dbi:mysql:database=$sqldb_cfg; host=$sqlserver_cfg:mysql_server_prepare=1",
         "$sqluser_cfg",
         "$sqlpw_cfg",
+        {   PrintError => 0,
+            RaiseError => 0
+        }
+        )
+        or $dbh_conn_error = 
+		"MySQL Connect Failed. - Check your input or the MySQL Process!";
+		
+	#Connect to Database Icinga-Web	
+	$dbh_web = DBI->connect(
+        "dbi:mysql:database=icinga_web; host=$sqlserver_cfg:mysql_server_prepare=1",
+        "$sqluser_web",
+        "$sqlpw_web",
         {   PrintError => 0,
             RaiseError => 0
         }
@@ -366,17 +386,29 @@ if ( !$mysqlcheck ) {
 		}
 
 		# Query icinga_conninfo
-		my $icinga_conninfo =
-        'select conninfo_id, last_checkin_time from icinga_conninfo order by connect_time desc limit 2';
-		$sth1 = $dbh_cfg->prepare($icinga_conninfo) or warn $DBI::errstr;
+		my $icinga_conninfo = 'select conninfo_id, last_checkin_time from icinga_conninfo order by connect_time desc limit 2';
+		$sth = $dbh_cfg->prepare($icinga_conninfo) or warn $DBI::errstr;
 
-		$sth1->execute() or warn $DBI::errstr;
+		$sth->execute() or warn $DBI::errstr;
 
-		while ( @row = $sth1->fetchrow_array() ) {
+		while ( @row = $sth->fetchrow_array() ) {
 			push( @result_icingaconninfo, "id:", @row, "\n" );
 		}
+		
+		# Query icinga_web db version
+		#FIXME ! IF Table doesnt exists the execute crash
+		my $icingaweb_dbversion = 'select version, modified from nsm_db_version';
+		$sth = $dbh_web->prepare($icingaweb_dbversion) or warn $DBI::errstr;
 
+		$sth->execute() or warn $DBI::errstr;
+
+		while ( @row = $sth->fetchrow_array() ) {
+			push( @result_icingawebdb, @row );
+		}
+		
     $dbh_cfg->disconnect();
+	$dbh_web->disconnect();
+	
 	} else {
 		print color("red"), "\n\n$dbh_conn_error\n\n", color("reset");
 	}   
@@ -410,7 +442,7 @@ MySQL Information:
  $mysqlver
  
 Icinga General Informations:
- Icinga DB-Version: $result_icingadb[0]
+ DB-Version: $result_icingadb[0]
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
  ido2db Processes: $ido2dbproc
@@ -424,6 +456,10 @@ Icinga.cfg/resource.cfg Information:
  Icinga Group: $icingacfggroup
  Plugin Path: $plugin_path
  idomod broker modul: $idomod_cfg
+ 
+Icinga Web:
+ DB-Version: $result_icingawebdb[0]
+ DB-last modified: $result_icingawebdb[1]
  
 ido2db Information:
  Server Type: $ido2dbservertype
