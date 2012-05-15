@@ -3547,11 +3547,11 @@ void show_scheduling_queue(void) {
 
 			/* last check */
 			get_time_string(&temp_svcstatus->last_check, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
-			last_check = (temp_svcstatus->last_check == (time_t)0) ? "N/A" : date_time;
+			last_check = (temp_svcstatus->last_check == (time_t)0) ? "N/A" : strdup(date_time);
 
 			/* next check */
 			get_time_string(&temp_svcstatus->next_check, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
-			next_check = (temp_svcstatus->next_check == (time_t)0) ? "N/A" : date_time;
+			next_check = (temp_svcstatus->next_check == (time_t)0) ? "N/A" : strdup(date_time);
 
 			/* type */
 			if (temp_svcstatus->check_options == CHECK_OPTION_NONE)
@@ -3602,11 +3602,11 @@ void show_scheduling_queue(void) {
 
 			/* last check */
 			get_time_string(&temp_hststatus->last_check, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
-			last_check = (temp_hststatus->last_check == (time_t)0) ? "N/A" : date_time;
+			last_check = (temp_hststatus->last_check == (time_t)0) ? "N/A" : strdup(date_time);
 
 			/* next check */
 			get_time_string(&temp_hststatus->next_check, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
-			next_check = (temp_hststatus->next_check == (time_t)0) ? "N/A" : date_time;
+			next_check = (temp_hststatus->next_check == (time_t)0) ? "N/A" : strdup(date_time);
 
 			/* type */
 			if (temp_hststatus->check_options == CHECK_OPTION_NONE)
@@ -3697,6 +3697,9 @@ void show_scheduling_queue(void) {
 
 			printf("</TD></TR>\n");
 		}
+
+		free(last_check);
+		free(next_check);
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {

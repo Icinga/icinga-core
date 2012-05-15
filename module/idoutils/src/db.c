@@ -400,6 +400,8 @@ int ido2db_db_is_connected(ido2db_idi *idi) {
 
 int ido2db_db_reconnect(ido2db_idi *idi) {
 
+	int result = IDO_OK;
+
 	/* check connection */
 	if (ido2db_db_is_connected(idi) == IDO_FALSE)
 		idi->dbinfo.connected = IDO_FALSE;
@@ -411,10 +413,10 @@ int ido2db_db_reconnect(ido2db_idi *idi) {
 			syslog(LOG_USER | LOG_INFO, "Error: Could not reconnect to database!");
 			return IDO_ERROR;
 		}
-		ido2db_db_hello(idi);
+		result = ido2db_db_hello(idi);
 	}
 
-	return IDO_OK;
+	return result;
 }
 
 
@@ -1317,6 +1319,8 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 	void *data[1];
 	buf = NULL;
 	name = NULL;
+	int result = IDO_OK;
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check () start \n");
 
 	name = strdup("idoutils");
@@ -1327,7 +1331,7 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 	if (asprintf(&buf, "SELECT version FROM %s WHERE name='%s'", ido2db_db_tablenames[IDO2DB_DBTABLE_DBVERSION], name) == -1)
 		buf = NULL;
 
-	if ((ido2db_db_query(idi, buf)) == IDO_OK) {
+	if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
 
 		if (idi->dbinfo.dbi_result != NULL) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
@@ -1363,7 +1367,7 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 	if (OCI_FetchNext(idi->dbinfo.oci_resultset)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() fetchnext ok\n");
 		idi->dbinfo.dbversion = strdup(OCI_GetString(idi->dbinfo.oci_resultset, 1));
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(version=%s)\n", idi->dbinfo.dbversion);
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check(version=%s)\n", idi->dbinfo.dbversion);
 	} else {
 		idi->dbinfo.dbversion = NULL;
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() fetchnext not ok\n");
@@ -1393,7 +1397,7 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check () end\n");
 
-	return IDO_OK;
+	return result;
 
 }
 
@@ -1418,7 +1422,16 @@ int ido2db_db_hello(ido2db_idi *idi) {
 		idi->instance_name = strdup("default");
 
 
-	ido2db_db_version_check(idi);
+	result = ido2db_db_version_check(idi);
+
+	if (result == IDO_ERROR) {
+                syslog(LOG_USER | LOG_INFO, "Error: DB Version Check against %s database query failed! Please check %s database configuration and schema!", ido2db_db_settings.dbserver, ido2db_db_settings.dbserver);
+                syslog(LOG_USER | LOG_INFO, "Exiting ...");
+
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() query against existing instance not possible, cleaning up and exiting\n");
+
+		return IDO_ERROR;
+	}
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
@@ -1445,23 +1458,8 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_terminate_threads();
-
-		/* disconnect from database */
-		ido2db_db_disconnect(idi);
-		ido2db_db_deinit(idi);
-
-		/* free memory */
-		ido2db_free_input_memory(idi);
-		ido2db_free_connection_memory(idi);
-
-		/* cleanup the socket */
-		ido2db_cleanup_socket();
-
-		/* free memory */
-		ido2db_free_program_memory();
-
-		_exit(0);
+		/* bail out, but do not exit the child yet */
+		return IDO_ERROR;
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -1493,23 +1491,8 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_terminate_threads();
-
-		/* disconnect from database */
-		ido2db_db_disconnect(idi);
-		ido2db_db_deinit(idi);
-
-		/* free memory */
-		ido2db_free_input_memory(idi);
-		ido2db_free_connection_memory(idi);
-
-		/* cleanup the socket */
-		ido2db_cleanup_socket();
-
-		/* free memory */
-		ido2db_free_program_memory();
-
-		_exit(0);
+		/* bail out, but do not exit the child yet */
+		return IDO_ERROR;
 	}
 
 	/* commit statement */
@@ -1892,23 +1875,8 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 	} else {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_terminate_threads();
-
-		/* disconnect from database */
-		ido2db_db_disconnect(idi);
-		ido2db_db_deinit(idi);
-
-		/* free memory */
-		ido2db_free_input_memory(idi);
-		ido2db_free_connection_memory(idi);
-
-		/* cleanup the socket */
-		ido2db_cleanup_socket();
-
-		/* free memory */
-		ido2db_free_program_memory();
-
-		_exit(0);
+		/* bail out, but do not exit the child yet - not allowed as thread */
+		return IDO_ERROR;
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -1933,23 +1901,8 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 	if (!OCI_Execute(idi->dbinfo.oci_statement_instances_select)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
-		ido2db_terminate_threads();
-
-		/* disconnect from database */
-		ido2db_db_disconnect(idi);
-		ido2db_db_deinit(idi);
-
-		/* free memory */
-		ido2db_free_input_memory(idi);
-		ido2db_free_connection_memory(idi);
-
-		/* cleanup the socket */
-		ido2db_cleanup_socket();
-
-		/* free memory */
-		ido2db_free_program_memory();
-
-		_exit(0);
+		/* bail out, but do not exit the child yet - not allowed as thread */
+		return IDO_ERROR;
 	}
 
 	/* commit statement */
