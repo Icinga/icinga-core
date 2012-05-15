@@ -250,6 +250,17 @@ my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
 # Icinga Checks / Reporting
 ################################
 
+#check idomod.so/idomod.o
+my $idomod_cfg = get_key_from_ini("$icinga_base/icinga.cfg", 'broker_module');
+my $idomod_o = which('idomod.o');
+if (!$idomod_o){
+	$idomod_o = "Couldnt find idomod.o";
+}
+my $idomod_so = which('idomod.so');
+if (!$idomod_so){
+	$idomod_so = "Couldnt find idomod.so";
+}
+
 #check if ido2db is running
 my $ido2dbproc = qx( ps aux | grep [i]do2db | wc -l );
 chomp($ido2dbproc);
@@ -406,6 +417,7 @@ Icinga.cfg/resource.cfg Information:
  Icinga User: $icingacfguser
  Icinga Group: $icingacfggroup
  Plugin Path: $plugin_path
+ idomod broker modul: $idomod_cfg
  
 ido2db Information:
  Server Type: $ido2dbservertype
@@ -415,6 +427,8 @@ ido2db Information:
  TCP Port: $ido2dbtcpport
  
 idomod Information:
+ idomod.o check: $idomod_o
+ idomod.so check: $idomod_so
  Output Type: $idomodsocket
  Output: $idomodoutput
  SSL Status: $idomodssl
