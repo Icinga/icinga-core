@@ -46,6 +46,7 @@ my $config_ref = {
     critical_services => {
         apache2 => { binaries => [ 'httpd', 'apache2' ] },
         mysql => { binaries => [ 'mysqld' ] },
+		postgresql => { binaries => [ 'postmaster' ] },
         icinga => { binaries => [ 'icinga' ] },
         ido2db => { binaries => [ 'ido2db' ] },
     },
