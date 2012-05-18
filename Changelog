@@ -4,6 +4,12 @@ Icinga 1.7.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+1.7.1 - ??/05/2012
+
+FIXES
+* classic ui: Fixed status.cgi time out when displaying hostgroups in large environments #2617 - RB
+
+
 1.7.0 - 15/05/2012
 
 !!! ATTENTION !!!

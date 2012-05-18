@@ -124,6 +124,7 @@ extern servicestatus *servicestatus_list;
 #define STATUS_COUNTED_UNFILTERED	2
 #define STATUS_COUNTED_FILTERED		4
 #define STATUS_BELONGS_TO_SG		8
+#define STATUS_BELONGS_TO_HG		16
 /** @} */
 
 /** @name NUMBER OF NAMED OBJECTS
@@ -571,6 +572,7 @@ int main(void) {
 	hoststatus *temp_hoststatus = NULL;
 	servicestatus *temp_servicestatus = NULL;
 	servicesmember *temp_sg_member = NULL;
+	hostsmember *temp_hg_member = NULL;
 	int regex_i = 0, i = 0;
 	int len;
 	int show_dropdown = NO_STATUS;
@@ -901,9 +903,11 @@ int main(void) {
 				if (temp_servicegroup != NULL && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
 					for (temp_sg_member = temp_servicegroup->members; temp_sg_member != NULL; temp_sg_member = temp_sg_member->next) {
 						temp_hoststatus = find_hoststatus(temp_sg_member->host_name);
-						temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
+						if (temp_hoststatus != NULL)
+							temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
 						temp_servicestatus = find_servicestatus(temp_sg_member->host_name, temp_sg_member->service_description);
-						temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
+						if (temp_servicestatus != NULL)
+							temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
 					}
 				}
 			}
@@ -912,15 +916,42 @@ int main(void) {
 				if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
 					for (temp_sg_member = temp_servicegroup->members; temp_sg_member != NULL; temp_sg_member = temp_sg_member->next) {
 						temp_hoststatus = find_hoststatus(temp_sg_member->host_name);
-						temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
+						if (temp_hoststatus != NULL)
+							temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
 						temp_servicestatus = find_servicestatus(temp_sg_member->host_name, temp_sg_member->service_description);
-						temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
+						if (temp_servicestatus != NULL)
+							temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
 					}
 				}
 			}
 		}
 	}
 
+	/* pre filter for all host groups as well */
+	if (display_type == DISPLAY_HOSTGROUPS) {
+		if (show_all_hostgroups == FALSE) {
+			for (i = 0; req_hostgroups[i].entry != NULL; i++) {
+				temp_hostgroup = find_hostgroup(req_hostgroups[i].entry);
+				if (temp_hostgroup != NULL && (show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE)) {
+					for (temp_hg_member = temp_hostgroup->members; temp_hg_member != NULL; temp_hg_member = temp_hg_member->next) {
+						temp_hoststatus = find_hoststatus(temp_hg_member->host_name);
+						if (temp_hoststatus != NULL)
+							temp_hoststatus->added |= STATUS_BELONGS_TO_HG;
+					}
+				}
+			}
+		} else {
+			for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
+				if (show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) {
+					for (temp_hg_member = temp_hostgroup->members; temp_hg_member != NULL; temp_hg_member = temp_hg_member->next) {
+						temp_hoststatus = find_hoststatus(temp_hg_member->host_name);
+						if (temp_hoststatus != NULL)
+							temp_hoststatus->added |= STATUS_BELONGS_TO_HG;
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 *	Now iterate through servicestatus_list and hoststatus_list to find all hosts/services we need to display
@@ -988,27 +1019,7 @@ int main(void) {
 
 		/* see if we should display a hostgroup */
 		else if (display_type == DISPLAY_HOSTGROUPS) {
-			found = FALSE;
-			if (show_all_hostgroups == FALSE) {
-				for (i = 0; req_hostgroups[i].entry != NULL; i++) {
-					temp_hostgroup = find_hostgroup(req_hostgroups[i].entry);
-					if (temp_hostgroup != NULL && \
-					        (show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) && \
-					        is_host_member_of_hostgroup(temp_hostgroup, temp_host) == TRUE) {
-						found = TRUE;
-						break;
-					}
-				}
-			} else {
-				for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
-					if ((show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) && \
-					        is_host_member_of_hostgroup(temp_hostgroup, temp_host) == TRUE) {
-						found = TRUE;
-						break;
-					}
-				}
-			}
-			if (found == FALSE)
+			if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 				continue;
 		}
 
@@ -1113,27 +1124,7 @@ int main(void) {
 
 			/* see if we should display a hostgroup */
 			else if (display_type == DISPLAY_HOSTGROUPS) {
-				found = FALSE;
-				if (show_all_hostgroups == FALSE) {
-					for (i = 0; req_hostgroups[i].entry != NULL; i++) {
-						temp_hostgroup = find_hostgroup(req_hostgroups[i].entry);
-						if (temp_hostgroup != NULL && \
-						        (show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) && \
-						        is_host_member_of_hostgroup(temp_hostgroup, temp_host) == TRUE) {
-							found = TRUE;
-							break;
-						}
-					}
-				} else {
-					for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
-						if ((show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) && \
-						        is_host_member_of_hostgroup(temp_hostgroup, temp_host) == TRUE) {
-							found = TRUE;
-							break;
-						}
-					}
-				}
-				if (found == FALSE)
+				if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 					continue;
 
 				/* see if we should display a servicegroup */
