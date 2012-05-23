@@ -360,7 +360,7 @@ if ( !$mysqlcheck ) {
         }
         )
         or $dbh_conn_error = 
-		"MySQL Connect Failed. - Check your input or the MySQL Process!";
+		"MySQL Connect to Icinga-DB Failed. - Check your input or the MySQL Process!";
 		
 	#Connect to Database Icinga-Web	
 	$dbh_web = DBI->connect(
@@ -372,7 +372,7 @@ if ( !$mysqlcheck ) {
         }
         )
         or $dbh_conn_error = 
-		"MySQL Connect Failed. - Check your input or the MySQL Process!";
+		"MySQL Connect to Icinga-Web DB Failed. - Check your input or the MySQL Process!";
 		
 	if(!$dbh_conn_error){
 		# Query icinga DB Version
@@ -520,7 +520,7 @@ else{
 }
 # MYSQL User Input Error
 if ($dbh_conn_error){
-	print $statuscrit,"$dbh_conn_error\n";
+	print $statuscrit,"\n $dbh_conn_error\n";
 }
 
 print <<EOF;
