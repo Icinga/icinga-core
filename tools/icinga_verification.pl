@@ -363,6 +363,8 @@ if ( !$mysqlcheck ) {
 		"MySQL Connect to Icinga-DB Failed. - Check your input or the MySQL Process!";
 		
 	#Connect to Database Icinga-Web	
+	#FIXME IF CONNECTION FAILED, ALL QUERYS ARE SKIPPED
+	#Same if no icinga-web is installed ...
 	$dbh_web = DBI->connect(
         "dbi:mysql:database=icinga_web; host=$sqlserver_cfg:mysql_server_prepare=1",
         "$sqluser_web",
