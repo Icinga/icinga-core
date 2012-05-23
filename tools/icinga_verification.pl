@@ -513,14 +513,14 @@ Database Tests:
 EOF
 #Connection via ido2db.cfg
 if (!$dbh_cfg_error){
-	print $statusok,"Connection to DB via ido2db.cfg";
+	print $statusok,"Connection to DB via ido2db.cfg\n";
 }
 else{
 	print $statuscrit,"$dbh_cfg_error\n";
 }
 # MYSQL User Input Error
 if ($dbh_conn_error){
-	print $statuscrit,"\n $dbh_conn_error\n";
+	print $statuscrit,"$dbh_conn_error\n";
 }
 
 print <<EOF;
@@ -763,7 +763,7 @@ sub get_error_from_log ($$) {
     if ( open( my $fh, '<', $file ) ) {
         while ( my $line = <$fh> ) {
             chomp($line);		
-            if ( $line =~ /\s+$key: (.*)/) {
+            if ( $line =~ /\s+$key: Error: (.*)/) {
 				print "\nFound error log in:","\n$file for key '$key':","\n$1 ", "\n" if $verbose;
                 return $1;
 				
