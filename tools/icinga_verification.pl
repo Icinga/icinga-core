@@ -664,6 +664,7 @@ sub which (@) {
     my @path = reverse( split( ':', $PATH ));
     push @path, "$icinga_base/../bin";
     push @path, "$icinga_base/../sbin";
+	 push @path, "$icinga_base/../lib";
 	push @path, "$pnp4nagios_base/../bin";
 	push @path, "$pnp4nagios_base/../sbin";
     print "looking for binaries in ", join(",", @path), "\n" if $verbose;
