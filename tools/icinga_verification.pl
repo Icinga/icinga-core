@@ -46,6 +46,7 @@ my $config_ref = {
     critical_services => {
         apache2 => { binaries => [ 'httpd', 'apache2' ] },
         mysql => { binaries => [ 'mysqld' ] },
+		postgresql => { binaries => [ 'postmaster' ] },
         icinga => { binaries => [ 'icinga' ] },
         ido2db => { binaries => [ 'ido2db' ] },
     },
@@ -108,76 +109,97 @@ if (! $icinga_base ) {
 
 my $pnp4nagios_base = find_pnp4nagios_dir();
 
-#### MySQL Config if MySQL is used ####
+#### DATABASE BACKEND ####
 
-#ido2db.cfg Mysql Config parsing
+#SQL Server Check
+my $mysqlcheck = which('mysql');
+my $psqlcheck = which('psql');
+
+#ido2db.cfg SQL Server Parsing
+my $sqlservertype_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertype');
 
 #ido2db Server Host Name
-my $mysqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
+my $sqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
 #ido2db DB User
-my $mysqluser_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_user');
+my $sqluser_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_user');
 #ido2db DB Name
-my $mysqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
+my $sqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
 #ido2db Password
-my $mysqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
+my $sqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
 
-#Mysql Server Check, is a mysql serverrunning?
-my $mysqlcheck = which('mysql');
+my ($dbh_cfg,$dbh_web, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1) = '';
+
+#Icinga Web DB USER1
+#FIXME
+#parse options from
+#/icinga-web/app/config/databases.xml
+my $sqluser_web = "icinga_web";
+my $sqlpw_web = "icinga_web";
+
+if ($sqlservertype_cfg eq 'mysql') {
 
 #Mysql Connection Testing
-my ($dbh_cfg, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1, $mysqldb) = '';
+	if ( !$mysqlcheck ) {
+		print "mysql service not found, check your ido2db.cfg or mysql Server\n";
+	} else {
 
-if ( !$mysqlcheck ) {
-    print "mysql not found, skipping\n";
-} else {
-
-    print STDERR " Mysql Found! - Try to connect via ido2db.cfg\n";
+		print STDERR " Mysql Found! - Try to connect via ido2db.cfg\n";
 	
-	# ido2db.cfg Connection test
-    $dbh_cfg = DBI->connect(
-        "dbi:mysql:database=$mysqldb_cfg; host=$mysqlserver_cfg:mysql_server_prepare=1",
-        "$mysqluser_cfg",
-        "$mysqlpw_cfg",
-        {   PrintError => 0,
-            RaiseError => 0
-        }
-        )
-        or $dbh_cfg_error =
-        "ido2db.cfg - MySQL Connect Failed.";
+		# ido2db.cfg Connection test
+		$dbh_cfg = DBI->connect(
+			"dbi:mysql:database=$sqldb_cfg; host=$sqlserver_cfg:mysql_server_prepare=1",
+			"$sqluser_cfg",
+			"$sqlpw_cfg",
+			{   PrintError => 0,
+				RaiseError => 0
+			}
+			)
+			or $dbh_cfg_error =
+			"ido2db.cfg - MySQL Connect Failed.";
 
-    if ( !$dbh_cfg_error ) {
-	    print " ido2db.cfg Mysql Connection Test OK!\n";
-        $dbh_cfg->disconnect();
-    } else {        
-		print color("red"), "ido2db.cfg - MySQL Connect FAILED. Start Config Script", color("reset");
-		print "\n";
-		print STDERR "\nValues in '< >' are default parameters! Confirm with [Enter]\n";
-		print STDERR "\nEnter your MYSQL Server <localhost>: ";
-		$mysqlserver_cfg = <STDIN>;
-		chomp($mysqlserver_cfg);
-		if ( !$mysqlserver_cfg ) {
-		$mysqlserver_cfg = 'localhost';
-		}
+		if ( !$dbh_cfg_error ) {
+			print " ido2db.cfg Mysql Connection Test OK!\n";
+			$dbh_cfg->disconnect();
+		} else {        
+			print color("red"), "ido2db.cfg - MySQL Connect FAILED. Start Config Script", color("reset");
+			print "\n";
+			print STDERR "\nValues in '< >' are default parameters! Confirm with [Enter]\n";
+			print STDERR "\nEnter your MYSQL Server <localhost>: ";
+			$sqlserver_cfg = <STDIN>;
+			chomp($sqlserver_cfg);
+			if ( !$sqlserver_cfg ) {
+			$sqlserver_cfg = 'localhost';
+			}
 
-		print STDERR "Enter your MYSQL User <root>: ";
-		$mysqluser_cfg = <STDIN>;
-		chomp($mysqluser_cfg);
-		if ( !$mysqluser_cfg ) {
-        $mysqluser_cfg = 'root';
-		}
+			print STDERR "Enter your MYSQL User <root>: ";
+			$sqluser_cfg = <STDIN>;
+			chomp($sqluser_cfg);
+			if ( !$sqluser_cfg ) {
+			$sqluser_cfg = 'root';
+			}
 	
-		print STDERR "Enter your Icinga Database <icinga>: ";
-		$mysqldb_cfg = <STDIN>;
-		chomp($mysqldb_cfg);
-		if ( !$mysqldb_cfg ) {
-        $mysqldb_cfg = 'icinga';
-		}
+			print STDERR "Enter your Icinga Database <icinga>: ";
+			$sqldb_cfg = <STDIN>;
+			chomp($sqldb_cfg);
+			if ( !$sqldb_cfg ) {
+			$sqldb_cfg = 'icinga';
+			}
 
-		system( 'stty', '-echo' );
-		print STDERR "Enter your MYSQL Password: ";
-		$mysqlpw_cfg = <STDIN>;
-		chomp($mysqlpw_cfg);
-		system( 'stty', 'echo' );
+			system( 'stty', '-echo' );
+			print STDERR "Enter your MYSQL Password: ";
+			$sqlpw_cfg = <STDIN>;
+			chomp($sqlpw_cfg);
+			system( 'stty', 'echo' );
+			}
+		}
+} elsif ($sqlservertype_cfg eq 'psql') {
+#Postgresql Connection Testing
+	if ( !$psqlcheck) {
+		print "postgresql not found, check your ido2db.cfg or PostgreSQL Server\n";
+	} else {
+		print STDERR " Postgresql found! - Try to connect via ido2db.cfg\n";
+		#FIXME
+		#PSQL CONNECTION TEST, Same as for Mysql
 	}
 }
 
@@ -214,7 +236,7 @@ my $mysqlver =
 
 
 # distribution
-my $distribution = get_distribution();
+my $distribution = (split( ",", get_distribution() ))[0];
 
 # icinga version
 my $icingaversion = get_icinga_version();
@@ -237,6 +259,17 @@ my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
 # Icinga Checks / Reporting
 ################################
 
+#check idomod.so/idomod.o
+my $idomod_cfg = get_key_from_ini("$icinga_base/icinga.cfg", 'broker_module');
+my $idomod_o = which('idomod.o');
+if (!$idomod_o){
+	$idomod_o = "Couldnt find idomod.o";
+}
+my $idomod_so = which('idomod.so');
+if (!$idomod_so){
+	$idomod_so = "Couldnt find idomod.so";
+}
+
 #check if ido2db is running
 my $ido2dbproc = qx( ps aux | grep [i]do2db | wc -l );
 chomp($ido2dbproc);
@@ -247,6 +280,7 @@ my $idocon = ($ido2dbproc - '1');
 ### icinga.cfg parsing ###
 #icinga external commands
 my $icingaextcmd = get_key_from_ini("$icinga_base/icinga.cfg", 'check_external_commands');
+my $icingaextcmdlog = get_key_from_ini("$icinga_base/icinga.cfg", 'log_external_commands');
 
 #icinga user
 my $icingacfguser = get_key_from_ini("$icinga_base/icinga.cfg", 'icinga_user');
@@ -256,6 +290,10 @@ chomp($icingacfguser);
 my $icingacfggroup = get_key_from_ini("$icinga_base/icinga.cfg", 'icinga_group');
 
 ### ido2db.cfg parsing ###
+#ido2db SLA#
+my $ido2dbsla = get_key_from_ini("$icinga_base/ido2db.cfg", 'enable_sla');
+if(!$ido2dbsla){$ido2dbsla = "no 'enable_sla' option found"};
+
 #ido2db socket type
 my $ido2dbsocket = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_type');
 
@@ -300,28 +338,43 @@ if ($raw_plugin_path){
 }
 
 #Check_disk / Check for free disk space AND check Plugin test
-my $check_disk = (split(";", qx(su $icingacfguser -c '$plugin_path/check_disk -c 5%')))[0];
+my $check_disk = (split(";", qx(sudo -u $icingacfguser -c '$plugin_path/check_disk -c 5%')))[0];
 
 #### MySQL Querys ####
 my $dbh_conn_error = '';
 my @result_icingadb  = ();
 my @row;
 my @result_icingaconninfo = ();
+my @result_icingawebdb  = ();
 
 if ( !$mysqlcheck ) {
     print STDERR "no Mysql Found, skip Querys\n";
 } else {
     # Connect to Database
     $dbh_cfg = DBI->connect(
-        "dbi:mysql:database=$mysqldb_cfg; host=$mysqlserver_cfg:mysql_server_prepare=1",
-        "$mysqluser_cfg",
-        "$mysqlpw_cfg",
+        "dbi:mysql:database=$sqldb_cfg; host=$sqlserver_cfg:mysql_server_prepare=1",
+        "$sqluser_cfg",
+        "$sqlpw_cfg",
         {   PrintError => 0,
             RaiseError => 0
         }
         )
         or $dbh_conn_error = 
-		"MySQL Connect Failed. - Check your input or the MySQL Process!";
+		"MySQL Connect to Icinga-DB Failed. - Check your input or the MySQL Process!";
+		
+	#Connect to Database Icinga-Web	
+	#FIXME IF CONNECTION FAILED, ALL QUERYS ARE SKIPPED
+	#Same if no icinga-web is installed ...
+	$dbh_web = DBI->connect(
+        "dbi:mysql:database=icinga_web; host=$sqlserver_cfg:mysql_server_prepare=1",
+        "$sqluser_web",
+        "$sqlpw_web",
+        {   PrintError => 0,
+            RaiseError => 0
+        }
+        )
+        or $dbh_conn_error = 
+		"MySQL Connect to Icinga-Web DB Failed. - Check your input or the MySQL Process!";
 		
 	if(!$dbh_conn_error){
 		# Query icinga DB Version
@@ -335,17 +388,29 @@ if ( !$mysqlcheck ) {
 		}
 
 		# Query icinga_conninfo
-		my $icinga_conninfo =
-        'select conninfo_id, last_checkin_time from icinga_conninfo order by connect_time desc limit 2';
-		$sth1 = $dbh_cfg->prepare($icinga_conninfo) or warn $DBI::errstr;
+		my $icinga_conninfo = 'select conninfo_id, last_checkin_time from icinga_conninfo order by connect_time desc limit 2';
+		$sth = $dbh_cfg->prepare($icinga_conninfo) or warn $DBI::errstr;
 
-		$sth1->execute() or warn $DBI::errstr;
+		$sth->execute() or warn $DBI::errstr;
 
-		while ( @row = $sth1->fetchrow_array() ) {
+		while ( @row = $sth->fetchrow_array() ) {
 			push( @result_icingaconninfo, "id:", @row, "\n" );
 		}
+		
+		# Query icinga_web db version
+		#FIXME ! IF Table doesnt exists the execute crash
+		my $icingaweb_dbversion = 'select version, modified from nsm_db_version';
+		$sth = $dbh_web->prepare($icingaweb_dbversion) or warn $DBI::errstr;
 
+		$sth->execute() or warn $DBI::errstr;
+
+		while ( @row = $sth->fetchrow_array() ) {
+			push( @result_icingawebdb, @row );
+		}
+		
     $dbh_cfg->disconnect();
+	$dbh_web->disconnect();
+	
 	} else {
 		print color("red"), "\n\n$dbh_conn_error\n\n", color("reset");
 	}   
@@ -365,7 +430,7 @@ Perlversion: $perlversion
 Current Date/Time on Server: $date
 
 OS Information:
-  OS Name: $distribution,
+  $distribution
   Kernel Version: $osversion
   LC_LANG: $LANG
   Selinux Status: $selinux
@@ -379,7 +444,7 @@ MySQL Information:
  $mysqlver
  
 Icinga General Informations:
- Icinga DB-Version: $result_icingadb[0]
+ DB-Version: $result_icingadb[0]
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
  ido2db Processes: $ido2dbproc
@@ -388,9 +453,15 @@ Icinga General Informations:
  @result_icingaconninfo 
 Icinga.cfg/resource.cfg Information:
  External Commands(1=on,0=off): $icingaextcmd
+ Log External Commands(1=on,0=off): $icingaextcmdlog
  Icinga User: $icingacfguser
  Icinga Group: $icingacfggroup
  Plugin Path: $plugin_path
+ idomod broker modul: $idomod_cfg
+ 
+Icinga Web:
+ DB-Version: $result_icingawebdb[0]
+ DB-last modified: $result_icingawebdb[1]
  
 ido2db Information:
  Server Type: $ido2dbservertype
@@ -398,8 +469,11 @@ ido2db Information:
  Socket Type: $ido2dbsocket
  Socket Name: $ido2dbsocketname
  TCP Port: $ido2dbtcpport
+ SLA Status(1=on,0=off): $ido2dbsla
  
 idomod Information:
+ idomod.o check: $idomod_o
+ idomod.so check: $idomod_so
  Output Type: $idomodsocket
  Output: $idomodoutput
  SSL Status: $idomodssl
@@ -441,7 +515,7 @@ Database Tests:
 EOF
 #Connection via ido2db.cfg
 if (!$dbh_cfg_error){
-	print $statusok,"Connection to DB via ido2db.cfg";
+	print $statusok,"Connection to DB via ido2db.cfg\n";
 }
 else{
 	print $statuscrit,"$dbh_cfg_error\n";
@@ -592,6 +666,7 @@ sub which (@) {
     my @path = reverse( split( ':', $PATH ));
     push @path, "$icinga_base/../bin";
     push @path, "$icinga_base/../sbin";
+	 push @path, "$icinga_base/../lib";
 	push @path, "$pnp4nagios_base/../bin";
 	push @path, "$pnp4nagios_base/../sbin";
     print "looking for binaries in ", join(",", @path), "\n" if $verbose;
@@ -690,7 +765,7 @@ sub get_error_from_log ($$) {
     if ( open( my $fh, '<', $file ) ) {
         while ( my $line = <$fh> ) {
             chomp($line);		
-            if ( $line =~ /\s+$key: (.*)/) {
+            if ( $line =~ /\s+$key: Error: (.*)/) {
 				print "\nFound error log in:","\n$file for key '$key':","\n$1 ", "\n" if $verbose;
                 return $1;
 				
