@@ -270,11 +270,11 @@ my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
 my $idomod_cfg = get_key_from_ini("$icinga_base/icinga.cfg", 'broker_module');
 my $idomod_o = which('idomod.o');
 if (!$idomod_o){
-	$idomod_o = "Couldnt find idomod.o";
+	$idomod_o = "Couldn't find idomod.o";
 }
 my $idomod_so = which('idomod.so');
 if (!$idomod_so){
-	$idomod_so = "Couldnt find idomod.so";
+	$idomod_so = "Couldn't find idomod.so";
 }
 
 #check if ido2db is running
