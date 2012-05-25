@@ -24,7 +24,11 @@
 
 use strict;
 use warnings;
-use DBI;
+eval { require DBI; DBI->import( LIST ); }; 
+if ($@) {
+	print STDERR "Perl module DBI not found\n";
+	exit 1;
+}
 use Term::ANSIColor;
 use Env qw (LANG PATH);
 use Getopt::Long;
