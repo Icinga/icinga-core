@@ -122,16 +122,17 @@ my $mysqlcheck = which('mysql');
 my $psqlcheck = which('psql');
 
 #ido2db.cfg SQL Server Parsing
-my $sqlservertype_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertype');
+my $ido2db_cfg = "$icinga_base/ido2db.cfg";
+my $sqlservertype_cfg =  get_key_from_ini("$ido2db_cfg", 'db_servertype');
 
 #ido2db Server Host Name
-my $sqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
+my $sqlserver_cfg =  get_key_from_ini("$ido2db_cfg", 'db_host');
 #ido2db DB User
-my $sqluser_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_user');
+my $sqluser_cfg = get_key_from_ini("$ido2db_cfg", 'db_user');
 #ido2db DB Name
-my $sqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
+my $sqldb_cfg = get_key_from_ini("$ido2db_cfg", 'db_name');
 #ido2db Password
-my $sqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
+my $sqlpw_cfg = get_key_from_ini("$ido2db_cfg", 'db_pass');
 
 my ($dbh_cfg,$dbh_web, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1) = '';
 
