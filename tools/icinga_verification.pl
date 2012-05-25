@@ -101,7 +101,7 @@ if ( $oscheck eq 'MSWin32' ) {
 my $icinga_base = find_icinga_dir();
 
 if (! $icinga_base ) {
-    print STDERR "\nIcinga base not found.\nPlease enter your Icinga base: ";
+    print STDERR "\nIcinga config dir not found.\nPlease enter your Icinga config dir: ";
     $icinga_base = <STDIN>;
     chomp($icinga_base);
     if (! -d $icinga_base) {
@@ -111,6 +111,7 @@ if (! $icinga_base ) {
 }
 #Icinga/Nagios Plugins Base Set
 
+my $icinga_cfg = "$icinga_base/icinga.cfg";
 my $pnp4nagios_base = find_pnp4nagios_dir();
 
 #### DATABASE BACKEND ####
