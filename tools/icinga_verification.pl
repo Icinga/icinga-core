@@ -410,7 +410,6 @@ if ( !$mysqlcheck ) {
 		}
 		
 		# Query icinga_web db version
-		#FIXME ! IF Table doesnt exists the execute crash
 		my $icingaweb_dbversion = 'select version, modified from nsm_db_version';
 		eval {
 		$sth = $dbh_web->prepare($icingaweb_dbversion);
