@@ -114,6 +114,7 @@ if (! $icinga_base ) {
 my $icinga_cfg = "$icinga_base/icinga.cfg";
 my $pnp4nagios_base = find_pnp4nagios_dir();
 
+my $icingashell = (getpwnam ('icinga'))[8];
 #### DATABASE BACKEND ####
 
 #SQL Server Check
