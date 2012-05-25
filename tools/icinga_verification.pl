@@ -350,7 +350,7 @@ if ($raw_plugin_path){
 }
 
 #Check_disk / Check for free disk space AND check Plugin test
-my $check_disk = (split(";", qx(sudo -u $icingacfguser -c '$plugin_path/check_disk -c 5%')))[0];
+my $check_disk = (split(";", qx(su $icingacfguser -c '$plugin_path/check_disk -c 5%')))[0];
 
 #### MySQL Querys ####
 my $dbh_conn_error = '';
@@ -481,7 +481,7 @@ Icinga.cfg/resource.cfg Information:
  
 Icinga Web:
  DB-Version: $result_icingawebdb[0]
- DB-last modified: $result_icingawebdb[1]
+ DB-last modified:
  
 ido2db Information:
  Server Type: $ido2dbservertype
