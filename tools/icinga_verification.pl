@@ -111,7 +111,7 @@ if (! $icinga_base ) {
     }
 }
 #Icinga/Nagios Plugins Base Set
-
+my $idomod_cfg = "$icinga_base/idomod.cfg";
 my $icinga_cfg = "$icinga_base/icinga.cfg";
 my $pnp4nagios_base = find_pnp4nagios_dir();
 
@@ -269,7 +269,8 @@ my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
 ################################
 
 #check idomod.so/idomod.o
-my $idomod_cfg = get_key_from_ini("$icinga_base/icinga.cfg", 'broker_module');
+
+my $idomod_broker = get_key_from_ini("$icinga_base/icinga.cfg", 'broker_module');
 my $idomod_o = which('idomod.o');
 if (!$idomod_o){
 	$idomod_o = "Couldn't find idomod.o";
@@ -321,6 +322,7 @@ my $ido2dbsocketname = get_key_from_ini("$ido2db_cfg", 'socket_name');
 #### ido2db.cfg parsing ####
 
 #Output Socket
+
 my $idomodsocket = get_key_from_ini("$idomod_cfg", 'output_type');
 if ($idomodsocket eq 'unixsocket'){
     $idomodsocket = 'unix';
@@ -476,7 +478,7 @@ Icinga.cfg/resource.cfg Information:
  Icinga Group: $icingacfggroup
  Icinga Shell: $icingashell
  Plugin Path: $plugin_path
- idomod broker modul: $idomod_cfg
+ idomod broker modul: $idomod_broker
  
 Icinga Web:
  DB-Version: $result_icingawebdb[0]
