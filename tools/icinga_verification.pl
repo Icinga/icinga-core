@@ -48,7 +48,7 @@ sub get_error_from_log;
 #Critical System Services
 my $config_ref = {
     critical_services => {
-        apache2 => { binaries => [ 'httpd', 'apache2' ] },
+        apache2 => { binaries => [ 'httpd', 'apache2', 'httpd2' ] },
         mysql => { binaries => [ 'mysqld' ] },
 		postgresql => { binaries => [ 'postmaster' ] },
         icinga => { binaries => [ 'icinga' ] },
