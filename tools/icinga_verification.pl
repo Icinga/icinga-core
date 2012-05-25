@@ -473,6 +473,7 @@ Icinga.cfg/resource.cfg Information:
  Log External Commands(1=on,0=off): $icingaextcmdlog
  Icinga User: $icingacfguser
  Icinga Group: $icingacfggroup
+ Icinga Shell: $icingashell
  Plugin Path: $plugin_path
  idomod broker modul: $idomod_cfg
  
