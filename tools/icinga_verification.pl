@@ -374,20 +374,6 @@ if ( !$mysqlcheck ) {
         or $dbh_conn_error = 
 		"MySQL Connect to Icinga-DB Failed. - Check your input or the MySQL process!";
 		
-	#Connect to Database Icinga-Web	
-	#FIXME IF CONNECTION FAILED, ALL QUERYS ARE SKIPPED
-	#Same if no icinga-web is installed ...
-	$dbh_web = DBI->connect(
-        "dbi:mysql:database=icinga_web; host=$sqlserver_cfg:mysql_server_prepare=1",
-        "$sqluser_web",
-        "$sqlpw_web",
-        {   PrintError => 0,
-            RaiseError => 0
-        }
-        )
-        or $dbh_conn_error = 
-		"MySQL Connect to Icinga-Web DB Failed. - Check your input or the MySQL process!";
-		
 	if(!$dbh_conn_error){
 		# Query icinga DB Version
 		$icinga_dbversion = 'SELECT version FROM icinga_dbversion';
@@ -409,7 +395,25 @@ if ( !$mysqlcheck ) {
 			push( @result_icingaconninfo, "id:", @row, "\n" );
 		}
 		
-		# Query icinga_web db version
+    $dbh_cfg->disconnect();
+	
+#ICINGA-WEB Connection
+	$dbh_web = DBI->connect(
+        "dbi:mysql:database=icinga_web; host=$sqlserver_cfg:mysql_server_prepare=1",
+        "$sqluser_web",
+        "$sqlpw_web",
+        {   PrintError => 0,
+            RaiseError => 0
+        }
+        )
+        or $dbh_conn_error = 
+		"MySQL Connect to Icinga-Web DB Failed. - Check your input or the MySQL process!";
+	
+	} else {
+		print color("red"), "\n\n$dbh_conn_error\n\n", color("reset");
+	}  
+	
+	# Query icinga_web db version
 		my $icingaweb_dbversion = 'select version, modified from nsm_db_version';
 		eval {
 		$sth = $dbh_web->prepare($icingaweb_dbversion);
@@ -417,7 +421,7 @@ if ( !$mysqlcheck ) {
 		if ($@) {
 			warn $DBI::errstr;
 		} else {
-			$icingaweb_dbversion = 'select version from nsm_db_version';
+			#$icingaweb_dbversion = 'select version from nsm_db_version';
 		$sth = $dbh_web->prepare($icingaweb_dbversion) or warn $DBI::errstr;
 
 		}
@@ -427,12 +431,7 @@ if ( !$mysqlcheck ) {
 			push( @result_icingawebdb, @row );
 		}
 		
-    $dbh_cfg->disconnect();
 	$dbh_web->disconnect();
-	
-	} else {
-		print color("red"), "\n\n$dbh_conn_error\n\n", color("reset");
-	}   
 }
 
 ###########################
@@ -481,7 +480,7 @@ Icinga.cfg/resource.cfg Information:
  
 Icinga Web:
  DB-Version: $result_icingawebdb[0]
- DB-last modified:
+ DB-last modified: $result_icingawebdb[1]
  
 ido2db Information:
  Server Type: $ido2dbservertype
