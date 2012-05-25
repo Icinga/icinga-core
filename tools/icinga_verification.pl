@@ -259,7 +259,7 @@ chomp($selinux);
 
 #log file test
 #FIXME - PATH to syslog not hardcoded
-#IDEA, read in /etc/rsyslog.config
+#IDEA, read in /etc/rsyslog.conf
 #get line with "*.info;mail.none;authpriv.none;cron.none" and save path to variable (centos ie. /var/log/messages
 
 my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
@@ -413,7 +413,7 @@ if ( !$mysqlcheck ) {
 		print color("red"), "\n\n$dbh_conn_error\n\n", color("reset");
 	}  
 	
-	# Query icinga_web db version
+# Query icinga_web db version
 		my $icingaweb_dbversion = 'select version, modified from nsm_db_version';
 		eval {
 		$sth = $dbh_web->prepare($icingaweb_dbversion);
