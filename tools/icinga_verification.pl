@@ -298,44 +298,45 @@ my $icingacfggroup = get_key_from_ini("$icinga_base/icinga.cfg", 'icinga_group')
 
 ### ido2db.cfg parsing ###
 #ido2db SLA#
-my $ido2dbsla = get_key_from_ini("$icinga_base/ido2db.cfg", 'enable_sla');
+my $ido2dbsla = get_key_from_ini("$ido2db_cfg", 'enable_sla');
 if(!$ido2dbsla){$ido2dbsla = "no 'enable_sla' option found"};
 
 #ido2db socket type
-my $ido2dbsocket = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_type');
+my $ido2dbsocket = get_key_from_ini("$ido2db_cfg", 'socket_type');
 
 #ido2db TCP Port
-my $ido2dbtcpport = get_key_from_ini("$icinga_base/ido2db.cfg", 'tcp_port');
+my $ido2dbtcpport = get_key_from_ini("$ido2db_cfg", 'tcp_port');
 
 #ido2db SSL Status
-my $ido2dbssl = get_key_from_ini("$icinga_base/ido2db.cfg", 'use_ssl');
+my $ido2dbssl = get_key_from_ini("$ido2db_cfg", 'use_ssl');
 
 #ido2db Servertype
-my $ido2dbservertype = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertype');
+my $ido2dbservertype = get_key_from_ini("$ido2db_cfg", 'db_servertype');
 
 #ido2db Socket Name
-my $ido2dbsocketname = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_name');
+my $ido2dbsocketname = get_key_from_ini("$ido2db_cfg", 'socket_name');
 
 #### ido2db.cfg parsing ####
 
 #Output Socket
-my $idomodsocket = get_key_from_ini("$icinga_base/idomod.cfg", 'output_type');
-	if ($idomodsocket eq 'unixsocket'){
-		$idomodsocket = 'unix';
-	}
+my $idomodsocket = get_key_from_ini("$idomod_cfg", 'output_type');
+if ($idomodsocket eq 'unixsocket'){
+    $idomodsocket = 'unix';
+}
 
 #Output
-my $idomodoutput = get_key_from_ini("$icinga_base/idomod.cfg", 'output');
+my $idomodoutput = get_key_from_ini("$idomod_cfg", 'output');
 
 #idomod SSL Status
-my $idomodssl = get_key_from_ini("$icinga_base/idomod.cfg", 'use_ssl');
+my $idomodssl = get_key_from_ini("$idomod_cfg", 'use_ssl');
 
 #idomod TCP port
-my $idomodtcpport = get_key_from_ini("$icinga_base/idomod.cfg", 'tcp_port');
+my $idomodtcpport = get_key_from_ini("$idomod_cfg", 'tcp_port');
 
-#### ressource.cfg / check user1 for correct Plugin Path####
+#### resource.cfg / check user1 for correct Plugin Path####
+my $resource_cfg = get_key_from_ini("$icinga_cfg", 'resource_file');
 my $plugin_path = '';
-my $raw_plugin_path = get_key_from_ini("$icinga_base/resource.cfg", '\$USER1\$');
+my $raw_plugin_path = get_key_from_ini("$resource_cfg", '\$USER1\$');
 chomp($raw_plugin_path);
 #only show path if the plugin check_ping was found
 if ($raw_plugin_path){
