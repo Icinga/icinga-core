@@ -152,6 +152,7 @@ if ($sqlservertype_cfg eq 'mysql') {
 
 		print STDERR " Mysql Found! - Try to connect via ido2db.cfg\n";
 	
+
 		# ido2db.cfg Connection test
 		$dbh_cfg = DBI->connect(
 			"dbi:mysql:database=$sqldb_cfg; host=$sqlserver_cfg:mysql_server_prepare=1",
@@ -356,7 +357,7 @@ my @result_icingaconninfo = ();
 my @result_icingawebdb  = ();
 
 if ( !$mysqlcheck ) {
-    print STDERR "no Mysql Found, skip Querys\n";
+    print STDERR "no Mysql Found, skip queries\n";
 } else {
     # Connect to Database
     $dbh_cfg = DBI->connect(
@@ -368,7 +369,7 @@ if ( !$mysqlcheck ) {
         }
         )
         or $dbh_conn_error = 
-		"MySQL Connect to Icinga-DB Failed. - Check your input or the MySQL Process!";
+		"MySQL Connect to Icinga-DB Failed. - Check your input or the MySQL process!";
 		
 	#Connect to Database Icinga-Web	
 	#FIXME IF CONNECTION FAILED, ALL QUERYS ARE SKIPPED
@@ -382,7 +383,7 @@ if ( !$mysqlcheck ) {
         }
         )
         or $dbh_conn_error = 
-		"MySQL Connect to Icinga-Web DB Failed. - Check your input or the MySQL Process!";
+		"MySQL Connect to Icinga-Web DB Failed. - Check your input or the MySQL process!";
 		
 	if(!$dbh_conn_error){
 		# Query icinga DB Version
@@ -408,8 +409,16 @@ if ( !$mysqlcheck ) {
 		# Query icinga_web db version
 		#FIXME ! IF Table doesnt exists the execute crash
 		my $icingaweb_dbversion = 'select version, modified from nsm_db_version';
+		eval {
+		$sth = $dbh_web->prepare($icingaweb_dbversion);
+		};
+		if ($@) {
+			warn $DBI::errstr;
+		} else {
+			$icingaweb_dbversion = 'select version from nsm_db_version';
 		$sth = $dbh_web->prepare($icingaweb_dbversion) or warn $DBI::errstr;
 
+		}
 		$sth->execute() or warn $DBI::errstr;
 
 		while ( @row = $sth->fetchrow_array() ) {
@@ -451,7 +460,7 @@ PHP Information:
 MySQL Information:
  $mysqlver
  
-Icinga General Informations:
+Icinga General Information:
  DB-Version: $result_icingadb[0]
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
