@@ -634,7 +634,7 @@ print <<EOF;
   Selinux Status: $selinux
   </pre>
   
-*Webserver Informations:*
+*Webserver Information:*
   <pre>
   Apache:
   $apacheinfo
@@ -645,7 +645,7 @@ print <<EOF;
   $mysqlver
   </pre>
  
-*Icinga General Informations:*
+*Icinga General Information:*
  <pre>
  Icinga DB-Version: $result_icingadb[0]
  icinga version: $icingaversion
@@ -670,6 +670,7 @@ sub get_key_from_ini ($$) {
     if ( open( my $fh, '<', $file ) ) {
         while ( my $line = <$fh> ) {
             chomp($line);
+			$line =~ s/#.*//;
             if ( $line =~ /^\s*$key=([^\s]+)/ ) {
                 return $1;
             }
@@ -677,6 +678,7 @@ sub get_key_from_ini ($$) {
     } else {
         print STDERR "Could not open initfile $file: $!\n";
     }
+	return "";
 }
 
 sub which (@) {
@@ -684,9 +686,11 @@ sub which (@) {
     my @path = reverse( split( ':', $PATH ));
     push @path, "$icinga_base/../bin";
     push @path, "$icinga_base/../sbin";
-	 push @path, "$icinga_base/../lib";
-	push @path, "$pnp4nagios_base/../bin";
-	push @path, "$pnp4nagios_base/../sbin";
+	push @path, "$icinga_base/../lib";
+    if ($pnp4nagios_base) {
+        push @path, "$pnp4nagios_base/../bin";
+        push @path, "$pnp4nagios_base/../sbin";
+    }
     print "looking for binaries in ", join(",", @path), "\n" if $verbose;
 
     foreach my $binary (@binaries) {
