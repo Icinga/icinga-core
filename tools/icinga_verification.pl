@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
 ############################################################
 ######   Icinga Verification and Reporting Script     ######
 ######  by Frankstar / Team Quality Assurance & VM    ######
@@ -24,7 +25,9 @@
 
 use strict;
 use warnings;
-eval { require DBI; DBI->import( LIST ); }; 
+#FIXME
+eval ("use DBI");
+#eval { require DBI; DBI->import( LIST ); }; 
 if ($@) {
 	print STDERR "Perl module DBI not found\n";
 	exit 1;
@@ -72,7 +75,6 @@ my $result = GetOptions(
 					"issuereport" => \$issuereport,
 					"help" => \$help
 					);
-
 if ($help){
 	usage();
 	exit;
@@ -88,7 +90,6 @@ print <<EOF;
 ######  by Frankstar / Team Quality Assurance & VM    ######
 ############################################################
 EOF
-
 
 #Check if we are on Windows
 my $oscheck = $^O;
@@ -201,6 +202,7 @@ if ($sqlservertype_cfg eq 'mysql') {
 			}
 		}
 } elsif ($sqlservertype_cfg eq 'psql') {
+
 #Postgresql Connection Testing
 	if ( !$psqlcheck) {
 		print "postgresql not found, check your ido2db.cfg or PostgreSQL Server\n";
@@ -241,7 +243,6 @@ my $mysqlver =
     which('mysql')
     ? ( split( ",", qx(mysql -V) ) )[0]
     : 'mysql binary not found';
-
 
 # distribution
 my $distribution = (split( ",", get_distribution() ))[0];
