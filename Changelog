@@ -25,6 +25,7 @@ ENHANCEMENTS
 * core: make logging of external command errors more verbose (Anton Lofgren, op5 team) #4402 - MF
 * core: avoid unnecessary ctime() calls when debugging is disabled, increase performance (Opsview Team) #4681 - MF
 * core: add check source to checkresult/status data #4709 - MF
+* core: fix check fails when using environment variables (Sven Nierlein) #2647 - MF
 
 * classic ui: add display filter modification for status.cgi #852 - RB
 * classic ui: log errors into cgi log (use_logging=1) #4389 - MF

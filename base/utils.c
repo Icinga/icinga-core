@@ -4232,10 +4232,11 @@ char *get_program_modification_date(void) {
 }
 
 int has_shell_metachars(const char *s) {
+	if (*s != '/' && *s != '.')
+		return 1;
 	if (strpbrk(s, "!$^&*()~[]\\|{};<>?'\""))
 		return 1;
-	else
-		return 0;
+	return 0;
 }
 
 
