@@ -415,22 +415,21 @@ if ( !$mysqlcheck ) {
 	
 # Query icinga_web db version
 		my $icingaweb_dbversion = 'select version, modified from nsm_db_version';
-		eval {
 		$sth = $dbh_web->prepare($icingaweb_dbversion);
+		eval {
+		$sth->execute();
 		};
 		if ($@) {
-			warn $DBI::errstr;
+			#warn $DBI::errstr;
+			print 
+			"\nFailure! Cant Fetch Table 'modified' from nsm_db_version,\nMaybe your Icinga-Web Database Shema is below 1.7.0\n\n";
 		} else {
-			#$icingaweb_dbversion = 'select version from nsm_db_version';
-		$sth = $dbh_web->prepare($icingaweb_dbversion) or warn $DBI::errstr;
-
-		}
-		$sth->execute() or warn $DBI::errstr;
-
-		while ( @row = $sth->fetchrow_array() ) {
-			push( @result_icingawebdb, @row );
-		}
+			$sth->execute() or warn $DBI::errstr;
 		
+			while ( @row = $sth->fetchrow_array() ) {
+				push( @result_icingawebdb, @row );
+			}
+		}	
 	$dbh_web->disconnect();
 }
 
