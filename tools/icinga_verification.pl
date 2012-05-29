@@ -275,6 +275,9 @@ my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
 #check idomod.so/idomod.o
 
 my $idomod_broker = get_key_from_ini("$icinga_base/icinga.cfg", 'broker_module');
+if (!$idomod_broker){
+	$idomod_broker = "no broker_module defined in icinga.cfg";
+}
 my $idomod_o = which('idomod.o');
 if (!$idomod_o){
 	$idomod_o = "Couldn't find idomod.o";
