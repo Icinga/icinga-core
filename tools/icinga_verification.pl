@@ -143,11 +143,11 @@ my ($dbh_cfg,$dbh_web, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1) = '';
 #Icinga Web DB Databases.xml Parsing
 my $databases_xml = "$icinga_web_base/config/databases.xml";
 my @sqldata_web = get_icinga_web_data("$databases_xml", "$sqlservertype_cfg");
-my $sqluser_web = @sqldata_web[0];
-my $sqlpw_web = @sqldata_web[1];
-my $sqlserver_web = @sqldata_web[2];
-my $sqlport_web = @sqldata_web[3];
-my $sqldb_web = @sqldata_web[4];
+my $sqluser_web = $sqldata_web[0];
+my $sqlpw_web = $sqldata_web[1];
+my $sqlserver_web = $sqldata_web[2];
+my $sqlport_web = $sqldata_web[3];
+my $sqldb_web = $sqldata_web[4];
 
 if ($sqlservertype_cfg eq 'mysql') {
 
@@ -459,7 +459,6 @@ print <<EOF;
 ############################################################
 ######              Verbose Informations              ######
 ############################################################
-
 Perlversion: $perlversion
 Current Date/Time on Server: $date
 
