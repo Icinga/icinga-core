@@ -46,6 +46,7 @@ sub find_icinga_dir;
 sub get_icinga_version;
 sub get_ido2db_version;
 sub get_error_from_log;
+sub get_icinga_web_data;
 
 ### preconfiguration ###
 #Critical System Services
@@ -100,6 +101,8 @@ if ( $oscheck eq 'MSWin32' ) {
 
 #Icinga Base Set
 my $icinga_base = find_icinga_dir();
+#Icinga-Web Base Set
+my $icinga_web_base = find_icinga_web_dir();
 
 if (! $icinga_base ) {
     print STDERR "\nIcinga config dir not found.\nPlease enter your Icinga config dir: ";
@@ -137,12 +140,14 @@ my $sqlpw_cfg = get_key_from_ini("$ido2db_cfg", 'db_pass');
 
 my ($dbh_cfg,$dbh_web, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1) = '';
 
-#Icinga Web DB USER1
-#FIXME
-#parse options from
-#/icinga-web/app/config/databases.xml
-my $sqluser_web = "icinga_web";
-my $sqlpw_web = "icinga_web";
+#Icinga Web DB Databases.xml Parsing
+my $databases_xml = "$icinga_web_base/config/databases.xml";
+my @sqldata_web = get_icinga_web_data("$databases_xml", "$sqlservertype_cfg");
+my $sqluser_web = @sqldata_web[0];
+my $sqlpw_web = @sqldata_web[1];
+my $sqlserver_web = @sqldata_web[2];
+my $sqlport_web = @sqldata_web[3];
+my $sqldb_web = @sqldata_web[4];
 
 if ($sqlservertype_cfg eq 'mysql') {
 
@@ -153,7 +158,6 @@ if ($sqlservertype_cfg eq 'mysql') {
 
 		print STDERR " Mysql Found! - Try to connect via ido2db.cfg\n";
 	
-
 		# ido2db.cfg Connection test
 		$dbh_cfg = DBI->connect(
 			"dbi:mysql:database=$sqldb_cfg; host=$sqlserver_cfg:mysql_server_prepare=1",
@@ -399,7 +403,7 @@ if ( !$mysqlcheck ) {
 	
 #ICINGA-WEB Connection
 	$dbh_web = DBI->connect(
-        "dbi:mysql:database=icinga_web; host=$sqlserver_cfg:mysql_server_prepare=1",
+        "dbi:mysql:database=$sqldb_web; host=$sqlserver_web:mysql_server_prepare=1",
         "$sqluser_web",
         "$sqlpw_web",
         {   PrintError => 0,
@@ -415,21 +419,30 @@ if ( !$mysqlcheck ) {
 	
 # Query icinga_web db version
 		my $icingaweb_dbversion = 'select version, modified from nsm_db_version';
-		$sth = $dbh_web->prepare($icingaweb_dbversion);
 		eval {
-		$sth->execute();
+		$sth = $dbh_web->prepare($icingaweb_dbversion);
 		};
 		if ($@) {
 			print 
-			"\nFailure! Cant Fetch Table 'modified' from nsm_db_version,\nMaybe your Icinga-Web Database Shema is below 1.7.0\n\n";
-		} else {
-			$sth->execute() or warn $DBI::errstr;
+			"\nFailure! Cant Connect to Icinga-Web Database\n\n";
+		} else {	
+		$sth = $dbh_web->prepare($icingaweb_dbversion);
 		
-			while ( @row = $sth->fetchrow_array() ) {
-				push( @result_icingawebdb, @row );
+			eval {
+			$sth->execute();
+			};
+			if ($@) {
+			print 
+				"\nFailure! Cant Fetch Table 'version, modified' from nsm_db_version,\nMaybe your Icinga-Web Database Shema is below 1.7.0\n\n";
+			} else {
+				$sth->execute();
+		
+				while ( @row = $sth->fetchrow_array() ) {
+					push( @result_icingawebdb, @row );
+				}
+			$dbh_web->disconnect();
 			}
 		}	
-	$dbh_web->disconnect();
 }
 
 
@@ -446,6 +459,7 @@ print <<EOF;
 ############################################################
 ######              Verbose Informations              ######
 ############################################################
+
 Perlversion: $perlversion
 Current Date/Time on Server: $date
 
@@ -743,6 +757,14 @@ sub find_icinga_dir {
     return undef;
 }
 
+sub find_icinga_web_dir {
+    my @locations = qw ( /opt/icinga-web/app /usr/local/icinga-web/app );
+    foreach my $location (@locations) {
+        return $location if -e "$location/config.php";
+    }
+    return undef;
+}
+
 sub find_pnp4nagios_dir {
     my @locations = qw ( /etc/pnp4nagios/ /opt/pnp4nagios/etc/ /usr/local/pnp4nagios/etc/ );
     foreach my $location (@locations) {
@@ -800,7 +822,28 @@ sub get_error_from_log ($$) {
         print STDERR "Could not open logfile $file: $!\n";
     }
 }
-  
+
+sub get_icinga_web_data ($$) {
+    my ( $file, $key ) = @_;
+
+    if ( !-f $file ) {
+        print STDERR "xml $file does not exist\n";
+        return;
+    }
+
+    if ( open( my $fh, '<', $file ) ) {
+        while ( my $line = <$fh> ) {
+            chomp($line);		
+				$line =~ s/#.*//;
+				if ( $line =~ /\s*"dsn">+$key:\/\/([^:]+):([^@]+)@([^:]+):([^\/]+)\/([^<]+)/ ) {
+				return $1, $2, $3, $4, $5;				
+            }
+        }
+    } else {
+        print STDERR "Could not open logfile $file: $!\n";
+    }
+}
+
 sub usage{
 print <<EOF;
 
