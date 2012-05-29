@@ -115,7 +115,7 @@ my $idomod_cfg = "$icinga_base/idomod.cfg";
 my $icinga_cfg = "$icinga_base/icinga.cfg";
 my $pnp4nagios_base = find_pnp4nagios_dir();
 
-my $icingashell = (getpwnam ('icinga'))[8];
+
 #### DATABASE BACKEND ####
 
 #SQL Server Check
@@ -432,6 +432,10 @@ if ( !$mysqlcheck ) {
 	$dbh_web->disconnect();
 }
 
+
+## Other Checks ##
+my $usershell = (getpwnam ($icingacfguser))[8];
+
 ###########################
 # Output Verbose Reporting
 ###########################
@@ -472,7 +476,7 @@ Icinga.cfg/resource.cfg Information:
  Log External Commands(1=on,0=off): $icingaextcmdlog
  Icinga User: $icingacfguser
  Icinga Group: $icingacfggroup
- Icinga Shell: $icingashell
+ User Shell: $usershell
  Plugin Path: $plugin_path
  broker modul: $idomod_broker
  
