@@ -420,7 +420,6 @@ if ( !$mysqlcheck ) {
 		$sth->execute();
 		};
 		if ($@) {
-			#warn $DBI::errstr;
 			print 
 			"\nFailure! Cant Fetch Table 'modified' from nsm_db_version,\nMaybe your Icinga-Web Database Shema is below 1.7.0\n\n";
 		} else {
@@ -475,7 +474,7 @@ Icinga.cfg/resource.cfg Information:
  Icinga Group: $icingacfggroup
  Icinga Shell: $icingashell
  Plugin Path: $plugin_path
- idomod broker modul: $idomod_broker
+ broker modul: $idomod_broker
  
 Icinga Web:
  DB-Version: $result_icingawebdb[0]
