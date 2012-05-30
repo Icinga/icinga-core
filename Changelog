@@ -6,9 +6,16 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 
 1.8.0 - XX/10/2012
 
-FIXES
+ENHANCEMENTS
+* core: pass long_output to neb api for statechange data #2650 - MF
 
+
+FIXES
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
+
+
+CHANGES
+* core: neb struct statechange data += long_ouput #2650 - MF
 
 
 1.7.1 - 18/06/2012

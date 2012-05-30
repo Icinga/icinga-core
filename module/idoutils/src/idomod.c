@@ -3038,8 +3038,7 @@ int idomod_broker_data(int event_type, void *data) {
 		es[0] = ido_escape_buffer(schangedata->host_name);
 		es[1] = ido_escape_buffer(schangedata->service_description);
 		es[2] = ido_escape_buffer(schangedata->output);
-		/* Preparing if servicecheck change data will have long_output in the future */
-		es[3] = ido_escape_buffer(schangedata->output);
+		es[3] = ido_escape_buffer(schangedata->long_output);
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
 		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d\n\n"
