@@ -5119,8 +5119,8 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	const int CONFIG_VARVALUE_SIZE = 2048; /* table configfilevariables column varvalue length */
 	int  arrsize = 0;
 	int count = 0;
-	unsigned long  *instid_arr;
-	unsigned long  *fileid_arr;
+	big_uint  *instid_arr;
+	big_uint  *fileid_arr;
 	char * name_arr;
 	char * val_arr;
 
@@ -5239,8 +5239,8 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 	/* allocate array buffers based an maximal expected sizes*/
-	instid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	fileid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
+	instid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	fileid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
 	/* string array buffer must be continous memory */
 	name_arr = (char *) malloc(OCI_BINDARRAY_MAX_SIZE * (CONFIG_VARNAME_SIZE + 1));
 	val_arr = (char *) malloc(OCI_BINDARRAY_MAX_SIZE * (CONFIG_VARVALUE_SIZE + 1));
@@ -5257,8 +5257,8 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_configfilevariables_elements()"
 	                      "  ArrayVars OK\n");
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X1"), (uint *)instid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X2"), (uint *)fileid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X1"), instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X2"), fileid_arr, 0);
 	OCI_BindArrayOfStrings(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X3"), (char *)name_arr, CONFIG_VARNAME_SIZE, 0);
 	OCI_BindArrayOfStrings(idi->dbinfo.oci_statement_configfilevariables_insert, MT(":X4"), (char *)val_arr, CONFIG_VARVALUE_SIZE, 0);
 	arrsize = 0;
@@ -5436,7 +5436,7 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 	const int CONFIG_VARVALUE_SIZE = 1024; /* table runtimevariables column varvalue length */
 	int  arrsize = 0;
 	int count = 0;
-	unsigned long  *instid_arr;
+	big_uint  *instid_arr;
 	char * name_arr;
 	char * val_arr;
 #endif
@@ -5466,7 +5466,7 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* allocate array buffers based an maximal expected sizes*/
-	instid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(int));
+	instid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
 	/* string array buffer must be continous memory */
 	name_arr = (char *) malloc(OCI_BINDARRAY_MAX_SIZE * (CONFIG_VARNAME_SIZE + 1));
 	val_arr = (char *) malloc(OCI_BINDARRAY_MAX_SIZE * (CONFIG_VARVALUE_SIZE + 1));
@@ -5482,7 +5482,7 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_runtimevariables()"
 	                      "  ArrayVars OK\n");
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_runtimevariables, MT(":X1"), (uint *)instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_runtimevariables, MT(":X1"), instid_arr, 0);
 	OCI_BindArrayOfStrings(idi->dbinfo.oci_statement_runtimevariables, MT(":X2"), (char *)name_arr, CONFIG_VARNAME_SIZE, 0);
 	OCI_BindArrayOfStrings(idi->dbinfo.oci_statement_runtimevariables, MT(":X3"), (char *)val_arr, CONFIG_VARVALUE_SIZE, 0);
 	arrsize = 0;
@@ -5721,9 +5721,9 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
-	unsigned long  *instid_arr;
-	unsigned long  *hostid_arr;
-	unsigned long  *memberid_arr;
+	big_uint  *instid_arr;
+	big_uint  *hostid_arr;
+	big_uint  *memberid_arr;
 
 #endif
 	void *data[58];
@@ -5971,9 +5971,9 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 	/* allocate array buffers based an maximal expected sizes*/
-	instid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	hostid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	memberid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
+	instid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	hostid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	memberid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
 
 	if ((instid_arr == NULL) || (hostid_arr == NULL) || (memberid_arr == NULL)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition() parent"
@@ -5986,9 +5986,9 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition() parent"
 	                      " ArrayVars OK\n");
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(":X1"), (uint *)instid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(":X2"), (uint *)hostid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(":X3"), (uint *)memberid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(":X1"), instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(":X2"), hostid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostdefinition_parenthosts, MT(":X3"), memberid_arr, 0);
 	arrsize = 0;
 
 #endif /* Oracle ocilib specific */
@@ -6116,9 +6116,9 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(":X1"), (uint *)instid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(":X2"), (uint *)hostid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(":X3"), (uint *)memberid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(":X1"), instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(":X2"), hostid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostdefinition_contactgroups, MT(":X3"), memberid_arr, 0);
 	arrsize = 0;
 
 #endif /* Oracle ocilib specific */
@@ -6244,9 +6244,9 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contacts, MT(":X1"), (uint *)instid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contacts, MT(":X2"), (uint *)hostid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostdefinition_contacts, MT(":X3"), (uint *)memberid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostdefinition_contacts, MT(":X1"), instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostdefinition_contacts, MT(":X2"), hostid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostdefinition_contacts, MT(":X3"), memberid_arr, 0);
 	arrsize = 0;
 
 #endif /* Oracle ocilib specific */
@@ -6384,9 +6384,9 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
-	unsigned long  *instid_arr;
-	unsigned long  *groupid_arr;
-	unsigned long  *memberid_arr;
+	big_uint  *instid_arr;
+	big_uint  *groupid_arr;
+	big_uint  *memberid_arr;
 
 #endif
 	void *data[4];
@@ -6506,9 +6506,9 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 	/* allocate array buffers based an maximal expected sizes*/
-	instid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	groupid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	memberid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
+	instid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	groupid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	memberid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
 
 	if ((instid_arr == NULL) || (groupid_arr == NULL) || (memberid_arr == NULL)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostgroupdefinition() members"
@@ -6520,9 +6520,9 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 	}
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_hostdefinition() members ArrayVars OK\n");
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(":X1"), (uint *)instid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(":X2"), (uint *)groupid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(":X3"), (uint *)memberid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(":X1"), instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(":X2"), groupid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_hostgroupdefinition_hostgroupmembers, MT(":X3"), memberid_arr, 0);
 	arrsize = 0;
 
 #endif /* Oracle ocilib specific */
@@ -6699,9 +6699,9 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
-	unsigned long  *instid_arr;
-	unsigned long  *serviceid_arr;
-	unsigned long  *memberid_arr;
+	big_uint  *instid_arr;
+	big_uint  *serviceid_arr;
+	big_uint  *memberid_arr;
 
 #endif
 	void *data[51];
@@ -6936,9 +6936,9 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 	/* allocate array buffers based an maximal expected sizes*/
-	instid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	serviceid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	memberid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
+	instid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	serviceid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	memberid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
 
 	if ((instid_arr == NULL) || (serviceid_arr == NULL) || (memberid_arr == NULL)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition() contactgroups"
@@ -6951,9 +6951,9 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition() contactgroups"
 	                      " ArrayVars OK\n");
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(":X1"), (uint *)instid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(":X2"), (uint *)serviceid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(":X3"), (uint *)memberid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(":X1"), instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(":X2"), serviceid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_servicedefinition_contactgroups, MT(":X3"), memberid_arr, 0);
 	arrsize = 0;
 
 
@@ -7079,9 +7079,9 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contacts, MT(":X1"), (uint *)instid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contacts, MT(":X2"), (uint *)serviceid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicedefinition_contacts, MT(":X3"), (uint *)memberid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_servicedefinition_contacts, MT(":X1"), instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_servicedefinition_contacts, MT(":X2"), serviceid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_servicedefinition_contacts, MT(":X3"), memberid_arr, 0);
 	arrsize = 0;
 
 
@@ -7228,9 +7228,9 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
-	unsigned long  *instid_arr;
-	unsigned long  *groupid_arr;
-	unsigned long  *memberid_arr;
+	big_uint  *instid_arr;
+	big_uint  *groupid_arr;
+	big_uint  *memberid_arr;
 #endif
 	void *data[4];
 	int first;
@@ -7351,9 +7351,9 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 	/* allocate array buffers based an maximal expected sizes*/
-	instid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	groupid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	memberid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
+	instid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	groupid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	memberid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
 
 	if ((instid_arr == NULL) || (groupid_arr == NULL) || (memberid_arr == NULL)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicegroupdefinition() "
@@ -7366,9 +7366,9 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_servicedefinition()"
 	                      " members ArrayVars OK\n");
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(":X1"), (uint *)instid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(":X2"), (uint *)groupid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(":X3"), (uint *)memberid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(":X1"), instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(":X2"), groupid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_servicegroupdefinition_members, MT(":X3"), memberid_arr, 0);
 	arrsize = 0;
 
 #endif /* Oracle ocilib specific */
@@ -8125,11 +8125,11 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
-	unsigned long  *instid_arr;
-	unsigned long  *timeid_arr;
+	big_uint  *instid_arr;
+	big_uint  *timeid_arr;
 	int  *day_arr;
-	unsigned long  *startsec_arr;
-	unsigned long  *endsec_arr;
+	big_uint  *startsec_arr;
+	big_uint  *endsec_arr;
 #endif
 	void *data[5];
 	int first;
@@ -8254,11 +8254,11 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 	/* allocate array buffers based an maximal expected sizes*/
-	instid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	timeid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
+	instid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	timeid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
 	day_arr = (int *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(int));
-	startsec_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	endsec_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
+	startsec_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	endsec_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
 
 	if ((instid_arr == NULL) || (timeid_arr == NULL) || (day_arr == NULL) || (startsec_arr == NULL) || (endsec_arr == NULL)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_timeperiodefinition_timeranges()"
@@ -8273,11 +8273,11 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_timeperiodefinition_timeranges()"
 	                      " ArrayVars OK\n");
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X1"), (uint *)instid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X2"), (uint *)timeid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X1"), instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X2"), timeid_arr, 0);
 	OCI_BindArrayOfInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X3"), (int *)day_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X4"), (uint *)startsec_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X5"), (uint *)endsec_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X4"), startsec_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_timeperiodefinition_timeranges, MT(":X5"), endsec_arr, 0);
 	arrsize = 0;
 
 #endif /* Oracle ocilib specific */
@@ -8855,9 +8855,9 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
-	unsigned long  *instid_arr;
-	unsigned long  *groupid_arr;
-	unsigned long  *memberid_arr;
+	big_uint  *instid_arr;
+	big_uint  *groupid_arr;
+	big_uint  *memberid_arr;
 #endif
 	void *data[4];
 	int first;
@@ -8975,9 +8975,9 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 	/* allocate array buffers based an maximal expected sizes*/
-	instid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	groupid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
-	memberid_arr = (unsigned long *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(long));
+	instid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	groupid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
+	memberid_arr = (big_uint *) malloc(OCI_BINDARRAY_MAX_SIZE * sizeof(big_uint));
 
 	if ((instid_arr == NULL) || (groupid_arr == NULL) || (memberid_arr == NULL)) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_contactgroupdefinition() members"
@@ -8989,9 +8989,9 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 	}
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "ido2db_handle_contactgroupdefinition() members ArrayVars OK\n");
 	/* bind arrays to statement */
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(":X1"), (uint *)instid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(":X2"), (uint *)groupid_arr, 0);
-	OCI_BindArrayOfUnsignedInts(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(":X3"), (uint *)memberid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(":X1"), instid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(":X2"), groupid_arr, 0);
+	OCI_BindArrayOfUnsignedBigInts(idi->dbinfo.oci_statement_contactgroupdefinition_contactgroupmembers, MT(":X3"), memberid_arr, 0);
 	arrsize = 0;
 
 #endif /* Oracle ocilib specific */

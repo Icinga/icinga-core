@@ -12,7 +12,7 @@ ENHANCEMENTS
 
 FIXES
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
-
+* idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
 
 CHANGES
 * core: neb struct statechange data += long_ouput #2650 - MF
