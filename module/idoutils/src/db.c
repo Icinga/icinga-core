@@ -1310,16 +1310,19 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 int ido2db_db_version_check(ido2db_idi *idi) {
 	char *buf;
 	char *name;
+	int result;;
+	void *data[1];
 	/*
 	#ifdef USE_ORACLE
 		char *dbversion;
 		dbversion=NULL;
 	#endif
 	*/
-	void *data[1];
+
 	buf = NULL;
 	name = NULL;
-	int result = IDO_OK;
+	result= IDO_OK;
+
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check () start \n");
 
@@ -2347,6 +2350,10 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 		return NULL;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string('%s') start\n", buf);
+
+	/* init variables to make compilers happy */
+	x=0;
+	y=0;
 
 	z = strlen(buf);
 	if ((newbuf = (char *) malloc((z * 2) + 1)) == NULL) {
