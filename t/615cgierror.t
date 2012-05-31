@@ -21,9 +21,6 @@ my %cgis = map { ( $_ => 1 ) } grep /\.cgi$/, readdir $dh;
 closedir $dh;
 
 
-# statuswrl does not output an appropriate error
-delete $cgis{'statuswrl.cgi'};
-
 plan tests => scalar keys %cgis;
 
 # loop over all cgis and see if they return an error

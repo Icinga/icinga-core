@@ -53,7 +53,6 @@ char            *host_down_sound = NULL;
 char            *host_unreachable_sound = NULL;
 char            *normal_sound = NULL;
 char            *statusmap_background_image = NULL;
-char            *statuswrl_include = NULL;
 
 char            *illegal_output_chars = NULL;
 
@@ -150,7 +149,6 @@ int             persistent_ack_comments = FALSE;
 int             use_ssl_authentication = FALSE;
 
 int             default_statusmap_layout_method = 0;
-int             default_statuswrl_layout_method = 0;
 
 int		color_transparency_index_r = 255;
 int		color_transparency_index_g = 255;
@@ -287,7 +285,6 @@ void reset_cgi_vars(void) {
 	color_transparency_index_r = 255;
 	color_transparency_index_g = 255;
 	color_transparency_index_b = 255;
-	statuswrl_include = NULL;
 
 	return;
 }
@@ -309,7 +306,6 @@ void free_memory(void) {
 	free(host_unreachable_sound);
 	free(normal_sound);
 	free(statusmap_background_image);
-	free(statuswrl_include);
 
 	return;
 }
@@ -536,12 +532,6 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "default_statusmap_layout"))
 			default_statusmap_layout_method = atoi(val);
-
-		else if (!strcmp(var, "default_statuswrl_layout"))
-			default_statuswrl_layout_method = atoi(val);
-
-		else if (!strcmp(var, "statuswrl_include"))
-			statuswrl_include = strdup(val);
 
 		else if (!strcmp(var, "action_url_target"))
 			action_url_target = strdup(val);
@@ -1087,10 +1077,6 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("Expires: %s\r\n", date_time);
 	}
 
-	if (cgi_id == STATUSWRL_CGI_ID) {
-		printf("Content-Type: x-world/x-vrml\r\n\r\n");
-		return;
-	}
 	if (content_type == IMAGE_CONTENT) {
 		printf("Content-Type: image/png\r\n\r\n");
 		return;

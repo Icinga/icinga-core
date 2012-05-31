@@ -8,7 +8,8 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 1.8.0 - XX/XX/2012
 
 ENHANCEMENTS
-* classic ui: Drop statuswml.cgi #2654 - RB
+* classic ui: Dropped statuswml.cgi #2654 - RB
+* classic ui: Dropped statuswrl.cgi #2359 - RB
 
 
 1.7.0 - 15/05/2012

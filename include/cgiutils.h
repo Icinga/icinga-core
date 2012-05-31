@@ -56,7 +56,6 @@ extern "C" {
 #define SHOWLOG_CGI		"showlog.cgi"
 #define STATUS_CGI		"status.cgi"
 #define STATUSMAP_CGI		"statusmap.cgi"
-#define STATUSWRL_CGI		"statuswrl.cgi"
 #define SUMMARY_CGI		"summary.cgi"
 #define TAC_CGI			"tac.cgi"
 #define TRENDS_CGI		"trends.cgi"
@@ -80,10 +79,9 @@ extern "C" {
 #define SHOWLOG_CGI_ID		9
 #define STATUS_CGI_ID		10
 #define STATUSMAP_CGI_ID	11
-#define STATUSWRL_CGI_ID	12
-#define SUMMARY_CGI_ID		13
-#define TAC_CGI_ID		14
-#define TRENDS_CGI_ID		15
+#define SUMMARY_CGI_ID		12
+#define TAC_CGI_ID		13
+#define TRENDS_CGI_ID		14
 
 /* Are these ones still in use??? */
 #define TRACEROUTE_CGI_ID	17

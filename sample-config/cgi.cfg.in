@@ -23,7 +23,7 @@ main_config_file=@sysconfdir@/icinga.cfg
 # PHYSICAL HTML PATH
 # This is the path where the HTML files for Icinga reside.  This
 # value is used to locate the logo images needed by the statusmap
-# and statuswrl CGIs.
+# and status CGIs.
 
 physical_html_path=@datadir@
 
@@ -356,29 +356,6 @@ show_partial_hostgroups=0
 #       5 = Circular (Marked Up)
 
 default_statusmap_layout=5
-
-
-
-# DEFAULT STATUSWRL LAYOUT METHOD
-# This option allows you to specify the default layout method
-# the statuswrl (VRML) CGI should use for drawing hosts.  If you
-# do not use this option, the default is to use user-defined
-# coordinates.  Valid options are as follows:
-#	0 = User-defined coordinates
-#       2 = Collapsed tree
-#       3 = Balanced tree
-#       4 = Circular
-
-default_statuswrl_layout=4
-
-
-
-# STATUSWRL INCLUDE
-# This option allows you to include your own objects in the
-# generated VRML world.  It is assumed that the file
-# resides in the HTML path (i.e. /usr/local/icinga/share).
-
-#statuswrl_include=myworld.wrl
 
 
 

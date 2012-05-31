@@ -163,9 +163,6 @@ status.cgi: status.c $(CGIDEPS) $(CDATADEPS)
 statusmap.cgi: statusmap.c $(CGIDEPS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ statusmap.c ../base/statsprofiler.c $(CGILIBS) $(GDLIBS) $(LIBS)
 
-statuswrl.cgi: statuswrl.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ statuswrl.c ../base/statsprofiler.c $(CGILIBS) $(MATHLIBS) $(LIBS)
-
 summary.cgi: summary.c $(CGIDEPS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ summary.c ../base/statsprofiler.c $(CGILIBS) $(LIBS)
 

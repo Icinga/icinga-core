@@ -87,7 +87,6 @@ extern char *service_unknown_sound;
 extern char *service_warning_sound;
 extern char *splunk_url;
 extern char *statusmap_background_image;
-extern char *statuswrl_include;
 extern char url_html_path[MAX_FILENAME_LENGTH];
 extern char url_logo_images_path[MAX_FILENAME_LENGTH];
 extern char url_stylesheets_path[MAX_FILENAME_LENGTH];
@@ -107,7 +106,6 @@ extern int default_expiring_acknowledgement_duration;
 extern int default_num_displayed_log_entries;
 extern int display_status_totals;
 extern int default_statusmap_layout_method;
-extern int default_statuswrl_layout_method;
 extern int enable_splunk_integration;
 extern int enforce_comments_on_actions;
 extern int escape_html_tags;
@@ -202,7 +200,6 @@ char *org_service_unknown_sound = "";
 char *org_service_warning_sound = "";
 char *org_splunk_url = "";
 char *org_statusmap_background_image = "";
-char *org_statuswrl_include = "";
 char *org_url_html_path = "";
 char *org_url_stylesheets_path = "";
 
@@ -217,7 +214,6 @@ int org_default_expiring_acknowledgement_duration;
 int org_default_num_displayed_log_entries;
 int org_display_status_totals;
 int org_default_statusmap_layout;
-int org_default_statuswrl_layout;
 int org_enable_splunk_integration;
 int org_enforce_comments_on_actions;
 int org_escape_html_tags;
@@ -3851,28 +3847,6 @@ void display_cgiconfig(void) {
 		printf(")&nbsp;</TD><TR>\n");
 	}
 
-	// default_statuswrl_layout
-	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT) {
-		PRINT_CONFIG_LINE_INT(default_statuswrl_layout_method, org_default_statuswrl_layout, "int")
-	} else {
-		odd = (odd == 0) ? 1 : 0;
-		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD>", (odd == 0) ? "dataEven" : "dataOdd", "default_statuswrl_layout");
-		printf("<TD>&nbsp;%d (", org_default_statuswrl_layout);
-		if (org_default_statuswrl_layout == 0)      printf("User-defined coordinates");
-		else if (org_default_statuswrl_layout == 2) printf("Collapsed tree");
-		else if (org_default_statuswrl_layout == 3) printf("Balanced tree");
-		else if (org_default_statuswrl_layout == 4) printf("Circular");
-		else printf("INVALID");
-		printf(")&nbsp;</TD><TD %s>", (org_default_statuswrl_layout != default_statuswrl_layout_method) ? "CLASS='dataDiff'" : "");
-		printf("&nbsp;%d (", default_statuswrl_layout_method);
-		if (default_statuswrl_layout_method == 0)      printf("User-defined coordinates");
-		else if (default_statuswrl_layout_method == 2) printf("Collapsed tree");
-		else if (default_statuswrl_layout_method == 3) printf("Balanced tree");
-		else if (default_statuswrl_layout_method == 4) printf("Circular");
-		else printf("INVALID");
-		printf(")&nbsp;</TD><TR>\n");
-	}
-
 	PRINT_CONFIG_LINE_INT(enable_splunk_integration, org_enable_splunk_integration, "bool")
 	PRINT_CONFIG_LINE_INT(enforce_comments_on_actions, org_enforce_comments_on_actions, "bool")
 	PRINT_CONFIG_LINE_INT(escape_html_tags, org_escape_html_tags, "bool")
@@ -3942,7 +3916,6 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_STRING(splunk_url, org_splunk_url)
 	PRINT_CONFIG_LINE_INT(status_show_long_plugin_output, org_status_show_long_plugin_output, "bool")
 	PRINT_CONFIG_LINE_STRING(statusmap_background_image, org_statusmap_background_image)
-	PRINT_CONFIG_LINE_STRING(statuswrl_include, org_statuswrl_include)
 	PRINT_CONFIG_LINE_INT(suppress_maintenance_downtime, org_suppress_maintenance_downtime, "bool")
 	PRINT_CONFIG_LINE_INT(tab_friendly_titles, org_tab_friendly_titles, "bool")
 	PRINT_CONFIG_LINE_INT(tac_show_only_hard_state, org_tac_show_only_hard_state, "bool")
@@ -4284,7 +4257,6 @@ void store_default_settings(void) {
 	service_warning_sound = (service_warning_sound == NULL) ? "" : service_warning_sound;
 	splunk_url = (splunk_url == NULL) ? "" : splunk_url;
 	statusmap_background_image = (statusmap_background_image == NULL) ? "" : statusmap_background_image;
-	statuswrl_include = (statuswrl_include == NULL) ? "" : statuswrl_include;
 
 	/* copy vars to org_vars*/
 	org_action_url_target = strdup(action_url_target);
@@ -4326,7 +4298,6 @@ void store_default_settings(void) {
 	org_service_warning_sound = strdup(service_warning_sound);
 	org_splunk_url = strdup(splunk_url);
 	org_statusmap_background_image = strdup(statusmap_background_image);
-	org_statuswrl_include = strdup(statuswrl_include);
 	org_url_html_path = strdup(url_html_path);
 	org_url_stylesheets_path = strdup(url_stylesheets_path);
 
@@ -4341,7 +4312,6 @@ void store_default_settings(void) {
 	org_default_num_displayed_log_entries = default_num_displayed_log_entries;
 	org_display_status_totals = display_status_totals;
 	org_default_statusmap_layout = default_statusmap_layout_method;
-	org_default_statuswrl_layout = default_statuswrl_layout_method;
 	org_enable_splunk_integration = enable_splunk_integration;
 	org_enforce_comments_on_actions = enforce_comments_on_actions;
 	org_escape_html_tags = escape_html_tags;
