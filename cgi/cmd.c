@@ -54,7 +54,6 @@ extern int  lock_author_names;
 extern int  persistent_ack_comments;
 extern int  default_expiring_acknowledgement_duration;
 
-extern int  content_type;
 extern int  display_header;
 extern int  daemon_check;
 
@@ -293,10 +292,7 @@ int main(void) {
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
 		document_header(CGI_ID, FALSE, "Error");
-		if (content_type == WML_CONTENT)
-			printf("<p>Error: Could not open CGI config file!</p>\n");
-		else
-			print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
+		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -305,10 +301,7 @@ int main(void) {
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
 		document_header(CGI_ID, FALSE, "Error");
-		if (content_type == WML_CONTENT)
-			printf("<p>Error: Could not open main config file!</p>\n");
-		else
-			print_error(main_config_file, ERROR_CGI_MAIN_CFG);
+		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -325,10 +318,7 @@ int main(void) {
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
 		document_header(CGI_ID, FALSE, "Error");
-		if (content_type == WML_CONTENT)
-			printf("<p>Error: Could not read object config data!</p>\n");
-		else
-			print_error(NULL, ERROR_CGI_OBJECT_DATA);
+		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -761,20 +751,6 @@ int process_cgivars(void) {
 				end_time_string = "";
 			else
 				strcpy(end_time_string, variables[x]);
-		}
-
-		/* we found the content type argument */
-		else if (!strcmp(variables[x], "content")) {
-			x++;
-			if (variables[x] == NULL) {
-				error = TRUE;
-				break;
-			}
-			if (!strcmp(variables[x], "wml")) {
-				content_type = WML_CONTENT;
-				display_header = FALSE;
-			} else
-				content_type = HTML_CONTENT;
 		}
 
 		/* we found the forced notification option */
@@ -2379,11 +2355,7 @@ void commit_command_data(int cmd) {
 		for (e = 0; e < NUMBER_OF_STRUCTS; e++) {
 			if (error[e].message == NULL)
 				continue;
-			if (content_type == WML_CONTENT)
-				printf("<p>Error: %s</p><BR>\n", error[e].message);
-			else {
-				printf("<tr><td class='errorString'>ERROR:</td><td class='errorContent'>%s</td></tr>\n", error[e].message);
-			}
+			printf("<tr><td class='errorString'>ERROR:</td><td class='errorContent'>%s</td></tr>\n", error[e].message);
 		}
 		printf("</table>\n</DIV>\n");
 		printf("<BR>\n");
@@ -2407,15 +2379,11 @@ void commit_command_data(int cmd) {
 	/* for commands without objects get the first result*/
 	if (cmd_has_objects == FALSE) {
 		if (submit_result[0] == OK) {
-			if (content_type == WML_CONTENT)
-				printf("<p>Your command was submitted sucessfully...</p>\n");
-			else {
-				printf("<DIV CLASS='successBox'>\n");
-				printf("<DIV CLASS='successMessage'>Your command request was successfully submitted to %s for processing.<BR><BR>\n", PROGRAM_NAME);
-				printf("Note: It may take a while before the command is actually processed.</DIV>\n");
-				printf("</DIV>\n");
-				printf("<BR><input type='submit' value='Done' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
-			}
+			printf("<DIV CLASS='successBox'>\n");
+			printf("<DIV CLASS='successMessage'>Your command request was successfully submitted to %s for processing.<BR><BR>\n", PROGRAM_NAME);
+			printf("Note: It may take a while before the command is actually processed.</DIV>\n");
+			printf("</DIV>\n");
+			printf("<BR><input type='submit' value='Done' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
 		} else {
 			print_generic_error_message("An error occurred while attempting to commit your command for processing.", "Unfortunately I can't determine the root cause of this problem.", 2);
 		}

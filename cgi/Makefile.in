@@ -40,7 +40,7 @@ CFLAGS=@CFLAGS@ @DEFS@ -DNSCGI
 LDFLAGS=@LDFLAGS@
 LIBS=@LIBS@
 
-CGIS=avail.cgi cmd.cgi config.cgi extinfo.cgi history.cgi notifications.cgi outages.cgi showlog.cgi status.cgi statuswml.cgi summary.cgi tac.cgi $(CGIEXTRAS)
+CGIS=avail.cgi cmd.cgi config.cgi extinfo.cgi history.cgi notifications.cgi outages.cgi showlog.cgi status.cgi summary.cgi tac.cgi $(CGIEXTRAS)
 
 # External data I/O code and headers
 XSDC=@XSDC@
@@ -159,9 +159,6 @@ showlog.cgi: showlog.c $(CGIDEPS)
 
 status.cgi: status.c $(CGIDEPS) $(CDATADEPS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ status.c ../base/statsprofiler.c $(CGILIBS) $(CDATALIBS) $(LIBS)
-
-statuswml.cgi: statuswml.c $(CGIDEPS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ statuswml.c ../base/statsprofiler.c $(CGILIBS) $(LIBS)
 
 statusmap.cgi: statusmap.c $(CGIDEPS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ statusmap.c ../base/statsprofiler.c $(CGILIBS) $(GDLIBS) $(LIBS)

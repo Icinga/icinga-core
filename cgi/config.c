@@ -81,7 +81,6 @@ extern char nagios_check_command[MAX_INPUT_BUFFER];
 extern char *normal_sound;
 extern char *notes_url_target;
 extern char physical_html_path[MAX_FILENAME_LENGTH];
-extern char *ping_syntax;
 extern char resource_file[MAX_INPUT_BUFFER];
 extern char *service_critical_sound;
 extern char *service_unknown_sound;
@@ -198,7 +197,6 @@ char *org_nagios_check_command = "";
 char *org_normal_sound = "";
 char *org_notes_url_target = "";
 char *org_physical_html_path = "";
-char *org_ping_syntax = "";
 char *org_service_critical_sound = "";
 char *org_service_unknown_sound = "";
 char *org_service_warning_sound = "";
@@ -3918,7 +3916,6 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_STRING(normal_sound, org_normal_sound)
 	PRINT_CONFIG_LINE_STRING(notes_url_target, org_notes_url_target)
 	PRINT_CONFIG_LINE_INT(persistent_ack_comments, org_persistent_ack_comments, "bool")
-	PRINT_CONFIG_LINE_STRING(ping_syntax, org_ping_syntax)
 	PRINT_CONFIG_LINE_STRING(physical_html_path, org_physical_html_path)
 	PRINT_CONFIG_LINE_INT(refresh_rate, org_refresh_rate, "int")
 
@@ -4282,7 +4279,6 @@ void store_default_settings(void) {
 	illegal_output_chars = (illegal_output_chars == NULL) ? "" : illegal_output_chars;
 	normal_sound = (normal_sound == NULL) ? "" : normal_sound;
 	notes_url_target = (notes_url_target == NULL) ? "" : notes_url_target;
-	ping_syntax = (ping_syntax == NULL) ? "" : ping_syntax;
 	service_critical_sound = (service_critical_sound == NULL) ? "" : service_critical_sound;
 	service_unknown_sound = (service_unknown_sound == NULL) ? "" : service_unknown_sound;
 	service_warning_sound = (service_warning_sound == NULL) ? "" : service_warning_sound;
@@ -4325,7 +4321,6 @@ void store_default_settings(void) {
 	org_normal_sound = strdup(normal_sound);
 	org_notes_url_target = strdup(notes_url_target);
 	org_physical_html_path = strdup(physical_html_path);
-	org_ping_syntax = strdup(ping_syntax);
 	org_service_critical_sound = strdup(service_critical_sound);
 	org_service_unknown_sound = strdup(service_unknown_sound);
 	org_service_warning_sound = strdup(service_warning_sound);

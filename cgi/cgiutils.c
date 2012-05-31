@@ -62,8 +62,6 @@ char            *http_charset = NULL;
 char            *notes_url_target = NULL;
 char            *action_url_target = NULL;
 
-char            *ping_syntax = NULL;
-
 char		*csv_delimiter = CSV_DELIMITER;
 char		*csv_data_enclosure = CSV_DATA_ENCLOSURE;
 
@@ -291,8 +289,6 @@ void reset_cgi_vars(void) {
 	color_transparency_index_b = 255;
 	statuswrl_include = NULL;
 
-	ping_syntax = NULL;
-
 	return;
 }
 
@@ -314,7 +310,6 @@ void free_memory(void) {
 	free(normal_sound);
 	free(statusmap_background_image);
 	free(statuswrl_include);
-	free(ping_syntax);
 
 	return;
 }
@@ -547,9 +542,6 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "statuswrl_include"))
 			statuswrl_include = strdup(val);
-
-		else if (!strcmp(var, "ping_syntax"))
-			ping_syntax = strdup(val);
 
 		else if (!strcmp(var, "action_url_target"))
 			action_url_target = strdup(val);
@@ -1078,20 +1070,6 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT)
 		refresh = FALSE;
 
-	if (content_type == WML_CONTENT) {
-		/* used by cmd.cgi */
-		printf("Content-type: text/vnd.wap.wml; charset=\"%s\"\r\n\r\n", http_charset);
-
-		printf("<?xml version=\"1.0\"?>\n");
-		printf("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\" \"http://www.wapforum.org/DTD/wml_1.1.xml\">\n");
-
-		printf("<wml>\n");
-
-		printf("<card id='card1' title='Command Results'>\n");
-
-		return;
-	}
-
 	// send top http header
 	if (cgi_id != ERROR_CGI_ID) {
 		printf("Cache-Control: no-store\r\n");
@@ -1111,21 +1089,6 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 
 	if (cgi_id == STATUSWRL_CGI_ID) {
 		printf("Content-Type: x-world/x-vrml\r\n\r\n");
-		return;
-	}
-	if (cgi_id == STATUSWML_CGI_ID) {
-
-		printf("Content-type: text/vnd.wap.wml; charset=\"%s\"\r\n\r\n", http_charset);
-
-		printf("<?xml version=\"1.0\"?>\n");
-		printf("<!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\" \"http://www.wapforum.org/DTD/wml_1.1.xml\">\n");
-
-		printf("<wml>\n");
-
-		printf("<head>\n");
-		printf("<meta forua=\"true\" http-equiv=\"Cache-Control\" content=\"max-age=0\"/>\n");
-		printf("</head>\n");
-
 		return;
 	}
 	if (content_type == IMAGE_CONTENT) {
@@ -1280,13 +1243,6 @@ void document_footer(int cgi_id) {
 	if (content_type == XML_CONTENT)
 		return;
 
-	if (content_type == WML_CONTENT) {
-		/* used by cmd.cgi */
-		printf("</card>\n");
-		printf("</wml>\n");
-		return;
-	}
-
 	if (content_type == JSON_CONTENT) {
 		printf("}\n}\n");
 		return;
@@ -1298,11 +1254,6 @@ void document_footer(int cgi_id) {
 	*/
 	if (embedded || content_type != HTML_CONTENT)
 		return;
-
-	if (cgi_id == STATUSWML_CGI_ID) {
-		printf("</wml>\n");
-		return;
-	}
 
 	/* include user SSI footer */
 	if (tac_header == FALSE)
@@ -2484,16 +2435,7 @@ void strip_splunk_query_terms(char *buffer) {
 
 void print_generic_error_message(char *title, char *text, int returnlevels) {
 
-	if (content_type == WML_CONTENT) {
-		printf("<p>");
-
-		if (title != NULL && title[0] != '\x0')
-			printf("%s", title);
-		if (text != NULL && text[0] != '\x0')
-			printf("<br>%s", text);
-
-		printf("</p>\n");
-	} else if (content_type == CSV_CONTENT) {
+	if (content_type == CSV_CONTENT) {
 		if (title != NULL && title[0] != '\x0')
 			printf("ERROR: %s\n", title);
 		if (text != NULL && text[0] != '\x0')
