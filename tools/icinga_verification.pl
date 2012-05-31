@@ -114,7 +114,7 @@ if (! $icinga_base ) {
 #Icinga-Web Base Set
 my $icinga_web_base = find_icinga_web_dir();
 if (! $icinga_web_base ) {
-    print STDERR "\nIcinga-Web config dir not found.\nPlease enter your Icinga config dir: ";
+    print STDERR "\nIcinga-Web config dir not found.\nPlease enter your Icinga-Web config dir.\nExample: /usr/local/icinga-web/app: ";
     $icinga_web_base = <STDIN>;
     chomp($icinga_web_base);
     if (! -d $icinga_web_base) {
