@@ -10,6 +10,7 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 ENHANCEMENTS
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
+* classic ui: Added action_url/notes_url to status.cgi for csvoutput and jsonoutput #2553 - RB
 
 
 1.7.0 - 15/05/2012

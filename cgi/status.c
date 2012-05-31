@@ -2092,7 +2092,15 @@ void show_service_detail(void) {
 		printf("%sLast_Check%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDuration%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAttempt%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
-		printf("%sStatus_Information%s\n", csv_data_enclosure, csv_data_enclosure);
+		printf("%sStatus_Information%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sIs_Flapping%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sIn_Scheduled_Downtime%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sActive_Checks_Enabled%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sPassive_Checks_Enabled%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sNotifications_Enabled%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sProblem_Acknowledged%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sAction_URL%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sNotes_URL%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
 		printf("<table style='margin-top:5px;' border=0 width=100%%>\n");
 		printf("<tr>\n");
@@ -2568,6 +2576,16 @@ void show_service_detail(void) {
 			printf("\"notifications_enabled\": %s, ", (temp_status->notifications_enabled == TRUE) ? "true" : "false");
 			printf("\"has_been_acknowledged\": %s, ", (temp_status->problem_has_been_acknowledged == TRUE) ? "true" : "false");
 
+			if (temp_service->action_url == NULL)
+				printf("\"action_url\": null, ");
+			else
+				printf("\"action_url\": \"%s\", ", json_encode(temp_service->action_url));
+
+			if (temp_service->notes_url == NULL)
+				printf("\"notes_url\": null, ");
+			else
+				printf("\"notes_url\": \"%s\", ", json_encode(temp_service->notes_url));
+
 			if (temp_status->plugin_output == NULL)
 				printf("\"status_information\": null }");
 			else
@@ -2577,12 +2595,19 @@ void show_service_detail(void) {
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description, csv_data_enclosure, csv_delimiter);
-
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->status_string, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->last_check, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->state_duration, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->attempts, csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s\n", csv_data_enclosure, (temp_status->plugin_output == NULL) ? "" : temp_status->plugin_output, csv_data_enclosure);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_status->plugin_output == NULL) ? "" : temp_status->plugin_output, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_status->is_flapping == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_status->scheduled_downtime_depth > 0) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_status->checks_enabled == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_status->accept_passive_checks == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_status->notifications_enabled == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_status->problem_has_been_acknowledged == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_service->action_url != NULL) ? temp_service->action_url : "", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s\n", csv_data_enclosure, (temp_service->notes_url != NULL) ? temp_service->notes_url : "", csv_data_enclosure);
 		}
 
 		last_host = temp_status->host_name;
@@ -2647,7 +2672,15 @@ void show_host_detail(void) {
 		printf("%sLast_Check%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDuration%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAttempt%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
-		printf("%sStatus_Information%s\n", csv_data_enclosure, csv_data_enclosure);
+		printf("%sStatus_Information%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sIs_Flapping%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sIn_Scheduled_Downtime%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sActive_Checks_Enabled%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sPassive_Checks_Enabled%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sNotifications_Enabled%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sProblem_Acknowledged%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sAction_URL%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sNotes_URL%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
 		printf("<table style='margin-top:5px;' border=0 width=100%%>\n");
 		printf("<tr>\n");
@@ -2979,6 +3012,16 @@ void show_host_detail(void) {
 			printf("\"notifications_enabled\": %s, ", (temp_statusdata->notifications_enabled == TRUE) ? "true" : "false");
 			printf("\"has_been_acknowledged\": %s, ", (temp_statusdata->problem_has_been_acknowledged == TRUE) ? "true" : "false");
 
+			if (temp_host->action_url == NULL)
+				printf("\"action_url\": null, ");
+			else
+				printf("\"action_url\": \"%s\", ", json_encode(temp_host->action_url));
+
+			if (temp_host->notes_url == NULL)
+				printf("\"notes_url\": null, ");
+			else
+				printf("\"notes_url\": \"%s\", ", json_encode(temp_host->notes_url));
+
 			if (temp_statusdata->plugin_output == NULL)
 				printf("\"status_information\": null }");
 			else
@@ -2987,12 +3030,19 @@ void show_host_detail(void) {
 			/* print list in csv format */
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, csv_data_enclosure, csv_delimiter);
-
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->status_string, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->last_check, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->state_duration, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->attempts, csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s\n", csv_data_enclosure, (temp_statusdata->plugin_output == NULL) ? "" : temp_statusdata->plugin_output, csv_data_enclosure);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->plugin_output == NULL) ? "" : temp_statusdata->plugin_output, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->is_flapping == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->scheduled_downtime_depth > 0) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->checks_enabled == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->accept_passive_checks == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->notifications_enabled == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_statusdata->problem_has_been_acknowledged == TRUE) ? "true" : "false", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_host->action_url != NULL) ? temp_host->action_url : "", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s\n", csv_data_enclosure, (temp_host->notes_url != NULL) ? temp_host->notes_url : "", csv_data_enclosure);
 		}
 	}
 
