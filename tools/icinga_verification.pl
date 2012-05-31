@@ -101,9 +101,6 @@ if ( $oscheck eq 'MSWin32' ) {
 
 #Icinga Base Set
 my $icinga_base = find_icinga_dir();
-#Icinga-Web Base Set
-my $icinga_web_base = find_icinga_web_dir();
-
 if (! $icinga_base ) {
     print STDERR "\nIcinga config dir not found.\nPlease enter your Icinga config dir: ";
     $icinga_base = <STDIN>;
@@ -113,6 +110,18 @@ if (! $icinga_base ) {
         exit 1;
     }
 }
+
+#Icinga-Web Base Set
+my $icinga_web_base = find_icinga_web_dir();
+if (! $icinga_web_base ) {
+    print STDERR "\nIcinga-Web config dir not found.\nPlease enter your Icinga config dir: ";
+    $icinga_web_base = <STDIN>;
+    chomp($icinga_web_base);
+    if (! -d $icinga_web_base) {
+        print STDERR "Couldn't find config.php.";
+    }
+}
+
 #Icinga/Nagios Plugins Base Set
 my $idomod_cfg = "$icinga_base/idomod.cfg";
 my $icinga_cfg = "$icinga_base/icinga.cfg";
