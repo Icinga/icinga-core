@@ -579,7 +579,6 @@ if ($dbh_conn_error){
 
 print <<EOF;
 
-
 ido2db/idomod Tests:
 EOF
 # ido2db -> idomod socket
