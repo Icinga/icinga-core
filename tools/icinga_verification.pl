@@ -357,6 +357,14 @@ my $idomodssl = get_key_from_ini("$idomod_cfg", 'use_ssl');
 #idomod TCP port
 my $idomodtcpport = get_key_from_ini("$idomod_cfg", 'tcp_port');
 
+#check for idoutils Broker Modul#
+my $brokermodulpath = "$icinga_base/modules";
+my $brokermodul_idoutils = '';
+if (! -e "$brokermodulpath/idoutils.cfg") {
+		$brokermodul_idoutils = "No idoutils.cfg in $brokermodulpath";
+	} else {
+		$brokermodul_idoutils = "idoutils.cfg in $brokermodulpath aktiv.";
+	}
 #### resource.cfg / check user1 for correct Plugin Path####
 my $resource_cfg = get_key_from_ini("$icinga_cfg", 'resource_file');
 if (! -e "$resource_cfg") {
@@ -509,7 +517,8 @@ Icinga.cfg/resource.cfg Information:
  Icinga Group: $icingacfggroup
  User Shell: $usershell
  Plugin Path: $plugin_path
- broker modul: $idomod_broker
+ broker modul cfg: $idomod_broker
+ broker modul dir: $brokermodul_idoutils
  
 Icinga Web:
  DB-Version: $result_icingawebdb[0]
@@ -766,7 +775,7 @@ sub get_distribution {
 }
 
 sub find_icinga_dir {
-    my @locations = qw ( /etc/icinga/ /opt/icinga/etc/ /usr/local/icinga/etc/ );
+    my @locations = qw ( /etc/icinga /opt/icinga/etc /usr/local/icinga/etc );
     foreach my $location (@locations) {
         return $location if -e "$location/icinga.cfg";
     }
@@ -782,7 +791,7 @@ sub find_icinga_web_dir {
 }
 
 sub find_pnp4nagios_dir {
-    my @locations = qw ( /etc/pnp4nagios/ /opt/pnp4nagios/etc/ /usr/local/pnp4nagios/etc/ );
+    my @locations = qw ( /etc/pnp4nagios /opt/pnp4nagios/etc /usr/local/pnp4nagios/etc );
     foreach my $location (@locations) {
         return $location if -e "$location/pnp4nagios_release";
     }
