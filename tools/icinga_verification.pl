@@ -102,11 +102,13 @@ if ( $oscheck eq 'MSWin32' ) {
 #Icinga Base Set
 my $icinga_base = find_icinga_dir();
 if (! $icinga_base ) {
-    print STDERR "\nIcinga config dir not found.\nPlease enter your Icinga config dir: ";
+	print STDERR color("red"), "\nIcinga dir not found!", color("reset");
+	print STDERR "\nPlease enter your Icinga dir\nExample '/usr/local/icinga': ";
     $icinga_base = <STDIN>;
     chomp($icinga_base);
-    if (! -d $icinga_base) {
-        print STDERR "Couldn't find icinga.cfg.";
+	$icinga_base = "$icinga_base/etc/";
+    if (! -e "$icinga_base/icinga.cfg") {
+		print STDERR color("red"), "\nCouldn't find icinga.cfg in path $icinga_base!\nWill quit now.\n", color("reset");
         exit 1;
     }
 }
@@ -114,11 +116,13 @@ if (! $icinga_base ) {
 #Icinga-Web Base Set
 my $icinga_web_base = find_icinga_web_dir();
 if (! $icinga_web_base ) {
-    print STDERR "\nIcinga-Web config dir not found.\nPlease enter your Icinga-Web config dir.\nExample: /usr/local/icinga-web/app: ";
+	print STDERR color("red"), "\nIcinga-Web dir not found.", color("reset");
+    print STDERR "\nPlease enter your Icinga-Web dir.\nExample '/usr/local/icinga-web': ";
     $icinga_web_base = <STDIN>;
     chomp($icinga_web_base);
-    if (! -d $icinga_web_base) {
-        print STDERR "Couldn't find config.php.";
+	$icinga_web_base = "$icinga_web_base/app/";
+    if (! -e "$icinga_web_base/config.php") {
+		print STDERR color("red"), "\nCouldn't find config.php in path $icinga_web_base!\nWill Skip Icinga-Web Database Tests\n", color("reset");
     }
 }
 
@@ -164,9 +168,7 @@ if ($sqlservertype_cfg eq 'mysql') {
 	if ( !$mysqlcheck ) {
 		print "mysql service not found, check your ido2db.cfg or mysql Server\n";
 	} else {
-
-		print STDERR " Mysql Found! - Try to connect via ido2db.cfg\n";
-	
+		print STDERR "\nMysql Found! - Try to connect via ido2db.cfg\n";
 		# ido2db.cfg Connection test
 		$dbh_cfg = DBI->connect(
 			"dbi:mysql:database=$sqldb_cfg; host=$sqlserver_cfg:mysql_server_prepare=1",
@@ -180,7 +182,7 @@ if ($sqlservertype_cfg eq 'mysql') {
 			"ido2db.cfg - MySQL Connect Failed.";
 
 		if ( !$dbh_cfg_error ) {
-			print " ido2db.cfg Mysql Connection Test OK!\n";
+			print STDERR color("green"), "ido2db.cfg Mysql Connection Test OK!\n", color("reset");
 			$dbh_cfg->disconnect();
 		} else {        
 			print color("red"), "ido2db.cfg - MySQL Connect FAILED. Start Config Script", color("reset");
@@ -355,6 +357,9 @@ my $idomodtcpport = get_key_from_ini("$idomod_cfg", 'tcp_port');
 
 #### resource.cfg / check user1 for correct Plugin Path####
 my $resource_cfg = get_key_from_ini("$icinga_cfg", 'resource_file');
+if (! -e "$resource_cfg") {
+		print STDERR color("red"), "\nCouldn't find resource.cfg!\nPath definded in icinga.cfg: $resource_cfg\n", color("reset");
+		}
 my $plugin_path = '';
 my $raw_plugin_path = get_key_from_ini("$resource_cfg", '\$USER1\$');
 chomp($raw_plugin_path);
@@ -444,8 +449,7 @@ if ( !$mysqlcheck ) {
 			$sth->execute();
 			};
 			if ($@) {
-			print 
-				"\nFailure! Cant Fetch Table 'version, modified' from nsm_db_version,\nMaybe your Icinga-Web Database Shema is below 1.7.0\n\n";
+				print STDERR color("red"), "\nFailure! Cant Fetch Table 'version, modified' from nsm_db_version,\nMaybe your Icinga-Web Database Shema is below 1.7.0\n\n", color("reset");
 			} else {
 				$sth->execute();
 		
@@ -691,7 +695,7 @@ sub get_key_from_ini ($$) {
     my ( $file, $key ) = @_;
 
     if ( !-f $file ) {
-        print STDERR "Inifile $file does not exist\n";
+        print STDERR "\nInifile $file does not exist\n";
         return;
     }
 
@@ -838,7 +842,7 @@ sub get_icinga_web_data ($$) {
     my ( $file, $key ) = @_;
 
     if ( !-f $file ) {
-        print STDERR "xml $file does not exist\n";
+        print STDERR "\n$file does not exist\n\n";
         return;
     }
 
