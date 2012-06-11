@@ -4,10 +4,15 @@ Icinga 1.7.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
-1.7.1 - ??/05/2012
+1.7.1 - 15/06/2012
 
 FIXES
 * classic ui: Fixed status.cgi time out when displaying hostgroups in large environments #2617 - RB
+
+* config: check_ido2db_procs.cfg should not depend on local-service template #2616 - MF
+
+* install: adapt lsb headers for icinga and ido2db #2637 - MF
+* install: fix typo in contrib/eventhandlers/redundancy-scenario1/handle-master-proc-event (thanks uosiu) #2671 - MF
 
 
 1.7.0 - 15/05/2012
