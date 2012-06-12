@@ -45,7 +45,7 @@ HARD)
 		# We should go back to being the slave host, 
 		# so disable active checks
 
-		`eventhandlerdir/disable_active_service_checks`
+		`$eventhandlerdir/disable_active_service_checks`
 		;;
 
 	esac
