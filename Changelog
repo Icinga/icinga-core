@@ -4,7 +4,7 @@ Icinga 1.7.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
-1.7.1 - 15/06/2012
+1.7.1 - 18/06/2012
 
 FIXES
 * core: use prefix in solaris service definition #2609 - TD/CF
