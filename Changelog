@@ -9,6 +9,7 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 FIXES
 * classic ui: Fixed status.cgi time out when displaying hostgroups in large environments #2617 - RB
 * classic ui: Fixed Invalid JSON output for hostgroup overview #2680 - trehn
+* classic ui: Fixed Confusing use of display_name in JSON and CSV output #2681 - trehn
 
 
 1.7.0 - 15/05/2012

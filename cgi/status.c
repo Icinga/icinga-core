@@ -2546,8 +2546,8 @@ void show_service_detail(void) {
 			if (json_start == FALSE)
 				printf(",\n");
 			json_start = FALSE;
-			printf("{ \"host\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
-			printf("\"service\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+			printf("{ \"host\": \"%s\", ", json_encode(temp_host->name));
+			printf("\"service\": \"%s\", ", json_encode(temp_service->description));
 			printf("\"status\": \"%s\", ", temp_status->status_string);
 			printf("\"last_check\": \"%s\", ", temp_status->last_check);
 			printf("\"duration\": \"%s\", ", temp_status->state_duration);
@@ -2559,6 +2559,16 @@ void show_service_detail(void) {
 			printf("\"notifications_enabled\": %s, ", (temp_status->notifications_enabled == TRUE) ? "true" : "false");
 			printf("\"has_been_acknowledged\": %s, ", (temp_status->problem_has_been_acknowledged == TRUE) ? "true" : "false");
 
+			if (temp_host->display_name == NULL)
+				printf("\"host_display_name\": null, ");
+			else
+				printf("\"host_display_name\": \"%s\", ", json_encode(temp_host->display_name));
+
+			if (temp_service->display_name == NULL)
+				printf("\"service_display_name\": null, ");
+			else
+				printf("\"service_display_name\": \"%s\", ", json_encode(temp_service->display_name));
+
 			if (temp_status->plugin_output == NULL)
 				printf("\"status_information\": null }");
 			else
@@ -2566,8 +2576,8 @@ void show_service_detail(void) {
 
 			/* print list in csv format */
 		} else if (content_type == CSV_CONTENT) {
-			printf("%s%s%s%s", csv_data_enclosure, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s%s", csv_data_enclosure, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_host->name, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_service->description, csv_data_enclosure, csv_delimiter);
 
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->status_string, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->last_check, csv_data_enclosure, csv_delimiter);
@@ -2958,7 +2968,7 @@ void show_host_detail(void) {
 			if (json_start == FALSE)
 				printf(",\n");
 			json_start = FALSE;
-			printf("{ \"host\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+			printf("{ \"host\": \"%s\", ", json_encode(temp_host->name));
 			printf("\"status\": \"%s\", ", temp_statusdata->status_string);
 			printf("\"last_check\": \"%s\", ", temp_statusdata->last_check);
 			printf("\"duration\": \"%s\", ", temp_statusdata->state_duration);
@@ -2970,6 +2980,11 @@ void show_host_detail(void) {
 			printf("\"notifications_enabled\": %s, ", (temp_statusdata->notifications_enabled == TRUE) ? "true" : "false");
 			printf("\"has_been_acknowledged\": %s, ", (temp_statusdata->problem_has_been_acknowledged == TRUE) ? "true" : "false");
 
+			if (temp_host->display_name == NULL)
+				printf("\"host_display_name\": null, ");
+			else
+				printf("\"host_display_name\": \"%s\", ", json_encode(temp_host->display_name));
+
 			if (temp_statusdata->plugin_output == NULL)
 				printf("\"status_information\": null }");
 			else
@@ -2977,7 +2992,7 @@ void show_host_detail(void) {
 
 			/* print list in csv format */
 		} else if (content_type == CSV_CONTENT) {
-			printf("%s%s%s%s", csv_data_enclosure, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_host->name, csv_data_enclosure, csv_delimiter);
 
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->status_string, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->last_check, csv_data_enclosure, csv_delimiter);
