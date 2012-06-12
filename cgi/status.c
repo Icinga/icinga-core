@@ -4251,6 +4251,7 @@ void show_hostgroup_overviews(void) {
 			/* always add a comma, except for the first line */
 			if (json_start == FALSE)
 				printf(",\n");
+			json_start = FALSE;
 		} else {
 			if (current_column == 1)
 				printf("<TR>\n");
