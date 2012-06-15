@@ -11,9 +11,9 @@ FIXES
 * core: fix various memory leaks in downtime eventhandling on SIGHUP (Carlos Velasco) #2666 - MF
 
 * classic ui: Fixed status.cgi time out when displaying hostgroups in large environments #2617 - RB
-* classic ui: Fixed Invalid JSON output for hostgroup overview #2680 - trehn
-* classic ui: Fixed Confusing use of display_name in JSON and CSV output #2681 - trehn
-* classic ui: Fixed wrong totals in "Service Status Summary" on Status Summary page #2689 - ziesemer
+* classic ui: Fixed Invalid JSON output for hostgroup overview (Torsten Rehn) #2680 - RB
+* classic ui: Fixed Confusing use of display_name in JSON and CSV output (Torsten Rehn) #2681 - RB
+* classic ui: Fixed wrong totals in "Service Status Summary" on Status Summary page (Mark Ziesemer) #2689 - RB
 
 * idoutils: fix small compiler issues #2620 - TD/CF
 * idoutils: fix upgradedb script typos & past changes #2682 - MF
