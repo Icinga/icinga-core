@@ -8,10 +8,15 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 
 FIXES
 * core: use prefix in solaris service definition #2609 - TD/CF
+* core: fix various memory leaks in downtime eventhandling on SIGHUP (Carlos Velasco) #2666 - MF
 
 * classic ui: Fixed status.cgi time out when displaying hostgroups in large environments #2617 - RB
+* classic ui: Fixed Invalid JSON output for hostgroup overview (Torsten Rehn) #2680 - RB
+* classic ui: Fixed Confusing use of display_name in JSON and CSV output (Torsten Rehn) #2681 - RB
+* classic ui: Fixed wrong totals in "Service Status Summary" on Status Summary page (Mark Ziesemer) #2689 - RB
 
 * idoutils: fix small compiler issues #2620 - TD/CF
+* idoutils: fix upgradedb script typos & past changes #2682 - MF
 
 * config: check_ido2db_procs.cfg should not depend on local-service template #2616 - MF
 

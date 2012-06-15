@@ -48,7 +48,7 @@ my $dbh = DBI->connect("DBI:mysql:database=$database;host=$hostname",
 eval { $dbh->do("SELECT * FROM icinga_dbversion LIMIT 1") };
 if ($@) {
 	print "*** Creating table icinga_dbversion",$/;
-	$dbh->do("CREATE TABLE icinga_dbversion (name VARCHAR(10) NOT NULL, version VARCHAR(10) NOT NULL);");
+	$dbh->do("CREATE TABLE IF NOT EXISTS icinga_dbversion (dbversion_id serial, name varchar(10) character set latin1  default '', version varchar(10) character set latin1  default '', create_time timestamp default '0000-00-00 00:00:00', modify_time timestamp default '0000-00-00 00:00:00', PRIMARY KEY (dbversion_id), UNIQUE KEY dbversion (name)) ENGINE=InnoDB;");
 };
 
 # Get current database version
@@ -61,7 +61,7 @@ $version = $dbh->selectrow_array("SELECT version FROM icinga_dbversion WHERE nam
 if ($version eq "") {
 	# Assume last legacy release (didn't have version table)
 	print "*** Assuming version $legacyversion of idoutils installed",$/;
-	$dbh->do("INSERT icinga_dbversion SET name='idoutils', version='$legacyversion';");
+	$dbh->do("INSERT INTO icinga_dbversion (name, version, create_time, modify_time) VALUES ('idoutils', '$legacyversion', NOW(), NOW()) ON DUPLICATE KEY UPDATE version='$legacyversion', modify_time=NOW();");
 	$version = $legacyversion;
 };
 
@@ -74,7 +74,7 @@ if ($version eq $thisversion){
 
 
 # Read upgrade script in the directory containing this script
-my $file="../mysql/mysql-upgrade-$version.sql";
+my $file="../mysql/upgrade/mysql-upgrade-$thisversion.sql";
 if (-e $file){
 	print "** DB upgrade required for $thisversion",$/;
 	print "     Using $file for upgrade...",$/;

@@ -2,6 +2,10 @@
 Classic-UI JSON Change Log
 #######################
 
+1.7.1 - only values added, no existing values changed
+* added host_display_name to host and service status data
+* added service_display_name to service status data
+
 1.7.0 - array names changed!!!! #2343
 	comments  -> host_comments  / service_comments
 	downtimes -> host_downtimes / service_downtimes

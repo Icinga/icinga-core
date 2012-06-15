@@ -634,7 +634,7 @@ void display_notifications(void) {
 				temp_service = find_service(host_name, service_name);
 
 			if (temp_host != NULL) {
-				snprintf(displayed_host_name, sizeof(displayed_host_name), "%s", (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+				snprintf(displayed_host_name, sizeof(displayed_host_name), "%s", (temp_host->display_name != NULL && content_type == HTML_CONTENT) ? temp_host->display_name : temp_host->name);
 				displayed_host_name[sizeof(displayed_host_name)-1] = '\x0';
 
 				if (temp_entry->type == LOGENTRY_HOST_NOTIFICATION) {
@@ -642,7 +642,7 @@ void display_notifications(void) {
 						show_entry = FALSE;
 				} else {
 					if (temp_service != NULL) {
-						snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
+						snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", (temp_service->display_name != NULL && content_type == HTML_CONTENT) ? temp_service->display_name : temp_service->description);
 						displayed_service_desc[sizeof(displayed_service_desc)-1] = '\x0';
 
 						if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)

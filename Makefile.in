@@ -271,6 +271,7 @@ distclean: clean
 	rm -f Makefile subst p1.pl
 	rm -f config.log config.status config.cache
 	rm -f t/var/objects.precache.generated t/var/objects.precache
+	rm -f solaris/icinga.xml
 
 devclean: distclean
 

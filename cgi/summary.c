@@ -1762,16 +1762,16 @@ void display_recent_alerts(void) {
 			json_start = FALSE;
 			printf("{ \"time\": \"%s\", ", date_time);
 			printf("\"alert_type\": \"%s\", ", (temp_event->event_type == AE_HOST_ALERT) ? "Host Alert" : "Service Alert");
-			printf("\"host\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+			printf("\"host\": \"%s\", ", json_encode(temp_host->name));
 			if (temp_event->event_type == AE_HOST_ALERT)
 				printf("\"service\": null, ");
 			else
-				printf("\"service\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+				printf("\"service\": \"%s\", ", json_encode(temp_service->description));
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s%s%s", csv_data_enclosure, date_time, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, (temp_event->event_type == AE_HOST_ALERT) ? "Host Alert" : "Service Alert", csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s%s", csv_data_enclosure, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s%s", csv_data_enclosure, (temp_event->event_type == AE_HOST_ALERT) ? "" : (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_host->name, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_event->event_type == AE_HOST_ALERT) ? "" : temp_service->description, csv_data_enclosure, csv_delimiter);
 		} else {
 			printf("<tr CLASS='data%s'>", (odd) ? "Even" : "Odd");
 

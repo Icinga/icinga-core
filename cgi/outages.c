@@ -369,11 +369,11 @@ void display_network_outages(void) {
 				printf(",\n");
 			json_start = FALSE;
 			printf("{ \"severity\": %d, ", temp_hostoutage->severity);
-			printf(" \"host\": \"%s\", ", (temp_hostoutage->hst->display_name != NULL) ? json_encode(temp_hostoutage->hst->display_name) : json_encode(temp_hostoutage->hst->name));
+			printf(" \"host\": \"%s\", ", json_encode(temp_hostoutage->hst->name));
 			printf(" \"state\": \"%s\", ", status);
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%d%s%s", csv_data_enclosure, temp_hostoutage->severity, csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s%s", csv_data_enclosure, (temp_hostoutage->hst->display_name != NULL) ? temp_hostoutage->hst->display_name : temp_hostoutage->hst->name, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_hostoutage->hst->name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, status, csv_data_enclosure, csv_delimiter);
 		} else {
 			printf("<TR CLASS='%s'>\n", bg_class);
