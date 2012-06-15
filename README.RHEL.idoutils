@@ -51,7 +51,7 @@ Create Database, User, Grants
 mysql> CREATE DATABASE icinga;
 Query OK, 1 row affected (0.01 sec)
 
-mysql>  GRANT USAGE ON *.* TO 'icinga'@'localhost'
+mysql>  GRANT USAGE ON icinga.* TO 'icinga'@'localhost'
           IDENTIFIED BY 'icinga'
           WITH MAX_QUERIES_PER_HOUR 0
           MAX_CONNECTIONS_PER_HOUR 0
