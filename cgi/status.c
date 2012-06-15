@@ -3598,6 +3598,7 @@ void show_servicegroup_service_totals_summary(servicegroup *temp_servicegroup) {
 	int services_critical_unacknowledged = 0;
 	servicesmember *temp_member = NULL;
 	servicestatus *temp_servicestatus = NULL;
+	servicestatus *last_servicestatus = NULL;
 	hoststatus *temp_hoststatus = NULL;
 	int problem = FALSE;
 
@@ -3608,6 +3609,10 @@ void show_servicegroup_service_totals_summary(servicegroup *temp_servicegroup) {
 		/* find the service status */
 		temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description);
 		if (temp_servicestatus == NULL)
+			continue;
+
+		/* skip this if it isn't a new service... */
+		if(temp_servicestatus == last_servicestatus)
 			continue;
 
 		/* find the status of the associated host */
@@ -3704,6 +3709,8 @@ void show_servicegroup_service_totals_summary(servicegroup *temp_servicegroup) {
 
 		else if (temp_servicestatus->status == SERVICE_PENDING)
 			services_pending++;
+
+		last_servicestatus = temp_servicestatus;
 	}
 
 	if (content_type == JSON_CONTENT) {
