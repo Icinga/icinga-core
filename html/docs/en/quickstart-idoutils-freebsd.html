@@ -437,12 +437,12 @@
 
  mysql&gt; CREATE DATABASE icinga;
 
- GRANT USAGE ON *.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga' 
+ GRANT USAGE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga' 
    WITH MAX_QUERIES_PER_HOUR 0
    MAX_CONNECTIONS_PER_HOUR 0
    MAX_UPDATES_PER_HOUR 0;
 
- GRANT SELECT , INSERT , UPDATE , DELETE
+ GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX
    ON icinga.* TO 'icinga'@'localhost';
 
  FLUSH PRIVILEGES ;
@@ -615,9 +615,9 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="id1442379"></a>
+  <a class="indexterm" name="id1424971"></a>
 
-  <a class="indexterm" name="id1442394"></a>
+  <a class="indexterm" name="id1424986"></a>
 </div>
 <div class="navfooter">
 <hr>

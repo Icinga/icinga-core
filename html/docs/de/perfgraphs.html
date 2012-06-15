@@ -90,14 +90,14 @@
 <pre class="programlisting"> define service{
     host_name               &lt;the Icinga server&gt;
     service_description     icingastats # (oder etwas Passendes)
-    check_command           check_icingastats
+    check_command           check_stats
     check_interval          1
     retry_interval          1
     ...
  }</pre>
 <p>und eine Command-Definition</p>
 <pre class="programlisting"> define command{
-    command_name            check_icingastats
+    command_name            check_stats
     command_line            $USER1$/check_nagiostats
   }</pre>
 <p>Vergessen Sie nicht den Neustart von Icinga nach diesen Änderungen.</p>
@@ -116,38 +116,23 @@
     freshness_threshold     180         # Pruefintervall + x Sekunden
     ...
  }</pre>
-<p>und eine Command-Definition</p>
-<pre class="programlisting"> define command{
+
+          <p>und eine Command-Definition</p>
+
+          <pre class="programlisting"> define command{
     command_name            check_stats
     command_line            $USER1$/check_dummy $ARG1$ $ARG2$
  }</pre>
-<p>Vergessen Sie nicht den Neustart von Icinga nach dieser Änderung.</p>
+
+          <p>Vergessen Sie nicht den Neustart von Icinga nach dieser Änderung.</p>
 
           <p>Fügen Sie eine Zeile zur crontab des Icinga-Benutzers hinzu, die das <code class="filename">icingastats</code>-Binary aufruft
           und die Ergebnisse an die Command-Pipe weiterleitet</p>
-<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; &lt;service&gt; &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
-<p>Auf
-          diese Weise werden die Werte in regelmäßigen Intervallen aktualisiert.</p>
+<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; icingastats &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
+<p>
+          Auf diese Weise werden die Werte in regelmäßigen Intervallen aktualisiert.</p>
         </li>
 </ul></div>
-    </li>
-<li class="listitem">
-      <p>Legen Sie einen logischen Link im templates-Verzeichnis von PNP4Nagios an </p>
-<pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php icingastats.php</pre>
-<p>Stellen
-      Sie sicher, dass <span class="emphasis"><em>icingastats</em></span> (ohne die Endung .php) zu dem Wert passt, den Sie in der Service-Definition
-      angegeben haben. Leerzeichen in der Service-Beschreibung müssen durch Unterstriche (_) im Dateinamen ersetzt werden (z.B. "Icinga
-      Stats" --&gt; "Icinga_Stats.php")</p>
-    </li>
-<li class="listitem">
-      <p>Fügen Sie eine Command-Definition hinzu</p>
-
-      <pre class="programlisting"> define command{
-    command_name            check_stats
-    command_line            $USER1$/check_dummy $ARG1$ $ARG2$
- }</pre>
-
-      <p>Vergessen Sie nicht den Neustart von Icinga nach dieser Änderung.</p>
     </li>
 <li class="listitem">
       <p>Legen Sie einen logischen Link im (Benutzer) templates-Verzeichnis von PNP4Nagios an</p>
@@ -155,13 +140,6 @@
 <p>
       Stellen Sie sicher, dass <span class="emphasis"><em>check_stats</em></span> (ohne die Endung .php) zu dem Wert passt, den Sie als ersten Parameter im
       check_command angegeben haben</p>
-    </li>
-<li class="listitem">
-      <p>Fügen Sie eine Zeile zur crontab des Icinga-Benutzers hinzu, die das <code class="filename">icingastats</code>-Binary aufruft und
-      die Ergebnisse an die Command-Pipe weiterleitet</p>
-<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; icingastats &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
-<p>
-      Auf diese Weise werden die Werte in regelmäßigen Intervallen aktualisiert.</p>
     </li>
 </ul></div>
 
@@ -173,7 +151,7 @@
   <p><span class="bold"><strong>Durchschnittliche Host-/Service-Prüfungslatenz</strong></span></p>
 
   <div class="figure">
-<a name="id1507041"></a><p class="title"><b>Abbildung 8.1. Durchschnittliche Host-/Service-Prüfungslatenz</b></p>
+<a name="id1591510"></a><p class="title"><b>Abbildung 8.1. Durchschnittliche Host-/Service-Prüfungslatenz</b></p>
 <div class="figure-contents">
     
 
@@ -221,7 +199,7 @@
   <p><span class="bold"><strong>Service-Statistiken</strong></span></p>
 
   <div class="figure">
-<a name="id1507162"></a><p class="title"><b>Abbildung 8.2. Service-Statistiken</b></p>
+<a name="id1591644"></a><p class="title"><b>Abbildung 8.2. Service-Statistiken</b></p>
 <div class="figure-contents">
     
 
@@ -252,7 +230,7 @@
   <p><span class="bold"><strong>Host-Statistiken</strong></span></p>
 
   <div class="figure">
-<a name="id1507259"></a><p class="title"><b>Abbildung 8.3. Host-Statistiken</b></p>
+<a name="id1591728"></a><p class="title"><b>Abbildung 8.3. Host-Statistiken</b></p>
 <div class="figure-contents">
     
 
@@ -282,7 +260,7 @@
   <p><span class="bold"><strong>Durchschnittliche Ausführungszeiten</strong></span></p>
 
   <div class="figure">
-<a name="id1507343"></a><p class="title"><b>Abbildung 8.4. Durchschnittliche Ausführungszeiten</b></p>
+<a name="id1591811"></a><p class="title"><b>Abbildung 8.4. Durchschnittliche Ausführungszeiten</b></p>
 <div class="figure-contents">
     
 
@@ -326,7 +304,7 @@
   <p><span class="bold"><strong>Externe Befehle</strong></span> (external commands)</p>
 
   <div class="figure">
-<a name="id1507448"></a><p class="title"><b>Abbildung 8.5. Externe Befehle</b></p>
+<a name="id1591916"></a><p class="title"><b>Abbildung 8.5. Externe Befehle</b></p>
 <div class="figure-contents">
     
 
@@ -354,7 +332,7 @@
   <p><span class="bold"><strong>Puffer für externe Befehle</strong></span> (external command buffers)</p>
 
   <div class="figure">
-<a name="id1507521"></a><p class="title"><b>Abbildung 8.6. Puffer für externe Befehle</b></p>
+<a name="id1591974"></a><p class="title"><b>Abbildung 8.6. Puffer für externe Befehle</b></p>
 <div class="figure-contents">
     
 
@@ -375,7 +353,7 @@
   <p><span class="bold"><strong>Zwischengespeicherte Host- und Service-Prüfungen</strong></span> (cached host and service checks)</p>
 
   <div class="figure">
-<a name="id1507576"></a><p class="title"><b>Abbildung 8.7. Zwischengespeicherte Host- und Service-Prüfungen</b></p>
+<a name="id1592043"></a><p class="title"><b>Abbildung 8.7. Zwischengespeicherte Host- und Service-Prüfungen</b></p>
 <div class="figure-contents">
     
 
@@ -400,7 +378,7 @@
   <p><span class="bold"><strong>Durchschnittliche Zustandswechsel</strong></span></p>
 
   <div class="figure">
-<a name="id1507637"></a><p class="title"><b>Abbildung 8.8. Durchschnittliche Zustandswechsel</b></p>
+<a name="id1592105"></a><p class="title"><b>Abbildung 8.8. Durchschnittliche Zustandswechsel</b></p>
 <div class="figure-contents">
     
 
@@ -416,7 +394,7 @@
       <p><a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattererkennung (flap detection)</a></p>
     </li></ul></div>
 
-  <a class="indexterm" name="id1507681"></a>
+  <a class="indexterm" name="id1592148"></a>
 </div>
 <div class="navfooter">
 <hr>

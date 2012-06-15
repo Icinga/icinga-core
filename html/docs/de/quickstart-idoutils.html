@@ -701,13 +701,13 @@
   
  mysql&gt; CREATE DATABASE icinga;
   
- GRANT USAGE ON *.* TO 'icinga'@'localhost' 
+ GRANT USAGE ON icinga.* TO 'icinga'@'localhost' 
    IDENTIFIED BY 'icinga'
    WITH MAX_QUERIES_PER_HOUR 0
    MAX_CONNECTIONS_PER_HOUR 0
    MAX_UPDATES_PER_HOUR 0;
    
- GRANT SELECT , INSERT , UPDATE , DELETE, DROP, CREATE VIEW
+ GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX
    ON icinga.* TO 'icinga'@'localhost';
  
  FLUSH PRIVILEGES ;
@@ -1042,9 +1042,9 @@
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="id1394485"></a>
+  <a class="indexterm" name="id1479314"></a>
 
-  <a class="indexterm" name="id1394499"></a>
+  <a class="indexterm" name="id1479328"></a>
 </div>
 <div class="navfooter">
 <hr>
