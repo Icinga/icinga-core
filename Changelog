@@ -4,6 +4,13 @@ Icinga 1.7.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+1.8.0 - XX/10/2012
+
+FIXES
+
+* idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
+
+
 1.7.1 - 18/06/2012
 
 FIXES

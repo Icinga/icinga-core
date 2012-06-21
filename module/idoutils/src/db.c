@@ -497,8 +497,28 @@ int ido2db_db_connect(ido2db_idi *idi) {
 		return IDO_ERROR;
 	}
 
-	dbi_conn_set_option(idi->dbinfo.dbi_conn, "host", ido2db_db_settings.host);
-	dbi_conn_set_option_numeric(idi->dbinfo.dbi_conn, "port", (int)ido2db_db_settings.port);
+	/* decide wether to set host and port, or not ... drivers will use socket otherwise */
+        switch (idi->dbinfo.server_type) {
+        case IDO2DB_DBSERVER_MYSQL:
+		if (ido2db_db_settings.host != NULL)
+			dbi_conn_set_option(idi->dbinfo.dbi_conn, "host", ido2db_db_settings.host);
+		if (ido2db_db_settings.port != 0)
+			dbi_conn_set_option_numeric(idi->dbinfo.dbi_conn, "port", (int)ido2db_db_settings.port);
+                break;
+        case IDO2DB_DBSERVER_PGSQL:
+		if (ido2db_db_settings.host != NULL)
+			dbi_conn_set_option(idi->dbinfo.dbi_conn, "host", ido2db_db_settings.host);
+		if (ido2db_db_settings.port != 0)
+			dbi_conn_set_option_numeric(idi->dbinfo.dbi_conn, "port", (int)ido2db_db_settings.port);
+                break;
+        default:
+		if (ido2db_db_settings.host != NULL)
+			dbi_conn_set_option(idi->dbinfo.dbi_conn, "host", ido2db_db_settings.host);
+		if (ido2db_db_settings.port != 0)
+			dbi_conn_set_option_numeric(idi->dbinfo.dbi_conn, "port", (int)ido2db_db_settings.port);
+                break;
+        }
+
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "username", ido2db_db_settings.username);
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "password", ido2db_db_settings.password);
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "dbname", ido2db_db_settings.dbname);
