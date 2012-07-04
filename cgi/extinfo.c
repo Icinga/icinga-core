@@ -3056,9 +3056,9 @@ void show_comments(int type) {
 				printf("\"expires\": \"%s\" }", expire_time);
 		} else if (content_type == CSV_CONTENT) {
 			if (display_type == DISPLAY_COMMENTS) {
-				printf("%s%s%s%s", csv_data_enclosure, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, csv_data_enclosure, csv_delimiter);
+				printf("%s%s%s%s", csv_data_enclosure, temp_host->name, csv_data_enclosure, csv_delimiter);
 				if (type == SERVICE_COMMENT)
-					printf("%s%s%s%s", csv_data_enclosure, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description, csv_data_enclosure, csv_delimiter);
+					printf("%s%s%s%s", csv_data_enclosure, temp_service->description, csv_data_enclosure, csv_delimiter);
 				else
 					printf("%s%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			}
@@ -3246,9 +3246,9 @@ void show_downtime(int type) {
 			}
 		} else if (content_type == CSV_CONTENT) {
 			if (display_type == DISPLAY_DOWNTIME) {
-				printf("%s%s%s%s", csv_data_enclosure, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, csv_data_enclosure, csv_delimiter);
+				printf("%s%s%s%s", csv_data_enclosure, temp_host->name, csv_data_enclosure, csv_delimiter);
 				if (type == SERVICE_DOWNTIME)
-					printf("%s%s%s%s", csv_data_enclosure, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description, csv_data_enclosure, csv_delimiter);
+					printf("%s%s%s%s", csv_data_enclosure, temp_service->description, csv_data_enclosure, csv_delimiter);
 				else
 					printf("%s%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			}
@@ -3529,14 +3529,14 @@ void show_scheduling_queue(void) {
 
 			/* host name */
 			if (temp_host != NULL)
-				snprintf(display_host, sizeof(display_host) - 1, "%s", (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+				snprintf(display_host, sizeof(display_host) - 1, "%s", (temp_host->display_name != NULL && content_type == HTML_CONTENT) ? temp_host->display_name : temp_host->name);
 			else
 				snprintf(display_host, sizeof(display_host) - 1, "%s", temp_svcstatus->host_name);
 			display_host[sizeof(display_host)-1] = '\x0';
 
 			/* service name */
 			if (temp_service != NULL)
-				snprintf(display_service, sizeof(display_service) - 1, "%s", (temp_service->display_name != NULL) ? temp_service->display_name : temp_svcstatus->description);
+				snprintf(display_service, sizeof(display_service) - 1, "%s", (temp_service->display_name != NULL && content_type == HTML_CONTENT) ? temp_service->display_name : temp_svcstatus->description);
 			else
 				snprintf(display_service, sizeof(display_service) - 1, "%s", temp_svcstatus->description);
 			display_service[sizeof(display_service)-1] = '\x0';
@@ -3595,7 +3595,7 @@ void show_scheduling_queue(void) {
 
 			/* host name*/
 			if (temp_host != NULL)
-				snprintf(display_host, sizeof(display_host) - 1, "%s", (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+				snprintf(display_host, sizeof(display_host) - 1, "%s", (temp_host->display_name != NULL && content_type == HTML_CONTENT) ? temp_host->display_name : temp_host->name);
 			else
 				snprintf(display_host, sizeof(display_host) - 1, "%s", temp_hststatus->host_name);
 			display_host[sizeof(display_host)-1] = '\x0';

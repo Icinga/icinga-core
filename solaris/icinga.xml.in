@@ -10,7 +10,7 @@
                 </dependency>
 
                 <dependency name='icinga_cfg_file' grouping='require_all' restart_on='none' type='path'>
-                        <service_fmri value='file://localhost/usr/local/icinga/etc/icinga.cfg' />
+                        <service_fmri value='file://localhost@prefix@/etc/icinga.cfg' />
                 </dependency>
 
                 <exec_method type='method' name='start'   exec='/lib/svc/method/icinga start' timeout_seconds='60' />

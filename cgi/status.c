@@ -124,6 +124,7 @@ extern servicestatus *servicestatus_list;
 #define STATUS_COUNTED_UNFILTERED	2
 #define STATUS_COUNTED_FILTERED		4
 #define STATUS_BELONGS_TO_SG		8
+#define STATUS_BELONGS_TO_HG		16
 /** @} */
 
 /** @name NUMBER OF NAMED OBJECTS
@@ -571,6 +572,7 @@ int main(void) {
 	hoststatus *temp_hoststatus = NULL;
 	servicestatus *temp_servicestatus = NULL;
 	servicesmember *temp_sg_member = NULL;
+	hostsmember *temp_hg_member = NULL;
 	int regex_i = 0, i = 0;
 	int len;
 	int show_dropdown = NO_STATUS;
@@ -901,9 +903,11 @@ int main(void) {
 				if (temp_servicegroup != NULL && is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
 					for (temp_sg_member = temp_servicegroup->members; temp_sg_member != NULL; temp_sg_member = temp_sg_member->next) {
 						temp_hoststatus = find_hoststatus(temp_sg_member->host_name);
-						temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
+						if (temp_hoststatus != NULL)
+							temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
 						temp_servicestatus = find_servicestatus(temp_sg_member->host_name, temp_sg_member->service_description);
-						temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
+						if (temp_servicestatus != NULL)
+							temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
 					}
 				}
 			}
@@ -912,15 +916,42 @@ int main(void) {
 				if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == TRUE) {
 					for (temp_sg_member = temp_servicegroup->members; temp_sg_member != NULL; temp_sg_member = temp_sg_member->next) {
 						temp_hoststatus = find_hoststatus(temp_sg_member->host_name);
-						temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
+						if (temp_hoststatus != NULL)
+							temp_hoststatus->added |= STATUS_BELONGS_TO_SG;
 						temp_servicestatus = find_servicestatus(temp_sg_member->host_name, temp_sg_member->service_description);
-						temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
+						if (temp_servicestatus != NULL)
+							temp_servicestatus->added |= STATUS_BELONGS_TO_SG;
 					}
 				}
 			}
 		}
 	}
 
+	/* pre filter for all host groups as well */
+	if (display_type == DISPLAY_HOSTGROUPS) {
+		if (show_all_hostgroups == FALSE) {
+			for (i = 0; req_hostgroups[i].entry != NULL; i++) {
+				temp_hostgroup = find_hostgroup(req_hostgroups[i].entry);
+				if (temp_hostgroup != NULL && (show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE)) {
+					for (temp_hg_member = temp_hostgroup->members; temp_hg_member != NULL; temp_hg_member = temp_hg_member->next) {
+						temp_hoststatus = find_hoststatus(temp_hg_member->host_name);
+						if (temp_hoststatus != NULL)
+							temp_hoststatus->added |= STATUS_BELONGS_TO_HG;
+					}
+				}
+			}
+		} else {
+			for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
+				if (show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) {
+					for (temp_hg_member = temp_hostgroup->members; temp_hg_member != NULL; temp_hg_member = temp_hg_member->next) {
+						temp_hoststatus = find_hoststatus(temp_hg_member->host_name);
+						if (temp_hoststatus != NULL)
+							temp_hoststatus->added |= STATUS_BELONGS_TO_HG;
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 *	Now iterate through servicestatus_list and hoststatus_list to find all hosts/services we need to display
@@ -988,27 +1019,7 @@ int main(void) {
 
 		/* see if we should display a hostgroup */
 		else if (display_type == DISPLAY_HOSTGROUPS) {
-			found = FALSE;
-			if (show_all_hostgroups == FALSE) {
-				for (i = 0; req_hostgroups[i].entry != NULL; i++) {
-					temp_hostgroup = find_hostgroup(req_hostgroups[i].entry);
-					if (temp_hostgroup != NULL && \
-					        (show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) && \
-					        is_host_member_of_hostgroup(temp_hostgroup, temp_host) == TRUE) {
-						found = TRUE;
-						break;
-					}
-				}
-			} else {
-				for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
-					if ((show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) && \
-					        is_host_member_of_hostgroup(temp_hostgroup, temp_host) == TRUE) {
-						found = TRUE;
-						break;
-					}
-				}
-			}
-			if (found == FALSE)
+			if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 				continue;
 		}
 
@@ -1113,27 +1124,7 @@ int main(void) {
 
 			/* see if we should display a hostgroup */
 			else if (display_type == DISPLAY_HOSTGROUPS) {
-				found = FALSE;
-				if (show_all_hostgroups == FALSE) {
-					for (i = 0; req_hostgroups[i].entry != NULL; i++) {
-						temp_hostgroup = find_hostgroup(req_hostgroups[i].entry);
-						if (temp_hostgroup != NULL && \
-						        (show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) && \
-						        is_host_member_of_hostgroup(temp_hostgroup, temp_host) == TRUE) {
-							found = TRUE;
-							break;
-						}
-					}
-				} else {
-					for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
-						if ((show_partial_hostgroups == TRUE || is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == TRUE) && \
-						        is_host_member_of_hostgroup(temp_hostgroup, temp_host) == TRUE) {
-							found = TRUE;
-							break;
-						}
-					}
-				}
-				if (found == FALSE)
+				if (!(temp_hoststatus->added & STATUS_BELONGS_TO_HG))
 					continue;
 
 				/* see if we should display a servicegroup */
@@ -2563,8 +2554,8 @@ void show_service_detail(void) {
 			if (json_start == FALSE)
 				printf(",\n");
 			json_start = FALSE;
-			printf("{ \"host\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
-			printf("\"service\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+			printf("{ \"host\": \"%s\", ", json_encode(temp_host->name));
+			printf("\"service\": \"%s\", ", json_encode(temp_service->description));
 			printf("\"status\": \"%s\", ", temp_status->status_string);
 			printf("\"last_check\": \"%s\", ", temp_status->last_check);
 			printf("\"duration\": \"%s\", ", temp_status->state_duration);
@@ -2586,6 +2577,16 @@ void show_service_detail(void) {
 			else
 				printf("\"notes_url\": \"%s\", ", json_encode(temp_service->notes_url));
 
+			if (temp_host->display_name == NULL)
+				printf("\"host_display_name\": null, ");
+			else
+				printf("\"host_display_name\": \"%s\", ", json_encode(temp_host->display_name));
+
+			if (temp_service->display_name == NULL)
+				printf("\"service_display_name\": null, ");
+			else
+				printf("\"service_display_name\": \"%s\", ", json_encode(temp_service->display_name));
+
 			if (temp_status->plugin_output == NULL)
 				printf("\"status_information\": null }");
 			else
@@ -2593,8 +2594,8 @@ void show_service_detail(void) {
 
 			/* print list in csv format */
 		} else if (content_type == CSV_CONTENT) {
-			printf("%s%s%s%s", csv_data_enclosure, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s%s", csv_data_enclosure, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_host->name, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_service->description, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->status_string, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->last_check, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_status->state_duration, csv_data_enclosure, csv_delimiter);
@@ -3000,7 +3001,7 @@ void show_host_detail(void) {
 			if (json_start == FALSE)
 				printf(",\n");
 			json_start = FALSE;
-			printf("{ \"host\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+			printf("{ \"host\": \"%s\", ", json_encode(temp_host->name));
 			printf("\"status\": \"%s\", ", temp_statusdata->status_string);
 			printf("\"last_check\": \"%s\", ", temp_statusdata->last_check);
 			printf("\"duration\": \"%s\", ", temp_statusdata->state_duration);
@@ -3022,6 +3023,11 @@ void show_host_detail(void) {
 			else
 				printf("\"notes_url\": \"%s\", ", json_encode(temp_host->notes_url));
 
+			if (temp_host->display_name == NULL)
+				printf("\"host_display_name\": null, ");
+			else
+				printf("\"host_display_name\": \"%s\", ", json_encode(temp_host->display_name));
+
 			if (temp_statusdata->plugin_output == NULL)
 				printf("\"status_information\": null }");
 			else
@@ -3029,7 +3035,7 @@ void show_host_detail(void) {
 
 			/* print list in csv format */
 		} else if (content_type == CSV_CONTENT) {
-			printf("%s%s%s%s", csv_data_enclosure, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_host->name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->status_string, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->last_check, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_statusdata->state_duration, csv_data_enclosure, csv_delimiter);
@@ -3642,6 +3648,7 @@ void show_servicegroup_service_totals_summary(servicegroup *temp_servicegroup) {
 	int services_critical_unacknowledged = 0;
 	servicesmember *temp_member = NULL;
 	servicestatus *temp_servicestatus = NULL;
+	servicestatus *last_servicestatus = NULL;
 	hoststatus *temp_hoststatus = NULL;
 	int problem = FALSE;
 
@@ -3652,6 +3659,10 @@ void show_servicegroup_service_totals_summary(servicegroup *temp_servicegroup) {
 		/* find the service status */
 		temp_servicestatus = find_servicestatus(temp_member->host_name, temp_member->service_description);
 		if (temp_servicestatus == NULL)
+			continue;
+
+		/* skip this if it isn't a new service... */
+		if(temp_servicestatus == last_servicestatus)
 			continue;
 
 		/* find the status of the associated host */
@@ -3748,6 +3759,8 @@ void show_servicegroup_service_totals_summary(servicegroup *temp_servicegroup) {
 
 		else if (temp_servicestatus->status == SERVICE_PENDING)
 			services_pending++;
+
+		last_servicestatus = temp_servicestatus;
 	}
 
 	if (content_type == JSON_CONTENT) {
@@ -4310,6 +4323,7 @@ void show_hostgroup_overviews(void) {
 			/* always add a comma, except for the first line */
 			if (json_start == FALSE)
 				printf(",\n");
+			json_start = FALSE;
 		} else {
 			if (current_column == 1)
 				printf("<TR>\n");
