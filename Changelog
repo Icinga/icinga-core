@@ -11,6 +11,7 @@ ENHANCEMENTS
 * core: try the most common macros ($ARGn$, $USERn$) first (Andreas Ericsson) #2674
 
 FIXES
+* core: unify check scheduling replacement logic for new events (Andreas Ericsson) #2676
 
 CHANGES
 
