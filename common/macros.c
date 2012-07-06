@@ -448,6 +448,8 @@ int grab_macro_value_r(icinga_macros *mac, char *macro_buffer, char **output, in
 	int delimiter_len = 0;
 	register int x;
 	int result = OK;
+	/* for the early cases, this is the default */
+	*free_macro = FALSE;
 
 	if (output == NULL)
 		return ERROR;
@@ -457,6 +459,41 @@ int grab_macro_value_r(icinga_macros *mac, char *macro_buffer, char **output, in
 
 	if (macro_buffer == NULL || clean_options == NULL || free_macro == NULL)
 		return ERROR;
+
+	/*
+	 * Handle $ARGn$ and $USERn$ macros first, since those are the most
+	 * common accessed ones per check. Since none of them requires to be
+	 * copied from the original buffer, we can return early as well
+	 */
+	/***** ARGV MACROS *****/
+	else if (strstr(macro_buffer, "ARG") == macro_buffer) {
+
+		/* which arg do we want? */
+		x = atoi(macro_buffer + 3);
+
+		if (x <= 0 || x > MAX_COMMAND_ARGUMENTS) {
+			return ERROR;
+		}
+
+		/* use a pre-computed macro value */
+		*output = mac->argv[x-1];
+		return OK;
+	}
+
+	/***** USER MACROS *****/
+	else if (strstr(macro_buffer, "USER") == macro_buffer) {
+
+		/* which macro do we want? */
+		x = atoi(macro_buffer + 4);
+
+		if (x <= 0 || x > MAX_USER_MACROS) {
+			return ERROR;
+		}
+
+		/* use a pre-computed macro value */
+		*output = macro_user[x-1];
+		return OK;
+	}
 
 	/* work with a copy of the original buffer */
 	if ((buf = (char *)strdup(macro_buffer)) == NULL)
@@ -524,38 +561,6 @@ int grab_macro_value_r(icinga_macros *mac, char *macro_buffer, char **output, in
 	/* we already found the macro... */
 	if (x < MACRO_X_COUNT)
 		x = x;
-
-	/***** ARGV MACROS *****/
-	else if (strstr(macro_name, "ARG") == macro_name) {
-
-		/* which arg do we want? */
-		x = atoi(macro_name + 3);
-
-		if (x <= 0 || x > MAX_COMMAND_ARGUMENTS) {
-			my_free(buf);
-			return ERROR;
-		}
-
-		/* use a pre-computed macro value */
-		*output = mac->argv[x-1];
-		*free_macro = FALSE;
-	}
-
-	/***** USER MACROS *****/
-	else if (strstr(macro_name, "USER") == macro_name) {
-
-		/* which macro do we want? */
-		x = atoi(macro_name + 4);
-
-		if (x <= 0 || x > MAX_USER_MACROS) {
-			my_free(buf);
-			return ERROR;
-		}
-
-		/* use a pre-computed macro value */
-		*output = macro_user[x-1];
-		*free_macro = FALSE;
-	}
 
 	/***** CONTACT ADDRESS MACROS *****/
 	/* NOTE: the code below should be broken out into a separate function */
