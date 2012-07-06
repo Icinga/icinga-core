@@ -12,6 +12,7 @@ ENHANCEMENTS
 * core: handle passive checks via external commands the same way as active checks, bypassing the temp check result file and reaper (Andreas Ericsson) #2687
 * core: use binary search when looking up macro names, instead of insane strcmp() loops (Andreas Ericsson) #2675
 
+* idoutils: change hasfunc to use sdbm algorithm for hashing precached objects #2792
 * icinga.spec: add devel package #2634
 
 FIXES
