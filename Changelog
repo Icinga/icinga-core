@@ -4,6 +4,15 @@ Icinga 1.7.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+1.8.0 - XX/10/2012
+
+ENHANCEMENTS
+* core/classic ui: make hashfunc more efficient by using sdbm #2761
+
+FIXES
+
+CHANGES
+
 1.7.1 - 18/06/2012
 
 FIXES
