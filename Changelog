@@ -13,6 +13,7 @@ ENHANCEMENTS
 
 FIXES
 * core: unify check scheduling replacement logic for new events (Andreas Ericsson) #2676
+* core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665
 
 CHANGES
 
