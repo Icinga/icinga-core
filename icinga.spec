@@ -62,6 +62,15 @@ Requires: %{name}-doc
 %description gui
 This package contains the webgui (html,css,cgi etc.) for %{name}
 
+%package devel
+Summary: Provides include files that Icinga-related applications may compile against
+Group: Development/Libraries/C and C++
+Requires: %{name} = %{version}
+
+%description devel
+This package provides include files that Icinga-related applications
+may compile against.
+
 %package idoutils-libdbi-mysql
 Summary: database broker module for %{name}
 Group: Applications/System
@@ -175,6 +184,10 @@ install -D -m 0644 icinga.logrotate %{buildroot}%{_sysconfdir}/logrotate.d/%{nam
 
 # install sample htpasswd file
 install -D -m 0644 icinga.htpasswd %{buildroot}%{_sysconfdir}/%{name}/passwd
+
+# install headers for development package
+install -d -m0755 "%{buildroot}%{_includedir}/%{name}/"
+install -m0644 include/*.h "%{buildroot}%{_includedir}/%{name}"
 
 %pre
 # Add icinga user
@@ -355,6 +368,9 @@ fi
 %attr(664,icinga,icingacmd) %{logdir}/gui/index.htm
 %attr(664,icinga,icingacmd) %{logdir}/gui/.htaccess
 
+%files devel
+%defattr(-,root,root)
+%{_includedir}/%{name}/
 
 %files idoutils-libdbi-mysql
 %defattr(-,root,root,-)
@@ -382,6 +398,10 @@ fi
 
 
 %changelog
+* Fri Jul 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.8.0-1
+- bump version
+- add devel package, installing header files to include/
+
 * Sun May 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.0-1
 - drop idoutils, add idoutils-libdbi-mysql and idoutils-libdbi-pgsql
 - add requires for libdbi drivers mysql and pgsql

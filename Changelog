@@ -11,11 +11,14 @@ ENHANCEMENTS
 * core: try the most common macros ($ARGn$, $USERn$) first (Andreas Ericsson) #2674
 * core: handle passive checks via external commands the same way as active checks, bypassing the temp check result file and reaper (Andreas Ericsson) #2687
 
+* icinga.spec: add devel package 2634
+
 FIXES
 * core: unify check scheduling replacement logic for new events (Andreas Ericsson) #2676
 * core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665
 
 CHANGES
+* icinga.spec: add devel package #2634
 
 1.7.1 - 18/06/2012
 
