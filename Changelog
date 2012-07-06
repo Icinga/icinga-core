@@ -9,6 +9,7 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 ENHANCEMENTS
 * core/classic ui: make hashfunc more efficient by using sdbm #2761
 * core: try the most common macros ($ARGn$, $USERn$) first (Andreas Ericsson) #2674
+* core: handle passive checks via external commands the same way as active checks, bypassing the temp check result file and reaper (Andreas Ericsson) #2687
 
 FIXES
 * core: unify check scheduling replacement logic for new events (Andreas Ericsson) #2676
