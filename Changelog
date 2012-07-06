@@ -12,6 +12,7 @@ FIXES
 * core: fix duplicated events on check scheduling logic for new events (Andreas Ericsson) #2676 #2993 - MF
 * core: avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993 - MF
 * core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665 - MF
+* core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197 - MF
 
 CHANGES
 
