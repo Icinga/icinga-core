@@ -353,7 +353,7 @@ void strip(char *buffer) {
 /**************************************************
  *************** HASH FUNCTIONS *******************
  **************************************************/
-static unsigned long sdbm(char *str) {
+static unsigned long sdbm(const char *str) {
 	unsigned long hash = 0;
 	int c;
 
@@ -365,9 +365,7 @@ static unsigned long sdbm(char *str) {
 
 /* dual hash function */
 int hashfunc(const char *name1, const char *name2, int hashslots) {
-	unsigned int i, result;
-
-	result = 0;
+	unsigned int result = 0;
 
 	if (name1)
 		result += sdbm(name1);
