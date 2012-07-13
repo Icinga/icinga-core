@@ -17,6 +17,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+
 ############################################################
 ######   Icinga Verification and Reporting Script     ######
 ######  by Frankstar / Team Quality Assurance & VM    ######
@@ -24,7 +25,13 @@
 
 use strict;
 use warnings;
-use DBI;
+#FIXME
+eval ("use DBI");
+#eval { require DBI; DBI->import( LIST ); }; 
+if ($@) {
+	print STDERR "Perl module DBI not found\n";
+	exit 1;
+}
 use Term::ANSIColor;
 use Env qw (LANG PATH);
 use Getopt::Long;
@@ -39,12 +46,13 @@ sub find_icinga_dir;
 sub get_icinga_version;
 sub get_ido2db_version;
 sub get_error_from_log;
+sub get_icinga_web_data;
 
 ### preconfiguration ###
 #Critical System Services
 my $config_ref = {
     critical_services => {
-        apache2 => { binaries => [ 'httpd', 'apache2' ] },
+        apache2 => { binaries => [ 'httpd', 'apache2', 'httpd2' ] },
         mysql => { binaries => [ 'mysqld' ] },
 		postgresql => { binaries => [ 'postmaster' ] },
         icinga => { binaries => [ 'icinga' ] },
@@ -68,7 +76,6 @@ my $result = GetOptions(
 					"issuereport" => \$issuereport,
 					"help" => \$help
 					);
-
 if ($help){
 	usage();
 	exit;
@@ -79,12 +86,11 @@ if ($help){
 ################################
 print <<EOF;
 
-############################################################
-######    Icinga Sanitycheck and Reporting Script     ######
-######  by Frankstar / Team Quality Assurance & VM    ######
-############################################################
+############################################################################################################
+##############################    Icinga Sanitycheck and Reporting Script     ##############################
+##############################  by Frankstar / Team Quality Assurance & VM    ##############################
+############################################################################################################
 EOF
-
 
 #Check if we are on Windows
 my $oscheck = $^O;
@@ -95,19 +101,36 @@ if ( $oscheck eq 'MSWin32' ) {
 
 #Icinga Base Set
 my $icinga_base = find_icinga_dir();
-
 if (! $icinga_base ) {
-    print STDERR "\nIcinga base not found.\nPlease enter your Icinga base: ";
+	print STDERR color("red"), "\nIcinga dir not found!", color("reset");
+	print STDERR "\nPlease enter your Icinga dir\nExample '/usr/local/icinga': ";
     $icinga_base = <STDIN>;
     chomp($icinga_base);
-    if (! -d $icinga_base) {
-        print STDERR "Couldn't find icinga.cfg.";
+	$icinga_base = "$icinga_base/etc/";
+    if (! -e "$icinga_base/icinga.cfg") {
+		print STDERR color("red"), "\nCouldn't find icinga.cfg in path $icinga_base!\nWill quit now.\n", color("reset");
         exit 1;
     }
 }
-#Icinga/Nagios Plugins Base Set
 
+#Icinga-Web Base Set
+my $icinga_web_base = find_icinga_web_dir();
+if (! $icinga_web_base ) {
+	print STDERR color("red"), "\nIcinga-Web dir not found.", color("reset");
+    print STDERR "\nPlease enter your Icinga-Web dir.\nExample '/usr/local/icinga-web': ";
+    $icinga_web_base = <STDIN>;
+    chomp($icinga_web_base);
+	$icinga_web_base = "$icinga_web_base/app/";
+    if (! -e "$icinga_web_base/config.php") {
+		print STDERR color("red"), "\nCouldn't find config.php in path $icinga_web_base!\nWill Skip Icinga-Web Database Tests\n", color("reset");
+    }
+}
+
+#Icinga/Nagios Plugins Base Set
+my $idomod_cfg = "$icinga_base/idomod.cfg";
+my $icinga_cfg = "$icinga_base/icinga.cfg";
 my $pnp4nagios_base = find_pnp4nagios_dir();
+
 
 #### DATABASE BACKEND ####
 
@@ -116,25 +139,28 @@ my $mysqlcheck = which('mysql');
 my $psqlcheck = which('psql');
 
 #ido2db.cfg SQL Server Parsing
-my $sqlservertype_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertype');
+my $ido2db_cfg = "$icinga_base/ido2db.cfg";
+my $sqlservertype_cfg =  get_key_from_ini("$ido2db_cfg", 'db_servertype');
 
 #ido2db Server Host Name
-my $sqlserver_cfg =  get_key_from_ini("$icinga_base/ido2db.cfg", 'db_host');
+my $sqlserver_cfg =  get_key_from_ini("$ido2db_cfg", 'db_host');
 #ido2db DB User
-my $sqluser_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_user');
+my $sqluser_cfg = get_key_from_ini("$ido2db_cfg", 'db_user');
 #ido2db DB Name
-my $sqldb_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_name');
+my $sqldb_cfg = get_key_from_ini("$ido2db_cfg", 'db_name');
 #ido2db Password
-my $sqlpw_cfg = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_pass');
+my $sqlpw_cfg = get_key_from_ini("$ido2db_cfg", 'db_pass');
 
 my ($dbh_cfg,$dbh_web, $dbh_cfg_error, $icinga_dbversion, $sth, $sth1) = '';
 
-#Icinga Web DB USER1
-#FIXME
-#parse options from
-#/icinga-web/app/config/databases.xml
-my $sqluser_web = "icinga_web";
-my $sqlpw_web = "icinga_web";
+#Icinga Web DB Databases.xml Parsing
+my $databases_xml = "$icinga_web_base/config/databases.xml";
+my @sqldata_web = get_icinga_web_data("$databases_xml", "$sqlservertype_cfg");
+my $sqluser_web = $sqldata_web[0];
+my $sqlpw_web = $sqldata_web[1];
+my $sqlserver_web = $sqldata_web[2];
+my $sqlport_web = $sqldata_web[3];
+my $sqldb_web = $sqldata_web[4];
 
 if ($sqlservertype_cfg eq 'mysql') {
 
@@ -142,9 +168,7 @@ if ($sqlservertype_cfg eq 'mysql') {
 	if ( !$mysqlcheck ) {
 		print "mysql service not found, check your ido2db.cfg or mysql Server\n";
 	} else {
-
-		print STDERR " Mysql Found! - Try to connect via ido2db.cfg\n";
-	
+		print STDERR "\nMysql Found! - Try to connect via ido2db.cfg\n";
 		# ido2db.cfg Connection test
 		$dbh_cfg = DBI->connect(
 			"dbi:mysql:database=$sqldb_cfg; host=$sqlserver_cfg:mysql_server_prepare=1",
@@ -158,7 +182,7 @@ if ($sqlservertype_cfg eq 'mysql') {
 			"ido2db.cfg - MySQL Connect Failed.";
 
 		if ( !$dbh_cfg_error ) {
-			print " ido2db.cfg Mysql Connection Test OK!\n";
+			print STDERR color("green"), "ido2db.cfg Mysql Connection Test OK!\n", color("reset");
 			$dbh_cfg->disconnect();
 		} else {        
 			print color("red"), "ido2db.cfg - MySQL Connect FAILED. Start Config Script", color("reset");
@@ -193,6 +217,7 @@ if ($sqlservertype_cfg eq 'mysql') {
 			}
 		}
 } elsif ($sqlservertype_cfg eq 'psql') {
+
 #Postgresql Connection Testing
 	if ( !$psqlcheck) {
 		print "postgresql not found, check your ido2db.cfg or PostgreSQL Server\n";
@@ -234,7 +259,6 @@ my $mysqlver =
     ? ( split( ",", qx(mysql -V) ) )[0]
     : 'mysql binary not found';
 
-
 # distribution
 my $distribution = (split( ",", get_distribution() ))[0];
 
@@ -250,7 +274,7 @@ chomp($selinux);
 
 #log file test
 #FIXME - PATH to syslog not hardcoded
-#IDEA, read in /etc/rsyslog.config
+#IDEA, read in /etc/rsyslog.conf
 #get line with "*.info;mail.none;authpriv.none;cron.none" and save path to variable (centos ie. /var/log/messages
 
 my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
@@ -260,14 +284,18 @@ my @idolog = get_error_from_log("/var/log/messages", 'ido2db');
 ################################
 
 #check idomod.so/idomod.o
-my $idomod_cfg = get_key_from_ini("$icinga_base/icinga.cfg", 'broker_module');
+
+my $idomod_broker = get_key_from_ini("$icinga_base/icinga.cfg", 'broker_module');
+if (!$idomod_broker){
+	$idomod_broker = "no broker_module defined in icinga.cfg";
+}
 my $idomod_o = which('idomod.o');
 if (!$idomod_o){
-	$idomod_o = "Couldnt find idomod.o";
+	$idomod_o = "Couldn't find idomod.o";
 }
 my $idomod_so = which('idomod.so');
 if (!$idomod_so){
-	$idomod_so = "Couldnt find idomod.so";
+	$idomod_so = "Couldn't find idomod.so";
 }
 
 #check if ido2db is running
@@ -291,44 +319,59 @@ my $icingacfggroup = get_key_from_ini("$icinga_base/icinga.cfg", 'icinga_group')
 
 ### ido2db.cfg parsing ###
 #ido2db SLA#
-my $ido2dbsla = get_key_from_ini("$icinga_base/ido2db.cfg", 'enable_sla');
+my $ido2dbsla = get_key_from_ini("$ido2db_cfg", 'enable_sla');
 if(!$ido2dbsla){$ido2dbsla = "no 'enable_sla' option found"};
 
 #ido2db socket type
-my $ido2dbsocket = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_type');
+my $ido2dbsocket = get_key_from_ini("$ido2db_cfg", 'socket_type');
 
 #ido2db TCP Port
-my $ido2dbtcpport = get_key_from_ini("$icinga_base/ido2db.cfg", 'tcp_port');
+my $ido2dbtcpport = get_key_from_ini("$ido2db_cfg", 'tcp_port');
 
 #ido2db SSL Status
-my $ido2dbssl = get_key_from_ini("$icinga_base/ido2db.cfg", 'use_ssl');
+my $ido2dbssl = get_key_from_ini("$ido2db_cfg", 'use_ssl');
 
 #ido2db Servertype
-my $ido2dbservertype = get_key_from_ini("$icinga_base/ido2db.cfg", 'db_servertype');
+my $ido2dbservertype = get_key_from_ini("$ido2db_cfg", 'db_servertype');
 
 #ido2db Socket Name
-my $ido2dbsocketname = get_key_from_ini("$icinga_base/ido2db.cfg", 'socket_name');
+my $ido2dbsocketname = get_key_from_ini("$ido2db_cfg", 'socket_name');
 
 #### ido2db.cfg parsing ####
 
 #Output Socket
-my $idomodsocket = get_key_from_ini("$icinga_base/idomod.cfg", 'output_type');
-	if ($idomodsocket eq 'unixsocket'){
-		$idomodsocket = 'unix';
-	}
 
+my $idomodsocket = get_key_from_ini("$idomod_cfg", 'output_type');
+if ($idomodsocket eq 'unixsocket'){
+    $idomodsocket = 'unix';
+}
+if ($idomodsocket eq 'tcpsocket'){
+    $idomodsocket = 'tcp';
+}
 #Output
-my $idomodoutput = get_key_from_ini("$icinga_base/idomod.cfg", 'output');
+my $idomodoutput = get_key_from_ini("$idomod_cfg", 'output');
 
 #idomod SSL Status
-my $idomodssl = get_key_from_ini("$icinga_base/idomod.cfg", 'use_ssl');
+my $idomodssl = get_key_from_ini("$idomod_cfg", 'use_ssl');
 
 #idomod TCP port
-my $idomodtcpport = get_key_from_ini("$icinga_base/idomod.cfg", 'tcp_port');
+my $idomodtcpport = get_key_from_ini("$idomod_cfg", 'tcp_port');
 
-#### ressource.cfg / check user1 for correct Plugin Path####
+#check for idoutils Broker Modul#
+my $brokermodulpath = "$icinga_base/modules";
+my $brokermodul_idoutils = '';
+if (! -e "$brokermodulpath/idoutils.cfg") {
+		$brokermodul_idoutils = "No idoutils.cfg in $brokermodulpath";
+	} else {
+		$brokermodul_idoutils = "idoutils.cfg in $brokermodulpath aktiv.";
+	}
+#### resource.cfg / check user1 for correct Plugin Path####
+my $resource_cfg = get_key_from_ini("$icinga_cfg", 'resource_file');
+if (! -e "$resource_cfg") {
+		print STDERR color("red"), "\nCouldn't find resource.cfg!\nPath definded in icinga.cfg: $resource_cfg\n", color("reset");
+		}
 my $plugin_path = '';
-my $raw_plugin_path = get_key_from_ini("$icinga_base/resource.cfg", '\$USER1\$');
+my $raw_plugin_path = get_key_from_ini("$resource_cfg", '\$USER1\$');
 chomp($raw_plugin_path);
 #only show path if the plugin check_ping was found
 if ($raw_plugin_path){
@@ -338,7 +381,7 @@ if ($raw_plugin_path){
 }
 
 #Check_disk / Check for free disk space AND check Plugin test
-my $check_disk = (split(";", qx(sudo -u $icingacfguser -c '$plugin_path/check_disk -c 5%')))[0];
+my $check_disk = (split(";", qx(su $icingacfguser -c '$plugin_path/check_disk -c 5%')))[0];
 
 #### MySQL Querys ####
 my $dbh_conn_error = '';
@@ -348,7 +391,7 @@ my @result_icingaconninfo = ();
 my @result_icingawebdb  = ();
 
 if ( !$mysqlcheck ) {
-    print STDERR "no Mysql Found, skip Querys\n";
+    print STDERR "no Mysql Found, skip queries\n";
 } else {
     # Connect to Database
     $dbh_cfg = DBI->connect(
@@ -360,21 +403,7 @@ if ( !$mysqlcheck ) {
         }
         )
         or $dbh_conn_error = 
-		"MySQL Connect to Icinga-DB Failed. - Check your input or the MySQL Process!";
-		
-	#Connect to Database Icinga-Web	
-	#FIXME IF CONNECTION FAILED, ALL QUERYS ARE SKIPPED
-	#Same if no icinga-web is installed ...
-	$dbh_web = DBI->connect(
-        "dbi:mysql:database=icinga_web; host=$sqlserver_cfg:mysql_server_prepare=1",
-        "$sqluser_web",
-        "$sqlpw_web",
-        {   PrintError => 0,
-            RaiseError => 0
-        }
-        )
-        or $dbh_conn_error = 
-		"MySQL Connect to Icinga-Web DB Failed. - Check your input or the MySQL Process!";
+		"MySQL Connect to Icinga-DB Failed. - Check your input or the MySQL process!";
 		
 	if(!$dbh_conn_error){
 		# Query icinga DB Version
@@ -397,24 +426,54 @@ if ( !$mysqlcheck ) {
 			push( @result_icingaconninfo, "id:", @row, "\n" );
 		}
 		
-		# Query icinga_web db version
-		#FIXME ! IF Table doesnt exists the execute crash
-		my $icingaweb_dbversion = 'select version, modified from nsm_db_version';
-		$sth = $dbh_web->prepare($icingaweb_dbversion) or warn $DBI::errstr;
-
-		$sth->execute() or warn $DBI::errstr;
-
-		while ( @row = $sth->fetchrow_array() ) {
-			push( @result_icingawebdb, @row );
-		}
-		
     $dbh_cfg->disconnect();
-	$dbh_web->disconnect();
+	
+#ICINGA-WEB Connection
+	$dbh_web = DBI->connect(
+        "dbi:mysql:database=$sqldb_web; host=$sqlserver_web:mysql_server_prepare=1",
+        "$sqluser_web",
+        "$sqlpw_web",
+        {   PrintError => 0,
+            RaiseError => 0
+        }
+        )
+        or $dbh_conn_error = 
+		"MySQL Connect to Icinga-Web DB Failed. - Check your input or the MySQL process!";
 	
 	} else {
 		print color("red"), "\n\n$dbh_conn_error\n\n", color("reset");
-	}   
+	}  
+	
+# Query icinga_web db version
+		my $icingaweb_dbversion = 'select version, modified from nsm_db_version';
+		eval {
+		$sth = $dbh_web->prepare($icingaweb_dbversion);
+		};
+		if ($@) {
+			print 
+			"\nFailure! Cant Connect to Icinga-Web Database\n\n";
+		} else {	
+		$sth = $dbh_web->prepare($icingaweb_dbversion);
+		
+			eval {
+			$sth->execute();
+			};
+			if ($@) {
+				print STDERR color("red"), "\nFailure! Cant Fetch Table 'version, modified' from nsm_db_version,\nMaybe your Icinga-Web Database Shema is below 1.7.0\n\n", color("reset");
+			} else {
+				$sth->execute();
+		
+				while ( @row = $sth->fetchrow_array() ) {
+					push( @result_icingawebdb, @row );
+				}
+			$dbh_web->disconnect();
+			}
+		}	
 }
+
+
+## Other Checks ##
+my $usershell = (getpwnam ($icingacfguser))[8];
 
 ###########################
 # Output Verbose Reporting
@@ -423,9 +482,9 @@ if ( !$mysqlcheck ) {
 if ($reporting or (!$reporting and not ($sanitycheck or $issuereport))){
 
 print <<EOF;
-############################################################
-######              Verbose Informations              ######
-############################################################
+############################################################################################################
+############################             Verbose Informations              #################################
+############################################################################################################
 Perlversion: $perlversion
 Current Date/Time on Server: $date
 
@@ -443,7 +502,7 @@ PHP Information:
 MySQL Information:
  $mysqlver
  
-Icinga General Informations:
+Icinga General Information:
  DB-Version: $result_icingadb[0]
  icinga version: $icingaversion
  ido2db version: $ido2dbversion
@@ -456,8 +515,10 @@ Icinga.cfg/resource.cfg Information:
  Log External Commands(1=on,0=off): $icingaextcmdlog
  Icinga User: $icingacfguser
  Icinga Group: $icingacfggroup
+ User Shell: $usershell
  Plugin Path: $plugin_path
- idomod broker modul: $idomod_cfg
+ broker modul cfg: $idomod_broker
+ broker modul dir: $brokermodul_idoutils
  
 Icinga Web:
  DB-Version: $result_icingawebdb[0]
@@ -486,7 +547,7 @@ Plugin Check with User Rights:
 (check_disk - Checks local HDD for free Space)
  $check_disk
  
-############################################################ 
+############################################################################################################ 
 EOF
 }
 
@@ -507,9 +568,9 @@ my $statuscrit = "$colorred $crit $colorreset";
 
 if ($sanitycheck){
 print <<EOF;
-############################################################
-######                 Sanity Check                   ######
-############################################################
+############################################################################################################
+###############################                Sanity Check                   ##############################
+############################################################################################################
 
 Database Tests:
 EOF
@@ -526,7 +587,6 @@ if ($dbh_conn_error){
 }
 
 print <<EOF;
-
 
 ido2db/idomod Tests:
 EOF
@@ -595,7 +655,7 @@ foreach my $service (keys(%{ $config_ref->{'noncritical_services'} })) {
 
 print <<EOF;
 
-############################################################
+############################################################################################################
 EOF
 }
 
@@ -605,9 +665,9 @@ EOF
 
 if ($issuereport){
 print <<EOF;
-############################################################
-### Copy the following Output and paste it to your Issue ###
-############################################################
+############################################################################################################
+#####################    Copy the following Output and paste it to your Issue     ##########################
+############################################################################################################
 *OS Information:*
   <pre>
   OS Name: $distribution,
@@ -616,7 +676,7 @@ print <<EOF;
   Selinux Status: $selinux
   </pre>
   
-*Webserver Informations:*
+*Webserver Information:*
   <pre>
   Apache:
   $apacheinfo
@@ -627,7 +687,7 @@ print <<EOF;
   $mysqlver
   </pre>
  
-*Icinga General Informations:*
+*Icinga General Information:*
  <pre>
  Icinga DB-Version: $result_icingadb[0]
  icinga version: $icingaversion
@@ -645,13 +705,14 @@ sub get_key_from_ini ($$) {
     my ( $file, $key ) = @_;
 
     if ( !-f $file ) {
-        print STDERR "Inifile $file does not exist\n";
+        print STDERR "\nInifile $file does not exist\n";
         return;
     }
 
     if ( open( my $fh, '<', $file ) ) {
         while ( my $line = <$fh> ) {
             chomp($line);
+			$line =~ s/#.*//;
             if ( $line =~ /^\s*$key=([^\s]+)/ ) {
                 return $1;
             }
@@ -659,6 +720,7 @@ sub get_key_from_ini ($$) {
     } else {
         print STDERR "Could not open initfile $file: $!\n";
     }
+	return "";
 }
 
 sub which (@) {
@@ -666,9 +728,11 @@ sub which (@) {
     my @path = reverse( split( ':', $PATH ));
     push @path, "$icinga_base/../bin";
     push @path, "$icinga_base/../sbin";
-	 push @path, "$icinga_base/../lib";
-	push @path, "$pnp4nagios_base/../bin";
-	push @path, "$pnp4nagios_base/../sbin";
+	push @path, "$icinga_base/../lib";
+    if ($pnp4nagios_base) {
+        push @path, "$pnp4nagios_base/../bin";
+        push @path, "$pnp4nagios_base/../sbin";
+    }
     print "looking for binaries in ", join(",", @path), "\n" if $verbose;
 
     foreach my $binary (@binaries) {
@@ -711,15 +775,23 @@ sub get_distribution {
 }
 
 sub find_icinga_dir {
-    my @locations = qw ( /etc/icinga/ /opt/icinga/etc/ /usr/local/icinga/etc/ );
+    my @locations = qw ( /etc/icinga /opt/icinga/etc /usr/local/icinga/etc );
     foreach my $location (@locations) {
         return $location if -e "$location/icinga.cfg";
     }
     return undef;
 }
 
+sub find_icinga_web_dir {
+    my @locations = qw ( /opt/icinga-web/app /usr/local/icinga-web/app );
+    foreach my $location (@locations) {
+        return $location if -e "$location/config.php";
+    }
+    return undef;
+}
+
 sub find_pnp4nagios_dir {
-    my @locations = qw ( /etc/pnp4nagios/ /opt/pnp4nagios/etc/ /usr/local/pnp4nagios/etc/ );
+    my @locations = qw ( /etc/pnp4nagios /opt/pnp4nagios/etc /usr/local/pnp4nagios/etc );
     foreach my $location (@locations) {
         return $location if -e "$location/pnp4nagios_release";
     }
@@ -775,7 +847,28 @@ sub get_error_from_log ($$) {
         print STDERR "Could not open logfile $file: $!\n";
     }
 }
-  
+
+sub get_icinga_web_data ($$) {
+    my ( $file, $key ) = @_;
+
+    if ( !-f $file ) {
+        print STDERR "\n$file does not exist\n\n";
+        return;
+    }
+
+    if ( open( my $fh, '<', $file ) ) {
+        while ( my $line = <$fh> ) {
+            chomp($line);		
+				$line =~ s/#.*//;
+				if ( $line =~ /\s*"dsn">+$key:\/\/([^:]+):([^@]+)@([^:]+):([^\/]+)\/([^<]+)/ ) {
+				return $1, $2, $3, $4, $5;				
+            }
+        }
+    } else {
+        print STDERR "Could not open logfile $file: $!\n";
+    }
+}
+
 sub usage{
 print <<EOF;
 
