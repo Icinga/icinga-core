@@ -103,7 +103,6 @@ extern int color_transparency_index_r;
 extern int cgi_log_rotation_method;
 extern int default_downtime_duration;
 extern int default_expiring_acknowledgement_duration;
-extern int default_num_displayed_log_entries;
 extern int display_status_totals;
 extern int default_statusmap_layout_method;
 extern int enable_splunk_integration;
@@ -115,6 +114,7 @@ extern int lock_author_names;
 extern int persistent_ack_comments;
 extern int refresh_rate;
 extern int refresh_type;
+extern int result_limit;
 extern int show_all_services_host_is_authorized_for;
 extern int show_context_help;
 extern int show_partial_hostgroups;
@@ -156,6 +156,10 @@ void store_default_settings(void);
 authdata current_authdata;
 
 int display_type = DISPLAY_NONE;
+int get_result_limit = -1;
+int result_start = 1;
+int total_entries = 0;
+int displayed_entries = 0;
 char *host_name = NULL;
 char *service_desc = NULL;
 char to_expand[MAX_COMMAND_BUFFER];
@@ -211,7 +215,6 @@ int org_color_transparency_index_r;
 int org_cgi_log_rotation_method;
 int org_default_downtime_duration;
 int org_default_expiring_acknowledgement_duration;
-int org_default_num_displayed_log_entries;
 int org_display_status_totals;
 int org_default_statusmap_layout;
 int org_enable_splunk_integration;
@@ -224,6 +227,7 @@ int org_lock_author_names;
 int org_persistent_ack_comments;
 int org_refresh_rate;
 int org_refresh_type;
+int org_result_limit;
 int org_show_all_services_host_is_authorized_for;
 int org_show_context_help;
 int org_show_partial_hostgroups;
@@ -291,6 +295,13 @@ int main(void) {
 	/* initialize macros */
 	init_macros();
 
+	/* overwrite config value with amount we got via GET */
+	result_limit = (get_result_limit != -1) ? get_result_limit : result_limit;
+
+	/* for json and csv output return all by default */
+	if (get_result_limit == -1 && (content_type == JSON_CONTENT || content_type == CSV_CONTENT))
+		result_limit = 0;
+
 	document_header(CGI_ID, TRUE, "Configuration");
 
 	/* get authentication information */
@@ -302,12 +313,96 @@ int main(void) {
 		printf("<tr>\n");
 
 		/* left column of the first row */
-		printf("<td align=left valign=top width=50%%>\n");
+		printf("<td align=left valign=top width=33%%>\n");
 		display_info_table("Configuration", &current_authdata, daemon_check);
 		printf("</td>\n");
 
+		/* left column of the first row */
+		printf("<td align=left width=33%% style='vertical-align:bottom;'>\n");
+		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>");
+
+		switch (display_type) {
+		case DISPLAY_HOSTS:
+			printf("Host");
+			break;
+		case DISPLAY_HOSTGROUPS:
+			printf("Host Group");
+			break;
+		case DISPLAY_SERVICEGROUPS:
+			printf("Service Group");
+			break;
+		case DISPLAY_CONTACTS:
+			printf("Contact");
+			break;
+		case DISPLAY_CONTACTGROUPS:
+			printf("Contact Group");
+			break;
+		case DISPLAY_SERVICES:
+			printf("Service");
+			break;
+		case DISPLAY_TIMEPERIODS:
+			printf("Time Period");
+			break;
+		case DISPLAY_COMMANDS:
+			printf("Command");
+			break;
+		case DISPLAY_SERVICEDEPENDENCIES:
+			printf("Service Dependencie");
+			break;
+		case DISPLAY_SERVICEESCALATIONS:
+			printf("Service Escalation");
+			break;
+		case DISPLAY_HOSTDEPENDENCIES:
+			printf("Host Dependencie");
+			break;
+		case DISPLAY_HOSTESCALATIONS:
+			printf("Host Escalation");
+			break;
+		case DISPLAY_MODULES:
+			printf("Module");
+			break;
+		case DISPLAY_CGICONFIG:
+			printf("CGI Config Setings");
+			break;
+		}
+
+		switch (display_type) {
+		case DISPLAY_SERVICES:
+			printf("%s%s", (*to_expand == '\0' ? "s" : "s Named or on Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
+			break;
+		case DISPLAY_SERVICEDEPENDENCIES:
+			printf("%s%s", (*to_expand == '\0' ? "s" : "s Involving Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
+			break;
+		case DISPLAY_SERVICEESCALATIONS:
+			printf("%s%s", (*to_expand == '\0' ? "s" : "s on Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
+			break;
+		case DISPLAY_HOSTDEPENDENCIES:
+			printf("%s%s", (*to_expand == '\0' ? "s" : "s Involving Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
+			break;
+		case DISPLAY_HOSTESCALATIONS:
+			printf("%s%s", (*to_expand == '\0' ? "s" : "s for Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
+			break;
+		case DISPLAY_COMMAND_EXPANSION:
+			break;
+		case DISPLAY_CGICONFIG:
+			break;
+		default :
+			printf("%s%s", (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
+		}
+
+		printf("</DIV>\n");
+
+		if (display_type != DISPLAY_NONE && display_type != DISPLAY_ALL && display_type != DISPLAY_COMMAND_EXPANSION && display_type != DISPLAY_CGICONFIG) {
+			printf("<div id='page_selector'>\n");
+			printf("<div id='page_navigation_copy'></div>");
+			page_limit_selector(result_start);
+			printf("</div>\n");
+		}
+
+		printf("</td>\n");
+
 		/* right hand column of top row */
-		printf("<td align=right valign=bottom width=50%%>\n");
+		printf("<td align=right valign=bottom width=33%%>\n");
 
 		if (display_type != DISPLAY_NONE && is_authorized_for_configuration_information(&current_authdata)) {
 
@@ -316,7 +411,7 @@ int main(void) {
 
 			display_options();
 
-			if (display_type != DISPLAY_COMMAND_EXPANSION) {
+			if (display_type != DISPLAY_COMMAND_EXPANSION && display_type != DISPLAY_CGICONFIG) {
 				if (display_type == DISPLAY_SERVICES) {
 					seldesc = " Services Named or on Host";
 				} else if (display_type == DISPLAY_SERVICEDEPENDENCIES) {
@@ -333,7 +428,7 @@ int main(void) {
 				printf("value='%s'>", escape_string(to_expand));
 			}
 
-			printf("<tr><td class='reportSelectItem'><input type='submit' value='Update'></td></tr>\n");
+			printf("<tr><td class='reportSelectItem'><input type='hidden' name='limit' value='%d'><input type='submit' value='Update'></td></tr>\n", result_limit);
 			printf("</form>\n");
 			printf("</table>\n");
 
@@ -524,6 +619,9 @@ int main(void) {
 		break;
 	}
 
+	if (content_type == HTML_CONTENT && display_type != DISPLAY_NONE && display_type != DISPLAY_ALL && display_type != DISPLAY_COMMAND_EXPANSION && display_type != DISPLAY_CGICONFIG)
+		page_num_selector(result_start, total_entries, displayed_entries);
+
 	document_footer(CGI_ID);
 
 	return OK;
@@ -647,6 +745,31 @@ int process_cgivars(void) {
 			content_type = JSON_CONTENT;
 		}
 
+		/* start num results to skip on displaying statusdata */
+		else if (!strcmp(variables[x], "start")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			result_start = atoi(variables[x]);
+
+			if (result_start < 1)
+				result_start = 1;
+		}
+
+		/* amount of results to display */
+		else if (!strcmp(variables[x], "limit")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			get_result_limit = atoi(variables[x]);
+		}
+
 		/* we received an invalid argument */
 		else
 			error = TRUE;
@@ -717,9 +840,6 @@ void display_hosts(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Host%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -769,6 +889,14 @@ void display_hosts(void) {
 
 	/* check all the hosts... */
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) if (((*to_expand) == '\0') || !strcmp(to_expand, temp_host->name)) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			/* grab macros */
 			grab_host_macros_r(mac, temp_host);
@@ -1274,9 +1402,6 @@ void display_hostgroups(void) {
 		printf("%sNotes URL%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAction URL%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Host Group%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -1292,6 +1417,14 @@ void display_hostgroups(void) {
 
 	/* check all the hostgroups... */
 	for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_hostgroup->group_name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -1402,9 +1535,6 @@ void display_servicegroups(void) {
 		printf("%sAction URL%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Service Group%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -1421,6 +1551,14 @@ void display_servicegroups(void) {
 
 	/* check all the servicegroups... */
 	for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_servicegroup->group_name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -1537,9 +1675,6 @@ void display_contacts(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Contact%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE CLASS='data'>\n");
@@ -1561,6 +1696,14 @@ void display_contacts(void) {
 
 	/* check all contacts... */
 	for (temp_contact = contact_list; temp_contact != NULL; temp_contact = temp_contact->next) if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_contact->name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -1814,9 +1957,6 @@ void display_contactgroups(void) {
 		printf("%sContact Members%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Contact Group%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CELLSPACING=3 CELLPADDING=0>\n");
@@ -1830,6 +1970,14 @@ void display_contactgroups(void) {
 
 	/* check all the contact groups... */
 	for (temp_contactgroup = contactgroup_list; temp_contactgroup != NULL; temp_contactgroup = temp_contactgroup->next) if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_contactgroup->group_name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -1952,9 +2100,6 @@ void display_services(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Service%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : "s Named or on Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -2003,6 +2148,14 @@ void display_services(void) {
 	for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
 
 		if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_service->host_name)) || (!strcmp(to_expand, temp_service->description))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			/* grab macros */
 			grab_service_macros_r(mac, temp_service);
@@ -2491,9 +2644,6 @@ void display_timeperiods(void) {
 		printf("%sTimes%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Time Period%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -2509,6 +2659,14 @@ void display_timeperiods(void) {
 
 	/* check all the time periods... */
 	for (temp_timeperiod = timeperiod_list; temp_timeperiod != NULL; temp_timeperiod = temp_timeperiod->next) if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_timeperiod->name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -2764,9 +2922,6 @@ void display_commands(void) {
 		printf("%sCommand Line%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Command%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -2776,6 +2931,14 @@ void display_commands(void) {
 
 	/* check all commands */
 	for (temp_command = command_list; temp_command != NULL; temp_command = temp_command->next) if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_command->name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -2835,9 +2998,6 @@ void display_servicedependencies(void) {
 		printf("%sDependency Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDependency Failure Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Service Dependencie%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : "s Involving Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -2858,8 +3018,17 @@ void display_servicedependencies(void) {
 	}
 
 	/* check all the service dependencies... */
-	for (temp_sd = servicedependency_list; temp_sd != NULL; temp_sd = temp_sd->next)
+	for (temp_sd = servicedependency_list; temp_sd != NULL; temp_sd = temp_sd->next) {
+
 		if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_sd->dependent_host_name)) || (!strcmp(to_expand, temp_sd->host_name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -2953,6 +3122,7 @@ void display_servicedependencies(void) {
 			else
 				printf("</TD>\n</TR>\n");
 		}
+	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
@@ -2986,9 +3156,6 @@ void display_serviceescalations(void) {
 		printf("%sEscalation Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sEscalation Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Service Escalation%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : "s on Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -3007,6 +3174,14 @@ void display_serviceescalations(void) {
 
 	/* check all the service escalations... */
 	for (temp_se = serviceescalation_list; temp_se != NULL; temp_se = temp_se->next) if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_se->host_name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -3230,9 +3405,6 @@ void display_hostdependencies(void) {
 		printf("%sDependency Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDependency Failure Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Host Dependencie%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : "s Involving Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -3247,8 +3419,17 @@ void display_hostdependencies(void) {
 	}
 
 	/* check all the host dependencies... */
-	for (temp_hd = hostdependency_list; temp_hd != NULL; temp_hd = temp_hd->next)
+	for (temp_hd = hostdependency_list; temp_hd != NULL; temp_hd = temp_hd->next) {
+
 		if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_hd->dependent_host_name)) || (!strcmp(to_expand, temp_hd->host_name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -3329,6 +3510,7 @@ void display_hostdependencies(void) {
 			else
 				printf("</TD>\n</TR>\n");
 		}
+	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
@@ -3361,9 +3543,6 @@ void display_hostescalations(void) {
 		printf("%sEscalation Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sEscalation Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Host Escalation%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : "s for Host "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -3381,6 +3560,14 @@ void display_hostescalations(void) {
 
 	/* check all the host escalations... */
 	for (temp_he = hostescalation_list; temp_he != NULL; temp_he = temp_he->next) if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_he->host_name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -3575,9 +3762,6 @@ void display_modules(void) {
 		printf("%sModule Args%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Module%s%s</DIV>\n",
-		       (*to_expand == '\0' ? "s" : " "), (*to_expand == '\0' ? "" : escape_string(to_expand)));
-
 		printf("<DIV ALIGN=CENTER>\n");
 
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
@@ -3587,6 +3771,14 @@ void display_modules(void) {
 
 	/* check all modules */
 	for (temp_module = module_list; temp_module != NULL; temp_module = temp_module->next) if (((*to_expand) == '\0') || (!strcmp(to_expand, temp_module->name))) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			displayed_entries++;
+			total_entries++;
 
 			if (odd) {
 				odd = 0;
@@ -3752,7 +3944,6 @@ void display_cgiconfig(void) {
 		printf("%sCurrent Setting%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>CGI Config Setings</DIV>\n");
 		printf("<DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='data' cellpadding=2>\n");
 		printf("<TR><TH CLASS='data'>Config Option Name</TH><TH CLASS='data'>Default Setting</TH><TH CLASS='data'>Current Setting</TH></TR>\n");
@@ -3818,7 +4009,6 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_STRING(default_user_name, org_default_user_name)
 	PRINT_CONFIG_LINE_INT(default_downtime_duration, org_default_downtime_duration, "int")
 	PRINT_CONFIG_LINE_INT(default_expiring_acknowledgement_duration, org_default_expiring_acknowledgement_duration, "int")
-	PRINT_CONFIG_LINE_INT(default_num_displayed_log_entries, org_default_num_displayed_log_entries, "int")
 	PRINT_CONFIG_LINE_INT(display_status_totals, org_display_status_totals, "bool")
 
 	// default_statusmap_layout
@@ -3903,6 +4093,7 @@ void display_cgiconfig(void) {
 		       (refresh_type != org_refresh_type) ? "CLASS='dataDiff'" : "" , refresh_type, (refresh_type > 0) ? "JAVASCRIPT_REFRESH" : "HTTPHEADER_REFRESH");
 	}
 
+	PRINT_CONFIG_LINE_INT(result_limit, org_result_limit, "int")
 	PRINT_CONFIG_LINE_STRING(service_critical_sound, org_service_critical_sound)
 	PRINT_CONFIG_LINE_STRING(service_unknown_sound, org_service_unknown_sound)
 	PRINT_CONFIG_LINE_STRING(service_warning_sound, org_service_warning_sound)
@@ -4309,7 +4500,6 @@ void store_default_settings(void) {
 	org_cgi_log_rotation_method = org_cgi_log_rotation_method;
 	org_default_downtime_duration = default_downtime_duration;
 	org_default_expiring_acknowledgement_duration = default_expiring_acknowledgement_duration;
-	org_default_num_displayed_log_entries = default_num_displayed_log_entries;
 	org_display_status_totals = display_status_totals;
 	org_default_statusmap_layout = default_statusmap_layout_method;
 	org_enable_splunk_integration = enable_splunk_integration;
@@ -4322,6 +4512,7 @@ void store_default_settings(void) {
 	org_persistent_ack_comments = persistent_ack_comments;
 	org_refresh_rate = refresh_rate;
 	org_refresh_type = refresh_type;
+	org_result_limit = result_limit;
 	org_show_tac_header = show_tac_header;
 	org_show_tac_header_pending = show_tac_header_pending;
 	org_showlog_current_states = showlog_current_states;

@@ -551,13 +551,13 @@ show_tac_header_pending=1
 
 
 
-# DEFAULT NUM DISPLAYED LOG ENTRIES OPTION
-# This options specifies the number of log entries
-# displayed by default in showlog.cgi. To display
-# all log entries by default set this value to 0.
-# Default is 10000.
+# RESULT LIMIT
+# This options specifies the number of page entries
+# displayed by default in various cgi's. To display
+# all entries by default set this value to 0.
+# Default is 50.
 
-#default_num_displayed_log_entries=10000
+result_limit=50
 
 
 

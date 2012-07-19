@@ -11,7 +11,7 @@ ENHANCEMENTS
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
 * classic ui: Added action_url/notes_url to status.cgi for csvoutput and jsonoutput #2553 - RB
-
++ classic ui: Added pagination to various cgi's #2725 - RB
 
 
 1.7.1 - 18/06/2012
