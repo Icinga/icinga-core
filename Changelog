@@ -13,6 +13,7 @@ FIXES
 * core: avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993 - MF
 * core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665 - MF
 * core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197 - MF
+* core: fix whitespaces are not stripped using multiple templates ("use abc, def, ghi") #2701 - MF
 
 CHANGES
 

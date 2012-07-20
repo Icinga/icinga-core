@@ -6139,6 +6139,9 @@ int xodtemplate_resolve_timeperiod(xodtemplate_timeperiod *this_timeperiod) {
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
 
+		/* strip whitespaces */
+		strip(temp_ptr);
+
 		template_timeperiod = xodtemplate_find_timeperiod(temp_ptr);
 		if (template_timeperiod == NULL) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in timeperiod definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_timeperiod->_config_file), this_timeperiod->_start_line);
@@ -6234,6 +6237,9 @@ int xodtemplate_resolve_command(xodtemplate_command *this_command) {
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
 
+		/* strip whitespaces */
+		strip(temp_ptr);
+
 		template_command = xodtemplate_find_command(temp_ptr);
 		if (template_command == NULL) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in command definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_command->_config_file), this_command->_start_line);
@@ -6283,6 +6289,9 @@ int xodtemplate_resolve_contactgroup(xodtemplate_contactgroup *this_contactgroup
 	/* apply all templates */
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
+
+		/* strip whitespaces */
+		strip(temp_ptr);
 
 		template_contactgroup = xodtemplate_find_contactgroup(temp_ptr);
 		if (template_contactgroup == NULL) {
@@ -6337,6 +6346,9 @@ int xodtemplate_resolve_hostgroup(xodtemplate_hostgroup *this_hostgroup) {
 	/* apply all templates */
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
+
+		/* strip whitespaces */
+		strip(temp_ptr);
 
 		template_hostgroup = xodtemplate_find_hostgroup(temp_ptr);
 		if (template_hostgroup == NULL) {
@@ -6407,6 +6419,9 @@ int xodtemplate_resolve_servicegroup(xodtemplate_servicegroup *this_servicegroup
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
 
+		/* strip whitespaces */
+		strip(temp_ptr);
+
 		template_servicegroup = xodtemplate_find_servicegroup(temp_ptr);
 		if (template_servicegroup == NULL) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in servicegroup definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_servicegroup->_config_file), this_servicegroup->_start_line);
@@ -6473,6 +6488,9 @@ int xodtemplate_resolve_servicedependency(xodtemplate_servicedependency *this_se
 	/* apply all templates */
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
+
+		/* strip whitespaces */
+		strip(temp_ptr);
 
 		template_servicedependency = xodtemplate_find_servicedependency(temp_ptr);
 		if (template_servicedependency == NULL) {
@@ -6551,6 +6569,9 @@ int xodtemplate_resolve_serviceescalation(xodtemplate_serviceescalation *this_se
 	/* apply all templates */
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
+
+		/* strip whitespaces */
+		strip(temp_ptr);
 
 		template_serviceescalation = xodtemplate_find_serviceescalation(temp_ptr);
 		if (template_serviceescalation == NULL) {
@@ -6656,6 +6677,9 @@ int xodtemplate_resolve_contact(xodtemplate_contact *this_contact) {
 	/* apply all templates */
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
+
+		/* strip whitespaces */
+		strip(temp_ptr);
 
 		template_contact = xodtemplate_find_contact(temp_ptr);
 		if (template_contact == NULL) {
@@ -6791,6 +6815,9 @@ int xodtemplate_resolve_host(xodtemplate_host *this_host) {
 	/* apply all templates */
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
+
+		/* strip whitespaces */
+		strip(temp_ptr);
 
 		template_host = xodtemplate_find_host(temp_ptr);
 		if (template_host == NULL) {
@@ -7043,6 +7070,9 @@ int xodtemplate_resolve_service(xodtemplate_service *this_service) {
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
 
+		/* strip whitespaces */
+		strip(temp_ptr);
+
 		template_service = xodtemplate_find_service(temp_ptr);
 		if (template_service == NULL) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in service definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_service->_config_file), this_service->_start_line);
@@ -7285,6 +7315,9 @@ int xodtemplate_resolve_hostdependency(xodtemplate_hostdependency *this_hostdepe
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
 
+		/* strip whitespaces */
+		strip(temp_ptr);
+
 		template_hostdependency = xodtemplate_find_hostdependency(temp_ptr);
 		if (template_hostdependency == NULL) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in host dependency definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_hostdependency->_config_file), this_hostdependency->_start_line);
@@ -7357,6 +7390,9 @@ int xodtemplate_resolve_hostescalation(xodtemplate_hostescalation *this_hostesca
 	/* apply all templates */
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
+
+		/* strip whitespaces */
+		strip(temp_ptr);
 
 		template_hostescalation = xodtemplate_find_hostescalation(temp_ptr);
 		if (template_hostescalation == NULL) {
@@ -7448,6 +7484,9 @@ int xodtemplate_resolve_hostextinfo(xodtemplate_hostextinfo *this_hostextinfo) {
 	/* apply all templates */
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
+
+		/* strip whitespaces */
+		strip(temp_ptr);
 
 		template_hostextinfo = xodtemplate_find_hostextinfo(temp_ptr);
 		if (template_hostextinfo == NULL) {
@@ -7550,6 +7589,9 @@ int xodtemplate_resolve_serviceextinfo(xodtemplate_serviceextinfo *this_servicee
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
 
+		/* strip whitespaces */
+		strip(temp_ptr);
+
 		template_serviceextinfo = xodtemplate_find_serviceextinfo(temp_ptr);
 		if (template_serviceextinfo == NULL) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in extended service info definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_serviceextinfo->_config_file), this_serviceextinfo->_start_line);
@@ -7633,6 +7675,9 @@ int xodtemplate_resolve_module(xodtemplate_module *this_module) {
 	/* apply all templates */
 	template_name_ptr = template_names;
 	for (temp_ptr = my_strsep(&template_name_ptr, ","); temp_ptr != NULL; temp_ptr = my_strsep(&template_name_ptr, ",")) {
+
+		/* strip whitespaces */
+		strip(temp_ptr);
 
 		template_module = xodtemplate_find_module(temp_ptr);
 		if (template_module == NULL) {
