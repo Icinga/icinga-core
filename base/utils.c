@@ -34,7 +34,7 @@
 #include "../include/broker.h"
 #include "../include/nebmods.h"
 #include "../include/nebmodules.h"
-
+#include "../lib/squeue.h"
 
 #ifdef EMBEDDEDPERL
 #include "../include/epn_icinga.h"
@@ -242,11 +242,11 @@ extern host             *host_list;
 extern hostgroup	*hostgroup_list;
 extern service          *service_list;
 extern servicegroup     *servicegroup_list;
-extern timed_event      *event_list_high;
-extern timed_event      *event_list_low;
 extern notification     *notification_list;
 extern command          *command_list;
 extern timeperiod       *timeperiod_list;
+
+extern squeue_t		*icinga_squeue;
 
 extern int      command_file_fd;
 extern FILE     *command_file_fp;
@@ -4232,8 +4232,6 @@ void cleanup(void) {
 
 /* free the memory allocated to the linked lists */
 void free_memory(icinga_macros *mac) {
-	timed_event *this_event = NULL;
-	timed_event *next_event = NULL;
 
 	/* free all allocated memory for the object definitions */
 	free_object_data();
@@ -4244,31 +4242,9 @@ void free_memory(icinga_macros *mac) {
 	/* free check result list */
 	free_check_result_list();
 
-	/* free memory for the high priority event list */
-	this_event = event_list_high;
-	while (this_event != NULL) {
-		if (this_event->event_type == EVENT_SCHEDULED_DOWNTIME)
-			my_free(this_event->event_data);
-		next_event = this_event->next;
-		my_free(this_event);
-		this_event = next_event;
-	}
-
-	/* reset the event pointer */
-	event_list_high = NULL;
-
-	/* free memory for the low priority event list */
-	this_event = event_list_low;
-	while (this_event != NULL) {
-		if (this_event->event_type == EVENT_SCHEDULED_DOWNTIME)
-			my_free(this_event->event_data);
-		next_event = this_event->next;
-		my_free(this_event);
-		this_event = next_event;
-	}
-
-	/* reset the event pointer */
-	event_list_low = NULL;
+	/* free event queue data */
+	squeue_destroy(icinga_squeue, SQUEUE_FREE_DATA);
+	icinga_squeue = NULL;
 
 	/* free memory for global event handlers */
 	my_free(global_host_event_handler);

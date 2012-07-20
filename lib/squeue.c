@@ -141,7 +141,7 @@ squeue_event *squeue_add_usec(squeue_t *q, time_t when, time_t usec, void *data)
 	tv.tv_sec = when;
 	tv.tv_usec = usec;
 	/* don't allow usecs greater 1sec */
-	assert(usec < 1000000);
+	//assert(usec < 1000000);
 	return squeue_add_tv(q, &tv, data);
 }
 
@@ -209,21 +209,3 @@ unsigned int squeue_size(squeue_t *q) {
 	return pqueue_size(q);
 }
 
-/*
- * This is only used to test the squeue implementation
- */
-static void squeue_foreach(squeue_t *q, int (*walker)(squeue_event *, void *), void *arg) {
-	squeue_t *dup;
-	void *e, *dup_d;
-
-	dup = squeue_create(q->size);
-	dup_d = dup->d;
-	memcpy(dup, q, sizeof(*q));
-	dup->d = dup_d;
-	memcpy(dup->d, q->d, (q->size * sizeof(void *)));
-
-	while ((e = pqueue_pop(dup))) {
-		walker(e, arg);
-	}
-	squeue_destroy(dup, 0);
-}
