@@ -22,6 +22,7 @@ FIXES
 * core: unify check scheduling replacement logic for new events (Andreas Ericsson) #2676
 * core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665
 * core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197
+* core: fix whitespaces are not stripped using multiple templates ("use abc, def, ghi") #2701
 
 CHANGES
 * icinga.spec: add devel package #2634
