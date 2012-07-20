@@ -40,7 +40,6 @@
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&style=overview" target="main">Servicegroup Overview</a></li>
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&style=summary" target="main">Servicegroup Summary</a></li>
 			<li class="menuli_style2"><a href="@cgiurl@/statusmap.cgi?host=all" target="main">Status Map</a></li>
-			<!-- <li class="menuli_style1"><a href="@cgiurl@/statuswrl.cgi?host=all" target="main">3-D Status Map</a></li> -->
 		</ul>
 		<h2>Problems</h2>
 		<ul>

@@ -1,8 +1,18 @@
 #######################
-Icinga 1.7.x Change Log
+Icinga 1.8.x Change Log
 #######################
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
+
+
+1.8.0 - XX/XX/2012
+
+ENHANCEMENTS
+* classic ui: Dropped statuswml.cgi #2654 - RB
+* classic ui: Dropped statuswrl.cgi #2359 - RB
+* classic ui: Added action_url/notes_url to status.cgi for csvoutput and jsonoutput #2553 - RB
++ classic ui: Added pagination to various cgi's #2725 - RB
+
 
 1.7.1 - 18/06/2012
 
@@ -22,6 +32,7 @@ FIXES
 
 * install: adapt lsb headers for icinga and ido2db #2637 - MF
 * install: fix typo in contrib/eventhandlers/redundancy-scenario1/handle-master-proc-event (thanks uosiu) #2671 - MF
+
 
 
 1.7.0 - 15/05/2012

@@ -49,7 +49,7 @@ extern int enable_splunk_integration;
 extern int showlog_initial_states;
 extern int showlog_current_states;
 extern int escape_html_tags;
-extern int default_num_displayed_log_entries;
+extern int result_limit;
 
 extern int embedded;
 extern int display_header;
@@ -66,6 +66,8 @@ int display_timebreaks = TRUE;			/**< determine if time breaks should be shown *
 int reverse = FALSE;				/**< determine if log should be viewed in reverse order */
 int timeperiod_type = TIMEPERIOD_SINGLE_DAY;	/**< determines the time period to view see cgiutils.h */
 int num_displayed = -1;				/**< holds amount of displayed log entries */
+int result_start = 1;				/**< keep track from where we have to start displaying results */
+int get_result_limit = -1;			/**< needed to overwrite config value with result_limit we get vie GET */
 
 int display_filter = FALSE;			/**< show filter */
 int show_notifications = TRUE;			/**< filter option */
@@ -167,9 +169,12 @@ int main(void) {
 			string_to_time(end_time_string, &ts_end);
 	}
 
-	/* set default displayed entries */
-	if (num_displayed == -1)
-		num_displayed = default_num_displayed_log_entries;
+	/* overwrite config value with amount we got via GET */
+	result_limit = (get_result_limit != -1) ? get_result_limit : result_limit;
+
+	/* for json and csv output return all by default */
+	if (get_result_limit == -1 && (content_type == JSON_CONTENT || content_type == CSV_CONTENT))
+		result_limit = 0;
 
 	document_header(CGI_ID, TRUE, "Log File");
 
@@ -197,6 +202,7 @@ int main(void) {
 		printf("<form method='GET' style='margin:0;' action='%s'>\n", SHOWLOG_CGI);
 		printf("<input type='hidden' name='ts_start' value='%lu'>\n", ts_start);
 		printf("<input type='hidden' name='ts_end' value='%lu'>\n", ts_end);
+		printf("<input type='hidden' name='limit' value='%d'>\n", result_limit);
 
 		/* begin top table */
 		printf("<table border=0 width=100%% cellpadding=0 cellspacing=0>\n");
@@ -495,17 +501,6 @@ int process_cgivars(void) {
 				show_downtime = FALSE;
 		}
 
-		/* number of displayed entries */
-		else if (!strcmp(variables[x], "num_displayed")) {
-			x++;
-			if (variables[x] == NULL) {
-				error = TRUE;
-				break;
-			}
-
-			num_displayed = atoi(variables[x]);
-		}
-
 		/* we found the CSV output option */
 		else if (!strcmp(variables[x], "csvoutput")) {
 			display_header = FALSE;
@@ -538,6 +533,32 @@ int process_cgivars(void) {
 		else if (!strcmp(variables[x], "nodaemoncheck"))
 			daemon_check = FALSE;
 
+
+		/* start num results to skip on displaying statusdata */
+		else if (!strcmp(variables[x], "start")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			result_start = atoi(variables[x]);
+
+			if (result_start < 1)
+				result_start = 1;
+		}
+
+		/* amount of results to display */
+		else if (!strcmp(variables[x], "limit")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			get_result_limit = atoi(variables[x]);
+		}
+
 		/* we received an invalid argument */
 		else
 			error = TRUE;
@@ -564,9 +585,10 @@ void display_logentries() {
 	int current_archive = 0;
 	int user_has_seen_something = FALSE;
 	int json_start = TRUE;
+	int total_entries = 0;
+	int displayed_entries = 0;
 	struct tm *time_ptr = NULL;
 	logentry *temp_entry = NULL;
-	int count = 0;
 
 
 	/* Add default filters */
@@ -686,14 +708,14 @@ void display_logentries() {
 
 	/* dealing with errors */
 	if (read_status == READLOG_ERROR_MEMORY) {
-		if (content_type == CSV_CONTENT)
-			printf("Out of memory..., showing all I could get!");
+		if (content_type == CSV_CONTENT || content_type == JSON_CONTENT)
+			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
 		else
-			printf("<P><DIV CLASS='warningMessage'>Out of memory..., showing all I could get!</DIV></P>");
+			printf("<DIV CLASS='warningMessage'>Out of memory..., showing all I could get!</DIV>");
 	}
 	if (read_status == READLOG_ERROR_NOFILE) {
 		snprintf(error_text, sizeof(error_text), "Error: Could not open log file '%s' for reading!", filename);
-		error_text[sizeof(error_text)-1] = '\x0';
+		error_text[sizeof(error_text) - 1] = '\x0';
 		print_generic_error_message(error_text, NULL, 0);
 	}
 	if (read_status == READLOG_ERROR_FILTER)
@@ -713,17 +735,32 @@ void display_logentries() {
 			printf("%sLog Entry%s\n", csv_data_enclosure, csv_data_enclosure);
 
 		} else {
-			printf("<DIV CLASS='logEntries'>\n");
-
 			/* add export to csv, json, link */
-			printf("<div align=right style='margin-right:1em;' class='csv_export_link'>");
+			printf("<table width='100%%' cellspacing=0 cellpadding=0 border=0><tr><td width='33%%'></td><td width='33%%' align=center nowrap>");
+			printf("<div id='page_selector'>\n");
+			printf("<div id='page_navigation_copy'></div>");
+			page_limit_selector(result_start);
+			printf("</div>\n");
+			printf("</td><td width='33%%' align='right'>\n");
+			printf("<div class='csv_export_link' style='margin-right:1em;'>");
 			print_export_link(CSV_CONTENT, SHOWLOG_CGI, NULL);
 			print_export_link(JSON_CONTENT, SHOWLOG_CGI, NULL);
 			print_export_link(HTML_CONTENT, SHOWLOG_CGI, NULL);
+			printf("</div></td></tr></table>");
 			printf("</div>\n");
+
+			printf("<DIV CLASS='logEntries'>\n");
 		}
 
 		for (temp_entry = entry_list; temp_entry != NULL; temp_entry = temp_entry->next) {
+
+			if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+				total_entries++;
+				continue;
+			}
+
+			total_entries++;
+			displayed_entries++;
 
 			/* set the correct icon and icon alt text for current log entry */
 			if (temp_entry->type == LOGENTRY_STARTUP) {
@@ -841,7 +878,7 @@ void display_logentries() {
 
 			time_ptr = localtime(&temp_entry->timestamp);
 			strftime(current_message_date, sizeof(current_message_date), "%B %d, %Y %H:00", time_ptr);
-			current_message_date[sizeof(current_message_date)-1] = '\x0';
+			current_message_date[sizeof(current_message_date) - 1] = '\x0';
 
 			if (strcmp(last_message_date, current_message_date) != 0 && display_timebreaks == TRUE) {
 				printf("</DIV>\n");
@@ -855,7 +892,7 @@ void display_logentries() {
 				printf("</DIV>\n");
 				printf("<BR><DIV CLASS='logEntries'>\n");
 				strncpy(last_message_date, current_message_date, sizeof(last_message_date));
-				last_message_date[sizeof(last_message_date)-1] = '\x0';
+				last_message_date[sizeof(last_message_date) - 1] = '\x0';
 			}
 
 			get_time_string(&temp_entry->timestamp, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
@@ -865,7 +902,7 @@ void display_logentries() {
 			if (content_type == CSV_CONTENT || content_type == JSON_CONTENT) {
 				for (i = 0; i < strlen(temp_entry->entry_text) - 1; i++)
 					*(temp_entry->entry_text + i) = *(temp_entry->entry_text + i + 1);
-				temp_entry->entry_text[strlen(temp_entry->entry_text)-1] = '\x0';
+				temp_entry->entry_text[strlen(temp_entry->entry_text) - 1] = '\x0';
 			}
 
 			/* displays log entry depending on requested content type */
@@ -893,24 +930,23 @@ void display_logentries() {
 			}
 
 			user_has_seen_something = TRUE;
-			count++;
-
-			/* stop if max amount is reached */
-			if (num_displayed != 0 && count >= num_displayed)
-				break;
 		}
 
 		if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
-			printf("</DIV><br><div align=center>%d entries displayed</div><HR>\n", count);
+			if (user_has_seen_something == TRUE) {
+				printf("</DIV><hr>\n");
+				page_num_selector(result_start, total_entries, displayed_entries);
+			} else {
+				printf("<script type='text/javascript'>document.getElementById('showlog_page_navigation').style.display='none';</script>");
+			}
 		} else if (content_type == JSON_CONTENT)
 			printf("\n]\n");
-
 	}
 
 	free_log_entries();
 
-	if (user_has_seen_something == FALSE && content_type != CSV_CONTENT)
-		printf("<P><DIV CLASS='warningMessage'>No log entries found!</DIV></P>");
+	if (user_has_seen_something == FALSE && content_type != CSV_CONTENT && content_type != JSON_CONTENT)
+		printf("<DIV CLASS='warningMessage'>No log entries found!</DIV>");
 
 	return;
 }
@@ -934,11 +970,6 @@ void show_filter(void) {
 	printf("<tr><td align=right width='10%%'>Search:</td>");
 	printf("<td nowrap><input type='text' name='query_string' id='query_string' size='15' class='NavBarSearchItem' value='%s'>", (query_string == NULL) ? "" : html_encode(query_string, TRUE));
 	printf("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='Clear' onClick=\"document.getElementById('query_string').value = '';\"></td></tr>");
-
-	/* displayed entries */
-	printf("<tr><td align=right>Entries:</td>");
-	printf("<td nowrap><input type='text' name='num_displayed' id='num_displayed' size='15' class='NavBarSearchItem' value='%d'>", num_displayed);
-	printf("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='Reset' onClick=\"document.getElementById('num_displayed').value = '%d';\"></td></tr>", default_num_displayed_log_entries);
 
 	/* Order */
 	printf("<tr><td align=right>Order:</td>");
@@ -990,7 +1021,7 @@ void show_filter(void) {
 	printf("</td></tr>\n");
 
 	/* submit Button */
-	printf("<tr><td><input type='submit' value='Apply'></td><td align=right><input type='reset' value='Reset' onClick=\"window.location.href='%s?order=new2old&timeperiod=singleday&ts_start=%lu&ts_end=%lu'\">&nbsp;</td></tr>\n", SHOWLOG_CGI, ts_start, ts_end);
+	printf("<tr><td><input type='submit' value='Apply'></td><td align=right><input type='reset' value='Reset' onClick=\"window.location.href='%s?order=new2old&timeperiod=singleday&limit=%d'\">&nbsp;</td></tr>\n", SHOWLOG_CGI, result_limit);
 
 	printf("</table>\n");
 
@@ -1007,7 +1038,7 @@ void display_own_nav_table() {
 	/* construct url */
 	dummy = asprintf(&url, "%s?timeperiod=singleday&order=%s", SHOWLOG_CGI, (reverse == TRUE) ? "old2new" : "new2old");
 	strncpy(temp_buffer, url, sizeof(temp_buffer));
-	dummy = asprintf(&url, "%s&num_displayed=%d", temp_buffer, num_displayed);
+	dummy = asprintf(&url, "%s&limit=%d&start=%d", temp_buffer, result_limit, result_start);
 
 	if (query_string != NULL) {
 		strncpy(temp_buffer, url, sizeof(temp_buffer));

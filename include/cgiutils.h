@@ -56,8 +56,6 @@ extern "C" {
 #define SHOWLOG_CGI		"showlog.cgi"
 #define STATUS_CGI		"status.cgi"
 #define STATUSMAP_CGI		"statusmap.cgi"
-#define STATUSWML_CGI		"statuswml.cgi"
-#define STATUSWRL_CGI		"statuswrl.cgi"
 #define SUMMARY_CGI		"summary.cgi"
 #define TAC_CGI			"tac.cgi"
 #define TRENDS_CGI		"trends.cgi"
@@ -81,11 +79,9 @@ extern "C" {
 #define SHOWLOG_CGI_ID		9
 #define STATUS_CGI_ID		10
 #define STATUSMAP_CGI_ID	11
-#define STATUSWML_CGI_ID	12
-#define STATUSWRL_CGI_ID	13
-#define SUMMARY_CGI_ID		14
-#define TAC_CGI_ID		15
-#define TRENDS_CGI_ID		16
+#define SUMMARY_CGI_ID		12
+#define TAC_CGI_ID		13
+#define TRENDS_CGI_ID		14
 
 /* Are these ones still in use??? */
 #define TRACEROUTE_CGI_ID	17
@@ -254,6 +250,15 @@ extern "C" {
 #define TAC_HEADER_EXECUTION_ICON	"hourglass-exclamation.png"
 #define TAC_HEADER_LATENCY_ICON		"hourglass-arrow.png"
 
+#define FIRST_PAGE_ACTIVE_ICON		"icon_first_active.gif"
+#define FIRST_PAGE_INACTIVE_ICON	"icon_first_inactive.gif"
+#define PREVIOUS_PAGE_ACTIVE_ICON	"icon_previous_active.gif"
+#define PREVIOUS_PAGE_INACTIVE_ICON	"icon_previous_inactive.gif"
+#define NEXT_PAGE_ACTIVE_ICON		"icon_next_active.gif"
+#define NEXT_PAGE_INACTIVE_ICON		"icon_next_inactive.gif"
+#define LAST_PAGE_ACTIVE_ICON		"icon_last_active.gif"
+#define LAST_PAGE_INACTIVE_ICON		"icon_last_inactive.gif"
+
 /* icons taken from http://findicons.com */
 #define EXPORT_CSV_ICON			"export_csv.png"
 #define EXPORT_CSV_ICON_ALT		"Export to CSV"
@@ -294,11 +299,10 @@ extern "C" {
 
 /************************ CGI CONTENT TYPE *********************************/
 #define HTML_CONTENT		0
-#define WML_CONTENT		1
-#define IMAGE_CONTENT		2
-#define CSV_CONTENT		3
-#define JSON_CONTENT		4
-#define XML_CONTENT		5
+#define IMAGE_CONTENT		1
+#define CSV_CONTENT		2
+#define JSON_CONTENT		3
+#define XML_CONTENT		4
 
 
 /************************ CSV OUTPUT CHARACTERS ****************************/
@@ -694,6 +698,22 @@ void print_comment_icon(char *, char *);
  *  This function prints modified_attributes as string
 **/
 void print_modified_attributes(int , char *, unsigned long);
+
+/** @brief Display's the page number selector
+ *  @param [in] result_start the result start for the current displayed list
+ *  @param [in] total_entries number of total entries available to display
+ *  @param [in] displayed_entries number of actually displayed entries
+ *
+ *  Display's the page number selector and gernerates all links to select next/previouse page. Also copy's selector to top of the page
+**/
+void page_num_selector(int result_start, int total_entries, int displayed_entries);
+
+/** @brief Display's the page limit selector
+ *  @param [in] result_start needed to keep track from which result num the user want's to change the amount of displayed entries.
+ *
+ *  Display's the page limit selector which overwrites the config value
+**/
+void page_limit_selector(int result_start);
 
 /******************************** MULTIURL PATCH *******************************/
 
