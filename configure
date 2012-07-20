@@ -803,7 +803,6 @@ with_cgiurl
 with_htmurl
 enable_nanosleep
 enable_event_broker
-enable_state_based_escal_ranges
 enable_idoutils
 with_ido_instance_name
 enable_oracle
@@ -1452,9 +1451,6 @@ Optional Features:
   --enable-nanosleep      enables use of nanosleep (instead sleep) in event
                           timing
   --enable-event-broker   enables integration of event broker routines
-  --enable-state-based-escal-ranges
-                          enables state based escalation ranges - attention:
-                          interferes with mk_livestatus neb module
   --enable-idoutils       enables database connectivity using idoutils
   --enable-oracle         enables idoutils with ocilib and oracle
   --enable-pgsql          !use libdbis pgsql support instead, libpq not yet
@@ -6420,21 +6416,6 @@ if test x$SNPRINTF_BROKEN = xyes; then
 	SNPRINTF_O=../common/snprintf.o
 	SNPRINTF_O_IDO=snprintf.o
 
-
-fi
-
-USE_STATE_BASED_ESCAL_RANGES=no
-# Check whether --enable-state-based-escal-ranges was given.
-if test "${enable_state_based_escal_ranges+set}" = set; then :
-  enableval=$enable_state_based_escal_ranges; USE_STATE_BASED_ESCAL_RANGES=$enableval
-else
-  USE_STATE_BASED_ESCAL_RANGES=no
-fi
-
-if test x$USE_STATE_BASED_ESCAL_RANGES = xyes; then
-	cat >>confdefs.h <<_ACEOF
-#define USE_ST_BASED_ESCAL_RANGES 1
-_ACEOF
 
 fi
 

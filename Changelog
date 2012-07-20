@@ -12,6 +12,8 @@ ENHANCEMENTS
 * core: handle passive checks via external commands the same way as active checks, bypassing the temp check result file and reaper (Andreas Ericsson) #2687
 * core: use binary search when looking up macro names, instead of insane strcmp() loops (Andreas Ericsson) #2675
 * core: add useful message to p1.pl when epn plugin does not call exit() (Sven Nierlein) #2431
+* core: re-enable state based escalation ranges, using cast tricks #2878
+	** livestatus and other neb modules not using the icinga headers won't see those
 
 * idoutils: change hasfunc to use sdbm algorithm for hashing precached objects #2792
 * icinga.spec: add devel package #2634

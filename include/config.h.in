@@ -360,9 +360,6 @@
 # define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
 #endif
 
-/* define to use state based escalation ranges */
-#undef USE_ST_BASED_ESCAL_RANGES
-
 /* Define to 1 if you have the <dbi/dbi.h> header file. */
 #undef HAVE_DBI_DBI_H
 #undef USE_LIBDBI
