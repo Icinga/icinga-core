@@ -25,3 +25,4 @@ tags
 .libs/
 *.la
 *.lo
+*.gcno

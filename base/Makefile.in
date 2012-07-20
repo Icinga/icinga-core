@@ -14,7 +14,7 @@ CFLAGS=@CFLAGS@ @DEFS@ -DNSCORE
 
 # Compiler flags for use with gprof
 # when running prof, make sure to remove drop_privilegues when running!
-#CFLAGS=@CFLAGS@ -pg @DEFS@ -DNSCORE
+CFLAGS += -pg -ftest-coverage
 
 # Compiler flags for use with Valgrind
 #CFLAGS=-O0 -g -DHAVE_CONFIG_H -DNSCORE
