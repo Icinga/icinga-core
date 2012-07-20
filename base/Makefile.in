@@ -7,6 +7,7 @@
 SRC_COMMON=../common
 SRC_INCLUDE=../include
 SRC_XDATA=../xdata
+SRC_LIB=../lib
 
 CC=@CC@
 CFLAGS=@CFLAGS@ @DEFS@ -DNSCORE
@@ -181,8 +182,11 @@ $(SRC_COMMON)/snprintf.o: $(SRC_COMMON)/snprintf.c
 
 ########## ICINGA ##########
 
-icinga: icinga.c $(OBJS) $(OBJDEPS) $(SRC_INCLUDE)/icinga.h $(SRC_INCLUDE)/locations.h
-	$(CC) $(CFLAGS) -o $@ icinga.c $(OBJS) $(BROKER_LDFLAGS) $(LDFLAGS) $(PERLLIBS) $(MATHLIBS) $(SOCKETLIBS) $(THREADLIBS) $(BROKERLIBS) $(LIBS)
+libicinga:
+	$(MAKE) -C ${SRC_LIB}
+
+icinga: icinga.c $(OBJS) $(OBJDEPS) $(SRC_INCLUDE)/icinga.h $(SRC_INCLUDE)/locations.h libicinga
+	$(CC) $(CFLAGS) -o $@ icinga.c $(OBJS) $(BROKER_LDFLAGS) $(LDFLAGS) $(PERLLIBS) $(MATHLIBS) $(SOCKETLIBS) $(THREADLIBS) $(BROKERLIBS) $(LIBS) $(SRC_LIB)/libicinga.a
 
 icingastats: icingastats.c $(SRC_INCLUDE)/locations.h
 	$(CC) $(CFLAGS) -o $@ statsprofiler.c icingastats.c $(LDFLAGS) $(MATHLIBS) $(LIBS)
@@ -215,3 +219,5 @@ install-basic:
 strip-post-install:
 	$(STRIP) $(DESTDIR)$(BINDIR)/@icinga_name@
 	$(STRIP) $(DESTDIR)$(BINDIR)/@icingastats_name@
+
+.PHONY: libicinga
