@@ -719,7 +719,7 @@ void display_logentries() {
 		print_generic_error_message(error_text, NULL, 0);
 	}
 	if (read_status == READLOG_ERROR_FILTER)
-		print_generic_error_message("It seems like that reagular expressions don't like waht you searched for. Please change your search string.", NULL, 0);
+		print_generic_error_message("It seems like that reagular expressions don't like what you searched for. Please change your search string.", NULL, 0);
 
 	/* now we start displaying the log entries */
 	else {
