@@ -737,7 +737,7 @@ void display_logentries() {
 		} else {
 			/* add export to csv, json, link */
 			printf("<table width='100%%' cellspacing=0 cellpadding=0 border=0><tr><td width='33%%'></td><td width='33%%' align=center nowrap>");
-			printf("<div id='page_selector'>\n");
+			printf("<div class='page_selector'>\n");
 			printf("<div id='page_navigation_copy'></div>");
 			page_limit_selector(result_start);
 			printf("</div>\n");

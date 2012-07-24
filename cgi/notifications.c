@@ -501,14 +501,12 @@ void display_notifications(void) {
 			if (status == READLOG_ERROR_MEMORY)
 				printf("<DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV>");
 
-			printf("<div align='center'>\n");
-
-			printf("<table border=0 CLASS='notifications'>\n");
+			printf("<table border=0 CLASS='notifications' align='center'>\n");
 
 			/* add export to csv, json, link */
 			printf("<TR><TD colspan='7'>");
 			printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
-			printf("<div id='page_selector'>\n");
+			printf("<div class='page_selector'>\n");
 			printf("<div id='page_navigation_copy'></div>");
 			page_limit_selector(result_start);
 			printf("</div>\n");
@@ -785,8 +783,6 @@ void display_notifications(void) {
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</table>\n");
-
-		printf("</div>\n");
 
 		if (total_notifications == 0) {
 			printf("<DIV CLASS='errorMessage' style='text-align:center;'>No notifications have been recorded");

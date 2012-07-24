@@ -383,7 +383,7 @@ int main(void) {
 		}
 
 		if (display_type != DISPLAY_NONE && display_type != DISPLAY_ALL && display_type != DISPLAY_COMMAND_EXPANSION && display_type != DISPLAY_CGICONFIG) {
-			printf("<div id='page_selector'>\n");
+			printf("<div class='page_selector'>\n");
 			printf("<div id='page_navigation_copy'></div>");
 			page_limit_selector(result_start);
 			printf("</div>\n");
@@ -396,19 +396,19 @@ int main(void) {
 
 		if (display_type != DISPLAY_NONE && is_authorized_for_configuration_information(&current_authdata)) {
 
-			printf("<table border=0>\n");
 			printf("<form method=\"get\" action=\"%s\">\n", CONFIG_CGI);
+			printf("<table border=0>\n");
 
 			display_options();
 
 			if (display_type != DISPLAY_COMMAND_EXPANSION && display_type != DISPLAY_CGICONFIG) {
 				printf("<tr><td align=left class='reportSelectSubTitle'>Search (regex):</td></tr>\n");
-				printf("<tr><td align=left class='reportSelectItem'><input type='text' name='search_string' value='%s'>\n", (search_string != NULL) ? escape_string(search_string): "");
+				printf("<tr><td align=left class='reportSelectItem'><input type='text' name='search_string' value='%s'></td></tr>\n", (search_string != NULL) ? escape_string(search_string): "");
 			}
 
 			printf("<tr><td class='reportSelectItem'><input type='hidden' name='limit' value='%d'><input type='submit' value='Update'></td></tr>\n", result_limit);
-			printf("</form>\n");
 			printf("</table>\n");
+			printf("</form>\n");
 
 			printf("<div class='csv_export_link'>");
 			if (display_type != DISPLAY_COMMAND_EXPANSION) {
@@ -418,77 +418,73 @@ int main(void) {
 			print_export_link(HTML_CONTENT, CONFIG_CGI, NULL);
 			printf("</div>\n");
 		}
+
+		/* display context-sensitive help */
+		switch (display_type) {
+		case DISPLAY_HOSTS:
+			display_context_help(CONTEXTHELP_CONFIG_HOSTS);
+			break;
+		case DISPLAY_HOSTGROUPS:
+			display_context_help(CONTEXTHELP_CONFIG_HOSTGROUPS);
+			break;
+		case DISPLAY_SERVICEGROUPS:
+			display_context_help(CONTEXTHELP_CONFIG_SERVICEGROUPS);
+			break;
+		case DISPLAY_CONTACTS:
+			display_context_help(CONTEXTHELP_CONFIG_CONTACTS);
+			break;
+		case DISPLAY_CONTACTGROUPS:
+			display_context_help(CONTEXTHELP_CONFIG_CONTACTGROUPS);
+			break;
+		case DISPLAY_SERVICES:
+			display_context_help(CONTEXTHELP_CONFIG_SERVICES);
+			break;
+		case DISPLAY_TIMEPERIODS:
+			display_context_help(CONTEXTHELP_CONFIG_TIMEPERIODS);
+			break;
+		case DISPLAY_COMMANDS:
+			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
+			break;
+		case DISPLAY_SERVICEDEPENDENCIES:
+			display_context_help(CONTEXTHELP_CONFIG_SERVICEDEPENDENCIES);
+			break;
+		case DISPLAY_SERVICEESCALATIONS:
+			display_context_help(CONTEXTHELP_CONFIG_HOSTESCALATIONS);
+			break;
+		case DISPLAY_HOSTDEPENDENCIES:
+			display_context_help(CONTEXTHELP_CONFIG_HOSTDEPENDENCIES);
+			break;
+		case DISPLAY_HOSTESCALATIONS:
+			display_context_help(CONTEXTHELP_CONFIG_HOSTESCALATIONS);
+			break;
+		case DISPLAY_COMMAND_EXPANSION:
+			/* Reusing DISPLAY_COMMANDS help until further notice */
+			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
+			break;
+		case DISPLAY_MODULES:
+			/* reuse commands context help */
+			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
+			break;
+		case DISPLAY_CGICONFIG:
+			/* reuse commands context help */
+			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
+			break;
+		case DISPLAY_ALL:
+			break;
+		default:
+			display_context_help(CONTEXTHELP_CONFIG_MENU);
+			break;
+		}
+
+		/* end of top table */
+		printf("</td></tr>\n");
+		printf("</table>\n");
 	}
 
 	/* empty search string if regex compile failed */
 	if (search_regex_compile_failed == TRUE)
 		my_free(search_string);
 
-
-	/* display context-sensitive help */
-	switch (display_type) {
-	case DISPLAY_HOSTS:
-		display_context_help(CONTEXTHELP_CONFIG_HOSTS);
-		break;
-	case DISPLAY_HOSTGROUPS:
-		display_context_help(CONTEXTHELP_CONFIG_HOSTGROUPS);
-		break;
-	case DISPLAY_SERVICEGROUPS:
-		display_context_help(CONTEXTHELP_CONFIG_SERVICEGROUPS);
-		break;
-	case DISPLAY_CONTACTS:
-		display_context_help(CONTEXTHELP_CONFIG_CONTACTS);
-		break;
-	case DISPLAY_CONTACTGROUPS:
-		display_context_help(CONTEXTHELP_CONFIG_CONTACTGROUPS);
-		break;
-	case DISPLAY_SERVICES:
-		display_context_help(CONTEXTHELP_CONFIG_SERVICES);
-		break;
-	case DISPLAY_TIMEPERIODS:
-		display_context_help(CONTEXTHELP_CONFIG_TIMEPERIODS);
-		break;
-	case DISPLAY_COMMANDS:
-		display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-		break;
-	case DISPLAY_SERVICEDEPENDENCIES:
-		display_context_help(CONTEXTHELP_CONFIG_SERVICEDEPENDENCIES);
-		break;
-	case DISPLAY_SERVICEESCALATIONS:
-		display_context_help(CONTEXTHELP_CONFIG_HOSTESCALATIONS);
-		break;
-	case DISPLAY_HOSTDEPENDENCIES:
-		display_context_help(CONTEXTHELP_CONFIG_HOSTDEPENDENCIES);
-		break;
-	case DISPLAY_HOSTESCALATIONS:
-		display_context_help(CONTEXTHELP_CONFIG_HOSTESCALATIONS);
-		break;
-	case DISPLAY_COMMAND_EXPANSION:
-		/* Reusing DISPLAY_COMMANDS help until further notice */
-		display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-		break;
-	case DISPLAY_MODULES:
-		/* reuse commands context help */
-		display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-		break;
-	case DISPLAY_CGICONFIG:
-		/* reuse commands context help */
-		display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-		break;
-	case DISPLAY_ALL:
-		break;
-	default:
-		display_context_help(CONTEXTHELP_CONFIG_MENU);
-		break;
-	}
-
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
-		printf("</td>\n");
-
-		/* end of top table */
-		printf("</tr>\n");
-		printf("</table>\n");
-	}
 
 	/* see if user is authorized to view configuration information... */
 	if (is_authorized_for_configuration_information(&current_authdata) == FALSE) {
@@ -587,14 +583,12 @@ int main(void) {
 
 			printf("<form method=\"get\" action=\"%s\">\n", CONFIG_CGI);
 
-			printf("<div align=center>\n");
-			printf("<table border=0>\n");
+			printf("<table border=0 align='center'>\n");
 
 			display_options();
 
 			printf("<tr><td class='reportSelectItem' align='center'><input type='submit' value='Continue'></td></tr>\n");
 			printf("</table>\n");
-			printf("</div>\n");
 
 			printf("</form>\n");
 		}
@@ -839,8 +833,6 @@ void display_hosts(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host Name</TH>");
@@ -1384,10 +1376,9 @@ void display_hosts(void) {
 
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -1410,8 +1401,6 @@ void display_hostgroups(void) {
 		printf("%sNotes URL%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAction URL%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Group Name</TH>");
@@ -1522,10 +1511,9 @@ void display_hostgroups(void) {
 		}
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -1549,10 +1537,7 @@ void display_servicegroups(void) {
 		printf("%sAction URL%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Group Name</TH>");
 		printf("<TH CLASS='data'>Description</TH>");
@@ -1661,10 +1646,9 @@ void display_servicegroups(void) {
 		}
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -1695,10 +1679,7 @@ void display_contacts(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
-		printf("<TABLE CLASS='data'>\n");
-
+		printf("<TABLE border='0' CLASS='data'>\n");
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Contact Name</TH>");
 		printf("<TH CLASS='data'>Alias</TH>");
@@ -1959,10 +1940,9 @@ void display_contacts(void) {
 			printf("</TD>\n</TR>\n");
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -1983,10 +1963,7 @@ void display_contactgroups(void) {
 		printf("%sContact Members%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
-		printf("<TABLE BORDER=0 CELLSPACING=3 CELLPADDING=0>\n");
-
+		printf("<TABLE BORDER=0 class='data'>\n");
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Group Name</TH>\n");
 		printf("<TH CLASS='data'>Description</TH>\n");
@@ -2069,10 +2046,9 @@ void display_contactgroups(void) {
 		}
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -2133,10 +2109,7 @@ void display_services(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host</TH>\n");
 		printf("<TH CLASS='data'>Description</TH>\n");
@@ -2649,10 +2622,9 @@ void display_services(void) {
 		}
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -2686,10 +2658,7 @@ void display_timeperiods(void) {
 		printf("%sTimes%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Name</TH>\n");
 		printf("<TH CLASS='data'>Alias/Description</TH>\n");
@@ -2948,10 +2917,9 @@ void display_timeperiods(void) {
 		}
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -2970,10 +2938,7 @@ void display_commands(void) {
 		printf("%sCommand Line%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		printf("<TR><TH CLASS='data'>Command Name</TH><TH CLASS='data'>Command Line</TH></TR>\n");
 	}
 
@@ -3025,10 +2990,9 @@ void display_commands(void) {
 		}
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -3054,10 +3018,7 @@ void display_servicedependencies(void) {
 		printf("%sDependency Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDependency Failure Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		printf("<TR>\n");
 		printf("<TH CLASS='data' COLSPAN=2>Dependent Service</TH>");
 		printf("<TH CLASS='data' COLSPAN=2>Master Service</TH>");
@@ -3191,10 +3152,9 @@ void display_servicedependencies(void) {
 	}
 
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -3223,10 +3183,7 @@ void display_serviceescalations(void) {
 		printf("%sEscalation Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sEscalation Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host</TH>");
 		printf("<TH CLASS='data'>Description</TH>");
@@ -3453,10 +3410,9 @@ void display_serviceescalations(void) {
 			printf("</TD>\n</TR>\n");
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -3478,10 +3434,7 @@ void display_hostdependencies(void) {
 		printf("%sDependency Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDependency Failure Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Dependent Host</TH>");
 		printf("<TH CLASS='data'>Master Host</TH>");
@@ -3588,10 +3541,9 @@ void display_hostdependencies(void) {
 			printf("</TD>\n</TR>\n");
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -3619,10 +3571,7 @@ void display_hostescalations(void) {
 		printf("%sEscalation Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sEscalation Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host</TH>");
 		printf("<TH CLASS='data'>Contacts/Groups</TH>");
@@ -3819,10 +3768,9 @@ void display_hostescalations(void) {
 			printf("</TD>\n</TR>\n");
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -3843,10 +3791,7 @@ void display_modules(void) {
 		printf("%sModule Args%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<TABLE BORDER=0 CLASS='data'>\n");
-
 		printf("<TR><TH CLASS='data'>Module Name</TH><TH CLASS='data'>Module Type</TH><TH CLASS='data'>Module Path</TH><TH CLASS='data'>Module Args</TH></TR>\n");
 	}
 
@@ -3905,10 +3850,9 @@ void display_modules(void) {
 		}
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -4032,7 +3976,6 @@ void display_cgiconfig(void) {
 		printf("%sCurrent Setting%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CLASS='data' cellpadding=2>\n");
 		printf("<TR><TH CLASS='data'>Config Option Name</TH><TH CLASS='data'>Default Setting</TH><TH CLASS='data'>Current Setting</TH></TR>\n");
 	}
@@ -4206,10 +4149,9 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_INT(use_ssl_authentication, org_use_ssl_authentication, "bool")
 
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;
@@ -4290,7 +4232,6 @@ void display_command_expansion(void) {
 			else trail_space[i] = 0;
 	}
 
-	printf("<P><DIV ALIGN=CENTER>\n");
 	printf("<TABLE BORDER=0 CLASS='data'>\n");
 	printf("<TR><TH CLASS='data'>Command Name</TH><TH CLASS='data'>Command Line</TH></TR>\n");
 
@@ -4468,7 +4409,6 @@ void display_command_expansion(void) {
 	printf("<INPUT TYPE='SUBMIT' VALUE='Go'></FORM></TD></TR>\n");
 
 	printf("</TABLE>\n");
-	printf("</DIV></P>\n");
 
 	return;
 }

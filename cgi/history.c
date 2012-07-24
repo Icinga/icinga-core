@@ -500,7 +500,7 @@ void show_history(void) {
 	} else if (status == READLOG_OK || status == READLOG_ERROR_MEMORY) {
 
 		printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
-		printf("<div id='page_selector'>\n");
+		printf("<div class='page_selector'>\n");
 		printf("<div id='page_navigation_copy'></div>");
 		page_limit_selector(result_start);
 		printf("</div>\n");

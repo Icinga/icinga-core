@@ -1142,7 +1142,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_DD_JS);
 
 		/* This CSS IS needed for proper dropdown menu's (bypass the use_stylesheets above, who does without anyway?) */
-		printf("<link rel='stylesheet' type='text/css' href='%s%s'/>\n", url_stylesheets_path, JQUERY_DD_CSS);
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_stylesheets_path, JQUERY_DD_CSS);
 
 		/* functions to handle the checkboxes and dropdown menus */
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, CHECKBOX_FUNCTIONS_JS);
@@ -1261,7 +1261,7 @@ void write_popup_code(int cgi_id) {
 	int x_offset = 3;
 	int y_offset = 3;
 
-	printf("<SCRIPT LANGUAGE='JavaScript'>\n");
+	printf("<SCRIPT LANGUAGE='JavaScript' type='text/javascript'>\n");
 	printf("<!--\n");
 	printf("// JavaScript popup based on code originally found at http://www.helpmaster.com/htmlhelp/javascript/popjbpopup.htm\n");
 	printf("function showPopup(text, eventObj){\n");
@@ -2122,10 +2122,10 @@ void include_ssi_file(char *filename) {
 		case EFAULT: /* Bad address. */
 		case ENOMEM: /* Out of memory (i.e. kernel memory). */
 		case ENAMETOOLONG: /* File name too long. */
-			printf("<br /> A stat call returned %d while looking for the file %s.<br />", errno, filename);
+			printf("<br> A stat call returned %d while looking for the file %s.<br>", errno, filename);
 			return;
 		case EACCES: /* Permission denied. -- The file should be accessible by nagios. */
-			printf("<br /> A stat call returned a permissions error(%d) while looking for the file %s.<br />", errno, filename);
+			printf("<br> A stat call returned a permissions error(%d) while looking for the file %s.<br>", errno, filename);
 			return;
 		case ENOENT: /* A component of the path file_name does not exist, or the path is an empty string. Just return if the file doesn't exist. */
 			return;
@@ -3321,18 +3321,18 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 	}
 
 	/* links page select elements and counters */
-	printf("<div id='page_selector'>\n");
+	printf("<div class='page_selector'>\n");
 	printf("<div id='page_navigation' class='page_select_dd'>");
 
 	if (current_page != 1 || (result_limit != 0 && result_start != 1))
-		printf("<a href='%s%sstart=1&limit=%d' title='First Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<<' /></a>\n", link, (strstr(link, "?")) ? "&" : "?", result_limit, url_images_path, FIRST_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=1&limit=%d' title='First Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<<'></a>\n", link, (strstr(link, "?")) ? "&" : "?", result_limit, url_images_path, FIRST_PAGE_ACTIVE_ICON);
 	else
-		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16' />\n", url_images_path, FIRST_PAGE_INACTIVE_ICON);
+		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16'>\n", url_images_path, FIRST_PAGE_INACTIVE_ICON);
 
 	if (current_page != 1)
-		printf("<a href='%s%sstart=%d&limit=%d' title='Previous Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<' /></a>\n", link, (strstr(link, "?")) ? "&" : "?", previous_page, result_limit, url_images_path, PREVIOUS_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=%d&limit=%d' title='Previous Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<'></a>\n", link, (strstr(link, "?")) ? "&" : "?", previous_page, result_limit, url_images_path, PREVIOUS_PAGE_ACTIVE_ICON);
 	else
-		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16' />\n", url_images_path, PREVIOUS_PAGE_INACTIVE_ICON);
+		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16'>\n", url_images_path, PREVIOUS_PAGE_INACTIVE_ICON);
 
 	printf("<span style='vertical-align:middle; font-size:8pt;'> Page </span>");
 
@@ -3343,10 +3343,10 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 	printf("<span style='vertical-align:middle; font-size:8pt;'> of %d </span>", total_pages);
 
 	if (current_page != total_pages) {
-		printf("<a href='%s%sstart=%d&limit=%d' title='Next Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>' /></a>\n", link, (strstr(link, "?")) ? "&" : "?", (result_start + result_limit), result_limit, url_images_path, NEXT_PAGE_ACTIVE_ICON);
-		printf("<a href='%s%sstart=%d&limit=%d' title='Last Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>>' /></a>\n", link, (strstr(link, "?")) ? "&" : "?", ((total_pages - 1)*result_limit) + 1, result_limit, url_images_path, LAST_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=%d&limit=%d' title='Next Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>'></a>\n", link, (strstr(link, "?")) ? "&" : "?", (result_start + result_limit), result_limit, url_images_path, NEXT_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=%d&limit=%d' title='Last Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>>'></a>\n", link, (strstr(link, "?")) ? "&" : "?", ((total_pages - 1)*result_limit) + 1, result_limit, url_images_path, LAST_PAGE_ACTIVE_ICON);
 	} else
-		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16' /><img src='%s%s' style='vertical-align: middle;' height='16' width='16' />\n", url_images_path, NEXT_PAGE_INACTIVE_ICON, url_images_path, LAST_PAGE_INACTIVE_ICON);
+		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16'><img src='%s%s' style='vertical-align: middle;' height='16' width='16'>\n", url_images_path, NEXT_PAGE_INACTIVE_ICON, url_images_path, LAST_PAGE_INACTIVE_ICON);
 
 	printf("</div>\n");
 	page_limit_selector(result_start);
@@ -3364,7 +3364,7 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 	printf("<div style='text-align:center;padding-top:6px;font-size:8pt;'>Displaying Result %d - %d of %d Matching Results</div>\n", display_from, display_to, total_entries);
 
 	/* copy page navigation to top of the page */
-	printf("<script language='javascript'>\n");
+	printf("<script language='javascript' type='text/javascript'>\n");
 	printf("$(document).ready(function() { \n");
 	printf("$('#page_navigation').clone(true).appendTo('#page_navigation_copy');\n");
 	printf("});\n");
@@ -3442,7 +3442,7 @@ void page_limit_selector(int result_start) {
 	printf("</select>\n");
 
 	/* Print out the activator for the dropdown (which must be between the body tags */
-	printf("<script language='javascript'>\n");
+	printf("<script language='javascript' type='text/javascript'>\n");
 	printf("$(document).ready(function() { \n");
 	printf("try { \n$(\"#limit_dd_%d\").msDropDown({visibleRows:6}).data(\"dd\").visible(true);\n", id);
 	printf("} catch(e) {\n");

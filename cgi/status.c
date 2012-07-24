@@ -1199,7 +1199,7 @@ int main(void) {
 	if (show_dropdown != NO_STATUS && content_type == HTML_CONTENT) {
 
 		if (highlight_table_rows == TRUE) {
-			printf("<script type = \"text/javascript\">\n");
+			printf("<script type=\"text/javascript\">\n");
 			printf("\t$(document).ready(function(){\n");
 			printf("\t\t$(\"table.status tr\").hover(function( e ) {\n");
 			printf("\t\t\t$(this).find(\"td\").each(function(){\n");
@@ -2194,7 +2194,7 @@ void show_service_detail(void) {
 		}
 
 		if (group_style_type != STYLE_HOST_SERVICE_DETAIL) {
-			printf("<div id='page_selector'>\n");
+			printf("<div class='page_selector'>\n");
 			printf("<div id='page_navigation_copy'></div>");
 			page_limit_selector(result_start);
 			printf("</div>\n");
@@ -2267,8 +2267,7 @@ void show_service_detail(void) {
 			temp_buffer[0] = '\x0';
 
 		/* the main list of services */
-		printf("<DIV ALIGN='center'>\n");
-		printf("<TABLE BORDER=0 width=100%% CLASS='status'>\n");
+		printf("<TABLE BORDER=0 width=100%% CLASS='status' align='center'>\n");
 
 		printf("<TR>\n");
 
@@ -2730,7 +2729,6 @@ void show_service_detail(void) {
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
 		printf("</FORM>\n");
 
 		/* if user couldn't see anything, print out some helpful info... */
@@ -2830,7 +2828,7 @@ void show_host_detail(void) {
 			printf("</DIV>\n");
 		}
 
-		printf("<div id='page_selector'>\n");
+		printf("<div class='page_selector'>\n");
 		printf("<div id='page_navigation_copy'></div>");
 		page_limit_selector(result_start);
 		printf("</div></td>\n");
@@ -2901,8 +2899,7 @@ void show_host_detail(void) {
 			temp_buffer[0] = '\x0';
 
 		/* the main list of hosts */
-		printf("<DIV ALIGN='center'>\n");
-		printf("<TABLE BORDER=0 width=100%% CLASS='status'>\n");
+		printf("<TABLE BORDER=0 width=100%% CLASS='status' align='center'>\n");
 
 		printf("<TR>\n");
 
@@ -3183,7 +3180,6 @@ void show_host_detail(void) {
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
 		printf("</FORM>\n");
 
 		/* if user couldn't see anything, print out some helpful info... */
@@ -3214,8 +3210,7 @@ void show_servicegroup_overviews(void) {
 		printf("\"servicegroup_overview\": [\n");
 	} else {
 		/* display status overviews for Servicegroups */
-		printf("<DIV ALIGN=center>\n");
-		printf("<TABLE BORDER=0 CELLPADDING=10>\n");
+		printf("<TABLE BORDER=0 CELLPADDING=10 align='center'>\n");
 
 		current_column = 1;
 	}
@@ -3278,7 +3273,6 @@ void show_servicegroup_overviews(void) {
 		}
 
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
 	}
 
 	/* if user couldn't see anything, print out some helpful info... */
@@ -3323,8 +3317,7 @@ void show_servicegroup_overview(servicegroup *temp_servicegroup) {
 		printf(" (<A HREF='%s?type=%d&servicegroup=%s'>%s</A>)", EXTINFO_CGI, DISPLAY_SERVICEGROUP_INFO, url_encode(temp_servicegroup->group_name), html_encode(temp_servicegroup->group_name, TRUE));
 		printf("</DIV>\n");
 
-		printf("<DIV CLASS='status'>\n");
-		printf("<table border=1 CLASS='status'>\n");
+		printf("<table border=1 CLASS='status' align='center'>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='status'>Host</TH><TH CLASS='status'>Status</TH><TH CLASS='status'>Services</TH><TH CLASS='status'>Actions</TH>\n");
@@ -3403,10 +3396,8 @@ void show_servicegroup_overview(servicegroup *temp_servicegroup) {
 
 	if (content_type == JSON_CONTENT)
 		printf(" ] }\n");
-	else {
+	else
 		printf("</table>\n");
-		printf("</DIV>\n");
-	}
 
 	return;
 }
@@ -3426,9 +3417,7 @@ void show_servicegroup_summaries(void) {
 	if (content_type == JSON_CONTENT) {
 		printf("\"servicegroup_summary\": [\n");
 	} else {
-		printf("<DIV ALIGN=center>\n");
-		printf("<table border=1 CLASS='status'>\n");
-
+		printf("<table border=1 CLASS='status' align='center'>\n");
 		printf("<TR>\n");
 		printf("<TH CLASS='status'>Service Group</TH><TH CLASS='status'>Host Status Summary</TH><TH CLASS='status'>Service Status Summary</TH>\n");
 		printf("</TR>\n");
@@ -3516,10 +3505,8 @@ void show_servicegroup_summaries(void) {
 
 	if (content_type == JSON_CONTENT)
 		printf(" ]\n");
-	else {
+	else
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	}
 
 	/* if user couldn't see anything, print out some helpful info... */
 	if (user_has_seen_something == FALSE) {
@@ -4111,13 +4098,10 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 		printf("{ \"servicegroup_name\": \"%s\",\n", json_encode(temp_servicegroup->group_name));
 		printf("\"members\": [ \n");
 	} else {
-		printf("<P>\n");
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<DIV CLASS='status'><A HREF='%s?servicegroup=%s&style=detail'>%s</A>", STATUS_CGI, url_encode(temp_servicegroup->group_name), html_encode(temp_servicegroup->alias, TRUE));
 		printf(" (<A HREF='%s?type=%d&servicegroup=%s'>%s</A>)</DIV>", EXTINFO_CGI, DISPLAY_SERVICEGROUP_INFO, url_encode(temp_servicegroup->group_name), html_encode(temp_servicegroup->group_name, TRUE));
 
-		printf("<TABLE BORDER=1 CLASS='status' ALIGN=CENTER>\n");
+		printf("<TABLE BORDER=1 CLASS='status' align='center'>\n");
 		printf("<TR><TH CLASS='status'>Host</TH><TH CLASS='status'>Services</a></TH><TH CLASS='status'>Actions</TH></TR>\n");
 	}
 
@@ -4360,11 +4344,8 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 
 	if (content_type == JSON_CONTENT)
 		printf(" ] } \n");
-	else {
+	else
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-		printf("</P>\n");
-	}
 
 	return;
 }
@@ -4386,9 +4367,7 @@ void show_hostgroup_overviews(void) {
 		printf("\"hostgroup_overview\": [\n");
 	} else {
 		/* display status overviews for hostgroups */
-		printf("<DIV ALIGN=center>\n");
-		printf("<TABLE BORDER=0 CELLPADDING=10>\n");
-
+		printf("<TABLE BORDER=0 CELLPADDING=10 align='center'>\n");
 		current_column = 1;
 	}
 
@@ -4485,7 +4464,6 @@ void show_hostgroup_overviews(void) {
 		}
 
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
 	}
 
 	/* if user couldn't see anything, print out some helpful info... */
@@ -4566,8 +4544,7 @@ int show_hostgroup_overview(hostgroup *hstgrp) {
 		printf(" (<A HREF='%s?type=%d&hostgroup=%s'>%s</A>)", EXTINFO_CGI, DISPLAY_HOSTGROUP_INFO, url_encode(hstgrp->group_name), html_encode(hstgrp->group_name, TRUE));
 		printf("</DIV>\n");
 
-		printf("<DIV CLASS='status'>\n");
-		printf("<table border=1 CLASS='status'>\n");
+		printf("<table border=1 CLASS='status' align='center'>\n");
 
 		printf("<TR>\n");
 		printf("<TH CLASS='status'>Host</TH><TH CLASS='status'>Status</TH><TH CLASS='status'>Services</TH><TH CLASS='status'>Actions</TH>\n");
@@ -4637,7 +4614,6 @@ int show_hostgroup_overview(hostgroup *hstgrp) {
 		printf(" ] }\n");
 	else {
 		printf("</table>\n");
-		printf("</DIV>\n");
 		printf("</TD>\n");
 	}
 
@@ -4691,9 +4667,9 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus, int odd,
 		printf("<TABLE BORDER=0 WIDTH=100%% cellpadding=0 cellspacing=0>\n");
 		printf("<TR CLASS='status%s'>\n", status_bg_class);
 		if (!strcmp(temp_host->address6, temp_host->name))
-			printf("<TD CLASS='status%s'><A HREF='%s?host=%s&style=detail' title='%s'>%s</A></TD>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
+			printf("<TD CLASS='status%s' align='left'><A HREF='%s?host=%s&style=detail' title='%s'>%s</A></TD>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
 		else
-			printf("<TD CLASS='status%s'><A HREF='%s?host=%s&style=detail' title='%s,%s'>%s</A></TD>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, temp_host->address6, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
+			printf("<TD CLASS='status%s' align='left'><A HREF='%s?host=%s&style=detail' title='%s,%s'>%s</A></TD>\n", status_bg_class, STATUS_CGI, url_encode(hststatus->host_name), temp_host->address, temp_host->address6, (temp_host->display_name != NULL) ? html_encode(temp_host->display_name, TRUE) : html_encode(temp_host->name, TRUE));
 
 		if (temp_host->icon_image != NULL) {
 			printf("<TD CLASS='status%s' WIDTH=5></TD>\n", status_bg_class);
@@ -4886,9 +4862,7 @@ void show_hostgroup_summaries(void) {
 	if (content_type == JSON_CONTENT) {
 		printf("\"hostgroup_summary\": [\n");
 	} else {
-		printf("<DIV ALIGN=center>\n");
-		printf("<table border=1 CLASS='status'>\n");
-
+		printf("<table border=1 CLASS='status' align='center'>\n");
 		printf("<TR>\n");
 		printf("<TH CLASS='status'>Host Group</TH><TH CLASS='status'>Host Status Summary</TH><TH CLASS='status'>Service Status Summary</TH>\n");
 		printf("</TR>\n");
@@ -4993,10 +4967,8 @@ void show_hostgroup_summaries(void) {
 
 	if (content_type == JSON_CONTENT)
 		printf(" ]\n");
-	else {
+	else
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	}
 
 	/* if user couldn't see anything, print out some helpful info... */
 	if (user_has_seen_something == FALSE) {
@@ -5623,13 +5595,10 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 		printf("{ \"hostgroup_name\": \"%s\",\n", json_encode(temp_hostgroup->group_name));
 		printf("\"members\": [ \n");
 	} else {
-		printf("<P>\n");
-		printf("<DIV ALIGN=CENTER>\n");
-
 		printf("<DIV CLASS='status'><A HREF='%s?hostgroup=%s&style=detail'>%s</A>", STATUS_CGI, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->alias, TRUE));
 		printf(" (<A HREF='%s?type=%d&hostgroup=%s'>%s</A>)</DIV>", EXTINFO_CGI, DISPLAY_HOSTGROUP_INFO, url_encode(temp_hostgroup->group_name), html_encode(temp_hostgroup->group_name, TRUE));
 
-		printf("<TABLE BORDER=1 CLASS='status' ALIGN=CENTER>\n");
+		printf("<TABLE BORDER=1 CLASS='status' align='center'>\n");
 		printf("<TR><TH CLASS='status'>Host</TH><TH CLASS='status'>Services</a></TH><TH CLASS='status'>Actions</TH></TR>\n");
 	}
 
@@ -5861,11 +5830,8 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 
 	if (content_type == JSON_CONTENT)
 		printf(" ] } \n");
-	else {
+	else
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-		printf("</P>\n");
-	}
 
 	return TRUE;
 }
@@ -6785,7 +6751,7 @@ void show_servicecommand_table(void) {
 		printf("</select>\n");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
-		printf("<script language='javascript'>\n");
+		printf("<script language='javascript' type=\"text/javascript\">\n");
 		printf("$(document).ready(function() { \n");
 		printf("document.tableformservice.cmd_typ.selectedIndex = 0;\n");
 		printf("document.tableformservice.cmd_typ.options[0].selected = true;\n");
@@ -6842,7 +6808,7 @@ void show_hostcommand_table(void) {
 		printf("</select>\n");
 
 		/* Print out the activator for the dropdown (which must be between the body tags */
-		printf("<script language='javascript'>\n");
+		printf("<script language='javascript' type=\"text/javascript\">\n");
 		printf("$(document).ready(function() { \n");
 		printf("document.tableformhost.cmd_typ.selectedIndex = 0;\n");
 		printf("document.tableformhost.cmd_typ.options[0].selected = true;\n");
@@ -6994,7 +6960,7 @@ void status_page_num_selector(int local_result_start, int status_type) {
 	/* links page select elements and counters */
 	if ((group_style_type == STYLE_HOST_SERVICE_DETAIL && status_type == SERVICE_STATUS) || group_style_type != STYLE_HOST_SERVICE_DETAIL) {
 
-		printf("<div id='page_selector'>\n");
+		printf("<div class='page_selector'>\n");
 		printf("<div id='page_navigation' class='page_select_dd'>");
 
 		if (current_page != 1 || (result_limit != 0 && result_start != 1))
@@ -7050,7 +7016,7 @@ void status_page_num_selector(int local_result_start, int status_type) {
 
 	/* copy page navigation to top of the page */
 	if ((group_style_type == STYLE_HOST_SERVICE_DETAIL && status_type == SERVICE_STATUS) || group_style_type != STYLE_HOST_SERVICE_DETAIL) {
-		printf("<script language='javascript'>\n");
+		printf("<script language='javascript' type=\"text/javascript\">\n");
 		printf("$(document).ready(function() { \n");
 		printf("$('#page_navigation').clone(true).appendTo('#page_navigation_copy');\n");
 		printf("});\n");

@@ -65,7 +65,7 @@
 .dd .borderTop{border-top:1px solid #c3c3c3 !important;}
 .dd .noBorderTop{border-top:none 0  !important}
 
-#page_selector {
+.page_selector {
 	width: 345px;
 	vertical-align: middle;
 	text-align: center;

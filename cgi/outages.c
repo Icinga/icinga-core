@@ -313,8 +313,8 @@ void display_network_outages(void) {
 		printf("%sSERVICES_AFFECTED%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
 		/* display the problem hosts... */
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH='33%%'></TD><TD WIDTH='33%%'><DIV CLASS='dataTitle'>Blocking Outages</DIV><TD WIDTH='33%%'>");
+
+		printf("<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 align='center'><TR><TD WIDTH='33%%'></TD><TD WIDTH='33%%'><DIV CLASS='dataTitle'>Blocking Outages</DIV><TD WIDTH='33%%'>");
 
 		/* add export to csv link */
 		printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
@@ -443,8 +443,6 @@ void display_network_outages(void) {
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
-
-		printf("</DIV></P>\n");
 
 		if (total_entries == 0)
 			printf("<DIV CLASS='itemTotalsTitle'>%d Blocking Outages Displayed</DIV>\n", total_entries);

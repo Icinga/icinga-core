@@ -17,7 +17,7 @@ a.homepageURL:Hover { color: #ff3300; }
 
 .dataTitle { text-align: center; font-weight: bold; font-size: 10pt; }
 
-table.data { background-color: #fff; padding: 2; }
+table.data { background-color: #fff; padding: 2; margin-left:auto;  margin-right:auto;}
 th.data { font-size: 10pt; background-color: #707677; color: #fff; }
 .dataOdd { background-color: #CFCFCF; }
 .dataEven { background-color: #E7E7E7; }
