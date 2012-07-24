@@ -11,8 +11,26 @@ ENHANCEMENTS
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
 * classic ui: Added action_url/notes_url to status.cgi for csvoutput and jsonoutput #2553 - RB
-* classic ui: Added pagination to various cgi's #2725 - RB
+* classic ui: Added pagination to various cgi's (thx to ideas and partly source from Nagios, Thruk, Icinga Web) #2725 - RB
+	** status.cgi for host & service status
+	** config.cgi
+	** extinfo.cgi for scheduling queue, comments and downtimes
+	** history.cgi
+	** notifications.cgi
+	** showlog.cgi
+	** icons sourced from "Silk icon set" (http://www.famfamfam.com/lab/icons/silk/) created by Mark James.
+
 * classic ui: Changed search in config.cgi to regex #2884
+
+CHANGES
+
+classic ui: Added pagination to various cgi's #2725
+	** new cgi GET params: "limit" and "start"
+	** new cgi.cfg option: "result_limit" (default: 50)
+
+classic ui: "result_limit" replaces "default_num_displayed_log_entries" in cgi.cfg #2725
+
+
 
 
 1.7.1 - 18/06/2012
