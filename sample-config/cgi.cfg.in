@@ -283,13 +283,35 @@ authorized_for_all_host_commands=icingaadmin
 # READ-ONLY USERS
 # A comma-delimited list of usernames that have read-only rights in
 # the CGIs.  This will block any service or host commands normally shown
-# on the extinfo CGI pages.  It will also block comments from being shown
-# to read-only users.
+# on the extinfo CGI pages. It will also block comments and downtimes
+# from being shown to read-only users.
 # Alternatively you can specify contactgroups too, starting
 # with Icinga 1.5.0
 
 #authorized_for_read_only=user1,user2
 #authorized_contactgroup_for_read_only=
+
+
+# READ-ONLY FOR COMMENTS USERS
+# A comma-delimited list of usernames that have rights to view comments in
+# the CGIs. If user is defined as read-only and you add the same user to
+# this options, then the user can still see comments. If user is NOT
+# read-only then the options to delete comments in extinfo.cgi are not
+# displayed as well.
+
+#authorized_for_comments_read_only=user1,user2
+#authorized_contactgroup_for_comments_read_only=
+
+
+# READ-ONLY FOR DOWNTIMES USERS
+# A comma-delimited list of usernames that have rights to view downtimes in
+# the CGIs. If user is defined as read-only and you add the same user to
+# this options, then the user can still see downtimes. If user is NOT
+# read-only then the options to delete downtimes in extinfo.cgi are not
+# displayed as well.
+
+#authorized_for_downtimes_read_only=user1,user2
+#authorized_contactgroup_for_downtimes_read_only=
 
 
 # SHOW ALL SERVICES THE HOST IS AUTHORIZED FOR

@@ -83,6 +83,8 @@ char		*authorized_for_all_services = NULL;
 char		*authorized_for_configuration_information = NULL;
 char		*authorized_for_full_command_resolution = NULL;
 char		*authorized_for_read_only = NULL;
+char		*authorized_for_comments_read_only = NULL;
+char		*authorized_for_downtimes_read_only = NULL;
 char		*authorized_for_system_commands = NULL;
 char		*authorized_for_system_information = NULL;
 char		*authorized_contactgroup_for_all_host_commands = NULL;
@@ -92,6 +94,8 @@ char		*authorized_contactgroup_for_all_services = NULL;
 char		*authorized_contactgroup_for_configuration_information = NULL;
 char		*authorized_contactgroup_for_full_command_resolution = NULL;
 char		*authorized_contactgroup_for_read_only = NULL;
+char		*authorized_contactgroup_for_comments_read_only = NULL;
+char		*authorized_contactgroup_for_downtimes_read_only = NULL;
 char		*authorized_contactgroup_for_system_commands = NULL;
 char		*authorized_contactgroup_for_system_information = NULL;
 char		*default_user_name = NULL;
@@ -652,6 +656,14 @@ int read_cgi_config_file(char *filename) {
 			authorized_for_read_only = strdup(val);
 			strip(authorized_for_read_only);
 
+		} else if (!strcmp(var, "authorized_for_comments_read_only")) {
+			authorized_for_comments_read_only = strdup(val);
+			strip(authorized_for_comments_read_only);
+
+		} else if (!strcmp(var, "authorized_for_downtimes_read_only")) {
+			authorized_for_downtimes_read_only = strdup(val);
+			strip(authorized_for_downtimes_read_only);
+
 		} else if (!strcmp(var, "authorized_for_system_commands")) {
 			authorized_for_system_commands = strdup(val);
 			strip(authorized_for_system_commands);
@@ -687,6 +699,14 @@ int read_cgi_config_file(char *filename) {
 		} else if (!strcmp(var, "authorized_contactgroup_for_read_only")) {
 			authorized_contactgroup_for_read_only = strdup(val);
 			strip(authorized_contactgroup_for_read_only);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_comments_read_only")) {
+			authorized_contactgroup_for_comments_read_only = strdup(val);
+			strip(authorized_contactgroup_for_comments_read_only);
+
+		} else if (!strcmp(var, "authorized_contactgroup_for_downtimes_read_only")) {
+			authorized_contactgroup_for_downtimes_read_only = strdup(val);
+			strip(authorized_contactgroup_for_downtimes_read_only);
 
 		} else if (!strcmp(var, "authorized_contactgroup_for_system_commands")) {
 			authorized_contactgroup_for_system_commands = strdup(val);

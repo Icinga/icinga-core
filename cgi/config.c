@@ -55,6 +55,8 @@ extern char *authorized_for_all_services;
 extern char *authorized_for_configuration_information;
 extern char *authorized_for_full_command_resolution;
 extern char *authorized_for_read_only;
+extern char *authorized_for_comments_read_only;
+extern char *authorized_for_downtimes_read_only;
 extern char *authorized_for_system_commands;
 extern char *authorized_for_system_information;
 extern char *authorized_contactgroup_for_all_host_commands;
@@ -64,6 +66,8 @@ extern char *authorized_contactgroup_for_all_services;
 extern char *authorized_contactgroup_for_configuration_information;
 extern char *authorized_contactgroup_for_full_command_resolution;
 extern char *authorized_contactgroup_for_read_only;
+extern char *authorized_contactgroup_for_comments_read_only;
+extern char *authorized_contactgroup_for_downtimes_read_only;
 extern char *authorized_contactgroup_for_system_commands;
 extern char *authorized_contactgroup_for_system_information;
 extern char cgi_log_archive_path[MAX_FILENAME_LENGTH];
@@ -176,6 +180,8 @@ char *org_authorized_for_all_services = "";
 char *org_authorized_for_configuration_information = "";
 char *org_authorized_for_full_command_resolution = "";
 char *org_authorized_for_read_only = "";
+char *org_authorized_for_comments_read_only;
+char *org_authorized_for_downtimes_read_only;
 char *org_authorized_for_system_commands = "";
 char *org_authorized_for_system_information = "";
 char *org_authorized_contactgroup_for_all_host_commands = "";
@@ -185,6 +191,8 @@ char *org_authorized_contactgroup_for_all_services = "";
 char *org_authorized_contactgroup_for_configuration_information = "";
 char *org_authorized_contactgroup_for_full_command_resolution = "";
 char *org_authorized_contactgroup_for_read_only = "";
+char *org_authorized_contactgroup_for_comments_read_only;
+char *org_authorized_contactgroup_for_downtimes_read_only;
 char *org_authorized_contactgroup_for_system_commands = "";
 char *org_authorized_contactgroup_for_system_information = "";
 char *org_cgi_log_archive_path = "";
@@ -3994,6 +4002,8 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_AUTH(authorized_for_configuration_information, org_authorized_for_configuration_information)
 	PRINT_CONFIG_LINE_AUTH(authorized_for_full_command_resolution, org_authorized_for_full_command_resolution)
 	PRINT_CONFIG_LINE_AUTH(authorized_for_read_only, org_authorized_for_read_only)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_comments_read_only, org_authorized_for_comments_read_only)
+	PRINT_CONFIG_LINE_AUTH(authorized_for_downtimes_read_only, org_authorized_for_downtimes_read_only)
 	PRINT_CONFIG_LINE_AUTH(authorized_for_system_commands, org_authorized_for_system_commands)
 	PRINT_CONFIG_LINE_AUTH(authorized_for_system_information, org_authorized_for_system_information)
 	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_all_host_commands, org_authorized_contactgroup_for_all_host_commands)
@@ -4003,6 +4013,8 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_configuration_information, org_authorized_contactgroup_for_configuration_information)
 	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_full_command_resolution, org_authorized_contactgroup_for_full_command_resolution)
 	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_read_only, org_authorized_contactgroup_for_read_only)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_comments_read_only, org_authorized_contactgroup_for_comments_read_only)
+	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_downtimes_read_only, org_authorized_contactgroup_for_downtimes_read_only)
 	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_system_commands, org_authorized_contactgroup_for_system_commands)
 	PRINT_CONFIG_LINE_AUTH(authorized_contactgroup_for_system_information, org_authorized_contactgroup_for_system_information)
 	PRINT_CONFIG_LINE_INT(add_notif_num_hard, org_add_notif_num_hard, "int")
@@ -4452,6 +4464,8 @@ void store_default_settings(void) {
 	authorized_for_configuration_information = (authorized_for_configuration_information == NULL) ? "" : authorized_for_configuration_information;
 	authorized_for_full_command_resolution = (authorized_for_full_command_resolution == NULL) ? "" : authorized_for_full_command_resolution;
 	authorized_for_read_only = (authorized_for_read_only == NULL) ? "" : authorized_for_read_only;
+	authorized_for_comments_read_only = (authorized_for_comments_read_only == NULL) ? "" : authorized_for_comments_read_only;
+	authorized_for_downtimes_read_only = (authorized_for_downtimes_read_only == NULL) ? "" : authorized_for_downtimes_read_only;
 	authorized_for_system_commands = (authorized_for_system_commands == NULL) ? "" : authorized_for_system_commands;
 	authorized_for_system_information = (authorized_for_system_information == NULL) ? "" : authorized_for_system_information;
 	authorized_contactgroup_for_all_host_commands = (authorized_contactgroup_for_all_host_commands == NULL) ? "" : authorized_contactgroup_for_all_host_commands;
@@ -4461,6 +4475,8 @@ void store_default_settings(void) {
 	authorized_contactgroup_for_configuration_information = (authorized_contactgroup_for_configuration_information == NULL) ? "" : authorized_contactgroup_for_configuration_information;
 	authorized_contactgroup_for_full_command_resolution = (authorized_contactgroup_for_full_command_resolution == NULL) ? "" : authorized_contactgroup_for_full_command_resolution;
 	authorized_contactgroup_for_read_only = (authorized_contactgroup_for_read_only == NULL) ? "" : authorized_contactgroup_for_read_only;
+	authorized_contactgroup_for_comments_read_only = (authorized_contactgroup_for_comments_read_only == NULL) ? "" : authorized_contactgroup_for_comments_read_only;
+	authorized_contactgroup_for_downtimes_read_only = (authorized_contactgroup_for_downtimes_read_only == NULL) ? "" : authorized_contactgroup_for_downtimes_read_only;
 	authorized_contactgroup_for_system_commands = (authorized_contactgroup_for_system_commands == NULL) ? "" : authorized_contactgroup_for_system_commands;
 	authorized_contactgroup_for_system_information = (authorized_contactgroup_for_system_information == NULL) ? "" : authorized_contactgroup_for_system_information;
 	csv_delimiter = (csv_delimiter == NULL) ? "" : csv_delimiter;
@@ -4488,6 +4504,8 @@ void store_default_settings(void) {
 	org_authorized_for_configuration_information = strdup(authorized_for_configuration_information);
 	org_authorized_for_full_command_resolution = strdup(authorized_for_full_command_resolution);
 	org_authorized_for_read_only = strdup(authorized_for_read_only);
+	org_authorized_for_comments_read_only = strdup(authorized_for_comments_read_only);
+	org_authorized_for_downtimes_read_only = strdup(authorized_for_downtimes_read_only);
 	org_authorized_for_system_commands = strdup(authorized_for_system_commands);
 	org_authorized_for_system_information = strdup(authorized_for_system_information);
 	org_authorized_contactgroup_for_all_host_commands = strdup(authorized_contactgroup_for_all_host_commands);
@@ -4496,6 +4514,8 @@ void store_default_settings(void) {
 	org_authorized_contactgroup_for_all_services = strdup(authorized_contactgroup_for_all_services);
 	org_authorized_contactgroup_for_configuration_information = strdup(authorized_contactgroup_for_configuration_information);
 	org_authorized_contactgroup_for_full_command_resolution = strdup(authorized_contactgroup_for_full_command_resolution);
+	org_authorized_contactgroup_for_downtimes_read_only = strdup(authorized_contactgroup_for_downtimes_read_only);
+	org_authorized_contactgroup_for_comments_read_only = strdup(authorized_contactgroup_for_comments_read_only);
 	org_authorized_contactgroup_for_read_only = strdup(authorized_contactgroup_for_read_only);
 	org_authorized_contactgroup_for_system_commands = strdup(authorized_contactgroup_for_system_commands);
 	org_authorized_contactgroup_for_system_information = strdup(authorized_contactgroup_for_system_information);

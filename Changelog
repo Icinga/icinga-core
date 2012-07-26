@@ -20,16 +20,21 @@ ENHANCEMENTS
 	** showlog.cgi
 	** icons sourced from "Silk icon set" (http://www.famfamfam.com/lab/icons/silk/) created by Mark James.
 
-* classic ui: Changed search in config.cgi to regex #2884
+* classic ui: Changed search in config.cgi to regex #2884 - RB
+* classic ui: Added config option to let read-only users see comments and downtimes #2699 - RB
 
 CHANGES
 
 classic ui: Added pagination to various cgi's #2725
 	** new cgi GET params: "limit" and "start"
-	** new cgi.cfg option: "result_limit" (default: 50)
 
-classic ui: "result_limit" replaces "default_num_displayed_log_entries" in cgi.cfg #2725
-
+classic ui: Added/Changed cgi.cfg options
+	** authorized_for_comments_read_only - #2699
+	** authorized_for_downtimes_read_only - #2699
+	** authorized_contactgroup_for_comments_read_only - #2699
+	** authorized_contactgroup_for_downtimes_read_only - #2699
+	** "result_limit" (default: 50) - #2725
+	** "result_limit" replaces "default_num_displayed_log_entries" - #2725
 
 
 

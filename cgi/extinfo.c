@@ -754,7 +754,7 @@ int main(void) {
 		} else
 			show_service_info();
 	} else if (display_type == DISPLAY_COMMENTS) {
-		if (is_authorized_for_read_only(&current_authdata) == TRUE)
+		if (is_authorized_for_read_only(&current_authdata) == TRUE && is_authorized_for_comments_read_only(&current_authdata) == FALSE)
 			printf("<DIV ALIGN=CENTER CLASS='infoMessage'>Your account does not have permissions to view comments.<br>\n");
 		else {
 			if (content_type == CSV_CONTENT || content_type == JSON_CONTENT) {
@@ -773,7 +773,7 @@ int main(void) {
 			}
 		}
 	} else if (display_type == DISPLAY_DOWNTIME) {
-		if (is_authorized_for_read_only(&current_authdata) == TRUE)
+		if (is_authorized_for_read_only(&current_authdata) == TRUE && is_authorized_for_downtimes_read_only(&current_authdata) == FALSE)
 			printf("<DIV ALIGN=CENTER CLASS='infoMessage'>Your account does not have permissions to view downtimes.<br>\n");
 		else {
 			if (content_type == CSV_CONTENT || content_type == JSON_CONTENT) {
@@ -1485,7 +1485,7 @@ void show_host_info(void) {
 			printf("\"notifications_enabled\": %s,\n", (temp_hoststatus->notifications_enabled == TRUE) ? "true" : "false");
 			printf("\"event_handler_enabled\": %s,\n", (temp_hoststatus->event_handler_enabled == TRUE) ? "true" : "false");
 			printf("\"flap_detection_enabled\": %s\n", (temp_hoststatus->flap_detection_enabled == TRUE) ? "true" : "false");
-			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+			if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
 
 				/* display comments */
 				printf(",\n");
@@ -1715,7 +1715,7 @@ void show_host_info(void) {
 
 		printf("<TD COLSPAN=2 VALIGN=TOP CLASS='commentPanel'>\n");
 
-		if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+		if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
 			/* display comments */
 			show_comments(HOST_COMMENT);
 			printf("<BR>");
@@ -1911,7 +1911,7 @@ void show_service_info(void) {
 			printf("\"notifications_enabled\": %s,\n", (temp_svcstatus->notifications_enabled == TRUE) ? "true" : "false");
 			printf("\"event_handler_enabled\": %s,\n", (temp_svcstatus->event_handler_enabled == TRUE) ? "true" : "false");
 			printf("\"flap_detection_enabled\": %s\n", (temp_svcstatus->flap_detection_enabled == TRUE) ? "true" : "false");
-			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+			if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
 
 				/* display comments */
 				printf(",\n");
@@ -2171,7 +2171,7 @@ void show_service_info(void) {
 		printf("<TR>\n");
 		printf("<TD COLSPAN=2 VALIGN=TOP CLASS='commentPanel'>\n");
 
-		if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+		if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
 			/* display comments */
 			show_comments(SERVICE_COMMENT);
 			printf("<BR>");
@@ -2855,6 +2855,9 @@ void show_comments(int type) {
 	if (display_type == DISPLAY_COMMENTS)
 		colspan = (type != SERVICE_COMMENT) ? colspan + 1 : colspan + 2;
 
+	if (is_authorized_for_comments_read_only(&current_authdata) == TRUE)
+		colspan--;
+
 	if (content_type == JSON_CONTENT) {
 		if (type == HOST_COMMENT)
 			printf("\"host_comments\": [\n");
@@ -2909,7 +2912,8 @@ void show_comments(int type) {
 			printf("</td><td width='33%%' align='right'>\n");
 		}
 
-		printf("<input type='submit' name='CommandButton' value='Delete Comments' disabled=\"disabled\">");
+		if (is_authorized_for_comments_read_only(&current_authdata) == FALSE)
+			printf("<input type='submit' name='CommandButton' value='Delete Comments' disabled=\"disabled\">");
 
 		if (display_type == DISPLAY_COMMENTS && type == HOST_COMMENT)
 			printf("</td></tr></table>");
@@ -2922,7 +2926,10 @@ void show_comments(int type) {
 			if (type == SERVICE_COMMENT)
 				printf("<TH CLASS='comment'>Service</TH>");
 		}
-		printf("<TH CLASS='comment'>Entry Time</TH><TH CLASS='comment'>Author</TH><TH CLASS='comment'>Comment</TH><TH CLASS='comment'>Comment ID</TH><TH CLASS='comment'>Persistent</TH><TH CLASS='comment'>Type</TH><TH CLASS='comment'>Expires</TH><TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value=all onclick=\"checkAll(\'tableform%scomment\');isValidForSubmit(\'tableform%scomment\');\"></TH></TR>\n", (type == HOST_COMMENT) ? "host" : "service", (type == HOST_COMMENT) ? "host" : "service");
+		printf("<TH CLASS='comment'>Entry Time</TH><TH CLASS='comment'>Author</TH><TH CLASS='comment'>Comment</TH><TH CLASS='comment'>Comment ID</TH><TH CLASS='comment'>Persistent</TH><TH CLASS='comment'>Type</TH><TH CLASS='comment'>Expires</TH>");
+		if (is_authorized_for_comments_read_only(&current_authdata) == FALSE)
+			printf("<TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value=all onclick=\"checkAll(\'tableform%scomment\');isValidForSubmit(\'tableform%scomment\');\"></TH>", (type == HOST_COMMENT) ? "host" : "service", (type == HOST_COMMENT) ? "host" : "service");
+		printf("</TR>\n");
 	}
 
 	/* display all the service comments */
@@ -3043,8 +3050,10 @@ void show_comments(int type) {
 				}
 			}
 			printf("<td name='comment_time'>%s</td><td name='comment_author'>%s</td><td name='comment_data'>%s</td><td name='comment_id'>%lu</td><td name='comment_persist'>%s</td><td name='comment_type'>%s</td><td name='comment_expire'>%s</td>", date_time, temp_comment->author, temp_comment->comment_data, temp_comment->comment_id, (temp_comment->persistent) ? "Yes" : "No", comment_type, (temp_comment->expires == TRUE) ? expire_time : "N/A");
-			printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
-			printf("<input type='checkbox' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\" name='com_id' id='comment_%lu' value='%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
+			if (is_authorized_for_comments_read_only(&current_authdata) == FALSE) {
+				printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
+				printf("<input type='checkbox' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\" name='com_id' id='comment_%lu' value='%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
+			}
 			printf("</tr>\n");
 		}
 		total_comments++;
@@ -3101,6 +3110,9 @@ void show_downtime(int type) {
 	/* define colspan */
 	if (display_type == DISPLAY_DOWNTIME)
 		colspan = (type != SERVICE_DOWNTIME) ? colspan + 1 : colspan + 2;
+
+	if (is_authorized_for_downtimes_read_only(&current_authdata) == TRUE)
+		colspan--;
 
 	if (content_type == JSON_CONTENT) {
 		if (type == HOST_DOWNTIME)
@@ -3160,7 +3172,8 @@ void show_downtime(int type) {
 			printf("</td><td width='33%%' align='right'>\n");
 		}
 
-		printf("<input type='submit' name='CommandButton' value='Delete Downtimes' disabled=\"disabled\">");
+		if (is_authorized_for_downtimes_read_only(&current_authdata) == FALSE)
+			printf("<input type='submit' name='CommandButton' value='Delete Downtimes' disabled=\"disabled\">");
 
 		if (display_type == DISPLAY_DOWNTIME && type == HOST_DOWNTIME)
 			printf("</td></tr></table>");
@@ -3173,7 +3186,10 @@ void show_downtime(int type) {
 			if (type == SERVICE_DOWNTIME)
 				printf("<TH CLASS='downtime'>Service</TH>");
 		}
-		printf("<TH CLASS='downtime'>Entry Time</TH><TH CLASS='downtime'>Author</TH><TH CLASS='downtime'>Comment</TH><TH CLASS='downtime'>Start Time</TH><TH CLASS='downtime'>End Time</TH><TH CLASS='downtime'>Type</TH><TH CLASS='downtime'>Trigger Time</TH><TH CLASS='downtime'>Duration</TH><TH CLASS='downtime'>Is in effect</TH><TH CLASS='downtime'>Downtime ID</TH><TH CLASS='downtime'>Trigger ID</TH><TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%sdowntime\');isValidForSubmit(\'tableform%sdowntime\');\"></TH></TR>\n", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
+		printf("<TH CLASS='downtime'>Entry Time</TH><TH CLASS='downtime'>Author</TH><TH CLASS='downtime'>Comment</TH><TH CLASS='downtime'>Start Time</TH><TH CLASS='downtime'>End Time</TH><TH CLASS='downtime'>Type</TH><TH CLASS='downtime'>Trigger Time</TH><TH CLASS='downtime'>Duration</TH><TH CLASS='downtime'>Is in effect</TH><TH CLASS='downtime'>Downtime ID</TH><TH CLASS='downtime'>Trigger ID</TH>");
+		if (is_authorized_for_downtimes_read_only(&current_authdata) == FALSE)
+			printf("<TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%sdowntime\');isValidForSubmit(\'tableform%sdowntime\');\"></TH>", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
+		printf("</TR>\n");
 	}
 
 	/* display all the downtime */
@@ -3339,13 +3355,11 @@ void show_downtime(int type) {
 			printf("%s\n", csv_data_enclosure);
 		} else {
 			printf("</td>\n");
-			printf("<td align='center' CLASS='%s'>", bg_class);
-			if (type == HOST_DOWNTIME)
-				printf("<a href='%s?cmd_typ=%d", CMD_CGI, CMD_DEL_HOST_DOWNTIME);
-			else
-				printf("<a href='%s?cmd_typ=%d", CMD_CGI, CMD_DEL_SVC_DOWNTIME);
-			printf("&down_id=%lu'><img src='%s%s' border=0 ALT='Delete/Cancel This Scheduled Downtime Entry' TITLE='Delete/Cancel This Scheduled Downtime Entry'></a>", temp_downtime->downtime_id, url_images_path, DELETE_ICON);
-			printf("<input type='checkbox' onClick=\"toggle_checkbox('downtime_%lu','tableform%sdowntime');\" name='down_id' id='downtime_%lu' value='%lu'></td>", temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service", temp_downtime->downtime_id, temp_downtime->downtime_id);
+			if (is_authorized_for_downtimes_read_only(&current_authdata) == FALSE) {
+				printf("<td align='center' CLASS='%s'><a href='%s?cmd_typ=%d", bg_class, CMD_CGI, (type == HOST_DOWNTIME) ? CMD_DEL_HOST_DOWNTIME : CMD_DEL_SVC_DOWNTIME);
+				printf("&down_id=%lu'><img src='%s%s' border=0 ALT='Delete/Cancel This Scheduled Downtime Entry' TITLE='Delete/Cancel This Scheduled Downtime Entry'></a>", temp_downtime->downtime_id, url_images_path, DELETE_ICON);
+				printf("<input type='checkbox' onClick=\"toggle_checkbox('downtime_%lu','tableform%sdowntime');\" name='down_id' id='downtime_%lu' value='%lu'></td>", temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service", temp_downtime->downtime_id, temp_downtime->downtime_id);
+			}
 			printf("</tr>\n");
 		}
 		total_downtime++;

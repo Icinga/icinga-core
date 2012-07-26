@@ -2473,8 +2473,7 @@ void show_service_detail(void) {
 				if (temp_hoststatus->problem_has_been_acknowledged == TRUE) {
 					printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s#comments'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host problem has been acknowledged' TITLE='This host problem has been acknowledged'></A></TD>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_status->host_name), url_images_path, ACKNOWLEDGEMENT_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 				}
-				/* only show comments if this is a non-read-only user */
-				if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+				if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
 					if (total_comments > 0)
 						print_comment_icon(temp_host->name, NULL);
 				}
@@ -2559,15 +2558,14 @@ void show_service_detail(void) {
 			printf("<TABLE BORDER=0 cellspacing=0 cellpadding=0>\n");
 			printf("<TR>\n");
 			total_comments = number_of_service_comments(temp_service->host_name, temp_service->description);
-			/* only show comments if this is a non-read-only user */
-			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
-				if (total_comments > 0) {
-					print_comment_icon(temp_host->name, temp_service->description);
-				}
-			}
 			if (temp_status->problem_has_been_acknowledged == TRUE) {
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_status->host_name));
 				printf("&service=%s#comments'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This service problem has been acknowledged' TITLE='This service problem has been acknowledged'></A></TD>", url_encode(temp_status->svc_description), url_images_path, ACKNOWLEDGEMENT_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+			}
+			if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
+				if (total_comments > 0) {
+					print_comment_icon(temp_host->name, temp_service->description);
+				}
 			}
 			if (temp_status->checks_enabled == FALSE) {
 				if (temp_status->accept_passive_checks == FALSE) {
@@ -3033,8 +3031,10 @@ void show_host_detail(void) {
 			if (temp_statusdata->problem_has_been_acknowledged == TRUE) {
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s#comments'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='This host problem has been acknowledged' TITLE='This host problem has been acknowledged'></A></TD>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, ACKNOWLEDGEMENT_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 			}
-			if (total_comments > 0)
-				print_comment_icon(temp_host->name, NULL);
+			if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
+				if (total_comments > 0)
+					print_comment_icon(temp_host->name, NULL);
+			}
 			if (temp_statusdata->notifications_enabled == FALSE) {
 				printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d ALT='Notifications for this host have been disabled' TITLE='Notifications for this host have been disabled'></A></TD>", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_statusdata->host_name), url_images_path, NOTIFICATIONS_DISABLED_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 			}
