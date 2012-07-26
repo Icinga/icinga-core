@@ -888,6 +888,13 @@ int delete_downtime_by_hostname_service_description_start_time_comment(char *hos
 	if (hostname == NULL && service_description == NULL && start_time == 0 && comment == NULL)
 		return deleted;
 
+	/*
+	 * lock while traversing the list
+	 * so that other threads cannot modify
+	 */
+#ifdef NSCORE
+	pthread_mutex_lock(&icinga_downtime_lock);
+#endif
 	for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = next_downtime) {
 		next_downtime = temp_downtime->next;
 		if (start_time != 0 && temp_downtime->start_time != start_time) {
@@ -911,6 +918,9 @@ int delete_downtime_by_hostname_service_description_start_time_comment(char *hos
 		unschedule_downtime(temp_downtime->type, temp_downtime->downtime_id);
 		deleted++;
 	}
+#ifdef NSCORE
+	pthread_mutex_unlock(&icinga_downtime_lock);
+#endif
 	return deleted;
 }
 
