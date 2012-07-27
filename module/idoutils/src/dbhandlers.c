@@ -740,25 +740,35 @@ int ido2db_add_cached_object_id(ido2db_idi *idi, int object_type, char *n1, char
 	return result;
 }
 
+/*
+ * hash functions
+ */
+static unsigned long ido2db_object_sdbm(const char *str) {
+        unsigned long hash = 0;
+        int c;
+
+        while ((c = *str++) != '\0')
+                hash = c + (hash << 6) + (hash << 16) - hash;
+
+        return hash;
+}
+
 int ido2db_object_hashfunc(const char *name1, const char *name2, int hashslots) {
-	unsigned int i, result;
+        unsigned int result = 0;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_object_hashfunc() start\n");
 
-	result = 0;
-	if (name1)
-		for (i = 0; i < strlen(name1); i++)
-			result += name1[i];
+        if (name1)
+                result += ido2db_object_sdbm(name1);
 
-	if (name2)
-		for (i = 0; i < strlen(name2); i++)
-			result += name2[i];
+        if (name2)
+                result += ido2db_object_sdbm(name2);
 
-	result = result % hashslots;
+        result = result % hashslots;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_object_hashfunc() end\n");
 
-	return result;
+        return result;
 }
 
 int ido2db_compare_object_hashdata(const char *val1a, const char *val1b,
@@ -794,6 +804,9 @@ int ido2db_compare_object_hashdata(const char *val1a, const char *val1b,
 	return result;
 }
 
+/*
+ * free cached object ids
+ */
 int ido2db_free_cached_object_ids(ido2db_idi *idi) {
 	int x = 0;
 	ido2db_dbobject *temp_object = NULL;
@@ -824,6 +837,7 @@ int ido2db_free_cached_object_ids(ido2db_idi *idi) {
 
 	return IDO_OK;
 }
+
 
 int ido2db_set_all_objects_as_inactive(ido2db_idi *idi) {
 	int result = IDO_OK;

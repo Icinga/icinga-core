@@ -5,9 +5,15 @@ Icinga 1.8.x Change Log
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
 
-1.8.0 - XX/XX/2012
+1.8.0 - XX/10/2012
 
 ENHANCEMENTS
+* core/classic ui: make hashfunc more efficient by using sdbm #2761 - MF/GB
+* core: try the most common macros ($ARGn$, $USERn$) first (Andreas Ericsson) #2674 - MF
+* core: handle passive checks via external commands the same way as active checks, bypassing the temp check result file and reaper (Andreas Ericsson) #2687 -MF
+* core: use binary search when looking up macro names, instead of insane strcmp() loops (Andreas Ericsson) #2675 - MF
+* core: add useful message to p1.pl when epn plugin does not call exit() (Sven Nierlein) #2431 -MF
+
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
 * classic ui: Added action_url/notes_url to status.cgi for csvoutput and jsonoutput #2553 - RB
@@ -23,12 +29,22 @@ ENHANCEMENTS
 * classic ui: Changed search in config.cgi to regex #2884 - RB
 * classic ui: Added config option to let read-only users see comments and downtimes #2699 - RB
 
+* idoutils: change hasfunc to use sdbm algorithm for hashing precached objects #2792i - MF/GB
+* icinga.spec: add devel package #2634 - MF
+
+FIXES
+* core: unify check scheduling replacement logic for new events (Andreas Ericsson) #2676 - MF
+* core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665 - MF
+* core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197 - MF
+
 CHANGES
 
-classic ui: Added pagination to various cgi's #2725
+* icinga.spec: add devel package #2634
+
+* classic ui: Added pagination to various cgi's #2725
 	** new cgi GET params: "limit" and "start"
 
-classic ui: Added/Changed cgi.cfg options
+* classic ui: Added/Changed cgi.cfg options
 	** authorized_for_comments_read_only - #2699
 	** authorized_for_downtimes_read_only - #2699
 	** authorized_contactgroup_for_comments_read_only - #2699

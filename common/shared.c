@@ -353,19 +353,25 @@ void strip(char *buffer) {
 /**************************************************
  *************** HASH FUNCTIONS *******************
  **************************************************/
+static unsigned long sdbm(const char *str) {
+	unsigned long hash = 0;
+	int c;
+
+	while ((c = *str++) != '\0')
+		hash = c + (hash << 6) + (hash << 16) - hash;
+
+	return hash;
+}
+
 /* dual hash function */
 int hashfunc(const char *name1, const char *name2, int hashslots) {
-	unsigned int i, result;
-
-	result = 0;
+	unsigned int result = 0;
 
 	if (name1)
-		for (i = 0; i < strlen(name1); i++)
-			result += name1[i];
+		result += sdbm(name1);
 
 	if (name2)
-		for (i = 0; i < strlen(name2); i++)
-			result += name2[i];
+		result += sdbm(name2);
 
 	result = result % hashslots;
 

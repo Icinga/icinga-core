@@ -3581,72 +3581,55 @@ int deinit_embedded_perl(void) {
 
 /* checks to see if we should run a script using the embedded Perl interpreter */
 int file_uses_embedded_perl(char *fname) {
-	int use_epn = FALSE;
-#ifdef EMBEDDEDPERL
+#ifndef EMBEDDEDPERL
+	return FALSE;
+#else
+	int line, use_epn = FALSE;
 	FILE *fp = NULL;
-	char line1[80] = "";
-	char linen[80] = "";
-	int line = 0;
-	char *ptr = NULL;
-	int found_epn_directive = FALSE;
+	char buf[256] = "";
 
-	if (enable_embedded_perl == TRUE) {
+	if (enable_embedded_perl != TRUE)
+		return FALSE;
 
-		/* open the file, check if its a Perl script and see if we can use epn  */
-		fp = fopen(fname, "r");
-		if (fp != NULL) {
 
-			/* grab the first line - we should see Perl */
-			fgets(line1, 80, fp);
+	/* open the file, check if its a Perl script and see if we can use epn  */
+	fp = fopen(fname, "r");
+	if (fp == NULL)
+		return FALSE;
 
-			/* yep, its a Perl script... */
-			if (strstr(line1, "/bin/perl") != NULL) {
+	/* grab the first line - we should see Perl. go home if not */
+	if (fgets(line1, 80, fp) == NULL || strstr(buf, "/bin/perl") == NULL) {
+		fclose(fp);
+	}
 
-				/* epn directives must be found in first ten lines of plugin */
-				for (line = 1; line < 10; line++) {
+	/* epn directives must be found in first ten lines of plugin */
+	for (line = 1; line < 10; line++) {
+		if (fgets(buf, sizeof(buf) - 1, fp) == NULL)
+			break;
 
-					if (fgets(linen, 80, fp)) {
+		buf[sizeof(buf) - 1] = '\0';
 
-						/* line contains Icinga directives - keep Nagios compatibility */
-						if (strstr(linen, "# nagios:") || strstr(linen, "# icinga:")) {
+		/* line contains Icinga directives - keep Nagios compatibility */
+		if (strstr(linen, "# nagios:") || strstr(linen, "# icinga:")) {
+			char *p;
+			p = strstr(buf + 8, "epn");
+			if (!p)
+				continue;
 
-							ptr = strtok(linen, ":");
-
-							/* process each directive */
-							for (ptr = strtok(NULL, ","); ptr != NULL; ptr = strtok(NULL, ",")) {
-
-								strip(ptr);
-
-								if (!strcmp(ptr, "+epn")) {
-									use_epn = TRUE;
-									found_epn_directive = TRUE;
-								} else if (!strcmp(ptr, "-epn")) {
-									use_epn = FALSE;
-									found_epn_directive = TRUE;
-								}
-							}
-						}
-
-						if (found_epn_directive == TRUE)
-							break;
-					}
-
-					/* EOF */
-					else
-						break;
-				}
-
-				/* if the plugin didn't tell us whether or not to use embedded Perl, use implicit value */
-				if (found_epn_directive == FALSE)
-					use_epn = (use_embedded_perl_implicitly == TRUE) ? TRUE : FALSE;
-			}
-
+			/*
+			 * we found it, so close the file and return
+			 * whatever it shows. '+epn' means yes. everything
+			 * else means no.
+			 */
 			fclose(fp);
+			return *(p - 1) == '+' ? TRUE : FALSE;
 		}
 	}
-#endif
 
-	return use_epn;
+	fclose(fp);
+
+	return use_embedded_perl_implicitly;
+#endif
 }
 
 
