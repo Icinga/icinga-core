@@ -1256,6 +1256,7 @@ CREATE TABLE programstatus (
   last_command_check TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   last_log_rotation TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   notifications_enabled integer default 0 ,
+  disable_notif_expire_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   active_service_checks_enabled integer default 0 ,
   passive_service_checks_enabled integer default 0 ,
   active_host_checks_enabled integer default 0 ,

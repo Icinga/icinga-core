@@ -55,6 +55,7 @@ th.downtime { text-align: left; font-size: 10pt;  background-color: #707677; col
 
 .notificationsENABLED { background-color: #00cc33; color: #fff; text-align: center; }
 .notificationsDISABLED { background-color: #ff3300; color: #fff; text-align: center; }
+.notificationsUNKNOWN { background-color: #bf44b2; color: #fff; text-align: center; }
 
 .checksENABLED { background-color: #00cc33; color: #fff; text-align: center; }
 .checksDISABLED { background-color: #ff3300; color: #fff; text-align: center; }

@@ -91,6 +91,8 @@ extern int      child_processes_fork_twice;
 
 extern int      time_change_threshold;
 
+extern time_t	disable_notifications_expire_time;
+
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
 extern int 	event_profiling_enabled;
@@ -669,6 +671,10 @@ void display_event_data(timed_event* event, int priority) {
 
 	case EVENT_PROGRAM_RESTART:
 		printf("\t\t(program restart)\n");
+		break;
+
+	case EVENT_EXPIRE_DISABLED_NOTIFICATIONS:
+		printf("\t\t((expire disabled notifications)\n");
 		break;
 
 	case EVENT_CHECK_REAPER:
@@ -1371,6 +1377,34 @@ int handle_timed_event(timed_event *event) {
 
 		/* log the restart */
 		logit(NSLOG_PROCESS_INFO, TRUE, "PROGRAM_RESTART event encountered, restarting...\n");
+		break;
+
+	case EVENT_EXPIRE_DISABLED_NOTIFICATIONS:
+
+		log_debug_info(DEBUGL_EVENTS, 0, "** Expire Disabled Notifications Event\n");
+
+		/* check if this is a future event, and needs to be kept.
+		 * otherwise, we would remove/reset events bound to happen
+		 */
+		if (disable_notifications_expire_time > event->run_time)
+			break;
+		/*
+		 * only do it when we actually have a time set
+		 * ENABLE_NOTIFICATIONS will set that to 0,
+		 * indicating that expiry already happened
+		 */
+		if (disable_notifications_expire_time > 0) {
+
+			/* reset the expire time before enabling notifications */
+			disable_notifications_expire_time = 0L;
+
+			/* re-enable all notifications (triggers programstatus update for neb modules too) */
+			enable_all_notifications();
+
+		        /* log that we will now expire disabled notifications */
+		        logit(NSLOG_INFO_MESSAGE, TRUE, "Disabled Notifications expired. All Notifications re-enabled.\n");
+		}
+
 		break;
 
 	case EVENT_CHECK_REAPER:

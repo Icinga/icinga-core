@@ -14,8 +14,14 @@ ENHANCEMENTS
 * core: add useful message to p1.pl when epn plugin does not call exit() (Sven Nierlein) #2431
 * core: re-enable state based escalation ranges, using cast tricks #2878
 	** livestatus and other neb modules not using the icinga headers won't see those
+* core: add a command to disable notifications program-wide with expire time as scheduled event #905 - MF
+	** DISABLE_NOTIFICATIONS_EXPIRE_TIME, works for global notifications
+
+* classic ui: add support for disable notifications with expire time to extinfo.cgi, Process Info #905 - MF
 
 * idoutils: change hasfunc to use sdbm algorithm for hashing precached objects #2792
+* idoutils: add disable_notif_expire_time to programstatus table - #905 - MF
+
 * icinga.spec: add devel package #2634
 
 FIXES
@@ -26,6 +32,14 @@ FIXES
 * core: make delete_downtime_by_hostname_service_description_start_time_comment threadsafe (Andreas Ericsson) #2899
 
 CHANGES
+* core: new command
+	** DISABLE_NOTIFICATIONS_EXPIRE_TIME;<schedule_time>;<expire_time> (set schedule_time to now()) #905
+
+* classic ui: new cgi.cfg option
+	** default_expiring_disabled_notifications_duration=86400 #905
+
+* idoutils: add disable_notif_expire_time to programstatus table #905
+
 * icinga.spec: add devel package #2634
 
 1.7.1 - 18/06/2012

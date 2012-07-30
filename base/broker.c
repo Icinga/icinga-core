@@ -40,6 +40,7 @@ extern int daemon_mode;
 extern time_t last_command_check;
 extern time_t last_log_rotation;
 extern int enable_notifications;
+extern time_t disable_notifications_expire_time;
 extern int execute_service_checks;
 extern int accept_passive_service_checks;
 extern int execute_host_checks;
@@ -492,6 +493,7 @@ void broker_program_status(int type, int flags, int attr, struct timeval *timest
 	ds.last_command_check = last_command_check;
 	ds.last_log_rotation = last_log_rotation;
 	ds.notifications_enabled = enable_notifications;
+	ds.disable_notifications_expire_time = disable_notifications_expire_time;
 	ds.active_service_checks_enabled = execute_service_checks;
 	ds.passive_service_checks_enabled = accept_passive_service_checks;
 	ds.active_host_checks_enabled = execute_host_checks;

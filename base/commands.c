@@ -52,6 +52,7 @@ extern time_t   last_command_status_update;
 extern int      command_check_interval;
 
 extern int      enable_notifications;
+extern time_t	disable_notifications_expire_time;
 extern int      execute_service_checks;
 extern int      accept_passive_service_checks;
 extern int      execute_host_checks;
@@ -252,6 +253,8 @@ int process_external_command1(char *cmd) {
 		command_type = CMD_DISABLE_NOTIFICATIONS;
 	else if (!strcmp(command_id, "ENTER_ACTIVE_MODE") || !strcmp(command_id, "ENABLE_NOTIFICATIONS"))
 		command_type = CMD_ENABLE_NOTIFICATIONS;
+	else if (!strcmp(command_id, "DISABLE_NOTIFICATIONS_EXPIRE_TIME"))
+		command_type = CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME;
 
 	else if (!strcmp(command_id, "SHUTDOWN_PROGRAM") || !strcmp(command_id, "SHUTDOWN_PROCESS"))
 		command_type = CMD_SHUTDOWN_PROCESS;
@@ -796,6 +799,10 @@ int process_external_command2(int cmd, time_t entry_time, char *args) {
 
 	case CMD_DISABLE_NOTIFICATIONS:
 		disable_all_notifications();
+		break;
+
+	case CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME:
+		disable_all_notifications_expire_time(cmd, args);
 		break;
 
 	case CMD_START_EXECUTING_SVC_CHECKS:
@@ -3733,6 +3740,17 @@ void enable_all_notifications(void) {
 	/* update notification status */
 	enable_notifications = TRUE;
 
+	/* check if there was an expiry event (we do not care when it was bound to happen, kill it) */
+	if (disable_notifications_expire_time > (time_t)0) {
+
+		/* reset to 0, so that future event will not be triggered */
+		disable_notifications_expire_time = (time_t)0;
+
+		/* log that we will expire disabled notifications */
+		logit(NSLOG_INFO_MESSAGE, TRUE, "Disabled Notifications forced expire, re-enabled notifications.\n");
+	}
+
+
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
 	broker_adaptive_program_data(NEBTYPE_ADAPTIVEPROGRAM_UPDATE, NEBFLAG_NONE, NEBATTR_NONE, CMD_NONE, attr, modified_host_process_attributes, attr, modified_service_process_attributes, NULL);
@@ -3771,6 +3789,36 @@ void disable_all_notifications(void) {
 	return;
 }
 
+void disable_all_notifications_expire_time(int cmd, char *args) {
+	char *temp_ptr = NULL;
+	char *exp_ptr = NULL;
+	char *end_ptr = NULL;
+	struct tm *tm, tm_s;
+	char temp_time[80];
+
+
+	/* extract expire time */
+	/* first arg is scheduled time, unused */
+	temp_ptr = my_strtok(args, ";");
+
+        exp_ptr = my_strtok(NULL, ";");
+        if (exp_ptr != NULL) {
+                /* This will be set to 0 if no expire_time is entered or data is bad */
+                disable_notifications_expire_time = strtoul(exp_ptr, &end_ptr, 10);
+        } else
+		return;
+
+	/* disable notifications */
+	disable_all_notifications();
+
+	/* schedule a new event to expire disabled notifications */
+	schedule_new_event(EVENT_EXPIRE_DISABLED_NOTIFICATIONS, TRUE, (disable_notifications_expire_time + 1), FALSE, 0, NULL, FALSE, NULL, NULL, 0);
+
+	/* log that we will expire disabled notifications */
+	tm = localtime_r(&disable_notifications_expire_time, &tm_s);
+	strftime(temp_time, 80, "%c", tm);
+	logit(NSLOG_INFO_MESSAGE, TRUE, "Disabled Notifications will expire on %s (%lu).\n", temp_time, disable_notifications_expire_time);
+}
 
 /* enables notifications for a service */
 void enable_service_notifications(service *svc) {

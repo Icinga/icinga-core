@@ -198,6 +198,7 @@ time_t          program_start = 0L;
 time_t          event_start = 0L;
 int             nagios_pid = 0;
 int             enable_notifications = TRUE;
+time_t		disable_notifications_expire_time = 0L;
 int             execute_service_checks = TRUE;
 int             accept_passive_service_checks = TRUE;
 int             execute_host_checks = TRUE;

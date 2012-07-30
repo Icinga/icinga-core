@@ -51,6 +51,7 @@ extern char           *global_host_event_handler;
 extern char           *global_service_event_handler;
 
 extern int            enable_notifications;
+extern time_t	      disable_notifications_expire_time;
 extern int            execute_service_checks;
 extern int            accept_passive_service_checks;
 extern int            execute_host_checks;
@@ -329,6 +330,7 @@ int xrddefault_save_state_information(void) {
 	fprintf(fp, "modified_host_attributes=%lu\n", (modified_host_process_attributes & ~process_host_attribute_mask));
 	fprintf(fp, "modified_service_attributes=%lu\n", (modified_service_process_attributes & ~process_service_attribute_mask));
 	fprintf(fp, "enable_notifications=%d\n", enable_notifications);
+	fprintf(fp, "disable_notifications_expire_time=%lu\n", disable_notifications_expire_time);
 	fprintf(fp, "active_service_checks_enabled=%d\n", execute_service_checks);
 	fprintf(fp, "passive_service_checks_enabled=%d\n", accept_passive_service_checks);
 	fprintf(fp, "active_host_checks_enabled=%d\n", execute_host_checks);
@@ -765,6 +767,21 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 					modified_host_process_attributes = MODATTR_NONE;
 					modified_service_process_attributes = MODATTR_NONE;
 				}
+
+				/* handle expiring disabled notifications */
+				if (enable_notifications == FALSE && disable_notifications_expire_time != (time_t)0) {
+					time(&current_time);
+
+					if (disable_notifications_expire_time > current_time) {
+						schedule_new_event(EVENT_EXPIRE_DISABLED_NOTIFICATIONS, TRUE, (disable_notifications_expire_time + 1), FALSE, 0, NULL, FALSE, NULL, NULL, 0);
+					} else {
+						/* re-enable everything */
+						enable_all_notifications();
+						disable_notifications_expire_time = (time_t)0;
+					}
+
+				}
+
 				break;
 
 			case XRDDEFAULT_HOSTSTATUS_DATA:
@@ -1147,6 +1164,8 @@ int xrddefault_read_retention_file_information(char *retention_file, int overwri
 					if (!strcmp(var, "enable_notifications")) {
 						if (modified_host_process_attributes & MODATTR_NOTIFICATIONS_ENABLED)
 							enable_notifications = (atoi(val) > 0) ? TRUE : FALSE;
+					} else if (!strcmp(var, "disable_notifications_expire_time")) {
+						disable_notifications_expire_time = strtoul(val, NULL, 10);
 					} else if (!strcmp(var, "active_service_checks_enabled")) {
 						if (modified_service_process_attributes & MODATTR_ACTIVE_CHECKS_ENABLED)
 							execute_service_checks = (atoi(val) > 0) ? TRUE : FALSE;

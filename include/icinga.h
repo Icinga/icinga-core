@@ -257,6 +257,7 @@ extern "C" {
 #define EVENT_RESCHEDULE_CHECKS		14      /* adjust scheduling of host and service checks */
 #define EVENT_EXPIRE_COMMENT            15      /* removes expired comments */
 #define EVENT_EXPIRE_ACKNOWLEDGEMENT    16      /* removes expired acknowledgements */
+#define EVENT_EXPIRE_DISABLED_NOTIFICATIONS 17	/* re-enables disabled notifications */
 #define EVENT_SLEEP                     98      /* asynchronous sleep event that occurs when event queues are empty */
 #define EVENT_USER_FUNCTION             99      /* USER-defined function (modules) */
 
@@ -652,6 +653,7 @@ void schedule_service_check(service *,time_t,int);	/* schedules an immediate or 
 void schedule_host_check(host *,time_t,int);		/* schedules an immediate or delayed host check */
 void enable_all_notifications(void);                    /* enables notifications on a program-wide basis */
 void disable_all_notifications(void);                   /* disables notifications on a program-wide basis */
+void disable_all_notifications_expire_time(int, char*);	/* disables notifications with expire time on a program-wide basis */
 void enable_service_notifications(service *);		/* enables service notifications */
 void disable_service_notifications(service *);		/* disables service notifications */
 void enable_host_notifications(host *);			/* enables host notifications */
