@@ -85,7 +85,6 @@ char *end_time_string = "";			/**< the requested end time */
 
 time_t ts_start = 0L;				/**< start time as unix timestamp */
 time_t ts_end = 0L;				/**< end time as unix timestamp */
-time_t ts_midnight = 0L;			/**< current midnight unix timestamp */
 
 authdata current_authdata;			/**< struct to hold current authentication data */
 
@@ -114,18 +113,9 @@ void display_logentries(void);
 **/
 void show_filter(void);
 
-/** @brief displays the navigation in the top center of the page
- *
- * This is a remake of the @ref display_nav_table function from cgiutils.c
- * But this one works with timestamps instead of archive numbers.
-**/
-void display_own_nav_table(void);
-
 /** @brief Yes we need a main function **/
 int main(void) {
 	int result = OK;
-	struct tm *t;
-	time_t current_time = 0L;
 
 	/* get the CGI variables passed in the URL */
 	process_cgivars();
@@ -184,18 +174,6 @@ int main(void) {
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
-	/* get the current time */
-	time(&current_time);
-	t = localtime(&current_time);
-
-	t->tm_sec = 0;
-	t->tm_min = 0;
-	t->tm_hour = 0;
-	t->tm_isdst = -1;
-
-	/* get timestamp for midnight today to find out if we have to show past log entries or present. (Also to give the right description to the info table)*/
-	ts_midnight = mktime(t);
-
 	if (display_header == TRUE) {
 
 		/* start input form */
@@ -210,14 +188,12 @@ int main(void) {
 
 		/* left column of top table - info box */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table((ts_end > ts_midnight) ? "Current Event Log" : "Archived Event Log", &current_authdata, daemon_check);
+		display_info_table("Event Log", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top table - log file navigation options */
 		printf("<td align=center valign=top width=33%%>\n");
-
-		display_own_nav_table();
-
+		display_nav_table(ts_start, ts_end);
 		printf("</td>\n");
 
 		/* right hand column of top row */
@@ -737,7 +713,7 @@ void display_logentries() {
 		} else {
 			/* add export to csv, json, link */
 			printf("<table width='100%%' cellspacing=0 cellpadding=0 border=0><tr><td width='33%%'></td><td width='33%%' align=center nowrap>");
-			printf("<div class='page_selector'>\n");
+			printf("<div class='page_selector' id='log_page_selector'>\n");
 			printf("<div id='page_navigation_copy'></div>");
 			page_limit_selector(result_start);
 			printf("</div>\n");
@@ -937,7 +913,7 @@ void display_logentries() {
 				printf("</DIV><hr>\n");
 				page_num_selector(result_start, total_entries, displayed_entries);
 			} else {
-				printf("<script type='text/javascript'>document.getElementById('showlog_page_navigation').style.display='none';</script>");
+				printf("<script type='text/javascript'>document.getElementById('log_page_selector').style.display='none';</script>");
 			}
 		} else if (content_type == JSON_CONTENT)
 			printf("\n]\n");
@@ -1026,104 +1002,5 @@ void show_filter(void) {
 	printf("</table>\n");
 
 	escape_html_tags = temp_htmlencode;
-	return;
-}
-
-void display_own_nav_table() {
-	char *url;
-	char temp_buffer[MAX_INPUT_BUFFER];
-	char date_time[MAX_INPUT_BUFFER];
-	int dummy;
-
-	/* construct url */
-	dummy = asprintf(&url, "%s?timeperiod=singleday&order=%s", SHOWLOG_CGI, (reverse == TRUE) ? "old2new" : "new2old");
-	strncpy(temp_buffer, url, sizeof(temp_buffer));
-	dummy = asprintf(&url, "%s&limit=%d&start=%d", temp_buffer, result_limit, result_start);
-
-	if (query_string != NULL) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&query_string=%s", temp_buffer, url_encode(query_string));
-	}
-	if (show_notifications == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&noti=off", temp_buffer);
-	}
-	if (show_host_status == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&hst=off", temp_buffer);
-	}
-	if (show_service_status == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&sst=off", temp_buffer);
-	}
-	if (show_external_commands == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&cmd=off", temp_buffer);
-	}
-	if (show_system_messages == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&sms=off", temp_buffer);
-	}
-	if (show_event_handler == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&evh=off", temp_buffer);
-	}
-	if (show_flapping == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&flp=off", temp_buffer);
-	}
-	if (show_downtime == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&dwn=off", temp_buffer);
-	}
-
-	/* show table */
-	printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='navBox'>\n");
-	printf("<tr>\n");
-	printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-	if (ts_end > ts_midnight) {
-		printf("Latest Archive<br>");
-		printf("<a href='%s&ts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Latest Archive' title='Latest Archive'></a>", url, ts_midnight - 86400, ts_midnight - 1, url_images_path, LEFT_ARROW_ICON);
-	} else {
-		printf("Earlier Archive<br>");
-		printf("<a href='%s&ts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, ts_start - 86400, ts_start - 1, url_images_path, LEFT_ARROW_ICON);
-	}
-	printf("</td>\n");
-
-	printf("<td width=15></td>\n");
-
-	printf("<td align=center CLASS='navBoxDate'>\n");
-	printf("<DIV CLASS='navBoxTitle'>Log Navigation</DIV>\n");
-	get_time_string(&ts_start, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
-	printf("%s", date_time);
-	printf("<br>to<br>");
-	if (ts_end > ts_midnight)
-		printf("Present..");
-	else {
-		get_time_string(&ts_end, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
-		printf("%s", date_time);
-	}
-	printf("</td>\n");
-
-	printf("<td width=15></td>\n");
-
-	if (ts_end <= ts_midnight) {
-
-		printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-		if (ts_end == ts_midnight) {
-			printf("Current Log<br>");
-			printf("<a href='%s&ts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Current Log' title='Current Log'></a>", url, ts_midnight + 1, ts_midnight + 86400, url_images_path, RIGHT_ARROW_ICON);
-		} else {
-			printf("More Recent Archive<br>");
-			printf("<a href='%s&ts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='More Recent Archive' title='More Recent Archive'></a>", url, ts_end + 1, ts_end + 86400, url_images_path, RIGHT_ARROW_ICON);
-		}
-		printf("</td>\n");
-	} else
-		printf("<td><img src='%s%s' border=0 width=75 height=1></td>\n", url_images_path, EMPTY_ICON);
-
-	printf("</tr>\n");
-
-	printf("</table>\n");
-
 	return;
 }

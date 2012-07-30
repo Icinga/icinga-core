@@ -1923,65 +1923,106 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 	return;
 }
 
-void display_nav_table(char *url, int archive) {
-	char date_time[MAX_DATETIME_LENGTH];
-	char archive_file[MAX_INPUT_BUFFER];
-	char *archive_basename;
+void display_nav_table(time_t ts_start, time_t ts_end) {
+	char *temp_buffer;
+	char url[MAX_INPUT_BUFFER] = "";
+	char stripped_query_string[MAX_INPUT_BUFFER] = "";
+	char date_time[MAX_INPUT_BUFFER];
+	struct tm *t;
+	time_t ts_midnight = 0L;
+	time_t current_time = 0L;
 
-	if (log_rotation_method != LOG_ROTATION_NONE) {
-		printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='navBox'>\n");
-		printf("<tr>\n");
-		printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-		printf("Earlier Archive<br>");
-		printf("<a href='%sarchive=%d&limit=%d'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, archive + 1, result_limit, url_images_path, LEFT_ARROW_ICON);
-		printf("</td>\n");
-
-		printf("<td width=15></td>\n");
-
-		printf("<td align=center CLASS='navBoxDate'>\n");
-		printf("<DIV CLASS='navBoxTitle'>Log File Navigation</DIV>\n");
-		get_time_string(&last_scheduled_log_rotation, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
-		printf("%s", date_time);
-		printf("<br>to<br>");
-		if (archive == 0)
-			printf("Present..");
-		else {
-			this_scheduled_log_rotation--;
-			get_time_string(&this_scheduled_log_rotation, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
-			printf("%s", date_time);
-		}
-		printf("</td>\n");
-
-		printf("<td width=15></td>\n");
-		if (archive != 0) {
-			printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-			if (archive == 1) {
-				printf("Current Log<br>");
-				printf("<a href='%s&limit=%d'><img src='%s%s' border=0 alt='Current Log' title='Current Log'></a>", url, result_limit, url_images_path, RIGHT_ARROW_ICON);
-			} else {
-				printf("More Recent Archive<br>");
-				printf("<a href='%sarchive=%d&limit=%d'><img src='%s%s' border=0 alt='More Recent Archive' title='More Recent Archive'></a>", url, archive - 1, result_limit, url_images_path, RIGHT_ARROW_ICON);
-			}
-			printf("</td>\n");
-		} else {
-			printf("<td align=center valign=center CLASS='navBoxItem'>Current Log<br>\n");
-			printf("<img src='%s%s' border=0 width=75 height=16></td>\n", url_images_path, EMPTY_ICON);
-		}
-
-		printf("</tr>\n");
-		printf("</table>\n");
+	/* define base url */
+	switch (CGI_ID) {
+	case HISTORY_CGI_ID:
+		strcat(url, HISTORY_CGI);
+		break;
+	case NOTIFICATIONS_CGI_ID:
+		strcat(url, NOTIFICATIONS_CGI);
+		break;
+	case SHOWLOG_CGI_ID:
+		strcat(url, SHOWLOG_CGI);
+		break;
+	default:
+		strcat(url, "NO_URL_DEFINED");
+		break;
 	}
 
-	/* get archive to use */
-	get_log_archive_to_use(archive, archive_file, sizeof(archive_file) - 1);
+	/* get url options but filter out "limit" and "status" */
+	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
+		strcpy(stripped_query_string, getenv("QUERY_STRING"));
+		strip_html_brackets(stripped_query_string);
 
-	/* cut the pathname for security, and the remaining slash for clarity */
-	archive_basename = (char *)&archive_file;
-	if (strrchr((char *)&archive_basename, '/') != NULL)
-		archive_basename = strrchr((char *)&archive_file, '/') + 1;
+		for (temp_buffer = my_strtok(stripped_query_string, "&"); temp_buffer != NULL; temp_buffer = my_strtok(NULL, "&")) {
+			if (strncmp(temp_buffer, "ts_start=", 9) != 0 && strncmp(temp_buffer, "ts_end=", 6) != 0 && strncmp(temp_buffer, "start=", 6) != 0) {
+				if (strstr(url, "?"))
+					strcat(url, "&");
+				else
+					strcat(url, "?");
+				strcat(url, temp_buffer);
+			}
+		}
+	}
 
-	/* now it's safe to print the filename */
-	printf("<BR><DIV CLASS='navBoxFile'>File: %s</DIV>\n", archive_basename);
+	/* get the current time */
+	time(&current_time);
+	t = localtime(&current_time);
+
+	t->tm_sec = 0;
+	t->tm_min = 0;
+	t->tm_hour = 0;
+	t->tm_isdst = -1;
+
+	/* get timestamp for midnight today to find out if we have to show past log entries or present. (Also to give the right description to the info table)*/
+	ts_midnight = mktime(t);
+
+	/* show table */
+	printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='navBox'>\n");
+	printf("<tr>\n");
+	printf("<td align=center valign=center CLASS='navBoxItem'>\n");
+	if (ts_end > ts_midnight) {
+		printf("Latest Archive<br>");
+		printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Latest Archive' title='Latest Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_midnight - 86400, ts_midnight - 1, url_images_path, LEFT_ARROW_ICON);
+	} else {
+		printf("Earlier Archive<br>");
+		printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_start - 86400, ts_start - 1, url_images_path, LEFT_ARROW_ICON);
+	}
+	printf("</td>\n");
+
+	printf("<td width=15></td>\n");
+
+	printf("<td align=center CLASS='navBoxDate'>\n");
+	printf("<DIV CLASS='navBoxTitle'>Log Navigation</DIV>\n");
+	get_time_string(&ts_start, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
+	printf("%s", date_time);
+	printf("<br>to<br>");
+	if (ts_end > ts_midnight)
+		printf("Present..");
+	else {
+		get_time_string(&ts_end, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
+		printf("%s", date_time);
+	}
+	printf("</td>\n");
+
+	printf("<td width=15></td>\n");
+
+	if (ts_end <= ts_midnight) {
+
+		printf("<td align=center valign=center CLASS='navBoxItem'>\n");
+		if (ts_end == ts_midnight) {
+			printf("Current Log<br>");
+			printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Current Log' title='Current Log'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_midnight + 1, ts_midnight + 86400, url_images_path, RIGHT_ARROW_ICON);
+		} else {
+			printf("More Recent Archive<br>");
+			printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='More Recent Archive' title='More Recent Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_end + 1, ts_end + 86400, url_images_path, RIGHT_ARROW_ICON);
+		}
+		printf("</td>\n");
+	} else
+		printf("<td><img src='%s%s' border=0 width=75 height=1></td>\n", url_images_path, EMPTY_ICON);
+
+	printf("</tr>\n");
+
+	printf("</table>\n");
 
 	return;
 }

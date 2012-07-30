@@ -639,7 +639,6 @@ void print_extra_hostgroup_url(char *,char *);
 void print_extra_servicegroup_url(char *,char *);
 
 void display_info_table(char *,authdata *, int);
-void display_nav_table(char *,int);
 
 void display_splunk_host_url(host *);
 void display_splunk_service_url(service *);
@@ -714,6 +713,15 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
  *  Display's the page limit selector which overwrites the config value
 **/
 void page_limit_selector(int result_start);
+
+/** @brief Display's navigation through log files based on timestamps
+ *  @param [in] ts_start start timestamp to display and calculate next/previous pages from
+ *  @param [in] ts_end end timestamp to display and calculate next/previous pages from
+ *
+ *  Display's the log file navigation which is used in history, notifications and showlog.
+ *  Generates url's/link's to next and previous pages.
+**/
+void display_nav_table(time_t ts_start, time_t ts_end);
 
 /******************************** MULTIURL PATCH *******************************/
 
