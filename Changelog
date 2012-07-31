@@ -47,6 +47,7 @@ CHANGES
 * idoutils: add disable_notif_expire_time to programstatus table #905
 
 * icinga.spec: add devel package #2634
+* icinga.spec: forced update on icinga.cfg change package locations #2923
 
 1.7.1 - 18/06/2012
 
