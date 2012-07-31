@@ -8,12 +8,15 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 1.8.0 - XX/10/2012
 
 ENHANCEMENTS
+
 * core: pass long_output to neb api for statechange data #2650 - MF
 * core/classic ui: make hashfunc more efficient by using sdbm #2761 - MF/GB
 * core: try the most common macros ($ARGn$, $USERn$) first (Andreas Ericsson) #2674 - MF
 * core: handle passive checks via external commands the same way as active checks, bypassing the temp check result file and reaper (Andreas Ericsson) #2687 -MF
 * core: use binary search when looking up macro names, instead of insane strcmp() loops (Andreas Ericsson) #2675 - MF
 * core: add useful message to p1.pl when epn plugin does not call exit() (Sven Nierlein) #2431 -MF
+* core: re-enable state based escalation ranges, using cast tricks #2878 - MF
+	** livestatus and other neb modules not using the icinga headers won't see those
 
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB

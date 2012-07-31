@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -107,6 +107,7 @@ extern time_t   last_program_stop;
 extern time_t   program_start;
 extern time_t   event_start;
 
+extern squeue_t		 *icinga_squeue;
 extern timed_event       *event_list_low;
 extern timed_event       *event_list_low_tail;
 
@@ -1443,11 +1444,11 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 		temp_service->last_notification = (time_t)0;
 		temp_service->next_notification = (time_t)0;
 		temp_service->current_notification_number = 0;
-#ifdef USE_ST_BASED_ESCAL_RANGES
+		/* state based escalation ranges */
 		temp_service->current_warning_notification_number = 0;
 		temp_service->current_critical_notification_number = 0;
 		temp_service->current_unknown_notification_number = 0;
-#endif
+
 		temp_service->problem_has_been_acknowledged = FALSE;
 		temp_service->acknowledgement_type = ACKNOWLEDGEMENT_NONE;
 		temp_service->notified_on_unknown = FALSE;
@@ -1688,13 +1689,13 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			check_for_host_flapping(temp_host, TRUE, FALSE, TRUE);
 			flapping_check_done = TRUE;
 
-#ifdef USE_ST_BASED_ESCAL_RANGES
+			/* state based escalation ranges */
 			if (hard_state_change == TRUE) {
 				temp_service->current_warning_notification_number = 0;
 				temp_service->current_critical_notification_number = 0;
 				temp_service->current_unknown_notification_number = 0;
 			}
-#endif
+
 			/* (re)send notifications out about this service problem if the host is up (and was at last check also) and the dependencies were okay... */
 			service_notification(temp_service, NOTIFICATION_NORMAL, NULL, NULL, NOTIFICATION_OPTION_NONE);
 
@@ -1938,8 +1939,13 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 	 */
 	if (use_original_event == FALSE) {
 
-		/* allocate memory for a new event item */
-		new_event = (timed_event *)malloc(sizeof(timed_event));
+		/*
+		 * allocate memory for a new event item
+		 * zero-initialize low prio events, to prevent random usec
+		 * values in sq_event, which is used as base for determining
+		 * the runtime in the scheduling queue
+		 */
+		new_event = (timed_event *)calloc(1, sizeof(timed_event));
 
 		if (new_event == NULL) {
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not reschedule check of service '%s' on host '%s'!\n", svc->description, svc->host_name);
@@ -1948,7 +1954,7 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 
 		/* make sure we kill off the old event */
 		if (temp_event) {
-			remove_event(temp_event, &event_list_low, &event_list_low_tail);
+			remove_event(icinga_squeue, temp_event);
 			my_free(temp_event);
 		}
 
@@ -1971,7 +1977,7 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 		new_event->event_interval = 0L;
 		new_event->timing_func = NULL;
 		new_event->compensate_for_time_change = TRUE;
-		reschedule_event(new_event, &event_list_low, &event_list_low_tail);
+		reschedule_event(icinga_squeue, new_event);
 	}
 
 	else {
@@ -2415,14 +2421,22 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 
 		log_debug_info(DEBUGL_CHECKS, 2, "Scheduling new host check event.\n");
 
+                /*
+                 * allocate memory for a new event item
+                 * zero-initialize low prio events, to prevent random usec
+                 * values in sq_event, which is used as base for determining
+                 * the runtime in the scheduling queue
+                 */
+                new_event = (timed_event *)calloc(1, sizeof(timed_event));
+
 		/* allocate memory for a new event item */
-		if((new_event = (timed_event *)malloc(sizeof(timed_event))) == NULL) {
+		if(new_event == NULL) {
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not reschedule check of host '%s'!\n", hst->name);
 			return;
 		}
 
 		if (temp_event) {
-			remove_event(temp_event, &event_list_low, &event_list_low_tail);
+			remove_event(icinga_squeue, temp_event);
 			my_free(temp_event);
 		}
 
@@ -2443,7 +2457,7 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 		new_event->event_interval = 0L;
 		new_event->timing_func = NULL;
 		new_event->compensate_for_time_change = TRUE;
-		reschedule_event(new_event, &event_list_low, &event_list_low_tail);
+		reschedule_event(icinga_squeue, new_event);
 	}
 
 	else {
@@ -4369,10 +4383,10 @@ int handle_host_state(host *hst) {
 		/* notify contacts about the recovery or problem if its a "hard" state */
 		if (hst->state_type == HARD_STATE) {
 
-#ifdef USE_ST_BASED_ESCAL_RANGES
+			/* state based escalation ranges */
 			hst->current_down_notification_number = 0;
 			hst->current_unreachable_notification_number = 0;
-#endif
+
 			host_notification(hst, NOTIFICATION_NORMAL, NULL, NULL, NOTIFICATION_OPTION_NONE);
 		}
 

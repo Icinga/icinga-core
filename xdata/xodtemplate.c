@@ -41,7 +41,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -1051,7 +1051,7 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 		xod_begin_def(serviceescalation);
 		new_serviceescalation->first_notification = -2;
 		new_serviceescalation->last_notification = -2;
-#ifdef USE_ST_BASED_ESCAL_RANGES
+		/* state based escalation ranges */
 		new_serviceescalation->first_warning_notification = -2;
 		new_serviceescalation->last_warning_notification = -2;
 		new_serviceescalation->first_critical_notification = -2;
@@ -1059,7 +1059,6 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 		new_serviceescalation->first_unknown_notification = -2;
 		new_serviceescalation->last_unknown_notification = -2;
 		new_serviceescalation->notification_interval = -2.0;
-#endif
 		break;
 
 	case XODTEMPLATE_CONTACT:
@@ -2007,7 +2006,7 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_serviceescalation->last_notification = atoi(value);
 			temp_serviceescalation->have_last_notification = TRUE;
 		}
-#ifdef USE_ST_BASED_ESCAL_RANGES
+		/* state based escalation ranges */
 		else if (!strcmp(variable, "first_warning_notification")) {
 			temp_serviceescalation->first_warning_notification = atoi(value);
 			temp_serviceescalation->have_first_warning_notification = TRUE;
@@ -2027,7 +2026,7 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_serviceescalation->last_unknown_notification = atoi(value);
 			temp_serviceescalation->have_last_unknown_notification = TRUE;
 		}
-#endif
+
 		else if (!strcmp(variable, "notification_interval")) {
 			temp_serviceescalation->notification_interval = strtod(value, NULL);
 			temp_serviceescalation->have_notification_interval = TRUE;
@@ -3264,7 +3263,7 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_hostescalation->last_notification = atoi(value);
 			temp_hostescalation->have_last_notification = TRUE;
 		}
-#ifdef USE_ST_BASED_ESCAL_RANGES
+		/* state based escalation ranges */
 		else if (!strcmp(variable, "first_down_notification")) {
 			temp_hostescalation->first_down_notification = atoi(value);
 			temp_hostescalation->have_first_down_notification = TRUE;
@@ -3278,7 +3277,7 @@ int xodtemplate_add_object_property(char *input, int options) {
 			temp_hostescalation->last_unreachable_notification = atoi(value);
 			temp_hostescalation->have_last_unreachable_notification = TRUE;
 		}
-#endif
+
 		else if (!strcmp(variable, "notification_interval")) {
 			temp_hostescalation->notification_interval = strtod(value, NULL);
 			temp_hostescalation->have_notification_interval = TRUE;
@@ -5276,20 +5275,22 @@ int xodtemplate_duplicate_hostescalation(xodtemplate_hostescalation *temp_hostes
 	/* duplicate non-string members */
 	new_hostescalation->first_notification = temp_hostescalation->first_notification;
 	new_hostescalation->last_notification = temp_hostescalation->last_notification;
-#ifdef USE_ST_BASED_ESCAL_RANGES
+
+/* state based escalation ranges */
 	new_hostescalation->first_down_notification = temp_hostescalation->first_down_notification;
 	new_hostescalation->last_down_notification = temp_hostescalation->last_down_notification;
 	new_hostescalation->first_unreachable_notification = temp_hostescalation->first_unreachable_notification;
 	new_hostescalation->last_unreachable_notification = temp_hostescalation->last_unreachable_notification;
-#endif
+
 	new_hostescalation->have_first_notification = temp_hostescalation->have_first_notification;
 	new_hostescalation->have_last_notification = temp_hostescalation->have_last_notification;
-#ifdef USE_ST_BASED_ESCAL_RANGES
+
+/* state based escalation ranges */
 	new_hostescalation->have_first_down_notification = temp_hostescalation->have_first_down_notification;
 	new_hostescalation->have_last_down_notification = temp_hostescalation->have_last_down_notification;
 	new_hostescalation->have_first_unreachable_notification = temp_hostescalation->have_first_unreachable_notification;
 	new_hostescalation->have_last_unreachable_notification = temp_hostescalation->have_last_unreachable_notification;
-#endif
+
 	new_hostescalation->notification_interval = temp_hostescalation->notification_interval;
 	new_hostescalation->have_notification_interval = temp_hostescalation->have_notification_interval;
 	new_hostescalation->escalate_on_down = temp_hostescalation->escalate_on_down;
@@ -5412,24 +5413,25 @@ int xodtemplate_duplicate_serviceescalation(xodtemplate_serviceescalation *temp_
 	/* duplicate non-string members */
 	new_serviceescalation->first_notification = temp_serviceescalation->first_notification;
 	new_serviceescalation->last_notification = temp_serviceescalation->last_notification;
-#ifdef USE_ST_BASED_ESCAL_RANGES
+
+	/* state based escalation ranges */
 	new_serviceescalation->first_warning_notification = temp_serviceescalation->first_warning_notification;
 	new_serviceescalation->last_warning_notification = temp_serviceescalation->last_warning_notification;
 	new_serviceescalation->first_critical_notification = temp_serviceescalation->first_critical_notification;
 	new_serviceescalation->last_critical_notification = temp_serviceescalation->last_critical_notification;
 	new_serviceescalation->first_unknown_notification = temp_serviceescalation->first_unknown_notification;
 	new_serviceescalation->last_unknown_notification = temp_serviceescalation->last_unknown_notification;
-#endif
+
 	new_serviceescalation->have_first_notification = temp_serviceescalation->have_first_notification;
 	new_serviceescalation->have_last_notification = temp_serviceescalation->have_last_notification;
-#ifdef USE_ST_BASED_ESCAL_RANGES
+	/* state based escalation ranges */
 	new_serviceescalation->have_first_warning_notification = temp_serviceescalation->have_first_warning_notification;
 	new_serviceescalation->have_last_warning_notification = temp_serviceescalation->have_last_warning_notification;
 	new_serviceescalation->have_first_critical_notification = temp_serviceescalation->have_first_critical_notification;
 	new_serviceescalation->have_last_critical_notification = temp_serviceescalation->have_last_critical_notification;
 	new_serviceescalation->have_first_unknown_notification = temp_serviceescalation->have_first_unknown_notification;
 	new_serviceescalation->have_last_unknown_notification = temp_serviceescalation->have_last_unknown_notification;
-#endif
+
 	new_serviceescalation->notification_interval = temp_serviceescalation->notification_interval;
 	new_serviceescalation->have_notification_interval = temp_serviceescalation->have_notification_interval;
 	new_serviceescalation->escalate_on_warning = temp_serviceescalation->escalate_on_warning;
@@ -6583,7 +6585,7 @@ int xodtemplate_resolve_serviceescalation(xodtemplate_serviceescalation *this_se
 			this_serviceescalation->last_notification = template_serviceescalation->last_notification;
 			this_serviceescalation->have_last_notification = TRUE;
 		}
-#ifdef USE_ST_BASED_ESCAL_RANGES
+		/* state based escalation ranges */
 		if (this_serviceescalation->have_first_warning_notification == FALSE && template_serviceescalation->have_first_warning_notification == TRUE) {
 			this_serviceescalation->first_warning_notification = template_serviceescalation->first_warning_notification;
 			this_serviceescalation->have_first_warning_notification = TRUE;
@@ -6608,7 +6610,7 @@ int xodtemplate_resolve_serviceescalation(xodtemplate_serviceescalation *this_se
 			this_serviceescalation->last_unknown_notification = template_serviceescalation->last_unknown_notification;
 			this_serviceescalation->have_last_unknown_notification = TRUE;
 		}
-#endif
+
 		if (this_serviceescalation->have_notification_interval == FALSE && template_serviceescalation->have_notification_interval == TRUE) {
 			this_serviceescalation->notification_interval = template_serviceescalation->notification_interval;
 			this_serviceescalation->have_notification_interval = TRUE;
@@ -7387,7 +7389,7 @@ int xodtemplate_resolve_hostescalation(xodtemplate_hostescalation *this_hostesca
 			this_hostescalation->last_notification = template_hostescalation->last_notification;
 			this_hostescalation->have_last_notification = TRUE;
 		}
-#ifdef USE_ST_BASED_ESCAL_RANGES
+		/* state based escalation ranges */
 		if (this_hostescalation->have_first_down_notification == FALSE && template_hostescalation->have_first_down_notification == TRUE) {
 			this_hostescalation->first_down_notification = template_hostescalation->first_down_notification;
 			this_hostescalation->have_first_down_notification = TRUE;
@@ -7404,7 +7406,7 @@ int xodtemplate_resolve_hostescalation(xodtemplate_hostescalation *this_hostesca
 			this_hostescalation->last_unreachable_notification = template_hostescalation->last_unreachable_notification;
 			this_hostescalation->have_last_unreachable_notification = TRUE;
 		}
-#endif
+
 		if (this_hostescalation->have_notification_interval == FALSE && template_hostescalation->have_notification_interval == TRUE) {
 			this_hostescalation->notification_interval = template_hostescalation->notification_interval;
 			this_hostescalation->have_notification_interval = TRUE;
@@ -9061,11 +9063,7 @@ int xodtemplate_register_serviceescalation(xodtemplate_serviceescalation *this_s
 	}
 
 	/* add the serviceescalation */
-#ifndef USE_ST_BASED_ESCAL_RANGES
-	new_serviceescalation = add_serviceescalation(this_serviceescalation->host_name, this_serviceescalation->service_description, this_serviceescalation->first_notification, this_serviceescalation->last_notification, this_serviceescalation->notification_interval, this_serviceescalation->escalation_period, this_serviceescalation->escalate_on_warning, this_serviceescalation->escalate_on_unknown, this_serviceescalation->escalate_on_critical, this_serviceescalation->escalate_on_recovery);
-#else
 	new_serviceescalation = add_serviceescalation(this_serviceescalation->host_name, this_serviceescalation->service_description, this_serviceescalation->first_notification, this_serviceescalation->last_notification, this_serviceescalation->first_warning_notification, this_serviceescalation->last_warning_notification, this_serviceescalation->first_critical_notification, this_serviceescalation->last_critical_notification, this_serviceescalation->first_unknown_notification, this_serviceescalation->last_unknown_notification, this_serviceescalation->notification_interval, this_serviceescalation->escalation_period, this_serviceescalation->escalate_on_warning, this_serviceescalation->escalate_on_unknown, this_serviceescalation->escalate_on_critical, this_serviceescalation->escalate_on_recovery);
-#endif
 
 	/* return with an error if we couldn't add the serviceescalation */
 	if (new_serviceescalation == NULL) {
@@ -9399,11 +9397,7 @@ int xodtemplate_register_hostescalation(xodtemplate_hostescalation *this_hostesc
 	}
 
 	/* add the hostescalation */
-#ifndef USE_ST_BASED_ESCAL_RANGES
-	new_hostescalation = add_hostescalation(this_hostescalation->host_name, this_hostescalation->first_notification, this_hostescalation->last_notification, this_hostescalation->notification_interval, this_hostescalation->escalation_period, this_hostescalation->escalate_on_down, this_hostescalation->escalate_on_unreachable, this_hostescalation->escalate_on_recovery);
-#else
 	new_hostescalation = add_hostescalation(this_hostescalation->host_name, this_hostescalation->first_notification, this_hostescalation->last_notification, this_hostescalation->first_down_notification, this_hostescalation->last_down_notification, this_hostescalation->first_unreachable_notification, this_hostescalation->last_unreachable_notification, this_hostescalation->notification_interval, this_hostescalation->escalation_period, this_hostescalation->escalate_on_down, this_hostescalation->escalate_on_unreachable, this_hostescalation->escalate_on_recovery);
-#endif
 
 	/* return with an error if we couldn't add the hostescalation */
 	if (new_hostescalation == NULL) {
@@ -11007,14 +11001,14 @@ int xodtemplate_cache_objects(char *cache_file) {
 			fprintf(fp, "\tservice_description\t%s\n", temp_serviceescalation->service_description);
 		fprintf(fp, "\tfirst_notification\t%d\n", temp_serviceescalation->first_notification);
 		fprintf(fp, "\tlast_notification\t%d\n", temp_serviceescalation->last_notification);
-#ifdef USE_ST_BASED_ESCAL_RANGES
+		/* state based escalation ranges */
 		fprintf(fp, "\tfirst_warning_notification\t%d\n", temp_serviceescalation->first_warning_notification);
 		fprintf(fp, "\tlast_warning_notification\t%d\n", temp_serviceescalation->last_warning_notification);
 		fprintf(fp, "\tfirst_critical_notification\t%d\n", temp_serviceescalation->first_critical_notification);
 		fprintf(fp, "\tlast_critical_notification\t%d\n", temp_serviceescalation->last_critical_notification);
 		fprintf(fp, "\tfirst_unknown_notification\t%d\n", temp_serviceescalation->first_unknown_notification);
 		fprintf(fp, "\tlast_unknown_notification\t%d\n", temp_serviceescalation->last_unknown_notification);
-#endif
+
 		fprintf(fp, "\tnotification_interval\t%f\n", temp_serviceescalation->notification_interval);
 		if (temp_serviceescalation->escalation_period)
 			fprintf(fp, "\tescalation_period\t%s\n", temp_serviceescalation->escalation_period);
@@ -11098,12 +11092,12 @@ int xodtemplate_cache_objects(char *cache_file) {
 			fprintf(fp, "\thost_name\t%s\n", temp_hostescalation->host_name);
 		fprintf(fp, "\tfirst_notification\t%d\n", temp_hostescalation->first_notification);
 		fprintf(fp, "\tlast_notification\t%d\n", temp_hostescalation->last_notification);
-#ifdef USE_ST_BASED_ESCAL_RANGES
+		/* state based escalation ranges */
 		fprintf(fp, "\tfirst_down_notification\t%d\n", temp_hostescalation->first_down_notification);
 		fprintf(fp, "\tlast_down_notification\t%d\n", temp_hostescalation->last_down_notification);
 		fprintf(fp, "\tfirst_unreachable_notification\t%d\n", temp_hostescalation->first_unreachable_notification);
 		fprintf(fp, "\tlast_unreachable_notification\t%d\n", temp_hostescalation->last_unreachable_notification);
-#endif
+
 		fprintf(fp, "\tnotification_interval\t%f\n", temp_hostescalation->notification_interval);
 		if (temp_hostescalation->escalation_period)
 			fprintf(fp, "\tescalation_period\t%s\n", temp_hostescalation->escalation_period);

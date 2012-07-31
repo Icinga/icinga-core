@@ -17,7 +17,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ************************************************************************/
 
 #ifndef _ICINGA_H
@@ -36,6 +36,7 @@
 #include "locations.h"
 #include "objects.h"
 #include "macros.h"
+#include "../lib/libicinga.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -297,8 +298,8 @@ typedef struct timed_event_struct{
 	void *event_data;
 	void *event_args;
 	int event_options;
-        struct timed_event_struct *next;
-        struct timed_event_struct *prev;
+	unsigned int priority;				/* 0 is auto, 1 is highest. n+1 < n */
+	struct squeue_event *sq_event;
         }timed_event;
 
 
@@ -426,16 +427,19 @@ void display_scheduling_info(void);				/* displays service check scheduling info
 
 
 /**** Event Queue Functions ****/
-int schedule_new_event(int,int,time_t,int,unsigned long,void *,int,void *,void *,int);	/* schedules a new timed event */
-void reschedule_event(timed_event *,timed_event **,timed_event **);   		/* reschedules an event */
-void add_event(timed_event *,timed_event **,timed_event **);     		/* adds an event to the execution queue */
-void remove_event(timed_event *,timed_event **,timed_event **);     		/* remove an event from the execution queue */
+int init_event_queue(void);					/* creates the queue icinga_squeue */
+timed_event *schedule_new_event(int,int,time_t,int,
+	unsigned long,void *,int,void *,void *,int);		/* schedules a new timed event */
+void reschedule_event(squeue_t *sq, timed_event *event);  	/* reschedules an event */
+void add_event(squeue_t *sq, timed_event *event);     		/* adds an event to the execution queue */
+void remove_event(squeue_t *sq, timed_event *event);   		/* remove an event from the execution queue */
 int event_execution_loop(void);                      		/* main monitoring/event handler loop */
 int handle_timed_event(timed_event *);		     		/* top level handler for timed events */
 void adjust_check_scheduling(void);		        	/* auto-adjusts scheduling of host and service checks */
-void compensate_for_system_time_change(unsigned long,unsigned long);	/* attempts to compensate for a change in the system time */
-void adjust_timestamp_for_time_change(time_t,time_t,unsigned long,time_t *); /* adjusts a timestamp variable for a system time change */
-void resort_event_list(timed_event **,timed_event **);                 	/* resorts event list by event run time for system time changes */
+void compensate_for_system_time_change(unsigned long,
+	unsigned long);						/* attempts to compensate for a change in the system time */
+void adjust_timestamp_for_time_change(time_t,time_t,
+	unsigned long,time_t *); 				/* adjusts a timestamp variable for a system time change */
 
 
 /**** IPC Functions ****/
