@@ -116,12 +116,13 @@ Documentation for %{name}
     --libdir="%{_libdir}/%{name}" \
     --sbindir="%{_libdir}/%{name}/cgi" \
     --sysconfdir="%{_sysconfdir}/%{name}" \
-    --with-cgiurl="/%{name}/cgi-bin" \
     --with-command-user="icinga" \
     --with-command-group="icingacmd" \
     --with-gd-lib="%{_libdir}" \
     --with-gd-inc="%{_includedir}" \
     --with-htmurl="/icinga" \
+    --with-cgiurl="/%{name}/cgi-bin" \
+    --with-mainurl="/%{name}/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29" \
     --with-init-dir="%{_initrddir}" \
     --with-lockfile="%{_localstatedir}/run/%{name}.pid" \
     --with-mail="/bin/mail" \
@@ -401,6 +402,7 @@ fi
 * Fri Jul 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.8.0-1
 - bump version
 - add devel package, installing header files to include/
+- use --with-mainurl from upstream to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29
 
 * Sun May 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.0-1
 - drop idoutils, add idoutils-libdbi-mysql and idoutils-libdbi-pgsql

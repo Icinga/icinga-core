@@ -25,7 +25,8 @@ ENHANCEMENTS
 
 * install: add --with-mainurl to configure, allowing to set the main frame target url for index.html #2611 - MF
 
-* icinga.spec: add devel package #2634
+* icinga.spec: add devel package #2634 - MF
+* icinga.spec: use --with-mainurl to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29 #2611 - MF
 
 FIXES
 * core: unify check scheduling replacement logic for new events (Andreas Ericsson) #2676
