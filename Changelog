@@ -24,6 +24,8 @@ FIXES
 * idoutils: fix icinga mysql db creation script grants access to all dbs #2917 - MF
 * idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
 
+* icinga.spec: forced update on icinga.cfg change package locations #2923 -MF
+
 CHANGES
 
 
