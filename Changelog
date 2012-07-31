@@ -23,6 +23,8 @@ ENHANCEMENTS
 * idoutils: change hasfunc to use sdbm algorithm for hashing precached objects #2792
 * idoutils: add disable_notif_expire_time to programstatus table - #905 - MF
 
+* install: add --with-mainurl to configure, allowing to set the main frame target url for index.html #2611 - MF
+
 * icinga.spec: add devel package #2634
 
 FIXES
