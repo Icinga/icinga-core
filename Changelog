@@ -34,12 +34,15 @@ ENHANCEMENTS
 * idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
 * idoutils: fix doubled quotes by skipping escaping data (Oracle only) #2534 - TD
 * idoutils: change hasfunc to use sdbm algorithm for hashing precached objects #2792i - MF/GB
+
 * icinga.spec: add devel package #2634 - MF
 
 FIXES
 * core: unify check scheduling replacement logic for new events (Andreas Ericsson) #2676 - MF
 * core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665 - MF
 * core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197 - MF
+
+* idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
 
 CHANGES
 

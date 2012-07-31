@@ -172,8 +172,6 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 		}
 	}
 
-	dbi_result_free(idi->dbinfo.dbi_result);
-
 	free(buf);
 	free(buf1);
 	free(buf2);
@@ -387,6 +385,7 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 		}
 	}
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 
 #endif
 
@@ -861,6 +860,7 @@ int ido2db_set_all_objects_as_inactive(ido2db_idi *idi) {
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 	free(buf);
 
 #endif
@@ -921,6 +921,7 @@ int ido2db_set_object_as_active(ido2db_idi *idi, int object_type,
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 	free(buf);
 
 #endif
@@ -1039,6 +1040,7 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 	free(buf);
 
 #endif
@@ -1125,6 +1127,7 @@ int ido2db_handle_logentry(ido2db_idi *idi) {
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -1278,6 +1281,7 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -1442,6 +1446,7 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 			buf = NULL;
 		result = ido2db_db_query(idi, buf);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 
 #endif
@@ -1564,6 +1569,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -1596,6 +1602,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -1623,6 +1630,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		result = ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 #endif
 
@@ -1699,6 +1707,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		result = ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 #endif
 
@@ -1758,6 +1767,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -1787,6 +1797,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		result = ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 
 #endif
@@ -1851,6 +1862,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 			result = ido2db_db_query(idi, buf);
 
 			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
 			free(buf);
 #endif
 
@@ -1968,6 +1980,7 @@ int ido2db_handle_logdata(ido2db_idi *idi) {
 
 	result = ido2db_db_query(idi, buf);
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 
 #endif
 
@@ -2114,6 +2127,7 @@ int ido2db_handle_systemcommanddata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -2219,6 +2233,7 @@ int ido2db_handle_eventhandlerdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -2375,6 +2390,7 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -2509,6 +2525,7 @@ int ido2db_handle_contactnotificationdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -2581,6 +2598,7 @@ int ido2db_handle_contactnotificationmethoddata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -2713,6 +2731,7 @@ int ido2db_handle_servicecheckdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -2847,6 +2866,7 @@ int ido2db_handle_hostcheckdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -2951,6 +2971,7 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -2981,6 +3002,7 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 		result = ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 
 #endif
@@ -3063,6 +3085,7 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -3092,6 +3115,7 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 		result = ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 #endif
 
@@ -3245,6 +3269,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -3284,6 +3309,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 		result = ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 #endif
 
@@ -3384,6 +3410,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 		result = ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 #endif
 
@@ -3500,6 +3527,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -3533,6 +3561,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 		result = ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 
 #endif
@@ -3631,6 +3660,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 		result = ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 #endif
 
@@ -3758,6 +3788,7 @@ int ido2db_handle_flappingdata(ido2db_idi *idi) {
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -3951,6 +3982,7 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -4161,6 +4193,7 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -4383,6 +4416,7 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -4476,6 +4510,7 @@ int ido2db_handle_contactstatusdata(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -4608,6 +4643,7 @@ int ido2db_handle_externalcommanddata(ido2db_idi *idi) {
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -4812,6 +4848,7 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 	free(buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -5002,6 +5039,7 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -5233,6 +5271,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -5384,6 +5423,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 
@@ -5628,6 +5668,7 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 
@@ -5954,6 +5995,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -6081,6 +6123,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 
@@ -6210,6 +6253,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 
@@ -6332,6 +6376,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 
@@ -6493,6 +6538,7 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -6610,6 +6656,7 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 
@@ -6921,6 +6968,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -7044,6 +7092,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 
@@ -7175,6 +7224,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 
@@ -7337,6 +7387,7 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -7461,6 +7512,7 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 
@@ -7559,6 +7611,7 @@ int ido2db_handle_hostdependencydefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -7633,6 +7686,7 @@ int ido2db_handle_servicedependencydefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -7769,6 +7823,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -7801,6 +7856,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -7834,6 +7890,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -7975,6 +8032,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8007,6 +8065,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8040,6 +8099,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8098,6 +8158,7 @@ int ido2db_handle_commanddefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8240,6 +8301,7 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8379,6 +8441,7 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 
@@ -8590,6 +8653,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8630,6 +8694,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8674,6 +8739,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8720,6 +8786,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8799,6 +8866,7 @@ int ido2db_save_custom_variables(ido2db_idi *idi, int table_idx, unsigned long o
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8829,6 +8897,7 @@ int ido2db_save_custom_variables(ido2db_idi *idi, int table_idx, unsigned long o
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -8962,6 +9031,7 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -9081,6 +9151,7 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 	if (first == 0) {
 		result = ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 #endif
 

@@ -221,6 +221,7 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 
 	if (*list == NULL) {
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		return -1;
 	}
 
@@ -254,6 +255,7 @@ int sla_query_states(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif /* USE_LIBDBI */
 
 #ifdef USE_PGSQL
@@ -457,6 +459,7 @@ int sla_save_state(ido2db_idi *idi, sla_state_t *state) {
 		return -1;
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif /* USE_LIBDBI */
 
 #ifdef USE_PGSQL
@@ -576,6 +579,7 @@ int sla_delete_state(ido2db_idi *idi, sla_state_t *state) {
 		return -1;
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif /* USE_LIBDBI */
 
 #ifdef USE_PGSQL /* USE_PGSQL */
@@ -790,6 +794,7 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 
 	if (*list == NULL) {
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		return -1;
 	}
 
@@ -822,6 +827,7 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif /* USE_LIBDBI */
 
 #ifdef USE_PGSQL
@@ -1076,6 +1082,7 @@ static int sla_query_dependent_services(ido2db_idi *idi,
 
 	if (*service_object_ids == NULL) {
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		return -1;
 	}
 
@@ -1091,6 +1098,7 @@ static int sla_query_dependent_services(ido2db_idi *idi,
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif /* USE_LIBDBI */
 
 #ifdef USE_PGSQL
