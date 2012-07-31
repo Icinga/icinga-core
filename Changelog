@@ -16,6 +16,7 @@ ENHANCEMENTS
 	** livestatus and other neb modules not using the icinga headers won't see those
 * core: add a command to disable notifications program-wide with expire time as scheduled event #905 - MF
 	** DISABLE_NOTIFICATIONS_EXPIRE_TIME, works for global notifications
+* core: add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879 - MF
 
 * classic ui: add support for disable notifications with expire time to extinfo.cgi, Process Info #905 - MF
 
@@ -30,6 +31,8 @@ FIXES
 * core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197
 * core: fix whitespaces are not stripped using multiple templates ("use abc, def, ghi") #2701
 * core: make delete_downtime_by_hostname_service_description_start_time_comment threadsafe (Andreas Ericsson) #2899
+* core: bail out early with config error if resource.cfg macros contain NULL values #2879 - MF
+* core: fix logical bug on icinga.cfg detection on config read #2879 - MF
 
 CHANGES
 * core: new command
