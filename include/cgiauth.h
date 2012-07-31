@@ -44,6 +44,8 @@ typedef struct authdata_struct{
 	int authorized_for_configuration_information;
 	int authorized_for_full_command_resolution;
 	int authorized_for_read_only;
+	int authorized_for_comments_read_only;
+	int authorized_for_downtimes_read_only;
 	int authenticated;
 	int number_of_authentication_rules;
 	char **authentication_rules;
@@ -77,6 +79,9 @@ int is_authorized_for_configuration_information(authdata *);
 int is_authorized_for_full_command_resolution(authdata *);
 
 int is_authorized_for_read_only(authdata *);
+int is_authorized_for_comments_read_only(authdata *);
+int is_authorized_for_downtimes_read_only(authdata *);
+
 #ifdef __cplusplus
   }
 #endif

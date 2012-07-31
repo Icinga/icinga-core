@@ -65,4 +65,24 @@
 .dd .borderTop{border-top:1px solid #c3c3c3 !important;}
 .dd .noBorderTop{border-top:none 0  !important}
 
+.page_selector {
+	width: 345px;
+	vertical-align: middle;
+	text-align: center;
+	height: 24px;
+	line-height: 24px;
+	padding:2px 0px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.page_select_dd {
+	padding: 0 5px;
+	height: 24px;
+	line-height: 24px;
+	float: left;
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
 /*******************************/

@@ -40,6 +40,7 @@ extern int 	embedded;
 extern int 	display_header;
 extern int 	daemon_check;
 extern int 	content_type;
+extern int	result_limit;
 
 extern logentry *entry_list;
 
@@ -58,6 +59,9 @@ int find_all = TRUE;
 int notification_options = NOTIFICATION_ALL;
 int reverse = FALSE;
 int display_type = DISPLAY_HOSTS;
+int result_start = 1;				/**< keep track from where we have to start displaying results */
+int get_result_limit = -1;			/**< needed to overwrite config value with result_limit we get vie GET */
+
 
 char log_file_to_use[MAX_FILENAME_LENGTH];
 char *query_contact_name = "";
@@ -106,6 +110,13 @@ int main(void) {
 		document_footer(CGI_ID);
 		return ERROR;
 	}
+
+	/* overwrite config value with amount we got via GET */
+	result_limit = (get_result_limit != -1) ? get_result_limit : result_limit;
+
+	/* for json and csv output return all by default */
+	if (get_result_limit == -1 && (content_type == JSON_CONTENT || content_type == CSV_CONTENT))
+		result_limit = 0;
 
 	document_header(CGI_ID, TRUE, "Alert Notifications");
 
@@ -187,7 +198,7 @@ int main(void) {
 		} else
 			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s?%s%s=%s&type=%d&", NOTIFICATIONS_CGI, (reverse == TRUE) ? "oldestfirst&" : "", (query_type == FIND_HOST) ? "host" : "contact", (query_type == FIND_HOST) ? url_encode(query_host_name) : url_encode(query_contact_name), notification_options);
 
-		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
 		display_nav_table(temp_buffer, log_archive);
 
 		printf("</td>\n");
@@ -239,7 +250,7 @@ int main(void) {
 		printf("</tr>\n");
 		printf("<tr>\n");
 		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='oldestfirst' %s></td>", (reverse == TRUE) ? "checked" : "");
-		printf("<td align=right CLASS='optBoxItem'><input type='submit' value='Update'></td>\n");
+		printf("<td align=right CLASS='optBoxItem'><input type='hidden' name='limit' value='%d'><input type='submit' value='Update'></td>\n", result_limit);
 		printf("</tr>\n");
 
 		/* display context-sensitive help */
@@ -386,6 +397,31 @@ int process_cgivars(void) {
 		/* we found the nodaemoncheck option */
 		else if (!strcmp(variables[x], "nodaemoncheck"))
 			daemon_check = FALSE;
+
+		/* start num results to skip on displaying statusdata */
+		else if (!strcmp(variables[x], "start")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			result_start = atoi(variables[x]);
+
+			if (result_start < 1)
+				result_start = 1;
+		}
+
+		/* amount of results to display */
+		else if (!strcmp(variables[x], "limit")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			get_result_limit = atoi(variables[x]);
+		}
 	}
 
 	/*
@@ -424,6 +460,7 @@ void display_notifications(void) {
 	char displayed_service_desc[MAX_INPUT_BUFFER];
 	int show_entry, status;
 	int total_notifications = 0;
+	int displayed_entries = 0;
 	int notification_detail_type = NOTIFICATION_SERVICE_CRITICAL;
 	int odd = 0;
 	int json_start = TRUE;
@@ -439,19 +476,16 @@ void display_notifications(void) {
 
 	free_log_filters();
 
-	if (status == READLOG_ERROR_MEMORY) {
-		printf("<P><DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV></P>");
-	}
 
 	if (status == READLOG_ERROR_NOFILE) {
 		snprintf(error_text, sizeof(error_text), "Error: Could not open log file '%s' for reading!", log_file_to_use);
-		error_text[sizeof(error_text)-1] = '\x0';
+		error_text[sizeof(error_text) - 1] = '\x0';
 		print_generic_error_message(error_text, NULL, 0);
 		free_log_entries();
 		return;
 	}
 
-	if (status == READLOG_OK) {
+	if (status == READLOG_OK || status == READLOG_ERROR_MEMORY) {
 		if (content_type == JSON_CONTENT)
 			printf("\"notifications\": [\n");
 		else if (content_type == CSV_CONTENT) {
@@ -463,18 +497,25 @@ void display_notifications(void) {
 			printf("%sNOTIFICATION_COMMAND%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sINFORMATION%s\n", csv_data_enclosure, csv_data_enclosure);
 		} else {
-			printf("<p>\n");
-			printf("<div align='center'>\n");
 
-			printf("<table border=0 CLASS='notifications'>\n");
+			if (status == READLOG_ERROR_MEMORY)
+				printf("<DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV>");
+
+			printf("<table border=0 CLASS='notifications' align='center'>\n");
 
 			/* add export to csv, json, link */
 			printf("<TR><TD colspan='7'>");
+			printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
+			printf("<div class='page_selector'>\n");
+			printf("<div id='page_navigation_copy'></div>");
+			page_limit_selector(result_start);
+			printf("</div>\n");
+			printf("</td><td width='33%%' align='right' style='padding-right:2px'>\n");
 			printf("<div class='csv_export_link'>");
 			print_export_link(CSV_CONTENT, NOTIFICATIONS_CGI, NULL);
 			print_export_link(JSON_CONTENT, NOTIFICATIONS_CGI, NULL);
 			print_export_link(HTML_CONTENT, NOTIFICATIONS_CGI, NULL);
-			printf("</DIV></TD></TR>\n");
+			printf("</div></td></tr></table>");
 
 			printf("<tr>\n");
 			printf("<th CLASS='notifications'>Host</th>\n");
@@ -501,25 +542,25 @@ void display_notifications(void) {
 			temp_buffer = (char *)strtok(temp_entry->entry_text, ":");
 			temp_buffer = (char *)strtok(NULL, ";");
 			snprintf(contact_name, sizeof(contact_name), "%s", (temp_buffer == NULL) ? "" : temp_buffer + 1);
-			contact_name[sizeof(contact_name)-1] = '\x0';
+			contact_name[sizeof(contact_name) - 1] = '\x0';
 
 			/* get the host name */
 			temp_buffer = (char *)strtok(NULL, ";");
 			snprintf(host_name, sizeof(host_name), "%s", (temp_buffer == NULL) ? "" : temp_buffer);
-			host_name[sizeof(host_name)-1] = '\x0';
+			host_name[sizeof(host_name) - 1] = '\x0';
 
 			/* get the service name */
 			service_name[0] = '\x0';
 			if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION) {
 				temp_buffer = (char *)strtok(NULL, ";");
 				snprintf(service_name, sizeof(service_name), "%s", (temp_buffer == NULL) ? "" : temp_buffer);
-				service_name[sizeof(service_name)-1] = '\x0';
+				service_name[sizeof(service_name) - 1] = '\x0';
 			}
 
 			/* get the alert level */
 			temp_buffer = (char *)strtok(NULL, ";");
 			snprintf(alert_level, sizeof(alert_level), "%s", (temp_buffer == NULL) ? "" : temp_buffer);
-			alert_level[sizeof(alert_level)-1] = '\x0';
+			alert_level[sizeof(alert_level) - 1] = '\x0';
 
 			if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION) {
 
@@ -586,7 +627,7 @@ void display_notifications(void) {
 			/* get the method name */
 			temp_buffer = (char *)strtok(NULL, ";");
 			snprintf(method_name, sizeof(method_name), "%s", (temp_buffer == NULL) ? "" : temp_buffer);
-			method_name[sizeof(method_name)-1] = '\x0';
+			method_name[sizeof(method_name) - 1] = '\x0';
 
 			/* move to the informational message */
 			temp_buffer = strtok(NULL, ";");
@@ -635,7 +676,7 @@ void display_notifications(void) {
 
 			if (temp_host != NULL) {
 				snprintf(displayed_host_name, sizeof(displayed_host_name), "%s", (temp_host->display_name != NULL && content_type == HTML_CONTENT) ? temp_host->display_name : temp_host->name);
-				displayed_host_name[sizeof(displayed_host_name)-1] = '\x0';
+				displayed_host_name[sizeof(displayed_host_name) - 1] = '\x0';
 
 				if (temp_entry->type == LOGENTRY_HOST_NOTIFICATION) {
 					if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
@@ -643,7 +684,7 @@ void display_notifications(void) {
 				} else {
 					if (temp_service != NULL) {
 						snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", (temp_service->display_name != NULL && content_type == HTML_CONTENT) ? temp_service->display_name : temp_service->description);
-						displayed_service_desc[sizeof(displayed_service_desc)-1] = '\x0';
+						displayed_service_desc[sizeof(displayed_service_desc) - 1] = '\x0';
 
 						if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
 							show_entry = FALSE;
@@ -652,7 +693,7 @@ void display_notifications(void) {
 							show_entry = FALSE;
 
 						snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", service_name);
-						displayed_service_desc[sizeof(displayed_service_desc)-1] = '\x0';
+						displayed_service_desc[sizeof(displayed_service_desc) - 1] = '\x0';
 					}
 				}
 			} else {
@@ -664,15 +705,21 @@ void display_notifications(void) {
 						show_entry = FALSE;
 
 					snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", service_name);
-					displayed_service_desc[sizeof(displayed_service_desc)-1] = '\x0';
+					displayed_service_desc[sizeof(displayed_service_desc) - 1] = '\x0';
 				}
 
 				snprintf(displayed_host_name, sizeof(displayed_host_name), "%s", host_name);
-				displayed_host_name[sizeof(displayed_host_name)-1] = '\x0';
+				displayed_host_name[sizeof(displayed_host_name) - 1] = '\x0';
 			}
 
 			if (show_entry == TRUE) {
 
+				if (result_limit != 0  && (((total_notifications + 1) < result_start) || (total_notifications >= ((result_start + result_limit) - 1)))) {
+					total_notifications++;
+					continue;
+				}
+
+				displayed_entries++;
 				total_notifications++;
 
 				if (odd)
@@ -737,11 +784,8 @@ void display_notifications(void) {
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</table>\n");
 
-		printf("</div>\n");
-		printf("</p>\n");
-
 		if (total_notifications == 0) {
-			printf("<P><DIV CLASS='errorMessage' style='text-align:center;'>No notifications have been recorded");
+			printf("<DIV CLASS='errorMessage' style='text-align:center;'>No notifications have been recorded");
 			if (find_all == FALSE) {
 				if (query_type == FIND_SERVICE)
 					printf(" for this service");
@@ -750,9 +794,10 @@ void display_notifications(void) {
 				else
 					printf(" for this host");
 			}
-			printf(" in %s log file</DIV></P>", (log_archive == 0) ? "the current" : "this archived");
-		} else
-			printf("<DIV align=center>%d Notification%s</DIV>", total_notifications, (total_notifications == 1) ? "" : "s");
+			printf(" in %s log file</DIV>", (log_archive == 0) ? "the current" : "this archived");
+		} else {
+			page_num_selector(result_start, total_notifications, displayed_entries);
+		}
 	} else if (content_type == JSON_CONTENT) {
 		printf("\n]\n");
 	}

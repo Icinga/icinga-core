@@ -71,6 +71,7 @@ extern int              program_stats[MAX_CHECK_STATS_TYPES][3];
 extern int              suppress_maintenance_downtime;
 extern int		extinfo_show_child_hosts;
 extern int		tab_friendly_titles;
+extern int		result_limit;
 
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
@@ -150,6 +151,11 @@ int display_type = DISPLAY_PROCESS_INFO;
 int sort_type = SORT_ASCENDING;
 int sort_option = SORT_NEXTCHECKTIME;
 int csv_type = CSV_DEFAULT;
+int get_result_limit = -1;
+int result_start = 1;
+int total_entries = 0;
+int displayed_entries = 0;
+
 
 int dummy;	/* reduce compiler warnings */
 
@@ -226,6 +232,13 @@ int main(void) {
 		return ERROR;
 	}
 
+	/* overwrite config value with amount we got via GET */
+	result_limit = (get_result_limit != -1) ? get_result_limit : result_limit;
+
+	/* for json and csv output return all by default */
+	if (get_result_limit == -1 && (content_type == JSON_CONTENT || content_type == CSV_CONTENT))
+		result_limit = 0;
+
 	/* initialize macros */
 	init_macros();
 
@@ -276,7 +289,7 @@ int main(void) {
 		else
 			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Icinga Process Information");
 
-		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+		temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
 
 		display_info_table(temp_buffer, &current_authdata, daemon_check);
 
@@ -289,29 +302,6 @@ int main(void) {
 			if (display_type == DISPLAY_SERVICE_INFO) {
 				temp_service = find_service(host_name, service_desc);
 				grab_service_macros_r(mac, temp_service);
-			}
-
-			/* write some Javascript helper functions */
-			/*
-				WHAT IS THIS FOR  ?????
-			*/
-			if (temp_host != NULL) {
-				printf("<SCRIPT LANGUAGE=\"JavaScript\">\n<!--\n");
-				printf("function nagios_get_host_name()\n{\n");
-				printf("return \"%s\";\n", temp_host->name);
-				printf("}\n");
-				printf("function nagios_get_host_address()\n{\n");
-				printf("return \"%s\";\n", temp_host->address);
-				printf("}\n");
-				printf("function nagios_get_host_address6()\n{\n");
-				printf("return \"%s\";\n", temp_host->address6);
-				printf("}\n");
-				if (temp_service != NULL) {
-					printf("function nagios_get_service_description()\n{\n");
-					printf("return \"%s\";\n", temp_service->description);
-					printf("}\n");
-				}
-				printf("//-->\n</SCRIPT>\n");
 			}
 		}
 
@@ -518,7 +508,7 @@ int main(void) {
 				for (temp_sd = servicedependency_list; temp_sd != NULL; temp_sd = temp_sd->next) {
 
 					if (!strcmp(temp_sd->dependent_service_description, temp_service->description) && !strcmp(temp_sd->dependent_host_name, temp_host->name) && \
-					  !(!strcmp(temp_sd->service_description, last_sd_svc_desc) && !strcmp(temp_sd->host_name, last_sd_hostname))) {
+					        !(!strcmp(temp_sd->service_description, last_sd_svc_desc) && !strcmp(temp_sd->host_name, last_sd_hostname))) {
 						if (found == TRUE)
 							printf(", ");
 
@@ -526,8 +516,8 @@ int main(void) {
 						printf("&service=%s'>%s on %s</A>\n", url_encode(temp_sd->service_description), html_encode(temp_sd->service_description, FALSE), html_encode(temp_sd->host_name, FALSE));
 						found = TRUE;
 					}
-					last_sd_svc_desc=temp_sd->service_description;
-					last_sd_hostname=temp_sd->host_name;
+					last_sd_svc_desc = temp_sd->service_description;
+					last_sd_hostname = temp_sd->host_name;
 				}
 
 				if (found == FALSE)
@@ -764,7 +754,7 @@ int main(void) {
 		} else
 			show_service_info();
 	} else if (display_type == DISPLAY_COMMENTS) {
-		if (is_authorized_for_read_only(&current_authdata) == TRUE)
+		if (is_authorized_for_read_only(&current_authdata) == TRUE && is_authorized_for_comments_read_only(&current_authdata) == FALSE)
 			printf("<DIV ALIGN=CENTER CLASS='infoMessage'>Your account does not have permissions to view comments.<br>\n");
 		else {
 			if (content_type == CSV_CONTENT || content_type == JSON_CONTENT) {
@@ -773,17 +763,17 @@ int main(void) {
 					printf(",\n");
 				show_comments(SERVICE_COMMENT);
 			} else {
-				printf("<BR />\n");
+				printf("<BR>\n");
 				printf("<DIV CLASS='commentNav'>[&nbsp;<A HREF='#HOSTCOMMENTS' CLASS='commentNav'>Host Comments</A>&nbsp;|&nbsp;<A HREF='#SERVICECOMMENTS' CLASS='commentNav'>Service Comments</A>&nbsp;]</DIV>\n");
-				printf("<BR />\n");
+				printf("<BR>\n");
 
 				show_comments(HOST_COMMENT);
-				printf("<BR />\n");
+				printf("<br>\n");
 				show_comments(SERVICE_COMMENT);
 			}
 		}
 	} else if (display_type == DISPLAY_DOWNTIME) {
-		if (is_authorized_for_read_only(&current_authdata) == TRUE)
+		if (is_authorized_for_read_only(&current_authdata) == TRUE && is_authorized_for_downtimes_read_only(&current_authdata) == FALSE)
 			printf("<DIV ALIGN=CENTER CLASS='infoMessage'>Your account does not have permissions to view downtimes.<br>\n");
 		else {
 			if (content_type == CSV_CONTENT || content_type == JSON_CONTENT) {
@@ -792,12 +782,12 @@ int main(void) {
 					printf(",\n");
 				show_downtime(SERVICE_DOWNTIME);
 			} else {
-				printf("<BR />\n");
+				printf("<br>\n");
 				printf("<DIV CLASS='downtimeNav'>[&nbsp;<A HREF='#HOSTDOWNTIME' CLASS='downtimeNav'>Host Downtime</A>&nbsp;|&nbsp;<A HREF='#SERVICEDOWNTIME' CLASS='downtimeNav'>Service Downtime</A>&nbsp;]</DIV>\n");
-				printf("<BR />\n");
+				printf("<br>\n");
 
 				show_downtime(HOST_DOWNTIME);
-				printf("<BR />\n");
+				printf("<br>\n");
 				show_downtime(SERVICE_DOWNTIME);
 			}
 		}
@@ -986,6 +976,32 @@ int process_cgivars(void) {
 		/* we found the nodaemoncheck option */
 		else if (!strcmp(variables[x], "nodaemoncheck"))
 			daemon_check = FALSE;
+
+		/* start num results to skip on displaying statusdata */
+		else if (!strcmp(variables[x], "start")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			result_start = atoi(variables[x]);
+
+			if (result_start < 1)
+				result_start = 1;
+		}
+
+		/* amount of results to display */
+		else if (!strcmp(variables[x], "limit")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			get_result_limit = atoi(variables[x]);
+		}
+
 	}
 
 
@@ -1113,7 +1129,7 @@ void show_process_info(void) {
 #endif
 		printf("\n");
 	} else {
-		printf("<BR />\n");
+		printf("<br>\n");
 
 		/* add export to csv, json, link */
 		printf("<div class='csv_export_link'>");
@@ -1122,9 +1138,7 @@ void show_process_info(void) {
 		print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
 		printf("</div>");
 
-		printf("<DIV ALIGN=CENTER>\n");
-
-		printf("<TABLE BORDER=0 CELLPADDING=20>\n");
+		printf("<TABLE BORDER=0 CELLPADDING=20 align='center'>\n");
 		printf("<TR><TD VALIGN=TOP>\n");
 
 		printf("<DIV CLASS='dataTitle'>Process Information</DIV>\n");
@@ -1282,7 +1296,6 @@ void show_process_info(void) {
 		printf("</TABLE>\n");
 
 		printf("</TD></TR></TABLE>\n");
-		printf("</DIV>\n");
 	}
 }
 
@@ -1347,7 +1360,7 @@ void show_host_info(void) {
 		snprintf(state_duration, sizeof(state_duration) - 1, "???");
 	else
 		snprintf(state_duration, sizeof(state_duration) - 1, "%2dd %2dh %2dm %2ds%s", days, hours, minutes, seconds, (temp_hoststatus->last_state_change == (time_t)0) ? "+" : "");
-	state_duration[sizeof(state_duration)-1] = '\x0';
+	state_duration[sizeof(state_duration) - 1] = '\x0';
 
 	/* calculate state age */
 	ts_state_age = 0;
@@ -1364,7 +1377,7 @@ void show_host_info(void) {
 		snprintf(status_age, sizeof(status_age) - 1, "N/A");
 	else
 		snprintf(status_age, sizeof(status_age) - 1, "%2dd %2dh %2dm %2ds", days, hours, minutes, seconds);
-	status_age[sizeof(status_age)-1] = '\x0';
+	status_age[sizeof(status_age) - 1] = '\x0';
 
 	/* first, we mark and color it as maintenance if that is preferred */
 	if (suppress_maintenance_downtime == TRUE && temp_hoststatus->scheduled_downtime_depth > 0) {
@@ -1472,7 +1485,7 @@ void show_host_info(void) {
 			printf("\"notifications_enabled\": %s,\n", (temp_hoststatus->notifications_enabled == TRUE) ? "true" : "false");
 			printf("\"event_handler_enabled\": %s,\n", (temp_hoststatus->event_handler_enabled == TRUE) ? "true" : "false");
 			printf("\"flap_detection_enabled\": %s\n", (temp_hoststatus->flap_detection_enabled == TRUE) ? "true" : "false");
-			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+			if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
 
 				/* display comments */
 				printf(",\n");
@@ -1485,8 +1498,7 @@ void show_host_info(void) {
 			printf(" }\n");
 		}
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CELLPADDING=0 WIDTH=100%%>\n");
+		printf("<TABLE BORDER=0 CELLPADDING=0 WIDTH='100%%' align='center'>\n");
 		printf("<TR>\n");
 
 		printf("<TD ALIGN=CENTER VALIGN=TOP CLASS='stateInfoPanel'>\n");
@@ -1494,7 +1506,7 @@ void show_host_info(void) {
 		printf("<DIV CLASS='dataTitle'>Host State Information</DIV>\n");
 
 		if (temp_hoststatus->has_been_checked == FALSE)
-			printf("<P><DIV ALIGN=CENTER>This host has not yet been checked, so status information is not available.</DIV></P>\n");
+			printf("<DIV ALIGN=CENTER>This host has not yet been checked, so status information is not available.</DIV>\n");
 
 		else {
 
@@ -1511,7 +1523,7 @@ void show_host_info(void) {
 			if (enable_splunk_integration == TRUE) {
 				printf("&nbsp;&nbsp;");
 				dummy = asprintf(&buf, "%s %s", temp_host->name, temp_hoststatus->plugin_output);
-				buf[sizeof(buf)-1] = '\x0';
+				buf[sizeof(buf) - 1] = '\x0';
 				display_splunk_generic_url(buf, 1);
 				free(buf);
 			}
@@ -1575,7 +1587,7 @@ void show_host_info(void) {
 			printf("</TD></TR>\n");
 			printf("<TR><TD>\n");
 
-			printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0>\n");
+			printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 align='left'>\n");
 			printf("<TR><TD class='stateInfoTable2'>\n");
 			printf("<TABLE BORDER=0>\n");
 
@@ -1681,9 +1693,9 @@ void show_host_info(void) {
 			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Add a new Host comment' TITLE='Add a new Host comment'></td><td CLASS='command'><a href='%s?cmd_typ=%d&host=%s'>", url_images_path, COMMENT_ICON, CMD_CGI, CMD_ADD_HOST_COMMENT, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("Add a new Host comment</a></td>");
 
-                        /* allow modified attributes to be reset */
-                        printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Reset Modified Attributes' TITLE='Reset Modified Attributes'></td><td CLASS='command'><a href='%s?cmd_typ=%d&attr=%d&host=%s'>", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_HOST_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
-                        printf("Reset Modified Attributes</a></td>");
+			/* allow modified attributes to be reset */
+			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Reset Modified Attributes' TITLE='Reset Modified Attributes'></td><td CLASS='command'><a href='%s?cmd_typ=%d&attr=%d&host=%s'>", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_HOST_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+			printf("Reset Modified Attributes</a></td>");
 
 			printf("</TABLE>\n");
 		} else if (is_authorized_for_read_only(&current_authdata) == TRUE) {
@@ -1701,9 +1713,9 @@ void show_host_info(void) {
 
 		printf("<TR>\n");
 
-		printf("<TD COLSPAN=2 ALIGN=CENTER VALIGN=TOP CLASS='commentPanel'>\n");
+		printf("<TD COLSPAN=2 VALIGN=TOP CLASS='commentPanel'>\n");
 
-		if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+		if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
 			/* display comments */
 			show_comments(HOST_COMMENT);
 			printf("<BR>");
@@ -1715,7 +1727,6 @@ void show_host_info(void) {
 
 		printf("</TR>\n");
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
 	}
 
 	return;
@@ -1782,7 +1793,7 @@ void show_service_info(void) {
 		snprintf(state_duration, sizeof(state_duration) - 1, "???");
 	else
 		snprintf(state_duration, sizeof(state_duration) - 1, "%2dd %2dh %2dm %2ds%s", days, hours, minutes, seconds, (temp_svcstatus->last_state_change == (time_t)0) ? "+" : "");
-	state_duration[sizeof(state_duration)-1] = '\x0';
+	state_duration[sizeof(state_duration) - 1] = '\x0';
 
 	/* first, we mark and color it as maintenance if that is preferred */
 	if (suppress_maintenance_downtime == TRUE && temp_svcstatus->scheduled_downtime_depth > 0) {
@@ -1816,7 +1827,7 @@ void show_service_info(void) {
 		snprintf(status_age, sizeof(status_age) - 1, "N/A");
 	else
 		snprintf(status_age, sizeof(status_age) - 1, "%2dd %2dh %2dm %2ds", days, hours, minutes, seconds);
-	status_age[sizeof(status_age)-1] = '\x0';
+	status_age[sizeof(status_age) - 1] = '\x0';
 
 	if (content_type == JSON_CONTENT) {
 		printf("\"service_info\": {\n");
@@ -1900,7 +1911,7 @@ void show_service_info(void) {
 			printf("\"notifications_enabled\": %s,\n", (temp_svcstatus->notifications_enabled == TRUE) ? "true" : "false");
 			printf("\"event_handler_enabled\": %s,\n", (temp_svcstatus->event_handler_enabled == TRUE) ? "true" : "false");
 			printf("\"flap_detection_enabled\": %s\n", (temp_svcstatus->flap_detection_enabled == TRUE) ? "true" : "false");
-			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+			if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
 
 				/* display comments */
 				printf(",\n");
@@ -1913,7 +1924,6 @@ void show_service_info(void) {
 			printf(" }\n");
 		}
 	} else {
-		printf("<DIV ALIGN=CENTER>\n");
 		printf("<TABLE BORDER=0 CELLPADDING=0 CELLSPACING=0 WIDTH=100%%>\n");
 		printf("<TR>\n");
 
@@ -1940,7 +1950,7 @@ void show_service_info(void) {
 			if (enable_splunk_integration == TRUE) {
 				printf("&nbsp;&nbsp;");
 				dummy = asprintf(&buf, "%s %s %s", temp_service->host_name, temp_service->description, temp_svcstatus->plugin_output);
-				buf[sizeof(buf)-1] = '\x0';
+				buf[sizeof(buf) - 1] = '\x0';
 				display_splunk_generic_url(buf, 1);
 				free(buf);
 			}
@@ -2006,7 +2016,7 @@ void show_service_info(void) {
 
 			printf("<TR><TD>\n");
 
-			printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0>\n");
+			printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 align='left'>\n");
 			printf("<TR><TD class='stateInfoTable2'>\n");
 			printf("<TABLE BORDER=0>\n");
 
@@ -2159,9 +2169,9 @@ void show_service_info(void) {
 		printf("<TR><TD COLSPAN=2><BR></TD></TR>\n");
 
 		printf("<TR>\n");
-		printf("<TD COLSPAN=2 ALIGN=CENTER VALIGN=TOP CLASS='commentPanel'>\n");
+		printf("<TD COLSPAN=2 VALIGN=TOP CLASS='commentPanel'>\n");
 
-		if (is_authorized_for_read_only(&current_authdata) == FALSE) {
+		if (is_authorized_for_read_only(&current_authdata) == FALSE || is_authorized_for_comments_read_only(&current_authdata) == TRUE) {
 			/* display comments */
 			show_comments(SERVICE_COMMENT);
 			printf("<BR>");
@@ -2172,7 +2182,6 @@ void show_service_info(void) {
 		printf("</TR>\n");
 
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
 	}
 
 	return;
@@ -2181,15 +2190,12 @@ void show_service_info(void) {
 void show_hostgroup_info(void) {
 	hostgroup *temp_hostgroup;
 
-
 	/* get hostgroup info */
 	temp_hostgroup = find_hostgroup(hostgroup_name);
 
 	/* make sure the user has rights to view hostgroup information */
 	if (is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == FALSE) {
-
 		print_generic_error_message("It appears as though you do not have permission to view information for this hostgroup...", "If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.", 0);
-
 		return;
 	}
 
@@ -2199,26 +2205,11 @@ void show_hostgroup_info(void) {
 		return;
 	}
 
-
-	printf("<DIV ALIGN=CENTER>\n");
-	printf("<TABLE BORDER=0 WIDTH=100%%>\n");
-	printf("<TR>\n");
-
-
-	/* top left panel */
-	printf("<TD ALIGN=CENTER VALIGN=TOP CLASS='stateInfoPanel'>\n");
-
-	/* right top panel */
-	printf("</TD><TD ALIGN=CENTER VALIGN=TOP CLASS='stateInfoPanel' ROWSPAN=2>\n");
-
 	printf("<DIV CLASS='dataTitle'>Hostgroup Commands</DIV>\n");
 
 	if (nagios_process_state == STATE_OK && is_authorized_for_read_only(&current_authdata) == FALSE) {
 
-		printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='command'>\n");
-		printf("<TR><TD>\n");
-
-		printf("<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 CLASS='command'>\n");
+		printf("<TABLE border=0 CELLSPACING=0 CELLPADDING=0 CLASS='command' align='center'>\n");
 
 		printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Schedule Downtime For All Hosts In This Hostgroup' TITLE='Schedule Downtime For All Hosts In This Hostgroup'></td><td CLASS='command'><a href='%s?cmd_typ=%d&hostgroup=%s'>Schedule downtime for all hosts in this hostgroup</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME, url_encode(hostgroup_name));
 
@@ -2238,38 +2229,18 @@ void show_hostgroup_info(void) {
 
 		printf("</table>\n");
 
-		printf("</TD></TR>\n");
-		printf("</TABLE>\n");
 	} else if (is_authorized_for_read_only(&current_authdata) == TRUE) {
-		printf("<DIV ALIGN=CENTER CLASS='infoMessage'>Your account does not have permissions to execute commands.<br>\n");
+		print_generic_error_message("Your account does not have permissions to execute commands.", NULL, 0);
 	} else {
-		printf("<DIV CLASS='infoMessage'>It appears as though Icinga is not running, so commands are temporarily unavailable...<br>\n");
+		printf("<DIV CLASS='infoMessage' align='center'>It appears as though Icinga is not running, so commands are temporarily unavailable...<br>\n");
 		printf("Click <a href='%s?type=%d'>here</a> to view Icinga process information</DIV>\n", EXTINFO_CGI, DISPLAY_PROCESS_INFO);
 	}
-
-	printf("</TD></TR>\n");
-	printf("<TR>\n");
-
-	/* left bottom panel */
-	printf("<TD ALIGN=CENTER VALIGN=TOP CLASS='stateInfoPanel'>\n");
-
-	printf("</TD></TR>\n");
-	printf("</TABLE>\n");
-	printf("</DIV>\n");
-
-
-	printf("</div>\n");
-
-	printf("</TD>\n");
-
-
 
 	return;
 }
 
 void show_servicegroup_info() {
 	servicegroup *temp_servicegroup;
-
 
 	/* get servicegroup info */
 	temp_servicegroup = find_servicegroup(servicegroup_name);
@@ -2286,26 +2257,11 @@ void show_servicegroup_info() {
 		return;
 	}
 
-
-	printf("<DIV ALIGN=CENTER>\n");
-	printf("<TABLE BORDER=0 WIDTH=100%%>\n");
-	printf("<TR>\n");
-
-
-	/* top left panel */
-	printf("<TD ALIGN=CENTER VALIGN=TOP CLASS='stateInfoPanel'>\n");
-
-	/* right top panel */
-	printf("</TD><TD ALIGN=CENTER VALIGN=TOP CLASS='stateInfoPanel' ROWSPAN=2>\n");
-
 	printf("<DIV CLASS='dataTitle'>Servicegroup Commands</DIV>\n");
 
 	if (nagios_process_state == STATE_OK) {
 
-		printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='command'>\n");
-		printf("<TR><TD>\n");
-
-		printf("<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 CLASS='command'>\n");
+		printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='command' align='center'>\n");
 
 		printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Schedule Downtime For All Hosts In This Servicegroup' TITLE='Schedule Downtime For All Hosts In This Servicegroup'></td><td CLASS='command'><a href='%s?cmd_typ=%d&servicegroup=%s'>Schedule downtime for all hosts in this servicegroup</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME, url_encode(servicegroup_name));
 
@@ -2325,28 +2281,12 @@ void show_servicegroup_info() {
 
 		printf("</table>\n");
 
-		printf("</TD></TR>\n");
-		printf("</TABLE>\n");
+	} else if (is_authorized_for_read_only(&current_authdata) == TRUE) {
+		print_generic_error_message("Your account does not have permissions to execute commands.", NULL, 0);
 	} else {
 		printf("<DIV CLASS='infoMessage'>It appears as though Icinga is not running, so commands are temporarily unavailable...<br>\n");
 		printf("Click <a href='%s?type=%d'>here</a> to view Icinga process information</DIV>\n", EXTINFO_CGI, DISPLAY_PROCESS_INFO);
 	}
-
-	printf("</TD></TR>\n");
-	printf("<TR>\n");
-
-	/* left bottom panel */
-	printf("<TD ALIGN=CENTER VALIGN=TOP CLASS='stateInfoPanel'>\n");
-
-	printf("</TD></TR>\n");
-	printf("</TABLE>\n");
-	printf("</DIV>\n");
-
-
-	printf("</div>\n");
-
-	printf("</TD>\n");
-
 
 	return;
 }
@@ -2913,7 +2853,10 @@ void show_comments(int type) {
 
 	/* define colspan */
 	if (display_type == DISPLAY_COMMENTS)
-		colspan = (type != SERVICE_COMMENT) ? 9 : 10;
+		colspan = (type != SERVICE_COMMENT) ? colspan + 1 : colspan + 2;
+
+	if (is_authorized_for_comments_read_only(&current_authdata) == TRUE)
+		colspan--;
 
 	if (content_type == JSON_CONTENT) {
 		if (type == HOST_COMMENT)
@@ -2952,13 +2895,30 @@ void show_comments(int type) {
 
 		printf("</TD></TR></TABLE>\n");
 
-		printf("<form name='tableform%scomment' id='tableform%scomment' action='%s' method='POST'>", (type == HOST_COMMENT) ? "host" : "service", (type == HOST_COMMENT) ? "host" : "service", CMD_CGI);
+		printf("<form name='tableform%scomment' id='tableform%scomment' action='%s' method='POST' onkeypress='var key = (window.event) ? event.keyCode : event.which; return (key != 13);'>", (type == HOST_COMMENT) ? "host" : "service", (type == HOST_COMMENT) ? "host" : "service", CMD_CGI);
 		printf("<input type=hidden name=buttonCheckboxChecked>");
 		printf("<input type=hidden name='cmd_typ' value=%d>", (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT);
-		printf("<DIV ALIGN=CENTER>\n");
+
 		printf("<TABLE BORDER=0 CLASS='comment'>\n");
 
-		printf("<TR><TD colspan='%d' align='right'><input type='submit' name='CommandButton' value='Delete Comments' disabled=\"disabled\"></TD></TR>\n", colspan);
+		printf("<TR><TD colspan='%d' align='right'>", colspan);
+
+		if (display_type == DISPLAY_COMMENTS && type == HOST_COMMENT) {
+			printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
+			printf("<div class='page_selector'>\n");
+			printf("<div id='page_navigation_copy'></div>\n");
+			page_limit_selector(result_start);
+			printf("</div>\n");
+			printf("</td><td width='33%%' align='right'>\n");
+		}
+
+		if (is_authorized_for_comments_read_only(&current_authdata) == FALSE)
+			printf("<input type='submit' name='CommandButton' value='Delete Comments' disabled=\"disabled\">");
+
+		if (display_type == DISPLAY_COMMENTS && type == HOST_COMMENT)
+			printf("</td></tr></table>");
+
+		printf("</TD></TR>\n");
 
 		printf("<TR CLASS='comment'>");
 		if (display_type == DISPLAY_COMMENTS) {
@@ -2966,7 +2926,10 @@ void show_comments(int type) {
 			if (type == SERVICE_COMMENT)
 				printf("<TH CLASS='comment'>Service</TH>");
 		}
-		printf("<TH CLASS='comment'>Entry Time</TH><TH CLASS='comment'>Author</TH><TH CLASS='comment'>Comment</TH><TH CLASS='comment'>Comment ID</TH><TH CLASS='comment'>Persistent</TH><TH CLASS='comment'>Type</TH><TH CLASS='comment'>Expires</TH><TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value=all onclick=\"checkAll(\'tableform%scomment\');isValidForSubmit(\'tableform%scomment\');\"></TH></TR>\n", (type == HOST_COMMENT) ? "host" : "service", (type == HOST_COMMENT) ? "host" : "service");
+		printf("<TH CLASS='comment'>Entry Time</TH><TH CLASS='comment'>Author</TH><TH CLASS='comment'>Comment</TH><TH CLASS='comment'>Comment ID</TH><TH CLASS='comment'>Persistent</TH><TH CLASS='comment'>Type</TH><TH CLASS='comment'>Expires</TH>");
+		if (is_authorized_for_comments_read_only(&current_authdata) == FALSE)
+			printf("<TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value=all onclick=\"checkAll(\'tableform%scomment\');isValidForSubmit(\'tableform%scomment\');\"></TH>", (type == HOST_COMMENT) ? "host" : "service", (type == HOST_COMMENT) ? "host" : "service");
+		printf("</TR>\n");
 	}
 
 	/* display all the service comments */
@@ -3003,6 +2966,14 @@ void show_comments(int type) {
 					continue;
 			}
 		}
+
+		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+			total_entries++;
+			continue;
+		}
+
+		displayed_entries++;
+		total_entries++;
 
 		if (odd) {
 			odd = 0;
@@ -3079,16 +3050,18 @@ void show_comments(int type) {
 				}
 			}
 			printf("<td name='comment_time'>%s</td><td name='comment_author'>%s</td><td name='comment_data'>%s</td><td name='comment_id'>%lu</td><td name='comment_persist'>%s</td><td name='comment_type'>%s</td><td name='comment_expire'>%s</td>", date_time, temp_comment->author, temp_comment->comment_data, temp_comment->comment_id, (temp_comment->persistent) ? "Yes" : "No", comment_type, (temp_comment->expires == TRUE) ? expire_time : "N/A");
-			printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
-			printf("<input type='checkbox' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\" name='com_id' id='comment_%lu' value='%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
-			printf("</td></tr>\n");
+			if (is_authorized_for_comments_read_only(&current_authdata) == FALSE) {
+				printf("<td align='center'><a href='%s?cmd_typ=%d&com_id=%lu'><img src='%s%s' border=0 ALT='Delete This Comment' TITLE='Delete This Comment'></a>", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
+				printf("<input type='checkbox' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\" name='com_id' id='comment_%lu' value='%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
+			}
+			printf("</tr>\n");
 		}
 		total_comments++;
 	}
 
 	/* see if this host or service has any comments associated with it */
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
-		if (total_comments == 0) {
+		if (total_comments == 0 && total_entries == 0) {
 			printf("<TR CLASS='commentOdd'><TD align='center' COLSPAN='%d'>", colspan);
 			if (display_type == DISPLAY_COMMENTS)
 				printf("There are no %s comments", (type == HOST_COMMENT) ? "host" : "service");
@@ -3096,14 +3069,21 @@ void show_comments(int type) {
 				printf("This %s has no comments associated with it", (type == HOST_COMMENT) ? "host" : "service");
 			printf("</TD></TR>\n");
 		}
+
+		if (display_type == DISPLAY_COMMENTS && type == SERVICE_COMMENT) {
+			printf("<TR><TD colspan='%d'>\n", colspan);
+			page_num_selector(result_start, total_entries, displayed_entries);
+			printf("</TD></TR>\n");
+		}
+
 		printf("</TABLE>\n");
-		printf("<script language='javascript'>\n");
+		printf("<script language='javascript' type='text/javascript'>\n");
 		printf("document.tableform%scomment.buttonCheckboxChecked.value = 'false';\n", (type == HOST_COMMENT) ? "host" : "service");
 		printf("checked = true;\n");
 		printf("checkAll(\"tableform%scomment\");\n", (type == HOST_COMMENT) ? "host" : "service");
 		printf("checked = false;\n");
 		printf("</script>\n");
-		printf("</FORM></DIV>\n");
+		printf("</FORM>\n");
 	}
 	if (content_type == JSON_CONTENT)
 		printf("]");
@@ -3124,12 +3104,15 @@ void show_downtime(int type) {
 	int seconds;
 	int odd = 0;
 	int total_downtime = 0;
-	int colspan = 10;
+	int colspan = 12;
 	int json_start = TRUE;
 
 	/* define colspan */
 	if (display_type == DISPLAY_DOWNTIME)
-		colspan = (type != SERVICE_DOWNTIME) ? 11 : 12;
+		colspan = (type != SERVICE_DOWNTIME) ? colspan + 1 : colspan + 2;
+
+	if (is_authorized_for_downtimes_read_only(&current_authdata) == TRUE)
+		colspan--;
 
 	if (content_type == JSON_CONTENT) {
 		if (type == HOST_DOWNTIME)
@@ -3172,13 +3155,30 @@ void show_downtime(int type) {
 
 		printf("</TD></TR></TABLE>\n");
 
-		printf("<form name='tableform%sdowntime' id='tableform%sdowntime' action='%s' method='POST'>", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service", CMD_CGI);
+		printf("<form name='tableform%sdowntime' id='tableform%sdowntime' action='%s' method='POST' onkeypress='var key = (window.event) ? event.keyCode : event.which; return (key != 13);'>", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service", CMD_CGI);
 		printf("<input type=hidden name=buttonCheckboxChecked>");
 		printf("<input type=hidden name='cmd_typ' value=%d>", (type == HOST_DOWNTIME) ? CMD_DEL_HOST_DOWNTIME : CMD_DEL_SVC_DOWNTIME);
 
 		printf("<TABLE BORDER=0 CLASS='downtime'>\n");
 
-		printf("<TR><TD colspan='%d' align='right'><input type='submit' name='CommandButton' value='Delete Downtimes' disabled=\"disabled\"></TD></TR>\n", colspan);
+		printf("<TR><TD colspan='%d' align='right'>", colspan);
+
+		if (display_type == DISPLAY_DOWNTIME && type == HOST_DOWNTIME) {
+			printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
+			printf("<div class='page_selector'>\n");
+			printf("<div id='page_navigation_copy'></div>\n");
+			page_limit_selector(result_start);
+			printf("</div>\n");
+			printf("</td><td width='33%%' align='right'>\n");
+		}
+
+		if (is_authorized_for_downtimes_read_only(&current_authdata) == FALSE)
+			printf("<input type='submit' name='CommandButton' value='Delete Downtimes' disabled=\"disabled\">");
+
+		if (display_type == DISPLAY_DOWNTIME && type == HOST_DOWNTIME)
+			printf("</td></tr></table>");
+
+		printf("</TD></TR>\n");
 
 		printf("<TR CLASS='downtime'>");
 		if (display_type == DISPLAY_DOWNTIME) {
@@ -3186,7 +3186,10 @@ void show_downtime(int type) {
 			if (type == SERVICE_DOWNTIME)
 				printf("<TH CLASS='downtime'>Service</TH>");
 		}
-		printf("<TH CLASS='downtime'>Entry Time</TH><TH CLASS='downtime'>Author</TH><TH CLASS='downtime'>Comment</TH><TH CLASS='downtime'>Start Time</TH><TH CLASS='downtime'>End Time</TH><TH CLASS='downtime'>Type</TH><TH CLASS='downtime'>Trigger Time</TH><TH CLASS='downtime'>Duration</TH><TH CLASS='downtime'>Is in effect</TH><TH CLASS='downtime'>Downtime ID</TH><TH CLASS='downtime'>Trigger ID</TH><TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%sdowntime\');isValidForSubmit(\'tableform%sdowntime\');\"></TH></TR>\n", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
+		printf("<TH CLASS='downtime'>Entry Time</TH><TH CLASS='downtime'>Author</TH><TH CLASS='downtime'>Comment</TH><TH CLASS='downtime'>Start Time</TH><TH CLASS='downtime'>End Time</TH><TH CLASS='downtime'>Type</TH><TH CLASS='downtime'>Trigger Time</TH><TH CLASS='downtime'>Duration</TH><TH CLASS='downtime'>Is in effect</TH><TH CLASS='downtime'>Downtime ID</TH><TH CLASS='downtime'>Trigger ID</TH>");
+		if (is_authorized_for_downtimes_read_only(&current_authdata) == FALSE)
+			printf("<TH CLASS='comment' nowrap>Actions&nbsp;&nbsp;<input type='checkbox' value='all' onclick=\"checkAll(\'tableform%sdowntime\');isValidForSubmit(\'tableform%sdowntime\');\"></TH>", (type == HOST_DOWNTIME) ? "host" : "service", (type == HOST_DOWNTIME) ? "host" : "service");
+		printf("</TR>\n");
 	}
 
 	/* display all the downtime */
@@ -3223,6 +3226,14 @@ void show_downtime(int type) {
 					continue;
 			}
 		}
+
+		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+			total_entries++;
+			continue;
+		}
+
+		displayed_entries++;
+		total_entries++;
 
 		if (odd) {
 			odd = 0;
@@ -3304,14 +3315,14 @@ void show_downtime(int type) {
 			printf("<td CLASS='%s'>%s</td>", bg_class, (temp_downtime->fixed == TRUE) ? "Fixed" : "Flexible");
 		}
 
-                get_time_string(&temp_downtime->trigger_time, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
-                if (content_type == JSON_CONTENT) {
-                        printf("\"trigger_time\": \"%s\", ", date_time);
-                } else if (content_type == CSV_CONTENT) {
-                        printf("%s%s%s%s", csv_data_enclosure, date_time, csv_data_enclosure, csv_delimiter);
-                } else {
-                        printf("<td CLASS='%s'>%s</td>", bg_class, date_time);
-                }
+		get_time_string(&temp_downtime->trigger_time, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
+		if (content_type == JSON_CONTENT) {
+			printf("\"trigger_time\": \"%s\", ", date_time);
+		} else if (content_type == CSV_CONTENT) {
+			printf("%s%s%s%s", csv_data_enclosure, date_time, csv_data_enclosure, csv_delimiter);
+		} else {
+			printf("<td CLASS='%s'>%s</td>", bg_class, date_time);
+		}
 
 		get_time_breakdown(temp_downtime->duration, &days, &hours, &minutes, &seconds);
 		if (content_type == JSON_CONTENT) {
@@ -3344,20 +3355,18 @@ void show_downtime(int type) {
 			printf("%s\n", csv_data_enclosure);
 		} else {
 			printf("</td>\n");
-			printf("<td align='center' CLASS='%s'>", bg_class);
-			if (type == HOST_DOWNTIME)
-				printf("<a href='%s?cmd_typ=%d", CMD_CGI, CMD_DEL_HOST_DOWNTIME);
-			else
-				printf("<a href='%s?cmd_typ=%d", CMD_CGI, CMD_DEL_SVC_DOWNTIME);
-			printf("&down_id=%lu'><img src='%s%s' border=0 ALT='Delete/Cancel This Scheduled Downtime Entry' TITLE='Delete/Cancel This Scheduled Downtime Entry'></a>", temp_downtime->downtime_id, url_images_path, DELETE_ICON);
-			printf("<input type='checkbox' onClick=\"toggle_checkbox('downtime_%lu','tableform%sdowntime');\" name='down_id' id='downtime_%lu' value='%lu'></td>", temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service", temp_downtime->downtime_id, temp_downtime->downtime_id);
-			printf("</td></tr>\n");
+			if (is_authorized_for_downtimes_read_only(&current_authdata) == FALSE) {
+				printf("<td align='center' CLASS='%s'><a href='%s?cmd_typ=%d", bg_class, CMD_CGI, (type == HOST_DOWNTIME) ? CMD_DEL_HOST_DOWNTIME : CMD_DEL_SVC_DOWNTIME);
+				printf("&down_id=%lu'><img src='%s%s' border=0 ALT='Delete/Cancel This Scheduled Downtime Entry' TITLE='Delete/Cancel This Scheduled Downtime Entry'></a>", temp_downtime->downtime_id, url_images_path, DELETE_ICON);
+				printf("<input type='checkbox' onClick=\"toggle_checkbox('downtime_%lu','tableform%sdowntime');\" name='down_id' id='downtime_%lu' value='%lu'></td>", temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service", temp_downtime->downtime_id, temp_downtime->downtime_id);
+			}
+			printf("</tr>\n");
 		}
 		total_downtime++;
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
-		if (total_downtime == 0) {
+		if (total_downtime == 0 && total_entries == 0) {
 			printf("<TR CLASS='downtimeOdd'><TD  align='center' COLSPAN=%d>", colspan);
 			if (display_type == DISPLAY_DOWNTIME)
 				printf("There are no %s with scheduled downtime", (type == HOST_DOWNTIME) ? "host" : "service");
@@ -3365,14 +3374,21 @@ void show_downtime(int type) {
 				printf("This %s has no scheduled downtime associated with it", (type == HOST_DOWNTIME) ? "host" : "service");
 			printf("</TD></TR>\n");
 		}
+
+		if (display_type == DISPLAY_DOWNTIME && type == SERVICE_DOWNTIME) {
+			printf("<TR><TD colspan='%d'>\n", colspan);
+			page_num_selector(result_start, total_entries, displayed_entries);
+			printf("</TD></TR>\n");
+		}
+
 		printf("</TABLE>\n");
-		printf("<script language='javascript'>\n");
+		printf("<script language='javascript' type='text/javascript'>\n");
 		printf("document.tableform%sdowntime.buttonCheckboxChecked.value = 'false';\n", (type == HOST_DOWNTIME) ? "host" : "service");
 		printf("checked = true;\n");
 		printf("checkAll(\"tableform%sdowntime\");\n", (type == HOST_DOWNTIME) ? "host" : "service");
 		printf("checked = false;\n");
 		printf("</script>\n");
-		printf("</FORM></DIV>\n");
+		printf("</FORM>\n");
 	}
 	if (content_type == JSON_CONTENT)
 		printf("]");
@@ -3431,31 +3447,40 @@ void show_scheduling_queue(void) {
 		printf("</b> (%s)\n", (sort_type == SORT_ASCENDING) ? "ascending" : "descending");
 		printf("</DIV>\n");
 
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='queue'>\n");
+		printf("<TABLE BORDER=0 CLASS='queue' align='center'>\n");
 
 		/* add export to csv link */
-		printf("<TR><TD colspan='7'><DIV class='csv_export_link'>");
+		printf("<TR><TD colspan='7'>\n");
+		printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='15%%'></td><td width='70%%' nowrap>");
+
+		printf("<div class='page_selector'>\n");
+		printf("<div id='page_navigation_copy'></div>\n");
+		page_limit_selector(result_start);
+		printf("</div>\n");
+
+		printf("</td><td width='15%%' align='right'>\n<DIV class='csv_export_link'>\n");
 		print_export_link(CSV_CONTENT, EXTINFO_CGI, NULL);
 		print_export_link(JSON_CONTENT, EXTINFO_CGI, NULL);
 		print_export_link(HTML_CONTENT, EXTINFO_CGI, NULL);
-		printf("</DIV></TD></TR>\n");
+		printf("</DIV>\n");
+		printf("</td></tr></table>");
+		printf("</TD></TR>\n");
 
 		printf("<TR CLASS='queue'>");
 
 		snprintf(temp_url, sizeof(temp_url) - 1, "%s?type=%d", EXTINFO_CGI, DISPLAY_SCHEDULING_QUEUE);
-		temp_url[sizeof(temp_url)-1] = '\x0';
+		temp_url[sizeof(temp_url) - 1] = '\x0';
 
 		if (host_name && *host_name != '\0') {
 			strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 			snprintf(temp_url, sizeof(temp_url) - 1, "%s&host=%s", temp_buffer, url_encode(host_name));
-			temp_url[sizeof(temp_url)-1] = '\x0';
+			temp_url[sizeof(temp_url) - 1] = '\x0';
 		}
 
 		if (service_desc && *service_desc != '\0') {
 			strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 			snprintf(temp_url, sizeof(temp_url) - 1, "%s&service=%s", temp_buffer, url_encode(service_desc));
-			temp_url[sizeof(temp_url)-1] = '\x0';
+			temp_url[sizeof(temp_url) - 1] = '\x0';
 		}
 
 		printf("<TH CLASS='queue'>Host&nbsp;<A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by host name (ascending)' TITLE='Sort by host name (ascending)'></A><A HREF='%s&sorttype=%d&sortoption=%d'><IMG SRC='%s%s' BORDER=0 ALT='Sort by host name (descending)' TITLE='Sort by host name (descending)'></A></TH>", temp_url, SORT_ASCENDING, SORT_HOSTNAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_HOSTNAME, url_images_path, DOWN_ARROW_ICON);
@@ -3511,7 +3536,7 @@ void show_scheduling_queue(void) {
 				continue;
 
 			snprintf(url_encoded_host, sizeof(url_encoded_host) - 1, "%s", url_encode(temp_svcstatus->host_name));
-			url_encoded_host[sizeof(url_encoded_host)-1] = '\x0';
+			url_encoded_host[sizeof(url_encoded_host) - 1] = '\x0';
 
 			/* find the service */
 			temp_service = find_service(temp_svcstatus->host_name, temp_svcstatus->description);
@@ -3525,25 +3550,25 @@ void show_scheduling_queue(void) {
 				continue;
 
 			snprintf(url_encoded_service, sizeof(url_encoded_service) - 1, "%s", url_encode(temp_svcstatus->description));
-			url_encoded_service[sizeof(url_encoded_service)-1] = '\x0';
+			url_encoded_service[sizeof(url_encoded_service) - 1] = '\x0';
 
 			/* host name */
 			if (temp_host != NULL)
 				snprintf(display_host, sizeof(display_host) - 1, "%s", (temp_host->display_name != NULL && content_type == HTML_CONTENT) ? temp_host->display_name : temp_host->name);
 			else
 				snprintf(display_host, sizeof(display_host) - 1, "%s", temp_svcstatus->host_name);
-			display_host[sizeof(display_host)-1] = '\x0';
+			display_host[sizeof(display_host) - 1] = '\x0';
 
 			/* service name */
 			if (temp_service != NULL)
 				snprintf(display_service, sizeof(display_service) - 1, "%s", (temp_service->display_name != NULL && content_type == HTML_CONTENT) ? temp_service->display_name : temp_svcstatus->description);
 			else
 				snprintf(display_service, sizeof(display_service) - 1, "%s", temp_svcstatus->description);
-			display_service[sizeof(display_service)-1] = '\x0';
+			display_service[sizeof(display_service) - 1] = '\x0';
 
 			/* service link*/
 			snprintf(service_link, sizeof(service_link) - 1, "%s?type=%d&host=%s&service=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encoded_host, url_encoded_service);
-			service_link[sizeof(service_link)-1] = '\x0';
+			service_link[sizeof(service_link) - 1] = '\x0';
 
 			/* last check */
 			get_time_string(&temp_svcstatus->last_check, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
@@ -3573,10 +3598,10 @@ void show_scheduling_queue(void) {
 				snprintf(action_link_enable_disable, sizeof(action_link_enable_disable) - 1, "%s?cmd_typ=%d&host=%s&service=%s", CMD_CGI, CMD_DISABLE_SVC_CHECK, url_encoded_host, url_encoded_service);
 			else
 				snprintf(action_link_enable_disable, sizeof(action_link_enable_disable) - 1, "%s?cmd_typ=%d&host=%s&service=%s", CMD_CGI, CMD_ENABLE_SVC_CHECK, url_encoded_host, url_encoded_service);
-			action_link_enable_disable[sizeof(action_link_enable_disable)-1] = '\x0';
+			action_link_enable_disable[sizeof(action_link_enable_disable) - 1] = '\x0';
 
 			snprintf(action_link_schedule, sizeof(action_link_schedule) - 1, "%s?cmd_typ=%d&host=%s&service=%s%s", CMD_CGI, CMD_SCHEDULE_SVC_CHECK, url_encoded_host, url_encoded_service, (temp_svcstatus->checks_enabled == TRUE) ? "&force_check" : "");
-			action_link_schedule[sizeof(action_link_schedule)-1] = '\x0';
+			action_link_schedule[sizeof(action_link_schedule) - 1] = '\x0';
 
 			/* get the host status */
 		} else {
@@ -3591,14 +3616,14 @@ void show_scheduling_queue(void) {
 				continue;
 
 			snprintf(url_encoded_host, sizeof(url_encoded_host) - 1, "%s", url_encode(temp_hststatus->host_name));
-			url_encoded_host[sizeof(url_encoded_host)-1] = '\x0';
+			url_encoded_host[sizeof(url_encoded_host) - 1] = '\x0';
 
 			/* host name*/
 			if (temp_host != NULL)
 				snprintf(display_host, sizeof(display_host) - 1, "%s", (temp_host->display_name != NULL && content_type == HTML_CONTENT) ? temp_host->display_name : temp_host->name);
 			else
 				snprintf(display_host, sizeof(display_host) - 1, "%s", temp_hststatus->host_name);
-			display_host[sizeof(display_host)-1] = '\x0';
+			display_host[sizeof(display_host) - 1] = '\x0';
 
 			/* last check */
 			get_time_string(&temp_hststatus->last_check, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
@@ -3628,11 +3653,21 @@ void show_scheduling_queue(void) {
 				snprintf(action_link_enable_disable, sizeof(action_link_enable_disable) - 1, "%s?cmd_typ=%d&host=%s", CMD_CGI, CMD_DISABLE_HOST_CHECK, url_encoded_host);
 			else
 				snprintf(action_link_enable_disable, sizeof(action_link_enable_disable) - 1, "%s?cmd_typ=%d&host=%s", CMD_CGI, CMD_ENABLE_HOST_CHECK, url_encoded_host);
-			action_link_enable_disable[sizeof(action_link_enable_disable)-1] = '\x0';
+			action_link_enable_disable[sizeof(action_link_enable_disable) - 1] = '\x0';
 
 			snprintf(action_link_schedule, sizeof(action_link_schedule) - 1, "%s?cmd_typ=%d&host=%s%s", CMD_CGI, CMD_SCHEDULE_HOST_CHECK, url_encoded_host, (temp_hststatus->checks_enabled == TRUE) ? "&force_check" : "");
-			action_link_schedule[sizeof(action_link_schedule)-1] = '\x0';
+			action_link_schedule[sizeof(action_link_schedule) - 1] = '\x0';
 		}
+
+		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+			total_entries++;
+			my_free(last_check);
+			my_free(next_check);
+			continue;
+		}
+
+		displayed_entries++;
+		total_entries++;
 
 		if (odd) {
 			odd = 0;
@@ -3698,13 +3733,15 @@ void show_scheduling_queue(void) {
 			printf("</TD></TR>\n");
 		}
 
-		free(last_check);
-		free(next_check);
+		my_free(last_check);
+		my_free(next_check);
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+		printf("<TR><TD colspan='7'>\n");
+		page_num_selector(result_start, total_entries, displayed_entries);
+		printf("</TD></TR>\n");
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
 	} else if (content_type == JSON_CONTENT)
 		printf(" ] \n");
 
@@ -3943,7 +3980,7 @@ int is_host_child_of_host(host *parent_host, host *child_host) {
 		if (child_host->parent_hosts == NULL)
 			return TRUE;
 
-	/* mid-level/bottom hosts */
+		/* mid-level/bottom hosts */
 	} else {
 
 		for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
