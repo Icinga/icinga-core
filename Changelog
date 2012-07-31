@@ -14,6 +14,9 @@ FIXES
 * core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665 - MF
 * core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197 - MF
 * core: fix whitespaces are not stripped using multiple templates ("use abc, def, ghi") #2701 - MF
+* core: add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879 - MF
+* core: bail out early with config error if resource.cfg macros contain NULL values #2879 - MF
+* core: fix logical bug on icinga.cfg detection on config read #2879 - MF
 
 * idoutils: fix icinga mysql db creation script grants access to all dbs #2917 - MF
 
