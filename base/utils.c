@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -34,7 +34,7 @@
 #include "../include/broker.h"
 #include "../include/nebmods.h"
 #include "../include/nebmodules.h"
-
+#include "../lib/squeue.h"
 
 #ifdef EMBEDDEDPERL
 #include "../include/epn_icinga.h"
@@ -242,11 +242,11 @@ extern host             *host_list;
 extern hostgroup	*hostgroup_list;
 extern service          *service_list;
 extern servicegroup     *servicegroup_list;
-extern timed_event      *event_list_high;
-extern timed_event      *event_list_low;
 extern notification     *notification_list;
 extern command          *command_list;
 extern timeperiod       *timeperiod_list;
+
+extern squeue_t		*icinga_squeue;
 
 extern int      command_file_fd;
 extern FILE     *command_file_fp;
@@ -3581,72 +3581,55 @@ int deinit_embedded_perl(void) {
 
 /* checks to see if we should run a script using the embedded Perl interpreter */
 int file_uses_embedded_perl(char *fname) {
-	int use_epn = FALSE;
-#ifdef EMBEDDEDPERL
+#ifndef EMBEDDEDPERL
+	return FALSE;
+#else
+	int line, use_epn = FALSE;
 	FILE *fp = NULL;
-	char line1[80] = "";
-	char linen[80] = "";
-	int line = 0;
-	char *ptr = NULL;
-	int found_epn_directive = FALSE;
+	char buf[256] = "";
 
-	if (enable_embedded_perl == TRUE) {
+	if (enable_embedded_perl != TRUE)
+		return FALSE;
 
-		/* open the file, check if its a Perl script and see if we can use epn  */
-		fp = fopen(fname, "r");
-		if (fp != NULL) {
 
-			/* grab the first line - we should see Perl */
-			fgets(line1, 80, fp);
+	/* open the file, check if its a Perl script and see if we can use epn  */
+	fp = fopen(fname, "r");
+	if (fp == NULL)
+		return FALSE;
 
-			/* yep, its a Perl script... */
-			if (strstr(line1, "/bin/perl") != NULL) {
+	/* grab the first line - we should see Perl. go home if not */
+	if (fgets(line1, 80, fp) == NULL || strstr(buf, "/bin/perl") == NULL) {
+		fclose(fp);
+	}
 
-				/* epn directives must be found in first ten lines of plugin */
-				for (line = 1; line < 10; line++) {
+	/* epn directives must be found in first ten lines of plugin */
+	for (line = 1; line < 10; line++) {
+		if (fgets(buf, sizeof(buf) - 1, fp) == NULL)
+			break;
 
-					if (fgets(linen, 80, fp)) {
+		buf[sizeof(buf) - 1] = '\0';
 
-						/* line contains Icinga directives - keep Nagios compatibility */
-						if (strstr(linen, "# nagios:") || strstr(linen, "# icinga:")) {
+		/* line contains Icinga directives - keep Nagios compatibility */
+		if (strstr(linen, "# nagios:") || strstr(linen, "# icinga:")) {
+			char *p;
+			p = strstr(buf + 8, "epn");
+			if (!p)
+				continue;
 
-							ptr = strtok(linen, ":");
-
-							/* process each directive */
-							for (ptr = strtok(NULL, ","); ptr != NULL; ptr = strtok(NULL, ",")) {
-
-								strip(ptr);
-
-								if (!strcmp(ptr, "+epn")) {
-									use_epn = TRUE;
-									found_epn_directive = TRUE;
-								} else if (!strcmp(ptr, "-epn")) {
-									use_epn = FALSE;
-									found_epn_directive = TRUE;
-								}
-							}
-						}
-
-						if (found_epn_directive == TRUE)
-							break;
-					}
-
-					/* EOF */
-					else
-						break;
-				}
-
-				/* if the plugin didn't tell us whether or not to use embedded Perl, use implicit value */
-				if (found_epn_directive == FALSE)
-					use_epn = (use_embedded_perl_implicitly == TRUE) ? TRUE : FALSE;
-			}
-
+			/*
+			 * we found it, so close the file and return
+			 * whatever it shows. '+epn' means yes. everything
+			 * else means no.
+			 */
 			fclose(fp);
+			return *(p - 1) == '+' ? TRUE : FALSE;
 		}
 	}
-#endif
 
-	return use_epn;
+	fclose(fp);
+
+	return use_embedded_perl_implicitly;
+#endif
 }
 
 
@@ -4249,8 +4232,6 @@ void cleanup(void) {
 
 /* free the memory allocated to the linked lists */
 void free_memory(icinga_macros *mac) {
-	timed_event *this_event = NULL;
-	timed_event *next_event = NULL;
 
 	/* free all allocated memory for the object definitions */
 	free_object_data();
@@ -4261,31 +4242,9 @@ void free_memory(icinga_macros *mac) {
 	/* free check result list */
 	free_check_result_list();
 
-	/* free memory for the high priority event list */
-	this_event = event_list_high;
-	while (this_event != NULL) {
-		if (this_event->event_type == EVENT_SCHEDULED_DOWNTIME)
-			my_free(this_event->event_data);
-		next_event = this_event->next;
-		my_free(this_event);
-		this_event = next_event;
-	}
-
-	/* reset the event pointer */
-	event_list_high = NULL;
-
-	/* free memory for the low priority event list */
-	this_event = event_list_low;
-	while (this_event != NULL) {
-		if (this_event->event_type == EVENT_SCHEDULED_DOWNTIME)
-			my_free(this_event->event_data);
-		next_event = this_event->next;
-		my_free(this_event);
-		this_event = next_event;
-	}
-
-	/* reset the event pointer */
-	event_list_low = NULL;
+	/* free event queue data */
+	squeue_destroy(icinga_squeue, SQUEUE_FREE_DATA);
+	icinga_squeue = NULL;
 
 	/* free memory for global event handlers */
 	my_free(global_host_event_handler);

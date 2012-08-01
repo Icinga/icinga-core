@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -518,10 +518,10 @@ int xsddefault_save_status_data(void) {
 		fprintf(fp, "\tnext_notification=%lu\n", temp_host->next_host_notification);
 		fprintf(fp, "\tno_more_notifications=%d\n", temp_host->no_more_notifications);
 		fprintf(fp, "\tcurrent_notification_number=%d\n", temp_host->current_notification_number);
-#ifdef USE_ST_BASED_ESCAL_RANGES
+		/* state based escalation ranges */
 		fprintf(fp, "\tcurrent_down_notification_number=%d\n", temp_host->current_down_notification_number);
 		fprintf(fp, "\tcurrent_unreachable_notification_number=%d\n", temp_host->current_unreachable_notification_number);
-#endif
+
 		fprintf(fp, "\tcurrent_notification_id=%lu\n", temp_host->current_notification_id);
 		fprintf(fp, "\tnotifications_enabled=%d\n", temp_host->notifications_enabled);
 		fprintf(fp, "\tproblem_has_been_acknowledged=%d\n", temp_host->problem_has_been_acknowledged);
@@ -594,11 +594,11 @@ int xsddefault_save_status_data(void) {
 		fprintf(fp, "\tnext_check=%lu\n", temp_service->next_check);
 		fprintf(fp, "\tcheck_options=%d\n", temp_service->check_options);
 		fprintf(fp, "\tcurrent_notification_number=%d\n", temp_service->current_notification_number);
-#ifdef USE_ST_BASED_ESCAL_RANGES
+		/* state based escalation ranges */
 		fprintf(fp, "\tcurrent_warning_notification_number=%d\n", temp_service->current_warning_notification_number);
 		fprintf(fp, "\tcurrent_critical_notification_number=%d\n", temp_service->current_critical_notification_number);
 		fprintf(fp, "\tcurrent_unknown_notification_number=%d\n", temp_service->current_unknown_notification_number);
-#endif
+
 		fprintf(fp, "\tcurrent_notification_id=%lu\n", temp_service->current_notification_id);
 		fprintf(fp, "\tlast_notification=%lu\n", temp_service->last_notification);
 		fprintf(fp, "\tnext_notification=%lu\n", temp_service->next_notification);
@@ -1123,12 +1123,12 @@ int xsddefault_read_status_data(char *config_file, int options) {
 						temp_hoststatus->no_more_notifications = (atoi(val) > 0) ? TRUE : FALSE;
 					else if (!strcmp(var, "current_notification_number"))
 						temp_hoststatus->current_notification_number = atoi(val);
-#ifdef USE_ST_BASED_ESCAL_RANGES
+					/* state based escalation ranges */
 					else if (!strcmp(var, "current_down_notification_number"))
 						temp_hoststatus->current_down_notification_number = atoi(val);
 					else if (!strcmp(var, "current_unreachable_notification_number"))
 						temp_hoststatus->current_unreachable_notification_number = atoi(val);
-#endif
+
 					else if (!strcmp(var, "notifications_enabled"))
 						temp_hoststatus->notifications_enabled = (atoi(val) > 0) ? TRUE : FALSE;
 					else if (!strcmp(var, "problem_has_been_acknowledged"))
@@ -1227,14 +1227,14 @@ int xsddefault_read_status_data(char *config_file, int options) {
 						temp_servicestatus->check_options = atoi(val);
 					else if (!strcmp(var, "current_notification_number"))
 						temp_servicestatus->current_notification_number = atoi(val);
-#ifdef USE_ST_BASED_ESCAL_RANGES
+					/* state based escalation ranges */
 					else if (!strcmp(var, "current_warning_notification_number"))
 						temp_servicestatus->current_warning_notification_number = atoi(val);
 					else if (!strcmp(var, "current_critical_notification_number"))
 						temp_servicestatus->current_critical_notification_number = atoi(val);
 					else if (!strcmp(var, "current_unknown_notification_number"))
 						temp_servicestatus->current_unknown_notification_number = atoi(val);
-#endif
+
 					else if (!strcmp(var, "last_notification"))
 						temp_servicestatus->last_notification = strtoul(val, NULL, 10);
 					else if (!strcmp(var, "next_notification"))

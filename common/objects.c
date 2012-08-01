@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -793,10 +793,11 @@ host *add_host(char *name, char *display_name, char *alias, char *address, char 
 	new_host->notified_on_down = FALSE;
 	new_host->notified_on_unreachable = FALSE;
 	new_host->current_notification_number = 0;
-#ifdef USE_ST_BASED_ESCAL_RANGES
+
+	/* state based escalation ranges */
 	new_host->current_down_notification_number = 0;
 	new_host->current_unreachable_notification_number = 0;
-#endif
+
 	new_host->current_notification_id = 0L;
 	new_host->no_more_notifications = FALSE;
 	new_host->check_flapping_recovery_notification = FALSE;
@@ -1722,11 +1723,12 @@ service *add_service(char *host_name, char *description, char *display_name, cha
 	new_service->notified_on_warning = FALSE;
 	new_service->notified_on_critical = FALSE;
 	new_service->current_notification_number = 0;
-#ifdef USE_ST_BASED_ESCAL_RANGES
+
+	/* state based escalation ranges */
 	new_service->current_warning_notification_number = 0;
 	new_service->current_critical_notification_number = 0;
 	new_service->current_unknown_notification_number = 0;
-#endif
+
 	new_service->current_notification_id = 0L;
 	new_service->latency = 0.0;
 	new_service->execution_time = 0.0;
@@ -1905,11 +1907,7 @@ command *add_command(char *name, char *value) {
 
 
 /* add a new service escalation to the list in memory */
-#ifndef USE_ST_BASED_ESCAL_RANGES
-serviceescalation *add_serviceescalation(char *host_name, char *description, int first_notification, int last_notification, double notification_interval, char *escalation_period, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_recovery) {
-#else
 serviceescalation *add_serviceescalation(char *host_name, char *description, int first_notification, int last_notification, int first_warning_notification, int last_warning_notification, int first_critical_notification, int last_critical_notification, int first_unknown_notification, int last_unknown_notification, double notification_interval, char *escalation_period, int escalate_on_warning, int escalate_on_unknown, int escalate_on_critical, int escalate_on_recovery) {
-#endif
 	serviceescalation *new_serviceescalation = NULL;
 	int result = OK;
 
@@ -1939,14 +1937,14 @@ serviceescalation *add_serviceescalation(char *host_name, char *description, int
 
 	new_serviceescalation->first_notification = first_notification;
 	new_serviceescalation->last_notification = last_notification;
-#ifdef USE_ST_BASED_ESCAL_RANGES
+	/* state based escalation ranges */
 	new_serviceescalation->first_warning_notification = first_warning_notification;
 	new_serviceescalation->last_warning_notification = last_warning_notification;
 	new_serviceescalation->first_critical_notification = first_critical_notification;
 	new_serviceescalation->last_critical_notification = last_critical_notification;
 	new_serviceescalation->first_unknown_notification = first_unknown_notification;
 	new_serviceescalation->last_unknown_notification = last_unknown_notification;
-#endif
+
 	new_serviceescalation->notification_interval = (notification_interval <= 0) ? 0 : notification_interval;
 	new_serviceescalation->escalate_on_recovery = (escalate_on_recovery > 0) ? TRUE : FALSE;
 	new_serviceescalation->escalate_on_warning = (escalate_on_warning > 0) ? TRUE : FALSE;
@@ -2188,11 +2186,7 @@ hostdependency *add_host_dependency(char *dependent_host_name, char *host_name, 
 
 
 /* add a new host escalation to the list in memory */
-#ifndef USE_ST_BASED_ESCAL_RANGES
-hostescalation *add_hostescalation(char *host_name, int first_notification, int last_notification, double notification_interval, char *escalation_period, int escalate_on_down, int escalate_on_unreachable, int escalate_on_recovery) {
-#else
 hostescalation *add_hostescalation(char *host_name, int first_notification, int last_notification, int first_down_notification, int last_down_notification, int first_unreachable_notification, int last_unreachable_notification, double notification_interval, char *escalation_period, int escalate_on_down, int escalate_on_unreachable, int escalate_on_recovery) {
-#endif
 	hostescalation *new_hostescalation = NULL;
 	int result = OK;
 
@@ -2220,12 +2214,12 @@ hostescalation *add_hostescalation(char *host_name, int first_notification, int 
 
 	new_hostescalation->first_notification = first_notification;
 	new_hostescalation->last_notification = last_notification;
-#ifdef USE_ST_BASED_ESCAL_RANGES
+	/* state based escalation ranges */
 	new_hostescalation->first_down_notification = first_down_notification;
 	new_hostescalation->last_down_notification = last_down_notification;
 	new_hostescalation->first_unreachable_notification = first_unreachable_notification;
 	new_hostescalation->last_unreachable_notification = last_unreachable_notification;
-#endif
+
 	new_hostescalation->notification_interval = (notification_interval <= 0) ? 0 : notification_interval;
 	new_hostescalation->escalate_on_recovery = (escalate_on_recovery > 0) ? TRUE : FALSE;
 	new_hostescalation->escalate_on_down = (escalate_on_down > 0) ? TRUE : FALSE;

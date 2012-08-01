@@ -6,8 +6,8 @@
 # Required-Stop:     $remote_fs $syslog $named $network
 # X-Start-Before:    icinga
 # X-Stop-After:      icinga
-# Should-Start:      $mysql $postgresql
-# Should-Stop:       $mysql $postgresql
+# Should-Start:      mysql postgresql
+# Should-Stop:       mysql postgresql
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Icinga IDO2DB Initscript

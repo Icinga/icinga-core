@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -30,6 +30,9 @@
 #include "config.h"
 #include "common.h"
 #include "objects.h"
+#ifdef NSCORE
+#include "icinga.h"
+#endif
 
 #ifdef __cplusplus
   extern "C" {
@@ -56,6 +59,9 @@ typedef struct scheduled_downtime_struct{
 	int incremented_pending_downtime;
 #endif
 	struct scheduled_downtime_struct *next;
+#ifdef NSCORE
+	timed_event *start_event, *stop_event;
+#endif
 	time_t trigger_time;				/* needed to detect when a flexible downtime starts/triggers */
 	}scheduled_downtime;
 

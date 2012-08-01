@@ -19,7 +19,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
-# Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 #
 #****************************************************************************/
 #
@@ -32,6 +32,7 @@
 # 2012.03.21:  0.07 bugfix: fix end date check; splitted code
 # 2012.03.22:  0.08 bugfix: set author/comment if blank
 #                   enable no blank before opening brace (2nd try)
+# 2012.07.13:  0.09 bugfix: fix exit from procedure
 
 use strict;
 use Getopt::Long qw(:config no_ignore_case bundling);
@@ -50,7 +51,7 @@ EOT
 #
 
 my $creator = "2012 Icinga Team";
-my $version = "0.08";
+my $version = "0.09";
 my $script  = "sched_down.pl";
 
 my $cFile = "/usr/local/icinga/etc/icinga.cfg";
@@ -847,7 +848,7 @@ sub set_cmd {
 	if ("$h;$s" =~ /;$/) {	# no service_description
 		if ($hg) {	# host_groups defined
 			my @member = split (/,/,$hg{$hg}->{members});
-			next if (already_planned (\@member,"HG",1,$key,$key2,$duration));
+			return 1 if (already_planned (\@member,"HG",1,$key,$key2,$duration));
 			$extcmd = "SCHEDULE_HOSTGROUP_HOST_DOWNTIME;$hg;$data";
 			push @$cmd, $extcmd;
 			$pDowntimes{"$hg;;$dt->{start_ts};$dt->{end_ts}"} = $extcmd;
