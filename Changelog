@@ -46,6 +46,9 @@ FIXES
 * core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665 - MF
 * core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197 - MF
 
+* classic ui: fix setting send_notification or sticky_ack as GET param has no effect on cmd.cgi acks #2926 - MF
+	** now you can finally disable checkboxes default ticked with these options
+
 * idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
 
 CHANGES
@@ -59,6 +62,7 @@ classic ui: Changed cgi GET params
 	** Added "ts_start", "ts_end" and "order" to history.cgi and notifications.cgi - #2341
 	** Removed "archive" and "oldestfirst" from history.cgi and notifications.cgi - #2341
 	** Added "start_time", "end_time" and "timeperiod" to notifications.cgi - #2341
+	** "send_notification" and "sticky_ack" on cmd.cgi require 0|1 vars, if not set, default is 1 #2926
 
 * classic ui: Added/Changed cgi.cfg options
 	** authorized_for_comments_read_only - #2699
