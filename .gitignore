@@ -30,3 +30,4 @@ tags
 *.gcno
 *.gcov
 /gmon.out
+/tools/todo
