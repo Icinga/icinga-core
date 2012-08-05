@@ -19,6 +19,7 @@ FIXES
 * core: fix logical bug on icinga.cfg detection on config read #2879 - MF
 * core: fsync() files before fclose() (Andreas Ericsson) #2948 - MF
 * core: remove weird switch() statement when scanning checkresult queue (Andreas Ericsson) #2950 - MF
+* core: fix deleting too old check result files (Andreas Ericsson) #2951 - MF
 
 * idoutils: fix icinga mysql db creation script grants access to all dbs #2917 - MF
 
