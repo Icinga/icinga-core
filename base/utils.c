@@ -2730,19 +2730,12 @@ int process_check_result_queue(char *dirname) {
 				continue;
 			}
 
-			switch (stat_buf.st_mode & S_IFMT) {
-
-			case S_IFREG:
-				/* don't process symlinked files */
-				if (!S_ISREG(stat_buf.st_mode))
-					continue;
-				break;
-
-			default:
-				/* everything else we ignore */
+			/*
+			 * don't process symlinked files, we only care
+			 * about real files
+			 */
+			if (!S_ISREG(stat_buf.st_mode))
 				continue;
-				break;
-			}
 
 			/* at this point we have a regular file... */
 
