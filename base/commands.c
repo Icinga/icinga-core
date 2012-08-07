@@ -2026,6 +2026,7 @@ int cmd_schedule_host_service_checks(int cmd, char *args, int force) {
 int cmd_signal_process(int cmd, char *args) {
 	time_t scheduled_time = 0L;
 	char *temp_ptr = NULL;
+	int result = OK;
 
 	/* get the time to schedule the event */
 	if ((temp_ptr = my_strtok(args, "\n")) == NULL)
@@ -2034,10 +2035,9 @@ int cmd_signal_process(int cmd, char *args) {
 		scheduled_time = strtoul(temp_ptr, NULL, 10);
 
 	/* add a scheduled program shutdown or restart to the event list */
-	if (!schedule_new_event((cmd == CMD_SHUTDOWN_PROCESS) ? EVENT_PROGRAM_SHUTDOWN : EVENT_PROGRAM_RESTART, TRUE, scheduled_time, FALSE, 0, NULL, FALSE, NULL, NULL, 0))
-		return ERROR;
+	result = schedule_new_event((cmd == CMD_SHUTDOWN_PROCESS) ? EVENT_PROGRAM_SHUTDOWN : EVENT_PROGRAM_RESTART, TRUE, scheduled_time, FALSE, 0, NULL, FALSE, NULL, NULL, 0);
 
-	return OK;
+	return result;
 }
 
 
