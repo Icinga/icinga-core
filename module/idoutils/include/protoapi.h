@@ -107,7 +107,7 @@
 
 /************** COMMON DATA ATTRIBUTES **************/
 
-#define IDO_MAX_DATA_TYPES                           270
+#define IDO_MAX_DATA_TYPES                           271
 
 #define IDO_DATA_NONE                                0
 
@@ -390,4 +390,5 @@
 #define IDO_DATA_END_TIME			     267    /* ACKNOWLEDGEMENT DATA */
 #define IDO_DATA_DOWNTIMEISINEFFECT		     268
 #define IDO_DATA_DOWNTIMETRIGGERTIME		     269
+#define IDO_DATA_DISABLED_NOTIFICATIONS_EXPIRE_TIME  270
 #endif

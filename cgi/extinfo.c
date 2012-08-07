@@ -51,6 +51,7 @@ extern int              daemon_mode;
 extern time_t           last_command_check;
 extern time_t           last_log_rotation;
 extern int              enable_notifications;
+extern time_t		disable_notifications_expire_time;
 extern int              execute_service_checks;
 extern int              accept_passive_service_checks;
 extern int              execute_host_checks;
@@ -1015,6 +1016,7 @@ void show_process_info(void) {
 	char start_time[MAX_DATETIME_LENGTH];
 	char last_external_check_time[MAX_DATETIME_LENGTH];
 	char last_log_rotation_time[MAX_DATETIME_LENGTH];
+	char disable_notif_expire_time[MAX_DATETIME_LENGTH];
 	time_t current_time;
 	unsigned long run_time;
 	char run_time_string[24];
@@ -1045,6 +1047,9 @@ void show_process_info(void) {
 
 	/* last log file rotation */
 	get_time_string(&last_log_rotation, last_log_rotation_time, (int)sizeof(last_log_rotation_time), SHORT_DATE_TIME);
+
+	/* disabled notifications expire time */
+	get_time_string(&disable_notifications_expire_time, disable_notif_expire_time, (int)sizeof(disable_notif_expire_time), SHORT_DATE_TIME);
 
 	if (content_type == JSON_CONTENT) {
 		printf("\"process_info\": {\n");
@@ -1167,6 +1172,11 @@ void show_process_info(void) {
 
 		/* notifications enabled */
 		printf("<TR><TD CLASS='dataVar'>Notifications Enabled?</TD><TD CLASS='dataVal'><DIV CLASS='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n", (enable_notifications == TRUE) ? "ENABLED" : "DISABLED", (enable_notifications == TRUE) ? "YES" : "NO");
+		if (enable_notifications == FALSE)
+			printf("<TR><TD CLASS='dataVar'>Notifications Disabled Expire Time:</TD><TD CLASS='dataVal'>%s</TD></TR>\n", disable_notif_expire_time);
+		else
+			printf("<TR><TD CLASS='dataVar'>Notifications Disabled Expire Time:</TD><TD CLASS='dataVal'><DIV CLASS='notificationsUNKNOWN'>&nbsp;&nbsp;NOT SET&nbsp;&nbsp;</DIV></TD></TR>\n");
+
 
 		/* service check execution enabled */
 		printf("<TR><TD CLASS='dataVar'>Service Checks Being Executed?</TD><TD CLASS='dataVal'><DIV CLASS='checks%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n", (execute_service_checks == TRUE) ? "ENABLED" : "DISABLED", (execute_service_checks == TRUE) ? "YES" : "NO");
@@ -1199,6 +1209,11 @@ void show_process_info(void) {
 
 		/* process performance data */
 		printf("<TR><TD CLASS='dataVar'>Performance Data Being Processed?</TD><TD CLASS='dataVal'>%s</TD></TR>\n", (process_performance_data == TRUE) ? "Yes" : "No");
+
+		/* Notifications disabled will expire? */
+		if(enable_notifications == TRUE && disable_notifications_expire_time > 0)
+			printf("<TR><TD CLASS='dataVar'>Notifications?</TD><TD CLASS='dataVal'>%s</TD></TR>\n", (process_performance_data == TRUE) ? "Yes" : "No");
+
 
 #ifdef USE_OLDCRUD
 		/* daemon mode */

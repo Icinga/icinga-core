@@ -116,12 +116,13 @@ Documentation for %{name}
     --libdir="%{_libdir}/%{name}" \
     --sbindir="%{_libdir}/%{name}/cgi" \
     --sysconfdir="%{_sysconfdir}/%{name}" \
-    --with-cgiurl="/%{name}/cgi-bin" \
     --with-command-user="icinga" \
     --with-command-group="icingacmd" \
     --with-gd-lib="%{_libdir}" \
     --with-gd-inc="%{_includedir}" \
     --with-htmurl="/icinga" \
+    --with-cgiurl="/%{name}/cgi-bin" \
+    --with-mainurl="/%{name}/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29" \
     --with-init-dir="%{_initrddir}" \
     --with-lockfile="%{_localstatedir}/run/%{name}.pid" \
     --with-mail="/bin/mail" \
@@ -218,6 +219,20 @@ then
     cp /var/icinga/objects.precache %{spooldir}/objects.precache
     rm /var/icinga/objects.precache
 fi
+
+# we must then check all changed config locations (and we enforce that change to icinga.cfg only once)
+# cgi.cfg luckily knows where icinga.cfg is and does not need an update
+# retention.dat, objects.cache, objects.precache, status.dat, cmdfile, pidfile, checkresults
+%{__perl} -pi -e '
+        s|/var/icinga/retention.dat|%{spooldir}/retention.dat|;
+        s|/var/icinga/objects.precache|%{spooldir}/objects.precache|;
+        s|/var/icinga/objects.cache|%{spooldir}/objects.cache|;
+        s|/var/icinga/status.dat|%{spooldir}/status.dat|;
+        s|/var/icinga/rw/icinga.cmd|%{spooldir}/cmd/icinga.cmd|;
+        s|/var/icinga/icinga.pid|/var/run/icinga.pid|;
+	s|/var/icinga/checkresults|%{spooldir}/checkresults|;
+   ' /etc/icinga/icinga.cfg
+
 # start icinga
 /sbin/service icinga start &>/dev/null || :
 fi
@@ -399,6 +414,8 @@ fi
 * Fri Jul 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.8.0-1
 - bump version
 - add devel package, installing header files to include/
+- use --with-mainurl from upstream to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29
+- forgot to check on old icinga.cfg entries not matching - enforce that once
 
 * Sun May 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.0-1
 - drop idoutils, add idoutils-libdbi-mysql and idoutils-libdbi-pgsql

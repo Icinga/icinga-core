@@ -346,7 +346,11 @@ int read_main_config_file(char *main_config_file) {
 			mac->x[MACRO_RESOURCEFILE] = (char *)strdup(value);
 
 			/* process the resource file */
-			read_resource_file(value);
+			if(read_resource_file(value) == ERROR) {
+                                dummy = asprintf(&error_message, "Resource file parsing failed");
+				error = TRUE;
+				break;
+			}
 		}
 
 		else if (!strcmp(variable, "log_file")) {

@@ -52,6 +52,7 @@ extern time_t   last_command_status_update;
 extern int      command_check_interval;
 
 extern int      enable_notifications;
+extern time_t	disable_notifications_expire_time;
 extern int      execute_service_checks;
 extern int      accept_passive_service_checks;
 extern int      execute_host_checks;
@@ -252,6 +253,8 @@ int process_external_command1(char *cmd) {
 		command_type = CMD_DISABLE_NOTIFICATIONS;
 	else if (!strcmp(command_id, "ENTER_ACTIVE_MODE") || !strcmp(command_id, "ENABLE_NOTIFICATIONS"))
 		command_type = CMD_ENABLE_NOTIFICATIONS;
+	else if (!strcmp(command_id, "DISABLE_NOTIFICATIONS_EXPIRE_TIME"))
+		command_type = CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME;
 
 	else if (!strcmp(command_id, "SHUTDOWN_PROGRAM") || !strcmp(command_id, "SHUTDOWN_PROCESS"))
 		command_type = CMD_SHUTDOWN_PROCESS;
@@ -796,6 +799,10 @@ int process_external_command2(int cmd, time_t entry_time, char *args) {
 
 	case CMD_DISABLE_NOTIFICATIONS:
 		disable_all_notifications();
+		break;
+
+	case CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME:
+		disable_all_notifications_expire_time(cmd, args);
 		break;
 
 	case CMD_START_EXECUTING_SVC_CHECKS:
@@ -2132,35 +2139,21 @@ int process_passive_service_check(time_t check_time, char *host_name, char *svc_
 		return ERROR;
 
 	/* initialize vars */
-	init_check_result(&cr);
-	cr.object_check_type = SERVICE_CHECK;
+	memset(&cr, 0, sizeof(cr));
+	cr.exited_ok = 1;
+	cr.check_type = SERVICE_CHECK_PASSIVE;
+	cr.host_name = real_host_name;
+	cr.service_description = svc_description;
+	cr.output = output;
+	cr.start_time.tv_sec = cr.finish_time.tv_sec = check_time;
 
-	/* save string vars */
-	if ((cr.host_name = (char *)strdup(real_host_name)) == NULL)
-		result = ERROR;
-	if ((cr.service_description = (char *)strdup(svc_description)) == NULL)
-		result = ERROR;
-	if ((cr.output = (char *)strdup(output)) == NULL)
-		result = ERROR;
-
-	/* handle errors */
-	if (result == ERROR) {
-		my_free(cr.output);
-		my_free(cr.service_description);
-		my_free(cr.host_name);
-		return ERROR;
-	}
-
-	/* save the return code */
+	/* save the return code and make sure it's sane */
 	cr.return_code = return_code;
 
 	/* make sure the return code is within bounds */
 	/* FIXME remove hardcoded return codes for states */
 	if (cr.return_code < 0 || cr.return_code > 3)
 		cr.return_code = STATE_UNKNOWN;
-
-	/* passive checks have same start/end time */
-	cr.start_time.tv_sec = cr.finish_time.tv_sec = check_time;
 
 	/* calculate latency */
 	gettimeofday(&tv, NULL);
@@ -2169,15 +2162,11 @@ int process_passive_service_check(time_t check_time, char *host_name, char *svc_
 		cr.latency = 0.0;
 
 	/*
-	 * passive checks can be treaded as normal check,
+	 * passive checks can be treated as normal checks,
 	 * passing the check_result struct over
 	 */
 
-	/* make the check handler happy */
-	cr.exited_ok = 1;
-	handle_async_service_check_result(temp_service, &cr);
-
-	return OK;
+	return handle_async_service_check_result(temp_service, &cr);
 }
 
 
@@ -2265,30 +2254,13 @@ int process_passive_host_check(time_t check_time, char *host_name, int return_co
 		return ERROR;
 
 	/* initialize vars */
-	init_check_result(&cr);
-	cr.object_check_type = HOST_CHECK;
-
-	/* save string vars */
-	if ((cr.host_name = (char *)strdup(real_host_name)) == NULL)
-		result = ERROR;
-	if ((cr.output = (char *)strdup(output)) == NULL)
-		result = ERROR;
-
-	/* handle errors */
-	if (result == ERROR) {
-		my_free(cr.output);
-		my_free(cr.service_description);
-		my_free(cr.host_name);
-		return ERROR;
-	}
+	memset(&cr, 0, sizeof(cr));
+	cr.host_name = real_host_name;
+	cr.exited_ok = 1;
+	cr.check_type = HOST_CHECK_PASSIVE;
 
 	/* save the return code */
 	cr.return_code = return_code;
-
-	/* make sure the return code is within bounds */
-	/* FIXME fix hardcoded return codes for states */
-	if (cr.return_code < 0 || cr.return_code > 3)
-		cr.return_code = STATE_UNKNOWN;
 
 	/* passive checks have same start/end time */
 	cr.start_time.tv_sec = cr.finish_time.tv_sec = check_time;
@@ -2305,7 +2277,6 @@ int process_passive_host_check(time_t check_time, char *host_name, int return_co
          */
 
 	/* make the check handler happy */
-	cr.exited_ok = 1;
 	handle_async_host_check_result_3x(temp_host, &cr);
 
 	return OK;
@@ -3733,6 +3704,17 @@ void enable_all_notifications(void) {
 	/* update notification status */
 	enable_notifications = TRUE;
 
+	/* check if there was an expiry event (we do not care when it was bound to happen, kill it) */
+	if (disable_notifications_expire_time > (time_t)0) {
+
+		/* reset to 0, so that future event will not be triggered */
+		disable_notifications_expire_time = (time_t)0;
+
+		/* log that we will expire disabled notifications */
+		logit(NSLOG_INFO_MESSAGE, TRUE, "Disabled Notifications forced expire, re-enabled notifications.\n");
+	}
+
+
 #ifdef USE_EVENT_BROKER
 	/* send data to event broker */
 	broker_adaptive_program_data(NEBTYPE_ADAPTIVEPROGRAM_UPDATE, NEBFLAG_NONE, NEBATTR_NONE, CMD_NONE, attr, modified_host_process_attributes, attr, modified_service_process_attributes, NULL);
@@ -3771,6 +3753,36 @@ void disable_all_notifications(void) {
 	return;
 }
 
+void disable_all_notifications_expire_time(int cmd, char *args) {
+	char *temp_ptr = NULL;
+	char *exp_ptr = NULL;
+	char *end_ptr = NULL;
+	struct tm *tm, tm_s;
+	char temp_time[80];
+
+
+	/* extract expire time */
+	/* first arg is scheduled time, unused */
+	temp_ptr = my_strtok(args, ";");
+
+        exp_ptr = my_strtok(NULL, ";");
+        if (exp_ptr != NULL) {
+                /* This will be set to 0 if no expire_time is entered or data is bad */
+                disable_notifications_expire_time = strtoul(exp_ptr, &end_ptr, 10);
+        } else
+		return;
+
+	/* disable notifications */
+	disable_all_notifications();
+
+	/* schedule a new event to expire disabled notifications */
+	schedule_new_event(EVENT_EXPIRE_DISABLED_NOTIFICATIONS, TRUE, (disable_notifications_expire_time + 1), FALSE, 0, NULL, FALSE, NULL, NULL, 0);
+
+	/* log that we will expire disabled notifications */
+	tm = localtime_r(&disable_notifications_expire_time, &tm_s);
+	strftime(temp_time, 80, "%c", tm);
+	logit(NSLOG_INFO_MESSAGE, TRUE, "Disabled Notifications will expire on %s (%lu).\n", temp_time, disable_notifications_expire_time);
+}
 
 /* enables notifications for a service */
 void enable_service_notifications(service *svc) {

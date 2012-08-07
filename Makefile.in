@@ -7,7 +7,6 @@
 # Source code directories
 ###############################
 SRC_BASE=@srcdir@/base
-SRC_LIB=@srcdir@/lib
 SRC_CGI=@srcdir@/cgi
 SRC_HTM=@srcdir@/html
 SRC_DOCS=@srcdir@/html/docs
@@ -116,6 +115,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-idoutils" "install idoutils module"
 	@printf "\t%-23s - %s\n" "install-eventhandlers" "install sample eventhandlers"
 	@printf "\t%-23s - %s\n" "install-dev-docu" "install doxygen development documentation"
+	@printf "\t%-23s - %s\n" "install-testconfig" "install test config"
 
 
 # FreeBSD make does not support -C option, so we'll use the Apache style... (patch by Stanley Hopcroft 12/27/1999)
@@ -201,9 +201,6 @@ all:
 	@echo "Enjoy."
 	@echo ""
 
-$(SRC_LIB)/libicinga.a:
-	cd $(SRC_LIB) && $(MAKE)
-
 icinga:
 	cd $(SRC_BASE) && $(MAKE)
 
@@ -239,7 +236,6 @@ modules:
 ###############################
 
 clean:
-	cd $(SRC_LIB) && $(MAKE) $@
 	cd $(SRC_BASE) && $(MAKE) $@
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_COMMON) && $(MAKE) $@
@@ -257,7 +253,6 @@ clean:
 	rm -f *~ *.*~ */*~ */*.*~ */*/*.*~
 
 distclean: clean
-	cd $(SRC_LIB) && $(MAKE) $@
 	cd $(SRC_BASE) && $(MAKE) $@
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_COMMON) && $(MAKE) $@
@@ -437,6 +432,12 @@ install-config:
 	@echo "the documentation for more information on how to actually define"
 	@echo "services, hosts, etc. to fit your particular needs."
 	@echo ""
+
+install-testconfig:
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/tests
+	for file in tests/etc/*.cfg; \
+	do $(INSTALL) -b -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(CFGDIR)/tests; done
+
 
 install-webconf:
 	$(MKDIR) -p -m 775 $(DESTDIR)$(HTTPD_CONF)

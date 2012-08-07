@@ -900,6 +900,7 @@ CREATE TABLE IF NOT EXISTS icinga_programstatus (
   last_command_check timestamp  default '0000-00-00 00:00:00',
   last_log_rotation timestamp  default '0000-00-00 00:00:00',
   notifications_enabled smallint default 0,
+  disable_notif_expire_time timestamp default '0000-00-00 00:00:00',
   active_service_checks_enabled smallint default 0,
   passive_service_checks_enabled smallint default 0,
   active_host_checks_enabled smallint default 0,

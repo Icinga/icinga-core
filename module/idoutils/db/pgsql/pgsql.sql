@@ -930,6 +930,7 @@ CREATE TABLE  icinga_programstatus (
   last_command_check timestamp with time zone default '1970-01-01 00:00:00',
   last_log_rotation timestamp with time zone default '1970-01-01 00:00:00',
   notifications_enabled INTEGER  default 0,
+  disable_notif_expire_time timestamp with time zone default '1970-01-01 00:00:00',
   active_service_checks_enabled INTEGER  default 0,
   passive_service_checks_enabled INTEGER  default 0,
   active_host_checks_enabled INTEGER  default 0,

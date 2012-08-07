@@ -17,6 +17,9 @@ ENHANCEMENTS
 * core: add useful message to p1.pl when epn plugin does not call exit() (Sven Nierlein) #2431 -MF
 * core: re-enable state based escalation ranges, using cast tricks #2878 - MF
 	** livestatus and other neb modules not using the icinga headers won't see those
+* core: add a command to disable notifications program-wide with expire time as scheduled event #905 - MF
+	** DISABLE_NOTIFICATIONS_EXPIRE_TIME, works for global notifications
+* core: add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879 - MF
 
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
@@ -32,11 +35,16 @@ ENHANCEMENTS
 
 * classic ui: Changed search in config.cgi to regex #2884 - RB
 * classic ui: Added config option to let read-only users see comments and downtimes #2699 - RB
+* classic ui: add support for disable notifications with expire time to extinfo.cgi, Process Info #905 - MF
 
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
 * idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
 * idoutils: fix doubled quotes by skipping escaping data (Oracle only) #2534 - TD
 * idoutils: change hasfunc to use sdbm algorithm for hashing precached objects #2792i - MF/GB
+* idoutils: add disable_notif_expire_time to programstatus table - #905 - MF
+
+* install: add --with-mainurl to configure, allowing to set the main frame target url for index.html #2611 - MF
+* icinga.spec: use --with-mainurl to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29 #2611 - MF
 
 * icinga.spec: add devel package #2634 - MF
 
@@ -44,6 +52,14 @@ FIXES
 * core: unify check scheduling replacement logic for new events (Andreas Ericsson) #2676 - MF
 * core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665 - MF
 * core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197 - MF
+* core: fix whitespaces are not stripped using multiple templates ("use abc, def, ghi") #2701
+* core: make delete_downtime_by_hostname_service_description_start_time_comment threadsafe (Andreas Ericsson) #2899
+* core: bail out early with config error if resource.cfg macros contain NULL values #2879 - MF
+* core: fix logical bug on icinga.cfg detection on config read #2879 - MF
+* core: free raw_command immediately after processing the macros / not needing them anymore - MF
+* core: fsync() files before fclose() (Andreas Ericsson) #2949 - MF
+* ocre: remove weird switch() statement when scanning checkresult queue (Andreas Ericsson) #2950 - MF
+* core: fix deleting too old check result files (Andreas Ericsson) #2951 - MF
 
 * idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
 
@@ -51,7 +67,12 @@ CHANGES
 
 * core: neb struct statechange data += long_ouput #2650 - MF
 
+* core: new command
+	** DISABLE_NOTIFICATIONS_EXPIRE_TIME;<schedule_time>;<expire_time> (set schedule_time to now()) #905
+
 * icinga.spec: add devel package #2634
+
+* icinga.spec: forced update on icinga.cfg change package locations #2923
 
 * classic ui: Added pagination to various cgi's #2725
 	** new cgi GET params: "limit" and "start"
@@ -63,7 +84,9 @@ CHANGES
 	** authorized_contactgroup_for_downtimes_read_only - #2699
 	** "result_limit" (default: 50) - #2725
 	** "result_limit" replaces "default_num_displayed_log_entries" - #2725
+	** default_expiring_disabled_notifications_duration=86400 #905
 
+* idoutils: add disable_notif_expire_time to programstatus table #905
 
 
 1.7.1 - 18/06/2012

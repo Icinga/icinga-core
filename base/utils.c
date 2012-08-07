@@ -34,7 +34,7 @@
 #include "../include/broker.h"
 #include "../include/nebmods.h"
 #include "../include/nebmodules.h"
-#include "../lib/squeue.h"
+
 
 #ifdef EMBEDDEDPERL
 #include "../include/epn_icinga.h"
@@ -242,11 +242,11 @@ extern host             *host_list;
 extern hostgroup	*hostgroup_list;
 extern service          *service_list;
 extern servicegroup     *servicegroup_list;
+extern timed_event      *event_list_high;
+extern timed_event      *event_list_low;
 extern notification     *notification_list;
 extern command          *command_list;
 extern timeperiod       *timeperiod_list;
-
-extern squeue_t		*icinga_squeue;
 
 extern int      command_file_fd;
 extern FILE     *command_file_fp;
@@ -296,7 +296,6 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 	int status = 0;
 	int result = 0;
 	char buffer[MAX_INPUT_BUFFER] = "";
-	char *temp_buffer = NULL;
 	int fd[2];
 	FILE *fp = NULL;
 	int bytes_read = 0;
@@ -579,7 +578,6 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 
 		/* check for possibly missing scripts/binaries/etc */
 		if (result == 126 || result == 127) {
-			temp_buffer = "\163\157\151\147\141\156\040\145\144\151\163\156\151";
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Attempting to execute the command \"%s\" resulted in a return code of %d.  Make sure the script or binary you are trying to execute actually exists...\n", cmd, result);
 		}
 
@@ -2730,21 +2728,23 @@ int process_check_result_queue(char *dirname) {
 				continue;
 			}
 
-			switch (stat_buf.st_mode & S_IFMT) {
-
-			case S_IFREG:
-				/* don't process symlinked files */
-				if (!S_ISREG(stat_buf.st_mode))
-					continue;
-				break;
-
-			default:
-				/* everything else we ignore */
+			/*
+			 * don't process symlinked files, we only care
+			 * about real files
+			 */
+			if (!S_ISREG(stat_buf.st_mode))
 				continue;
-				break;
-			}
 
 			/* at this point we have a regular file... */
+
+			/*
+			 * if the file is too old, we delete it
+			 * otherwise we will leave old files there
+			 */
+			if (stat_buf.st_mtime + max_check_result_file_age < time(NULL)) {
+				delete_check_result_file(dirfile->d_name);
+				continue;
+			}
 
 			/* can we find the associated ok-to-go file ? */
 			dummy = asprintf(&temp_buffer, "%s.ok", file);
@@ -4232,6 +4232,8 @@ void cleanup(void) {
 
 /* free the memory allocated to the linked lists */
 void free_memory(icinga_macros *mac) {
+	timed_event *this_event = NULL;
+	timed_event *next_event = NULL;
 
 	/* free all allocated memory for the object definitions */
 	free_object_data();
@@ -4242,9 +4244,31 @@ void free_memory(icinga_macros *mac) {
 	/* free check result list */
 	free_check_result_list();
 
-	/* free event queue data */
-	squeue_destroy(icinga_squeue, SQUEUE_FREE_DATA);
-	icinga_squeue = NULL;
+	/* free memory for the high priority event list */
+	this_event = event_list_high;
+	while (this_event != NULL) {
+		if (this_event->event_type == EVENT_SCHEDULED_DOWNTIME)
+			my_free(this_event->event_data);
+		next_event = this_event->next;
+		my_free(this_event);
+		this_event = next_event;
+	}
+
+	/* reset the event pointer */
+	event_list_high = NULL;
+
+	/* free memory for the low priority event list */
+	this_event = event_list_low;
+	while (this_event != NULL) {
+		if (this_event->event_type == EVENT_SCHEDULED_DOWNTIME)
+			my_free(this_event->event_data);
+		next_event = this_event->next;
+		my_free(this_event);
+		this_event = next_event;
+	}
+
+	/* reset the event pointer */
+	event_list_low = NULL;
 
 	/* free memory for global event handlers */
 	my_free(global_host_event_handler);
