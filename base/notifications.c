@@ -289,6 +289,8 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
                 clear_summary_macros_r(&mac);
                 clear_contact_macros_r(&mac);
                 clear_argv_macros_r(&mac);
+		clear_service_macros_r(&mac);
+		clear_host_macros_r(&mac);
 
                 /* this gets set in create_notification_list_from_service() */
                 my_free(mac.x[MACRO_NOTIFICATIONISESCALATED]);
@@ -1470,6 +1472,7 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 		clear_summary_macros_r(&mac);
 		clear_contact_macros_r(&mac);
 		clear_argv_macros_r(&mac);
+		clear_host_macros_r(&mac);
 
 		/* this gets set in create_notification_list_from_service() */
 		my_free(mac.x[MACRO_NOTIFICATIONISESCALATED]);
