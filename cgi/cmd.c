@@ -1380,6 +1380,11 @@ void request_command_data(int cmd) {
 		snprintf(action, sizeof(action), "Schedule downtime for these %s", (cmd == CMD_SCHEDULE_HOST_DOWNTIME) ? "hosts" : "services");
 		break;
 
+	case CMD_DEL_DOWNTIME_BY_HOST_NAME:
+                snprintf(help_text, sizeof(help_text), "This command is used to delete all downtime specified by the host name already supplied.");
+		snprintf(action, sizeof(action), "Remove all downtime for these hosts");
+                break;
+
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
 		snprintf(help_text, sizeof(help_text), "This command is used to schedule downtime for a particular host and all of its services.	During the specified downtime, %s will not send notifications out about the host. "
 		         "Normally, a host in downtime will not send alerts about any services in a failed state. This option will explicitly set downtime for all services for this host. "
@@ -1509,7 +1514,7 @@ void request_command_data(int cmd) {
 		break;
 
 	default:
-		print_generic_error_message("Sorry Dave, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
+		print_generic_error_message("Sorry Dave2, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
 
 		return;
 	}
@@ -1605,6 +1610,18 @@ void request_command_data(int cmd) {
 		}
 
 		break;
+
+	case CMD_DEL_DOWNTIME_BY_HOST_NAME:
+                print_object_list(PRINT_HOST_LIST);
+
+                print_form_element(PRINT_COMMON_HEADER, cmd);
+
+                if (enforce_comments_on_actions == TRUE) {
+                        print_form_element(PRINT_AUTHOR, cmd);
+                        print_form_element(PRINT_COMMENT_BOX, cmd);
+                }
+
+                break;
 
 	case CMD_DELAY_SVC_NOTIFICATION:
 	case CMD_DELAY_HOST_NOTIFICATION:
@@ -2316,6 +2333,7 @@ void commit_command_data(int cmd) {
 	case CMD_SCHEDULE_HOST_CHECK:
 	case CMD_START_OBSESSING_OVER_HOST:
 	case CMD_STOP_OBSESSING_OVER_HOST:
+	case CMD_DEL_DOWNTIME_BY_HOST_NAME:
 
 		if (cmd == CMD_SCHEDULE_HOST_DOWNTIME || cmd == CMD_SCHEDULE_HOST_SVC_DOWNTIME || enforce_comments_on_actions == TRUE) {
 			/* make sure we have author and comment data */
@@ -2441,7 +2459,7 @@ void commit_command_data(int cmd) {
 		break;
 
 	default:
-		print_generic_error_message("Sorry Dave, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
+		print_generic_error_message("Sorry Dave3, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
 
 		return;
 	}
@@ -2760,6 +2778,15 @@ int commit_command(int cmd) {
 				continue;
 			if (is_authorized[x])
 				submit_result[x] = cmd_submitf(cmd, "%lu", multi_ids[x]);
+		}
+		break;
+
+	case CMD_DEL_DOWNTIME_BY_HOST_NAME:
+		for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
+			if (commands[x].host_name == NULL)
+				continue;
+			if (is_authorized[x])
+				submit_result[x] = cmd_submitf(cmd, "%s", commands[x].host_name);
 		}
 		break;
 
