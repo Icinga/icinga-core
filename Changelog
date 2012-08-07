@@ -36,6 +36,10 @@ FIXES
 * core: make delete_downtime_by_hostname_service_description_start_time_comment threadsafe (Andreas Ericsson) #2899
 * core: bail out early with config error if resource.cfg macros contain NULL values #2879 - MF
 * core: fix logical bug on icinga.cfg detection on config read #2879 - MF
+* core: free raw_command immediately after processing the macros / not needing them anymore - MF
+* core: fsync() files before fclose() (Andreas Ericsson) #2949 - MF
+* ocre: remove weird switch() statement when scanning checkresult queue (Andreas Ericsson) #2950 - MF
+* core: fix deleting too old check result files (Andreas Ericsson) #2951 - MF
 
 CHANGES
 * core: new command
