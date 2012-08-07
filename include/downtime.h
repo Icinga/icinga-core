@@ -30,9 +30,6 @@
 #include "config.h"
 #include "common.h"
 #include "objects.h"
-#ifdef NSCORE
-#include "icinga.h"
-#endif
 
 #ifdef __cplusplus
   extern "C" {
@@ -59,9 +56,6 @@ typedef struct scheduled_downtime_struct{
 	int incremented_pending_downtime;
 #endif
 	struct scheduled_downtime_struct *next;
-#ifdef NSCORE
-	timed_event *start_event, *stop_event;
-#endif
 	time_t trigger_time;				/* needed to detect when a flexible downtime starts/triggers */
 	}scheduled_downtime;
 

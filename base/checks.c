@@ -107,7 +107,6 @@ extern time_t   last_program_stop;
 extern time_t   program_start;
 extern time_t   event_start;
 
-extern squeue_t		 *icinga_squeue;
 extern timed_event       *event_list_low;
 extern timed_event       *event_list_low_tail;
 
@@ -1940,13 +1939,8 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 	 */
 	if (use_original_event == FALSE) {
 
-		/*
-		 * allocate memory for a new event item
-		 * zero-initialize low prio events, to prevent random usec
-		 * values in sq_event, which is used as base for determining
-		 * the runtime in the scheduling queue
-		 */
-		new_event = (timed_event *)calloc(1, sizeof(timed_event));
+		/* allocate memory for a new event item */
+		new_event = (timed_event *)malloc(sizeof(timed_event));
 
 		if (new_event == NULL) {
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not reschedule check of service '%s' on host '%s'!\n", svc->description, svc->host_name);
@@ -1955,7 +1949,7 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 
 		/* make sure we kill off the old event */
 		if (temp_event) {
-			remove_event(icinga_squeue, temp_event);
+			remove_event(temp_event, &event_list_low, &event_list_low_tail);
 			my_free(temp_event);
 		}
 
@@ -1978,7 +1972,7 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 		new_event->event_interval = 0L;
 		new_event->timing_func = NULL;
 		new_event->compensate_for_time_change = TRUE;
-		reschedule_event(icinga_squeue, new_event);
+		reschedule_event(new_event, &event_list_low, &event_list_low_tail);
 	}
 
 	else {
@@ -2422,22 +2416,14 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 
 		log_debug_info(DEBUGL_CHECKS, 2, "Scheduling new host check event.\n");
 
-                /*
-                 * allocate memory for a new event item
-                 * zero-initialize low prio events, to prevent random usec
-                 * values in sq_event, which is used as base for determining
-                 * the runtime in the scheduling queue
-                 */
-                new_event = (timed_event *)calloc(1, sizeof(timed_event));
-
 		/* allocate memory for a new event item */
-		if(new_event == NULL) {
+		if((new_event = (timed_event *)malloc(sizeof(timed_event))) == NULL) {
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not reschedule check of host '%s'!\n", hst->name);
 			return;
 		}
 
 		if (temp_event) {
-			remove_event(icinga_squeue, temp_event);
+			remove_event(temp_event, &event_list_low, &event_list_low_tail);
 			my_free(temp_event);
 		}
 
@@ -2458,7 +2444,7 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 		new_event->event_interval = 0L;
 		new_event->timing_func = NULL;
 		new_event->compensate_for_time_change = TRUE;
-		reschedule_event(icinga_squeue, new_event);
+		reschedule_event(new_event, &event_list_low, &event_list_low_tail);
 	}
 
 	else {
