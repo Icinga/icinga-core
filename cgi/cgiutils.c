@@ -120,9 +120,6 @@ extern char 	*macro_user[MAX_USER_MACROS];
 
 /** readlogs.c **/
 int		log_rotation_method = LOG_ROTATION_NONE;
-extern time_t	this_scheduled_log_rotation;
-extern time_t	last_scheduled_log_rotation;
-extern time_t	next_scheduled_log_rotation;
 char		log_file[MAX_INPUT_BUFFER];
 char		log_archive_path[MAX_INPUT_BUFFER];
 
@@ -2515,7 +2512,7 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
 		if (returnlevels != 0)
 			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-%d);' class='submitButton'>\n", returnlevels);
 
-		printf("</DIV>\n");
+		printf("</DIV><BR>\n");
 	}
 
 	return;

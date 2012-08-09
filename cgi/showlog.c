@@ -44,7 +44,6 @@ extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char *csv_delimiter;
 extern char *csv_data_enclosure;
 
-extern int log_rotation_method;
 extern int enable_splunk_integration;
 extern int showlog_initial_states;
 extern int showlog_current_states;
@@ -55,8 +54,6 @@ extern int embedded;
 extern int display_header;
 extern int daemon_check;
 extern int content_type;
-
-extern logentry *entry_list;
 /** @} */
 
 /** @name Internal vars
@@ -262,7 +259,7 @@ int process_cgivars(void) {
 			strip_html_brackets(query_string);
 
 			if (strlen(query_string) == 0)
-				query_string = NULL;
+				my_free(query_string);
 		}
 
 		/* we found first time argument */
@@ -553,155 +550,116 @@ void display_logentries() {
 	char last_message_date[MAX_INPUT_BUFFER] = "";
 	char current_message_date[MAX_INPUT_BUFFER] = "";
 	char date_time[MAX_DATETIME_LENGTH];
-	char error_text[MAX_INPUT_BUFFER] = "";
-	char filename[MAX_FILENAME_LENGTH];
-	int status = 0, read_status = 0, i;
-	int oldest_archive = 0;
-	int newest_archive = 0;
-	int current_archive = 0;
+	char *error_text = NULL;
+	int status = READLOG_OK;
+	int i = 0;
 	int user_has_seen_something = FALSE;
 	int json_start = TRUE;
 	int total_entries = 0;
 	int displayed_entries = 0;
 	struct tm *time_ptr = NULL;
+	logentry *entry_list = NULL;
 	logentry *temp_entry = NULL;
+	logfilter *filter_list = NULL;
 
 
 	/* Add default filters */
 	if (showlog_initial_states == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_INITIAL_STATE, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_INITIAL_STATE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_INITIAL_STATE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_INITIAL_STATE, LOGFILTER_EXCLUDE);
 	}
 	if (showlog_current_states == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_CURRENT_STATE, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_CURRENT_STATE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_CURRENT_STATE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_CURRENT_STATE, LOGFILTER_EXCLUDE);
 	}
 
 	/* Add requested filters */
 	if (show_notifications == FALSE) {
-		add_log_filter(LOGENTRY_HOST_NOTIFICATION, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_NOTIFICATION, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_NOTIFICATION, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_NOTIFICATION, LOGFILTER_EXCLUDE);
 	}
 	if (show_host_status == FALSE) {
-		add_log_filter(LOGENTRY_HOST_UP, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_DOWN, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_UNREACHABLE, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_RECOVERY, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_PASSIVE_HOST_CHECK, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_UP, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_DOWN, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_UNREACHABLE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_RECOVERY, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_PASSIVE_HOST_CHECK, LOGFILTER_EXCLUDE);
 	}
 	if (show_service_status == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_OK, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_WARNING, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_CRITICAL, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_UNKNOWN, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_RECOVERY, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_PASSIVE_SERVICE_CHECK, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_OK, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_WARNING, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_CRITICAL, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_UNKNOWN, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_RECOVERY, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_PASSIVE_SERVICE_CHECK, LOGFILTER_EXCLUDE);
 	}
 	if (show_external_commands == FALSE)
-		add_log_filter(LOGENTRY_EXTERNAL_COMMAND, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_EXTERNAL_COMMAND, LOGFILTER_EXCLUDE);
 
 	if (show_system_messages == FALSE) {
-		add_log_filter(LOGENTRY_SYSTEM_WARNING, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_STARTUP, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SHUTDOWN, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_BAILOUT, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_RESTART, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_LOG_ROTATION, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_AUTOSAVE, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_IDOMOD, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SYSTEM_WARNING, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_STARTUP, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SHUTDOWN, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_BAILOUT, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_RESTART, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_LOG_ROTATION, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_AUTOSAVE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_IDOMOD, LOGFILTER_EXCLUDE);
 	}
 	if (show_event_handler == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_EVENT_HANDLER, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_EVENT_HANDLER, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_EVENT_HANDLER, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_EVENT_HANDLER, LOGFILTER_EXCLUDE);
 	}
 	if (show_flapping == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_FLAPPING_STARTED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_FLAPPING_STOPPED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_FLAPPING_DISABLED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_FLAPPING_STARTED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_FLAPPING_STOPPED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_FLAPPING_DISABLED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_FLAPPING_STARTED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_FLAPPING_STOPPED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_FLAPPING_DISABLED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_STARTED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_STOPPED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_DISABLED, LOGFILTER_EXCLUDE);
 	}
 	if (show_downtime == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_DOWNTIME_STARTED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_DOWNTIME_STOPPED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_DOWNTIME_CANCELLED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_DOWNTIME_STARTED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_DOWNTIME_STOPPED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_DOWNTIME_CANCELLED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_DOWNTIME_STARTED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_DOWNTIME_STOPPED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_DOWNTIME_CANCELLED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_DOWNTIME_STARTED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_DOWNTIME_STOPPED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_DOWNTIME_CANCELLED, LOGFILTER_EXCLUDE);
 	}
 
+	/* scan the log file for archived state data */
+	status = get_log_entries(&entry_list, &filter_list, &error_text, query_string, reverse, ts_start, ts_end);
 
-	/* determine oldest archive to use when scanning for data */
-	oldest_archive = determine_archive_to_use_from_time(ts_start);
+	free_log_filters(&filter_list);
 
-
-	/* determine most recent archive to use when scanning for data */
-	newest_archive = determine_archive_to_use_from_time(ts_end);
-
-	/* Add 10 backtrack archives */
-	newest_archive -= 10;
-	oldest_archive += 5;
-	if (newest_archive < 0)
-		newest_archive = 0;
-
-	/* correct archive id errors */
-	if (oldest_archive < newest_archive)
-		oldest_archive = newest_archive;
-
-	current_archive = oldest_archive;
-
-	/* read in all the necessary archived logs */
-	while (1) {
-
-		/* get the name of the log file that contains this archive */
-		get_log_archive_to_use(current_archive, filename, sizeof(filename) - 1);
-
-		/* scan the log file for archived state data */
-		status = get_log_entries(filename, query_string, reverse, ts_start, ts_end);
-
-		/* Stop if we out of memory or have a wrong filter */
-		if (status == READLOG_ERROR_FILTER || status == READLOG_ERROR_MEMORY) {
-			read_status = status;
-			break;
-		}
-
-		/* Don't care if there isn't a file to read */
-		if (status == READLOG_ERROR_NOFILE && read_status == READLOG_OK)
-			status = READLOG_OK;
-
-		/* set status */
-		read_status = status;
-
-		/* count/break depending on direction (new2old / old2new) */
-		if (current_archive <= newest_archive)
-			break;
-
-		current_archive--;
-	}
-
-	free_log_filters();
 
 	/* dealing with errors */
-	if (read_status == READLOG_ERROR_MEMORY) {
-		if (content_type == CSV_CONTENT || content_type == JSON_CONTENT)
+	if (status == READLOG_ERROR_WARNING) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		} else
+			print_generic_error_message("Unkown error!", NULL, 0);
+	}
+
+	if (status == READLOG_ERROR_MEMORY)
 			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
-		else
-			printf("<DIV CLASS='warningMessage'>Out of memory..., showing all I could get!</DIV>");
-	}
-	if (read_status == READLOG_ERROR_NOFILE) {
-		snprintf(error_text, sizeof(error_text), "Error: Could not open log file '%s' for reading!", filename);
-		error_text[sizeof(error_text) - 1] = '\x0';
-		print_generic_error_message(error_text, NULL, 0);
-	}
-	if (read_status == READLOG_ERROR_FILTER)
-		print_generic_error_message("It seems like that reagular expressions don't like what you searched for. Please change your search string.", NULL, 0);
+
+
+	if (status == READLOG_ERROR_FATAL) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		}
+		user_has_seen_something = TRUE;
 
 	/* now we start displaying the log entries */
-	else {
+	} else {
 
 		if (content_type == JSON_CONTENT) {
 			display_timebreaks = FALSE;
+			if (status != READLOG_OK)
+				printf(",\n");
 			printf("\"log_entries\": [\n");
 		} else if (content_type == CSV_CONTENT) {
 			display_timebreaks = FALSE;
@@ -919,7 +877,7 @@ void display_logentries() {
 			printf("\n]\n");
 	}
 
-	free_log_entries();
+	free_log_entries(&entry_list);
 
 	if (user_has_seen_something == FALSE && content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("<DIV CLASS='warningMessage'>No log entries found!</DIV>");

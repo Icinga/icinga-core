@@ -41,14 +41,11 @@
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 
-extern int log_rotation_method;
 extern int enable_splunk_integration;
 extern int embedded;
 extern int display_header;
 extern int daemon_check;
 extern int result_limit;
-
-extern logentry *entry_list;
 /** @} */
 
 /** @name Internal vars
@@ -473,89 +470,54 @@ void show_history(void) {
 	char match1[MAX_INPUT_BUFFER];
 	char match2[MAX_INPUT_BUFFER];
 	char date_time[MAX_DATETIME_LENGTH];
+	char last_message_date[MAX_INPUT_BUFFER] = "";
+	char current_message_date[MAX_INPUT_BUFFER] = "";
 	char *temp_buffer = NULL;
 	char *entry_host_name = NULL;
 	char *entry_service_desc = NULL;
-	char error_text[MAX_INPUT_BUFFER] = "";
-	char last_message_date[MAX_INPUT_BUFFER] = "";
-	char current_message_date[MAX_INPUT_BUFFER] = "";
-	char filename[MAX_FILENAME_LENGTH];
+	char *error_text = NULL;
 	int system_message = FALSE;
 	int display_line = FALSE;
 	int history_type = SERVICE_HISTORY;
 	int history_detail_type = HISTORY_SERVICE_CRITICAL;
-	int status = 0;
+	int status = READLOG_OK;
 	int displayed_entries = 0;
 	int total_entries = 0;
-	int read_status = 0;
-	int oldest_archive = 0;
-	int newest_archive = 0;
-	int current_archive = 0;
 	host *temp_host = NULL;
 	service *temp_service = NULL;
 	logentry *temp_entry = NULL;
 	struct tm *time_ptr = NULL;
+	logentry *entry_list = NULL;
+	logfilter *filter_list = NULL;
 
-	/* determine oldest archive to use when scanning for data */
-	oldest_archive = determine_archive_to_use_from_time(ts_start);
 
-	/* determine most recent archive to use when scanning for data */
-	newest_archive = determine_archive_to_use_from_time(ts_end);
+	/* scan the log file for archived state data */
+	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, reverse, ts_start, ts_end);
 
-	/* Add 10 backtrack archives */
-	newest_archive -= 10;
-	oldest_archive += 5;
-	if (newest_archive < 0)
-		newest_archive = 0;
 
-	/* correct archive id errors */
-	if (oldest_archive < newest_archive)
-		oldest_archive = newest_archive;
+	/* dealing with errors */
+	if (status == READLOG_ERROR_WARNING) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		} else
+			print_generic_error_message("Unkown error!", NULL, 0);
+	}
 
-	current_archive = oldest_archive;
+	if (status == READLOG_ERROR_MEMORY)
+			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
 
-	/* read in all the necessary archived logs */
-	while (1) {
 
-		/* get the name of the log file that contains this archive */
-		get_log_archive_to_use(current_archive, filename, sizeof(filename) - 1);
-
-		/* scan the log file for archived state data */
-		status = get_log_entries(filename, NULL, reverse, ts_start, ts_end);
-
-		/* Stop if we out of memory or have a wrong filter */
-		if (status == READLOG_ERROR_FILTER || status == READLOG_ERROR_MEMORY) {
-			read_status = status;
-			break;
+	if (status == READLOG_ERROR_FATAL) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
 		}
 
-		/* Don't care if there isn't a file to read */
-		if (status == READLOG_ERROR_NOFILE && read_status == READLOG_OK)
-			status = READLOG_OK;
-
-		/* set status */
-		read_status = status;
-
-		/* count/break depending on direction (new2old / old2new) */
-		if (current_archive <= newest_archive)
-			break;
-
-		current_archive--;
-	}
-
-	if (status == READLOG_ERROR_MEMORY) {
-		printf("<DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV>");
-	}
-
-	if (status == READLOG_ERROR_NOFILE) {
-		snprintf(error_text, sizeof(error_text), "Error: Could not open log file '%s' for reading!", filename);
-		error_text[sizeof(error_text) - 1] = '\x0';
-		print_generic_error_message(error_text, NULL, 0);
-		/* free memory */
-		free_log_entries();
 		return;
 
-	} else if (status == READLOG_OK || status == READLOG_ERROR_MEMORY) {
+	/* now we start displaying the log entries */
+	} else {
 
 		printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
 		printf("<div class='page_selector' id='hist_page_selector'>\n");
@@ -963,7 +925,7 @@ void show_history(void) {
 		}
 	}
 
-	free_log_entries();
+	free_log_entries(&entry_list);
 
 	printf("</DIV>\n");
 

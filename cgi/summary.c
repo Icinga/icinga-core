@@ -38,10 +38,6 @@ extern host *host_list;
 extern hostgroup *hostgroup_list;
 extern service *service_list;
 extern servicegroup *servicegroup_list;
-extern logentry *entry_list;
-
-extern int       log_rotation_method;
-
 
 /* custom report types */
 #define REPORT_NONE				0
@@ -99,7 +95,6 @@ typedef struct alert_producer_struct {
 } alert_producer;
 
 void read_archived_event_data(void);
-void scan_log_file_for_archived_event_data(char *);
 void compute_report_times(void);
 void determine_standard_report_options(void);
 void add_archived_event(int, time_t, int, int, char *, char *, char *);
@@ -1109,61 +1104,35 @@ int process_cgivars(void) {
 
 /* reads log files for archived event data */
 void read_archived_event_data(void) {
-	char filename[MAX_FILENAME_LENGTH];
-	int oldest_archive = 0;
-	int newest_archive = 0;
-	int current_archive = 0;
-
-	/* determine oldest archive to use when scanning for data */
-	oldest_archive = determine_archive_to_use_from_time(t1);
-
-	/* determine most recent archive to use when scanning for data */
-	newest_archive = determine_archive_to_use_from_time(t2);
-
-	if (oldest_archive < newest_archive)
-		oldest_archive = newest_archive;
-
-	/* add host filter */
-	add_log_filter(LOGENTRY_HOST_UP, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_HOST_DOWN, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_HOST_UNREACHABLE, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_HOST_RECOVERY, LOGFILTER_INCLUDE);
-
-	/* add service filter */
-	add_log_filter(LOGENTRY_SERVICE_OK, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_WARNING, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_CRITICAL, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_UNKNOWN, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_RECOVERY, LOGFILTER_INCLUDE);
-
-	/* read in all the necessary archived logs (from most recent to earliest) */
-	for (current_archive = newest_archive; current_archive <= oldest_archive; current_archive++) {
-
-		/* get the name of the log file that contains this archive */
-		get_log_archive_to_use(current_archive, filename, sizeof(filename) - 1);
-
-		/* scan the log file for archived state data */
-		scan_log_file_for_archived_event_data(filename);
-	}
-
-	free_log_filters();
-
-	return;
-}
-
-/* grabs archived event data from a log file */
-void scan_log_file_for_archived_event_data(char *filename) {
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_svc_description[MAX_INPUT_BUFFER];
 	char *temp_buffer;
 	char *plugin_output;
+	char *error_text = NULL;
 	int state;
 	int state_type;
-	int status;
+	int status = READLOG_OK;
 	logentry *temp_entry = NULL;
+	logentry *entry_list = NULL;
+	logfilter *filter_list = NULL;
+
+	/* add host filter */
+	add_log_filter(&filter_list, LOGENTRY_HOST_UP, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_HOST_DOWN, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_HOST_UNREACHABLE, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_HOST_RECOVERY, LOGFILTER_INCLUDE);
+
+	/* add service filter */
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_OK, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_WARNING, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_CRITICAL, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_UNKNOWN, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_RECOVERY, LOGFILTER_INCLUDE);
 
 	/* read log entries */
-	status = get_log_entries(filename, NULL, FALSE, t1, t2);
+	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, FALSE, t1, t2);
+
+	free_log_filters(&filter_list);
 
 	if (status == READLOG_OK) {
 
@@ -1265,7 +1234,7 @@ void scan_log_file_for_archived_event_data(char *filename) {
 	}
 
 	/* free memory */
-	free_log_entries();
+	free_log_entries(&entry_list);
 
 	return;
 }

@@ -47,7 +47,6 @@ extern int     log_rotation_method;
 
 extern host *host_list;
 extern service *service_list;
-extern logentry *entry_list;
 
 extern skiplist *object_skiplists[NUM_OBJECT_SKIPLISTS];
 
@@ -2320,83 +2319,16 @@ void free_archived_state_list(void) {
 
 /* reads log files for archived state data */
 void read_archived_state_data(void) {
-	char filename[MAX_FILENAME_LENGTH];
-	int newest_archive = 0;
-	int oldest_archive = 0;
-	int current_archive;
-
-#ifdef DEBUG
-	printf("Determining archives to use...\n");
-#endif
-
-	/* determine earliest archive to use */
-	oldest_archive = determine_archive_to_use_from_time(t1);
-	if (log_rotation_method != LOG_ROTATION_NONE)
-		oldest_archive += backtrack_archives;
-
-	/* determine most recent archive to use */
-	newest_archive = determine_archive_to_use_from_time(t2);
-
-	if (oldest_archive < newest_archive)
-		oldest_archive = newest_archive;
-
-#ifdef DEBUG
-	printf("Oldest archive: %d\n", oldest_archive);
-	printf("Newest archive: %d\n", newest_archive);
-#endif
-
-	/* Service filter */
-	add_log_filter(LOGENTRY_SERVICE_OK, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_WARNING, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_CRITICAL, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_UNKNOWN, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_RECOVERY, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_INITIAL_STATE, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_CURRENT_STATE, LOGFILTER_INCLUDE);
-
-	/* Host filter */
-	add_log_filter(LOGENTRY_HOST_UP, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_HOST_DOWN, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_HOST_UNREACHABLE, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_HOST_RECOVERY, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_HOST_INITIAL_STATE, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_HOST_CURRENT_STATE, LOGFILTER_INCLUDE);
-
-	if (ignore_daemon_restart == FALSE) {
-		add_log_filter(LOGENTRY_STARTUP, LOGFILTER_INCLUDE);
-		add_log_filter(LOGENTRY_RESTART, LOGFILTER_INCLUDE);
-		add_log_filter(LOGENTRY_SHUTDOWN, LOGFILTER_INCLUDE);
-		add_log_filter(LOGENTRY_BAILOUT, LOGFILTER_INCLUDE);
-	}
-
-	/* read in all the necessary archived logs */
-	for (current_archive = newest_archive; current_archive <= oldest_archive; current_archive++) {
-
-		/* get the name of the log file that contains this archive */
-		get_log_archive_to_use(current_archive, filename, sizeof(filename) - 1);
-
-#ifdef DEBUG
-		printf("\tCurrent archive: %d (%s)\n", current_archive, filename);
-#endif
-
-		/* scan the log file for archived state data */
-		scan_log_file_for_archived_state_data(filename);
-	}
-
-	free_log_filters();
-
-	return;
-}
-
-
-/* grabs archives state data from a log file */
-void scan_log_file_for_archived_state_data(char *filename) {
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *plugin_output = NULL;
 	char *temp_buffer = NULL;
+	char *error_text = NULL;
 	logentry *temp_entry = NULL;
-	int state_type = 0, status;
+	logentry *entry_list = NULL;
+	logfilter *filter_list = NULL;
+	int state_type = 0;
+	int status = READLOG_OK;
 
 	/* print something so browser doesn't time out */
 	if (content_type == HTML_CONTENT) {
@@ -2404,20 +2336,35 @@ void scan_log_file_for_archived_state_data(char *filename) {
 		fflush(NULL);
 	}
 
-	status = get_log_entries(filename, NULL, FALSE, t1 - (60 * 60 * 24 * backtrack_archives), t2);
+	/* Service filter */
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_OK, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_WARNING, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_CRITICAL, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_UNKNOWN, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_RECOVERY, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_INITIAL_STATE, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_CURRENT_STATE, LOGFILTER_INCLUDE);
 
-	if (status != READLOG_OK) {
-#ifdef DEBUG
-		printf("Could not open file '%s' for reading.\n", filename);
-#endif
-		free_log_entries();
-		return;
-	} else {
+	/* Host filter */
+	add_log_filter(&filter_list, LOGENTRY_HOST_UP, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_HOST_DOWN, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_HOST_UNREACHABLE, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_HOST_RECOVERY, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_HOST_INITIAL_STATE, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_HOST_CURRENT_STATE, LOGFILTER_INCLUDE);
 
-#ifdef DEBUG
-		printf("Scanning log file '%s' for archived state data...\n", filename);
-#endif
+	if (ignore_daemon_restart == FALSE) {
+		add_log_filter(&filter_list, LOGENTRY_STARTUP, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_RESTART, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SHUTDOWN, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_BAILOUT, LOGFILTER_INCLUDE);
+	}
 
+	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, FALSE, t1 - (60 * 60 * 24 * backtrack_archives), t2);
+
+	free_log_filters(&filter_list);
+
+	if (status != READLOG_ERROR_FATAL) {
 
 		for (temp_entry = entry_list; temp_entry != NULL; temp_entry = temp_entry->next) {
 
@@ -2544,7 +2491,7 @@ void scan_log_file_for_archived_state_data(char *filename) {
 				}
 			}
 		}
-		free_log_entries();
+		free_log_entries(&entry_list);
 	}
 	return;
 }

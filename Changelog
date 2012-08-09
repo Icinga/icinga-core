@@ -23,6 +23,7 @@ ENHANCEMENTS
 * classic ui: Changed search in config.cgi to regex #2884 - RB
 * classic ui: Added config option to let read-only users see comments and downtimes #2699 - RB
 * classic ui: Added selection of timeperiod for notifications and history #2341 - RB
+* classic ui: Refactored reading of logfiles again #972 - RB
 
 CHANGES
 

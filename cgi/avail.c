@@ -44,7 +44,6 @@ extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
 extern service   *service_list;
 extern timeperiod *timeperiod_list;
-extern logentry  *entry_list;
 
 extern int       log_rotation_method;
 
@@ -228,7 +227,6 @@ void add_scheduled_downtime(int, time_t, avail_subject *);
 void free_availability_data(void);
 void free_archived_state_list(archived_state *);
 void read_archived_state_data(void);
-void scan_log_file_for_archived_state_data(char *);
 unsigned long calculate_total_time(time_t, time_t);
 
 int process_cgivars(void);
@@ -2879,57 +2877,21 @@ void free_archived_state_list(archived_state *as_list) {
 
 /* reads log files for archived state data */
 void read_archived_state_data(void) {
-	char filename[MAX_FILENAME_LENGTH];
-	int oldest_archive = 0;
-	int newest_archive = 0;
-	int current_archive = 0;
-
-	/* determine oldest archive to use when scanning for data (include backtracked archives as well) */
-	oldest_archive = determine_archive_to_use_from_time(t1);
-	if (log_rotation_method != LOG_ROTATION_NONE)
-		oldest_archive += backtrack_archives;
-
-	/* determine most recent archive to use when scanning for data */
-	newest_archive = determine_archive_to_use_from_time(t2);
-
-	if (oldest_archive < newest_archive)
-		oldest_archive = newest_archive;
-
-	/* read in all the necessary archived logs (from most recent to earliest) */
-	for (current_archive = newest_archive; current_archive <= oldest_archive; current_archive++) {
-#ifdef DEBUG
-		printf("Reading archive #%d\n", current_archive);
-#endif
-
-		/* get the name of the log file that contains this archive */
-		get_log_archive_to_use(current_archive, filename, sizeof(filename) - 1);
-
-#ifdef DEBUG
-		printf("Archive name: '%s'\n", filename);
-#endif
-
-		/* scan the log file for archived state data */
-		scan_log_file_for_archived_state_data(filename);
-	}
-
-	return;
-}
-
-
-
-/* grabs archives state data from a log file */
-void scan_log_file_for_archived_state_data(char *filename) {
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *plugin_output = NULL;
 	char *temp_buffer = NULL;
+	char *error_text = NULL;
 	avail_subject *temp_subject = NULL;
 	logentry *temp_entry = NULL;
-	int state_type = 0, status;
+	int state_type = 0;
+	int status = READLOG_OK;
+	logentry *entry_list = NULL;
+	logfilter *filter_list = NULL;
 
-	status = get_log_entries(filename, NULL, FALSE, t1 - (60 * 60 * 24 * backtrack_archives), t2);
+	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, FALSE, t1 - (60 * 60 * 24 * backtrack_archives), t2);
 
-	if (status == READLOG_OK) {
+	if (status != READLOG_ERROR_FATAL) {
 
 		for (temp_entry = entry_list; temp_entry != NULL; temp_entry = temp_entry->next) {
 
@@ -3145,7 +3107,7 @@ void scan_log_file_for_archived_state_data(char *filename) {
 		}
 	}
 
-	free_log_entries();
+	free_log_entries(&entry_list);
 
 	return;
 }

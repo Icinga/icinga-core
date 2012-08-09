@@ -43,14 +43,11 @@ extern char 	*csv_data_enclosure;
 
 extern char 	main_config_file[MAX_FILENAME_LENGTH];
 
-extern int	log_rotation_method;
 extern int 	embedded;
 extern int 	display_header;
 extern int 	daemon_check;
 extern int 	content_type;
 extern int	result_limit;
-
-extern logentry *entry_list;
 /** @} */
 
 /** @name QUERY TYPES
@@ -592,6 +589,7 @@ int process_cgivars(void) {
 
 void display_notifications(void) {
 	char *temp_buffer;
+	char *error_text = NULL;
 	char date_time[MAX_DATETIME_LENGTH];
 	char alert_level[MAX_INPUT_BUFFER];
 	char alert_level_class[MAX_INPUT_BUFFER];
@@ -599,89 +597,57 @@ void display_notifications(void) {
 	char service_name[MAX_INPUT_BUFFER];
 	char host_name[MAX_INPUT_BUFFER];
 	char method_name[MAX_INPUT_BUFFER];
-	char error_text[MAX_INPUT_BUFFER];
 	char displayed_host_name[MAX_INPUT_BUFFER];
 	char displayed_service_desc[MAX_INPUT_BUFFER];
-	char filename[MAX_FILENAME_LENGTH];
 	int show_entry;
 	int total_notifications = 0;
 	int displayed_entries = 0;
 	int notification_detail_type = NOTIFICATION_SERVICE_CRITICAL;
-	int read_status = 0, status;
-	int oldest_archive = 0;
-	int newest_archive = 0;
-	int current_archive = 0;
+	int status = READLOG_OK;
 	int odd = 0;
 	int json_start = TRUE;
 	host *temp_host = NULL;
 	service *temp_service = NULL;
 	logentry *temp_entry = NULL;
+	logentry *entry_list = NULL;
+	logfilter *filter_list = NULL;
 
-	add_log_filter(LOGENTRY_HOST_NOTIFICATION, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_NOTIFICATION, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_HOST_NOTIFICATION, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_NOTIFICATION, LOGFILTER_INCLUDE);
+
+	/* scan the log file for notification data */
+	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, reverse, ts_start, ts_end);
+
+	free_log_filters(&filter_list);
+
+	/* dealing with errors */
+	if (status == READLOG_ERROR_WARNING) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		} else
+			print_generic_error_message("Unkown error!", NULL, 0);
+	}
+
+	if (status == READLOG_ERROR_MEMORY)
+			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
 
 
-	/* determine oldest archive to use when scanning for data */
-	oldest_archive = determine_archive_to_use_from_time(ts_start);
-
-	/* determine most recent archive to use when scanning for data */
-	newest_archive = determine_archive_to_use_from_time(ts_end);
-
-	/* Add 10 backtrack archives */
-	newest_archive -= 10;
-	oldest_archive += 5;
-	if (newest_archive < 0)
-		newest_archive = 0;
-
-	/* correct archive id errors */
-	if (oldest_archive < newest_archive)
-		oldest_archive = newest_archive;
-
-	current_archive = oldest_archive;
-
-	/* read in all the necessary archived logs */
-	while (1) {
-
-		/* get the name of the log file that contains this archive */
-		get_log_archive_to_use(current_archive, filename, sizeof(filename) - 1);
-
-		/* scan the log file for archived state data */
-		status = get_log_entries(filename, NULL, reverse, ts_start, ts_end);
-
-		/* Stop if we out of memory or have a wrong filter */
-		if (status == READLOG_ERROR_FILTER || status == READLOG_ERROR_MEMORY) {
-			read_status = status;
-			break;
+	if (status == READLOG_ERROR_FATAL) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
 		}
 
-		/* Don't care if there isn't a file to read */
-		if (status == READLOG_ERROR_NOFILE && read_status == READLOG_OK)
-			status = READLOG_OK;
-
-		/* set status */
-		read_status = status;
-
-		/* count/break depending on direction (new2old / old2new) */
-		if (current_archive <= newest_archive)
-			break;
-
-		current_archive--;
-	}
-
-	free_log_filters();
-
-	if (read_status == READLOG_ERROR_NOFILE) {
-		snprintf(error_text, sizeof(error_text), "Error: Could not open log file '%s' for reading!", filename);
-		error_text[sizeof(error_text) - 1] = '\x0';
-		print_generic_error_message(error_text, NULL, 0);
-		free_log_entries();
 		return;
-	}
 
-	if (read_status == READLOG_OK || read_status == READLOG_ERROR_MEMORY) {
-		if (content_type == JSON_CONTENT)
+	/* now we start displaying the notification entries */
+	} else {
+		if (content_type == JSON_CONTENT) {
+			if (status != READLOG_OK)
+				printf(",\n");
 			printf("\"notifications\": [\n");
-		else if (content_type == CSV_CONTENT) {
+		} else if (content_type == CSV_CONTENT) {
 			printf("%sHOST%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sSERVICE%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sTYPE%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
@@ -690,10 +656,6 @@ void display_notifications(void) {
 			printf("%sNOTIFICATION_COMMAND%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sINFORMATION%s\n", csv_data_enclosure, csv_data_enclosure);
 		} else {
-
-			if (read_status == READLOG_ERROR_MEMORY)
-				printf("<DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV>");
-
 			printf("<table border=0 CLASS='notifications' align='center'>\n");
 
 			/* add export to csv, json, link */
@@ -720,9 +682,6 @@ void display_notifications(void) {
 			printf("<th CLASS='notifications'>Information</th>\n");
 			printf("</tr>\n");
 		}
-	}
-
-	if (read_status == READLOG_OK) {
 
 		/* check all entries */
 		for (temp_entry = entry_list; temp_entry != NULL; temp_entry = temp_entry->next) {
@@ -972,7 +931,7 @@ void display_notifications(void) {
 		}
 	}
 
-	free_log_entries();
+	free_log_entries(&entry_list);
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</table>\n");
@@ -987,7 +946,7 @@ void display_notifications(void) {
 				else
 					printf(" for this host");
 			}
-			printf(" in %s log file</DIV>", (newest_archive == 0) ? "the current" : "this archived");
+			printf(" in log files for selected date.</DIV>");
 		}
 
 		page_num_selector(result_start, total_notifications, displayed_entries);
