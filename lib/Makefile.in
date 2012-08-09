@@ -1,0 +1,67 @@
+CC = gcc
+COV_CFLAGS = -ggd3 -O0 -ftest-coverage -fprofile-arcs -pg
+#LDFLAGS =
+LDFLAGS = $(COV_CFLAGS)
+
+CFLAGS ?= @CFLAGS@
+ALL_CFLAGS = -Wall $(CFLAGS) @DEFS@
+LIBNAME = libicinga.a
+
+all: $(LIBNAME)
+
+SNPRINTF_O=@SNPRINTF_O@
+TESTED_SRC_C := squeue.c
+SRC_C := $(TESTED_SRC_C) pqueue.c
+SRC_O := $(patsubst %.c,%.o,$(SRC_C)) $(SNPRINTF_O)
+TESTS := $(patsubst %.c,test-%,$(TESTED_SRC_C))
+
+test: $(TESTS)
+	@for t in $(TESTS); do echo $$t:; ./$$t || exit 1; echo; done
+
+test-squeue: pqueue.o test-squeue.o
+	$(CC) $(ALL_CFLAGS) $(LDFLAGS) $^ -o $@
+
+%.o: %.c %.h Makefile
+	$(CC) $(ALL_CFLAGS) -c $< -o $@
+
+test-%: test-%.c %.c %.h Makefile
+	$(CC) $(ALL_CFLAGS) $< -o $@
+
+$(LIBNAME): $(SRC_O)
+	$(AR) cr $@ $^
+
+wproc: wproc.o $(LIBNAME)
+	$(CC) $(ALL_CFLAGS) $(ALL_LDFLAGS) $^ -o $@
+
+coverage:
+	@$(MAKE) -s --no-print-directory clean
+	@$(MAKE) --no-print-directory cov-build
+	@$(MAKE) --no-print-directory cov-report
+
+cov-buid:
+	$(MAKE) CFLAGS='$(COV_CFLAGS)' LDFLAGS='$(COV_CFLAGS)' test
+
+cov-report:
+	@{ for f in $(TESTS) pqueue; do \
+		gcov -b -p $$f.c >/dev/null; \
+	done; }
+
+	@rm -f *.h.gcov -test-*.c.gcov
+	@echo "--- untested functions:" | tee -a untested
+	@grep '^function .* called 0' *.c.gcov \
+	| sed -e 's/function \([^ ]*\) called 0.*/\1/' \
+	| sed -e 's/\.c\.gcov:/\.c:/' | tee -a untested
+
+distclean: clean
+	rm -f Makefile
+
+clean: clean-test clean-coverage
+	rm -f core.* *.o *~ wproc *.gcov *.gcda *.gcno gmon.out *.a
+
+clean-test: clean-coverage
+	rm -rf $(TESTS)
+
+clean-coverage:
+	rm -f untested *.gcov *.gcda *.gcno gmon.out
+
+.PHONY: clean clean-test clean-coverage coverage

@@ -7,6 +7,7 @@
 # Source code directories
 ###############################
 SRC_BASE=@srcdir@/base
+SRC_LIB=@srcdir@/lib
 SRC_CGI=@srcdir@/cgi
 SRC_HTM=@srcdir@/html
 SRC_DOCS=@srcdir@/html/docs
@@ -200,6 +201,9 @@ all:
 	@echo "Enjoy."
 	@echo ""
 
+$(SRC_LIB)/libicinga.a:
+	cd $(SRC_LIB) && $(MAKE)
+
 icinga:
 	cd $(SRC_BASE) && $(MAKE)
 
@@ -235,6 +239,7 @@ modules:
 ###############################
 
 clean:
+	cd $(SRC_LIB) && $(MAKE) $@
 	cd $(SRC_BASE) && $(MAKE) $@
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_COMMON) && $(MAKE) $@
@@ -252,6 +257,7 @@ clean:
 	rm -f *~ *.*~ */*~ */*.*~ */*/*.*~
 
 distclean: clean
+	cd $(SRC_LIB) && $(MAKE) $@
 	cd $(SRC_BASE) && $(MAKE) $@
 	cd $(SRC_CGI) && $(MAKE) $@
 	cd $(SRC_COMMON) && $(MAKE) $@

@@ -23,5 +23,10 @@ tags
 .DS_Store
 .deps/
 .libs/
+*.o
+*.a
 *.la
 *.lo
+*.gcno
+*.gcov
+/gmon.out

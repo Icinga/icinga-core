@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ***********************************************************************/
 
 #include "../include/config.h"
@@ -3227,16 +3227,16 @@ void display_serviceescalations(void) {
 		if (content_type == JSON_CONTENT) {
 			printf(" ], ");
 			printf("\"first_notification\": %d, ", temp_se->first_notification);
-#ifdef USE_ST_BASED_ESCAL_RANGES
+			/* state based escalation ranges */
 			printf("\"first_warning_notification\": %d, ", temp_se->first_warning_notification);
 			printf("\"first_critical_notification\": %d, ", temp_se->first_critical_notification);
 			printf("\"first_unknown_notification\": %d, ", temp_se->first_unknown_notification);
-#endif
+
 			if (temp_se->last_notification == 0)
 				printf("\"last_notification\": null, ");
 			else
 				printf("\"last_notification\": %d, ", temp_se->last_notification);
-#ifdef USE_ST_BASED_ESCAL_RANGES
+			/* state based escalation ranges */
 			if (temp_se->last_warning_notification == 0)
 				printf("\"last_warning_notification\": null, ");
 			else
@@ -3249,30 +3249,23 @@ void display_serviceescalations(void) {
 				printf("\"last_warning_notification\": null, ");
 			else
 				printf("\"last_warning_notification\": %d, ", temp_se->last_unknown_notification);
-#endif
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s", csv_data_enclosure, csv_delimiter);
 
-#ifndef USE_ST_BASED_ESCAL_RANGES
-			printf("%s%d%s%s", csv_data_enclosure, temp_se->first_notification, csv_data_enclosure, csv_delimiter);
-#else
+			/* state based escalation ranges */
 			printf("%s%d, %d, %d, %d%s%s", csv_data_enclosure, temp_se->first_notification, temp_se->first_warning_notification, temp_se->first_critical_notification, temp_se->first_unknown_notification, csv_data_enclosure, csv_delimiter);
-#endif
 			printf("%s", csv_data_enclosure);
 		} else {
 			printf("</TD>\n");
 
-#ifndef USE_ST_BASED_ESCAL_RANGES
-			printf("<TD CLASS='%s'>%d</TD>\n", bg_class, temp_se->first_notification);
-#else
+			/* state based escalation ranges */
 			printf("<TD CLASS='%s'>%d, %d, %d, %d</TD>\n", bg_class, temp_se->first_notification, temp_se->first_warning_notification, temp_se->first_critical_notification, temp_se->first_unknown_notification);
-#endif
 
 			printf("<TD CLASS='%s'>", bg_class);
 		}
 
 		if (content_type != JSON_CONTENT) {
-#ifdef USE_ST_BASED_ESCAL_RANGES
+			/* state based escalation ranges */
 			if (temp_se->last_notification == 0)
 				printf("Infinity, ");
 			else
@@ -3289,12 +3282,6 @@ void display_serviceescalations(void) {
 				printf("Infinity");
 			else
 				printf("%d", temp_se->last_unknown_notification);
-#else
-			if (temp_se->last_notification == 0)
-				printf("Infinity");
-			else
-				printf("%d", temp_se->last_notification);
-#endif
 		}
 
 		get_interval_time_string(temp_se->notification_interval, time_string, sizeof(time_string));
@@ -3605,15 +3592,15 @@ void display_hostescalations(void) {
 		if (content_type == JSON_CONTENT) {
 			printf(" ], ");
 			printf("\"first_notification\": %d, ", temp_he->first_notification);
-#ifdef USE_ST_BASED_ESCAL_RANGES
+			/* state based escalation ranges */
 			printf("\"first_down_notification\": %d, ", temp_he->first_down_notification);
 			printf("\"first_unreachable_notification\": %d, ", temp_he->first_unreachable_notification);
-#endif
+
 			if (temp_he->last_notification == 0)
 				printf("\"last_notification\": null, ");
 			else
 				printf("\"last_notification\": %d, ", temp_he->last_notification);
-#ifdef USE_ST_BASED_ESCAL_RANGES
+			/* state based escalation ranges */
 			if (temp_he->last_down_notification == 0)
 				printf("\"last_down_notification\": null, ");
 			else
@@ -3622,29 +3609,22 @@ void display_hostescalations(void) {
 				printf("\"last_unreachable_notification\": null, ");
 			else
 				printf("\"last_unreachable_notification\": %d, ", temp_he->last_unreachable_notification);
-#endif
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s", csv_data_enclosure, csv_delimiter);
 
-#ifndef USE_ST_BASED_ESCAL_RANGES
-			printf("%s%d%s%s", csv_data_enclosure, temp_he->first_notification, csv_data_enclosure, csv_delimiter);
-#else
+			/* state based escalation ranges */
 			printf("%s%d, %d, %d%s%s", csv_data_enclosure, temp_he->first_notification, temp_he->first_down_notification, temp_he->first_unreachable_notification, csv_data_enclosure, csv_delimiter);
-#endif
 			printf("%s", csv_data_enclosure);
 		} else {
 			printf("</TD>\n");
 
-#ifndef USE_ST_BASED_ESCAL_RANGES
-			printf("<TD CLASS='%s'>%d</TD>", bg_class, temp_he->first_notification);
-#else
+			/* state based escalation ranges */
 			printf("<TD CLASS='%s'>%d, %d, %d</TD>", bg_class, temp_he->first_notification, temp_he->first_down_notification, temp_he->first_unreachable_notification);
-#endif
 			printf("<TD CLASS='%s'>", bg_class);
 		}
 
 		if (content_type != JSON_CONTENT) {
-#ifdef USE_ST_BASED_ESCAL_RANGES
+			/* state based escalation ranges */
 			if (temp_he->last_notification == 0)
 				printf("Infinity, ");
 			else
@@ -3657,12 +3637,6 @@ void display_hostescalations(void) {
 				printf("Infinity");
 			else
 				printf("%d", temp_he->last_unreachable_notification);
-#else
-			if (temp_he->last_notification == 0)
-				printf("Infinity");
-			else
-				printf("%d", temp_he->last_notification);
-#endif
 		}
 
 		get_interval_time_string(temp_he->notification_interval, time_string, sizeof(time_string));

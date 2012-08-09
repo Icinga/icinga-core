@@ -20,7 +20,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *************************************************************************/
 
 /** @file cmd.c
@@ -139,8 +139,8 @@ int notification_delay = 0;			/**< delay for submitted notification in minutes *
 int schedule_delay = 0;				/**< delay for sheduled actions in minutes (Icinga restart, Notfications enable/disable)
 							!not implemented in GUI! */
 int persistent_comment = FALSE;			/**< bool if omment should survive Icinga restart */
-int sticky_ack = FALSE;				/**< bool to disable notifications until recover */
-int send_notification = FALSE;			/**< bool sends a notification if service gets acknowledged */
+int sticky_ack = TRUE;				/**< bool to disable notifications until recover */
+int send_notification = TRUE;			/**< bool sends a notification if service gets acknowledged */
 int use_ack_end_time = FALSE;			/**< bool if expire acknowledgement is selected or not */
 int force_check = FALSE;				/**< bool if check should be forced */
 int plugin_state = STATE_OK;			/**< plugin state for passive submitted check */
@@ -587,12 +587,24 @@ int process_cgivars(void) {
 			persistent_comment = TRUE;
 
 		/* we got the notification option for an acknowledgement */
-		else if (!strcmp(variables[x], "send_notification"))
-			send_notification = TRUE;
+		else if (!strcmp(variables[x], "send_notification")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+			send_notification = (atoi(variables[x]) > 0) ? TRUE : FALSE;
+		}
 
 		/* we got the acknowledgement type */
-		else if (!strcmp(variables[x], "sticky_ack"))
-			sticky_ack = TRUE;
+		else if (!strcmp(variables[x], "sticky_ack")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+			sticky_ack = (atoi(variables[x]) > 0) ? TRUE : FALSE;
+		}
 
 		/* we use the end_time as expire time */
 		else if (!strcmp(variables[x], "use_ack_end_time"))
@@ -901,7 +913,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Sticky Acknowledgement:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' NAME='sticky_ack' CHECKED></td></tr>\n");
+		printf("<INPUT TYPE='checkbox' NAME='sticky_ack' %s></td></tr>\n", (sticky_ack == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_SEND_NOTFICATION:
@@ -911,7 +923,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Send Notification:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' NAME='send_notification' CHECKED></td></tr>\n");
+		printf("<INPUT TYPE='checkbox' NAME='send_notification' %s></td></tr>\n", (send_notification == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_PERSISTENT:
