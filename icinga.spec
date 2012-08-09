@@ -338,7 +338,6 @@ fi
 %{_libdir}/%{name}/cgi/tac.cgi
 %{_libdir}/%{name}/cgi/trends.cgi
 %dir %{_datadir}/%{name}
-%{_datadir}/%{name}/contexthelp
 %{_datadir}/%{name}/images
 %{_datadir}/%{name}/index.html
 %{_datadir}/%{name}/js

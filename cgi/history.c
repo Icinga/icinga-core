@@ -265,13 +265,6 @@ int main(void) {
 		printf("<td align=left CLASS='optBoxItem'><input type='submit' value='Update'></td>\n");
 		printf("</tr>\n");
 
-		/* display context-sensitive help */
-		printf("<tr>\n");
-		printf("<td align=right>\n");
-		display_context_help(CONTEXTHELP_HISTORY);
-		printf("</td>\n");
-		printf("</tr>\n");
-
 		printf("</table>\n");
 		printf("</form>\n");
 		printf("</td>\n");

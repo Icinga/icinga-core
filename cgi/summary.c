@@ -371,35 +371,6 @@ int main(int argc, char **argv) {
 			printf("</form>\n");
 			printf("</td>\n");
 			printf("</tr>\n");
-
-			/* display context-sensitive help */
-			printf("<tr><td></td><td align=right valign=bottom>\n");
-			if (display_type == REPORT_TOP_ALERTS)
-				display_context_help(CONTEXTHELP_SUMMARY_ALERT_PRODUCERS);
-			else if (display_type == REPORT_ALERT_TOTALS)
-				display_context_help(CONTEXTHELP_SUMMARY_ALERT_TOTALS);
-			else if (display_type == REPORT_HOSTGROUP_ALERT_TOTALS)
-				display_context_help(CONTEXTHELP_SUMMARY_HOSTGROUP_ALERT_TOTALS);
-			else if (display_type == REPORT_HOST_ALERT_TOTALS)
-				display_context_help(CONTEXTHELP_SUMMARY_HOST_ALERT_TOTALS);
-			else if (display_type == REPORT_SERVICE_ALERT_TOTALS)
-				display_context_help(CONTEXTHELP_SUMMARY_SERVICE_ALERT_TOTALS);
-			else if (display_type == REPORT_SERVICEGROUP_ALERT_TOTALS)
-				display_context_help(CONTEXTHELP_SUMMARY_SERVICEGROUP_ALERT_TOTALS);
-			else
-				display_context_help(CONTEXTHELP_SUMMARY_RECENT_ALERTS);
-			printf("</td></tr>\n");
-
-			printf("</table>\n");
-		}
-
-		else {
-			printf("<table border=0>\n");
-
-			printf("<tr><td></td><td align=right valign=bottom>\n");
-			display_context_help(CONTEXTHELP_SUMMARY_MENU);
-			printf("</td></tr>\n");
-
 			printf("</table>\n");
 		}
 

@@ -40,7 +40,6 @@ char            physical_images_path[MAX_FILENAME_LENGTH];
 char            physical_ssi_path[MAX_FILENAME_LENGTH];
 char            url_html_path[MAX_FILENAME_LENGTH];
 char            url_docs_path[MAX_FILENAME_LENGTH];
-char            url_context_help_path[MAX_FILENAME_LENGTH];
 char            url_images_path[MAX_FILENAME_LENGTH];
 char            url_logo_images_path[MAX_FILENAME_LENGTH];
 char            url_stylesheets_path[MAX_FILENAME_LENGTH];
@@ -132,7 +131,6 @@ int             use_authentication = TRUE;
 
 int             interval_length = 60;
 
-int             show_context_help = FALSE;
 int		show_all_services_host_is_authorized_for = TRUE;
 
 int             use_pending_states = TRUE;
@@ -244,7 +242,6 @@ void reset_cgi_vars(void) {
 
 	strcpy(url_html_path, "");
 	strcpy(url_docs_path, "");
-	strcpy(url_context_help_path, "");
 	strcpy(url_stylesheets_path, "");
 	strcpy(url_js_path, "");
 	strcpy(url_media_path, "");
@@ -386,9 +383,6 @@ int read_cgi_config_file(char *filename) {
 			strip(main_config_file);
 		}
 
-		else if (!strcmp(var, "show_context_help"))
-			show_context_help = (atoi(val) > 0) ? TRUE : FALSE;
-
 		else if (!strcmp(var, "show_all_services_host_is_authorized_for"))
 			show_all_services_host_is_authorized_for = (atoi(val) > 0) ? TRUE : FALSE;
 
@@ -438,9 +432,6 @@ int read_cgi_config_file(char *filename) {
 
 			snprintf(url_docs_path, sizeof(url_docs_path), "%sdocs/", url_html_path);
 			url_docs_path[sizeof(url_docs_path) - 1] = '\x0';
-
-			snprintf(url_context_help_path, sizeof(url_context_help_path), "%scontexthelp/", url_html_path);
-			url_context_help_path[sizeof(url_context_help_path) - 1] = '\x0';
 
 			snprintf(url_images_path, sizeof(url_images_path), "%simages/", url_html_path);
 			url_images_path[sizeof(url_images_path) - 1] = '\x0';
@@ -2388,22 +2379,6 @@ void print_error(char *config_file, int error_type) {
 
 	printf("</td></tr></table></DIV>\n");
 	printf("</DIV>\n");
-
-	return;
-}
-
-/* displays context-sensitive help window */
-void display_context_help(char *chid) {
-	char *icon = CONTEXT_HELP_ICON1;
-
-	if (show_context_help == FALSE)
-		return;
-
-	/* change icon if necessary */
-	if (!strcmp(chid, CONTEXTHELP_TAC))
-		icon = CONTEXT_HELP_ICON2;
-
-	printf("<a href='%s%s.html' target='cshw' onClick='javascript:window.open(\"%s%s.html\",\"cshw\",\"width=550,height=600,toolbar=0,location=0,status=0,resizable=1,scrollbars=1\");return true'><img src='%s%s' border=0 alt='Display context-sensitive help for this screen' title='Display context-sensitive help for this screen'></a>\n", url_context_help_path, chid, url_context_help_path, chid, url_images_path, icon);
 
 	return;
 }

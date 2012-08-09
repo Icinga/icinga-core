@@ -1250,33 +1250,6 @@ int main(void) {
 		show_service_status_totals();
 		printf("</td>\n");
 
-		/* display context-sensitive help */
-		printf("<td align=right valign=bottom>\n");
-		if (display_type == DISPLAY_HOSTS)
-			if (group_style_type == STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
-			else
-				display_context_help(CONTEXTHELP_STATUS_DETAIL);
-		else if (display_type == DISPLAY_SERVICEGROUPS) {
-			if (group_style_type == STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_DETAIL);
-			else if (group_style_type == STYLE_OVERVIEW)
-				display_context_help(CONTEXTHELP_STATUS_SGOVERVIEW);
-			else if (group_style_type == STYLE_SUMMARY)
-				display_context_help(CONTEXTHELP_STATUS_SGSUMMARY);
-			else if (group_style_type == STYLE_GRID)
-				display_context_help(CONTEXTHELP_STATUS_SGGRID);
-		} else {
-			if (group_style_type == STYLE_HOST_DETAIL)
-				display_context_help(CONTEXTHELP_STATUS_HOST_DETAIL);
-			else if (group_style_type == STYLE_OVERVIEW)
-				display_context_help(CONTEXTHELP_STATUS_HGOVERVIEW);
-			else if (group_style_type == STYLE_SUMMARY)
-				display_context_help(CONTEXTHELP_STATUS_HGSUMMARY);
-			else if (group_style_type == STYLE_GRID)
-				display_context_help(CONTEXTHELP_STATUS_HGGRID);
-		}
-		printf("</td>\n");
 		printf("</tr>\n");
 		printf("</table>\n");
 

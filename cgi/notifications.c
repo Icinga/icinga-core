@@ -307,11 +307,6 @@ int main(void) {
 		/* submit Button */
 		printf("<tr><td><input type='submit' value='Update'></td><td align=right><input type='reset' value='Reset' onClick=\"window.location.href='%s?order=new2old&timeperiod=singleday&limit=%d'\">&nbsp;</td></tr>\n", NOTIFICATIONS_CGI, result_limit);
 
-		/* display context-sensitive help */
-		printf("<tr><td></td><td align=right valign=bottom>\n");
-		display_context_help(CONTEXTHELP_NOTIFICATIONS);
-		printf("</td></tr>\n");
-
 		printf("</table>\n");
 		printf("</form>\n");
 

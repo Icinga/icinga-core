@@ -570,29 +570,6 @@ int main(int argc, char **argv) {
 			printf("</td>\n");
 			printf("</tr>\n");
 		}
-
-		/* display context-sensitive help */
-		printf("<tr><td></td><td align=right valign=bottom>\n");
-		if (get_date_parts == TRUE)
-			display_context_help(CONTEXTHELP_AVAIL_MENU5);
-		else if (select_hostgroups == TRUE)
-			display_context_help(CONTEXTHELP_AVAIL_MENU2);
-		else if (select_hosts == TRUE)
-			display_context_help(CONTEXTHELP_AVAIL_MENU3);
-		else if (select_services == TRUE)
-			display_context_help(CONTEXTHELP_AVAIL_MENU4);
-		else if (display_type == DISPLAY_HOSTGROUP_AVAIL)
-			display_context_help(CONTEXTHELP_AVAIL_HOSTGROUP);
-		else if (display_type == DISPLAY_HOST_AVAIL)
-			display_context_help(CONTEXTHELP_AVAIL_HOST);
-		else if (display_type == DISPLAY_SERVICE_AVAIL)
-			display_context_help(CONTEXTHELP_AVAIL_SERVICE);
-		else if (display_type == DISPLAY_SERVICEGROUP_AVAIL)
-			display_context_help(CONTEXTHELP_AVAIL_SERVICEGROUP);
-		else
-			display_context_help(CONTEXTHELP_AVAIL_MENU1);
-		printf("</td></tr>\n");
-
 		printf("</table>\n");
 		printf("</form>\n");
 

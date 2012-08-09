@@ -173,10 +173,6 @@ int main(void) {
 
 		/* right column of top row */
 		printf("<td align=right valign=bottom width=33%%>\n");
-
-		/* display context-sensitive help */
-		display_context_help(CONTEXTHELP_OUTAGES);
-
 		printf("</td>\n");
 
 		/* end of top table */

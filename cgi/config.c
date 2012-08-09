@@ -120,7 +120,6 @@ extern int refresh_rate;
 extern int refresh_type;
 extern int result_limit;
 extern int show_all_services_host_is_authorized_for;
-extern int show_context_help;
 extern int show_partial_hostgroups;
 extern int show_tac_header;
 extern int show_tac_header_pending;
@@ -239,7 +238,6 @@ int org_refresh_rate;
 int org_refresh_type;
 int org_result_limit;
 int org_show_all_services_host_is_authorized_for;
-int org_show_context_help;
 int org_show_partial_hostgroups;
 int org_show_tac_header;
 int org_show_tac_header_pending;
@@ -425,63 +423,6 @@ int main(void) {
 			}
 			print_export_link(HTML_CONTENT, CONFIG_CGI, NULL);
 			printf("</div>\n");
-		}
-
-		/* display context-sensitive help */
-		switch (display_type) {
-		case DISPLAY_HOSTS:
-			display_context_help(CONTEXTHELP_CONFIG_HOSTS);
-			break;
-		case DISPLAY_HOSTGROUPS:
-			display_context_help(CONTEXTHELP_CONFIG_HOSTGROUPS);
-			break;
-		case DISPLAY_SERVICEGROUPS:
-			display_context_help(CONTEXTHELP_CONFIG_SERVICEGROUPS);
-			break;
-		case DISPLAY_CONTACTS:
-			display_context_help(CONTEXTHELP_CONFIG_CONTACTS);
-			break;
-		case DISPLAY_CONTACTGROUPS:
-			display_context_help(CONTEXTHELP_CONFIG_CONTACTGROUPS);
-			break;
-		case DISPLAY_SERVICES:
-			display_context_help(CONTEXTHELP_CONFIG_SERVICES);
-			break;
-		case DISPLAY_TIMEPERIODS:
-			display_context_help(CONTEXTHELP_CONFIG_TIMEPERIODS);
-			break;
-		case DISPLAY_COMMANDS:
-			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-			break;
-		case DISPLAY_SERVICEDEPENDENCIES:
-			display_context_help(CONTEXTHELP_CONFIG_SERVICEDEPENDENCIES);
-			break;
-		case DISPLAY_SERVICEESCALATIONS:
-			display_context_help(CONTEXTHELP_CONFIG_HOSTESCALATIONS);
-			break;
-		case DISPLAY_HOSTDEPENDENCIES:
-			display_context_help(CONTEXTHELP_CONFIG_HOSTDEPENDENCIES);
-			break;
-		case DISPLAY_HOSTESCALATIONS:
-			display_context_help(CONTEXTHELP_CONFIG_HOSTESCALATIONS);
-			break;
-		case DISPLAY_COMMAND_EXPANSION:
-			/* Reusing DISPLAY_COMMANDS help until further notice */
-			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-			break;
-		case DISPLAY_MODULES:
-			/* reuse commands context help */
-			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-			break;
-		case DISPLAY_CGICONFIG:
-			/* reuse commands context help */
-			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-			break;
-		case DISPLAY_ALL:
-			break;
-		default:
-			display_context_help(CONTEXTHELP_CONFIG_MENU);
-			break;
 		}
 
 		/* end of top table */
@@ -4141,7 +4082,6 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_STRING(service_unknown_sound, org_service_unknown_sound)
 	PRINT_CONFIG_LINE_STRING(service_warning_sound, org_service_warning_sound)
 	PRINT_CONFIG_LINE_INT(show_all_services_host_is_authorized_for, org_show_all_services_host_is_authorized_for, "bool")
-	PRINT_CONFIG_LINE_INT(show_context_help, org_show_context_help, "bool")
 	PRINT_CONFIG_LINE_INT(show_partial_hostgroups, org_show_partial_hostgroups, "bool")
 	PRINT_CONFIG_LINE_INT(show_tac_header, org_show_tac_header, "bool")
 	PRINT_CONFIG_LINE_INT(show_tac_header_pending, org_show_tac_header_pending, "bool")
@@ -4574,7 +4514,6 @@ void store_default_settings(void) {
 	org_use_authentication = use_authentication;
 	org_use_logging = use_logging;
 	org_use_ssl_authentication = use_ssl_authentication;
-	org_show_context_help = show_context_help;
 	org_show_all_services_host_is_authorized_for = show_all_services_host_is_authorized_for;
 	org_show_partial_hostgroups = show_partial_hostgroups;
 	org_use_pending_states = use_pending_states;

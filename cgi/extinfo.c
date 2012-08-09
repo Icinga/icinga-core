@@ -695,26 +695,6 @@ int main(void) {
 			printf("</TABLE>\n");
 		}
 
-		/* display context-sensitive help */
-		if (display_type == DISPLAY_HOST_INFO)
-			display_context_help(CONTEXTHELP_EXT_HOST);
-		else if (display_type == DISPLAY_SERVICE_INFO)
-			display_context_help(CONTEXTHELP_EXT_SERVICE);
-		else if (display_type == DISPLAY_HOSTGROUP_INFO)
-			display_context_help(CONTEXTHELP_EXT_HOSTGROUP);
-		else if (display_type == DISPLAY_SERVICEGROUP_INFO)
-			display_context_help(CONTEXTHELP_EXT_SERVICEGROUP);
-		else if (display_type == DISPLAY_PROCESS_INFO)
-			display_context_help(CONTEXTHELP_EXT_PROCESS);
-		else if (display_type == DISPLAY_PERFORMANCE)
-			display_context_help(CONTEXTHELP_EXT_PERFORMANCE);
-		else if (display_type == DISPLAY_COMMENTS)
-			display_context_help(CONTEXTHELP_EXT_COMMENTS);
-		else if (display_type == DISPLAY_DOWNTIME)
-			display_context_help(CONTEXTHELP_EXT_DOWNTIME);
-		else if (display_type == DISPLAY_SCHEDULING_QUEUE)
-			display_context_help(CONTEXTHELP_EXT_QUEUE);
-
 		printf("</td>\n");
 
 		/* end of top table */

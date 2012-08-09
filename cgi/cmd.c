@@ -348,13 +348,6 @@ int main(void) {
 
 		/* right column of the first row */
 		printf("<td align=right valign=bottom width=33%%>\n");
-
-		/* display context-sensitive help */
-		if (command_mode == CMDMODE_COMMIT)
-			display_context_help(CONTEXTHELP_CMD_COMMIT);
-		else
-			display_context_help(CONTEXTHELP_CMD_INPUT);
-
 		printf("</td>\n");
 
 		/* end of top table */

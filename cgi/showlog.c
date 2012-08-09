@@ -201,11 +201,6 @@ int main(void) {
 		show_filter();
 		printf("</td></tr>\n");
 
-		/* display context-sensitive help */
-		printf("<tr><td align=right>\n");
-		display_context_help(CONTEXTHELP_LOG);
-		printf("</td></tr>\n");
-
 		printf("</table>\n");
 
 		printf("</td>\n");

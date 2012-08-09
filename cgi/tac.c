@@ -1796,10 +1796,6 @@ void display_tac_overview(void) {
 		printf("<tr>\n");
 
 		printf("<td valign=bottom align=right>\n");
-
-		/* display context-sensitive help */
-		display_context_help(CONTEXTHELP_TAC);
-
 		printf("</td>\n");
 
 		printf("<td>\n");

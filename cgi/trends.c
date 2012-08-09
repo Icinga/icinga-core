@@ -580,27 +580,6 @@ int main(int argc, char **argv) {
 			printf("</td></tr>\n");
 		}
 
-		/* display context-sensitive help */
-		printf("<tr><td></td><td align=right valign=bottom>\n");
-		if (display_type != DISPLAY_NO_TRENDS && input_type == GET_INPUT_NONE) {
-			if (display_type == DISPLAY_HOST_TRENDS)
-				display_context_help(CONTEXTHELP_TRENDS_HOST);
-			else
-				display_context_help(CONTEXTHELP_TRENDS_SERVICE);
-		} else if (display_type == DISPLAY_NO_TRENDS || input_type != GET_INPUT_NONE) {
-			if (input_type == GET_INPUT_NONE)
-				display_context_help(CONTEXTHELP_TRENDS_MENU1);
-			else if (input_type == GET_INPUT_TARGET_TYPE)
-				display_context_help(CONTEXTHELP_TRENDS_MENU1);
-			else if (input_type == GET_INPUT_HOST_TARGET)
-				display_context_help(CONTEXTHELP_TRENDS_MENU2);
-			else if (input_type == GET_INPUT_SERVICE_TARGET)
-				display_context_help(CONTEXTHELP_TRENDS_MENU3);
-			else if (input_type == GET_INPUT_OPTIONS)
-				display_context_help(CONTEXTHELP_TRENDS_MENU4);
-		}
-		printf("</td></tr>\n");
-
 		printf("</table>\n");
 		printf("</form>\n");
 
