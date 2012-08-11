@@ -507,6 +507,7 @@ int xpddefault_run_service_performance_data_command(icinga_macros *mac, service 
 
 	/* process any macros in the raw command line */
 	process_macros_r(mac, raw_command_line, &processed_command_line, macro_options);
+	my_free(raw_command_line);
 	if (processed_command_line == NULL)
 		return ERROR;
 
@@ -520,7 +521,6 @@ int xpddefault_run_service_performance_data_command(icinga_macros *mac, service 
 		logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Service performance data command '%s' for service '%s' on host '%s' timed out after %d seconds\n", processed_command_line, svc->description, svc->host_name, xpddefault_perfdata_timeout);
 
 	/* free memory */
-	my_free(raw_command_line);
 	my_free(processed_command_line);
 
 	return result;
@@ -559,6 +559,7 @@ int xpddefault_run_host_performance_data_command(icinga_macros *mac, host *hst) 
 
 	/* run the command */
 	my_system_r(mac, processed_command_line, xpddefault_perfdata_timeout, &early_timeout, &exectime, NULL, 0);
+	my_free(raw_command_line);
 	if (processed_command_line == NULL)
 		return ERROR;
 
@@ -567,7 +568,6 @@ int xpddefault_run_host_performance_data_command(icinga_macros *mac, host *hst) 
 		logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Host performance data command '%s' for host '%s' timed out after %d seconds\n", processed_command_line, hst->name, xpddefault_perfdata_timeout);
 
 	/* free memory */
-	my_free(raw_command_line);
 	my_free(processed_command_line);
 
 	return result;
@@ -808,6 +808,7 @@ int xpddefault_process_host_perfdata_file(void) {
 
 	/* process any macros in the raw command line */
 	process_macros_r(&mac, raw_command_line, &processed_command_line, macro_options);
+	my_free(raw_command_line);
 	if (processed_command_line == NULL) {
 		clear_volatile_macros_r(&mac);
 		return ERROR;
@@ -832,7 +833,6 @@ int xpddefault_process_host_perfdata_file(void) {
 		logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Host performance data file processing command '%s' timed out after %d seconds\n", processed_command_line, xpddefault_perfdata_timeout);
 
 	/* free memory */
-	my_free(raw_command_line);
 	my_free(processed_command_line);
 
 	return result;
@@ -869,6 +869,7 @@ int xpddefault_process_service_perfdata_file(void) {
 
 	/* process any macros in the raw command line */
 	process_macros_r(&mac, raw_command_line, &processed_command_line, macro_options);
+	my_free(raw_command_line);
 	if (processed_command_line == NULL) {
 		clear_volatile_macros_r(&mac);
 		return ERROR;
@@ -894,7 +895,6 @@ int xpddefault_process_service_perfdata_file(void) {
 		logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Service performance data file processing command '%s' timed out after %d seconds\n", processed_command_line, xpddefault_perfdata_timeout);
 
 	/* free memory */
-	my_free(raw_command_line);
 	my_free(processed_command_line);
 
 	return result;

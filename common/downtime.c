@@ -50,7 +50,8 @@ scheduled_downtime *scheduled_downtime_list = NULL;
 int		   defer_downtime_sorting = 0;
 
 #ifdef NSCORE
-extern squeue_t	*icinga_squeue;
+extern timed_event *event_list_high;
+extern timed_event *event_list_high_tail;
 pthread_mutex_t icinga_downtime_lock = PTHREAD_MUTEX_INITIALIZER;
 #endif
 
@@ -127,6 +128,7 @@ int unschedule_downtime(int type, unsigned long downtime_id) {
 	scheduled_downtime *next_downtime = NULL;
 	host *hst = NULL;
 	service *svc = NULL;
+	timed_event *temp_event = NULL;
 #ifdef USE_EVENT_BROKER
 	int attr = 0;
 #endif
@@ -195,13 +197,16 @@ int unschedule_downtime(int type, unsigned long downtime_id) {
 	}
 
 	/* remove scheduled entry from event queue */
-	if (temp_downtime->start_event) {
-		remove_event(icinga_squeue, temp_downtime->start_event);
-		my_free(temp_downtime->start_event);
+	for (temp_event = event_list_high; temp_event != NULL; temp_event = temp_event->next) {
+		if (temp_event->event_type != EVENT_SCHEDULED_DOWNTIME)
+			continue;
+		if (((unsigned long)temp_event->event_data) == downtime_id)
+			break;
 	}
-	if (temp_downtime->stop_event) {
-		remove_event(icinga_squeue, temp_downtime->stop_event);
-		my_free(temp_downtime->stop_event);
+	if (temp_event != NULL) {
+		remove_event(temp_event, &event_list_high, &event_list_high_tail);
+		my_free(temp_event->event_data);
+		my_free(temp_event);
 	}
 
 	/* delete downtime entry */
@@ -210,12 +215,7 @@ int unschedule_downtime(int type, unsigned long downtime_id) {
 	else
 		delete_service_downtime(downtime_id);
 
-	/*
-	 * unschedule all downtime entries that were triggered by this one
-	 * @TODO: Fix this algorithm so it uses something sane instead
-	 * of this horrible mess of recurisve =(n * t), where t is
-	 * "downtime triggered by this downtime"
-	 */
+	/* unschedule all downtime entries that were triggered by this one */
 	while (1) {
 
 		for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = next_downtime) {
@@ -313,7 +313,7 @@ int register_downtime(int type, unsigned long downtime_id) {
 	if (temp_downtime->triggered_by == 0) {
 		if ((new_downtime_id = (unsigned long *)malloc(sizeof(unsigned long *)))) {
 			*new_downtime_id = downtime_id;
-			temp_downtime->start_event = schedule_new_event(EVENT_SCHEDULED_DOWNTIME, TRUE, temp_downtime->start_time, FALSE, 0, NULL, FALSE, (void *)new_downtime_id, NULL, 0);
+			schedule_new_event(EVENT_SCHEDULED_DOWNTIME, TRUE, temp_downtime->start_time, FALSE, 0, NULL, FALSE, (void *)new_downtime_id, NULL, 0);
 		}
 	}
 
@@ -395,7 +395,7 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime) {
 
 				/*** SINCE THE FLEX DOWNTIME MAY NEVER START, WE HAVE TO PROVIDE A WAY OF EXPIRING UNUSED DOWNTIME... ***/
 
-				temp_downtime->stop_event = schedule_new_event(EVENT_EXPIRE_DOWNTIME, TRUE, (temp_downtime->end_time + 1), FALSE, 0, NULL, FALSE, NULL, NULL, 0);
+				schedule_new_event(EVENT_EXPIRE_DOWNTIME, TRUE, (temp_downtime->end_time + 1), FALSE, 0, NULL, FALSE, NULL, NULL, 0);
 
 				return OK;
 			}
@@ -555,7 +555,6 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime) {
 
 		if ((new_downtime_id = (unsigned long *)malloc(sizeof(unsigned long *)))) {
 			*new_downtime_id = temp_downtime->downtime_id;
-			/* FIXME - save returned event? */
 			schedule_new_event(EVENT_SCHEDULED_DOWNTIME, TRUE, event_time, FALSE, 0, NULL, FALSE, (void *)new_downtime_id, NULL, 0);
 		}
 
@@ -888,6 +887,13 @@ int delete_downtime_by_hostname_service_description_start_time_comment(char *hos
 	if (hostname == NULL && service_description == NULL && start_time == 0 && comment == NULL)
 		return deleted;
 
+	/*
+	 * lock while traversing the list
+	 * so that other threads cannot modify
+	 */
+#ifdef NSCORE
+	pthread_mutex_lock(&icinga_downtime_lock);
+#endif
 	for (temp_downtime = scheduled_downtime_list; temp_downtime != NULL; temp_downtime = next_downtime) {
 		next_downtime = temp_downtime->next;
 		if (start_time != 0 && temp_downtime->start_time != start_time) {
@@ -911,6 +917,9 @@ int delete_downtime_by_hostname_service_description_start_time_comment(char *hos
 		unschedule_downtime(temp_downtime->type, temp_downtime->downtime_id);
 		deleted++;
 	}
+#ifdef NSCORE
+	pthread_mutex_unlock(&icinga_downtime_lock);
+#endif
 	return deleted;
 }
 

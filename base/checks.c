@@ -107,7 +107,6 @@ extern time_t   last_program_stop;
 extern time_t   program_start;
 extern time_t   event_start;
 
-extern squeue_t		 *icinga_squeue;
 extern timed_event       *event_list_low;
 extern timed_event       *event_list_low_tail;
 
@@ -589,13 +588,15 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 
 	/* process any macros contained in the argument */
 	process_macros_r(&mac, raw_command, &processed_command, 0);
+
+	my_free(raw_command);
+
 	if (processed_command == NULL) {
 		clear_volatile_macros_r(&mac);
 		log_debug_info(DEBUGL_CHECKS, 0, "Processed check command for service '%s' on host '%s' was NULL - aborting.\n", svc->description, svc->host_name);
 		if (preferred_time)
 			*preferred_time += (svc->check_interval * interval_length);
 		svc->latency = old_latency;
-		my_free(raw_command);
 		return ERROR;
 	}
 
@@ -614,7 +615,6 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 		clear_volatile_macros_r(&mac);
 		svc->latency = old_latency;
 		my_free(processed_command);
-		my_free(raw_command);
 		return OK;
 	}
 #endif
@@ -1939,13 +1939,8 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 	 */
 	if (use_original_event == FALSE) {
 
-		/*
-		 * allocate memory for a new event item
-		 * zero-initialize low prio events, to prevent random usec
-		 * values in sq_event, which is used as base for determining
-		 * the runtime in the scheduling queue
-		 */
-		new_event = (timed_event *)calloc(1, sizeof(timed_event));
+		/* allocate memory for a new event item */
+		new_event = (timed_event *)malloc(sizeof(timed_event));
 
 		if (new_event == NULL) {
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not reschedule check of service '%s' on host '%s'!\n", svc->description, svc->host_name);
@@ -1954,7 +1949,7 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 
 		/* make sure we kill off the old event */
 		if (temp_event) {
-			remove_event(icinga_squeue, temp_event);
+			remove_event(temp_event, &event_list_low, &event_list_low_tail);
 			my_free(temp_event);
 		}
 
@@ -1977,7 +1972,7 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 		new_event->event_interval = 0L;
 		new_event->timing_func = NULL;
 		new_event->compensate_for_time_change = TRUE;
-		reschedule_event(icinga_squeue, new_event);
+		reschedule_event(new_event, &event_list_low, &event_list_low_tail);
 	}
 
 	else {
@@ -2421,22 +2416,14 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 
 		log_debug_info(DEBUGL_CHECKS, 2, "Scheduling new host check event.\n");
 
-                /*
-                 * allocate memory for a new event item
-                 * zero-initialize low prio events, to prevent random usec
-                 * values in sq_event, which is used as base for determining
-                 * the runtime in the scheduling queue
-                 */
-                new_event = (timed_event *)calloc(1, sizeof(timed_event));
-
 		/* allocate memory for a new event item */
-		if(new_event == NULL) {
+		if((new_event = (timed_event *)malloc(sizeof(timed_event))) == NULL) {
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not reschedule check of host '%s'!\n", hst->name);
 			return;
 		}
 
 		if (temp_event) {
-			remove_event(icinga_squeue, temp_event);
+			remove_event(temp_event, &event_list_low, &event_list_low_tail);
 			my_free(temp_event);
 		}
 
@@ -2457,7 +2444,7 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 		new_event->event_interval = 0L;
 		new_event->timing_func = NULL;
 		new_event->compensate_for_time_change = TRUE;
-		reschedule_event(icinga_squeue, new_event);
+		reschedule_event(new_event, &event_list_low, &event_list_low_tail);
 	}
 
 	else {
@@ -2927,6 +2914,7 @@ int execute_sync_host_check_3x(host *hst) {
 	/* process any macros contained in the argument */
 	process_macros_r(&mac, raw_command, &processed_command, 0);
 	if (processed_command == NULL) {
+		my_free(raw_command);
 		clear_volatile_macros_r(&mac);
 		return ERROR;
 	}
@@ -2943,6 +2931,7 @@ int execute_sync_host_check_3x(host *hst) {
 
 	log_debug_info(DEBUGL_COMMANDS, 1, "Raw host check command: %s\n", raw_command);
 	log_debug_info(DEBUGL_COMMANDS, 0, "Processed host check ommand: %s\n", processed_command);
+	my_free(raw_command);
 
 	/* clear plugin output and performance data buffers */
 	my_free(hst->plugin_output);
@@ -2974,7 +2963,6 @@ int execute_sync_host_check_3x(host *hst) {
 
 	/* free memory */
 	my_free(temp_plugin_output);
-	my_free(raw_command);
 	my_free(processed_command);
 
 	/* a NULL host check command means we should assume the host is UP */
@@ -3196,6 +3184,9 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 
 	/* process any macros contained in the argument */
 	process_macros_r(&mac, raw_command, &processed_command, 0);
+
+	my_free(raw_command);
+
 	if (processed_command == NULL) {
 		clear_volatile_macros_r(&mac);
 		log_debug_info(DEBUGL_CHECKS, 0, "Processed check command for host '%s' was NULL - aborting.\n", hst->name);

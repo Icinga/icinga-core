@@ -626,8 +626,9 @@ MOD_LDFLAGS
 MOD_CFLAGS
 BROKERLIBS
 BROKER_LDFLAGS
-cgiurl
+mainurl
 htmurl
+cgiurl
 XDDH
 XDDC
 XPDH
@@ -771,6 +772,7 @@ with_gd_inc
 enable_statusmap
 with_cgiurl
 with_htmurl
+with_mainurl
 enable_nanosleep
 enable_event_broker
 enable_idoutils
@@ -1492,6 +1494,9 @@ Optional Packages:
                           slash)
   --with-htmurl=<local-url>
                           sets URL for public html
+  --with-mainurl=<local-url>
+                          sets URL for default main frame in index.html (use
+                          quotes if special chars like & used)
   --with-ido-instance-name=<instancename>
                           sets instance_name for IDOUtils in idomod.cfg
   --with-ocilib-lib=DIR   sets location of the ocilib library
@@ -6086,6 +6091,7 @@ else
 fi
 
 
+
 # Check whether --with-htmurl was given.
 if test "${with_htmurl+set}" = set; then :
   withval=$with_htmurl; htmurl=$withval
@@ -6093,6 +6099,14 @@ else
   htmurl=/icinga
 fi
 
+
+
+# Check whether --with-mainurl was given.
+if test "${with_mainurl+set}" = set; then :
+  withval=$with_mainurl; mainurl=$withval
+else
+  mainurl=/icinga/cgi-bin/tac.cgi
+fi
 
 
 
@@ -7118,7 +7132,7 @@ $as_echo_n "checking for -Wall based on os/compiler... " >&6; }
         esac
 
 
-ac_config_files="$ac_config_files Makefile subst solaris/pkginfo solaris/icinga.xml lib/Makefile base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl"
+ac_config_files="$ac_config_files Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl"
 
 
 
@@ -7742,7 +7756,6 @@ do
     "subst") CONFIG_FILES="$CONFIG_FILES subst" ;;
     "solaris/pkginfo") CONFIG_FILES="$CONFIG_FILES solaris/pkginfo" ;;
     "solaris/icinga.xml") CONFIG_FILES="$CONFIG_FILES solaris/icinga.xml" ;;
-    "lib/Makefile") CONFIG_FILES="$CONFIG_FILES lib/Makefile" ;;
     "base/Makefile") CONFIG_FILES="$CONFIG_FILES base/Makefile" ;;
     "common/Makefile") CONFIG_FILES="$CONFIG_FILES common/Makefile" ;;
     "contrib/Makefile") CONFIG_FILES="$CONFIG_FILES contrib/Makefile" ;;
@@ -8491,6 +8504,8 @@ echo " ------------------------"
 $as_echo "                 HTML URL:  http://localhost$htmurl/" >&6; }
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:                   CGI URL:  http://localhost$cgiurl/" >&5
 $as_echo "                  CGI URL:  http://localhost$cgiurl/" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:                  Main URL:  http://localhost$mainurl" >&5
+$as_echo "                 Main URL:  http://localhost$mainurl" >&6; }
 
 
 
