@@ -36,7 +36,6 @@
 #include "locations.h"
 #include "objects.h"
 #include "macros.h"
-#include "../lib/libicinga.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -257,6 +256,7 @@ extern "C" {
 #define EVENT_RESCHEDULE_CHECKS		14      /* adjust scheduling of host and service checks */
 #define EVENT_EXPIRE_COMMENT            15      /* removes expired comments */
 #define EVENT_EXPIRE_ACKNOWLEDGEMENT    16      /* removes expired acknowledgements */
+#define EVENT_EXPIRE_DISABLED_NOTIFICATIONS 17	/* re-enables disabled notifications */
 #define EVENT_SLEEP                     98      /* asynchronous sleep event that occurs when event queues are empty */
 #define EVENT_USER_FUNCTION             99      /* USER-defined function (modules) */
 
@@ -298,8 +298,8 @@ typedef struct timed_event_struct{
 	void *event_data;
 	void *event_args;
 	int event_options;
-	unsigned int priority;				/* 0 is auto, 1 is highest. n+1 < n */
-	struct squeue_event *sq_event;
+        struct timed_event_struct *next;
+        struct timed_event_struct *prev;
         }timed_event;
 
 
@@ -359,6 +359,18 @@ typedef struct sched_info_struct{
 	time_t last_host_check;
         }sched_info;
 
+
+/* PASSIVE_CHECK_RESULT structure */
+typedef struct passive_check_result_struct{
+	int object_check_type;
+	char *host_name;
+	char *service_description;
+	int return_code;
+	char *output;
+	time_t check_time;
+	double latency;
+	struct passive_check_result_struct *next;
+	}passive_check_result;
 
 
 /* CIRCULAR_BUFFER structure - used by worker threads */
@@ -427,19 +439,16 @@ void display_scheduling_info(void);				/* displays service check scheduling info
 
 
 /**** Event Queue Functions ****/
-int init_event_queue(void);					/* creates the queue icinga_squeue */
-timed_event *schedule_new_event(int,int,time_t,int,
-	unsigned long,void *,int,void *,void *,int);		/* schedules a new timed event */
-void reschedule_event(squeue_t *sq, timed_event *event);  	/* reschedules an event */
-void add_event(squeue_t *sq, timed_event *event);     		/* adds an event to the execution queue */
-void remove_event(squeue_t *sq, timed_event *event);   		/* remove an event from the execution queue */
+int schedule_new_event(int,int,time_t,int,unsigned long,void *,int,void *,void *,int);	/* schedules a new timed event */
+void reschedule_event(timed_event *,timed_event **,timed_event **);   		/* reschedules an event */
+void add_event(timed_event *,timed_event **,timed_event **);     		/* adds an event to the execution queue */
+void remove_event(timed_event *,timed_event **,timed_event **);     		/* remove an event from the execution queue */
 int event_execution_loop(void);                      		/* main monitoring/event handler loop */
 int handle_timed_event(timed_event *);		     		/* top level handler for timed events */
 void adjust_check_scheduling(void);		        	/* auto-adjusts scheduling of host and service checks */
-void compensate_for_system_time_change(unsigned long,
-	unsigned long);						/* attempts to compensate for a change in the system time */
-void adjust_timestamp_for_time_change(time_t,time_t,
-	unsigned long,time_t *); 				/* adjusts a timestamp variable for a system time change */
+void compensate_for_system_time_change(unsigned long,unsigned long);	/* attempts to compensate for a change in the system time */
+void adjust_timestamp_for_time_change(time_t,time_t,unsigned long,time_t *); /* adjusts a timestamp variable for a system time change */
+void resort_event_list(timed_event **,timed_event **);                 	/* resorts event list by event run time for system time changes */
 
 
 /**** IPC Functions ****/
@@ -652,6 +661,7 @@ void schedule_service_check(service *,time_t,int);	/* schedules an immediate or 
 void schedule_host_check(host *,time_t,int);		/* schedules an immediate or delayed host check */
 void enable_all_notifications(void);                    /* enables notifications on a program-wide basis */
 void disable_all_notifications(void);                   /* disables notifications on a program-wide basis */
+void disable_all_notifications_expire_time(int, char*);	/* disables notifications with expire time on a program-wide basis */
 void enable_service_notifications(service *);		/* enables service notifications */
 void disable_service_notifications(service *);		/* disables service notifications */
 void enable_host_notifications(host *);			/* enables host notifications */
@@ -685,6 +695,7 @@ void enable_service_freshness_checks(void);		/* enable service freshness checks 
 void disable_service_freshness_checks(void);		/* disable service freshness checks */
 void enable_host_freshness_checks(void);		/* enable host freshness checks */
 void disable_host_freshness_checks(void);		/* disable host freshness checks */
+void process_passive_checks(void);                      /* processes passive host and service check results */
 void enable_all_failure_prediction(void);               /* enables failure prediction on a program-wide basis */
 void disable_all_failure_prediction(void);              /* disables failure prediction on a program-wide basis */
 void enable_performance_data(void);                     /* enables processing of performance data on a program-wide basis */

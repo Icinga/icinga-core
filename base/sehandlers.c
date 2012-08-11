@@ -301,6 +301,7 @@ int run_global_service_event_handler(icinga_macros *mac, service *svc) {
 
 	/* process any macros in the raw command line */
 	process_macros_r(mac, raw_command, &processed_command, macro_options);
+	my_free(raw_command);
 	if (processed_command == NULL)
 		return ERROR;
 
@@ -321,7 +322,6 @@ int run_global_service_event_handler(icinga_macros *mac, service *svc) {
 	/* neb module wants to override (or cancel) the event handler - perhaps it will run the eventhandler itself */
 	if (neb_result == NEBERROR_CALLBACKOVERRIDE) {
 		my_free(processed_command);
-		my_free(raw_command);
 		my_free(raw_logentry);
 		my_free(processed_logentry);
 		return OK;
@@ -347,7 +347,6 @@ int run_global_service_event_handler(icinga_macros *mac, service *svc) {
 
 	/* free memory */
 	my_free(command_output);
-	my_free(raw_command);
 	my_free(processed_command);
 	my_free(raw_logentry);
 	my_free(processed_logentry);
@@ -400,6 +399,7 @@ int run_service_event_handler(icinga_macros *mac, service *svc) {
 
 	/* process any macros in the raw command line */
 	process_macros_r(mac, raw_command, &processed_command, macro_options);
+	my_free(raw_command);
 	if (processed_command == NULL)
 		return ERROR;
 
@@ -420,7 +420,6 @@ int run_service_event_handler(icinga_macros *mac, service *svc) {
 	/* neb module wants to override (or cancel) the event handler - perhaps it will run the eventhandler itself */
 	if (neb_result == NEBERROR_CALLBACKOVERRIDE) {
 		my_free(processed_command);
-		my_free(raw_command);
 		my_free(raw_logentry);
 		my_free(processed_logentry);
 		return OK;
@@ -446,7 +445,6 @@ int run_service_event_handler(icinga_macros *mac, service *svc) {
 
 	/* free memory */
 	my_free(command_output);
-	my_free(raw_command);
 	my_free(processed_command);
 	my_free(raw_logentry);
 	my_free(processed_logentry);
@@ -547,6 +545,7 @@ int run_global_host_event_handler(icinga_macros *mac, host *hst) {
 
 	/* process any macros in the raw command line */
 	process_macros_r(mac, raw_command, &processed_command, macro_options);
+	my_free(raw_command);
 	if (processed_command == NULL)
 		return ERROR;
 
@@ -567,7 +566,6 @@ int run_global_host_event_handler(icinga_macros *mac, host *hst) {
 	/* neb module wants to override (or cancel) the event handler - perhaps it will run the eventhandler itself */
 	if (neb_result == NEBERROR_CALLBACKOVERRIDE) {
 		my_free(processed_command);
-		my_free(raw_command);
 		my_free(raw_logentry);
 		my_free(processed_logentry);
 		return OK;
@@ -593,7 +591,6 @@ int run_global_host_event_handler(icinga_macros *mac, host *hst) {
 
 	/* free memory */
 	my_free(command_output);
-	my_free(raw_command);
 	my_free(processed_command);
 	my_free(raw_logentry);
 	my_free(processed_logentry);
@@ -645,6 +642,7 @@ int run_host_event_handler(icinga_macros *mac, host *hst) {
 
 	/* process any macros in the raw command line */
 	process_macros_r(mac, raw_command, &processed_command, macro_options);
+	my_free(raw_command);
 	if (processed_command == NULL)
 		return ERROR;
 
@@ -665,7 +663,6 @@ int run_host_event_handler(icinga_macros *mac, host *hst) {
 	/* neb module wants to override (or cancel) the event handler - perhaps it will run the eventhandler itself */
 	if (neb_result == NEBERROR_CALLBACKOVERRIDE) {
 		my_free(processed_command);
-		my_free(raw_command);
 		my_free(raw_logentry);
 		my_free(processed_logentry);
 		return OK;
@@ -691,7 +688,6 @@ int run_host_event_handler(icinga_macros *mac, host *hst) {
 
 	/* free memory */
 	my_free(command_output);
-	my_free(raw_command);
 	my_free(processed_command);
 	my_free(raw_logentry);
 	my_free(processed_logentry);
