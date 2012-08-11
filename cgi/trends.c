@@ -863,16 +863,12 @@ int main(int argc, char **argv) {
 		/* ask the user for what host they want a report for */
 		if (input_type == GET_INPUT_HOST_TARGET) {
 
-			printf("<P><DIV ALIGN=CENTER>\n");
 			printf("<DIV CLASS='reportSelectTitle'>Step 2: Select Host</DIV>\n");
-			printf("</DIV></P>\n");
-
-			printf("<P><DIV ALIGN=CENTER>\n");
 
 			printf("<form method=\"GET\" action=\"%s\">\n", TRENDS_CGI);
 			printf("<input type='hidden' name='input' value='getoptions'>\n");
 
-			printf("<TABLE BORDER=0 cellspacing=0 cellpadding=10>\n");
+			printf("<TABLE BORDER=0 cellspacing=0 cellpadding=10 align='center'>\n");
 			printf("<tr><td class='reportSelectSubTitle' valign=center>Host:</td>\n");
 			printf("<td class='reportSelectItem' valign=center>\n");
 			printf("<select name='host'>\n");
@@ -891,23 +887,17 @@ int main(int argc, char **argv) {
 
 			printf("</TABLE>\n");
 			printf("</form>\n");
-
-			printf("</DIV></P>\n");
 		}
 
 		/* ask the user for what service they want a report for */
 		else if (input_type == GET_INPUT_SERVICE_TARGET) {
 
-			printf("<P><DIV ALIGN=CENTER>\n");
 			printf("<DIV CLASS='reportSelectTitle'>Step 2: Select Service</DIV>\n");
-			printf("</DIV></P>\n");
-
-			printf("<P><DIV ALIGN=CENTER>\n");
 
 			printf("<form method=\"POST\" action=\"%s\" name=\"serviceform\">\n", TRENDS_CGI);
 			printf("<input type='hidden' name='input' value='getoptions'>\n");
 
-			printf("<TABLE BORDER=0 cellpadding=5>\n");
+			printf("<TABLE BORDER=0 cellpadding=5 align='center'>\n");
 			printf("<tr><td class='reportSelectSubTitle'>Service:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='hostservice'>\n");
@@ -927,8 +917,6 @@ int main(int argc, char **argv) {
 
 			printf("</TABLE>\n");
 			printf("</form>\n");
-
-			printf("</DIV></P>\n");
 		}
 
 		/* ask the user for report range and options */
@@ -942,18 +930,14 @@ int main(int argc, char **argv) {
 			end_day = t->tm_mday;
 			end_year = t->tm_year + 1900;
 
-			printf("<P><DIV ALIGN=CENTER>\n");
 			printf("<DIV CLASS='reportSelectTitle'>Step 3: Select Report Options</DIV>\n");
-			printf("</DIV></P>\n");
-
-			printf("<P><DIV ALIGN=CENTER>\n");
 
 			printf("<form method=\"GET\" action=\"%s\">\n", TRENDS_CGI);
 			printf("<input type='hidden' name='host' value='%s'>\n", escape_string(host_name));
 			if (display_type == DISPLAY_SERVICE_TRENDS)
 				printf("<input type='hidden' name='service' value='%s'>\n", escape_string(service_desc));
 
-			printf("<TABLE BORDER=0 CELLPADDING=5>\n");
+			printf("<TABLE BORDER=0 CELLPADDING=5 align='center'>\n");
 			printf("<tr><td class='reportSelectSubTitle' align=right>Report period:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='timeperiod'>\n");
@@ -1094,8 +1078,6 @@ int main(int argc, char **argv) {
 			printf("</TABLE>\n");
 			printf("</form>\n");
 
-			printf("</DIV></P>\n");
-
 			/*
 			printf("<P><DIV ALIGN=CENTER CLASS='helpfulHint'>\n");
 			printf("Note: Choosing the 'suppress image map' option will make the report run approximately twice as fast as it would otherwise, but it will prevent you from being able to zoom in on specific time periods.\n");
@@ -1105,14 +1087,10 @@ int main(int argc, char **argv) {
 
 		/* as the user whether they want a graph for a host or service */
 		else {
-			printf("<P><DIV ALIGN=CENTER>\n");
 			printf("<DIV CLASS='reportSelectTitle'>Step 1: Select Report Type</DIV>\n");
-			printf("</DIV></P>\n");
-
-			printf("<P><DIV ALIGN=CENTER>\n");
 
 			printf("<form method=\"GET\" action=\"%s\">\n", TRENDS_CGI);
-			printf("<TABLE BORDER=0 cellpadding=5>\n");
+			printf("<TABLE BORDER=0 cellpadding=5 align='center'>\n");
 
 			printf("<tr><td class='reportSelectSubTitle' align=right>Type:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
@@ -1128,8 +1106,6 @@ int main(int argc, char **argv) {
 
 			printf("</TABLE>\n");
 			printf("</form>\n");
-
-			printf("</DIV></P>\n");
 		}
 
 	}

@@ -23,9 +23,7 @@ td.linkBox a:hover { background: url(../images/interface/menu_li2.gif) 0 0.35em 
 .filterTitle { font-size: 10pt; font-weight: bold; }
 .filterValue { color: #707677 }
 
-.itemTotalsTitle { text-align: center; margin-top:5px; }
-
-.statusTitle { text-align: center; font-weight: bold; font-size: 10pt; }
+.statusTitle { text-align: center; font-weight: bold; font-size: 10pt; vertical-align: middle;}
 
 table.status { background-color: #fff; padding: 2px; border: 0; }
 th.status { font-size: 10pt; background-color: #707677; color: #fff; border: 0; }

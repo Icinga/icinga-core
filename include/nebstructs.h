@@ -531,6 +531,8 @@ typedef struct nebstruct_statechange_struct{
 	char            *output;
 
 	void            *object_ptr;
+	/* do not break the api */
+	char            *long_output;
         }nebstruct_statechange_data;
 
 #ifdef __cplusplus

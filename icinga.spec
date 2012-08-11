@@ -362,8 +362,6 @@ fi
 %{_libdir}/%{name}/cgi/showlog.cgi
 %{_libdir}/%{name}/cgi/status.cgi
 %{_libdir}/%{name}/cgi/statusmap.cgi
-%{_libdir}/%{name}/cgi/statuswml.cgi
-%{_libdir}/%{name}/cgi/statuswrl.cgi
 %{_libdir}/%{name}/cgi/summary.cgi
 %{_libdir}/%{name}/cgi/tac.cgi
 %{_libdir}/%{name}/cgi/trends.cgi

@@ -313,8 +313,8 @@ void display_network_outages(void) {
 		printf("%sSERVICES_AFFECTED%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
 		/* display the problem hosts... */
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH='33%%'></TD><TD WIDTH='33%%'><DIV CLASS='dataTitle'>Blocking Outages</DIV><TD WIDTH='33%%'>");
+
+		printf("<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 align='center'><TR><TD WIDTH='33%%'></TD><TD WIDTH='33%%'><DIV CLASS='dataTitle'>Blocking Outages</DIV><TD WIDTH='33%%'>");
 
 		/* add export to csv link */
 		printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
@@ -423,9 +423,6 @@ void display_network_outages(void) {
 #ifdef USE_STATUSMAP
 			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status map for this host and its children' TITLE='View status map for this host and its children'></A>\n", STATUSMAP_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUSMAP_ICON);
 #endif
-#ifdef USE_STATUSWRL
-			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View 3-D status map for this host and its children' TITLE='View 3-D status map for this host and its children'></A>\n", STATUSWRL_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUSWORLD_ICON);
-#endif
 #ifdef USE_TRENDS
 			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View trends for this host' TITLE='View trends for this host'></A>\n", TRENDS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, TRENDS_ICON);
 #endif
@@ -446,8 +443,6 @@ void display_network_outages(void) {
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
-
-		printf("</DIV></P>\n");
 
 		if (total_entries == 0)
 			printf("<DIV CLASS='itemTotalsTitle'>%d Blocking Outages Displayed</DIV>\n", total_entries);

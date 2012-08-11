@@ -217,7 +217,6 @@ int main(int argc, char **argv) {
 	host *temp_host = NULL;
 	service *temp_service = NULL;
 	int is_authorized = TRUE;
-	int found = FALSE;
 	int days, hours, minutes, seconds;
 	char *first_service = NULL;
 	int x;
@@ -666,16 +665,12 @@ int main(int argc, char **argv) {
 		/* ask the user for what host they want a report for */
 		if (input_type == GET_INPUT_HOST_TARGET) {
 
-			printf("<P><DIV ALIGN=CENTER>\n");
 			printf("<DIV CLASS='reportSelectTitle'>Step 2: Select Host</DIV>\n");
-			printf("</DIV></P>\n");
-
-			printf("<P><DIV ALIGN=CENTER>\n");
 
 			printf("<form method=\"GET\" action=\"%s\">\n", HISTOGRAM_CGI);
 			printf("<input type='hidden' name='input' value='getoptions'>\n");
 
-			printf("<TABLE BORDER=0 cellspacing=0 cellpadding=10>\n");
+			printf("<TABLE BORDER=0 cellspacing=0 cellpadding=10 align='center'>\n");
 			printf("<tr><td class='reportSelectSubTitle' valign=center>Host:</td>\n");
 			printf("<td class='reportSelectItem' valign=center>\n");
 			printf("<select name='host'>\n");
@@ -694,53 +689,26 @@ int main(int argc, char **argv) {
 
 			printf("</TABLE>\n");
 			printf("</form>\n");
-
-			printf("</DIV></P>\n");
 		}
 
 		/* ask the user for what service they want a report for */
 		else if (input_type == GET_INPUT_SERVICE_TARGET) {
 
-			printf("<SCRIPT LANGUAGE='JavaScript'>\n");
-			printf("function gethostname(hostindex){\n");
-			printf("hostnames=[");
-
-			for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
-				if (is_authorized_for_service(temp_service, &current_authdata) == TRUE) {
-					if (found == TRUE)
-						printf(",");
-					else
-						first_service = temp_service->host_name;
-					printf(" \"%s\"", temp_service->host_name);
-					found = TRUE;
-				}
-			}
-
-			printf(" ]\n");
-			printf("return hostnames[hostindex];\n");
-			printf("}\n");
-			printf("</SCRIPT>\n");
-
-
-			printf("<P><DIV ALIGN=CENTER>\n");
 			printf("<DIV CLASS='reportSelectTitle'>Step 2: Select Service</DIV>\n");
-			printf("</DIV></P>\n");
-
-			printf("<P><DIV ALIGN=CENTER>\n");
 
 			printf("<form method=\"GET\" action=\"%s\" name=\"serviceform\">\n", HISTOGRAM_CGI);
 			printf("<input type='hidden' name='input' value='getoptions'>\n");
 			printf("<input type='hidden' name='host' value='%s'>\n", (first_service == NULL) ? "unknown" : (char *)escape_string(first_service));
 
-			printf("<TABLE BORDER=0 cellpadding=5>\n");
+			printf("<TABLE BORDER=0 cellpadding=5 align='center'>\n");
 			printf("<tr><td class='reportSelectSubTitle'>Service:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
-			printf("<select name='service' onFocus='document.serviceform.host.value=gethostname(this.selectedIndex);' onChange='document.serviceform.host.value=gethostname(this.selectedIndex);'>\n");
+			printf("<select name='hostservice'>\n");
 
 			for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
 				if (is_authorized_for_service(temp_service, &current_authdata) == TRUE)
 					temp_host = find_host(temp_service->host_name);
-				printf("<option value='%s'>%s;%s\n", escape_string(temp_service->description), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
+				printf("<option value='%s^%s'>%s;%s\n", escape_string(temp_service->host_name), escape_string(temp_service->description), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
 			}
 
 			printf("</select>\n");
@@ -752,8 +720,6 @@ int main(int argc, char **argv) {
 
 			printf("</TABLE>\n");
 			printf("</form>\n");
-
-			printf("</DIV></P>\n");
 		}
 
 		/* ask the user for report range and options */
@@ -767,18 +733,14 @@ int main(int argc, char **argv) {
 			end_day = t->tm_mday;
 			end_year = t->tm_year + 1900;
 
-			printf("<P><DIV ALIGN=CENTER>\n");
 			printf("<DIV CLASS='reportSelectTitle'>Step 3: Select Report Options</DIV>\n");
-			printf("</DIV></P>\n");
-
-			printf("<P><DIV ALIGN=CENTER>\n");
 
 			printf("<form method=\"GET\" action=\"%s\">\n", HISTOGRAM_CGI);
 			printf("<input type='hidden' name='host' value='%s'>\n", escape_string(host_name));
 			if (display_type == DISPLAY_SERVICE_HISTOGRAM)
 				printf("<input type='hidden' name='service' value='%s'>\n", escape_string(service_desc));
 
-			printf("<TABLE BORDER=0 cellpadding=5>\n");
+			printf("<TABLE BORDER=0 cellpadding=5 align='center'>\n");
 			printf("<tr><td class='reportSelectSubTitle' align=right>Report Period:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='timeperiod'>\n");
@@ -918,21 +880,15 @@ int main(int argc, char **argv) {
 
 			printf("</TABLE>\n");
 			printf("</form>\n");
-
-			printf("</DIV></P>\n");
 		}
 
 		/* as the user whether they want a graph for a host or service */
 		else {
-			printf("<P><DIV ALIGN=CENTER>\n");
 			printf("<DIV CLASS='reportSelectTitle'>Step 1: Select Report Type</DIV>\n");
-			printf("</DIV></P>\n");
-
-			printf("<P><DIV ALIGN=CENTER>\n");
 
 			printf("<form method=\"GET\" action=\"%s\">\n", HISTOGRAM_CGI);
 
-			printf("<TABLE BORDER=0 cellpadding=5>\n");
+			printf("<TABLE BORDER=0 cellpadding=5 align='center'>\n");
 			printf("<tr><td class='reportSelectSubTitle' align=right>Type:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='input'>\n");
@@ -947,8 +903,6 @@ int main(int argc, char **argv) {
 
 			printf("</TABLE>\n");
 			printf("</form>\n");
-
-			printf("</DIV></P>\n");
 		}
 
 	}
@@ -963,6 +917,7 @@ int main(int argc, char **argv) {
 
 int process_cgivars(void) {
 	char **variables;
+	char *temp_buffer = NULL;
 	int error = FALSE;
 	int x;
 
@@ -1002,6 +957,31 @@ int process_cgivars(void) {
 			if ((service_desc = (char *)strdup(variables[x])) == NULL)
 				service_desc = "";
 			strip_html_brackets(service_desc);
+
+			display_type = DISPLAY_SERVICE_HISTOGRAM;
+		}
+
+		/* we found a combined host/service */
+		else if (!strcmp(variables[x], "hostservice")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			temp_buffer = strtok(variables[x], "^");
+
+			if ((host_name = (char *)strdup(temp_buffer)) == NULL)
+				host_name = "";
+			else
+				strip_html_brackets(host_name);
+
+			temp_buffer = strtok(NULL, "");
+
+			if ((service_desc = (char *)strdup(temp_buffer)) == NULL)
+				service_desc = "";
+			else
+				strip_html_brackets(service_desc);
 
 			display_type = DISPLAY_SERVICE_HISTOGRAM;
 		}

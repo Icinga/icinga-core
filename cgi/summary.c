@@ -437,13 +437,11 @@ int main(int argc, char **argv) {
 		end_year = t->tm_year + 1900;
 
 		printf("<DIV ALIGN=CENTER CLASS='dateSelectTitle'>Standard Reports:</DIV>\n");
-		printf("<DIV ALIGN=CENTER>\n");
 		printf("<form method=\"get\" action=\"%s\">\n", SUMMARY_CGI);
 
 		printf("<input type='hidden' name='report' value='1'>\n");
 
-		printf("<table border=0 cellpadding=5>\n");
-
+		printf("<table border=0 cellpadding=5 align='center'>\n");
 		printf("<tr><td class='reportSelectSubTitle' align=right>Report Type:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='standardreport'>\n");
@@ -460,15 +458,15 @@ int main(int argc, char **argv) {
 		printf("</table>\n");
 
 		printf("</form>\n");
-		printf("</DIV>\n");
+
 
 		printf("<DIV ALIGN=CENTER CLASS='dateSelectTitle'>Custom Report Options:</DIV>\n");
-		printf("<DIV ALIGN=CENTER>\n");
+
 		printf("<form method=\"get\" action=\"%s\">\n", SUMMARY_CGI);
 
 		printf("<input type='hidden' name='report' value='1'>\n");
 
-		printf("<table border=0 cellpadding=5>\n");
+		printf("<table border=0 cellpadding=5 align='center'>\n");
 
 		printf("<tr><td class='reportSelectSubTitle' align=right>Report Type:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
@@ -639,7 +637,6 @@ int main(int argc, char **argv) {
 		printf("</table>\n");
 
 		printf("</form>\n");
-		printf("</DIV>\n");
 	}
 
 
@@ -1613,7 +1610,6 @@ void display_report(void) {
 	} else {
 		printf("<BR>\n");
 
-		printf("<DIV ALIGN=CENTER>\n");
 		printf("<table align=\"CENTER\" border=\"0\"><tr><td>");
 		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>");
 		if (display_type == REPORT_ALERT_TOTALS)
@@ -1679,7 +1675,6 @@ void display_report(void) {
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</td></tr></table>");
-		printf("</DIV>\n");
 	} else if (content_type == JSON_CONTENT) {
 		printf("\n]\n");
 		if (display_type != REPORT_ALERT_TOTALS)
@@ -1716,12 +1711,11 @@ void display_recent_alerts(void) {
 		printf("<BR>\n");
 
 		if (item_limit <= 0 || total_items <= item_limit || total_items == 0)
-			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying all %d matching alerts\n", total_items);
+			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying all %d matching alerts</DIV>\n", total_items);
 		else
-			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying most recent %d of %d total matching alerts\n", item_limit, total_items);
+			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying most recent %d of %d total matching alerts</DIV>\n", item_limit, total_items);
 
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
+		printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
 
 		printf("<TR><TD colspan='7'>");
 		/* add export to csv, json, link */
@@ -1844,10 +1838,9 @@ void display_recent_alerts(void) {
 		}
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 
@@ -2007,12 +2000,11 @@ void display_top_alerts(void) {
 		printf("<BR>\n");
 
 		if (item_limit <= 0 || total_items <= item_limit || total_items == 0)
-			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying all %d matching alert producers\n", total_items);
+			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying all %d matching alert producers</DIV>\n", total_items);
 		else
-			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying top %d of %d total matching alert producers\n", item_limit, total_items);
+			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying top %d of %d total matching alert producers</DIV>\n", item_limit, total_items);
 
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
+		printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
 
 		printf("<TR><TD colspan='5'>");
 		/* add export to csv, json, link */
@@ -2084,10 +2076,9 @@ void display_top_alerts(void) {
 		}
 	}
 
-	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
+	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("</TABLE>\n");
-		printf("</DIV>\n");
-	} else if (content_type == JSON_CONTENT)
+	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
 	return;

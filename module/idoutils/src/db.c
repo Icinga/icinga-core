@@ -497,8 +497,28 @@ int ido2db_db_connect(ido2db_idi *idi) {
 		return IDO_ERROR;
 	}
 
-	dbi_conn_set_option(idi->dbinfo.dbi_conn, "host", ido2db_db_settings.host);
-	dbi_conn_set_option_numeric(idi->dbinfo.dbi_conn, "port", (int)ido2db_db_settings.port);
+	/* decide wether to set host and port, or not ... drivers will use socket otherwise */
+        switch (idi->dbinfo.server_type) {
+        case IDO2DB_DBSERVER_MYSQL:
+		if (ido2db_db_settings.host != NULL)
+			dbi_conn_set_option(idi->dbinfo.dbi_conn, "host", ido2db_db_settings.host);
+		if (ido2db_db_settings.port != 0)
+			dbi_conn_set_option_numeric(idi->dbinfo.dbi_conn, "port", (int)ido2db_db_settings.port);
+                break;
+        case IDO2DB_DBSERVER_PGSQL:
+		if (ido2db_db_settings.host != NULL)
+			dbi_conn_set_option(idi->dbinfo.dbi_conn, "host", ido2db_db_settings.host);
+		if (ido2db_db_settings.port != 0)
+			dbi_conn_set_option_numeric(idi->dbinfo.dbi_conn, "port", (int)ido2db_db_settings.port);
+                break;
+        default:
+		if (ido2db_db_settings.host != NULL)
+			dbi_conn_set_option(idi->dbinfo.dbi_conn, "host", ido2db_db_settings.host);
+		if (ido2db_db_settings.port != 0)
+			dbi_conn_set_option_numeric(idi->dbinfo.dbi_conn, "port", (int)ido2db_db_settings.port);
+                break;
+        }
+
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "username", ido2db_db_settings.username);
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "password", ido2db_db_settings.password);
 	dbi_conn_set_option(idi->dbinfo.dbi_conn, "dbname", ido2db_db_settings.dbname);
@@ -1466,6 +1486,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 	free(buf);
 
 #endif
@@ -1568,6 +1589,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 			}
 		}
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 
 		free(buf);
 
@@ -1631,6 +1653,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(timezone) Error: TimeZone Set to UTC failed\n");
 		}
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 	}else{
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(timezone) Error: buffer allocation failed\n");
@@ -1688,6 +1711,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 			break;
 		}
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 
 	free(buf);
@@ -1883,6 +1907,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 	}
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 	free(buf);
 
 #endif
@@ -1961,6 +1986,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(timezone) Error: TimeZone Set to UTC failed\n");
 		}
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		free(buf);
 	}else{
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(timezone) Error: buffer allocation failed\n");
@@ -2017,6 +2043,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 			break;
 		}
 		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 
 	free(buf);
@@ -2202,6 +2229,7 @@ int ido2db_db_goodbye(ido2db_idi *idi) {
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 
 	free(buf);
 	free(ts);
@@ -2284,6 +2312,7 @@ int ido2db_db_checkin(ido2db_idi *idi) {
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 	free(buf);
 
 #endif
@@ -2361,6 +2390,15 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 		return NULL;
 	}
 
+#ifdef USE_ORACLE
+	/* oracle doesnt need escaping because of bind variables,
+	 * but we need to allocate the buffer #2534
+	 * */
+	strcpy(newbuf,buf);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_escape_string oracle changed string ('%s')\n", newbuf);
+	return newbuf;
+#endif
+
 
 	/* escape characters */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
@@ -2406,17 +2444,6 @@ char *ido2db_db_escape_string(ido2db_idi *idi, char *buf) {
 	newbuf[y] = '\0';
 
 #endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-	for (x = 0, y = 0; x < z; x++) {
-
-		if (buf[x] == '\'')
-			newbuf[y++] = '\'';
-
-		newbuf[y++] = buf[x];
-	}
-#endif /* Oracle ocilib specific */
 
 	/* terminate escape string */
 	newbuf[y] = '\0';
@@ -2687,6 +2714,7 @@ int ido2db_db_clear_table(ido2db_idi *idi, char *table_name) {
 	result = ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 	free(buf);
 
 #endif
@@ -2809,6 +2837,7 @@ int ido2db_db_get_latest_data_time(ido2db_idi *idi, char *table_name, char *fiel
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
@@ -2851,6 +2880,7 @@ int ido2db_db_trim_data_table(ido2db_idi *idi, char *table_name, char *field_nam
 
 	result = ido2db_db_query(idi, buf);
 	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
 
 #endif
 
