@@ -360,6 +360,18 @@ typedef struct sched_info_struct{
         }sched_info;
 
 
+/* PASSIVE_CHECK_RESULT structure */
+typedef struct passive_check_result_struct{
+	int object_check_type;
+	char *host_name;
+	char *service_description;
+	int return_code;
+	char *output;
+	time_t check_time;
+	double latency;
+	struct passive_check_result_struct *next;
+	}passive_check_result;
+
 
 /* CIRCULAR_BUFFER structure - used by worker threads */
 typedef struct circular_buffer_struct{
@@ -683,6 +695,7 @@ void enable_service_freshness_checks(void);		/* enable service freshness checks 
 void disable_service_freshness_checks(void);		/* disable service freshness checks */
 void enable_host_freshness_checks(void);		/* enable host freshness checks */
 void disable_host_freshness_checks(void);		/* disable host freshness checks */
+void process_passive_checks(void);                      /* processes passive host and service check results */
 void enable_all_failure_prediction(void);               /* enables failure prediction on a program-wide basis */
 void disable_all_failure_prediction(void);              /* disables failure prediction on a program-wide basis */
 void enable_performance_data(void);                     /* enables processing of performance data on a program-wide basis */
