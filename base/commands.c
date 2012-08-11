@@ -2139,21 +2139,35 @@ int process_passive_service_check(time_t check_time, char *host_name, char *svc_
 		return ERROR;
 
 	/* initialize vars */
-	memset(&cr, 0, sizeof(cr));
-	cr.exited_ok = 1;
-	cr.check_type = SERVICE_CHECK_PASSIVE;
-	cr.host_name = real_host_name;
-	cr.service_description = svc_description;
-	cr.output = output;
-	cr.start_time.tv_sec = cr.finish_time.tv_sec = check_time;
+	init_check_result(&cr);
+	cr.object_check_type = SERVICE_CHECK;
 
-	/* save the return code and make sure it's sane */
+	/* save string vars */
+	if ((cr.host_name = (char *)strdup(real_host_name)) == NULL)
+		result = ERROR;
+	if ((cr.service_description = (char *)strdup(svc_description)) == NULL)
+		result = ERROR;
+	if ((cr.output = (char *)strdup(output)) == NULL)
+		result = ERROR;
+
+	/* handle errors */
+	if (result == ERROR) {
+		my_free(cr.output);
+		my_free(cr.service_description);
+		my_free(cr.host_name);
+		return ERROR;
+	}
+
+	/* save the return code */
 	cr.return_code = return_code;
 
 	/* make sure the return code is within bounds */
 	/* FIXME remove hardcoded return codes for states */
 	if (cr.return_code < 0 || cr.return_code > 3)
 		cr.return_code = STATE_UNKNOWN;
+
+	/* passive checks have same start/end time */
+	cr.start_time.tv_sec = cr.finish_time.tv_sec = check_time;
 
 	/* calculate latency */
 	gettimeofday(&tv, NULL);
@@ -2162,11 +2176,15 @@ int process_passive_service_check(time_t check_time, char *host_name, char *svc_
 		cr.latency = 0.0;
 
 	/*
-	 * passive checks can be treated as normal checks,
+	 * passive checks can be treaded as normal check,
 	 * passing the check_result struct over
 	 */
 
-	return handle_async_service_check_result(temp_service, &cr);
+	/* make the check handler happy */
+	cr.exited_ok = 1;
+	handle_async_service_check_result(temp_service, &cr);
+
+	return OK;
 }
 
 
@@ -2254,13 +2272,30 @@ int process_passive_host_check(time_t check_time, char *host_name, int return_co
 		return ERROR;
 
 	/* initialize vars */
-	memset(&cr, 0, sizeof(cr));
-	cr.host_name = real_host_name;
-	cr.exited_ok = 1;
-	cr.check_type = HOST_CHECK_PASSIVE;
+	init_check_result(&cr);
+	cr.object_check_type = HOST_CHECK;
+
+	/* save string vars */
+	if ((cr.host_name = (char *)strdup(real_host_name)) == NULL)
+		result = ERROR;
+	if ((cr.output = (char *)strdup(output)) == NULL)
+		result = ERROR;
+
+	/* handle errors */
+	if (result == ERROR) {
+		my_free(cr.output);
+		my_free(cr.service_description);
+		my_free(cr.host_name);
+		return ERROR;
+	}
 
 	/* save the return code */
 	cr.return_code = return_code;
+
+	/* make sure the return code is within bounds */
+	/* FIXME fix hardcoded return codes for states */
+	if (cr.return_code < 0 || cr.return_code > 3)
+		cr.return_code = STATE_UNKNOWN;
 
 	/* passive checks have same start/end time */
 	cr.start_time.tv_sec = cr.finish_time.tv_sec = check_time;
@@ -2277,6 +2312,7 @@ int process_passive_host_check(time_t check_time, char *host_name, int return_co
          */
 
 	/* make the check handler happy */
+	cr.exited_ok = 1;
 	handle_async_host_check_result_3x(temp_host, &cr);
 
 	return OK;
