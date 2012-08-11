@@ -1092,7 +1092,7 @@ int ido2db_wait_for_connections(void) {
 
 		if (chmod(ido2db_socket_name, ido2db_socket_perm) < 0) {
 			close(ido2db_sd);
-			perror("Could not bind socket");
+			perror("Could not chmod socket");
 			return IDO_ERROR;
 		}
 
