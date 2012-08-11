@@ -41,6 +41,7 @@ ENHANCEMENTS
 * idoutils: fix doubled quotes by skipping escaping data (Oracle only) #2534 - TD
 * idoutils: change hasfunc to use sdbm algorithm for hashing precached objects #2792i - MF/GB
 * idoutils: add disable_notif_expire_time to programstatus table - #905 - MF
+* idoutils: add socket_perm to set unix socket permissions (Lennart Betz) #2659 - MF
 
 * install: add --with-mainurl to configure, allowing to set the main frame target url for index.html #2611 - MF
 * icinga.spec: use --with-mainurl to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29 #2611 - MF
@@ -86,6 +87,9 @@ CHANGES
 	** default_expiring_disabled_notifications_duration=86400 #905
 
 * idoutils: add disable_notif_expire_time to programstatus table #905
+
+* ido2db.cfg: new config option
+	** socket_perm (default 0755) #2659
 
 
 1.7.1 - 18/06/2012

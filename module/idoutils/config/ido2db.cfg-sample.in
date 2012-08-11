@@ -43,6 +43,16 @@ socket_name=@IDOSOCKFILE@
 
 
 
+# SOCKET PERMISSIONS
+# This option determines the permissions of the Unix domain
+# socket. This option is only valid if the socket type specified
+# above is "unix". Default permissions are set to 0755.
+
+socket_perm=0755
+
+
+
+
 # TCP PORT
 # This option determines what port the daemon will listen for
 # connections on.  This option is only vlaid if the socket type
