@@ -62,6 +62,7 @@ time_t last_command_check;
 time_t last_log_rotation;
 time_t status_file_creation_time;
 int enable_notifications;
+time_t disable_notifications_expire_time;
 int execute_service_checks;
 int accept_passive_service_checks;
 int execute_host_checks;
@@ -91,6 +92,7 @@ extern int daemon_mode;
 extern time_t last_command_check;
 extern time_t last_log_rotation;
 extern int enable_notifications;
+extern time_t disable_notifications_expire_time;
 extern int execute_service_checks;
 extern int accept_passive_service_checks;
 extern int execute_host_checks;
@@ -429,6 +431,7 @@ int xsddefault_save_status_data(void) {
 	fprintf(fp, "\tlast_command_check=%lu\n", last_command_check);
 	fprintf(fp, "\tlast_log_rotation=%lu\n", last_log_rotation);
 	fprintf(fp, "\tenable_notifications=%d\n", enable_notifications);
+	fprintf(fp, "\tdisable_notifications_expire_time=%lu\n", disable_notifications_expire_time);
 	fprintf(fp, "\tactive_service_checks_enabled=%d\n", execute_service_checks);
 	fprintf(fp, "\tpassive_service_checks_enabled=%d\n", accept_passive_service_checks);
 	fprintf(fp, "\tactive_host_checks_enabled=%d\n", execute_host_checks);
@@ -709,11 +712,11 @@ int xsddefault_save_status_data(void) {
 	/* flush the file to disk */
 	fflush(fp);
 
-	/* close the temp file */
-	result = fclose(fp);
-
 	/* fsync the file so that it is completely written out before moving it */
 	fsync(fd);
+
+	/* close the temp file */
+	result = fclose(fp);
 
 	/* save/close was successful */
 	if (result == 0) {
@@ -975,6 +978,8 @@ int xsddefault_read_status_data(char *config_file, int options) {
 					last_log_rotation = strtoul(val, NULL, 10);
 				else if (!strcmp(var, "enable_notifications"))
 					enable_notifications = (atoi(val) > 0) ? TRUE : FALSE;
+				else if (!strcmp(var, "disable_notifications_expire_time"))
+					disable_notifications_expire_time = strtoul(val, NULL, 10);
 				else if (!strcmp(var, "active_service_checks_enabled"))
 					execute_service_checks = (atoi(val) > 0) ? TRUE : FALSE;
 				else if (!strcmp(var, "passive_service_checks_enabled"))

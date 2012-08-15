@@ -53,6 +53,7 @@ extern int  use_authentication;
 extern int  lock_author_names;
 extern int  persistent_ack_comments;
 extern int  default_expiring_acknowledgement_duration;
+extern int  default_expiring_disabled_notifications_duration;
 
 extern int  display_header;
 extern int  daemon_check;
@@ -102,6 +103,11 @@ extern comment *comment_list;
 #define PRINT_DOWNTIME_LIST		20
 /** @}*/
 
+/** @name NOTIFICATION LIST TYPES
+ @{**/
+#define PRINT_EXPIRE_DISABLE_NOTIFICATIONS	21
+/** @}*/
+
 /** @brief host/service list structure
  *
  *  Struct to hold information of hosts and services for batch processing
@@ -142,13 +148,14 @@ int persistent_comment = FALSE;			/**< bool if omment should survive Icinga rest
 int sticky_ack = TRUE;				/**< bool to disable notifications until recover */
 int send_notification = TRUE;			/**< bool sends a notification if service gets acknowledged */
 int use_ack_end_time = FALSE;			/**< bool if expire acknowledgement is selected or not */
-int force_check = FALSE;				/**< bool if check should be forced */
+int use_disabled_notif_end_time = FALSE;	/**< bool if expire disabled notifications is selected or not */
+int force_check = FALSE;			/**< bool if check should be forced */
 int plugin_state = STATE_OK;			/**< plugin state for passive submitted check */
 int affect_host_and_services = FALSE;		/**< bool if notifiactions or else affect all host and services */
 int propagate_to_children = FALSE;		/**< bool if en/disable host notifications should propagated to children */
 int fixed = FALSE;				/**< bool if downtime is fixed or flexible */
 unsigned long duration = 0L;			/**< downtime duration */
-unsigned long triggered_by = 0L;			/**< downtime id which triggers submited downtime */
+unsigned long triggered_by = 0L;		/**< downtime id which triggers submited downtime */
 int child_options = 0;				/**< if downtime should trigger child host downtimes */
 int force_notification = 0;			/**< force a notification to be send out through event handler */
 int broadcast_notification = 0;			/**< this options determines if notification should be broadcasted */
@@ -610,6 +617,10 @@ int process_cgivars(void) {
 		else if (!strcmp(variables[x], "use_ack_end_time"))
 			use_ack_end_time = TRUE;
 
+		/* we use the end_time as disabled notifcations expire time */
+		else if (!strcmp(variables[x], "use_disabled_notif_end_time"))
+			use_disabled_notif_end_time = TRUE;
+
 		/* we got the service check force option */
 		else if (!strcmp(variables[x], "force_check"))
 			force_check = TRUE;
@@ -1032,6 +1043,27 @@ void print_form_element(int element, int cmd) {
 		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
 		break;
 
+        case PRINT_EXPIRE_DISABLE_NOTIFICATIONS:
+
+                strcpy(help_text, "If you want to let the disabled notifications expire, check this option.");
+
+                printf("<tr><td class=\"objectDescription descriptionleft\">Use Expire Time:");
+                print_help_box(help_text);
+                printf("</td><td align=\"left\">");
+                printf("<INPUT TYPE='checkbox' ID='expire_checkbox' NAME='use_disabled_notif_end_time' onClick=\"if (document.getElementById('expire_checkbox').checked == true) document.getElementById('expired_date_row').style.display = ''; else document.getElementById('expired_date_row').style.display = 'none';\"></td></tr>\n");
+
+                snprintf(help_text, sizeof(help_text), "Enter the expire date/time for disabled notifications. %s will automatically re-enable all notifications after this time expired.", PROGRAM_NAME);
+                help_text[sizeof(help_text)-1] = '\x0';
+
+                time(&t);
+                t += (unsigned long)default_expiring_disabled_notifications_duration;
+                get_time_string(&t, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
+
+                printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
+                print_help_box(help_text);
+                printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
+                break;
+
 	case PRINT_FORCE_CHECK:
 
 		snprintf(help_text, sizeof(help_text), "If you select this option, %s will force a check of the host/service regardless of both what time the scheduled check occurs and whether or not checks are enabled for the host/service.", PROGRAM_NAME);
@@ -1122,6 +1154,11 @@ void request_command_data(int cmd) {
 	case CMD_DISABLE_NOTIFICATIONS:
 		snprintf(help_text, sizeof(help_text), "This command is used to %s host and service notifications on a program-wide basis", (cmd == CMD_ENABLE_NOTIFICATIONS) ? "enable" : "disable");
 		snprintf(action, sizeof(action), "%s notifications on a program-wide basis", (cmd == CMD_ENABLE_NOTIFICATIONS) ? "Enable" : "Disable");
+		break;
+
+	case CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME:
+		snprintf(help_text, sizeof(help_text), "This command is used to disable host and service notifications on a program-wide basis, with a given expire time");
+		snprintf(action, sizeof(action), "Disable notifications on a program-wide basis, with expire time");
 		break;
 
 	case CMD_SHUTDOWN_PROCESS:
@@ -1628,13 +1665,18 @@ void request_command_data(int cmd) {
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
 
+		if (cmd == CMD_DISABLE_NOTIFICATIONS) {
+			print_form_element(PRINT_EXPIRE_DISABLE_NOTIFICATIONS, cmd);
+		}
 		if (enforce_comments_on_actions == TRUE) {
 			print_form_element(PRINT_COMMON_HEADER, cmd);
 			print_form_element(PRINT_AUTHOR, cmd);
 			print_form_element(PRINT_COMMENT_BOX, cmd);
 		} else	{
-			printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
-			printf("<tr><td CLASS='objectDescription' colspan=2>There are no options for this command.<br>Click the 'Commit' button to submit the command.</td></tr>\n");
+			if (cmd != CMD_DISABLE_NOTIFICATIONS) {
+				printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+				printf("<tr><td CLASS='objectDescription' colspan=2>There are no options for this command.<br>Click the 'Commit' button to submit the command.</td></tr>\n");
+			}
 		}
 
 		break;
@@ -2140,6 +2182,15 @@ void commit_command_data(int cmd) {
 	case CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS:
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
+
+                if (use_disabled_notif_end_time == TRUE && cmd == CMD_DISABLE_NOTIFICATIONS) {
+
+                        time(&start_time);
+
+                        /* make sure we have end time if required */
+                        check_time_sanity(&e);
+                } else
+                        end_time = 0L;
 
 		if (enforce_comments_on_actions == TRUE) {
 			check_comment_sanity(&e);
@@ -2656,12 +2707,24 @@ int commit_command(int cmd) {
 		}
 		break;
 
-	case CMD_DISABLE_NOTIFICATIONS:
 	case CMD_ENABLE_NOTIFICATIONS:
 	case CMD_SHUTDOWN_PROCESS:
 	case CMD_RESTART_PROCESS:
 		if (is_authorized[x])
 			submit_result[x] = cmd_submitf(cmd, "%lu", scheduled_time);
+		break;
+
+	case CMD_DISABLE_NOTIFICATIONS:
+		if (is_authorized[x]) {
+			/* we should expire the disabled notifications */
+			if(end_time > 0) {
+				cmd = CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME;
+				submit_result[x] = cmd_submitf(cmd, "%lu;%lu", scheduled_time, end_time);
+				my_free(temp_buffer);
+			} else {
+				submit_result[x] = cmd_submitf(cmd, "%lu", scheduled_time);
+			}
+		}
 		break;
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:

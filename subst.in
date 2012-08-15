@@ -49,6 +49,7 @@ while ($f = shift @ARGV) {
 		s|\@libdir\@|@libdir@|g;
 		s|\@htmurl\@|@htmurl@|g;
 		s|\@cgiurl\@|@cgiurl@|g;
+		s|\@mainurl\@|@mainurl@|g;
 		s|\@MAIL_PROG\@|@MAIL_PROG@|g;
 		s|\@VERSION\@|@VERSION@|g;
 		s|\$\{exec_prefix\}|@exec_prefix@|g; # must be next to last

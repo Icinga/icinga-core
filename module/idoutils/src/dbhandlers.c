@@ -3887,6 +3887,7 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	unsigned long last_command_check = 0L;
 	unsigned long last_log_rotation = 0L;
 	int notifications_enabled = 0;
+	unsigned long disable_notifications_expire_time = 0L;
 	int active_service_checks_enabled = 0;
 	int passive_service_checks_enabled = 0;
 	int active_host_checks_enabled = 0;
@@ -3899,10 +3900,10 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	int obsess_over_services = 0;
 	unsigned long modified_host_attributes = 0L;
 	unsigned long modified_service_attributes = 0L;
-	char *ts[4];
+	char *ts[5];
 	char *es[2];
 	int result = IDO_OK;
-	void *data[26];
+	void *data[28];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_programstatusdata() start\n");
 
@@ -3935,6 +3936,7 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERSERVICES], &obsess_over_services);
 	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDHOSTATTRIBUTES], &modified_host_attributes);
 	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDSERVICEATTRIBUTES], &modified_service_attributes);
+	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_DISABLED_NOTIFICATIONS_EXPIRE_TIME], &disable_notifications_expire_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_GLOBALHOSTEVENTHANDLER]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_GLOBALSERVICEEVENTHANDLER]);
@@ -3943,6 +3945,7 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	ts[1] = ido2db_db_timet_to_sql(idi, program_start_time);
 	ts[2] = ido2db_db_timet_to_sql(idi, last_command_check);
 	ts[3] = ido2db_db_timet_to_sql(idi, last_log_rotation);
+	ts[4] = ido2db_db_timet_to_sql(idi, disable_notifications_expire_time);
 
 	data[0] = (void *) &idi->dbinfo.instance_id;
 	data[1] = (void *) &ts[0];
@@ -3971,6 +3974,9 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	data[23] = (void *) &program_start_time;
 	data[24] = (void *) &last_command_check;
 	data[25] = (void *) &last_log_rotation;
+	/* disabled notifications expiry */
+	data[26] = (void *) &ts[4];
+	data[27] = (void *) &disable_notifications_expire_time;
 
 	/* save entry to db */
 	result = ido2db_query_insert_or_update_programstatusdata_add(idi, data);

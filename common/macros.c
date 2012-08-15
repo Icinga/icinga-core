@@ -211,7 +211,7 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 
 			/* we already have a macro... */
 			if (result == OK)
-				x = 0;
+				; /* do nothing special if things worked out ok */
 
 			/* an escaped $ is done by specifying two $$ next to each other */
 			else if (!strcmp(temp_buffer, "")) {
@@ -289,11 +289,11 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 		}
 	}
 
+	/* free copy of input buffer */
+	my_free(save_buffer);
+
 	log_debug_info(DEBUGL_MACROS, 1, "  Done.  Final output: '%s'\n", *output_buffer);
 	log_debug_info(DEBUGL_MACROS, 1, "**** END MACRO PROCESSING *************\n");
-
-	if (save_buffer)
-		free(save_buffer);
 
 	return OK;
 }
@@ -504,7 +504,7 @@ int grab_macro_value_r(icinga_macros *mac, char *macro_buffer, char **output, in
 	 * copied from the original buffer, we can return early as well
 	 */
 	/***** ARGV MACROS *****/
-	else if (strstr(macro_buffer, "ARG") == macro_buffer) {
+	if (strstr(macro_buffer, "ARG") == macro_buffer) {
 
 		/* which arg do we want? */
 		x = atoi(macro_buffer + 3);
@@ -519,7 +519,7 @@ int grab_macro_value_r(icinga_macros *mac, char *macro_buffer, char **output, in
 	}
 
 	/***** USER MACROS *****/
-	else if (strstr(macro_buffer, "USER") == macro_buffer) {
+	if (strstr(macro_buffer, "USER") == macro_buffer) {
 
 		/* which macro do we want? */
 		x = atoi(macro_buffer + 4);
