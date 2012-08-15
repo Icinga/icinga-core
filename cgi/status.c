@@ -2638,8 +2638,10 @@ void show_service_detail(void) {
 			if (json_start == FALSE)
 				printf(",\n");
 			json_start = FALSE;
-			printf("{ \"host\": \"%s\", ", json_encode(temp_host->name));
-			printf("\"service\": \"%s\", ", json_encode(temp_service->description));
+			printf("{ \"host_name\": \"%s\", ", json_encode(temp_host->name));
+			printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+			printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
+			printf("\"service_display_name\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
 			printf("\"status\": \"%s\", ", temp_status->status_string);
 			printf("\"last_check\": \"%s\", ", temp_status->last_check);
 			printf("\"duration\": \"%s\", ", temp_status->state_duration);
@@ -2660,16 +2662,6 @@ void show_service_detail(void) {
 				printf("\"notes_url\": null, ");
 			else
 				printf("\"notes_url\": \"%s\", ", json_encode(temp_service->notes_url));
-
-			if (temp_host->display_name == NULL)
-				printf("\"host_display_name\": null, ");
-			else
-				printf("\"host_display_name\": \"%s\", ", json_encode(temp_host->display_name));
-
-			if (temp_service->display_name == NULL)
-				printf("\"service_display_name\": null, ");
-			else
-				printf("\"service_display_name\": \"%s\", ", json_encode(temp_service->display_name));
 
 			if (temp_status->plugin_output == NULL)
 				printf("\"status_information\": null }");
@@ -3101,7 +3093,8 @@ void show_host_detail(void) {
 			if (json_start == FALSE)
 				printf(",\n");
 			json_start = FALSE;
-			printf("{ \"host\": \"%s\", ", json_encode(temp_host->name));
+			printf("{ \"host_name\": \"%s\", ", json_encode(temp_host->name));
+			printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 			printf("\"status\": \"%s\", ", temp_statusdata->status_string);
 			printf("\"last_check\": \"%s\", ", temp_statusdata->last_check);
 			printf("\"duration\": \"%s\", ", temp_statusdata->state_duration);
@@ -3122,11 +3115,6 @@ void show_host_detail(void) {
 				printf("\"notes_url\": null, ");
 			else
 				printf("\"notes_url\": \"%s\", ", json_encode(temp_host->notes_url));
-
-			if (temp_host->display_name == NULL)
-				printf("\"host_display_name\": null, ");
-			else
-				printf("\"host_display_name\": \"%s\", ", json_encode(temp_host->display_name));
 
 			if (temp_statusdata->plugin_output == NULL)
 				printf("\"status_information\": null }");
@@ -4060,6 +4048,7 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 	servicesmember *temp_member2;
 	host *temp_host;
 	host *last_host;
+	service *temp_service;
 	hoststatus *temp_hoststatus;
 	servicestatus *temp_servicestatus;
 	int odd = 0;
@@ -4165,6 +4154,7 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 			json_start = FALSE;
 
 			printf("{ \"host_name\": \"%s\",\n", json_encode(temp_host->name));
+			printf("\"host_display_name\": \"%s\",\n", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 			printf("\"host_status\": \"%s\",\n", status);
 			printf("\"services\": [ \n");
 		} else {
@@ -4247,6 +4237,10 @@ void show_servicegroup_grid(servicegroup *temp_servicegroup) {
 				json_start2 = FALSE;
 
 				printf("{ \"service_description\": \"%s\",\n", json_encode(temp_servicestatus->description));
+
+				temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
+				printf("\"service_display_name\": \"%s\",\n", (temp_service != NULL && temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_servicestatus->description));
+
 				if (temp_servicestatus == NULL)
 					printf("\"service_status\": null } ");
 				else
@@ -4605,6 +4599,9 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus, int odd,
 
 	temp_host = find_host(hststatus->host_name);
 
+	if (temp_host == NULL)
+		return;
+
 	/* grab macros */
 	grab_host_macros_r(mac, temp_host);
 
@@ -4630,6 +4627,7 @@ void show_servicegroup_hostgroup_member_overview(hoststatus *hststatus, int odd,
 
 	if (content_type == JSON_CONTENT) {
 		printf("{ \"host_name\": \"%s\", ", json_encode(hststatus->host_name));
+		printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 		printf("\"host_status\": \"%s\", ", status);
 		show_servicegroup_hostgroup_member_service_status_totals(hststatus->host_name, data);
 		printf("}\n");
@@ -5515,6 +5513,7 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 	char *host_status_class = "";
 	char *service_status_class = "";
 	host *temp_host;
+	service *temp_service;
 	hoststatus *temp_hoststatus;
 	statusdata *temp_status = NULL;
 	char *processed_string = NULL;
@@ -5653,6 +5652,7 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 			json_start = FALSE;
 
 			printf("{ \"host_name\": \"%s\",\n", json_encode(temp_host->name));
+			printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 			printf("\"host_status\": \"%s\",\n", status);
 			printf("\"services\": [ \n");
 		} else {
@@ -5729,6 +5729,10 @@ int show_hostgroup_grid(hostgroup *temp_hostgroup) {
 					json_start2 = FALSE;
 
 					printf("{ \"service_description\": \"%s\",\n", json_encode(temp_status->svc_description));
+
+					temp_service = find_service(temp_status->host_name, temp_status->svc_description);
+					printf("\"service_display_name\": \"%s\",\n", (temp_service != NULL && temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_status->svc_description));
+
 					if (temp_status == NULL)
 						printf("\"service_status\": null } ");
 					else

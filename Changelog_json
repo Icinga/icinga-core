@@ -2,6 +2,10 @@
 Classic-UI JSON Change Log
 #######################
 
+1.8.0 - IMPORTANT: strings changed (making string names more consitent throughout all cgis) #2693
+* changed host -> host_name  !!!!!
+* changed service or description -> service_description  !!!!
+* added host_display_name and service_display_name to every json output!
 1.7.1 - only values added, no existing values changed
 * added host_display_name to host and service status data
 * added service_display_name to service status data

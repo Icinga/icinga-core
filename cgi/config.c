@@ -742,6 +742,7 @@ void display_hosts(void) {
 	} else if (content_type == CSV_CONTENT) {
 		printf("%sHost Name%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAlias/Description%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sDisplay Name%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAddress%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAddress6%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sParent Hosts%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
@@ -786,6 +787,7 @@ void display_hosts(void) {
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host Name</TH>");
 		printf("<TH CLASS='data'>Alias/Description</TH>");
+		printf("<TH CLASS='data'>Display Name</TH>");
 		printf("<TH CLASS='data'>Address</TH>");
 		printf("<TH CLASS='data'>Address6</TH>");
 		printf("<TH CLASS='data'>Parent Hosts</TH>");
@@ -866,6 +868,7 @@ void display_hosts(void) {
 			json_start = FALSE;
 			printf("{ \"host_name\": \"%s\", ", json_encode(temp_host->name));
 			printf("\"alias\": \"%s\", ", json_encode(temp_host->alias));
+			printf("\"host_display_name\": \"%s\", ", json_encode(temp_host->display_name));
 			printf("\"address\": \"%s\", ", temp_host->address);
 			printf("\"address6\": \"%s\", ", temp_host->address6);
 			printf("\"parent_hosts\": [ ");
@@ -874,6 +877,7 @@ void display_hosts(void) {
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_host->name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_host->alias, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_host->display_name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_host->address, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_host->address6, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
@@ -885,6 +889,7 @@ void display_hosts(void) {
 			printf("<TD CLASS='%s'><a name='%s'><a href='%s?type=services&search_string=%%5E%s%%24'>%s</a></a></TD>\n", bg_class,
 			       url_encode(temp_host->name), CONFIG_CGI, url_encode(temp_host->name), html_encode(temp_host->name, FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->alias, FALSE));
+			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->display_name, FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->address, FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->address6, FALSE));
 			printf("<TD CLASS='%s'>", bg_class);
@@ -2022,6 +2027,7 @@ void display_services(void) {
 	} else if (content_type == CSV_CONTENT) {
 		printf("%sHost%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDescription%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sDisplay Name%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sMax. Check Attempts%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sNormal Check Interval%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sRetry Check Interval%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
@@ -2062,6 +2068,7 @@ void display_services(void) {
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host</TH>\n");
 		printf("<TH CLASS='data'>Description</TH>\n");
+		printf("<TH CLASS='data'>Display Name</TH>\n");
 		printf("<TH CLASS='data'>Max. Check Attempts</TH>\n");
 		printf("<TH CLASS='data'>Normal Check Interval</TH>\n");
 		printf("<TH CLASS='data'>Retry Check Interval</TH>\n");
@@ -2145,7 +2152,8 @@ void display_services(void) {
 				printf(",\n");
 			json_start = FALSE;
 			printf("{ \"host_name\": \"%s\", ", json_encode(temp_service->host_name));
-			printf("\"description\": \"%s\", ", json_encode(temp_service->description));
+			printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
+			printf("\"service_display_name\": \"%s\", ", json_encode(temp_service->display_name));
 			printf("\"max_check_attempts\": %d, ", temp_service->max_attempts);
 			printf("\"normal_check_interval\": \"%s\", ", time_string[0]);
 			printf("\"retry_check_interval\": \"%s\", ", time_string[1]);
@@ -2172,6 +2180,7 @@ void display_services(void) {
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_service->host_name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_service->description, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_service->display_name, csv_data_enclosure, csv_delimiter);
 			printf("%s%d%s%s", csv_data_enclosure, temp_service->max_attempts, csv_data_enclosure, csv_delimiter);
 
 			printf("%s%s%s%s", csv_data_enclosure, time_string[0], csv_data_enclosure, csv_delimiter);
@@ -2208,6 +2217,8 @@ void display_services(void) {
 
 			/* find a way to show display_name if set once */
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_service->description, FALSE));
+
+			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_service->display_name, FALSE));
 
 			printf("<TD CLASS='%s'>%d</TD>\n", bg_class, temp_service->max_attempts);
 

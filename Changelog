@@ -35,6 +35,7 @@ ENHANCEMENTS
 * classic ui: Added selection of timeperiod for notifications and history #2341 - RB
 * classic ui: Refactored reading of logfiles again #972 - RB
 * classic ui: Dropped context help entirely #2892 - RB
+* classic ui: Separate host_name/display_name and service_description/display_name in json output #2693 - RB
 
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
 * idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
@@ -59,6 +60,7 @@ CHANGES
 
 * icinga.spec: add devel package #2634
 
+classic ui: changed "cgi_json_version" to 1.8 -> see Changelog_json for changes
 classic ui: Changed cgi GET params
 	** Added "limit" and "start" for pagination to various cgi's - #2725
 	** Added "ts_start", "ts_end" and "order" to history.cgi and notifications.cgi - #2341
@@ -74,6 +76,8 @@ classic ui: Changed cgi GET params
 	** "result_limit" (default: 50) - #2725
 	** "result_limit" replaces "default_num_displayed_log_entries" - #2725
 
+!!!IMPORTANT!!!
+change strings in json output:
 
 
 1.7.1 - 18/06/2012

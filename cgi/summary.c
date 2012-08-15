@@ -1696,11 +1696,15 @@ void display_recent_alerts(void) {
 			json_start = FALSE;
 			printf("{ \"time\": \"%s\", ", date_time);
 			printf("\"alert_type\": \"%s\", ", (temp_event->event_type == AE_HOST_ALERT) ? "Host Alert" : "Service Alert");
-			printf("\"host\": \"%s\", ", json_encode(temp_host->name));
-			if (temp_event->event_type == AE_HOST_ALERT)
-				printf("\"service\": null, ");
-			else
-				printf("\"service\": \"%s\", ", json_encode(temp_service->description));
+			printf("\"host_name\": \"%s\", ", json_encode(temp_host->name));
+			printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+			if (temp_event->event_type == AE_HOST_ALERT) {
+				printf("\"service_description\": null, ");
+				printf("\"service_display_name\": null, ");
+			} else {
+				printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
+				printf("\"service_display_name\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+			}
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s%s%s", csv_data_enclosure, date_time, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, (temp_event->event_type == AE_HOST_ALERT) ? "Host Alert" : "Service Alert", csv_data_enclosure, csv_delimiter);
@@ -1868,6 +1872,8 @@ void display_top_alerts(void) {
 	alert_producer *last_producer = NULL;
 	alert_producer *new_producer = NULL;
 	alert_producer *temp_list = NULL;
+	host *temp_host;
+	service *temp_service;
 	int producer_type = AE_HOST_PRODUCER;
 	int current_item = 0;
 	int odd = 0;
@@ -1982,11 +1988,19 @@ void display_top_alerts(void) {
 			json_start = FALSE;
 			printf("{ \"rank\": %d, ", current_item);
 			printf(" \"producer_type\": \"%s\", ", (temp_producer->producer_type == AE_HOST_PRODUCER) ? "Host" : "Service");
-			printf(" \"host\": \"%s\", ", json_encode(temp_producer->host_name));
-			if (temp_producer->producer_type == AE_HOST_PRODUCER)
-				printf(" \"service\": null, ");
-			else
-				printf(" \"service\": \"%s\", ", json_encode(temp_producer->service_description));
+			printf(" \"host_name\": \"%s\", ", json_encode(temp_producer->host_name));
+
+			temp_host = find_host(temp_producer->host_name);
+			printf("\"host_display_name\": \"%s\", ", (temp_host != NULL && temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+			if (temp_producer->producer_type == AE_HOST_PRODUCER) {
+				printf(" \"service_description\": null, ");
+				printf(" \"service_display_name\": null, ");
+			} else {
+				printf(" \"service_description\": \"%s\", ", json_encode(temp_producer->service_description));
+
+				temp_service = find_service(temp_producer->host_name, temp_producer->service_description);
+				printf("\"service_display_name\": \"%s\", ", (temp_service != NULL && temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+			}
 			printf(" \"total_alerts\": %d}", temp_producer->total_alerts);
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%d%s%s", csv_data_enclosure, current_item, csv_data_enclosure, csv_delimiter);
@@ -2040,9 +2054,7 @@ void display_alerts(void) {
 	int soft_service_unknown_alerts = 0;
 	int hard_service_critical_alerts = 0;
 	int soft_service_critical_alerts = 0;
-
 	int json_start = TRUE;
-
 	archived_event *temp_event;
 	host *temp_host;
 	service *temp_service;
@@ -2065,6 +2077,7 @@ void display_alerts(void) {
 				printf("],\n");
 			json_list_start = FALSE;
 			printf("\"host_name\": \"%s\",\n", json_encode(target_host->name));
+			printf("\"host_display_name\": \"%s\", ", (target_host->display_name != NULL) ? json_encode(target_host->display_name) : json_encode(target_host->name));
 			printf("\"report\": [\n");
 		}
 	}
@@ -2108,8 +2121,13 @@ void display_alerts(void) {
 			if (json_list_start == FALSE)
 				printf("],\n");
 			json_list_start = FALSE;
-			printf("\"host_name\": \"%s\",\n", json_encode(target_service->host_name));
-			printf("\"service\": \"%s\",\n", json_encode(target_service->description));
+			temp_host = find_host(target_service->host_name);
+			if (temp_host == NULL)
+				return;
+			printf("\"host_name\": \"%s\",\n", json_encode(temp_host->name));
+			printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+			printf("\"service_description\": \"%s\",\n", json_encode(target_service->description));
+			printf("\"service_display_name\": \"%s\", ", (target_service->display_name != NULL) ? json_encode(target_service->display_name) : json_encode(target_service->description));
 			printf("\"report\": [\n");
 		}
 

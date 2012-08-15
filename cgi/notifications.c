@@ -877,11 +877,15 @@ void display_notifications(void) {
 				if (content_type == JSON_CONTENT) {
 					if (json_start == FALSE)
 						printf(",\n");
-					printf("{\"host\": \"%s\", ", json_encode(displayed_host_name));
-					if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION)
-						printf("\"service\": \"%s\", ", json_encode(displayed_service_desc));
-					else
-						printf("\"service\": null, ");
+					printf("{\"host_name\": \"%s\", ", json_encode(temp_host->name));
+					printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+					if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION) {
+						printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
+						printf("\"service_display_name\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+					} else {
+						printf("\"service_description\": null, ");
+						printf("\"service_display_name\": null, ");
+					}
 					printf("\"type\": \"%s\", ", alert_level);
 					printf("\"time\": \"%s\", ", date_time);
 					printf("\"contact\": \"%s\", ", json_encode(contact_name));
