@@ -2391,7 +2391,7 @@ void show_service_detail(void) {
 
 		if (content_type == HTML_CONTENT) {
 
-			printf("<TR onClick=\"toggle_checkbox('service_%d','tableformservice');\">\n", total_service_entries);
+			printf("<TR>\n");
 
 			/* host name column */
 			if (new_host == TRUE) {
@@ -2613,15 +2613,15 @@ void show_service_detail(void) {
 
 
 			/* the rest of the columns... */
-			printf("<TD CLASS='status%s'>%s</TD>\n", status_class, temp_status->status_string);
-			printf("<TD CLASS='status%s' nowrap>%s</TD>\n", status_bg_class, temp_status->last_check);
-			printf("<TD CLASS='status%s' nowrap>%s</TD>\n", status_bg_class, temp_status->state_duration);
-			printf("<TD CLASS='status%s'>%s</TD>\n", status_bg_class, temp_status->attempts);
-			printf("<TD CLASS='status%s' valign='center'>%s</TD>\n", status_bg_class, temp_status->plugin_output);
+			printf("<TD onClick=\"toggle_checkbox('service_%d','tableformservice');\" CLASS='status%s'>%s</TD>\n", total_service_entries, status_class, temp_status->status_string);
+			printf("<TD onClick=\"toggle_checkbox('service_%d','tableformservice');\" CLASS='status%s' nowrap>%s</TD>\n", total_service_entries, status_bg_class, temp_status->last_check);
+			printf("<TD onClick=\"toggle_checkbox('service_%d','tableformservice');\" CLASS='status%s' nowrap>%s</TD>\n", total_service_entries, status_bg_class, temp_status->state_duration);
+			printf("<TD onClick=\"toggle_checkbox('service_%d','tableformservice');\" CLASS='status%s'>%s</TD>\n", total_service_entries, status_bg_class, temp_status->attempts);
+			printf("<TD onClick=\"toggle_checkbox('service_%d','tableformservice');\" CLASS='status%s' valign='center'>%s</TD>\n", total_service_entries, status_bg_class, temp_status->plugin_output);
 
 			/* Checkbox for service(s) */
 			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
-				printf("<TD CLASS='status%s' nowrap align='center'>", status_bg_class);
+				printf("<TD onClick=\"toggle_checkbox('service_%d','tableformservice');\" CLASS='status%s' nowrap align='center'>", total_service_entries, status_bg_class);
 				printf("<input onClick=\"toggle_checkbox('service_%d','tableformservice');\" type='checkbox' id='service_%d' name='hostservice' value='%s^%s'></TD>\n", total_service_entries, total_service_entries, temp_status->host_name, temp_status->svc_description);
 			}
 
@@ -2969,7 +2969,7 @@ void show_host_detail(void) {
 
 		if (content_type == HTML_CONTENT) {
 
-			printf("<TR onClick=\"toggle_checkbox('host_%d','tableformhost');\">\n", total_host_entries);
+			printf("<TR>\n");
 
 
 			/**** host name column ****/
@@ -3069,15 +3069,15 @@ void show_host_detail(void) {
 			printf("</TD>\n");
 
 			/* the rest of the columns... */
-			printf("<TD CLASS='status%s'>%s</TD>\n", status_class, temp_statusdata->status_string);
-			printf("<TD CLASS='status%s' nowrap>%s</TD>\n", status_bg_class, temp_statusdata->last_check);
-			printf("<TD CLASS='status%s' nowrap>%s</TD>\n", status_bg_class, temp_statusdata->state_duration);
-			printf("<TD CLASS='status%s'>%s</TD>\n", status_bg_class, temp_statusdata->attempts);
-			printf("<TD CLASS='status%s' valign='center'>%s</TD>\n", status_bg_class, temp_statusdata->plugin_output);
+			printf("<TD onClick=\"toggle_checkbox('host_%d','tableformhost');\" CLASS='status%s'>%s</TD>\n", total_host_entries, status_class, temp_statusdata->status_string);
+			printf("<TD onClick=\"toggle_checkbox('host_%d','tableformhost');\" CLASS='status%s' nowrap>%s</TD>\n", total_host_entries, status_bg_class, temp_statusdata->last_check);
+			printf("<TD onClick=\"toggle_checkbox('host_%d','tableformhost');\" CLASS='status%s' nowrap>%s</TD>\n", total_host_entries, status_bg_class, temp_statusdata->state_duration);
+			printf("<TD onClick=\"toggle_checkbox('host_%d','tableformhost');\" CLASS='status%s'>%s</TD>\n", total_host_entries, status_bg_class, temp_statusdata->attempts);
+			printf("<TD onClick=\"toggle_checkbox('host_%d','tableformhost');\" CLASS='status%s' valign='center'>%s</TD>\n", total_host_entries, status_bg_class, temp_statusdata->plugin_output);
 
 			/* Checkbox for host(s) */
 			if (is_authorized_for_read_only(&current_authdata) == FALSE) {
-				printf("<TD CLASS='status%s' nowrap align='center'>", status_bg_class);
+				printf("<TD onClick=\"toggle_checkbox('host_%d','tableformhost');\" CLASS='status%s' nowrap align='center'>", total_host_entries, status_bg_class);
 				printf("<input onClick=\"toggle_checkbox('host_%d','tableformhost');\" type='checkbox' id='host_%d' name='host' value='%s'></TD>\n", total_host_entries, total_host_entries, temp_statusdata->host_name);
 			}
 

@@ -67,6 +67,7 @@ FIXES
 
 * classic ui: fix setting send_notification or sticky_ack as GET param has no effect on cmd.cgi acks #2926 - MF
 	** now you can finally disable checkboxes default ticked with these options
+* classic ui: Fixed clicking an (action|notes)url in a row automatically ticks the row for the commands #2809 - RB
 
 * idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
 
