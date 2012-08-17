@@ -60,11 +60,6 @@ extern "C" {
 #define TAC_CGI			"tac.cgi"
 #define TRENDS_CGI		"trends.cgi"
 
-/* Are these ones still in use??? */
-#define TRACEROUTE_CGI		"traceroute.cgi"
-#define CHECKSANITY_CGI		"checksanity.cgi"
-#define MINISTATUS_CGI		"ministatus.cgi"
-
 
 /******************************* CGI IDS **********************************/
 
@@ -83,13 +78,8 @@ extern "C" {
 #define TAC_CGI_ID		13
 #define TRENDS_CGI_ID		14
 
-/* Are these ones still in use??? */
-#define TRACEROUTE_CGI_ID	17
-#define CHECKSANITY_CGI_ID	18
-#define MINISTATUS_CGI_ID	19
-
 /* for error msg */
-#define ERROR_CGI_ID	20
+#define ERROR_CGI_ID		20
 
 
 /******************************* ERROR CGI IDS **********************************/
@@ -122,15 +112,11 @@ extern "C" {
 #define TAC_HEADER_CSS		"tacheader.css"
 #define TRENDS_CSS		"trends.css"
 
-/* Are these ones still in use??? */
-#define CHECKSANITY_CSS		"checksanity.css"
-#define MINISTATUS_CSS		"ministatus.css"
-
 
 /**************************** JAVASCRIPT NAMES ******************************/
 
 #define CHECKBOX_FUNCTIONS_JS   "checkbox_functions.js"
-#define JQUERY_MAIN_JS		"jquery-1.6.2.min.js"
+#define JQUERY_MAIN_JS		"jquery-1.8.0.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
 #define SKINNYTIP_JS		"skinnytip.js"
 #define PAGE_REFRESH_JS		"page_refresh.js"
