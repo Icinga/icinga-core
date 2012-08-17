@@ -982,7 +982,7 @@ void print_form_element(int element, int cmd) {
 			printf("Check Time:");
 		}
 		print_help_box(help_text);
-		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='%s_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", (element == PRINT_END_TIME) ? "end" : "start", buffer);
+		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' class='timepicker' NAME='%s_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", (element == PRINT_END_TIME) ? "end" : "start", buffer);
 		break;
 
 	case PRINT_FIXED_FLEXIBLE_TYPE:
@@ -1040,7 +1040,7 @@ void print_form_element(int element, int cmd) {
 
 		printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
 		print_help_box(help_text);
-		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
+		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
 		break;
 
         case PRINT_EXPIRE_DISABLE_NOTIFICATIONS:
@@ -1061,7 +1061,7 @@ void print_form_element(int element, int cmd) {
 
                 printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
                 print_help_box(help_text);
-                printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
+                printf("</td><td align=\"left\"><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
                 break;
 
 	case PRINT_FORCE_CHECK:

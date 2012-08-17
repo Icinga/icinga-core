@@ -135,6 +135,20 @@ extern "C" {
 #define SKINNYTIP_JS		"skinnytip.js"
 #define PAGE_REFRESH_JS		"page_refresh.js"
 
+
+/**************************** JQUERY-UI PATH ******************************/
+
+#define JQ_UI_CORE_JS		"jquery.ui.core.min.js"
+#define JQ_UI_WIDGET_JS		"jquery.ui.widget.min.js"
+#define JQ_UI_MOUSE_JS		"jquery.ui.mouse.min.js"
+#define JQ_UI_SLIDER_JS		"jquery.ui.slider.min.js"
+#define JQ_UI_DATEPICKER_JS	"jquery.ui.datepicker.min.js"
+#define JQ_UI_TIMEPICKER_JS	"jquery.ui.timepicker-addon.min.js"
+
+#define JQ_UI_ALL_CSS		"theme/jquery.ui.all.css"
+#define JQ_UI_TIMEPICKER_CSS	"theme/jquery.ui.timepicker-addon.css"
+
+
 /********************************* ICONS ************************************/
 
 #define STATUS_ICON_WIDTH		20

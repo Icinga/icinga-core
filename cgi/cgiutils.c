@@ -44,6 +44,7 @@ char            url_images_path[MAX_FILENAME_LENGTH];
 char            url_logo_images_path[MAX_FILENAME_LENGTH];
 char            url_stylesheets_path[MAX_FILENAME_LENGTH];
 char            url_js_path[MAX_FILENAME_LENGTH];
+char            url_jquiryui_path[MAX_FILENAME_LENGTH];
 char            url_media_path[MAX_FILENAME_LENGTH];
 
 char            *service_critical_sound = NULL;
@@ -447,6 +448,9 @@ int read_cgi_config_file(char *filename) {
 
 			snprintf(url_js_path, sizeof(url_js_path), "%sjs/", url_html_path);
 			url_js_path[sizeof(url_js_path) - 1] = '\x0';
+
+			snprintf(url_jquiryui_path, sizeof(url_jquiryui_path), "%sjquery-ui/", url_html_path);
+			url_jquiryui_path[sizeof(url_jquiryui_path) - 1] = '\x0';
 
 			snprintf(url_media_path, sizeof(url_media_path), "%smedia/", url_html_path);
 			url_media_path[sizeof(url_media_path) - 1] = '\x0';
@@ -1121,7 +1125,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	if (embedded == TRUE)
 		return;
 
-	printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
+	printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
 	printf("<html>\n");
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n", url_images_path);
@@ -1149,12 +1153,47 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, PAGE_REFRESH_JS);
 	}
 
+	/* jQuery JavaScript library */
+	printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_MAIN_JS);
+
+	/* datetimepicker libs and css */
+	if (cgi_id == CMD_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID) {
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_CORE_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_WIDGET_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_MOUSE_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_SLIDER_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_DATEPICKER_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_TIMEPICKER_JS);
+
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_ALL_CSS);
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_TIMEPICKER_CSS);
+
+		printf("<script type=\"text/javascript\">\n");
+		printf("$(function() {\n");
+		printf("\t$( \".timepicker\" ).datetimepicker({\n");
+		printf("\t\tfirstDay: %d,\n", week_starts_on_monday);
+
+		if (date_format == DATE_FORMAT_EURO)
+			printf("\t\tdateFormat: 'dd-mm-yy',\n");
+		else if (date_format == DATE_FORMAT_ISO8601 || date_format == DATE_FORMAT_STRICT_ISO8601)
+			printf("\t\tdateFormat: 'yy-mm-dd%s',\n", (date_format == DATE_FORMAT_STRICT_ISO8601) ? "T" : "");
+		else
+			printf("\t\tdateFormat: 'mm-dd-yy',\n");
+
+		printf("\t\ttimeFormat: 'hh:mm:ss',\n");
+		printf("\t\tshowWeek: true,\n");
+		printf("\t\tchangeMonth: true,\n");
+		printf("\t\tchangeYear: true\n");
+		printf("\t});\n");
+		printf("});\n");
+		printf("</script>\n");
+	}
+
+	/* Add jQuery MSDropDown to sites with pagination and status.cgi */
 	if (cgi_id == STATUS_CGI_ID || cgi_id == EXTINFO_CGI_ID || cgi_id == CONFIG_CGI_ID || cgi_id == HISTORY_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID) {
-		/* JavaScript for dropdown menu WITH images */
-		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_MAIN_JS);
-		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_DD_JS);
 
 		/* This CSS IS needed for proper dropdown menu's (bypass the use_stylesheets above, who does without anyway?) */
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_DD_JS);
 		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_stylesheets_path, JQUERY_DD_CSS);
 
 		/* functions to handle the checkboxes and dropdown menus */

@@ -926,10 +926,10 @@ void show_filter(void) {
 
 	printf("<br><table border=0 cellspacing=0 cellpadding=0>\n");
 	get_time_string(&ts_start, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
-	printf("<tr><td>Start:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' NAME='start_time' VALUE='%s' SIZE=\"25\"></td></tr>", buffer);
+	printf("<tr><td>Start:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' class='timepicker' NAME='start_time' VALUE='%s' SIZE=\"25\"></td></tr>", buffer);
 
 	get_time_string(&ts_end, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
-	printf("<tr><td>End:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr></table></div>", buffer);
+	printf("<tr><td>End:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr></table></div>", buffer);
 
 	printf("</td></tr>\n");
 
