@@ -200,6 +200,7 @@ int navbar_search = FALSE;				/**< set if user used search via menu (legacy) */
 int user_is_authorized_for_statusdata = FALSE;		/**< used to see if we return a no autorised or no data error message if no data is found after filtering */
 int nostatusheader_option = FALSE;			/**< define of status header should be displayed or not */
 int display_all_unhandled_problems = FALSE;		/**< special view of all unhandled problems */
+int display_all_problems = FALSE;			/**< special view of all problems */
 int result_start = 1;					/**< keep track from where we have to start displaying results */
 int get_result_limit = -1;				/**< needed to overwrite config value with result_limit we get vie GET */
 int displayed_host_entries = 0;				/**< number of displayed host entries */
@@ -986,11 +987,12 @@ int main(void) {
 
 	/* if user just want's to see all unhandled problems */
 	/* prepare for services */
-	if (display_all_unhandled_problems == TRUE) {
+	if (display_all_unhandled_problems == TRUE || display_all_problems == TRUE) {
 		host_status_types = HOST_UP | HOST_PENDING;
 		service_status_types = all_service_problems;
 		group_style_type = STYLE_HOST_SERVICE_DETAIL;
-		service_properties |= service_problems_unhandled;
+		if (display_all_unhandled_problems == TRUE)
+			service_properties |= service_problems_unhandled;
 	}
 
 	for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
@@ -1093,16 +1095,17 @@ int main(void) {
 		if (!(service_status_types & temp_servicestatus->status))
 			continue;
 
-		if (display_all_unhandled_problems == FALSE)
+		if (display_all_unhandled_problems == FALSE && display_all_problems == FALSE)
 			add_status_data(HOST_STATUS, temp_hoststatus);
 		add_status_data(SERVICE_STATUS, temp_servicestatus);
 	}
 
 	/* if user just want's to see all unhandled problems */
 	/* prepare for hosts */
-	if (display_all_unhandled_problems == TRUE) {
+	if (display_all_unhandled_problems == TRUE || display_all_problems == TRUE) {
 		host_status_types = all_host_problems;
-		host_properties |= host_problems_unhandled;
+		if (display_all_unhandled_problems == TRUE)
+			host_properties |= host_problems_unhandled;
 	}
 
 
@@ -1779,6 +1782,10 @@ int process_cgivars(void) {
 		else if (!strcmp(variables[x], "allunhandledproblems"))
 			display_all_unhandled_problems = TRUE;
 
+		/* we found the nodaemoncheck option */
+		else if (!strcmp(variables[x], "allproblems"))
+			display_all_problems = TRUE;
+
 		/* start num results to skip on displaying statusdata */
 		else if (!strcmp(variables[x], "start")) {
 			x++;
@@ -1850,6 +1857,8 @@ void show_service_status_totals(void) {
 		snprintf(status_url, sizeof(status_url) - 1, "%s?search_string=%s&style=%s", STATUS_CGI, url_encode(search_string), style);
 	else if (display_all_unhandled_problems == TRUE)
 		snprintf(status_url, sizeof(status_url) - 1, "%s?hoststatustypes=%d&serviceprops=%d&style=%s", STATUS_CGI, HOST_UP | HOST_PENDING, service_problems_unhandled, style);
+	else if (display_all_problems == TRUE)
+		snprintf(status_url, sizeof(status_url) - 1, "%s?hoststatustypes=%d&style=%s", STATUS_CGI, HOST_UP | HOST_PENDING, style);
 	else if (display_type == DISPLAY_HOSTS)
 		snprintf(status_url, sizeof(status_url) - 1, "%s?%s%s%s&style=%s&hoststatustypes=%d", STATUS_CGI, url_hosts_part, (service_filter != NULL) ? "&servicefilter=" : "", (service_filter != NULL) ? url_encode(service_filter) : "", style, host_status_types);
 	else if (display_type == DISPLAY_SERVICEGROUPS)
@@ -1964,9 +1973,9 @@ void show_host_status_totals(void) {
 	num_problems_unfiltered = num_total_hosts_down + num_total_hosts_unreachable;
 
 	/* construct url start */
-	if (group_style_type == STYLE_HOST_SERVICE_DETAIL && display_all_unhandled_problems == FALSE)
+	if (group_style_type == STYLE_HOST_SERVICE_DETAIL && display_all_unhandled_problems == FALSE && display_all_problems == FALSE)
 		style = strdup("hostservicedetail");
-	else if (group_style_type == STYLE_HOST_DETAIL || display_all_unhandled_problems == TRUE)
+	else if (group_style_type == STYLE_HOST_DETAIL || display_all_unhandled_problems == TRUE || display_all_problems == TRUE)
 		style = strdup("hostdetail");
 	else if (group_style_type == STYLE_OVERVIEW)
 		style = strdup("overview");
@@ -1981,6 +1990,8 @@ void show_host_status_totals(void) {
 		snprintf(status_url, sizeof(status_url) - 1, "%s?search_string=%s", STATUS_CGI, url_encode(search_string));
 	else if (display_all_unhandled_problems == TRUE)
 		snprintf(status_url, sizeof(status_url) - 1, "%s?hoststatustypes=%d&hostprops=%d&style=%s", STATUS_CGI, all_host_problems, host_problems_unhandled, style);
+	else if (display_all_problems == TRUE)
+		snprintf(status_url, sizeof(status_url) - 1, "%s?hoststatustypes=%d&style=%s", STATUS_CGI, all_host_problems, style);
 	else if (display_type == DISPLAY_HOSTS)
 		snprintf(status_url, sizeof(status_url) - 1, "%s?%s%s%s&style=%s", STATUS_CGI, url_hosts_part, (service_filter != NULL) ? "&servicefilter=" : "", (service_filter != NULL) ? url_encode(service_filter) : "", style);
 	else if (display_type == DISPLAY_SERVICEGROUPS)
@@ -2194,8 +2205,8 @@ void show_service_detail(void) {
 
 		if (search_string != NULL)
 			dummy = asprintf(&temp_url, "%s?search_string=%s&sortobject=services", STATUS_CGI, url_encode(search_string));
-		else if (display_all_unhandled_problems == TRUE)
-			dummy = asprintf(&temp_url, "%s?allunhandledproblems&sortobject=services", STATUS_CGI);
+		else if (display_all_unhandled_problems == TRUE || display_all_problems == TRUE)
+			dummy = asprintf(&temp_url, "%s?all%sproblems&sortobject=services", STATUS_CGI, (display_all_unhandled_problems == TRUE) ? "unhandled" : "");
 		else if (display_type == DISPLAY_HOSTS)
 			dummy = asprintf(&temp_url, "%s?%s&style=%s&sortobject=services", STATUS_CGI, url_hosts_part, style);
 		else if (display_type == DISPLAY_SERVICEGROUPS)
@@ -2203,7 +2214,7 @@ void show_service_detail(void) {
 		else
 			dummy = asprintf(&temp_url, "%s?%s&style=%s&sortobject=services", STATUS_CGI, url_hostgroups_part, style);
 
-		if (display_all_unhandled_problems == FALSE) {
+		if (display_all_unhandled_problems == FALSE && display_all_problems == FALSE) {
 			if (service_status_types != all_service_status_types) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
@@ -2816,8 +2827,8 @@ void show_host_detail(void) {
 
 		if (search_string != NULL)
 			dummy = asprintf(&temp_url, "%s?search_string=%s&sortobject=hosts", STATUS_CGI, url_encode(search_string));
-		else if (display_all_unhandled_problems == TRUE)
-			dummy = asprintf(&temp_url, "%s?allunhandledproblems&sortobject=hosts", STATUS_CGI);
+		else if (display_all_unhandled_problems == TRUE || display_all_problems == TRUE)
+			dummy = asprintf(&temp_url, "%s?all%sproblems&sortobject=hosts", STATUS_CGI, (display_all_unhandled_problems == TRUE) ? "unhandled" : "");
 		else if (display_type == DISPLAY_HOSTS)
 			dummy = asprintf(&temp_url, "%s?%s&style=%s&sortobject=hosts", STATUS_CGI, url_hosts_part, style);
 		else if (display_type == DISPLAY_SERVICEGROUPS)
@@ -2825,7 +2836,7 @@ void show_host_detail(void) {
 		else
 			dummy = asprintf(&temp_url, "%s?%s&style=%s&sortobject=hosts", STATUS_CGI, url_hostgroups_part, style);
 
-		if (display_all_unhandled_problems == FALSE) {
+		if (display_all_unhandled_problems == FALSE && display_all_problems == FALSE) {
 			if (service_status_types != all_service_status_types) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);

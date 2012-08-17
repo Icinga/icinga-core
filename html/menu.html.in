@@ -48,7 +48,8 @@
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?style=hostdetail&hoststatustypes=12" target="main">Host Problems</a></li>
 			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?style=hostdetail&hoststatustypes=12&hostprops=2097162" target="main">Unhandled Hosts</a></li>
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?allunhandledproblems" target="main">All Unhandled Problems</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/outages.cgi" target="main">Network Outages</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?allproblems" target="main">All Problems</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/outages.cgi" target="main">Network Outages</a></li>
 		</ul>
 		<h2>System</h2>
 		<ul>
