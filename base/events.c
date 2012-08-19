@@ -929,6 +929,22 @@ int schedule_new_event(int event_type, int high_priority, time_t run_time, int r
 		new_event->event_interval = event_interval;
 		new_event->timing_func = timing_func;
 		new_event->compensate_for_time_change = compensate_for_time_change;
+		/*
+		 * we need to keep the reverse link from the (service|host *)event_data->next_check_event
+		 * to the new_event in order to stay sane on schedule_host|service_check() checks
+		 * later on, already having a new event assigned to host/service, not rescheduling a new event.
+		 * see #2993 for deeper analysis
+		 */
+		if (event_type == EVENT_SERVICE_CHECK) {
+			service *temp_service = (service *)event_data;
+			temp_service->next_check_event = new_event;
+			log_debug_info(DEBUGL_CHECKS, 2, "Service '%s' on Host '%s' next_check_event populated\n", temp_service->description, temp_service->host_name);
+		}
+		if (event_type == EVENT_HOST_CHECK) {
+			host *temp_host = (host *)event_data;
+			temp_host->next_check_event = new_event;
+			log_debug_info(DEBUGL_CHECKS, 2, "Host '%s' next_check_event populated\n", temp_host->name);
+		}
 	} else
 		return ERROR;
 

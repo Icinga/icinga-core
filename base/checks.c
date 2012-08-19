@@ -1894,7 +1894,7 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 	 */
 	if (temp_event != NULL) {
 
-		log_debug_info(DEBUGL_CHECKS, 2, "Found another service check event for this service @ %s", ctime(&temp_event->run_time));
+		log_debug_info(DEBUGL_CHECKS, 2, "Found another service check event for service '%s' on host '%s' @ %s", svc->description, svc->host_name, ctime(&temp_event->run_time));
 
 		/* use the originally scheduled check unless we decide otherwise */
 		use_original_event = TRUE;
@@ -1938,6 +1938,8 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 	 */
 	if (use_original_event == FALSE) {
 
+		log_debug_info(DEBUGL_CHECKS, 2, "Scheduling new service check event for '%s' on host '%s' @ %s", svc->description, svc->host_name, ctime(&check_time));
+
 		/* allocate memory for a new event item */
 		new_event = (timed_event *)malloc(sizeof(timed_event));
 
@@ -1948,11 +1950,10 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 
 		/* make sure we kill off the old event */
 		if (temp_event) {
+			log_debug_info(DEBUGL_CHECKS, 2, "Removing service check event for service '%s' on host '%s' @ %s", svc->description, svc->host_name, ctime(&temp_event->run_time));
 			remove_event(temp_event, &event_list_low, &event_list_low_tail);
 			my_free(temp_event);
 		}
-
-		log_debug_info(DEBUGL_CHECKS, 2, "Scheduling new service check event.\n");
 
 		/* set the next service check event and time */
 		svc->next_check_event = new_event;
@@ -2370,7 +2371,7 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 	 */
 	if (temp_event != NULL) {
 
-		log_debug_info(DEBUGL_CHECKS, 2, "Found another host check event for this host @ %s", ctime(&temp_event->run_time));
+		log_debug_info(DEBUGL_CHECKS, 2, "Found another host check event for host '%s' @ %s", hst->name, ctime(&temp_event->run_time));
 
 		/* use the originally scheduled check unless we decide otherwise */
 		use_original_event = TRUE;
@@ -2413,7 +2414,7 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 	 */
 	if (use_original_event == FALSE) {
 
-		log_debug_info(DEBUGL_CHECKS, 2, "Scheduling new host check event.\n");
+		log_debug_info(DEBUGL_CHECKS, 2, "Scheduling new host check event for '%s' @ %s", hst->name, ctime(&check_time));
 
 		/* allocate memory for a new event item */
 		if((new_event = (timed_event *)malloc(sizeof(timed_event))) == NULL) {
@@ -2422,6 +2423,7 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 		}
 
 		if (temp_event) {
+			log_debug_info(DEBUGL_CHECKS, 2, "Removing host check event for host '%s' @ %s", hst->name, ctime(&temp_event->run_time));
 			remove_event(temp_event, &event_list_low, &event_list_low_tail);
 			my_free(temp_event);
 		}

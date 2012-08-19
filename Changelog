@@ -4,12 +4,13 @@ Icinga 1.7.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
-1.7.2 - XX/XX/2012
+1.7.2 - 27/08/2012
 
 ENHANCEMENTS
 
 FIXES
 * core: fix duplicated events on check scheduling logic for new events (Andreas Ericsson) #2676 #2993 - MF
+* core: avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993 - MF
 
 CHANGES
 
