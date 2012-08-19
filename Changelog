@@ -15,6 +15,8 @@ FIXES
 * core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197 - MF
 * core: fix whitespaces are not stripped using multiple templates ("use abc, def, ghi") #2701 - MF
 
+* idoutils: fix icinga mysql db creation script grants access to all dbs #2917 - MF
+
 CHANGES
 
 
