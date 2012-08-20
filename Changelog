@@ -59,6 +59,7 @@ FIXES
 * core: fsync() files before fclose() (Andreas Ericsson) #2949 - MF
 * ocre: remove weird switch() statement when scanning checkresult queue (Andreas Ericsson) #2950 - MF
 * core: fix deleting too old check result files (Andreas Ericsson) #2951 - MF
+* core: avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993
 
 * idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
 
