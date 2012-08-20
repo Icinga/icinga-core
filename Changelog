@@ -91,7 +91,7 @@ classic ui: Changed cgi GET params
 	** Added "start_time", "end_time" and "timeperiod" to notifications.cgi - #2341
 	** "send_notification" and "sticky_ack" on cmd.cgi require 0|1 vars, if not set, default is 1 #2926
 
-* classic ui: Added/Changed cgi.cfg options
+classic ui: Added/Changed cgi.cfg options
 	** authorized_for_comments_read_only - #2699
 	** authorized_for_downtimes_read_only - #2699
 	** authorized_contactgroup_for_comments_read_only - #2699
@@ -100,12 +100,14 @@ classic ui: Changed cgi GET params
 	** "result_limit" replaces "default_num_displayed_log_entries" - #2725
 	** default_expiring_disabled_notifications_duration=86400 #905
 
-*classic ui: change strings in json output: !!!IMPORTANT!!!
+classic ui: change strings in json output: !!!IMPORTANT!!!
 	** host -> host_name
 	** service -> service_description
 	** description -> service_description
 	** added host_display_name
 	** added service_display_name
+
+classic ui: added checkbox in cmd.cgi to deselect unintentional selected hosts/services #2697
 
 * idoutils: add disable_notif_expire_time to programstatus table #905
 
