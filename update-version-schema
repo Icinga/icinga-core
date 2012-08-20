@@ -10,10 +10,10 @@ else
 fi
 
 # Current version number
-CURRENTVERSION=1.7.0
+CURRENTVERSION=1.8.0
 
 # Last date
-LASTDATE=04-27-2012
+LASTDATE=08-20-2012
 
 if [ "x$1" = "x" ]
 then
@@ -60,7 +60,7 @@ perl -i -p -e "s/IDO_SCHEMA_VERSION \".*\"/IDO_SCHEMA_VERSION \"$newversion\"/;"
 # pgsql SELECT updatedbversion('1.3.0');
 # oracle DEFINE ICINGA_VERSION=1.3.0
 
-perl -i -p -e "s/VALUES \(\'idoutils\', \'.*\'\)/VALUES \(\'idoutils\', \'$newversion\'\)/;" module/idoutils/db/mysql/mysql.sql
+perl -i -p -e "s/VALUES \(\'idoutils\', \'.*\', NOW\(\), NOW\(\)\)/VALUES \(\'idoutils\', \'$newversion\', NOW\(\), NOW\(\)\)/;" module/idoutils/db/mysql/mysql.sql
 perl -i -p -e "s/version=\'.*\'/version=\'$newversion\'/;" module/idoutils/db/mysql/mysql.sql
 perl -i -p -e "s/updatedbversion\(\'.*\'\)/updatedbversion\(\'$newversion\'\)/;" module/idoutils/db/pgsql/pgsql.sql
 perl -i -p -e "s/ICINGA_VERSION=.*/ICINGA_VERSION=$newversion/;" module/idoutils/db/oracle/oracle.sql
