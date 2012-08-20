@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -40,6 +40,7 @@ extern int daemon_mode;
 extern time_t last_command_check;
 extern time_t last_log_rotation;
 extern int enable_notifications;
+extern time_t disable_notifications_expire_time;
 extern int execute_service_checks;
 extern int accept_passive_service_checks;
 extern int execute_host_checks;
@@ -492,6 +493,7 @@ void broker_program_status(int type, int flags, int attr, struct timeval *timest
 	ds.last_command_check = last_command_check;
 	ds.last_log_rotation = last_log_rotation;
 	ds.notifications_enabled = enable_notifications;
+	ds.disable_notifications_expire_time = disable_notifications_expire_time;
 	ds.active_service_checks_enabled = execute_service_checks;
 	ds.passive_service_checks_enabled = accept_passive_service_checks;
 	ds.active_host_checks_enabled = execute_host_checks;
@@ -978,11 +980,13 @@ void broker_statechange_data(int type, int flags, int attr, int statechange_type
 		ds.host_name = temp_service->host_name;
 		ds.service_description = temp_service->description;
 		ds.output = temp_service->plugin_output;
+		ds.long_output = temp_service->long_plugin_output;
 	} else {
 		temp_host = (host *)data;
 		ds.host_name = temp_host->name;
 		ds.service_description = NULL;
 		ds.output = temp_host->plugin_output;
+		ds.long_output = temp_host->long_plugin_output;
 	}
 	ds.object_ptr = data;
 	ds.state = state;

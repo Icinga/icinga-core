@@ -18,7 +18,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -41,23 +41,22 @@
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 
-extern int log_rotation_method;
 extern int enable_splunk_integration;
 extern int embedded;
 extern int display_header;
 extern int daemon_check;
-
-extern logentry *entry_list;
+extern int result_limit;
 /** @} */
 
 /** @name Internal vars
     @{ **/
-int log_archive = 0;				/**< holds the archive id, which should be shown */
 int display_type = DISPLAY_HOSTS;			/**< determine the view (host/service) */
 int show_all_hosts = TRUE;			/**< if historical data is requested for all hosts */
 int reverse = FALSE;				/**< determine if log should be viewed in reverse order */
 int history_options = HISTORY_ALL;		/**< determines the type of historical data */
 int state_options = STATE_ALL;			/**< the state of historical data */
+int result_start = 1;				/**< keep track from where we have to start displaying results */
+int get_result_limit = -1;			/**< needed to overwrite config value with result_limit we get vie GET */
 
 int display_frills = TRUE;			/**< determine if icons should be shown in listing */
 int display_timebreaks = TRUE;			/**< determine if time breaks should be shown */
@@ -67,7 +66,9 @@ int display_downtime_alerts = TRUE;		/**< determine if downtime alerts should be
 
 char *host_name = "all";				/**< the requested host name */
 char *service_desc = "";				/**< the requested service name */
-char log_file_to_use[MAX_FILENAME_LENGTH];	/**< the name of the logfile to read data from */
+
+time_t ts_start = 0L;				/**< start time as unix timestamp */
+time_t ts_end = 0L;				/**< end time as unix timestamp */
 
 authdata current_authdata;			/**< struct to hold current authentication data */
 
@@ -93,8 +94,6 @@ int process_cgivars(void);
 /** @brief Yes we need a main function **/
 int main(void) {
 	int result = OK;
-	char temp_buffer[MAX_INPUT_BUFFER];
-	char temp_buffer2[MAX_INPUT_BUFFER];
 
 	/* get the variables passed to us */
 	process_cgivars();
@@ -129,13 +128,16 @@ int main(void) {
 		return ERROR;
 	}
 
+	/* overwrite config value with amount we got via GET */
+	result_limit = (get_result_limit != -1) ? get_result_limit : result_limit;
+
 	document_header(CGI_ID, TRUE, "History");
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
-	/* determine what log file we should be using */
-	get_log_archive_to_use(log_archive, log_file_to_use, (int)sizeof(log_file_to_use));
+	/* calculate timestamps for reading logs */
+	convert_timeperiod_to_times(TIMEPERIOD_SINGLE_DAY, &ts_start, &ts_end);
 
 	if (display_header == TRUE) {
 
@@ -147,13 +149,11 @@ int main(void) {
 		printf("<td align=left valign=top width=33%%>\n");
 
 		if (display_type == DISPLAY_SERVICES)
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Service Alert History");
+			display_info_table("Service Alert History", &current_authdata, daemon_check);
 		else if (show_all_hosts == TRUE)
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Alert History");
+			display_info_table("Alert History", &current_authdata, daemon_check);
 		else
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Host Alert History");
-		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		display_info_table(temp_buffer, &current_authdata, daemon_check);
+			display_info_table("Host Alert History", &current_authdata, daemon_check);
 
 		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 		printf("<TR><TD CLASS='linkBox'>\n");
@@ -191,15 +191,7 @@ int main(void) {
 		printf("</DIV>\n");
 		printf("<BR />\n");
 
-		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s?%shost=%s&type=%d&statetype=%d&", HISTORY_CGI, (reverse == TRUE) ? "oldestfirst&" : "", url_encode(host_name), history_options, state_options);
-		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		if (display_type == DISPLAY_SERVICES) {
-			snprintf(temp_buffer2, sizeof(temp_buffer2) - 1, "service=%s&", url_encode(service_desc));
-			temp_buffer2[sizeof(temp_buffer2)-1] = '\x0';
-			strncat(temp_buffer, temp_buffer2, sizeof(temp_buffer) - strlen(temp_buffer) - 1);
-			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		}
-		display_nav_table(temp_buffer, log_archive);
+		display_nav_table(ts_start, ts_end);
 
 		printf("</td>\n");
 
@@ -207,11 +199,14 @@ int main(void) {
 		printf("<td align=right valign=top width=33%%>\n");
 
 		printf("<form method=\"GET\" action=\"%s\">\n", HISTORY_CGI);
-		printf("<table border=0 CLASS='optBox'>\n");
+		printf("<input type='hidden' name='ts_start' value='%lu'>\n", ts_start);
+		printf("<input type='hidden' name='ts_end' value='%lu'>\n", ts_end);
+		printf("<input type='hidden' name='limit' value='%d'>\n", result_limit);
 		printf("<input type='hidden' name='host' value='%s'>\n", (show_all_hosts == TRUE) ? "all" : escape_string(host_name));
 		if (display_type == DISPLAY_SERVICES)
 			printf("<input type='hidden' name='service' value='%s'>\n", escape_string(service_desc));
-		printf("<input type='hidden' name='archive' value='%d'>\n", log_archive);
+
+		printf("<table border=0 CLASS='optBox'>\n");
 
 		printf("<tr>\n");
 		printf("<td align=left CLASS='optBoxItem'>State type options:</td>\n");
@@ -263,25 +258,15 @@ int main(void) {
 		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='nosystem' %s> Hide Process Messages</td>", (display_system_messages == FALSE) ? "checked" : "");
 		printf("</tr>\n");
 		printf("<tr>\n");
-		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='oldestfirst' %s> Older Entries First</td>", (reverse == TRUE) ? "checked" : "");
+		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='order' value='old2new' %s> Older Entries First</td>", (reverse == TRUE) ? "checked" : "");
 		printf("</tr>\n");
 
 		printf("<tr>\n");
 		printf("<td align=left CLASS='optBoxItem'><input type='submit' value='Update'></td>\n");
 		printf("</tr>\n");
 
-		/* display context-sensitive help */
-		printf("<tr>\n");
-		printf("<td align=right>\n");
-		display_context_help(CONTEXTHELP_HISTORY);
-		printf("</td>\n");
-		printf("</tr>\n");
-
 		printf("</table>\n");
 		printf("</form>\n");
-
-		print_export_link(HTML_CONTENT, HISTORY_CGI, NULL);
-
 		printf("</td>\n");
 
 		/* end of top table */
@@ -372,23 +357,40 @@ int process_cgivars(void) {
 			state_options = atoi(variables[x]);
 		}
 
-
-		/* we found the log archive argument */
-		else if (!strcmp(variables[x], "archive")) {
+		/* we found first time argument */
+		else if (!strcmp(variables[x], "ts_start")) {
 			x++;
 			if (variables[x] == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			log_archive = atoi(variables[x]);
-			if (log_archive < 0)
-				log_archive = 0;
+			ts_start = (time_t)strtoul(variables[x], NULL, 10);
+		}
+
+		/* we found last time argument */
+		else if (!strcmp(variables[x], "ts_end")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			ts_end = (time_t)strtoul(variables[x], NULL, 10);
 		}
 
 		/* we found the order argument */
-		else if (!strcmp(variables[x], "oldestfirst")) {
-			reverse = TRUE;
+		else if (!strcmp(variables[x], "order")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			if (!strcmp(variables[x], "new2old"))
+				reverse = FALSE;
+			else if (!strcmp(variables[x], "old2new"))
+				reverse = TRUE;
 		}
 
 		/* we found the embed option */
@@ -422,6 +424,31 @@ int process_cgivars(void) {
 		/* we found the no downtime alerts option */
 		else if (!strcmp(variables[x], "nodowntime"))
 			display_downtime_alerts = FALSE;
+
+		/* start num results to skip on displaying statusdata */
+		else if (!strcmp(variables[x], "start")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			result_start = atoi(variables[x]);
+
+			if (result_start < 1)
+				result_start = 1;
+		}
+
+		/* amount of results to display */
+		else if (!strcmp(variables[x], "limit")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			get_result_limit = atoi(variables[x]);
+		}
 	}
 
 	/* free memory allocated to the CGI variables */
@@ -436,41 +463,65 @@ void show_history(void) {
 	char match1[MAX_INPUT_BUFFER];
 	char match2[MAX_INPUT_BUFFER];
 	char date_time[MAX_DATETIME_LENGTH];
+	char last_message_date[MAX_INPUT_BUFFER] = "";
+	char current_message_date[MAX_INPUT_BUFFER] = "";
 	char *temp_buffer = NULL;
 	char *entry_host_name = NULL;
 	char *entry_service_desc = NULL;
-	char error_text[MAX_INPUT_BUFFER] = "";
-	char last_message_date[MAX_INPUT_BUFFER] = "";
-	char current_message_date[MAX_INPUT_BUFFER] = "";
-	int found_line = FALSE;
+	char *error_text = NULL;
 	int system_message = FALSE;
 	int display_line = FALSE;
 	int history_type = SERVICE_HISTORY;
 	int history_detail_type = HISTORY_SERVICE_CRITICAL;
-	int status = 0;
+	int status = READLOG_OK;
+	int displayed_entries = 0;
+	int total_entries = 0;
 	host *temp_host = NULL;
 	service *temp_service = NULL;
 	logentry *temp_entry = NULL;
 	struct tm *time_ptr = NULL;
+	logentry *entry_list = NULL;
+	logfilter *filter_list = NULL;
 
-	/* read log entries */
-	status = get_log_entries(log_file_to_use, NULL, reverse, -1, -1);
 
-	if (status == READLOG_ERROR_MEMORY) {
-		printf("<P><DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV></P>");
+	/* scan the log file for archived state data */
+	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, reverse, ts_start, ts_end);
+
+
+	/* dealing with errors */
+	if (status == READLOG_ERROR_WARNING) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		} else
+			print_generic_error_message("Unkown error!", NULL, 0);
 	}
 
-	if (status == READLOG_ERROR_NOFILE) {
-		snprintf(error_text, sizeof(error_text), "Error: Could not open log file '%s' for reading!", log_file_to_use);
-		error_text[sizeof(error_text)-1] = '\x0';
-		print_generic_error_message(error_text, NULL, 0);
-		/* free memory */
-		free_log_entries();
+	if (status == READLOG_ERROR_MEMORY)
+			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
+
+
+	if (status == READLOG_ERROR_FATAL) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		}
+
 		return;
 
-	} else if (status == READLOG_OK) {
+	/* now we start displaying the log entries */
+	} else {
 
-		printf("<P><DIV CLASS='logEntries'>\n");
+		printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
+		printf("<div class='page_selector' id='hist_page_selector'>\n");
+		printf("<div id='page_navigation_copy'></div>");
+		page_limit_selector(result_start);
+		printf("</div>\n");
+		printf("</td><td width='33%%' align='right' style='padding-right:2px'>\n");
+		print_export_link(HTML_CONTENT, HISTORY_CGI, NULL);
+		printf("</td></tr></table>");
+
+		printf("<DIV CLASS='logEntries'>\n");
 
 		for (temp_entry = entry_list; temp_entry != NULL; temp_entry = temp_entry->next) {
 
@@ -710,13 +761,13 @@ void show_history(void) {
 				break;
 			}
 
-			image[sizeof(image)-1] = '\x0';
-			image_alt[sizeof(image_alt)-1] = '\x0';
+			image[sizeof(image) - 1] = '\x0';
+			image_alt[sizeof(image_alt) - 1] = '\x0';
 
 			/* get the timestamp */
 			time_ptr = localtime(&temp_entry->timestamp);
 			strftime(current_message_date, sizeof(current_message_date), "%B %d, %Y %H:00\n", time_ptr);
-			current_message_date[sizeof(current_message_date)-1] = '\x0';
+			current_message_date[sizeof(current_message_date) - 1] = '\x0';
 
 			get_time_string(&temp_entry->timestamp, date_time, sizeof(date_time), SHORT_DATE_TIME);
 			strip(date_time);
@@ -826,6 +877,14 @@ void show_history(void) {
 				/* display the entry if we should... */
 				if (display_line == TRUE) {
 
+					if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
+						total_entries++;
+						continue;
+					}
+
+					displayed_entries++;
+					total_entries++;
+
 					if (strcmp(last_message_date, current_message_date) != 0 && display_timebreaks == TRUE) {
 						printf("</DIV><BR CLEAR='all' />\n");
 						printf("<DIV CLASS='dateTimeBreak'>\n");
@@ -837,7 +896,7 @@ void show_history(void) {
 						printf("</DIV>\n");
 						printf("<BR CLEAR='all' /><DIV CLASS='logEntries'>\n");
 						strncpy(last_message_date, current_message_date, sizeof(last_message_date));
-						last_message_date[sizeof(last_message_date)-1] = '\x0';
+						last_message_date[sizeof(last_message_date) - 1] = '\x0';
 					}
 
 					if (display_frills == TRUE)
@@ -848,8 +907,6 @@ void show_history(void) {
 						display_splunk_generic_url(temp_entry->entry_text, 2);
 					}
 					printf("<br clear='all' />\n");
-
-					found_line = TRUE;
 				}
 			}
 
@@ -861,21 +918,23 @@ void show_history(void) {
 		}
 	}
 
-	free_log_entries();
+	free_log_entries(&entry_list);
 
-	printf("</DIV></P>\n");
+	printf("</DIV>\n");
 
-	if (found_line == FALSE) {
+	if (total_entries == 0) {
 		printf("<HR>\n");
-		printf("<P><DIV CLASS='errorMessage' style='text-align:center'>No history information was found ");
+		printf("<DIV CLASS='errorMessage' style='text-align:center'>No history information was found ");
 		if (display_type == DISPLAY_HOSTS)
 			printf("%s", (show_all_hosts == TRUE) ? "" : "for this host ");
 		else
 			printf("for this service ");
-		printf("in %s log file</DIV></P>", (log_archive == 0) ? "the current" : "this archived");
+		printf("in log files for selected date.</DIV>");
+		printf("<script type='text/javascript'>document.getElementById('hist_page_selector').style.display='none';</script>");
+	} else {
+		printf("<HR>\n");
+		page_num_selector(result_start, total_entries, displayed_entries);
 	}
-
-	printf("<HR>\n");
 
 	return;
 }

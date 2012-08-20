@@ -18,7 +18,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ************************************************************************/
 
 #ifndef _CGIUTILS_H
@@ -56,16 +56,9 @@ extern "C" {
 #define SHOWLOG_CGI		"showlog.cgi"
 #define STATUS_CGI		"status.cgi"
 #define STATUSMAP_CGI		"statusmap.cgi"
-#define STATUSWML_CGI		"statuswml.cgi"
-#define STATUSWRL_CGI		"statuswrl.cgi"
 #define SUMMARY_CGI		"summary.cgi"
 #define TAC_CGI			"tac.cgi"
 #define TRENDS_CGI		"trends.cgi"
-
-/* Are these ones still in use??? */
-#define TRACEROUTE_CGI		"traceroute.cgi"
-#define CHECKSANITY_CGI		"checksanity.cgi"
-#define MINISTATUS_CGI		"ministatus.cgi"
 
 
 /******************************* CGI IDS **********************************/
@@ -81,19 +74,12 @@ extern "C" {
 #define SHOWLOG_CGI_ID		9
 #define STATUS_CGI_ID		10
 #define STATUSMAP_CGI_ID	11
-#define STATUSWML_CGI_ID	12
-#define STATUSWRL_CGI_ID	13
-#define SUMMARY_CGI_ID		14
-#define TAC_CGI_ID		15
-#define TRENDS_CGI_ID		16
-
-/* Are these ones still in use??? */
-#define TRACEROUTE_CGI_ID	17
-#define CHECKSANITY_CGI_ID	18
-#define MINISTATUS_CGI_ID	19
+#define SUMMARY_CGI_ID		12
+#define TAC_CGI_ID		13
+#define TRENDS_CGI_ID		14
 
 /* for error msg */
-#define ERROR_CGI_ID	20
+#define ERROR_CGI_ID		20
 
 
 /******************************* ERROR CGI IDS **********************************/
@@ -126,18 +112,28 @@ extern "C" {
 #define TAC_HEADER_CSS		"tacheader.css"
 #define TRENDS_CSS		"trends.css"
 
-/* Are these ones still in use??? */
-#define CHECKSANITY_CSS		"checksanity.css"
-#define MINISTATUS_CSS		"ministatus.css"
-
 
 /**************************** JAVASCRIPT NAMES ******************************/
 
 #define CHECKBOX_FUNCTIONS_JS   "checkbox_functions.js"
-#define JQUERY_MAIN_JS		"jquery-1.6.2.min.js"
+#define JQUERY_MAIN_JS		"jquery-1.8.0.min.js"
 #define JQUERY_DD_JS		"jquery.dd.js"
 #define SKINNYTIP_JS		"skinnytip.js"
 #define PAGE_REFRESH_JS		"page_refresh.js"
+
+
+/**************************** JQUERY-UI PATH ******************************/
+
+#define JQ_UI_CORE_JS		"jquery.ui.core.min.js"
+#define JQ_UI_WIDGET_JS		"jquery.ui.widget.min.js"
+#define JQ_UI_MOUSE_JS		"jquery.ui.mouse.min.js"
+#define JQ_UI_SLIDER_JS		"jquery.ui.slider.min.js"
+#define JQ_UI_DATEPICKER_JS	"jquery.ui.datepicker.min.js"
+#define JQ_UI_TIMEPICKER_JS	"jquery.ui.timepicker-addon.min.js"
+
+#define JQ_UI_ALL_CSS		"theme/jquery.ui.all.css"
+#define JQ_UI_TIMEPICKER_CSS	"theme/jquery.ui.timepicker-addon.css"
+
 
 /********************************* ICONS ************************************/
 
@@ -254,6 +250,15 @@ extern "C" {
 #define TAC_HEADER_EXECUTION_ICON	"hourglass-exclamation.png"
 #define TAC_HEADER_LATENCY_ICON		"hourglass-arrow.png"
 
+#define FIRST_PAGE_ACTIVE_ICON		"icon_first_active.gif"
+#define FIRST_PAGE_INACTIVE_ICON	"icon_first_inactive.gif"
+#define PREVIOUS_PAGE_ACTIVE_ICON	"icon_previous_active.gif"
+#define PREVIOUS_PAGE_INACTIVE_ICON	"icon_previous_inactive.gif"
+#define NEXT_PAGE_ACTIVE_ICON		"icon_next_active.gif"
+#define NEXT_PAGE_INACTIVE_ICON		"icon_next_inactive.gif"
+#define LAST_PAGE_ACTIVE_ICON		"icon_last_active.gif"
+#define LAST_PAGE_INACTIVE_ICON		"icon_last_inactive.gif"
+
 /* icons taken from http://findicons.com */
 #define EXPORT_CSV_ICON			"export_csv.png"
 #define EXPORT_CSV_ICON_ALT		"Export to CSV"
@@ -294,11 +299,10 @@ extern "C" {
 
 /************************ CGI CONTENT TYPE *********************************/
 #define HTML_CONTENT		0
-#define WML_CONTENT		1
-#define IMAGE_CONTENT		2
-#define CSV_CONTENT		3
-#define JSON_CONTENT		4
-#define XML_CONTENT		5
+#define IMAGE_CONTENT		1
+#define CSV_CONTENT		2
+#define JSON_CONTENT		3
+#define XML_CONTENT		4
 
 
 /************************ CSV OUTPUT CHARACTERS ****************************/
@@ -416,94 +420,6 @@ extern "C" {
 #define SSI_FOOTER			1
 
 
-/************************ CONTEXT-SENSITIVE HELP  *************************/
-
-#define CONTEXTHELP_STATUS_DETAIL	"A1"
-#define CONTEXTHELP_STATUS_HGOVERVIEW	"A2"
-#define CONTEXTHELP_STATUS_HGSUMMARY	"A3"
-#define CONTEXTHELP_STATUS_HGGRID	"A4"
-#define CONTEXTHELP_STATUS_SVCPROBLEMS	"A5"
-#define CONTEXTHELP_STATUS_HOST_DETAIL	"A6"
-#define CONTEXTHELP_STATUS_HOSTPROBLEMS	"A7"
-#define CONTEXTHELP_STATUS_SGOVERVIEW	"A8"
-#define CONTEXTHELP_STATUS_SGSUMMARY	"A9"
-#define CONTEXTHELP_STATUS_SGGRID	"A10"
-
-#define CONTEXTHELP_TAC			"B1"
-
-#define CONTEXTHELP_MAP			"C1"
-
-#define CONTEXTHELP_LOG			"D1"
-
-#define CONTEXTHELP_HISTORY		"E1"
-
-#define CONTEXTHELP_NOTIFICATIONS	"F1"
-
-#define CONTEXTHELP_TRENDS_MENU1	"G1"
-#define CONTEXTHELP_TRENDS_MENU2	"G2"
-#define CONTEXTHELP_TRENDS_MENU3	"G3"
-#define CONTEXTHELP_TRENDS_MENU4	"G4"
-#define CONTEXTHELP_TRENDS_HOST		"G5"
-#define CONTEXTHELP_TRENDS_SERVICE	"G6"
-
-#define CONTEXTHELP_AVAIL_MENU1		"H1"
-#define CONTEXTHELP_AVAIL_MENU2		"H2"
-#define CONTEXTHELP_AVAIL_MENU3		"H3"
-#define CONTEXTHELP_AVAIL_MENU4		"H4"
-#define CONTEXTHELP_AVAIL_MENU5		"H5"
-#define CONTEXTHELP_AVAIL_HOSTGROUP	"H6"
-#define CONTEXTHELP_AVAIL_HOST		"H7"
-#define CONTEXTHELP_AVAIL_SERVICE	"H8"
-#define CONTEXTHELP_AVAIL_SERVICEGROUP	"H9"
-
-#define CONTEXTHELP_EXT_HOST		"I1"
-#define CONTEXTHELP_EXT_SERVICE		"I2"
-#define CONTEXTHELP_EXT_HOSTGROUP	"I3"
-#define CONTEXTHELP_EXT_PROCESS		"I4"
-#define CONTEXTHELP_EXT_PERFORMANCE	"I5"
-#define CONTEXTHELP_EXT_COMMENTS	"I6"
-#define CONTEXTHELP_EXT_DOWNTIME	"I7"
-#define CONTEXTHELP_EXT_QUEUE		"I8"
-#define CONTEXTHELP_EXT_SERVICEGROUP	"I9"
-
-#define CONTEXTHELP_CMD_INPUT		"J1"
-#define CONTEXTHELP_CMD_COMMIT		"J2"
-
-#define CONTEXTHELP_OUTAGES		"K1"
-
-#define CONTEXTHELP_CONFIG_MENU			"L1"
-#define CONTEXTHELP_CONFIG_HOSTS		"L2"
-#define CONTEXTHELP_CONFIG_HOSTDEPENDENCIES	"L3"
-#define CONTEXTHELP_CONFIG_HOSTESCALATIONS	"L4"
-#define CONTEXTHELP_CONFIG_HOSTGROUPS		"L5"
-#define CONTEXTHELP_CONFIG_HOSTGROUPESCALATIONS	"L6"
-#define CONTEXTHELP_CONFIG_SERVICES		"L7"
-#define CONTEXTHELP_CONFIG_SERVICEDEPENDENCIES	"L8"
-#define CONTEXTHELP_CONFIG_SERVICEESCALATIONS	"L9"
-#define CONTEXTHELP_CONFIG_CONTACTS		"L10"
-#define CONTEXTHELP_CONFIG_CONTACTGROUPS	"L11"
-#define CONTEXTHELP_CONFIG_TIMEPERIODS		"L12"
-#define CONTEXTHELP_CONFIG_COMMANDS		"L13"
-#define CONTEXTHELP_CONFIG_HOSTEXTINFO		"L14"
-#define CONTEXTHELP_CONFIG_SERVICEEXTINFO	"L15"
-#define CONTEXTHELP_CONFIG_SERVICEGROUPS	"L16"
-
-#define CONTEXTHELP_HISTOGRAM_MENU1	"M1"
-#define CONTEXTHELP_HISTOGRAM_MENU2	"M2"
-#define CONTEXTHELP_HISTOGRAM_MENU3	"M3"
-#define CONTEXTHELP_HISTOGRAM_MENU4	"M4"
-#define CONTEXTHELP_HISTOGRAM_HOST	"M5"
-#define CONTEXTHELP_HISTOGRAM_SERVICE	"M6"
-
-#define CONTEXTHELP_SUMMARY_MENU			"N1"
-#define CONTEXTHELP_SUMMARY_RECENT_ALERTS		"N2"
-#define CONTEXTHELP_SUMMARY_ALERT_TOTALS		"N3"
-#define CONTEXTHELP_SUMMARY_HOSTGROUP_ALERT_TOTALS	"N4"
-#define CONTEXTHELP_SUMMARY_HOST_ALERT_TOTALS		"N5"
-#define CONTEXTHELP_SUMMARY_SERVICE_ALERT_TOTALS	"N6"
-#define CONTEXTHELP_SUMMARY_ALERT_PRODUCERS		"N7"
-#define CONTEXTHELP_SUMMARY_SERVICEGROUP_ALERT_TOTALS	"N8"
-
 /************************** TAC TITLES ****************************/
 
 #define TAC_TITLE_HOST_NOT_DISABLED			"Hosts Not Disabled"
@@ -529,7 +445,7 @@ extern "C" {
 
 /************************** JSON OUTPUT VERSION ************************/
 
-#define JSON_OUTPUT_VERSION "1.7.1"
+#define JSON_OUTPUT_VERSION "1.8.0"
 
 
 /************************** BUFFER  ***************************************/
@@ -635,7 +551,6 @@ void print_extra_hostgroup_url(char *,char *);
 void print_extra_servicegroup_url(char *,char *);
 
 void display_info_table(char *,authdata *, int);
-void display_nav_table(char *,int);
 
 void display_splunk_host_url(host *);
 void display_splunk_service_url(service *);
@@ -651,8 +566,6 @@ void icinga_resource_file_error(char *);
 void object_data_error(void);
 void status_data_error(void);
 void print_error(char*, int);
-
-void display_context_help(char *);				/* displays context-sensitive help window */
 
 void document_header(int,int, char *);				/* print document header */
 void document_footer(int);					/* print document footer */
@@ -694,6 +607,31 @@ void print_comment_icon(char *, char *);
  *  This function prints modified_attributes as string
 **/
 void print_modified_attributes(int , char *, unsigned long);
+
+/** @brief Display's the page number selector
+ *  @param [in] result_start the result start for the current displayed list
+ *  @param [in] total_entries number of total entries available to display
+ *  @param [in] displayed_entries number of actually displayed entries
+ *
+ *  Display's the page number selector and gernerates all links to select next/previouse page. Also copy's selector to top of the page
+**/
+void page_num_selector(int result_start, int total_entries, int displayed_entries);
+
+/** @brief Display's the page limit selector
+ *  @param [in] result_start needed to keep track from which result num the user want's to change the amount of displayed entries.
+ *
+ *  Display's the page limit selector which overwrites the config value
+**/
+void page_limit_selector(int result_start);
+
+/** @brief Display's navigation through log files based on timestamps
+ *  @param [in] ts_start start timestamp to display and calculate next/previous pages from
+ *  @param [in] ts_end end timestamp to display and calculate next/previous pages from
+ *
+ *  Display's the log file navigation which is used in history, notifications and showlog.
+ *  Generates url's/link's to next and previous pages.
+**/
+void display_nav_table(time_t ts_start, time_t ts_end);
 
 /******************************** MULTIURL PATCH *******************************/
 

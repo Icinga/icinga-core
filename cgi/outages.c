@@ -18,7 +18,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *************************************************************************/
 
 #include "../include/config.h"
@@ -173,10 +173,6 @@ int main(void) {
 
 		/* right column of top row */
 		printf("<td align=right valign=bottom width=33%%>\n");
-
-		/* display context-sensitive help */
-		display_context_help(CONTEXTHELP_OUTAGES);
-
 		printf("</td>\n");
 
 		/* end of top table */
@@ -313,8 +309,8 @@ void display_network_outages(void) {
 		printf("%sSERVICES_AFFECTED%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
 		/* display the problem hosts... */
-		printf("<DIV ALIGN=CENTER>\n");
-		printf("<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0><TR><TD WIDTH='33%%'></TD><TD WIDTH='33%%'><DIV CLASS='dataTitle'>Blocking Outages</DIV><TD WIDTH='33%%'>");
+
+		printf("<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 align='center'><TR><TD WIDTH='33%%'></TD><TD WIDTH='33%%'><DIV CLASS='dataTitle'>Blocking Outages</DIV><TD WIDTH='33%%'>");
 
 		/* add export to csv link */
 		printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
@@ -369,7 +365,8 @@ void display_network_outages(void) {
 				printf(",\n");
 			json_start = FALSE;
 			printf("{ \"severity\": %d, ", temp_hostoutage->severity);
-			printf(" \"host\": \"%s\", ", json_encode(temp_hostoutage->hst->name));
+			printf(" \"host_name\": \"%s\", ", json_encode(temp_hostoutage->hst->name));
+			printf(" \"host_display_name\": \"%s\", ", (temp_hostoutage->hst->display_name != NULL) ? json_encode(temp_hostoutage->hst->display_name) : json_encode(temp_hostoutage->hst->name));
 			printf(" \"state\": \"%s\", ", status);
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%d%s%s", csv_data_enclosure, temp_hostoutage->severity, csv_data_enclosure, csv_delimiter);
@@ -423,9 +420,6 @@ void display_network_outages(void) {
 #ifdef USE_STATUSMAP
 			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status map for this host and its children' TITLE='View status map for this host and its children'></A>\n", STATUSMAP_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUSMAP_ICON);
 #endif
-#ifdef USE_STATUSWRL
-			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View 3-D status map for this host and its children' TITLE='View 3-D status map for this host and its children'></A>\n", STATUSWRL_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUSWORLD_ICON);
-#endif
 #ifdef USE_TRENDS
 			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View trends for this host' TITLE='View trends for this host'></A>\n", TRENDS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, TRENDS_ICON);
 #endif
@@ -446,8 +440,6 @@ void display_network_outages(void) {
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</TABLE>\n");
-
-		printf("</DIV></P>\n");
 
 		if (total_entries == 0)
 			printf("<DIV CLASS='itemTotalsTitle'>%d Blocking Outages Displayed</DIV>\n", total_entries);

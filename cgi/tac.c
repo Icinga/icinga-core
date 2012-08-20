@@ -21,7 +21,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ***********************************************************************/
 
 /** @file tac.c
@@ -1796,10 +1796,6 @@ void display_tac_overview(void) {
 		printf("<tr>\n");
 
 		printf("<td valign=bottom align=right>\n");
-
-		/* display context-sensitive help */
-		display_context_help(CONTEXTHELP_TAC);
-
 		printf("</td>\n");
 
 		printf("<td>\n");

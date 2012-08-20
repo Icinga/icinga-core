@@ -18,7 +18,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -41,6 +41,8 @@ extern char		*authorized_for_all_services;
 extern char		*authorized_for_configuration_information;
 extern char		*authorized_for_full_command_resolution;
 extern char		*authorized_for_read_only;
+extern char		*authorized_for_comments_read_only;
+extern char		*authorized_for_downtimes_read_only;
 extern char		*authorized_for_system_commands;
 extern char		*authorized_for_system_information;
 extern char		*authorized_contactgroup_for_all_host_commands;
@@ -50,6 +52,8 @@ extern char		*authorized_contactgroup_for_all_services;
 extern char		*authorized_contactgroup_for_configuration_information;
 extern char		*authorized_contactgroup_for_full_command_resolution;
 extern char		*authorized_contactgroup_for_read_only;
+extern char		*authorized_contactgroup_for_comments_read_only;
+extern char		*authorized_contactgroup_for_downtimes_read_only;
 extern char		*authorized_contactgroup_for_system_commands;
 extern char		*authorized_contactgroup_for_system_information;
 extern char		*default_user_name;
@@ -128,6 +132,8 @@ int get_authentication_information(authdata *authinfo) {
 	authinfo->authorized_for_configuration_information = FALSE;
 	authinfo->authorized_for_full_command_resolution = FALSE;
 	authinfo->authorized_for_read_only = FALSE;
+	authinfo->authorized_for_comments_read_only = FALSE;
+	authinfo->authorized_for_downtimes_read_only = FALSE;
 	authinfo->number_of_authentication_rules = 0;
 	authinfo->authentication_rules = NULL;
 
@@ -174,6 +180,8 @@ int get_authentication_information(authdata *authinfo) {
 	AUTH_USER(configuration_information)
 	AUTH_USER(full_command_resolution)
 	AUTH_USER(read_only)
+	AUTH_USER(comments_read_only)
+	AUTH_USER(downtimes_read_only)
 	AUTH_USER(system_commands)
 	AUTH_USER(system_information)
 
@@ -185,6 +193,8 @@ int get_authentication_information(authdata *authinfo) {
 		AUTH_GROUP(configuration_information)
 		AUTH_GROUP(full_command_resolution)
 		AUTH_GROUP(read_only)
+		AUTH_GROUP(comments_read_only)
+		AUTH_GROUP(downtimes_read_only)
 		AUTH_GROUP(system_commands)
 		AUTH_GROUP(system_information)
 	}
@@ -494,6 +504,34 @@ int is_authorized_for_read_only(authdata *authinfo) {
 		return FALSE;
 
 	return authinfo->authorized_for_read_only;
+}
+
+/* check if current user is allowed to view read only comment data */
+int is_authorized_for_comments_read_only(authdata *authinfo) {
+
+	/* if we're not using authentication, fake it */
+	if (use_authentication == FALSE)
+		return FALSE;
+
+	/* if this user has not authenticated return error */
+	if (authinfo->authenticated == FALSE)
+		return FALSE;
+
+	return authinfo->authorized_for_comments_read_only;
+}
+
+/* check if current user is allowed to view read only downtime data */
+int is_authorized_for_downtimes_read_only(authdata *authinfo) {
+
+	/* if we're not using authentication, fake it */
+	if (use_authentication == FALSE)
+		return FALSE;
+
+	/* if this user has not authenticated return error */
+	if (authinfo->authenticated == FALSE)
+		return FALSE;
+
+	return authinfo->authorized_for_downtimes_read_only;
 }
 
 /* check if user is authorized to view information about a particular service */

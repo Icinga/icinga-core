@@ -18,7 +18,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ***********************************************************************/
 
 /** @file readlogs.c
@@ -29,42 +29,83 @@
 #include "../include/cgiutils.h"
 #include "../include/readlogs.h"
 
-
-/** @name initializing lists
-    @{ **/
-logfilter	*filter_list = NULL;			/**< list of filters which should applyed during log reading */
-logentry	*entry_list = NULL;			/**< the list with all current logentries */
-logentry 	*last_entry = NULL;			/**< the last used log entry element */
-/** @} */
-
+/** @brief file name data struct
+ *
+ *  structure to hold single file name for file list array
+**/
+struct file_data {
+	char	*file_name;				/**< holds file name */
+};
 
 /** @name external vars
     @{ **/
-extern int	log_rotation_method;			/**< the log rotation method of the main Icinga log file see common.h */
-
 extern char	log_file[MAX_FILENAME_LENGTH];		/**< the full file name of the main icinga log file */
 extern char	log_archive_path[MAX_FILENAME_LENGTH];	/**< the full path to the archived log files */
 /** @} */
 
-/** @name vars for log archive determination
-    @{ **/
-time_t		this_scheduled_log_rotation = 0L;		/**< timestamp of current log rotation*/
-time_t		last_scheduled_log_rotation = 0L;		/**< timestamp of last log rotation */
-time_t		next_scheduled_log_rotation = 0L;		/**< timestamp of next log rotation */
-/** @} */
 
+/** @brief sort helper function for icinga logfile sorting
+ *  @param [in] a_in file a to compare
+ *  @param [in] b_in file b to compare
+ *  @return wether file a is newer or older then file b, based on filename
+ *	@retval positive or negative
+ *  @author Ricardo Bartels
+**/
+int sort_icinga_logfiles_by_name(const void *a_in, const void *b_in) {
+	char date_a[11] = "";
+	char date_b[11] = "";
 
-/** @name log reading
-    @{ **/
+	struct file_data *a = (struct file_data *)a_in;
+	struct file_data *b = (struct file_data *)b_in;
+
+	if (a->file_name == NULL || b->file_name == NULL)
+		return 0;
+
+	// year
+	date_a[0]  = a->file_name[13];
+	date_a[1]  = a->file_name[14];
+	date_a[2]  = a->file_name[15];
+	date_a[3]  = a->file_name[16];
+	//month
+	date_a[4]  = a->file_name[7];
+	date_a[5]  = a->file_name[8];
+	// day
+	date_a[6]  = a->file_name[10];
+	date_a[7]  = a->file_name[11];
+	// hour
+	date_a[8]  = a->file_name[18];
+	date_a[9]  = a->file_name[19];
+	date_a[10] = 0;
+
+	// year
+	date_b[0]  = b->file_name[13];
+	date_b[1]  = b->file_name[14];
+	date_b[2]  = b->file_name[15];
+	date_b[3]  = b->file_name[16];
+	// month
+	date_b[4]  = b->file_name[7];
+	date_b[5]  = b->file_name[8];
+	// day
+	date_b[6]  = b->file_name[10];
+	date_b[7]  = b->file_name[11];
+	// hour
+	date_b[8]  = b->file_name[18];
+	date_b[9]  = b->file_name[19];
+	date_b[10] = 0;
+
+	// return compared values
+	return (int)(atoi(date_b) - atoi(date_a));
+}
 
 /** @brief Add Filter to the list of log filters
+ *  @param [out] filter_list a list of filters of type logfilter struct where requested filter got added
  *  @param [in] requested_filter the id of the log entry you want to filter for
  *  @param [in] include_exclude type of filter
  *	@arg LOGFILTER_INCLUDE
  *	@arg LOGFILTER_EXCLUDE
  *  @return wether adding filter was successful or not (see readlogs.h)
  *	@retval READLOG_OK
- *	@retval READLOG_ERROR
+ *	@retval READLOG_ERROR_FATAL
  *	@retval READLOG_ERROR_MEMORY
  *  @warning at the moment can be only one type of filters for all elements,
  *	     only include for all OR exclude for all.
@@ -80,7 +121,7 @@ time_t		next_scheduled_log_rotation = 0L;		/**< timestamp of next log rotation *
  * - LOGFILTER_INCLUDE keeps the log entries specified and throws out the rest
  * - LOGFILTER_EXCLUDE keeps all log entries except the ones which are specified
 **/
-int add_log_filter(int requested_filter, int include_exclude) {
+int add_log_filter(logfilter **new_filter, int requested_filter, int include_exclude) {
 	logfilter *temp_filter = NULL;
 
 	temp_filter = (logfilter *)malloc(sizeof(logfilter));
@@ -98,36 +139,36 @@ int add_log_filter(int requested_filter, int include_exclude) {
 		temp_filter->exclude = requested_filter;
 	else {
 		my_free(temp_filter);
-		return READLOG_ERROR;
+		return READLOG_ERROR_FATAL;
 	}
 
-	if (filter_list == NULL)
-		filter_list = temp_filter;
+	if (*new_filter == NULL)
+		*new_filter = temp_filter;
 	else {
-		temp_filter->next = filter_list;
-		filter_list = temp_filter;
+		temp_filter->next = *new_filter;
+		*new_filter = temp_filter;
 	}
 
 	return READLOG_OK;
 }
 
 
-/** @brief Read's a defined log file and stores the entries into entry list struct
- *  @param [in] log_file the full path of the log file to read
- *  @param [in] search_string a string you are searching for.
+/** @brief Read's log data for defined timerange and stores the entries into entry_list struct
+ *  @param [out] entry_list returns a filled entry list of requested log data
+ *  @param [in] filter_list a list of filters of type logfilter struct
+ *  @param [out] error_text returns a error string in case of an error execpt on READLOG_ERROR_MEMORY
+ *  @param [in] search_string a string you are searching for
  *		Set to NULL to disable search function
  *  @param [in] reverse this bool defines which order the log entries should return
  *  @param [in] ts_start defines the start timestamp for log entries
  *	@arg >=0 means unix timestamp
- *	@arg -1 deactivated
  *  @param [in] ts_end defines the end timestamp for log entries
  *	@arg >=0 means unix timestamp
- *	@arg -1 deactivated
  *  @return
  *	@retval READLOG_OK
- *	@retval READLOG_ERROR
+ *	@retval READLOG_ERROR_WARNING
+ *	@retval READLOG_ERROR_FATAL
  *	@retval READLOG_ERROR_MEMORY
- *	@retval READLOG_ERROR_NOFILE
  *	@retval READLOG_ERROR_FILTER
  *  @author Ricardo Bartels
  *
@@ -139,44 +180,188 @@ int add_log_filter(int requested_filter, int include_exclude) {
  *  entries will be returned which are between start and end. Very useful if user has all
  *  entries in one log file.
 **/
-int get_log_entries(char *log_file, char *search_string, int reverse, time_t ts_start, time_t ts_end) {
+int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error_text, char *search_string, int reverse, time_t ts_start, time_t ts_end) {
 	char *input = NULL;
 	char *temp_buffer = NULL;
 	char *search_regex = NULL;
+	char log_file_name[MAX_FILENAME_LENGTH];
+	char ts_buffer[16];
 	int type = 0;
 	int regex_i = 0, i = 0, len = 0;
+	int file_num = 1;
+	int file = 0;
+	int in_range = FALSE;
+	int return_val = READLOG_OK;
+	int data_found = FALSE;
+	int dummy;
 	short keep_entry = TRUE;
-	time_t timestamp;
+	time_t timestamp = 0L;
+	time_t last_timestamp = 0L;
 	mmapfile *thefile = NULL;
 	logentry *temp_entry = NULL;
+	logentry *last_entry = NULL;
 	regex_t preg;
 	logfilter *temp_filter;
+	DIR *dirp;
+	struct dirent *dptr;
+	struct file_data files[10000];
 
-	if ((thefile = mmap_fopen(log_file)) != NULL) {
+	/* empty error_text */
+	if (*error_text != NULL)
+		my_free(*error_text);
 
-		if (search_string != NULL) {
-			/* allocate for 3 extra chars, ^, $ and \0 */
-			search_regex = malloc(sizeof(char) * (strlen(search_string) * 2 + 3));
-			len = strlen(search_string);
-			for (i = 0; i < len; i++, regex_i++) {
-				if (search_string[i] == '*') {
-					search_regex[regex_i++] = '.';
-					search_regex[regex_i] = '*';
-				} else
-					search_regex[regex_i] = search_string[i];
-			}
-			//search_regex[0]='^';
-			//search_regex[regex_i++]='$';
+	/* bail out if one timestamp is negative */
+	if (ts_start < 0 || ts_end < 0) {
+		*error_text = strdup("start or end timestamp are invalid. Check submited date information");
+		return READLOG_ERROR_FATAL;
+	}
 
-			search_regex[regex_i] = '\0';
+	/* check if search_string is set */
+	if (search_string != NULL) {
 
-			/* check and compile regex */
-			if (regcomp(&preg, search_regex, REG_ICASE | REG_NOSUB) != 0) {
-				regfree(&preg);
-				mmap_fclose(thefile);
-				return READLOG_ERROR_FILTER;
-			}
+		/* allocate for 3 extra chars, ^, $ and \0 */
+		search_regex = malloc(sizeof(char) * (strlen(search_string) * 2 + 3));
+		len = strlen(search_string);
+		for (i = 0; i < len; i++, regex_i++) {
+			if (search_string[i] == '*') {
+				search_regex[regex_i++] = '.';
+				search_regex[regex_i] = '*';
+			} else
+				search_regex[regex_i] = search_string[i];
 		}
+
+		search_regex[regex_i] = '\0';
+
+		/* check and compile regex, return error on failure */
+		if (regcomp(&preg, search_regex, REG_ICASE | REG_NOSUB) != 0) {
+			regfree(&preg);
+			my_free(search_regex);
+			*error_text = strdup("It seems like that reagular expressions don't like what you searched for. Please change your search string.");
+			return READLOG_ERROR_FATAL;
+		}
+
+		my_free(search_regex);
+	}
+
+	/* initialize file data array */
+	for (i=0;i<10000;i++)
+		files[i].file_name = NULL;
+
+	/* try to open log_archive_path, return if it fails */
+	if ((dirp=opendir(log_archive_path)) == NULL){
+
+		if (search_string != NULL)
+			regfree(&preg);
+
+		dummy = asprintf(&temp_buffer, "Unable to open \"log_archive_path\" -> \"%s\"!!!", log_archive_path);
+		*error_text = strdup(temp_buffer);
+		my_free(temp_buffer);
+
+		return READLOG_ERROR_FATAL;
+
+	} else {
+
+		/* read every dir entry */
+		while ((dptr=readdir(dirp)) != NULL) {
+
+			/* filter dir for icinga / nagios log files */
+			if ((strncmp("icinga-",dptr->d_name,7) == 0 || strncmp("nagios-",dptr->d_name,7) == 0 ) && strstr(dptr->d_name, ".log"))
+				files[file_num++].file_name = strdup(dptr->d_name);
+		}
+		closedir(dirp);
+	}
+
+	/* sort log files, newest first */
+	qsort(files, sizeof(files) / sizeof(struct file_data) , sizeof(struct file_data), sort_icinga_logfiles_by_name);
+
+	/* define which log files to use */
+	for (i=0; i< file_num; i++) {
+
+		/* first log file is always the current log file */
+		if (i == 0) {
+			strncpy(log_file_name, log_file, sizeof(log_file_name) -1);
+			log_file_name[sizeof(log_file_name)-1] = '\x0';
+
+		/* return full path of logfile and store first timestamp of last file */
+		} else {
+			snprintf(log_file_name, sizeof(log_file_name) -1, "%s%s",log_archive_path, files[i].file_name);
+			log_file_name[sizeof(log_file_name)-1] = '\x0';
+
+			last_timestamp = timestamp;
+		}
+
+		/* free file entry and set to NULL. if valid file is found, entry gets refilled */
+		my_free(files[i].file_name);
+
+		/* we found data and we are out of range again, file must be older then ts_start. stop checking files */
+		if (data_found == TRUE && in_range == FALSE)
+			continue;
+
+		/* try to open log file, or throw error and try next log file */
+		if((file=open(log_file_name, O_RDONLY)) < -1) {
+
+			if (*error_text == NULL) {
+				dummy = asprintf(&temp_buffer, "Unable to open log file \"%s\" !!!", log_file_name);
+				*error_text = strdup(temp_buffer);
+				my_free(temp_buffer);
+			}
+
+			return_val = READLOG_ERROR_WARNING;
+
+			continue;
+		}
+
+		/* read first 16 bytes to get first timestamp, or throw error if data is not 16 bytes log (empty file) */
+		if(read(file,ts_buffer,16) != 16) {
+
+			if (*error_text == NULL) {
+				dummy = asprintf(&temp_buffer, "Log file \"%s\" invalid! No timestamp found within first 16 bytes!", log_file_name);
+				*error_text = strdup(temp_buffer);
+				my_free(temp_buffer);
+			}
+
+			return_val = READLOG_ERROR_WARNING;
+
+			close(file);
+			continue;
+		}
+
+		close(file);
+
+		/* get first timestamp */
+		temp_buffer = strtok(ts_buffer, "]");
+		timestamp = (temp_buffer == NULL) ? 0L : strtoul(temp_buffer + 1, NULL, 10);
+
+
+		/* if first (oldest) timestamp in file is newer then ts_end, skip file */
+		if (timestamp > ts_end)
+			continue;
+
+		/* file found where timestamp range matches ts_end */
+		if (timestamp < ts_end && (last_timestamp > ts_end || last_timestamp == 0L))
+			in_range = TRUE;
+
+		/* the priviouse file holds range for ts_start */
+		if (last_timestamp != 0L && last_timestamp < ts_start)
+			in_range = FALSE;
+
+		/* keep file if in range */
+		if(in_range == TRUE) {
+			files[i].file_name = strdup(log_file_name);
+			data_found = TRUE;
+		}
+	}
+
+	/* read all log files we found earlier in reverse order, starting with the oldest */
+	for (i=file_num; i >= 0; i--) {
+
+		/* if file name is empty try next file */
+		if (files[i].file_name == NULL)
+			continue;
+
+		/* try to open log file */
+		if ((thefile = mmap_fopen(files[i].file_name)) == NULL)
+			continue;
 
 		while (1) {
 
@@ -195,19 +380,20 @@ int get_log_entries(char *log_file, char *search_string, int reverse, time_t ts_
 			temp_buffer = strtok(input, "]");
 			timestamp = (temp_buffer == NULL) ? 0L : strtoul(temp_buffer + 1, NULL, 10);
 
-			/* skip line if out of time range */
-			if ((ts_start >= 0 && timestamp < ts_start) || (ts_end >= 0 && timestamp > ts_end))
+			/* skip line if out of range */
+			if ((ts_end >= 0 && timestamp > ts_end) || (ts_start >= 0 && timestamp < ts_start))
 				continue;
 
 			/* get log entry text */
 			temp_buffer = strtok(NULL, "\n");
 
+			/* if we search for something, check if it entry matches search_string */
 			if (search_string != NULL) {
 				if (regexec(&preg, temp_buffer, 0, NULL, 0) == REG_NOMATCH)
 					continue;
 			}
 
-
+			/* categorize log entry */
 			if (strstr(temp_buffer, " starting..."))
 				type = LOGENTRY_STARTUP;
 			else if (strstr(temp_buffer, " shutting down..."))
@@ -300,9 +486,9 @@ int get_log_entries(char *log_file, char *search_string, int reverse, time_t ts_
 				type = LOGENTRY_UNDEFINED;
 
 			/* apply filters */
-			if (filter_list != NULL) {
+			if (*filter_list != NULL) {
 				keep_entry = FALSE;
-				for (temp_filter = filter_list; temp_filter != NULL; temp_filter = temp_filter->next) {
+				for (temp_filter = *filter_list; temp_filter != NULL; temp_filter = temp_filter->next) {
 					if (temp_filter->include != 0) {
 						if (temp_filter->include == type) {
 							keep_entry = TRUE;
@@ -324,6 +510,7 @@ int get_log_entries(char *log_file, char *search_string, int reverse, time_t ts_
 			/* allocate memory for a new log entry */
 			temp_entry = (logentry *)malloc(sizeof(logentry));
 			if (temp_entry == NULL) {
+
 				mmap_fclose(thefile);
 				return READLOG_ERROR_MEMORY;
 			}
@@ -339,43 +526,45 @@ int get_log_entries(char *log_file, char *search_string, int reverse, time_t ts_
 			temp_entry->entry_text = strdup(temp_buffer);
 
 			if (reverse == TRUE) {
-				if (entry_list == NULL) {
-					entry_list = temp_entry;
-					last_entry = entry_list;
+				if (*entry_list == NULL) {
+					*entry_list = temp_entry;
+					last_entry = *entry_list;
 				} else {
 					last_entry->next = temp_entry;
 					last_entry = temp_entry;
 				}
 			} else {
-				temp_entry->next = entry_list;
-				entry_list = temp_entry;
+				temp_entry->next = *entry_list;
+				*entry_list = temp_entry;
 			}
 		}
 
 		mmap_fclose(thefile);
+	}
 
-		if (search_string != NULL)
-			regfree(&preg);
-	} else
-		return READLOG_ERROR_NOFILE;
+	for (i=0; i< file_num;i++)
+		my_free(files[i].file_name);
 
-	return READLOG_OK;
+	if (search_string != NULL)
+		regfree(&preg);
+
+	return return_val;
 }
 
 /** @brief frees all memory allocated to list of log filters in memory
  *  @author Ricardo Bartels
 **/
-void free_log_filters(void) {
+void free_log_filters(logfilter **filter_list) {
 	logfilter *temp_filter = NULL;
 	logfilter *next_filter = NULL;
 
-	for (temp_filter = filter_list; temp_filter != NULL;) {
+	for (temp_filter = *filter_list; temp_filter != NULL;) {
 		next_filter = temp_filter->next;
 		my_free(temp_filter);
 		temp_filter = next_filter;
 	}
 
-	filter_list = NULL;
+	*filter_list = NULL;
 
 	return;
 }
@@ -383,11 +572,11 @@ void free_log_filters(void) {
 /** @brief frees all memory allocated to list of log entries in memory
  *  @author Ricardo Bartels
 **/
-void free_log_entries(void) {
+void free_log_entries(logentry **entry_list) {
 	logentry *temp_entry;
 	logentry *next_entry;
 
-	for (temp_entry = entry_list; temp_entry != NULL;) {
+	for (temp_entry = *entry_list; temp_entry != NULL;) {
 		next_entry = temp_entry->next;
 		if (temp_entry->entry_text != NULL)
 			my_free(temp_entry->entry_text);
@@ -395,205 +584,7 @@ void free_log_entries(void) {
 		temp_entry = next_entry;
 	}
 
-	entry_list = NULL;
+	*entry_list = NULL;
 
 	return;
 }
-
-/**@}*/
-
-/** @name log archive determination
-    @{ **/
-
-/** @brief returns the file name of a log file depending on \c archive number and \c log_rotation_method
- *  @param [in] archive number of log archive to return file name for
- *  @param [out] file_name returns the file name corresponding to \c archive
- *  @param [in] file_name_length the maximum length of the char in \c file_name
- *
- *  This function determines the log file we should use (from current time). Depending which archive
- *  number given it returns the full file name of the log file we can read. (@ref get_log_entries)
-**/
-void get_log_archive_to_use(int archive, char *file_name, int file_name_length) {
-	struct tm *t;
-	FILE *fd;
-
-	/* determine the time at which the log was rotated for this archive # */
-	determine_log_rotation_times(archive);
-
-	/* if we're not rotating the logs or if we want the current log, use the main one... */
-	if (log_rotation_method == LOG_ROTATION_NONE || archive <= 0) {
-		strncpy(file_name, log_file, file_name_length);
-		file_name[file_name_length-1] = '\x0';
-		return;
-	}
-
-	t = localtime(&this_scheduled_log_rotation);
-
-	/* use the time that the log rotation occurred to figure out the name of the log file */
-	snprintf(file_name, file_name_length, "%sicinga-%02d-%02d-%d-%02d.log", log_archive_path, t->tm_mon + 1, t->tm_mday, t->tm_year + 1900, t->tm_hour);
-	file_name[file_name_length-1] = '\x0';
-
-	/* check if a icinga named archive logfile already exist. Otherwise change back to nagios syntax */
-	if ((fd = fopen(file_name, "r")) == NULL) {
-		snprintf(file_name, file_name_length, "%snagios-%02d-%02d-%d-%02d.log", log_archive_path, t->tm_mon + 1, t->tm_mday, t->tm_year + 1900, t->tm_hour);
-		file_name[file_name_length-1] = '\x0';
-
-		/* 06-02-2010 Michael Friedrich
-		   Yeah, and if no log has been written, nagios- will fail with the wrong error message
-		   leading the user to the assumption that the logfile is not even created - if the logfile
-		   was not rotated by the core after this date */
-		if ((fd = fopen(file_name, "r")) == NULL) {
-			snprintf(file_name, file_name_length, "%sicinga-%02d-%02d-%d-%02d.log", log_archive_path, t->tm_mon + 1, t->tm_mday, t->tm_year + 1900, t->tm_hour);
-			file_name[file_name_length-1] = '\x0';
-		} else
-			fclose(fd);
-	} else
-		fclose(fd);
-
-	return;
-}
-
-
-/** @brief returns an archive number for a given timestamp corresponding to \c log_rotation_method
- *  @param [in] target_time the timestamp for which the archive number should be returned for
- *  @return the archive number corresponding to given \c target_time
- *
- *  This function determines log archive to use, given a specific time. The log archive number
- *  represents the log file.
- *
- * In case the \c log_rotation_method would be daily then this archive numbers would return:
- *  - 0 - today
- *  - 1 - yesterday
- *  - 2 - 2 days ago
- *  - 3 - ...
-**/
-int determine_archive_to_use_from_time(time_t target_time) {
-	time_t current_time;
-	int current_archive = 0;
-
-	/* if log rotation is disabled, we don't have archives */
-	if (log_rotation_method == LOG_ROTATION_NONE)
-		return 0;
-
-	/* make sure target time is rational */
-	current_time = time(NULL);
-	if (target_time >= current_time)
-		return 0;
-
-	/* backtrack through archives to find the one we need for this time */
-	/* start with archive of 1, subtract one when we find the right time period to compensate for current (non-rotated) log */
-	for (current_archive = 1;; current_archive++) {
-
-		/* determine time at which the log rotation occurred for this archive number */
-		determine_log_rotation_times(current_archive);
-
-		/* if the target time falls within the times encompassed by this archive, we have the right archive! */
-		if (target_time >= this_scheduled_log_rotation)
-			return current_archive - 1;
-	}
-
-	return 0;
-}
-
-
-/** @brief determines the log rotation times
- *  @param [in] archive number of archive to determine the log rotation times for
- *
- *  determines the log rotation times - past, present, future - depending on \c archive
- *  number and \c log_rotation_method
-**/
-void determine_log_rotation_times(int archive) {
-	struct tm *t;
-	int current_month;
-	int is_dst_now = FALSE;
-	time_t current_time;
-
-	/* negative archive numbers don't make sense */
-	/* if archive=0 (current log), this_scheduled_log_rotation time is set to next rotation time */
-	if (archive < 0)
-		return;
-
-	time(&current_time);
-	t = localtime(&current_time);
-	is_dst_now = (t->tm_isdst > 0) ? TRUE : FALSE;
-	t->tm_min = 0;
-	t->tm_sec = 0;
-
-	switch (log_rotation_method) {
-
-	case LOG_ROTATION_HOURLY:
-		this_scheduled_log_rotation = mktime(t);
-		this_scheduled_log_rotation = (time_t)(this_scheduled_log_rotation - ((archive - 1) * 3600));
-		last_scheduled_log_rotation = (time_t)(this_scheduled_log_rotation - 3600);
-		break;
-
-	case LOG_ROTATION_DAILY:
-		t->tm_hour = 0;
-		this_scheduled_log_rotation = mktime(t);
-		this_scheduled_log_rotation = (time_t)(this_scheduled_log_rotation - ((archive - 1) * 86400));
-		last_scheduled_log_rotation = (time_t)(this_scheduled_log_rotation - 86400);
-		break;
-
-	case LOG_ROTATION_WEEKLY:
-		t->tm_hour = 0;
-		this_scheduled_log_rotation = mktime(t);
-		this_scheduled_log_rotation = (time_t)(this_scheduled_log_rotation - (86400 * t->tm_wday));
-		this_scheduled_log_rotation = (time_t)(this_scheduled_log_rotation - ((archive - 1) * 604800));
-		last_scheduled_log_rotation = (time_t)(this_scheduled_log_rotation - 604800);
-		break;
-
-	case LOG_ROTATION_MONTHLY:
-
-		t = localtime(&current_time);
-		t->tm_mon++;
-		t->tm_mday = 1;
-		t->tm_hour = 0;
-		t->tm_min = 0;
-		t->tm_sec = 0;
-		for (current_month = 0; current_month <= archive; current_month++) {
-			if (t->tm_mon == 0) {
-				t->tm_mon = 11;
-				t->tm_year--;
-			} else
-				t->tm_mon--;
-		}
-		last_scheduled_log_rotation = mktime(t);
-
-		t = localtime(&current_time);
-		t->tm_mon++;
-		t->tm_mday = 1;
-		t->tm_hour = 0;
-		t->tm_min = 0;
-		t->tm_sec = 0;
-		for (current_month = 0; current_month < archive; current_month++) {
-			if (t->tm_mon == 0) {
-				t->tm_mon = 11;
-				t->tm_year--;
-			} else
-				t->tm_mon--;
-		}
-		this_scheduled_log_rotation = mktime(t);
-
-		break;
-	default:
-		break;
-	}
-
-	/* adjust this rotation time for daylight savings time */
-	t = localtime(&this_scheduled_log_rotation);
-	if (t->tm_isdst > 0 && is_dst_now == FALSE)
-		this_scheduled_log_rotation = (time_t)(this_scheduled_log_rotation - 3600);
-	else if (t->tm_isdst == 0 && is_dst_now == TRUE)
-		this_scheduled_log_rotation = (time_t)(this_scheduled_log_rotation + 3600);
-
-	/* adjust last rotation time for daylight savings time */
-	t = localtime(&last_scheduled_log_rotation);
-	if (t->tm_isdst > 0 && is_dst_now == FALSE)
-		last_scheduled_log_rotation = (time_t)(last_scheduled_log_rotation - 3600);
-	else if (t->tm_isdst == 0 && is_dst_now == TRUE)
-		last_scheduled_log_rotation = (time_t)(last_scheduled_log_rotation + 3600);
-
-	return;
-}
-
-/** @} */

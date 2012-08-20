@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Modifizierte Attribute</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
+<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
+<link rel="prev" href="cgiincludes.html" title="Angepasste CGI-Kopf- und Fußzeilen">
+<link rel="next" href="objectinheritance.html" title="Objektvererbung">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Modifizierte Attribute</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="cgiincludes.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="objectinheritance.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Modifizierte Attribute">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="modified_attr"></a><a name="modified-attr"></a>Modifizierte Attribute</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Einführung</strong></span></p>
+
+  <p>Verschiedene Attribute von Host, Services und Kontakte können während der Laufzeit verändert werden, z.B. beim Deaktivieren von
+  Benachrichtigungen über das Web-Interface, wodurch der lokale Standardwert überschrieben wird. Der Core wird <span class="bold"><strong>immer</strong></span> zuerst das modifizierte Attribut benutzen.</p>
+
+  <p>Wenn "<a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a>" aktiviert ist (das ist der Standard),
+  dann werden diese Änderungen über Neustarts hinweg beibehalten. Falls Sie diese Einstellung deaktivieren, dann gelten die geänderten Werte
+  nur bis zum nächsten Neustart.</p>
+
+  <p>Neben der automatischen Änderung durch verschiedene Befehle der klassischen Oberfläche können Sie diese Werte auch mit Hilfe von
+  <a class="link" href="extcommands.html" title="Externe Befehle">externen Befehlen</a> anpassen.</p>
+
+  <p><span class="bold"><strong>Liste der externen Befehle zum ändern von Attributen</strong></span> (zu Details siehe <a class="link" href="extcommands2.html" title="Liste der externen Befehle">Liste der externen Befehle</a>)</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Host-Attribute ändern: <code class="code">CHANGE_HOST_MODATTR;</code>&lt;host_name&gt;;&lt;value&gt;</p>
+    </li>
+<li class="listitem">
+      <p>Service-Attribute ändern: <code class="code">CHANGE_SVC_MODATTR;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;value&gt;</p>
+    </li>
+<li class="listitem">
+      <p>Kontakt-Attribute ändern: <code class="code">CHANGE_CONTACT_MODATTR;</code>&lt;contact_name&gt;;&lt;value&gt;</p>
+    </li>
+<li class="listitem">
+      <p>Kontakt-Attribute ändern: <code class="code">CHANGE_CONTACT_MODHATTR;</code>&lt;contact_name&gt;;&lt;value&gt;</p>
+    </li>
+<li class="listitem">
+      <p>Kontakt-Attribute ändern: <code class="code">CHANGE_CONTACT_MODSATTR;</code>&lt;contact_name&gt;;&lt;value&gt;</p>
+    </li>
+</ul></div>
+
+  <p>Der Werte ist ein logisches ODER der verschiedenen Werte aus der Tabelle am Ende dieses Abschnitts. "Logisches ODER" bedeutet, dass
+  Sie die Werte addieren und die Summe benutzen müssen.</p>
+
+  <p><span class="bold"><strong>Beispiel</strong></span></p>
+
+  <p>Die folgenden Zeilen zeigen ein allgemeines Beispiel, wie externe Befehle an das Command-File übergeben werden.</p>
+
+  <pre class="programlisting"> #!/bin/sh
+ # Adjust variables to fit your environment as necessary.
+
+ now=`date +%s`
+ commandfile='/usr/local/icinga/var/rw/icinga.cmd'
+
+ /bin/printf "[%lu] CHANGE_HOST_MODATTR;Host1;11\n" $now &gt; $commandfile</pre>
+
+  <p>Das o.g. Kommando wird verschiedene Attribute von "Host1" ändern:</p>
+
+  <pre class="screen">enable notifications      1
+enable active checks      2
+enable the eventhandler   8
+                         --
+                         11</pre>
+
+  <p><a name="modified_attr-table"></a><span class="bold"><strong>Auszug aus include/common.h</strong></span></p>
+
+  <pre class="screen">/************************MODIFIED ATTRIBUTES *************************/
+#define MODATTR_NONE                            0
+#define MODATTR_NOTIFICATIONS_ENABLED           1
+#define MODATTR_ACTIVE_CHECKS_ENABLED           2
+#define MODATTR_PASSIVE_CHECKS_ENABLED          4
+#define MODATTR_EVENT_HANDLER_ENABLED           8
+#define MODATTR_FLAP_DETECTION_ENABLED          16
+#define MODATTR_FAILURE_PREDICTION_ENABLED      32
+#define MODATTR_PERFORMANCE_DATA_ENABLED        64
+#define MODATTR_OBSESSIVE_HANDLER_ENABLED       128
+#define MODATTR_EVENT_HANDLER_COMMAND           256
+#define MODATTR_CHECK_COMMAND                   512
+#define MODATTR_NORMAL_CHECK_INTERVAL           1024
+#define MODATTR_RETRY_CHECK_INTERVAL            2048
+#define MODATTR_MAX_CHECK_ATTEMPTS              4096
+#define MODATTR_FRESHNESS_CHECKS_ENABLED        8192
+#define MODATTR_CHECK_TIMEPERIOD                16384
+#define MODATTR_CUSTOM_VARIABLE                 32768
+#define MODATTR_NOTIFICATION_TIMEPERIOD         65536</pre>
+
+  <a class="indexterm" name="id1585666"></a>
+
+  <a class="indexterm" name="id1585681"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="cgiincludes.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="objectinheritance.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Angepasste CGI-Kopf- und Fußzeilen </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Objektvererbung</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

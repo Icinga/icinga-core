@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -89,6 +89,8 @@ extern int      execute_host_checks;
 extern int      child_processes_fork_twice;
 
 extern int      time_change_threshold;
+
+extern time_t	disable_notifications_expire_time;
 
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
@@ -675,6 +677,10 @@ void display_event_data(timed_event* event, int priority) {
 		printf("\t\t(program restart)\n");
 		break;
 
+	case EVENT_EXPIRE_DISABLED_NOTIFICATIONS:
+		printf("\t\t((expire disabled notifications)\n");
+		break;
+
 	case EVENT_CHECK_REAPER:
 		printf("\t\t(service check reaper)\n");
 		break;
@@ -929,6 +935,22 @@ int schedule_new_event(int event_type, int high_priority, time_t run_time, int r
 		new_event->event_interval = event_interval;
 		new_event->timing_func = timing_func;
 		new_event->compensate_for_time_change = compensate_for_time_change;
+		/*
+		 * we need to keep the reverse link from the (service|host *)event_data->next_check_event
+		 * to the new_event in order to stay sane on schedule_host|service_check() checks
+		 * later on, already having a new event assigned to host/service, not rescheduling a new event.
+		 * see #2993 for deeper analysis
+		 */
+		if (event_type == EVENT_SERVICE_CHECK) {
+			service *temp_service = (service *)event_data;
+			temp_service->next_check_event = new_event;
+			log_debug_info(DEBUGL_CHECKS, 2, "Service '%s' on Host '%s' next_check_event populated\n", temp_service->description, temp_service->host_name);
+		}
+		if (event_type == EVENT_HOST_CHECK) {
+			host *temp_host = (host *)event_data;
+			temp_host->next_check_event = new_event;
+			log_debug_info(DEBUGL_CHECKS, 2, "Host '%s' next_check_event populated\n", temp_host->name);
+		}
 	} else
 		return ERROR;
 
@@ -1502,6 +1524,34 @@ int handle_timed_event(timed_event *event) {
 
 		/* log the restart */
 		logit(NSLOG_PROCESS_INFO, TRUE, "PROGRAM_RESTART event encountered, restarting...\n");
+		break;
+
+	case EVENT_EXPIRE_DISABLED_NOTIFICATIONS:
+
+		log_debug_info(DEBUGL_EVENTS, 0, "** Expire Disabled Notifications Event\n");
+
+		/* check if this is a future event, and needs to be kept.
+		 * otherwise, we would remove/reset events bound to happen
+		 */
+		if (disable_notifications_expire_time > event->run_time)
+			break;
+		/*
+		 * only do it when we actually have a time set
+		 * ENABLE_NOTIFICATIONS will set that to 0,
+		 * indicating that expiry already happened
+		 */
+		if (disable_notifications_expire_time > 0) {
+
+			/* reset the expire time before enabling notifications */
+			disable_notifications_expire_time = 0L;
+
+			/* re-enable all notifications (triggers programstatus update for neb modules too) */
+			enable_all_notifications();
+
+		        /* log that we will now expire disabled notifications */
+		        logit(NSLOG_INFO_MESSAGE, TRUE, "Disabled Notifications expired. All Notifications re-enabled.\n");
+		}
+
 		break;
 
 	case EVENT_CHECK_REAPER:

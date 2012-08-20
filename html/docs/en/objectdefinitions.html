@@ -63,10 +63,12 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Please try to avoid special characters in the object definitions. Currently (Icinga &lt;= 1.5.0) there is a bug which
-    prevents forcing reschedules from the classic ui resulting in the error message that you are not authorized.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Please try to avoid special characters in the object definitions. In Icinga &lt;= 1.5.0 there was a bug which prevented
+    forcing reschedules from the classic ui resulting in the error message that you are not authorized.</p>
+  </td></tr>
 </table></div>
- 
+
   <p><a name="objectdefinitions-retention_notes"></a><span class="bold"><strong>Retention Notes</strong></span></p>
 
   <p>It is important to point out that several directives in host, service, and contact definitions may not be picked up by Icinga
@@ -125,13 +127,13 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-module">Module definitions</a></p>
 
-  <a class="indexterm" name="id1553994"></a>
+  <a class="indexterm" name="id1450728"></a>
 
-  <a class="indexterm" name="id1554005"></a>
+  <a class="indexterm" name="id1450738"></a>
 
   <div class="section" title="Host definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1554018"></a><a name="objectdefinitions-host"></a>Host definition</h3></div></div></div>
+<a name="id1450751"></a><a name="objectdefinitions-host"></a>Host definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -146,7 +148,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional. <span class="color"><font color="red">Please make sure that you read the notes on the "address", "contacts", and "contact_groups"
+      directive.</font></span></p>
     </td></tr>
 </table></div>
 
@@ -176,7 +179,7 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p><span class="color"><font color="red">address</font></span></p></td>
+<td><p>address</p></td>
 <td><p>address</p></td>
 </tr>
 <tr>
@@ -281,6 +284,11 @@
 </tr>
 <tr>
 <td><p></p></td>
+<td><p>failure_prediction_enabled</p></td>
+<td><p>[0/1]</p></td>
+</tr>
+<tr>
+<td><p></p></td>
 <td><p>process_perf_data</p></td>
 <td><p>[0/1]</p></td>
 </tr>
@@ -296,12 +304,12 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">contacts</font></span></td>
+<td>contacts</td>
 <td><p>contacts</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">contact_groups</font></span></td>
+<td>contact_groups</td>
 <td>contact_groups</td>
 </tr>
 <tr>
@@ -433,16 +441,16 @@
 <td>
 <p>This directive is used to define the address of the host. Normally, this is an IP address, although it could really
             be anything you want (so long as it can be used to check the status of the host). You can use a FQDN to identify the host
-            instead of an IP address, but if DNS services are not availble this could cause problems. When used properly, the $HOSTADDRESS$
+            instead of an IP address, but if DNS services are not available this could cause problems. When used properly, the $HOSTADDRESS$
             <a class="link" href="macros.html" title="Understanding Macros and How They Work">macro</a> will contain this address. </p> <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-                <p>If you do not specify an address directive in a host definition, the name of the host will be used as its address. A
-                word of caution about doing this, however - if DNS fails, most of your service checks will fail because the plugins will be
-                unable to resolve the host name.</p>
+                <p>If you do not specify an address directive in a host definition, the name of the host will be used as its address.
+                <span class="color"><font color="red">A word of caution about doing this, however - if DNS fails, most of your service
+                checks will fail because the plugins will be unable to resolve the host name.</font></span></p>
               </td></tr>
 </table></div>
 </td>
@@ -450,10 +458,10 @@
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>address6</strong></span>:</p></td>
 <td>
-<p>This directive is used to define a second address for the host. Normally, this is an IPv6 address, although it could really
-            be anything you want (so long as it can be used to check the status of the host). You can use a FQDN to identify the host
-            instead of an IP address, but if DNS services are not availble this could cause problems. When used properly, the $HOSTADDRESS6$
-            <a class="link" href="macros.html" title="Understanding Macros and How They Work">macro</a> will contain this address. </p> <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<p>This directive is used to define a second address for the host. Normally, this is an IPv6 address, although it
+            could really be anything you want (so long as it can be used to check the status of the host). You can use a FQDN to identify
+            the host instead of an IP address, but if DNS services are not available this could cause problems. When used properly, the
+            $HOSTADDRESS6$ <a class="link" href="macros.html" title="Understanding Macros and How They Work">macro</a> will contain this address. </p> <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
@@ -615,6 +623,11 @@
             states.</p></td>
 </tr>
 <tr>
+<td><p><span class="bold"><strong>failure_prediction_enabled</strong></span>:</p></td>
+<td><p>This directive is used to determine whether or not failure prediction is enabled for this host. Values: 0 = disable
+            host failure prediction, 1 = enable host failure prediction. </p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>process_perf_data *</strong></span>:</p></td>
 <td><p>This directive is used to determine whether or not the processing of performance data is enabled for this host.
             Values: 0 = disable performance data processing, 1 = enable performance data processing.</p></td>
@@ -635,19 +648,20 @@
 <td align="left" valign="top"><p><span class="bold"><strong>contacts</strong></span>:</p></td>
 <td><p>This is a list of the <span class="emphasis"><em>short names</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contacts</a> that should be notified whenever there are problems (or recoveries) with
             this host. Multiple contacts should be separated by commas. Useful if you want notifications to go to just a few people and
-            don't want to configure <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contact groups</a>. You must specify at least one
-            contact or contact group in each host definition.</p></td>
+            don't want to configure <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contact groups</a>. <span class="color"><font color="red">You must specify at least one contact or contact group in each host definition or nobody at all will be
+            notified</font></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>contact_groups</strong></span>:</p></td>
 <td><p>This is a list of the <span class="emphasis"><em>short names</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contact groups</a> that should be notified whenever there are problems (or
-            recoveries) with this host. Multiple contact groups should be separated by commas. You must specify at least one contact or
-            contact group in each host definition.</p></td>
+            recoveries) with this host. Multiple contact groups should be separated by commas. <span class="color"><font color="red">You
+            must specify at least one contact or contact group in each host definition or nobody at all will be
+            notified</font></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notification_interval</strong></span>:</p></td>
-<td><p>This directive is used to define the number of "time units" to wait before re-notifying a contact that this service
-            is <span class="emphasis"><em>still</em></span> down or unreachable. Unless you've changed the <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> directive from the default value of 60, this number will mean
+<td><p>This directive is used to define the number of "time units" to wait before re-notifying a contact that this host is
+            <span class="emphasis"><em>still</em></span> down or unreachable. Unless you've changed the <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> directive from the default value of 60, this number will mean
             minutes. If you set this value to 0, Icinga will <span class="emphasis"><em>not</em></span> re-notify contacts about problems for this host
             - only one problem notification will be sent out.</p></td>
 </tr>
@@ -668,10 +682,10 @@
 <td align="left" valign="top"><p><span class="bold"><strong>notification_options</strong></span>:</p></td>
 <td><p>This directive is used to determine when notifications for the host should be sent out. Valid options are a
             combination of one or more of the following: <span class="bold"><strong>d</strong></span> = send notifications on a DOWN state, <span class="bold"><strong>u</strong></span> = send notifications on an UNREACHABLE state, <span class="bold"><strong>r</strong></span> = send notifications
-            on recoveries (OK state), <span class="bold"><strong>f</strong></span> = send notifications when the host starts and stops <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">flapping</a>, and <span class="bold"><strong>s</strong></span> = send notifications when <a class="link" href="downtime.html" title="Scheduled Downtime">scheduled downtime</a> starts and ends. If you specify <span class="bold"><strong>n</strong></span> (none) as an
-            option, no host notifications will be sent out. If you do not specify any notification options, Icinga will assume that
-            you want notifications to be sent out for all possible states. Example: If you specify <span class="bold"><strong>d,r</strong></span> in
-            this field, notifications will only be sent out when the host goes DOWN and when it recovers from a DOWN state.</p></td>
+            on recoveries (OK state), <span class="bold"><strong>f</strong></span> = send notifications when the host starts and stops <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">flapping</a>, and <span class="bold"><strong>s</strong></span> = send notifications when <a class="link" href="downtime.html" title="Scheduled Downtime">scheduled downtime</a> starts and ends. <span class="color"><font color="red">If you specify <span class="bold"><strong>n</strong></span> (none) as an option, no host notifications will be sent out.</font></span> If you do not specify any
+            notification options, Icinga will assume that you want notifications to be sent out for all possible states. Example: If
+            you specify <span class="bold"><strong>d,r</strong></span> in this field, notifications will only be sent out when the host goes DOWN and
+            when it recovers from a DOWN state.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notifications_enabled *</strong></span>:</p></td>
@@ -746,13 +760,14 @@
             Unlike the image you use for the <span class="emphasis"><em>&lt;icon_image&gt;</em></span> variable, this one should probably
             <span class="emphasis"><em>not</em></span> have any transparency. If it does, the host object will look a bit weird. Images for hosts are assumed
             to be in the <span class="bold"><strong>logos/</strong></span> subdirectory in your HTML images directory (i.e.
-            <span class="emphasis"><em>/usr/local/icinga/share/images/logos</em></span>).</p>
-            <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+            <span class="emphasis"><em>/usr/local/icinga/share/images/logos</em></span>).</p> <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>This directive has no effect in Icinga</p></td></tr>
+<tr><td align="left" valign="top">
+                <p>This directive has no effect in Icinga</p>
+              </td></tr>
 </table></div>
 </td>
 </tr>
@@ -807,14 +822,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1554986"></a>
+    <a class="indexterm" name="id1451721"></a>
 
-    <a class="indexterm" name="id1556652"></a>
+    <a class="indexterm" name="id1453432"></a>
   </div>
 
   <div class="section" title="Hostgroup Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1554021"></a><a name="objectdefinitions-hostgroup"></a>Hostgroup Definition</h3></div></div></div>
+<a name="id1450754"></a><a name="objectdefinitions-hostgroup"></a>Hostgroup Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -948,14 +963,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1557171"></a>
+    <a class="indexterm" name="id1453953"></a>
 
-    <a class="indexterm" name="id1557179"></a>
+    <a class="indexterm" name="id1453963"></a>
   </div>
 
   <div class="section" title="Service Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1556668"></a><a name="objectdefinitions-service"></a>Service Definition</h3></div></div></div>
+<a name="id1453444"></a><a name="objectdefinitions-service"></a>Service Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -963,6 +978,16 @@
     <p>A service definition is used to identify a "service" that runs on a host. The term "service" is used very loosely. It can mean an
     actual service that runs on the host (POP, SMTP, HTTP, etc.) or some other type of metric associated with the host (response to a ping,
     number of logged in users, free disk space, etc.). The different arguments to a service definition are outlined below.</p>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Please note that some directives may be inherited from the host definition. For details refer to <a class="link" href="objectinheritance.html#objectinheritance-implied_inheritance">implied inheritance</a>.</p>
+    </td></tr>
+</table></div>
 
     <p><span class="emphasis"><em>Definition Format:</em></span></p>
 
@@ -972,7 +997,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional. <span class="color"><font color="red">Please make sure that you read the notes on the "contacts", and "contact_groups"
+      directive.</font></span></p>
     </td></tr>
 </table></div>
 
@@ -1102,6 +1128,11 @@
 </tr>
 <tr>
 <td><p></p></td>
+<td><p>failure_prediction_enabled</p></td>
+<td><p>[0/1]</p></td>
+</tr>
+<tr>
+<td><p></p></td>
 <td><p>process_perf_data</p></td>
 <td><p>[0/1]</p></td>
 </tr>
@@ -1142,12 +1173,12 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">contacts</font></span></td>
+<td>contacts</td>
 <td><p>contacts</p></td>
 </tr>
 <tr>
 <td><p></p></td>
-<td><span class="color"><font color="red">contact_groups</font></span></td>
+<td>contact_groups</td>
 <td><p>contact_groups</p></td>
 </tr>
 <tr>
@@ -1362,6 +1393,11 @@
             OK states, <span class="bold"><strong>w</strong></span> = WARNING states, <span class="bold"><strong>c</strong></span> = CRITICAL states, <span class="bold"><strong>u</strong></span> = UNKNOWN states.</p></td>
 </tr>
 <tr>
+<td><p><span class="bold"><strong>failure_prediction_enabled</strong></span>:</p></td>
+<td><p>This directive is used to determine whether or not failure prediction is enabled for this service. Values: 0 =
+            disable service failure prediction, 1 = enable service failure prediction.</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>process_perf_data *</strong></span>:</p></td>
 <td><p>This directive is used to determine whether or not the processing of performance data is enabled for this service.
             Values: 0 = disable performance data processing, 1 = enable performance data processing.</p></td>
@@ -1404,10 +1440,11 @@
             <span class="bold"><strong>u</strong></span> = send notifications on an UNKNOWN state, <span class="bold"><strong>c</strong></span> = send
             notifications on a CRITICAL state, <span class="bold"><strong>r</strong></span> = send notifications on recoveries (OK state), <span class="bold"><strong>f</strong></span> = send notifications when the service starts and stops <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">flapping</a>, and
             <span class="bold"><strong>s</strong></span> = send notifications when <a class="link" href="downtime.html" title="Scheduled Downtime">scheduled downtime</a> starts and ends.
-            If you specify <span class="bold"><strong>n</strong></span> (none) as an option, no service notifications will be sent out. If you do not
-            specify any notification options, Icinga will assume that you want notifications to be sent out for all possible states.
-            Example: If you specify <span class="bold"><strong>w,r</strong></span> in this field, notifications will only be sent out when the service
-            goes into a WARNING state and when it recovers from a WARNING state.</p></td>
+            <span class="color"><font color="red">If you specify <span class="bold"><strong>n</strong></span> (none) as an option, no service
+            notifications will be sent out.</font></span> If you do not specify any notification options, Icinga will assume that you
+            want notifications to be sent out for all possible states. Example: If you specify <span class="bold"><strong>w,r</strong></span> in this
+            field, notifications will only be sent out when the service goes into a WARNING state and when it recovers from a WARNING
+            state.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notifications_enabled *</strong></span>:</p></td>
@@ -1418,14 +1455,15 @@
 <td align="left" valign="top"><p><span class="bold"><strong>contacts</strong></span>:</p></td>
 <td><p>This is a list of the <span class="emphasis"><em>short names</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contacts</a> that should be notified whenever there are problems (or recoveries) with
             this service. Multiple contacts should be separated by commas. Useful if you want notifications to go to just a few people and
-            don't want to configure <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contact groups</a>. You must specify at least one
-            contact or contact group in each service definition.</p></td>
+            don't want to configure <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contact groups</a>. <span class="color"><font color="red">You must specify at least one contact or contact group in each service definition or nobody at all will be
+            notified</font></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>contact_groups</strong></span>:</p></td>
 <td><p>This is a list of the <span class="emphasis"><em>short names</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contact groups</a> that should be notified whenever there are problems (or
-            recoveries) with this service. Multiple contact groups should be separated by commas. You must specify at least one contact or
-            contact group in each service definition.</p></td>
+            recoveries) with this service. Multiple contact groups should be separated by commas. <span class="color"><font color="red">You
+            must specify at least one contact or contact group in each service definition or nobody at all will be
+            notified</font></span>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>stalking_options</strong></span>:</p></td>
@@ -1494,14 +1532,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1558080"></a>
+    <a class="indexterm" name="id1454878"></a>
 
-    <a class="indexterm" name="id1559530"></a>
+    <a class="indexterm" name="id1456377"></a>
   </div>
 
   <div class="section" title="Servicegroup Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1557193"></a><a name="objectdefinitions-servicegroup"></a>Servicegroup Definition</h3></div></div></div>
+<a name="id1453977"></a><a name="objectdefinitions-servicegroup"></a>Servicegroup Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -1641,14 +1679,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1560072"></a>
+    <a class="indexterm" name="id1456918"></a>
 
-    <a class="indexterm" name="id1560082"></a>
+    <a class="indexterm" name="id1456926"></a>
   </div>
 
   <div class="section" title="Contact Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1559543"></a><a name="objectdefinitions-contact"></a>Contact Definition</h3></div></div></div>
+<a name="id1456392"></a><a name="objectdefinitions-contact"></a>Contact Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -1851,17 +1889,16 @@
 <td><p>This directive is used to define the host states for which notifications can be sent out to this contact. Valid
             options are a combination of one or more of the following: <span class="bold"><strong>d</strong></span> = notify on DOWN host states,
             <span class="bold"><strong>u</strong></span> = notify on UNREACHABLE host states, <span class="bold"><strong>r</strong></span> = notify on host
-            recoveries (UP states), <span class="bold"><strong>f</strong></span> = notify when the host starts and stops <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">flapping</a>, and <span class="bold"><strong>s</strong></span> = send notifications when host or service <a class="link" href="downtime.html" title="Scheduled Downtime">scheduled downtime</a> starts and ends. If you specify <span class="bold"><strong>n</strong></span> (none) as an
-            option, the contact will not receive any type of host notifications.</p></td>
+            recoveries (UP states), <span class="bold"><strong>f</strong></span> = notify when the host starts and stops <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">flapping</a>, and <span class="bold"><strong>s</strong></span> = send notifications when host or service <a class="link" href="downtime.html" title="Scheduled Downtime">scheduled downtime</a> starts and ends. <span class="color"><font color="red">If you specify <span class="bold"><strong>n</strong></span> (none) as an option, the contact will not receive any type of host
+            notifications.</font></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notification_options</strong></span>:</p></td>
 <td><p>This directive is used to define the service states for which notifications can be sent out to this contact. Valid
             options are a combination of one or more of the following: <span class="bold"><strong>w</strong></span> = notify on WARNING service
             states, <span class="bold"><strong>u</strong></span> = notify on UNKNOWN service states, <span class="bold"><strong>c</strong></span> = notify on
-            CRITICAL service states, <span class="bold"><strong>r</strong></span> = notify on service recoveries (OK states), and <span class="bold"><strong>f</strong></span> = notify when the service starts and stops <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">flapping</a>. If you specify
-            <span class="bold"><strong>n</strong></span> (none) as an option, the contact will not receive any type of service
-            notifications.</p></td>
+            CRITICAL service states, <span class="bold"><strong>r</strong></span> = notify on service recoveries (OK states), and <span class="bold"><strong>f</strong></span> = notify when the service starts and stops <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">flapping</a>.<span class="color"><font color="red"> If you specify <span class="bold"><strong>n</strong></span> (none) as an option, the contact will not
+            receive any type of service notifications.</font></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notification_commands</strong></span>:</p></td>
@@ -1910,14 +1947,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1561257"></a>
+    <a class="indexterm" name="id1458117"></a>
 
-    <a class="indexterm" name="id1561266"></a>
+    <a class="indexterm" name="id1458125"></a>
   </div>
 
   <div class="section" title="Contactgroup Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1560095"></a><a name="objectdefinitions-contactgroup"></a>Contactgroup Definition</h3></div></div></div>
+<a name="id1456939"></a><a name="objectdefinitions-contactgroup"></a>Contactgroup Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2016,14 +2053,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1561646"></a>
+    <a class="indexterm" name="id1458507"></a>
 
-    <a class="indexterm" name="id1561655"></a>
+    <a class="indexterm" name="id1458516"></a>
   </div>
 
   <div class="section" title="Timeperiod Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1561282"></a><a name="objectdefinitions-timeperiod"></a>Timeperiod Definition</h3></div></div></div>
+<a name="id1458137"></a><a name="objectdefinitions-timeperiod"></a>Timeperiod Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2182,14 +2219,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1562108"></a>
+    <a class="indexterm" name="id1458969"></a>
 
-    <a class="indexterm" name="id1562116"></a>
+    <a class="indexterm" name="id1458978"></a>
   </div>
 
   <div class="section" title="Command Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1561668"></a><a name="objectdefinitions-command"></a>Command Definition</h3></div></div></div>
+<a name="id1458532"></a><a name="objectdefinitions-command"></a>Command Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2287,14 +2324,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1562508"></a>
+    <a class="indexterm" name="id1459335"></a>
 
-    <a class="indexterm" name="id1562519"></a>
+    <a class="indexterm" name="id1459372"></a>
   </div>
 
   <div class="section" title="Servicedependency Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1562129"></a><a name="objectdefinitions-servicedependency"></a>Servicedependency Definition</h3></div></div></div>
+<a name="id1458991"></a><a name="objectdefinitions-servicedependency"></a>Servicedependency Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2311,8 +2348,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional. However, you must supply at least one type of
-      criteria for the definition to be of much use.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional. However, you must
+      supply at least one type of criteria for the definition to be of much use.</p>
     </td></tr>
 </table></div>
 
@@ -2477,20 +2514,30 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1563351"></a>
+    <a class="indexterm" name="id1460211"></a>
 
-    <a class="indexterm" name="id1563361"></a>
+    <a class="indexterm" name="id1460202"></a>
   </div>
 
   <div class="section" title="Serviceescalation Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1562533"></a><a name="objectdefinitions-serviceescalation"></a>Serviceescalation Definition</h3></div></div></div>
+<a name="id1459385"></a><a name="objectdefinitions-serviceescalation"></a>Serviceescalation Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
 
     <p>Service escalations are <span class="emphasis"><em>completely optional</em></span> and are used to escalate notifications for a particular service.
     More information on how notification escalations work can be found <a class="link" href="escalations.html" title="Notification Escalations">here</a>.</p>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Please note that some directives may be inherited from the service definition. For details refer to <a class="link" href="objectinheritance.html#objectinheritance-implied_inheritance">implied inheritance</a>.</p>
+    </td></tr>
+</table></div>
 
     <p><span class="emphasis"><em>Definition Format:</em></span></p>
 
@@ -2759,14 +2806,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1564508"></a>
+    <a class="indexterm" name="id1461379"></a>
 
-    <a class="indexterm" name="id1564516"></a>
+    <a class="indexterm" name="id1461387"></a>
   </div>
 
   <div class="section" title="Hostdependency Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1563375"></a><a name="objectdefinitions-hostdependency"></a>Hostdependency Definition</h3></div></div></div>
+<a name="id1460231"></a><a name="objectdefinitions-hostdependency"></a>Hostdependency Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2924,20 +2971,30 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1565209"></a>
+    <a class="indexterm" name="id1462081"></a>
 
-    <a class="indexterm" name="id1565198"></a>
+    <a class="indexterm" name="id1462091"></a>
   </div>
 
   <div class="section" title="Hostescalation Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1564530"></a><a name="objectdefinitions-hostescalation"></a>Hostescalation Definition</h3></div></div></div>
+<a name="id1461400"></a><a name="objectdefinitions-hostescalation"></a>Hostescalation Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
 
     <p>Host escalations are <span class="emphasis"><em>completely optional</em></span> and are used to escalate notifications for a particular host. More
     information on how notification escalations work can be found <a class="link" href="escalations.html" title="Notification Escalations">here</a>.</p>
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Please note that some directives may be inherited from the host definition. For details refer to <a class="link" href="objectinheritance.html#objectinheritance-implied_inheritance">implied inheritance</a>.</p>
+    </td></tr>
+</table></div>
 
     <p><span class="emphasis"><em>Definition Format:</em></span></p>
 
@@ -3153,32 +3210,31 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1566095"></a>
+    <a class="indexterm" name="id1462983"></a>
 
-    <a class="indexterm" name="id1566104"></a>
+    <a class="indexterm" name="id1462991"></a>
   </div>
 
   <div class="section" title="Hostextinfo Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1565230"></a><a name="objectdefinitions-hostextinfo"></a>Hostextinfo Definition</h3></div></div></div>
+<a name="id1462106"></a><a name="objectdefinitions-hostextinfo"></a>Hostextinfo Definition</h3></div></div></div>
     
+
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>This definition type is deprecated and may be removed in the future. Please use the directives in the host definition
+      instead.</p>
+    </td></tr>
+</table></div>
 
     <p><span class="emphasis"><em>Description:</em></span></p>
 
     <p>Extended host information entries are basically used to make the output from the <a class="link" href="cgis.html#cgis-status_cgi">status</a>,
-    <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>, <a class="link" href="cgis.html#cgis-statuswrl_cgi">statuswrl</a>, and <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a> CGIs look pretty. They have no effect on monitoring and are completely optional.</p>
-
-    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
-<th align="left">Tip</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p>All directives contained in extended host information definitions are also available in <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definitions</a>. Thus, you can choose to define the directives below in your host definitions
-      if it makes your configuration simpler. Separate extended host information definitions will continue to be supported for backward
-      compatibility.</p>
-    </td></tr>
-</table></div>
+    <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>,  and <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a> CGIs look pretty. They have no effect on monitoring and are completely optional.</p>
 
     <p><span class="emphasis"><em>Definition Format:</em></span></p>
 
@@ -3188,8 +3244,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional. However, you need to supply at least one optional
-      variable in each definition for it to be of much use.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional. However, you need to
+      supply at least one optional variable in each definition for it to be of much use.</p>
     </td></tr>
 </table></div>
 
@@ -3206,6 +3262,11 @@
 <td><p></p></td>
 <td><span class="color"><font color="red">host_name</font></span></td>
 <td><p>host_name</p></td>
+</tr>
+<tr>
+<td><p></p></td>
+<td><p>hostgroup_name</p></td>
+<td>note_string</td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -3286,6 +3347,12 @@
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>host_name</strong></span>:</p></td>
 <td><p>This variable is used to identify the <span class="emphasis"><em>short name</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> which the data is associated with.</p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p><span class="bold"><strong>hostgroup_name</strong></span>:</p></td>
+<td><p>This directive is used to identify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-hostgroup">hostgroup(s)</a> that the definition should apply to. Multiple hostgroups should be
+            separated by commas. If this is used, the definition will apply to all hosts that are members of the specified
+            hostgroup(s).</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notes</strong></span>:</p></td>
@@ -3396,33 +3463,32 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1566915"></a>
+    <a class="indexterm" name="id1463841"></a>
 
-    <a class="indexterm" name="id1566922"></a>
+    <a class="indexterm" name="id1463849"></a>
   </div>
 
   <div class="section" title="Serviceextinfo Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1566117"></a><a name="objectdefinitions-serviceextinfo"></a>Serviceextinfo Definition</h3></div></div></div>
+<a name="id1463006"></a><a name="objectdefinitions-serviceextinfo"></a>Serviceextinfo Definition</h3></div></div></div>
     
+
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>This definition type is deprecated and may be removed in the future. Please use the directives in the service definition
+      instead.</p>
+    </td></tr>
+</table></div>
 
     <p><span class="emphasis"><em>Description:</em></span></p>
 
     <p>Extended service information entries are basically used to make the output from the <a class="link" href="cgis.html#cgis-status_cgi">status</a>
     and <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a> CGIs look pretty. They have no effect on monitoring and are completely
     optional.</p>
-
-    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
-<th align="left">Tip</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p>As of Nagios 3.x, all directives contained in extended service information definitions are also available in <a class="link" href="objectdefinitions.html#objectdefinitions-service">service definitions</a>. Thus, you can choose to define the directives below in your service
-      definitions if it makes your configuration simpler. Separate extended service information definitions will continue to be supported
-      for backward compatibility.</p>
-    </td></tr>
-</table></div>
 
     <p><span class="emphasis"><em>Definition Format:</em></span></p>
 
@@ -3432,8 +3498,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p><span class="color"><font color="red">"Directives"</font></span>are required while the others are optional. However, you need to supply at least one optional
-      variable in each definition for it to be of much use.</p>
+      <p><span class="color"><font color="red">"Directives"</font></span> are required while the others are optional. However, you need to
+      supply at least one optional variable in each definition for it to be of much use.</p>
     </td></tr>
 </table></div>
 
@@ -3455,6 +3521,11 @@
 <td><p></p></td>
 <td><span class="color"><font color="red">service_description</font></span></td>
 <td><p>service_description</p></td>
+</tr>
+<tr>
+<td><p></p></td>
+<td><p>hostgroup_name</p></td>
+<td><p>hostgroup_name</p></td>
 </tr>
 <tr>
 <td><p></p></td>
@@ -3519,6 +3590,12 @@
             associated with.</p></td>
 </tr>
 <tr>
+<td align="left" valign="top"><p><span class="bold"><strong>hostgroup_name</strong></span>:</p></td>
+<td><p>This directive is used to identify the <span class="emphasis"><em>short name(s)</em></span> of the <a class="link" href="objectdefinitions.html#objectdefinitions-hostgroup">hostgroup(s)</a> that the definition should apply to. Multiple hostgroups should be
+            separated by commas. If this is used, the definition will apply to all hosts that are members of the specified
+            hostgroup(s).</p></td>
+</tr>
+<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notes</strong></span>:</p></td>
 <td><p>This directive is used to define an optional string of notes pertaining to the service. If you specify a note here,
             you will see the it in the <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information</a> CGI (when you are viewing information
@@ -3559,19 +3636,20 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1567515"></a>
+    <a class="indexterm" name="id1464489"></a>
 
-    <a class="indexterm" name="id1567524"></a>
+    <a class="indexterm" name="id1464499"></a>
   </div>
 
   <div class="section" title="Module Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1567493"></a><a name="objectdefinitions-module"></a>Module Definition</h3></div></div></div>
+<a name="id1463862"></a><a name="objectdefinitions-module"></a>Module Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
 
-    <p>A module definition is used to specify information about a module. It can be used instead of a broker_module entry in the main configuration file thus being more flexible (you can use cfg_file/cfg_dir entries to include it).</p>
+    <p>A module definition is used to specify information about a module. It can be used instead of a broker_module entry in the main
+    configuration file thus being more flexible (you can use cfg_file/cfg_dir entries to include it).</p>
 
     <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -3605,8 +3683,7 @@
 <tbody>
 <tr><td colspan="3" align="left" valign="middle"><p>define module{</p></td></tr>
 <tr>
-<td><p>
-            </p></td>
+<td><p> </p></td>
 <td><p><span class="color"><font color="red">module_name</font></span></p></td>
 <td><p>module name</p></td>
 </tr>
@@ -3637,12 +3714,13 @@
 
     <pre class="screen"> define module{
         module_name    ido_mod
-        path           /usr/local/icinga/bin/idomod.o
+        path           /usr/local/icinga/lib/idomod.so
         module_type    neb
         args           config_file=/usr/local/icinga/etc/idomod.cfg
         }</pre>
 
-    <p>Based on the <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">MKLiveStatus</a> documentation the module definition would look like this:</p>
+    <p>Based on the <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">MKLiveStatus</a> documentation the module
+    definition would look like this:</p>
 
     <pre class="screen"> define module{
         module_name    mklivestatus
@@ -3667,12 +3745,13 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>module_type</strong></span>:</p></td>
-<td><p>This optional directive defines the type of the module, e.g. 'neb' for event broker modules. This directive is intended to allow further filtering on the module loading.</p></td>
+<td><p>This optional directive defines the type of the module, e.g. 'neb' for event broker modules. This directive is
+            intended to allow further filtering on the module loading.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>path</strong></span>:</p></td>
-<td><p>This mandatory directive specifies the path to the module binary to be loaded. For event broker modules like
-            idomod the user running the core must be allowed to read and load the module.</p></td>
+<td><p>This mandatory directive specifies the path to the module binary to be loaded. For event broker modules like idomod
+            the user running the core must be allowed to read and load the module.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>args</strong></span>:</p></td>
@@ -3694,9 +3773,8 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="id1567907"></a>
+    <a class="indexterm" name="id1464875"></a>
   </div>
-
 </div>
 <div class="navfooter">
 <hr>

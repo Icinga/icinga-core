@@ -37,19 +37,20 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Instead of installing Icinga from scratch you may want to use a package which might be available for your OS. Please
-    take a look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.
-    </p>
+    <p>Instead of installing Icinga from scratch you may want to use a package which might be available for your OS. Please take a
+    look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.</p>
+
     <p>If you are planning to install from source then please use the official release tarball.</p>
   </td></tr>
 </table></div>
+
   <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
+    <p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
   </td></tr>
 </table></div>
 
@@ -169,10 +170,12 @@
 
   <pre class="programlisting"> #&gt; make all</pre>
 
-  <p>Install binaries, init script, sample config files and set permissions on the external command directory. </p>
-<pre class="programlisting"> #&gt; make install 
- #&gt; make install-init 
- #&gt; make install-config 
+  <p>Install binaries, init script, sample config files, some eventhandlers, and set permissions on the external command directory.
+  </p>
+<pre class="programlisting"> #&gt; make install
+ #&gt; make install-init
+ #&gt; make install-config
+ #&gt; make install-eventhandlers
  #&gt; make install-commandmode </pre>
 <p> or shorter </p>
 <pre class="programlisting"> #&gt; make fullinstall
@@ -183,8 +186,21 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
-  </code> anymore to avoid accidently overwriting of your config files.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
+    </code>anymore to avoid accidently overwriting of your config files.</p>
+  </td></tr>
+</table></div>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.7.0 <code class="literal">make install-eventhandlers</code> will install some event handler routines. To
+    prevent undesired behaviour it is only included when you use <code class="literal">make fullinstall</code>.</p>
+  </td></tr>
 </table></div>
 
   <p>The Icinga-API will be installed during "make install" so if you are required to install it manually please try: </p>
@@ -314,7 +330,7 @@
   <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
   Started"</a> about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id1524789"></a>
+  <a class="indexterm" name="id1422027"></a>
 </div>
 <div class="navfooter">
 <hr>

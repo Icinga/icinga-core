@@ -7,7 +7,7 @@
 	<meta name="robots" content="noindex, nofollow" />
 	<link rel="stylesheet" type="text/css" href="stylesheets/interface/menu.css" media="screen, projection" />
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
-	<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="js/menu.js"></script>
 </head>
 <body>
@@ -40,7 +40,6 @@
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&style=overview" target="main">Servicegroup Overview</a></li>
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&style=summary" target="main">Servicegroup Summary</a></li>
 			<li class="menuli_style2"><a href="@cgiurl@/statusmap.cgi?host=all" target="main">Status Map</a></li>
-			<!-- <li class="menuli_style1"><a href="@cgiurl@/statuswrl.cgi?host=all" target="main">3-D Status Map</a></li> -->
 		</ul>
 		<h2>Problems</h2>
 		<ul>
@@ -49,7 +48,8 @@
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?style=hostdetail&hoststatustypes=12" target="main">Host Problems</a></li>
 			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?style=hostdetail&hoststatustypes=12&hostprops=2097162" target="main">Unhandled Hosts</a></li>
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?allunhandledproblems" target="main">All Unhandled Problems</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/outages.cgi" target="main">Network Outages</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?allproblems" target="main">All Problems</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/outages.cgi" target="main">Network Outages</a></li>
 		</ul>
 		<h2>System</h2>
 		<ul>

@@ -23,7 +23,7 @@ main_config_file=@sysconfdir@/icinga.cfg
 # PHYSICAL HTML PATH
 # This is the path where the HTML files for Icinga reside.  This
 # value is used to locate the logo images needed by the statusmap
-# and statuswrl CGIs.
+# and status CGIs.
 
 physical_html_path=@datadir@
 
@@ -55,16 +55,6 @@ url_stylesheets_path=@htmurl@/stylesheets
 # This defines charset that is sent with HTTP headers.
 
 http_charset=utf-8
-
-
-
-# CONTEXT-SENSITIVE HELP
-# This option determines whether or not a context-sensitive
-# help icon will be displayed for most of the CGIs.
-# Values: 0 = disables context-sensitive help
-#         1 = enables context-sensitive help
-
-show_context_help=0
 
 
 
@@ -283,13 +273,35 @@ authorized_for_all_host_commands=icingaadmin
 # READ-ONLY USERS
 # A comma-delimited list of usernames that have read-only rights in
 # the CGIs.  This will block any service or host commands normally shown
-# on the extinfo CGI pages.  It will also block comments from being shown
-# to read-only users.
+# on the extinfo CGI pages. It will also block comments and downtimes
+# from being shown to read-only users.
 # Alternatively you can specify contactgroups too, starting
 # with Icinga 1.5.0
 
 #authorized_for_read_only=user1,user2
 #authorized_contactgroup_for_read_only=
+
+
+# READ-ONLY FOR COMMENTS USERS
+# A comma-delimited list of usernames that have rights to view comments in
+# the CGIs. If user is defined as read-only and you add the same user to
+# this options, then the user can still see comments. If user is NOT
+# read-only then the options to delete comments in extinfo.cgi are not
+# displayed as well.
+
+#authorized_for_comments_read_only=user1,user2
+#authorized_contactgroup_for_comments_read_only=
+
+
+# READ-ONLY FOR DOWNTIMES USERS
+# A comma-delimited list of usernames that have rights to view downtimes in
+# the CGIs. If user is defined as read-only and you add the same user to
+# this options, then the user can still see downtimes. If user is NOT
+# read-only then the options to delete downtimes in extinfo.cgi are not
+# displayed as well.
+
+#authorized_for_downtimes_read_only=user1,user2
+#authorized_contactgroup_for_downtimes_read_only=
 
 
 # SHOW ALL SERVICES THE HOST IS AUTHORIZED FOR
@@ -356,45 +368,6 @@ show_partial_hostgroups=0
 #       5 = Circular (Marked Up)
 
 default_statusmap_layout=5
-
-
-
-# DEFAULT STATUSWRL LAYOUT METHOD
-# This option allows you to specify the default layout method
-# the statuswrl (VRML) CGI should use for drawing hosts.  If you
-# do not use this option, the default is to use user-defined
-# coordinates.  Valid options are as follows:
-#	0 = User-defined coordinates
-#       2 = Collapsed tree
-#       3 = Balanced tree
-#       4 = Circular
-
-default_statuswrl_layout=4
-
-
-
-# STATUSWRL INCLUDE
-# This option allows you to include your own objects in the
-# generated VRML world.  It is assumed that the file
-# resides in the HTML path (i.e. /usr/local/icinga/share).
-
-#statuswrl_include=myworld.wrl
-
-
-
-# PING SYNTAX
-# This option determines what syntax should be used when
-# attempting to ping a host from the WAP interface (using
-# the statuswml CGI.  You must include the full path to
-# the ping binary, along with all required options.  The
-# $HOSTADDRESS$ macro is substituted with the address of
-# the host before the command is executed.
-# Please note that the syntax for the ping binary is
-# notorious for being different on virtually ever *NIX
-# OS and distribution, so you may have to tweak this to
-# work on your system.
-
-ping_syntax=/bin/ping -n -U -c 5 $HOSTADDRESS$
 
 
 
@@ -496,6 +469,14 @@ default_expiring_acknowledgement_duration=86400
 
 
 
+# DEFAULT EXPIRING DISABLED NOTIFICATIONS DURATION
+# This option defines the default duration (in seconds) of a expiring
+# disabled notifications. Default is 86400 seconds (1 day).
+
+default_expiring_disabled_notifications_duration=86400
+
+
+
 # SHOW LONG PLUGIN OUTPUT IN STATUS OPTION
 # This option allows you to specify the length of status information
 # in output of status.cgi. If you set the value to 1 it shows the
@@ -590,13 +571,13 @@ show_tac_header_pending=1
 
 
 
-# DEFAULT NUM DISPLAYED LOG ENTRIES OPTION
-# This options specifies the number of log entries
-# displayed by default in showlog.cgi. To display
-# all log entries by default set this value to 0.
-# Default is 10000.
+# RESULT LIMIT
+# This options specifies the number of page entries
+# displayed by default in various cgi's. To display
+# all entries by default set this value to 0.
+# Default is 50.
 
-#default_num_displayed_log_entries=10000
+result_limit=50
 
 
 

@@ -24,7 +24,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -44,6 +44,7 @@ int profiler_core_event_types[] = {
 	EVENT_LOG_ROTATION,
 	EVENT_PROGRAM_SHUTDOWN,
 	EVENT_PROGRAM_RESTART,
+	EVENT_EXPIRE_DISABLED_NOTIFICATIONS,
 	EVENT_CHECK_REAPER,
 	EVENT_ORPHAN_CHECK,
 	EVENT_RETENTION_SAVE,
@@ -70,6 +71,7 @@ void profiler_init() {
 	profiler_add(EVENT_LOG_ROTATION, "EVENT_LOG_ROTATION");
 	profiler_add(EVENT_PROGRAM_SHUTDOWN, "EVENT_PROGRAM_SHUTDOWN");
 	profiler_add(EVENT_PROGRAM_RESTART, "EVENT_PROGRAM_RESTART");
+	profiler_add(EVENT_EXPIRE_DISABLED_NOTIFICATIONS, "EVENT_EXPIRE_DISABLED_NOTIFICATIONS");
 	profiler_add(EVENT_CHECK_REAPER, "EVENT_CHECK_REAPER");
 	profiler_add(EVENT_ORPHAN_CHECK, "EVENT_ORPHAN_CHECK");
 	profiler_add(EVENT_RETENTION_SAVE, "EVENT_RETENTION_SAVE");

@@ -24,7 +24,7 @@
 </div>
 <div class="index" title="Stichwortverzeichnis">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="id1608772"></a>Stichwortverzeichnis</h2></div></div></div>
+<a name="id1634015"></a>Stichwortverzeichnis</h2></div></div></div>
 <div class="index">
 <div class="indexdiv">
 <h3>A</h3>
@@ -135,8 +135,12 @@
 <dd><dl><dt>Audio-Alarme, <a class="indexterm" href="configcgi.html#configcgi-audio_alerts">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
 <dt>Ausfallzeit</dt>
-<dd><dl><dt>geplante Ausfallzeit, <a class="indexterm" href="downtime.html">Geplante Ausfallzeiten</a>
-</dt></dl></dd>
+<dd><dl>
+<dt>geplante, <a class="indexterm" href="downtime.html">Geplante Ausfallzeiten</a>
+</dt>
+<dt>wiederkehrende, <a class="indexterm" href="recurring_downtimes.html">Wiederkehrende Ausfallzeiten</a>
+</dt>
+</dl></dd>
 <dt>authorized_contactgroup_for_all_hosts=</dt>
 <dd><dl><dt>Zugang zu globalen Host-Informationen (contactgroup), <a class="indexterm" href="configcgi.html#configcgi-authorized_for_all_hosts">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
@@ -279,6 +283,8 @@
 </dt>
 <dt>assumestatesduringnotrunning, <a class="indexterm" href="cgiparams.html#cgiparams-assumestatesduringnotrunning">Informationen zu den CGI-Parametern</a>
 </dt>
+<dt>attr, <a class="indexterm" href="cgiparams.html#cgiparams-attr">Informationen zu den CGI-Parametern</a>
+</dt>
 <dt>backtrack, <a class="indexterm" href="cgiparams.html#cgiparams-backtrack">Informationen zu den CGI-Parametern</a>
 </dt>
 <dt>breakdown, <a class="indexterm" href="cgiparams.html#cgiparams-breakdown">Informationen zu den CGI-Parametern</a>
@@ -417,7 +423,7 @@
 </dt>
 <dt>serviceprops, <a class="indexterm" href="cgiparams.html#cgiparams-serviceprops">Informationen zu den CGI-Parametern</a>
 </dt>
-<dt>servicestates, <a class="indexterm" href="../../../../../"></a>
+<dt>servicestates, <a class="indexterm" href="cgiparams.html#cgiparams-servicestates">Informationen zu den CGI-Parametern</a>
 </dt>
 <dt>servicestatustypes, <a class="indexterm" href="cgiparams.html#cgiparams-servicestatustypes">Informationen zu den CGI-Parametern</a>
 </dt>
@@ -487,7 +493,7 @@
 </dt>
 <dt>Änderungen am Classic UI, <a class="indexterm" href="cgis.html#cgis-summary_cgi">Icinga Classic UI: Informationen über die CGIs</a>
 </dt>
-<dt>Ausf&#167077;n von CGIs auf der Kommandozeile, <a class="indexterm" href="cgicmd.html">Ausführen von CGIs auf der Kommandzeile</a>
+<dt>Ausführen von CGIs auf der Kommandozeile, <a class="indexterm" href="cgicmd.html">Ausführen von CGIs auf der Kommandozeile</a>
 </dt>
 <dt>Availability Reporting CGI, <a class="indexterm" href="cgis.html#cgis-avail_cgi">Icinga Classic UI: Informationen über die CGIs</a>
 </dt>
@@ -516,8 +522,6 @@
 <dt>Tactical Overview CGI, <a class="indexterm" href="cgis.html#cgis-tac_cgi">Icinga Classic UI: Informationen über die CGIs</a>
 </dt>
 <dt>Trends CGI, <a class="indexterm" href="cgis.html#cgis-trends_cgi">Icinga Classic UI: Informationen über die CGIs</a>
-</dt>
-<dt>WAP Interface CGI, <a class="indexterm" href="cgis.html#cgis-statuswml_cgi">Icinga Classic UI: Informationen über die CGIs</a>
 </dt>
 </dl></dd>
 <dt>cgi_log_archive_path=</dt>
@@ -655,8 +659,12 @@
 <dd><dl><dt>Host-/Service-Status-Gesamtanzahlen anzeigen, <a class="indexterm" href="configcgi.html#configcgi-display_status_totals">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
 <dt>Downtime</dt>
-<dd><dl><dt>geplante Ausfallzeit, <a class="indexterm" href="downtime.html">Geplante Ausfallzeiten</a>
-</dt></dl></dd>
+<dd><dl>
+<dt>geplante Ausfallzeit, <a class="indexterm" href="downtime.html">Geplante Ausfallzeiten</a>
+</dt>
+<dt>wiederkehrende, <a class="indexterm" href="recurring_downtimes.html">Wiederkehrende Ausfallzeiten</a>
+</dt>
+</dl></dd>
 </dl>
 </div>
 <div class="indexdiv">
@@ -1141,7 +1149,7 @@
 </dt>
 <dt>hostprops, <a class="indexterm" href="cgiparams.html#cgiparams-filter">Informationen zu den CGI-Parametern</a>
 </dt>
-<dt>hoststatustypes, <a class="indexterm" href="../../../../../"></a>
+<dt>hoststatustypes, <a class="indexterm" href="cgiparams.html#cgiparams-hoststatustypes">Informationen zu den CGI-Parametern</a>
 </dt>
 <dt>host_check_timeout=</dt>
 <dd><dl><dt>Host-Prüfungs-Zeitüberschreitung, <a class="indexterm" href="configmain.html#configmain-host_check_timeout">Optionen der Hauptkonfigurationsdatei</a>
@@ -1256,11 +1264,9 @@
 </dt>
 <dt>Datenbank-Update, <a class="indexterm" href="upgrading_icingaweb.html">Aktualisierung von Icinga-Web und Icinga-Web Datenbank</a>
 </dt>
-<dt>Icinga-API connection, <a class="indexterm" href="icinga-web-config.html#configweb-api">Konfigurationsübersicht Icinga-Web</a>
-</dt>
 <dt>Modul-Konfiguration, <a class="indexterm" href="icinga-web-config.html#configweb-module">Konfigurationsübersicht Icinga-Web</a>
 </dt>
-<dt>Überblick Version 1.6.x, <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro_1.6">Einführung in Icinga-Web (&gt;= 1.6)</a>
+<dt>Überblick Version 1.7.x, <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro_1.7">Einführung in Icinga-Web (&gt;= 1.7)</a>
 </dt>
 </dl></dd>
 <dt>Icinga-Web Zeitzone, <a class="indexterm" href="icinga-web-config.html#configweb-timezone">Konfigurationsübersicht Icinga-Web</a>
@@ -1395,7 +1401,7 @@
 <dt>Use encryption (idomod.cfg), <a class="indexterm" href="configido.html#configido-use_ssl">IDOMOD Konfigurationsoptionen</a>
 </dt>
 </dl></dd>
-<dt>IDOUtils / Zeitzonen-Unterstützung, <a class="indexterm" href="quickstart-idoutils.html#quickstart-idoutils_timezone-support">Icinga-Schnellstart mit IDOUtils</a>, <a class="indexterm" href="quickstart-idoutils.html#quickstart-idoutils_timezone-support">Icinga-Schnellstart mit IDOUtils</a>
+<dt>IDOUtils / Zeitzonen-Unterstützung, <a class="indexterm" href="quickstart-idoutils.html#quickstart-idoutils_timezone-support">Icinga-Schnellstart mit IDOUtils</a>, <a class="indexterm" href="quickstart-idoutils-freebsd.html#quickstart-idoutils-freebsd_timezone-support">Icinga-Schnellstart mit IDOUtils auf FreeBSD</a>
 </dt>
 <dt>illegal_macro_output_chars=</dt>
 <dd><dl><dt>Illegale Makroausgabe, <a class="indexterm" href="configmain.html#configmain-illegal_macro_output_chars">Optionen der Hauptkonfigurationsdatei</a>
@@ -1869,6 +1875,9 @@
 </dt></dl></dd>
 <dt>MKLiveStatus-Integration, <a class="indexterm" href="int-mklivestatus.html">MKLiveStatus-Integration</a>
 </dt>
+<dt>Modified attributes</dt>
+<dd><dl><dt>Possible values, <a class="indexterm" href="modified_attr.html">Modifizierte Attribute</a>
+</dt></dl></dd>
 <dt>Monitoring</dt>
 <dd><dl>
 <dt>Linux/Unix-Rechner überwachen, <a class="indexterm" href="monitoring-linux.html">Linux/Unix-Rechner überwachen</a>
@@ -1886,6 +1895,8 @@
 <dt>Windows-Rechner überwachen, <a class="indexterm" href="monitoring-windows.html">Windows-Maschinen überwachen</a>
 </dt>
 </dl></dd>
+<dt>Monitoring-Überblick, <a class="indexterm" href="monitoring-overview.html#monitoring_overview">Monitoring-Überblick</a>
+</dt>
 <dt>MultiSite, <a class="indexterm" href="addons.html#addons-web">Icinga Addons</a>
 </dt>
 </dl>
@@ -2047,7 +2058,7 @@
 <dd><dl><dt>Performance-Daten-Verarbeitungsbefehl, <a class="indexterm" href="configmain.html#configmain-perfdata_timeout">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
 <dt>Performance Data</dt>
-<dd><dl><dt>Data Format, <a class="indexterm" href="../../../../../"></a>
+<dd><dl><dt>Data Format, <a class="indexterm" href="perfdata.html#perf_data">Performance-Daten</a>
 </dt></dl></dd>
 <dt>Performance-Daten, <a class="indexterm" href="perfdata.html">Performance-Daten</a>
 </dt>
@@ -2056,9 +2067,6 @@
 </dt></dl></dd>
 <dt>physical_html_path=</dt>
 <dd><dl><dt>vollständiger (physical) HTML-Pfad, <a class="indexterm" href="configcgi.html#configcgi-physical_html_path">Optionen CGI-Konfigurationsdatei</a>
-</dt></dl></dd>
-<dt>ping_syntax=</dt>
-<dd><dl><dt>Ping-Syntax, <a class="indexterm" href="configcgi.html#configcgi-ping_syntax">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
 <dt>Plugins</dt>
 <dd><dl>
@@ -2118,6 +2126,9 @@
 </dt></dl></dd>
 <dt>refresh_rate=</dt>
 <dd><dl><dt>CGI-Refresh-Rate, <a class="indexterm" href="configcgi.html#configcgi-refresh_rate">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
+<dt>refresh_type=</dt>
+<dd><dl><dt>CGI-Refresh-Typ, <a class="indexterm" href="configcgi.html#configcgi-refresh_type">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
 <dt>resource_file=</dt>
 <dd><dl><dt>Ressource-Datei, <a class="indexterm" href="configmain.html#configmain-resource_file">Optionen der Hauptkonfigurationsdatei</a>
@@ -2209,7 +2220,7 @@
 </dt>
 <dt>serviceprops, <a class="indexterm" href="cgiparams.html#cgiparams-filter">Informationen zu den CGI-Parametern</a>
 </dt>
-<dt>servicestatustypes, <a class="indexterm" href="../../../../../"></a>
+<dt>servicestatustypes, <a class="indexterm" href="cgiparams.html#cgiparams-servicestatustypes">Informationen zu den CGI-Parametern</a>
 </dt>
 <dt>service_check_timeout=</dt>
 <dd><dl><dt>Service-Prüfungs-Zeitüberschreitung, <a class="indexterm" href="configmain.html#configmain-service_check_timeout">Optionen der Hauptkonfigurationsdatei</a>
@@ -2522,6 +2533,9 @@
 <dt>idomod.cfg, <a class="indexterm" href="configido.html#configido-use_ssl">IDOMOD Konfigurationsoptionen</a>
 </dt>
 </dl></dd>
+<dt>use_ssl_authentication=</dt>
+<dd><dl><dt>Nutzung von Client-Zertifikaten, <a class="indexterm" href="configcgi.html#configcgi-use_ssl_authentication">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
 <dt>use_syslog=</dt>
 <dd><dl><dt>Syslog-Protokollierung, <a class="indexterm" href="configmain.html#configmain-use_syslog">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>

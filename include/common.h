@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ************************************************************************/
 
 #include "shared.h"
@@ -27,8 +27,8 @@
 #define PROGRAM_NAME "Icinga"
 #define PROGRAM_NAME_UC "ICINGA"
 #define PROGRAM_NAME_LC "icinga"
-#define PROGRAM_VERSION "1.7.0-dev"
-#define PROGRAM_MODIFICATION_DATE "05-15-2012"
+#define PROGRAM_VERSION "1.8.0dev"
+#define PROGRAM_MODIFICATION_DATE "10-17-2012"
 
 /*#define DEBUG_CHECK_IPC 1 */
 /*#define DEBUG_CHECK_IPC2 1*/
@@ -315,6 +315,9 @@
 
 #define CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE		174
 #define CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE		175
+
+/* for disabled notifications expiry */
+#define CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME		176
 
 /* custom command introduced in Nagios 3.x */
 #define CMD_CUSTOM_COMMAND                              999

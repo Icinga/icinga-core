@@ -1,0 +1,132 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Modified attributes</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="cgiincludes.html" title="Custom CGI Headers and Footers">
+<link rel="next" href="objectinheritance.html" title="Object Inheritance">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Modified attributes</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="cgiincludes.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="objectinheritance.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Modified attributes">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="modified_attr"></a><a name="modified-attr"></a>Modified attributes</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>Several attributes of hosts, services, and contacts can be changed during runtime, e.g. when disabling notifications through the
+  webinterface, thus overriding the local configuration default. The core will <span class="bold"><strong>always</strong></span> use the modified
+  attributes in the first place.</p>
+
+  <p>If "<a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a>" is enabled (this is the default) these
+  changes will be saved across restarts. If you choose to disable this setting the changes will only last until the next restart.</p>
+
+  <p>Apart from changing them automatically via several commands in the classic UI you can alter the values using <a class="link" href="extcommands.html" title="External Commands">external commands</a>.</p>
+
+  <p><span class="bold"><strong>List of external commands to modify attributes</strong></span> (for details see the <a class="link" href="extcommands2.html" title="List of External Commands">list of external commands</a>)</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>change host attributes: <code class="code">CHANGE_HOST_MODATTR;</code>&lt;host_name&gt;;&lt;value&gt;</p>
+    </li>
+<li class="listitem">
+      <p>change service attributes: <code class="code">CHANGE_SVC_MODATTR;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;value&gt;</p>
+    </li>
+<li class="listitem">
+      <p>change contact attributes: <code class="code">CHANGE_CONTACT_MODATTR;</code>&lt;contact_name&gt;;&lt;value&gt;</p>
+    </li>
+<li class="listitem">
+      <p>change contact attributes: <code class="code">CHANGE_CONTACT_MODHATTR;</code>&lt;contact_name&gt;;&lt;value&gt;</p>
+    </li>
+<li class="listitem">
+      <p>change contact attributes: <code class="code">CHANGE_CONTACT_MODSATTR;</code>&lt;contact_name&gt;;&lt;value&gt;</p>
+    </li>
+</ul></div>
+
+  <p>The value is a logical OR of the different values from the table at the end of this section. "Logical OR" means that you have to add
+  the values and use the result.</p>
+
+  <p><span class="bold"><strong>Example</strong></span></p>
+
+  <p>The following lines show a general example how to submit external commands to the command file.</p>
+
+  <pre class="programlisting"> #!/bin/sh
+ # Adjust variables to fit your environment as necessary.
+
+ now=`date +%s`
+ commandfile='/usr/local/icinga/var/rw/icinga.cmd'
+
+ /bin/printf "[%lu] CHANGE_HOST_MODATTR;Host1;11\n" $now &gt; $commandfile</pre>
+
+  <p>The above command will modify several attributes on "Host1":</p>
+
+  <pre class="screen">enable notifications      1
+enable active checks      2
+enable the eventhandler   8
+                         --
+                         11</pre>
+
+  <p><a name="modified_attr-table"></a><span class="bold"><strong>Excerpt from include/common.h</strong></span></p>
+
+  <pre class="screen">/************************MODIFIED ATTRIBUTES *************************/
+#define MODATTR_NONE                            0
+#define MODATTR_NOTIFICATIONS_ENABLED           1
+#define MODATTR_ACTIVE_CHECKS_ENABLED           2
+#define MODATTR_PASSIVE_CHECKS_ENABLED          4
+#define MODATTR_EVENT_HANDLER_ENABLED           8
+#define MODATTR_FLAP_DETECTION_ENABLED          16
+#define MODATTR_FAILURE_PREDICTION_ENABLED      32
+#define MODATTR_PERFORMANCE_DATA_ENABLED        64
+#define MODATTR_OBSESSIVE_HANDLER_ENABLED       128
+#define MODATTR_EVENT_HANDLER_COMMAND           256
+#define MODATTR_CHECK_COMMAND                   512
+#define MODATTR_NORMAL_CHECK_INTERVAL           1024
+#define MODATTR_RETRY_CHECK_INTERVAL            2048
+#define MODATTR_MAX_CHECK_ATTEMPTS              4096
+#define MODATTR_FRESHNESS_CHECKS_ENABLED        8192
+#define MODATTR_CHECK_TIMEPERIOD                16384
+#define MODATTR_CUSTOM_VARIABLE                 32768
+#define MODATTR_NOTIFICATION_TIMEPERIOD         65536</pre>
+
+  <a class="indexterm" name="id1531496"></a>
+
+  <a class="indexterm" name="id1531509"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="cgiincludes.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="objectinheritance.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Custom CGI Headers and
+  Footers </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Object Inheritance</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

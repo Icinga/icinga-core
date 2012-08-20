@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -346,7 +346,11 @@ int read_main_config_file(char *main_config_file) {
 			mac->x[MACRO_RESOURCEFILE] = (char *)strdup(value);
 
 			/* process the resource file */
-			read_resource_file(value);
+			if(read_resource_file(value) == ERROR) {
+                                dummy = asprintf(&error_message, "Resource file parsing failed");
+				error = TRUE;
+				break;
+			}
 		}
 
 		else if (!strcmp(variable, "log_file")) {

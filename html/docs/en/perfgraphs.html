@@ -89,15 +89,16 @@
 <pre class="programlisting"> define service{
     host_name               &lt;the Icinga server&gt;
     service_description     icingastats # (or something appropriate)
-    check_command           check_icingastats
+    check_command           check_stats
     check_interval          1
     retry_interval          1
     ...
  }</pre>
 <p>and a command definition</p>
 <pre class="programlisting"> define command{
-    command_name            check_icingastats
-    command_line            $USER1$/check_nagiostats</pre>
+    command_name            check_stats
+    command_line            $USER1$/check_nagiostats
+ }</pre>
 <p>Don't forget to restart Icinga after these changes.</p>
         </li>
 <li class="listitem">
@@ -108,26 +109,35 @@
     host_name               &lt;the Icinga server&gt;
     service_description     icingastats # (or something appropriate)
     active_checks_enabled   0
-    check_command           check_dummy!0
+    check_command           check_stats!3!Freshness threshold exceeded
+    check_freshness         1
+    freshness_threshold     180         # check interval + x seconds
     ...
  }</pre>
-<p>Don't forget to restart Icinga after this change.</p>
+
+          <p>and a command definition</p>
+
+          <pre class="programlisting"> define command{
+    command_name            check_stats
+    command_line            $USER1$/check_dummy $ARG1$ $ARG2$
+ }</pre>
+
+          <p>Don't forget to restart Icinga after this change.</p>
 
           <p>Add a line to the crontab of the Icinga user which will call the <code class="filename">icingastats</code> binary and submit
           the results to the command pipe</p>
-<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; &lt;service&gt; &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
+<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; icingastats &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
 <p>
           This way the values are updated in regular intervals.</p>
         </li>
 </ul></div>
     </li>
 <li class="listitem">
-      <p>Create a symbolic link in the templates folder of PNP4Nagios</p>
-<pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php icingastats.php</pre>
+      <p>Create a symbolic link in the (user) templates folder of PNP4Nagios</p>
+<pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php check_stats.php</pre>
 <p>Make
-      sure that <span class="emphasis"><em>icingastats</em></span> (without the extension .php) matches the value you specified for the service description.
-      Blanks in the service description have to be replaced by underscores in the filename (e.g. "Icinga Stats" --&gt;
-      "Icinga_Stats.php")</p>
+      sure that <span class="emphasis"><em>check_stats</em></span> (without the extension .php) matches the value you specified as first parameter in the
+      check_command.</p>
     </li>
 </ul></div>
 
@@ -138,7 +148,7 @@
   <p><span class="bold"><strong>Average Host / Service Check Latency</strong></span></p>
 
   <div class="figure">
-<a name="id1639433"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p>
+<a name="id1537333"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p>
 <div class="figure-contents">
     
 
@@ -185,7 +195,7 @@
   <p><span class="bold"><strong>Service Statistics</strong></span></p>
 
   <div class="figure">
-<a name="id1639569"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p>
+<a name="id1537467"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p>
 <div class="figure-contents">
     
 
@@ -215,7 +225,7 @@
   <p><span class="bold"><strong>Host Statistics</strong></span></p>
 
   <div class="figure">
-<a name="id1639650"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p>
+<a name="id1537549"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p>
 <div class="figure-contents">
     
 
@@ -245,7 +255,7 @@
   <p><span class="bold"><strong>Average Execution Times</strong></span></p>
 
   <div class="figure">
-<a name="id1639732"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p>
+<a name="id1537631"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p>
 <div class="figure-contents">
     
 
@@ -288,7 +298,7 @@
   <p><span class="bold"><strong>External Commands</strong></span></p>
 
   <div class="figure">
-<a name="id1639836"></a><p class="title"><b>Figure 8.5. External Commands</b></p>
+<a name="id1537735"></a><p class="title"><b>Figure 8.5. External Commands</b></p>
 <div class="figure-contents">
     
 
@@ -316,7 +326,7 @@
   <p><span class="bold"><strong>External Command Buffers</strong></span></p>
 
   <div class="figure">
-<a name="id1639910"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p>
+<a name="id1537804"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p>
 <div class="figure-contents">
     
 
@@ -334,7 +344,7 @@
   <p><span class="bold"><strong>Cached Host and Service Checks</strong></span></p>
 
   <div class="figure">
-<a name="id1639962"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p>
+<a name="id1537853"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p>
 <div class="figure-contents">
     
 
@@ -357,7 +367,7 @@
   <p><span class="bold"><strong>Average State Changes</strong></span></p>
 
   <div class="figure">
-<a name="id1640021"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p>
+<a name="id1537914"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p>
 <div class="figure-contents">
     
 
@@ -373,7 +383,7 @@
       <p><a class="link" href="flapping.html" title="Detection and Handling of State Flapping">Flap detection</a></p>
     </li></ul></div>
 
-  <a class="indexterm" name="id1640064"></a>
+  <a class="indexterm" name="id1537958"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -37,21 +37,22 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Anstatt Icinga von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
-    Betriebssystem gibt. Bitte werfen Sie einen Blick auf die
-    <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der Pakete</a>.
-    </p>
+    <p>Anstatt Icinga von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
+    Betriebssystem gibt. Bitte werfen Sie einen Blick auf die <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der
+    Pakete</a>.</p>
+
     <p>Falls Sie aus den Sourcen installieren möchten, dann benutzen Sie bitte die offiziellen Release-Tarballs.</p>
   </td></tr>
 </table></div>
+
   <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf.
-    gelöst ist.</p>
+    <p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf. gelöst
+    ist.</p>
   </td></tr>
 </table></div>
 
@@ -71,9 +72,12 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Inzwischen gibt es einen FreeBSD-Port von Icinga (net-mgmt/icinga), so dass Sie den vielleicht installieren möchten ;-)</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Inzwischen gibt es einen FreeBSD-Port von Icinga (net-mgmt/icinga), so dass Sie den vielleicht installieren möchten
+    ;-)</p>
+  </td></tr>
 </table></div>
- 
+
   <p><span class="bold"><strong>Was dabei herauskommt</strong></span></p>
 
   <p>Wenn Sie diesen Anweisungen folgen, werden Sie am Ende folgendes haben:</p>
@@ -117,14 +121,17 @@
     </li>
 <li class="listitem">
       <p>libdbi-Treiber, eine Datenbank wie z.B. MySQL oder PostgreSQL</p>
+
       <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>PostgreSQL: Aufgrund von Änderungen an Insert-Statements funktioniert PostgreSQL 8.1 nicht länger (und ist auch bereits
-        <a class="link" href="http://wiki.postgresql.org/wiki/PostgreSQL_Release_Support_Policy" target="_top">"End-of-life"</a> seit November 2010), also
-        benutzen Sie bitte 8.2 oder besser noch 8.4. String escaping mit PostgreSQL 9.x befindet sich noch in einem experimentellen Stadium         (siehe auch <a class="link" href="https://dev.icinga.org/issues/1974" target="_top">issue #1974</a>).</p></td></tr>
+<tr><td align="left" valign="top">
+        <p>PostgreSQL: Aufgrund von Änderungen an Insert-Statements funktioniert PostgreSQL 8.1 nicht länger (und ist auch bereits <a class="link" href="http://wiki.postgresql.org/wiki/PostgreSQL_Release_Support_Policy" target="_top">"End-of-life"</a> seit November 2010), also
+        benutzen Sie bitte 8.2 oder besser noch 8.4. String escaping mit PostgreSQL 9.x befindet sich noch in einem experimentellen Stadium
+        (siehe auch <a class="link" href="https://dev.icinga.org/issues/1974" target="_top">issue #1974</a>).</p>
+      </td></tr>
 </table></div>
     </li>
 </ul></div>
@@ -154,26 +161,28 @@
 
   <p>Wenn Sie Oracle als RDBMS einsetzen möchten, dann ist das unter FreeBSD leider nicht so ohne weiteres möglich.</p>
 
-  <p><a name="quickstart-idoutils_timezone-support"></a><span class="bold"><strong>Zeitzonenunterstützung</strong></span></p>
+  <p><a name="quickstart-idoutils-freebsd_timezone-support"></a><span class="bold"><strong>Zeitzonenunterstützung</strong></span></p>
+
   <p>Ab Icinga 1.6 werden alle Zeit-/Datumsinformationen als lokale Zeitstempel in der Datenbank gespeichert. Vorher gab es für
   jedes Datenbanksystem unterschiedliche Vorgehensweisen beim Speichern und Abrufen der Daten, was schwierig für Frontend-Applikationen war.
   Deshalb wurden die Datentypen geändert: für MySQL von DATETIME in TIMESTAMP und für Oracle von DATE in LOCAL TIMESTAMP (0).
   PostgreSQL benutzt bereits TIMESTAMP, es wurde aber in TIMESTAMP WITH TIME ZONE geändert. IDO2DB wird die Sitzungszeitzone auf UTC
   setzen und alle Unix-Timestamps (die per Definition UTC sind) als UTC-basierte Werte speichern. Bitte stellen Sie sicher, dass Ihr System
   Unix-Timestamps als UTC-basierte Werte ausgibt (wie "date -u '+%s'").</p>
+
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Stellen Sie sicher, dass Ihre Datenbanksitzung in der gleichen Zeitzone läuft, in der die existierenden
-  Zeit-/Datumsinformationen gespeichert wurden (überprüfen Sie Ihre lokale Zeitzone, z.B. Oracle: "select sessiontimezone from
-  dual;"), wenn Sie das Upgrade-Script laufen lassen.
-  Zusätzlich für Ihre Bequemlichkeit sollten Sie in Oracle das Format der Sitzungszeitstempel auf den Wert zu setzen, den Sie
-  wünschen, z.B. "alter session set nls_timestamp_format='YYYY-MM-DD HH24:MI:SS'; oder etwas ähnliches.
-  Nun können Sie Einträge von verschiedenen Icinga-Installationen in unterschiedlichen Zeitzonen ansehen, die in der gleichen
-  Datenbank gespeichert wurden, und unabhängig davon, von woher Sie darauf zugreifen, werden sie in Ihrer lokalen Zeitzone angezeigt.
-  </p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Stellen Sie sicher, dass Ihre Datenbanksitzung in der gleichen Zeitzone läuft, in der die existierenden Zeit-/Datumsinformationen
+    gespeichert wurden (überprüfen Sie Ihre lokale Zeitzone, z.B. Oracle: "select sessiontimezone from dual;"), wenn Sie das
+    Upgrade-Script laufen lassen. Zusätzlich für Ihre Bequemlichkeit sollten Sie in Oracle das Format der Sitzungszeitstempel auf den
+    Wert zu setzen, den Sie wünschen, z.B. "alter session set nls_timestamp_format='YYYY-MM-DD HH24:MI:SS'; oder etwas ähnliches. Nun können
+    Sie Einträge von verschiedenen Icinga-Installationen in unterschiedlichen Zeitzonen ansehen, die in der gleichen Datenbank
+    gespeichert wurden, und unabhängig davon, von woher Sie darauf zugreifen, werden sie in Ihrer lokalen Zeitzone angezeigt.</p>
+  </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>Installation der Pakete</strong></span></p>
@@ -285,6 +294,7 @@
     Broker-Modul.</p>
   </td></tr>
 </table></div>
+
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
@@ -292,18 +302,15 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Sie sollten <code class="literal">CFLAGS=..."</code> wie oben angegeben benutzen. Anderenfalls finden Sie ggf. später folgende Zeilen in
-    <code class="filename">icinga.log</code>:
-    </p>
-<pre class="screen"> Error: Module &#8216;/usr/local/icinga/bin/idomod.o&#8217; is using an old or unspecified version of the event broker API. Module will
+    <code class="filename">icinga.log</code>: </p>
+<pre class="screen"> Error: Module &#8216;/usr/local/icinga/lib/idomod.so&#8217; is using an old or unspecified version of the event broker API. Module will
  be unloaded.
- Event broker module &#8216;/usr/local/icinga/bin/idomod.o&#8217; deinitialized successfully.</pre>
-<p>
-    Mehr Informationen zu diesem Fehler finden Sie <a class="link" href="http://www.mazej.net/icinga-idomod-o-is-using-an-old-or-unspecified-version-of-the-event-broker-api/" target="_top">
-    hier</a>.
-    </p>
+ Event broker module &#8216;/usr/local/icinga/lib/idomod.so&#8217; deinitialized successfully.</pre>
+<p> Mehr Informationen zu diesem Fehler finden Sie
+    <a class="link" href="http://www.mazej.net/icinga-idomod-o-is-using-an-old-or-unspecified-version-of-the-event-broker-api/" target="_top">
+    hier</a>.</p>
   </td></tr>
 </table></div>
-
 
   <p><span class="bold"><strong>Mit SSL-Verschlüsselung:</strong></span></p>
 
@@ -317,15 +324,15 @@
 
   <pre class="programlisting"> #&gt; gmake all</pre>
 
-  <p>Installieren Sie die Binaries, das Init-Script, Beispiel-Konfigurationsdateien und setzen Sie die Berechtigungen für das
-  External-Command-Verzeichnis.</p>
-<pre class="programlisting"> #&gt; gmake install 
- #&gt; gmake install-init 
- #&gt; gmake install-config 
- #&gt; gmake install-commandmode
- #&gt; gmake install-idoutils</pre>
+  <p>Installieren Sie die Binaries, das Init-Script, Beispiel-Konfigurationsdateien, Beispiel-Eventhandler und setzen Sie die
+  Berechtigungen für das External-Command-Verzeichnis. </p>
+<pre class="programlisting"> #&gt; make install
+ #&gt; gmake install-init
+ #&gt; gmake install-config
+ #&gt; gmake install-eventhandlers
+ #&gt; gmake install-commandmode </pre>
 <p> oder kürzer </p>
-<pre class="programlisting"> #&gt; gmake fullinstall
+<pre class="programlisting"> #&gt; make fullinstall
  #&gt; gmake install-config</pre>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -333,8 +340,10 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"><p>Ab Icinga 1.5.0 ist <code class="literal">gmake install-config</code> NICHT mehr in <code class="literal">gmake fullinstall </code> 
-  enthalten, um ein versehentliches Überschreiben der Konfigurationsdateien zu verhindern.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Ab Icinga 1.5.0 ist <code class="literal">make install-config</code> NICHT mehr in <code class="literal">make fullinstall </code>enthalten, um
+    ein versehentliches Überschreiben der Konfigurationsdateien zu verhindern.</p>
+  </td></tr>
 </table></div>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -343,7 +352,18 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Die Icinga-API diente als eine in PHP geschriebene Datenbank-Abstraktionsschicht. Seit Icinga ist sie durch eine 
+    <p>Ab Icinga 1.7.0 werden mit <code class="literal">make install-eventhandlers</code> einige Beispiel-Eventhandler installiert. Das ist
+    lediglich in <code class="literal">make fullinstall</code> enthalten, um ein versehentliches Überschreiben der Dateien zu verhindern.</p>
+  </td></tr>
+</table></div>
+
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Die Icinga-API diente als eine in PHP geschriebene Datenbank-Abstraktionsschicht. Seit Icinga ist sie durch eine
     interne Datenbank-Abstraktionsschicht ersetzt worden, so dass Icinga-API nicht mehr installiert werden muss.</p>
   </td></tr>
 </table></div>
@@ -373,7 +393,8 @@
  output_type=tcpsocket
  output=127.0.0.1</pre>
 
-  <p>(passen Sie die IP-Adresse an, wenn sich Ihre Datenbank nicht auf localhost befindet!) und in der <code class="filename">ido2db.cfg</code> mit</p>
+  <p>(passen Sie die IP-Adresse an, wenn sich Ihre Datenbank nicht auf localhost befindet!) und in der <code class="filename">ido2db.cfg</code>
+  mit</p>
 
   <pre class="programlisting"> use_ssl=1
  socket_type=tcp </pre>
@@ -396,16 +417,21 @@
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
+     
+
     <p>Unter normalen Umständen gibt es im <code class="filename">modules</code>-Unterverzeichnis bereits die folgende module-Definition, so dass
     Sie keine Änderungen an der Hauptkonfigurationsdatei vornehmen müssen.</p>
 
+     
+
     <pre class="screen"> define module{
         module_name    ido_mod
-        path           /usr/local/icinga/bin/idomod.o
+        path           /usr/local/icinga/lib/idomod.so
         module_type    neb
         args           config_file=/usr/local/icinga/etc/idomod.cfg
         }</pre>
-    Das bedeutet auch, dass ein entsprechender broker_module-Eintrag nicht aktiviert werden darf!
+
+     Das bedeutet auch, dass ein entsprechender broker_module-Eintrag nicht aktiviert werden darf! 
   </td></tr>
 </table></div>
 
@@ -430,13 +456,13 @@
 
  mysql&gt; CREATE DATABASE icinga;
 
- GRANT USAGE ON *.* TO 'icinga'@'localhost'
+ GRANT USAGE ON icinga.* TO 'icinga'@'localhost'
    IDENTIFIED BY 'icinga'
    WITH MAX_QUERIES_PER_HOUR 0
    MAX_CONNECTIONS_PER_HOUR 0
    MAX_UPDATES_PER_HOUR 0;
 
- GRANT SELECT , INSERT , UPDATE , DELETE
+ GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX
    ON icinga.* TO 'icinga'@'localhost';
 
  FLUSH PRIVILEGES ;
@@ -595,9 +621,9 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="id1456697"></a>
+  <a class="indexterm" name="id1480396"></a>
 
-  <a class="indexterm" name="id1456711"></a>
+  <a class="indexterm" name="id1480411"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -17,7 +17,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  ************************************************************************/
 
 
@@ -75,8 +75,6 @@
 /***** CGI COMPILE OPTIONS *****/
 /* should we compile and use the statusmap CGI? */
 #undef USE_STATUSMAP
-/* should we compile and use the statuswrl CGI? */
-#undef USE_STATUSWRL
 /* should we compile and use the trends CGI? */
 #undef USE_TRENDS
 /* should we compile and use the histogram CGI? */
@@ -359,9 +357,6 @@
 #ifndef WIFEXITED
 # define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
 #endif
-
-/* define to use state based escalation ranges */
-#undef USE_ST_BASED_ESCAL_RANGES
 
 /* Define to 1 if you have the <dbi/dbi.h> header file. */
 #undef HAVE_DBI_DBI_H

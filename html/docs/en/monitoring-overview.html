@@ -1,0 +1,116 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<title>Monitoring Overview</title>
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
+<link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
+<link rel="prev" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">
+<link rel="next" href="monitoring-windows.html" title="Monitoring Windows Machines">
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Monitoring Overview</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="upgrading_idoutils.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 2. Getting Started</th>
+<td width="20%" align="right"> <a accesskey="n" href="monitoring-windows.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="Monitoring Overview">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="monitoring-overview"></a><a name="monitoring_overview"></a>Monitoring Overview</h2></div></div></div>
+  
+
+  <p><span class="bold"><strong>Introduction</strong></span></p>
+
+  <p>Icinga is intended to monitor devices (e.g. server, router, printer, and other hardware like temperature sensors) and
+  services (processes running on these devices, metrics, etc.). There are several ways to do that and different approaches for different
+  devices depending on your needs or the infrastructure.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="activechecks.html" title="Active Checks">Active checks</a></p>
+
+      <p>The checks are initiated from the monitoring server repeated at given intervals. The server is waiting for the check results.
+      The values and thresholds are set on the monitoring server. Check results can be retrieved</p>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>using SNMP. The remote system runs an SNMP daemon allowing to read the requested values. Depending on the plugin and the
+          daemon SNMP v1, v2c, or v3 are supported</p>
+        </li>
+<li class="listitem">
+          <p>using <a class="link" href="nrpe.html" title="NRPE">NRPE</a>, calling an NRPE daemon on the remote system which executes a check and returns the
+          results to NRPE which in turn delivers it to the Icinga process</p>
+        </li>
+<li class="listitem">
+          <p>calling a plugin using SSH to call a check on the remote system which returns the data to the plugin</p>
+        </li>
+<li class="listitem">
+          <p>using the plugin check_nt to connect to a service (e.g. "<a class="link" href="http://nsclient.org" target="_top">NSClient++</a>") on the
+          remote windows box and return data on several metrics</p>
+        </li>
+<li class="listitem">
+          <p>using addons like <a class="link" href="http://my-plugin.de" target="_top">check_multi</a> or <a class="link" href="http://mathias-kettner.de/check_mk_overview.html" target="_top">check_mk</a> which call plugins on their own to decrease the
+          performance impact on the monitoring process (due to parallel calls). The configuration of values and thresholds is mostly moved
+          to these addons which might increase the time of administration</p>
+        </li>
+</ul></div>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="passivechecks.html" title="Passive Checks">Passive checks</a></p>
+
+      <p>The checks are initiated on remote systems (not necessarily the system to be monitored but probably "satellite systems", aka
+      "pollers", which monitor an organisational unit). The check results are transmitted to the monitoring server using <a class="link" href="nsca.html" title="NSCA">NSCA</a> consisting of send_nsca on the client system and the nsca daemon on the monitoring server and processed
+      there to update the current status. Setting <a class="link" href="freshness.html" title="Service and Host Freshness Checks">freshness thresholds</a> will notify you if results do not
+      appear in time. Depending on the configuration tools used administration might be more complex but using firewalls or other
+      limitations imposed by security, customers, and/or other means you might not have the choice. Using passive checks will decrease the
+      load on your monitoring system, too, because it only has to process the check results instead of executing checks itself. You can use
+      entries in the crontab to execute checks at fixed times, execute long running queries when necessary or execute backup jobs returning
+      only the results.</p>
+    </li>
+<li class="listitem">
+      <p>A mix of both</p>
+
+      <p>You might have remote systems running checks at given intervals providing data via a secret and secure page on a web server. The
+      monitoring server is not able to check the systems directly (due to firewalls, customer regulations, etc.) but can access the document
+      provided by the web server. It will retrieve the data using scripts (checks?) and injecting the results via <a class="link" href="extcommands.html" title="External Commands">external commands</a>.</p>
+    </li>
+<li class="listitem">
+      <p>SNMP-Traps</p>
+
+      <p>Sometimes you don't want to check things periodically because they are running smoothly and it would impose unnecessary network
+      load. Several devices will inform you themselves when something goes wrong by using SNMP traps.</p>
+    </li>
+</ul></div>
+
+  <a class="indexterm" name="id1427400"></a>
+</div>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="upgrading_idoutils.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="monitoring-windows.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Upgrading IDOUtils Database </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Monitoring Windows Machines</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
+</html>

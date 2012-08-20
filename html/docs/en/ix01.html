@@ -24,7 +24,7 @@
 </div>
 <div class="index" title="Index">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="id1681617"></a>Index</h2></div></div></div>
+<a name="id1579570"></a>Index</h2></div></div></div>
 <div class="index">
 <div class="indexdiv">
 <h3>A</h3>
@@ -242,6 +242,8 @@
 <dt>assumestateretention, <a class="indexterm" href="cgiparams.html#cgiparams-assumestateretention">Information On CGI parameters</a>
 </dt>
 <dt>assumestatesduringnotrunning, <a class="indexterm" href="cgiparams.html#cgiparams-assumestatesduringnotrunning">Information On CGI parameters</a>
+</dt>
+<dt>attr, <a class="indexterm" href="cgiparams.html#cgiparams-attr">Information On CGI parameters</a>
 </dt>
 <dt>backtrack, <a class="indexterm" href="cgiparams.html#cgiparams-backtrack">Information On CGI parameters</a>
 </dt>
@@ -486,8 +488,6 @@
 </dt>
 <dt>Trends CGI, <a class="indexterm" href="cgis.html#cgis-trends_cgi">Icinga Classic UI: Information On The CGIs</a>
 </dt>
-<dt>WAP Interface CGI, <a class="indexterm" href="cgis.html#cgis-statuswml_cgi">Icinga Classic UI: Information On The CGIs</a>
-</dt>
 </dl></dd>
 <dt>cgi_log_archive_path=</dt>
 <dd><dl><dt>Set location of CGI log archive directory, <a class="indexterm" href="configcgi.html#configcgi-cgi_log_archive_path">CGI Configuration File Options</a>
@@ -663,8 +663,12 @@
 <dt>Downloading The Latest Version, <a class="indexterm" href="about.html#downloading">About Icinga</a>
 </dt>
 <dt>Downtime</dt>
-<dd><dl><dt>Scheduled Downtime, <a class="indexterm" href="downtime.html#schedule_downtime">Scheduled Downtime</a>
-</dt></dl></dd>
+<dd><dl>
+<dt>recurring, <a class="indexterm" href="recurring_downtimes.html">Recurring Downtimes</a>
+</dt>
+<dt>scheduled, <a class="indexterm" href="downtime.html#schedule_downtime">Scheduled Downtime</a>
+</dt>
+</dl></dd>
 </dl>
 </div>
 <div class="indexdiv">
@@ -1145,7 +1149,7 @@
 </dt>
 <dt>hostprops, <a class="indexterm" href="cgiparams.html#cgiparams-filter">Information On CGI parameters</a>
 </dt>
-<dt>hoststatustypes, <a class="indexterm" href="../../../../../"></a>
+<dt>hoststatustypes, <a class="indexterm" href="cgiparams.html#cgiparams-hoststatustypes">Information On CGI parameters</a>
 </dt>
 <dt>host_check_timeout=</dt>
 <dd><dl><dt>Host Check Timeout, <a class="indexterm" href="configmain.html#configmain-host_check_timeout">Main Configuration File Options</a>
@@ -1253,11 +1257,9 @@
 </dt>
 <dt>Customised Configuration, <a class="indexterm" href="icinga-web-config.html">Configuration Overview of Icinga-Web</a>
 </dt>
-<dt>Icinga-API connection, <a class="indexterm" href="icinga-web-config.html#configweb-api">Configuration Overview of Icinga-Web</a>
-</dt>
 <dt>Module configuration, <a class="indexterm" href="icinga-web-config.html#configweb-module">Configuration Overview of Icinga-Web</a>
 </dt>
-<dt>Overview version 1.6.x, <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro_1.6">Introduction to Icinga-Web (&gt;= 1.6.x)</a>
+<dt>Overview version 1.7.x, <a class="indexterm" href="icinga-web-introduction.html#icinga-web-intro_1.7">Introduction to Icinga-Web (&gt;= 1.7.x)</a>
 </dt>
 <dt>Session Cookie Lifetime, <a class="indexterm" href="icinga-web-config.html#configweb-session-lifetime">Configuration Overview of Icinga-Web</a>
 </dt>
@@ -1831,6 +1833,9 @@
 </dt></dl></dd>
 <dt>MKLiveStatus-Integration, <a class="indexterm" href="int-mklivestatus.html">MKLiveStatus Integration</a>
 </dt>
+<dt>Modified attributes</dt>
+<dd><dl><dt>Possible values, <a class="indexterm" href="modified_attr.html">Modified attributes</a>
+</dt></dl></dd>
 <dt>Monitoring</dt>
 <dd><dl>
 <dt>Monitoring Linux/Unix Machines, <a class="indexterm" href="monitoring-linux.html#monitoring_linux">Monitoring Linux/Unix Machines</a>
@@ -1848,6 +1853,8 @@
 <dt>Redundant and Failover Network Monitoring, <a class="indexterm" href="redundancy.html#redundancy_failover">Redundant and Failover Network Monitoring</a>
 </dt>
 </dl></dd>
+<dt>Monitoring Overview, <a class="indexterm" href="adaptive.html#adaptive_monitoring">Adaptive Monitoring</a>
+</dt>
 <dt>MultiSite, <a class="indexterm" href="addons.html#addons-web">Icinga Addons</a>
 </dt>
 </dl>
@@ -2034,9 +2041,6 @@
 <dt>physical_html_path=</dt>
 <dd><dl><dt>Physical HTML Path, <a class="indexterm" href="configcgi.html#configcgi-physical_html_path">CGI Configuration File Options</a>
 </dt></dl></dd>
-<dt>ping_syntax=</dt>
-<dd><dl><dt>Ping Syntax, <a class="indexterm" href="configcgi.html#configcgi-ping_syntax">CGI Configuration File Options</a>
-</dt></dl></dd>
 <dt>Plugins</dt>
 <dd><dl>
 <dt>Icinga Plugin API, <a class="indexterm" href="pluginapi.html#plugin_api">Icinga Plugin API</a>
@@ -2097,6 +2101,9 @@
 </dt></dl></dd>
 <dt>refresh_rate=</dt>
 <dd><dl><dt>CGI Refresh Rate, <a class="indexterm" href="configcgi.html#configcgi-refresh_rate">CGI Configuration File Options</a>
+</dt></dl></dd>
+<dt>refresh_type=</dt>
+<dd><dl><dt>CGI Refresh Type, <a class="indexterm" href="configcgi.html#configcgi-refresh_type">CGI Configuration File Options</a>
 </dt></dl></dd>
 <dt>resource_file=</dt>
 <dd><dl><dt>Resource File, <a class="indexterm" href="configmain.html#configmain-resource_file">Main Configuration File Options</a>
@@ -2188,7 +2195,7 @@
 </dt>
 <dt>serviceprops, <a class="indexterm" href="cgiparams.html#cgiparams-filter">Information On CGI parameters</a>
 </dt>
-<dt>servicestatustypes, <a class="indexterm" href="../../../../../"></a>
+<dt>servicestatustypes, <a class="indexterm" href="cgiparams.html#cgiparams-servicestatustypes">Information On CGI parameters</a>
 </dt>
 <dt>service_check_timeout=</dt>
 <dd><dl><dt>Service Check Timeout, <a class="indexterm" href="configmain.html#configmain-service_check_timeout">Main Configuration File Options</a>
@@ -2264,11 +2271,11 @@
 <dt>stalking_event_handlers_for_services=</dt>
 <dd><dl><dt>Stalking Event Handlers for Services, <a class="indexterm" href="configmain.html#configmain-stalking_event_handlers_for_services">Main Configuration File Options</a>
 </dt></dl></dd>
-<dt>stalking_for_hosts=</dt>
-<dd><dl><dt>Notifications for Stalked Hosts, <a class="indexterm" href="../../../../../"></a>
+<dt>stalking_notifications_for_hosts=</dt>
+<dd><dl><dt>Notifications for Stalked Hosts, <a class="indexterm" href="configmain.html#configmain-stalking_notifications_for_hosts">Main Configuration File Options</a>
 </dt></dl></dd>
-<dt>stalking_for_services=</dt>
-<dd><dl><dt>Notifications for Stalked Services, <a class="indexterm" href="../../../../../"></a>
+<dt>stalking_notifications_for_services=</dt>
+<dd><dl><dt>Notifications for Stalked Services, <a class="indexterm" href="configmain.html#configmain-stalking_notifications_for_services">Main Configuration File Options</a>
 </dt></dl></dd>
 <dt>Starting and Stopping Icinga, <a class="indexterm" href="startstop.html#start_stop">Starting and Stopping Icinga</a>
 </dt>
@@ -2520,6 +2527,9 @@
 <dt>idomod.cfg, <a class="indexterm" href="configido.html#configido-use_ssl">IDOMOD config options</a>
 </dt>
 </dl></dd>
+<dt>use_ssl_authentication=</dt>
+<dd><dl><dt>Use Client Certificates, <a class="indexterm" href="configcgi.html#configcgi-use_ssl_authentication">CGI Configuration File Options</a>
+</dt></dl></dd>
 <dt>use_syslog=</dt>
 <dd><dl><dt>Syslog Logging Option, <a class="indexterm" href="configmain.html#configmain-use_syslog">Main Configuration File Options</a>
 </dt></dl></dd>

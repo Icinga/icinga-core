@@ -2770,5 +2770,3 @@ int terminate_cleanup_thread(void) {
 
 }
 
-
-

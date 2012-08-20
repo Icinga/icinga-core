@@ -23,7 +23,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -700,12 +700,6 @@ void display_page_header(void) {
 		printf("</td><td CLASS='optBoxItem'>\n");
 		printf("<input type='submit' value='Update'>\n");
 		printf("</td></tr>\n");
-
-		/* display context-sensitive help */
-		printf("<tr><td></td><td align=right valign=bottom>\n");
-		display_context_help(CONTEXTHELP_MAP);
-		printf("</td></tr>\n");
-
 		printf("</table>\n");
 
 		printf("</td></tr>\n");

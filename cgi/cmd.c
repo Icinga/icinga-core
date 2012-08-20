@@ -20,7 +20,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *************************************************************************/
 
 /** @file cmd.c
@@ -33,6 +33,7 @@
 #include "../include/objects.h"
 #include "../include/comments.h"
 #include "../include/downtime.h"
+#include "../include/statusdata.h"
 
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
@@ -53,8 +54,8 @@ extern int  use_authentication;
 extern int  lock_author_names;
 extern int  persistent_ack_comments;
 extern int  default_expiring_acknowledgement_duration;
+extern int  default_expiring_disabled_notifications_duration;
 
-extern int  content_type;
 extern int  display_header;
 extern int  daemon_check;
 
@@ -103,6 +104,11 @@ extern comment *comment_list;
 #define PRINT_DOWNTIME_LIST		20
 /** @}*/
 
+/** @name NOTIFICATION LIST TYPES
+ @{**/
+#define PRINT_EXPIRE_DISABLE_NOTIFICATIONS	21
+/** @}*/
+
 /** @brief host/service list structure
  *
  *  Struct to hold information of hosts and services for batch processing
@@ -140,16 +146,17 @@ int notification_delay = 0;			/**< delay for submitted notification in minutes *
 int schedule_delay = 0;				/**< delay for sheduled actions in minutes (Icinga restart, Notfications enable/disable)
 							!not implemented in GUI! */
 int persistent_comment = FALSE;			/**< bool if omment should survive Icinga restart */
-int sticky_ack = FALSE;				/**< bool to disable notifications until recover */
-int send_notification = FALSE;			/**< bool sends a notification if service gets acknowledged */
+int sticky_ack = TRUE;				/**< bool to disable notifications until recover */
+int send_notification = TRUE;			/**< bool sends a notification if service gets acknowledged */
 int use_ack_end_time = FALSE;			/**< bool if expire acknowledgement is selected or not */
-int force_check = FALSE;				/**< bool if check should be forced */
+int use_disabled_notif_end_time = FALSE;	/**< bool if expire disabled notifications is selected or not */
+int force_check = FALSE;			/**< bool if check should be forced */
 int plugin_state = STATE_OK;			/**< plugin state for passive submitted check */
 int affect_host_and_services = FALSE;		/**< bool if notifiactions or else affect all host and services */
 int propagate_to_children = FALSE;		/**< bool if en/disable host notifications should propagated to children */
 int fixed = FALSE;				/**< bool if downtime is fixed or flexible */
 unsigned long duration = 0L;			/**< downtime duration */
-unsigned long triggered_by = 0L;			/**< downtime id which triggers submited downtime */
+unsigned long triggered_by = 0L;		/**< downtime id which triggers submited downtime */
 int child_options = 0;				/**< if downtime should trigger child host downtimes */
 int force_notification = 0;			/**< force a notification to be send out through event handler */
 int broadcast_notification = 0;			/**< this options determines if notification should be broadcasted */
@@ -293,10 +300,7 @@ int main(void) {
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
 		document_header(CGI_ID, FALSE, "Error");
-		if (content_type == WML_CONTENT)
-			printf("<p>Error: Could not open CGI config file!</p>\n");
-		else
-			print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
+		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -305,10 +309,7 @@ int main(void) {
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
 		document_header(CGI_ID, FALSE, "Error");
-		if (content_type == WML_CONTENT)
-			printf("<p>Error: Could not open main config file!</p>\n");
-		else
-			print_error(main_config_file, ERROR_CGI_MAIN_CFG);
+		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -325,13 +326,21 @@ int main(void) {
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
 		document_header(CGI_ID, FALSE, "Error");
-		if (content_type == WML_CONTENT)
-			printf("<p>Error: Could not read object config data!</p>\n");
-		else
-			print_error(NULL, ERROR_CGI_OBJECT_DATA);
+		print_error(NULL, ERROR_CGI_OBJECT_DATA);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
+
+	/* read all status data */
+	result = read_all_status_data(get_cgi_config_location(), READ_ALL_STATUS_DATA);
+	if (result == ERROR && daemon_check == TRUE) {
+		document_header(CGI_ID, FALSE, "Error");
+		print_error(NULL, ERROR_CGI_STATUS_DATA);
+		document_footer(CGI_ID);
+		free_memory();
+		return ERROR;
+	}
+
 
 	document_header(CGI_ID, TRUE, "External Command Interface");
 
@@ -358,13 +367,6 @@ int main(void) {
 
 		/* right column of the first row */
 		printf("<td align=right valign=bottom width=33%%>\n");
-
-		/* display context-sensitive help */
-		if (command_mode == CMDMODE_COMMIT)
-			display_context_help(CONTEXTHELP_CMD_COMMIT);
-		else
-			display_context_help(CONTEXTHELP_CMD_INPUT);
-
 		printf("</td>\n");
 
 		/* end of top table */
@@ -604,16 +606,32 @@ int process_cgivars(void) {
 			persistent_comment = TRUE;
 
 		/* we got the notification option for an acknowledgement */
-		else if (!strcmp(variables[x], "send_notification"))
-			send_notification = TRUE;
+		else if (!strcmp(variables[x], "send_notification")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+			send_notification = (atoi(variables[x]) > 0) ? TRUE : FALSE;
+		}
 
 		/* we got the acknowledgement type */
-		else if (!strcmp(variables[x], "sticky_ack"))
-			sticky_ack = TRUE;
+		else if (!strcmp(variables[x], "sticky_ack")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+			sticky_ack = (atoi(variables[x]) > 0) ? TRUE : FALSE;
+		}
 
 		/* we use the end_time as expire time */
 		else if (!strcmp(variables[x], "use_ack_end_time"))
 			use_ack_end_time = TRUE;
+
+		/* we use the end_time as disabled notifcations expire time */
+		else if (!strcmp(variables[x], "use_disabled_notif_end_time"))
+			use_disabled_notif_end_time = TRUE;
 
 		/* we got the service check force option */
 		else if (!strcmp(variables[x], "force_check"))
@@ -763,20 +781,6 @@ int process_cgivars(void) {
 				strcpy(end_time_string, variables[x]);
 		}
 
-		/* we found the content type argument */
-		else if (!strcmp(variables[x], "content")) {
-			x++;
-			if (variables[x] == NULL) {
-				error = TRUE;
-				break;
-			}
-			if (!strcmp(variables[x], "wml")) {
-				content_type = WML_CONTENT;
-				display_header = FALSE;
-			} else
-				content_type = HTML_CONTENT;
-		}
-
 		/* we found the forced notification option */
 		else if (!strcmp(variables[x], "force_notification"))
 			force_notification = NOTIFICATION_OPTION_FORCED;
@@ -798,22 +802,54 @@ int process_cgivars(void) {
 }
 
 void print_object_list(int list_type) {
+	hoststatus *temp_hoststatus = NULL;
+	servicestatus *temp_servicestatus = NULL;
 	int x = 0;
 	int row_color = 0;
+	int host_passive = FALSE;
+	int service_passive = FALSE;
 
-	printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
-	printf("<tr CLASS=\"sectionHeader\"><td COLSPAN=\"2\" >Affected Objects</td></tr>\n");
+
+	printf("<tr><td colspan=\"2\">&nbsp;</td></tr>\n");
+	printf("<tr class=\"sectionHeader\"><td colspan=\"2\" >Affected Objects</td></tr>\n");
+
+	printf("<tr><td colspan=\"2\"><TABLE cellspacing='2' cellpadding='0' border='0' width='100%%'>\n");
 
 	if (list_type == PRINT_SERVICE_LIST)
-		printf("<tr class=\"objectDescription\"><td width=\"50%%\">Host</td><td width=\"50%%\">Service</td></tr>\n");
+		printf("<tr class=\"objectDescription\"><td width=\"46%%\">Host</td><td width=\"46%%\">Service</td><td width='16'></td></tr>\n");
+	else if (list_type == PRINT_HOST_LIST)
+		printf("<tr class=\"objectDescription\"><td colspan=\"2\" width=\"96%%\">Hosts</td><td width='16'></td></tr>\n");
 	else
-		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		printf("<tr><td colspan=\"3\">&nbsp;</td></tr>\n");
 
 	for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
 
 		if (list_type == PRINT_HOST_LIST || list_type == PRINT_SERVICE_LIST) {
+			host_passive = FALSE;
+			service_passive = FALSE;
+
 			if (commands[x].host_name == NULL)
 				continue;
+
+			if (strlen(commands[x].host_name) != 0 && (
+				command_type == CMD_SCHEDULE_HOST_CHECK ||
+				command_type == CMD_DISABLE_HOST_CHECK ||
+				command_type == CMD_SCHEDULE_SVC_CHECK ||
+				command_type == CMD_DISABLE_SVC_CHECK )) {
+				if((temp_hoststatus = find_hoststatus(commands[x].host_name)) != NULL) {
+					if (temp_hoststatus->checks_enabled == FALSE)
+						host_passive = TRUE;
+				}
+
+
+				if (list_type == PRINT_SERVICE_LIST && strlen(commands[x].description) != 0 ) {
+					if((temp_servicestatus = find_servicestatus(commands[x].host_name, commands[x].description)) != NULL) {
+						if (temp_servicestatus->checks_enabled == FALSE)
+							service_passive = TRUE;
+					}
+				}
+			}
+
 		} else {
 			if (multi_ids[x] == FALSE)
 				continue;
@@ -825,10 +861,8 @@ void print_object_list(int list_type) {
 		if (list_type == PRINT_SERVICE_LIST) {
 			/* hostname and service description are present */
 			if (strlen(commands[x].host_name) != 0  && strlen(commands[x].description) != 0) {
-				printf(">%s</td>", escape_string(commands[x].host_name));
-				/* we can use "escape_string" only twice in one line */
-				printf("<td><INPUT TYPE='HIDDEN' NAME='hostservice' VALUE='%s^%s'>", escape_string(commands[x].host_name), escape_string(commands[x].description));
-				printf("%s</td></tr>\n", escape_string(commands[x].description));
+				printf(">%s</td><td>%s</td>", escape_string(commands[x].host_name), escape_string(commands[x].description));
+				printf("<td align='center'><input type='checkbox' name='hostservice' value='%s^%s' %s></td></tr>\n", escape_string(commands[x].host_name), escape_string(commands[x].description), (service_passive == FALSE) ? "checked" : "");
 			} else {
 				/* if hostname is empty print inputbox instead */
 				if (!strcmp(commands[x].host_name, ""))
@@ -837,22 +871,28 @@ void print_object_list(int list_type) {
 					printf("><INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>%s</td>", escape_string(commands[x].host_name), escape_string(commands[x].host_name));
 				/* if service description is empty print inputbox instead */
 				if (!strcmp(commands[x].description, ""))
-					printf("<td><INPUT TYPE='TEXT' NAME='service' SIZE=30></td></tr>\n");
+					printf("<td><INPUT TYPE='TEXT' NAME='service' SIZE=30></td>");
 				else
-					printf("<td><INPUT TYPE='HIDDEN' NAME='service' VALUE='%s'>%s</td></tr>\n", escape_string(commands[x].description), escape_string(commands[x].description));
+					printf("<td><INPUT TYPE='HIDDEN' NAME='service' VALUE='%s'>%s</td>", escape_string(commands[x].description), escape_string(commands[x].description));
+
+				printf("<td></td></tr>\n");
 			}
 		} else if (list_type == PRINT_HOST_LIST) {
 			/* if hostname is empty print inputbox instead */
 			if (!strcmp(commands[x].host_name, ""))
-				printf(" style=\"font-weight:bold;\">Host:</td><td><INPUT TYPE='TEXT' NAME='host' SIZE=30></td></tr>\n");
-			else
-				printf(" style=\"font-weight:bold;\">Host:</td><td><INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>%s</td></tr>\n", escape_string(commands[x].host_name), escape_string(commands[x].host_name));
+				printf(" style=\"font-weight:bold;\">Host:</td><td><INPUT TYPE='TEXT' NAME='host' SIZE=30></td><td></td></tr>\n");
+			else {
+				printf(" style=\"font-weight:bold;\">Host:</td><td>%s</td>", escape_string(commands[x].host_name));
+				printf("<td align='center'><input type='checkbox' name='host' value='%s' %s></td></tr>\n", escape_string(commands[x].host_name), (host_passive == FALSE) ? "checked" : "");
+			}
 		} else if (list_type == PRINT_COMMENT_LIST) {
 			printf(" style=\"font-weight:bold;\">Comment ID:</td><td><INPUT TYPE='HIDDEN' NAME='com_id' VALUE='%lu'>%lu</td></tr>\n", multi_ids[x], multi_ids[x]);
 		} else if (list_type == PRINT_DOWNTIME_LIST) {
 			printf(" style=\"font-weight:bold;\">Scheduled Downtime ID:</td><td><INPUT TYPE='HIDDEN' NAME='down_id' VALUE='%lu'>%lu</td></tr>\n", multi_ids[x], multi_ids[x]);
 		}
 	}
+
+	printf("</td><tr></table>\n");
 
 	return;
 }
@@ -932,7 +972,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Sticky Acknowledgement:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' NAME='sticky_ack' CHECKED></td></tr>\n");
+		printf("<INPUT TYPE='checkbox' NAME='sticky_ack' %s></td></tr>\n", (sticky_ack == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_SEND_NOTFICATION:
@@ -942,7 +982,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Send Notification:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' NAME='send_notification' CHECKED></td></tr>\n");
+		printf("<INPUT TYPE='checkbox' NAME='send_notification' %s></td></tr>\n", (send_notification == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_PERSISTENT:
@@ -990,7 +1030,7 @@ void print_form_element(int element, int cmd) {
 			printf("Check Time:");
 		}
 		print_help_box(help_text);
-		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='%s_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", (element == PRINT_END_TIME) ? "end" : "start", buffer);
+		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' class='timepicker' NAME='%s_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", (element == PRINT_END_TIME) ? "end" : "start", buffer);
 		break;
 
 	case PRINT_FIXED_FLEXIBLE_TYPE:
@@ -1048,8 +1088,29 @@ void print_form_element(int element, int cmd) {
 
 		printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
 		print_help_box(help_text);
-		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
+		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
 		break;
+
+        case PRINT_EXPIRE_DISABLE_NOTIFICATIONS:
+
+                strcpy(help_text, "If you want to let the disabled notifications expire, check this option.");
+
+                printf("<tr><td class=\"objectDescription descriptionleft\">Use Expire Time:");
+                print_help_box(help_text);
+                printf("</td><td align=\"left\">");
+                printf("<INPUT TYPE='checkbox' ID='expire_checkbox' NAME='use_disabled_notif_end_time' onClick=\"if (document.getElementById('expire_checkbox').checked == true) document.getElementById('expired_date_row').style.display = ''; else document.getElementById('expired_date_row').style.display = 'none';\"></td></tr>\n");
+
+                snprintf(help_text, sizeof(help_text), "Enter the expire date/time for disabled notifications. %s will automatically re-enable all notifications after this time expired.", PROGRAM_NAME);
+                help_text[sizeof(help_text)-1] = '\x0';
+
+                time(&t);
+                t += (unsigned long)default_expiring_disabled_notifications_duration;
+                get_time_string(&t, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
+
+                printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
+                print_help_box(help_text);
+                printf("</td><td align=\"left\"><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
+                break;
 
 	case PRINT_FORCE_CHECK:
 
@@ -1141,6 +1202,11 @@ void request_command_data(int cmd) {
 	case CMD_DISABLE_NOTIFICATIONS:
 		snprintf(help_text, sizeof(help_text), "This command is used to %s host and service notifications on a program-wide basis", (cmd == CMD_ENABLE_NOTIFICATIONS) ? "enable" : "disable");
 		snprintf(action, sizeof(action), "%s notifications on a program-wide basis", (cmd == CMD_ENABLE_NOTIFICATIONS) ? "Enable" : "Disable");
+		break;
+
+	case CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME:
+		snprintf(help_text, sizeof(help_text), "This command is used to disable host and service notifications on a program-wide basis, with a given expire time");
+		snprintf(action, sizeof(action), "Disable notifications on a program-wide basis, with expire time");
 		break;
 
 	case CMD_SHUTDOWN_PROCESS:
@@ -1647,13 +1713,18 @@ void request_command_data(int cmd) {
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
 
+		if (cmd == CMD_DISABLE_NOTIFICATIONS) {
+			print_form_element(PRINT_EXPIRE_DISABLE_NOTIFICATIONS, cmd);
+		}
 		if (enforce_comments_on_actions == TRUE) {
 			print_form_element(PRINT_COMMON_HEADER, cmd);
 			print_form_element(PRINT_AUTHOR, cmd);
 			print_form_element(PRINT_COMMENT_BOX, cmd);
 		} else	{
-			printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
-			printf("<tr><td CLASS='objectDescription' colspan=2>There are no options for this command.<br>Click the 'Commit' button to submit the command.</td></tr>\n");
+			if (cmd != CMD_DISABLE_NOTIFICATIONS) {
+				printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+				printf("<tr><td CLASS='objectDescription' colspan=2>There are no options for this command.<br>Click the 'Commit' button to submit the command.</td></tr>\n");
+			}
 		}
 
 		break;
@@ -2160,6 +2231,15 @@ void commit_command_data(int cmd) {
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
 
+                if (use_disabled_notif_end_time == TRUE && cmd == CMD_DISABLE_NOTIFICATIONS) {
+
+                        time(&start_time);
+
+                        /* make sure we have end time if required */
+                        check_time_sanity(&e);
+                } else
+                        end_time = 0L;
+
 		if (enforce_comments_on_actions == TRUE) {
 			check_comment_sanity(&e);
 			clean_comment_data(comment_author);
@@ -2379,11 +2459,7 @@ void commit_command_data(int cmd) {
 		for (e = 0; e < NUMBER_OF_STRUCTS; e++) {
 			if (error[e].message == NULL)
 				continue;
-			if (content_type == WML_CONTENT)
-				printf("<p>Error: %s</p><BR>\n", error[e].message);
-			else {
-				printf("<tr><td class='errorString'>ERROR:</td><td class='errorContent'>%s</td></tr>\n", error[e].message);
-			}
+			printf("<tr><td class='errorString'>ERROR:</td><td class='errorContent'>%s</td></tr>\n", error[e].message);
 		}
 		printf("</table>\n</DIV>\n");
 		printf("<BR>\n");
@@ -2407,15 +2483,11 @@ void commit_command_data(int cmd) {
 	/* for commands without objects get the first result*/
 	if (cmd_has_objects == FALSE) {
 		if (submit_result[0] == OK) {
-			if (content_type == WML_CONTENT)
-				printf("<p>Your command was submitted sucessfully...</p>\n");
-			else {
-				printf("<DIV CLASS='successBox'>\n");
-				printf("<DIV CLASS='successMessage'>Your command request was successfully submitted to %s for processing.<BR><BR>\n", PROGRAM_NAME);
-				printf("Note: It may take a while before the command is actually processed.</DIV>\n");
-				printf("</DIV>\n");
-				printf("<BR><input type='submit' value='Done' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
-			}
+			printf("<DIV CLASS='successBox'>\n");
+			printf("<DIV CLASS='successMessage'>Your command request was successfully submitted to %s for processing.<BR><BR>\n", PROGRAM_NAME);
+			printf("Note: It may take a while before the command is actually processed.</DIV>\n");
+			printf("</DIV>\n");
+			printf("<BR><input type='submit' value='Done' onClick='window.history.go(-2);' class='submitButton'></DIV>\n");
 		} else {
 			print_generic_error_message("An error occurred while attempting to commit your command for processing.", "Unfortunately I can't determine the root cause of this problem.", 2);
 		}
@@ -2683,12 +2755,24 @@ int commit_command(int cmd) {
 		}
 		break;
 
-	case CMD_DISABLE_NOTIFICATIONS:
 	case CMD_ENABLE_NOTIFICATIONS:
 	case CMD_SHUTDOWN_PROCESS:
 	case CMD_RESTART_PROCESS:
 		if (is_authorized[x])
 			submit_result[x] = cmd_submitf(cmd, "%lu", scheduled_time);
+		break;
+
+	case CMD_DISABLE_NOTIFICATIONS:
+		if (is_authorized[x]) {
+			/* we should expire the disabled notifications */
+			if(end_time > 0) {
+				cmd = CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME;
+				submit_result[x] = cmd_submitf(cmd, "%lu;%lu", scheduled_time, end_time);
+				my_free(temp_buffer);
+			} else {
+				submit_result[x] = cmd_submitf(cmd, "%lu", scheduled_time);
+			}
+		}
 		break;
 
 	case CMD_ENABLE_HOST_SVC_CHECKS:

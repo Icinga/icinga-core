@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -278,6 +278,7 @@ typedef struct nebstruct_program_status_struct{
 	unsigned long   modified_service_attributes;
 	char            *global_host_event_handler;
 	char            *global_service_event_handler;
+	time_t		disable_notifications_expire_time;
         }nebstruct_program_status_data;
 
 
@@ -530,6 +531,8 @@ typedef struct nebstruct_statechange_struct{
 	char            *output;
 
 	void            *object_ptr;
+	/* do not break the api */
+	char            *long_output;
         }nebstruct_statechange_data;
 
 #ifdef __cplusplus

@@ -18,7 +18,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -52,6 +52,7 @@ struct nagios_extcmd in_core_commands[] = {
 	CMD_DEF(DELAY_SVC_NOTIFICATION, 0, NULL),
 	CMD_DEF(DELAY_HOST_NOTIFICATION, 0, NULL),
 	CMD_DEF(DISABLE_NOTIFICATIONS, 0, NULL),
+	CMD_DEF(DISABLE_NOTIFICATIONS_EXPIRE_TIME, 0, NULL),
 	CMD_DEF(ENABLE_NOTIFICATIONS, 0, NULL),
 	CMD_DEF(RESTART_PROCESS, 0, NULL),
 	CMD_DEF(SHUTDOWN_PROCESS, 0, NULL),

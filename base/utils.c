@@ -19,7 +19,7 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *
  *****************************************************************************/
 
@@ -296,7 +296,6 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 	int status = 0;
 	int result = 0;
 	char buffer[MAX_INPUT_BUFFER] = "";
-	char *temp_buffer = NULL;
 	int fd[2];
 	FILE *fp = NULL;
 	int bytes_read = 0;
@@ -579,7 +578,6 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 
 		/* check for possibly missing scripts/binaries/etc */
 		if (result == 126 || result == 127) {
-			temp_buffer = "\163\157\151\147\141\156\040\145\144\151\163\156\151";
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Attempting to execute the command \"%s\" resulted in a return code of %d.  Make sure the script or binary you are trying to execute actually exists...\n", cmd, result);
 		}
 
@@ -2730,21 +2728,23 @@ int process_check_result_queue(char *dirname) {
 				continue;
 			}
 
-			switch (stat_buf.st_mode & S_IFMT) {
-
-			case S_IFREG:
-				/* don't process symlinked files */
-				if (!S_ISREG(stat_buf.st_mode))
-					continue;
-				break;
-
-			default:
-				/* everything else we ignore */
+			/*
+			 * don't process symlinked files, we only care
+			 * about real files
+			 */
+			if (!S_ISREG(stat_buf.st_mode))
 				continue;
-				break;
-			}
 
 			/* at this point we have a regular file... */
+
+			/*
+			 * if the file is too old, we delete it
+			 * otherwise we will leave old files there
+			 */
+			if (stat_buf.st_mtime + max_check_result_file_age < time(NULL)) {
+				delete_check_result_file(dirfile->d_name);
+				continue;
+			}
 
 			/* can we find the associated ok-to-go file ? */
 			dummy = asprintf(&temp_buffer, "%s.ok", file);
@@ -3581,72 +3581,55 @@ int deinit_embedded_perl(void) {
 
 /* checks to see if we should run a script using the embedded Perl interpreter */
 int file_uses_embedded_perl(char *fname) {
-	int use_epn = FALSE;
-#ifdef EMBEDDEDPERL
+#ifndef EMBEDDEDPERL
+	return FALSE;
+#else
+	int line, use_epn = FALSE;
 	FILE *fp = NULL;
-	char line1[80] = "";
-	char linen[80] = "";
-	int line = 0;
-	char *ptr = NULL;
-	int found_epn_directive = FALSE;
+	char buf[256] = "";
 
-	if (enable_embedded_perl == TRUE) {
+	if (enable_embedded_perl != TRUE)
+		return FALSE;
 
-		/* open the file, check if its a Perl script and see if we can use epn  */
-		fp = fopen(fname, "r");
-		if (fp != NULL) {
 
-			/* grab the first line - we should see Perl */
-			fgets(line1, 80, fp);
+	/* open the file, check if its a Perl script and see if we can use epn  */
+	fp = fopen(fname, "r");
+	if (fp == NULL)
+		return FALSE;
 
-			/* yep, its a Perl script... */
-			if (strstr(line1, "/bin/perl") != NULL) {
+	/* grab the first line - we should see Perl. go home if not */
+	if (fgets(line1, 80, fp) == NULL || strstr(buf, "/bin/perl") == NULL) {
+		fclose(fp);
+	}
 
-				/* epn directives must be found in first ten lines of plugin */
-				for (line = 1; line < 10; line++) {
+	/* epn directives must be found in first ten lines of plugin */
+	for (line = 1; line < 10; line++) {
+		if (fgets(buf, sizeof(buf) - 1, fp) == NULL)
+			break;
 
-					if (fgets(linen, 80, fp)) {
+		buf[sizeof(buf) - 1] = '\0';
 
-						/* line contains Icinga directives - keep Nagios compatibility */
-						if (strstr(linen, "# nagios:") || strstr(linen, "# icinga:")) {
+		/* line contains Icinga directives - keep Nagios compatibility */
+		if (strstr(linen, "# nagios:") || strstr(linen, "# icinga:")) {
+			char *p;
+			p = strstr(buf + 8, "epn");
+			if (!p)
+				continue;
 
-							ptr = strtok(linen, ":");
-
-							/* process each directive */
-							for (ptr = strtok(NULL, ","); ptr != NULL; ptr = strtok(NULL, ",")) {
-
-								strip(ptr);
-
-								if (!strcmp(ptr, "+epn")) {
-									use_epn = TRUE;
-									found_epn_directive = TRUE;
-								} else if (!strcmp(ptr, "-epn")) {
-									use_epn = FALSE;
-									found_epn_directive = TRUE;
-								}
-							}
-						}
-
-						if (found_epn_directive == TRUE)
-							break;
-					}
-
-					/* EOF */
-					else
-						break;
-				}
-
-				/* if the plugin didn't tell us whether or not to use embedded Perl, use implicit value */
-				if (found_epn_directive == FALSE)
-					use_epn = (use_embedded_perl_implicitly == TRUE) ? TRUE : FALSE;
-			}
-
+			/*
+			 * we found it, so close the file and return
+			 * whatever it shows. '+epn' means yes. everything
+			 * else means no.
+			 */
 			fclose(fp);
+			return *(p - 1) == '+' ? TRUE : FALSE;
 		}
 	}
-#endif
 
-	return use_epn;
+	fclose(fp);
+
+	return use_embedded_perl_implicitly;
+#endif
 }
 
 

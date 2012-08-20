@@ -21,58 +21,86 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
  *****************************************************************************/
+
+/** @file notifications.c
+ *  @brief cgi to browse through Icinga notification history
+**/
+
 
 #include "../include/config.h"
 #include "../include/common.h"
-
 #include "../include/getcgi.h"
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
 #include "../include/readlogs.h"
 
-extern char 	main_config_file[MAX_FILENAME_LENGTH];
+/** @name External vars
+    @{ **/
+extern char 	*csv_delimiter;
+extern char 	*csv_data_enclosure;
 
-extern int	log_rotation_method;
+extern char 	main_config_file[MAX_FILENAME_LENGTH];
 
 extern int 	embedded;
 extern int 	display_header;
 extern int 	daemon_check;
 extern int 	content_type;
+extern int	result_limit;
+/** @} */
 
-extern logentry *entry_list;
+/** @name QUERY TYPES
+ @{**/
+#define FIND_HOST		1		/**< display notifications for a host / all hosts */
+#define FIND_CONTACT		2		/**< display notifications for a contact / all contacts */
+#define FIND_SERVICE		3		/**< display notifications for specific service */
+/** @} */
 
-extern char 	*csv_delimiter;
-extern char 	*csv_data_enclosure;
+/** @name Internal vars
+    @{ **/
+int query_type = FIND_HOST;			/**< holds requested notifications type  */
+int find_all = TRUE;				/**< display all or just one requested host / contact */
+int notification_options = NOTIFICATION_ALL;	/**< determine type of notifications */
+int reverse = FALSE;				/**< determine if log should be viewed in reverse order */
+int timeperiod_type = TIMEPERIOD_SINGLE_DAY;	/**< determines the time period to view see cgiutils.h */
+int result_start = 1;				/**< keep track from where we have to start displaying results */
+int get_result_limit = -1;			/**< needed to overwrite config value with result_limit we get vie GET */
 
-#define FIND_HOST		1
-#define FIND_CONTACT		2
-#define FIND_SERVICE		3
+char *query_contact_name = "";			/**< the requested contact */
+char *query_host_name = "";			/**< the requested host name */
+char *query_svc_description = "";		/**< the requested service */
+char *start_time_string = "";			/**< the requested start time */
+char *end_time_string = "";			/**< the requested end time */
 
-authdata current_authdata;
+time_t ts_start = 0L;				/**< start time as unix timestamp */
+time_t ts_end = 0L;				/**< end time as unix timestamp */
 
-int log_archive = 0;
-int query_type = FIND_HOST;
-int find_all = TRUE;
-int notification_options = NOTIFICATION_ALL;
-int reverse = FALSE;
-int display_type = DISPLAY_HOSTS;
+authdata current_authdata;			/**< struct to hold current authentication data */
 
-char log_file_to_use[MAX_FILENAME_LENGTH];
-char *query_contact_name = "";
-char *query_host_name = "";
-char *query_svc_description = "";
+int CGI_ID = NOTIFICATIONS_CGI_ID;		/**< ID to identify the cgi for functions in cgiutils.c */
+/** @} */
 
-int CGI_ID = NOTIFICATIONS_CGI_ID;
-
+/** @brief displays the requested notification entries
+ *
+ * Applies the requested filters, reads in all necessary log files
+ * and afterwards showing each matching notification log entry.
+**/
 void display_notifications(void);
+
+/** @brief Parses the requested GET/POST variables
+ *  @return wether parsing was successful or not
+ *	@retval TRUE
+ *	@retval FALSE
+ *
+ *  @n This function parses the request and set's the necessary variables
+**/
 int process_cgivars(void);
 
+/** @brief Yes we need a main function **/
 int main(void) {
+	char buffer[MAX_DATETIME_LENGTH];
 	int result = OK;
-	char temp_buffer[MAX_INPUT_BUFFER];
-	char temp_buffer2[MAX_INPUT_BUFFER];
 
 	/* get the arguments passed in the URL */
 	process_cgivars();
@@ -107,13 +135,29 @@ int main(void) {
 		return ERROR;
 	}
 
+	/* This requires the date_format parameter in the main config file */
+	if (timeperiod_type == TIMEPERIOD_CUSTOM) {
+		if (strcmp(start_time_string, ""))
+			string_to_time(start_time_string, &ts_start);
+
+		if (strcmp(end_time_string, ""))
+			string_to_time(end_time_string, &ts_end);
+	}
+
+	/* overwrite config value with amount we got via GET */
+	result_limit = (get_result_limit != -1) ? get_result_limit : result_limit;
+
+	/* for json and csv output return all by default */
+	if (get_result_limit == -1 && (content_type == JSON_CONTENT || content_type == CSV_CONTENT))
+		result_limit = 0;
+
 	document_header(CGI_ID, TRUE, "Alert Notifications");
 
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
-	/* determine what log file we should use */
-	get_log_archive_to_use(log_archive, log_file_to_use, (int)sizeof(log_file_to_use));
+	/* calculate timestamps for reading logs */
+	convert_timeperiod_to_times(timeperiod_type, &ts_start, &ts_end);
 
 	if (display_header == TRUE) {
 
@@ -125,16 +169,14 @@ int main(void) {
 		printf("<td align=left valign=top width=33%%>\n");
 
 		if (query_type == FIND_SERVICE)
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Service Notifications");
+			display_info_table("Service Notifications", &current_authdata, daemon_check);
 		else if (query_type == FIND_HOST) {
 			if (find_all == TRUE)
-				snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Notifications");
+				display_info_table("Notifications", &current_authdata, daemon_check);
 			else
-				snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Host Notifications");
+				display_info_table("Host Notifications", &current_authdata, daemon_check);
 		} else
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Contact Notifications");
-
-		display_info_table(temp_buffer, &current_authdata, daemon_check);
+			display_info_table("Contact Notifications", &current_authdata, daemon_check);
 
 		if (query_type == FIND_HOST || query_type == FIND_SERVICE) {
 			printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
@@ -180,37 +222,32 @@ int main(void) {
 		printf("</DIV>\n");
 		printf("<BR>\n");
 
-		if (query_type == FIND_SERVICE) {
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s?%shost=%s&", NOTIFICATIONS_CGI, (reverse == TRUE) ? "oldestfirst&" : "", url_encode(query_host_name));
-			snprintf(temp_buffer2, sizeof(temp_buffer2) - 1, "service=%s&type=%d&", url_encode(query_svc_description), notification_options);
-			strncat(temp_buffer, temp_buffer2, sizeof(temp_buffer) - strlen(temp_buffer) - 1);
-		} else
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s?%s%s=%s&type=%d&", NOTIFICATIONS_CGI, (reverse == TRUE) ? "oldestfirst&" : "", (query_type == FIND_HOST) ? "host" : "contact", (query_type == FIND_HOST) ? url_encode(query_host_name) : url_encode(query_contact_name), notification_options);
-
-		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
-		display_nav_table(temp_buffer, log_archive);
+		display_nav_table(ts_start, ts_end);
 
 		printf("</td>\n");
 
 		/* right hand column of top row */
 		printf("<td align=right valign=top width=33%%>\n");
 
-		printf("<table border=0 CLASS='optBox'>\n");
 		printf("<form method='GET' action='%s'>\n", NOTIFICATIONS_CGI);
 		if (query_type == FIND_SERVICE) {
 			printf("<input type='hidden' name='host' value='%s'>\n", escape_string(query_host_name));
 			printf("<input type='hidden' name='service' value='%s'>\n", escape_string(query_svc_description));
 		} else
 			printf("<input type='hidden' name='%s' value='%s'>\n", (query_type == FIND_HOST) ? "host" : "contact", (query_type == FIND_HOST) ? escape_string(query_host_name) : escape_string(query_contact_name));
-		printf("<input type='hidden' name='archive' value='%d'>\n", log_archive);
+		printf("<input type='hidden' name='ts_start' value='%lu'>\n", ts_start);
+		printf("<input type='hidden' name='ts_end' value='%lu'>\n", ts_end);
+		printf("<input type='hidden' name='limit' value='%d'>\n", result_limit);
+
+		printf("<table border=0 CLASS='optBox'>\n");
 		printf("<tr>\n");
 		if (query_type == FIND_SERVICE)
 			printf("<td align=left colspan=2 CLASS='optBoxItem'>Notification detail level for this service:</td>");
 		else
 			printf("<td align=left colspan=2 CLASS='optBoxItem'>Notification detail level for %s %s%s:</td>", (find_all == TRUE) ? "all" : "this", (query_type == FIND_HOST) ? "host" : "contact", (find_all == TRUE) ? "s" : "");
 		printf("</tr>\n");
-		printf("<tr>\n");
-		printf("<td align=left colspan=2 CLASS='optBoxItem'><select name='type'>\n");
+		printf("<tr><td></td>\n");
+		printf("<td align=left CLASS='optBoxItem'><select name='type'>\n");
 		printf("<option value=%d %s>All notifications\n", NOTIFICATION_ALL, (notification_options == NOTIFICATION_ALL) ? "selected" : "");
 		if (query_type != FIND_SERVICE) {
 			printf("<option value=%d %s>All service notifications\n", NOTIFICATION_SERVICE_ALL, (notification_options == NOTIFICATION_SERVICE_ALL) ? "selected" : "");
@@ -233,22 +270,45 @@ int main(void) {
 		}
 		printf("</select></td>\n");
 		printf("</tr>\n");
-		printf("<tr>\n");
-		printf("<td align=left CLASS='optBoxItem'>Older Entries First:</td>\n");
-		printf("<td></td>\n");
-		printf("</tr>\n");
-		printf("<tr>\n");
-		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='oldestfirst' %s></td>", (reverse == TRUE) ? "checked" : "");
-		printf("<td align=right CLASS='optBoxItem'><input type='submit' value='Update'></td>\n");
-		printf("</tr>\n");
 
-		/* display context-sensitive help */
-		printf("<tr><td></td><td align=right valign=bottom>\n");
-		display_context_help(CONTEXTHELP_NOTIFICATIONS);
+		/* Order */
+		printf("<tr><td align=right>Order:</td>");
+		printf("<td nowrap><input type=radio name='order' value='new2old' %s> Newer Entries First&nbsp;&nbsp;| <input type=radio name='order' value='old2new' %s> Older Entries First</td></tr>\n", (reverse == TRUE) ? "" : "checked", (reverse == TRUE) ? "checked" : "");
+
+		/* Timeperiod */
+		printf("<tr><td align=left>Timeperiod:</td>");
+		printf("<td align=left>\n");
+
+		printf("<select id='selecttp' name='timeperiod' onChange=\"var i=document.getElementById('selecttp').selectedIndex; if (document.getElementById('selecttp').options[i].value == 'custom') { document.getElementById('custtime').style.display = ''; } else { document.getElementById('custtime').style.display = 'none';}\">\n");
+		printf("<option value=singleday %s>Single Day\n", (timeperiod_type == TIMEPERIOD_SINGLE_DAY) ? "selected" : "");
+		printf("<option value=today %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "selected" : "");
+		printf("<option value=last24hours %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "selected" : "");
+		printf("<option value=thisweek %s>This Week\n", (timeperiod_type == TIMEPERIOD_THISWEEK) ? "selected" : "");
+		printf("<option value=last7days %s>Last 7 Days\n", (timeperiod_type == TIMEPERIOD_LAST7DAYS) ? "selected" : "");
+		printf("<option value=lastweek %s>Last Week\n", (timeperiod_type == TIMEPERIOD_LASTWEEK) ? "selected" : "");
+		printf("<option value=thismonth %s>This Month\n", (timeperiod_type == TIMEPERIOD_THISMONTH) ? "selected" : "");
+		printf("<option value=last31days %s>Last 31 Days\n", (timeperiod_type == TIMEPERIOD_LAST31DAYS) ? "selected" : "");
+		printf("<option value=lastmonth %s>Last Month\n", (timeperiod_type == TIMEPERIOD_LASTMONTH) ? "selected" : "");
+		printf("<option value=thisyear %s>This Year\n", (timeperiod_type == TIMEPERIOD_THISYEAR) ? "selected" : "");
+		printf("<option value=lastyear %s>Last Year\n", (timeperiod_type == TIMEPERIOD_LASTYEAR) ? "selected" : "");
+		printf("<option value=custom %s>* CUSTOM PERIOD *\n", (timeperiod_type == TIMEPERIOD_CUSTOM) ? "selected" : "");
+		printf("</select>\n");
+		printf("<div id='custtime' style='display:%s;'>", (timeperiod_type == TIMEPERIOD_CUSTOM) ? "" : "none");
+
+		printf("<br><table border=0 cellspacing=0 cellpadding=0>\n");
+		get_time_string(&ts_start, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
+		printf("<tr><td>Start:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' class='timepicker' NAME='start_time' VALUE='%s' SIZE=\"25\"></td></tr>", buffer);
+
+		get_time_string(&ts_end, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
+		printf("<tr><td>End:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr></table></div>", buffer);
+
 		printf("</td></tr>\n");
 
-		printf("</form>\n");
+		/* submit Button */
+		printf("<tr><td><input type='submit' value='Update'></td><td align=right><input type='reset' value='Reset' onClick=\"window.location.href='%s?order=new2old&timeperiod=singleday&limit=%d'\">&nbsp;</td></tr>\n", NOTIFICATIONS_CGI, result_limit);
+
 		printf("</table>\n");
+		printf("</form>\n");
 
 		printf("</td>\n");
 
@@ -346,17 +406,108 @@ int process_cgivars(void) {
 			notification_options = atoi(variables[x]);
 		}
 
-		/* we found the log archive argument */
-		else if (!strcmp(variables[x], "archive")) {
+		/* we found first time argument */
+		else if (!strcmp(variables[x], "ts_start")) {
 			x++;
 			if (variables[x] == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			log_archive = atoi(variables[x]);
-			if (log_archive < 0)
-				log_archive = 0;
+			ts_start = (time_t)strtoul(variables[x], NULL, 10);
+		}
+
+		/* we found last time argument */
+		else if (!strcmp(variables[x], "ts_end")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			ts_end = (time_t)strtoul(variables[x], NULL, 10);
+		}
+
+		/* we found the start time */
+		else if (!strcmp(variables[x], "start_time")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			start_time_string = (char *)malloc(strlen(variables[x]) + 1);
+			if (start_time_string == NULL)
+				start_time_string = "";
+			else
+				strcpy(start_time_string, variables[x]);
+		}
+
+		/* we found the end time */
+		else if (!strcmp(variables[x], "end_time")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			end_time_string = (char *)malloc(strlen(variables[x]) + 1);
+			if (end_time_string == NULL)
+				end_time_string = "";
+			else
+				strcpy(end_time_string, variables[x]);
+		}
+
+		/* we found the standard timeperiod argument */
+		else if (!strcmp(variables[x], "timeperiod")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			if (!strcmp(variables[x], "today"))
+				timeperiod_type = TIMEPERIOD_TODAY;
+			else if (!strcmp(variables[x], "singelday"))
+				timeperiod_type = TIMEPERIOD_SINGLE_DAY;
+			else if (!strcmp(variables[x], "last24hours"))
+				timeperiod_type = TIMEPERIOD_LAST24HOURS;
+			else if (!strcmp(variables[x], "thisweek"))
+				timeperiod_type = TIMEPERIOD_THISWEEK;
+			else if (!strcmp(variables[x], "lastweek"))
+				timeperiod_type = TIMEPERIOD_LASTWEEK;
+			else if (!strcmp(variables[x], "thismonth"))
+				timeperiod_type = TIMEPERIOD_THISMONTH;
+			else if (!strcmp(variables[x], "lastmonth"))
+				timeperiod_type = TIMEPERIOD_LASTMONTH;
+			else if (!strcmp(variables[x], "thisyear"))
+				timeperiod_type = TIMEPERIOD_THISYEAR;
+			else if (!strcmp(variables[x], "lastyear"))
+				timeperiod_type = TIMEPERIOD_LASTYEAR;
+			else if (!strcmp(variables[x], "last7days"))
+				timeperiod_type = TIMEPERIOD_LAST7DAYS;
+			else if (!strcmp(variables[x], "last31days"))
+				timeperiod_type = TIMEPERIOD_LAST31DAYS;
+			else if (!strcmp(variables[x], "custom"))
+				timeperiod_type = TIMEPERIOD_CUSTOM;
+			else
+				continue;
+
+			convert_timeperiod_to_times(timeperiod_type, &ts_start, &ts_end);
+		}
+
+		/* we found the order argument */
+		else if (!strcmp(variables[x], "order")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			if (!strcmp(variables[x], "new2old"))
+				reverse = FALSE;
+			else if (!strcmp(variables[x], "old2new"))
+				reverse = TRUE;
 		}
 
 		/* we found the CSV output option */
@@ -371,10 +522,6 @@ int process_cgivars(void) {
 			content_type = JSON_CONTENT;
 		}
 
-		/* we found the order argument */
-		else if (!strcmp(variables[x], "oldestfirst"))
-			reverse = TRUE;
-
 		/* we found the embed option */
 		else if (!strcmp(variables[x], "embedded"))
 			embedded = TRUE;
@@ -386,6 +533,31 @@ int process_cgivars(void) {
 		/* we found the nodaemoncheck option */
 		else if (!strcmp(variables[x], "nodaemoncheck"))
 			daemon_check = FALSE;
+
+		/* start num results to skip on displaying statusdata */
+		else if (!strcmp(variables[x], "start")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			result_start = atoi(variables[x]);
+
+			if (result_start < 1)
+				result_start = 1;
+		}
+
+		/* amount of results to display */
+		else if (!strcmp(variables[x], "limit")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			get_result_limit = atoi(variables[x]);
+		}
 	}
 
 	/*
@@ -412,6 +584,7 @@ int process_cgivars(void) {
 
 void display_notifications(void) {
 	char *temp_buffer;
+	char *error_text = NULL;
 	char date_time[MAX_DATETIME_LENGTH];
 	char alert_level[MAX_INPUT_BUFFER];
 	char alert_level_class[MAX_INPUT_BUFFER];
@@ -419,42 +592,57 @@ void display_notifications(void) {
 	char service_name[MAX_INPUT_BUFFER];
 	char host_name[MAX_INPUT_BUFFER];
 	char method_name[MAX_INPUT_BUFFER];
-	char error_text[MAX_INPUT_BUFFER];
 	char displayed_host_name[MAX_INPUT_BUFFER];
 	char displayed_service_desc[MAX_INPUT_BUFFER];
-	int show_entry, status;
+	int show_entry;
 	int total_notifications = 0;
+	int displayed_entries = 0;
 	int notification_detail_type = NOTIFICATION_SERVICE_CRITICAL;
+	int status = READLOG_OK;
 	int odd = 0;
 	int json_start = TRUE;
 	host *temp_host = NULL;
 	service *temp_service = NULL;
 	logentry *temp_entry = NULL;
+	logentry *entry_list = NULL;
+	logfilter *filter_list = NULL;
 
+	add_log_filter(&filter_list, LOGENTRY_HOST_NOTIFICATION, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_NOTIFICATION, LOGFILTER_INCLUDE);
 
-	add_log_filter(LOGENTRY_HOST_NOTIFICATION, LOGFILTER_INCLUDE);
-	add_log_filter(LOGENTRY_SERVICE_NOTIFICATION, LOGFILTER_INCLUDE);
+	/* scan the log file for notification data */
+	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, reverse, ts_start, ts_end);
 
-	status = get_log_entries(log_file_to_use, NULL, reverse, -1, -1);
+	free_log_filters(&filter_list);
 
-	free_log_filters();
-
-	if (status == READLOG_ERROR_MEMORY) {
-		printf("<P><DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV></P>");
+	/* dealing with errors */
+	if (status == READLOG_ERROR_WARNING) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		} else
+			print_generic_error_message("Unkown error!", NULL, 0);
 	}
 
-	if (status == READLOG_ERROR_NOFILE) {
-		snprintf(error_text, sizeof(error_text), "Error: Could not open log file '%s' for reading!", log_file_to_use);
-		error_text[sizeof(error_text)-1] = '\x0';
-		print_generic_error_message(error_text, NULL, 0);
-		free_log_entries();
+	if (status == READLOG_ERROR_MEMORY)
+			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
+
+
+	if (status == READLOG_ERROR_FATAL) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		}
+
 		return;
-	}
 
-	if (status == READLOG_OK) {
-		if (content_type == JSON_CONTENT)
+	/* now we start displaying the notification entries */
+	} else {
+		if (content_type == JSON_CONTENT) {
+			if (status != READLOG_OK)
+				printf(",\n");
 			printf("\"notifications\": [\n");
-		else if (content_type == CSV_CONTENT) {
+		} else if (content_type == CSV_CONTENT) {
 			printf("%sHOST%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sSERVICE%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sTYPE%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
@@ -463,18 +651,21 @@ void display_notifications(void) {
 			printf("%sNOTIFICATION_COMMAND%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sINFORMATION%s\n", csv_data_enclosure, csv_data_enclosure);
 		} else {
-			printf("<p>\n");
-			printf("<div align='center'>\n");
-
-			printf("<table border=0 CLASS='notifications'>\n");
+			printf("<table border=0 CLASS='notifications' align='center'>\n");
 
 			/* add export to csv, json, link */
 			printf("<TR><TD colspan='7'>");
+			printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
+			printf("<div class='page_selector'>\n");
+			printf("<div id='page_navigation_copy'></div>");
+			page_limit_selector(result_start);
+			printf("</div>\n");
+			printf("</td><td width='33%%' align='right' style='padding-right:2px'>\n");
 			printf("<div class='csv_export_link'>");
 			print_export_link(CSV_CONTENT, NOTIFICATIONS_CGI, NULL);
 			print_export_link(JSON_CONTENT, NOTIFICATIONS_CGI, NULL);
 			print_export_link(HTML_CONTENT, NOTIFICATIONS_CGI, NULL);
-			printf("</DIV></TD></TR>\n");
+			printf("</div></td></tr></table>");
 
 			printf("<tr>\n");
 			printf("<th CLASS='notifications'>Host</th>\n");
@@ -486,9 +677,6 @@ void display_notifications(void) {
 			printf("<th CLASS='notifications'>Information</th>\n");
 			printf("</tr>\n");
 		}
-	}
-
-	if (status == READLOG_OK) {
 
 		/* check all entries */
 		for (temp_entry = entry_list; temp_entry != NULL; temp_entry = temp_entry->next) {
@@ -501,25 +689,25 @@ void display_notifications(void) {
 			temp_buffer = (char *)strtok(temp_entry->entry_text, ":");
 			temp_buffer = (char *)strtok(NULL, ";");
 			snprintf(contact_name, sizeof(contact_name), "%s", (temp_buffer == NULL) ? "" : temp_buffer + 1);
-			contact_name[sizeof(contact_name)-1] = '\x0';
+			contact_name[sizeof(contact_name) - 1] = '\x0';
 
 			/* get the host name */
 			temp_buffer = (char *)strtok(NULL, ";");
 			snprintf(host_name, sizeof(host_name), "%s", (temp_buffer == NULL) ? "" : temp_buffer);
-			host_name[sizeof(host_name)-1] = '\x0';
+			host_name[sizeof(host_name) - 1] = '\x0';
 
 			/* get the service name */
 			service_name[0] = '\x0';
 			if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION) {
 				temp_buffer = (char *)strtok(NULL, ";");
 				snprintf(service_name, sizeof(service_name), "%s", (temp_buffer == NULL) ? "" : temp_buffer);
-				service_name[sizeof(service_name)-1] = '\x0';
+				service_name[sizeof(service_name) - 1] = '\x0';
 			}
 
 			/* get the alert level */
 			temp_buffer = (char *)strtok(NULL, ";");
 			snprintf(alert_level, sizeof(alert_level), "%s", (temp_buffer == NULL) ? "" : temp_buffer);
-			alert_level[sizeof(alert_level)-1] = '\x0';
+			alert_level[sizeof(alert_level) - 1] = '\x0';
 
 			if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION) {
 
@@ -586,7 +774,7 @@ void display_notifications(void) {
 			/* get the method name */
 			temp_buffer = (char *)strtok(NULL, ";");
 			snprintf(method_name, sizeof(method_name), "%s", (temp_buffer == NULL) ? "" : temp_buffer);
-			method_name[sizeof(method_name)-1] = '\x0';
+			method_name[sizeof(method_name) - 1] = '\x0';
 
 			/* move to the informational message */
 			temp_buffer = strtok(NULL, ";");
@@ -635,7 +823,7 @@ void display_notifications(void) {
 
 			if (temp_host != NULL) {
 				snprintf(displayed_host_name, sizeof(displayed_host_name), "%s", (temp_host->display_name != NULL && content_type == HTML_CONTENT) ? temp_host->display_name : temp_host->name);
-				displayed_host_name[sizeof(displayed_host_name)-1] = '\x0';
+				displayed_host_name[sizeof(displayed_host_name) - 1] = '\x0';
 
 				if (temp_entry->type == LOGENTRY_HOST_NOTIFICATION) {
 					if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
@@ -643,7 +831,7 @@ void display_notifications(void) {
 				} else {
 					if (temp_service != NULL) {
 						snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", (temp_service->display_name != NULL && content_type == HTML_CONTENT) ? temp_service->display_name : temp_service->description);
-						displayed_service_desc[sizeof(displayed_service_desc)-1] = '\x0';
+						displayed_service_desc[sizeof(displayed_service_desc) - 1] = '\x0';
 
 						if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
 							show_entry = FALSE;
@@ -652,7 +840,7 @@ void display_notifications(void) {
 							show_entry = FALSE;
 
 						snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", service_name);
-						displayed_service_desc[sizeof(displayed_service_desc)-1] = '\x0';
+						displayed_service_desc[sizeof(displayed_service_desc) - 1] = '\x0';
 					}
 				}
 			} else {
@@ -664,15 +852,21 @@ void display_notifications(void) {
 						show_entry = FALSE;
 
 					snprintf(displayed_service_desc, sizeof(displayed_service_desc), "%s", service_name);
-					displayed_service_desc[sizeof(displayed_service_desc)-1] = '\x0';
+					displayed_service_desc[sizeof(displayed_service_desc) - 1] = '\x0';
 				}
 
 				snprintf(displayed_host_name, sizeof(displayed_host_name), "%s", host_name);
-				displayed_host_name[sizeof(displayed_host_name)-1] = '\x0';
+				displayed_host_name[sizeof(displayed_host_name) - 1] = '\x0';
 			}
 
 			if (show_entry == TRUE) {
 
+				if (result_limit != 0  && (((total_notifications + 1) < result_start) || (total_notifications >= ((result_start + result_limit) - 1)))) {
+					total_notifications++;
+					continue;
+				}
+
+				displayed_entries++;
 				total_notifications++;
 
 				if (odd)
@@ -683,11 +877,15 @@ void display_notifications(void) {
 				if (content_type == JSON_CONTENT) {
 					if (json_start == FALSE)
 						printf(",\n");
-					printf("{\"host\": \"%s\", ", json_encode(displayed_host_name));
-					if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION)
-						printf("\"service\": \"%s\", ", json_encode(displayed_service_desc));
-					else
-						printf("\"service\": null, ");
+					printf("{\"host_name\": \"%s\", ", json_encode(temp_host->name));
+					printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+					if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION) {
+						printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
+						printf("\"service_display_name\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+					} else {
+						printf("\"service_description\": null, ");
+						printf("\"service_display_name\": null, ");
+					}
 					printf("\"type\": \"%s\", ", alert_level);
 					printf("\"time\": \"%s\", ", date_time);
 					printf("\"contact\": \"%s\", ", json_encode(contact_name));
@@ -732,16 +930,13 @@ void display_notifications(void) {
 		}
 	}
 
-	free_log_entries();
+	free_log_entries(&entry_list);
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		printf("</table>\n");
 
-		printf("</div>\n");
-		printf("</p>\n");
-
 		if (total_notifications == 0) {
-			printf("<P><DIV CLASS='errorMessage' style='text-align:center;'>No notifications have been recorded");
+			printf("<DIV CLASS='errorMessage' style='text-align:center;'>No notifications have been recorded");
 			if (find_all == FALSE) {
 				if (query_type == FIND_SERVICE)
 					printf(" for this service");
@@ -750,9 +945,11 @@ void display_notifications(void) {
 				else
 					printf(" for this host");
 			}
-			printf(" in %s log file</DIV></P>", (log_archive == 0) ? "the current" : "this archived");
-		} else
-			printf("<DIV align=center>%d Notification%s</DIV>", total_notifications, (total_notifications == 1) ? "" : "s");
+			printf(" in log files for selected date.</DIV>");
+		}
+
+		page_num_selector(result_start, total_notifications, displayed_entries);
+
 	} else if (content_type == JSON_CONTENT) {
 		printf("\n]\n");
 	}

@@ -37,19 +37,20 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Instead of installing Icinga from scratch you may want to use a package which might be available for your OS. Please
-    take a look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.
-    </p>
+    <p>Instead of installing Icinga from scratch you may want to use a package which might be available for your OS. Please take a
+    look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.</p>
+
     <p>If you are planning to install from source then please use the official release tarball.</p>
   </td></tr>
 </table></div>
+
   <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
+    <p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
   </td></tr>
 </table></div>
 
@@ -68,7 +69,9 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Meanwhile there's a FreeBSD port of Icinga (net-mgmt/icinga) so maybe that's the one you want to install ;-).</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Meanwhile there's a FreeBSD port of Icinga (net-mgmt/icinga) so maybe that's the one you want to install ;-).</p>
+  </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>What You'll End Up With</strong></span></p>
@@ -112,13 +115,16 @@
     </li>
 <li class="listitem">
       <p>libdbi-drivers, a database like MySQL, or PostgreSQL</p>
+
       <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>PostgreSQL: Due to changes on insert statements PostgreSQL 8.1 does no longer work (and is already <a class="link" href="http://wiki.postgresql.org/wiki/PostgreSQL_Release_Support_Policy" target="_top">end-of-life</a> since November 2010) so please use
-        8.2 or even better 8.4. String escaping in PostgreSQL 9.x is still in an experimental state (refer to <a class="link" href="https://dev.icinga.org/issues/1974" target="_top">issue #1974</a>).</p></td></tr>
+<tr><td align="left" valign="top">
+        <p>PostgreSQL: Due to changes on insert statements PostgreSQL 8.1 does no longer work (and is already <a class="link" href="http://wiki.postgresql.org/wiki/PostgreSQL_Release_Support_Policy" target="_top">end-of-life</a> since November 2010) so please use
+        8.2 or even better 8.4. String escaping in PostgreSQL 9.x is still in an experimental state (refer to <a class="link" href="https://dev.icinga.org/issues/1974" target="_top">issue #1974</a>).</p>
+      </td></tr>
 </table></div>
     </li>
 </ul></div>
@@ -149,21 +155,27 @@
   <p>If you want to use Oracle as an RDBMS then we are sorry. Unfortunately it isn't that easy with FreeBSD.</p>
 
   <p><a name="quickstart_idof-timezone_support"></a><span class="bold"><strong>Timezone support</strong></span></p>
-  <p>Starting with Icinga 1.6 all dates are stored as local timestamps in the database. Before that there was a different 
-  behaviour storing and retrieving dates for each database system which was difficult to handle for frontend apps. Therefore datatypes have   been changed for MySQL from DATETIME to TIMESTAMP and for Oracle from DATE to LOCAL TIMESTAMP (0). PostgreSQL was 
+
+  <p>Starting with Icinga 1.6 all dates are stored as local timestamps in the database. Before that there was a different
+  behaviour storing and retrieving dates for each database system which was difficult to handle for frontend apps. Therefore datatypes have
+  been changed for MySQL from DATETIME to TIMESTAMP and for Oracle from DATE to LOCAL TIMESTAMP (0). PostgreSQL was
   already using TIMESTAMP but has been changed to TIMESTAMP WITH TIME ZONE. IDO2DB will set session timezone to UTC and store all unix
   timestamps (which are UTC per definition) as UTC based values. Please make sure your system returns unix timestamps as real UTC based
   values (like "date -u '+%s'").</p>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Make sure your database session runs in the same timezone in which the existing dates have been stored (check your local
-  timezone e.g. Oracle:"select sessiontimezone from dual;") if you are running the upgrade script.
-  Additionally for your convenience in Oracle you should set your session timestamp format to the value you want, e.g "alter session   set nls_timestamp_format='YYYY-MM-DD HH24:MI:SS';" or similar.
-  Now you can view entries from different Icinga installations in different time zones which are stored in the same database and 
-  regardless from where you accessing it, all entries are returned in your local time zone.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Make sure your database session runs in the same timezone in which the existing dates have been stored (check your local timezone
+    e.g. Oracle:"select sessiontimezone from dual;") if you are running the upgrade script. Additionally for your convenience in
+    Oracle you should set your session timestamp format to the value you want, e.g "alter session set
+    nls_timestamp_format='YYYY-MM-DD HH24:MI:SS';" or similar. Now you can view entries from different Icinga installations in
+    different time zones which are stored in the same database and regardless from where you accessing it, all entries are returned in your
+    local time zone.</p>
+  </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>Install the packages</strong></span></p>
@@ -234,6 +246,7 @@
  #&gt; cd ~/src</pre>
 
   <p>Get the current source from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
+
   <p>Don't forget to download the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a>.</p>
 
   <p><span class="bold"><strong>Compile and install Icinga and IDOUtils</strong></span></p>
@@ -271,6 +284,7 @@
     respectively.</p>
   </td></tr>
 </table></div>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
@@ -278,15 +292,11 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>You should include <code class="literal">CFLAGS=..."</code> like specified above. Otherwise you might get the following lines in
-    <code class="filename">icinga.log</code>:
-    </p>
-<pre class="screen"> Error: Module &#8216;/usr/local/icinga/bin/idomod.o&#8217; is using an old or unspecified version of the event broker API. Module will
- be unloaded.
- Event broker module &#8216;/usr/local/icinga/bin/idomod.o&#8217; deinitialized successfully.</pre>
-<p>
-    More details on this error can be found <a class="link" href="http://www.mazej.net/icinga-idomod-o-is-using-an-old-or-unspecified-version-of-the-event-broker-api/" target="_top">
-    here</a>.
-    </p>
+    <code class="filename">icinga.log</code>: </p>
+<pre class="screen"> Error: Module &#8216;/usr/local/icinga/lib/idomod.so&#8217; is using an old or unspecified version
+ of the event broker API. Module will be unloaded.
+ Event broker module &#8216;/usr/local/icinga/lib/idomod.so&#8217; deinitialized successfully.</pre>
+<p> More details on this error can be found <a class="link" href="http://www.mazej.net/icinga-idomod-o-is-using-an-old-or-unspecified-version-of-the-event-broker-api/" target="_top"> here</a>.</p>
   </td></tr>
 </table></div>
 
@@ -301,12 +311,13 @@
 
   <pre class="programlisting"> #&gt; gmake all</pre>
 
-  <p>Install binaries, init script, sample config files and set permissions on the external command directory. </p>
-<pre class="programlisting"> #&gt; gmake install 
- #&gt; gmake install-init 
- #&gt; gmake install-config 
- #&gt; gmake install-commandmode
- #&gt; gmake install-idoutils</pre>
+  <p>Install binaries, init script, sample config files, some eventhandlers, and set permissions on the external command directory.
+  </p>
+<pre class="programlisting"> #&gt; make install
+ #&gt; make install-init
+ #&gt; make install-config
+ #&gt; make install-eventhandlers
+ #&gt; make install-commandmode </pre>
 <p> or shorter </p>
 <pre class="programlisting"> #&gt; make fullinstall
  #&gt; make install-config</pre>
@@ -316,8 +327,21 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
-  </code> anymore to avoid accidently overwriting of your config files.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
+    </code>anymore to avoid accidently overwriting of your config files.</p>
+  </td></tr>
+</table></div>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Starting with Icinga 1.7.0 <code class="literal">make install-eventhandlers</code> will install some event handler routines. To
+    prevent undesired behaviour it is only included when you use <code class="literal">make fullinstall</code>.</p>
+  </td></tr>
 </table></div>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -381,15 +405,14 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Under normal circumstances the following module definition is already present in the <code class="filename">modules</code> subdirectory so
-    there is no need to edit the main config file</p>
-
-    <pre class="screen"> define module{
+    there is no need to edit the main config file </p>
+<pre class="screen"> define module{
         module_name    ido_mod
-        path           /usr/local/icinga/bin/idomod.o
+        path           /usr/local/icinga/lib/idomod.so
         module_type    neb
         args           config_file=/usr/local/icinga/etc/idomod.cfg
         }</pre>
-    This also means that a broker_module entry must not be enabled!
+<p> This also means that a broker_module entry must not be enabled!</p>
   </td></tr>
 </table></div>
 
@@ -414,12 +437,12 @@
 
  mysql&gt; CREATE DATABASE icinga;
 
- GRANT USAGE ON *.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga' 
+ GRANT USAGE ON icinga.* TO 'icinga'@'localhost' IDENTIFIED BY 'icinga' 
    WITH MAX_QUERIES_PER_HOUR 0
    MAX_CONNECTIONS_PER_HOUR 0
    MAX_UPDATES_PER_HOUR 0;
 
- GRANT SELECT , INSERT , UPDATE , DELETE
+ GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX
    ON icinga.* TO 'icinga'@'localhost';
 
  FLUSH PRIVILEGES ;
@@ -592,9 +615,9 @@
   <pre class="programlisting">make install NAGIOSUSER=icinga NAGIOSGROUP=icinga \
  PREFIX=/usr/local/icinga</pre>
 
-  <a class="indexterm" name="id1527649"></a>
+  <a class="indexterm" name="id1424971"></a>
 
-  <a class="indexterm" name="id1527664"></a>
+  <a class="indexterm" name="id1424986"></a>
 </div>
 <div class="navfooter">
 <hr>
