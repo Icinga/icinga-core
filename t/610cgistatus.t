@@ -27,13 +27,13 @@ $output = run_cgi('etc/cgi.cfg', 'GET', 'host=host1', 'status.cgi');
 
 # check if setting the filter works
 like( $output, '/status.cgi\?host=host1/', "Host value should be set to specific host if passed in" );
-like( $output, '/1 Matching Service Entries Displayed/', "Found the one host" );
+like( $output, '/1 of 1 Matching Services/', "Found the one host" );
 
 # run with empty host argument and see if nothing matches
 $output = run_cgi('etc/cgi.cfg', 'GET', 'host=', 'status.cgi');
 
 like( $output, '/status.cgi\?host=&/', "Host value kept as blank if set to blank" );
-like( $output, '/0 Matching Service Entries Displayed/', "Got no hosts because looking for a blank name" );
+like( $output, '/0 of 0 Matching Services/', "Got no hosts because looking for a blank name" );
 
 $output = run_cgi('etc/cgi.cfg', 'GET', '', 'status.cgi');
 like( $output, '/status.cgi\?host=all&/', "Host value should be set to all if nothing set initially" );
