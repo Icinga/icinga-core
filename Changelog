@@ -62,6 +62,7 @@ FIXES
 * core: fix deleting too old check result files (Andreas Ericsson) #2951 - MF
 
 * idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
+* idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
 
 CHANGES
 
