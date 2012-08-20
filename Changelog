@@ -42,6 +42,7 @@ ENHANCEMENTS
 * idoutils: change hasfunc to use sdbm algorithm for hashing precached objects #2792i - MF/GB
 * idoutils: add disable_notif_expire_time to programstatus table - #905 - MF
 * idoutils: add socket_perm to set unix socket permissions (Lennart Betz) #2659 - MF
+* idoutils: upgradedb script for mysql installs all updates between $version and $currentrelease (Philipp Deneu) #2685 - MF
 
 * install: add --with-mainurl to configure, allowing to set the main frame target url for index.html #2611 - MF
 * icinga.spec: use --with-mainurl to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29 #2611 - MF
