@@ -22,6 +22,7 @@ FIXES
 * core: fix deleting too old check result files (Andreas Ericsson) #2951 - MF
 
 * idoutils: fix icinga mysql db creation script grants access to all dbs #2917 - MF
+* idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
 
 CHANGES
 
