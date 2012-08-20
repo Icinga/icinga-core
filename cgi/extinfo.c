@@ -696,26 +696,6 @@ int main(void) {
 			printf("</TABLE>\n");
 		}
 
-		/* display context-sensitive help */
-		if (display_type == DISPLAY_HOST_INFO)
-			display_context_help(CONTEXTHELP_EXT_HOST);
-		else if (display_type == DISPLAY_SERVICE_INFO)
-			display_context_help(CONTEXTHELP_EXT_SERVICE);
-		else if (display_type == DISPLAY_HOSTGROUP_INFO)
-			display_context_help(CONTEXTHELP_EXT_HOSTGROUP);
-		else if (display_type == DISPLAY_SERVICEGROUP_INFO)
-			display_context_help(CONTEXTHELP_EXT_SERVICEGROUP);
-		else if (display_type == DISPLAY_PROCESS_INFO)
-			display_context_help(CONTEXTHELP_EXT_PROCESS);
-		else if (display_type == DISPLAY_PERFORMANCE)
-			display_context_help(CONTEXTHELP_EXT_PERFORMANCE);
-		else if (display_type == DISPLAY_COMMENTS)
-			display_context_help(CONTEXTHELP_EXT_COMMENTS);
-		else if (display_type == DISPLAY_DOWNTIME)
-			display_context_help(CONTEXTHELP_EXT_DOWNTIME);
-		else if (display_type == DISPLAY_SCHEDULING_QUEUE)
-			display_context_help(CONTEXTHELP_EXT_QUEUE);
-
 		printf("</td>\n");
 
 		/* end of top table */
@@ -1421,6 +1401,7 @@ void show_host_info(void) {
 	if (content_type == JSON_CONTENT) {
 		printf("\"host_info\": {\n");
 		printf("\"host_name\": \"%s\",\n", json_encode(host_name));
+		printf("\"host_display_name\": \"%s\",\n", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(host_name));
 		if (temp_hoststatus->has_been_checked == FALSE)
 			printf("\"has_been_checked\": false\n");
 		else {
@@ -1749,6 +1730,7 @@ void show_host_info(void) {
 
 void show_service_info(void) {
 	service *temp_service;
+	host *temp_host;
 	char date_time[MAX_DATETIME_LENGTH];
 	char status_age[48];
 	char state_duration[48];
@@ -1764,6 +1746,9 @@ void show_service_info(void) {
 	time_t ts_state_age = 0L;
 	time_t current_time;
 	int duration_error = FALSE;
+
+	/* get host info */
+	temp_host = find_host(host_name);
 
 	/* find the service */
 	temp_service = find_service(host_name, service_desc);
@@ -1847,7 +1832,9 @@ void show_service_info(void) {
 	if (content_type == JSON_CONTENT) {
 		printf("\"service_info\": {\n");
 		printf("\"host_name\": \"%s\",\n", json_encode(host_name));
+		printf("\"host_display_name\": \"%s\",\n", (temp_host != NULL && temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(host_name));
 		printf("\"service_description\": \"%s\",\n", json_encode(service_desc));
+		printf("\"service_display_name\": \"%s\",\n", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(service_desc));
 		if (temp_svcstatus->has_been_checked == FALSE)
 			printf("\"has_been_checked\": false\n");
 		else {
@@ -3027,8 +3014,11 @@ void show_comments(int type) {
 			printf("{ ");
 			if (display_type == DISPLAY_COMMENTS) {
 				printf("\"host_name\": \"%s\", ", json_encode(temp_host->name));
-				if (type == SERVICE_COMMENT)
+				printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+				if (type == SERVICE_COMMENT) {
 					printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
+					printf("\"service_display_name\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+				}
 			}
 			printf("\"entry_time\": \"%s\", ", date_time);
 			printf("\"author\": \"%s\", ", json_encode(temp_comment->author));
@@ -3267,8 +3257,11 @@ void show_downtime(int type) {
 			printf("{ ");
 			if (display_type == DISPLAY_DOWNTIME) {
 				printf("\"host_name\": \"%s\", ", json_encode(temp_host->name));
-				if (type == SERVICE_DOWNTIME)
+				printf("\"host_display_name\": \"%s\", ", (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+				if (type == SERVICE_DOWNTIME) {
 					printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
+					printf("\"service_display_name\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+				}
 			}
 		} else if (content_type == CSV_CONTENT) {
 			if (display_type == DISPLAY_DOWNTIME) {
@@ -3423,8 +3416,10 @@ void show_scheduling_queue(void) {
 	char service_link[MAX_INPUT_BUFFER];
 	char action_link_enable_disable[MAX_INPUT_BUFFER];
 	char action_link_schedule[MAX_INPUT_BUFFER];
-	char display_host[MAX_INPUT_BUFFER];
-	char display_service[MAX_INPUT_BUFFER];
+	char host_native_name[MAX_INPUT_BUFFER];
+	char service_native_name[MAX_INPUT_BUFFER];
+	char host_display_name[MAX_INPUT_BUFFER];
+	char service_display_name[MAX_INPUT_BUFFER];
 	char url_encoded_service[MAX_INPUT_BUFFER];
 	char url_encoded_host[MAX_INPUT_BUFFER];
 	char temp_buffer[MAX_INPUT_BUFFER];
@@ -3568,18 +3563,16 @@ void show_scheduling_queue(void) {
 			url_encoded_service[sizeof(url_encoded_service) - 1] = '\x0';
 
 			/* host name */
-			if (temp_host != NULL)
-				snprintf(display_host, sizeof(display_host) - 1, "%s", (temp_host->display_name != NULL && content_type == HTML_CONTENT) ? temp_host->display_name : temp_host->name);
-			else
-				snprintf(display_host, sizeof(display_host) - 1, "%s", temp_svcstatus->host_name);
-			display_host[sizeof(display_host) - 1] = '\x0';
+			snprintf(host_native_name, sizeof(host_native_name) - 1, "%s", temp_svcstatus->host_name);
+			host_native_name[sizeof(host_native_name) - 1] = '\x0';
+			snprintf(host_display_name, sizeof(host_display_name) - 1, "%s", (temp_host != NULL && temp_host->display_name != NULL) ? temp_host->display_name : temp_hststatus->host_name);
+			host_display_name[sizeof(host_display_name) - 1] = '\x0';
 
 			/* service name */
-			if (temp_service != NULL)
-				snprintf(display_service, sizeof(display_service) - 1, "%s", (temp_service->display_name != NULL && content_type == HTML_CONTENT) ? temp_service->display_name : temp_svcstatus->description);
-			else
-				snprintf(display_service, sizeof(display_service) - 1, "%s", temp_svcstatus->description);
-			display_service[sizeof(display_service) - 1] = '\x0';
+			snprintf(service_native_name, sizeof(service_native_name) - 1, "%s", temp_svcstatus->description);
+			service_native_name[sizeof(service_native_name) - 1] = '\x0';
+			snprintf(service_display_name, sizeof(service_display_name) - 1, "%s", (temp_service != NULL && temp_service->display_name != NULL) ? temp_service->display_name : temp_svcstatus->description);
+			service_display_name[sizeof(service_display_name) - 1] = '\x0';
 
 			/* service link*/
 			snprintf(service_link, sizeof(service_link) - 1, "%s?type=%d&host=%s&service=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encoded_host, url_encoded_service);
@@ -3633,12 +3626,11 @@ void show_scheduling_queue(void) {
 			snprintf(url_encoded_host, sizeof(url_encoded_host) - 1, "%s", url_encode(temp_hststatus->host_name));
 			url_encoded_host[sizeof(url_encoded_host) - 1] = '\x0';
 
-			/* host name*/
-			if (temp_host != NULL)
-				snprintf(display_host, sizeof(display_host) - 1, "%s", (temp_host->display_name != NULL && content_type == HTML_CONTENT) ? temp_host->display_name : temp_host->name);
-			else
-				snprintf(display_host, sizeof(display_host) - 1, "%s", temp_hststatus->host_name);
-			display_host[sizeof(display_host) - 1] = '\x0';
+			/* host name */
+			snprintf(host_native_name, sizeof(host_native_name) - 1, "%s", temp_hststatus->host_name);
+			host_native_name[sizeof(host_native_name) - 1] = '\x0';
+			snprintf(host_display_name, sizeof(host_display_name) - 1, "%s", (temp_host != NULL && temp_host->display_name != NULL) ? temp_host->display_name : temp_hststatus->host_name);
+			host_display_name[sizeof(host_display_name) - 1] = '\x0';
 
 			/* last check */
 			get_time_string(&temp_hststatus->last_check, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
@@ -3698,9 +3690,11 @@ void show_scheduling_queue(void) {
 				printf(",\n");
 			json_start = FALSE;
 
-			printf("{ \"host_name\": \"%s\", ", json_encode(display_host));
+			printf("{ \"host_name\": \"%s\", ", json_encode(host_native_name));
+			printf("\"host_display_name\": \"%s\", ", json_encode(host_display_name));
 			if (temp_sortdata->is_service == TRUE) {
-				printf("\"service_description\": \"%s\", ", json_encode(display_service));
+				printf("\"service_description\": \"%s\", ", json_encode(service_native_name));
+				printf("\"service_display_name\": \"%s\", ", json_encode(service_display_name));
 				printf("\"type\": \"SERVICE_CHECK\", ");
 			} else
 				printf("\"type\": \"HOST_CHECK\", ");
@@ -3710,8 +3704,8 @@ void show_scheduling_queue(void) {
 			printf("\"type\": \"%s\", ", type);
 			printf("\"active_check\": %s }", (checks_enabled == TRUE) ? "true" : "false");
 		} else if (content_type == CSV_CONTENT) {
-			printf("%s%s%s%s", csv_data_enclosure, display_host, csv_data_enclosure, csv_delimiter);
-			printf("%s%s%s%s", csv_data_enclosure, (temp_sortdata->is_service == TRUE) ? display_service : "", csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, host_native_name, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_sortdata->is_service == TRUE) ? service_native_name : "", csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, last_check, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, next_check, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, type, csv_data_enclosure, csv_delimiter);
@@ -3720,11 +3714,11 @@ void show_scheduling_queue(void) {
 			printf("<TR CLASS='queue%s'>", bgclass);
 
 			/* Host */
-			printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>", bgclass, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encoded_host, display_host);
+			printf("<TD CLASS='queue%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>", bgclass, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encoded_host, html_encode(host_display_name,TRUE));
 
 			/* Service */
 			if (temp_sortdata->is_service == TRUE)
-				printf("<TD CLASS='queue%s'><A HREF='%s'>%s</A></TD>", bgclass, service_link, display_service);
+				printf("<TD CLASS='queue%s'><A HREF='%s'>%s</A></TD>", bgclass, service_link, html_encode(service_display_name,TRUE));
 			else
 				printf("<TD CLASS='queue%s'>&nbsp;</TD>", bgclass);
 

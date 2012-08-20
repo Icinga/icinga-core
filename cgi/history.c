@@ -41,19 +41,15 @@
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
 
-extern int log_rotation_method;
 extern int enable_splunk_integration;
 extern int embedded;
 extern int display_header;
 extern int daemon_check;
 extern int result_limit;
-
-extern logentry *entry_list;
 /** @} */
 
 /** @name Internal vars
     @{ **/
-int log_archive = 0;				/**< holds the archive id, which should be shown */
 int display_type = DISPLAY_HOSTS;			/**< determine the view (host/service) */
 int show_all_hosts = TRUE;			/**< if historical data is requested for all hosts */
 int reverse = FALSE;				/**< determine if log should be viewed in reverse order */
@@ -70,7 +66,9 @@ int display_downtime_alerts = TRUE;		/**< determine if downtime alerts should be
 
 char *host_name = "all";				/**< the requested host name */
 char *service_desc = "";				/**< the requested service name */
-char log_file_to_use[MAX_FILENAME_LENGTH];	/**< the name of the logfile to read data from */
+
+time_t ts_start = 0L;				/**< start time as unix timestamp */
+time_t ts_end = 0L;				/**< end time as unix timestamp */
 
 authdata current_authdata;			/**< struct to hold current authentication data */
 
@@ -96,8 +94,6 @@ int process_cgivars(void);
 /** @brief Yes we need a main function **/
 int main(void) {
 	int result = OK;
-	char temp_buffer[MAX_INPUT_BUFFER];
-	char temp_buffer2[MAX_INPUT_BUFFER];
 
 	/* get the variables passed to us */
 	process_cgivars();
@@ -140,8 +136,8 @@ int main(void) {
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
-	/* determine what log file we should be using */
-	get_log_archive_to_use(log_archive, log_file_to_use, (int)sizeof(log_file_to_use));
+	/* calculate timestamps for reading logs */
+	convert_timeperiod_to_times(TIMEPERIOD_SINGLE_DAY, &ts_start, &ts_end);
 
 	if (display_header == TRUE) {
 
@@ -153,13 +149,11 @@ int main(void) {
 		printf("<td align=left valign=top width=33%%>\n");
 
 		if (display_type == DISPLAY_SERVICES)
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Service Alert History");
+			display_info_table("Service Alert History", &current_authdata, daemon_check);
 		else if (show_all_hosts == TRUE)
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Alert History");
+			display_info_table("Alert History", &current_authdata, daemon_check);
 		else
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Host Alert History");
-		temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
-		display_info_table(temp_buffer, &current_authdata, daemon_check);
+			display_info_table("Host Alert History", &current_authdata, daemon_check);
 
 		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 		printf("<TR><TD CLASS='linkBox'>\n");
@@ -197,15 +191,7 @@ int main(void) {
 		printf("</DIV>\n");
 		printf("<BR />\n");
 
-		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "%s?%shost=%s&type=%d&statetype=%d&", HISTORY_CGI, (reverse == TRUE) ? "oldestfirst&" : "", url_encode(host_name), history_options, state_options);
-		temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
-		if (display_type == DISPLAY_SERVICES) {
-			snprintf(temp_buffer2, sizeof(temp_buffer2) - 1, "service=%s&", url_encode(service_desc));
-			temp_buffer2[sizeof(temp_buffer2) - 1] = '\x0';
-			strncat(temp_buffer, temp_buffer2, sizeof(temp_buffer) - strlen(temp_buffer) - 1);
-			temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
-		}
-		display_nav_table(temp_buffer, log_archive);
+		display_nav_table(ts_start, ts_end);
 
 		printf("</td>\n");
 
@@ -213,11 +199,14 @@ int main(void) {
 		printf("<td align=right valign=top width=33%%>\n");
 
 		printf("<form method=\"GET\" action=\"%s\">\n", HISTORY_CGI);
-		printf("<table border=0 CLASS='optBox'>\n");
+		printf("<input type='hidden' name='ts_start' value='%lu'>\n", ts_start);
+		printf("<input type='hidden' name='ts_end' value='%lu'>\n", ts_end);
+		printf("<input type='hidden' name='limit' value='%d'>\n", result_limit);
 		printf("<input type='hidden' name='host' value='%s'>\n", (show_all_hosts == TRUE) ? "all" : escape_string(host_name));
 		if (display_type == DISPLAY_SERVICES)
 			printf("<input type='hidden' name='service' value='%s'>\n", escape_string(service_desc));
-		printf("<input type='hidden' name='archive' value='%d'>\n", log_archive);
+
+		printf("<table border=0 CLASS='optBox'>\n");
 
 		printf("<tr>\n");
 		printf("<td align=left CLASS='optBoxItem'>State type options:</td>\n");
@@ -269,18 +258,11 @@ int main(void) {
 		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='nosystem' %s> Hide Process Messages</td>", (display_system_messages == FALSE) ? "checked" : "");
 		printf("</tr>\n");
 		printf("<tr>\n");
-		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='oldestfirst' %s> Older Entries First</td>", (reverse == TRUE) ? "checked" : "");
+		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='order' value='old2new' %s> Older Entries First</td>", (reverse == TRUE) ? "checked" : "");
 		printf("</tr>\n");
 
 		printf("<tr>\n");
-		printf("<td align=left CLASS='optBoxItem'><input type='hidden' name='limit' value='%d'><input type='submit' value='Update'></td>\n", result_limit);
-		printf("</tr>\n");
-
-		/* display context-sensitive help */
-		printf("<tr>\n");
-		printf("<td align=right>\n");
-		display_context_help(CONTEXTHELP_HISTORY);
-		printf("</td>\n");
+		printf("<td align=left CLASS='optBoxItem'><input type='submit' value='Update'></td>\n");
 		printf("</tr>\n");
 
 		printf("</table>\n");
@@ -375,23 +357,40 @@ int process_cgivars(void) {
 			state_options = atoi(variables[x]);
 		}
 
-
-		/* we found the log archive argument */
-		else if (!strcmp(variables[x], "archive")) {
+		/* we found first time argument */
+		else if (!strcmp(variables[x], "ts_start")) {
 			x++;
 			if (variables[x] == NULL) {
 				error = TRUE;
 				break;
 			}
 
-			log_archive = atoi(variables[x]);
-			if (log_archive < 0)
-				log_archive = 0;
+			ts_start = (time_t)strtoul(variables[x], NULL, 10);
+		}
+
+		/* we found last time argument */
+		else if (!strcmp(variables[x], "ts_end")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			ts_end = (time_t)strtoul(variables[x], NULL, 10);
 		}
 
 		/* we found the order argument */
-		else if (!strcmp(variables[x], "oldestfirst")) {
-			reverse = TRUE;
+		else if (!strcmp(variables[x], "order")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			if (!strcmp(variables[x], "new2old"))
+				reverse = FALSE;
+			else if (!strcmp(variables[x], "old2new"))
+				reverse = TRUE;
 		}
 
 		/* we found the embed option */
@@ -464,43 +463,57 @@ void show_history(void) {
 	char match1[MAX_INPUT_BUFFER];
 	char match2[MAX_INPUT_BUFFER];
 	char date_time[MAX_DATETIME_LENGTH];
+	char last_message_date[MAX_INPUT_BUFFER] = "";
+	char current_message_date[MAX_INPUT_BUFFER] = "";
 	char *temp_buffer = NULL;
 	char *entry_host_name = NULL;
 	char *entry_service_desc = NULL;
-	char error_text[MAX_INPUT_BUFFER] = "";
-	char last_message_date[MAX_INPUT_BUFFER] = "";
-	char current_message_date[MAX_INPUT_BUFFER] = "";
+	char *error_text = NULL;
 	int system_message = FALSE;
 	int display_line = FALSE;
 	int history_type = SERVICE_HISTORY;
 	int history_detail_type = HISTORY_SERVICE_CRITICAL;
-	int status = 0;
+	int status = READLOG_OK;
 	int displayed_entries = 0;
 	int total_entries = 0;
 	host *temp_host = NULL;
 	service *temp_service = NULL;
 	logentry *temp_entry = NULL;
 	struct tm *time_ptr = NULL;
+	logentry *entry_list = NULL;
+	logfilter *filter_list = NULL;
 
-	/* read log entries */
-	status = get_log_entries(log_file_to_use, NULL, reverse, -1, -1);
 
-	if (status == READLOG_ERROR_MEMORY) {
-		printf("<DIV CLASS='warningMessage'>Run out of memory..., showing all I could gather!</DIV>");
+	/* scan the log file for archived state data */
+	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, reverse, ts_start, ts_end);
+
+
+	/* dealing with errors */
+	if (status == READLOG_ERROR_WARNING) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		} else
+			print_generic_error_message("Unkown error!", NULL, 0);
 	}
 
-	if (status == READLOG_ERROR_NOFILE) {
-		snprintf(error_text, sizeof(error_text), "Error: Could not open log file '%s' for reading!", log_file_to_use);
-		error_text[sizeof(error_text) - 1] = '\x0';
-		print_generic_error_message(error_text, NULL, 0);
-		/* free memory */
-		free_log_entries();
+	if (status == READLOG_ERROR_MEMORY)
+			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
+
+
+	if (status == READLOG_ERROR_FATAL) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		}
+
 		return;
 
-	} else if (status == READLOG_OK || status == READLOG_ERROR_MEMORY) {
+	/* now we start displaying the log entries */
+	} else {
 
 		printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
-		printf("<div class='page_selector'>\n");
+		printf("<div class='page_selector' id='hist_page_selector'>\n");
 		printf("<div id='page_navigation_copy'></div>");
 		page_limit_selector(result_start);
 		printf("</div>\n");
@@ -905,7 +918,7 @@ void show_history(void) {
 		}
 	}
 
-	free_log_entries();
+	free_log_entries(&entry_list);
 
 	printf("</DIV>\n");
 
@@ -916,12 +929,12 @@ void show_history(void) {
 			printf("%s", (show_all_hosts == TRUE) ? "" : "for this host ");
 		else
 			printf("for this service ");
-		printf("in %s log file</DIV>", (log_archive == 0) ? "the current" : "this archived");
+		printf("in log files for selected date.</DIV>");
+		printf("<script type='text/javascript'>document.getElementById('hist_page_selector').style.display='none';</script>");
+	} else {
+		printf("<HR>\n");
+		page_num_selector(result_start, total_entries, displayed_entries);
 	}
-
-	printf("<HR>\n");
-
-	page_num_selector(result_start, total_entries, displayed_entries);
 
 	return;
 }

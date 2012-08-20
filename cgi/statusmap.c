@@ -700,12 +700,6 @@ void display_page_header(void) {
 		printf("</td><td CLASS='optBoxItem'>\n");
 		printf("<input type='submit' value='Update'>\n");
 		printf("</td></tr>\n");
-
-		/* display context-sensitive help */
-		printf("<tr><td></td><td align=right valign=bottom>\n");
-		display_context_help(CONTEXTHELP_MAP);
-		printf("</td></tr>\n");
-
 		printf("</table>\n");
 
 		printf("</td></tr>\n");

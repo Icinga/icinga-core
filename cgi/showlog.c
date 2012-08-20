@@ -44,7 +44,6 @@ extern char url_images_path[MAX_FILENAME_LENGTH];
 extern char *csv_delimiter;
 extern char *csv_data_enclosure;
 
-extern int log_rotation_method;
 extern int enable_splunk_integration;
 extern int showlog_initial_states;
 extern int showlog_current_states;
@@ -55,8 +54,6 @@ extern int embedded;
 extern int display_header;
 extern int daemon_check;
 extern int content_type;
-
-extern logentry *entry_list;
 /** @} */
 
 /** @name Internal vars
@@ -85,7 +82,6 @@ char *end_time_string = "";			/**< the requested end time */
 
 time_t ts_start = 0L;				/**< start time as unix timestamp */
 time_t ts_end = 0L;				/**< end time as unix timestamp */
-time_t ts_midnight = 0L;			/**< current midnight unix timestamp */
 
 authdata current_authdata;			/**< struct to hold current authentication data */
 
@@ -114,18 +110,9 @@ void display_logentries(void);
 **/
 void show_filter(void);
 
-/** @brief displays the navigation in the top center of the page
- *
- * This is a remake of the @ref display_nav_table function from cgiutils.c
- * But this one works with timestamps instead of archive numbers.
-**/
-void display_own_nav_table(void);
-
 /** @brief Yes we need a main function **/
 int main(void) {
 	int result = OK;
-	struct tm *t;
-	time_t current_time = 0L;
 
 	/* get the CGI variables passed in the URL */
 	process_cgivars();
@@ -184,18 +171,6 @@ int main(void) {
 	/* get authentication information */
 	get_authentication_information(&current_authdata);
 
-	/* get the current time */
-	time(&current_time);
-	t = localtime(&current_time);
-
-	t->tm_sec = 0;
-	t->tm_min = 0;
-	t->tm_hour = 0;
-	t->tm_isdst = -1;
-
-	/* get timestamp for midnight today to find out if we have to show past log entries or present. (Also to give the right description to the info table)*/
-	ts_midnight = mktime(t);
-
 	if (display_header == TRUE) {
 
 		/* start input form */
@@ -210,14 +185,12 @@ int main(void) {
 
 		/* left column of top table - info box */
 		printf("<td align=left valign=top width=33%%>\n");
-		display_info_table((ts_end > ts_midnight) ? "Current Event Log" : "Archived Event Log", &current_authdata, daemon_check);
+		display_info_table("Event Log", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top table - log file navigation options */
 		printf("<td align=center valign=top width=33%%>\n");
-
-		display_own_nav_table();
-
+		display_nav_table(ts_start, ts_end);
 		printf("</td>\n");
 
 		/* right hand column of top row */
@@ -226,11 +199,6 @@ int main(void) {
 		/* show filter */
 		printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='optBox' align=right><tr><td>\n");
 		show_filter();
-		printf("</td></tr>\n");
-
-		/* display context-sensitive help */
-		printf("<tr><td align=right>\n");
-		display_context_help(CONTEXTHELP_LOG);
 		printf("</td></tr>\n");
 
 		printf("</table>\n");
@@ -286,7 +254,7 @@ int process_cgivars(void) {
 			strip_html_brackets(query_string);
 
 			if (strlen(query_string) == 0)
-				query_string = NULL;
+				my_free(query_string);
 		}
 
 		/* we found first time argument */
@@ -577,155 +545,116 @@ void display_logentries() {
 	char last_message_date[MAX_INPUT_BUFFER] = "";
 	char current_message_date[MAX_INPUT_BUFFER] = "";
 	char date_time[MAX_DATETIME_LENGTH];
-	char error_text[MAX_INPUT_BUFFER] = "";
-	char filename[MAX_FILENAME_LENGTH];
-	int status = 0, read_status = 0, i;
-	int oldest_archive = 0;
-	int newest_archive = 0;
-	int current_archive = 0;
+	char *error_text = NULL;
+	int status = READLOG_OK;
+	int i = 0;
 	int user_has_seen_something = FALSE;
 	int json_start = TRUE;
 	int total_entries = 0;
 	int displayed_entries = 0;
 	struct tm *time_ptr = NULL;
+	logentry *entry_list = NULL;
 	logentry *temp_entry = NULL;
+	logfilter *filter_list = NULL;
 
 
 	/* Add default filters */
 	if (showlog_initial_states == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_INITIAL_STATE, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_INITIAL_STATE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_INITIAL_STATE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_INITIAL_STATE, LOGFILTER_EXCLUDE);
 	}
 	if (showlog_current_states == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_CURRENT_STATE, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_CURRENT_STATE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_CURRENT_STATE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_CURRENT_STATE, LOGFILTER_EXCLUDE);
 	}
 
 	/* Add requested filters */
 	if (show_notifications == FALSE) {
-		add_log_filter(LOGENTRY_HOST_NOTIFICATION, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_NOTIFICATION, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_NOTIFICATION, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_NOTIFICATION, LOGFILTER_EXCLUDE);
 	}
 	if (show_host_status == FALSE) {
-		add_log_filter(LOGENTRY_HOST_UP, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_DOWN, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_UNREACHABLE, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_RECOVERY, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_PASSIVE_HOST_CHECK, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_UP, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_DOWN, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_UNREACHABLE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_RECOVERY, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_PASSIVE_HOST_CHECK, LOGFILTER_EXCLUDE);
 	}
 	if (show_service_status == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_OK, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_WARNING, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_CRITICAL, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_UNKNOWN, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_RECOVERY, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_PASSIVE_SERVICE_CHECK, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_OK, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_WARNING, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_CRITICAL, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_UNKNOWN, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_RECOVERY, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_PASSIVE_SERVICE_CHECK, LOGFILTER_EXCLUDE);
 	}
 	if (show_external_commands == FALSE)
-		add_log_filter(LOGENTRY_EXTERNAL_COMMAND, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_EXTERNAL_COMMAND, LOGFILTER_EXCLUDE);
 
 	if (show_system_messages == FALSE) {
-		add_log_filter(LOGENTRY_SYSTEM_WARNING, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_STARTUP, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SHUTDOWN, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_BAILOUT, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_RESTART, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_LOG_ROTATION, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_AUTOSAVE, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_IDOMOD, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SYSTEM_WARNING, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_STARTUP, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SHUTDOWN, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_BAILOUT, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_RESTART, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_LOG_ROTATION, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_AUTOSAVE, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_IDOMOD, LOGFILTER_EXCLUDE);
 	}
 	if (show_event_handler == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_EVENT_HANDLER, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_EVENT_HANDLER, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_EVENT_HANDLER, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_EVENT_HANDLER, LOGFILTER_EXCLUDE);
 	}
 	if (show_flapping == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_FLAPPING_STARTED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_FLAPPING_STOPPED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_FLAPPING_DISABLED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_FLAPPING_STARTED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_FLAPPING_STOPPED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_FLAPPING_DISABLED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_FLAPPING_STARTED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_FLAPPING_STOPPED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_FLAPPING_DISABLED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_STARTED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_STOPPED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_DISABLED, LOGFILTER_EXCLUDE);
 	}
 	if (show_downtime == FALSE) {
-		add_log_filter(LOGENTRY_SERVICE_DOWNTIME_STARTED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_DOWNTIME_STOPPED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_SERVICE_DOWNTIME_CANCELLED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_DOWNTIME_STARTED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_DOWNTIME_STOPPED, LOGFILTER_EXCLUDE);
-		add_log_filter(LOGENTRY_HOST_DOWNTIME_CANCELLED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_DOWNTIME_STARTED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_DOWNTIME_STOPPED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_SERVICE_DOWNTIME_CANCELLED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_DOWNTIME_STARTED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_DOWNTIME_STOPPED, LOGFILTER_EXCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_DOWNTIME_CANCELLED, LOGFILTER_EXCLUDE);
 	}
 
+	/* scan the log file for archived state data */
+	status = get_log_entries(&entry_list, &filter_list, &error_text, query_string, reverse, ts_start, ts_end);
 
-	/* determine oldest archive to use when scanning for data */
-	oldest_archive = determine_archive_to_use_from_time(ts_start);
+	free_log_filters(&filter_list);
 
-
-	/* determine most recent archive to use when scanning for data */
-	newest_archive = determine_archive_to_use_from_time(ts_end);
-
-	/* Add 10 backtrack archives */
-	newest_archive -= 10;
-	oldest_archive += 5;
-	if (newest_archive < 0)
-		newest_archive = 0;
-
-	/* correct archive id errors */
-	if (oldest_archive < newest_archive)
-		oldest_archive = newest_archive;
-
-	current_archive = oldest_archive;
-
-	/* read in all the necessary archived logs */
-	while (1) {
-
-		/* get the name of the log file that contains this archive */
-		get_log_archive_to_use(current_archive, filename, sizeof(filename) - 1);
-
-		/* scan the log file for archived state data */
-		status = get_log_entries(filename, query_string, reverse, ts_start, ts_end);
-
-		/* Stop if we out of memory or have a wrong filter */
-		if (status == READLOG_ERROR_FILTER || status == READLOG_ERROR_MEMORY) {
-			read_status = status;
-			break;
-		}
-
-		/* Don't care if there isn't a file to read */
-		if (status == READLOG_ERROR_NOFILE && read_status == READLOG_OK)
-			status = READLOG_OK;
-
-		/* set status */
-		read_status = status;
-
-		/* count/break depending on direction (new2old / old2new) */
-		if (current_archive <= newest_archive)
-			break;
-
-		current_archive--;
-	}
-
-	free_log_filters();
 
 	/* dealing with errors */
-	if (read_status == READLOG_ERROR_MEMORY) {
-		if (content_type == CSV_CONTENT || content_type == JSON_CONTENT)
+	if (status == READLOG_ERROR_WARNING) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		} else
+			print_generic_error_message("Unkown error!", NULL, 0);
+	}
+
+	if (status == READLOG_ERROR_MEMORY)
 			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
-		else
-			printf("<DIV CLASS='warningMessage'>Out of memory..., showing all I could get!</DIV>");
-	}
-	if (read_status == READLOG_ERROR_NOFILE) {
-		snprintf(error_text, sizeof(error_text), "Error: Could not open log file '%s' for reading!", filename);
-		error_text[sizeof(error_text) - 1] = '\x0';
-		print_generic_error_message(error_text, NULL, 0);
-	}
-	if (read_status == READLOG_ERROR_FILTER)
-		print_generic_error_message("It seems like that reagular expressions don't like what you searched for. Please change your search string.", NULL, 0);
+
+
+	if (status == READLOG_ERROR_FATAL) {
+		if (error_text != NULL) {
+			print_generic_error_message(error_text, NULL, 0);
+			my_free(error_text);
+		}
+		user_has_seen_something = TRUE;
 
 	/* now we start displaying the log entries */
-	else {
+	} else {
 
 		if (content_type == JSON_CONTENT) {
 			display_timebreaks = FALSE;
+			if (status != READLOG_OK)
+				printf(",\n");
 			printf("\"log_entries\": [\n");
 		} else if (content_type == CSV_CONTENT) {
 			display_timebreaks = FALSE;
@@ -737,7 +666,7 @@ void display_logentries() {
 		} else {
 			/* add export to csv, json, link */
 			printf("<table width='100%%' cellspacing=0 cellpadding=0 border=0><tr><td width='33%%'></td><td width='33%%' align=center nowrap>");
-			printf("<div class='page_selector'>\n");
+			printf("<div class='page_selector' id='log_page_selector'>\n");
 			printf("<div id='page_navigation_copy'></div>");
 			page_limit_selector(result_start);
 			printf("</div>\n");
@@ -937,13 +866,13 @@ void display_logentries() {
 				printf("</DIV><hr>\n");
 				page_num_selector(result_start, total_entries, displayed_entries);
 			} else {
-				printf("<script type='text/javascript'>document.getElementById('showlog_page_navigation').style.display='none';</script>");
+				printf("<script type='text/javascript'>document.getElementById('log_page_selector').style.display='none';</script>");
 			}
 		} else if (content_type == JSON_CONTENT)
 			printf("\n]\n");
 	}
 
-	free_log_entries();
+	free_log_entries(&entry_list);
 
 	if (user_has_seen_something == FALSE && content_type != CSV_CONTENT && content_type != JSON_CONTENT)
 		printf("<DIV CLASS='warningMessage'>No log entries found!</DIV>");
@@ -997,10 +926,10 @@ void show_filter(void) {
 
 	printf("<br><table border=0 cellspacing=0 cellpadding=0>\n");
 	get_time_string(&ts_start, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
-	printf("<tr><td>Start:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' NAME='start_time' VALUE='%s' SIZE=\"25\"></td></tr>", buffer);
+	printf("<tr><td>Start:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' class='timepicker' NAME='start_time' VALUE='%s' SIZE=\"25\"></td></tr>", buffer);
 
 	get_time_string(&ts_end, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
-	printf("<tr><td>End:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr></table></div>", buffer);
+	printf("<tr><td>End:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr></table></div>", buffer);
 
 	printf("</td></tr>\n");
 
@@ -1026,104 +955,5 @@ void show_filter(void) {
 	printf("</table>\n");
 
 	escape_html_tags = temp_htmlencode;
-	return;
-}
-
-void display_own_nav_table() {
-	char *url;
-	char temp_buffer[MAX_INPUT_BUFFER];
-	char date_time[MAX_INPUT_BUFFER];
-	int dummy;
-
-	/* construct url */
-	dummy = asprintf(&url, "%s?timeperiod=singleday&order=%s", SHOWLOG_CGI, (reverse == TRUE) ? "old2new" : "new2old");
-	strncpy(temp_buffer, url, sizeof(temp_buffer));
-	dummy = asprintf(&url, "%s&limit=%d&start=%d", temp_buffer, result_limit, result_start);
-
-	if (query_string != NULL) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&query_string=%s", temp_buffer, url_encode(query_string));
-	}
-	if (show_notifications == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&noti=off", temp_buffer);
-	}
-	if (show_host_status == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&hst=off", temp_buffer);
-	}
-	if (show_service_status == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&sst=off", temp_buffer);
-	}
-	if (show_external_commands == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&cmd=off", temp_buffer);
-	}
-	if (show_system_messages == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&sms=off", temp_buffer);
-	}
-	if (show_event_handler == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&evh=off", temp_buffer);
-	}
-	if (show_flapping == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&flp=off", temp_buffer);
-	}
-	if (show_downtime == FALSE) {
-		strncpy(temp_buffer, url, sizeof(temp_buffer));
-		dummy = asprintf(&url, "%s&dwn=off", temp_buffer);
-	}
-
-	/* show table */
-	printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='navBox'>\n");
-	printf("<tr>\n");
-	printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-	if (ts_end > ts_midnight) {
-		printf("Latest Archive<br>");
-		printf("<a href='%s&ts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Latest Archive' title='Latest Archive'></a>", url, ts_midnight - 86400, ts_midnight - 1, url_images_path, LEFT_ARROW_ICON);
-	} else {
-		printf("Earlier Archive<br>");
-		printf("<a href='%s&ts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, ts_start - 86400, ts_start - 1, url_images_path, LEFT_ARROW_ICON);
-	}
-	printf("</td>\n");
-
-	printf("<td width=15></td>\n");
-
-	printf("<td align=center CLASS='navBoxDate'>\n");
-	printf("<DIV CLASS='navBoxTitle'>Log Navigation</DIV>\n");
-	get_time_string(&ts_start, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
-	printf("%s", date_time);
-	printf("<br>to<br>");
-	if (ts_end > ts_midnight)
-		printf("Present..");
-	else {
-		get_time_string(&ts_end, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
-		printf("%s", date_time);
-	}
-	printf("</td>\n");
-
-	printf("<td width=15></td>\n");
-
-	if (ts_end <= ts_midnight) {
-
-		printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-		if (ts_end == ts_midnight) {
-			printf("Current Log<br>");
-			printf("<a href='%s&ts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Current Log' title='Current Log'></a>", url, ts_midnight + 1, ts_midnight + 86400, url_images_path, RIGHT_ARROW_ICON);
-		} else {
-			printf("More Recent Archive<br>");
-			printf("<a href='%s&ts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='More Recent Archive' title='More Recent Archive'></a>", url, ts_end + 1, ts_end + 86400, url_images_path, RIGHT_ARROW_ICON);
-		}
-		printf("</td>\n");
-	} else
-		printf("<td><img src='%s%s' border=0 width=75 height=1></td>\n", url_images_path, EMPTY_ICON);
-
-	printf("</tr>\n");
-
-	printf("</table>\n");
-
 	return;
 }

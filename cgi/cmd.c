@@ -33,6 +33,7 @@
 #include "../include/objects.h"
 #include "../include/comments.h"
 #include "../include/downtime.h"
+#include "../include/statusdata.h"
 
 #include "../include/cgiutils.h"
 #include "../include/cgiauth.h"
@@ -145,8 +146,8 @@ int notification_delay = 0;			/**< delay for submitted notification in minutes *
 int schedule_delay = 0;				/**< delay for sheduled actions in minutes (Icinga restart, Notfications enable/disable)
 							!not implemented in GUI! */
 int persistent_comment = FALSE;			/**< bool if omment should survive Icinga restart */
-int sticky_ack = FALSE;				/**< bool to disable notifications until recover */
-int send_notification = FALSE;			/**< bool sends a notification if service gets acknowledged */
+int sticky_ack = TRUE;				/**< bool to disable notifications until recover */
+int send_notification = TRUE;			/**< bool sends a notification if service gets acknowledged */
 int use_ack_end_time = FALSE;			/**< bool if expire acknowledgement is selected or not */
 int use_disabled_notif_end_time = FALSE;	/**< bool if expire disabled notifications is selected or not */
 int force_check = FALSE;			/**< bool if check should be forced */
@@ -330,6 +331,17 @@ int main(void) {
 		return ERROR;
 	}
 
+	/* read all status data */
+	result = read_all_status_data(get_cgi_config_location(), READ_ALL_STATUS_DATA);
+	if (result == ERROR && daemon_check == TRUE) {
+		document_header(CGI_ID, FALSE, "Error");
+		print_error(NULL, ERROR_CGI_STATUS_DATA);
+		document_footer(CGI_ID);
+		free_memory();
+		return ERROR;
+	}
+
+
 	document_header(CGI_ID, TRUE, "External Command Interface");
 
 	/* get authentication information */
@@ -355,13 +367,6 @@ int main(void) {
 
 		/* right column of the first row */
 		printf("<td align=right valign=bottom width=33%%>\n");
-
-		/* display context-sensitive help */
-		if (command_mode == CMDMODE_COMMIT)
-			display_context_help(CONTEXTHELP_CMD_COMMIT);
-		else
-			display_context_help(CONTEXTHELP_CMD_INPUT);
-
 		printf("</td>\n");
 
 		/* end of top table */
@@ -601,12 +606,24 @@ int process_cgivars(void) {
 			persistent_comment = TRUE;
 
 		/* we got the notification option for an acknowledgement */
-		else if (!strcmp(variables[x], "send_notification"))
-			send_notification = TRUE;
+		else if (!strcmp(variables[x], "send_notification")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+			send_notification = (atoi(variables[x]) > 0) ? TRUE : FALSE;
+		}
 
 		/* we got the acknowledgement type */
-		else if (!strcmp(variables[x], "sticky_ack"))
-			sticky_ack = TRUE;
+		else if (!strcmp(variables[x], "sticky_ack")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+			sticky_ack = (atoi(variables[x]) > 0) ? TRUE : FALSE;
+		}
 
 		/* we use the end_time as expire time */
 		else if (!strcmp(variables[x], "use_ack_end_time"))
@@ -785,22 +802,54 @@ int process_cgivars(void) {
 }
 
 void print_object_list(int list_type) {
+	hoststatus *temp_hoststatus = NULL;
+	servicestatus *temp_servicestatus = NULL;
 	int x = 0;
 	int row_color = 0;
+	int host_passive = FALSE;
+	int service_passive = FALSE;
 
-	printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
-	printf("<tr CLASS=\"sectionHeader\"><td COLSPAN=\"2\" >Affected Objects</td></tr>\n");
+
+	printf("<tr><td colspan=\"2\">&nbsp;</td></tr>\n");
+	printf("<tr class=\"sectionHeader\"><td colspan=\"2\" >Affected Objects</td></tr>\n");
+
+	printf("<tr><td colspan=\"2\"><TABLE cellspacing='2' cellpadding='0' border='0' width='100%%'>\n");
 
 	if (list_type == PRINT_SERVICE_LIST)
-		printf("<tr class=\"objectDescription\"><td width=\"50%%\">Host</td><td width=\"50%%\">Service</td></tr>\n");
+		printf("<tr class=\"objectDescription\"><td width=\"46%%\">Host</td><td width=\"46%%\">Service</td><td width='16'></td></tr>\n");
+	else if (list_type == PRINT_HOST_LIST)
+		printf("<tr class=\"objectDescription\"><td colspan=\"2\" width=\"96%%\">Hosts</td><td width='16'></td></tr>\n");
 	else
-		printf("<tr><td COLSPAN=\"2\">&nbsp;</td></tr>\n");
+		printf("<tr><td colspan=\"3\">&nbsp;</td></tr>\n");
 
 	for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
 
 		if (list_type == PRINT_HOST_LIST || list_type == PRINT_SERVICE_LIST) {
+			host_passive = FALSE;
+			service_passive = FALSE;
+
 			if (commands[x].host_name == NULL)
 				continue;
+
+			if (strlen(commands[x].host_name) != 0 && (
+				command_type == CMD_SCHEDULE_HOST_CHECK ||
+				command_type == CMD_DISABLE_HOST_CHECK ||
+				command_type == CMD_SCHEDULE_SVC_CHECK ||
+				command_type == CMD_DISABLE_SVC_CHECK )) {
+				if((temp_hoststatus = find_hoststatus(commands[x].host_name)) != NULL) {
+					if (temp_hoststatus->checks_enabled == FALSE)
+						host_passive = TRUE;
+				}
+
+
+				if (list_type == PRINT_SERVICE_LIST && strlen(commands[x].description) != 0 ) {
+					if((temp_servicestatus = find_servicestatus(commands[x].host_name, commands[x].description)) != NULL) {
+						if (temp_servicestatus->checks_enabled == FALSE)
+							service_passive = TRUE;
+					}
+				}
+			}
+
 		} else {
 			if (multi_ids[x] == FALSE)
 				continue;
@@ -812,10 +861,8 @@ void print_object_list(int list_type) {
 		if (list_type == PRINT_SERVICE_LIST) {
 			/* hostname and service description are present */
 			if (strlen(commands[x].host_name) != 0  && strlen(commands[x].description) != 0) {
-				printf(">%s</td>", escape_string(commands[x].host_name));
-				/* we can use "escape_string" only twice in one line */
-				printf("<td><INPUT TYPE='HIDDEN' NAME='hostservice' VALUE='%s^%s'>", escape_string(commands[x].host_name), escape_string(commands[x].description));
-				printf("%s</td></tr>\n", escape_string(commands[x].description));
+				printf(">%s</td><td>%s</td>", escape_string(commands[x].host_name), escape_string(commands[x].description));
+				printf("<td align='center'><input type='checkbox' name='hostservice' value='%s^%s' %s></td></tr>\n", escape_string(commands[x].host_name), escape_string(commands[x].description), (service_passive == FALSE) ? "checked" : "");
 			} else {
 				/* if hostname is empty print inputbox instead */
 				if (!strcmp(commands[x].host_name, ""))
@@ -824,22 +871,28 @@ void print_object_list(int list_type) {
 					printf("><INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>%s</td>", escape_string(commands[x].host_name), escape_string(commands[x].host_name));
 				/* if service description is empty print inputbox instead */
 				if (!strcmp(commands[x].description, ""))
-					printf("<td><INPUT TYPE='TEXT' NAME='service' SIZE=30></td></tr>\n");
+					printf("<td><INPUT TYPE='TEXT' NAME='service' SIZE=30></td>");
 				else
-					printf("<td><INPUT TYPE='HIDDEN' NAME='service' VALUE='%s'>%s</td></tr>\n", escape_string(commands[x].description), escape_string(commands[x].description));
+					printf("<td><INPUT TYPE='HIDDEN' NAME='service' VALUE='%s'>%s</td>", escape_string(commands[x].description), escape_string(commands[x].description));
+
+				printf("<td></td></tr>\n");
 			}
 		} else if (list_type == PRINT_HOST_LIST) {
 			/* if hostname is empty print inputbox instead */
 			if (!strcmp(commands[x].host_name, ""))
-				printf(" style=\"font-weight:bold;\">Host:</td><td><INPUT TYPE='TEXT' NAME='host' SIZE=30></td></tr>\n");
-			else
-				printf(" style=\"font-weight:bold;\">Host:</td><td><INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>%s</td></tr>\n", escape_string(commands[x].host_name), escape_string(commands[x].host_name));
+				printf(" style=\"font-weight:bold;\">Host:</td><td><INPUT TYPE='TEXT' NAME='host' SIZE=30></td><td></td></tr>\n");
+			else {
+				printf(" style=\"font-weight:bold;\">Host:</td><td>%s</td>", escape_string(commands[x].host_name));
+				printf("<td align='center'><input type='checkbox' name='host' value='%s' %s></td></tr>\n", escape_string(commands[x].host_name), (host_passive == FALSE) ? "checked" : "");
+			}
 		} else if (list_type == PRINT_COMMENT_LIST) {
 			printf(" style=\"font-weight:bold;\">Comment ID:</td><td><INPUT TYPE='HIDDEN' NAME='com_id' VALUE='%lu'>%lu</td></tr>\n", multi_ids[x], multi_ids[x]);
 		} else if (list_type == PRINT_DOWNTIME_LIST) {
 			printf(" style=\"font-weight:bold;\">Scheduled Downtime ID:</td><td><INPUT TYPE='HIDDEN' NAME='down_id' VALUE='%lu'>%lu</td></tr>\n", multi_ids[x], multi_ids[x]);
 		}
 	}
+
+	printf("</td><tr></table>\n");
 
 	return;
 }
@@ -919,7 +972,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Sticky Acknowledgement:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' NAME='sticky_ack' CHECKED></td></tr>\n");
+		printf("<INPUT TYPE='checkbox' NAME='sticky_ack' %s></td></tr>\n", (sticky_ack == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_SEND_NOTFICATION:
@@ -929,7 +982,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Send Notification:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' NAME='send_notification' CHECKED></td></tr>\n");
+		printf("<INPUT TYPE='checkbox' NAME='send_notification' %s></td></tr>\n", (send_notification == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_PERSISTENT:
@@ -977,7 +1030,7 @@ void print_form_element(int element, int cmd) {
 			printf("Check Time:");
 		}
 		print_help_box(help_text);
-		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='%s_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", (element == PRINT_END_TIME) ? "end" : "start", buffer);
+		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' class='timepicker' NAME='%s_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", (element == PRINT_END_TIME) ? "end" : "start", buffer);
 		break;
 
 	case PRINT_FIXED_FLEXIBLE_TYPE:
@@ -1035,7 +1088,7 @@ void print_form_element(int element, int cmd) {
 
 		printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
 		print_help_box(help_text);
-		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
+		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
 		break;
 
         case PRINT_EXPIRE_DISABLE_NOTIFICATIONS:
@@ -1056,7 +1109,7 @@ void print_form_element(int element, int cmd) {
 
                 printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
                 print_help_box(help_text);
-                printf("</td><td align=\"left\"><INPUT TYPE='TEXT' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
+                printf("</td><td align=\"left\"><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
                 break;
 
 	case PRINT_FORCE_CHECK:

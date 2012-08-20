@@ -44,7 +44,6 @@ extern hostgroup *hostgroup_list;
 extern servicegroup *servicegroup_list;
 extern service   *service_list;
 extern timeperiod *timeperiod_list;
-extern logentry  *entry_list;
 
 extern int       log_rotation_method;
 
@@ -148,8 +147,8 @@ time_t t1;
 time_t t2;
 
 /* number of host (hheader) and service (sheader) titles */
-#define		hheader_num	37
-#define		sheader_num	47
+#define		hheader_num	38
+#define		sheader_num	49
 char		*hheader[hheader_num];
 char		*sheader[sheader_num];
 
@@ -228,7 +227,6 @@ void add_scheduled_downtime(int, time_t, avail_subject *);
 void free_availability_data(void);
 void free_archived_state_list(archived_state *);
 void read_archived_state_data(void);
-void scan_log_file_for_archived_state_data(char *);
 unsigned long calculate_total_time(time_t, time_t);
 
 int process_cgivars(void);
@@ -572,29 +570,6 @@ int main(int argc, char **argv) {
 			printf("</td>\n");
 			printf("</tr>\n");
 		}
-
-		/* display context-sensitive help */
-		printf("<tr><td></td><td align=right valign=bottom>\n");
-		if (get_date_parts == TRUE)
-			display_context_help(CONTEXTHELP_AVAIL_MENU5);
-		else if (select_hostgroups == TRUE)
-			display_context_help(CONTEXTHELP_AVAIL_MENU2);
-		else if (select_hosts == TRUE)
-			display_context_help(CONTEXTHELP_AVAIL_MENU3);
-		else if (select_services == TRUE)
-			display_context_help(CONTEXTHELP_AVAIL_MENU4);
-		else if (display_type == DISPLAY_HOSTGROUP_AVAIL)
-			display_context_help(CONTEXTHELP_AVAIL_HOSTGROUP);
-		else if (display_type == DISPLAY_HOST_AVAIL)
-			display_context_help(CONTEXTHELP_AVAIL_HOST);
-		else if (display_type == DISPLAY_SERVICE_AVAIL)
-			display_context_help(CONTEXTHELP_AVAIL_SERVICE);
-		else if (display_type == DISPLAY_SERVICEGROUP_AVAIL)
-			display_context_help(CONTEXTHELP_AVAIL_SERVICEGROUP);
-		else
-			display_context_help(CONTEXTHELP_AVAIL_MENU1);
-		printf("</td></tr>\n");
-
 		printf("</table>\n");
 		printf("</form>\n");
 
@@ -961,6 +936,7 @@ int main(int argc, char **argv) {
 
 			/* devine host header for non HTML output */
 			hheader[0] = "host_name";
+			hheader[37] = "host_display_name";
 
 			/* up times */
 			hheader[1] = "time_up_scheduled";
@@ -1011,7 +987,9 @@ int main(int argc, char **argv) {
 
 			/* devine service header for non HTML output */
 			sheader[0] = "host_name";
+			sheader[47] = "host_display_name";
 			sheader[1] = "service_description";
+			sheader[48] = "service_display_name";
 
 			/* ok times */
 			sheader[2] = "time_ok_scheduled";
@@ -2879,57 +2857,21 @@ void free_archived_state_list(archived_state *as_list) {
 
 /* reads log files for archived state data */
 void read_archived_state_data(void) {
-	char filename[MAX_FILENAME_LENGTH];
-	int oldest_archive = 0;
-	int newest_archive = 0;
-	int current_archive = 0;
-
-	/* determine oldest archive to use when scanning for data (include backtracked archives as well) */
-	oldest_archive = determine_archive_to_use_from_time(t1);
-	if (log_rotation_method != LOG_ROTATION_NONE)
-		oldest_archive += backtrack_archives;
-
-	/* determine most recent archive to use when scanning for data */
-	newest_archive = determine_archive_to_use_from_time(t2);
-
-	if (oldest_archive < newest_archive)
-		oldest_archive = newest_archive;
-
-	/* read in all the necessary archived logs (from most recent to earliest) */
-	for (current_archive = newest_archive; current_archive <= oldest_archive; current_archive++) {
-#ifdef DEBUG
-		printf("Reading archive #%d\n", current_archive);
-#endif
-
-		/* get the name of the log file that contains this archive */
-		get_log_archive_to_use(current_archive, filename, sizeof(filename) - 1);
-
-#ifdef DEBUG
-		printf("Archive name: '%s'\n", filename);
-#endif
-
-		/* scan the log file for archived state data */
-		scan_log_file_for_archived_state_data(filename);
-	}
-
-	return;
-}
-
-
-
-/* grabs archives state data from a log file */
-void scan_log_file_for_archived_state_data(char *filename) {
 	char entry_host_name[MAX_INPUT_BUFFER];
 	char entry_service_desc[MAX_INPUT_BUFFER];
 	char *plugin_output = NULL;
 	char *temp_buffer = NULL;
+	char *error_text = NULL;
 	avail_subject *temp_subject = NULL;
 	logentry *temp_entry = NULL;
-	int state_type = 0, status;
+	int state_type = 0;
+	int status = READLOG_OK;
+	logentry *entry_list = NULL;
+	logfilter *filter_list = NULL;
 
-	status = get_log_entries(filename, NULL, FALSE, t1 - (60 * 60 * 24 * backtrack_archives), t2);
+	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, FALSE, t1 - (60 * 60 * 24 * backtrack_archives), t2);
 
-	if (status == READLOG_OK) {
+	if (status != READLOG_ERROR_FATAL) {
 
 		for (temp_entry = entry_list; temp_entry != NULL; temp_entry = temp_entry->next) {
 
@@ -3145,7 +3087,7 @@ void scan_log_file_for_archived_state_data(char *filename) {
 		}
 	}
 
-	free_log_entries();
+	free_log_entries(&entry_list);
 
 	return;
 }
@@ -3531,7 +3473,7 @@ void display_specific_hostgroup_availability(hostgroup *hg) {
 	} else if (content_type == CSV_CONTENT) {
 		printf("%sHOSTGROUP %s HOST_STATE_BREAKDOWNS%s%s\n", csv_data_enclosure, hg->group_name, csv_data_enclosure, csv_delimiter);
 
-		for (i = 0; i < (hheader_num - 3); i++)
+		for (i = 0; i < (hheader_num - 4); i++)
 			printf("%s%s%s%s", csv_data_enclosure, hheader[i], csv_data_enclosure, csv_delimiter);
 
 		printf("\n");
@@ -3595,6 +3537,7 @@ void display_specific_hostgroup_availability(hostgroup *hg) {
 
 			/* host name */
 			printf("{ \"%s\": \"%s\", ", hheader[0], json_encode(temp_subject->host_name));
+			printf("{ \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 
 			/* up times */
 			printf(" \"%s\": %lu, ", hheader[1], temp_subject->scheduled_time_up);
@@ -3929,7 +3872,7 @@ void display_specific_servicegroup_availability(servicegroup *sg) {
 	} else if (content_type == CSV_CONTENT) {
 		printf("%sSERVICEGROUP %s HOST_STATE_BREAKDOWNS%s%s\n", csv_data_enclosure, sg->group_name, csv_data_enclosure, csv_delimiter);
 
-		for (i = 0; i < (hheader_num - 3); i++)
+		for (i = 0; i < (hheader_num - 4); i++)
 			printf("%s%s%s%s", csv_data_enclosure, hheader[i], csv_data_enclosure, csv_delimiter);
 
 		printf("\n");
@@ -3993,6 +3936,7 @@ void display_specific_servicegroup_availability(servicegroup *sg) {
 
 			/* host name */
 			printf("{ \"%s\": \"%s\", ", hheader[0], json_encode(temp_subject->host_name));
+			printf("{ \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 
 			/* up times */
 			printf(" \"%s\": %lu, ", hheader[1], temp_subject->scheduled_time_up);
@@ -4190,7 +4134,7 @@ void display_specific_servicegroup_availability(servicegroup *sg) {
 	} else if (content_type == CSV_CONTENT) {
 		printf("%sSERVICEGROUP %s SERVICE_STATE_BREAKDOWNS%s%s\n", csv_data_enclosure, sg->group_name, csv_data_enclosure, csv_delimiter);
 
-		for (i = 0; i < (sheader_num - 3); i++)
+		for (i = 0; i < (sheader_num - 5); i++)
 			printf("%s%s%s%s", csv_data_enclosure, sheader[i], csv_data_enclosure, csv_delimiter);
 
 		printf("\n");
@@ -4268,9 +4212,13 @@ void display_specific_servicegroup_availability(servicegroup *sg) {
 			if (json_start != TRUE)
 				printf(",\n");
 
+			temp_host = find_host(temp_subject->host_name);
+
 			/* host name and service description */
 			printf("{ \"%s\": \"%s\", ", sheader[0], json_encode(temp_subject->host_name));
+			printf(" \"%s\": \"%s\", ", sheader[47], (temp_host != NULL && temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 			printf(" \"%s\": \"%s\", ", sheader[1], json_encode(temp_subject->service_description));
+			printf(" \"%s\": \"%s\", ", sheader[48], (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
 
 			/* ok times */
 			printf(" \"%s\": %lu, ", sheader[2], temp_subject->scheduled_time_ok);
@@ -4748,6 +4696,7 @@ void display_host_availability(void) {
 
 				/* host name */
 				printf("{ \"%s\": \"%s\", ", hheader[0], json_encode(temp_subject->host_name));
+				printf("{ \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 
 				/* up times */
 				printf(" \"%s\": %lu, ", hheader[1], temp_subject->scheduled_time_up);
@@ -4923,7 +4872,8 @@ void display_host_availability(void) {
 						printf(",\n");
 					json_start = FALSE;
 
-					printf(" {\"service\": \"%s\", ", temp_subject->service_description);
+					printf(" {\"service_description\": \"%s\", ", temp_service->description);
+					printf(" \"service_display_name\": \"%s\", ", (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
 					printf(" \"percent_time_ok\": %2.3f, ", percent_time_ok);
 					printf(" \"percent_time_ok_known\": %2.3f, ", percent_time_ok_known);
 					printf(" \"percent_time_warning\": %2.3f, ", percent_time_warning);
@@ -4998,7 +4948,7 @@ void display_host_availability(void) {
 
 		} else if (content_type == CSV_CONTENT) {
 
-			for (i = 0; i < hheader_num; i++)
+			for (i = 0; i < hheader_num -1 ; i++)
 				printf("%s%s%s%s", csv_data_enclosure, hheader[i], csv_data_enclosure, csv_delimiter);
 
 			printf("\n");
@@ -5074,7 +5024,7 @@ void display_host_availability(void) {
 			printf("<host_availability>\n");
 		} else if (content_type == CSV_CONTENT) {
 
-			for (i = 0; i < hheader_num; i++)
+			for (i = 0; i < hheader_num -1; i++)
 				printf("%s%s%s%s", csv_data_enclosure, hheader[i], csv_data_enclosure, csv_delimiter);
 
 			printf("\n");
@@ -5174,6 +5124,7 @@ void display_host_availability(void) {
 
 				/* host name */
 				printf("{ \"%s\": \"%s\", ", hheader[0], json_encode(temp_subject->host_name));
+				printf("{ \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 
 				/* up times */
 				printf(" \"%s\": %lu, ", hheader[1], temp_subject->scheduled_time_up);
@@ -5387,6 +5338,7 @@ void display_service_availability(void) {
 	unsigned long time_indeterminate;
 	avail_subject *temp_subject;
 	service *temp_service;
+	host *temp_host;
 	int days, hours, minutes, seconds;
 	char time_ok_string[48];
 	char time_warning_string[48];
@@ -5624,9 +5576,13 @@ void display_service_availability(void) {
 			printf("\"service_availability\": {\n");
 			printf("\"services\": [\n");
 
+			temp_host = find_host(temp_subject->host_name);
+
 			/* host name and service description */
 			printf("{ \"%s\": \"%s\", ", sheader[0], json_encode(temp_subject->host_name));
+			printf(" \"%s\": \"%s\", ", sheader[47], (temp_host != NULL && temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 			printf(" \"%s\": \"%s\", ", sheader[1], json_encode(temp_subject->service_description));
+			printf(" \"%s\": \"%s\", ", sheader[48], (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
 
 			/* ok times */
 			printf(" \"%s\": %lu, ", sheader[2], temp_subject->scheduled_time_ok);
@@ -5751,7 +5707,7 @@ void display_service_availability(void) {
 
 		} else if (content_type == CSV_CONTENT) {
 
-			for (i = 0; i < sheader_num; i++)
+			for (i = 0; i < sheader_num -2; i++)
 				printf("%s%s%s%s", csv_data_enclosure, sheader[i], csv_data_enclosure, csv_delimiter);
 
 			printf("\n");
@@ -5848,7 +5804,7 @@ void display_service_availability(void) {
 			printf("<service_availability>\n");
 		} else if (content_type == CSV_CONTENT) {
 
-			for (i = 0; i < sheader_num; i++)
+			for (i = 0; i < sheader_num -2; i++)
 				printf("%s%s%s%s", csv_data_enclosure, sheader[i], csv_data_enclosure, csv_delimiter);
 
 			printf("\n");
@@ -5962,9 +5918,13 @@ void display_service_availability(void) {
 				if (json_start != TRUE)
 					printf(",\n");
 
+				temp_host = find_host(temp_subject->host_name);
+
 				/* host name and service description */
 				printf("{ \"%s\": \"%s\", ", sheader[0], json_encode(temp_subject->host_name));
+				printf(" \"%s\": \"%s\", ", sheader[47], (temp_host != NULL && temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 				printf(" \"%s\": \"%s\", ", sheader[1], json_encode(temp_subject->service_description));
+				printf(" \"%s\": \"%s\", ", sheader[48], (temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
 
 				/* ok times */
 				printf(" \"%s\": %lu, ", sheader[2], temp_subject->scheduled_time_ok);

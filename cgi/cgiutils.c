@@ -40,11 +40,11 @@ char            physical_images_path[MAX_FILENAME_LENGTH];
 char            physical_ssi_path[MAX_FILENAME_LENGTH];
 char            url_html_path[MAX_FILENAME_LENGTH];
 char            url_docs_path[MAX_FILENAME_LENGTH];
-char            url_context_help_path[MAX_FILENAME_LENGTH];
 char            url_images_path[MAX_FILENAME_LENGTH];
 char            url_logo_images_path[MAX_FILENAME_LENGTH];
 char            url_stylesheets_path[MAX_FILENAME_LENGTH];
 char            url_js_path[MAX_FILENAME_LENGTH];
+char            url_jquiryui_path[MAX_FILENAME_LENGTH];
 char            url_media_path[MAX_FILENAME_LENGTH];
 
 char            *service_critical_sound = NULL;
@@ -120,9 +120,6 @@ extern char 	*macro_user[MAX_USER_MACROS];
 
 /** readlogs.c **/
 int		log_rotation_method = LOG_ROTATION_NONE;
-extern time_t	this_scheduled_log_rotation;
-extern time_t	last_scheduled_log_rotation;
-extern time_t	next_scheduled_log_rotation;
 char		log_file[MAX_INPUT_BUFFER];
 char		log_archive_path[MAX_INPUT_BUFFER];
 
@@ -135,7 +132,6 @@ int             use_authentication = TRUE;
 
 int             interval_length = 60;
 
-int             show_context_help = FALSE;
 int		show_all_services_host_is_authorized_for = TRUE;
 
 int             use_pending_states = TRUE;
@@ -248,7 +244,6 @@ void reset_cgi_vars(void) {
 
 	strcpy(url_html_path, "");
 	strcpy(url_docs_path, "");
-	strcpy(url_context_help_path, "");
 	strcpy(url_stylesheets_path, "");
 	strcpy(url_js_path, "");
 	strcpy(url_media_path, "");
@@ -390,9 +385,6 @@ int read_cgi_config_file(char *filename) {
 			strip(main_config_file);
 		}
 
-		else if (!strcmp(var, "show_context_help"))
-			show_context_help = (atoi(val) > 0) ? TRUE : FALSE;
-
 		else if (!strcmp(var, "show_all_services_host_is_authorized_for"))
 			show_all_services_host_is_authorized_for = (atoi(val) > 0) ? TRUE : FALSE;
 
@@ -443,9 +435,6 @@ int read_cgi_config_file(char *filename) {
 			snprintf(url_docs_path, sizeof(url_docs_path), "%sdocs/", url_html_path);
 			url_docs_path[sizeof(url_docs_path) - 1] = '\x0';
 
-			snprintf(url_context_help_path, sizeof(url_context_help_path), "%scontexthelp/", url_html_path);
-			url_context_help_path[sizeof(url_context_help_path) - 1] = '\x0';
-
 			snprintf(url_images_path, sizeof(url_images_path), "%simages/", url_html_path);
 			url_images_path[sizeof(url_images_path) - 1] = '\x0';
 
@@ -459,6 +448,9 @@ int read_cgi_config_file(char *filename) {
 
 			snprintf(url_js_path, sizeof(url_js_path), "%sjs/", url_html_path);
 			url_js_path[sizeof(url_js_path) - 1] = '\x0';
+
+			snprintf(url_jquiryui_path, sizeof(url_jquiryui_path), "%sjquery-ui/", url_html_path);
+			url_jquiryui_path[sizeof(url_jquiryui_path) - 1] = '\x0';
 
 			snprintf(url_media_path, sizeof(url_media_path), "%smedia/", url_html_path);
 			url_media_path[sizeof(url_media_path) - 1] = '\x0';
@@ -1133,7 +1125,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	if (embedded == TRUE)
 		return;
 
-	printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">");
+	printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
 	printf("<html>\n");
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n", url_images_path);
@@ -1161,12 +1153,47 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, PAGE_REFRESH_JS);
 	}
 
+	/* jQuery JavaScript library */
+	printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_MAIN_JS);
+
+	/* datetimepicker libs and css */
+	if (cgi_id == CMD_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID) {
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_CORE_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_WIDGET_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_MOUSE_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_SLIDER_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_DATEPICKER_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_TIMEPICKER_JS);
+
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_ALL_CSS);
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_TIMEPICKER_CSS);
+
+		printf("<script type=\"text/javascript\">\n");
+		printf("$(function() {\n");
+		printf("\t$( \".timepicker\" ).datetimepicker({\n");
+		printf("\t\tfirstDay: %d,\n", week_starts_on_monday);
+
+		if (date_format == DATE_FORMAT_EURO)
+			printf("\t\tdateFormat: 'dd-mm-yy',\n");
+		else if (date_format == DATE_FORMAT_ISO8601 || date_format == DATE_FORMAT_STRICT_ISO8601)
+			printf("\t\tdateFormat: 'yy-mm-dd%s',\n", (date_format == DATE_FORMAT_STRICT_ISO8601) ? "T" : "");
+		else
+			printf("\t\tdateFormat: 'mm-dd-yy',\n");
+
+		printf("\t\ttimeFormat: 'hh:mm:ss',\n");
+		printf("\t\tshowWeek: true,\n");
+		printf("\t\tchangeMonth: true,\n");
+		printf("\t\tchangeYear: true\n");
+		printf("\t});\n");
+		printf("});\n");
+		printf("</script>\n");
+	}
+
+	/* Add jQuery MSDropDown to sites with pagination and status.cgi */
 	if (cgi_id == STATUS_CGI_ID || cgi_id == EXTINFO_CGI_ID || cgi_id == CONFIG_CGI_ID || cgi_id == HISTORY_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID) {
-		/* JavaScript for dropdown menu WITH images */
-		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_MAIN_JS);
-		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_DD_JS);
 
 		/* This CSS IS needed for proper dropdown menu's (bypass the use_stylesheets above, who does without anyway?) */
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_DD_JS);
 		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_stylesheets_path, JQUERY_DD_CSS);
 
 		/* functions to handle the checkboxes and dropdown menus */
@@ -1927,65 +1954,106 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 	return;
 }
 
-void display_nav_table(char *url, int archive) {
-	char date_time[MAX_DATETIME_LENGTH];
-	char archive_file[MAX_INPUT_BUFFER];
-	char *archive_basename;
+void display_nav_table(time_t ts_start, time_t ts_end) {
+	char *temp_buffer;
+	char url[MAX_INPUT_BUFFER] = "";
+	char stripped_query_string[MAX_INPUT_BUFFER] = "";
+	char date_time[MAX_INPUT_BUFFER];
+	struct tm *t;
+	time_t ts_midnight = 0L;
+	time_t current_time = 0L;
 
-	if (log_rotation_method != LOG_ROTATION_NONE) {
-		printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='navBox'>\n");
-		printf("<tr>\n");
-		printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-		printf("Earlier Archive<br>");
-		printf("<a href='%sarchive=%d&limit=%d'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, archive + 1, result_limit, url_images_path, LEFT_ARROW_ICON);
-		printf("</td>\n");
-
-		printf("<td width=15></td>\n");
-
-		printf("<td align=center CLASS='navBoxDate'>\n");
-		printf("<DIV CLASS='navBoxTitle'>Log File Navigation</DIV>\n");
-		get_time_string(&last_scheduled_log_rotation, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
-		printf("%s", date_time);
-		printf("<br>to<br>");
-		if (archive == 0)
-			printf("Present..");
-		else {
-			this_scheduled_log_rotation--;
-			get_time_string(&this_scheduled_log_rotation, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
-			printf("%s", date_time);
-		}
-		printf("</td>\n");
-
-		printf("<td width=15></td>\n");
-		if (archive != 0) {
-			printf("<td align=center valign=center CLASS='navBoxItem'>\n");
-			if (archive == 1) {
-				printf("Current Log<br>");
-				printf("<a href='%s&limit=%d'><img src='%s%s' border=0 alt='Current Log' title='Current Log'></a>", url, result_limit, url_images_path, RIGHT_ARROW_ICON);
-			} else {
-				printf("More Recent Archive<br>");
-				printf("<a href='%sarchive=%d&limit=%d'><img src='%s%s' border=0 alt='More Recent Archive' title='More Recent Archive'></a>", url, archive - 1, result_limit, url_images_path, RIGHT_ARROW_ICON);
-			}
-			printf("</td>\n");
-		} else {
-			printf("<td align=center valign=center CLASS='navBoxItem'>Current Log<br>\n");
-			printf("<img src='%s%s' border=0 width=75 height=16></td>\n", url_images_path, EMPTY_ICON);
-		}
-
-		printf("</tr>\n");
-		printf("</table>\n");
+	/* define base url */
+	switch (CGI_ID) {
+	case HISTORY_CGI_ID:
+		strcat(url, HISTORY_CGI);
+		break;
+	case NOTIFICATIONS_CGI_ID:
+		strcat(url, NOTIFICATIONS_CGI);
+		break;
+	case SHOWLOG_CGI_ID:
+		strcat(url, SHOWLOG_CGI);
+		break;
+	default:
+		strcat(url, "NO_URL_DEFINED");
+		break;
 	}
 
-	/* get archive to use */
-	get_log_archive_to_use(archive, archive_file, sizeof(archive_file) - 1);
+	/* get url options but filter out "limit" and "status" */
+	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
+		strcpy(stripped_query_string, getenv("QUERY_STRING"));
+		strip_html_brackets(stripped_query_string);
 
-	/* cut the pathname for security, and the remaining slash for clarity */
-	archive_basename = (char *)&archive_file;
-	if (strrchr((char *)&archive_basename, '/') != NULL)
-		archive_basename = strrchr((char *)&archive_file, '/') + 1;
+		for (temp_buffer = my_strtok(stripped_query_string, "&"); temp_buffer != NULL; temp_buffer = my_strtok(NULL, "&")) {
+			if (strncmp(temp_buffer, "ts_start=", 9) != 0 && strncmp(temp_buffer, "ts_end=", 6) != 0 && strncmp(temp_buffer, "start=", 6) != 0) {
+				if (strstr(url, "?"))
+					strcat(url, "&");
+				else
+					strcat(url, "?");
+				strcat(url, temp_buffer);
+			}
+		}
+	}
 
-	/* now it's safe to print the filename */
-	printf("<BR><DIV CLASS='navBoxFile'>File: %s</DIV>\n", archive_basename);
+	/* get the current time */
+	time(&current_time);
+	t = localtime(&current_time);
+
+	t->tm_sec = 0;
+	t->tm_min = 0;
+	t->tm_hour = 0;
+	t->tm_isdst = -1;
+
+	/* get timestamp for midnight today to find out if we have to show past log entries or present. (Also to give the right description to the info table)*/
+	ts_midnight = mktime(t);
+
+	/* show table */
+	printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='navBox'>\n");
+	printf("<tr>\n");
+	printf("<td align=center valign=center CLASS='navBoxItem'>\n");
+	if (ts_end > ts_midnight) {
+		printf("Latest Archive<br>");
+		printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Latest Archive' title='Latest Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_midnight - 86400, ts_midnight - 1, url_images_path, LEFT_ARROW_ICON);
+	} else {
+		printf("Earlier Archive<br>");
+		printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_start - 86400, ts_start - 1, url_images_path, LEFT_ARROW_ICON);
+	}
+	printf("</td>\n");
+
+	printf("<td width=15></td>\n");
+
+	printf("<td align=center CLASS='navBoxDate'>\n");
+	printf("<DIV CLASS='navBoxTitle'>Log Navigation</DIV>\n");
+	get_time_string(&ts_start, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
+	printf("%s", date_time);
+	printf("<br>to<br>");
+	if (ts_end > ts_midnight)
+		printf("Present..");
+	else {
+		get_time_string(&ts_end, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
+		printf("%s", date_time);
+	}
+	printf("</td>\n");
+
+	printf("<td width=15></td>\n");
+
+	if (ts_end <= ts_midnight) {
+
+		printf("<td align=center valign=center CLASS='navBoxItem'>\n");
+		if (ts_end == ts_midnight) {
+			printf("Current Log<br>");
+			printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Current Log' title='Current Log'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_midnight + 1, ts_midnight + 86400, url_images_path, RIGHT_ARROW_ICON);
+		} else {
+			printf("More Recent Archive<br>");
+			printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='More Recent Archive' title='More Recent Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_end + 1, ts_end + 86400, url_images_path, RIGHT_ARROW_ICON);
+		}
+		printf("</td>\n");
+	} else
+		printf("<td><img src='%s%s' border=0 width=75 height=1></td>\n", url_images_path, EMPTY_ICON);
+
+	printf("</tr>\n");
+
+	printf("</table>\n");
 
 	return;
 }
@@ -2358,22 +2426,6 @@ void print_error(char *config_file, int error_type) {
 	return;
 }
 
-/* displays context-sensitive help window */
-void display_context_help(char *chid) {
-	char *icon = CONTEXT_HELP_ICON1;
-
-	if (show_context_help == FALSE)
-		return;
-
-	/* change icon if necessary */
-	if (!strcmp(chid, CONTEXTHELP_TAC))
-		icon = CONTEXT_HELP_ICON2;
-
-	printf("<a href='%s%s.html' target='cshw' onClick='javascript:window.open(\"%s%s.html\",\"cshw\",\"width=550,height=600,toolbar=0,location=0,status=0,resizable=1,scrollbars=1\");return true'><img src='%s%s' border=0 alt='Display context-sensitive help for this screen' title='Display context-sensitive help for this screen'></a>\n", url_context_help_path, chid, url_context_help_path, chid, url_images_path, icon);
-
-	return;
-}
-
 void display_splunk_host_url(host *hst) {
 
 	if (enable_splunk_integration == FALSE)
@@ -2478,7 +2530,7 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
 		if (returnlevels != 0)
 			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-%d);' class='submitButton'>\n", returnlevels);
 
-		printf("</DIV>\n");
+		printf("</DIV><BR>\n");
 	}
 
 	return;

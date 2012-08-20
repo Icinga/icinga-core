@@ -130,7 +130,6 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 	char *buf_ptr = NULL;
 	char *delim_ptr = NULL;
 	int in_macro = FALSE;
-	int x = 0;
 	char *selected_macro = NULL;
 	char *original_macro = NULL;
 	char *cleaned_macro = NULL;

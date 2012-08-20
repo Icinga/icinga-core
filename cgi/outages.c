@@ -173,10 +173,6 @@ int main(void) {
 
 		/* right column of top row */
 		printf("<td align=right valign=bottom width=33%%>\n");
-
-		/* display context-sensitive help */
-		display_context_help(CONTEXTHELP_OUTAGES);
-
 		printf("</td>\n");
 
 		/* end of top table */
@@ -369,7 +365,8 @@ void display_network_outages(void) {
 				printf(",\n");
 			json_start = FALSE;
 			printf("{ \"severity\": %d, ", temp_hostoutage->severity);
-			printf(" \"host\": \"%s\", ", json_encode(temp_hostoutage->hst->name));
+			printf(" \"host_name\": \"%s\", ", json_encode(temp_hostoutage->hst->name));
+			printf(" \"host_display_name\": \"%s\", ", (temp_hostoutage->hst->display_name != NULL) ? json_encode(temp_hostoutage->hst->display_name) : json_encode(temp_hostoutage->hst->name));
 			printf(" \"state\": \"%s\", ", status);
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%d%s%s", csv_data_enclosure, temp_hostoutage->severity, csv_data_enclosure, csv_delimiter);

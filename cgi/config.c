@@ -120,7 +120,6 @@ extern int refresh_rate;
 extern int refresh_type;
 extern int result_limit;
 extern int show_all_services_host_is_authorized_for;
-extern int show_context_help;
 extern int show_partial_hostgroups;
 extern int show_tac_header;
 extern int show_tac_header_pending;
@@ -239,7 +238,6 @@ int org_refresh_rate;
 int org_refresh_type;
 int org_result_limit;
 int org_show_all_services_host_is_authorized_for;
-int org_show_context_help;
 int org_show_partial_hostgroups;
 int org_show_tac_header;
 int org_show_tac_header_pending;
@@ -425,63 +423,6 @@ int main(void) {
 			}
 			print_export_link(HTML_CONTENT, CONFIG_CGI, NULL);
 			printf("</div>\n");
-		}
-
-		/* display context-sensitive help */
-		switch (display_type) {
-		case DISPLAY_HOSTS:
-			display_context_help(CONTEXTHELP_CONFIG_HOSTS);
-			break;
-		case DISPLAY_HOSTGROUPS:
-			display_context_help(CONTEXTHELP_CONFIG_HOSTGROUPS);
-			break;
-		case DISPLAY_SERVICEGROUPS:
-			display_context_help(CONTEXTHELP_CONFIG_SERVICEGROUPS);
-			break;
-		case DISPLAY_CONTACTS:
-			display_context_help(CONTEXTHELP_CONFIG_CONTACTS);
-			break;
-		case DISPLAY_CONTACTGROUPS:
-			display_context_help(CONTEXTHELP_CONFIG_CONTACTGROUPS);
-			break;
-		case DISPLAY_SERVICES:
-			display_context_help(CONTEXTHELP_CONFIG_SERVICES);
-			break;
-		case DISPLAY_TIMEPERIODS:
-			display_context_help(CONTEXTHELP_CONFIG_TIMEPERIODS);
-			break;
-		case DISPLAY_COMMANDS:
-			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-			break;
-		case DISPLAY_SERVICEDEPENDENCIES:
-			display_context_help(CONTEXTHELP_CONFIG_SERVICEDEPENDENCIES);
-			break;
-		case DISPLAY_SERVICEESCALATIONS:
-			display_context_help(CONTEXTHELP_CONFIG_HOSTESCALATIONS);
-			break;
-		case DISPLAY_HOSTDEPENDENCIES:
-			display_context_help(CONTEXTHELP_CONFIG_HOSTDEPENDENCIES);
-			break;
-		case DISPLAY_HOSTESCALATIONS:
-			display_context_help(CONTEXTHELP_CONFIG_HOSTESCALATIONS);
-			break;
-		case DISPLAY_COMMAND_EXPANSION:
-			/* Reusing DISPLAY_COMMANDS help until further notice */
-			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-			break;
-		case DISPLAY_MODULES:
-			/* reuse commands context help */
-			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-			break;
-		case DISPLAY_CGICONFIG:
-			/* reuse commands context help */
-			display_context_help(CONTEXTHELP_CONFIG_COMMANDS);
-			break;
-		case DISPLAY_ALL:
-			break;
-		default:
-			display_context_help(CONTEXTHELP_CONFIG_MENU);
-			break;
 		}
 
 		/* end of top table */
@@ -801,6 +742,7 @@ void display_hosts(void) {
 	} else if (content_type == CSV_CONTENT) {
 		printf("%sHost Name%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAlias/Description%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sDisplay Name%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAddress%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAddress6%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sParent Hosts%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
@@ -845,6 +787,7 @@ void display_hosts(void) {
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host Name</TH>");
 		printf("<TH CLASS='data'>Alias/Description</TH>");
+		printf("<TH CLASS='data'>Display Name</TH>");
 		printf("<TH CLASS='data'>Address</TH>");
 		printf("<TH CLASS='data'>Address6</TH>");
 		printf("<TH CLASS='data'>Parent Hosts</TH>");
@@ -925,6 +868,7 @@ void display_hosts(void) {
 			json_start = FALSE;
 			printf("{ \"host_name\": \"%s\", ", json_encode(temp_host->name));
 			printf("\"alias\": \"%s\", ", json_encode(temp_host->alias));
+			printf("\"host_display_name\": \"%s\", ", json_encode(temp_host->display_name));
 			printf("\"address\": \"%s\", ", temp_host->address);
 			printf("\"address6\": \"%s\", ", temp_host->address6);
 			printf("\"parent_hosts\": [ ");
@@ -933,6 +877,7 @@ void display_hosts(void) {
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_host->name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_host->alias, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_host->display_name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_host->address, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_host->address6, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
@@ -944,6 +889,7 @@ void display_hosts(void) {
 			printf("<TD CLASS='%s'><a name='%s'><a href='%s?type=services&search_string=%%5E%s%%24'>%s</a></a></TD>\n", bg_class,
 			       url_encode(temp_host->name), CONFIG_CGI, url_encode(temp_host->name), html_encode(temp_host->name, FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->alias, FALSE));
+			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->display_name, FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->address, FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->address6, FALSE));
 			printf("<TD CLASS='%s'>", bg_class);
@@ -2081,6 +2027,7 @@ void display_services(void) {
 	} else if (content_type == CSV_CONTENT) {
 		printf("%sHost%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDescription%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sDisplay Name%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sMax. Check Attempts%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sNormal Check Interval%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sRetry Check Interval%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
@@ -2121,6 +2068,7 @@ void display_services(void) {
 		printf("<TR>\n");
 		printf("<TH CLASS='data'>Host</TH>\n");
 		printf("<TH CLASS='data'>Description</TH>\n");
+		printf("<TH CLASS='data'>Display Name</TH>\n");
 		printf("<TH CLASS='data'>Max. Check Attempts</TH>\n");
 		printf("<TH CLASS='data'>Normal Check Interval</TH>\n");
 		printf("<TH CLASS='data'>Retry Check Interval</TH>\n");
@@ -2204,7 +2152,8 @@ void display_services(void) {
 				printf(",\n");
 			json_start = FALSE;
 			printf("{ \"host_name\": \"%s\", ", json_encode(temp_service->host_name));
-			printf("\"description\": \"%s\", ", json_encode(temp_service->description));
+			printf("\"service_description\": \"%s\", ", json_encode(temp_service->description));
+			printf("\"service_display_name\": \"%s\", ", json_encode(temp_service->display_name));
 			printf("\"max_check_attempts\": %d, ", temp_service->max_attempts);
 			printf("\"normal_check_interval\": \"%s\", ", time_string[0]);
 			printf("\"retry_check_interval\": \"%s\", ", time_string[1]);
@@ -2231,6 +2180,7 @@ void display_services(void) {
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_service->host_name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_service->description, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, temp_service->display_name, csv_data_enclosure, csv_delimiter);
 			printf("%s%d%s%s", csv_data_enclosure, temp_service->max_attempts, csv_data_enclosure, csv_delimiter);
 
 			printf("%s%s%s%s", csv_data_enclosure, time_string[0], csv_data_enclosure, csv_delimiter);
@@ -2267,6 +2217,8 @@ void display_services(void) {
 
 			/* find a way to show display_name if set once */
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_service->description, FALSE));
+
+			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_service->display_name, FALSE));
 
 			printf("<TD CLASS='%s'>%d</TD>\n", bg_class, temp_service->max_attempts);
 
@@ -4115,7 +4067,6 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_STRING(service_unknown_sound, org_service_unknown_sound)
 	PRINT_CONFIG_LINE_STRING(service_warning_sound, org_service_warning_sound)
 	PRINT_CONFIG_LINE_INT(show_all_services_host_is_authorized_for, org_show_all_services_host_is_authorized_for, "bool")
-	PRINT_CONFIG_LINE_INT(show_context_help, org_show_context_help, "bool")
 	PRINT_CONFIG_LINE_INT(show_partial_hostgroups, org_show_partial_hostgroups, "bool")
 	PRINT_CONFIG_LINE_INT(show_tac_header, org_show_tac_header, "bool")
 	PRINT_CONFIG_LINE_INT(show_tac_header_pending, org_show_tac_header_pending, "bool")
@@ -4548,7 +4499,6 @@ void store_default_settings(void) {
 	org_use_authentication = use_authentication;
 	org_use_logging = use_logging;
 	org_use_ssl_authentication = use_ssl_authentication;
-	org_show_context_help = show_context_help;
 	org_show_all_services_host_is_authorized_for = show_all_services_host_is_authorized_for;
 	org_show_partial_hostgroups = show_partial_hostgroups;
 	org_use_pending_states = use_pending_states;

@@ -58,16 +58,6 @@ http_charset=utf-8
 
 
 
-# CONTEXT-SENSITIVE HELP
-# This option determines whether or not a context-sensitive
-# help icon will be displayed for most of the CGIs.
-# Values: 0 = disables context-sensitive help
-#         1 = enables context-sensitive help
-
-show_context_help=0
-
-
-
 # HIGHLIGHT TABLE ROWS
 # This option allows you to define if table rows in status.cgi
 # will be highlighted or not.
