@@ -304,6 +304,7 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 	int dbuf_chunk = 1024;
 	int flags;
 #ifdef EMBEDDEDPERL
+	char *temp_buffer = NULL;
 	char fname[512] = "";
 	char *args[5] = {"", DO_CLEAN, "", "", NULL };
 	SV *plugin_hndlr_cr = NULL; /* perl.h holds typedef struct */
@@ -3598,7 +3599,7 @@ int file_uses_embedded_perl(char *fname) {
 		return FALSE;
 
 	/* grab the first line - we should see Perl. go home if not */
-	if (fgets(line1, 80, fp) == NULL || strstr(buf, "/bin/perl") == NULL) {
+	if (fgets(buf, 80, fp) == NULL || strstr(buf, "/bin/perl") == NULL) {
 		fclose(fp);
 	}
 
@@ -3610,7 +3611,7 @@ int file_uses_embedded_perl(char *fname) {
 		buf[sizeof(buf) - 1] = '\0';
 
 		/* line contains Icinga directives - keep Nagios compatibility */
-		if (strstr(linen, "# nagios:") || strstr(linen, "# icinga:")) {
+		if (strstr(buf, "# nagios:") || strstr(buf, "# icinga:")) {
 			char *p;
 			p = strstr(buf + 8, "epn");
 			if (!p)
