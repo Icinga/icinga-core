@@ -64,6 +64,7 @@ char *ido2db_group = NULL;
 int ido2db_sd = 0;
 int ido2db_socket_type = IDO_SINK_UNIXSOCKET;
 char *ido2db_socket_name = NULL;
+mode_t ido2db_socket_perm = 0755;
 
 int ido2db_tcp_port = IDO_DEFAULT_TCP_PORT;
 int ido2db_use_inetd = IDO_FALSE;
@@ -479,6 +480,8 @@ int ido2db_process_config_var(char *arg) {
 	} else if (!strcmp(var, "socket_name")) {
 		if ((ido2db_socket_name = strdup(val)) == NULL)
 			return IDO_ERROR;
+	} else if (!strcmp(var, "socket_perm")) {
+		ido2db_socket_perm = strtoul(val, NULL, 8);
 	} else if (!strcmp(var, "tcp_port")) {
 		ido2db_tcp_port = atoi(val);
 	} else if (!strcmp(var, "db_servertype")) {
@@ -1084,6 +1087,12 @@ int ido2db_wait_for_connections(void) {
 		if ((bind(ido2db_sd, (struct sockaddr *)&server_address_u, SUN_LEN(&server_address_u)))) {
 			close(ido2db_sd);
 			perror("Could not bind socket");
+			return IDO_ERROR;
+		}
+
+		if (chmod(ido2db_socket_name, ido2db_socket_perm) < 0) {
+			close(ido2db_sd);
+			perror("Could not chmod socket");
 			return IDO_ERROR;
 		}
 
