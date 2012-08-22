@@ -1971,13 +1971,20 @@ int grab_standard_hostgroup_macro_r(icinga_macros *mac, int macro_type, hostgrou
 				temp_len += strlen(temp_hostsmember->host_name) + 2;
 			}
 		}
+
+		/* if there no hostgroups members, we need to malloc at least an empty string for future calls of this function */
+		if (temp_len <= 0)
+			temp_len = 1;
+
 		/* allocate or reallocate the memory buffer */
 		if (*output == NULL) {
 			*output = (char *)malloc(temp_len);
+			(*output)[temp_len-1] = '\0';
 		} else {
 			init_len = strlen(*output);
 			temp_len += init_len;
 			*output = (char *)realloc(*output, temp_len);
+			(*output)[temp_len-1] = '\0';
 		}
 		/* now fill in the string with the member names */
 		for (temp_hostsmember = temp_hostgroup->members; temp_hostsmember != NULL; temp_hostsmember = temp_hostsmember->next) {
@@ -2306,13 +2313,20 @@ int grab_standard_servicegroup_macro_r(icinga_macros *mac, int macro_type, servi
 				temp_len += strlen(temp_servicesmember->host_name) + strlen(temp_servicesmember->service_description) + 3;
 			}
 		}
+
+		/* if there no hostgroups members, we need to malloc at least an empty string for future calls of this function */
+		if (temp_len <= 0)
+			temp_len = 1;
+
 		/* allocate or reallocate the memory buffer */
 		if (*output == NULL) {
 			*output = (char *)malloc(temp_len);
+			(*output)[temp_len-1] = '\0';
 		} else {
 			init_len = strlen(*output);
 			temp_len += init_len;
 			*output = (char *)realloc(*output, temp_len);
+			(*output)[temp_len-1] = '\0';
 		}
 		/* now fill in the string with the group members */
 		for (temp_servicesmember = temp_servicegroup->members; temp_servicesmember != NULL; temp_servicesmember = temp_servicesmember->next) {
