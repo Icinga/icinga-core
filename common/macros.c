@@ -38,6 +38,7 @@
 #ifdef NSCORE
 extern int      use_large_installation_tweaks;
 extern int      enable_environment_macros;
+extern int	keep_unknown_macros;
 #endif
 
 int dummy;	/* reduce compiler warnings */
@@ -226,12 +227,21 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 
 				log_debug_info(DEBUGL_MACROS, 2, "  Non-macro.  Running output (%lu): '%s'\n", (unsigned long)strlen(*output_buffer), *output_buffer);
 
-				/* add the plain text to the end of the already processed buffer */
-				*output_buffer = (char *)realloc(*output_buffer, strlen(*output_buffer) + strlen(temp_buffer) + 3);
-				strcat(*output_buffer, "$");
-				strcat(*output_buffer, temp_buffer);
-				if (buf_ptr != NULL)
+#ifdef NSCORE
+				if (keep_unknown_macros == TRUE) {
+#endif
+					/* add the plain text to the end of the already processed buffer */
+					*output_buffer = (char *)realloc(*output_buffer, strlen(*output_buffer) + strlen(temp_buffer) + 3);
 					strcat(*output_buffer, "$");
+					strcat(*output_buffer, temp_buffer);
+					if (buf_ptr != NULL)
+						strcat(*output_buffer, "$");
+#ifdef NSCORE
+				} else {
+					/* do not process unknown macros */
+					logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Skipping unknown macro '$%s$', removing it from output! Fix your config, or set keep_unknown_macros accordingly...\n", temp_buffer);
+				}
+#endif
 			}
 
 			/* insert macro */

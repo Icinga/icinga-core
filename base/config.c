@@ -196,6 +196,8 @@ extern int      stalking_notifications_for_services;
 extern int      date_format;
 extern char     *use_timezone;
 
+extern int	keep_unknown_macros;
+
 extern contact		*contact_list;
 extern contactgroup	*contactgroup_list;
 extern host             *host_list;
@@ -1450,6 +1452,17 @@ int read_main_config_file(char *main_config_file) {
 		} else if (!strcmp(variable, "allow_empty_hostgroup_assignment")) {
 			allow_empty_hostgroup_assignment = (atoi(value) > 0) ? TRUE : FALSE;
 		}
+
+                else if (!strcmp(variable, "keep_unknown_macros")) {
+
+                        if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+                                dummy = asprintf(&error_message, "Illegal value for check_service_freshness");
+                                error = TRUE;
+                                break;
+                        }
+
+                        keep_unknown_macros = (atoi(value) > 0) ? TRUE : FALSE;
+                }
 
 		/*** AUTH_FILE VARIABLE USED BY EMBEDDED PERL INTERPRETER ***/
 		else if (!strcmp(variable, "auth_file")) {

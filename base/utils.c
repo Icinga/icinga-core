@@ -236,6 +236,8 @@ extern int      stalking_notifications_for_services;
 
 extern int      date_format;
 
+extern int 	keep_unknown_macros;
+
 extern contact		*contact_list;
 extern contactgroup	*contactgroup_list;
 extern host             *host_list;
@@ -4486,6 +4488,7 @@ int reset_variables(void) {
 	stalking_notifications_for_hosts = DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS;
 	stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES;
 
+	keep_unknown_macros = FALSE;
 	external_command_buffer_slots = DEFAULT_EXTERNAL_COMMAND_BUFFER_SLOTS;
 
 	debug_level = DEFAULT_DEBUG_LEVEL;

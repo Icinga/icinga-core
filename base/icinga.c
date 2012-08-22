@@ -255,6 +255,8 @@ int             command_file_created = FALSE;
 int             event_profiling_enabled = FALSE;
 #endif
 
+int		keep_unknown_macros = FALSE;
+
 extern contact	       *contact_list;
 extern contactgroup    *contactgroup_list;
 extern hostgroup       *hostgroup_list;

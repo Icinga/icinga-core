@@ -69,6 +69,8 @@ FIXES
 * ocre: remove weird switch() statement when scanning checkresult queue (Andreas Ericsson) #2950 - MF
 * core: fix deleting too old check result files (Andreas Ericsson) #2951 - MF
 * core: avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993
+* core: unknown macros are not replaced, and misleading to single dollar signs #2291 - MF
+	** you can revert to the old behaviour with keep_unknown_macros=1 in icinga.cfg
 
 * classic ui: fix setting send_notification or sticky_ack as GET param has no effect on cmd.cgi acks #2926 - MF
 	** now you can finally disable checkboxes default ticked with these options
@@ -83,6 +85,10 @@ CHANGES
 
 * core: new command
 	** DISABLE_NOTIFICATIONS_EXPIRE_TIME;<schedule_time>;<expire_time> (set schedule_time to now()) #905
+
+* core: unknown macros are not left on the output anymore, logging a warning instead
+	** either fix your config (i.e. wrong macros, escape dollar signs with another one)
+	** or set keep_unknown_macros=1 in icinga.cfg to revert to the old behaviour
 
 * icinga.spec: add devel package #2634
 * icinga.spec: forced update on icinga.cfg change package locations #2923
