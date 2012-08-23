@@ -4,7 +4,7 @@
 <title>Icinga-Schnellstart auf Linux</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7.2 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="quickstart.html" title="Schnellstart-Installationsanleitungen">
 <link rel="next" href="quickstart-icinga-freebsd.html" title="Icinga-Schnellstart auf FreeBSD">
@@ -40,6 +40,22 @@
     <p>Anstatt Icinga von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
     Betriebssystem gibt. Bitte werfen Sie einen Blick auf die <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der
     Pakete</a>.</p>
+
+    <p>Bitte bedenken Sie, dass die Upstream-Pakete evtl. relativ alt sind, so dass die Verwendung von Backports-Paketen ein Weg ist,
+    eine aktuelle Version zu bekommen. Bitte werfen Sie einen Blick auf die (englischsprachigen) Wiki-Artikel für detaillierte
+    Informationen:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+Debian" target="_top">Debian</a></p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+Ubuntu" target="_top">Ubuntu</a></p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+RHEL" target="_top">RHEL/CentOS</a></p>
+      </li>
+</ul></div>
 
     <p>Falls Sie aus den Sourcen installieren möchten, dann benutzen Sie bitte die offiziellen Release-Tarballs.</p>
   </td></tr>
@@ -262,8 +278,8 @@
   <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT Snapshot)</p>
 
   <pre class="programlisting"> #&gt; cd /usr/src/
- #&gt; tar xvzf icinga-1.7.tar.gz
- #&gt; cd icinga-1.7</pre>
+ #&gt; tar xvzf icinga-1.7.2.tar.gz
+ #&gt; cd icinga-1.7.2</pre>
 
   <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
@@ -388,8 +404,8 @@
   <p>Entpacken Sie die Nagios-Plugins-Quellcode-Archivdatei.</p>
 
   <pre class="programlisting"> #&gt; cd /usr/src
- #&gt; tar xzf nagios-plugins-1.4.15.tar.gz
- #&gt; cd nagios-plugins-1.4.15</pre>
+ #&gt; tar xzf nagios-plugins-1.4.16.tar.gz
+ #&gt; cd nagios-plugins-1.4.16</pre>
 
   <p>Kompilieren und installieren Sie die Plugins.</p>
 
@@ -484,7 +500,7 @@
 
   <p>Die Konfiguration von e-Mail-Benachrichtigungen ist nicht Gegenstand dieser Anleitung. Icinga ist konfiguriert, um
   e-Mail-Benachrichtigungen zu versenden, aber möglicherweise ist auf Ihrem System noch kein Mail-Programm installiert bzw. konfiguriert.
-  Schauen Sie in Ihre Systemdokumentation, suchen Sie im Web oder gucken Sie im <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">IcingaCommunity.org-Wiki</a> nach genauen Anweisungen, wie Ihr System
+  Schauen Sie in Ihre Systemdokumentation, suchen Sie im Web oder gucken Sie im <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">NagiosCommunity.org-Wiki</a> nach genauen Anweisungen, wie Ihr System
   konfiguriert werden muss, damit es e-Mail-Mitteilungen an externe Adressen versendet. Mehr Informationen zu Benachrichtigungen finden Sie
   <a class="link" href="notifications.html" title="Benachrichtigungen">hier</a>.</p>
 
@@ -494,9 +510,9 @@
   Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="id1476634"></a>
+  <a class="indexterm" name="id1337882"></a>
 
-  <a class="indexterm" name="id1476617"></a>
+  <a class="indexterm" name="id1337896"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -4,7 +4,7 @@
 <title>NRPE</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7.2 Documentation">
 <link rel="up" href="ch10.html" title="Chapter 10. Additional software">
 <link rel="prev" href="addons.html" title="Icinga Addons">
 <link rel="next" href="nsca.html" title="NSCA">
@@ -51,7 +51,7 @@
   outweigh the security difference. SSL can be actived though if you need a more secure connection.</p>
 
   <div class="figure">
-<a name="id1540220"></a><p class="title"><b>Figure 10.1. NRPE</b></p>
+<a name="id1548258"></a><p class="title"><b>Figure 10.1. NRPE</b></p>
 <div class="figure-contents">
     
 
@@ -77,7 +77,7 @@
   The machine running the NRPE daemon is acting as a relay in this case.</p>
 
   <div class="figure">
-<a name="id1540259"></a><p class="title"><b>Figure 10.2. NRPE remote</b></p>
+<a name="id1548297"></a><p class="title"><b>Figure 10.2. NRPE remote</b></p>
 <div class="figure-contents">
     
 
@@ -117,19 +117,22 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Instead of installing NRPE from scratch you may want to use a package which might be available for your OS. Please
-    take a look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.
-    </p>
-    <p>If you are planning to install from source then please use the official release tarball.</p>
+    <p>Instead of installing NRPE from scratch you may want to use a package which might be available for your OS. Please take a
+    look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.</p>
+
+    <p>If you are planning to install from source then please use the official release tarball using something like </p>
+<pre class="programlisting"> #&gt; wget http://sourceforge.net/projects/nagios/files/nrpe-2.x/nrpe-2.12/nrpe-2.12.tar.gz -O nrpe.tgz
+ #&gt; tar xzf nrpe.tgz</pre>
   </td></tr>
 </table></div>
+
   <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
+    <p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
   </td></tr>
 </table></div>
 
@@ -613,7 +616,7 @@
   NRPE process if it is running as a standalone daemon. Execute the check on the monitoring server. Afterwards you should see
   debugging information in the syslog (e.g. <code class="filename">/var/log/messages</code>) which might help resolving the problem.</p>
 
-  <p>You might as well get help using one of the mailing lists or forums (http://www.icinga.org/community/get-help/).</p>
+  <p>You might as well get help using one of the mailing lists or forums (<a class="link" href="http://www.icinga.org/support/" target="_top">http://www.icinga.org/support/</a>).</p>
 
   <p><span class="bold"><strong>Upgrading</strong></span></p>
 
@@ -659,9 +662,9 @@
     </li>
 </ul></div>
 
-  <a class="indexterm" name="id1541492"></a>
+  <a class="indexterm" name="id1549545"></a>
 
-  <a class="indexterm" name="id1541505"></a>
+  <a class="indexterm" name="id1549559"></a>
 </div>
 <div class="navfooter">
 <hr>

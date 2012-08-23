@@ -4,7 +4,7 @@
 <title>NSCA</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7.2 Dokumentation">
 <link rel="up" href="ch10.html" title="Kapitel 10. weitere Software">
 <link rel="prev" href="nrpe.html" title="NRPE">
 <link rel="next" href="ch11.html" title="Kapitel 11. Entwicklung">
@@ -36,7 +36,7 @@
   des Namens werden auch Host-Prüfergebnisse übertragen.</p>
 
   <div class="figure">
-<a name="id1595770"></a><p class="title"><b>Abbildung 10.3. NSCA</b></p>
+<a name="id1457281"></a><p class="title"><b>Abbildung 10.3. NSCA</b></p>
 <div class="figure-contents">
     
 
@@ -90,21 +90,24 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Anstatt NSCA von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
-    Betriebssystem gibt. Bitte werfen Sie einen Blick auf die
-    <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der Pakete</a>.
+    <p>Anstatt NSCA von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
+    Betriebssystem gibt. Bitte werfen Sie einen Blick auf die <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der
+    Pakete</a>.</p>
+
+    <p>Falls Sie aus den Sourcen installieren möchten, dann benutzen Sie bitte die offiziellen Release-Tarballs, z.B. durch
     </p>
-    <p>Falls Sie aus den Sourcen installieren möchten, dann benutzen Sie bitte die offiziellen Release-Tarballs.</p>
+<pre class="programlisting"> #&gt; wget http://sourceforge.net/projects/nagios/files/nsca-2.x/nsca-2.7.2/nsca-2.7.2.tar.gz -O nsca-2.7.2.tar.gz</pre>
   </td></tr>
 </table></div>
+
   <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf.
-    gelöst ist.</p>
+    <p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf. gelöst
+    ist.</p>
   </td></tr>
 </table></div>
 
@@ -136,18 +139,11 @@
 <th align="left">Achtung</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>
-     Wenn die libmcrypt-Dateien nicht gefunden werden, dann wird "./configure" sich beschweren, aber NICHT mit einem Return-Code ungleich Null enden, so dass Sie 
-
-    <span class="emphasis"><em>config.log</em></span>
-
-     mit dem folgenden Befehl prüfen sollten 
-
-    </p>
+    <p>Wenn die libmcrypt-Dateien nicht gefunden werden, dann wird "./configure" sich beschweren, aber NICHT mit einem Return-Code
+    ungleich Null enden, so dass Sie <span class="emphasis"><em>config.log</em></span> mit dem folgenden Befehl prüfen sollten </p>
 <pre class="programlisting"> #&gt; grep mcrypt.h: config.log</pre>
 <p>
-
-     Dieser Befehl sollte keine Zeilen ausgeben.</p>
+    Dieser Befehl sollte keine Zeilen ausgeben.</p>
   </td></tr>
 </table></div>
 
@@ -233,9 +229,9 @@
 <li class="listitem">
           <p>inetd MIT tcpwrappers</p>
 
-          <p>Fügen Sie Einträge zu Ihrer <code class="filename">/etc/hosts.allow</code> und <code class="filename">/etc/hosts.deny</code> hinzu, um
-          TCP wrapper-Protection für den nsca-Service zu aktivieren. Dies ist optional, allerdings sehr empfohlen. Fügen Sie "nsca stream
-          tcp nowait &lt;user&gt; /usr/sbin/tcpd &lt;nsca-binary&gt; -c &lt;nsca-cfg&gt; --inetd" zur /etc/inetd.conf hinzu, z.B.</p>
+          <p>Fügen Sie Einträge zu Ihrer <code class="filename">/etc/hosts.allow</code> und <code class="filename">/etc/hosts.deny</code> hinzu, um TCP
+          wrapper-Protection für den nsca-Service zu aktivieren. Dies ist optional, allerdings sehr empfohlen. Fügen Sie "nsca stream tcp
+          nowait &lt;user&gt; /usr/sbin/tcpd &lt;nsca-binary&gt; -c &lt;nsca-cfg&gt; --inetd" zur /etc/inetd.conf hinzu, z.B.</p>
 
           <pre class="programlisting"> #&gt; echo "nsca stream tcp nowait icinga /usr/sbin/tcpd /usr/local/icinga/bin/nsca -c /usr/local/icinga/etc/nsca.cfg --inetd" &gt;&gt; /etc/inetd.conf
  #&gt; /etc/init.d/inetd restart</pre>
@@ -253,13 +249,13 @@
           <p>xinetd</p>
 
           <p>Denken Sie daran, die Konfigurationsdatei <code class="filename">nsca.xinetd</code> im <code class="filename">sample-config</code>-Verzeichnis
-          zu editieren und &lt;ipaddress1&gt; durch die IP-Adressen Ihrer Client-Rechner (auf denen send_nsca laufen wird) zu ersetzen.
-          Dies funktioniert nur, wenn xinetd mit Unterstützung für tcpwrapper kompiliert wurde. Wenn Sie DHCP benutzen, funktioniert das
-          nicht und Sie sollten diese Zeile löschen.</p>
+          zu editieren und &lt;ipaddress1&gt; durch die IP-Adressen Ihrer Client-Rechner (auf denen send_nsca laufen wird) zu ersetzen. Dies
+          funktioniert nur, wenn xinetd mit Unterstützung für tcpwrapper kompiliert wurde. Wenn Sie DHCP benutzen, funktioniert das nicht
+          und Sie sollten diese Zeile löschen.</p>
 
-          <p>Fügen Sie Einträge zu Ihrer <code class="filename">/etc/hosts.allow</code> und <code class="filename">/etc/hosts.deny</code> hinzu, um TCP wrapper-Protection für den nsca-Service zu
-          aktivieren. Dies ist optional, allerdings sehr empfohlen. Fügen Sie "nsca stream tcp nowait &lt;user&gt; /usr/sbin/tcpd
-          &lt;nsca-binary&gt; -c &lt;nsca-cfg&gt; --inetd" zur /etc/inetd.conf hinzu, z.B.</p>
+          <p>Fügen Sie Einträge zu Ihrer <code class="filename">/etc/hosts.allow</code> und <code class="filename">/etc/hosts.deny</code> hinzu, um TCP
+          wrapper-Protection für den nsca-Service zu aktivieren. Dies ist optional, allerdings sehr empfohlen. Fügen Sie "nsca stream tcp
+          nowait &lt;user&gt; /usr/sbin/tcpd &lt;nsca-binary&gt; -c &lt;nsca-cfg&gt; --inetd" zur /etc/inetd.conf hinzu, z.B.</p>
 
           <pre class="programlisting"> #&gt; cp -p ../sample-config/nsca.xinetd /etc/xinetd.d/
  #&gt; /etc/init.d/xinetd restart</pre>
@@ -396,9 +392,9 @@
   sollten die Daten dann auch im klassischen Web-Interface sehen sowie feststellen, dass der Service-Status von "Pending" auf "OK"
   gewechselt ist und die Ausgabe die Daten enthält, die Sie versandt haben.</p>
 
-  <a class="indexterm" name="id1596509"></a>
+  <a class="indexterm" name="id1458038"></a>
 
-  <a class="indexterm" name="id1596538"></a>
+  <a class="indexterm" name="id1458040"></a>
 </div>
 <div class="navfooter">
 <hr>

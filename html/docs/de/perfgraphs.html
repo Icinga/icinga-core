@@ -4,7 +4,7 @@
 <title>Grafische Darstellung von Performance-Informationen mit PNP4Nagios</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7.2 Dokumentation">
 <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
 <link rel="prev" href="icingastats.html" title="Nutzung des Icingastats-Utilitys">
 <link rel="next" href="temp_data.html" title="Temporäre Daten">
@@ -116,30 +116,28 @@
     freshness_threshold     180         # Pruefintervall + x Sekunden
     ...
  }</pre>
-
-          <p>und eine Command-Definition</p>
-
-          <pre class="programlisting"> define command{
+<p>und eine Command-Definition</p>
+<pre class="programlisting"> define command{
     command_name            check_stats
     command_line            $USER1$/check_dummy $ARG1$ $ARG2$
  }</pre>
-
-          <p>Vergessen Sie nicht den Neustart von Icinga nach dieser Änderung.</p>
+<p>Vergessen Sie nicht den Neustart von Icinga nach dieser Änderung.</p>
 
           <p>Fügen Sie eine Zeile zur crontab des Icinga-Benutzers hinzu, die das <code class="filename">icingastats</code>-Binary aufruft
           und die Ergebnisse an die Command-Pipe weiterleitet</p>
-<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; icingastats &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
-<p>
-          Auf diese Weise werden die Werte in regelmäßigen Intervallen aktualisiert.</p>
+<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; &lt;service&gt; &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
+<p>Auf
+          diese Weise werden die Werte in regelmäßigen Intervallen aktualisiert.</p>
         </li>
 </ul></div>
     </li>
 <li class="listitem">
-      <p>Legen Sie einen logischen Link im (Benutzer) templates-Verzeichnis von PNP4Nagios an</p>
-<pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php check_stats.php</pre>
-<p>
-      Stellen Sie sicher, dass <span class="emphasis"><em>check_stats</em></span> (ohne die Endung .php) zu dem Wert passt, den Sie als ersten Parameter im
-      check_command angegeben haben</p>
+      <p>Legen Sie einen logischen Link im templates-Verzeichnis von PNP4Nagios an </p>
+<pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php icingastats.php</pre>
+<p>Stellen
+      Sie sicher, dass <span class="emphasis"><em>icingastats</em></span> (ohne die Endung .php) zu dem Wert passt, den Sie in der Service-Definition
+      angegeben haben. Leerzeichen in der Service-Beschreibung müssen durch Unterstriche (_) im Dateinamen ersetzt werden (z.B. "Icinga
+      Stats" --&gt; "Icinga_Stats.php")</p>
     </li>
 </ul></div>
 
@@ -151,7 +149,7 @@
   <p><span class="bold"><strong>Durchschnittliche Host-/Service-Prüfungslatenz</strong></span></p>
 
   <div class="figure">
-<a name="id1591510"></a><p class="title"><b>Abbildung 8.1. Durchschnittliche Host-/Service-Prüfungslatenz</b></p>
+<a name="id1453009"></a><p class="title"><b>Abbildung 8.1. Durchschnittliche Host-/Service-Prüfungslatenz</b></p>
 <div class="figure-contents">
     
 
@@ -199,7 +197,7 @@
   <p><span class="bold"><strong>Service-Statistiken</strong></span></p>
 
   <div class="figure">
-<a name="id1591644"></a><p class="title"><b>Abbildung 8.2. Service-Statistiken</b></p>
+<a name="id1453144"></a><p class="title"><b>Abbildung 8.2. Service-Statistiken</b></p>
 <div class="figure-contents">
     
 
@@ -230,7 +228,7 @@
   <p><span class="bold"><strong>Host-Statistiken</strong></span></p>
 
   <div class="figure">
-<a name="id1591728"></a><p class="title"><b>Abbildung 8.3. Host-Statistiken</b></p>
+<a name="id1453227"></a><p class="title"><b>Abbildung 8.3. Host-Statistiken</b></p>
 <div class="figure-contents">
     
 
@@ -260,7 +258,7 @@
   <p><span class="bold"><strong>Durchschnittliche Ausführungszeiten</strong></span></p>
 
   <div class="figure">
-<a name="id1591811"></a><p class="title"><b>Abbildung 8.4. Durchschnittliche Ausführungszeiten</b></p>
+<a name="id1453309"></a><p class="title"><b>Abbildung 8.4. Durchschnittliche Ausführungszeiten</b></p>
 <div class="figure-contents">
     
 
@@ -304,7 +302,7 @@
   <p><span class="bold"><strong>Externe Befehle</strong></span> (external commands)</p>
 
   <div class="figure">
-<a name="id1591916"></a><p class="title"><b>Abbildung 8.5. Externe Befehle</b></p>
+<a name="id1453415"></a><p class="title"><b>Abbildung 8.5. Externe Befehle</b></p>
 <div class="figure-contents">
     
 
@@ -332,7 +330,7 @@
   <p><span class="bold"><strong>Puffer für externe Befehle</strong></span> (external command buffers)</p>
 
   <div class="figure">
-<a name="id1591974"></a><p class="title"><b>Abbildung 8.6. Puffer für externe Befehle</b></p>
+<a name="id1453487"></a><p class="title"><b>Abbildung 8.6. Puffer für externe Befehle</b></p>
 <div class="figure-contents">
     
 
@@ -353,7 +351,7 @@
   <p><span class="bold"><strong>Zwischengespeicherte Host- und Service-Prüfungen</strong></span> (cached host and service checks)</p>
 
   <div class="figure">
-<a name="id1592043"></a><p class="title"><b>Abbildung 8.7. Zwischengespeicherte Host- und Service-Prüfungen</b></p>
+<a name="id1453542"></a><p class="title"><b>Abbildung 8.7. Zwischengespeicherte Host- und Service-Prüfungen</b></p>
 <div class="figure-contents">
     
 
@@ -378,7 +376,7 @@
   <p><span class="bold"><strong>Durchschnittliche Zustandswechsel</strong></span></p>
 
   <div class="figure">
-<a name="id1592105"></a><p class="title"><b>Abbildung 8.8. Durchschnittliche Zustandswechsel</b></p>
+<a name="id1453604"></a><p class="title"><b>Abbildung 8.8. Durchschnittliche Zustandswechsel</b></p>
 <div class="figure-contents">
     
 
@@ -394,7 +392,7 @@
       <p><a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattererkennung (flap detection)</a></p>
     </li></ul></div>
 
-  <a class="indexterm" name="id1592148"></a>
+  <a class="indexterm" name="id1453647"></a>
 </div>
 <div class="navfooter">
 <hr>

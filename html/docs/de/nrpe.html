@@ -4,7 +4,7 @@
 <title>NRPE</title>
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.7.2 Dokumentation">
 <link rel="up" href="ch10.html" title="Kapitel 10. weitere Software">
 <link rel="prev" href="addons.html" title="Icinga Addons">
 <link rel="next" href="nsca.html" title="NSCA">
@@ -53,7 +53,7 @@
   bei der Sicherheit überwiegen. SSL kann übrigens aktiviert werden, wenn Sie eine sicherere Verbindung benötigen.</p>
 
   <div class="figure">
-<a name="id1594414"></a><p class="title"><b>Abbildung 10.1. NRPE</b></p>
+<a name="id1455904"></a><p class="title"><b>Abbildung 10.1. NRPE</b></p>
 <div class="figure-contents">
     
 
@@ -82,7 +82,7 @@
   Relais.</p>
 
   <div class="figure">
-<a name="id1594471"></a><p class="title"><b>Abbildung 10.2. NRPE remote</b></p>
+<a name="id1455965"></a><p class="title"><b>Abbildung 10.2. NRPE remote</b></p>
 <div class="figure-contents">
     
 
@@ -123,21 +123,25 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Anstatt NRPE von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
-    Betriebssystem gibt. Bitte werfen Sie einen Blick auf die
-    <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der Pakete</a>.
+    <p>Anstatt NRPE von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
+    Betriebssystem gibt. Bitte werfen Sie einen Blick auf die <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der
+    Pakete</a>.</p>
+
+    <p>Falls Sie aus den Sourcen installieren möchten, dann benutzen Sie bitte die offiziellen Release-Tarballs, z.B. durch
     </p>
-    <p>Falls Sie aus den Sourcen installieren möchten, dann benutzen Sie bitte die offiziellen Release-Tarballs.</p>
+<pre class="programlisting"> #&gt; wget http://sourceforge.net/projects/nagios/files/nrpe-2.x/nrpe-2.12/nrpe-2.12.tar.gz -O nrpe.tgz
+ #&gt; tar xzf nrpe.tgz</pre>
   </td></tr>
 </table></div>
+
   <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf.
-    gelöst ist.</p>
+    <p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf. gelöst
+    ist.</p>
   </td></tr>
 </table></div>
 
@@ -238,7 +242,8 @@
         </td></tr>
 </table></div>
 <p>Editieren Sie die Konfigurationsdatei <code class="filename">sample-config/nrpe.cfg</code> und ändern Sie die Einstellung von
-      "allowed_hosts=&lt;IP address&gt;" auf die IP-Adresse Ihres Icinga-Servers. Mehrere IP-Adressen werden durch Komma getrennt.</p>
+      "allowed_hosts=&lt;IP address&gt;" auf die IP-Adresse Ihres Icinga-Servers. Mehrere IP-Adressen werden durch Komma
+      getrennt.</p>
     </li>
 </ul></div>
 
@@ -334,8 +339,8 @@
           <p>xinetd (empfohlen)</p>
 
           <p>Editieren Sie die Konfigurationsdatei <code class="filename">nrpe.xinetd</code> im Verzeichnis <code class="filename">sample-config</code> und
-          ersetzen Sie die Adresse hinter &lt;only_from&gt; durch die IP-Adresse des Icinga-Servers (wo check_nrpe laufen
-          wird). Mehrere IP-Adressen werden durch Leerzeichen voneinander getrennt.</p>
+          ersetzen Sie die Adresse hinter &lt;only_from&gt; durch die IP-Adresse des Icinga-Servers (wo check_nrpe laufen wird).
+          Mehrere IP-Adressen werden durch Leerzeichen voneinander getrennt.</p>
 
           <p>Fügen Sie Einträge in <code class="filename">/etc/hosts.allow</code> und <code class="filename">/etc/hosts.deny</code> ein, um
           TCP-wrapper-protection für den nrpe-Service zu aktivieren. Dies ist optional, wird aber wärmstens empfohlen. Kopieren Sie die
@@ -398,7 +403,8 @@
             </li>
 <li class="listitem">
               <p>die Direktive <span class="emphasis"><em>only_from</em></span> directive in der Datei <code class="filename">/etc/xinetd.d/nrpe</code> einen
-              Eintrag für die IP-Adresse des Icinga-Servers enthält. Mehrere IP-Adressen werden durch Leerzeichen voneinander getrennt</p>
+              Eintrag für die IP-Adresse des Icinga-Servers enthält. Mehrere IP-Adressen werden durch Leerzeichen voneinander
+              getrennt</p>
             </li>
 <li class="listitem">
               <p>xinetd installiert und gestartet ist</p>
@@ -625,12 +631,12 @@
       unter inetd oder xinetd), dann müssen Sie ihn neustarten, damit der neue Timeout-Wert erkannt wird.</p>
     </li></ul></div>
 
-  <p>Falls Sie immer noch Probleme haben, dann setzen Sie "debug=1" in <code class="filename">nrpe.cfg</code> auf dem entfernen Host. Denken Sie 
+  <p>Falls Sie immer noch Probleme haben, dann setzen Sie "debug=1" in <code class="filename">nrpe.cfg</code> auf dem entfernen Host. Denken Sie
   daran, den NRPE-Prozess neu zu starten, wenn dieser im Standalone-Modus läuft. Führen Sie die Prüfung auf dem Überwachungs-Server
   aus. Anschließend sollten Sie Debugging-Informationen im Syslog (z.B. <code class="filename">/var/log/messages</code>) finden, die bei der
   Fehlerbehebung weiterhelfen sollten.</p>
 
-  <p>Sie können such auch an eine der Mailing-Listen bzw. Foren wenden (http://www.icinga.org/community/get-help/).</p>
+  <p>Sie können such auch an eine der Mailing-Listen bzw. Foren wenden (<a class="link" href="http://www.icinga.org/support/" target="_top">http://www.icinga.org/support/</a>).</p>
 
   <p><span class="bold"><strong>Aktualisierung</strong></span></p>
 
@@ -676,9 +682,9 @@
     </li>
 </ul></div>
 
-  <a class="indexterm" name="id1595716"></a>
+  <a class="indexterm" name="id1457225"></a>
 
-  <a class="indexterm" name="id1595729"></a>
+  <a class="indexterm" name="id1457239"></a>
 </div>
 <div class="navfooter">
 <hr>
