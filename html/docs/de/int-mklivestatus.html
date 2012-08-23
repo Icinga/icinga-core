@@ -1,7 +1,8 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>MKLiveStatus-Integration</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
@@ -16,9 +17,9 @@
 <tr><th colspan="3" align="center">MKLiveStatus-Integration</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="int-tcpwrappers.html">Zurück</a> </td>
+<a accesskey="p" href="int-tcpwrappers.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 9. Integration mit anderer Software</th>
-<td width="20%" align="right"> <a accesskey="n" href="reporting_1.6.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="reporting_1.6.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -29,12 +30,12 @@
 <a name="int-mklivestatus"></a>MKLiveStatus-Integration</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
   <p>MKLiveStatus ist ein Modul von Mathias Kettner zur Anbindung von verschiedene Addons wie z.B. NagVis oder Thruk an
-  Icinga (oder Nagios). Solange Sie keine Datenbank zur Speicherung von historischen Werten benötigen, könnte dies eine gute
+  Icinga (oder Nagios). Solange Sie keine Datenbank zur Speicherung von historischen Werten benÃ¶tigen, kÃ¶nnte dies eine gute
   Wahl sein, weil es relativ klein und einfach zu installieren ist. Auf der <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">offiziellen Website</a> finden Sie die komplette Dokumenation, denn hier
-  beschreiben wir nur in sehr kurzer Form die Installation und Konfiguration von MKLiveStatus für Icinga. Wir nehmen an, dass Sie
+  beschreiben wir nur in sehr kurzer Form die Installation und Konfiguration von MKLiveStatus fÃ¼r Icinga. Wir nehmen an, dass Sie
   Icinga in <span class="emphasis"><em>/usr/local/icinga</em></span> installiert haben.</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
@@ -51,7 +52,7 @@
 <li class="listitem">
       <p>Editieren Sie <span class="emphasis"><em>icinga.cfg</em></span>, um das Modul zu integrieren. Stellen Sie sicher, dass das Verzeichnis
       <span class="emphasis"><em>/usr/local/icinga/var/rw</em></span> existiert und dass der Icinga-Benutzer dort Schreibrechte hat. Es sollte das gleiche
-      Verzeichnis sein, das auch für das Command File (meistens icinga.cmd) benutzt wird. "live" ist ein Socket, der nur während der
+      Verzeichnis sein, das auch fÃ¼r das Command File (meistens icinga.cmd) benutzt wird. "live" ist ein Socket, der nur wÃ¤hrend der
       Laufzeit des Moduls vorhanden ist.</p>
 
       <p><code class="code"> broker_module=/usr/local/icinga/bin/livestatus.o /usr/local/icinga/var/rw/live</code></p>
@@ -62,7 +63,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Ab Icinga 1.4 können Sie statt des broker_module-Eintrags die neue module-Definition in einer Ihrer
+        <p>Ab Icinga 1.4 kÃ¶nnen Sie statt des broker_module-Eintrags die neue module-Definition in einer Ihrer
         Objektkonfigurationsdateien benutzen:</p>
 
         <pre class="screen"> define module{
@@ -84,37 +85,37 @@
       <pre class="programlisting"> /etc/init.d/icinga restart</pre>
     </li>
 <li class="listitem">
-      <p>Prüfen Sie, ob das Modul läuft</p>
+      <p>PrÃ¼fen Sie, ob das Modul lÃ¤uft</p>
 
       <pre class="programlisting"> ps -ef | grep livestatus
  ls -la /usr/local/icinga/var/rw/live</pre>
 
-      <p>Falls es keinen Prozess und/oder keinen Socket gibt, dann prüfen Sie das Icinga-Log und bereinigen Sie vorhandene
+      <p>Falls es keinen Prozess und/oder keinen Socket gibt, dann prÃ¼fen Sie das Icinga-Log und bereinigen Sie vorhandene
       Fehler.</p>
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id1593095"></a>
+  <a class="indexterm" name="id1560285"></a>
 
-  <a class="indexterm" name="id1593108"></a>
+  <a class="indexterm" name="id1560296"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="int-tcpwrappers.html">Zurück</a> </td>
+<a accesskey="p" href="int-tcpwrappers.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch09.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="reporting_1.6.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="reporting_1.6.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">TCP-Wrapper-Integration </td>
+<td width="40%" align="left" valign="top">TCP-Wrapper-IntegrationÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Installation von Icinga-Reporting mit JasperServer</td>
+<td width="40%" align="right" valign="top">Â Installation von Icinga-Reporting mit JasperServer</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

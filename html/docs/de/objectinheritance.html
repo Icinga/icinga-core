@@ -1,13 +1,14 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Objektvererbung</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="modified_attr.html" title="Modifizierte Attribute">
-<link rel="next" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">
+<link rel="next" href="objecttricks.html" title="Zeitsparende Tricks fÃ¼r Objektdefinitionen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -16,9 +17,9 @@
 <tr><th colspan="3" align="center">Objektvererbung</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="modified_attr.html">Zurück</a> </td>
+<a accesskey="p" href="modified_attr.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="objecttricks.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="objecttricks.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -29,9 +30,9 @@
 <a name="objectinheritance"></a>Objektvererbung</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Dieses Dokument versucht Objektvererbung zu erklären und wie sie in Ihren <a class="link" href="objectdefinitions.html" title="Objektdefinitionen">Objektdefinitionen</a> genutzt werden kann.</p>
+  <p>Dieses Dokument versucht Objektvererbung zu erklÃ¤ren und wie sie in Ihren <a class="link" href="objectdefinitions.html" title="Objektdefinitionen">Objektdefinitionen</a> genutzt werden kann.</p>
 
   <p>Wenn Sie nach dem Lesen verwirrt sind, wie Rekursion und Vererbung arbeiten, sollten Sie einen Blick in die
   Beispielobjektkonfigurationsdateien in der Icinga-Distribution werfen. Wenn das immer noch nicht hilft, dann senden Sie eine
@@ -50,23 +51,23 @@
         register      [0/1]
         }</pre>
 
-  <p>Die erste Variable heißt <span class="emphasis"><em>name</em></span>. Das ist lediglich ein "Vorlagen"-Name (template name), auf den in anderen
-  Objektdefinitonen verwiesen wird, so dass diese die Objekteigenschaften/Variablen erben. Vorlagennamen müssen innerhalb der Objekte des
-  gleichen Typs eindeutig sein, so dass Sie nicht zwei oder mehr Host-Definitionen mit "hosttemplate" als Namen haben können.</p>
+  <p>Die erste Variable heiÃŸt <span class="emphasis"><em>name</em></span>. Das ist lediglich ein "Vorlagen"-Name (template name), auf den in anderen
+  Objektdefinitonen verwiesen wird, so dass diese die Objekteigenschaften/Variablen erben. Vorlagennamen mÃ¼ssen innerhalb der Objekte des
+  gleichen Typs eindeutig sein, so dass Sie nicht zwei oder mehr Host-Definitionen mit "hosttemplate" als Namen haben kÃ¶nnen.</p>
 
-  <p>Die zweite Variable heißt <span class="emphasis"><em>use</em></span>. Hier geben Sie den Namen der Vorlage an, deren Eigenschaften/Variablen Sie erben
-  möchten. Der Name, den Sie für diese Variable angeben, muss als Vorlage definiert sein (mit Hilfe der
+  <p>Die zweite Variable heiÃŸt <span class="emphasis"><em>use</em></span>. Hier geben Sie den Namen der Vorlage an, deren Eigenschaften/Variablen Sie erben
+  mÃ¶chten. Der Name, den Sie fÃ¼r diese Variable angeben, muss als Vorlage definiert sein (mit Hilfe der
   <span class="emphasis"><em>name</em></span>-Variable).</p>
 
-  <p>Die dritte Variable heißt <span class="emphasis"><em>register</em></span>. Diese Variable wird benutzt, um anzuzeigen, ob die Objektdefinition
+  <p>Die dritte Variable heiÃŸt <span class="emphasis"><em>register</em></span>. Diese Variable wird benutzt, um anzuzeigen, ob die Objektdefinition
   "registriert" werden soll. Per Default werden alle Objektdefinitionen registriert. Wenn Sie eine partielle Objektdefinition als Vorlage
-  nutzen, möchten Sie verhindern, dass sie registriert wird (ein Beispiel dazu folgt). Die Werte sind wie folgt: 0 = die Objektdefinition
+  nutzen, mÃ¶chten Sie verhindern, dass sie registriert wird (ein Beispiel dazu folgt). Die Werte sind wie folgt: 0 = die Objektdefinition
   NICHT registrieren, 1 = die Objektdefinition registrieren (das ist der Default). Diese Variable wird NICHT vererbt, bei jeder als Vorlage
   genutzten (Teil-) Objektdefinition muss explizit die <span class="emphasis"><em>register</em></span>-Direktive auf <span class="emphasis"><em>0</em></span> gesetzt werden.
-  Dies verhindert die Notwendigkeit, eine vererbte <span class="emphasis"><em>register</em></span>-Direktive für jedes zu registrierende Objekt mit einem Wert
-  von <span class="emphasis"><em>1</em></span> zu übersteuern.</p>
+  Dies verhindert die Notwendigkeit, eine vererbte <span class="emphasis"><em>register</em></span>-Direktive fÃ¼r jedes zu registrierende Objekt mit einem Wert
+  von <span class="emphasis"><em>1</em></span> zu Ã¼bersteuern.</p>
 
-  <p><span class="bold"><strong>Lokale Variablen gegenüber vererbten Variablen</strong></span></p>
+  <p><span class="bold"><strong>Lokale Variablen gegenÃ¼ber vererbten Variablen</strong></span></p>
 
   <p>Bei der Vererbung ist es wichtig zu wissen, dass "lokale" Objektvariablen immer Vorrang vor Variablen aus der Vorlage haben. Werfen
   Sie einen Blick auf das folgende Beispiel mit zwei Host-Definitionen (nicht alle notwendigen Variablen sind dargestellt):</p>
@@ -84,10 +85,10 @@
         use                     hosttemplate1
         }</pre>
 
-  <p>Sie werden bemerken, dass die Definiton für den Host <span class="emphasis"><em>bighost1</em></span> mit Hilfe der Vorlage
-  <span class="emphasis"><em>hosttemplate1</em></span> definiert wurde. Die Definition für Host <span class="emphasis"><em>bighost2</em></span> nutzt die Definition von
-  <span class="emphasis"><em>bighost1</em></span> als Vorlagenobjekt. Sobald Icinga diese Daten verarbeitet hat, wäre die resultierende Definition von
-  <span class="emphasis"><em>bighost2</em></span> äquivalent zu dieser Definition:</p>
+  <p>Sie werden bemerken, dass die Definiton fÃ¼r den Host <span class="emphasis"><em>bighost1</em></span> mit Hilfe der Vorlage
+  <span class="emphasis"><em>hosttemplate1</em></span> definiert wurde. Die Definition fÃ¼r Host <span class="emphasis"><em>bighost2</em></span> nutzt die Definition von
+  <span class="emphasis"><em>bighost1</em></span> als Vorlagenobjekt. Sobald Icinga diese Daten verarbeitet hat, wÃ¤re die resultierende Definition von
+  <span class="emphasis"><em>bighost2</em></span> Ã¤quivalent zu dieser Definition:</p>
 
   <pre class="screen"> define host{
         host_name               bighost2
@@ -99,16 +100,16 @@
   <p>Sie sehen, dass die <span class="emphasis"><em>check_command</em></span>- und <span class="emphasis"><em>notification_options</em></span>-Variablen vom Vorlagenobjekt
   geerbt wurden (wo Host <span class="emphasis"><em>bighost1</em></span> definiert wird). Trotzdem wurden die <span class="emphasis"><em>host_name</em></span>- und
   <span class="emphasis"><em>check_attempts</em></span>-Variablen nicht vom Vorlagenobjekt geerbt, weil sie lokal definiert wurden. Erinnern Sie sich, dass
-  von einem Vorlagenobjekt geerbte Variablen von lokal definierten Variablen überschrieben werden. Das sollte ein ziemlich einfach zu
+  von einem Vorlagenobjekt geerbte Variablen von lokal definierten Variablen Ã¼berschrieben werden. Das sollte ein ziemlich einfach zu
   verstehendes Konzept sein.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: wenn Sie möchten, dass lokale Zeichenketten-Variablen an geerbte Zeichenkettenwerte angehängt werden,
-  können Sie das tun. Lesen Sie <a class="link" href="objectinheritance.html#objectinheritance-add_string">weiter unten</a> mehr darüber, wie das erreicht werden
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: wenn Sie mÃ¶chten, dass lokale Zeichenketten-Variablen an geerbte Zeichenkettenwerte angehÃ¤ngt werden,
+  kÃ¶nnen Sie das tun. Lesen Sie <a class="link" href="objectinheritance.html#objectinheritance-add_string">weiter unten</a> mehr darÃ¼ber, wie das erreicht werden
   kann.</p>
 
   <p><span class="bold"><strong>Vererbungsverkettung</strong></span></p>
 
-  <p>Objekte können Eigenschaften/Variablen aus mehreren Ebenen von Vorlagenobjekten erben. Nehmen Sie das folgende Beispiel:</p>
+  <p>Objekte kÃ¶nnen Eigenschaften/Variablen aus mehreren Ebenen von Vorlagenobjekten erben. Nehmen Sie das folgende Beispiel:</p>
 
   <pre class="screen"> define host{
         host_name               bighost1
@@ -130,7 +131,7 @@
 
   <p>Sie werden bemerken, dass die Definition von Host <span class="emphasis"><em>bighost3</em></span> Variablen von der Definition von
   <span class="emphasis"><em>bighost2</em></span> erbt, die wiederum Variablen von der Definition von Host <span class="emphasis"><em>bighost1</em></span> erbt. Sobald
-  Icinga diese Konfigurationsdaten verarbeitet, sind die resultierenden Host-Definition äquivalent zu den folgenden:</p>
+  Icinga diese Konfigurationsdaten verarbeitet, sind die resultierenden Host-Definition Ã¤quivalent zu den folgenden:</p>
 
   <pre class="screen"> define host{
         host_name               bighost1
@@ -151,15 +152,15 @@
         max_check_attempts      3
         }</pre>
 
-  <p>Es gibt keine eingebaute Beschränkung, wie "tief" Vererbung gehen kann, aber Sie sollten sich vielleicht selbst auf ein paar Ebenen
-  beschränken, um die Übersicht zu behalten.</p>
+  <p>Es gibt keine eingebaute BeschrÃ¤nkung, wie "tief" Vererbung gehen kann, aber Sie sollten sich vielleicht selbst auf ein paar Ebenen
+  beschrÃ¤nken, um die Ãœbersicht zu behalten.</p>
 
-  <p><span class="bold"><strong>Unvollständige Objektdefinitionen als Vorlagen nutzen</strong></span></p>
+  <p><span class="bold"><strong>UnvollstÃ¤ndige Objektdefinitionen als Vorlagen nutzen</strong></span></p>
 
-  <p>Es ist möglich, unvollständige Objektdefinitionen als Vorlage für andere Objektdefinitionen zu nutzen. Mit "unvollständiger"
-  Definition meinen wir, dass nicht alle benötigten Variablen in der Objektdefinition angegeben wurden. Es mag komisch klingen,
-  unvollständige Definitionen als Vorlagen zu nutzen, aber es ist tatsächlich empfohlen, dies zu tun. Warum? Nun, sie können als ein Satz
-  von Defaults für alle anderen Objektdefinitionen dienen. Nehmen Sie das folgende Beispiel:</p>
+  <p>Es ist mÃ¶glich, unvollstÃ¤ndige Objektdefinitionen als Vorlage fÃ¼r andere Objektdefinitionen zu nutzen. Mit "unvollstÃ¤ndiger"
+  Definition meinen wir, dass nicht alle benÃ¶tigten Variablen in der Objektdefinition angegeben wurden. Es mag komisch klingen,
+  unvollstÃ¤ndige Definitionen als Vorlagen zu nutzen, aber es ist tatsÃ¤chlich empfohlen, dies zu tun. Warum? Nun, sie kÃ¶nnen als ein Satz
+  von Defaults fÃ¼r alle anderen Objektdefinitionen dienen. Nehmen Sie das folgende Beispiel:</p>
 
   <pre class="screen"> define host{
         check_command           check-host-alive
@@ -179,14 +180,14 @@
         use                     generichosttemplate
         }</pre>
 
-  <p>Beachten Sie, dass die erste Host-Definition unvollständig ist, weil die erforderliche <span class="emphasis"><em>host_name</em></span>-Variable
-  fehlt. Wir müssen keinen Host-Namen angeben, weil wir diese Definition als Vorlage nutzen wollen. Um Icinga daran zu hindern, diese
+  <p>Beachten Sie, dass die erste Host-Definition unvollstÃ¤ndig ist, weil die erforderliche <span class="emphasis"><em>host_name</em></span>-Variable
+  fehlt. Wir mÃ¼ssen keinen Host-Namen angeben, weil wir diese Definition als Vorlage nutzen wollen. Um Icinga daran zu hindern, diese
   Definition als einen normalen Host anzusehen, setzen wir die <span class="emphasis"><em>register</em></span>-Variable auf 0.</p>
 
   <p>Die Definitionen von <span class="emphasis"><em>bighost1</em></span> und <span class="emphasis"><em>bighost2</em></span> erben ihre Werte von der generischen
-  Host-Definition. Die einzige Variable, die überschrieben wird, ist die <span class="emphasis"><em>address</em></span>-Variable. Das bedeutet, dass beide
+  Host-Definition. Die einzige Variable, die Ã¼berschrieben wird, ist die <span class="emphasis"><em>address</em></span>-Variable. Das bedeutet, dass beide
   Hosts exakt die gleichen Eigenschaften haben, bis auf die <span class="emphasis"><em>host_name</em></span>- und <span class="emphasis"><em>address</em></span>-Variablen.
-  Sobald Icinga die Konfigurationsdaten im Beispiel verarbeitet, wären die resultierenden Host-Definitionen äquivalent zu
+  Sobald Icinga die Konfigurationsdaten im Beispiel verarbeitet, wÃ¤ren die resultierenden Host-Definitionen Ã¤quivalent zu
   folgenden:</p>
 
   <pre class="screen"> define host{
@@ -204,12 +205,12 @@
         max_check_attempts      5
         }</pre>
 
-  <p>Die Nutzung einer Vorlagendefinition für Default-Werte erspart Ihnen mindestens eine Menge Tipparbeit. Es spart Ihnen auch eine
-  Menge Kopfschmerzen, wenn Sie später die Default-Werte von Variablen für eine große Zahl von Hosts wollen.</p>
+  <p>Die Nutzung einer Vorlagendefinition fÃ¼r Default-Werte erspart Ihnen mindestens eine Menge Tipparbeit. Es spart Ihnen auch eine
+  Menge Kopfschmerzen, wenn Sie spÃ¤ter die Default-Werte von Variablen fÃ¼r eine groÃŸe Zahl von Hosts wollen.</p>
 
   <p><span class="bold"><strong>eigene Objektvariablen</strong></span> (custom object variables)</p>
 
-  <p>Jede <a class="link" href="customobjectvars.html" title="Maßgeschneiderte Objektvariablen">eigene Objektvariable</a>, die Sie in Ihren Host-, Service- oder Kontaktdefinitionen
+  <p>Jede <a class="link" href="customobjectvars.html" title="MaÃŸgeschneiderte Objektvariablen">eigene Objektvariable</a>, die Sie in Ihren Host-, Service- oder Kontaktdefinitionen
   definieren, wird wie jede andere Standardvariable vererbt. Nehmen Sie das folgende Beispiel:</p>
 
   <pre class="screen"> define host{
@@ -226,7 +227,7 @@
 
   <p>Der Host <span class="emphasis"><em>bighost1</em></span> wird die eigenen Host-Variablen <span class="emphasis"><em>_customvar1</em></span> und
   <span class="emphasis"><em>_snmp_community</em></span> von der <span class="emphasis"><em>generichosttemplate</em></span>-Definition erben, zusammen mit den entsprechenden
-  Werten. Die daraus resultierende Definition für <span class="emphasis"><em>bighost1</em></span> sieht wie folgt aus:</p>
+  Werten. Die daraus resultierende Definition fÃ¼r <span class="emphasis"><em>bighost1</em></span> sieht wie folgt aus:</p>
 
   <pre class="screen"> define host{
         host_name               bighost1
@@ -235,11 +236,11 @@
         _snmp_community         public
         }</pre>
 
-  <p><a name="objectinheritance-cancel_string"></a><span class="bold"><strong>Vererbung für Zeichenketten-Werte aufheben</strong></span></p>
+  <p><a name="objectinheritance-cancel_string"></a><span class="bold"><strong>Vererbung fÃ¼r Zeichenketten-Werte aufheben</strong></span></p>
 
-  <p>In einigen Fällen möchten Sie vielleicht nicht, dass Ihre Host-, Service- oder Kontakt-Definitionen Werte von
-  Zeichenketten-Variablen aus Vorlagen erben. Wenn das der Fall ist, können Sie "<span class="bold"><strong>null</strong></span>" (ohne
-  Anführungszeichen) als den Wert der Variable, die Sie nicht erben möchten. Nehmen Sie das folgende Beispiel:</p>
+  <p>In einigen FÃ¤llen mÃ¶chten Sie vielleicht nicht, dass Ihre Host-, Service- oder Kontakt-Definitionen Werte von
+  Zeichenketten-Variablen aus Vorlagen erben. Wenn das der Fall ist, kÃ¶nnen Sie "<span class="bold"><strong>null</strong></span>" (ohne
+  AnfÃ¼hrungszeichen) als den Wert der Variable, die Sie nicht erben mÃ¶chten. Nehmen Sie das folgende Beispiel:</p>
 
   <pre class="screen"> define host{
         event_handler           my-event-handler-command
@@ -264,12 +265,12 @@
 
   <p><a name="objectinheritance-add_string"></a><span class="bold"><strong>additive Vererbung von Zeichenketten-Werten</strong></span></p>
 
-  <p>Icinga gibt lokalen Variablen Vorrang vor Werten, die von Vorlagen vererbt werden. In den meisten Fällen überschreiben lokale
-  Variablenwerte jene, die in Vorlagen definiert sind. In einigen Fällen ist es sinnvoll, dass Icinga die Werte von geerbten
+  <p>Icinga gibt lokalen Variablen Vorrang vor Werten, die von Vorlagen vererbt werden. In den meisten FÃ¤llen Ã¼berschreiben lokale
+  Variablenwerte jene, die in Vorlagen definiert sind. In einigen FÃ¤llen ist es sinnvoll, dass Icinga die Werte von geerbten
   <span class="emphasis"><em>und</em></span> lokalen Variablen gemeinsam nutzt.</p>
 
   <p>Diese "additive Vererbung" kann durch Voranstellen eines Pluszeichens (<span class="bold"><strong>+</strong></span>) vor den lokalen
-  Variablenwert erreicht werden. Dieses Feature ist nur für Standard-Variablen verfügbar, die Zeichenketten-Werte enthalten. Nehmen Sie das
+  Variablenwert erreicht werden. Dieses Feature ist nur fÃ¼r Standard-Variablen verfÃ¼gbar, die Zeichenketten-Werte enthalten. Nehmen Sie das
   folgende Beispiel:</p>
 
   <pre class="screen"> define host{
@@ -284,7 +285,7 @@
         }</pre>
 
   <p>In diesem Fall wird der <span class="emphasis"><em>linuxserver1</em></span> den Wert der lokalen <span class="emphasis"><em>hostgroups</em></span>-Variablen dem der
-  <span class="emphasis"><em>generichosttemplate</em></span>-Vorlage hinzufügen. Die resultierende Definition von <span class="emphasis"><em>linuxserver1</em></span> sieht wie
+  <span class="emphasis"><em>generichosttemplate</em></span>-Vorlage hinzufÃ¼gen. Die resultierende Definition von <span class="emphasis"><em>linuxserver1</em></span> sieht wie
   folgt aus:</p>
 
   <pre class="screen"> define host{
@@ -294,12 +295,12 @@
 
   <p><a name="objectinheritance-implied_inheritance"></a><span class="bold"><strong>Implizite Vererbung</strong></span></p>
 
-  <p>Normalerweise müssen Sie entweder explizit den Wert einer erforderlichen Variable in einer Objektdefinition angeben oder sie von
+  <p>Normalerweise mÃ¼ssen Sie entweder explizit den Wert einer erforderlichen Variable in einer Objektdefinition angeben oder sie von
   einer Vorlage erben. Es gibt ein paar Ausnahmen zu dieser Regel, in denen Icinga annimmt, dass Sie einen Wert benutzen wollen, der
   statt dessen von einem verbundenen Objekt kommt. Die Werte einiger Service-Variablen werden zum Beispiel vom Host kopiert, mit dem der
   Service verbunden ist, wenn Sie diese nicht anderweitig angeben.</p>
 
-  <p>Die folgende Tabelle führt die Objektvariablen auf, die implizit von verbundenen Objekten vererbt werden, wenn Sie deren Werte nicht
+  <p>Die folgende Tabelle fÃ¼hrt die Objektvariablen auf, die implizit von verbundenen Objekten vererbt werden, wenn Sie deren Werte nicht
   explizit angeben oder sie von einer Vorlage erben.</p>
 
   <div class="informaltable">
@@ -377,15 +378,15 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Diese Werte werden nur im Falle des Zustandswechsels eines Objekts vererbt, so dass sich "in der verbundenen ... Definition" nur
-    auf die eine Host/Service-Kombination bezieht, die fehlschlägt/sich erholt, obwohl es möglich ist, einen Service für ein oder mehrere
-    Hostgruppen auszuführen.</p>
+    auf die eine Host/Service-Kombination bezieht, die fehlschlÃ¤gt/sich erholt, obwohl es mÃ¶glich ist, einen Service fÃ¼r ein oder mehrere
+    Hostgruppen auszufÃ¼hren.</p>
   </td></tr>
 </table></div>
 
   <p><a name="objectinheritance-impliedescalations"></a><span class="bold"><strong>implizite/additive Vererbung bei
   Eskalationen</strong></span></p>
 
-  <p>Service- und Host-Eskalationsdefinitionen können eine spezielle Regel benutzen, die die Möglichkeiten von impliziter und additiver
+  <p>Service- und Host-Eskalationsdefinitionen kÃ¶nnen eine spezielle Regel benutzen, die die MÃ¶glichkeiten von impliziter und additiver
   Vererbung kombiniert. Wenn Eskalationen 1) nicht die Werte ihrer <span class="emphasis"><em>contact_groups</em></span>- oder
   <span class="emphasis"><em>contacts</em></span>-Direktiven von anderen Eskalationsvorlagen erben und 2) ihre <span class="emphasis"><em>contact_groups</em></span>- oder
   <span class="emphasis"><em>contacts</em></span>-Direktiven mit einen Plus-Zeichen (+) beginnen, dann werden die Werte der
@@ -405,7 +406,7 @@
         ...
         }</pre>
 
-  <p>Das ist ein viel einfacheres Äquivalent zu:</p>
+  <p>Das ist ein viel einfacheres Ã„quivalent zu:</p>
 
   <pre class="screen"> define hostescalation{
         host_name               linux-server
@@ -415,14 +416,14 @@
 
   <p><a name="objectinheritance-important_values"></a><span class="bold"><strong>Wichtige Werte</strong></span> (important values)</p>
 
-  <p>Service-Vorlagen können eine spezielle Regel benutzen, die ihrem check_command-Wert Vorrang gibt. Wenn das check_command mit einem
+  <p>Service-Vorlagen kÃ¶nnen eine spezielle Regel benutzen, die ihrem check_command-Wert Vorrang gibt. Wenn das check_command mit einem
   Ausrufungszeichen (!) beginnt, dann wird das check_command der Vorlage als wichtig markiert und wird statt des im Service definierten
   check_command (dies ist der CSS-Syntax nachempfunden, die ! als wichtiges Attribut benutzt).</p>
 
-  <p>Warum ist das nützlich? Es ist hauptsächlich dann sinnvoll, wenn ein unterschiedliches check_command für verteilte Systeme gesetzt
+  <p>Warum ist das nÃ¼tzlich? Es ist hauptsÃ¤chlich dann sinnvoll, wenn ein unterschiedliches check_command fÃ¼r verteilte Systeme gesetzt
   wird. Sie wollen vielleicht einen Frische-Schwellwert und ein check_command setzen, der den Service in einen fehlerhaften Status versetzt,
   aber das funktioniert nicht mit dem normalen Vorlagensystem. Dieses "wichtig"-Kennzeichen erlaubt es, das angepasste check_command zu
-  schreiben, aber eine allgemeine verteilte Vorlage zu benutzen, die das check_command überlagert, wenn es auf dem zentralen
+  schreiben, aber eine allgemeine verteilte Vorlage zu benutzen, die das check_command Ã¼berlagert, wenn es auf dem zentralen
   Icinga-Server eingesetzt wird.</p>
 
   <p>Zum Beispiel:</p>
@@ -456,8 +457,8 @@ define service {
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Bitte beachten Sie, dass nur eine Vererbungsebene bei diesen wichtigen Werten möglich ist. Das bedeutet, dass Sie nicht das
-    check_command von einer Vorlage zu einer weiteren und von dort zum Service vererben können. </p>
+    <p>Bitte beachten Sie, dass nur eine Vererbungsebene bei diesen wichtigen Werten mÃ¶glich ist. Das bedeutet, dass Sie nicht das
+    check_command von einer Vorlage zu einer weiteren und von dort zum Service vererben kÃ¶nnen. </p>
 <pre class="programlisting"> Template1 =&gt; Service1                &lt;== funktioniert
  Template1 =&gt; Template2 =&gt; Service1   &lt;== funktioniert NICHT</pre>
   </td></tr>
@@ -465,7 +466,7 @@ define service {
 
   <p><a name="objectinheritance-multiple_templates"></a><span class="bold"><strong>Mehrere Vererbungsquellen</strong></span></p>
 
-  <p>Bisher haben alle Beispiele Objektdefinitionen gezeigt, die Variablen/Werte von einer einzelnen Quelle erben. Sie können für
+  <p>Bisher haben alle Beispiele Objektdefinitionen gezeigt, die Variablen/Werte von einer einzelnen Quelle erben. Sie kÃ¶nnen fÃ¼r
   komplexere Konfigurationen auch Variablen/Werte von mehreren Quellen erben, wie unten gezeigt.</p>
 
   <div class="informaltable">
@@ -509,7 +510,7 @@ define service {
   <p>Im obigen Beispiel erbt <span class="emphasis"><em>devweb1</em></span> Variablen/Werte von zwei Quellen: <span class="emphasis"><em>generic-host</em></span> und
   <span class="emphasis"><em>development-server</em></span>. Sie werden bemerken, dass in beiden Quellen eine <span class="emphasis"><em>check_interval</em></span>-Variable
   definiert ist. Weil <span class="emphasis"><em>generic-host</em></span> die erste in <span class="emphasis"><em>devweb1</em></span> durch die
-  <span class="emphasis"><em>use</em></span>-Direktive angegebene Vorlage ist, wird der Wert für die <span class="emphasis"><em>check_interval</em></span>-Variable durch den
+  <span class="emphasis"><em>use</em></span>-Direktive angegebene Vorlage ist, wird der Wert fÃ¼r die <span class="emphasis"><em>check_interval</em></span>-Variable durch den
   <span class="emphasis"><em>devweb1</em></span>-Host vererbt. Nach der Vererbung sieht die Definition von <span class="emphasis"><em>devweb1</em></span> wie folgt aus:</p>
 
   <pre class="screen"> # Development web server
@@ -524,9 +525,9 @@ define service {
   <p><span class="bold"><strong>Vorrang bei mehreren Vererbungsquellen</strong></span></p>
 
   <p>Wenn Sie mehrere Vererbungsquellen nutzen, ist es wichtig zu wissen, wie Icinga Variablen behandelt, die in mehreren Quellen
-  definiert sind. In diesen Fällen wird Icinga die Variable/den Wert aus der ersten Quelle benutzen, die in der
+  definiert sind. In diesen FÃ¤llen wird Icinga die Variable/den Wert aus der ersten Quelle benutzen, die in der
   <span class="emphasis"><em>use</em></span>-Direktive angegeben ist. Weil Vererbungsquellen ebenfalls Variablen/Werte aus ein oder mehreren Quellen erben
-  können, kann es kompliziert werden herauszufinden, welche Variablen/Werte-Paare Vorrang haben.</p>
+  kÃ¶nnen, kann es kompliziert werden herauszufinden, welche Variablen/Werte-Paare Vorrang haben.</p>
 
   <div class="informaltable">
     <table border="0">
@@ -550,35 +551,35 @@ define service {
 </table>
   </div>
 
-  <a class="indexterm" name="id1586971"></a>
+  <a class="indexterm" name="id1554158"></a>
 
-  <a class="indexterm" name="id1586981"></a>
+  <a class="indexterm" name="id1554143"></a>
 
-  <a class="indexterm" name="id1586994"></a>
+  <a class="indexterm" name="id1554177"></a>
 
-  <a class="indexterm" name="id1587009"></a>
+  <a class="indexterm" name="id1554188"></a>
 
-  <a class="indexterm" name="id1587022"></a>
+  <a class="indexterm" name="id1554202"></a>
 
-  <a class="indexterm" name="id1587036"></a>
+  <a class="indexterm" name="id1554217"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="modified_attr.html">Zurück</a> </td>
+<a accesskey="p" href="modified_attr.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="objecttricks.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="objecttricks.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Modifizierte Attribute </td>
+<td width="40%" align="left" valign="top">Modifizierte AttributeÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Zeitsparende Tricks für Objektdefinitionen</td>
+<td width="40%" align="right" valign="top">Â Zeitsparende Tricks fÃ¼r Objektdefinitionen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

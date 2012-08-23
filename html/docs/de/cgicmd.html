@@ -1,11 +1,12 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Ausführen von CGIs auf der Kommandozeile</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>AusfÃ¼hren von CGIs auf der Kommandozeile</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
-<link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
+<link rel="up" href="ch06.html" title="Kapitel 6. Die BenutzeroberflÃ¤chen">
 <link rel="prev" href="cgiparams.html" title="Informationen zu den CGI-Parametern">
 <link rel="next" href="icinga-web-scratch.html" title="Installation des Icinga-Web Frontend">
 </head>
@@ -13,48 +14,48 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Ausführen von CGIs auf der Kommandozeile</th></tr>
+<tr><th colspan="3" align="center">AusfÃ¼hren von CGIs auf der Kommandozeile</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="cgiparams.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 6. Die Benutzeroberflächen</th>
-<td width="20%" align="right"> <a accesskey="n" href="icinga-web-scratch.html">Weiter</a>
+<a accesskey="p" href="cgiparams.html">ZurÃ¼ck</a>Â </td>
+<th width="60%" align="center">Kapitel 6. Die BenutzeroberflÃ¤chen</th>
+<td width="20%" align="right">Â <a accesskey="n" href="icinga-web-scratch.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Ausführen von CGIs auf der Kommandozeile">
+<div class="section" title="AusfÃ¼hren von CGIs auf der Kommandozeile">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgicmd"></a><a name="cgi_cmd"></a>Ausführen von CGIs auf der Kommandozeile</h2></div></div></div>
+<a name="cgicmd"></a><a name="cgi_cmd"></a>AusfÃ¼hren von CGIs auf der Kommandozeile</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>In den meisten Fällen werden Sie Ihren Browser benutzen, um die Informationen anzusehen, die Sie benötigen. Es mag Situationen
-  geben, in denen Sie die Daten mit anderen Werkzeugen bearbeiten möchten, um Wiki-Einträge zu erzeugen, Mails zu verschicken usw. Zusammen
-  mit den <a class="link" href="cgiparams.html" title="Informationen zu den CGI-Parametern">Informationen zu den CGI-Parametern</a> können Sie die CGIs auf der Kommandozeile aufrufen.</p>
+  <p>In den meisten FÃ¤llen werden Sie Ihren Browser benutzen, um die Informationen anzusehen, die Sie benÃ¶tigen. Es mag Situationen
+  geben, in denen Sie die Daten mit anderen Werkzeugen bearbeiten mÃ¶chten, um Wiki-EintrÃ¤ge zu erzeugen, Mails zu verschicken usw. Zusammen
+  mit den <a class="link" href="cgiparams.html" title="Informationen zu den CGI-Parametern">Informationen zu den CGI-Parametern</a> kÃ¶nnen Sie die CGIs auf der Kommandozeile aufrufen.</p>
 
   <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
 
-  <p>Bevor Sie die CGIs tatsächlich aufrufen können, müssen Sie drei Umgebungsvariablen setzen: </p>
+  <p>Bevor Sie die CGIs tatsÃ¤chlich aufrufen kÃ¶nnen, mÃ¼ssen Sie drei Umgebungsvariablen setzen: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
         <p>REMOTE_USER</p>
 
-        <p>Diese Variable enthälft einen Benutzer, der berechtigt ist, die Informationen abzurufen. In den meisten Fällen wird dies
+        <p>Diese Variable enthÃ¤lft einen Benutzer, der berechtigt ist, die Informationen abzurufen. In den meisten FÃ¤llen wird dies
         "icingaadmin" sein (<code class="literal">set REMOTE_USER='icingaadmin')</code></p>
       </li>
 <li class="listitem">
         <p>REQUEST_METHOD</p>
 
-        <p><code class="literal">set REQUEST_METHOD='GET'</code>. Mögliche Werte sind "GET", "POST" und "HEAD"</p>
+        <p><code class="literal">set REQUEST_METHOD='GET'</code>. MÃ¶gliche Werte sind "GET", "POST" und "HEAD"</p>
       </li>
 <li class="listitem">
         <p>QUERY_STRING</p>
 
-        <p>Anstatt Argumente über die Kommandozeile an die CGIs zu übergeben, müssen Sie die Variable "QUERY_STRING" mit den
-        entsprechenden Werten füllen.</p>
+        <p>Anstatt Argumente Ã¼ber die Kommandozeile an die CGIs zu Ã¼bergeben, mÃ¼ssen Sie die Variable "QUERY_STRING" mit den
+        entsprechenden Werten fÃ¼llen.</p>
 
         <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -63,7 +64,7 @@
 </tr>
 <tr><td align="left" valign="top">
           <p>Die meisten Leute finden es schwierig, HTML-Ausgaben zu lesen, so dass es eine gute Idee ist, der Variable QUERY_STRING
-          "jsonoutput" oder "csvoutput" hinzuzufügen <code class="code"> (QUERY_STRING='jsonoutput' bzw. QUERY_STRING='jsonoutput')</code> .</p>
+          "jsonoutput" oder "csvoutput" hinzuzufÃ¼gen <code class="code"> (QUERY_STRING='jsonoutput' bzw. QUERY_STRING='jsonoutput')</code> .</p>
         </td></tr>
 </table></div>
       </li>
@@ -117,15 +118,15 @@
 <pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;style=detail&amp;servicestatustypes=28&amp;serviceprops=65536'
  $&gt; ./status.cgi</pre>
 
-  <p>Kommentare für alle Objekte</p>
+  <p>Kommentare fÃ¼r alle Objekte</p>
 <pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;type=3'
  $&gt; ./extinfo.cgi</pre>
 
-  <p>Trends für router_02, Zeitangaben durch Unix-Timestamps</p>
+  <p>Trends fÃ¼r router_02, Zeitangaben durch Unix-Timestamps</p>
 <pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;host=router_02&amp;timeperiod=custom&amp;t1=130748400&amp;t2=1307570400'
  $&gt; ./extinfo.cgi</pre>
 
-  <p>Trends für router_02, Zeitangaben durch Datum und Uhrzeit</p>
+  <p>Trends fÃ¼r router_02, Zeitangaben durch Datum und Uhrzeit</p>
 <pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;host=router_02&amp;timeperiod=custom\
  &amp;sday=6&amp;smon=6&amp;syear=2011&amp;shour=0&amp;smin=0&amp;ssec=0\
  &amp;eday=7&amp;emon=6&amp;eyear=2011&amp;ehour=0&amp;emin=0&amp;esec=0'
@@ -133,25 +134,25 @@
 
   <p>(wird fortgesetzt)</p>
 
-  <a class="indexterm" name="id1568729"></a>
+  <a class="indexterm" name="id1535911"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="cgiparams.html">Zurück</a> </td>
+<a accesskey="p" href="cgiparams.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="icinga-web-scratch.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="icinga-web-scratch.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Informationen zu den CGI-Parametern </td>
+<td width="40%" align="left" valign="top">Informationen zu den CGI-ParameternÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Installation des Icinga-Web Frontend</td>
+<td width="40%" align="right" valign="top">Â Installation des Icinga-Web Frontend</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

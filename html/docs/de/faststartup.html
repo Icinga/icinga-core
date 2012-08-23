@@ -1,12 +1,13 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Schnellstart-Optionen</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
-<link rel="prev" href="tuning.html" title="Icinga für maximale Leistung optimieren">
+<link rel="prev" href="tuning.html" title="Icinga fÃ¼r maximale Leistung optimieren">
 <link rel="next" href="largeinstalltweaks.html" title="Large Installation Tweaks">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -16,9 +17,9 @@
 <tr><th colspan="3" align="center">Schnellstart-Optionen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="tuning.html">Zurück</a> </td>
+<a accesskey="p" href="tuning.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 8. Sicherheit und Leistungsoptimierung</th>
-<td width="20%" align="right"> <a accesskey="n" href="largeinstalltweaks.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="largeinstalltweaks.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -29,28 +30,28 @@
 <a name="faststartup"></a><a name="fast_startup"></a>Schnellstart-Optionen</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Es gibt einige Dinge, die Sie tun können, um die Zeit zu verringern, die Icinga zum (Neu-)Start benötigt. Diese
-  Beschleunigung umfasst u.a. Änderungen bei der Verarbeitung Ihrer Konfigurationsdateien.</p>
+  <p>Es gibt einige Dinge, die Sie tun kÃ¶nnen, um die Zeit zu verringern, die Icinga zum (Neu-)Start benÃ¶tigt. Diese
+  Beschleunigung umfasst u.a. Ã„nderungen bei der Verarbeitung Ihrer Konfigurationsdateien.</p>
 
   <p>Diese Techniken zu benutzen ist besonders dann sinnvoll, wenn bei Ihnen einer oder mehrere der folgenden Punkte zutreffen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>große Konfigurationen</p>
+      <p>groÃŸe Konfigurationen</p>
     </li>
 <li class="listitem">
       <p>komplexe Konfigurationen (massiver Einsatz von Template-Features)</p>
     </li>
 <li class="listitem">
-      <p>Installationen, bei denen häufige Neustarts notwendig sind</p>
+      <p>Installationen, bei denen hÃ¤ufige Neustarts notwendig sind</p>
     </li>
 </ul></div>
 
   <p><span class="bold"><strong>Hintergrund</strong></span></p>
 
-  <p>Bei jedem (erneuten) Start von Icinga müssen die Konfigurationsdateien verarbeitet werden, bevor die Überwachung beginnen
+  <p>Bei jedem (erneuten) Start von Icinga mÃ¼ssen die Konfigurationsdateien verarbeitet werden, bevor die Ãœberwachung beginnen
   kann. Dieser Konfigurationsanlaufprozess umfasst eine Reihe von Schritten:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -58,10 +59,10 @@
       <p>Lesen der Konfigurationsdateien</p>
     </li>
 <li class="listitem">
-      <p>Auflösen von Template-Definitionen</p>
+      <p>AuflÃ¶sen von Template-Definitionen</p>
     </li>
 <li class="listitem">
-      <p>"Recombobulating" Ihrer Objekte (ein [ausgedachter] Begriff für die verschiedenen Arten von Arbeiten, die auftreten)</p>
+      <p>"Recombobulating" Ihrer Objekte (ein [ausgedachter] Begriff fÃ¼r die verschiedenen Arten von Arbeiten, die auftreten)</p>
     </li>
 <li class="listitem">
       <p>duplizieren von Objektdefinitionen</p>
@@ -73,29 +74,29 @@
       <p>sortieren Ihrer Objektdefinitionen</p>
     </li>
 <li class="listitem">
-      <p>überprüfen der Objektbeziehungsintegrität</p>
+      <p>Ã¼berprÃ¼fen der ObjektbeziehungsintegritÃ¤t</p>
     </li>
 <li class="listitem">
-      <p>prüfen von zirkulären Pfaden</p>
+      <p>prÃ¼fen von zirkulÃ¤ren Pfaden</p>
     </li>
 <li class="listitem">
       <p>und mehr...</p>
     </li>
 </ul></div>
 
-  <p>Einige dieser Schritte können ziemlich zeitintensiv sein, wenn Sie große oder komplexe Konfigurationen haben. Gibt es einen Weg,
+  <p>Einige dieser Schritte kÃ¶nnen ziemlich zeitintensiv sein, wenn Sie groÃŸe oder komplexe Konfigurationen haben. Gibt es einen Weg,
   einen dieser Schritte zu beschleunigen? Ja!</p>
 
   <p><span class="bold"><strong>Bewertung von Anlaufzeiten</strong></span></p>
 
-  <p>Bevor wir weitermachen, die Dinge zu beschleunigen, müssen wir sehen was möglich ist und ob wir uns mit der ganzen Sache
-  beschäftigen sollten oder nicht. Das ist einfach - starten Sie Icinga mit der <span class="bold"><strong>-s</strong></span> oder
+  <p>Bevor wir weitermachen, die Dinge zu beschleunigen, mÃ¼ssen wir sehen was mÃ¶glich ist und ob wir uns mit der ganzen Sache
+  beschÃ¤ftigen sollten oder nicht. Das ist einfach - starten Sie Icinga mit der <span class="bold"><strong>-s</strong></span> oder
   <span class="bold"><strong>--test-scheduling</strong></span>-Option, um Zeiten und Planungsinformationen zu bekommen.</p>
 
-  <p>Beginnend mit Icinga 1.0.2 gibt es eine zusätzliche Option <span class="bold"><strong>-S</strong></span> oder <span class="bold"><strong>
+  <p>Beginnend mit Icinga 1.0.2 gibt es eine zusÃ¤tzliche Option <span class="bold"><strong>-S</strong></span> oder <span class="bold"><strong>
   --show-scheduling</strong></span>. Damit erhalten Sie weitere Informationen zur Scheduling Queue.</p>
 
-  <p>Ein Beispiel für die Ausgabe (gekürzt, um nur relevante Teile zu zeigen) sehen Sie nachfolgend. In diesem Beispiel nutzen wir eine
+  <p>Ein Beispiel fÃ¼r die Ausgabe (gekÃ¼rzt, um nur relevante Teile zu zeigen) sehen Sie nachfolgend. In diesem Beispiel nutzen wir eine
   Icinga-Konfigurations mit 25 Host und etwas mehr als 10.000 Services.</p>
 
   <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -s /usr/local/icinga/etc/icinga.cfg
@@ -132,14 +133,14 @@ Misc:                 0.006924 sec
                       ============
 TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings</pre>
 
-  <p>Okay, lassen Sie uns ansehen was passiert ist. Wenn wir die Summen ansehen, dauerte es ungefähr <span class="bold"><strong>11,6</strong></span> Sekunden, die Konfigurationsdateien zu verarbeiten und weitere <span class="bold"><strong>56</strong></span> Sekunden,
+  <p>Okay, lassen Sie uns ansehen was passiert ist. Wenn wir die Summen ansehen, dauerte es ungefÃ¤hr <span class="bold"><strong>11,6</strong></span> Sekunden, die Konfigurationsdateien zu verarbeiten und weitere <span class="bold"><strong>56</strong></span> Sekunden,
   die Konfigurations zu verifizieren. Das bedeutet, dass es fast <span class="bold"><strong>68 Sekunden</strong></span> dauert, bis die erste
-  Überwachung beginnen kann! Das ist nicht akzeptierbar, wenn wir Icinga ziemlich regelmäßig neu starten müsseb.</p>
+  Ãœberwachung beginnen kann! Das ist nicht akzeptierbar, wenn wir Icinga ziemlich regelmÃ¤ÃŸig neu starten mÃ¼sseb.</p>
 
-  <p>Was kann man daran ändern? Werfen Sie einen erneuten Blick auf die Ausgabe und Sie sehen, dass Icinga schätzt, dass wir etwa
+  <p>Was kann man daran Ã¤ndern? Werfen Sie einen erneuten Blick auf die Ausgabe und Sie sehen, dass Icinga schÃ¤tzt, dass wir etwa
   <span class="bold"><strong>8,4</strong></span> Sekunden bei der Verarbeitung der Konfiguration und weitere <span class="bold"><strong>54,7</strong></span> bei
-  der Verifizierung einsparen können. Icinga denkt, dass wir <span class="bold"><strong>63 Sekunden</strong></span> der normalen Anlaufzeit
-  sparen können, wenn einige Optimierungen vorgenommen werden.</p>
+  der Verifizierung einsparen kÃ¶nnen. Icinga denkt, dass wir <span class="bold"><strong>63 Sekunden</strong></span> der normalen Anlaufzeit
+  sparen kÃ¶nnen, wenn einige Optimierungen vorgenommen werden.</p>
 
   <p>Wow! Von <span class="bold"><strong>68 Sekunden</strong></span> auf gerade mal <span class="bold"><strong>5 Sekunden</strong></span>? Yep, lesen Sie
   weiter, um zu sehen, wie das geht.</p>
@@ -147,8 +148,8 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
   <p><span class="bold"><strong>Pre-Caching der Objektkonfiguration</strong></span></p>
 
   <p>Icinga kann einige Zeit beim analysieren Ihrer Konfigurationsdateien verbringen, besonders dann, wenn Sie Template-Features
-  wie z.B. Vererbung usw. nutzen. Um die Zeit der Analyse Ihrer Konfiguration zu verringern, können Sie Icinga veranlassen, Ihre
-  Konfigurationsdateien für die Zukunft vorzuverarbeiten (pre-process) und vor-zwischenzuspeichern (pre-cache).</p>
+  wie z.B. Vererbung usw. nutzen. Um die Zeit der Analyse Ihrer Konfiguration zu verringern, kÃ¶nnen Sie Icinga veranlassen, Ihre
+  Konfigurationsdateien fÃ¼r die Zukunft vorzuverarbeiten (pre-process) und vor-zwischenzuspeichern (pre-cache).</p>
 
   <div class="informaltable">
     <table border="0">
@@ -162,12 +163,12 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 <p> Wenn Sie Icinga mit der <span class="bold"><strong>-p</strong></span>-Kommandozeilenoption
           starten, wird Icinga Ihre Konfigurationsdateien einlesen, verarbeiten und sie in einer vor-zwischengespeicherten
           (pre-cached) (durch die <a class="link" href="configmain.html#configmain-precached_object_file">precached_object_file</a>-Direktive angegebene)
-          Konfigurationsdatei sichern. Diese Konfigurationsdatei enthält vorverarbeitete Konfigurationseinträge, die Icinga in
-          Zukunft einfacher/schneller verarbeiten kann.</p> <p>Sie müssen die <span class="bold"><strong>-p</strong></span>-Kommandozeilenoption
+          Konfigurationsdatei sichern. Diese Konfigurationsdatei enthÃ¤lt vorverarbeitete KonfigurationseintrÃ¤ge, die Icinga in
+          Zukunft einfacher/schneller verarbeiten kann.</p> <p>Sie mÃ¼ssen die <span class="bold"><strong>-p</strong></span>-Kommandozeilenoption
           zusammen mit der <span class="bold"><strong>-v</strong></span> oder <span class="bold"><strong>-s</strong></span>-Kommandozeilenoption benutzen, wie
-          nachfolgend gezeigt. Dies stellt sicher, dass Ihre Konfiguration überprüft wird, bevor die precached-Datei erstellt wird.</p>
+          nachfolgend gezeigt. Dies stellt sicher, dass Ihre Konfiguration Ã¼berprÃ¼ft wird, bevor die precached-Datei erstellt wird.</p>
           <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -pv /usr/local/icinga/etc/icinga.cfg </pre> <p>Die precached-Konfigurationsdatei wird wahrscheinlich um
-          einiges größer sein als die Summe Ihrer Objektkonfigurationsdateien. Das ist normal und beabsichtigt.</p>
+          einiges grÃ¶ÃŸer sein als die Summe Ihrer Objektkonfigurationsdateien. Das ist normal und beabsichtigt.</p>
 </td>
 <td align="left" valign="top">
 <p> </p>
@@ -177,13 +178,13 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 </tr>
 <tr>
 <td align="left" valign="top">
-<p> Sobald die precached-Objektkonfigurationdatei erstellt wurde, können Sie Icinga
+<p> Sobald die precached-Objektkonfigurationdatei erstellt wurde, kÃ¶nnen Sie Icinga
           starten und mit der <span class="bold"><strong>-u</strong></span>-Kommandozeilenoption angeben, dass diese Datei statt Ihrer
           Konfigurationsdatei(en) benutzt werden soll.</p> <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -ud /usr/local/icinga/etc/icinga.cfg </pre>
-          <p><span class="inlinemediaobject"><img src="../images/important.gif"></span> Wenn Sie Ihre Konfigurationsdateien ändern, müssen Sie diese erneut überprüfen und die
+          <p><span class="inlinemediaobject"><img src="../images/important.gif"></span> Wenn Sie Ihre Konfigurationsdateien Ã¤ndern, mÃ¼ssen Sie diese erneut Ã¼berprÃ¼fen und die
           precached-Konfigurationsdatei neu erstellen, bevor Sie Icinga erneut starten. Wenn Sie die precached-Konfigurationsdatei
           nicht neu generieren, wird Icinga Ihre alte Konfiguration benutzen, weil die precached-Konfigurationsdatei gelesen wird und
-          nicht Ihre geänderten Konfigurationsdateien.</p>
+          nicht Ihre geÃ¤nderten Konfigurationsdateien.</p>
 </td>
 <td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/fast-startup2.png"></span> </p></td>
 </tr>
@@ -191,83 +192,83 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 </table>
   </div>
 
-  <p><span class="bold"><strong>Überspringen der Test von zirkulären Pfaden</strong></span></p>
+  <p><span class="bold"><strong>Ãœberspringen der Test von zirkulÃ¤ren Pfaden</strong></span></p>
 
-  <p>Der zweite (und zeitintensivste) Teil der Konfigurationsanlaufphase ist die Prüfung auf zirkuläre Pfade. Im obigen Beispiel dauerte
-  es fast eine Minute, um diesen Schritt der Konfigurationsprüfung auszuführen.</p>
+  <p>Der zweite (und zeitintensivste) Teil der Konfigurationsanlaufphase ist die PrÃ¼fung auf zirkulÃ¤re Pfade. Im obigen Beispiel dauerte
+  es fast eine Minute, um diesen Schritt der KonfigurationsprÃ¼fung auszufÃ¼hren.</p>
 
-  <p>Was ist diese zirkuläre-Pfad-Prüfung und warum dauert sie so lange? Die zirkuläre-Pfad-Prüfung soll verhindern, dass Sie zirkuläre
-  Pfade in Ihren Host-, Host-Abhängigkeits- oder Service-Abhängigkeitsdefinitionen haben. Wenn ein zirkulärer Pfad in Ihren
-  Konfigurationsdateien existiert, könnte Icinga in einer Deadlock-Situation enden. Der wahrscheinlichste Grund dafür, dass die
-  Prüfung so lange dauert, dürfte darin liegen, dass wir keinen effizienten Algorithmus benutzen. Ein effizienterer Algorithmus wäre daher
+  <p>Was ist diese zirkulÃ¤re-Pfad-PrÃ¼fung und warum dauert sie so lange? Die zirkulÃ¤re-Pfad-PrÃ¼fung soll verhindern, dass Sie zirkulÃ¤re
+  Pfade in Ihren Host-, Host-AbhÃ¤ngigkeits- oder Service-AbhÃ¤ngigkeitsdefinitionen haben. Wenn ein zirkulÃ¤rer Pfad in Ihren
+  Konfigurationsdateien existiert, kÃ¶nnte Icinga in einer Deadlock-Situation enden. Der wahrscheinlichste Grund dafÃ¼r, dass die
+  PrÃ¼fung so lange dauert, dÃ¼rfte darin liegen, dass wir keinen effizienten Algorithmus benutzen. Ein effizienterer Algorithmus wÃ¤re daher
   willkommen. Wink: das bedeutet, dass alle Absolventen der Computerwissenschaften, die ihre Thesen zu Icinga gemailt haben, ein
-  wenig Code liefern könnten. :-)</p>
+  wenig Code liefern kÃ¶nnten. :-)</p>
 
-  <p>Wenn Sie die Prüfung auf zirkuläre Pfade überspringen möchten, wenn Sie Icinga starten, dann fügen Sie die <span class="bold"><strong>-x</strong></span>-Option wie folgt hinzu:</p>
+  <p>Wenn Sie die PrÃ¼fung auf zirkulÃ¤re Pfade Ã¼berspringen mÃ¶chten, wenn Sie Icinga starten, dann fÃ¼gen Sie die <span class="bold"><strong>-x</strong></span>-Option wie folgt hinzu:</p>
 
   <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -xd /usr/local/icinga/etc/icinga.cfg </pre>
 
-  <p><span class="inlinemediaobject"><img src="../images/important.gif"></span> Es ist von äußerster Wichtigkeit, dass Sie Ihre Konfiguration überprüfen, bevor Sie Icinga (erneut) starten,
-  wenn Sie auf die Prüfung auf zirkuläre Pfade verzichten. Wenn Sie es nicht tun, kann dies zu Deadlocks führen. Sie sind gewarnt
+  <p><span class="inlinemediaobject"><img src="../images/important.gif"></span> Es ist von Ã¤uÃŸerster Wichtigkeit, dass Sie Ihre Konfiguration Ã¼berprÃ¼fen, bevor Sie Icinga (erneut) starten,
+  wenn Sie auf die PrÃ¼fung auf zirkulÃ¤re Pfade verzichten. Wenn Sie es nicht tun, kann dies zu Deadlocks fÃ¼hren. Sie sind gewarnt
   worden.</p>
 
   <p><span class="bold"><strong>Alles zusammenfassen</strong></span></p>
 
-  <p>Folgen Sie diesen Schritten, wenn Sie mögliche Beschleunigungen durch pre-Caching Ihrer Konfiguration und überspringen der Prüfungen
-  auf zirkuläre Pfade nutzen wollen.</p>
+  <p>Folgen Sie diesen Schritten, wenn Sie mÃ¶gliche Beschleunigungen durch pre-Caching Ihrer Konfiguration und Ã¼berspringen der PrÃ¼fungen
+  auf zirkulÃ¤re Pfade nutzen wollen.</p>
 
-  <p>1. Überprüfen Sie Ihre Konfiguration und legen Sie die precache-Datei mit den folgenden Befehlen an:</p>
+  <p>1. ÃœberprÃ¼fen Sie Ihre Konfiguration und legen Sie die precache-Datei mit den folgenden Befehlen an:</p>
 
   <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -vp /usr/local/icinga/etc/icinga.cfg
 </pre>
 
-  <p>2. Stoppen Sie Icinga, wenn es momentan läuft.</p>
+  <p>2. Stoppen Sie Icinga, wenn es momentan lÃ¤uft.</p>
 
-  <p>3. Starten Sie Icinga wie folgt, um die precached-Konfigurationsdatei zu nutzen und auf Prüfung auf zirkuläre Pfade zu
-  überspringen:</p>
+  <p>3. Starten Sie Icinga wie folgt, um die precached-Konfigurationsdatei zu nutzen und auf PrÃ¼fung auf zirkulÃ¤re Pfade zu
+  Ã¼berspringen:</p>
 
   <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -uxd /usr/local/icinga/etc/icinga.cfg
 </pre>
 
-  <p>4. Wenn Sie in Zukunft Ihre Konfigurationsdateien verändern und Icinga erneut starten müssen, damit diese Änderungen aktiv
-  werden, dann wiederholen Sie Schritt 1, um Ihre Konfiguration erneut zu überprüfen und die precached-Konfigurationsdatei zu erstellen.
-  Sobald das getan ist, können Sie Icinga über das Web-Interface oder durch das Senden eines SIGHUP-Signals neustarten. Wenn Sie die
+  <p>4. Wenn Sie in Zukunft Ihre Konfigurationsdateien verÃ¤ndern und Icinga erneut starten mÃ¼ssen, damit diese Ã„nderungen aktiv
+  werden, dann wiederholen Sie Schritt 1, um Ihre Konfiguration erneut zu Ã¼berprÃ¼fen und die precached-Konfigurationsdatei zu erstellen.
+  Sobald das getan ist, kÃ¶nnen Sie Icinga Ã¼ber das Web-Interface oder durch das Senden eines SIGHUP-Signals neustarten. Wenn Sie die
   precached-Objektdatei nicht neu erstellen, wird Icinga wieder Ihre alte Konfiguration benutzen, weil es die precached-Datei liest
   statt Ihrer Konfigurationsdateien.</p>
 
   <p>5. Das war's! Erfreuen Sie sich am Geschwindigkeitsgewinn beim Start.</p>
 
-  <a class="indexterm" name="id1590800"></a>
+  <a class="indexterm" name="id1557986"></a>
 
-  <a class="indexterm" name="id1590812"></a>
+  <a class="indexterm" name="id1557998"></a>
 
-  <a class="indexterm" name="id1590801"></a>
+  <a class="indexterm" name="id1558008"></a>
 
-  <a class="indexterm" name="id1590831"></a>
+  <a class="indexterm" name="id1558021"></a>
 
-  <a class="indexterm" name="id1590842"></a>
+  <a class="indexterm" name="id1558036"></a>
 
-  <a class="indexterm" name="id1590854"></a>
+  <a class="indexterm" name="id1558049"></a>
 
-  <a class="indexterm" name="id1590863"></a>
+  <a class="indexterm" name="id1558062"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="tuning.html">Zurück</a> </td>
+<a accesskey="p" href="tuning.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch08.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="largeinstalltweaks.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="largeinstalltweaks.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Icinga für maximale Leistung optimieren </td>
+<td width="40%" align="left" valign="top">Icinga fÃ¼r maximale Leistung optimierenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Large Installation Tweaks</td>
+<td width="40%" align="right" valign="top">Â Large Installation Tweaks</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

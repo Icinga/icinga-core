@@ -1,80 +1,81 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Host- und Service-Abhängigkeiten</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Host- und Service-AbhÃ¤ngigkeiten</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="clusters.html" title="Service- und Host-Gruppen überwachen">
+<link rel="prev" href="clusters.html" title="Service- und Host-Gruppen Ã¼berwachen">
 <link rel="next" href="stalking.html" title="Status Stalking">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Host- und Service-Abhängigkeiten</th></tr>
+<tr><th colspan="3" align="center">Host- und Service-AbhÃ¤ngigkeiten</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="clusters.html">Zurück</a> </td>
+<a accesskey="p" href="clusters.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="stalking.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="stalking.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Host- und Service-Abhängigkeiten">
+<div class="section" title="Host- und Service-AbhÃ¤ngigkeiten">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="dependencies"></a>Host- und Service-Abhängigkeiten</h2></div></div></div>
+<a name="dependencies"></a>Host- und Service-AbhÃ¤ngigkeiten</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Service- und Hostabhängigkeiten sind ein fortgeschrittenes Feature von Icinga, dass Ihnen die Kontrolle über Hosts
-  und Services erlaubt basierend auf dem Status von einem oder mehreren anderen Hosts oder Services. Wir werden erklären, wie
-  Abhängigkeiten arbeiten, zusammen mit den Unterschieden zwischen Host- und Service-Abhängigkeiten.</p>
+  <p>Service- und HostabhÃ¤ngigkeiten sind ein fortgeschrittenes Feature von Icinga, dass Ihnen die Kontrolle Ã¼ber Hosts
+  und Services erlaubt basierend auf dem Status von einem oder mehreren anderen Hosts oder Services. Wir werden erklÃ¤ren, wie
+  AbhÃ¤ngigkeiten arbeiten, zusammen mit den Unterschieden zwischen Host- und Service-AbhÃ¤ngigkeiten.</p>
 
-  <p><span class="bold"><strong>Überblick Service-Abhängigkeiten</strong></span></p>
+  <p><span class="bold"><strong>Ãœberblick Service-AbhÃ¤ngigkeiten</strong></span></p>
 
-  <p>Es gibt ein paar Dinge, die Sie über Service-Abhängigkeiten wissen sollten:</p>
+  <p>Es gibt ein paar Dinge, die Sie Ã¼ber Service-AbhÃ¤ngigkeiten wissen sollten:</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>ein Service kann von einem oder mehreren Services abhängig sein</p>
+      <p>ein Service kann von einem oder mehreren Services abhÃ¤ngig sein</p>
     </li>
 <li class="listitem">
-      <p>ein Service kann von Services abhängig sein, die nicht mit dem gleichen Host verbunden sind</p>
+      <p>ein Service kann von Services abhÃ¤ngig sein, die nicht mit dem gleichen Host verbunden sind</p>
     </li>
 <li class="listitem">
-      <p>Service-Abhängigkeiten werden nicht vererbt (solange es nicht explizit konfiguriert wurde)</p>
+      <p>Service-AbhÃ¤ngigkeiten werden nicht vererbt (solange es nicht explizit konfiguriert wurde)</p>
     </li>
 <li class="listitem">
-      <p>Service-Abhängigkeiten können benutzt werden, um Service-Prüfungen auszuführen und Service-Benachrichtigungen können
-      unter verschiedenen Umständen unterdrückt werden (OK, WARNING, UNKNOWN und/oder CRITICAL-Zustände)</p>
+      <p>Service-AbhÃ¤ngigkeiten kÃ¶nnen benutzt werden, um Service-PrÃ¼fungen auszufÃ¼hren und Service-Benachrichtigungen kÃ¶nnen
+      unter verschiedenen UmstÃ¤nden unterdrÃ¼ckt werden (OK, WARNING, UNKNOWN und/oder CRITICAL-ZustÃ¤nde)</p>
     </li>
 <li class="listitem">
-      <p>Service-Abhängigkeiten sind ggf. nur während bestimmter <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitfenster</a> gültig</p>
+      <p>Service-AbhÃ¤ngigkeiten sind ggf. nur wÃ¤hrend bestimmter <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitfenster</a> gÃ¼ltig</p>
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Service-Abhängigkeiten definieren</strong></span></p>
+  <p><span class="bold"><strong>Service-AbhÃ¤ngigkeiten definieren</strong></span></p>
 
-  <p>Zuerst die Grundlagen. Sie erstellen Service-Abhängigkeiten durch Hinzufügen von <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeitsdefinitionen</a> in der/n <a class="link" href="configobject.html" title="Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>. In jeder Definition geben Sie den <span class="emphasis"><em>abhängigen</em></span>
-  Service an, den Service, von dem sie <span class="emphasis"><em>abhängen</em></span> und die Kriterien (falls vorhanden), die die Ausführung und
-  Benachrichtungsabhängigkeiten fehlschlagen lassen (diese werden später beschrieben).</p>
+  <p>Zuerst die Grundlagen. Sie erstellen Service-AbhÃ¤ngigkeiten durch HinzufÃ¼gen von <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-AbhÃ¤ngigkeitsdefinitionen</a> in der/n <a class="link" href="configobject.html" title="Ãœberblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>. In jeder Definition geben Sie den <span class="emphasis"><em>abhÃ¤ngigen</em></span>
+  Service an, den Service, von dem sie <span class="emphasis"><em>abhÃ¤ngen</em></span> und die Kriterien (falls vorhanden), die die AusfÃ¼hrung und
+  BenachrichtungsabhÃ¤ngigkeiten fehlschlagen lassen (diese werden spÃ¤ter beschrieben).</p>
 
-  <p>Sie können mehrere Abhängigkeiten für einen bestimmten Service erstellen, aber Sie müssen eine eigene
-  Service-Abhängigkeitsdefinition anlegen für jede Abhängigkeit, die Sie erstellen.</p>
+  <p>Sie kÃ¶nnen mehrere AbhÃ¤ngigkeiten fÃ¼r einen bestimmten Service erstellen, aber Sie mÃ¼ssen eine eigene
+  Service-AbhÃ¤ngigkeitsdefinition anlegen fÃ¼r jede AbhÃ¤ngigkeit, die Sie erstellen.</p>
 
-  <p><span class="bold"><strong>Beispiel Service-Abhängigkeiten</strong></span></p>
+  <p><span class="bold"><strong>Beispiel Service-AbhÃ¤ngigkeiten</strong></span></p>
 
-  <p>Das folgende Bild zeigt ein beispielhaftes Logik-Layout von Service-Benachrichtigungen und Ausführungsabhängigkeiten.
-  Verschiedene Services sind abhängig von anderen Services bzgl. Benachrichtigungen und Prüfausführung.</p>
+  <p>Das folgende Bild zeigt ein beispielhaftes Logik-Layout von Service-Benachrichtigungen und AusfÃ¼hrungsabhÃ¤ngigkeiten.
+  Verschiedene Services sind abhÃ¤ngig von anderen Services bzgl. Benachrichtigungen und PrÃ¼fausfÃ¼hrung.</p>
 
   <div class="mediaobject"><img src="../images/service-dependencies.png"></div>
 
-  <p>In diesem Beispiel würde die Abhängigkeitsdefinition für <span class="emphasis"><em>Service F</em></span> auf <span class="emphasis"><em>Host C</em></span>
+  <p>In diesem Beispiel wÃ¼rde die AbhÃ¤ngigkeitsdefinition fÃ¼r <span class="emphasis"><em>Service F</em></span> auf <span class="emphasis"><em>Host C</em></span>
   wie folgt aussehen:</p>
 
   <pre class="screen"> define servicedependency{
@@ -102,7 +103,7 @@
         notification_failure_criteria   c
         }</pre>
 
-  <p>Die anderen im obigen Bild gezeigten Abhängigkeitsdefinitionen würden wie folgt definiert:</p>
+  <p>Die anderen im obigen Bild gezeigten AbhÃ¤ngigkeitsdefinitionen wÃ¼rden wie folgt definiert:</p>
 
   <pre class="screen"> define servicedependency{
         host_name                       Host A
@@ -129,92 +130,92 @@
         notification_failure_criteria   w,u,c
         }</pre>
 
-  <p><span class="bold"><strong>Wie Service-Abhängigkeiten getestet werden</strong></span></p>
+  <p><span class="bold"><strong>Wie Service-AbhÃ¤ngigkeiten getestet werden</strong></span></p>
 
-  <p>Bevor Icinga eine Service-Prüfung ausführt oder Benachrichtigungen für einen Service versendet, wird es prüfen, ob
-  der Service irgendwelche Abhängigkeiten hat. Wenn es keine Abhängigkeiten gibt, wird die Prüfung ausgeführt oder die
-  Benachrichtigung versandt, wie es sein sollte. Falls der Service ein oder mehrere Abhängigkeiten <span class="emphasis"><em>hat</em></span>, wird
-  Icinga jeden Abhängigkeitseintrag wie folgt prüfen:</p>
+  <p>Bevor Icinga eine Service-PrÃ¼fung ausfÃ¼hrt oder Benachrichtigungen fÃ¼r einen Service versendet, wird es prÃ¼fen, ob
+  der Service irgendwelche AbhÃ¤ngigkeiten hat. Wenn es keine AbhÃ¤ngigkeiten gibt, wird die PrÃ¼fung ausgefÃ¼hrt oder die
+  Benachrichtigung versandt, wie es sein sollte. Falls der Service ein oder mehrere AbhÃ¤ngigkeiten <span class="emphasis"><em>hat</em></span>, wird
+  Icinga jeden AbhÃ¤ngigkeitseintrag wie folgt prÃ¼fen:</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Icinga erhält den aktuellen Status<sup> <a class="link" href="dependencies.html#dependencies-hard_dependencies">*</a>
-      </sup> des Services, von dem der Eintrag <span class="emphasis"><em>abhängig</em></span> ist.</p>
+      <p>Icinga erhÃ¤lt den aktuellen Status<sup> <a class="link" href="dependencies.html#dependencies-hard_dependencies">*</a>
+      </sup> des Services, von dem der Eintrag <span class="emphasis"><em>abhÃ¤ngig</em></span> ist.</p>
     </li>
 <li class="listitem">
-      <p>Icinga vergleicht den Status des Services, von dem der Eintrag <span class="emphasis"><em>abhängig</em></span> ist, gegen die
-      Ausführungs- oder Benachrichtigungsfehleroptionen in der Abhängigkeitsdefinition (je nachdem, welche zu dieser Zeit relevant
+      <p>Icinga vergleicht den Status des Services, von dem der Eintrag <span class="emphasis"><em>abhÃ¤ngig</em></span> ist, gegen die
+      AusfÃ¼hrungs- oder Benachrichtigungsfehleroptionen in der AbhÃ¤ngigkeitsdefinition (je nachdem, welche zu dieser Zeit relevant
       ist).</p>
     </li>
 <li class="listitem">
-      <p>wenn der aktuelle Status des Services, von dem der Eintrag <span class="emphasis"><em>abhängig</em></span> ist, mit einer der
-      Fehleroptionen übereinstimmt, dann wird die Abhängigkeit als fehlerhaft angesehen und Icinga verlässt die
-      Abhängigkeits-Prüfschleife.</p>
+      <p>wenn der aktuelle Status des Services, von dem der Eintrag <span class="emphasis"><em>abhÃ¤ngig</em></span> ist, mit einer der
+      Fehleroptionen Ã¼bereinstimmt, dann wird die AbhÃ¤ngigkeit als fehlerhaft angesehen und Icinga verlÃ¤sst die
+      AbhÃ¤ngigkeits-PrÃ¼fschleife.</p>
     </li>
 <li class="listitem">
-      <p>wenn der aktuelle Status des Services, von dem der Eintrag <span class="emphasis"><em>abhängig</em></span> ist, nicht mit einer der
-      Fehleroptionen übereinstimmt, dann wird die Abhängigkeit als korrekt durchlaufen angesehen und Icinga wird fortfahren
-      und den nächsten Abhängigkeitseintrag prüfen.</p>
+      <p>wenn der aktuelle Status des Services, von dem der Eintrag <span class="emphasis"><em>abhÃ¤ngig</em></span> ist, nicht mit einer der
+      Fehleroptionen Ã¼bereinstimmt, dann wird die AbhÃ¤ngigkeit als korrekt durchlaufen angesehen und Icinga wird fortfahren
+      und den nÃ¤chsten AbhÃ¤ngigkeitseintrag prÃ¼fen.</p>
     </li>
 </ol></div>
 
-  <p>Dieser Ablauf wird ausgeführt, bis entweder alle Abhängigkeiten für diesen Service geprüft wurden oder eine
-  Abhängigkeitsprüfung fehlschlägt.</p>
+  <p>Dieser Ablauf wird ausgefÃ¼hrt, bis entweder alle AbhÃ¤ngigkeiten fÃ¼r diesen Service geprÃ¼ft wurden oder eine
+  AbhÃ¤ngigkeitsprÃ¼fung fehlschlÃ¤gt.</p>
 
   <p><a name="dependencies-hard_dependencies"></a><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: <sup>*</sup>Bitte beachten Sie, dass Icinga per Default den aktuellsten
-  <a class="link" href="statetypes.html" title="Statustypen">Hard-Status</a> des/r Services benutzt, von dem der Eintrag abhängig ist, wenn es die
-  Abhängigkeitsprüfungen durchführt. Wenn Icinga den aktuellsten Status des/r Services benutzen soll (egal, ob es sich um
+  <a class="link" href="statetypes.html" title="Statustypen">Hard-Status</a> des/r Services benutzt, von dem der Eintrag abhÃ¤ngig ist, wenn es die
+  AbhÃ¤ngigkeitsprÃ¼fungen durchfÃ¼hrt. Wenn Icinga den aktuellsten Status des/r Services benutzen soll (egal, ob es sich um
   einen Hard- oder Soft-Zustand handelt), dann aktivieren Sie die <a class="link" href="configmain.html#configmain-soft_state_dependencies">soft_state_dependencies</a>-Option.</p>
 
-  <p><span class="bold"><strong>Ausführungsabhängigkeiten</strong></span></p>
+  <p><span class="bold"><strong>AusfÃ¼hrungsabhÃ¤ngigkeiten</strong></span></p>
 
-  <p>Ausführungsabhängigkeiten werden benutzt, um einzuschränken, wann <a class="link" href="activechecks.html" title="Aktive Prüfungen (Active Checks)">aktive Prüfungen</a>
-  eines Service ausgeführt werden können. <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">Passive Prüfungen</a> werden durch
-  Ausführungsabhängigkeiten nicht eingeschränkt.</p>
+  <p>AusfÃ¼hrungsabhÃ¤ngigkeiten werden benutzt, um einzuschrÃ¤nken, wann <a class="link" href="activechecks.html" title="Aktive PrÃ¼fungen (Active Checks)">aktive PrÃ¼fungen</a>
+  eines Service ausgefÃ¼hrt werden kÃ¶nnen. <a class="link" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">Passive PrÃ¼fungen</a> werden durch
+  AusfÃ¼hrungsabhÃ¤ngigkeiten nicht eingeschrÃ¤nkt.</p>
 
-  <p>Wenn <span class="emphasis"><em>alle</em></span> der Ausführungsabhängigkeitstests für den Service <span class="emphasis"><em>erfolgreich</em></span>
-  durchlaufen wurden, wird Icinga die Prüfung für den Service durchführen, wie es das normal tun würde. Wenn auch nur einer
-  der Ausführungsabhängigkeiten für einen Service fehlschlägt, wird Icinga vorübergehend die Ausführung von Prüfungen für
-  diesen (abhängigen) Service verhindern. Irgendwann in der Zukunft können die Ausführungsabhängigkeitstests für den Service
-  erfolgreich durchlaufen werden. Wenn dies geschieht, wird Icinga mit der Prüfung des Service beginnen, wie es das normal
-  tun würde. Mehr Informationen über die Logik der Prüfungsplanung finden Sie <a class="link" href="checkscheduling.html" title="Service- und Host-Prüfungsplanung">hier</a>.</p>
+  <p>Wenn <span class="emphasis"><em>alle</em></span> der AusfÃ¼hrungsabhÃ¤ngigkeitstests fÃ¼r den Service <span class="emphasis"><em>erfolgreich</em></span>
+  durchlaufen wurden, wird Icinga die PrÃ¼fung fÃ¼r den Service durchfÃ¼hren, wie es das normal tun wÃ¼rde. Wenn auch nur einer
+  der AusfÃ¼hrungsabhÃ¤ngigkeiten fÃ¼r einen Service fehlschlÃ¤gt, wird Icinga vorÃ¼bergehend die AusfÃ¼hrung von PrÃ¼fungen fÃ¼r
+  diesen (abhÃ¤ngigen) Service verhindern. Irgendwann in der Zukunft kÃ¶nnen die AusfÃ¼hrungsabhÃ¤ngigkeitstests fÃ¼r den Service
+  erfolgreich durchlaufen werden. Wenn dies geschieht, wird Icinga mit der PrÃ¼fung des Service beginnen, wie es das normal
+  tun wÃ¼rde. Mehr Informationen Ã¼ber die Logik der PrÃ¼fungsplanung finden Sie <a class="link" href="checkscheduling.html" title="Service- und Host-PrÃ¼fungsplanung">hier</a>.</p>
 
-  <p>Im obigen Beispiel wären die Tests der Ausführungsabhängigkeiten für <span class="bold"><strong>Service E</strong></span>
+  <p>Im obigen Beispiel wÃ¤ren die Tests der AusfÃ¼hrungsabhÃ¤ngigkeiten fÃ¼r <span class="bold"><strong>Service E</strong></span>
   fehlgeschlagen, wenn <span class="bold"><strong>Service B</strong></span> in einem WARNING- oder UNKNOWN-Zustand ist. Falls dies der Fall
-  ist, würde die Service-Prüfung nicht ausgeführt und die Prüfung würde für eine (mögliche) Ausführung zu einem späteren Zeitpunkt
+  ist, wÃ¼rde die Service-PrÃ¼fung nicht ausgefÃ¼hrt und die PrÃ¼fung wÃ¼rde fÃ¼r eine (mÃ¶gliche) AusfÃ¼hrung zu einem spÃ¤teren Zeitpunkt
   geplant.</p>
 
-  <p><span class="bold"><strong>Benachrichtigungsabhängigkeiten</strong></span></p>
+  <p><span class="bold"><strong>BenachrichtigungsabhÃ¤ngigkeiten</strong></span></p>
 
-  <p>Wenn <span class="emphasis"><em>alle</em></span> der Benachrichtigungsabhängigkeitstests für den Service <span class="emphasis"><em>erfolgreich</em></span>
-  durchlaufen wurden, wird Icinga Benachrichtigungen für den Service versenden, wie es das normal tun würde. Wenn auch nur
-  einer der Benachrichtigungsabhängigkeiten für einen Service fehlschlägt, wird Icinga vorübergehend die Benachrichtigungen
-  für diesen (abhängigen) Service unterdrücken. Irgendwann in der Zukunft können die Benachrichtigungsabhängigkeitstests für den
-  Service erfolgreich durchlaufen werden. Wenn dies geschieht, wird Icinga mit dem Versand von Benachrichtigungen für
-  diesen Service beginnen, wie es das normal tun würde. Mehr Informationen über die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="Benachrichtigungen">hier</a>.</p>
+  <p>Wenn <span class="emphasis"><em>alle</em></span> der BenachrichtigungsabhÃ¤ngigkeitstests fÃ¼r den Service <span class="emphasis"><em>erfolgreich</em></span>
+  durchlaufen wurden, wird Icinga Benachrichtigungen fÃ¼r den Service versenden, wie es das normal tun wÃ¼rde. Wenn auch nur
+  einer der BenachrichtigungsabhÃ¤ngigkeiten fÃ¼r einen Service fehlschlÃ¤gt, wird Icinga vorÃ¼bergehend die Benachrichtigungen
+  fÃ¼r diesen (abhÃ¤ngigen) Service unterdrÃ¼cken. Irgendwann in der Zukunft kÃ¶nnen die BenachrichtigungsabhÃ¤ngigkeitstests fÃ¼r den
+  Service erfolgreich durchlaufen werden. Wenn dies geschieht, wird Icinga mit dem Versand von Benachrichtigungen fÃ¼r
+  diesen Service beginnen, wie es das normal tun wÃ¼rde. Mehr Informationen Ã¼ber die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="Benachrichtigungen">hier</a>.</p>
 
-  <p>Im obigen Beispiel wären die Tests der Benachrichtigungsabhängigkeiten für <span class="bold"><strong>Service F</strong></span>
-  fehlgeschlagen, wenn <span class="bold"><strong>Service C</strong></span> in einem CRITICAL-Zustand <span class="emphasis"><em>und/oder</em></span><span class="bold"><strong>Service D</strong></span> in einem WARNING- oder UNKNOWN-Zustand <span class="emphasis"><em>und/oder</em></span><span class="bold"><strong>Service E</strong></span> in einem WARNING-, UNKNOWN- oder CRITICAL-Zustand ist. Falls dies der Fall ist, würden keine
+  <p>Im obigen Beispiel wÃ¤ren die Tests der BenachrichtigungsabhÃ¤ngigkeiten fÃ¼r <span class="bold"><strong>Service F</strong></span>
+  fehlgeschlagen, wenn <span class="bold"><strong>Service C</strong></span> in einem CRITICAL-Zustand <span class="emphasis"><em>und/oder</em></span><span class="bold"><strong>Service D</strong></span> in einem WARNING- oder UNKNOWN-Zustand <span class="emphasis"><em>und/oder</em></span><span class="bold"><strong>Service E</strong></span> in einem WARNING-, UNKNOWN- oder CRITICAL-Zustand ist. Falls dies der Fall ist, wÃ¼rden keine
   Benachrichtigungen versandt werden.</p>
 
-  <p><span class="bold"><strong>Abhängigkeitsvererbung</strong></span></p>
+  <p><span class="bold"><strong>AbhÃ¤ngigkeitsvererbung</strong></span></p>
 
-  <p>Wie bereits erwähnt werden Service-Abhängigkeiten <span class="emphasis"><em>nicht</em></span> per Default vererbt. Im obigen Beispiel sehen
-  Sie, dass Service F von Service E abhängig ist. Trotzdem erbt er nicht automatisch die Abhängigkeiten von Service E zu Service B
-  und Service C. Um Service F von Service C abhängig zu machen, müssen wir eine weitere Service-Abhängigkeitsdefinition
-  hinzufügen. Es gibt keine Abhängigkeitsdefinition für Service B, also ist Service F <span class="emphasis"><em>nicht</em></span> abhängig von
+  <p>Wie bereits erwÃ¤hnt werden Service-AbhÃ¤ngigkeiten <span class="emphasis"><em>nicht</em></span> per Default vererbt. Im obigen Beispiel sehen
+  Sie, dass Service F von Service E abhÃ¤ngig ist. Trotzdem erbt er nicht automatisch die AbhÃ¤ngigkeiten von Service E zu Service B
+  und Service C. Um Service F von Service C abhÃ¤ngig zu machen, mÃ¼ssen wir eine weitere Service-AbhÃ¤ngigkeitsdefinition
+  hinzufÃ¼gen. Es gibt keine AbhÃ¤ngigkeitsdefinition fÃ¼r Service B, also ist Service F <span class="emphasis"><em>nicht</em></span> abhÃ¤ngig von
   Service B.</p>
 
-  <p>Wenn Sie Service-Abhängigkeiten vererbbar machen <span class="emphasis"><em>wollen</em></span>, müssen Sie die
-  <span class="emphasis"><em>inherits_parent</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeits</a>-Definition benutzen. Wenn diese Direktive aktiviert
-  ist, bedeutet das, dass der Abhängige die Abhängigkeiten des Service erbt, von dem er abhängt (auch als Master-Service
-  bezeichnet). Mit anderen Worten, wenn der Master-Service von anderen Services abhängt und eine von diesen Abhängigkeiten
-  fehlschlägt, wird auch dieser Service fehlschlagen.</p>
+  <p>Wenn Sie Service-AbhÃ¤ngigkeiten vererbbar machen <span class="emphasis"><em>wollen</em></span>, mÃ¼ssen Sie die
+  <span class="emphasis"><em>inherits_parent</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-AbhÃ¤ngigkeits</a>-Definition benutzen. Wenn diese Direktive aktiviert
+  ist, bedeutet das, dass der AbhÃ¤ngige die AbhÃ¤ngigkeiten des Service erbt, von dem er abhÃ¤ngt (auch als Master-Service
+  bezeichnet). Mit anderen Worten, wenn der Master-Service von anderen Services abhÃ¤ngt und eine von diesen AbhÃ¤ngigkeiten
+  fehlschlÃ¤gt, wird auch dieser Service fehlschlagen.</p>
 
-  <p>Stellen Sie sich für das obige Beispiel vor, Sie möchten eine neue Abhängigkeit für Service F hinzufügen, um ihn von
-  Service A abhängig zu machen. Sie können eine neue Abhängigkeitsdefinition erzeugen, die Service F als den
-  <span class="emphasis"><em>abhängigen</em></span> Service und Service A als den <span class="emphasis"><em>Master</em></span>-Service angibt (d.h. der Service, auf
-  den F <span class="emphasis"><em>angewiesen</em></span> ist). Sie können alternativ die Abhängigkeitsdefinition der Services D und F verändern,
+  <p>Stellen Sie sich fÃ¼r das obige Beispiel vor, Sie mÃ¶chten eine neue AbhÃ¤ngigkeit fÃ¼r Service F hinzufÃ¼gen, um ihn von
+  Service A abhÃ¤ngig zu machen. Sie kÃ¶nnen eine neue AbhÃ¤ngigkeitsdefinition erzeugen, die Service F als den
+  <span class="emphasis"><em>abhÃ¤ngigen</em></span> Service und Service A als den <span class="emphasis"><em>Master</em></span>-Service angibt (d.h. der Service, auf
+  den F <span class="emphasis"><em>angewiesen</em></span> ist). Sie kÃ¶nnen alternativ die AbhÃ¤ngigkeitsdefinition der Services D und F verÃ¤ndern,
   die dann wie folgt aussehen:</p>
 
   <pre class="screen"> define servicedependency{
@@ -227,49 +228,49 @@
         inherits_parent                 1
         }</pre>
 
-  <p>Weil die <span class="emphasis"><em>inherits_parent</em></span>-Direktive aktiviert ist, werden die Abhängigkeiten zwischen den Services A
-  und D getestet, wenn die Abhängigkeiten zwischen den Services F und D getestet werden.</p>
+  <p>Weil die <span class="emphasis"><em>inherits_parent</em></span>-Direktive aktiviert ist, werden die AbhÃ¤ngigkeiten zwischen den Services A
+  und D getestet, wenn die AbhÃ¤ngigkeiten zwischen den Services F und D getestet werden.</p>
 
-  <p>Abhängigkeiten können mehrere Vererbungsebenen haben. Wenn bei der Abhängigkeitsdefinition zwischen A und D die
-  <span class="emphasis"><em>inherits_parent</em></span>-Direktive aktiviert ist und Service A von einem anderen Service abhängig ist (sagen wir
-  Service G), dann wäre Service F von den Services D, A und G abhängig (jeder mit möglicherweise unterschiedlichen
+  <p>AbhÃ¤ngigkeiten kÃ¶nnen mehrere Vererbungsebenen haben. Wenn bei der AbhÃ¤ngigkeitsdefinition zwischen A und D die
+  <span class="emphasis"><em>inherits_parent</em></span>-Direktive aktiviert ist und Service A von einem anderen Service abhÃ¤ngig ist (sagen wir
+  Service G), dann wÃ¤re Service F von den Services D, A und G abhÃ¤ngig (jeder mit mÃ¶glicherweise unterschiedlichen
   Kriterien).</p>
 
-  <p><span class="bold"><strong>Host-Abhängigkeiten</strong></span></p>
+  <p><span class="bold"><strong>Host-AbhÃ¤ngigkeiten</strong></span></p>
 
-  <p>Wie Sie vielleicht erwarten, arbeiten Host-Abhängigkeiten in einer ähnlichen Weise wie Service-Abhängigkeiten. Der
-  Unterschied ist, dass sie für Hosts gelten und nicht für Services.</p>
+  <p>Wie Sie vielleicht erwarten, arbeiten Host-AbhÃ¤ngigkeiten in einer Ã¤hnlichen Weise wie Service-AbhÃ¤ngigkeiten. Der
+  Unterschied ist, dass sie fÃ¼r Hosts gelten und nicht fÃ¼r Services.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Verwechseln Sie Host-Abhängigkeiten nicht mit Eltern/Kind-Beziehungen. Sie sollten in den
-  meisten Fällen Eltern/Kind-Beziehungen (mit Hilfe der <span class="emphasis"><em>parents</em></span>-Direktive in den <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen) benutzen statt Host-Abhängigkeiten. Eine Beschreibung, wie
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Verwechseln Sie Host-AbhÃ¤ngigkeiten nicht mit Eltern/Kind-Beziehungen. Sie sollten in den
+  meisten FÃ¤llen Eltern/Kind-Beziehungen (mit Hilfe der <span class="emphasis"><em>parents</em></span>-Direktive in den <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen) benutzen statt Host-AbhÃ¤ngigkeiten. Eine Beschreibung, wie
   Eltern/Kind-Beziehungen arbeiten, finden Sie in der Dokumentation zur <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerkerreichbarkeit</a>.</p>
 
-  <p>Hier die Grundlagen zu Host-Abhängigkeiten:</p>
+  <p>Hier die Grundlagen zu Host-AbhÃ¤ngigkeiten:</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>ein Host kann von einem oder mehreren Hosts abhängig sein</p>
+      <p>ein Host kann von einem oder mehreren Hosts abhÃ¤ngig sein</p>
     </li>
 <li class="listitem">
-      <p>Host-Abhängigkeiten werden nicht vererbt (solange es nicht explizit konfiguriert wurde)</p>
+      <p>Host-AbhÃ¤ngigkeiten werden nicht vererbt (solange es nicht explizit konfiguriert wurde)</p>
     </li>
 <li class="listitem">
-      <p>Host-Abhängigkeiten können genutzt werden, um Host-Prüfungen auszuführen und Host-Benachrichtigungen unter bestimmten
-      Umständen zu unterdrücken (UP, DOWN- und/oder UNREACHABLE-Zustände)</p>
+      <p>Host-AbhÃ¤ngigkeiten kÃ¶nnen genutzt werden, um Host-PrÃ¼fungen auszufÃ¼hren und Host-Benachrichtigungen unter bestimmten
+      UmstÃ¤nden zu unterdrÃ¼cken (UP, DOWN- und/oder UNREACHABLE-ZustÃ¤nde)</p>
     </li>
 <li class="listitem">
-      <p>Host-Abhängigkeiten sind ggf. nur während bestimmter <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitfenster</a> gültig</p>
+      <p>Host-AbhÃ¤ngigkeiten sind ggf. nur wÃ¤hrend bestimmter <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitfenster</a> gÃ¼ltig</p>
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Beispiel Host-Abhängigkeiten</strong></span></p>
+  <p><span class="bold"><strong>Beispiel Host-AbhÃ¤ngigkeiten</strong></span></p>
 
-  <p>Das folgende Bild zeigt ein Beispiel für das logische Layout von Benachrichtigungsabhängigkeiten. Verschiedene Hosts sind
-  bzgl. Benachrichtigungen abhängig von anderen Hosts.</p>
+  <p>Das folgende Bild zeigt ein Beispiel fÃ¼r das logische Layout von BenachrichtigungsabhÃ¤ngigkeiten. Verschiedene Hosts sind
+  bzgl. Benachrichtigungen abhÃ¤ngig von anderen Hosts.</p>
 
   <div class="mediaobject"><img src="../images/host-dependencies.png"></div>
 
-  <p>Im obigen Beispiel würden die Abhängigkeitsdefinitionen für <span class="emphasis"><em>Host C</em></span> wie folgt aussehen:</p>
+  <p>Im obigen Beispiel wÃ¼rden die AbhÃ¤ngigkeitsdefinitionen fÃ¼r <span class="emphasis"><em>Host C</em></span> wie folgt aussehen:</p>
 
   <pre class="screen"> define hostdependency{
         host_name                       Host A
@@ -282,37 +283,37 @@
         notification_failure_criteria   d,u
         }</pre>
 
-  <p>Wie bei Service-Abhängigkeiten werden Host-Abhängigkeiten nicht vererbt. Im Beispielbild sehen Sie, dass Host C nicht die
-  Host-Abhängigkeiten von Host B erbt. Um Host C von Host A abhängig zu machen, muss eine neue Host-Abhängigkeitsdefinition
+  <p>Wie bei Service-AbhÃ¤ngigkeiten werden Host-AbhÃ¤ngigkeiten nicht vererbt. Im Beispielbild sehen Sie, dass Host C nicht die
+  Host-AbhÃ¤ngigkeiten von Host B erbt. Um Host C von Host A abhÃ¤ngig zu machen, muss eine neue Host-AbhÃ¤ngigkeitsdefinition
   erstellt werden.</p>
 
-  <p>Host-Benachrichtigungsabhängigkeiten arbeiten in einer ähnlichen Weise wie Service-Benachrichtigungsabhängigkeiten. Wenn
-  <span class="emphasis"><em>alle</em></span> der Benachrichtigungsabhängigkeitstests für den Host <span class="emphasis"><em>erfolgreich</em></span> durchlaufen
-  wurden, wird Icinga Benachrichtigungen für den Host versenden, wie es das normal tun würde. Wenn auch nur einer der
-  Benachrichtigungsabhängigkeiten für einen Host fehlschlägt, wird Icinga vorübergehend die Benachrichtigungen für diesen
-  (abhängigen) Host unterdrücken. Irgendwann in der Zukunft können die Benachrichtigungsabhängigkeitstests für den Host
-  erfolgreich durchlaufen werden. Wenn dies geschieht, wird Icinga mit dem Versand von Benachrichtigungen für diesen Host
-  beginnen, wie es das normal tun würde. Mehr Informationen über die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="Benachrichtigungen">hier</a>.</p>
-  <a class="indexterm" name="id1580181"></a>
-  <a class="indexterm" name="id1580192"></a>
+  <p>Host-BenachrichtigungsabhÃ¤ngigkeiten arbeiten in einer Ã¤hnlichen Weise wie Service-BenachrichtigungsabhÃ¤ngigkeiten. Wenn
+  <span class="emphasis"><em>alle</em></span> der BenachrichtigungsabhÃ¤ngigkeitstests fÃ¼r den Host <span class="emphasis"><em>erfolgreich</em></span> durchlaufen
+  wurden, wird Icinga Benachrichtigungen fÃ¼r den Host versenden, wie es das normal tun wÃ¼rde. Wenn auch nur einer der
+  BenachrichtigungsabhÃ¤ngigkeiten fÃ¼r einen Host fehlschlÃ¤gt, wird Icinga vorÃ¼bergehend die Benachrichtigungen fÃ¼r diesen
+  (abhÃ¤ngigen) Host unterdrÃ¼cken. Irgendwann in der Zukunft kÃ¶nnen die BenachrichtigungsabhÃ¤ngigkeitstests fÃ¼r den Host
+  erfolgreich durchlaufen werden. Wenn dies geschieht, wird Icinga mit dem Versand von Benachrichtigungen fÃ¼r diesen Host
+  beginnen, wie es das normal tun wÃ¼rde. Mehr Informationen Ã¼ber die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="Benachrichtigungen">hier</a>.</p>
+  <a class="indexterm" name="id1547352"></a>
+  <a class="indexterm" name="id1547373"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="clusters.html">Zurück</a> </td>
+<a accesskey="p" href="clusters.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="stalking.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="stalking.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Service- und Host-Gruppen überwachen </td>
+<td width="40%" align="left" valign="top">Service- und Host-Gruppen Ã¼berwachenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Status Stalking</td>
+<td width="40%" align="right" valign="top">Â Status Stalking</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

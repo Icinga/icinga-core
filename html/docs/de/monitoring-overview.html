@@ -1,119 +1,120 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Monitoring-Überblick</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Monitoring-Ãœberblick</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="upgrading_idoutils.html" title="IDOUtils-Datenbank aktualisieren">
-<link rel="next" href="monitoring-windows.html" title="Windows-Maschinen überwachen">
+<link rel="next" href="monitoring-windows.html" title="Windows-Maschinen Ã¼berwachen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Monitoring-Überblick</th></tr>
+<tr><th colspan="3" align="center">Monitoring-Ãœberblick</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="upgrading_idoutils.html">Zurück</a> </td>
+<a accesskey="p" href="upgrading_idoutils.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 2. Los geht's</th>
-<td width="20%" align="right"> <a accesskey="n" href="monitoring-windows.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="monitoring-windows.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Monitoring-Überblick">
+<div class="section" title="Monitoring-Ãœberblick">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-overview"></a><a name="monitoring_overview"></a>Monitoring-Überblick</h2></div></div></div>
+<a name="monitoring-overview"></a><a name="monitoring_overview"></a>Monitoring-Ãœberblick</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Icinga ist gedacht, um "Geräte" (z.B. Server, Router, Drucker und andere Hardware wie Temperatursensoren, usw.) und
-  "Services" (Prozesse auf diesen Geräten bzw. Metriken) zu überwachen. Es gibt verschiedene Wege, das zu tun und unterschiedliche Ansätze
-  für unterschiedliche Geräte, abhängig von Ihren Bedürfnissen oder der Infrastruktur.</p>
+  <p>Icinga ist gedacht, um "GerÃ¤te" (z.B. Server, Router, Drucker und andere Hardware wie Temperatursensoren, usw.) und
+  "Services" (Prozesse auf diesen GerÃ¤ten bzw. Metriken) zu Ã¼berwachen. Es gibt verschiedene Wege, das zu tun und unterschiedliche AnsÃ¤tze
+  fÃ¼r unterschiedliche GerÃ¤te, abhÃ¤ngig von Ihren BedÃ¼rfnissen oder der Infrastruktur.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="activechecks.html" title="Aktive Prüfungen (Active Checks)">Aktive Prüfungen</a></p>
+      <p><a class="link" href="activechecks.html" title="Aktive PrÃ¼fungen (Active Checks)">Aktive PrÃ¼fungen</a></p>
 
-      <p>Die Prüfungen werden vom Überwachungsrechner zu vorgegebenen Intervallen initiiert. Der Server warten auf die Prüfergebnisse.
-      Die Mess- und Schwellwerte werden auf dem Überwachungsrechner gesetzt. Die Prüfergebnisse können abgefragt werden</p>
+      <p>Die PrÃ¼fungen werden vom Ãœberwachungsrechner zu vorgegebenen Intervallen initiiert. Der Server warten auf die PrÃ¼fergebnisse.
+      Die Mess- und Schwellwerte werden auf dem Ãœberwachungsrechner gesetzt. Die PrÃ¼fergebnisse kÃ¶nnen abgefragt werden</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p>mit Hilfe von SNMP. Auf dem entfernten System läuft ein SNMP-Dämon, der das Auslesen der erforderlichen Werte erlaubt.
-          Abhängig von Plugin und Dämon werden SNMP v1, v2c bzw. v3 unterstützt</p>
+          <p>mit Hilfe von SNMP. Auf dem entfernten System lÃ¤uft ein SNMP-DÃ¤mon, der das Auslesen der erforderlichen Werte erlaubt.
+          AbhÃ¤ngig von Plugin und DÃ¤mon werden SNMP v1, v2c bzw. v3 unterstÃ¼tzt</p>
         </li>
 <li class="listitem">
-          <p>per <a class="link" href="nrpe.html" title="NRPE">NRPE</a>, das einen NRPE-Dämon auf dem entfernten System kontaktiert, das eine Prüfung ausführt
-          und die Ergebnisse an NRPE zurückliefert, das sie wiederum an den Icinga-Prozess übergibt</p>
+          <p>per <a class="link" href="nrpe.html" title="NRPE">NRPE</a>, das einen NRPE-DÃ¤mon auf dem entfernten System kontaktiert, das eine PrÃ¼fung ausfÃ¼hrt
+          und die Ergebnisse an NRPE zurÃ¼ckliefert, das sie wiederum an den Icinga-Prozess Ã¼bergibt</p>
         </li>
 <li class="listitem">
-          <p>über ein Plugin, das SSH benutzt, um eine Prüfung auf dem entfernten System ausführt und die Daten an das Plugin
-          zurückliefert</p>
+          <p>Ã¼ber ein Plugin, das SSH benutzt, um eine PrÃ¼fung auf dem entfernten System ausfÃ¼hrt und die Daten an das Plugin
+          zurÃ¼ckliefert</p>
         </li>
 <li class="listitem">
-          <p>über das Plugin check_nt, das einen Dienst (z.B. "<a class="link" href="http://nsclient.org" target="_top">NSClient++</a>") auf dem
-          entfernten Windows-System anspricht und die Daten zu verschiedenen Metriken zurückliefert</p>
+          <p>Ã¼ber das Plugin check_nt, das einen Dienst (z.B. "<a class="link" href="http://nsclient.org" target="_top">NSClient++</a>") auf dem
+          entfernten Windows-System anspricht und die Daten zu verschiedenen Metriken zurÃ¼ckliefert</p>
         </li>
 <li class="listitem">
           <p>mit Hilfe von Addons wie <a class="link" href="http://my-plugin.de" target="_top">check_multi</a> oder <a class="link" href="http://mathias-kettner.de/check_mk_overview.html" target="_top">check_mk</a>, die ihrerseits Plugins aufrufen, um die Belastung
-          des Überwachungsprozesses zu verringen (durch parallelisierte Aufrufe). Die Konfiguration von Mess- und Schwellwerten wird
-          größtenteils auf diese Addons verlagert, was den Konfigurationsaufwand erhöhen kann</p>
+          des Ãœberwachungsprozesses zu verringen (durch parallelisierte Aufrufe). Die Konfiguration von Mess- und Schwellwerten wird
+          grÃ¶ÃŸtenteils auf diese Addons verlagert, was den Konfigurationsaufwand erhÃ¶hen kann</p>
         </li>
 </ul></div>
     </li>
 <li class="listitem">
-      <p><a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">Passive Prüfungen</a></p>
+      <p><a class="link" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">Passive PrÃ¼fungen</a></p>
 
-      <p>Die Prüfungen werden auf den entfernten Systemen ausgelöst (nicht notwendigerweise auf den zu überwachenden Systemen, sondern
-      ggf. auf "Satellitensystemen", sog. "Poller", die z.B. eine Origanisationeinheit überwachen). Die Prüfergebnisse werden mit Hilfe von
-      <a class="link" href="nsca.html" title="NSCA">NSCA</a>, bestehend aus send_nsca auf dem Client-System und dem NSCA-Dämon auf dem Überwachungsrechner, an
-      diesen übertragen und dort verarbeitet, um den Status zu aktualisieren. Durch das Setzen von <a class="link" href="freshness.html" title="Service- und Host-Frische-Prüfungen">Frische-Schwellwerten</a> werden Sie informiert, wenn die Ergebnisse nicht rechtzeitig eintreffen. Abhängig von
-      den benutzen Administrations-Tools ist die Verwaltung ggf. komplexer, aber wegen Firewalls oder anderen Beschränkungen, die durch
-      Sicherheitsmaßnahmen, Kunden, oder anderen Vorgaben unerläßlich sind, haben Sie möglicherweise keine andere Wahl. Die Nutzung von
-      passiven Prüfungen reduziert auch die Belastung Ihres Überwachungsrechners, denn es werden nur Ergebnisse verarbeitet statt Prüfungen
-      ausgeführt. Sie können Einträge in der crontab nutzen, um Prüfungen zu festgelegten Zeiten auszuführen, lang laufende Auswertungen
-      nach Bedarf starten, oder Backup-Jobs ausführen, die lediglich die Ergebnisse zurückliefern.</p>
+      <p>Die PrÃ¼fungen werden auf den entfernten Systemen ausgelÃ¶st (nicht notwendigerweise auf den zu Ã¼berwachenden Systemen, sondern
+      ggf. auf "Satellitensystemen", sog. "Poller", die z.B. eine Origanisationeinheit Ã¼berwachen). Die PrÃ¼fergebnisse werden mit Hilfe von
+      <a class="link" href="nsca.html" title="NSCA">NSCA</a>, bestehend aus send_nsca auf dem Client-System und dem NSCA-DÃ¤mon auf dem Ãœberwachungsrechner, an
+      diesen Ã¼bertragen und dort verarbeitet, um den Status zu aktualisieren. Durch das Setzen von <a class="link" href="freshness.html" title="Service- und Host-Frische-PrÃ¼fungen">Frische-Schwellwerten</a> werden Sie informiert, wenn die Ergebnisse nicht rechtzeitig eintreffen. AbhÃ¤ngig von
+      den benutzen Administrations-Tools ist die Verwaltung ggf. komplexer, aber wegen Firewalls oder anderen BeschrÃ¤nkungen, die durch
+      SicherheitsmaÃŸnahmen, Kunden, oder anderen Vorgaben unerlÃ¤ÃŸlich sind, haben Sie mÃ¶glicherweise keine andere Wahl. Die Nutzung von
+      passiven PrÃ¼fungen reduziert auch die Belastung Ihres Ãœberwachungsrechners, denn es werden nur Ergebnisse verarbeitet statt PrÃ¼fungen
+      ausgefÃ¼hrt. Sie kÃ¶nnen EintrÃ¤ge in der crontab nutzen, um PrÃ¼fungen zu festgelegten Zeiten auszufÃ¼hren, lang laufende Auswertungen
+      nach Bedarf starten, oder Backup-Jobs ausfÃ¼hren, die lediglich die Ergebnisse zurÃ¼ckliefern.</p>
     </li>
 <li class="listitem">
       <p>Eine Mischung aus beidem</p>
 
-      <p>Vielleicht haben Sie entfernte Systeme, die Prüfungen zu bestimmten Zeiten ausführen und die Ergebnisse auf einer geheimen und
-      gesicherten Web-Seite bereitstellen. Der Überwachungsrechner kann (/darf) die System nicht direkt prüfen (wegen Firewalls,
-      Kundenvorgaben), aber er hat Zugriff auf das Dokument auf dieser Web-Seite, kann die Daten mit Hilfe eines Scripts (einer Prüfung)
-      auswerten und die Ergebnisse über <a class="link" href="extcommands.html" title="Externe Befehle">externe Kommandos</a> bereitstellen.</p>
+      <p>Vielleicht haben Sie entfernte Systeme, die PrÃ¼fungen zu bestimmten Zeiten ausfÃ¼hren und die Ergebnisse auf einer geheimen und
+      gesicherten Web-Seite bereitstellen. Der Ãœberwachungsrechner kann (/darf) die System nicht direkt prÃ¼fen (wegen Firewalls,
+      Kundenvorgaben), aber er hat Zugriff auf das Dokument auf dieser Web-Seite, kann die Daten mit Hilfe eines Scripts (einer PrÃ¼fung)
+      auswerten und die Ergebnisse Ã¼ber <a class="link" href="extcommands.html" title="Externe Befehle">externe Kommandos</a> bereitstellen.</p>
     </li>
 <li class="listitem">
       <p>SNMP-Traps</p>
 
-      <p>Manchmal möchten Sie die Dinge nicht regelmäßig überprüfen, weil sie normalerweise fehlerfrei funktionieren und unnötig
-      Netzwerkverkehr erzeugt wird. Verschiedene Geräte informieren Sie eigenständig per SNMP-Traps wenn etwas schiefgeht.</p>
+      <p>Manchmal mÃ¶chten Sie die Dinge nicht regelmÃ¤ÃŸig Ã¼berprÃ¼fen, weil sie normalerweise fehlerfrei funktionieren und unnÃ¶tig
+      Netzwerkverkehr erzeugt wird. Verschiedene GerÃ¤te informieren Sie eigenstÃ¤ndig per SNMP-Traps wenn etwas schiefgeht.</p>
     </li>
 </ul></div>
 
-  <a class="indexterm" name="id1482941"></a>
+  <a class="indexterm" name="id1450325"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="upgrading_idoutils.html">Zurück</a> </td>
+<a accesskey="p" href="upgrading_idoutils.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="monitoring-windows.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="monitoring-windows.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">IDOUtils-Datenbank aktualisieren </td>
+<td width="40%" align="left" valign="top">IDOUtils-Datenbank aktualisierenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Windows-Maschinen überwachen</td>
+<td width="40%" align="right" valign="top">Â Windows-Maschinen Ã¼berwachen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

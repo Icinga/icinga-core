@@ -1,7 +1,8 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Large Installation Tweaks</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
@@ -16,9 +17,9 @@
 <tr><th colspan="3" align="center">Large Installation Tweaks</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="faststartup.html">Zurück</a> </td>
+<a accesskey="p" href="faststartup.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 8. Sicherheit und Leistungsoptimierung</th>
-<td width="20%" align="right"> <a accesskey="n" href="icingastats.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="icingastats.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -29,10 +30,10 @@
 <a name="largeinstalltweaks"></a>Large Installation Tweaks</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Benutzer mit großen Icinga-Installation können von der <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a>-Konfigurationsoption profitieren. Das
-  Aktivieren dieser Option erlaubt es dem Icinga-Daemon, bestimmte Abkürzungen zu nehmen, die in geringerer Systembelastung
+  <p>Benutzer mit groÃŸen Icinga-Installation kÃ¶nnen von der <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a>-Konfigurationsoption profitieren. Das
+  Aktivieren dieser Option erlaubt es dem Icinga-Daemon, bestimmte AbkÃ¼rzungen zu nehmen, die in geringerer Systembelastung
   und besserer Leistung resultieren.</p>
 
   <p><span class="bold"><strong>Effekte</strong></span></p>
@@ -43,48 +44,48 @@
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Keine Zusammenfassungsmakros in Umgebungsvariablen</strong></span> - Die <a class="link" href="macrolist.html#macrolist-summary_macros">Zusammenfassungsmakros</a> werden Ihnen nicht als Umgebungsvariablen zur Verfügung
-      stehen. Die Berechnung der Werte dieser Makros kann in großen Konfigurationen ziemlich zeitintensiv sein, so dass sie nicht
-      als Umgebungsvariablen zur Verfügung stehen, wenn Sie diese Option benutzen. Zusammenfassungsmakros sind weiterhin als
-      reguläre Makros verfügbar, wenn Sie diese Ihren Scripts als Parameter übergeben.</p>
+      <p><span class="bold"><strong>Keine Zusammenfassungsmakros in Umgebungsvariablen</strong></span> - Die <a class="link" href="macrolist.html#macrolist-summary_macros">Zusammenfassungsmakros</a> werden Ihnen nicht als Umgebungsvariablen zur VerfÃ¼gung
+      stehen. Die Berechnung der Werte dieser Makros kann in groÃŸen Konfigurationen ziemlich zeitintensiv sein, so dass sie nicht
+      als Umgebungsvariablen zur VerfÃ¼gung stehen, wenn Sie diese Option benutzen. Zusammenfassungsmakros sind weiterhin als
+      regulÃ¤re Makros verfÃ¼gbar, wenn Sie diese Ihren Scripts als Parameter Ã¼bergeben.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Unterschiedliche Speicherbereinigung</strong></span> - Normalerweise wird Icinga den
       allokierten Speicher in Kind-Prozessen freigeben, bevor sie enden. Dies ist wahrscheinlich die beste Vorgehensweise, aber
-      vielleicht in großen Installationen unnötig, weil die meisten Betriebssysteme selbst darauf achten, allokierten Speicher
+      vielleicht in groÃŸen Installationen unnÃ¶tig, weil die meisten Betriebssysteme selbst darauf achten, allokierten Speicher
       freizugeben, wenn Prozesse enden. Das Betriebssystem neigt dazu, belegten Speicher schneller freizugeben, als Icinga
       das kann, so dass Icinga nicht versucht, Speicher in Kind-Prozessen freizugeben, wenn Sie diese Option
       aktivieren.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Weniger fork()</strong></span> - Normalerweise wird Icinga zweimal fork() aufrufen, wenn es
-      Host- und Service-Prüfungen ausführt. Das wird getan, um (1) ein hohes Maß an Resistenz sicherzustellen gegen Plugins, die
-      fehlschlagen und einen SegFault erzeugen und (2) dafür sorgen, dass das Betriebssystem sich um die Bereinigung der
-      Enkel-Prozesse kümmert, sobald sie enden. Der zusätzliche fork() ist nicht wirklich nötig, so dass er übersprungen wird,
+      Host- und Service-PrÃ¼fungen ausfÃ¼hrt. Das wird getan, um (1) ein hohes MaÃŸ an Resistenz sicherzustellen gegen Plugins, die
+      fehlschlagen und einen SegFault erzeugen und (2) dafÃ¼r sorgen, dass das Betriebssystem sich um die Bereinigung der
+      Enkel-Prozesse kÃ¼mmert, sobald sie enden. Der zusÃ¤tzliche fork() ist nicht wirklich nÃ¶tig, so dass er Ã¼bersprungen wird,
       wenn Sie diese Option aktivieren. Als Ergebnis werden Kind-Prozesse von Icinga selbst bereinigt (anstatt diese
-      Aufgabe dem Betriebssystem zu überlassen). Dieses Feature sollte für spürbare Lasteinsparungen in Ihrer
+      Aufgabe dem Betriebssystem zu Ã¼berlassen). Dieses Feature sollte fÃ¼r spÃ¼rbare Lasteinsparungen in Ihrer
       Icinga-Installation sorgen.</p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id1590981"></a>
+  <a class="indexterm" name="id1558167"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="faststartup.html">Zurück</a> </td>
+<a accesskey="p" href="faststartup.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch08.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="icingastats.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="icingastats.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Schnellstart-Optionen </td>
+<td width="40%" align="left" valign="top">Schnellstart-OptionenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Nutzung des Icingastats-Utilitys</td>
+<td width="40%" align="right" valign="top">Â Nutzung des Icingastats-Utilitys</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

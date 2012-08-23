@@ -1,106 +1,107 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Verteilte Überwachung</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Verteilte Ãœberwachung</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="freshness.html" title="Service- und Host-Frische-Prüfungen">
-<link rel="next" href="redundancy.html" title="Redundante und Failover-Netzwerk-Überwachung">
+<link rel="prev" href="freshness.html" title="Service- und Host-Frische-PrÃ¼fungen">
+<link rel="next" href="redundancy.html" title="Redundante und Failover-Netzwerk-Ãœberwachung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Verteilte Überwachung</th></tr>
+<tr><th colspan="3" align="center">Verteilte Ãœberwachung</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="freshness.html">Zurück</a> </td>
+<a accesskey="p" href="freshness.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="redundancy.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="redundancy.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Verteilte Überwachung">
+<div class="section" title="Verteilte Ãœberwachung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="distributed"></a>Verteilte Überwachung</h2></div></div></div>
+<a name="distributed"></a>Verteilte Ãœberwachung</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Icinga kann konfiguriert werden, so dass es verteilte Überwachung von Netzwerk-Services und Ressourcen unterstützt.
+  <p>Icinga kann konfiguriert werden, so dass es verteilte Ãœberwachung von Netzwerk-Services und Ressourcen unterstÃ¼tzt.
   Wir werden versuchen, kurz zu beschreiben, wie das erreicht werden kann...</p>
 
   <p><span class="bold"><strong>Ziele</strong></span></p>
 
-  <p>Das Ziel der verteilten Überwachungsumgebung, das wir beschreiben wollen, ist die Reduzierung des Overheads
-  (CPU-Belastung, etc.) bei der Service-Prüfung von einem "zentralen" Server auf ein oder mehrere "verteilte" Server. Die meisten
-  kleinen bis mittleren Unternehmen werden keinen wirklichen Bedarf für das Aufsetzen solch einer Umgebung haben. Wenn Sie
+  <p>Das Ziel der verteilten Ãœberwachungsumgebung, das wir beschreiben wollen, ist die Reduzierung des Overheads
+  (CPU-Belastung, etc.) bei der Service-PrÃ¼fung von einem "zentralen" Server auf ein oder mehrere "verteilte" Server. Die meisten
+  kleinen bis mittleren Unternehmen werden keinen wirklichen Bedarf fÃ¼r das Aufsetzen solch einer Umgebung haben. Wenn Sie
   allerdings hunderte oder sogar tausende von <span class="emphasis"><em>Hosts</em></span> (und ein Mehrfaches an Services) mit Icinga
-  überwachen wollen, dann kann das ziemlich wichtig werden.</p>
+  Ã¼berwachen wollen, dann kann das ziemlich wichtig werden.</p>
 
   <p><span class="bold"><strong>Referenzdiagramm</strong></span></p>
 
-  <p>Das folgende Diagramm soll Ihnen eine generelle Idee davon geben, wie verteilte Überwachung mit Icinga arbeitet.
-  Wir werden uns auf die Elemente im Diagramm beziehen, während wir die Dinge erklären...</p>
+  <p>Das folgende Diagramm soll Ihnen eine generelle Idee davon geben, wie verteilte Ãœberwachung mit Icinga arbeitet.
+  Wir werden uns auf die Elemente im Diagramm beziehen, wÃ¤hrend wir die Dinge erklÃ¤ren...</p>
 
   <p><span class="inlinemediaobject"><img src="../images/distributed.png"></span></p>
 
   <p><span class="bold"><strong>Zentraler Server vs. Verteilte Server</strong></span></p>
 
-  <p>Beim Einrichten einer verteilten Überwachungsumgebung mit Icinga gibt es Unterschiede in der Art, wie zentrale und
-  verteilte Server konfiguriert sind. Wir werden Ihnen zeigen, wie beide Arten von Servern konfiguriert werden und erklären,
-  welche Auswirkungen die gemachten Änderungen auf die gesamte Überwachung haben. Für den Anfang beschreiben wir den Zweck der
+  <p>Beim Einrichten einer verteilten Ãœberwachungsumgebung mit Icinga gibt es Unterschiede in der Art, wie zentrale und
+  verteilte Server konfiguriert sind. Wir werden Ihnen zeigen, wie beide Arten von Servern konfiguriert werden und erklÃ¤ren,
+  welche Auswirkungen die gemachten Ã„nderungen auf die gesamte Ãœberwachung haben. FÃ¼r den Anfang beschreiben wir den Zweck der
   verschiedenen Server-Typen...</p>
 
-  <p>Die Funktion eines <span class="emphasis"><em>verteilten Servers</em></span> ist es, aktiv Prüfungen für alle Services durchzuführen, die
-  Sie für eine "Gruppe" (Cluster) von Hosts definieren. Wir benutzen den Begriff "Gruppe" locker - er meint lediglich eine
-  willkürliche Gruppe von Hosts in Ihrem Netzwerk. Abhängig von Ihrem Netzwerk-Layout können Sie mehrere Gruppen in einem
+  <p>Die Funktion eines <span class="emphasis"><em>verteilten Servers</em></span> ist es, aktiv PrÃ¼fungen fÃ¼r alle Services durchzufÃ¼hren, die
+  Sie fÃ¼r eine "Gruppe" (Cluster) von Hosts definieren. Wir benutzen den Begriff "Gruppe" locker - er meint lediglich eine
+  willkÃ¼rliche Gruppe von Hosts in Ihrem Netzwerk. AbhÃ¤ngig von Ihrem Netzwerk-Layout kÃ¶nnen Sie mehrere Gruppen in einem
   physischen Standort haben oder jede Gruppe kann durch ein WAN voneinander getrennt sein, mit einer eigenen Firewall, usw.
-  Wichtig anzumerken ist, dass es für jede Gruppe von Hosts (wie immer Sie diese definieren mögen) einen verteilten Server gibt,
-  auf dem Icinga läuft, und der die Services der Hosts dieser Gruppe überwacht. Ein verteilter Server enthält meistens eine
+  Wichtig anzumerken ist, dass es fÃ¼r jede Gruppe von Hosts (wie immer Sie diese definieren mÃ¶gen) einen verteilten Server gibt,
+  auf dem Icinga lÃ¤uft, und der die Services der Hosts dieser Gruppe Ã¼berwacht. Ein verteilter Server enthÃ¤lt meistens eine
   simple Installation von Icinga. Es muss kein Web-Interface installiert sein, keine Benachrichtigungen versenden, keine
-  Eventhandler-Scripts ausführen, noch etwas anderes tun außer Service-Prüfungen ausführen, wenn Sie das nicht wollen.
-  Detaillierte Informationen zur Konfiguration eines verteilten Services gibt es später...</p>
+  Eventhandler-Scripts ausfÃ¼hren, noch etwas anderes tun auÃŸer Service-PrÃ¼fungen ausfÃ¼hren, wenn Sie das nicht wollen.
+  Detaillierte Informationen zur Konfiguration eines verteilten Services gibt es spÃ¤ter...</p>
 
-  <p>Der Zweck des <span class="emphasis"><em>zentralen</em></span> Servers ist es lediglich, auf Service-Prüfungsergebnisse von einem oder
-  mehreren verteilten Servern zu horchen. Obwohl Services ab und zu aktiv durch den zentralen Server geprüft werden, werden diese
-  aktiven Prüfungen nur unter schlimmen Umständen ausgeführt, also lassen Sie uns im Moment sagen, dass der zentrale Server
-  lediglich passive Prüfungen annimmt. Da der zentrale Server Ergebnisse von <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">passiven
-  Service-Prüfungen</a> von einem oder mehreren verteilten Servern erhält, dient er als Mittelpunkt der gesamten
-  Überwachungslogik (d.h., er versendet Benachrichtigungen, startet Eventhandler-Scripts, legt den Zustand von Hosts fest, enthält
+  <p>Der Zweck des <span class="emphasis"><em>zentralen</em></span> Servers ist es lediglich, auf Service-PrÃ¼fungsergebnisse von einem oder
+  mehreren verteilten Servern zu horchen. Obwohl Services ab und zu aktiv durch den zentralen Server geprÃ¼ft werden, werden diese
+  aktiven PrÃ¼fungen nur unter schlimmen UmstÃ¤nden ausgefÃ¼hrt, also lassen Sie uns im Moment sagen, dass der zentrale Server
+  lediglich passive PrÃ¼fungen annimmt. Da der zentrale Server Ergebnisse von <a class="link" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">passiven
+  Service-PrÃ¼fungen</a> von einem oder mehreren verteilten Servern erhÃ¤lt, dient er als Mittelpunkt der gesamten
+  Ãœberwachungslogik (d.h., er versendet Benachrichtigungen, startet Eventhandler-Scripts, legt den Zustand von Hosts fest, enthÃ¤lt
   das Web-Interface, usw.).</p>
 
-  <p><span class="bold"><strong>Service-Prüfungsinformationen von verteilten Servern erhalten</strong></span></p>
+  <p><span class="bold"><strong>Service-PrÃ¼fungsinformationen von verteilten Servern erhalten</strong></span></p>
 
-  <p>Bevor wir näher auf Konfigurationsdetails eingehen, müssen wir wissen, wie die Service-Prüfungsergebnisse von den
-  verteilten Servern zum zentralen Server geschickt werden. Wir haben bereits erwähnt, wie man passive Prüfungsergebnisse an den
-  gleichen Host schickt, auf dem Icinga läuft (wie in der Dokumentation zu <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">passive
-  Prüfungen</a> beschrieben), aber wir haben keinerlei Informationen darüber gegeben, wie man passive Prüfergebnisse von
+  <p>Bevor wir nÃ¤her auf Konfigurationsdetails eingehen, mÃ¼ssen wir wissen, wie die Service-PrÃ¼fungsergebnisse von den
+  verteilten Servern zum zentralen Server geschickt werden. Wir haben bereits erwÃ¤hnt, wie man passive PrÃ¼fungsergebnisse an den
+  gleichen Host schickt, auf dem Icinga lÃ¤uft (wie in der Dokumentation zu <a class="link" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">passive
+  PrÃ¼fungen</a> beschrieben), aber wir haben keinerlei Informationen darÃ¼ber gegeben, wie man passive PrÃ¼fergebnisse von
   anderen Hosts verschickt.</p>
 
-  <p>Um den Versand von passiven Prüfergebnissen an einen anderen Host zu erleichtern, haben wir das <a class="link" href="addons.html#addons-nsca">nsca-Addon</a> geschrieben. Das Addon besteht aus zwei Teilen. Das erste ist ein Client-Programm
-  (send_nsca), das auf einem entfernten Host läuft und benutzt wird, um die Service-Prüfergebnisse an einen anderen Server zu
-  senden. Das zweite Teil ist der nsca-Daemon (nsca), der entweder als eigenständiger Daemon oder unter inetd läuft und auf
-  Verbindungen von Client-Programmen horcht. Nach dem Empfang von Service-Prüfinformationen von einem Client wird der Daemon die
-  Prüfinformationen an Icinga (auf dem zentralen Server) weiterleiten, indem ein
-  <span class="emphasis"><em>PROCESS_SVC_CHECK_RESULT</em></span> zusammen mit den Prüfergebnissen in das <a class="link" href="configmain.html#configmain-command_file">external command file</a> eingefügt wird. Das nächste Mal, wenn Icinga auf <a class="link" href="extcommands.html" title="Externe Befehle">externe Befehle</a> prüft, wird es die passiven Prüfergebnisse finden, die von den verteilten Servern
+  <p>Um den Versand von passiven PrÃ¼fergebnissen an einen anderen Host zu erleichtern, haben wir das <a class="link" href="addons.html#addons-nsca">nsca-Addon</a> geschrieben. Das Addon besteht aus zwei Teilen. Das erste ist ein Client-Programm
+  (send_nsca), das auf einem entfernten Host lÃ¤uft und benutzt wird, um die Service-PrÃ¼fergebnisse an einen anderen Server zu
+  senden. Das zweite Teil ist der nsca-Daemon (nsca), der entweder als eigenstÃ¤ndiger Daemon oder unter inetd lÃ¤uft und auf
+  Verbindungen von Client-Programmen horcht. Nach dem Empfang von Service-PrÃ¼finformationen von einem Client wird der Daemon die
+  PrÃ¼finformationen an Icinga (auf dem zentralen Server) weiterleiten, indem ein
+  <span class="emphasis"><em>PROCESS_SVC_CHECK_RESULT</em></span> zusammen mit den PrÃ¼fergebnissen in das <a class="link" href="configmain.html#configmain-command_file">external command file</a> eingefÃ¼gt wird. Das nÃ¤chste Mal, wenn Icinga auf <a class="link" href="extcommands.html" title="Externe Befehle">externe Befehle</a> prÃ¼ft, wird es die passiven PrÃ¼fergebnisse finden, die von den verteilten Servern
   geschickt wurden und sie verarbeiten. Einfach, oder?</p>
 
   <p><span class="bold"><strong>Verteilte Server-Konfiguration</strong></span></p>
 
-  <p>Also wie genau wird Icinga auf einem verteilten Server konfiguriert? Grundsätzlich ist es eine einfache
-  Installation. Sie müssen weder ein Web-Interface installieren noch Benachrichtigungen versenden, weil dies alles vom zentralen
+  <p>Also wie genau wird Icinga auf einem verteilten Server konfiguriert? GrundsÃ¤tzlich ist es eine einfache
+  Installation. Sie mÃ¼ssen weder ein Web-Interface installieren noch Benachrichtigungen versenden, weil dies alles vom zentralen
   Server aus erledigt wird.</p>
 
   <p>Haupt-Konfigurationsanpassungen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Nur die direkt durch den verteilten Server zu überwachenden Services werden in der <a class="link" href="configobject.html" title="Überblick Objektkonfiguration">Objekt-Konfigurationsdatei</a> definiert.</p>
+      <p>Nur die direkt durch den verteilten Server zu Ã¼berwachenden Services werden in der <a class="link" href="configobject.html" title="Ãœberblick Objektkonfiguration">Objekt-Konfigurationsdatei</a> definiert.</p>
     </li>
 <li class="listitem">
       <p>Die <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktive auf dem verteilten Server
@@ -117,23 +118,23 @@
 </ul></div>
 
   <p>Damit alles zusammenkommt und ordentlich arbeitet, wollen wir, dass der verteilte Server die Ergebnisse
-  <span class="emphasis"><em>aller</em></span> Service-Prüfungen an Icinga meldet. Wir können <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> benutzen, um <span class="emphasis"><em>Änderungen</em></span> am Zustand eines Service mitzuteilen,
-  aber das bringt's nicht. Um den verteilten Server zu zwingen, alle Prüfergebnisse zu melden, müssen Sie die <a class="link" href="configmain.html#configmain-obsess_over_services">obsess_over_services</a>-Option in der Hauptkonfigurationsdatei aktivieren und ein
-  <a class="link" href="configmain.html#configmain-ocsp_command">ocsp_command</a> bereitstellen, was nach jeder Service-Prüfung ausgeführt wird. Wir
-  werden das ocsp-Kommando benutzen, um die Ergebnisse aller Service-Prüfungen an den zentralen Server zu senden und den
-  send_nsca-Client sowie den nsca-Daemon benutzen (wie oben beschrieben), um die Übertragung zu erledigen.</p>
+  <span class="emphasis"><em>aller</em></span> Service-PrÃ¼fungen an Icinga meldet. Wir kÃ¶nnen <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> benutzen, um <span class="emphasis"><em>Ã„nderungen</em></span> am Zustand eines Service mitzuteilen,
+  aber das bringt's nicht. Um den verteilten Server zu zwingen, alle PrÃ¼fergebnisse zu melden, mÃ¼ssen Sie die <a class="link" href="configmain.html#configmain-obsess_over_services">obsess_over_services</a>-Option in der Hauptkonfigurationsdatei aktivieren und ein
+  <a class="link" href="configmain.html#configmain-ocsp_command">ocsp_command</a> bereitstellen, was nach jeder Service-PrÃ¼fung ausgefÃ¼hrt wird. Wir
+  werden das ocsp-Kommando benutzen, um die Ergebnisse aller Service-PrÃ¼fungen an den zentralen Server zu senden und den
+  send_nsca-Client sowie den nsca-Daemon benutzen (wie oben beschrieben), um die Ãœbertragung zu erledigen.</p>
 
-  <p>Um dies zu erreichen, müssen Sie ein ocsp-Kommando wie folgt definieren:</p>
+  <p>Um dies zu erreichen, mÃ¼ssen Sie ein ocsp-Kommando wie folgt definieren:</p>
 
   <p><span class="bold"><strong>ocsp_command=submit_check_result</strong></span></p>
 
-  <p>Die Definition für den <span class="emphasis"><em>submit_check_result</em></span>-Befehl sieht ungefähr so aus:</p>
+  <p>Die Definition fÃ¼r den <span class="emphasis"><em>submit_check_result</em></span>-Befehl sieht ungefÃ¤hr so aus:</p>
 
   <pre class="screen">
  <span class="bold"><strong>define command{ command_name submit_check_result command_line /usr/local/icinga/libexec/eventhandlers/submit_check_result $HOSTNAME$ '$SERVICEDESC$' $SERVICESTATE$ '$SERVICEOUTPUT$' }</strong></span>
     </pre>
 
-  <p>Die <span class="emphasis"><em>submit_check_result</em></span> Shell-Scripte sehen ungefähr so aus (ersetzen Sie
+  <p>Die <span class="emphasis"><em>submit_check_result</em></span> Shell-Scripte sehen ungefÃ¤hr so aus (ersetzen Sie
   <span class="emphasis"><em>central_server</em></span> durch die IP-Adresse des zentralen Servers):</p>
 
   <pre class="screen"> #!/bin/sh
@@ -173,40 +174,40 @@
   sind.</p>
 
   <p>Das ist alles! Wir haben erfolgreich einen entfernten Host konfiguriert, auf dem Icinga als ein verteilter
-  Überwachungs-Server läuft. Lassen Sie uns genau betrachten, was mit dem verteilten Server passiert und wie er
-  Service-Prüfungsergebnisse an Icinga schickt (die unten skizzierten Schritte entsprechen den Zahlen im obigen
+  Ãœberwachungs-Server lÃ¤uft. Lassen Sie uns genau betrachten, was mit dem verteilten Server passiert und wie er
+  Service-PrÃ¼fungsergebnisse an Icinga schickt (die unten skizzierten Schritte entsprechen den Zahlen im obigen
   Referenzdiagramm):</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Nachdem der verteilte Server eine Service-Prüfung beendet hat, führt er den Befehl aus, den Sie mit der Variable <a class="link" href="configmain.html#configmain-ocsp_command">ocsp_command</a> definiert haben. In unserem Beispiel ist dies das
-      <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers/submit_check_result</em></span>-Script. Beachten Sie, dass die Definition für
-      den <span class="emphasis"><em>submit_check_result</em></span>-Befehl vier Parameter für das Script übergibt: den Namen des Hosts, der mit dem
-      Service verbunden ist, die Service-Beschreibung, den Rückgabewert der Service-Prüfung und die Plugin-Ausgabe der
-      Service-Prüfung.</p>
+      <p>Nachdem der verteilte Server eine Service-PrÃ¼fung beendet hat, fÃ¼hrt er den Befehl aus, den Sie mit der Variable <a class="link" href="configmain.html#configmain-ocsp_command">ocsp_command</a> definiert haben. In unserem Beispiel ist dies das
+      <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers/submit_check_result</em></span>-Script. Beachten Sie, dass die Definition fÃ¼r
+      den <span class="emphasis"><em>submit_check_result</em></span>-Befehl vier Parameter fÃ¼r das Script Ã¼bergibt: den Namen des Hosts, der mit dem
+      Service verbunden ist, die Service-Beschreibung, den RÃ¼ckgabewert der Service-PrÃ¼fung und die Plugin-Ausgabe der
+      Service-PrÃ¼fung.</p>
     </li>
 <li class="listitem">
-      <p>das <span class="emphasis"><em>submit_check_result</em></span>-Script übergibt die Informationen der Service-Prüfung (Host-Name,
-      Beschreibung, Rückgabewert und Ausgabe) an das <span class="emphasis"><em>send_nsca</em></span>-Client-Programm.</p>
+      <p>das <span class="emphasis"><em>submit_check_result</em></span>-Script Ã¼bergibt die Informationen der Service-PrÃ¼fung (Host-Name,
+      Beschreibung, RÃ¼ckgabewert und Ausgabe) an das <span class="emphasis"><em>send_nsca</em></span>-Client-Programm.</p>
     </li>
 <li class="listitem">
-      <p>das <span class="emphasis"><em>send_nsca</em></span>-Programm überträgt die Informationen der Service-Prüfung an den
-      <span class="emphasis"><em>nsca</em></span>-Daemon auf dem zentralen Überwachungs-Server.</p>
+      <p>das <span class="emphasis"><em>send_nsca</em></span>-Programm Ã¼bertrÃ¤gt die Informationen der Service-PrÃ¼fung an den
+      <span class="emphasis"><em>nsca</em></span>-Daemon auf dem zentralen Ãœberwachungs-Server.</p>
     </li>
 <li class="listitem">
-      <p>der <span class="emphasis"><em>nsca</em></span>-Daemon auf dem zentralen Server nimmt die Informationen der Service-Prüfung und schreibt
-      sie in das external command file, damit Icinga sie später dort aufsammeln kann.</p>
+      <p>der <span class="emphasis"><em>nsca</em></span>-Daemon auf dem zentralen Server nimmt die Informationen der Service-PrÃ¼fung und schreibt
+      sie in das external command file, damit Icinga sie spÃ¤ter dort aufsammeln kann.</p>
     </li>
 <li class="listitem">
       <p>der Icinga-Prozess auf dem zentralen Server liest das external command file und verarbeitet die passiven
-      Service-Prüfungsergebnisse, die vom verteilten Überwachungs-Server stammen.</p>
+      Service-PrÃ¼fungsergebnisse, die vom verteilten Ãœberwachungs-Server stammen.</p>
     </li>
 </ol></div>
 
   <p><span class="bold"><strong>zentrale Server-Konfiguration</strong></span></p>
 
-  <p>Wir haben betrachtet, wie verteilte Überwachungs-Server konfiguriert werden sollten, daher wenden wir uns nun dem
-  zentralen Server zu. Für alle wichtigen Dinge wird der zentrale so konfiguriert wie ein einzelner Server. Dessen Setup ist wie
+  <p>Wir haben betrachtet, wie verteilte Ãœberwachungs-Server konfiguriert werden sollten, daher wenden wir uns nun dem
+  zentralen Server zu. FÃ¼r alle wichtigen Dinge wird der zentrale so konfiguriert wie ein einzelner Server. Dessen Setup ist wie
   folgt:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -218,7 +219,7 @@
       auf 1 gesetzt. Das aktiviert Benachrichtungen (optional, aber empfohlen)</p>
     </li>
 <li class="listitem">
-      <p>auf dem zentralen Server sind <a class="link" href="configmain.html#configmain-execute_service_checks">aktive Service-Prüfungen</a>
+      <p>auf dem zentralen Server sind <a class="link" href="configmain.html#configmain-execute_service_checks">aktive Service-PrÃ¼fungen</a>
       deaktiviert (optional, aber empfohlen - beachten Sie die folgenden Anmerkungen)</p>
     </li>
 <li class="listitem">
@@ -227,7 +228,7 @@
     </li>
 <li class="listitem">
       <p>auf dem zentralen Server sind <a class="link" href="configmain.html#configmain-accept_passive_service_checks">passive
-      Service-Prüfungen</a> aktiviert (erforderlich)</p>
+      Service-PrÃ¼fungen</a> aktiviert (erforderlich)</p>
     </li>
 </ul></div>
 
@@ -235,121 +236,121 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Der zentrale Server muss Service-Definitionen für <span class="emphasis"><em>alle Services</em></span> haben, die auf allen verteilten
-      Servern überwacht werden. Icinga wird passive Prüfungsergebnisse ignorieren, wenn sie nicht zu einem Service passen,
+      <p>Der zentrale Server muss Service-Definitionen fÃ¼r <span class="emphasis"><em>alle Services</em></span> haben, die auf allen verteilten
+      Servern Ã¼berwacht werden. Icinga wird passive PrÃ¼fungsergebnisse ignorieren, wenn sie nicht zu einem Service passen,
       den Sie definiert haben.</p>
     </li>
 <li class="listitem">
       <p>Wenn Sie den zentralen Server nur benutzen, um Services zu verarbeiten, deren Ergebnisse von verteilten Hosts stammen,
-      können Sie alle aktiven Service-Prüfungen auf programmweiter Basis durch das Setzen der <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a>-Direktive auf 0 deaktivieren. Wenn Sie den
-      zentralen Server nutzen, um selbst einige Services aktiv zu überwachen (ohne die Hilfe von verteilten Servern), dann sollten
+      kÃ¶nnen Sie alle aktiven Service-PrÃ¼fungen auf programmweiter Basis durch das Setzen der <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a>-Direktive auf 0 deaktivieren. Wenn Sie den
+      zentralen Server nutzen, um selbst einige Services aktiv zu Ã¼berwachen (ohne die Hilfe von verteilten Servern), dann sollten
       Sie die <span class="emphasis"><em>active_checks_enabled</em></span>-Option der Service-Definitionen auf 0 setzen, die von den verteilten
-      Servern überwacht werden. Das hindert Icinga daran, diese Services aktiv zu prüfen.</p>
+      Servern Ã¼berwacht werden. Das hindert Icinga daran, diese Services aktiv zu prÃ¼fen.</p>
     </li>
 </ul></div>
 
-  <p>Es ist wichtig, dass Sie entweder alle Service-Prüfungen auf einer programmweiten Basis deaktivieren oder die
+  <p>Es ist wichtig, dass Sie entweder alle Service-PrÃ¼fungen auf einer programmweiten Basis deaktivieren oder die
   <span class="emphasis"><em>enable_active_checks</em></span>-Option in jeder Service-Definition deaktivieren, die von einem verteilten Server
-  überwacht werden. Das stellt sicher, dass aktive Service-Prüfungen unter normalen Umständen niemals ausgeführt werden. Die
-  Services werden weiterhin im normalen Prüfintervall geplant (3 Min., 5 Min., usw.), aber nicht ausgeführt. Wir werden bald
-  erklären, warum das so ist...</p>
+  Ã¼berwacht werden. Das stellt sicher, dass aktive Service-PrÃ¼fungen unter normalen UmstÃ¤nden niemals ausgefÃ¼hrt werden. Die
+  Services werden weiterhin im normalen PrÃ¼fintervall geplant (3 Min., 5 Min., usw.), aber nicht ausgefÃ¼hrt. Wir werden bald
+  erklÃ¤ren, warum das so ist...</p>
 
   <p>Das war's! Einfach, oder?</p>
 
-  <p><span class="bold"><strong>Probleme bei passiven Prüfungen</strong></span></p>
+  <p><span class="bold"><strong>Probleme bei passiven PrÃ¼fungen</strong></span></p>
 
-  <p>Für alle wichtigen Dinge können wir sagen, dass sich der zentrale Server bei Überwachungen allein auf passive Prüfungen
-  verlässt. Das Hauptproblem daran, sich komplett auf passive Prüfungen zu verlassen besteht darin, dass Icinga darauf
-  vertrauen muss, dass jemand anders die Daten liefert. Was passiert, wenn der entfernte Host, der passive Prüfergebnisse sendet,
-  herunterfährt oder unerreichbar wird? Wenn Icinga nicht aktiv die Services auf dem Host prüft, wie soll es wissen, wann
+  <p>FÃ¼r alle wichtigen Dinge kÃ¶nnen wir sagen, dass sich der zentrale Server bei Ãœberwachungen allein auf passive PrÃ¼fungen
+  verlÃ¤sst. Das Hauptproblem daran, sich komplett auf passive PrÃ¼fungen zu verlassen besteht darin, dass Icinga darauf
+  vertrauen muss, dass jemand anders die Daten liefert. Was passiert, wenn der entfernte Host, der passive PrÃ¼fergebnisse sendet,
+  herunterfÃ¤hrt oder unerreichbar wird? Wenn Icinga nicht aktiv die Services auf dem Host prÃ¼ft, wie soll es wissen, wann
   es ein Problem gibt?</p>
 
-  <p>Glücklicherweise gibt es einen Weg, diese Art von Problemen zu behandeln...</p>
+  <p>GlÃ¼cklicherweise gibt es einen Weg, diese Art von Problemen zu behandeln...</p>
 
-  <p><span class="bold"><strong>Frische-Prüfung (Freshness Checking)</strong></span></p>
+  <p><span class="bold"><strong>Frische-PrÃ¼fung (Freshness Checking)</strong></span></p>
 
-  <p>Icinga unterstützt ein Feature, das eine "Frische"-Prüfung für die Ergebnisse von Service-Prüfungen durchführt.
-  Mehr Informationen über Frische-Prüfung finden Sie <a class="link" href="freshness.html" title="Service- und Host-Frische-Prüfungen">hier</a>. Dieses Feature sorgt für etwas Schutz
-  gegen Situationen, in denen entfernte Hosts keine passiven Service-Prüfungen mehr an den zentralen Überwachungs-Server schicken.
-  Der Zweck der "Frische"-Prüfung besteht darin, sicherzustellen, dass Service-Prüfungen entweder regelmäßig passiv durch
-  verteilte Server oder aktiv durch den zentralen Server durchgeführt werden, falls dies notwendig sein sollte. Wenn die
-  Service-Prüfergebnisse von verteilten Servern als "abgestanden" angesehen werden, kann Icinga so konfiguriert werden, um
-  aktive Prüfungen des Service vom zentralen Überwachungs-Server aus zu erzwingen.</p>
+  <p>Icinga unterstÃ¼tzt ein Feature, das eine "Frische"-PrÃ¼fung fÃ¼r die Ergebnisse von Service-PrÃ¼fungen durchfÃ¼hrt.
+  Mehr Informationen Ã¼ber Frische-PrÃ¼fung finden Sie <a class="link" href="freshness.html" title="Service- und Host-Frische-PrÃ¼fungen">hier</a>. Dieses Feature sorgt fÃ¼r etwas Schutz
+  gegen Situationen, in denen entfernte Hosts keine passiven Service-PrÃ¼fungen mehr an den zentralen Ãœberwachungs-Server schicken.
+  Der Zweck der "Frische"-PrÃ¼fung besteht darin, sicherzustellen, dass Service-PrÃ¼fungen entweder regelmÃ¤ÃŸig passiv durch
+  verteilte Server oder aktiv durch den zentralen Server durchgefÃ¼hrt werden, falls dies notwendig sein sollte. Wenn die
+  Service-PrÃ¼fergebnisse von verteilten Servern als "abgestanden" angesehen werden, kann Icinga so konfiguriert werden, um
+  aktive PrÃ¼fungen des Service vom zentralen Ãœberwachungs-Server aus zu erzwingen.</p>
 
-  <p>Wie machen Sie das? Auf dem zentralen Überwachungs-Server müssen Sie Services konfigurieren, die von verteilten Server wie
-  folgt überwacht werden:</p>
+  <p>Wie machen Sie das? Auf dem zentralen Ãœberwachungs-Server mÃ¼ssen Sie Services konfigurieren, die von verteilten Server wie
+  folgt Ã¼berwacht werden:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>Die <span class="emphasis"><em>check_freshness</em></span>-Option in der Service-Definition ist auf 1 zu setzen. Das aktiviert
-      "Frische"-Prüfungen für den Service.</p>
+      "Frische"-PrÃ¼fungen fÃ¼r den Service.</p>
     </li>
 <li class="listitem">
       <p>Die <span class="emphasis"><em>freshness_threshold</em></span>-Option in den Service-Definitionen sollte auf einen Wert (in Sekunden)
       gesetzt werden, der widerspiegelt, wie "frisch" die (von den entfernten Servern gelieferten) Ergebnisse der
-      Service-Prüfungen sein sollten.</p>
+      Service-PrÃ¼fungen sein sollten.</p>
     </li>
 <li class="listitem">
-      <p>Die <span class="emphasis"><em>check_command</em></span>-Option in den Service-Definitionen sollte gültige Befehle enthalten, die
-      genutzt werden können, um den Service aktiv vom zentralen Server aus zu prüfen.</p>
+      <p>Die <span class="emphasis"><em>check_command</em></span>-Option in den Service-Definitionen sollte gÃ¼ltige Befehle enthalten, die
+      genutzt werden kÃ¶nnen, um den Service aktiv vom zentralen Server aus zu prÃ¼fen.</p>
     </li>
 </ul></div>
 
-  <p>Icinga prüft periodisch die "Frische" der Ergebnisse aller Services, für die Frische-Prüfungen aktiviert sind. Die
+  <p>Icinga prÃ¼ft periodisch die "Frische" der Ergebnisse aller Services, fÃ¼r die Frische-PrÃ¼fungen aktiviert sind. Die
   <span class="emphasis"><em>freshness_threshold</em></span>-Option in jeder Service-Definition wird benutzt, um festzulegen, wie "frisch" die
-  Ergebnisse für jeden Service sein sollen. Wenn Sie z.B. diesen Wert für einen Ihrer Services auf 300 setzen, wird Icinga
-  das Service-Ergebnis als "abgestanden" betrachten, wenn es älter als 5 Minuten (300 Sekunden) ist. Falls Sie keinen Wert für die
+  Ergebnisse fÃ¼r jeden Service sein sollen. Wenn Sie z.B. diesen Wert fÃ¼r einen Ihrer Services auf 300 setzen, wird Icinga
+  das Service-Ergebnis als "abgestanden" betrachten, wenn es Ã¤lter als 5 Minuten (300 Sekunden) ist. Falls Sie keinen Wert fÃ¼r die
   <span class="emphasis"><em>freshness_threshold</em></span>-Option angeben, wird Icinga automatisch einen "Frische"-Schwellwert berechnen,
   indem es die Werte der <span class="emphasis"><em>check_interval</em></span>- oder der <span class="emphasis"><em>retry_interval</em></span>-Option
-  betrachtet (abhängig vom <a class="link" href="statetypes.html" title="Statustypen">Statustyp</a>, in dem sich der Service befindet). Wenn die
-  Service-Ergebnisse als "abgestanden" angesehen werden, wird Icinga den Service-Prüf-Befehl ausführen, der in der
-  <span class="emphasis"><em>check_command</em></span>-Option der Service-Definition angegeben ist, und dadurch den Service aktiv prüfen.</p>
+  betrachtet (abhÃ¤ngig vom <a class="link" href="statetypes.html" title="Statustypen">Statustyp</a>, in dem sich der Service befindet). Wenn die
+  Service-Ergebnisse als "abgestanden" angesehen werden, wird Icinga den Service-PrÃ¼f-Befehl ausfÃ¼hren, der in der
+  <span class="emphasis"><em>check_command</em></span>-Option der Service-Definition angegeben ist, und dadurch den Service aktiv prÃ¼fen.</p>
 
-  <p>Denken Sie daran, dass Sie eine <span class="emphasis"><em>check_command</em></span>-Option in den Service-Definitionen angeben müssen, die
-  genutzt werden kann, um den Status des Service aktiv vom zentralen Server aus zu prüfen. Unter normalen Umständen wird dieser
-  Prüfbefehl niemals ausgeführt (weil aktive Prüfungen auf programmweiter Ebene bzw. für den einzelnen Service deaktiviert
-  wurden). Wenn Frische-Prüfungen aktiviert sind, wird Icinga diesen Befehl ausführen, um den Zustand des Service aktiv zu
-  prüfen, <span class="emphasis"><em>auch wenn aktive Prüfungen auf einer programmweiten Ebene oder Service-spezifischen Basis deaktiviert
+  <p>Denken Sie daran, dass Sie eine <span class="emphasis"><em>check_command</em></span>-Option in den Service-Definitionen angeben mÃ¼ssen, die
+  genutzt werden kann, um den Status des Service aktiv vom zentralen Server aus zu prÃ¼fen. Unter normalen UmstÃ¤nden wird dieser
+  PrÃ¼fbefehl niemals ausgefÃ¼hrt (weil aktive PrÃ¼fungen auf programmweiter Ebene bzw. fÃ¼r den einzelnen Service deaktiviert
+  wurden). Wenn Frische-PrÃ¼fungen aktiviert sind, wird Icinga diesen Befehl ausfÃ¼hren, um den Zustand des Service aktiv zu
+  prÃ¼fen, <span class="emphasis"><em>auch wenn aktive PrÃ¼fungen auf einer programmweiten Ebene oder Service-spezifischen Basis deaktiviert
   sind</em></span>.</p>
 
-  <p>Falls Sie es nicht schaffen, Befehle zu definieren, um aktiv einen Service vom zentralen Überwachungs-Host aus zu prüfen
-  (oder wenn es zu einer großen Qual wird), können Sie ganz einfach bei all Ihren Services in der
-  <span class="emphasis"><em>check_command</em></span>-Option ein Dummy-Script angeben, das einen kritischen Status zurückliefert. Hier ein
+  <p>Falls Sie es nicht schaffen, Befehle zu definieren, um aktiv einen Service vom zentralen Ãœberwachungs-Host aus zu prÃ¼fen
+  (oder wenn es zu einer groÃŸen Qual wird), kÃ¶nnen Sie ganz einfach bei all Ihren Services in der
+  <span class="emphasis"><em>check_command</em></span>-Option ein Dummy-Script angeben, das einen kritischen Status zurÃ¼ckliefert. Hier ein
   Beispiel... Lassen Sie uns annehmen, Sie definieren einen Befehl namens 'service-is-stale' und benutzen den Befehlsnamen in der
-  <span class="emphasis"><em>check_command</em></span>-Option Ihrer Services. Hier nun, wie die Definition aussehen könnte...</p>
+  <span class="emphasis"><em>check_command</em></span>-Option Ihrer Services. Hier nun, wie die Definition aussehen kÃ¶nnte...</p>
 
   <pre class="screen">
  <span class="bold"><strong> define command{ command_name service-is-stale command_line /usr/local/icinga/libexec/check_dummy 2 "CRITICAL: Service results are stale" }</strong></span>
     </pre>
 
   <p>Wenn Icinga feststellt, dass das Service-Ergebnis abgestanden ist und das <span class="bold"><strong>service-is-stale</strong></span>-Kommando aufruft, wird das <span class="emphasis"><em>/usr/local/icinga/libexec/check_dummy</em></span>-Plugin
-  ausgeführt und der Service geht in einen kritischen Zustand. Das wird wahrscheinlich dazu führen, dass Benachrichtigungen
+  ausgefÃ¼hrt und der Service geht in einen kritischen Zustand. Das wird wahrscheinlich dazu fÃ¼hren, dass Benachrichtigungen
   versandt werden, so dass Sie wissen, dass es ein Problem gibt.</p>
 
-  <p><span class="bold"><strong>Host-Prüfungen durchführen</strong></span></p>
+  <p><span class="bold"><strong>Host-PrÃ¼fungen durchfÃ¼hren</strong></span></p>
 
-  <p>An diesem Punkt wissen Sie, wie man Service-Ergebnisse von verteilten Servern auf passive Weise erhält. Das bedeutet, der
-  zentrale Server nicht aktiv Service-Prüfungen ausführt. Aber was ist mit Host-Prüfungen? Sie müssen sie trotzdem erledigen, aber
+  <p>An diesem Punkt wissen Sie, wie man Service-Ergebnisse von verteilten Servern auf passive Weise erhÃ¤lt. Das bedeutet, der
+  zentrale Server nicht aktiv Service-PrÃ¼fungen ausfÃ¼hrt. Aber was ist mit Host-PrÃ¼fungen? Sie mÃ¼ssen sie trotzdem erledigen, aber
   wie?</p>
 
-  <p>Nachdem Host-Prüfungen normalerweise einen kleinen Teil der Überwachungsaktivität verbrauchen (sie werden nur ausgeführt,
-  wenn es dringend notwendig ist), raten wir dazu, dass Sie die Host-Prüfungen aktiv vom zentralen Server aus durchführen. Das
-  bedeutet, dass Sie Host-Prüfungen auf dem zentralen Server genau wie auf den verteilten Servern definieren (und auf die gleiche
-  Weise, wie Sie das in einer normalen, nicht-verteilten Umgebung tun würden).</p>
+  <p>Nachdem Host-PrÃ¼fungen normalerweise einen kleinen Teil der ÃœberwachungsaktivitÃ¤t verbrauchen (sie werden nur ausgefÃ¼hrt,
+  wenn es dringend notwendig ist), raten wir dazu, dass Sie die Host-PrÃ¼fungen aktiv vom zentralen Server aus durchfÃ¼hren. Das
+  bedeutet, dass Sie Host-PrÃ¼fungen auf dem zentralen Server genau wie auf den verteilten Servern definieren (und auf die gleiche
+  Weise, wie Sie das in einer normalen, nicht-verteilten Umgebung tun wÃ¼rden).</p>
 
-  <p>Passive Host-Prüfungen sind verfügbar (lesen Sie <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">hier</a>), so dass Sie diese in Ihrer
-  verteilten Umgebung nutzen können, allerdings gibt es dabei ein paar Probleme. Das größte Problem besteht darin, dass
-  Icinga Ergebnisse von passiven Host-Prüfungen (die Problemzustände DOWN und UNREACHABLE) nicht übersetzt, wenn sie
-  verarbeitet werden. Das bedeutet, falls Ihre Überwachungs-Server eine unterschiedliche Eltern-/Kind-Host-Struktur haben (und das
-  werden sie, wenn Ihre Überwachungs-Server an unterschiedlichen Standorten stehen), wird der zentrale Überwachungs-Server eine
-  ungenaue Sicht Ihrer Host-Zustände haben.</p>
+  <p>Passive Host-PrÃ¼fungen sind verfÃ¼gbar (lesen Sie <a class="link" href="passivechecks.html" title="Passive PrÃ¼fungen (Passive Checks)">hier</a>), so dass Sie diese in Ihrer
+  verteilten Umgebung nutzen kÃ¶nnen, allerdings gibt es dabei ein paar Probleme. Das grÃ¶ÃŸte Problem besteht darin, dass
+  Icinga Ergebnisse von passiven Host-PrÃ¼fungen (die ProblemzustÃ¤nde DOWN und UNREACHABLE) nicht Ã¼bersetzt, wenn sie
+  verarbeitet werden. Das bedeutet, falls Ihre Ãœberwachungs-Server eine unterschiedliche Eltern-/Kind-Host-Struktur haben (und das
+  werden sie, wenn Ihre Ãœberwachungs-Server an unterschiedlichen Standorten stehen), wird der zentrale Ãœberwachungs-Server eine
+  ungenaue Sicht Ihrer Host-ZustÃ¤nde haben.</p>
 
-  <p>Falls Sie in Ihrer verteilten Überwachungs-Umgebung passive Host-Prüfungen an einen zentralen Server senden möchten, dann
+  <p>Falls Sie in Ihrer verteilten Ãœberwachungs-Umgebung passive Host-PrÃ¼fungen an einen zentralen Server senden mÃ¶chten, dann
   stellen Sie sicher:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>dass auf dem zentralen Server <a class="link" href="configmain.html#configmain-accept_passive_host_checks">passive Host-Prüfungen</a>
+      <p>dass auf dem zentralen Server <a class="link" href="configmain.html#configmain-accept_passive_host_checks">passive Host-PrÃ¼fungen</a>
       aktiviert sind (notwendig)</p>
     </li>
 <li class="listitem">
@@ -361,29 +362,29 @@
     </li>
 </ul></div>
 
-  <p>Der ochp-Befehl, der zur Verarbeitung von Host-Prüfergebnissen genutzt wird, arbeitet ähnlich wie der ocsp-Befehl, der für
-  die Verarbeitung von Service-Prüfergebnissen benutzt wird (siehe oben). Um sicherzustellen, dass passive Host-Prüfergebnisse
-  aktuell sind, sollten Sie <a class="link" href="freshness.html" title="Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> für Hosts aktivieren (ähnlich zu dem, was weiter
-  oben für Services beschrieben wird).</p>
-  <a class="indexterm" name="id1576398"></a>
+  <p>Der ochp-Befehl, der zur Verarbeitung von Host-PrÃ¼fergebnissen genutzt wird, arbeitet Ã¤hnlich wie der ocsp-Befehl, der fÃ¼r
+  die Verarbeitung von Service-PrÃ¼fergebnissen benutzt wird (siehe oben). Um sicherzustellen, dass passive Host-PrÃ¼fergebnisse
+  aktuell sind, sollten Sie <a class="link" href="freshness.html" title="Service- und Host-Frische-PrÃ¼fungen">Frische-PrÃ¼fungen</a> fÃ¼r Hosts aktivieren (Ã¤hnlich zu dem, was weiter
+  oben fÃ¼r Services beschrieben wird).</p>
+  <a class="indexterm" name="id1543582"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="freshness.html">Zurück</a> </td>
+<a accesskey="p" href="freshness.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="redundancy.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="redundancy.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Service- und Host-Frische-Prüfungen </td>
+<td width="40%" align="left" valign="top">Service- und Host-Frische-PrÃ¼fungenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Redundante und Failover-Netzwerk-Überwachung</td>
+<td width="40%" align="right" valign="top">Â Redundante und Failover-Netzwerk-Ãœberwachung</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

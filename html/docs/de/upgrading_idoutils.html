@@ -1,13 +1,14 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>IDOUtils-Datenbank aktualisieren</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="upgrading.html" title="Icinga aktualisieren">
-<link rel="next" href="monitoring-overview.html" title="Monitoring-Überblick">
+<link rel="next" href="monitoring-overview.html" title="Monitoring-Ãœberblick">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -16,9 +17,9 @@
 <tr><th colspan="3" align="center">IDOUtils-Datenbank aktualisieren</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="upgrading.html">Zurück</a> </td>
+<a accesskey="p" href="upgrading.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 2. Los geht's</th>
-<td width="20%" align="right"> <a accesskey="n" href="monitoring-overview.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="monitoring-overview.html">Weiter</a>
 </td>
 </tr>
 </table>
@@ -29,9 +30,9 @@
 <a name="upgrading_idoutils"></a><a name="upgrading_idoutils2"></a>IDOUtils-Datenbank aktualisieren</h2></div></div></div>
   
 
-  <p>Es mag einen Bug im Datenbankschema geben, der behoben wurde. Wenn Sie eine ältere IDOUtils-Version aktualisieren, dann
-  müssen Sie außerdem diese Anpassungen manuell ausführen. Wenn Sie rpm/deb-Pakete benutzen, lesen Sie bitte die Hinweise und/oder fragen
-  Sie den Maintainer, ob er diese Anpassungen in der Installationsroutine hinzugefügt hat.</p>
+  <p>Es mag einen Bug im Datenbankschema geben, der behoben wurde. Wenn Sie eine Ã¤ltere IDOUtils-Version aktualisieren, dann
+  mÃ¼ssen Sie auÃŸerdem diese Anpassungen manuell ausfÃ¼hren. Wenn Sie rpm/deb-Pakete benutzen, lesen Sie bitte die Hinweise und/oder fragen
+  Sie den Maintainer, ob er diese Anpassungen in der Installationsroutine hinzugefÃ¼gt hat.</p>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -39,7 +40,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Abhängig von den Änderungen und der Größe Ihrer Datenbank kann es eine Weile dauern, die Anpassungen durchzuführen. Bitte haben
+    <p>AbhÃ¤ngig von den Ã„nderungen und der GrÃ¶ÃŸe Ihrer Datenbank kann es eine Weile dauern, die Anpassungen durchzufÃ¼hren. Bitte haben
     Sie ein wenig Geduld und brechen Sie das Script nicht ab, weil sonst ggf. Ihre Daten unbrauchbar sind.</p>
   </td></tr>
 </table></div>
@@ -60,24 +61,24 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Wenn Sie eine ältere Version aktualisieren wollen und zwischen dieser und der aktuellen noch andere Versionen liegen, dann sollten
-    Sie beachten, dass Sie auch die dazwischen liegenden Updates inkrementell installieren müssen!</p>
+    <p>Wenn Sie eine Ã¤ltere Version aktualisieren wollen und zwischen dieser und der aktuellen noch andere Versionen liegen, dann sollten
+    Sie beachten, dass Sie auch die dazwischen liegenden Updates inkrementell installieren mÃ¼ssen!</p>
   </td></tr>
 </table></div>
 
-  <p>Sie haben z.B. 1.0RC1 installiert und möchten auf 1.0.1 aktualisieren - Sie müssen dann zuerst auf 1.0 Stable updaten und dann die
-  Aktualierung auf 1.0.1 durchführen.</p>
+  <p>Sie haben z.B. 1.0RC1 installiert und mÃ¶chten auf 1.0.1 aktualisieren - Sie mÃ¼ssen dann zuerst auf 1.0 Stable updaten und dann die
+  Aktualierung auf 1.0.1 durchfÃ¼hren.</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
       <p>Sichern Sie Ihre aktuelle Datenbank vor der Aktualisierung!</p>
     </li>
 <li class="listitem">
-      <p>Prüfen Sie die laufende IDOUtils-Version und die Zielversion. Prüfen Sie, ob zwischen diesen beiden Versionen noch andere
+      <p>PrÃ¼fen Sie die laufende IDOUtils-Version und die Zielversion. PrÃ¼fen Sie, ob zwischen diesen beiden Versionen noch andere
       Versionen liegen und aktualisieren Sie ggf. schrittweise.</p>
     </li>
 <li class="listitem">
-      <p>Führen Sie die Aktualisierung(en) mit einem Benutzer durch, der über die notwendigen Berechtigungen verfügt. Sie können das
+      <p>FÃ¼hren Sie die Aktualisierung(en) mit einem Benutzer durch, der Ã¼ber die notwendigen Berechtigungen verfÃ¼gt. Sie kÃ¶nnen das
       upgradedb-Script verwenden, aber das wird nicht empfohlen (betrifft nur MySQL).</p>
     </li>
 </ol></div>
@@ -96,11 +97,11 @@
   <p><a name="upgrading_idoutils_1.7"></a><span class="bold"><strong>Aktualisierung der IDOUtils auf 1.7</strong></span></p>
 
   <p><span class="color"><font color="red">Beginnend mit Icinga 1.7 wurden Ort und Name der idomod shared-Library von
-  <code class="filename">$bindir/idomod.o</code> in <code class="filename">$libdir/idomod.so</code> geändert. Bitte beachten Sie, dass auch die Endung ".o" in
-  ".so" geändert wurde. Abhängig von der verwendeten Methode müssen Sie entweder den Aufruf im "broker_module"-Eintrag in
+  <code class="filename">$bindir/idomod.o</code> in <code class="filename">$libdir/idomod.so</code> geÃ¤ndert. Bitte beachten Sie, dass auch die Endung ".o" in
+  ".so" geÃ¤ndert wurde. AbhÃ¤ngig von der verwendeten Methode mÃ¼ssen Sie entweder den Aufruf im "broker_module"-Eintrag in
   <code class="filename">icinga.cfg</code> ODER die Moduldefinition in <code class="filename">module/idomod.cfg</code> anpassen.</font></span> Die alte Datei
   <code class="filename">idomod.o</code> wird entfernt, falls sie gefunden wird. Sie erhalten auch eine Warnung beim Aufruf von "make
-  install-idoutils" über diese Änderung.</p>
+  install-idoutils" Ã¼ber diese Ã„nderung.</p>
 
   <p>Bitte lesen Sie auch den Abschnitt "CHANGES for users" in <code class="filename">changelog</code>.</p>
 
@@ -114,13 +115,13 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Zum Einsatz von IDOUtils 1.5.0 mit Oracle benötigen Sie OCILIB 3.9.2 - installieren Sie nicht 3.9.0 oder 3.9.1, denn
+    <p>Zum Einsatz von IDOUtils 1.5.0 mit Oracle benÃ¶tigen Sie OCILIB 3.9.2 - installieren Sie nicht 3.9.0 oder 3.9.1, denn
     diese Version sind fehlerbehaftet.</p>
   </td></tr>
 </table></div>
 
-  <p>Passen Sie <code class="filename">oracle-upgrade-1.5.0.sql</code> an und definieren Sie Ihre Tablespaces ähnlich den folgenden Zeilen. Sie
-  können auch Ihre bestehenden Tablespace-Namen für alle Definitionen benutzen. </p>
+  <p>Passen Sie <code class="filename">oracle-upgrade-1.5.0.sql</code> an und definieren Sie Ihre Tablespaces Ã¤hnlich den folgenden Zeilen. Sie
+  kÃ¶nnen auch Ihre bestehenden Tablespace-Namen fÃ¼r alle Definitionen benutzen. </p>
 <pre class="programlisting"> /* set real TBS names on which you have quota, no checks are implemented!*/
  define DATATBS='icinga';
  define LOBTBS='icinga';
@@ -144,19 +145,19 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Die minimal erforderliche Version ist Oracle 10g R2. Ältere Versionen können ggf. ebenfalls funktionieren, werden aber
-      nicht unterstützt.</p>
+      <p>Die minimal erforderliche Version ist Oracle 10g R2. Ã„ltere Versionen kÃ¶nnen ggf. ebenfalls funktionieren, werden aber
+      nicht unterstÃ¼tzt.</p>
     </li>
 <li class="listitem">
-      <p>Die optionale Trennung von Daten-, Index- und LOB-Tablespaces wird eingeführt. Passen Sie <code class="filename">oracle-upgrade-1.4.0.sql
-      </code> an und definieren Sie Ihre Tablespaces. Sie können auch Ihre bestehenden Tablespace-Namen für alle Definitionen
+      <p>Die optionale Trennung von Daten-, Index- und LOB-Tablespaces wird eingefÃ¼hrt. Passen Sie <code class="filename">oracle-upgrade-1.4.0.sql
+      </code> an und definieren Sie Ihre Tablespaces. Sie kÃ¶nnen auch Ihre bestehenden Tablespace-Namen fÃ¼r alle Definitionen
       benutzen.</p>
 
       <p>Aktionen:</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p>entfernen der Beschränkungen von Zahlenwerten</p>
+          <p>entfernen der BeschrÃ¤nkungen von Zahlenwerten</p>
         </li>
 <li class="listitem">
           <p>entfernen der meisten bestehenden NOT NULL-Constraints</p>
@@ -190,10 +191,10 @@
         <p>Sie den kompletten <code class="filename">upgrade</code>-Ordner kopieren</p>
       </li>
 <li class="listitem">
-        <p>Sie das Script <code class="filename">oracle-upgrade-1.4.0.sql</code> anpassen und die Werte für DATA, LOB und IXT setzen</p>
+        <p>Sie das Script <code class="filename">oracle-upgrade-1.4.0.sql</code> anpassen und die Werte fÃ¼r DATA, LOB und IXT setzen</p>
       </li>
 <li class="listitem">
-        <p>Sie anschließend das Upgrade-Script starten</p>
+        <p>Sie anschlieÃŸend das Upgrade-Script starten</p>
       </li>
 </ol></div>
   </td></tr>
@@ -203,15 +204,15 @@
 
   <p><span class="bold"><strong>Aktualisieren der IDOUtils auf 1.3</strong></span></p>
 
-  <p>Mit IDOUtils 1.3 wird die Verwendung der Tabelle dbversion im IDOUtils Schema wieder eingeführt. Das Aktualisierungsskript
-  stellt sicher, dass die Tabelle dbversion die aktuelle Version enthält. Ido2db vergleicht die Programversion mit der Datenbankversion und
+  <p>Mit IDOUtils 1.3 wird die Verwendung der Tabelle dbversion im IDOUtils Schema wieder eingefÃ¼hrt. Das Aktualisierungsskript
+  stellt sicher, dass die Tabelle dbversion die aktuelle Version enthÃ¤lt. Ido2db vergleicht die Programversion mit der Datenbankversion und
   gibt einen Fehler im Syslog aus, wenn die Versionen voneinander abweichen.</p>
 
-  <p>Verwenden Sie das Aktualisierungsskript für die IDOUtils 1.3 unter
+  <p>Verwenden Sie das Aktualisierungsskript fÃ¼r die IDOUtils 1.3 unter
   <code class="literal">module/idoutils/db/&lt;rdbms&gt;/&lt;rdbm&gt;-upgrade-1.3.sql</code> gegen Ihr aktuelles Datenbankschema, bitte beachten Sie
   die inkrementelle Vorgehensweise wie oben beschrieben.</p>
 
-  <p>Nach der Aktualisierung sollten Sie die Datenbank-Version prüfen.</p>
+  <p>Nach der Aktualisierung sollten Sie die Datenbank-Version prÃ¼fen.</p>
 
   <pre class="programlisting"> SQL&gt; SELECT * FROM icinga_dbversion</pre>
 
@@ -229,21 +230,21 @@
 
   <p><span class="bold"><strong>Aktualisieren der IDOUtils auf 1.0.3</strong></span></p>
 
-  <p>Es gab ein paar kleinere Änderungen:</p>
+  <p>Es gab ein paar kleinere Ã„nderungen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>display_name wurde geändert zu varchar(255) für mysql/oracle</p>
+      <p>display_name wurde geÃ¤ndert zu varchar(255) fÃ¼r mysql/oracle</p>
     </li>
 <li class="listitem">
       <p>Update des pgsql schema, ersetzen von varchar(n) durch text</p>
     </li>
 <li class="listitem">
-      <p>Geänderter Wert für Konfigdateivariablen bis 1024 Länge für MySQL/Oracle.</p>
+      <p>GeÃ¤nderter Wert fÃ¼r Konfigdateivariablen bis 1024 LÃ¤nge fÃ¼r MySQL/Oracle.</p>
     </li>
 </ul></div>
 
-  <p>Bitte verwenden Sie das Update-Skript für ihre Datenbank wie oben beschrieben.</p>
+  <p>Bitte verwenden Sie das Update-Skript fÃ¼r ihre Datenbank wie oben beschrieben.</p>
 
   <a name="upgrading_idoutils_1.0.2"></a>
 
@@ -263,23 +264,23 @@
   <p>Historische Daten allerdings behalten diese unterschiedliche Beziehung zur Objekttabelle bei - vor und nach dem Restart sind die
   Relationen unterschiedlich.</p>
 
-  <p>Diese Dateninkonsistenz ist natürlich nicht wünschenswert und es wurde dementsprechend versucht, eine einfache Lösungsmöglichkeit zu
+  <p>Diese Dateninkonsistenz ist natÃ¼rlich nicht wÃ¼nschenswert und es wurde dementsprechend versucht, eine einfache LÃ¶sungsmÃ¶glichkeit zu
   finden.</p>
 
-  <p>Neben den normale SQL Scripts für 1.0.2 (z.B. mysql-upgrade-1.0.2.sql) stehen erweiterte SQL Scripts zur Verfügung.</p>
+  <p>Neben den normale SQL Scripts fÃ¼r 1.0.2 (z.B. mysql-upgrade-1.0.2.sql) stehen erweiterte SQL Scripts zur VerfÃ¼gung.</p>
 
   <p>Das Script arbeitet jeweils auf einer historischen Tabelle und holt sich mit Hilfe einer gestaffelten Query die notwendigen Daten
   aus den beiden Tabellen - historisch 1..1 Objekte. Desweiteren werden kaputte Eintraege zur Zeit des Restarts bereinigt.</p>
 
-  <p>Bitte verwenden Sie diese Scripts wie Sie möchten - wahlweise direkt ausgeführt oder Schritt für Schritt, wie der Ablauf innerhalb
-  des Scripts ist. Beachten Sie allerdings bitte, dass diese Scripts ohne Garantie auf ihr eigenes Risiko verwendet werden können.</p>
+  <p>Bitte verwenden Sie diese Scripts wie Sie mÃ¶chten - wahlweise direkt ausgefÃ¼hrt oder Schritt fÃ¼r Schritt, wie der Ablauf innerhalb
+  des Scripts ist. Beachten Sie allerdings bitte, dass diese Scripts ohne Garantie auf ihr eigenes Risiko verwendet werden kÃ¶nnen.</p>
 
-  <p>Falls Sie lediglich Livedaten verwenden, ist unter Umständen eine Neuinstallation des Datenbankschemas die einfachere Option.</p>
+  <p>Falls Sie lediglich Livedaten verwenden, ist unter UmstÃ¤nden eine Neuinstallation des Datenbankschemas die einfachere Option.</p>
 
   <p>* &lt;rdbms&gt;-upgrade-1.0.2-fix-object-relations.sql</p>
 
-  <p>Das "normale" Upgrade Script ist in 1.0.2 nur für MySQL verfügbar. Es wurden binäre Casts entfernt, da case sensistives Vergleichen
-  auch mit einer Anpassung der Collation erreicht werden kann und so massive Performanceeinbrüche verhindert werden können.</p>
+  <p>Das "normale" Upgrade Script ist in 1.0.2 nur fÃ¼r MySQL verfÃ¼gbar. Es wurden binÃ¤re Casts entfernt, da case sensistives Vergleichen
+  auch mit einer Anpassung der Collation erreicht werden kann und so massive PerformanceeinbrÃ¼che verhindert werden kÃ¶nnen.</p>
 
   <p>* mysql-upgrade-1.0.2.sql</p>
 
@@ -288,18 +289,18 @@
   <p><span class="bold"><strong>Aktualisieren der IDOUtils auf 1.0.1</strong></span></p>
 
   <p>Bitte vergewissern Sie sich, dass Sie bereits auf Icinga IDOUtils 1.0 aktualisiert haben, bevor Sie diesen Abschnitt
-  weierlesen! Es gab einige (große) Veränderungen für alle unterstützten RDBMS, deshalb lesen Sie diesen Abschnitt bitte sehr sorgfältig.
-  Alle Datenbank- Skripte sind nun in entsprechenden Unterverzeichnissen zu finden. Für alle RDBMS wurden mehr Indizes gesetzt, außerdem
-  wurde die Größe der command_line Spalte in mehreren Tabellen, die 255 Zeichen überschritten, angepasst.</p>
+  weierlesen! Es gab einige (groÃŸe) VerÃ¤nderungen fÃ¼r alle unterstÃ¼tzten RDBMS, deshalb lesen Sie diesen Abschnitt bitte sehr sorgfÃ¤ltig.
+  Alle Datenbank- Skripte sind nun in entsprechenden Unterverzeichnissen zu finden. FÃ¼r alle RDBMS wurden mehr Indizes gesetzt, auÃŸerdem
+  wurde die GrÃ¶ÃŸe der command_line Spalte in mehreren Tabellen, die 255 Zeichen Ã¼berschritten, angepasst.</p>
 
-  <p>RDBMS spezifische Änderungen und HowTo's:</p>
+  <p>RDBMS spezifische Ã„nderungen und HowTo's:</p>
 
   <p><span class="bold"><strong>MySQL:</strong></span></p>
 
-  <p>Änderung der Datenbank- Engine von MYISAM zu InnoDB. Der Grund ist die Umgehung von Zeilen- Sperren/Transaktionen/Rollbacks im
-  Gegensatz zu einer kleinen Geschwindigkeitseinbuße während der Inserts.</p>
+  <p>Ã„nderung der Datenbank- Engine von MYISAM zu InnoDB. Der Grund ist die Umgehung von Zeilen- Sperren/Transaktionen/Rollbacks im
+  Gegensatz zu einer kleinen GeschwindigkeitseinbuÃŸe wÃ¤hrend der Inserts.</p>
 
-  <p>Das Upgrade-Skript führt eine ALTER TABLE- Anweisung aus. Falls ihnen diese Idee nicht gefällt, können Sie auch folgendes
+  <p>Das Upgrade-Skript fÃ¼hrt eine ALTER TABLE- Anweisung aus. Falls ihnen diese Idee nicht gefÃ¤llt, kÃ¶nnen Sie auch folgendes
   tun:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -309,42 +310,42 @@
       <pre class="programlisting"># mysqldump -u root -p icinga &gt; icinga.sql</pre>
     </li>
 <li class="listitem">
-      <p>Ändern Sie alle Einträge von "MYISAM" zu "InnoDB"</p>
+      <p>Ã„ndern Sie alle EintrÃ¤ge von "MYISAM" zu "InnoDB"</p>
     </li>
 <li class="listitem">
-      <p>Import des angepassten Datensatzes in eine neue Datenbank (wenn Sie die alte Datenbank verwenden möchten, löschen Sie als erstes
+      <p>Import des angepassten Datensatzes in eine neue Datenbank (wenn Sie die alte Datenbank verwenden mÃ¶chten, lÃ¶schen Sie als erstes
       den originalen Datensatz und rekreieren Sie die Datenbank).</p>
     </li>
 </ul></div>
 
   <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
 
-  <p>Der Tabelle systemcommands fehlte die Spalte der Namens Ausgabe. Diese wird während des Upgrades hinzugefügt.</p>
+  <p>Der Tabelle systemcommands fehlte die Spalte der Namens Ausgabe. Diese wird wÃ¤hrend des Upgrades hinzugefÃ¼gt.</p>
 
   <p><span class="bold"><strong>Oracle:</strong></span></p>
 
-  <p>Um die Performance in mehreren Bereichen zu verbessern, muß der Wert für open_cursors höher gesetzt werden (Standardwert ist 50).
-  Das Aktualisierungsskript enthält zwei neue, in DML geschriebene, Prozeduren für die DELETE- Anweisungen.</p>
+  <p>Um die Performance in mehreren Bereichen zu verbessern, muÃŸ der Wert fÃ¼r open_cursors hÃ¶her gesetzt werden (Standardwert ist 50).
+  Das Aktualisierungsskript enthÃ¤lt zwei neue, in DML geschriebene, Prozeduren fÃ¼r die DELETE- Anweisungen.</p>
 
-  <p>Darüber hinaus gab es umfangreiche Änderungen bezüglich der Autoincrement- Sequenz und der AFTER INSERT- Trigger (Emulation des
-  MySQL Autoincrement auf Primärschlüssel). Die alte Routine wurde komplett verworfen, d.h. alle Trigger und die Autoincrement- Sequenz
-  werden während des Updates entfernt. Als Ersatz werden für jede Tabelle neue Sequenzen hinzugefügt und in den IDOUtils für Oracle
+  <p>DarÃ¼ber hinaus gab es umfangreiche Ã„nderungen bezÃ¼glich der Autoincrement- Sequenz und der AFTER INSERT- Trigger (Emulation des
+  MySQL Autoincrement auf PrimÃ¤rschlÃ¼ssel). Die alte Routine wurde komplett verworfen, d.h. alle Trigger und die Autoincrement- Sequenz
+  werden wÃ¤hrend des Updates entfernt. Als Ersatz werden fÃ¼r jede Tabelle neue Sequenzen hinzugefÃ¼gt und in den IDOUtils fÃ¼r Oracle
   verwendet.</p>
 
-  <p>Bei bestehenden Datensätzen wird dies beim Importieren zu Problemen führen. Die Sequenzen starten mit dem Wert 1 wo hingegen der
-  primäre Key (id) einen Maximalwert gesetzt hat. Aus diesem Grund wird eine Basisfunktion bereitgestellt, die das folgende tut: Diese
-  extrahiert den maximalen Wert der id plus eins aus der angegebenen Tabelle und verändert den jeweiligen Sequence Start auf diesen
+  <p>Bei bestehenden DatensÃ¤tzen wird dies beim Importieren zu Problemen fÃ¼hren. Die Sequenzen starten mit dem Wert 1 wo hingegen der
+  primÃ¤re Key (id) einen Maximalwert gesetzt hat. Aus diesem Grund wird eine Basisfunktion bereitgestellt, die das folgende tut: Diese
+  extrahiert den maximalen Wert der id plus eins aus der angegebenen Tabelle und verÃ¤ndert den jeweiligen Sequence Start auf diesen
   berechneten Wert.</p>
 
-  <p>Bitte verwenden Sie diese Prozedur so, wie Sie es benötigen - auf alle Tabellen und Sequenzen oder auf separierte Teile. Die
-  Prozedur ist auskommentiert, und wird ohne Garantie auf Datenkonsistenz zur Verfügung gestellt. Ziehen Sie Ihren DBA zu Rate, wenn Sie
-  bestehende Datensätze importieren wollen.</p>
+  <p>Bitte verwenden Sie diese Prozedur so, wie Sie es benÃ¶tigen - auf alle Tabellen und Sequenzen oder auf separierte Teile. Die
+  Prozedur ist auskommentiert, und wird ohne Garantie auf Datenkonsistenz zur VerfÃ¼gung gestellt. Ziehen Sie Ihren DBA zu Rate, wenn Sie
+  bestehende DatensÃ¤tze importieren wollen.</p>
 
   <a name="upgrading_idoutils_1.0"></a>
 
   <p><span class="bold"><strong>Aktualisieren der IDOUtils auf 1.0</strong></span></p>
 
-  <p>Es gab einen Unique-Key-Fehler durch den Fork, der bei einigen Tabellen zu doppelten und nutzlosen Zeilen führt. Dies betrifft die
+  <p>Es gab einen Unique-Key-Fehler durch den Fork, der bei einigen Tabellen zu doppelten und nutzlosen Zeilen fÃ¼hrt. Dies betrifft die
   folgenden Tabellen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -375,13 +376,13 @@
   <pre class="programlisting"> PRIMARY KEY (`servicecheck_id`),
  UNIQUE KEY `instance_id` (`instance_id`,`service_object_id`,`start_time`,`start_time_usec`)</pre>
 
-  <p>zu ändern, befolgen Sie bitte den folgenden Ablauf!</p>
+  <p>zu Ã¤ndern, befolgen Sie bitte den folgenden Ablauf!</p>
 
   <p><span class="bold"><strong>Wenn Sie von IDOUtils 1.0RC aktualisieren, dann benutzen Sie bitte
-  module/idoutils/db/mysql/mysql-upgrade-1.0.sql - wenn Sie von einer älteren Version aktualisieren, dann führen Sie vorher die notwendigen
+  module/idoutils/db/mysql/mysql-upgrade-1.0.sql - wenn Sie von einer Ã¤lteren Version aktualisieren, dann fÃ¼hren Sie vorher die notwendigen
   Schritte durch, um auf 1.0RC zu aktualisieren!</strong></span></p>
 
-  <p>Bitte sichern Sie Ihre Datenbank und stoppen Sie ido2db vor der Ausführung des Patches!</p>
+  <p>Bitte sichern Sie Ihre Datenbank und stoppen Sie ido2db vor der AusfÃ¼hrung des Patches!</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -396,51 +397,51 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>hinzufügen einer temporären Spalte 'active', um die aktualisierte Zeile zu kennzeichnen</p>
+      <p>hinzufÃ¼gen einer temporÃ¤ren Spalte 'active', um die aktualisierte Zeile zu kennzeichnen</p>
     </li>
 <li class="listitem">
-      <p>ermitteln der benötigten Informationen zweier doppelter Zeilen basierend auf dem unique contraint, aktualisieren der zweiten
+      <p>ermitteln der benÃ¶tigten Informationen zweier doppelter Zeilen basierend auf dem unique contraint, aktualisieren der zweiten
       Zeile und markieren durch first=inactive, second=active</p>
     </li>
 <li class="listitem">
-      <p>löschen aller als 'inactive' gekennzeichneten Zeilen</p>
+      <p>lÃ¶schen aller als 'inactive' gekennzeichneten Zeilen</p>
     </li>
 <li class="listitem">
       <p>entfernen der fehlerhaften Key-Definitionen</p>
     </li>
 <li class="listitem">
-      <p>hinzufügen des Unique Key</p>
+      <p>hinzufÃ¼gen des Unique Key</p>
     </li>
 <li class="listitem">
-      <p>entfernen der temporären Spalte 'active'</p>
+      <p>entfernen der temporÃ¤ren Spalte 'active'</p>
     </li>
 </ul></div>
 
-  <p>Diese Prozedur wird für jede Tabelle durchgeführt, so dass es eine Weile dauern kann, abhängig von Ihren Tabellengrößen und/oder
+  <p>Diese Prozedur wird fÃ¼r jede Tabelle durchgefÃ¼hrt, so dass es eine Weile dauern kann, abhÃ¤ngig von Ihren TabellengrÃ¶ÃŸen und/oder
   DB-Spezifikationen.</p>
 
-  <p>Falls Sie vorher etwas an den Keys verändert haben, dann stellen Sie sicher, dass Sie das gleiche DB-Schema wie in IDOUtils
+  <p>Falls Sie vorher etwas an den Keys verÃ¤ndert haben, dann stellen Sie sicher, dass Sie das gleiche DB-Schema wie in IDOUtils
   1.0RC benutzen, andernfalls wird das Script fehlschlagen.</p>
 
-  <a class="indexterm" name="id1482752"></a>
+  <a class="indexterm" name="id1450136"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="upgrading.html">Zurück</a> </td>
+<a accesskey="p" href="upgrading.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="monitoring-overview.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="monitoring-overview.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Icinga aktualisieren </td>
+<td width="40%" align="left" valign="top">Icinga aktualisierenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Monitoring-Überblick</td>
+<td width="40%" align="right" valign="top">Â Monitoring-Ãœberblick</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>
