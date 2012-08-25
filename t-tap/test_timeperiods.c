@@ -274,6 +274,11 @@ int dump_retained_host_service_states_to_neb = TRUE;
 int stalking_notifications_for_hosts = DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS;
 int stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES;
 
+time_t disable_notifications_expire_time = 0L;
+void enable_all_notifications() {}
+
+int             keep_unknown_macros = FALSE;
+
 /* Dummy variables */
 sched_info scheduling_info;
 timed_event event_list_low;
