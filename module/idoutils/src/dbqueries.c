@@ -1971,6 +1971,8 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
                 result = ido2db_db_query(idi, query1);
                 free(query1);
 
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commentdata_add() dbi_result_get_numrows_affected=%lu\n", dbi_result_get_numrows_affected(idi->dbinfo.dbi_result));
+
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
                         /* try insert instead */

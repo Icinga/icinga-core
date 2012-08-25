@@ -2470,8 +2470,17 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
 
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-		if (asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t) == -1)
+		/* mysql from_unixtime treats 0 as 'Out of range value for column '...' at row 1'
+		 * which basically is a mess, when doing updates at all. in order to stay sane, we
+		 * set the value explicitely to NULL. mysql, you suck hard.
+		 */
+		if (t == 0) {
+			if (asprintf(&buf, "FROM_UNIXTIME(NULL)") == -1)
 			buf = NULL;
+		} else {
+			if (asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t) == -1)
+				buf = NULL;
+		}
 		break;
 	case IDO2DB_DBSERVER_PGSQL:
 		/* from_unixtime is a PL/SQL function (defined in db/pgsql.sql) */
