@@ -31,6 +31,113 @@
 
   <p>As usual this is only a brief overview. Please take a look at the Changelog as well if you are missing something.</p>
 
+  <p><span class="bold"><strong>Core</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>fix duplicated events on check scheduling logic for new events (Andreas Ericsson) #2676 #2993</p>
+    </li>
+<li class="listitem">
+      <p>avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993</p>
+    </li>
+<li class="listitem">
+      <p>get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665</p>
+    </li>
+<li class="listitem">
+      <p>revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197</p>
+    </li>
+<li class="listitem">
+      <p>fix whitespaces are not stripped using multiple templates ("use abc, def, ghi") #2701</p>
+    </li>
+<li class="listitem">
+      <p>add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879</p>
+    </li>
+<li class="listitem">
+      <p>bail out early with config error if resource.cfg macros contain NULL values #2879</p>
+    </li>
+<li class="listitem">
+      <p>fix logical bug on icinga.cfg detection on config read #2879</p>
+    </li>
+<li class="listitem">
+      <p>fsync() files before fclose() (Andreas Ericsson) #2948</p>
+    </li>
+<li class="listitem">
+      <p>remove weird switch() statement when scanning checkresult queue (Andreas Ericsson) #2950</p>
+    </li>
+<li class="listitem">
+      <p>fix deleting too old check result files (Andreas Ericsson) #2951</p>
+    </li>
+<li class="listitem">
+      <p>icinga.spec: forced update on icinga.cfg change package locations #2923</p>
+    </li>
+<li class="listitem">
+      <p>icinga.spec: fix permissions on ido2db.cfg potentially world readable (Aaron Russo) #2897</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>IDOUtils</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>fix icinga mysql db creation script grants access to all dbs #2917</p>
+    </li>
+<li class="listitem">
+      <p>fix ignoring mysql password in create_mysqldb.sh #2994</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>1.7.1</strong></span></p>
+
+  <p><span class="bold"><strong>Core</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>use prefix in solaris service definition #2609</p>
+    </li>
+<li class="listitem">
+      <p>fix various memory leaks in downtime eventhandling on SIGHUP (Carlos Velasco) #2666</p>
+    </li>
+<li class="listitem">
+      <p>check_ido2db_procs.cfg should not depend on local-service template #2616</p>
+    </li>
+<li class="listitem">
+      <p>adapt lsb headers for icinga and ido2db #2637</p>
+    </li>
+<li class="listitem">
+      <p>fix typo in contrib/eventhandlers/redundancy-scenario1/handle-master-proc-event (thanks uosiu) #2671</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>Classic UI</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>Fixed status.cgi time out when displaying hostgroups in large environments #2617</p>
+    </li>
+<li class="listitem">
+      <p>Fixed Invalid JSON output for hostgroup overview (Torsten Rehn) #2680</p>
+    </li>
+<li class="listitem">
+      <p>Fixed Confusing use of display_name in JSON and CSV output (Torsten Rehn) #2681</p>
+    </li>
+<li class="listitem">
+      <p>Fixed wrong totals in "Service Status Summary" on Status Summary page (Mark Ziesemer) #2689</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>IDOUtils</strong></span></p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>fix small compiler issues #2620</p>
+    </li>
+<li class="listitem">
+      <p>fix upgradedb script typos and past changes #2682</p>
+    </li>
+</ul></div>
+
+  <p><span class="bold"><strong>1.7.0</strong></span></p>
+
   <p><span class="bold"><strong>CHANGES</strong></span></p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -170,7 +277,7 @@
 
   <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga-Docs</a></p>
 
-  <a class="indexterm" name="id1336549"></a>
+  <a class="indexterm" name="id1338030"></a>
 </div>
 <div class="navfooter">
 <hr>
