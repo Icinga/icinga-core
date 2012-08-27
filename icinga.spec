@@ -374,7 +374,7 @@ fi
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
 %attr(755,-,-) %{_initrddir}/ido2db
-%config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
+attr(660,root,root) %config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/idomod.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/modules/idoutils.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/objects/ido2db_check_proc.cfg
@@ -399,6 +399,7 @@ fi
 * Tue Aug 21 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.2-1
 - bump version
 - forgot to check on old icinga.cfg entries not matching - enforce that once
+- change permissions on ido2db.cfg, not being world readable (Aaron Russo) #2987
 
 * Mon Jun 18 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.1-1
 - bump to 1.7.1
