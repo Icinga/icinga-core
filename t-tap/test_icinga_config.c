@@ -272,6 +272,11 @@ int stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SER
 
 time_t          last_program_stop = 0L;
 
+time_t disable_notifications_expire_time = 0L;
+void enable_all_notifications() {}
+
+int             keep_unknown_macros = FALSE;
+
 /* Dummy variables */
 sched_info scheduling_info;
 timed_event event_list_low;

@@ -154,6 +154,9 @@ int dump_retained_host_service_states_to_neb = TRUE;
 int stalking_notifications_for_hosts = DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS;
 int stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES;
 
+time_t disable_notifications_expire_time = 0L;
+void enable_all_notifications() {}
+
 /* Test variables */
 service *svc1 = NULL, *svc2 = NULL, *svc3 = NULL;
 host *host1 = NULL;
