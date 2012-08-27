@@ -127,6 +127,28 @@ classic ui: Changed cgi GET params
 	** socket_perm (default 0755) #2659
 
 
+1.7.2 - 27/08/2012
+
+FIXES
+* core: fix duplicated events on check scheduling logic for new events (Andreas Ericsson) #2676 #2993 - MF
+* core: avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993 - MF
+* core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665 - MF
+* core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197 - MF
+* core: fix whitespaces are not stripped using multiple templates ("use abc, def, ghi") #2701 - MF
+* core: add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879 - MF
+* core: bail out early with config error if resource.cfg macros contain NULL values #2879 - MF
+* core: fix logical bug on icinga.cfg detection on config read #2879 - MF
+* core: fsync() files before fclose() (Andreas Ericsson) #2948 - MF
+* core: remove weird switch() statement when scanning checkresult queue (Andreas Ericsson) #2950 - MF
+* core: fix deleting too old check result files (Andreas Ericsson) #2951 - MF
+
+* idoutils: fix icinga mysql db creation script grants access to all dbs #2917 - MF
+* idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
+
+* icinga.spec: forced update on icinga.cfg change package locations #2923 -MF
+* icinga.spec: fix permissions on ido2db.cfg potentially world readable (Aaron Russo) #2897 - MF
+
+
 1.7.1 - 18/06/2012
 
 FIXES
