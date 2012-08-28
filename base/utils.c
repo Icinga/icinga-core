@@ -3601,6 +3601,7 @@ int file_uses_embedded_perl(char *fname) {
 	/* grab the first line - we should see Perl. go home if not */
 	if (fgets(buf, 80, fp) == NULL || strstr(buf, "/bin/perl") == NULL) {
 		fclose(fp);
+		return FALSE;
 	}
 
 	/* epn directives must be found in first ten lines of plugin */
