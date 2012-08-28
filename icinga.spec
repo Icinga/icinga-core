@@ -388,7 +388,7 @@ fi
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
 %attr(755,-,-) %{_initrddir}/ido2db
-%config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
+%attr(660,root,root) %config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/idomod.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/modules/idoutils.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/objects/ido2db_check_proc.cfg
@@ -400,7 +400,7 @@ fi
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
 %attr(755,-,-) %{_initrddir}/ido2db
-%config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
+%attr(660,root,root) %config(noreplace) %{_sysconfdir}/%{name}/ido2db.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/idomod.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/modules/idoutils.cfg
 %config(noreplace) %{_sysconfdir}/%{name}/objects/ido2db_check_proc.cfg
@@ -415,6 +415,7 @@ fi
 - add devel package, installing header files to include/
 - use --with-mainurl from upstream to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29
 - forgot to check on old icinga.cfg entries not matching - enforce that once
+- change permissions on ido2db.cfg, not being world readable (Aaron Russo) #2987
 
 * Sun May 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.0-1
 - drop idoutils, add idoutils-libdbi-mysql and idoutils-libdbi-pgsql

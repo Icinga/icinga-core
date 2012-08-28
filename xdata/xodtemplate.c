@@ -7986,7 +7986,7 @@ int xodtemplate_recombobulate_hostgroups(void) {
 		temp_memberlist = xodtemplate_expand_hostgroups_and_hosts(NULL, temp_hostgroup->members, temp_hostgroup->_config_file, temp_hostgroup->_start_line);
 
 		/* add all members to the host group */
-		if (temp_memberlist == NULL) {
+		if (temp_memberlist == NULL && allow_empty_hostgroup_assignment == 0) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand members specified in hostgroup (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_hostgroup->_config_file), temp_hostgroup->_start_line);
 			return ERROR;
 		}
