@@ -374,6 +374,7 @@ fi
 %{_datadir}/%{name}/sidebar.html
 %{_datadir}/%{name}/ssi
 %{_datadir}/%{name}/stylesheets
+%{_datadir}/%{name}/jquery-ui
 %attr(2775,icinga,icingacmd) %dir %{logdir}/gui
 %attr(664,icinga,icingacmd) %{logdir}/gui/index.htm
 %attr(664,icinga,icingacmd) %{logdir}/gui/.htaccess
@@ -415,6 +416,7 @@ fi
 - forgot to check on old icinga.cfg entries not matching - enforce that once
 - change permissions on ido2db.cfg, not being world readable (Aaron Russo) #2987
 - drop unsupported configure options causing warnings #3037
+- fix new jquery-ui files from icinga-gui datetime picker #3009
 
 * Sun May 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.0-1
 - drop idoutils, add idoutils-libdbi-mysql and idoutils-libdbi-pgsql
