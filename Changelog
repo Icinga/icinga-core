@@ -82,6 +82,7 @@ FIXES
 * idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
 
 * icinga.spec: fix permissions on ido2db.cfg potentially world readable (Aaron Russo) #2897 - MF
+* icinga.soec: drop unsupported configure flags #3037 - MF
 
 CHANGES
 
