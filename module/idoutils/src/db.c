@@ -5076,7 +5076,7 @@ int ido2db_oci_prepared_statement_downtimedata_scheduled_downtime(ido2db_idi *id
 	             "INSERT (id, instance_id, downtime_type, object_id, "
 	             "entry_time, author_name, comment_data, "
 	             "internal_downtime_id, triggered_by_id, "
-	             "is_fixed, duration, scheduled_start_time, scheduled_end_time "
+	             "is_fixed, duration, scheduled_start_time, scheduled_end_time, "
 		     "is_in_effect, trigger_time) "
 	             "VALUES (seq_scheduleddowntime.nextval, :X1, :X2, :X3, "
 	             "unixts2localts(:X4), :X5, :X6, "
@@ -7357,11 +7357,11 @@ int ido2db_oci_prepared_statement_sla_downtime_select(ido2db_idi *idi) {
 		     "is_fixed, duration "
 		     "FROM %s "
 		     "WHERE instance_id = :X1 AND object_id = :X2 AND "
-		     "((actual_start_time > :X3 AND actual_start_time < :X4) OR "
-		     " (actual_end_time > :X3 AND actual_end_time < :X4) OR "
-		     " (actual_start_time < :X3 AND actual_end_time > :X4) OR "
+		     "((actual_start_time > unixts2localts(:X3) AND actual_start_time < unixts2localts(:X4)) OR "
+		     " (actual_end_time > unixts2localts(:X3) AND actual_end_time < unixts2localts(:X4)) OR "
+		     " (actual_start_time < unixts2localts(:X3) AND actual_end_time > unixts2localts(:X4)) OR "
 		     " (actual_end_time = unixts2localts(0)))",
-	             ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY]) == -1) {
+	             ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
 		buf = NULL;
 	}
 

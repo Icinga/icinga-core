@@ -869,7 +869,7 @@ int sla_query_downtime(ido2db_idi *idi, unsigned long object_id,
 	OCI_Commit(idi->dbinfo.oci_connection);
 
 	idi->dbinfo.oci_resultset = OCI_GetResultset(
-	                                idi->dbinfo.oci_statement_sla_services_select);
+	                                idi->dbinfo.oci_statement_sla_downtime_select);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
 	                      "sla_query_downtime() query ok\n");
