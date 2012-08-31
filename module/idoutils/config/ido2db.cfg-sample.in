@@ -225,7 +225,7 @@ max_contactnotifications_age=44640
 max_contactnotificationmethods_age=44640
 
 
-## CLEAN REALTIME TABLES AT CORE STARTUP
+## CLEAN REALTIME TABLES AT CORE STARTUP !!!EXPERIMENTAL!!!
 # If you don't want to clean all those tables, set this option to 0.
 # This can be useful if the deletes slow down the normal data
 # processing.
@@ -235,7 +235,7 @@ max_contactnotificationmethods_age=44640
 clean_realtime_tables_on_core_startup=1
 
 
-## CLEAN CONFIG TABLES AT CORE STARTUP
+## CLEAN CONFIG TABLES AT CORE STARTUP !!!EXPERIMENTAL!!!
 # If you don't want to clean all those tables, set this option to 0.
 # This can be useful if the deletes slow down the normal data
 # processing.
