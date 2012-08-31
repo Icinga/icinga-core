@@ -828,9 +828,9 @@ void print_object_list(int list_type) {
 	printf("<TABLE cellspacing='2' cellpadding='0' border='0' width='100%%'>\n");
 
 	if (list_type == PRINT_SERVICE_LIST)
-		printf("<tr class=\"objectDescription\"><td width=\"46%%\">Host</td><td width=\"46%%\">Service</td><td width='16'><input type='checkbox' onclick=\"checkAllBoxes();\" title=\"Check All\"></td></tr>\n");
+		printf("<tr class=\"objectTableHeader\"><td width=\"46%%\">Host</td><td width=\"46%%\">Service</td><td width='16'><input type='checkbox' onclick=\"checkAllBoxes();\" title=\"Check All\"></td></tr>\n");
 	else if (list_type == PRINT_HOST_LIST)
-		printf("<tr class=\"objectDescription\"><td colspan=\"2\" width=\"96%%\">Hosts</td><td width='16'><input type='checkbox' onclick=\"checkAllBoxes();\" title=\"Check All\"></td></tr>\n");
+		printf("<tr class=\"objectTableHeader\"><td colspan=\"2\" width=\"96%%\">Hosts</td><td width='16'><input type='checkbox' onclick=\"checkAllBoxes();\" title=\"Check All\"></td></tr>\n");
 	else
 		printf("<tr><td colspan=\"3\">&nbsp;</td></tr>\n");
 
@@ -875,8 +875,19 @@ void print_object_list(int list_type) {
 		if (list_type == PRINT_SERVICE_LIST) {
 			/* hostname and service description are present */
 			if (strlen(commands[x].host_name) != 0  && strlen(commands[x].description) != 0) {
-				printf(">%s</td><td>%s</td>", escape_string(commands[x].host_name), escape_string(commands[x].description));
-				printf("<td align='center'><input type='checkbox' name='hostservice' id=\"cb_%d\" value='%s^%s' title=\"%s Service\" %s></td></tr>\n", x, escape_string(commands[x].host_name), escape_string(commands[x].description), (service_passive == FALSE) ? "Active" : "Passive", (service_passive == FALSE) ? "checked" : "");
+				printf(">%s</td><td>%s",
+					escape_string(commands[x].host_name), escape_string(commands[x].description)
+				);
+				if (service_passive == TRUE) {
+					printf("<img src='%s%s' align=right border=0 alt='Passive' title='Passive Service'>",
+						url_images_path, PASSIVE_ICON
+					);
+				}
+                                printf("</td>\n");
+
+				printf("<td align='center'><input type='checkbox' name='hostservice' id=\"cb_%d\" value='%s^%s' title=\"%s Service\" %s></td></tr>\n",
+					x, escape_string(commands[x].host_name), escape_string(commands[x].description),
+					(service_passive == FALSE) ? "Active" : "Passive", (service_passive == FALSE) ? "checked" : "");
 			} else {
 				/* if hostname is empty print inputbox instead */
 				if (!strcmp(commands[x].host_name, ""))
@@ -896,8 +907,18 @@ void print_object_list(int list_type) {
 			if (!strcmp(commands[x].host_name, ""))
 				printf(" style=\"font-weight:bold;\">Host:</td><td><INPUT TYPE='TEXT' NAME='host' SIZE=30></td><td></td></tr>\n");
 			else {
-				printf(" style=\"font-weight:bold;\">Host:</td><td>%s</td>", escape_string(commands[x].host_name));
-				printf("<td align='center'><input type='checkbox' name='host' id=\"cb_%d\" value='%s' title=\"%s Host\" %s></td></tr>\n", x, escape_string(commands[x].host_name), (host_passive == FALSE) ? "Active" : "Passive", (host_passive == FALSE) ? "checked" : "");
+				printf(" style=\"font-weight:bold;\">Host:</td><td>%s", escape_string(commands[x].host_name));
+				if (host_passive == TRUE) {
+					printf("<img src='%s%s' align=right border=0 alt='Passive' title='Passive Service'>",
+						url_images_path, PASSIVE_ICON
+					);
+				}
+                                printf("</td>\n");
+
+				printf("<td align='center'><input type='checkbox' name='host' id=\"cb_%d\" value='%s' title=\"%s Host\" %s></td></tr>\n",
+					x, escape_string(commands[x].host_name),
+					(host_passive == FALSE) ? "Active" : "Passive", (host_passive == FALSE) ? "checked" : ""
+				);
 			}
 		} else if (list_type == PRINT_COMMENT_LIST) {
 			printf(" style=\"font-weight:bold;\">Comment ID:</td><td><INPUT TYPE='HIDDEN' NAME='com_id' VALUE='%lu'>%lu</td></tr>\n", multi_ids[x], multi_ids[x]);
