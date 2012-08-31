@@ -1938,8 +1938,11 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
+	char * query = NULL;
 	char * query1 = NULL;
 	char * query2 = NULL;
+	int mysql_update = FALSE;
+	unsigned long comment_id = 0L;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commentdata_add() start\n");
 
@@ -1953,30 +1956,64 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
                 dummy = asprintf(&query1, "UPDATE %s SET comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
-                                 ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS],
-                                 *(int *) data[3],               /* update start */
-                                 *(int *) data[4],
-                                 *(unsigned long *) data[5],
-                                 *(char **) data[8],
-                                 *(char **) data[9],
-                                 *(int *) data[10],
-                                 *(int *) data[11],
-                                 *(int *) data[12],
-                                 *(char **) data[13],            /* end end */
-                                 *(unsigned long *) data[2],     /* unique constraint start */
-                                 *(char **) data[6],
-                                 *(unsigned long *) data[7]      /* unique constraint end */
-                                );
+				ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS],
+				*(int *) data[3],               /* update start */
+				*(int *) data[4],
+				*(unsigned long *) data[5],
+				*(char **) data[8],
+				*(char **) data[9],
+				*(int *) data[10],
+				*(int *) data[11],
+				*(int *) data[12],
+				*(char **) data[13],            /* end end */
+				*(unsigned long *) data[2],     /* unique constraint start */
+				*(char **) data[6],
+				*(unsigned long *) data[7]      /* unique constraint end */
+				);
                 /* send query to db */
                 result = ido2db_db_query(idi, query1);
                 free(query1);
 
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commentdata_add() dbi_result_get_numrows_affected=%lu\n", dbi_result_get_numrows_affected(idi->dbinfo.dbi_result));
 
-                /* check result if update was ok */
-                if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)",
+		/* we can't use INSERT ... ON DUPLICATE KEY UPDATE ... anymore, as MySQL flagged that unsafe
+		 * for more than one unique constraint (haha, primary key, suckers!) on replication starting
+		 * with 5.5.24 - see #3008 for more info. That's also true for REPLACE INTO ... SELECT ...
+		 * Since comments can be loaded and added with the same data by the core, we cannot just try
+		 * update and then insert, we need to explicitely select and then decide what to do.
+		 */
+
+		/* it seems we did not affect anything, but the libdbi mysql driver is entirely broken
+		 * and might return 0 in any case, so we need to fire another select statement just to
+		 * be sure about it.
+		 */
+		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+	                dummy = asprintf(&query, "SELECT comment_id FROM %s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
+					ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS],
+					*(unsigned long *) data[2],     /* unique constraint start */
+					*(char **) data[6],
+					*(unsigned long *) data[7]      /* unique constraint end */
+					);
+
+	                /* send query to db */
+			if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+				if (idi->dbinfo.dbi_result != NULL) {
+					if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+						comment_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "comment_id");
+						mysql_update = TRUE;
+					} else {
+						mysql_update = FALSE;
+					}
+
+					dbi_result_free(idi->dbinfo.dbi_result);
+					idi->dbinfo.dbi_result = NULL;
+				}
+			}
+                	free(query);
+
+			if (mysql_update == FALSE) {
+	                        /* no data found, insert it new */
+        	                dummy = asprintf(&query2, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)",
                                          ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS],
                                          *(char **) data[0],             /* insert start */
                                          *(unsigned long *) data[1],
@@ -1993,9 +2030,10 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
                                          *(int *) data[12],
                                          *(char **) data[13]            /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+                	        /* send query to db */
+                        	result = ido2db_db_query(idi, query2);
+	                        free(query2);
+			}
                 }
                 break;
 
@@ -2150,8 +2188,11 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
+	char * query = NULL;
 	char * query1 = NULL;
 	char * query2 = NULL;
+	int mysql_update = FALSE;
+	unsigned long comment_id = 0L;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commentdata_history_add() start\n");
 
@@ -2164,29 +2205,59 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-                dummy = asprintf(&query1, "UPDATE %s SET comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
-                                 ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTHISTORY],
-                                 *(int *) data[3],               /* update start */
-                                 *(int *) data[4],
-                                 *(unsigned long *) data[5],
-                                 *(char **) data[8],
-                                 *(char **) data[9],
-                                 *(int *) data[10],
-                                 *(int *) data[11],
-                                 *(int *) data[12],
-                                 *(char **) data[13],            /* end end */
-                                 *(unsigned long *) data[2],     /* unique constraint start */
-                                 *(char **) data[6],
-                                 *(unsigned long *) data[7]      /* unique constraint end */
-                                );
-                /* send query to db */
-                result = ido2db_db_query(idi, query1);
-                free(query1);
+		dummy = asprintf(&query1, "UPDATE %s SET comment_type=%d, entry_type=%d, object_id=%lu, author_name='%s', comment_data='%s', is_persistent=%d, comment_source=%d, expires=%d, expiration_time=%s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
+				ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTHISTORY],
+				*(int *) data[3],               /* update start */
+				*(int *) data[4],
+				*(unsigned long *) data[5],
+				*(char **) data[8],
+				*(char **) data[9],
+				*(int *) data[10],
+				*(int *) data[11],
+				*(int *) data[12],
+				*(char **) data[13],            /* end end */
+				*(unsigned long *) data[2],     /* unique constraint start */
+				*(char **) data[6],
+				*(unsigned long *) data[7]      /* unique constraint end */
+				);
+		/* send query to db */
+		result = ido2db_db_query(idi, query1);
+		free(query1);
 
-                /* check result if update was ok */
-                if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)",
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_commentdata_history_add() dbi_result_get_numrows_affected=%lu\n", dbi_result_get_numrows_affected(idi->dbinfo.dbi_result));
+
+                /* it seems we did not affect anything, but the libdbi mysql driver is entirely broken
+                 * and might return 0 in any case, so we need to fire another select statement just to
+                 * be sure about it.
+                 */
+		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+	                dummy = asprintf(&query, "SELECT commenthistory_id FROM %s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
+				ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTHISTORY],
+				*(unsigned long *) data[2],     /* unique constraint start */
+				*(char **) data[6],
+				*(unsigned long *) data[7]      /* unique constraint end */
+				);
+
+        	        /* send query to db */
+			if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+				if (idi->dbinfo.dbi_result != NULL) {
+					if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+						comment_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "comment_id");
+						mysql_update = TRUE;
+					} else {
+						mysql_update = FALSE;
+					}
+
+					dbi_result_free(idi->dbinfo.dbi_result);
+					idi->dbinfo.dbi_result = NULL;
+				}
+			}
+        	        free(query);
+
+			if (mysql_update == FALSE) {
+
+        	                /* no data provided, insert one */
+	                        dummy = asprintf(&query2, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, '%s', '%s', %d, %d, %d, %s)",
                                          ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTHISTORY],
                                          *(char **) data[0],             /* insert start */
                                          *(unsigned long *) data[1],
@@ -2203,9 +2274,10 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
                                          *(int *) data[12],
                                          *(char **) data[13]            /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+                	        /* send query to db */
+                        	result = ido2db_db_query(idi, query2);
+	                        free(query2);
+			}
                 }
                 break;
 
@@ -2823,8 +2895,11 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
+	char * query = NULL;
 	char * query1 = NULL;
 	char * query2 = NULL;
+	unsigned long programstatus_id;
+	int mysql_update = FALSE;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_programstatusdata_add() start\n");
 
@@ -2875,10 +2950,36 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
                 result = ido2db_db_query(idi, query1);
                 free(query1);
 
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_programstatusdata_add() dbi_result_get_numrows_affected=%lu\n", dbi_result_get_numrows_affected(idi->dbinfo.dbi_result));
+
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s (instance_id, status_update_time, program_start_time, "
+
+                        dummy = asprintf(&query, "SELECT programstatus_id FROM %s WHERE instance_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS],
+                                 *(unsigned long *) data[0]      /* unique constraint start/end */
+                                );
+                        
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                programstatus_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "programstatus_id");
+                                                mysql_update = TRUE;
+                                        } else {
+                                                mysql_update = FALSE;
+                                        }
+                                         
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+                        free(query);
+
+
+			if (mysql_update == FALSE) {
+	                        /* try insert instead */
+        	                dummy = asprintf(&query2, "INSERT INTO %s (instance_id, status_update_time, program_start_time, "
                                                         "is_currently_running, process_id, daemon_mode, "
                                                         "last_command_check, last_log_rotation, notifications_enabled, "
                                                         "active_service_checks_enabled, passive_service_checks_enabled, active_host_checks_enabled, "
@@ -2912,9 +3013,10 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
                                          *(char **) data[21],
                                          *(char **) data[26]             /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+                	        /* send query to db */
+	                        result = ido2db_db_query(idi, query2);
+        	                free(query2);
+			}
                 }
                 break;
 
@@ -3137,8 +3239,11 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
+	char * query = NULL;
 	char * query1 = NULL;
 	char * query2 = NULL;
+	unsigned long hoststatus_id;
+	int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
 	OCI_Lob *lob_li;
@@ -3168,7 +3273,7 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 			(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:perfdata truncated\n");
 		}
-                dummy = asprintf(&query1, "UPDATE %s SET instance_id=%lu, host_object_id=%lu, status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type=%d, last_notification=%s, next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_host=%d, modified_host_attributes=%lu, event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id=%lu WHERE host_object_id=%lu",
+	        dummy = asprintf(&query1, "UPDATE %s SET instance_id=%lu, host_object_id=%lu, status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type=%d, last_notification=%s, next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_host=%d, modified_host_attributes=%lu, event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id=%lu WHERE host_object_id=%lu",
                                  ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS],
                                  *(unsigned long *) data[0],     /* update start */
                                  *(unsigned long *) data[1],
@@ -3218,14 +3323,37 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
                                  *(unsigned long *) data[45],     /* update end */
                                  *(unsigned long *) data[1]     /* unique constraint start/end */
                                 );
-                /* send query to db */
-                result = ido2db_db_query(idi, query1);
-                free(query1);
+	        /* send query to db */
+        	result = ido2db_db_query(idi, query1);
+	        free(query1);
+                
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() dbi_result_get_numrows_affected=%lu\n", dbi_result_get_numrows_affected(idi->dbinfo.dbi_result));
 
-                /* check result if update was ok */
-                if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s (instance_id, host_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, '%s', '%s', %lf, %lf, %lu)",
+		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dummy = asprintf(&query, "SELECT hoststatus_id FROM %s WHERE host_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS],
+                                *(unsigned long *) data[1]     /* unique constraint start/end */
+                                );
+
+	                /* send query to db */
+	                if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+        	                if (idi->dbinfo.dbi_result != NULL) {
+                	                if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                        	                hoststatus_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hoststatus_id");
+                                	        mysql_update = TRUE;
+	                                } else {
+        	                                mysql_update = FALSE;
+                	                }
+
+	                                dbi_result_free(idi->dbinfo.dbi_result);
+        	                        idi->dbinfo.dbi_result = NULL;
+	                        }
+	                }
+        	        free(query);
+
+			if (mysql_update == FALSE) {
+                        	/* try insert instead */
+	                        dummy = asprintf(&query2, "INSERT INTO %s (instance_id, host_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, '%s', '%s', %lf, %lf, %lu)",
                                          ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS],
                                          *(unsigned long *) data[0],     /* insert start */
                                          *(unsigned long *) data[1],
@@ -3274,9 +3402,10 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
                                          *(double *) data[44],
                                          *(unsigned long *) data[45]     /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+        	                /* send query to db */
+                	        result = ido2db_db_query(idi, query2);
+                        	free(query2);
+			}
                 }
                 break;
 
@@ -3621,8 +3750,11 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
+	char * query = NULL;
 	char * query1 = NULL;
 	char * query2 = NULL;
+	unsigned long servicestatus_id;
+	int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
 	OCI_Lob *lob_li;
@@ -3707,10 +3839,35 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
                 result = ido2db_db_query(idi, query1);
                 free(query1);
 
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() dbi_result_get_numrows_affected=%lu\n", dbi_result_get_numrows_affected(idi->dbinfo.dbi_result));
+
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%lf', '%lf', '%lf', %d, %d, %d, %d, %lu, '%s', '%s', '%lf', '%lf', %lu)",
+
+	                dummy = asprintf(&query, "SELECT servicestatus_id FROM %s WHERE service_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICESTATUS],
+                                 *(unsigned long *) data[1]     /* unique constraint start/end */
+                                );
+
+	                /* send query to db */
+	                if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+	                        if (idi->dbinfo.dbi_result != NULL) {
+	                                if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+	                                        servicestatus_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "servicestatus_id");
+	                                        mysql_update = TRUE;
+	                                } else {
+	                                        mysql_update = FALSE;
+	                                }
+
+	                                dbi_result_free(idi->dbinfo.dbi_result);
+	                                idi->dbinfo.dbi_result = NULL;
+	                        }
+	                }
+        	        free(query);
+
+			if (mysql_update == FALSE) {
+	                        /* try insert instead */
+        	                dummy = asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, '%s', '%s', '%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%lf', '%lf', '%lf', %d, %d, %d, %d, %lu, '%s', '%s', '%lf', '%lf', %lu)",
                                          ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICESTATUS],
                                          *(unsigned long *) data[0],     /* insert start */
                                          *(unsigned long *) data[1],
@@ -3760,9 +3917,10 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
                                          *(double *) data[45],
                                          *(unsigned long *) data[46]     /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+                	        /* send query to db */
+                        	result = ido2db_db_query(idi, query2);
+	                        free(query2);
+			}
                 }
                 break;
 
