@@ -878,6 +878,17 @@ int notify_contact_of_service(icinga_macros *mac, contact *cntct, service *svc, 
 			my_free(processed_buffer);
 		}
 
+#ifdef USE_EVENT_BROKER
+                /* send data to event broker */
+                method_end_time.tv_sec = 0L;
+                method_end_time.tv_usec = 0L;
+                neb_result = broker_contact_notification_method_data(NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_NOTIFICATION, type, method_start_time, method_end_time, (void *)svc, cntct, temp_commandsmember->command, not_author, not_data, escalated, NULL);
+                if (NEBERROR_CALLBACKCANCEL == neb_result)
+                        break ;
+                else if (NEBERROR_CALLBACKOVERRIDE == neb_result)
+                        continue ;
+#endif
+
 		/* run the notification command */
 		my_system_r(mac, processed_command, notification_timeout, &early_timeout, &exectime, NULL, 0);
 
@@ -1976,6 +1987,17 @@ int notify_contact_of_host(icinga_macros *mac, contact *cntct, host *hst, int ty
 			my_free(temp_buffer);
 			my_free(processed_buffer);
 		}
+
+#ifdef USE_EVENT_BROKER
+                /* send data to event broker */
+                method_end_time.tv_sec = 0L;
+                method_end_time.tv_usec = 0L;
+                neb_result = broker_contact_notification_method_data(NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE, NEBFLAG_NONE, NEBATTR_NONE, HOST_NOTIFICATION, type, method_start_time, method_end_time, (void *)hst, cntct, temp_commandsmember->command, not_author, not_data, escalated, NULL);
+                if (NEBERROR_CALLBACKCANCEL == neb_result)
+                        break;
+                else if (NEBERROR_CALLBACKOVERRIDE == neb_result)
+                        continue;
+#endif
 
 		/* run the notification command */
 		my_system_r(mac, processed_command, notification_timeout, &early_timeout, &exectime, NULL, 0);
