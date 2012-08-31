@@ -68,11 +68,7 @@ function showValue(form,arg,schedule_host_check,schedule_host_svc_check) {
 checked=false;
 function checkAll(form) {
 	var checkboxes = document.getElementById(form);
-	if (checked == false)
-		checked = true;
-	else
-		checked = false;
-
+	checked = (checked == false) ? true : false;
 	for (var i=0; i < checkboxes.elements.length; i++) {
 		if (checkboxes.elements[i].type == "checkbox" ) {
 			checkboxes.elements[i].checked = checked;
@@ -83,10 +79,7 @@ function checkAll(form) {
 function toggle_checkbox(id, form) {
 	var x = document.getElementById(id);
 
-	if ( x.checked == true )
-		x.checked=false;
-	else
-		x.checked=true;
+	x.checked = ( x.checked == true ) ? false : true;
 
 	isValidForSubmit(form);
 

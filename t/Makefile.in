@@ -1,13 +1,21 @@
-# Makefile for Icinga tests using perl
+# Makefile for Icinga tests
+
+CP=@CP@
+CC=@CC@
+CFLAGS=@CFLAGS@ @DEFS@
 
 all:
 
-test:
+test:	JSON_checker
 	@perl -I. -MTest::Harness -e '$$Test::Harness::verbose=1; runtests @ARGV;' *.t
 
 clean:
 	rm -f tests.log
+	rm -f json_checker/JSON_checker_lib.o
+	rm -f JSON_checker
 distclean: clean
 	rm -f Makefile
 
-
+JSON_checker:
+	$(CC) $(CFLAGS) -c -o json_checker/JSON_checker_lib.o json_checker/JSON_checker_lib.c
+	$(CC) $(CFLAGS) -o JSON_checker json_checker/JSON_checker.c json_checker/JSON_checker_lib.o
