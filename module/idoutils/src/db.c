@@ -127,6 +127,8 @@ int ido2db_oci_prepared_statement_sla_history_delete(ido2db_idi *idi);
 extern ido2db_dbconfig ido2db_db_settings;
 extern time_t ido2db_db_last_checkin_time;
 
+extern char *libdbi_driver_dir;
+
 char *ido2db_db_rawtablenames[IDO2DB_MAX_DBTABLES] = {
 	"instances",
 	"conninfo",
@@ -300,7 +302,7 @@ int ido2db_db_init(ido2db_idi *idi) {
 	/* initialize db structures, etc. */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
-	if (dbi_initialize(NULL) == -1) {
+	if (dbi_initialize(libdbi_driver_dir) == -1) {
 		syslog(LOG_USER | LOG_INFO, "Error: dbi_initialize() failed\n");
 		return IDO_ERROR;
 	}
@@ -2985,7 +2987,8 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 int ido2db_check_dbd_driver(void) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_dbd_driver() start\n");
-	dbi_initialize(NULL);
+
+	dbi_initialize(libdbi_driver_dir);
 
 	switch (ido2db_db_settings.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:

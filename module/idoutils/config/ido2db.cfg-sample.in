@@ -76,6 +76,17 @@ use_ssl=0
 
 
 
+# LIBDBI DRIVER DIRECTORY !!!EXPERIMENTAL!!!
+# This option is only valid when using libdbi as database abstraction layer
+# (so not oracle) on compile time. By default, libdbi will figure out the
+# correct path itsself. If you want to change it, enable and change the value.
+#
+# Default: not in use, enable and change to e.g. /usr/local/lib/dbd
+
+#libdbi_driver_dir=@LIBDBIDRIVERDIR@
+
+
+
 # DATABASE SERVER TYPE
 # This option determines what type of DB server the daemon should
 # connect to.
