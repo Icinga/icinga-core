@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Redundant and Failover Network Monitoring</title>
+<title>7.6. Redundant and Failover Network Monitoring</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
-<link rel="prev" href="distributed.html" title="Distributed Monitoring">
-<link rel="next" href="flapping.html" title="Detection and Handling of State Flapping">
+<link rel="prev" href="distributed.html" title="7.5. Distributed Monitoring">
+<link rel="next" href="flapping.html" title="7.7. Detection and Handling of State Flapping">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Redundant and Failover Network Monitoring</th></tr>
+<tr><th colspan="3" align="center">7.6. Redundant and Failover Network Monitoring</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="distributed.html">Prev</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Redundant and Failover Network Monitoring">
+<div class="section" title="7.6. Redundant and Failover Network Monitoring">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="redundancy"></a><a name="redundancy_failover"></a>Redundant and Failover Network Monitoring</h2></div></div></div>
+<a name="redundancy"></a>7.6. <a name="redundancy_failover"></a>Redundant and Failover Network Monitoring</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -72,10 +72,10 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Implementing <a class="link" href="eventhandlers.html" title="Event Handlers">event handlers</a> for hosts and services</p>
+      <p>Implementing <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handlers</a> for hosts and services</p>
     </li>
 <li class="listitem">
-      <p>Issuing <a class="link" href="extcommands.html" title="External Commands">external commands</a> to Icinga via shell scripts</p>
+      <p>Issuing <a class="link" href="extcommands.html" title="7.1. External Commands">external commands</a> to Icinga via shell scripts</p>
     </li>
 <li class="listitem">
       <p>Executing plugins on remote hosts using either the <a class="link" href="addons.html#addons-nrpe">NRPE addon</a> or some other
@@ -151,7 +151,7 @@
 
   <p><span class="bold"><strong>Initial Configuration</strong></span></p>
 
-  <p>Next we need to consider the differences between the <a class="link" href="configobject.html" title="Object Configuration Overview">object configuration file(s)</a> on
+  <p>Next we need to consider the differences between the <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object configuration file(s)</a> on
   the master and slave hosts...</p>
 
   <p>We will assume that you have the master host (host A) setup to monitor services on all hosts shown in the diagram above.
@@ -160,7 +160,7 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>The host definition for host A (in the host E configuration file) should have a host <a class="link" href="eventhandlers.html" title="Event Handlers">event handler</a> defined. Lets say the name of the host event handler is <span class="color"><font color="red">handle-master-host-event</font></span>.</p>
+      <p>The host definition for host A (in the host E configuration file) should have a host <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handler</a> defined. Lets say the name of the host event handler is <span class="color"><font color="red">handle-master-host-event</font></span>.</p>
     </li>
 <li class="listitem">
       <p>The configuration file on host E should have a service defined to check the status of the Icinga process on
@@ -168,7 +168,7 @@
       can be done by using one of the methods described in <span class="bold"><strong>this FAQ</strong></span> (update this!).</p>
     </li>
 <li class="listitem">
-      <p>The service definition for the Icinga process check on host A should have an <a class="link" href="eventhandlers.html" title="Event Handlers">event handler</a> defined. Lets say the name of the service event handler is <span class="color"><font color="red">handle-master-proc-event</font></span>.</p>
+      <p>The service definition for the Icinga process check on host A should have an <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handler</a> defined. Lets say the name of the service event handler is <span class="color"><font color="red">handle-master-proc-event</font></span>.</p>
     </li>
 </ul></div>
 
@@ -328,7 +328,7 @@ exit 0</pre>
       done by using the <span class="emphasis"><em>max_check_attempts</em></span> argument in the host definition.</p>
     </li>
 <li class="listitem">
-      <p>Increase the frequency of <a class="link" href="extcommands.html" title="External Commands">external command</a> checks on host E. This is done by
+      <p>Increase the frequency of <a class="link" href="extcommands.html" title="7.1. External Commands">external command</a> checks on host E. This is done by
       modifying the <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a> option in the main
       configuration file.</p>
     </li>
@@ -426,9 +426,9 @@ exit 0</pre>
   monitoring deals with service checks.</p>
 
   <p>That's pretty much it as far as setup goes.</p>
-  <a class="indexterm" name="id1459105"></a>
-  <a class="indexterm" name="id1459135"></a>
-  <a class="indexterm" name="id1459148"></a>
+  <a class="indexterm" name="idp12546704"></a>
+  <a class="indexterm" name="idp12544128"></a>
+  <a class="indexterm" name="idp12547856"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -441,9 +441,9 @@ exit 0</pre>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Distributed Monitoring </td>
+<td width="40%" align="left" valign="top">7.5. Distributed Monitoring </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Detection and Handling of State Flapping</td>
+<td width="40%" align="right" valign="top"> 7.7. Detection and Handling of State Flapping</td>
 </tr>
 </table>
 </div>

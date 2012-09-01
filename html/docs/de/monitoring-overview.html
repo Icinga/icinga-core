@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Monitoring-Überblick</title>
+<title>2.10. Monitoring-Überblick</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="upgrading_idoutils.html" title="IDOUtils-Datenbank aktualisieren">
-<link rel="next" href="monitoring-windows.html" title="Windows-Maschinen überwachen">
+<link rel="prev" href="upgrading_idoutils.html" title="2.9. IDOUtils-Datenbank aktualisieren">
+<link rel="next" href="monitoring-windows.html" title="2.11. Windows-Maschinen überwachen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Monitoring-Überblick</th></tr>
+<tr><th colspan="3" align="center">2.10. Monitoring-Überblick</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="upgrading_idoutils.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Monitoring-Überblick">
+<div class="section" title="2.10. Monitoring-Überblick">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-overview"></a><a name="monitoring_overview"></a>Monitoring-Überblick</h2></div></div></div>
+<a name="monitoring-overview"></a>2.10. <a name="monitoring_overview"></a>Monitoring-Überblick</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -38,7 +38,7 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="activechecks.html" title="Aktive Prüfungen (Active Checks)">Aktive Prüfungen</a></p>
+      <p><a class="link" href="activechecks.html" title="5.6. Aktive Prüfungen (Active Checks)">Aktive Prüfungen</a></p>
 
       <p>Die Prüfungen werden vom Überwachungsrechner zu vorgegebenen Intervallen initiiert. Der Server warten auf die Prüfergebnisse.
       Die Mess- und Schwellwerte werden auf dem Überwachungsrechner gesetzt. Die Prüfergebnisse können abgefragt werden</p>
@@ -49,7 +49,7 @@
           Abhängig von Plugin und Dämon werden SNMP v1, v2c bzw. v3 unterstützt</p>
         </li>
 <li class="listitem">
-          <p>per <a class="link" href="nrpe.html" title="NRPE">NRPE</a>, das einen NRPE-Dämon auf dem entfernten System kontaktiert, das eine Prüfung ausführt
+          <p>per <a class="link" href="nrpe.html" title="10.2. NRPE">NRPE</a>, das einen NRPE-Dämon auf dem entfernten System kontaktiert, das eine Prüfung ausführt
           und die Ergebnisse an NRPE zurückliefert, das sie wiederum an den Icinga-Prozess übergibt</p>
         </li>
 <li class="listitem">
@@ -68,12 +68,12 @@
 </ul></div>
     </li>
 <li class="listitem">
-      <p><a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">Passive Prüfungen</a></p>
+      <p><a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">Passive Prüfungen</a></p>
 
       <p>Die Prüfungen werden auf den entfernten Systemen ausgelöst (nicht notwendigerweise auf den zu überwachenden Systemen, sondern
       ggf. auf "Satellitensystemen", sog. "Poller", die z.B. eine Origanisationeinheit überwachen). Die Prüfergebnisse werden mit Hilfe von
-      <a class="link" href="nsca.html" title="NSCA">NSCA</a>, bestehend aus send_nsca auf dem Client-System und dem NSCA-Dämon auf dem Überwachungsrechner, an
-      diesen übertragen und dort verarbeitet, um den Status zu aktualisieren. Durch das Setzen von <a class="link" href="freshness.html" title="Service- und Host-Frische-Prüfungen">Frische-Schwellwerten</a> werden Sie informiert, wenn die Ergebnisse nicht rechtzeitig eintreffen. Abhängig von
+      <a class="link" href="nsca.html" title="10.3. NSCA">NSCA</a>, bestehend aus send_nsca auf dem Client-System und dem NSCA-Dämon auf dem Überwachungsrechner, an
+      diesen übertragen und dort verarbeitet, um den Status zu aktualisieren. Durch das Setzen von <a class="link" href="freshness.html" title="7.4. Service- und Host-Frische-Prüfungen">Frische-Schwellwerten</a> werden Sie informiert, wenn die Ergebnisse nicht rechtzeitig eintreffen. Abhängig von
       den benutzen Administrations-Tools ist die Verwaltung ggf. komplexer, aber wegen Firewalls oder anderen Beschränkungen, die durch
       Sicherheitsmaßnahmen, Kunden, oder anderen Vorgaben unerläßlich sind, haben Sie möglicherweise keine andere Wahl. Die Nutzung von
       passiven Prüfungen reduziert auch die Belastung Ihres Überwachungsrechners, denn es werden nur Ergebnisse verarbeitet statt Prüfungen
@@ -86,7 +86,7 @@
       <p>Vielleicht haben Sie entfernte Systeme, die Prüfungen zu bestimmten Zeiten ausführen und die Ergebnisse auf einer geheimen und
       gesicherten Web-Seite bereitstellen. Der Überwachungsrechner kann (/darf) die System nicht direkt prüfen (wegen Firewalls,
       Kundenvorgaben), aber er hat Zugriff auf das Dokument auf dieser Web-Seite, kann die Daten mit Hilfe eines Scripts (einer Prüfung)
-      auswerten und die Ergebnisse über <a class="link" href="extcommands.html" title="Externe Befehle">externe Kommandos</a> bereitstellen.</p>
+      auswerten und die Ergebnisse über <a class="link" href="extcommands.html" title="7.1. Externe Befehle">externe Kommandos</a> bereitstellen.</p>
     </li>
 <li class="listitem">
       <p>SNMP-Traps</p>
@@ -96,7 +96,7 @@
     </li>
 </ul></div>
 
-  <a class="indexterm" name="id1450325"></a>
+  <a class="indexterm" name="idp1109296"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -109,9 +109,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">IDOUtils-Datenbank aktualisieren </td>
+<td width="40%" align="left" valign="top">2.9. IDOUtils-Datenbank aktualisieren </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Windows-Maschinen überwachen</td>
+<td width="40%" align="right" valign="top"> 2.11. Windows-Maschinen überwachen</td>
 </tr>
 </table>
 </div>

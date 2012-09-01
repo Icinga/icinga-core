@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Host- und Service-Abhängigkeiten</title>
+<title>7.12. Host- und Service-Abhängigkeiten</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="clusters.html" title="Service- und Host-Gruppen überwachen">
-<link rel="next" href="stalking.html" title="Status Stalking">
+<link rel="prev" href="clusters.html" title="7.11. Service- und Host-Gruppen überwachen">
+<link rel="next" href="stalking.html" title="7.13. Status Stalking">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Host- und Service-Abhängigkeiten</th></tr>
+<tr><th colspan="3" align="center">7.12. Host- und Service-Abhängigkeiten</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="clusters.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Host- und Service-Abhängigkeiten">
+<div class="section" title="7.12. Host- und Service-Abhängigkeiten">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="dependencies"></a>Host- und Service-Abhängigkeiten</h2></div></div></div>
+<a name="dependencies"></a>7.12. Host- und Service-Abhängigkeiten</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -55,13 +55,13 @@
       unter verschiedenen Umständen unterdrückt werden (OK, WARNING, UNKNOWN und/oder CRITICAL-Zustände)</p>
     </li>
 <li class="listitem">
-      <p>Service-Abhängigkeiten sind ggf. nur während bestimmter <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitfenster</a> gültig</p>
+      <p>Service-Abhängigkeiten sind ggf. nur während bestimmter <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitfenster</a> gültig</p>
     </li>
 </ol></div>
 
   <p><span class="bold"><strong>Service-Abhängigkeiten definieren</strong></span></p>
 
-  <p>Zuerst die Grundlagen. Sie erstellen Service-Abhängigkeiten durch Hinzufügen von <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeitsdefinitionen</a> in der/n <a class="link" href="configobject.html" title="Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>. In jeder Definition geben Sie den <span class="emphasis"><em>abhängigen</em></span>
+  <p>Zuerst die Grundlagen. Sie erstellen Service-Abhängigkeiten durch Hinzufügen von <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeitsdefinitionen</a> in der/n <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>. In jeder Definition geben Sie den <span class="emphasis"><em>abhängigen</em></span>
   Service an, den Service, von dem sie <span class="emphasis"><em>abhängen</em></span> und die Kriterien (falls vorhanden), die die Ausführung und
   Benachrichtungsabhängigkeiten fehlschlagen lassen (diese werden später beschrieben).</p>
 
@@ -163,14 +163,14 @@
   Abhängigkeitsprüfung fehlschlägt.</p>
 
   <p><a name="dependencies-hard_dependencies"></a><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: <sup>*</sup>Bitte beachten Sie, dass Icinga per Default den aktuellsten
-  <a class="link" href="statetypes.html" title="Statustypen">Hard-Status</a> des/r Services benutzt, von dem der Eintrag abhängig ist, wenn es die
+  <a class="link" href="statetypes.html" title="5.8. Statustypen">Hard-Status</a> des/r Services benutzt, von dem der Eintrag abhängig ist, wenn es die
   Abhängigkeitsprüfungen durchführt. Wenn Icinga den aktuellsten Status des/r Services benutzen soll (egal, ob es sich um
   einen Hard- oder Soft-Zustand handelt), dann aktivieren Sie die <a class="link" href="configmain.html#configmain-soft_state_dependencies">soft_state_dependencies</a>-Option.</p>
 
   <p><span class="bold"><strong>Ausführungsabhängigkeiten</strong></span></p>
 
-  <p>Ausführungsabhängigkeiten werden benutzt, um einzuschränken, wann <a class="link" href="activechecks.html" title="Aktive Prüfungen (Active Checks)">aktive Prüfungen</a>
-  eines Service ausgeführt werden können. <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">Passive Prüfungen</a> werden durch
+  <p>Ausführungsabhängigkeiten werden benutzt, um einzuschränken, wann <a class="link" href="activechecks.html" title="5.6. Aktive Prüfungen (Active Checks)">aktive Prüfungen</a>
+  eines Service ausgeführt werden können. <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">Passive Prüfungen</a> werden durch
   Ausführungsabhängigkeiten nicht eingeschränkt.</p>
 
   <p>Wenn <span class="emphasis"><em>alle</em></span> der Ausführungsabhängigkeitstests für den Service <span class="emphasis"><em>erfolgreich</em></span>
@@ -178,7 +178,7 @@
   der Ausführungsabhängigkeiten für einen Service fehlschlägt, wird Icinga vorübergehend die Ausführung von Prüfungen für
   diesen (abhängigen) Service verhindern. Irgendwann in der Zukunft können die Ausführungsabhängigkeitstests für den Service
   erfolgreich durchlaufen werden. Wenn dies geschieht, wird Icinga mit der Prüfung des Service beginnen, wie es das normal
-  tun würde. Mehr Informationen über die Logik der Prüfungsplanung finden Sie <a class="link" href="checkscheduling.html" title="Service- und Host-Prüfungsplanung">hier</a>.</p>
+  tun würde. Mehr Informationen über die Logik der Prüfungsplanung finden Sie <a class="link" href="checkscheduling.html" title="7.22. Service- und Host-Prüfungsplanung">hier</a>.</p>
 
   <p>Im obigen Beispiel wären die Tests der Ausführungsabhängigkeiten für <span class="bold"><strong>Service E</strong></span>
   fehlgeschlagen, wenn <span class="bold"><strong>Service B</strong></span> in einem WARNING- oder UNKNOWN-Zustand ist. Falls dies der Fall
@@ -192,7 +192,7 @@
   einer der Benachrichtigungsabhängigkeiten für einen Service fehlschlägt, wird Icinga vorübergehend die Benachrichtigungen
   für diesen (abhängigen) Service unterdrücken. Irgendwann in der Zukunft können die Benachrichtigungsabhängigkeitstests für den
   Service erfolgreich durchlaufen werden. Wenn dies geschieht, wird Icinga mit dem Versand von Benachrichtigungen für
-  diesen Service beginnen, wie es das normal tun würde. Mehr Informationen über die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="Benachrichtigungen">hier</a>.</p>
+  diesen Service beginnen, wie es das normal tun würde. Mehr Informationen über die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a>.</p>
 
   <p>Im obigen Beispiel wären die Tests der Benachrichtigungsabhängigkeiten für <span class="bold"><strong>Service F</strong></span>
   fehlgeschlagen, wenn <span class="bold"><strong>Service C</strong></span> in einem CRITICAL-Zustand <span class="emphasis"><em>und/oder</em></span><span class="bold"><strong>Service D</strong></span> in einem WARNING- oder UNKNOWN-Zustand <span class="emphasis"><em>und/oder</em></span><span class="bold"><strong>Service E</strong></span> in einem WARNING-, UNKNOWN- oder CRITICAL-Zustand ist. Falls dies der Fall ist, würden keine
@@ -243,7 +243,7 @@
 
   <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Verwechseln Sie Host-Abhängigkeiten nicht mit Eltern/Kind-Beziehungen. Sie sollten in den
   meisten Fällen Eltern/Kind-Beziehungen (mit Hilfe der <span class="emphasis"><em>parents</em></span>-Direktive in den <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen) benutzen statt Host-Abhängigkeiten. Eine Beschreibung, wie
-  Eltern/Kind-Beziehungen arbeiten, finden Sie in der Dokumentation zur <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerkerreichbarkeit</a>.</p>
+  Eltern/Kind-Beziehungen arbeiten, finden Sie in der Dokumentation zur <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerkerreichbarkeit</a>.</p>
 
   <p>Hier die Grundlagen zu Host-Abhängigkeiten:</p>
 
@@ -259,7 +259,7 @@
       Umständen zu unterdrücken (UP, DOWN- und/oder UNREACHABLE-Zustände)</p>
     </li>
 <li class="listitem">
-      <p>Host-Abhängigkeiten sind ggf. nur während bestimmter <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitfenster</a> gültig</p>
+      <p>Host-Abhängigkeiten sind ggf. nur während bestimmter <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitfenster</a> gültig</p>
     </li>
 </ol></div>
 
@@ -293,9 +293,9 @@
   Benachrichtigungsabhängigkeiten für einen Host fehlschlägt, wird Icinga vorübergehend die Benachrichtigungen für diesen
   (abhängigen) Host unterdrücken. Irgendwann in der Zukunft können die Benachrichtigungsabhängigkeitstests für den Host
   erfolgreich durchlaufen werden. Wenn dies geschieht, wird Icinga mit dem Versand von Benachrichtigungen für diesen Host
-  beginnen, wie es das normal tun würde. Mehr Informationen über die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="Benachrichtigungen">hier</a>.</p>
-  <a class="indexterm" name="id1547352"></a>
-  <a class="indexterm" name="id1547373"></a>
+  beginnen, wie es das normal tun würde. Mehr Informationen über die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a>.</p>
+  <a class="indexterm" name="idp12757840"></a>
+  <a class="indexterm" name="idp12760352"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -308,9 +308,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Service- und Host-Gruppen überwachen </td>
+<td width="40%" align="left" valign="top">7.11. Service- und Host-Gruppen überwachen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Status Stalking</td>
+<td width="40%" align="right" valign="top"> 7.13. Status Stalking</td>
 </tr>
 </table>
 </div>

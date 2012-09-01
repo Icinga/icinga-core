@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Service and Host Check Scheduling</title>
+<title>7.22. Service and Host Check Scheduling</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
-<link rel="prev" href="passivestatetranslation.html" title="Passive Host State Translation">
-<link rel="next" href="cgiincludes.html" title="Custom CGI Headers and Footers">
+<link rel="prev" href="passivestatetranslation.html" title="7.21. Passive Host State Translation">
+<link rel="next" href="cgiincludes.html" title="7.23. Custom CGI Headers and Footers">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Service and Host Check Scheduling</th></tr>
+<tr><th colspan="3" align="center">7.22. Service and Host Check Scheduling</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="passivestatetranslation.html">Prev</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Service and Host Check Scheduling">
+<div class="section" title="7.22. Service and Host Check Scheduling">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="checkscheduling"></a><a name="checkscheduling-check_scheduling"></a>Service and Host Check Scheduling</h2></div></div></div>
+<a name="checkscheduling"></a>7.22. <a name="checkscheduling-check_scheduling"></a>Service and Host Check Scheduling</h2></div></div></div>
   
 
   <p><a name="checkscheduling-introduction"></a><span class="bold"><strong>Introduction</strong></span></p>
@@ -54,7 +54,7 @@
     </li>
 </ul></div>
 
-  <p>There are also four configuration options in the <a class="link" href="configmain.html" title="Main Configuration File Options">main configuration file</a> that affect
+  <p>There are also four configuration options in the <a class="link" href="configmain.html" title="3.2. Main Configuration File Options">main configuration file</a> that affect
   service checks. These include:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -247,7 +247,7 @@
 
   <p><a name="checkscheduling-time_restraints"></a><span class="bold"><strong>Time Restraints</strong></span></p>
 
-  <p>The <span class="emphasis"><em>check_period</em></span> option determines the <a class="link" href="timeperiods.html" title="Time Periods">time period</a> during which
+  <p>The <span class="emphasis"><em>check_period</em></span> option determines the <a class="link" href="timeperiods.html" title="5.9. Time Periods">time period</a> during which
   Icinga can run checks of the service. Regardless of what status a particular service is in, if the time that it is
   actually executed is not a valid time within the time period that has been specified, the check will <span class="emphasis"><em>not</em></span> be
   executed. Instead, Icinga will reschedule the service check for the next valid time in the time period. If the check can
@@ -280,7 +280,7 @@
   <p>So what happens when there are problems with a service? Well, one of the things that happens is the service check
   scheduling changes. If you've configured the <span class="emphasis"><em>max_attempts</em></span> option of the service definition to be something
   greater than 1, Icinga will recheck the service before deciding that a real problem exists. While the service is being
-  rechecked (up to <span class="emphasis"><em>max_attempts</em></span> times) it is considered to be in a "soft" state (as described <a class="link" href="statetypes.html" title="State Types">here</a>) and the service checks are rescheduled at a frequency determined by the
+  rechecked (up to <span class="emphasis"><em>max_attempts</em></span> times) it is considered to be in a "soft" state (as described <a class="link" href="statetypes.html" title="5.8. State Types">here</a>) and the service checks are rescheduled at a frequency determined by the
   <span class="emphasis"><em>retry_interval</em></span> option.</p>
 
   <p>If Icinga rechecks the service <span class="emphasis"><em>max_attempts</em></span> times and it is still in a non-OK state,
@@ -356,21 +356,21 @@
   service.</p>
 
   <p>First off, the <span class="emphasis"><em>check_interval</em></span> option is the interval at which the service is checked under
-  "normal" circumstances. "Normal" circumstances mean whenever the service is in an OK state or when its in a <a class="link" href="statetypes.html" title="State Types">hard</a> non-OK state.</p>
+  "normal" circumstances. "Normal" circumstances mean whenever the service is in an OK state or when its in a <a class="link" href="statetypes.html" title="5.8. State Types">hard</a> non-OK state.</p>
 
   <p>When a service first changes from an OK state to a non-OK state, Icinga gives you the ability to temporarily slow
   down or speed up the interval at which subsequent checks of that service will occur. When the service first changes state,
   Icinga will perform up to <span class="emphasis"><em>max_check_attempts</em></span>-1 retries of the service check before it decides its a
   real problem. While the service is being retried, it is scheduled according to the <span class="emphasis"><em>retry_interval</em></span>
   option, which might be faster or slower than the normal <span class="emphasis"><em>check_interval</em></span> option. While the service is
-  being rechecked (up to <span class="emphasis"><em>max_check_attempts</em></span>-1 times), the service is in a <a class="link" href="statetypes.html" title="State Types">soft
+  being rechecked (up to <span class="emphasis"><em>max_check_attempts</em></span>-1 times), the service is in a <a class="link" href="statetypes.html" title="5.8. State Types">soft
   state</a>. If the service is rechecked <span class="emphasis"><em>max_check_attempts</em></span>-1 times and it is still in a non-OK state, the
-  service turns into a <a class="link" href="statetypes.html" title="State Types">hard state</a> and is subsequently rescheduled at the normal rate specified
+  service turns into a <a class="link" href="statetypes.html" title="5.8. State Types">hard state</a> and is subsequently rescheduled at the normal rate specified
   by the <span class="emphasis"><em>check_interval</em></span> option.</p>
 
   <p>On a side note, it you specify a value of 1 for the <span class="emphasis"><em>max_check_attempts</em></span> option, the service will not
   ever be checked at the interval specified by the <span class="emphasis"><em>retry_interval</em></span> option. Instead, it immediately turns
-  into a <a class="link" href="statetypes.html" title="State Types">hard state</a> and is subsequently rescheduled at the rate specified by the
+  into a <a class="link" href="statetypes.html" title="5.8. State Types">hard state</a> and is subsequently rescheduled at the rate specified by the
   <span class="emphasis"><em>check_interval</em></span> option.</p>
 
   <p><span class="bold"><strong>TODO</strong></span></p>
@@ -381,20 +381,20 @@
 
   <p>This documentation is being rewritten. Stay tuned for more information in a later beta release...</p>
 
-  <a class="indexterm" name="id1466799"></a>
-  <a class="indexterm" name="id1466810"></a>
-  <a class="indexterm" name="id1466818"></a>
-  <a class="indexterm" name="id1466828"></a>
-  <a class="indexterm" name="id1466839"></a>
-  <a class="indexterm" name="id1466848"></a>
-  <a class="indexterm" name="id1466859"></a>
-  <a class="indexterm" name="id1466866"></a>
-  <a class="indexterm" name="id1466875"></a>
-  <a class="indexterm" name="id1466887"></a>
-  <a class="indexterm" name="id1466897"></a>
-  <a class="indexterm" name="id1466907"></a>
-  <a class="indexterm" name="id1466915"></a>
-  <a class="indexterm" name="id1466926"></a>
+  <a class="indexterm" name="idp13467616"></a>
+  <a class="indexterm" name="idp13469040"></a>
+  <a class="indexterm" name="idp13470000"></a>
+  <a class="indexterm" name="idp13471120"></a>
+  <a class="indexterm" name="idp13472272"></a>
+  <a class="indexterm" name="idp13473696"></a>
+  <a class="indexterm" name="idp13474768"></a>
+  <a class="indexterm" name="idp13475776"></a>
+  <a class="indexterm" name="idp13476864"></a>
+  <a class="indexterm" name="idp13478192"></a>
+  <a class="indexterm" name="idp13479088"></a>
+  <a class="indexterm" name="idp13480176"></a>
+  <a class="indexterm" name="idp13481296"></a>
+  <a class="indexterm" name="idp13482848"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -407,9 +407,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Passive Host State Translation </td>
+<td width="40%" align="left" valign="top">7.21. Passive Host State Translation </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Custom CGI Headers and
+<td width="40%" align="right" valign="top"> 7.23. Custom CGI Headers and
   Footers</td>
 </tr>
 </table>

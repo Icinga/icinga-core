@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Zeitfenster</title>
+<title>5.9. Zeitfenster</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
-<link rel="prev" href="statetypes.html" title="Statustypen">
-<link rel="next" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">
+<link rel="prev" href="statetypes.html" title="5.8. Statustypen">
+<link rel="next" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Zeitfenster</th></tr>
+<tr><th colspan="3" align="center">5.9. Zeitfenster</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="statetypes.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Zeitfenster">
+<div class="section" title="5.9. Zeitfenster">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="timeperiods"></a>Zeitfenster</h2></div></div></div>
+<a name="timeperiods"></a>5.9. Zeitfenster</h2></div></div></div>
     
     <p> oder...</p>
     <p>
@@ -99,16 +99,16 @@
     </p>
     <p>Durch das Angeben eines Zeitfensters in der <span class="emphasis"><em>notification_period</em></span>-Direktive einer Host- oder Service-Definition kontrollieren Sie, wann Icinga Benachrichtigungen versenden darf, um über Probleme oder Erholungen für den Host oder Service zu informieren. Wenn eine Host-Benachrichtigung versandt werden soll, prüft Icinga, ob die aktuelle Zeit in einem gültigen Bereich der <span class="emphasis"><em>notification_period</em></span> liegt. Wenn eine gültige Zeit vorliegt, wird Icinga versuchen, jeden Kontakt über das Problem oder die Erholung zu informieren.</p>
     <p>Sie können Zeitfenster auch nutzen, um zu kontrollieren, wann Benachrichtigungen an einzelne Kontakte versandt werden. Durch die Nutzung der <span class="emphasis"><em>service_notification_period</em></span>- und der <span class="emphasis"><em>host_notification_period</em></span>-Direktiven in den <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt-Definitionen</a> sind Sie in der Lage, eine tatsächliche Rufbereitschaft für jeden Kontakt zu definieren. Kontakte werden Host- und Service-Benachrichtigungen nur während der Zeiten erhalten, die Sie in den Benachrichtigungs-Direktiven angegeben haben.</p>
-    <p>Beispiele, wie Zeitfenster-Definitionen für Rufbereitschafts-Wechsel angelegt werden, finden Sie <a class="link" href="oncallrotation.html" title="Bereitschafts-Rotation">hier</a>.</p>
+    <p>Beispiele, wie Zeitfenster-Definitionen für Rufbereitschafts-Wechsel angelegt werden, finden Sie <a class="link" href="oncallrotation.html" title="7.10. Bereitschafts-Rotation">hier</a>.</p>
     <p>
       <span class="bold"><strong>Wie Zeitfenster mit Benachrichtigungs-Eskalationen arbeiten</strong></span>
     </p>
-    <p>Service- und Host-<a class="link" href="escalations.html" title="Benachrichtigungseskalationen">Benachrichtigungs-Eskalationen</a> haben eine optionale <span class="emphasis"><em>escalation_period</em></span>-Direktive, die es Ihnen erlaubt ein Zeitfenster anzugeben, wann die Eskalation gültig ist und benutzt werden kann. Wenn Sie die <span class="emphasis"><em>escalation_period</em></span>-Direktive nicht in einer Eskalations-Definition benutzen, ist diese Eskalation zu allen Zeiten gültig. Wenn Sie ein Zeitfenster in der <span class="emphasis"><em>escalation_period</em></span>-Direktive angeben, wird Icinga die Eskalations-Definition nur zu Zeiten nutzen, die aufgrund der Zeitfenster-Definition gültig sind.</p>
+    <p>Service- und Host-<a class="link" href="escalations.html" title="7.8. Benachrichtigungseskalationen">Benachrichtigungs-Eskalationen</a> haben eine optionale <span class="emphasis"><em>escalation_period</em></span>-Direktive, die es Ihnen erlaubt ein Zeitfenster anzugeben, wann die Eskalation gültig ist und benutzt werden kann. Wenn Sie die <span class="emphasis"><em>escalation_period</em></span>-Direktive nicht in einer Eskalations-Definition benutzen, ist diese Eskalation zu allen Zeiten gültig. Wenn Sie ein Zeitfenster in der <span class="emphasis"><em>escalation_period</em></span>-Direktive angeben, wird Icinga die Eskalations-Definition nur zu Zeiten nutzen, die aufgrund der Zeitfenster-Definition gültig sind.</p>
     <p>
       <span class="bold"><strong>Wie Zeitfenster mit Abhängigkeiten arbeiten</strong></span>
     </p>
-    <p>Service- und Host-<a class="link" href="dependencies.html" title="Host- und Service-Abhängigkeiten">Abhängigkeiten</a> haben eine optionale <span class="emphasis"><em>dependency_period</em></span>-Direktive, die es Ihnen erlaubt ein Zeitfenster anzugeben, wann die Abhängigkeit gültig ist und benutzt werden kann. Wenn Sie die <span class="emphasis"><em>dependency_period</em></span>-Direktive nicht in einer Abhängigkeits-Definition benutzen, ist diese Abhängigkeit zu allen Zeiten gültig. Wenn Sie ein Zeitfenster in der <span class="emphasis"><em>dependency_period</em></span>-Direktive angeben, wird Icinga die Abhängigkeits-Definition nur zu Zeiten nutzen, die aufgrund der Zeitfenster-Definition gültig sind.</p>
-  <a class="indexterm" name="id1521436"></a>
+    <p>Service- und Host-<a class="link" href="dependencies.html" title="7.12. Host- und Service-Abhängigkeiten">Abhängigkeiten</a> haben eine optionale <span class="emphasis"><em>dependency_period</em></span>-Direktive, die es Ihnen erlaubt ein Zeitfenster anzugeben, wann die Abhängigkeit gültig ist und benutzt werden kann. Wenn Sie die <span class="emphasis"><em>dependency_period</em></span>-Direktive nicht in einer Abhängigkeits-Definition benutzen, ist diese Abhängigkeit zu allen Zeiten gültig. Wenn Sie ein Zeitfenster in der <span class="emphasis"><em>dependency_period</em></span>-Direktive angeben, wird Icinga die Abhängigkeits-Definition nur zu Zeiten nutzen, die aufgrund der Zeitfenster-Definition gültig sind.</p>
+  <a class="indexterm" name="idp9647472"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -121,9 +121,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Statustypen </td>
+<td width="40%" align="left" valign="top">5.8. Statustypen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</td>
+<td width="40%" align="right" valign="top"> 5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</td>
 </tr>
 </table>
 </div>

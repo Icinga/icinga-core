@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Statustypen</title>
+<title>5.8. Statustypen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
-<link rel="prev" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">
-<link rel="next" href="timeperiods.html" title="Zeitfenster">
+<link rel="prev" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">
+<link rel="next" href="timeperiods.html" title="5.9. Zeitfenster">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Statustypen</th></tr>
+<tr><th colspan="3" align="center">5.8. Statustypen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="passivechecks.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Statustypen">
+<div class="section" title="5.8. Statustypen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="statetypes"></a>Statustypen</h2></div></div></div>
+<a name="statetypes"></a>5.8. Statustypen</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -44,7 +44,7 @@
 </ul></div>
 
   <p>Es gibt zwei Statustypen in Icinga: SOFT- und HARD-Zustände. Diese Statustypen sind ein wichtiger Teil der
-  Überwachungslogik, da sie zur Ermittlung dienen, wann <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> ausgeführt und <a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungen</a> zuerst versandt werden.</p>
+  Überwachungslogik, da sie zur Ermittlung dienen, wann <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandler</a> ausgeführt und <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a> zuerst versandt werden.</p>
 
   <p>Dieses Dokument beschreibt den Unterschied zwischen SOFT- und HARD-Zuständen, wann sie auftreten und was passiert, wenn
   sie auftreten.</p>
@@ -89,7 +89,7 @@
   kann insbesondere dann nützlich sein, wenn Sie versuchen wollen, proaktiv ein Problem zu lösen, bevor es sich in einen
   HARD-Zustand verwandelt. Die <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a>- oder <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>-Makros werden den Wert "<span class="emphasis"><em>SOFT</em></span>" haben, wenn
   Eventhandler ausgeführt werden, was es Ihren Eventhandlern erlaubt zu wissen, wann sie fehlerbehebende Aktionen vornehmen
-  sollen. Mehr Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="Eventhandler">hier</a>.</p>
+  sollen. Mehr Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">hier</a>.</p>
 
   <p><span class="bold"><strong>Hard-Zustände</strong></span></p>
 
@@ -113,7 +113,7 @@
       <p>wenn ein Host oder Service sich von einem Hard-Error-Zustand erholt. Dies wird als Hard-Recovery angesehen.</p>
     </li>
 <li class="listitem">
-      <p>wenn eine <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">passive Host-Prüfung</a> empfangen wird. Passive Host-Prüfungen werden als
+      <p>wenn eine <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passive Host-Prüfung</a> empfangen wird. Passive Host-Prüfungen werden als
       HARD angesehen, wenn nicht die <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a>-Option aktiviert ist.</p>
     </li>
 </ul></div>
@@ -134,7 +134,7 @@
 
   <p>Die <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> oder <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>-Makros werden den Wert "<span class="emphasis"><em>HARD</em></span>" haben, wenn
   Eventhandler ausgeführt werden, was es Ihren Eventhandlern erlaubt zu wissen, wann sie fehlerbehebende Aktionen vornehmen
-  sollen. Mehr Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="Eventhandler">hier</a>.</p>
+  sollen. Mehr Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">hier</a>.</p>
 
   <p><span class="bold"><strong>Beispiel</strong></span></p>
 
@@ -260,7 +260,7 @@
 </tbody>
 </table>
   </div>
-  <a class="indexterm" name="id1521045"></a>
+  <a class="indexterm" name="idp9600256"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -273,9 +273,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Passive Prüfungen (Passive Checks) </td>
+<td width="40%" align="left" valign="top">5.7. Passive Prüfungen (Passive Checks) </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Zeitfenster</td>
+<td width="40%" align="right" valign="top"> 5.9. Zeitfenster</td>
 </tr>
 </table>
 </div>

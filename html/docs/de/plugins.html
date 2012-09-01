@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Icinga Plugins</title>
+<title>5.1. Icinga Plugins</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="prev" href="ch05.html" title="Kapitel 5. Die Grundlagen">
-<link rel="next" href="macros.html" title="Makros verstehen und wie sie arbeiten">
+<link rel="next" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga Plugins</th></tr>
+<tr><th colspan="3" align="center">5.1. Icinga Plugins</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="ch05.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Icinga Plugins">
+<div class="section" title="5.1. Icinga Plugins">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plugins"></a>Icinga Plugins</h2></div></div></div>
+<a name="plugins"></a>5.1. Icinga Plugins</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -45,7 +45,7 @@
   <p>Icinga wird ein Plugin immer dann ausführen, wenn die Notwendigkeit besteht, den Status eines Hosts oder Service zu prüfen.
   Das Plugin tut <span class="emphasis"><em>etwas</em></span> (beachten Sie den sehr allgemeinen Ausdruck), um die Prüfung auszuführen und dann einfach die
   Ergebnisse an Icinga zurückzuliefern. Icinga wird die Ergebnisse verarbeiten, die es vom Plugin erhält, und dann notwendige
-  Aktionen ausführen (starten von <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandlern</a>, senden von <a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungen</a>, etc).</p>
+  Aktionen ausführen (starten von <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandlern</a>, senden von <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a>, etc).</p>
 
   <p><span class="bold"><strong>Plugins als eine Abstraktionsschicht</strong></span></p>
 
@@ -57,7 +57,7 @@
   <p>Der Vorteil dieses Typs von Plugin-Architektur ist, dass Sie fast alles überwachen können, was Ihnen einfällt. Wenn Sie den Prozess
   der Überwachung automatisieren können, können Sie es mit Icinga überwachen. Es gibt bereits eine Menge von Plugins, die erzeugt
   wurden, um grundlegende Ressourcen wie z.B. Prozessorauslastung, Plattenbelegung, Ping-Raten usw. zu überwachen. Wenn Sie etwas anderes
-  überwachen möchten, werfen Sie einen Blick in die Dokumentation zu <a class="link" href="pluginapi.html" title="Nagios Plugin API">Plugins schreiben</a> und erstellen Sie
+  überwachen möchten, werfen Sie einen Blick in die Dokumentation zu <a class="link" href="pluginapi.html" title="11.1. Nagios Plugin API">Plugins schreiben</a> und erstellen Sie
   ein eigenes. Es ist einfach!</p>
 
   <p>Der Nachteil dieses Typs von Plugin-Architektur ist die Tatsache, dass Icinga absolut keine Ahnung davon hat, was Sie
@@ -73,7 +73,7 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><code class="systemitem">HTTP</code>, <code class="systemitem">POP3</code>, <code class="systemitem">IMAP</code>, <code class="systemitem">FTP</code>, <code class="systemitem">SSH</code>, <code class="systemitem">DHCP</code></p>
+      <p><span class="systemitem">HTTP</span>, <span class="systemitem">POP3</span>, <span class="systemitem">IMAP</span>, <span class="systemitem">FTP</span>, <span class="systemitem">SSH</span>, <span class="systemitem">DHCP</span></p>
     </li>
 <li class="listitem">
       <p>CPU-Auslastung, Plattenbelegung, Speicherauslastung, Anzahl Benutzer</p>
@@ -245,7 +245,7 @@
 
   <a name="plugins-hints2"></a>
 
-  <p>Neben den bereits genannten gibt es eine Vielzahl von <a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a>, die die Arbeit erleichtern. Dabei gibt
+  <p>Neben den bereits genannten gibt es eine Vielzahl von <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a>, die die Arbeit erleichtern. Dabei gibt
   es einige Dinge anzumerken:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -478,17 +478,17 @@
 
   <p><span class="bold"><strong>Plugin API</strong></span></p>
 
-  <p>Informationen zu technischen Aspekten von Plugins sowie zur Erstellung Ihrer eigenen Plugins finden Sie <a class="link" href="pluginapi.html" title="Nagios Plugin API">hier</a>.</p>
+  <p>Informationen zu technischen Aspekten von Plugins sowie zur Erstellung Ihrer eigenen Plugins finden Sie <a class="link" href="pluginapi.html" title="11.1. Nagios Plugin API">hier</a>.</p>
 
-  <a class="indexterm" name="id1496597"></a>
+  <a class="indexterm" name="idp6664688"></a>
 
-  <a class="indexterm" name="id1496610"></a>
+  <a class="indexterm" name="idp6666336"></a>
 
-  <a class="indexterm" name="id1496620"></a>
+  <a class="indexterm" name="idp6667376"></a>
 
-  <a class="indexterm" name="id1496634"></a>
+  <a class="indexterm" name="idp6669056"></a>
 
-  <a class="indexterm" name="id1496647"></a>
+  <a class="indexterm" name="idp6670656"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -503,7 +503,7 @@
 <tr>
 <td width="40%" align="left" valign="top">Kapitel 5. Die Grundlagen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Makros verstehen und wie sie arbeiten</td>
+<td width="40%" align="right" valign="top"> 5.2. Makros verstehen und wie sie arbeiten</td>
 </tr>
 </table>
 </div>

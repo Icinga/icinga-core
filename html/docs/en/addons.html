@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Icinga Addons</title>
+<title>10.1. Icinga Addons</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch10.html" title="Chapter 10. Additional software">
 <link rel="prev" href="ch10.html" title="Chapter 10. Additional software">
-<link rel="next" href="nrpe.html" title="NRPE">
+<link rel="next" href="nrpe.html" title="10.2. NRPE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga Addons</th></tr>
+<tr><th colspan="3" align="center">10.1. Icinga Addons</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="ch10.html">Prev</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Icinga Addons">
+<div class="section" title="10.1. Icinga Addons">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="addons"></a><a name="Icinga_addons"></a>Icinga Addons</h2></div></div></div>
+<a name="addons"></a>10.1. <a name="Icinga_addons"></a>Icinga Addons</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -51,7 +51,7 @@
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p><a class="link" href="nsca.html" title="NSCA">NSCA</a>, <a class="link" href="nrpe.html" title="NRPE">NRPE</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
+          <p><a class="link" href="nsca.html" title="10.3. NSCA">NSCA</a>, <a class="link" href="nrpe.html" title="10.2. NRPE">NRPE</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
         </li>
 <li class="listitem">
           <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, ...</p>
@@ -114,23 +114,23 @@
 
   <p><span class="inlinemediaobject"><img src="../images/nrpe.png"></span></p>
 
-  <p>NRPE is an addon that allows you to execute <a class="link" href="plugins.html" title="Icinga Plugins">plugins</a> on remote Linux/Unix hosts. This is useful if you
+  <p>NRPE is an addon that allows you to execute <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a> on remote Linux/Unix hosts. This is useful if you
   need to monitor local resources/attributes like disk usage, CPU load, memory usage, etc. on a remote host. Similiar functionality can be
   accomplished by using the <span class="emphasis"><em>check_by_ssh</em></span> plugin, although it can impose a higher CPU load on the monitoring machine -
   especially if you are monitoring hundreds or thousands of hosts.</p>
 
   <p>The NRPE addon can be found at <a class="link" href="https://git.icinga.org/?p=icinga-nrpe.git" target="_top">https://git.icinga.org/?p=icinga-nrpe.git</a>.
-  You will find the <a class="link" href="nrpe.html" title="NRPE">documentation</a> in the next section.</p>
+  You will find the <a class="link" href="nrpe.html" title="10.2. NRPE">documentation</a> in the next section.</p>
 
   <p><a name="addons-nsca"></a><span class="bold"><strong>NSCA</strong></span></p>
 
   <p><span class="inlinemediaobject"><img src="../images/nsca.png"></span></p>
 
-  <p>NSCA is an addon that allows you to send <a class="link" href="passivechecks.html" title="Passive Checks">passive check</a> results from remote Linux/Unix hosts to
-  the Icinga daemon running on the monitoring server. This is very useful in <a class="link" href="distributed.html" title="Distributed Monitoring">distributed</a> and <a class="link" href="redundancy.html" title="Redundant and Failover Network Monitoring">redundant/failover</a> monitoring setups.</p>
+  <p>NSCA is an addon that allows you to send <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive check</a> results from remote Linux/Unix hosts to
+  the Icinga daemon running on the monitoring server. This is very useful in <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed</a> and <a class="link" href="redundancy.html" title="7.6. Redundant and Failover Network Monitoring">redundant/failover</a> monitoring setups.</p>
 
   <p>The NSCA addon can be found at <a class="link" href="https://git.icinga.org/?p=icinga-nsca.git" target="_top">https://git.icinga.org/?p=icinga-nsca.git</a>.
-  You will find the <a class="link" href="nsca.html" title="NSCA">documentation</a> in the next section.</p>
+  You will find the <a class="link" href="nsca.html" title="10.3. NSCA">documentation</a> in the next section.</p>
 
   <p><a name="addons-idoutils"></a><span class="bold"><strong>IDOUtils</strong></span></p>
 
@@ -140,58 +140,58 @@
   Icinga can all store their information in a central database for centralized reporting. In the future it will probably be used as a
   basis for a PHP based web interface.</p>
 
-  <p>The IDOUtils addon install instructions can be found in the <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">Quickstart-Idoutils</a> and more
+  <p>The IDOUtils addon install instructions can be found in the <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">Quickstart-Idoutils</a> and more
   documentation can be found at <a class="link" href="http://docs.icinga.org/latest/en/" target="_top">http://docs.icinga.org/</a>.</p>
 
-  <a class="indexterm" name="id1475619"></a>
+  <a class="indexterm" name="idp14526528"></a>
 
-  <a class="indexterm" name="id1475633"></a>
+  <a class="indexterm" name="idp14528176"></a>
 
-  <a class="indexterm" name="id1475646"></a>
+  <a class="indexterm" name="idp14529776"></a>
 
-  <a class="indexterm" name="id1475660"></a>
+  <a class="indexterm" name="idp14531472"></a>
 
-  <a class="indexterm" name="id1475670"></a>
+  <a class="indexterm" name="idp14532688"></a>
 
-  <a class="indexterm" name="id1475683"></a>
+  <a class="indexterm" name="idp14534176"></a>
 
-  <a class="indexterm" name="id1475694"></a>
+  <a class="indexterm" name="idp14535488"></a>
 
-  <a class="indexterm" name="id1475707"></a>
+  <a class="indexterm" name="idp14536976"></a>
 
-  <a class="indexterm" name="id1475717"></a>
+  <a class="indexterm" name="idp14538288"></a>
 
-  <a class="indexterm" name="id1475730"></a>
+  <a class="indexterm" name="idp14539776"></a>
 
-  <a class="indexterm" name="id1475741"></a>
+  <a class="indexterm" name="idp14541088"></a>
 
-  <a class="indexterm" name="id1475754"></a>
+  <a class="indexterm" name="idp14542576"></a>
 
-  <a class="indexterm" name="id1475765"></a>
+  <a class="indexterm" name="idp14543888"></a>
 
-  <a class="indexterm" name="id1475778"></a>
+  <a class="indexterm" name="idp14545376"></a>
 
-  <a class="indexterm" name="id1475787"></a>
+  <a class="indexterm" name="idp14546688"></a>
 
-  <a class="indexterm" name="id1475798"></a>
+  <a class="indexterm" name="idp14548176"></a>
 
-  <a class="indexterm" name="id1475810"></a>
+  <a class="indexterm" name="idp14549488"></a>
 
-  <a class="indexterm" name="id1475822"></a>
+  <a class="indexterm" name="idp14550976"></a>
 
-  <a class="indexterm" name="id1475832"></a>
+  <a class="indexterm" name="idp14552288"></a>
 
-  <a class="indexterm" name="id1475847"></a>
+  <a class="indexterm" name="idp14553776"></a>
 
-  <a class="indexterm" name="id1475856"></a>
+  <a class="indexterm" name="idp14555088"></a>
 
-  <a class="indexterm" name="id1475869"></a>
+  <a class="indexterm" name="idp14556576"></a>
 
-  <a class="indexterm" name="id1475881"></a>
+  <a class="indexterm" name="idp14557888"></a>
 
-  <a class="indexterm" name="id1475892"></a>
+  <a class="indexterm" name="idp14559376"></a>
 
-  <a class="indexterm" name="id1475904"></a>
+  <a class="indexterm" name="idp14560688"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -206,7 +206,7 @@
 <tr>
 <td width="40%" align="left" valign="top">Chapter 10. Additional software </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> NRPE</td>
+<td width="40%" align="right" valign="top"> 10.2. NRPE</td>
 </tr>
 </table>
 </div>

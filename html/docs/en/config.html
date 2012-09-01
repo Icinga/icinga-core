@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Configuration Overview</title>
+<title>3.1. Configuration Overview</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
 <link rel="prev" href="ch03.html" title="Chapter 3. Configuring Icinga">
-<link rel="next" href="configmain.html" title="Main Configuration File Options">
+<link rel="next" href="configmain.html" title="3.2. Main Configuration File Options">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Configuration Overview</th></tr>
+<tr><th colspan="3" align="center">3.1. Configuration Overview</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="ch03.html">Prev</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Configuration Overview">
+<div class="section" title="3.1. Configuration Overview">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="config"></a><a name="config_overview"></a>Configuration Overview</h2></div></div></div>
+<a name="config"></a>3.1. <a name="config_overview"></a>Configuration Overview</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -43,7 +43,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Sample configuration files are installed in the <span class="emphasis"><em>/usr/local/icinga/etc/</em></span> directory when you follow
-    the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart installation guide</a>.</p>
+    the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart installation guide</a>.</p>
   </td></tr>
 </table></div>
 
@@ -55,7 +55,7 @@
   file is read by both the Icinga daemon and the CGIs. This is where you're going to want to get started in your
   configuration adventures.</p>
 
-  <p>Documentation for the main configuration file can be found <a class="link" href="configmain.html" title="Main Configuration File Options">here</a>.</p>
+  <p>Documentation for the main configuration file can be found <a class="link" href="configmain.html" title="3.2. Main Configuration File Options">here</a>.</p>
 
   <p><span class="bold"><strong>Resource File(s)</strong></span></p>
 
@@ -72,7 +72,7 @@
   <p>You can specify one or more object definition files by using the <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>
   and/or <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a> directives in your main configuration file.</p>
 
-  <p>An introduction to object definitions, and how they relate to each other, can be found <a class="link" href="configobject.html" title="Object Configuration Overview">here</a>.</p>
+  <p>An introduction to object definitions, and how they relate to each other, can be found <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">here</a>.</p>
 
   <p>Your object definition files can in turn include other files using the <a class="link" href="configobject.html#configobject-include_file">include_file</a>
   or <a class="link" href="configobject.html#configobject-include_dir">include_dir</a> directives. These can only occur outside of the actual object
@@ -81,11 +81,11 @@
 
   <p><span class="bold"><strong>CGI Configuration File</strong></span></p>
 
-  <p>The CGI configuration file contains a number of directives that affect the operation of the <a class="link" href="cgis.html" title="Icinga Classic UI: Information On The CGIs">CGIs</a>. It also contains a reference the main configuration file, so the CGIs know how you've configured
+  <p>The CGI configuration file contains a number of directives that affect the operation of the <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">CGIs</a>. It also contains a reference the main configuration file, so the CGIs know how you've configured
   Icinga and where your object definitions are stored.</p>
 
-  <p>Documentation for the CGI configuration file can be found <a class="link" href="configcgi.html" title="CGI Configuration File Options">here</a>.</p>
-  <a class="indexterm" name="id1366447"></a>
+  <p>Documentation for the CGI configuration file can be found <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">here</a>.</p>
+  <a class="indexterm" name="idp1423968"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -100,7 +100,7 @@
 <tr>
 <td width="40%" align="left" valign="top">Chapter 3. Configuring Icinga </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Main Configuration File Options</td>
+<td width="40%" align="right" valign="top"> 3.2. Main Configuration File Options</td>
 </tr>
 </table>
 </div>

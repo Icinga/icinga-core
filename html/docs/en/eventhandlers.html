@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Event Handlers</title>
+<title>7.2. Event Handlers</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
-<link rel="prev" href="extcommands.html" title="External Commands">
-<link rel="next" href="volatileservices.html" title="Volatile Services">
+<link rel="prev" href="extcommands.html" title="7.1. External Commands">
+<link rel="next" href="volatileservices.html" title="7.3. Volatile Services">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Event Handlers</th></tr>
+<tr><th colspan="3" align="center">7.2. Event Handlers</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="extcommands.html">Prev</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Event Handlers">
+<div class="section" title="7.2. Event Handlers">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="eventhandlers"></a><a name="event_handlers"></a>Event Handlers</h2></div></div></div>
+<a name="eventhandlers"></a>7.2. <a name="event_handlers"></a>Event Handlers</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -77,7 +77,7 @@
     </li>
 </ul></div>
 
-  <p>SOFT and HARD states are described in detail <a class="link" href="statetypes.html" title="State Types">here</a> .</p>
+  <p>SOFT and HARD states are described in detail <a class="link" href="statetypes.html" title="5.8. State Types">here</a> .</p>
 
   <p><span class="bold"><strong>Event Handler Types</strong></span></p>
 
@@ -126,7 +126,7 @@
   <p><span class="bold"><strong>Writing Event Handler Commands</strong></span></p>
 
   <p>Event handler commands will likely be shell or perl scripts, but they can be any type of executable that can run from a
-  command prompt. At a minimum, the scripts should take the following <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros</a> as arguments:</p>
+  command prompt. At a minimum, the scripts should take the following <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> as arguments:</p>
 
   <p>For Services: <a class="link" href="macrolist.html#macrolist-servicestate"> <span class="bold"><strong>$SERVICESTATE$</strong></span> </a> , <a class="link" href="macrolist.html#macrolist-servicestatetype"> <span class="bold"><strong>$SERVICESTATETYPE$</strong></span> </a> , <a class="link" href="macrolist.html#macrolist-serviceattempt"> <span class="bold"><strong>$SERVICEATTEMPT$</strong></span> </a></p>
 
@@ -142,8 +142,8 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Additional sample event handler scripts can be found in the <span class="emphasis"><em>contrib/eventhandlers/</em></span> subdirectory of
-    the Icinga distribution. Some of these sample scripts demonstrate the use of <a class="link" href="extcommands.html" title="External Commands">external
-    commands</a> to implement a <a class="link" href="redundancy.html" title="Redundant and Failover Network Monitoring">redundant</a> and <a class="link" href="distributed.html" title="Distributed Monitoring">distributed</a>
+    the Icinga distribution. Some of these sample scripts demonstrate the use of <a class="link" href="extcommands.html" title="7.1. External Commands">external
+    commands</a> to implement a <a class="link" href="redundancy.html" title="7.6. Redundant and Failover Network Monitoring">redundant</a> and <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed</a>
     monitoring environments.</p>
   </td></tr>
 </table></div>
@@ -271,8 +271,8 @@ exit 0</pre>
 
   <p>That's all there is to it! Event handlers are pretty simple to write and implement, so give it a try and see what you can
   do.</p>
-  <a class="indexterm" name="id1456473"></a>
-  <a class="indexterm" name="id1456480"></a>
+  <a class="indexterm" name="idp12228048"></a>
+  <a class="indexterm" name="idp12228880"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -285,9 +285,9 @@ exit 0</pre>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">External Commands </td>
+<td width="40%" align="left" valign="top">7.1. External Commands </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Volatile Services</td>
+<td width="40%" align="right" valign="top"> 7.3. Volatile Services</td>
 </tr>
 </table>
 </div>

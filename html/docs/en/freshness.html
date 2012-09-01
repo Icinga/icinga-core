@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Service and Host Freshness Checks</title>
+<title>7.4. Service and Host Freshness Checks</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
-<link rel="prev" href="volatileservices.html" title="Volatile Services">
-<link rel="next" href="distributed.html" title="Distributed Monitoring">
+<link rel="prev" href="volatileservices.html" title="7.3. Volatile Services">
+<link rel="next" href="distributed.html" title="7.5. Distributed Monitoring">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Service and Host Freshness Checks</th></tr>
+<tr><th colspan="3" align="center">7.4. Service and Host Freshness Checks</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="volatileservices.html">Prev</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Service and Host Freshness Checks">
+<div class="section" title="7.4. Service and Host Freshness Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="freshness"></a><a name="freshness_checks"></a>Service and Host Freshness Checks</h2></div></div></div>
+<a name="freshness"></a>7.4. <a name="freshness_checks"></a>Service and Host Freshness Checks</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -36,8 +36,8 @@
   freshness checking is to ensure that host and service checks are being provided passively by external applications on a regular
   basis.</p>
 
-  <p>Freshness checking is useful when you want to ensure that <a class="link" href="passivechecks.html" title="Passive Checks">passive checks</a> are being
-  received as frequently as you want. This can be very useful in <a class="link" href="distributed.html" title="Distributed Monitoring">distributed</a> and <a class="link" href="redundancy.html" title="Redundant and Failover Network Monitoring">failover</a> monitoring environments.</p>
+  <p>Freshness checking is useful when you want to ensure that <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive checks</a> are being
+  received as frequently as you want. This can be very useful in <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed</a> and <a class="link" href="redundancy.html" title="7.6. Redundant and Failover Network Monitoring">failover</a> monitoring environments.</p>
 
   <p><span class="inlinemediaobject"><img src="../images/freshness.png"></span></p>
 
@@ -58,7 +58,7 @@
       "stale".</p>
     </li>
 <li class="listitem">
-      <p>If the check results is found to be stale, Icinga will force an <a class="link" href="activechecks.html" title="Active Checks">active
+      <p>If the check results is found to be stale, Icinga will force an <a class="link" href="activechecks.html" title="5.6. Active Checks">active
       check</a> of the host or service by executing the command specified by in the host or service definition.</p>
     </li>
 </ul></div>
@@ -158,7 +158,7 @@
   as an active service check. This causes the <span class="emphasis"><em>check_dummy</em></span> plugin to be executed, which returns a critical
   state to Icinga. The service will then go into to a critical state (if it isn't already there) and someone will probably
   get notified of the problem.</p>
-  <a class="indexterm" name="id1457170"></a>
+  <a class="indexterm" name="idp12312080"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -171,9 +171,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Volatile Services </td>
+<td width="40%" align="left" valign="top">7.3. Volatile Services </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Distributed Monitoring</td>
+<td width="40%" align="right" valign="top"> 7.5. Distributed Monitoring</td>
 </tr>
 </table>
 </div>

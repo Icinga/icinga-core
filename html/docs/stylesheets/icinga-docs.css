@@ -1,6 +1,7 @@
-/* color scheme similar to www.icinga.org */
+/* color scheme similar to www.icinga.org, with some adaptions to code blocks etc */
 
 
+/* body */
 body {
 	margin: 0;
 	padding: 0;
@@ -12,43 +13,47 @@ body {
 	font-family: verdana, sans-serif;
 }
 
+/* urls */
 a:link, a:visited, a:active {
 	color: #1F1F1F;
 	font-weight: normal;
 	text-decoration: underline;
-	}
+}
 
 a:hover {
 	color: #FFB600;
 	font-weight: normal;
 	text-decoration: underline;
-	}
+}
+
+
 ul, ol, dl, p, h1, h2, h3, h4, h5, h6 {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	padding-top: 0;
 	padding-bottom: 0;
-	}
+}
 /* remove margins on sub-lists */
 ul ul, ul ol, ol ul, ol ol {
 	margin-top: 0;
 	margin-bottom: 0;
-	}
+}
 
+/* code style */
 code, pre {
 	font-family: "Courier New", Courier, monospace;
 	font-size: 1em;
-	}
+}
 pre {
 	overflow: auto;
 	word-wrap: normal;
 	padding-bottom: 1.5em;
 	overflow-y: hidden;
 	width: 99%;
-	}
+}
 abbr[title], acronym[title] {
 	border-bottom: 1px dotted;
-	}
+}
 
 hr {
 	display: block;
@@ -57,7 +62,8 @@ hr {
 	margin: 0.5em auto;
 	color: #cccccc;
 	background-color: #cccccc;
-	}
+}
+
 /* use the body's font size in tables, too: */
 table {
 	font-size: 1em;
@@ -65,9 +71,92 @@ table {
 	padding: 0;
 	background: none;
 	border: 0;
-	}
+}
+
+/* block shadows */
+pre.literallayout,
+.screen,
+.synopsis,
+.programlisting,
+.refsynopsysdiv p,
+div.note,
+.warning,
+.important
+.informataltable {
+	-moz-box-shadow: 3px 3px 5px #DFDFDF;
+	-webkit-box-shadow: 3px 3px 5px #DFDFDF;
+	-khtml-box-shadow: 3px 3px 5px #DFDFDF;
+	-o-box-shadow: 3px 3px 5px #DFDFDF;
+	box-shadow: 3px 3px 5px #DFDFDF;
+}
+
+/* block layout */
+pre.literallayout,
+.screen,
+.synopsis,
+.programlisting,
+.refsynopsysdiv p,
+div.note,
+.warning,
+.important,
+.informataltable {
+	color: black;
+	border-width: 1px;
+	border-style: solid;
+	padding: 2ex;
+	margin: 2ex 0 2ex 2ex;
+	overflow: auto;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 8px;
+	-khtml-border-radius: 8px;
+	border-radius: 8px;
+}
+
+/* non programlisting blocks */
+pre.literallayout,
+pre.synopsis,
+.refsynopsis p,
+.screen {
+	border-color: #CFCFCF;
+	background-color: #F7F7F7;
+}
+
+/* programlisting special */
+pre.programlisting {
+	border-color: #CFCFCF;
+	background-color: #EFEFEF;
+	border: 1px dashed black;
+}
+
+/* informaltable special */
+div.informaltable,
+.informaltable.table,
+.informaltable.table tr,
+.informaltable.table td {
+	border-collapse: collapse;
+	border-spacing: 10px;
+	font-size: 1em;
+	border-color: #CFCFCF;
+	background-color: #EFEFEF;
+	border: 1px dotted black;
+	margin: 2px 5px;
+	padding: 0.5em;
+}
+
+div.informaltable p {
+	/* line-height: 1.1em; */
+}
+
+/* note, important special */
+div.note,
+.warning,
+.important {
+	background-color: #FFFFFF;
+	border: 1px solid #000000;
+}
 
 
+/* headers */
 h1 { font-size: 34px; line-height: 1.2; margin: 0.3em 0 10px; }
 h2 { font-size: 28px; line-height: 1.3; margin: 1em 0 .2em; }
 h3 { font-size: 24px; line-height: 1.3; margin: 1em 0 .2em; }
@@ -76,14 +165,12 @@ h5 { font-size: 1.3em; margin: 1.67em 0; font-weight: bold; }
 h6 { font-size: 1.15em; margin: 1.67em 0; font-weight: bold; }
 
 /* center some titles */
-
-.BOOK .TITLE, .BOOK .CORPAUTHOR, .BOOK .COPYRIGHT {
+.book .title, .book .corpauthor, .book .copyright {
 	text-align: center;
 }
 
 /* decoration for formal examples */
-
-DIV.EXAMPLE {
+div.example {
 	padding-left: 15px;
 	border-style: solid;
 	border-width: 0px;
@@ -93,25 +180,23 @@ DIV.EXAMPLE {
 }
 
 /* less dense spacing of TOC */
-
-.BOOK .TOC DL DT {
+.booc .toc DL DT {
 	padding-top: 1.5ex;
 	padding-bottom: 1.5ex;
 }
 
-.BOOK .TOC DL DL DT {
+.book .toc DL DL DT {
 	padding-top: 0ex;
 	padding-bottom: 0ex;
 }
 
 /* miscellaneous */
-
-PRE.LITERALLAYOUT, .SCREEN, .SYNOPSIS, .PROGRAMLISTING {
+pre.literallayout, .screen, .synopsis, .programlisting {
 	margin-left: 4ex;
 }
 
-.COMMENT	{ color: red; }
+.comment	{ color: red; }
 
-VAR		{ font-family: monospace; font-style: italic; }
+var		{ font-family: monospace; font-style: italic; }
 /* Konqueror's standard style for ACRONYM is italic. */
-ACRONYM		{ font-style: inherit; }
+acronym		{ font-style: inherit; }

@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Host-Prüfungen (Host checks)</title>
+<title>5.4. Host-Prüfungen (Host checks)</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
-<link rel="prev" href="macrolist.html" title="Standard-Makros in Icinga">
-<link rel="next" href="servicechecks.html" title="Service-Prüfungen (Service Checks)">
+<link rel="prev" href="macrolist.html" title="5.3. Standard-Makros in Icinga">
+<link rel="next" href="servicechecks.html" title="5.5. Service-Prüfungen (Service Checks)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Host-Prüfungen (Host checks)</th></tr>
+<tr><th colspan="3" align="center">5.4. Host-Prüfungen (Host checks)</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="macrolist.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Host-Prüfungen (Host checks)">
+<div class="section" title="5.4. Host-Prüfungen (Host checks)">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="hostchecks"></a>Host-Prüfungen (Host checks)</h2></div></div></div>
+<a name="hostchecks"></a>5.4. Host-Prüfungen (Host checks)</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -48,10 +48,10 @@
       <p>nach Bedarf, wenn ein mit dem Host verbundener Service den Status wechselt.</p>
     </li>
 <li class="listitem">
-      <p>nach Bedarf als Teil der <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Verfügbarkeit</a>s-Logik.</p>
+      <p>nach Bedarf als Teil der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Verfügbarkeit</a>s-Logik.</p>
     </li>
 <li class="listitem">
-      <p>nach Bedarf bei <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">vorausschauenden Host-Abhängigkeitsprüfungen</a>.</p>
+      <p>nach Bedarf bei <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende Abhängigkeitsprüfungen">vorausschauenden Host-Abhängigkeitsprüfungen</a>.</p>
     </li>
 </ul></div>
 
@@ -64,25 +64,25 @@
   auch der Host den Status gewechselt hat. Wenn beispielsweise der mit einem Host verbundene HTTP-Service den Status von CRITICAL
   auf OK gewechselt hat, kann das bedeuten, dass der Host gerade einen Reboot beendet hat und nun wieder verfügbar ist.</p>
 
-  <p>Host-Prüfungen nach Bedarf werden auch als Teil der <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Erreichbarkeit</a>
+  <p>Host-Prüfungen nach Bedarf werden auch als Teil der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Erreichbarkeit</a>
   erledigt. Icinga ist so konstruiert, dass Netzwerkausfälle so schnell wie möglich erkannt werden und zwischen DOWN- und
   UNREACHABLE-Zuständen unterschieden werden kann. Das sind sehr unterschiedliche Zustände und es kann dem Admin helfen, schnell
   die Ursache für einen Netzwerkausfall zu finden.</p>
 
-  <p>Prüfungen nach Bedarf werden auch als Teil der <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">vorausschauenden
+  <p>Prüfungen nach Bedarf werden auch als Teil der <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende Abhängigkeitsprüfungen">vorausschauenden
   Host-Abhängigkeitsprüfung</a>s-Logik durchgeführt.</p>
 
   <p><span class="bold"><strong>zwischengespeicherte Host-Prüfungen (cached host checks)</strong></span></p>
 
   <p>Die Performance von Host-Prüfungen nach Bedarf kann signifikant durch den Einsatz von "cached checks" erhöht werden, die
   es Icinga erlauben, auf eine Host-Prüfung zu verzichten, wenn es feststellt, dass ein relativ frisches Prüfungsergebnis
-  genügt. Mehr Informationen zu "cached checks" finden Sie <a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">hier</a>.</p>
+  genügt. Mehr Informationen zu "cached checks" finden Sie <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte Prüfungen">hier</a>.</p>
 
   <p><span class="bold"><strong>Abhängigkeiten und Prüfungen</strong></span></p>
 
   <p>Sie können <a class="link" href="objectdefinitions.html#objectdefinitions-hostdependency">Host-Ausführungs-Abhängigkeiten</a> definieren, die
   Icinga von der Statusprüfung eines Hosts abhalten in Abhängigkeit vom Status ein oder mehrerer anderer Hosts. Mehr
-  Informationen zu Abhängigkeiten finden Sie <a class="link" href="dependencies.html" title="Host- und Service-Abhängigkeiten">hier</a>.</p>
+  Informationen zu Abhängigkeiten finden Sie <a class="link" href="dependencies.html" title="7.12. Host- und Service-Abhängigkeiten">hier</a>.</p>
 
   <p><span class="bold"><strong>Parallelisierung von Host-Prüfungen</strong></span></p>
 
@@ -98,13 +98,13 @@
   Host-Prüfung benutzen kann.</p>
 
   <p>Wenn Icinga die Ergebnisse von geplanten und nach Bedarf ausgeführten Host-Prüfungen verarbeitet, kann es
-  (zusätzliche) Prüfungen anderer Hosts veranlassen. Diese Prüfungen können aus zwei Gründen veranlasst werden: <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">vorausschauende Abhängigkeitsprüfungen</a> und um den Status des Hosts mit Hilfe von <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerk-Erreichbarkeit</a>s-Logik festzustellen. Die zusätzlichen Prüfungen werden
+  (zusätzliche) Prüfungen anderer Hosts veranlassen. Diese Prüfungen können aus zwei Gründen veranlasst werden: <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende Abhängigkeitsprüfungen">vorausschauende Abhängigkeitsprüfungen</a> und um den Status des Hosts mit Hilfe von <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerk-Erreichbarkeit</a>s-Logik festzustellen. Die zusätzlichen Prüfungen werden
   normalerweise parallel ausgeführt. Allerdings gibt es eine große Ausnahme, der Sie sich bewusst sein sollten, da sie einen
   negativen Einfluss auf die Performance haben kann...</p>
 
   <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Hosts, deren <span class="emphasis"><em>max_check_attempts</em></span>-Wert auf <span class="bold"><strong>1</strong></span> gesetzt
   sind, können schwerwiegende Performance-Probleme verursachen. Der Grund? Wenn Icinga den richtigen Status mit Hilfe der
-  <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerk-Erreichbarkeit</a>s-Logik ermitteln muss (um zu sehen, ob sie DOWN oder
+  <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerk-Erreichbarkeit</a>s-Logik ermitteln muss (um zu sehen, ob sie DOWN oder
   UNREACHABLE sind), muss es <span class="bold"><strong>aufeinanderfolgende</strong></span> Prüfungen für alle direkten Eltern des Hosts
   starten. Um es noch einmal zu wiederholen, diese Prüfungen laufen <span class="emphasis"><em>nacheinander</em></span> statt parallel, also kann es
   zu einem Performance-Einbruch kommen. Aus diesem Grund würden wir empfehlen, dass Sie immer einen Wert größer als 1 für die
@@ -128,7 +128,7 @@
 
   <p><span class="bold"><strong>Host-Statusermittlung</strong></span></p>
 
-  <p>Host-Prüfungen werden mit Hilfe von <a class="link" href="plugins.html" title="Icinga Plugins">Plugins</a> durchgeführt, die den Status OK, WARNING,
+  <p>Host-Prüfungen werden mit Hilfe von <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> durchgeführt, die den Status OK, WARNING,
   UNKNOWN oder CRITICAL zurückliefern können. Wie übersetzt Icinga diese Return-Codes der Plugins in die Host-Zustände UP,
   DOWN oder UNREACHABLE? Wir werden sehen...</p>
 
@@ -202,23 +202,23 @@
 </table>
   </div>
 
-  <p>Mehr Informationen, wie Icinga zwischen DOWN- und UNREACHABLE-Zuständen unterscheidet, finden Sie <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">hier</a>.</p>
+  <p>Mehr Informationen, wie Icinga zwischen DOWN- und UNREACHABLE-Zuständen unterscheidet, finden Sie <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">hier</a>.</p>
 
   <p><span class="bold"><strong>Host-Statusänderungen</strong></span></p>
 
   <p>Wie Ihnen wahrscheinlich bereits bewusst ist, bleiben Hosts nicht immer in einem Zustand. Dinge gehen kaputt, Patches
   werden eingespielt und Server müssen neu gestartet werden. Wenn Icinga den Status von Hosts prüft, ist es in der Lage
   festzustellen, wenn ein Host zwischen UP-, DOWN- und UNREACHABLE-Zuständen wechselt und geeignete Maßnahmen ergreifen. Diese
-  Zustandsänderungen resultieren in verschiedenen <a class="link" href="statetypes.html" title="Statustypen">Statustypen</a> (HARD oder SOFT), was zum Auslösen
-  von <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandlern</a> und dem Versenden von <a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungen</a> führen kann. Das Erkennen und Behandeln von Statusänderungen ist das, worum es
+  Zustandsänderungen resultieren in verschiedenen <a class="link" href="statetypes.html" title="5.8. Statustypen">Statustypen</a> (HARD oder SOFT), was zum Auslösen
+  von <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandlern</a> und dem Versenden von <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a> führen kann. Das Erkennen und Behandeln von Statusänderungen ist das, worum es
   sich bei Icinga handelt.</p>
 
   <p>Wenn Host-Statusänderungen zu oft erfolgen, werden sie als "flatternd" (flapping) angesehen. Ein gutes Beispiel für einen
   flatternden Host wäre ein Server, der spontan jedes Mal neu startet, sobald das Betriebssystem lädt. Das ist immer ein spaßiges
   Szenario, mit dem man sich befassen muss. Icinga kann erkennen, wenn Hosts anfangen zu flattern, und kann
   Benachrichtigungen unterdrücken, bis das Flattern stoppt und sich der Host-Status stabilisiert. Mehr Informationen über die
-  Erkennungslogik des Flatterns finden Sie <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">hier</a>.</p>
-  <a class="indexterm" name="id1519117"></a>
+  Erkennungslogik des Flatterns finden Sie <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">hier</a>.</p>
+  <a class="indexterm" name="idp9369264"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -231,9 +231,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Standard-Makros in Icinga </td>
+<td width="40%" align="left" valign="top">5.3. Standard-Makros in Icinga </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Service-Prüfungen (Service Checks)</td>
+<td width="40%" align="right" valign="top"> 5.5. Service-Prüfungen (Service Checks)</td>
 </tr>
 </table>
 </div>

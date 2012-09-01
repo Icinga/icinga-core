@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Upgrading (to) Icinga</title>
+<title>2.8. Upgrading (to) Icinga</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
-<link rel="prev" href="howtos.html" title="Links to other published Howtos">
-<link rel="next" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">
+<link rel="prev" href="howtos.html" title="2.7. Links to other published Howtos">
+<link rel="next" href="upgrading_idoutils.html" title="2.9. Upgrading IDOUtils Database">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Upgrading (to) Icinga</th></tr>
+<tr><th colspan="3" align="center">2.8. Upgrading (to) Icinga</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="howtos.html">Prev</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Upgrading (to) Icinga">
+<div class="section" title="2.8. Upgrading (to) Icinga">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="upgrading"></a><a name="upgrading_nagios"></a>Upgrading (to) Icinga</h2></div></div></div>
+<a name="upgrading"></a>2.8. <a name="upgrading_nagios"></a>Upgrading (to) Icinga</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Contents</strong></span></p>
@@ -46,7 +46,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>If you are using IDOUtils then you have to update it, too. Please take a look at <a class="link" href="upgrading_idoutils.html" title="Upgrading IDOUtils Database">
+    <p>If you are using IDOUtils then you have to update it, too. Please take a look at <a class="link" href="upgrading_idoutils.html" title="2.9. Upgrading IDOUtils Database">
     upgrading_idoutils</a> as well.</p>
 
     <p><span class="color"><font color="red">Starting with Icinga 1.7 the location of the idomod shared library changed from
@@ -65,7 +65,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>If you are using Icinga-Web then you have to update it, too. Please take a look at <a class="link" href="upgrading_icingaweb.html" title="Upgrading Icinga-Web and Icinga-Web Database">
+    <p>If you are using Icinga-Web then you have to update it, too. Please take a look at <a class="link" href="upgrading_icingaweb.html" title="6.5. Upgrading Icinga-Web and Icinga-Web Database">
     upgrading_icingaweb</a> as well.</p>
   </td></tr>
 </table></div>
@@ -148,7 +148,7 @@
   <p>Make sure you have a good backup of your existing Nagios installation and configuration files. If anything goes wrong or
   doesn't work, this will allow you to rollback to your old version.</p>
 
-  <p>Please install Icinga according to the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart guide</a>. Please note that</p>
+  <p>Please install Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart guide</a>. Please note that</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -311,7 +311,7 @@
     </li>
 </ul></div>
 
-  <p>Also make sure to read the "<a class="link" href="whatsnew.html" title="What's New in Icinga 1.7">What's New</a>" section of the documentation. It describes all the changes
+  <p>Also make sure to read the "<a class="link" href="whatsnew.html" title="1.2. What's New in Icinga 1.7">What's New</a>" section of the documentation. It describes all the changes
   that were made to the Icinga code since the latest stable release of Nagios 3.0.6. Quite a bit has changed, so make sure you
   read it over.</p>
 
@@ -358,13 +358,13 @@
       <p>Uninstall the original RPM or APT package</p>
     </li>
 <li class="listitem">
-      <p>Install Icinga from source by following the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart guide</a></p>
+      <p>Install Icinga from source by following the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart guide</a></p>
     </li>
 <li class="listitem">
       <p>Restore your original Nagios configuration files, retention file, and log files</p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="verifyconfig.html" title="Verifying Your Configuration">Verify</a> your configuration and <a class="link" href="startstop.html" title="Starting and Stopping Icinga">start</a> Icinga</p>
+      <p><a class="link" href="verifyconfig.html" title="4.1. Verifying Your Configuration">Verify</a> your configuration and <a class="link" href="startstop.html" title="4.2. Starting and Stopping Icinga">start</a> Icinga</p>
     </li>
 </ol></div>
 
@@ -372,17 +372,17 @@
   backed up all your critical Nagios files before removing the original RPM or APT package, so you can revert back if you encounter
   problems.</p>
 
-  <a class="indexterm" name="id1362259"></a>
+  <a class="indexterm" name="idp918432"></a>
 
-  <a class="indexterm" name="id1362287"></a>
+  <a class="indexterm" name="idp919376"></a>
 
-  <a class="indexterm" name="id1362256"></a>
+  <a class="indexterm" name="idp921104"></a>
 
-  <a class="indexterm" name="id1362316"></a>
+  <a class="indexterm" name="idp922752"></a>
 
-  <a class="indexterm" name="id1362329"></a>
+  <a class="indexterm" name="idp924320"></a>
 
-  <a class="indexterm" name="id1362343"></a>
+  <a class="indexterm" name="idp925888"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -395,9 +395,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Links to other published Howtos </td>
+<td width="40%" align="left" valign="top">2.7. Links to other published Howtos </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Upgrading IDOUtils Database</td>
+<td width="40%" align="right" valign="top"> 2.9. Upgrading IDOUtils Database</td>
 </tr>
 </table>
 </div>

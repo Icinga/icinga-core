@@ -7,8 +7,8 @@
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="prev" href="icinga-web-pnp.html" title="Integration of PNP4Nagios into Icinga-Web">
-<link rel="next" href="extcommands.html" title="External Commands">
+<link rel="prev" href="icinga-web-pnp.html" title="6.8. Integration of PNP4Nagios into Icinga-Web">
+<link rel="next" href="extcommands.html" title="7.1. External Commands">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -31,33 +31,33 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="section"><a href="extcommands.html">External Commands</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html">Event Handlers</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html">Volatile Services</a></span></dt>
-<dt><span class="section"><a href="freshness.html">Service and Host Freshness Checks</a></span></dt>
-<dt><span class="section"><a href="distributed.html">Distributed Monitoring</a></span></dt>
-<dt><span class="section"><a href="redundancy.html">Redundant and Failover Network Monitoring</a></span></dt>
-<dt><span class="section"><a href="flapping.html">Detection and Handling of State Flapping</a></span></dt>
-<dt><span class="section"><a href="escalations.html">Notification Escalations</a></span></dt>
-<dt><span class="section"><a href="escalation_condition.html">Escalation Condition</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html">On-Call Rotations</a></span></dt>
-<dt><span class="section"><a href="clusters.html">Monitoring Service and Host Clusters</a></span></dt>
-<dt><span class="section"><a href="dependencies.html">Host and Service Dependencies</a></span></dt>
-<dt><span class="section"><a href="stalking.html">State Stalking</a></span></dt>
-<dt><span class="section"><a href="perfdata.html">Performance Data</a></span></dt>
-<dt><span class="section"><a href="downtime.html">Scheduled Downtime</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html">Recurring Downtimes</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html">Using The Embedded Perl Interpreter</a></span></dt>
-<dt><span class="section"><a href="adaptive.html">Adaptive Monitoring</a></span></dt>
-<dt><span class="section"><a href="dependencychecks.html">Predictive Dependency Checks</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html">Cached Checks</a></span></dt>
-<dt><span class="section"><a href="passivestatetranslation.html">Passive Host State Translation</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html">Service and Host Check Scheduling</a></span></dt>
-<dt><span class="section"><a href="cgiincludes.html">Custom CGI Headers and
+<dt><span class="section"><a href="extcommands.html">7.1. External Commands</a></span></dt>
+<dt><span class="section"><a href="eventhandlers.html">7.2. Event Handlers</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html">7.3. Volatile Services</a></span></dt>
+<dt><span class="section"><a href="freshness.html">7.4. Service and Host Freshness Checks</a></span></dt>
+<dt><span class="section"><a href="distributed.html">7.5. Distributed Monitoring</a></span></dt>
+<dt><span class="section"><a href="redundancy.html">7.6. Redundant and Failover Network Monitoring</a></span></dt>
+<dt><span class="section"><a href="flapping.html">7.7. Detection and Handling of State Flapping</a></span></dt>
+<dt><span class="section"><a href="escalations.html">7.8. Notification Escalations</a></span></dt>
+<dt><span class="section"><a href="escalation_condition.html">7.9. Escalation Condition</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html">7.10. On-Call Rotations</a></span></dt>
+<dt><span class="section"><a href="clusters.html">7.11. Monitoring Service and Host Clusters</a></span></dt>
+<dt><span class="section"><a href="dependencies.html">7.12. Host and Service Dependencies</a></span></dt>
+<dt><span class="section"><a href="stalking.html">7.13. State Stalking</a></span></dt>
+<dt><span class="section"><a href="perfdata.html">7.14. Performance Data</a></span></dt>
+<dt><span class="section"><a href="downtime.html">7.15. Scheduled Downtime</a></span></dt>
+<dt><span class="section"><a href="recurring_downtimes.html">7.16. Recurring Downtimes</a></span></dt>
+<dt><span class="section"><a href="embeddedperl.html">7.17. Using The Embedded Perl Interpreter</a></span></dt>
+<dt><span class="section"><a href="adaptive.html">7.18. Adaptive Monitoring</a></span></dt>
+<dt><span class="section"><a href="dependencychecks.html">7.19. Predictive Dependency Checks</a></span></dt>
+<dt><span class="section"><a href="cachedchecks.html">7.20. Cached Checks</a></span></dt>
+<dt><span class="section"><a href="passivestatetranslation.html">7.21. Passive Host State Translation</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html">7.22. Service and Host Check Scheduling</a></span></dt>
+<dt><span class="section"><a href="cgiincludes.html">7.23. Custom CGI Headers and
   Footers</a></span></dt>
-<dt><span class="section"><a href="modified_attr.html">Modified attributes</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html">Object Inheritance</a></span></dt>
-<dt><span class="section"><a href="objecttricks.html">Time-Saving Tricks For Object Definitions</a></span></dt>
+<dt><span class="section"><a href="modified_attr.html">7.24. Modified attributes</a></span></dt>
+<dt><span class="section"><a href="objectinheritance.html">7.25. Object Inheritance</a></span></dt>
+<dt><span class="section"><a href="objecttricks.html">7.26. Time-Saving Tricks For Object Definitions</a></span></dt>
 </dl>
 </div>
     
@@ -124,9 +124,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Integration of PNP4Nagios into Icinga-Web </td>
+<td width="40%" align="left" valign="top">6.8. Integration of PNP4Nagios into Icinga-Web </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> External Commands</td>
+<td width="40%" align="right" valign="top"> 7.1. External Commands</td>
 </tr>
 </table>
 </div>

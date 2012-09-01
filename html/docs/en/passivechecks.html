@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Passive Checks</title>
+<title>5.7. Passive Checks</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch05.html" title="Chapter 5. The Basics">
-<link rel="prev" href="activechecks.html" title="Active Checks">
-<link rel="next" href="statetypes.html" title="State Types">
+<link rel="prev" href="activechecks.html" title="5.6. Active Checks">
+<link rel="next" href="statetypes.html" title="5.8. State Types">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Passive Checks</th></tr>
+<tr><th colspan="3" align="center">5.7. Passive Checks</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="activechecks.html">Prev</a> </td>
@@ -25,14 +25,14 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Passive Checks">
+<div class="section" title="5.7. Passive Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="passivechecks"></a><a name="passive_checks"></a>Passive Checks</h2></div></div></div>
+<a name="passivechecks"></a>5.7. <a name="passive_checks"></a>Passive Checks</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
 
-  <p>In most cases you'll use Icinga to monitor your hosts and services using regularly scheduled <a class="link" href="activechecks.html" title="Active Checks">active checks</a>. Active checks can be used to "poll" a device or service for status information
+  <p>In most cases you'll use Icinga to monitor your hosts and services using regularly scheduled <a class="link" href="activechecks.html" title="5.6. Active Checks">active checks</a>. Active checks can be used to "poll" a device or service for status information
   every so often. Icinga also supports a way to monitor hosts and services passively instead of actively. They key features
   of passive checks are as follows:</p>
 
@@ -66,7 +66,7 @@
   alerts. You never know how many (if any) traps or alerts you'll receive in a given time frame, so it's not feasible to just
   monitor their status every few minutes.</p>
 
-  <p>Passive checks are also used when configuring <a class="link" href="distributed.html" title="Distributed Monitoring">distributed</a> or <a class="link" href="redundancy.html" title="Redundant and Failover Network Monitoring">redundant</a> monitoring installations.</p>
+  <p>Passive checks are also used when configuring <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed</a> or <a class="link" href="redundancy.html" title="7.6. Redundant and Failover Network Monitoring">redundant</a> monitoring installations.</p>
 
   <p><span class="bold"><strong>How Passive Checks Work</strong></span></p>
 
@@ -120,7 +120,7 @@
   <p><span class="bold"><strong>Submitting Passive Service Check Results</strong></span></p>
 
   <p>External applications can submit passive service check results to Icinga by writing a PROCESS_SERVICE_CHECK_RESULT
-  <a class="link" href="extcommands.html" title="External Commands">external command</a> to the external command file.</p>
+  <a class="link" href="extcommands.html" title="7.1. External Commands">external command</a> to the external command file.</p>
 
   <p>The format of the command is as follows:</p>
 
@@ -166,7 +166,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>An example shell script of how to submit passive service check results to Icinga can be found in the
-    documentation on <a class="link" href="volatileservices.html" title="Volatile Services">volatile services</a>.</p>
+    documentation on <a class="link" href="volatileservices.html" title="7.3. Volatile Services">volatile services</a>.</p>
   </td></tr>
 </table></div>
 
@@ -212,13 +212,13 @@
 
   <p>Unlike with active host checks, Icinga does not (by default) attempt to determine whether or host is DOWN or
   UNREACHABLE with passive checks. Rather, Icinga takes the passive check result to be the actual state the host is in and
-  doesn't try to determine the host's actual state using the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">reachability logic</a>. This
-  can cause problems if you are submitting passive checks from a remote host or you have a <a class="link" href="distributed.html" title="Distributed Monitoring">distributed
+  doesn't try to determine the host's actual state using the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">reachability logic</a>. This
+  can cause problems if you are submitting passive checks from a remote host or you have a <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed
   monitoring setup</a> where the parent/child host relationships are different.</p>
 
   <p>You can tell Icinga to translate DOWN/UNREACHABLE passive check result states to their "proper" state by using the
   <a class="link" href="configmain.html#configmain-translate_passive_host_checks">translate_passive_host_checks</a> variable. More information on how
-  this works can be found <a class="link" href="passivestatetranslation.html" title="Passive Host State Translation">here</a>.</p>
+  this works can be found <a class="link" href="passivestatetranslation.html" title="7.21. Passive Host State Translation">here</a>.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -226,7 +226,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Passive host checks are normally treated as <a class="link" href="statetypes.html" title="State Types">HARD states</a>, unless the <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a> option is enabled.</p>
+    <p>Passive host checks are normally treated as <a class="link" href="statetypes.html" title="5.8. State Types">HARD states</a>, unless the <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a> option is enabled.</p>
   </td></tr>
 </table></div>
 
@@ -242,7 +242,7 @@
   and a client that is executed from remote hosts. The daemon will listen for connections from remote clients, perform some basic
   validation on the results being submitted, and then write the check results directly into the external command file (as
   described above). More information on the NSCA addon can be found <a class="link" href="addons.html#addons-nsca">here</a>.</p>
-  <a class="indexterm" name="id1434191"></a>
+  <a class="indexterm" name="idp9553536"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -255,9 +255,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Active Checks </td>
+<td width="40%" align="left" valign="top">5.6. Active Checks </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> State Types</td>
+<td width="40%" align="right" valign="top"> 5.8. State Types</td>
 </tr>
 </table>
 </div>

@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Custom Object Variables</title>
+<title>3.5. Custom Object Variables</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
-<link rel="prev" href="objectdefinitions.html" title="Object Definitions">
-<link rel="next" href="configcgi.html" title="CGI Configuration File Options">
+<link rel="prev" href="objectdefinitions.html" title="3.4. Object Definitions">
+<link rel="next" href="configcgi.html" title="3.6. CGI Configuration File Options">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Custom Object Variables</th></tr>
+<tr><th colspan="3" align="center">3.5. Custom Object Variables</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="objectdefinitions.html">Prev</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Custom Object Variables">
+<div class="section" title="3.5. Custom Object Variables">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="customobjectvars"></a><a name="custom_object_vars"></a>Custom Object Variables</h2></div></div></div>
+<a name="customobjectvars"></a>3.5. <a name="custom_object_vars"></a>Custom Object Variables</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -57,11 +57,11 @@
       <p>Custom variable names are converted to all uppercase before use</p>
     </li>
 <li class="listitem">
-      <p>Custom variables are <a class="link" href="objectinheritance.html" title="Object Inheritance">inherited</a> from object templates like normal
+      <p>Custom variables are <a class="link" href="objectinheritance.html" title="7.25. Object Inheritance">inherited</a> from object templates like normal
       variables</p>
     </li>
 <li class="listitem">
-      <p>Scripts can reference custom variable values with <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros and environment
+      <p>Scripts can reference custom variable values with <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros and environment
       variables</a></p>
     </li>
 </ul></div>
@@ -112,7 +112,7 @@ define contact{
   <p><span class="bold"><strong>Custom Variables As Macros</strong></span></p>
 
   <p>Custom variable values can be referenced in scripts and executables that Icinga runs for checks, notifications,
-  etc. by using <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros</a> or environment variables.</p>
+  etc. by using <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> or environment variables.</p>
 
   <p>In order to prevent name collision among custom variables from different object types, Icinga prepends "_HOST",
   "_SERVICE", or "_CONTACT" to the beginning of custom host, service, or contact variables, respectively, in macro and environment
@@ -176,10 +176,10 @@ define contact{
 
   <p><span class="bold"><strong>Custom Variables And Inheritance</strong></span></p>
 
-  <p>Custom object variables are <a class="link" href="objectinheritance.html" title="Object Inheritance">inherited</a> just like standard host, service, or
+  <p>Custom object variables are <a class="link" href="objectinheritance.html" title="7.25. Object Inheritance">inherited</a> just like standard host, service, or
   contact variables.</p>
-  <a class="indexterm" name="id1401056"></a>
-  <a class="indexterm" name="id1401065"></a>
+  <a class="indexterm" name="idp5574144"></a>
+  <a class="indexterm" name="idp5574896"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -192,9 +192,9 @@ define contact{
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Object Definitions </td>
+<td width="40%" align="left" valign="top">3.4. Object Definitions </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> CGI Configuration File Options</td>
+<td width="40%" align="right" valign="top"> 3.6. CGI Configuration File Options</td>
 </tr>
 </table>
 </div>

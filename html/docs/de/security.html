@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Sicherheitsüberlegungen</title>
+<title>8.1. Sicherheitsüberlegungen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
 <link rel="prev" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
-<link rel="next" href="cgisecurity.html" title="Verbesserte CGI-Sicherheit und Authentifizierung">
+<link rel="next" href="cgisecurity.html" title="8.2. Verbesserte CGI-Sicherheit und Authentifizierung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Sicherheitsüberlegungen</th></tr>
+<tr><th colspan="3" align="center">8.1. Sicherheitsüberlegungen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="ch08.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Sicherheitsüberlegungen">
+<div class="section" title="8.1. Sicherheitsüberlegungen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="security"></a>Sicherheitsüberlegungen</h2></div></div></div>
+<a name="security"></a>8.1. Sicherheitsüberlegungen</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -105,7 +105,7 @@
       <p><span class="bold"><strong>Fordern Sie Authentifizierung bei den CGIs</strong></span>. Wir empfehlen dringend Authentifizierung
       für den Zugriff auf die CGIs. Sobald Sie das tun, lesen Sie die Dokumentation zu Standardberechtigungen von
       authentifizierten Kontakten und autorisieren Sie bestimmte Kontakte für zusätzliche Rechte nur, wenn es nötig ist. Eine
-      Anleitung zur Einrichtung von Authentifizierung und Autorisierung finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>. Wenn Sie
+      Anleitung zur Einrichtung von Authentifizierung und Autorisierung finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>. Wenn Sie
       mit der <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a>-Direktive die Authentifizierung in der
       CGI-Konfigurationsdatei deaktivieren, wird das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> das Schreiben jeglicher
       Befehle in das <a class="link" href="configmain.html#configmain-command_file">external command file</a> verweigern. Sie wollen schließlich
@@ -116,9 +116,9 @@
       benutzen Sie den <span class="emphasis"><em>absoluten Pfad</em></span> (keinen relativen) für Scripte oder Programm, die Sie ausführen.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Verstecken Sie sensible Daten mit $USERn$-Makros</strong></span>. Die CGIs lesen die <a class="link" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> und die <a class="link" href="configobject.html" title="Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>, so dass Sie dort keine sensiblen Informationen (Benutzernamen,
+      <p><span class="bold"><strong>Verstecken Sie sensible Daten mit $USERn$-Makros</strong></span>. Die CGIs lesen die <a class="link" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> und die <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>, so dass Sie dort keine sensiblen Informationen (Benutzernamen,
       Passwörter, usw.) ablegen sollten. Wenn Sie Benutzernamen und/oder Passwörter in einer Befehlsdefinition angeben müssen,
-      dann nutzen Sie ein $USERn$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a>, um sie zu verstecken. $USERn$-Makros werden in einer oder
+      dann nutzen Sie ein $USERn$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a>, um sie zu verstecken. $USERn$-Makros werden in einer oder
       mehreren <a class="link" href="configmain.html#configmain-resource_file">Ressourcen-Dateien</a> definiert. Die CGIs werden nicht versuchen, den
       Inhalt von Ressourcen-Dateien zu lesen, so dass Sie restriktivere Berechtigungen (600 oder 660) dafür benutzen können.
       Betrachten Sie die Beispiel-<span class="emphasis"><em>resource.cfg</em></span>-Datei im Basisverzeichnis der Icinga-Distribution für
@@ -149,7 +149,7 @@
       <p><span class="inlinemediaobject"><img src="../images/security2.png"></span></p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id1556003"></a>
+  <a class="indexterm" name="idp13796320"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -164,7 +164,7 @@
 <tr>
 <td width="40%" align="left" valign="top">Kapitel 8. Sicherheit und Leistungsoptimierung </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Verbesserte CGI-Sicherheit und Authentifizierung</td>
+<td width="40%" align="right" valign="top"> 8.2. Verbesserte CGI-Sicherheit und Authentifizierung</td>
 </tr>
 </table>
 </div>

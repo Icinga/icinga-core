@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Active Checks</title>
+<title>5.6. Active Checks</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch05.html" title="Chapter 5. The Basics">
-<link rel="prev" href="servicechecks.html" title="Service Checks">
-<link rel="next" href="passivechecks.html" title="Passive Checks">
+<link rel="prev" href="servicechecks.html" title="5.5. Service Checks">
+<link rel="next" href="passivechecks.html" title="5.7. Passive Checks">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Active Checks</th></tr>
+<tr><th colspan="3" align="center">5.6. Active Checks</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="servicechecks.html">Prev</a> </td>
@@ -25,15 +25,15 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Active Checks">
+<div class="section" title="5.6. Active Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="activechecks"></a><a name="active_checks"></a>Active Checks</h2></div></div></div>
+<a name="activechecks"></a>5.6. <a name="active_checks"></a>Active Checks</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
 
   <p>Icinga is capable of monitoring hosts and services in two ways: actively and passively. Passive checks are
-  described <a class="link" href="passivechecks.html" title="Passive Checks">elsewhere</a>, so we'll focus on active checks here. Active checks are the most
+  described <a class="link" href="passivechecks.html" title="5.7. Passive Checks">elsewhere</a>, so we'll focus on active checks here. Active checks are the most
   common method for monitoring hosts and services. The main features of actives checks as as follows:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -55,7 +55,7 @@
   the results of the host or service check and take appropriate action as necessary (e.g. send notifications, run event handlers,
   etc).</p>
 
-  <p>More information on how plugins work can be found <a class="link" href="plugins.html" title="Icinga Plugins">here</a>.</p>
+  <p>More information on how plugins work can be found <a class="link" href="plugins.html" title="5.1. Icinga Plugins">here</a>.</p>
 
   <p><span class="bold"><strong>When Are Active Checks Executed?</strong></span></p>
 
@@ -72,17 +72,17 @@
 </ul></div>
 
   <p>Regularly scheduled checks occur at intervals equaling either the <span class="emphasis"><em>check_interval</em></span> or the
-  <span class="emphasis"><em>retry_interval</em></span> in your host or service definitions, depending on what <a class="link" href="statetypes.html" title="State Types">type of
+  <span class="emphasis"><em>retry_interval</em></span> in your host or service definitions, depending on what <a class="link" href="statetypes.html" title="5.8. State Types">type of
   state</a> the host or service is in. If a host or service is in a HARD state, it will be actively checked at intervals equal
   to the <span class="emphasis"><em>check_interval</em></span> option. If it is in a SOFT state, it will be checked at intervals equal to the
   <span class="emphasis"><em>retry_interval</em></span> option.</p>
 
   <p>On-demand checks are performed whenever Icinga sees a need to obtain the latest status information about a
-  particular host or service. For example, when Icinga is determining the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">reachability</a> of a host, it will often perform on-demand checks of parent and child hosts to
-  accurately determine the status of a particular network segment. On-demand checks also occur in the <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">predictive dependency check</a> logic in order to ensure Icinga has the most accurate
+  particular host or service. For example, when Icinga is determining the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">reachability</a> of a host, it will often perform on-demand checks of parent and child hosts to
+  accurately determine the status of a particular network segment. On-demand checks also occur in the <a class="link" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">predictive dependency check</a> logic in order to ensure Icinga has the most accurate
   status information.</p>
-  <a class="indexterm" name="id1433607"></a>
-  <a class="indexterm" name="id1433617"></a>
+  <a class="indexterm" name="idp9483504"></a>
+  <a class="indexterm" name="idp9484608"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -95,9 +95,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Service Checks </td>
+<td width="40%" align="left" valign="top">5.5. Service Checks </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Passive Checks</td>
+<td width="40%" align="right" valign="top"> 5.7. Passive Checks</td>
 </tr>
 </table>
 </div>

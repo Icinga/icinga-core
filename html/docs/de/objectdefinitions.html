@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Objektdefinitionen</title>
+<title>3.4. Objektdefinitionen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
-<link rel="prev" href="configobject.html" title="Überblick Objektkonfiguration">
-<link rel="next" href="customobjectvars.html" title="Maßgeschneiderte Objektvariablen">
+<link rel="prev" href="configobject.html" title="3.3. Überblick Objektkonfiguration">
+<link rel="next" href="customobjectvars.html" title="3.5. Maßgeschneiderte Objektvariablen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Objektdefinitionen</th></tr>
+<tr><th colspan="3" align="center">3.4. Objektdefinitionen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="configobject.html">Zurück</a> </td>
@@ -25,18 +25,18 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Objektdefinitionen">
+<div class="section" title="3.4. Objektdefinitionen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="objectdefinitions"></a>Objektdefinitionen</h2></div></div></div>
+<a name="objectdefinitions"></a>3.4. Objektdefinitionen</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
 
   <p>Eine der Möglichkeiten des Objektkonfigurationsformats von Icinga besteht darin, dass Sie Objektkonfigurationsdefinitionen
   erstellen können, die Eigenschaften von anderen Objektdefinitionen erben. Eine Erklärung, wie Objektvererbung funktioniert, finden Sie
-  <a class="link" href="objectinheritance.html" title="Objektvererbung">hier</a>. Wir empfehlen Ihnen dringend, dass Sie sich mit Objektvererbung beschäftigen, nachdem Sie
+  <a class="link" href="objectinheritance.html" title="7.25. Objektvererbung">hier</a>. Wir empfehlen Ihnen dringend, dass Sie sich mit Objektvererbung beschäftigen, nachdem Sie
   die folgende Dokumentation überflogen haben, weil sie Ihnen die Arbeit bei der Erstellung und Wartung der Objektdefinitionen viel
-  einfacher macht. Lesen Sie außerdem die <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a>, die Ihnen Abkürzungsmöglichkeiten für
+  einfacher macht. Lesen Sie außerdem die <a class="link" href="objecttricks.html" title="7.26. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a>, die Ihnen Abkürzungsmöglichkeiten für
   andernfalls langwierige Konfigurationsaufgaben bieten.</p>
 
   <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Wenn Sie Konfigurationsdateien anlegen und/oder editieren, dann behalten Sie das Folgende im Hinterkopf:</p>
@@ -83,7 +83,7 @@
   <p><span class="bold"><strong>Beispielkonfigurationsdatei</strong></span></p>
 
   <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Beispielobjektkonfigurationsdateien werden im <span class="emphasis"><em>/usr/local/icinga/etc/</em></span>-Verzeichnis
-  installiert, wenn Sie der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> gefolgt sind.</p>
+  installiert, wenn Sie der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> gefolgt sind.</p>
 
   <p><span class="bold"><strong>Objekttypen</strong></span></p>
 
@@ -115,13 +115,13 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-serviceextinfo">erweiterte Service-Informationsdefinitionen</a></p>
 
-  <a class="indexterm" name="id1472194"></a>
+  <a class="indexterm" name="idp3734048"></a>
 
-  <a class="indexterm" name="id1472204"></a>
+  <a class="indexterm" name="idp3735248"></a>
 
-  <div class="section" title="Host-Definition">
+  <div class="section" title="3.4.1. Host-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1472218"></a><a name="objectdefinitions-host"></a>Host-Definition</h3></div></div></div>
+<a name="idp3736912"></a>3.4.1. <a name="objectdefinitions-host"></a>Host-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -415,14 +415,14 @@
 <td align="left" valign="top"><p><span class="bold"><strong>alias</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um einen längeren Namen oder eine Beschreibung zu definieren, der/die den Host
             identifiziert. Er/sie wird angeboten, damit Sie den Host einfacher identifizieren können. Bei korrekter Anwendung wird das
-            $HOSTALIAS$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a> diesen Alias/diese Beschreibung enthalten.</p></td>
+            $HOSTALIAS$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a> diesen Alias/diese Beschreibung enthalten.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>address</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um die Adresse des Hosts zu definieren. Normalerweise ist dies die IP-Adresse des
             Hosts, obwohl es eigentlich alles sein kann, was Sie wollen (solange es genutzt werden kann, um den Status des Hosts zu prüfen).
             Sie können einen vollqualifizierten Domänennamen (FQDN) statt einer IP-Adresse benutzen, um den Host zu identifizieren, aber
-            wenn keine DNS-Dienste verfügbar sind, kann dies zu Problemen führen. Bei korrekter Anwendung wird das $HOSTADDRESS$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a> diese Adresse enthalten. <span class="bold"><strong>Anmerkung:</strong></span> Wenn Sie keine
+            wenn keine DNS-Dienste verfügbar sind, kann dies zu Problemen führen. Bei korrekter Anwendung wird das $HOSTADDRESS$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a> diese Adresse enthalten. <span class="bold"><strong>Anmerkung:</strong></span> Wenn Sie keine
             Adress-Direktive in einer Host-Definition benutzen, wird der Name des Hosts statt der Adresse benutzt. <span class="color"><font color="red">Trotzdem ein Wort der Warnung: wenn DNS ausfällt, werden die meisten Ihrer Service-Prüfungen fehlschlagen, weil die
             Plugins nicht in der Lage sind, den Host-Namen aufzulösen.</font></span></p></td>
 </tr>
@@ -432,7 +432,7 @@
             IPv6-Adresse des Hosts, obwohl es eigentlich alles sein kann, was Sie wollen (solange es genutzt werden kann, um den Status des
             Hosts zu prüfen). Sie können einen vollqualifizierten Domänennamen (FQDN) statt einer IP-Adresse benutzen, um den Host zu
             identifizieren, aber wenn keine DNS-Dienste verfügbar sind, kann dies zu Problemen führen. Bei korrekter Anwendung wird das
-            $HOSTADDRESS6$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a> diese Adresse enthalten. <span class="bold"><strong>Anmerkung:</strong></span> Wenn Sie
+            $HOSTADDRESS6$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a> diese Adresse enthalten. <span class="bold"><strong>Anmerkung:</strong></span> Wenn Sie
             keine Adress6-Direktive in einer Host-Definition benutzen, wird der Name des Hosts statt der Adresse benutzt. Trotzdem ein Wort
             der Warnung: wenn DNS ausfällt, werden die meisten Ihrer Service-Prüfungen fehlschlagen, weil die Plugins nicht in der Lage
             sind, den Host-Namen aufzulösen (verfügbar ab Icinga 1.3).</p></td>
@@ -448,7 +448,7 @@
 <td><p>Diese Direktive wird benutzt, um eine Komma-separierte Liste von Kurznamen der "Eltern"-Hosts dieses bestimmten
             Hosts zu definieren. Eltern-Hosts sind typischerweise Router, Switches, Firewalls usw. Ein Router, Switch usw., der am nächsten
             zum entfernten Host ist, wird als "Eltern" dieses Hosts angesehen. Lesen Sie weitere Informationen im Dokument "Festlegen des
-            Zustands und der Erreichbarkeit von Netzwerk-Hosts", das Sie <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">hier</a> finden. Wenn dieser
+            Zustands und der Erreichbarkeit von Netzwerk-Hosts", das Sie <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">hier</a> finden. Wenn dieser
             Host im gleichen Netzwerksegment wie der überwachende Host ist (ohne dazwischen liegende Router usw.), wird der Host als im
             lokalen Netzwerk befindlich angesehen und hat deshalb keinen Eltern-Host. Lassen Sie diesen Wert leer, wenn der Host keinen
             Eltern-Host hat (d.h. wenn er im gleichen Segment wie der Icinga-Host ist). Die Reihenfolge, in der Sie Eltern-Hosts
@@ -487,7 +487,7 @@
 <td align="left" valign="top"><p><span class="bold"><strong>check_interval</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um die Anzahl von "Zeiteinheiten" zwischen regelmäßig geplanten Prüfungen zu
             definieren. Solange Sie die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive mit einem Default-Wert
-            von 60 nicht verändert haben, wird diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der <a class="link" href="checkscheduling.html" title="Service- und Host-Prüfungsplanung">check scheduling</a>-Dokumentation.</p></td>
+            von 60 nicht verändert haben, wird diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der <a class="link" href="checkscheduling.html" title="7.22. Service- und Host-Prüfungsplanung">check scheduling</a>-Dokumentation.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retry_interval</strong></span>:</p></td>
@@ -495,7 +495,7 @@
             gewartet werden sollen. Erneute Überprüfungen für den Host werden mit dem Wiederholungsintervall eingeplant, wenn dieser in
             einen nicht-UP-Zustand gewechselt ist. Sobald der Host <span class="bold"><strong>max_check_attempts</strong></span>-Mal ohne eine
             Zustandsänderung geprüft wurde, wird die Planung zum "normalen" Wert zurückkehren, der durch den <span class="bold"><strong>check_interval</strong></span>-Wert angegeben wird. Solange Sie die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive mit einem Default-Wert von 60 nicht verändert haben, wird
-            diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der <a class="link" href="checkscheduling.html" title="Service- und Host-Prüfungsplanung">check
+            diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der <a class="link" href="checkscheduling.html" title="7.22. Service- und Host-Prüfungsplanung">check
             scheduling</a>-Dokumentation.</p></td>
 </tr>
 <tr>
@@ -519,7 +519,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_freshness *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob <a class="link" href="freshness.html" title="Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> (freshness
+<td><p>Diese Direktive wird benutzt, um festzulegen, ob <a class="link" href="freshness.html" title="7.4. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> (freshness
             checks) für diesen Host aktiviert sind oder nicht. Werte: 0 = Frische-Prüfungen deaktivieren, 1 = Frische-Prüfungen
             aktivieren.</p></td>
 </tr>
@@ -532,7 +532,7 @@
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>event_handler</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den <span class="emphasis"><em>Kurznamen</em></span> des <a class="link" href="objectdefinitions.html#objectdefinitions-command">Befehls</a> anzugeben, der jedes Mal ausgeführt werden soll, sobald ein Statuswechsel für
-            den Host erkannt wird (d.h. er "down" geht oder sich wieder erholt). Lesen Sie die Dokumentation zu <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandlern</a> für eine detailliertere Erklärung, wie Scripte zur Behandlung von Ereignissen
+            den Host erkannt wird (d.h. er "down" geht oder sich wieder erholt). Lesen Sie die Dokumentation zu <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandlern</a> für eine detailliertere Erklärung, wie Scripte zur Behandlung von Ereignissen
             geschrieben werden. Die maximale Zeit, die ein Eventhandler-Befehl dauern darf, wird durch die <a class="link" href="configmain.html#configmain-event_handler_timeout">event_handler_timeout</a>-Option kontrolliert.</p></td>
 </tr>
 <tr>
@@ -543,23 +543,23 @@
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>low_flap_threshold</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den unteren Zustandsänderungsschwellwert zu definieren, der in der
-            Flattererkennung für diesen Host benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-low_host_flap_threshold">low_host_flap_threshold</a>-Direktive benutzt.</p></td>
+            Flattererkennung für diesen Host benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-low_host_flap_threshold">low_host_flap_threshold</a>-Direktive benutzt.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>high_flap_threshold</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den oberen Zustandsänderungsschwellwert zu definieren, der in der Flattererkennung
-            für diesen Host benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie
+            für diesen Host benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie
             diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-high_host_flap_threshold">high_host_flap_threshold</a>-Direktive benutzt.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_enabled *</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob Flattererkennung für diesen Host aktiviert ist. Mehr Informationen
-            zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">hier</a>. Werte: 0 = Host-Flattererkennung deaktivieren, 1 =
+            zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">hier</a>. Werte: 0 = Host-Flattererkennung deaktivieren, 1 =
             Host-Flattererkennung aktivieren.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_options</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, welche Host-Zustände die <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattererkennungslogik</a> für diesen Host benutzen wird. Gültige Optionen sind Kombinationen von einem
+<td><p>Diese Direktive wird benutzt, um festzulegen, welche Host-Zustände die <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">Flattererkennungslogik</a> für diesen Host benutzen wird. Gültige Optionen sind Kombinationen von einem
             oder mehreren folgender Werte: <span class="bold"><strong>o</strong></span> = UP-Zustände, <span class="bold"><strong>d</strong></span> =
             DOWN-Zustände, <span class="bold"><strong>u</strong></span> = UNREACHABLE-Zustände.</p></td>
 </tr>
@@ -628,8 +628,8 @@
 <td><p>Diese Direktive wird benutzt, um festzulegen, wann Benachrichtigungen für diesen Host versandt werden. Gültige
             Optionen sind eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>d</strong></span> = Benachrichtigungen
             bei einem DOWN-Zustand versenden, <span class="bold"><strong>u</strong></span> = Benachrichtigungen bei einem UNREACHABLE-Zustand
-            versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei Erholungen (OK-Zustand) versenden, <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Host mit <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt bzw.
-            aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante
+            versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei Erholungen (OK-Zustand) versenden, <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Host mit <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt bzw.
+            aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="7.15. Geplante Ausfallzeiten">geplante
             Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn Sie <span class="bold"><strong>n</strong></span>
             (none) als Option angeben, werden keine Host-Benachrichtigungen versandt.</font></span> Wenn Sie keine Benachrichtigungsoptionen
             angeben, geht Icinga davon aus, dass Sie Benachrichtigungen zu allen möglichen Zuständen haben möchten. Beispiel: wenn
@@ -646,7 +646,7 @@
 <td><p>Diese Direktive legt fest, für welche Host-Zustände "Verfolgung" (stalking) aktiviert ist. Gültige Optionen sind
             eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>o</strong></span> = verfolgen von UP-Zuständen,
             <span class="bold"><strong>d</strong></span> = verfolgen von DOWN-Zuständen und <span class="bold"><strong>u</strong></span> = verfolgen von
-            UNREACHABLE-Zuständen. Mehr Informationen zur Statusverfolgung finden Sie <a class="link" href="stalking.html" title="Status Stalking">hier</a>.</p></td>
+            UNREACHABLE-Zuständen. Mehr Informationen zur Statusverfolgung finden Sie <a class="link" href="stalking.html" title="7.13. Status Stalking">hier</a>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notes</strong></span>:</p></td>
@@ -734,19 +734,19 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1473157"></a>
+    <a class="indexterm" name="idp3849088"></a>
 
-    <a class="indexterm" name="id1474805"></a>
+    <a class="indexterm" name="idp4047776"></a>
   </div>
 
-  <div class="section" title="Hostgruppen-Definition">
+  <div class="section" title="3.4.2. Hostgruppen-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1472220"></a><a name="objectdefinitions-hostgroup"></a>Hostgruppen-Definition</h3></div></div></div>
+<a name="idp3737168"></a>3.4.2. <a name="objectdefinitions-hostgroup"></a>Hostgruppen-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
-    <p>Eine Hostgruppen-Definition wird benutzt, um einen oder mehrere Hosts zu gruppieren, um die Konfiguration mit <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen oder für Anzeigezwecke in den <a class="link" href="cgis.html" title="Icinga Classic UI: Informationen über die CGIs">CGIs</a>.</p>
+    <p>Eine Hostgruppen-Definition wird benutzt, um einen oder mehrere Hosts zu gruppieren, um die Konfiguration mit <a class="link" href="objecttricks.html" title="7.26. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen oder für Anzeigezwecke in den <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die CGIs">CGIs</a>.</p>
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
@@ -869,14 +869,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1475320"></a>
+    <a class="indexterm" name="idp4110048"></a>
 
-    <a class="indexterm" name="id1475329"></a>
+    <a class="indexterm" name="idp4111056"></a>
   </div>
 
-  <div class="section" title="Service-Definition">
+  <div class="section" title="3.4.3. Service-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1474817"></a><a name="objectdefinitions-service"></a>Service-Definition</h3></div></div></div>
+<a name="idp4049600"></a>3.4.3. <a name="objectdefinitions-service"></a>Service-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -1177,7 +1177,7 @@
 <td align="left" valign="top"><p><span class="bold"><strong>is_volatile</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um zu kennzeichnen, dass der Service "sprunghaft" (volatile) ist. Services sind
             normalerweise <span class="emphasis"><em>nicht</em></span> sprunghaft. Mehr Informationen zu sprunghaften Services und wie sie sich von normalen
-            Services unterscheiden, finden Sie <a class="link" href="volatileservices.html" title="sprunghafte Services">hier</a>. Werte: 0 = Service ist nicht sprunghaft, 1 =
+            Services unterscheiden, finden Sie <a class="link" href="volatileservices.html" title="7.3. sprunghafte Services">hier</a>. Werte: 0 = Service ist nicht sprunghaft, 1 =
             Service ist sprunghaft, 2 = Service ist sprunghaft, respektiert aber die Einstellung der Direktive notification_interval bei
             erneuten Benachrichtigungen (Option "2" gibt es seit Icinga 1.0.2).</p></td>
 </tr>
@@ -1206,7 +1206,7 @@
             der Service in einem nicht-OK-Zustand befindet, aber mehr als <span class="bold"><strong>max_check_attemps</strong></span>-mal erneut
             geprüft wurde. Solange Sie die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive mit einem
             Default-Wert von 60 nicht verändert haben, wird diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der
-            <a class="link" href="checkscheduling.html" title="Service- und Host-Prüfungsplanung">check scheduling</a>-Dokumentation.</p></td>
+            <a class="link" href="checkscheduling.html" title="7.22. Service- und Host-Prüfungsplanung">check scheduling</a>-Dokumentation.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>retry_interval</strong></span>:</p></td>
@@ -1214,7 +1214,7 @@
             des Service gewartet werden sollen. Erneute Überprüfungen für Services werden mit dem Wiederholungsintervall eingeplant, wenn
             diese in einen nicht-OK-Zustand gewechselt sind. Sobald der Service <span class="bold"><strong>max_check_attempts</strong></span>-Mal ohne
             eine Zustandsänderung geprüft wurde, wird die Planung zum "normalen" Wert zurückkehren, der durch den <span class="bold"><strong>check_interval</strong></span>-Wert angegeben wird. Solange Sie die <a class="link" href="configmain.html#configmain-interval_length">interval_length</a>-Direktive mit einem Default-Wert von 60 nicht verändert haben, wird
-            diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der <a class="link" href="checkscheduling.html" title="Service- und Host-Prüfungsplanung">check
+            diese Zahl Minuten bedeuten. Mehr Informationen zu diesem Wert finden Sie in der <a class="link" href="checkscheduling.html" title="7.22. Service- und Host-Prüfungsplanung">check
             scheduling</a>-Dokumentation.</p></td>
 </tr>
 <tr>
@@ -1239,7 +1239,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>check_freshness *</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob <a class="link" href="freshness.html" title="Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> (freshness
+<td><p>Diese Direktive wird benutzt, um festzulegen, ob <a class="link" href="freshness.html" title="7.4. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> (freshness
             checks) für diesen Service aktiviert sind oder nicht. Werte: 0 = Frische-Prüfungen deaktivieren, 1 = Frische-Prüfungen
             aktivieren.</p></td>
 </tr>
@@ -1252,7 +1252,7 @@
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>event_handler</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den <span class="emphasis"><em>Kurznamen</em></span> des <a class="link" href="objectdefinitions.html#objectdefinitions-command">Befehls</a> anzugeben, der jedes Mal ausgeführt werden soll, sobald ein Statuswechsel für
-            den Service erkannt wird (d.h. er in einen nicht-OK-Zustand geht oder sich wieder erholt). Lesen Sie die Dokumentation zu <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandlern</a> für eine detailliertere Erklärung, wie Scripte zur Behandlung von Ereignissen
+            den Service erkannt wird (d.h. er in einen nicht-OK-Zustand geht oder sich wieder erholt). Lesen Sie die Dokumentation zu <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandlern</a> für eine detailliertere Erklärung, wie Scripte zur Behandlung von Ereignissen
             geschrieben werden. Die maximale Zeit, die ein Eventhandler-Befehl dauern darf, wird durch die <a class="link" href="configmain.html#configmain-event_handler_timeout">event_handler_timeout</a>-Option kontrolliert.</p></td>
 </tr>
 <tr>
@@ -1263,23 +1263,23 @@
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>low_flap_threshold</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den unteren Zustandsänderungsschwellwert zu definieren, der in der
-            Flattererkennung für diesen Service benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-low_service_flap_threshold">low_service_flap_threshold</a>-Direktive benutzt.</p></td>
+            Flattererkennung für diesen Service benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-low_service_flap_threshold">low_service_flap_threshold</a>-Direktive benutzt.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>high_flap_threshold</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den oberen Zustandsänderungsschwellwert zu definieren, der in der Flattererkennung
-            für diesen Service benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn
+            für diesen Service benutzt wird. Mehr Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">hier</a>. Wenn
             Sie diese Direktive auf 0 setzen, wird der programmweite Wert aus der <a class="link" href="configmain.html#configmain-high_service_flap_threshold">high_service_flap_threshold</a>-Direktive benutzt.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_enabled *</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um festzulegen, ob Flattererkennung für diesen Service aktiviert ist. Mehr
-            Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">hier</a>. Werte: 0 = Service-Flattererkennung
+            Informationen zur Flattererkennung finden Sie <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">hier</a>. Werte: 0 = Service-Flattererkennung
             deaktivieren, 1 = Service-Flattererkennung aktivieren.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>flap_detection_options</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, welche Service-Zustände die <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattererkennungslogik</a> für diesen Service benutzen wird. Gültige Optionen sind Kombinationen von einem
+<td><p>Diese Direktive wird benutzt, um festzulegen, welche Service-Zustände die <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">Flattererkennungslogik</a> für diesen Service benutzen wird. Gültige Optionen sind Kombinationen von einem
             oder mehreren folgender Werte: <span class="bold"><strong>o</strong></span> = OK-Zustände, <span class="bold"><strong>w</strong></span> =
             WARNING-Zustände, <span class="bold"><strong>c</strong></span> = CRITICAL-Zustände, <span class="bold"><strong>u</strong></span> =
             UNKNOWN-Zustände.</p></td>
@@ -1334,8 +1334,8 @@
 <td><p>Diese Direktive wird benutzt, um festzulegen, wann Benachrichtigungen für diesen Service versandt werden. Gültige
             Optionen sind eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>w</strong></span> = Benachrichtigungen
             bei einem WARNING-Zustand versenden, <span class="bold"><strong>u</strong></span> = Benachrichtigungen bei einem UNKNOWN-Zustand
-            versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei Erholungen (OK-Zustand) versenden, <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Service mit <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt
-            bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante
+            versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei Erholungen (OK-Zustand) versenden, <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Service mit <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt
+            bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="7.15. Geplante Ausfallzeiten">geplante
             Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn Sie <span class="bold"><strong>n</strong></span>
             (none) als Option angeben, werden keine Service-Benachrichtigungen versandt.</font></span> Wenn Sie keine Benachrichtigungsoptionen
             angeben, geht Icinga davon aus, dass Sie Benachrichtigungen zu allen möglichen Zuständen haben möchten. Beispiel: wenn
@@ -1368,7 +1368,7 @@
             eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>o</strong></span> = verfolgen von OK-Zuständen,
             <span class="bold"><strong>w</strong></span> = verfolgen von WARNING-Zuständen, <span class="bold"><strong>c</strong></span> = verfolgen von
             CRITICAL-Zuständen und <span class="bold"><strong>u</strong></span> = verfolgen von UNKNOWN-Zuständen. Mehr Informationen zur
-            Statusverfolgung finden Sie <a class="link" href="stalking.html" title="Status Stalking">hier</a>.</p></td>
+            Statusverfolgung finden Sie <a class="link" href="stalking.html" title="7.13. Status Stalking">hier</a>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>notes</strong></span>:</p></td>
@@ -1427,19 +1427,19 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1476234"></a>
+    <a class="indexterm" name="idp4219504"></a>
 
-    <a class="indexterm" name="id1477705"></a>
+    <a class="indexterm" name="idp4396272"></a>
   </div>
 
-  <div class="section" title="Servicegruppen-Definition">
+  <div class="section" title="3.4.4. Servicegruppen-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1475342"></a><a name="objectdefinitions-servicegroup"></a>Servicegruppen-Definition</h3></div></div></div>
+<a name="idp4112576"></a>3.4.4. <a name="objectdefinitions-servicegroup"></a>Servicegruppen-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
-    <p>Eine Servicegruppen-Definition wird benutzt, um einen oder mehrere Services zu gruppieren, um die Konfiguration mit <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen oder für Anzeigezwecke in den <a class="link" href="cgis.html" title="Icinga Classic UI: Informationen über die CGIs">CGIs</a>.</p>
+    <p>Eine Servicegruppen-Definition wird benutzt, um einen oder mehrere Services zu gruppieren, um die Konfiguration mit <a class="link" href="objecttricks.html" title="7.26. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen oder für Anzeigezwecke in den <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die CGIs">CGIs</a>.</p>
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
@@ -1568,14 +1568,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1478244"></a>
+    <a class="indexterm" name="idp4460816"></a>
 
-    <a class="indexterm" name="id1478252"></a>
+    <a class="indexterm" name="idp4461824"></a>
   </div>
 
-  <div class="section" title="Kontakt-Definition">
+  <div class="section" title="3.4.5. Kontakt-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1477720"></a><a name="objectdefinitions-contact"></a>Kontakt-Definition</h3></div></div></div>
+<a name="idp4397712"></a>3.4.5. <a name="objectdefinitions-contact"></a>Kontakt-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -1721,12 +1721,12 @@
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>contact_name</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um einen Kurznamen zu definieren, der den Kontakt identifiziert. Er wird in <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">Kontaktgruppen</a>-Definitionen benutzt. Bei korrekter Anwendung wird das
-            $CONTACTNAME$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a> diesen Wert enthalten.</p></td>
+            $CONTACTNAME$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a> diesen Wert enthalten.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>alias</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um einen längeren Namen oder eine Beschreibung zu definieren, der/die den Kontakt
-            identifiziert. Bei korrekter Anwendung wird das $CONTACTALIAS$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a> diesen Alias/diese
+            identifiziert. Bei korrekter Anwendung wird das $CONTACTALIAS$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a> diesen Alias/diese
             Beschreibung enthalten. Falls nicht angegeben, wird der <span class="emphasis"><em>contact_name</em></span> als Alias verwendet.</p></td>
 </tr>
 <tr>
@@ -1750,14 +1750,14 @@
 <td align="left" valign="top"><p><span class="bold"><strong>host_notification_period</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den Kurznamen des <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">Zeitfensters</a>
             anzugeben, in dem der Kontakt über Host-Probleme oder Erholungen informiert wird. Sie können dies als "Bereitschafts"-Zeiten
-            dieses Kontakts für Host-Benachrichtigungen ansehen. Lesen Sie die Dokumentation zu <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitfenstern</a>, um mehr Informationen darüber zu erhalten, wie diese funktionieren und welche
+            dieses Kontakts für Host-Benachrichtigungen ansehen. Lesen Sie die Dokumentation zu <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitfenstern</a>, um mehr Informationen darüber zu erhalten, wie diese funktionieren und welche
             potenziellen Probleme durch unsachgemäßen Gebrauch entstehen können.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notification_period</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um den Kurznamen des <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">Zeitfensters</a>
             anzugeben, in dem der Kontakt über Service-Probleme oder Erholungen informiert wird. Sie können dies als "Bereitschafts"-Zeiten
-            dieses Kontakts für Service-Benachrichtigungen ansehen. Lesen Sie die Dokumentation zu <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitfenstern</a>, um mehr Informationen darüber zu erhalten, wie diese funktionieren und welche
+            dieses Kontakts für Service-Benachrichtigungen ansehen. Lesen Sie die Dokumentation zu <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitfenstern</a>, um mehr Informationen darüber zu erhalten, wie diese funktionieren und welche
             potenziellen Probleme durch unsachgemäßen Gebrauch entstehen können.</p></td>
 </tr>
 <tr>
@@ -1772,8 +1772,8 @@
 <td><p>Diese Direktive wird benutzt, um die Host-Zustände festzulegen, bei denen Benachrichtigungen an den Kontakt
             versandt werden. Gültige Optionen sind eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>d</strong></span> = Benachrichtigungen bei einem DOWN-Zustand versenden, <span class="bold"><strong>u</strong></span> =
             Benachrichtigungen bei einem UNREACHABLE-Zustand versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei
-            Erholungen (UP-Zustand) versenden, <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Host mit <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden,
-            wenn eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn
+            Erholungen (UP-Zustand) versenden, <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Host mit <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">Flattern</a> anfängt bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden,
+            wenn eine <a class="link" href="downtime.html" title="7.15. Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn
             Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine Host-Benachrichtigungen
             versandt.</font></span></p></td>
 </tr>
@@ -1783,8 +1783,8 @@
             versandt werden. Gültige Optionen sind eine Kombination von einem oder mehreren folgender Werte: <span class="bold"><strong>w</strong></span> = Benachrichtigungen bei einem WARNING-Zustand versenden,<span class="bold"><strong> c</strong></span> =
             Benachrichtigungen bei einem CRITICAL-Zustand versenden, <span class="bold"><strong>u</strong></span> = Benachrichtigungen bei einem
             UNKNOWN-Zustand versenden, <span class="bold"><strong>r</strong></span> = Benachrichtigungen bei Erholungen (OK-Zustand) versenden,
-            <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Service mit <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">Flattern</a>
-            anfängt bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine Service-Benachrichtigungen versandt.</font></span></p></td>
+            <span class="bold"><strong>f</strong></span> = Benachrichtigungen versenden, wenn der Service mit <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">Flattern</a>
+            anfängt bzw. aufhört und <span class="bold"><strong>s</strong></span> = Benachrichtigungen versenden, wenn eine <a class="link" href="downtime.html" title="7.15. Geplante Ausfallzeiten">geplante Ausfallzeit</a> anfängt oder aufhört. <span class="color"><font color="red">Wenn Sie <span class="bold"><strong>n</strong></span> (none) als Option angeben, werden keine Service-Benachrichtigungen versandt.</font></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>service_notification_commands</strong></span>:</p></td>
@@ -1797,13 +1797,13 @@
 <td align="left" valign="top"><p><span class="bold"><strong>email</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um ein e-Mail-Adresse für den Kontakt zu definieren. Abhängig von Ihren
             Benachrichtigungsbefehlen kann sie benutzt werden, um eine Alarm-Mail an den Kontakt zu versenden. Bei korrekter Anwendung wird
-            das $CONTACTEMAIL$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a> diesen Wert enthalten.</p></td>
+            das $CONTACTEMAIL$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a> diesen Wert enthalten.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>pager</strong></span>:</p></td>
 <td><p>Diese Direktive wird benutzt, um eine Pager-Nummer für den Kontakt zu definieren. Sie kann auch eine e-Mail-Adresse
             eines Pager-Gateways (z.B. pagejoe@pagenet.com) sein. Abhängig von Ihren Benachrichtigungsbefehlen kann sie benutzt werden, um
-            eine Alarm-Page an den Kontakt zu versenden. Bei korrekter Anwendung wird das $CONTACTPAGER$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a>
+            eine Alarm-Page an den Kontakt zu versenden. Bei korrekter Anwendung wird das $CONTACTPAGER$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a>
             diesen Wert enthalten.</p></td>
 </tr>
 <tr>
@@ -1811,11 +1811,11 @@
 <td><p>Adress-Direktiven werden benutzt, um zusätzliche "Adressen" für den Kontakt zu definieren. Diese Adressen können
             alles sein - Mobiltelefonnummern, Instant-Messaging-Adressen usw. Abhängig von Ihren Benachrichtigungsbefehlen kann sie benutzt
             werden, um einen Alarm an den Kontakt zu versenden. Bis zu sechs Adressen können mit Hilfe dieser Direktiven definiert werden
-            (<span class="emphasis"><em>address1</em></span> bis <span class="emphasis"><em>address6</em></span>). Das $CONTACTADDRESS<span class="emphasis"><em>x</em></span>$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a> wird diesen Wert enthalten.</p></td>
+            (<span class="emphasis"><em>address1</em></span> bis <span class="emphasis"><em>address6</em></span>). Das $CONTACTADDRESS<span class="emphasis"><em>x</em></span>$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a> wird diesen Wert enthalten.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>can_submit_commands</strong></span>:</p></td>
-<td><p>Diese Direktive wird benutzt, um festzulegen, ob dieser Kontakt über die CGIs <a class="link" href="extcommands.html" title="Externe Befehle">externe
+<td><p>Diese Direktive wird benutzt, um festzulegen, ob dieser Kontakt über die CGIs <a class="link" href="extcommands.html" title="7.1. Externe Befehle">externe
             Befehle</a> an Icinga erteilen kann. Werte: 0 = dem Kontakt die Erteilung von Befehlen verweigern, 1 = dem Kontakt die
             Erteilung von Befehlen erlauben.</p></td>
 </tr>
@@ -1835,20 +1835,20 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1479455"></a>
+    <a class="indexterm" name="idp4606144"></a>
 
-    <a class="indexterm" name="id1479444"></a>
+    <a class="indexterm" name="idp4604880"></a>
   </div>
 
-  <div class="section" title="Kontaktgruppen-Definition">
+  <div class="section" title="3.4.6. Kontaktgruppen-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1478265"></a><a name="objectdefinitions-contactgroup"></a>Kontaktgruppen-Definition</h3></div></div></div>
+<a name="idp4463344"></a>3.4.6. <a name="objectdefinitions-contactgroup"></a>Kontaktgruppen-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
     <p>Eine Kontaktgruppen-Definition wird benutzt, um einen oder mehrere <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakte</a> zu
-    gruppieren, um Alarm-/Erholungs-<a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungen</a> zu versenden.</p>
+    gruppieren, um Alarm-/Erholungs-<a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a> zu versenden.</p>
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
@@ -1934,14 +1934,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1479842"></a>
+    <a class="indexterm" name="idp4652656"></a>
 
-    <a class="indexterm" name="id1479851"></a>
+    <a class="indexterm" name="idp4653664"></a>
   </div>
 
-  <div class="section" title="Zeitfenster-Definition (timeperiod)">
+  <div class="section" title="3.4.7. Zeitfenster-Definition (timeperiod)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1479475"></a><a name="objectdefinitions-timeperiod"></a>Zeitfenster-Definition (timeperiod)</h3></div></div></div>
+<a name="idp4608576"></a>3.4.7. <a name="objectdefinitions-timeperiod"></a>Zeitfenster-Definition (timeperiod)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2078,7 +2078,7 @@
             Funktionalitäten wie "alle drei Tage zwischen diesen Daten" zu erreichen. Statt alle möglichen von Ausnahmen anzugeben, zeigen
             wir Ihnen anhand der o.g. Beispieldefinitionen, was möglich ist. :-) Wochentage und verschiedene Arten von Ausnahmen haben alle
             verschiedene Vorrangebenen, so dass es wichtig ist zu verstehen, wie sie sich gegenseitig beeinflussen. Mehr Informationen dazu
-            finden Sie in der Dokumentation zu <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitfenstern</a>.</p></td>
+            finden Sie in der Dokumentation zu <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitfenstern</a>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>exclude</strong></span>:</p></td>
@@ -2089,22 +2089,22 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1480295"></a>
+    <a class="indexterm" name="idp4706448"></a>
 
-    <a class="indexterm" name="id1480304"></a>
+    <a class="indexterm" name="idp4707456"></a>
   </div>
 
-  <div class="section" title="Befehls-Definition (command)">
+  <div class="section" title="3.4.8. Befehls-Definition (command)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1479864"></a><a name="objectdefinitions-command"></a>Befehls-Definition (command)</h3></div></div></div>
+<a name="idp4655248"></a>3.4.8. <a name="objectdefinitions-command"></a>Befehls-Definition (command)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
     <p>Eine Befehls-Definition ist genau das. Sie definiert einen Befehl. Befehle, die definiert werden können, umfassen u.a.
-    Service-Prüfungen, Host-Benachrichtigungen und Host-Eventhandler. Befehls-Definitionen können <a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a>
+    Service-Prüfungen, Host-Benachrichtigungen und Host-Eventhandler. Befehls-Definitionen können <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a>
     enthalten, aber Sie müssen sicherstellen, dass Sie nur solche Makros verwenden, die unter den gegebenen Umständen "gültig" sind. Mehr
-    Informationen dazu, welche Makros verfügbar und wann sie "gültig" sind, finden Sie <a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">hier</a>. Die verschiedenen
+    Informationen dazu, welche Makros verfügbar und wann sie "gültig" sind, finden Sie <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">hier</a>. Die verschiedenen
     Argumente einer Befehls-Definition sehen Sie nachfolgend.</p>
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
@@ -2163,8 +2163,8 @@
 <td align="left" valign="top"><p><span class="bold"><strong>command_line</strong></span>:</p></td>
 <td>
 <p> Diese Direktive wird benutzt, um zu definieren, was wirklich durch Icinga ausgeführt wird, wenn der Befehl
-            für Service- oder Host-Prüfungen, Benachrichtigungen oder <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> benutzt wird. Vor
-            der Ausführung der Kommandozeile werden alle gültigen <a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a> durch die entsprechenden Werte
+            für Service- oder Host-Prüfungen, Benachrichtigungen oder <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandler</a> benutzt wird. Vor
+            der Ausführung der Kommandozeile werden alle gültigen <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a> durch die entsprechenden Werte
             ersetzt. Lesen Sie die Dokumentation, um festzustellen, welche verschiedenen Makros Sie benutzen können. Beachten Sie, dass die
             Kommandozeile <span class="emphasis"><em>nicht</em></span> von Anführungszeichen eingeschlossen wird. Achten Sie auch darauf, dass Sie bei der
             Übergabe eines Dollarzeichens ($) ein weiteres Dollarzeichen zur Maskierung benutzen müssen (aus bar$foo muss bar$$foo
@@ -2181,21 +2181,21 @@
             Laufzeit Parameter an Befehle übergeben wollen, können Sie die <a class="link" href="macrolist.html#macrolist-arg"><span class="bold"><strong>$ARGn$</strong></span>-Makros</a> in der <span class="emphasis"><em>command_line</em></span>-Direktive der Befehlsdefinition benutzen
             und in den Objektdefinitions-Direktiven (Host-Prüfbefehl, Service-Eventhandler, usw.), die auf den Befehl verweisen, einzelne
             Argumente durch Ausrufezeichen (!) vom Befehlsnamen (und von einander) trennen. Mehr Informationen, wie Argumente in
-            Befehlsdefinitionen während der Laufzeit verarbeitet werden, finden Sie in der Dokumentation zu <a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a>.</p>
+            Befehlsdefinitionen während der Laufzeit verarbeitet werden, finden Sie in der Dokumentation zu <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a>.</p>
 </td>
 </tr>
 </tbody>
 </table>
     </div>
 
-    <a class="indexterm" name="id1480687"></a>
+    <a class="indexterm" name="idp4753952"></a>
 
-    <a class="indexterm" name="id1480695"></a>
+    <a class="indexterm" name="idp4754960"></a>
   </div>
 
-  <div class="section" title="Service-Abhängigkeits-Definition (servicedependency)">
+  <div class="section" title="3.4.9. Service-Abhängigkeits-Definition (servicedependency)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1480318"></a><a name="objectdefinitions-servicedependency"></a>Service-Abhängigkeits-Definition (servicedependency)</h3></div></div></div>
+<a name="idp4708976"></a>3.4.9. <a name="objectdefinitions-servicedependency"></a>Service-Abhängigkeits-Definition (servicedependency)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2203,7 +2203,7 @@
     <p>Service-Abhängigkeiten sind ein fortgeschrittenes Feature von Icinga, das es Ihnen erlaubt, Benachrichtungen und aktive
     Prüfungen von Services in Abhängigkeit vom Status eines oder mehrerer Services zu unterdrücken. Service-Abhängigkeiten sind optional und
     zielen hauptsächlich auf fortgeschrittene Benutzer mit komplizierten Überwachungsumgebungen. Mehr Informationen, wie
-    Service-Abhängigkeiten arbeiten (lesen Sie dies!), finden Sie <a class="link" href="dependencies.html" title="Host- und Service-Abhängigkeiten">hier</a>.</p>
+    Service-Abhängigkeiten arbeiten (lesen Sie dies!), finden Sie <a class="link" href="dependencies.html" title="7.12. Host- und Service-Abhängigkeiten">hier</a>.</p>
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
@@ -2373,20 +2373,20 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1480983"></a>
+    <a class="indexterm" name="idp4855232"></a>
 
-    <a class="indexterm" name="id1481537"></a>
+    <a class="indexterm" name="idp4856240"></a>
   </div>
 
-  <div class="section" title="Serviceeskalations-Definition">
+  <div class="section" title="3.4.10. Serviceeskalations-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1480708"></a><a name="objectdefinitions-serviceescalation"></a>Serviceeskalations-Definition</h3></div></div></div>
+<a name="idp4756480"></a>3.4.10. <a name="objectdefinitions-serviceescalation"></a>Serviceeskalations-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
     <p>Serviceeskalationen sind <span class="emphasis"><em>komplett optional</em></span> und werden benutzt, um Benachrichtigungen für einen bestimmten
-    Service zu eskalieren. Mehr Informationen, wie Eskalationen arbeiten, finden Sie <a class="link" href="escalations.html" title="Benachrichtigungseskalationen">hier</a>.</p>
+    Service zu eskalieren. Mehr Informationen, wie Eskalationen arbeiten, finden Sie <a class="link" href="escalations.html" title="7.8. Benachrichtigungseskalationen">hier</a>.</p>
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -2604,7 +2604,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>escalation_condition</strong></span>:</p></td>
-<td><p>Diese Direktive ist ab Icinga 1.0.1 verfügbar. Nähere Einzelheiten finden Sie <a class="link" href="escalation_condition.html" title="Eskalations-Bedingung">hier</a>.</p></td>
+<td><p>Diese Direktive ist ab Icinga 1.0.1 verfügbar. Nähere Einzelheiten finden Sie <a class="link" href="escalation_condition.html" title="7.9. Eskalations-Bedingung">hier</a>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_warning_notification</strong></span>:</p></td>
@@ -2655,14 +2655,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1482679"></a>
+    <a class="indexterm" name="idp4993392"></a>
 
-    <a class="indexterm" name="id1482687"></a>
+    <a class="indexterm" name="idp4994400"></a>
   </div>
 
-  <div class="section" title="Host-Abhängigkeits-Definition (hostdependency)">
+  <div class="section" title="3.4.11. Host-Abhängigkeits-Definition (hostdependency)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1481549"></a><a name="objectdefinitions-hostdependency"></a>Host-Abhängigkeits-Definition (hostdependency)</h3></div></div></div>
+<a name="idp4857760"></a>3.4.11. <a name="objectdefinitions-hostdependency"></a>Host-Abhängigkeits-Definition (hostdependency)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2670,7 +2670,7 @@
     <p>Host-Abhängigkeiten sind ein fortgeschrittenes Feature von Icinga, das es Ihnen erlaubt, Benachrichtungen von Hosts in
     Abhängigkeit vom Status eines oder mehrerer Hosts zu unterdrücken. Host-Abhängigkeiten sind optional und zielen hauptsächlich auf
     fortgeschrittene Benutzer mit komplizierten Überwachungsumgebungen. Mehr Informationen, wie Host-Abhängigkeiten arbeiten (lesen Sie
-    dies!), finden Sie <a class="link" href="dependencies.html" title="Host- und Service-Abhängigkeiten">hier</a>.</p>
+    dies!), finden Sie <a class="link" href="dependencies.html" title="7.12. Host- und Service-Abhängigkeiten">hier</a>.</p>
 
     <p><span class="emphasis"><em>Definition:</em></span></p>
 
@@ -2810,20 +2810,20 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1483379"></a>
+    <a class="indexterm" name="idp5077312"></a>
 
-    <a class="indexterm" name="id1483387"></a>
+    <a class="indexterm" name="idp5078208"></a>
   </div>
 
-  <div class="section" title="Host-Eskalations-Definition">
+  <div class="section" title="3.4.12. Host-Eskalations-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1482702"></a><a name="objectdefinitions-hostescalation"></a>Host-Eskalations-Definition</h3></div></div></div>
+<a name="idp4995952"></a>3.4.12. <a name="objectdefinitions-hostescalation"></a>Host-Eskalations-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
     <p>Host-Eskalationen sind <span class="emphasis"><em>komplett optional</em></span> und werden benutzt, um Benachrichtigungen für einen bestimmten Host
-    zu eskalieren. Mehr Informationen, wie Eskalationen arbeiten, finden Sie <a class="link" href="escalations.html" title="Benachrichtigungseskalationen">hier</a>.</p>
+    zu eskalieren. Mehr Informationen, wie Eskalationen arbeiten, finden Sie <a class="link" href="escalations.html" title="7.8. Benachrichtigungseskalationen">hier</a>.</p>
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -3008,7 +3008,7 @@
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>escalation_condition</strong></span>:</p></td>
-<td><p>Diese Direktive ist ab Icinga 1.0.1 verfügbar. Nähere Einzelheiten finden Sie <a class="link" href="escalation_condition.html" title="Eskalations-Bedingung">hier</a>.</p></td>
+<td><p>Diese Direktive ist ab Icinga 1.0.1 verfügbar. Nähere Einzelheiten finden Sie <a class="link" href="escalation_condition.html" title="7.9. Eskalations-Bedingung">hier</a>.</p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p><span class="bold"><strong>first_down_notification</strong></span>:</p></td>
@@ -3044,14 +3044,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1484308"></a>
+    <a class="indexterm" name="idp5189040"></a>
 
-    <a class="indexterm" name="id1484317"></a>
+    <a class="indexterm" name="idp5190048"></a>
   </div>
 
-  <div class="section" title="erweiterte Hostinformations-Definition (hostextinfo)">
+  <div class="section" title="3.4.13. erweiterte Hostinformations-Definition (hostextinfo)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1483402"></a><a name="objectdefinitions-hostextinfo"></a>erweiterte Hostinformations-Definition (hostextinfo)</h3></div></div></div>
+<a name="idp5079792"></a>3.4.13. <a name="objectdefinitions-hostextinfo"></a>erweiterte Hostinformations-Definition (hostextinfo)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -3252,14 +3252,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1485125"></a>
+    <a class="indexterm" name="idp5287168"></a>
 
-    <a class="indexterm" name="id1485135"></a>
+    <a class="indexterm" name="idp5284368"></a>
   </div>
 
-  <div class="section" title="erweiterte Serviceinformations-Definition (serviceextinfo)">
+  <div class="section" title="3.4.14. erweiterte Serviceinformations-Definition (serviceextinfo)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1484329"></a><a name="objectdefinitions-serviceextinfo"></a>erweiterte Serviceinformations-Definition (serviceextinfo)</h3></div></div></div>
+<a name="idp5191568"></a>3.4.14. <a name="objectdefinitions-serviceextinfo"></a>erweiterte Serviceinformations-Definition (serviceextinfo)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -3427,14 +3427,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="id1485806"></a>
+    <a class="indexterm" name="idp5365888"></a>
 
-    <a class="indexterm" name="id1485816"></a>
+    <a class="indexterm" name="idp5369552"></a>
   </div>
 
-  <div class="section" title="Module-Definition">
+  <div class="section" title="3.4.15. Module-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1485148"></a><a name="objectdefinitions-module"></a>Module-Definition</h3></div></div></div>
+<a name="idp5289632"></a>3.4.15. <a name="objectdefinitions-module"></a>Module-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -3558,7 +3558,7 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="id1486194"></a>
+    <a class="indexterm" name="idp5415264"></a>
   </div>
 </div>
 <div class="navfooter">
@@ -3572,9 +3572,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Überblick Objektkonfiguration </td>
+<td width="40%" align="left" valign="top">3.3. Überblick Objektkonfiguration </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Maßgeschneiderte Objektvariablen</td>
+<td width="40%" align="right" valign="top"> 3.5. Maßgeschneiderte Objektvariablen</td>
 </tr>
 </table>
 </div>

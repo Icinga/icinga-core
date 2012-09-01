@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Konfigurationsüberblick</title>
+<title>3.1. Konfigurationsüberblick</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
 <link rel="prev" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
-<link rel="next" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">
+<link rel="next" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Konfigurationsüberblick</th></tr>
+<tr><th colspan="3" align="center">3.1. Konfigurationsüberblick</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="ch03.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Konfigurationsüberblick">
+<div class="section" title="3.1. Konfigurationsüberblick">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="config"></a>Konfigurationsüberblick</h2></div></div></div>
+<a name="config"></a>3.1. Konfigurationsüberblick</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -37,7 +37,7 @@
   herausgefunden haben, wie die Dinge funktionieren, werden Sie feststellen, dass es die Mühe wert ist. :-)</p>
 
   <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Beispiel-Konfigurationsdateien werden im
-  <span class="emphasis"><em>/usr/local/icinga/etc/</em></span>-Verzeichnis installiert, wenn Sie der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstart-Installationsanleitung</a> folgen.</p>
+  <span class="emphasis"><em>/usr/local/icinga/etc/</em></span>-Verzeichnis installiert, wenn Sie der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Installationsanleitung</a> folgen.</p>
 
   <div class="mediaobject" align="right"><img src="../images/configoverview.png" align="right"></div>
 
@@ -47,7 +47,7 @@
   beeinflussen. Diese Konfigurationsdatei wird vom Icinga-Daemon und den CGIs gelesen. Hier werden Sie in Ihr
   Konfigurationsabenteuer starten wollen.</p>
 
-  <p>Dokumentation zur Hauptkonfigurationsdatei finden Sie <a class="link" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">hier</a>.</p>
+  <p>Dokumentation zur Hauptkonfigurationsdatei finden Sie <a class="link" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">hier</a>.</p>
 
   <p><span class="bold"><strong>Ressource-Datei(en)</strong></span></p>
 
@@ -65,7 +65,7 @@
   <p>Sie können eine oder mehrere Objektdefinitionen-Dateien mit Hilfe der <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>-
   und/oder <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a>-Direktiven in Ihrer Hauptkonfigurationsdatei angeben.</p>
 
-  <p>Eine Einführung zu Objektdefinitionen und wie sie in Beziehung zu einander stehen, finden Sie <a class="link" href="configobject.html" title="Überblick Objektkonfiguration">hier</a>.</p>
+  <p>Eine Einführung zu Objektdefinitionen und wie sie in Beziehung zu einander stehen, finden Sie <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">hier</a>.</p>
 
   <p>Ihre Objektkonfigurationsdateien können wiederum andere Dateien einschließen mit Hilfe der <a class="link" href="configobject.html#configobject-include_file">include_file</a>-
   oder <a class="link" href="configobject.html#configobject-include_dir">include_dir</a>-Direktiven. Sie können lediglich außerhalb der eigentlichen
@@ -74,12 +74,12 @@
 
   <p><span class="bold"><strong>CGI-Konfigurationsdatei</strong></span></p>
 
-  <p>Die CGI-Konfigurationsdatei enthält eine Reihe von Direktiven, die die Arbeitsweise der <a class="link" href="cgis.html" title="Icinga Classic UI: Informationen über die CGIs">CGIs</a>
+  <p>Die CGI-Konfigurationsdatei enthält eine Reihe von Direktiven, die die Arbeitsweise der <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die CGIs">CGIs</a>
   beeinflussen. Sie enthält auch einen Verweis auf die Hauptkonfigurationsdatei, so dass die CGIs wissen, wie Sie Icinga
   konfiguriert haben und wo Ihre Objektdefinitionen gespeichert sind.</p>
 
-  <p>Dokumentation zur CGI-Konfigurationsdatei finden Sie <a class="link" href="configcgi.html" title="Optionen CGI-Konfigurationsdatei">hier</a>.</p>
-  <a class="indexterm" name="id1453578"></a>
+  <p>Dokumentation zur CGI-Konfigurationsdatei finden Sie <a class="link" href="configcgi.html" title="3.6. Optionen CGI-Konfigurationsdatei">hier</a>.</p>
+  <a class="indexterm" name="idp1503568"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -94,7 +94,7 @@
 <tr>
 <td width="40%" align="left" valign="top">Kapitel 3. Icinga konfigurieren </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Optionen der Hauptkonfigurationsdatei</td>
+<td width="40%" align="right" valign="top"> 3.2. Optionen der Hauptkonfigurationsdatei</td>
 </tr>
 </table>
 </div>

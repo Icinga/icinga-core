@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Icinga Addons</title>
+<title>10.1. Icinga Addons</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch10.html" title="Kapitel 10. weitere Software">
 <link rel="prev" href="ch10.html" title="Kapitel 10. weitere Software">
-<link rel="next" href="nrpe.html" title="NRPE">
+<link rel="next" href="nrpe.html" title="10.2. NRPE">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga Addons</th></tr>
+<tr><th colspan="3" align="center">10.1. Icinga Addons</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="ch10.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Icinga Addons">
+<div class="section" title="10.1. Icinga Addons">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="addons"></a>Icinga Addons</h2></div></div></div>
+<a name="addons"></a>10.1. Icinga Addons</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -49,7 +49,7 @@
       <p><a name="addons-mon"></a>die Überwachung von entfernten Hosts (*NIX, Windows, etc.)</p>
       <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p><a class="link" href="nsca.html" title="NSCA">NSCA</a>, <a class="link" href="nrpe.html" title="NRPE">NRPE</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
+          <p><a class="link" href="nsca.html" title="10.3. NSCA">NSCA</a>, <a class="link" href="nrpe.html" title="10.2. NRPE">NRPE</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
         </li>
 <li class="listitem">
           <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, ...</p>
@@ -112,25 +112,25 @@
 
   <p><span class="inlinemediaobject"><img src="../images/nrpe.png"></span></p>
 
-  <p>NRPE ist ein Addon, das es Ihnen erlaubt, <a class="link" href="plugins.html" title="Icinga Plugins">Plugins</a> auf entfernten
+  <p>NRPE ist ein Addon, das es Ihnen erlaubt, <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> auf entfernten
   Linux-/Unix-Hosts auszuführen. Dies ist nützlich, wenn Sie lokale Ressourcen/Attribute wie Plattenbelegung, CPU-Last,
   Speicherbelegung usw. auf entfernten Hosts überwachen wollen. Ähnliche Funktionalitäten können durch das
   <span class="emphasis"><em>check_by_ssh</em></span>-Plugin erreicht werden, obwohl es auf dem Überwachungsrechner für eine höhere CPU-Belastung
   sorgen kann - besonders dann, wenn Sie hunderte oder tausende von Hosts überwachen.</p>
 
   <p>Das NRPE-Addon finden Sie unter <a class="link" href="https://git.icinga.org/?p=icinga-nrpe.git" target="_top">https://git.icinga.org/?p=icinga-nrpe.git</a>.
-  Die <a class="link" href="nrpe.html" title="NRPE">Dokumentation</a> finden Sie in nächsten Abschnitt.</p>
+  Die <a class="link" href="nrpe.html" title="10.2. NRPE">Dokumentation</a> finden Sie in nächsten Abschnitt.</p>
 
   <p><a name="addons-nsca"></a><span class="bold"><strong>NSCA</strong></span></p>
 
   <p><span class="inlinemediaobject"><img src="../images/nsca.png"></span></p>
 
-  <p>NSCA ist ein Addon, das es Ihnen erlaubt, <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">passive Prüf</a>-Resultate von
+  <p>NSCA ist ein Addon, das es Ihnen erlaubt, <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passive Prüf</a>-Resultate von
   entfernten Linux-/Unix-Hosts an den Icinga-Daemon zu senden, der auf dem Überwachungs-Server läuft. Das ist sehr
-  hilfreich in <a class="link" href="distributed.html" title="Verteilte Überwachung">verteilten</a> und <a class="link" href="redundancy.html" title="Redundante und Failover-Netzwerk-Überwachung">redundanten/Failover</a>-Überwachungs-Umgebungen.</p>
+  hilfreich in <a class="link" href="distributed.html" title="7.5. Verteilte Überwachung">verteilten</a> und <a class="link" href="redundancy.html" title="7.6. Redundante und Failover-Netzwerk-Überwachung">redundanten/Failover</a>-Überwachungs-Umgebungen.</p>
 
   <p>Das NSCA-Addon finden Sie unter <a class="link" href="https://git.icinga.org/?p=icinga-nsca.git" target="_top">https://git.icinga.org/?p=icinga-nsca.git</a>.
-  Die <a class="link" href="nsca.html" title="NSCA">Dokumentation</a> finden Sie in nächsten Abschnitt.</p>
+  Die <a class="link" href="nsca.html" title="10.3. NSCA">Dokumentation</a> finden Sie in nächsten Abschnitt.</p>
 
   <p><a name="addons-idoutils"></a><span class="bold"><strong>IDOUtils</strong></span></p>
 
@@ -142,55 +142,55 @@
   Icinga dienen. Neben MySQL werden auch Oracle und PostgreSQL unterstützt.</p>
 
   <p>Das IDOUtils-Addon und die Dokumentation finden Sie unter <a class="link" href="http://docs.icinga.org/" target="_top">http://docs.icinga.org/</a>.</p>
-  <a class="indexterm" name="id1561264"></a>
+  <a class="indexterm" name="idp14427760"></a>
 
-  <a class="indexterm" name="id1561277"></a>
+  <a class="indexterm" name="idp14429408"></a>
 
-  <a class="indexterm" name="id1561291"></a>
+  <a class="indexterm" name="idp14431040"></a>
 
-  <a class="indexterm" name="id1561304"></a>
+  <a class="indexterm" name="idp14432736"></a>
 
-  <a class="indexterm" name="id1561314"></a>
+  <a class="indexterm" name="idp14433952"></a>
 
-  <a class="indexterm" name="id1561328"></a>
+  <a class="indexterm" name="idp14435536"></a>
 
-  <a class="indexterm" name="id1561339"></a>
+  <a class="indexterm" name="idp14436736"></a>
 
-  <a class="indexterm" name="id1561352"></a>
+  <a class="indexterm" name="idp14438320"></a>
 
-  <a class="indexterm" name="id1561362"></a>
+  <a class="indexterm" name="idp14439520"></a>
 
-  <a class="indexterm" name="id1561375"></a>
+  <a class="indexterm" name="idp14441104"></a>
 
-  <a class="indexterm" name="id1561385"></a>
+  <a class="indexterm" name="idp14442304"></a>
 
-  <a class="indexterm" name="id1561399"></a>
+  <a class="indexterm" name="idp14443888"></a>
 
-  <a class="indexterm" name="id1561410"></a>
+  <a class="indexterm" name="idp14445088"></a>
 
-  <a class="indexterm" name="id1561423"></a>
+  <a class="indexterm" name="idp14446672"></a>
 
-  <a class="indexterm" name="id1561433"></a>
+  <a class="indexterm" name="idp14447872"></a>
 
-  <a class="indexterm" name="id1561446"></a>
+  <a class="indexterm" name="idp14449456"></a>
 
-  <a class="indexterm" name="id1561456"></a>
+  <a class="indexterm" name="idp14450656"></a>
 
-  <a class="indexterm" name="id1561470"></a>
+  <a class="indexterm" name="idp14452240"></a>
 
-  <a class="indexterm" name="id1561480"></a>
+  <a class="indexterm" name="idp14453440"></a>
 
-  <a class="indexterm" name="id1560948"></a>
+  <a class="indexterm" name="idp14455024"></a>
 
-  <a class="indexterm" name="id1561500"></a>
+  <a class="indexterm" name="idp14456224"></a>
 
-  <a class="indexterm" name="id1561515"></a>
+  <a class="indexterm" name="idp14457808"></a>
 
-  <a class="indexterm" name="id1561523"></a>
+  <a class="indexterm" name="idp14459008"></a>
 
-  <a class="indexterm" name="id1561538"></a>
+  <a class="indexterm" name="idp14460592"></a>
 
-  <a class="indexterm" name="id1561550"></a>
+  <a class="indexterm" name="idp14461792"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -205,7 +205,7 @@
 <tr>
 <td width="40%" align="left" valign="top">Kapitel 10. weitere Software </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> NRPE</td>
+<td width="40%" align="right" valign="top"> 10.2. NRPE</td>
 </tr>
 </table>
 </div>

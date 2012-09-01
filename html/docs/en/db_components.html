@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Components</title>
+<title>12.2. Components</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="ch12.html" title="Chapter 12. IDOUtils">
-<link rel="prev" href="db_intro.html" title="Introduction">
-<link rel="next" href="configido.html" title="Configuration of IDOUtils">
+<link rel="prev" href="db_intro.html" title="12.1. Introduction">
+<link rel="next" href="configido.html" title="12.3. Configuration of IDOUtils">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Components</th></tr>
+<tr><th colspan="3" align="center">12.2. Components</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="db_intro.html">Prev</a> </td>
@@ -25,14 +25,14 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Components">
+<div class="section" title="12.2. Components">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="db_components"></a>Components</h2></div></div></div>
+<a name="db_components"></a>12.2. Components</h2></div></div></div>
   
 
-  <div class="section" title="Overview">
+  <div class="section" title="12.2.1. Overview">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1487009"></a>Overview</h3></div></div></div>
+<a name="idp15890928"></a>12.2.1. Overview</h3></div></div></div>
     
 
     <p>There are four main components that make up the IDO utilities:</p>
@@ -55,9 +55,9 @@
     <p>Each component is described in more detail on the following pages.</p>
   </div>
 
-  <div class="section" title="IDOMOD">
+  <div class="section" title="12.2.2. IDOMOD">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1487056"></a>IDOMOD</h3></div></div></div>
+<a name="idp15898640"></a>12.2.2. IDOMOD</h3></div></div></div>
     
 
     <p>The IDO utilities includes an Icinga event broker module (IDOMOD.O) that exports data from the Icinga daemon.</p>
@@ -67,7 +67,7 @@
     logic present in the running Icinga process.</p>
 
     <div class="figure">
-<a name="id1487073"></a><p class="title"><b>Figure 12.5. Loaded IDOMOD Event broker Module</b></p>
+<a name="idp15900848"></a><p class="title"><b>Figure 12.5. Loaded IDOMOD Event broker Module</b></p>
 <div class="figure-contents">
       
 
@@ -81,7 +81,7 @@
     TCP socket.</p>
 
     <div class="figure">
-<a name="id1487105"></a><p class="title"><b>Figure 12.6. IDOMOD Capabilities</b></p>
+<a name="idp15901872"></a><p class="title"><b>Figure 12.6. IDOMOD Capabilities</b></p>
 <div class="figure-contents">
       
 
@@ -101,18 +101,18 @@
     and listens on the socket needs to be restarted, etc.</p>
   </div>
 
-  <div class="section" title="LOG2IDO">
+  <div class="section" title="12.2.3. LOG2IDO">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1487140"></a>LOG2IDO</h3></div></div></div>
+<a name="idp15909264"></a>12.2.3. LOG2IDO</h3></div></div></div>
     
 
     <p>The LOG2IDO utility has been designed to allow you to import historical Icinga, Nagios and NetSaint log files into a
-    database via the IDO2DB daemon (<a class="link" href="db_components.html#IDO2DB-description" title="IDO2DB">described later</a>). The utility works by sending historical log
+    database via the IDO2DB daemon (<a class="link" href="db_components.html#IDO2DB-description" title="12.2.IDO2DB. IDO2DB">described later</a>). The utility works by sending historical log
     file data to a standard file, a Unix domain socket, or a TCP socket in a format the IDO2DB daemon understands. The IDO2DB daemon can
     then be used to process that output and store the historical logfile information in a database.</p>
 
     <div class="figure">
-<a name="id1487159"></a><p class="title"><b>Figure 12.7. LOG2IDO Utility</b></p>
+<a name="idp15911600"></a><p class="title"><b>Figure 12.7. LOG2IDO Utility</b></p>
 <div class="figure-contents">
       
 
@@ -122,16 +122,16 @@
 <br class="figure-break">
   </div>
 
-  <div class="section" title="FILE2SOCK">
+  <div class="section" title="12.2.4. FILE2SOCK">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="id1487180"></a>FILE2SOCK</h3></div></div></div>
+<a name="idp15914160"></a>12.2.4. FILE2SOCK</h3></div></div></div>
     
 
     <p>The FILE2SOCK utility is quite simple. It reads input from a standard file (or STDIN) and writes all of that data to either a Unix
     domain socket or TCP socket. The data that is read is not processed in any way before it is sent to the socket.</p>
 
     <div class="figure">
-<a name="id1487193"></a><p class="title"><b>Figure 12.8. FILE2SOCK Utility</b></p>
+<a name="idp15915552"></a><p class="title"><b>Figure 12.8. FILE2SOCK Utility</b></p>
 <div class="figure-contents">
       
 
@@ -145,9 +145,9 @@
     the IDO2DB daemon's TCP or Unix domain socket.</p>
   </div>
 
-  <div class="section" title="IDO2DB">
+  <div class="section" title="12.2.IDO2DB. IDO2DB">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="IDO2DB-description"></a>IDO2DB</h3></div></div></div>
+<a name="IDO2DB-description"></a>12.2.IDO2DB. IDO2DB</h3></div></div></div>
     
 
     <p>The IDO2DB utility is designed to take the data output from the IDOMOD and LOG2IDO components and store it in a MySQL, Oracle, or PostgreSQL database.</p>
@@ -156,7 +156,7 @@
     either as a standalone, multi-process daemon or under INETD (if using a TCP socket).</p>
 
     <div class="figure">
-<a name="id1487240"></a><p class="title"><b>Figure 12.9. IDO2DB Daemon</b></p>
+<a name="idp15921472"></a><p class="title"><b>Figure 12.9. IDO2DB Daemon</b></p>
 <div class="figure-contents">
       
 
@@ -170,7 +170,7 @@
     processing.</p>
 
     <div class="figure">
-<a name="id1487268"></a><p class="title"><b>Figure 12.10. IDO2DB with multiple Clients</b></p>
+<a name="idp15924576"></a><p class="title"><b>Figure 12.10. IDO2DB with multiple Clients</b></p>
 <div class="figure-contents">
       
 
@@ -193,9 +193,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Introduction </td>
+<td width="40%" align="left" valign="top">12.1. Introduction </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Configuration of IDOUtils</td>
+<td width="40%" align="right" valign="top"> 12.3. Configuration of IDOUtils</td>
 </tr>
 </table>
 </div>

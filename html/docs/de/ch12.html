@@ -7,8 +7,8 @@
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="index.html" title="Icinga Version 1.7 Dokumentation">
-<link rel="prev" href="icinga-web-api.html" title="Die Icinga-Web REST API">
-<link rel="next" href="db_intro.html" title="Einleitung">
+<link rel="prev" href="icinga-web-api.html" title="11.5. Die Icinga-Web REST API">
+<link rel="next" href="db_intro.html" title="12.1. Einleitung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -31,41 +31,41 @@
 <div class="toc">
 <p><b>Inhaltsverzeichnis</b></p>
 <dl>
-<dt><span class="section"><a href="db_intro.html">Einleitung</a></span></dt>
+<dt><span class="section"><a href="db_intro.html">12.1. Einleitung</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_intro.html#id420467">Zweck</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1572678">Design-Überblick</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1572766">Instanzen</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1572834">Installation</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#idm122858240">12.1.1. Zweck</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#idp15797056">12.1.2. Design-Überblick</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#idp15807712">12.1.3. Instanzen</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#idp15814352">12.1.4. Installation</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="components.html">Komponenten</a></span></dt>
+<dt><span class="section"><a href="components.html">12.2. Komponenten</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="components.html#id1572861">Überblick</a></span></dt>
-<dt><span class="section"><a href="components.html#id1572906">IDOMOD</a></span></dt>
-<dt><span class="section"><a href="components.html#id1572995">LOG2IDO</a></span></dt>
-<dt><span class="section"><a href="components.html#id1573038">FILE2SOCK</a></span></dt>
-<dt><span class="section"><a href="components.html#IDO2DB-description">IDO2DB. IDO2DB</a></span></dt>
+<dt><span class="section"><a href="components.html#idp15817280">12.2.1. Überblick</a></span></dt>
+<dt><span class="section"><a href="components.html#idp15825392">12.2.2. IDOMOD</a></span></dt>
+<dt><span class="section"><a href="components.html#idp15836048">12.2.3. LOG2IDO</a></span></dt>
+<dt><span class="section"><a href="components.html#idp15841120">12.2.4. FILE2SOCK</a></span></dt>
+<dt><span class="section"><a href="components.html#IDO2DB-description">12.2.IDO2DB. IDO2DB</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="configido.html">Konfiguration der IDOUtils</a></span></dt>
+<dt><span class="section"><a href="configido.html">12.3. Konfiguration der IDOUtils</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="configido.html#id1573794">IDOMOD Konfigurationsoptionen</a></span></dt>
-<dt><span class="section"><a href="configido.html#id1573802">IDO2DB Konfigurationsoptionen</a></span></dt>
+<dt><span class="section"><a href="configido.html#idp15931184">12.3.1. IDOMOD Konfigurationsoptionen</a></span></dt>
+<dt><span class="section"><a href="configido.html#idp15932128">12.3.2. IDO2DB Konfigurationsoptionen</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="example-configs.html">Beispielkonfigurationen</a></span></dt>
+<dt><span class="section"><a href="example-configs.html">12.4. Beispielkonfigurationen</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="example-configs.html#id1575595">Einzelner Server, einzelne Instanz</a></span></dt>
-<dt><span class="section"><a href="example-configs.html#id1579181">Einzelner Server, mehrere Instanzen</a></span></dt>
-<dt><span class="section"><a href="example-configs.html#id1579275">Einzelner Server, einzelne Instanz, Log-Datei-Import</a></span></dt>
+<dt><span class="section"><a href="example-configs.html#idp16147680">12.4.1. Einzelner Server, einzelne Instanz</a></span></dt>
+<dt><span class="section"><a href="example-configs.html#idp16577360">12.4.2. Einzelner Server, mehrere Instanzen</a></span></dt>
+<dt><span class="section"><a href="example-configs.html#idp16588320">12.4.3. Einzelner Server, einzelne Instanz, Log-Datei-Import</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="db_model.html">IDOUtils Database Model</a></span></dt>
+<dt><span class="section"><a href="db_model.html">12.5. IDOUtils Database Model</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_model.html#id1579546">Central Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1579993"> Debugging Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1579996">Historical Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1580502"> Current Status Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1580514"> Configuration Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#idp16621216">12.5.1. Central Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#idp16621536">12.5.2.  Debugging Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#idp16676512">12.5.3. Historical Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#idp16734832">12.5.4.  Current Status Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#idp16736496">12.5.5.  Configuration Tables</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="db_changes.html">Datenbank-Anpassungen/Änderungen</a></span></dt>
+<dt><span class="section"><a href="db_changes.html">12.6. Datenbank-Anpassungen/Änderungen</a></span></dt>
 </dl>
 </div>
     
@@ -93,9 +93,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Die Icinga-Web REST API </td>
+<td width="40%" align="left" valign="top">11.5. Die Icinga-Web REST API </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Einleitung</td>
+<td width="40%" align="right" valign="top"> 12.1. Einleitung</td>
 </tr>
 </table>
 </div>

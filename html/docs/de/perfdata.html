@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Performance-Daten</title>
+<title>7.14. Performance-Daten</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="stalking.html" title="Status Stalking">
-<link rel="next" href="downtime.html" title="Geplante Ausfallzeiten">
+<link rel="prev" href="stalking.html" title="7.13. Status Stalking">
+<link rel="next" href="downtime.html" title="7.15. Geplante Ausfallzeiten">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Performance-Daten</th></tr>
+<tr><th colspan="3" align="center">7.14. Performance-Daten</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="stalking.html">Zurück</a> </td>
@@ -25,14 +25,14 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Performance-Daten">
+<div class="section" title="7.14. Performance-Daten">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="perfdata"></a><a name="perf_data"></a>Performance-Daten</h2></div></div></div>
+<a name="perfdata"></a>7.14. <a name="perf_data"></a>Performance-Daten</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Icinga ist ausgelegt, dass <a class="link" href="plugins.html" title="Icinga Plugins">Plugins</a> neben den normalen Statusinformationen optional auch
+  <p>Icinga ist ausgelegt, dass <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> neben den normalen Statusinformationen optional auch
   Performance-Daten zurückliefern können, die Sie außerdem zur weiteren Verarbeitung an externe Applikationen übergeben können. Eine
   Beschreibung der verschiedenen Typen von Performance-Daten wie auch Informationen darüber, wie diese Daten verarbeitet werden, finden Sie
   im Folgenden...</p>
@@ -53,7 +53,7 @@
   <p>Prüf-Performance-Daten sind interne Daten, die sich auf die aktuelle Ausführung einer Host- oder Service-Prüfung beziehen. Dies kann
   Dinge wie die Service-Prüfverzögerung enthalten (service check latency, d.h., wie viel Zeit von der geplanten Ausführung bis zu
   eigentlichen Ausführung verging) oder die Anzahl der Sekunden, die die Ausführung einer Host- oder Service-Prüfung dauerte. Dieser Typ von
-  Performance-Daten ist für alle ausgeführten Prüfungen verfügbar. Die <a class="link" href="macrolist.html#macrolist-hostexecutiontime">$HOSTEXECUTIONTIME$</a>- und <a class="link" href="macrolist.html#macrolist-serviceexecutiontime">$SERVICEEXECUTIONTIME$</a>-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a> können benutzt werden, um die
+  Performance-Daten ist für alle ausgeführten Prüfungen verfügbar. Die <a class="link" href="macrolist.html#macrolist-hostexecutiontime">$HOSTEXECUTIONTIME$</a>- und <a class="link" href="macrolist.html#macrolist-serviceexecutiontime">$SERVICEEXECUTIONTIME$</a>-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a> können benutzt werden, um die
   Anzahl der Sekunden zu ermitteln, die eine Host- oder Service-Prüfung dauerte und die <a class="link" href="macrolist.html#macrolist-hostlatency">$HOSTLATENCY$</a>- und <a class="link" href="macrolist.html#macrolist-servicelatency">$SERVICELATENCY$</a>-Makros können
   zur Ermittlung der "Verspätung" einer regulär geplanten Host- oder Service-Prüfung genutzt werden.</p>
 
@@ -61,7 +61,7 @@
   Plugin-spezifische Daten können Dinge wie Prozentsatz des Paketverlustes, freie Plattenplatz, Prozessor-Load, Anzahl der gegenwärtigen
   Benutzer usw. umfassen - generell jede Art von Metrik, die das Plugin misst, wenn es ausgeführt wird. Plugin-spezifische Performance-Daten
   sind optional und werden ggf. nicht von allen Plugins unterstützt. Plugin-spezifische Performance-Daten (falls verfügbar) werden durch die
-  <a class="link" href="macrolist.html#macrolist-hostperfdata">$HOSTPERFDATA$</a>- und <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a>-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a> bereit gestellt. Lesen Sie weiter, um mehr Informationen darüber zu erhalten, wie Plugins Performance-Daten
+  <a class="link" href="macrolist.html#macrolist-hostperfdata">$HOSTPERFDATA$</a>- und <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a>-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a> bereit gestellt. Lesen Sie weiter, um mehr Informationen darüber zu erhalten, wie Plugins Performance-Daten
   an Icinga zur Bereitstellung durch die $HOSTPERFDATA$- und $SERVICEPERFDATA$-Makros zurückliefern können.</p>
 
   <p><span class="bold"><strong>Plugin-Performance-Daten</strong></span></p>
@@ -71,7 +71,7 @@
 
   <pre class="screen"> PING ok - Packet loss = 0%, RTA = 0.80 ms</pre>
 
-  <p>Bei dieser einfachen Art von Ausgabe ist die gesamte Textzeile in den $HOSTOUTPUT$- oder $SERVICEOUTPUT$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a> verfügbar (abhängig davon, ob dieses Plugin als Host- oder Service-Prüfung benutzt wurde).</p>
+  <p>Bei dieser einfachen Art von Ausgabe ist die gesamte Textzeile in den $HOSTOUTPUT$- oder $SERVICEOUTPUT$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a> verfügbar (abhängig davon, ob dieses Plugin als Host- oder Service-Prüfung benutzt wurde).</p>
 
   <p>Plugins können in ihrer Ausgabe optionale Performance-Daten zurückliefern, indem nach dem normalen, menschlich lesbaren Text ein
   Pipe-Symbol (|) folgt und danach eine Zeichenkette, die ein oder mehrere Performance-Daten-Metriken enthält. Lassen Sie uns das
@@ -98,7 +98,7 @@
   ms</em></span>" enthalten (ohne Anführungszeichen) und das $HOSTPERFDATA$- oder das $SERVICEPERFDATA$-Makro würde
   "<span class="emphasis"><em>percent_packet_loss=0 rta=0.80</em></span>" enthalten (ohne Anführungszeichen).</p>
 
-  <p>Icinga kann mehrere Zeilen Performance-Daten (ebenso wie normale Textausgaben) von Plugins entgegennehmen, wie in der <a class="link" href="pluginapi.html" title="Nagios Plugin API">plugin API documentation</a> beschrieben.</p>
+  <p>Icinga kann mehrere Zeilen Performance-Daten (ebenso wie normale Textausgaben) von Plugins entgegennehmen, wie in der <a class="link" href="pluginapi.html" title="11.1. Nagios Plugin API">plugin API documentation</a> beschrieben.</p>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -279,9 +279,9 @@
     </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id1548643"></a>
+  <a class="indexterm" name="idp12912512"></a>
 
-  <a class="indexterm" name="id1548654"></a>
+  <a class="indexterm" name="idp12913696"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -294,9 +294,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Status Stalking </td>
+<td width="40%" align="left" valign="top">7.13. Status Stalking </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Geplante Ausfallzeiten</td>
+<td width="40%" align="right" valign="top"> 7.15. Geplante Ausfallzeiten</td>
 </tr>
 </table>
 </div>

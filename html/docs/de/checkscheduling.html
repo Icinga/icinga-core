@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Service- und Host-Prüfungsplanung</title>
+<title>7.22. Service- und Host-Prüfungsplanung</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="passivestatetranslation.html" title="Passive Host-Zustandsübersetzung">
-<link rel="next" href="cgiincludes.html" title="Angepasste CGI-Kopf- und Fußzeilen">
+<link rel="prev" href="passivestatetranslation.html" title="7.21. Passive Host-Zustandsübersetzung">
+<link rel="next" href="cgiincludes.html" title="7.23. Angepasste CGI-Kopf- und Fußzeilen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Service- und Host-Prüfungsplanung</th></tr>
+<tr><th colspan="3" align="center">7.22. Service- und Host-Prüfungsplanung</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="passivestatetranslation.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Service- und Host-Prüfungsplanung">
+<div class="section" title="7.22. Service- und Host-Prüfungsplanung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="checkscheduling"></a><a name="checkscheduling-check_scheduling"></a>Service- und Host-Prüfungsplanung</h2></div></div></div>
+<a name="checkscheduling"></a>7.22. <a name="checkscheduling-check_scheduling"></a>Service- und Host-Prüfungsplanung</h2></div></div></div>
   
 
   <p><a name="checkscheduling-introduction"></a><span class="bold"><strong>Einführung</strong></span></p>
@@ -54,7 +54,7 @@
     </li>
 </ul></div>
 
-  <p>Es gibt außerdem vier Konfigurationsoptionen in der <a class="link" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a>, die
+  <p>Es gibt außerdem vier Konfigurationsoptionen in der <a class="link" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a>, die
   Service-Prüfungen beeinflussen. Dies sind:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -257,7 +257,7 @@
 
   <p><a name="checkscheduling-time_restraints"></a><span class="bold"><strong>Zeitbeschränkungen</strong></span></p>
 
-  <p>Die Option <span class="emphasis"><em>check_period</em></span> legt den <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitraum</a> fest, in dem
+  <p>Die Option <span class="emphasis"><em>check_period</em></span> legt den <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitraum</a> fest, in dem
   Icinga Service-Prüfungen ausführen kann. Falls die Zeit, zu der eine Prüfung für einen bestimmten Service ausgeführt
   werden werden soll, nicht innerhalb des angegebenen Zeitraum liegt, wird die Prüfung <span class="emphasis"><em>nicht</em></span> ausgeführt, und
   zwar unabhängig vom Status des Service. Statt dessen wird Icinga die Service-Prüfung für die nächste gültige Zeit des
@@ -293,7 +293,7 @@
   Service-Prüfungsplanung ändert. Wenn Sie die Option <span class="emphasis"><em>max_attempts</em></span> auf einen Wert größer als eins gesetzt
   haben, wird Icinga die Prüfung erneut einplanen, bevor es entscheidet, dass ein wirkliches Problem existiert. Während der
   Service erneut geprüft wird (bis zu <span class="emphasis"><em>max_attempts</em></span> Mal), wird er als in einem "soft"-Status befindlich
-  angesehen (wie <a class="link" href="statetypes.html" title="Statustypen">hier</a> beschrieben) und die Service-Prüfungen werden mit einer Häufigkeit
+  angesehen (wie <a class="link" href="statetypes.html" title="5.8. Statustypen">hier</a> beschrieben) und die Service-Prüfungen werden mit einer Häufigkeit
   eingeplant, die in der Option <span class="emphasis"><em>retry_interval</em></span> angegeben ist.</p>
 
   <p>Wenn Icinga den Service <span class="emphasis"><em>max_attempts</em></span> Mal erneut eingeplant hat und er immer noch in einem
@@ -366,7 +366,7 @@
   beeinflussen.</p>
 
   <p>Zuallererst gibt die <span class="emphasis"><em>check_interval</em></span>-Option das Intervall an, in dem der Service unter
-  "normalen" Umständen geprüft wird. "Normale" Umstände bedeutet, wenn sich der Service in einem "OK"- oder einem <a class="link" href="statetypes.html" title="Statustypen">harten</a> nicht-OK-Zustand befindet.</p>
+  "normalen" Umständen geprüft wird. "Normale" Umstände bedeutet, wenn sich der Service in einem "OK"- oder einem <a class="link" href="statetypes.html" title="5.8. Statustypen">harten</a> nicht-OK-Zustand befindet.</p>
 
   <p>Wenn ein Service das erste Mal von einem OK- in einen nicht-OK-Zustand wechselt, gibt Ihnen Icinga die Möglichkeit,
   das Intervall temporär zu verkleinern oder zu vergrößern, in dem nachfolgende Prüfungen für diesen Service ausgeführt werden.
@@ -374,14 +374,14 @@
   durchführen, bevor es entscheidet, dass es sich um ein richtiges Problem handelt. Während die Prüfungen wiederholt werden,
   werden sie gemäß der <span class="emphasis"><em>retry_interval</em></span>-Option neu eingeplant, was schneller oder langsam als die
   <span class="emphasis"><em>check_interval</em></span>-Option ist. Während der Service erneut geprüft wird (bis zu
-  <span class="emphasis"><em>max_check_attempts</em></span>-1 mal), ist der Service in einem <a class="link" href="statetypes.html" title="Statustypen">soft-Zustand</a>. Wenn
+  <span class="emphasis"><em>max_check_attempts</em></span>-1 mal), ist der Service in einem <a class="link" href="statetypes.html" title="5.8. Statustypen">soft-Zustand</a>. Wenn
   der Service <span class="emphasis"><em>max_check_attempts</em></span>-1 mal geprüft wurde und sich immer noch in einem nicht-OK-Zustand befindet,
-  wird der Service in einen <a class="link" href="statetypes.html" title="Statustypen">hard-Zustand</a> wechseln und wird nachfolgend wieder mit der normalen
+  wird der Service in einen <a class="link" href="statetypes.html" title="5.8. Statustypen">hard-Zustand</a> wechseln und wird nachfolgend wieder mit der normalen
   Rate eingeplant, die in der <span class="emphasis"><em>check_interval</em></span>-Option festgelegt ist.</p>
 
   <p>Als Randbemerkung, wenn Sie einen Wert von 1 für die <span class="emphasis"><em>max_check_attempts</em></span>-Option definieren, wird der
   Service niemals mit dem Intervall geprüft, das in der <span class="emphasis"><em>retry_interval</em></span>-Option angegeben ist. Statt
-  dessen wird er sofort in einen <a class="link" href="statetypes.html" title="Statustypen">hard-Zustand</a> wechseln und anschließend mit dem in der Option
+  dessen wird er sofort in einen <a class="link" href="statetypes.html" title="5.8. Statustypen">hard-Zustand</a> wechseln und anschließend mit dem in der Option
   <span class="emphasis"><em>check_interval</em></span> festgelegten Intervall geprüft.</p>
 
   <p><span class="bold"><strong>TODO</strong></span></p>
@@ -391,20 +391,20 @@
   <p>Die meisten der o.g. Informationen treffen auch auf Host-Prüfungen zu.</p>
 
   <p>Dieser Abschnitt wird aktualisiert. Voraussichtlich gibt es mehr Informationen in einer der nächsten Ausgaben...</p>
-  <a class="indexterm" name="id1552413"></a>
-  <a class="indexterm" name="id1552422"></a>
-  <a class="indexterm" name="id1552431"></a>
-  <a class="indexterm" name="id1552442"></a>
-  <a class="indexterm" name="id1552451"></a>
-  <a class="indexterm" name="id1552461"></a>
-  <a class="indexterm" name="id1552471"></a>
-  <a class="indexterm" name="id1552481"></a>
-  <a class="indexterm" name="id1552491"></a>
-  <a class="indexterm" name="id1552499"></a>
-  <a class="indexterm" name="id1552508"></a>
-  <a class="indexterm" name="id1552517"></a>
-  <a class="indexterm" name="id1552527"></a>
-  <a class="indexterm" name="id1552539"></a>
+  <a class="indexterm" name="idp13363184"></a>
+  <a class="indexterm" name="idp13366144"></a>
+  <a class="indexterm" name="idp13366272"></a>
+  <a class="indexterm" name="idp13368512"></a>
+  <a class="indexterm" name="idp13369936"></a>
+  <a class="indexterm" name="idp13370944"></a>
+  <a class="indexterm" name="idp13372272"></a>
+  <a class="indexterm" name="idp13373488"></a>
+  <a class="indexterm" name="idp13374656"></a>
+  <a class="indexterm" name="idp13375664"></a>
+  <a class="indexterm" name="idp13376656"></a>
+  <a class="indexterm" name="idp13377776"></a>
+  <a class="indexterm" name="idp13378992"></a>
+  <a class="indexterm" name="idp13380448"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -417,9 +417,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Passive Host-Zustandsübersetzung </td>
+<td width="40%" align="left" valign="top">7.21. Passive Host-Zustandsübersetzung </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Angepasste CGI-Kopf- und Fußzeilen</td>
+<td width="40%" align="right" valign="top"> 7.23. Angepasste CGI-Kopf- und Fußzeilen</td>
 </tr>
 </table>
 </div>

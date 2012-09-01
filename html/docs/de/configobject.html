@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Überblick Objektkonfiguration</title>
+<title>3.3. Überblick Objektkonfiguration</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
-<link rel="prev" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">
-<link rel="next" href="objectdefinitions.html" title="Objektdefinitionen">
+<link rel="prev" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">
+<link rel="next" href="objectdefinitions.html" title="3.4. Objektdefinitionen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Überblick Objektkonfiguration</th></tr>
+<tr><th colspan="3" align="center">3.3. Überblick Objektkonfiguration</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="configmain.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="Überblick Objektkonfiguration">
+<div class="section" title="3.3. Überblick Objektkonfiguration">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="configobject"></a>Überblick Objektkonfiguration</h2></div></div></div>
+<a name="configobject"></a>3.3. Überblick Objektkonfiguration</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Was sind Objekte?</strong></span></p>
@@ -95,7 +95,7 @@
   Objektdefinitionsdatei einzuschließen, die ebenfalls <span class="bold"><strong>include_file=</strong></span> oder
   <span class="bold"><strong>include_dir=</strong></span> enthält, um eine weitere Datei einzuschließen, und so fort.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Wenn Sie der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstart-Installationsanleitung</a> folgen,
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Wenn Sie der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Installationsanleitung</a> folgen,
   werden verschiedene Beispiel-Objektkonfigurationsdateien in <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span> abgelegt. Sie
   können diese Beispieldateien benutzen, um zu sehen, wie Objektvererbung funktioniert und lernen, wie Sie Ihre eigenen
   Objektdefinitionen anlegen.</p>
@@ -104,11 +104,11 @@
 
   <p>Objekte werden in einem flexiblen Vorlagenformat definiert, das es viel einfacher machen kann, Ihre
   Icinga-Konfiguration auf lange Sicht zu verwalten. Grundlegende Informationen, wie Objekte in Ihren Konfigurationsdateien
-  definiert werden, finden Sie <a class="link" href="objectdefinitions.html" title="Objektdefinitionen">hier</a>.</p>
+  definiert werden, finden Sie <a class="link" href="objectdefinitions.html" title="3.4. Objektdefinitionen">hier</a>.</p>
 
-  <p>Sobald Sie mit den Grundlagen vertraut sind, wie Objekte zu definieren sind, sollten Sie bei <a class="link" href="objectinheritance.html" title="Objektvererbung">Objektvererbung</a> weiterlesen, weil es Ihre Konfiguration robuster für die Zukunft macht.
+  <p>Sobald Sie mit den Grundlagen vertraut sind, wie Objekte zu definieren sind, sollten Sie bei <a class="link" href="objectinheritance.html" title="7.25. Objektvererbung">Objektvererbung</a> weiterlesen, weil es Ihre Konfiguration robuster für die Zukunft macht.
   Erfahrene Benutzer können einige fortgeschrittene Möglichkeiten der Objektdefinition ausnutzen, die in der Dokumentation zu
-  <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> beschrieben sind.</p>
+  <a class="link" href="objecttricks.html" title="7.26. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> beschrieben sind.</p>
 
   <p><a name="configobject-objectoverview"></a><span class="bold"><strong>Objekte erklärt</strong></span></p>
 
@@ -142,7 +142,7 @@
               </li>
 <li class="listitem">
                 <p>Hosts können Eltern/Kind-Beziehungen mit anderen Hosts haben, oftmals dargestellt durch reale
-                Netzwerkverbindungen, die in der <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerk-Erreichbarkeits</a>-Logik benutzt
+                Netzwerkverbindungen, die in der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerk-Erreichbarkeits</a>-Logik benutzt
                 wird.</p>
               </li>
 </ul></div> <p><a class="link" href="objectdefinitions.html#objectdefinitions-hostgroup">
@@ -152,7 +152,7 @@
 
                
             </a> sind Gruppen von einem oder mehreren Hosts. Hostgruppen können es einfacher machen, (1) den Status von in
-          Beziehung stehenden Hosts im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
+          Beziehung stehenden Hosts im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="7.26. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
 </td>
 <td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-hosts.png"></span> </p></td>
 </tr></tbody>
@@ -191,7 +191,7 @@
 
                
             </a> sind Gruppen von einem oder mehreren Services. Servicegruppen können es einfacher machen, (1) den Status von
-          in Beziehung stehenden Services im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
+          in Beziehung stehenden Services im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="7.26. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
 </td>
 <td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-services.png"></span> </p></td>
 </tr></tbody>
@@ -255,7 +255,7 @@
 <li class="listitem">
                 <p>wann Kontakte Benachrichtigungen erhalten</p>
               </li>
-</ul></div> <p>Informationen darüber, wie Zeitfenster arbeiten, finden Sie <a class="link" href="timeperiods.html" title="Zeitfenster">hier</a>.</p>
+</ul></div> <p>Informationen darüber, wie Zeitfenster arbeiten, finden Sie <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">hier</a>.</p>
 </td>
 <td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-timeperiods.png"></span> </p></td>
 </tr></tbody>
@@ -296,11 +296,11 @@
 </tr></tbody>
 </table>
   </div>
-  <a class="indexterm" name="id1471839"></a>
-  <a class="indexterm" name="id1471849"></a>
-  <a class="indexterm" name="id1471857"></a>
-  <a class="indexterm" name="id1471869"></a>
-  <a class="indexterm" name="id1471880"></a>
+  <a class="indexterm" name="idp3691808"></a>
+  <a class="indexterm" name="idp3692912"></a>
+  <a class="indexterm" name="idp3693920"></a>
+  <a class="indexterm" name="idp3695312"></a>
+  <a class="indexterm" name="idp3696704"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -313,9 +313,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Optionen der Hauptkonfigurationsdatei </td>
+<td width="40%" align="left" valign="top">3.2. Optionen der Hauptkonfigurationsdatei </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Objektdefinitionen</td>
+<td width="40%" align="right" valign="top"> 3.4. Objektdefinitionen</td>
 </tr>
 </table>
 </div>
