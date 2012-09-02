@@ -30,7 +30,7 @@ CC=@CC@
 CFLAGS=@CFLAGS@ @DEFS@ -DNSCGI
 
 # for profiling
-CFLAGS += -pg -ftest-coverage
+#CFLAGS += -pg -ftest-coverage
 
 # Compiler flags for optimization (overrides default)
 #CFLAGS=-O3 -Wall -Wshadow -Wpointer-arith -Wcast-qual -Wcast-align -Wstrict-prototypes -Wmissing-prototypes -Wnested-externs -DHAVE_CONFIG_H -DNSCGI
