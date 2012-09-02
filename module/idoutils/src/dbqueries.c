@@ -2437,8 +2437,11 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
-	char * query1 = NULL;
-	char * query2 = NULL;
+        char * query = NULL;
+        char * query1 = NULL;
+        char * query2 = NULL;
+        unsigned long scheduleddowntime_id;
+        int mysql_update = FALSE;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add() start\n");
 
@@ -2474,10 +2477,39 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
                 result = ido2db_db_query(idi, query1);
                 free(query1);
 
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add() dbi_result_get_numrows_affected=%lu\n", dbi_result_get_numrows_affected(idi->dbinfo.dbi_result));
+
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s "
+
+                        dummy = asprintf(&query, "SELECT scheduleddowntime_id FROM %s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]
+                                 ,*(unsigned long *) data[0]     /* unique constraint start */
+                                 ,*(unsigned long *) data[2]
+                                 ,*(char **) data[3]
+                                 ,*(unsigned long *) data[6]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                scheduleddowntime_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "scheduleddowntime_id");
+                                                mysql_update = TRUE;
+                                        } else {
+                                                mysql_update = FALSE;
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+                        free(query);
+
+                        if (mysql_update == FALSE) {
+
+                        	/* try insert instead */
+	                        dummy = asprintf(&query2, "INSERT INTO %s "
                                                         "(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time, is_in_effect, trigger_time) "
                                                         "VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s, %d, %s)"
                                          ,ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]
@@ -2496,9 +2528,10 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
                                          ,*(int *) data[15]
                                          ,*(char **) data[16]            /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+        	                /* send query to db */
+                	        result = ido2db_db_query(idi, query2);
+                        	free(query2);
+			}
                 }
                 break;
 
@@ -2659,8 +2692,11 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
-	char * query1 = NULL;
-	char * query2 = NULL;
+        char * query = NULL;
+        char * query1 = NULL;
+        char * query2 = NULL;
+        unsigned long downtimehistory_id;
+        int mysql_update = FALSE;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_downtimedata_downtime_history_add() start\n");
 
@@ -2698,10 +2734,38 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
                 result = ido2db_db_query(idi, query1);
                 free(query1);
 
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_downtimedata_downtime_history_add() dbi_result_get_numrows_affected=%lu\n", dbi_result_get_numrows_affected(idi->dbinfo.dbi_result));
+
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s "
+
+                        dummy = asprintf(&query, "SELECT downtimehistory_id FROM %s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]
+                                 ,*(unsigned long *) data[0]     /* unique constraint start */
+                                 ,*(unsigned long *) data[2]
+                                 ,*(char **) data[3]
+                                 ,*(unsigned long *) data[6]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                downtimehistory_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "downtimehistory_id");
+                                                mysql_update = TRUE;
+                                        } else {
+                                                mysql_update = FALSE;
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+                        free(query);
+
+                        if (mysql_update == FALSE) {
+                        	/* try insert instead */
+	                        dummy = asprintf(&query2, "INSERT INTO %s "
                                                         "(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time, is_in_effect, trigger_time) "
                                                         "VALUES (%lu, %d, %lu, %s, '%s', '%s', %lu, %lu, %d, %lu, %s, %s, %d, %s)"
                                          ,ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]
@@ -2722,9 +2786,10 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 
                                          /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+        	                /* send query to db */
+                	        result = ido2db_db_query(idi, query2);
+                        	free(query2);
+			}
                 }
                 break;
 
