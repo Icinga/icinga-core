@@ -19,10 +19,19 @@ td {
 	padding-bottom:3px;
 }
 
-.objectDescription {
+.objectTableHeader {
 	font-size: 8pt;
 	font-weight: bold;
 	height:25px;
+	background-color: #707677;
+	color: #fff;
+	border: 0;
+}
+
+.objectDescription {
+        font-size: 8pt;
+        font-weight: bold;
+        height:25px;
 }
 
 .descriptionleft {
