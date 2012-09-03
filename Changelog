@@ -19,6 +19,7 @@ ENHANCEMENTS
 * core: add a command to disable notifications program-wide with expire time as scheduled event #905 - MF
 	** DISABLE_NOTIFICATIONS_EXPIRE_TIME, works for global notifications
 * core: add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879 - MF
+* core: add new callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE to allow override of sending notifications #2041 - MF
 
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
@@ -86,6 +87,7 @@ FIXES
 * idoutils: fix sla_downtime_select query and result handle; scheduled downtime merge statement #2780 - MF
 
 * icinga.spec: fix permissions on ido2db.cfg potentially world readable (Aaron Russo) #2897 - MF
+* icinga.soec: drop unsupported configure flags #3037 - MF
 
 CHANGES
 
@@ -97,6 +99,8 @@ CHANGES
 * core: unknown macros are not left on the output anymore, logging a warning instead
 	** either fix your config (i.e. wrong macros, escape dollar signs with another one)
 	** or set keep_unknown_macros=1 in icinga.cfg to revert to the old behaviour
+
+* core: new NEB callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE (606) #2041
 
 * icinga.spec: add devel package #2634
 * icinga.spec: forced update on icinga.cfg change package locations #2923

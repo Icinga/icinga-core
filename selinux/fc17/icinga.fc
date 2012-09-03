@@ -1,0 +1,37 @@
+/etc/rc\.d/init\.d/icinga	--	gen_context(system_u:object_r:icinga_initrc_exec_t,s0)
+/etc/rc\.d/init\.d/ido2db	--	gen_context(system_u:object_r:ido2db_initrc_exec_t,s0)
+
+/usr/bin/icinga		--	gen_context(system_u:object_r:icinga_exec_t,s0)
+/usr/bin/ido2db		--	gen_context(system_u:object_r:ido2db_exec_t,s0)
+
+/var/log/icinga(/.*)?		gen_context(system_u:object_r:icinga_log_t,s0)
+
+/var/log/icinga/archives(/.*)?		gen_context(system_u:object_r:icinga_log_t,s0)
+
+/var/log/icinga/gui(/.*)?		gen_context(system_u:object_r:icinga_log_t,s0)
+
+/var/log/icinga/gui/.htaccess		--	gen_context(system_u:object_r:icinga_log_t,s0)
+
+/var/log/icinga/gui/index.htm		--	gen_context(system_u:object_r:icinga_log_t,s0)
+
+/var/run/icinga.pid		--	gen_context(system_u:object_r:icinga_var_run_t,s0)
+/run/icinga.pid		--	gen_context(system_u:object_r:icinga_var_run_t,s0)
+
+/var/run/ido2db.pid		--	gen_context(system_u:object_r:ido2db_var_run_t,s0)
+/run/ido2db.pid		--	gen_context(system_u:object_r:ido2db_var_run_t,s0)
+
+/var/spool/icinga(/.*)?		gen_context(system_u:object_r:icinga_spool_t,s0)
+
+/var/spool/icinga/checkresults(/.*)?		gen_context(system_u:object_r:icinga_spool_t,s0)
+
+/var/spool/icinga/cmd(/.*)?		gen_context(system_u:object_r:icinga_command_t,s0)
+
+/usr/lib/icinga/cgi(/.*)?		gen_context(system_u:object_r:httpd_icinga_script_exec_t,s0)
+
+/usr/share/icinga(/.*)?		gen_context(system_u:object_r:httpd_icinga_content_t,s0)
+
+/etc/icinga-web(/.*)?		gen_context(system_u:object_r:httpd_icinga_web_content_t,s0)
+/usr/share/icinga-web(/.*)?		gen_context(system_u:object_r:httpd_icinga_web_content_t,s0)
+/var/log/icinga-web(/.*)?         gen_context(system_u:object_r:httpd_icinga_web_content_rw_t,s0)
+/var/cache/icinga-web(/.*)?         gen_context(system_u:object_r:httpd_icinga_web_content_rw_t,s0)
+
