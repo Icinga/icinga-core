@@ -76,6 +76,17 @@ use_ssl=0
 
 
 
+# LIBDBI DRIVER DIRECTORY !!!EXPERIMENTAL!!!
+# This option is only valid when using libdbi as database abstraction layer
+# (so not oracle) on compile time. By default, libdbi will figure out the
+# correct path itsself. If you want to change it, enable and change the value.
+#
+# Default: not in use, enable and change to e.g. /usr/local/lib/dbd
+
+#libdbi_driver_dir=@LIBDBIDRIVERDIR@
+
+
+
 # DATABASE SERVER TYPE
 # This option determines what type of DB server the daemon should
 # connect to.
@@ -214,7 +225,7 @@ max_contactnotifications_age=44640
 max_contactnotificationmethods_age=44640
 
 
-## CLEAN REALTIME TABLES AT CORE STARTUP
+## CLEAN REALTIME TABLES AT CORE STARTUP !!!EXPERIMENTAL!!!
 # If you don't want to clean all those tables, set this option to 0.
 # This can be useful if the deletes slow down the normal data
 # processing.
@@ -224,7 +235,7 @@ max_contactnotificationmethods_age=44640
 clean_realtime_tables_on_core_startup=1
 
 
-## CLEAN CONFIG TABLES AT CORE STARTUP
+## CLEAN CONFIG TABLES AT CORE STARTUP !!!EXPERIMENTAL!!!
 # If you don't want to clean all those tables, set this option to 0.
 # This can be useful if the deletes slow down the normal data
 # processing.

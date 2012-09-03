@@ -90,6 +90,8 @@ unsigned long ido2db_max_debug_file_size = 0L;
 int enable_sla = IDO_FALSE;
 int ido2db_debug_readable_timestamp = IDO_FALSE;
 
+char *libdbi_driver_dir = NULL;
+
 int stop_signal_detected = IDO_FALSE;
 
 char *sigs[35] = {"EXIT", "HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS", "FPE", "KILL", "USR1", "SEGV", "USR2", "PIPE", "ALRM", "TERM", "STKFLT", "CHLD", "CONT", "STOP", "TSTP", "TTIN", "TTOU", "URG", "XCPU", "XFSZ", "VTALRM", "PROF", "WINCH", "IO", "PWR", "UNUSED", "ZERR", "DEBUG", (char *)NULL};
@@ -225,7 +227,7 @@ int main(int argc, char **argv) {
 	if (ido2db_check_dbd_driver() == IDO_FALSE) {
 		printf("Support for the specified database server is either not yet supported, or was not found on your system.\n");
 
-		numdrivers = dbi_initialize(NULL);
+		numdrivers = dbi_initialize(libdbi_driver_dir);
 		if (numdrivers == -1)
 			numdrivers = 0;
 
@@ -608,6 +610,10 @@ int ido2db_process_config_var(char *arg) {
 	} else if (!strcmp(var, "debug_readable_timestamp")) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	}
+	else if (!strcmp(var, "libdbi_driver_dir")) {
+		if ((libdbi_driver_dir = strdup(val)) == NULL)
+			return IDO_ERROR;
+	}
 	//syslog(LOG_ERR,"ido2db_process_config_var(%s) end\n",var);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_process_config_var(%s) end\n", var);
@@ -705,6 +711,10 @@ int ido2db_free_program_memory(void) {
 	if (ido2db_debug_file) {
 		free(ido2db_debug_file);
 		ido2db_debug_file = NULL;
+	}
+	if (libdbi_driver_dir) {
+		free(libdbi_driver_dir);
+		libdbi_driver_dir = NULL;
 	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_free_program_memory() end\n");
