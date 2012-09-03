@@ -1467,6 +1467,7 @@ void show_host_info(void) {
 				printf("\"host_is_flapping\": %s,\n", (temp_hoststatus->is_flapping == TRUE) ? "true" : "false");
 			printf("\"flapping_percent_state_change\": %3.2f,\n", temp_hoststatus->percent_state_change);
 			printf("\"host_in_scheduled_downtime\": %s,\n", (temp_hoststatus->scheduled_downtime_depth > 0) ? "true" : "false");
+			printf("\"host_has_been_acknowledged\": %s,\n", (temp_hoststatus->problem_has_been_acknowledged == TRUE) ? "true" : "false");
 
 			get_time_string(&temp_hoststatus->last_update, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
 			printf("\"last_update\": \"%s\",\n", date_time);
@@ -1899,6 +1900,7 @@ void show_service_info(void) {
 				printf("\"service_is_flapping\": %s,\n", (temp_svcstatus->is_flapping == TRUE) ? "true" : "false");
 			printf("\"flapping_percent_state_change\": %3.2f,\n", temp_svcstatus->percent_state_change);
 			printf("\"service_in_scheduled_downtime\": %s,\n", (temp_svcstatus->scheduled_downtime_depth > 0) ? "true" : "false");
+			printf("\"service_has_been_acknowledged\": %s,\n", (temp_svcstatus->problem_has_been_acknowledged == TRUE) ? "true" : "false");
 
 			get_time_string(&temp_svcstatus->last_update, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
 			printf("\"last_update\": \"%s\",\n", date_time);

@@ -5,7 +5,7 @@ Icinga 1.8.x Change Log
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
 
-1.8.0 - XX/10/2012
+1.8.0 - 18/10/2012
 
 ENHANCEMENTS
 * core: pass long_output to neb api for statechange data #2650 - MF
@@ -19,6 +19,7 @@ ENHANCEMENTS
 * core: add a command to disable notifications program-wide with expire time as scheduled event #905 - MF
 	** DISABLE_NOTIFICATIONS_EXPIRE_TIME, works for global notifications
 * core: add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879 - MF
+* core: add new callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE to allow override of sending notifications #2041 - MF
 
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
@@ -42,6 +43,7 @@ ENHANCEMENTS
 * classic ui: Added date/time selection for all date/time input fields #2576 - RB
 * classic ui: Added 'All Problems' to 'Problems' group in menu #2645 - RB
 * classic ui: Added host/service selection for commands, leaving out passive only checks on check reschedule in cmd.cgi #2697 - RB
+* classic ui: add host_has_been_acknowledged and service_has_been_acknowledged to extinfo.cgi jsonoutput (Torsten Rehn) #3000 - MF
 
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
 * idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
@@ -50,6 +52,7 @@ ENHANCEMENTS
 * idoutils: add disable_notif_expire_time to programstatus table - #905 - MF
 * idoutils: add socket_perm to set unix socket permissions (Lennart Betz) #2659 - MF
 * idoutils: upgradedb script for mysql installs all updates between $version and $currentrelease (Philipp Deneu) #2685 - MF
+* idoutils: add --with-libdbi-driver-dir to configure, libdbi_driver_dir to ido2db.cfg to pass the driver location instead of NULL by default #2691 - MF
 
 * install: add --with-mainurl to configure, allowing to set the main frame target url for index.html #2611 - MF
 * icinga.spec: use --with-mainurl to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29 #2611 - MF
@@ -77,11 +80,14 @@ FIXES
 * classic ui: fix setting send_notification or sticky_ack as GET param has no effect on cmd.cgi acks #2926 - MF
 	** now you can finally disable checkboxes default ticked with these options
 * classic ui: Fixed clicking an (action|notes)url in a row automatically ticks the row for the commands #2809 - RB
+* classic ui: menu search can't handle umlauts in hostnames correctly (changed to utf8) #2999 - MF
 
 * idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
 * idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
+* idoutils: fix sla_downtime_select query and result handle; scheduled downtime merge statement #2780 - MF
 
 * icinga.spec: fix permissions on ido2db.cfg potentially world readable (Aaron Russo) #2897 - MF
+* icinga.soec: drop unsupported configure flags #3037 - MF
 
 CHANGES
 
@@ -93,6 +99,8 @@ CHANGES
 * core: unknown macros are not left on the output anymore, logging a warning instead
 	** either fix your config (i.e. wrong macros, escape dollar signs with another one)
 	** or set keep_unknown_macros=1 in icinga.cfg to revert to the old behaviour
+
+* core: new NEB callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE (606) #2041
 
 * icinga.spec: add devel package #2634
 * icinga.spec: forced update on icinga.cfg change package locations #2923
@@ -127,6 +135,9 @@ classic ui: added checkbox in cmd.cgi to deselect unintentional selected hosts/s
 
 * ido2db.cfg: new config option
 	** socket_perm (default 0755) #2659
+	** libdbi_driver_dir (default NULL) #2691
+
+* install: add --with-libdbi-driver-dir to configure #2691
 
 
 1.7.2 - 27/08/2012
