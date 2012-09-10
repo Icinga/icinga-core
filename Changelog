@@ -77,6 +77,7 @@ FIXES
 * core: fix having empty host/servicegroups, $HOST|SERVICEGROUPMEMBERS$ on-demand macro returns garbage on realloc (thx roguelazer) #2913 - MF
 * core: allow multiple empty (host)groups chained with enabled allow_empty_hostgroup_assignment #2437 - MF
 * core: fixed when deleting an expiring ack the event to delete the ack doesn't get deleted #3084 - RB
+* core: fix error checking on subgroup expanding on host|service|contactgroup members #3088 - MF/RB
 
 * classic ui: fix setting send_notification or sticky_ack as GET param has no effect on cmd.cgi acks #2926 - MF
 	** now you can finally disable checkboxes default ticked with these options
