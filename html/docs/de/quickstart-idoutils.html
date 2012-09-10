@@ -1,35 +1,36 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Icinga-Schnellstart mit IDOUtils</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>2.5. Icinga-Schnellstart mit IDOUtils</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="quickstart-icinga-freebsd.html" title="Icinga-Schnellstart auf FreeBSD">
-<link rel="next" href="quickstart-idoutils-freebsd.html" title="Icinga-Schnellstart mit IDOUtils auf FreeBSD">
+<link rel="prev" href="quickstart-icinga-freebsd.html" title="2.4. Icinga-Schnellstart auf FreeBSD">
+<link rel="next" href="quickstart-idoutils-freebsd.html" title="2.6. Icinga-Schnellstart mit IDOUtils auf FreeBSD">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga-Schnellstart mit IDOUtils</th></tr>
+<tr><th colspan="3" align="center">2.5. Icinga-Schnellstart mit IDOUtils</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="quickstart-icinga-freebsd.html">Zurück</a> </td>
+<a accesskey="p" href="quickstart-icinga-freebsd.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 2. Los geht's</th>
-<td width="20%" align="right"> <a accesskey="n" href="quickstart-idoutils-freebsd.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="quickstart-idoutils-freebsd.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Icinga-Schnellstart mit IDOUtils">
+<div class="section" title="2.5. Icinga-Schnellstart mit IDOUtils">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="quickstart-idoutils"></a>Icinga-Schnellstart mit IDOUtils</h2></div></div></div>
+<a name="quickstart-idoutils"></a>2.5. Icinga-Schnellstart mit IDOUtils</h2></div></div></div>
   
 
-  <p><span class="bold"><strong><a name="introduction_idoutils"></a>Einführung</strong></span></p>
+  <p><span class="bold"><strong><a name="introduction_idoutils"></a>EinfÃ¼hrung</strong></span></p>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -37,11 +38,27 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Anstatt Icinga von Grund auf zu installieren möchten Sie vielleicht ein Paket benutzen, das es möglicherweise für Ihr
+    <p>Anstatt Icinga von Grund auf zu installieren mÃ¶chten Sie vielleicht ein Paket benutzen, das es mÃ¶glicherweise fÃ¼r Ihr
     Betriebssystem gibt. Bitte werfen Sie einen Blick auf die <a class="link" href="https://www.icinga.org/download/packages" target="_top">Tabelle der
     Pakete</a>.</p>
 
-    <p>Falls Sie aus den Sourcen installieren möchten, dann benutzen Sie bitte die offiziellen Release-Tarballs.</p>
+    <p>Bitte bedenken Sie, dass die Upstream-Pakete evtl. relativ alt sind, so dass die Verwendung von Backports-Paketen ein Weg ist,
+    eine aktuelle Version zu bekommen. Bitte werfen Sie einen Blick auf die (englischsprachigen) Wiki-Artikel fÃ¼r detaillierte
+    Informationen:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+Debian" target="_top">Debian</a></p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+Ubuntu" target="_top">Ubuntu</a></p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+RHEL" target="_top">RHEL/CentOS</a></p>
+      </li>
+</ul></div>
+
+    <p>Falls Sie aus den Sourcen installieren mÃ¶chten, dann benutzen Sie bitte die offiziellen Release-Tarballs.</p>
   </td></tr>
 </table></div>
 
@@ -51,21 +68,21 @@
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf. gelöst
+    <p>Bitte benutzen Sie keine GIT-Snapshots, solange Sie kein Problem haben, das in der aktuellen Entwicklerversion ggf. gelÃ¶st
     ist.</p>
   </td></tr>
 </table></div>
 
   <p>Diese Schnellstartanleitung ist dazu gedacht, Ihnen einfache Anweisungen zu liefern, wie Sie Icinga innerhalb von 30 Minuten
-  aus dem Quellcode installieren und Ihren lokalen Rechner damit überwachen.</p>
+  aus dem Quellcode installieren und Ihren lokalen Rechner damit Ã¼berwachen.</p>
 
-  <p>Hier werden keine fortgeschrittenen Installationsoptionen vorgestellt - lediglich die Grundlagen, die für 95% aller Benutzer
+  <p>Hier werden keine fortgeschrittenen Installationsoptionen vorgestellt - lediglich die Grundlagen, die fÃ¼r 95% aller Benutzer
   funktionieren, die anfangen wollen.</p>
 
-  <p>Diese Anleitung enthält Anweisungen für drei verschiedene Linux-Distributionen: <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>, <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a> und <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>. Ähnliche Distributionen werden wahrscheinlich auch funktionieren, darunter
+  <p>Diese Anleitung enthÃ¤lt Anweisungen fÃ¼r drei verschiedene Linux-Distributionen: <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>, <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a> und <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>. Ã„hnliche Distributionen werden wahrscheinlich auch funktionieren, darunter
   <a class="link" href="http://www.redhat.com/" target="_top">RedHat</a>, <a class="link" href="http://www.centos.org/" target="_top">CentOS</a>, <a class="link" href="http://www.debian.org/" target="_top">Debian</a> und <a class="link" href="http://www.novell.com/products/server/" target="_top">SLES</a>.</p>
 
-  <p><span class="bold"><strong>Wenn Sie planen, Icinga OHNE IDOUtils zu nutzen, dann lesen Sie statt dessen <a class="xref" href="quickstart-icinga.html" title="Icinga-Schnellstart auf Linux">&#8222;Icinga-Schnellstart auf Linux&#8220;</a>!</strong></span></p>
+  <p><span class="bold"><strong>Wenn Sie planen, Icinga OHNE IDOUtils zu nutzen, dann lesen Sie statt dessen <a class="xref" href="quickstart-icinga.html" title="2.3. Icinga-Schnellstart auf Linux">AbschnittÂ 2.3, â€žIcinga-Schnellstart auf Linuxâ€œ</a>!</strong></span></p>
 
   <p><span class="bold"><strong>Was dabei herauskommt</strong></span></p>
 
@@ -76,23 +93,23 @@
       <p>Icinga und die Plugins werden unterhalb von /usr/local/icinga installiert sein</p>
     </li>
 <li class="listitem">
-      <p>Icinga wird so konfiguriert sein, dass es einige Dinge auf Ihrem lokalen System überwacht (CPU-Auslastung,
+      <p>Icinga wird so konfiguriert sein, dass es einige Dinge auf Ihrem lokalen System Ã¼berwacht (CPU-Auslastung,
       Plattenbelegung, usw.)</p>
     </li>
 <li class="listitem">
       <p>Das klassische Icinga-Web-Interface ist erreichbar unter http://localhost/icinga/</p>
     </li>
 <li class="listitem">
-      <p>Eine Datenbank, die von Icinga mit Hilfe von IDOUtils gefüllt wird</p>
+      <p>Eine Datenbank, die von Icinga mit Hilfe von IDOUtils gefÃ¼llt wird</p>
     </li>
 </ul></div>
 
   <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
 
-  <p>Während einiger Teile der Installation benötigen Sie <span class="bold"><strong>root</strong></span>-Zugang zu Ihrer Maschine.</p>
+  <p>WÃ¤hrend einiger Teile der Installation benÃ¶tigen Sie <span class="bold"><strong>root</strong></span>-Zugang zu Ihrer Maschine.</p>
 
-  <p>IDOUtils benutzt die <a class="link" href="http://libdbi.sourceforge.net" target="_top">libdbi</a> und die libdbi-Treiber für verschiedene
-  Datenbanken. Die Development-Libraries werden ebenfalls benötigt. Die folgenden Beispiele zeigen, wie die IDOUtils mit libdbi für
+  <p>IDOUtils benutzt die <a class="link" href="http://libdbi.sourceforge.net" target="_top">libdbi</a> und die libdbi-Treiber fÃ¼r verschiedene
+  Datenbanken. Die Development-Libraries werden ebenfalls benÃ¶tigt. Die folgenden Beispiele zeigen, wie die IDOUtils mit libdbi fÃ¼r
   MySQL oder PostgreSQL installiert werden.</p>
 
   <p>Stellen Sie sicher, dass die folgenden Pakete installiert sind, bevor Sie fortfahren.</p>
@@ -119,7 +136,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>PostgreSQL: Aufgrund von Änderungen an Insert-Statements funktioniert PostgreSQL 8.1 nicht länger (und ist auch bereits <a class="link" href="http://wiki.postgresql.org/wiki/PostgreSQL_Release_Support_Policy" target="_top">"End-of-life"</a> seit November 2010), also
+        <p>PostgreSQL: Aufgrund von Ã„nderungen an Insert-Statements funktioniert PostgreSQL 8.1 nicht lÃ¤nger (und ist auch bereits <a class="link" href="http://wiki.postgresql.org/wiki/PostgreSQL_Release_Support_Policy" target="_top">"End-of-life"</a> seit November 2010), also
         benutzen Sie bitte 8.2 oder besser noch 8.4. String escaping mit PostgreSQL 9.x befindet sich noch in einem experimentellen
         Stadium.</p>
       </td></tr>
@@ -129,15 +146,15 @@
 
   <p><span class="bold"><strong>Optional</strong></span></p>
 
-  <p>Zu irgendeiner Zeit möchten Sie wahrscheinlich SNMP-basierte Prüfungen verwenden, so dass es eine gute Idee ist, die benötigten
-  Pakete gleich zu installieren. Anderenfalls werden die Plugins nicht kompiliert und sind nicht verfügbar, wenn Sie diese brauchen.</p>
+  <p>Zu irgendeiner Zeit mÃ¶chten Sie wahrscheinlich SNMP-basierte PrÃ¼fungen verwenden, so dass es eine gute Idee ist, die benÃ¶tigten
+  Pakete gleich zu installieren. Anderenfalls werden die Plugins nicht kompiliert und sind nicht verfÃ¼gbar, wenn Sie diese brauchen.</p>
 
-  <p><span class="bold"><strong>Neue Features für die IDOUtils:</strong></span></p>
+  <p><span class="bold"><strong>Neue Features fÃ¼r die IDOUtils:</strong></span></p>
 
-  <p><span class="bold"><strong>SSL-Verschlüsselung zwischen idomod und ido2db</strong></span></p>
+  <p><span class="bold"><strong>SSL-VerschlÃ¼sselung zwischen idomod und ido2db</strong></span></p>
 
-  <p>Wenn Sie <span class="bold"><strong>SSL-Verschlüsselung </strong></span>verwenden möchten, werden zusätzlich die Pakete openssl und
-  openssl-devel/libssl-dev benötigt!</p>
+  <p>Wenn Sie <span class="bold"><strong>SSL-VerschlÃ¼sselung </strong></span>verwenden mÃ¶chten, werden zusÃ¤tzlich die Pakete openssl und
+  openssl-devel/libssl-dev benÃ¶tigt!</p>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -149,9 +166,9 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Oracle-Datenbankunterstützung</strong></span></p>
+  <p><span class="bold"><strong>Oracle-DatenbankunterstÃ¼tzung</strong></span></p>
 
-  <p>Wenn Sie Oracle als RDBMS einsetzen möchten, müssen Sie installieren:</p>
+  <p>Wenn Sie Oracle als RDBMS einsetzen mÃ¶chten, mÃ¼ssen Sie installieren:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -166,7 +183,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Zum Einsatz von IDOUtils 1.5.0 mit Oracle benötigen Sie OCILIB 3.9.2 - installieren Sie nicht 3.9.0 oder 3.9.1,
+        <p>Zum Einsatz von IDOUtils 1.5.0 mit Oracle benÃ¶tigen Sie OCILIB 3.9.2 - installieren Sie nicht 3.9.0 oder 3.9.1,
         denn diese Version sind fehlerbehaftet.</p>
       </td></tr>
 </table></div>
@@ -196,30 +213,30 @@
 
   <p><span class="emphasis"><em>Icinga 1.4</em></span></p>
 
-  <p>Seit Icinga 1.4 wird mindestens Oracle 10gR2 benötigt. Ältere Versionen funktionieren möglicherweise, werden aber
-  nicht unterstützt. Die Oracle-Skripte wurden geändert, um für Daten, Indexe und LOBs nun unterschiedliche Tablespaces zu nutzen.
-  Aus diesem Grund gibt es die Notwendigkeit, den Tablespace-Namen anzugeben, den Sie benutzen möchten. Wenn Sie eine kleine Umgebung haben,
-  dann können Sie für alle "defines" den gleichen Tablespace angeben. Sie müssen das neue Skript <code class="filename">icinga_defines.sql</code> auf
-  Ihre Bedürfnisse anpassen, bevor Sie das Skript <code class="filename">oracle.sql</code> ausführen. Um Ihnen ein wenig Arbeit abzunehmen, gibt es
-  ein neues Skript <code class="filename">create_oracle_sys.sql</code>, das Ihnen helfen soll, die benötigten Tablespaces und einen
-  Icinga-Applikations-Benutzer anzulegen, das als SYS ausgeführt werden muss. Es benutzt außerdem
+  <p>Seit Icinga 1.4 wird mindestens Oracle 10gR2 benÃ¶tigt. Ã„ltere Versionen funktionieren mÃ¶glicherweise, werden aber
+  nicht unterstÃ¼tzt. Die Oracle-Skripte wurden geÃ¤ndert, um fÃ¼r Daten, Indexe und LOBs nun unterschiedliche Tablespaces zu nutzen.
+  Aus diesem Grund gibt es die Notwendigkeit, den Tablespace-Namen anzugeben, den Sie benutzen mÃ¶chten. Wenn Sie eine kleine Umgebung haben,
+  dann kÃ¶nnen Sie fÃ¼r alle "defines" den gleichen Tablespace angeben. Sie mÃ¼ssen das neue Skript <code class="filename">icinga_defines.sql</code> auf
+  Ihre BedÃ¼rfnisse anpassen, bevor Sie das Skript <code class="filename">oracle.sql</code> ausfÃ¼hren. Um Ihnen ein wenig Arbeit abzunehmen, gibt es
+  ein neues Skript <code class="filename">create_oracle_sys.sql</code>, das Ihnen helfen soll, die benÃ¶tigten Tablespaces und einen
+  Icinga-Applikations-Benutzer anzulegen, das als SYS ausgefÃ¼hrt werden muss. Es benutzt auÃŸerdem
   <code class="filename">icinga_defines.sql</code>. Die Erzeugung von Objekten wurde von <code class="filename">oracle.sql</code> in das Skript
   <code class="filename">create_icinga_objects_oracle.sql</code> verlagert. Das alte <code class="filename">oracle.sql</code> wurde in ein "Master"-Skript
-  umgewandelt und enthält per "include" Verweise auf alle anderen Skripte, die im aktuellen Verzeichnis erwartet werden. Aus diesem Grund
-  sollten Sie <code class="filename">sqlplus</code> in diesem Verzeichnis starten, um <code class="filename">oracle.sql</code> auszuführen. Auf diese Weise
+  umgewandelt und enthÃ¤lt per "include" Verweise auf alle anderen Skripte, die im aktuellen Verzeichnis erwartet werden. Aus diesem Grund
+  sollten Sie <code class="filename">sqlplus</code> in diesem Verzeichnis starten, um <code class="filename">oracle.sql</code> auszufÃ¼hren. Auf diese Weise
   erfolgt die Erzeugung von Benutzer und Tablespaces sowie die Erzeugung der Icinga-Tabellen in einem Schritt. Als ein
   All-in-one-Beispiel gibt es das neue Skript <code class="filename">db/scripts/create_oracledb.sh</code>. Passen Sie die Variablen auf Ihre
-  Bedürfnisse an und freuen Sie sich. Wenn Sie es vorziehen, die Schritte als SYS selbst zu erledigen, dann entfernen Sie den Kommentar vor
+  BedÃ¼rfnisse an und freuen Sie sich. Wenn Sie es vorziehen, die Schritte als SYS selbst zu erledigen, dann entfernen Sie den Kommentar vor
   <code class="filename">create_oracle_sys.sql</code> und stellen Sie sicher, dass Ihr Icinga-Datenbankbenutzer und die Tabellen existieren
   und (mindestens) mit den gleichen Rechten definiert sind und dass die korrekten Einstellungen in <code class="filename">icinga_defines.sql</code>
   vorhanden sind.</p>
 
-  <p><a name="quickstart-idoutils_timezone-support"></a><span class="bold"><strong>Zeitzonenunterstützung</strong></span></p>
+  <p><a name="quickstart-idoutils_timezone-support"></a><span class="bold"><strong>ZeitzonenunterstÃ¼tzung</strong></span></p>
 
-  <p>Ab Icinga 1.6 werden alle Zeit-/Datumsinformationen als lokale Zeitstempel in der Datenbank gespeichert. Vorher gab es für
-  jedes Datenbanksystem unterschiedliche Vorgehensweisen beim Speichern und Abrufen der Daten, was schwierig für Frontend-Applikationen war.
-  Deshalb wurden die Datentypen geändert: für MySQL von DATETIME in TIMESTAMP und für Oracle von DATE in LOCAL TIMESTAMP (0).
-  PostgreSQL benutzt bereits TIMESTAMP, es wurde aber in TIMESTAMP WITH TIME ZONE geändert. IDO2DB wird die Sitzungszeitzone auf UTC
+  <p>Ab Icinga 1.6 werden alle Zeit-/Datumsinformationen als lokale Zeitstempel in der Datenbank gespeichert. Vorher gab es fÃ¼r
+  jedes Datenbanksystem unterschiedliche Vorgehensweisen beim Speichern und Abrufen der Daten, was schwierig fÃ¼r Frontend-Applikationen war.
+  Deshalb wurden die Datentypen geÃ¤ndert: fÃ¼r MySQL von DATETIME in TIMESTAMP und fÃ¼r Oracle von DATE in LOCAL TIMESTAMP (0).
+  PostgreSQL benutzt bereits TIMESTAMP, es wurde aber in TIMESTAMP WITH TIME ZONE geÃ¤ndert. IDO2DB wird die Sitzungszeitzone auf UTC
   setzen und alle Unix-Timestamps (die per Definition UTC sind) als UTC-basierte Werte speichern. Bitte stellen Sie sicher, dass Ihr System
   Unix-Timestamps als UTC-basierte Werte ausgibt (wie "date -u '+%s'").</p>
 
@@ -229,18 +246,18 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Stellen Sie sicher, dass Ihre Datenbanksitzung in der gleichen Zeitzone läuft, in der die existierenden Zeit-/Datumsinformationen
-    gespeichert wurden (überprüfen Sie Ihre lokale Zeitzone, z.B. Oracle: "select sessiontimezone from dual;"), wenn Sie das
-    Upgrade-Script laufen lassen. Zusätzlich für Ihre Bequemlichkeit sollten Sie in Oracle das Format der Sitzungszeitstempel auf den
-    Wert zu setzen, den Sie wünschen, z.B. "alter session set nls_timestamp_format='YYYY-MM-DD HH24:MI:SS'; oder etwas ähnliches. Nun können
-    Sie Einträge von verschiedenen Icinga-Installationen in unterschiedlichen Zeitzonen ansehen, die in der gleichen Datenbank
-    gespeichert wurden, und unabhängig davon, von woher Sie darauf zugreifen, werden sie in Ihrer lokalen Zeitzone angezeigt.</p>
+    <p>Stellen Sie sicher, dass Ihre Datenbanksitzung in der gleichen Zeitzone lÃ¤uft, in der die existierenden Zeit-/Datumsinformationen
+    gespeichert wurden (Ã¼berprÃ¼fen Sie Ihre lokale Zeitzone, z.B. Oracle: "select sessiontimezone from dual;"), wenn Sie das
+    Upgrade-Script laufen lassen. ZusÃ¤tzlich fÃ¼r Ihre Bequemlichkeit sollten Sie in Oracle das Format der Sitzungszeitstempel auf den
+    Wert zu setzen, den Sie wÃ¼nschen, z.B. "alter session set nls_timestamp_format='YYYY-MM-DD HH24:MI:SS'; oder etwas Ã¤hnliches. Nun kÃ¶nnen
+    Sie EintrÃ¤ge von verschiedenen Icinga-Installationen in unterschiedlichen Zeitzonen ansehen, die in der gleichen Datenbank
+    gespeichert wurden, und unabhÃ¤ngig davon, von woher Sie darauf zugreifen, werden sie in Ihrer lokalen Zeitzone angezeigt.</p>
   </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>Installation der Pakete</strong></span></p>
 
-  <p>Sie können diese Pakete mit Hilfe der folgenden Befehle installieren (als root oder mit sudo).</p>
+  <p>Sie kÃ¶nnen diese Pakete mit Hilfe der folgenden Befehle installieren (als root oder mit sudo).</p>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -248,7 +265,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Unglücklicherweise ändern sich manchmal die Paketnamen zwischen verschiedenen Ausgaben der gleichen Distribution, so dass Sie die
+    <p>UnglÃ¼cklicherweise Ã¤ndern sich manchmal die Paketnamen zwischen verschiedenen Ausgaben der gleichen Distribution, so dass Sie die
     Suchoption Ihres Paket-Managers nutzen sollten, falls Sie die Fehlermeldung bekommen, dass eins der Pakete nicht gefunden wurde.
     </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -304,7 +321,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Die Zahlen &lt;62/12&gt; können je nach Distribution abweichen</p>
+    <p>Die Zahlen &lt;62/12&gt; kÃ¶nnen je nach Distribution abweichen</p>
   </td></tr>
 </table></div>
 
@@ -314,7 +331,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Ab Debian 6.0/Ubuntu 10.10 heißt das Paket libpng12-0, der Name des dev-Pakets ändert sich nicht.</p>
+    <p>Ab Debian 6.0/Ubuntu 10.10 heiÃŸt das Paket libpng12-0, der Name des dev-Pakets Ã¤ndert sich nicht.</p>
   </td></tr>
 </table></div>
 
@@ -333,7 +350,7 @@
 
   <p><span class="bold"><strong>openSuSE:</strong></span></p>
 
-  <p>Bitte nutzen Sie YaST für die Installation der Pakete gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel und -optional-
+  <p>Bitte nutzen Sie YaST fÃ¼r die Installation der Pakete gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel und -optional-
   net-snmp, net-snmp-devel und perl-Net-SNMP.</p>
 
   <p>Die Nutzung von zypper sollte ebenfalls funktionieren:</p>
@@ -355,7 +372,7 @@
 <li class="listitem">
       <p><span class="bold"><strong>MySQL:</strong></span></p>
 
-      <p>Benutzen Sie yast zur Installation der Pakete für das RDBMS, das Sie verwenden möchten, also "mysql", "mysql-devel" sowie die
+      <p>Benutzen Sie yast zur Installation der Pakete fÃ¼r das RDBMS, das Sie verwenden mÃ¶chten, also "mysql", "mysql-devel" sowie die
       libdbi-Pakete "libdbi", "libdbi-devel", "libdbi-drivers" und "libdbi-dbd-mysql" oder alternativ <code class="filename">zypper</code></p>
 
       <pre class="programlisting"> #&gt; zypper install mysql mysql-devel libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql</pre>
@@ -365,7 +382,7 @@
 <li class="listitem">
       <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
 
-      <p>Benutzen Sie yast zur Installation der Pakete für das RDBMS, das Sie verwenden möchten, also "postgresql", "postgresql-devel"
+      <p>Benutzen Sie yast zur Installation der Pakete fÃ¼r das RDBMS, das Sie verwenden mÃ¶chten, also "postgresql", "postgresql-devel"
       und "postgresql-server" sowie die libdbi-Pakete "libdbi", "libdbi-devel" und "libdbi-drivers" oder alternativ
       <code class="filename">zypper&gt;</code>.</p>
 
@@ -374,8 +391,8 @@
     </li>
 </ul></div>
 
-  <p>Bei alten OpenSuSE- (SLES) Version einschließlich Version 10 ist es ziemlich wahrscheinlich, dass es keine libdbi-Packages gibt, so
-  dass Sie die Sourcen herunterladen und kompilieren müssen. Ersetzen Sie dabei &lt;rdbm&gt; durch Ihr RDBM wie mysql oder pgsql. Bitte
+  <p>Bei alten OpenSuSE- (SLES) Version einschlieÃŸlich Version 10 ist es ziemlich wahrscheinlich, dass es keine libdbi-Packages gibt, so
+  dass Sie die Sourcen herunterladen und kompilieren mÃ¼ssen. Ersetzen Sie dabei &lt;rdbm&gt; durch Ihr RDBM wie mysql oder pgsql. Bitte
   beachten Sie, dass der Oracle-Treiber noch nicht funktioniert. Lesen Sie daher den entsprechenden Abschnitt zu ocilib (anstatt
   libdbi).</p>
 
@@ -391,7 +408,7 @@
  #&gt; tar xvzf libdbi-drivers-0.8.3-1.tar.gz</pre>
     </li>
 <li class="listitem">
-      <p>Installieren Sie die libdbi. Möglicherweise brauchen Sie beim configure weitere Optionen (set --prefix=/usr ... )</p>
+      <p>Installieren Sie die libdbi. MÃ¶glicherweise brauchen Sie beim configure weitere Optionen (set --prefix=/usr ... )</p>
 
       <pre class="programlisting"> #&gt; cd libdbi-0.8.3
  #&gt; ./configure --disable-docs
@@ -412,7 +429,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Bei den 64-bit-Versionen müssen Sie die Pfade zu den include- und lib-dir-Verzeichnissen explizit angeben:</p>
+        <p>Bei den 64-bit-Versionen mÃ¼ssen Sie die Pfade zu den include- und lib-dir-Verzeichnissen explizit angeben:</p>
 
         <pre class="programlisting"> #&gt; ./configure --with-&lt;rdbm&gt; \
     --with-&lt;rdbm&gt;-incdir=/usr/include/&lt;rdbm&gt;/ \
@@ -433,12 +450,12 @@
   <pre class="programlisting"> #&gt; /usr/sbin/useradd -m icinga 
  #&gt; passwd icinga  </pre>
 
-  <p>Bei einigen Distributionen müssen Sie die Gruppe in einem gesonderten Schritt anlegen:</p>
+  <p>Bei einigen Distributionen mÃ¼ssen Sie die Gruppe in einem gesonderten Schritt anlegen:</p>
 
   <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga</pre>
 
-  <p>Damit Sie über das klassische Web-Interface Befehle an Icinga senden können, legen Sie noch eine neue Gruppe icinga-cmd an
-  und fügen Sie den Webbenutzer und den Icingabenutzer dieser Gruppe hinzu.</p>
+  <p>Damit Sie Ã¼ber das klassische Web-Interface Befehle an Icinga senden kÃ¶nnen, legen Sie noch eine neue Gruppe icinga-cmd an
+  und fÃ¼gen Sie den Webbenutzer und den Icingabenutzer dieser Gruppe hinzu.</p>
 
   <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga-cmd
  #&gt; /usr/sbin/usermod -a -G icinga-cmd icinga
@@ -452,7 +469,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Bei einigen usermod-Versionen (z.B. OpenSuSE 11 bzw. SLES 11) fehlt die Option -a. In diesen Fällen kann sie entfallen.</p>
+    <p>Bei einigen usermod-Versionen (z.B. OpenSuSE 11 bzw. SLES 11) fehlt die Option -a. In diesen FÃ¤llen kann sie entfallen.</p>
   </td></tr>
 </table></div>
 
@@ -462,7 +479,7 @@
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Solaris unterstützt nur Gruppennamen bis max. 8 Zeichen, verwenden Sie icingcmd anstelle von icinga-cmd.</p>
+    <p>Solaris unterstÃ¼tzt nur Gruppennamen bis max. 8 Zeichen, verwenden Sie icingcmd anstelle von icinga-cmd.</p>
   </td></tr>
 </table></div>
 
@@ -494,7 +511,7 @@
   </td></tr>
 </table></div>
 
-  <p>Führen Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
+  <p>FÃ¼hren Sie das Icinga-configure-Script aus. Durch die Nutzung des --help-Flags erhalten Sie Hilfe zu den Optionen.</p>
 
   <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils</pre>
 
@@ -504,8 +521,8 @@
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Das Kompilieren auf Solaris kann wegen unerfüllten Bibliotheksabhängigkeiten von gethostbyname fehlschlagen. Wenn dies der Fall
-    ist, führen Sie folgenden Befehl vor configure aus:</p>
+    <p>Das Kompilieren auf Solaris kann wegen unerfÃ¼llten BibliotheksabhÃ¤ngigkeiten von gethostbyname fehlschlagen. Wenn dies der Fall
+    ist, fÃ¼hren Sie folgenden Befehl vor configure aus:</p>
 
     <pre class="programlisting"> #&gt; export LIBS=-lsocket -lnsl</pre>
   </td></tr>
@@ -518,25 +535,25 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Auch mit <span class="bold"><strong>PostgreSQL</strong></span> sollten Sie nicht den Parameter <code class="literal">--enable-pgsq</code>
-    verwenden, denn dieser wird noch nicht unterstützt.</p>
+    verwenden, denn dieser wird noch nicht unterstÃ¼tzt.</p>
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Mit <span class="bold"><strong>SSL</strong></span>-Verschlüsselung:</strong></span></p>
+  <p><span class="bold"><strong>Mit <span class="bold"><strong>SSL</strong></span>-VerschlÃ¼sselung:</strong></span></p>
 
   <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-ssl</pre>
 
-  <p><span class="bold"><strong>Mit Oracle-Datenbankunterstützung:</strong></span></p>
+  <p><span class="bold"><strong>Mit Oracle-DatenbankunterstÃ¼tzung:</strong></span></p>
 
   <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd \
     --enable-idoutils --enable-oracle</pre>
-<p> Wenn Ihre Oracle Libraries nicht in der Path-Variablen enthalten sind, können Sie sie
+<p> Wenn Ihre Oracle Libraries nicht in der Path-Variablen enthalten sind, kÃ¶nnen Sie sie
   im configure angeben: </p>
 <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd \
     --enable-idoutils --enable-oracle \
     --with-oracle-lib=/path/to/instantclient</pre>
 <p> Wenn Sie die ocilib nicht im Standardpfad (/usr/local) installiert haben,
-  können Sie configure die lib/inc Verzeichnisse angeben:</p>
+  kÃ¶nnen Sie configure die lib/inc Verzeichnisse angeben:</p>
 <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd \
     --enable-idoutils --enable-oracle \
     --with-ocilib-lib=/path/to/ocilib/lib --with-ocilib-inc=/path/to/ocilib/include</pre>
@@ -547,7 +564,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Wenn Sie von einer Oracle-Datenbank auf ein anderes RDBMS wechseln möchten, dann müssen Sie die IDOUtils erneut
+      <p>Wenn Sie von einer Oracle-Datenbank auf ein anderes RDBMS wechseln mÃ¶chten, dann mÃ¼ssen Sie die IDOUtils erneut
       kompilieren und installieren!</p>
     </td></tr>
 </table></div>
@@ -557,18 +574,18 @@
 
   <p><span class="bold"><strong>Kompilieren und Installieren</strong></span></p>
 
-  <p>Kompilieren Sie den Icinga-Source-Code. Es gibt auch eine extra Option für IDOUtils (<span class="emphasis"><em>make
-  idoutils</em></span>), wenn Sie nur dieses Module erneut kompilieren möchten. Um mögliche Optionen zu sehen, rufen Sie lediglich "make"
+  <p>Kompilieren Sie den Icinga-Source-Code. Es gibt auch eine extra Option fÃ¼r IDOUtils (<span class="emphasis"><em>make
+  idoutils</em></span>), wenn Sie nur dieses Module erneut kompilieren mÃ¶chten. Um mÃ¶gliche Optionen zu sehen, rufen Sie lediglich "make"
   auf.</p>
 <pre class="programlisting"> #&gt; make all</pre>
 <p> Installieren Sie die Binaries, das Init-Script, Beispiel-Konfigurationsdateien und
-  setzen Sie die Berechtigungen für das External-Command-Verzeichnis. </p>
+  setzen Sie die Berechtigungen fÃ¼r das External-Command-Verzeichnis. </p>
 <pre class="programlisting"> #&gt; make install 
  #&gt; make install-init 
  #&gt; make install-config 
  #&gt; make install-eventhandlers
  #&gt; make install-commandmode </pre>
-<p> oder kürzer </p>
+<p> oder kÃ¼rzer </p>
 <pre class="programlisting"> #&gt; make fullinstall
  #&gt; make install-config</pre>
 
@@ -579,7 +596,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Ab Icinga 1.5.0 ist <code class="literal">make install-config</code> NICHT mehr in <code class="literal">make fullinstall </code>enthalten, um
-    ein versehentliches Überschreiben der Konfigurationsdateien zu verhindern.</p>
+    ein versehentliches Ãœberschreiben der Konfigurationsdateien zu verhindern.</p>
   </td></tr>
 </table></div>
 
@@ -590,7 +607,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Ab Icinga 1.7.0 werden mit <code class="literal">make install-eventhandlers</code> einige Beispiel-Eventhandler installiert. Das ist
-    lediglich in <code class="literal">make fullinstall</code> enthalten, um ein versehentliches Überschreiben der Dateien zu verhindern.</p>
+    lediglich in <code class="literal">make fullinstall</code> enthalten, um ein versehentliches Ãœberschreiben der Dateien zu verhindern.</p>
   </td></tr>
 </table></div>
 
@@ -600,10 +617,10 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Installieren Sie die IDOUtils und andere Ereignis-Broker-Module nur mit dem primären Ziel <span class="bold"><strong>make
-    instal</strong></span><span class="bold"><strong>l</strong></span>. Manuelles Kopieren und Überschreiben des vorhandenen Moduls erzeugt einen Segfault
-    des Icinga-Kerns mit Hilfe von idomod.so, da eine Verwendung einer temporären Kopie explizit verhindert werden soll. Dies ist nützlich
-    für <a class="link" href="http://omdistro.org/" target="_top">OMD</a></p>
+    <p>Installieren Sie die IDOUtils und andere Ereignis-Broker-Module nur mit dem primÃ¤ren Ziel <span class="bold"><strong>make
+    instal</strong></span><span class="bold"><strong>l</strong></span>. Manuelles Kopieren und Ãœberschreiben des vorhandenen Moduls erzeugt einen Segfault
+    des Icinga-Kerns mit Hilfe von idomod.so, da eine Verwendung einer temporÃ¤ren Kopie explizit verhindert werden soll. Dies ist nÃ¼tzlich
+    fÃ¼r <a class="link" href="http://omdistro.org/" target="_top">OMD</a></p>
   </td></tr>
 </table></div>
 
@@ -627,8 +644,8 @@
 <p>in /usr/local/icinga/etc/
   installiert.</p>
 
-  <p>Ändern Sie die <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span>-Konfigurationsdatei mit Ihrem bevorzugten Editor und
-  passen die e-Mail-Adresse in der <span class="emphasis"><em>icingaadmin</em></span>-Kontaktdefinition an, so dass sie die Adresse enthält, die im Falle von
+  <p>Ã„ndern Sie die <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span>-Konfigurationsdatei mit Ihrem bevorzugten Editor und
+  passen die e-Mail-Adresse in der <span class="emphasis"><em>icingaadmin</em></span>-Kontaktdefinition an, so dass sie die Adresse enthÃ¤lt, die im Falle von
   Alarmen benachrichtigt werden soll.</p>
 
   <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
@@ -667,8 +684,8 @@
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Unter normalen Umständen gibt es im <code class="filename">modules</code>-Unterverzeichnis bereits die folgende module-Definition, so dass
-    Sie keine Änderungen an der Hauptkonfigurationsdatei vornehmen müssen. </p>
+    <p>Unter normalen UmstÃ¤nden gibt es im <code class="filename">modules</code>-Unterverzeichnis bereits die folgende module-Definition, so dass
+    Sie keine Ã„nderungen an der Hauptkonfigurationsdatei vornehmen mÃ¼ssen. </p>
 <pre class="screen"> define module{
         module_name    ido_mod
         path           /usr/local/icinga/lib/idomod.so
@@ -691,9 +708,9 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Wenn Sie wie weiter oben beschrieben das Datenbanksystem neu installiert haben, dann müssen Sie den Datenbank-Server starten,
-        bevor Sie eine Datenbank anlegen können. Im Falle von MySQL erfolgt der Start z.B. mit <code class="code">/etc/init.d/mysqld start</code> (oder
-        <code class="code">/etc/init.d/mysql</code>, abhängig von Ihrer Distribution).</p>
+        <p>Wenn Sie wie weiter oben beschrieben das Datenbanksystem neu installiert haben, dann mÃ¼ssen Sie den Datenbank-Server starten,
+        bevor Sie eine Datenbank anlegen kÃ¶nnen. Im Falle von MySQL erfolgt der Start z.B. mit <code class="code">/etc/init.d/mysqld start</code> (oder
+        <code class="code">/etc/init.d/mysql</code>, abhÃ¤ngig von Ihrer Distribution).</p>
       </td></tr>
 </table></div>
 
@@ -720,7 +737,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Ab Icinga 1.6 benötigt der icinga-User zusätzlich die Rechte DROP und CREATE VIEW.</p>
+        <p>Ab Icinga 1.6 benÃ¶tigt der icinga-User zusÃ¤tzlich die Rechte DROP und CREATE VIEW.</p>
       </td></tr>
 </table></div>
 
@@ -792,7 +809,7 @@
 
       <p>Erstellen Sie ein Datenbank-Schema und eine username/password-Kombination (lesen Sie dazu die Oracle-Dokumentation unter
       http://www.oracle.com oder fragen Sie Ihren DBA). Importieren Sie das Datenbank-Schema mit sqlplus (oder Ihrer bevorzugten Methode). Kopieren
-      Sie <code class="filename">module/idoutils/db/oracle/*</code> nach $ORACLE_HOME und ändern Sie in <code class="filename">icinga_defines.sql</code> die
+      Sie <code class="filename">module/idoutils/db/oracle/*</code> nach $ORACLE_HOME und Ã¤ndern Sie in <code class="filename">icinga_defines.sql</code> die
       Werte zu Tablespace-Namen und Benutzerdaten.</p>
 
       <pre class="programlisting"> #&gt; su - oracle
@@ -812,7 +829,7 @@
 
   <p><span class="bold"><strong>Installieren und konfigurieren des klassischen Web-Interface</strong></span></p>
 
-  <p>Icinga stellt das klassische Web-Interface zur Verfügung ("Classic Web", "die CGIs"). Sie können dieses wie folgt
+  <p>Icinga stellt das klassische Web-Interface zur VerfÃ¼gung ("Classic Web", "die CGIs"). Sie kÃ¶nnen dieses wie folgt
   installieren:</p>
 
   <pre class="programlisting"> #&gt; cd /path/to/icinga-src
@@ -820,7 +837,7 @@
  #&gt; make install-cgis
  #&gt; make install-html</pre>
 
-  <p>Wenn Sie (zusätzlich) das neue Icinga-Web installieren wollen, lesen Sie bitte <a class="link" href="icinga-web-scratch.html" title="Installation des Icinga-Web Frontend">Installation des
+  <p>Wenn Sie (zusÃ¤tzlich) das neue Icinga-Web installieren wollen, lesen Sie bitte <a class="link" href="icinga-web-scratch.html" title="6.4. Installation des Icinga-Web Frontend">Installation des
   Web-Interface</a>.</p>
 
   <p>Installieren Sie die Icinga-Web-Konfigurationsdatei im Apache conf.d-Verzeichnis.</p>
@@ -828,8 +845,8 @@
   <pre class="programlisting"> #&gt; cd /path/to/icinga-src
  #&gt; make install-webconf</pre>
 
-  <p>Legen Sie ein <span class="emphasis"><em>icingaadmin</em></span>-Konto an, um sich am klassischen Web-Interface anmelden zu können. Merken Sie sich
-  das Passwort, das Sie diesem Konto geben - Sie brauchen es später.</p>
+  <p>Legen Sie ein <span class="emphasis"><em>icingaadmin</em></span>-Konto an, um sich am klassischen Web-Interface anmelden zu kÃ¶nnen. Merken Sie sich
+  das Passwort, das Sie diesem Konto geben - Sie brauchen es spÃ¤ter.</p>
 
   <pre class="screen"> #&gt; htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
 
@@ -839,15 +856,15 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Abhängig von der Apache-Version müssen Sie ggf. <span class="emphasis"><em>htpasswd2 verwenden.</em></span></p>
+    <p>AbhÃ¤ngig von der Apache-Version mÃ¼ssen Sie ggf. <span class="emphasis"><em>htpasswd2 verwenden.</em></span></p>
   </td></tr>
 </table></div>
 
-  <p>Wenn Sie das Passwort später ändern oder einen weiteren Benutzer hinzufügen möchten, verwenden Sie den folgenden Befehl:</p>
+  <p>Wenn Sie das Passwort spÃ¤ter Ã¤ndern oder einen weiteren Benutzer hinzufÃ¼gen mÃ¶chten, verwenden Sie den folgenden Befehl:</p>
 
   <pre class="programlisting"> #&gt; htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
 
-  <p>Starten Sie Apache neu, damit die Änderungen wirksam werden.</p>
+  <p>Starten Sie Apache neu, damit die Ã„nderungen wirksam werden.</p>
 
   <p><span class="bold"><strong>Fedora / RHEL / CentOS</strong></span>:</p>
 
@@ -867,7 +884,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Prüfen Sie die Implementierung der verbesserten CGI-Sicherheitsmaßnahmen wie <a class="link" href="cgisecurity.html" title="Verbesserte CGI-Sicherheit und Authentifizierung">hier</a> beschrieben,
+    <p>PrÃ¼fen Sie die Implementierung der verbesserten CGI-SicherheitsmaÃŸnahmen wie <a class="link" href="cgisecurity.html" title="8.2. Verbesserte CGI-Sicherheit und Authentifizierung">hier</a> beschrieben,
     um sicherzustellen, dass Ihre Web-Authentifizierungsinformationen nicht kompromittiert werden.</p>
   </td></tr>
 </table></div>
@@ -877,8 +894,8 @@
   <p>Entpacken Sie die Nagios-Plugins-Quellcode-Archivdatei.</p>
 
   <pre class="screen"> #&gt; cd /usr/src
- #&gt; tar xzf nagios-plugins-1.4.15.tar.gz
- #&gt; cd nagios-plugins-1.4.15</pre>
+ #&gt; tar xzf nagios-plugins-1.4.16.tar.gz
+ #&gt; cd nagios-plugins-1.4.16</pre>
 
   <p>Kompilieren und installieren Sie die Plugins.</p>
 
@@ -889,11 +906,11 @@
 
   <p><span class="bold"><strong>Anpassen der SELinux-Einstellungen</strong></span></p>
 
-  <p>RHEL und ähnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security
-  Enhanced Linux) ausgeliefert und laufen im "Enforcing"-Modus. Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie
+  <p>RHEL und Ã¤hnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security
+  Enhanced Linux) ausgeliefert und laufen im "Enforcing"-Modus. Dies kann zu "Internal Server Error"-Fehlern fÃ¼hren, wenn Sie
   versuchen, die Icinga-CGIs aufzurufen.</p>
 
-  <p>Schauen Sie, ob SELinux im Enforcing-Modus läuft.</p>
+  <p>Schauen Sie, ob SELinux im Enforcing-Modus lÃ¤uft.</p>
 
   <pre class="screen"> #&gt; getenforce</pre>
 
@@ -901,18 +918,18 @@
 
   <pre class="screen"> #&gt; setenforce 0</pre>
 
-  <p>Damit diese Änderung dauerhaft wird, müssen Sie diese Einstellung in <span class="emphasis"><em>/etc/selinux/config</em></span> anpassen und das
+  <p>Damit diese Ã„nderung dauerhaft wird, mÃ¼ssen Sie diese Einstellung in <span class="emphasis"><em>/etc/selinux/config</em></span> anpassen und das
   System neustarten.</p>
 
-  <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, können Sie den folgenden Befehl benutzen, um die
+  <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, kÃ¶nnen Sie den folgenden Befehl benutzen, um die
   CGIs im Enforcing/Targeted-Modus laufen zu lassen:</p>
 
   <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
  #&gt; chcon -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/icinga.cmd</pre>
 
-  <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darüber zu erhalten, wie die
-  Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgeführt werden.</p>
+  <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darÃ¼ber zu erhalten, wie die
+  Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgefÃ¼hrt werden.</p>
 
   <p><span class="bold"><strong>IDOUtils und Icinga starten</strong></span></p>
 
@@ -940,8 +957,8 @@
 
   <p><span class="bold"><strong>Automatischer Start von IDOUtils</strong></span></p>
 
-  <p>Fügen Sie IDOUtils zu der Liste der System-Services hinzu und sorgen Sie für einen automatischen Start, wenn das System
-  hochfährt (stellen Sie sicher, dass Sie vorher das Init-Script installiert haben).</p>
+  <p>FÃ¼gen Sie IDOUtils zu der Liste der System-Services hinzu und sorgen Sie fÃ¼r einen automatischen Start, wenn das System
+  hochfÃ¤hrt (stellen Sie sicher, dass Sie vorher das Init-Script installiert haben).</p>
 
   <p><span class="bold"><strong>Fedora / openSuSE:</strong></span></p>
 
@@ -955,7 +972,7 @@
 
   <p><span class="bold"><strong>Start von Icinga</strong></span></p>
 
-  <p>Überprüfen Sie die Icinga-Beispielkonfigurationsdateien.</p>
+  <p>ÃœberprÃ¼fen Sie die Icinga-Beispielkonfigurationsdateien.</p>
 
   <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
 
@@ -971,8 +988,8 @@
 
   <p><span class="bold"><strong>Automatischer Start von Icinga</strong></span></p>
 
-  <p>Fügen Sie Icinga zu der Liste der System-Services hinzu und sorgen Sie für einen automatischen Start, wenn das System
-  hochfährt (stellen Sie sicher, dass Sie vorher das Init-Script installiert haben).</p>
+  <p>FÃ¼gen Sie Icinga zu der Liste der System-Services hinzu und sorgen Sie fÃ¼r einen automatischen Start, wenn das System
+  hochfÃ¤hrt (stellen Sie sicher, dass Sie vorher das Init-Script installiert haben).</p>
 
   <p><span class="bold"><strong>Fedora / openSuSE:</strong></span></p>
 
@@ -985,10 +1002,10 @@
 
   <p><span class="bold"><strong>Anpassen der SELinux-Einstellungen</strong></span></p>
 
-  <p>Fedora wird mit installiertem SELinux (Security Enhanced Linux) ausgeliefert und läuft im "Enforcing"-Modus.
-  Dies kann zu "Internal Server Error"-Fehlern führen, wenn Sie versuchen, die Icinga-CGIs aufzurufen.</p>
+  <p>Fedora wird mit installiertem SELinux (Security Enhanced Linux) ausgeliefert und lÃ¤uft im "Enforcing"-Modus.
+  Dies kann zu "Internal Server Error"-Fehlern fÃ¼hren, wenn Sie versuchen, die Icinga-CGIs aufzurufen.</p>
 
-  <p>Schauen Sie, ob SELinux im Enforcing-Modus läuft.</p>
+  <p>Schauen Sie, ob SELinux im Enforcing-Modus lÃ¤uft.</p>
 
   <pre class="screen"> #&gt; getenforce</pre>
 
@@ -996,21 +1013,21 @@
 
   <pre class="screen"> #&gt; setenforce 0</pre>
 
-  <p>Damit diese Änderung dauerhaft wird, müssen Sie diese Einstellung in <span class="emphasis"><em>/etc/selinux/config</em></span> anpassen und das
+  <p>Damit diese Ã„nderung dauerhaft wird, mÃ¼ssen Sie diese Einstellung in <span class="emphasis"><em>/etc/selinux/config</em></span> anpassen und das
   System neustarten.</p>
 
-  <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, können Sie den folgenden Befehl benutzen, um die
+  <p>Statt SELinux zu deaktivieren oder es in den Permissive-Modus zu versetzen, kÃ¶nnen Sie den folgenden Befehl benutzen, um die
   CGIs im Enforcing/Targeted-Modus laufen zu lassen:</p>
 
   <pre class="screen"> #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/sbin/
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/</pre>
 
-  <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darüber zu erhalten, wie die
-  Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgeführt werden.</p>
+  <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darÃ¼ber zu erhalten, wie die
+  Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgefÃ¼hrt werden.</p>
 
   <p><span class="bold"><strong>Anmelden am klassischen Web-Interface</strong></span></p>
 
-  <p>Sie sollten nun auf das klassische Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
+  <p>Sie sollten nun auf das klassische Icinga-Web-Interface zugreifen kÃ¶nnen. Sie werden nach dem Benutzernamen
   (<span class="emphasis"><em>nagiosadmin</em></span>) und Passwort gefragt, das Sie vorhin angegeben haben.</p>
 
   <pre class="screen"> http://localhost/icinga/</pre>
@@ -1019,50 +1036,50 @@
 
   <pre class="programlisting"> http://yourdomain.com/icinga/</pre>
 
-  <p>Klicken Sie auf den "Service Detail"-Verweis in der Navigationsleiste, um Details darüber zu erhalten, was auf Ihrer lokalen
-  Maschine überwacht wird. Es wird ein paar Minuten dauern, bis Icinga alle mit Ihrer Maschine verbundenen Services geprüft hat, weil
-  die Prüfungen über eine gewisse Zeit verteilt werden.</p>
+  <p>Klicken Sie auf den "Service Detail"-Verweis in der Navigationsleiste, um Details darÃ¼ber zu erhalten, was auf Ihrer lokalen
+  Maschine Ã¼berwacht wird. Es wird ein paar Minuten dauern, bis Icinga alle mit Ihrer Maschine verbundenen Services geprÃ¼ft hat, weil
+  die PrÃ¼fungen Ã¼ber eine gewisse Zeit verteilt werden.</p>
 
   <p><span class="bold"><strong>Andere Anpassungen:</strong></span></p>
 
-  <p>Stellen Sie sicher, dass die Firewall-Einstellungen Ihrer Maschine einen Zugriff auf das klassische Web-Interface ermöglichen, wenn
+  <p>Stellen Sie sicher, dass die Firewall-Einstellungen Ihrer Maschine einen Zugriff auf das klassische Web-Interface ermÃ¶glichen, wenn
   Sie von anderen Rechnern darauf zugreifen wollen.</p>
 
   <pre class="programlisting"> #&gt; iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</pre>
 
   <p>Die Konfiguration von e-Mail-Benachrichtigungen ist nicht Gegenstand dieser Anleitung. Icinga ist konfiguriert, um
-  e-Mail-Benachrichtigungen zu versenden, aber möglicherweise ist auf Ihrem System noch kein Mail-Programm installiert bzw. konfiguriert.
+  e-Mail-Benachrichtigungen zu versenden, aber mÃ¶glicherweise ist auf Ihrem System noch kein Mail-Programm installiert bzw. konfiguriert.
   Schauen Sie in Ihre Systemdokumentation, suchen Sie im Web oder gucken Sie im <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">
   NagiosCommunity.org-Wiki</a> nach genauen Anweisungen, wie Ihr System konfiguriert werden muss, damit es e-Mail-Mitteilungen an externe
-  Adressen versendet. Mehr Informationen zu Benachrichtigungen finden Sie <a class="link" href="notifications.html" title="Benachrichtigungen">hier</a></p>
+  Adressen versendet. Mehr Informationen zu Benachrichtigungen finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a></p>
 
   <p><span class="bold"><strong>Fertig</strong></span></p>
 
-  <p>Glückwunsch! Sie haben erfolgreich Icinga installiert. Ihre Reise in die Überwachung hat gerade begonnen. Sie werden ohne
-  Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
+  <p>GlÃ¼ckwunsch! Sie haben erfolgreich Icinga installiert. Ihre Reise in die Ãœberwachung hat gerade begonnen. Sie werden ohne
+  Zweifel mehr als nur Ihre lokale Maschine Ã¼berwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
   sollten...</p>
 
-  <a class="indexterm" name="id1479314"></a>
+  <a class="indexterm" name="id1428099"></a>
 
-  <a class="indexterm" name="id1479328"></a>
+  <a class="indexterm" name="id1428112"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="quickstart-icinga-freebsd.html">Zurück</a> </td>
+<a accesskey="p" href="quickstart-icinga-freebsd.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="quickstart-idoutils-freebsd.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="quickstart-idoutils-freebsd.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Icinga-Schnellstart auf FreeBSD </td>
+<td width="40%" align="left" valign="top">2.4. Icinga-Schnellstart auf FreeBSDÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Icinga-Schnellstart mit IDOUtils auf FreeBSD</td>
+<td width="40%" align="right" valign="top">Â 2.6. Icinga-Schnellstart mit IDOUtils auf FreeBSD</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

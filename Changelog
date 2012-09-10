@@ -20,6 +20,7 @@ ENHANCEMENTS
 	** DISABLE_NOTIFICATIONS_EXPIRE_TIME, works for global notifications
 * core: add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879 - MF
 * core: add new callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE to allow override of sending notifications #2041 - MF
+* core: only reap results when checkresult_list is not overloaded (max_check_result_list_items) (thx Thomas Gelf) #3099 - MF
 
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
@@ -76,6 +77,8 @@ FIXES
 	** you can revert to the old behaviour with keep_unknown_macros=1 in icinga.cfg
 * core: fix having empty host/servicegroups, $HOST|SERVICEGROUPMEMBERS$ on-demand macro returns garbage on realloc (thx roguelazer) #2913 - MF
 * core: allow multiple empty (host)groups chained with enabled allow_empty_hostgroup_assignment #2437 - MF
+* core: fixed when deleting an expiring ack the event to delete the ack doesn't get deleted #3084 - RB
+* core: fix error checking on subgroup expanding on host|service|contactgroup members #3088 - MF/RB
 
 * classic ui: fix setting send_notification or sticky_ack as GET param has no effect on cmd.cgi acks #2926 - MF
 	** now you can finally disable checkboxes default ticked with these options
@@ -85,6 +88,8 @@ FIXES
 * idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
 * idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
 * idoutils: fix sla_downtime_select query and result handle; scheduled downtime merge statement #2780 - MF
+
+* install: fix icinga.xml for solaris pkg not updated #2609 - CF
 
 * icinga.spec: fix permissions on ido2db.cfg potentially world readable (Aaron Russo) #2897 - MF
 * icinga.soec: drop unsupported configure flags #3037 - MF
@@ -99,6 +104,12 @@ CHANGES
 * core: unknown macros are not left on the output anymore, logging a warning instead
 	** either fix your config (i.e. wrong macros, escape dollar signs with another one)
 	** or set keep_unknown_macros=1 in icinga.cfg to revert to the old behaviour
+
+* core: max_check_result_list_items will set the max number of checkresults waiting for being processed #3099
+	** if checkresult_list is "full", the checkresult reaper will bail early
+	** leaving the core time to process the existing items on checkresult list
+	** max_check_result_list_items=0 is the default, disabling this feature
+	** max_check_result_list_items=1024 should work in larger distributed setups
 
 * core: new NEB callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE (606) #2041
 

@@ -1,83 +1,84 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Adaptive Überwachung</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.18. Adaptive Ãœberwachung</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="embeddedperl.html" title="Benutzen des Embedded Perl Interpreters">
-<link rel="next" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">
+<link rel="prev" href="embeddedperl.html" title="7.17. Benutzen des Embedded Perl Interpreters">
+<link rel="next" href="dependencychecks.html" title="7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Adaptive Überwachung</th></tr>
+<tr><th colspan="3" align="center">7.18. Adaptive Ãœberwachung</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="embeddedperl.html">Zurück</a> </td>
+<a accesskey="p" href="embeddedperl.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="dependencychecks.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="dependencychecks.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Adaptive Überwachung">
+<div class="section" title="7.18. Adaptive Ãœberwachung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="adaptive"></a>Adaptive Überwachung</h2></div></div></div>
+<a name="adaptive"></a>7.18. Adaptive Ãœberwachung</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Icinga erlaubt Ihnen, verschiedene Befehle und Host- und Service-Prüfattribute während der Laufzeit zu verändern.
-  Wir bezeichnen diese Möglichkeit als "adaptive Überwachung". Bitte beachten Sie, dass diese adaptiven Überwachungs-Features in
+  <p>Icinga erlaubt Ihnen, verschiedene Befehle und Host- und Service-PrÃ¼fattribute wÃ¤hrend der Laufzeit zu verÃ¤ndern.
+  Wir bezeichnen diese MÃ¶glichkeit als "adaptive Ãœberwachung". Bitte beachten Sie, dass diese adaptiven Ãœberwachungs-Features in
   Icinga wahrscheinlich von 99% aller Benutzer nicht genutzt werden, aber sie erlauben Ihnen einige nette Dinge.</p>
 
-  <p><span class="bold"><strong>Was kann verändert werden?</strong></span></p>
+  <p><span class="bold"><strong>Was kann verÃ¤ndert werden?</strong></span></p>
 
-  <p>Die folgenden Service-Prüfattribute können während der Laufzeit verändert werden:</p>
+  <p>Die folgenden Service-PrÃ¼fattribute kÃ¶nnen wÃ¤hrend der Laufzeit verÃ¤ndert werden:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Prüfbefehl (und Befehlsparameter)</p>
+      <p>PrÃ¼fbefehl (und Befehlsparameter)</p>
     </li>
 <li class="listitem">
-      <p>Prüfintervall</p>
+      <p>PrÃ¼fintervall</p>
     </li>
 <li class="listitem">
-      <p>max. Prüfversuche</p>
+      <p>max. PrÃ¼fversuche</p>
     </li>
 <li class="listitem">
-      <p>Prüfzeitfenster</p>
+      <p>PrÃ¼fzeitfenster</p>
     </li>
 <li class="listitem">
       <p>Eventhandler-Befehl (und Befehlsparameter)</p>
     </li>
 </ul></div>
 
-  <p>Die folgenden Host-Prüfattribute können während der Laufzeit verändert werden:</p>
+  <p>Die folgenden Host-PrÃ¼fattribute kÃ¶nnen wÃ¤hrend der Laufzeit verÃ¤ndert werden:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Prüfbefehl (und Befehlsparameter)</p>
+      <p>PrÃ¼fbefehl (und Befehlsparameter)</p>
     </li>
 <li class="listitem">
-      <p>Prüfintervall</p>
+      <p>PrÃ¼fintervall</p>
     </li>
 <li class="listitem">
-      <p>max. Prüfversuche</p>
+      <p>max. PrÃ¼fversuche</p>
     </li>
 <li class="listitem">
-      <p>Prüfzeitfenster</p>
+      <p>PrÃ¼fzeitfenster</p>
     </li>
 <li class="listitem">
       <p>Eventhandler-Befehl (und Befehlsparameter)</p>
     </li>
 </ul></div>
 
-  <p>Die folgenden globalen Attribute können während der Laufzeit verändert werden:</p>
+  <p>Die folgenden globalen Attribute kÃ¶nnen wÃ¤hrend der Laufzeit verÃ¤ndert werden:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -88,46 +89,46 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Externe Befehle für adaptive Überwachung</strong></span></p>
+  <p><span class="bold"><strong>Externe Befehle fÃ¼r adaptive Ãœberwachung</strong></span></p>
 
-  <p>Um globale oder Host- bzw. Service-spezifische Attribute während der Laufzeit zu ändern, müssen Sie über das <a class="link" href="configmain.html#configmain-command_file">external command file</a> den entsprechenden <a class="link" href="extcommands.html" title="Externe Befehle">externen
-  Befehl</a> an Icinga senden. Eine vollständige Liste von externen Befehlen, die zur adaptiven Überwachung benutzt
-  werden können, finden Sie in der <a class="link" href="extcommands2.html" title="Liste der externen Befehle">Liste der externen Befehle"</a>.</p>
+  <p>Um globale oder Host- bzw. Service-spezifische Attribute wÃ¤hrend der Laufzeit zu Ã¤ndern, mÃ¼ssen Sie Ã¼ber das <a class="link" href="configmain.html#configmain-command_file">external command file</a> den entsprechenden <a class="link" href="extcommands.html" title="7.1. Externe Befehle">externen
+  Befehl</a> an Icinga senden. Eine vollstÃ¤ndige Liste von externen Befehlen, die zur adaptiven Ãœberwachung benutzt
+  werden kÃ¶nnen, finden Sie in der <a class="link" href="extcommands2.html" title="11.3. Liste der externen Befehle">Liste der externen Befehle"</a>.</p>
 
   <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkungen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Bei der Änderung von Prüfbefehlen, Prüfzeitfenstern oder Eventhandler-Befehlen ist es wichtig anzumerken, dass die
-      neuen Werte für diese Optionen vor dem Neustart von Icinga definiert werden müssen. Jede Anfrage, die einen Befehl
-      oder ein Zeitfenster auf einen Wert ändert, der beim Start nicht definiert war, wird ignoriert.</p>
+      <p>Bei der Ã„nderung von PrÃ¼fbefehlen, PrÃ¼fzeitfenstern oder Eventhandler-Befehlen ist es wichtig anzumerken, dass die
+      neuen Werte fÃ¼r diese Optionen vor dem Neustart von Icinga definiert werden mÃ¼ssen. Jede Anfrage, die einen Befehl
+      oder ein Zeitfenster auf einen Wert Ã¤ndert, der beim Start nicht definiert war, wird ignoriert.</p>
     </li>
 <li class="listitem">
-      <p>Sie können Befehlsparameter zusammen mit dem tatsächlichen Befehlsnamen angeben - trennen Sie einfach die einzelnen
+      <p>Sie kÃ¶nnen Befehlsparameter zusammen mit dem tatsÃ¤chlichen Befehlsnamen angeben - trennen Sie einfach die einzelnen
       Parameter vom Befehlsnamen (und voneinander) durch Ausrufezeichen (!). Mehr Informationen, wie Parameter in
-      Befehlsdefinitionen während der Laufzeit verarbeitet werden, finden Sie in der Dokumentation zu <a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a>.</p>
+      Befehlsdefinitionen wÃ¤hrend der Laufzeit verarbeitet werden, finden Sie in der Dokumentation zu <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a>.</p>
     </li>
 </ul></div>
-  <a class="indexterm" name="id1583131"></a>
-  <a class="indexterm" name="id1583121"></a>
+  <a class="indexterm" name="id1533019"></a>
+  <a class="indexterm" name="id1533026"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="embeddedperl.html">Zurück</a> </td>
+<a accesskey="p" href="embeddedperl.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="dependencychecks.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="dependencychecks.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Benutzen des Embedded Perl Interpreters </td>
+<td width="40%" align="left" valign="top">7.17. Benutzen des Embedded Perl InterpretersÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Vorausschauende Abhängigkeitsprüfungen</td>
+<td width="40%" align="right" valign="top">Â 7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

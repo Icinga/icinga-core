@@ -7775,7 +7775,8 @@ int xodtemplate_recombobulate_contactgroups(void) {
 
 	/* expand subgroup membership recursively */
 	for (temp_contactgroup = xodtemplate_contactgroup_list; temp_contactgroup; temp_contactgroup = temp_contactgroup->next)
-		xodtemplate_recombobulate_contactgroup_subgroups(temp_contactgroup, NULL);
+		if(xodtemplate_recombobulate_contactgroup_subgroups(temp_contactgroup, NULL) != OK)
+			return ERROR;
 
 
 	/* expand members of all contactgroups - this could be done in xodtemplate_register_contactgroup(), but we can save the CGIs some work if we do it here */
@@ -7970,7 +7971,8 @@ int xodtemplate_recombobulate_hostgroups(void) {
 
 	/* expand subgroup membership recursively */
 	for (temp_hostgroup = xodtemplate_hostgroup_list; temp_hostgroup; temp_hostgroup = temp_hostgroup->next)
-		xodtemplate_recombobulate_hostgroup_subgroups(temp_hostgroup, NULL);
+		if (xodtemplate_recombobulate_hostgroup_subgroups(temp_hostgroup, NULL) != OK)
+			return ERROR;
 
 	/* expand members of all hostgroups - this could be done in xodtemplate_register_hostgroup(), but we can save the CGIs some work if we do it here */
 	for (temp_hostgroup = xodtemplate_hostgroup_list; temp_hostgroup; temp_hostgroup = temp_hostgroup->next) {
@@ -8164,7 +8166,8 @@ int xodtemplate_recombobulate_servicegroups(void) {
 
 	/* expand subgroup membership recursively */
 	for (temp_servicegroup = xodtemplate_servicegroup_list; temp_servicegroup; temp_servicegroup = temp_servicegroup->next)
-		xodtemplate_recombobulate_servicegroup_subgroups(temp_servicegroup, NULL);
+		if (xodtemplate_recombobulate_servicegroup_subgroups(temp_servicegroup, NULL) != OK)
+			return ERROR;
 
 	/* expand members of all servicegroups - this could be done in xodtemplate_register_servicegroup(), but we can save the CGIs some work if we do it here */
 	for (temp_servicegroup = xodtemplate_servicegroup_list; temp_servicegroup; temp_servicegroup = temp_servicegroup->next) {

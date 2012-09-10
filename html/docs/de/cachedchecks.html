@@ -1,148 +1,149 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Zwischengespeicherte Prüfungen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.20. Zwischengespeicherte PrÃ¼fungen</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">
-<link rel="next" href="passivestatetranslation.html" title="Passive Host-Zustandsübersetzung">
+<link rel="prev" href="dependencychecks.html" title="7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">
+<link rel="next" href="passivestatetranslation.html" title="7.21. Passive Host-ZustandsÃ¼bersetzung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Zwischengespeicherte Prüfungen</th></tr>
+<tr><th colspan="3" align="center">7.20. Zwischengespeicherte PrÃ¼fungen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="dependencychecks.html">Zurück</a> </td>
+<a accesskey="p" href="dependencychecks.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="passivestatetranslation.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Zwischengespeicherte Prüfungen">
+<div class="section" title="7.20. Zwischengespeicherte PrÃ¼fungen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cachedchecks"></a>Zwischengespeicherte Prüfungen</h2></div></div></div>
+<a name="cachedchecks"></a>7.20. Zwischengespeicherte PrÃ¼fungen</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
   <div class="mediaobject" align="right"><img src="../images/cachedchecks1.png" align="right"></div>
 
-  <p>Die Leistung der Überwachungslogik von Icinga kann mit Hilfe von zwischengespeicherten Prüfungen (cached checks) nennenswert
-  gesteigert werden. Zwischengespeicherte Prüfungen erlauben es Icinga, auf die Ausführung einer Host- oder Service-Prüfung zu
-  verzichten, wenn es feststellt, dass ein recht aktuelles Prüfergebnis ausreicht.</p>
+  <p>Die Leistung der Ãœberwachungslogik von Icinga kann mit Hilfe von zwischengespeicherten PrÃ¼fungen (cached checks) nennenswert
+  gesteigert werden. Zwischengespeicherte PrÃ¼fungen erlauben es Icinga, auf die AusfÃ¼hrung einer Host- oder Service-PrÃ¼fung zu
+  verzichten, wenn es feststellt, dass ein recht aktuelles PrÃ¼fergebnis ausreicht.</p>
 
-  <p><span class="bold"><strong>Nur für Prüfungen nach Bedarf</strong></span></p>
+  <p><span class="bold"><strong>Nur fÃ¼r PrÃ¼fungen nach Bedarf</strong></span></p>
 
-  <p>Regelmäßig eingeplante Host- und Service-Prüfungen werden keine Leistungssteigerung durch zwischengespeicherte Prüfungen erfahren.
-  Zwischengespeicherte Prüfungen sind nur sinnvoll zur Steigerung von Host- und Service-Prüfungen nach Bedarf. Geplante Prüfungen sorgen
-  dafür, dass Host- und Service-Zustände regelmäßig aktualisiert werden, was in der Zukunft dazu führen kann, dass die Ergebnisse als
-  zwischengespeicherte Prüfungen genutzt werden können.</p>
+  <p>RegelmÃ¤ÃŸig eingeplante Host- und Service-PrÃ¼fungen werden keine Leistungssteigerung durch zwischengespeicherte PrÃ¼fungen erfahren.
+  Zwischengespeicherte PrÃ¼fungen sind nur sinnvoll zur Steigerung von Host- und Service-PrÃ¼fungen nach Bedarf. Geplante PrÃ¼fungen sorgen
+  dafÃ¼r, dass Host- und Service-ZustÃ¤nde regelmÃ¤ÃŸig aktualisiert werden, was in der Zukunft dazu fÃ¼hren kann, dass die Ergebnisse als
+  zwischengespeicherte PrÃ¼fungen genutzt werden kÃ¶nnen.</p>
 
-  <p>Zur Erinnerung: Host-Prüfungen nach Bedarf treten auf...</p>
+  <p>Zur Erinnerung: Host-PrÃ¼fungen nach Bedarf treten auf...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>wenn ein mit einem Host verbundener Service den Status wechselt</p>
     </li>
 <li class="listitem">
-      <p>wenn nötig als Teil der <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Erreichbarkeit</a>s-Logik</p>
+      <p>wenn nÃ¶tig als Teil der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Erreichbarkeit</a>s-Logik</p>
     </li>
 <li class="listitem">
-      <p>wenn nötig für <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">vorausschauende Host-Abhängigkeitsprüfungen</a></p>
+      <p>wenn nÃ¶tig fÃ¼r <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">vorausschauende Host-AbhÃ¤ngigkeitsprÃ¼fungen</a></p>
     </li>
 </ul></div>
 
-  <p>und Service-Prüfungen nach Bedarf treten auf...</p>
+  <p>und Service-PrÃ¼fungen nach Bedarf treten auf...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>wenn nötig für <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">vorausschauende Service-Abhängigkeitsprüfungen</a></p>
+      <p>wenn nÃ¶tig fÃ¼r <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">vorausschauende Service-AbhÃ¤ngigkeitsprÃ¼fungen</a></p>
     </li></ul></div>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Hinweis: Solange Sie keinen Gebrauch von Service-Abhängigkeiten machen, wird Icinga nicht in der Lage sein,
-  zwischengespeicherte Prüfungen zur Leistungssteigerung von Service-Prüfungen zu nutzen. Keine Bange - das ist normal. Zwischengespeicherte
-  Host-Prüfungen sorgen für große Leistungssteigerungen und jeder sollte dort einen Vorteil sehen.</p>
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Hinweis: Solange Sie keinen Gebrauch von Service-AbhÃ¤ngigkeiten machen, wird Icinga nicht in der Lage sein,
+  zwischengespeicherte PrÃ¼fungen zur Leistungssteigerung von Service-PrÃ¼fungen zu nutzen. Keine Bange - das ist normal. Zwischengespeicherte
+  Host-PrÃ¼fungen sorgen fÃ¼r groÃŸe Leistungssteigerungen und jeder sollte dort einen Vorteil sehen.</p>
 
   <p><span class="bold"><strong>Wie Zwischenspeicherung arbeitet</strong></span></p>
 
   <div class="mediaobject" align="right"><img src="../images/cachedchecks.png" align="right"></div>
 
-  <p>Wenn Icinga eine Host- oder Service-Prüfung nach Bedarf durchführen muss, wird es eine Festlegung treffen, ob es ein
-  zwischengespeichertes Ergebnis benutzen kann oder ob es wirklich eine Prüfung durchführen muss. Es tut dies, indem es schaut, ob die
-  letzte Prüfung für den Host oder Service innerhalb der letzten X Minuten erfolgte, wobei X der zwischengespeicherte Host- oder
+  <p>Wenn Icinga eine Host- oder Service-PrÃ¼fung nach Bedarf durchfÃ¼hren muss, wird es eine Festlegung treffen, ob es ein
+  zwischengespeichertes Ergebnis benutzen kann oder ob es wirklich eine PrÃ¼fung durchfÃ¼hren muss. Es tut dies, indem es schaut, ob die
+  letzte PrÃ¼fung fÃ¼r den Host oder Service innerhalb der letzten X Minuten erfolgte, wobei X der zwischengespeicherte Host- oder
   Service-Horizont ist.</p>
 
-  <p>Wenn die letzte Prüfung innerhalb des Zeitfensters erfolgte, das durch die cached-check-horizon-Variable angegeben ist, wird
-  Icinga das Ergebnis der letzen Host- oder Service-Prüfung nutzen und <span class="emphasis"><em>nicht</em></span> eine neue Prüfung ausführen. Wenn
-  der Host oder Service noch nicht geprüft wurde oder die letzte Prüfung außerhalb des cached-check-horizon-Zeitfensters liegt, wird
-  Icinga durch ein Plugin eine neue Host- oder Service-Prüfung durchführen.</p>
+  <p>Wenn die letzte PrÃ¼fung innerhalb des Zeitfensters erfolgte, das durch die cached-check-horizon-Variable angegeben ist, wird
+  Icinga das Ergebnis der letzen Host- oder Service-PrÃ¼fung nutzen und <span class="emphasis"><em>nicht</em></span> eine neue PrÃ¼fung ausfÃ¼hren. Wenn
+  der Host oder Service noch nicht geprÃ¼ft wurde oder die letzte PrÃ¼fung auÃŸerhalb des cached-check-horizon-Zeitfensters liegt, wird
+  Icinga durch ein Plugin eine neue Host- oder Service-PrÃ¼fung durchfÃ¼hren.</p>
 
   <p><span class="bold"><strong>Was dies wirklich bedeutet</strong></span></p>
 
-  <p>Icinga führt Prüfungen nach Bedarf durch, weil es den aktuellen Status eines Hosts oder Service <span class="emphasis"><em>in diesem
-  Moment</em></span> wissen muss. Durch die Nutzung von zwischengespeicherten Prüfungen lassen Sie Icinga glauben, dass die kürzlichen
-  Prüfungsergebnisse für die Ermittlung des aktuellen Zustands von Hosts "gut genug" sind und dass es nicht hergehen muss und erneut den
-  Zustand für den Host oder Service prüfen muss.</p>
+  <p>Icinga fÃ¼hrt PrÃ¼fungen nach Bedarf durch, weil es den aktuellen Status eines Hosts oder Service <span class="emphasis"><em>in diesem
+  Moment</em></span> wissen muss. Durch die Nutzung von zwischengespeicherten PrÃ¼fungen lassen Sie Icinga glauben, dass die kÃ¼rzlichen
+  PrÃ¼fungsergebnisse fÃ¼r die Ermittlung des aktuellen Zustands von Hosts "gut genug" sind und dass es nicht hergehen muss und erneut den
+  Zustand fÃ¼r den Host oder Service prÃ¼fen muss.</p>
 
-  <p>Die cached-check-horizon-Variable teilt Icinga mit, wie aktuell Prüfergebnisse sein müssen, um zuverlässig den jetzigen
+  <p>Die cached-check-horizon-Variable teilt Icinga mit, wie aktuell PrÃ¼fergebnisse sein mÃ¼ssen, um zuverlÃ¤ssig den jetzigen
   Status eines Hosts oder Services darzustellen. Bei einem cached-check-horizon-Wert von 30 Sekunden sagen Sie Icinga, dass die
-  Prüfung des Zustands eines Host innerhalb der letzten 30 Sekunden erfolgt sein muss, um noch als aktueller Zustand dieses Hosts angesehen
+  PrÃ¼fung des Zustands eines Host innerhalb der letzten 30 Sekunden erfolgt sein muss, um noch als aktueller Zustand dieses Hosts angesehen
   zu werden.</p>
 
-  <p>Die Anzahl von zwischengespeicherten Prüfergebnissen, die Icinga nutzen kann, im Verhältnis zu der Anzahl von Prüfungen nach
-  Bedarf, kann als die cached-check "Treffer"-Rate bezeichnet werden. Durch die Erhöhung des cached-check-horizon-Wertes bis zum regulären
-  Prüfintervall des Hosts können Sie theoretisch eine Trefferrate von 100% erreichen. In diesem Fall würden alle Prüfungen nach Bedarf
-  zwischengespeicherte Prüfergebnisse benutzen. Was für eine Leistungssteigerung! Aber ist es das wirklich? Wahrscheinlich nicht.</p>
+  <p>Die Anzahl von zwischengespeicherten PrÃ¼fergebnissen, die Icinga nutzen kann, im VerhÃ¤ltnis zu der Anzahl von PrÃ¼fungen nach
+  Bedarf, kann als die cached-check "Treffer"-Rate bezeichnet werden. Durch die ErhÃ¶hung des cached-check-horizon-Wertes bis zum regulÃ¤ren
+  PrÃ¼fintervall des Hosts kÃ¶nnen Sie theoretisch eine Trefferrate von 100% erreichen. In diesem Fall wÃ¼rden alle PrÃ¼fungen nach Bedarf
+  zwischengespeicherte PrÃ¼fergebnisse benutzen. Was fÃ¼r eine Leistungssteigerung! Aber ist es das wirklich? Wahrscheinlich nicht.</p>
 
-  <p>Die Zuverlässigkeit von zwischengespeicherten Prüfergebnissen nimmt mit der Zeit ab. Höhere Trefferraten erfordern, dass vorherige
-  Prüfergebnisse für längere Zeit als "gültig" angesehen werden. Dinge können sich schnell in jedem Netzwerk-Szenario ändern, und es gibt
-  keine Garantie dafür, dass es bei einem Server auf einmal brennt, der vor 30 Sekunden fehlerfrei funktionierte. Das ist der Kompromiss:
-  Zuverlässigkeit gegen Geschwindigkeit. Wenn der cached-check-horizon-Wert groß ist, riskieren Sie, dass Sie unzuverlässige Prüfergebnisse
-  in der Überwachungslogik haben.</p>
+  <p>Die ZuverlÃ¤ssigkeit von zwischengespeicherten PrÃ¼fergebnissen nimmt mit der Zeit ab. HÃ¶here Trefferraten erfordern, dass vorherige
+  PrÃ¼fergebnisse fÃ¼r lÃ¤ngere Zeit als "gÃ¼ltig" angesehen werden. Dinge kÃ¶nnen sich schnell in jedem Netzwerk-Szenario Ã¤ndern, und es gibt
+  keine Garantie dafÃ¼r, dass es bei einem Server auf einmal brennt, der vor 30 Sekunden fehlerfrei funktionierte. Das ist der Kompromiss:
+  ZuverlÃ¤ssigkeit gegen Geschwindigkeit. Wenn der cached-check-horizon-Wert groÃŸ ist, riskieren Sie, dass Sie unzuverlÃ¤ssige PrÃ¼fergebnisse
+  in der Ãœberwachungslogik haben.</p>
 
-  <p>Icinga wird letztendlich den korrekten Status aller Hosts und Services ermitteln, so dass es lediglich für eine kurze Zeit
-  mit inkorrekten Informationen arbeitet, selbst wenn sich die zwischengespeicherten Prüfergebnisse als unzuverlässig herausstellen sollten.
-  Selbst kurze Zeiten von unzuverlässigen Statusinformationen können sich für Admins als Ärgernis erweisen, wenn sie Benachrichtigungen über
-  Probleme bekommen, die nicht länger existieren.</p>
+  <p>Icinga wird letztendlich den korrekten Status aller Hosts und Services ermitteln, so dass es lediglich fÃ¼r eine kurze Zeit
+  mit inkorrekten Informationen arbeitet, selbst wenn sich die zwischengespeicherten PrÃ¼fergebnisse als unzuverlÃ¤ssig herausstellen sollten.
+  Selbst kurze Zeiten von unzuverlÃ¤ssigen Statusinformationen kÃ¶nnen sich fÃ¼r Admins als Ã„rgernis erweisen, wenn sie Benachrichtigungen Ã¼ber
+  Probleme bekommen, die nicht lÃ¤nger existieren.</p>
 
-  <p>Es gibt keinen Standard-cached-check-horizon-Wert oder keine Trefferrate, die für jeden Icinga-Benutzer akzeptierbar wäre.
-  Einige Leute möchten einen kleines horizon-Zeitfenster und eine niedrige Trefferrate während andere ein größeres Zeitfenster und eine
-  höhere Trefferrate bevorzugen (mit einer kleineren Zuverlässigkeitsrate). Einige Leute möchten vielleicht ganz auf zwischengespeicherte
-  Prüfungen verzichten, um eine hundertprozentige Zuverlässigkeitsrate zu erhalten. Verschiedene horizon-Zeitfenster auszuprobieren und
-  ihren Einfluss auf die Zuverlässigkeit von Statusinformationen zu sehen ist vielleicht das einzige Bedürfnis, das ein einzelner Benutzer
-  hat, um den "richtigen" Wert für seine Situation zu finden.</p>
+  <p>Es gibt keinen Standard-cached-check-horizon-Wert oder keine Trefferrate, die fÃ¼r jeden Icinga-Benutzer akzeptierbar wÃ¤re.
+  Einige Leute mÃ¶chten einen kleines horizon-Zeitfenster und eine niedrige Trefferrate wÃ¤hrend andere ein grÃ¶ÃŸeres Zeitfenster und eine
+  hÃ¶here Trefferrate bevorzugen (mit einer kleineren ZuverlÃ¤ssigkeitsrate). Einige Leute mÃ¶chten vielleicht ganz auf zwischengespeicherte
+  PrÃ¼fungen verzichten, um eine hundertprozentige ZuverlÃ¤ssigkeitsrate zu erhalten. Verschiedene horizon-Zeitfenster auszuprobieren und
+  ihren Einfluss auf die ZuverlÃ¤ssigkeit von Statusinformationen zu sehen ist vielleicht das einzige BedÃ¼rfnis, das ein einzelner Benutzer
+  hat, um den "richtigen" Wert fÃ¼r seine Situation zu finden.</p>
 
   <p><span class="bold"><strong>Konfigurationsvariablen</strong></span></p>
 
-  <p>Die folgenden Variablen legen die Zeitfenster fest, in denen ein vorangegangenes Prüfergebnis als ein zwischengespeichertes
-  Prüfergebnis genutzt werden kann:</p>
+  <p>Die folgenden Variablen legen die Zeitfenster fest, in denen ein vorangegangenes PrÃ¼fergebnis als ein zwischengespeichertes
+  PrÃ¼fergebnis genutzt werden kann:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p>Die <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a>-Variable kontrolliert
-      zwischengespeicherte Host-Prüfungen.</p>
+      zwischengespeicherte Host-PrÃ¼fungen.</p>
     </li>
 <li class="listitem">
       <p>Die <a class="link" href="configmain.html#configmain-cached_service_check_horizon">cached_service_check_horizon</a>-Variable kontrolliert
-      zwischengespeicherte Service-Prüfungen.</p>
+      zwischengespeicherte Service-PrÃ¼fungen.</p>
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Zwischenspeichereffektivität optimieren</strong></span></p>
+  <p><span class="bold"><strong>ZwischenspeichereffektivitÃ¤t optimieren</strong></span></p>
 
-  <p>Um den größten Nutzen aus zwischengespeicherten Prüfungen zu ziehen, sollten Sie:</p>
+  <p>Um den grÃ¶ÃŸten Nutzen aus zwischengespeicherten PrÃ¼fungen zu ziehen, sollten Sie:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>regelmäßige Host-Prüfungen einplanen</p>
+      <p>regelmÃ¤ÃŸige Host-PrÃ¼fungen einplanen</p>
     </li>
 <li class="listitem">
-      <p>z.B. PNP4Nagios benutzen, um grafische Auswertungen von 1) Prüfungen nach Bedarf und 2) zwischengespeicherten Prüfungen zu
+      <p>z.B. PNP4Nagios benutzen, um grafische Auswertungen von 1) PrÃ¼fungen nach Bedarf und 2) zwischengespeicherten PrÃ¼fungen zu
       erstellen</p>
     </li>
 <li class="listitem">
@@ -150,73 +151,73 @@
     </li>
 </ul></div>
 
-  <p>Sie können regelmäßige Prüfungen für Ihre Hosts durch einen größeren Wert als 0 in der <span class="emphasis"><em>check_interval</em></span>-Option in
+  <p>Sie kÃ¶nnen regelmÃ¤ÃŸige PrÃ¼fungen fÃ¼r Ihre Hosts durch einen grÃ¶ÃŸeren Wert als 0 in der <span class="emphasis"><em>check_interval</em></span>-Option in
   Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definitionen</a> einplanen. Wenn Sie das tun, sollten Sie die
-  <span class="emphasis"><em>max_check_attempts</em></span>-Option auf einen Wert größer als 1 setzen, oder es wird ein Performance-Problem geben. Das
-  potenzielle Performance-Problem ist <a class="link" href="hostchecks.html" title="Host-Prüfungen (Host checks)">hier</a> genauer beschrieben.</p>
+  <span class="emphasis"><em>max_check_attempts</em></span>-Option auf einen Wert grÃ¶ÃŸer als 1 setzen, oder es wird ein Performance-Problem geben. Das
+  potenzielle Performance-Problem ist <a class="link" href="hostchecks.html" title="5.4. Host-PrÃ¼fungen (Host checks)">hier</a> genauer beschrieben.</p>
 
   <div class="mediaobject"><img src="../images/perfdata_cached2.png"></div>
 
-  <p>Ein guter Weg, um den richtigen Wert für die cached-check-horizon-Optionen zu ermitteln, besteht im Vergleich der Anzahl von
-  Prüfungen nach Bedarf gegen die Anzahl, in denen zwischengespeicherte Ergebnisse benutzt werden. Das <a class="link" href="icingastats.html" title="Nutzung des Icingastats-Utilitys">icingastats</a>-Dienstprogramm kann Informationen über zwischengespeicherte Prüfungen erzeugen, die dann mit
-  <a class="link" href="perfgraphs.html" title="Grafische Darstellung von Performance-Informationen mit PNP4Nagios">PNP4Nagios</a> dargestellt werden können. Ein Beispiel-Diagramm, das zwischengespeicherte Prüfungen gegen
+  <p>Ein guter Weg, um den richtigen Wert fÃ¼r die cached-check-horizon-Optionen zu ermitteln, besteht im Vergleich der Anzahl von
+  PrÃ¼fungen nach Bedarf gegen die Anzahl, in denen zwischengespeicherte Ergebnisse benutzt werden. Das <a class="link" href="icingastats.html" title="8.6. Nutzung des Icingastats-Utilitys">icingastats</a>-Dienstprogramm kann Informationen Ã¼ber zwischengespeicherte PrÃ¼fungen erzeugen, die dann mit
+  <a class="link" href="perfgraphs.html" title="8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios">PNP4Nagios</a> dargestellt werden kÃ¶nnen. Ein Beispiel-Diagramm, das zwischengespeicherte PrÃ¼fungen gegen
   solche nach Bedarf darstellt, sehen Sie oben.</p>
 
   <p>Bei der Testumgebung, aus der dieser Graph stammt, gab es...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>insgesamt 110 Hosts, die alle in regelmäßigen Abständen geprüft wurden</p>
+      <p>insgesamt 110 Hosts, die alle in regelmÃ¤ÃŸigen AbstÃ¤nden geprÃ¼ft wurden</p>
     </li>
 <li class="listitem">
-      <p>ein durchschnittliches (regelmäßig geplantes) Host-Prüfintervall von 30 Minuten</p>
+      <p>ein durchschnittliches (regelmÃ¤ÃŸig geplantes) Host-PrÃ¼fintervall von 30 Minuten</p>
     </li>
 <li class="listitem">
       <p>ein <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a> von 15 Sekunden</p>
     </li>
 </ul></div>
 
-  <p>Das Diagramm zeigt, wie viele regelmäßig geplante Host-Prüfungen im Vergleich zu zwischengespeicherten Host-Prüfungen erfolgt sind.
-  In diesem Beispiel wurden alle fünf Minuten ein Durchschnitt von 77 Host-Prüfungen durchgeführt. 59 von diesen (76%) sind Prüfungen nach
+  <p>Das Diagramm zeigt, wie viele regelmÃ¤ÃŸig geplante Host-PrÃ¼fungen im Vergleich zu zwischengespeicherten Host-PrÃ¼fungen erfolgt sind.
+  In diesem Beispiel wurden alle fÃ¼nf Minuten ein Durchschnitt von 77 Host-PrÃ¼fungen durchgefÃ¼hrt. 59 von diesen (76%) sind PrÃ¼fungen nach
   Bedarf.</p>
 
-  <p>Es zeigt auch, wie viele zwischengespeicherte Host-Prüfungen während der Zeit aufgetreten sind. In diesem Beispiel waren es im
-  Durchschnitt 21 Host-Prüfungen alle fünf Minuten.</p>
+  <p>Es zeigt auch, wie viele zwischengespeicherte Host-PrÃ¼fungen wÃ¤hrend der Zeit aufgetreten sind. In diesem Beispiel waren es im
+  Durchschnitt 21 Host-PrÃ¼fungen alle fÃ¼nf Minuten.</p>
 
-  <p>Erinnern Sie sich, dass zwischengespeicherte Prüfungen nur für Prüfungen nach Bedarf verfügbar sind. Basierend auf den 5-Minuten-
-  Durchschnitten der Graphen sehen wir, dass Icinga in 21 von 59 Fällen ein zwischengespeichertes Ergebnis benutzen kann, wenn
-  Prüfungen nach Bedarf auszuführen sind. Das scheint nicht viel zu sein, aber diese Graphen stellen eine kleine Überwachungsumgebung dar.
-  Bedenken Sie, dass 21 von 59 fast 36% sind und Sie können sich vorstellen, wie dies die Host-Prüf-Performance in großen Umgebungen
-  steigern kann. Der Prozentsatz könnte größer sein, wenn der Wert der cached_host_check_horizon-Variablen erhöht wird, aber das würde die
-  Zuverlässigkeit der zwischengespeicherten Host-Statusinformation verringern.</p>
+  <p>Erinnern Sie sich, dass zwischengespeicherte PrÃ¼fungen nur fÃ¼r PrÃ¼fungen nach Bedarf verfÃ¼gbar sind. Basierend auf den 5-Minuten-
+  Durchschnitten der Graphen sehen wir, dass Icinga in 21 von 59 FÃ¤llen ein zwischengespeichertes Ergebnis benutzen kann, wenn
+  PrÃ¼fungen nach Bedarf auszufÃ¼hren sind. Das scheint nicht viel zu sein, aber diese Graphen stellen eine kleine Ãœberwachungsumgebung dar.
+  Bedenken Sie, dass 21 von 59 fast 36% sind und Sie kÃ¶nnen sich vorstellen, wie dies die Host-PrÃ¼f-Performance in groÃŸen Umgebungen
+  steigern kann. Der Prozentsatz kÃ¶nnte grÃ¶ÃŸer sein, wenn der Wert der cached_host_check_horizon-Variablen erhÃ¶ht wird, aber das wÃ¼rde die
+  ZuverlÃ¤ssigkeit der zwischengespeicherten Host-Statusinformation verringern.</p>
 
-  <p>Sobald Sie ein paar Stunden oder Tage mit PNP4Nagios-Graphen haben, sollten Sie sehen, wie viele Host- und Service-Prüfungen mit
-  Hilfe von Plugins ausgeführt werden gegen die, die zwischengespeicherte Prüfergebnisse benutzen. Nutzen Sie diese Informationen, um die
-  cached-check-horizon-Variablen entsprechend für Ihre Situation anzupassen. Überwachen Sie weiterhin die PNP4Nagios-Graphen, um zu sehen,
-  wie die Änderung der horizon-Variablen die zwischengespeicherten Prüf-Statistiken beeinflusst. Ändern und wiederholen Sie, falls
+  <p>Sobald Sie ein paar Stunden oder Tage mit PNP4Nagios-Graphen haben, sollten Sie sehen, wie viele Host- und Service-PrÃ¼fungen mit
+  Hilfe von Plugins ausgefÃ¼hrt werden gegen die, die zwischengespeicherte PrÃ¼fergebnisse benutzen. Nutzen Sie diese Informationen, um die
+  cached-check-horizon-Variablen entsprechend fÃ¼r Ihre Situation anzupassen. Ãœberwachen Sie weiterhin die PNP4Nagios-Graphen, um zu sehen,
+  wie die Ã„nderung der horizon-Variablen die zwischengespeicherten PrÃ¼f-Statistiken beeinflusst. Ã„ndern und wiederholen Sie, falls
   erforderlich.</p>
 
-  <a class="indexterm" name="id1583835"></a>
+  <a class="indexterm" name="id1533720"></a>
 
-  <a class="indexterm" name="id1583845"></a>
+  <a class="indexterm" name="id1533730"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="dependencychecks.html">Zurück</a> </td>
+<a accesskey="p" href="dependencychecks.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="passivestatetranslation.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Vorausschauende Abhängigkeitsprüfungen </td>
+<td width="40%" align="left" valign="top">7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Passive Host-Zustandsübersetzung</td>
+<td width="40%" align="right" valign="top">Â 7.21. Passive Host-ZustandsÃ¼bersetzung</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Icinga Plugin API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>11.1.Â Icinga Plugin API</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch11.html" title="Chapter 11. Development">
-<link rel="prev" href="ch11.html" title="Chapter 11. Development">
-<link rel="next" href="epnplugins.html" title="Developing Plugins For Use With Embedded Perl">
+<link rel="up" href="ch11.html" title="ChapterÂ 11.Â Development">
+<link rel="prev" href="ch11.html" title="ChapterÂ 11.Â Development">
+<link rel="next" href="epnplugins.html" title="11.2.Â Developing Plugins For Use With Embedded Perl">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga Plugin API</th></tr>
+<tr><th colspan="3" align="center">11.1.Â Icinga Plugin API</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch11.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 11. Development</th>
-<td width="20%" align="right"> <a accesskey="n" href="epnplugins.html">Next</a>
+<a accesskey="p" href="ch11.html">Prev</a>Â </td>
+<th width="60%" align="center">ChapterÂ 11.Â Development</th>
+<td width="20%" align="right">Â <a accesskey="n" href="epnplugins.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Icinga Plugin API">
+<div class="section" title="11.1.Â Icinga Plugin API">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="pluginapi"></a><a name="plugin_api"></a>Icinga Plugin API</h2></div></div></div>
+<a name="pluginapi"></a>11.1.Â <a name="plugin_api"></a>Icinga Plugin API</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Other Resources</strong></span></p>
@@ -137,11 +138,11 @@
   <p>A plugin can return optional performance data for use by external applications. To do this, the performance data must be
   separated from the text output with a pipe (|) symbol like such:</p>
 
-  <p><span class="color"><font color="red">DISK OK - free space: / 3326 MB (56%);</font></span> | <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968</font></span></p>
+  <p><span class="color"><font color="red">DISK OK - free space: / 3326 MB (56%);</font></span>Â |Â <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968</font></span></p>
 
-  <p>If this plugin was used to perform a service check, the <span class="color"><font color="red">red</font></span> portion of output
+  <p>If this plugin was used to perform a service check, theÂ <span class="color"><font color="red">red</font></span>Â portion of output
   (left of the pipe separator) will be stored in the <a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a> macro and the
-   <span class="color"><font color="red">orange</font></span> portion of output (right of the pipe separator) will be stored in the <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a> macro.</p>
+  Â <span class="color"><font color="red">orange</font></span>Â portion of output (right of the pipe separator) will be stored in the <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a> macro.</p>
 
   <p><span class="bold"><strong>Case 3: Multiple lines of output (text and perfdata)</strong></span></p>
 
@@ -149,7 +150,7 @@
 
   <p><span class="color"><font color="red">DISK OK - free space: / 3326 MB (56%);</font></span></p>
 
-  <p> | <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968</font></span></p>
+  <p>Â |Â <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968</font></span></p>
 
   <p><span class="color"><font color="blue">/ 15272 MB (77%);</font></span></p>
 
@@ -157,7 +158,7 @@
 
   <p><span class="color"><font color="blue">/home 69357 MB (27%);</font></span></p>
 
-  <p><span class="color"><font color="blue">/var/log 819 MB (84%);</font></span> | <span class="color"><font color="#FFA500">/boot=68MB;88;93;0;98</font></span></p>
+  <p><span class="color"><font color="blue">/var/log 819 MB (84%);</font></span>Â |Â <span class="color"><font color="#FFA500">/boot=68MB;88;93;0;98</font></span></p>
 
   <p><span class="color"><font color="#FFA500">/home=69357MB;253404;253409;0;253414</font></span></p>
 
@@ -187,7 +188,7 @@
 </tr>
 <tr>
 <td><p>$SERVICEPERFDATA$</p></td>
-<td><p> <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968 /boot=68MB;88;93;0;98 /home=69357MB;253404;253409;0;253414 /var/log=818MB;970;975;0;980</font></span>
+<td><p> <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968Â /boot=68MB;88;93;0;98Â /home=69357MB;253404;253409;0;253414Â /var/log=818MB;970;975;0;980</font></span>
           </p></td>
 </tr>
 <tr>
@@ -229,32 +230,32 @@
 
   <p>If you're looking for some example plugins to study, we would recommend that you download the official Nagios
   plugins and look through the code for various C, Perl, and shell script plugins. Information on obtaining the official
-  Nagios plugins can be found <a class="link" href="plugins.html" title="Icinga Plugins">here</a>.</p>
+  Nagios plugins can be found <a class="link" href="plugins.html" title="5.1.Â Icinga Plugins">here</a>.</p>
 
   <p><span class="bold"><strong>Perl Plugins</strong></span></p>
 
-  <p>Icinga features an optional <a class="link" href="embeddedperl.html" title="Using The Embedded Perl Interpreter">embedded Perl interpreter</a> which can speed up the
+  <p>Icinga features an optional <a class="link" href="embeddedperl.html" title="7.17.Â Using The Embedded Perl Interpreter">embedded Perl interpreter</a> which can speed up the
   execution of Perl plugins. More information on developing Perl plugins for use with the embedded Perl interpreter can be found
-  <a class="link" href="embeddedperl.html" title="Using The Embedded Perl Interpreter">here</a>.</p>
-  <a class="indexterm" name="id1543066"></a>
+  <a class="link" href="embeddedperl.html" title="7.17.Â Using The Embedded Perl Interpreter">here</a>.</p>
+  <a class="indexterm" name="id1482641"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch11.html">Prev</a> </td>
+<a accesskey="p" href="ch11.html">Prev</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch11.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="epnplugins.html">Next</a>
+<td width="40%" align="right">Â <a accesskey="n" href="epnplugins.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Chapter 11. Development </td>
+<td width="40%" align="left" valign="top">ChapterÂ 11.Â DevelopmentÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Developing Plugins For Use With Embedded Perl</td>
+<td width="40%" align="right" valign="top">Â 11.2.Â Developing Plugins For Use With Embedded Perl</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

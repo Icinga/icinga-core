@@ -496,7 +496,6 @@
 
 #define MAX_DATETIME_LENGTH			48
 
-
 /************************* MODIFIED ATTRIBUTES **************************/
 
 #define MODATTR_NONE                            0

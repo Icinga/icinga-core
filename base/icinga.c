@@ -285,6 +285,8 @@ int             debug_level = DEFAULT_DEBUG_LEVEL;
 int             debug_verbosity = DEFAULT_DEBUG_VERBOSITY;
 unsigned long   max_debug_file_size = DEFAULT_MAX_DEBUG_FILE_SIZE;
 
+unsigned long   max_check_result_list_items = DEFAULT_MAX_CHECK_RESULT_LIST_ITEMS;
+
 int dummy;	/* reduce compiler warnings */
 
 

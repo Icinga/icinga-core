@@ -1,38 +1,39 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Authentifizierung und Autorisierung in den CGIs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>3.7. Authentifizierung und Autorisierung in den CGIs</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
-<link rel="prev" href="configcgi.html" title="Optionen CGI-Konfigurationsdatei">
-<link rel="next" href="ch04.html" title="Kapitel 4. Icinga starten/stoppen/prüfen">
+<link rel="prev" href="configcgi.html" title="3.6. Optionen CGI-Konfigurationsdatei">
+<link rel="next" href="ch04.html" title="Kapitel 4. Icinga starten/stoppen/prÃ¼fen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Authentifizierung und Autorisierung in den CGIs</th></tr>
+<tr><th colspan="3" align="center">3.7. Authentifizierung und Autorisierung in den CGIs</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="configcgi.html">Zurück</a> </td>
+<a accesskey="p" href="configcgi.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 3. Icinga konfigurieren</th>
-<td width="20%" align="right"> <a accesskey="n" href="ch04.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="ch04.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Authentifizierung und Autorisierung in den CGIs">
+<div class="section" title="3.7. Authentifizierung und Autorisierung in den CGIs">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgiauth"></a>Authentifizierung und Autorisierung in den CGIs</h2></div></div></div>
+<a name="cgiauth"></a>3.7. Authentifizierung und Autorisierung in den CGIs</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Dieses Dokument beschreibt, wie die Icinga-CGIs entscheiden, wer die Überwachungs- und Konfigurationsinformationen
-  sehen darf und wer über das Web-Interface Befehle an den Icinga-Daemon erteilen darf.</p>
+  <p>Dieses Dokument beschreibt, wie die Icinga-CGIs entscheiden, wer die Ãœberwachungs- und Konfigurationsinformationen
+  sehen darf und wer Ã¼ber das Web-Interface Befehle an den Icinga-Daemon erteilen darf.</p>
 
   <p><a name="cgiauth-definitions"></a><span class="bold"><strong> Definitionen</strong></span></p>
 
@@ -41,47 +42,47 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Ein <span class="bold"><strong>authentifizierter Benutzer</strong></span> ist jemand, der sich dem Web-Server gegenüber mit
-      Benutzer und Passwort authentifiziert hat und dem Zugang zum Icinga-Web-Interface gewährt wurde.</p>
+      <p>Ein <span class="bold"><strong>authentifizierter Benutzer</strong></span> ist jemand, der sich dem Web-Server gegenÃ¼ber mit
+      Benutzer und Passwort authentifiziert hat und dem Zugang zum Icinga-Web-Interface gewÃ¤hrt wurde.</p>
     </li>
 <li class="listitem">
       <p>Ein <span class="bold"><strong>authentifizierter Kontakt</strong></span> ist ein authentifizierter Benutzer, dessen Benutzername
-      mit dem Kurznamen einer <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt-Definition</a> übereinstimmt.</p>
+      mit dem Kurznamen einer <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt-Definition</a> Ã¼bereinstimmt.</p>
     </li>
 </ul></div>
 
   <p><a name="cgiauth-config_web_users"></a> <span class="bold"><strong>Erstellen von authentifizierten
   Benutzern</strong></span></p>
 
-  <p>Wenn wir annehmen, dass Sie Ihren Web-Server wie in der <a class="link" href="quickstart.html" title="Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a>
+  <p>Wenn wir annehmen, dass Sie Ihren Web-Server wie in der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a>
   konfiguriert haben, dann sollte er Sie dazu auffordern, sich zu authentifizieren, bevor Sie die Icinga-CGIs benutzen
-  können. Sie sollten außerdem ein Benutzerkonto (<span class="emphasis"><em>icingaadmin</em></span>) haben, das Zugang zu den CGIs hat.</p>
+  kÃ¶nnen. Sie sollten auÃŸerdem ein Benutzerkonto (<span class="emphasis"><em>icingaadmin</em></span>) haben, das Zugang zu den CGIs hat.</p>
 
-  <p>Während Sie weitere <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakte</a> definieren, um Host- und
-  Service-Benachrichtigungen zu erhalten, möchten Sie wahrscheinlich auch, dass sie Zugang zum Icinga-Web-Interface haben.
-  Sie können den folgenden Befehl benutzen, um zusätzliche Benutzer hinzuzufügen, die sich bei den CGI authentifizieren können.
-  Ersetzen Sie &lt;username&gt; durch den Benutzernamen, den Sie hinzufügen möchten. In den meisten Fällen sollte der Benutzername
-  mit dem Kurznamen eines <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakts</a> übereinstimmen, den Sie definiert
+  <p>WÃ¤hrend Sie weitere <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakte</a> definieren, um Host- und
+  Service-Benachrichtigungen zu erhalten, mÃ¶chten Sie wahrscheinlich auch, dass sie Zugang zum Icinga-Web-Interface haben.
+  Sie kÃ¶nnen den folgenden Befehl benutzen, um zusÃ¤tzliche Benutzer hinzuzufÃ¼gen, die sich bei den CGI authentifizieren kÃ¶nnen.
+  Ersetzen Sie &lt;username&gt; durch den Benutzernamen, den Sie hinzufÃ¼gen mÃ¶chten. In den meisten FÃ¤llen sollte der Benutzername
+  mit dem Kurznamen eines <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakts</a> Ã¼bereinstimmen, den Sie definiert
   haben.</p>
 
   <pre class="screen"> htpasswd /usr/local/icinga/etc/htpasswd.users &lt;username&gt;</pre>
 
   <p><a name="cgiauth-enable_cgi_auth"></a> <span class="bold"><strong>Aktivieren der
-  Authentifizierungs/Autorisierungsfunktionalität in den CGIs</strong></span></p>
+  Authentifizierungs/AutorisierungsfunktionalitÃ¤t in den CGIs</strong></span></p>
 
-  <p>Als nächstes sollten Sie sicherstellen, dass die CGI so konfiguriert sind, dass sie die Authentifizierungs- und
-  Autorisierungsfunktionalität nutzen, um festzulegen, welchen Zugang Benutzer zu Informationen und/oder Befehlen haben. Dies wird
-  durch die <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a>-Variable in der <a class="link" href="configcgi.html" title="Optionen CGI-Konfigurationsdatei">CGI-Konfigurationsdatei</a> erreicht, die einen Wert ungleich Null haben muss. Beispiel:</p>
+  <p>Als nÃ¤chstes sollten Sie sicherstellen, dass die CGI so konfiguriert sind, dass sie die Authentifizierungs- und
+  AutorisierungsfunktionalitÃ¤t nutzen, um festzulegen, welchen Zugang Benutzer zu Informationen und/oder Befehlen haben. Dies wird
+  durch die <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a>-Variable in der <a class="link" href="configcgi.html" title="3.6. Optionen CGI-Konfigurationsdatei">CGI-Konfigurationsdatei</a> erreicht, die einen Wert ungleich Null haben muss. Beispiel:</p>
 
   <pre class="screen"> use_authentication=1</pre>
 
-  <p>Okay, nun sind Sie fertig mit dem Einstellen der grundlegenden Authentifizierungs- und Autorisierungsfunktionalität in den
+  <p>Okay, nun sind Sie fertig mit dem Einstellen der grundlegenden Authentifizierungs- und AutorisierungsfunktionalitÃ¤t in den
   CGIs.</p>
 
-  <p><a name="cgiauth-default_rights"></a> <span class="bold"><strong>Standardberechtigungen für
+  <p><a name="cgiauth-default_rights"></a> <span class="bold"><strong>Standardberechtigungen fÃ¼r
   CGI-Informationen</strong></span></p>
 
-  <p>Welche Standardberechtigungen haben Benutzer in den CGIs, wenn die Authentifizierungs- und Autorisierungsfunktionalität
+  <p>Welche Standardberechtigungen haben Benutzer in den CGIs, wenn die Authentifizierungs- und AutorisierungsfunktionalitÃ¤t
   aktiviert ist?</p>
 
   <div class="informaltable">
@@ -169,8 +170,8 @@
   </div>
 
   <p><span class="emphasis"><em>Authentifizierten Kontakten<sup> <a class="link" href="cgiauth.html#cgiauth-definitions">*</a> </sup> </em></span>
-  werden die folgenden Berechtigungen für jeden <span class="bold"><strong>Service</strong></span> gewährt, bei dem sie als Kontakt
-  eingetragen sind (aber "Nein" für Services, bei denen sie nicht als Kontakt eingetragen sind)...</p>
+  werden die folgenden Berechtigungen fÃ¼r jeden <span class="bold"><strong>Service</strong></span> gewÃ¤hrt, bei dem sie als Kontakt
+  eingetragen sind (aber "Nein" fÃ¼r Services, bei denen sie nicht als Kontakt eingetragen sind)...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -180,7 +181,7 @@
       <p>Autorisierung, um Service-Konfigurationsinformationen zu sehen</p>
     </li>
 <li class="listitem">
-      <p>Autorisierung, um Verlauf und Benachrichtigungen für den Service zu sehen</p>
+      <p>Autorisierung, um Verlauf und Benachrichtigungen fÃ¼r den Service zu sehen</p>
     </li>
 <li class="listitem">
       <p>Autorisierung, um Service-Befehle zu erteilen</p>
@@ -188,8 +189,8 @@
 </ul></div>
 
   <p><span class="emphasis"><em>Authentifizierten Kontakten<sup> <a class="link" href="cgiauth.html#cgiauth-definitions">*</a> </sup> </em></span>
-  werden die folgenden Berechtigungen für jeden <span class="bold"><strong>Host</strong></span> gewährt, bei dem sie als Kontakt eingetragen
-  sind (aber "Nein" für Hosts, bei denen sie nicht als Kontakt eingetragen sind)...</p>
+  werden die folgenden Berechtigungen fÃ¼r jeden <span class="bold"><strong>Host</strong></span> gewÃ¤hrt, bei dem sie als Kontakt eingetragen
+  sind (aber "Nein" fÃ¼r Hosts, bei denen sie nicht als Kontakt eingetragen sind)...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -199,22 +200,22 @@
       <p>Autorisierung, um Host-Konfigurationsinformationen zu sehen</p>
     </li>
 <li class="listitem">
-      <p>Autorisierung, um Verlauf und Benachrichtigungen für den Host zu sehen</p>
+      <p>Autorisierung, um Verlauf und Benachrichtigungen fÃ¼r den Host zu sehen</p>
     </li>
 <li class="listitem">
       <p>Autorisierung, um Host-Befehle zu erteilen</p>
     </li>
 <li class="listitem">
-      <p>Autorisierung, um Statusinformationen für alle Services des Hosts zu sehen</p>
+      <p>Autorisierung, um Statusinformationen fÃ¼r alle Services des Hosts zu sehen</p>
     </li>
 <li class="listitem">
-      <p>Autorisierung, um Konfigurationsinformationen für alle Services des Hosts zu sehen</p>
+      <p>Autorisierung, um Konfigurationsinformationen fÃ¼r alle Services des Hosts zu sehen</p>
     </li>
 <li class="listitem">
-      <p>Autorisierung, um Verlauf und Benachrichtigungen für alle Services des Host zu sehen</p>
+      <p>Autorisierung, um Verlauf und Benachrichtigungen fÃ¼r alle Services des Host zu sehen</p>
     </li>
 <li class="listitem">
-      <p>Autorisierung, um Befehle für alle Services des Hosts zu erteilen</p>
+      <p>Autorisierung, um Befehle fÃ¼r alle Services des Hosts zu erteilen</p>
     </li>
 </ul></div>
 
@@ -223,31 +224,31 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>die Log-Datei über das <a class="link" href="cgis.html#cgis-showlog_cgi">showlog CGI</a> anzusehen</p>
+      <p>die Log-Datei Ã¼ber das <a class="link" href="cgis.html#cgis-showlog_cgi">showlog CGI</a> anzusehen</p>
     </li>
 <li class="listitem">
-      <p>Icinga-Prozessinformationen über das <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a>
+      <p>Icinga-Prozessinformationen Ã¼ber das <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a>
       anzusehen</p>
     </li>
 <li class="listitem">
-      <p>Icinga-Prozessbefehle über das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> zu erteilen</p>
+      <p>Icinga-Prozessbefehle Ã¼ber das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> zu erteilen</p>
     </li>
 <li class="listitem">
-      <p>Definitionen für Hostgruppen, Kontakte, Kontaktgruppen, Zeitfenster und Befehle über das <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a> anzusehen</p>
+      <p>Definitionen fÃ¼r Hostgruppen, Kontakte, Kontaktgruppen, Zeitfenster und Befehle Ã¼ber das <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a> anzusehen</p>
     </li>
 </ul></div>
 
-  <p>Sie werden unzweifelhaft Zugang zu diesen Informationen haben wollen, so dass Sie wie unten beschrieben zusätzliche Rechte
-  für sich (und vielleicht andere Benutzer) zuweisen möchten.</p>
+  <p>Sie werden unzweifelhaft Zugang zu diesen Informationen haben wollen, so dass Sie wie unten beschrieben zusÃ¤tzliche Rechte
+  fÃ¼r sich (und vielleicht andere Benutzer) zuweisen mÃ¶chten.</p>
 
-  <p><a name="cgiauth-additional_rights"></a> <span class="bold"><strong>Zusätzliche Berechtigungen zu CGI-Informationen
-  gewähren</strong></span></p>
+  <p><a name="cgiauth-additional_rights"></a> <span class="bold"><strong>ZusÃ¤tzliche Berechtigungen zu CGI-Informationen
+  gewÃ¤hren</strong></span></p>
 
-  <p>Uns ist klar, dass die verfügbaren Optionen es nicht erlauben, sehr genau auf bestimmte Berechtigungen einzugehen, aber es
+  <p>Uns ist klar, dass die verfÃ¼gbaren Optionen es nicht erlauben, sehr genau auf bestimmte Berechtigungen einzugehen, aber es
   ist besser als nichts...</p>
 
-  <p>Benutzern können zusätzliche Autorisierungen gegeben werden, indem sie den folgenden Variablen in der
-  CGI-Konfigurationsdatei hinzugefügt werden...</p>
+  <p>Benutzern kÃ¶nnen zusÃ¤tzliche Autorisierungen gegeben werden, indem sie den folgenden Variablen in der
+  CGI-Konfigurationsdatei hinzugefÃ¼gt werden...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -275,49 +276,49 @@
 
   <p><a name="cgiauth-cgi_auth_requirements"></a> <span class="bold"><strong>CGI-Autorisierungsanforderungen</strong></span></p>
 
-  <p>Wenn Sie verwirrt sind, welche Autorisierung Sie benötigen, um Zugang zu verschiedenen Informationen in den CGIs zu
-  bekommen, lesen Sie <a class="link" href="cgis.html" title="Icinga Classic UI: Informationen über die CGIs">hier</a> den Abschnitt <span class="emphasis"><em> <span class="bold"><strong>Autorisierungsanforderungen</strong></span> </em></span>, in dem jedes CGI beschrieben ist.</p>
+  <p>Wenn Sie verwirrt sind, welche Autorisierung Sie benÃ¶tigen, um Zugang zu verschiedenen Informationen in den CGIs zu
+  bekommen, lesen Sie <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Informationen Ã¼ber die CGIs">hier</a> den Abschnitt <span class="emphasis"><em> <span class="bold"><strong>Autorisierungsanforderungen</strong></span> </em></span>, in dem jedes CGI beschrieben ist.</p>
 
   <p><a name="cgiauth-secure_web_servers"></a> <span class="bold"><strong>Authentifizierung auf sicheren
   Web-Servern</strong></span></p>
 
-  <p>Wenn Ihr Web-Server in einer sicheren Domäne steht (d.h. hinter einer Firewall) oder wenn Sie SSL benutzen, dann können
+  <p>Wenn Ihr Web-Server in einer sicheren DomÃ¤ne steht (d.h. hinter einer Firewall) oder wenn Sie SSL benutzen, dann kÃ¶nnen
   Sie einen Standard-Benutzernamen definieren, der verwendet werden kann, um die CGI aufzurufen. Dies wird durch die Definition
-  der <a class="link" href="configcgi.html#configcgi-default_user_name">default_user_name</a>-Option in der <a class="link" href="configcgi.html" title="Optionen CGI-Konfigurationsdatei">CGI-Konfigurationsdatei</a> erreicht. Durch die Definition eines Standard-Benutzernamens, der die CGIs
-  aufrufen kann, können Sie Benutzern erlauben, die CGIs aufzurufen, ohne dass sie sich am Web-Server authentifizieren müssen. Sie
-  möchten das vielleicht nutzen, um die Verwendung der Basis-Web-Authentifizierung zu verhindern, weil diese Passwörter im
-  Klartext über das Internet überträgt.</p>
+  der <a class="link" href="configcgi.html#configcgi-default_user_name">default_user_name</a>-Option in der <a class="link" href="configcgi.html" title="3.6. Optionen CGI-Konfigurationsdatei">CGI-Konfigurationsdatei</a> erreicht. Durch die Definition eines Standard-Benutzernamens, der die CGIs
+  aufrufen kann, kÃ¶nnen Sie Benutzern erlauben, die CGIs aufzurufen, ohne dass sie sich am Web-Server authentifizieren mÃ¼ssen. Sie
+  mÃ¶chten das vielleicht nutzen, um die Verwendung der Basis-Web-Authentifizierung zu verhindern, weil diese PasswÃ¶rter im
+  Klartext Ã¼ber das Internet Ã¼bertrÃ¤gt.</p>
 
   <p><span class="bold"><strong>Wichtig:</strong></span> Definieren Sie <span class="emphasis"><em>keinen</em></span> Standard-Benutzernamen, solange Sie
   nicht einen sicheren Web-Server haben und sicher sind, dass sich jeder, der die CGIs aufruft, in irgendeiner Weise
   authentifiziert hat. Wenn Sie diese Variable definieren, dann wird jeder, der sich am Web-Server authentifiziert, alle Rechte
   dieses Benutzers erben!</p>
-  <a class="indexterm" name="id1527767"></a>
-  <a class="indexterm" name="id1527773"></a>
-  <a class="indexterm" name="id1527782"></a>
-  <a class="indexterm" name="id1527793"></a>
-  <a class="indexterm" name="id1527801"></a>
-  <a class="indexterm" name="id1527811"></a>
-  <a class="indexterm" name="id1527820"></a>
-  <a class="indexterm" name="id1527832"></a>
+  <a class="indexterm" name="id1477597"></a>
+  <a class="indexterm" name="id1477603"></a>
+  <a class="indexterm" name="id1477612"></a>
+  <a class="indexterm" name="id1477623"></a>
+  <a class="indexterm" name="id1477630"></a>
+  <a class="indexterm" name="id1477641"></a>
+  <a class="indexterm" name="id1477650"></a>
+  <a class="indexterm" name="id1477662"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="configcgi.html">Zurück</a> </td>
+<a accesskey="p" href="configcgi.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch03.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ch04.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="ch04.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Optionen CGI-Konfigurationsdatei </td>
+<td width="40%" align="left" valign="top">3.6. Optionen CGI-KonfigurationsdateiÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Kapitel 4. Icinga starten/stoppen/prüfen</td>
+<td width="40%" align="right" valign="top">Â Kapitel 4. Icinga starten/stoppen/prÃ¼fen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

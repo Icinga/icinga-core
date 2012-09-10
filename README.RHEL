@@ -75,6 +75,13 @@ Troubleshooting
 - check the httpd error.log, the icinga.log and the syslog
 - in case of possible bugs, turn on debugging and refer to the debug logs
 
+Package Specific Locations
+--------------------------
+
+You might wonder which package locations are different to the upstream docs.
+Check back here for a detailed, uptodate list:
+https://wiki.icinga.org/display/howtos/Package+Specific+Locations
+
 Recommended Reading
 -------------------
 

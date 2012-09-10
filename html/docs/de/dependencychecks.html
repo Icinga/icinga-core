@@ -1,113 +1,114 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Vorausschauende Abhängigkeitsprüfungen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="adaptive.html" title="Adaptive Überwachung">
-<link rel="next" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">
+<link rel="prev" href="adaptive.html" title="7.18. Adaptive Ãœberwachung">
+<link rel="next" href="cachedchecks.html" title="7.20. Zwischengespeicherte PrÃ¼fungen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Vorausschauende Abhängigkeitsprüfungen</th></tr>
+<tr><th colspan="3" align="center">7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="adaptive.html">Zurück</a> </td>
+<a accesskey="p" href="adaptive.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="cachedchecks.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="cachedchecks.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Vorausschauende Abhängigkeitsprüfungen">
+<div class="section" title="7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="dependencychecks"></a>Vorausschauende Abhängigkeitsprüfungen</h2></div></div></div>
+<a name="dependencychecks"></a>7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Host- und Service-<a class="link" href="dependencies.html" title="Host- und Service-Abhängigkeiten">Abhängigkeiten</a> können definiert werden, um Ihnen größere Kontrolle
-  darüber zu geben, wann Prüfungen ausgeführt und wann Benachrichtigungen versandt werden. Da Abhängigkeiten benutzt werden, um
-  grundlegende Aspekte des Überwachungsprozesses zu kontrollieren, ist es wichtig sicherzustellen, dass die Status-Informationen
-  in der Abhängigkeitslogik so aktuell wie möglich sind.</p>
+  <p>Host- und Service-<a class="link" href="dependencies.html" title="7.12. Host- und Service-AbhÃ¤ngigkeiten">AbhÃ¤ngigkeiten</a> kÃ¶nnen definiert werden, um Ihnen grÃ¶ÃŸere Kontrolle
+  darÃ¼ber zu geben, wann PrÃ¼fungen ausgefÃ¼hrt und wann Benachrichtigungen versandt werden. Da AbhÃ¤ngigkeiten benutzt werden, um
+  grundlegende Aspekte des Ãœberwachungsprozesses zu kontrollieren, ist es wichtig sicherzustellen, dass die Status-Informationen
+  in der AbhÃ¤ngigkeitslogik so aktuell wie mÃ¶glich sind.</p>
 
-  <p>Icinga erlaubt Ihnen, vorausschauende Abhängigkeitsprüfungen für Hosts und Services zu aktivieren, um
-  sicherzustellen, dass die Abhängigkeitslogik die aktuellsten Status-Informationen hat, wenn Entscheidungen darüber getroffen
-  werden müssen, ob Benachrichtigungen verschickt werden oder um aktive Prüfungen für einen Host oder Service zu erlauben.</p>
+  <p>Icinga erlaubt Ihnen, vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen fÃ¼r Hosts und Services zu aktivieren, um
+  sicherzustellen, dass die AbhÃ¤ngigkeitslogik die aktuellsten Status-Informationen hat, wenn Entscheidungen darÃ¼ber getroffen
+  werden mÃ¼ssen, ob Benachrichtigungen verschickt werden oder um aktive PrÃ¼fungen fÃ¼r einen Host oder Service zu erlauben.</p>
 
-  <p><span class="bold"><strong>Wie arbeiten vorausschauende Prüfungen?</strong></span></p>
+  <p><span class="bold"><strong>Wie arbeiten vorausschauende PrÃ¼fungen?</strong></span></p>
 
-  <p>Das nachfolgende Bild zeigt ein einfaches Diagramm von Hosts, die von Icinga überwacht werden, zusammen mit ihren
-  Eltern/Kindbeziehungen und Abhängigkeiten.</p>
+  <p>Das nachfolgende Bild zeigt ein einfaches Diagramm von Hosts, die von Icinga Ã¼berwacht werden, zusammen mit ihren
+  Eltern/Kindbeziehungen und AbhÃ¤ngigkeiten.</p>
 
   <p>Der <span class="emphasis"><em>Switch2</em></span>-Host in diesem Beispiel hat gerade den Status von UP in einen Problemzustand gewechselt.
-  Icinga muss feststellen, ob der Host DOWN oder UNREACHABLE ist, also wird es parallele Prüfungen für die direkten Eltern
+  Icinga muss feststellen, ob der Host DOWN oder UNREACHABLE ist, also wird es parallele PrÃ¼fungen fÃ¼r die direkten Eltern
   (<span class="emphasis"><em>Firewall1</em></span>) und Kinder (<span class="emphasis"><em>Comp1</em></span>, <span class="emphasis"><em>Comp2</em></span>, und
-  <span class="emphasis"><em>Switch3</em></span>) auslösen. Das ist eine normale Funktion der <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Erreichbarkeit</a>s-Logik.</p>
+  <span class="emphasis"><em>Switch3</em></span>) auslÃ¶sen. Das ist eine normale Funktion der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Erreichbarkeit</a>s-Logik.</p>
 
   <p>Sie werden auch feststellen, dass <span class="emphasis"><em>Switch2</em></span> von <span class="emphasis"><em>Monitor1</em></span> und
-  <span class="emphasis"><em>File1</em></span> in Bezug auf Benachrichtigungen oder Prüfausführung abhängt (welches davon ist unwichtig für dieses
-  Beispiel). Wenn vorausschauende Host-Abhängigkeitsprüfungen aktiviert sind, wird Icinga parallele Prüfungen von
-  <span class="emphasis"><em>Monitor1</em></span> und <span class="emphasis"><em>File1</em></span> sowie gleichzeitig für die direkten Eltern und Kinder von
-  <span class="emphasis"><em>Switch2</em></span> auslösen. Icinga tut dies, weil es wei&#65533;, dass es die Abhängigkeitslogik in der nahen Zukunft
-  prüfen muss (z.B. für Zwecke der Benachrichtigung) und es will sicherstellen, dass es die aktuellsten Statusinformationen für
-  die Hosts hat, die an der Abhängigkeit beteiligt sind.</p>
+  <span class="emphasis"><em>File1</em></span> in Bezug auf Benachrichtigungen oder PrÃ¼fausfÃ¼hrung abhÃ¤ngt (welches davon ist unwichtig fÃ¼r dieses
+  Beispiel). Wenn vorausschauende Host-AbhÃ¤ngigkeitsprÃ¼fungen aktiviert sind, wird Icinga parallele PrÃ¼fungen von
+  <span class="emphasis"><em>Monitor1</em></span> und <span class="emphasis"><em>File1</em></span> sowie gleichzeitig fÃ¼r die direkten Eltern und Kinder von
+  <span class="emphasis"><em>Switch2</em></span> auslÃ¶sen. Icinga tut dies, weil es weiï¿½, dass es die AbhÃ¤ngigkeitslogik in der nahen Zukunft
+  prÃ¼fen muss (z.B. fÃ¼r Zwecke der Benachrichtigung) und es will sicherstellen, dass es die aktuellsten Statusinformationen fÃ¼r
+  die Hosts hat, die an der AbhÃ¤ngigkeit beteiligt sind.</p>
 
   <div class="mediaobject"><img src="../images/predictive-dependency-checks.png"></div>
 
-  <p>So arbeiten vorausschauende Abhängigkeitsprüfungen. Einfach, oder?</p>
+  <p>So arbeiten vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen. Einfach, oder?</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Vorausschauende Service-Abhängigkeitsprüfungen arbeiten in einer ähnlichen Weise wie oben
-  beschrieben. Außer natürlich, dass sie mit Services arbeiten statt mit Hosts.</p>
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Vorausschauende Service-AbhÃ¤ngigkeitsprÃ¼fungen arbeiten in einer Ã¤hnlichen Weise wie oben
+  beschrieben. AuÃŸer natÃ¼rlich, dass sie mit Services arbeiten statt mit Hosts.</p>
 
-  <p><span class="bold"><strong>Vorausschauende Prüfungen aktivieren</strong></span></p>
+  <p><span class="bold"><strong>Vorausschauende PrÃ¼fungen aktivieren</strong></span></p>
 
-  <p>Vorausschauende Abhängigkeitsprüfungen verursachen ziemlich wenig Overhead, also würden wir empfehlen, dass Sie diese
-  aktivieren. In den meisten Fällen werden die Vorteile, aktuelle Informationen für die Abhängigkeitslogik zu haben, den
-  zusätzlichen Overhead durch diese Prüfungen mehr als ausgleichen.</p>
+  <p>Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen verursachen ziemlich wenig Overhead, also wÃ¼rden wir empfehlen, dass Sie diese
+  aktivieren. In den meisten FÃ¤llen werden die Vorteile, aktuelle Informationen fÃ¼r die AbhÃ¤ngigkeitslogik zu haben, den
+  zusÃ¤tzlichen Overhead durch diese PrÃ¼fungen mehr als ausgleichen.</p>
 
-  <p>Vorausschauende Abhängigkeitsprüfungen zu aktivieren ist einfach:</p>
+  <p>Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen zu aktivieren ist einfach:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Vorausschauende Host-Abhängigkeitsprüfungen werden durch die <a class="link" href="configmain.html#configmain-enable_predictive_host_dependency_checks">enable_predictive_host_dependency_checks</a>-Option
+      <p>Vorausschauende Host-AbhÃ¤ngigkeitsprÃ¼fungen werden durch die <a class="link" href="configmain.html#configmain-enable_predictive_host_dependency_checks">enable_predictive_host_dependency_checks</a>-Option
       kontrolliert.</p>
     </li>
 <li class="listitem">
-      <p>Vorausschauende Service-Abhängigkeitsprüfungen werden durch die <a class="link" href="configmain.html#configmain-enable_predictive_service_dependency_checks">enable_predictive_service_dependency_checks</a>-Option
+      <p>Vorausschauende Service-AbhÃ¤ngigkeitsprÃ¼fungen werden durch die <a class="link" href="configmain.html#configmain-enable_predictive_service_dependency_checks">enable_predictive_service_dependency_checks</a>-Option
       kontrolliert.</p>
     </li>
 </ul></div>
 
   <p><span class="bold"><strong>Cached Checks</strong></span></p>
 
-  <p>Vorausschauende Abhängigkeitsprüfungen sind Prüfungen nach Bedarf und daher den Regeln von <a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">cached checks</a> unterworfen. Cached checks können Ihnen Performance-Verbesserungen liefern, wenn
-  Icinga darauf verzichtet, eine Host- oder Serviceprüfung durchzuführen, wenn es statt dessen ein relativ aktuelles
-  Prüfungsergebnis nutzen kann. Mehr Informationen über cached checks finden Sie <a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">hier</a>.</p>
-  <a class="indexterm" name="id1583367"></a>
+  <p>Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen sind PrÃ¼fungen nach Bedarf und daher den Regeln von <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte PrÃ¼fungen">cached checks</a> unterworfen. Cached checks kÃ¶nnen Ihnen Performance-Verbesserungen liefern, wenn
+  Icinga darauf verzichtet, eine Host- oder ServiceprÃ¼fung durchzufÃ¼hren, wenn es statt dessen ein relativ aktuelles
+  PrÃ¼fungsergebnis nutzen kann. Mehr Informationen Ã¼ber cached checks finden Sie <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte PrÃ¼fungen">hier</a>.</p>
+  <a class="indexterm" name="id1533253"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="adaptive.html">Zurück</a> </td>
+<a accesskey="p" href="adaptive.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="cachedchecks.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="cachedchecks.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Adaptive Überwachung </td>
+<td width="40%" align="left" valign="top">7.18. Adaptive ÃœberwachungÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Zwischengespeicherte Prüfungen</td>
+<td width="40%" align="right" valign="top">Â 7.20. Zwischengespeicherte PrÃ¼fungen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

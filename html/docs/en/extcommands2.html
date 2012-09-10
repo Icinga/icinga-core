@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>List of External Commands</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>11.3.Â List of External Commands</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch11.html" title="Chapter 11. Development">
-<link rel="prev" href="epnplugins.html" title="Developing Plugins For Use With Embedded Perl">
-<link rel="next" href="icinga-api.html" title="No Icinga-API to install anymore">
+<link rel="up" href="ch11.html" title="ChapterÂ 11.Â Development">
+<link rel="prev" href="epnplugins.html" title="11.2.Â Developing Plugins For Use With Embedded Perl">
+<link rel="next" href="icinga-api.html" title="11.4.Â No Icinga-API to install anymore">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">List of External Commands</th></tr>
+<tr><th colspan="3" align="center">11.3.Â List of External Commands</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="epnplugins.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 11. Development</th>
-<td width="20%" align="right"> <a accesskey="n" href="icinga-api.html">Next</a>
+<a accesskey="p" href="epnplugins.html">Prev</a>Â </td>
+<th width="60%" align="center">ChapterÂ 11.Â Development</th>
+<td width="20%" align="right">Â <a accesskey="n" href="icinga-api.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="List of External Commands">
+<div class="section" title="11.3.Â List of External Commands">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="extcommands2"></a><a name="extcmd2"></a>List of External Commands</h2></div></div></div>
+<a name="extcommands2"></a>11.3.Â <a name="extcmd2"></a>List of External Commands</h2></div></div></div>
   
 
   <p>Below you will find descriptions of each external command. It is quite easy to send external commands to Icinga and you only
@@ -50,10 +51,13 @@
 
   <p>Allows you to acknowledge the current problem for the specified host. By acknowledging the current problem, future notifications
   (for the same host state) are disabled.</p>
-  <p>If the "sticky" option is set to two (2), the acknowledgement will remain until the host recovers (returns to an UP state). 
+
+  <p>If the "sticky" option is set to two (2), the acknowledgement will remain until the host recovers (returns to an UP state).
   Otherwise the acknowledgement will automatically be removed when the host changes state.</p>
+
   <p>If the "notify" option is set to one (1), a notification will be sent out to contacts indicating that the current host problem has
   been acknowledged, if set to null (0) there will be no notification.</p>
+
   <p>If the "persistent" option is set to one (1), the comment associated with the acknowledgement will remain even after the host
   recovers.</p>
 
@@ -79,10 +83,13 @@
 
   <p>Allows you to acknowledge the current problem for the specified service. By acknowledging the current problem, future notifications
   (for the same servicestate) are disabled.</p>
-  <p>If the "sticky" option is set to two (2), the acknowledgement will remain until the service recovers (returns to an OK state). 
+
+  <p>If the "sticky" option is set to two (2), the acknowledgement will remain until the service recovers (returns to an OK state).
   Otherwise the acknowledgement will automatically be removed when the service changes state.</p>
+
   <p>If the "notify" option is set to one (1), a notification will be sent out to contacts indicating that the current service problem
   has been acknowledged, if set to null (0) there will be no notification.</p>
+
   <p>If the "persistent" option is set to one (1), the comment associated with the acknowledgement will remain even after the service
   recovers.</p>
 
@@ -333,13 +340,16 @@
 
   <p>Deletes the host downtime entry for the host whose host_name matches the "host_name" argument. If the downtime is currently in
   effect, the host will come out of scheduled downtime (as long as there are no other overlapping active downtime entries).</p>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>This command is available starting with Icinga 1.4. Changes provided by the <a class="link" href="http://www.opsview.com/" target="_top">
-  Opsview</a> team.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>This command is available starting with Icinga 1.4. Changes provided by the <a class="link" href="http://www.opsview.com/" target="_top">
+    Opsview</a> team.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="extcmd2-del_downtime_by_hostgroup_name"></a> <span class="bold"><strong>DEL_DOWNTIME_BY_HOSTGROUP_NAME</strong></span></p>
@@ -347,30 +357,35 @@
   <p><code class="code">DEL_DOWNTIME_BY_HOSTGROUP_NAME;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Deletes the host downtime entries of all hosts of the host group matching the "hostgroup_name" argument. If the downtime is
-  currently in effect, the host will come out of scheduled downtime (as long as there are no other overlapping active downtime entries).
-  </p>
+  currently in effect, the host will come out of scheduled downtime (as long as there are no other overlapping active downtime
+  entries).</p>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>This command is available starting with Icinga 1.4. Changes provided by the <a class="link" href="http://www.opsview.com/" target="_top">
-  Opsview</a> team.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>This command is available starting with Icinga 1.4. Changes provided by the <a class="link" href="http://www.opsview.com/" target="_top">
+    Opsview</a> team.</p>
+  </td></tr>
 </table></div>
 
-  <p><a name="extcmd2-del_downtime_by_start_time_comment"></a> <span class="bold"><strong>DEL_DOWNTIME_BY_START_TIME_COMMENT</strong></span>
-  </p>
+  <p><a name="extcmd2-del_downtime_by_start_time_comment"></a> <span class="bold"><strong>DEL_DOWNTIME_BY_START_TIME_COMMENT</strong></span></p>
 
   <p><code class="code">DEL_DOWNTIME_BY_START_TIME_COMMENT;</code>&lt;start time[;comment_id]&gt;</p>
 
   <p>Deletes downtimes with start times matching the timestamp specified by the "start time" argument and an optional comment ID.</p>
+
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>This command is available starting with Icinga 1.4. Changes provided by the <a class="link" href="http://www.opsview.com/" target="_top">
-  Opsview </a> team.</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>This command is available starting with Icinga 1.4. Changes provided by the <a class="link" href="http://www.opsview.com/" target="_top">
+    Opsview </a> team.</p>
+  </td></tr>
 </table></div>
 
   <p><a name="extcmd2-del_host_downtime"></a> <span class="bold"><strong>DEL_HOST_DOWNTIME</strong></span></p>
@@ -551,6 +566,14 @@
   <p><code class="code">DISABLE_NOTIFICATIONS</code></p>
 
   <p>Disables host and service notifications on a program-wide basis.</p>
+
+  <p><a name="extcmd2-disable_notifications_expire_time"></a> <span class="bold"><strong>DISABLE_NOTIFICATIONS_EXPIRE_TIME</strong></span></p>
+
+  <p><code class="code">DISABLE_NOTIFICATIONS_EXPIRE_TIME;&lt;schedule_time&gt;;&lt;expire_time&gt;</code> </p>
+
+  <p>&lt;schedule_time&gt; has no effect currently, set it to current timestamp in your scripts.</p>
+
+  <p>Disables host and service notifications on a program-wide basis, with given expire time.</p>
 
   <p><a name="extcmd2-disable_passive_host_checks"></a> <span class="bold"><strong>DISABLE_PASSIVE_HOST_CHECKS</strong></span></p>
 
@@ -1233,343 +1256,345 @@
 
   <p>Disables processing of service checks via the OCSP command on a program-wide basis.</p>
 
-  <a class="indexterm" name="id1547759"></a>
+  <a class="indexterm" name="id1487376"></a>
 
-  <a class="indexterm" name="id1547774"></a>
+  <a class="indexterm" name="id1487391"></a>
 
-  <a class="indexterm" name="id1547788"></a>
+  <a class="indexterm" name="id1487405"></a>
 
-  <a class="indexterm" name="id1547802"></a>
+  <a class="indexterm" name="id1487418"></a>
 
-  <a class="indexterm" name="id1547816"></a>
+  <a class="indexterm" name="id1487432"></a>
 
-  <a class="indexterm" name="id1547829"></a>
+  <a class="indexterm" name="id1487446"></a>
 
-  <a class="indexterm" name="id1547844"></a>
+  <a class="indexterm" name="id1487459"></a>
 
-  <a class="indexterm" name="id1547857"></a>
+  <a class="indexterm" name="id1487472"></a>
 
-  <a class="indexterm" name="id1547871"></a>
+  <a class="indexterm" name="id1487486"></a>
 
-  <a class="indexterm" name="id1547884"></a>
+  <a class="indexterm" name="id1487500"></a>
 
-  <a class="indexterm" name="id1547899"></a>
+  <a class="indexterm" name="id1487513"></a>
 
-  <a class="indexterm" name="id1547911"></a>
+  <a class="indexterm" name="id1487527"></a>
 
-  <a class="indexterm" name="id1547925"></a>
+  <a class="indexterm" name="id1487541"></a>
 
-  <a class="indexterm" name="id1547939"></a>
+  <a class="indexterm" name="id1487555"></a>
 
-  <a class="indexterm" name="id1547953"></a>
+  <a class="indexterm" name="id1487568"></a>
 
-  <a class="indexterm" name="id1547966"></a>
+  <a class="indexterm" name="id1487582"></a>
 
-  <a class="indexterm" name="id1547980"></a>
+  <a class="indexterm" name="id1487596"></a>
 
-  <a class="indexterm" name="id1547993"></a>
+  <a class="indexterm" name="id1487609"></a>
 
-  <a class="indexterm" name="id1548007"></a>
+  <a class="indexterm" name="id1487623"></a>
 
-  <a class="indexterm" name="id1548022"></a>
+  <a class="indexterm" name="id1487637"></a>
 
-  <a class="indexterm" name="id1548035"></a>
+  <a class="indexterm" name="id1487650"></a>
 
-  <a class="indexterm" name="id1548049"></a>
+  <a class="indexterm" name="id1487664"></a>
 
-  <a class="indexterm" name="id1548063"></a>
+  <a class="indexterm" name="id1487678"></a>
 
-  <a class="indexterm" name="id1548076"></a>
+  <a class="indexterm" name="id1487692"></a>
 
-  <a class="indexterm" name="id1548092"></a>
+  <a class="indexterm" name="id1487706"></a>
 
-  <a class="indexterm" name="id1548104"></a>
+  <a class="indexterm" name="id1487720"></a>
 
-  <a class="indexterm" name="id1548118"></a>
+  <a class="indexterm" name="id1487732"></a>
 
-  <a class="indexterm" name="id1548131"></a>
+  <a class="indexterm" name="id1487747"></a>
 
-  <a class="indexterm" name="id1548145"></a>
+  <a class="indexterm" name="id1487761"></a>
 
-  <a class="indexterm" name="id1548159"></a>
+  <a class="indexterm" name="id1487775"></a>
 
-  <a class="indexterm" name="id1548173"></a>
+  <a class="indexterm" name="id1487789"></a>
 
-  <a class="indexterm" name="id1548186"></a>
+  <a class="indexterm" name="id1487802"></a>
 
-  <a class="indexterm" name="id1548198"></a>
+  <a class="indexterm" name="id1487814"></a>
 
-  <a class="indexterm" name="id1548199"></a>
+  <a class="indexterm" name="id1487815"></a>
 
-  <a class="indexterm" name="id1548227"></a>
+  <a class="indexterm" name="id1487843"></a>
 
-  <a class="indexterm" name="id1548241"></a>
+  <a class="indexterm" name="id1487857"></a>
 
-  <a class="indexterm" name="id1548255"></a>
+  <a class="indexterm" name="id1487871"></a>
 
-  <a class="indexterm" name="id1548268"></a>
+  <a class="indexterm" name="id1487884"></a>
 
-  <a class="indexterm" name="id1548282"></a>
+  <a class="indexterm" name="id1487898"></a>
 
-  <a class="indexterm" name="id1548296"></a>
+  <a class="indexterm" name="id1487912"></a>
 
-  <a class="indexterm" name="id1548309"></a>
+  <a class="indexterm" name="id1487925"></a>
 
-  <a class="indexterm" name="id1548323"></a>
+  <a class="indexterm" name="id1487939"></a>
 
-  <a class="indexterm" name="id1548337"></a>
+  <a class="indexterm" name="id1487953"></a>
 
-  <a class="indexterm" name="id1548351"></a>
+  <a class="indexterm" name="id1487967"></a>
 
-  <a class="indexterm" name="id1548364"></a>
+  <a class="indexterm" name="id1487980"></a>
 
-  <a class="indexterm" name="id1548378"></a>
+  <a class="indexterm" name="id1487994"></a>
 
-  <a class="indexterm" name="id1548392"></a>
+  <a class="indexterm" name="id1488008"></a>
 
-  <a class="indexterm" name="id1548406"></a>
+  <a class="indexterm" name="id1488022"></a>
 
-  <a class="indexterm" name="id1548419"></a>
+  <a class="indexterm" name="id1488035"></a>
 
-  <a class="indexterm" name="id1548433"></a>
+  <a class="indexterm" name="id1488049"></a>
 
-  <a class="indexterm" name="id1548447"></a>
+  <a class="indexterm" name="id1488063"></a>
 
-  <a class="indexterm" name="id1548460"></a>
+  <a class="indexterm" name="id1488076"></a>
 
-  <a class="indexterm" name="id1548472"></a>
+  <a class="indexterm" name="id1488088"></a>
 
-  <a class="indexterm" name="id1548488"></a>
+  <a class="indexterm" name="id1488104"></a>
 
-  <a class="indexterm" name="id1548502"></a>
+  <a class="indexterm" name="id1488116"></a>
 
-  <a class="indexterm" name="id1548515"></a>
+  <a class="indexterm" name="id1488131"></a>
 
-  <a class="indexterm" name="id1548529"></a>
+  <a class="indexterm" name="id1488145"></a>
 
-  <a class="indexterm" name="id1548543"></a>
+  <a class="indexterm" name="id1488159"></a>
 
-  <a class="indexterm" name="id1548556"></a>
+  <a class="indexterm" name="id1488172"></a>
 
-  <a class="indexterm" name="id1548570"></a>
+  <a class="indexterm" name="id1488186"></a>
 
-  <a class="indexterm" name="id1548584"></a>
+  <a class="indexterm" name="id1488200"></a>
 
-  <a class="indexterm" name="id1548598"></a>
+  <a class="indexterm" name="id1488214"></a>
 
-  <a class="indexterm" name="id1548612"></a>
+  <a class="indexterm" name="id1488228"></a>
 
-  <a class="indexterm" name="id1548625"></a>
+  <a class="indexterm" name="id1488242"></a>
 
-  <a class="indexterm" name="id1548639"></a>
+  <a class="indexterm" name="id1488255"></a>
 
-  <a class="indexterm" name="id1548653"></a>
+  <a class="indexterm" name="id1488270"></a>
 
-  <a class="indexterm" name="id1548667"></a>
+  <a class="indexterm" name="id1488283"></a>
 
-  <a class="indexterm" name="id1548680"></a>
+  <a class="indexterm" name="id1488297"></a>
 
-  <a class="indexterm" name="id1548694"></a>
+  <a class="indexterm" name="id1488311"></a>
 
-  <a class="indexterm" name="id1548708"></a>
+  <a class="indexterm" name="id1488325"></a>
 
-  <a class="indexterm" name="id1548722"></a>
+  <a class="indexterm" name="id1488339"></a>
 
-  <a class="indexterm" name="id1548735"></a>
+  <a class="indexterm" name="id1488353"></a>
 
-  <a class="indexterm" name="id1548750"></a>
+  <a class="indexterm" name="id1488367"></a>
 
-  <a class="indexterm" name="id1548764"></a>
+  <a class="indexterm" name="id1488381"></a>
 
-  <a class="indexterm" name="id1548778"></a>
+  <a class="indexterm" name="id1488395"></a>
 
-  <a class="indexterm" name="id1548792"></a>
+  <a class="indexterm" name="id1488408"></a>
 
-  <a class="indexterm" name="id1548806"></a>
+  <a class="indexterm" name="id1488422"></a>
 
-  <a class="indexterm" name="id1548819"></a>
+  <a class="indexterm" name="id1488436"></a>
 
-  <a class="indexterm" name="id1548833"></a>
+  <a class="indexterm" name="id1488449"></a>
 
-  <a class="indexterm" name="id1548847"></a>
+  <a class="indexterm" name="id1488463"></a>
 
-  <a class="indexterm" name="id1548860"></a>
+  <a class="indexterm" name="id1488477"></a>
 
-  <a class="indexterm" name="id1548874"></a>
+  <a class="indexterm" name="id1488490"></a>
 
-  <a class="indexterm" name="id1548888"></a>
+  <a class="indexterm" name="id1488504"></a>
 
-  <a class="indexterm" name="id1548902"></a>
+  <a class="indexterm" name="id1488518"></a>
 
-  <a class="indexterm" name="id1548916"></a>
+  <a class="indexterm" name="id1488532"></a>
 
-  <a class="indexterm" name="id1548930"></a>
+  <a class="indexterm" name="id1488546"></a>
 
-  <a class="indexterm" name="id1548943"></a>
+  <a class="indexterm" name="id1488560"></a>
 
-  <a class="indexterm" name="id1548957"></a>
+  <a class="indexterm" name="id1488573"></a>
 
-  <a class="indexterm" name="id1548971"></a>
+  <a class="indexterm" name="id1488587"></a>
 
-  <a class="indexterm" name="id1548984"></a>
+  <a class="indexterm" name="id1488601"></a>
 
-  <a class="indexterm" name="id1548998"></a>
+  <a class="indexterm" name="id1488614"></a>
 
-  <a class="indexterm" name="id1549012"></a>
+  <a class="indexterm" name="id1488628"></a>
 
-  <a class="indexterm" name="id1549026"></a>
+  <a class="indexterm" name="id1488642"></a>
 
-  <a class="indexterm" name="id1549038"></a>
+  <a class="indexterm" name="id1488656"></a>
 
-  <a class="indexterm" name="id1549052"></a>
+  <a class="indexterm" name="id1488669"></a>
 
-  <a class="indexterm" name="id1549066"></a>
+  <a class="indexterm" name="id1488683"></a>
 
-  <a class="indexterm" name="id1549080"></a>
+  <a class="indexterm" name="id1488697"></a>
 
-  <a class="indexterm" name="id1549094"></a>
+  <a class="indexterm" name="id1488710"></a>
 
-  <a class="indexterm" name="id1549108"></a>
+  <a class="indexterm" name="id1488724"></a>
 
-  <a class="indexterm" name="id1549122"></a>
+  <a class="indexterm" name="id1488738"></a>
 
-  <a class="indexterm" name="id1549135"></a>
+  <a class="indexterm" name="id1488752"></a>
 
-  <a class="indexterm" name="id1549149"></a>
+  <a class="indexterm" name="id1488766"></a>
 
-  <a class="indexterm" name="id1549163"></a>
+  <a class="indexterm" name="id1488779"></a>
 
-  <a class="indexterm" name="id1549174"></a>
+  <a class="indexterm" name="id1488793"></a>
 
-  <a class="indexterm" name="id1549190"></a>
+  <a class="indexterm" name="id1488807"></a>
 
-  <a class="indexterm" name="id1549203"></a>
+  <a class="indexterm" name="id1488821"></a>
 
-  <a class="indexterm" name="id1549218"></a>
+  <a class="indexterm" name="id1488834"></a>
 
-  <a class="indexterm" name="id1549231"></a>
+  <a class="indexterm" name="id1488848"></a>
 
-  <a class="indexterm" name="id1549245"></a>
+  <a class="indexterm" name="id1488861"></a>
 
-  <a class="indexterm" name="id1549259"></a>
+  <a class="indexterm" name="id1488875"></a>
 
-  <a class="indexterm" name="id1549273"></a>
+  <a class="indexterm" name="id1488889"></a>
 
-  <a class="indexterm" name="id1549287"></a>
+  <a class="indexterm" name="id1488903"></a>
 
-  <a class="indexterm" name="id1549301"></a>
+  <a class="indexterm" name="id1488916"></a>
 
-  <a class="indexterm" name="id1549314"></a>
+  <a class="indexterm" name="id1488930"></a>
 
-  <a class="indexterm" name="id1549328"></a>
+  <a class="indexterm" name="id1488944"></a>
 
-  <a class="indexterm" name="id1549342"></a>
+  <a class="indexterm" name="id1488956"></a>
 
-  <a class="indexterm" name="id1549356"></a>
+  <a class="indexterm" name="id1488971"></a>
 
-  <a class="indexterm" name="id1549369"></a>
+  <a class="indexterm" name="id1488984"></a>
 
-  <a class="indexterm" name="id1549381"></a>
+  <a class="indexterm" name="id1488998"></a>
 
-  <a class="indexterm" name="id1549396"></a>
+  <a class="indexterm" name="id1489012"></a>
 
-  <a class="indexterm" name="id1549409"></a>
+  <a class="indexterm" name="id1489026"></a>
 
-  <a class="indexterm" name="id1549424"></a>
+  <a class="indexterm" name="id1489040"></a>
 
-  <a class="indexterm" name="id1549438"></a>
+  <a class="indexterm" name="id1489054"></a>
 
-  <a class="indexterm" name="id1549451"></a>
+  <a class="indexterm" name="id1489067"></a>
 
-  <a class="indexterm" name="id1549465"></a>
+  <a class="indexterm" name="id1489081"></a>
 
-  <a class="indexterm" name="id1549479"></a>
+  <a class="indexterm" name="id1489092"></a>
 
-  <a class="indexterm" name="id1549493"></a>
+  <a class="indexterm" name="id1489094"></a>
 
-  <a class="indexterm" name="id1549506"></a>
+  <a class="indexterm" name="id1489120"></a>
 
-  <a class="indexterm" name="id1549520"></a>
+  <a class="indexterm" name="id1489136"></a>
 
-  <a class="indexterm" name="id1549534"></a>
+  <a class="indexterm" name="id1489150"></a>
 
-  <a class="indexterm" name="id1549548"></a>
+  <a class="indexterm" name="id1489163"></a>
 
-  <a class="indexterm" name="id1549561"></a>
+  <a class="indexterm" name="id1489177"></a>
 
-  <a class="indexterm" name="id1549575"></a>
+  <a class="indexterm" name="id1489191"></a>
 
-  <a class="indexterm" name="id1549589"></a>
+  <a class="indexterm" name="id1489204"></a>
 
-  <a class="indexterm" name="id1549602"></a>
+  <a class="indexterm" name="id1489218"></a>
 
-  <a class="indexterm" name="id1549616"></a>
+  <a class="indexterm" name="id1489232"></a>
 
-  <a class="indexterm" name="id1549630"></a>
+  <a class="indexterm" name="id1489246"></a>
 
-  <a class="indexterm" name="id1549644"></a>
+  <a class="indexterm" name="id1489260"></a>
 
-  <a class="indexterm" name="id1549658"></a>
+  <a class="indexterm" name="id1489273"></a>
 
-  <a class="indexterm" name="id1549672"></a>
+  <a class="indexterm" name="id1489287"></a>
 
-  <a class="indexterm" name="id1549686"></a>
+  <a class="indexterm" name="id1489299"></a>
 
-  <a class="indexterm" name="id1549699"></a>
+  <a class="indexterm" name="id1489300"></a>
 
-  <a class="indexterm" name="id1549713"></a>
+  <a class="indexterm" name="id1489328"></a>
 
-  <a class="indexterm" name="id1549727"></a>
+  <a class="indexterm" name="id1489342"></a>
 
-  <a class="indexterm" name="id1549740"></a>
+  <a class="indexterm" name="id1489355"></a>
 
-  <a class="indexterm" name="id1549755"></a>
+  <a class="indexterm" name="id1489369"></a>
 
-  <a class="indexterm" name="id1549768"></a>
+  <a class="indexterm" name="id1489384"></a>
 
-  <a class="indexterm" name="id1549782"></a>
+  <a class="indexterm" name="id1489398"></a>
 
-  <a class="indexterm" name="id1549796"></a>
+  <a class="indexterm" name="id1489412"></a>
 
-  <a class="indexterm" name="id1549809"></a>
+  <a class="indexterm" name="id1489425"></a>
 
-  <a class="indexterm" name="id1549823"></a>
+  <a class="indexterm" name="id1489439"></a>
 
-  <a class="indexterm" name="id1549837"></a>
+  <a class="indexterm" name="id1489454"></a>
 
-  <a class="indexterm" name="id1549851"></a>
+  <a class="indexterm" name="id1489467"></a>
 
-  <a class="indexterm" name="id1549864"></a>
+  <a class="indexterm" name="id1489481"></a>
 
-  <a class="indexterm" name="id1549878"></a>
+  <a class="indexterm" name="id1489494"></a>
 
-  <a class="indexterm" name="id1549892"></a>
+  <a class="indexterm" name="id1489509"></a>
 
-  <a class="indexterm" name="id1549906"></a>
+  <a class="indexterm" name="id1489522"></a>
 
-  <a class="indexterm" name="id1549920"></a>
+  <a class="indexterm" name="id1489535"></a>
 
-  <a class="indexterm" name="id1549933"></a>
+  <a class="indexterm" name="id1489549"></a>
 
-  <a class="indexterm" name="id1549947"></a>
+  <a class="indexterm" name="id1489563"></a>
+
+  <a class="indexterm" name="id1489576"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="epnplugins.html">Prev</a> </td>
+<a accesskey="p" href="epnplugins.html">Prev</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch11.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="icinga-api.html">Next</a>
+<td width="40%" align="right">Â <a accesskey="n" href="icinga-api.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Developing Plugins For Use With Embedded Perl </td>
+<td width="40%" align="left" valign="top">11.2.Â Developing Plugins For Use With Embedded PerlÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> No Icinga-API to install anymore</td>
+<td width="40%" align="right" valign="top">Â 11.4.Â No Icinga-API to install anymore</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

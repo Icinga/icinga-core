@@ -1,54 +1,55 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Passive Host-Zustandsübersetzung</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.21. Passive Host-ZustandsÃ¼bersetzung</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">
-<link rel="next" href="checkscheduling.html" title="Service- und Host-Prüfungsplanung">
+<link rel="prev" href="cachedchecks.html" title="7.20. Zwischengespeicherte PrÃ¼fungen">
+<link rel="next" href="checkscheduling.html" title="7.22. Service- und Host-PrÃ¼fungsplanung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Passive Host-Zustandsübersetzung</th></tr>
+<tr><th colspan="3" align="center">7.21. Passive Host-ZustandsÃ¼bersetzung</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="cachedchecks.html">Zurück</a> </td>
+<a accesskey="p" href="cachedchecks.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="checkscheduling.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="checkscheduling.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Passive Host-Zustandsübersetzung">
+<div class="section" title="7.21. Passive Host-ZustandsÃ¼bersetzung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="passivestatetranslation"></a>Passive Host-Zustandsübersetzung</h2></div></div></div>
+<a name="passivestatetranslation"></a>7.21. Passive Host-ZustandsÃ¼bersetzung</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Wenn Icinga passive Host-Prüfungen von entfernten Quellen erhält (d.h. andere Icinga-Instanzen in verteilten
+  <p>Wenn Icinga passive Host-PrÃ¼fungen von entfernten Quellen erhÃ¤lt (d.h. andere Icinga-Instanzen in verteilten
   oder Failover-Umgebungen), gibt der von der entfernten Quelle gelieferte Host-Status ggf. nicht genau den aus
-  Icinga-Sicht zutreffenden Zustand wieder. Weil verteilte und Failover-Überwachungs-Installationen ziemlich identisch
-  sind, ist es wichtig einen Mechanismus anzubieten, um exakte Host-Zustände zwischen verschiedenen Icinga-Instanzen
+  Icinga-Sicht zutreffenden Zustand wieder. Weil verteilte und Failover-Ãœberwachungs-Installationen ziemlich identisch
+  sind, ist es wichtig einen Mechanismus anzubieten, um exakte Host-ZustÃ¤nde zwischen verschiedenen Icinga-Instanzen
   sicherzustellen.</p>
 
   <p><span class="bold"><strong>Verschiedene Sichten</strong></span></p>
 
-  <p>Das folgende Bild zeigt eine vereinfachte Sicht für ein Failover-Überwachungsaufbau.</p>
+  <p>Das folgende Bild zeigt eine vereinfachte Sicht fÃ¼r ein Failover-Ãœberwachungsaufbau.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><span class="emphasis"><em>Icinga-A</em></span> ist der primäre Überwachungsserver, der aktiv alle Switches und Router
-      überwacht.</p>
+      <p><span class="emphasis"><em>Icinga-A</em></span> ist der primÃ¤re Ãœberwachungsserver, der aktiv alle Switches und Router
+      Ã¼berwacht.</p>
     </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>Icinga-B</em></span> und <span class="emphasis"><em>Icinga-C</em></span> sind Backup-Überwachungsserver, die
-      passive Prüfergebnisse von <span class="emphasis"><em>Icinga-A</em></span> erhalten.</p>
+      <p><span class="emphasis"><em>Icinga-B</em></span> und <span class="emphasis"><em>Icinga-C</em></span> sind Backup-Ãœberwachungsserver, die
+      passive PrÃ¼fergebnisse von <span class="emphasis"><em>Icinga-A</em></span> erhalten.</p>
     </li>
 <li class="listitem">
       <p>Sowohl <span class="emphasis"><em>Router-C</em></span> als auch <span class="emphasis"><em>Router-D</em></span> sind fehlerhaft und daher offline.</p>
@@ -57,7 +58,7 @@
 
   <div class="mediaobject"><img src="../images/passivehosttranslation.png"></div>
 
-  <p>In welchem Status sind <span class="emphasis"><em>Router-C</em></span> und <span class="emphasis"><em>Router-D</em></span> gerade? Die Antwort hängt davon ab,
+  <p>In welchem Status sind <span class="emphasis"><em>Router-C</em></span> und <span class="emphasis"><em>Router-D</em></span> gerade? Die Antwort hÃ¤ngt davon ab,
   welche Icinga-Instanz Sie fragen.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -74,49 +75,49 @@
     </li>
 </ul></div>
 
-  <p>Jede Icinga-Instanz hat eine unterschiedliche Sicht des Netzwerks. Die Backup-Überwachungsserver sollten nicht
-  blind passive Host-Zustände vom primären Überwachungsserver akzeptieren oder Sie werden inkorrekte Informationen über den
+  <p>Jede Icinga-Instanz hat eine unterschiedliche Sicht des Netzwerks. Die Backup-Ãœberwachungsserver sollten nicht
+  blind passive Host-ZustÃ¤nde vom primÃ¤ren Ãœberwachungsserver akzeptieren oder Sie werden inkorrekte Informationen Ã¼ber den
   aktuellen Zustand des Netzwerks haben.</p>
 
-  <p>Ohne die Übersetzung von passiven Host-Prüfergebnissen vom primären Überwachungsserver
-  (<span class="emphasis"><em>Icinga-A</em></span>) würde <span class="emphasis"><em>Icinga-C</em></span> den <span class="emphasis"><em>Router-D</em></span> als
-  UNREACHABLE sehen, obwohl dieser vom eigenen Standpunkt aus eigentlich DOWN ist. Ähnliches gilt für die
-  DOWN/UNREACHABLE-Zustände von <span class="emphasis"><em>Router-C</em></span> und <span class="emphasis"><em>Router-D</em></span> (vom Standpunkt von
+  <p>Ohne die Ãœbersetzung von passiven Host-PrÃ¼fergebnissen vom primÃ¤ren Ãœberwachungsserver
+  (<span class="emphasis"><em>Icinga-A</em></span>) wÃ¼rde <span class="emphasis"><em>Icinga-C</em></span> den <span class="emphasis"><em>Router-D</em></span> als
+  UNREACHABLE sehen, obwohl dieser vom eigenen Standpunkt aus eigentlich DOWN ist. Ã„hnliches gilt fÃ¼r die
+  DOWN/UNREACHABLE-ZustÃ¤nde von <span class="emphasis"><em>Router-C</em></span> und <span class="emphasis"><em>Router-D</em></span> (vom Standpunkt von
   <span class="emphasis"><em>Icinga-A</em></span> aus), die aus Sicht von <span class="emphasis"><em>Icinga-B</em></span> umgedreht werden
   sollten.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Es kann einige Situationen geben, in denen Sie nicht möchten, dass Icinga die
-  DOWN/UNREACHABLE-Zustände von entfernten Quellen in ihre "korrekten" Zustände vom Standpunkt der lokalen Icinga-Instanz
-  aus umsetzt. Zum Beispiel möchten Sie vielleicht in verteilten Überwachungsumgebungen, dass die zentrale Icinga-Instanz
-  weiß, wie verteilte Instanzen ihre jeweiligen Teile des Netzwerks sehen.</p>
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Es kann einige Situationen geben, in denen Sie nicht mÃ¶chten, dass Icinga die
+  DOWN/UNREACHABLE-ZustÃ¤nde von entfernten Quellen in ihre "korrekten" ZustÃ¤nde vom Standpunkt der lokalen Icinga-Instanz
+  aus umsetzt. Zum Beispiel mÃ¶chten Sie vielleicht in verteilten Ãœberwachungsumgebungen, dass die zentrale Icinga-Instanz
+  weiÃŸ, wie verteilte Instanzen ihre jeweiligen Teile des Netzwerks sehen.</p>
 
-  <p><span class="bold"><strong>Status-Übersetzung aktivieren</strong></span></p>
+  <p><span class="bold"><strong>Status-Ãœbersetzung aktivieren</strong></span></p>
 
-  <p>Per Default wird Icinga <span class="emphasis"><em>nicht</em></span> automatisch die DOWN/UNREACHABLE-Zustände von passiven
-  Prüfergebnissen übersetzen. Sie müssen dieses Feature aktivieren, wenn Sie es benötigen und nutzen wollen.</p>
+  <p>Per Default wird Icinga <span class="emphasis"><em>nicht</em></span> automatisch die DOWN/UNREACHABLE-ZustÃ¤nde von passiven
+  PrÃ¼fergebnissen Ã¼bersetzen. Sie mÃ¼ssen dieses Feature aktivieren, wenn Sie es benÃ¶tigen und nutzen wollen.</p>
 
-  <p>Die automatische Übersetzung von passiven Host-Prüfzuständen wird durch die <a class="link" href="configmain.html#configmain-translate_passive_host_checks">translate_passive_host_checks</a>-Variable kontrolliert. Durch die
-  Aktivierung wird Icinga automatisch DOWN- und UNREACHABLE-Zustände von entfernten Quellen in die korrekten Zustände für
-  die lokale Instanz übersetzen.</p>
-  <a class="indexterm" name="id1584096"></a>
+  <p>Die automatische Ãœbersetzung von passiven Host-PrÃ¼fzustÃ¤nden wird durch die <a class="link" href="configmain.html#configmain-translate_passive_host_checks">translate_passive_host_checks</a>-Variable kontrolliert. Durch die
+  Aktivierung wird Icinga automatisch DOWN- und UNREACHABLE-ZustÃ¤nde von entfernten Quellen in die korrekten ZustÃ¤nde fÃ¼r
+  die lokale Instanz Ã¼bersetzen.</p>
+  <a class="indexterm" name="id1533980"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="cachedchecks.html">Zurück</a> </td>
+<a accesskey="p" href="cachedchecks.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="checkscheduling.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="checkscheduling.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Zwischengespeicherte Prüfungen </td>
+<td width="40%" align="left" valign="top">7.20. Zwischengespeicherte PrÃ¼fungenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Service- und Host-Prüfungsplanung</td>
+<td width="40%" align="right" valign="top">Â 7.22. Service- und Host-PrÃ¼fungsplanung</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

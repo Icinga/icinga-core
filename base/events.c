@@ -960,6 +960,47 @@ int schedule_new_event(int event_type, int high_priority, time_t run_time, int r
 	return OK;
 }
 
+/* delete a scheduled timed event */
+/*
+	ATTENTION: at the moment only used for acknowledgements
+	If needed for other cases, you have to adopt this function to fit all needs!!!
+*/
+int delete_scheduled_event(int event_type, int high_priority, time_t run_time, int recurring, unsigned long event_interval, void *timing_func, int compensate_for_time_change, void *event_data, void *event_args, int event_options) {
+	timed_event **event_list = NULL;
+	timed_event **event_list_tail = NULL;
+	timed_event *temp_event = NULL;
+
+	/* we support only acknowledgements at the moment */
+	if (event_type != EVENT_EXPIRE_ACKNOWLEDGEMENT)
+		return OK;
+
+	log_debug_info(DEBUGL_FUNCTIONS, 0, "delete_scheduled_event()\n");
+
+	if (high_priority == TRUE) {
+		event_list = &event_list_high;
+		event_list_tail = &event_list_high_tail;
+	} else {
+		event_list = &event_list_low;
+		event_list_tail = &event_list_low_tail;
+	}
+
+	/* start from the beginning */
+	for (temp_event = *event_list; temp_event != NULL; temp_event = temp_event->next) {
+
+		if (temp_event->event_type == event_type && temp_event->event_options == event_options && temp_event->event_data == event_data) {
+
+			log_debug_info(DEBUGL_EVENTS, 1, "Removing event type %d @ %s", event_type, ctime(&run_time));
+
+			/* remove the event from the event list */
+			remove_event(temp_event, event_list, event_list_tail);
+
+			return OK;
+		}
+	}
+
+	return ERROR;
+}
+
 
 /* reschedule an event in order of execution time */
 void reschedule_event(timed_event *event, timed_event **event_list, timed_event **event_list_tail) {

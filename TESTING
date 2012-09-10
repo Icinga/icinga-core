@@ -7,6 +7,29 @@ Found something?
 
 Then please let us know by opening an issue: dev.icinga.org
 
+More information about testing can be found in the Icinga Wiki: https://wiki.icinga.org/display/testing/Home
+
+=====================================================================================================================
+= Build Tests
+=====================================================================================================================
+
+t/ and t-tap/ for cgis and core functionality
+
+RHEL
+$ sudo yum install perl-HTML-Lint
+$ sudo yum install perl-Test-WWW-Mechanize
+
+Debian
+$ sudo apt-get install libipc-run3-perl libtest-most-perl libhtml-lint-perl libtest-www-mechanize-cgiapp-perl
+
+$ ./configure
+$ make test
+
+tests/ contains a variety of test config files, which can be installed into sysconfdir/icinga/tests and then included
+in your icinga.cfg for keeping resolved issues tested while implementing new stuff.
+
+$ sudo make install-testconfig
+
 
 =====================================================================================================================
 = Using GIT for providing Diffs/Patches
@@ -125,17 +148,6 @@ Errors
     * Are there any noticable memory leaks
     * gcc -Wall on Makefile.in if not already set
     * gdb, strace, valgrind
-
-
-
-t/ and t-tap/
-
-$ sudo yum install perl-HTML-Lint
-$ sudo yum install perl-Test-WWW-Mechanize
-
-$ ./configure --enable-libtap
-$ make all
-$ make test
 
 
 Plugins

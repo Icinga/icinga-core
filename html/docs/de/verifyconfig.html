@@ -1,57 +1,58 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Überprüfen Ihrer Icinga-Konfiguration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>4.1. ÃœberprÃ¼fen Ihrer Icinga-Konfiguration</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
-<link rel="up" href="ch04.html" title="Kapitel 4. Icinga starten/stoppen/prüfen">
-<link rel="prev" href="ch04.html" title="Kapitel 4. Icinga starten/stoppen/prüfen">
-<link rel="next" href="startstop.html" title="Icinga starten und stoppen">
+<link rel="up" href="ch04.html" title="Kapitel 4. Icinga starten/stoppen/prÃ¼fen">
+<link rel="prev" href="ch04.html" title="Kapitel 4. Icinga starten/stoppen/prÃ¼fen">
+<link rel="next" href="startstop.html" title="4.2. Icinga starten und stoppen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Überprüfen Ihrer Icinga-Konfiguration</th></tr>
+<tr><th colspan="3" align="center">4.1. ÃœberprÃ¼fen Ihrer Icinga-Konfiguration</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch04.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 4. Icinga starten/stoppen/prüfen</th>
-<td width="20%" align="right"> <a accesskey="n" href="startstop.html">Weiter</a>
+<a accesskey="p" href="ch04.html">ZurÃ¼ck</a>Â </td>
+<th width="60%" align="center">Kapitel 4. Icinga starten/stoppen/prÃ¼fen</th>
+<td width="20%" align="right">Â <a accesskey="n" href="startstop.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Überprüfen Ihrer Icinga-Konfiguration">
+<div class="section" title="4.1. ÃœberprÃ¼fen Ihrer Icinga-Konfiguration">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="verifyconfig"></a><a name="verify_config"></a>Überprüfen Ihrer Icinga-Konfiguration</h2></div></div></div>
+<a name="verifyconfig"></a>4.1. <a name="verify_config"></a>ÃœberprÃ¼fen Ihrer Icinga-Konfiguration</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Überprüfen Ihrer Konfiguration</strong></span></p>
+  <p><span class="bold"><strong>ÃœberprÃ¼fen Ihrer Konfiguration</strong></span></p>
 
-  <p>Jedes Mal, nachdem Sie Ihre <a class="link" href="config.html" title="Konfigurationsüberblick">Konfigurationsdateien</a> verändert haben, sollten Sie sie überprüfen. Es ist
-  wichtig, das zu tun, bevor Sie Icinga (neu)starten, weil Icinga herunterfährt, wenn Ihre Konfiguration Fehler
-  enthält.</p>
+  <p>Jedes Mal, nachdem Sie Ihre <a class="link" href="config.html" title="3.1. KonfigurationsÃ¼berblick">Konfigurationsdateien</a> verÃ¤ndert haben, sollten Sie sie Ã¼berprÃ¼fen. Es ist
+  wichtig, das zu tun, bevor Sie Icinga (neu)starten, weil Icinga herunterfÃ¤hrt, wenn Ihre Konfiguration Fehler
+  enthÃ¤lt.</p>
 
-  <p>Um Ihre Konfiguration zu überprüfen, starten Sie Icinga mit der <span class="bold"><strong>-v</strong></span>-Option wie folgt:</p>
+  <p>Um Ihre Konfiguration zu Ã¼berprÃ¼fen, starten Sie Icinga mit der <span class="bold"><strong>-v</strong></span>-Option wie folgt:</p>
 
   <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
 
   <p>Wenn Sie vergessen haben, kritische Daten einzugeben oder Dinge fehlkonfiguriert haben, spuckt Icinga eine Warnung oder eine
-  Fehlermeldung aus, die Ihnen die Stelle des Problems zeigen sollte. Fehlermeldungen geben grundsätzlich die Zeile der Konfigurationsdatei
-  aus, die die Ursache des Problems zu sein scheint. Bei Fehlern wird Icinga oft sofort die Überprüfung beenden und bereits nach der
-  Ausgabe des ersten Fehlers zur Kommandozeile zurückkehren. Das geschieht, weil dieser erste Fehler im Laufe der restlichen
-  Konfigurationdatei(en) weitere Fehler nach sich ziehen könnte. Sobald Sie Fehlermeldungen bekommen, müssen Sie Ihre Konfigurationsdateien
-  editieren, um das Problem zu beheben. Warnungen können <span class="emphasis"><em>generell</em></span> problemlos ignoriert werden, weil sie lediglich
-  Empfehlungen darstellen und keine Erfordernisse für den Betrieb.</p>
+  Fehlermeldung aus, die Ihnen die Stelle des Problems zeigen sollte. Fehlermeldungen geben grundsÃ¤tzlich die Zeile der Konfigurationsdatei
+  aus, die die Ursache des Problems zu sein scheint. Bei Fehlern wird Icinga oft sofort die ÃœberprÃ¼fung beenden und bereits nach der
+  Ausgabe des ersten Fehlers zur Kommandozeile zurÃ¼ckkehren. Das geschieht, weil dieser erste Fehler im Laufe der restlichen
+  Konfigurationdatei(en) weitere Fehler nach sich ziehen kÃ¶nnte. Sobald Sie Fehlermeldungen bekommen, mÃ¼ssen Sie Ihre Konfigurationsdateien
+  editieren, um das Problem zu beheben. Warnungen kÃ¶nnen <span class="emphasis"><em>generell</em></span> problemlos ignoriert werden, weil sie lediglich
+  Empfehlungen darstellen und keine Erfordernisse fÃ¼r den Betrieb.</p>
 
-  <p>Anstatt die Pfade für das Binary und die Konfigurationsdatei anzugeben können Sie auch den folgenden Befehl eingeben:
+  <p>Anstatt die Pfade fÃ¼r das Binary und die Konfigurationsdatei anzugeben kÃ¶nnen Sie auch den folgenden Befehl eingeben:
   </p>
 <pre class="programlisting"> #&gt; /etc/init.d/icinga checkconfig</pre>
-<p>Die Ausführung ergibt einen Return-Code ungleich Null, wenn Ihre
-  Konfiguration Fehler enthält. Das kann sinnvoll sein, wenn Sie Icinga automatisch erneut starten wollen..</p>
+<p>Die AusfÃ¼hrung ergibt einen Return-Code ungleich Null, wenn Ihre
+  Konfiguration Fehler enthÃ¤lt. Das kann sinnvoll sein, wenn Sie Icinga automatisch erneut starten wollen..</p>
 
   <p>Wenn Sie stattdessen den folgenden Befehl eingeben </p>
 <pre class="programlisting"> #&gt; /etc/init.d/icinga show-errors</pre>
@@ -59,35 +60,35 @@
   Datei mit den gefundenen Fehlern erstellt. Falls es Fehler gibt, wird der Inhalt der Datei angezeigt ("show-errors" ab Icinga
   1.0.2).</p>
 
-  <p>Sobald Sie Ihre Konfigurationsdateien überprüft und eventuelle Fehler bereinigt haben, können Sie <a class="link" href="startstop.html" title="Icinga starten und stoppen">Icinga (neu)starten</a></p>
+  <p>Sobald Sie Ihre Konfigurationsdateien Ã¼berprÃ¼ft und eventuelle Fehler bereinigt haben, kÃ¶nnen Sie <a class="link" href="startstop.html" title="4.2. Icinga starten und stoppen">Icinga (neu)starten</a></p>
 
-  <a class="indexterm" name="id1527919"></a>
+  <a class="indexterm" name="id1477749"></a>
 
-  <a class="indexterm" name="id1527914"></a>
+  <a class="indexterm" name="id1477744"></a>
 
-  <a class="indexterm" name="id1527943"></a>
+  <a class="indexterm" name="id1477773"></a>
 
-  <a class="indexterm" name="id1527956"></a>
+  <a class="indexterm" name="id1477786"></a>
 
-  <a class="indexterm" name="id1527970"></a>
+  <a class="indexterm" name="id1477800"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch04.html">Zurück</a> </td>
+<a accesskey="p" href="ch04.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch04.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="startstop.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="startstop.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Kapitel 4. Icinga starten/stoppen/prüfen </td>
+<td width="40%" align="left" valign="top">Kapitel 4. Icinga starten/stoppen/prÃ¼fenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Icinga starten und stoppen</td>
+<td width="40%" align="right" valign="top">Â 4.2. Icinga starten und stoppen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

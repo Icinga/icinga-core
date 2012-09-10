@@ -4244,6 +4244,10 @@ void acknowledge_service_problem(service *svc, char *ack_author, char *ack_data,
 /* removes a host acknowledgement */
 void remove_host_acknowledgement(host *hst) {
 
+	/* delete scheduled event to delete acknowledegement */
+	if (hst->acknowledgement_end_time != 0L)
+		delete_scheduled_event(EVENT_EXPIRE_ACKNOWLEDGEMENT, TRUE, hst->acknowledgement_end_time, FALSE, 0, NULL, FALSE, hst, NULL, HOST_ACKNOWLEDGEMENT);
+
 	/* set the acknowledgement flag */
 	hst->problem_has_been_acknowledged = FALSE;
 	hst->acknowledgement_end_time = (time_t)0;
@@ -4260,6 +4264,10 @@ void remove_host_acknowledgement(host *hst) {
 
 /* removes a service acknowledgement */
 void remove_service_acknowledgement(service *svc) {
+
+	/* delete scheduled event to delete acknowledegement */
+	if (svc->acknowledgement_end_time != 0L)
+		delete_scheduled_event(EVENT_EXPIRE_ACKNOWLEDGEMENT, TRUE, svc->acknowledgement_end_time, FALSE, 0, NULL, FALSE, svc, NULL, SERVICE_ACKNOWLEDGEMENT);
 
 	/* set the acknowledgement flag */
 	svc->problem_has_been_acknowledged = FALSE;
