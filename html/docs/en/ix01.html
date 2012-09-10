@@ -25,7 +25,7 @@
 </div>
 <div class="index" title="Index">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="idp19289344"></a>Index</h2></div></div></div>
+<a name="id1519308"></a>Index</h2></div></div></div>
 <div class="index">
 <div class="indexdiv">
 <h3>A</h3>
@@ -139,8 +139,14 @@
 <dt>authorized_for_all_service_commands=</dt>
 <dd><dl><dt>Global Service Command (contact), <a class="indexterm" href="configcgi.html#configcgi-authorized_for_all_service_commands">CGI Configuration File Options</a>
 </dt></dl></dd>
+<dt>authorized_for_comments_read_only=</dt>
+<dd><dl><dt>Grant read-only access for comments, <a class="indexterm" href="configcgi.html#configcgi-authorized_for_comments_read_only">CGI Configuration File Options</a>
+</dt></dl></dd>
 <dt>authorized_for_configuration_information=</dt>
 <dd><dl><dt>Configuration Information (contact), <a class="indexterm" href="configcgi.html#configcgi-authorized_for_configuration_information">CGI Configuration File Options</a>
+</dt></dl></dd>
+<dt>authorized_for_downtimes_read_only=</dt>
+<dd><dl><dt>Grant read-only access for downtimes, <a class="indexterm" href="configcgi.html#configcgi-authorized_for_downtimes_read_only">CGI Configuration File Options</a>
 </dt></dl></dd>
 <dt>authorized_for_full_command_resolution=</dt>
 <dd><dl><dt>Allow user(s) for FULL command line view, <a class="indexterm" href="configcgi.html#configcgi-authorized_for_full_command_resolution">CGI Configuration File Options</a>
@@ -235,8 +241,6 @@
 <dt>ahas, <a class="indexterm" href="cgiparams.html#cgiparams-ahas">Information On CGI parameters</a>
 </dt>
 <dt>alerttypes, <a class="indexterm" href="cgiparams.html#cgiparams-alerttypes">Information On CGI parameters</a>
-</dt>
-<dt>archive, <a class="indexterm" href="cgiparams.html#cgiparams-archive">Information On CGI parameters</a>
 </dt>
 <dt>assumeinitialstates, <a class="indexterm" href="cgiparams.html#cgiparams-assumeinitialstates">Information On CGI parameters</a>
 </dt>
@@ -408,6 +412,8 @@
 </dt>
 <dt>standardreport, <a class="indexterm" href="cgiparams.html#cgiparams-standardreport">Information On CGI parameters</a>
 </dt>
+<dt>start, <a class="indexterm" href="cgiparams.html#cgiparams-start">Information On CGI parameters</a>
+</dt>
 <dt>start_time, <a class="indexterm" href="cgiparams.html#cgiparams-start_time">Information On CGI parameters</a>
 </dt>
 <dt>statetype, <a class="indexterm" href="cgiparams.html#cgiparams-statetype">Information On CGI parameters</a>
@@ -528,6 +534,9 @@
 <dt>Cluster</dt>
 <dd><dl><dt>Monitoring Service and Host Clusters, <a class="indexterm" href="clusters.html#monitoring_clusters">Monitoring Service and Host Clusters</a>
 </dt></dl></dd>
+<dt>color_transparency_index=</dt>
+<dd><dl><dt>Statusmap Transparency Index Colour, <a class="indexterm" href="configcgi.html#configcgi-color_transparency_index">CGI Configuration File Options</a>
+</dt></dl></dd>
 <dt>Command Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-command">Command Definition</a>
 </dt>
 <dt>command_check_interval=</dt>
@@ -549,6 +558,9 @@
 </dl></dd>
 <dt>Configuration Overview, <a class="indexterm" href="config.html#config_overview">Configuration Overview</a>
 </dt>
+<dd><dl><dt>icinga.cfg, resource.cfg, cgi.cfg, commands.cfg, contacts.cfg, notifications.cfg, timeperiods.cfg, printer.cfg, switch.cfg,
+    windows.cfg, <a class="indexterm" href="config.html#config_overview-filenames">Configuration Overview</a>
+</dt></dl></dd>
 <dt>config_output_options=</dt>
 <dd><dl><dt>idomod.cfg, <a class="indexterm" href="configido.html#configido-config_output_options">IDOMOD config options</a>
 </dt></dl></dd>
@@ -556,6 +568,12 @@
 </dt>
 <dt>Contactgroup Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contactgroup">Contactgroup Definition</a>
 </dt>
+<dt>csv_data_enclosure=</dt>
+<dd><dl><dt>CSV Export Field Enclosure Character, <a class="indexterm" href="configcgi.html#configcgi-csv_data_enclosure">CGI Configuration File Options</a>
+</dt></dl></dd>
+<dt>csv_delimiter=</dt>
+<dd><dl><dt>CSV Export Field Separator Character, <a class="indexterm" href="configcgi.html#configcgi-csv_delimiter">CGI Configuration File Options</a>
+</dt></dl></dd>
 <dt>Custom CGI Headers and Footers, <a class="indexterm" href="cgiincludes.html#cgi_includes">Custom CGI Headers and
   Footers</a>
 </dt>
@@ -634,8 +652,8 @@
 <dt>default_expiring_acknowledgement_duration=</dt>
 <dd><dl><dt>Set expiration period of acknowledgements, <a class="indexterm" href="configcgi.html#configcgi-default_expiring_acknowledgement_duration">CGI Configuration File Options</a>
 </dt></dl></dd>
-<dt>default_num_displayed_log_entries=</dt>
-<dd><dl><dt>Limit number of log entries to be displayed, <a class="indexterm" href="configcgi.html#configcgi-default_num_displayed_log_entries">CGI Configuration File Options</a>
+<dt>default_expiring_disabled_notifictions_duration=</dt>
+<dd><dl><dt>Default Expiring Disabled Notifications Duration, <a class="indexterm" href="configcgi.html#configcgi-default_expiring_disabled_notifictions_duration">CGI Configuration File Options</a>
 </dt></dl></dd>
 <dt>default_statusmap_layout=</dt>
 <dd><dl><dt>Default Statusmap Layout, <a class="indexterm" href="configcgi.html#configcgi-default_statusmap_layout">CGI Configuration File Options</a>
@@ -870,6 +888,8 @@
 <dt>DISABLE_HOST_SVC_NOTIFICATIONS, <a class="indexterm" href="extcommands2.html#extcmd2-disable_host_svc_notifications">List of External Commands</a>
 </dt>
 <dt>DISABLE_NOTIFICATIONS, <a class="indexterm" href="extcommands2.html#extcmd2-disable_notifications">List of External Commands</a>
+</dt>
+<dt>DISABLE_NOTIFICATIONS_EXPIRE_TIME, <a class="indexterm" href="extcommands2.html#extcmd2-disable_notifications_expire_time">List of External Commands</a>
 </dt>
 <dt>DISABLE_PASSIVE_HOST_CHECKS, <a class="indexterm" href="extcommands2.html#extcmd2-disable_passive_host_checks">List of External Commands</a>
 </dt>
@@ -1208,6 +1228,8 @@
 </dt>
 <dt>Setting up DNX with Icinga, <a class="indexterm" href="howtos.html">Links to other published Howtos</a>
 </dt>
+<dt>Setting up Icinga -Mobile, <a class="indexterm" href="howtos.html">Links to other published Howtos</a>
+</dt>
 <dt>Setting up mod gearman with Icinga, <a class="indexterm" href="howtos.html">Links to other published Howtos</a>
 </dt>
 <dt>Step By Step install using RPMS for fc13, <a class="indexterm" href="howtos.html">Links to other published Howtos</a>
@@ -1418,6 +1440,14 @@
 </dt>
 <dt>interval_length=</dt>
 <dd><dl><dt>Timing Interval Length, <a class="indexterm" href="configmain.html#configmain-interval_length">Main Configuration File Options</a>
+</dt></dl></dd>
+</dl>
+</div>
+<div class="indexdiv">
+<h3>K</h3>
+<dl>
+<dt>keep_unknown_macros=</dt>
+<dd><dl><dt>Keep Unknown Macros, <a class="indexterm" href="configmain.html#configmain-keep_unknown_macros">Main Configuration File Options</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -2109,6 +2139,9 @@
 <dt>resource_file=</dt>
 <dd><dl><dt>Resource File, <a class="indexterm" href="configmain.html#configmain-resource_file">Main Configuration File Options</a>
 </dt></dl></dd>
+<dt>result_limit=</dt>
+<dd><dl><dt>Limit number of page entries to be displayed, <a class="indexterm" href="configcgi.html#configcgi-result_limit">CGI Configuration File Options</a>
+</dt></dl></dd>
 <dt>retained_contact_host_attribute_mask=</dt>
 <dd><dl><dt>Retained Contact Host Attribute Mask, <a class="indexterm" href="configmain.html#configmain-retained_contact_host_attribute_mask">Main Configuration File Options</a>
 </dt></dl></dd>
@@ -2256,6 +2289,9 @@
 </dt>
 <dt>socket_name=</dt>
 <dd><dl><dt>ido2db.cfg, <a class="indexterm" href="configido.html#configido-socket_name">IDO2DB config options</a>
+</dt></dl></dd>
+<dt>socket_perm=</dt>
+<dd><dl><dt>ido2db.cfg, <a class="indexterm" href="configido.html#configido-socket_perm">IDO2DB config options</a>
 </dt></dl></dd>
 <dt>socket_type=</dt>
 <dd><dl><dt>ido2db.cfg, <a class="indexterm" href="configido.html#configido-socket_type">IDO2DB config options</a>
@@ -2514,6 +2550,9 @@
 </dt></dl></dd>
 <dt>use_logging=</dt>
 <dd><dl><dt>Enable/disable CGI command logging, <a class="indexterm" href="configcgi.html#configcgi-use_logging">CGI Configuration File Options</a>
+</dt></dl></dd>
+<dt>use_pending_states=</dt>
+<dd><dl><dt>Select state to be shown while pending, <a class="indexterm" href="configcgi.html#configcgi-use_pending_states">CGI Configuration File Options</a>
 </dt></dl></dd>
 <dt>use_regexp_matching=</dt>
 <dd><dl><dt>Regular Expression Matching, <a class="indexterm" href="configmain.html#configmain-use_regexp_matching">Main Configuration File Options</a>

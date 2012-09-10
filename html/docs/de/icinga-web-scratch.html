@@ -177,7 +177,7 @@
         </li>
 </ul></div>
 
-      <p>Die Installation von Icinga mit den IDOUtils ist in der <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga-Schnellstart mit IDOUtils">Icinga-Schnellstartanleitung</a> bescrieben</p>
+      <p>Die Installation von Icinga mit den IDOUtils ist in der <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga-Schnellstart mit IDOUtils">Icinga-Schnellstartanleitung</a> beschrieben</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Die Installation</strong></span></p>
@@ -358,10 +358,6 @@
       <pre class="programlisting"> #&gt; make db-drop            - löscht die komplette Datenbank, inklusive
                             - Security-Abfrage, um ungewolltes Löschen zu verhindern</pre>
 
-      <pre class="programlisting"> #&gt; make db-doc2sql         - falls Sie SQL scripts beispielsweise für Packaging oder
-                            - manuelles Setup benötigen, können Sie diese Option verwenden,
-                            - verwenden, um die SQL-Scripts aus Doctrine zu extrahieren</pre>
-
       <p>Um die Datenbankanlege-Befehle nutzen zu können, müssen Sie dem Benutzer, der diese DB-Befehle ausführen soll, auch die
       entsprechenden Privilegien zuordnen. Falls derjenige Benutzer, der für das Icinga-Web in <code class="filename">configure</code> vorgesehen
       wurde, zu wenig Berechtigungen hat, gibt es in 'make' eine Abfrage, ob Sie einen anderen Benutzer mit mehr Privilegien verwenden
@@ -374,16 +370,24 @@
 
       <p><span class="bold"><strong>Manuelles Anlegen der Datenbank</strong></span></p>
 
-      <p>Sofern Sie die Datenbank manuell installieren wollen, z.B. für Package building, können Sie mit diesem Befehl die SQL-Scripts
-      extrahieren</p>
+      <p>Sofern Sie die Datenbank manuell installieren wollen, z.B. für Package building, so finden Sie unter
+      &lt;/path/to/icinga-web/etc/schema/&gt; das zu importierende SQL-Script.</p>
 
-      <pre class="programlisting"> #&gt; make db-doc2sql</pre>
+      <p><span class="bold"><strong>MySQL</strong></span></p>
+<pre class="programlisting"> $ mysql -u root -p icinga_web  &lt; /path/to/icinga-web/etc/schema/mysql.sql</pre>
+      <p><span class="bold"><strong>Oracle</strong></span>
 
-      <p>und diese dann in die frisch angelegte Datenbank importieren.</p>
+          </p>
+<pre class="programlisting"> #&gt; su - oracle
+ $ sqlplus dbuser/dbpass
+ SQL&gt; @oracle.sql</pre>
+<p>
+        </p> 
+<p><span class="bold"><strong>Postgresql</strong></span> </p>
+<pre class="programlisting"> #&gt; su - postgres
+ $ psql -U icinga_web -d icinga_web &lt; /path/to/icinga-web/etc/schema/pgsql.sql</pre>
 
-      <p><span class="emphasis"><em>PostgreSQL</em></span></p>
-
-      <p>Bitte editieren Sie die Datei <code class="filename">pg_hba.conf</code> und tragen Sie die folgenden Zeilen ein:</p>
+      <p>Bitte editieren Sie außerdem die Datei <code class="filename">pg_hba.conf</code> und tragen Sie die folgenden Zeilen ein:</p>
 
       <pre class="programlisting"> #&gt; vi /etc/postgresql/9.x/main/pg_hba.conf
 
@@ -905,9 +909,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
     </li>
 </ol></div>
 
-  <a class="indexterm" name="idp11505536"></a>
+  <a class="indexterm" name="id1519606"></a>
 
-  <a class="indexterm" name="idp11557440"></a>
+  <a class="indexterm" name="id1520043"></a>
 </div>
 <div class="navfooter">
 <hr>

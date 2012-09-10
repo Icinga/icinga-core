@@ -32,9 +32,9 @@
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
 
-  <p>There are several different configuration files that you're going to need to create or edit before you start monitoring
-  anything. Be patient! Configuring Icinga can take quite a while, especially if you're first-time user. Once you figure
-  out how things work, it'll all be well worth your time. :-)</p>
+  <p>There are several different configuration files that you're going to need to create or edit before you start monitoring anything. Be
+  patient! Configuring Icinga can take quite a while, especially if you're first-time user. Once you figure out how things work,
+  it'll all be well worth your time. :-)</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -42,50 +42,67 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Sample configuration files are installed in the <span class="emphasis"><em>/usr/local/icinga/etc/</em></span> directory when you follow
-    the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart installation guide</a>.</p>
+    <p>Sample configuration files are installed in the <span class="emphasis"><em>/usr/local/icinga/etc/</em></span> directory when you follow the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart installation guide</a>.</p>
   </td></tr>
 </table></div>
 
-  <p><span class="inlinemediaobject"><img src="../images/configoverview.png"></span></p>
+  <div class="mediaobject" align="right"><img src="../images/configoverview.png" align="right"></div>
+
+  <p><a name="config_overview-filenames"></a><span class="bold"><strong>File names</strong></span></p>
+
+  <p>Names and locations of these configuration files are all up to you but it is commonly accepted to have files called
+  <code class="filename">icinga.cfg</code>, <code class="filename">resource.cfg</code>, and <code class="filename">cgi.cfg</code> in the main config directory.</p>
+
+  <p>The names of the object definition files may show the type of definitions (<code class="filename">contacts.cfg, commands.cfg</code>,
+  <code class="filename">timeperiods.cfg</code>, <code class="filename">notifications.cfg</code>), the type of hardware (<code class="filename">printer.cfg</code>,
+  <code class="filename">switch.cfg</code>), or the object which is described (<code class="filename">localhost.cfg</code>). If your installation doesn't
+  contain any of these files then there is no need to panic. Using a web-based configuration tool, a database driven script, or editing the
+  files with your favourite editor the files may be in separate folders per geographical location (country, branch, ...) and a file per
+  physical or logical unit (room, rack, application, development, ...), or the concept which seems to suit your needs best.</p>
 
   <p><span class="bold"><strong>Main Configuration File</strong></span></p>
 
-  <p>The main configuration file contains a number of directives that affect how the Icinga daemon operates. This config
-  file is read by both the Icinga daemon and the CGIs. This is where you're going to want to get started in your
-  configuration adventures.</p>
+  <p>The main configuration file contains a number of directives that affect how the Icinga daemon operates and links to several
+  other files. This config file is read by both the Icinga daemon and the CGIs. This is where you're going to want to get started in
+  your configuration adventures.</p>
 
   <p>Documentation for the main configuration file can be found <a class="link" href="configmain.html" title="3.2. Main Configuration File Options">here</a>.</p>
 
   <p><span class="bold"><strong>Resource File(s)</strong></span></p>
 
-  <p>Resource files can be used to store user-defined macros. The main point of having resource files is to use them to store
-  sensitive configuration information (like passwords), without making them available to the CGIs.</p>
+  <p>Resource files can be used to store user-defined macros. The main point of having resource files is to use them to store sensitive
+  configuration information (like passwords), without making them available to the CGIs.</p>
 
-  <p>You can specify one or more optional resource files by using the <a class="link" href="configmain.html#configmain-resource_file">resource_file</a> directive in your main configuration file.</p>
+  <p>You can specify one or more optional resource files by using the <a class="link" href="configmain.html#configmain-resource_file">resource_file</a>
+  directive in your main configuration file.</p>
 
   <p><span class="bold"><strong>Object Definition Files</strong></span></p>
 
-  <p>Object definition files are used to define hosts, services, hostgroups, contacts, contactgroups, commands, etc. This is
-  where you define all the things you want monitor and how you want to monitor them.</p>
+  <p>Object definition files are used to define hosts, services, hostgroups, contacts, contactgroups, commands, etc. This is where you
+  define all the things you want to monitor and how you want to monitor them.</p>
 
-  <p>You can specify one or more object definition files by using the <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>
-  and/or <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a> directives in your main configuration file.</p>
+  <p>You can specify one or more object definition files by using the <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a> and/or <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a> directives in your main configuration file, but it is advisable to stick to one type of
+  directive (<span class="emphasis"><em>either</em></span> cfg_dir <span class="emphasis"><em>or</em></span> cfg_file until you understand the implications using both at a
+  time).</p>
 
   <p>An introduction to object definitions, and how they relate to each other, can be found <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">here</a>.</p>
 
   <p>Your object definition files can in turn include other files using the <a class="link" href="configobject.html#configobject-include_file">include_file</a>
-  or <a class="link" href="configobject.html#configobject-include_dir">include_dir</a> directives. These can only occur outside of the actual object
-  definitions, and behave very much like the <a class="link" href="configmain.html#configmain-cfg_file">cfg_file=</a> and
-  <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir=</a> directives in the main configuration file.</p>
+  or <a class="link" href="configobject.html#configobject-include_dir">include_dir</a> directives. These can only occur outside of the actual object definitions,
+  and behave very much like the <a class="link" href="configmain.html#configmain-cfg_file">cfg_file=</a> and <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir=</a>
+  directives in the main configuration file.</p>
 
   <p><span class="bold"><strong>CGI Configuration File</strong></span></p>
 
-  <p>The CGI configuration file contains a number of directives that affect the operation of the <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">CGIs</a>. It also contains a reference the main configuration file, so the CGIs know how you've configured
-  Icinga and where your object definitions are stored.</p>
+  <p>The CGI configuration file contains a number of directives that affect the operation of the <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">CGIs</a>. It
+  also contains a reference to the main configuration file, so the CGIs know how you've configured Icinga and where your object
+  definitions are stored.</p>
 
   <p>Documentation for the CGI configuration file can be found <a class="link" href="configcgi.html" title="3.6. CGI Configuration File Options">here</a>.</p>
-  <a class="indexterm" name="idp1423968"></a>
+
+  <a class="indexterm" name="id1369440"></a>
+
+  <a class="indexterm" name="id1369434"></a>
 </div>
 <div class="navfooter">
 <hr>

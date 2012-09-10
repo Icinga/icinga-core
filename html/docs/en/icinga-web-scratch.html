@@ -341,8 +341,6 @@
 
       <pre class="programlisting"> #&gt; make db-drop            - drops your database with a security query to avoid casualties</pre>
 
-      <pre class="programlisting"> #&gt; make db-doc2sql         - if you require plain SQL scripts, use this option to generate SQL from Doctrine. This can be useful for packaging or manual db install</pre>
-
       <p>To use the database creation commands you have to grant privileges to the user who will execute the commands on your dbms. If
       the user defined via configure is a low-privileged one, 'make' asks about a more privileged one e.g. a root user. If this does not
       work for you, alter 'etc/build.properties' to match the requirements of a root user.</p>
@@ -353,13 +351,22 @@
 
       <p><span class="bold"><strong>Manually create Database</strong></span></p>
 
-      <p>If you require manual database creation e.g. for package building, you can extract the plain SQL scripts using:</p>
+      <p>If you require manual database creation e.g. for package building, you can extract the needed SQL script from
+      &lt;/path/to/icinga-web/etc/schema/&gt;</p>
 
-      <pre class="programlisting"> #&gt; make db-doc2sql</pre>
+      <p>and then import the script into your freshly created database:</p>
 
-      <p>and then use the generated scripts on the freshly created database.</p>
+      <p><span class="bold"><strong>MySQL</strong></span></p>
+<pre class="programlisting"> $ mysql -u root -p icinga_web  &lt; /path/to/icinga-web/etc/schema/mysql.sql</pre>
 
-      <p><span class="emphasis"><em>PostgreSQL</em></span></p>
+      <p><span class="bold"><strong>Oracle</strong></span> </p>
+<pre class="programlisting"> #&gt; su - oracle
+ $ sqlplus dbuser/dbpass
+ SQL&gt; @oracle.sql</pre>
+
+      <p><span class="bold"><strong>Postgresql</strong></span> </p>
+<pre class="programlisting"> #&gt; su - postgres
+ $ psql -U icinga_web -d icinga_web &lt; /path/to/icinga-web/etc/schema/pgsql.sql</pre>
 
       <p>Please edit the file <code class="filename">pg_hba.conf</code> and add the following lines:</p>
 
@@ -885,11 +892,11 @@ Alias /icinga-web /usr/local/icinga-web/pub
     </li>
 </ol></div>
 
-  <a class="indexterm" name="idp11634800"></a>
+  <a class="indexterm" name="id1455327"></a>
 
-  <a class="indexterm" name="idp11684160"></a>
+  <a class="indexterm" name="id1455743"></a>
 
-  <a class="indexterm" name="idp11685760"></a>
+  <a class="indexterm" name="id1455754"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -25,7 +25,7 @@
 </div>
 <div class="index" title="Stichwortverzeichnis">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="idp19218976"></a>Stichwortverzeichnis</h2></div></div></div>
+<a name="id1584072"></a>Stichwortverzeichnis</h2></div></div></div>
 <div class="index">
 <div class="indexdiv">
 <h3>A</h3>
@@ -175,8 +175,14 @@
 <dt>authorized_for_all_service_commands=</dt>
 <dd><dl><dt>Zugang zu globalen Service-Befehlen (contact), <a class="indexterm" href="configcgi.html#configcgi-authorized_for_all_service_commands">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
+<dt>authorized_for_comments_read_only=</dt>
+<dd><dl><dt>Lesenden Zugang für Kommentare erlauben, <a class="indexterm" href="configcgi.html#configcgi-authorized_for_comments_read_only">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
 <dt>authorized_for_configuration_information=</dt>
 <dd><dl><dt>Zugang zu Konfigurationsinformationen (contact), <a class="indexterm" href="configcgi.html#configcgi-authorized_for_configuration_information">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
+<dt>authorized_for_downtimes_read_only=</dt>
+<dd><dl><dt>Lesenden Zugang für Downtimes erlauben, <a class="indexterm" href="configcgi.html#configcgi-authorized_for_downtimes_read_only">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
 <dt>authorized_for_full_command_resolution=</dt>
 <dd><dl><dt>Benutzer(n) VOLLEN Zugriff auf Kommandozeilenanzeige erlauben, <a class="indexterm" href="configcgi.html#configcgi-authorized_for_full_command_resolution">Optionen CGI-Konfigurationsdatei</a>
@@ -275,8 +281,6 @@
 <dt>ahas, <a class="indexterm" href="cgiparams.html#cgiparams-ahas">Informationen zu den CGI-Parametern</a>
 </dt>
 <dt>alerttypes, <a class="indexterm" href="cgiparams.html#cgiparams-alerttypes">Informationen zu den CGI-Parametern</a>
-</dt>
-<dt>archive, <a class="indexterm" href="cgiparams.html#cgiparams-archive">Informationen zu den CGI-Parametern</a>
 </dt>
 <dt>assumeinitialstates, <a class="indexterm" href="cgiparams.html#cgiparams-assumeinitialstates">Informationen zu den CGI-Parametern</a>
 </dt>
@@ -448,6 +452,8 @@
 </dt>
 <dt>standardreport, <a class="indexterm" href="cgiparams.html#cgiparams-standardreport">Informationen zu den CGI-Parametern</a>
 </dt>
+<dt>start, <a class="indexterm" href="cgiparams.html#cgiparams-start">Informationen zu den CGI-Parametern</a>
+</dt>
 <dt>start_time, <a class="indexterm" href="cgiparams.html#cgiparams-start_time">Informationen zu den CGI-Parametern</a>
 </dt>
 <dt>statetype, <a class="indexterm" href="cgiparams.html#cgiparams-statetype">Informationen zu den CGI-Parametern</a>
@@ -563,6 +569,9 @@
 <dt>Cluster</dt>
 <dd><dl><dt>Service- und Host-Gruppen überwachen, <a class="indexterm" href="clusters.html">Service- und Host-Gruppen überwachen</a>
 </dt></dl></dd>
+<dt>color_transparency_index=</dt>
+<dd><dl><dt>Statusmap Transparency Index Colour, <a class="indexterm" href="configcgi.html#configcgi-color_transparency_index">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
 <dt>command_check_interval=</dt>
 <dd><dl><dt>Prüfintervall externe Befehle, <a class="indexterm" href="configmain.html#configmain-command_check_interval">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
@@ -571,6 +580,12 @@
 </dt></dl></dd>
 <dt>config_output_options=</dt>
 <dd><dl><dt>idomod.cfg, <a class="indexterm" href="configido.html#configido-config_output_options">IDOMOD Konfigurationsoptionen</a>
+</dt></dl></dd>
+<dt>csv_data_enclosure=</dt>
+<dd><dl><dt>CSV Export Field Enclosure Character, <a class="indexterm" href="configcgi.html#configcgi-csv_data_enclosure">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
+<dt>csv_delimiter=</dt>
+<dd><dl><dt>CSV Export Field Separator Character, <a class="indexterm" href="configcgi.html#configcgi-csv_delimiter">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
 </dl>
 </div>
@@ -647,8 +662,8 @@
 <dt>default_expiring_acknowledgement_duration=</dt>
 <dd><dl><dt>Setzt die Verfallszeit von Bestätigungen (acknowledgements), <a class="indexterm" href="configcgi.html#configcgi-default_expiring_acknowledgement_duration">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
-<dt>default_num_displayed_log_entries=</dt>
-<dd><dl><dt>Anzahl anzuzeigender Protokolleinträge beschränken, <a class="indexterm" href="configcgi.html#configcgi-default_num_displayed_log_entries">Optionen CGI-Konfigurationsdatei</a>
+<dt>default_expiring_disabled_notifictions_duration=</dt>
+<dd><dl><dt>Standard- Ablaufdauer für global deaktivierte Benachrichtigungen, <a class="indexterm" href="configcgi.html#configcgi-default_expiring_disabled_notifictions_duration">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
 <dt>default_statusmap_layout=</dt>
 <dd><dl><dt>Default-Statusmap-Layout, <a class="indexterm" href="configcgi.html#configcgi-default_statusmap_layout">Optionen CGI-Konfigurationsdatei</a>
@@ -869,6 +884,8 @@
 <dt>DISABLE_HOST_SVC_NOTIFICATIONS, <a class="indexterm" href="extcommands2.html#extcmd2-disable_host_svc_notifications">Liste der externen Befehle</a>
 </dt>
 <dt>DISABLE_NOTIFICATIONS, <a class="indexterm" href="extcommands2.html#extcmd2-disable_notifications">Liste der externen Befehle</a>
+</dt>
+<dt>DISABLE_NOTIFICATIONS_EXPIRE_TIME, <a class="indexterm" href="extcommands2.html#extcmd2-disable_notifications_expire_time">Liste der externen Befehle</a>
 </dt>
 <dt>DISABLE_PASSIVE_HOST_CHECKS, <a class="indexterm" href="extcommands2.html#extcmd2-disable_passive_host_checks">Liste der externen Befehle</a>
 </dt>
@@ -1210,6 +1227,8 @@
 </dt>
 <dt>Setting up DNX with Icinga, <a class="indexterm" href="howtos.html">Links zu weiteren Howtos</a>
 </dt>
+<dt>Setting up Icinga -Mobile, <a class="indexterm" href="howtos.html">Links zu weiteren Howtos</a>
+</dt>
 <dt>Setting up mod gearman with Icinga, <a class="indexterm" href="howtos.html">Links zu weiteren Howtos</a>
 </dt>
 <dt>Step By Step install using RPMS for fc13, <a class="indexterm" href="howtos.html">Links zu weiteren Howtos</a>
@@ -1436,6 +1455,9 @@
 <div class="indexdiv">
 <h3>K</h3>
 <dl>
+<dt>keep_unknown_macros=</dt>
+<dd><dl><dt>Unbekannte Makros, <a class="indexterm" href="configmain.html#configmain-keep_unknown_macros">Optionen der Hauptkonfigurationsdatei</a>
+</dt></dl></dd>
 <dt>Kompatibilität, <a class="indexterm" href="about.html#compatibility">Über Icinga</a>
 </dt>
 <dt>Konfiguration</dt>
@@ -1455,6 +1477,9 @@
 </dt>
 <dt>Konfigurationsüberblick, <a class="indexterm" href="config.html">Konfigurationsüberblick</a>
 </dt>
+<dd><dl><dt>icinga.cfg, resource.cfg, cgi.cfg, commands.cfg, contacts.cfg, notifications.cfg, timeperiods.cfg, printer.cfg, switch.cfg,
+    windows.cfg, <a class="indexterm" href="config.html#config_overview-filenames">Konfigurationsüberblick</a>
+</dt></dl></dd>
 <dt>Kontakt-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contact">Kontakt-Definition</a>
 </dt>
 <dt>Kontaktgruppen-Definition, <a class="indexterm" href="objectdefinitions.html#objectdefinitions-contactgroup">Kontaktgruppen-Definition</a>
@@ -2134,6 +2159,9 @@
 <dt>resource_file=</dt>
 <dd><dl><dt>Ressource-Datei, <a class="indexterm" href="configmain.html#configmain-resource_file">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
+<dt>result_limit=</dt>
+<dd><dl><dt>Anzahl anzuzeigender Seiteneinträge beschränken, <a class="indexterm" href="configcgi.html#configcgi-result_limit">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
 <dt>retained_contact_host_attribute_mask=</dt>
 <dd><dl><dt>aufbewahrte "Contact Host"-Attributmaske, <a class="indexterm" href="configmain.html#configmain-retained_contact_attribute_mask">Optionen der Hauptkonfigurationsdatei</a>
 </dt></dl></dd>
@@ -2280,6 +2308,9 @@
 </dt></dl></dd>
 <dt>socket_name=</dt>
 <dd><dl><dt>ido2db.cfg, <a class="indexterm" href="configido.html#configido-socket_name">IDO2DB Konfigurationsoptionen</a>
+</dt></dl></dd>
+<dt>socket_perm=</dt>
+<dd><dl><dt>ido2db.cfg, <a class="indexterm" href="configido.html#configido-socket_perm">IDO2DB Konfigurationsoptionen</a>
 </dt></dl></dd>
 <dt>socket_type=</dt>
 <dd><dl><dt>ido2db.cfg, <a class="indexterm" href="configido.html#configido-socket_type">IDO2DB Konfigurationsoptionen</a>
@@ -2520,6 +2551,9 @@
 </dt></dl></dd>
 <dt>use_logging=</dt>
 <dd><dl><dt>CGI-Protokollierung (de)aktivieren, <a class="indexterm" href="configcgi.html#configcgi-use_logging">Optionen CGI-Konfigurationsdatei</a>
+</dt></dl></dd>
+<dt>use_pending_states=</dt>
+<dd><dl><dt>Anzeige für PENDING-Status auswählen, <a class="indexterm" href="configcgi.html#configcgi-use_pending_states">Optionen CGI-Konfigurationsdatei</a>
 </dt></dl></dd>
 <dt>use_regexp_matching=</dt>
 <dd><dl><dt>Regular Expression Matching, <a class="indexterm" href="configmain.html#configmain-use_regexp_matching">Optionen der Hauptkonfigurationsdatei</a>
