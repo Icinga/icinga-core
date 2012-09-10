@@ -2,3 +2,4 @@ var/objects.precache
 var/objects.precache.generated
 Makefile
 tests.log
+gmon.out
