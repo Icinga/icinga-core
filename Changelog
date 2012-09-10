@@ -86,6 +86,8 @@ FIXES
 * idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
 * idoutils: fix sla_downtime_select query and result handle; scheduled downtime merge statement #2780 - MF
 
+* install: fix icinga.xml for solaris pkg not updated #2609 - CF
+
 * icinga.spec: fix permissions on ido2db.cfg potentially world readable (Aaron Russo) #2897 - MF
 * icinga.soec: drop unsupported configure flags #3037 - MF
 

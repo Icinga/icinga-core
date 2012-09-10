@@ -560,6 +560,7 @@ Prototype:
 	mkdir -p $(PACKDIR)/lib/svc/method/
 	$(INSTALL) -o root -g bin -m 555 daemon-init $(PACKDIR)/lib/svc/method/icinga
 	mkdir -p $(PACKDIR)/var/svc/manifest/application/
+	sed 's%!CFGPREFIX!%$(CFGDIR)%g' solaris/icinga.xml.tpl > solaris/icinga.xml
 	$(INSTALL) -m 444 -o root -g root solaris/icinga.xml $(PACKDIR)/var/svc/manifest/application/
 	#cd contrib; $(MAKE) all; $(MAKE) DESTDIR=$(PACKDIR) INIT_OPTS='' INSTALL_OPTS='' COMMAND_OPTS='' icinga_grp='' icinga_usr='' install
 	echo i pkginfo > solaris/Prototype
