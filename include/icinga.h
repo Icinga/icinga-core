@@ -147,6 +147,7 @@ extern "C" {
 
 #define DEFAULT_ALLOW_EMPTY_HOSTGROUP_ASSIGNMENT                0	/* Do not allow empty hostgroup assignment by default */
 
+#define DEFAULT_MAX_CHECK_RESULT_LIST_ITEMS              	0	/* max items in checkresult lists, where reaper will not process anymore files into the lists. 0 means *all* */
 
 /******************** HOST STATUS *********************/
 

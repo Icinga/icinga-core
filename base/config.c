@@ -227,6 +227,8 @@ extern unsigned long    max_debug_file_size;
 
 extern int              allow_empty_hostgroup_assignment;
 
+extern unsigned long    max_check_result_list_items;
+
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
 extern int              event_profiling_enabled;
@@ -1463,6 +1465,10 @@ int read_main_config_file(char *main_config_file) {
 
                         keep_unknown_macros = (atoi(value) > 0) ? TRUE : FALSE;
                 }
+
+		else if (!strcmp(variable, "max_check_result_list_items"))
+			max_check_result_list_items = strtoul(value, NULL, 0);
+
 
 		/*** AUTH_FILE VARIABLE USED BY EMBEDDED PERL INTERPRETER ***/
 		else if (!strcmp(variable, "auth_file")) {

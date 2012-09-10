@@ -20,6 +20,7 @@ ENHANCEMENTS
 	** DISABLE_NOTIFICATIONS_EXPIRE_TIME, works for global notifications
 * core: add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879 - MF
 * core: add new callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE to allow override of sending notifications #2041 - MF
+* core: only reap results when checkresult_list is not overloaded (max_check_result_list_items) (thx Thomas Gelf) #3099 - MF
 
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
@@ -103,6 +104,12 @@ CHANGES
 * core: unknown macros are not left on the output anymore, logging a warning instead
 	** either fix your config (i.e. wrong macros, escape dollar signs with another one)
 	** or set keep_unknown_macros=1 in icinga.cfg to revert to the old behaviour
+
+* core: max_check_result_list_items will set the max number of checkresults waiting for being processed #3099
+	** if checkresult_list is "full", the checkresult reaper will bail early
+	** leaving the core time to process the existing items on checkresult list
+	** max_check_result_list_items=0 is the default, disabling this feature
+	** max_check_result_list_items=1024 should work in larger distributed setups
 
 * core: new NEB callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE (606) #2041
 
