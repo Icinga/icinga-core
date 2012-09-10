@@ -1,37 +1,38 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Predictive Dependency Checks</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.19. Predictive Dependency Checks</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch07.html" title="Chapter�7.�Advanced Topics">
-<link rel="prev" href="adaptive.html" title="Adaptive Monitoring">
-<link rel="next" href="cachedchecks.html" title="Cached Checks">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="adaptive.html" title="7.18. Adaptive Monitoring">
+<link rel="next" href="cachedchecks.html" title="7.20. Cached Checks">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Predictive Dependency Checks</th></tr>
+<tr><th colspan="3" align="center">7.19. Predictive Dependency Checks</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="adaptive.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�7.�Advanced Topics</th>
-<td width="20%" align="right">�<a accesskey="n" href="cachedchecks.html">Next</a>
+<a accesskey="p" href="adaptive.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="cachedchecks.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Predictive Dependency Checks">
+<div class="section" title="7.19. Predictive Dependency Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="dependencychecks"></a><a name="dependency_checks"></a>Predictive Dependency Checks</h2></div></div></div>
+<a name="dependencychecks"></a>7.19. <a name="dependency_checks"></a>Predictive Dependency Checks</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
 
-  <p>Host and service <a class="link" href="dependencies.html" title="Host and Service Dependencies">dependencies</a> can be defined to allow you greater control over when
+  <p>Host and service <a class="link" href="dependencies.html" title="7.12. Host and Service Dependencies">dependencies</a> can be defined to allow you greater control over when
   checks are executed and when notifications are sent out. As dependencies are used to control basic aspects of the monitoring
   process, it is crucial to ensure that status information used in the dependency logic is as up to date as possible.</p>
 
@@ -47,7 +48,7 @@
   <p>The <span class="emphasis"><em>Switch2</em></span> host in this example has just changed state from an UP state to a problem state.
   Icinga needs to determine whether the host is DOWN or UNREACHABLE, so it will launch parallel checks of
   <span class="emphasis"><em>Switch2</em></span>'s immediate parents (<span class="emphasis"><em>Firewall1</em></span>) and children (<span class="emphasis"><em>Comp1</em></span>,
-  <span class="emphasis"><em>Comp2</em></span>, and <span class="emphasis"><em>Switch3</em></span>). This is a normal function of the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
+  <span class="emphasis"><em>Comp2</em></span>, and <span class="emphasis"><em>Switch3</em></span>). This is a normal function of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
 
   <p>You will also notice that <span class="emphasis"><em>Switch2</em></span> is depending on <span class="emphasis"><em>Monitor1</em></span> and
   <span class="emphasis"><em>File1</em></span> for either notifications or check execution (which one is unimportant in this example). If predictive
@@ -91,28 +92,28 @@
 
   <p><span class="bold"><strong>Cached Checks</strong></span></p>
 
-  <p>Predictive dependency checks are on-demand checks and are therefore subject to the rules of <a class="link" href="cachedchecks.html" title="Cached Checks">cached checks</a>. Cached checks can provide you with performance improvements by allowing
+  <p>Predictive dependency checks are on-demand checks and are therefore subject to the rules of <a class="link" href="cachedchecks.html" title="7.20. Cached Checks">cached checks</a>. Cached checks can provide you with performance improvements by allowing
   Icinga to forgo running an actual host or service check if it can use a relatively recent check result instead. More
-  information on cached checks can be found <a class="link" href="cachedchecks.html" title="Cached Checks">here</a>.</p>
-  <a class="indexterm" name="id1529204"></a>
+  information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.20. Cached Checks">here</a>.</p>
+  <a class="indexterm" name="idp13246080"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="adaptive.html">Prev</a>�</td>
+<a accesskey="p" href="adaptive.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="cachedchecks.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="cachedchecks.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Adaptive Monitoring�</td>
+<td width="40%" align="left" valign="top">7.18. Adaptive Monitoring </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Cached Checks</td>
+<td width="40%" align="right" valign="top"> 7.20. Cached Checks</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

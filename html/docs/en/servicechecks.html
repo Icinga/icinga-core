@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Service Checks</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.5. Service Checks</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch05.html" title="Chapter�5.�The Basics">
-<link rel="prev" href="hostchecks.html" title="Host Checks">
-<link rel="next" href="activechecks.html" title="Active Checks">
+<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
+<link rel="prev" href="hostchecks.html" title="5.4. Host Checks">
+<link rel="next" href="activechecks.html" title="5.6. Active Checks">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Service Checks</th></tr>
+<tr><th colspan="3" align="center">5.5. Service Checks</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="hostchecks.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�5.�The Basics</th>
-<td width="20%" align="right">�<a accesskey="n" href="activechecks.html">Next</a>
+<a accesskey="p" href="hostchecks.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. The Basics</th>
+<td width="20%" align="right"> <a accesskey="n" href="activechecks.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Service Checks">
+<div class="section" title="5.5. Service Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="servicechecks"></a><a name="service_checks"></a>Service Checks</h2></div></div></div>
+<a name="servicechecks"></a>5.5. <a name="service_checks"></a>Service Checks</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -43,11 +44,11 @@
       options in your <a class="link" href="objectdefinitions.html#objectdefinitions-service">service definitions</a>.</p>
     </li>
 <li class="listitem">
-      <p>On-demand as needed for <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">predictive service dependency checks</a>.</p>
+      <p>On-demand as needed for <a class="link" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">predictive service dependency checks</a>.</p>
     </li>
 </ul></div>
 
-  <p>On-demand checks are performed as part of the <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">predictive service dependency check</a>
+  <p>On-demand checks are performed as part of the <a class="link" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">predictive service dependency check</a>
   logic. These checks help ensure that the dependency logic is as accurate as possible. If you don't make use of <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service dependencies</a>, Icinga won't perform any on-demand service
   checks.</p>
 
@@ -55,13 +56,13 @@
 
   <p>The performance of on-demand service checks can be significantly improved by implementing the use of cached checks, which
   allow Icinga to forgo executing a service check if it determines a relatively recent check result will do instead. Cached
-  checks will only provide a performance increase if you are making use of <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service dependencies</a>. More information on cached checks can be found <a class="link" href="cachedchecks.html" title="Cached Checks">here</a>.</p>
+  checks will only provide a performance increase if you are making use of <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service dependencies</a>. More information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.20. Cached Checks">here</a>.</p>
 
   <p><span class="bold"><strong>Dependencies and Checks</strong></span></p>
 
   <p>You can define <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service execution dependencies</a> that prevent
   Icinga from checking the status of a service depending on the state of one or more other services. More information on
-  dependencies can be found <a class="link" href="dependencies.html" title="Host and Service Dependencies">here</a>.</p>
+  dependencies can be found <a class="link" href="dependencies.html" title="7.12. Host and Service Dependencies">here</a>.</p>
 
   <p><span class="bold"><strong>Parallelization of Service Checks</strong></span></p>
 
@@ -95,40 +96,40 @@
 
   <p><span class="bold"><strong>Service State Determination</strong></span></p>
 
-  <p>Service checks are performed by <a class="link" href="plugins.html" title="Icinga Plugins">plugins</a>, which can return a state of OK, WARNING, UNKNOWN,
+  <p>Service checks are performed by <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a>, which can return a state of OK, WARNING, UNKNOWN,
   or CRITICAL. These plugin states directly translate to service states. For example, a plugin which returns a WARNING state will
   cause a service to have a WARNING state.</p>
 
   <p><span class="bold"><strong>Services State Changes</strong></span></p>
 
   <p>When Icinga checks the status of services, it will be able to detect when a service changes between OK, WARNING,
-  UNKNOWN, and CRITICAL states and take appropriate action. These state changes result in different <a class="link" href="statetypes.html" title="State Types">state types</a> (HARD or SOFT), which can trigger <a class="link" href="eventhandlers.html" title="Event Handlers">event handlers</a> to
-  be run and <a class="link" href="notifications.html" title="Notifications">notifications</a> to be sent out. Service state changes can also trigger on-demand
-  <a class="link" href="hostchecks.html" title="Host Checks">host checks</a>. Detecting and dealing with state changes is what Icinga is all
+  UNKNOWN, and CRITICAL states and take appropriate action. These state changes result in different <a class="link" href="statetypes.html" title="5.8. State Types">state types</a> (HARD or SOFT), which can trigger <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handlers</a> to
+  be run and <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a> to be sent out. Service state changes can also trigger on-demand
+  <a class="link" href="hostchecks.html" title="5.4. Host Checks">host checks</a>. Detecting and dealing with state changes is what Icinga is all
   about.</p>
 
   <p>When services change state too frequently they are considered to be "flapping". Icinga can detect when services
   start flapping, and can suppress notifications until flapping stops and the service's state stabilizes. More information on the
-  flap detection logic can be found <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">here</a>.</p>
-  <a class="indexterm" name="id1497664"></a>
+  flap detection logic can be found <a class="link" href="flapping.html" title="7.7. Detection and Handling of State Flapping">here</a>.</p>
+  <a class="indexterm" name="idp9461760"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="hostchecks.html">Prev</a>�</td>
+<a accesskey="p" href="hostchecks.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="activechecks.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="activechecks.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Host Checks�</td>
+<td width="40%" align="left" valign="top">5.4. Host Checks </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Active Checks</td>
+<td width="40%" align="right" valign="top"> 5.6. Active Checks</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

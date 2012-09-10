@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>TCP Wrapper Integration</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>9.3. TCP Wrapper Integration</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch09.html" title="Chapter�9.�Integration With Other Software">
-<link rel="prev" href="int-snmptrap.html" title="SNMP Trap Integration">
-<link rel="next" href="int-mklivestatus.html" title="MKLiveStatus Integration">
+<link rel="up" href="ch09.html" title="Chapter 9. Integration With Other Software">
+<link rel="prev" href="int-snmptrap.html" title="9.2. SNMP Trap Integration">
+<link rel="next" href="int-mklivestatus.html" title="9.4. MKLiveStatus Integration">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">TCP Wrapper Integration</th></tr>
+<tr><th colspan="3" align="center">9.3. TCP Wrapper Integration</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="int-snmptrap.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�9.�Integration With Other Software</th>
-<td width="20%" align="right">�<a accesskey="n" href="int-mklivestatus.html">Next</a>
+<a accesskey="p" href="int-snmptrap.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 9. Integration With Other Software</th>
+<td width="20%" align="right"> <a accesskey="n" href="int-mklivestatus.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="TCP Wrapper Integration">
+<div class="section" title="9.3. TCP Wrapper Integration">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="int-tcpwrappers"></a><a name="int_tcpwrappers"></a>TCP Wrapper Integration</h2></div></div></div>
+<a name="int-tcpwrappers"></a>9.3. <a name="int_tcpwrappers"></a>TCP Wrapper Integration</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -42,10 +43,10 @@
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>You are already familiar with <a class="link" href="passivechecks.html" title="Passive Checks">passive checks</a> and how they work.</p>
+      <p>You are already familiar with <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive checks</a> and how they work.</p>
     </li>
 <li class="listitem">
-      <p>You are already familiar with <a class="link" href="volatileservices.html" title="Volatile Services">volatile services</a> and how they work.</p>
+      <p>You are already familiar with <a class="link" href="volatileservices.html" title="7.3. Volatile Services">volatile services</a> and how they work.</p>
     </li>
 <li class="listitem">
       <p>The host which you are generating alerts for (i.e. the host you are using TCP wrappers on) is a remote host (called
@@ -63,7 +64,7 @@
   <p>If you haven't done so already, create a <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a> for the remote host
   (<span class="emphasis"><em>firestorm</em></span>).</p>
 
-  <p>Next, define a service in one of your <a class="link" href="configobject.html" title="Object Configuration Overview">object configuration files</a> for the TCP wrapper
+  <p>Next, define a service in one of your <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object configuration files</a> for the TCP wrapper
   alerts on host <span class="emphasis"><em>firestorm</em></span>. The service definition might look something like this:</p>
 
   <pre class="screen"> define service{
@@ -137,25 +138,25 @@
   the alert will look something like the following:</p>
 
   <pre class="screen">Denied sshd2-sdn-ar-002mnminnP321.dialsprint.net </pre>
-  <a class="indexterm" name="id1538762"></a>
+  <a class="indexterm" name="idp14393056"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="int-snmptrap.html">Prev</a>�</td>
+<a accesskey="p" href="int-snmptrap.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="int-mklivestatus.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="int-mklivestatus.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">SNMP Trap Integration�</td>
+<td width="40%" align="left" valign="top">9.2. SNMP Trap Integration </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�MKLiveStatus Integration</td>
+<td width="40%" align="right" valign="top"> 9.4. MKLiveStatus Integration</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

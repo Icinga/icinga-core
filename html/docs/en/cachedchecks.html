@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Cached Checks</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.20. Cached Checks</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch07.html" title="Chapter�7.�Advanced Topics">
-<link rel="prev" href="dependencychecks.html" title="Predictive Dependency Checks">
-<link rel="next" href="passivestatetranslation.html" title="Passive Host State Translation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">
+<link rel="next" href="passivestatetranslation.html" title="7.21. Passive Host State Translation">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Cached Checks</th></tr>
+<tr><th colspan="3" align="center">7.20. Cached Checks</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="dependencychecks.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�7.�Advanced Topics</th>
-<td width="20%" align="right">�<a accesskey="n" href="passivestatetranslation.html">Next</a>
+<a accesskey="p" href="dependencychecks.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Cached Checks">
+<div class="section" title="7.20. Cached Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cachedchecks"></a><a name="cached_checks"></a>Cached Checks</h2></div></div></div>
+<a name="cachedchecks"></a>7.20. <a name="cached_checks"></a>Cached Checks</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -50,17 +51,17 @@
       <p>When a service associated with the host changes state.</p>
     </li>
 <li class="listitem">
-      <p>As needed as part of the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
+      <p>As needed as part of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
     </li>
 <li class="listitem">
-      <p>As needed for <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">predictive host dependency checks</a>.</p>
+      <p>As needed for <a class="link" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">predictive host dependency checks</a>.</p>
     </li>
 </ul></div>
 
   <p>And on-demand service checks occur...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>As needed for <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">predictive service dependency checks</a>.</p>
+      <p>As needed for <a class="link" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">predictive service dependency checks</a>.</p>
     </li></ul></div>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -156,10 +157,10 @@
   <p>You can schedule regular checks of your hosts by specifying a value greater than 0 for <span class="emphasis"><em>check_interval</em></span> option in
   your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definitions</a>. If you do this, make sure that you set the
   <span class="emphasis"><em>max_check_attempts</em></span> option to a value greater than 1, or it will cause a big performance hit. This potential
-  performance hit is described in detail <a class="link" href="hostchecks.html" title="Host Checks">here</a>.</p>
+  performance hit is described in detail <a class="link" href="hostchecks.html" title="5.4. Host Checks">here</a>.</p>
 
   <div class="figure">
-<a name="id1529559"></a><p class="title"><b>Figure�7.1.�Cached checks</b></p>
+<a name="idp13288288"></a><p class="title"><b>Figure 7.1. Cached checks</b></p>
 <div class="figure-contents">
     
 
@@ -169,8 +170,8 @@
 <br class="figure-break">
 
   <p>A good way to determine the proper value for the cached check horizon option is to compare how many on-demand checks Icinga
-  has to actually run versus how may it can use cached values for. The <a class="link" href="icingastats.html" title="Using The Icingastats Utility">icingastats</a> utility can produce
-  information on cached checks, which can then be <a class="link" href="perfgraphs.html" title="Graphing Performance Info With PNP4Nagios">graphed with PNP4Nagios</a>. An example graph that compares
+  has to actually run versus how may it can use cached values for. The <a class="link" href="icingastats.html" title="8.6. Using The Icingastats Utility">icingastats</a> utility can produce
+  information on cached checks, which can then be <a class="link" href="perfgraphs.html" title="8.7. Graphing Performance Info With PNP4Nagios">graphed with PNP4Nagios</a>. An example graph that compares
   cached vs. actual on-demand checks is shown above.</p>
 
   <p>The monitoring installation which produced the graphs had:</p>
@@ -204,25 +205,25 @@
   appropriately for your situation. Continue to monitor the PNP4Nagios graphs over time to see how changing the horizon variables affected
   cached check statistics. Rinse and repeat as necessary.</p>
 
-  <a class="indexterm" name="id1529666"></a>
+  <a class="indexterm" name="idp13300848"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="dependencychecks.html">Prev</a>�</td>
+<a accesskey="p" href="dependencychecks.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="passivestatetranslation.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Predictive Dependency Checks�</td>
+<td width="40%" align="left" valign="top">7.19. Predictive Dependency Checks </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Passive Host State Translation</td>
+<td width="40%" align="right" valign="top"> 7.21. Passive Host State Translation</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

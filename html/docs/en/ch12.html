@@ -1,70 +1,71 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Chapter 12. IDOUtils</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>ChapterÂ 12.Â IDOUtils</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
 <link rel="up" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="prev" href="icinga-web-api.html" title="The Icinga-Web REST API">
-<link rel="next" href="db_intro.html" title="Introduction">
+<link rel="prev" href="icinga-web-api.html" title="11.5.Â The Icinga-Web REST API">
+<link rel="next" href="db_intro.html" title="12.1.Â Introduction">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Chapter 12. IDOUtils</th></tr>
+<tr><th colspan="3" align="center">ChapterÂ 12.Â IDOUtils</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="icinga-web-api.html">Prev</a> </td>
-<th width="60%" align="center"> </th>
-<td width="20%" align="right"> <a accesskey="n" href="db_intro.html">Next</a>
+<a accesskey="p" href="icinga-web-api.html">Prev</a>Â </td>
+<th width="60%" align="center">Â </th>
+<td width="20%" align="right">Â <a accesskey="n" href="db_intro.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="chapter" title="Chapter 12. IDOUtils">
+<div class="chapter" title="ChapterÂ 12.Â IDOUtils">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="ch12"></a>Chapter 12. IDOUtils</h2></div></div></div>
+<a name="ch12"></a>ChapterÂ 12.Â IDOUtils</h2></div></div></div>
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="section"><a href="db_intro.html">Introduction</a></span></dt>
+<dt><span class="section"><a href="db_intro.html">12.1. Introduction</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_intro.html#id397080">Purpose</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1551055">Design Overview</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1551143">Instances</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1551214">Installation</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#idm107489232">12.1.1. Purpose</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#idp15870480">12.1.2. Design Overview</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#idp15881248">12.1.3. Instances</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#idp15887712">12.1.4. Installation</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="db_components.html">Components</a></span></dt>
+<dt><span class="section"><a href="db_components.html">12.2. Components</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_components.html#id1551241">Overview</a></span></dt>
-<dt><span class="section"><a href="db_components.html#id1551290">IDOMOD</a></span></dt>
-<dt><span class="section"><a href="db_components.html#id1551373">LOG2IDO</a></span></dt>
-<dt><span class="section"><a href="db_components.html#id1551414">FILE2SOCK</a></span></dt>
-<dt><span class="section"><a href="db_components.html#IDO2DB-description">IDO2DB. IDO2DB</a></span></dt>
+<dt><span class="section"><a href="db_components.html#idp15890928">12.2.1. Overview</a></span></dt>
+<dt><span class="section"><a href="db_components.html#idp15898640">12.2.2. IDOMOD</a></span></dt>
+<dt><span class="section"><a href="db_components.html#idp15909264">12.2.3. LOG2IDO</a></span></dt>
+<dt><span class="section"><a href="db_components.html#idp15914160">12.2.4. FILE2SOCK</a></span></dt>
+<dt><span class="section"><a href="db_components.html#IDO2DB-description">12.2.IDO2DB. IDO2DB</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="configido.html">Configuration of IDOUtils</a></span></dt>
+<dt><span class="section"><a href="configido.html">12.3. Configuration of IDOUtils</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="configido.html#id1552155">IDOMOD config options</a></span></dt>
-<dt><span class="section"><a href="configido.html#id1552157">IDO2DB config options</a></span></dt>
+<dt><span class="section"><a href="configido.html#idp16002800">12.3.1. IDOMOD config options</a></span></dt>
+<dt><span class="section"><a href="configido.html#idp16003744">12.3.2. IDO2DB config options</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="db_example-configs.html">Example Configurations</a></span></dt>
+<dt><span class="section"><a href="db_example-configs.html">12.4. Example Configurations</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_example-configs.html#id1553946">Single Server, Single Instance Setup</a></span></dt>
-<dt><span class="section"><a href="db_example-configs.html#id1557513">Single Server, Multiple Instance Setup</a></span></dt>
-<dt><span class="section"><a href="db_example-configs.html#id1557608">Single Server, Single Instance Log File Import</a></span></dt>
+<dt><span class="section"><a href="db_example-configs.html#idp16218144">12.4.1. Single Server, Single Instance Setup</a></span></dt>
+<dt><span class="section"><a href="db_example-configs.html#idp16645904">12.4.2. Single Server, Multiple Instance Setup</a></span></dt>
+<dt><span class="section"><a href="db_example-configs.html#idp16656992">12.4.3. Single Server, Single Instance Log File Import</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="db_model.html">IDOUtils Database Model</a></span></dt>
+<dt><span class="section"><a href="db_model.html">12.5. IDOUtils Database Model</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_model.html#id1557888">Central Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1557891"> Debugging Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1558336">Historical Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1558837"> Current Status Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1558850"> Configuration Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#idp16689440">12.5.1. Central Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#idp16690528">12.5.2.  Debugging Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#idp16744576">12.5.3. Historical Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#idp16804096">12.5.4.  Current Status Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#idp16805760">12.5.5.  Configuration Tables</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="db_changes.html">Database changes/alterations</a></span></dt>
+<dt><span class="section"><a href="db_changes.html">12.6. Database changes/alterations</a></span></dt>
 </dl>
 </div>
     
@@ -86,18 +87,18 @@
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="icinga-web-api.html">Prev</a> </td>
-<td width="20%" align="center"> </td>
-<td width="40%" align="right"> <a accesskey="n" href="db_intro.html">Next</a>
+<a accesskey="p" href="icinga-web-api.html">Prev</a>Â </td>
+<td width="20%" align="center">Â </td>
+<td width="40%" align="right">Â <a accesskey="n" href="db_intro.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">The Icinga-Web REST API </td>
+<td width="40%" align="left" valign="top">11.5.Â The Icinga-Web REST APIÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Introduction</td>
+<td width="40%" align="right" valign="top">Â 12.1.Â Introduction</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -1,33 +1,34 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Authentication And Authorization In The CGIs</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>3.7.Â Authentication And Authorization In The CGIs</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
-<link rel="prev" href="configcgi.html" title="CGI Configuration File Options">
-<link rel="next" href="ch04.html" title="Chapter 4. Running Icinga">
+<link rel="up" href="ch03.html" title="ChapterÂ 3.Â Configuring Icinga">
+<link rel="prev" href="configcgi.html" title="3.6.Â CGI Configuration File Options">
+<link rel="next" href="ch04.html" title="ChapterÂ 4.Â Running Icinga">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Authentication And
+<tr><th colspan="3" align="center">3.7.Â Authentication And
   Authorization In The CGIs</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="configcgi.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 3. Configuring Icinga</th>
-<td width="20%" align="right"> <a accesskey="n" href="ch04.html">Next</a>
+<a accesskey="p" href="configcgi.html">Prev</a>Â </td>
+<th width="60%" align="center">ChapterÂ 3.Â Configuring Icinga</th>
+<td width="20%" align="right">Â <a accesskey="n" href="ch04.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Authentication And Authorization In The CGIs">
+<div class="section" title="3.7.Â Authentication And Authorization In The CGIs">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgiauth"></a><a name="cgi_authentication"></a>Authentication And
+<a name="cgiauth"></a>3.7.Â <a name="cgi_authentication"></a>Authentication And
   Authorization In The CGIs</h2></div></div></div>
   
 
@@ -59,7 +60,7 @@
 
   <p><a name="cgiauth-config_web_users"></a> <span class="bold"><strong>Setting Up Authenticated Users</strong></span></p>
 
-  <p>Assuming you configured your web server as described in the <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart guide</a>, it should require that you
+  <p>Assuming you configured your web server as described in the <a class="link" href="quickstart.html" title="2.2.Â Quickstart Installation Guides">quickstart guide</a>, it should require that you
   authenticate before accessing the Icinga CGIs. You should also have
   one user account (<span class="emphasis"><em>icingaadmin</em></span>) that can access the
   CGIs.</p>
@@ -81,7 +82,7 @@
   configured to use the authentication and authorization functionality in
   determining what information and/or commands users have access to. This is
   done be setting the <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> variable in
-  the <a class="link" href="configcgi.html" title="CGI Configuration File Options">CGI configuration file</a> to a non-zero
+  the <a class="link" href="configcgi.html" title="3.6.Â CGI Configuration File Options">CGI configuration file</a> to a non-zero
   value. Example:</p>
 
   <pre class="screen"> use_authentication=1</pre>
@@ -263,7 +264,7 @@
   <p>You can grant <span class="emphasis"><em>authenticated contacts</em></span> or other
   <span class="emphasis"><em>authenticated users</em></span> permission to additional
   information in the CGIs by adding them to various authorization variables in
-  the <a class="link" href="configcgi.html" title="CGI Configuration File Options">CGI configuration file</a>. We realize that
+  the <a class="link" href="configcgi.html" title="3.6.Â CGI Configuration File Options">CGI configuration file</a>. We realize that
   the available options don't allow for getting really specific about
   particular permissions, but its better than nothing..</p>
 
@@ -298,14 +299,14 @@
 
   <p>If you are confused about the authorization needed to access various
   information in the CGIs, read the <span class="emphasis"><em> <span class="bold"><strong>Authorization Requirements</strong></span> </em></span> section for
-  each CGI as described <a class="link" href="cgis.html" title="Icinga Classic UI: Information On The CGIs">here</a>.</p>
+  each CGI as described <a class="link" href="cgis.html" title="6.1.Â Icinga Classic UI: Information On The CGIs">here</a>.</p>
 
   <p><a name="cgiauth-secure_web_servers"></a> <span class="bold"><strong>Authentication On Secured Web Servers</strong></span></p>
 
   <p>If your web server is located in a secure domain (i.e., behind a
   firewall) or if you are using SSL, you can define a default username that
   can be used to access the CGIs. This is done by defining the <a class="link" href="configcgi.html#configcgi-default_user_name">default_user_name</a> option in the
-  <a class="link" href="configcgi.html" title="CGI Configuration File Options">CGI configuration file</a>. By defining a
+  <a class="link" href="configcgi.html" title="3.6.Â CGI Configuration File Options">CGI configuration file</a>. By defining a
   default username that can access the CGIs, you can allow users to access the
   CGIs without necessarily having to authenticate to the web server. You may
   want to use this to avoid having to use basic web authentication, as basic
@@ -318,39 +319,39 @@
   has not authenticated to the web server will inherit all rights you assign
   to this user!</p>
 
-  <a class="indexterm" name="id1473894"></a>
+  <a class="indexterm" name="idp6607200"></a>
 
-  <a class="indexterm" name="id1473904"></a>
+  <a class="indexterm" name="idp6608208"></a>
 
-  <a class="indexterm" name="id1473916"></a>
+  <a class="indexterm" name="idp6609952"></a>
 
-  <a class="indexterm" name="id1473917"></a>
+  <a class="indexterm" name="idp6611648"></a>
 
-  <a class="indexterm" name="id1473932"></a>
+  <a class="indexterm" name="idp6613232"></a>
 
-  <a class="indexterm" name="id1473959"></a>
+  <a class="indexterm" name="idp6614800"></a>
 
-  <a class="indexterm" name="id1473973"></a>
+  <a class="indexterm" name="idp6616512"></a>
 
-  <a class="indexterm" name="id1473986"></a>
+  <a class="indexterm" name="idp6618144"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="configcgi.html">Prev</a> </td>
+<a accesskey="p" href="configcgi.html">Prev</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ch04.html">Next</a>
+<td width="40%" align="right">Â <a accesskey="n" href="ch04.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">CGI Configuration File Options </td>
+<td width="40%" align="left" valign="top">3.6.Â CGI Configuration File OptionsÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Chapter 4. Running Icinga</td>
+<td width="40%" align="right" valign="top">Â ChapterÂ 4.Â Running Icinga</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

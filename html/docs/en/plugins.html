@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Icinga Plugins</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.1.Â Icinga Plugins</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
-<link rel="prev" href="ch05.html" title="Chapter 5. The Basics">
-<link rel="next" href="macros.html" title="Understanding Macros and How They Work">
+<link rel="up" href="ch05.html" title="ChapterÂ 5.Â The Basics">
+<link rel="prev" href="ch05.html" title="ChapterÂ 5.Â The Basics">
+<link rel="next" href="macros.html" title="5.2.Â Understanding Macros and How They Work">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga Plugins</th></tr>
+<tr><th colspan="3" align="center">5.1.Â Icinga Plugins</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch05.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 5. The Basics</th>
-<td width="20%" align="right"> <a accesskey="n" href="macros.html">Next</a>
+<a accesskey="p" href="ch05.html">Prev</a>Â </td>
+<th width="60%" align="center">ChapterÂ 5.Â The Basics</th>
+<td width="20%" align="right">Â <a accesskey="n" href="macros.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Icinga Plugins">
+<div class="section" title="5.1.Â Icinga Plugins">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plugins"></a><a name="Icinga_plugins"></a>Icinga Plugins</h2></div></div></div>
+<a name="plugins"></a>5.1.Â <a name="Icinga_plugins"></a>Icinga Plugins</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -42,7 +43,7 @@
 
   <p>Icinga will execute a plugin whenever there is a need to check the status of a service or host. The plugin does
   <span class="emphasis"><em>something</em></span> (notice the very general term) to perform the check and then simply returns the results to Icinga.
-  Icinga will process the results that it receives from the plugin and take any necessary actions (running <a class="link" href="eventhandlers.html" title="Event Handlers">event handlers</a>, sending out <a class="link" href="notifications.html" title="Notifications">notifications</a>, etc).</p>
+  Icinga will process the results that it receives from the plugin and take any necessary actions (running <a class="link" href="eventhandlers.html" title="7.2.Â Event Handlers">event handlers</a>, sending out <a class="link" href="notifications.html" title="5.11.Â Notifications">notifications</a>, etc).</p>
 
   <p><span class="bold"><strong>Plugins As An Abstraction Layer</strong></span></p>
 
@@ -54,7 +55,7 @@
   <p>The upside of this type of plugin architecture is that you can monitor just about anything you can think of. If you can automate the
   process of checking something, you can monitor it with Icinga. There are already a lot of plugins that have been created in order
   to monitor basic resources such as processor load, disk usage, ping rates, etc. If you want to monitor something else, take a look at the
-  documentation on <a class="link" href="pluginapi.html" title="Icinga Plugin API">writing plugins</a> and roll your own. It's simple!</p>
+  documentation on <a class="link" href="pluginapi.html" title="11.1.Â Icinga Plugin API">writing plugins</a> and roll your own. It's simple!</p>
 
   <p>The downside to this type of plugin architecture is the fact that Icinga has absolutely no idea what it is that you're
   monitoring. You could be monitoring network traffic statistics, data error rates, room temperature, CPU voltage, fan speed, processor
@@ -233,7 +234,7 @@
 
   <a name="plugins-hints2"></a>
 
-  <p>In addition to the <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros</a> already mentioned there are a lot of others making life easier. Please
+  <p>In addition to the <a class="link" href="macros.html" title="5.2.Â Understanding Macros and How They Work">macros</a> already mentioned there are a lot of others making life easier. Please
   note:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -459,33 +460,33 @@
 
   <p><span class="bold"><strong>Plugin API</strong></span></p>
 
-  <p>You can find information on the technical aspects of plugins, as well as how to go about creating your own custom plugins <a class="link" href="pluginapi.html" title="Icinga Plugin API">here</a>.</p>
+  <p>You can find information on the technical aspects of plugins, as well as how to go about creating your own custom plugins <a class="link" href="pluginapi.html" title="11.1.Â Icinga Plugin API">here</a>.</p>
 
-  <a class="indexterm" name="id1475513"></a>
+  <a class="indexterm" name="idp6800864"></a>
 
-  <a class="indexterm" name="id1475527"></a>
+  <a class="indexterm" name="idp6798880"></a>
 
-  <a class="indexterm" name="id1475537"></a>
+  <a class="indexterm" name="idp6803648"></a>
 
-  <a class="indexterm" name="id1475550"></a>
+  <a class="indexterm" name="idp6805472"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch05.html">Prev</a> </td>
+<a accesskey="p" href="ch05.html">Prev</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="macros.html">Next</a>
+<td width="40%" align="right">Â <a accesskey="n" href="macros.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Chapter 5. The Basics </td>
+<td width="40%" align="left" valign="top">ChapterÂ 5.Â The BasicsÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Understanding Macros and How They Work</td>
+<td width="40%" align="right" valign="top">Â 5.2.Â Understanding Macros and How They Work</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

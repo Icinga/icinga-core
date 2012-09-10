@@ -1,43 +1,44 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Eventhandler</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.2. Eventhandler</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="extcommands.html" title="Externe Befehle">
-<link rel="next" href="volatileservices.html" title="sprunghafte Services">
+<link rel="prev" href="extcommands.html" title="7.1. Externe Befehle">
+<link rel="next" href="volatileservices.html" title="7.3. sprunghafte Services">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Eventhandler</th></tr>
+<tr><th colspan="3" align="center">7.2. Eventhandler</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="extcommands.html">Zurück</a> </td>
+<a accesskey="p" href="extcommands.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="volatileservices.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="volatileservices.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Eventhandler">
+<div class="section" title="7.2. Eventhandler">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="eventhandlers"></a>Eventhandler</h2></div></div></div>
+<a name="eventhandlers"></a>7.2. Eventhandler</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
   <div class="mediaobject" align="right"><img src="../images/eventhandlers.png" align="right"></div>
 
   <p>Eventhandler sind optionale Systemkommandos (Scripts oder Programme), die gestartet werden, wenn ein Host- oder
-  Service-Zustandswechsel stattfindet. Sie werden auf dem System ausgeführt, auf dem die Prüfung eingeplant (initiiert) wurde.</p>
+  Service-Zustandswechsel stattfindet. Sie werden auf dem System ausgefÃ¼hrt, auf dem die PrÃ¼fung eingeplant (initiiert) wurde.</p>
 
-  <p>Ein einleuchtender Einsatz von Eventhandlern ist die Möglichkeit von Icinga, proaktiv Probleme zu beheben, bevor
-  jemand benachrichtigt wird. Einige andere Anwendungsmöglichkeiten für Eventhandler umfassen:</p>
+  <p>Ein einleuchtender Einsatz von Eventhandlern ist die MÃ¶glichkeit von Icinga, proaktiv Probleme zu beheben, bevor
+  jemand benachrichtigt wird. Einige andere AnwendungsmÃ¶glichkeiten fÃ¼r Eventhandler umfassen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -57,12 +58,12 @@
     </li>
 </ul></div>
 
-  <p>* Strom durch ein automatisiertes Script bei einem Host aus- und einzuschalten, der Probleme hat, sollte wohlüberlegt
-  sein. Betrachten Sie sorgfältig die möglichen Konsequenzen, bevor Sie automatische Reboots implementieren. :-)</p>
+  <p>* Strom durch ein automatisiertes Script bei einem Host aus- und einzuschalten, der Probleme hat, sollte wohlÃ¼berlegt
+  sein. Betrachten Sie sorgfÃ¤ltig die mÃ¶glichen Konsequenzen, bevor Sie automatische Reboots implementieren. :-)</p>
 
-  <p><span class="bold"><strong>Wann werden Eventhandler ausgeführt?</strong></span></p>
+  <p><span class="bold"><strong>Wann werden Eventhandler ausgefÃ¼hrt?</strong></span></p>
 
-  <p>Eventhandler werden ausgeführt, wenn ein Service oder Host</p>
+  <p>Eventhandler werden ausgefÃ¼hrt, wenn ein Service oder Host</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -72,15 +73,15 @@
       <p>in einen HARD-Problemzustand wechselt</p>
     </li>
 <li class="listitem">
-      <p>aus einem SOFT- oder HARD-Problemzustand zurückkehrt</p>
+      <p>aus einem SOFT- oder HARD-Problemzustand zurÃ¼ckkehrt</p>
     </li>
 </ul></div>
 
-  <p>SOFT- und HARD-Zustände sind ausführlich <a class="link" href="statetypes.html" title="Statustypen">hier</a> beschrieben.</p>
+  <p>SOFT- und HARD-ZustÃ¤nde sind ausfÃ¼hrlich <a class="link" href="statetypes.html" title="5.8. Statustypen">hier</a> beschrieben.</p>
 
   <p><span class="bold"><strong>Eventhandler-Typen</strong></span></p>
 
-  <p>Es gibt unterschiedliche Typen von optionalen Eventhandlern, die Sie definieren können, um Host- und Statuswechsel zu
+  <p>Es gibt unterschiedliche Typen von optionalen Eventhandlern, die Sie definieren kÃ¶nnen, um Host- und Statuswechsel zu
   behandeln:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -98,68 +99,68 @@
     </li>
 </ul></div>
 
-  <p>Globale Host- und Service-Eventhandler werden für <span class="emphasis"><em>jeden</em></span> auftretenden Host- oder
-  Service-Zustandswechsel durchgeführt, direkt vor einem möglichen Host- oder Service-spezifischen Eventhandler. Sie können
+  <p>Globale Host- und Service-Eventhandler werden fÃ¼r <span class="emphasis"><em>jeden</em></span> auftretenden Host- oder
+  Service-Zustandswechsel durchgefÃ¼hrt, direkt vor einem mÃ¶glichen Host- oder Service-spezifischen Eventhandler. Sie kÃ¶nnen
   globale Host- oder Service-spezifische Eventhandler durch die <a class="link" href="configmain.html#configmain-global_host_event_handler">global_host_event_handler</a> und <a class="link" href="configmain.html#configmain-global_service_event_handler">global_service_event_handler</a>-Optionen in der Hauptkonfigurationsdatei
   angeben.</p>
 
-  <p>Einzelne Hosts und Service können ihre eigenen Eventhandler haben, die ausgeführt werden, um Statuswechsel zu behandeln.
-  Sie können einen auszuführenden Eventhandler durch die <span class="emphasis"><em>event_handler</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>- oder <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a>-Definitionen
+  <p>Einzelne Hosts und Service kÃ¶nnen ihre eigenen Eventhandler haben, die ausgefÃ¼hrt werden, um Statuswechsel zu behandeln.
+  Sie kÃ¶nnen einen auszufÃ¼hrenden Eventhandler durch die <span class="emphasis"><em>event_handler</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>- oder <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a>-Definitionen
   angeben. Diese Host- und Service-spezifischen Eventhandler werden direkt nach dem (optionalen) globalen Host- oder
-  Service-Eventhandler ausgeführt.</p>
+  Service-Eventhandler ausgefÃ¼hrt.</p>
 
   <p><span class="bold"><strong>Eventhandler aktivieren</strong></span></p>
 
-  <p>Eventhandler können durch die <a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a>-Direktive in
+  <p>Eventhandler kÃ¶nnen durch die <a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a>-Direktive in
   Ihrer Hauptkonfigurationsdatei programmweit aktiviert oder deaktiviert werden.</p>
 
   <p>Host- und Service-spezifische Eventhandler werden durch die <span class="emphasis"><em>event_handler_enabled</em></span>-Direktive in Ihrer
   <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>- oder <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a>-Definition
-  aktiviert oder deaktiviert. Host- und Service-spezifische Eventhandler werden nicht ausgeführt, wenn die globale <a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a>-Option deaktiviert ist.</p>
+  aktiviert oder deaktiviert. Host- und Service-spezifische Eventhandler werden nicht ausgefÃ¼hrt, wenn die globale <a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a>-Option deaktiviert ist.</p>
 
-  <p><span class="bold"><strong>Eventhandler-Ausführungsreihenfolge</strong></span></p>
+  <p><span class="bold"><strong>Eventhandler-AusfÃ¼hrungsreihenfolge</strong></span></p>
 
-  <p>Wie bereits erwähnt werden globale Host- und Service-Eventhandler direkt vor Host- oder Service-spezifischen Eventhandlern
-  ausgeführt.</p>
+  <p>Wie bereits erwÃ¤hnt werden globale Host- und Service-Eventhandler direkt vor Host- oder Service-spezifischen Eventhandlern
+  ausgefÃ¼hrt.</p>
 
-  <p>Eventhandler werden bei HARD-Problemen und Erholungszuständen direkt nach dem Versand von Benachrichtigungen
-  ausgeführt.</p>
+  <p>Eventhandler werden bei HARD-Problemen und ErholungszustÃ¤nden direkt nach dem Versand von Benachrichtigungen
+  ausgefÃ¼hrt.</p>
 
   <p><span class="bold"><strong>Eventhandler-Kommandos schreiben</strong></span></p>
 
-  <p>Eventhandler werden wahrscheinlich Shell- oder Perl-Scripte sein, aber es ist jede Art von ausführbarer Datei denkbar, die
-  von der Kommandozeile aus lauffähig ist. Die Scripte sollten mindestens die folgenden <a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a> als
+  <p>Eventhandler werden wahrscheinlich Shell- oder Perl-Scripte sein, aber es ist jede Art von ausfÃ¼hrbarer Datei denkbar, die
+  von der Kommandozeile aus lauffÃ¤hig ist. Die Scripte sollten mindestens die folgenden <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a> als
   Argumente nutzen:</p>
 
-  <p>Für Services: <a class="link" href="macrolist.html#macrolist-servicestate"> <span class="bold"><strong>$SERVICESTATE$</strong></span> </a> , <a class="link" href="macrolist.html#macrolist-servicestatetype"> <span class="bold"><strong>$SERVICESTATETYPE$</strong></span> </a> , <a class="link" href="macrolist.html#macrolist-serviceattempt"> <span class="bold"><strong>$SERVICEATTEMPT$</strong></span> </a></p>
+  <p>FÃ¼r Services: <a class="link" href="macrolist.html#macrolist-servicestate"> <span class="bold"><strong>$SERVICESTATE$</strong></span> </a> , <a class="link" href="macrolist.html#macrolist-servicestatetype"> <span class="bold"><strong>$SERVICESTATETYPE$</strong></span> </a> , <a class="link" href="macrolist.html#macrolist-serviceattempt"> <span class="bold"><strong>$SERVICEATTEMPT$</strong></span> </a></p>
 
-  <p>Für Hosts: <a class="link" href="macrolist.html#macrolist-hoststate"> <span class="bold"><strong>$HOSTSTATE$</strong></span> </a> , <a class="link" href="macrolist.html#macrolist-hoststatetype"> <span class="bold"><strong>$HOSTSTATETYPE$</strong></span> </a> , <a class="link" href="macrolist.html#macrolist-hostattempt"> <span class="bold"><strong>$HOSTATTEMPT$</strong></span> </a></p>
+  <p>FÃ¼r Hosts: <a class="link" href="macrolist.html#macrolist-hoststate"> <span class="bold"><strong>$HOSTSTATE$</strong></span> </a> , <a class="link" href="macrolist.html#macrolist-hoststatetype"> <span class="bold"><strong>$HOSTSTATETYPE$</strong></span> </a> , <a class="link" href="macrolist.html#macrolist-hostattempt"> <span class="bold"><strong>$HOSTATTEMPT$</strong></span> </a></p>
 
-  <p>Die Scripte sollten die Werte der übergebenen Parameter untersuchen und darauf basierend notwendige Aktionen ausführen.
-  Der beste Weg, die Funktionsweise von Eventhandlern zu verstehen, ist der Blick auf ein Beispiel. Glücklicherweise finden Sie
+  <p>Die Scripte sollten die Werte der Ã¼bergebenen Parameter untersuchen und darauf basierend notwendige Aktionen ausfÃ¼hren.
+  Der beste Weg, die Funktionsweise von Eventhandlern zu verstehen, ist der Blick auf ein Beispiel. GlÃ¼cklicherweise finden Sie
   eins <a class="link" href="eventhandlers.html#eventhandlers-example">hier</a>.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Zusätzliche Eventhandler-Scripte finden Sie im
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: ZusÃ¤tzliche Eventhandler-Scripte finden Sie im
   <span class="emphasis"><em>contrib/eventhandlers/</em></span>-Unterverzeichnis der Icinga-Distribution. Einige dieser Beispiel-Scripts
-  demonstrieren die Benutzung von <a class="link" href="extcommands.html" title="Externe Befehle">externen Befehlen</a>, um <a class="link" href="redundancy.html" title="Redundante und Failover-Netzwerk-Überwachung">redundante</a> und <a class="link" href="distributed.html" title="Verteilte Überwachung">verteilte</a> Überwachungsumgebungen zu
+  demonstrieren die Benutzung von <a class="link" href="extcommands.html" title="7.1. Externe Befehle">externen Befehlen</a>, um <a class="link" href="redundancy.html" title="7.6. Redundante und Failover-Netzwerk-Ãœberwachung">redundante</a> und <a class="link" href="distributed.html" title="7.5. Verteilte Ãœberwachung">verteilte</a> Ãœberwachungsumgebungen zu
   implementieren.</p>
 
-  <p><span class="bold"><strong>Berechtigungen für Eventhandler-Befehle</strong></span></p>
+  <p><span class="bold"><strong>Berechtigungen fÃ¼r Eventhandler-Befehle</strong></span></p>
 
-  <p>Eventhandler werden normalerweise mit den gleichen Berechtigungen ausgeführt wie der Benutzer, der Icinga auf Ihrer
-  Maschine ausführt. Dies kann ein Problem darstellen, wenn Sie einen Eventhandler schreiben möchten, der Systemdienste neu
-  startet, da generell root-Rechte benötigt werden, um diese Aufgaben zu erledigen.</p>
+  <p>Eventhandler werden normalerweise mit den gleichen Berechtigungen ausgefÃ¼hrt wie der Benutzer, der Icinga auf Ihrer
+  Maschine ausfÃ¼hrt. Dies kann ein Problem darstellen, wenn Sie einen Eventhandler schreiben mÃ¶chten, der Systemdienste neu
+  startet, da generell root-Rechte benÃ¶tigt werden, um diese Aufgaben zu erledigen.</p>
 
-  <p>Idealerweise sollten Sie den Typ von Eventhandler einschätzen und dem Icinga-Benutzer gerade genug Berechtigungen
-  gewähren, damit er die notwendigen Systembefehle ausführen kann. Vielleicht möchten Sie <a class="link" href="http://www.courtesan.com/sudo/sudo.html" target="_top">sudo</a> ausprobieren, um das zu erreichen.</p>
+  <p>Idealerweise sollten Sie den Typ von Eventhandler einschÃ¤tzen und dem Icinga-Benutzer gerade genug Berechtigungen
+  gewÃ¤hren, damit er die notwendigen Systembefehle ausfÃ¼hren kann. Vielleicht mÃ¶chten Sie <a class="link" href="http://www.courtesan.com/sudo/sudo.html" target="_top">sudo</a> ausprobieren, um das zu erreichen.</p>
 
   <p><a name="eventhandlers-example"></a><span class="bold"><strong>Service-Eventhandler-Beispiel</strong></span></p>
 
-  <p>Das folgende Beispiel geht davon aus, dass Sie den HTTP-Server auf der lokalen Maschine überwachen und
-  <span class="emphasis"><em>restart-httpd</em></span> als den Eventhandler-Befehl für die HTTP-Service-Definition angegeben haben. Außerdem nehmen
-  wir an, dass Sie die Option <span class="emphasis"><em>max_check_attempts</em></span> für den Service auf einen Wert von 4 oder höher gesetzt
-  haben (d.h., der Service wird viermal geprüft, bevor angenommen wird, dass es ein richtiges Problem gibt). Eine gekürzte
-  Service-Definition könnte wie folgt aussehen...</p>
+  <p>Das folgende Beispiel geht davon aus, dass Sie den HTTP-Server auf der lokalen Maschine Ã¼berwachen und
+  <span class="emphasis"><em>restart-httpd</em></span> als den Eventhandler-Befehl fÃ¼r die HTTP-Service-Definition angegeben haben. AuÃŸerdem nehmen
+  wir an, dass Sie die Option <span class="emphasis"><em>max_check_attempts</em></span> fÃ¼r den Service auf einen Wert von 4 oder hÃ¶her gesetzt
+  haben (d.h., der Service wird viermal geprÃ¼ft, bevor angenommen wird, dass es ein richtiges Problem gibt). Eine gekÃ¼rzte
+  Service-Definition kÃ¶nnte wie folgt aussehen...</p>
 
   <pre class="screen"> define service{
         host_name               somehost
@@ -169,9 +170,9 @@
         ...
         }</pre>
 
-  <p>Sobald der Service mit einem Eventhandler definiert wird, müssen wir diesen Eventhandler als Befehlsfolge definieren. Eine
-  Beispieldefinition für <span class="emphasis"><em>restart-httpd</em></span> sehen Sie nachfolgend. Beachten Sie die Makros in der Kommandozeile,
-  die an das Eventhandler-Script übergeben werden - sie sind wichtig!</p>
+  <p>Sobald der Service mit einem Eventhandler definiert wird, mÃ¼ssen wir diesen Eventhandler als Befehlsfolge definieren. Eine
+  Beispieldefinition fÃ¼r <span class="emphasis"><em>restart-httpd</em></span> sehen Sie nachfolgend. Beachten Sie die Makros in der Kommandozeile,
+  die an das Eventhandler-Script Ã¼bergeben werden - sie sind wichtig!</p>
 
   <pre class="screen"> define command{
         command_name    restart-httpd
@@ -183,37 +184,37 @@
 
   <pre class="screen">#!/bin/sh
 #
-# Eventhandler-Script für den Restart des Web-Servers auf der lokalen Maschine
+# Eventhandler-Script fÃ¼r den Restart des Web-Servers auf der lokalen Maschine
 #
 # Anmerkung: Dieses Script wird den Web-Server nur dann restarten, wenn der Service
-#       dreimal erneut geprüft wurde (sich in einem "soft"-Zustand befindet)
-#       oder der Web-Service aus irgendeinem Grund in einen "hard"-Zustand fällt 
+#       dreimal erneut geprÃ¼ft wurde (sich in einem "soft"-Zustand befindet)
+#       oder der Web-Service aus irgendeinem Grund in einen "hard"-Zustand fÃ¤llt 
 # In welchem Status befindet sich der Service?
 case "$1" in
 OK)
         # Der Service hat sich gerade erholt, also tun wir nichts...
         ;;
 WARNING)
-        # Wir kümmern uns nicht um WARNING-Zustände, denn der Dienst läuft wahrscheinlich noch...
+        # Wir kÃ¼mmern uns nicht um WARNING-ZustÃ¤nde, denn der Dienst lÃ¤uft wahrscheinlich noch...
         ;;
 UNKNOWN)
-        # Wir wissen nicht, was einen UNKNOWN-Fehler auslösen könnte, also tun wir nichts...
+        # Wir wissen nicht, was einen UNKNOWN-Fehler auslÃ¶sen kÃ¶nnte, also tun wir nichts...
         ;;
 CRITICAL)
         # Aha!  Der HTTP-Service scheint ein Problem zu haben - vielleicht sollten wir den Server neu starten...
         # Ist dies ein "Soft"- oder ein "Hard"-Zustand?
         case "$2" in
-        # Wir sind in einem "Soft"-Zustand, also ist Icinga mitten in erneuten Prüfungen, bevor es in einen
+        # Wir sind in einem "Soft"-Zustand, also ist Icinga mitten in erneuten PrÃ¼fungen, bevor es in einen
         # "Hard"-Zustand wechselt und Kontakte informiert werden...
         SOFT)
                 # Bei welchem Versuch sind wir? Wir wollen den Web-Server nicht gleich beim ersten Mal restarten,
-                # denn es könnte ein Ausrutscher sein!
+                # denn es kÃ¶nnte ein Ausrutscher sein!
                 case "$3" in
-                # Warte, bis die Prüfung dreimal wiederholt wurde, bevor der Web-Server restartet wird.
-                # Falls der Check ein viertes Mal fehlschlägt (nachdem wir den Web-Server restartet haben),
-                # wird der Zustandstyp auf "Hard" wechseln und Kontakte werden über das Problem informiert.
+                # Warte, bis die PrÃ¼fung dreimal wiederholt wurde, bevor der Web-Server restartet wird.
+                # Falls der Check ein viertes Mal fehlschlÃ¤gt (nachdem wir den Web-Server restartet haben),
+                # wird der Zustandstyp auf "Hard" wechseln und Kontakte werden Ã¼ber das Problem informiert.
                 # Hoffentlich wird der Web-Server erfolgreich restartet, so dass der vierte Check zu einer
-                # "Soft"-Erholung führt. Wenn das passiert, wird niemand informiert, weil wir das Problem gelöst haben.
+                # "Soft"-Erholung fÃ¼hrt. Wenn das passiert, wird niemand informiert, weil wir das Problem gelÃ¶st haben.
                 3)
                         echo -n "Restart des HTTP-Service (dritter kritischer "Soft"-Zustand)..."
                         # Aufrufen des Init-Scripts, um den HTTPD-Server zu restarten
@@ -222,10 +223,10 @@ CRITICAL)
                         esac
                 ;;
         # Der HTTP-Service hat es irgendwie geschafft, in einen "Hard"-Zustand zu wechseln, ohne dass das Problem
-        # behoben wurde. Er hätte durch den Code restartet werden sollen, aber aus irgendeinem Grund hat es nicht
+        # behoben wurde. Er hÃ¤tte durch den Code restartet werden sollen, aber aus irgendeinem Grund hat es nicht
         # funktioniert. Wir probieren es ein letztes Mal, okay?
-        # Anmerkung: Kontakte wurden bereits darüber informiert, dass es ein Problem mit dem Service gibt (solange
-        # Sie nicht Benachrichtungen für diesen Service deaktiviert haben.
+        # Anmerkung: Kontakte wurden bereits darÃ¼ber informiert, dass es ein Problem mit dem Service gibt (solange
+        # Sie nicht Benachrichtungen fÃ¼r diesen Service deaktiviert haben.
         HARD)
                 echo -n "Restart des HTTP-Service..."
                 # Aufrufen des Init-Scripts, um den HTTPD-Server zu restarten
@@ -236,12 +237,12 @@ CRITICAL)
 esac
 exit 0</pre>
 
-  <p>Das mitgelieferte Beispiel-Script wird versuchen, den Web-Server auf der lokalen Maschine in zwei Fällen zu
+  <p>Das mitgelieferte Beispiel-Script wird versuchen, den Web-Server auf der lokalen Maschine in zwei FÃ¤llen zu
   restarten:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>nachdem der Service das dritte Mal erneut geprüft wurde und sich in einem kritischen "Soft"-Zustand befindet</p>
+      <p>nachdem der Service das dritte Mal erneut geprÃ¼ft wurde und sich in einem kritischen "Soft"-Zustand befindet</p>
     </li>
 <li class="listitem">
       <p>nachdem der Service das erste Mal in einen kritischen "Hard"-Zustand wechselt</p>
@@ -250,32 +251,32 @@ exit 0</pre>
 
   <p>Das Script sollte theoretisch den Web-Server restarten und das Problem beheben, bevor der Service in einen
   "Hard"-Problemzustand wechselt, aber wir stellen eine Absicherung bereit, falls es nicht das erste Mal funktioniert. Es ist
-  anzumerken, dass der Eventhandler nur einmal ausgeführt wird, wenn der Service in einen HARD-Zustand wechselt. Das hält
-  Icinga davon ab, das Script zum Restart des Web-Servers wiederholt auszuführen, wenn der Service in einem
+  anzumerken, dass der Eventhandler nur einmal ausgefÃ¼hrt wird, wenn der Service in einen HARD-Zustand wechselt. Das hÃ¤lt
+  Icinga davon ab, das Script zum Restart des Web-Servers wiederholt auszufÃ¼hren, wenn der Service in einem
   HARD-Problemzustand bleibt. Das wollen Sie nicht. :-)</p>
 
   <p>Das ist alles! Eventhandler sind ziemlich einfach zu schreiben und zu implementieren, also versuchen Sie es und sehen, was
-  Sie tun können.</p>
-  <a class="indexterm" name="id1574781"></a>
-  <a class="indexterm" name="id1574790"></a>
+  Sie tun kÃ¶nnen.</p>
+  <a class="indexterm" name="idp12111440"></a>
+  <a class="indexterm" name="idp12112432"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="extcommands.html">Zurück</a> </td>
+<a accesskey="p" href="extcommands.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="volatileservices.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="volatileservices.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Externe Befehle </td>
+<td width="40%" align="left" valign="top">7.1. Externe BefehleÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> sprunghafte Services</td>
+<td width="40%" align="right" valign="top">Â 7.3. sprunghafte Services</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

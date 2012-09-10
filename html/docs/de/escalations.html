@@ -1,49 +1,50 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Benachrichtigungseskalationen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.8. Benachrichtigungseskalationen</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">
-<link rel="next" href="escalation_condition.html" title="Eskalations-Bedingung">
+<link rel="prev" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">
+<link rel="next" href="escalation_condition.html" title="7.9. Eskalations-Bedingung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Benachrichtigungseskalationen</th></tr>
+<tr><th colspan="3" align="center">7.8. Benachrichtigungseskalationen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="flapping.html">Zurück</a> </td>
+<a accesskey="p" href="flapping.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="escalation_condition.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="escalation_condition.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Benachrichtigungseskalationen">
+<div class="section" title="7.8. Benachrichtigungseskalationen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="escalations"></a>Benachrichtigungseskalationen</h2></div></div></div>
+<a name="escalations"></a>7.8. Benachrichtigungseskalationen</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
   <div class="mediaobject" align="right"><img src="../images/objects-contacts.png" align="right"></div>
 
-  <p>Icinga unterstützt optionale Eskalation von Kontakt-Benachrichtigungen für Hosts und Services. Eskalationen von
-  Host- oder Service-Benachrichtigungen werden erreichen durch das Definieren von <a class="link" href="objectdefinitions.html#objectdefinitions-hostescalation">Host-Eskalationen</a> bzw. <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">Service-Eskalationen</a> in Ihrer/Ihren <a class="link" href="configobject.html" title="Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>.</p>
+  <p>Icinga unterstÃ¼tzt optionale Eskalation von Kontakt-Benachrichtigungen fÃ¼r Hosts und Services. Eskalationen von
+  Host- oder Service-Benachrichtigungen werden erreichen durch das Definieren von <a class="link" href="objectdefinitions.html#objectdefinitions-hostescalation">Host-Eskalationen</a> bzw. <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">Service-Eskalationen</a> in Ihrer/Ihren <a class="link" href="configobject.html" title="3.3. Ãœberblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>.</p>
 
   <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Das Beispiel, das wir unten zeigen, benutzt Service-Eskalationsdefinitionen, aber
-  Host-Eskalationen arbeiten genau so. Außer, dass sie für Hosts sind statt für Services. :-)</p>
+  Host-Eskalationen arbeiten genau so. AuÃŸer, dass sie fÃ¼r Hosts sind statt fÃ¼r Services. :-)</p>
 
   <p><span class="bold"><strong>Wann werden Benachrichtigungen eskaliert?</strong></span></p>
 
   <p>Benachrichtigungen werden eskaliert, <span class="emphasis"><em>wenn, und nur wenn</em></span> eine oder mehrere Eskalationsdefinitionen mit
-  der aktuellen Benachrichtigung übereinstimmen, die gerade versandt wird. Wenn eine Host- oder Service-Benachrichtigung
-  <span class="emphasis"><em>keine</em></span> gültige Eskalationsdefinition hat, die auf sie zutrifft, dann wird die Benachrichtigung an die
+  der aktuellen Benachrichtigung Ã¼bereinstimmen, die gerade versandt wird. Wenn eine Host- oder Service-Benachrichtigung
+  <span class="emphasis"><em>keine</em></span> gÃ¼ltige Eskalationsdefinition hat, die auf sie zutrifft, dann wird die Benachrichtigung an die
   Kontaktgruppe(n) verschickt, die in der Hostgroup- oder Service-Definition angegeben wurde(n). Lassen Sie uns das untenstehende
   Beispiel betrachten:</p>
 
@@ -64,17 +65,17 @@
         contact_groups          nt-admins,managers,everyone
         }</pre>
 
-  <p>Beachten Sie, dass es "Lücken" in den Benachrichtigungs-Eskalationsdefinitionen gibt. Im Besonderen werden weder die
-  Benachrichtigungen 1 und 2 von den Eskalationen behandelt noch die Benachrichtigungen über 10. Für die ersten beiden und die
-  Benachrichtigungen über 10 werden die <span class="emphasis"><em>Default</em></span>-Kontaktgruppen aus der Service-Definition benutzt. Bei allen
-  Beispielen, die wir benutzen, nehmen wir an, dass die Default-Kontaktgruppe für die Service-Definition
+  <p>Beachten Sie, dass es "LÃ¼cken" in den Benachrichtigungs-Eskalationsdefinitionen gibt. Im Besonderen werden weder die
+  Benachrichtigungen 1 und 2 von den Eskalationen behandelt noch die Benachrichtigungen Ã¼ber 10. FÃ¼r die ersten beiden und die
+  Benachrichtigungen Ã¼ber 10 werden die <span class="emphasis"><em>Default</em></span>-Kontaktgruppen aus der Service-Definition benutzt. Bei allen
+  Beispielen, die wir benutzen, nehmen wir an, dass die Default-Kontaktgruppe fÃ¼r die Service-Definition
   <span class="emphasis"><em>nt-admins</em></span> lautet.</p>
 
   <p><span class="bold"><strong>Kontaktgruppen</strong></span></p>
 
   <p>Beim Definieren von Benachrichtigungs-Eskalationen ist es wichtig zu wissen, dass alle Kontaktgruppen, die Mitglieder von
-  "niedrigeren" Eskalationen (d.h. mit niedrigeren Benachrichtigungsnummern-Bereichen) sind, auch in den "höheren"
-  Eskalationsdefinitionen enthalten sein sollen. Das sollte passieren, um sicherzustellen, dass jeder, der über ein Problem
+  "niedrigeren" Eskalationen (d.h. mit niedrigeren Benachrichtigungsnummern-Bereichen) sind, auch in den "hÃ¶heren"
+  Eskalationsdefinitionen enthalten sein sollen. Das sollte passieren, um sicherzustellen, dass jeder, der Ã¼ber ein Problem
   informiert wird, <span class="emphasis"><em>weiterhin</em></span> informiert wird, wenn ein Problem eskaliert. Beispiel:</p>
 
   <pre class="screen"> define serviceescalation{
@@ -95,18 +96,18 @@
         }</pre>
 
   <p>Die erste (oder "niedrigste") Eskalationsstufe umfasst die <span class="emphasis"><em>nt-admins</em></span> und die
-  <span class="emphasis"><em>managers</em></span>-Kontaktgruppe. Die letzte (oder "höchste") umfasst die <span class="emphasis"><em>nt-admins</em></span>,
+  <span class="emphasis"><em>managers</em></span>-Kontaktgruppe. Die letzte (oder "hÃ¶chste") umfasst die <span class="emphasis"><em>nt-admins</em></span>,
   <span class="emphasis"><em>managers</em></span> und <span class="emphasis"><em>everyone</em></span>-Kontaktgruppen. Beachten Sie, dass die
   <span class="emphasis"><em>nt-admins</em></span>-Kontaktgruppe in beiden Eskalationsdefinitionen enthalten ist. Dies passiert, damit sie weiterhin
   per Pager informiert werden, falls noch Probleme existieren, nachdem die ersten beiden Service-Benachrichtigungen versandt
   wurden. Die <span class="emphasis"><em>managers</em></span>-Kontaktgruppe erscheint zuerst in der "niedrigen" Eskalationsdefinition - sie wird das
-  erste Mal benachrichtigt, wenn die dritte Benachrichtigung versandt wird. Wir möchten, dass die
-  <span class="emphasis"><em>managers</em></span>-Gruppe weiterhin informiert wird, wenn das Problem nach der fünften Benachrichtigung noch
-  existiert, also sind sie in der "höheren" Eskalationsdefinition enthalten.</p>
+  erste Mal benachrichtigt, wenn die dritte Benachrichtigung versandt wird. Wir mÃ¶chten, dass die
+  <span class="emphasis"><em>managers</em></span>-Gruppe weiterhin informiert wird, wenn das Problem nach der fÃ¼nften Benachrichtigung noch
+  existiert, also sind sie in der "hÃ¶heren" Eskalationsdefinition enthalten.</p>
 
-  <p><span class="bold"><strong>Überlappende Eskalationsbereiche</strong></span></p>
+  <p><span class="bold"><strong>Ãœberlappende Eskalationsbereiche</strong></span></p>
 
-  <p>Benachrichtigungs-Eskalationsdefinitionen können Benachrichtigungs-Bereiche haben, die überlappen. Nehmen Sie das folgende
+  <p>Benachrichtigungs-Eskalationsdefinitionen kÃ¶nnen Benachrichtigungs-Bereiche haben, die Ã¼berlappen. Nehmen Sie das folgende
   Beispiel:</p>
 
   <pre class="screen"> define serviceescalation{
@@ -134,17 +135,17 @@
       Benachrichtung informiert</p>
     </li>
 <li class="listitem">
-      <p>alle drei Kontaktgruppen werden bei der vierten und fünften Benachrichtigung informiert</p>
+      <p>alle drei Kontaktgruppen werden bei der vierten und fÃ¼nften Benachrichtigung informiert</p>
     </li>
 <li class="listitem">
-      <p>nur die <span class="emphasis"><em>on-call-support</em></span>-Kontaktgruppe wird bei der sechsten (und höheren) Benachrichtigung
+      <p>nur die <span class="emphasis"><em>on-call-support</em></span>-Kontaktgruppe wird bei der sechsten (und hÃ¶heren) Benachrichtigung
       informiert</p>
     </li>
 </ul></div>
 
   <p><span class="bold"><strong>Erholungsbenachrichtigungen</strong></span></p>
 
-  <p>Erholungsbenachrichtigungen unterscheiden sich geringfügig von Problembenachrichtigungen, wenn es um Eskalationen geht.
+  <p>Erholungsbenachrichtigungen unterscheiden sich geringfÃ¼gig von Problembenachrichtigungen, wenn es um Eskalationen geht.
   Nehmen Sie das folgende Beispiel:</p>
 
   <pre class="screen"> define serviceescalation{
@@ -164,16 +165,16 @@
         contact_groups          on-call-support
         }</pre>
 
-  <p>Falls nach drei Problembenachrichtigungen eine Erholungsbenachrichtigung für den Service versandt wird: wer wird
+  <p>Falls nach drei Problembenachrichtigungen eine Erholungsbenachrichtigung fÃ¼r den Service versandt wird: wer wird
   informiert? Die Erholung ist eigentlich die vierte Benachrichtigung, die versandt wird. Allerdings ist der Eskalationscode
-  intelligent genug zu erkennen, dass nur die Leute, die die dritte Problembenachrichtigung erhalten haben, auch über die Erholung
-  informiert werden. In diesem Fall würden die <span class="emphasis"><em>nt-admins</em></span>- und <span class="emphasis"><em>managers</em></span>-Kontaktgruppen
-  über die Erholung informiert werden.</p>
+  intelligent genug zu erkennen, dass nur die Leute, die die dritte Problembenachrichtigung erhalten haben, auch Ã¼ber die Erholung
+  informiert werden. In diesem Fall wÃ¼rden die <span class="emphasis"><em>nt-admins</em></span>- und <span class="emphasis"><em>managers</em></span>-Kontaktgruppen
+  Ã¼ber die Erholung informiert werden.</p>
 
   <p><span class="bold"><strong>Benachrichtigungsintervalle</strong></span></p>
 
-  <p>Sie können die Häufigkeit, mit der eskalierte Benachrichtigungen für einen bestimmten Host oder Service versandt werden,
-  mit der <span class="emphasis"><em>notification_interval</em></span>-Option in der Hostgroup- oder Service-Eskalations-Definition ändern.
+  <p>Sie kÃ¶nnen die HÃ¤ufigkeit, mit der eskalierte Benachrichtigungen fÃ¼r einen bestimmten Host oder Service versandt werden,
+  mit der <span class="emphasis"><em>notification_interval</em></span>-Option in der Hostgroup- oder Service-Eskalations-Definition Ã¤ndern.
   Beispiel:</p>
 
   <pre class="screen"> define serviceescalation{
@@ -193,17 +194,17 @@
         contact_groups          nt-admins,managers,everyone
         }</pre>
 
-  <p>In diesem Beispiel sehen wir, dass das Default-Benachrichtigungsintervall für den Service auf 240 Minuten eingestellt ist
-  (das ist der Wert in der Service-Definition). Wenn die Service-Benachrichtigung bei der dritten, vierten und fünften
+  <p>In diesem Beispiel sehen wir, dass das Default-Benachrichtigungsintervall fÃ¼r den Service auf 240 Minuten eingestellt ist
+  (das ist der Wert in der Service-Definition). Wenn die Service-Benachrichtigung bei der dritten, vierten und fÃ¼nften
   Benachrichtigung eskaliert, wird ein Intervall von 45 Minuten zwischen den Benachrichtigungen genutzt. Bei der sechsten und
   folgenden Benachrichtigungen ist das Benachrichtigungsintervall 60 Minuten, wie in der zweiten Eskalationsdefinition
   angegeben.</p>
 
-  <p>Nachdem es möglich ist, überlappende Eskalationsdefinitonen für eine bestimmte Hostgruppe oder einen Service zu haben, und
+  <p>Nachdem es mÃ¶glich ist, Ã¼berlappende Eskalationsdefinitonen fÃ¼r eine bestimmte Hostgruppe oder einen Service zu haben, und
   der Tatsache, dass ein Host Mitglied von mehreren Hostgruppen sein kann, muss Icinga eine Entscheidung treffen, was zu
-  tun ist, wenn die Benachrichtigungs-Intervalle von Eskalationsdefinitionen überlappen. In jedem Fall, wenn es mehrere gültige
-  Eskalationsdefinitionen für eine bestimmte Benachrichtigung gibt, wird Icinga das kleinste Benachrichtigungs-Intervall
-  wählen. Nehmen Sie das folgende Beispiel:</p>
+  tun ist, wenn die Benachrichtigungs-Intervalle von Eskalationsdefinitionen Ã¼berlappen. In jedem Fall, wenn es mehrere gÃ¼ltige
+  Eskalationsdefinitionen fÃ¼r eine bestimmte Benachrichtigung gibt, wird Icinga das kleinste Benachrichtigungs-Intervall
+  wÃ¤hlen. Nehmen Sie das folgende Beispiel:</p>
 
   <pre class="screen"> define serviceescalation{
         host_name               webserver
@@ -222,13 +223,13 @@
         contact_groups          nt-admins,managers,everyone
         }</pre>
 
-  <p>Wir sehen, dass die beiden Eskalationsdefinitionen bei der vierten und fünften Benachrichtigung überlappen. Bei diesen
+  <p>Wir sehen, dass die beiden Eskalationsdefinitionen bei der vierten und fÃ¼nften Benachrichtigung Ã¼berlappen. Bei diesen
   Benachrichtigungen wird Icinga ein Benachrichtigungsintervall von 45 Minuten benutzen, weil dies das kleinste Intervall
-  aller vorhandenen gültigen Eskalationsdefinitionen für diese Benachrichtigungen ist.</p>
+  aller vorhandenen gÃ¼ltigen Eskalationsdefinitionen fÃ¼r diese Benachrichtigungen ist.</p>
 
   <p>Eine letzte Anmerkung zu Benachrichtigungsintervallen, die Intervalle von 0 behandelt. Ein Intervall von 0 bedeutet, dass
-  Icinga lediglich eine Benachrichtigung für die erste gültige Benachrichtigung während der Eskalationsdefinition
-  versendet. Alle folgenden Benachrichtigungen für die Hostgruppe oder den Service werden unterdrückt. Nehmen Sie dieses
+  Icinga lediglich eine Benachrichtigung fÃ¼r die erste gÃ¼ltige Benachrichtigung wÃ¤hrend der Eskalationsdefinition
+  versendet. Alle folgenden Benachrichtigungen fÃ¼r die Hostgruppe oder den Service werden unterdrÃ¼ckt. Nehmen Sie dieses
   Beispiel:</p>
 
   <pre class="screen"> define serviceescalation{
@@ -258,52 +259,52 @@
 
   <p>In dem obigen Beispiel werden maximal vier Problembenachrichtigungen zu diesem Service versandt. Das ist so, weil das
   Benachrichtigungsintervall 0 in der zweiten Eskalationsdefinition angibt, dass nur eine Benachrichtigung versandt werden soll
-  (beginnend mit der vierten und diese einschließend) und folgende Benachrichtigungen unterdrückt werden sollen. Deshalb hat die
+  (beginnend mit der vierten und diese einschlieÃŸend) und folgende Benachrichtigungen unterdrÃ¼ckt werden sollen. Deshalb hat die
   dritte Eskalationsdefinition keinerlei Auswirkungen, denn es wird nie mehr als vier Benachrichtigungen geben.</p>
 
-  <p><span class="bold"><strong>Zeitfenster-Beschränkungen</strong></span></p>
+  <p><span class="bold"><strong>Zeitfenster-BeschrÃ¤nkungen</strong></span></p>
 
-  <p>Unter normalen Umständen können Eskalationen zu jeder Zeit benutzt werden, zu der Benachrichtigungen für einen Host oder
+  <p>Unter normalen UmstÃ¤nden kÃ¶nnen Eskalationen zu jeder Zeit benutzt werden, zu der Benachrichtigungen fÃ¼r einen Host oder
   Service versandt werden. Dieses "Benachrichtigungs-Zeitfenster" ist festgelegt durch die
   <span class="emphasis"><em>notification_period</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>- oder <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a>-Definition.</p>
 
-  <p>Sie können optional Eskalationen durch die <span class="emphasis"><em>escalation_period</em></span>-Direktive in der Host- oder
-  Service-Eskalationsdefinition beschränken, so dass sie lediglich während bestimmter Zeitspannen benutzt werden. Wenn Sie die
-  <span class="emphasis"><em>escalation_period</em></span>-Direktive benutzen, um eine <a class="link" href="timeperiods.html" title="Zeitfenster">Zeitspanne</a> zu definieren,
-  während der die Eskalation benutzt werden kann, wird sie nur zu dieser Zeit benutzt. Wenn Sie keine
+  <p>Sie kÃ¶nnen optional Eskalationen durch die <span class="emphasis"><em>escalation_period</em></span>-Direktive in der Host- oder
+  Service-Eskalationsdefinition beschrÃ¤nken, so dass sie lediglich wÃ¤hrend bestimmter Zeitspannen benutzt werden. Wenn Sie die
+  <span class="emphasis"><em>escalation_period</em></span>-Direktive benutzen, um eine <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitspanne</a> zu definieren,
+  wÃ¤hrend der die Eskalation benutzt werden kann, wird sie nur zu dieser Zeit benutzt. Wenn Sie keine
   <span class="emphasis"><em>escalation_period</em></span>-Direktive angeben, kann die Eskalation zu jeder Zeit innerhalb des
   "Benachrichtigungs-Zeitfensters" des Hosts oder Service benutzt werden.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: eskalierte Benachrichtigungen unterliegen weiterhin den normalen Zeitbeschränkungen, die durch
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: eskalierte Benachrichtigungen unterliegen weiterhin den normalen ZeitbeschrÃ¤nkungen, die durch
   die <span class="emphasis"><em>notification_period</em></span>-Direktive in einer Host- oder Service-Definition festgelegt wurden, so dass die
-  Zeitspanne, die Sie in einer Eskalationsdefinition angeben, ein Teil des größeren "Benachrichtigungs-Zeitfensters" sein
+  Zeitspanne, die Sie in einer Eskalationsdefinition angeben, ein Teil des grÃ¶ÃŸeren "Benachrichtigungs-Zeitfensters" sein
   sollte.</p>
 
-  <p><span class="bold"><strong>Status-Beschränkungen</strong></span></p>
+  <p><span class="bold"><strong>Status-BeschrÃ¤nkungen</strong></span></p>
 
-  <p>Wenn Sie die Eskalationsdefinition beschränken wollen, damit sie nur benutzt wird, während sich der Host oder Service in
-  einem bestimmten Zustand befindet, so können Sie die <span class="emphasis"><em>escalation_options</em></span>-Direktive in der Host- oder
+  <p>Wenn Sie die Eskalationsdefinition beschrÃ¤nken wollen, damit sie nur benutzt wird, wÃ¤hrend sich der Host oder Service in
+  einem bestimmten Zustand befindet, so kÃ¶nnen Sie die <span class="emphasis"><em>escalation_options</em></span>-Direktive in der Host- oder
   Service-Eskalationsdefinition benutzen. Wenn Sie die <span class="emphasis"><em>escalation_options</em></span>-Direktive nicht verwenden, werden
   die Eskalationen in jedem Status der Hosts oder Services benutzt.</p>
-  <a class="indexterm" name="id1578616"></a>
+  <a class="indexterm" name="idp12571264"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="flapping.html">Zurück</a> </td>
+<a accesskey="p" href="flapping.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="escalation_condition.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="escalation_condition.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Erkennung und Behandlung von Status-Flattern </td>
+<td width="40%" align="left" valign="top">7.7. Erkennung und Behandlung von Status-FlatternÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Eskalations-Bedingung</td>
+<td width="40%" align="right" valign="top">Â 7.9. Eskalations-Bedingung</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

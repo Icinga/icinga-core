@@ -1,37 +1,38 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Nagios Plugin API</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>11.1. Nagios Plugin API</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch11.html" title="Kapitel 11. Entwicklung">
 <link rel="prev" href="ch11.html" title="Kapitel 11. Entwicklung">
-<link rel="next" href="epnplugins.html" title="Entwickeln von Plugins für die Nutzung mit Embedded Perl">
+<link rel="next" href="epnplugins.html" title="11.2. Entwickeln von Plugins fÃ¼r die Nutzung mit Embedded Perl">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Nagios Plugin API</th></tr>
+<tr><th colspan="3" align="center">11.1. Nagios Plugin API</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch11.html">Zurück</a> </td>
+<a accesskey="p" href="ch11.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 11. Entwicklung</th>
-<td width="20%" align="right"> <a accesskey="n" href="epnplugins.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="epnplugins.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Nagios Plugin API">
+<div class="section" title="11.1. Nagios Plugin API">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="pluginapi"></a>Nagios Plugin API</h2></div></div></div>
+<a name="pluginapi"></a>11.1. Nagios Plugin API</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Andere Ressourcen</strong></span></p>
 
-  <p>Wenn Sie planen, Ihren eigenen Plugins für Icinga zu schreiben, dann besuchen Sie folgende Ressourcen:</p>
+  <p>Wenn Sie planen, Ihren eigenen Plugins fÃ¼r Icinga zu schreiben, dann besuchen Sie folgende Ressourcen:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -42,29 +43,29 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Plugin-Überblick</strong></span></p>
+  <p><span class="bold"><strong>Plugin-Ãœberblick</strong></span></p>
 
-  <p>Scripts und ausführbare Programme müssen (mindestens) zwei Dinge tun, um als Icinga-Plugins zu
+  <p>Scripts und ausfÃ¼hrbare Programme mÃ¼ssen (mindestens) zwei Dinge tun, um als Icinga-Plugins zu
   funktionieren:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>mit einem von verschiedenen möglichen Return-Codes enden</p>
+      <p>mit einem von verschiedenen mÃ¶glichen Return-Codes enden</p>
     </li>
 <li class="listitem">
-      <p>mindestens eine Zeile Textausgabe an STDOUT zurückliefern</p>
+      <p>mindestens eine Zeile Textausgabe an STDOUT zurÃ¼ckliefern</p>
     </li>
 </ul></div>
 
-  <p>Die inneren Abläufe Ihres Plugins sind für Icinga unwichtig. Ihr Plugin könnte den Zustand eines TCP-Ports prüfen,
-  eine Datenbankabfrage durchführen, den freien Plattenplatz ermitteln oder was immer benötigt wird, um etwas zu prüfen. Die
-  Einzelheiten hängen davon ab, was zu prüfen ist - das liegt an Ihnen.</p>
+  <p>Die inneren AblÃ¤ufe Ihres Plugins sind fÃ¼r Icinga unwichtig. Ihr Plugin kÃ¶nnte den Zustand eines TCP-Ports prÃ¼fen,
+  eine Datenbankabfrage durchfÃ¼hren, den freien Plattenplatz ermitteln oder was immer benÃ¶tigt wird, um etwas zu prÃ¼fen. Die
+  Einzelheiten hÃ¤ngen davon ab, was zu prÃ¼fen ist - das liegt an Ihnen.</p>
 
   <p><span class="bold"><strong>Return-Code</strong></span></p>
 
-  <p>Icinga ermittelt den Zustand eines Hosts oder Service über die Auswertung des Return-Codes des Plugins. Die
-  folgenden Tabellen zeigen eine Liste von gültigen Return-Codes zusammen mit ihren entsprechenden Service- oder
-  Host-Zuständen.</p>
+  <p>Icinga ermittelt den Zustand eines Hosts oder Service Ã¼ber die Auswertung des Return-Codes des Plugins. Die
+  folgenden Tabellen zeigen eine Liste von gÃ¼ltigen Return-Codes zusammen mit ihren entsprechenden Service- oder
+  Host-ZustÃ¤nden.</p>
 
   <div class="informaltable">
     <table border="1">
@@ -105,13 +106,13 @@
 
   <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Wenn die <a class="link" href="configmain.html#configmain-use_aggressive_host_checking">use_aggressive_host_checking</a>-Option aktiviert ist, dann ergibt ein
   Return-Code von 1 einen Host-Zustand "DOWN" oder "UNREACHABLE". Andernfalls ergibt ein Return-Code von 1 einen Host-Zustand
-  "UP". Der Prozess, durch den Icinga ermittelt, ob ein Host DOWN oder UNREACHABLE ist, wird <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">hier</a> erklärt.</p>
+  "UP". Der Prozess, durch den Icinga ermittelt, ob ein Host DOWN oder UNREACHABLE ist, wird <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">hier</a> erklÃ¤rt.</p>
 
   <p><span class="bold"><strong>Spezifikation der Plugin-Ausgabe(n)</strong></span></p>
 
-  <p>Als Minimum sollten Plugins mindestens eine Zeile Textausgabe zurückliefern, es können aber auch mehrere Zeilen Ausgaben
-  sein. Plugins können zusätzlich Performance-Daten zurückliefern, die von externen Applikationen verarbeitet werden können. Das
-  grundlegende Format für Plugin-Ausgaben ist wie folgt:</p>
+  <p>Als Minimum sollten Plugins mindestens eine Zeile Textausgabe zurÃ¼ckliefern, es kÃ¶nnen aber auch mehrere Zeilen Ausgaben
+  sein. Plugins kÃ¶nnen zusÃ¤tzlich Performance-Daten zurÃ¼ckliefern, die von externen Applikationen verarbeitet werden kÃ¶nnen. Das
+  grundlegende Format fÃ¼r Plugin-Ausgaben ist wie folgt:</p>
 
   <p><span class="color"><font color="red">TEXT OUTPUT</font></span> | <span class="color"><font color="#FFA500">OPTIONAL
   PERFDATA</font></span></p>
@@ -121,35 +122,35 @@
   <p><span class="color"><font color="#FFA500">PERFDATA LINE 3 ... PERFDATA LINE N</font></span></p>
 
   <p>Die Performance-Daten (in <span class="color"><font color="#FFA500">orange</font></span> dargestellt) sind optional. Wenn
-  ein Plugin Performance-Daten in der Ausgabe zurückliefert, dann müssen die Performance-Daten von den anderen Textausgaben mit
-  einem Pipe-Symbol (|) getrennt werden. Zusätzliche Zeilen von langen Textausgaben (in <span class="color"><font color="blue">blau</font></span> dargestellt) sind ebenso optional.</p>
+  ein Plugin Performance-Daten in der Ausgabe zurÃ¼ckliefert, dann mÃ¼ssen die Performance-Daten von den anderen Textausgaben mit
+  einem Pipe-Symbol (|) getrennt werden. ZusÃ¤tzliche Zeilen von langen Textausgaben (in <span class="color"><font color="blue">blau</font></span> dargestellt) sind ebenso optional.</p>
 
   <p><span class="bold"><strong>Plugin-Beispielausgaben</strong></span></p>
 
-  <p>Nun ein paar Beispiele von möglichen Plugin-Ausgaben...</p>
+  <p>Nun ein paar Beispiele von mÃ¶glichen Plugin-Ausgaben...</p>
 
   <p><span class="bold"><strong>Fall 1: Eine Zeile Ausgabe (nur Text)</strong></span></p>
 
   <p>Angenommen, wir haben ein Plugin, das eine Zeile ausgibt, dann sieht das wie folgt aus:</p>
 
-  <p>DISK OK - free space: / 3326 MB (56%); Wenn dieses Plugin benutzt wurde, um eine Service-Prüfung durchzuführen, wird die
+  <p>DISK OK - free space: / 3326 MB (56%); Wenn dieses Plugin benutzt wurde, um eine Service-PrÃ¼fung durchzufÃ¼hren, wird die
   gesamte Zeile der Ausgabe im <a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a>-Makro gespeichert.</p>
 
   <p><span class="bold"><strong>Fall 2: Eine Zeile Ausgabe (Text und Performance-Daten)</strong></span></p>
 
-  <p>Ein Plugin kann optionale Performance-Daten zurückliefern, die von externen Applikationen benutzt werden. Um dies zu tun,
-  müssen die Performance-Daten von der Textausgabe durch ein Pipe-Symbol (|) wie folgt getrennt werden:</p>
+  <p>Ein Plugin kann optionale Performance-Daten zurÃ¼ckliefern, die von externen Applikationen benutzt werden. Um dies zu tun,
+  mÃ¼ssen die Performance-Daten von der Textausgabe durch ein Pipe-Symbol (|) wie folgt getrennt werden:</p>
 
-  <p><span class="color"><font color="red">DISK OK - free space: / 3326 MB (56%);</font></span> | <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968</font></span>. Wenn dieses Plugin benutzt wurde, um eine
-  Service-Prüfung durchzuführen, wird der <span class="color"><font color="red">rote</font></span> Teil der Ausgabe (links vom Pipe-Symbol) im <a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a>-Makro und der <span class="color"><font color="#FFA500">orange</font></span> Teil der Ausgabe (rechts vom Pipe-Symbol) im
+  <p><span class="color"><font color="red">DISK OK - free space: / 3326 MB (56%);</font></span>Â |Â <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968</font></span>. Wenn dieses Plugin benutzt wurde, um eine
+  Service-PrÃ¼fung durchzufÃ¼hren, wird derÂ <span class="color"><font color="red">rote</font></span>Â Teil der Ausgabe (links vom Pipe-Symbol) im <a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a>-Makro und der <span class="color"><font color="#FFA500">orange</font></span> Teil der Ausgabe (rechts vom Pipe-Symbol) im
   <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a>-Makro gespeichert.</p>
   <p><span class="bold"><strong>Fall 3: Mehrere Zeilen Ausgaben (Text und Performance-Daten)</strong></span></p>
 
-  <p>Ein Plugin kann optional mehrere Zeilen von Text und Performance-Daten wie folgt zurückliefern:</p>
+  <p>Ein Plugin kann optional mehrere Zeilen von Text und Performance-Daten wie folgt zurÃ¼ckliefern:</p>
 
   <p><span class="color"><font color="red">DISK OK - free space: / 3326 MB (56%);</font></span></p>
 
-  <p> | <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968</font></span></p>
+  <p>Â |Â <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968</font></span></p>
 
   <p><span class="color"><font color="blue">/ 15272 MB (77%);</font></span></p>
 
@@ -157,16 +158,16 @@
 
   <p><span class="color"><font color="blue">/home 69357 MB (27%);</font></span></p>
 
-  <p><span class="color"><font color="blue">/var/log 819 MB (84%);</font></span> | <span class="color"><font color="#FFA500">/boot=68MB;88;93;0;98</font></span></p>
+  <p><span class="color"><font color="blue">/var/log 819 MB (84%);</font></span>Â |Â <span class="color"><font color="#FFA500">/boot=68MB;88;93;0;98</font></span></p>
 
   <p><span class="color"><font color="#FFA500">/home=69357MB;253404;253409;0;253414</font></span></p>
 
   <p><span class="color"><font color="#FFA500">/var/log=818MB;970;975;0;980</font></span></p>
 
-  <p>Wenn dieses Plugin benutzt wurde, um eine Service-Prüfung durchzuführen, wird der <span class="color"><font color="red">rote</font></span> Teil der ersten Zeile der Ausgabe (links vom Pipe-Symbol) im <a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a>-Makro gespeichert. Der <span class="color"><font color="#FFA500">orange</font></span> Teil der ersten und folgender Zeilen wird (durch Leerzeichen verbunden) im <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a>-Makro gespeichert. Der <span class="color"><font color="blue">blaue</font></span> Teil der zweiten bis fünften Zeile der Ausgabe wird (mit maskierten Newlines) verkettet und im
+  <p>Wenn dieses Plugin benutzt wurde, um eine Service-PrÃ¼fung durchzufÃ¼hren, wird der <span class="color"><font color="red">rote</font></span> Teil der ersten Zeile der Ausgabe (links vom Pipe-Symbol) im <a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a>-Makro gespeichert. Der <span class="color"><font color="#FFA500">orange</font></span> Teil der ersten und folgender Zeilen wird (durch Leerzeichen verbunden) im <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a>-Makro gespeichert. Der <span class="color"><font color="blue">blaue</font></span> Teil der zweiten bis fÃ¼nften Zeile der Ausgabe wird (mit maskierten Newlines) verkettet und im
   <a class="link" href="macrolist.html#macrolist-longserviceoutput">$LONGSERVICEOUTPUT$</a>-Makro gespeichert.</p>
 
-  <p>Der endgültige Inhalt jedes Makros ist wie folgt:</p>
+  <p>Der endgÃ¼ltige Inhalt jedes Makros ist wie folgt:</p>
 
   <div class="informaltable">
     <table border="1">
@@ -185,7 +186,7 @@
 </tr>
 <tr>
 <td><p>$SERVICEPERFDATA$</p></td>
-<td><p> <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968 /boot=68MB;88;93;0;98 /home=69357MB;253404;253409;0;253414 /var/log=818MB;970;975;0;980</font></span>
+<td><p> <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968Â /boot=68MB;88;93;0;98Â /home=69357MB;253404;253409;0;253414Â /var/log=818MB;970;975;0;980</font></span>
           </p></td>
 </tr>
 <tr>
@@ -197,63 +198,63 @@
 </table>
   </div>
 
-  <p>Mit Blick auf mehrere Zeilen Ausgaben haben Sie die folgenden Möglichkeiten, Performance-Daten zurückzuliefern:</p>
+  <p>Mit Blick auf mehrere Zeilen Ausgaben haben Sie die folgenden MÃ¶glichkeiten, Performance-Daten zurÃ¼ckzuliefern:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Sie können keinerlei Performance-Daten zurückliefern</p>
+      <p>Sie kÃ¶nnen keinerlei Performance-Daten zurÃ¼ckliefern</p>
     </li>
 <li class="listitem">
-      <p>Sie können nur in der ersten Zeile Performance-Daten zurückliefern</p>
+      <p>Sie kÃ¶nnen nur in der ersten Zeile Performance-Daten zurÃ¼ckliefern</p>
     </li>
 <li class="listitem">
-      <p>Sie können Performance-Daten in nachfolgenden Zeilen zurückliefern (nach der ersten)</p>
+      <p>Sie kÃ¶nnen Performance-Daten in nachfolgenden Zeilen zurÃ¼ckliefern (nach der ersten)</p>
     </li>
 <li class="listitem">
-      <p>Sie können Performance-Daten in der ersten und folgenden Zeilen zurückliefern (wie oben gezeigt)</p>
+      <p>Sie kÃ¶nnen Performance-Daten in der ersten und folgenden Zeilen zurÃ¼ckliefern (wie oben gezeigt)</p>
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Längenbeschränkungen von Plugin-Ausgaben</strong></span></p>
+  <p><span class="bold"><strong>LÃ¤ngenbeschrÃ¤nkungen von Plugin-Ausgaben</strong></span></p>
 
-  <p>Icinga wird nur die ersten acht KB an Daten lesen, die ein Plugin zurückliefert. Dies wird getan, um durchgedrehte
-  Plugins davon abzuhalten, Megabyte oder Gigabyte an Daten an Icinga zurückzuliefern. Diese Beschränkung von acht KB kann
-  einfach geändert werden, wenn Sie das brauchen. Ändern Sie einfach den Wert der MAX_PLUGIN_OUTPUT_LENGTH-Definition in der
+  <p>Icinga wird nur die ersten acht KB an Daten lesen, die ein Plugin zurÃ¼ckliefert. Dies wird getan, um durchgedrehte
+  Plugins davon abzuhalten, Megabyte oder Gigabyte an Daten an Icinga zurÃ¼ckzuliefern. Diese BeschrÃ¤nkung von acht KB kann
+  einfach geÃ¤ndert werden, wenn Sie das brauchen. Ã„ndern Sie einfach den Wert der MAX_PLUGIN_OUTPUT_LENGTH-Definition in der
   <span class="emphasis"><em>include/nagios.h.in</em></span>-Datei der Source-Code-Distribution und rekompilieren Sie Icinga.
-  Wenn Sie die Kapazität von acht KB durch Anpassung dieses Wertes ändern, dann stellen Sie sicht, dass Sie vor dem Kompilieren
-  auch den Wert von MAX_EXTERNAL_COMMAND_LENGTH in include/common.h erhöhen, damit Resultate von passiven Prüfungen in dieser Länge
-  durch das External Command File empfangen werden können.</p>
+  Wenn Sie die KapazitÃ¤t von acht KB durch Anpassung dieses Wertes Ã¤ndern, dann stellen Sie sicht, dass Sie vor dem Kompilieren
+  auch den Wert von MAX_EXTERNAL_COMMAND_LENGTH in include/common.h erhÃ¶hen, damit Resultate von passiven PrÃ¼fungen in dieser LÃ¤nge
+  durch das External Command File empfangen werden kÃ¶nnen.</p>
 
   <p><span class="bold"><strong>Beispiele</strong></span></p>
 
-  <p>Wenn Sie nach Beispiel-Plugins suchen, um sie zu studieren, würden wir empfehlen, dass Sie die offiziellen
+  <p>Wenn Sie nach Beispiel-Plugins suchen, um sie zu studieren, wÃ¼rden wir empfehlen, dass Sie die offiziellen
   Icinga-Plugins herunterladen und den Code von verschiedenen C-, Perl- und Shell-Script-Plugins ansehen. Informationen,
-  wie Sie die offiziellen Plugins besorgen können, finden Sie <a class="link" href="plugins.html" title="Icinga Plugins">hier</a>.</p>
+  wie Sie die offiziellen Plugins besorgen kÃ¶nnen, finden Sie <a class="link" href="plugins.html" title="5.1. Icinga Plugins">hier</a>.</p>
 
   <p><span class="bold"><strong>Perl-Plugins</strong></span></p>
 
-  <p>Icinga bietet einen optionalen <a class="link" href="embeddedperl.html" title="Benutzen des Embedded Perl Interpreters">eingebauten Perl-Interpreter</a> (embedded Perl
-  interpreter), der die Ausführung von Perl-Plugins beschleunigen kann. Mehr Informationen zur Entwicklung von Perl-Plugins zur
-  Nutzung mit dem eingebauten Perl-Interpreter finden Sie <a class="link" href="embeddedperl.html" title="Benutzen des Embedded Perl Interpreters">hier</a>.</p>
-  <a class="indexterm" name="id1597380"></a>
+  <p>Icinga bietet einen optionalen <a class="link" href="embeddedperl.html" title="7.17. Benutzen des Embedded Perl Interpreters">eingebauten Perl-Interpreter</a> (embedded Perl
+  interpreter), der die AusfÃ¼hrung von Perl-Plugins beschleunigen kann. Mehr Informationen zur Entwicklung von Perl-Plugins zur
+  Nutzung mit dem eingebauten Perl-Interpreter finden Sie <a class="link" href="embeddedperl.html" title="7.17. Benutzen des Embedded Perl Interpreters">hier</a>.</p>
+  <a class="indexterm" name="idp14825808"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch11.html">Zurück</a> </td>
+<a accesskey="p" href="ch11.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch11.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="epnplugins.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="epnplugins.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Kapitel 11. Entwicklung </td>
+<td width="40%" align="left" valign="top">Kapitel 11. EntwicklungÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Entwickeln von Plugins für die Nutzung mit Embedded Perl</td>
+<td width="40%" align="right" valign="top">Â 11.2. Entwickeln von Plugins fÃ¼r die Nutzung mit Embedded Perl</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Monitoring Service and Host Clusters</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.11. Monitoring Service and Host Clusters</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch07.html" title="Chapter�7.�Advanced Topics">
-<link rel="prev" href="oncallrotation.html" title="On-Call Rotations">
-<link rel="next" href="dependencies.html" title="Host and Service Dependencies">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="oncallrotation.html" title="7.10. On-Call Rotations">
+<link rel="next" href="dependencies.html" title="7.12. Host and Service Dependencies">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Monitoring Service and Host Clusters</th></tr>
+<tr><th colspan="3" align="center">7.11. Monitoring Service and Host Clusters</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="oncallrotation.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�7.�Advanced Topics</th>
-<td width="20%" align="right">�<a accesskey="n" href="dependencies.html">Next</a>
+<a accesskey="p" href="oncallrotation.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="dependencies.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Monitoring Service and Host Clusters">
+<div class="section" title="7.11. Monitoring Service and Host Clusters">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="clusters"></a><a name="monitoring_clusters"></a>Monitoring Service and Host Clusters</h2></div></div></div>
+<a name="clusters"></a>7.11. <a name="monitoring_clusters"></a>Monitoring Service and Host Clusters</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -114,7 +115,7 @@
         ...
         }</pre>
 
-  <p>It is important to notice that we are passing a comma-delimited list of <span class="emphasis"><em>on-demand</em></span> service state <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros</a> to the $ARG4$ macro in the cluster check command. That's important! Icinga will fill those
+  <p>It is important to notice that we are passing a comma-delimited list of <span class="emphasis"><em>on-demand</em></span> service state <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> to the $ARG4$ macro in the cluster check command. That's important! Icinga will fill those
   on-demand macros in with the current service state IDs (numerical values, rather than text strings) of the individual members of
   the cluster.</p>
 
@@ -126,7 +127,7 @@
   hosts in the cluster, as this will cause problems with notifications for the cluster if that host goes down. A good idea might
   be to associate the service with the host that Icinga is running on. After all, if the host that Icinga is running
   on goes down, then Icinga isn't running anymore, so there isn't anything you can do as far as monitoring (unless you've
-  setup <a class="link" href="redundancy.html" title="Redundant and Failover Network Monitoring">redundant monitoring hosts</a>)...</p>
+  setup <a class="link" href="redundancy.html" title="7.6. Redundant and Failover Network Monitoring">redundant monitoring hosts</a>)...</p>
 
   <p>Anyway, let's assume that you have a <span class="emphasis"><em>check_host_cluster</em></span> command defined as follows:</p>
 
@@ -145,7 +146,7 @@
         ...
         }</pre>
 
-  <p>It is important to notice that we are passing a comma-delimited list of <span class="emphasis"><em>on-demand</em></span> host state <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros</a> to the $ARG4$ macro in the cluster check command. That's important! Icinga will fill those
+  <p>It is important to notice that we are passing a comma-delimited list of <span class="emphasis"><em>on-demand</em></span> host state <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> to the $ARG4$ macro in the cluster check command. That's important! Icinga will fill those
   on-demand macros in with the current host state IDs (numerical values, rather than text strings) of the individual members of
   the cluster.</p>
 
@@ -154,25 +155,25 @@
   member, you will most likely want to disable notifications when the host goes down . Remeber that you don't care as much about
   the status of any individual host as you do the overall status of the cluster. Depending on your network layout and what you're
   trying to accomplish, you may wish to leave notifications for unreachable states enabled for the host definitions.</p>
-  <a class="indexterm" name="id1525405"></a>
+  <a class="indexterm" name="idp12790608"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="oncallrotation.html">Prev</a>�</td>
+<a accesskey="p" href="oncallrotation.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="dependencies.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="dependencies.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">On-Call Rotations�</td>
+<td width="40%" align="left" valign="top">7.10. On-Call Rotations </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Host and Service Dependencies</td>
+<td width="40%" align="right" valign="top"> 7.12. Host and Service Dependencies</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

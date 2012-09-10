@@ -1,43 +1,44 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Aktualisierung von Icinga-Web und Icinga-Web Datenbank</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>6.6. Aktualisierung von Icinga-Web und Icinga-Web Datenbank</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
-<link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
-<link rel="prev" href="icinga-web-config.html" title="Konfigurationsübersicht Icinga-Web">
-<link rel="next" href="icinga-web-introduction.html" title="Einführung in Icinga-Web">
+<link rel="up" href="ch06.html" title="Kapitel 6. Die BenutzeroberflÃ¤chen">
+<link rel="prev" href="icinga-web-config.html" title="6.5. KonfigurationsÃ¼bersicht Icinga-Web">
+<link rel="next" href="icinga-web-introduction.html" title="6.7. EinfÃ¼hrung in Icinga-Web">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Aktualisierung von Icinga-Web und Icinga-Web Datenbank</th></tr>
+<tr><th colspan="3" align="center">6.6. Aktualisierung von Icinga-Web und Icinga-Web Datenbank</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="icinga-web-config.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 6. Die Benutzeroberflächen</th>
-<td width="20%" align="right"> <a accesskey="n" href="icinga-web-introduction.html">Weiter</a>
+<a accesskey="p" href="icinga-web-config.html">ZurÃ¼ck</a>Â </td>
+<th width="60%" align="center">Kapitel 6. Die BenutzeroberflÃ¤chen</th>
+<td width="20%" align="right">Â <a accesskey="n" href="icinga-web-introduction.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Aktualisierung von Icinga-Web und Icinga-Web Datenbank">
+<div class="section" title="6.6. Aktualisierung von Icinga-Web und Icinga-Web Datenbank">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="upgrading_icingaweb"></a>Aktualisierung von Icinga-Web und Icinga-Web Datenbank</h2></div></div></div>
+<a name="upgrading_icingaweb"></a>6.6. Aktualisierung von Icinga-Web und Icinga-Web Datenbank</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Aktualisieren von Icinga-Web</strong></span></p>
 
-  <p>Sobald neuere Versionen von Icinga-Web herauskommen, sollten Sie dringend über eine Aktualisierung nachdenken. Neuere Ausgaben
+  <p>Sobald neuere Versionen von Icinga-Web herauskommen, sollten Sie dringend Ã¼ber eine Aktualisierung nachdenken. Neuere Ausgaben
   enthalten Behebungen von kritischen Fehlern, so dass es wichtig ist, aktuell zu sein. Wenn Sie bereits Icinga-Web, wie in den
-  Schnellstartanleitungen beschrieben, aus dem Quellcode installiert haben, dann können Sie einfach neuere Versionen installieren.</p>
+  Schnellstartanleitungen beschrieben, aus dem Quellcode installiert haben, dann kÃ¶nnen Sie einfach neuere Versionen installieren.</p>
 
-  <p>Stellen Sie sicher, dass Sie eine vollständige Datensicherung Ihrer bestehenden Icinga-Web-Installation und der
-  Konfigurationsdateien haben (wenn Sie Ihre benutzerdefinierte Konfiguration in *.site.xml- Dateien erstellt haben, so werden diese während
-  der Aktualisierung nicht überschrieben!). Wenn irgendetwas schief geht oder nicht funktioniert, dann können Sie auf diese Weise schnell
+  <p>Stellen Sie sicher, dass Sie eine vollstÃ¤ndige Datensicherung Ihrer bestehenden Icinga-Web-Installation und der
+  Konfigurationsdateien haben (wenn Sie Ihre benutzerdefinierte Konfiguration in *.site.xml- Dateien erstellt haben, so werden diese wÃ¤hrend
+  der Aktualisierung nicht Ã¼berschrieben!). Wenn irgendetwas schief geht oder nicht funktioniert, dann kÃ¶nnen Sie auf diese Weise schnell
   Ihre alte Icinga-Web-Version wiederherstellen.</p>
 
   <p>Bitte denken Sie daran, dass <code class="code">configure</code> mit den gleichen Optionen wie bei der vorherigen Installation aufzurufen ist!
@@ -49,21 +50,21 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Bitte beachten Sie, dass es einige wesentliche Änderungen mit Icinga 1.5 gab, die ggf. zusätzliche Aktionen erfordern
-    könnten:</p>
+    <p>Bitte beachten Sie, dass es einige wesentliche Ã„nderungen mit Icinga 1.5 gab, die ggf. zusÃ¤tzliche Aktionen erfordern
+    kÃ¶nnten:</p>
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Die <code class="filename">*.site.xml</code>-Datei für lokale Konfigurationsanpassungen wurden entfernt, Konfigurationen werden nun
-        unter <code class="filename">etc/conf.d/</code> abgelegt (oder dem Pfad, der während der Installation mit --with-conf-dir 
+        <p>Die <code class="filename">*.site.xml</code>-Datei fÃ¼r lokale Konfigurationsanpassungen wurden entfernt, Konfigurationen werden nun
+        unter <code class="filename">etc/conf.d/</code> abgelegt (oder dem Pfad, der wÃ¤hrend der Installation mit --with-conf-dir 
         (--with-conf-folder bis Icinga 1.6.x) angegeben wurde)</p>
       </li>
 <li class="listitem">
-        <p>Das Log-Verzeichnis befindet sich nun unter <code class="filename">log/</code> (oder dem Pfad, der während der Installation mit
+        <p>Das Log-Verzeichnis befindet sich nun unter <code class="filename">log/</code> (oder dem Pfad, der wÃ¤hrend der Installation mit
         --with-log-folder angegeben wurde)</p>
       </li>
 <li class="listitem">
-        <p>Die Icinga-API wurde entfernt und nun wird Doctrine für alle Datenbank-Transaktionen benutzt
+        <p>Die Icinga-API wurde entfernt und nun wird Doctrine fÃ¼r alle Datenbank-Transaktionen benutzt
         (<code class="filename">icinga-io.xml</code> ist nun <code class="filename">databases.xml</code>)</p>
       </li>
 <li class="listitem">
@@ -72,8 +73,8 @@
 </ul></div>
 
     <p>Falls Sie Icinga-Web &lt;= 1.4x benutzen, dann empfehlen wir eine Neuinstallation anstatt einer Aktualisierung. Es ist besser,
-    Ihre alten Konfigurationsdateien in die neue Struktur zu kopieren, weil es viele geänderte und gelöschte Dateien gibt, um die wir uns
-    bei einer Aktualisierung ggf. nicht kümmern.</p>
+    Ihre alten Konfigurationsdateien in die neue Struktur zu kopieren, weil es viele geÃ¤nderte und gelÃ¶schte Dateien gibt, um die wir uns
+    bei einer Aktualisierung ggf. nicht kÃ¼mmern.</p>
   </td></tr>
 </table></div>
 
@@ -120,7 +121,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Bitte beachten Sie, dass Sie hier die Icinga-Web-Datenbank konfigurieren, und nicht die Icinga-IDOUtils-Datenbank! User- und
-    Gruppenname des Web-Prozesses sind abhängig von der verwendeten Distribution.</p>
+    Gruppenname des Web-Prozesses sind abhÃ¤ngig von der verwendeten Distribution.</p>
   </td></tr>
 </table></div>
 
@@ -134,7 +135,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Wenn Sie configure ohne weitere Optionen ausführen, erwartet der Installer die Icinga-API unter
+    <p>Wenn Sie configure ohne weitere Optionen ausfÃ¼hren, erwartet der Installer die Icinga-API unter
     /usr/local/icinga/share/icinga-api.</p>
   </td></tr>
 </table></div>
@@ -160,16 +161,16 @@
 
   <pre class="programlisting"> #&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
 
-  <p>Das war's, Sie können sich nun an Ihrem aktualisierten Icinga-Web anmelden.</p>
+  <p>Das war's, Sie kÃ¶nnen sich nun an Ihrem aktualisierten Icinga-Web anmelden.</p>
 
   <p>Bekannte Fehler sind <a class="link" href="icinga-web-scratch.html#icinga-web-scratch-errors"> hier</a> beschrieben.</p>
 
   <p><span class="bold"><strong>Aktualisieren der Icinga-Web Datenbank</strong></span></p>
 
   <p>Die Aktualisierung Ihrer Icinga-Web Datenbank ist optional, aber es mag einen Bug im Datenbankschema geben, der behoben wurde. Wenn
-  Sie eine ältere Icinga-Web Datenbank-Version aktualisieren, dann müssen Sie außerdem diese Anpassungen manuell ausführen. Wenn Sie
+  Sie eine Ã¤ltere Icinga-Web Datenbank-Version aktualisieren, dann mÃ¼ssen Sie auÃŸerdem diese Anpassungen manuell ausfÃ¼hren. Wenn Sie
   rpm/deb-Pakete benutzen, lesen Sie bitte die Hinweise und/oder fragen Sie den Maintainer, der diese Anpassungen in der
-  Installationsroutine hinzugefügt hat.</p>
+  Installationsroutine hinzugefÃ¼gt hat.</p>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -177,7 +178,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Abhängig von den Änderungen und der Größe Ihrer Datenbank kann es eine Weile dauern, die Anpassungen durchzuführen. Bitte haben
+    <p>AbhÃ¤ngig von den Ã„nderungen und der GrÃ¶ÃŸe Ihrer Datenbank kann es eine Weile dauern, die Anpassungen durchzufÃ¼hren. Bitte haben
     Sie ein wenig Geduld und brechen Sie das Script nicht ab, weil sonst ggf. Ihre Daten unbrauchbar sind.</p>
   </td></tr>
 </table></div>
@@ -198,8 +199,8 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Wenn Sie eine ältere Version aktualisieren wollen und zwischen dieser und der aktuellen noch andere Versionen liegen, dann sollten
-    Sie beachten, dass Sie auch die dazwischen liegenden Updates inkrementell installieren müssen!</p>
+    <p>Wenn Sie eine Ã¤ltere Version aktualisieren wollen und zwischen dieser und der aktuellen noch andere Versionen liegen, dann sollten
+    Sie beachten, dass Sie auch die dazwischen liegenden Updates inkrementell installieren mÃ¼ssen!</p>
   </td></tr>
 </table></div>
 
@@ -208,11 +209,11 @@
       <p>Sichern Sie Ihre aktuelle Datenbank vor der Aktualisierung!</p>
     </li>
 <li class="listitem">
-      <p>Prüfen Sie die laufende Icinga-Web Datenbank- Version und die Zielversion. Prüfen Sie, ob zwischen diesen beiden Versionen noch
+      <p>PrÃ¼fen Sie die laufende Icinga-Web Datenbank- Version und die Zielversion. PrÃ¼fen Sie, ob zwischen diesen beiden Versionen noch
       andere Versionen liegen und aktualisieren Sie ggf. schrittweise.</p>
     </li>
 <li class="listitem">
-      <p>Führen Sie die Aktualisierung(en) mit einem Benutzer durch, der über die notwendigen Berechtigungen verfügt.</p>
+      <p>FÃ¼hren Sie die Aktualisierung(en) mit einem Benutzer durch, der Ã¼ber die notwendigen Berechtigungen verfÃ¼gt.</p>
     </li>
 </ol></div>
 
@@ -228,31 +229,31 @@
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle_&lt;alteVersion&gt;_to_&lt;neueVersion&gt;.sql</pre>
 
-  <a class="indexterm" name="id1572413"></a>
+  <a class="indexterm" name="idp11826832"></a>
 
-  <a class="indexterm" name="id1572424"></a>
+  <a class="indexterm" name="idp11828112"></a>
 
-  <a class="indexterm" name="id1572436"></a>
+  <a class="indexterm" name="idp11829680"></a>
 
-  <a class="indexterm" name="id1572447"></a>
+  <a class="indexterm" name="idp11830816"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="icinga-web-config.html">Zurück</a> </td>
+<a accesskey="p" href="icinga-web-config.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="icinga-web-introduction.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="icinga-web-introduction.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Konfigurationsübersicht Icinga-Web </td>
+<td width="40%" align="left" valign="top">6.5. KonfigurationsÃ¼bersicht Icinga-WebÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Einführung in Icinga-Web</td>
+<td width="40%" align="right" valign="top">Â 6.7. EinfÃ¼hrung in Icinga-Web</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

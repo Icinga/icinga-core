@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>State Types</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.8. State Types</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch05.html" title="Chapter�5.�The Basics">
-<link rel="prev" href="passivechecks.html" title="Passive Checks">
-<link rel="next" href="timeperiods.html" title="Time Periods">
+<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
+<link rel="prev" href="passivechecks.html" title="5.7. Passive Checks">
+<link rel="next" href="timeperiods.html" title="5.9. Time Periods">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">State Types</th></tr>
+<tr><th colspan="3" align="center">5.8. State Types</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="passivechecks.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�5.�The Basics</th>
-<td width="20%" align="right">�<a accesskey="n" href="timeperiods.html">Next</a>
+<a accesskey="p" href="passivechecks.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. The Basics</th>
+<td width="20%" align="right"> <a accesskey="n" href="timeperiods.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="State Types">
+<div class="section" title="5.8. State Types">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="statetypes"></a><a name="state_types"></a>State Types</h2></div></div></div>
+<a name="statetypes"></a>5.8. <a name="state_types"></a>State Types</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -43,8 +44,8 @@
 </ul></div>
 
   <p>There are two state types in Icinga - SOFT states and HARD states. These state types are a crucial part of the
-  monitoring logic, as they are used to determine when <a class="link" href="eventhandlers.html" title="Event Handlers">event handlers</a> are executed and when
-  <a class="link" href="notifications.html" title="Notifications">notifications</a> are initially sent out.</p>
+  monitoring logic, as they are used to determine when <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handlers</a> are executed and when
+  <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a> are initially sent out.</p>
 
   <p>This document describes the difference between SOFT and HARD states, how they occur, and what happens when they
   occur.</p>
@@ -88,7 +89,7 @@
   <p>The only important thing that really happens during a soft state is the execution of event handlers. Using event handlers
   can be particularly useful if you want to try and proactively fix a problem before it turns into a HARD state. The <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> or <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>
   macros will have a value of "<span class="emphasis"><em>SOFT</em></span>" when event handlers are executed, which allows your event handler
-  scripts to know when they should take corrective action. More information on event handlers can be found <a class="link" href="eventhandlers.html" title="Event Handlers">here</a>.</p>
+  scripts to know when they should take corrective action. More information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">here</a>.</p>
 
   <p><span class="bold"><strong>Hard States</strong></span></p>
 
@@ -110,7 +111,7 @@
       <p>When a host or service recovers from a hard error state. This is considered to be a hard recovery.</p>
     </li>
 <li class="listitem">
-      <p>When a <a class="link" href="passivechecks.html" title="Passive Checks">passive host check</a> is received. Passive host checks are treated as HARD
+      <p>When a <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive host check</a> is received. Passive host checks are treated as HARD
       unless the <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a> option is
       enabled.</p>
     </li>
@@ -132,7 +133,7 @@
 
   <p>The <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> or <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a> macros will have a value of "<span class="emphasis"><em>HARD</em></span>" when
   event handlers are executed, which allows your event handler scripts to know when they should take corrective action. More
-  information on event handlers can be found <a class="link" href="eventhandlers.html" title="Event Handlers">here</a>.</p>
+  information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">here</a>.</p>
 
   <p><span class="bold"><strong>Example</strong></span></p>
 
@@ -255,25 +256,25 @@
 </tbody>
 </table>
   </div>
-  <a class="indexterm" name="id1499279"></a>
+  <a class="indexterm" name="idp9654320"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="passivechecks.html">Prev</a>�</td>
+<a accesskey="p" href="passivechecks.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="timeperiods.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="timeperiods.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Passive Checks�</td>
+<td width="40%" align="left" valign="top">5.7. Passive Checks </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Time Periods</td>
+<td width="40%" align="right" valign="top"> 5.9. Time Periods</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

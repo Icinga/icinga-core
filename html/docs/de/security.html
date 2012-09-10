@@ -1,172 +1,173 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Sicherheitsüberlegungen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>8.1. SicherheitsÃ¼berlegungen</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
 <link rel="prev" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
-<link rel="next" href="cgisecurity.html" title="Verbesserte CGI-Sicherheit und Authentifizierung">
+<link rel="next" href="cgisecurity.html" title="8.2. Verbesserte CGI-Sicherheit und Authentifizierung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Sicherheitsüberlegungen</th></tr>
+<tr><th colspan="3" align="center">8.1. SicherheitsÃ¼berlegungen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch08.html">Zurück</a> </td>
+<a accesskey="p" href="ch08.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 8. Sicherheit und Leistungsoptimierung</th>
-<td width="20%" align="right"> <a accesskey="n" href="cgisecurity.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="cgisecurity.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Sicherheitsüberlegungen">
+<div class="section" title="8.1. SicherheitsÃ¼berlegungen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="security"></a>Sicherheitsüberlegungen</h2></div></div></div>
+<a name="security"></a>8.1. SicherheitsÃ¼berlegungen</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
   <div class="mediaobject"><img src="../images/security.png"></div>
 
-  <p>Dies ist als ein kurzer Überblick einiger Dinge gedacht, die Sie bei der Installation von Icinga im Hinterkopf
+  <p>Dies ist als ein kurzer Ãœberblick einiger Dinge gedacht, die Sie bei der Installation von Icinga im Hinterkopf
   behalten sollten, um es in einer sicheren Weise aufzusetzen.</p>
 
-  <p>Ihr Überwachungsrechner sollte als eine Hintertür in Ihre anderen System betrachtet werden. In vielen Fällen wird dem
-  Icinga-Rechner der Zugriff auf Firewalls gewährt, um entfernte Server zu überwachen. In den meisten Fällen ist die
-  Abfrage von verschiedenen Informationen der entfernten Server erlaubt. Überwachenden Servern wird ein gewisses Maß an Vertrauen
-  entgegen gebracht, damit sie entfernte Systeme abfragen können. Das bietet einem potenziellen Angreifer eine attraktive
-  Hintertür zu Ihren Systemen. Ein Angreifer könnte es einfacher haben, in Ihre Systeme einzudringen, wenn er zuerst den
-  Überwachungsserver kompromittiert. Das trifft besonders dann zu, wenn Sie gemeinsame SSH-Schlüssel nutzen, um entfernte Systeme
-  zu überwachen.</p>
+  <p>Ihr Ãœberwachungsrechner sollte als eine HintertÃ¼r in Ihre anderen System betrachtet werden. In vielen FÃ¤llen wird dem
+  Icinga-Rechner der Zugriff auf Firewalls gewÃ¤hrt, um entfernte Server zu Ã¼berwachen. In den meisten FÃ¤llen ist die
+  Abfrage von verschiedenen Informationen der entfernten Server erlaubt. Ãœberwachenden Servern wird ein gewisses MaÃŸ an Vertrauen
+  entgegen gebracht, damit sie entfernte Systeme abfragen kÃ¶nnen. Das bietet einem potenziellen Angreifer eine attraktive
+  HintertÃ¼r zu Ihren Systemen. Ein Angreifer kÃ¶nnte es einfacher haben, in Ihre Systeme einzudringen, wenn er zuerst den
+  Ãœberwachungsserver kompromittiert. Das trifft besonders dann zu, wenn Sie gemeinsame SSH-SchlÃ¼ssel nutzen, um entfernte Systeme
+  zu Ã¼berwachen.</p>
 
-  <p>Wenn ein Eindringling in der Lage ist, Prüfergebnisse oder externe Befehle an den Icinga-Daemon zu erteilen, hat er
-  die Möglichkeit, falsche Überwachungsdaten zu übertragen, Sie mit falschen Benachrichtigungen auf die Palme bringen oder
-  Eventhandler-Scripte auszulösen. Wenn Sie Eventhandler-Scripte haben, die Services neu starten, Strom unterbrechen usw., dann
+  <p>Wenn ein Eindringling in der Lage ist, PrÃ¼fergebnisse oder externe Befehle an den Icinga-Daemon zu erteilen, hat er
+  die MÃ¶glichkeit, falsche Ãœberwachungsdaten zu Ã¼bertragen, Sie mit falschen Benachrichtigungen auf die Palme bringen oder
+  Eventhandler-Scripte auszulÃ¶sen. Wenn Sie Eventhandler-Scripte haben, die Services neu starten, Strom unterbrechen usw., dann
   kann das ziemlich problematisch sein.</p>
 
-  <p>Ein weiterer zu beachtender Bereich ist die Möglichkeit von Eindringlingen, Überwachungsdaten (Statusinformationen) zu
-  belauschen, während sie über den Draht gehen. Wenn Übertragungskanäle nicht verschlüsselt sind, können Angreifer durch
-  Beobachtung Ihrer Überwachungsdaten wertvolle Informationen gewinnen. Nehmen Sie als Beispiel die folgende Situation: ein
-  Angreifer belauscht für eine gewisse Zeit die Überwachungsdaten und analysiert die typische CPU- und Plattenauslastung Ihrer
+  <p>Ein weiterer zu beachtender Bereich ist die MÃ¶glichkeit von Eindringlingen, Ãœberwachungsdaten (Statusinformationen) zu
+  belauschen, wÃ¤hrend sie Ã¼ber den Draht gehen. Wenn ÃœbertragungskanÃ¤le nicht verschlÃ¼sselt sind, kÃ¶nnen Angreifer durch
+  Beobachtung Ihrer Ãœberwachungsdaten wertvolle Informationen gewinnen. Nehmen Sie als Beispiel die folgende Situation: ein
+  Angreifer belauscht fÃ¼r eine gewisse Zeit die Ãœberwachungsdaten und analysiert die typische CPU- und Plattenauslastung Ihrer
   Systeme zusammen mit der Zahl der Benutzer, die typischerweise angemeldet sind. Der Angreifer ist dann in der Lage, die beste
-  Zeit für die Kompromittierung eines Systems und dessen Ressourcen (CPU usw.) zu ermitteln, ohne bemerkt zu werden.</p>
+  Zeit fÃ¼r die Kompromittierung eines Systems und dessen Ressourcen (CPU usw.) zu ermitteln, ohne bemerkt zu werden.</p>
 
-  <p>Hier sind einige Hinweise, wie Sie Ihre Systeme sichern können, wenn Sie eine Icinga-basierte Überwachungslösung
+  <p>Hier sind einige Hinweise, wie Sie Ihre Systeme sichern kÃ¶nnen, wenn Sie eine Icinga-basierte ÃœberwachungslÃ¶sung
   implementieren...</p>
 
   <p><a name="security-bestpractices"></a> <span class="bold"><strong>Optimale Verfahren</strong></span></p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Benutzen Sie eine eigene Überwachungs-Box</strong></span>. Wir würden empfehlen, dass Sie einen
-      Server benutzen, der nur für die Überwachung (und ggf. andere administrative Aufgaben) vorgesehen ist. Schützen Sie Ihren
-      Überwachungsserver, als wäre es einer der wichtigsten Server Ihres Netzwerks. Halten Sie die laufenden Services auf einem
-      Minimum und beschränken Sie den Zugang durch TCP-Wrapper, Firewalls usw. Weil der Icinga-Rechner berechtigt ist, mit
+      <p><span class="bold"><strong>Benutzen Sie eine eigene Ãœberwachungs-Box</strong></span>. Wir wÃ¼rden empfehlen, dass Sie einen
+      Server benutzen, der nur fÃ¼r die Ãœberwachung (und ggf. andere administrative Aufgaben) vorgesehen ist. SchÃ¼tzen Sie Ihren
+      Ãœberwachungsserver, als wÃ¤re es einer der wichtigsten Server Ihres Netzwerks. Halten Sie die laufenden Services auf einem
+      Minimum und beschrÃ¤nken Sie den Zugang durch TCP-Wrapper, Firewalls usw. Weil der Icinga-Rechner berechtigt ist, mit
       Ihren Servern zu reden und vielleicht durch Ihre Firewalls zu gehen, kann es ein Sicherheitsrisiko sein, wenn Sie Benutzern
-      Zugang zu Ihrem Überwachungsserver gewähren. Bedenken Sie, dass es einfacher ist, root-Zugang über eine Sicherheitslücke zu
+      Zugang zu Ihrem Ãœberwachungsserver gewÃ¤hren. Bedenken Sie, dass es einfacher ist, root-Zugang Ã¼ber eine SicherheitslÃ¼cke zu
       bekommen, wenn Sie ein lokales Benutzerkonto auf dem System haben.</p>
 
       <p><span class="inlinemediaobject"><img src="../images/security3.png"></span></p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Lassen Sie Icinga nicht als root laufen</strong></span> . Icinga muss nicht als root
-      laufen, also tun Sie es nicht. Sie können Icinga anweisen, die Berechtigungen nach dem Start zu "droppen" und mit
+      laufen, also tun Sie es nicht. Sie kÃ¶nnen Icinga anweisen, die Berechtigungen nach dem Start zu "droppen" und mit
       Hilfe der <a class="link" href="configmain-nagios_user" target="_top">icinga_user</a>- und <a class="link" href="configmain-nagios_group" target="_top">icinga_group</a>-Direktiven in der Hauptkonfigurationsdatei unter anderen Benutzer-
-      und/oder Gruppenberechtigungen zu laufen. Wenn Sie Eventhandler oder Plugins ausführen müssen, die Root-Berechtigungen
-      benötigen, möchten Sie vielleicht <a class="link" href="http://www.courtesan.com/sudo/sudo.html" target="_top">sudo</a> nutzen.</p>
+      und/oder Gruppenberechtigungen zu laufen. Wenn Sie Eventhandler oder Plugins ausfÃ¼hren mÃ¼ssen, die Root-Berechtigungen
+      benÃ¶tigen, mÃ¶chten Sie vielleicht <a class="link" href="http://www.courtesan.com/sudo/sudo.html" target="_top">sudo</a> nutzen.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Verriegeln Sie das Prüfergebnis-Verzeichnis</strong></span>. Stellen Sie sicher, dass nur der
+      <p><span class="bold"><strong>Verriegeln Sie das PrÃ¼fergebnis-Verzeichnis</strong></span>. Stellen Sie sicher, dass nur der
       <span class="emphasis"><em>icinga</em></span>-Benutzer im <a class="link" href="configmain.html#configmain-check_result_path">check result path</a> lesen und
-      schreiben darf. Wenn andere Benutzer außer <span class="emphasis"><em>icinga</em></span> (oder <span class="emphasis"><em>root</em></span>) in diesem
-      Verzeichnis schreiben dürfen, dann können sie falsche Host-/Service-Prüfergebnisse an den Icinga-Daemon senden. Dies
-      kann zu Ärger (falschen Benachrichtigungen) oder Sicherheitsproblemen (ausgelösten Eventhandlern) führen.</p>
+      schreiben darf. Wenn andere Benutzer auÃŸer <span class="emphasis"><em>icinga</em></span> (oder <span class="emphasis"><em>root</em></span>) in diesem
+      Verzeichnis schreiben dÃ¼rfen, dann kÃ¶nnen sie falsche Host-/Service-PrÃ¼fergebnisse an den Icinga-Daemon senden. Dies
+      kann zu Ã„rger (falschen Benachrichtigungen) oder Sicherheitsproblemen (ausgelÃ¶sten Eventhandlern) fÃ¼hren.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Verriegeln Sie das External Command File</strong></span>. Wenn Sie <a class="link" href="extcommands.html" target="_top">externe Befehle</a> aktivieren, dann stellen Sie sicher, dass Sie passende Berechtigungen
-      für das <span class="emphasis"><em>/usr/local/icinga/var/rw</em></span>-Verzeichnis setzen. Nur der Icinga-Benutzer (normalerweise
+      fÃ¼r das <span class="emphasis"><em>/usr/local/icinga/var/rw</em></span>-Verzeichnis setzen. Nur der Icinga-Benutzer (normalerweise
       <span class="emphasis"><em>icinga</em></span>) und der Web-Server-Benutzer (normalerweise <span class="emphasis"><em>nobody</em></span>,
-      <span class="emphasis"><em>httpd</em></span>, <span class="emphasis"><em>apache2</em></span> oder <span class="emphasis"><em>www-data</em></span>) sollten Schreibberechtigung für
-      das Commmand-File besitzen. Wenn Sie Icinga auf einer Maschine installiert haben, die der Überwachung und
+      <span class="emphasis"><em>httpd</em></span>, <span class="emphasis"><em>apache2</em></span> oder <span class="emphasis"><em>www-data</em></span>) sollten Schreibberechtigung fÃ¼r
+      das Commmand-File besitzen. Wenn Sie Icinga auf einer Maschine installiert haben, die der Ãœberwachung und
       administrativen Aufgaben dient, dann sollte das ausreichen. Wenn Sie es auf einer allgemeinen- oder Multi-User-Maschine
       installiert haben (nicht empfohlen) und dem Web-Server-Benutzer Schreibberechtigung auf das Command-File geben, kann das ein
-      Sicherheitsproblem sein. Sie wollen schließlich nicht, dass jeder Benutzer auf Ihrem System Icinga über das
-      External-Command-File kontrollieren kann. In diesem Fall würden wir raten, nur dem <span class="emphasis"><em>nagios</em></span>-Benutzer
+      Sicherheitsproblem sein. Sie wollen schlieÃŸlich nicht, dass jeder Benutzer auf Ihrem System Icinga Ã¼ber das
+      External-Command-File kontrollieren kann. In diesem Fall wÃ¼rden wir raten, nur dem <span class="emphasis"><em>nagios</em></span>-Benutzer
       Schreibberechtigung zu erlauben und etwas wie <a class="link" href="http://cgiwrap.sourceforge.net/" target="_top">CGIWrap</a> zu benutzen,
       um die CGIs als <span class="emphasis"><em>icinga</em></span> statt als <span class="emphasis"><em>nobody</em></span> laufen zu lassen.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Fordern Sie Authentifizierung bei den CGIs</strong></span>. Wir empfehlen dringend Authentifizierung
-      für den Zugriff auf die CGIs. Sobald Sie das tun, lesen Sie die Dokumentation zu Standardberechtigungen von
-      authentifizierten Kontakten und autorisieren Sie bestimmte Kontakte für zusätzliche Rechte nur, wenn es nötig ist. Eine
-      Anleitung zur Einrichtung von Authentifizierung und Autorisierung finden Sie <a class="link" href="cgiauth.html" title="Authentifizierung und Autorisierung in den CGIs">hier</a>. Wenn Sie
+      fÃ¼r den Zugriff auf die CGIs. Sobald Sie das tun, lesen Sie die Dokumentation zu Standardberechtigungen von
+      authentifizierten Kontakten und autorisieren Sie bestimmte Kontakte fÃ¼r zusÃ¤tzliche Rechte nur, wenn es nÃ¶tig ist. Eine
+      Anleitung zur Einrichtung von Authentifizierung und Autorisierung finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>. Wenn Sie
       mit der <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a>-Direktive die Authentifizierung in der
       CGI-Konfigurationsdatei deaktivieren, wird das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> das Schreiben jeglicher
-      Befehle in das <a class="link" href="configmain.html#configmain-command_file">external command file</a> verweigern. Sie wollen schließlich
+      Befehle in das <a class="link" href="configmain.html#configmain-command_file">external command file</a> verweigern. Sie wollen schlieÃŸlich
       nicht, dass alle Welt in der Lage ist, Icinga zu kontrollieren, oder?</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Benutzen Sie absolute Pfade in Befehlsdefinitionen</strong></span>. Wenn Sie Befehle definieren,
-      benutzen Sie den <span class="emphasis"><em>absoluten Pfad</em></span> (keinen relativen) für Scripte oder Programm, die Sie ausführen.</p>
+      benutzen Sie den <span class="emphasis"><em>absoluten Pfad</em></span> (keinen relativen) fÃ¼r Scripte oder Programm, die Sie ausfÃ¼hren.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Verstecken Sie sensible Daten mit $USERn$-Makros</strong></span>. Die CGIs lesen die <a class="link" href="configmain.html" title="Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> und die <a class="link" href="configobject.html" title="Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>, so dass Sie dort keine sensiblen Informationen (Benutzernamen,
-      Passwörter, usw.) ablegen sollten. Wenn Sie Benutzernamen und/oder Passwörter in einer Befehlsdefinition angeben müssen,
-      dann nutzen Sie ein $USERn$-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makro</a>, um sie zu verstecken. $USERn$-Makros werden in einer oder
+      <p><span class="bold"><strong>Verstecken Sie sensible Daten mit $USERn$-Makros</strong></span>. Die CGIs lesen die <a class="link" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> und die <a class="link" href="configobject.html" title="3.3. Ãœberblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>, so dass Sie dort keine sensiblen Informationen (Benutzernamen,
+      PasswÃ¶rter, usw.) ablegen sollten. Wenn Sie Benutzernamen und/oder PasswÃ¶rter in einer Befehlsdefinition angeben mÃ¼ssen,
+      dann nutzen Sie ein $USERn$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a>, um sie zu verstecken. $USERn$-Makros werden in einer oder
       mehreren <a class="link" href="configmain.html#configmain-resource_file">Ressourcen-Dateien</a> definiert. Die CGIs werden nicht versuchen, den
-      Inhalt von Ressourcen-Dateien zu lesen, so dass Sie restriktivere Berechtigungen (600 oder 660) dafür benutzen können.
-      Betrachten Sie die Beispiel-<span class="emphasis"><em>resource.cfg</em></span>-Datei im Basisverzeichnis der Icinga-Distribution für
+      Inhalt von Ressourcen-Dateien zu lesen, so dass Sie restriktivere Berechtigungen (600 oder 660) dafÃ¼r benutzen kÃ¶nnen.
+      Betrachten Sie die Beispiel-<span class="emphasis"><em>resource.cfg</em></span>-Datei im Basisverzeichnis der Icinga-Distribution fÃ¼r
       ein Beispiel, wie $USERn$-Makros zu definieren sind.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Entfernen Sie gefährliche Zeichen aus Makros</strong></span>. Benutzen Sie die <a class="link" href="configmain.html#configmain-illegal_macro_output_chars">illegal_macro_output_chars</a>-Direktive, um gefährliche Zeichen aus den
+      <p><span class="bold"><strong>Entfernen Sie gefÃ¤hrliche Zeichen aus Makros</strong></span>. Benutzen Sie die <a class="link" href="configmain.html#configmain-illegal_macro_output_chars">illegal_macro_output_chars</a>-Direktive, um gefÃ¤hrliche Zeichen aus den
       $HOSTOUTPUT$- , $SERVICEOUTPUT$-, $HOSTPERFDATA$- und $SERVICEPERFDATA$-Makros zu entfernen, bevor sie in Benachrichtigungen
-      usw. benutzt werden. Gefährliche Zeichen kann alles sein, was ggf. durch die Shell interpretiert wird und dadurch eine
-      Sicherheitslücke öffnet. Ein Beispiel dafür sind Backtick-Zeichen (`) in den $HOSTOUTPUT$, $SERVICEOUTPUT$, $HOSTPERFDATA$
+      usw. benutzt werden. GefÃ¤hrliche Zeichen kann alles sein, was ggf. durch die Shell interpretiert wird und dadurch eine
+      SicherheitslÃ¼cke Ã¶ffnet. Ein Beispiel dafÃ¼r sind Backtick-Zeichen (`) in den $HOSTOUTPUT$, $SERVICEOUTPUT$, $HOSTPERFDATA$
       und /oder $SERVICEPERFDATA$-Makros, die es einem Angreifer erlauben, einen beliebigen Befehl als Icinga-Benutzer
-      auszuführen (ein guter Grund, Icinga NICHT als root-Benutzer laufen zu lassen).</p>
+      auszufÃ¼hren (ein guter Grund, Icinga NICHT als root-Benutzer laufen zu lassen).</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Sicherer Zugang zu entfernten Agenten</strong></span>. Verriegeln Sie den Zugang zu Agenten
       (NRPE, NSClient, SNMP, usw.) auf entfernten Systemen durch Firewalls, Zugangsliste usw. Sie wollen nicht, dass jeder
-      Ihre Systeme nach Statusinformationen abfragt. Diese Informationen können durch einen Angreifer genutzt werden, um entfernte
-      Eventhandler-Scripte auszuführen oder die beste Zeit zu ermitteln, um nicht beobachtet zu werden.</p>
+      Ihre Systeme nach Statusinformationen abfragt. Diese Informationen kÃ¶nnen durch einen Angreifer genutzt werden, um entfernte
+      Eventhandler-Scripte auszufÃ¼hren oder die beste Zeit zu ermitteln, um nicht beobachtet zu werden.</p>
 
       <p><span class="inlinemediaobject"><img src="../images/security1.png"></span></p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Sichere Kommunikationskanäle</strong></span>. Stellen Sie sicher, dass Sie die Kommunikationskanäle
-      zwischen verschiedenen Icinga-Installationen und Ihren Überwachungskanälen verschlüsseln, wann immer möglich. Sie
-      wollen nicht, dass jemand Statusinformationen belauscht, die über Ihr Netzwerk gehen. Diese Informationen können durch einen
-      Angreifer genutzt werden, um die beste Zeit für einen unbeobachteten Zugang zu ermitteln.</p>
+      <p><span class="bold"><strong>Sichere KommunikationskanÃ¤le</strong></span>. Stellen Sie sicher, dass Sie die KommunikationskanÃ¤le
+      zwischen verschiedenen Icinga-Installationen und Ihren ÃœberwachungskanÃ¤len verschlÃ¼sseln, wann immer mÃ¶glich. Sie
+      wollen nicht, dass jemand Statusinformationen belauscht, die Ã¼ber Ihr Netzwerk gehen. Diese Informationen kÃ¶nnen durch einen
+      Angreifer genutzt werden, um die beste Zeit fÃ¼r einen unbeobachteten Zugang zu ermitteln.</p>
 
       <p><span class="inlinemediaobject"><img src="../images/security2.png"></span></p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id1589182"></a>
+  <a class="indexterm" name="idp13796320"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch08.html">Zurück</a> </td>
+<a accesskey="p" href="ch08.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch08.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="cgisecurity.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="cgisecurity.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Kapitel 8. Sicherheit und Leistungsoptimierung </td>
+<td width="40%" align="left" valign="top">Kapitel 8. Sicherheit und LeistungsoptimierungÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Verbesserte CGI-Sicherheit und Authentifizierung</td>
+<td width="40%" align="right" valign="top">Â 8.2. Verbesserte CGI-Sicherheit und Authentifizierung</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Notification Escalations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.8.Â Notification Escalations</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
-<link rel="prev" href="flapping.html" title="Detection and Handling of State Flapping">
-<link rel="next" href="escalation_condition.html" title="Escalation Condition">
+<link rel="up" href="ch07.html" title="ChapterÂ 7.Â Advanced Topics">
+<link rel="prev" href="flapping.html" title="7.7.Â Detection and Handling of State Flapping">
+<link rel="next" href="escalation_condition.html" title="7.9.Â Escalation Condition">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Notification Escalations</th></tr>
+<tr><th colspan="3" align="center">7.8.Â Notification Escalations</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="flapping.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 7. Advanced Topics</th>
-<td width="20%" align="right"> <a accesskey="n" href="escalation_condition.html">Next</a>
+<a accesskey="p" href="flapping.html">Prev</a>Â </td>
+<th width="60%" align="center">ChapterÂ 7.Â Advanced Topics</th>
+<td width="20%" align="right">Â <a accesskey="n" href="escalation_condition.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Notification Escalations">
+<div class="section" title="7.8.Â Notification Escalations">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="escalations"></a><a name="notification_escalations"></a>Notification Escalations</h2></div></div></div>
+<a name="escalations"></a>7.8.Â <a name="notification_escalations"></a>Notification Escalations</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -34,7 +35,7 @@
   <p><span class="inlinemediaobject"><img src="../images/objects-contacts.png"></span></p>
 
   <p>Icinga supports optional escalation of contact notifications for hosts and services. Escalation of host and service
-  notifications is accomplished by defining <a class="link" href="objectdefinitions.html#objectdefinitions-hostescalation">host escalations</a> and <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">service escalations</a> in your <a class="link" href="configobject.html" title="Object Configuration Overview">object
+  notifications is accomplished by defining <a class="link" href="objectdefinitions.html#objectdefinitions-hostescalation">host escalations</a> and <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">service escalations</a> in your <a class="link" href="configobject.html" title="3.3.Â Object Configuration Overview">object
   configuration file(s)</a>.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -280,7 +281,7 @@
 
   <p>You can optionally restrict escalations so that they are only used during specific time periods by using the
   <span class="emphasis"><em>escalation_period</em></span> directive in the host or service escalation definition. If you use the
-  <span class="emphasis"><em>escalation_period</em></span> directive to specify a <a class="link" href="timeperiods.html" title="Time Periods">timeperiod</a> during which the
+  <span class="emphasis"><em>escalation_period</em></span> directive to specify a <a class="link" href="timeperiods.html" title="5.9.Â Time Periods">timeperiod</a> during which the
   escalation can be used, the escalation will only be used during that time. If you do not specify any
   <span class="emphasis"><em>escalation_period</em></span> directive, the escalation can be used at any time within the "notification time window"
   for the host or service.</p>
@@ -303,25 +304,25 @@
   particular state, you can use the <span class="emphasis"><em>escalation_options</em></span> directive in the host or service escalation
   definition. If you do not use the <span class="emphasis"><em>escalation_options</em></span> directive, the escalation can be used when the host or
   service is in any state.</p>
-  <a class="indexterm" name="id1524557"></a>
+  <a class="indexterm" name="idp12688320"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="flapping.html">Prev</a> </td>
+<a accesskey="p" href="flapping.html">Prev</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="escalation_condition.html">Next</a>
+<td width="40%" align="right">Â <a accesskey="n" href="escalation_condition.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Detection and Handling of State Flapping </td>
+<td width="40%" align="left" valign="top">7.7.Â Detection and Handling of State FlappingÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Escalation Condition</td>
+<td width="40%" align="right" valign="top">Â 7.9.Â Escalation Condition</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

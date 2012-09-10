@@ -1,78 +1,79 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Icinga Plugins</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.1. Icinga Plugins</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="prev" href="ch05.html" title="Kapitel 5. Die Grundlagen">
-<link rel="next" href="macros.html" title="Makros verstehen und wie sie arbeiten">
+<link rel="next" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga Plugins</th></tr>
+<tr><th colspan="3" align="center">5.1. Icinga Plugins</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch05.html">Zurück</a> </td>
+<a accesskey="p" href="ch05.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
-<td width="20%" align="right"> <a accesskey="n" href="macros.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="macros.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Icinga Plugins">
+<div class="section" title="5.1. Icinga Plugins">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="plugins"></a>Icinga Plugins</h2></div></div></div>
+<a name="plugins"></a>5.1. Icinga Plugins</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Icinga enthält nicht, wie viele andere Überwachungs-Tools, interne Mechanismen zur Prüfung des Zustands von Hosts und
-  Services in Ihrem Netzwerk. Icinga verlässt sich statt dessen auf externe Programme (Plugins genannt), die all die schmutzige
+  <p>Icinga enthÃ¤lt nicht, wie viele andere Ãœberwachungs-Tools, interne Mechanismen zur PrÃ¼fung des Zustands von Hosts und
+  Services in Ihrem Netzwerk. Icinga verlÃ¤sst sich statt dessen auf externe Programme (Plugins genannt), die all die schmutzige
   Arbeit tun.</p>
 
   <p><span class="bold"><strong>Was sind Plugins?</strong></span></p>
 
-  <p>Plugins sind kompilierte Programme oder Scripts (Perl-Scripts, Shell-Scripts, usw.), die von einer Kommandozeile aus laufen können,
-  um den Status eines Hosts oder Service zu prüfen. Icinga benutzt die Ergebnisse von Plugins, um den aktuellen Status von Hosts oder
+  <p>Plugins sind kompilierte Programme oder Scripts (Perl-Scripts, Shell-Scripts, usw.), die von einer Kommandozeile aus laufen kÃ¶nnen,
+  um den Status eines Hosts oder Service zu prÃ¼fen. Icinga benutzt die Ergebnisse von Plugins, um den aktuellen Status von Hosts oder
   Services in Ihrem Netzwerk zu ermitteln.</p>
 
-  <p>Icinga wird ein Plugin immer dann ausführen, wenn die Notwendigkeit besteht, den Status eines Hosts oder Service zu prüfen.
-  Das Plugin tut <span class="emphasis"><em>etwas</em></span> (beachten Sie den sehr allgemeinen Ausdruck), um die Prüfung auszuführen und dann einfach die
-  Ergebnisse an Icinga zurückzuliefern. Icinga wird die Ergebnisse verarbeiten, die es vom Plugin erhält, und dann notwendige
-  Aktionen ausführen (starten von <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandlern</a>, senden von <a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungen</a>, etc).</p>
+  <p>Icinga wird ein Plugin immer dann ausfÃ¼hren, wenn die Notwendigkeit besteht, den Status eines Hosts oder Service zu prÃ¼fen.
+  Das Plugin tut <span class="emphasis"><em>etwas</em></span> (beachten Sie den sehr allgemeinen Ausdruck), um die PrÃ¼fung auszufÃ¼hren und dann einfach die
+  Ergebnisse an Icinga zurÃ¼ckzuliefern. Icinga wird die Ergebnisse verarbeiten, die es vom Plugin erhÃ¤lt, und dann notwendige
+  Aktionen ausfÃ¼hren (starten von <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandlern</a>, senden von <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a>, etc).</p>
 
   <p><span class="bold"><strong>Plugins als eine Abstraktionsschicht</strong></span></p>
 
   <p><span class="inlinemediaobject"><img src="../images/plugins.png"></span></p>
 
-  <p>Plugins arbeiten wie eine Abstraktionsschicht zwischen der Überwachungslogik im Icinga-Dämon und den eigentlichen Services
-  und Hosts, die überwacht werden.</p>
+  <p>Plugins arbeiten wie eine Abstraktionsschicht zwischen der Ãœberwachungslogik im Icinga-DÃ¤mon und den eigentlichen Services
+  und Hosts, die Ã¼berwacht werden.</p>
 
-  <p>Der Vorteil dieses Typs von Plugin-Architektur ist, dass Sie fast alles überwachen können, was Ihnen einfällt. Wenn Sie den Prozess
-  der Überwachung automatisieren können, können Sie es mit Icinga überwachen. Es gibt bereits eine Menge von Plugins, die erzeugt
-  wurden, um grundlegende Ressourcen wie z.B. Prozessorauslastung, Plattenbelegung, Ping-Raten usw. zu überwachen. Wenn Sie etwas anderes
-  überwachen möchten, werfen Sie einen Blick in die Dokumentation zu <a class="link" href="pluginapi.html" title="Nagios Plugin API">Plugins schreiben</a> und erstellen Sie
+  <p>Der Vorteil dieses Typs von Plugin-Architektur ist, dass Sie fast alles Ã¼berwachen kÃ¶nnen, was Ihnen einfÃ¤llt. Wenn Sie den Prozess
+  der Ãœberwachung automatisieren kÃ¶nnen, kÃ¶nnen Sie es mit Icinga Ã¼berwachen. Es gibt bereits eine Menge von Plugins, die erzeugt
+  wurden, um grundlegende Ressourcen wie z.B. Prozessorauslastung, Plattenbelegung, Ping-Raten usw. zu Ã¼berwachen. Wenn Sie etwas anderes
+  Ã¼berwachen mÃ¶chten, werfen Sie einen Blick in die Dokumentation zu <a class="link" href="pluginapi.html" title="11.1. Nagios Plugin API">Plugins schreiben</a> und erstellen Sie
   ein eigenes. Es ist einfach!</p>
 
   <p>Der Nachteil dieses Typs von Plugin-Architektur ist die Tatsache, dass Icinga absolut keine Ahnung davon hat, was Sie
-  überwachen. Sie könnten Netzwerkverkehr-Statistiken, Datenfehler-Raten, Raumtemperatur, CPU-Spannung, Lüftergeschwindigkeit,
-  Prozessorauslastung, Plattenbelegung überwachen oder die Fähigkeit Ihres superphantastischen Toasters, am Morgen Ihr Brot ordnungsgemäß zu
-  bräunen... Icinga versteht nicht die Besonderheiten dessen, was überwacht wird - es verfolgt lediglich Veränderungen des
-  <span class="emphasis"><em>Zustands</em></span> dieser Ressourcen. Nur die Plugins selbst wissen genau, was sie überwachen und wie die eigentlichen
-  Prüfungen auszuführen sind.</p>
+  Ã¼berwachen. Sie kÃ¶nnten Netzwerkverkehr-Statistiken, Datenfehler-Raten, Raumtemperatur, CPU-Spannung, LÃ¼ftergeschwindigkeit,
+  Prozessorauslastung, Plattenbelegung Ã¼berwachen oder die FÃ¤higkeit Ihres superphantastischen Toasters, am Morgen Ihr Brot ordnungsgemÃ¤ÃŸ zu
+  brÃ¤unen... Icinga versteht nicht die Besonderheiten dessen, was Ã¼berwacht wird - es verfolgt lediglich VerÃ¤nderungen des
+  <span class="emphasis"><em>Zustands</em></span> dieser Ressourcen. Nur die Plugins selbst wissen genau, was sie Ã¼berwachen und wie die eigentlichen
+  PrÃ¼fungen auszufÃ¼hren sind.</p>
 
-  <p><span class="bold"><strong>Welche Plugins sind verfügbar?</strong></span></p>
+  <p><span class="bold"><strong>Welche Plugins sind verfÃ¼gbar?</strong></span></p>
 
-  <p>Es gibt bereits zahlreiche Plugins, um viele verschiedene Arten von Geräten und Services zu überwachen, u.a.:</p>
+  <p>Es gibt bereits zahlreiche Plugins, um viele verschiedene Arten von GerÃ¤ten und Services zu Ã¼berwachen, u.a.:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><code class="systemitem">HTTP</code>, <code class="systemitem">POP3</code>, <code class="systemitem">IMAP</code>, <code class="systemitem">FTP</code>, <code class="systemitem">SSH</code>, <code class="systemitem">DHCP</code></p>
+      <p><span class="systemitem">HTTP</span>, <span class="systemitem">POP3</span>, <span class="systemitem">IMAP</span>, <span class="systemitem">FTP</span>, <span class="systemitem">SSH</span>, <span class="systemitem">DHCP</span></p>
     </li>
 <li class="listitem">
       <p>CPU-Auslastung, Plattenbelegung, Speicherauslastung, Anzahl Benutzer</p>
@@ -108,7 +109,7 @@
   <p><a name="plugins-howto"></a><span class="bold"><strong>Wie benutze ich Plugin X?</strong></span></p>
 
   <p>Fast alle Plugins zeigen grundlegende Bedienungshinweise an, wenn sie von der Kommandozeile mit der Option '-h' oder '--help'
-  aufgerufen werden. Wenn Sie z.B. wissen möchten, wie das Plugins check_http arbeitet bzw. welche Optionen es akzeptiert, sollten Sie
+  aufgerufen werden. Wenn Sie z.B. wissen mÃ¶chten, wie das Plugins check_http arbeitet bzw. welche Optionen es akzeptiert, sollten Sie
   folgenden Befehl ausprobieren:</p>
 
   <pre class="screen"> $&gt; ./check_http --help</pre>
@@ -121,9 +122,9 @@
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Führen Sie Plugins immer mit dem Icinga-Benutzer aus, denn einige Plugins erstellen temporäre Dateien. Wenn Sie Plugins mit
-    einem anderen Benutzer ausführen, dann kann der Icinga-Benutzer diese Dateien ggf. nicht überschreiben. Wenn Sie einen anderen
-    Benutzer verwenden, werden Sie nicht feststellen, ob ist der Icinga-Benutzer überhaupt berechtigt ist, auf bestimmte Dateien
+    <p>FÃ¼hren Sie Plugins immer mit dem Icinga-Benutzer aus, denn einige Plugins erstellen temporÃ¤re Dateien. Wenn Sie Plugins mit
+    einem anderen Benutzer ausfÃ¼hren, dann kann der Icinga-Benutzer diese Dateien ggf. nicht Ã¼berschreiben. Wenn Sie einen anderen
+    Benutzer verwenden, werden Sie nicht feststellen, ob ist der Icinga-Benutzer Ã¼berhaupt berechtigt ist, auf bestimmte Dateien
     (z.B. Shared Libraries) zuzugreifen.</p>
 
     <p>Rufen Sie das Plugin nicht mit einem relativen Pfad auf (z.B. <span class="emphasis"><em>./check_test_plugin</em></span>). Benutzen Sie immer
@@ -131,9 +132,9 @@
 
     <p>Bitte beachten Sie, dass der Icinga-<span class="emphasis"><em>Benutzer</em></span> eine andere Umgebung als der
     Icinga-<span class="emphasis"><em>Prozess</em></span> hat. Beim Benutzer wurden Login-Skripte durchlaufen und es ist ein Terminal mit der
-    Benutzer-Sitzung verbunden, so dass die erfolgreiche Ausführung eines Plugins von der Kommandozeile aus nicht (notwendigerweise)
-    bedeutet, dass es funktioniert, wenn es vom Prozess ausgeführt wird. Außerdem wird der Prozess per Default keine Shell benutzen, sondern
-    Aufrufe von popen/execvp ausführen, abhängig vom Befehl (popen falls die Kommandozeile Metazeichen enthält, die Bedeutung für die Shell
+    Benutzer-Sitzung verbunden, so dass die erfolgreiche AusfÃ¼hrung eines Plugins von der Kommandozeile aus nicht (notwendigerweise)
+    bedeutet, dass es funktioniert, wenn es vom Prozess ausgefÃ¼hrt wird. AuÃŸerdem wird der Prozess per Default keine Shell benutzen, sondern
+    Aufrufe von popen/execvp ausfÃ¼hren, abhÃ¤ngig vom Befehl (popen falls die Kommandozeile Metazeichen enthÃ¤lt, die Bedeutung fÃ¼r die Shell
     haben wie z.B. <code class="literal">!$^&amp;*()~[]\|{};&lt;&gt;?'"</code>, execvp falls keine Metazeichen vorhanden sind).</p>
   </td></tr>
 </table></div>
@@ -148,23 +149,23 @@
 
   <p>Wenn Sie jetzt angemeldet sind, dann springen Sie zum Punkt "Anpassen der Umgebung".</p>
 
-  <p>Bedingt durch das Sicherheitsbewusstsein des Packagers / Systemadministrators könnte dies fehlschlagen, weil der Account für
-  Anmeldungen gesperrt ist. Bitten Sie Ihren Systemadministrator, das vorübergehend zu ändern oder führen Sie einen der folgenden Punkte
+  <p>Bedingt durch das Sicherheitsbewusstsein des Packagers / Systemadministrators kÃ¶nnte dies fehlschlagen, weil der Account fÃ¼r
+  Anmeldungen gesperrt ist. Bitten Sie Ihren Systemadministrator, das vorÃ¼bergehend zu Ã¤ndern oder fÃ¼hren Sie einen der folgenden Punkte
   aus</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>ermitteln Sie die aktuelle Shell aus <code class="filename">/etc/passwd</code> und ändern Sie diese durch Ausführen von </p>
+      <p>ermitteln Sie die aktuelle Shell aus <code class="filename">/etc/passwd</code> und Ã¤ndern Sie diese durch AusfÃ¼hren von </p>
 <pre class="screen"> #&gt; OLD_SHELL=`grep icinga /etc/passwd | sed 's/.*://'`
  #&gt; usermod -s /bin/sh icinga</pre>
-<p>führen Sie die Befehle aus, nachdem Sie zum Icinga-Benutzer gewechselt sind und die Umgebung
+<p>fÃ¼hren Sie die Befehle aus, nachdem Sie zum Icinga-Benutzer gewechselt sind und die Umgebung
       wie oben beschrieben bereinigt haben</p>
 
       <p>vergessen Sie nicht, die Shell-Einstellung nach dem Testen und verlassen der Sitzung wiederherzustellen</p>
 <pre class="screen"> #&gt; usermod -s $OLD_SHELL icinga</pre>
     </li>
 <li class="listitem">
-      <p>führen Sie den Befehl über "sudo -u icinga" aus</p>
+      <p>fÃ¼hren Sie den Befehl Ã¼ber "sudo -u icinga" aus</p>
 
       <pre class="screen"> #&gt; sudo -u icinga /usr/local/icinga/libexec/sample-plugin.pl ...</pre>
     </li>
@@ -172,48 +173,48 @@
 
   <p><span class="bold"><strong>Anpassen der Umgebung</strong></span></p>
 
-  <p>Einige Prüfungen (wie check_oracle_health) hängen davon ab, dass verschiedene Umgebungsvariablen gesetzt sind. Setzen Sie diese
-  nicht in <code class="filename">.bashrc</code> oder anderen benutzerabhängigen Dateien, sondern wählen Sie dafür eine zentrale Stelle. Das
-  Default-Init-Skript durchläuft die Datei <code class="filename">/etc/sysconfig/icinga</code> (wenn sie vorhanden ist), so dass es ein idealer Platz
-  wäre. Benutzen Sie dafür nicht das Init-Skript selbst, weil Ihre Änderungen sonst bei Updates ggf. verloren gehen.</p>
+  <p>Einige PrÃ¼fungen (wie check_oracle_health) hÃ¤ngen davon ab, dass verschiedene Umgebungsvariablen gesetzt sind. Setzen Sie diese
+  nicht in <code class="filename">.bashrc</code> oder anderen benutzerabhÃ¤ngigen Dateien, sondern wÃ¤hlen Sie dafÃ¼r eine zentrale Stelle. Das
+  Default-Init-Skript durchlÃ¤uft die Datei <code class="filename">/etc/sysconfig/icinga</code> (wenn sie vorhanden ist), so dass es ein idealer Platz
+  wÃ¤re. Benutzen Sie dafÃ¼r nicht das Init-Skript selbst, weil Ihre Ã„nderungen sonst bei Updates ggf. verloren gehen.</p>
 
-  <p>Beispiel für <code class="filename">/etc/sysconfig/icinga</code></p>
+  <p>Beispiel fÃ¼r <code class="filename">/etc/sysconfig/icinga</code></p>
 
   <pre class="screen"> export ORACLE_HOME=/usr/lib/oracle/11.2/client64
  export LD_LIBRARY_PATH=$ORACLE_HOME/lib
  export PATH=$PATH:$ORACLE_HOME</pre>
-<p>Nachdem Sie sich angemeldet haben, sind diese Variablen noch nicht verfügbar, aber das ist ziemlich
+<p>Nachdem Sie sich angemeldet haben, sind diese Variablen noch nicht verfÃ¼gbar, aber das ist ziemlich
   einfach</p>
 
   <pre class="screen"> $&gt; . /etc/sysconfig/icinga</pre>
-<p>Bitte überprüfen Sie die Einstellungen</p>
+<p>Bitte Ã¼berprÃ¼fen Sie die Einstellungen</p>
 <pre class="screen"> $&gt; echo $ORACLE_HOME
  $&gt; echo $LD_LIBRARY_PATH
  $&gt; echo $PATH</pre>
 
   <p><span class="bold"><strong>Integration eines neuen Plugins</strong></span></p>
 
-  <p>Wenn Sie ein neues Plugin integrieren möchten, dann lesen Sie die Dokumentation (falls vorhanden). Sie könnte wichtige Informationen
-  über die Voraussetzungen wie z.B. zusätzliche Pakete oder (Perl-) Module enthalten, wie das Plugin zu installieren ist bzw.
-  distributionsabhängige Hinweise.</p>
+  <p>Wenn Sie ein neues Plugin integrieren mÃ¶chten, dann lesen Sie die Dokumentation (falls vorhanden). Sie kÃ¶nnte wichtige Informationen
+  Ã¼ber die Voraussetzungen wie z.B. zusÃ¤tzliche Pakete oder (Perl-) Module enthalten, wie das Plugin zu installieren ist bzw.
+  distributionsabhÃ¤ngige Hinweise.</p>
 
-  <p>Manchmal müssen Sie das Plugin kompilieren, wobei Sie den Vorgang durch den Aufruf von "./configure" mit oder ohne Optionen
-  vorbereiten. Bitte prüfen Sie die Datei config.log auf mögliche Fehler zu fehlenden (devel-)Paketen vor dem Aufuf des eigentlichen
-  Compile-Vorgangs (meistens "make" oder "make all"). In den meisten Fällen wird das Plugin durch den Aufruf von "make install" in das
+  <p>Manchmal mÃ¼ssen Sie das Plugin kompilieren, wobei Sie den Vorgang durch den Aufruf von "./configure" mit oder ohne Optionen
+  vorbereiten. Bitte prÃ¼fen Sie die Datei config.log auf mÃ¶gliche Fehler zu fehlenden (devel-)Paketen vor dem Aufuf des eigentlichen
+  Compile-Vorgangs (meistens "make" oder "make all"). In den meisten FÃ¤llen wird das Plugin durch den Aufruf von "make install" in das
   Plugins-Verzeichnis (z.B. <span class="emphasis"><em>/usr/local/icinga/libexec</em></span>) kopiert.</p>
 
-  <p>Manchmal müssen Sie das Plugin auf Ihre Umgebung anpassen (z.B. den Pfad zu "utils.pm"). Sie können stattdessen einen logischen Link
-  erzeugen, der auf das Plugin-Verzeichnis weist, so dass Sie nicht das Plugin ändern müssen, um diese Änderung zu umgehen und spätere
+  <p>Manchmal mÃ¼ssen Sie das Plugin auf Ihre Umgebung anpassen (z.B. den Pfad zu "utils.pm"). Sie kÃ¶nnen stattdessen einen logischen Link
+  erzeugen, der auf das Plugin-Verzeichnis weist, so dass Sie nicht das Plugin Ã¤ndern mÃ¼ssen, um diese Ã„nderung zu umgehen und spÃ¤tere
   Updates zu vereinfachen.</p>
 
-  <p>Nach der Installation des Plugins rufen Sie es mit den nötigen Optionen von der Kommandozeile aus auf. Wenn dies funktioniert,
-  können Sie es in Icinga integrieren.</p>
+  <p>Nach der Installation des Plugins rufen Sie es mit den nÃ¶tigen Optionen von der Kommandozeile aus auf. Wenn dies funktioniert,
+  kÃ¶nnen Sie es in Icinga integrieren.</p>
 
   <p>Stellen Sie sich vor, dass Sie den folgenden Aufruf benutzt haben:</p>
 
   <pre class="programlisting"> /usr/local/icinga/libexec/sample-plugin.pl -H 192.168.1.2 -a argument1 -p parameter -n 5</pre>
 
-  <p>Die command-Definition enthält zwei Direktiven</p>
+  <p>Die command-Definition enthÃ¤lt zwei Direktiven</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -221,12 +222,12 @@
       benutzen</p>
     </li>
 <li class="listitem">
-      <p>command_line: hier definieren Sie den auszuführenden Befehl. Sie könnten den Befehl angeben, den Sie auf der Kommandozeile
-      benutzen, aber das wäre zu unflexibel. Normalerweise ändert sich das Plugin-Verzeichnis (/usr/local/icinga/libexec) nicht, so dass wir eine
-      <a class="link" href="macrolist.html#macrolist-user">$USERn$</a>-Variable benutzen können, die in der resource.cfg definiert werden. Die IP-Adresse
-      ändert sich von Host zu Host. Es gibt das Makro <a class="link" href="macrolist.html#macrolist-hostaddress">$HOSTADDRESS$</a>, das wir dafür nutzen
-      können. Die Werte der Optionen können sich ändern, so dass auch sie flexibel sein sollten. Das könnte zu folgender Definition
-      führen:</p>
+      <p>command_line: hier definieren Sie den auszufÃ¼hrenden Befehl. Sie kÃ¶nnten den Befehl angeben, den Sie auf der Kommandozeile
+      benutzen, aber das wÃ¤re zu unflexibel. Normalerweise Ã¤ndert sich das Plugin-Verzeichnis (/usr/local/icinga/libexec) nicht, so dass wir eine
+      <a class="link" href="macrolist.html#macrolist-user">$USERn$</a>-Variable benutzen kÃ¶nnen, die in der resource.cfg definiert werden. Die IP-Adresse
+      Ã¤ndert sich von Host zu Host. Es gibt das Makro <a class="link" href="macrolist.html#macrolist-hostaddress">$HOSTADDRESS$</a>, das wir dafÃ¼r nutzen
+      kÃ¶nnen. Die Werte der Optionen kÃ¶nnen sich Ã¤ndern, so dass auch sie flexibel sein sollten. Das kÃ¶nnte zu folgender Definition
+      fÃ¼hren:</p>
     </li>
 </ul></div>
 
@@ -235,7 +236,7 @@
     command_line $USER1$/sample-plugin.pl -H $HOSTADDRESS$ -a $ARG1$ -p $ARG2$ -n $ARG3$
     }</pre>
 
-  <p>Dann müssen wir die check_command-Direktive definieren, die Teil der Host-/Service-Definition ist. Es beginnt mit dem Kurznamen
+  <p>Dann mÃ¼ssen wir die check_command-Direktive definieren, die Teil der Host-/Service-Definition ist. Es beginnt mit dem Kurznamen
   gefolgt von den Argumenten, die jeweils durch Ausrufezeichen voneinander getrennt sind:</p>
 
   <pre class="programlisting"> check_command check_sample!argument1!parameter!5</pre>
@@ -244,23 +245,23 @@
 
   <a name="plugins-hints2"></a>
 
-  <p>Neben den bereits genannten gibt es eine Vielzahl von <a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a>, die die Arbeit erleichtern. Dabei gibt
+  <p>Neben den bereits genannten gibt es eine Vielzahl von <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a>, die die Arbeit erleichtern. Dabei gibt
   es einige Dinge anzumerken:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Alle Icinga-Makros benutzen Großbuchstaben und werden in Dollarzeichen ($) eingeschlossen</p>
+      <p>Alle Icinga-Makros benutzen GroÃŸbuchstaben und werden in Dollarzeichen ($) eingeschlossen</p>
     </li>
 <li class="listitem">
-      <p>Die meisten Makros haben einen bestimmten Gültigkeitsbereich. Wenn Sie versuchen, ein Makro außerhalb dieses Bereichs zu nutzen,
+      <p>Die meisten Makros haben einen bestimmten GÃ¼ltigkeitsbereich. Wenn Sie versuchen, ein Makro auÃŸerhalb dieses Bereichs zu nutzen,
       dann werden Sie statt des erwarteten Wertes lediglich ein Dollarzeichen ($) sehen</p>
     </li>
 <li class="listitem">
-      <p>Die <a class="link" href="macrolist.html#macrolist-user">$USERn$</a>-Makros können genutzt werden, um sensible Informationen wie z.B. Passwörter zu
-      "verstecken", denn die Werte werden im Gegensatz zu den anderen Makros nicht im Web-Interface angezeigt. Außerdem können sie verwendet
-      werden, um bestimmte Sonderzeichen nutzen zu können, die anderenfalls zu Schwierigkeiten führen. Ein Beispiel wäre
-      <code class="literal">USER99=;</code>. Auf diese Weise können Sie ein Semikolon benutzen, das sonst als Start eines Kommentars in Ihrer
-      Definition behandelt würde</p>
+      <p>Die <a class="link" href="macrolist.html#macrolist-user">$USERn$</a>-Makros kÃ¶nnen genutzt werden, um sensible Informationen wie z.B. PasswÃ¶rter zu
+      "verstecken", denn die Werte werden im Gegensatz zu den anderen Makros nicht im Web-Interface angezeigt. AuÃŸerdem kÃ¶nnen sie verwendet
+      werden, um bestimmte Sonderzeichen nutzen zu kÃ¶nnen, die anderenfalls zu Schwierigkeiten fÃ¼hren. Ein Beispiel wÃ¤re
+      <code class="literal">USER99=;</code>. Auf diese Weise kÃ¶nnen Sie ein Semikolon benutzen, das sonst als Start eines Kommentars in Ihrer
+      Definition behandelt wÃ¼rde</p>
     </li>
 <li class="listitem">
       <p>Nachdem es bei deutschsprachigen Personen oftmals zu Problemen kommt: <a class="link" href="macrolist.html#macrolist-hostaddress">$HOSTADDRESS$</a>
@@ -270,15 +271,15 @@
 
   <p><span class="bold"><strong>Raw command line</strong></span></p>
 
-  <p>Beginnend mit Icinga 1.6 ermöglicht das klassische UI die Anzeige der Kommandozeile mit aufgelösten Variablen einschließlich
+  <p>Beginnend mit Icinga 1.6 ermÃ¶glicht das klassische UI die Anzeige der Kommandozeile mit aufgelÃ¶sten Variablen einschlieÃŸlich
   der Werte aus <code class="filename">resource.cfg</code>. Der Klick auf "ACTIVE" neben "Check type" in den Host-/Service Check Details gibt Ihnen
-  Zugriff auf diese Informationen. Wenn Sie noch keine Prüfung definiert haben, dann wählen Sie "View Config" aus den Hauptmenü auf der
-  linken Seite und dann "Command expansion". Bitte beachten Sie, dass der Benutzer über die Direktive <a class="link" href="configcgi.html#configcgi-authorized_for_full_command_resolution">authorized_for_full_command_resolution</a> in <code class="filename">cgi.cfg</code>
-  explizit dazu berechtigt sein muss, die Werte der Variable aus <code class="filename">resource.cfg</code> sehen zu dürfen. Außerdem muss der
-  Benutzer, unter dem der Web-Server läuft, Leseberechtigung auf diese Datei besitzen.</p>
+  Zugriff auf diese Informationen. Wenn Sie noch keine PrÃ¼fung definiert haben, dann wÃ¤hlen Sie "View Config" aus den HauptmenÃ¼ auf der
+  linken Seite und dann "Command expansion". Bitte beachten Sie, dass der Benutzer Ã¼ber die Direktive <a class="link" href="configcgi.html#configcgi-authorized_for_full_command_resolution">authorized_for_full_command_resolution</a> in <code class="filename">cgi.cfg</code>
+  explizit dazu berechtigt sein muss, die Werte der Variable aus <code class="filename">resource.cfg</code> sehen zu dÃ¼rfen. AuÃŸerdem muss der
+  Benutzer, unter dem der Web-Server lÃ¤uft, Leseberechtigung auf diese Datei besitzen.</p>
 
-  <p>Wenn Sie die Kommandozeile protokollieren möchten, dann müssen Sie einige Direktiven in <code class="filename">icinga.cfg</code> auf die
-  folgenden Werte ändern</p>
+  <p>Wenn Sie die Kommandozeile protokollieren mÃ¶chten, dann mÃ¼ssen Sie einige Direktiven in <code class="filename">icinga.cfg</code> auf die
+  folgenden Werte Ã¤ndern</p>
 
   <pre class="screen"> #  16 = Host/service checks
  # 256 = Commands
@@ -288,17 +289,17 @@
 
   <p><span class="bold"><strong>Schwellwert und Bereiche</strong></span></p>
 
-  <p>Einige Plugins unterstützen Bereichsangaben für die Warn- und Kritisch-Werte. Bitte überprüfen Sie die Dokumentation, ob das der
-  Fall für das Plugin ist, das Sie benutzen möchten. Das Folgende ist ein Auszug der (englischsprachigen) <a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT" target="_top">Entwickler-Richtlinien</a>:</p>
+  <p>Einige Plugins unterstÃ¼tzen Bereichsangaben fÃ¼r die Warn- und Kritisch-Werte. Bitte Ã¼berprÃ¼fen Sie die Dokumentation, ob das der
+  Fall fÃ¼r das Plugin ist, das Sie benutzen mÃ¶chten. Das Folgende ist ein Auszug der (englischsprachigen) <a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT" target="_top">Entwickler-Richtlinien</a>:</p>
 
   <p>Ein Bereich ist definiert als ein Start- und Endpunkt (inklusive) auf einer numerischen Skala (ggf. bis zu +/--Unendlich).</p>
 
   <p>Ein Schwellwert ist ein Bereich mit einem Alarmpegel (entweder Warning oder Critical).</p>
 
-  <p>In der Theorie wird das Plugin eine Prüfung durchführen, die einen numerischen Wert oder eine Metrik zurückliefert, die dann mit den
+  <p>In der Theorie wird das Plugin eine PrÃ¼fung durchfÃ¼hren, die einen numerischen Wert oder eine Metrik zurÃ¼ckliefert, die dann mit den
   Warning- und Critical-Schwellwerten verglichen wird</p>
 
-  <p>Dies ist das generelle Format für Bereiche:</p>
+  <p>Dies ist das generelle Format fÃ¼r Bereiche:</p>
 
   <p><code class="code">[@]start:end</code></p>
 
@@ -318,11 +319,11 @@
       <p>um -Unendlich anzugeben, benutzen Sie "~"</p>
     </li>
 <li class="listitem">
-      <p>Alarm erfolgt, wenn die Metrik außerhalb des durch Start- und Ende angegebenen Bereichs liegt (Endpunkte gehören
+      <p>Alarm erfolgt, wenn die Metrik auÃŸerhalb des durch Start- und Ende angegebenen Bereichs liegt (Endpunkte gehÃ¶ren
       <span class="emphasis"><em>nicht</em></span> zum Bereich)</p>
     </li>
 <li class="listitem">
-      <p>wenn der Bereich mit "@" beginnt, dann ist zu alamieren, wenn die Metrik innerhalb des Bereichs liegt (einschließlich der
+      <p>wenn der Bereich mit "@" beginnt, dann ist zu alamieren, wenn die Metrik innerhalb des Bereichs liegt (einschlieÃŸlich der
       Endpunkte)</p>
     </li>
 </ol></div>
@@ -333,7 +334,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Nicht alle Plugin unterstützen (bisher) die Bereichsnotation.</p>
+    <p>Nicht alle Plugin unterstÃ¼tzen (bisher) die Bereichsnotation.</p>
   </td></tr>
 </table></div>
 
@@ -351,19 +352,19 @@
 </tr>
 <tr>
 <td>10</td>
-<td>&lt; 0 oder &gt; 10, (außerhalb des Bereichs von {0 .. 10})</td>
+<td>&lt; 0 oder &gt; 10, (auÃŸerhalb des Bereichs von {0 .. 10})</td>
 </tr>
 <tr>
 <td>10:</td>
-<td>&lt; 10, (außerhalb {10 .. Unendlich})</td>
+<td>&lt; 10, (auÃŸerhalb {10 .. Unendlich})</td>
 </tr>
 <tr>
 <td>~:10</td>
-<td>&gt; 10, (außerhalb des Bereichs von {-Unendlich .. 10})</td>
+<td>&gt; 10, (auÃŸerhalb des Bereichs von {-Unendlich .. 10})</td>
 </tr>
 <tr>
 <td>10:20</td>
-<td>&lt; 10 oder &gt; 20, (außerhalb des Bereichs von {10 .. 20})</td>
+<td>&lt; 10 oder &gt; 20, (auÃŸerhalb des Bereichs von {10 .. 20})</td>
 </tr>
 <tr>
 <td>@10:20</td>
@@ -383,11 +384,11 @@
 <tbody>
 <tr>
 <td><span class="bold"><strong>Kommandozeile</strong></span></td>
-<td><span class="bold"><strong>Erklärung</strong></span></td>
+<td><span class="bold"><strong>ErklÃ¤rung</strong></span></td>
 </tr>
 <tr>
 <td>check_stuff -w10 -c20</td>
-<td>kritisch, wenn "stuff" größer als 20, andernfalls warnen, wenn größer als 10 (außerdem kritisch, wenn "stuff" kleiner als
+<td>kritisch, wenn "stuff" grÃ¶ÃŸer als 20, andernfalls warnen, wenn grÃ¶ÃŸer als 10 (auÃŸerdem kritisch, wenn "stuff" kleiner als
             0)</td>
 </tr>
 <tr>
@@ -396,7 +397,7 @@
 </tr>
 <tr>
 <td>check_stuff -w10: -c20</td>
-<td>kritisch, wenn "stuff" größer als 20, andernfalls warnen, wenn"stuff" kleiner als 10 (außerdem kritisch, wenn "stuff"
+<td>kritisch, wenn "stuff" grÃ¶ÃŸer als 20, andernfalls warnen, wenn"stuff" kleiner als 10 (auÃŸerdem kritisch, wenn "stuff"
             kleiner als 0)</td>
 </tr>
 <tr>
@@ -405,7 +406,7 @@
 </tr>
 <tr>
 <td>check_stuff -w~:0 -c10</td>
-<td>kritisch, wenn "stuff" größer als 10; warnen, wenn "stuff" größer als 0</td>
+<td>kritisch, wenn "stuff" grÃ¶ÃŸer als 10; warnen, wenn "stuff" grÃ¶ÃŸer als 0</td>
 </tr>
 <tr>
 <td>check_stuff -c5:6</td>
@@ -418,7 +419,7 @@
 </tr>
 <tr>
 <td>check_stuff -w20:30 -c10:40</td>
-<td>warnen, wenn "stuff" kleiner als 20 oder größer als 30, kritisch, wenn "stuff" kleiner als 10 oder größer als 40
+<td>warnen, wenn "stuff" kleiner als 20 oder grÃ¶ÃŸer als 30, kritisch, wenn "stuff" kleiner als 10 oder grÃ¶ÃŸer als 40
             <span class="bold"><strong>[2]</strong></span>
 </td>
 </tr>
@@ -432,18 +433,18 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>[1]: Bei der Kommandozeile in den Entwickler-Richtlinien fehlt "@", anderenfalls wäre die Erklärung falsch (und es gäbe kein
-    Beispiel für die @-Notation)</p>
+    <p>[1]: Bei der Kommandozeile in den Entwickler-Richtlinien fehlt "@", anderenfalls wÃ¤re die ErklÃ¤rung falsch (und es gÃ¤be kein
+    Beispiel fÃ¼r die @-Notation)</p>
 
     <p>[2]: Bitte beachten Sie, dass das letzte Beispiel geschachtelte Bereiche benutzt. Das mag nicht bei allen Plugins funktionieren,
-    die Bereichsangaben unterstützen. Es wurde mit check_snmp getestet</p>
+    die Bereichsangaben unterstÃ¼tzen. Es wurde mit check_snmp getestet</p>
   </td></tr>
 </table></div>
 
   <p><span class="bold"><strong>Aktivieren der Definition</strong></span></p>
 
-  <p>Prüfen Sie die Konfiguration mit "/etc/init.d/icinga show-errors" und bereinigen Sie eventuelle Fehler, bevor Sie Icinga mit
-  "/etc/init.d/icinga restart" neu starten. Warten Sie, bis das Objekt geprüft wurde und betrachten Sie die Status-Details. Vielleicht gibt
+  <p>PrÃ¼fen Sie die Konfiguration mit "/etc/init.d/icinga show-errors" und bereinigen Sie eventuelle Fehler, bevor Sie Icinga mit
+  "/etc/init.d/icinga restart" neu starten. Warten Sie, bis das Objekt geprÃ¼ft wurde und betrachten Sie die Status-Details. Vielleicht gibt
   es Fehler.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -458,54 +459,54 @@
 <li class="listitem">
       <p>"...resulted in a return code of 126"</p>
 
-      <p>Meistens handelt es sich um ein Berechtigungsproblem. Der Benutzer kann ggf. das Plugin nicht ausführen bzw. darauf und/oder auf
-      zugehörige Dateien zugreifen.</p>
+      <p>Meistens handelt es sich um ein Berechtigungsproblem. Der Benutzer kann ggf. das Plugin nicht ausfÃ¼hren bzw. darauf und/oder auf
+      zugehÃ¶rige Dateien zugreifen.</p>
     </li>
 <li class="listitem">
       <p>"...resulted in a return code of 13"</p>
 
-      <p>Meistens handelt es sich um ein Berechtigungsproblem. Der Benutzer kann ggf. das Plugin nicht ausführen bzw. darauf und/oder auf
-      zugehörige Dateien zugreifen. Das kann passieren, wenn Sie als root ein Plugin ausgeführt haben, das temporäre Dateien anlegt. Der
-      Icinga-Benutzer ist nicht berechtigt, diese Dateien zu überschreiben.</p>
+      <p>Meistens handelt es sich um ein Berechtigungsproblem. Der Benutzer kann ggf. das Plugin nicht ausfÃ¼hren bzw. darauf und/oder auf
+      zugehÃ¶rige Dateien zugreifen. Das kann passieren, wenn Sie als root ein Plugin ausgefÃ¼hrt haben, das temporÃ¤re Dateien anlegt. Der
+      Icinga-Benutzer ist nicht berechtigt, diese Dateien zu Ã¼berschreiben.</p>
     </li>
 <li class="listitem">
       <p>(null)</p>
 
-      <p>Der interne Aufruf von execvp lieferte nichts zurück.</p>
+      <p>Der interne Aufruf von execvp lieferte nichts zurÃ¼ck.</p>
     </li>
 </ul></div>
 
   <p><span class="bold"><strong>Plugin API</strong></span></p>
 
-  <p>Informationen zu technischen Aspekten von Plugins sowie zur Erstellung Ihrer eigenen Plugins finden Sie <a class="link" href="pluginapi.html" title="Nagios Plugin API">hier</a>.</p>
+  <p>Informationen zu technischen Aspekten von Plugins sowie zur Erstellung Ihrer eigenen Plugins finden Sie <a class="link" href="pluginapi.html" title="11.1. Nagios Plugin API">hier</a>.</p>
 
-  <a class="indexterm" name="id1529405"></a>
+  <a class="indexterm" name="idp6664688"></a>
 
-  <a class="indexterm" name="id1529418"></a>
+  <a class="indexterm" name="idp6666336"></a>
 
-  <a class="indexterm" name="id1529427"></a>
+  <a class="indexterm" name="idp6667376"></a>
 
-  <a class="indexterm" name="id1529441"></a>
+  <a class="indexterm" name="idp6669056"></a>
 
-  <a class="indexterm" name="id1529454"></a>
+  <a class="indexterm" name="idp6670656"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch05.html">Zurück</a> </td>
+<a accesskey="p" href="ch05.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="macros.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="macros.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Kapitel 5. Die Grundlagen </td>
+<td width="40%" align="left" valign="top">Kapitel 5. Die GrundlagenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Makros verstehen und wie sie arbeiten</td>
+<td width="40%" align="right" valign="top">Â 5.2. Makros verstehen und wie sie arbeiten</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

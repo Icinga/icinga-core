@@ -1,61 +1,62 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Erkennung und Behandlung von Status-Flattern</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.7. Erkennung und Behandlung von Status-Flattern</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="redundancy.html" title="Redundante und Failover-Netzwerk-Überwachung">
-<link rel="next" href="escalations.html" title="Benachrichtigungseskalationen">
+<link rel="prev" href="redundancy.html" title="7.6. Redundante und Failover-Netzwerk-Ãœberwachung">
+<link rel="next" href="escalations.html" title="7.8. Benachrichtigungseskalationen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Erkennung und Behandlung von Status-Flattern</th></tr>
+<tr><th colspan="3" align="center">7.7. Erkennung und Behandlung von Status-Flattern</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="redundancy.html">Zurück</a> </td>
+<a accesskey="p" href="redundancy.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="escalations.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="escalations.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Erkennung und Behandlung von Status-Flattern">
+<div class="section" title="7.7. Erkennung und Behandlung von Status-Flattern">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="flapping"></a>Erkennung und Behandlung von Status-Flattern</h2></div></div></div>
+<a name="flapping"></a>7.7. Erkennung und Behandlung von Status-Flattern</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Icinga unterstützt die Erkennung von Hosts und Services, die "flattern". Flattern tritt auf, wenn Hosts oder
+  <p>Icinga unterstÃ¼tzt die Erkennung von Hosts und Services, die "flattern". Flattern tritt auf, wenn Hosts oder
   Services zu oft den Zustand wechseln und dadurch einen Sturm von Problemen und Erholungsbenachrichtigungen erzeugen. Flattern
-  kann auf Konfigurationsprobleme hinweisen (z.B. Schwellwerte, die zu niedrig gesetzt sind), störende Services oder wirkliche
+  kann auf Konfigurationsprobleme hinweisen (z.B. Schwellwerte, die zu niedrig gesetzt sind), stÃ¶rende Services oder wirkliche
   Netzwerkprobleme.</p>
 
   <p><span class="bold"><strong>Wie Flatter-Erkennung arbeitet</strong></span></p>
 
   <p>Bevor wir darauf eingehen, lassen Sie uns sagen, dass es etwas schwierig war, Flatter-Erkennung zu implementieren. Wie
-  genau legt man fest, was "zu häufig" in Bezug auf Statusänderungen für einen Host oder Service ist? Als Ethan Galstad zuerst an
+  genau legt man fest, was "zu hÃ¤ufig" in Bezug auf StatusÃ¤nderungen fÃ¼r einen Host oder Service ist? Als Ethan Galstad zuerst an
   die Implementierung der Flatter-Erkennung gedacht hat, versuchte er Informationen zu finden, wie Flattern erkannt werden
-  könnte/sollte. Er konnte keinerlei Informationen darüber finden, was andere benutzten (benutzen andere so etwas?), also
-  entschied er sich für das, was er für eine sinnvolle Lösung hielt...</p>
+  kÃ¶nnte/sollte. Er konnte keinerlei Informationen darÃ¼ber finden, was andere benutzten (benutzen andere so etwas?), also
+  entschied er sich fÃ¼r das, was er fÃ¼r eine sinnvolle LÃ¶sung hielt...</p>
 
-  <p>Sobald Icinga den Zustand eines Hosts oder Services prüft, wird es prüfen, ob dafür Flattern begonnen oder geendet
+  <p>Sobald Icinga den Zustand eines Hosts oder Services prÃ¼ft, wird es prÃ¼fen, ob dafÃ¼r Flattern begonnen oder geendet
   hat. Es tut dies durch:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>speichern der Ergebnisse der letzten 21 Prüfungen des Hosts oder Service</p>
+      <p>speichern der Ergebnisse der letzten 21 PrÃ¼fungen des Hosts oder Service</p>
     </li>
 <li class="listitem">
-      <p>analysieren der historischen Prüfergebnisse und feststellen, wo Statusänderungen/-übergänge auftreten</p>
+      <p>analysieren der historischen PrÃ¼fergebnisse und feststellen, wo StatusÃ¤nderungen/-Ã¼bergÃ¤nge auftreten</p>
     </li>
 <li class="listitem">
-      <p>benutzen der Statusübergänge, um einen Statuswechsel-Prozentsatz (ein Maß für die Änderung) für den Statuswechsel des
+      <p>benutzen der StatusÃ¼bergÃ¤nge, um einen Statuswechsel-Prozentsatz (ein MaÃŸ fÃ¼r die Ã„nderung) fÃ¼r den Statuswechsel des
       Hosts oder Service festzulegen</p>
     </li>
 <li class="listitem">
@@ -64,7 +65,7 @@
 </ul></div>
 
   <p>Ein Host oder Service wird angesehen, mit dem Flatter <span class="emphasis"><em>begonnen</em></span> zu haben, wenn der Prozentsatz das
-  erste Mal einen <span class="emphasis"><em>hohen</em></span> Flatter-Schwellwert überschritten hat.</p>
+  erste Mal einen <span class="emphasis"><em>hohen</em></span> Flatter-Schwellwert Ã¼berschritten hat.</p>
 
   <p>Ein Host oder Service wird angesehen, das Flattern <span class="emphasis"><em>beendet</em></span> zu haben, wenn der Prozentsatz unter einen
   <span class="emphasis"><em>niedrigen</em></span> Flatter-Schwellwert sinkt (vorausgesetzt, dass er vorher geflattert hat).</p>
@@ -73,90 +74,90 @@
 
   <p>Lassen Sie uns etwas detaillierter beschreiben, wie Flatter-Erkennung bei Services arbeitet...</p>
 
-  <p>Das Bild unten zeigt eine chronologische Historie von Service-Zuständen der letzten 21 Service-Prüfungen. OK-Zustände sind
-  in grün dargestellt, WARNING-Zustände in gelb, CRITICAL-Zustände in rot und UNKNOWN-Zustände in orange.</p>
+  <p>Das Bild unten zeigt eine chronologische Historie von Service-ZustÃ¤nden der letzten 21 Service-PrÃ¼fungen. OK-ZustÃ¤nde sind
+  in grÃ¼n dargestellt, WARNING-ZustÃ¤nde in gelb, CRITICAL-ZustÃ¤nde in rot und UNKNOWN-ZustÃ¤nde in orange.</p>
 
   <div class="mediaobject"><img src="../images/statetransitions.png"></div>
 
-  <p>Die historischen Service-Prüfergebnisse werden untersucht, um festzustellen, wo Statusänderungen/-übergänge auftreten.
-  Statusänderungen treten auf, wenn ein archivierter Status sich von den archivierten Zuständen unterscheidet, die ihm direkt
-  vorausgehen. Da wir die Ergebnisse der letzten 21 Status-Prüfungen in dem Array ablegen, können wir bis zu 20 Statusänderungen
-  haben. In diesem Beispiel gibt es sieben Statusänderungen, die im Bild durch blaue Pfeile gekennzeichnet sind.</p>
+  <p>Die historischen Service-PrÃ¼fergebnisse werden untersucht, um festzustellen, wo StatusÃ¤nderungen/-Ã¼bergÃ¤nge auftreten.
+  StatusÃ¤nderungen treten auf, wenn ein archivierter Status sich von den archivierten ZustÃ¤nden unterscheidet, die ihm direkt
+  vorausgehen. Da wir die Ergebnisse der letzten 21 Status-PrÃ¼fungen in dem Array ablegen, kÃ¶nnen wir bis zu 20 StatusÃ¤nderungen
+  haben. In diesem Beispiel gibt es sieben StatusÃ¤nderungen, die im Bild durch blaue Pfeile gekennzeichnet sind.</p>
 
-  <p>Die Flatter-Erkennungslogik nutzt die Statusänderungen, um einen Gesamtprozentsatz für den Service festzulegen. Dies ist
-  ein Maßstab für die Sprunghaftigkeit/Änderung des Service. Services, die nie den Status wechseln, haben einen
-  Statusänderungswert von 0%, während Services, die ihren Status bei jeder Prüfung wechseln, einen Wert von 100% haben. Die
+  <p>Die Flatter-Erkennungslogik nutzt die StatusÃ¤nderungen, um einen Gesamtprozentsatz fÃ¼r den Service festzulegen. Dies ist
+  ein MaÃŸstab fÃ¼r die Sprunghaftigkeit/Ã„nderung des Service. Services, die nie den Status wechseln, haben einen
+  StatusÃ¤nderungswert von 0%, wÃ¤hrend Services, die ihren Status bei jeder PrÃ¼fung wechseln, einen Wert von 100% haben. Die
   meisten Services werden einen Prozentwert irgendwo dazwischen haben.</p>
 
-  <p>Während der Berechnung des Prozentsatzes für den Service wird der Flatter-Erkennungsalgorithmus mehr Gewicht auf neuere
-  Statusänderungen legen als auf alte. Genauer gesagt sind die Flatter-Erkennungsroutinen im Moment so ausgelegt, dass der neueste
-  Statuswechsel 50% mehr Gewicht hat als der älteste. Das Bild unten zeigt, wie neuere Statuswechsel mehr Gewicht erhalten als
-  ältere, während der Gesamtprozentwert für einen bestimmten Service berechnet wird.</p>
+  <p>WÃ¤hrend der Berechnung des Prozentsatzes fÃ¼r den Service wird der Flatter-Erkennungsalgorithmus mehr Gewicht auf neuere
+  StatusÃ¤nderungen legen als auf alte. Genauer gesagt sind die Flatter-Erkennungsroutinen im Moment so ausgelegt, dass der neueste
+  Statuswechsel 50% mehr Gewicht hat als der Ã¤lteste. Das Bild unten zeigt, wie neuere Statuswechsel mehr Gewicht erhalten als
+  Ã¤ltere, wÃ¤hrend der Gesamtprozentwert fÃ¼r einen bestimmten Service berechnet wird.</p>
 
   <div class="mediaobject"><img src="../images/statetransitions2.png"></div>
 
-  <p>Lassen Sie uns mit dem obigen Bild eine Berechnung der prozentualen Statusänderungen für den Service durchführen. Sie
+  <p>Lassen Sie uns mit dem obigen Bild eine Berechnung der prozentualen StatusÃ¤nderungen fÃ¼r den Service durchfÃ¼hren. Sie
   werden bemerken, dass es insgesamt sieben Statuswechsel gibt (bei t<sub>3</sub>, t<sub>4</sub>,
   t<sub>5</sub>, t<sub>9</sub>, t<sub>12</sub>, t<sub>16</sub> und
-  t<sub>19</sub>). Ohne Gewichtung der Statuswechsel über die Zeit würde dies einen Gesamtwert von 35% ergeben:</p>
+  t<sub>19</sub>). Ohne Gewichtung der Statuswechsel Ã¼ber die Zeit wÃ¼rde dies einen Gesamtwert von 35% ergeben:</p>
 
-  <p>(7 beobachtete Statuswechsel / 20 mögliche Statuswechsel) * 100 = 35 %</p>
+  <p>(7 beobachtete Statuswechsel / 20 mÃ¶gliche Statuswechsel) * 100 = 35 %</p>
 
-  <p>Nachdem die Flatter-Erkennungslogik neueren Statuswechseln mehr Gewicht gibt als älteren, wird der eigentliche Wert in
-  diesem Beispiel geringfügig kleiner sein als 35%. Lassen Sie uns annehmen, dass der gewichtete Prozentwert 31% ist...</p>
+  <p>Nachdem die Flatter-Erkennungslogik neueren Statuswechseln mehr Gewicht gibt als Ã¤lteren, wird der eigentliche Wert in
+  diesem Beispiel geringfÃ¼gig kleiner sein als 35%. Lassen Sie uns annehmen, dass der gewichtete Prozentwert 31% ist...</p>
 
-  <p>Der errechnete Prozentwert für den Service (31%) wird dann gegen die Flatter-Schwellwerte verglichen, um zu sehen, was
+  <p>Der errechnete Prozentwert fÃ¼r den Service (31%) wird dann gegen die Flatter-Schwellwerte verglichen, um zu sehen, was
   passiert:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>wenn der Service bisher <span class="emphasis"><em>nicht</em></span> flatterte und 31% <span class="emphasis"><em>gleich oder größer</em></span> als der
+      <p>wenn der Service bisher <span class="emphasis"><em>nicht</em></span> flatterte und 31% <span class="emphasis"><em>gleich oder grÃ¶ÃŸer</em></span> als der
       hohe Flatter-Schwellwert ist, nimmt Icinga an, dass der Service gerade angefangen hat zu flattern.</p>
     </li>
 <li class="listitem">
       <p>wenn der Service <span class="emphasis"><em>bereits</em></span> flatterte und 31% <span class="emphasis"><em>unter</em></span> dem niedrigen
-      Flatter-Schwellwert liegt, nimmt Icinga an, dass der Service gerade aufgehört hat zu flattern.</p>
+      Flatter-Schwellwert liegt, nimmt Icinga an, dass der Service gerade aufgehÃ¶rt hat zu flattern.</p>
     </li>
 </ul></div>
 
   <p>wenn keine der beiden Bedingungen zutrifft, dann macht die Flatter-Erkennungslogik nichts weiteres mit dem Service, da er
   entweder (noch) nicht flattert oder bereits flattert.</p>
 
-  <p><span class="bold"><strong>Flatter-Erkennung für Services</strong></span></p>
+  <p><span class="bold"><strong>Flatter-Erkennung fÃ¼r Services</strong></span></p>
 
-  <p>Icinga prüft jedes Mal, wenn der Service geprüft wird (egal ob aktiv oder passiv), ob ein Service flattert.</p>
+  <p>Icinga prÃ¼ft jedes Mal, wenn der Service geprÃ¼ft wird (egal ob aktiv oder passiv), ob ein Service flattert.</p>
 
-  <p>Die Flatter-Erkennungslogik für Services arbeitet wie in dem obigen Beispiel beschrieben.</p>
+  <p>Die Flatter-Erkennungslogik fÃ¼r Services arbeitet wie in dem obigen Beispiel beschrieben.</p>
 
-  <p><span class="bold"><strong>Flatter-Erkennung für Hosts</strong></span></p>
+  <p><span class="bold"><strong>Flatter-Erkennung fÃ¼r Hosts</strong></span></p>
 
-  <p>Host-Flatter-Erkennung arbeitet in einer ähnlichen Weise wie die Service-Flatter-Erkennung, mit einem wichtigen
-  Unterschied: Icinga wird versuchen zu prüfen, ob ein Host flattert, wenn:</p>
+  <p>Host-Flatter-Erkennung arbeitet in einer Ã¤hnlichen Weise wie die Service-Flatter-Erkennung, mit einem wichtigen
+  Unterschied: Icinga wird versuchen zu prÃ¼fen, ob ein Host flattert, wenn:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>der Host geprüft wird (aktiv oder passiv)</p>
+      <p>der Host geprÃ¼ft wird (aktiv oder passiv)</p>
     </li>
 <li class="listitem">
-      <p>manchmal, wenn ein Service geprüft wird, der mit dem Host verbunden ist. Genauer gesagt, wenn wenigstens
-      <span class="emphasis"><em>x</em></span> der Zeit vergangen ist, seit die letzte Flatter-Erkennung durchgeführt wurde, wobei
+      <p>manchmal, wenn ein Service geprÃ¼ft wird, der mit dem Host verbunden ist. Genauer gesagt, wenn wenigstens
+      <span class="emphasis"><em>x</em></span> der Zeit vergangen ist, seit die letzte Flatter-Erkennung durchgefÃ¼hrt wurde, wobei
       <span class="emphasis"><em>x</em></span> dem Durchschnittsintervall aller Services entspricht, die mit dem Host verbunden sind.</p>
     </li>
 </ul></div>
 
   <p>Warum wird das gemacht? Bei Services wissen wir, dass die minimale Zeit zwischen zwei aufeinander folgenden
-  Flatter-Erkennungsroutinen gleich dem Service-Prüfintervall sein wird. Allerdings werden Sie Hosts wahrscheinlich nicht auf
-  einer regelmäßigen Basis überwachen, so dass es kein Prüfintervall gibt, das in der Flatter-Erkennungslogik benutzt werden kann.
-  Außerdem ist es sinnvoll, dass die Prüfung eines Service der Erkennung eines Host-Flatterns dienen sollte. Services sind
+  Flatter-Erkennungsroutinen gleich dem Service-PrÃ¼fintervall sein wird. Allerdings werden Sie Hosts wahrscheinlich nicht auf
+  einer regelmÃ¤ÃŸigen Basis Ã¼berwachen, so dass es kein PrÃ¼fintervall gibt, das in der Flatter-Erkennungslogik benutzt werden kann.
+  AuÃŸerdem ist es sinnvoll, dass die PrÃ¼fung eines Service der Erkennung eines Host-Flatterns dienen sollte. Services sind
   Attribute eines Hosts bzw. bezogen auf Dinge, die mit dem Host verbunden sind. Auf jeden Fall ist es die beste Methode, die
-  Ethan Galstad gefunden hat, um festzulegen, wie oft die Flatter-Erkennung auf einem Host ausgeführt werden kann.</p>
+  Ethan Galstad gefunden hat, um festzulegen, wie oft die Flatter-Erkennung auf einem Host ausgefÃ¼hrt werden kann.</p>
 
   <p><span class="bold"><strong>Flatter-Erkennungsschwellwerte</strong></span></p>
 
-  <p>Icinga benutzt verschiedene Variablen, um die Schwellwert-Prozentsätze der Statusänderungen festzulegen, die es für
-  die Flatter-Erkennung nutzt. Für Hosts und Services gibt es hohe und niedrige <span class="emphasis"><em>globale</em></span> und
-  <span class="emphasis"><em>Host-</em></span> und <span class="emphasis"><em>Service-spezifische</em></span> Schwellwerte, die Sie konfigurieren können.
-  Icinga wird die globalen Schwellwerte für die Flatter-Erkennung nutzen, wenn Sie keine Host- oder Service-spezifischen
+  <p>Icinga benutzt verschiedene Variablen, um die Schwellwert-ProzentsÃ¤tze der StatusÃ¤nderungen festzulegen, die es fÃ¼r
+  die Flatter-Erkennung nutzt. FÃ¼r Hosts und Services gibt es hohe und niedrige <span class="emphasis"><em>globale</em></span> und
+  <span class="emphasis"><em>Host-</em></span> und <span class="emphasis"><em>Service-spezifische</em></span> Schwellwerte, die Sie konfigurieren kÃ¶nnen.
+  Icinga wird die globalen Schwellwerte fÃ¼r die Flatter-Erkennung nutzen, wenn Sie keine Host- oder Service-spezifischen
   Schwellwerte angegeben haben.</p>
 
   <p>Die Tabelle unten zeigt die globalen und die Host- oder Service-spezifischen Variablen, die die verschiedenen Schwellwerte
@@ -245,15 +246,15 @@
 </table>
   </div>
 
-  <p><span class="bold"><strong>Zustände, die für die Flatter-Erkennung benutzt werden</strong></span></p>
+  <p><span class="bold"><strong>ZustÃ¤nde, die fÃ¼r die Flatter-Erkennung benutzt werden</strong></span></p>
 
-  <p>Normalerweise wird Icinga die Ergebnisse der letzten 21 Präfungen eines Hosts oder Service verfolgen, unabhängig
-  vom Prüfergebnis (Host-/Service-Zustand), um sie für die Flatter-Erkennungslogik zu benutzen.</p>
+  <p>Normalerweise wird Icinga die Ergebnisse der letzten 21 PrÃ¤fungen eines Hosts oder Service verfolgen, unabhÃ¤ngig
+  vom PrÃ¼fergebnis (Host-/Service-Zustand), um sie fÃ¼r die Flatter-Erkennungslogik zu benutzen.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Sie können durch die <span class="emphasis"><em>flap_detection_options</em></span>-Direktive in Ihren Host- oder
-  Service-Definitonen verschiedene Host- oder Service-Zustände von der Nutzung in der Flatter-Erkennungslogik ausschließen. Diese
-  Direktive erlaubt Ihnen die Angabe, welche Host- oder Service-Zustände (z.B. "UP", "DOWN", "OK", "CRITICAL") Sie für die
-  Flatter-Erkennung benutzen wollen. Wenn Sie diese Direktive nicht nutzen wollen, werden alle Host- und Service-Zustände in der
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Sie kÃ¶nnen durch die <span class="emphasis"><em>flap_detection_options</em></span>-Direktive in Ihren Host- oder
+  Service-Definitonen verschiedene Host- oder Service-ZustÃ¤nde von der Nutzung in der Flatter-Erkennungslogik ausschlieÃŸen. Diese
+  Direktive erlaubt Ihnen die Angabe, welche Host- oder Service-ZustÃ¤nde (z.B. "UP", "DOWN", "OK", "CRITICAL") Sie fÃ¼r die
+  Flatter-Erkennung benutzen wollen. Wenn Sie diese Direktive nicht nutzen wollen, werden alle Host- und Service-ZustÃ¤nde in der
   Flatter-Erkennung benutzt.</p>
 
   <p><span class="bold"><strong>Flatter-Behandlung</strong></span></p>
@@ -265,37 +266,37 @@
       <p>eine Meldung protokollieren, dass der Service oder Host flattert</p>
     </li>
 <li class="listitem">
-      <p>einen nicht-permanenten Kommentar zum Host oder Service hinzufügen, dass er flattert</p>
+      <p>einen nicht-permanenten Kommentar zum Host oder Service hinzufÃ¼gen, dass er flattert</p>
     </li>
 <li class="listitem">
-      <p>eine "flapping start"-Benachrichtigung für den Host oder Service an die betreffenden Kontakte versenden</p>
+      <p>eine "flapping start"-Benachrichtigung fÃ¼r den Host oder Service an die betreffenden Kontakte versenden</p>
     </li>
 <li class="listitem">
-      <p>andere Benachrichtigungen für den Service oder Host unterdrücken (das ist einer der Filter in der <a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungslogik</a>)</p>
+      <p>andere Benachrichtigungen fÃ¼r den Service oder Host unterdrÃ¼cken (das ist einer der Filter in der <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungslogik</a>)</p>
     </li>
 </ol></div>
 
-  <p>Wenn ein Service oder Host aufhört zu flattern, wird Icinga:</p>
+  <p>Wenn ein Service oder Host aufhÃ¶rt zu flattern, wird Icinga:</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
       <p>eine Meldung protokollieren, dass der Service oder Host nicht mehr flattert</p>
     </li>
 <li class="listitem">
-      <p>den Kommentar löschen, der zum Service oder Host hinzugefügt wurde, als dieser anfing zu flattern</p>
+      <p>den Kommentar lÃ¶schen, der zum Service oder Host hinzugefÃ¼gt wurde, als dieser anfing zu flattern</p>
     </li>
 <li class="listitem">
-      <p>eine "flapping stop"-Benachrichtigung für den Host oder Service an die betreffenden Kontakte versenden</p>
+      <p>eine "flapping stop"-Benachrichtigung fÃ¼r den Host oder Service an die betreffenden Kontakte versenden</p>
     </li>
 <li class="listitem">
-      <p>die Blockade von Benachrichtigungen für den Service oder Host entfernen (Benachrichtigungen sind nach wie vor an die
-      normale <a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungslogik</a> gebunden)</p>
+      <p>die Blockade von Benachrichtigungen fÃ¼r den Service oder Host entfernen (Benachrichtigungen sind nach wie vor an die
+      normale <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungslogik</a> gebunden)</p>
     </li>
 </ol></div>
 
   <p><span class="bold"><strong>Aktivieren der Flatter-Erkennung</strong></span></p>
 
-  <p>Um die Flatter-Erkennungsmöglichkeiten in Icinga zu aktivieren, müssen Sie folgendes tun:</p>
+  <p>Um die Flatter-ErkennungsmÃ¶glichkeiten in Icinga zu aktivieren, mÃ¼ssen Sie folgendes tun:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -309,27 +310,27 @@
 
   <p>Wenn Sie die Flatter-Erkennung auf einer globalen Ebene deaktivieren wollen, setzen Sie die <a class="link" href="configmain.html#configmain-enable_flap_detection">enable_flap_detection</a>-Direktive auf 0.</p>
 
-  <p>Wenn Sie die Flatter-Erkennung nur für einige Hosts oder Services deaktivieren wollen, nutzen Sie die
+  <p>Wenn Sie die Flatter-Erkennung nur fÃ¼r einige Hosts oder Services deaktivieren wollen, nutzen Sie die
   <span class="emphasis"><em>flap_detection_enabled</em></span>-Direktive in den Host- oder Service-Definitionen, um das zu tun.</p>
-  <a class="indexterm" name="id1578153"></a>
+  <a class="indexterm" name="idp12515344"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="redundancy.html">Zurück</a> </td>
+<a accesskey="p" href="redundancy.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="escalations.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="escalations.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Redundante und Failover-Netzwerk-Überwachung </td>
+<td width="40%" align="left" valign="top">7.6. Redundante und Failover-Netzwerk-ÃœberwachungÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Benachrichtigungseskalationen</td>
+<td width="40%" align="right" valign="top">Â 7.8. Benachrichtigungseskalationen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

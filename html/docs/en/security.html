@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Security Considerations</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>8.1.Â Security Considerations</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
-<link rel="prev" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
-<link rel="next" href="cgisecurity.html" title="Enhanced CGI Security and Authentication">
+<link rel="up" href="ch08.html" title="ChapterÂ 8.Â Security and Performance Tuning">
+<link rel="prev" href="ch08.html" title="ChapterÂ 8.Â Security and Performance Tuning">
+<link rel="next" href="cgisecurity.html" title="8.2.Â Enhanced CGI Security and Authentication">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Security Considerations</th></tr>
+<tr><th colspan="3" align="center">8.1.Â Security Considerations</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="ch08.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
-<td width="20%" align="right"> <a accesskey="n" href="cgisecurity.html">Next</a>
+<a accesskey="p" href="ch08.html">Prev</a>Â </td>
+<th width="60%" align="center">ChapterÂ 8.Â Security and Performance Tuning</th>
+<td width="20%" align="right">Â <a accesskey="n" href="cgisecurity.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Security Considerations">
+<div class="section" title="8.1.Â Security Considerations">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="security"></a><a name="security_considerations"></a>Security Considerations</h2></div></div></div>
+<a name="security"></a>8.1.Â <a name="security_considerations"></a>Security Considerations</h2></div></div></div>
   
 
   <p><a name="security-intro"></a> <span class="bold"><strong>Introduction</strong></span></p>
@@ -85,7 +86,7 @@
       (bogus notifications) or security problems (event handlers being kicked off).</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Lock Down The External Command File</strong></span> . If you enable <a class="link" href="extcommands.html" title="External Commands">external commands</a>, make sure you set proper permissions on the
+      <p><span class="bold"><strong>Lock Down The External Command File</strong></span> . If you enable <a class="link" href="extcommands.html" title="7.1.Â External Commands">external commands</a>, make sure you set proper permissions on the
       <span class="emphasis"><em>/usr/local/icinga/var/rw</em></span> directory. You only want the Icinga user (usually
       <span class="emphasis"><em>icinga</em></span>) and the web server user (usually <span class="emphasis"><em>nobody</em></span>, <span class="emphasis"><em>httpd</em></span>,
       <span class="emphasis"><em>apache2</em></span>, or <span class="emphasis"><em>www-data</em></span>) to have permissions to write to the command file. If you've
@@ -100,14 +101,14 @@
       <p><span class="bold"><strong>Require Authentication In The CGIs</strong></span> . We would strongly suggest requiring
       authentication for accessing the CGIs. Once you do that, read the documentation on the default rights that authenticated
       contacts have, and only authorize specific contacts for additional rights as necessary. Instructions on setting up
-      authentication and configuring authorization rights can be found <a class="link" href="cgiauth.html" title="Authentication And Authorization In The CGIs">here</a>. If you disable the CGI
+      authentication and configuring authorization rights can be found <a class="link" href="cgiauth.html" title="3.7.Â Authentication And Authorization In The CGIs">here</a>. If you disable the CGI
       authentication features using the <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> directive in the
       CGI config file, the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> will refuse to write any commands to the <a class="link" href="configmain.html#configmain-command_file">external command file</a>. After all, you don't want the world to be able to control
       Icinga do you?</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Implement Enhanced CGI Security Measures</strong></span> . We would strongly suggest that you
-      consider implementing enhanced security measures for the CGIs as described <a class="link" href="cgisecurity.html" title="Enhanced CGI Security and Authentication">here</a>. These
+      consider implementing enhanced security measures for the CGIs as described <a class="link" href="cgisecurity.html" title="8.2.Â Enhanced CGI Security and Authentication">here</a>. These
       measures can help ensure that the username/password you use to access the Icinga web interface are not intercepted by
       third parties.</p>
     </li>
@@ -116,9 +117,9 @@
       specify the <span class="emphasis"><em>full path</em></span> (not a relative one) to any scripts or binaries you're executing.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Hide Sensitive Information With $USERn$ Macros</strong></span> . The CGIs read the <a class="link" href="configmain.html" title="Main Configuration File Options">main config file</a> and <a class="link" href="configobject.html" title="Object Configuration Overview">object config file(s)</a>, so you don't
+      <p><span class="bold"><strong>Hide Sensitive Information With $USERn$ Macros</strong></span> . The CGIs read the <a class="link" href="configmain.html" title="3.2.Â Main Configuration File Options">main config file</a> and <a class="link" href="configobject.html" title="3.3.Â Object Configuration Overview">object config file(s)</a>, so you don't
       want to keep any sensitive information (usernames, passwords, etc) in there. If you need to specify a username and/or
-      password in a command definition use a $USERn$ <a class="link" href="macros.html" title="Understanding Macros and How They Work">macro</a> to hide it. $USERn$ macros are defined in
+      password in a command definition use a $USERn$ <a class="link" href="macros.html" title="5.2.Â Understanding Macros and How They Work">macro</a> to hide it. $USERn$ macros are defined in
       one or more <a class="link" href="configmain.html#configmain-resource_file">resource files</a>. The CGIs will not attempt to read the contents
       of resource files, so you can set more restrictive permissions (600 or 660) on them. See the sample
       <span class="emphasis"><em>resource.cfg</em></span> file in the base of the Icinga distribution for an example of how to define $USERn$
@@ -149,26 +150,26 @@
       <p><span class="inlinemediaobject"><img src="../images/security2.png"></span></p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id1535020"></a>
+  <a class="indexterm" name="idp13899712"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="ch08.html">Prev</a> </td>
+<a accesskey="p" href="ch08.html">Prev</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="cgisecurity.html">Next</a>
+<td width="40%" align="right">Â <a accesskey="n" href="cgisecurity.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Chapter 8. Security and Performance Tuning </td>
+<td width="40%" align="left" valign="top">ChapterÂ 8.Â Security and Performance TuningÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Enhanced CGI Security and
+<td width="40%" align="right" valign="top">Â 8.2.Â Enhanced CGI Security and
   Authentication</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

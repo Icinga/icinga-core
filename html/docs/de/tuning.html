@@ -1,203 +1,204 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Icinga für maximale Leistung optimieren</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>8.3. Icinga fÃ¼r maximale Leistung optimieren</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
-<link rel="prev" href="cgisecurity.html" title="Verbesserte CGI-Sicherheit und Authentifizierung">
-<link rel="next" href="faststartup.html" title="Schnellstart-Optionen">
+<link rel="prev" href="cgisecurity.html" title="8.2. Verbesserte CGI-Sicherheit und Authentifizierung">
+<link rel="next" href="faststartup.html" title="8.4. Schnellstart-Optionen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga für maximale Leistung optimieren</th></tr>
+<tr><th colspan="3" align="center">8.3. Icinga fÃ¼r maximale Leistung optimieren</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="cgisecurity.html">Zurück</a> </td>
+<a accesskey="p" href="cgisecurity.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 8. Sicherheit und Leistungsoptimierung</th>
-<td width="20%" align="right"> <a accesskey="n" href="faststartup.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="faststartup.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Icinga für maximale Leistung optimieren">
+<div class="section" title="8.3. Icinga fÃ¼r maximale Leistung optimieren">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="tuning"></a>Icinga für maximale Leistung optimieren</h2></div></div></div>
+<a name="tuning"></a>8.3. Icinga fÃ¼r maximale Leistung optimieren</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
   <div class="mediaobject"><img src="../images/tuning.png"></div>
 
-  <p>Jetzt haben Sie Icinga endlich eingerichtet und lauffähig und nun wollen Sie wissen, wie man ein wenig daran drehen kann. Die
-  Leistung von Icinga zu optimieren kann notwendig sein, wenn Sie eine große Zahl (&gt; 1.000) von Hosts und Services haben. Hier ein
-  paar Dinge, nach denen Sie schauen können, um Icinga zu optimieren...</p>
+  <p>Jetzt haben Sie Icinga endlich eingerichtet und lauffÃ¤hig und nun wollen Sie wissen, wie man ein wenig daran drehen kann. Die
+  Leistung von Icinga zu optimieren kann notwendig sein, wenn Sie eine groÃŸe Zahl (&gt; 1.000) von Hosts und Services haben. Hier ein
+  paar Dinge, nach denen Sie schauen kÃ¶nnen, um Icinga zu optimieren...</p>
 
   <p><span class="bold"><strong>Optimierungshinweise:</strong></span></p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
       <p><span class="bold"><strong>Stellen Sie Performance-Statistiken mit PNP4Nagios dar</strong></span>. Um zu verfolgen, wie die Last Ihrer
-      Icinga-Installation aussieht und welche Auswirkungen Ihre Konfigurationsänderungen darauf haben, sollten Sie verschiedene
+      Icinga-Installation aussieht und welche Auswirkungen Ihre KonfigurationsÃ¤nderungen darauf haben, sollten Sie verschiedene
       wichtige Statistiken mit PNP4Nagios darstellen. Das ist wirklich sehr, sehr sinnvoll, wenn es um die Leistungsoptimierung einer
-      Icinga-Installation geht. Informationen, wie das zu tun ist, finden Sie <a class="link" href="perfgraphs.html" title="Grafische Darstellung von Performance-Informationen mit PNP4Nagios">hier</a>.</p>
+      Icinga-Installation geht. Informationen, wie das zu tun ist, finden Sie <a class="link" href="perfgraphs.html" title="8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios">hier</a>.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Benutzen Sie "Verbesserungen für große Installationen"</strong></span> (large installation tweaks). Das
+      <p><span class="bold"><strong>Benutzen Sie "Verbesserungen fÃ¼r groÃŸe Installationen"</strong></span> (large installation tweaks). Das
       Aktivieren der <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a>-Option kann Ihnen bessere
-      Leistung bringen. Lesen Sie <a class="link" href="largeinstalltweaks.html" title="Large Installation Tweaks">hier</a> mehr darüber, was diese Option tut.</p>
+      Leistung bringen. Lesen Sie <a class="link" href="largeinstalltweaks.html" title="8.5. Large Installation Tweaks">hier</a> mehr darÃ¼ber, was diese Option tut.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Deaktivieren Sie Umgebungs-Makros</strong></span>. Makros werden Prüfungen, Benachrichtigungen, Eventhandlern
-      usw. normalerweise über Umgebungsvariablen zur Verfügung gestellt. Das kann in einer großen Icinga-Installation zu einem
-      Problem werden, weil es zusätzlichen Speicher (und wichtiger) mehr CPU verbraucht. Wenn Ihre Scripte nicht über Umgebungsvariablen auf
-      Makros zugreifen (d.h., wenn Sie alle benötigen Makros in der Kommandozeile übergeben), dann brauchen Sie dieses Feature nicht. Sie
-      können über die <a class="link" href="configmain.html#configmain-enable_environment_macros">enable_environment_macros</a>-Option einstellen, ob Makros als
-      Umgebungsvariablen verfügbar sind.</p>
+      <p><span class="bold"><strong>Deaktivieren Sie Umgebungs-Makros</strong></span>. Makros werden PrÃ¼fungen, Benachrichtigungen, Eventhandlern
+      usw. normalerweise Ã¼ber Umgebungsvariablen zur VerfÃ¼gung gestellt. Das kann in einer groÃŸen Icinga-Installation zu einem
+      Problem werden, weil es zusÃ¤tzlichen Speicher (und wichtiger) mehr CPU verbraucht. Wenn Ihre Scripte nicht Ã¼ber Umgebungsvariablen auf
+      Makros zugreifen (d.h., wenn Sie alle benÃ¶tigen Makros in der Kommandozeile Ã¼bergeben), dann brauchen Sie dieses Feature nicht. Sie
+      kÃ¶nnen Ã¼ber die <a class="link" href="configmain.html#configmain-enable_environment_macros">enable_environment_macros</a>-Option einstellen, ob Makros als
+      Umgebungsvariablen verfÃ¼gbar sind.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Prüfergebnis-Ernterhythmus</strong></span> (Check Result Reaper Frequency). Die <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>-Variable legt fest, wie oft Icinga
-      prüfen soll, ob Host- und Service-Ergebnisse verarbeitet werden müssen. Die maximale Zeit, die es zur Verarbeitung solcher Ergebnisse
-      benötigen darf, ist durch die maximale Erntezeit (max reaper time) festgelegt (siehe unten). Wenn Ihr Ernterhythmus zu hoch (zu
-      selten) ist, könnten Sie hohe Latenzzeiten für Host- und Service-Prüfungen sehen.</p>
+      <p><span class="bold"><strong>PrÃ¼fergebnis-Ernterhythmus</strong></span> (Check Result Reaper Frequency). Die <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>-Variable legt fest, wie oft Icinga
+      prÃ¼fen soll, ob Host- und Service-Ergebnisse verarbeitet werden mÃ¼ssen. Die maximale Zeit, die es zur Verarbeitung solcher Ergebnisse
+      benÃ¶tigen darf, ist durch die maximale Erntezeit (max reaper time) festgelegt (siehe unten). Wenn Ihr Ernterhythmus zu hoch (zu
+      selten) ist, kÃ¶nnten Sie hohe Latenzzeiten fÃ¼r Host- und Service-PrÃ¼fungen sehen.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>maximale Erntezeit</strong></span> (Max Reaper Time). Die <a class="link" href="configmain.html#configmain-max_check_result_reaper_time">max_check_result_reaper_time</a>-Variable legt die maximale Zeit fest, die der
-      Icinga-Daemon für die Verarbeitung der Ergebnisse von Host- und Service-Prüfungen verbringen darf, bevor er sich anderen Dingen
-      zuwendet - wie z.B. dem Ausführen von neuen Host- und Service-Prüfungen. Ein zu hoher Wert kann zu hohen Latenzzeiten bei Ihren Host-
-      und Service-Prüfungen führen. Ein zu niedriger Wert kann den gleichen Effekt haben. Wenn Sie zu hohe Latenzzeiten haben, dann passen
-      Sie diesen Wert an und sehen Sie, welchen Effekt das hat. <a class="link" href="perfgraphs.html" title="Grafische Darstellung von Performance-Informationen mit PNP4Nagios">Graphisch dargestellte Statistiken</a> helfen
+      Icinga-Daemon fÃ¼r die Verarbeitung der Ergebnisse von Host- und Service-PrÃ¼fungen verbringen darf, bevor er sich anderen Dingen
+      zuwendet - wie z.B. dem AusfÃ¼hren von neuen Host- und Service-PrÃ¼fungen. Ein zu hoher Wert kann zu hohen Latenzzeiten bei Ihren Host-
+      und Service-PrÃ¼fungen fÃ¼hren. Ein zu niedriger Wert kann den gleichen Effekt haben. Wenn Sie zu hohe Latenzzeiten haben, dann passen
+      Sie diesen Wert an und sehen Sie, welchen Effekt das hat. <a class="link" href="perfgraphs.html" title="8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios">Graphisch dargestellte Statistiken</a> helfen
       Ihnen bei der Auswertung der Auswirkungen.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Anpassen der Pufferwerte</strong></span>. Gegebenenfalls müssen Sie den Wert der <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external_command_buffer_slots</a>-Option anpassen. Die graphische Analyse mit
-      <a class="link" href="perfgraphs.html" title="Grafische Darstellung von Performance-Informationen mit PNP4Nagios">PNP4Nagios</a> (siehe oben) zeigt Ihnen, welche Werte Sie für diese Option nutzen sollten.</p>
+      <p><span class="bold"><strong>Anpassen der Pufferwerte</strong></span>. Gegebenenfalls mÃ¼ssen Sie den Wert der <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external_command_buffer_slots</a>-Option anpassen. Die graphische Analyse mit
+      <a class="link" href="perfgraphs.html" title="8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios">PNP4Nagios</a> (siehe oben) zeigt Ihnen, welche Werte Sie fÃ¼r diese Option nutzen sollten.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Prüfen Sie Service-Latenzzeiten, um den besten Wert für die maximale Anzahl von gleichzeitigen Prüfungen
-      zu ermitteln</strong></span>. Icinga kann die Anzahl von gleichzeitig ausgeführten Prüfungen durch die <a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a>-Option begrenzen. Das ist gut, weil es Ihnen etwas Kontrolle
-      darüber gibt, wieviel Last Icinga auf Ihrem Überwachungsrechner erzeugt, aber es kann auch die Dinge verlangsamen. Wenn Sie für
-      die Mehrzahl Ihrer Service-Prüfungen hohe Latenzzeiten sehen (&gt; 10 oder 15 Sekunden), dann enthalten Sie Icinga Prüfungen
-      vor, die es braucht. Das ist nicht der Fehler von Icinga - es ist Ihrer. Unter idealen Bedingungen hätten alle
-      Service-Prüfungen eine Latenzzeit von 0, was bedeutet, dass alle Prüfungen zu der Zeit stattfinden, für die sie geplant sind.
-      Allerdings ist es normal, dass einige Prüfungen kleine Latenzzeiten haben. Wir würden empfehlen, die niedrigste Zahl der meisten
-      gleichzeitigen Prüfungen zu nehmen, wenn Sie Icinga mit der <span class="bold"><strong>-s</strong></span>-Option starten und diesen Wert
-      zu verdoppeln. Erhöhen Sie diesen Wert dann soweit, bis die durchschnittlichen Latenzzeiten für Service-Prüfungen ziemlich niedrig
-      ist. Mehr Informationen zur Planung von Service-Prüfungen finden Sie <a class="link" href="checkscheduling.html" title="Service- und Host-Prüfungsplanung">hier</a>.</p>
+      <p><span class="bold"><strong>PrÃ¼fen Sie Service-Latenzzeiten, um den besten Wert fÃ¼r die maximale Anzahl von gleichzeitigen PrÃ¼fungen
+      zu ermitteln</strong></span>. Icinga kann die Anzahl von gleichzeitig ausgefÃ¼hrten PrÃ¼fungen durch die <a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a>-Option begrenzen. Das ist gut, weil es Ihnen etwas Kontrolle
+      darÃ¼ber gibt, wieviel Last Icinga auf Ihrem Ãœberwachungsrechner erzeugt, aber es kann auch die Dinge verlangsamen. Wenn Sie fÃ¼r
+      die Mehrzahl Ihrer Service-PrÃ¼fungen hohe Latenzzeiten sehen (&gt; 10 oder 15 Sekunden), dann enthalten Sie Icinga PrÃ¼fungen
+      vor, die es braucht. Das ist nicht der Fehler von Icinga - es ist Ihrer. Unter idealen Bedingungen hÃ¤tten alle
+      Service-PrÃ¼fungen eine Latenzzeit von 0, was bedeutet, dass alle PrÃ¼fungen zu der Zeit stattfinden, fÃ¼r die sie geplant sind.
+      Allerdings ist es normal, dass einige PrÃ¼fungen kleine Latenzzeiten haben. Wir wÃ¼rden empfehlen, die niedrigste Zahl der meisten
+      gleichzeitigen PrÃ¼fungen zu nehmen, wenn Sie Icinga mit der <span class="bold"><strong>-s</strong></span>-Option starten und diesen Wert
+      zu verdoppeln. ErhÃ¶hen Sie diesen Wert dann soweit, bis die durchschnittlichen Latenzzeiten fÃ¼r Service-PrÃ¼fungen ziemlich niedrig
+      ist. Mehr Informationen zur Planung von Service-PrÃ¼fungen finden Sie <a class="link" href="checkscheduling.html" title="7.22. Service- und Host-PrÃ¼fungsplanung">hier</a>.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Nutzen Sie passive Prüfungen, wenn möglich</strong></span>. Der nötige Overhead, um die Ergebnisse von <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">passiven Service-Prüfungen</a> zu verarbeiten, ist viel niedriger als bei "normalen" aktiven Prüfungen,
-      also machen Sie Gebrauch von dieser Information, wenn Sie eine Menge von Services überwachen. Es sollte angemerkt werden, dass passive
-      Prüfungen nur dann wirklich sinnvoll sind, wenn Sie irgendeine externe Applikation haben, die überwachen oder berichten kann; wenn
+      <p><span class="bold"><strong>Nutzen Sie passive PrÃ¼fungen, wenn mÃ¶glich</strong></span>. Der nÃ¶tige Overhead, um die Ergebnisse von <a class="link" href="passivechecks.html" title="5.7. Passive PrÃ¼fungen (Passive Checks)">passiven Service-PrÃ¼fungen</a> zu verarbeiten, ist viel niedriger als bei "normalen" aktiven PrÃ¼fungen,
+      also machen Sie Gebrauch von dieser Information, wenn Sie eine Menge von Services Ã¼berwachen. Es sollte angemerkt werden, dass passive
+      PrÃ¼fungen nur dann wirklich sinnvoll sind, wenn Sie irgendeine externe Applikation haben, die Ã¼berwachen oder berichten kann; wenn
       also Icinga all die Arbeit machen muss, ist das nicht hilfreich.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Vermeiden Sie interpretierte Plugins</strong></span>. Etwas, was spürbar die Last Ihres Überwachungs-Hosts
-      senkt, ist die Nutzung von kompilierten (C/C++, usw.) Plugins statt interpretierter Scripts (Perl, usw.). Während Perl und ähnliches
-      einfach zu schreiben ist und gut läuft, kann die Tatsache, dass es bei jeder Ausführung kompiliert/interpretiert werden muss, zu einer
-      spürbaren Steigerung der Last Ihres Überwachungs-Hosts führen, wenn Sie eine Menge von Service-Prüfungen haben. Wenn Sie Perl-Plugins
-      nutzen wollen, dann überlegen Sie, ob Sie diese nicht mit perlcc(1) (einem Utility, das Teil der Standard-Perl-Distribution ist) zu
+      <p><span class="bold"><strong>Vermeiden Sie interpretierte Plugins</strong></span>. Etwas, was spÃ¼rbar die Last Ihres Ãœberwachungs-Hosts
+      senkt, ist die Nutzung von kompilierten (C/C++, usw.) Plugins statt interpretierter Scripts (Perl, usw.). WÃ¤hrend Perl und Ã¤hnliches
+      einfach zu schreiben ist und gut lÃ¤uft, kann die Tatsache, dass es bei jeder AusfÃ¼hrung kompiliert/interpretiert werden muss, zu einer
+      spÃ¼rbaren Steigerung der Last Ihres Ãœberwachungs-Hosts fÃ¼hren, wenn Sie eine Menge von Service-PrÃ¼fungen haben. Wenn Sie Perl-Plugins
+      nutzen wollen, dann Ã¼berlegen Sie, ob Sie diese nicht mit perlcc(1) (einem Utility, das Teil der Standard-Perl-Distribution ist) zu
       einem richtigen Programm umwandeln oder Icinga mit eingebettetem Perl-Interpreter kompilieren (siehe unten).</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Nutzen Sie den eingebetteten Perl-Interpreter</strong></span>. Wenn Sie eine Menge von Perl-Scripten für
-      Prüfungen benutzen, dann werden Sie vielleicht feststellen, dass das Kompilieren des <a class="link" href="embeddedperl.html" title="Benutzen des Embedded Perl Interpreters">eingebetteten
+      <p><span class="bold"><strong>Nutzen Sie den eingebetteten Perl-Interpreter</strong></span>. Wenn Sie eine Menge von Perl-Scripten fÃ¼r
+      PrÃ¼fungen benutzen, dann werden Sie vielleicht feststellen, dass das Kompilieren des <a class="link" href="embeddedperl.html" title="7.17. Benutzen des Embedded Perl Interpreters">eingebetteten
       Perl-Interpreters</a> (embedded Perl interpreter) in das Icinga-Binary die Dinge beschleunigt.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Optimieren Sie Host-Prüfbefehle</strong></span>. Wenn Sie Host-Zustände mit dem check_ping-Plugin prüfen, dann
-      werden Sie feststellen, dass die Host-Prüfungen viel schneller durchgeführt werden, wenn Sie diese abbrechen. Statt einen
-      <span class="emphasis"><em>max_attempts</em></span>-Wert von 1 anzugeben und mit dem check_ping-Plugins 10 ICMP-Pakete an den Host zu schicken, wäre es
+      <p><span class="bold"><strong>Optimieren Sie Host-PrÃ¼fbefehle</strong></span>. Wenn Sie Host-ZustÃ¤nde mit dem check_ping-Plugin prÃ¼fen, dann
+      werden Sie feststellen, dass die Host-PrÃ¼fungen viel schneller durchgefÃ¼hrt werden, wenn Sie diese abbrechen. Statt einen
+      <span class="emphasis"><em>max_attempts</em></span>-Wert von 1 anzugeben und mit dem check_ping-Plugins 10 ICMP-Pakete an den Host zu schicken, wÃ¤re es
       viel schneller, den <span class="emphasis"><em>max_attempts</em></span>-Wert auf 10 zu setzen und jedes Mal nur ein ICMP-Paket zu senden. Das liegt
-      daran, dass Icinga den Zustand eines Hosts oft nach der Ausführung eines Plugins feststellen kann, so dass Sie die erste
-      Prüfung so schnell wie möglich machen sollten. Diese Methode hat in einigen Situationen ihre Fallstricke (z.B. Hosts, die langsam
-      reagieren, könnten als "down" angesehen werden), aber wir denken, dass Sie schnellere Host-Prüfungen sehen werden, wenn Sie sie
-      benutzen. Eine weitere Möglichkeit wäre, statt check_ping ein schnelleres Plugin (z.B. check_fping) als
+      daran, dass Icinga den Zustand eines Hosts oft nach der AusfÃ¼hrung eines Plugins feststellen kann, so dass Sie die erste
+      PrÃ¼fung so schnell wie mÃ¶glich machen sollten. Diese Methode hat in einigen Situationen ihre Fallstricke (z.B. Hosts, die langsam
+      reagieren, kÃ¶nnten als "down" angesehen werden), aber wir denken, dass Sie schnellere Host-PrÃ¼fungen sehen werden, wenn Sie sie
+      benutzen. Eine weitere MÃ¶glichkeit wÃ¤re, statt check_ping ein schnelleres Plugin (z.B. check_fping) als
       <span class="emphasis"><em>host_check_command</em></span> zu benutzen.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Planen Sie regelmäßige Host-Prüfungen</strong></span>. Regelmäßige Host-Prüfungen zu planen kann tatsächlich
-      die Leistung von Icinga steigern. Das liegt an der Art, wie die <a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">Zwischenspeicher-Prüflogik</a>
-      (cached check logic) arbeitet (siehe unten). Um regelmäßige Prüfungen eines Hosts zu planen, setzen Sie die
+      <p><span class="bold"><strong>Planen Sie regelmÃ¤ÃŸige Host-PrÃ¼fungen</strong></span>. RegelmÃ¤ÃŸige Host-PrÃ¼fungen zu planen kann tatsÃ¤chlich
+      die Leistung von Icinga steigern. Das liegt an der Art, wie die <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte PrÃ¼fungen">Zwischenspeicher-PrÃ¼flogik</a>
+      (cached check logic) arbeitet (siehe unten). Um regelmÃ¤ÃŸige PrÃ¼fungen eines Hosts zu planen, setzen Sie die
       <span class="emphasis"><em>check_interval</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a> auf einen Wert
-      größer als Null.</p>
+      grÃ¶ÃŸer als Null.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Aktivieren Sie zwischengespeicherte Host-Prüfungsergebnisse</strong></span> (cached host checks).
-      Host-Prüfungen nach Bedarf können von der Zwischenspeicherung (caching) profitieren. Host-Prüfungen nach Bedarf werden ausgeführt,
-      wenn Icinga einen Service-Zustandswechsel feststellt. Diese Prüfungen nach Bedarf werden ausgeführt, wenn Icinga wissen
+      <p><span class="bold"><strong>Aktivieren Sie zwischengespeicherte Host-PrÃ¼fungsergebnisse</strong></span> (cached host checks).
+      Host-PrÃ¼fungen nach Bedarf kÃ¶nnen von der Zwischenspeicherung (caching) profitieren. Host-PrÃ¼fungen nach Bedarf werden ausgefÃ¼hrt,
+      wenn Icinga einen Service-Zustandswechsel feststellt. Diese PrÃ¼fungen nach Bedarf werden ausgefÃ¼hrt, wenn Icinga wissen
       will, ob der mit dem Service verbundene Host den Zustand gewechselt hat. Durch die Aktivierung von zwischengespeicherten
-      Host-Prüfungsergebnissen können Sie die Leistung optimieren. In einigen Fällen könnte Icinga in der Lage sein, den
-      alten/zwischengespeicherten Zustand des Hosts zu benutzen, statt eine Host-Prüfung auszuführen. Das kann die Dinge beschleunigen und
-      die Last des Überwachungsservers reduzieren. Damit zwischengespeicherte Prüfungen effektiv sind, müssen Sie regelmäßige Prüfungen für
-      Ihre Hosts planen (siehe oben). Mehr Informationen zu zwischengespeicherten Prüfungen finden Sie <a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">hier</a>.</p>
+      Host-PrÃ¼fungsergebnissen kÃ¶nnen Sie die Leistung optimieren. In einigen FÃ¤llen kÃ¶nnte Icinga in der Lage sein, den
+      alten/zwischengespeicherten Zustand des Hosts zu benutzen, statt eine Host-PrÃ¼fung auszufÃ¼hren. Das kann die Dinge beschleunigen und
+      die Last des Ãœberwachungsservers reduzieren. Damit zwischengespeicherte PrÃ¼fungen effektiv sind, mÃ¼ssen Sie regelmÃ¤ÃŸige PrÃ¼fungen fÃ¼r
+      Ihre Hosts planen (siehe oben). Mehr Informationen zu zwischengespeicherten PrÃ¼fungen finden Sie <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte PrÃ¼fungen">hier</a>.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Nutzen Sie keine agressiven Host-Prüfungen</strong></span>. Solange Sie keine Probleme damit haben, dass
-      Icinga Host-Erholungen nicht korrekt erkennt, würden wir empfehlen, die <a class="link" href="configmain.html#configmain-use_agressive_host_checking">use_aggressive_host_checking</a>-Option nicht zu aktivieren. Wenn diese Option
-      abgeschaltet ist, werden Host-Prüfungen viel schneller ausgeführt, was zu schnellerer Ausführung von Service-Prüfungen führt.
-      Allerdings können Host-Erholungen unter bestimmten Umständen übersehen werden, wenn sie ausgeschaltet ist. Wenn sich z.B. der Host
-      erholt, aber alle mit ihm verbundenen Services in einem nicht-OK-Zustand bleiben (und nicht zwischen verschiedenen nicht-OK-Zuständen
-      "kippeln"), dann könnte Icinga übersehen, dass sich der Host erholt hat. Einige wenige Leute könnten diese Option aktivieren,
-      aber die Mehrheit nicht und wir würden empfehlen, sie nicht zu aktivieren, solange Sie nicht glauben, dass Sie sie benötigen...</p>
+      <p><span class="bold"><strong>Nutzen Sie keine agressiven Host-PrÃ¼fungen</strong></span>. Solange Sie keine Probleme damit haben, dass
+      Icinga Host-Erholungen nicht korrekt erkennt, wÃ¼rden wir empfehlen, die <a class="link" href="configmain.html#configmain-use_agressive_host_checking">use_aggressive_host_checking</a>-Option nicht zu aktivieren. Wenn diese Option
+      abgeschaltet ist, werden Host-PrÃ¼fungen viel schneller ausgefÃ¼hrt, was zu schnellerer AusfÃ¼hrung von Service-PrÃ¼fungen fÃ¼hrt.
+      Allerdings kÃ¶nnen Host-Erholungen unter bestimmten UmstÃ¤nden Ã¼bersehen werden, wenn sie ausgeschaltet ist. Wenn sich z.B. der Host
+      erholt, aber alle mit ihm verbundenen Services in einem nicht-OK-Zustand bleiben (und nicht zwischen verschiedenen nicht-OK-ZustÃ¤nden
+      "kippeln"), dann kÃ¶nnte Icinga Ã¼bersehen, dass sich der Host erholt hat. Einige wenige Leute kÃ¶nnten diese Option aktivieren,
+      aber die Mehrheit nicht und wir wÃ¼rden empfehlen, sie nicht zu aktivieren, solange Sie nicht glauben, dass Sie sie benÃ¶tigen...</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Optimierung externer Befehle</strong></span>. Wenn Sie eine Menge externer Befehle verarbeiten (d.h. passive
-      Prüfungen in einer <a class="link" href="distributed.html" title="Verteilte Überwachung">verteilten Umgebung</a>, dann wollen Sie vielleicht die <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a>-Variable auf <span class="bold"><strong>-1</strong></span> setzen. Das
-      bewirkt, dass Icinga so oft wie möglich auf externe Befehle prüft. Sie sollten außerdem überlegen, die Anzahl verfügbarer <a class="link" href="configmain.html#configmain-external_command_buffer_slots">externer Befehlspuffer</a> zu erhöhen. Puffer werden benutzt, um externe Befehle
+      PrÃ¼fungen in einer <a class="link" href="distributed.html" title="7.5. Verteilte Ãœberwachung">verteilten Umgebung</a>, dann wollen Sie vielleicht die <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a>-Variable auf <span class="bold"><strong>-1</strong></span> setzen. Das
+      bewirkt, dass Icinga so oft wie mÃ¶glich auf externe Befehle prÃ¼ft. Sie sollten auÃŸerdem Ã¼berlegen, die Anzahl verfÃ¼gbarer <a class="link" href="configmain.html#configmain-external_command_buffer_slots">externer Befehlspuffer</a> zu erhÃ¶hen. Puffer werden benutzt, um externe Befehle
       zu speichern, die (durch einen separaten Thread) aus dem <a class="link" href="configmain.html#configmain-command_file">external command file</a> gelesen
-      werden, bevor sie vom Icinga-Daemon verarbeitet werden. Wenn Ihr Icinga-Daemon eine Menge von passiven Prüfungen oder
-      externen Befehlen empfängt, dann könnten Sie in eine Situation kommen, in der immer alle Puffer voll sind. Das führt zu blockierenden
-      Kind-Prozessen (externe Scripte, NSCA-Daemon usw.), wenn sie versuchen, in das "external command file" zu schreiben. Wir würden
+      werden, bevor sie vom Icinga-Daemon verarbeitet werden. Wenn Ihr Icinga-Daemon eine Menge von passiven PrÃ¼fungen oder
+      externen Befehlen empfÃ¤ngt, dann kÃ¶nnten Sie in eine Situation kommen, in der immer alle Puffer voll sind. Das fÃ¼hrt zu blockierenden
+      Kind-Prozessen (externe Scripte, NSCA-Daemon usw.), wenn sie versuchen, in das "external command file" zu schreiben. Wir wÃ¼rden
       sehr empfehlen, dass Sie die Nutzung von externen Befehlspuffern graphisch mit Hilfe von PNP4Nagios und dem icingastats-Utility
-      darstellen, wie es <a class="link" href="perfgraphs.html" title="Grafische Darstellung von Performance-Informationen mit PNP4Nagios">hier</a> beschrieben ist, so dass Sie die typische externe Befehlspuffernutzung Ihrer
+      darstellen, wie es <a class="link" href="perfgraphs.html" title="8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios">hier</a> beschrieben ist, so dass Sie die typische externe Befehlspuffernutzung Ihrer
       Icinga-Installation sehen.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Optimieren Sie die Hardware für maximale Leistung</strong></span>. Hinweis: Hardware-Leistung sollte kein Thema
-      sein, solange Sie nicht 1) Tausende von Services überwachen, 2) eine Menge von Nachverarbeitung von Performance-Daten usw. machen.
+      <p><span class="bold"><strong>Optimieren Sie die Hardware fÃ¼r maximale Leistung</strong></span>. Hinweis: Hardware-Leistung sollte kein Thema
+      sein, solange Sie nicht 1) Tausende von Services Ã¼berwachen, 2) eine Menge von Nachverarbeitung von Performance-Daten usw. machen.
       Ihre Systemkonfiguration und Ihre Hardware-Ausstattung werden direkt beeinflussen, was Ihr Betriebssystem leistet, so dass sie
-      beeinflussen, was Icinga leistet. Die häufigste Hardware-Optimierung betrifft die Festplatte(n). CPU und
-      Speichergeschwindigkeit sind offensichtliche Faktoren, die die Leistung beeinflussen, aber der Plattenzugriff wird Ihr größter
+      beeinflussen, was Icinga leistet. Die hÃ¤ufigste Hardware-Optimierung betrifft die Festplatte(n). CPU und
+      Speichergeschwindigkeit sind offensichtliche Faktoren, die die Leistung beeinflussen, aber der Plattenzugriff wird Ihr grÃ¶ÃŸter
       Flaschenhals sein. Speichern Sie Plugins, das Status-Log usw. nicht auf langsamen Platten (d.h. alte IDE-Platten oder NFS-Mounts).
-      Wenn Sie sie haben, dann nutzen Sie UltraSCSI- oder schnelle IDE-Platten. Ein wichtiger Hinweis für IDE/Linux-Benutzer ist,
+      Wenn Sie sie haben, dann nutzen Sie UltraSCSI- oder schnelle IDE-Platten. Ein wichtiger Hinweis fÃ¼r IDE/Linux-Benutzer ist,
       dass viele Linux-Installationen nicht versuchen, den Plattenzugriff zu optimieren. Wenn Sie die Plattenzugriffsparameter nicht
-      ändern (z.B. mit einem Utility wie <span class="bold"><strong>hdparam</strong></span>), werden Sie eine <span class="bold"><strong>Menge</strong></span>
+      Ã¤ndern (z.B. mit einem Utility wie <span class="bold"><strong>hdparam</strong></span>), werden Sie eine <span class="bold"><strong>Menge</strong></span>
       der schnellen Features der neuen IDE-Platten verlieren.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Benutzen Sie eine RAM-Disk für temporäre Daten</strong></span> . Verschiedene Dateien werden sehr oft angelegt
+      <p><span class="bold"><strong>Benutzen Sie eine RAM-Disk fÃ¼r temporÃ¤re Daten</strong></span> . Verschiedene Dateien werden sehr oft angelegt
       und verarbeitet. Das betrifft u.a. den aktuellen Zustand, der im <a class="link" href="configmain.html#configmain-status_file">status file</a> gespeichert
       wird und die laufende Konfiguration, die im <a class="link" href="configmain.html#configmain-object_cache_file">object cache file</a> abgelegt ist. Um
       physikalischen I/O zu reduzieren, ist es ratsam, diese Daten auf einer RAM-Disk abzulegen. Datenverlust durch einen Stromausfall oder
-      etwas ähnliches ist nicht kritisch, weil diese beiden Dateien bei jedem (Re-)Start von Icinga neu erzeugt werden. Das Anlegen
-      einer RAM-Disk und die Änderungen an der Hauptkonfigurationsdatei werden <a class="link" href="temp_data.html" title="Temporäre Daten">hier</a> beschrieben.</p>
+      etwas Ã¤hnliches ist nicht kritisch, weil diese beiden Dateien bei jedem (Re-)Start von Icinga neu erzeugt werden. Das Anlegen
+      einer RAM-Disk und die Ã„nderungen an der Hauptkonfigurationsdatei werden <a class="link" href="temp_data.html" title="8.8. TemporÃ¤re Daten">hier</a> beschrieben.</p>
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id1589709"></a>
+  <a class="indexterm" name="idp13903424"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="cgisecurity.html">Zurück</a> </td>
+<a accesskey="p" href="cgisecurity.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch08.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="faststartup.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="faststartup.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Verbesserte CGI-Sicherheit und Authentifizierung </td>
+<td width="40%" align="left" valign="top">8.2. Verbesserte CGI-Sicherheit und AuthentifizierungÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Schnellstart-Optionen</td>
+<td width="40%" align="right" valign="top">Â 8.4. Schnellstart-Optionen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>
