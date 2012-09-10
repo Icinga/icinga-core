@@ -440,6 +440,7 @@ void display_scheduling_info(void);				/* displays service check scheduling info
 
 /**** Event Queue Functions ****/
 int schedule_new_event(int,int,time_t,int,unsigned long,void *,int,void *,void *,int);	/* schedules a new timed event */
+int delete_scheduled_event(int,int,time_t,int,unsigned long,void *,int,void *,void *,int);	/* delete a scheduled event */
 void reschedule_event(timed_event *,timed_event **,timed_event **);   		/* reschedules an event */
 void add_event(timed_event *,timed_event **,timed_event **);     		/* adds an event to the execution queue */
 void remove_event(timed_event *,timed_event **,timed_event **);     		/* remove an event from the execution queue */
