@@ -960,7 +960,7 @@ int schedule_new_event(int event_type, int high_priority, time_t run_time, int r
 	return OK;
 }
 
-/* delete a scheduled event */
+/* delete a scheduled timed event */
 /*
 	ATTENTION: at the moment only used for acknowledgements
 	If needed for other cases, you have to adopt this function to fit all needs!!!
@@ -988,6 +988,8 @@ int delete_scheduled_event(int event_type, int high_priority, time_t run_time, i
 	for (temp_event = *event_list; temp_event != NULL; temp_event = temp_event->next) {
 
 		if (temp_event->event_type == event_type && temp_event->event_options == event_options && temp_event->event_data == event_data) {
+
+			log_debug_info(DEBUGL_EVENTS, 1, "Removing event type %d @ %s", event_type, ctime(&run_time));
 
 			/* remove the event from the event list */
 			remove_event(temp_event, event_list, event_list_tail);
