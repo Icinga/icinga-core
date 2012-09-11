@@ -30,7 +30,7 @@ function icinga_get_scroll_position() {
 	}
 
 	//debug - overwrite the title with the current scroll position
-	document.title = 'icinga_get_scroll_position=' + window.scroll_pos;
+	//document.title = 'icinga_get_scroll_position=' + window.scroll_pos;
 
 	return scroll_pos;
 }
@@ -69,7 +69,7 @@ function icinga_set_scroll_position() {
 			scroll_pos = match[1];
 			window.scrollTo(0, scroll_pos);
 			//debug
-			document.title = 'icinga_set_scroll_position=' + scroll_pos;
+			//document.title = 'icinga_set_scroll_position=' + scroll_pos;
 		}
 	}
 }
