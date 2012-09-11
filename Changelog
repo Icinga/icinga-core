@@ -84,6 +84,7 @@ FIXES
 	** now you can finally disable checkboxes default ticked with these options
 * classic ui: Fixed clicking an (action|notes)url in a row automatically ticks the row for the commands #2809 - RB
 * classic ui: menu search can't handle umlauts in hostnames correctly (changed to utf8) #2999 - MF
+* classic ui: fix cmd.cgi does not read enviroment variable ICINGA_COMMAND_FILE (thx Dirk Goetz) #3106 - MF
 
 * idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
 * idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
