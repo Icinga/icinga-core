@@ -314,6 +314,9 @@ int main(void) {
 		return ERROR;
 	}
 
+	/* read environment var ICINGA_COMMAND_FILE */
+	strcpy(command_file, get_cmd_file_location());
+
 	/* This requires the date_format parameter in the main config file */
 	if (strcmp(start_time_string, ""))
 		string_to_time(start_time_string, &start_time);

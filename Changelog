@@ -45,6 +45,7 @@ ENHANCEMENTS
 * classic ui: Added 'All Problems' to 'Problems' group in menu #2645 - RB
 * classic ui: Added host/service selection for commands, leaving out passive only checks on check reschedule in cmd.cgi #2697 - RB
 * classic ui: add host_has_been_acknowledged and service_has_been_acknowledged to extinfo.cgi jsonoutput (Torsten Rehn) #3000 - MF
+* classic ui: javascript refresh jumps to page top, not restoring previous scrolling position; add url param 'scroll=' #2855 - MF
 
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
 * idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
@@ -84,6 +85,7 @@ FIXES
 	** now you can finally disable checkboxes default ticked with these options
 * classic ui: Fixed clicking an (action|notes)url in a row automatically ticks the row for the commands #2809 - RB
 * classic ui: menu search can't handle umlauts in hostnames correctly (changed to utf8) #2999 - MF
+* classic ui: fix cmd.cgi does not read enviroment variable ICINGA_COMMAND_FILE (thx Dirk Goetz) #3106 - MF
 
 * idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
 * idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
@@ -123,6 +125,7 @@ classic ui: Changed cgi GET params
 	** Removed "archive" and "oldestfirst" from history.cgi and notifications.cgi - #2341
 	** Added "start_time", "end_time" and "timeperiod" to notifications.cgi - #2341
 	** "send_notification" and "sticky_ack" on cmd.cgi require 0|1 vars, if not set, default is 1 #2926
+	** add "scroll", interpreted by javascript reload to restore the scrolling position #2855
 
 classic ui: Added/Changed cgi.cfg options
 	** authorized_for_comments_read_only - #2699
