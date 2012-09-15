@@ -4766,8 +4766,11 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
 int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
-	char * query1 = NULL;
-	char * query2 = NULL;
+        char * query = NULL;
+        char * query1 = NULL;
+        char * query2 = NULL;
+        unsigned long host_id;
+        int mysql_update = FALSE;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_definition_add() start\n");
 
@@ -4847,8 +4850,34 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d, address6) VALUES (%lu, %d, %lu, '%s', '%s', '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, %d, %d, %lf, %lf, %lf, '%s')",
+
+                        dummy = asprintf(&query, "SELECT host_id FROM %s WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                host_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "host_id");
+                                                mysql_update = TRUE;
+                                        } else {
+                                                mysql_update = FALSE;
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+                        free(query);
+
+                        if (mysql_update == FALSE) {
+
+	                        /* try insert instead */
+	                        dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d, address6) VALUES (%lu, %d, %lu, '%s', '%s', '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s', '%s', '%s', %d, %d, %d, %d, %lf, %lf, %lf, '%s')",
                                          ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS],
                                          *(unsigned long *) data[0],     /* insert start */
                                          *(int *) data[1],
@@ -4909,9 +4938,10 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
                                          *(double *) data[56],
                                          *(char **) data[57]           /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+	                        /* send query to db */
+        	                result = ido2db_db_query(idi, query2);
+                	        free(query2);
+			}
                 }
                 break;
 
@@ -5807,8 +5837,11 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2d
 int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
-	char * query1 = NULL;
-	char * query2 = NULL;
+        char * query = NULL;
+        char * query1 = NULL;
+        char * query2 = NULL;
+        unsigned long service_id;
+        int mysql_update = FALSE;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() start\n");
 
@@ -5881,8 +5914,34 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt) VALUES (%lu, %d, %lu, %lu, '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s')",
+
+                        dummy = asprintf(&query, "SELECT service_id FROM %s WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[3]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                service_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "service_id");
+                                                mysql_update = TRUE;
+                                        } else {
+                                                mysql_update = FALSE;
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+                        free(query);
+
+                        if (mysql_update == FALSE) {
+
+	                        /* try insert instead */
+        	                dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt) VALUES (%lu, %d, %lu, %lu, '%s', %lu, '%s', %lu, '%s', %lu, %lu, '%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%s', '%s', '%s', '%s', '%s')",
                                          ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
                                          *(unsigned long *) data[0],     /* insert start */
                                          *(int *) data[1],
@@ -5936,9 +5995,10 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
                                          *(char **) data[49],
                                          *(char **) data[50]            /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+	                        /* send query to db */
+        	                result = ido2db_db_query(idi, query2);
+                	        free(query2);
+			}
                 }
                 break;
 
