@@ -3914,8 +3914,10 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* don't store old data */
-	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time)
+	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time) {
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_programstatusdata() %lu < %lu\n", tstamp.tv_sec, idi->dbinfo.latest_realtime_data_time);
 		return IDO_OK;
+	}
 
 	/* covert vars */
 	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_PROGRAMSTARTTIME], &program_start_time);
