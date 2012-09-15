@@ -8820,8 +8820,11 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
 int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
-	char * query1 = NULL;
-	char * query2 = NULL;
+        char * query = NULL;
+        char * query1 = NULL;
+        char * query2 = NULL;
+        unsigned long customvariable_id;
+        int mysql_update = FALSE;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_save_custom_variables_customvariables_add() start\n");
 
@@ -8849,8 +8852,33 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s (instance_id, object_id, config_type, has_been_modified, varname, varvalue) VALUES (%lu, %lu, %d, %d, '%s', '%s')",
+
+                        dummy = asprintf(&query, "SELECT customvariable_id FROM %s WHERE object_id=%lu AND varname='%s'",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLES],
+                                 *(unsigned long *) data[1],    /* unique constraint start */
+                                 (*(char **) data[4] == NULL) ? "" : *(char **) data[4]         /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                customvariable_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "customvariable_id");
+                                                mysql_update = TRUE;
+                                        } else {
+                                                mysql_update = FALSE;
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+                        free(query);
+
+                        if (mysql_update == FALSE) {
+
+	                        /* try insert instead */
+        	                dummy = asprintf(&query2, "INSERT INTO %s (instance_id, object_id, config_type, has_been_modified, varname, varvalue) VALUES (%lu, %lu, %d, %d, '%s', '%s')",
                                          ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLES],
                                          *(unsigned long *) data[0],     /* insert start */
                                          *(unsigned long *) data[1],
@@ -8859,9 +8887,10 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                                          (*(char **) data[4] == NULL) ? "" : *(char **) data[4],
                                          (*(char **) data[5] == NULL) ? "" : *(char **) data[5]         /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+	                        /* send query to db */
+        	                result = ido2db_db_query(idi, query2);
+                	        free(query2);
+			}
                 }
                 break;
 
@@ -8980,8 +9009,11 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add(ido2db_idi *idi, void **data) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
-	char * query1 = NULL;
-	char * query2 = NULL;
+        char * query = NULL;
+        char * query1 = NULL;
+        char * query2 = NULL;
+        unsigned long customvariablestatus_id;
+        int mysql_update = FALSE;
 #endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add() start\n");
@@ -9010,8 +9042,32 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
-                        /* try insert instead */
-                        dummy = asprintf(&query2, "INSERT INTO %s (instance_id, object_id, status_update_time, has_been_modified, varname, varvalue) VALUES (%lu, %lu, %s, %d, '%s', '%s')",
+
+                        dummy = asprintf(&query, "SELECT customvariablestatus_id FROM %s WHERE object_id=%lu AND varname='%s'",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS],
+                                 *(unsigned long *) data[1],     /* unique constraint start */
+                                 (*(char **) data[4] == NULL) ? "" : *(char **) data[4] /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                customvariablestatus_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "customvariablestatus_id");
+                                                mysql_update = TRUE;
+                                        } else {
+                                                mysql_update = FALSE;
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+                        free(query);
+
+                        if (mysql_update == FALSE) {
+	                        /* try insert instead */
+        	                dummy = asprintf(&query2, "INSERT INTO %s (instance_id, object_id, status_update_time, has_been_modified, varname, varvalue) VALUES (%lu, %lu, %s, %d, '%s', '%s')",
                                          ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS],
                                          *(unsigned long *) data[0],     /* insert start */
                                          *(unsigned long *) data[1],
@@ -9020,9 +9076,10 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                                          (*(char **) data[4] == NULL) ? "" : *(char **) data[4],
                                          (*(char **) data[5] == NULL) ? "" : *(char **) data[5]       /* insert end */
                                         );
-                        /* send query to db */
-                        result = ido2db_db_query(idi, query2);
-                        free(query2);
+	                        /* send query to db */
+        	                result = ido2db_db_query(idi, query2);
+                	        free(query2);
+			}
                 }
                 break;
 
