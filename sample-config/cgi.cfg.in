@@ -162,6 +162,16 @@ use_ssl_authentication=0
 
 
 
+# LOWERCASE USER NAME
+# This option controls whether or not the username is converted
+# to all lowercase letters. Can be useful if the username is stored
+# in Active Directory (case-insensitive).
+
+lowercase_user_name=0
+
+
+
+
 # DEFAULT USER
 # Setting this variable will define a default user name that can
 # access pages without authentication.  This allows people within a
