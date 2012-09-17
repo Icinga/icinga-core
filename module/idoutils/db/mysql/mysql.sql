@@ -26,7 +26,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 
 CREATE TABLE IF NOT EXISTS icinga_acknowledgements (
-  acknowledgement_id serial,
+  acknowledgement_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   entry_time timestamp  default '0000-00-00 00:00:00',
   entry_time_usec  int default 0,
@@ -49,7 +49,7 @@ CREATE TABLE IF NOT EXISTS icinga_acknowledgements (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_commands (
-  command_id serial,
+  command_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   object_id bigint unsigned default 0,
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS icinga_commands (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_commenthistory (
-  commenthistory_id serial,
+  commenthistory_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   entry_time timestamp  default '0000-00-00 00:00:00',
   entry_time_usec  int default 0,
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS icinga_commenthistory (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_comments (
-  comment_id serial,
+  comment_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   entry_time timestamp  default '0000-00-00 00:00:00',
   entry_time_usec  int default 0,
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS icinga_comments (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_configfiles (
-  configfile_id serial,
+  configfile_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   configfile_type smallint default 0,
   configfile_path varchar(255) character set latin1  default '',
@@ -134,7 +134,7 @@ CREATE TABLE IF NOT EXISTS icinga_configfiles (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_configfilevariables (
-  configfilevariable_id serial,
+  configfilevariable_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   configfile_id bigint unsigned default 0,
   varname varchar(64) character set latin1  default '',
@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS icinga_configfilevariables (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_conninfo (
-  conninfo_id serial,
+  conninfo_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   agent_name varchar(32) character set latin1  default '',
   agent_version varchar(16) character set latin1  default '',
@@ -174,7 +174,7 @@ CREATE TABLE IF NOT EXISTS icinga_conninfo (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_contactgroups (
-  contactgroup_id serial,
+  contactgroup_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   contactgroup_object_id bigint unsigned default 0,
@@ -190,7 +190,7 @@ CREATE TABLE IF NOT EXISTS icinga_contactgroups (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_contactgroup_members (
-  contactgroup_member_id serial,
+  contactgroup_member_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   contactgroup_id bigint unsigned default 0,
   contact_object_id bigint unsigned default 0,
@@ -204,7 +204,7 @@ CREATE TABLE IF NOT EXISTS icinga_contactgroup_members (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_contactnotificationmethods (
-  contactnotificationmethod_id serial,
+  contactnotificationmethod_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   contactnotification_id bigint unsigned default 0,
   start_time timestamp  default '0000-00-00 00:00:00',
@@ -224,7 +224,7 @@ CREATE TABLE IF NOT EXISTS icinga_contactnotificationmethods (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_contactnotifications (
-  contactnotification_id serial,
+  contactnotification_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   notification_id bigint unsigned default 0,
   contact_object_id bigint unsigned default 0,
@@ -243,7 +243,7 @@ CREATE TABLE IF NOT EXISTS icinga_contactnotifications (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_contacts (
-  contact_id serial,
+  contact_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   contact_object_id bigint unsigned default 0,
@@ -277,7 +277,7 @@ CREATE TABLE IF NOT EXISTS icinga_contacts (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_contactstatus (
-  contactstatus_id serial,
+  contactstatus_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   contact_object_id bigint unsigned default 0,
   status_update_time timestamp  default '0000-00-00 00:00:00',
@@ -299,7 +299,7 @@ CREATE TABLE IF NOT EXISTS icinga_contactstatus (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_contact_addresses (
-  contact_address_id serial,
+  contact_address_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   contact_id bigint unsigned default 0,
   address_number smallint default 0,
@@ -315,7 +315,7 @@ CREATE TABLE IF NOT EXISTS icinga_contact_addresses (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_contact_notificationcommands (
-  contact_notificationcommand_id serial,
+  contact_notificationcommand_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   contact_id bigint unsigned default 0,
   notification_type smallint default 0,
@@ -332,7 +332,7 @@ CREATE TABLE IF NOT EXISTS icinga_contact_notificationcommands (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_customvariables (
-  customvariable_id serial,
+  customvariable_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   object_id bigint unsigned default 0,
   config_type smallint default 0,
@@ -351,7 +351,7 @@ CREATE TABLE IF NOT EXISTS icinga_customvariables (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_customvariablestatus (
-  customvariablestatus_id serial,
+  customvariablestatus_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   object_id bigint unsigned default 0,
   status_update_time timestamp  default '0000-00-00 00:00:00',
@@ -370,7 +370,7 @@ CREATE TABLE IF NOT EXISTS icinga_customvariablestatus (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_dbversion (
-  dbversion_id serial,
+  dbversion_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   name varchar(10) character set latin1  default '',
   version varchar(10) character set latin1  default '',
   create_time timestamp default '0000-00-00 00:00:00',
@@ -386,7 +386,7 @@ CREATE TABLE IF NOT EXISTS icinga_dbversion (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_downtimehistory (
-  downtimehistory_id serial,
+  downtimehistory_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   downtime_type smallint default 0,
   object_id bigint unsigned default 0,
@@ -418,7 +418,7 @@ CREATE TABLE IF NOT EXISTS icinga_downtimehistory (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_eventhandlers (
-  eventhandler_id serial,
+  eventhandler_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   eventhandler_type smallint default 0,
   object_id bigint unsigned default 0,
@@ -448,7 +448,7 @@ CREATE TABLE IF NOT EXISTS icinga_eventhandlers (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_externalcommands (
-  externalcommand_id serial,
+  externalcommand_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   entry_time timestamp  default '0000-00-00 00:00:00',
   command_type smallint default 0,
@@ -464,7 +464,7 @@ CREATE TABLE IF NOT EXISTS icinga_externalcommands (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_flappinghistory (
-  flappinghistory_id serial,
+  flappinghistory_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   event_time timestamp  default '0000-00-00 00:00:00',
   event_time_usec  int default 0,
@@ -487,7 +487,7 @@ CREATE TABLE IF NOT EXISTS icinga_flappinghistory (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_hostchecks (
-  hostcheck_id serial,
+  hostcheck_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   host_object_id bigint unsigned default 0,
   check_type smallint default 0,
@@ -521,7 +521,7 @@ CREATE TABLE IF NOT EXISTS icinga_hostchecks (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_hostdependencies (
-  hostdependency_id serial,
+  hostdependency_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   host_object_id bigint unsigned default 0,
@@ -543,7 +543,7 @@ CREATE TABLE IF NOT EXISTS icinga_hostdependencies (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_hostescalations (
-  hostescalation_id serial,
+  hostescalation_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   host_object_id bigint unsigned default 0,
@@ -565,7 +565,7 @@ CREATE TABLE IF NOT EXISTS icinga_hostescalations (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_hostescalation_contactgroups (
-  hostescalation_contactgroup_id serial,
+  hostescalation_contactgroup_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   hostescalation_id bigint unsigned default 0,
   contactgroup_object_id bigint unsigned default 0,
@@ -580,7 +580,7 @@ CREATE TABLE IF NOT EXISTS icinga_hostescalation_contactgroups (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_hostescalation_contacts (
-  hostescalation_contact_id serial,
+  hostescalation_contact_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   hostescalation_id bigint unsigned default 0,
   contact_object_id bigint unsigned default 0,
@@ -595,7 +595,7 @@ CREATE TABLE IF NOT EXISTS icinga_hostescalation_contacts (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_hostgroups (
-  hostgroup_id serial,
+  hostgroup_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   hostgroup_object_id bigint unsigned default 0,
@@ -611,7 +611,7 @@ CREATE TABLE IF NOT EXISTS icinga_hostgroups (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_hostgroup_members (
-  hostgroup_member_id serial,
+  hostgroup_member_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   hostgroup_id bigint unsigned default 0,
   host_object_id bigint unsigned default 0,
@@ -625,7 +625,7 @@ CREATE TABLE IF NOT EXISTS icinga_hostgroup_members (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_hosts (
-  host_id serial,
+  host_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   host_object_id bigint unsigned default 0,
@@ -696,7 +696,7 @@ CREATE TABLE IF NOT EXISTS icinga_hosts (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_hoststatus (
-  hoststatus_id serial,
+  hoststatus_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   host_object_id bigint unsigned default 0,
   status_update_time timestamp  default '0000-00-00 00:00:00',
@@ -754,7 +754,7 @@ CREATE TABLE IF NOT EXISTS icinga_hoststatus (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_host_contactgroups (
-  host_contactgroup_id serial,
+  host_contactgroup_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   host_id bigint unsigned default 0,
   contactgroup_object_id bigint unsigned default 0,
@@ -768,7 +768,7 @@ CREATE TABLE IF NOT EXISTS icinga_host_contactgroups (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_host_contacts (
-  host_contact_id serial,
+  host_contact_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   host_id bigint unsigned default 0,
   contact_object_id bigint unsigned default 0,
@@ -782,7 +782,7 @@ CREATE TABLE IF NOT EXISTS icinga_host_contacts (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_host_parenthosts (
-  host_parenthost_id serial,
+  host_parenthost_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   host_id bigint unsigned default 0,
   parent_host_object_id bigint unsigned default 0,
@@ -796,7 +796,7 @@ CREATE TABLE IF NOT EXISTS icinga_host_parenthosts (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_instances (
-  instance_id serial,
+  instance_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_name varchar(64) character set latin1  default '',
   instance_description varchar(128) character set latin1  default '',
   PRIMARY KEY  (instance_id)
@@ -809,7 +809,7 @@ CREATE TABLE IF NOT EXISTS icinga_instances (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_logentries (
-  logentry_id serial,
+  logentry_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   logentry_time timestamp  default '0000-00-00 00:00:00',
   entry_time timestamp  default '0000-00-00 00:00:00',
@@ -828,7 +828,7 @@ CREATE TABLE IF NOT EXISTS icinga_logentries (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_notifications (
-  notification_id serial,
+  notification_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   notification_type smallint default 0,
   notification_reason smallint default 0,
@@ -853,7 +853,7 @@ CREATE TABLE IF NOT EXISTS icinga_notifications (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_objects (
-  object_id serial,
+  object_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   objecttype_id bigint unsigned default 0,
   name1 varchar(128) character set latin1 collate latin1_general_cs  default '',
@@ -870,7 +870,7 @@ CREATE TABLE IF NOT EXISTS icinga_objects (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_processevents (
-  processevent_id serial,
+  processevent_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   event_type smallint default 0,
   event_time timestamp  default '0000-00-00 00:00:00',
@@ -889,7 +889,7 @@ CREATE TABLE IF NOT EXISTS icinga_processevents (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_programstatus (
-  programstatus_id serial,
+  programstatus_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   status_update_time timestamp  default '0000-00-00 00:00:00',
   program_start_time timestamp  default '0000-00-00 00:00:00',
@@ -926,7 +926,7 @@ CREATE TABLE IF NOT EXISTS icinga_programstatus (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_runtimevariables (
-  runtimevariable_id serial,
+  runtimevariable_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   varname varchar(64) character set latin1  default '',
   varvalue TEXT character set latin1  default '',
@@ -940,7 +940,7 @@ CREATE TABLE IF NOT EXISTS icinga_runtimevariables (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_scheduleddowntime (
-  scheduleddowntime_id serial,
+  scheduleddowntime_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   downtime_type smallint default 0,
   object_id bigint unsigned default 0,
@@ -969,7 +969,7 @@ CREATE TABLE IF NOT EXISTS icinga_scheduleddowntime (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_servicechecks (
-  servicecheck_id serial,
+  servicecheck_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   service_object_id bigint unsigned default 0,
   check_type smallint default 0,
@@ -1002,7 +1002,7 @@ CREATE TABLE IF NOT EXISTS icinga_servicechecks (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_servicedependencies (
-  servicedependency_id serial,
+  servicedependency_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   service_object_id bigint unsigned default 0,
@@ -1025,7 +1025,7 @@ CREATE TABLE IF NOT EXISTS icinga_servicedependencies (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_serviceescalations (
-  serviceescalation_id serial,
+  serviceescalation_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   service_object_id bigint unsigned default 0,
@@ -1048,7 +1048,7 @@ CREATE TABLE IF NOT EXISTS icinga_serviceescalations (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_serviceescalation_contactgroups (
-  serviceescalation_contactgroup_id serial,
+  serviceescalation_contactgroup_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   serviceescalation_id bigint unsigned default 0,
   contactgroup_object_id bigint unsigned default 0,
@@ -1063,7 +1063,7 @@ CREATE TABLE IF NOT EXISTS icinga_serviceescalation_contactgroups (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_serviceescalation_contacts (
-  serviceescalation_contact_id serial,
+  serviceescalation_contact_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   serviceescalation_id bigint unsigned default 0,
   contact_object_id bigint unsigned default 0,
@@ -1078,7 +1078,7 @@ CREATE TABLE IF NOT EXISTS icinga_serviceescalation_contacts (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_servicegroups (
-  servicegroup_id serial,
+  servicegroup_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   servicegroup_object_id bigint unsigned default 0,
@@ -1094,7 +1094,7 @@ CREATE TABLE IF NOT EXISTS icinga_servicegroups (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_servicegroup_members (
-  servicegroup_member_id serial,
+  servicegroup_member_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   servicegroup_id bigint unsigned default 0,
   service_object_id bigint unsigned default 0,
@@ -1108,7 +1108,7 @@ CREATE TABLE IF NOT EXISTS icinga_servicegroup_members (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_services (
-  service_id serial,
+  service_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   host_object_id bigint unsigned default 0,
@@ -1172,7 +1172,7 @@ CREATE TABLE IF NOT EXISTS icinga_services (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_servicestatus (
-  servicestatus_id serial,
+  servicestatus_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   service_object_id bigint unsigned default 0,
   status_update_time timestamp  default '0000-00-00 00:00:00',
@@ -1231,7 +1231,7 @@ CREATE TABLE IF NOT EXISTS icinga_servicestatus (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_service_contactgroups (
-  service_contactgroup_id serial,
+  service_contactgroup_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   service_id bigint unsigned default 0,
   contactgroup_object_id bigint unsigned default 0,
@@ -1245,7 +1245,7 @@ CREATE TABLE IF NOT EXISTS icinga_service_contactgroups (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_service_contacts (
-  service_contact_id serial,
+  service_contact_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   service_id bigint unsigned default 0,
   contact_object_id bigint unsigned default 0,
@@ -1259,7 +1259,7 @@ CREATE TABLE IF NOT EXISTS icinga_service_contacts (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_statehistory (
-  statehistory_id serial,
+  statehistory_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   state_time timestamp  default '0000-00-00 00:00:00',
   state_time_usec  int default 0,
@@ -1283,7 +1283,7 @@ CREATE TABLE IF NOT EXISTS icinga_statehistory (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_systemcommands (
-  systemcommand_id serial,
+  systemcommand_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   start_time timestamp  default '0000-00-00 00:00:00',
   start_time_usec  int default 0,
@@ -1307,7 +1307,7 @@ CREATE TABLE IF NOT EXISTS icinga_systemcommands (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_timedeventqueue (
-  timedeventqueue_id serial,
+  timedeventqueue_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   event_type smallint default 0,
   queued_time timestamp  default '0000-00-00 00:00:00',
@@ -1326,7 +1326,7 @@ CREATE TABLE IF NOT EXISTS icinga_timedeventqueue (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_timedevents (
-  timedevent_id serial,
+  timedevent_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   event_type smallint default 0,
   queued_time timestamp  default '0000-00-00 00:00:00',
@@ -1349,7 +1349,7 @@ CREATE TABLE IF NOT EXISTS icinga_timedevents (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_timeperiods (
-  timeperiod_id serial,
+  timeperiod_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   config_type smallint default 0,
   timeperiod_object_id bigint unsigned default 0,
@@ -1365,7 +1365,7 @@ CREATE TABLE IF NOT EXISTS icinga_timeperiods (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_timeperiod_timeranges (
-  timeperiod_timerange_id serial,
+  timeperiod_timerange_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   timeperiod_id bigint unsigned default 0,
   day smallint default 0,
@@ -1381,7 +1381,7 @@ CREATE TABLE IF NOT EXISTS icinga_timeperiod_timeranges (
 --
 
 CREATE TABLE IF NOT EXISTS icinga_slahistory (
-  slahistory_id serial,
+  slahistory_id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   instance_id bigint unsigned default 0,
   start_time timestamp null default NULL,
   end_time timestamp null default NULL,
@@ -1585,6 +1585,17 @@ CREATE INDEX contacts_object_id_idx ON icinga_contacts(contact_object_id);
 CREATE INDEX contact_notif_meth_notif_idx ON icinga_contactnotificationmethods(contactnotification_id, command_object_id);
 CREATE INDEX command_object_idx ON icinga_commands(object_id); 
 CREATE INDEX services_combined_object_idx ON icinga_services(service_object_id, host_object_id);
+
+
+-- #2618
+CREATE INDEX cntgrpmbrs_cgid_coid ON icinga_contactgroup_members (contactgroup_id,contact_object_id);
+CREATE INDEX hstgrpmbrs_hgid_hoid ON icinga_hostgroup_members (hostgroup_id,host_object_id);
+CREATE INDEX hstcntgrps_hid_cgoid ON icinga_host_contactgroups (host_id,contactgroup_object_id);
+CREATE INDEX hstprnthsts_hid_phoid ON icinga_host_parenthosts (host_id,parent_host_object_id);
+CREATE INDEX runtimevars_iid_varn ON icinga_runtimevariables (instance_id,varname);
+CREATE INDEX sgmbrs_sgid_soid ON icinga_servicegroup_members (servicegroup_id,service_object_id);
+CREATE INDEX scgrps_sid_cgoid ON icinga_service_contactgroups (service_id,contactgroup_object_id);
+CREATE INDEX tperiod_tid_d_ss_es ON icinga_timeperiod_timeranges (timeperiod_id,day,start_sec,end_sec);
 
 -- -----------------------------------------
 -- set dbversion
