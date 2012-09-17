@@ -39,6 +39,19 @@ spool oracle-upgrade-&&ICINGA_VERSION..log
 alter table programstatus add disable_notif_expire_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR');
 
 -- -----------------------------------------
+-- #2618
+-- -----------------------------------------
+
+CREATE INDEX cntgrpmbrs_cgid_coid ON contactgroup_members (contactgroup_id,contact_object_id) tablespace &&IDXTBS;
+CREATE INDEX hstgrpmbrs_hgid_hoid ON hostgroup_members (hostgroup_id,host_object_id) tablespace &&IDXTBS;
+CREATE INDEX hstcntgrps_hid_cgoid ON host_contactgroups (host_id,contactgroup_object_id) tablespace &&IDXTBS;
+CREATE INDEX hstprnthsts_hid_phoid ON host_parenthosts (host_id,parent_host_object_id) tablespace &&IDXTBS;
+CREATE INDEX runtimevars_iid_varn ON runtimevariables (instance_id,varname) tablespace &&IDXTBS;
+CREATE INDEX sgmbrs_sgid_soid ON servicegroup_members (servicegroup_id,service_object_id) tablespace &&IDXTBS;
+CREATE INDEX scgrps_sid_cgoid ON service_contactgroups (service_id,contactgroup_object_id) tablespace &&IDXTBS;
+CREATE INDEX tperiod_tid_d_ss_es ON timeperiod_timeranges (timeperiod_id,day,start_sec,end_sec) tablespace &&IDXTBS;
+
+-- -----------------------------------------
 -- finally update dbversion
 -- -----------------------------------------
 
