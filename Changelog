@@ -8,10 +8,10 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 1.8.0 - 18/10/2012
 
 ENHANCEMENTS
+
 * core: pass long_output to neb api for statechange data #2650 - MF
 * core/classic ui: make hashfunc more efficient by using sdbm #2761 - MF/GB
 * core: try the most common macros ($ARGn$, $USERn$) first (Andreas Ericsson) #2674 - MF
-* core: handle passive checks via external commands the same way as active checks, bypassing the temp check result file and reaper (Andreas Ericsson) #2687 -MF
 * core: use binary search when looking up macro names, instead of insane strcmp() loops (Andreas Ericsson) #2675 - MF
 * core: add useful message to p1.pl when epn plugin does not call exit() (Sven Nierlein) #2431 -MF
 * core: re-enable state based escalation ranges, using cast tricks #2878 - MF
@@ -33,7 +33,6 @@ ENHANCEMENTS
 	** notifications.cgi
 	** showlog.cgi
 	** icons sourced from "Silk icon set" (http://www.famfamfam.com/lab/icons/silk/) created by Mark James.
-
 * classic ui: Changed search in config.cgi to regex #2884 - RB
 * classic ui: Added config option to let read-only users see comments and downtimes #2699 - RB
 * classic ui: Added selection of timeperiod for notifications and history #2341 - RB
@@ -57,11 +56,14 @@ ENHANCEMENTS
 * idoutils: add --with-libdbi-driver-dir to configure, libdbi_driver_dir to ido2db.cfg to pass the driver location instead of NULL by default #2691 - MF
 
 * install: add --with-mainurl to configure, allowing to set the main frame target url for index.html #2611 - MF
-* icinga.spec: use --with-mainurl to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29 #2611 - MF
 
+* docs: add a new stylesheet and rework docbook.xsl #3046 - MF
+
+* icinga.spec: use --with-mainurl to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29 #2611 - MF
 * icinga.spec: add devel package #2634 - MF
 
 FIXES
+
 * core: unify check scheduling replacement logic for new events (Andreas Ericsson) #2676 - MF
 * core: get rid of the instame macro usage while logging alerts and states (Andreas Ericsson) #2665 - MF
 * core: revamp the detection of embedded perl usage directive "# icinga: +epn" (Andreas Ericsson) #2197 - MF
@@ -90,44 +92,39 @@ FIXES
 * idoutils: set result handle explicitely to NULL after dbi_result_free() to prevent memory free'ing corruption #2612 - MF/GB
 * idoutils: fix ignoring mysql password in create_mysqldb.sh #2994 - MF
 * idoutils: fix sla_downtime_select query and result handle; scheduled downtime merge statement #2780 - MF
+* idoutils: fix insert on duplicate key with multiple unique keys marked unsafe in mysql >= 5.5.24; rewrite all queries #3008 - MF
+* idoutils: fix redundant indexes in MySQL schema (thx Michael Renner) #3018 - MF
+* idoutils: re-add missing indexes from #1110 resolving performance issues on all supported rdbms #2618 - MF
 
 * install: fix icinga.xml for solaris pkg not updated #2609 - CF
 
 * icinga.spec: fix permissions on ido2db.cfg potentially world readable (Aaron Russo) #2897 - MF
-* icinga.soec: drop unsupported configure flags #3037 - MF
+* icinga.spec: drop unsupported configure flags #3037 - MF
 
 CHANGES
 
 * core: neb struct statechange data += long_ouput #2650 - MF
-
 * core: new command
 	** DISABLE_NOTIFICATIONS_EXPIRE_TIME;<schedule_time>;<expire_time> (set schedule_time to now()) #905
-
 * core: unknown macros are not left on the output anymore, logging a warning instead
 	** either fix your config (i.e. wrong macros, escape dollar signs with another one)
 	** or set keep_unknown_macros=1 in icinga.cfg to revert to the old behaviour
-
 * core: max_check_result_list_items will set the max number of checkresults waiting for being processed #3099
 	** if checkresult_list is "full", the checkresult reaper will bail early
 	** leaving the core time to process the existing items on checkresult list
 	** max_check_result_list_items=0 is the default, disabling this feature
 	** max_check_result_list_items=1024 should work in larger distributed setups
-
 * core: new NEB callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE (606) #2041
 
-* icinga.spec: add devel package #2634
-* icinga.spec: forced update on icinga.cfg change package locations #2923
-
-classic ui: changed "cgi_json_version" to 1.8 -> see Changelog_json for changes
-classic ui: Changed cgi GET params
+* classic ui: changed "cgi_json_version" to 1.8 -> see Changelog_json for changes
+* classic ui: Changed cgi GET params
 	** Added "limit" and "start" for pagination to various cgi's - #2725
 	** Added "ts_start", "ts_end" and "order" to history.cgi and notifications.cgi - #2341
 	** Removed "archive" and "oldestfirst" from history.cgi and notifications.cgi - #2341
 	** Added "start_time", "end_time" and "timeperiod" to notifications.cgi - #2341
 	** "send_notification" and "sticky_ack" on cmd.cgi require 0|1 vars, if not set, default is 1 #2926
 	** add "scroll", interpreted by javascript reload to restore the scrolling position #2855
-
-classic ui: Added/Changed cgi.cfg options
+* classic ui: Added/Changed cgi.cfg options
 	** authorized_for_comments_read_only - #2699
 	** authorized_for_downtimes_read_only - #2699
 	** authorized_contactgroup_for_comments_read_only - #2699
@@ -135,23 +132,26 @@ classic ui: Added/Changed cgi.cfg options
 	** "result_limit" (default: 50) - #2725
 	** "result_limit" replaces "default_num_displayed_log_entries" - #2725
 	** default_expiring_disabled_notifications_duration=86400 #905
-
-classic ui: change strings in json output: !!!IMPORTANT!!!
+* classic ui: change strings in json output: !!!IMPORTANT!!!
 	** host -> host_name
 	** service -> service_description
 	** description -> service_description
 	** added host_display_name
 	** added service_display_name
-
-classic ui: added checkbox in cmd.cgi to deselect unintentional selected hosts/services #2697
+* classic ui: added checkbox in cmd.cgi to deselect unintentional selected hosts/services #2697
 
 * idoutils: add disable_notif_expire_time to programstatus table #905
-
-* ido2db.cfg: new config option
+* idoutils: ido2db.cfg new config options
 	** socket_perm (default 0755) #2659
 	** libdbi_driver_dir (default NULL) #2691
 
 * install: add --with-libdbi-driver-dir to configure #2691
+
+* docs: new stylesheet in html/docs/stylesheets/icinga-docs.css #3046
+
+* icinga.spec: add devel package #2634
+* icinga.spec: forced update on icinga.cfg change package locations #2923
+
 
 
 1.7.2 - 27/08/2012
