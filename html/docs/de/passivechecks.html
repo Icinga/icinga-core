@@ -1,105 +1,106 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Passive Prüfungen (Passive Checks)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.7. Passive PrÃ¼fungen (Passive Checks)</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
-<link rel="prev" href="activechecks.html" title="Aktive Prüfungen (Active Checks)">
-<link rel="next" href="statetypes.html" title="Statustypen">
+<link rel="prev" href="activechecks.html" title="5.6. Aktive PrÃ¼fungen (Active Checks)">
+<link rel="next" href="statetypes.html" title="5.8. Statustypen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Passive Prüfungen (Passive Checks)</th></tr>
+<tr><th colspan="3" align="center">5.7. Passive PrÃ¼fungen (Passive Checks)</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="activechecks.html">Zurück</a> </td>
+<a accesskey="p" href="activechecks.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
-<td width="20%" align="right"> <a accesskey="n" href="statetypes.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="statetypes.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Passive Prüfungen (Passive Checks)">
+<div class="section" title="5.7. Passive PrÃ¼fungen (Passive Checks)">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="passivechecks"></a>Passive Prüfungen (Passive Checks)</h2></div></div></div>
+<a name="passivechecks"></a>5.7. Passive PrÃ¼fungen (Passive Checks)</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>In den meisten Fällen werden Sie Icinga nutzen, um Ihre Hosts und Services mit Hilfe von regelmäßig geplanten <a class="link" href="activechecks.html" title="Aktive Prüfungen (Active Checks)">aktiven Prüfungen</a> zu überwachen. Aktive Prüfungen können genutzt werden, um ein Gerät oder Service
-  gelegentlich "abzufragen". Icinga unterstützt auch einen Weg, Hosts und Services passiv zu überwachen statt aktiv. Die
-  Hauptmerkmale von passiven Prüfungen sind wie folgt:</p>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p>passive Prüfungen werden von externen Anwendungen/Prozessen veranlasst und ausgeführt</p>
-    </li>
-<li class="listitem">
-      <p>Ergebnisse von passiven Prüfungen werden an Icinga zur Verarbeitung übermittelt</p>
-    </li>
-</ul></div>
-
-  <p>Der Hauptunterschied zwischen aktiven und passiven Prüfungen ist, dass aktive Prüfungen von Icinga veranlasst und
-  ausgeführt werden, während passive Prüfungen von externen Applikationen durchgeführt werden.</p>
-
-  <p><span class="bold"><strong>Einsatzmöglichkeiten für passive Prüfungen</strong></span></p>
-
-  <p>passive Prüfungen sind nützlich, um Services zu überwachen, die</p>
+  <p>In den meisten FÃ¤llen werden Sie Icinga nutzen, um Ihre Hosts und Services mit Hilfe von regelmÃ¤ÃŸig geplanten <a class="link" href="activechecks.html" title="5.6. Aktive PrÃ¼fungen (Active Checks)">aktiven PrÃ¼fungen</a> zu Ã¼berwachen. Aktive PrÃ¼fungen kÃ¶nnen genutzt werden, um ein GerÃ¤t oder Service
+  gelegentlich "abzufragen". Icinga unterstÃ¼tzt auch einen Weg, Hosts und Services passiv zu Ã¼berwachen statt aktiv. Die
+  Hauptmerkmale von passiven PrÃ¼fungen sind wie folgt:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>von Natur aus asynchron sind und nicht effektiv durch Abfrage ihres Zustands auf einer regelmäßig geplanten Basis
-      überwacht werden können</p>
+      <p>passive PrÃ¼fungen werden von externen Anwendungen/Prozessen veranlasst und ausgefÃ¼hrt</p>
     </li>
 <li class="listitem">
-      <p>sich hinter einer Firewall befinden und nicht aktiv vom überwachenden Host aus geprüft werden können</p>
+      <p>Ergebnisse von passiven PrÃ¼fungen werden an Icinga zur Verarbeitung Ã¼bermittelt</p>
     </li>
 </ul></div>
 
-  <p>Beispiele für asynchrone Services, bei denen sich eine passive Überwachung lohnt, sind u.a. SNMP-Traps und
-  Sicherheits-Alarme. Sie wissen nie, wie viele (falls überhaupt) Traps oder Alarme Sie innerhalb eines vorgegebenen Zeitfensters
-  erhalten, so dass es nicht sinnvoll ist, ihren Status alle paar Minuten zu überwachen.</p>
+  <p>Der Hauptunterschied zwischen aktiven und passiven PrÃ¼fungen ist, dass aktive PrÃ¼fungen von Icinga veranlasst und
+  ausgefÃ¼hrt werden, wÃ¤hrend passive PrÃ¼fungen von externen Applikationen durchgefÃ¼hrt werden.</p>
 
-  <p>Passive Prüfungen werden auch genutzt, um <a class="link" href="distributed.html" title="Verteilte Überwachung">verteilte</a> oder <a class="link" href="redundancy.html" title="Redundante und Failover-Netzwerk-Überwachung">redundante</a> Überwachungsinstallationen zu konfigurieren.</p>
+  <p><span class="bold"><strong>EinsatzmÃ¶glichkeiten fÃ¼r passive PrÃ¼fungen</strong></span></p>
 
-  <p><span class="bold"><strong>Wie passive Prüfungen arbeiten</strong></span></p>
+  <p>passive PrÃ¼fungen sind nÃ¼tzlich, um Services zu Ã¼berwachen, die</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>von Natur aus asynchron sind und nicht effektiv durch Abfrage ihres Zustands auf einer regelmÃ¤ÃŸig geplanten Basis
+      Ã¼berwacht werden kÃ¶nnen</p>
+    </li>
+<li class="listitem">
+      <p>sich hinter einer Firewall befinden und nicht aktiv vom Ã¼berwachenden Host aus geprÃ¼ft werden kÃ¶nnen</p>
+    </li>
+</ul></div>
+
+  <p>Beispiele fÃ¼r asynchrone Services, bei denen sich eine passive Ãœberwachung lohnt, sind u.a. SNMP-Traps und
+  Sicherheits-Alarme. Sie wissen nie, wie viele (falls Ã¼berhaupt) Traps oder Alarme Sie innerhalb eines vorgegebenen Zeitfensters
+  erhalten, so dass es nicht sinnvoll ist, ihren Status alle paar Minuten zu Ã¼berwachen.</p>
+
+  <p>Passive PrÃ¼fungen werden auch genutzt, um <a class="link" href="distributed.html" title="7.5. Verteilte Ãœberwachung">verteilte</a> oder <a class="link" href="redundancy.html" title="7.6. Redundante und Failover-Netzwerk-Ãœberwachung">redundante</a> Ãœberwachungsinstallationen zu konfigurieren.</p>
+
+  <p><span class="bold"><strong>Wie passive PrÃ¼fungen arbeiten</strong></span></p>
 
   <div class="mediaobject"><img src="../images/passivechecks.png"></div>
 
-  <p>Hier nun mehr Details, wie passive Prüfungen arbeiten...</p>
+  <p>Hier nun mehr Details, wie passive PrÃ¼fungen arbeiten...</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>eine externe Applikation prüft den Status eines Hosts oder Service.</p>
+      <p>eine externe Applikation prÃ¼ft den Status eines Hosts oder Service.</p>
     </li>
 <li class="listitem">
-      <p>die externe Applikation schreibt die Ergebnisse der Prüfung in das <a class="link" href="configmain.html#configmain-command_file">external
+      <p>die externe Applikation schreibt die Ergebnisse der PrÃ¼fung in das <a class="link" href="configmain.html#configmain-command_file">external
       command file</a>.</p>
     </li>
 <li class="listitem">
-      <p>das nächste Mal, wenn Icinga das "external command file" liest, wird es die Ergebnisse aller passiven Prüfungen
-      zur späteren Verarbeitung in eine Queue stellen. Dieselbe Queue, die für die Speicherung von Ergebnissen von aktiven
-      Prüfungen genutzt wird, wird auch für die Speicherung von Ergebnissen von aktiven Prüfungen verwendet.</p>
+      <p>das nÃ¤chste Mal, wenn Icinga das "external command file" liest, wird es die Ergebnisse aller passiven PrÃ¼fungen
+      zur spÃ¤teren Verarbeitung in eine Queue stellen. Dieselbe Queue, die fÃ¼r die Speicherung von Ergebnissen von aktiven
+      PrÃ¼fungen genutzt wird, wird auch fÃ¼r die Speicherung von Ergebnissen von aktiven PrÃ¼fungen verwendet.</p>
     </li>
 <li class="listitem">
       <p>Icinga wird periodisch ein <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check result reaper
-      event</a> ausführen und die Ergebnis-Queue abfragen. Jedes Service-Prüfungs-Ergebnis, das in der Queue gefunden wird,
-      wird in der gleichen Weise bearbeitet - unabhängig davon, ob die Prüfung aktiv oder passiv war. Icinga kann abhängig
-      vom Prüfergebnis Benachrichtigungen senden, Alarme protokollieren, usw.</p>
+      event</a> ausfÃ¼hren und die Ergebnis-Queue abfragen. Jedes Service-PrÃ¼fungs-Ergebnis, das in der Queue gefunden wird,
+      wird in der gleichen Weise bearbeitet - unabhÃ¤ngig davon, ob die PrÃ¼fung aktiv oder passiv war. Icinga kann abhÃ¤ngig
+      vom PrÃ¼fergebnis Benachrichtigungen senden, Alarme protokollieren, usw.</p>
     </li>
 </ol></div>
 
-  <p>Die Verarbeitung von aktiven und passiven Prüfungsergebnissen ist tatsächlich identisch. Dies erlaubt eine nahtlose
+  <p>Die Verarbeitung von aktiven und passiven PrÃ¼fungsergebnissen ist tatsÃ¤chlich identisch. Dies erlaubt eine nahtlose
   Integration von externen Applikationen mit Icinga.</p>
 
-  <p><span class="bold"><strong>Passive Prüfungen aktivieren</strong></span></p>
+  <p><span class="bold"><strong>Passive PrÃ¼fungen aktivieren</strong></span></p>
 
-  <p>Um passive Prüfungen in Icinga zu aktivieren, müssen Sie folgendes tun:</p>
+  <p>Um passive PrÃ¼fungen in Icinga zu aktivieren, mÃ¼ssen Sie folgendes tun:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -112,15 +113,15 @@
     </li>
 </ul></div>
 
-  <p>Wenn Sie die Verarbeitung von passiven Prüfungen global deaktivieren wollen, setzen Sie die <a class="link" href="configmain.html#configmain-accept_passive_service_checks">accept_passive_service_checks</a>-Direktive auf 0.</p>
+  <p>Wenn Sie die Verarbeitung von passiven PrÃ¼fungen global deaktivieren wollen, setzen Sie die <a class="link" href="configmain.html#configmain-accept_passive_service_checks">accept_passive_service_checks</a>-Direktive auf 0.</p>
 
-  <p>Wenn Sie die Verarbeitung von passiven Prüfungen nur für ein paar Hosts oder Services deaktivieren wollen, nutzen Sie die
+  <p>Wenn Sie die Verarbeitung von passiven PrÃ¼fungen nur fÃ¼r ein paar Hosts oder Services deaktivieren wollen, nutzen Sie die
   <span class="emphasis"><em>passive_checks_enabled</em></span>-Direktive in den Host- und/oder Service-Definitionen.</p>
 
-  <p><span class="bold"><strong>Übermitteln von passiven Service-Prüfungsergebnissen</strong></span></p>
+  <p><span class="bold"><strong>Ãœbermitteln von passiven Service-PrÃ¼fungsergebnissen</strong></span></p>
 
-  <p>Externe Applikationen können passive Prüfungsergebisse an Icinga übermitteln, indem sie ein
-  PROCESS_SERVICE_CHECK_RESULT <a class="link" href="extcommands.html" title="Externe Befehle">external command</a> in das "external command file"
+  <p>Externe Applikationen kÃ¶nnen passive PrÃ¼fungsergebisse an Icinga Ã¼bermitteln, indem sie ein
+  PROCESS_SERVICE_CHECK_RESULT <a class="link" href="extcommands.html" title="7.1. Externe Befehle">external command</a> in das "external command file"
   schreiben.</p>
 
   <p>Das Format des Befehls lautet wie folgt:</p>
@@ -132,7 +133,7 @@
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><span class="emphasis"><em>timestamp</em></span> ist die Zeit im time_t-Format (Sekunden seit der UNIX-Epoche), zu der die
-      Service-Prüfung durchgeführt (oder übermittelt) wurde. Bitte beachten Sie das einzelne Leerzeichen nach der rechten
+      Service-PrÃ¼fung durchgefÃ¼hrt (oder Ã¼bermittelt) wurde. Bitte beachten Sie das einzelne Leerzeichen nach der rechten
       Klammer.</p>
     </li>
 <li class="listitem">
@@ -143,24 +144,24 @@
       <p><span class="emphasis"><em>svc_description</em></span> ist die Beschreibung des Service wie in der Service-Definition angegeben</p>
     </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>return_code</em></span> ist der Return-Code der Prüfung (0=OK, 1=WARNING, 2=CRITICAL, 3=UNKNOWN)</p>
+      <p><span class="emphasis"><em>return_code</em></span> ist der Return-Code der PrÃ¼fung (0=OK, 1=WARNING, 2=CRITICAL, 3=UNKNOWN)</p>
     </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>plugin_output</em></span> ist die Textausgabe der Service-Prüfung (also die Ausgabe des Plugins)</p>
+      <p><span class="emphasis"><em>plugin_output</em></span> ist die Textausgabe der Service-PrÃ¼fung (also die Ausgabe des Plugins)</p>
     </li>
 </ul></div>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: ein Service muss in Icinga definiert sein, bevor Sie passive Prüfungen für ihn
-  abliefern können! Icinga wird alle Prüfergebnisse für Services ignorieren, die nicht konfiguriert waren, bevor es das
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: ein Service muss in Icinga definiert sein, bevor Sie passive PrÃ¼fungen fÃ¼r ihn
+  abliefern kÃ¶nnen! Icinga wird alle PrÃ¼fergebnisse fÃ¼r Services ignorieren, die nicht konfiguriert waren, bevor es das
   letzte Mal (neu) gestartet wurde.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Ein Beispiel-Shell-Script, wie man passive Service-Prüfungsergebnisse an Icinga übermittelt,
-  finden Sie in der Dokumentation zu <a class="link" href="volatileservices.html" title="sprunghafte Services">sprunghaften Services</a>.</p>
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Ein Beispiel-Shell-Script, wie man passive Service-PrÃ¼fungsergebnisse an Icinga Ã¼bermittelt,
+  finden Sie in der Dokumentation zu <a class="link" href="volatileservices.html" title="7.3. sprunghafte Services">sprunghaften Services</a>.</p>
 
-  <p><span class="bold"><strong>Übermitteln von passiven Host-Prüfungsergebnissen</strong></span></p>
+  <p><span class="bold"><strong>Ãœbermitteln von passiven Host-PrÃ¼fungsergebnissen</strong></span></p>
 
-  <p>Externe Applikationen können passive Host-Prüfungsergebisse an Icinga übermitteln, indem sie ein
-  PROCESS_HOST_CHECK_RESULT <a class="link" href="extcommands.html" title="Externe Befehle">external command</a> in das "external command file" schreiben.</p>
+  <p>Externe Applikationen kÃ¶nnen passive Host-PrÃ¼fungsergebisse an Icinga Ã¼bermitteln, indem sie ein
+  PROCESS_HOST_CHECK_RESULT <a class="link" href="extcommands.html" title="7.1. Externe Befehle">external command</a> in das "external command file" schreiben.</p>
 
   <p>Das Format des Befehls lautet wie folgt:</p>
 
@@ -170,8 +171,8 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><span class="emphasis"><em>timestamp</em></span> ist die Zeit im time_t-Format (Sekunden seit der UNIX-Epoche), zu der die Host-Prüfung
-      durchgeführt (oder übermittelt) wurde. Bitte beachten Sie das einzelne Leerzeichen nach der rechten Klammer.</p>
+      <p><span class="emphasis"><em>timestamp</em></span> ist die Zeit im time_t-Format (Sekunden seit der UNIX-Epoche), zu der die Host-PrÃ¼fung
+      durchgefÃ¼hrt (oder Ã¼bermittelt) wurde. Bitte beachten Sie das einzelne Leerzeichen nach der rechten Klammer.</p>
     </li>
 <li class="listitem">
       <p><span class="emphasis"><em>host_name</em></span> ist der Kurzname des Hosts (wie in der Host-Definition angegeben)</p>
@@ -180,58 +181,58 @@
       <p><span class="emphasis"><em>host_status</em></span> ist der Status des Hosts (0=UP, 1=DOWN, 2=UNREACHABLE)</p>
     </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>plugin_output</em></span> ist die Textausgabe der Host-Prüfung (also die Ausgabe des Plugins)</p>
+      <p><span class="emphasis"><em>plugin_output</em></span> ist die Textausgabe der Host-PrÃ¼fung (also die Ausgabe des Plugins)</p>
     </li>
 </ul></div>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: ein Host muss in Icinga definiert sein, bevor Sie passive Prüfungen für ihn abliefern
-  können! Icinga wird alle Prüfergebnisse für Hosts ignorieren, die nicht konfiguriert waren, bevor es das letzte Mal (neu)
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: ein Host muss in Icinga definiert sein, bevor Sie passive PrÃ¼fungen fÃ¼r ihn abliefern
+  kÃ¶nnen! Icinga wird alle PrÃ¼fergebnisse fÃ¼r Hosts ignorieren, die nicht konfiguriert waren, bevor es das letzte Mal (neu)
   gestartet wurde.</p>
 
-  <p><span class="bold"><strong>Passive Prüfungen und Host-Zustände</strong></span></p>
+  <p><span class="bold"><strong>Passive PrÃ¼fungen und Host-ZustÃ¤nde</strong></span></p>
 
-  <p>Icinga versucht bei passiven Prüfungen - anders bei aktiven Prüfungen - nicht festzustellen, ob der Host DOWN oder
-  UNREACHABLE ist. Statt dessen nimmt Icinga das passive Prüfergebnis als den wahren Status des Hosts und versucht nicht,
-  den wahren Host-Status mit Hilfe der <a class="link" href="networkreachability.html" title="Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Erreichbarkeitslogik</a> zu ermitteln. Dies kann
-  Probleme verursachen, wenn Sie passive Prüfungen von einem entfernten Host übermitteln oder Sie ein <a class="link" href="distributed.html" title="Verteilte Überwachung">verteiltes Überwachungs-Setup</a> haben, in dem Eltern/Kind-Verhältnisse unterschiedlich sind.</p>
+  <p>Icinga versucht bei passiven PrÃ¼fungen - anders bei aktiven PrÃ¼fungen - nicht festzustellen, ob der Host DOWN oder
+  UNREACHABLE ist. Statt dessen nimmt Icinga das passive PrÃ¼fergebnis als den wahren Status des Hosts und versucht nicht,
+  den wahren Host-Status mit Hilfe der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Erreichbarkeitslogik</a> zu ermitteln. Dies kann
+  Probleme verursachen, wenn Sie passive PrÃ¼fungen von einem entfernten Host Ã¼bermitteln oder Sie ein <a class="link" href="distributed.html" title="7.5. Verteilte Ãœberwachung">verteiltes Ãœberwachungs-Setup</a> haben, in dem Eltern/Kind-VerhÃ¤ltnisse unterschiedlich sind.</p>
 
-  <p>Sie können Icinga anweisen, die passiven Prüfergebnisse DOWN/UNREACHABLE-Zustände mit Hilfe der <a class="link" href="configmain.html#configmain-translate_passive_host_checks">translate_passive_host_checks</a>-Variable in ihre "sauberen" Zustände zu
-  übersetzen. Mehr Informationen wie dies funktioniert, finden Sie <a class="link" href="passivestatetranslation.html" title="Passive Host-Zustandsübersetzung">hier</a>.</p>
+  <p>Sie kÃ¶nnen Icinga anweisen, die passiven PrÃ¼fergebnisse DOWN/UNREACHABLE-ZustÃ¤nde mit Hilfe der <a class="link" href="configmain.html#configmain-translate_passive_host_checks">translate_passive_host_checks</a>-Variable in ihre "sauberen" ZustÃ¤nde zu
+  Ã¼bersetzen. Mehr Informationen wie dies funktioniert, finden Sie <a class="link" href="passivestatetranslation.html" title="7.21. Passive Host-ZustandsÃ¼bersetzung">hier</a>.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Passive Host-Prüfungen werden normalerweise als <a class="link" href="statetypes.html" title="Statustypen">HARD-Zustände</a> behandelt, falls nicht die <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a>-Option aktiviert ist.</p>
+  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Passive Host-PrÃ¼fungen werden normalerweise als <a class="link" href="statetypes.html" title="5.8. Statustypen">HARD-ZustÃ¤nde</a> behandelt, falls nicht die <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a>-Option aktiviert ist.</p>
 
-  <p><span class="bold"><strong>Übermitteln von passiven Prüfungsergebnissen von entfernten Hosts</strong></span></p>
+  <p><span class="bold"><strong>Ãœbermitteln von passiven PrÃ¼fungsergebnissen von entfernten Hosts</strong></span></p>
 
   <div class="mediaobject"><img src="../images/nsca.png"></div>
 
   <p>Wenn eine Applikation, die sich auf dem gleichen Host wie Icinga befindet, passive Host- oder
-  Service-Prüfungsergebnisse sendet, kann es die Ergebisse einfach direkt in das "external command file" schreiben wie oben
-  skizziert. Allerdings können entfernte Hosts das nicht so einfach tun.</p>
+  Service-PrÃ¼fungsergebnisse sendet, kann es die Ergebisse einfach direkt in das "external command file" schreiben wie oben
+  skizziert. Allerdings kÃ¶nnen entfernte Hosts das nicht so einfach tun.</p>
 
-  <p>Um es entfernten Hosts zu erlauben, passive Prüfungsergebnisse an den überwachenden Host zu senden, hat Ethan Galstad das
+  <p>Um es entfernten Hosts zu erlauben, passive PrÃ¼fungsergebnisse an den Ã¼berwachenden Host zu senden, hat Ethan Galstad das
   <a class="link" href="addons.html#addons-nsca">NSCA</a>-Addon entwickelt. Das NSCA-Addon besteht aus einem Daemon, der auf dem
-  Icinga-Host läuft und einem Client, der auf entfernten Hosts ausgeführt wird. Der Daemon lauscht auf Verbindungen von
-  entfernten Hosts, führt mit den Ergebnissen einige grundlegende Gültigkeitsprüfungen durch und schreibt die Prüfergebnisse
-  direkt in das "external command file" (wie oben beschrieben). Mehr Informationen über das NSCA-Addon finden Sie <a class="link" href="addons.html#addons-nsca">hier</a>.</p>
-  <a class="indexterm" name="id1553007"></a>
+  Icinga-Host lÃ¤uft und einem Client, der auf entfernten Hosts ausgefÃ¼hrt wird. Der Daemon lauscht auf Verbindungen von
+  entfernten Hosts, fÃ¼hrt mit den Ergebnissen einige grundlegende GÃ¼ltigkeitsprÃ¼fungen durch und schreibt die PrÃ¼fergebnisse
+  direkt in das "external command file" (wie oben beschrieben). Mehr Informationen Ã¼ber das NSCA-Addon finden Sie <a class="link" href="addons.html#addons-nsca">hier</a>.</p>
+  <a class="indexterm" name="id1502838"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="activechecks.html">Zurück</a> </td>
+<a accesskey="p" href="activechecks.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="statetypes.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="statetypes.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Aktive Prüfungen (Active Checks) </td>
+<td width="40%" align="left" valign="top">5.6. Aktive PrÃ¼fungen (Active Checks)Â </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Statustypen</td>
+<td width="40%" align="right" valign="top">Â 5.8. Statustypen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

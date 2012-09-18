@@ -1,87 +1,88 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Service-Prüfungen (Service Checks)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.5. Service-PrÃ¼fungen (Service Checks)</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
-<link rel="prev" href="hostchecks.html" title="Host-Prüfungen (Host checks)">
-<link rel="next" href="activechecks.html" title="Aktive Prüfungen (Active Checks)">
+<link rel="prev" href="hostchecks.html" title="5.4. Host-PrÃ¼fungen (Host checks)">
+<link rel="next" href="activechecks.html" title="5.6. Aktive PrÃ¼fungen (Active Checks)">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Service-Prüfungen (Service Checks)</th></tr>
+<tr><th colspan="3" align="center">5.5. Service-PrÃ¼fungen (Service Checks)</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="hostchecks.html">Zurück</a> </td>
+<a accesskey="p" href="hostchecks.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
-<td width="20%" align="right"> <a accesskey="n" href="activechecks.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="activechecks.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Service-Prüfungen (Service Checks)">
+<div class="section" title="5.5. Service-PrÃ¼fungen (Service Checks)">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="servicechecks"></a>Service-Prüfungen (Service Checks)</h2></div></div></div>
+<a name="servicechecks"></a>5.5. Service-PrÃ¼fungen (Service Checks)</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Die grundlegenden Tätigkeiten von Service-Prüfungen werden hier beschrieben...</p>
+  <p>Die grundlegenden TÃ¤tigkeiten von Service-PrÃ¼fungen werden hier beschrieben...</p>
 
-  <p><span class="bold"><strong>Wann werden Service-Prüfungen durchgeführt?</strong></span></p>
+  <p><span class="bold"><strong>Wann werden Service-PrÃ¼fungen durchgefÃ¼hrt?</strong></span></p>
 
-  <p>Services werden durch den Icinga-Daemon geprüft</p>
+  <p>Services werden durch den Icinga-Daemon geprÃ¼ft</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>in regelmäßigen Intervallen, wie sie durch die <span class="emphasis"><em>check_interval</em></span> und
+      <p>in regelmÃ¤ÃŸigen Intervallen, wie sie durch die <span class="emphasis"><em>check_interval</em></span> und
       <span class="emphasis"><em>retry_interval</em></span>-Optionen in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service-Definitionen</a>
       festgelegt sind.</p>
     </li>
 <li class="listitem">
-      <p>nach Bedarf bei <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">vorausschauende Host-Abhängigkeitsprüfungen</a>.</p>
+      <p>nach Bedarf bei <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">vorausschauende Host-AbhÃ¤ngigkeitsprÃ¼fungen</a>.</p>
     </li>
 </ul></div>
 
-  <p>Prüfungen nach Bedarf werden als Teil der <a class="link" href="dependencychecks.html" title="Vorausschauende Abhängigkeitsprüfungen">vorausschauenden
-  Service-Abhängigkeitsprüfung</a>s-Logik durchgeführt. Diese Prüfungen helfen sicherzustellen, dass die Abhängigkeitslogik so
-  genau wie möglich ist. Falls Sie die <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeiten</a> nicht
-  nutzen, wird Icinga keine Service-Prüfungen nach Bedarf durchführen.</p>
+  <p>PrÃ¼fungen nach Bedarf werden als Teil der <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende AbhÃ¤ngigkeitsprÃ¼fungen">vorausschauenden
+  Service-AbhÃ¤ngigkeitsprÃ¼fung</a>s-Logik durchgefÃ¼hrt. Diese PrÃ¼fungen helfen sicherzustellen, dass die AbhÃ¤ngigkeitslogik so
+  genau wie mÃ¶glich ist. Falls Sie die <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-AbhÃ¤ngigkeiten</a> nicht
+  nutzen, wird Icinga keine Service-PrÃ¼fungen nach Bedarf durchfÃ¼hren.</p>
 
-  <p><span class="bold"><strong>zwischengespeicherte Service-Prüfungen</strong></span> (cached service checks)</p>
+  <p><span class="bold"><strong>zwischengespeicherte Service-PrÃ¼fungen</strong></span> (cached service checks)</p>
 
-  <p>Die Performance von Service-Prüfungen nach Bedarf kann signifikant durch den Einsatz von "cached checks" erhöht werden,
-  die es Icinga erlauben, auf eine Service-Prüfung zu verzichten, wenn es feststellt, dass ein relativ frisches
-  Prüfungsergebnis genügt. Cached checks werden nur dann einen Performance-Gewinn ergeben, wenn Sie <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeiten</a> nutzen. Mehr Informationen zu "cached checks" finden
-  Sie <a class="link" href="cachedchecks.html" title="Zwischengespeicherte Prüfungen">hier</a>.</p>
+  <p>Die Performance von Service-PrÃ¼fungen nach Bedarf kann signifikant durch den Einsatz von "cached checks" erhÃ¶ht werden,
+  die es Icinga erlauben, auf eine Service-PrÃ¼fung zu verzichten, wenn es feststellt, dass ein relativ frisches
+  PrÃ¼fungsergebnis genÃ¼gt. Cached checks werden nur dann einen Performance-Gewinn ergeben, wenn Sie <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-AbhÃ¤ngigkeiten</a> nutzen. Mehr Informationen zu "cached checks" finden
+  Sie <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte PrÃ¼fungen">hier</a>.</p>
 
-  <p><span class="bold"><strong>Abhängigkeiten und Prüfungen</strong></span></p>
+  <p><span class="bold"><strong>AbhÃ¤ngigkeiten und PrÃ¼fungen</strong></span></p>
 
-  <p>Sie können <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Ausführungs-Abhängigkeiten</a> definieren, die
-  Icinga von der Statusprüfung eines Service abhalten in Abhängigkeit vom Status ein oder mehrerer anderer Services. Mehr
-  Informationen zu Abhängigkeiten finden Sie <a class="link" href="dependencies.html" title="Host- und Service-Abhängigkeiten">hier</a>.</p>
+  <p>Sie kÃ¶nnen <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-AusfÃ¼hrungs-AbhÃ¤ngigkeiten</a> definieren, die
+  Icinga von der StatusprÃ¼fung eines Service abhalten in AbhÃ¤ngigkeit vom Status ein oder mehrerer anderer Services. Mehr
+  Informationen zu AbhÃ¤ngigkeiten finden Sie <a class="link" href="dependencies.html" title="7.12. Host- und Service-AbhÃ¤ngigkeiten">hier</a>.</p>
 
-  <p><span class="bold"><strong>Parallelisierung von Service-Prüfungen</strong></span></p>
+  <p><span class="bold"><strong>Parallelisierung von Service-PrÃ¼fungen</strong></span></p>
 
-  <p>Geplante Service-Prüfungen laufen parallel. Wenn Icinga eine geplante Service-Prüfung ausführt, wird es die
-  Service-Prüfung veranlassen und dann zu anderen Arbeiten zurückkehren (Host-Prüfungen ausführen, etc.). Die Service-Prüfung
-  läuft in einem Kind-Prozess, der vom Haupt-Icinga-Prozess aufgerufen wird ("fork()ed"). Wenn die Service-Prüfung beendet
-  ist, wird der Kind-Prozess den Haupt-Icinga-Prozess (seinen Eltern-Prozess) über das Ergebnis informieren. Der
-  Haupt-Icinga-Prozess wird dann das Prüfungsergebnis behandeln und geeignete Aktionen durchführen (Eventhandler starten,
+  <p>Geplante Service-PrÃ¼fungen laufen parallel. Wenn Icinga eine geplante Service-PrÃ¼fung ausfÃ¼hrt, wird es die
+  Service-PrÃ¼fung veranlassen und dann zu anderen Arbeiten zurÃ¼ckkehren (Host-PrÃ¼fungen ausfÃ¼hren, etc.). Die Service-PrÃ¼fung
+  lÃ¤uft in einem Kind-Prozess, der vom Haupt-Icinga-Prozess aufgerufen wird ("fork()ed"). Wenn die Service-PrÃ¼fung beendet
+  ist, wird der Kind-Prozess den Haupt-Icinga-Prozess (seinen Eltern-Prozess) Ã¼ber das Ergebnis informieren. Der
+  Haupt-Icinga-Prozess wird dann das PrÃ¼fungsergebnis behandeln und geeignete Aktionen durchfÃ¼hren (Eventhandler starten,
   Benachrichtigungen senden, usw.).</p>
 
-  <p>Service-Prüfungen nach Bedarf laufen ebenfalls parallel, falls notwendig. Wie bereits vorher erwähnt kann Icinga
-  auf die eigentliche Ausführung einer Service-Prüfung nach Bedarf verzichten, wenn es das gespeicherte Ergebnis einer relativ
-  frischen Service-Prüfung benutzen kann.</p>
+  <p>Service-PrÃ¼fungen nach Bedarf laufen ebenfalls parallel, falls notwendig. Wie bereits vorher erwÃ¤hnt kann Icinga
+  auf die eigentliche AusfÃ¼hrung einer Service-PrÃ¼fung nach Bedarf verzichten, wenn es das gespeicherte Ergebnis einer relativ
+  frischen Service-PrÃ¼fung benutzen kann.</p>
 
-  <p><span class="bold"><strong>Service-Zustände</strong></span></p>
+  <p><span class="bold"><strong>Service-ZustÃ¤nde</strong></span></p>
 
-  <p>Services, die geprüft werden, können in einem von vier unterschiedlichen Zuständen sein</p>
+  <p>Services, die geprÃ¼ft werden, kÃ¶nnen in einem von vier unterschiedlichen ZustÃ¤nden sein</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -100,40 +101,40 @@
 
   <p><span class="bold"><strong>Service-Statusermittlung</strong></span></p>
 
-  <p>Service-Prüfungen werden mit Hilfe von <a class="link" href="plugins.html" title="Icinga Plugins">Plugins</a> durchgeführt, die den Status OK, WARNING,
-  UNKNOWN oder CRITICAL zurückliefern können. Diese Return-Codes der Plugins werden direkt in die Service-Zustände übersetzt.
-  Beispielsweise wird das WARNING-Ergebnis eines Plugins zu einem WARNING-Status eines Service führen.</p>
+  <p>Service-PrÃ¼fungen werden mit Hilfe von <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> durchgefÃ¼hrt, die den Status OK, WARNING,
+  UNKNOWN oder CRITICAL zurÃ¼ckliefern kÃ¶nnen. Diese Return-Codes der Plugins werden direkt in die Service-ZustÃ¤nde Ã¼bersetzt.
+  Beispielsweise wird das WARNING-Ergebnis eines Plugins zu einem WARNING-Status eines Service fÃ¼hren.</p>
 
-  <p><span class="bold"><strong>Service-Statusänderungen</strong></span></p>
+  <p><span class="bold"><strong>Service-StatusÃ¤nderungen</strong></span></p>
 
-  <p>Wenn Icinga den Status von Services prüft, ist es in der Lage festzustellen, wenn ein Service zwischen OK-,
-  WARNING-, UNKNOWN- und CRITICAL-Zuständen wechselt und geeignete Maßnahmen ergreifen. Diese Zustandsänderungen resultieren in
-  verschiedenen <a class="link" href="statetypes.html" title="Statustypen">Statustypen</a> (HARD oder SOFT), was zum Auslösen von <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandlern</a> und dem Versenden von <a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungen</a>
-  führen kann. Service-Statusänderungen können auch zum Auslösen von <a class="link" href="hostchecks.html" title="Host-Prüfungen (Host checks)">Host-Prüfungen</a> nach Bedarf
-  führen. Das Erkennen und Behandeln von Statusänderungen ist das, worum es sich bei Icinga handelt.</p>
+  <p>Wenn Icinga den Status von Services prÃ¼ft, ist es in der Lage festzustellen, wenn ein Service zwischen OK-,
+  WARNING-, UNKNOWN- und CRITICAL-ZustÃ¤nden wechselt und geeignete MaÃŸnahmen ergreifen. Diese ZustandsÃ¤nderungen resultieren in
+  verschiedenen <a class="link" href="statetypes.html" title="5.8. Statustypen">Statustypen</a> (HARD oder SOFT), was zum AuslÃ¶sen von <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandlern</a> und dem Versenden von <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a>
+  fÃ¼hren kann. Service-StatusÃ¤nderungen kÃ¶nnen auch zum AuslÃ¶sen von <a class="link" href="hostchecks.html" title="5.4. Host-PrÃ¼fungen (Host checks)">Host-PrÃ¼fungen</a> nach Bedarf
+  fÃ¼hren. Das Erkennen und Behandeln von StatusÃ¤nderungen ist das, worum es sich bei Icinga handelt.</p>
 
-  <p>Wenn Service-Statusänderungen zu oft erfolgen, werden sie als "flatternd" (flapping) angesehen. Icinga kann
-  erkennen, wenn Services anfangen zu flattern, und kann Benachrichtigungen unterdrücken, bis das Flattern stoppt und sich der
-  Service-Status stabilisiert. Mehr Informationen über die Erkennungslogik des Flatterns finden Sie <a class="link" href="flapping.html" title="Erkennung und Behandlung von Status-Flattern">hier</a>.</p>
-  <a class="indexterm" name="id1552210"></a>
+  <p>Wenn Service-StatusÃ¤nderungen zu oft erfolgen, werden sie als "flatternd" (flapping) angesehen. Icinga kann
+  erkennen, wenn Services anfangen zu flattern, und kann Benachrichtigungen unterdrÃ¼cken, bis das Flattern stoppt und sich der
+  Service-Status stabilisiert. Mehr Informationen Ã¼ber die Erkennungslogik des Flatterns finden Sie <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">hier</a>.</p>
+  <a class="indexterm" name="id1502041"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="hostchecks.html">Zurück</a> </td>
+<a accesskey="p" href="hostchecks.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="activechecks.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="activechecks.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Host-Prüfungen (Host checks) </td>
+<td width="40%" align="left" valign="top">5.4. Host-PrÃ¼fungen (Host checks)Â </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Aktive Prüfungen (Active Checks)</td>
+<td width="40%" align="right" valign="top">Â 5.6. Aktive PrÃ¼fungen (Active Checks)</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

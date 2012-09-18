@@ -236,6 +236,8 @@ extern int      stalking_notifications_for_services;
 
 extern int      date_format;
 
+extern int 	keep_unknown_macros;
+
 extern contact		*contact_list;
 extern contactgroup	*contactgroup_list;
 extern host             *host_list;
@@ -278,6 +280,8 @@ extern int             debug_level;
 extern int             debug_verbosity;
 extern unsigned long   max_debug_file_size;
 
+extern unsigned long   max_check_result_list_items;
+
 /* from GNU defines errno as a macro, since it's a per-thread variable */
 #ifndef errno
 extern int errno;
@@ -304,6 +308,7 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 	int dbuf_chunk = 1024;
 	int flags;
 #ifdef EMBEDDEDPERL
+	char *temp_buffer = NULL;
 	char fname[512] = "";
 	char *args[5] = {"", DO_CLEAN, "", "", NULL };
 	SV *plugin_hndlr_cr = NULL; /* perl.h holds typedef struct */
@@ -2698,6 +2703,31 @@ int process_check_result_queue(char *dirname) {
 	char *temp_buffer = NULL;
 	int result = OK;
 
+	unsigned long list_length = 0;
+	check_result *current = check_result_list;
+
+	if (max_check_result_list_items != 0) {
+		/* get the number of items currently to-be-processed
+		 * already on the checkresult list
+		 */
+		while (current != NULL) {
+			list_length++;
+			current = current->next;
+		}
+
+		log_debug_info(DEBUGL_CHECKS, 1, "check_result_list has %lu items\n", list_length);
+
+		/* on larger setups, the list in memory might have grown
+		 * large, and we would just stash too much results into
+		 * the list, so bail early here, letting checkresults
+		 * being processed first, then reaping again.
+		 */
+		if (list_length > max_check_result_list_items) {
+			log_debug_info(DEBUGL_CHECKS, 1, "Skipping check result queue as there are %lu/%lu results not handled by the reaper\n", list_length, max_check_result_list_items);
+			return OK;
+		}
+	}
+
 	/* make sure we have what we need */
 	if (dirname == NULL) {
 		logit(NSLOG_CONFIG_ERROR, TRUE, "Error: No check result queue directory specified.\n");
@@ -3598,8 +3628,9 @@ int file_uses_embedded_perl(char *fname) {
 		return FALSE;
 
 	/* grab the first line - we should see Perl. go home if not */
-	if (fgets(line1, 80, fp) == NULL || strstr(buf, "/bin/perl") == NULL) {
+	if (fgets(buf, 80, fp) == NULL || strstr(buf, "/bin/perl") == NULL) {
 		fclose(fp);
+		return FALSE;
 	}
 
 	/* epn directives must be found in first ten lines of plugin */
@@ -3610,7 +3641,7 @@ int file_uses_embedded_perl(char *fname) {
 		buf[sizeof(buf) - 1] = '\0';
 
 		/* line contains Icinga directives - keep Nagios compatibility */
-		if (strstr(linen, "# nagios:") || strstr(linen, "# icinga:")) {
+		if (strstr(buf, "# nagios:") || strstr(buf, "# icinga:")) {
 			char *p;
 			p = strstr(buf + 8, "epn");
 			if (!p)
@@ -4485,11 +4516,14 @@ int reset_variables(void) {
 	stalking_notifications_for_hosts = DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS;
 	stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES;
 
+	keep_unknown_macros = FALSE;
 	external_command_buffer_slots = DEFAULT_EXTERNAL_COMMAND_BUFFER_SLOTS;
 
 	debug_level = DEFAULT_DEBUG_LEVEL;
 	debug_verbosity = DEFAULT_DEBUG_VERBOSITY;
 	max_debug_file_size = DEFAULT_MAX_DEBUG_FILE_SIZE;
+
+	max_check_result_list_items = DEFAULT_MAX_CHECK_RESULT_LIST_ITEMS;
 
 	date_format = DATE_FORMAT_US;
 

@@ -370,6 +370,12 @@ define serviceescalation {
 	service_description	Uses important check command
 	first_notification	-2
 	last_notification	-2
+	first_warning_notification	-2
+	last_warning_notification	-2
+	first_critical_notification	-2
+	last_critical_notification	-2
+	first_unknown_notification	-2
+	last_unknown_notification	-2
 	notification_interval	65.000000
 	escalation_period	none
 	escalation_options	w,u,c,r
@@ -381,6 +387,12 @@ define serviceescalation {
 	service_description	Uses important check command
 	first_notification	-2
 	last_notification	-2
+	first_warning_notification	-2
+	last_warning_notification	-2
+	first_critical_notification	-2
+	last_critical_notification	-2
+	first_unknown_notification	-2
+	last_unknown_notification	-2
 	notification_interval	65.000000
 	escalation_period	none
 	escalation_options	w,u,c,r
@@ -392,6 +404,12 @@ define serviceescalation {
 	service_description	dependent-service
 	first_notification	-2
 	last_notification	-2
+	first_warning_notification	-2
+	last_warning_notification	-2
+	first_critical_notification	-2
+	last_critical_notification	-2
+	first_unknown_notification	-2
+	last_unknown_notification	-2
 	notification_interval	65.000000
 	escalation_period	none
 	escalation_options	w,u,c,r
@@ -403,6 +421,12 @@ define serviceescalation {
 	service_description	master-service
 	first_notification	-2
 	last_notification	-2
+	first_warning_notification	-2
+	last_warning_notification	-2
+	first_critical_notification	-2
+	last_critical_notification	-2
+	first_unknown_notification	-2
+	last_unknown_notification	-2
 	notification_interval	65.000000
 	escalation_period	none
 	escalation_options	w,u,c,r

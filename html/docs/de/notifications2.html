@@ -1,40 +1,41 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Benachrichtigungen: Beispiele und Fehlersuche</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.12. Benachrichtigungen: Beispiele und Fehlersuche</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
-<link rel="prev" href="notifications.html" title="Benachrichtigungen">
-<link rel="next" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
+<link rel="prev" href="notifications.html" title="5.11. Benachrichtigungen">
+<link rel="next" href="ch06.html" title="Kapitel 6. Die BenutzeroberflÃ¤chen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Benachrichtigungen: Beispiele und Fehlersuche</th></tr>
+<tr><th colspan="3" align="center">5.12. Benachrichtigungen: Beispiele und Fehlersuche</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="notifications.html">Zurück</a> </td>
+<a accesskey="p" href="notifications.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
-<td width="20%" align="right"> <a accesskey="n" href="ch06.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="ch06.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Benachrichtigungen: Beispiele und Fehlersuche">
+<div class="section" title="5.12. Benachrichtigungen: Beispiele und Fehlersuche">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="notifications2"></a><a name="notifications_2"></a>Benachrichtigungen: Beispiele und Fehlersuche</h2></div></div></div>
+<a name="notifications2"></a>5.12. <a name="notifications_2"></a>Benachrichtigungen: Beispiele und Fehlersuche</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
   <p>Die Objektdefinitionen von <a class="link" href="objectdefinitions.html#objectdefinitions-host">Hosts</a>, <a class="link" href="objectdefinitions.html#objectdefinitions-service">Services</a> und <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakten</a> / <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">Kontaktgruppen</a> wurden im Kapitel "Icinga konfigurieren" gezeigt, die verschiedenen zu
-  durchlaufenden Tests, um festzustellen, ob eine Benachrichtigung versandt wird, wurden im Abschnitt "<a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtigungen</a>" beschrieben.</p>
+  durchlaufenden Tests, um festzustellen, ob eine Benachrichtigung versandt wird, wurden im Abschnitt "<a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a>" beschrieben.</p>
 
-  <p>Trotz all der Erklärungen scheint es immer noch einen Grad der Unsicherheit zu geben, so dass wir versuchen, ein Beispiel für e-Mail
+  <p>Trotz all der ErklÃ¤rungen scheint es immer noch einen Grad der Unsicherheit zu geben, so dass wir versuchen, ein Beispiel fÃ¼r e-Mail
   als Kommunikationsweg zu geben.</p>
 
   <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
@@ -44,14 +45,14 @@
 </tr>
 <tr><td align="left" valign="top">
       <p>Icinga bietet <span class="bold"><strong>keinerlei</strong></span> Methoden zur Benachrichtung irgendeines Kontaktes, den Sie definiert
-      haben, so dass die Einrichtung und Konfiguration von Mail, SMS, Pager oder welchen Weg Sie auch immer wählen mögen, ganz allein Ihre
-      Aufgabe und nicht Teil dieser Dokumentation ist. Wenn Sie Mail betrachten, dann müssen Sie ein Mail-Programm (postfix, sendmail oder
-      jeden anderen MTA, mit dem Sie sich wohlfühlen) installieren, "Relaying" auf dem Icinga-Server einrichten (postfix:
+      haben, so dass die Einrichtung und Konfiguration von Mail, SMS, Pager oder welchen Weg Sie auch immer wÃ¤hlen mÃ¶gen, ganz allein Ihre
+      Aufgabe und nicht Teil dieser Dokumentation ist. Wenn Sie Mail betrachten, dann mÃ¼ssen Sie ein Mail-Programm (postfix, sendmail oder
+      jeden anderen MTA, mit dem Sie sich wohlfÃ¼hlen) installieren, "Relaying" auf dem Icinga-Server einrichten (postfix:
       <code class="filename">/etc/postfix/main.cf</code>, Direktive "relayhost"; sendmail: <code class="filename">/etc/mail/sendmail.cf</code>, Directive
-      "DS"), "Relaying" auf Ihrem zentralen Mail-Server einrichten für Mails, die vom Icinga-Server eintreffen und prüfen, dass Sie Mails
-      von Ihrem Icinga-Server aus senden können als Benutzer, mit dem auch der Icinga-Prozess läuft.</p>
+      "DS"), "Relaying" auf Ihrem zentralen Mail-Server einrichten fÃ¼r Mails, die vom Icinga-Server eintreffen und prÃ¼fen, dass Sie Mails
+      von Ihrem Icinga-Server aus senden kÃ¶nnen als Benutzer, mit dem auch der Icinga-Prozess lÃ¤uft.</p>
 
-      <p>Wenn Sie keine Meldungen von der Kommandozeile Ihres Icinga-Servers aus senden können, dann ist es nicht sinnvoll, dass Sie
+      <p>Wenn Sie keine Meldungen von der Kommandozeile Ihres Icinga-Servers aus senden kÃ¶nnen, dann ist es nicht sinnvoll, dass Sie
       weiterlesen.</p>
     </td></tr>
 </table></div>
@@ -59,11 +60,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Wie bereits oben angemerkt benötigen Sie einen funktionierenden Weg, um Meldungen von der Kommandozeile aus zu versenden. Wenn
-      das nicht funktioniert, dann müssen Sie das zuerst reparieren!</p>
+      <p>Wie bereits oben angemerkt benÃ¶tigen Sie einen funktionierenden Weg, um Meldungen von der Kommandozeile aus zu versenden. Wenn
+      das nicht funktioniert, dann mÃ¼ssen Sie das zuerst reparieren!</p>
     </li>
 <li class="listitem">
-      <p>Sie benötigen mindestens eine Kontaktdefinition ähnlich der folgenden:</p>
+      <p>Sie benÃ¶tigen mindestens eine Kontaktdefinition Ã¤hnlich der folgenden:</p>
 
       <pre class="screen"> define contact {
         contact_name                    jdoe
@@ -78,35 +79,35 @@
         email                           jdoe@some.domain.name
         }</pre>
 
-      <p>Die Definition enthält alle benötigten Direktiven und eine semi-optionale (email).</p>
+      <p>Die Definition enthÃ¤lt alle benÃ¶tigten Direktiven und eine semi-optionale (email).</p>
 
       <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p>Benachrichtigungen sind für Hosts und Services aktiviert</p>
+          <p>Benachrichtigungen sind fÃ¼r Hosts und Services aktiviert</p>
         </li>
 <li class="listitem">
-          <p>Benachrichtigungen werden innerhalb des Zeitfensters "24x7" und während "workhours" für Services verschickt. Diese
+          <p>Benachrichtigungen werden innerhalb des Zeitfensters "24x7" und wÃ¤hrend "workhours" fÃ¼r Services verschickt. Diese
           Zeitfenster erfordern entsprechende <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">Zeitfenster-Definitionen</a>. Wir nehmen an,
           dass "24x7" 24 Stunden und sieben Tage die Woche und "workhours" Montag bis Freitag von 09:00 Uhr bis 17:00 Uhr bedeutet. Bitte
           beachten Sie, dass "notification_period" etwas anderes ist als "check_period", die in Host- und Service-Definitionen zu finden
-          ist. Ersteres gibt das Zeitfenster an, in welchem Meldungen versandt werden, wenn alle in "<a class="link" href="notifications.html" title="Benachrichtigungen">Benachrichtungen</a>" beschriebenen Prüfungen erfolgreich durchlaufen wurden.</p>
+          ist. Ersteres gibt das Zeitfenster an, in welchem Meldungen versandt werden, wenn alle in "<a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtungen</a>" beschriebenen PrÃ¼fungen erfolgreich durchlaufen wurden.</p>
         </li>
 <li class="listitem">
-          <p>Meldungen werden für Hosts versandt, die in die Zustände UNREACHABLE und DOWN wechseln bzw. wieder in den UP-Status
-          zurückkehren. Für Services, die in die Zustände WARNING, CRITICAL und UNREACHABLE wechseln bzw. wieder in den OK-Status
-          zurückkehren, werden ebenfalls Meldungen verschickt.</p>
+          <p>Meldungen werden fÃ¼r Hosts versandt, die in die ZustÃ¤nde UNREACHABLE und DOWN wechseln bzw. wieder in den UP-Status
+          zurÃ¼ckkehren. FÃ¼r Services, die in die ZustÃ¤nde WARNING, CRITICAL und UNREACHABLE wechseln bzw. wieder in den OK-Status
+          zurÃ¼ckkehren, werden ebenfalls Meldungen verschickt.</p>
         </li>
 <li class="listitem">
           <p>Hosts und Services benutzen unterschiedliche Befehle, um den Kontakt zu benachrichtigen.</p>
         </li>
 <li class="listitem">
-          <p>Außer "email" können Sie verschiedene andere Adressen definieren, die zur Benachrichtigung des Kontakt genutzt werden
-          können.</p>
+          <p>AuÃŸer "email" kÃ¶nnen Sie verschiedene andere Adressen definieren, die zur Benachrichtigung des Kontakt genutzt werden
+          kÃ¶nnen.</p>
         </li>
 </ul></div>
     </li>
 <li class="listitem">
-      <p>Sie benötigen verschiedene Befehlsdefinitionen für "host-notify-by-email" und "notify-by-email". Die gezeigten Definitionen
+      <p>Sie benÃ¶tigen verschiedene Befehlsdefinitionen fÃ¼r "host-notify-by-email" und "notify-by-email". Die gezeigten Definitionen
       stammen aus den Icinga-Beispielkonfigurationsdateien. Die Befehlszeile wurde umformatiert.</p>
 
       <pre class="screen"> # 'notify-host-by-email' command definition
@@ -149,28 +150,28 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Bitte überprüfen Sie, dass die Programme (<code class="filename">printf</code>, <code class="filename">mailx</code>) tatsächlich an den
+        <p>Bitte Ã¼berprÃ¼fen Sie, dass die Programme (<code class="filename">printf</code>, <code class="filename">mailx</code>) tatsÃ¤chlich an den
         angegebenen Stellen existieren. Dies kann je nach Distribution abweichen.</p>
       </td></tr>
 </table></div>
 
-      <p>Es gibt viele <a class="link" href="macrolist.html" title="Standard-Makros in Icinga">Makros</a>, die benutzt werden können, um die Benachrichtigungen mit Informationen zu
-      füllen.</p>
+      <p>Es gibt viele <a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">Makros</a>, die benutzt werden kÃ¶nnen, um die Benachrichtigungen mit Informationen zu
+      fÃ¼llen.</p>
 <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>Verschiedene Makros haben einen eingeschränkten Gültigkeitsbereich, z.B. sind CONTACT*-Makros innerhalb von Event-Handlern
-          nicht verfügbar.</p>
+          <p>Verschiedene Makros haben einen eingeschrÃ¤nkten GÃ¼ltigkeitsbereich, z.B. sind CONTACT*-Makros innerhalb von Event-Handlern
+          nicht verfÃ¼gbar.</p>
         </td></tr>
 </table></div>
 
-      <p>Sie können Ihren eigenen Benachrichtigungsbefehl durch hinzufügen oder löschen von Makros schreiben. Stellen Sie sicher, dass er
-      die Informationen enthält, die der Empfänger benötigt. Sie möchten vielleicht ein ausgeklügeltes Skript schreiben, das eine Datenbank
-      prüft, um den Weg festzulegen, über den ein Kontakt informiert werden soll abhängig von der Zeit, zu der eine Benachrichtigung
-      versandt werden soll (per Mail während der Arbeitszeit, zusätzlich per SMS außerhalb der Arbeitszeit, gar nicht während des
+      <p>Sie kÃ¶nnen Ihren eigenen Benachrichtigungsbefehl durch hinzufÃ¼gen oder lÃ¶schen von Makros schreiben. Stellen Sie sicher, dass er
+      die Informationen enthÃ¤lt, die der EmpfÃ¤nger benÃ¶tigt. Sie mÃ¶chten vielleicht ein ausgeklÃ¼geltes Skript schreiben, das eine Datenbank
+      prÃ¼ft, um den Weg festzulegen, Ã¼ber den ein Kontakt informiert werden soll abhÃ¤ngig von der Zeit, zu der eine Benachrichtigung
+      versandt werden soll (per Mail wÃ¤hrend der Arbeitszeit, zusÃ¤tzlich per SMS auÃŸerhalb der Arbeitszeit, gar nicht wÃ¤hrend des
       Urlaubs).</p>
     </li>
 </ul></div>
@@ -216,86 +217,86 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Der erste Service überwacht die Anzahl von Ersatz-Festplatten innerhalb eines Disk-Shelfs. Normalerweise sind zwei Festplatten
-      verfügbar. Wenn nur eine verfügbar ist, soll eine Warnung erfolgen, bei keiner freien wird das als kritisch angesehen.
+      <p>Der erste Service Ã¼berwacht die Anzahl von Ersatz-Festplatten innerhalb eines Disk-Shelfs. Normalerweise sind zwei Festplatten
+      verfÃ¼gbar. Wenn nur eine verfÃ¼gbar ist, soll eine Warnung erfolgen, bei keiner freien wird das als kritisch angesehen.
       Benachrichtigungen werden jederzeit versandt, wobei Benachrichtigungen im Fehlerfall erneut alle 60 Minuten erfolgen. John Doe ist
       nicht Mitglied der Admin-Gruppe, so dass er gesondert angegeben wird.</p>
     </li>
 <li class="listitem">
-      <p>Der zweite Service überwacht die Anzahl von angemeldeten Benutzern. Bei mehr als 20 Benutzer soll gewarnt werden und mehr als 50
-      Benutzer ist kritisch. Der Betrieb ist außerhalb der Arbeitszeit geschlossen und inaktive Benutzer werden nach einer gewissen Zeit
-      automatisch abgemeldet, so dass es keine Notwendigkeit für Benachrichtigungen außerhalb der Arbeitszeit gibt. Bitte beachten Sie, dass
+      <p>Der zweite Service Ã¼berwacht die Anzahl von angemeldeten Benutzern. Bei mehr als 20 Benutzer soll gewarnt werden und mehr als 50
+      Benutzer ist kritisch. Der Betrieb ist auÃŸerhalb der Arbeitszeit geschlossen und inaktive Benutzer werden nach einer gewissen Zeit
+      automatisch abgemeldet, so dass es keine Notwendigkeit fÃ¼r Benachrichtigungen auÃŸerhalb der Arbeitszeit gibt. Bitte beachten Sie, dass
       bei einer Warnung <span class="emphasis"><em>keine</em></span> Benachrichtigung versandt wird, weil dies nicht in den "notification_options" angegeben
       wurde! Es gibt lediglich eine Benachrichtigung im Falle eines nicht-OK-Zustand, auch wenn der Zustand zwischen WARNING und CRITICAL
       wechselt.</p>
     </li>
 <li class="listitem">
-      <p>Der letzte Service prüft die Speicherauslastung einer Maschine, auf der ständig Batch-Jobs ausgeführt werden. Warnungen werden
+      <p>Der letzte Service prÃ¼ft die Speicherauslastung einer Maschine, auf der stÃ¤ndig Batch-Jobs ausgefÃ¼hrt werden. Warnungen werden
       bei mehr als 90% RAM-Belegung erzeugt und jenseits von 95% wird es als kritisch angesehen. Der Versand von Meldungen im
-      10-Minuten-Takt scheint eine gute Idee zu sein, aber dies nur während der Arbeitszeit zu tun ist vielleicht nicht ausreichend.
+      10-Minuten-Takt scheint eine gute Idee zu sein, aber dies nur wÃ¤hrend der Arbeitszeit zu tun ist vielleicht nicht ausreichend.
       <span class="bold"><strong>Aber</strong></span>: Obwohl eine Vielzahl von Benachrichtigungsoptionen angegeben wurde, wird die Admins-Gruppe
-      niemals eine Meldung bekommen! Der Grund? Bitte prüfen Sie selbst die Bedeutung jedes möglichen Wertes von "notification_options",
+      niemals eine Meldung bekommen! Der Grund? Bitte prÃ¼fen Sie selbst die Bedeutung jedes mÃ¶glichen Wertes von "notification_options",
       indem Sie die Beschreibung der Host-/Service-Definition lesen.</p>
     </li>
 </ul></div>
 
   <p><span class="bold"><strong>Fehlersuche</strong></span></p>
 
-  <p>Falls Benachrichtigungen nicht zu funktionieren scheinen, dann gibt es verschiedene Dinge, die man prüfen kann:</p>
+  <p>Falls Benachrichtigungen nicht zu funktionieren scheinen, dann gibt es verschiedene Dinge, die man prÃ¼fen kann:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Ist der Host/Service bereits in einem "Hard"-Zustand? Prüfen Sie den Zustand, indem Sie sich die Host/Service-Details
+      <p>Ist der Host/Service bereits in einem "Hard"-Zustand? PrÃ¼fen Sie den Zustand, indem Sie sich die Host/Service-Details
       ansehen</p>
     </li>
 <li class="listitem">
-      <p>Ist das Makro in dem Kontext gültig, in dem Sie es benutzen</p>
+      <p>Ist das Makro in dem Kontext gÃ¼ltig, in dem Sie es benutzen</p>
     </li>
 <li class="listitem">
-      <p>Ist das Programm zum Senden von Benachrichtigungen (mail / pager / ...) installiert und lauffähig? Ist es möglich,
+      <p>Ist das Programm zum Senden von Benachrichtigungen (mail / pager / ...) installiert und lauffÃ¤hig? Ist es mÃ¶glich,
       Benachrichtigungen von der Kommandozeile aus an die in der Kontaktdefinition angegebene Adresse zu versenden mit dem Benutzer, unter
-      dem auch der Icinga-Prozess läuft? Anmerkung: Aus Sicherheitsgründen könnte es sein, dass die Login-Shell deaktiviert ist, so dass Sie
-      dies vorübergehend ändern müssen</p>
+      dem auch der Icinga-Prozess lÃ¤uft? Anmerkung: Aus SicherheitsgrÃ¼nden kÃ¶nnte es sein, dass die Login-Shell deaktiviert ist, so dass Sie
+      dies vorÃ¼bergehend Ã¤ndern mÃ¼ssen</p>
     </li>
 <li class="listitem">
-      <p>Anstatt Meldungen zu versenden können Sie die Ausgabe auch in eine Datei umleiten, indem Sie "<code class="literal">| /usr/bin/mail
-      ...</code>" durch etwas wie "<code class="literal">&gt; /tmp/notification.log</code>" ersetzen, um zu prüfen, ob alles Makros korrekt ersetzt
+      <p>Anstatt Meldungen zu versenden kÃ¶nnen Sie die Ausgabe auch in eine Datei umleiten, indem Sie "<code class="literal">| /usr/bin/mail
+      ...</code>" durch etwas wie "<code class="literal">&gt; /tmp/notification.log</code>" ersetzen, um zu prÃ¼fen, ob alles Makros korrekt ersetzt
       werden</p>
     </li>
 <li class="listitem">
-      <p>Prüfen Sie das Icinga-Log, Mail-Log und System-Log auf Meldungen</p>
+      <p>PrÃ¼fen Sie das Icinga-Log, Mail-Log und System-Log auf Meldungen</p>
     </li>
 <li class="listitem">
-      <p>Editieren Sie <code class="filename">icinga.cfg</code> und ändern Sie die folgenden Direktiven:</p>
+      <p>Editieren Sie <code class="filename">icinga.cfg</code> und Ã¤ndern Sie die folgenden Direktiven:</p>
 
       <pre class="screen"> debug_level=32                  # notifications
  debug_verbosity=2               # very detailed
  max_debug_file_size=1000000000  # max 1GB of debug file</pre>
 
-      <p>Starten Sie Icinga neu und verschicken Sie über das klassische UI eine "custom notification", um die Einstellungen zu
-      prüfen.</p>
+      <p>Starten Sie Icinga neu und verschicken Sie Ã¼ber das klassische UI eine "custom notification", um die Einstellungen zu
+      prÃ¼fen.</p>
     </li>
 </ul></div>
 
-  <a class="indexterm" name="id1555786"></a>
+  <a class="indexterm" name="id1505603"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="notifications.html">Zurück</a> </td>
+<a accesskey="p" href="notifications.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ch06.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="ch06.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Benachrichtigungen </td>
+<td width="40%" align="left" valign="top">5.11. BenachrichtigungenÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Kapitel 6. Die Benutzeroberflächen</td>
+<td width="40%" align="right" valign="top">Â Kapitel 6. Die BenutzeroberflÃ¤chen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

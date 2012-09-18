@@ -1,102 +1,103 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Service- und Host-Gruppen überwachen</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.11. Service- und Host-Gruppen Ã¼berwachen</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="oncallrotation.html" title="Bereitschafts-Rotation">
-<link rel="next" href="dependencies.html" title="Host- und Service-Abhängigkeiten">
+<link rel="prev" href="oncallrotation.html" title="7.10. Bereitschafts-Rotation">
+<link rel="next" href="dependencies.html" title="7.12. Host- und Service-AbhÃ¤ngigkeiten">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Service- und Host-Gruppen überwachen</th></tr>
+<tr><th colspan="3" align="center">7.11. Service- und Host-Gruppen Ã¼berwachen</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="oncallrotation.html">Zurück</a> </td>
+<a accesskey="p" href="oncallrotation.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="dependencies.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="dependencies.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Service- und Host-Gruppen überwachen">
+<div class="section" title="7.11. Service- und Host-Gruppen Ã¼berwachen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="clusters"></a>Service- und Host-Gruppen überwachen</h2></div></div></div>
+<a name="clusters"></a>7.11. Service- und Host-Gruppen Ã¼berwachen</h2></div></div></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <p><span class="bold"><strong>EinfÃ¼hrung</strong></span></p>
 
-  <p>Einige Leute haben gefragt, wie man Gruppen (Cluster) von Hosts und Services überwacht, also möchten wir hier schreiben,
+  <p>Einige Leute haben gefragt, wie man Gruppen (Cluster) von Hosts und Services Ã¼berwacht, also mÃ¶chten wir hier schreiben,
   wie man das macht. Es ist ziemlich geradeaus, also hoffentlich sind die Dinge einfach zu verstehen...</p>
 
-  <p>Zuerst benötigen wir eine Definition, was wir mit "Cluster" meinen. Der einfachste Weg, dies zu verstehen, ist mit einem
-  Beispiel. Lassen Sie uns annehmen, Ihr Unternehmen hat fünf Hosts, die redundante DNS-Services für Ihr Unternehmen zur Verfügung
-  stellt. Wenn einer ausfällt, ist das keine große Katastrophe, weil die verbleibenden Server weiterhin die Namensauflösung
-  bereitstellen. Wenn Sie mit der Überwachung der Verfügbarkeit der DNS-Server betraut sind, werden Sie fünf Server überwachen
-  wollen. Das ist das, was wir als <span class="emphasis"><em>Service</em></span>-Cluster ansehen würden. Der Service-Cluster besteht aus fünf
-  einzelnen DNS-Services, die Sie überwachen wollen. Obwohl Sie jeden einzelnen Service überwachen wollen, wird Ihr Hauptaugenmerk
-  eher auf dem Gesamtstatus des DNS-Service-Clusters liegen als auf der Verfügbarkeit eines einzelnen Service.</p>
+  <p>Zuerst benÃ¶tigen wir eine Definition, was wir mit "Cluster" meinen. Der einfachste Weg, dies zu verstehen, ist mit einem
+  Beispiel. Lassen Sie uns annehmen, Ihr Unternehmen hat fÃ¼nf Hosts, die redundante DNS-Services fÃ¼r Ihr Unternehmen zur VerfÃ¼gung
+  stellt. Wenn einer ausfÃ¤llt, ist das keine groÃŸe Katastrophe, weil die verbleibenden Server weiterhin die NamensauflÃ¶sung
+  bereitstellen. Wenn Sie mit der Ãœberwachung der VerfÃ¼gbarkeit der DNS-Server betraut sind, werden Sie fÃ¼nf Server Ã¼berwachen
+  wollen. Das ist das, was wir als <span class="emphasis"><em>Service</em></span>-Cluster ansehen wÃ¼rden. Der Service-Cluster besteht aus fÃ¼nf
+  einzelnen DNS-Services, die Sie Ã¼berwachen wollen. Obwohl Sie jeden einzelnen Service Ã¼berwachen wollen, wird Ihr Hauptaugenmerk
+  eher auf dem Gesamtstatus des DNS-Service-Clusters liegen als auf der VerfÃ¼gbarkeit eines einzelnen Service.</p>
 
-  <p>Wenn Ihre Organisation eine Gruppe von Hosts hat, die eine Hochverfügbarkeitslösung darstellt, würden wir dies als
-  <span class="emphasis"><em>Host</em></span>-Cluster bezeichnen. Wenn ein bestimmter Host ausfällt, wird ein anderer einspringen, um die Aufgaben
-  des ausgefallenen zu übernehmen. Als eine Randbemerkung: Sehen Sie sich das <a class="link" href="http://www.linux-ha.org/" target="_top">High-Availability Linux Project</a> für Informationen zur Redundanz von Hosts
+  <p>Wenn Ihre Organisation eine Gruppe von Hosts hat, die eine HochverfÃ¼gbarkeitslÃ¶sung darstellt, wÃ¼rden wir dies als
+  <span class="emphasis"><em>Host</em></span>-Cluster bezeichnen. Wenn ein bestimmter Host ausfÃ¤llt, wird ein anderer einspringen, um die Aufgaben
+  des ausgefallenen zu Ã¼bernehmen. Als eine Randbemerkung: Sehen Sie sich das <a class="link" href="http://www.linux-ha.org/" target="_top">High-Availability Linux Project</a> fÃ¼r Informationen zur Redundanz von Hosts
   und Services mit Linux an.</p>
 
   <p><span class="bold"><strong>Angriffsplan</strong></span></p>
 
-  <p>Es gibt mehrere Wege, wie Sie eventuell Service- oder Host-Gruppen überwachen können. Wir werden die Methode beschreiben,
-  von der wir glauben, dass sie die Einfachste ist. Service- oder Host-Cluster überwachen umfasst zwei Dinge:</p>
+  <p>Es gibt mehrere Wege, wie Sie eventuell Service- oder Host-Gruppen Ã¼berwachen kÃ¶nnen. Wir werden die Methode beschreiben,
+  von der wir glauben, dass sie die Einfachste ist. Service- oder Host-Cluster Ã¼berwachen umfasst zwei Dinge:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>überwachen einzelner Cluster-Elemente</p>
+      <p>Ã¼berwachen einzelner Cluster-Elemente</p>
     </li>
 <li class="listitem">
-      <p>überwachen des Clusters als eine gesamte Einheit</p>
+      <p>Ã¼berwachen des Clusters als eine gesamte Einheit</p>
     </li>
 </ul></div>
 
-  <p>Das Überwachen von einzelnen Host- oder Service-Cluster-Elementen ist einfacher als Sie denken. Eigentlich tun Sie es
-  wahrscheinlich schon. Bei Service-Clustern sollten Sie sicherstellen, dass Sie jedes Service-Element des Clusters überwachen.
-  Wenn Sie ein Cluster aus fünf DNS-Servern haben, dann stellen Sie sicher, dass Sie fünf einzelne Service-Definitionen haben
+  <p>Das Ãœberwachen von einzelnen Host- oder Service-Cluster-Elementen ist einfacher als Sie denken. Eigentlich tun Sie es
+  wahrscheinlich schon. Bei Service-Clustern sollten Sie sicherstellen, dass Sie jedes Service-Element des Clusters Ã¼berwachen.
+  Wenn Sie ein Cluster aus fÃ¼nf DNS-Servern haben, dann stellen Sie sicher, dass Sie fÃ¼nf einzelne Service-Definitionen haben
   (z.B. mit dem <span class="emphasis"><em>check_dns</em></span>-Plugin). Bei Host-Clustern stellen Sie sicher, dass Sie entsprechende
-  Host-Definitionen für jedes Mitglied des Clusters haben (Sie müssen auch mindestens einen Service auf jedem Host überwachen).
-  <span class="bold"><strong>Wichtig:</strong></span> Sie können die Benachrichtigungen für die einzelnen Cluster-Elemente deaktivieren
-  (Host- oder Service-Definitionen). Obwohl keine Benachrichtigungen für die einzelnen Elemente versandt werden, bekommen Sie
+  Host-Definitionen fÃ¼r jedes Mitglied des Clusters haben (Sie mÃ¼ssen auch mindestens einen Service auf jedem Host Ã¼berwachen).
+  <span class="bold"><strong>Wichtig:</strong></span> Sie kÃ¶nnen die Benachrichtigungen fÃ¼r die einzelnen Cluster-Elemente deaktivieren
+  (Host- oder Service-Definitionen). Obwohl keine Benachrichtigungen fÃ¼r die einzelnen Elemente versandt werden, bekommen Sie
   trotzdem eine visuelle Anzeige des einzelnen Host- oder Service-Zustands in der <a class="link" href="cgis.html#cgis-status_cgi">Status
-  CGI</a>. Das ist nützlich bei der genauen Erkennung der Quelle von Problemen im Cluster in der Zukunft.</p>
+  CGI</a>. Das ist nÃ¼tzlich bei der genauen Erkennung der Quelle von Problemen im Cluster in der Zukunft.</p>
 
-  <p>Die Überwachung des gesamten Clusters kann mit Hilfe der bereits im Cache verfügbaren Ergebnisse der Cluster-Elemente
-  erfolgen. Auch wenn Sie alle Elemente des Clusters erneut prüfen könnten, um den Cluster-Status zu ermitteln: warum sollten Sie
+  <p>Die Ãœberwachung des gesamten Clusters kann mit Hilfe der bereits im Cache verfÃ¼gbaren Ergebnisse der Cluster-Elemente
+  erfolgen. Auch wenn Sie alle Elemente des Clusters erneut prÃ¼fen kÃ¶nnten, um den Cluster-Status zu ermitteln: warum sollten Sie
   Bandbreite und Ressourcen vergeuden, wenn bereits die Ergebnisse im Cache vorliegen? Wo werden die Ergebnisse abgelegt?
-  Ergebnisse für Cluster-Elemente sind im <a class="link" href="configmain.html#configmain-status_file">Status-File</a> zu finden (vorausgesetzt, dass
-  Sie jedes Element überwachen). Das <span class="emphasis"><em>check_cluster</em></span>-Plugin ist genau für den Zweck ausgelegt, um Host- und
-  Service-Zustände im Status-File zu prüfen. <span class="bold"><strong>Wichtig:</strong></span> Auch wenn Sie Benachrichtigungen für
-  einzelne Elemente des Clusters nicht aktiviert haben, möchten Sie sie vielleicht für den Gesamtstatus des Clusters
+  Ergebnisse fÃ¼r Cluster-Elemente sind im <a class="link" href="configmain.html#configmain-status_file">Status-File</a> zu finden (vorausgesetzt, dass
+  Sie jedes Element Ã¼berwachen). Das <span class="emphasis"><em>check_cluster</em></span>-Plugin ist genau fÃ¼r den Zweck ausgelegt, um Host- und
+  Service-ZustÃ¤nde im Status-File zu prÃ¼fen. <span class="bold"><strong>Wichtig:</strong></span> Auch wenn Sie Benachrichtigungen fÃ¼r
+  einzelne Elemente des Clusters nicht aktiviert haben, mÃ¶chten Sie sie vielleicht fÃ¼r den Gesamtstatus des Clusters
   aktivieren.</p>
 
   <p><span class="bold"><strong>Das check_cluster-Plugin benutzen</strong></span></p>
 
-  <p>Das check_cluster-Plugin ist dafür ausgelegt, den Gesamtstatus eines Host- oder Service-Clusters durch die Prüfung der
+  <p>Das check_cluster-Plugin ist dafÃ¼r ausgelegt, den Gesamtstatus eines Host- oder Service-Clusters durch die PrÃ¼fung der
   Statusinformationen jedes einzelnen Host- oder Service-Cluster-Elements zu ermitteln.</p>
 
   <p>noch mehr... Das <span class="emphasis"><em>check_cluster</em></span>-Plugin finden Sie im contrib-Verzeichnis der Nagios-Plugins
   unter <a class="link" href="http://sourceforge.net/projects/nagiosplug" target="_top">http://sourceforge.net/projects/nagiosplug/</a>.</p>
 
-  <p><span class="bold"><strong>Service-Cluster überwachen</strong></span></p>
+  <p><span class="bold"><strong>Service-Cluster Ã¼berwachen</strong></span></p>
 
-  <p>Nehmen wir an, dass Sie drei DNS-Server haben, die redundante Dienste in Ihrem Netzwerk bereitstellen. Zuerst müssen Sie
-  jeden einzelnen DNS-Server überwachen, bevor Sie sie als Cluster überwachen können. Wir nehmen an, dass Sie bereits drei
-  einzelne Services haben (die alle "DNS Service" heißen), die mit Ihren DNS-Hosts verbunden sind ("host1", "host2" und "host3"
+  <p>Nehmen wir an, dass Sie drei DNS-Server haben, die redundante Dienste in Ihrem Netzwerk bereitstellen. Zuerst mÃ¼ssen Sie
+  jeden einzelnen DNS-Server Ã¼berwachen, bevor Sie sie als Cluster Ã¼berwachen kÃ¶nnen. Wir nehmen an, dass Sie bereits drei
+  einzelne Services haben (die alle "DNS Service" heiÃŸen), die mit Ihren DNS-Hosts verbunden sind ("host1", "host2" und "host3"
   genannt).</p>
 
-  <p>Um die Services als einen Cluster zu überwachen, müssen Sie einen neuen "Cluster"-Service erstellen. Bevor Sie das tun,
-  sollten Sie ein Service-Cluster-Prüfbefehl konfigurieren. Lassen Sie uns annehmen, dass Sie einen Befehl namens
+  <p>Um die Services als einen Cluster zu Ã¼berwachen, mÃ¼ssen Sie einen neuen "Cluster"-Service erstellen. Bevor Sie das tun,
+  sollten Sie ein Service-Cluster-PrÃ¼fbefehl konfigurieren. Lassen Sie uns annehmen, dass Sie einen Befehl namens
   <span class="emphasis"><em>check_service_cluster</em></span> wie folgt definieren:</p>
 
   <pre class="screen"> define command{
@@ -104,11 +105,11 @@
         command_line    /usr/local/icinga/libexec/check_cluster --service -l $ARG1$ -w $ARG2$ -c $ARG3$ -d $ARG4$ 
         }</pre>
 
-  <p>Nun müssen Sie den "Cluster"-Service erstellen und den <span class="emphasis"><em>check_service_cluster</em></span>-Befehl benutzen, den Sie
-  gerade als Cluster-Prüfbefehl erstellt haben. Das folgende Beispiel gibt einen Hinweis, wie das zu tun ist. Es generiert einen
+  <p>Nun mÃ¼ssen Sie den "Cluster"-Service erstellen und den <span class="emphasis"><em>check_service_cluster</em></span>-Befehl benutzen, den Sie
+  gerade als Cluster-PrÃ¼fbefehl erstellt haben. Das folgende Beispiel gibt einen Hinweis, wie das zu tun ist. Es generiert einen
   CRITICAL-Alarm, wenn zwei oder mehr Services im Cluster in einem nicht-OK-Zustand sind und einen WARNING-Alarm, wenn nur einer
   der Services in einem nicht-OK-Zustand ist. Wenn jedes der einzelnen Service-Mitglieder des Clusters OK sind, wird auch die
-  Cluster-Prüfung einen OK-Status zurückliefern.</p>
+  Cluster-PrÃ¼fung einen OK-Status zurÃ¼ckliefern.</p>
 
   <pre class="screen"> define service{
         ...
@@ -116,20 +117,20 @@
         ...
         }</pre>
 
-  <p>Es ist wichtig anzumerken, dass wir eine Komma-separierte Liste von <span class="emphasis"><em>on-demand</em></span> Service-Zustands-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a> an das $ARG4$-Makro des Cluster-Prüfbefehls übergeben. Das ist wichtig! Icinga wird diese
+  <p>Es ist wichtig anzumerken, dass wir eine Komma-separierte Liste von <span class="emphasis"><em>on-demand</em></span> Service-Zustands-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a> an das $ARG4$-Makro des Cluster-PrÃ¼fbefehls Ã¼bergeben. Das ist wichtig! Icinga wird diese
   On-Demand-Makros mit den aktuellen Service-Status-IDs (numerischen Werten statt Zeichenketten) der einzelnen Mitglieder des
-  Clusters füllen.</p>
+  Clusters fÃ¼llen.</p>
 
-  <p><span class="bold"><strong>Host-Cluster überwachen</strong></span></p>
+  <p><span class="bold"><strong>Host-Cluster Ã¼berwachen</strong></span></p>
 
-  <p>Host-Cluster zu überwachen ist ziemlich ähnlich zur Überwachung von Service-Clustern. Offenkundig besteht der
-  Hauptunterschied darin, dass Hosts überwacht werden und nicht Services. Um den Status eines Host-Clusters zu überwachen, müssen
+  <p>Host-Cluster zu Ã¼berwachen ist ziemlich Ã¤hnlich zur Ãœberwachung von Service-Clustern. Offenkundig besteht der
+  Hauptunterschied darin, dass Hosts Ã¼berwacht werden und nicht Services. Um den Status eines Host-Clusters zu Ã¼berwachen, mÃ¼ssen
   Sie einen Service definieren, der das <span class="emphasis"><em>check_cluster</em></span>-Plugin benutzt. Der Service sollte
-  <span class="emphasis"><em>nicht</em></span> mit einem der Hosts im Cluster verbunden werden, weil dies Probleme mit Benachrichtigungen für den
-  Cluster erzeugt, wenn der Host "down" geht. Eine gute Idee könnte es sein, den Service mit dem Host zu verbinden, auf dem
-  Icinga läuft. Wenn der Host, auf dem Icinga läuft, "down" geht, dann funktioniert auch Icinga nicht mehr
-  und dann können Sie auch nichts mehr tun (es sei denn, Sie hätten eine <a class="link" href="redundancy.html" title="Redundante und Failover-Netzwerk-Überwachung">redundante
-  Host-Überwachung</a> eingerichtet)...</p>
+  <span class="emphasis"><em>nicht</em></span> mit einem der Hosts im Cluster verbunden werden, weil dies Probleme mit Benachrichtigungen fÃ¼r den
+  Cluster erzeugt, wenn der Host "down" geht. Eine gute Idee kÃ¶nnte es sein, den Service mit dem Host zu verbinden, auf dem
+  Icinga lÃ¤uft. Wenn der Host, auf dem Icinga lÃ¤uft, "down" geht, dann funktioniert auch Icinga nicht mehr
+  und dann kÃ¶nnen Sie auch nichts mehr tun (es sei denn, Sie hÃ¤tten eine <a class="link" href="redundancy.html" title="7.6. Redundante und Failover-Netzwerk-Ãœberwachung">redundante
+  Host-Ãœberwachung</a> eingerichtet)...</p>
 
   <p>Wie auch immer, lassen Sie uns annehmen, dass Sie einen <span class="emphasis"><em>check_host_cluster</em></span>-Befehl wie folgt definiert
   haben:</p>
@@ -141,7 +142,7 @@
 
   <p>Sagen wir, dass Sie drei Hosts ("host1", "host2" und "host3" genannt) in Ihrem Host-Cluster haben. Wenn Icinga
   einen WARNING-Alarm generieren soll, wenn einer der Host im Cluster nicht UP ist bzw. einen CRITICAL-Alarm, wenn zwei oder mehr
-  Hosts nicht UP sind, dann sollte der Service, um das Host-Cluster zu überwachen, ungefähr so aussehen:</p>
+  Hosts nicht UP sind, dann sollte der Service, um das Host-Cluster zu Ã¼berwachen, ungefÃ¤hr so aussehen:</p>
 
   <pre class="screen"> define service{
         ...
@@ -149,35 +150,35 @@
         ...
         }</pre>
 
-  <p>Es ist wichtig anzumerken, dass wir eine Komma-separierte Liste von <span class="emphasis"><em>on-demand</em></span> Host-Zustands-<a class="link" href="macros.html" title="Makros verstehen und wie sie arbeiten">Makros</a> an das $ARG4$-Makro des Cluster-Prüfbefehls übergeben. Das ist wichtig! Icinga wird diese
+  <p>Es ist wichtig anzumerken, dass wir eine Komma-separierte Liste von <span class="emphasis"><em>on-demand</em></span> Host-Zustands-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a> an das $ARG4$-Makro des Cluster-PrÃ¼fbefehls Ã¼bergeben. Das ist wichtig! Icinga wird diese
   On-Demand-Makros mit den aktuellen Host-Status-IDs (numerischen Werten statt Zeichenketten) der einzelnen Mitglieder des
-  Clusters füllen.</p>
+  Clusters fÃ¼llen.</p>
 
-  <p>Das war's! Icinga wird regelmäßig den Status des Host-Clusters prüfen und Benachrichtigungen an Sie versenden, wenn
-  der Status nicht OK ist (vorausgesetzt, dass Sie Benachrichtigungen für den Service aktiviert haben). Beachten Sie, dass Sie
-  höchstwahrscheinlich die Benachrichtigungen in den einzelnen Host-Definitionen deaktivieren werden, wenn der Host "down" geht.
-  Denken Sie daran, dass Sie der Status der einzelnen Hosts weniger interessiert als der Gesamtstatus des Clusters. Abhängig von
-  Ihrem Netzwerk-Layout und von dem, was Sie erreichen wollen, möchten Sie vielleicht die Benachrichtigungen für
-  UNREACHABLE-Zustände bei den Host-Definitionen aktiviert lassen.</p>
-  <a class="indexterm" name="id1579464"></a>
+  <p>Das war's! Icinga wird regelmÃ¤ÃŸig den Status des Host-Clusters prÃ¼fen und Benachrichtigungen an Sie versenden, wenn
+  der Status nicht OK ist (vorausgesetzt, dass Sie Benachrichtigungen fÃ¼r den Service aktiviert haben). Beachten Sie, dass Sie
+  hÃ¶chstwahrscheinlich die Benachrichtigungen in den einzelnen Host-Definitionen deaktivieren werden, wenn der Host "down" geht.
+  Denken Sie daran, dass Sie der Status der einzelnen Hosts weniger interessiert als der Gesamtstatus des Clusters. AbhÃ¤ngig von
+  Ihrem Netzwerk-Layout und von dem, was Sie erreichen wollen, mÃ¶chten Sie vielleicht die Benachrichtigungen fÃ¼r
+  UNREACHABLE-ZustÃ¤nde bei den Host-Definitionen aktiviert lassen.</p>
+  <a class="indexterm" name="id1529351"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="oncallrotation.html">Zurück</a> </td>
+<a accesskey="p" href="oncallrotation.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="dependencies.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="dependencies.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Bereitschafts-Rotation </td>
+<td width="40%" align="left" valign="top">7.10. Bereitschafts-RotationÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Host- und Service-Abhängigkeiten</td>
+<td width="40%" align="right" valign="top">Â 7.12. Host- und Service-AbhÃ¤ngigkeiten</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

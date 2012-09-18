@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Time Periods</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.9. Time Periods</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch05.html" title="Chapter�5.�The Basics">
-<link rel="prev" href="statetypes.html" title="State Types">
-<link rel="next" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">
+<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
+<link rel="prev" href="statetypes.html" title="5.8. State Types">
+<link rel="next" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Time Periods</th></tr>
+<tr><th colspan="3" align="center">5.9. Time Periods</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="statetypes.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�5.�The Basics</th>
-<td width="20%" align="right">�<a accesskey="n" href="networkreachability.html">Next</a>
+<a accesskey="p" href="statetypes.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. The Basics</th>
+<td width="20%" align="right"> <a accesskey="n" href="networkreachability.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Time Periods">
+<div class="section" title="5.9. Time Periods">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="timeperiods"></a><a name="time_periods"></a>Time Periods</h2></div></div></div>
+<a name="timeperiods"></a>5.9. <a name="time_periods"></a>Time Periods</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -136,11 +137,11 @@
   contact. Contacts will only receive host and service notifications during the times you specify in the notification period
   directives.</p>
 
-  <p>Examples of how to create timeperiod definitions for use for on-call rotations can be found <a class="link" href="oncallrotation.html" title="On-Call Rotations">here</a>.</p>
+  <p>Examples of how to create timeperiod definitions for use for on-call rotations can be found <a class="link" href="oncallrotation.html" title="7.10. On-Call Rotations">here</a>.</p>
 
   <p><span class="bold"><strong>How Time Periods Work With Notification Escalations</strong></span></p>
 
-  <p>Service and host <a class="link" href="escalations.html" title="Notification Escalations">notification escalations</a> have an optional
+  <p>Service and host <a class="link" href="escalations.html" title="7.8. Notification Escalations">notification escalations</a> have an optional
   <span class="emphasis"><em>escalation_period</em></span> directive that allows you to specify a timeperiod when the escalation is valid and can be
   used. If you do not use the <span class="emphasis"><em>escalation_period</em></span> directive in an escalation definition, the escalation is
   considered valid at all times. If you specify a timeperiod in the <span class="emphasis"><em>escalation_period</em></span> directive,
@@ -148,30 +149,30 @@
 
   <p><span class="bold"><strong>How Time Periods Work With Dependencies</strong></span></p>
 
-  <p>Service and host <a class="link" href="dependencies.html" title="Host and Service Dependencies">dependencies</a> have an optional <span class="emphasis"><em>dependency_period</em></span>
+  <p>Service and host <a class="link" href="dependencies.html" title="7.12. Host and Service Dependencies">dependencies</a> have an optional <span class="emphasis"><em>dependency_period</em></span>
   directive that allows you to specify a timeperiod when the dependendies are valid and can be used. If you do not use the
   <span class="emphasis"><em>dependency_period</em></span> directive in a dependency definition, the dependency can be used at any time. If you
   specify a timeperiod in the <span class="emphasis"><em>dependency_period</em></span> directive, Icinga will only use the dependency
   definition during times that are valid in the timeperiod definition.</p>
-  <a class="indexterm" name="id1499631"></a>
+  <a class="indexterm" name="id1439139"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="statetypes.html">Prev</a>�</td>
+<a accesskey="p" href="statetypes.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="networkreachability.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="networkreachability.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">State Types�</td>
+<td width="40%" align="left" valign="top">5.8. State Types </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Determining Status and Reachability of Network Hosts</td>
+<td width="40%" align="right" valign="top"> 5.10. Determining Status and Reachability of Network Hosts</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

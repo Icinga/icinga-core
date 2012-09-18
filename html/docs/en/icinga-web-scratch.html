@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Installation of the Icinga-Web Frontend</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>6.4. Installation of the Icinga-Web Frontend</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch06.html" title="Chapter�6.�User Interfaces">
-<link rel="prev" href="cgicmd.html" title="Executing CGIs on the command line">
-<link rel="next" href="upgrading_icingaweb.html" title="Upgrading Icinga-Web and Icinga-Web Database">
+<link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
+<link rel="prev" href="cgicmd.html" title="6.3. Executing CGIs on the command line">
+<link rel="next" href="upgrading_icingaweb.html" title="6.5. Upgrading Icinga-Web and Icinga-Web Database">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Installation of the Icinga-Web Frontend</th></tr>
+<tr><th colspan="3" align="center">6.4. Installation of the Icinga-Web Frontend</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="cgicmd.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�6.�User Interfaces</th>
-<td width="20%" align="right">�<a accesskey="n" href="upgrading_icingaweb.html">Next</a>
+<a accesskey="p" href="cgicmd.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 6. User Interfaces</th>
+<td width="20%" align="right"> <a accesskey="n" href="upgrading_icingaweb.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Installation of the Icinga-Web Frontend">
+<div class="section" title="6.4. Installation of the Icinga-Web Frontend">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-web-scratch"></a>Installation of the Icinga-Web Frontend</h2></div></div></div>
+<a name="icinga-web-scratch"></a>6.4. Installation of the Icinga-Web Frontend</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -100,7 +101,7 @@
                 </td></tr>
 </table></div>
 
-              <p>Installing Icinga with IDOUtils is described in the <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">Icinga with IDOUtils Quickstart
+              <p>Installing Icinga with IDOUtils is described in the <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">Icinga with IDOUtils Quickstart
               Guide</a></p>
             </li>
 </ul></div>
@@ -163,7 +164,7 @@
                 </td></tr>
 </table></div>
 
-              <p>Installing Icinga with IDOUtils is described in the <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">Icinga with IDOUtils Quickstart
+              <p>Installing Icinga with IDOUtils is described in the <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">Icinga with IDOUtils Quickstart
               Guide</a></p>
             </li>
 </ul></div>
@@ -340,8 +341,6 @@
 
       <pre class="programlisting"> #&gt; make db-drop            - drops your database with a security query to avoid casualties</pre>
 
-      <pre class="programlisting"> #&gt; make db-doc2sql         - if you require plain SQL scripts, use this option to generate SQL from Doctrine. This can be useful for packaging or manual db install</pre>
-
       <p>To use the database creation commands you have to grant privileges to the user who will execute the commands on your dbms. If
       the user defined via configure is a low-privileged one, 'make' asks about a more privileged one e.g. a root user. If this does not
       work for you, alter 'etc/build.properties' to match the requirements of a root user.</p>
@@ -352,13 +351,22 @@
 
       <p><span class="bold"><strong>Manually create Database</strong></span></p>
 
-      <p>If you require manual database creation e.g. for package building, you can extract the plain SQL scripts using:</p>
+      <p>If you require manual database creation e.g. for package building, you can extract the needed SQL script from
+      &lt;/path/to/icinga-web/etc/schema/&gt;</p>
 
-      <pre class="programlisting"> #&gt; make db-doc2sql</pre>
+      <p>and then import the script into your freshly created database:</p>
 
-      <p>and then use the generated scripts on the freshly created database.</p>
+      <p><span class="bold"><strong>MySQL</strong></span></p>
+<pre class="programlisting"> $ mysql -u root -p icinga_web  &lt; /path/to/icinga-web/etc/schema/mysql.sql</pre>
 
-      <p><span class="emphasis"><em>PostgreSQL</em></span></p>
+      <p><span class="bold"><strong>Oracle</strong></span> </p>
+<pre class="programlisting"> #&gt; su - oracle
+ $ sqlplus dbuser/dbpass
+ SQL&gt; @oracle.sql</pre>
+
+      <p><span class="bold"><strong>Postgresql</strong></span> </p>
+<pre class="programlisting"> #&gt; su - postgres
+ $ psql -U icinga_web -d icinga_web &lt; /path/to/icinga-web/etc/schema/pgsql.sql</pre>
 
       <p>Please edit the file <code class="filename">pg_hba.conf</code> and add the following lines:</p>
 
@@ -772,7 +780,7 @@ Alias /icinga-web /usr/local/icinga-web/pub
         </li>
 <li class="listitem">
           <p>Nothing there =&gt; Check icinga.log if IDOMOD gets loaded if not enable the Event Broker Module in icinga.cfg like
-          described in the Icinga Core with <a class="link" href="quickstart-idoutils.html" title="Icinga with IDOUtils Quickstart">IDOUtils Quickstart Guide</a></p>
+          described in the Icinga Core with <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">IDOUtils Quickstart Guide</a></p>
         </li>
 <li class="listitem">
           <p>IDOUtils DB-Schema is the current one? =&gt; If not check the upgrade path and docs of IDOUtils</p>
@@ -884,29 +892,29 @@ Alias /icinga-web /usr/local/icinga-web/pub
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id1515781"></a>
+  <a class="indexterm" name="id1455327"></a>
 
-  <a class="indexterm" name="id1516198"></a>
+  <a class="indexterm" name="id1455743"></a>
 
-  <a class="indexterm" name="id1516208"></a>
+  <a class="indexterm" name="id1455754"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="cgicmd.html">Prev</a>�</td>
+<a accesskey="p" href="cgicmd.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="upgrading_icingaweb.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="upgrading_icingaweb.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Executing CGIs on the command line�</td>
+<td width="40%" align="left" valign="top">6.3. Executing CGIs on the command line </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Upgrading Icinga-Web and Icinga-Web Database</td>
+<td width="40%" align="right" valign="top"> 6.5. Upgrading Icinga-Web and Icinga-Web Database</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

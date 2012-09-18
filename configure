@@ -618,6 +618,7 @@ ido2db_runtime
 ido2db_name
 icingastats_name
 icinga_name
+LIBDBIDRIVERDIR
 DBLIBS
 IDO_INSTANCE_NAME
 BROKER_H
@@ -786,6 +787,7 @@ with_pgsql_lib
 with_psql_inc
 with_dbi_lib
 with_dbi_inc
+with_libdbi_driver_dir
 enable_embedded_perl
 with_perlcache
 enable_cygwin
@@ -1509,6 +1511,9 @@ Optional Packages:
                           files,
   --with-dbi-lib=DIR      sets location of the libdbi library
   --with-dbi-inc=DIR      sets location of the libdbi include files,
+  --with-libdbi-driver-dir=<path>
+                          sets path to libdbi driver directory path (only
+                          valid with libdbi, not oracle ocilib)
   --with-perlcache        turns on cacheing of internally compiled Perl
                           scripts
   --with-ssl=DIR          sets location of the SSL installation
@@ -6719,6 +6724,21 @@ _ACEOF
 	fi
 fi
 
+LIBDBIDRIVERDIR=no
+
+# Check whether --with-libdbi-driver-dir was given.
+if test "${with_libdbi_driver_dir+set}" = set; then :
+  withval=$with_libdbi_driver_dir; LIBDBIDRIVERDIR=$withval
+else
+  LIBDBIDRIVERDIR=no
+fi
+
+if test x$LIBDBIDRIVERDIR = xno; then
+        LIBDBIDRIVERDIR="/usr/local/lib/dbd"
+fi
+
+
+
 USEPERL=no;
 INSTALLPERLSTUFF=no;
 # Check whether --enable-embedded-perl was given.
@@ -8448,6 +8468,8 @@ $as_echo "           Build IDOUtils:  ocilib, instance_name=$IDO_INSTANCE_NAME" 
 else
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:            Build IDOUtils:  libdbi, instance_name=$IDO_INSTANCE_NAME" >&5
 $as_echo "           Build IDOUtils:  libdbi, instance_name=$IDO_INSTANCE_NAME" >&6; }
+{ $as_echo "$as_me:${as_lineno-$LINENO}: result:         libdbi driver dir:  $LIBDBIDRIVERDIR" >&5
+$as_echo "        libdbi driver dir:  $LIBDBIDRIVERDIR" >&6; }
 fi
 else
 { $as_echo "$as_me:${as_lineno-$LINENO}: result:            Build IDOUtils:  no" >&5

@@ -53,9 +53,8 @@ if ($@) {
 
 # Get current database version
 my $version;
-my $thisversion="1.7.0";
-my $lastversion="1.7.0";
-my $legacyversion="1.7.0";
+my $thisversion = "1.7.0";
+my $legacyversion = "1.7.0";
 
 $version = $dbh->selectrow_array("SELECT version FROM icinga_dbversion WHERE name='idoutils'");
 if ($version eq "") {
@@ -72,19 +71,32 @@ if ($version eq $thisversion){
     exit 0;
 }
 
-
 # Read upgrade script in the directory containing this script
 my $file="../mysql/upgrade/mysql-upgrade-$thisversion.sql";
 if (-e $file){
 	print "** DB upgrade required for $thisversion",$/;
-	print "     Using $file for upgrade...",$/;
-	my $p = "-p$password" if $password;	# Not required if password is blank
-	system("mysql -u $username $p -D$database -h$hostname < $file") == 0 or die "Upgrade from $file failed";
-	print "** Upgrade to $thisversion complete",$/;
-}
-else{
-	print "** No update script found for version $version - assuming none are required.",$/;
-	print "** Upgrade to $thisversion complete",$/;
+    while ($version lt $thisversion) {
+        opendir(UPGRADE, "../mysql/upgrade/") || die "Can not open upgrade directory";
+        our @a = readdir(UPGRADE);
+        @a = sort(@a);
+        foreach(@a) {
+            $_ =~ m/mysql-upgrade-(.*).sql/g;
+            my $upgradeversion = $1;
+            if ($upgradeversion ge $version){
+                my $file="../mysql/upgrade/mysql-upgrade-$upgradeversion.sql";
+                $version = $upgradeversion;
+                print "     Using $file for upgrade...",$/;
+                my $p = "-p$password" if $password;	# Not required if password is blank
+               	system("mysql -u $username $p -D$database -h$hostname < $file") == 0 or die "Upgrade from $file failed";
+                print "     Database version is now: $version",$/;
+            }
+        }
+        close UPGRADE;
+    }
+    print "** Upgrade to $thisversion complete",$/;
+} else{
+    print "** No update script found for version $version - assuming none are required.",$/;
+    print "** Upgrade to $thisversion complete",$/;
 }
 
 # from 1.3.0 on we do that manually in the upgrade sqls for each rdbms itsself

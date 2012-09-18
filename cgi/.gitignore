@@ -1,3 +1,4 @@
 *.o
 *.cgi
+*.gcno
 Makefile

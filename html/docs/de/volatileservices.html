@@ -1,87 +1,88 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>sprunghafte Services</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.3. sprunghafte Services</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="eventhandlers.html" title="Eventhandler">
-<link rel="next" href="freshness.html" title="Service- und Host-Frische-Prüfungen">
+<link rel="prev" href="eventhandlers.html" title="7.2. Eventhandler">
+<link rel="next" href="freshness.html" title="7.4. Service- und Host-Frische-PrÃ¼fungen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">sprunghafte Services</th></tr>
+<tr><th colspan="3" align="center">7.3. sprunghafte Services</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="eventhandlers.html">Zurück</a> </td>
+<a accesskey="p" href="eventhandlers.html">ZurÃ¼ck</a>Â </td>
 <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="freshness.html">Weiter</a>
+<td width="20%" align="right">Â <a accesskey="n" href="freshness.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="sprunghafte Services">
+<div class="section" title="7.3. sprunghafte Services">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="volatileservices"></a>sprunghafte Services</h2></div></div></div>
+<a name="volatileservices"></a>7.3. sprunghafte Services</h2></div></div></div>
     
     <p>
-      <span class="bold"><strong>Einführung</strong></span>
+      <span class="bold"><strong>EinfÃ¼hrung</strong></span>
     </p>
-    <p>Icinga hat die Möglichkeit, zwischen "normalen" und "flüchtigen" Services zu unterscheiden. Die <span class="emphasis"><em>is_volatile</em></span>-Option in jeder Service-Definition erlaubt Ihnen festzulegen, ob ein bestimmter Service flüchtig ist oder nicht. Für die meisten Leute wird die Mehrzahl der überwachten Services nicht-flüchtig (d.h. "normal") sein. Trotzdem können flüchtige Services sehr nützlich sein, wenn sie richtig eingesetzt werden...</p>
+    <p>Icinga hat die MÃ¶glichkeit, zwischen "normalen" und "flÃ¼chtigen" Services zu unterscheiden. Die <span class="emphasis"><em>is_volatile</em></span>-Option in jeder Service-Definition erlaubt Ihnen festzulegen, ob ein bestimmter Service flÃ¼chtig ist oder nicht. FÃ¼r die meisten Leute wird die Mehrzahl der Ã¼berwachten Services nicht-flÃ¼chtig (d.h. "normal") sein. Trotzdem kÃ¶nnen flÃ¼chtige Services sehr nÃ¼tzlich sein, wenn sie richtig eingesetzt werden...</p>
     <p>
-      <span class="bold"><strong>Wofür sind sie nützlich?</strong></span>
+      <span class="bold"><strong>WofÃ¼r sind sie nÃ¼tzlich?</strong></span>
     </p>
-    <p>Flüchtige Services sind nützlich zur Überwachung von...</p>
+    <p>FlÃ¼chtige Services sind nÃ¼tzlich zur Ãœberwachung von...</p>
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p> Dingen, die sich jedes Mal automatisch in einen "OK"-Zustand zurücksetzen, wenn sie geprüft werden</p>
+        <p> Dingen, die sich jedes Mal automatisch in einen "OK"-Zustand zurÃ¼cksetzen, wenn sie geprÃ¼ft werden</p>
       </li>
 <li class="listitem">
         <p> Ereignisse wie Sicherheits-Alarme, die jedes Mal Beachtung erfordern, wenn ein Problem vorliegt (und nicht nur beim ersten Mal)</p>
       </li>
 </ul></div>
     <p>
-      <span class="bold"><strong>Was ist so besonders an flüchtigen Services?</strong></span>
+      <span class="bold"><strong>Was ist so besonders an flÃ¼chtigen Services?</strong></span>
     </p>
-    <p>Flüchtige Services unterscheiden sich von "normalen" Services in drei wichtigen Punkten. <span class="emphasis"><em>Jedes Mal</em></span> wenn sie in einem <a class="link" href="statetypes.html" title="Statustypen">harten</a> nicht-OK-Zustand sind und die Prüfung einen nicht-OK-Zustand ergibt (also keine Statusänderung eintritt)...</p>
+    <p>FlÃ¼chtige Services unterscheiden sich von "normalen" Services in drei wichtigen Punkten. <span class="emphasis"><em>Jedes Mal</em></span> wenn sie in einem <a class="link" href="statetypes.html" title="5.8. Statustypen">harten</a> nicht-OK-Zustand sind und die PrÃ¼fung einen nicht-OK-Zustand ergibt (also keine StatusÃ¤nderung eintritt)...</p>
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
         <p> wird der nicht-OK-Zustand des Service protokolliert</p>
       </li>
 <li class="listitem">
-        <p> werden Kontakte über das Problem informiert (falls es das ist, <a class="link" href="notifications.html" title="Benachrichtigungen">was zu tun ist</a>). Anmerkung: Benachrichtigungsintervalle werden bei flüchtigen Services ignoriert.</p>
+        <p> werden Kontakte Ã¼ber das Problem informiert (falls es das ist, <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">was zu tun ist</a>). Anmerkung: Benachrichtigungsintervalle werden bei flÃ¼chtigen Services ignoriert.</p>
       </li>
 <li class="listitem">
-        <p> Der <a class="link" href="eventhandlers.html" title="Eventhandler">Eventhandler</a> für den Service wird ausgeführt (falls einer definiert ist)</p>
+        <p> Der <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandler</a> fÃ¼r den Service wird ausgefÃ¼hrt (falls einer definiert ist)</p>
       </li>
 </ul></div>
-    <p>Diese Ereignisse finden normalerweise nur für Services statt, wenn sie in einem nicht-OK-Zustand sind und gerade ein Hard-Zustandswechsel erfolgte. In anderen Worten, sie passieren nur das erste Mal, wenn ein Service in einen nicht-OK-Zustand geht. Wenn weitere Prüfungen des Service den gleichen nicht-OK-Zustand ergeben, erfolgt kein harter Zustandswechsel und keines der genannten Ereignisse wird stattfinden.</p>
+    <p>Diese Ereignisse finden normalerweise nur fÃ¼r Services statt, wenn sie in einem nicht-OK-Zustand sind und gerade ein Hard-Zustandswechsel erfolgte. In anderen Worten, sie passieren nur das erste Mal, wenn ein Service in einen nicht-OK-Zustand geht. Wenn weitere PrÃ¼fungen des Service den gleichen nicht-OK-Zustand ergeben, erfolgt kein harter Zustandswechsel und keines der genannten Ereignisse wird stattfinden.</p>
     <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span>
- Hinweis: Wenn Sie nur an der Protokollierung interessiert sind, dann sehen Sie sich die <a class="link" href="stalking.html" title="Status Stalking">Stalking</a>-Option an.</p>
+ Hinweis: Wenn Sie nur an der Protokollierung interessiert sind, dann sehen Sie sich die <a class="link" href="stalking.html" title="7.13. Status Stalking">Stalking</a>-Option an.</p>
     <p>
       <span class="bold"><strong>Die Macht der Zwei</strong></span>
     </p>
-    <p>Wenn Sie die Möglichkeiten von flüchtigen Services und <a class="link" href="passivechecks.html" title="Passive Prüfungen (Passive Checks)">passiven Service-Prüfungen</a> kombinieren, können Sie einige sehr nützliche Dinge tun. Beispiele hierfür umfassen u.a. die Behandlung von SNMP-Traps, Sicherheits-Alarme, usw.</p>
-    <p>Wie wäre es mit einem Beispiel... Nehmen wir an, Sie nutzen <a class="link" href="http://sourceforge.net/projects/sentrytools/" target="_top">PortSentry</a>, um Portscans auf Ihrer Maschine zu erkennen und automatisch potenzielle Eindringlinge auszusperren. Wenn Sie wollen, dass Icinga über Portscans erfährt, können Sie das Folgende tun...</p>
+    <p>Wenn Sie die MÃ¶glichkeiten von flÃ¼chtigen Services und <a class="link" href="passivechecks.html" title="5.7. Passive PrÃ¼fungen (Passive Checks)">passiven Service-PrÃ¼fungen</a> kombinieren, kÃ¶nnen Sie einige sehr nÃ¼tzliche Dinge tun. Beispiele hierfÃ¼r umfassen u.a. die Behandlung von SNMP-Traps, Sicherheits-Alarme, usw.</p>
+    <p>Wie wÃ¤re es mit einem Beispiel... Nehmen wir an, Sie nutzen <a class="link" href="http://sourceforge.net/projects/sentrytools/" target="_top">PortSentry</a>, um Portscans auf Ihrer Maschine zu erkennen und automatisch potenzielle Eindringlinge auszusperren. Wenn Sie wollen, dass Icinga Ã¼ber Portscans erfÃ¤hrt, kÃ¶nnen Sie das Folgende tun...</p>
     <p>
       <span class="bold"><strong>Icinga Konfiguration:</strong></span>
     </p>
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p> Legen Sie eine Service-Definition namens <span class="emphasis"><em>Port Scans</em></span> an und verbinden Sie diese mit dem Host, auf dem PortSentry läuft.</p>
+        <p> Legen Sie eine Service-Definition namens <span class="emphasis"><em>Port Scans</em></span> an und verbinden Sie diese mit dem Host, auf dem PortSentry lÃ¤uft.</p>
       </li>
 <li class="listitem">
-        <p> Setzen Sie die <span class="emphasis"><em>max_check_attempts</em></span>-Direktive in der Service-Definition auf 1. Dies teilt Icinga mit, sofort einen <a class="link" href="statetypes.html" title="Statustypen">Hard-Zustand</a> für den Service zu erzwingen, wenn ein nicht-OK-Zustand ermittelt wird.</p>
+        <p> Setzen Sie die <span class="emphasis"><em>max_check_attempts</em></span>-Direktive in der Service-Definition auf 1. Dies teilt Icinga mit, sofort einen <a class="link" href="statetypes.html" title="5.8. Statustypen">Hard-Zustand</a> fÃ¼r den Service zu erzwingen, wenn ein nicht-OK-Zustand ermittelt wird.</p>
       </li>
 <li class="listitem">
-        <p> Setzen Sie die <span class="emphasis"><em>active_checks_enabled</em></span>-Direktive in der Service-Definition auf 0. Dies hält Icinga davon ab, den Service aktiv zu prüfen.</p>
+        <p> Setzen Sie die <span class="emphasis"><em>active_checks_enabled</em></span>-Direktive in der Service-Definition auf 0. Dies hÃ¤lt Icinga davon ab, den Service aktiv zu prÃ¼fen.</p>
       </li>
 <li class="listitem">
-        <p> Setzen Sie die <span class="emphasis"><em>passive_checks_enabled</em></span>-Direktive in der Service-Definition auf 1. Das erlaubt passive Prüfungen für den Service.</p>
+        <p> Setzen Sie die <span class="emphasis"><em>passive_checks_enabled</em></span>-Direktive in der Service-Definition auf 1. Das erlaubt passive PrÃ¼fungen fÃ¼r den Service.</p>
       </li>
 <li class="listitem">
         <p> Setzen Sie die <span class="emphasis"><em>is_volatile</em></span>-Direktive in der Service-Definition auf 1.</p>
@@ -90,13 +91,13 @@
     <p>
       <span class="bold"><strong>PortSentry Konfiguration:</strong></span>
     </p>
-    <p>Editieren Sie die PortSentry-Konfigurationsdatei (portsentry.conf) und definieren Sie einen Befehl für die <span class="emphasis"><em>KILL_RUN_CMD</em></span>-Direktive wie folgt:</p>
+    <p>Editieren Sie die PortSentry-Konfigurationsdatei (portsentry.conf) und definieren Sie einen Befehl fÃ¼r die <span class="emphasis"><em>KILL_RUN_CMD</em></span>-Direktive wie folgt:</p>
     <pre class="screen"> KILL_RUN_CMD="/usr/local/icinga/libexec/eventhandlers/submit_check_result host_name 'Port Scans' 2 'Port scan from host $TARGET$ on port $PORT$.  Host has been firewalled.'"</pre>
     <p>Stellen Sie sicher, <span class="emphasis"><em>host_name</em></span> durch den Kurznamen des Hosts zu ersetzen, mit dem der Service verbunden ist.</p>
     <p>
       <span class="bold"><strong>Portscan-Script:</strong></span>
     </p>
-    <p>Erstellen Sie ein Shell-Script im <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span>-Verzeichnis namens <span class="emphasis"><em>submit_check_result</em></span>. Der Inhalt des Shell-Scripts sollte ähnlich dem Folgenden sein...</p>
+    <p>Erstellen Sie ein Shell-Script im <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span>-Verzeichnis namens <span class="emphasis"><em>submit_check_result</em></span>. Der Inhalt des Shell-Scripts sollte Ã¤hnlich dem Folgenden sein...</p>
     <pre class="screen"> #!/bin/sh
  # Write a command to the Icinga command file to cause
  # it to process a service check result
@@ -111,38 +112,38 @@
     <p>Was passiert, wenn PortSentry in der Zukunft einen Portscan auf der Maschine entdeckt?</p>
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p> PortSentry wird den Host ausschließen ("firewall", das ist eine Funktion der PortSentry-Software)</p>
+        <p> PortSentry wird den Host ausschlieÃŸen ("firewall", das ist eine Funktion der PortSentry-Software)</p>
       </li>
 <li class="listitem">
-        <p> PortSentry wird das <span class="emphasis"><em>submit_check_result</em></span>-Shell-Script ausführen und ein passives Prüfergebnis an Icinga senden</p>
+        <p> PortSentry wird das <span class="emphasis"><em>submit_check_result</em></span>-Shell-Script ausfÃ¼hren und ein passives PrÃ¼fergebnis an Icinga senden</p>
       </li>
 <li class="listitem">
-        <p> Icinga wird das external command file lesen und das passive Service-Prüfergebnis von PortSentry verarbeiten</p>
+        <p> Icinga wird das external command file lesen und das passive Service-PrÃ¼fergebnis von PortSentry verarbeiten</p>
       </li>
 <li class="listitem">
         <p> Icinga wird den <span class="emphasis"><em>Port Scans</em></span>-Service in einen harten CRITICAL-Zustand versetzen und Benachrichtigungen an die Kontakte senden</p>
       </li>
 </ul></div>
-    <p>Ziemlich hübsch, oder?</p>
-  <a class="indexterm" name="id1575181"></a>
+    <p>Ziemlich hÃ¼bsch, oder?</p>
+  <a class="indexterm" name="id1525069"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="eventhandlers.html">Zurück</a> </td>
+<a accesskey="p" href="eventhandlers.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="freshness.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="freshness.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Eventhandler </td>
+<td width="40%" align="left" valign="top">7.2. EventhandlerÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Service- und Host-Frische-Prüfungen</td>
+<td width="40%" align="right" valign="top">Â 7.4. Service- und Host-Frische-PrÃ¼fungen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -127,6 +127,8 @@ int ido2db_oci_prepared_statement_sla_history_delete(ido2db_idi *idi);
 extern ido2db_dbconfig ido2db_db_settings;
 extern time_t ido2db_db_last_checkin_time;
 
+extern char *libdbi_driver_dir;
+
 char *ido2db_db_rawtablenames[IDO2DB_MAX_DBTABLES] = {
 	"instances",
 	"conninfo",
@@ -300,7 +302,7 @@ int ido2db_db_init(ido2db_idi *idi) {
 	/* initialize db structures, etc. */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 
-	if (dbi_initialize(NULL) == -1) {
+	if (dbi_initialize(libdbi_driver_dir) == -1) {
 		syslog(LOG_USER | LOG_INFO, "Error: dbi_initialize() failed\n");
 		return IDO_ERROR;
 	}
@@ -2470,8 +2472,17 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
 
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-		if (asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t) == -1)
+		/* mysql from_unixtime treats 0 as 'Out of range value for column '...' at row 1'
+		 * which basically is a mess, when doing updates at all. in order to stay sane, we
+		 * set the value explicitely to NULL. mysql, you suck hard.
+		 */
+		if (t == 0) {
+			if (asprintf(&buf, "FROM_UNIXTIME(NULL)") == -1)
 			buf = NULL;
+		} else {
+			if (asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t) == -1)
+				buf = NULL;
+		}
 		break;
 	case IDO2DB_DBSERVER_PGSQL:
 		/* from_unixtime is a PL/SQL function (defined in db/pgsql.sql) */
@@ -2976,7 +2987,8 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 int ido2db_check_dbd_driver(void) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_check_dbd_driver() start\n");
-	dbi_initialize(NULL);
+
+	dbi_initialize(libdbi_driver_dir);
 
 	switch (ido2db_db_settings.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
@@ -4523,7 +4535,7 @@ int ido2db_oci_prepared_statement_programstatus(ido2db_idi *idi) {
 	             "process_performance_data=:X16, obsess_over_hosts=:X17, "
 	             "obsess_over_services=:X18, modified_host_attributes=:X19, "
 	             "modified_service_attributes=:X20, global_host_event_handler=:X21, "
-	             "global_service_event_handler=:X22, disable_notif_expire_time=:X23 "
+	             "global_service_event_handler=:X22, disable_notif_expire_time=unixts2localts(:X23) "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, status_update_time, "
 	             "program_start_time, is_currently_running, "
@@ -4540,7 +4552,7 @@ int ido2db_oci_prepared_statement_programstatus(ido2db_idi *idi) {
 	             "VALUES (seq_programstatus.nextval, :X1, unixts2localts(:X2) , "
 	             "unixts2localts(:X3) , '1', :X4, :X5, "
 	             "unixts2localts(:X6), unixts2localts(:X7) , :X8, :X9, :X10, :X11, "
-	             ":X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, :X23)",
+	             ":X12, :X13, :X14, :X15, :X16, :X17, :X18, :X19, :X20, :X21, :X22, unixts2localts(:X23) )",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS]) == -1) {
 		buf = NULL;
 	}
@@ -5064,7 +5076,7 @@ int ido2db_oci_prepared_statement_downtimedata_scheduled_downtime(ido2db_idi *id
 	             "INSERT (id, instance_id, downtime_type, object_id, "
 	             "entry_time, author_name, comment_data, "
 	             "internal_downtime_id, triggered_by_id, "
-	             "is_fixed, duration, scheduled_start_time, scheduled_end_time "
+	             "is_fixed, duration, scheduled_start_time, scheduled_end_time, "
 		     "is_in_effect, trigger_time) "
 	             "VALUES (seq_scheduleddowntime.nextval, :X1, :X2, :X3, "
 	             "unixts2localts(:X4), :X5, :X6, "
@@ -7345,11 +7357,11 @@ int ido2db_oci_prepared_statement_sla_downtime_select(ido2db_idi *idi) {
 		     "is_fixed, duration "
 		     "FROM %s "
 		     "WHERE instance_id = :X1 AND object_id = :X2 AND "
-		     "((actual_start_time > :X3 AND actual_start_time < :X4) OR "
-		     " (actual_end_time > :X3 AND actual_end_time < :X4) OR "
-		     " (actual_start_time < :X3 AND actual_end_time > :X4) OR "
+		     "((actual_start_time > unixts2localts(:X3) AND actual_start_time < unixts2localts(:X4)) OR "
+		     " (actual_end_time > unixts2localts(:X3) AND actual_end_time < unixts2localts(:X4)) OR "
+		     " (actual_start_time < unixts2localts(:X3) AND actual_end_time > unixts2localts(:X4)) OR "
 		     " (actual_end_time = unixts2localts(0)))",
-	             ido2db_db_tablenames[IDO2DB_DBTABLE_SLAHISTORY]) == -1) {
+	             ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]) == -1) {
 		buf = NULL;
 	}
 

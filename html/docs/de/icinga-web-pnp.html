@@ -1,39 +1,40 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Integration von PNP4Nagios in das Icinga-Web Frontend</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>6.8. Integration von PNP4Nagios in das Icinga-Web Frontend</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
-<link rel="up" href="ch06.html" title="Kapitel 6. Die Benutzeroberflächen">
-<link rel="prev" href="icinga-web-introduction.html" title="Einführung in Icinga-Web">
+<link rel="up" href="ch06.html" title="Kapitel 6. Die BenutzeroberflÃ¤chen">
+<link rel="prev" href="icinga-web-introduction.html" title="6.7. EinfÃ¼hrung in Icinga-Web">
 <link rel="next" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Integration von PNP4Nagios in das Icinga-Web Frontend</th></tr>
+<tr><th colspan="3" align="center">6.8. Integration von PNP4Nagios in das Icinga-Web Frontend</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="icinga-web-introduction.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 6. Die Benutzeroberflächen</th>
-<td width="20%" align="right"> <a accesskey="n" href="ch07.html">Weiter</a>
+<a accesskey="p" href="icinga-web-introduction.html">ZurÃ¼ck</a>Â </td>
+<th width="60%" align="center">Kapitel 6. Die BenutzeroberflÃ¤chen</th>
+<td width="20%" align="right">Â <a accesskey="n" href="ch07.html">Weiter</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Integration von PNP4Nagios in das Icinga-Web Frontend">
+<div class="section" title="6.8. Integration von PNP4Nagios in das Icinga-Web Frontend">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-web-pnp"></a>Integration von PNP4Nagios in das Icinga-Web Frontend</h2></div></div></div>
+<a name="icinga-web-pnp"></a>6.8. Integration von PNP4Nagios in das Icinga-Web Frontend</h2></div></div></div>
   
 
-  <p>Mit Hilfe dieser Anleitung können Sie PNP4Nagios in das Icinga-Web-Frontend integrieren. Wenn Sie PNP4Nagios in das Icinga Classic UI
-  integrieren möchten, lesen Sie bitte die PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">Dokumentation.</a></p>
+  <p>Mit Hilfe dieser Anleitung kÃ¶nnen Sie PNP4Nagios in das Icinga-Web-Frontend integrieren. Wenn Sie PNP4Nagios in das Icinga Classic UI
+  integrieren mÃ¶chten, lesen Sie bitte die PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">Dokumentation.</a></p>
 
   <div class="figure">
-<a name="id1573655"></a><p class="title"><b>Abbildung 6.30. PNP4Nagios integriert in Icinga-Web</b></p>
+<a name="id1523542"></a><p class="title"><b>Abbildung 6.30. PNP4Nagios integriert in Icinga-Web</b></p>
 <div class="figure-contents">
       
 
@@ -49,7 +50,7 @@
       <p>Installieren Sie PNP4Nagios wie in der PNP4Nagios-<a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">Dokumentation</a> beschrieben.</p>
     </li>
 <li class="listitem">
-      <p>Passen Sie die PNP4Nagios-Konfiguration auf Ihre Icinga-Konfiguration an. Wahrscheinlich müssen Sie hier ändern:
+      <p>Passen Sie die PNP4Nagios-Konfiguration auf Ihre Icinga-Konfiguration an. Wahrscheinlich mÃ¼ssen Sie hier Ã¤ndern:
       </p>
 <pre class="programlisting">#&gt; vi npcd.cfg
     user = icinga
@@ -74,7 +75,7 @@
         <p>Stellen Sie sicher, dass Sie bestehende Pfade benutzen, legen Sie sie an, falls notwendig, und/oder passen Sie die Angaben an
         Ihre Distribution an.</p>
 
-        <p>Bitte überprüfen Sie, dass die command-Definitionen für "process-host-perfdata-file" und "process-service-perfdata-file"
+        <p>Bitte Ã¼berprÃ¼fen Sie, dass die command-Definitionen fÃ¼r "process-host-perfdata-file" und "process-service-perfdata-file"
         (wahrscheinlich in <code class="filename">etc/objects/commands.cfg</code>) auf das gleiche Zielverzeichnis zeigen, das in perfdata_spool_dir
         angegeben wurde.</p>
       </td></tr>
@@ -84,7 +85,7 @@
 
   <p><span class="bold"><strong>Template-Extensions</strong></span></p>
 
-  <p>Seit Version 1.5 können die Grid-Templates unberührt bleiben, weil wir XML-Extensions integriert haben, um Grid-Template mit
+  <p>Seit Version 1.5 kÃ¶nnen die Grid-Templates unberÃ¼hrt bleiben, weil wir XML-Extensions integriert haben, um Grid-Template mit
   einfachen Schnipseln anzupassen. Die PNP-Integration wurde mit diesen Extensions upgrade-sicher gemacht.</p>
 
   <p>Ausschnitt aus <code class="filename">INSTALL</code> in <code class="filename">contrib/PNP_Integration/</code></p>
@@ -108,7 +109,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Bitte beachten Sie, dass Sie das Addon nach einem Icinga-Web-Upgrade erneut installieren müssen.</p>
+      <p>Bitte beachten Sie, dass Sie das Addon nach einem Icinga-Web-Upgrade erneut installieren mÃ¼ssen.</p>
     </td></tr>
 </table></div>
 
@@ -121,7 +122,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Die folgenden Zeilen beschreiben die manuelle Integration für Version 1.4 und früher</p>
+      <p>Die folgenden Zeilen beschreiben die manuelle Integration fÃ¼r Version 1.4 und frÃ¼her</p>
     </td></tr>
 </table></div>
 
@@ -134,7 +135,7 @@
 <pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml \
     /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-host-template.xml</pre>
 <p> In der neuen Datei legen wir eine
-      zusätzliche Feld- (field) Definition an: </p>
+      zusÃ¤tzliche Feld- (field) Definition an: </p>
 <pre class="programlisting">        &lt;field name="pnp4nagios_host_link"&gt;
             &lt;!-- datasource maps a data field from api call --&gt;
             &lt;datasource&gt;
@@ -194,7 +195,7 @@
       <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
 
       <p>Editieren von <code class="filename">cronks.xml</code> im Unterverzeichnis <code class="filename">app/modules/Cronks/config/</code> unter
-      Icinga-Web und hinzufügen von: </p>
+      Icinga-Web und hinzufÃ¼gen von: </p>
 <pre class="programlisting">&lt;cronk name="gridMyHostView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
     &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
@@ -218,7 +219,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Die folgenden Zeilen beschreiben die manuelle Integration für Version 1.4 und früher</p>
+      <p>Die folgenden Zeilen beschreiben die manuelle Integration fÃ¼r Version 1.4 und frÃ¼her</p>
     </td></tr>
 </table></div>
 
@@ -232,7 +233,7 @@
       <pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-service-template.xml \
     /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-service-template.xml</pre>
 
-      <p>In der neuen Datei legen wir eine zusätzliche Feld- (field) Definition an:</p>
+      <p>In der neuen Datei legen wir eine zusÃ¤tzliche Feld- (field) Definition an:</p>
 
       <pre class="programlisting">        &lt;field name="pnp4nagios_service_link"&gt;
             &lt;!-- datasource maps a data field from api call --&gt;
@@ -293,7 +294,7 @@
       <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
 
       <p>Editieren von <code class="filename">cronks.xml</code> im Unterverzeichnis <code class="filename">app/modules/Cronks/config/</code> unter
-      Icinga-Web und hinzufügen von:</p>
+      Icinga-Web und hinzufÃ¼gen von:</p>
 
       <pre class="programlisting">&lt;cronk name="gridMyServiceView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
@@ -321,7 +322,7 @@
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Löschen des Cache</strong></span></p>
+  <p><span class="bold"><strong>LÃ¶schen des Cache</strong></span></p>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -329,7 +330,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Bitte denken Sie daran, dass Sie nach dem Editieren von *.xml-Dateien den Cache bereinigen müssen!</p>
+    <p>Bitte denken Sie daran, dass Sie nach dem Editieren von *.xml-Dateien den Cache bereinigen mÃ¼ssen!</p>
   </td></tr>
 </table></div>
 
@@ -341,25 +342,25 @@
 
   <p>Das war es auch schon, Sie sind fertig!</p>
 
-  <a class="indexterm" name="id1574036"></a>
+  <a class="indexterm" name="id1523923"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="icinga-web-introduction.html">Zurück</a> </td>
+<a accesskey="p" href="icinga-web-introduction.html">ZurÃ¼ck</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch06.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ch07.html">Weiter</a>
+<td width="40%" align="right">Â <a accesskey="n" href="ch07.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Einführung in Icinga-Web </td>
+<td width="40%" align="left" valign="top">6.7. EinfÃ¼hrung in Icinga-WebÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Kapitel 7. Fortgeschrittene Themen</td>
+<td width="40%" align="right" valign="top">Â Kapitel 7. Fortgeschrittene Themen</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

@@ -935,6 +935,22 @@ int schedule_new_event(int event_type, int high_priority, time_t run_time, int r
 		new_event->event_interval = event_interval;
 		new_event->timing_func = timing_func;
 		new_event->compensate_for_time_change = compensate_for_time_change;
+		/*
+		 * we need to keep the reverse link from the (service|host *)event_data->next_check_event
+		 * to the new_event in order to stay sane on schedule_host|service_check() checks
+		 * later on, already having a new event assigned to host/service, not rescheduling a new event.
+		 * see #2993 for deeper analysis
+		 */
+		if (event_type == EVENT_SERVICE_CHECK) {
+			service *temp_service = (service *)event_data;
+			temp_service->next_check_event = new_event;
+			log_debug_info(DEBUGL_CHECKS, 2, "Service '%s' on Host '%s' next_check_event populated\n", temp_service->description, temp_service->host_name);
+		}
+		if (event_type == EVENT_HOST_CHECK) {
+			host *temp_host = (host *)event_data;
+			temp_host->next_check_event = new_event;
+			log_debug_info(DEBUGL_CHECKS, 2, "Host '%s' next_check_event populated\n", temp_host->name);
+		}
 	} else
 		return ERROR;
 
@@ -942,6 +958,47 @@ int schedule_new_event(int event_type, int high_priority, time_t run_time, int r
 	add_event(new_event, event_list, event_list_tail);
 
 	return OK;
+}
+
+/* delete a scheduled timed event */
+/*
+	ATTENTION: at the moment only used for acknowledgements
+	If needed for other cases, you have to adopt this function to fit all needs!!!
+*/
+int delete_scheduled_event(int event_type, int high_priority, time_t run_time, int recurring, unsigned long event_interval, void *timing_func, int compensate_for_time_change, void *event_data, void *event_args, int event_options) {
+	timed_event **event_list = NULL;
+	timed_event **event_list_tail = NULL;
+	timed_event *temp_event = NULL;
+
+	/* we support only acknowledgements at the moment */
+	if (event_type != EVENT_EXPIRE_ACKNOWLEDGEMENT)
+		return OK;
+
+	log_debug_info(DEBUGL_FUNCTIONS, 0, "delete_scheduled_event()\n");
+
+	if (high_priority == TRUE) {
+		event_list = &event_list_high;
+		event_list_tail = &event_list_high_tail;
+	} else {
+		event_list = &event_list_low;
+		event_list_tail = &event_list_low_tail;
+	}
+
+	/* start from the beginning */
+	for (temp_event = *event_list; temp_event != NULL; temp_event = temp_event->next) {
+
+		if (temp_event->event_type == event_type && temp_event->event_options == event_options && temp_event->event_data == event_data) {
+
+			log_debug_info(DEBUGL_EVENTS, 1, "Removing event type %d @ %s", event_type, ctime(&run_time));
+
+			/* remove the event from the event list */
+			remove_event(temp_event, event_list, event_list_tail);
+
+			return OK;
+		}
+	}
+
+	return ERROR;
 }
 
 

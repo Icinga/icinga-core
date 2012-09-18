@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>State Stalking</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.13. State Stalking</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch07.html" title="Chapter�7.�Advanced Topics">
-<link rel="prev" href="dependencies.html" title="Host and Service Dependencies">
-<link rel="next" href="perfdata.html" title="Performance Data">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="dependencies.html" title="7.12. Host and Service Dependencies">
+<link rel="next" href="perfdata.html" title="7.14. Performance Data">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">State Stalking</th></tr>
+<tr><th colspan="3" align="center">7.13. State Stalking</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="dependencies.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�7.�Advanced Topics</th>
-<td width="20%" align="right">�<a accesskey="n" href="perfdata.html">Next</a>
+<a accesskey="p" href="dependencies.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="perfdata.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="State Stalking">
+<div class="section" title="7.13. State Stalking">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="stalking"></a><a name="state_stalking"></a>State Stalking</h2></div></div></div>
+<a name="stalking"></a>7.13. <a name="state_stalking"></a>State Stalking</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -155,40 +156,40 @@
 
   <p><span class="bold"><strong>How Do I Enable Stalking?</strong></span></p>
 
-  <p>You can enable state stalking for hosts and services by using the <span class="emphasis"><em>stalking_options</em></span> directive in <a class="link" href="configobject.html" title="Object Configuration Overview">host and service definitions</a>.</p>
+  <p>You can enable state stalking for hosts and services by using the <span class="emphasis"><em>stalking_options</em></span> directive in <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">host and service definitions</a>.</p>
 
   <p><span class="bold"><strong>How Does Stalking Differ From Volatile Services?</strong></span></p>
 
-  <p><a class="link" href="volatileservices.html" title="Volatile Services">Volatile services</a> are similar, but will cause notifications and event handlers to
+  <p><a class="link" href="volatileservices.html" title="7.3. Volatile Services">Volatile services</a> are similar, but will cause notifications and event handlers to
   run. Stalking is purely for logging purposes.</p>
 
   <p><span class="bold"><strong>Caveats</strong></span></p>
 
   <p>You should be aware that there are some potential pitfalls with enabling stalking. These all relate to the reporting
-  functions found in various <a class="link" href="cgis.html" title="Icinga Classic UI: Information On The CGIs">CGIs</a> (histogram, alert summary, etc.). Because state stalking will cause
+  functions found in various <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">CGIs</a> (histogram, alert summary, etc.). Because state stalking will cause
   additional alert entries to be logged, the data produced by the reports will show evidence of inflated numbers of alerts.</p>
 
   <p>As a general rule, I would suggest that you <span class="emphasis"><em>not</em></span> enable stalking for hosts and services without
   thinking things through. Still, it's there if you need and want it.</p>
-  <a class="indexterm" name="id1526697"></a>
+  <a class="indexterm" name="id1466275"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="dependencies.html">Prev</a>�</td>
+<a accesskey="p" href="dependencies.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="perfdata.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="perfdata.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Host and Service Dependencies�</td>
+<td width="40%" align="left" valign="top">7.12. Host and Service Dependencies </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Performance Data</td>
+<td width="40%" align="right" valign="top"> 7.14. Performance Data</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

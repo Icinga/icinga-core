@@ -997,6 +997,15 @@ if test x$USE_IDOUTILS = xyes; then
 	fi
 fi
 
+dnl Location of temp path
+LIBDBIDRIVERDIR=no
+AC_ARG_WITH(libdbi-driver-dir,AC_HELP_STRING([--with-libdbi-driver-dir=<path>],[sets path to libdbi driver directory path (only valid with libdbi, not oracle ocilib)]),LIBDBIDRIVERDIR=$withval,LIBDBIDRIVERDIR=no)
+if test x$LIBDBIDRIVERDIR = xno; then
+        LIBDBIDRIVERDIR="/usr/local/lib/dbd"
+fi
+AC_SUBST(LIBDBIDRIVERDIR)
+
+
 USEPERL=no;
 INSTALLPERLSTUFF=no;
 AC_ARG_ENABLE(embedded-perl,AC_HELP_STRING([--enable-embedded-perl],[will enable embedded Perl interpreter]),[
@@ -1386,6 +1395,7 @@ if test x$USE_IDOUTILS_ORACLE = xyes; then
 AC_MSG_RESULT([           Build IDOUtils:  ocilib, instance_name=$IDO_INSTANCE_NAME])
 else
 AC_MSG_RESULT([           Build IDOUtils:  libdbi, instance_name=$IDO_INSTANCE_NAME])
+AC_MSG_RESULT([        libdbi driver dir:  $LIBDBIDRIVERDIR])
 fi
 else
 AC_MSG_RESULT([           Build IDOUtils:  no])

@@ -38,6 +38,7 @@
 #ifdef NSCORE
 extern int      use_large_installation_tweaks;
 extern int      enable_environment_macros;
+extern int	keep_unknown_macros;
 #endif
 
 int dummy;	/* reduce compiler warnings */
@@ -226,12 +227,21 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 
 				log_debug_info(DEBUGL_MACROS, 2, "  Non-macro.  Running output (%lu): '%s'\n", (unsigned long)strlen(*output_buffer), *output_buffer);
 
-				/* add the plain text to the end of the already processed buffer */
-				*output_buffer = (char *)realloc(*output_buffer, strlen(*output_buffer) + strlen(temp_buffer) + 3);
-				strcat(*output_buffer, "$");
-				strcat(*output_buffer, temp_buffer);
-				if (buf_ptr != NULL)
+#ifdef NSCORE
+				if (keep_unknown_macros == TRUE) {
+#endif
+					/* add the plain text to the end of the already processed buffer */
+					*output_buffer = (char *)realloc(*output_buffer, strlen(*output_buffer) + strlen(temp_buffer) + 3);
 					strcat(*output_buffer, "$");
+					strcat(*output_buffer, temp_buffer);
+					if (buf_ptr != NULL)
+						strcat(*output_buffer, "$");
+#ifdef NSCORE
+				} else {
+					/* do not process unknown macros */
+					logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Skipping unknown macro '$%s$', removing it from output! Fix your config, or set keep_unknown_macros accordingly...\n", temp_buffer);
+				}
+#endif
 			}
 
 			/* insert macro */
@@ -1961,13 +1971,20 @@ int grab_standard_hostgroup_macro_r(icinga_macros *mac, int macro_type, hostgrou
 				temp_len += strlen(temp_hostsmember->host_name) + 2;
 			}
 		}
+
+		/* if there no hostgroups members, we need to malloc at least an empty string for future calls of this function */
+		if (temp_len <= 0)
+			temp_len = 1;
+
 		/* allocate or reallocate the memory buffer */
 		if (*output == NULL) {
 			*output = (char *)malloc(temp_len);
+			(*output)[temp_len-1] = '\0';
 		} else {
 			init_len = strlen(*output);
 			temp_len += init_len;
 			*output = (char *)realloc(*output, temp_len);
+			(*output)[temp_len-1] = '\0';
 		}
 		/* now fill in the string with the member names */
 		for (temp_hostsmember = temp_hostgroup->members; temp_hostsmember != NULL; temp_hostsmember = temp_hostsmember->next) {
@@ -2296,13 +2313,20 @@ int grab_standard_servicegroup_macro_r(icinga_macros *mac, int macro_type, servi
 				temp_len += strlen(temp_servicesmember->host_name) + strlen(temp_servicesmember->service_description) + 3;
 			}
 		}
+
+		/* if there no hostgroups members, we need to malloc at least an empty string for future calls of this function */
+		if (temp_len <= 0)
+			temp_len = 1;
+
 		/* allocate or reallocate the memory buffer */
 		if (*output == NULL) {
 			*output = (char *)malloc(temp_len);
+			(*output)[temp_len-1] = '\0';
 		} else {
 			init_len = strlen(*output);
 			temp_len += init_len;
 			*output = (char *)realloc(*output, temp_len);
+			(*output)[temp_len-1] = '\0';
 		}
 		/* now fill in the string with the group members */
 		for (temp_servicesmember = temp_servicegroup->members; temp_servicesmember != NULL; temp_servicesmember = temp_servicesmember->next) {

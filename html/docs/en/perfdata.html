@@ -1,37 +1,38 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Performance Data</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.14. Performance Data</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch07.html" title="Chapter�7.�Advanced Topics">
-<link rel="prev" href="stalking.html" title="State Stalking">
-<link rel="next" href="downtime.html" title="Scheduled Downtime">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="stalking.html" title="7.13. State Stalking">
+<link rel="next" href="downtime.html" title="7.15. Scheduled Downtime">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Performance Data</th></tr>
+<tr><th colspan="3" align="center">7.14. Performance Data</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="stalking.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�7.�Advanced Topics</th>
-<td width="20%" align="right">�<a accesskey="n" href="downtime.html">Next</a>
+<a accesskey="p" href="stalking.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="downtime.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Performance Data">
+<div class="section" title="7.14. Performance Data">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="perfdata"></a><a name="perf_data"></a>Performance Data</h2></div></div></div>
+<a name="perfdata"></a>7.14. <a name="perf_data"></a>Performance Data</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
 
-  <p>Icinga is designed to allow <a class="link" href="plugins.html" title="Icinga Plugins">plugins</a> to return optional performance data in addition to normal
+  <p>Icinga is designed to allow <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a> to return optional performance data in addition to normal
   status data, as well as allow you to pass that performance data to external applications for processing. A description of the different
   types of performance data, as well as information on how to go about processing that data is described below...</p>
 
@@ -50,7 +51,7 @@
 
   <p>Check performance data is internal data that relates to the actual execution of a host or service check. This might include things
   like service check latency (i.e. how "late" was the service check from its scheduled execution time) and the number of seconds a host or
-  service check took to execute. This type of performance data is available for all checks that are performed. The <a class="link" href="macrolist.html#macrolist-hostexecutiontime">$HOSTEXECUTIONTIME$</a> and <a class="link" href="macrolist.html#macrolist-serviceexecutiontime">$SERVICEEXECUTIONTIME$</a> <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros</a> can be used to determine the
+  service check took to execute. This type of performance data is available for all checks that are performed. The <a class="link" href="macrolist.html#macrolist-hostexecutiontime">$HOSTEXECUTIONTIME$</a> and <a class="link" href="macrolist.html#macrolist-serviceexecutiontime">$SERVICEEXECUTIONTIME$</a> <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> can be used to determine the
   number of seconds a host or service check was running and the <a class="link" href="macrolist.html#macrolist-hostlatency">$HOSTLATENCY$</a> and <a class="link" href="macrolist.html#macrolist-servicelatency">$SERVICELATENCY$</a> macros can be used to determine how "late" a regularly-scheduled host or
   service check was.</p>
 
@@ -58,7 +59,7 @@
   include things like percent packet loss, free disk space, processor load, number of current users, etc. - basically any type of metric
   that the plugin is measuring when it executes. Plugin-specific performance data is optional and may not be supported by all plugins.
   Plugin-specific performance data (if available) can be obtained by using the <a class="link" href="macrolist.html#macrolist-hostperfdata">$HOSTPERFDATA$</a>
-  and <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a> <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros</a>. Read on for more information
+  and <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a> <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a>. Read on for more information
   on how plugins can return performance data to Icinga for inclusion in the $HOSTPERFDATA$ and $SERVICEPERFDATA$ macros.</p>
 
   <p><span class="bold"><strong>Plugin Performance Data</strong></span></p>
@@ -68,7 +69,7 @@
 
   <pre class="screen"> PING ok - Packet loss = 0%, RTA = 0.80 ms </pre>
 
-  <p>With this simple type of output, the entire line of text is available in the $HOSTOUTPUT$ or $SERVICEOUTPUT$ <a class="link" href="macros.html" title="Understanding Macros and How They Work">macros</a> (depending on whether this plugin was used as a host check or service check).</p>
+  <p>With this simple type of output, the entire line of text is available in the $HOSTOUTPUT$ or $SERVICEOUTPUT$ <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> (depending on whether this plugin was used as a host check or service check).</p>
 
   <p>Plugins can return optional performance data in their output by sending the normal, human-readable text string that they usually
   would, followed by a pipe character (|), and then a string containing one or more performance data metrics. Let's take the check_ping
@@ -94,7 +95,7 @@
   ms</em></span>" (without quotes) and the $HOSTPERFDATA$ or $SERVICEPERFDATA$ macro would contain "<span class="emphasis"><em>percent_packet_loss=0
   rta=0.80</em></span>" (without quotes).</p>
 
-  <p>Multiple lines of performance data (as well as normal text output) can be obtained from plugins, as described in the <a class="link" href="pluginapi.html" title="Icinga Plugin API">plugin API documentation</a>.</p>
+  <p>Multiple lines of performance data (as well as normal text output) can be obtained from plugins, as described in the <a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">plugin API documentation</a>.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -281,33 +282,33 @@
       <p>*1: Having a decimal comma instead of a decimal point may be a result of using your local language settings. It might be fixed
       internally by your graphing tool but don't rely on it.</p>
 
-      <p>*2: Having "pages" or other non-standard UOMs (e.g. �C/�F) will probably result in errors or discarded performance data when
+      <p>*2: Having "pages" or other non-standard UOMs (e.g. °C/°F) will probably result in errors or discarded performance data when
       using addon like <a class="link" href="http://docs.pnp4nagios.org/" target="_top">PNP4Nagios</a> or other tools which try to graph your performance
       data.</p>
     </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id1527361"></a>
+  <a class="indexterm" name="id1466924"></a>
 
-  <a class="indexterm" name="id1527371"></a>
+  <a class="indexterm" name="id1466934"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="stalking.html">Prev</a>�</td>
+<a accesskey="p" href="stalking.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="downtime.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="downtime.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">State Stalking�</td>
+<td width="40%" align="left" valign="top">7.13. State Stalking </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Scheduled Downtime</td>
+<td width="40%" align="right" valign="top"> 7.15. Scheduled Downtime</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

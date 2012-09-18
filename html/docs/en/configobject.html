@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Object Configuration Overview</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>3.3. Object Configuration Overview</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch03.html" title="Chapter�3.�Configuring Icinga">
-<link rel="prev" href="configmain.html" title="Main Configuration File Options">
-<link rel="next" href="objectdefinitions.html" title="Object Definitions">
+<link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
+<link rel="prev" href="configmain.html" title="3.2. Main Configuration File Options">
+<link rel="next" href="objectdefinitions.html" title="3.4. Object Definitions">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Object Configuration Overview</th></tr>
+<tr><th colspan="3" align="center">3.3. Object Configuration Overview</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="configmain.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�3.�Configuring Icinga</th>
-<td width="20%" align="right">�<a accesskey="n" href="objectdefinitions.html">Next</a>
+<a accesskey="p" href="configmain.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 3. Configuring Icinga</th>
+<td width="20%" align="right"> <a accesskey="n" href="objectdefinitions.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Object Configuration Overview">
+<div class="section" title="3.3. Object Configuration Overview">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="configobject"></a><a name="config_object"></a>Object Configuration Overview</h2></div></div></div>
+<a name="configobject"></a>3.3. <a name="config_object"></a>Object Configuration Overview</h2></div></div></div>
   
 
   <p><span class="bold"><strong>What Are Objects?</strong></span></p>
@@ -97,7 +98,7 @@
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>When you follow <a class="link" href="quickstart.html" title="Quickstart Installation Guides">quickstart installation guide</a>, several sample object configuration
+    <p>When you follow <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart installation guide</a>, several sample object configuration
     files are placed in <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span>. You can use these sample files to see how object
     inheritance works and learn how to define your own object definitions.</p>
   </td></tr>
@@ -106,10 +107,10 @@
   <p><span class="bold"><strong>How Are Objects Defined?</strong></span></p>
 
   <p>Objects are defined in a flexible template format, which can make it much easier to manage your Icinga
-  configuration in the long term. Basic information on how to define objects in your configuration files can be found <a class="link" href="objectdefinitions.html" title="Object Definitions">here</a>.</p>
+  configuration in the long term. Basic information on how to define objects in your configuration files can be found <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">here</a>.</p>
 
-  <p>Once you get familiar with the basics of how to define objects, you should read up on <a class="link" href="objectinheritance.html" title="Object Inheritance">object inheritance</a>, as it will make your configuration more robust for the future. Seasoned
-  users can exploit some advanced features of object definitions as described in the documentation on <a class="link" href="objecttricks.html" title="Time-Saving Tricks For Object Definitions">object tricks</a>.</p>
+  <p>Once you get familiar with the basics of how to define objects, you should read up on <a class="link" href="objectinheritance.html" title="7.25. Object Inheritance">object inheritance</a>, as it will make your configuration more robust for the future. Seasoned
+  users can exploit some advanced features of object definitions as described in the documentation on <a class="link" href="objecttricks.html" title="7.26. Time-Saving Tricks For Object Definitions">object tricks</a>.</p>
 
   <p><a name="configobject-objectoverview"></a></p>
 
@@ -143,14 +144,14 @@
               </li>
 <li class="listitem">
                 <p>Hosts can have parent/child relationships with other hosts, often representing real-world network
-                connections, which is used in the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">network reachability</a> logic.</p>
+                connections, which is used in the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">network reachability</a> logic.</p>
               </li>
 </ul></div> <p><a class="link" href="objectdefinitions.html#objectdefinitions-hostgroup">
 
               <span class="bold"><strong>Host Groups</strong></span>
 
             </a> are groups of one or more hosts. Host groups can make it easier to (1) view the status of related hosts in the
-          Icinga web interface and (2) simplify your configuration through the use of <a class="link" href="objecttricks.html" title="Time-Saving Tricks For Object Definitions">object
+          Icinga web interface and (2) simplify your configuration through the use of <a class="link" href="objecttricks.html" title="7.26. Time-Saving Tricks For Object Definitions">object
           tricks</a>.</p>
 </td>
 <td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-hosts.png"></span> </p></td>
@@ -188,7 +189,7 @@
               <span class="bold"><strong>Service Groups</strong></span>
                
             </a> are groups of one or more services. Service groups can make it easier to (1) view the status of related
-          services in the Icinga web interface and (2) simplify your configuration through the use of <a class="link" href="objecttricks.html" title="Time-Saving Tricks For Object Definitions">object tricks</a>.</p>
+          services in the Icinga web interface and (2) simplify your configuration through the use of <a class="link" href="objecttricks.html" title="7.26. Time-Saving Tricks For Object Definitions">object tricks</a>.</p>
 </td>
 <td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-services.png"></span> </p></td>
 </tr></tbody>
@@ -251,7 +252,7 @@
 <li class="listitem">
                 <p>When contacts can receive notifications</p>
               </li>
-</ul></div> <p>Information on how timeperiods work can be found <a class="link" href="timeperiods.html" title="Time Periods">here</a>.</p>
+</ul></div> <p>Information on how timeperiods work can be found <a class="link" href="timeperiods.html" title="5.9. Time Periods">here</a>.</p>
 </td>
 <td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-timeperiods.png"></span> </p></td>
 </tr></tbody>
@@ -291,29 +292,29 @@
 </tr></tbody>
 </table>
   </div>
-  <a class="indexterm" name="id1450390"></a>
-  <a class="indexterm" name="id1450375"></a>
-  <a class="indexterm" name="id1450404"></a>
-  <a class="indexterm" name="id1450415"></a>
-  <a class="indexterm" name="id1450429"></a>
+  <a class="indexterm" name="id1389284"></a>
+  <a class="indexterm" name="id1389291"></a>
+  <a class="indexterm" name="id1389302"></a>
+  <a class="indexterm" name="id1389315"></a>
+  <a class="indexterm" name="id1389328"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="configmain.html">Prev</a>�</td>
+<a accesskey="p" href="configmain.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="objectdefinitions.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="objectdefinitions.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Main Configuration File Options�</td>
+<td width="40%" align="left" valign="top">3.2. Main Configuration File Options </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Object Definitions</td>
+<td width="40%" align="right" valign="top"> 3.4. Object Definitions</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

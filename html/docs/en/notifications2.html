@@ -1,38 +1,39 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Notifications: Examples and troubleshooting</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.12.Â Notifications: Examples and troubleshooting</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
-<link rel="prev" href="notifications.html" title="Notifications">
-<link rel="next" href="ch06.html" title="Chapter 6. User Interfaces">
+<link rel="up" href="ch05.html" title="ChapterÂ 5.Â The Basics">
+<link rel="prev" href="notifications.html" title="5.11.Â Notifications">
+<link rel="next" href="ch06.html" title="ChapterÂ 6.Â User Interfaces">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Notifications: Examples and troubleshooting</th></tr>
+<tr><th colspan="3" align="center">5.12.Â Notifications: Examples and troubleshooting</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="notifications.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 5. The Basics</th>
-<td width="20%" align="right"> <a accesskey="n" href="ch06.html">Next</a>
+<a accesskey="p" href="notifications.html">Prev</a>Â </td>
+<th width="60%" align="center">ChapterÂ 5.Â The Basics</th>
+<td width="20%" align="right">Â <a accesskey="n" href="ch06.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Notifications: Examples and troubleshooting">
+<div class="section" title="5.12.Â Notifications: Examples and troubleshooting">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="notifications2"></a><a name="notifications_2"></a>Notifications: Examples and troubleshooting</h2></div></div></div>
+<a name="notifications2"></a>5.12.Â <a name="notifications_2"></a>Notifications: Examples and troubleshooting</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
 
   <p>Object definitions of <a class="link" href="objectdefinitions.html#objectdefinitions-host">hosts</a>, <a class="link" href="objectdefinitions.html#objectdefinitions-service">services</a>, and <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contacts</a> / <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contact groups</a> were shown in the chapter "Configuring Icinga", the several checks being
-  made to determine whether a notification will be sent or not were described in the section "<a class="link" href="notifications.html" title="Notifications">Notifications</a>".</p>
+  made to determine whether a notification will be sent or not were described in the section "<a class="link" href="notifications.html" title="5.11.Â Notifications">Notifications</a>".</p>
 
   <p>Despite all the explanations it seems that there is still some level of uncertainty so we'll try to show an example using mail as
   one way of communication.</p>
@@ -87,7 +88,7 @@
           require appropriate <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">time period definitions</a>. We'll assume that "24x7" means 24
           hours 7 days a week and "workhours" monday to friday from 9 a.m. to 5 p.m. Please note that "notification_period" is different
           from "check_period" as specified in host and service definitions. It specifies the time period in which messages will be sent if
-          all checks described in "<a class="link" href="notifications.html" title="Notifications">Notifications</a>" have been passed successfully.</p>
+          all checks described in "<a class="link" href="notifications.html" title="5.11.Â Notifications">Notifications</a>" have been passed successfully.</p>
         </li>
 <li class="listitem">
           <p>Messages will be sent for hosts changing to UNREACHABLE and DOWN states and when returning back to an UP state. Services
@@ -150,7 +151,7 @@
       </td></tr>
 </table></div>
 
-      <p>There are many <a class="link" href="macrolist.html" title="Standard Macros in Icinga">macros</a> which can be inserted to add information to the notifications.</p>
+      <p>There are many <a class="link" href="macrolist.html" title="5.3.Â Standard Macros in Icinga">macros</a> which can be inserted to add information to the notifications.</p>
 <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
@@ -263,25 +264,25 @@
     </li>
 </ul></div>
 
-  <a class="indexterm" name="id1501165"></a>
+  <a class="indexterm" name="id1440656"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="notifications.html">Prev</a> </td>
+<a accesskey="p" href="notifications.html">Prev</a>Â </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ch06.html">Next</a>
+<td width="40%" align="right">Â <a accesskey="n" href="ch06.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Notifications </td>
+<td width="40%" align="left" valign="top">5.11.Â NotificationsÂ </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Chapter 6. User Interfaces</td>
+<td width="40%" align="right" valign="top">Â ChapterÂ 6.Â User Interfaces</td>
 </tr>
 </table>
 </div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">Â© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>

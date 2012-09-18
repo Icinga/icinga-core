@@ -123,6 +123,8 @@ int dump_retained_host_service_states_to_neb = TRUE;
 int stalking_notifications_for_hosts = DEFAULT_STALKING_NOTIFICATIONS_FOR_HOSTS;
 int stalking_notifications_for_services = DEFAULT_STALKING_NOTIFICATIONS_FOR_SERVICES;
 
+unsigned long max_check_result_list_items = DEFAULT_MAX_CHECK_RESULT_LIST_ITEMS;
+
 time_t last_program_stop = 0L;
 
 int grab_host_macros(host *hst) {}

@@ -1,32 +1,33 @@
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-<title>Host Checks</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.4. Host Checks</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="ch05.html" title="Chapter�5.�The Basics">
-<link rel="prev" href="macrolist.html" title="Standard Macros in Icinga">
-<link rel="next" href="servicechecks.html" title="Service Checks">
+<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
+<link rel="prev" href="macrolist.html" title="5.3. Standard Macros in Icinga">
+<link rel="next" href="servicechecks.html" title="5.5. Service Checks">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Host Checks</th></tr>
+<tr><th colspan="3" align="center">5.4. Host Checks</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="macrolist.html">Prev</a>�</td>
-<th width="60%" align="center">Chapter�5.�The Basics</th>
-<td width="20%" align="right">�<a accesskey="n" href="servicechecks.html">Next</a>
+<a accesskey="p" href="macrolist.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. The Basics</th>
+<td width="20%" align="right"> <a accesskey="n" href="servicechecks.html">Next</a>
 </td>
 </tr>
 </table>
 <hr>
 </div>
-<div class="section" title="Host Checks">
+<div class="section" title="5.4. Host Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="hostchecks"></a><a name="host_checks"></a>Host Checks</h2></div></div></div>
+<a name="hostchecks"></a>5.4. <a name="host_checks"></a>Host Checks</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -46,10 +47,10 @@
       <p>On-demand when a service associated with the host changes state.</p>
     </li>
 <li class="listitem">
-      <p>On-demand as needed as part of the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
+      <p>On-demand as needed as part of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
     </li>
 <li class="listitem">
-      <p>On-demand as needed for <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">predictive host dependency checks</a>.</p>
+      <p>On-demand as needed for <a class="link" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">predictive host dependency checks</a>.</p>
     </li>
 </ul></div>
 
@@ -62,24 +63,24 @@
   state. For example, if Icinga detects that the HTTP service associated with a host just changed from a CRITICAL to an OK
   state, it may indicate that the host just recovered from a reboot and is now back up and running.</p>
 
-  <p>On-demand checks of hosts are also made as part of the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">host reachability</a> logic.
+  <p>On-demand checks of hosts are also made as part of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.
   Icinga is designed to detect network outages as quickly as possible, and distinguish between DOWN and UNREACHABLE host
   states. These are very different states and can help an admin quickly locate the cause of a network outage.</p>
 
-  <p>On-demand checks are also performed as part of the <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">predictive host dependency
+  <p>On-demand checks are also performed as part of the <a class="link" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">predictive host dependency
   check</a> logic. These checks help ensure that the dependency logic is as accurate as possible.</p>
 
   <p><span class="bold"><strong>Cached Host Checks</strong></span></p>
 
   <p>The performance of on-demand host checks can be significantly improved by implementing the use of cached checks, which
   allow Icinga to forgo executing a host check if it determines a relatively recent check result will do instead. More
-  information on cached checks can be found <a class="link" href="cachedchecks.html" title="Cached Checks">here</a>.</p>
+  information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.20. Cached Checks">here</a>.</p>
 
   <p><span class="bold"><strong>Dependencies and Checks</strong></span></p>
 
   <p>You can define <a class="link" href="objectdefinitions.html#objectdefinitions-hostdependency">host execution dependencies</a> that prevent
   Icinga from checking the status of a host depending on the state of one or more other hosts. More information on
-  dependencies can be found <a class="link" href="dependencies.html" title="Host and Service Dependencies">here</a>.</p>
+  dependencies can be found <a class="link" href="dependencies.html" title="7.12. Host and Service Dependencies">here</a>.</p>
 
   <p><span class="bold"><strong>Parallelization of Host Checks</strong></span></p>
 
@@ -93,8 +94,8 @@
   execution of an on-demand host check if it can use the cached results from a relatively recent host check.</p>
 
   <p>When Icinga processes the results of scheduled and on-demand host checks, it may initiate (secondary) checks of
-  other hosts. These checks can be initated for two reasons: <a class="link" href="dependencychecks.html" title="Predictive Dependency Checks">predictive dependency checks</a>
-  and to determining the status of the host using the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">network reachability</a> logic. The
+  other hosts. These checks can be initated for two reasons: <a class="link" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">predictive dependency checks</a>
+  and to determining the status of the host using the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">network reachability</a> logic. The
   secondary checks that are initiated are usually run in parallel. However, there is one big exception that you should be aware
   of, as it can have negative effect on performance...</p>
 
@@ -105,7 +106,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Hosts which have their <span class="emphasis"><em>max_check_attempts</em></span> value set to <span class="bold"><strong>1</strong></span> can cause
-    serious performance problems. The reason? If Icinga needs to determine their true state using the <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">network reachability</a> logic (to see if they're DOWN or UNREACHABLE), it will have to
+    serious performance problems. The reason? If Icinga needs to determine their true state using the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">network reachability</a> logic (to see if they're DOWN or UNREACHABLE), it will have to
     launch <span class="bold"><strong>serial</strong></span> checks of all of the host's immediate parents. Just to reiterate, those checks
     are run <span class="emphasis"><em>serially</em></span>, rather than in parallel, so it can cause a big performance hit. For this reason, we
     would recommend that you always use a value greater than 1 for the <span class="emphasis"><em>max_check_attempts</em></span> directives in your
@@ -131,7 +132,7 @@
 
   <p><span class="bold"><strong>Host State Determination</strong></span></p>
 
-  <p>Host checks are performed by <a class="link" href="plugins.html" title="Icinga Plugins">plugins</a>, which can return a state of OK, WARNING, UNKNOWN, or
+  <p>Host checks are performed by <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a>, which can return a state of OK, WARNING, UNKNOWN, or
   CRITICAL. How does Icinga translate these plugin return codes into host states of UP, DOWN, or UNREACHABLE? Lets
   see...</p>
 
@@ -212,39 +213,39 @@
 </table>
   </div>
 
-  <p>More information on how Icinga distinguishes between DOWN and UNREACHABLE states can be found <a class="link" href="networkreachability.html" title="Determining Status and Reachability of Network Hosts">here</a>.</p>
+  <p>More information on how Icinga distinguishes between DOWN and UNREACHABLE states can be found <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">here</a>.</p>
 
   <p><span class="bold"><strong>Host State Changes</strong></span></p>
 
   <p>As you are probably well aware, hosts don't always stay in one state. Things break, patches get applied, and servers need
   to be rebooted. When Icinga checks the status of hosts, it will be able to detect when a host changes between UP, DOWN,
-  and UNREACHABLE states and take appropriate action. These state changes result in different <a class="link" href="statetypes.html" title="State Types">state
-  types</a> (HARD or SOFT), which can trigger <a class="link" href="eventhandlers.html" title="Event Handlers">event handlers</a> to be run and <a class="link" href="notifications.html" title="Notifications">notifications</a> to be sent out. Detecting and dealing with state changes is what Icinga is
+  and UNREACHABLE states and take appropriate action. These state changes result in different <a class="link" href="statetypes.html" title="5.8. State Types">state
+  types</a> (HARD or SOFT), which can trigger <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handlers</a> to be run and <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a> to be sent out. Detecting and dealing with state changes is what Icinga is
   all about.</p>
 
   <p>When hosts change state too frequently they are considered to be "flapping". A good example of a flapping host would be
   server that keeps spontaneously rebooting as soon as the operating system loads. That's always a fun scenario to have to deal
   with. Icinga can detect when hosts start flapping, and can suppress notifications until flapping stops and the host's
-  state stabilizes. More information on the flap detection logic can be found <a class="link" href="flapping.html" title="Detection and Handling of State Flapping">here</a>.</p>
-  <a class="indexterm" name="id1497382"></a>
+  state stabilizes. More information on the flap detection logic can be found <a class="link" href="flapping.html" title="7.7. Detection and Handling of State Flapping">here</a>.</p>
+  <a class="indexterm" name="id1436895"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="macrolist.html">Prev</a>�</td>
+<a accesskey="p" href="macrolist.html">Prev</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
-<td width="40%" align="right">�<a accesskey="n" href="servicechecks.html">Next</a>
+<td width="40%" align="right"> <a accesskey="n" href="servicechecks.html">Next</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">Standard Macros in Icinga�</td>
+<td width="40%" align="left" valign="top">5.3. Standard Macros in Icinga </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top">�Service Checks</td>
+<td width="40%" align="right" valign="top"> 5.5. Service Checks</td>
 </tr>
 </table>
 </div>
-<P class="copyright">� 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
 </body>
 </html>
