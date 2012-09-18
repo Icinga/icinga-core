@@ -46,6 +46,7 @@ extern int embedded;
 extern int display_header;
 extern int daemon_check;
 extern int result_limit;
+extern int show_partial_hostgroups;
 /** @} */
 
 /** @name Internal vars
@@ -66,6 +67,8 @@ int display_downtime_alerts = TRUE;		/**< determine if downtime alerts should be
 
 char *host_name = "all";				/**< the requested host name */
 char *service_desc = "";				/**< the requested service name */
+char *hostgroup_name = "";				/**< the requested hostgroup name */
+char *servicegroup_name = "";				/**< the requested hostgroup name */
 
 time_t ts_start = 0L;				/**< start time as unix timestamp */
 time_t ts_end = 0L;				/**< end time as unix timestamp */
@@ -148,12 +151,16 @@ int main(void) {
 		/* left column of the first row */
 		printf("<td align=left valign=top width=33%%>\n");
 
-		if (display_type == DISPLAY_SERVICES)
-			display_info_table("Service Alert History", &current_authdata, daemon_check);
-		else if (show_all_hosts == TRUE)
-			display_info_table("Alert History", &current_authdata, daemon_check);
-		else
+		if (display_type == DISPLAY_HOSTS)
 			display_info_table("Host Alert History", &current_authdata, daemon_check);
+		else if (display_type == DISPLAY_SERVICES)
+			display_info_table("Service Alert History", &current_authdata, daemon_check);
+		else if (display_type == DISPLAY_HOSTGROUPS)
+			display_info_table("Host Group Alert History", &current_authdata, daemon_check);
+		else if (display_type == DISPLAY_SERVICEGROUPS)
+			display_info_table("Service Group Alert History", &current_authdata, daemon_check);
+		else
+			display_info_table("Alert History", &current_authdata, daemon_check);
 
 		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 		printf("<TR><TD CLASS='linkBox'>\n");
@@ -164,7 +171,7 @@ int main(void) {
 			if (show_all_hosts == FALSE)
 				printf("<A HREF='%s?host=%s'>View Trends For This Host</A>\n", TRENDS_CGI, url_encode(host_name));
 #endif
-		} else {
+		} else if (display_type == DISPLAY_SERVICES) {
 			printf("<A HREF='%s?host=%s&", NOTIFICATIONS_CGI, url_encode(host_name));
 			printf("service=%s'>View Notifications For This Service</A><BR />\n", url_encode(service_desc));
 #ifdef USE_TRENDS
@@ -172,6 +179,14 @@ int main(void) {
 			printf("service=%s'>View Trends For This Service</A><BR />\n", url_encode(service_desc));
 #endif
 			printf("<A HREF='%s?host=%s'>View History For This Host</A>\n", HISTORY_CGI, url_encode(host_name));
+		} else if (display_type == DISPLAY_HOSTGROUPS) {
+			printf("<a href='%s?hostgroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This</b> Host Group</a><br>\n", STATUS_CGI, url_encode(hostgroup_name));
+			printf("<a href='%s?hostgroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This</b> Host Group</a><br>\n", STATUS_CGI, url_encode(hostgroup_name));
+			printf("<a href='%s?hostgroup=%s'>View <b>Notifications</b> For <b>This</b> Host Group</a><br>\n", NOTIFICATIONS_CGI, url_encode(hostgroup_name));
+		} else if (display_type == DISPLAY_SERVICEGROUPS) {
+			printf("<a href='%s?servicegroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This</b> Service Group</a><br>\n", STATUS_CGI, url_encode(servicegroup_name));
+			printf("<a href='%s?servicegroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This</b> Service Group</a><br>\n", STATUS_CGI, url_encode(servicegroup_name));
+			printf("<a href='%s?servicegroup=%s'>View <b>Notifications</b> For <b>This</b> Service Group</a><br>\n", NOTIFICATIONS_CGI, url_encode(servicegroup_name));
 		}
 		printf("</TD></TR>\n");
 		printf("</TABLE>\n");
@@ -183,11 +198,16 @@ int main(void) {
 
 		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
 		if (display_type == DISPLAY_SERVICES)
-			printf("Service '%s' On Host '%s'", service_desc, host_name);
-		else if (show_all_hosts == TRUE)
-			printf("All Hosts and Services");
-		else
-			printf("Host '%s'", host_name);
+			printf("Service '%s' On Host '%s'", html_encode(service_desc, TRUE), html_encode(host_name, TRUE));
+		else if (display_type == DISPLAY_HOSTS) {
+			if (show_all_hosts == TRUE)
+				printf("All Hosts and Services");
+			else
+				printf("Host '%s'", html_encode(host_name, TRUE));
+		} else if (display_type == DISPLAY_HOSTGROUPS)
+			printf("Host Group '%s'", html_encode(hostgroup_name, TRUE));
+		else if (display_type == DISPLAY_SERVICEGROUPS)
+			printf("Serivce Group '%s'", html_encode(servicegroup_name, TRUE));
 		printf("</DIV>\n");
 		printf("<BR />\n");
 
@@ -202,10 +222,16 @@ int main(void) {
 		printf("<input type='hidden' name='ts_start' value='%lu'>\n", ts_start);
 		printf("<input type='hidden' name='ts_end' value='%lu'>\n", ts_end);
 		printf("<input type='hidden' name='limit' value='%d'>\n", result_limit);
-		printf("<input type='hidden' name='host' value='%s'>\n", (show_all_hosts == TRUE) ? "all" : escape_string(host_name));
-		if (display_type == DISPLAY_SERVICES)
-			printf("<input type='hidden' name='service' value='%s'>\n", escape_string(service_desc));
 
+		if (display_type == DISPLAY_HOSTGROUPS)
+			printf("<input type='hidden' name='hostgroup' value='%s'>\n", escape_string(hostgroup_name));
+		else if (display_type == DISPLAY_SERVICEGROUPS)
+			printf("<input type='hidden' name='servicegroup' value='%s'>\n", escape_string(servicegroup_name));
+		else {
+			printf("<input type='hidden' name='host' value='%s'>\n", (show_all_hosts == TRUE) ? "all" : escape_string(host_name));
+			if (display_type == DISPLAY_SERVICES)
+				printf("<input type='hidden' name='service' value='%s'>\n", escape_string(service_desc));
+		}
 		printf("<table border=0 CLASS='optBox'>\n");
 
 		printf("<tr>\n");
@@ -222,7 +248,9 @@ int main(void) {
 
 		printf("<tr>\n");
 		printf("<td align=left CLASS='optBoxItem'>History detail level for ");
-		if (display_type == DISPLAY_HOSTS)
+		if (display_type == DISPLAY_HOSTGROUPS || display_type == DISPLAY_SERVICEGROUPS)
+			printf("this %sgroup", (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service");
+		else if (display_type == DISPLAY_HOSTS)
 			printf("%s host%s", (show_all_hosts == TRUE) ? "all" : "this", (show_all_hosts == TRUE) ? "s" : "");
 		else
 			printf("service");
@@ -230,16 +258,16 @@ int main(void) {
 		printf("</tr>\n");
 		printf("<tr>\n");
 		printf("<td align=left CLASS='optBoxItem'><select name='type'>\n");
-		if (display_type == DISPLAY_HOSTS)
+		if (display_type == DISPLAY_HOSTS || display_type == DISPLAY_HOSTGROUPS)
 			printf("<option value=%d %s>All alerts</option>\n", HISTORY_ALL, (history_options == HISTORY_ALL) ? "selected" : "");
 		printf("<option value=%d %s>All service alerts</option>\n", HISTORY_SERVICE_ALL, (history_options == HISTORY_SERVICE_ALL) ? "selected" : "");
-		if (display_type == DISPLAY_HOSTS)
+		if (display_type == DISPLAY_HOSTS || display_type == DISPLAY_HOSTGROUPS)
 			printf("<option value=%d %s>All host alerts</option>\n", HISTORY_HOST_ALL, (history_options == HISTORY_HOST_ALL) ? "selected" : "");
 		printf("<option value=%d %s>Service warning</option>\n", HISTORY_SERVICE_WARNING, (history_options == HISTORY_SERVICE_WARNING) ? "selected" : "");
 		printf("<option value=%d %s>Service unknown</option>\n", HISTORY_SERVICE_UNKNOWN, (history_options == HISTORY_SERVICE_UNKNOWN) ? "selected" : "");
 		printf("<option value=%d %s>Service critical</option>\n", HISTORY_SERVICE_CRITICAL, (history_options == HISTORY_SERVICE_CRITICAL) ? "selected" : "");
 		printf("<option value=%d %s>Service recovery</option>\n", HISTORY_SERVICE_RECOVERY, (history_options == HISTORY_SERVICE_RECOVERY) ? "selected" : "");
-		if (display_type == DISPLAY_HOSTS) {
+		if (display_type == DISPLAY_HOSTS || display_type == DISPLAY_HOSTGROUPS) {
 			printf("<option value=%d %s>Host down</option>\n", HISTORY_HOST_DOWN, (history_options == HISTORY_HOST_DOWN) ? "selected" : "");
 			printf("<option value=%d %s>Host unreachable</option>\n", HISTORY_HOST_UNREACHABLE, (history_options == HISTORY_HOST_UNREACHABLE) ? "selected" : "");
 			printf("<option value=%d %s>Host recovery</option>\n", HISTORY_HOST_RECOVERY, (history_options == HISTORY_HOST_RECOVERY) ? "selected" : "");
@@ -334,6 +362,31 @@ int process_cgivars(void) {
 			display_type = DISPLAY_SERVICES;
 		}
 
+		/* we found the hostgroup argument */
+		else if (!strcmp(variables[x], "hostgroup")) {
+			display_type = DISPLAY_HOSTGROUPS;
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+			if ((hostgroup_name = strdup(variables[x])) == NULL)
+				hostgroup_name = "";
+			strip_html_brackets(hostgroup_name);
+		}
+
+		/* we found the servicegroup argument */
+		else if (!strcmp(variables[x], "servicegroup")) {
+			display_type = DISPLAY_SERVICEGROUPS;
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+			if ((servicegroup_name = strdup(variables[x])) == NULL)
+				servicegroup_name = "";
+			strip_html_brackets(servicegroup_name);
+		}
 
 		/* we found the history type argument */
 		else if (!strcmp(variables[x], "type")) {
@@ -478,10 +531,74 @@ void show_history(void) {
 	int total_entries = 0;
 	host *temp_host = NULL;
 	service *temp_service = NULL;
+	hostgroup *temp_hostgroup = NULL;
+	servicegroup *temp_servicegroup = NULL;
 	logentry *temp_entry = NULL;
 	struct tm *time_ptr = NULL;
 	logentry *entry_list = NULL;
 	logfilter *filter_list = NULL;
+
+
+	if (display_type == DISPLAY_HOSTGROUPS) {
+
+		temp_hostgroup = find_hostgroup(hostgroup_name);
+
+		if (temp_hostgroup == NULL) {
+			print_generic_error_message("There are no host groups with this name defined.", NULL, 0);
+			return;
+		}
+		/* make sure the user is authorized to view this hostgroup */
+		if (show_partial_hostgroups == FALSE && is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == FALSE) {
+			print_generic_error_message("It appears as though you do not have permission to view information for the host group you requested...", "If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.", 0);
+			return;
+		}
+	}
+
+	if (display_type == DISPLAY_SERVICEGROUPS) {
+
+		temp_servicegroup = find_servicegroup(servicegroup_name);
+
+		if (temp_servicegroup == NULL) {
+			print_generic_error_message("There are no service groups with this name defined.", NULL, 0);
+			return;
+		}
+		/* make sure the user is authorized to view this servicegroup */
+		if (is_authorized_for_servicegroup(temp_servicegroup, &current_authdata) == FALSE) {
+			print_generic_error_message("It appears as though you do not have permission to view information for the service group you requested...", "If you believe this is an error, check the HTTP server authentication requirements for accessing this CGI and check the authorization options in your CGI configuration file.", 0);
+			return;
+		}
+	}
+
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_CRITICAL, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_WARNING, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_UNKNOWN, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_RECOVERY, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_OK, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_FLAPPING_STARTED, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_FLAPPING_STOPPED, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_FLAPPING_DISABLED, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_DOWNTIME_STARTED, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_DOWNTIME_STOPPED, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SERVICE_DOWNTIME_CANCELLED, LOGFILTER_INCLUDE);
+
+	if (display_type == DISPLAY_HOSTS || display_type == DISPLAY_HOSTGROUPS) {
+		add_log_filter(&filter_list, LOGENTRY_HOST_DOWN, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_UNREACHABLE, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_RECOVERY, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_UP, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_STARTED, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_STOPPED, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_DISABLED, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_DISABLED, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_STOPPED, LOGFILTER_INCLUDE);
+		add_log_filter(&filter_list, LOGENTRY_HOST_FLAPPING_DISABLED, LOGFILTER_INCLUDE);
+	}
+
+	/* system log entries */
+	add_log_filter(&filter_list, LOGENTRY_STARTUP, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_SHUTDOWN, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_BAILOUT, LOGFILTER_INCLUDE);
+	add_log_filter(&filter_list, LOGENTRY_RESTART, LOGFILTER_INCLUDE);
 
 
 	/* scan the log file for archived state data */
@@ -779,7 +896,7 @@ void show_history(void) {
 				if (system_message == TRUE)
 					display_line = TRUE;
 
-				else if (display_type == DISPLAY_HOSTS) {
+				else if (display_type == DISPLAY_HOSTS || display_type == DISPLAY_HOSTGROUPS) {
 
 					if (history_type == HOST_HISTORY || history_type == SERVICE_HISTORY) {
 						sprintf(match1, " HOST ALERT: %s;", host_name);
@@ -825,7 +942,7 @@ void show_history(void) {
 					}
 				}
 
-				else if (display_type == DISPLAY_SERVICES) {
+				else if (display_type == DISPLAY_SERVICES || display_type == DISPLAY_SERVICEGROUPS) {
 
 					if (history_type == SERVICE_HISTORY)
 						sprintf(match1, " SERVICE ALERT: %s;%s;", host_name, service_desc);
@@ -834,8 +951,13 @@ void show_history(void) {
 					else if (history_type == SERVICE_DOWNTIME_HISTORY)
 						sprintf(match1, " SERVICE DOWNTIME ALERT: %s;%s;", host_name, service_desc);
 
-					if (strstr(temp_entry->entry_text, match1) && (history_type == SERVICE_HISTORY || history_type == SERVICE_FLAPPING_HISTORY || history_type == SERVICE_DOWNTIME_HISTORY))
+					if (display_type == DISPLAY_SERVICEGROUPS)
 						display_line = TRUE;
+					else if (strstr(temp_entry->entry_text, match1))
+						display_line = TRUE;
+
+					if (history_type != SERVICE_HISTORY && history_type != SERVICE_FLAPPING_HISTORY && history_type != SERVICE_DOWNTIME_HISTORY)
+						display_line = FALSE;
 
 					if (display_line == TRUE) {
 						if (history_options == HISTORY_ALL || history_options == HISTORY_SERVICE_ALL)
@@ -860,17 +982,29 @@ void show_history(void) {
 					}
 				}
 
-				/* make sure user is authorized to view this host or service information */
-				if (system_message == FALSE) {
+				/* make sure user is authorized to view this log entry */
+				if (display_line == TRUE) {
 
-					if (history_type == HOST_HISTORY || history_type == HOST_FLAPPING_HISTORY || history_type == HOST_DOWNTIME_HISTORY) {
-						temp_host = find_host(entry_host_name);
-						if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+					if (system_message == TRUE) {
+						if (is_authorized_for_system_information(&current_authdata) == FALSE)
 							display_line = FALSE;
 					} else {
-						temp_service = find_service(entry_host_name, entry_service_desc);
-						if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
-							display_line = FALSE;
+						temp_host = find_host(entry_host_name);
+
+						if (history_type == HOST_HISTORY || history_type == HOST_FLAPPING_HISTORY || history_type == HOST_DOWNTIME_HISTORY) {
+							if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+								display_line = FALSE;
+							else if (display_type == DISPLAY_HOSTGROUPS && is_host_member_of_hostgroup(temp_hostgroup, temp_host) == FALSE)
+								display_line = FALSE;
+						} else {
+							temp_service = find_service(entry_host_name, entry_service_desc);
+							if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
+								display_line = FALSE;
+							else if (display_type == DISPLAY_HOSTGROUPS && is_host_member_of_hostgroup(temp_hostgroup, temp_host) == FALSE)
+								display_line = FALSE;
+							else if (display_type == DISPLAY_SERVICEGROUPS && is_service_member_of_servicegroup(temp_servicegroup, temp_service) == FALSE)
+								display_line = FALSE;
+						}
 					}
 				}
 

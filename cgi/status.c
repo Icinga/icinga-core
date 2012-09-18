@@ -1333,6 +1333,11 @@ int main(void) {
 				printf("<a href='%s?%s&style=summary'>View <b>Status Summary</b> For <b>%s</b> %s Group%s</a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
 			if (group_style_type != STYLE_GRID)
 				printf("<a href='%s?%s&style=grid'>View <b>Status Grid</b> For <b>%s</b> %s Group%s</a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
+
+			if (show_all == FALSE && ((display_type == DISPLAY_HOSTGROUPS && num_req_hostgroups == 1) || (display_type == DISPLAY_SERVICEGROUPS && num_req_servicegroups == 1))) {
+				printf("<a href='%s?%s'>View <b>Notifications</b> For <b>This</b> %s Group%s</a><br>\n", NOTIFICATIONS_CGI, group_url, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
+				printf("<a href='%s?%s'>View <b>History</b> For <b>This</b> %s Group%s</a><br>\n", HISTORY_CGI, group_url, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
+			}
 		}
 
 		printf("</td></tr>\n");
