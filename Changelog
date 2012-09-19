@@ -127,7 +127,8 @@ classic ui: Changed cgi GET params
 	** Added "start_time", "end_time" and "timeperiod" to notifications.cgi - #2341
 	** "send_notification" and "sticky_ack" on cmd.cgi require 0|1 vars, if not set, default is 1 #2926
 	** Added "hostgroup" and "servicegroup" to history.cgi and notifications.cgi #2679
-	** add "scroll", interpreted by javascript reload to restore the scrolling position #2855
+	** Added "scroll", interpreted by javascript reload to restore the scrolling position #2855
+	** Added "search_string" and "item_name" to config.cgi #2884
 
 classic ui: Added/Changed cgi.cfg options
 	** authorized_for_comments_read_only - #2699
