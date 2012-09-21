@@ -1273,8 +1273,8 @@ int main(void) {
 		if (display_type == DISPLAY_HOSTS) {
 
 			if (search_string == NULL && (show_all_hosts == TRUE || num_req_hosts <= 1)) {
-				printf("<a href='%s?%s'>View <b>History</b> For <b>%s</a><br>\n", HISTORY_CGI, url_hosts_part, (show_all_hosts == TRUE) ? "All</b> Hosts" : "This</b> Host");
-				printf("<a href='%s?%s'>View <b>Notifications</b> For <b>%s</a>\n", NOTIFICATIONS_CGI, url_hosts_part, (show_all_hosts == TRUE) ? "All</b> Hosts" : "This</b> Host");
+				printf("<a href='%s?%s'>View <b>Alert History</b> For <b>%s</b></a><br>\n", HISTORY_CGI, url_hosts_part, (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
+				printf("<a href='%s?%s'>View <b>Notifications</b> For <b>%s</b></a>\n", NOTIFICATIONS_CGI, url_hosts_part, (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
 			}
 
 			if (search_string != NULL)
@@ -1284,11 +1284,11 @@ int main(void) {
 			temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
 
 			if (group_style_type != STYLE_HOST_SERVICE_DETAIL && search_string == NULL)
-				printf("<br><a href='%s?%s&style=hostservicedetail'>View <b>Host AND Services</b> For <b>All</b> Hosts</a>\n", STATUS_CGI, temp_buffer);
+				printf("<br><a href='%s?%s&style=hostservicedetail'>View <b>Host AND Services</b> For <b>All Hosts</b></a>\n", STATUS_CGI, temp_buffer);
 			if (group_style_type != STYLE_SERVICE_DETAIL)
-				printf("<br><a href='%s?%s&style=detail'>View <b>Service Status Detail</b> For <b>All</b> Hosts</a>\n", STATUS_CGI, temp_buffer);
+				printf("<br><a href='%s?%s&style=detail'>View <b>Service Status Detail</b> For <b>All Hosts</b></a>\n", STATUS_CGI, temp_buffer);
 			if (group_style_type != STYLE_HOST_DETAIL)
-				printf("<br><a href='%s?%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>All</b> Hosts</a>\n", STATUS_CGI, temp_buffer);
+				printf("<br><a href='%s?%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>All Hosts</b></a>\n", STATUS_CGI, temp_buffer);
 		} else if (display_type == DISPLAY_SERVICEGROUPS || display_type == DISPLAY_HOSTGROUPS) {
 			if (display_type == DISPLAY_HOSTGROUPS) {
 				show_all = show_all_hostgroups;
@@ -1308,35 +1308,40 @@ int main(void) {
 
 			if (show_all == FALSE) {
 				if (group_style_type == STYLE_HOST_SERVICE_DETAIL)
-					printf("<a href='%s?%sgroup=all&style=hostservicedetail'>View <b>Host AND Services</b> For <b>All</b> %s Groups</a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+					printf("<a href='%s?%sgroup=all&style=hostservicedetail'>View <b>Host AND Services</b> For <b>All %sgroups</b></a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
 				if (group_style_type == STYLE_SERVICE_DETAIL)
-					printf("<a href='%s?%sgroup=all&style=detail'>View <b>Service Status Detail</b> For <b>All</b> %s Groups</a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+					printf("<a href='%s?%sgroup=all&style=detail'>View <b>Service Status Detail</b> For <b>All %sgroups</b></a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
 				if (group_style_type == STYLE_HOST_DETAIL)
-					printf("<a href='%s?%sgroup=all&style=hostdetail'>View <b>Host Status Detail</b> For <b>All</b> %s Groups</a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+					printf("<a href='%s?%sgroup=all&style=hostdetail'>View <b>Host Status Detail</b> For <b>All %sgroups</b></a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
 				if (group_style_type == STYLE_OVERVIEW)
-					printf("<a href='%s?%sgroup=all&style=overview'>View <b>Status Overview</b> For <b>All</b> %s Groups</a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+					printf("<a href='%s?%sgroup=all&style=overview'>View <b>Status Overview</b> For <b>All %sgroups</b></a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
 				if (group_style_type == STYLE_SUMMARY)
-					printf("<a href='%s?%sgroup=all&style=summary'>View <b>Status Summary</b> For <b>All</b> %s Groups</a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+					printf("<a href='%s?%sgroup=all&style=summary'>View <b>Status Summary</b> For <b>All %sgroups</b></a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
 				if (group_style_type == STYLE_GRID)
-					printf("<a href='%s?%sgroup=all&style=grid'>View <b>Status Grid</b> For <b>All</b> %s Groups</a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+					printf("<a href='%s?%sgroup=all&style=grid'>View <b>Status Grid</b> For <b>All %sgroups</b></a><br>\n", STATUS_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service", (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
 			}
 
 			if (group_style_type != STYLE_HOST_SERVICE_DETAIL)
-				printf("<a href='%s?%s&style=hostservicedetail'>View <b>Host AND Services</b> Status Detail For <b>%s</b> %s Group%s</a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
+				printf("<a href='%s?%s&style=hostservicedetail'>View <b>Host AND Services</b> Status Detail For <b>%s %sgroup%s</b></a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
 			if (group_style_type != STYLE_SERVICE_DETAIL)
-				printf("<a href='%s?%s&style=detail'>View <b>Service Status Detail</b> For <b>%s</b> %s Group%s</a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
+				printf("<a href='%s?%s&style=detail'>View <b>Service Status Detail</b> For <b>%s %sgroup%s</b></a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
 			if (group_style_type != STYLE_HOST_DETAIL)
-				printf("<a href='%s?%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>%s</b> %s Group%s</a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
+				printf("<a href='%s?%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>%s %sgroup%s</b></a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
 			if (group_style_type != STYLE_OVERVIEW)
-				printf("<a href='%s?%s&style=overview'>View <b>Status Overview</b> For <b>%s</b> %s Group%s</a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
+				printf("<a href='%s?%s&style=overview'>View <b>Status Overview</b> For <b>%s %sgroup%s</b></a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
 			if (group_style_type != STYLE_SUMMARY)
-				printf("<a href='%s?%s&style=summary'>View <b>Status Summary</b> For <b>%s</b> %s Group%s</a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
+				printf("<a href='%s?%s&style=summary'>View <b>Status Summary</b> For <b>%s %sgroup%s</b></a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
 			if (group_style_type != STYLE_GRID)
-				printf("<a href='%s?%s&style=grid'>View <b>Status Grid</b> For <b>%s</b> %s Group%s</a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
+				printf("<a href='%s?%s&style=grid'>View <b>Status Grid</b> For <b>%s %sgroup%s</b></a><br>\n", STATUS_CGI, group_url, temp_buffer, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
 
 			if (show_all == FALSE && ((display_type == DISPLAY_HOSTGROUPS && num_req_hostgroups == 1) || (display_type == DISPLAY_SERVICEGROUPS && num_req_servicegroups == 1))) {
-				printf("<a href='%s?%s'>View <b>Notifications</b> For <b>This</b> %s Group%s</a><br>\n", NOTIFICATIONS_CGI, group_url, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
-				printf("<a href='%s?%s'>View <b>History</b> For <b>This</b> %s Group%s</a><br>\n", HISTORY_CGI, group_url, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service", !strcmp(temp_buffer, "This") ? "" : "s");
+				printf("<a href='%s?%s'>View <b>Notifications</b> For <b>This %sgroup</b></a><br>\n", NOTIFICATIONS_CGI, group_url, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+				printf("<a href='%s?%s'>View <b>Alert History</b> For <b>This %sgroup</b></a><br>\n", HISTORY_CGI, group_url, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+				printf("<a href='%s?type=%d&%s'>View <b>Commands</b> For <b>This %sgroup</b></a><br>\n", EXTINFO_CGI, (display_type == DISPLAY_HOSTGROUPS) ? DISPLAY_HOSTGROUP_INFO : DISPLAY_SERVICEGROUP_INFO, group_url, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+				if (is_authorized_for_configuration_information(&current_authdata) == TRUE) {
+					printf("<a href='%s?type=%sgroups&item_name=%s'>View <b>Config</b> For <b>This %sgroup</b></a>\n", CONFIG_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service",
+						url_encode((display_type == DISPLAY_HOSTGROUPS) ? req_hostgroups[0].entry : req_servicegroups[0].entry), (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+				}
 			}
 		}
 

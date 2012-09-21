@@ -165,28 +165,28 @@ int main(void) {
 		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 		printf("<TR><TD CLASS='linkBox'>\n");
 		if (display_type == DISPLAY_HOSTS) {
-			printf("<A HREF='%s?host=%s'>View Status Detail For %s</A><BR />\n", STATUS_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
-			printf("<A HREF='%s?host=%s'>View Notifications For %s</A><BR />\n", NOTIFICATIONS_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
+			printf("<a href='%s?host=%s'>View <b>Service Status Detail</b> For <b>%s</b></a><br>\n", STATUS_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
+			printf("<a href='%s?host=%s'>View <b>Notifications</b> For <b>%s</b></a><br>\n", NOTIFICATIONS_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
+			printf("<a href='%s?type=%d&host=%s'>View <b>Information</b> For <b>This Host</b></a><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
 #ifdef USE_TRENDS
 			if (show_all_hosts == FALSE)
-				printf("<A HREF='%s?host=%s'>View Trends For This Host</A>\n", TRENDS_CGI, url_encode(host_name));
+				printf("<a href='%s?host=%s'>View <b>Trends</b> For <b>This Host</b></a>\n", TRENDS_CGI, url_encode(host_name));
 #endif
 		} else if (display_type == DISPLAY_SERVICES) {
-			printf("<A HREF='%s?host=%s&", NOTIFICATIONS_CGI, url_encode(host_name));
-			printf("service=%s'>View Notifications For This Service</A><BR />\n", url_encode(service_desc));
+			printf("<a href='%s?host=%s&service=%s'>View <b>Notifications</b> For <b>This Service</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(host_name), url_encode(service_desc));
+			printf("<a href='%s?type=%d&host=%s&service=%s'>View <b>Information</b> For <b>This Service</b></a><br>\n", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name), url_encode(service_desc));
 #ifdef USE_TRENDS
-			printf("<A HREF='%s?host=%s&", TRENDS_CGI, url_encode(host_name));
-			printf("service=%s'>View Trends For This Service</A><BR />\n", url_encode(service_desc));
+			printf("<a href='%s?host=%s&service=%s'>View <b>Trends</b> For <b>This Service</b></a><br>\n", TRENDS_CGI, url_encode(host_name), url_encode(service_desc));
 #endif
-			printf("<A HREF='%s?host=%s'>View History For This Host</A>\n", HISTORY_CGI, url_encode(host_name));
+			printf("<a href='%s?host=%s'>View <b>Alert History</b> For <b>This Host</b></a>\n", HISTORY_CGI, url_encode(host_name));
 		} else if (display_type == DISPLAY_HOSTGROUPS) {
-			printf("<a href='%s?hostgroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This</b> Host Group</a><br>\n", STATUS_CGI, url_encode(hostgroup_name));
-			printf("<a href='%s?hostgroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This</b> Host Group</a><br>\n", STATUS_CGI, url_encode(hostgroup_name));
-			printf("<a href='%s?hostgroup=%s'>View <b>Notifications</b> For <b>This</b> Host Group</a><br>\n", NOTIFICATIONS_CGI, url_encode(hostgroup_name));
+			printf("<a href='%s?hostgroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(hostgroup_name));
+			printf("<a href='%s?hostgroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(hostgroup_name));
+			printf("<a href='%s?hostgroup=%s'>View <b>Notifications</b> For <b>This Hostgroup</b></a>\n", NOTIFICATIONS_CGI, url_encode(hostgroup_name));
 		} else if (display_type == DISPLAY_SERVICEGROUPS) {
-			printf("<a href='%s?servicegroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This</b> Service Group</a><br>\n", STATUS_CGI, url_encode(servicegroup_name));
-			printf("<a href='%s?servicegroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This</b> Service Group</a><br>\n", STATUS_CGI, url_encode(servicegroup_name));
-			printf("<a href='%s?servicegroup=%s'>View <b>Notifications</b> For <b>This</b> Service Group</a><br>\n", NOTIFICATIONS_CGI, url_encode(servicegroup_name));
+			printf("<a href='%s?servicegroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(servicegroup_name));
+			printf("<a href='%s?servicegroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(servicegroup_name));
+			printf("<a href='%s?servicegroup=%s'>View <b>Notifications</b> For <b>This Servicegroup</b></a>\n", NOTIFICATIONS_CGI, url_encode(servicegroup_name));
 		}
 		printf("</TD></TR>\n");
 		printf("</TABLE>\n");

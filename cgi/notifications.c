@@ -182,27 +182,32 @@ int main(void) {
 			printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 			printf("<TR><TD CLASS='linkBox'>\n");
 			if (query_type == DISPLAY_HOSTS) {
-				printf("<A HREF='%s?host=%s'>View <b>Status Detail</b> For <b>%s</A><BR>\n", STATUS_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name), (find_all == TRUE) ? "All</b> Hosts" : "This</b> Host");
-				printf("<A HREF='%s?host=%s'>View <b>History</b> For <b>%s</A><BR>\n", HISTORY_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name), (find_all == TRUE) ? "All</b> Hosts" : "This</b> Host");
+				printf("<a href='%s?host=%s'>View <b>Status Detail</b> For <b>%s</b></a><br>\n", STATUS_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name), (find_all == TRUE) ? "All Hosts" : "This Host");
+				printf("<a href='%s?host=%s'>View <b>Alert History</b> For <b>%s</b></a><br>\n", HISTORY_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name), (find_all == TRUE) ? "All Hosts" : "This Host");
 #ifdef USE_TRENDS
 				if (find_all == FALSE)
-					printf("<A HREF='%s?host=%s'>View <b>Trends</b> For <b>This</b> Host</A><BR>\n", TRENDS_CGI, url_encode(query_host_name));
+					printf("<a href='%s?host=%s'>View <b>Trends</b> For <b>This Host</b></a><br>\n", TRENDS_CGI, url_encode(query_host_name));
 #endif
+				printf("<a href='%s?type=%d&host=%s'>View <b>Information</b> For <b>This Host</b></a><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(query_host_name));
+				printf("<a href='%s?host=%s&show_log_entries'>View <b>Availability Report</b> For <b>This Host</b></a><br>\n", AVAIL_CGI, url_encode(query_host_name));
 			} else if (query_type == DISPLAY_SERVICES) {
-				printf("<A HREF='%s?host=%s&", HISTORY_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
-				printf("service=%s'>View <b>History</b> For <b>This</b> Service</A><BR>\n", url_encode(query_svc_description));
+				printf("<a href='%s?host=%s&", HISTORY_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
+				printf("service=%s'>View <b>Alert History</b> For <b>This Service</b></a><br>\n", url_encode(query_svc_description));
 #ifdef USE_TRENDS
-				printf("<A HREF='%s?host=%s&", TRENDS_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
-				printf("service=%s'>View <b>Trends</b> For <b>This</b> Service</A><BR>\n", url_encode(query_svc_description));
+				printf("<a href='%s?host=%s&", TRENDS_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
+				printf("service=%s'>View <b>Trends</b> For <b>This Service</b></a><br>\n", url_encode(query_svc_description));
 #endif
+				printf("<a href='%s?type=%d&host=%s&service=%s'>View <b>Information</b> For <b>This Service</b></a><br>\n", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(query_host_name), url_encode(query_svc_description));
+				printf("<a href='%s?host=%s&service=%s&show_log_entries'>View <b>Availability Report</b> For <b>This Service</b></a><br>\n", AVAIL_CGI, url_encode(query_host_name), url_encode(query_svc_description));
+				printf("<a href='%s?host=%s'>View <b>Notifications</b> For <b>This Host</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(query_host_name));
 			} else if (query_type == DISPLAY_HOSTGROUPS) {
-				printf("<a href='%s?hostgroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This</b> Host Group</a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
-				printf("<a href='%s?hostgroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This</b> Host Group</a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
-				printf("<a href='%s?hostgroup=%s'>View <b>History</b> For <b>This</b> Host Group</a><br>\n", HISTORY_CGI, url_encode(query_hostgroup_name));
+				printf("<a href='%s?hostgroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
+				printf("<a href='%s?hostgroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
+				printf("<a href='%s?hostgroup=%s'>View <b>Alert History</b> For <b>This Hostgroup</b></a><br>\n", HISTORY_CGI, url_encode(query_hostgroup_name));
 			} else if (query_type == DISPLAY_SERVICEGROUPS) {
-				printf("<a href='%s?servicegroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This</b> Service Group</a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
-				printf("<a href='%s?servicegroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This</b> Service Group</a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
-				printf("<a href='%s?servicegroup=%s'>View <b>History</b> For <b>This</b> Service Group</a><br>\n", HISTORY_CGI, url_encode(query_servicegroup_name));
+				printf("<a href='%s?servicegroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
+				printf("<a href='%s?servicegroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
+				printf("<a href='%s?servicegroup=%s'>View <b>Alert History</b> For <b>This Servicegroup</b></a><br>\n", HISTORY_CGI, url_encode(query_servicegroup_name));
 			}
 			printf("</TD></TR>\n");
 			printf("</TABLE>\n");
