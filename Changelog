@@ -21,6 +21,7 @@ ENHANCEMENTS
 * core: add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879 - MF
 * core: add new callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE to allow override of sending notifications #2041 - MF
 * core: only reap results when checkresult_list is not overloaded (max_check_result_list_items) (thx Thomas Gelf) #3099 - MF
+* core: log a message when reaper max time is reached #3159 - MF
 
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
