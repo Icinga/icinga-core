@@ -1514,7 +1514,7 @@ void request_command_data(int cmd) {
 		break;
 
 	default:
-		print_generic_error_message("Sorry Dave2, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
+		print_generic_error_message("Sorry Dave, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
 
 		return;
 	}
@@ -2459,7 +2459,7 @@ void commit_command_data(int cmd) {
 		break;
 
 	default:
-		print_generic_error_message("Sorry Dave3, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
+		print_generic_error_message("Sorry Dave, I can't let you do that...", "Executing an unknown command? Shame on you!", 2);
 
 		return;
 	}

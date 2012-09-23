@@ -6817,7 +6817,7 @@ void show_hostcommand_table(void) {
 		printf("checked = true;\n");
 		printf("checkAll(\"tableformhost\");\n");
 		printf("checked = false;\n");
-		printf("try { \n$(\".DropDownHost\").msDropDown({visibleRows:25}).data(\"dd\").visible(true);\n");
+		printf("try { \n$(\".DropDownHost\").msDropDown({visibleRows:27}).data(\"dd\").visible(true);\n");
 		printf("} catch(e) {\n");
 		printf("if (console) { console.log(e); }\n}\n");
 		printf("});\n");
