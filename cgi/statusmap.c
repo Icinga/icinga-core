@@ -545,11 +545,11 @@ void display_page_header(void) {
 		printf("<TR><TD CLASS='linkBox'>\n");
 
 		if (show_all_hosts == FALSE) {
-			printf("<a href='%s?host=all&max_width=%d&max_height=%d'>View Status Map For All Hosts</a><BR>", STATUSMAP_CGI, max_image_width, max_image_height);
-			printf("<a href='%s?host=%s'>View Status Detail For This Host</a><BR>\n", STATUS_CGI, url_encode(host_name));
+			printf("<a href='%s?host=all&max_width=%d&max_height=%d'>View <b>Status Map</b> For <b>All Hosts</b></a><br>", STATUSMAP_CGI, max_image_width, max_image_height);
+			printf("<a href='%s?host=%s'>View <b>Service Status Detail</b> For <b>This Host</b></a><br>\n", STATUS_CGI, url_encode(host_name));
 		}
-		printf("<a href='%s?host=all&style=hostdetail'>View Status Detail For All Hosts</a><BR>\n", STATUS_CGI);
-		printf("<a href='%s?host=all'>View Status Overview For All Hosts</a>\n", STATUS_CGI);
+		printf("<a href='%s?host=all&style=hostdetail'>View <b>Host Status Detail</b> For <b>All Hosts</b></a><br>\n", STATUS_CGI);
+		printf("<a href='%s?host=all'>View <b>Service Status Detail</b> For <b>All Hosts</b></a>\n", STATUS_CGI);
 
 		printf("</TD></TR>\n");
 		printf("</TABLE>\n");

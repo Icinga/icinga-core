@@ -65,7 +65,7 @@ char            *action_url_target = NULL;
 char		*csv_delimiter = CSV_DELIMITER;
 char		*csv_data_enclosure = CSV_DATA_ENCLOSURE;
 
-char		highlight_table_rows = TRUE;
+int		highlight_table_rows = TRUE;
 
 char            nagios_check_command[MAX_INPUT_BUFFER] = "";
 char            nagios_process_info[MAX_INPUT_BUFFER] = "";
