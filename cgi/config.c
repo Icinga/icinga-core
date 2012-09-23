@@ -167,6 +167,7 @@ char *host_name = NULL;
 char *service_desc = NULL;
 char to_expand[MAX_COMMAND_BUFFER];
 char hashed_color[8];
+char *item_name = NULL;					/**< contains exact name user is looking for */
 char *search_string = NULL;				/**< contains search string if user searched something */
 regex_t search_preg;					/**< contains compiled regex term to use with regexec() */
 
@@ -376,11 +377,13 @@ int main(void) {
 
 		printf("</DIV>\n");
 
-		if (search_string != NULL) {
+		if (search_string != NULL || item_name != NULL) {
 			saved_escape_html_tags_var = escape_html_tags;
 			escape_html_tags = TRUE;
 
-			if (search_regex_compile_failed == FALSE)
+			if (item_name != NULL)
+				printf("<DIV align='center'>Displaying: '%s'</DIV>", html_encode(item_name, FALSE));
+			else if (search_regex_compile_failed == FALSE)
 				printf("<DIV align='center'>Filterd by Search String: '%s'</DIV>", html_encode(search_string, FALSE));
 			else
 				printf("<div class='errorMessage'>The regular expression '%s' is invalid!</div>", html_encode(search_string, FALSE));
@@ -546,8 +549,13 @@ int main(void) {
 	}
 
 	/* regexec search string */
-	if (search_string != NULL)
+	if (search_string != NULL) {
 		regfree(&search_preg);
+		my_free(search_string);
+	}
+
+	if (item_name != NULL)
+		my_free(item_name);
 
 	if (content_type == HTML_CONTENT && display_type != DISPLAY_NONE && display_type != DISPLAY_ALL && display_type != DISPLAY_COMMAND_EXPANSION && display_type != DISPLAY_CGICONFIG)
 		page_num_selector(result_start, total_entries, displayed_entries);
@@ -583,6 +591,18 @@ int process_cgivars(void) {
 
 			if (strlen(variables[x]) != 0)
 				search_string = strdup(variables[x]);
+		}
+
+		/* we found the item_name argument */
+		else if (!strcmp(variables[x], "item_name")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
+
+			if (strlen(variables[x]) != 0)
+				item_name = strdup(variables[x]);
 		}
 
 		/* we found the host name */
@@ -832,6 +852,9 @@ void display_hosts(void) {
 	/* check all the hosts... */
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
 
+		if (item_name != NULL && strcmp(item_name, temp_host->name) != 0)
+			continue;
+
 		/* try to find a match */
 		if (search_string != NULL && \
 			regexec(&search_preg, temp_host->name, 0, NULL, 0) != 0 && \
@@ -884,10 +907,7 @@ void display_hosts(void) {
 		} else {
 			printf("<TR CLASS='%s'>\n", bg_class);
 
-			/* find a solution to print display_name if once set in host definition */
-			/* printf("<TD CLASS='%s'><a name='%s'>%s</a></TD>\n",bg_class,url_encode(temp_host->name),(temp_host->display_name!=NULL)?temp_host->display_name:temp_host->name); */
-			printf("<TD CLASS='%s'><a name='%s'><a href='%s?type=services&search_string=%%5E%s%%24'>%s</a></a></TD>\n", bg_class,
-			       url_encode(temp_host->name), CONFIG_CGI, url_encode(temp_host->name), html_encode(temp_host->name, FALSE));
+			printf("<TD CLASS='%s'><a href='%s?type=services&search_string=%s^%%2E%%2A'>%s</a></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_host->name), html_encode(temp_host->name, FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->alias, FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->display_name, FALSE));
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->address, FALSE));
@@ -905,7 +925,7 @@ void display_hosts(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_hostsmember->host_name);
 			else
-				printf("<a href='%s?type=hosts&search_string=%%5E%s%%24'>%s</a>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
+				printf("<a href='%s?type=hosts&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
 		}
 
 		if (temp_host->parent_hosts == NULL)
@@ -976,7 +996,7 @@ void display_hosts(void) {
 			if (temp_host->check_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_host->check_period), html_encode(temp_host->check_period, FALSE));
+				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_host->check_period), html_encode(temp_host->check_period, FALSE));
 			printf("</TD>\n");
 
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->obsess_over_host == TRUE) ? "Yes" : "No");
@@ -1009,7 +1029,7 @@ void display_hosts(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<A HREF='%s?type=contacts&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<A HREF='%s?type=contacts&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 		for (temp_contactgroupsmember = temp_host->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
 			contact++;
@@ -1021,7 +1041,7 @@ void display_hosts(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<A HREF='%s?type=contactgroups&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<A HREF='%s?type=contactgroups&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -1098,14 +1118,14 @@ void display_hosts(void) {
 			if (temp_host->notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&search_string=%%5E%s%%24'>%s</a>", CONFIG_CGI, url_encode(temp_host->notification_period), html_encode(temp_host->notification_period, FALSE));
+				printf("<a href='%s?type=timeperiods&irem_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->notification_period), html_encode(temp_host->notification_period, FALSE));
 			printf("</TD>\n");
 
 			printf("<TD CLASS='%s'>", bg_class);
 			if (temp_host->event_handler == NULL)
 				printf("&nbsp");
 			else
-				/* printf("<a href='%s?type=commands&search_string=%%5E%s%%24'>%s</a></TD>\n",CONFIG_CGI,url_encode(strtok(temp_host->event_handler,"!")),html_encode(temp_host->event_handler,FALSE)); */
+				/* printf("<a href='%s?type=commands&item_name=%s'>%s</a></TD>\n",CONFIG_CGI,url_encode(strtok(temp_host->event_handler,"!")),html_encode(temp_host->event_handler,FALSE)); */
 				printf("<a href='%s?type=command&host=%s&expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->event_handler), html_encode(temp_host->event_handler, FALSE));
 
 			printf("</TD>\n");
@@ -1369,6 +1389,9 @@ void display_hostgroups(void) {
 	/* check all the hostgroups... */
 	for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
 
+		if (item_name != NULL && strcmp(item_name, temp_hostgroup->group_name) != 0)
+			continue;
+
 		/* try to find a match */
 		if (search_string != NULL && \
 			regexec(&search_preg, temp_hostgroup->group_name, 0, NULL, 0) != 0 && \
@@ -1451,7 +1474,7 @@ void display_hostgroups(void) {
 
 				if (temp_hostsmember != temp_hostgroup->members)
 					printf(", ");
-				printf("<A HREF='%s?type=hosts&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
+				printf("<A HREF='%s?type=hosts&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
 			}
 			printf("</TD>\n");
 
@@ -1504,6 +1527,9 @@ void display_servicegroups(void) {
 
 	/* check all the servicegroups... */
 	for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
+
+		if (item_name != NULL && strcmp(item_name, temp_servicegroup->group_name) != 0)
+			continue;
 
 		/* try to find a match */
 		if (search_string != NULL && \
@@ -1582,9 +1608,9 @@ void display_servicegroups(void) {
 			/* find all the services that are members of this servicegroup... */
 			for (temp_servicesmember = temp_servicegroup->members; temp_servicesmember != NULL; temp_servicesmember = temp_servicesmember->next) {
 
-				printf("%s<A HREF='%s?type=hosts&search_string=%%5E%s%%24'>%s</A> / ", (temp_servicesmember == temp_servicegroup->members) ? "" : ", ", CONFIG_CGI, url_encode(temp_servicesmember->host_name), html_encode(temp_servicesmember->host_name, FALSE));
+				printf("%s<A HREF='%s?type=hosts&item_name=%s'>%s</A> / ", (temp_servicesmember == temp_servicegroup->members) ? "" : ", ", CONFIG_CGI, url_encode(temp_servicesmember->host_name), html_encode(temp_servicesmember->host_name, FALSE));
 
-				printf("<A HREF='%s?type=services&search_string=%%5E%s%%24#%s;", CONFIG_CGI, url_encode(temp_servicesmember->host_name), url_encode(temp_servicesmember->host_name));
+				printf("<A HREF='%s?type=services&item_name=%s^", CONFIG_CGI, url_encode(temp_servicesmember->host_name));
 				printf("%s'>%s</A>", url_encode(temp_servicesmember->service_description), html_encode(temp_servicesmember->service_description, FALSE));
 			}
 
@@ -1651,6 +1677,9 @@ void display_contacts(void) {
 
 	/* check all contacts... */
 	for (temp_contact = contact_list; temp_contact != NULL; temp_contact = temp_contact->next) {
+
+		if (item_name != NULL && strcmp(item_name, temp_contact->name) != 0)
+			continue;
 
 		/* try to find a match */
 		if (search_string != NULL && \
@@ -1800,14 +1829,14 @@ void display_contacts(void) {
 			if (temp_contact->service_notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_contact->service_notification_period), html_encode(temp_contact->service_notification_period, FALSE));
+				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contact->service_notification_period), html_encode(temp_contact->service_notification_period, FALSE));
 			printf("</TD>\n");
 
 			printf("<TD CLASS='%s'>\n", bg_class);
 			if (temp_contact->host_notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_contact->host_notification_period), html_encode(temp_contact->host_notification_period, FALSE));
+				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contact->host_notification_period), html_encode(temp_contact->host_notification_period, FALSE));
 			printf("</TD>\n");
 
 			printf("<TD CLASS='%s'>", bg_class);
@@ -1928,6 +1957,9 @@ void display_contactgroups(void) {
 	/* check all the contact groups... */
 	for (temp_contactgroup = contactgroup_list; temp_contactgroup != NULL; temp_contactgroup = temp_contactgroup->next) {
 
+		if (item_name != NULL && strcmp(item_name, temp_contactgroup->group_name) != 0)
+			continue;
+
 		/* try to find a match */
 		if (search_string != NULL && \
 			regexec(&search_preg, temp_contactgroup->group_name, 0, NULL, 0) != 0 && \
@@ -1993,7 +2025,7 @@ void display_contactgroups(void) {
 				if (temp_contactsmember != temp_contactgroup->members)
 					printf(", ");
 
-				printf("<A HREF='%s?type=contacts&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<A HREF='%s?type=contacts&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 			}
 			printf("</TD>\n");
 			printf("</TR>\n");
@@ -2110,8 +2142,11 @@ void display_services(void) {
 	for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
 
 		/* try to match on combination of host name and service description */
-		snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_service->host_name, temp_service->display_name);
+		snprintf(host_service_name, sizeof(host_service_name), "%s^%s", temp_service->host_name, temp_service->description);
 		host_service_name[sizeof(host_service_name) - 1] = '\x0';
+
+		if (item_name != NULL && strcmp(item_name, host_service_name) != 0)
+			continue;
 
 		/* try to find a match */
 		if (search_string != NULL && \
@@ -2213,7 +2248,7 @@ void display_services(void) {
 
 			printf("<TD CLASS='%s'><A NAME='%s;", bg_class, url_encode(temp_service->host_name));
 			printf("%s'></A>", url_encode(temp_service->description));
-			printf("<A HREF='%s?type=hosts&search_string=%%5E%s%%24'>%s</A></TD>\n", CONFIG_CGI, url_encode(temp_service->host_name), html_encode(temp_service->host_name, FALSE));
+			printf("<A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", CONFIG_CGI, url_encode(temp_service->host_name), html_encode(temp_service->host_name, FALSE));
 
 			/* find a way to show display_name if set once */
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_service->description, FALSE));
@@ -2232,7 +2267,7 @@ void display_services(void) {
 			if (temp_service->check_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_service->check_period), html_encode(temp_service->check_period, FALSE));
+				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_service->check_period), html_encode(temp_service->check_period, FALSE));
 			printf("</TD>\n");
 
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->parallelize == TRUE) ? "Yes" : "No");
@@ -2268,7 +2303,7 @@ void display_services(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<A HREF='%s?type=contacts&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<A HREF='%s?type=contacts&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 
 		for (temp_contactgroupsmember = temp_service->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
@@ -2281,7 +2316,7 @@ void display_services(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<A HREF='%s?type=contactgroups&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<A HREF='%s?type=contactgroups&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -2363,7 +2398,7 @@ void display_services(void) {
 			if (temp_service->notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_service->notification_period), html_encode(temp_service->notification_period, FALSE));
+				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_service->notification_period), html_encode(temp_service->notification_period, FALSE));
 			printf("</TD>\n");
 			printf("<TD CLASS='%s'>", bg_class);
 			if (temp_service->event_handler == NULL)
@@ -2630,6 +2665,9 @@ void display_timeperiods(void) {
 
 	/* check all the time periods... */
 	for (temp_timeperiod = timeperiod_list; temp_timeperiod != NULL; temp_timeperiod = temp_timeperiod->next) {
+
+		if (item_name != NULL && strcmp(item_name, temp_timeperiod->name) != 0)
+			continue;
 
 		/* try to find a match */
 		if (search_string != NULL && \
@@ -2905,6 +2943,9 @@ void display_commands(void) {
 	/* check all commands */
 	for (temp_command = command_list; temp_command != NULL; temp_command = temp_command->next) {
 
+		if (item_name != NULL && strcmp(item_name, temp_command->name) != 0)
+			continue;
+
 		/* try to find a match */
 		if (search_string != NULL && \
 			regexec(&search_preg, temp_command->name, 0, NULL, 0) != 0 && \
@@ -3057,14 +3098,14 @@ void display_servicedependencies(void) {
 		} else {
 			printf("<TR CLASS='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&search_string=%%5E%s%%24'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name), html_encode(temp_sd->dependent_host_name, FALSE));
+			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name), html_encode(temp_sd->dependent_host_name, FALSE));
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=services&search_string=%%5E%s%%24#%s;", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name), url_encode(temp_sd->dependent_host_name));
+			printf("<TD CLASS='%s'><A HREF='%s?type=services&item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name));
 			printf("%s'>%s</A></TD>\n", url_encode(temp_sd->dependent_service_description), html_encode(temp_sd->dependent_service_description, FALSE));
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&search_string=%%5E%s%%24'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name), html_encode(temp_sd->host_name, FALSE));
+			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name), html_encode(temp_sd->host_name, FALSE));
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=services&search_string=%%5E%s%%24#%s;", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name), url_encode(temp_sd->host_name));
+			printf("<TD CLASS='%s'><A HREF='%s?type=services&item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name));
 			printf("%s'>%s</A></TD>\n", url_encode(temp_sd->service_description), html_encode(temp_sd->service_description, FALSE));
 
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_sd->dependency_type == NOTIFICATION_DEPENDENCY) ? "Notification" : "Check Execution");
@@ -3073,7 +3114,7 @@ void display_servicedependencies(void) {
 			if (temp_sd->dependency_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_sd->dependency_period), html_encode(temp_sd->dependency_period, FALSE));
+				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_sd->dependency_period), html_encode(temp_sd->dependency_period, FALSE));
 			printf("</TD>\n");
 
 			printf("<TD CLASS='%s'>", bg_class);
@@ -3199,9 +3240,9 @@ void display_serviceescalations(void) {
 		} else {
 			printf("<TR CLASS='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&search_string=%%5E%s%%24'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_se->host_name), html_encode(temp_se->host_name, FALSE));
+			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_se->host_name), html_encode(temp_se->host_name, FALSE));
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=services&search_string=%%5E%s%%24#%s;", bg_class, CONFIG_CGI, url_encode(temp_se->host_name), url_encode(temp_se->host_name));
+			printf("<TD CLASS='%s'><A HREF='%s?type=services&item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_se->host_name));
 			printf("%s'>%s</A></TD>\n", url_encode(temp_se->description), html_encode(temp_se->description, FALSE));
 
 			printf("<TD CLASS='%s'>", bg_class);
@@ -3218,7 +3259,7 @@ void display_serviceescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<A HREF='%s?type=contacts&search_string=%%5E%s%%24'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<A HREF='%s?type=contacts&item_name=%s'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 		for (temp_contactgroupsmember = temp_se->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
 			contact++;
@@ -3230,7 +3271,7 @@ void display_serviceescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<A HREF='%s?type=contactgroups&search_string=%%5E%s%%24'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<A HREF='%s?type=contactgroups&item_name=%s'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -3323,7 +3364,7 @@ void display_serviceescalations(void) {
 			if (temp_se->escalation_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_se->escalation_period), html_encode(temp_se->escalation_period, FALSE));
+				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_se->escalation_period), html_encode(temp_se->escalation_period, FALSE));
 			printf("</TD>\n");
 
 			printf("<TD CLASS='%s'>", bg_class);
@@ -3443,9 +3484,9 @@ void display_hostdependencies(void) {
 		} else {
 			printf("<TR CLASS='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&search_string=%%5E%s%%24'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->dependent_host_name), html_encode(temp_hd->dependent_host_name, FALSE));
+			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->dependent_host_name), html_encode(temp_hd->dependent_host_name, FALSE));
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&search_string=%%5E%s%%24'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
+			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
 
 			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_hd->dependency_type == NOTIFICATION_DEPENDENCY) ? "Notification" : "Check Execution");
 
@@ -3453,7 +3494,7 @@ void display_hostdependencies(void) {
 			if (temp_hd->dependency_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_hd->dependency_period), html_encode(temp_hd->dependency_period, FALSE));
+				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_hd->dependency_period), html_encode(temp_hd->dependency_period, FALSE));
 			printf("</TD>\n");
 
 			printf("<TD CLASS='%s'>", bg_class);
@@ -3570,7 +3611,7 @@ void display_hostescalations(void) {
 		} else {
 			printf("<TR CLASS='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&search_string=%%5E%s%%24'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_he->host_name), html_encode(temp_he->host_name, FALSE));
+			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_he->host_name), html_encode(temp_he->host_name, FALSE));
 
 			printf("<TD CLASS='%s'>", bg_class);
 		}
@@ -3584,7 +3625,7 @@ void display_hostescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<A HREF='%s?type=contacts&search_string=%%5E%s%%24'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<A HREF='%s?type=contacts&item_name=%s'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 		for (temp_contactgroupsmember = temp_he->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
 			contact++;
@@ -3595,7 +3636,7 @@ void display_hostescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<A HREF='%s?type=contactgroups&search_string=%%5E%s%%24'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<A HREF='%s?type=contactgroups&item_name=%s'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -3672,7 +3713,7 @@ void display_hostescalations(void) {
 			if (temp_he->escalation_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, url_encode(temp_he->escalation_period), html_encode(temp_he->escalation_period, FALSE));
+				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_he->escalation_period), html_encode(temp_he->escalation_period, FALSE));
 			printf("</TD>\n");
 
 			printf("<TD CLASS='%s'>", bg_class);
@@ -3731,6 +3772,9 @@ void display_modules(void) {
 
 	/* check all modules */
 	for (temp_module = module_list; temp_module != NULL; temp_module = temp_module->next) {
+
+		if (item_name != NULL && strcmp(item_name, temp_module->name) != 0)
+			continue;
 
 		/* try to find a match */
 		if (search_string != NULL && \
@@ -3892,7 +3936,7 @@ void display_cgiconfig(void) {
 				if (json_start == FALSE) \
 					printf(", "); \
 				json_start = FALSE; \
-				printf("<A HREF='%s?type=contact%ss&search_string=%%5E%s%%24'>%s</A>", CONFIG_CGI, (strstr(#org_var, "contactgroup")) ? "group" : "", \
+				printf("<A HREF='%s?type=contact%ss&item_name=%s'>%s</A>", CONFIG_CGI, (strstr(#org_var, "contactgroup")) ? "group" : "", \
 				(!strcmp(temp_ptr, "*")) ? "" : url_encode(temp_ptr), html_encode(temp_ptr, FALSE)); \
 			} \
 		} \

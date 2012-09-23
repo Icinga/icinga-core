@@ -323,41 +323,53 @@ int main(void) {
 			printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
 			printf("<TR><TD CLASS='linkBox'>\n");
 			if (display_type == DISPLAY_SERVICE_INFO)
-				printf("<A HREF='%s?type=%d&host=%s'>View Information For This Host</A><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
+				printf("<a href='%s?type=%d&host=%s'>View <b>Information</b> For <b>This Host</b></a><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
 			if (display_type == DISPLAY_SERVICE_INFO || display_type == DISPLAY_HOST_INFO)
-				printf("<A HREF='%s?host=%s'>View Status Detail For This Host</A><BR>\n", STATUS_CGI, url_encode(host_name));
+				printf("<a href='%s?host=%s'>View <b>Service Status Detail</b> For <b>This Host</b></a><br>\n", STATUS_CGI, url_encode(host_name));
 			if (display_type == DISPLAY_HOST_INFO) {
-				printf("<A HREF='%s?host=%s'>View Alert History For This Host</A><BR>\n", HISTORY_CGI, url_encode(host_name));
+				printf("<a href='%s?host=%s'>View <b>Alert History</b> For <b>This Host</b></a><br>\n", HISTORY_CGI, url_encode(host_name));
 #ifdef USE_TRENDS
-				printf("<A HREF='%s?host=%s'>View Trends For This Host</A><BR>\n", TRENDS_CGI, url_encode(host_name));
+				printf("<a href='%s?host=%s'>View <b>Trends</b> For <b>This Host</b></a><br>\n", TRENDS_CGI, url_encode(host_name));
 #endif
 #ifdef USE_HISTOGRAM
-				printf("<A HREF='%s?host=%s'>View Alert Histogram For This Host</A><BR>\n", HISTOGRAM_CGI, url_encode(host_name));
+				printf("<a href='%s?host=%s'>View <b>Alert Histogram</b> For <b>This Host</b></a><br>\n", HISTOGRAM_CGI, url_encode(host_name));
 #endif
-				printf("<A HREF='%s?host=%s&show_log_entries'>View Availability Report For This Host</A><BR>\n", AVAIL_CGI, url_encode(host_name));
-				printf("<A HREF='%s?host=%s'>View Notifications For This Host</A><BR>\n", NOTIFICATIONS_CGI, url_encode(host_name));
-				printf("<A HREF='%s?type=%d&host=%s'>View Scheduling Queue For This Host</A>\n", EXTINFO_CGI, DISPLAY_SCHEDULING_QUEUE, url_encode(host_name));
+				printf("<a href='%s?host=%s&show_log_entries'>View <b>Availability Report</b> For <b>This Host</b></a><br>\n", AVAIL_CGI, url_encode(host_name));
+				printf("<a href='%s?host=%s'>View <b>Notifications</b> For <b>This Host</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(host_name));
+				printf("<a href='%s?type=%d&host=%s'>View <b>Scheduling Queue</b> For <b>This Host</b></a><br>\n", EXTINFO_CGI, DISPLAY_SCHEDULING_QUEUE, url_encode(host_name));
+				if (is_authorized_for_configuration_information(&current_authdata) == TRUE)
+					printf("<a href='%s?type=hosts&item_name=%s'>View <b>Config</b> For <b>This Host</b></a>\n", CONFIG_CGI, url_encode(host_name));
 			} else if (display_type == DISPLAY_SERVICE_INFO) {
-				printf("<A HREF='%s?host=%s&service=%s'>View Alert History For This Service</A><BR>\n", HISTORY_CGI, url_encode(host_name), url_encode(service_desc));
+				printf("<a href='%s?host=%s&service=%s'>View <b>Alert History</b> For <b>This Service</b></a><br>\n", HISTORY_CGI, url_encode(host_name), url_encode(service_desc));
 #ifdef USE_TRENDS
-				printf("<A HREF='%s?host=%s&service=%s'>View Trends For This Service</A><BR>\n", TRENDS_CGI, url_encode(host_name), url_encode(service_desc));
+				printf("<a href='%s?host=%s&service=%s'>View <b>Trends</b> For <b>This Service</b></a><br>\n", TRENDS_CGI, url_encode(host_name), url_encode(service_desc));
 #endif
 #ifdef USE_HISTOGRAM
-				printf("<A HREF='%s?host=%s&service=%s'>View Alert Histogram For This Service</A><BR>\n", HISTOGRAM_CGI, url_encode(host_name), url_encode(service_desc));
+				printf("<a href='%s?host=%s&service=%s'>View <b>Alert Histogram</b> For <b>This Service</b></a><br>\n", HISTOGRAM_CGI, url_encode(host_name), url_encode(service_desc));
 #endif
-				printf("<A HREF='%s?host=%s&service=%s&show_log_entries'>View Availability Report For This Service</A><BR>\n", AVAIL_CGI, url_encode(host_name), url_encode(service_desc));
-				printf("<A HREF='%s?host=%s&service=%s'>View Notifications For This Service</A><BR>\n", NOTIFICATIONS_CGI, url_encode(host_name), url_encode(service_desc));
-				printf("<A HREF='%s?type=%d&host=%s&service=%s'>View Scheduling Queue For This Service</A>\n", EXTINFO_CGI, DISPLAY_SCHEDULING_QUEUE, url_encode(host_name), url_encode(service_desc));
+				printf("<a href='%s?host=%s&service=%s&show_log_entries'>View <b>Availability Report</b> For <b>This Service</b></a><br>\n", AVAIL_CGI, url_encode(host_name), url_encode(service_desc));
+				printf("<a href='%s?host=%s&service=%s'>View <b>Notifications</b> For <b>This Service</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(host_name), url_encode(service_desc));
+				printf("<a href='%s?type=%d&host=%s&service=%s'>View <b>Scheduling Queue</b> For <b>This Service</b></a><br>\n", EXTINFO_CGI, DISPLAY_SCHEDULING_QUEUE, url_encode(host_name), url_encode(service_desc));
+				if (is_authorized_for_configuration_information(&current_authdata) == TRUE)
+					printf("<a href='%s?type=services&item_name=%s^%s'>View <b>Config</b> For <b>This Service</b></a>\n", CONFIG_CGI, url_encode(host_name), url_encode(service_desc));
 			} else if (display_type == DISPLAY_HOSTGROUP_INFO) {
-				printf("<A HREF='%s?hostgroup=%s&style=detail'>View Status Detail For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
-				printf("<A HREF='%s?hostgroup=%s&style=overview'>View Status Overview For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
-				printf("<A HREF='%s?hostgroup=%s&style=grid'>View Status Grid For This Hostgroup</A><BR>\n", STATUS_CGI, url_encode(hostgroup_name));
-				printf("<A HREF='%s?hostgroup=%s'>View Availability For This Hostgroup</A><BR>\n", AVAIL_CGI, url_encode(hostgroup_name));
+				printf("<a href='%s?hostgroup=%s&style=detail'>View <b>Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(hostgroup_name));
+				printf("<a href='%s?hostgroup=%s&style=overview'>View <b>Status Overview</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(hostgroup_name));
+				printf("<a href='%s?hostgroup=%s&style=grid'>View <b>Status Grid</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(hostgroup_name));
+				printf("<a href='%s?hostgroup=%s'>View <b>Alert History</b> For <b>This Hostgroup</b></a><br>\n", HISTORY_CGI, url_encode(hostgroup_name));
+				printf("<a href='%s?hostgroup=%s'>View <b>Availability Report</b> For <b>This Hostgroup</b></a><br>\n", AVAIL_CGI, url_encode(hostgroup_name));
+				printf("<a href='%s?hostgroup=%s'>View <b>Notifications</b> For <b>This Hostgroup</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(hostgroup_name));
+				if (is_authorized_for_configuration_information(&current_authdata) == TRUE)
+					printf("<a href='%s?type=hostgroups&item_name=%s'>View <b>Config</b> For <b>This Hostgroup</b></a>\n", CONFIG_CGI, url_encode(hostgroup_name));
 			} else if (display_type == DISPLAY_SERVICEGROUP_INFO) {
-				printf("<A HREF='%s?servicegroup=%s&style=detail'>View Status Detail For This Servicegroup</A><BR>\n", STATUS_CGI, url_encode(servicegroup_name));
-				printf("<A HREF='%s?servicegroup=%s&style=overview'>View Status Overview For This Servicegroup</A><BR>\n", STATUS_CGI, url_encode(servicegroup_name));
-				printf("<A HREF='%s?servicegroup=%s&style=grid'>View Status Grid For This Servicegroup</A><BR>\n", STATUS_CGI, url_encode(servicegroup_name));
-				printf("<A HREF='%s?servicegroup=%s'>View Availability For This Servicegroup</A><BR>\n", AVAIL_CGI, url_encode(servicegroup_name));
+				printf("<a href='%s?servicegroup=%s&style=detail'>View <b>Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(servicegroup_name));
+				printf("<a href='%s?servicegroup=%s&style=overview'>View <b>Status Overview</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(servicegroup_name));
+				printf("<a href='%s?servicegroup=%s&style=grid'>View <b>Status Grid</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(servicegroup_name));
+				printf("<a href='%s?servicegroup=%s'>View <b>Alert History</b> For <b>This Servicegroup</b></a><br>\n", HISTORY_CGI, url_encode(servicegroup_name));
+				printf("<a href='%s?servicegroup=%s'>View <b>Availability Report</b> For <b>This Servicegroup</b></a><br>\n", AVAIL_CGI, url_encode(servicegroup_name));
+				printf("<a href='%s?servicegroup=%s'>View <b>Notifications</b> For <b>This Servicegroup</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(servicegroup_name));
+				if (is_authorized_for_configuration_information(&current_authdata) == TRUE)
+					printf("<a href='%s?type=servicegroups&item_name=%s'>View <b>Config</b> For <b>This Servicegroup</b></a>\n", CONFIG_CGI, url_encode(servicegroup_name));
 			}
 			printf("</TD></TR>\n");
 			printf("</TABLE>\n");

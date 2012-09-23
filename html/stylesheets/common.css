@@ -194,3 +194,8 @@ a img {
 	margin:1em;
 	font-size: 10pt;
 }
+
+.linkBox { border: 0; }
+table.linkBox { margin-top: 20px; }
+td.linkBox a { color: #000; margin-left: 5px;  padding-left: 10px;  background: url(../images/interface/menu_li1.gif) 0 0.35em no-repeat;  }
+td.linkBox a:hover { color: #6e7475; background: url(../images/interface/menu_li2.gif) 0 0.35em no-repeat;  }
