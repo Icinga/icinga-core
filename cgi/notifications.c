@@ -229,7 +229,7 @@ int main(void) {
 		} else if (query_type == DISPLAY_HOSTGROUPS) {
 			printf("Host Group '%s'", html_encode(query_hostgroup_name, TRUE));
 		} else if (query_type == DISPLAY_SERVICEGROUPS) {
-			printf("Serivce Group '%s'", html_encode(query_servicegroup_name, TRUE));
+			printf("Service Group '%s'", html_encode(query_servicegroup_name, TRUE));
 		} else {
 			if (find_all == TRUE)
 				printf("All Contacts");
