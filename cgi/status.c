@@ -6794,7 +6794,7 @@ void show_hostcommand_table(void) {
 		printf("<option value='%d' title='%s%s' >Delay Next Host Notification</option>\n", CMD_DELAY_HOST_NOTIFICATION, url_images_path, DELAY_ICON);
 		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s)</option>\n", CMD_SCHEDULE_HOST_DOWNTIME, url_images_path, DOWNTIME_ICON);
 		printf("<option value='%d' title='%s%s' >Schedule Downtime For Checked Host(s) and All Services</option>\n", CMD_SCHEDULE_HOST_SVC_DOWNTIME, url_images_path, DOWNTIME_ICON);
-		printf("<option value='%d' title='%s%s' >Remove All Scheduled downtime of Selected Host(s)</option>\n", CMD_DEL_DOWNTIME_BY_HOST_NAME, url_images_path, DISABLED_ICON);
+		printf("<option value='%d' title='%s%s' >Remove Downtime(s) For Checked Host(s) and All Services</option>\n", CMD_DEL_DOWNTIME_BY_HOST_NAME, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Disable Notifications For All Services On Checked Host(s)</option>\n", CMD_DISABLE_HOST_SVC_NOTIFICATIONS, url_images_path, DISABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Enable Notifications For All Services On Checked Host(s)</option>\n", CMD_ENABLE_HOST_SVC_NOTIFICATIONS, url_images_path, ENABLED_ICON);
 		printf("<option value='%d' title='%s%s' >Schedule A Check Of All Services On Checked Host(s)</option>\n", CMD_SCHEDULE_HOST_SVC_CHECKS, url_images_path, DELAY_ICON);

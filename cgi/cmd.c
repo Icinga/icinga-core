@@ -1381,8 +1381,8 @@ void request_command_data(int cmd) {
 		break;
 
 	case CMD_DEL_DOWNTIME_BY_HOST_NAME:
-                snprintf(help_text, sizeof(help_text), "This command is used to delete all downtime specified by the host name already supplied.");
-		snprintf(action, sizeof(action), "Remove all downtime for these hosts");
+                snprintf(help_text, sizeof(help_text), "This command is used to delete all downtimes for a host and all its services specified by the host name already supplied.");
+		snprintf(action, sizeof(action), "Remove downtimes for all services for these hosts and the hosts themself");
                 break;
 
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
