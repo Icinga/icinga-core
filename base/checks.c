@@ -1985,6 +1985,9 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 		log_debug_info(DEBUGL_CHECKS, 2, "Keeping original service check event (ignoring the new one).\n");
 	}
 
+	/* update next_check time for service */
+	update_service_status(svc, FALSE);
+
 	return;
 }
 
@@ -2457,6 +2460,9 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 
 		log_debug_info(DEBUGL_CHECKS, 2, "Keeping original host check event (ignoring the new one).\n");
 	}
+
+	/* update next_check time for host */
+	update_host_status(hst, FALSE);
 
 	return;
 }
