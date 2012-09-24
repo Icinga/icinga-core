@@ -882,7 +882,7 @@ void print_object_list(int list_type) {
 					escape_string(commands[x].host_name), escape_string(commands[x].description)
 				);
 				if (service_passive == TRUE) {
-					printf("<img src='%s%s' align=right border=0 alt='Passive' title='Passive Service'>",
+					printf("<img src='%s%s' align=right border=0 style='padding-right:2px' alt='Passive' title='Passive Service'>",
 						url_images_path, PASSIVE_ICON
 					);
 				}
@@ -912,7 +912,7 @@ void print_object_list(int list_type) {
 			else {
 				printf(" style=\"font-weight:bold;\">Host:</td><td>%s", escape_string(commands[x].host_name));
 				if (host_passive == TRUE) {
-					printf("<img src='%s%s' align=right border=0 alt='Passive' title='Passive Service'>",
+					printf("<img src='%s%s' align=right border=0 style='padding-right:2px' alt='Passive' title='Passive Service'>",
 						url_images_path, PASSIVE_ICON
 					);
 				}
