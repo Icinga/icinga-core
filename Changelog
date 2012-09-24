@@ -21,6 +21,7 @@ ENHANCEMENTS
 * core: add hint on icinga.cfg package location, and tip to read Changelog CHANGES on upgrades #2879 - MF
 * core: add new callback NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE to allow override of sending notifications #2041 - MF
 * core: only reap results when checkresult_list is not overloaded (max_check_result_list_items) (thx Thomas Gelf) #3099 - MF
+* core: log a message when reaper max time is reached #3159 - MF
 
 * classic ui: Dropped statuswml.cgi #2654 - RB
 * classic ui: Dropped statuswrl.cgi #2359 - RB
@@ -47,6 +48,7 @@ ENHANCEMENTS
 * classic ui: Added host/service group filter to notifications.cgi & history.cgi #2679 - RB
 * classic ui: javascript refresh jumps to page top, not restoring previous scrolling position; add url param 'scroll=' #2855 - MF
 * classic ui: Cleaned up "linkBox" in all cgi's #3154 - RB
+* classic ui: add command to delete host downtime and all associated service downtimes (extinfo.cgi, status.cgi command drop down) - RD/MF
 
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
 * idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
@@ -84,6 +86,8 @@ FIXES
 * core: allow multiple empty (host)groups chained with enabled allow_empty_hostgroup_assignment #2437 - MF
 * core: fixed when deleting an expiring ack the event to delete the ack doesn't get deleted #3084 - RB
 * core: fix error checking on subgroup expanding on host|service|contactgroup members #3088 - MF/RB
+* core: fix lockup on DEL_DOWNTIME_BY_HOST_NAME command #1572 - MF
+* core: fix next_check attribute not updated after scheduling new check #2265 - MF
 
 * classic ui: fix setting send_notification or sticky_ack as GET param has no effect on cmd.cgi acks #2926 - MF
 	** now you can finally disable checkboxes default ticked with these options
@@ -97,6 +101,7 @@ FIXES
 * idoutils: fix insert on duplicate key with multiple unique keys marked unsafe in mysql >= 5.5.24; rewrite all queries #3008 - MF
 * idoutils: fix redundant indexes in MySQL schema (thx Michael Renner) #3018 - MF
 * idoutils: re-add missing indexes from #1110 resolving performance issues on all supported rdbms #2618 - MF
+* idoutils: fix IDOUtils on PostgreSQL, recreates service objects in icinga_objects (thx Torsten Fohrer) #3166 - MF
 
 * install: fix icinga.xml for solaris pkg not updated #2609 - CF
 
