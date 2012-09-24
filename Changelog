@@ -93,6 +93,7 @@ FIXES
 * idoutils: fix insert on duplicate key with multiple unique keys marked unsafe in mysql >= 5.5.24; rewrite all queries #3008 - MF
 * idoutils: fix redundant indexes in MySQL schema (thx Michael Renner) #3018 - MF
 * idoutils: re-add missing indexes from #1110 resolving performance issues on all supported rdbms #2618 - MF
+* idoutils: fix IDOUtils on PostgreSQL, recreates service objects in icinga_objects (thx Torsten Fohrer) #3166 - MF
 
 * install: fix icinga.xml for solaris pkg not updated #2609 - CF
 
