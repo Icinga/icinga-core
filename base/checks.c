@@ -367,6 +367,7 @@ int reap_check_results(void) {
 		time(&current_time);
 		if ((int)(current_time - reaper_start_time) > max_check_reaper_time) {
 			log_debug_info(DEBUGL_CHECKS, 0, "Breaking out of check result reaper: max reaper time exceeded\n");
+			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Breaking out of check result reaper: max reaper time (%d) exceeded. Reaped %d results, but more checkresults to process. Perhaps check core performance tuning tips?\n", max_check_reaper_time, reaped_checks);
 			break;
 		}
 
@@ -1984,6 +1985,9 @@ void schedule_service_check(service *svc, time_t check_time, int options) {
 		log_debug_info(DEBUGL_CHECKS, 2, "Keeping original service check event (ignoring the new one).\n");
 	}
 
+	/* update next_check time for service */
+	update_service_status(svc, FALSE);
+
 	return;
 }
 
@@ -2456,6 +2460,9 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 
 		log_debug_info(DEBUGL_CHECKS, 2, "Keeping original host check event (ignoring the new one).\n");
 	}
+
+	/* update next_check time for host */
+	update_host_status(hst, FALSE);
 
 	return;
 }

@@ -914,7 +914,14 @@ int delete_downtime_by_hostname_service_description_start_time_comment(char *hos
 				continue;
 		}
 
+#ifdef NSCORE
+		/* unlock here, because delete_*_downtime will try to lock itsself */
+		pthread_mutex_unlock(&icinga_downtime_lock);
+#endif
 		unschedule_downtime(temp_downtime->type, temp_downtime->downtime_id);
+#ifdef NSCORE
+		pthread_mutex_lock(&icinga_downtime_lock);
+#endif
 		deleted++;
 	}
 #ifdef NSCORE

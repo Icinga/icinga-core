@@ -290,6 +290,7 @@ sub read_object_file {
 			next;
 		}
 		my ($obj,$val) = /(.*?)\s+(.*)/;
+		next unless (defined $val);
 		if ($obj =~ /(.+)group_name/) {
 			$tmp->{type} = $1;
 			$tmp->{name} = $val;
