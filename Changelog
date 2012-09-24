@@ -4,6 +4,14 @@ Icinga 1.7.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+<<<<<<< HEAD
+=======
+
+1.7.x - xx/xx/2012
+
+* idoutils: fix IDOUtils on PostgreSQL, recreates service objects in icinga_objects (thx Torsten Fohrer) #3166 - MF
+
+
 1.7.2 - 27/08/2012
 
 FIXES

@@ -144,7 +144,7 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 			break;
                 case IDO2DB_DBSERVER_PGSQL:
                         /* Postgres does case sensitive compare  */
-                        if (asprintf(&buf2, "name2=E'%s'", es[0]) == -1)
+                        if (asprintf(&buf2, "name2=E'%s'", es[1]) == -1)
                                 buf2 = NULL;
                         break;
 		default:
