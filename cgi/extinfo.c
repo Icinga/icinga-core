@@ -1680,6 +1680,8 @@ void show_host_info(void) {
 
 			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Schedule Downtime For This Host and All Services' TITLE='Schedule Downtime For This Host and All Services'></td><td CLASS='command'><a href='%s?cmd_typ=%d&host=%s'>Schedule downtime for this host and all services</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_HOST_SVC_DOWNTIME, url_encode(host_name));
 
+			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Remove Downtime(s) for this host and all services' TITLE='Remove Downtime(s) for this host and all services'></td><td CLASS='command'><a href='%s?cmd_typ=%d&host=%s'>Remove Downtime(s) for this host and all services</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DEL_DOWNTIME_BY_HOST_NAME, url_encode(host_name));
+
 			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Disable Notifications For All Services On This Host' TITLE='Disable Notifications For All Services On This Host'></td><td CLASS='command' NOWRAP><a href='%s?cmd_typ=%d&host=%s'>Disable notifications for all services on this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_SVC_NOTIFICATIONS, url_encode(host_name));
 
 			printf("<tr CLASS='command'><td><img src='%s%s' border=0 ALT='Enable Notifications For All Services On This Host' TITLE='Enable Notifications For All Services On This Host'></td><td CLASS='command'><a href='%s?cmd_typ=%d&host=%s'>Enable notifications for all services on this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_SVC_NOTIFICATIONS, url_encode(host_name));

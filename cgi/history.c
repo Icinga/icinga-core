@@ -207,7 +207,7 @@ int main(void) {
 		} else if (display_type == DISPLAY_HOSTGROUPS)
 			printf("Host Group '%s'", html_encode(hostgroup_name, TRUE));
 		else if (display_type == DISPLAY_SERVICEGROUPS)
-			printf("Serivce Group '%s'", html_encode(servicegroup_name, TRUE));
+			printf("Service Group '%s'", html_encode(servicegroup_name, TRUE));
 		printf("</DIV>\n");
 		printf("<BR />\n");
 
