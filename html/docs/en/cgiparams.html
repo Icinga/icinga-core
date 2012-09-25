@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
 <link rel="up" href="ch06.html" title="Chapter 6. User Interfaces">
 <link rel="prev" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">
 <link rel="next" href="cgicmd.html" title="6.3. Executing CGIs on the command line">
@@ -47,19 +47,18 @@
   <p>Instead of using your browser you may want to run the CGIs on the command line and process the results with other tools. For a first
   impression change to the folder containing the *.cgi modules (e.g. <code class="filename">/usr/local/icinga/sbin</code>), set some environment
   variables and execute one of the CGIs:</p>
-<pre class="programlisting"> $&gt; export REMOTE_USER=icingaadmin   # or choose the appropriate user
+<pre class="screen"> $&gt; export REMOTE_USER=icingaadmin   # or choose the appropriate user
  $&gt; export REQUEST_METHOD='GET'      # if you enter queries
  $&gt; export QUERY_STRING='host=all'   # see the tables below 
 
  $&gt; ./status.cgi</pre>
-<p>Depending on the number of hosts this may return a lot of lines containing HTML code in between which
-  most people will find hard to read so you should add "&amp;csvoutput" or "&amp;jsonoutput" to QUERY_STRING along with other
-  arguments.</p>
+<p>Depending on the number of hosts this may return a lot of lines containing HTML code in between which most
+  people will find hard to read so you should add "&amp;csvoutput" or "&amp;jsonoutput" to QUERY_STRING along with other arguments.</p>
 
   <p>Set QUERY_STRING as needed and execute the desired CGI.</p>
 
   <p>If you forgot to set the environment variables you'll receive the following lines:</p>
-<pre class="programlisting"> $&gt; ./status.cgi
+<pre class="screen"> $&gt; ./status.cgi
  getcgivars(): Unsupported REQUEST_METHOD -&gt; ''
 
  I'm guessing you're trying to execute the CGI from a command line.
@@ -612,8 +611,8 @@
 <td> </td>
 <td> </td>
 <td> </td>
-<td> </td>
-<td> </td>
+<td>X[5]</td>
+<td>X[5]</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -810,8 +809,8 @@
 <td> </td>
 <td>X</td>
 <td> </td>
-<td> </td>
-<td> </td>
+<td>X[5]</td>
+<td>X[5]</td>
 <td> </td>
 <td> </td>
 <td>X</td>
@@ -859,7 +858,7 @@
 <tr>
 <td>
 <a name="cgiparams-hoststatustypes"></a>hoststatustypes</td>
-<td>X</td>
+<td> </td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -972,6 +971,24 @@
 <td> </td>
 <td> </td>
 <td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+</tr>
+<tr>
+<td>
+<a name="cgiparams-item_name"></a>item_name [5]</td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -1200,7 +1217,7 @@
 </tr>
 <tr>
 <td>
-<a name="cgiparams-oldestfirst"></a>oldestfirst</td>
+<a name="cgiparams-oldestfirst"></a>oldestfirst [6]</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -1210,6 +1227,24 @@
 <td>X</td>
 <td> </td>
 <td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>
+<a name="cgiparams-order"></a>order [5]</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td> </td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -1398,6 +1433,24 @@
 </tr>
 <tr>
 <td>
+<a name="cgiparams-search_string"></a>search_string [5]</td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>
 <a name="cgiparams-send_notification"></a>send_notification</td>
 <td> </td>
 <td>X</td>
@@ -1458,8 +1511,8 @@
 <td> </td>
 <td>X</td>
 <td> </td>
-<td> </td>
-<td> </td>
+<td>X[5]</td>
+<td>X[5]</td>
 <td> </td>
 <td> </td>
 <td>X</td>
@@ -1728,8 +1781,8 @@
 <td> </td>
 <td> </td>
 <td> </td>
-<td> </td>
-<td> </td>
+<td>X[5]</td>
+<td>X[5]</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -1872,8 +1925,8 @@
 <td> </td>
 <td> </td>
 <td>X</td>
-<td> </td>
-<td> </td>
+<td>X[5]</td>
+<td>X[5]</td>
 <td> </td>
 <td> </td>
 <td> </td>
@@ -1881,6 +1934,42 @@
 <td>X</td>
 <td> </td>
 <td>X</td>
+</tr>
+<tr>
+<td>
+<a name="cgiparams-ts_end"></a>ts_end [5]</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+</tr>
+<tr>
+<td>
+<a name="cgiparams-ts_start"></a>ts_start [5]</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td>X</td>
+<td>X</td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
+<td> </td>
 </tr>
 <tr>
 <td>
@@ -2278,6 +2367,13 @@
 <td> </td>
 </tr>
 <tr>
+<td><a class="link" href="cgiparams.html#cgiparams-item_name">item_name</a></td>
+<td>Search for exact match of specified string (for regex search see <a class="link" href="cgiparams.html#cgiparams-search_string">search_string</a>)</td>
+<td> </td>
+<td>item_name=localhost</td>
+<td>[5]</td>
+</tr>
+<tr>
 <td><a class="link" href="cgiparams.html#cgiparams-jsonoutput">jsonoutput</a></td>
 <td>Specify whether or not the report output should be in json format</td>
 <td>yes;no</td>
@@ -2366,7 +2462,14 @@
 <td>Reverse sort order</td>
 <td> </td>
 <td>oldestfirst</td>
-<td>Default: show most recent entries first</td>
+<td>Default: show most recent entries first; see note [6]</td>
+</tr>
+<tr>
+<td><a class="link" href="cgiparams.html#cgiparams-order">order</a></td>
+<td>Specify sort order</td>
+<td>new2old, old2new</td>
+<td>order=old2new</td>
+<td>Default: show most recent entries first; see note [5]</td>
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-performance_data">performance_data</a></td>
@@ -2437,6 +2540,13 @@
 <td> </td>
 <td> </td>
 <td> </td>
+</tr>
+<tr>
+<td><a class="link" href="cgiparams.html#cgiparams-search_string">search_string</a></td>
+<td>Find object with given string using regular expressions</td>
+<td> </td>
+<td> </td>
+<td>[5]</td>
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-send_notification">send_notification</a></td>
@@ -2565,7 +2675,7 @@
 <td>Resultcounter</td>
 <td> </td>
 <td> </td>
-<td>[5] Resultcounter for pagination.</td>
+<td>[5] Result counter for pagination.</td>
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-start_time">start_time</a></td>
@@ -2639,6 +2749,20 @@
 <td>A valid downtime id</td>
 <td> </td>
 <td> </td>
+</tr>
+<tr>
+<td><a class="link" href="cgiparams.html#cgiparams-ts_end">ts_end</a></td>
+<td>Data is shown up to ts_end (unix timestamp)</td>
+<td>A valid unix timestamp</td>
+<td> </td>
+<td>[5]</td>
+</tr>
+<tr>
+<td><a class="link" href="cgiparams.html#cgiparams-ts_start">ts_start</a></td>
+<td>Data is shown starting at ts_start (unix timestamp)</td>
+<td>A valid unix timestamp</td>
+<td> </td>
+<td>[5]</td>
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-type">type</a></td>
@@ -2812,7 +2936,7 @@
 
   <p><a name="cgiparams-statustypes"></a><span class="bold"><strong>Excerpt from include/statusdata.h</strong></span></p>
 
-  <pre class="screen">/*************************** SERVICE STATES ***************************/
+  <pre class="programlisting">/*************************** SERVICE STATES ***************************/
 #define SERVICE_PENDING  1
 #define SERVICE_OK       2
 #define SERVICE_WARNING  4
@@ -2837,217 +2961,229 @@
 
   <p>[5] Available starting with Icinga 1.8.</p>
 
-  <a class="indexterm" name="id1582188"></a>
+  <p>[6] Removed starting with Icinga 1.8.</p>
 
-  <a class="indexterm" name="id1582202"></a>
+  <a class="indexterm" name="id1615120"></a>
 
-  <a class="indexterm" name="id1582216"></a>
+  <a class="indexterm" name="id1615134"></a>
 
-  <a class="indexterm" name="id1582226"></a>
+  <a class="indexterm" name="id1615148"></a>
 
-  <a class="indexterm" name="id1582236"></a>
+  <a class="indexterm" name="id1615159"></a>
 
-  <a class="indexterm" name="id1582248"></a>
+  <a class="indexterm" name="id1615167"></a>
 
-  <a class="indexterm" name="id1582257"></a>
+  <a class="indexterm" name="id1615182"></a>
 
-  <a class="indexterm" name="id1582265"></a>
+  <a class="indexterm" name="id1615192"></a>
 
-  <a class="indexterm" name="id1582277"></a>
+  <a class="indexterm" name="id1615201"></a>
 
-  <a class="indexterm" name="id1582288"></a>
+  <a class="indexterm" name="id1615215"></a>
 
-  <a class="indexterm" name="id1582302"></a>
+  <a class="indexterm" name="id1615228"></a>
 
-  <a class="indexterm" name="id1582316"></a>
+  <a class="indexterm" name="id1615242"></a>
 
-  <a class="indexterm" name="id1582328"></a>
+  <a class="indexterm" name="id1615255"></a>
 
-  <a class="indexterm" name="id1582343"></a>
+  <a class="indexterm" name="id1615268"></a>
 
-  <a class="indexterm" name="id1582355"></a>
+  <a class="indexterm" name="id1615282"></a>
 
-  <a class="indexterm" name="id1582367"></a>
+  <a class="indexterm" name="id1615296"></a>
 
-  <a class="indexterm" name="id1582368"></a>
+  <a class="indexterm" name="id1615310"></a>
 
-  <a class="indexterm" name="id1582396"></a>
+  <a class="indexterm" name="id1615323"></a>
 
-  <a class="indexterm" name="id1582397"></a>
+  <a class="indexterm" name="id1615336"></a>
 
-  <a class="indexterm" name="id1582424"></a>
+  <a class="indexterm" name="id1615351"></a>
 
-  <a class="indexterm" name="id1582436"></a>
+  <a class="indexterm" name="id1615364"></a>
 
-  <a class="indexterm" name="id1582450"></a>
+  <a class="indexterm" name="id1615379"></a>
 
-  <a class="indexterm" name="id1582452"></a>
+  <a class="indexterm" name="id1615392"></a>
 
-  <a class="indexterm" name="id1582478"></a>
+  <a class="indexterm" name="id1615406"></a>
 
-  <a class="indexterm" name="id1582490"></a>
+  <a class="indexterm" name="id1615420"></a>
 
-  <a class="indexterm" name="id1582505"></a>
+  <a class="indexterm" name="id1615434"></a>
 
-  <a class="indexterm" name="id1582506"></a>
+  <a class="indexterm" name="id1615447"></a>
 
-  <a class="indexterm" name="id1582533"></a>
+  <a class="indexterm" name="id1615462"></a>
 
-  <a class="indexterm" name="id1582545"></a>
+  <a class="indexterm" name="id1615475"></a>
 
-  <a class="indexterm" name="id1582560"></a>
+  <a class="indexterm" name="id1615490"></a>
 
-  <a class="indexterm" name="id1582561"></a>
+  <a class="indexterm" name="id1615503"></a>
 
-  <a class="indexterm" name="id1582587"></a>
+  <a class="indexterm" name="id1615517"></a>
 
-  <a class="indexterm" name="id1582600"></a>
+  <a class="indexterm" name="id1615530"></a>
 
-  <a class="indexterm" name="id1582614"></a>
+  <a class="indexterm" name="id1615545"></a>
 
-  <a class="indexterm" name="id1582615"></a>
+  <a class="indexterm" name="id1615558"></a>
 
-  <a class="indexterm" name="id1582642"></a>
+  <a class="indexterm" name="id1615573"></a>
 
-  <a class="indexterm" name="id1582654"></a>
+  <a class="indexterm" name="id1615586"></a>
 
-  <a class="indexterm" name="id1582669"></a>
+  <a class="indexterm" name="id1615601"></a>
 
-  <a class="indexterm" name="id1582670"></a>
+  <a class="indexterm" name="id1615614"></a>
 
-  <a class="indexterm" name="id1582696"></a>
+  <a class="indexterm" name="id1615628"></a>
 
-  <a class="indexterm" name="id1582697"></a>
+  <a class="indexterm" name="id1615642"></a>
 
-  <a class="indexterm" name="id1582723"></a>
+  <a class="indexterm" name="id1615656"></a>
 
-  <a class="indexterm" name="id1582736"></a>
+  <a class="indexterm" name="id1615669"></a>
 
-  <a class="indexterm" name="id1582751"></a>
+  <a class="indexterm" name="id1615682"></a>
 
-  <a class="indexterm" name="id1582763"></a>
+  <a class="indexterm" name="id1615695"></a>
 
-  <a class="indexterm" name="id1582778"></a>
+  <a class="indexterm" name="id1615709"></a>
 
-  <a class="indexterm" name="id1582790"></a>
+  <a class="indexterm" name="id1615722"></a>
 
-  <a class="indexterm" name="id1582805"></a>
+  <a class="indexterm" name="id1615736"></a>
 
-  <a class="indexterm" name="id1582818"></a>
+  <a class="indexterm" name="id1615749"></a>
 
-  <a class="indexterm" name="id1582832"></a>
+  <a class="indexterm" name="id1615763"></a>
 
-  <a class="indexterm" name="id1582846"></a>
+  <a class="indexterm" name="id1615776"></a>
 
-  <a class="indexterm" name="id1582860"></a>
+  <a class="indexterm" name="id1615789"></a>
 
-  <a class="indexterm" name="id1582873"></a>
+  <a class="indexterm" name="id1615803"></a>
 
-  <a class="indexterm" name="id1582886"></a>
+  <a class="indexterm" name="id1615816"></a>
 
-  <a class="indexterm" name="id1582899"></a>
+  <a class="indexterm" name="id1615829"></a>
 
-  <a class="indexterm" name="id1582913"></a>
+  <a class="indexterm" name="id1615843"></a>
 
-  <a class="indexterm" name="id1582927"></a>
+  <a class="indexterm" name="id1615857"></a>
 
-  <a class="indexterm" name="id1582941"></a>
+  <a class="indexterm" name="id1615870"></a>
 
-  <a class="indexterm" name="id1582955"></a>
+  <a class="indexterm" name="id1615881"></a>
 
-  <a class="indexterm" name="id1582969"></a>
+  <a class="indexterm" name="id1615895"></a>
 
-  <a class="indexterm" name="id1582983"></a>
+  <a class="indexterm" name="id1615908"></a>
 
-  <a class="indexterm" name="id1582996"></a>
+  <a class="indexterm" name="id1615922"></a>
 
-  <a class="indexterm" name="id1583010"></a>
+  <a class="indexterm" name="id1615934"></a>
 
-  <a class="indexterm" name="id1583024"></a>
+  <a class="indexterm" name="id1615935"></a>
 
-  <a class="indexterm" name="id1583038"></a>
+  <a class="indexterm" name="id1615961"></a>
 
-  <a class="indexterm" name="id1583052"></a>
+  <a class="indexterm" name="id1615973"></a>
 
-  <a class="indexterm" name="id1583066"></a>
+  <a class="indexterm" name="id1615974"></a>
 
-  <a class="indexterm" name="id1583080"></a>
+  <a class="indexterm" name="id1616002"></a>
 
-  <a class="indexterm" name="id1583093"></a>
+  <a class="indexterm" name="id1616003"></a>
 
-  <a class="indexterm" name="id1583107"></a>
+  <a class="indexterm" name="id1616030"></a>
 
-  <a class="indexterm" name="id1583121"></a>
+  <a class="indexterm" name="id1616042"></a>
 
-  <a class="indexterm" name="id1583135"></a>
+  <a class="indexterm" name="id1616054"></a>
 
-  <a class="indexterm" name="id1583149"></a>
+  <a class="indexterm" name="id1616056"></a>
 
-  <a class="indexterm" name="id1583163"></a>
+  <a class="indexterm" name="id1616082"></a>
 
-  <a class="indexterm" name="id1583176"></a>
+  <a class="indexterm" name="id1616083"></a>
 
-  <a class="indexterm" name="id1583190"></a>
+  <a class="indexterm" name="id1616109"></a>
 
-  <a class="indexterm" name="id1583204"></a>
+  <a class="indexterm" name="id1616110"></a>
 
-  <a class="indexterm" name="id1583218"></a>
+  <a class="indexterm" name="id1616136"></a>
 
-  <a class="indexterm" name="id1583232"></a>
+  <a class="indexterm" name="id1616137"></a>
 
-  <a class="indexterm" name="id1583246"></a>
+  <a class="indexterm" name="id1616163"></a>
 
-  <a class="indexterm" name="id1583259"></a>
+  <a class="indexterm" name="id1616164"></a>
 
-  <a class="indexterm" name="id1583273"></a>
+  <a class="indexterm" name="id1616190"></a>
 
-  <a class="indexterm" name="id1583287"></a>
+  <a class="indexterm" name="id1616191"></a>
 
-  <a class="indexterm" name="id1583301"></a>
+  <a class="indexterm" name="id1616206"></a>
 
-  <a class="indexterm" name="id1583315"></a>
+  <a class="indexterm" name="id1616218"></a>
 
-  <a class="indexterm" name="id1583328"></a>
+  <a class="indexterm" name="id1616246"></a>
 
-  <a class="indexterm" name="id1583342"></a>
+  <a class="indexterm" name="id1616247"></a>
 
-  <a class="indexterm" name="id1583356"></a>
+  <a class="indexterm" name="id1616274"></a>
 
-  <a class="indexterm" name="id1583369"></a>
+  <a class="indexterm" name="id1616286"></a>
 
-  <a class="indexterm" name="id1583381"></a>
+  <a class="indexterm" name="id1616300"></a>
 
-  <a class="indexterm" name="id1583393"></a>
+  <a class="indexterm" name="id1616314"></a>
 
-  <a class="indexterm" name="id1583404"></a>
+  <a class="indexterm" name="id1616328"></a>
 
-  <a class="indexterm" name="id1583418"></a>
+  <a class="indexterm" name="id1616340"></a>
 
-  <a class="indexterm" name="id1583430"></a>
+  <a class="indexterm" name="id1616341"></a>
 
-  <a class="indexterm" name="id1583444"></a>
+  <a class="indexterm" name="id1616369"></a>
 
-  <a class="indexterm" name="id1583458"></a>
+  <a class="indexterm" name="id1616381"></a>
 
-  <a class="indexterm" name="id1583471"></a>
+  <a class="indexterm" name="id1616397"></a>
 
-  <a class="indexterm" name="id1583483"></a>
+  <a class="indexterm" name="id1616410"></a>
 
-  <a class="indexterm" name="id1583498"></a>
+  <a class="indexterm" name="id1616423"></a>
 
-  <a class="indexterm" name="id1583511"></a>
+  <a class="indexterm" name="id1616436"></a>
 
-  <a class="indexterm" name="id1583526"></a>
+  <a class="indexterm" name="id1616451"></a>
 
-  <a class="indexterm" name="id1583539"></a>
+  <a class="indexterm" name="id1616464"></a>
 
-  <a class="indexterm" name="id1583552"></a>
+  <a class="indexterm" name="id1616477"></a>
 
-  <a class="indexterm" name="id1583566"></a>
+  <a class="indexterm" name="id1616491"></a>
 
-  <a class="indexterm" name="id1583579"></a>
+  <a class="indexterm" name="id1616504"></a>
 
-  <a class="indexterm" name="id1583593"></a>
+  <a class="indexterm" name="id1616518"></a>
+
+  <a class="indexterm" name="id1616531"></a>
+
+  <a class="indexterm" name="id1616545"></a>
+
+  <a class="indexterm" name="id1616558"></a>
+
+  <a class="indexterm" name="id1616572"></a>
+
+  <a class="indexterm" name="id1616585"></a>
+
+  <a class="indexterm" name="id1616598"></a>
 </div>
 <div class="navfooter">
 <hr>

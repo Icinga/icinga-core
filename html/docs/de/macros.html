@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="prev" href="plugins.html" title="5.1. Icinga Plugins">
 <link rel="next" href="macrolist.html" title="5.3. Standard-Makros in Icinga">
@@ -32,22 +32,22 @@
 
   <p><span class="bold"><strong>Makros</strong></span></p>
 
-  <p>Eine der Haupteigenschaften, die Icinga so flexibel machen, ist die Fähigkeit, Makros in Befehlsdefinitionen zu
-  benutzen. Makros erlauben Ihnen, Bezug auf Informationen von Hosts, Services und anderen Quellen zu nehmen.</p>
+  <p>Eine der Haupteigenschaften, die Icinga so flexibel machen, ist die Fähigkeit, Makros in Befehlsdefinitionen zu benutzen.
+  Makros erlauben Ihnen, Bezug auf Informationen von Hosts, Services und anderen Quellen zu nehmen.</p>
 
   <p><span class="bold"><strong>Makroersetzungen - wie Makros arbeiten</strong></span></p>
 
-  <p>Bevor Icinga einen Befehl ausführt, ersetzt es jedes Makro, das es in der Befehlsdefinition findet, durch den
-  entsprechenden Wert. Diese Makroersetzung erfolgt für alle Arten von Befehlen, die Icinga ausführt - Host- und
-  Service-Checks, Benachrichtigungen, Eventhandler usw.</p>
+  <p>Bevor Icinga einen Befehl ausführt, ersetzt es jedes Makro, das es in der Befehlsdefinition findet, durch den entsprechenden
+  Wert. Diese Makroersetzung erfolgt für alle Arten von Befehlen, die Icinga ausführt - Host- und Service-Checks, Benachrichtigungen,
+  Eventhandler usw.</p>
 
   <p>Bestimmte Makros können wieder Makros enthalten. Dazu zählen die Makros $HOSTNOTES$, $HOSTNOTESURL$, $HOSTACTIONURL$,
   $SERVICENOTES$, $SERVICENOTESURL$ und $SERVICEACTIONURL$.</p>
 
   <p><span class="bold"><strong>Beispiel 1: Host-Address Makro</strong></span></p>
 
-  <p>Wenn Sie Host- und Service-Makros in Befehlsdefinitionen benutzen, beziehen sich diese auf Werte für den Host oder
-  Service, für den der Befehl ausgeführt wird. Nehmen wir ein Beispiel. Angenommen, wir benutzen eine Host-Definition und einen
+  <p>Wenn Sie Host- und Service-Makros in Befehlsdefinitionen benutzen, beziehen sich diese auf Werte für den Host oder Service, für den
+  der Befehl ausgeführt wird. Nehmen wir ein Beispiel. Angenommen, wir benutzen eine Host-Definition und einen
   <span class="emphasis"><em>check_ping</em></span>-Befehl, die wie folgt definiert sind:</p>
 
   <pre class="screen"> define host{
@@ -58,34 +58,33 @@
         }
  define command{
         command_name    check_ping
-        command_line    /usr/local/icinga/libexec/check_ping -H $HOSTADDRESS$ -w 100.0,90% -c 200.0,60%
+        command_line    /usr/local/icinga/libexec/check_ping -H $HOSTADDRESS$ -w 100.0,25% -c 200.0,50%
         }</pre>
 
   <p>die erweiterte/endgültige auszuführende Befehlszeile für die Host-Prüfung würde so aussehen:</p>
 
-  <pre class="screen">$&gt; /usr/local/icinga/libexec/check_ping -H 192.168.1.2 -w 100.0,90% -c 200.0,60%</pre>
+  <pre class="screen">$&gt; /usr/local/icinga/libexec/check_ping -H 192.168.1.2 -w 100.0,25% -c 200.0,50%</pre>
 
-  <p>Ziemlich einfach, stimmt's? Die Schönheit liegt darin, dass Sie eine einzelne Befehlsdefinition für eine unbegrenzte Zahl
-  von Hosts nutzen können. Jeder Host kann mit der selben Befehlsdefinition geprüft werden, weil jede Host-Adresse automatisch vor
-  der Ausführung in der Befehlszeile ersetzt wird.</p>
+  <p>Ziemlich einfach, stimmt's? Die Schönheit liegt darin, dass Sie eine einzelne Befehlsdefinition für eine unbegrenzte Zahl von Hosts
+  nutzen können. Jeder Host kann mit der selben Befehlsdefinition geprüft werden, weil jede Host-Adresse automatisch vor der Ausführung in
+  der Befehlszeile ersetzt wird.</p>
 
   <p><span class="bold"><strong>Beispiel 2: Befehlsargument-Makros</strong></span></p>
 
-  <p>Sie können auch Argumente an Befehle übergeben, was recht handlich ist, wenn Sie Ihre Befehlsdefinitonen ziemlich
-  generisch halten möchten. Argumente werden in der Objektdefinition (d.h. Host oder Service) angegeben, indem sie durch
-  Ausrufezeichen (!) vom Befehlsnamen getrennt werden:</p>
+  <p>Sie können auch Argumente an Befehle übergeben, was recht handlich ist, wenn Sie Ihre Befehlsdefinitonen ziemlich generisch halten
+  möchten. Argumente werden in der Objektdefinition (d.h. Host oder Service) angegeben, indem sie durch Ausrufezeichen (!) vom Befehlsnamen
+  getrennt werden:</p>
 
   <pre class="screen"> define service{
         host_name               linuxbox
         service_description     PING
-        check_command           check_ping!200.0,80%!400.0,40%
+        check_command           check_ping!200.0,25%!400.0,50%
         ...
         }</pre>
 
-  <p>Im obigen Beispiel hat der Service-Check zwei Argumente (auf die mit <a class="link" href="macrolist.html#macrolist-arg">$ARGn$</a>-Makros
-  zugegriffen werden kann). Das $ARG1$-Makro wird "<span class="color"><font color="red">200.0,80%</font></span>" und $ARG2$ wird
-  "<span class="color"><font color="red">400.0,40%</font></span>" (beide ohne Anführungszeichen). Angenommen, wir benutzen die
-  vorher angegebene Host-Definiton und einen wie folgt definierten <span class="emphasis"><em>check_ping</em></span>-Befehl:</p>
+  <p>Im obigen Beispiel hat der Service-Check zwei Argumente (auf die mit <a class="link" href="macrolist.html#macrolist-arg">$ARGn$</a>-Makros zugegriffen
+  werden kann). Das $ARG1$-Makro wird "<span class="color"><font color="red">200.0,50%</font></span>" und $ARG2$ wird "<span class="color"><font color="red">400.0,25%</font></span>" (beide ohne Anführungszeichen). Angenommen, wir benutzen die vorher angegebene
+  Host-Definiton und einen wie folgt definierten <span class="emphasis"><em>check_ping</em></span>-Befehl:</p>
 
   <pre class="screen"> define command{
         command_name    check_ping
@@ -94,23 +93,50 @@
 
   <p>die erweiterte/endgültige auszuführende Befehlszeile für die Service-Prüfung würde so aussehen:</p>
 
-  <pre class="screen">$&gt; /usr/local/icinga/libexec/check_ping -H 192.168.1.2 -w 200.0,80% -c 400.0,40%</pre>
+  <pre class="screen">$&gt; /usr/local/icinga/libexec/check_ping -H 192.168.1.2 -w 200.0,25% -c 400.0,50%</pre>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Falls Sie Ausrufezeichen (!) in Ihren Argumenten übergeben müssen, dann können Sie das tun,
-  indem Sie diese mit einem Backslash (\) maskieren. Falls Sie Backslashes in Ihren Argumenten einsetzen müssen, sind diese
-  ebenfalls mit Backslashes zu maskieren.</p>
+  <div class="tip" title="Tipp" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tipp]" src="../images/tip.png"></td>
+<th align="left">Tipp</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p><a name="macros-bang"></a>Falls Sie Ausrufezeichen (!) in Ihren Argumenten übergeben müssen, dann können Sie das tun, indem
+    Sie diese mit einem Backslash (\) maskieren. Falls Sie Backslashes in Ihren Argumenten einsetzen müssen, sind diese ebenfalls mit
+    Backslashes zu maskieren.</p>
+  </td></tr>
+</table></div>
+
+  <div class="tip" title="Tipp" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tipp]" src="../images/tip.png"></td>
+<th align="left">Tipp</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p><a name="macros-semicolon"></a>Falls Sie ein Semikolon (;) in Ihren Argumenten übergeben müssen, dann können Sie das nicht
+    tun, indem Sie das Zeichen in der Definition verwenden, weil es als Start eines Kommentars angesehen wird. Sie definieren stattdessen
+    eine $USER$-Variable in der Ressource-Datei und benutzen diese in Ihrer Definition.</p>
+
+    <p>Ressource File</p>
+<pre class="programlisting">$USER255$=;</pre>
+<p>Command-Definition</p>
+<pre class="programlisting">define command{
+       command_name   ...
+       command_line   $USER1$/your_plugin "Ein Text mit einem Semikolon ($USER255$)"
+}</pre>
+  </td></tr>
+</table></div>
 
   <p><span class="bold"><strong>On-Demand-Makros</strong></span></p>
 
-  <p>Wenn Sie Host- und Service-Makros in Ihren Befehlsdefinitionen benutzen, dann beziehen sie sich normalerweise auf Werte
-  des Hosts oder Service, für den der Befehl ausgeführt wird. Wenn beispielsweise eine Host-Prüfung für einen Host namens
-  "linuxbox" ausgeführt wird, werden sich all die <a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">Standard-Host-Makros</a> auf Werte für diesen Host
-  beziehen ("linuxbox").</p>
+  <p>Wenn Sie Host- und Service-Makros in Ihren Befehlsdefinitionen benutzen, dann beziehen sie sich normalerweise auf Werte des Hosts
+  oder Service, für den der Befehl ausgeführt wird. Wenn beispielsweise eine Host-Prüfung für einen Host namens "linuxbox" ausgeführt wird,
+  werden sich all die <a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">Standard-Host-Makros</a> auf Werte für diesen Host beziehen ("linuxbox").</p>
 
   <p>Wenn Sie möchten, dass sich die Werte eines Befehls auf einen anderen Host oder Service beziehen (für den der Befehl nicht
-  ausgeführt wird), dann können Sie die sogenannten "On-Demand-Makros" benutzen. On-Demand-Makros sehen wie normale Makros aus,
-  außer der Tatsache, dass sie einen Bezeichner für den Host oder Service enthalten, von dem sie ihren Wert erhalten sollen. Hier
-  das grundsätzliche Format von On-Demand-Makros:</p>
+  ausgeführt wird), dann können Sie die sogenannten "On-Demand-Makros" benutzen. On-Demand-Makros sehen wie normale Makros aus, außer der
+  Tatsache, dass sie einen Bezeichner für den Host oder Service enthalten, von dem sie ihren Wert erhalten sollen. Hier das grundsätzliche
+  Format von On-Demand-Makros:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -121,15 +147,15 @@
     </li>
 </ul></div>
 
-  <p>Ersetzen Sie <span class="emphasis"><em>HOSTMACRONAME</em></span> und <span class="emphasis"><em>SERVICEMACRONAME</em></span> durch den Namen eines der
-  Standard-Host- oder Service-Makros, die <a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">hier</a> zu finden sind.</p>
+  <p>Ersetzen Sie <span class="emphasis"><em>HOSTMACRONAME</em></span> und <span class="emphasis"><em>SERVICEMACRONAME</em></span> durch den Namen eines der Standard-Host-
+  oder Service-Makros, die <a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">hier</a> zu finden sind.</p>
 
   <p>Beachten Sie, dass der Makroname durch einen Doppelpunkt (:) vom Host- oder Service-Bezeichner getrennt ist. Für
-  On-Demand-Service-Makros besteht der Service-Bezeichner aus einem Host-Namen und einer Service-Beschreibung - sie sind ebenfalls
-  durch einen Doppelpunkt (:) voneinander getrennt.</p>
+  On-Demand-Service-Makros besteht der Service-Bezeichner aus einem Host-Namen und einer Service-Beschreibung - sie sind ebenfalls durch
+  einen Doppelpunkt (:) voneinander getrennt.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: On-Demand-Service-Makros können ein leeres Host-Namen-Feld enthalten. In diesem Fall wird
-  automatisch der Name des Hosts benutzt, der mit dem Service verbunden ist.</p>
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: On-Demand-Service-Makros können ein leeres Host-Namen-Feld enthalten. In diesem Fall wird automatisch der
+  Name des Hosts benutzt, der mit dem Service verbunden ist.</p>
 
   <p>Beispiele für On-Demand-Host- und Service-Makros folgen:</p>
 
@@ -146,9 +172,9 @@
 
   <p><span class="bold"><strong>On-Demand-Gruppen-Makros</strong></span></p>
 
-  <p>Sie können die Werte eines Makros über alle Kontakte, Hosts oder Services in einer bestimmten Gruppe mit einem speziellen
-  Format Ihrer On-Demand-Makrodeklaration erhalten. Sie tun dies, indem Sie auf eine bestimmte Hostgruppe, Servicegruppe oder
-  Kontaktgruppe in einem On-Demand-Makro verweisen und zwar wie folgt:</p>
+  <p>Sie können die Werte eines Makros über alle Kontakte, Hosts oder Services in einer bestimmten Gruppe mit einem speziellen Format
+  Ihrer On-Demand-Makrodeklaration erhalten. Sie tun dies, indem Sie auf eine bestimmte Hostgruppe, Servicegruppe oder Kontaktgruppe in
+  einem On-Demand-Makro verweisen und zwar wie folgt:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -162,9 +188,9 @@
     </li>
 </ul></div>
 
-  <p>Ersetzen Sie <span class="emphasis"><em>HOSTMACRONAME</em></span>, <span class="emphasis"><em>SERVICEMACRONAME</em></span> und
-  <span class="emphasis"><em>CONTACTMACRONAME</em></span> durch den Namen eines der Standard-Host-, Service- oder Kontaktmakros, die Sie <a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">hier</a> finden. Der Begrenzer (delimiter), den Sie angeben, wird benutzt, um Makrowerte der einzelnen
-  Gruppenmitglieder von einander zu trennen.</p>
+  <p>Ersetzen Sie <span class="emphasis"><em>HOSTMACRONAME</em></span>, <span class="emphasis"><em>SERVICEMACRONAME</em></span> und <span class="emphasis"><em>CONTACTMACRONAME</em></span>
+  durch den Namen eines der Standard-Host-, Service- oder Kontaktmakros, die Sie <a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">hier</a> finden. Der Begrenzer
+  (delimiter), den Sie angeben, wird benutzt, um Makrowerte der einzelnen Gruppenmitglieder von einander zu trennen.</p>
 
   <p>Das folgende Makro wird beispielsweise eine komma-separierte Liste von Host-Status-IDs zurückliefern, die Mitglieder der
   <span class="emphasis"><em>hg1</em></span>-Hostgruppe sind:</p>
@@ -201,14 +227,14 @@
         ...
         }</pre>
 
-  <p>Die Benutzervariable _MACADRESS wäre in einem Makro <span class="color"><font color="red">$_HOSTMACADDRESS$</font></span>
-  verfügbar. Weitere Informationen zu Benutzervariablen und wie sie in Makros eingesetzt werden können, finden Sie <a class="link" href="customobjectvars.html" title="3.5. Maßgeschneiderte Objektvariablen">hier</a>.</p>
+  <p>Die Benutzervariable _MACADRESS wäre in einem Makro <span class="color"><font color="red">$_HOSTMACADDRESS$</font></span> verfügbar.
+  Weitere Informationen zu Benutzervariablen und wie sie in Makros eingesetzt werden können, finden Sie <a class="link" href="customobjectvars.html" title="3.5. Maßgeschneiderte Objektvariablen">hier</a>.</p>
 
   <p><span class="bold"><strong>Makrobereinigung</strong></span></p>
 
-  <p>Einige Makros werden von potenziell gefährlichen Shell-Metazeichen bereinigt, bevor Ersetzungen in Befehlen stattfinden.
-  Welche Zeichen aus den Makros entfernt werden, hängt von den Einstellungen der <a class="link" href="configmain.html#configmain-illegal_macro_output_chars">illegal_macro_output_chars</a>-Direktive ab. Die folgenden Makros werden von
-  potenziell gefährlichen Zeichen bereinigt:</p>
+  <p>Einige Makros werden von potenziell gefährlichen Shell-Metazeichen bereinigt, bevor Ersetzungen in Befehlen stattfinden. Welche
+  Zeichen aus den Makros entfernt werden, hängt von den Einstellungen der <a class="link" href="configmain.html#configmain-illegal_macro_output_chars">illegal_macro_output_chars</a>-Direktive ab. Die folgenden Makros werden von potenziell
+  gefährlichen Zeichen bereinigt:</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -245,17 +271,21 @@
 
   <p><span class="bold"><strong>Makros als Umgebungsvariablen</strong></span></p>
 
-  <p>Die meisten Makros werden als Umgebungsvariablen zur Verfügung gestellt, um einen einfachen Einsatz in Scripts oder
-  Befehlen zu ermöglichen, die von Icinga ausgeführt werden. Aus Gründen der Sicherheit und der Vernunft werden <a class="link" href="macrolist.html#macrolist-user">$USERn$</a> und "on-demand" Host- und Service-Makros <span class="underline">nicht</span> als
+  <p>Die meisten Makros werden als Umgebungsvariablen zur Verfügung gestellt, um einen einfachen Einsatz in Scripts oder Befehlen zu
+  ermöglichen, die von Icinga ausgeführt werden. Aus Gründen der Sicherheit und der Vernunft werden <a class="link" href="macrolist.html#macrolist-user">$USERn$</a> und "on-demand" Host- und Service-Makros <span class="underline">nicht</span> als
   Umgebungsvariablen zur Verfügung gestellt.</p>
 
   <p>Umgebungsvariablen, die Standard-Makros enthalten, werden ebenso wie ihre entsprechenden Makronamen benannt (<a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">hier</a> aufgeführt), wobei ihnen "ICINGA_" vorangestellt wird. Beispielsweise wäre das <a class="link" href="macrolist.html#macrolist-hostname">$HOSTNAME$</a>-Makro als Umgebungsvariable "ICINGA_HOSTNAME" verfügbar.</p>
 
   <p><span class="bold"><strong>Verfügbare Makros</strong></span></p>
 
-  <p>Eine Liste aller in Icinga verfügbaren Makros sowie eine Tabelle, wann sie eingesetzt werden können, finden Sie
-  <a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">hier</a>.</p>
-  <a class="indexterm" name="id1579071"></a>
+  <p>Eine Liste aller in Icinga verfügbaren Makros sowie eine Tabelle, wann sie eingesetzt werden können, finden Sie <a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">hier</a>.</p>
+
+  <a class="indexterm" name="id1565878"></a>
+
+  <a class="indexterm" name="id1565892"></a>
+
+  <a class="indexterm" name="id1565906"></a>
 </div>
 <div class="navfooter">
 <hr>

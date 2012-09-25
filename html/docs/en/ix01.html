@@ -5,8 +5,8 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
-<link rel="up" href="index.html" title="Icinga Version 1.7 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="index.html" title="Icinga Version 1.8 Documentation">
 <link rel="prev" href="db_changes.html" title="12.6. Database changes/alterations">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
@@ -25,7 +25,7 @@
 </div>
 <div class="index" title="Index">
 <div class="titlepage"><div><div><h2 class="title">
-<a name="id1648774"></a>Index</h2></div></div></div>
+<a name="id1681760"></a>Index</h2></div></div></div>
 <div class="index">
 <div class="indexdiv">
 <h3>A</h3>
@@ -332,6 +332,8 @@
 </dt>
 <dt>input, <a class="indexterm" href="cgiparams.html#cgiparams-input">Information On CGI parameters</a>
 </dt>
+<dt>item_name, <a class="indexterm" href="cgiparams.html#cgiparams-item_name">Information On CGI parameters</a>
+</dt>
 <dt>jsonoutput, <a class="indexterm" href="cgiparams.html#cgiparams-jsonoutput">Information On CGI parameters</a>
 </dt>
 <dt>limit, <a class="indexterm" href="cgiparams.html#cgiparams-limit">Information On CGI parameters</a>
@@ -358,6 +360,8 @@
 </dt>
 <dt>oldestfirst, <a class="indexterm" href="cgiparams.html#cgiparams-oldestfirst">Information On CGI parameters</a>
 </dt>
+<dt>order, <a class="indexterm" href="cgiparams.html#cgiparams-order">Information On CGI parameters</a>
+</dt>
 <dt>performance_data, <a class="indexterm" href="cgiparams.html#cgiparams-performance_data">Information On CGI parameters</a>
 </dt>
 <dt>persistent, <a class="indexterm" href="cgiparams.html#cgiparams-persistent">Information On CGI parameters</a>
@@ -377,6 +381,8 @@
 <dt>sched_dly, <a class="indexterm" href="cgiparams.html#cgiparams-sched_dly">Information On CGI parameters</a>
 </dt>
 <dt>sday, <a class="indexterm" href="cgiparams.html#cgiparams-sday">Information On CGI parameters</a>
+</dt>
+<dt>search_string, <a class="indexterm" href="cgiparams.html#cgiparams-search_string">Information On CGI parameters</a>
 </dt>
 <dt>send_notification, <a class="indexterm" href="cgiparams.html#cgiparams-send_notification">Information On CGI parameters</a>
 </dt>
@@ -433,6 +439,10 @@
 <dt>timeperiod, <a class="indexterm" href="cgiparams.html#cgiparams-timeperiod">Information On CGI parameters</a>
 </dt>
 <dt>trigger, <a class="indexterm" href="cgiparams.html#cgiparams-trigger">Information On CGI parameters</a>
+</dt>
+<dt>ts_end, <a class="indexterm" href="cgiparams.html#cgiparams-ts_end">Information On CGI parameters</a>
+</dt>
+<dt>ts_start, <a class="indexterm" href="cgiparams.html#cgiparams-ts_start">Information On CGI parameters</a>
 </dt>
 <dt>type, <a class="indexterm" href="cgiparams.html#cgiparams-type">Information On CGI parameters</a>
 </dt>
@@ -1829,6 +1839,10 @@
 </dt>
 <dt>Understanding Macros and How They Work, <a class="indexterm" href="macros.html#macro_overview">Understanding Macros and How They Work</a>
 </dt>
+<dt>Using bang (!) characters, <a class="indexterm" href="macros.html#macros-bang">Understanding Macros and How They Work</a>
+</dt>
+<dt>Using semicolon (;) characters, <a class="indexterm" href="macros.html#macros-semicolon">Understanding Macros and How They Work</a>
+</dt>
 </dl></dd>
 <dt>Main Configuration File Options, <a class="indexterm" href="configmain.html#config_main">Main Configuration File Options</a>
 </dt>
@@ -2074,13 +2088,13 @@
 </dt></dl></dd>
 <dt>Plugins</dt>
 <dd><dl>
+<dt>Hints how to execute plugins, <a class="indexterm" href="plugins.html#plugins-hints">Icinga Plugins</a>
+</dt>
 <dt>Icinga Plugin API, <a class="indexterm" href="pluginapi.html#plugin_api">Icinga Plugin API</a>
 </dt>
 <dt>Icinga Plugins, <a class="indexterm" href="plugins.html#Icinga_plugins">Icinga Plugins</a>
 </dt>
-<dt>Integrating a new plugin, <a class="indexterm" href="plugins.html#plugins-hints">Icinga Plugins</a>
-</dt>
-<dt>Plugins and macros, <a class="indexterm" href="plugins.html#plugins-hints">Icinga Plugins</a>
+<dt>Integrating a new plugin, <a class="indexterm" href="plugins.html#plugins-new_plugin">Icinga Plugins</a>
 </dt>
 </dl></dd>
 <dt>PNP4Nagios, <a class="indexterm" href="addons.html#addons-vis">Icinga Addons</a>
@@ -2602,7 +2616,7 @@
 </dt></dl></dd>
 <dt>What is Icinga?, <a class="indexterm" href="about.html#whatsicinga">About Icinga</a>
 </dt>
-<dt>What's new in Icinga, <a class="indexterm" href="whatsnew.html">What's New in Icinga 1.7</a>
+<dt>What's new in Icinga, <a class="indexterm" href="whatsnew.html">What's New in Icinga 1.8</a>
 </dt>
 <dt>Wiki</dt>
 <dd><dl><dt>HowTo's, <a class="indexterm" href="howtos.html">Links to other published Howtos</a>
