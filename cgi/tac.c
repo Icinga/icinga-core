@@ -70,6 +70,7 @@ extern int show_tac_header;
 extern int show_tac_header_pending;
 extern int embedded;
 extern int refresh;
+extern int refresh_type;
 extern int display_header;
 extern int daemon_check;
 extern int tac_header;
@@ -1216,7 +1217,7 @@ void display_tac_overview(void) {
 
 		printf("<tr>\n");
 		printf("<td nowrap='nowrap'><img src='%s%s' alt='Hosts' width='16' height='16' align='right' /></td>\n", url_images_path, TAC_HEADER_HOST_ICON);
-		printf("<td><table width='92%%' border='0'>\n");
+		printf("<td><table width='95%%' border='0'>\n");
 
 		/* 1. Row Hosts */
 		printf("<tr>\n");
@@ -1306,6 +1307,12 @@ void display_tac_overview(void) {
 		printf("<a target='main' href='%s?host=all&style=hostdetail' title='%s'> %d TOTAL </a></div>\n", STATUS_CGI, TAC_TITLE_HOST_ALL, total_hosts);
 		printf("</div>\n");
 		printf("</td>\n");
+
+		if (refresh_type == JAVASCRIPT_REFRESH) {
+			printf("<td nowrap align=center>\n");
+			printf("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='#' onClick='icinga_do_refresh(); return false;'><img src='%s%s' border=0 style='margin-bottom:-2px;'></a>\n", url_images_path, RELOAD_ICON);
+			printf("</td>\n");
+		}
 
 		printf("</tr>\n");
 		printf("</table></td>\n");

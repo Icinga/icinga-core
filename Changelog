@@ -50,6 +50,7 @@ ENHANCEMENTS
 * classic ui: Cleaned up "linkBox" in all cgi's #3154 - RB
 * classic ui: add command to delete host downtime and all associated service downtimes (extinfo.cgi, status.cgi command drop down) - RD/MF
 * classic ui: Added config option to convert login username to lower case #3171 - AH
+* classic ui: Added a refresh button to tac.cgi in header mode #3164 - RB
 
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
 * idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
