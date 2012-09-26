@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.8. Icinga aktualisieren</title>
+<title>2.9. Icinga aktualisieren</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="howtos.html" title="2.7. Links zu weiteren Howtos">
-<link rel="next" href="upgrading_idoutils.html" title="2.9. IDOUtils-Datenbank aktualisieren">
+<link rel="prev" href="howtos.html" title="2.8. Links zu weiteren Howtos">
+<link rel="next" href="upgrading_idoutils.html" title="2.10. IDOUtils-Datenbank aktualisieren">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.8. Icinga aktualisieren</th></tr>
+<tr><th colspan="3" align="center">2.9. Icinga aktualisieren</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="howtos.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="2.8. Icinga aktualisieren">
+<div class="section" title="2.9. Icinga aktualisieren">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="upgrading"></a>2.8. Icinga aktualisieren</h2></div></div></div>
+<a name="upgrading"></a>2.9. Icinga aktualisieren</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Inhalt</strong></span></p>
@@ -47,7 +47,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>Wenn Sie die IDOUtils benutzen, dann müssen Sie auch diese aktualisieren. Weitere Informationen finden Sie im Abschnitt
-    <a class="link" href="upgrading_idoutils.html" title="2.9. IDOUtils-Datenbank aktualisieren">IDOUtils-Datenbank aktualisieren</a>.</p>
+    <a class="link" href="upgrading_idoutils.html" title="2.10. IDOUtils-Datenbank aktualisieren">IDOUtils-Datenbank aktualisieren</a>.</p>
   </td></tr>
 </table></div>
 
@@ -150,12 +150,12 @@
 
   <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org//" target="_top">http://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
 
-  <pre class="screen"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.7</em></span>.tar.gz</pre>
+  <pre class="screen"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><em>1.8</em></span>.tar.gz</pre>
 
   <p>Entpacken Sie das Quellcode-Archiv.</p>
 
-  <pre class="screen"> #&gt; tar xzf icinga-<span class="emphasis"><em>1.7</em></span>.tar.gz
- #&gt; cd icinga-<span class="emphasis"><em>1.7</em></span> </pre>
+  <pre class="screen"> #&gt; tar xzf icinga-<span class="emphasis"><em>1.8</em></span>.tar.gz
+ #&gt; cd icinga-<span class="emphasis"><em>1.8</em></span> </pre>
 
   <p>Starten Sie das Icinga-configure-Script mit den Optionen, die Sie beim <code class="code">./configure</code> von Nagios benutzt
   haben. Den Aufruf finden Sie in der Datei <code class="filename">config.log</code>. Beispiel:</p>
@@ -248,9 +248,9 @@
 
   <p><a name="upgrading-nagios2x"></a> <span class="bold"><strong>Upgrade von Nagios 2.x</strong></span></p>
 
-  <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.7 zu aktualisieren. Die Aktualisierung ist
+  <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.8 zu aktualisieren. Die Aktualisierung ist
   im Wesentlichen die gleiche wie die von bestehenden Nagios 3.x-Versionen. Allerdings müssen Sie Ihre Konfigurationsdateien ein
-  wenig ändern, damit sie mit Icinga 1.7 funktionieren:</p>
+  wenig ändern, damit sie mit Icinga 1.8 funktionieren:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -289,7 +289,7 @@
     </li>
 </ul></div>
 
-  <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="1.2. What's New in Icinga 1.7">Was gibt's Neues</a>"-Abschnitt in der Dokumentation lesen.
+  <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="1.2. What's New in Icinga 1.8">Was gibt's Neues</a>"-Abschnitt in der Dokumentation lesen.
   Er beschreibt all die Änderungen am Icinga-Code.</p>
 
   <p><a name="upgrading-rpm"></a> <span class="bold"><strong>Aktualisierung einer RPM-Installation</strong></span></p>
@@ -356,17 +356,17 @@
   Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder APT-Paket
   entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-  <a class="indexterm" name="id1529781"></a>
+  <a class="indexterm" name="id1528853"></a>
 
-  <a class="indexterm" name="id1529791"></a>
+  <a class="indexterm" name="id1528863"></a>
 
-  <a class="indexterm" name="id1529760"></a>
+  <a class="indexterm" name="id1528832"></a>
 
-  <a class="indexterm" name="id1529816"></a>
+  <a class="indexterm" name="id1528888"></a>
 
-  <a class="indexterm" name="id1529830"></a>
+  <a class="indexterm" name="id1528902"></a>
 
-  <a class="indexterm" name="id1529843"></a>
+  <a class="indexterm" name="id1528916"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -379,9 +379,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">2.7. Links zu weiteren Howtos </td>
+<td width="40%" align="left" valign="top">2.8. Links zu weiteren Howtos </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 2.9. IDOUtils-Datenbank aktualisieren</td>
+<td width="40%" align="right" valign="top"> 2.10. IDOUtils-Datenbank aktualisieren</td>
 </tr>
 </table>
 </div>

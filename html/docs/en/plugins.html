@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
 <link rel="up" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="prev" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="next" href="macros.html" title="5.2. Understanding Macros and How They Work">
@@ -185,7 +185,7 @@
  $&gt; echo $LD_LIBRARY_PATH
  $&gt; echo $PATH</pre>
 
-  <p><span class="bold"><strong>Integrating a new plugin</strong></span></p>
+  <p><a name="plugins-new_plugin"></a><span class="bold"><strong>Integrating a new plugin</strong></span></p>
 
   <p>If you want to integrate a new plugin then please read the documentation (if any) before installing it. It may contain important
   information about the prerequisites like additional packages, (perl) modules and on how to install the plugin together with hints for your
@@ -262,9 +262,9 @@
   <p>Starting with Icinga 1.6 the classic UI allows to inspect the raw command line including values from
   <code class="filename">resource.cfg</code>. Clicking on "ACTIVE" next to "Check type" within host/service check details will give access to this
   information. If you don't have defined a check yet choose "View Config" from the main menu on the left, then "Command expansion". Please
-  note that the user has to be permitted explicitly using the directive <a class="link" href="configcgi.html#configcgi-authorized_for_full_command_resolution">authorized_for_full_command_resolution</a> in
-  <code class="filename">cgi.cfg</code> to see the values of variables from <code class="filename">resource.cfg</code>. The user running the web server must
-  have read access on this file, too.</p>
+  note that the user has to be permitted explicitly using the directive <a class="link" href="configcgi.html#configcgi-authorized_for_full_command_resolution">authorized_for_full_command_resolution</a> in <code class="filename">cgi.cfg</code>
+  to see the values of variables from <code class="filename">resource.cfg</code>. The user running the web server must have read access on this file,
+  too.</p>
 
   <p>If you intend to log the raw command line then change some directives in <code class="filename">icinga.cfg</code> to the following
   values</p>
@@ -462,13 +462,13 @@
 
   <p>You can find information on the technical aspects of plugins, as well as how to go about creating your own custom plugins <a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">here</a>.</p>
 
-  <a class="indexterm" name="id1544482"></a>
+  <a class="indexterm" name="id1372498"></a>
 
-  <a class="indexterm" name="id1544493"></a>
+  <a class="indexterm" name="id1372511"></a>
 
-  <a class="indexterm" name="id1544465"></a>
+  <a class="indexterm" name="id1372521"></a>
 
-  <a class="indexterm" name="id1544518"></a>
+  <a class="indexterm" name="id1372535"></a>
 </div>
 <div class="navfooter">
 <hr>

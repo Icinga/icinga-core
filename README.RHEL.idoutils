@@ -57,7 +57,7 @@ mysql>  GRANT USAGE ON icinga.* TO 'icinga'@'localhost'
           MAX_CONNECTIONS_PER_HOUR 0
           MAX_UPDATES_PER_HOUR 0;
 
-mysql>  GRANT SELECT , INSERT , UPDATE , DELETE, DROP, CREATE VIEW
+mysql>  GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
           ON icinga.* TO 'icinga'@'localhost';
 
 mysql>  FLUSH PRIVILEGES;
