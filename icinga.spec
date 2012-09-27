@@ -371,7 +371,6 @@ fi
 %{_datadir}/%{name}/media
 %{_datadir}/%{name}/menu.html
 %{_datadir}/%{name}/robots.txt
-%{_datadir}/%{name}/sidebar.html
 %{_datadir}/%{name}/ssi
 %{_datadir}/%{name}/stylesheets
 %{_datadir}/%{name}/jquery-ui

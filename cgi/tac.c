@@ -1473,7 +1473,7 @@ void display_tac_overview(void) {
 		printf("</table></td>\n");
 
 		/* Monitor Performance */
-		printf("<td width='460px' style='background-image: url(%s%s)'><table width='280px' border='0' align='right' class='tacheader-monitor-performance-container'>\n", url_images_path, TAC_HEADER_LOGO);
+		printf("<td width='460px' height='70px' style='background-image: url(%s%s)'><table width='280px' border='0' align='right' class='tacheader-monitor-performance-container'>\n", url_images_path, TAC_HEADER_LOGO);
 		printf("<tr>\n");
 		printf("<td><img src='%s%s' width='16' height='16' alt='Hosts (active/passive)' /></td>\n", url_images_path, TAC_HEADER_HOST_ICON);
 		printf("<td>\n");

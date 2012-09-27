@@ -6,9 +6,9 @@
 	<meta name="robots" content="noindex, nofollow" />
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 </head>
-	<frameset frameborder="0" framespacing="0" rows="66,*" onLoad='document.title="Icinga: "+window.location.hostname;'>
+	<frameset frameborder="0" framespacing="0" rows="72,*" onLoad='document.title="Icinga: "+window.location.hostname;'>
 		<frame src="@cgiurl@/tac.cgi?tac_header" name="top" target="main" scrolling="no" />
-		<frameset frameborder="0" framespacing="0" cols="220,*">
+		<frameset frameborder="0" framespacing="0" cols="200,*">
 			<frame src="menu.html" name="menu" target="main" scrolling="auto"/>
 			<frame src="@mainurl@" name="main" />
 		</frameset>
