@@ -7,6 +7,7 @@ Classic-UI JSON Change Log
 * changed service or description -> service_description  !!!!
 * added host_display_name and service_display_name to every json output!
 * added host_has_been_acknowledged and service_has_been_acknowledged to extinfo.cgi #3000
+* added state_type to host and service status in status.cgi #3195
 
 1.7.1 - only values added, no existing values changed
 * added host_display_name to host and service status data
