@@ -1,23 +1,23 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>3.3. Überblick Objektkonfiguration</title>
+<title>3.2. Überblick Objektkonfiguration</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
-<link rel="prev" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">
-<link rel="next" href="objectdefinitions.html" title="3.4. Objektdefinitionen">
+<link rel="prev" href="config.html" title="3.1. Konfigurationsüberblick">
+<link rel="next" href="objectdefinitions.html" title="3.3. Objektdefinitionen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">3.3. Überblick Objektkonfiguration</th></tr>
+<tr><th colspan="3" align="center">3.2. Überblick Objektkonfiguration</th></tr>
 <tr>
 <td width="20%" align="left">
-<a accesskey="p" href="configmain.html">Zurück</a> </td>
+<a accesskey="p" href="config.html">Zurück</a> </td>
 <th width="60%" align="center">Kapitel 3. Icinga konfigurieren</th>
 <td width="20%" align="right"> <a accesskey="n" href="objectdefinitions.html">Weiter</a>
 </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="3.3. Überblick Objektkonfiguration">
+<div class="section" title="3.2. Überblick Objektkonfiguration">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="configobject"></a>3.3. Überblick Objektkonfiguration</h2></div></div></div>
+<a name="configobject"></a>3.2. Überblick Objektkonfiguration</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Was sind Objekte?</strong></span></p>
@@ -73,7 +73,7 @@
   <p><span class="bold"><strong>Wo werden Objekte definiert?</strong></span></p>
 
   <p>Objekte können in einer oder mehreren Konfigurationsdateien und/oder Verzeichnissen definiert werden, die Sie mit den
-  <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>- und/oder <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a>-Direktiven in
+  <a class="link" href="../../../../../">cfg_file</a>- und/oder <a class="link" href="../../../../../">cfg_dir</a>-Direktiven in
   der Hauptkonfigurationsdatei angeben.</p>
 
   <p><a name="configobject-include_file"></a></p>
@@ -87,8 +87,8 @@
   mit der Endung <span class="emphasis"><em>.cfg</em></span> einschließen. Diese Direktiven können mehrfach angegeben werden, um mehrere Dateien und/oder
   Verzeichnisse einzuschließen.</p>
   <p>Die Direktiven sind nicht in den eigentlichen Definitionen eines Objektes erlaubt, sondern sollten vor, nach oder zwischen
-  Objektdefinitionen auftreten. Sie sind eng mit den <a class="link" href="configmain.html#configmain-cfg_file">cfg_file=</a>- und
-  <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir=</a>-Direktiven in der Hauptkonfigurationsdatei verwandt.</p>
+  Objektdefinitionen auftreten. Sie sind eng mit den <a class="link" href="../../../../../">cfg_file=</a>- und
+  <a class="link" href="../../../../../">cfg_dir=</a>-Direktiven in der Hauptkonfigurationsdatei verwandt.</p>
   <p>Diese Direktiven können verkettet werden, d.h. eine Objektdefinitionsdatei, die in der Hauptkonfigurationsdatei durch eine
   <span class="bold"><strong>cfg_file=</strong></span>- oder <span class="bold"><strong>cfg_dir=</strong></span>-Direktive eingeschlossen wird, kann
   <span class="bold"><strong>include_file=</strong></span> oder <span class="bold"><strong>include_dir=</strong></span> enthalten, um eine weitere
@@ -104,11 +104,11 @@
 
   <p>Objekte werden in einem flexiblen Vorlagenformat definiert, das es viel einfacher machen kann, Ihre
   Icinga-Konfiguration auf lange Sicht zu verwalten. Grundlegende Informationen, wie Objekte in Ihren Konfigurationsdateien
-  definiert werden, finden Sie <a class="link" href="objectdefinitions.html" title="3.4. Objektdefinitionen">hier</a>.</p>
+  definiert werden, finden Sie <a class="link" href="objectdefinitions.html" title="3.3. Objektdefinitionen">hier</a>.</p>
 
-  <p>Sobald Sie mit den Grundlagen vertraut sind, wie Objekte zu definieren sind, sollten Sie bei <a class="link" href="objectinheritance.html" title="7.25. Objektvererbung">Objektvererbung</a> weiterlesen, weil es Ihre Konfiguration robuster für die Zukunft macht.
+  <p>Sobald Sie mit den Grundlagen vertraut sind, wie Objekte zu definieren sind, sollten Sie bei <a class="link" href="objectinheritance.html" title="7.26. Objektvererbung">Objektvererbung</a> weiterlesen, weil es Ihre Konfiguration robuster für die Zukunft macht.
   Erfahrene Benutzer können einige fortgeschrittene Möglichkeiten der Objektdefinition ausnutzen, die in der Dokumentation zu
-  <a class="link" href="objecttricks.html" title="7.26. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> beschrieben sind.</p>
+  <a class="link" href="objecttricks.html" title="7.27. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> beschrieben sind.</p>
 
   <p><a name="configobject-objectoverview"></a><span class="bold"><strong>Objekte erklärt</strong></span></p>
 
@@ -152,7 +152,7 @@
 
                
             </a> sind Gruppen von einem oder mehreren Hosts. Hostgruppen können es einfacher machen, (1) den Status von in
-          Beziehung stehenden Hosts im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="7.26. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
+          Beziehung stehenden Hosts im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="7.27. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
 </td>
 <td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-hosts.png"></span> </p></td>
 </tr></tbody>
@@ -191,7 +191,7 @@
 
                
             </a> sind Gruppen von einem oder mehreren Services. Servicegruppen können es einfacher machen, (1) den Status von
-          in Beziehung stehenden Services im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="7.26. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
+          in Beziehung stehenden Services im Icinga-Web-Interface anzusehen und (2) Ihre Konfiguration mit Hilfe von <a class="link" href="objecttricks.html" title="7.27. Zeitsparende Tricks für Objektdefinitionen">Objekt-Tricks</a> zu vereinfachen.</p>
 </td>
 <td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/objects-services.png"></span> </p></td>
 </tr></tbody>
@@ -296,26 +296,26 @@
 </tr></tbody>
 </table>
   </div>
-  <a class="indexterm" name="id1551682"></a>
-  <a class="indexterm" name="id1551692"></a>
-  <a class="indexterm" name="id1551701"></a>
-  <a class="indexterm" name="id1551715"></a>
-  <a class="indexterm" name="id1551728"></a>
+  <a class="indexterm" name="id1515866"></a>
+  <a class="indexterm" name="id1515875"></a>
+  <a class="indexterm" name="id1515883"></a>
+  <a class="indexterm" name="id1515895"></a>
+  <a class="indexterm" name="id1515906"></a>
 </div>
 <div class="navfooter">
 <hr>
 <table width="100%" summary="Navigation footer">
 <tr>
 <td width="40%" align="left">
-<a accesskey="p" href="configmain.html">Zurück</a> </td>
+<a accesskey="p" href="config.html">Zurück</a> </td>
 <td width="20%" align="center"><a accesskey="u" href="ch03.html">Nach oben</a></td>
 <td width="40%" align="right"> <a accesskey="n" href="objectdefinitions.html">Weiter</a>
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">3.2. Optionen der Hauptkonfigurationsdatei </td>
+<td width="40%" align="left" valign="top">3.1. Konfigurationsüberblick </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 3.4. Objektdefinitionen</td>
+<td width="40%" align="right" valign="top"> 3.3. Objektdefinitionen</td>
 </tr>
 </table>
 </div>

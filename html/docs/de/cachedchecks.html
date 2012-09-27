@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.20. Zwischengespeicherte Prüfungen</title>
+<title>7.21. Zwischengespeicherte Prüfungen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="dependencychecks.html" title="7.19. Vorausschauende Abhängigkeitsprüfungen">
-<link rel="next" href="passivestatetranslation.html" title="7.21. Passive Host-Zustandsübersetzung">
+<link rel="prev" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">
+<link rel="next" href="passivestatetranslation.html" title="7.22. Passive Host-Zustandsübersetzung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.20. Zwischengespeicherte Prüfungen</th></tr>
+<tr><th colspan="3" align="center">7.21. Zwischengespeicherte Prüfungen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="dependencychecks.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.20. Zwischengespeicherte Prüfungen">
+<div class="section" title="7.21. Zwischengespeicherte Prüfungen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cachedchecks"></a>7.20. Zwischengespeicherte Prüfungen</h2></div></div></div>
+<a name="cachedchecks"></a>7.21. Zwischengespeicherte Prüfungen</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -55,14 +55,14 @@
       <p>wenn nötig als Teil der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Erreichbarkeit</a>s-Logik</p>
     </li>
 <li class="listitem">
-      <p>wenn nötig für <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende Abhängigkeitsprüfungen">vorausschauende Host-Abhängigkeitsprüfungen</a></p>
+      <p>wenn nötig für <a class="link" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">vorausschauende Host-Abhängigkeitsprüfungen</a></p>
     </li>
 </ul></div>
 
   <p>und Service-Prüfungen nach Bedarf treten auf...</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>wenn nötig für <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende Abhängigkeitsprüfungen">vorausschauende Service-Abhängigkeitsprüfungen</a></p>
+      <p>wenn nötig für <a class="link" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">vorausschauende Service-Abhängigkeitsprüfungen</a></p>
     </li></ul></div>
 
   <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Hinweis: Solange Sie keinen Gebrauch von Service-Abhängigkeiten machen, wird Icinga nicht in der Lage sein,
@@ -125,11 +125,11 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Die <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a>-Variable kontrolliert
+      <p>Die <a class="link" href="../../../../../">cached_host_check_horizon</a>-Variable kontrolliert
       zwischengespeicherte Host-Prüfungen.</p>
     </li>
 <li class="listitem">
-      <p>Die <a class="link" href="configmain.html#configmain-cached_service_check_horizon">cached_service_check_horizon</a>-Variable kontrolliert
+      <p>Die <a class="link" href="../../../../../">cached_service_check_horizon</a>-Variable kontrolliert
       zwischengespeicherte Service-Prüfungen.</p>
     </li>
 </ul></div>
@@ -173,7 +173,7 @@
       <p>ein durchschnittliches (regelmäßig geplantes) Host-Prüfintervall von 30 Minuten</p>
     </li>
 <li class="listitem">
-      <p>ein <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a> von 15 Sekunden</p>
+      <p>ein <a class="link" href="../../../../../">cached_host_check_horizon</a> von 15 Sekunden</p>
     </li>
 </ul></div>
 
@@ -197,9 +197,9 @@
   wie die Änderung der horizon-Variablen die zwischengespeicherten Prüf-Statistiken beeinflusst. Ändern und wiederholen Sie, falls
   erforderlich.</p>
 
-  <a class="indexterm" name="id1632401"></a>
+  <a class="indexterm" name="id1603048"></a>
 
-  <a class="indexterm" name="id1632412"></a>
+  <a class="indexterm" name="id1603058"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -212,9 +212,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">7.19. Vorausschauende Abhängigkeitsprüfungen </td>
+<td width="40%" align="left" valign="top">7.20. Vorausschauende Abhängigkeitsprüfungen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 7.21. Passive Host-Zustandsübersetzung</td>
+<td width="40%" align="right" valign="top"> 7.22. Passive Host-Zustandsübersetzung</td>
 </tr>
 </table>
 </div>

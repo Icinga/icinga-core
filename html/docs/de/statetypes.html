@@ -44,7 +44,7 @@
 </ul></div>
 
   <p>Es gibt zwei Statustypen in Icinga: SOFT- und HARD-Zustände. Diese Statustypen sind ein wichtiger Teil der
-  Überwachungslogik, da sie zur Ermittlung dienen, wann <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandler</a> ausgeführt und <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a> zuerst versandt werden.</p>
+  Überwachungslogik, da sie zur Ermittlung dienen, wann <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> ausgeführt und <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a> zuerst versandt werden.</p>
 
   <p>Dieses Dokument beschreibt den Unterschied zwischen SOFT- und HARD-Zuständen, wann sie auftreten und was passiert, wenn
   sie auftreten.</p>
@@ -83,13 +83,13 @@
     </li>
 </ul></div>
 
-  <p>SOFT-Zustände werden nur protokolliert, wenn Sie die <a class="link" href="configmain.html#configmain-log_service_retries">log_service_retries</a>- oder die <a class="link" href="configmain.html#configmain-log_host_retries">log_host_retries</a>-Option in Ihrer Hauptkonfigurationsdatei aktiviert haben.</p>
+  <p>SOFT-Zustände werden nur protokolliert, wenn Sie die <a class="link" href="../../../../../">log_service_retries</a>- oder die <a class="link" href="../../../../../">log_host_retries</a>-Option in Ihrer Hauptkonfigurationsdatei aktiviert haben.</p>
 
   <p>Das einzig Wichtige, was bei einem Soft-Zustand passiert, ist die Ausführung von Eventhandlern. Eventhandler zu benutzen
   kann insbesondere dann nützlich sein, wenn Sie versuchen wollen, proaktiv ein Problem zu lösen, bevor es sich in einen
   HARD-Zustand verwandelt. Die <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a>- oder <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>-Makros werden den Wert "<span class="emphasis"><em>SOFT</em></span>" haben, wenn
   Eventhandler ausgeführt werden, was es Ihren Eventhandlern erlaubt zu wissen, wann sie fehlerbehebende Aktionen vornehmen
-  sollen. Mehr Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">hier</a>.</p>
+  sollen. Mehr Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">hier</a>.</p>
 
   <p><span class="bold"><strong>Hard-Zustände</strong></span></p>
 
@@ -114,7 +114,7 @@
     </li>
 <li class="listitem">
       <p>wenn eine <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passive Host-Prüfung</a> empfangen wird. Passive Host-Prüfungen werden als
-      HARD angesehen, wenn nicht die <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a>-Option aktiviert ist.</p>
+      HARD angesehen, wenn nicht die <a class="link" href="../../../../../">passive_host_checks_are_soft</a>-Option aktiviert ist.</p>
     </li>
 </ul></div>
 
@@ -134,7 +134,7 @@
 
   <p>Die <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> oder <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>-Makros werden den Wert "<span class="emphasis"><em>HARD</em></span>" haben, wenn
   Eventhandler ausgeführt werden, was es Ihren Eventhandlern erlaubt zu wissen, wann sie fehlerbehebende Aktionen vornehmen
-  sollen. Mehr Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">hier</a>.</p>
+  sollen. Mehr Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">hier</a>.</p>
 
   <p><span class="bold"><strong>Beispiel</strong></span></p>
 
@@ -260,7 +260,7 @@
 </tbody>
 </table>
   </div>
-  <a class="indexterm" name="id1601896"></a>
+  <a class="indexterm" name="id1566207"></a>
 </div>
 <div class="navfooter">
 <hr>

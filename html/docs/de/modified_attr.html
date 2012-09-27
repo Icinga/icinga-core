@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.24. Modifizierte Attribute</title>
+<title>7.25. Modifizierte Attribute</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="cgiincludes.html" title="7.23. Angepasste CGI-Kopf- und Fußzeilen">
-<link rel="next" href="objectinheritance.html" title="7.25. Objektvererbung">
+<link rel="prev" href="cgiincludes.html" title="7.24. Angepasste CGI-Kopf- und Fußzeilen">
+<link rel="next" href="objectinheritance.html" title="7.26. Objektvererbung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.24. Modifizierte Attribute</th></tr>
+<tr><th colspan="3" align="center">7.25. Modifizierte Attribute</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="cgiincludes.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.24. Modifizierte Attribute">
+<div class="section" title="7.25. Modifizierte Attribute">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="modified_attr"></a>7.24. <a name="modified-attr"></a>Modifizierte Attribute</h2></div></div></div>
+<a name="modified_attr"></a>7.25. <a name="modified-attr"></a>Modifizierte Attribute</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -35,14 +35,14 @@
   <p>Verschiedene Attribute von Host, Services und Kontakte können während der Laufzeit verändert werden, z.B. beim Deaktivieren von
   Benachrichtigungen über das Web-Interface, wodurch der lokale Standardwert überschrieben wird. Der Core wird <span class="bold"><strong>immer</strong></span> zuerst das modifizierte Attribut benutzen.</p>
 
-  <p>Wenn "<a class="link" href="configmain.html#configmain-retain_state_information">retain_state_information</a>" aktiviert ist (das ist der Standard),
+  <p>Wenn "<a class="link" href="../../../../../">retain_state_information</a>" aktiviert ist (das ist der Standard),
   dann werden diese Änderungen über Neustarts hinweg beibehalten. Falls Sie diese Einstellung deaktivieren, dann gelten die geänderten Werte
   nur bis zum nächsten Neustart.</p>
 
   <p>Neben der automatischen Änderung durch verschiedene Befehle der klassischen Oberfläche können Sie diese Werte auch mit Hilfe von
   <a class="link" href="extcommands.html" title="7.1. Externe Befehle">externen Befehlen</a> anpassen.</p>
 
-  <p><span class="bold"><strong>Liste der externen Befehle zum ändern von Attributen</strong></span> (zu Details siehe <a class="link" href="extcommands2.html" title="11.3. Liste der externen Befehle">Liste der externen Befehle</a>)</p>
+  <p><span class="bold"><strong>Liste der externen Befehle zum ändern von Attributen</strong></span> (zu Details siehe <a class="link" href="extcommands2.html" title="7.2. Liste der externen Befehle">Liste der externen Befehle</a>)</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -107,9 +107,9 @@ enable the eventhandler   8
 #define MODATTR_CUSTOM_VARIABLE                 32768
 #define MODATTR_NOTIFICATION_TIMEPERIOD         65536</pre>
 
-  <a class="indexterm" name="id1634236"></a>
+  <a class="indexterm" name="id1604879"></a>
 
-  <a class="indexterm" name="id1634249"></a>
+  <a class="indexterm" name="id1604894"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -122,9 +122,9 @@ enable the eventhandler   8
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">7.23. Angepasste CGI-Kopf- und Fußzeilen </td>
+<td width="40%" align="left" valign="top">7.24. Angepasste CGI-Kopf- und Fußzeilen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 7.25. Objektvererbung</td>
+<td width="40%" align="right" valign="top"> 7.26. Objektvererbung</td>
 </tr>
 </table>
 </div>

@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.12. Host and Service Dependencies</title>
+<title>7.13. Host and Service Dependencies</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
-<link rel="prev" href="clusters.html" title="7.11. Monitoring Service and Host Clusters">
-<link rel="next" href="stalking.html" title="7.13. State Stalking">
+<link rel="prev" href="clusters.html" title="7.12. Monitoring Service and Host Clusters">
+<link rel="next" href="stalking.html" title="7.14. State Stalking">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.12. Host and Service Dependencies</th></tr>
+<tr><th colspan="3" align="center">7.13. Host and Service Dependencies</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="clusters.html">Prev</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.12. Host and Service Dependencies">
+<div class="section" title="7.13. Host and Service Dependencies">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="dependencies"></a>7.12. <a name="host_srv_dependencies"></a>Host and Service Dependencies</h2></div></div></div>
+<a name="dependencies"></a>7.13. <a name="host_srv_dependencies"></a>Host and Service Dependencies</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Introduction</strong></span></p>
@@ -190,7 +190,7 @@
   will execute the check of the service as it normally would. If even just one of the execution dependencies for a service fails,
   Icinga will temporarily prevent the execution of checks for that (dependent) service. At some point in the future the
   execution dependency tests for the service may all pass. If this happens, Icinga will start checking the service again as
-  it normally would. More information on the check scheduling logic can be found <a class="link" href="checkscheduling.html" title="7.22. Service and Host Check Scheduling">here</a>.</p>
+  it normally would. More information on the check scheduling logic can be found <a class="link" href="checkscheduling.html" title="7.23. Service and Host Check Scheduling">here</a>.</p>
 
   <p>In the example above, <span class="bold"><strong>Service E</strong></span> would have failed execution dependencies if <span class="bold"><strong>Service B</strong></span> is in a WARNING or UNKNOWN state. If this was the case, the service check would not be
   performed and the check would be scheduled for (potential) execution at a later time.</p>
@@ -310,8 +310,8 @@
   repress notifications for that (dependent) host. At some point in the future the notification dependency tests for the host may
   all pass. If this happens, Icinga will start sending out notifications again as it normally would for the host. More
   information on the notification logic can be found <a class="link" href="notifications.html" title="5.11. Notifications">here</a>.</p>
-  <a class="indexterm" name="id1423651"></a>
-  <a class="indexterm" name="id1423656"></a>
+  <a class="indexterm" name="id1634521"></a>
+  <a class="indexterm" name="id1634531"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -324,9 +324,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">7.11. Monitoring Service and Host Clusters </td>
+<td width="40%" align="left" valign="top">7.12. Monitoring Service and Host Clusters </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 7.13. State Stalking</td>
+<td width="40%" align="right" valign="top"> 7.14. State Stalking</td>
 </tr>
 </table>
 </div>
