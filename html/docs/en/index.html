@@ -1,18 +1,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Icinga Version 1.7 Documentation</title>
+<title>Icinga Version 1.8 Documentation</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.7 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
 <link rel="next" href="ch01.html" title="Chapter 1. About">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Icinga Version 1.7 Documentation</th></tr>
+<tr><th colspan="3" align="center">Icinga Version 1.8 Documentation</th></tr>
 <tr>
 <td width="20%" align="left"> </td>
 <th width="60%" align="center"> </th>
@@ -22,24 +22,24 @@
 </table>
 <hr>
 </div>
-<div lang="en" class="book" title="Icinga Version 1.7 Documentation">
+<div lang="en" class="book" title="Icinga Version 1.8 Documentation">
 <div class="titlepage">
 <div>
 <div><h1 class="title">
-<a name="Icinga"></a>Icinga Version 1.7 Documentation</h1></div>
+<a name="Icinga"></a>Icinga Version 1.8 Documentation</h1></div>
 <div><div class="legalnotice" title="Legal Notice">
-<a name="id1487125"></a>
+<a name="id1315026"></a>
       <p>Copyright 2009-2012 Icinga Development Team.</p>
     </div></div>
 <div><div class="legalnotice" title="Legal Notice">
-<a name="id1487101"></a>
+<a name="id1315021"></a>
       <p>Portions copyright © by Nagios/Icinga community members - see the THANKS file in the Icinga core sources for more
       information..</p>
 
       <p>Credits to Yoann LAMY for creating the Vautour Style we use for the Icinga Classic UI</p>
     </div></div>
 <div><div class="legalnotice" title="Legal Notice">
-<a name="id1487273"></a>
+<a name="id1314983"></a>
       <p>Icinga is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software
       Foundation. This gives you legal permission to copy, distribute and/or modify Icinga under certain conditions. Read the
       'LICENSE' file in the Icinga distribution or read the online version of the license for more details.</p>
@@ -48,7 +48,7 @@
       MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</span>”</span></p>
     </div></div>
 <div><div class="legalnotice" title="Legal Notice">
-<a name="id615634"></a>
+<a name="id1315184"></a>
       <p>Nagios is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software
       Foundation. This gives you legal permission to copy, distribute and/or modify Nagios under certain conditions. Read the
       'LICENSE' file in the Nagios distribution or read the online version of the license for more details.</p>
@@ -58,7 +58,7 @@
       contained herein is provided <span class="quote">“<span class="quote">AS IS</span>”</span> with <span class="quote">“<span class="quote">NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN,
       MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</span>”</span></p>
     </div></div>
-<div><p class="pubdate">2012.05.15</p></div>
+<div><p class="pubdate">2012.10.18</p></div>
 <div><div class="revhistory"><table border="1" width="100%" summary="Revision history">
 <tr><th align="left" valign="top" colspan="2"><b>Revision History</b></th></tr>
       <tr>
@@ -89,7 +89,7 @@
 <dt><span class="chapter"><a href="ch01.html">1. About</a></span></dt>
 <dd><dl>
 <dt><span class="section"><a href="about.html">1.1. About Icinga</a></span></dt>
-<dt><span class="section"><a href="whatsnew.html">1.2. What's New in Icinga 1.7</a></span></dt>
+<dt><span class="section"><a href="whatsnew.html">1.2. What's New in Icinga 1.8</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="ch02.html">2. Getting Started</a></span></dt>
 <dd><dl>
@@ -99,16 +99,17 @@
 <dt><span class="section"><a href="quickstart-icinga-freebsd.html">2.4. Icinga Quickstart FreeBSD</a></span></dt>
 <dt><span class="section"><a href="quickstart-idoutils.html">2.5. Icinga with IDOUtils Quickstart</a></span></dt>
 <dt><span class="section"><a href="quickstart-idoutils-freebsd.html">2.6. Icinga and IDOUtils Quickstart on FreeBSD</a></span></dt>
-<dt><span class="section"><a href="howtos.html">2.7. Links to other published Howtos</a></span></dt>
-<dt><span class="section"><a href="upgrading.html">2.8. Upgrading (to) Icinga</a></span></dt>
-<dt><span class="section"><a href="upgrading_idoutils.html">2.9. Upgrading IDOUtils Database</a></span></dt>
-<dt><span class="section"><a href="monitoring-overview.html">2.10. Monitoring Overview</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html">2.11. Monitoring Windows Machines</a></span></dt>
-<dt><span class="section"><a href="monitoring-linux.html">2.12. Monitoring Linux/Unix Machines</a></span></dt>
-<dt><span class="section"><a href="monitoring-netware.html">2.13. Monitoring Netware Servers</a></span></dt>
-<dt><span class="section"><a href="monitoring-printers.html">2.14. Monitoring Network Printers</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html">2.15. Monitoring Routers and Switches</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html">2.16. Monitoring Publicly Available Services</a></span></dt>
+<dt><span class="section"><a href="icinga_packages.html">2.7. Icinga Packages for Linux- Distributions</a></span></dt>
+<dt><span class="section"><a href="howtos.html">2.8. Links to other published Howtos</a></span></dt>
+<dt><span class="section"><a href="upgrading.html">2.9. Upgrading (to) Icinga</a></span></dt>
+<dt><span class="section"><a href="upgrading_idoutils.html">2.10. Upgrading IDOUtils Database</a></span></dt>
+<dt><span class="section"><a href="monitoring-overview.html">2.11. Monitoring Overview</a></span></dt>
+<dt><span class="section"><a href="monitoring-windows.html">2.12. Monitoring Windows Machines</a></span></dt>
+<dt><span class="section"><a href="monitoring-linux.html">2.13. Monitoring Linux/Unix Machines</a></span></dt>
+<dt><span class="section"><a href="monitoring-netware.html">2.14. Monitoring Netware Servers</a></span></dt>
+<dt><span class="section"><a href="monitoring-printers.html">2.15. Monitoring Network Printers</a></span></dt>
+<dt><span class="section"><a href="monitoring-routers.html">2.16. Monitoring Routers and Switches</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html">2.17. Monitoring Publicly Available Services</a></span></dt>
 </dl></dd>
 <dt><span class="chapter"><a href="ch03.html">3. Configuring Icinga</a></span></dt>
 <dd><dl>
@@ -117,21 +118,21 @@
 <dt><span class="section"><a href="configobject.html">3.3. Object Configuration Overview</a></span></dt>
 <dt><span class="section"><a href="objectdefinitions.html">3.4. Object Definitions</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="objectdefinitions.html#id1519118">3.4.1. Host definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1519120">3.4.2. Hostgroup Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1521811">3.4.3. Service Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1522348">3.4.4. Servicegroup Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1524758">3.4.5. Contact Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1525304">3.4.6. Contactgroup Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1526501">3.4.7. Timeperiod Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1526900">3.4.8. Command Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1527354">3.4.9. Servicedependency Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1527754">3.4.10. Serviceescalation Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1528597">3.4.11. Hostdependency Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1529765">3.4.12. Hostescalation Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1530472">3.4.13. Hostextinfo Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1531369">3.4.14. Serviceextinfo Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#id1532230">3.4.15. Module Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1347124">3.4.1. Host definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1347126">3.4.2. Hostgroup Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1349820">3.4.3. Service Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1350359">3.4.4. Servicegroup Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1352764">3.4.5. Contact Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1353318">3.4.6. Contactgroup Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1354516">3.4.7. Timeperiod Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1354911">3.4.8. Command Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1355363">3.4.9. Servicedependency Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1355767">3.4.10. Serviceescalation Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1356609">3.4.11. Hostdependency Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1357776">3.4.12. Hostescalation Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1358479">3.4.13. Hostextinfo Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1359382">3.4.14. Serviceextinfo Definition</a></span></dt>
+<dt><span class="section"><a href="objectdefinitions.html#id1360240">3.4.15. Module Definition</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="customobjectvars.html">3.5. Custom Object Variables</a></span></dt>
 <dt><span class="section"><a href="configcgi.html">3.6. CGI Configuration File Options</a></span></dt>
@@ -238,37 +239,37 @@
 <dd><dl>
 <dt><span class="section"><a href="db_intro.html">12.1. Introduction</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_intro.html#id595538">12.1.1. Purpose</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1620144">12.1.2. Design Overview</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1620234">12.1.3. Instances</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#id1620307">12.1.4. Installation</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#id290952">12.1.1. Purpose</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#id1448669">12.1.2. Design Overview</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#id1448757">12.1.3. Instances</a></span></dt>
+<dt><span class="section"><a href="db_intro.html#id1448829">12.1.4. Installation</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="db_components.html">12.2. Components</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_components.html#id1620333">12.2.1. Overview</a></span></dt>
-<dt><span class="section"><a href="db_components.html#id1620384">12.2.2. IDOMOD</a></span></dt>
-<dt><span class="section"><a href="db_components.html#id1620472">12.2.3. LOG2IDO</a></span></dt>
-<dt><span class="section"><a href="db_components.html#id1620513">12.2.4. FILE2SOCK</a></span></dt>
+<dt><span class="section"><a href="db_components.html#id1448855">12.2.1. Overview</a></span></dt>
+<dt><span class="section"><a href="db_components.html#id1448902">12.2.2. IDOMOD</a></span></dt>
+<dt><span class="section"><a href="db_components.html#id1448988">12.2.3. LOG2IDO</a></span></dt>
+<dt><span class="section"><a href="db_components.html#id1449031">12.2.4. FILE2SOCK</a></span></dt>
 <dt><span class="section"><a href="db_components.html#IDO2DB-description">12.2.IDO2DB. IDO2DB</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="configido.html">12.3. Configuration of IDOUtils</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="configido.html#id1621244">12.3.1. IDOMOD config options</a></span></dt>
-<dt><span class="section"><a href="configido.html#id1621252">12.3.2. IDO2DB config options</a></span></dt>
+<dt><span class="section"><a href="configido.html#id1449768">12.3.1. IDOMOD config options</a></span></dt>
+<dt><span class="section"><a href="configido.html#id1449775">12.3.2. IDO2DB config options</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="db_example-configs.html">12.4. Example Configurations</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_example-configs.html#id1623043">12.4.1. Single Server, Single Instance Setup</a></span></dt>
-<dt><span class="section"><a href="db_example-configs.html#id1626706">12.4.2. Single Server, Multiple Instance Setup</a></span></dt>
-<dt><span class="section"><a href="db_example-configs.html#id1626799">12.4.3. Single Server, Single Instance Log File Import</a></span></dt>
+<dt><span class="section"><a href="db_example-configs.html#id1451570">12.4.1. Single Server, Single Instance Setup</a></span></dt>
+<dt><span class="section"><a href="db_example-configs.html#id1455231">12.4.2. Single Server, Multiple Instance Setup</a></span></dt>
+<dt><span class="section"><a href="db_example-configs.html#id1455322">12.4.3. Single Server, Single Instance Log File Import</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="db_model.html">12.5. IDOUtils Database Model</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_model.html#id1627080">12.5.1. Central Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1627082">12.5.2.  Debugging Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1628023">12.5.3. Historical Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1628025">12.5.4.  Current Status Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#id1628039">12.5.5.  Configuration Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#id1455599">12.5.1. Central Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#id1455601">12.5.2.  Debugging Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#id1456545">12.5.3. Historical Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#id1456547">12.5.4.  Current Status Tables</a></span></dt>
+<dt><span class="section"><a href="db_model.html#id1456561">12.5.5.  Configuration Tables</a></span></dt>
 </dl></dd>
 <dt><span class="section"><a href="db_changes.html">12.6. Database changes/alterations</a></span></dt>
 </dl></dd>
@@ -278,133 +279,133 @@
 <div class="list-of-figures">
 <p><b>List of Figures</b></p>
 <dl>
-<dt>3.1. <a href="configcgi.html#id1539865">Example of new header</a>
+<dt>3.1. <a href="configcgi.html#id1367876">Example of new header</a>
 </dt>
-<dt>6.1. <a href="icinga-web-introduction.html#id1587572">Icinga-Web login screen</a>
+<dt>6.1. <a href="icinga-web-introduction.html#id1416092">Icinga-Web login screen</a>
 </dt>
-<dt>6.2. <a href="icinga-web-introduction.html#id1587603">Icinga-Web overview</a>
+<dt>6.2. <a href="icinga-web-introduction.html#id1416121">Icinga-Web overview</a>
 </dt>
-<dt>6.3. <a href="icinga-web-introduction.html#id1587642">Icinga-Web top menu</a>
+<dt>6.3. <a href="icinga-web-introduction.html#id1416162">Icinga-Web top menu</a>
 </dt>
-<dt>6.4. <a href="icinga-web-introduction.html#id1587678">Icinga-Web live search</a>
+<dt>6.4. <a href="icinga-web-introduction.html#id1416197">Icinga-Web live search</a>
 </dt>
-<dt>6.5. <a href="icinga-web-introduction.html#id1587739">Icinga-Web status cronk</a>
+<dt>6.5. <a href="icinga-web-introduction.html#id1416257">Icinga-Web status cronk</a>
 </dt>
-<dt>6.6. <a href="icinga-web-introduction.html#id1587784">Icinga-Web data cronks</a>
+<dt>6.6. <a href="icinga-web-introduction.html#id1416299">Icinga-Web data cronks</a>
 </dt>
-<dt>6.7. <a href="icinga-web-introduction.html#id1587817">Icinga-Web tactical overview cronks</a>
+<dt>6.7. <a href="icinga-web-introduction.html#id1416333">Icinga-Web tactical overview cronks</a>
 </dt>
-<dt>6.8. <a href="icinga-web-introduction.html#id1587848">Icinga-Web reporting cronk</a>
+<dt>6.8. <a href="icinga-web-introduction.html#id1416364">Icinga-Web reporting cronk</a>
 </dt>
-<dt>6.9. <a href="icinga-web-introduction.html#id1587418">Icinga-Web misc cronks</a>
+<dt>6.9. <a href="icinga-web-introduction.html#id1416400">Icinga-Web misc cronks</a>
 </dt>
-<dt>6.10. <a href="icinga-web-introduction.html#id1587915">Icinga-Web main screen</a>
+<dt>6.10. <a href="icinga-web-introduction.html#id1416438">Icinga-Web main screen</a>
 </dt>
-<dt>6.11. <a href="icinga-web-introduction.html#id1587947">Icinga-Web host status</a>
+<dt>6.11. <a href="icinga-web-introduction.html#id1416473">Icinga-Web host status</a>
 </dt>
-<dt>6.12. <a href="icinga-web-introduction.html#id1587976">Icinga-Web service status</a>
+<dt>6.12. <a href="icinga-web-introduction.html#id1416504">Icinga-Web service status</a>
 </dt>
-<dt>6.13. <a href="icinga-web-introduction.html#id1588006">Icinga-Web hostgroup status</a>
+<dt>6.13. <a href="icinga-web-introduction.html#id1416536">Icinga-Web hostgroup status</a>
 </dt>
-<dt>6.14. <a href="icinga-web-introduction.html#id1588040">Icinga-Web log</a>
+<dt>6.14. <a href="icinga-web-introduction.html#id1416569">Icinga-Web log</a>
 </dt>
-<dt>6.15. <a href="icinga-web-introduction.html#id1588076">Icinga-Web cronk bar</a>
+<dt>6.15. <a href="icinga-web-introduction.html#id1416605">Icinga-Web cronk bar</a>
 </dt>
-<dt>6.16. <a href="icinga-web-introduction.html#id1588125">Icinga-Web cronk bar</a>
+<dt>6.16. <a href="icinga-web-introduction.html#id1416656">Icinga-Web cronk bar</a>
 </dt>
-<dt>6.17. <a href="icinga-web-introduction.html#id1588204">Icinga-Web host commands</a>
+<dt>6.17. <a href="icinga-web-introduction.html#id1416732">Icinga-Web host commands</a>
 </dt>
-<dt>6.18. <a href="icinga-web-introduction.html#id1588236">Icinga-Web service commands</a>
+<dt>6.18. <a href="icinga-web-introduction.html#id1416766">Icinga-Web service commands</a>
 </dt>
-<dt>6.19. <a href="icinga-web-introduction.html#id1588274">Icinga-Web filter restriction</a>
+<dt>6.19. <a href="icinga-web-introduction.html#id1416806">Icinga-Web filter restriction</a>
 </dt>
-<dt>6.20. <a href="icinga-web-introduction.html#id1588302">Icinga-Web filter condition</a>
+<dt>6.20. <a href="icinga-web-introduction.html#id1416834">Icinga-Web filter condition</a>
 </dt>
-<dt>6.21. <a href="icinga-web-introduction.html#id1588328">Icinga-Web filter active</a>
+<dt>6.21. <a href="icinga-web-introduction.html#id1416863">Icinga-Web filter active</a>
 </dt>
-<dt>6.22. <a href="icinga-web-introduction.html#id1588376">Icinga-Web top menu admin</a>
+<dt>6.22. <a href="icinga-web-introduction.html#id1416908">Icinga-Web top menu admin</a>
 </dt>
-<dt>6.23. <a href="icinga-web-introduction.html#id1588406">Icinga-Web user admin</a>
+<dt>6.23. <a href="icinga-web-introduction.html#id1416935">Icinga-Web user admin</a>
 </dt>
-<dt>6.24. <a href="icinga-web-introduction.html#id1588468">Icinga-Web edit user</a>
+<dt>6.24. <a href="icinga-web-introduction.html#id1416993">Icinga-Web edit user</a>
 </dt>
-<dt>6.25. <a href="icinga-web-introduction.html#id1588506">Icinga-Web group admin</a>
+<dt>6.25. <a href="icinga-web-introduction.html#id1417026">Icinga-Web group admin</a>
 </dt>
-<dt>6.26. <a href="icinga-web-introduction.html#id1588535">Icinga-Web groups</a>
+<dt>6.26. <a href="icinga-web-introduction.html#id1417059">Icinga-Web groups</a>
 </dt>
-<dt>6.27. <a href="icinga-web-introduction.html#id1588582">Icinga-Web logs</a>
+<dt>6.27. <a href="icinga-web-introduction.html#id1417102">Icinga-Web logs</a>
 </dt>
-<dt>6.28. <a href="icinga-web-introduction.html#id1588616">Icinga-Web Tasks</a>
+<dt>6.28. <a href="icinga-web-introduction.html#id1417138">Icinga-Web Tasks</a>
 </dt>
-<dt>6.29. <a href="icinga-web-pnp.html#id1588676">PNP4Nagios integrated in Icinga-Web</a>
+<dt>6.29. <a href="icinga-web-pnp.html#id1417195">PNP4Nagios integrated in Icinga-Web</a>
 </dt>
-<dt>7.1. <a href="cachedchecks.html#id1598583">Cached checks</a>
+<dt>7.1. <a href="cachedchecks.html#id1427106">Cached checks</a>
 </dt>
-<dt>8.1. <a href="perfgraphs.html#id1606356">Average Host / Service Check Latency</a>
+<dt>8.1. <a href="perfgraphs.html#id1434885">Average Host / Service Check Latency</a>
 </dt>
-<dt>8.2. <a href="perfgraphs.html#id1606489">Service Statistics</a>
+<dt>8.2. <a href="perfgraphs.html#id1435014">Service Statistics</a>
 </dt>
-<dt>8.3. <a href="perfgraphs.html#id1606573">Host Statistics</a>
+<dt>8.3. <a href="perfgraphs.html#id1435097">Host Statistics</a>
 </dt>
-<dt>8.4. <a href="perfgraphs.html#id1606655">Average Execution Times</a>
+<dt>8.4. <a href="perfgraphs.html#id1435178">Average Execution Times</a>
 </dt>
-<dt>8.5. <a href="perfgraphs.html#id1606759">External Commands</a>
+<dt>8.5. <a href="perfgraphs.html#id1435262">External Commands</a>
 </dt>
-<dt>8.6. <a href="perfgraphs.html#id1606831">External Command Buffers</a>
+<dt>8.6. <a href="perfgraphs.html#id1435354">External Command Buffers</a>
 </dt>
-<dt>8.7. <a href="perfgraphs.html#id1606883">Cached Host and Service Checks</a>
+<dt>8.7. <a href="perfgraphs.html#id1435405">Cached Host and Service Checks</a>
 </dt>
-<dt>8.8. <a href="perfgraphs.html#id1606942">Average State Changes</a>
+<dt>8.8. <a href="perfgraphs.html#id1435452">Average State Changes</a>
 </dt>
-<dt>9.1. <a href="reporting_1.6.html#id1608309">Icinga reporting</a>
+<dt>9.1. <a href="reporting_1.6.html#id1436836">Icinga reporting</a>
 </dt>
-<dt>10.1. <a href="nrpe.html#id1609249">NRPE</a>
+<dt>10.1. <a href="nrpe.html#id1437771">NRPE</a>
 </dt>
-<dt>10.2. <a href="nrpe.html#id1609286">NRPE remote</a>
+<dt>10.2. <a href="nrpe.html#id1437810">NRPE remote</a>
 </dt>
-<dt>10.3. <a href="nsca.html#id1610585">NSCA</a>
+<dt>10.3. <a href="nsca.html#id1439112">NSCA</a>
 </dt>
-<dt>12.1. <a href="db_intro.html#id1620186">Multiple instances</a>
+<dt>12.1. <a href="db_intro.html#id1448710">Multiple instances</a>
 </dt>
-<dt>12.2. <a href="db_intro.html#id1620214">Future development: One Instance, multiple databases</a>
+<dt>12.2. <a href="db_intro.html#id1448736">Future development: One Instance, multiple databases</a>
 </dt>
-<dt>12.3. <a href="db_intro.html#id1620253">Instance names based on geographical locations</a>
+<dt>12.3. <a href="db_intro.html#id1448774">Instance names based on geographical locations</a>
 </dt>
-<dt>12.4. <a href="db_intro.html#id1620277">Instance names based on their purpose</a>
+<dt>12.4. <a href="db_intro.html#id1448799">Instance names based on their purpose</a>
 </dt>
-<dt>12.5. <a href="db_components.html#id1620403">Loaded IDOMOD Event broker Module</a>
+<dt>12.5. <a href="db_components.html#id1448921">Loaded IDOMOD Event broker Module</a>
 </dt>
-<dt>12.6. <a href="db_components.html#id1620434">IDOMOD Capabilities</a>
+<dt>12.6. <a href="db_components.html#id1448951">IDOMOD Capabilities</a>
 </dt>
-<dt>12.7. <a href="db_components.html#id1620491">LOG2IDO Utility</a>
+<dt>12.7. <a href="db_components.html#id1449008">LOG2IDO Utility</a>
 </dt>
-<dt>12.8. <a href="db_components.html#id1620526">FILE2SOCK Utility</a>
+<dt>12.8. <a href="db_components.html#id1449043">FILE2SOCK Utility</a>
 </dt>
-<dt>12.9. <a href="db_components.html#id1620576">IDO2DB Daemon</a>
+<dt>12.9. <a href="db_components.html#id1449094">IDO2DB Daemon</a>
 </dt>
-<dt>12.10. <a href="db_components.html#id1620603">IDO2DB with multiple Clients</a>
+<dt>12.10. <a href="db_components.html#id1449121">IDO2DB with multiple Clients</a>
 </dt>
-<dt>12.11. <a href="db_example-configs.html#id1623062">Single Server, Single Instance Setup</a>
+<dt>12.11. <a href="db_example-configs.html#id1451590">Single Server, Single Instance Setup</a>
 </dt>
-<dt>12.12. <a href="db_example-configs.html#id1626725">Single Server, Multiple Instance Setup</a>
+<dt>12.12. <a href="db_example-configs.html#id1455250">Single Server, Multiple Instance Setup</a>
 </dt>
-<dt>12.13. <a href="db_example-configs.html#id1626836">Single Server, Single Instance Log File Import</a>
+<dt>12.13. <a href="db_example-configs.html#id1455359">Single Server, Single Instance Log File Import</a>
 </dt>
-<dt>12.14. <a href="db_model.html#id1627147">Relationship of Central Tables</a>
+<dt>12.14. <a href="db_model.html#id1455664">Relationship of Central Tables</a>
 </dt>
-<dt>12.15. <a href="db_model.html#id1627583">Relationship of Debugging Tables</a>
+<dt>12.15. <a href="db_model.html#id1456112">Relationship of Debugging Tables</a>
 </dt>
-<dt>12.16. <a href="db_model.html#id1628292">Relationship of Historical Tables</a>
+<dt>12.16. <a href="db_model.html#id1456809">Relationship of Historical Tables</a>
 </dt>
-<dt>12.17. <a href="db_model.html#id1635438">Relationship of Current Status Tables</a>
+<dt>12.17. <a href="db_model.html#id1463974">Relationship of Current Status Tables</a>
 </dt>
-<dt>12.18. <a href="db_model.html#id1640388">Relationship of Configuration Tables</a>
+<dt>12.18. <a href="db_model.html#id1468914">Relationship of Configuration Tables</a>
 </dt>
 </dl>
 </div>
 <div class="list-of-tables">
 <p><b>List of Tables</b></p>
-<dl><dt>6.1. <a href="icinga-web-config.html#id1585695">Configuration files</a>
+<dl><dt>6.1. <a href="icinga-web-config.html#id1414219">Configuration files</a>
 </dt></dl>
 </div>
   
