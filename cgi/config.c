@@ -115,6 +115,7 @@ extern int escape_html_tags;
 extern int extinfo_show_child_hosts;
 extern int highlight_table_rows;
 extern int lock_author_names;
+extern int lowercase_user_name;
 extern int persistent_ack_comments;
 extern int refresh_rate;
 extern int refresh_type;
@@ -234,6 +235,7 @@ int org_extinfo_show_child_hosts;
 int org_first_day_of_week;
 int org_highlight_table_rows;
 int org_lock_author_names;
+int org_lowercase_user_name;
 int org_persistent_ack_comments;
 int org_refresh_rate;
 int org_refresh_type;
@@ -4088,6 +4090,7 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_STRING(http_charset, org_http_charset)
 	PRINT_CONFIG_LINE_STRING(illegal_output_chars, org_illegal_macro_output_chars)
 	PRINT_CONFIG_LINE_INT(lock_author_names, org_lock_author_names, "bool")
+	PRINT_CONFIG_LINE_INT(lowercase_user_name, org_lowercase_user_name, "bool")
 	PRINT_CONFIG_LINE_STRING(main_config_file, org_main_config_file)
 	PRINT_CONFIG_LINE_STRING(nagios_check_command, org_nagios_check_command)
 	PRINT_CONFIG_LINE_STRING(normal_sound, org_normal_sound)
@@ -4527,6 +4530,7 @@ void store_default_settings(void) {
 	org_first_day_of_week = week_starts_on_monday;
 	org_highlight_table_rows = highlight_table_rows;
 	org_lock_author_names = lock_author_names;
+	org_lowercase_user_name = lowercase_user_name;
 	org_persistent_ack_comments = persistent_ack_comments;
 	org_refresh_rate = refresh_rate;
 	org_refresh_type = refresh_type;

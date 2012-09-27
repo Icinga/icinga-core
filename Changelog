@@ -49,6 +49,8 @@ ENHANCEMENTS
 * classic ui: javascript refresh jumps to page top, not restoring previous scrolling position; add url param 'scroll=' #2855 - MF
 * classic ui: Cleaned up "linkBox" in all cgi's #3154 - RB
 * classic ui: add command to delete host downtime and all associated service downtimes (extinfo.cgi, status.cgi command drop down) - RD/MF
+* classic ui: Added config option to convert login username to lower case #3171 - AH
+* classic ui: Added a refresh button to tac.cgi in header mode #3164 - RB
 
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
 * idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
@@ -142,6 +144,7 @@ classic ui: Added/Changed cgi.cfg options
 	** "result_limit" (default: 50) - #2725
 	** "result_limit" replaces "default_num_displayed_log_entries" - #2725
 	** default_expiring_disabled_notifications_duration=86400 #905
+	** lowercase_user_name - #3171
 * classic ui: change strings in json output: !!!IMPORTANT!!!
 	** host -> host_name
 	** service -> service_description
