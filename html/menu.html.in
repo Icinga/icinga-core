@@ -5,7 +5,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta http-equiv="Content-Language" content="en" />
 	<meta name="robots" content="noindex, nofollow" />
-	<link rel="stylesheet" type="text/css" href="stylesheets/interface/menu.css" media="screen, projection" />
+	<link rel="stylesheet" type="text/css" href="stylesheets/menu.css" media="screen, projection" />
 	<link rel="shortcut icon" type="image/x-icon" href="images/favicon.ico" />
 	<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
 	<script type="text/javascript" src="js/menu.js"></script>
@@ -17,7 +17,8 @@
 			<li class="menuli_style1"><a href="main.html" target="main">Home</a></li>
 			<li class="menuli_style2">
 				<div class="flag">Documentation
-					<a class="flag" href="docs/de/index.html" target="main"><img src="docs/images/flags/de.png" /></a><a class="flag" href="docs/en/index.html" target="main"><img src="docs/images/flags/um_gb.png" /></a>
+					<a class="flag" href="docs/de/index.html" target="main"><img src="docs/images/flags/de.png" /></a>
+					<a class="flag" href="docs/en/index.html" target="main"><img src="docs/images/flags/um_gb.png" /></a>
 				</div>
 			</li>
 			<!-- classic search -->
@@ -25,7 +26,7 @@
 			<li class="menuli_style2">
 			<div class="navbarsearch">
 			<form method="get" action="@cgiurl@/status.cgi" target="main">
-			<input type='text' name='search_string' size='20' class="NavBarSearchItem">
+			<input type='text' name='search_string' style="width: 150px; padding: 2px; margin-left: 10px; border: 1px solid grey">
 			</form>
 			</div>
 			</li>

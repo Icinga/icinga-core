@@ -60,6 +60,7 @@ extern char		*default_user_name;
 
 extern int		use_authentication;
 extern int		use_ssl_authentication;
+extern int		lowercase_user_name;
 extern int		show_all_services_host_is_authorized_for;
 
 /* get current authentication information */
@@ -68,6 +69,7 @@ int get_authentication_information(authdata *authinfo) {
 	char temp_data[MAX_INPUT_BUFFER];
 	contact *temp_contact;
 	contactgroup *temp_contactgroup;
+	int i = 0;
 
 	/** BEGIN MACRO declaration */
 
@@ -150,6 +152,11 @@ int get_authentication_information(authdata *authinfo) {
 	/* if we don't have a username yet, then fake the authentication if we find a default username defined */
 	if (temp_ptr == NULL || (!strcmp(temp_ptr, "") && strcmp(default_user_name, "")))
 		temp_ptr = default_user_name;
+
+	if (lowercase_user_name == TRUE) {
+		for (i = 0; i < strlen(temp_ptr); i++)
+			temp_ptr[i] = tolower(temp_ptr[i]);
+	}
 
 	authinfo->username = (char *)malloc(strlen(temp_ptr) + 1);
 

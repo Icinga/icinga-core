@@ -149,6 +149,8 @@ int             persistent_ack_comments = FALSE;
 
 int             use_ssl_authentication = FALSE;
 
+int             lowercase_user_name = FALSE;
+
 int             default_statusmap_layout_method = 0;
 
 int		color_transparency_index_r = 255;
@@ -572,6 +574,9 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "use_ssl_authentication"))
 			use_ssl_authentication = (atoi(val) > 0) ? TRUE : FALSE;
+
+		else if (!strcmp(var, "lowercase_user_name"))
+			lowercase_user_name = (atoi(val) > 0) ? TRUE : FALSE;
 
 		else if (!strcmp(var, "status_show_long_plugin_output"))
 			status_show_long_plugin_output = (atoi(val) > 0) ? TRUE : FALSE;
