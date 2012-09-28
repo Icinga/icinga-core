@@ -157,6 +157,7 @@ typedef struct statusdata_struct {
 	int		checks_enabled;			/**< bool if active checks are enabled */
 	int		accept_passive_checks;		/**< bool if passive checks are enabled */
 	int		is_flapping;			/**< bool if status is flapping */
+	int		state_type;			/**< type of state HARD_STATE / SOFT_STATE */
 	struct statusdata_struct *next;			/**< next statusdata */
 } statusdata;
 
@@ -2667,6 +2668,7 @@ void show_service_detail(void) {
 			printf("\"last_check\": \"%s\", ", temp_status->last_check);
 			printf("\"duration\": \"%s\", ", temp_status->state_duration);
 			printf("\"attempts\": \"%s\", ", temp_status->attempts);
+			printf("\"state_type\": \"%s\", ", (temp_status->state_type == HARD_STATE) ? "HARD" : "SOFT");
 			printf("\"is_flapping\": %s, ", (temp_status->is_flapping == TRUE) ? "true" : "false");
 			printf("\"in_scheduled_downtime\": %s, ", (temp_status->scheduled_downtime_depth > 0) ? "true" : "false");
 			printf("\"active_checks_enabled\": %s, ", (temp_status->checks_enabled == TRUE) ? "true" : "false");
@@ -3120,6 +3122,7 @@ void show_host_detail(void) {
 			printf("\"last_check\": \"%s\", ", temp_statusdata->last_check);
 			printf("\"duration\": \"%s\", ", temp_statusdata->state_duration);
 			printf("\"attempts\": \"%s\", ", temp_statusdata->attempts);
+			printf("\"state_type\": \"%s\", ", (temp_statusdata->state_type == HARD_STATE) ? "HARD" : "SOFT");
 			printf("\"is_flapping\": %s, ", (temp_statusdata->is_flapping == TRUE) ? "true" : "false");
 			printf("\"in_scheduled_downtime\": %s, ", (temp_statusdata->scheduled_downtime_depth > 0) ? "true" : "false");
 			printf("\"active_checks_enabled\": %s, ", (temp_statusdata->checks_enabled == TRUE) ? "true" : "false");
@@ -5871,6 +5874,7 @@ int add_status_data(int status_type, void *data) {
 	int notifications_enabled = FALSE;
 	int checks_enabled = FALSE;
 	int accept_passive_checks = FALSE;
+	int state_type = HARD_STATE;
 
 	if (status_type == HOST_STATUS) {
 
@@ -5904,6 +5908,7 @@ int add_status_data(int status_type, void *data) {
 		checks_enabled = host_status->checks_enabled;
 		accept_passive_checks = host_status->accept_passive_host_checks;
 		is_flapping = host_status->is_flapping;
+		state_type = host_status->state_type;
 
 		plugin_output_short = host_status->plugin_output;
 		plugin_output_long = host_status->long_plugin_output;
@@ -5946,6 +5951,7 @@ int add_status_data(int status_type, void *data) {
 		checks_enabled = service_status->checks_enabled;
 		accept_passive_checks = service_status->accept_passive_service_checks;
 		is_flapping = service_status->is_flapping;
+		state_type = service_status->state_type;
 
 		plugin_output_short = service_status->plugin_output;
 		plugin_output_long = service_status->long_plugin_output;
@@ -6032,6 +6038,7 @@ int add_status_data(int status_type, void *data) {
 	new_statusdata->checks_enabled = checks_enabled;
 	new_statusdata->accept_passive_checks = accept_passive_checks;
 	new_statusdata->is_flapping = is_flapping;
+	new_statusdata->state_type = state_type;
 
 	new_statusdata->plugin_output = (plugin_output == NULL) ? NULL : strdup(plugin_output);
 

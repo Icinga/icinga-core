@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.6. Redundante und Failover-Netzwerk-Überwachung</title>
+<title>7.7. Redundante und Failover-Netzwerk-Überwachung</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="distributed.html" title="7.5. Verteilte Überwachung">
-<link rel="next" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">
+<link rel="prev" href="distributed.html" title="7.6. Verteilte Überwachung">
+<link rel="next" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.6. Redundante und Failover-Netzwerk-Überwachung</th></tr>
+<tr><th colspan="3" align="center">7.7. Redundante und Failover-Netzwerk-Überwachung</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="distributed.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.6. Redundante und Failover-Netzwerk-Überwachung">
+<div class="section" title="7.7. Redundante und Failover-Netzwerk-Überwachung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="redundancy"></a>7.6. Redundante und Failover-Netzwerk-Überwachung</h2></div></div></div>
+<a name="redundancy"></a>7.7. Redundante und Failover-Netzwerk-Überwachung</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -57,7 +57,7 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Implementieren von <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandlern</a> für Hosts und Services</p>
+      <p>Implementieren von <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandlern</a> für Hosts und Services</p>
     </li>
 <li class="listitem">
       <p>Erteilen von <a class="link" href="extcommands.html" title="7.1. Externe Befehle">externen Befehlen</a> an Icinga über Shell-Scripts</p>
@@ -115,13 +115,13 @@
 
   <p><span class="bold"><strong>anfängliche Programmeinstellungen</strong></span></p>
 
-  <p>Auf dem Slave-Host (Host E) wird die ursprüngliche <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktive deaktiviert, so dass dadurch der Versand von
-  Host- oder Service-Benachrichtigungen verhindert wird. Sie sollten auch sicherstellen, dass die <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a>-Direktive deaktiviert ist. Das war einfach
+  <p>Auf dem Slave-Host (Host E) wird die ursprüngliche <a class="link" href="../../../../../">enable_notifications</a>-Direktive deaktiviert, so dass dadurch der Versand von
+  Host- oder Service-Benachrichtigungen verhindert wird. Sie sollten auch sicherstellen, dass die <a class="link" href="../../../../../">check_external_commands</a>-Direktive deaktiviert ist. Das war einfach
   genug...</p>
 
   <p><span class="bold"><strong>anfängliche Konfiguration</strong></span></p>
 
-  <p>Als nächstes sollten wir die Unterschiede zwischen den <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei</a> von
+  <p>Als nächstes sollten wir die Unterschiede zwischen den <a class="link" href="configobject.html" title="3.2. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei</a> von
   Master- und Slave-Host(s) betrachten...</p>
 
   <p>Wir gehen davon aus, dass Sie den Master-Host (Host A) so konfiguriert haben, dass er alle Services auf den gezeigten
@@ -130,7 +130,7 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Die Host-Definition für Host A (in der Host-Konfigurationsdatei von Host E) sollte einen Host-<a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandler</a> enthalten. Der Name für den Host-Eventhandler lautet <span class="color"><font color="red">handle-master-host-event</font></span>.</p>
+      <p>Die Host-Definition für Host A (in der Host-Konfigurationsdatei von Host E) sollte einen Host-<a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> enthalten. Der Name für den Host-Eventhandler lautet <span class="color"><font color="red">handle-master-host-event</font></span>.</p>
     </li>
 <li class="listitem">
       <p>Die Konfigurationsdatei auf Host E enthält einen Service, der den Status des Icinga-Prozesses auf Host A prüft.
@@ -138,7 +138,7 @@
       eine der in den <span class="bold"><strong>FAQ</strong></span> beschriebenen Methoden erfolgen.</p>
     </li>
 <li class="listitem">
-      <p>Die Service-Definition für den Icinga-Prozess auf Host A sollte einen <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandler</a>-Eintrag enthalten. Als Namen für diese Service-Eventhandler wählen wir <span class="color"><font color="red">handle-master-proc-event</font></span>.</p>
+      <p>Die Service-Definition für den Icinga-Prozess auf Host A sollte einen <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a>-Eintrag enthalten. Als Namen für diese Service-Eventhandler wählen wir <span class="color"><font color="red">handle-master-proc-event</font></span>.</p>
     </li>
 </ul></div>
 
@@ -296,7 +296,7 @@
     </li>
 <li class="listitem">
       <p>erhöhen der Frequenz der <a class="link" href="extcommands.html" title="7.1. Externe Befehle">external command</a>-Prüfungen auf Host E. Dies wird erreicht
-      durch die Anpassung der <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a>-Option in der
+      durch die Anpassung der <a class="link" href="../../../../../">command_check_interval</a>-Option in der
       Hauptkonfigurationsdatei.</p>
     </li>
 </ul></div>
@@ -354,16 +354,16 @@
 
   <p><span class="bold"><strong>Initiale Programm-Einstellungen</strong></span></p>
 
-  <p>Deaktivieren Sie aktive Service-Prüfungen und Benachrichtigungen auf dem Slave-Host durch die <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a>- und die <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktiven. Dies wird den Slave-Host davon abhalten,
+  <p>Deaktivieren Sie aktive Service-Prüfungen und Benachrichtigungen auf dem Slave-Host durch die <a class="link" href="../../../../../">execute_service_checks</a>- und die <a class="link" href="../../../../../">enable_notifications</a>-Direktiven. Dies wird den Slave-Host davon abhalten,
   Services und Hosts zu überwachen und Benachrichtigungen zu versenden, während der Icinga-Prozess auf dem Master-Host noch
-  läuft. Stellen Sie außerdem sicher, dass die <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a>-Direktive auf dem Slave-Host aktiviert ist.</p>
+  läuft. Stellen Sie außerdem sicher, dass die <a class="link" href="../../../../../">check_external_commands</a>-Direktive auf dem Slave-Host aktiviert ist.</p>
 
   <p><span class="bold"><strong>Master-Prozess-Prüfungen</strong></span></p>
 
   <p>Setzen Sie einen cron-Job auf dem Slave-Host auf, der periodisch (sagen wir jede Minute) läuft und den Status des
   Icinga-Prozesses auf dem Master-Host (mit dem <span class="emphasis"><em>check_nrpe</em></span> auf dem Slave-Host und den <a class="link" href="addons.html#addons-nrpe">nrpe daemon</a> und <span class="emphasis"><em>check_nagios</em></span>-Plugins auf dem Master-Host) prüft. Das Script
   sollte den Return-Code des <span class="emphasis"><em>check_nrpe-Plugins</em></span> prüfen. Falls es einen nicht-OK-Status zurückliefert, sollte
-  das Script den entsprechenden Befehl an das <a class="link" href="configmain.html#configmain-command_file">external command file</a> senden, um
+  das Script den entsprechenden Befehl an das <a class="link" href="../../../../../">external command file</a> senden, um
   sowohl die Benachrichtigungen als auch die aktiven Service-Prüfungen zu aktivieren. Falls das Plugin einen OK-Status
   zurückliefert, sollte das Script Befehle an das external command file senden, um sowohl Benachrichtigungen als auch aktive
   Prüfungen zu deaktivieren.</p>
@@ -380,7 +380,7 @@
   Punkt, den Sie berücksichtigen sollten, damit die Dinge besser laufen.</p>
 
   <p>Das große Problem dabei, wie die Dinge bisher konfiguriert sind, besteht darin, dass der Slave-Host nicht den aktuellen
-  Status von Hosts und Services kennt, wenn er die Überwachung übernimmt. Ein Weg, dieses Problem zu lösen, ist es, die <a class="link" href="configmain.html#configmain-ocsp_command">ocsp command</a>-Option auf dem Master-Host zu aktivieren und alle Service-Prüfergebnisse
+  Status von Hosts und Services kennt, wenn er die Überwachung übernimmt. Ein Weg, dieses Problem zu lösen, ist es, die <a class="link" href="../../../../../">ocsp command</a>-Option auf dem Master-Host zu aktivieren und alle Service-Prüfergebnisse
   mit dem <a class="link" href="addons.html#addons-nsca">nsca Addon</a> an den Slave-Host zu schicken. Der Slave-Host wird dann aktuelle
   Status-Informationen für alle Services haben, wenn er die Überwachung übernimmt. Weil aktive Service-Prüfungen auf dem
   Slave-Host nicht aktiviert sind, werden sie nicht ausgeführt. Host-Prüfungen hingegen werden nach Bedarf ausgeführt. Das
@@ -388,10 +388,10 @@
   darstellen sollte, weil die Mehrzahl der Überwachung Service-Prüfungen betrifft.</p>
 
   <p>Das ist eigentlich alles, was das Setup betrifft.</p>
-  <a class="indexterm" name="id1625946"></a>
-  <a class="indexterm" name="id1625956"></a>
-  <a class="indexterm" name="id1625967"></a>
-  <a class="indexterm" name="id1625977"></a>
+  <a class="indexterm" name="id1596590"></a>
+  <a class="indexterm" name="id1596601"></a>
+  <a class="indexterm" name="id1596611"></a>
+  <a class="indexterm" name="id1596621"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -404,9 +404,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">7.5. Verteilte Überwachung </td>
+<td width="40%" align="left" valign="top">7.6. Verteilte Überwachung </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 7.7. Erkennung und Behandlung von Status-Flattern</td>
+<td width="40%" align="right" valign="top"> 7.8. Erkennung und Behandlung von Status-Flattern</td>
 </tr>
 </table>
 </div>

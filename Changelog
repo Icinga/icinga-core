@@ -51,6 +51,7 @@ ENHANCEMENTS
 * classic ui: add command to delete host downtime and all associated service downtimes (extinfo.cgi, status.cgi command drop down) - RD/MF
 * classic ui: Added config option to convert login username to lower case #3171 - AH
 * classic ui: Added a refresh button to tac.cgi in header mode #3164 - RB
+* classic ui: Added state type to JSON in status.cgi #3195 - RB
 
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
 * idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
@@ -147,11 +148,13 @@ classic ui: Added/Changed cgi.cfg options
 	** default_expiring_disabled_notifications_duration=86400 #905
 	** lowercase_user_name - #3171
 * classic ui: change strings in json output: !!!IMPORTANT!!!
-	** host -> host_name
-	** service -> service_description
-	** description -> service_description
-	** added host_display_name
-	** added service_display_name
+	** host -> host_name #2693
+	** service -> service_description #2693
+	** description -> service_description #2693
+	** added host_display_name #2693
+	** added service_display_name #2693
+	** added host_has_been_acknowledged and service_has_been_acknowledged to extinfo.cgi #3000
+	** added state_type to host and service status in status.cgi #3195
 * classic ui: added checkbox in cmd.cgi to deselect unintentional selected hosts/services #2697
 
 * idoutils: add disable_notif_expire_time to programstatus table #905

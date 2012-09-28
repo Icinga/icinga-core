@@ -1861,7 +1861,7 @@
   colouring as active checks.</p>
 
   <div class="figure">
-<a name="id1367876"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
+<a name="id1572322"></a><p class="title"><b>Figure 3.1. Example of new header</b></p>
 <div class="figure-contents">
     
 
@@ -2212,7 +2212,7 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_full_command_resolution=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt; </strong></span>
+<td><p><span class="bold"><strong>authorized_for_full_command_resolution=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
           </p></td>
 </tr>
 <tr>
@@ -2284,7 +2284,7 @@
   </td></tr>
 </table></div>
 
-  <p><a name="configcgi-result_limit"></a> <span class="bold"><strong>Limit number of page entries to be displayed</strong></span></p>
+  <p><a name="configcgi-result_limit"></a><span class="bold"><strong>Limit number of page entries to be displayed</strong></span></p>
 
   <div class="informaltable">
     <table border="0">
@@ -2295,7 +2295,7 @@
 <tbody>
 <tr>
 <td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>result_limit=&lt;n&gt; </strong></span> </p></td>
+<td><p><span class="bold"><strong>result_limit=&lt;n&gt;</strong></span></p></td>
 </tr>
 <tr>
 <td align="left" valign="top"><p>Example:</p></td>
@@ -2306,7 +2306,7 @@
   </div>
 
   <p>This options specifies the number of page entries displayed by default in various cgi's. To display all entries by default set this
-  value to 0. Default is 50..</p>
+  value to 0. Default is 50.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -2318,137 +2318,173 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id1369143"></a>
+  <p><a name="configcgi-lowercase_user_name"></a><span class="bold"><strong>Convert user name to lowercase</strong></span></p>
 
-  <a class="indexterm" name="id1369153"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td align="left" valign="top"><p>Format:</p></td>
+<td><p><span class="bold"><strong>lowercase_user_name=0|1</strong></span></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>lowercase_user_name=1</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id1369166"></a>
+  <p>This option controls whether or not the username is converted to all lowercase letters. Can be useful if the username is stored in
+  Active Directory (case-insensitive). Default is 1.</p>
 
-  <a class="indexterm" name="id1369180"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>This option is available starting with Icinga 1.8</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id1369193"></a>
+  <a class="indexterm" name="id1573684"></a>
 
-  <a class="indexterm" name="id1369206"></a>
+  <a class="indexterm" name="id1573692"></a>
 
-  <a class="indexterm" name="id1369221"></a>
+  <a class="indexterm" name="id1573704"></a>
 
-  <a class="indexterm" name="id1369234"></a>
+  <a class="indexterm" name="id1573718"></a>
 
-  <a class="indexterm" name="id1369249"></a>
+  <a class="indexterm" name="id1573732"></a>
 
-  <a class="indexterm" name="id1369262"></a>
+  <a class="indexterm" name="id1573746"></a>
 
-  <a class="indexterm" name="id1369276"></a>
+  <a class="indexterm" name="id1573759"></a>
 
-  <a class="indexterm" name="id1369290"></a>
+  <a class="indexterm" name="id1573773"></a>
 
-  <a class="indexterm" name="id1369304"></a>
+  <a class="indexterm" name="id1573787"></a>
 
-  <a class="indexterm" name="id1369318"></a>
+  <a class="indexterm" name="id1573800"></a>
 
-  <a class="indexterm" name="id1369333"></a>
+  <a class="indexterm" name="id1573810"></a>
 
-  <a class="indexterm" name="id1369346"></a>
+  <a class="indexterm" name="id1573828"></a>
 
-  <a class="indexterm" name="id1369360"></a>
+  <a class="indexterm" name="id1573842"></a>
 
-  <a class="indexterm" name="id1369374"></a>
+  <a class="indexterm" name="id1573857"></a>
 
-  <a class="indexterm" name="id1369389"></a>
+  <a class="indexterm" name="id1573867"></a>
 
-  <a class="indexterm" name="id1369402"></a>
+  <a class="indexterm" name="id1573880"></a>
 
-  <a class="indexterm" name="id1369416"></a>
+  <a class="indexterm" name="id1573899"></a>
 
-  <a class="indexterm" name="id1369430"></a>
+  <a class="indexterm" name="id1573913"></a>
 
-  <a class="indexterm" name="id1369445"></a>
+  <a class="indexterm" name="id1573928"></a>
 
-  <a class="indexterm" name="id1369458"></a>
+  <a class="indexterm" name="id1573942"></a>
 
-  <a class="indexterm" name="id1369473"></a>
+  <a class="indexterm" name="id1573956"></a>
 
-  <a class="indexterm" name="id1369486"></a>
+  <a class="indexterm" name="id1573970"></a>
 
-  <a class="indexterm" name="id1369502"></a>
+  <a class="indexterm" name="id1573984"></a>
 
-  <a class="indexterm" name="id1369515"></a>
+  <a class="indexterm" name="id1573998"></a>
 
-  <a class="indexterm" name="id1369529"></a>
+  <a class="indexterm" name="id1574012"></a>
 
-  <a class="indexterm" name="id1369542"></a>
+  <a class="indexterm" name="id1574026"></a>
 
-  <a class="indexterm" name="id1369556"></a>
+  <a class="indexterm" name="id1574041"></a>
 
-  <a class="indexterm" name="id1369570"></a>
+  <a class="indexterm" name="id1574055"></a>
 
-  <a class="indexterm" name="id1369584"></a>
+  <a class="indexterm" name="id1574069"></a>
 
-  <a class="indexterm" name="id1369596"></a>
+  <a class="indexterm" name="id1574083"></a>
 
-  <a class="indexterm" name="id1369608"></a>
+  <a class="indexterm" name="id1574096"></a>
 
-  <a class="indexterm" name="id1369620"></a>
+  <a class="indexterm" name="id1574110"></a>
 
-  <a class="indexterm" name="id1369633"></a>
+  <a class="indexterm" name="id1574124"></a>
 
-  <a class="indexterm" name="id1369647"></a>
+  <a class="indexterm" name="id1574138"></a>
 
-  <a class="indexterm" name="id1369655"></a>
+  <a class="indexterm" name="id1574151"></a>
 
-  <a class="indexterm" name="id1369674"></a>
+  <a class="indexterm" name="id1574165"></a>
 
-  <a class="indexterm" name="id1369687"></a>
+  <a class="indexterm" name="id1574178"></a>
 
-  <a class="indexterm" name="id1369701"></a>
+  <a class="indexterm" name="id1574192"></a>
 
-  <a class="indexterm" name="id1369715"></a>
+  <a class="indexterm" name="id1574205"></a>
 
-  <a class="indexterm" name="id1369729"></a>
+  <a class="indexterm" name="id1574219"></a>
 
-  <a class="indexterm" name="id1369743"></a>
+  <a class="indexterm" name="id1574233"></a>
 
-  <a class="indexterm" name="id1369756"></a>
+  <a class="indexterm" name="id1574246"></a>
 
-  <a class="indexterm" name="id1369770"></a>
+  <a class="indexterm" name="id1574260"></a>
 
-  <a class="indexterm" name="id1369784"></a>
+  <a class="indexterm" name="id1574274"></a>
 
-  <a class="indexterm" name="id1369795"></a>
+  <a class="indexterm" name="id1574288"></a>
 
-  <a class="indexterm" name="id1369808"></a>
+  <a class="indexterm" name="id1574301"></a>
 
-  <a class="indexterm" name="id1369822"></a>
+  <a class="indexterm" name="id1574315"></a>
 
-  <a class="indexterm" name="id1369835"></a>
+  <a class="indexterm" name="id1574330"></a>
 
-  <a class="indexterm" name="id1369848"></a>
+  <a class="indexterm" name="id1574340"></a>
 
-  <a class="indexterm" name="id1369862"></a>
+  <a class="indexterm" name="id1574354"></a>
 
-  <a class="indexterm" name="id1369871"></a>
+  <a class="indexterm" name="id1574367"></a>
 
-  <a class="indexterm" name="id1369890"></a>
+  <a class="indexterm" name="id1574381"></a>
 
-  <a class="indexterm" name="id1369898"></a>
+  <a class="indexterm" name="id1574394"></a>
 
-  <a class="indexterm" name="id1369912"></a>
+  <a class="indexterm" name="id1574407"></a>
 
-  <a class="indexterm" name="id1369926"></a>
+  <a class="indexterm" name="id1574422"></a>
 
-  <a class="indexterm" name="id1369946"></a>
+  <a class="indexterm" name="id1574436"></a>
 
-  <a class="indexterm" name="id1369959"></a>
+  <a class="indexterm" name="id1574450"></a>
 
-  <a class="indexterm" name="id1369973"></a>
+  <a class="indexterm" name="id1574463"></a>
 
-  <a class="indexterm" name="id1369987"></a>
+  <a class="indexterm" name="id1574475"></a>
 
-  <a class="indexterm" name="id1370001"></a>
+  <a class="indexterm" name="id1574489"></a>
 
-  <a class="indexterm" name="id1370010"></a>
+  <a class="indexterm" name="id1574503"></a>
 
-  <a class="indexterm" name="id1370029"></a>
+  <a class="indexterm" name="id1574517"></a>
+
+  <a class="indexterm" name="id1574531"></a>
+
+  <a class="indexterm" name="id1574545"></a>
+
+  <a class="indexterm" name="id1574554"></a>
+
+  <a class="indexterm" name="id1574573"></a>
+
+  <a class="indexterm" name="id1574586"></a>
 </div>
 <div class="navfooter">
 <hr>

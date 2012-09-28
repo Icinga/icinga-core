@@ -37,7 +37,7 @@
   <p>Es gab eine Menge Fragen, wie genau Benachrichtigungen arbeiten. Wir werden versuchen, genau zu erklären, wann und wie Host- und
   Service-Benachrichtigungen versandt werden und ebenso, wer sie bekommt.</p>
 
-  <p>Benachrichtigungs-Eskalationen werden <a class="link" href="escalations.html" title="7.8. Benachrichtigungseskalationen">hier</a> beschrieben.</p>
+  <p>Benachrichtigungs-Eskalationen werden <a class="link" href="escalations.html" title="7.9. Benachrichtigungseskalationen">hier</a> beschrieben.</p>
 
   <p><span class="bold"><strong>Wann erfolgen Benachrichtigungen?</strong></span></p>
 
@@ -76,18 +76,18 @@
   <p><span class="bold"><strong>Programmweite Filter:</strong></span></p>
 
   <p>Der erste Filter, den Benachrichtigungen durchlaufen müssen, ist ein Test, ob Benachrichtigungen auf einer programmweiten Basis
-  aktiviert sind. Dies wird ursprünglich durch die <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Option in der
+  aktiviert sind. Dies wird ursprünglich durch die <a class="link" href="../../../../../">enable_notifications</a>-Option in der
   Hauptkonfigurationsdatei festgelegt, kann aber während der Laufzeit über das Web-Interface verändert werden. Falls Benachrichtigungen auf
   programmweiter Basis deaktiviert sind, werden keine Benachrichtigungen für Hosts oder Services versandt - Punkt. Wenn sie auf
   programmweiter Basis aktiviert sind, müssen weitere Tests durchlaufen werden...</p>
 
   <p><span class="bold"><strong>Service- und Host-Filter:</strong></span></p>
 
-  <p>Der erste Filter für Host- oder Service-Benachrichtigungen ist eine Prüfung, ob sich der Host oder Service in einer <a class="link" href="downtime.html" title="7.15. Geplante Ausfallzeiten">geplanten Ausfallzeit</a> (downtime) befindet. Falls es eine geplante Ausfallzeit ist, <span class="bold"><strong>wird
+  <p>Der erste Filter für Host- oder Service-Benachrichtigungen ist eine Prüfung, ob sich der Host oder Service in einer <a class="link" href="downtime.html" title="7.16. Geplante Ausfallzeiten">geplanten Ausfallzeit</a> (downtime) befindet. Falls es eine geplante Ausfallzeit ist, <span class="bold"><strong>wird
   niemand informiert</strong></span>. Wenn es keine Ausfallzeit ist, geht es weiter zum nächsten Filter. Als kleine Randnotiz:
   Service-Benachrichtigungen werden unterdrückt, falls sich der mit ihnen verbundene Host in einer geplanten Ausfallzeit befindet.</p>
 
-  <p>Der zweite Filter für Host- oder Service-Benachrichtigungenen ist eine Prüfung, ob der Host oder Service <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">flattert</a> (wenn Sie Flatter-Erkennung aktiviert haben). Falls der Service oder Host gerade flattert, <span class="bold"><strong>wird niemand informiert</strong></span>. Andernfalls geht es weiter zum nächsten Filter.</p>
+  <p>Der zweite Filter für Host- oder Service-Benachrichtigungenen ist eine Prüfung, ob der Host oder Service <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">flattert</a> (wenn Sie Flatter-Erkennung aktiviert haben). Falls der Service oder Host gerade flattert, <span class="bold"><strong>wird niemand informiert</strong></span>. Andernfalls geht es weiter zum nächsten Filter.</p>
 
   <p>Der dritte für Hosts oder Services zu durchlaufende Filter sind die Host- oder Service-spezifischen Benachrichtigungsoptionen. Jede
   Service-Definition enthält Optionen, die festlegen, ob Benachrichtungen für Warnungen, kritische Zustände oder Erholungen versandt werden
@@ -189,30 +189,30 @@
 </tr>
 <tr>
 <td><p>FLAPPINGSTART</p></td>
-<td><p>Der Host oder Service hat gerade angefangen zu <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">flattern</a>.</p></td>
+<td><p>Der Host oder Service hat gerade angefangen zu <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">flattern</a>.</p></td>
 </tr>
 <tr>
 <td><p>FLAPPINGSTOP</p></td>
-<td><p>Der Host oder Service hat gerade aufgehört zu <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">flattern</a>.</p></td>
+<td><p>Der Host oder Service hat gerade aufgehört zu <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">flattern</a>.</p></td>
 </tr>
 <tr>
 <td><p>FLAPPINGDISABLED</p></td>
-<td><p>Der Host oder Service hat gerade aufgehört zu <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">flattern</a>, weil die Flatter-Erkennung
+<td><p>Der Host oder Service hat gerade aufgehört zu <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">flattern</a>, weil die Flatter-Erkennung
           deaktiviert wurde.</p></td>
 </tr>
 <tr>
 <td><p>DOWNTIMESTART</p></td>
-<td><p>Der Host oder Service hat gerade ein <a class="link" href="downtime.html" title="7.15. Geplante Ausfallzeiten">geplante Downtime</a> begonnen. Weitere
+<td><p>Der Host oder Service hat gerade ein <a class="link" href="downtime.html" title="7.16. Geplante Ausfallzeiten">geplante Downtime</a> begonnen. Weitere
           Benachrichtigungen werden unterdrückt.</p></td>
 </tr>
 <tr>
 <td><p>DOWNTIMESTOP</p></td>
-<td><p>Der Host oder Service hat gerade eine <a class="link" href="downtime.html" title="7.15. Geplante Ausfallzeiten">geplante Downtime</a> beendet. Benachrichtungen
+<td><p>Der Host oder Service hat gerade eine <a class="link" href="downtime.html" title="7.16. Geplante Ausfallzeiten">geplante Downtime</a> beendet. Benachrichtungen
           über Probleme werden wieder versandt.</p></td>
 </tr>
 <tr>
 <td><p>DOWNTIMECANCELLED</p></td>
-<td><p>Die Phase der <a class="link" href="downtime.html" title="7.15. Geplante Ausfallzeiten">geplanten Downtime</a> für den Host oder Service wurde gerade annulliert.
+<td><p>Die Phase der <a class="link" href="downtime.html" title="7.16. Geplante Ausfallzeiten">geplanten Downtime</a> für den Host oder Service wurde gerade annulliert.
           Benachrichtungen über Probleme werden wieder versandt.</p></td>
 </tr>
 </tbody>
@@ -276,13 +276,13 @@
   Audio-Hinweise auf einem anderen Rechner abspielen möchten, dann sehen Sie sich die Projekte <a class="link" href="http://radscan.com/nas.html" target="_top">Network Audio System (NAS)</a> und <a class="link" href="http://rplay.doit.org/" target="_top">rplay</a>
   an.</p>
 
-  <a class="indexterm" name="id1603351"></a>
+  <a class="indexterm" name="id1567643"></a>
 
-  <a class="indexterm" name="id1603361"></a>
+  <a class="indexterm" name="id1567653"></a>
 
-  <a class="indexterm" name="id1603375"></a>
+  <a class="indexterm" name="id1567667"></a>
 
-  <a class="indexterm" name="id1603389"></a>
+  <a class="indexterm" name="id1567681"></a>
 </div>
 <div class="navfooter">
 <hr>

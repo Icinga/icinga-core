@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.26. Zeitsparende Tricks für Objektdefinitionen</title>
+<title>7.27. Zeitsparende Tricks für Objektdefinitionen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="objectinheritance.html" title="7.25. Objektvererbung">
+<link rel="prev" href="objectinheritance.html" title="7.26. Objektvererbung">
 <link rel="next" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.26. Zeitsparende Tricks für Objektdefinitionen</th></tr>
+<tr><th colspan="3" align="center">7.27. Zeitsparende Tricks für Objektdefinitionen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="objectinheritance.html">Zurück</a> </td>
@@ -25,16 +25,16 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.26. Zeitsparende Tricks für Objektdefinitionen">
+<div class="section" title="7.27. Zeitsparende Tricks für Objektdefinitionen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="objecttricks"></a>7.26. Zeitsparende Tricks für Objektdefinitionen</h2></div></div></div>
+<a name="objecttricks"></a>7.27. Zeitsparende Tricks für Objektdefinitionen</h2></div></div></div>
   
 
   <p>oder...</p>
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Dieses Dokument versucht zu erklären, wie Sie die (etwas) versteckten Möglichkeiten von <a class="link" href="objectdefinitions.html" title="3.4. Objektdefinitionen">vorlagenbasierenden Objektdefinitionen</a> ausnutzen können, um Ihren Verstand zu bewahren. Sie fragen sich
+  <p>Dieses Dokument versucht zu erklären, wie Sie die (etwas) versteckten Möglichkeiten von <a class="link" href="objectdefinitions.html" title="3.3. Objektdefinitionen">vorlagenbasierenden Objektdefinitionen</a> ausnutzen können, um Ihren Verstand zu bewahren. Sie fragen sich
   wie? Verschiedene Objekttypen erlauben es Ihnen, mehrere Host-Namen und/oder Hostgruppen-Namen in Definitionen anzugeben und die
   Objektdefinitionen in mehrere Hosts oder Services zu "kopieren". Wir werden jeden Objekttyp, der diese Möglichkeiten unterstützt, separat
   behandeln. Für den Anfang sind die Objekttypen, die diese zeitsparende Möglichkeit unterstützen, wie folgt:</p>
@@ -65,9 +65,9 @@
 
   <p><span class="bold"><strong>Übereinstimmung von regulären Ausdrücken</strong></span> (Regular Expression Matching)</p>
 
-  <p>Die Beispiele, die wir unten zeigen, benutzen "Standard"-Übereinstimmung (Matching) von Objektnamen und <span class="bold"><strong>*erfordern*</strong></span>, dass die Option <a class="link" href="configmain.html#configmain-use_regexp_matching">use_regexp_matching</a><span class="bold"><strong>*deaktiviert*</strong></span>ist.</p>
+  <p>Die Beispiele, die wir unten zeigen, benutzen "Standard"-Übereinstimmung (Matching) von Objektnamen und <span class="bold"><strong>*erfordern*</strong></span>, dass die Option <a class="link" href="../../../../../">use_regexp_matching</a><span class="bold"><strong>*deaktiviert*</strong></span>ist.</p>
 
-  <p>Wenn Sie wollen, können Sie die Übereinstimmung von regulären Ausdrücken mit Hilfe der <a class="link" href="configmain.html#configmain-use_regexp_matching">use_regexp_matching</a>-Konfigurationsoption aktivieren. Reguläre Ausdrücke können in jedem
+  <p>Wenn Sie wollen, können Sie die Übereinstimmung von regulären Ausdrücken mit Hilfe der <a class="link" href="../../../../../">use_regexp_matching</a>-Konfigurationsoption aktivieren. Reguläre Ausdrücke können in jedem
   der Felder benutzt werden, die in den Beispielen unten benutzt werden (Hostnamen, Hostgruppen-Namen, Service-Namen und
   Servicegruppen-Namen).</p>
 
@@ -453,27 +453,27 @@
         <span class="emphasis"><em>weitere Hostgruppen-Direktiven</em></span> ...
         }</pre>
 
-  <a class="indexterm" name="id1637231"></a>
+  <a class="indexterm" name="id1607873"></a>
 
-  <a class="indexterm" name="id1637245"></a>
+  <a class="indexterm" name="id1607887"></a>
 
-  <a class="indexterm" name="id1637255"></a>
+  <a class="indexterm" name="id1607897"></a>
 
-  <a class="indexterm" name="id1637265"></a>
+  <a class="indexterm" name="id1607907"></a>
 
-  <a class="indexterm" name="id1637276"></a>
+  <a class="indexterm" name="id1607918"></a>
 
-  <a class="indexterm" name="id1637286"></a>
+  <a class="indexterm" name="id1607928"></a>
 
-  <a class="indexterm" name="id1637300"></a>
+  <a class="indexterm" name="id1607942"></a>
 
-  <a class="indexterm" name="id1637310"></a>
+  <a class="indexterm" name="id1607951"></a>
 
-  <a class="indexterm" name="id1637322"></a>
+  <a class="indexterm" name="id1607964"></a>
 
-  <a class="indexterm" name="id1637334"></a>
+  <a class="indexterm" name="id1607975"></a>
 
-  <a class="indexterm" name="id1637344"></a>
+  <a class="indexterm" name="id1607984"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -486,7 +486,7 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">7.25. Objektvererbung </td>
+<td width="40%" align="left" valign="top">7.26. Objektvererbung </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
 <td width="40%" align="right" valign="top"> Kapitel 8. Sicherheit und Leistungsoptimierung</td>
 </tr>

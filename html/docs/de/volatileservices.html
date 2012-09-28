@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.3. sprunghafte Services</title>
+<title>7.4. sprunghafte Services</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="eventhandlers.html" title="7.2. Eventhandler">
-<link rel="next" href="freshness.html" title="7.4. Service- und Host-Frische-Prüfungen">
+<link rel="prev" href="eventhandlers.html" title="7.3. Eventhandler">
+<link rel="next" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.3. sprunghafte Services</th></tr>
+<tr><th colspan="3" align="center">7.4. sprunghafte Services</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="eventhandlers.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.3. sprunghafte Services">
+<div class="section" title="7.4. sprunghafte Services">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="volatileservices"></a>7.3. sprunghafte Services</h2></div></div></div>
+<a name="volatileservices"></a>7.4. sprunghafte Services</h2></div></div></div>
     
     <p>
       <span class="bold"><strong>Einführung</strong></span>
@@ -57,12 +57,12 @@
         <p> werden Kontakte über das Problem informiert (falls es das ist, <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">was zu tun ist</a>). Anmerkung: Benachrichtigungsintervalle werden bei flüchtigen Services ignoriert.</p>
       </li>
 <li class="listitem">
-        <p> Der <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandler</a> für den Service wird ausgeführt (falls einer definiert ist)</p>
+        <p> Der <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> für den Service wird ausgeführt (falls einer definiert ist)</p>
       </li>
 </ul></div>
     <p>Diese Ereignisse finden normalerweise nur für Services statt, wenn sie in einem nicht-OK-Zustand sind und gerade ein Hard-Zustandswechsel erfolgte. In anderen Worten, sie passieren nur das erste Mal, wenn ein Service in einen nicht-OK-Zustand geht. Wenn weitere Prüfungen des Service den gleichen nicht-OK-Zustand ergeben, erfolgt kein harter Zustandswechsel und keines der genannten Ereignisse wird stattfinden.</p>
     <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span>
- Hinweis: Wenn Sie nur an der Protokollierung interessiert sind, dann sehen Sie sich die <a class="link" href="stalking.html" title="7.13. Status Stalking">Stalking</a>-Option an.</p>
+ Hinweis: Wenn Sie nur an der Protokollierung interessiert sind, dann sehen Sie sich die <a class="link" href="stalking.html" title="7.14. Status Stalking">Stalking</a>-Option an.</p>
     <p>
       <span class="bold"><strong>Die Macht der Zwei</strong></span>
     </p>
@@ -125,7 +125,7 @@
       </li>
 </ul></div>
     <p>Ziemlich hübsch, oder?</p>
-  <a class="indexterm" name="id1623756"></a>
+  <a class="indexterm" name="id1594400"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -138,9 +138,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">7.2. Eventhandler </td>
+<td width="40%" align="left" valign="top">7.3. Eventhandler </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 7.4. Service- und Host-Frische-Prüfungen</td>
+<td width="40%" align="right" valign="top"> 7.5. Service- und Host-Frische-Prüfungen</td>
 </tr>
 </table>
 </div>

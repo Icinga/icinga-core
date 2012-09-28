@@ -37,7 +37,7 @@
   des Namens werden auch Host-Prüfergebnisse übertragen.</p>
 
   <div class="figure">
-<a name="id1644352"></a><p class="title"><b>Abbildung 10.3. NSCA</b></p>
+<a name="id1614996"></a><p class="title"><b>Abbildung 10.3. NSCA</b></p>
 <div class="figure-contents">
     
 
@@ -62,15 +62,15 @@
       <p>Icinga sollte laufen</p>
     </li>
 <li class="listitem">
-      <p><span class="emphasis"><em><a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands = 1</a></em></span> sollte in
+      <p><span class="emphasis"><em><a class="link" href="../../../../../">check_external_commands = 1</a></em></span> sollte in
       <code class="literal">icinga.cfg</code> gesetzt sein</p>
     </li>
 <li class="listitem">
-      <p><span class="emphasis"><em><a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval = &lt;n&gt;[s]</a></em></span> sollte in
+      <p><span class="emphasis"><em><a class="link" href="../../../../../">command_check_interval = &lt;n&gt;[s]</a></em></span> sollte in
       <code class="literal">icinga.cfg</code> gesetzt sein<code class="literal"> </code></p>
     </li>
 <li class="listitem">
-      <p><span class="emphasis"><em><a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks = 1</a></em></span> sollte während der Testphase in
+      <p><span class="emphasis"><em><a class="link" href="../../../../../">log_passive_checks = 1</a></em></span> sollte während der Testphase in
       <code class="literal">icinga.cfg</code> gesetzt sein, anderenfalls gibt es keine Meldungen über eintreffende passive Prüfungen</p>
     </li>
 <li class="listitem">
@@ -183,7 +183,7 @@
   <p>Wenn die Voraussetzungen erfüllt sind, dann sollten Sie einige Warnungen in <code class="literal">icinga.log</code> sehen, dass Host "A" und
   Service "B" nicht in der Icinga-Konfiguration gefunden werden konnten. Dies bedeutet, dass nsca ausreichende Berechtigungen hat, um
   in das Icinga-Command-File zu schreiben. Prüfen Sie, ob der nsca-Daemon und Icinga mit unterschiedlichen Benutzern laufen,
-  wenn es keine Meldugen in icinga.log gibt. Prüfen Sie außerdem die Einstellung von <a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks</a> in <code class="literal">icinga.cfg</code>.</p>
+  wenn es keine Meldugen in icinga.log gibt. Prüfen Sie außerdem die Einstellung von <a class="link" href="../../../../../">log_passive_checks</a> in <code class="literal">icinga.cfg</code>.</p>
 
   <p><span class="bold"><strong>Installation</strong></span></p>
 
@@ -287,7 +287,7 @@
  $&gt; echo -e "A\tB\tC\tD\n" | /usr/local/icinga/bin/send_nsca -H &lt;Icinga server&gt; -c /usr/local/icinga/etc/send_nsca.cfg</pre>
 
   <p>Dies sollte ebenfalls die Meldung "1 data packet(s) sent to host successfully." liefern und es sollte Warnungen im icinga.log auf
-  dem Icinga-Server geben, die ähnlich zu den o.g. sind. Wenn es keine Meldungen gibt, dann prüfen Sie die Einstellung von <a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks</a> in <code class="literal">icinga.cfg</code>.</p>
+  dem Icinga-Server geben, die ähnlich zu den o.g. sind. Wenn es keine Meldungen gibt, dann prüfen Sie die Einstellung von <a class="link" href="../../../../../">log_passive_checks</a> in <code class="literal">icinga.cfg</code>.</p>
 
   <p><span class="bold"><strong>Fehlersuche</strong></span></p>
 
@@ -386,16 +386,16 @@
 <p>Bitte
   denken Sie daran, dass Host-Name und Service-Beschreibung exakt den Angaben in Ihrer Icinga-Definition entsprechen müssen (die Angaben
   sind Case-sensitiv). Andernfalls bekommen Sie Meldungen in icinga.log, dass das Objekt nicht gefunden werden kann. Falls es keine
-  Meldungen gibt, kontrollieren Sie die Einstellung von <a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks</a> in
+  Meldungen gibt, kontrollieren Sie die Einstellung von <a class="link" href="../../../../../">log_passive_checks</a> in
   <code class="literal">icinga.cfg</code>.</p>
 
   <p>Nach einem kurzen Moment sollten Sie Meldungen in icinga.log sehen, dass die gesendeten Informationen verarbeitet wurden. Sie
   sollten die Daten dann auch im klassischen Web-Interface sehen sowie feststellen, dass der Service-Status von "Pending" auf "OK"
   gewechselt ist und die Ausgabe die Daten enthält, die Sie versandt haben.</p>
 
-  <a class="indexterm" name="id1645115"></a>
+  <a class="indexterm" name="id1615763"></a>
 
-  <a class="indexterm" name="id1645129"></a>
+  <a class="indexterm" name="id1615777"></a>
 </div>
 <div class="navfooter">
 <hr>

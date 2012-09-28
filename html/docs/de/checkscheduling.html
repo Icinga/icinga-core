@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.22. Service- und Host-Prüfungsplanung</title>
+<title>7.23. Service- und Host-Prüfungsplanung</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="passivestatetranslation.html" title="7.21. Passive Host-Zustandsübersetzung">
-<link rel="next" href="cgiincludes.html" title="7.23. Angepasste CGI-Kopf- und Fußzeilen">
+<link rel="prev" href="passivestatetranslation.html" title="7.22. Passive Host-Zustandsübersetzung">
+<link rel="next" href="cgiincludes.html" title="7.24. Angepasste CGI-Kopf- und Fußzeilen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.22. Service- und Host-Prüfungsplanung</th></tr>
+<tr><th colspan="3" align="center">7.23. Service- und Host-Prüfungsplanung</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="passivestatetranslation.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.22. Service- und Host-Prüfungsplanung">
+<div class="section" title="7.23. Service- und Host-Prüfungsplanung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="checkscheduling"></a>7.22. <a name="checkscheduling-check_scheduling"></a>Service- und Host-Prüfungsplanung</h2></div></div></div>
+<a name="checkscheduling"></a>7.23. <a name="checkscheduling-check_scheduling"></a>Service- und Host-Prüfungsplanung</h2></div></div></div>
   
 
   <p><a name="checkscheduling-introduction"></a><span class="bold"><strong>Einführung</strong></span></p>
@@ -54,21 +54,21 @@
     </li>
 </ul></div>
 
-  <p>Es gibt außerdem vier Konfigurationsoptionen in der <a class="link" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a>, die
+  <p>Es gibt außerdem vier Konfigurationsoptionen in der <a class="link" href="../../../../../">Hauptkonfigurationsdatei</a>, die
   Service-Prüfungen beeinflussen. Dies sind:</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="configmain.html#configmain-service_inter_check_delay_method"><span class="emphasis"><em>service_inter_check_delay_method</em></span></a></p>
+      <p><a class="link" href="../../../../../"><span class="emphasis"><em>service_inter_check_delay_method</em></span></a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configmain.html#configmain-service_interleave_factor"><span class="emphasis"><em>service_interleave_factor</em></span></a></p>
+      <p><a class="link" href="../../../../../"><span class="emphasis"><em>service_interleave_factor</em></span></a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configmain.html#configmain-max_concurrent_checks"><span class="emphasis"><em>max_concurrent_checks</em></span></a></p>
+      <p><a class="link" href="../../../../../"><span class="emphasis"><em>max_concurrent_checks</em></span></a></p>
     </li>
 <li class="listitem">
-      <p><a class="link" href="configmain.html#configmain-check_result_reaper_frequency"><span class="emphasis"><em>check_result_reaper_frequency</em></span></a></p>
+      <p><a class="link" href="../../../../../"><span class="emphasis"><em>check_result_reaper_frequency</em></span></a></p>
     </li>
 </ul></div>
 
@@ -121,7 +121,7 @@
 
   <p>Wie bereits erwähnt, versucht Icinga die Last auf dem Rechner, auf dem Icinga läuft, auszugleichen, indem
   die Service-Prüfungen verteilt werden. Der Abstand zwischen aufeinander folgenden Service-Prüfungen wird "inter-check delay"
-  genannt. Durch die Angabe eines Werts für die Variable <a class="link" href="configmain.html#configmain-service_inter_check_delay_method">service_inter_check_delay_method</a> in der Hauptkonfigurationsdatei
+  genannt. Durch die Angabe eines Werts für die Variable <a class="link" href="../../../../../">service_inter_check_delay_method</a> in der Hauptkonfigurationsdatei
   können Sie festlegen, wie diese Verzögerung berechnet wird. Wir werden erläutern, wie die "schlaue" Berechnung arbeitet, weil
   dies die Einstellung ist, die Sie für die normale Verarbeitung benutzen sollten.</p>
 
@@ -150,7 +150,7 @@
   Verbindungen auf dem gleichen Port gibt. Außerdem ist es nett, wenn man versucht, die Last auf den Hosts auszugleichen/zu
   minimieren...</p>
 
-  <p>Durch die Angabe eines Werts für die Variable <a class="link" href="configmain.html#configmain-service_interleave_factor">service_interleave_factor</a> in der Hauptkonfigurationsdatei können
+  <p>Durch die Angabe eines Werts für die Variable <a class="link" href="../../../../../">service_interleave_factor</a> in der Hauptkonfigurationsdatei können
   beeinflussen, wie dieser Faktor berechnet wird. Wir werden erläutern, wie die "schlaue" Berechnung arbeitet, weil dies die
   Einstellung ist, die Sie for die normale Verarbeitung nutzen sollten. Sie können, natürlich, einen Wert vorgeben, anstatt ihn
   von Icinga berechnen zu lassen. Außerdem ist zu beachten, dass die Verschachtelung bei einem Wert von 1 praktisch
@@ -203,7 +203,7 @@
   Service-Prüfungen</strong></span></p>
 
   <p>Um Icinga davon abzuhalten, all Ihre CPU-Ressourcen zu verbrauchen, können Sie die maximale Zahl von gleichzeitigen
-  Service-Prüfungen beschränken, die zu einer beliebigen Zeit laufen können. Dies wird durch die Option <a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a> in der Hauptkonfigurationsdatei festgelegt.</p>
+  Service-Prüfungen beschränken, die zu einer beliebigen Zeit laufen können. Dies wird durch die Option <a class="link" href="../../../../../">max_concurrent_checks</a> in der Hauptkonfigurationsdatei festgelegt.</p>
 
   <p>Gut daran ist, dass Sie mit dieser Einstellung Icingas CPU-Nutzung beeinflussen können. Schlecht ist, dass
   Service-Prüfungen ins Hintertreffen geraten können, wenn dieser Wert zu niedrig eingestellt ist. Wenn es Zeit wird, eine
@@ -221,7 +221,7 @@
       Option <span class="bold"><strong>-s</strong></span>, um den Wert zu kontrollieren)</p>
     </li>
 <li class="listitem">
-      <p>die Häufigkeit (in Sekunden) von "reaper events", wie sie in der <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>-Variable in der
+      <p>die Häufigkeit (in Sekunden) von "reaper events", wie sie in der <a class="link" href="../../../../../">check_result_reaper_frequency</a>-Variable in der
       Hauptkonfigurationsdatei angegeben ist</p>
     </li>
 <li class="listitem">
@@ -331,7 +331,7 @@
   <p><span class="inlinemediaobject"><img src="../images/checktiming.png"></span></p>
 
   <p>Zuallererst sind <span class="bold"><strong>X</strong></span><sub>n</sub> Prüfergebnis-Ernteereignisse, die in der
-  Häufigkeit geplant werden, die durch die Option <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a> in der Hauptkonfigurationsdatei
+  Häufigkeit geplant werden, die durch die Option <a class="link" href="../../../../../">check_result_reaper_frequency</a> in der Hauptkonfigurationsdatei
   angegeben ist. Prüfergebnis-Ernteereignisse übernehmen die Arbeit, Service-Prüfergebnisse zu sammeln und zu verarbeiten. SIe
   dienen als die Kernlogik für Icinga, starten Host-Prüfungen, Ereignisbehandlung-Routinen und Benachrichtigungen, wenn das
   notwendig ist.</p>
@@ -391,20 +391,20 @@
   <p>Die meisten der o.g. Informationen treffen auch auf Host-Prüfungen zu.</p>
 
   <p>Dieser Abschnitt wird aktualisiert. Voraussichtlich gibt es mehr Informationen in einer der nächsten Ausgaben...</p>
-  <a class="indexterm" name="id1633798"></a>
-  <a class="indexterm" name="id1633807"></a>
-  <a class="indexterm" name="id1633816"></a>
-  <a class="indexterm" name="id1633826"></a>
-  <a class="indexterm" name="id1633836"></a>
-  <a class="indexterm" name="id1633846"></a>
-  <a class="indexterm" name="id1633856"></a>
-  <a class="indexterm" name="id1633866"></a>
-  <a class="indexterm" name="id1633875"></a>
-  <a class="indexterm" name="id1633885"></a>
-  <a class="indexterm" name="id1633894"></a>
-  <a class="indexterm" name="id1633904"></a>
-  <a class="indexterm" name="id1633913"></a>
-  <a class="indexterm" name="id1633924"></a>
+  <a class="indexterm" name="id1604441"></a>
+  <a class="indexterm" name="id1604450"></a>
+  <a class="indexterm" name="id1604460"></a>
+  <a class="indexterm" name="id1604470"></a>
+  <a class="indexterm" name="id1604480"></a>
+  <a class="indexterm" name="id1604490"></a>
+  <a class="indexterm" name="id1604500"></a>
+  <a class="indexterm" name="id1604510"></a>
+  <a class="indexterm" name="id1604518"></a>
+  <a class="indexterm" name="id1604529"></a>
+  <a class="indexterm" name="id1604538"></a>
+  <a class="indexterm" name="id1604548"></a>
+  <a class="indexterm" name="id1604557"></a>
+  <a class="indexterm" name="id1604567"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -417,9 +417,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">7.21. Passive Host-Zustandsübersetzung </td>
+<td width="40%" align="left" valign="top">7.22. Passive Host-Zustandsübersetzung </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 7.23. Angepasste CGI-Kopf- und Fußzeilen</td>
+<td width="40%" align="right" valign="top"> 7.24. Angepasste CGI-Kopf- und Fußzeilen</td>
 </tr>
 </table>
 </div>

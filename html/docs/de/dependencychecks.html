@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.19. Vorausschauende Abhängigkeitsprüfungen</title>
+<title>7.20. Vorausschauende Abhängigkeitsprüfungen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="adaptive.html" title="7.18. Adaptive Überwachung">
-<link rel="next" href="cachedchecks.html" title="7.20. Zwischengespeicherte Prüfungen">
+<link rel="prev" href="adaptive.html" title="7.19. Adaptive Überwachung">
+<link rel="next" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.19. Vorausschauende Abhängigkeitsprüfungen</th></tr>
+<tr><th colspan="3" align="center">7.20. Vorausschauende Abhängigkeitsprüfungen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="adaptive.html">Zurück</a> </td>
@@ -25,14 +25,14 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.19. Vorausschauende Abhängigkeitsprüfungen">
+<div class="section" title="7.20. Vorausschauende Abhängigkeitsprüfungen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="dependencychecks"></a>7.19. Vorausschauende Abhängigkeitsprüfungen</h2></div></div></div>
+<a name="dependencychecks"></a>7.20. Vorausschauende Abhängigkeitsprüfungen</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
 
-  <p>Host- und Service-<a class="link" href="dependencies.html" title="7.12. Host- und Service-Abhängigkeiten">Abhängigkeiten</a> können definiert werden, um Ihnen größere Kontrolle
+  <p>Host- und Service-<a class="link" href="dependencies.html" title="7.13. Host- und Service-Abhängigkeiten">Abhängigkeiten</a> können definiert werden, um Ihnen größere Kontrolle
   darüber zu geben, wann Prüfungen ausgeführt und wann Benachrichtigungen versandt werden. Da Abhängigkeiten benutzt werden, um
   grundlegende Aspekte des Überwachungsprozesses zu kontrollieren, ist es wichtig sicherzustellen, dass die Status-Informationen
   in der Abhängigkeitslogik so aktuell wie möglich sind.</p>
@@ -76,21 +76,21 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Vorausschauende Host-Abhängigkeitsprüfungen werden durch die <a class="link" href="configmain.html#configmain-enable_predictive_host_dependency_checks">enable_predictive_host_dependency_checks</a>-Option
+      <p>Vorausschauende Host-Abhängigkeitsprüfungen werden durch die <a class="link" href="../../../../../">enable_predictive_host_dependency_checks</a>-Option
       kontrolliert.</p>
     </li>
 <li class="listitem">
-      <p>Vorausschauende Service-Abhängigkeitsprüfungen werden durch die <a class="link" href="configmain.html#configmain-enable_predictive_service_dependency_checks">enable_predictive_service_dependency_checks</a>-Option
+      <p>Vorausschauende Service-Abhängigkeitsprüfungen werden durch die <a class="link" href="../../../../../">enable_predictive_service_dependency_checks</a>-Option
       kontrolliert.</p>
     </li>
 </ul></div>
 
   <p><span class="bold"><strong>Cached Checks</strong></span></p>
 
-  <p>Vorausschauende Abhängigkeitsprüfungen sind Prüfungen nach Bedarf und daher den Regeln von <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte Prüfungen">cached checks</a> unterworfen. Cached checks können Ihnen Performance-Verbesserungen liefern, wenn
+  <p>Vorausschauende Abhängigkeitsprüfungen sind Prüfungen nach Bedarf und daher den Regeln von <a class="link" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">cached checks</a> unterworfen. Cached checks können Ihnen Performance-Verbesserungen liefern, wenn
   Icinga darauf verzichtet, eine Host- oder Serviceprüfung durchzuführen, wenn es statt dessen ein relativ aktuelles
-  Prüfungsergebnis nutzen kann. Mehr Informationen über cached checks finden Sie <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte Prüfungen">hier</a>.</p>
-  <a class="indexterm" name="id1631938"></a>
+  Prüfungsergebnis nutzen kann. Mehr Informationen über cached checks finden Sie <a class="link" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">hier</a>.</p>
+  <a class="indexterm" name="id1602581"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -103,9 +103,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">7.18. Adaptive Überwachung </td>
+<td width="40%" align="left" valign="top">7.19. Adaptive Überwachung </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 7.20. Zwischengespeicherte Prüfungen</td>
+<td width="40%" align="right" valign="top"> 7.21. Zwischengespeicherte Prüfungen</td>
 </tr>
 </table>
 </div>
