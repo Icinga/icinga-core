@@ -1205,7 +1205,7 @@ void display_tac_overview(void) {
 
 	if (tac_header == TRUE && show_tac_header == FALSE) { // we want the top header, but not the tac version
 
-		printf("	<div id='banner' align='center'><img src='%s%s' alt='%s' /></div>", url_images_path, TAC_HEADER_DEFAULT_LOGO, TAC_HEADER_DEFAULT_LOGO_ALT);
+		printf("	<div class='tac_banner' align='center'><img src='%s%s' alt='%s' /></div>", url_images_path, TAC_HEADER_DEFAULT_LOGO, TAC_HEADER_DEFAULT_LOGO_ALT);
 		return; //we're done here
 
 	} else if (tac_header == TRUE && show_tac_header == TRUE) { // we want the tac header
