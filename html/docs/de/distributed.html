@@ -88,7 +88,7 @@
   senden. Das zweite Teil ist der nsca-Daemon (nsca), der entweder als eigenständiger Daemon oder unter inetd läuft und auf
   Verbindungen von Client-Programmen horcht. Nach dem Empfang von Service-Prüfinformationen von einem Client wird der Daemon die
   Prüfinformationen an Icinga (auf dem zentralen Server) weiterleiten, indem ein
-  <span class="emphasis"><em>PROCESS_SVC_CHECK_RESULT</em></span> zusammen mit den Prüfergebnissen in das <a class="link" href="../../../../../">external command file</a> eingefügt wird. Das nächste Mal, wenn Icinga auf <a class="link" href="extcommands.html" title="7.1. Externe Befehle">externe Befehle</a> prüft, wird es die passiven Prüfergebnisse finden, die von den verteilten Servern
+  <span class="emphasis"><em>PROCESS_SVC_CHECK_RESULT</em></span> zusammen mit den Prüfergebnissen in das <a class="link" href="configmain.html#configmain-command_file">external command file</a> eingefügt wird. Das nächste Mal, wenn Icinga auf <a class="link" href="extcommands.html" title="7.1. Externe Befehle">externe Befehle</a> prüft, wird es die passiven Prüfergebnisse finden, die von den verteilten Servern
   geschickt wurden und sie verarbeiten. Einfach, oder?</p>
 
   <p><span class="bold"><strong>Verteilte Server-Konfiguration</strong></span></p>
@@ -101,26 +101,26 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Nur die direkt durch den verteilten Server zu überwachenden Services werden in der <a class="link" href="configobject.html" title="3.2. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei</a> definiert.</p>
+      <p>Nur die direkt durch den verteilten Server zu überwachenden Services werden in der <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei</a> definiert.</p>
     </li>
 <li class="listitem">
-      <p>Die <a class="link" href="../../../../../">enable_notifications</a>-Direktive auf dem verteilten Server
+      <p>Die <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktive auf dem verteilten Server
       wird auf 0 gesetzt. Das verhindert das Versenden von Benachrichtigungen.</p>
     </li>
 <li class="listitem">
-      <p>Die <a class="link" href="../../../../../">obsess over services</a>-Direktive auf dem verteilten Server
+      <p>Die <a class="link" href="configmain.html#configmain-obsess_over_services">obsess over services</a>-Direktive auf dem verteilten Server
       wird aktiviert.</p>
     </li>
 <li class="listitem">
-      <p>Auf dem verteilten Server ist ein <a class="link" href="../../../../../">ocsp command</a> definiert (wie unten
+      <p>Auf dem verteilten Server ist ein <a class="link" href="configmain.html#configmain-ocsp_command">ocsp command</a> definiert (wie unten
       beschrieben).</p>
     </li>
 </ul></div>
 
   <p>Damit alles zusammenkommt und ordentlich arbeitet, wollen wir, dass der verteilte Server die Ergebnisse
   <span class="emphasis"><em>aller</em></span> Service-Prüfungen an Icinga meldet. Wir können <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> benutzen, um <span class="emphasis"><em>Änderungen</em></span> am Zustand eines Service mitzuteilen,
-  aber das bringt's nicht. Um den verteilten Server zu zwingen, alle Prüfergebnisse zu melden, müssen Sie die <a class="link" href="../../../../../">obsess_over_services</a>-Option in der Hauptkonfigurationsdatei aktivieren und ein
-  <a class="link" href="../../../../../">ocsp_command</a> bereitstellen, was nach jeder Service-Prüfung ausgeführt wird. Wir
+  aber das bringt's nicht. Um den verteilten Server zu zwingen, alle Prüfergebnisse zu melden, müssen Sie die <a class="link" href="configmain.html#configmain-obsess_over_services">obsess_over_services</a>-Option in der Hauptkonfigurationsdatei aktivieren und ein
+  <a class="link" href="configmain.html#configmain-ocsp_command">ocsp_command</a> bereitstellen, was nach jeder Service-Prüfung ausgeführt wird. Wir
   werden das ocsp-Kommando benutzen, um die Ergebnisse aller Service-Prüfungen an den zentralen Server zu senden und den
   send_nsca-Client sowie den nsca-Daemon benutzen (wie oben beschrieben), um die Übertragung zu erledigen.</p>
 
@@ -180,7 +180,7 @@
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Nachdem der verteilte Server eine Service-Prüfung beendet hat, führt er den Befehl aus, den Sie mit der Variable <a class="link" href="../../../../../">ocsp_command</a> definiert haben. In unserem Beispiel ist dies das
+      <p>Nachdem der verteilte Server eine Service-Prüfung beendet hat, führt er den Befehl aus, den Sie mit der Variable <a class="link" href="configmain.html#configmain-ocsp_command">ocsp_command</a> definiert haben. In unserem Beispiel ist dies das
       <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers/submit_check_result</em></span>-Script. Beachten Sie, dass die Definition für
       den <span class="emphasis"><em>submit_check_result</em></span>-Befehl vier Parameter für das Script übergibt: den Namen des Hosts, der mit dem
       Service verbunden ist, die Service-Beschreibung, den Rückgabewert der Service-Prüfung und die Plugin-Ausgabe der
@@ -215,19 +215,19 @@
       <p>auf dem zentralen Server ist das Web-Interface installiert (optional, aber empfohlen)</p>
     </li>
 <li class="listitem">
-      <p>auf dem zentralen Server ist die <a class="link" href="../../../../../">enable_notifications</a>-Direktive
+      <p>auf dem zentralen Server ist die <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktive
       auf 1 gesetzt. Das aktiviert Benachrichtungen (optional, aber empfohlen)</p>
     </li>
 <li class="listitem">
-      <p>auf dem zentralen Server sind <a class="link" href="../../../../../">aktive Service-Prüfungen</a>
+      <p>auf dem zentralen Server sind <a class="link" href="configmain.html#configmain-execute_service_checks">aktive Service-Prüfungen</a>
       deaktiviert (optional, aber empfohlen - beachten Sie die folgenden Anmerkungen)</p>
     </li>
 <li class="listitem">
-      <p>auf dem zentralen Server sind <a class="link" href="../../../../../">external command checks</a>
+      <p>auf dem zentralen Server sind <a class="link" href="configmain.html#configmain-check_external_commands">external command checks</a>
       aktiviert (erforderlich)</p>
     </li>
 <li class="listitem">
-      <p>auf dem zentralen Server sind <a class="link" href="../../../../../">passive
+      <p>auf dem zentralen Server sind <a class="link" href="configmain.html#configmain-accept_passive_service_checks">passive
       Service-Prüfungen</a> aktiviert (erforderlich)</p>
     </li>
 </ul></div>
@@ -242,7 +242,7 @@
     </li>
 <li class="listitem">
       <p>Wenn Sie den zentralen Server nur benutzen, um Services zu verarbeiten, deren Ergebnisse von verteilten Hosts stammen,
-      können Sie alle aktiven Service-Prüfungen auf programmweiter Basis durch das Setzen der <a class="link" href="../../../../../">execute_service_checks</a>-Direktive auf 0 deaktivieren. Wenn Sie den
+      können Sie alle aktiven Service-Prüfungen auf programmweiter Basis durch das Setzen der <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a>-Direktive auf 0 deaktivieren. Wenn Sie den
       zentralen Server nutzen, um selbst einige Services aktiv zu überwachen (ohne die Hilfe von verteilten Servern), dann sollten
       Sie die <span class="emphasis"><em>active_checks_enabled</em></span>-Option der Service-Definitionen auf 0 setzen, die von den verteilten
       Servern überwacht werden. Das hindert Icinga daran, diese Services aktiv zu prüfen.</p>
@@ -350,15 +350,15 @@
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>dass auf dem zentralen Server <a class="link" href="../../../../../">passive Host-Prüfungen</a>
+      <p>dass auf dem zentralen Server <a class="link" href="configmain.html#configmain-accept_passive_host_checks">passive Host-Prüfungen</a>
       aktiviert sind (notwendig)</p>
     </li>
 <li class="listitem">
-      <p>dass auf dem verteilten Server <a class="link" href="../../../../../">obsess over hosts</a> aktiviert
+      <p>dass auf dem verteilten Server <a class="link" href="configmain.html#configmain-obsess_over_hosts">obsess over hosts</a> aktiviert
       ist.</p>
     </li>
 <li class="listitem">
-      <p>dass auf dem verteilten Server ein <a class="link" href="../../../../../">ochp command</a> definiert ist.</p>
+      <p>dass auf dem verteilten Server ein <a class="link" href="configmain.html#configmain-ochp_command">ochp command</a> definiert ist.</p>
     </li>
 </ul></div>
 
@@ -366,7 +366,7 @@
   die Verarbeitung von Service-Prüfergebnissen benutzt wird (siehe oben). Um sicherzustellen, dass passive Host-Prüfergebnisse
   aktuell sind, sollten Sie <a class="link" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> für Hosts aktivieren (ähnlich zu dem, was weiter
   oben für Services beschrieben wird).</p>
-  <a class="indexterm" name="id1595616"></a>
+  <a class="indexterm" name="idp13370416"></a>
 </div>
 <div class="navfooter">
 <hr>

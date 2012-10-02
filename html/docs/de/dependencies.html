@@ -61,7 +61,7 @@
 
   <p><span class="bold"><strong>Service-Abhängigkeiten definieren</strong></span></p>
 
-  <p>Zuerst die Grundlagen. Sie erstellen Service-Abhängigkeiten durch Hinzufügen von <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeitsdefinitionen</a> in der/n <a class="link" href="configobject.html" title="3.2. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>. In jeder Definition geben Sie den <span class="emphasis"><em>abhängigen</em></span>
+  <p>Zuerst die Grundlagen. Sie erstellen Service-Abhängigkeiten durch Hinzufügen von <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeitsdefinitionen</a> in der/n <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>. In jeder Definition geben Sie den <span class="emphasis"><em>abhängigen</em></span>
   Service an, den Service, von dem sie <span class="emphasis"><em>abhängen</em></span> und die Kriterien (falls vorhanden), die die Ausführung und
   Benachrichtungsabhängigkeiten fehlschlagen lassen (diese werden später beschrieben).</p>
 
@@ -165,7 +165,7 @@
   <p><a name="dependencies-hard_dependencies"></a><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: <sup>*</sup>Bitte beachten Sie, dass Icinga per Default den aktuellsten
   <a class="link" href="statetypes.html" title="5.8. Statustypen">Hard-Status</a> des/r Services benutzt, von dem der Eintrag abhängig ist, wenn es die
   Abhängigkeitsprüfungen durchführt. Wenn Icinga den aktuellsten Status des/r Services benutzen soll (egal, ob es sich um
-  einen Hard- oder Soft-Zustand handelt), dann aktivieren Sie die <a class="link" href="../../../../../">soft_state_dependencies</a>-Option.</p>
+  einen Hard- oder Soft-Zustand handelt), dann aktivieren Sie die <a class="link" href="configmain.html#configmain-soft_state_dependencies">soft_state_dependencies</a>-Option.</p>
 
   <p><span class="bold"><strong>Ausführungsabhängigkeiten</strong></span></p>
 
@@ -294,8 +294,8 @@
   (abhängigen) Host unterdrücken. Irgendwann in der Zukunft können die Benachrichtigungsabhängigkeitstests für den Host
   erfolgreich durchlaufen werden. Wenn dies geschieht, wird Icinga mit dem Versand von Benachrichtigungen für diesen Host
   beginnen, wie es das normal tun würde. Mehr Informationen über die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a>.</p>
-  <a class="indexterm" name="id1599383"></a>
-  <a class="indexterm" name="id1599404"></a>
+  <a class="indexterm" name="idp13826928"></a>
+  <a class="indexterm" name="idp13828160"></a>
 </div>
 <div class="navfooter">
 <hr>
