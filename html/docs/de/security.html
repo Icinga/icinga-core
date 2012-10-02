@@ -83,7 +83,7 @@
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Verriegeln Sie das Prüfergebnis-Verzeichnis</strong></span>. Stellen Sie sicher, dass nur der
-      <span class="emphasis"><em>icinga</em></span>-Benutzer im <a class="link" href="../../../../../">check result path</a> lesen und
+      <span class="emphasis"><em>icinga</em></span>-Benutzer im <a class="link" href="configmain.html#configmain-check_result_path">check result path</a> lesen und
       schreiben darf. Wenn andere Benutzer außer <span class="emphasis"><em>icinga</em></span> (oder <span class="emphasis"><em>root</em></span>) in diesem
       Verzeichnis schreiben dürfen, dann können sie falsche Host-/Service-Prüfergebnisse an den Icinga-Daemon senden. Dies
       kann zu Ärger (falschen Benachrichtigungen) oder Sicherheitsproblemen (ausgelösten Eventhandlern) führen.</p>
@@ -105,10 +105,10 @@
       <p><span class="bold"><strong>Fordern Sie Authentifizierung bei den CGIs</strong></span>. Wir empfehlen dringend Authentifizierung
       für den Zugriff auf die CGIs. Sobald Sie das tun, lesen Sie die Dokumentation zu Standardberechtigungen von
       authentifizierten Kontakten und autorisieren Sie bestimmte Kontakte für zusätzliche Rechte nur, wenn es nötig ist. Eine
-      Anleitung zur Einrichtung von Authentifizierung und Autorisierung finden Sie <a class="link" href="cgiauth.html" title="3.6. Authentifizierung und Autorisierung in den CGIs">hier</a>. Wenn Sie
+      Anleitung zur Einrichtung von Authentifizierung und Autorisierung finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>. Wenn Sie
       mit der <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a>-Direktive die Authentifizierung in der
       CGI-Konfigurationsdatei deaktivieren, wird das <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> das Schreiben jeglicher
-      Befehle in das <a class="link" href="../../../../../">external command file</a> verweigern. Sie wollen schließlich
+      Befehle in das <a class="link" href="configmain.html#configmain-command_file">external command file</a> verweigern. Sie wollen schließlich
       nicht, dass alle Welt in der Lage ist, Icinga zu kontrollieren, oder?</p>
     </li>
 <li class="listitem">
@@ -116,16 +116,16 @@
       benutzen Sie den <span class="emphasis"><em>absoluten Pfad</em></span> (keinen relativen) für Scripte oder Programm, die Sie ausführen.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Verstecken Sie sensible Daten mit $USERn$-Makros</strong></span>. Die CGIs lesen die <a class="link" href="../../../../../">Hauptkonfigurationsdatei</a> und die <a class="link" href="configobject.html" title="3.2. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>, so dass Sie dort keine sensiblen Informationen (Benutzernamen,
+      <p><span class="bold"><strong>Verstecken Sie sensible Daten mit $USERn$-Makros</strong></span>. Die CGIs lesen die <a class="link" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> und die <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>, so dass Sie dort keine sensiblen Informationen (Benutzernamen,
       Passwörter, usw.) ablegen sollten. Wenn Sie Benutzernamen und/oder Passwörter in einer Befehlsdefinition angeben müssen,
       dann nutzen Sie ein $USERn$-<a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makro</a>, um sie zu verstecken. $USERn$-Makros werden in einer oder
-      mehreren <a class="link" href="../../../../../">Ressourcen-Dateien</a> definiert. Die CGIs werden nicht versuchen, den
+      mehreren <a class="link" href="configmain.html#configmain-resource_file">Ressourcen-Dateien</a> definiert. Die CGIs werden nicht versuchen, den
       Inhalt von Ressourcen-Dateien zu lesen, so dass Sie restriktivere Berechtigungen (600 oder 660) dafür benutzen können.
       Betrachten Sie die Beispiel-<span class="emphasis"><em>resource.cfg</em></span>-Datei im Basisverzeichnis der Icinga-Distribution für
       ein Beispiel, wie $USERn$-Makros zu definieren sind.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Entfernen Sie gefährliche Zeichen aus Makros</strong></span>. Benutzen Sie die <a class="link" href="../../../../../">illegal_macro_output_chars</a>-Direktive, um gefährliche Zeichen aus den
+      <p><span class="bold"><strong>Entfernen Sie gefährliche Zeichen aus Makros</strong></span>. Benutzen Sie die <a class="link" href="configmain.html#configmain-illegal_macro_output_chars">illegal_macro_output_chars</a>-Direktive, um gefährliche Zeichen aus den
       $HOSTOUTPUT$- , $SERVICEOUTPUT$-, $HOSTPERFDATA$- und $SERVICEPERFDATA$-Makros zu entfernen, bevor sie in Benachrichtigungen
       usw. benutzt werden. Gefährliche Zeichen kann alles sein, was ggf. durch die Shell interpretiert wird und dadurch eine
       Sicherheitslücke öffnet. Ein Beispiel dafür sind Backtick-Zeichen (`) in den $HOSTOUTPUT$, $SERVICEOUTPUT$, $HOSTPERFDATA$
@@ -149,7 +149,7 @@
       <p><span class="inlinemediaobject"><img src="../images/security2.png"></span></p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id1608030"></a>
+  <a class="indexterm" name="idp14907024"></a>
 </div>
 <div class="navfooter">
 <hr>

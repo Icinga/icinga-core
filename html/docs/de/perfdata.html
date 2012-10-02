@@ -120,7 +120,7 @@
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>aktivieren Sie die <a class="link" href="../../../../../">process_performance_data</a>-Option.</p>
+      <p>aktivieren Sie die <a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a>-Option.</p>
     </li>
 <li class="listitem">
       <p>konfigurieren Sie Icinga so, dass Performance-Daten in Dateien geschrieben und/oder durch Befehle verarbeitet
@@ -135,7 +135,7 @@
 
   <p>Der flexibelste Weg, um Performance-Daten zu verarbeiten, besteht darin, Icinga Befehle ausführen zu lassen (die Sie
   angeben), um die Daten zu verarbeiten oder sie umzulenken, damit sie später von externen Applikationen verarbeiten werden. Die Befehle,
-  die Icinga ausführt, um Host- und Service-Performance-Daten zu verarbeiten, werden durch die <a class="link" href="../../../../../">host_perfdata_command</a>- und <a class="link" href="../../../../../">service_perfdata_command</a>-Optionen festgelegt.</p>
+  die Icinga ausführt, um Host- und Service-Performance-Daten zu verarbeiten, werden durch die <a class="link" href="configmain.html#configmain-host_perfdata_command">host_perfdata_command</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_command">service_perfdata_command</a>-Optionen festgelegt.</p>
 
   <p>Eine Beispiel-Befehlsdefinition, die Service-Prüf-Performance-Daten zur späteren Verarbeitung durch eine andere Applikation in eine
   Textdatei umleitet, finden Sie nachfolgend:</p>
@@ -152,8 +152,8 @@
 
   <p><span class="bold"><strong>Performance-Daten in Dateien schreiben</strong></span></p>
 
-  <p>Sie können Icinga mit Hilfe der <a class="link" href="../../../../../">host_perfdata_file</a>- und <a class="link" href="../../../../../">service_perfdata_file</a>-Optionen anweisen, die Host- und Service-Performance-Daten direkt
-  in Textdateien auszugeben. Das Format, in dem Host- und Service-Performance-Daten in diese Dateien geschrieben wird, wird durch die <a class="link" href="../../../../../">host_perfdata_file_template</a>- und <a class="link" href="../../../../../">service_perfdata_file_template</a>-Optionen festgelegt.</p>
+  <p>Sie können Icinga mit Hilfe der <a class="link" href="configmain.html#configmain-host_perfdata_file">host_perfdata_file</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file">service_perfdata_file</a>-Optionen anweisen, die Host- und Service-Performance-Daten direkt
+  in Textdateien auszugeben. Das Format, in dem Host- und Service-Performance-Daten in diese Dateien geschrieben wird, wird durch die <a class="link" href="configmain.html#configmain-host_perfdata_file_template">host_perfdata_file_template</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file_template">service_perfdata_file_template</a>-Optionen festgelegt.</p>
 
   <p>Eine Beispiel-Dateiformatvorlage für Performance-Daten könnte wie folgt aussehen:</p>
 
@@ -162,11 +162,11 @@
 </pre>
 
   <p>Per Default werden die Textdateien im "append"-Modus ("anhängen") eröffnet. Wenn Sie den Modus auf "write" ("schreiben") oder
-  "non-blocking read/write" ("nicht-blockierendes Lesen/Schreiben", nützlich beim Schreiben in Pipes) ändern, können Sie die <a class="link" href="../../../../../">host_perfdata_file_mode</a>- und <a class="link" href="../../../../../">service_perfdata_file_mode</a>-Optionen nutzen.</p>
+  "non-blocking read/write" ("nicht-blockierendes Lesen/Schreiben", nützlich beim Schreiben in Pipes) ändern, können Sie die <a class="link" href="configmain.html#configmain-host_perfdata_file_mode">host_perfdata_file_mode</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file_mode">service_perfdata_file_mode</a>-Optionen nutzen.</p>
 
-  <p>Zusätzlich können Sie Icinga mit den <a class="link" href="../../../../../">host_perfdata_file_processing_command</a>- und <a class="link" href="../../../../../">service_perfdata_file_processing_command</a>-Optionen anweisen,
+  <p>Zusätzlich können Sie Icinga mit den <a class="link" href="configmain.html#configmain-host_perfdata_file_processing_command">host_perfdata_file_processing_command</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file_processing_command">service_perfdata_file_processing_command</a>-Optionen anweisen,
   periodisch Befehle auszuführen, um regelmäßig die Performance-Daten-Dateien zu verarbeiten (z.B., um sie zu rotieren). Das Intervall, in
-  dem diese Befehle ausgeführt werden, ist durch die <a class="link" href="../../../../../">host_perfdata_file_processing_interval</a>- und <a class="link" href="../../../../../">service_perfdata_file_processing_interval</a>-Optionen
+  dem diese Befehle ausgeführt werden, ist durch die <a class="link" href="configmain.html#configmain-host_perfdata_file_processing_interval">host_perfdata_file_processing_interval</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file_processing_interval">service_perfdata_file_processing_interval</a>-Optionen
   festgelegt.</p>
 
   <p><span class="bold"><strong><a name="perfdata-format"></a>Format Performance-Daten</strong></span></p>
@@ -279,9 +279,9 @@
     </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id1600672"></a>
+  <a class="indexterm" name="idp13980384"></a>
 
-  <a class="indexterm" name="id1600682"></a>
+  <a class="indexterm" name="idp13981616"></a>
 </div>
 <div class="navfooter">
 <hr>
