@@ -145,96 +145,109 @@
 
   <p><span class="bold"><strong>New features for the IDOUtils:</strong></span></p>
 
-  <p><span class="bold"><strong>SSL-Encryption between idomod and ido2db</strong></span></p>
-
-  <p>If you want to use SSL-encryption you'll need openssl and openssl-devel/libssl-dev (Ubuntu) to be installed !</p>
-
-  <p><span class="bold"><strong>Oracle Database Support</strong></span></p>
-
-  <p>If you want Oracle as RDBMS you'll need to install ocilib instead of libdbi.</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Using IDOUtils 1.5.0 with Oracle requires at least OCILIB 3.9.2 - don't install 3.9.0 or 3.9.1 as they remain
-    buggy.</p>
-  </td></tr>
-</table></div>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>More detailed instructions using IDOUtils with Oracle you can find in our wiki howto series about <a class="link" href="https://wiki.icinga.org/display/howtos/Icinga+and+Oracle" target="_top">Oracle</a>.</p>
-  </td></tr>
-</table></div>
-
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Oracle libraries and SDK (e.g. Instant Client)</p>
+      <p><span class="bold"><strong>SSL-Encryption between idomod and ido2db</strong></span></p>
 
-      <p>If you install from package, make sure the libraries are within PATH. Otherwise you need to set the Oracle libs during Icinga
-      IDOUtils install using e.g. --with-oracle-lib=/path/to/instantclient</p>
+      <p>If you want to use SSL-encryption you'll need openssl and openssl-devel/libssl-dev (Ubuntu) to be installed !</p>
     </li>
 <li class="listitem">
-      <p>ocilib instead of libdbi</p>
-    </li>
+      <p><span class="bold"><strong>Oracle Database Support</strong></span></p>
+
+      <p>If you want Oracle as RDBMS you'll need to install ocilib instead of libdbi.</p>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Using IDOUtils 1.5.0 with Oracle requires at least OCILIB 3.9.2 - don't install 3.9.0 or 3.9.1 as they remain
+        buggy.</p>
+      </td></tr>
+</table></div>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>More detailed instructions using IDOUtils with Oracle you can find in our wiki howto series about <a class="link" href="https://wiki.icinga.org/display/howtos/Icinga+and+Oracle" target="_top">Oracle</a>.</p>
+      </td></tr>
+</table></div>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p>Oracle libraries and SDK (e.g. Instant Client)</p>
+
+          <p>If you install from package, make sure the libraries are within PATH. Otherwise you need to set the Oracle libs during
+          Icinga IDOUtils install using e.g. --with-oracle-lib=/path/to/instantclient</p>
+        </li>
+<li class="listitem">
+          <p>ocilib instead of libdbi</p>
+        </li>
 </ul></div>
 
-  <p>Get it from http://orclib.sourceforge.net/ and point configure to your Oracle libraries and header files e.g. from the Oracle instant client:</p>
+      <p>Get it from http://orclib.sourceforge.net/ and point configure to your Oracle libraries and header files e.g. from the Oracle instant
+      client:</p>
 
-  <pre class="programlisting"> #&gt; ./configure --with-oracle-headers-path=/path/to/instantclient/sdk/include \
+      <pre class="screen"> #&gt; ./configure --with-oracle-headers-path=/path/to/instantclient/sdk/include \
     --with-oracle-lib-path=/path/to/instantclient/
  #&gt; make
  #&gt; make install</pre>
 
-  <p><span class="emphasis"><em>Icinga 1.4</em></span></p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><span class="emphasis"><em>Icinga 1.4</em></span></p>
 
-  <p>As of Icinga 1.4 the minimum expected Oracle version is Oracle 10gR2. Older versions may work, but are not
-  supported. Oracle scripts are designed to split data, index and lobs into different tablespaces. For this reason there is a new
-  prerequisite to define the tablespace names you want to use. If you are working in a small environment, you can set all defines to the
-  same real tablespace. You will find a new script <code class="filename">icinga_defines.sql</code> which you have to adapt for your needs before
-  applying <code class="filename">oracle.sql</code>. For your convenience there is a new script <code class="filename">create_oracle_sys.sql</code> included,
-  which should help you to create the necessary tablespaces and an Icinga application user and must run as SYS. It will make use of
-  <code class="filename">icinga_defines.sql</code> as well. Object creation has been moved from <code class="filename">oracle.sql</code> to the script
-  <code class="filename">create_icinga_objects_oracle.sql</code>.</p>
+          <p>As of Icinga 1.4 the minimum expected Oracle version is Oracle 10gR2. Older versions may work, but are
+          not supported. Oracle scripts are designed to split data, index and lobs into different tablespaces. For this reason there
+          is a new prerequisite to define the tablespace names you want to use. If you are working in a small environment, you can set all
+          defines to the same real tablespace. You will find a new script <code class="filename">icinga_defines.sql</code> which you have to adapt
+          for your needs before applying <code class="filename">oracle.sql</code>. For your convenience there is a new script
+          <code class="filename">create_oracle_sys.sql</code> included, which should help you to create the necessary tablespaces and an
+          Icinga application user and must run as SYS. It will make use of <code class="filename">icinga_defines.sql</code> as well. Object
+          creation has been moved from <code class="filename">oracle.sql</code> to the script
+          <code class="filename">create_icinga_objects_oracle.sql</code>.</p>
 
-  <p>The former <code class="filename">oracle.sql</code> has been redesigned as a master script to record all other scripts as includes and
-  expects these includes within the current directory. For this reason you should start <code class="filename">sqlplus</code> executing
-  <code class="filename">oracle.sql</code> within this directory. This way the creation of user and tablespaces and the creation of Icinga
-  tables runs in one step. As an all-in-one sample you will find a new script <code class="filename">db/scripts/create_oracledb.sh</code>. Edit
-  variables to suit your needs and enjoy. If you prefer to do SYS steps for yourself, please uncomment
-  <code class="filename">create_oracle_sys.sql</code> and make sure that your database Icinga user and tables exist and are defined with the
-  same (or more) rights and that the correct settings have been applied to <code class="filename">icinga_defines.sql</code>.</p>
+          <p>The former <code class="filename">oracle.sql</code> has been redesigned as a master script to record all other scripts as includes
+          and expects these includes within the current directory. For this reason you should start <code class="filename">sqlplus</code> executing
+          <code class="filename">oracle.sql</code> within this directory. This way the creation of user and tablespaces and the creation of
+          Icinga tables runs in one step. As an all-in-one sample you will find a new script
+          <code class="filename">db/scripts/create_oracledb.sh</code>. Edit variables to suit your needs and enjoy. If you prefer to do SYS steps for
+          yourself, please uncomment <code class="filename">create_oracle_sys.sql</code> and make sure that your database Icinga user and
+          tables exist and are defined with the same (or more) rights and that the correct settings have been applied to
+          <code class="filename">icinga_defines.sql</code>.</p>
+        </li>
+<li class="listitem">
+          <p><a name="quickstart-idoutils_timezone-support"></a><span class="bold"><strong>Timezone support</strong></span></p>
 
-  <p><a name="quickstart-idoutils_timezone-support"></a><span class="bold"><strong>Timezone support</strong></span></p>
+          <p>Starting with Icinga 1.6 all dates are stored as local timestamps in the database. Before that there was a different
+          behaviour storing and retrieving dates for each database system which was difficult to handle for frontend apps. Therefore
+          datatypes have been changed for MySQL from DATETIME to TIMESTAMP and for Oracle from DATE to LOCAL TIMESTAMP (0).
+          PostgreSQL was already using TIMESTAMP but has been changed to TIMESTAMP WITH TIME ZONE. IDO2DB will set session timezone to
+          UTC and store all unix timestamps (which are UTC per definition) as UTC based values. Please make sure your system returns unix
+          timestamps as real UTC based values (like "date -u '+%s'").</p>
 
-  <p>Starting with Icinga 1.6 all dates are stored as local timestamps in the database. Before that there was a different
-  behaviour storing and retrieving dates for each database system which was difficult to handle for frontend apps. Therefore datatypes have
-  been changed for MySQL from DATETIME to TIMESTAMP and for Oracle from DATE to LOCAL TIMESTAMP (0). PostgreSQL was
-  already using TIMESTAMP but has been changed to TIMESTAMP WITH TIME ZONE. IDO2DB will set session timezone to UTC and store all unix
-  timestamps (which are UTC per definition) as UTC based values. Please make sure your system returns unix timestamps as real UTC based
-  values (like "date -u '+%s'").</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Make sure your database session runs in the same timezone in which the existing dates have been stored (check your local timezone
-    e.g. Oracle:"select sessiontimezone from dual;") if you are running the upgrade script. Additionally for your convenience in
-    Oracle you should set your session timestamp format to the value you want, e.g "alter session set
-    nls_timestamp_format='YYYY-MM-DD HH24:MI:SS';" or similar. Now you can view entries from different Icinga installations in
-    different time zones which are stored in the same database and regardless from where you accessing it, all entries are returned in your
-    local time zone.</p>
-  </td></tr>
+            <p>Make sure your database session runs in the same timezone in which the existing dates have been stored (check your local
+            timezone e.g. Oracle:"select sessiontimezone from dual;") if you are running the upgrade script. Additionally for your
+            convenience in Oracle you should set your session timestamp format to the value you want, e.g "alter session set
+            nls_timestamp_format='YYYY-MM-DD HH24:MI:SS';" or similar. Now you can view entries from different Icinga installations
+            in different time zones which are stored in the same database and regardless from where you accessing it, all entries are
+            returned in your local time zone.</p>
+          </td></tr>
 </table></div>
+        </li>
+</ul></div>
+    </li>
+</ul></div>
 
   <p><span class="bold"><strong>Install Packages</strong></span></p>
 
@@ -262,105 +275,12 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
 
-  <pre class="programlisting"> #&gt; yum install httpd gcc glibc glibc-common gd gd-devel
+      <pre class="screen"> #&gt; yum install httpd gcc glibc glibc-common gd gd-devel
  #&gt; yum install libjpeg libjpeg-devel libpng libpng-devel</pre>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>You may have to use libjpeg-turbo and libjpeg-turbo-devel instead</p>
-  </td></tr>
-</table></div>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p><span class="bold"><strong>MySQL:</strong></span></p>
-
-      <pre class="programlisting"> #&gt; yum install mysql mysql-server \
-    libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql</pre>
-    </li>
-<li class="listitem">
-      <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
-
-      <pre class="programlisting"> #&gt; yum install postgresql postgresql-server \
-    libdbi libdbi-devel libdbi-drivers libdbi-dbd-pgsql</pre>
-    </li>
-</ul></div>
-
-  <p><span class="bold"><strong>Debian/Ubuntu:</strong></span></p>
-
-  <pre class="programlisting"> #&gt; apt-get install apache2 build-essential libgd2-xpm-dev
- #&gt; apt-get install libjpeg62 libjpeg62-dev libpng12 libpng12-dev</pre>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>The numbers &lt;62/12&gt; might differ, depending on your distribution</p>
-  </td></tr>
-</table></div>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Starting with Debian 6.0 / Ubuntu 10.10 the package is called libpng-12-0, the name of the dev-package hasn't
-    changed.</p>
-  </td></tr>
-</table></div>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p><span class="bold"><strong>MySQL:</strong></span></p>
-
-      <pre class="programlisting"> #&gt; apt-get install mysql-server mysql-client libdbi1 libdbi-dev libdbd-mysql</pre>
-    </li>
-<li class="listitem">
-      <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
-
-      <pre class="programlisting"> #&gt; apt-get install postgresql libdbi1 libdbi-dev libdbd-pgsql</pre>
-    </li>
-</ul></div>
-
-  <p><span class="bold"><strong>openSuSE:</strong></span></p>
-
-  <p>Please use YaST to install at least the packages gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel and, optionally,
-  net-snmp, net-snmp-devel and perl-Net-SNMP.</p>
-
-  <p>Using zypper should work as well:</p>
-
-  <pre class="programlisting"> #&gt; zypper install gd gd-devel libjpeg libjpeg-devel libpng libpng-devel
- #&gt; zypper install net-snmp net-snmp-devel perl-Net-SNMP</pre>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>The devel packages might be placed on the SDK DVDs.</p>
-  </td></tr>
-</table></div>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p><span class="bold"><strong>MySQL:</strong></span></p>
-
-      <p>Use YaST to install the packages for the RDBMS you want to use, i.e. "mysql", "mysql-devel", "mysql-client" and the libdbi
-      packages "libdbi", "libdbi-devel", "libdbi-drivers" and "libdbi-dbd-mysql", or alternatively <code class="filename">zypper</code>.</p>
-
-      <pre class="programlisting"> #&gt; zypper install mysql mysql-devel mysql-client \
-    libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql
-      </pre>
 
       <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -368,48 +288,145 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>In OpenSuSE 11 (SLES 11) the name of the package was changed from "mysql-devel" to "libmysqlclient-devel".</p>
+        <p>You may have to use libjpeg-turbo and libjpeg-turbo-devel instead</p>
       </td></tr>
 </table></div>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><span class="bold"><strong>MySQL:</strong></span></p>
+
+          <pre class="screen"> #&gt; yum install mysql mysql-server \
+    libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql</pre>
+        </li>
+<li class="listitem">
+          <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
+
+          <pre class="screen"> #&gt; yum install postgresql postgresql-server \
+    libdbi libdbi-devel libdbi-drivers libdbi-dbd-pgsql</pre>
+        </li>
+</ul></div>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
+      <p><span class="bold"><strong>Debian/Ubuntu:</strong></span></p>
 
-      <p>Use YaST to install the packages for the RDBMS you want to use, i.e. "postgresql", "postgresql-devel", "postgresql-server" and
-      the libdbi packages "libdbi", "libdbi-devel" and "libdbi-drivers", or alternatively <code class="filename">zypper</code>.</p>
+      <pre class="screen"> #&gt; apt-get install apache2 build-essential libgd2-xpm-dev
+ #&gt; apt-get install libjpeg62 libjpeg62-dev libpng12 libpng12-dev</pre>
 
-      <pre class="programlisting"> #&gt; zypper install postgresql postgresql-devel postgresql-server
- #&gt; zypper install libdbi libdbi-devel libdbi-drivers</pre>
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>The numbers &lt;62/12&gt; might differ, depending on your distribution</p>
+      </td></tr>
+</table></div>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>Starting with Debian 6.0 / Ubuntu 10.10 the package is called libpng-12-0, the name of the dev-package hasn't
+        changed.</p>
+      </td></tr>
+</table></div>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><span class="bold"><strong>MySQL:</strong></span></p>
+
+          <pre class="screen"> #&gt; apt-get install mysql-server mysql-client libdbi1 libdbi-dev libdbd-mysql</pre>
+        </li>
+<li class="listitem">
+          <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
+
+          <pre class="screen"> #&gt; apt-get install postgresql libdbi1 libdbi-dev libdbd-pgsql</pre>
+        </li>
+</ul></div>
     </li>
+<li class="listitem">
+      <p><span class="bold"><strong>openSuSE:</strong></span></p>
+
+      <p>Please use YaST to install at least the packages gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel and, optionally,
+      net-snmp, net-snmp-devel and perl-Net-SNMP.</p>
+
+      <p>Using zypper should work as well:</p>
+
+      <pre class="screen"> #&gt; zypper install gd gd-devel libjpeg libjpeg-devel libpng libpng-devel
+ #&gt; zypper install net-snmp net-snmp-devel perl-Net-SNMP</pre>
+
+      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+        <p>The devel packages might be placed on the SDK DVDs.</p>
+      </td></tr>
+</table></div>
+
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><span class="bold"><strong>MySQL:</strong></span></p>
+
+          <p>Use YaST to install the packages for the RDBMS you want to use, i.e. "mysql", "mysql-devel", "mysql-client" and the libdbi
+          packages "libdbi", "libdbi-devel", "libdbi-drivers" and "libdbi-dbd-mysql", or alternatively <code class="filename">zypper</code>.</p>
+
+          <pre class="screen"> #&gt; zypper install mysql mysql-devel mysql-client \
+    libdbi libdbi-devel libdbi-drivers libdbi-dbd-mysql
+      </pre>
+
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+            <p>In OpenSuSE 11 (SLES 11) the name of the package was changed from "mysql-devel" to "libmysqlclient-devel".</p>
+          </td></tr>
+</table></div>
+        </li>
+<li class="listitem">
+          <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
+
+          <p>Use YaST to install the packages for the RDBMS you want to use, i.e. "postgresql", "postgresql-devel", "postgresql-server"
+          and the libdbi packages "libdbi", "libdbi-devel" and "libdbi-drivers", or alternatively <code class="filename">zypper</code>.</p>
+
+          <pre class="screen"> #&gt; zypper install postgresql postgresql-devel postgresql-server
+ #&gt; zypper install libdbi libdbi-devel libdbi-drivers</pre>
+        </li>
 </ul></div>
 
-  <p>Using old OpenSuSE (SLES) versions including version 10 it is most likely that there aren't any libdbi packages so you have to
-  download and compile the sources. Replace &lt;rdbm&gt; with your desired RDBM like mysql or pgsql. Remember that the Oracle driver is not
-  yet working and read the appropriate section with ocilib instead of libdbi.</p>
+      <p>Using old OpenSuSE (SLES) versions including version 10 it is most likely that there aren't any libdbi packages so you have to
+      download and compile the sources. Replace &lt;rdbm&gt; with your desired RDBM like mysql or pgsql. Remember that the Oracle driver is
+      not yet working and read the appropriate section with ocilib instead of libdbi.</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+      <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Download and extract the tar.gz files</p>
+          <p>Download and extract the tar.gz files</p>
 
-      <p><a class="link" href="http://libdbi.sourceforge.net/download.html" target="_top">http://libdbi.sourceforge.net/download.html</a></p>
+          <p><a class="link" href="http://libdbi.sourceforge.net/download.html" target="_top">http://libdbi.sourceforge.net/download.html</a></p>
 
-      <p><a class="link" href="http://libdbi-drivers.sourceforge.net/download.html" target="_top">http://libdbi-drivers.sourceforge.net/download.html</a></p>
+          <p><a class="link" href="http://libdbi-drivers.sourceforge.net/download.html" target="_top">http://libdbi-drivers.sourceforge.net/download.html</a></p>
 
-      <pre class="programlisting"> #&gt; tar xvzf libdbi-0.8.3.tar.gz
+          <pre class="screen"> #&gt; tar xvzf libdbi-0.8.3.tar.gz
  #&gt; tar xvzf libdbi-drivers-0.8.3-1.tar.gz</pre>
-    </li>
+        </li>
 <li class="listitem">
-      <p>Install libdbi. Maybe you have to specify additional options with configure (set --prefix=/usr ... )</p>
+          <p>Install libdbi. Maybe you have to specify additional options with configure (set --prefix=/usr ... )</p>
 
-      <pre class="programlisting"> #&gt; cd libdbi-0.8.3
+          <pre class="screen"> #&gt; cd libdbi-0.8.3
  #&gt; ./configure --disable-docs
  #&gt; make
  #&gt; make install</pre>
-    </li>
+        </li>
 <li class="listitem">
-      <p>Install libdbi-drivers</p>
+          <p>Install libdbi-drivers</p>
 
-      <pre class="programlisting"> #&gt; cd libdbi-drivers-0.8.3-1
+          <pre class="screen"> #&gt; cd libdbi-drivers-0.8.3-1
  #&gt; ./configure --with-&lt;rdbm&gt; --disable-docs
  #&gt; make
  #&gt; make install</pre>
@@ -419,35 +436,37 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>Using the 64-bit-versions you have to specify the paths to the include- and lib-dir explicitly:</p>
+              <p>Using the 64-bit-versions you have to specify the paths to the include- and lib-dir explicitly:</p>
 
-          <pre class="programlisting"> #&gt; ./configure --with-&lt;rdbm&gt; \
+              <pre class="screen"> #&gt; ./configure --with-&lt;rdbm&gt; \
     --with-&lt;rdbm&gt;-incdir=/usr/include/&lt;rdbm&gt;/ \
     --with-&lt;rdbm&gt;-libdir=/usr/lib64/ --disable-docs</pre>
-        </td></tr>
+            </td></tr>
 </table></div>
-    </li>
+        </li>
 </ol></div>
+    </li>
+</ul></div>
 
   <p><span class="bold"><strong>Create Account Information</strong></span></p>
 
   <p>Become the root user.</p>
 
-  <pre class="programlisting"> $&gt; su -l</pre>
+  <pre class="screen"> $&gt; su -l</pre>
 
   <p>Create a new <span class="emphasis"><em>Icinga</em></span> user account and give it a password.</p>
 
-  <pre class="programlisting"> #&gt; /usr/sbin/useradd -m icinga 
+  <pre class="screen"> #&gt; /usr/sbin/useradd -m icinga 
  #&gt; passwd icinga </pre>
 
   <p>On some distributions you'll need to add the group in a single step:</p>
 
-  <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga</pre>
+  <pre class="screen"> #&gt; /usr/sbin/groupadd icinga</pre>
 
   <p>For sending commands from the classic web interface to Icinga, you'll need to create a new group icinga-cmd. Add the webuser
   and the Icingauser to this group:</p>
 
-  <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga-cmd
+  <pre class="screen"> #&gt; /usr/sbin/groupadd icinga-cmd
  #&gt; /usr/sbin/usermod -a -G icinga-cmd icinga
  #&gt; /usr/sbin/usermod -a -G icinga-cmd www-data</pre>
 
@@ -478,7 +497,7 @@
 
   <p>Change to your local source directory i.e. /usr/src</p>
 
-  <pre class="programlisting"> #&gt; cd /usr/src</pre>
+  <pre class="screen"> #&gt; cd /usr/src</pre>
 
   <p>Get the current source from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>. Don't forget to download the
   <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a></p>
@@ -487,7 +506,7 @@
 
   <p>Extract the Icinga source code tarball</p>
 
-  <pre class="programlisting"> #&gt; cd /usr/src/ 
+  <pre class="screen"> #&gt; cd /usr/src/ 
  #&gt; tar xvzf icinga-1.8.tar.gz 
  #&gt; cd icinga-1.8</pre>
 
@@ -503,7 +522,7 @@
 
   <p>Run the Icinga configure script and enable IDOUtils. You will get help by using the --help flag:</p>
 
-  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils </pre>
+  <pre class="screen"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils </pre>
 
   <p>Also with PostgreSQL you should not use the argument --enable-pgsq because it is not supported yet.</p>
 
@@ -516,27 +535,30 @@
     <p>Compiling on Solaris might fail upon unresolved library dependencies on gethostbyname. In that case run this before running
     configure:</p>
 
-    <pre class="programlisting"> #&gt; export LIBS=-lsocket -lnsl</pre>
+    <pre class="screen"> #&gt; export LIBS=-lsocket -lnsl</pre>
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>With SSL-Encryption:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="bold"><strong>With SSL-Encryption:</strong></span></p>
 
-  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-ssl</pre>
+      <pre class="screen"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-ssl</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>With Oracle Database Support:</strong></span></p>
 
-  <p><span class="bold"><strong>With Oracle Database Support:</strong></span></p>
+      <pre class="screen"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle </pre>
+<p> If you didn't install
+      Oracle libraries to PATH, you can point configure there:</p>
 
-  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd --enable-idoutils --enable-oracle </pre>
-<p> If you didn't
-  install Oracle libraries to PATH, you can point configure there:</p>
-
-  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd \
+      <pre class="screen"> #&gt; ./configure --with-command-group=icinga-cmd \
     --enable-idoutils --enable-oracle \
     --with-oracle-lib=/path/to/instantclient</pre>
 
-  <p>If you didn't install ocilib to the default path (/usr/local) you can point configure to the lib/inc directories:</p>
+      <p>If you didn't install ocilib to the default path (/usr/local) you can point configure to the lib/inc directories:</p>
 
-  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd \
+      <pre class="screen"> #&gt; ./configure --with-command-group=icinga-cmd \
     --enable-idoutils --enable-oracle \
     --with-ocilib-lib=/path/to/ocilib/lib \
     --with-ocilib-inc=/path/to/ocilib/include</pre>
@@ -546,28 +568,30 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>If you want to change RDBM from Oracle to others, you need to recompile and reinstall IDOUtils!</p>
-    </td></tr>
+          <p>If you want to change RDBM from Oracle to others, you need to recompile and reinstall IDOUtils!</p>
+        </td></tr>
 </table></div>
-<pre class="programlisting"> #&gt; make distclean
+<pre class="screen"> #&gt; make distclean
  #&gt; ./configure --enable-idoutils</pre>
+    </li>
+</ul></div>
 
   <p><span class="bold"><strong>Compile and Install</strong></span></p>
 
   <p>Compile the Icinga source code. There is also an extra option for IDOUtils (<span class="emphasis"><em>make idoutils</em></span>) if you
   need to recompile only this module. To see available options, only use "make".</p>
 
-  <pre class="programlisting"> #&gt; make all</pre>
+  <pre class="screen"> #&gt; make all</pre>
 
   <p>Install binaries, init script, sample config files, some eventhandlers, and set permissions on the external command directory.
   </p>
-<pre class="programlisting"> #&gt; make install
+<pre class="screen"> #&gt; make install
  #&gt; make install-init
  #&gt; make install-config
  #&gt; make install-eventhandlers
  #&gt; make install-commandmode </pre>
 <p> or shorter </p>
-<pre class="programlisting"> #&gt; make fullinstall
+<pre class="screen"> #&gt; make fullinstall
  #&gt; make install-config</pre>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -626,9 +650,9 @@
   address associated with the <span class="emphasis"><em>icingaadmin</em></span> contact definition to the address you'd like to use for receiving
   alerts.</p>
 
-  <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
+  <pre class="screen"> #&gt; vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
 
-  <pre class="programlisting"> #&gt; cd /usr/local/icinga/etc/
+  <pre class="screen"> #&gt; cd /usr/local/icinga/etc/
  #&gt; mv idomod.cfg-sample idomod.cfg
  #&gt; mv ido2db.cfg-sample ido2db.cfg</pre>
 
@@ -665,7 +689,7 @@
 <tr><td align="left" valign="top">
     <p>Under normal circumstances the following module definition is already present in the <code class="filename">modules</code> subdirectory so
     there is no need to edit the main config file </p>
-<pre class="screen"> define module{
+<pre class="programlisting"> define module{
         module_name    ido_mod
         path           /usr/local/icinga/lib/idomod.so
         module_type    neb
@@ -694,7 +718,7 @@
 
       <p>Create Database, User, Grants:</p>
 
-      <pre class="programlisting"> #&gt; mysql -u root -p
+      <pre class="screen"> #&gt; mysql -u root -p
  mysql&gt; CREATE DATABASE icinga;
 
  GRANT USAGE ON icinga.* TO 'icinga'@'localhost'
@@ -722,16 +746,16 @@
 
       <p>Import database scheme for MySQL:</p>
 
-      <pre class="programlisting"> #&gt; cd /path/to/icinga-src/module/idoutils/db/mysql
+      <pre class="screen"> #&gt; cd /path/to/icinga-src/module/idoutils/db/mysql
  #&gt; mysql -u root -p icinga &lt; mysql.sql</pre>
 
       <p>Edit the DB config file to customize IDOUtils</p>
 
       
 
-      <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/ido2db.cfg
+      <pre class="screen"> #&gt; vi /usr/local/icinga/etc/ido2db.cfg</pre>
 
- db_servertype=mysql
+      <pre class="programlisting"> db_servertype=mysql
  db_port=3306
  db_user=icinga
  db_pass=icinga</pre>
@@ -741,7 +765,7 @@
 
       <p>Create database and User:</p>
 
-      <pre class="programlisting"> #&gt; su - postgres
+      <pre class="screen"> #&gt; su - postgres
  
  $ psql
  postgres=# CREATE USER icinga;
@@ -752,13 +776,18 @@
 
       <p>Starting with PostgreSQL 9.1 "createlang ..." is obsolete.</p>
 
-      <p><span class="bold"><strong>Debian:</strong></span></p>
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+          <p><span class="bold"><strong>Debian:</strong></span></p>
 
-      <pre class="programlisting"> #&gt; vi /etc/postgresql/8.x/main/pg_hba.conf</pre>
+          <pre class="screen"> #&gt; vi /etc/postgresql/8.x/main/pg_hba.conf</pre>
+        </li>
+<li class="listitem">
+          <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
 
-      <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
-
-      <pre class="programlisting"> #&gt; vi /var/lib/pgsql/data/pg_hba.conf</pre>
+          <pre class="screen"> #&gt; vi /var/lib/pgsql/data/pg_hba.conf</pre>
+        </li>
+</ul></div>
 
       <p>Edit the config e.g. like this (local user must be trusted)</p>
 
@@ -776,15 +805,16 @@
 
       <p>Reload and configure database scheme.</p>
 
-      <pre class="programlisting"> #&gt; /etc/init.d/postgresql-8.x reload</pre>
+      <pre class="screen"> #&gt; /etc/init.d/postgresql-8.x reload</pre>
 
-      <pre class="programlisting"> #&gt; cd /path/to/icinga-src/module/idoutils/db/pgsql
+      <pre class="screen"> #&gt; cd /path/to/icinga-src/module/idoutils/db/pgsql
  #&gt; psql -U icinga -d icinga &lt; pgsql.sql</pre>
 
       <p>Edit the DB config file to customize IDOUtils</p>
 
-      <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/ido2db.cfg
- db_servertype=pgsql
+      <pre class="screen"> #&gt; vi /usr/local/icinga/etc/ido2db.cfg</pre>
+
+      <pre class="programlisting"> db_servertype=pgsql
  db_port=5432
  db_user=icinga
  db_pass=icinga</pre>
@@ -796,15 +826,16 @@
       Import the database scheme with sqlplus (or your preferred method). Copy <code class="filename">module/idoutils/db/oracle/*</code> to
       $ORACLE_HOME and edit <code class="filename">icinga_defines.sql</code> to match tablespace and user credential information.</p>
 
-      <pre class="programlisting"> #&gt; su - oracle
+      <pre class="screen"> #&gt; su - oracle
  $&gt; sqlplus dbuser/dbpass
  SQL&gt; @oracle.sql</pre>
 
       <p>Edit the DB config file to customize IDOUtils. Remember that Oracle ignores the db host, instead point db_name to
       //DBSERVER/DBNAME</p>
 
-      <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/ido2db.cfg
-  db_servertype=oracle
+      <pre class="screen"> #&gt; vi /usr/local/icinga/etc/ido2db.cfg</pre>
+
+      <pre class="programlisting">  db_servertype=oracle
   db_port=1521
   db_user=icinga
   db_pass=icinga</pre>
@@ -815,7 +846,7 @@
 
   <p>Icinga ships with the classic web interface ("the CGIs") which can be installed via</p>
 
-  <pre class="programlisting"> #&gt; make cgis
+  <pre class="screen"> #&gt; make cgis
  #&gt; make install-cgis
  #&gt; make install-html</pre>
 
@@ -824,16 +855,16 @@
 
   <p>Install the Icinga classic web config file in the Apache conf.d directory.</p>
 
-  <pre class="programlisting"> #&gt; make install-webconf</pre>
+  <pre class="screen"> #&gt; make install-webconf</pre>
 
   <p>Create an <span class="emphasis"><em>icingaadmin</em></span> account for logging into the Icinga classic web interface. Remember the password
   you assign to this account - you'll need it later.</p>
 
-  <pre class="programlisting"> #&gt; htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
+  <pre class="screen"> #&gt; htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
 
   <p>To change the password of an existing user or to add a new user, take this command:</p>
 
-  <pre class="programlisting"> #&gt; htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
+  <pre class="screen"> #&gt; htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -847,29 +878,35 @@
 
   <p>Reload/Restart Apache to make the new settings take effect.</p>
 
-  <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="bold"><strong>Fedora/RHEL/CentOS:</strong></span></p>
 
-  <pre class="programlisting"> #&gt; service httpd restart</pre>
+      <pre class="screen"> #&gt; service httpd restart</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Ubuntu/openSuSE:</strong></span></p>
 
-  <p><span class="bold"><strong>Ubuntu/openSuSE:</strong></span></p>
+      <pre class="screen"> #&gt; service apache2 restart</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <pre class="programlisting"> #&gt; service apache2 restart</pre>
-
-  <p><span class="bold"><strong>Debian:</strong></span></p>
-
-  <pre class="programlisting"> #&gt; /etc/init.d/apache2 reload</pre>
+      <pre class="screen"> #&gt; /etc/init.d/apache2 reload</pre>
+    </li>
+</ul></div>
 
   <p><span class="bold"><strong>Compile and Install the Nagios Plugins</strong></span></p>
 
   <p>Extract the Nagios plugins source code tarball.</p>
 
-  <pre class="programlisting"> #&gt; cd /usr/src 
+  <pre class="screen"> #&gt; cd /usr/src 
  #&gt; tar xvzf nagios-plugins-1.4.16.tar.gz 
  #&gt; cd nagios-plugins-1.4.16  </pre>
 
   <p>Compile and install the plugins by changing install directory to <code class="filename">/usr/local/icinga</code></p>
 
-  <pre class="programlisting"> #&gt; ./configure --prefix=/usr/local/icinga \
+  <pre class="screen"> #&gt; ./configure --prefix=/usr/local/icinga \
     --with-cgiurl=/icinga/cgi-bin --with-htmurl=/icinga \
     --with-nagios-user=icinga --with-nagios-group=icinga
  #&gt; make 
@@ -895,7 +932,7 @@
   <p>Instead of deactivating SELinux or setting it into permissive mode you can use the following commands to run the CGIs in
   enforcing/targeted mode:</p>
 
-  <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
+  <pre class="screen"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
  #&gt; chcon -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/icinga.cmd</pre>
 
@@ -905,59 +942,78 @@
 
   <p><span class="emphasis"><em>Start IDOUtils:</em></span></p>
 
-  <p><span class="bold"><strong> Fedora/RHEL/CentOS/Ubuntu/openSuSE:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="bold"><strong> Fedora/RHEL/CentOS/Ubuntu/openSuSE:</strong></span></p>
 
-  <pre class="programlisting"> #&gt; service ido2db start</pre>
+      <pre class="screen"> #&gt; service ido2db start</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <p><span class="bold"><strong>Debian:</strong></span></p>
-
-  <pre class="programlisting"> #&gt; /etc/init.d/ido2db start</pre>
+      <pre class="screen"> #&gt; /etc/init.d/ido2db start</pre>
+    </li>
+</ul></div>
 
   <p><span class="emphasis"><em>Stop IDOUtils:</em></span></p>
 
-  <p><span class="bold"><strong> Fedora/RHEL/CentOSUbuntu/openSuSE:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="bold"><strong> Fedora/RHEL/CentOSUbuntu/openSuSE:</strong></span></p>
 
-  <pre class="programlisting"> #&gt; service ido2db stop</pre>
+      <pre class="screen"> #&gt; service ido2db stop</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <p><span class="bold"><strong>Debian:</strong></span></p>
-
-  <pre class="programlisting"> #&gt; /etc/init.d/ido2db stop</pre>
+      <pre class="screen"> #&gt; /etc/init.d/ido2db stop</pre>
+    </li>
+</ul></div>
 
   <p>Verify the sample Icinga configuration files.</p>
 
-  <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg </pre>
+  <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg </pre>
 
   <p>If there are no errors, start Icinga.</p>
 
-  <p><span class="bold"><strong> Fedora/RHEL/CentOS/Ubuntu/openSuSE:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="bold"><strong> Fedora/RHEL/CentOS/Ubuntu/openSuSE:</strong></span></p>
 
-  <pre class="programlisting"> #&gt; service icinga start</pre>
+      <pre class="screen"> #&gt; service icinga start</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Debian:</strong></span></p>
 
-  <p><span class="bold"><strong>Debian:</strong></span></p>
-
-  <pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
+      <pre class="screen"> #&gt; /etc/init.d/icinga start</pre>
+    </li>
+</ul></div>
 
   <p><span class="bold"><strong>Configure Icinga Startup</strong></span></p>
 
   <p>Add Icinga to the list of system services and have it automatically start when the system boots (make sure you have installed
   the init script before).</p>
 
-  <p><span class="bold"><strong>Fedora/RHEL/CentOS/openSuSE:</strong></span></p>
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="bold"><strong>Fedora/RHEL/CentOS/openSuSE:</strong></span></p>
 
-  <pre class="programlisting"> #&gt; chkconfig --add icinga chkconfig icinga on</pre>
+      <pre class="screen"> #&gt; chkconfig --add icinga chkconfig icinga on</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Debian/Ubuntu:</strong></span></p>
 
-  <p><span class="bold"><strong>Debian/Ubuntu:</strong></span></p>
-
-  <pre class="programlisting"> #&gt; update-rc.d icinga defaults</pre>
+      <pre class="screen"> #&gt; update-rc.d icinga defaults</pre>
+    </li>
+</ul></div>
 
   <p><span class="bold"><strong>Login to the Classic Web Interface</strong></span></p>
 
   <p>You should now be able to access the Icinga classic web interface at the URL below. You'll be prompted for the username (
   <span class="emphasis"><em>icingaadmin</em></span> ) and password you specified earlier. </p>
-<pre class="programlisting"> http://localhost/icinga/</pre>
-<p> or
-  </p>
-<pre class="programlisting"> http://yourdomain.com/icinga/ </pre>
+<pre class="screen"> http://localhost/icinga/</pre>
+<p> or </p>
+<pre class="screen"> http://yourdomain.com/icinga/ </pre>
 
   <p>Click on the "Service Detail" navbar link to see details of what's being monitored on your local machine. It will take a few minutes
   for Icinga to check all the services associated with your machine.</p>
@@ -967,7 +1023,7 @@
   <p>Make sure your system's firewall rules are configured to allow access to the web server if you want to access the Icinga
   classic interface remotely.</p>
 
-  <pre class="programlisting"> #&gt; iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</pre>
+  <pre class="screen"> #&gt; iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</pre>
 
   <p>Setting up your mail transfer agent (MTA) like exim, sendmail or postfix to allow Icinga sending notification emails won't be
   explained here. Please refer to the <a class="link" href="http://www.nagioswiki.org/" target="_top">Nagios-Wiki</a> for more resources.</p>
@@ -980,9 +1036,9 @@
   no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a>
   about "Monitoring ..."</p>
 
-  <a class="indexterm" name="idp614240"></a>
+  <a class="indexterm" name="idp629232"></a>
 
-  <a class="indexterm" name="idp615728"></a>
+  <a class="indexterm" name="idp630720"></a>
 </div>
 <div class="navfooter">
 <hr>

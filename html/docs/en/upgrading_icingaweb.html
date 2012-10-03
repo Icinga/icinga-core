@@ -28,71 +28,83 @@
 <div class="section" title="6.5. Upgrading Icinga-Web and Icinga-Web Database">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="upgrading_icingaweb"></a>6.5. Upgrading Icinga-Web and Icinga-Web Database</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="upgrading_icingaweb.html#idp12042176">6.5.1. Upgrading Icinga-Web</a></span></dt>
+<dt><span class="section"><a href="upgrading_icingaweb.html#idp12054944">6.5.2. The Upgrade</a></span></dt>
+<dt><span class="section"><a href="upgrading_icingaweb.html#idp12055200">6.5.3. Upgrading the Icinga-Web Database</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Upgrading Icinga-Web</strong></span></p>
+  <div class="section" title="6.5.1. Upgrading Icinga-Web">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12042176"></a>6.5.1. Upgrading Icinga-Web</h3></div></div></div>
+    
 
-  <p>If there's a new Icinga-Web version available on http://www.icinga.org/ you should consider updating. Newer versions contain bugfixes, minor
-  or major, which makes it even more important to get the latest and the greatest. If you already installed Icinga-Web; using the installing
-  guide it should be rather easy to install newer version.</p>
+    <p>If there's a new Icinga-Web version available on http://www.icinga.org/ you should consider updating. Newer versions contain bugfixes, minor
+    or major, which makes it even more important to get the latest and the greatest. If you already installed Icinga-Web; using the
+    installing guide it should be rather easy to install newer version.</p>
 
-  <p>Make sure you'll have a safe backup of your Icinga-Web installation and your configs (if you stored your customised configuration in
-  *.site.xml- Files, they won't be overwritten during the upgrade process!). If anything goes wrong you can restore your old setup rather
-  easy.</p>
+    <p>Make sure you'll have a safe backup of your Icinga-Web installation and your configs (if you stored your customised configuration
+    in *.site.xml- Files, they won't be overwritten during the upgrade process!). If anything goes wrong you can restore your old setup
+    rather easy.</p>
 
-  <p>Regular updates of Icinga-Web are possible by just by re-installing Icinga-Web. Please keep in mind that <code class="code">configure</code>
-  requires the same parameters as before - look it up in <code class="code">config.log</code> and save that in a safe location.</p>
+    <p>Regular updates of Icinga-Web are possible by just by re-installing Icinga-Web. Please keep in mind that <code class="code">configure</code>
+    requires the same parameters as before - look it up in <code class="code">config.log</code> and save that in a safe location.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Please note that there were some major changes starting with Icinga 1.5 that may require some additional actions:</p>
+      <p>Please note that there were some major changes starting with Icinga 1.5 that may require some additional actions:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>The <code class="filename">*.site.xml</code> files for local configuration changes were removed, configurations are now in
-        <code class="filename">etc/conf.d/</code> (or defined during installation with --with-conf-dir (--with-conf-folder up to Icinga 1.6.x)
-        </p>
-      </li>
+          <p>The <code class="filename">*.site.xml</code> files for local configuration changes were removed, configurations are now in
+          <code class="filename">etc/conf.d/</code> (or defined during installation with --with-conf-dir (--with-conf-folder up to Icinga
+          1.6.x)</p>
+        </li>
 <li class="listitem">
-        <p>The log folder is now under <code class="filename">log/</code> (or defined during installation with the --with-log-folder)</p>
-      </li>
+          <p>The log folder is now under <code class="filename">log/</code> (or defined during installation with the --with-log-folder)</p>
+        </li>
 <li class="listitem">
-        <p>The icinga-api was removed, doctrine is now used for all database transactions (<code class="filename">icinga-io.xml</code> is now
-        <code class="filename">databases.xml</code>)</p>
-      </li>
+          <p>The icinga-api was removed, doctrine is now used for all database transactions (<code class="filename">icinga-io.xml</code> is now
+          <code class="filename">databases.xml</code>)</p>
+        </li>
 <li class="listitem">
-        <p>Commands are now sent through the internal console-handler (because the icinga-api has been removed)</p>
-      </li>
+          <p>Commands are now sent through the internal console-handler (because the icinga-api has been removed)</p>
+        </li>
 </ul></div>
 
-    <p>If you are using Icinga-Web &lt;= 1.4x then we suggest to do a fresh installation instead of an upgrade. It's better to copy your
-    old configuration files into the new structure because there are many changed and removed files we might not care about while
-    upgrading.</p>
-  </td></tr>
+      <p>If you are using Icinga-Web &lt;= 1.4x then we suggest to do a fresh installation instead of an upgrade. It's better to copy
+      your old configuration files into the new structure because there are many changed and removed files we might not care about while
+      upgrading.</p>
+    </td></tr>
 </table></div>
+  </div>
 
-  <p><span class="bold"><strong>The Upgrade</strong></span></p>
+  <div class="section" title="6.5.2. The Upgrade">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12054944"></a>6.5.2. The Upgrade</h3></div></div></div>
+    
 
-  <p>Please download the archive from <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">http://sourceforge.net/projects/icinga/files/</a>. If you have an issue
-  fixed in the current developer version then please take your clone from the icinga-web.git to get the freshest branch:</p>
+    <p>Please download the archive from <a class="link" href="http://sourceforge.net/projects/icinga/files/" target="_top">http://sourceforge.net/projects/icinga/files/</a>. If you have an issue
+    fixed in the current developer version then please take your clone from the icinga-web.git to get the freshest branch:</p>
 
-  <pre class="programlisting"> #&gt; git clone git://git.icinga.org/icinga-web.git</pre>
+    <pre class="screen"> #&gt; git clone git://git.icinga.org/icinga-web.git</pre>
 
-  <p>Unpack your tarball:</p>
+    <p>Unpack your tarball:</p>
 
-  <pre class="programlisting"> #&gt; tar xzvf icinga-web-1.8.0.tar.gz</pre>
+    <pre class="screen"> #&gt; tar xzvf icinga-web-1.8.0.tar.gz</pre>
 
-  <p>Then change to the directory:</p>
+    <p>Then change to the directory:</p>
 
-  <pre class="programlisting"> #&gt; cd icinga-web-1.8.0</pre>
+    <pre class="screen"> #&gt; cd icinga-web-1.8.0</pre>
 
-  <p>Icinga-Web provides several configure options e.g.</p>
+    <p>Icinga-Web provides several configure options e.g.</p>
 
-  <pre class="programlisting"> #&gt; ./configure 
+    <pre class="screen"> #&gt; ./configure 
                 --prefix=/usr/local/icinga-web 
                 --with-web-user=www-data 
                 --with-web-group=www-data 
@@ -111,125 +123,135 @@
                 --with-api-port=PORT Port for connection (default 3306)
                 --with-api-socket=PATH Path to socket (default none)</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Keep in mind that you configure the Icinga-Web database not the Icinga IDOUtils database! User and group name of the web process
-    depend on the distribution used.</p>
-  </td></tr>
+      <p>Keep in mind that you configure the Icinga-Web database not the Icinga IDOUtils database! User and group name of the web process
+      depend on the distribution used.</p>
+    </td></tr>
 </table></div>
 
-  <p>Please use:</p>
+    <p>Please use:</p>
 
-  <pre class="programlisting"> #&gt; ./configure --help</pre>
+    <pre class="screen"> #&gt; ./configure --help</pre>
 
-  <p>to see all configure options.</p>
+    <p>to see all configure options.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Using no options the installer expects the Icinga-API to be found at /usr/local/icinga/share/icinga-api.</p>
-  </td></tr>
+      <p>Using no options the installer expects the Icinga-API to be found at /usr/local/icinga/share/icinga-api.</p>
+    </td></tr>
 </table></div>
 
-  <p>Per default the Icinga-Web will be updated to <code class="filename">/usr/local/icinga-web</code> using:</p>
+    <p>Per default the Icinga-Web will be updated to <code class="filename">/usr/local/icinga-web</code> using:</p>
 
-  <pre class="programlisting"> #&gt; ./configure
+    <pre class="screen"> #&gt; ./configure
  #&gt; make upgrade</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>After changing any configs you need to clear the config cache!</p>
-  </td></tr>
+      <p>After changing any configs you need to clear the config cache!</p>
+    </td></tr>
 </table></div>
 
-  <pre class="programlisting"> #&gt; rm -rf app/cache/config/*.php</pre>
+    <pre class="screen"> #&gt; rm -rf app/cache/config/*.php</pre>
 
-  <p>or /path/to/clearcache.sh</p>
+    <p>or /path/to/clearcache.sh</p>
 
-  <pre class="programlisting"> #&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
+    <pre class="screen"> #&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
 
-  <p>Any errors? Take a look <a class="link" href="icinga-web-scratch.html#icinga-web-scratch-errors"> here.</a></p>
+    <p>Any errors? Take a look <a class="link" href="icinga-web-scratch.html#icinga-web-scratch-errors"> here.</a></p>
+  </div>
 
-  <p><span class="bold"><strong>Upgrading the Icinga-Web Database</strong></span></p>
+  <div class="section" title="6.5.3. Upgrading the Icinga-Web Database">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12055200"></a>6.5.3. Upgrading the Icinga-Web Database</h3></div></div></div>
+    
 
-  <p>This is optional, but there may be a bug within the database scheme which has been fixed. If you are upgrading from an older
-  Icinga-Web database version you also need to apply those fixes manually. If you are using rpm/deb packages please read the notes and/or
-  ask the maintainer if he has added those modifications to the install routine.</p>
+    <p>This is optional, but there may be a bug within the database scheme which has been fixed. If you are upgrading from an older
+    Icinga-Web database version you also need to apply those fixes manually. If you are using rpm/deb packages please read the notes and/or
+    ask the maintainer if he has added those modifications to the install routine.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Depending on the changes to be done and the size of your database it may take a while to update your database. Please try to be
-    patient and don't abort the script as it may leave the data being corrupt.</p>
-  </td></tr>
+      <p>Depending on the changes to be done and the size of your database it may take a while to update your database. Please try to be
+      patient and don't abort the script as it may leave the data being corrupt.</p>
+    </td></tr>
 </table></div>
 
-  <p>The upgrade files can be found next to the database install files in <code class="literal">/path/to/icinga-web/etc/schema/updates/</code>. The
-  syntax is as follows:</p>
+    <p>The upgrade files can be found next to the database install files in <code class="literal">/path/to/icinga-web/etc/schema/updates/</code>.
+    The syntax is as follows:</p>
 
-  <p><code class="literal">&lt;rdbm&gt;_&lt;old-version&gt;_to_&lt;new-version&gt;.sql</code></p>
+    <p><code class="literal">&lt;rdbm&gt;_&lt;old-version&gt;_to_&lt;new-version&gt;.sql</code></p>
 
-  <p>where &lt;rdbm&gt; could be mysql, pgsql or oracle and &lt;newversion&gt; points to the version you want to upgrade to.</p>
+    <p>where &lt;rdbm&gt; could be mysql, pgsql or oracle and &lt;newversion&gt; points to the version you want to upgrade to.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>If you are upgrading from an older version and there are other versions in between be advised that you need to apply those upgrade
-    files with incremental steps!</p>
-  </td></tr>
+      <p>If you are upgrading from an older version and there are other versions in between be advised that you need to apply those
+      upgrade files with incremental steps!</p>
+    </td></tr>
 </table></div>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Backup your current database before upgrading!</p>
-    </li>
+        <p>Backup your current database before upgrading!</p>
+      </li>
 <li class="listitem">
-      <p>Check current Icinga-Web database version and the target version. Check if there are any version in between and upgrade
-      incremental if necessary.</p>
-    </li>
+        <p>Check current Icinga-Web database version and the target version. Check if there are any version in between and upgrade
+        incremental if necessary.</p>
+      </li>
 <li class="listitem">
-      <p>Apply the upgrade(s) using a rdbm user with appropriate rights.</p>
-    </li>
+        <p>Apply the upgrade(s) using a rdbm user with appropriate rights.</p>
+      </li>
 </ol></div>
 
-  <p><span class="bold"><strong>MySQL</strong></span> </p>
-<pre class="programlisting"> $ mysql -u root -p icinga_web &lt; /path/to/icinga-web/etc/schema/updates/mysql_&lt;oldversion&gt;_to_&lt;newversion&gt;.sql</pre>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><span class="bold"><strong>MySQL</strong></span> </p>
+<pre class="screen"> $ mysql -u root -p icinga_web &lt; /path/to/icinga-web/etc/schema/updates/mysql_&lt;oldversion&gt;_to_&lt;newversion&gt;.sql</pre>
 <p>
-  <span class="bold"><strong>Postgresql</strong></span> </p>
-<pre class="programlisting"> #&gt; su - postgres
+        <span class="bold"><strong>Postgresql</strong></span> </p>
+<pre class="screen"> #&gt; su - postgres
  $ psql -U icinga_web -d icinga_web &lt; /path/to/icinga-web/etc/schema/updates/pgsql_&lt;oldversion&gt;_to_&lt;newversion&gt;.sql</pre>
-
-  <p><span class="bold"><strong>Oracle</strong></span> </p>
-<pre class="programlisting"> #&gt; su - oracle
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Oracle</strong></span> </p>
+<pre class="screen"> #&gt; su - oracle
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle_&lt;oldversion&gt;_to_&lt;newversion&gt;.sql</pre>
+      </li>
+</ul></div>
 
-  <p>That's all.</p>
+    <p>That's all.</p>
 
-  <a class="indexterm" name="idp12023248"></a>
+    <a class="indexterm" name="idp12084976"></a>
 
-  <a class="indexterm" name="idp12024384"></a>
+    <a class="indexterm" name="idp12086208"></a>
 
-  <a class="indexterm" name="idp12026224"></a>
+    <a class="indexterm" name="idp12087808"></a>
 
-  <a class="indexterm" name="idp12027392"></a>
+    <a class="indexterm" name="idp12089056"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

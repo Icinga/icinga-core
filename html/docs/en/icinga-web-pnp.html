@@ -28,13 +28,20 @@
 <div class="section" title="6.8. Integration of PNP4Nagios into Icinga-Web">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="icinga-web-pnp"></a>6.8. Integration of PNP4Nagios into Icinga-Web</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="icinga-web-pnp.html#idp12467968">6.8.1. Install PNP4Nagios</a></span></dt>
+<dt><span class="section"><a href="icinga-web-pnp.html#idp12476144">6.8.2. Templates Extension</a></span></dt>
+<dt><span class="section"><a href="icinga-web-pnp.html#idp12481280">6.8.3. Create a configuration to include PNP4Nagios host pages in Icinga-Web</a></span></dt>
+<dt><span class="section"><a href="icinga-web-pnp.html#idp12490912">6.8.4. Create a configuration to include pnp4nagios service pages in icinga-web</a></span></dt>
+<dt><span class="section"><a href="icinga-web-pnp.html#idp12504016">6.8.5. Clearing the cache</a></span></dt>
+</dl></div>
   
 
   <p>Here we'll give you some instructions on how to integrate PNP4Nagios into the Icinga-Web frontend. If you want to integrate
   PNP4Nagios into the Icinga Classic UI please follow the PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">documentation</a>.</p>
 
   <div class="figure">
-<a name="idp12402672"></a><p class="title"><b>Figure 6.31. PNP4Nagios integrated in Icinga-Web</b></p>
+<a name="idp12464992"></a><p class="title"><b>Figure 6.31. PNP4Nagios integrated in Icinga-Web</b></p>
 <div class="figure-contents">
       
 
@@ -43,7 +50,9 @@
 </div>
 <p><br class="figure-break"></p>
 
-  <p><span class="bold"><strong>Install PNP4Nagios</strong></span></p>
+<div class="section" title="6.8.1. Install PNP4Nagios">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12467968"></a>6.8.1. Install PNP4Nagios</h3></div></div></div>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -52,18 +61,22 @@
 <li class="listitem">
       <p>Change the PNP4Nagios configuration to match your Icinga configuration. You probably may want to change these:
       </p>
-<pre class="programlisting">#&gt; vi npcd.cfg
-    user = icinga
+<pre class="screen">#&gt; vi npcd.cfg</pre>
+<p>
+</p>
+<pre class="programlisting">    user = icinga
     group = icinga
     log_file = /var/log/icinga/npcd.log
     perfdata_spool_dir = /var/icinga/spool/
     perfdata_file = /var/icinga/perfdata.dump</pre>
 <p> </p>
-<pre class="programlisting">#&gt; vi process_perfdata.cfg
-    LOG_FILE = /var/log/icinga/perfdata.log
+<pre class="screen">#&gt; vi process_perfdata.cfg</pre>
+<p>
+</p>
+<pre class="programlisting">    LOG_FILE = /var/log/icinga/perfdata.log
     XML_ENC = ISO-8859-1  # use if encountering national character issues</pre>
 <p> </p>
-<pre class="programlisting">#&gt; vi config.php 
+<pre class="screen">#&gt; vi config.php 
     $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
       <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -82,7 +95,10 @@
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Templates Extension</strong></span></p>
+</div>
+<div class="section" title="6.8.2. Templates Extension">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12476144"></a>6.8.2. Templates Extension</h3></div></div></div>
 
   <p>Since version 1.5 you can leave the grid templates untouched because we integrated XML extension to customize grid templates with
   simple snippets. PNP integration is made with these extensions to be upgrade safe.</p>
@@ -112,7 +128,10 @@
     </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Create a configuration to include PNP4Nagios host pages in Icinga-Web</strong></span></p>
+</div>
+<div class="section" title="6.8.3. Create a configuration to include PNP4Nagios host pages in Icinga-Web">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12481280"></a>6.8.3. Create a configuration to include PNP4Nagios host pages in Icinga-Web</h3></div></div></div>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -130,7 +149,7 @@
 
       <p>Make a copy of the default icinga-host-template.xml in app/modules/Cronks/data/xml/grid under your Icinga-Web installation path,
       example: </p>
-<pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml \
+<pre class="screen">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml \
     /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-host-template.xml</pre>
 <p> In the new file we just created add
       a new field definition: </p>
@@ -208,7 +227,10 @@
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Create a configuration to include pnp4nagios service pages in icinga-web</strong></span></p>
+</div>
+<div class="section" title="6.8.4. Create a configuration to include pnp4nagios service pages in icinga-web">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12490912"></a>6.8.4. Create a configuration to include pnp4nagios service pages in icinga-web</h3></div></div></div>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -227,7 +249,7 @@
       <p>Make a copy of the default icinga-service-template.xml in app/modules/Cronks/data/xml/grid under your icinga-web installation
       path.</p>
 
-      <pre class="programlisting">cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-service-template.xml \
+      <pre class="screen">cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-service-template.xml \
     /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-service-template.xml</pre>
 
       <p>In the new file we just created add a new field definition:</p>
@@ -309,16 +331,19 @@
       <p>Using your new created grid view as default (if you want)</p>
 
       <p>Please backup your original view first: </p>
-<pre class="programlisting">#&gt; cp data/xml/grid/icinga-service-template.xml data/xml/grid/icinga-service-template.bak</pre>
+<pre class="screen">#&gt; cp data/xml/grid/icinga-service-template.xml data/xml/grid/icinga-service-template.bak</pre>
 <p>
       then </p>
-<pre class="programlisting">#&gt; cp data/xml/grid/icinga-my-service-template.xml data/xml/grid/icinga-service-template.xml</pre>
+<pre class="screen">#&gt; cp data/xml/grid/icinga-my-service-template.xml data/xml/grid/icinga-service-template.xml</pre>
 <p>Clear
       the cache, like described below. Performance graphs are now in your default "serviceStatus" Cronk!</p>
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Clearing the cache</strong></span></p>
+</div>
+<div class="section" title="6.8.5. Clearing the cache">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12504016"></a>6.8.5. Clearing the cache</h3></div></div></div>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -330,15 +355,16 @@
   </td></tr>
 </table></div>
 
-  <pre class="programlisting">#&gt; rm -f app/cache/config/*.php</pre>
+  <pre class="screen">#&gt; rm -f app/cache/config/*.php</pre>
 
   <p>or /path/to/clearcache.sh</p>
 
-  <pre class="programlisting">#&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
+  <pre class="screen">#&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
 
   <p>That's all, you're done!</p>
 
-  <a class="indexterm" name="idp12445600"></a>
+  <a class="indexterm" name="idp12507056"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

@@ -28,9 +28,17 @@
 <div class="section" title="7.20. Predictive Dependency Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dependencychecks"></a>7.20. <a name="dependency_checks"></a>Predictive Dependency Checks</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="dependencychecks.html#idp14298240">7.20.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="dependencychecks.html#idp14301072">7.20.2. How Do Predictive Checks Work?</a></span></dt>
+<dt><span class="section"><a href="dependencychecks.html#idp14301200">7.20.3. Enabling Predictive Checks</a></span></dt>
+<dt><span class="section"><a href="dependencychecks.html#idp14319360">7.20.4. Cached Checks</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="7.20.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14298240"></a>7.20.1. Introduction</h3></div></div></div>
 
   <p>Host and service <a class="link" href="dependencies.html" title="7.13. Host and Service Dependencies">dependencies</a> can be defined to allow you greater control over when
   checks are executed and when notifications are sent out. As dependencies are used to control basic aspects of the monitoring
@@ -40,7 +48,10 @@
   will have the most up-to-date status information when it comes to making decisions about whether to send out notifications or
   allow active checks of a host or service.</p>
 
-  <p><span class="bold"><strong>How Do Predictive Checks Work?</strong></span></p>
+  </div>
+<div class="section" title="7.20.2. How Do Predictive Checks Work?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14301072"></a>7.20.2. How Do Predictive Checks Work?</h3></div></div></div>
 
   <p>The image below shows a basic diagram of hosts that are being monitored by Icinga, along with their parent/child
   relationships and dependencies.</p>
@@ -73,7 +84,10 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Enabling Predictive Checks</strong></span></p>
+  </div>
+<div class="section" title="7.20.3. Enabling Predictive Checks">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14301200"></a>7.20.3. Enabling Predictive Checks</h3></div></div></div>
 
   <p>Predictive dependency checks involve rather little overhead, so I would recommend that you enable them. In most cases, the
   benefits of having accurate information for the dependency logic outweighs the extra overhead imposed by these checks.</p>
@@ -90,12 +104,16 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Cached Checks</strong></span></p>
+  </div>
+<div class="section" title="7.20.4. Cached Checks">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14319360"></a>7.20.4. Cached Checks</h3></div></div></div>
 
   <p>Predictive dependency checks are on-demand checks and are therefore subject to the rules of <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">cached checks</a>. Cached checks can provide you with performance improvements by allowing
   Icinga to forgo running an actual host or service check if it can use a relatively recent check result instead. More
   information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">here</a>.</p>
-  <a class="indexterm" name="idp14307952"></a>
+  <a class="indexterm" name="idp14321952"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

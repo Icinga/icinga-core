@@ -35,7 +35,7 @@
 
   <p>In order to verify your configuration, run Icinga using the <span class="bold"><strong>-v</strong></span> command line option:</p>
 
-  <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg  </pre>
+  <pre class="screen"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
 
   <p>If you've forgotten to enter some critical data or misconfigured things, Icinga will show a warning or error message that
   should point you to the location of the problem.</p>
@@ -51,27 +51,27 @@
   <span class="emphasis"><em>generally</em></span> be safely ignored, since they are only recommendations and not requirements.</p>
 
   <p>Instead of specifying the paths to binary and config file you can issue </p>
-<pre class="programlisting"> #&gt; /etc/init.d/icinga checkconfig</pre>
+<pre class="screen"> #&gt; /etc/init.d/icinga checkconfig</pre>
 <p>which
   results in just a non-zero return code if your config contains any errors. This might be useful if you want to restart Icinga
   automatically.</p>
 
   <p>Using </p>
-<pre class="programlisting"> #&gt; /etc/init.d/icinga show-errors</pre>
-<p>the command will create a file containing the errors found.
-  If there are any the contents of the file is shown ("show-errors" starting with Icinga 1.0.2).</p>
+<pre class="screen"> #&gt; /etc/init.d/icinga show-errors</pre>
+<p>the command will create a file containing the errors found. If there are
+  any the contents of the file is shown ("show-errors" starting with Icinga 1.0.2).</p>
 
   <p>Once you've verified your configuration files and fixed possible errors you can go ahead with <a class="xref" href="startstop.html" title="4.2. Starting and Stopping Icinga">Section 4.2, “Starting and Stopping Icinga”</a>.</p>
 
-  <a class="indexterm" name="idp6857552"></a>
+  <a class="indexterm" name="idp6889744"></a>
 
-  <a class="indexterm" name="idp6858688"></a>
+  <a class="indexterm" name="idp6889088"></a>
 
-  <a class="indexterm" name="idp6860464"></a>
+  <a class="indexterm" name="idp6892560"></a>
 
-  <a class="indexterm" name="idp6862064"></a>
+  <a class="indexterm" name="idp6894192"></a>
 
-  <a class="indexterm" name="idp6863712"></a>
+  <a class="indexterm" name="idp6895856"></a>
 </div>
 <div class="navfooter">
 <hr>

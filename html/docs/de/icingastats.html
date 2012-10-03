@@ -28,27 +28,44 @@
 <div class="section" title="8.6. Nutzung des Icingastats-Utilitys">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="icingastats"></a>8.6. Nutzung des Icingastats-Utilitys</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="icingastats.html#idp15217328">8.6.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="icingastats.html#idp15220336">8.6.2. Gebrauchshinweise</a></span></dt>
+<dt><span class="section"><a href="icingastats.html#idp15222864">8.6.3. menschlich-lesbare Ausgabe</a></span></dt>
+<dt><span class="section"><a href="icingastats.html#idp15224512">8.6.4. PNP4Nagios-Integration</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="8.6.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15217328"></a>8.6.1. Einführung</h3></div></div></div>
+    
 
-  <p>Ein Utility namens <span class="bold"><strong>icingastats</strong></span> ist in der Icinga-Distribution enthalten. Es wird zusammen
-  mit dem Icinga-Daemon kompiliert und installiert. Das icingastats-Utility liefert Ihnen verschiedene Informationen zu einem
-  laufenden Icinga-Prozess, die sehr hilfreich bei der <a class="link" href="tuning.html" title="8.3. Icinga für maximale Leistung optimieren">Leistungsoptimierung</a> sein können. Sie können
-  Informationen in einem menschlich-lesbaren oder im Performance-Daten-kompatiblen Format erhalten.</p>
+    <p>Ein Utility namens <span class="bold"><strong>icingastats</strong></span> ist in der Icinga-Distribution enthalten. Es wird zusammen
+    mit dem Icinga-Daemon kompiliert und installiert. Das icingastats-Utility liefert Ihnen verschiedene Informationen zu einem
+    laufenden Icinga-Prozess, die sehr hilfreich bei der <a class="link" href="tuning.html" title="8.3. Icinga für maximale Leistung optimieren">Leistungsoptimierung</a> sein können. Sie können
+    Informationen in einem menschlich-lesbaren oder im Performance-Daten-kompatiblen Format erhalten.</p>
+  </div>
 
-  <p><span class="bold"><strong>Gebrauchshinweise</strong></span></p>
+  <div class="section" title="8.6.2. Gebrauchshinweise">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15220336"></a>8.6.2. Gebrauchshinweise</h3></div></div></div>
+    
 
-  <p>Sie können das <span class="emphasis"><em>icingastats</em></span>-Utility mit der <span class="bold"><strong>--help</strong></span>-Option starten, um
-  Gebrauchshinweise zu bekommen.</p>
+    <p>Sie können das <span class="emphasis"><em>icingastats</em></span>-Utility mit der <span class="bold"><strong>--help</strong></span>-Option starten, um
+    Gebrauchshinweise zu bekommen.</p>
+  </div>
 
-  <p><span class="bold"><strong>menschlich-lesbare Ausgabe</strong></span></p>
+  <div class="section" title="8.6.3. menschlich-lesbare Ausgabe">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15222864"></a>8.6.3. menschlich-lesbare Ausgabe</h3></div></div></div>
+    
 
-  <p>Um menschlich-lesbare Informationen zur Leistung eines laufenden Icinga-Prozesses zu erhalten, starten Sie das
-  <span class="emphasis"><em>icingastats</em></span>-Utility mit dem <span class="bold"><strong>-c</strong></span>-Kommandozeilenargument, um die Position Ihrer
-  Hauptkonfigurationsdatei wie folgt anzugeben:</p>
+    <p>Um menschlich-lesbare Informationen zur Leistung eines laufenden Icinga-Prozesses zu erhalten, starten Sie das
+    <span class="emphasis"><em>icingastats</em></span>-Utility mit dem <span class="bold"><strong>-c</strong></span>-Kommandozeilenargument, um die Position Ihrer
+    Hauptkonfigurationsdatei wie folgt anzugeben:</p>
 
-  <pre class="screen">[icinga@monitoring ~]# /usr/local/icinga/bin/icingastats -c /usr/local/icinga/etc/nagios.cfg
+    <pre class="screen">[icinga@monitoring ~]# /usr/local/icinga/bin/icingastats -c /usr/local/icinga/etc/nagios.cfg
 Icinga Stats 1.8
 Copyright (c) 2009 Nagios Core Development Team and Community Contributors
 Copyright (c) 1999-2009 Ethan Galstad
@@ -115,19 +132,24 @@ External Commands Last 1/5/15 min:      6 / 6 / 15
 
 [icinga@monitoring ~]# </pre>
 
-  <p>Wie Sie sehen können, zeigt das Utility ein Reihe von verschiedenen Metriken zum Icinga-Prozess an. Metriken mit mehreren
-  Werten sind (wenn nicht anders angegeben) Minimum-, Maximum- und Durchschnittswerte für die betreffende Metrik.</p>
+    <p>Wie Sie sehen können, zeigt das Utility ein Reihe von verschiedenen Metriken zum Icinga-Prozess an. Metriken mit mehreren
+    Werten sind (wenn nicht anders angegeben) Minimum-, Maximum- und Durchschnittswerte für die betreffende Metrik.</p>
+  </div>
 
-  <p><span class="bold"><strong>PNP4Nagios-Integration</strong></span></p>
+  <div class="section" title="8.6.4. PNP4Nagios-Integration">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15224512"></a>8.6.4. PNP4Nagios-Integration</h3></div></div></div>
+    
 
-  <p>Sie können das <span class="emphasis"><em>icingastats</em></span>-Utility benutzen, um verschiedene Icinga-Metriken mit PNP4Nagios (oder
-  anderen kompatiblen Programmen) anzuzeigen. Um das zu tun, starten Sie das <span class="emphasis"><em>icingastats</em></span>-Utility mit den <span class="bold"><strong>--mrtg</strong></span>- und <span class="bold"><strong>--data</strong></span>-Optionen. Die <span class="bold"><strong>--data</strong></span>-Option
-  wird benutzt, um anzugeben, welche Statistiken dargestellt werden sollen. Mögliche Werte für die <span class="bold"><strong>--data</strong></span>-Option finden Sie durch Start des <span class="emphasis"><em>icingastats</em></span>-Utilitys mit der <span class="bold"><strong>--help</strong></span>-Option.</p>
+    <p>Sie können das <span class="emphasis"><em>icingastats</em></span>-Utility benutzen, um verschiedene Icinga-Metriken mit PNP4Nagios (oder
+    anderen kompatiblen Programmen) anzuzeigen. Um das zu tun, starten Sie das <span class="emphasis"><em>icingastats</em></span>-Utility mit den <span class="bold"><strong>--mrtg</strong></span>- und <span class="bold"><strong>--data</strong></span>-Optionen. Die <span class="bold"><strong>--data</strong></span>-Option
+    wird benutzt, um anzugeben, welche Statistiken dargestellt werden sollen. Mögliche Werte für die <span class="bold"><strong>--data</strong></span>-Option finden Sie durch Start des <span class="emphasis"><em>icingastats</em></span>-Utilitys mit der <span class="bold"><strong>--help</strong></span>-Option.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Informationen zum Gebrauch des <span class="emphasis"><em>icingastats</em></span>-Utilitys zu Generierung von
-  PNP4Nagios-Grafiken zu Darstellung von Icinga-Leistungsstatistiken finden Sie <a class="link" href="perfgraphs.html" title="8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios">hier</a>.</p>
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Informationen zum Gebrauch des <span class="emphasis"><em>icingastats</em></span>-Utilitys zu Generierung von
+    PNP4Nagios-Grafiken zu Darstellung von Icinga-Leistungsstatistiken finden Sie <a class="link" href="perfgraphs.html" title="8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios">hier</a>.</p>
 
-  <a class="indexterm" name="idp15147408"></a>
+    <a class="indexterm" name="idp15239712"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

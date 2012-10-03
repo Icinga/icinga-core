@@ -28,9 +28,17 @@
 <div class="section" title="7.5. Service and Host Freshness Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="freshness"></a>7.5. <a name="freshness_checks"></a>Service and Host Freshness Checks</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="freshness.html#idp13396320">7.5.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="freshness.html#idp13402448">7.5.2. How Does Freshness Checking Work?</a></span></dt>
+<dt><span class="section"><a href="freshness.html#idp13410544">7.5.3. Enabling Freshness Checking</a></span></dt>
+<dt><span class="section"><a href="freshness.html#idp13424560">7.5.4. Example</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="7.5.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13396320"></a>7.5.1. Introduction</h3></div></div></div>
 
   <p>Icinga supports a feature that does "freshness" checking on the results of host and service checks. The purpose of
   freshness checking is to ensure that host and service checks are being provided passively by external applications on a regular
@@ -41,7 +49,10 @@
 
   <p><span class="inlinemediaobject"><img src="../images/freshness.png"></span></p>
 
-  <p><span class="bold"><strong>How Does Freshness Checking Work?</strong></span></p>
+  </div>
+<div class="section" title="7.5.2. How Does Freshness Checking Work?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13402448"></a>7.5.2. How Does Freshness Checking Work?</h3></div></div></div>
 
   <p>Icinga periodically checks the freshness of the results for all hosts services that have freshness checking
   enabled.</p>
@@ -77,7 +88,10 @@
   <p>For example, if you have a freshness threshold of 60 for one of your services, Icinga will consider that service to
   be stale if its last check result is older than 60 seconds.</p>
 
-  <p><span class="bold"><strong>Enabling Freshness Checking</strong></span></p>
+  </div>
+<div class="section" title="7.5.3. Enabling Freshness Checking">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13410544"></a>7.5.3. Enabling Freshness Checking</h3></div></div></div>
 
   <p>Here's what you need to do to enable freshness checking...</p>
 
@@ -120,7 +134,10 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Example</strong></span></p>
+  </div>
+<div class="section" title="7.5.4. Example">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13424560"></a>7.5.4. Example</h3></div></div></div>
 
   <p>An example of a service that might require freshness checking might be one that reports the status of your nightly backup
   jobs. Perhaps you have a external script that submit the results of the backup job to Icinga once the backup is
@@ -131,7 +148,7 @@
 
   <p>Here's what the definition for the service might look like (some required options are omitted)...</p>
 
-  <pre class="screen"> define service{
+  <pre class="programlisting"> define service{
         host_name               backup-server
         service_description     ArcServe Backup Job
         active_checks_enabled   0               ; active checks are NOT enabled
@@ -149,7 +166,7 @@
   results of the service are determined to be stale. The definition of the <span class="emphasis"><em>no-backup-report</em></span> command might
   look like this...</p>
 
-  <pre class="screen"> define command{
+  <pre class="programlisting"> define command{
         command_name    no-backup-report
         command_line    /usr/local/icinga/libexec/check_dummy 2 "CRITICAL: Results of backup job were not reported!"
         }</pre>
@@ -158,7 +175,8 @@
   as an active service check. This causes the <span class="emphasis"><em>check_dummy</em></span> plugin to be executed, which returns a critical
   state to Icinga. The service will then go into to a critical state (if it isn't already there) and someone will probably
   get notified of the problem.</p>
-  <a class="indexterm" name="idp13374160"></a>
+  <a class="indexterm" name="idp13432112"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

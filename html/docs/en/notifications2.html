@@ -28,43 +28,51 @@
 <div class="section" title="5.12. Notifications: Examples and troubleshooting">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="notifications2"></a>5.12. <a name="notifications_2"></a>Notifications: Examples and troubleshooting</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="notifications2.html#idp10121216">5.12.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="notifications2.html#idp10150864">5.12.2. Some examples</a></span></dt>
+<dt><span class="section"><a href="notifications2.html#idp10159984">5.12.3. Troubleshooting</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="5.12.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10121216"></a>5.12.1. Introduction</h3></div></div></div>
+    
 
-  <p>Object definitions of <a class="link" href="objectdefinitions.html#objectdefinitions-host">hosts</a>, <a class="link" href="objectdefinitions.html#objectdefinitions-service">services</a>, and <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contacts</a> / <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contact groups</a> were shown in the chapter "Configuring Icinga", the several checks being
-  made to determine whether a notification will be sent or not were described in the section "<a class="link" href="notifications.html" title="5.11. Notifications">Notifications</a>".</p>
+    <p>Object definitions of <a class="link" href="objectdefinitions.html#objectdefinitions-host">hosts</a>, <a class="link" href="objectdefinitions.html#objectdefinitions-service">services</a>, and <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contacts</a> / <a class="link" href="objectdefinitions.html#objectdefinitions-contactgroup">contact groups</a> were shown in the chapter "Configuring Icinga", the several checks being
+    made to determine whether a notification will be sent or not were described in the section "<a class="link" href="notifications.html" title="5.11. Notifications">Notifications</a>".</p>
 
-  <p>Despite all the explanations it seems that there is still some level of uncertainty so we'll try to show an example using mail as
-  one way of communication.</p>
+    <p>Despite all the explanations it seems that there is still some level of uncertainty so we'll try to show an example using mail as
+    one way of communication.</p>
 
-  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Icinga does <span class="bold"><strong>not</strong></span> provide any method to notify any contact you define so setting up mail, sms,
-      pager, or whichever way you may choose is entirely up to you and not part of this documentation. Regarding mail you have to install a
-      mail program (postfix, sendmail, or any other MTA you feel comfortable with), set up relaying on the Icinga server (postfix:
-      <code class="filename">/etc/postfix/main.cf</code>, directive "relayhost"; sendmail: <code class="filename">/etc/mail/sendmail.cf</code>, directive
-      "DS"), allow relaying on your central mail server for mails coming from your Icinga server and verify that you can send mails from
-      your Icinga server using the user running Icinga.</p>
+        <p>Icinga does <span class="bold"><strong>not</strong></span> provide any method to notify any contact you define so setting up mail, sms,
+        pager, or whichever way you may choose is entirely up to you and not part of this documentation. Regarding mail you have to install
+        a mail program (postfix, sendmail, or any other MTA you feel comfortable with), set up relaying on the Icinga server (postfix:
+        <code class="filename">/etc/postfix/main.cf</code>, directive "relayhost"; sendmail: <code class="filename">/etc/mail/sendmail.cf</code>, directive
+        "DS"), allow relaying on your central mail server for mails coming from your Icinga server and verify that you can send mails from
+        your Icinga server using the user running Icinga.</p>
 
-      <p>If you cannot send messages from the command line on your Icinga server then there is no sense in reading on.</p>
-    </td></tr>
+        <p>If you cannot send messages from the command line on your Icinga server then there is no sense in reading on.</p>
+      </td></tr>
 </table></div>
 <p><span class="bold"><strong>Prerequisites</strong></span></p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>As stated above you need a working way to send messages from the command line. If that doesn't work then you have to fix it
-      first!</p>
-    </li>
+        <p>As stated above you need a working way to send messages from the command line. If that doesn't work then you have to fix it
+        first!</p>
+      </li>
 <li class="listitem">
-      <p>You need at least one contact definition like the following:</p>
+        <p>You need at least one contact definition like the following:</p>
 
-      <pre class="screen"> define contact {
+        <pre class="programlisting"> define contact {
         contact_name                    jdoe
         host_notifications_enabled      1
         host_notification_period        24x7
@@ -77,36 +85,36 @@
         email                           jdoe@some.domain.name
         }</pre>
 
-      <p>The definition contains all required directives and one semi-optional (email).</p>
+        <p>The definition contains all required directives and one semi-optional (email).</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p>Notifications are enabled for both hosts and services</p>
-        </li>
+            <p>Notifications are enabled for both hosts and services</p>
+          </li>
 <li class="listitem">
-          <p>Notifications will be sent during the time period "24x7" for hosts and during "workhours" for services. These time periods
-          require appropriate <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">time period definitions</a>. We'll assume that "24x7" means 24
-          hours 7 days a week and "workhours" monday to friday from 9 a.m. to 5 p.m. Please note that "notification_period" is different
-          from "check_period" as specified in host and service definitions. It specifies the time period in which messages will be sent if
-          all checks described in "<a class="link" href="notifications.html" title="5.11. Notifications">Notifications</a>" have been passed successfully.</p>
-        </li>
+            <p>Notifications will be sent during the time period "24x7" for hosts and during "workhours" for services. These time periods
+            require appropriate <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">time period definitions</a>. We'll assume that "24x7" means
+            24 hours 7 days a week and "workhours" monday to friday from 9 a.m. to 5 p.m. Please note that "notification_period" is
+            different from "check_period" as specified in host and service definitions. It specifies the time period in which messages will
+            be sent if all checks described in "<a class="link" href="notifications.html" title="5.11. Notifications">Notifications</a>" have been passed successfully.</p>
+          </li>
 <li class="listitem">
-          <p>Messages will be sent for hosts changing to UNREACHABLE and DOWN states and when returning back to an UP state. Services
-          changing to WARNING, CRITICAL, and UNREACHABLE and returning back to an OK state will send notifications as well.</p>
-        </li>
+            <p>Messages will be sent for hosts changing to UNREACHABLE and DOWN states and when returning back to an UP state. Services
+            changing to WARNING, CRITICAL, and UNREACHABLE and returning back to an OK state will send notifications as well.</p>
+          </li>
 <li class="listitem">
-          <p>Hosts and services use different commands to notify the contact.</p>
-        </li>
+            <p>Hosts and services use different commands to notify the contact.</p>
+          </li>
 <li class="listitem">
-          <p>Apart from "email" you can specify several other addresses which might be used to notify the contact.</p>
-        </li>
+            <p>Apart from "email" you can specify several other addresses which might be used to notify the contact.</p>
+          </li>
 </ul></div>
-    </li>
+      </li>
 <li class="listitem">
-      <p>You need different command definitions for "host-notify-by-email" and "notify-by-email". The definitions shown were taken from
-      the Icinga sample config files. The command line was reformatted.</p>
+        <p>You need different command definitions for "host-notify-by-email" and "notify-by-email". The definitions shown were taken from
+        the Icinga sample config files. The command line was reformatted.</p>
 
-      <pre class="screen"> # 'notify-host-by-email' command definition
+        <pre class="programlisting"> # 'notify-host-by-email' command definition
  define command {
         command_name   notify-host-by-email
         command_line   /usr/bin/printf "%b" "***** Icinga *****\n\n \
@@ -140,41 +148,45 @@
                          $CONTACTEMAIL$
         }</pre>
 
-      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Please verify that the programs (<code class="filename">printf</code>, <code class="filename">mailx</code>) actually exist at the given
-        locations. They may differ between distributions.</p>
-      </td></tr>
+          <p>Please verify that the programs (<code class="filename">printf</code>, <code class="filename">mailx</code>) actually exist at the given
+          locations. They may differ between distributions.</p>
+        </td></tr>
 </table></div>
 
-      <p>There are many <a class="link" href="macrolist.html" title="5.3. Standard Macros in Icinga">macros</a> which can be inserted to add information to the notifications.</p>
+        <p>There are many <a class="link" href="macrolist.html" title="5.3. Standard Macros in Icinga">macros</a> which can be inserted to add information to the notifications.</p>
 <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>Several macros have a limited scope, e.g. CONTACT* macros are not available within event handlers.</p>
-        </td></tr>
+            <p>Several macros have a limited scope, e.g. CONTACT* macros are not available within event handlers.</p>
+          </td></tr>
 </table></div>
 
-      <p>You are free to write your own notification command adding or removing macros as needed. Just ensure that it contains the
-      information the addressee requires. You may want to write a sophisticated script which checks a database to determine the way a
-      contact can be reached depending on the time the notification is sent (via mail during working hours, additionally via sms during
-      non-working hours, not at all during holidays).</p>
-    </li>
+        <p>You are free to write your own notification command adding or removing macros as needed. Just ensure that it contains the
+        information the addressee requires. You may want to write a sophisticated script which checks a database to determine the way a
+        contact can be reached depending on the time the notification is sent (via mail during working hours, additionally via sms during
+        non-working hours, not at all during holidays).</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Some examples</strong></span></p>
+  <div class="section" title="5.12.2. Some examples">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10150864"></a>5.12.2. Some examples</h3></div></div></div>
+    
 
-  <p>We will define some services containing only some directives assuming that the other (required) things were defined using a template
-  and show some things to look for:</p>
+    <p>We will define some services containing only some directives assuming that the other (required) things were defined using a
+    template and show some things to look for:</p>
 
-  <pre class="screen"> define service {
+    <pre class="programlisting"> define service {
         use                      service_template
         host_name                san_host
         service_description      spare_disks
@@ -208,63 +220,68 @@
         contacts                 admins
         }</pre>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>The first service monitors the number of spare discs within a disc shelf. Normally there are two discs available. Having only
-      one should generate a warning, dropping to zero is considered critical. Notifications will be sent at all times, repeating the non-OK
-      state every 60 minutes. John Doe is not part of the admins group so he is specified separately.</p>
-    </li>
+        <p>The first service monitors the number of spare discs within a disc shelf. Normally there are two discs available. Having only
+        one should generate a warning, dropping to zero is considered critical. Notifications will be sent at all times, repeating the
+        non-OK state every 60 minutes. John Doe is not part of the admins group so he is specified separately.</p>
+      </li>
 <li class="listitem">
-      <p>The second service monitors the number of users logged in. Exceeding 20 users generates a warning, above 50 users is critical.
-      The shop is closed after working hours and users are logged off automatically after some idle time so there is no need for
-      notifications at other times. Please note that a warning will <span class="emphasis"><em>not</em></span> send a notification because that is not
-      specified in the notification options! There will be only one notification in case of a non-OK state, even if the state changes
-      between WARNING and CRITICAL.</p>
-    </li>
+        <p>The second service monitors the number of users logged in. Exceeding 20 users generates a warning, above 50 users is critical.
+        The shop is closed after working hours and users are logged off automatically after some idle time so there is no need for
+        notifications at other times. Please note that a warning will <span class="emphasis"><em>not</em></span> send a notification because that is not
+        specified in the notification options! There will be only one notification in case of a non-OK state, even if the state changes
+        between WARNING and CRITICAL.</p>
+      </li>
 <li class="listitem">
-      <p>The last service checks the amount of memory on a machine running batch jobs all the time. Warnings will be generated above 90%
-      RAM usage and if beyond 95% it is considered critical. Sending out messages in a ten minute interval seems to be a good idea but
-      sending them only during workhours might be insufficient. <span class="bold"><strong>But</strong></span>: although there are a lot of
-      notification options specified the admins group will not get any messages at all! The reason? Please check the meaning of each
-      possible value of "notification_options" for yourself by looking at the object definition of hosts / services.</p>
-    </li>
+        <p>The last service checks the amount of memory on a machine running batch jobs all the time. Warnings will be generated above
+        90% RAM usage and if beyond 95% it is considered critical. Sending out messages in a ten minute interval seems to be a good idea but
+        sending them only during workhours might be insufficient. <span class="bold"><strong>But</strong></span>: although there are a lot of
+        notification options specified the admins group will not get any messages at all! The reason? Please check the meaning of each
+        possible value of "notification_options" for yourself by looking at the object definition of hosts / services.</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Troubleshooting</strong></span></p>
+  <div class="section" title="5.12.3. Troubleshooting">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10159984"></a>5.12.3. Troubleshooting</h3></div></div></div>
+    
 
-  <p>If notifications don't seem to work there are several things to check:</p>
+    <p>If notifications don't seem to work there are several things to check:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Has the host/service state already turned into a "hard" state? Check the state looking at the host/service details</p>
-    </li>
+        <p>Has the host/service state already turned into a "hard" state? Check the state looking at the host/service details</p>
+      </li>
 <li class="listitem">
-      <p>Is the macro valid in the context where you are using it?</p>
-    </li>
+        <p>Is the macro valid in the context where you are using it?</p>
+      </li>
 <li class="listitem">
-      <p>Is the program to send messages (mail / pager / ...) up and running? Is it possible to send messages from the command line with
-      the account used to run the Icinga process to the address specified in the contact definition? Note: For security reasons the login
-      shell might be disabled so you may have to change that temporarily</p>
-    </li>
+        <p>Is the program to send messages (mail / pager / ...) up and running? Is it possible to send messages from the command line
+        with the account used to run the Icinga process to the address specified in the contact definition? Note: For security reasons the
+        login shell might be disabled so you may have to change that temporarily</p>
+      </li>
 <li class="listitem">
-      <p>Instead of sending messages you can redirect the output to a file by changing "<code class="literal">| /usr/bin/mail ...</code>" to
-      something like "<code class="literal">&gt; /tmp/notification.log</code>" to verify that all macros are resolved correctly</p>
-    </li>
+        <p>Instead of sending messages you can redirect the output to a file by changing "<code class="literal">| /usr/bin/mail ...</code>" to
+        something like "<code class="literal">&gt; /tmp/notification.log</code>" to verify that all macros are resolved correctly</p>
+      </li>
 <li class="listitem">
-      <p>Check the Icinga log, mail log, and system log for messages</p>
-    </li>
+        <p>Check the Icinga log, mail log, and system log for messages</p>
+      </li>
 <li class="listitem">
-      <p>Edit <code class="filename">icinga.cfg</code> and change the following directives</p>
+        <p>Edit <code class="filename">icinga.cfg</code> and change the following directives</p>
 
-      <pre class="screen"> debug_level=32                  # notifications
+        <pre class="programlisting"> debug_level=32                  # notifications
  debug_verbosity=2               # very detailed
  max_debug_file_size=1000000000  # max 1GB of debug file</pre>
 
-      <p>Restart Icinga and send a custom notification via the classic UI to check the settings.</p>
-    </li>
+        <p>Restart Icinga and send a custom notification via the classic UI to check the settings.</p>
+      </li>
 </ul></div>
 
-  <a class="indexterm" name="idp10113248"></a>
+    <a class="indexterm" name="idp10170160"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

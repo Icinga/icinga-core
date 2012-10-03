@@ -28,47 +28,63 @@
 <div class="section" title="5.10. Determining Status and Reachability of Network Hosts">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="networkreachability"></a>5.10. <a name="network_reachability"></a>Determining Status and Reachability of Network Hosts</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="networkreachability.html#idp9987392">5.10.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp9990304">5.10.2. Example Network</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp9994480">5.10.3. Defining Parent/Child Relationships</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp10001488">5.10.4. Reachability Logic in Action</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp10011456">5.10.5. UNREACHABLE States and Notifications</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="5.10.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9987392"></a>5.10.1. Introduction</h3></div></div></div>
+    
 
-  <p>If you've ever work in tech support, you've undoubtably had users tell you "the Internet is down". As a techie, you're
-  pretty sure that no one pulled the power cord from the Internet. Something must be going wrong somewhere between the user's
-  chair and the Internet.</p>
+    <p>If you've ever work in tech support, you've undoubtably had users tell you "the Internet is down". As a techie, you're pretty sure
+    that no one pulled the power cord from the Internet. Something must be going wrong somewhere between the user's chair and the
+    Internet.</p>
 
-  <p>Assuming its a technical problem, you begin to search for the problem. Perhaps the user's computer is turned off, maybe
-  their network cable is unplugged, or perhaps your organization's core router just took a dive. Whatever the problem might be,
-  one thing is most certain - the Internet isn't down. It just happens to be unreachable for that user.</p>
+    <p>Assuming its a technical problem, you begin to search for the problem. Perhaps the user's computer is turned off, maybe their
+    network cable is unplugged, or perhaps your organization's core router just took a dive. Whatever the problem might be, one thing is
+    most certain - the Internet isn't down. It just happens to be unreachable for that user.</p>
 
-  <p>Icinga is able to determine whether the hosts you're monitoring are in a DOWN or UNREACHABLE state. These are very
-  different (although related) states and can help you quickly determine the root cause of network problems. Here's how the
-  reachability logic works to distinguish between these two states...</p>
+    <p>Icinga is able to determine whether the hosts you're monitoring are in a DOWN or UNREACHABLE state. These are very
+    different (although related) states and can help you quickly determine the root cause of network problems. Here's how the reachability
+    logic works to distinguish between these two states...</p>
+  </div>
 
-  <p><span class="bold"><strong>Example Network</strong></span></p>
+  <div class="section" title="5.10.2. Example Network">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9990304"></a>5.10.2. Example Network</h3></div></div></div>
+    
 
-  <p>Take a look at the simple network diagram below. For this example, lets assume you're monitoring all the hosts (server,
-  routers, switches, etc) that are pictured. Icinga is installed and running on the <span class="emphasis"><em>Icinga</em></span>
-  host.</p>
+    <p>Take a look at the simple network diagram below. For this example, lets assume you're monitoring all the hosts (server, routers,
+    switches, etc) that are pictured. Icinga is installed and running on the <span class="emphasis"><em>Icinga</em></span> host.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/reachability1.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability1.png"></span></p>
+  </div>
 
-  <p><span class="bold"><strong>Defining Parent/Child Relationships</strong></span></p>
+  <div class="section" title="5.10.3. Defining Parent/Child Relationships">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9994480"></a>5.10.3. Defining Parent/Child Relationships</h3></div></div></div>
+    
 
-  <p>In order for Icinga to be able to distinguish between DOWN and UNREACHABLE states for the hosts that are being
-  monitored, you'll need to tell Icinga how those hosts are connected to each other - from the standpoint of the
-  Icinga daemon. To do this, trace the path that a data packet would take from the Icinga daemon to each individual
-  host. Each switch, router, and server the packet encounters or passes through is considered a "hop" and will require that you
-  define a parent/child host relationship in Icinga. Here's what the host parent/child relationships look like from the
-  viewpoint of Icinga:</p>
+    <p>In order for Icinga to be able to distinguish between DOWN and UNREACHABLE states for the hosts that are being monitored,
+    you'll need to tell Icinga how those hosts are connected to each other - from the standpoint of the Icinga daemon. To do
+    this, trace the path that a data packet would take from the Icinga daemon to each individual host. Each switch, router, and
+    server the packet encounters or passes through is considered a "hop" and will require that you define a parent/child host relationship
+    in Icinga. Here's what the host parent/child relationships look like from the viewpoint of Icinga:</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/reachability2.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability2.png"></span></p>
 
-  <p>Now that you know what the parent/child relationships look like for hosts that are being monitored, how do you configure
-  Icinga to reflect them? The <span class="emphasis"><em>parents</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host
-  definitions</a> allows you to do this. Here's what the (abbreviated) host definitions with parent/child relationships would
-  look like for this example:</p>
+    <p>Now that you know what the parent/child relationships look like for hosts that are being monitored, how do you configure
+    Icinga to reflect them? The <span class="emphasis"><em>parents</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host
+    definitions</a> allows you to do this. Here's what the (abbreviated) host definitions with parent/child relationships would look like
+    for this example:</p>
 
-  <pre class="screen"> define host{
+    <pre class="programlisting"> define host{
         host_name       Icinga   ; &lt;-- The local host has no parent - it is the topmost host
         }
 
@@ -116,39 +132,50 @@
         host_name       somewebsite.com
         parents         Router2
         }</pre>
+  </div>
 
-  <p><span class="bold"><strong>Reachability Logic in Action</strong></span></p>
+  <div class="section" title="5.10.4. Reachability Logic in Action">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10001488"></a>5.10.4. Reachability Logic in Action</h3></div></div></div>
+    
 
-  <p>Now that you're configured Icinga with the proper parent/child relationships for your hosts, let's see what happen
-  when problems arise. Assume that two hosts - <span class="emphasis"><em>Web</em></span> and <span class="emphasis"><em>Router1</em></span> - go offline...</p>
+    <p>Now that you're configured Icinga with the proper parent/child relationships for your hosts, let's see what happen when
+    problems arise. Assume that two hosts - <span class="emphasis"><em>Web</em></span> and <span class="emphasis"><em>Router1</em></span> - go offline...</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/reachability3.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability3.png"></span></p>
 
-  <p>When hosts change state (i.e. from UP to DOWN), the host reachability logic in Icinga kicks in. The reachability
-  logic will initiate parallel checks of the parents and children of whatever hosts change state. This allows Icinga to
-  quickly determine the current status of your network infrastructure when changes occur.</p>
+    <p>When hosts change state (i.e. from UP to DOWN), the host reachability logic in Icinga kicks in. The reachability logic will
+    initiate parallel checks of the parents and children of whatever hosts change state. This allows Icinga to quickly determine the
+    current status of your network infrastructure when changes occur.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/reachability4.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability4.png"></span></p>
 
-  <p>In this example, Icinga will determine that <span class="emphasis"><em>Web</em></span> and <span class="emphasis"><em>Router1</em></span> are both in
-  DOWN states because the "path" to those hosts is not being blocked.</p>
+    <p>In this example, Icinga will determine that <span class="emphasis"><em>Web</em></span> and <span class="emphasis"><em>Router1</em></span> are both in DOWN
+    states because the "path" to those hosts is not being blocked.</p>
 
-  <p>Icinga will determine that all the hosts "beneath" <span class="emphasis"><em>Router1</em></span> are all in an UNREACHABLE state
-  because Icinga can't reach them. <span class="emphasis"><em>Router1</em></span> is DOWN and is blocking the path to those other hosts.
-  Those hosts might be running fine, or they might be offline - Icinga doesn't know because it can't reach them. Hence
-  Icinga considers them to be UNREACHABLE instead of DOWN.</p>
+    <p>Icinga will determine that all the hosts "beneath" <span class="emphasis"><em>Router1</em></span> are all in an UNREACHABLE state because
+    Icinga can't reach them. <span class="emphasis"><em>Router1</em></span> is DOWN and is blocking the path to those other hosts. Those hosts might be
+    running fine, or they might be offline - Icinga doesn't know because it can't reach them. Hence Icinga considers them to
+    be UNREACHABLE instead of DOWN.</p>
+  </div>
 
-  <p><span class="bold"><strong>UNREACHABLE States and Notifications</strong></span></p>
+  <div class="section" title="5.10.5. UNREACHABLE States and Notifications">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10011456"></a>5.10.5. UNREACHABLE States and Notifications</h3></div></div></div>
+    
 
-  <p>By default, Icinga will notify contacts about both DOWN and UNREACHABLE host states. As an admin/tech, you might
-  not want to get notifications about hosts that are UNREACHABLE. You know your network structure, and if Icinga notifies
-  you that your router/firewall is down, you know that everything behind it is unreachable.</p>
+    <p>By default, Icinga will notify contacts about both DOWN and UNREACHABLE host states. As an admin/tech, you might not want
+    to get notifications about hosts that are UNREACHABLE. You know your network structure, and if Icinga notifies you that your
+    router/firewall is down, you know that everything behind it is unreachable.</p>
 
-  <p>If you want to spare yourself from a flood of UNREACHABLE notifications during network outages, you can exclude the
-  unreachable (u) option from the <span class="emphasis"><em>notification_options</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> definitions and/or the <span class="emphasis"><em>host_notification_options</em></span> directive in
-  your <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact</a> definitions.</p>
-  <a class="indexterm" name="idp9961696"></a>
-  <a class="indexterm" name="idp9962880"></a>
+    <p>If you want to spare yourself from a flood of UNREACHABLE notifications during network outages, you can exclude the unreachable
+    (u) option from the <span class="emphasis"><em>notification_options</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a>
+    definitions and/or the <span class="emphasis"><em>host_notification_options</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact</a> definitions.</p>
+
+    <a class="indexterm" name="idp10015984"></a>
+
+    <a class="indexterm" name="idp10017664"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

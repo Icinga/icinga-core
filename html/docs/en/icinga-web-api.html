@@ -28,68 +28,97 @@
 <div class="section" title="11.4. The Icinga-Web REST API">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="icinga-web-api"></a>11.4. The Icinga-Web REST API</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="icinga-web-api.html#idp16125440">11.4.1. Why should I use the API?</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16128512">11.4.2. Features of the Icinga-Web REST API</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16139344">11.4.3. What's the difference between the Icinga-API and the Icinga-Web REST API?</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16140832">11.4.4. Prerequisites</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16150656">11.4.5. Reference</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16152160">11.4.6. GET</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16159184">11.4.7. The structure of the URL:</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16163008">11.4.8. The Parameters en detail:</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16176160">11.4.9. Example for GET</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16182064">11.4.10. POST</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16188784">11.4.11. Parameters en detail</a></span></dt>
+<dt><span class="section"><a href="icinga-web-api.html#idp16201776">11.4.12. Example for POST</a></span></dt>
+</dl></div>
   
 
   <p>In this document we'll describe the Icinga-Web REST API (yes, we know that the term is not yet completed) which allows you to
   request your monitoring information via GET or POST requests (in the future (&gt;1.2), you will also be able to send commands via
   PUT).</p>
 
-  <p><span class="bold"><strong>Why should I use the API?</strong></span></p>
+  <div class="section" title="11.4.1. Why should I use the API?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16125440"></a>11.4.1. Why should I use the API?</h3></div></div></div>
+    
 
-  <p>For most people, the combination Icinga/Icinga-Web will fit most needs. You can watch your monitoring status, act on problems
-  and extend it to suit your needs (Modules/Cronks).</p>
+    <p>For most people, the combination Icinga/Icinga-Web will fit most needs. You can watch your monitoring status, act on
+    problems and extend it to suit your needs (Modules/Cronks).</p>
 
-  <p>But sometimes, you have another piece of software that is interested in some monitoring data (for example: <a class="link" href="http://www.icinga.org/2010/07/16/icinga-chromed-status-for-google-chrome/chromium/" target="_top">Icinga-Chromed-Status</a>). You could
-  parse the cgi output of Icinga (many programs do that at this time), but that's not really a high performance solution - and
-  certainly no fun for the developer. The goal of the REST API is to return the data you want (and only the data you want) in a
-  standardized, machine-readable format like JSON or XML</p>
+    <p>But sometimes, you have another piece of software that is interested in some monitoring data (for example: <a class="link" href="http://www.icinga.org/2010/07/16/icinga-chromed-status-for-google-chrome/chromium/" target="_top">Icinga-Chromed-Status</a>). You could
+    parse the cgi output of Icinga (many programs do that at this time), but that's not really a high performance solution - and
+    certainly no fun for the developer. The goal of the REST API is to return the data you want (and only the data you want) in a
+    standardized, machine-readable format like JSON or XML</p>
+  </div>
 
-  <p><span class="bold"><strong>Features of the Icinga-Web REST API </strong></span></p>
+  <div class="section" title="11.4.2. Features of the Icinga-Web REST API">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16128512"></a>11.4.2. Features of the Icinga-Web REST API</h3></div></div></div>
+    
 
-  <p>Currently supported (v1.2): </p>
+    <p>Currently supported (v1.2): </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Availability of almost all monitoring fields via GET or POST.</p>
-      </li>
+          <p>Availability of almost all monitoring fields via GET or POST.</p>
+        </li>
 <li class="listitem">
-        <p>Return data as xml or json.</p>
-      </li>
+          <p>Return data as xml or json.</p>
+        </li>
 <li class="listitem">
-        <p>AND &amp; OR search filtergroups with unlimited nesting levels (AND)).</p>
-      </li>
+          <p>AND &amp; OR search filtergroups with unlimited nesting levels (AND)).</p>
+        </li>
 <li class="listitem">
-        <p>You choose which columns you want returned, not the API (less overhead).</p>
-      </li>
+          <p>You choose which columns you want returned, not the API (less overhead).</p>
+        </li>
 <li class="listitem">
-        <p>Support of limit, offset, order, group by.</p>
-      </li>
+          <p>Support of limit, offset, order, group by.</p>
+        </li>
 <li class="listitem">
-        <p>Return an additional total count field.</p>
-      </li>
+          <p>Return an additional total count field.</p>
+        </li>
 <li class="listitem">
-        <p>Authorization via auth_key in request or cookies.</p>
-      </li>
+          <p>Authorization via auth_key in request or cookies.</p>
+        </li>
 <li class="listitem">
-        <p>Respects Icinga-web principals (for example, limit to specific hostgroups).</p>
-      </li>
+          <p>Respects Icinga-web principals (for example, limit to specific hostgroups).</p>
+        </li>
 </ul></div>
 
-  <p>Planned in future(&gt; 1.2): </p>
+    <p>Planned in future(&gt; 1.2): </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-        <p>Send commands via PUT</p>
-      </li></ul></div>
+          <p>Send commands via PUT</p>
+        </li></ul></div>
+  </div>
 
-  <p><span class="bold"><strong>What's the difference between the Icinga-API and the Icinga-Web REST API? </strong></span></p>
+  <div class="section" title="11.4.3. What's the difference between the Icinga-API and the Icinga-Web REST API?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16139344"></a>11.4.3. What's the difference between the Icinga-API and the Icinga-Web REST API?</h3></div></div></div>
+    
 
-  <p>The Icinga-API can at this point considered as an internal toolkit to access the database informations. In fact, the REST API acts
-  on top of this API and extends it via the HTTP protocol. In the future, the Icinga-API will be merged into Icinga-Web.</p>
+    <p>The Icinga-API can at this point considered as an internal toolkit to access the database informations. In fact, the REST API acts
+    on top of this API and extends it via the HTTP protocol. In the future, the Icinga-API will be merged into Icinga-Web.</p>
+  </div>
 
-  <p><span class="bold"><strong>Prerequisites</strong></span></p>
+  <div class="section" title="11.4.4. Prerequisites">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16140832"></a>11.4.4. Prerequisites</h3></div></div></div>
+    
 
-  <p>In order to use the API, you first have to enable the Auth provider for it. This can be done under
-  icinga-web/app/modules/AppKit/config/auth.xml.</p>
+    <p>In order to use the API, you first have to enable the Auth provider for it. This can be done under
+    icinga-web/app/modules/AppKit/config/auth.xml.</p>
 
-  <p>Change "auth_enabled" to 'true' in this section: </p>
+    <p>Change "auth_enabled" to 'true' in this section: </p>
 <pre class="programlisting">&lt;ae:parameter name="auth_key"&gt;
     &lt;ae:parameter name="auth_module"&gt;AppKit&lt;/ae:parameter&gt;
     &lt;ae:parameter name="auth_provider"&gt;Auth.Provider.AuthKey&lt;/ae:parameter&gt;
@@ -97,134 +126,155 @@
     &lt;ae:parameter name="auth_authoritative"&gt;true&lt;/ae:parameter&gt;
 &lt;/ae:parameter&gt;</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>If you edit any *.xml file you have to clear the cache afterwards!</p>
-  </td></tr>
+      <p>If you edit any *.xml file you have to clear the cache afterwards!</p>
+    </td></tr>
 </table></div>
 
-  <pre class="programlisting">rm -f app/cache/config/*.php</pre>
+    <pre class="programlisting">rm -f app/cache/config/*.php</pre>
 
-  <p>or</p>
+    <p>or</p>
 
-  <pre class="programlisting">icinga-web/bin/clearcache.sh</pre>
+    <pre class="programlisting">icinga-web/bin/clearcache.sh</pre>
 
-  <p>Now, in Icinga-Web, you have to add a user with API access: </p>
+    <p>Now, in Icinga-Web, you have to add a user with API access: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Create a new user</p>
+          <p>Create a new user</p>
+        </li>
+<li class="listitem">
+          <p>Choose auth_key in the Auth_via field</p>
+        </li>
+<li class="listitem">
+          <p>Insert an API key to use</p>
+        </li>
+<li class="listitem">
+          <p>Under principals, add the appkit.api.access principal</p>
+        </li>
+</ul></div>
+
+    <p>That's it, now you can start.</p>
+  </div>
+
+  <div class="section" title="11.4.5. Reference">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16150656"></a>11.4.5. Reference</h3></div></div></div>
+    
+
+    <p>So, here are the goodies. In the next few points we'll explain how the API can be accessed:</p>
+  </div>
+
+  <div class="section" title="11.4.6. GET">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16152160"></a>11.4.6. GET</h3></div></div></div>
+    
+
+    <p>Advantages:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>Easy to use, it's just an URL!</p>
       </li>
 <li class="listitem">
-        <p>Choose auth_key in the Auth_via field</p>
-      </li>
-<li class="listitem">
-        <p>Insert an API key to use</p>
-      </li>
-<li class="listitem">
-        <p>Under principals, add the appkit.api.access principal</p>
+        <p>You always see what parameters have been requested.</p>
       </li>
 </ul></div>
 
-  <p>That's it, now you can start.</p>
+    <p>Disadvantages:</p>
 
-  <p><span class="bold"><strong>Reference</strong></span></p>
-
-  <p>So, here are the goodies. In the next few points we'll explain how the API can be accessed:</p>
-
-  <p><span class="bold"><strong>GET</strong></span></p>
-
-  <p>Advantages:</p>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Easy to use, it's just an URL!</p>
-    </li>
+        <p>If you request it in a browser your API key could be in the browser history.</p>
+      </li>
 <li class="listitem">
-      <p>You always see what parameters have been requested.</p>
-    </li>
+        <p>In a browser, you cannot add URLs with unlimited size (2,083 characters for Internet explorer, for example).</p>
+      </li>
+<li class="listitem">
+        <p>Especially when parameters are escaped, the parameter list lacks a bit of clarity.</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p>Disadvantages:</p>
+  <div class="section" title="11.4.7. The structure of the URL:">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16159184"></a>11.4.7. The structure of the URL:</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <p>To access the api, the URL should look as in the following (italics are optional, bold ones are required)
+    host.com/icinga-web/web/api/ <span class="bold"><strong>TARGET</strong></span> / <span class="bold"><strong>COLUMNS</strong></span> / FILTER / ORDER /
+    GROUPING / LIMIT / COUNTFIELD / <span class="bold"><strong>OUTPUT_TYPE</strong></span></p>
+  </div>
+
+  <div class="section" title="11.4.8. The Parameters en detail:">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16163008"></a>11.4.8. The Parameters en detail:</h3></div></div></div>
+    
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>If you request it in a browser your API key could be in the browser history.</p>
-    </li>
+        <p>TARGET: Which field to request, is a simple string like host.</p>
+      </li>
 <li class="listitem">
-      <p>In a browser, you cannot add URLs with unlimited size (2,083 characters for Internet explorer, for example).</p>
-    </li>
+        <p>COLUMNS: A listing of columns to return, must look like this: columns[COL1|COL2|COL3|...]</p>
+      </li>
 <li class="listitem">
-      <p>Especially when parameters are escaped, the parameter list lacks a bit of clarity.</p>
-    </li>
-</ul></div>
+        <p>FILTER: Defines which filters to use in the request. Must always be nested in AND or OR groups.</p>
 
-  <p><span class="bold"><strong>The structure of the URL:</strong></span></p>
+        <p>The filter itself looks like this:</p>
 
-  <p>To access the api, the URL should look as in the following (italics are optional, bold ones are required)
-  host.com/icinga-web/web/api/ <span class="bold"><strong>TARGET</strong></span> / <span class="bold"><strong>COLUMNS</strong></span> / FILTER / ORDER /
-  GROUPING / LIMIT / COUNTFIELD / <span class="bold"><strong>OUTPUT_TYPE</strong></span></p>
+        <pre class="programlisting">filters[AND/OR(COLUMN|OPERATOR|VALUE;COLUMN2|OPERATOR2|VALUE2;OR(...),AND]</pre>
 
-  <p><span class="bold"><strong>The Parameters en detail:</strong></span></p>
+        <p>Example: Select all services with smtp in the name, but only if they're ok or unknown</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p>TARGET: Which field to request, is a simple string like host.</p>
-    </li>
-<li class="listitem">
-      <p>COLUMNS: A listing of columns to return, must look like this: columns[COL1|COL2|COL3|...]</p>
-    </li>
-<li class="listitem">
-      <p>FILTER: Defines which filters to use in the request. Must always be nested in AND or OR groups.</p>
-
-      <p>The filter itself looks like this:</p>
-
-      <pre class="programlisting">filters[AND/OR(COLUMN|OPERATOR|VALUE;COLUMN2|OPERATOR2|VALUE2;OR(...),AND]</pre>
-
-      <p>Example: Select all services with smtp in the name, but only if they're ok or unknown</p>
-
-      <p class="bold">Wrong: </p>
+        <p class="bold">Wrong: </p>
 <pre class="programlisting">filters[SERVICE_NAME|like|*smtp*;OR(SERVICE_CURRENT_STATE|=|0;SERVICE_CURRENT_STATE|=|3)]</pre>
 
-      <p>You always need a nesting level at the beginning, see:</p>
+        <p>You always need a nesting level at the beginning, see:</p>
 
-      <p class="bold">Correct: </p>
+        <p class="bold">Correct: </p>
 <pre class="programlisting">filters[AND ( SERVICE_NAME|like|*smtp*;OR ( SERVICE_CURRENT_STATE|=|0;SERVICE_CURRENT_STATE|=|3 ) )]
 </pre>
-    </li>
+      </li>
 <li class="listitem">
-      <p>ORDER: Defines which field to use for ordering and if ascending or descending ordering should be used. Example: order[COLUMN|
-      ASC or DESC]</p>
-    </li>
+        <p>ORDER: Defines which field to use for ordering and if ascending or descending ordering should be used. Example: order[COLUMN|
+        ASC or DESC]</p>
+      </li>
 <li class="listitem">
-      <p>GROUPING: Defines a field to group by: group[COL]</p>
-    </li>
+        <p>GROUPING: Defines a field to group by: group[COL]</p>
+      </li>
 <li class="listitem">
-      <p>LIMIT: Defines a starting offset and/or a limit: limit[START;END ( if needed ) ]</p>
-    </li>
+        <p>LIMIT: Defines a starting offset and/or a limit: limit[START;END ( if needed ) ]</p>
+      </li>
 <li class="listitem">
-      <p>COUNTFIELD: Adds a total field to the result which counts by this field (in most cases, the id): countColumn=COL</p>
-    </li>
+        <p>COUNTFIELD: Adds a total field to the result which counts by this field (in most cases, the id): countColumn=COL</p>
+      </li>
 <li class="listitem">
-      <p>OUTPUT: At this time either json or xml</p>
-    </li>
+        <p>OUTPUT: At this time either json or xml</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Example for GET</strong></span></p>
+  <div class="section" title="11.4.9. Example for GET">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16176160"></a>11.4.9. Example for GET</h3></div></div></div>
+    
 
-  <p>Get all services that are critical or warning, but have a host that is ok. Sort descending by the service state and count the
-  services. Authentification is done via authkey (here APITEST123456). The request is broken into pieces for better readability, XML:</p>
+    <p>Get all services that are critical or warning, but have a host that is ok. Sort descending by the service state and count the
+    services. Authentification is done via authkey (here APITEST123456). The request is broken into pieces for better readability,
+    XML:</p>
 
-  <pre class="programlisting">http://localhost/icinga-web/web/api/service/filter[AND(HOST_CURRENT_STATE|=|0;OR(SERVICE_CURRENT_STATE|=|1;SERVICE_CURRENT_STATE|=|2))]/
+    <pre class="programlisting">http://localhost/icinga-web/web/api/service/filter[AND(HOST_CURRENT_STATE|=|0;OR(SERVICE_CURRENT_STATE|=|1;SERVICE_CURRENT_STATE|=|2))]/
 columns(SERVICE_NAME|HOST_NAME|SERVICE_CURRENT_STATE|HOST_NAME|HOST_CURRENT_STATE|HOSTGROUP_NAME)/
 order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/xml</pre>
 
-  <p>This would return something like:</p>
+    <p>This would return something like:</p>
 
-  <pre class="programlisting">&lt;results&gt;
+    <pre class="programlisting">&lt;results&gt;
    &lt;result&gt;
        &lt;column name="SERVICE_ID"&gt;295&lt;/column&gt;
        &lt;column name="SERVICE_OBJECT_ID"&gt;139&lt;/column&gt;
@@ -248,10 +298,10 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
    &lt;total&gt;2&lt;/total&gt;
 &lt;/results&gt; </pre>
 
-  <p>If you change the xml to json you get the same information (plus additional infos for ExtJS, which you can ignore if you're not
-  using it) in json format:</p>
+    <p>If you change the xml to json you get the same information (plus additional infos for ExtJS, which you can ignore if you're not
+    using it) in json format:</p>
 
-  <pre class="programlisting">{"metaData":
+    <pre class="programlisting">{"metaData":
    {"paramNames":{"start":"limit_start","limit":"limit"},
     "totalProperty":"total",
     "root":"result",
@@ -279,56 +329,64 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
    "total":"2" 
 }
 *CAUTION*: If you're not using the countField parameter, you'll get a flat json with the result.</pre>
+  </div>
 
-  <p><span class="bold"><strong>POST</strong></span></p>
+  <div class="section" title="11.4.10. POST">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16182064"></a>11.4.10. POST</h3></div></div></div>
+    
 
-  <p>Advantages:</p>
+    <p>Advantages:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Unlimited parameter size, as it's made for big requests.</p>
-    </li>
+        <p>Unlimited parameter size, as it's made for big requests.</p>
+      </li>
 <li class="listitem">
-      <p>Your parameters don't appear in the browser history, only the base url.</p>
-    </li>
+        <p>Your parameters don't appear in the browser history, only the base url.</p>
+      </li>
 <li class="listitem">
-      <p>It's easier to implement in applications (ok, that's my opinion :) )</p>
-    </li>
+        <p>It's easier to implement in applications (ok, that's my opinion :) )</p>
+      </li>
 </ul></div>
 
-  <p>Disadvantages:</p>
+    <p>Disadvantages:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>POST will be send via the header, so you can't request it easily from the browser's address field.</p>
-    </li></ul></div>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+        <p>POST will be send via the header, so you can't request it easily from the browser's address field.</p>
+      </li></ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Parameters en detail</strong></span></p>
+  <div class="section" title="11.4.11. Parameters en detail">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16188784"></a>11.4.11. Parameters en detail</h3></div></div></div>
+    
 
-  <p>The link is almost the same like the GET baselink, but with the output type in it: For example, host.com/icinga-web/web/api/json.
-  The following parameters are supported:</p>
+    <p>The link is almost the same like the GET baselink, but with the output type in it: For example, host.com/icinga-web/web/api/json.
+    The following parameters are supported:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>'target': The search target, like host</p>
-    </li>
+        <p>'target': The search target, like host</p>
+      </li>
 <li class="listitem">
-      <p>'columns[]': An array of columns</p>
+        <p>'columns[]': An array of columns</p>
 
-      <p>Example:</p>
+        <p>Example:</p>
 
-      <p>columns [0] = SERVICE_NAME</p>
+        <p>columns [0] = SERVICE_NAME</p>
 
-      <p>columns [1] = SERVICE_ID</p>
-    </li>
+        <p>columns [1] = SERVICE_ID</p>
+      </li>
 <li class="listitem">
-      <p>'groups[]' : Group by this field</p>
-    </li>
+        <p>'groups[]' : Group by this field</p>
+      </li>
 <li class="listitem">
-      <p>'filters_json' : A json describing how to filter</p>
+        <p>'filters_json' : A json describing how to filter</p>
 
-      <p>Example:</p>
+        <p>Example:</p>
 
-      <pre class="programlisting">[{
+        <pre class="programlisting">[{
    "type": "AND",
    "field": [{
       "type": 'atom',
@@ -352,30 +410,34 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
 }]
 
 </pre>
-    </li>
+      </li>
 <li class="listitem">
-      <p>'order_col' : Column to order by</p>
-    </li>
+        <p>'order_col' : Column to order by</p>
+      </li>
 <li class="listitem">
-      <p>'order_dir' : Order direction (asc oder desc)</p>
-    </li>
+        <p>'order_dir' : Order direction (asc oder desc)</p>
+      </li>
 <li class="listitem">
-      <p>'limit_start' : The offset of the records to start</p>
-    </li>
+        <p>'limit_start' : The offset of the records to start</p>
+      </li>
 <li class="listitem">
-      <p>'limit' : Limits the result to x responses</p>
-    </li>
+        <p>'limit' : Limits the result to x responses</p>
+      </li>
 <li class="listitem">
-      <p>'countColumn' : Add a total field with this column</p>
-    </li>
+        <p>'countColumn' : Add a total field with this column</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Example for POST</strong></span></p>
+  <div class="section" title="11.4.12. Example for POST">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16201776"></a>11.4.12. Example for POST</h3></div></div></div>
+    
 
-  <p>Lets take the example from Example for GET and use a post request this time. We're going to use curl, so the example can be repeated
-  from the console:</p>
+    <p>Let's take the example from Example for GET and use a post request this time. We're going to use curl, so the example can be
+    repeated from the console:</p>
 
-  <pre class="programlisting">curl 
+    <pre class="programlisting">curl 
 -d target=service 
 -d 'filters_json={"type":"AND","field":[{"type":"atom","field":["HOST_CURRENT_STATE"],"method":["="],"value":[0]},{"type":"OR","field":[{"type":"atom","field":["SERVICE_CURRENT_STATE"],"method":["="],"value":[1]},{"type":"atom","field":["SERVICE_CURRENT_STATE"],"method":["="],"value" : [2] }]}]}' 
 -d columns[0]=SERVICE_NAME 
@@ -389,9 +451,10 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
 -d 'authkey=API123456' 
 http://localhost/icinga-web/web/api/xml </pre>
 
-  <p>This would return the same result as the GET request shown before.</p>
+    <p>This would return the same result as the GET request shown before.</p>
 
-  <a class="indexterm" name="idp16176768"></a>
+    <a class="indexterm" name="idp16204704"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

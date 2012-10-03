@@ -28,383 +28,512 @@
 <div class="section" title="7.23. Service- und Host-Prüfungsplanung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="checkscheduling"></a>7.23. <a name="checkscheduling-check_scheduling"></a>Service- und Host-Prüfungsplanung</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="checkscheduling.html#idp14372080">7.23.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14374128">7.23.2. Konfigurationsoptionen</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14393344">7.23.3. Initiale Planung</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14399360">7.23.4. Inter-Check-Verzögerung (inter-check delay)</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14405344">7.23.5. Service-Verschachtelung (service interleaving)</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14439392">7.23.6. Maximale Zahl gleichzeitiger Service-Prüfungen</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14439648">7.23.7. Zeitbeschränkungen</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14461696">7.23.8. Normale Planung</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14464144">7.23.9. Planung bei Problemen</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14472880">7.23.10. Host-Prüfungen</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14475008">7.23.11. Planungsverzögerungen</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14477184">7.23.12. Planungsbeispiel</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14495248">7.23.13. Service-Definitionsoptionen, die die Planung beeinflussen</a></span></dt>
+<dt><span class="section"><a href="checkscheduling.html#idp14495408">7.23.14. TODO</a></span></dt>
+</dl></div>
   
 
-  <p><a name="checkscheduling-introduction"></a><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="7.23.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14372080"></a>7.23.1. <a name="checkscheduling-introduction"></a>Einführung</h3></div></div></div>
+    
 
-  <p>Es gab eine Menge Fragen dazu, wie Service-Prüfungen in bestimmten Situationen geplant werden, außerdem wie sich Planung
-  und eigentliche Ausführung unterscheiden und wie die Ergebnisse verarbeitet werden. Wir werden versuchen, ein bisschen mehr ins
-  Detail zu gehen, wie dies alles funktioniert...</p>
+    <p>Es gab eine Menge Fragen dazu, wie Service-Prüfungen in bestimmten Situationen geplant werden, außerdem wie sich Planung und
+    eigentliche Ausführung unterscheiden und wie die Ergebnisse verarbeitet werden. Wir werden versuchen, ein bisschen mehr ins Detail zu
+    gehen, wie dies alles funktioniert...</p>
+  </div>
 
-  <p><a name="checkscheduling-configuration_options"></a><span class="bold"><strong>Konfigurationsoptionen</strong></span></p>
+  <div class="section" title="7.23.2. Konfigurationsoptionen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14374128"></a>7.23.2. <a name="checkscheduling-configuration_options"></a>Konfigurationsoptionen</h3></div></div></div>
+    
 
-  <p>Es gibt es verschiedene Konfigurationsoptionen, die beeinflussen, wie Service-Prüfungen geplant, ausgeführt und
-  verarbeitet werden. Als Anfang enthält jede <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service-Definition</a> drei Optionen,
-  die festlegen, wann und wie jede einzelne Service-Prüfung geplant und ausgeführt wird Diese drei Optionen sind:</p>
+    <p>Es gibt es verschiedene Konfigurationsoptionen, die beeinflussen, wie Service-Prüfungen geplant, ausgeführt und verarbeitet
+    werden. Als Anfang enthält jede <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service-Definition</a> drei Optionen, die festlegen, wann
+    und wie jede einzelne Service-Prüfung geplant und ausgeführt wird Diese drei Optionen sind:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><span class="emphasis"><em>check_interval</em></span></p>
-    </li>
+        <p>
+          <span class="emphasis"><em>check_interval</em></span>
+        </p>
+      </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>retry_interval</em></span></p>
-    </li>
+        <p>
+          <span class="emphasis"><em>retry_interval</em></span>
+        </p>
+      </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>check_period</em></span></p>
-    </li>
+        <p>
+          <span class="emphasis"><em>check_period</em></span>
+        </p>
+      </li>
 </ul></div>
 
-  <p>Es gibt außerdem vier Konfigurationsoptionen in der <a class="link" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a>, die
-  Service-Prüfungen beeinflussen. Dies sind:</p>
+    <p>Es gibt außerdem vier Konfigurationsoptionen in der <a class="link" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a>, die
+    Service-Prüfungen beeinflussen. Dies sind:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="configmain.html#configmain-service_inter_check_delay_method"><span class="emphasis"><em>service_inter_check_delay_method</em></span></a></p>
-    </li>
+        <p>
+          <a class="link" href="configmain.html#configmain-service_inter_check_delay_method">
+            <span class="emphasis"><em>service_inter_check_delay_method</em></span>
+          </a>
+        </p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="configmain.html#configmain-service_interleave_factor"><span class="emphasis"><em>service_interleave_factor</em></span></a></p>
-    </li>
+        <p>
+          <a class="link" href="configmain.html#configmain-service_interleave_factor">
+            <span class="emphasis"><em>service_interleave_factor</em></span>
+          </a>
+        </p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="configmain.html#configmain-max_concurrent_checks"><span class="emphasis"><em>max_concurrent_checks</em></span></a></p>
-    </li>
+        <p>
+          <a class="link" href="configmain.html#configmain-max_concurrent_checks">
+            <span class="emphasis"><em>max_concurrent_checks</em></span>
+          </a>
+        </p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="configmain.html#configmain-check_result_reaper_frequency"><span class="emphasis"><em>check_result_reaper_frequency</em></span></a></p>
-    </li>
+        <p>
+          <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">
+            <span class="emphasis"><em>check_result_reaper_frequency</em></span>
+          </a>
+        </p>
+      </li>
 </ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Die letzte Direktive betrifft auch Host-Prüfungen.</p>
-  </td></tr>
+      <p>Die letzte Direktive betrifft auch Host-Prüfungen.</p>
+    </td></tr>
 </table></div>
 
-  <p>Wir werden nun mehr ins Detail gehen, wie all diese Optionen die Service-Prüfungsplaung beeinflussen. Lassen Sie uns
-  zuerst betrachten, wie Services beim ersten (Neu-)Start von Icinga eingeplant werden...</p>
+    <p>Wir werden nun mehr ins Detail gehen, wie all diese Optionen die Service-Prüfungsplaung beeinflussen. Lassen Sie uns zuerst
+    betrachten, wie Services beim ersten (Neu-)Start von Icinga eingeplant werden...</p>
+  </div>
 
-  <p><a name="checkscheduling-initial_scheduling"></a><span class="bold"><strong>Initiale Planung</strong></span></p>
+  <div class="section" title="7.23.3. Initiale Planung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14393344"></a>7.23.3. <a name="checkscheduling-initial_scheduling"></a>Initiale Planung</h3></div></div></div>
+    
 
-  <p>Wenn Icinga (neu) startet, wird es versuchen, die initialen Prüfungen aller Services in einer Art und Weise so zu
-  planen, dass die Load auf dem lokalen und den entfernten Hosts mimimiert wird. Dies wird durch die Verteilung und das
-  Verschachteln der Services erreicht. Die Verteilung von Service-Prüfungen (auch als inter-check-delay bekannt) wird benutzt, um
-  die Last des lokalen Icinga-Servers zu minimieren/auszugleichen und die Verschachtelung wird benutzt, um die Last auf
-  entfernten Hosts zu minimieren/auszugleichen. Sowohl inter-check-relay als auch Verschachtelungsfunktion werden nachfolgend
-  erläutert.</p>
+    <p>Wenn Icinga (neu) startet, wird es versuchen, die initialen Prüfungen aller Services in einer Art und Weise so zu planen,
+    dass die Load auf dem lokalen und den entfernten Hosts mimimiert wird. Dies wird durch die Verteilung und das Verschachteln der Services
+    erreicht. Die Verteilung von Service-Prüfungen (auch als inter-check-delay bekannt) wird benutzt, um die Last des lokalen
+    Icinga-Servers zu minimieren/auszugleichen und die Verschachtelung wird benutzt, um die Last auf entfernten Hosts zu
+    minimieren/auszugleichen. Sowohl inter-check-relay als auch Verschachtelungsfunktion werden nachfolgend erläutert.</p>
 
-  <p>Selbst wenn die Service-Prüfungen initial geplant werden, um die Last auf lokalen und entfernten Hosts auszubalancieren,
-  werden die Dinge dem eintretenden Chaos nachgeben und ein wenig zufällig werden. Gründe dafür sind u.a., dass Services nicht
-  alle mit dem gleichen Intervall geprüft werden, dass die Ausführung einiger Services länger dauert als andere, dass Host-
-  und/oder Service-Probleme das Timing von ein oder mehreren Services verändern können, etc. Wenigstens versuchen wir, die Dinge
-  gut zu beginnen. Hoffentlich hält die initiale Planung die Last auf dem lokalen und den entfernten Hosts im Laufe der Zeit
-  relativ ausgeglichen...</p>
+    <p>Selbst wenn die Service-Prüfungen initial geplant werden, um die Last auf lokalen und entfernten Hosts auszubalancieren, werden
+    die Dinge dem eintretenden Chaos nachgeben und ein wenig zufällig werden. Gründe dafür sind u.a., dass Services nicht alle mit dem
+    gleichen Intervall geprüft werden, dass die Ausführung einiger Services länger dauert als andere, dass Host- und/oder Service-Probleme
+    das Timing von ein oder mehreren Services verändern können, etc. Wenigstens versuchen wir, die Dinge gut zu beginnen. Hoffentlich hält
+    die initiale Planung die Last auf dem lokalen und den entfernten Hosts im Laufe der Zeit relativ ausgeglichen...</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Wenn Sie die initiale Service-Prüfungs-Planungsinformationen ansehen möchten, dann starten Sie Icinga mit der
-    <span class="bold"><strong>-s</strong></span> Kommandozeilenoption. Dabei werden Ihnen grundlegende Planungsinformationen
-    (inter-check-Verzögerung, Verschachtelungsfaktor, erste und letzte Service-Prüfzeit, etc., angezeigt) und es wird ein neues
-    Status-Log angezeigt, das die genauen Zeiten darstellt, zu denen alle Services initial eingeplant werden. Weil diese Option
-    das Status-Log überschreibt, sollte Sie sie nicht nutzen, solange eine weitere Icinga-Instanz läuft. Icinga wird
-    <span class="emphasis"><em>nicht</em></span> die Überwachung starten, wenn diese Option benutzt wird.</p>
-  </td></tr>
+      <p>Wenn Sie die initiale Service-Prüfungs-Planungsinformationen ansehen möchten, dann starten Sie Icinga mit der <span class="bold"><strong>-s</strong></span> Kommandozeilenoption. Dabei werden Ihnen grundlegende Planungsinformationen (inter-check-Verzögerung,
+      Verschachtelungsfaktor, erste und letzte Service-Prüfzeit, etc., angezeigt) und es wird ein neues Status-Log angezeigt, das die
+      genauen Zeiten darstellt, zu denen alle Services initial eingeplant werden. Weil diese Option das Status-Log überschreibt, sollte Sie
+      sie nicht nutzen, solange eine weitere Icinga-Instanz läuft. Icinga wird <span class="emphasis"><em>nicht</em></span> die Überwachung
+      starten, wenn diese Option benutzt wird.</p>
+    </td></tr>
 </table></div>
+  </div>
 
-  <p><a name="checkscheduling-service_inter_check_delay"></a><span class="bold"><strong>Inter-Check-Verzögerung (inter-check
-  delay)</strong></span></p>
+  <div class="section" title="7.23.4. Inter-Check-Verzögerung (inter-check delay)">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14399360"></a>7.23.4. <a name="checkscheduling-service_inter_check_delay"></a>Inter-Check-Verzögerung (inter-check delay)</h3></div></div></div>
+    
 
-  <p>Wie bereits erwähnt, versucht Icinga die Last auf dem Rechner, auf dem Icinga läuft, auszugleichen, indem
-  die Service-Prüfungen verteilt werden. Der Abstand zwischen aufeinander folgenden Service-Prüfungen wird "inter-check delay"
-  genannt. Durch die Angabe eines Werts für die Variable <a class="link" href="configmain.html#configmain-service_inter_check_delay_method">service_inter_check_delay_method</a> in der Hauptkonfigurationsdatei
-  können Sie festlegen, wie diese Verzögerung berechnet wird. Wir werden erläutern, wie die "schlaue" Berechnung arbeitet, weil
-  dies die Einstellung ist, die Sie für die normale Verarbeitung benutzen sollten.</p>
+    <p>Wie bereits erwähnt, versucht Icinga die Last auf dem Rechner, auf dem Icinga läuft, auszugleichen, indem die
+    Service-Prüfungen verteilt werden. Der Abstand zwischen aufeinander folgenden Service-Prüfungen wird "inter-check delay" genannt. Durch
+    die Angabe eines Werts für die Variable <a class="link" href="configmain.html#configmain-service_inter_check_delay_method">service_inter_check_delay_method</a> in der Hauptkonfigurationsdatei können Sie
+    festlegen, wie diese Verzögerung berechnet wird. Wir werden erläutern, wie die "schlaue" Berechnung arbeitet, weil dies die Einstellung
+    ist, die Sie für die normale Verarbeitung benutzen sollten.</p>
 
-  <p>Wenn Sie die Einstellung "smart" bei der Variable <span class="emphasis"><em>service_inter_check_delay_method</em></span> angeben, wird
-  Icinga den Wert für die inter-check-Verzögerung wie folgt berechnen:</p>
+    <p>Wenn Sie die Einstellung "smart" bei der Variable <span class="emphasis"><em>service_inter_check_delay_method</em></span> angeben, wird
+    Icinga den Wert für die inter-check-Verzögerung wie folgt berechnen:</p>
 
-  <p><span class="emphasis"><em>inter-check-Verzögerung = (durchschnittl. Check-Intervall für alle Services) / (Gesamtzahl der
-  Services)</em></span></p>
+    <p>
+      <span class="emphasis"><em>inter-check-Verzögerung = (durchschnittl. Check-Intervall für alle Services) / (Gesamtzahl der Services)</em></span>
+    </p>
 
-  <p>Nehmen wir ein Beispiel. Sagen wir, Sie haben 1.000 Services mit einem normalen Prüfintervall von fünf Minuten (natürlich
-  werden einige Services mit anderen Intervallen geprüft, aber wir vereinfachen an dieser Stelle...). Die gesamte
-  Check-Intervall-Zeit ist 5.000 (1.000 * 5). Das bedeutet, dass das durchschnittliche Check-Intervall für jeden Service fünf
-  Minuten ist (5.000 / 1.000). Aufgrund dieser Information wissen wir, dass wir (im Durchschnitt) 1.000 Prüfungen pro fünf Minuten
-  benötigen. Das heißt, dass wir eine inter-check-Verzögerung von 0,005 Minuten (5 / 1000, also etwa 0,3 Sekunden) benutzen
-  sollten, wenn die Services das erste Mal verteilt werden. Durch die Verteilung alle 0,3 Sekunden können wir erreichen, dass
-  Icinga jede Sekunde drei Service-Prüfungen einplant und/oder ausführt. Durch die gleichmäßige Aufteilung über die Zeit
-  können wir hoffen, dass die Last auf dem lokalen Rechner, auf dem Icinga läuft, in etwa gleich bleibt.</p>
+    <p>Nehmen wir ein Beispiel. Sagen wir, Sie haben 1.000 Services mit einem normalen Prüfintervall von fünf Minuten (natürlich werden
+    einige Services mit anderen Intervallen geprüft, aber wir vereinfachen an dieser Stelle...). Die gesamte Check-Intervall-Zeit ist 5.000
+    (1.000 * 5). Das bedeutet, dass das durchschnittliche Check-Intervall für jeden Service fünf Minuten ist (5.000 / 1.000). Aufgrund
+    dieser Information wissen wir, dass wir (im Durchschnitt) 1.000 Prüfungen pro fünf Minuten benötigen. Das heißt, dass wir eine
+    inter-check-Verzögerung von 0,005 Minuten (5 / 1000, also etwa 0,3 Sekunden) benutzen sollten, wenn die Services das erste Mal verteilt
+    werden. Durch die Verteilung alle 0,3 Sekunden können wir erreichen, dass Icinga jede Sekunde drei Service-Prüfungen einplant
+    und/oder ausführt. Durch die gleichmäßige Aufteilung über die Zeit können wir hoffen, dass die Last auf dem lokalen Rechner, auf dem
+    Icinga läuft, in etwa gleich bleibt.</p>
+  </div>
 
-  <p><a name="checkscheduling-service_interleaving"></a><span class="bold"><strong>Service-Verschachtelung (service
-  interleaving)</strong></span></p>
+  <div class="section" title="7.23.5. Service-Verschachtelung (service interleaving)">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14405344"></a>7.23.5. <a name="checkscheduling-service_interleaving"></a>Service-Verschachtelung (service interleaving)</h3></div></div></div>
+    
 
-  <p>Wie oben erläutert hilft die inter-check-Verzögerung dabei, die Last auf dem lokalen Host auszugleichen. Was ist aber mit
-  entfernten Hosts? Ist es notwendig, die Last auf entfernten Hosts auszugleichen? Warum? Ja, es ist wichtig, und ja,
-  Icinga kann dabei helfen. Wenn Sie eine große Zahl von Services auf einem entfernten Host überwachen und die Prüfungen
-  nicht verteilt wären, dann könnte der entfernte Host denken, dass er das Opfer einer SYN-Attacke wurde, wenn es viele offene
-  Verbindungen auf dem gleichen Port gibt. Außerdem ist es nett, wenn man versucht, die Last auf den Hosts auszugleichen/zu
-  minimieren...</p>
+    <p>Wie oben erläutert hilft die inter-check-Verzögerung dabei, die Last auf dem lokalen Host auszugleichen. Was ist aber mit
+    entfernten Hosts? Ist es notwendig, die Last auf entfernten Hosts auszugleichen? Warum? Ja, es ist wichtig, und ja, Icinga kann
+    dabei helfen. Wenn Sie eine große Zahl von Services auf einem entfernten Host überwachen und die Prüfungen nicht verteilt wären, dann
+    könnte der entfernte Host denken, dass er das Opfer einer SYN-Attacke wurde, wenn es viele offene Verbindungen auf dem gleichen Port
+    gibt. Außerdem ist es nett, wenn man versucht, die Last auf den Hosts auszugleichen/zu minimieren...</p>
 
-  <p>Durch die Angabe eines Werts für die Variable <a class="link" href="configmain.html#configmain-service_interleave_factor">service_interleave_factor</a> in der Hauptkonfigurationsdatei können
-  beeinflussen, wie dieser Faktor berechnet wird. Wir werden erläutern, wie die "schlaue" Berechnung arbeitet, weil dies die
-  Einstellung ist, die Sie for die normale Verarbeitung nutzen sollten. Sie können, natürlich, einen Wert vorgeben, anstatt ihn
-  von Icinga berechnen zu lassen. Außerdem ist zu beachten, dass die Verschachtelung bei einem Wert von 1 praktisch
-  deaktiviert ist.</p>
+    <p>Durch die Angabe eines Werts für die Variable <a class="link" href="configmain.html#configmain-service_interleave_factor">service_interleave_factor</a> in der Hauptkonfigurationsdatei können beeinflussen, wie
+    dieser Faktor berechnet wird. Wir werden erläutern, wie die "schlaue" Berechnung arbeitet, weil dies die Einstellung ist, die Sie for
+    die normale Verarbeitung nutzen sollten. Sie können, natürlich, einen Wert vorgeben, anstatt ihn von Icinga berechnen zu lassen.
+    Außerdem ist zu beachten, dass die Verschachtelung bei einem Wert von 1 praktisch deaktiviert ist.</p>
 
-  <p>Wenn Sie die Einstellung "smart" bei der Variable <span class="emphasis"><em>service_interleave_factor</em></span> angeben, wird
-  Icinga den Wert für den Verschachtelungsfaktor wie folgt berechnen:</p>
+    <p>Wenn Sie die Einstellung "smart" bei der Variable <span class="emphasis"><em>service_interleave_factor</em></span> angeben, wird Icinga den
+    Wert für den Verschachtelungsfaktor wie folgt berechnen:</p>
 
-  <p><span class="emphasis"><em>interleave factor = ceil ( Gesamtzahl der Services / Gesamtzahl der Hosts )</em></span></p>
+    <p>
+      <span class="emphasis"><em>interleave factor = ceil ( Gesamtzahl der Services / Gesamtzahl der Hosts )</em></span>
+    </p>
 
-  <p>Nehmen wir ein Beispiel. Sagen wir, Sie haben insgesamt 1.000 Services und 150 Hosts, die Sie überwachen. Icinga
-  würde einen Verschachtelungsfaktor von 7 berechnen (1000 / 150 = 6,6; aufgerundet 7). Das bedeutet, dass Icinga bei der
-  initialen Planung die erste Service-Prüfung einplant, die es findet, dann die nächsten sechs überspringt, den nächsten einplant,
-  usw... Dieser Prozess wird wiederholt, bis alles Service-Prüfungen eingeplant sind. Weil die Services nach dem Namen des Hosts
-  sortiert sind (und damit eingeplant werden), mit dem sie verbunden sind, wird dies helfen, die Last auf entfernten Hosts zu
-  minimieren/auszugleichen.</p>
+    <p>Nehmen wir ein Beispiel. Sagen wir, Sie haben insgesamt 1.000 Services und 150 Hosts, die Sie überwachen. Icinga würde
+    einen Verschachtelungsfaktor von 7 berechnen (1000 / 150 = 6,6; aufgerundet 7). Das bedeutet, dass Icinga bei der initialen
+    Planung die erste Service-Prüfung einplant, die es findet, dann die nächsten sechs überspringt, den nächsten einplant, usw... Dieser
+    Prozess wird wiederholt, bis alles Service-Prüfungen eingeplant sind. Weil die Services nach dem Namen des Hosts sortiert sind (und
+    damit eingeplant werden), mit dem sie verbunden sind, wird dies helfen, die Last auf entfernten Hosts zu
+    minimieren/auszugleichen.</p>
 
-  <p>Die folgenden Bilder zeigen, wie Service-Prüfungen eingeplant werden, wenn sie nicht verschachtelt werden
-  (<span class="emphasis"><em>service_interleave_factor</em></span>=1) und wenn sie mit einem Wert von 4 für
-  <span class="emphasis"><em>service_interleave_factor</em></span> verschachtelt werden.</p>
+    <p>Die folgenden Bilder zeigen, wie Service-Prüfungen eingeplant werden, wenn sie nicht verschachtelt werden
+    (<span class="emphasis"><em>service_interleave_factor</em></span>=1) und wenn sie mit einem Wert von 4 für <span class="emphasis"><em>service_interleave_factor</em></span>
+    verschachtelt werden.</p>
 
-  <div class="informaltable">
-    <table border="0">
+    <div class="informaltable">
+      <table border="0">
 <colgroup>
 <col>
 <col>
 </colgroup>
 <tbody>
 <tr>
-<td><p>nicht verschachtelte Prüfungen</p></td>
-<td><p>verschachtelte Prüfungen</p></td>
+<td>
+              <p>nicht verschachtelte Prüfungen</p>
+            </td>
+<td>
+              <p>verschachtelte Prüfungen</p>
+            </td>
 </tr>
 <tr>
-<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/noninterleaved1.png" width="500"></span> </p></td>
-<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved1.png" width="500"></span> </p></td>
+<td align="left" valign="middle">
+              <p>
+                <span class="inlinemediaobject"><img src="../images/noninterleaved1.png" width="500"></span>
+              </p>
+            </td>
+<td align="left" valign="middle">
+              <p>
+                <span class="inlinemediaobject"><img src="../images/interleaved1.png" width="500"></span>
+              </p>
+            </td>
 </tr>
 <tr>
-<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/noninterleaved2.png" width="500"></span> </p></td>
-<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved2.png" width="500"></span> </p></td>
+<td align="left" valign="middle">
+              <p>
+                <span class="inlinemediaobject"><img src="../images/noninterleaved2.png" width="500"></span>
+              </p>
+            </td>
+<td align="left" valign="middle">
+              <p>
+                <span class="inlinemediaobject"><img src="../images/interleaved2.png" width="500"></span>
+              </p>
+            </td>
 </tr>
 <tr>
 <td> </td>
-<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved3.png" width="500"></span> </p></td>
+<td align="left" valign="middle">
+              <p>
+                <span class="inlinemediaobject"><img src="../images/interleaved3.png" width="500"></span>
+              </p>
+            </td>
 </tr>
 </tbody>
 </table>
+    </div>
   </div>
 
-  <p><a name="checkscheduling-max_concurrent_checks"></a><span class="bold"><strong>Maximale Zahl gleichzeitiger
-  Service-Prüfungen</strong></span></p>
+  <div class="section" title="7.23.6. Maximale Zahl gleichzeitiger Service-Prüfungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14439392"></a>7.23.6. <a name="checkscheduling-max_concurrent_checks"></a>Maximale Zahl gleichzeitiger Service-Prüfungen</h3></div></div></div>
+    
 
-  <p>Um Icinga davon abzuhalten, all Ihre CPU-Ressourcen zu verbrauchen, können Sie die maximale Zahl von gleichzeitigen
-  Service-Prüfungen beschränken, die zu einer beliebigen Zeit laufen können. Dies wird durch die Option <a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a> in der Hauptkonfigurationsdatei festgelegt.</p>
+    <p>Um Icinga davon abzuhalten, all Ihre CPU-Ressourcen zu verbrauchen, können Sie die maximale Zahl von gleichzeitigen
+    Service-Prüfungen beschränken, die zu einer beliebigen Zeit laufen können. Dies wird durch die Option <a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a> in der Hauptkonfigurationsdatei festgelegt.</p>
 
-  <p>Gut daran ist, dass Sie mit dieser Einstellung Icingas CPU-Nutzung beeinflussen können. Schlecht ist, dass
-  Service-Prüfungen ins Hintertreffen geraten können, wenn dieser Wert zu niedrig eingestellt ist. Wenn es Zeit wird, eine
-  Service-Prüfung auszuführen, wird Icinga sicherstellen, dass nicht mehr als x Service-Prüfungen ausgeführt werden bzw.
-  darauf warten, dass die Prüfergebnisse verarbeitet werden (wobei x die Anzahl der Prüfungen ist, die Sie über die Option
-  <span class="emphasis"><em>max_concurrent_checks</em></span> angegeben haben). Falls diese Grenze erreicht ist, wird Icinga die Ausführung
-  von anstehenden Prüfungen aufschieben, bis einige der vorherigen Prüfungen beendet sind. Also wie kann man einen geeigneten Wert
-  für die Option <span class="emphasis"><em>max_concurrent_checks</em></span> festlegen?</p>
+    <p>Gut daran ist, dass Sie mit dieser Einstellung Icingas CPU-Nutzung beeinflussen können. Schlecht ist, dass
+    Service-Prüfungen ins Hintertreffen geraten können, wenn dieser Wert zu niedrig eingestellt ist. Wenn es Zeit wird, eine Service-Prüfung
+    auszuführen, wird Icinga sicherstellen, dass nicht mehr als x Service-Prüfungen ausgeführt werden bzw. darauf warten, dass die
+    Prüfergebnisse verarbeitet werden (wobei x die Anzahl der Prüfungen ist, die Sie über die Option
+    <span class="emphasis"><em>max_concurrent_checks</em></span> angegeben haben). Falls diese Grenze erreicht ist, wird Icinga die Ausführung von
+    anstehenden Prüfungen aufschieben, bis einige der vorherigen Prüfungen beendet sind. Also wie kann man einen geeigneten Wert für die
+    Option <span class="emphasis"><em>max_concurrent_checks</em></span> festlegen?</p>
 
-  <p>Zuerst müssen Sie einige Dinge wissen...</p>
+    <p>Zuerst müssen Sie einige Dinge wissen...</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>die inter-check-Verzögerung, die Icinga benutzt, um die initialen Service-Prüfungen einzuplanen (nutzen Sie die
-      Option <span class="bold"><strong>-s</strong></span>, um den Wert zu kontrollieren)</p>
-    </li>
+        <p>die inter-check-Verzögerung, die Icinga benutzt, um die initialen Service-Prüfungen einzuplanen (nutzen Sie die Option
+        <span class="bold"><strong>-s</strong></span>, um den Wert zu kontrollieren)</p>
+      </li>
 <li class="listitem">
-      <p>die Häufigkeit (in Sekunden) von "reaper events", wie sie in der <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>-Variable in der
-      Hauptkonfigurationsdatei angegeben ist</p>
-    </li>
+        <p>die Häufigkeit (in Sekunden) von "reaper events", wie sie in der <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>-Variable in der Hauptkonfigurationsdatei
+        angegeben ist</p>
+      </li>
 <li class="listitem">
-      <p>eine Vorstellung der durchschnittlichen Zeit, die Service-Prüfungen wirklich zur Ausführung benötigen (die meisten
-      Plugins haben einen Timeout von 10 Sekunden, so dass der Durchschnitt wahrscheinlich niedriger liegt)</p>
-    </li>
+        <p>eine Vorstellung der durchschnittlichen Zeit, die Service-Prüfungen wirklich zur Ausführung benötigen (die meisten Plugins
+        haben einen Timeout von 10 Sekunden, so dass der Durchschnitt wahrscheinlich niedriger liegt)</p>
+      </li>
 </ul></div>
 
-  <p>Dann benutzen Sie die folgende Berechnung, um einen geeigneten Wert für die maximale Zahl von gleichzeitig erlaubten
-  Prüfungen zu errechnen...</p>
+    <p>Dann benutzen Sie die folgende Berechnung, um einen geeigneten Wert für die maximale Zahl von gleichzeitig erlaubten Prüfungen zu
+    errechnen...</p>
 
-  <p><span class="emphasis"><em>max. Anzahl gleichzeitiger Prüfungen = ceil( max( check result reaper frequency , average check execution time )
-  / inter-check delay )</em></span></p>
+    <p>
+      <span class="emphasis"><em>max. Anzahl gleichzeitiger Prüfungen = ceil( max( check result reaper frequency , average check execution time ) /
+      inter-check delay )</em></span>
+    </p>
 
-  <p>Die errechnete Zahl sollte einen guten Ausgangspunkt für die <span class="emphasis"><em>max_concurrent_checks</em></span>-Variable bieten.
-  Es kann sein, dass Sie diesen Wert noch ein wenig erhöhen müssen, falls Service-Prüfungen nach wie vor nicht zur geplanten Zeit
-  ausgeführt werden oder verringern Sie, falls Icinga zu viel CPU-Zeit beansprucht.</p>
+    <p>Die errechnete Zahl sollte einen guten Ausgangspunkt für die <span class="emphasis"><em>max_concurrent_checks</em></span>-Variable bieten. Es kann
+    sein, dass Sie diesen Wert noch ein wenig erhöhen müssen, falls Service-Prüfungen nach wie vor nicht zur geplanten Zeit ausgeführt
+    werden oder verringern Sie, falls Icinga zu viel CPU-Zeit beansprucht.</p>
 
-  <p>Nehmen wir an, dass Sie 875 Services, jeder mit einem durchschnittlichen Intervall von zwei Minuten. Das bedeutet, dass
-  die inter-check-Verzögerung etwa 0,137 Sekunden ist. Wenn Sie die "check result reaper frequency" auf zehn Sekunden einstellen,
-  können Sie einen ungefähren Wert für die maximale Zahl von gleichzeitigen Prüfungen wie folgt berechnen (wir nehmen an, dass die
-  durchschnittliche Ausführungszeit für Service-Prüfungen kleiner als zehn Sekunden ist) ...</p>
+    <p>Nehmen wir an, dass Sie 875 Services, jeder mit einem durchschnittlichen Intervall von zwei Minuten. Das bedeutet, dass die
+    inter-check-Verzögerung etwa 0,137 Sekunden ist. Wenn Sie die "check result reaper frequency" auf zehn Sekunden einstellen, können Sie
+    einen ungefähren Wert für die maximale Zahl von gleichzeitigen Prüfungen wie folgt berechnen (wir nehmen an, dass die durchschnittliche
+    Ausführungszeit für Service-Prüfungen kleiner als zehn Sekunden ist) ...</p>
 
-  <p><span class="emphasis"><em>max. Zahl gleichzeitiger Prüfungen = ceil( 10 / 0.137 )</em></span></p>
+    <p>
+      <span class="emphasis"><em>max. Zahl gleichzeitiger Prüfungen = ceil( 10 / 0.137 )</em></span>
+    </p>
 
-  <p>In diesem Fall ist der berechnete Wert 73. Das ergibt Sinn, denn Icinga wird etwas mehr als sieben neue
-  Service-Prüfungen pro Sekunde ausführen und es wird Service-Prüfergebnisse nur alle zehn Sekunden verarbeiten. Das bedeutet,
-  dass es zu einer beliebigen Zeit nur etwas mehr als 70 Service-Prüfungen gibt, die ausgeführt werden bzw. deren Ergebnisse
-  verarbeitet werden. In diesem Fall würden wir wahrscheinlich empfehlen, den Wert für die Zahl der gleichzeitigen Prüfungen auf
-  80 zu erhöhen, weil es Verzögerungen gibt, wenn Icinga Service-Prüfergebnisse verarbeitet bzw. andere Dinge tut. Sie
-  werden offensichtlich ein wenig testen und verändern müssen, damit alles reibungslos funktioniert, aber mit diesen Informationen
-  sollten Sie ein paar generelle Richtlinien an der Hand haben...</p>
+    <p>In diesem Fall ist der berechnete Wert 73. Das ergibt Sinn, denn Icinga wird etwas mehr als sieben neue Service-Prüfungen
+    pro Sekunde ausführen und es wird Service-Prüfergebnisse nur alle zehn Sekunden verarbeiten. Das bedeutet, dass es zu einer beliebigen
+    Zeit nur etwas mehr als 70 Service-Prüfungen gibt, die ausgeführt werden bzw. deren Ergebnisse verarbeitet werden. In diesem Fall würden
+    wir wahrscheinlich empfehlen, den Wert für die Zahl der gleichzeitigen Prüfungen auf 80 zu erhöhen, weil es Verzögerungen gibt, wenn
+    Icinga Service-Prüfergebnisse verarbeitet bzw. andere Dinge tut. Sie werden offensichtlich ein wenig testen und verändern müssen,
+    damit alles reibungslos funktioniert, aber mit diesen Informationen sollten Sie ein paar generelle Richtlinien an der Hand
+    haben...</p>
+  </div>
 
-  <p><a name="checkscheduling-time_restraints"></a><span class="bold"><strong>Zeitbeschränkungen</strong></span></p>
+  <div class="section" title="7.23.7. Zeitbeschränkungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14439648"></a>7.23.7. <a name="checkscheduling-time_restraints"></a>Zeitbeschränkungen</h3></div></div></div>
+    
 
-  <p>Die Option <span class="emphasis"><em>check_period</em></span> legt den <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitraum</a> fest, in dem
-  Icinga Service-Prüfungen ausführen kann. Falls die Zeit, zu der eine Prüfung für einen bestimmten Service ausgeführt
-  werden werden soll, nicht innerhalb des angegebenen Zeitraum liegt, wird die Prüfung <span class="emphasis"><em>nicht</em></span> ausgeführt, und
-  zwar unabhängig vom Status des Service. Statt dessen wird Icinga die Service-Prüfung für die nächste gültige Zeit des
-  Zeitraums einplanen. Wenn die Prüfung gestartet werden kann (d.h. die Zeit ist gültig innerhalb des Zeitraums), wird die
-  Service-Prüfung ausgeführt.</p>
+    <p>Die Option <span class="emphasis"><em>check_period</em></span> legt den <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitraum</a> fest, in dem Icinga
+    Service-Prüfungen ausführen kann. Falls die Zeit, zu der eine Prüfung für einen bestimmten Service ausgeführt werden werden soll, nicht
+    innerhalb des angegebenen Zeitraum liegt, wird die Prüfung <span class="emphasis"><em>nicht</em></span> ausgeführt, und zwar unabhängig vom Status des
+    Service. Statt dessen wird Icinga die Service-Prüfung für die nächste gültige Zeit des Zeitraums einplanen. Wenn die Prüfung
+    gestartet werden kann (d.h. die Zeit ist gültig innerhalb des Zeitraums), wird die Service-Prüfung ausgeführt.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Auch wenn eine Service-Prüfung nicht zu einer bestimmten Zeit ausgeführt werden kann, könnte Icinga sie trotzdem
-    <span class="emphasis"><em>einplanen</em></span>. Das wird höchstwahrscheinlich während der initialen Planung von Services passieren, aber es
-    kann auch in anderen Fällen passieren. Das bedeutet nicht, dass Icinga die Prüfung ausführen wird. Wenn es Zeit wird,
-    die Prüfung tatsächlich <span class="emphasis"><em>auszuführen</em></span>, wird Icinga kontrollieren, ob die Prüfung zur angegeben Zeit
-    gestartet werden kann. Falls nicht, wird Icinga die Service-Prüfung nicht ausführen, sondern sie zu einer späteren Zeit
-    einplanen. Lassen Sie sich nicht verwirren! Die Planung und Ausführunge von Service-Prüfungen sind zwei unterschiedliche (wenn
-    auch, zusammenhängende) Dinge.</p>
-  </td></tr>
+      <p>Auch wenn eine Service-Prüfung nicht zu einer bestimmten Zeit ausgeführt werden kann, könnte Icinga sie trotzdem
+      <span class="emphasis"><em>einplanen</em></span>. Das wird höchstwahrscheinlich während der initialen Planung von Services passieren, aber es kann auch
+      in anderen Fällen passieren. Das bedeutet nicht, dass Icinga die Prüfung ausführen wird. Wenn es Zeit wird, die Prüfung
+      tatsächlich <span class="emphasis"><em>auszuführen</em></span>, wird Icinga kontrollieren, ob die Prüfung zur angegeben Zeit gestartet werden
+      kann. Falls nicht, wird Icinga die Service-Prüfung nicht ausführen, sondern sie zu einer späteren Zeit einplanen. Lassen Sie
+      sich nicht verwirren! Die Planung und Ausführunge von Service-Prüfungen sind zwei unterschiedliche (wenn auch, zusammenhängende)
+      Dinge.</p>
+    </td></tr>
 </table></div>
+  </div>
 
-  <p><a name="checkscheduling-normal_scheduling"></a><span class="bold"><strong>Normale Planung</strong></span></p>
+  <div class="section" title="7.23.8. Normale Planung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14461696"></a>7.23.8. <a name="checkscheduling-normal_scheduling"></a>Normale Planung</h3></div></div></div>
+    
 
-  <p>In einer idealen Welt hätten Sie keine Netzwerkprobleme. Aber wenn das so wäre, dann hätten Sie auch kein
-  Netzwerküberwachungsprogramm. Wie auch immer, wenn die Dinge reibungslos laufen und ein Service in einem OK-Zustand ist, nennen
-  wir das "normal". Service-Prüfungen werden normalerweise in der Häufigkeit geplant, die in der Option
-  <span class="emphasis"><em>check_interval</em></span> angegeben ist. Das war's. Einfach, oder?</p>
+    <p>In einer idealen Welt hätten Sie keine Netzwerkprobleme. Aber wenn das so wäre, dann hätten Sie auch kein
+    Netzwerküberwachungsprogramm. Wie auch immer, wenn die Dinge reibungslos laufen und ein Service in einem OK-Zustand ist, nennen wir das
+    "normal". Service-Prüfungen werden normalerweise in der Häufigkeit geplant, die in der Option <span class="emphasis"><em>check_interval</em></span>
+    angegeben ist. Das war's. Einfach, oder?</p>
+  </div>
 
-  <p><a name="checkscheduling-problem_scheduling"></a><span class="bold"><strong>Planung bei Problemen</strong></span></p>
+  <div class="section" title="7.23.9. Planung bei Problemen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14464144"></a>7.23.9. <a name="checkscheduling-problem_scheduling"></a>Planung bei Problemen</h3></div></div></div>
+    
 
-  <p>Also, was passiert, wenn es Probleme mit einem Service gibt? Nun, eins der Dinge ist, dass sich die
-  Service-Prüfungsplanung ändert. Wenn Sie die Option <span class="emphasis"><em>max_attempts</em></span> auf einen Wert größer als eins gesetzt
-  haben, wird Icinga die Prüfung erneut einplanen, bevor es entscheidet, dass ein wirkliches Problem existiert. Während der
-  Service erneut geprüft wird (bis zu <span class="emphasis"><em>max_attempts</em></span> Mal), wird er als in einem "soft"-Status befindlich
-  angesehen (wie <a class="link" href="statetypes.html" title="5.8. Statustypen">hier</a> beschrieben) und die Service-Prüfungen werden mit einer Häufigkeit
-  eingeplant, die in der Option <span class="emphasis"><em>retry_interval</em></span> angegeben ist.</p>
+    <p>Also, was passiert, wenn es Probleme mit einem Service gibt? Nun, eins der Dinge ist, dass sich die Service-Prüfungsplanung
+    ändert. Wenn Sie die Option <span class="emphasis"><em>max_attempts</em></span> auf einen Wert größer als eins gesetzt haben, wird Icinga die
+    Prüfung erneut einplanen, bevor es entscheidet, dass ein wirkliches Problem existiert. Während der Service erneut geprüft wird (bis zu
+    <span class="emphasis"><em>max_attempts</em></span> Mal), wird er als in einem "soft"-Status befindlich angesehen (wie <a class="link" href="statetypes.html" title="5.8. Statustypen">hier</a> beschrieben) und die Service-Prüfungen werden mit einer Häufigkeit eingeplant, die in der Option
+    <span class="emphasis"><em>retry_interval</em></span> angegeben ist.</p>
 
-  <p>Wenn Icinga den Service <span class="emphasis"><em>max_attempts</em></span> Mal erneut eingeplant hat und er immer noch in einem
-  nicht-OK Status ist, wird Icinga den Service in einen "Hard"-Status versetzen, Benachrichtigungen an Kontakte versenden
-  (falls zutreffend) und weitere Prüfungen des Service wieder mit der Häufigkeit planen, die in der Option
-  <span class="emphasis"><em>check_interval</em></span> festgelegt ist.</p>
+    <p>Wenn Icinga den Service <span class="emphasis"><em>max_attempts</em></span> Mal erneut eingeplant hat und er immer noch in einem nicht-OK
+    Status ist, wird Icinga den Service in einen "Hard"-Status versetzen, Benachrichtigungen an Kontakte versenden (falls zutreffend)
+    und weitere Prüfungen des Service wieder mit der Häufigkeit planen, die in der Option <span class="emphasis"><em>check_interval</em></span> festgelegt
+    ist.</p>
 
-  <p>Wie immer gibt es Ausnahmen der Regel. Wenn eine Service-Prüfung zu einem nicht-OK-Status führt, wird Icinga den
-  mit diesem Service verbundenen Host prüfen, um festzustellen, ob er "up" ist oder nicht (siehe die Anmerkung <a class="link" href="checkscheduling.html#checkscheduling-host_checks">unten</a> zu Informationen, wie dies passiert). Wenn der Host nicht "up" ist (also
-  "down" oder "unreachable"), wird Icinga den Service sofort in einen harten nicht-OK-Status versetzen und die Zahl der
-  aktuellen Versuche auf 1 zurücksetzen. Da der Service in einem harten nicht-OK-Status ist, wird die Service-Prüfung mit der
-  normalen Häufigkeit geplant, die in der Option <span class="emphasis"><em>check_interval</em></span> angegeben ist, statt des Wertes aus der
-  Option <span class="emphasis"><em>retry_interval</em></span>.</p>
+    <p>Wie immer gibt es Ausnahmen der Regel. Wenn eine Service-Prüfung zu einem nicht-OK-Status führt, wird Icinga den mit diesem
+    Service verbundenen Host prüfen, um festzustellen, ob er "up" ist oder nicht (siehe die Anmerkung <a class="link" href="checkscheduling.html#checkscheduling-host_checks">unten</a> zu Informationen, wie dies passiert). Wenn der Host nicht "up" ist (also "down" oder
+    "unreachable"), wird Icinga den Service sofort in einen harten nicht-OK-Status versetzen und die Zahl der aktuellen Versuche auf
+    1 zurücksetzen. Da der Service in einem harten nicht-OK-Status ist, wird die Service-Prüfung mit der normalen Häufigkeit geplant, die in
+    der Option <span class="emphasis"><em>check_interval</em></span> angegeben ist, statt des Wertes aus der Option
+    <span class="emphasis"><em>retry_interval</em></span>.</p>
+  </div>
 
-  <p><a name="checkscheduling-host_checks"></a><span class="bold"><strong>Host-Prüfungen</strong></span></p>
+  <div class="section" title="7.23.10. Host-Prüfungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14472880"></a>7.23.10. <a name="checkscheduling-host_checks"></a>Host-Prüfungen</h3></div></div></div>
+    
 
-  <p>Ein Fall, wo Icinga den Status eines Hosts prüft, ist, wenn ein Service-Prüfung einen nicht-OK-Zustand ergibt.
-  Icinga prüft den Host, um zu entscheiden, ob der Host "up" ist oder nicht, bzw. ob der Host "up", "down" oder
-  "unreachable" ist. Wenn die erste Host-Prüfung einen nicht-OK-Zustand ergibt, wird Icinga Host-Prüfungen wie bei den
-  Services durchführen.</p>
+    <p>Ein Fall, wo Icinga den Status eines Hosts prüft, ist, wenn ein Service-Prüfung einen nicht-OK-Zustand ergibt.
+    Icinga prüft den Host, um zu entscheiden, ob der Host "up" ist oder nicht, bzw. ob der Host "up", "down" oder "unreachable" ist.
+    Wenn die erste Host-Prüfung einen nicht-OK-Zustand ergibt, wird Icinga Host-Prüfungen wie bei den Services durchführen.</p>
+  </div>
 
-  <p> <a name="checkscheduling-scheduling_delays"></a><span class="bold"><strong>Planungsverzögerungen</strong></span></p>
+  <div class="section" title="7.23.11. Planungsverzögerungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14475008"></a>7.23.11. <a name="checkscheduling-scheduling_delays"></a>Planungsverzögerungen</h3></div></div></div>
+    
 
-  <p>Es sollte erwähnt werden, dass Service-Prüfungsplanung und -ausführung geschieht, so gut es geht. Individuelle
-  Service-Prüfungen werden inIcinga als Ereignisse mit niedriger Priorität angesehen, so dass sie verzögert werden können,
-  wenn Ereignisse mit höherer Priorität ausgeführt werden müssen. Beispiel von Ereignissen mit hoher Priorität umfassen
-  Log-Datei-Rotationen, externe Befehlsprüfungen und Prüfergebnis-Ernteereignisse.</p>
+    <p>Es sollte erwähnt werden, dass Service-Prüfungsplanung und -ausführung geschieht, so gut es geht. Individuelle Service-Prüfungen
+    werden inIcinga als Ereignisse mit niedriger Priorität angesehen, so dass sie verzögert werden können, wenn Ereignisse mit
+    höherer Priorität ausgeführt werden müssen. Beispiel von Ereignissen mit hoher Priorität umfassen Log-Datei-Rotationen, externe
+    Befehlsprüfungen und Prüfergebnis-Ernteereignisse.</p>
+  </div>
 
-  <p><a name="checkscheduling-scheduling_example"></a><span class="bold"><strong>Planungsbeispiel</strong></span></p>
+  <div class="section" title="7.23.12. Planungsbeispiel">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14477184"></a>7.23.12. <a name="checkscheduling-scheduling_example"></a>Planungsbeispiel</h3></div></div></div>
+    
 
-  <p>Die Planung von Service-Prüfungen, ihre Ausführung und die Verarbeitung ihrer Ergebnisse können ein bisschen schwierig zu
-  verstehen sein, deshalb schauen wir uns ein einfaches Beispiel an. Betrachten wir das folgende Diagramm - wir werden uns darauf
-  beziehen, während wir die Dinge erklären.</p>
+    <p>Die Planung von Service-Prüfungen, ihre Ausführung und die Verarbeitung ihrer Ergebnisse können ein bisschen schwierig zu
+    verstehen sein, deshalb schauen wir uns ein einfaches Beispiel an. Betrachten wir das folgende Diagramm - wir werden uns darauf
+    beziehen, während wir die Dinge erklären.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/checktiming.png"></span></p>
+    <p>
+      <span class="inlinemediaobject"><img src="../images/checktiming.png"></span>
+    </p>
 
-  <p>Zuallererst sind <span class="bold"><strong>X</strong></span><sub>n</sub> Prüfergebnis-Ernteereignisse, die in der
-  Häufigkeit geplant werden, die durch die Option <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a> in der Hauptkonfigurationsdatei
-  angegeben ist. Prüfergebnis-Ernteereignisse übernehmen die Arbeit, Service-Prüfergebnisse zu sammeln und zu verarbeiten. SIe
-  dienen als die Kernlogik für Icinga, starten Host-Prüfungen, Ereignisbehandlung-Routinen und Benachrichtigungen, wenn das
-  notwendig ist.</p>
+    <p>Zuallererst sind <span class="bold"><strong>X</strong></span><sub>n</sub> Prüfergebnis-Ernteereignisse, die in der Häufigkeit
+    geplant werden, die durch die Option <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a> in
+    der Hauptkonfigurationsdatei angegeben ist. Prüfergebnis-Ernteereignisse übernehmen die Arbeit, Service-Prüfergebnisse zu sammeln und zu
+    verarbeiten. SIe dienen als die Kernlogik für Icinga, starten Host-Prüfungen, Ereignisbehandlung-Routinen und Benachrichtigungen,
+    wenn das notwendig ist.</p>
 
-  <p>Für das Beispiel hier ist die Ausführung eines Service für den Zeitpunkt <span class="bold"><strong>A </strong></span>geplant.
-  Allerdings kam Icinga in der Ereigniswarteschlange ins Hintertreffen, so dass die Prüfung erst zum Zeitpunkt <span class="bold"><strong>B</strong></span> ausgeführt wird. Die Service-Prüfung endet zum Zeitpunkt <span class="bold"><strong>C</strong></span>, so dass
-  die Differenz zwischen den Punkten <span class="bold"><strong>C</strong></span> and <span class="bold"><strong>B</strong></span> die Laufzeit der
-  Prüfung ist.</p>
+    <p>Für das Beispiel hier ist die Ausführung eines Service für den Zeitpunkt <span class="bold"><strong>A </strong></span>geplant. Allerdings
+    kam Icinga in der Ereigniswarteschlange ins Hintertreffen, so dass die Prüfung erst zum Zeitpunkt <span class="bold"><strong>B</strong></span> ausgeführt wird. Die Service-Prüfung endet zum Zeitpunkt <span class="bold"><strong>C</strong></span>, so dass die
+    Differenz zwischen den Punkten <span class="bold"><strong>C</strong></span> and <span class="bold"><strong>B</strong></span> die Laufzeit der Prüfung
+    ist.</p>
 
-  <p>Die Ergebnisse der Service-Prüfungen werden nicht sofort nach der Prüfung verarbeitet. Statt dessen werden die Ergebnisse
-  für eine spätere Verarbeitung durch einen Prüfergebnis-Ernteereignis gespeichert. Das nächste Prüfergebnis-Ernteereignis findet
-  zum Zeitpunkt <span class="bold"><strong>D</strong></span> statt, so dass dies ungefähr die Zeit ist, zu der die Ergebnisse verarbeitet
-  werden (die tatsächliche Zeit kann später als <span class="bold"><strong>D</strong></span> sein, weil ggf. andere Service-Prüfergebnisse
-  vor diesem Service verarbeitet werden).</p>
+    <p>Die Ergebnisse der Service-Prüfungen werden nicht sofort nach der Prüfung verarbeitet. Statt dessen werden die Ergebnisse für eine
+    spätere Verarbeitung durch einen Prüfergebnis-Ernteereignis gespeichert. Das nächste Prüfergebnis-Ernteereignis findet zum Zeitpunkt
+    <span class="bold"><strong>D</strong></span> statt, so dass dies ungefähr die Zeit ist, zu der die Ergebnisse verarbeitet werden (die tatsächliche
+    Zeit kann später als <span class="bold"><strong>D</strong></span> sein, weil ggf. andere Service-Prüfergebnisse vor diesem Service verarbeitet
+    werden).</p>
 
-  <p>Zu der Zeit, zu der das Prüfergebnis-Ernteereignis die Service-Prüfergebnisse verarbeitet, wird es die nächste
-  Service-Prüfung einplanen und in Icingas Ereigniswarteschlange stellen. Wir nehmen an, dass die Service-Prüfung einen
-  OK-Zustand ergibt, so dass die nächste Prüfung zum Zeitpunkt <span class="bold"><strong>E</strong></span> nach der ursprünglich geplanten
-  Prüfzeit geplant wird, mit einem zeitlichen Abstand, der in der <span class="emphasis"><em>check_interval</em></span>-Option angegeben ist.
-  Beachten Sie, dass der Service <span class="emphasis"><em>nicht</em></span> erneut eingeplant wird basierend auf der Zeit, zu der er tatsächlich
-  ausgeführt wird! Es gibt eine Ausnahme (es gibt immer eine, oder?) - falls die Zeit, zu der die Service-Prüfung tatsächlich
-  ausgeführt wird (Punkt <span class="bold"><strong>B</strong></span>) nach der nächsten Service-Prüfzeit liegt (Punkt <span class="bold"><strong>E</strong></span>), wird Icinga das durch das Anpassen der nächsten Prüfzeit ausgleichen. Das wird gemacht, damit
-  Icinga nicht verrückt wird beim Versuch, mit den Service-Prüfungen Schritt zu halten, wenn eine hohe Last auftritt.
-  Außerdem, wie sinnvoll ist es, etwas in der Vergangenheit zu planen...?</p>
+    <p>Zu der Zeit, zu der das Prüfergebnis-Ernteereignis die Service-Prüfergebnisse verarbeitet, wird es die nächste Service-Prüfung
+    einplanen und in Icingas Ereigniswarteschlange stellen. Wir nehmen an, dass die Service-Prüfung einen OK-Zustand ergibt, so dass
+    die nächste Prüfung zum Zeitpunkt <span class="bold"><strong>E</strong></span> nach der ursprünglich geplanten Prüfzeit geplant wird, mit einem
+    zeitlichen Abstand, der in der <span class="emphasis"><em>check_interval</em></span>-Option angegeben ist. Beachten Sie, dass der Service
+    <span class="emphasis"><em>nicht</em></span> erneut eingeplant wird basierend auf der Zeit, zu der er tatsächlich ausgeführt wird! Es gibt eine Ausnahme
+    (es gibt immer eine, oder?) - falls die Zeit, zu der die Service-Prüfung tatsächlich ausgeführt wird (Punkt <span class="bold"><strong>B</strong></span>) nach der nächsten Service-Prüfzeit liegt (Punkt <span class="bold"><strong>E</strong></span>), wird Icinga das
+    durch das Anpassen der nächsten Prüfzeit ausgleichen. Das wird gemacht, damit Icinga nicht verrückt wird beim Versuch, mit den
+    Service-Prüfungen Schritt zu halten, wenn eine hohe Last auftritt. Außerdem, wie sinnvoll ist es, etwas in der Vergangenheit zu
+    planen...?</p>
+  </div>
 
-  <p><a name="checkscheduling-service_options"></a><span class="bold"><strong>Service-Definitionsoptionen, die die Planung
-  beeinflussen</strong></span></p>
+  <div class="section" title="7.23.13. Service-Definitionsoptionen, die die Planung beeinflussen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14495248"></a>7.23.13. <a name="checkscheduling-service_options"></a>Service-Definitionsoptionen, die die Planung beeinflussen</h3></div></div></div>
+    
 
-  <p>Jede Service-Definition enthält eine <span class="emphasis"><em>check_interval</em></span>- und eine
-  <span class="emphasis"><em>retry_interval</em></span>-Option. Hoffentlich klärt das Folgende, was diese zwei Optionen tun, wie sie mit der
-  <span class="emphasis"><em>max_check_attempts</em></span>-Option in der Service-Definition zusammenwirken, und wie sie die Planung des Service
-  beeinflussen.</p>
+    <p>Jede Service-Definition enthält eine <span class="emphasis"><em>check_interval</em></span>- und eine <span class="emphasis"><em>retry_interval</em></span>-Option.
+    Hoffentlich klärt das Folgende, was diese zwei Optionen tun, wie sie mit der <span class="emphasis"><em>max_check_attempts</em></span>-Option in der
+    Service-Definition zusammenwirken, und wie sie die Planung des Service beeinflussen.</p>
 
-  <p>Zuallererst gibt die <span class="emphasis"><em>check_interval</em></span>-Option das Intervall an, in dem der Service unter
-  "normalen" Umständen geprüft wird. "Normale" Umstände bedeutet, wenn sich der Service in einem "OK"- oder einem <a class="link" href="statetypes.html" title="5.8. Statustypen">harten</a> nicht-OK-Zustand befindet.</p>
+    <p>Zuallererst gibt die <span class="emphasis"><em>check_interval</em></span>-Option das Intervall an, in dem der Service unter "normalen" Umständen
+    geprüft wird. "Normale" Umstände bedeutet, wenn sich der Service in einem "OK"- oder einem <a class="link" href="statetypes.html" title="5.8. Statustypen">harten</a>
+    nicht-OK-Zustand befindet.</p>
 
-  <p>Wenn ein Service das erste Mal von einem OK- in einen nicht-OK-Zustand wechselt, gibt Ihnen Icinga die Möglichkeit,
-  das Intervall temporär zu verkleinern oder zu vergrößern, in dem nachfolgende Prüfungen für diesen Service ausgeführt werden.
-  Wenn der Service-Zustand das erste Mal wechselt, wird Icinga bis zu <span class="emphasis"><em>max_check_attempts</em></span>-1 Versuche
-  durchführen, bevor es entscheidet, dass es sich um ein richtiges Problem handelt. Während die Prüfungen wiederholt werden,
-  werden sie gemäß der <span class="emphasis"><em>retry_interval</em></span>-Option neu eingeplant, was schneller oder langsam als die
-  <span class="emphasis"><em>check_interval</em></span>-Option ist. Während der Service erneut geprüft wird (bis zu
-  <span class="emphasis"><em>max_check_attempts</em></span>-1 mal), ist der Service in einem <a class="link" href="statetypes.html" title="5.8. Statustypen">soft-Zustand</a>. Wenn
-  der Service <span class="emphasis"><em>max_check_attempts</em></span>-1 mal geprüft wurde und sich immer noch in einem nicht-OK-Zustand befindet,
-  wird der Service in einen <a class="link" href="statetypes.html" title="5.8. Statustypen">hard-Zustand</a> wechseln und wird nachfolgend wieder mit der normalen
-  Rate eingeplant, die in der <span class="emphasis"><em>check_interval</em></span>-Option festgelegt ist.</p>
+    <p>Wenn ein Service das erste Mal von einem OK- in einen nicht-OK-Zustand wechselt, gibt Ihnen Icinga die Möglichkeit, das
+    Intervall temporär zu verkleinern oder zu vergrößern, in dem nachfolgende Prüfungen für diesen Service ausgeführt werden. Wenn der
+    Service-Zustand das erste Mal wechselt, wird Icinga bis zu <span class="emphasis"><em>max_check_attempts</em></span>-1 Versuche durchführen, bevor
+    es entscheidet, dass es sich um ein richtiges Problem handelt. Während die Prüfungen wiederholt werden, werden sie gemäß der
+    <span class="emphasis"><em>retry_interval</em></span>-Option neu eingeplant, was schneller oder langsam als die <span class="emphasis"><em>check_interval</em></span>-Option
+    ist. Während der Service erneut geprüft wird (bis zu <span class="emphasis"><em>max_check_attempts</em></span>-1 mal), ist der Service in einem <a class="link" href="statetypes.html" title="5.8. Statustypen">soft-Zustand</a>. Wenn der Service <span class="emphasis"><em>max_check_attempts</em></span>-1 mal geprüft wurde und sich immer
+    noch in einem nicht-OK-Zustand befindet, wird der Service in einen <a class="link" href="statetypes.html" title="5.8. Statustypen">hard-Zustand</a> wechseln und wird
+    nachfolgend wieder mit der normalen Rate eingeplant, die in der <span class="emphasis"><em>check_interval</em></span>-Option festgelegt ist.</p>
 
-  <p>Als Randbemerkung, wenn Sie einen Wert von 1 für die <span class="emphasis"><em>max_check_attempts</em></span>-Option definieren, wird der
-  Service niemals mit dem Intervall geprüft, das in der <span class="emphasis"><em>retry_interval</em></span>-Option angegeben ist. Statt
-  dessen wird er sofort in einen <a class="link" href="statetypes.html" title="5.8. Statustypen">hard-Zustand</a> wechseln und anschließend mit dem in der Option
-  <span class="emphasis"><em>check_interval</em></span> festgelegten Intervall geprüft.</p>
+    <p>Als Randbemerkung, wenn Sie einen Wert von 1 für die <span class="emphasis"><em>max_check_attempts</em></span>-Option definieren, wird der Service
+    niemals mit dem Intervall geprüft, das in der <span class="emphasis"><em>retry_interval</em></span>-Option angegeben ist. Statt dessen wird er sofort in
+    einen <a class="link" href="statetypes.html" title="5.8. Statustypen">hard-Zustand</a> wechseln und anschließend mit dem in der Option <span class="emphasis"><em>check_interval</em></span>
+    festgelegten Intervall geprüft.</p>
+  </div>
 
-  <p><span class="bold"><strong>TODO</strong></span></p>
+  <div class="section" title="7.23.14. TODO">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14495408"></a>7.23.14. TODO</h3></div></div></div>
+    
 
-  <p><a name="checkscheduling-host_inter_check_delay"></a><span class="bold"><strong>Host-Prüfungs-Direktiven</strong></span></p>
+    <p>
+      <span class="bold"><strong><a name="checkscheduling-host_inter_check_delay"></a>Host-Prüfungs-Direktiven</strong></span>
+    </p>
 
-  <p>Die meisten der o.g. Informationen treffen auch auf Host-Prüfungen zu.</p>
+    <p>Die meisten der o.g. Informationen treffen auch auf Host-Prüfungen zu.</p>
 
-  <p>Dieser Abschnitt wird aktualisiert. Voraussichtlich gibt es mehr Informationen in einer der nächsten Ausgaben...</p>
-  <a class="indexterm" name="idp14430464"></a>
-  <a class="indexterm" name="idp14433424"></a>
-  <a class="indexterm" name="idp14433552"></a>
-  <a class="indexterm" name="idp14435792"></a>
-  <a class="indexterm" name="idp14437216"></a>
-  <a class="indexterm" name="idp14438224"></a>
-  <a class="indexterm" name="idp14439552"></a>
-  <a class="indexterm" name="idp14440768"></a>
-  <a class="indexterm" name="idp14441936"></a>
-  <a class="indexterm" name="idp14442944"></a>
-  <a class="indexterm" name="idp14443936"></a>
-  <a class="indexterm" name="idp14445056"></a>
-  <a class="indexterm" name="idp14446272"></a>
-  <a class="indexterm" name="idp14447728"></a>
+    <p>Dieser Abschnitt wird aktualisiert. Voraussichtlich gibt es mehr Informationen in einer der nächsten Ausgaben...</p>
+  </div>
+
+  <a class="indexterm" name="idp14511888"></a>
+
+  <a class="indexterm" name="idp14513712"></a>
+
+  <a class="indexterm" name="idp14515200"></a>
+
+  <a class="indexterm" name="idp14516832"></a>
+
+  <a class="indexterm" name="idp14518528"></a>
+
+  <a class="indexterm" name="idp14520288"></a>
+
+  <a class="indexterm" name="idp14521856"></a>
+
+  <a class="indexterm" name="idp14523488"></a>
+
+  <a class="indexterm" name="idp14525120"></a>
+
+  <a class="indexterm" name="idp14526752"></a>
+
+  <a class="indexterm" name="idp14528384"></a>
+
+  <a class="indexterm" name="idp14530016"></a>
+
+  <a class="indexterm" name="idp14531648"></a>
+
+  <a class="indexterm" name="idp14533152"></a>
 </div>
 <div class="navfooter">
 <hr>

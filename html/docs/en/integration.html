@@ -28,80 +28,98 @@
 <div class="section" title="9.1. Integration Overview">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="integration"></a>9.1. <a name="Icinga_integration"></a>Integration Overview</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="integration.html#idm123400736">9.1.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="integration.html#idp15399504">9.1.2. Integration Points</a></span></dt>
+<dt><span class="section"><a href="integration.html#idp15419584">9.1.3. Integration Examples</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="9.1.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idm123400736"></a>9.1.1. Introduction</h3></div></div></div>
+    
 
-  <p>Icinga can be easily integrated in your existing infrastructure. There are several methods of integrating Icinga with
-  the management software you're already using and you can monitor almost any type of new or custom hardware, service, or application that
-  you might have.</p>
+    <p>Icinga can be easily integrated in your existing infrastructure. There are several methods of integrating Icinga
+    with the management software you're already using and you can monitor almost any type of new or custom hardware, service, or application
+    that you might have.</p>
+  </div>
 
-  <p><span class="bold"><strong>Integration Points</strong></span></p>
+  <div class="section" title="9.1.2. Integration Points">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15399504"></a>9.1.2. Integration Points</h3></div></div></div>
+    
 
-  <p><span class="inlinemediaobject"><img src="../images/integrationoverview.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/integrationoverview.png"></span></p>
 
-  <p>To monitor new hardware, services, or applications, check out the docs on:</p>
+    <p>To monitor new hardware, services, or applications, check out the docs on:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a></p>
-    </li>
+        <p><a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a></p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">Plugin API</a></p>
-    </li>
+        <p><a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">Plugin API</a></p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="passivechecks.html" title="5.7. Passive Checks">Passive Checks</a></p>
-    </li>
+        <p><a class="link" href="passivechecks.html" title="5.7. Passive Checks">Passive Checks</a></p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="eventhandlers.html" title="7.3. Event Handlers">Event Handlers</a></p>
-    </li>
+        <p><a class="link" href="eventhandlers.html" title="7.3. Event Handlers">Event Handlers</a></p>
+      </li>
 </ul></div>
 
-  <p>To get data into Icinga from external applications, check out the docs on:</p>
+    <p>To get data into Icinga from external applications, check out the docs on:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="passivechecks.html" title="5.7. Passive Checks">Passive Checks</a></p>
-    </li>
+        <p><a class="link" href="passivechecks.html" title="5.7. Passive Checks">Passive Checks</a></p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="extcommands.html" title="7.1. External Commands">External Commands</a></p>
-    </li>
+        <p><a class="link" href="extcommands.html" title="7.1. External Commands">External Commands</a></p>
+      </li>
 </ul></div>
 
-  <p>To send status, performance, or notification information from Icinga to external applications, check out the docs on:</p>
+    <p>To send status, performance, or notification information from Icinga to external applications, check out the docs
+    on:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="eventhandlers.html" title="7.3. Event Handlers">Event Handlers</a></p>
-    </li>
+        <p><a class="link" href="eventhandlers.html" title="7.3. Event Handlers">Event Handlers</a></p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a> and <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a> Commands</p>
-    </li>
+        <p><a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a> and <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a> Commands</p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="perfdata.html" title="7.15. Performance Data">Performance Data</a></p>
-    </li>
+        <p><a class="link" href="perfdata.html" title="7.15. Performance Data">Performance Data</a></p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="notifications.html" title="5.11. Notifications">Notifications</a></p>
-    </li>
+        <p><a class="link" href="notifications.html" title="5.11. Notifications">Notifications</a></p>
+      </li>
+</ul></div>
+  </div>
+
+  <div class="section" title="9.1.3. Integration Examples">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15419584"></a>9.1.3. Integration Examples</h3></div></div></div>
+    
+
+    <p>The following documents show some examples on how to integrate Icinga with external applications:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><a class="link" href="int-tcpwrappers.html" title="9.3. TCP Wrapper Integration">TCP Wrappers</a> (security alerts)</p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="int-snmptrap.html" title="9.2. SNMP Trap Integration">SNMP Traps</a> (Arcserve backup job status)</p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="int-mklivestatus.html" title="9.4. MKLiveStatus Integration">mklivestatus</a> (interface from Icinga to several addons like <a class="link" href="http://www.nagvis.org" target="_top">NagVis</a> and <a class="link" href="http://www.thruk.org" target="_top">Thruk</a>)</p>
+      </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Integration Examples</strong></span></p>
-
-  <p>The following documents show some examples on how to integrate Icinga with external applications:</p>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p><a class="link" href="int-tcpwrappers.html" title="9.3. TCP Wrapper Integration">TCP Wrappers</a> (security alerts)</p>
-    </li>
-<li class="listitem">
-      <p><a class="link" href="int-snmptrap.html" title="9.2. SNMP Trap Integration">SNMP Traps</a> (Arcserve backup job status)</p>
-    </li>
-<li class="listitem">
-      <p><a class="link" href="int-mklivestatus.html" title="9.4. MKLiveStatus Integration">mklivestatus</a> (interface from Icinga to several addons like <a class="link" href="http://www.nagvis.org" target="_top">NagVis</a> and <a class="link" href="http://www.thruk.org" target="_top">Thruk</a>)</p>
-    </li>
-</ul></div>
-
-  <a class="indexterm" name="idp15408352"></a>
+    <a class="indexterm" name="idp15427504"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

@@ -28,27 +28,44 @@
 <div class="section" title="8.6. Using The Icingastats Utility">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="icingastats"></a>8.6. <a name="icinga_stats"></a>Using The Icingastats Utility</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="icingastats.html#idp15241504">8.6.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="icingastats.html#idp15244336">8.6.2. Usage Information</a></span></dt>
+<dt><span class="section"><a href="icingastats.html#idp15246736">8.6.3. Human-Readable Output</a></span></dt>
+<dt><span class="section"><a href="icingastats.html#idp15253568">8.6.4. PNP4Nagios Integration</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="8.6.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15241504"></a>8.6.1. Introduction</h3></div></div></div>
+    
 
-  <p>A utility called <span class="bold"><strong>icingastats</strong></span> is included in the Icinga distribution. It is compiled and
-  installed along with the main Icinga daemon. The icingastats utility allows you to obtain various information about a running
-  Icinga process that can be very helpful in <a class="link" href="tuning.html" title="8.3. Tuning Icinga For Maximum Performance">tuning performance</a>. You can obtain information either in
-  human-readable or performance data compatible format.</p>
+    <p>A utility called <span class="bold"><strong>icingastats</strong></span> is included in the Icinga distribution. It is compiled and
+    installed along with the main Icinga daemon. The icingastats utility allows you to obtain various information about a running
+    Icinga process that can be very helpful in <a class="link" href="tuning.html" title="8.3. Tuning Icinga For Maximum Performance">tuning performance</a>. You can obtain information either in
+    human-readable or performance data compatible format.</p>
+  </div>
 
-  <p><span class="bold"><strong>Usage Information</strong></span></p>
+  <div class="section" title="8.6.2. Usage Information">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15244336"></a>8.6.2. Usage Information</h3></div></div></div>
+    
 
-  <p>You can run the <span class="emphasis"><em>icingastats</em></span> utility with the <span class="bold"><strong>--help</strong></span> option to get usage
-  information.</p>
+    <p>You can run the <span class="emphasis"><em>icingastats</em></span> utility with the <span class="bold"><strong>--help</strong></span> option to get usage
+    information.</p>
+  </div>
 
-  <p><span class="bold"><strong>Human-Readable Output</strong></span></p>
+  <div class="section" title="8.6.3. Human-Readable Output">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15246736"></a>8.6.3. Human-Readable Output</h3></div></div></div>
+    
 
-  <p>To obtain human-readable information on the performance of a running Icinga process, run the
-  <span class="emphasis"><em>icingastats</em></span> utility with the <span class="bold"><strong>-c</strong></span> command line argument to specify your main
-  configuration file location like such:</p>
+    <p>To obtain human-readable information on the performance of a running Icinga process, run the
+    <span class="emphasis"><em>icingastats</em></span> utility with the <span class="bold"><strong>-c</strong></span> command line argument to specify your main
+    configuration file location like such:</p>
 
-  <pre class="screen">[icinga@monitoring ~]# /usr/local/icinga/bin/icingastats -c /usr/local/icinga/etc/icinga.cfg
+    <pre class="screen">[icinga@monitoring ~]# /usr/local/icinga/bin/icingastats -c /usr/local/icinga/etc/icinga.cfg
 
 Icinga Stats 1.8
 Copyright (c) 2009 Nagios Core Development Team and Community Contributors
@@ -117,29 +134,34 @@ External Commands Last 1/5/15 min:      6 / 6 / 15
 
 [icinga@monitoring ~]#</pre>
 
-  <p>As you can see, the utility displays a number of different metrics pertaining to the Icinga process. Metrics which have
-  multiple values are (unless otherwise specified) min, max and average values for that particular metric.</p>
+    <p>As you can see, the utility displays a number of different metrics pertaining to the Icinga process. Metrics which have
+    multiple values are (unless otherwise specified) min, max and average values for that particular metric.</p>
+  </div>
 
-  <p><span class="bold"><strong>PNP4Nagios Integration</strong></span></p>
+  <div class="section" title="8.6.4. PNP4Nagios Integration">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15253568"></a>8.6.4. PNP4Nagios Integration</h3></div></div></div>
+    
 
-  <p>You can use the <span class="emphasis"><em>icingastats</em></span> utility to display various Icinga metrics using PNP4Nagios (or other
-  compatible programmes). To do so, run the <span class="emphasis"><em>icingastats</em></span> utility using the <span class="bold"><strong>--mrtg</strong></span> and
-  <span class="bold"><strong>--data</strong></span> arguments. The <span class="bold"><strong>--data</strong></span> argument is used to specify what statistics
-  should be graphed. Possible values for the <span class="bold"><strong>--data</strong></span> argument can be found by running the
-  <span class="emphasis"><em>icingastats</em></span> utility with the <span class="bold"><strong>--help</strong></span> option.</p>
+    <p>You can use the <span class="emphasis"><em>icingastats</em></span> utility to display various Icinga metrics using PNP4Nagios (or other
+    compatible programmes). To do so, run the <span class="emphasis"><em>icingastats</em></span> utility using the <span class="bold"><strong>--mrtg</strong></span>
+    and <span class="bold"><strong>--data</strong></span> arguments. The <span class="bold"><strong>--data</strong></span> argument is used to specify what
+    statistics should be graphed. Possible values for the <span class="bold"><strong>--data</strong></span> argument can be found by running the
+    <span class="emphasis"><em>icingastats</em></span> utility with the <span class="bold"><strong>--help</strong></span> option.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Information on using the <span class="emphasis"><em>icingastats</em></span> utility to generate PNP4Nagios graphs for Icinga performance
-    statistics can be found <a class="link" href="perfgraphs.html" title="8.7. Graphing Performance Info With PNP4Nagios">here</a>.</p>
-  </td></tr>
+      <p>Information on using the <span class="emphasis"><em>icingastats</em></span> utility to generate PNP4Nagios graphs for Icinga performance
+      statistics can be found <a class="link" href="perfgraphs.html" title="8.7. Graphing Performance Info With PNP4Nagios">here</a>.</p>
+    </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp15244272"></a>
+    <a class="indexterm" name="idp15262416"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

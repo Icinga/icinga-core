@@ -28,37 +28,51 @@
 <div class="section" title="7.11. Bereitschafts-Rotation">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="oncallrotation"></a>7.11. Bereitschafts-Rotation</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="oncallrotation.html#idp13726928">7.11.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13734704">7.11.2. Szenario 1: Urlaub und Wochenenden</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13734960">7.11.3. Szenario 2: Abwechselnde Tage</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13748464">7.11.4. Szenario 3: Abwechselnde Wochen</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13755648">7.11.5. Szenario 4: Urlaubstage</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13763712">7.11.6. Andere Szenarien</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="7.11.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13726928"></a>7.11.1. Einführung</h3></div></div></div>
+    
 
-  <div class="mediaobject" align="right"><img src="../images/objects-contacts.png" align="right"></div>
+    <div class="mediaobject" align="right"><img src="../images/objects-contacts.png" align="right"></div>
 
-  <div class="mediaobject" align="right"><img src="../images/objects-timeperiods.png" align="right"></div>
+    <div class="mediaobject" align="right"><img src="../images/objects-timeperiods.png" align="right"></div>
 
-  <p>Admins müssen oft genug Pager, Mobiltelefonanrufe usw. beantworten, wenn sie es am wenigsten gebrauchen können. Keiner mag
-  es, morgens um 4 Uhr geweckt zu werden. Allerdings ist es oft besser, das Problem mitten in der Nacht zu lösen als den Zorn
-  eines unglücklichen Chefs zu spüren, wenn Sie am nächsten Morgen um 9 Uhr ins Büro kommen.</p>
+    <p>Admins müssen oft genug Pager, Mobiltelefonanrufe usw. beantworten, wenn sie es am wenigsten gebrauchen können. Keiner mag es,
+    morgens um 4 Uhr geweckt zu werden. Allerdings ist es oft besser, das Problem mitten in der Nacht zu lösen als den Zorn eines
+    unglücklichen Chefs zu spüren, wenn Sie am nächsten Morgen um 9 Uhr ins Büro kommen.</p>
 
-  <p>Für die glücklichen Admins, die ein Team von Gurus haben, die die Verantwortlichkeiten bei der Beantwortung von Alarmen
-  teilen können, gibt es oft Bereitschaftspläne. Mehrere Admins werden oft abwechselnd Benachrichtigungen an Wochenenden, Nächten,
-  Urlauben usw. entgegennehmen.</p>
+    <p>Für die glücklichen Admins, die ein Team von Gurus haben, die die Verantwortlichkeiten bei der Beantwortung von Alarmen teilen
+    können, gibt es oft Bereitschaftspläne. Mehrere Admins werden oft abwechselnd Benachrichtigungen an Wochenenden, Nächten, Urlauben usw.
+    entgegennehmen.</p>
 
-  <p>Wir werden Ihnen zeigen, wie Sie <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitfenster</a>-Definitionen erstellen können, die die
-  meisten Bereitschafts-Benachrichtigungen behandeln werden. Diese Definitionen werden keine menschlichen Dinge berücksichtigen,
-  die unweigerlich auftreten werden (Admins, die sich krank melden, Tausch von Schichten, oder Pager, die ins Wasser fallen), aber
-  sie werden es Ihnen erlauben, eine grundlegende Struktur in Ihre Aufteilung zu bringen, die für die meiste Zeit funktionieren
-  wird.</p>
+    <p>Wir werden Ihnen zeigen, wie Sie <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitfenster</a>-Definitionen erstellen können, die die meisten
+    Bereitschafts-Benachrichtigungen behandeln werden. Diese Definitionen werden keine menschlichen Dinge berücksichtigen, die unweigerlich
+    auftreten werden (Admins, die sich krank melden, Tausch von Schichten, oder Pager, die ins Wasser fallen), aber sie werden es Ihnen
+    erlauben, eine grundlegende Struktur in Ihre Aufteilung zu bringen, die für die meiste Zeit funktionieren wird.</p>
+  </div>
 
-  <p><span class="bold"><strong>Szenario 1: Urlaub und Wochenenden</strong></span></p>
+  <div class="section" title="7.11.2. Szenario 1: Urlaub und Wochenenden">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13734704"></a>7.11.2. Szenario 1: Urlaub und Wochenenden</h3></div></div></div>
+    
 
-  <p>Zwei Admins - John und Bob - sind verantwortlich für die Bearbeitung von Icinga-Alarmen. John erhält alle
-  Benachrichtigungen an Wochentagen (und Nächten) - außer im Urlaub - und Bob erhält Benachrichtigungen während der Wochenenden
-  und Urlaube. Glücklicher Bob. Hier nun, wie Sie diese Art der Rotation mit Zeitfenstern definieren...</p>
+    <p>Zwei Admins - John und Bob - sind verantwortlich für die Bearbeitung von Icinga-Alarmen. John erhält alle
+    Benachrichtigungen an Wochentagen (und Nächten) - außer im Urlaub - und Bob erhält Benachrichtigungen während der Wochenenden und
+    Urlaube. Glücklicher Bob. Hier nun, wie Sie diese Art der Rotation mit Zeitfenstern definieren...</p>
 
-  <p>Definieren Sie zuerst ein Zeitfenster, das Bereiche für Urlaube enthält:</p>
+    <p>Definieren Sie zuerst ein Zeitfenster, das Bereiche für Urlaube enthält:</p>
 
-  <pre class="screen"> define timeperiod{
+    <pre class="screen"> define timeperiod{
         name                    holidays
         timeperiod_name         holidays
         january 1               00:00-24:00     ; Neujahr
@@ -72,10 +86,10 @@
         december 31             17:00-24:00     ; Silvester (ab 17:00 Uhr)
         }</pre>
 
-  <p>Als nächstes definieren Sie ein Zeitfenster für Johns Bereitschaftszeiten, das die Wochentage und Nächte während der Woche
-  enthält, aber die Daten/Zeiten im Urlaubs-Zeitfenster ausschließt:</p>
+    <p>Als nächstes definieren Sie ein Zeitfenster für Johns Bereitschaftszeiten, das die Wochentage und Nächte während der Woche
+    enthält, aber die Daten/Zeiten im Urlaubs-Zeitfenster ausschließt:</p>
 
-  <pre class="screen"> define timeperiod{
+    <pre class="screen"> define timeperiod{
         timeperiod_name john-oncall
         monday          00:00-24:00
         tuesday         00:00-24:00
@@ -85,82 +99,88 @@
         exclude         holidays                ; Exclude holiday dates/times defined elsewhere
         }</pre>
 
-  <p>Sie können nun dieses Zeitfenster in Johns Kontaktdefinition referenzieren:</p>
+    <p>Sie können nun dieses Zeitfenster in Johns Kontaktdefinition referenzieren:</p>
 
-  <pre class="screen"> define contact{
+    <pre class="screen"> define contact{
         contact_name                    john
         ...
         host_notification_period        john-oncall
         service_notification_period     john-oncall
         }</pre>
 
-  <p>Definieren Sie ein neues Zeitfenster für Bobs Bereitschaftszeiten, das die Wochenenden und die Daten/Zeiten der o.g.
-  holiday-Zeitfenster enthält:</p>
+    <p>Definieren Sie ein neues Zeitfenster für Bobs Bereitschaftszeiten, das die Wochenenden und die Daten/Zeiten der o.g.
+    holiday-Zeitfenster enthält:</p>
 
-  <pre class="screen"> define timeperiod{
+    <pre class="screen"> define timeperiod{
         timeperiod_name bob-oncall
         friday          00:00-24:00
         saturday        00:00-24:00
         use             holidays        ; Also include holiday date/times defined elsewhere
         }</pre>
 
-  <p>Sie können nun auf dieses Zeitfenster in Bobs Kontaktdefinition referenzieren:</p>
+    <p>Sie können nun auf dieses Zeitfenster in Bobs Kontaktdefinition referenzieren:</p>
 
-  <pre class="screen"> define contact{
+    <pre class="screen"> define contact{
         contact_name                    bob
         ...
         host_notification_period        bob-oncall
         service_notification_period     bob-oncall
         }</pre>
+  </div>
 
-  <p><span class="bold"><strong>Szenario 2: Abwechselnde Tage</strong></span></p>
+  <div class="section" title="7.11.3. Szenario 2: Abwechselnde Tage">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13734960"></a>7.11.3. Szenario 2: Abwechselnde Tage</h3></div></div></div>
+    
 
-  <p>In diesem Szenario wechseln sich John und Bob täglich mit der Bearbeitung von Alarmen ab - unabhängig davon, ob es sich um
-  Wochenenden, Wochentage oder Urlaub handelt.</p>
+    <p>In diesem Szenario wechseln sich John und Bob täglich mit der Bearbeitung von Alarmen ab - unabhängig davon, ob es sich um
+    Wochenenden, Wochentage oder Urlaub handelt.</p>
 
-  <p>Definieren Sie ein Zeitfenster, wann John Benachrichtigungen erhalten soll. Angenommen, der heutige Tage ist der 1. August
-  2009 und John beginnt heute mit der Bearbeitung von Benachrichtigungen, dann würde die Definition wie folgt aussehen:</p>
+    <p>Definieren Sie ein Zeitfenster, wann John Benachrichtigungen erhalten soll. Angenommen, der heutige Tage ist der 1. August 2009
+    und John beginnt heute mit der Bearbeitung von Benachrichtigungen, dann würde die Definition wie folgt aussehen:</p>
 
-  <pre class="screen"> define timeperiod{
+    <pre class="screen"> define timeperiod{
         timeperiod_name                 john-oncall
         2009-08-01 / 2                  00:00-24:00     ; Alle zwei Tage, beginnend am 1. August 2009
         }</pre>
 
-  <p>Nun definieren Sie ein Zeitfenster, wann Bob Benachrichtigungen erhalten soll. Bob erhält Benachrichtigungen an den Tagen,
-  an denen John keine erhält, also beginnt seine erste Bereitschaft morgen (2. August 2009).</p>
+    <p>Nun definieren Sie ein Zeitfenster, wann Bob Benachrichtigungen erhalten soll. Bob erhält Benachrichtigungen an den Tagen, an
+    denen John keine erhält, also beginnt seine erste Bereitschaft morgen (2. August 2009).</p>
 
-  <pre class="screen"> define timeperiod{
+    <pre class="screen"> define timeperiod{
         timeperiod_name                 bob-oncall
         2009-08-02 / 2                  00:00-24:00     ; Alle zwei Tage, beginnend am 2. August 2009
         }</pre>
 
-  <p>Nun müssen Sie diese Zeitfenster-Definitionen in den Kontaktdefinitionen von John und Bob referenzieren.</p>
+    <p>Nun müssen Sie diese Zeitfenster-Definitionen in den Kontaktdefinitionen von John und Bob referenzieren.</p>
 
-  <pre class="screen"> define contact{
+    <pre class="screen"> define contact{
         contact_name                    john
         ...
         host_notification_period        john-oncall
         service_notification_period     john-oncall
         }</pre>
 
-  <pre class="screen"> define contact{
+    <pre class="screen"> define contact{
         contact_name                    bob
         ...
         host_notification_period        bob-oncall
         service_notification_period     bob-oncall
         }</pre>
+  </div>
 
-  <p><span class="bold"><strong>Szenario 3: Abwechselnde Wochen</strong></span></p>
+  <div class="section" title="7.11.4. Szenario 3: Abwechselnde Wochen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13748464"></a>7.11.4. Szenario 3: Abwechselnde Wochen</h3></div></div></div>
+    
 
-  <p>In diesem Szenario wechseln sich John und Bob jede Woche mit der Bearbeitung von Alarmen ab. John bearbeitet Alarme von
-  Montag bis Sonntag in der einen Woche und Bob bearbeitet Alarme in den nächsten sieben Tagen. Dies wiederholt sich immer
-  wieder.</p>
+    <p>In diesem Szenario wechseln sich John und Bob jede Woche mit der Bearbeitung von Alarmen ab. John bearbeitet Alarme von Montag bis
+    Sonntag in der einen Woche und Bob bearbeitet Alarme in den nächsten sieben Tagen. Dies wiederholt sich immer wieder.</p>
 
-  <p>Definieren Sie ein Zeitfenster, wann John Benachrichtigungen erhalten soll. Angenommen, heute ist Montag, der 27. Juli
-  2009 und John bearbeitet Benachrichtigungen in dieser Woche (beginnend mit heute), würde die Definition wie folgt
-  aussehen:</p>
+    <p>Definieren Sie ein Zeitfenster, wann John Benachrichtigungen erhalten soll. Angenommen, heute ist Montag, der 27. Juli 2009 und
+    John bearbeitet Benachrichtigungen in dieser Woche (beginnend mit heute), würde die Definition wie folgt aussehen:</p>
 
-  <pre class="screen"> define timeperiod{
+    <pre class="screen"> define timeperiod{
         timeperiod_name john-oncall
         2009-07-27 / 14 00:00-24:00     ; alle 14 days (zwei Wochen), beginnend am 27. Juli 2009
         2009-07-28 / 14 00:00-24:00     ; jeden zweiten Dienstag, beginnend am 28. Juli 2009
@@ -171,10 +191,10 @@
         2009-08-02 / 14 00:00-24:00     ; jeden zweiten Sonntag, beginnend am 2. August 2009
         }</pre>
 
-  <p>Nun definieren Sie ein Zeitfenster, wann Bob Benachrichtigungen erhalten soll. Bob erhält Benachrichtigungen in den
-  Wochen, in denen John keine bekommt, also startet seine erste Bereitschaft am nächsten Montag (3. August 2009).</p>
+    <p>Nun definieren Sie ein Zeitfenster, wann Bob Benachrichtigungen erhalten soll. Bob erhält Benachrichtigungen in den Wochen, in
+    denen John keine bekommt, also startet seine erste Bereitschaft am nächsten Montag (3. August 2009).</p>
 
-  <pre class="screen"> define timeperiod{
+    <pre class="screen"> define timeperiod{
         timeperiod_name bob-oncall
         2007-08-03 / 14 00:00-24:00     ; Every 14 days (two weeks), starting Monday, August 3th, 2009
         2007-08-04 / 14 00:00-24:00     ; Every other Monday starting August 4th, 2009
@@ -185,31 +205,35 @@
         2007-08-09 / 14 00:00-24:00     ; Every other Saturday starting August 9th, 2009
         }</pre>
 
-  <p>Nun müssen Sie diese Zeitfenster-Definitionen in den Kontaktdefinitionen von John und Bob referenzieren.</p>
+    <p>Nun müssen Sie diese Zeitfenster-Definitionen in den Kontaktdefinitionen von John und Bob referenzieren.</p>
 
-  <pre class="screen"> define contact{
+    <pre class="screen"> define contact{
         contact_name                    john
         ...
         host_notification_period        john-oncall
         service_notification_period     john-oncall
         }</pre>
 
-  <pre class="screen"> define contact{
+    <pre class="screen"> define contact{
         contact_name                    bob
         ...
         host_notification_period        bob-oncall
         service_notification_period     bob-oncall
         }</pre>
+  </div>
 
-  <p><span class="bold"><strong>Szenario 4: Urlaubstage</strong></span></p>
+  <div class="section" title="7.11.5. Szenario 4: Urlaubstage">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13755648"></a>7.11.5. Szenario 4: Urlaubstage</h3></div></div></div>
+    
 
-  <p>In diesem Szenario bearbeitet John Benachrichtigungen an allen Tagen außer an denen, an denen er frei hat. Er hat frei an
-  einigen festen Tagen im Monat ebenso wie an einigen geplanten Urlaubszeiten. Bob bearbeitet Benachrichtigungen, wenn John Urlaub
-  hat oder nicht im Büro ist.</p>
+    <p>In diesem Szenario bearbeitet John Benachrichtigungen an allen Tagen außer an denen, an denen er frei hat. Er hat frei an einigen
+    festen Tagen im Monat ebenso wie an einigen geplanten Urlaubszeiten. Bob bearbeitet Benachrichtigungen, wenn John Urlaub hat oder nicht
+    im Büro ist.</p>
 
-  <p>Definieren Sie zuerst ein Zeitfenster, das die Bereiche für Johns Urlaubstage und freie Tage enthält:</p>
+    <p>Definieren Sie zuerst ein Zeitfenster, das die Bereiche für Johns Urlaubstage und freie Tage enthält:</p>
 
-  <pre class="screen"> define timeperiod{
+    <pre class="screen"> define timeperiod{
         name                    john-out-of-office
         timeperiod_name         john-out-of-office
         day 15                  00:00-24:00             ; 15. Tag jeden Monats
@@ -220,10 +244,10 @@
         2009-11-01 - 2009-11-10 00:00-24:00             ; Urlaub auf den Virgin Islands (1.-10. November 2009)
         }</pre>
 
-  <p>Als nächstes definieren Sie ein Zeitfenster für Johns Bereitschaftszeiten, das die Daten/Zeiten im o.g. Zeitfenster
-  ausschließt:</p>
+    <p>Als nächstes definieren Sie ein Zeitfenster für Johns Bereitschaftszeiten, das die Daten/Zeiten im o.g. Zeitfenster
+    ausschließt:</p>
 
-  <pre class="screen"> define timeperiod{
+    <pre class="screen"> define timeperiod{
         timeperiod_name         john-oncall
         monday                  00:00-24:00
         tuesday                 00:00-24:00
@@ -233,39 +257,45 @@
         exclude                 john-out-of-office      ; Exclude dates/times John is out
         }</pre>
 
-  <p>Sie können nun dieses Zeitfenster in Johns Kontaktdefinition referenzieren:</p>
+    <p>Sie können nun dieses Zeitfenster in Johns Kontaktdefinition referenzieren:</p>
 
-  <pre class="screen"> define contact{
+    <pre class="screen"> define contact{
         contact_name                    john
         ...
         host_notification_period        john-oncall
         service_notification_period     john-oncall
         }</pre>
 
-  <p>Definieren Sie ein neues Zeitfenster für Bobs Bereitschaftszeiten, das die Zeiten von Johns Abwesenheiten enthält:</p>
+    <p>Definieren Sie ein neues Zeitfenster für Bobs Bereitschaftszeiten, das die Zeiten von Johns Abwesenheiten enthält:</p>
 
-  <pre class="screen"> define timeperiod{
+    <pre class="screen"> define timeperiod{
         timeperiod_name                  bob-oncall
         use                             john-out-of-office      ; Include holiday date/times that John is out
         }</pre>
 
-  <p>Sie können nun dieses Zeitfenster in Bobs Kontaktdefinition referenzieren:</p>
+    <p>Sie können nun dieses Zeitfenster in Bobs Kontaktdefinition referenzieren:</p>
 
-  <pre class="screen"> define contact{
+    <pre class="screen"> define contact{
         contact_name                    bob
         ...
         host_notification_period        bob-oncall
         service_notification_period     bob-oncall
         }</pre>
+  </div>
 
-  <p><span class="bold"><strong>Andere Szenarien</strong></span></p>
+  <div class="section" title="7.11.6. Andere Szenarien">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13763712"></a>7.11.6. Andere Szenarien</h3></div></div></div>
+    
 
-  <p>Es gibt eine Menge von anderen Bereitschafts-Benachrichtigungs-Szenarien, die Sie haben könnten. Die
-  Datumsausschluss-Direktive in den <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">Zeitfenster-Definitionen</a> ist in der Lage,
-  die meisten Datums- und Zeitbereiche abzubilden, die Sie brauchen könnten, also betrachten Sie die verschiedenen Formate, die
-  Sie benutzen können. Wenn Sie einen Fehler bei der Erstellung von Zeitfenster-Definitionen machen, dann sollten Sie darauf
-  achten, jemand anderem mehr Bereitschaftszeit zu geben. :-)</p>
-  <a class="indexterm" name="idp13704832"></a>
+    <p>Es gibt eine Menge von anderen Bereitschafts-Benachrichtigungs-Szenarien, die Sie haben könnten. Die Datumsausschluss-Direktive in
+    den <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">Zeitfenster-Definitionen</a> ist in der Lage, die meisten Datums- und Zeitbereiche
+    abzubilden, die Sie brauchen könnten, also betrachten Sie die verschiedenen Formate, die Sie benutzen können. Wenn Sie einen Fehler bei
+    der Erstellung von Zeitfenster-Definitionen machen, dann sollten Sie darauf achten, jemand anderem mehr Bereitschaftszeit zu geben.
+    :-)</p>
+
+    <a class="indexterm" name="idp13766384"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

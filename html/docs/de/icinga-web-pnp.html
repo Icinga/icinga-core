@@ -28,13 +28,19 @@
 <div class="section" title="6.8. Integration von PNP4Nagios in das Icinga-Web Frontend">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="icinga-web-pnp"></a>6.8. Integration von PNP4Nagios in das Icinga-Web Frontend</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="icinga-web-pnp.html#idp12338848">6.8.1. Installieren von PNP4Nagios</a></span></dt>
+<dt><span class="section"><a href="icinga-web-pnp.html#idp12346736">6.8.2. Template-Extensions</a></span></dt>
+<dt><span class="section"><a href="icinga-web-pnp.html#idp12363776">6.8.3. Integrieren von PNP4Nagios in Icinga-Web-Serviceansichten</a></span></dt>
+<dt><span class="section"><a href="icinga-web-pnp.html#idp12378688">6.8.4. Löschen des Cache</a></span></dt>
+</dl></div>
   
 
   <p>Mit Hilfe dieser Anleitung können Sie PNP4Nagios in das Icinga-Web-Frontend integrieren. Wenn Sie PNP4Nagios in das Icinga Classic UI
   integrieren möchten, lesen Sie bitte die PNP4Nagios <a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">Dokumentation.</a></p>
 
   <div class="figure">
-<a name="idp12281136"></a><p class="title"><b>Abbildung 6.32. PNP4Nagios integriert in Icinga-Web</b></p>
+<a name="idp12335872"></a><p class="title"><b>Abbildung 6.32. PNP4Nagios integriert in Icinga-Web</b></p>
 <div class="figure-contents">
       
 
@@ -43,15 +49,18 @@
 </div>
 <p><br class="figure-break"></p>
 
-  <p><span class="bold"><strong>Installieren von PNP4Nagios</strong></span></p>
+  <div class="section" title="6.8.1. Installieren von PNP4Nagios">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12338848"></a>6.8.1. Installieren von PNP4Nagios</h3></div></div></div>
+    
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Installieren Sie PNP4Nagios wie in der PNP4Nagios-<a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">Dokumentation</a> beschrieben.</p>
-    </li>
+        <p>Installieren Sie PNP4Nagios wie in der PNP4Nagios-<a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">Dokumentation</a> beschrieben.</p>
+      </li>
 <li class="listitem">
-      <p>Passen Sie die PNP4Nagios-Konfiguration auf Ihre Icinga-Konfiguration an. Wahrscheinlich müssen Sie hier ändern:
-      </p>
+        <p>Passen Sie die PNP4Nagios-Konfiguration auf Ihre Icinga-Konfiguration an. Wahrscheinlich müssen Sie hier ändern:
+        </p>
 <pre class="programlisting">#&gt; vi npcd.cfg
     user = icinga
     group = icinga
@@ -66,31 +75,35 @@
 <pre class="programlisting">#&gt; vi config.php 
     $conf['nagios_base'] = "/icinga/cgi-bin";</pre>
 
-      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+        <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Stellen Sie sicher, dass Sie bestehende Pfade benutzen, legen Sie sie an, falls notwendig, und/oder passen Sie die Angaben an
-        Ihre Distribution an.</p>
+          <p>Stellen Sie sicher, dass Sie bestehende Pfade benutzen, legen Sie sie an, falls notwendig, und/oder passen Sie die Angaben
+          an Ihre Distribution an.</p>
 
-        <p>Bitte überprüfen Sie, dass die command-Definitionen für "process-host-perfdata-file" und "process-service-perfdata-file"
-        (wahrscheinlich in <code class="filename">etc/objects/commands.cfg</code>) auf das gleiche Zielverzeichnis zeigen, das in perfdata_spool_dir
-        angegeben wurde.</p>
-      </td></tr>
+          <p>Bitte überprüfen Sie, dass die command-Definitionen für "process-host-perfdata-file" und "process-service-perfdata-file"
+          (wahrscheinlich in <code class="filename">etc/objects/commands.cfg</code>) auf das gleiche Zielverzeichnis zeigen, das in
+          perfdata_spool_dir angegeben wurde.</p>
+        </td></tr>
 </table></div>
-    </li>
+      </li>
 </ol></div>
+  </div>
 
-  <p><span class="bold"><strong>Template-Extensions</strong></span></p>
+  <div class="section" title="6.8.2. Template-Extensions">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12346736"></a>6.8.2. Template-Extensions</h3></div></div></div>
+    
 
-  <p>Seit Version 1.5 können die Grid-Templates unberührt bleiben, weil wir XML-Extensions integriert haben, um Grid-Template mit
-  einfachen Schnipseln anzupassen. Die PNP-Integration wurde mit diesen Extensions upgrade-sicher gemacht.</p>
+    <p>Seit Version 1.5 können die Grid-Templates unberührt bleiben, weil wir XML-Extensions integriert haben, um Grid-Template mit
+    einfachen Schnipseln anzupassen. Die PNP-Integration wurde mit diesen Extensions upgrade-sicher gemacht.</p>
 
-  <p>Ausschnitt aus <code class="filename">INSTALL</code> in <code class="filename">contrib/PNP_Integration/</code></p>
+    <p>Ausschnitt aus <code class="filename">INSTALL</code> in <code class="filename">contrib/PNP_Integration/</code></p>
 
-  <pre class="screen">#&gt; cat contrib/PNP_Integration/INSTALL
+    <pre class="screen">#&gt; cat contrib/PNP_Integration/INSTALL
     ************************
     * INSTALLATION
     ************************
@@ -103,39 +116,39 @@
 <pre class="screen"> $&gt; cd etc/contrib/PNP_Integration
  $&gt; sh install.sh</pre>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Bitte beachten Sie, dass Sie das Addon nach einem Icinga-Web-Upgrade erneut installieren müssen.</p>
-    </td></tr>
+        <p>Bitte beachten Sie, dass Sie das Addon nach einem Icinga-Web-Upgrade erneut installieren müssen.</p>
+      </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Erstellen Sie die Konfiguration, um die PNP4Nagios Host-Seiten in das Icinga-Web zu
-  integrieren</strong></span></p>
+    <p><span class="bold"><strong>Erstellen Sie die Konfiguration, um die PNP4Nagios Host-Seiten in das Icinga-Web zu
+    integrieren</strong></span></p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Die folgenden Zeilen beschreiben die manuelle Integration für Version 1.4 und früher</p>
-    </td></tr>
+        <p>Die folgenden Zeilen beschreiben die manuelle Integration für Version 1.4 und früher</p>
+      </td></tr>
 </table></div>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Erstellen einer neuen Host-Grid-Ansicht:</p>
+        <p>Erstellen einer neuen Host-Grid-Ansicht:</p>
 
-      <p>Bitte erstellen Sie eine Kopie von <code class="filename">icinga-host-template.xml</code> in
-      <code class="filename">app/modules/Cronks/data/xml/grid</code> unter Ihrem Icinga-web-Installationspfad: </p>
+        <p>Bitte erstellen Sie eine Kopie von <code class="filename">icinga-host-template.xml</code> in
+        <code class="filename">app/modules/Cronks/data/xml/grid</code> unter Ihrem Icinga-web-Installationspfad: </p>
 <pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-host-template.xml \
     /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-host-template.xml</pre>
 <p> In der neuen Datei legen wir eine
-      zusätzliche Feld- (field) Definition an: </p>
+        zusätzliche Feld- (field) Definition an: </p>
 <pre class="programlisting">        &lt;field name="pnp4nagios_host_link"&gt;
             &lt;!-- datasource maps a data field from api call --&gt;
             &lt;datasource&gt;
@@ -190,12 +203,12 @@
                 &lt;parameter name="enabled"&gt;false&lt;/parameter&gt;
             &lt;/order&gt;
         &lt;/field&gt;</pre>
-    </li>
+      </li>
 <li class="listitem">
-      <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
+        <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
 
-      <p>Editieren von <code class="filename">cronks.xml</code> im Unterverzeichnis <code class="filename">app/modules/Cronks/config/</code> unter
-      Icinga-Web und hinzufügen von: </p>
+        <p>Editieren von <code class="filename">cronks.xml</code> im Unterverzeichnis <code class="filename">app/modules/Cronks/config/</code> unter
+        Icinga-Web und hinzufügen von: </p>
 <pre class="programlisting">&lt;cronk name="gridMyHostView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
     &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
@@ -208,34 +221,38 @@
         &lt;ae:parameter name="template"&gt;icinga-my-host-template&lt;/ae:parameter&gt;
     &lt;/ae:parameter&gt;
 &lt;/cronk&gt;</pre>
-    </li>
+      </li>
 </ol></div>
+  </div>
 
-  <p><span class="bold"><strong>Integrieren von PNP4Nagios in Icinga-Web-Serviceansichten</strong></span></p>
+  <div class="section" title="6.8.3. Integrieren von PNP4Nagios in Icinga-Web-Serviceansichten">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12363776"></a>6.8.3. Integrieren von PNP4Nagios in Icinga-Web-Serviceansichten</h3></div></div></div>
+    
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Die folgenden Zeilen beschreiben die manuelle Integration für Version 1.4 und früher</p>
-    </td></tr>
+        <p>Die folgenden Zeilen beschreiben die manuelle Integration für Version 1.4 und früher</p>
+      </td></tr>
 </table></div>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Erstellen einer neuen Service-Grid-Ansicht</p>
+        <p>Erstellen einer neuen Service-Grid-Ansicht</p>
 
-      <p>Kopieren Sie das Standard-Template "<code class="filename">icinga-service-template.xml</code>" von
-      <code class="filename">app/modules/Cronks/data/xml/grid</code> in Ihren Icinga-Web-Installationspfad:</p>
+        <p>Kopieren Sie das Standard-Template "<code class="filename">icinga-service-template.xml</code>" von
+        <code class="filename">app/modules/Cronks/data/xml/grid</code> in Ihren Icinga-Web-Installationspfad:</p>
 
-      <pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-service-template.xml \
+        <pre class="programlisting">#&gt; cp /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-service-template.xml \
     /usr/local/icinga-web/app/modules/Cronks/data/xml/grid/icinga-my-service-template.xml</pre>
 
-      <p>In der neuen Datei legen wir eine zusätzliche Feld- (field) Definition an:</p>
+        <p>In der neuen Datei legen wir eine zusätzliche Feld- (field) Definition an:</p>
 
-      <pre class="programlisting">        &lt;field name="pnp4nagios_service_link"&gt;
+        <pre class="programlisting">        &lt;field name="pnp4nagios_service_link"&gt;
             &lt;!-- datasource maps a data field from api call --&gt;
             &lt;datasource&gt;
                 &lt;parameter name="field"&gt;SERVICE_NAME&lt;/parameter&gt;
@@ -289,14 +306,14 @@
                 &lt;parameter name="enabled"&gt;false&lt;/parameter&gt;
             &lt;/order&gt;
         &lt;/field&gt;</pre>
-    </li>
+      </li>
 <li class="listitem">
-      <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
+        <p>Anlegen einer neuen Grid-Ansicht im "Data" Cronk-Container</p>
 
-      <p>Editieren von <code class="filename">cronks.xml</code> im Unterverzeichnis <code class="filename">app/modules/Cronks/config/</code> unter
-      Icinga-Web und hinzufügen von:</p>
+        <p>Editieren von <code class="filename">cronks.xml</code> im Unterverzeichnis <code class="filename">app/modules/Cronks/config/</code> unter
+        Icinga-Web und hinzufügen von:</p>
 
-      <pre class="programlisting">&lt;cronk name="gridMyServiceView"&gt;
+        <pre class="programlisting">&lt;cronk name="gridMyServiceView"&gt;
     &lt;ae:parameter name="module"&gt;Cronks&lt;/ae:parameter&gt;
     &lt;ae:parameter name="action"&gt;System.ViewProc&lt;/ae:parameter&gt;
     &lt;ae:parameter name="hide"&gt;false&lt;/ae:parameter&gt;
@@ -308,41 +325,46 @@
         &lt;ae:parameter name="template"&gt;icinga-my-service-template&lt;/ae:parameter&gt;
     &lt;/ae:parameter&gt;
 &lt;/cronk&gt;</pre>
-    </li>
+      </li>
 <li class="listitem">
-      <p>Verwenden der neuen Grid-Ansicht als Standard-Service-Ansicht</p>
+        <p>Verwenden der neuen Grid-Ansicht als Standard-Service-Ansicht</p>
 
-      <p>Bitte sichern Sie zuerst Ihre originale Ansicht: </p>
+        <p>Bitte sichern Sie zuerst Ihre originale Ansicht: </p>
 <pre class="programlisting">#&gt; cp data/xml/grid/icinga-service-template.xml data/xml/grid/icinga-service-template.bak</pre>
 <p>
-      dann</p>
+        dann</p>
 <pre class="programlisting">#&gt; cp data/xml/grid/icinga-my-service-template.xml data/xml/grid/icinga-service-template.xml</pre>
 <p>Leeren
-      Sie den Cache wie unten beschrieben. Die Performancegraphen sind nun in Ihren "serviceStatus"-Cronk integriert!</p>
-    </li>
+        Sie den Cache wie unten beschrieben. Die Performancegraphen sind nun in Ihren "serviceStatus"-Cronk integriert!</p>
+      </li>
 </ol></div>
+  </div>
 
-  <p><span class="bold"><strong>Löschen des Cache</strong></span></p>
+  <div class="section" title="6.8.4. Löschen des Cache">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12378688"></a>6.8.4. Löschen des Cache</h3></div></div></div>
+    
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Bitte denken Sie daran, dass Sie nach dem Editieren von *.xml-Dateien den Cache bereinigen müssen!</p>
-  </td></tr>
+      <p>Bitte denken Sie daran, dass Sie nach dem Editieren von *.xml-Dateien den Cache bereinigen müssen!</p>
+    </td></tr>
 </table></div>
 
-  <pre class="programlisting">#&gt; rm -f app/cache/config/*.php</pre>
+    <pre class="programlisting">#&gt; rm -f app/cache/config/*.php</pre>
 
-  <p>oder /path/to/clearcache.sh</p>
+    <p>oder /path/to/clearcache.sh</p>
 
-  <pre class="programlisting">#&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
+    <pre class="programlisting">#&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
 
-  <p>Das war es auch schon, Sie sind fertig!</p>
+    <p>Das war es auch schon, Sie sind fertig!</p>
 
-  <a class="indexterm" name="idp12327936"></a>
+    <a class="indexterm" name="idp12381920"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

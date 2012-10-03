@@ -28,64 +28,82 @@
 <div class="section" title="3.5. Custom Object Variables">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="customobjectvars"></a>3.5. <a name="custom_object_vars"></a>Custom Object Variables</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="customobjectvars.html#idp5702256">3.5.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="customobjectvars.html#idp5705216">3.5.2. Custom Variable Basics</a></span></dt>
+<dt><span class="section"><a href="customobjectvars.html#idp5716832">3.5.3. Examples</a></span></dt>
+<dt><span class="section"><a href="customobjectvars.html#idp5719424">3.5.4. Custom Variables As Macros</a></span></dt>
+<dt><span class="section"><a href="customobjectvars.html#idp5750304">3.5.5. Custom Variables And Inheritance</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <a class="indexterm" name="idp5701008"></a>
 
-  <p>Users often request that new variables be added to host, service, and contact definitions. These include variables for
-  SNMP community, MAC address, AIM username, Skype number, and street address. The list is endless. The problem that I see with
-  doing this is that it makes Icinga less generic and more infrastructure-specific. Icinga was intended to be
-  flexible, which meant things needed to be designed in a generic manner. Host definitions in Icinga, for example, have a
-  generic "address" variable that can contain anything from an IP address to human-readable driving directions - whatever is
-  appropriate for the user's setup.</p>
+  <div class="section" title="3.5.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5702256"></a>3.5.1. Introduction</h3></div></div></div>
+    
 
-  <p>Still, there needs to be a method for admins to store information about their infrastructure components in their
-  Icinga configuration without imposing a set of specific variables on others. Icinga attempts to solve this problem
-  by allowing users to define custom variables in their object definitions. Custom variables allow users to define additional
-  properties in their host, service, and contact definitions, and use their values in notifications, event handlers, and host and
-  service checks.</p>
+    <p>Users often request that new variables be added to host, service, and contact definitions. These include variables for SNMP
+    community, MAC address, AIM username, Skype number, and street address. The list is endless. The problem that I see with doing this is
+    that it makes Icinga less generic and more infrastructure-specific. Icinga was intended to be flexible, which meant things
+    needed to be designed in a generic manner. Host definitions in Icinga, for example, have a generic "address" variable that can
+    contain anything from an IP address to human-readable driving directions - whatever is appropriate for the user's setup.</p>
 
-  <p><span class="bold"><strong>Custom Variable Basics</strong></span></p>
+    <p>Still, there needs to be a method for admins to store information about their infrastructure components in their Icinga
+    configuration without imposing a set of specific variables on others. Icinga attempts to solve this problem by allowing users to
+    define custom variables in their object definitions. Custom variables allow users to define additional properties in their host,
+    service, and contact definitions, and use their values in notifications, event handlers, and host and service checks.</p>
+  </div>
 
-  <p>There are a few important things that you should note about custom variables:</p>
+  <div class="section" title="3.5.2. Custom Variable Basics">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5705216"></a>3.5.2. Custom Variable Basics</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <p>There are a few important things that you should note about custom variables:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Custom variable names must begin with an underscore (_) to prevent name collision with standard variables</p>
-    </li>
+        <p>Custom variable names must begin with an underscore (_) to prevent name collision with standard variables</p>
+      </li>
 <li class="listitem">
-      <p>Custom variable names are converted to all uppercase before use</p>
-    </li>
+        <p>Custom variable names are converted to all uppercase before use</p>
+      </li>
 <li class="listitem">
-      <p>Custom variables are <a class="link" href="objectinheritance.html" title="7.26. Object Inheritance">inherited</a> from object templates like normal
-      variables</p>
-    </li>
+        <p>Custom variables are <a class="link" href="objectinheritance.html" title="7.26. Object Inheritance">inherited</a> from object templates like normal variables</p>
+      </li>
 <li class="listitem">
-      <p>Scripts can reference custom variable values with <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros and environment
-      variables</a></p>
-    </li>
+        <p>Scripts can reference custom variable values with <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros and environment variables</a></p>
+      </li>
 </ul></div>
 
-  <a name="customobjectvars-runtime"></a>
-  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+    <a name="customobjectvars-runtime"></a>
+
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Custom variables are replaced <span class="emphasis"><em>during runtime</em></span>, neither during the verification phase (icinga -v
-    icinga.cfg) nor during the Icinga start up process so placing them in host names, service descriptions, and several other places
-    of the object definition will lead to an error message during verification like "<code class="literal">&lt;object&gt; contains one or more
-    illegal characters.</code>". Changing the directive "illegal_object_name_chars" will <span class="emphasis"><em>not</em></span> solve this issue.
-    </p>
-  </td></tr>
+      <p>Custom variables are replaced <span class="emphasis"><em>during runtime</em></span>, neither during the verification phase (icinga -v icinga.cfg)
+      nor during the Icinga start up process so placing them in host names, service descriptions, and several other places of the
+      object definition will lead to an error message during verification like "<code class="literal">&lt;object&gt; contains one or more illegal
+      characters.</code>". Changing the directive "illegal_object_name_chars" will <span class="emphasis"><em>not</em></span> solve this issue.</p>
+    </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Examples</strong></span></p>
+    <a class="indexterm" name="idp5715216"></a>
+  </div>
 
-  <p>Here's an example of how custom variables can be defined in different types of object definitions:</p>
+  <div class="section" title="3.5.3. Examples">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5716832"></a>3.5.3. Examples</h3></div></div></div>
+    
 
-  <pre class="screen">
+    <p>Here's an example of how custom variables can be defined in different types of object definitions:</p>
+
+    <pre class="programlisting">
 define host{
         host_name       linuxserver
         _mac_address    00:06:5B:A6:AD:AA       ; &lt;-- Custom MAC_ADDRESS variable
@@ -108,19 +126,23 @@ define contact{
         ...
         }
 </pre>
+  </div>
 
-  <p><span class="bold"><strong>Custom Variables As Macros</strong></span></p>
+  <div class="section" title="3.5.4. Custom Variables As Macros">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5719424"></a>3.5.4. Custom Variables As Macros</h3></div></div></div>
+    
 
-  <p>Custom variable values can be referenced in scripts and executables that Icinga runs for checks, notifications,
-  etc. by using <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> or environment variables.</p>
+    <p>Custom variable values can be referenced in scripts and executables that Icinga runs for checks, notifications, etc. by
+    using <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> or environment variables.</p>
 
-  <p>In order to prevent name collision among custom variables from different object types, Icinga prepends "_HOST",
-  "_SERVICE", or "_CONTACT" to the beginning of custom host, service, or contact variables, respectively, in macro and environment
-  variable names. The table below shows the corresponding macro and environment variable names for the custom variables that were
-  defined in the example above.</p>
+    <p>In order to prevent name collision among custom variables from different object types, Icinga prepends "_HOST", "_SERVICE",
+    or "_CONTACT" to the beginning of custom host, service, or contact variables, respectively, in macro and environment variable names. The
+    table below shows the corresponding macro and environment variable names for the custom variables that were defined in the example
+    above.</p>
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -172,14 +194,17 @@ define contact{
 </tr>
 </tbody>
 </table>
+    </div>
   </div>
 
-  <p><span class="bold"><strong>Custom Variables And Inheritance</strong></span></p>
+  <div class="section" title="3.5.5. Custom Variables And Inheritance">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5750304"></a>3.5.5. Custom Variables And Inheritance</h3></div></div></div>
+    
 
-  <p>Custom object variables are <a class="link" href="objectinheritance.html" title="7.26. Object Inheritance">inherited</a> just like standard host, service, or
-  contact variables.</p>
-  <a class="indexterm" name="idp5716528"></a>
-  <a class="indexterm" name="idp5717472"></a>
+    <p>Custom object variables are <a class="link" href="objectinheritance.html" title="7.26. Object Inheritance">inherited</a> just like standard host, service, or contact
+    variables.</p>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

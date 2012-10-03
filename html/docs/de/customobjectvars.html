@@ -28,66 +28,87 @@
 <div class="section" title="3.5. Maßgeschneiderte Objektvariablen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="customobjectvars"></a>3.5. Maßgeschneiderte Objektvariablen</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="customobjectvars.html#idp5534224">3.5.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="customobjectvars.html#idp5537104">3.5.2. Grundlagen zu maßgeschneiderten Variablen</a></span></dt>
+<dt><span class="section"><a href="customobjectvars.html#idp5549280">3.5.3. Beispiele</a></span></dt>
+<dt><span class="section"><a href="customobjectvars.html#idp5551904">3.5.4. maßgeschneiderte Variablen als Makros</a></span></dt>
+<dt><span class="section"><a href="customobjectvars.html#idp5583488">3.5.5. maßgeschneiderte Variablen und Vererbung</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <a class="indexterm" name="idp5533328"></a>
 
-  <p>Benutzer fragen oft nach neuen Variablen in Host-, Service- und Kontaktdefinitionen. Dazu gehören Variablen für die
-  SNMP-Community, MAC-Adressen, AIM-Benutzernamen, Skype-Nummern und Straßennamen. Die Liste ist endlos. Das Problem, was wir
-  darin sehen ist, dass Icinga weniger generisch und mehr infrastrukturspezifisch wird. Icinga war dazu gedacht,
-  flexibel zu sein, was bedeutet, dass die Dinge in einer generischen Art und Weise geplant waren. Host-Definitionen in
-  Icinga zum Beispiel haben eine generische "address"-Variable, die alles von einer IP-Adresse bis zu menschlich-lesbaren
-  Wegbeschreibungen enthalten kann - was immer für die Umgebung des Benutzers angemessen ist.</p>
+  <div class="section" title="3.5.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5534224"></a>3.5.1. Einführung</h3></div></div></div>
+    
 
-  <p>Trotzdem muss es eine Methode für Administratoren geben, in ihrer Icinga-Konfiguration Informationen zu ihren
-  Infrastrukturkomponenten zu speichern, ohne anderen einen Satz von speziellen Variablen aufzubürden. Icinga versucht
-  dieses Problem zu lösen, indem es Benutzern erlaubt, maßgeschneiderte Variablen in ihren Objektdefinitionen anzugeben.
-  Maßgeschneiderte Variablen erlauben es Benutzern, zusätzliche Eigenschaften in ihren Host-, Service- und Kontaktdefinitionen
-  anzugeben und ihre Werte in Benachrichtigungen, Eventhandlern sowie Host- und Service-Prüfungen zu benutzen.</p>
+    <p>Benutzer fragen oft nach neuen Variablen in Host-, Service- und Kontaktdefinitionen. Dazu gehören Variablen für die
+    SNMP-Community, MAC-Adressen, AIM-Benutzernamen, Skype-Nummern und Straßennamen. Die Liste ist endlos. Das Problem, was wir darin sehen
+    ist, dass Icinga weniger generisch und mehr infrastrukturspezifisch wird. Icinga war dazu gedacht, flexibel zu sein, was
+    bedeutet, dass die Dinge in einer generischen Art und Weise geplant waren. Host-Definitionen in Icinga zum Beispiel haben eine
+    generische "address"-Variable, die alles von einer IP-Adresse bis zu menschlich-lesbaren Wegbeschreibungen enthalten kann - was immer
+    für die Umgebung des Benutzers angemessen ist.</p>
 
-  <p><span class="bold"><strong>Grundlagen zu maßgeschneiderten Variablen</strong></span></p>
+    <p>Trotzdem muss es eine Methode für Administratoren geben, in ihrer Icinga-Konfiguration Informationen zu ihren
+    Infrastrukturkomponenten zu speichern, ohne anderen einen Satz von speziellen Variablen aufzubürden. Icinga versucht dieses
+    Problem zu lösen, indem es Benutzern erlaubt, maßgeschneiderte Variablen in ihren Objektdefinitionen anzugeben. Maßgeschneiderte
+    Variablen erlauben es Benutzern, zusätzliche Eigenschaften in ihren Host-, Service- und Kontaktdefinitionen anzugeben und ihre Werte in
+    Benachrichtigungen, Eventhandlern sowie Host- und Service-Prüfungen zu benutzen.</p>
+  </div>
 
-  <p>Es gibt ein paar wichtige Dinge, die Sie bei maßgeschneiderten Variablen beachten sollten:</p>
+  <div class="section" title="3.5.2. Grundlagen zu maßgeschneiderten Variablen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5537104"></a>3.5.2. Grundlagen zu maßgeschneiderten Variablen</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <p>Es gibt ein paar wichtige Dinge, die Sie bei maßgeschneiderten Variablen beachten sollten:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>maßgeschneiderte Variablennamen müssen mit einem Unterstrich (_) beginnen, um einen Namenskonflikt mit
-      Standardvariablen zu verhindern</p>
-    </li>
+        <p>maßgeschneiderte Variablennamen müssen mit einem Unterstrich (_) beginnen, um einen Namenskonflikt mit Standardvariablen zu
+        verhindern</p>
+      </li>
 <li class="listitem">
-      <p>maßgeschneiderten Variablennamen werden vor der Benutzung in Großbuchstaben umgewandelt</p>
-    </li>
+        <p>maßgeschneiderten Variablennamen werden vor der Benutzung in Großbuchstaben umgewandelt</p>
+      </li>
 <li class="listitem">
-      <p>maßgeschneiderten Variablen werden von Objektvorlagen wie normale Variablen <a class="link" href="objectinheritance.html" title="7.26. Objektvererbung">geerbt</a></p>
-    </li>
+        <p>maßgeschneiderten Variablen werden von Objektvorlagen wie normale Variablen <a class="link" href="objectinheritance.html" title="7.26. Objektvererbung">geerbt</a></p>
+      </li>
 <li class="listitem">
-      <p>Scripts können sich mit <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros und Umgebungsvariablen</a> auf die Werte von
-      maßgeschneiderten Variablen beziehen</p>
-    </li>
+        <p>Scripts können sich mit <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros und Umgebungsvariablen</a> auf die Werte von maßgeschneiderten
+        Variablen beziehen</p>
+      </li>
 </ul></div>
 
-  <a name="customobjectvars-runtime"></a>
-  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+    <a name="customobjectvars-runtime"></a>
+
+    <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
 <th align="left">Wichtig</th>
 </tr>
 <tr><td align="left" valign="top">
-<p>Maßgeschneiderte Variablen werden erst <span class="emphasis"><em>zur Laufzeit</em></span> ersetzt, weder bei der Überprüfungsphase (icinga
-    -v icinga.cfg) noch während des Icinga-Startprozesses, so dass das Platzieren in Host-Namen, Service-Beschreibungen oder
-    verschiedenen anderen Stellen der Objektdefinition während der Überprüfung zu einer Fehlermeldung ähnlich "<code class="literal">&lt;object&gt;
-    contains one or more illegal characters.</code>" führt. Das Ändern der Direktive "illegal_object_name_chars" wird <span class="emphasis"><em>
-    nicht</em></span> das Problem lösen.
-    </p>
-  </td></tr>
+      <p>Maßgeschneiderte Variablen werden erst <span class="emphasis"><em>zur Laufzeit</em></span> ersetzt, weder bei der Überprüfungsphase (icinga -v
+      icinga.cfg) noch während des Icinga-Startprozesses, so dass das Platzieren in Host-Namen, Service-Beschreibungen oder
+      verschiedenen anderen Stellen der Objektdefinition während der Überprüfung zu einer Fehlermeldung ähnlich "<code class="literal">&lt;object&gt;
+      contains one or more illegal characters.</code>" führt. Das Ändern der Direktive "illegal_object_name_chars" wird <span class="emphasis"><em>
+      nicht</em></span> das Problem lösen.</p>
+    </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Beispiele</strong></span></p>
+    <a class="indexterm" name="idp5547520"></a>
+  </div>
 
-  <p>Hier ein Beispiel, wie maßgeschneiderte Variablen in verschiedenen Arten von Objektdefinitionen definiert werden
-  können:</p>
+  <div class="section" title="3.5.3. Beispiele">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5549280"></a>3.5.3. Beispiele</h3></div></div></div>
+    
 
-  <pre class="screen"> define host{
+    <p>Hier ein Beispiel, wie maßgeschneiderte Variablen in verschiedenen Arten von Objektdefinitionen definiert werden können:</p>
+
+    <pre class="programlisting"> define host{
         host_name       linuxserver
         _mac_address    00:06:5B:A6:AD:AA       ; &lt;-- Custom MAC_ADDRESS variable
         _rack_number    R32                     ; &lt;-- Custom RACK_NUMBER variable
@@ -106,19 +127,23 @@
         _YahooID        john32                  ; &lt;-- Custom YAHOOID variable
         ...
         }</pre>
+  </div>
 
-  <p><span class="bold"><strong>maßgeschneiderte Variablen als Makros</strong></span></p>
+  <div class="section" title="3.5.4. maßgeschneiderte Variablen als Makros">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5551904"></a>3.5.4. maßgeschneiderte Variablen als Makros</h3></div></div></div>
+    
 
-  <p>Maßgeschneiderte Variablen können über <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a> oder Umgebungsvariablen in Scripts und
-  Programmen eingesetzt werden, die Icinga für Prüfungen, Benachrichtigungen usw. ausführt.</p>
+    <p>Maßgeschneiderte Variablen können über <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a> oder Umgebungsvariablen in Scripts und Programmen
+    eingesetzt werden, die Icinga für Prüfungen, Benachrichtigungen usw. ausführt.</p>
 
-  <p>Um Namenskonflikte zwischen maßgeschneiderten Variablen aus verschiedenen Objektarten zu verhindern, stellt Icinga
-  "_HOST", "_SERVICE" oder "_CONTACT" an den Anfang von maßgeschneiderten Host-, Service- oder Kontaktvariablennamen in Makros und
-  Umgebungsvariablen. Die folgende Tabelle zeigt die entsprechenden Namen für maßgeschneiderte Variablen, die im obigen Beispiel
-  definiert wurden.</p>
+    <p>Um Namenskonflikte zwischen maßgeschneiderten Variablen aus verschiedenen Objektarten zu verhindern, stellt Icinga "_HOST",
+    "_SERVICE" oder "_CONTACT" an den Anfang von maßgeschneiderten Host-, Service- oder Kontaktvariablennamen in Makros und
+    Umgebungsvariablen. Die folgende Tabelle zeigt die entsprechenden Namen für maßgeschneiderte Variablen, die im obigen Beispiel definiert
+    wurden.</p>
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -170,13 +195,16 @@
 </tr>
 </tbody>
 </table>
+    </div>
   </div>
 
-  <p><span class="bold"><strong>maßgeschneiderte Variablen und Vererbung</strong></span></p>
+  <div class="section" title="3.5.5. maßgeschneiderte Variablen und Vererbung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5583488"></a>3.5.5. maßgeschneiderte Variablen und Vererbung</h3></div></div></div>
+    
 
-  <p>Maßgeschneiderte Objektvariablen werden genau wie Standard-Host-, Service- oder Kontaktvariablen <a class="link" href="objectinheritance.html" title="7.26. Objektvererbung">vererbt</a>.</p>
-  <a class="indexterm" name="idp5567200"></a>
-  <a class="indexterm" name="idp5568176"></a>
+    <p>Maßgeschneiderte Objektvariablen werden genau wie Standard-Host-, Service- oder Kontaktvariablen <a class="link" href="objectinheritance.html" title="7.26. Objektvererbung">vererbt</a>.</p>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

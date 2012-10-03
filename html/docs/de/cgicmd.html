@@ -28,50 +28,63 @@
 <div class="section" title="6.3. Ausführen von CGIs auf der Kommandozeile">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cgicmd"></a>6.3. <a name="cgi_cmd"></a>Ausführen von CGIs auf der Kommandozeile</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="cgicmd.html#idp10543104">6.3.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="cgicmd.html#idp11706448">6.3.2. Voraussetzungen</a></span></dt>
+<dt><span class="section"><a href="cgicmd.html#idp11716400">6.3.3. Beispiele</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="6.3.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10543104"></a>6.3.1. Einführung</h3></div></div></div>
+    
 
-  <p>In den meisten Fällen werden Sie Ihren Browser benutzen, um die Informationen anzusehen, die Sie benötigen. Es mag Situationen
-  geben, in denen Sie die Daten mit anderen Werkzeugen bearbeiten möchten, um Wiki-Einträge zu erzeugen, Mails zu verschicken usw. Zusammen
-  mit den <a class="link" href="cgiparams.html" title="6.2. Informationen zu den CGI-Parametern">Informationen zu den CGI-Parametern</a> können Sie die CGIs auf der Kommandozeile aufrufen.</p>
+    <p>In den meisten Fällen werden Sie Ihren Browser benutzen, um die Informationen anzusehen, die Sie benötigen. Es mag Situationen
+    geben, in denen Sie die Daten mit anderen Werkzeugen bearbeiten möchten, um Wiki-Einträge zu erzeugen, Mails zu verschicken usw.
+    Zusammen mit den <a class="link" href="cgiparams.html" title="6.2. Informationen zu den CGI-Parametern">Informationen zu den CGI-Parametern</a> können Sie die CGIs auf der Kommandozeile
+    aufrufen.</p>
+  </div>
 
-  <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
+  <div class="section" title="6.3.2. Voraussetzungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp11706448"></a>6.3.2. Voraussetzungen</h3></div></div></div>
+    
 
-  <p>Bevor Sie die CGIs tatsächlich aufrufen können, müssen Sie drei Umgebungsvariablen setzen: </p>
+    <p>Bevor Sie die CGIs tatsächlich aufrufen können, müssen Sie drei Umgebungsvariablen setzen: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>REMOTE_USER</p>
+          <p>REMOTE_USER</p>
 
-        <p>Diese Variable enthälft einen Benutzer, der berechtigt ist, die Informationen abzurufen. In den meisten Fällen wird dies
-        "icingaadmin" sein (<code class="literal">set REMOTE_USER='icingaadmin')</code></p>
-      </li>
+          <p>Diese Variable enthälft einen Benutzer, der berechtigt ist, die Informationen abzurufen. In den meisten Fällen wird dies
+          "icingaadmin" sein (<code class="literal">set REMOTE_USER='icingaadmin')</code></p>
+        </li>
 <li class="listitem">
-        <p>REQUEST_METHOD</p>
+          <p>REQUEST_METHOD</p>
 
-        <p><code class="literal">set REQUEST_METHOD='GET'</code>. Mögliche Werte sind "GET", "POST" und "HEAD"</p>
-      </li>
+          <p><code class="literal">set REQUEST_METHOD='GET'</code>. Mögliche Werte sind "GET", "POST" und "HEAD"</p>
+        </li>
 <li class="listitem">
-        <p>QUERY_STRING</p>
+          <p>QUERY_STRING</p>
 
-        <p>Anstatt Argumente über die Kommandozeile an die CGIs zu übergeben, müssen Sie die Variable "QUERY_STRING" mit den
-        entsprechenden Werten füllen.</p>
+          <p>Anstatt Argumente über die Kommandozeile an die CGIs zu übergeben, müssen Sie die Variable "QUERY_STRING" mit den
+          entsprechenden Werten füllen.</p>
 
-        <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+          <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>Die meisten Leute finden es schwierig, HTML-Ausgaben zu lesen, so dass es eine gute Idee ist, der Variable QUERY_STRING
-          "jsonoutput" oder "csvoutput" hinzuzufügen <code class="code"> (QUERY_STRING='jsonoutput' bzw. QUERY_STRING='jsonoutput')</code> .</p>
-        </td></tr>
+            <p>Die meisten Leute finden es schwierig, HTML-Ausgaben zu lesen, so dass es eine gute Idee ist, der Variable QUERY_STRING
+            "jsonoutput" oder "csvoutput" hinzuzufügen <code class="code"> (QUERY_STRING='jsonoutput' bzw. QUERY_STRING='jsonoutput')</code> .</p>
+          </td></tr>
 </table></div>
-      </li>
+        </li>
 </ul></div>
 
-  <p>Wenn Sie vergessen, die Umgebungsvariablen zu setzen, dann bekommen Sie beim Aufruf die folgenden Zeilen:</p>
-<pre class="programlisting"> $&gt; ./status.cgi
+    <p>Wenn Sie vergessen, die Umgebungsvariablen zu setzen, dann bekommen Sie beim Aufruf die folgenden Zeilen:</p>
+<pre class="screen"> $&gt; ./status.cgi
  getcgivars(): Unsupported REQUEST_METHOD -&gt; ''
 
  I'm guessing you're trying to execute the CGI from a command line.
@@ -83,58 +96,63 @@
  note: if you've enabled authentication in the CGIs, you must set the
  "REMOTE_USER" environment variable to be the name of the user you're
  "authenticated" as.</pre>
+  </div>
 
-  <p><span class="bold"><strong>Beispiele</strong></span></p>
+  <div class="section" title="6.3.3. Beispiele">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp11716400"></a>6.3.3. Beispiele</h3></div></div></div>
+    
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Die CGIs werden aus dem Ordner aufgerufen, in dem sich die *.cgi-Dateien befinden (z.B.
-    <code class="filename">/usr/local/icinga/sbin</code>). Dies ist nicht notwendig, sondern dient lediglich der Einfachheit. Solange nichts anderes
-    angegeben ist, gilt <code class="literal">REQUEST_METHOD='GET'</code>.</p>
-  </td></tr>
+      <p>Die CGIs werden aus dem Ordner aufgerufen, in dem sich die *.cgi-Dateien befinden (z.B.
+      <code class="filename">/usr/local/icinga/sbin</code>). Dies ist nicht notwendig, sondern dient lediglich der Einfachheit. Solange nichts
+      anderes angegeben ist, gilt <code class="literal">REQUEST_METHOD='GET'</code>.</p>
+    </td></tr>
 </table></div>
 
-  <p>Tactical overview</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput'
+    <p>Tactical overview</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput'
  $&gt; ./tac.cgi</pre>
 
-  <p>Alle Hosts im Zustand DOWN</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;style=hostdetail&amp;hoststatustypes=4'
+    <p>Alle Hosts im Zustand DOWN</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;style=hostdetail&amp;hoststatustypes=4'
  $&gt; ./status.cgi</pre>
 
-  <p>Alle Hosts im Zustand DOWN, die "unacknowledged" <span class="emphasis"><em>und</em></span> nicht in einer Downtime sind</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;style=hostdetail&amp;hoststatustypes=4&amp;hostprops=10'
+    <p>Alle Hosts im Zustand DOWN, die "unacknowledged" <span class="emphasis"><em>und</em></span> nicht in einer Downtime sind</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;style=hostdetail&amp;hoststatustypes=4&amp;hostprops=10'
  $&gt; ./status.cgi</pre>
 
-  <p>Alle Services in einem nicht-OK-Zustand</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;style=detail&amp;servicestatustypes=28'
+    <p>Alle Services in einem nicht-OK-Zustand</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;style=detail&amp;servicestatustypes=28'
  $&gt; ./status.cgi</pre>
 
-  <p>Alle passiven Services im Zustand CRITICAL</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;style=detail&amp;servicestatustypes=28&amp;serviceprops=65536'
+    <p>Alle passiven Services im Zustand CRITICAL</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;style=detail&amp;servicestatustypes=28&amp;serviceprops=65536'
  $&gt; ./status.cgi</pre>
 
-  <p>Kommentare für alle Objekte</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;type=3'
+    <p>Kommentare für alle Objekte</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;type=3'
  $&gt; ./extinfo.cgi</pre>
 
-  <p>Trends für router_02, Zeitangaben durch Unix-Timestamps</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;host=router_02&amp;timeperiod=custom&amp;t1=130748400&amp;t2=1307570400'
+    <p>Trends für router_02, Zeitangaben durch Unix-Timestamps</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;host=router_02&amp;timeperiod=custom&amp;t1=130748400&amp;t2=1307570400'
  $&gt; ./extinfo.cgi</pre>
 
-  <p>Trends für router_02, Zeitangaben durch Datum und Uhrzeit</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;host=router_02&amp;timeperiod=custom\
+    <p>Trends für router_02, Zeitangaben durch Datum und Uhrzeit</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;host=router_02&amp;timeperiod=custom\
  &amp;sday=6&amp;smon=6&amp;syear=2011&amp;shour=0&amp;smin=0&amp;ssec=0\
  &amp;eday=7&amp;emon=6&amp;eyear=2011&amp;ehour=0&amp;emin=0&amp;esec=0'
  $&gt; ./extinfo.cgi</pre>
 
-  <p>(wird fortgesetzt)</p>
+    <p>(wird fortgesetzt)</p>
 
-  <a class="indexterm" name="idp11678512"></a>
+    <a class="indexterm" name="idp11726528"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

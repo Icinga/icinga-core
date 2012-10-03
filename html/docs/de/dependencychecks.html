@@ -28,69 +28,93 @@
 <div class="section" title="7.20. Vorausschauende Abhängigkeitsprüfungen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dependencychecks"></a>7.20. Vorausschauende Abhängigkeitsprüfungen</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="dependencychecks.html#idp14255136">7.20.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="dependencychecks.html#idp14258544">7.20.2. Wie arbeiten vorausschauende Prüfungen?</a></span></dt>
+<dt><span class="section"><a href="dependencychecks.html#idp14271424">7.20.3. Vorausschauende Prüfungen aktivieren</a></span></dt>
+<dt><span class="section"><a href="dependencychecks.html#idp14275952">7.20.4. Cached Checks</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="7.20.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14255136"></a>7.20.1. Einführung</h3></div></div></div>
+    
 
-  <p>Host- und Service-<a class="link" href="dependencies.html" title="7.13. Host- und Service-Abhängigkeiten">Abhängigkeiten</a> können definiert werden, um Ihnen größere Kontrolle
-  darüber zu geben, wann Prüfungen ausgeführt und wann Benachrichtigungen versandt werden. Da Abhängigkeiten benutzt werden, um
-  grundlegende Aspekte des Überwachungsprozesses zu kontrollieren, ist es wichtig sicherzustellen, dass die Status-Informationen
-  in der Abhängigkeitslogik so aktuell wie möglich sind.</p>
+    <p>Host- und Service-<a class="link" href="dependencies.html" title="7.13. Host- und Service-Abhängigkeiten">Abhängigkeiten</a> können definiert werden, um Ihnen größere Kontrolle darüber
+    zu geben, wann Prüfungen ausgeführt und wann Benachrichtigungen versandt werden. Da Abhängigkeiten benutzt werden, um grundlegende
+    Aspekte des Überwachungsprozesses zu kontrollieren, ist es wichtig sicherzustellen, dass die Status-Informationen in der
+    Abhängigkeitslogik so aktuell wie möglich sind.</p>
 
-  <p>Icinga erlaubt Ihnen, vorausschauende Abhängigkeitsprüfungen für Hosts und Services zu aktivieren, um
-  sicherzustellen, dass die Abhängigkeitslogik die aktuellsten Status-Informationen hat, wenn Entscheidungen darüber getroffen
-  werden müssen, ob Benachrichtigungen verschickt werden oder um aktive Prüfungen für einen Host oder Service zu erlauben.</p>
+    <p>Icinga erlaubt Ihnen, vorausschauende Abhängigkeitsprüfungen für Hosts und Services zu aktivieren, um sicherzustellen, dass
+    die Abhängigkeitslogik die aktuellsten Status-Informationen hat, wenn Entscheidungen darüber getroffen werden müssen, ob
+    Benachrichtigungen verschickt werden oder um aktive Prüfungen für einen Host oder Service zu erlauben.</p>
+  </div>
 
-  <p><span class="bold"><strong>Wie arbeiten vorausschauende Prüfungen?</strong></span></p>
+  <div class="section" title="7.20.2. Wie arbeiten vorausschauende Prüfungen?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14258544"></a>7.20.2. Wie arbeiten vorausschauende Prüfungen?</h3></div></div></div>
+    
 
-  <p>Das nachfolgende Bild zeigt ein einfaches Diagramm von Hosts, die von Icinga überwacht werden, zusammen mit ihren
-  Eltern/Kindbeziehungen und Abhängigkeiten.</p>
+    <p>Das nachfolgende Bild zeigt ein einfaches Diagramm von Hosts, die von Icinga überwacht werden, zusammen mit ihren
+    Eltern/Kindbeziehungen und Abhängigkeiten.</p>
 
-  <p>Der <span class="emphasis"><em>Switch2</em></span>-Host in diesem Beispiel hat gerade den Status von UP in einen Problemzustand gewechselt.
-  Icinga muss feststellen, ob der Host DOWN oder UNREACHABLE ist, also wird es parallele Prüfungen für die direkten Eltern
-  (<span class="emphasis"><em>Firewall1</em></span>) und Kinder (<span class="emphasis"><em>Comp1</em></span>, <span class="emphasis"><em>Comp2</em></span>, und
-  <span class="emphasis"><em>Switch3</em></span>) auslösen. Das ist eine normale Funktion der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Erreichbarkeit</a>s-Logik.</p>
+    <p>Der <span class="emphasis"><em>Switch2</em></span>-Host in diesem Beispiel hat gerade den Status von UP in einen Problemzustand gewechselt.
+    Icinga muss feststellen, ob der Host DOWN oder UNREACHABLE ist, also wird es parallele Prüfungen für die direkten Eltern
+    (<span class="emphasis"><em>Firewall1</em></span>) und Kinder (<span class="emphasis"><em>Comp1</em></span>, <span class="emphasis"><em>Comp2</em></span>, und <span class="emphasis"><em>Switch3</em></span>)
+    auslösen. Das ist eine normale Funktion der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Erreichbarkeit</a>s-Logik.</p>
 
-  <p>Sie werden auch feststellen, dass <span class="emphasis"><em>Switch2</em></span> von <span class="emphasis"><em>Monitor1</em></span> und
-  <span class="emphasis"><em>File1</em></span> in Bezug auf Benachrichtigungen oder Prüfausführung abhängt (welches davon ist unwichtig für dieses
-  Beispiel). Wenn vorausschauende Host-Abhängigkeitsprüfungen aktiviert sind, wird Icinga parallele Prüfungen von
-  <span class="emphasis"><em>Monitor1</em></span> und <span class="emphasis"><em>File1</em></span> sowie gleichzeitig für die direkten Eltern und Kinder von
-  <span class="emphasis"><em>Switch2</em></span> auslösen. Icinga tut dies, weil es wei�, dass es die Abhängigkeitslogik in der nahen Zukunft
-  prüfen muss (z.B. für Zwecke der Benachrichtigung) und es will sicherstellen, dass es die aktuellsten Statusinformationen für
-  die Hosts hat, die an der Abhängigkeit beteiligt sind.</p>
+    <p>Sie werden auch feststellen, dass <span class="emphasis"><em>Switch2</em></span> von <span class="emphasis"><em>Monitor1</em></span> und <span class="emphasis"><em>File1</em></span> in
+    Bezug auf Benachrichtigungen oder Prüfausführung abhängt (welches davon ist unwichtig für dieses Beispiel). Wenn vorausschauende
+    Host-Abhängigkeitsprüfungen aktiviert sind, wird Icinga parallele Prüfungen von <span class="emphasis"><em>Monitor1</em></span> und
+    <span class="emphasis"><em>File1</em></span> sowie gleichzeitig für die direkten Eltern und Kinder von <span class="emphasis"><em>Switch2</em></span> auslösen.
+    Icinga tut dies, weil es wei�, dass es die Abhängigkeitslogik in der nahen Zukunft prüfen muss (z.B. für Zwecke der
+    Benachrichtigung) und es will sicherstellen, dass es die aktuellsten Statusinformationen für die Hosts hat, die an der Abhängigkeit
+    beteiligt sind.</p>
 
-  <div class="mediaobject"><img src="../images/predictive-dependency-checks.png"></div>
+    <div class="mediaobject"><img src="../images/predictive-dependency-checks.png"></div>
 
-  <p>So arbeiten vorausschauende Abhängigkeitsprüfungen. Einfach, oder?</p>
+    <p>So arbeiten vorausschauende Abhängigkeitsprüfungen. Einfach, oder?</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Vorausschauende Service-Abhängigkeitsprüfungen arbeiten in einer ähnlichen Weise wie oben
-  beschrieben. Außer natürlich, dass sie mit Services arbeiten statt mit Hosts.</p>
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Vorausschauende Service-Abhängigkeitsprüfungen arbeiten in einer ähnlichen Weise wie oben beschrieben.
+    Außer natürlich, dass sie mit Services arbeiten statt mit Hosts.</p>
+  </div>
 
-  <p><span class="bold"><strong>Vorausschauende Prüfungen aktivieren</strong></span></p>
+  <div class="section" title="7.20.3. Vorausschauende Prüfungen aktivieren">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14271424"></a>7.20.3. Vorausschauende Prüfungen aktivieren</h3></div></div></div>
+    
 
-  <p>Vorausschauende Abhängigkeitsprüfungen verursachen ziemlich wenig Overhead, also würden wir empfehlen, dass Sie diese
-  aktivieren. In den meisten Fällen werden die Vorteile, aktuelle Informationen für die Abhängigkeitslogik zu haben, den
-  zusätzlichen Overhead durch diese Prüfungen mehr als ausgleichen.</p>
+    <p>Vorausschauende Abhängigkeitsprüfungen verursachen ziemlich wenig Overhead, also würden wir empfehlen, dass Sie diese aktivieren.
+    In den meisten Fällen werden die Vorteile, aktuelle Informationen für die Abhängigkeitslogik zu haben, den zusätzlichen Overhead durch
+    diese Prüfungen mehr als ausgleichen.</p>
 
-  <p>Vorausschauende Abhängigkeitsprüfungen zu aktivieren ist einfach:</p>
+    <p>Vorausschauende Abhängigkeitsprüfungen zu aktivieren ist einfach:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Vorausschauende Host-Abhängigkeitsprüfungen werden durch die <a class="link" href="configmain.html#configmain-enable_predictive_host_dependency_checks">enable_predictive_host_dependency_checks</a>-Option
-      kontrolliert.</p>
-    </li>
+        <p>Vorausschauende Host-Abhängigkeitsprüfungen werden durch die <a class="link" href="configmain.html#configmain-enable_predictive_host_dependency_checks">enable_predictive_host_dependency_checks</a>-Option
+        kontrolliert.</p>
+      </li>
 <li class="listitem">
-      <p>Vorausschauende Service-Abhängigkeitsprüfungen werden durch die <a class="link" href="configmain.html#configmain-enable_predictive_service_dependency_checks">enable_predictive_service_dependency_checks</a>-Option
-      kontrolliert.</p>
-    </li>
+        <p>Vorausschauende Service-Abhängigkeitsprüfungen werden durch die <a class="link" href="configmain.html#configmain-enable_predictive_service_dependency_checks">enable_predictive_service_dependency_checks</a>-Option
+        kontrolliert.</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Cached Checks</strong></span></p>
+  <div class="section" title="7.20.4. Cached Checks">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14275952"></a>7.20.4. Cached Checks</h3></div></div></div>
+    
 
-  <p>Vorausschauende Abhängigkeitsprüfungen sind Prüfungen nach Bedarf und daher den Regeln von <a class="link" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">cached checks</a> unterworfen. Cached checks können Ihnen Performance-Verbesserungen liefern, wenn
-  Icinga darauf verzichtet, eine Host- oder Serviceprüfung durchzuführen, wenn es statt dessen ein relativ aktuelles
-  Prüfungsergebnis nutzen kann. Mehr Informationen über cached checks finden Sie <a class="link" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">hier</a>.</p>
-  <a class="indexterm" name="idp14209520"></a>
+    <p>Vorausschauende Abhängigkeitsprüfungen sind Prüfungen nach Bedarf und daher den Regeln von <a class="link" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">cached
+    checks</a> unterworfen. Cached checks können Ihnen Performance-Verbesserungen liefern, wenn Icinga darauf verzichtet, eine
+    Host- oder Serviceprüfung durchzuführen, wenn es statt dessen ein relativ aktuelles Prüfungsergebnis nutzen kann. Mehr Informationen
+    über cached checks finden Sie <a class="link" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">hier</a>.</p>
+
+    <a class="indexterm" name="idp14280432"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

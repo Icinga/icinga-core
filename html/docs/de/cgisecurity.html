@@ -28,60 +28,76 @@
 <div class="section" title="8.2. Verbesserte CGI-Sicherheit und Authentifizierung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cgisecurity"></a>8.2. Verbesserte CGI-Sicherheit und Authentifizierung</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="cgisecurity.html#idp14998352">8.2.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="cgisecurity.html#idp14999632">8.2.2. Zusätzliche Techniken</a></span></dt>
+<dt><span class="section"><a href="cgisecurity.html#idp15014256">8.2.3. Implementieren der Digest Authentication</a></span></dt>
+<dt><span class="section"><a href="cgisecurity.html#idp15022608">8.2.4. Implementieren erzwungener TLS/SSL-Kommunikation</a></span></dt>
+<dt><span class="section"><a href="cgisecurity.html#idp15031456">8.2.5. Implementieren von IP-Subnetz-Beschränkung</a></span></dt>
+<dt><span class="section"><a href="cgisecurity.html#idp15036192">8.2.6. Wichtige Anmerkungen</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="8.2.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14998352"></a>8.2.1. Einführung</h3></div></div></div>
+    
 
-  <div class="mediaobject" align="right"><img src="../images/security.png" align="right"></div>
+    <div class="mediaobject" align="right"><img src="../images/security.png" align="right"></div>
 
-  <p>Dies ist als eine Einführung für die Implementierung stärkerer Authentifizierung und Server-Sicherheit bezogen auf das
-  CGI-Web-Interface gedacht.</p>
+    <p>Dies ist als eine Einführung für die Implementierung stärkerer Authentifizierung und Server-Sicherheit bezogen auf das
+    CGI-Web-Interface gedacht.</p>
 
-  <p>Es gibt viele Wege, die Sicherheit Ihres Überwachungs-Servers und des Icinga-Umfeldes zu verbessern. Dies sollte
-  nicht als das Ende aller Bemühungen angesehen werden. Nehmen Sie es statt dessen als eine Einführung für einige der Techniken,
-  die Sie nutzen können, um die Sicherheit Ihres System zu verstärken. Wie immer sollten Sie forschen und die besten Techniken
-  nutzen, die verfügbar sind. Behandeln Sie Ihren Überwachungs-Server, als wäre es der wichtigste Server in Ihrem Netzwerk und Sie
-  werden belohnt werden.</p>
+    <p>Es gibt viele Wege, die Sicherheit Ihres Überwachungs-Servers und des Icinga-Umfeldes zu verbessern. Dies sollte nicht als
+    das Ende aller Bemühungen angesehen werden. Nehmen Sie es statt dessen als eine Einführung für einige der Techniken, die Sie nutzen
+    können, um die Sicherheit Ihres System zu verstärken. Wie immer sollten Sie forschen und die besten Techniken nutzen, die verfügbar
+    sind. Behandeln Sie Ihren Überwachungs-Server, als wäre es der wichtigste Server in Ihrem Netzwerk und Sie werden belohnt werden.</p>
+  </div>
 
-  <p><a name="cgisecurity-additionaltechniques"></a> <span class="bold"><strong>Zusätzliche Techniken</strong></span></p>
+  <div class="section" title="8.2.2. Zusätzliche Techniken">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14999632"></a>8.2.2. <a name="cgisecurity-additionaltechniques"></a>Zusätzliche Techniken</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><span class="bold"><strong>Stärkere Authentifizierung durch Digest Authentication</strong></span>. Wenn Sie den <a class="link" href="quickstart" target="_top">Schnellstartanleitungen</a> gefolgt sind, werden Sie wahrscheinlich Apaches <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_auth_basic.html" target="_top">Basic Authentication</a> nutzen. "Basic
-      Authentication" wird Benutzer und Password bei jedem HTTP-Request im Klartext übertragen. Ziehen Sie eine sicherere
-      Authentifierungsmethode wie z.B. <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_auth_digest.html" target="_top">Digest
-      Authentication</a> in Betracht, die aus Ihrem Benutzernamen und Passwort einen MD5-Hash erzeugt, der bei jeder Anfrage
-      gesendet wird.</p>
-    </li>
+        <p><span class="bold"><strong>Stärkere Authentifizierung durch Digest Authentication</strong></span>. Wenn Sie den <a class="link" href="quickstart" target="_top">Schnellstartanleitungen</a> gefolgt sind, werden Sie wahrscheinlich Apaches <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_auth_basic.html" target="_top">Basic Authentication</a> nutzen. "Basic Authentication"
+        wird Benutzer und Password bei jedem HTTP-Request im Klartext übertragen. Ziehen Sie eine sicherere Authentifierungsmethode wie z.B.
+        <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_auth_digest.html" target="_top">Digest Authentication</a> in Betracht, die aus Ihrem
+        Benutzernamen und Passwort einen MD5-Hash erzeugt, der bei jeder Anfrage gesendet wird.</p>
+      </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Erzwingen von TLS/SSL für jede Web-Kommunikation</strong></span>. Apache bietet <a class="link" href="http://de.wikipedia.org/wiki/Transport_Layer_Security" target="_top">TLS/SSL</a> durch das <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html" target="_top">mod_ssl</a>-Modul. TLS/SSL bietet einen sicheren Tunnel
-      zwischen Client und Server, der Abhören und Verfälschung durch starke publickey/privatekey-Kryptographie verhindert.</p>
-    </li>
+        <p><span class="bold"><strong>Erzwingen von TLS/SSL für jede Web-Kommunikation</strong></span>. Apache bietet <a class="link" href="http://de.wikipedia.org/wiki/Transport_Layer_Security" target="_top">TLS/SSL</a> durch das <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html" target="_top">mod_ssl</a>-Modul. TLS/SSL bietet einen sicheren Tunnel zwischen
+        Client und Server, der Abhören und Verfälschung durch starke publickey/privatekey-Kryptographie verhindert.</p>
+      </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Beschränken Sie Apache mit Hilfe von Zugangskontrollen</strong></span>. Überlegen Sie, ob Sie
-      den Zugang zur Icinga-Box auf Ihre IP-Adresse, IP-Adressbereich oder IP-Subnetz beschränken. Wenn Sie Zugang von
-      außen auf Ihr Netzwerk benötigen, können Sie VPN und SSH-Tunnel nutzen. Es ist einfach, den Zugang zu Ihrem System auf
-      HTTP/HTTPS zu begrenzen.</p>
-    </li>
+        <p><span class="bold"><strong>Beschränken Sie Apache mit Hilfe von Zugangskontrollen</strong></span>. Überlegen Sie, ob Sie den
+        Zugang zur Icinga-Box auf Ihre IP-Adresse, IP-Adressbereich oder IP-Subnetz beschränken. Wenn Sie Zugang von außen auf Ihr
+        Netzwerk benötigen, können Sie VPN und SSH-Tunnel nutzen. Es ist einfach, den Zugang zu Ihrem System auf HTTP/HTTPS zu
+        begrenzen.</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><a name="cgisecurity-implementation-digest"></a> <span class="bold"><strong>Implementieren der Digest
-  Authentication</strong></span></p>
+  <div class="section" title="8.2.3. Implementieren der Digest Authentication">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15014256"></a>8.2.3. <a name="cgisecurity-implementation-digest"></a>Implementieren der Digest Authentication</h3></div></div></div>
+    
 
-  <p>Die Implementierung der Digest Authentication ist einfach. Dazu müssen Sie den neuen Typ der Passwort-Datei mit dem <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htdigest.html" target="_top">'htdigest'</a>-Tool anlegen, dann die
-  Apache-Konfiguration für Icinga anpassen (typischerweise /etc/httpd/conf.d/icinga.conf).</p>
+    <p>Die Implementierung der Digest Authentication ist einfach. Dazu müssen Sie den neuen Typ der Passwort-Datei mit dem <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htdigest.html" target="_top">'htdigest'</a>-Tool anlegen, dann die
+    Apache-Konfiguration für Icinga anpassen (typischerweise /etc/httpd/conf.d/icinga.conf).</p>
 
-  <p>Legen Sie eine neue Passwort-Datei mit dem <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htdigest.html" target="_top">'htdigest'</a>-Tool an. Den Unterschied, den Sie
-  feststellen werden, wenn Sie mit dem <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htpasswd.html" target="_top">'htpasswd'</a>-Tool vertraut sind, ist die Anforderung,
-  ein 'Realm'-Parameter anzugeben. In diesem Fall bezieht sich 'realm' auf den Wert der 'AuthName'-Direktive in der
-  Apache-Konfiguration.</p>
+    <p>Legen Sie eine neue Passwort-Datei mit dem <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htdigest.html" target="_top">'htdigest'</a>-Tool an. Den Unterschied, den Sie feststellen
+    werden, wenn Sie mit dem <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htpasswd.html" target="_top">'htpasswd'</a>-Tool vertraut
+    sind, ist die Anforderung, ein 'Realm'-Parameter anzugeben. In diesem Fall bezieht sich 'realm' auf den Wert der 'AuthName'-Direktive in
+    der Apache-Konfiguration.</p>
 
-  <pre class="screen"> htdigest -c /usr/local/icinga/etc/.digest_pw "Icinga Access" icingaadmin</pre>
+    <pre class="screen"> htdigest -c /usr/local/icinga/etc/.digest_pw "Icinga Access" icingaadmin</pre>
 
-  <p>Als nächstes editieren Sie die Apache-Konfigurationsdatei für Icinga (typischerweise /etc/httpd/conf.d/icinga.conf) mit
-  Hilfe des folgenden Beispiels:</p>
+    <p>Als nächstes editieren Sie die Apache-Konfigurationsdatei für Icinga (typischerweise /etc/httpd/conf.d/icinga.conf) mit Hilfe des
+    folgenden Beispiels:</p>
 
-  <pre class="screen"> ## BEGIN APACHE CONFIG SNIPPET - Icinga.CONF
+    <pre class="screen"> ## BEGIN APACHE CONFIG SNIPPET - Icinga.CONF
  ScriptAlias /icinga/cgi-bin "/usr/local/icinga/sbin"
  &lt;Directory "/usr/local/icinga/sbin"&gt;
     Options ExecCGI
@@ -106,27 +122,29 @@
  &lt;/Directory&gt;
  ## END APACHE CONFIG SNIPPETS</pre>
 
-  <p>Danach starten Sie den Apache-Service, damit die neuen Einstellungen aktiv werden können.</p>
+    <p>Danach starten Sie den Apache-Service, damit die neuen Einstellungen aktiv werden können.</p>
 
-  <pre class="screen"> /etc/init.d/httpd restart</pre>
+    <pre class="screen"> /etc/init.d/httpd restart</pre>
+  </div>
 
-  <p><a name="cgisecurity-implementation-ssl"></a> <span class="bold"><strong>Implementieren erzwungener
-  TLS/SSL-Kommunikation</strong></span></p>
+  <div class="section" title="8.2.4. Implementieren erzwungener TLS/SSL-Kommunikation">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15022608"></a>8.2.4. <a name="cgisecurity-implementation-ssl"></a>Implementieren erzwungener TLS/SSL-Kommunikation</h3></div></div></div>
+    
 
-  <p>Stellen Sie sicher, dass Sie Apache und OpenSSL installiert haben. Normalerweise sollten Sie <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html" target="_top">mod_ssl</a>-Unterstützung haben. Falls Sie trotzdem
-  Schwierigkeiten haben, finden Sie ggf. Hilfe durch das Lesen von Apaches <a class="link" href="http://httpd.apache.org/docs/2.0/ssl" target="_top">TLS/SSL Encryption Documentation</a>.</p>
+    <p>Stellen Sie sicher, dass Sie Apache und OpenSSL installiert haben. Normalerweise sollten Sie <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html" target="_top">mod_ssl</a>-Unterstützung haben. Falls Sie trotzdem Schwierigkeiten
+    haben, finden Sie ggf. Hilfe durch das Lesen von Apaches <a class="link" href="http://httpd.apache.org/docs/2.0/ssl" target="_top">TLS/SSL
+    Encryption Documentation</a>.</p>
 
-  <p>Als nächstes prüfen Sie durch den Aufruf des Icinga-Web-Interfaces über HTTPS (https://your.domain/Icinga),
-  dass die TLS/SSL-Unterstützung funktioniert. Wenn es funktioniert, können Sie mit den nächsten Schritten fortfahren, die die
-  Nutzung von HTTPS erzwingen und alle HTTP-Anfragen an das Icinga-Web-Interface blockiert. Wenn Sie Schwierigkeiten haben,
-  lesen Sie bitte Apaches <a class="link" href="http://httpd.apache.org/docs/2.0/ssl" target="_top">TLS/SSL Encryption Documentation</a>
-  und nutzen Sie <a class="link" href="http://www.google.com" target="_top">Google</a> für die Suche nach Lösungen zu Ihrer
-  Apache-Installation.</p>
+    <p>Als nächstes prüfen Sie durch den Aufruf des Icinga-Web-Interfaces über HTTPS (https://your.domain/Icinga), dass die
+    TLS/SSL-Unterstützung funktioniert. Wenn es funktioniert, können Sie mit den nächsten Schritten fortfahren, die die Nutzung von HTTPS
+    erzwingen und alle HTTP-Anfragen an das Icinga-Web-Interface blockiert. Wenn Sie Schwierigkeiten haben, lesen Sie bitte
+    Apaches <a class="link" href="http://httpd.apache.org/docs/2.0/ssl" target="_top">TLS/SSL Encryption Documentation</a> und nutzen Sie <a class="link" href="http://www.google.com" target="_top">Google</a> für die Suche nach Lösungen zu Ihrer Apache-Installation.</p>
 
-  <p>Danach editieren Sie die Apache-Konfigurationsdatei für Icinga (typischerweise /etc/httpd/conf.d/icinga.conf) und fügen
-  Sie den 'sbin'- und 'share'-Verzeichnissen die 'SSLRequireSSL'-Direktive hinzu.</p>
+    <p>Danach editieren Sie die Apache-Konfigurationsdatei für Icinga (typischerweise /etc/httpd/conf.d/icinga.conf) und fügen Sie den
+    'sbin'- und 'share'-Verzeichnissen die 'SSLRequireSSL'-Direktive hinzu.</p>
 
-  <pre class="screen"> ## BEGIN APACHE CONFIG SNIPPET - Icinga.CONF
+    <pre class="screen"> ## BEGIN APACHE CONFIG SNIPPET - Icinga.CONF
  ScriptAlias /icinga/cgi-bin "/usr/local/icinga/sbin"
  &lt;Directory "/usr/local/icinga/sbin"&gt;
     ...
@@ -141,20 +159,24 @@
  &lt;/Directory&gt;
  ## END APACHE CONFIG SNIPPETS</pre>
 
-  <p>Danach starten Sie den Apache-Service, damit die neuen Einstellungen aktiv werden können.</p>
+    <p>Danach starten Sie den Apache-Service, damit die neuen Einstellungen aktiv werden können.</p>
 
-  <pre class="screen"> /etc/init.d/httpd restart</pre>
+    <pre class="screen"> /etc/init.d/httpd restart</pre>
+  </div>
 
-  <p><a name="cgisecurity-implementation-lockdown"></a> <span class="bold"><strong>Implementieren von
-  IP-Subnetz-Beschränkung</strong></span></p>
+  <div class="section" title="8.2.5. Implementieren von IP-Subnetz-Beschränkung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15031456"></a>8.2.5. <a name="cgisecurity-implementation-lockdown"></a>Implementieren von IP-Subnetz-Beschränkung</h3></div></div></div>
+    
 
-  <p>Das folgende Beispiel zeigt, wie Sie den Zugang auf die Icinga-CGIs auf eine bestimmte IP-Adresse, einen
-  IP-Adressbereich oder ein IP-Subnetz mit Hilfe von Apaches <a class="link" href="http://httpd.apache.org/docs/2.2/howto/access.html" target="_top">Access Controls</a> beschränken.</p>
+    <p>Das folgende Beispiel zeigt, wie Sie den Zugang auf die Icinga-CGIs auf eine bestimmte IP-Adresse, einen IP-Adressbereich
+    oder ein IP-Subnetz mit Hilfe von Apaches <a class="link" href="http://httpd.apache.org/docs/2.2/howto/access.html" target="_top">Access
+    Controls</a> beschränken.</p>
 
-  <p>Danach editieren Sie die Apache-Konfigurationsdatei für Icinga (typischerweise /etc/httpd/conf.d/icinga.conf) und fügen
-  Sie die 'Allow'-, 'Deny'- und 'Order'-Direktiven hinzu. Dazu folgendes Beispiel:</p>
+    <p>Danach editieren Sie die Apache-Konfigurationsdatei für Icinga (typischerweise /etc/httpd/conf.d/icinga.conf) und fügen Sie die
+    'Allow'-, 'Deny'- und 'Order'-Direktiven hinzu. Dazu folgendes Beispiel:</p>
 
-  <pre class="screen"> ## BEGIN APACHE CONFIG SNIPPET - Icinga.CONF
+    <pre class="screen"> ## BEGIN APACHE CONFIG SNIPPET - Icinga.CONF
  ScriptAlias /icinga/cgi-bin "/usr/local/icinga/sbin"
  &lt;Directory "/usr/local/icinga/sbin"&gt;
     ...
@@ -178,39 +200,47 @@
     ...
  &lt;/Directory&gt;
  ## END APACHE CONFIG SNIPPET</pre>
+  </div>
 
-  <p><a name="cgisecurity-importantnotes"></a> <span class="bold"><strong>Wichtige Anmerkungen</strong></span></p>
+  <div class="section" title="8.2.6. Wichtige Anmerkungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15036192"></a>8.2.6. <a name="cgisecurity-importantnotes"></a>Wichtige Anmerkungen</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><span class="bold"><strong>Digest Authentication sendet Daten im Klartext, aber nicht Ihren Benutzernamen und
-      Passwort</strong></span> .</p>
-    </li>
+        <p><span class="bold"><strong>Digest Authentication sendet Daten im Klartext, aber nicht Ihren Benutzernamen und Passwort</strong></span>
+        .</p>
+      </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Digest Authentication ist nicht ganz so gut unterstützt wie Basic Authentication</strong></span>
-      .</p>
-    </li>
+        <p><span class="bold"><strong>Digest Authentication ist nicht ganz so gut unterstützt wie Basic Authentication</strong></span> .</p>
+      </li>
 <li class="listitem">
-      <p><span class="bold"><strong>TLS/SSL hat das Potential für einen "Man-in-the-middle-Angriff"</strong></span>. MITM-Angriffe machen
-      verletzbar, wenn ein Angreifer in der Lage ist, sich zwischen Server und Client zu schieben wie bei einem Phishing-Angriff,
-      ISP-Monitoring oder Resignierung von Unternehmens-LAN Firewall-Zertifikaten. Bitte machen Sie sich kundig zu
-      Zertifikats-Verifikation!</p>
-    </li>
+        <p><span class="bold"><strong>TLS/SSL hat das Potential für einen "Man-in-the-middle-Angriff"</strong></span>. MITM-Angriffe machen
+        verletzbar, wenn ein Angreifer in der Lage ist, sich zwischen Server und Client zu schieben wie bei einem Phishing-Angriff,
+        ISP-Monitoring oder Resignierung von Unternehmens-LAN Firewall-Zertifikaten. Bitte machen Sie sich kundig zu
+        Zertifikats-Verifikation!</p>
+      </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Apache Access Controls schützen nur die HTTP/HTTPS-Protokolle</strong></span> . Sehen Sie sich
-      <a class="link" href="http://www.netfilter.org/projects/iptables/index.html" target="_top">IPtables</a> für eine starke systemweite
-      Firewall-Kontrolle an.</p>
-    </li>
+        <p><span class="bold"><strong>Apache Access Controls schützen nur die HTTP/HTTPS-Protokolle</strong></span> . Sehen Sie sich <a class="link" href="http://www.netfilter.org/projects/iptables/index.html" target="_top">IPtables</a> für eine starke systemweite Firewall-Kontrolle
+        an.</p>
+      </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Am wichtigsten: Sicherheit ist ein bewegliches Ziel, also bleiben Sie informiert und forschen
-      Sie</strong></span> ! Vielleicht durch das Anhören eines Podcasts wie z.B. "<a class="link" href="http://www.grc.com/securitynow.htm" target="_top">Security Now!</a>".</p>
-    </li>
+        <p><span class="bold"><strong>Am wichtigsten: Sicherheit ist ein bewegliches Ziel, also bleiben Sie informiert und forschen
+        Sie</strong></span> ! Vielleicht durch das Anhören eines Podcasts wie z.B. "<a class="link" href="http://www.grc.com/securitynow.htm" target="_top">Security Now!</a>".</p>
+      </li>
 </ul></div>
-  <a class="indexterm" name="idp14959200"></a>
-  <a class="indexterm" name="idp14960208"></a>
-  <a class="indexterm" name="idp14961568"></a>
-  <a class="indexterm" name="idp14962576"></a>
-  <a class="indexterm" name="idp14963904"></a>
+
+    <a class="indexterm" name="idp15047760"></a>
+
+    <a class="indexterm" name="idp15049584"></a>
+
+    <a class="indexterm" name="idp15051152"></a>
+
+    <a class="indexterm" name="idp15052800"></a>
+
+    <a class="indexterm" name="idp15054448"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

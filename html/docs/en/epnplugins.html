@@ -28,9 +28,17 @@
 <div class="section" title="11.2. Developing Plugins For Use With Embedded Perl">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="epnplugins"></a>11.2. <a name="epn_plugins"></a>Developing Plugins For Use With Embedded Perl</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="epnplugins.html#idp16002208">11.2.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="epnplugins.html#idp16004176">11.2.2. Target Audience</a></span></dt>
+<dt><span class="section"><a href="epnplugins.html#idp16008288">11.2.3. Things you should do when developing a Perl Plugin (ePN or not)</a></span></dt>
+<dt><span class="section"><a href="epnplugins.html#idp16017552">11.2.4. Things you must do to develop a Perl plugin for ePN</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="11.2.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16002208"></a>11.2.1. Introduction</h3></div></div></div>
 
   <p>Stanley Hopcroft has worked with the embedded Perl interpreter quite a bit and has commented on the advantages/disadvanges
   of using it. He has also given several helpful hints on creating Perl plugins that work properly with the embedded interpreter.
@@ -39,7 +47,10 @@
   <p>It should be noted that "ePN", as used in this documentation, refers to embedded Perl Nagios, or if you prefer,
   Icinga compiled with an embedded Perl interpreter.</p>
 
-  <p><span class="bold"><strong>Target Audience</strong></span></p>
+  </div>
+<div class="section" title="11.2.2. Target Audience">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16004176"></a>11.2.2. Target Audience</h3></div></div></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -55,7 +66,10 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Things you should do when developing a Perl Plugin (ePN or not)</strong></span></p>
+  </div>
+<div class="section" title="11.2.3. Things you should do when developing a Perl Plugin (ePN or not)">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16008288"></a>11.2.3. Things you should do when developing a Perl Plugin (ePN or not)</h3></div></div></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -87,7 +101,10 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Things you must do to develop a Perl plugin for ePN</strong></span></p>
+  </div>
+<div class="section" title="11.2.4. Things you must do to develop a Perl plugin for ePN">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16017552"></a>11.2.4. Things you must do to develop a Perl plugin for ePN</h3></div></div></div>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
@@ -259,7 +276,8 @@ package Embed::check_5frpc; sub hndlr { shift(@_);
       Icinga). ]</font></span></p>
     </li>
 </ol></div>
-  <a class="indexterm" name="idp15992640"></a>
+  <a class="indexterm" name="idp16051472"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

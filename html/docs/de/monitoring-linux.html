@@ -28,60 +28,72 @@
 <div class="section" title="2.13. Linux/Unix-Rechner überwachen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-linux"></a>2.13. Linux/Unix-Rechner überwachen</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="monitoring-linux.html#idp1187904">2.13.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="monitoring-linux.html#idp1200720">2.13.2. Überblick</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <a class="indexterm" name="idp1184640"></a>
 
-  <p>Dieses Dokument beschreibt, wie Sie "private" Dienste und Attribute auf Linux/UNIX-Servern überwachen, wie
-  z.B.:</p>
+  <a class="indexterm" name="idp1186336"></a>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+  <div class="section" title="2.13.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1187904"></a>2.13.1. Einführung</h3></div></div></div>
+    
+
+    <p>Dieses Dokument beschreibt, wie Sie "private" Dienste und Attribute auf Linux/UNIX-Servern überwachen, wie z.B.:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>CPU-Auslastung</p>
-    </li>
+        <p>CPU-Auslastung</p>
+      </li>
 <li class="listitem">
-      <p>Speichernutzung</p>
-    </li>
+        <p>Speichernutzung</p>
+      </li>
 <li class="listitem">
-      <p>Plattenbelegung</p>
-    </li>
+        <p>Plattenbelegung</p>
+      </li>
 <li class="listitem">
-      <p>angemeldete Benutzer</p>
-    </li>
+        <p>angemeldete Benutzer</p>
+      </li>
 <li class="listitem">
-      <p>laufende Prozesse</p>
-    </li>
+        <p>laufende Prozesse</p>
+      </li>
 <li class="listitem">
-      <p>etc.</p>
-    </li>
+        <p>etc.</p>
+      </li>
 </ul></div>
 
-  <p>Öffentlich nutzbare Dienste, die von Linux-Servern zur Verfügung gestellt werden (HTTP, FTP, SSH, SMTP, etc.),
-  können einfach mit Hilfe der Dokumentation <a class="link" href="monitoring-publicservices.html" title="2.17. Öffentlich zugängliche Dienste überwachen">öffentlich zugängliche Dienste
-  überwachen</a> kontrolliert werden.</p>
+    <p>Öffentlich nutzbare Dienste, die von Linux-Servern zur Verfügung gestellt werden (HTTP, FTP, SSH, SMTP, etc.), können
+    einfach mit Hilfe der Dokumentation <a class="link" href="monitoring-publicservices.html" title="2.17. Öffentlich zugängliche Dienste überwachen">öffentlich zugängliche Dienste überwachen</a>
+    kontrolliert werden.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen
-  sich auf Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span>,
-  <span class="emphasis"><em>templates.cfg</em></span>, etc.) definiert sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung
-  folgen.</p>
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
+    Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.)
+    definiert sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung folgen.</p>
+  </div>
 
-  <p><span class="bold"><strong>Überblick</strong></span></p>
+  <div class="section" title="2.13.2. Überblick">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1200720"></a>2.13.2. Überblick</h3></div></div></div>
+    
 
-  <p>[Anmerkung: Dieses Dokument ist noch nicht vollständig. Wir würden empfehlen, die Dokumentation zum <a class="link" href="addons.html#addons-nrpe">NRPE-Addon</a> zu lesen, um zu sehen, wie ein entfernter Linux/Unix-Server zu überwachen
-  ist.]</p>
+    <p>[Anmerkung: Dieses Dokument ist noch nicht vollständig. Wir würden empfehlen, die Dokumentation zum <a class="link" href="addons.html#addons-nrpe">NRPE-Addon</a> zu lesen, um zu sehen, wie ein entfernter Linux/Unix-Server zu überwachen
+    ist.]</p>
 
-  <p>Es gibt verschiedene Wege, Attribute oder entfernte Linux/Unix-Server zu überwachen. Einer benutzt gemeinsame
-  SSH-Schlüssel und das <span class="emphasis"><em>check_by_ssh</em></span>-Plugin auf entfernten Servern. Diese Methode wird hier nicht behandelt,
-  kann aber zu hoher Last auf Ihrem Überwachungs-Server führen, wenn Sie hunderte oder tausende von Services überwachen. Der
-  Overhead durch das Auf- und Abbauen von SSH-Verbindungen ist der Grund dafür.</p>
+    <p>Es gibt verschiedene Wege, Attribute oder entfernte Linux/Unix-Server zu überwachen. Einer benutzt gemeinsame SSH-Schlüssel
+    und das <span class="emphasis"><em>check_by_ssh</em></span>-Plugin auf entfernten Servern. Diese Methode wird hier nicht behandelt, kann aber zu hoher
+    Last auf Ihrem Überwachungs-Server führen, wenn Sie hunderte oder tausende von Services überwachen. Der Overhead durch das Auf- und
+    Abbauen von SSH-Verbindungen ist der Grund dafür.</p>
 
-  <div class="mediaobject"><img src="../images/nrpe.png"></div>
+    <div class="mediaobject"><img src="../images/nrpe.png"></div>
 
-  <p>Eine andere gebräuchliche Methode der Überwachung von entfernten Linux/Unix-Hosts ist die Nutzung des <a class="link" href="addons.html#addons-nrpe">NRPE-Addons</a>. NRPE erlaubt Ihnen, Plugins auf entfernten Linux/Unix-Hosts
-  auszuführen. Das ist nützlich, wenn Sie lokale Ressourcen/Attribute wie z.B. Plattenbelegung, CPU-Auslastung, Speichernutzung
-  auf einem entfernten Host überwachen wollen.</p>
-  <a class="indexterm" name="idp1199904"></a>
-  <a class="indexterm" name="idp1197488"></a>
+    <p>Eine andere gebräuchliche Methode der Überwachung von entfernten Linux/Unix-Hosts ist die Nutzung des <a class="link" href="addons.html#addons-nrpe">NRPE-Addons</a>. NRPE erlaubt Ihnen, Plugins auf entfernten Linux/Unix-Hosts auszuführen.
+    Das ist nützlich, wenn Sie lokale Ressourcen/Attribute wie z.B. Plattenbelegung, CPU-Auslastung, Speichernutzung auf einem entfernten
+    Host überwachen wollen.</p>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

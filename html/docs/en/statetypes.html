@@ -28,121 +28,142 @@
 <div class="section" title="5.8. State Types">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="statetypes"></a>5.8. <a name="state_types"></a>State Types</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="statetypes.html#idp9842992">5.8.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9847744">5.8.2. Service and Host Check Retries</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9851744">5.8.3. Soft States</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9864432">5.8.4. Hard States</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9880400">5.8.5. Example</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="5.8.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9842992"></a>5.8.1. Introduction</h3></div></div></div>
+    
 
-  <p>The current state of monitored services and hosts is determined by two components:</p>
+    <p>The current state of monitored services and hosts is determined by two components:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>The status of the service or host (i.e. OK, WARNING, UP, DOWN, etc.)</p>
-    </li>
+        <p>The status of the service or host (i.e. OK, WARNING, UP, DOWN, etc.)</p>
+      </li>
 <li class="listitem">
-      <p>Tye <span class="emphasis"><em>type</em></span> of state the service or host is in</p>
-    </li>
+        <p>Tye <span class="emphasis"><em>type</em></span> of state the service or host is in</p>
+      </li>
 </ul></div>
 
-  <p>There are two state types in Icinga - SOFT states and HARD states. These state types are a crucial part of the
-  monitoring logic, as they are used to determine when <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a> are executed and when
-  <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a> are initially sent out.</p>
+    <p>There are two state types in Icinga - SOFT states and HARD states. These state types are a crucial part of the monitoring
+    logic, as they are used to determine when <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a> are executed and when <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a> are initially sent out.</p>
 
-  <p>This document describes the difference between SOFT and HARD states, how they occur, and what happens when they
-  occur.</p>
+    <p>This document describes the difference between SOFT and HARD states, how they occur, and what happens when they occur.</p>
+  </div>
 
-  <p><span class="bold"><strong>Service and Host Check Retries</strong></span></p>
+  <div class="section" title="5.8.2. Service and Host Check Retries">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9847744"></a>5.8.2. Service and Host Check Retries</h3></div></div></div>
+    
 
-  <p>In order to prevent false alarms from transient problems, Icinga allows you to define how many times a service or
-  host should be (re)checked before it is considered to have a "real" problem. This is controlled by the
-  <span class="emphasis"><em>max_check_attempts</em></span> option in the host and service definitions. Understanding how hosts and services are
-  (re)checked in order to determine if a real problem exists is important in understanding how state types work.</p>
+    <p>In order to prevent false alarms from transient problems, Icinga allows you to define how many times a service or host
+    should be (re)checked before it is considered to have a "real" problem. This is controlled by the
+    <span class="emphasis"><em>max_check_attempts</em></span> option in the host and service definitions. Understanding how hosts and services are (re)checked
+    in order to determine if a real problem exists is important in understanding how state types work.</p>
+  </div>
 
-  <p><span class="bold"><strong>Soft States</strong></span></p>
+  <div class="section" title="5.8.3. Soft States">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9851744"></a>5.8.3. Soft States</h3></div></div></div>
+    
 
-  <p>Soft states occur in the following situations...</p>
+    <p>Soft states occur in the following situations...</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>When a service or host check results in a non-OK or non-UP state and the service check has not yet been (re)checked
-      the number of times specified by the <span class="emphasis"><em>max_check_attempts</em></span> directive in the service or host definition.
-      This is called a soft error.</p>
-    </li>
+        <p>When a service or host check results in a non-OK or non-UP state and the service check has not yet been (re)checked the number
+        of times specified by the <span class="emphasis"><em>max_check_attempts</em></span> directive in the service or host definition. This is called a soft
+        error.</p>
+      </li>
 <li class="listitem">
-      <p>When a service or host recovers from a soft error. This is considered a soft recovery.</p>
-    </li>
+        <p>When a service or host recovers from a soft error. This is considered a soft recovery.</p>
+      </li>
 </ul></div>
 
-  <p>The following things occur when hosts or services experience SOFT state changes:</p>
+    <p>The following things occur when hosts or services experience SOFT state changes:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>The SOFT state is logged.</p>
-    </li>
+        <p>The SOFT state is logged.</p>
+      </li>
 <li class="listitem">
-      <p>Event handlers are executed to handle the SOFT state.</p>
-    </li>
+        <p>Event handlers are executed to handle the SOFT state.</p>
+      </li>
 </ul></div>
 
-  <p>SOFT states are only logged if you enabled the <a class="link" href="configmain.html#configmain-log_service_retries">log_service_retries</a>
-  or <a class="link" href="configmain.html#configmain-log_host_retries">log_host_retries</a> options in your main configuration file.</p>
+    <p>SOFT states are only logged if you enabled the <a class="link" href="configmain.html#configmain-log_service_retries">log_service_retries</a> or <a class="link" href="configmain.html#configmain-log_host_retries">log_host_retries</a> options in your main configuration file.</p>
 
-  <p>The only important thing that really happens during a soft state is the execution of event handlers. Using event handlers
-  can be particularly useful if you want to try and proactively fix a problem before it turns into a HARD state. The <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> or <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>
-  macros will have a value of "<span class="emphasis"><em>SOFT</em></span>" when event handlers are executed, which allows your event handler
-  scripts to know when they should take corrective action. More information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">here</a>.</p>
+    <p>The only important thing that really happens during a soft state is the execution of event handlers. Using event handlers can be
+    particularly useful if you want to try and proactively fix a problem before it turns into a HARD state. The <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> or <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a> macros
+    will have a value of "<span class="emphasis"><em>SOFT</em></span>" when event handlers are executed, which allows your event handler scripts to know when
+    they should take corrective action. More information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">here</a>.</p>
+  </div>
 
-  <p><span class="bold"><strong>Hard States</strong></span></p>
+  <div class="section" title="5.8.4. Hard States">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9864432"></a>5.8.4. Hard States</h3></div></div></div>
+    
 
-  <p>Hard states occur for hosts and services in the following situations:</p>
+    <p>Hard states occur for hosts and services in the following situations:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>When a host or service check results in a non-UP or non-OK state and it has been (re)checked the number of times
-      specified by the <span class="emphasis"><em>max_check_attempts</em></span> option in the host or service definition. This is a hard error
-      state.</p>
-    </li>
+        <p>When a host or service check results in a non-UP or non-OK state and it has been (re)checked the number of times specified by
+        the <span class="emphasis"><em>max_check_attempts</em></span> option in the host or service definition. This is a hard error state.</p>
+      </li>
 <li class="listitem">
-      <p>When a host or service transitions from one hard error state to another error state (e.g. WARNING to CRITICAL).</p>
-    </li>
+        <p>When a host or service transitions from one hard error state to another error state (e.g. WARNING to CRITICAL).</p>
+      </li>
 <li class="listitem">
-      <p>When a service check results in a non-OK state and its corresponding host is either DOWN or UNREACHABLE.</p>
-    </li>
+        <p>When a service check results in a non-OK state and its corresponding host is either DOWN or UNREACHABLE.</p>
+      </li>
 <li class="listitem">
-      <p>When a host or service recovers from a hard error state. This is considered to be a hard recovery.</p>
-    </li>
+        <p>When a host or service recovers from a hard error state. This is considered to be a hard recovery.</p>
+      </li>
 <li class="listitem">
-      <p>When a <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive host check</a> is received. Passive host checks are treated as HARD
-      unless the <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a> option is
-      enabled.</p>
-    </li>
+        <p>When a <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive host check</a> is received. Passive host checks are treated as HARD unless the
+        <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a> option is enabled.</p>
+      </li>
 </ul></div>
 
-  <p>The following things occur when hosts or services experience HARD state changes:</p>
+    <p>The following things occur when hosts or services experience HARD state changes:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>The HARD state is logged.</p>
-    </li>
+        <p>The HARD state is logged.</p>
+      </li>
 <li class="listitem">
-      <p>Event handlers are executed to handle the HARD state.</p>
-    </li>
+        <p>Event handlers are executed to handle the HARD state.</p>
+      </li>
 <li class="listitem">
-      <p>Contacts are notifified of the host or service problem or recovery.</p>
-    </li>
+        <p>Contacts are notifified of the host or service problem or recovery.</p>
+      </li>
 </ul></div>
 
-  <p>The <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> or <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a> macros will have a value of "<span class="emphasis"><em>HARD</em></span>" when
-  event handlers are executed, which allows your event handler scripts to know when they should take corrective action. More
-  information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">here</a>.</p>
+    <p>The <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> or <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a> macros will have a value of "<span class="emphasis"><em>HARD</em></span>" when event
+    handlers are executed, which allows your event handler scripts to know when they should take corrective action. More information on
+    event handlers can be found <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">here</a>.</p>
+  </div>
 
-  <p><span class="bold"><strong>Example</strong></span></p>
+  <div class="section" title="5.8.5. Example">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9880400"></a>5.8.5. Example</h3></div></div></div>
+    
 
-  <p>Here's an example of how state types are determined, when state changes occur, and when event handlers and notifications
-  are sent out. The table below shows consecutive checks of a service over time. The service has a
-  <span class="emphasis"><em>max_check_attempts</em></span> value of 3.</p>
+    <p>Here's an example of how state types are determined, when state changes occur, and when event handlers and notifications are sent
+    out. The table below shows consecutive checks of a service over time. The service has a <span class="emphasis"><em>max_check_attempts</em></span> value of
+    3.</p>
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -190,8 +211,8 @@
 <td><p>CRITICAL</p></td>
 <td><p>HARD</p></td>
 <td><p>Yes</p></td>
-<td><p>Max check attempts has been reached, so service goes into a HARD state. Event handlers execute and a
-          problem notification is sent out. Check # is reset to 1 immediately after this happens.</p></td>
+<td><p>Max check attempts has been reached, so service goes into a HARD state. Event handlers execute and a problem
+            notification is sent out. Check # is reset to 1 immediately after this happens.</p></td>
 </tr>
 <tr>
 <td><p>4</p></td>
@@ -200,7 +221,7 @@
 <td><p>HARD</p></td>
 <td><p>Yes</p></td>
 <td><p>Service changes to a HARD WARNING state. Event handlers execute and a problem notification is sent
-          out.</p></td>
+            out.</p></td>
 </tr>
 <tr>
 <td><p>5</p></td>
@@ -208,8 +229,8 @@
 <td><p>WARNING</p></td>
 <td><p>HARD</p></td>
 <td><p>No</p></td>
-<td><p>Service stabilizes in a HARD problem state. Depending on what the notification interval for the service is,
-          another notification might be sent out.</p></td>
+<td><p>Service stabilizes in a HARD problem state. Depending on what the notification interval for the service is, another
+            notification might be sent out.</p></td>
 </tr>
 <tr>
 <td><p>6</p></td>
@@ -217,8 +238,7 @@
 <td><p>OK</p></td>
 <td><p>HARD</p></td>
 <td><p>Yes</p></td>
-<td><p>Service experiences a HARD recovery. Event handlers execute and a recovery notification is sent
-          out.</p></td>
+<td><p>Service experiences a HARD recovery. Event handlers execute and a recovery notification is sent out.</p></td>
 </tr>
 <tr>
 <td><p>7</p></td>
@@ -242,8 +262,8 @@
 <td><p>OK</p></td>
 <td><p>SOFT</p></td>
 <td><p>Yes</p></td>
-<td><p>Service experiences a SOFT recovery. Event handlers execute, but notification are not sent, as this wasn't
-          a "real" problem. State type is set HARD and check # is reset to 1 immediately after this happens.</p></td>
+<td><p>Service experiences a SOFT recovery. Event handlers execute, but notification are not sent, as this wasn't a "real"
+            problem. State type is set HARD and check # is reset to 1 immediately after this happens.</p></td>
 </tr>
 <tr>
 <td><p>10</p></td>
@@ -255,8 +275,10 @@
 </tr>
 </tbody>
 </table>
+    </div>
+
+    <a class="indexterm" name="idp9942752"></a>
   </div>
-  <a class="indexterm" name="idp9888016"></a>
 </div>
 <div class="navfooter">
 <hr>

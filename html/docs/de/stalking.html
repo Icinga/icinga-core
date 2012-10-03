@@ -28,27 +28,42 @@
 <div class="section" title="7.14. Status Stalking">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="stalking"></a>7.14. Status Stalking</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="stalking.html#idp13894960">7.14.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="stalking.html#idp13896928">7.14.2. Wie funktioniert es?</a></span></dt>
+<dt><span class="section"><a href="stalking.html#idp13955264">7.14.3. Sollte ich die Verfolgung aktivieren?</a></span></dt>
+<dt><span class="section"><a href="stalking.html#idp13957792">7.14.4. Wie aktiviere ich die Verfolgung?</a></span></dt>
+<dt><span class="section"><a href="stalking.html#idp13960240">7.14.5. Wie unterschieden sich Verfolgung und "flüchtige Services"?</a></span></dt>
+<dt><span class="section"><a href="stalking.html#idp13962464">7.14.6. Risiken</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="7.14.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13894960"></a>7.14.1. Einführung</h3></div></div></div>
+    
 
-  <p>Statusverfolgung ("state stalking") ist ein Feature, welches wahrscheinlich von den meisten Benutzern nicht eingesetzt
-  wird. Wenn es aktiviert ist, erlaubt es Ihnen die Protokollierung von Änderungen bei Service- und Host-Prüfungen, selbst wenn
-  sich der Zustand von Host oder Service nicht ändert. Wenn die Verfolgung für einen bestimmten Host oder Service aktiviert ist,
-  wird Icinga den Host oder Service sehr genau beobachten und jede Änderung protokollieren, die es in der Ausgabe der
-  Prüfergebnisse sieht. Wie Sie sehen werden, kann es sehr hilfreich bei der späteren Analyse der Log-Files sein.</p>
+    <p>Statusverfolgung ("state stalking") ist ein Feature, welches wahrscheinlich von den meisten Benutzern nicht eingesetzt wird. Wenn
+    es aktiviert ist, erlaubt es Ihnen die Protokollierung von Änderungen bei Service- und Host-Prüfungen, selbst wenn sich der Zustand von
+    Host oder Service nicht ändert. Wenn die Verfolgung für einen bestimmten Host oder Service aktiviert ist, wird Icinga den Host
+    oder Service sehr genau beobachten und jede Änderung protokollieren, die es in der Ausgabe der Prüfergebnisse sieht. Wie Sie sehen
+    werden, kann es sehr hilfreich bei der späteren Analyse der Log-Files sein.</p>
+  </div>
 
-  <p><span class="bold"><strong>Wie funktioniert es?</strong></span></p>
+  <div class="section" title="7.14.2. Wie funktioniert es?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13896928"></a>7.14.2. Wie funktioniert es?</h3></div></div></div>
+    
 
-  <p>Unter normalen Umständen wird das Ergebnis einer Host- oder Service-Prüfung nur protokolliert, wenn der Host oder Service
-  seit der letzten Prüfung seinen Zustand geändert hat. Es gibt wenige Ausnahmen, aber normalerweise ist das die Regel.</p>
+    <p>Unter normalen Umständen wird das Ergebnis einer Host- oder Service-Prüfung nur protokolliert, wenn der Host oder Service seit der
+    letzten Prüfung seinen Zustand geändert hat. Es gibt wenige Ausnahmen, aber normalerweise ist das die Regel.</p>
 
-  <p>Wenn Sie die Verfolgung für einen oder mehrere Zustände eines bestimmten Hosts oder Service aktivieren, wird Icinga
-  die Ergebnisse der Host- oder Service-Prüfung protokollieren, wenn sich die Ausgaben der Prüfung von den Ausgaben der letzten
-  Prüfung unterscheiden. Nehmen Sie das folgende Beispiel von acht aufeinander folgenden Prüfungen eines Service:</p>
+    <p>Wenn Sie die Verfolgung für einen oder mehrere Zustände eines bestimmten Hosts oder Service aktivieren, wird Icinga die
+    Ergebnisse der Host- oder Service-Prüfung protokollieren, wenn sich die Ausgaben der Prüfung von den Ausgaben der letzten Prüfung
+    unterscheiden. Nehmen Sie das folgende Beispiel von acht aufeinander folgenden Prüfungen eines Service:</p>
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -122,59 +137,76 @@
 </tr>
 </tbody>
 </table>
+    </div>
+
+    <p>Bei dieser Reihenfolge von Prüfungen würden Sie normalerweise nur zwei Einträge dieser Katastrophe sehen. Der erste würde bei
+    Prüfung x+2 auftreten, wenn der Service von einem OK- in einen WARNING-Zustand wechselt. Der zweite Log-Eintrag würde bei
+    Service-Prüfung x+3 auftreten, wenn der Service von einem WARNING- in einen CRITICAL-Zustand wechselt.</p>
+
+    <p>Aus welchem Grund auch immer möchten Sie die komplette Geschichte dieser Katastrophe in Ihren Log-Dateien sehen. Vielleicht, um
+    Ihrem Manager zu zeigen, wie schnell die Situation außer Kontrolle geriet, vielleicht nur, um bei ein paar Bier in der Kneipe darüber zu
+    lachen...</p>
+
+    <p>Wenn Sie die Verfolgung dieses Services für CRITICAL-Zustände aktiviert haben, hätten Sie zusätzlich zu den Ereignissen x+2 und
+    x+3 auch noch x+4 und x+5 protokolliert. Warum ist das so? Mit aktivierter Verfolgung hätte Icinga die Ausgaben jeder
+    Service-Prüfung untersucht, um Veränderungen zur Ausgabe der vorherigen Prüfung festzustellen. Wenn sich die Ausgaben unterscheiden und
+    sich der Zustand des Service zwischen den beiden Prüfungen nicht verändert hat, würde die Ausgabe der neueren Prüfung
+    protokolliert.</p>
+
+    <p>Ein ähnliches Beispiel für die Verfolgung könnte ein Service sein, der Ihren Web-Server prüft. Wenn das check_http-Plugin das
+    erste Mal einen WARNING-Zustand wegen eines 404-Fehlers zurückliefert und bei folgenden Prüfungen einen WARNING-Zustand wegen eines
+    nicht gefundenen Musters zurückliefert, dann möchten Sie das vielleicht wissen. Wenn Sie die Statusverfolgung für WARNING-Zustände nicht
+    aktiviert haben, würde nur das erste WARNING-Ereignis (der 404-Fehler) protokolliert und Sie hätten keine Ahnung (beim Blick auf
+    archivierte Protokolle), dass weitere WARNING-Zustände nicht auf dem 404-Fehler zurückzuführen sind, sondern dass bestimmte Textmuster
+    nicht in der untersuchten Web-Seite zu finden waren.</p>
   </div>
 
-  <p>Bei dieser Reihenfolge von Prüfungen würden Sie normalerweise nur zwei Einträge dieser Katastrophe sehen. Der erste würde
-  bei Prüfung x+2 auftreten, wenn der Service von einem OK- in einen WARNING-Zustand wechselt. Der zweite Log-Eintrag würde bei
-  Service-Prüfung x+3 auftreten, wenn der Service von einem WARNING- in einen CRITICAL-Zustand wechselt.</p>
+  <div class="section" title="7.14.3. Sollte ich die Verfolgung aktivieren?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13955264"></a>7.14.3. Sollte ich die Verfolgung aktivieren?</h3></div></div></div>
+    
 
-  <p>Aus welchem Grund auch immer möchten Sie die komplette Geschichte dieser Katastrophe in Ihren Log-Dateien sehen.
-  Vielleicht, um Ihrem Manager zu zeigen, wie schnell die Situation außer Kontrolle geriet, vielleicht nur, um bei ein paar Bier
-  in der Kneipe darüber zu lachen...</p>
+    <p>Zuerst müssen Sie entscheiden, ob Sie wirklich Bedarf zur Untersuchung archivierter Protokolldaten haben, um die genaue Ursache
+    eines Problems zu finden. Sie können entscheiden, dass Sie dieses Feature für ein paar Hosts oder Services brauchen, aber nicht für
+    alle. Sie können auch feststellen, dass Sie die Verfolgung nur für einige Host- oder Service-Zustände brauchen, statt für alle. Sie
+    könnten z.B. entscheiden, dass Sie die Verfolgung nur für die WARNING- und CRITICAL-Zustände eines Service benötigen, aber nicht OK- und
+    UNKNOWN-Zustände.</p>
 
-  <p>Wenn Sie die Verfolgung dieses Services für CRITICAL-Zustände aktiviert haben, hätten Sie zusätzlich zu den Ereignissen
-  x+2 und x+3 auch noch x+4 und x+5 protokolliert. Warum ist das so? Mit aktivierter Verfolgung hätte Icinga die Ausgaben
-  jeder Service-Prüfung untersucht, um Veränderungen zur Ausgabe der vorherigen Prüfung festzustellen. Wenn sich die Ausgaben
-  unterscheiden und sich der Zustand des Service zwischen den beiden Prüfungen nicht verändert hat, würde die Ausgabe der neueren
-  Prüfung protokolliert.</p>
+    <p>Die Entscheidung, die Verfolgung für einen bestimmten Host oder Service zu aktivieren, hängt auch vom Plugin ab, das Sie zur
+    Prüfung des Hosts oder Service einsetzen.</p>
+  </div>
 
-  <p>Ein ähnliches Beispiel für die Verfolgung könnte ein Service sein, der Ihren Web-Server prüft. Wenn das check_http-Plugin
-  das erste Mal einen WARNING-Zustand wegen eines 404-Fehlers zurückliefert und bei folgenden Prüfungen einen WARNING-Zustand
-  wegen eines nicht gefundenen Musters zurückliefert, dann möchten Sie das vielleicht wissen. Wenn Sie die Statusverfolgung für
-  WARNING-Zustände nicht aktiviert haben, würde nur das erste WARNING-Ereignis (der 404-Fehler) protokolliert und Sie hätten keine
-  Ahnung (beim Blick auf archivierte Protokolle), dass weitere WARNING-Zustände nicht auf dem 404-Fehler zurückzuführen sind,
-  sondern dass bestimmte Textmuster nicht in der untersuchten Web-Seite zu finden waren.</p>
+  <div class="section" title="7.14.4. Wie aktiviere ich die Verfolgung?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13957792"></a>7.14.4. Wie aktiviere ich die Verfolgung?</h3></div></div></div>
+    
 
-  <p><span class="bold"><strong>Sollte ich die Verfolgung aktivieren?</strong></span></p>
+    <p>Sie können die Verfolgung für Hosts und Services durch die <span class="emphasis"><em>stalking_options</em></span>-Direktive in den <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Host- und Service-Definitionen</a> aktivieren.</p>
+  </div>
 
-  <p>Zuerst müssen Sie entscheiden, ob Sie wirklich Bedarf zur Untersuchung archivierter Protokolldaten haben, um die genaue
-  Ursache eines Problems zu finden. Sie können entscheiden, dass Sie dieses Feature für ein paar Hosts oder Services brauchen,
-  aber nicht für alle. Sie können auch feststellen, dass Sie die Verfolgung nur für einige Host- oder Service-Zustände brauchen,
-  statt für alle. Sie könnten z.B. entscheiden, dass Sie die Verfolgung nur für die WARNING- und CRITICAL-Zustände eines Service
-  benötigen, aber nicht OK- und UNKNOWN-Zustände.</p>
+  <div class="section" title='7.14.5. Wie unterschieden sich Verfolgung und "flüchtige Services"?'>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13960240"></a>7.14.5. Wie unterschieden sich Verfolgung und "flüchtige Services"?</h3></div></div></div>
+    
 
-  <p>Die Entscheidung, die Verfolgung für einen bestimmten Host oder Service zu aktivieren, hängt auch vom Plugin ab, das Sie
-  zur Prüfung des Hosts oder Service einsetzen.</p>
+    <p><a class="link" href="volatileservices.html" title="7.4. sprunghafte Services">Flüchtige Services</a> (volatile services) sind ähnlich, aber sie verursachen
+    Benachrichtigungen und führen Eventhandler aus. Die Verfolgung dient lediglich der Protokollierung.</p>
+  </div>
 
-  <p><span class="bold"><strong>Wie aktiviere ich die Verfolgung?</strong></span></p>
+  <div class="section" title="7.14.6. Risiken">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13962464"></a>7.14.6. Risiken</h3></div></div></div>
+    
 
-  <p>Sie können die Verfolgung für Hosts und Services durch die <span class="emphasis"><em>stalking_options</em></span>-Direktive in den <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Host- und Service-Definitionen</a> aktivieren.</p>
+    <p>Sie sollten beachten, dass es einige potenzielle Fallstricke bei der Aktivierung von Verfolgungen gibt. Sie beziehen sich alle auf
+    die Berichtsfunktionen, die in verschiedenen <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die CGIs">CGIs</a> zu finden sind (Histogramm, Alarmübersicht, usw.). Weil
+    die Statusverfolgung zusätzliche Alarmeinträge schreibt, werden die Berichte eine erhöhte Anzahl von Alarmen anzeigen.</p>
 
-  <p><span class="bold"><strong>Wie unterschieden sich Verfolgung und "flüchtige Services"?</strong></span></p>
+    <p>Als generelle Regel würden wir empfehlen, dass Sie die Verfolgung für Hosts und Services <span class="emphasis"><em>nicht</em></span> aktivieren,
+    ohne gründlich darüber nachgedacht zu haben. Auf jeden Fall ist sie da, wenn Sie sie brauchen.</p>
 
-  <p><a class="link" href="volatileservices.html" title="7.4. sprunghafte Services">Flüchtige Services</a> (volatile services) sind ähnlich, aber sie verursachen
-  Benachrichtigungen und führen Eventhandler aus. Die Verfolgung dient lediglich der Protokollierung.</p>
-
-  <p><span class="bold"><strong>Risiken</strong></span></p>
-
-  <p>Sie sollten beachten, dass es einige potenzielle Fallstricke bei der Aktivierung von Verfolgungen gibt. Sie beziehen sich
-  alle auf die Berichtsfunktionen, die in verschiedenen <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Informationen über die CGIs">CGIs</a> zu finden sind (Histogramm,
-  Alarmübersicht, usw.). Weil die Statusverfolgung zusätzliche Alarmeinträge schreibt, werden die Berichte eine erhöhte Anzahl von
-  Alarmen anzeigen.</p>
-
-  <p>Als generelle Regel würden wir empfehlen, dass Sie die Verfolgung für Hosts und Services <span class="emphasis"><em>nicht</em></span>
-  aktivieren, ohne gründlich darüber nachgedacht zu haben. Auf jeden Fall ist sie da, wenn Sie sie brauchen.</p>
-  <a class="indexterm" name="idp13892416"></a>
+    <a class="indexterm" name="idp13965936"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

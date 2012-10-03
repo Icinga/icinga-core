@@ -28,75 +28,92 @@
 <div class="section" title="2.17. Öffentlich zugängliche Dienste überwachen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-publicservices"></a>2.17. Öffentlich zugängliche Dienste überwachen</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1385680">2.17.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1400480">2.17.2. Plugins zur Überwachung von Services</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1406512">2.17.3. erstellen einer Host-Definition</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1413216">2.17.4. erstellen von Service-Definitionen</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1468992">2.17.5. Icinga erneut starten</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <a class="indexterm" name="idp1382352"></a>
 
-  <p>Dieses Dokument beschreibt, wie Sie öffentlich zugängliche Dienste, Applikationen und Protokolle überwachen können. Mit
-  "öffentlich" meinen wir Dienste, die über das Netzwerk zugänglich sind - entweder das lokale Netzwerk oder das größere Internet.
-  Beispiele von öffentlichen Diensten umfassen u.a. HTTP, POP3, IMAP, FTP und SSH. Es gibt viele weitere öffentliche Dienste, die
-  Sie wahrscheinlich jeden Tag benutzen. Diese Dienste und Applikationen, genau wie ihre zu Grunde liegenden Protokolle, können
-  normalerweise mit Icinga ohne spezielle Zugangsvoraussetzungen überwacht werden.</p>
+  <a class="indexterm" name="idp1384048"></a>
 
-  <p>Private Dienste können im Gegensatz dazu nicht ohne einen dazwischen geschalteten Agenten überwacht werden. Beispiele von
-  mit Hosts verbundenen privaten Diensten sind Dinge wie CPU-Auslastung, Speicherbelegung, Plattenbelegung, angemeldete Benutzer,
-  Prozessinformationen usw. Diese privaten Dienste oder Attribute von Hosts werden normalerweise nicht an externe Clients
-  offengelegt. Diese Situation erfordert, dass ein zwischengeschalteter Überwachungsagent auf jedem Host installiert wird, den Sie
-  überwachen müssen. Mehr Informationen zur Überwachung von privaten Diensten auf verschiedenen Arten von Hosts finden Sie in der
-  Dokumentation zu:</p>
+  <div class="section" title="2.17.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1385680"></a>2.17.1. Einführung</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <p>Dieses Dokument beschreibt, wie Sie öffentlich zugängliche Dienste, Applikationen und Protokolle überwachen können. Mit
+    "öffentlich" meinen wir Dienste, die über das Netzwerk zugänglich sind - entweder das lokale Netzwerk oder das größere Internet.
+    Beispiele von öffentlichen Diensten umfassen u.a. HTTP, POP3, IMAP, FTP und SSH. Es gibt viele weitere öffentliche Dienste, die Sie
+    wahrscheinlich jeden Tag benutzen. Diese Dienste und Applikationen, genau wie ihre zu Grunde liegenden Protokolle, können normalerweise
+    mit Icinga ohne spezielle Zugangsvoraussetzungen überwacht werden.</p>
+
+    <p>Private Dienste können im Gegensatz dazu nicht ohne einen dazwischen geschalteten Agenten überwacht werden. Beispiele von mit
+    Hosts verbundenen privaten Diensten sind Dinge wie CPU-Auslastung, Speicherbelegung, Plattenbelegung, angemeldete Benutzer,
+    Prozessinformationen usw. Diese privaten Dienste oder Attribute von Hosts werden normalerweise nicht an externe Clients offengelegt.
+    Diese Situation erfordert, dass ein zwischengeschalteter Überwachungsagent auf jedem Host installiert wird, den Sie überwachen müssen.
+    Mehr Informationen zur Überwachung von privaten Diensten auf verschiedenen Arten von Hosts finden Sie in der Dokumentation zu:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="monitoring-windows.html" title="2.12. Windows-Maschinen überwachen">Windows-Rechner überwachen</a></p>
-    </li>
+        <p><a class="link" href="monitoring-windows.html" title="2.12. Windows-Maschinen überwachen">Windows-Rechner überwachen</a></p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="monitoring-netware.html" title="2.14. Netware-Server überwachen">Netware-Server überwachen</a></p>
-    </li>
+        <p><a class="link" href="monitoring-netware.html" title="2.14. Netware-Server überwachen">Netware-Server überwachen</a></p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="monitoring-linux.html" title="2.13. Linux/Unix-Rechner überwachen">Linux/Unix-Rechner überwachen</a></p>
-    </li>
+        <p><a class="link" href="monitoring-linux.html" title="2.13. Linux/Unix-Rechner überwachen">Linux/Unix-Rechner überwachen</a></p>
+      </li>
 </ul></div>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Gelegentlich werden Sie feststellen, dass Informationen zu privaten Diensten und Applikationen
-  mit SNMP überwacht werden können. Der SNMP-Agent erlaubt Ihnen, entfernt liegende anderenfalls private (und unzugängliche)
-  Informationen des Hosts zu überwachen. Mehr Informationen zur Überwachung von Diensten mit SNMP finden Sie in der Dokumentation
-  zur <a class="link" href="monitoring-routers.html" title="2.16. Router und Switches überwachen">Überwachung von Switches und Routern</a>.</p>
+    <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Gelegentlich werden Sie feststellen, dass Informationen zu privaten Diensten und Applikationen mit SNMP
+    überwacht werden können. Der SNMP-Agent erlaubt Ihnen, entfernt liegende anderenfalls private (und unzugängliche) Informationen des
+    Hosts zu überwachen. Mehr Informationen zur Überwachung von Diensten mit SNMP finden Sie in der Dokumentation zur <a class="link" href="monitoring-routers.html" title="2.16. Router und Switches überwachen">Überwachung von Switches und Routern</a>.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen
-  sich auf Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span> und
-  <span class="emphasis"><em>localhost.cfg</em></span>) definiert sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung
-  folgen.</p>
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
+    Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span> und <span class="emphasis"><em>localhost.cfg</em></span>) definiert
+    sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung folgen.</p>
+  </div>
 
-  <p><span class="bold"><strong>Plugins zur Überwachung von Services</strong></span></p>
+  <div class="section" title="2.17.2. Plugins zur Überwachung von Services">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1400480"></a>2.17.2. Plugins zur Überwachung von Services</h3></div></div></div>
+    
 
-  <p>Wenn Sie feststellen, dass Sie eine bestimmte Applikation, einen Service oder ein Protokoll überwachen müssen, dann stehen
-  die Chancen gut, dass bereits ein <a class="link" href="plugins.html" target="_top">Plugin</a> existiert. Die offizielle
-  Icinga-Plugin-Distribution enthält Plugins, mit denen eine Reihe von Services und Protokollen überwacht werden können. Es
-  gibt auch eine große Zahl von Plugins, die andere Leute beigetragen haben, die Sie im
-  <span class="emphasis"><em>contrib/</em></span>-Unterverzeichnis der Plugin-Distribution finden. Die <a class="link" href="http://www.nagiosexchange.org/" target="_top">IcingaExchange.org</a>-Website stellt eine Reihe von zusätzlichen Plugins
-  bereit, die andere Benutzer geschrieben haben, also schauen Sie vorbei, wenn Sie Zeit finden.</p>
+    <p>Wenn Sie feststellen, dass Sie eine bestimmte Applikation, einen Service oder ein Protokoll überwachen müssen, dann stehen die
+    Chancen gut, dass bereits ein <a class="link" href="plugins.html" target="_top">Plugin</a> existiert. Die offizielle Icinga-Plugin-Distribution
+    enthält Plugins, mit denen eine Reihe von Services und Protokollen überwacht werden können. Es gibt auch eine große Zahl von Plugins,
+    die andere Leute beigetragen haben, die Sie im <span class="emphasis"><em>contrib/</em></span>-Unterverzeichnis der Plugin-Distribution finden. Die <a class="link" href="http://www.nagiosexchange.org/" target="_top">IcingaExchange.org</a>-Website stellt eine Reihe von zusätzlichen Plugins bereit,
+    die andere Benutzer geschrieben haben, also schauen Sie vorbei, wenn Sie Zeit finden.</p>
 
-  <p>Wenn Sie zufällig kein entsprechendes Plugin für das finden, was Sie überwachen möchten, dann können Sie immer Ihr eigenes
-  schreiben. Plugins sind einfach zu schreiben, also lassen Sie sich nicht von diesem Gedanken abschrecken. Lesen Sie dazu die
-  Dokumentation über die <a class="link" href="pluginapi.html" title="11.1. Nagios Plugin API">Entwicklung von Plugins</a>.</p>
+    <p>Wenn Sie zufällig kein entsprechendes Plugin für das finden, was Sie überwachen möchten, dann können Sie immer Ihr eigenes
+    schreiben. Plugins sind einfach zu schreiben, also lassen Sie sich nicht von diesem Gedanken abschrecken. Lesen Sie dazu die
+    Dokumentation über die <a class="link" href="pluginapi.html" title="11.1. Nagios Plugin API">Entwicklung von Plugins</a>.</p>
 
-  <p>Ich werde Sie durch die Überwachung von einigen grundlegenden Diensten führen, die Sie vielleicht früher oder später
-  brauchen. Jeder dieser Services kann mit einem der Plugins überwacht werden, die als Teil der Icinga-Plugin-Distribution
-  installiert werden. Lassen Sie uns beginnen...</p>
+    <p>Ich werde Sie durch die Überwachung von einigen grundlegenden Diensten führen, die Sie vielleicht früher oder später brauchen.
+    Jeder dieser Services kann mit einem der Plugins überwacht werden, die als Teil der Icinga-Plugin-Distribution installiert
+    werden. Lassen Sie uns beginnen...</p>
+  </div>
 
-  <p><span class="bold"><strong>erstellen einer Host-Definition</strong></span></p>
+  <div class="section" title="2.17.3. erstellen einer Host-Definition">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1406512"></a>2.17.3. erstellen einer Host-Definition</h3></div></div></div>
+    
 
-  <p>Bevor Sie einen Service überwachen können, müssen Sie einen <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a> definieren,
-  der mit dem Service verbunden ist. Sie können Host-Definitionen in jeder Objektkonfigurationsdatei platzieren, die mit einer
-  <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>-Direktive definiert ist oder in einem Verzeichnis, das in einer <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a>-Direktive angegeben ist. Wenn Sie bereits eine Host-Definition angelegt haben, dann
-  können Sie diesen Schritt überspringen.</p>
+    <p>Bevor Sie einen Service überwachen können, müssen Sie einen <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a> definieren, der mit
+    dem Service verbunden ist. Sie können Host-Definitionen in jeder Objektkonfigurationsdatei platzieren, die mit einer <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>-Direktive definiert ist oder in einem Verzeichnis, das in einer <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a>-Direktive angegeben ist. Wenn Sie bereits eine Host-Definition angelegt haben, dann können
+    Sie diesen Schritt überspringen.</p>
 
-  <p>Lassen Sie uns für dieses Beispiel annehmen, dass Sie eine Reihe von Services auf einem entfernten Host überwachen wollen.
-  Lassen Sie uns diesen Host <span class="emphasis"><em>remotehost</em></span> nennen. Die Host-Definition kann in einer eigenen Datei ablegt oder
-  zu einer bereits existierenden Objektkonfigurationsdatei hinzugefügt werden. Hier nun, wie die Host-Definition für
-  <span class="emphasis"><em>remotehost</em></span> aussehen könnte:</p>
+    <p>Lassen Sie uns für dieses Beispiel annehmen, dass Sie eine Reihe von Services auf einem entfernten Host überwachen wollen. Lassen
+    Sie uns diesen Host <span class="emphasis"><em>remotehost</em></span> nennen. Die Host-Definition kann in einer eigenen Datei ablegt oder zu einer bereits
+    existierenden Objektkonfigurationsdatei hinzugefügt werden. Hier nun, wie die Host-Definition für <span class="emphasis"><em>remotehost</em></span>
+    aussehen könnte:</p>
 
-  <pre class="screen"> define host{
+    <pre class="programlisting"> define host{
         use             generic-host            ; Inherit default values from a template
         host_name       remotehost              ; The name we're giving to this host
         alias           Some Remote Host        ; A longer name associated with the host
@@ -104,248 +121,260 @@
         hostgroups      allhosts                ; Host groups this host is associated with
         }</pre>
 
-  <p>Nachdem für den Host eine Definition hinzugefügt wurde, können wir mit der Definition von zu überwachenden Services
-  beginnen. Genau wie Host-Definitionen können auch Service-Definitionen in jeder Objektkonfigurationdatei abgelegt werden.</p>
+    <p>Nachdem für den Host eine Definition hinzugefügt wurde, können wir mit der Definition von zu überwachenden Services beginnen.
+    Genau wie Host-Definitionen können auch Service-Definitionen in jeder Objektkonfigurationdatei abgelegt werden.</p>
+  </div>
 
-  <p><span class="bold"><strong>erstellen von Service-Definitionen</strong></span></p>
+  <div class="section" title="2.17.4. erstellen von Service-Definitionen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1413216"></a>2.17.4. erstellen von Service-Definitionen</h3></div></div></div>
+    
 
-  <p>Für jeden Service, den Sie überwachen wollen, müssen Sie in Icinga einen <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a> definieren, der mit der Host-Definition verbunden ist, die Sie gerade
-  angelegt haben. Sie können Host-Definitionen in jeder Objektkonfigurationsdatei platzieren, die mit einer <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>-Direktive definiert ist oder in einem Verzeichnis, das in einer <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a>-Direktive angegeben ist.</p>
+    <p>Für jeden Service, den Sie überwachen wollen, müssen Sie in Icinga einen <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service</a> definieren, der mit der Host-Definition verbunden ist, die Sie gerade angelegt haben.
+    Sie können Host-Definitionen in jeder Objektkonfigurationsdatei platzieren, die mit einer <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a>-Direktive definiert ist oder in einem Verzeichnis, das in einer <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a>-Direktive angegeben ist.</p>
 
-  <p>Einige Beispiel-Service-Definitionen zur Überwachung von gebräuchlichen Services (HTTP, FTP, usw.) finden Sie
-  nachfolgend.</p>
+    <p>Einige Beispiel-Service-Definitionen zur Überwachung von gebräuchlichen Services (HTTP, FTP, usw.) finden Sie nachfolgend.</p>
 
-  <p><span class="bold"><strong>HTTP überwachen</strong></span></p>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><span class="bold"><strong>HTTP überwachen</strong></span></p>
 
-  <p>Wahrscheinlich werden Sie zu irgendeinem Zeitpunkt Web-Server überwachen wollen - entweder Ihre eigenen oder die von
-  anderen. Das <span class="emphasis"><em>check_http</em></span>-Plugin macht genau das. Es versteht HTTP und kann Antwortzeiten, Fehler-Codes,
-  Zeichenketten im zurückgelieferten HTML, Server-Zertifikate und vieles mehr überwachen.</p>
+        <p>Wahrscheinlich werden Sie zu irgendeinem Zeitpunkt Web-Server überwachen wollen - entweder Ihre eigenen oder die von anderen.
+        Das <span class="emphasis"><em>check_http</em></span>-Plugin macht genau das. Es versteht HTTP und kann Antwortzeiten, Fehler-Codes, Zeichenketten im
+        zurückgelieferten HTML, Server-Zertifikate und vieles mehr überwachen.</p>
 
-  <p>Die <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_http</em></span>-Plugin.
-  Sie lautet:</p>
+        <p>Die <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_http</em></span>-Plugin. Sie
+        lautet:</p>
 
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         name            check_http
         command_name    check_http
         command_line    $USER1$/check_http -I $HOSTADDRESS$ $ARG1$
         }</pre>
 
-  <p>Eine einfache Service-Definition, um den HTTP-Service auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde
-  so aussehen:</p>
+        <p>Eine einfache Service-Definition, um den HTTP-Service auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde so
+        aussehen:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     HTTP
         check_command           check_http
         }</pre>
 
-  <p>Diese einfache Service-Definition wird den auf <span class="emphasis"><em>remotehost</em></span> laufenden HTTP-Service überwachen. Es
-  werden Alarme erzeugt, wenn der Web-Server nicht innerhalb von 10 Sekunden antwortet bzw. wenn HTTP-Fehler-Codes (403, 404,
-  usw.) zurückgeliefert werden. Das ist alles, was Sie für eine einfache Überwachung brauchen. Ziemlich simpel, oder?</p>
+        <p>Diese einfache Service-Definition wird den auf <span class="emphasis"><em>remotehost</em></span> laufenden HTTP-Service überwachen. Es werden
+        Alarme erzeugt, wenn der Web-Server nicht innerhalb von 10 Sekunden antwortet bzw. wenn HTTP-Fehler-Codes (403, 404, usw.)
+        zurückgeliefert werden. Das ist alles, was Sie für eine einfache Überwachung brauchen. Ziemlich simpel, oder?</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Für eine erweiterte Überwachung starten Sie das <span class="emphasis"><em>check_http</em></span>-Plugin manuell
-  mit <span class="emphasis"><em>--help</em></span> als Kommandozeilenargument, um alle Optionen zu sehen, die das Plugin unterstützt. Diese
-  <span class="emphasis"><em>--help</em></span>-Syntax funktioniert bei allen Plugins, die wir in diesem Dokument behandeln werden.</p>
+        <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Für eine erweiterte Überwachung starten Sie das <span class="emphasis"><em>check_http</em></span>-Plugin manuell mit
+        <span class="emphasis"><em>--help</em></span> als Kommandozeilenargument, um alle Optionen zu sehen, die das Plugin unterstützt. Diese
+        <span class="emphasis"><em>--help</em></span>-Syntax funktioniert bei allen Plugins, die wir in diesem Dokument behandeln werden.</p>
 
-  <p>Eine fortgeschrittenere Definition zur Überwachung des HTTP-Service finden Sie nachfolgend. Diese Service-Definition wird
-  prüfen, ob der URI /download/index.php die Zeichenkette "latest-version.tar.gz" enthält. Falls die Zeichenkette nicht gefunden
-  wird, der URI nicht gültig ist oder der Web-Server länger als fünf Sekunden für die Antwort braucht, wird ein Fehler
-  erzeugt.</p>
+        <p>Eine fortgeschrittenere Definition zur Überwachung des HTTP-Service finden Sie nachfolgend. Diese Service-Definition wird
+        prüfen, ob der URI /download/index.php die Zeichenkette "latest-version.tar.gz" enthält. Falls die Zeichenkette nicht gefunden wird,
+        der URI nicht gültig ist oder der Web-Server länger als fünf Sekunden für die Antwort braucht, wird ein Fehler erzeugt.</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     Product Download Link
         check_command           check_http!-u /download/index.php -t 5 -s "latest-version.tar.gz"
         }</pre>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>FTP überwachen</strong></span></p>
 
-  <p><span class="bold"><strong>FTP überwachen</strong></span></p>
+        <p>Wenn Sie FTP-Server überwachen müssen, können Sie das <span class="emphasis"><em>check_ftp</em></span>-Plugin benutzen. Die
+        <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_ftp</em></span>-Plugin. Sie
+        lautet:</p>
 
-  <p>Wenn Sie FTP-Server überwachen müssen, können Sie das <span class="emphasis"><em>check_ftp</em></span>-Plugin benutzen. Die
-  <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_ftp</em></span>-Plugin. Sie
-  lautet:</p>
-
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         command_name    check_ftp
         command_line    $USER1$/check_ftp -H $HOSTADDRESS$ $ARG1$
         }</pre>
 
-  <p>Eine einfache Service-Definition, um den FTP-Server auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde
-  so aussehen:</p>
+        <p>Eine einfache Service-Definition, um den FTP-Server auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde so
+        aussehen:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     FTP
         check_command           check_ftp
         }</pre>
 
-  <p>Diese Service-Definition wird den FTP-Service überwachen und Alarme erzeugen, wenn der FTP-Server nicht innerhalb von 10
-  Sekunden antwortet.</p>
+        <p>Diese Service-Definition wird den FTP-Service überwachen und Alarme erzeugen, wenn der FTP-Server nicht innerhalb von 10
+        Sekunden antwortet.</p>
 
-  <p>Eine fortgeschrittenere Definition finden Sie nachfolgend. Dieser Service wird den FTP-Server prüfen, der auf Port 1023
-  auf <span class="emphasis"><em>remotehost</em></span> läuft. Falls der FTP-Server nicht innerhalb von fünf Sekunden antwortet oder die
-  Server-Antwort nicht die Zeichenkette "Pure-FTPd [TLS]" enthält, wird ein Fehler erzeugt.</p>
+        <p>Eine fortgeschrittenere Definition finden Sie nachfolgend. Dieser Service wird den FTP-Server prüfen, der auf Port 1023 auf
+        <span class="emphasis"><em>remotehost</em></span> läuft. Falls der FTP-Server nicht innerhalb von fünf Sekunden antwortet oder die Server-Antwort
+        nicht die Zeichenkette "Pure-FTPd [TLS]" enthält, wird ein Fehler erzeugt.</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     Special FTP 
         check_command           check_ftp!-p 1023 -t 5 -e "Pure-FTPd [TLS]"
         }</pre>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>SSH überwachen</strong></span></p>
 
-  <p><span class="bold"><strong>SSH überwachen</strong></span></p>
+        <p>Wenn Sie SSH-Server überwachen müssen, können Sie das <span class="emphasis"><em>check_ssh</em></span>-Plugin benutzen. Die
+        <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_ssh</em></span>-Plugin. Sie
+        lautet:</p>
 
-  <p>Wenn Sie SSH-Server überwachen müssen, können Sie das <span class="emphasis"><em>check_ssh</em></span>-Plugin benutzen. Die
-  <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_ssh</em></span>-Plugin. Sie
-  lautet:</p>
-
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         command_name    check_ssh
         command_line    $USER1$/check_ssh $ARG1$ $HOSTADDRESS$
         }</pre>
 
-  <p>Eine einfache Service-Definition, um den SSH-Server auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde
-  so aussehen:</p>
+        <p>Eine einfache Service-Definition, um den SSH-Server auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde so
+        aussehen:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     SSH
         check_command           check_ssh
         }</pre>
 
-  <p>Diese Service-Definition wird den SSH-Service überwachen und Alarme erzeugen, wenn der SSH-Server nicht innerhalb von 10
-  Sekunden antwortet.</p>
+        <p>Diese Service-Definition wird den SSH-Service überwachen und Alarme erzeugen, wenn der SSH-Server nicht innerhalb von 10
+        Sekunden antwortet.</p>
 
-  <p>Eine fortgeschrittenere Definition finden Sie nachfolgend. Dieser Service wird den SSH-Server prüfen und einen Fehler
-  erzeugen, wenn der Server nicht innerhalb von fünf Sekunden antwortet oder die Server-Antwort nicht mit der Zeichenkette
-  "OpenSSH_4.2" übereinstimmt.</p>
+        <p>Eine fortgeschrittenere Definition finden Sie nachfolgend. Dieser Service wird den SSH-Server prüfen und einen Fehler
+        erzeugen, wenn der Server nicht innerhalb von fünf Sekunden antwortet oder die Server-Antwort nicht mit der Zeichenkette
+        "OpenSSH_4.2" übereinstimmt.</p>
 
-  <pre class="screen">
-define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     SSH Version Check 
         check_command           check_ssh!-t 5 -r "OpenSSH_4.2"
         }</pre>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>SMTP</strong></span></p>
 
-  <p><span class="bold"><strong>SMTP</strong></span></p>
+        <p>Das <span class="emphasis"><em>check_smtp</em></span>-Plugin kann genutzt werden, um Ihren e-Mail-Server zu überwachen. Die
+        <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_smtp</em></span>-Plugin. Sie
+        lautet:</p>
 
-  <p>Das <span class="emphasis"><em>check_smtp</em></span>-Plugin kann genutzt werden, um Ihren e-Mail-Server zu überwachen. Die
-  <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_smtp</em></span>-Plugin. Sie
-  lautet:</p>
-
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         command_name    check_smtp
         command_line    $USER1$/check_smtp -H $HOSTADDRESS$ $ARG1$
         }</pre>
 
-  <p>Eine einfache Service-Definition, um den SMTP-Server auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde
-  so aussehen:</p>
+        <p>Eine einfache Service-Definition, um den SMTP-Server auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde so
+        aussehen:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     SMTP
         check_command           check_smtp
         }</pre>
 
-  <p>Diese Service-Definition wird den SMTP-Service überwachen und Alarme erzeugen, wenn der SMTP-Server nicht innerhalb von 10
-  Sekunden antwortet.</p>
+        <p>Diese Service-Definition wird den SMTP-Service überwachen und Alarme erzeugen, wenn der SMTP-Server nicht innerhalb von 10
+        Sekunden antwortet.</p>
 
-  <p>Eine fortgeschrittenere Definition finden Sie nachfolgend. Dieser Service wird den SMTP-Server prüfen und einen Fehler
-  erzeugen, wenn der Server nicht innerhalb von fünf Sekunden antwortet oder die Server-Antwort nicht die Zeichenkette
-  "mygreatmailserver" enthält.</p>
+        <p>Eine fortgeschrittenere Definition finden Sie nachfolgend. Dieser Service wird den SMTP-Server prüfen und einen Fehler
+        erzeugen, wenn der Server nicht innerhalb von fünf Sekunden antwortet oder die Server-Antwort nicht die Zeichenkette
+        "mygreatmailserver" enthält.</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     SMTP Response Check 
         check_command           check_smtp!-t 5 -e "mygreatmailserver.com"
         }</pre>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>POP3 überwachen</strong></span></p>
 
-  <p><span class="bold"><strong>POP3 überwachen</strong></span></p>
+        <p>Das <span class="emphasis"><em>check_pop</em></span>-Plugin kann genutzt werden, um den POP3-Service Ihres e-Mail-Servers zu überwachen. Die
+        <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_pop</em></span>-Plugin. Sie
+        lautet:</p>
 
-  <p>Das <span class="emphasis"><em>check_pop</em></span>-Plugin kann genutzt werden, um den POP3-Service Ihres e-Mail-Servers zu überwachen. Die
-  <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_pop</em></span>-Plugin. Sie
-  lautet:</p>
-
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         command_name    check_pop
         command_line    $USER1$/check_pop -H $HOSTADDRESS$ $ARG1$
         }</pre>
 
-  <p>Eine einfache Service-Definition, um den POP3-Service auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde
-  so aussehen:</p>
+        <p>Eine einfache Service-Definition, um den POP3-Service auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde so
+        aussehen:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     POP3
         check_command           check_pop
         }</pre>
 
-  <p>Diese Service-Definition wird den POP3-Service überwachen und Alarme erzeugen, wenn der POP3-Server nicht innerhalb von 10
-  Sekunden antwortet.</p>
+        <p>Diese Service-Definition wird den POP3-Service überwachen und Alarme erzeugen, wenn der POP3-Server nicht innerhalb von 10
+        Sekunden antwortet.</p>
 
-  <p>Eine fortgeschrittenere Definition finden Sie nachfolgend. Dieser Service wird den POP3-Service prüfen und einen Fehler
-  erzeugen, wenn der Server nicht innerhalb von fünf Sekunden antwortet oder die Server-Antwort nicht die Zeichenkette
-  "mygreatmailserver.com" übereinstimmt.</p>
+        <p>Eine fortgeschrittenere Definition finden Sie nachfolgend. Dieser Service wird den POP3-Service prüfen und einen Fehler
+        erzeugen, wenn der Server nicht innerhalb von fünf Sekunden antwortet oder die Server-Antwort nicht die Zeichenkette
+        "mygreatmailserver.com" übereinstimmt.</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     POP3 Response Check 
         check_command           check_pop!-t 5 -e "mygreatmailserver.com"
         }</pre>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>IMAP überwachen</strong></span></p>
 
-  <p><span class="bold"><strong>IMAP überwachen</strong></span></p>
+        <p>Das <span class="emphasis"><em>check_imap</em></span>-Plugin kann genutzt werden, um den IMAP4-Service Ihres e-Mail-Servers zu überwachen. Die
+        <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_imap</em></span>-Plugin. Sie
+        lautet:</p>
 
-  <p>Das <span class="emphasis"><em>check_imap</em></span>-Plugin kann genutzt werden, um den IMAP4-Service Ihres e-Mail-Servers zu überwachen.
-  Die <span class="emphasis"><em>commands.cfg</em></span>-Datei enthält eine Befehlsdefinition für das <span class="emphasis"><em>check_imap</em></span>-Plugin. Sie
-  lautet:</p>
-
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         command_name    check_imap
         command_line    $USER1$/check_imap -H $HOSTADDRESS$ $ARG1$
         }</pre>
 
-  <p>Eine einfache Service-Definition, um den IMAP4-Server auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde
-  so aussehen:</p>
+        <p>Eine einfache Service-Definition, um den IMAP4-Server auf dem <span class="emphasis"><em>remotehost</em></span>-Rechner zu überwachen, würde so
+        aussehen:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     IMAP
         check_command           check_imap
         }</pre>
 
-  <p>Diese Service-Definition wird den IMAP4-Service überwachen und Alarme erzeugen, wenn der IMAP-Server nicht innerhalb von
-  10 Sekunden antwortet.</p>
+        <p>Diese Service-Definition wird den IMAP4-Service überwachen und Alarme erzeugen, wenn der IMAP-Server nicht innerhalb von 10
+        Sekunden antwortet.</p>
 
-  <p>Eine fortgeschrittenere Definition finden Sie nachfolgend. Dieser Service wird den IMAP4-Service prüfen und einen Fehler
-  erzeugen, wenn der Server nicht innerhalb von fünf Sekunden antwortet oder die Server-Antwort nicht die Zeichenkette
-  "mygreatmailserver.com" enthält.</p>
+        <p>Eine fortgeschrittenere Definition finden Sie nachfolgend. Dieser Service wird den IMAP4-Service prüfen und einen Fehler
+        erzeugen, wenn der Server nicht innerhalb von fünf Sekunden antwortet oder die Server-Antwort nicht die Zeichenkette
+        "mygreatmailserver.com" enthält.</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     IMAP4 Response Check 
         check_command           check_imap!-t 5 -e "mygreatmailserver.com"
         }</pre>
+      </li>
+</ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Icinga erneut starten</strong></span></p>
+  <div class="section" title="2.17.5. Icinga erneut starten">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1468992"></a>2.17.5. Icinga erneut starten</h3></div></div></div>
+    
 
-  <p>Sobald Sie die neuen Host- und Service-Definitionen zu Ihrer/n Konfigurationsdatei(en) hinzugefügt haben, sind Sie bereit,
-  sie zu überwachen. Um dies zu tun, müssen Sie <a class="link" href="verifyconfig.html" title="4.1. Überprüfen Ihrer Icinga-Konfiguration">die Konfiguration überprüfen</a> und <a class="link" href="startstop.html" title="4.2. Icinga starten und stoppen">Icinga erneut starten</a>.</p>
+    <p>Sobald Sie die neuen Host- und Service-Definitionen zu Ihrer/n Konfigurationsdatei(en) hinzugefügt haben, sind Sie bereit, sie zu
+    überwachen. Um dies zu tun, müssen Sie <a class="link" href="verifyconfig.html" title="4.1. Überprüfen Ihrer Icinga-Konfiguration">die Konfiguration überprüfen</a> und <a class="link" href="startstop.html" title="4.2. Icinga starten und stoppen">Icinga erneut starten</a>.</p>
 
-  <p>Wenn der Überprüfungsprozess irgendwelche Fehler produziert, dann verbessern Sie Ihre Konfigurationsdatei, bevor Sie
-  fortfahren. Stellen Sie sicher, dass Sie Icinga nicht erneut starten, bevor der Überprüfungsprozess ohne Fehler
-  durchläuft!</p>
-  <a class="indexterm" name="idp1456128"></a>
-  <a class="indexterm" name="idp1452640"></a>
+    <p>Wenn der Überprüfungsprozess irgendwelche Fehler produziert, dann verbessern Sie Ihre Konfigurationsdatei, bevor Sie fortfahren.
+    Stellen Sie sicher, dass Sie Icinga nicht erneut starten, bevor der Überprüfungsprozess ohne Fehler durchläuft!</p>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

@@ -28,14 +28,32 @@
 <div class="section" title="5.1. Icinga Plugins">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plugins"></a>5.1. <a name="Icinga_plugins"></a>Icinga Plugins</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="plugins.html#idm106805216">5.1.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idm123549872">5.1.2. What Are Plugins?</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6940944">5.1.3. Plugins As An Abstraction Layer</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6946736">5.1.4. What Plugins Are Available?</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6953040">5.1.5. Obtaining Plugins</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6953168">5.1.6. Switch to the Icinga user</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6966944">5.1.7. Extending the environment</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6974816">5.1.8. Raw command line</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp7005264">5.1.9. Threshold and ranges</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp7005856">5.1.10. Activating the definition</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp7056240">5.1.11. Plugin API</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="5.1.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idm106805216"></a>5.1.1. Introduction</h3></div></div></div>
 
   <p>Unlike many other monitoring tools, Icinga does not include any internal mechanisms for checking the status of hosts and
   services on your network. Instead, Icinga relies on external programs (called plugins) to do all the dirty work.</p>
 
-  <p><span class="bold"><strong>What Are Plugins?</strong></span></p>
+  </div>
+<div class="section" title="5.1.2. What Are Plugins?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idm123549872"></a>5.1.2. What Are Plugins?</h3></div></div></div>
 
   <p>Plugins are compiled executables or scripts (Perl scripts, shell scripts, etc.) that can be run from a command line to check the
   status or a host or service. Icinga uses the results from plugins to determine the current status of hosts and services on your
@@ -45,7 +63,10 @@
   <span class="emphasis"><em>something</em></span> (notice the very general term) to perform the check and then simply returns the results to Icinga.
   Icinga will process the results that it receives from the plugin and take any necessary actions (running <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a>, sending out <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a>, etc).</p>
 
-  <p><span class="bold"><strong>Plugins As An Abstraction Layer</strong></span></p>
+  </div>
+<div class="section" title="5.1.3. Plugins As An Abstraction Layer">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp6940944"></a>5.1.3. Plugins As An Abstraction Layer</h3></div></div></div>
 
   <p><span class="inlinemediaobject"><img src="../images/plugins.png"></span></p>
 
@@ -63,7 +84,10 @@
   understand the specifics of what's being monitored - it just tracks changes in the <span class="emphasis"><em>state</em></span> of those resources. Only the
   plugins themselves know exactly what they're monitoring and how to perform the actual checks.</p>
 
-  <p><span class="bold"><strong>What Plugins Are Available?</strong></span></p>
+  </div>
+<div class="section" title="5.1.4. What Plugins Are Available?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp6946736"></a>5.1.4. What Plugins Are Available?</h3></div></div></div>
 
   <p>There are plugins currently available to monitor many different kinds of devices and services, including:</p>
 
@@ -85,7 +109,10 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Obtaining Plugins</strong></span></p>
+  </div>
+<div class="section" title="5.1.5. Obtaining Plugins">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp6953040"></a>5.1.5. Obtaining Plugins</h3></div></div></div>
 
   <p>Plugins are not distributed with Icinga, but you can download the official Nagios plugins and many additional plugins
   created and maintained by Nagios and Icinga users from the following locations:</p>
@@ -135,7 +162,10 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Switch to the Icinga user</strong></span></p>
+  </div>
+<div class="section" title="5.1.6. Switch to the Icinga user">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp6953168"></a>5.1.6. Switch to the Icinga user</h3></div></div></div>
 
   <p>Switch to the Icinga user as defined in <code class="filename">icinga.cfg</code> unless already done and clear the environment</p>
 
@@ -165,7 +195,10 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Extending the environment</strong></span></p>
+  </div>
+<div class="section" title="5.1.7. Extending the environment">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp6966944"></a>5.1.7. Extending the environment</h3></div></div></div>
 
   <p>Several checks (like check_oracle_health) depend on various environment variables to be set. Don't put these in
   <code class="filename">.bashrc</code> or similar user dependent files but choose a central location. The default init script sources the file
@@ -257,7 +290,10 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Raw command line</strong></span></p>
+  </div>
+<div class="section" title="5.1.8. Raw command line">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp6974816"></a>5.1.8. Raw command line</h3></div></div></div>
 
   <p>Starting with Icinga 1.6 the classic UI allows to inspect the raw command line including values from
   <code class="filename">resource.cfg</code>. Clicking on "ACTIVE" next to "Check type" within host/service check details will give access to this
@@ -269,13 +305,16 @@
   <p>If you intend to log the raw command line then change some directives in <code class="filename">icinga.cfg</code> to the following
   values</p>
 
-  <pre class="screen"> #  16 = Host/service checks
+  <pre class="programlisting"> #  16 = Host/service checks
  # 256 = Commands
  debug_level=272
  debug_verbosity=2
  max_debug_file_size=1000000000</pre>
 
-  <p><span class="bold"><strong>Threshold and ranges</strong></span></p>
+  </div>
+<div class="section" title="5.1.9. Threshold and ranges">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp7005264"></a>5.1.9. Threshold and ranges</h3></div></div></div>
 
   <p>Some plugins support specifying ranges for the warning and critical values. Please check the documentation if this is the case for
   the plugin you want to use. The following is an excerpt from the <a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT" target="_top">developer guidelines</a>:</p>
@@ -424,7 +463,10 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Activating the definition</strong></span></p>
+  </div>
+<div class="section" title="5.1.10. Activating the definition">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp7005856"></a>5.1.10. Activating the definition</h3></div></div></div>
 
   <p>Check the configuration using "/etc/init.d/icinga show-errors" and resolve any errors before issuing "/etc/init.d/icinga restart".
   Wait until the object is checked and look at the status details. There might be errors.</p>
@@ -458,17 +500,21 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Plugin API</strong></span></p>
+  </div>
+<div class="section" title="5.1.11. Plugin API">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp7056240"></a>5.1.11. Plugin API</h3></div></div></div>
 
   <p>You can find information on the technical aspects of plugins, as well as how to go about creating your own custom plugins <a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">here</a>.</p>
 
-  <a class="indexterm" name="idp7029136"></a>
+  <a class="indexterm" name="idp7058304"></a>
 
-  <a class="indexterm" name="idp7027152"></a>
+  <a class="indexterm" name="idp7059936"></a>
 
-  <a class="indexterm" name="idp7031920"></a>
+  <a class="indexterm" name="idp7061216"></a>
 
-  <a class="indexterm" name="idp7033744"></a>
+  <a class="indexterm" name="idp7062784"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

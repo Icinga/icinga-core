@@ -28,48 +28,64 @@
 <div class="section" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="networkreachability"></a>5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="networkreachability.html#idp9927808">5.10.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp9931424">5.10.2. Beispiel-Netzwerk</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp9935456">5.10.3. Definieren von Eltern/Kind-Beziehungen</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp9942288">5.10.4. Erreichbarkeits-Logik in Aktion</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp9951696">5.10.5. UNREACHABLE Zustände und Benachrichtigungen</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="5.10.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9927808"></a>5.10.1. Einführung</h3></div></div></div>
+    
 
-  <p>Falls Sie jemals im technischen Support gearbeitet haben, hatten Sie zweifelsohne Benutzer, die Ihnen erzählt haben, "das
-  Internet sei down". Als Techniker waren Sie ziemlich sicher, daß keiner den Stromstecker aus dem Internet gezogen hatte.
-  Irgendetwas muss schiefgehen zwischen dem Stuhl des Benutzers und dem Internet.</p>
+    <p>Falls Sie jemals im technischen Support gearbeitet haben, hatten Sie zweifelsohne Benutzer, die Ihnen erzählt haben, "das Internet
+    sei down". Als Techniker waren Sie ziemlich sicher, daß keiner den Stromstecker aus dem Internet gezogen hatte. Irgendetwas muss
+    schiefgehen zwischen dem Stuhl des Benutzers und dem Internet.</p>
 
-  <p>Angenommen es ist ein technisches Problem, dann werden Sie nach dem Problem suchen. Vielleicht ist der PC des Benutzers
-  ausgeschaltet oder das Netzwerkkabel ist gezogen oder der zentrale Router Ihres Unternehmen nimmt gerade eine Auszeit. Was immer
-  das Problem sein mag, eines ist sehr sicher - das Internet ist nicht down. Es ist lediglich nicht für den Benutzer
-  erreichbar.</p>
+    <p>Angenommen es ist ein technisches Problem, dann werden Sie nach dem Problem suchen. Vielleicht ist der PC des Benutzers
+    ausgeschaltet oder das Netzwerkkabel ist gezogen oder der zentrale Router Ihres Unternehmen nimmt gerade eine Auszeit. Was immer das
+    Problem sein mag, eines ist sehr sicher - das Internet ist nicht down. Es ist lediglich nicht für den Benutzer erreichbar.</p>
 
-  <p>Icinga ist in der Lage festzustellen, ob die Hosts, die Sie überwachen, in einem DOWN- oder UNREACHABLE-Zustand
-  sind. Dies sind sehr unterschiedliche (obwohl durchaus verwandte) Zustände und können Ihnen helfen, schnell die Grundursache für
-  Netzwerkprobleme festzustellen. Hier nun, wie die Netzwerk-Erreichbarkeitslogik arbeitet, um zwischen diesen beiden Zuständen zu
-  unterscheiden...</p>
+    <p>Icinga ist in der Lage festzustellen, ob die Hosts, die Sie überwachen, in einem DOWN- oder UNREACHABLE-Zustand sind. Dies
+    sind sehr unterschiedliche (obwohl durchaus verwandte) Zustände und können Ihnen helfen, schnell die Grundursache für Netzwerkprobleme
+    festzustellen. Hier nun, wie die Netzwerk-Erreichbarkeitslogik arbeitet, um zwischen diesen beiden Zuständen zu unterscheiden...</p>
+  </div>
 
-  <p><span class="bold"><strong>Beispiel-Netzwerk</strong></span></p>
+  <div class="section" title="5.10.2. Beispiel-Netzwerk">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9931424"></a>5.10.2. Beispiel-Netzwerk</h3></div></div></div>
+    
 
-  <p>Werfen Sie einen Blick auf das einfache Netzwerk-Diagramm. Lassen Sie uns annehmen, dass Sie alle Hosts (Server, Router,
-  Switches, etc.) überwachen, die abgebildet sind. Icinga ist installiert und lauffähig auf dem
-  <span class="emphasis"><em>Icinga</em></span>-Host.</p>
+    <p>Werfen Sie einen Blick auf das einfache Netzwerk-Diagramm. Lassen Sie uns annehmen, dass Sie alle Hosts (Server, Router, Switches,
+    etc.) überwachen, die abgebildet sind. Icinga ist installiert und lauffähig auf dem
+    <span class="emphasis"><em>Icinga</em></span>-Host.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/reachability1.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability1.png"></span></p>
+  </div>
 
-  <p><span class="bold"><strong>Definieren von Eltern/Kind-Beziehungen</strong></span></p>
+  <div class="section" title="5.10.3. Definieren von Eltern/Kind-Beziehungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9935456"></a>5.10.3. Definieren von Eltern/Kind-Beziehungen</h3></div></div></div>
+    
 
-  <p>Um Icinga in die Lage zu versetzen, zwischen DOWN und UNREACHABLE-Zuständen der überwachten Hosts zu unterscheiden,
-  müssen Sie Icinga mitteilen, wie diese Hosts miteinander verbunden sind - vom Standpunkt des Icinga-Daemons aus
-  gesehen. Um dies zu tun verfolgen Sie den Weg, den ein Datenpaket vom Icinga-Daemon zu jedem einzelnen Host nehmen würde.
-  Jeder Switch, Router und Server, den das Paket trifft oder passiert, wird als "Hop" angesehen und erfordert, dass Sie eine
-  Eltern/Kind-Beziehung in Icinga definieren. Hier nun, wie die Host-Eltern/Kind-Beziehung aus der Sicht von Icinga
-  aussieht:</p>
+    <p>Um Icinga in die Lage zu versetzen, zwischen DOWN und UNREACHABLE-Zuständen der überwachten Hosts zu unterscheiden, müssen
+    Sie Icinga mitteilen, wie diese Hosts miteinander verbunden sind - vom Standpunkt des Icinga-Daemons aus gesehen. Um dies
+    zu tun verfolgen Sie den Weg, den ein Datenpaket vom Icinga-Daemon zu jedem einzelnen Host nehmen würde. Jeder Switch, Router und
+    Server, den das Paket trifft oder passiert, wird als "Hop" angesehen und erfordert, dass Sie eine Eltern/Kind-Beziehung in Icinga
+    definieren. Hier nun, wie die Host-Eltern/Kind-Beziehung aus der Sicht von Icinga aussieht:</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/reachability2.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability2.png"></span></p>
 
-  <p>Nun, da Sie wissen, wie die Eltern/Kind-Beziehungen für überwachte Hosts aussehen, wie konfigurieren Sie Icinga, um
-  sie abzubilden? Die <span class="emphasis"><em>parents</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definitionen</a> erlaubt Ihnen, das zu tun. Hier nun, wie die (verkürzten)
-  Host-Definitionen mit Eltern/Kind-Beziehung für dieses Beispiel aussehen würden:</p>
+    <p>Nun, da Sie wissen, wie die Eltern/Kind-Beziehungen für überwachte Hosts aussehen, wie konfigurieren Sie Icinga, um sie
+    abzubilden? Die <span class="emphasis"><em>parents</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definitionen</a> erlaubt
+    Ihnen, das zu tun. Hier nun, wie die (verkürzten) Host-Definitionen mit Eltern/Kind-Beziehung für dieses Beispiel aussehen
+    würden:</p>
 
-  <pre class="screen"> define host{
+    <pre class="programlisting"> define host{
         host_name               Icinga   ; &lt;-- der lokale Host hat keine Eltern - es ist der am weitesten oben stehende Host
         }
  define host{
@@ -108,42 +124,50 @@
         host_name       somewebsite.com
         parents         Router2
         }</pre>
+  </div>
 
-  <p><span class="bold"><strong>Erreichbarkeits-Logik in Aktion</strong></span></p>
+  <div class="section" title="5.10.4. Erreichbarkeits-Logik in Aktion">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9942288"></a>5.10.4. Erreichbarkeits-Logik in Aktion</h3></div></div></div>
+    
 
-  <p>Nachdem Sie Icinga mit den passenden Eltern/Kind-Beziehungen konfiguriert haben, lassen Sie uns sehen, was
-  passiert, wenn Probleme auftauchen. Nehmen Sie an, dass zwei Hosts, <span class="emphasis"><em>Web</em></span> und <span class="emphasis"><em>Router1</em></span>,
-  offline gehen...</p>
+    <p>Nachdem Sie Icinga mit den passenden Eltern/Kind-Beziehungen konfiguriert haben, lassen Sie uns sehen, was passiert, wenn
+    Probleme auftauchen. Nehmen Sie an, dass zwei Hosts, <span class="emphasis"><em>Web</em></span> und <span class="emphasis"><em>Router1</em></span>, offline gehen...</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/reachability3.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability3.png"></span></p>
 
-  <p>Wenn Hosts den Status wechseln (d.h. von UP zu DOWN) wird die Host-Erreichbarkeitslogik in Icinga anspringen. Die
-  Erreichbarkeits-Logik wird parallele Prüfungen der Eltern und Kinder aller Hosts veranlassen, deren Status sich ändert. Dies
-  erlaubt es Icinga schnell den aktuellen Status Ihrer Netzwerk-Infrastruktur zu ermitteln, wenn Änderungen
-  auftreten.</p>
+    <p>Wenn Hosts den Status wechseln (d.h. von UP zu DOWN) wird die Host-Erreichbarkeitslogik in Icinga anspringen. Die
+    Erreichbarkeits-Logik wird parallele Prüfungen der Eltern und Kinder aller Hosts veranlassen, deren Status sich ändert. Dies erlaubt es
+    Icinga schnell den aktuellen Status Ihrer Netzwerk-Infrastruktur zu ermitteln, wenn Änderungen auftreten.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/reachability4.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability4.png"></span></p>
 
-  <p>In diesem Beispiel wird Icinga feststellen, dass <span class="emphasis"><em>Web</em></span> und <span class="emphasis"><em>Router1</em></span> beide im
-  DOWN-Status sind, weil der "Pfad" zu diesen Hosts nicht blockiert ist.</p>
+    <p>In diesem Beispiel wird Icinga feststellen, dass <span class="emphasis"><em>Web</em></span> und <span class="emphasis"><em>Router1</em></span> beide im
+    DOWN-Status sind, weil der "Pfad" zu diesen Hosts nicht blockiert ist.</p>
 
-  <p>Icinga wird feststellen, dass alle Hosts "unterhalb" <span class="emphasis"><em>Router1</em></span> alle in einem UNREACHABLE Status
-  sind, weil Icinga sie nicht erreichen kann. <span class="emphasis"><em>Router1</em></span> ist DOWN und blockiert den Weg zu diesen anderen
-  Hosts. Diese Hosts können wunderbar funktionieren oder offline sein - Icinga weiß es nicht, weil es sie nicht erreichen
-  kann. Deshalb wird Icinga sie als UNREACHABLE ansehen anstatt DOWN.</p>
+    <p>Icinga wird feststellen, dass alle Hosts "unterhalb" <span class="emphasis"><em>Router1</em></span> alle in einem UNREACHABLE Status sind,
+    weil Icinga sie nicht erreichen kann. <span class="emphasis"><em>Router1</em></span> ist DOWN und blockiert den Weg zu diesen anderen Hosts. Diese
+    Hosts können wunderbar funktionieren oder offline sein - Icinga weiß es nicht, weil es sie nicht erreichen kann. Deshalb wird
+    Icinga sie als UNREACHABLE ansehen anstatt DOWN.</p>
+  </div>
 
-  <p><span class="bold"><strong>UNREACHABLE Zustände und Benachrichtigungen</strong></span></p>
+  <div class="section" title="5.10.5. UNREACHABLE Zustände und Benachrichtigungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9951696"></a>5.10.5. UNREACHABLE Zustände und Benachrichtigungen</h3></div></div></div>
+    
 
-  <p>Standardmäßig wird Icinga Kontakte über Hosts im DOWN und UNREACHABLE-Status informieren. Als ein Admin/Techniker
-  möchten Sie vielleicht keine Benachrichtigungen über Hosts erhalten, die UNREACHABLE sind. Sie kennen Ihre Netzwerkstruktur und
-  wenn Icinga Sie informiert, dass der Router/die Firewall unten ist, dann wissen Sie, dass alles dahinter nicht erreichbar
-  ist.</p>
+    <p>Standardmäßig wird Icinga Kontakte über Hosts im DOWN und UNREACHABLE-Status informieren. Als ein Admin/Techniker möchten
+    Sie vielleicht keine Benachrichtigungen über Hosts erhalten, die UNREACHABLE sind. Sie kennen Ihre Netzwerkstruktur und wenn
+    Icinga Sie informiert, dass der Router/die Firewall unten ist, dann wissen Sie, dass alles dahinter nicht erreichbar ist.</p>
 
-  <p>Falls Sie sich eine Flut von Benachrichtigungen über UNREACHABLE-Zustände während eines Netzwerkausfalls ersparen möchten,
-  können Sie die unreachable (u)-Option der <span class="emphasis"><em>notification_options</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen und/oder die <span class="emphasis"><em>host_notification_options</em></span>-Direktive
-  in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt</a>-Direktiven ausschließen.</p>
-  <a class="indexterm" name="idp9911360"></a>
-  <a class="indexterm" name="idp9912560"></a>
+    <p>Falls Sie sich eine Flut von Benachrichtigungen über UNREACHABLE-Zustände während eines Netzwerkausfalls ersparen möchten, können
+    Sie die unreachable (u)-Option der <span class="emphasis"><em>notification_options</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen und/oder die <span class="emphasis"><em>host_notification_options</em></span>-Direktive in Ihren
+    <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt</a>-Direktiven ausschließen.</p>
+
+    <a class="indexterm" name="idp9954544"></a>
+
+    <a class="indexterm" name="idp9958320"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>
