@@ -64,6 +64,8 @@ ENHANCEMENTS
 
 * install: add --with-mainurl to configure, allowing to set the main frame target url for index.html #2611 - MF
 
+* contrib: add nginx configuration for icinga classicui by Francisco Miguel Biete into contrib/nginx #2253 - MF
+
 * docs: add a new stylesheet and rework docbook.xsl #3046 - MF
 * docs: add tocs for all sections #3193 - WN
 

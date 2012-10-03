@@ -1,0 +1,17 @@
+server {
+    listen 80;
+    server_name icinga.domain.com
+    index index.php index.html index.htm;
+
+    error_log /var/log/nginx/icinga-classic_error.log;
+
+    include nginx.security.conf;
+
+    include nginx.icinga.conf;
+
+    include nginx.pnp4nagios.conf;
+
+    location = / {
+        rewrite ^/$ /icinga/index.html permanent;
+    }
+}
