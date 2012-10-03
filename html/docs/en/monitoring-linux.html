@@ -28,74 +28,87 @@
 <div class="section" title="2.13. Monitoring Linux/Unix Machines">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-linux"></a>2.13. <a name="monitoring_linux"></a>Monitoring Linux/Unix Machines</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="monitoring-linux.html#idp1176224">2.13.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="monitoring-linux.html#idp1187920">2.13.2. Overview</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <a class="indexterm" name="idp1174768"></a>
 
-  <p>This document describes how you can monitor "private" services and attributes of Linux/UNIX servers, such as:</p>
+  <div class="section" title="2.13.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1176224"></a>2.13.1. Introduction</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <p>This document describes how you can monitor "private" services and attributes of Linux/UNIX servers, such as:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>CPU load</p>
-    </li>
+        <p>CPU load</p>
+      </li>
 <li class="listitem">
-      <p>Memory usage</p>
-    </li>
+        <p>Memory usage</p>
+      </li>
 <li class="listitem">
-      <p>Disk usage</p>
-    </li>
+        <p>Disk usage</p>
+      </li>
 <li class="listitem">
-      <p>Logged in users</p>
-    </li>
+        <p>Logged in users</p>
+      </li>
 <li class="listitem">
-      <p>Running processes</p>
-    </li>
+        <p>Running processes</p>
+      </li>
 <li class="listitem">
-      <p>etc.</p>
-    </li>
+        <p>etc.</p>
+      </li>
 </ul></div>
 
-  <p>Publicly available services that are provided by Linux servers (HTTP, FTP, SSH, SMTP, etc.) can be monitored easily by
-  following the documentation on <a class="link" href="monitoring-publicservices.html" title="2.17. Monitoring Publicly Available Services">monitoring publicly available services</a>.</p>
+    <p>Publicly available services that are provided by Linux servers (HTTP, FTP, SSH, SMTP, etc.) can be monitored easily by following
+    the documentation on <a class="link" href="monitoring-publicservices.html" title="2.17. Monitoring Publicly Available Services">monitoring publicly available services</a>.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart
-    guide</a>. The sample configuration entries below reference objects that are defined in the sample config files
-    (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.) that are installed if you follow the
-    quickstart.</p>
-  </td></tr>
+      <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart
+      guide</a>. The sample configuration entries below reference objects that are defined in the sample config files
+      (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.) that are installed if you follow the quickstart.</p>
+    </td></tr>
 </table></div>
-
-  <p><span class="bold"><strong>Overview</strong></span></p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>This document has not been completed. We would recommend you read the documentation on the <a class="link" href="addons.html#addons-nrpe">NRPE addon</a> for instructions on how to monitor a remote Linux/Unix server.</p>
-  </td></tr>
-</table></div>
-
-  <p>There are several different ways to monitor attributes or remote Linux/Unix servers. One is by using shared SSH keys and
-  the <span class="emphasis"><em>check_by_ssh</em></span> plugin to execute plugins on remote servers. This method will not be covered here, but can
-  result in high load on your monitoring server if you are monitoring hundreds or thousands of services. The overhead of setting
-  up/destroying SSH connections is the cause of this.</p>
-
-  <div class="informalfigure">
-    <div class="mediaobject"><img src="../images/nrpe.png"></div>
   </div>
 
-  <p>Another common method of monitoring remote Linux/Unix hosts is to use the <a class="link" href="addons.html#addons-nrpe">NRPE addon</a>.
-  NRPE allows you to execute plugins on remote Linux/Unix hosts. This is useful if you need to monitor local resources/attributes
-  like disk usage, CPU load, memory usage, etc. on a remote host.</p>
-  <a class="indexterm" name="idp1170256"></a>
+  <div class="section" title="2.13.2. Overview">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1187920"></a>2.13.2. Overview</h3></div></div></div>
+    
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>This document has not been completed. We would recommend you read the documentation on the <a class="link" href="addons.html#addons-nrpe">NRPE
+      addon</a> for instructions on how to monitor a remote Linux/Unix server.</p>
+    </td></tr>
+</table></div>
+
+    <p>There are several different ways to monitor attributes or remote Linux/Unix servers. One is by using shared SSH keys and the
+    <span class="emphasis"><em>check_by_ssh</em></span> plugin to execute plugins on remote servers. This method will not be covered here, but can result in
+    high load on your monitoring server if you are monitoring hundreds or thousands of services. The overhead of setting up/destroying SSH
+    connections is the cause of this.</p>
+
+    <div class="informalfigure">
+      <div class="mediaobject"><img src="../images/nrpe.png"></div>
+    </div>
+
+    <p>Another common method of monitoring remote Linux/Unix hosts is to use the <a class="link" href="addons.html#addons-nrpe">NRPE addon</a>. NRPE
+    allows you to execute plugins on remote Linux/Unix hosts. This is useful if you need to monitor local resources/attributes like disk
+    usage, CPU load, memory usage, etc. on a remote host.</p>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

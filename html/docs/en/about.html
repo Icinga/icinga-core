@@ -28,119 +28,151 @@
 <div class="section" title="1.1. About Icinga">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="about"></a>1.1. About Icinga</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="about.html#idp41072">1.1.1. What is Icinga?</a></span></dt>
+<dt><span class="section"><a href="about.html#idp63152">1.1.2. System requirements</a></span></dt>
+<dt><span class="section"><a href="about.html#idp74336">1.1.3. Licensing</a></span></dt>
+<dt><span class="section"><a href="about.html#idp77760">1.1.4. Acknowledgements</a></span></dt>
+<dt><span class="section"><a href="about.html#idp81920">1.1.5. Downloading The Latest Version</a></span></dt>
+<dt><span class="section"><a href="about.html#idp85584">1.1.6. Compatibility</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong><a name="whatsicinga"></a>What is Icinga?</strong></span></p>
+  <div class="section" title="1.1.1. What is Icinga?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp41072"></a>1.1.1. <a name="whatsicinga"></a>What is Icinga?</h3></div></div></div>
+    
 
-  <p>Icinga is a monitoring system checking hosts and services you specify and notifying you when things go wrong and when they
-  recover. It runs on multiple Linux distributions (including <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>,
-  <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a>, and <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>) as
-  well as several Unix platforms (including <a class="link" href="http://www.sun.com/software/solaris/" target="_top">Solaris</a> and <a class="link" href="http://www.hp.com" target="_top">HP</a>). The systems to be monitored can be nearly anything connected to a network.</p>
+    <p>Icinga is a monitoring system checking hosts and services you specify and notifying you when things go wrong and when they
+    recover. It runs on multiple Linux distributions (including <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>,
+    <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a>, and <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>)
+    as well as several Unix platforms (including <a class="link" href="http://www.sun.com/software/solaris/" target="_top">Solaris</a> and <a class="link" href="http://www.hp.com" target="_top">HP</a>). The systems to be monitored can be nearly anything connected to a network.</p>
 
-  <p>Some of the many features of Icinga include:</p>
+    <p>Some of the many features of Icinga include:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Monitoring of network services (<span class="systemitem">SMTP</span>, <span class="systemitem">POP3</span>, <span class="systemitem">HTTP</span>, <span class="systemitem">NNTP</span>, <span class="systemitem">PING</span>,
-      etc.)</p>
-    </li>
+        <p>Monitoring of network services (<span class="systemitem">SMTP</span>, <span class="systemitem">POP3</span>, <span class="systemitem">HTTP</span>, <span class="systemitem">NNTP</span>, <span class="systemitem">PING</span>,
+        etc.)</p>
+      </li>
 <li class="listitem">
-      <p>Monitoring of host resources (CPU load, disk usage, etc.)</p>
-    </li>
+        <p>Monitoring of host resources (CPU load, disk usage, etc.)</p>
+      </li>
 <li class="listitem">
-      <p>Simple plugin design that allows users to easily develop their own service checks</p>
-    </li>
+        <p>Simple plugin design that allows users to easily develop their own service checks</p>
+      </li>
 <li class="listitem">
-      <p>Parallelized service checks</p>
-    </li>
+        <p>Parallelized service checks</p>
+      </li>
 <li class="listitem">
-      <p>Ability to define network host hierarchy using "parent" hosts, allowing detection of and distinction between hosts that are down
-      and those that are unreachable</p>
-    </li>
+        <p>Ability to define network host hierarchy using "parent" hosts, allowing detection of and distinction between hosts that are
+        down and those that are unreachable</p>
+      </li>
 <li class="listitem">
-      <p>Contact notifications when service or host problems occur and get resolved (via email, pager, or user-defined method)</p>
-    </li>
+        <p>Contact notifications when service or host problems occur and get resolved (via email, pager, or user-defined method)</p>
+      </li>
 <li class="listitem">
-      <p>Ability to define event handlers to be run during service or host events for proactive problem resolution</p>
-    </li>
+        <p>Ability to define event handlers to be run during service or host events for proactive problem resolution</p>
+      </li>
 <li class="listitem">
-      <p>Automatic log file rotation</p>
-    </li>
+        <p>Automatic log file rotation</p>
+      </li>
 <li class="listitem">
-      <p>Support for implementing redundant monitoring hosts</p>
-    </li>
+        <p>Support for implementing redundant monitoring hosts</p>
+      </li>
 <li class="listitem">
-      <p>Optional classic web interface for viewing current network status, notification and problem history, log file, etc.</p>
-    </li>
+        <p>Optional classic web interface for viewing current network status, notification and problem history, log file, etc.</p>
+      </li>
 <li class="listitem">
-      <p>Optional new Icinga web interface based on Icinga Core, IDOUtils, API using a modern and refreshed web 2.0 GUI showing current
-      states, historical information, using cronks and filters, creating reports with multilanguage support</p>
-    </li>
+        <p>Optional new Icinga web interface based on Icinga Core, IDOUtils, API using a modern and refreshed web 2.0 GUI showing current
+        states, historical information, using cronks and filters, creating reports with multilanguage support</p>
+      </li>
 </ul></div>
 
-  <p><span class="bold"><strong><a name="system_requirements"></a>System requirements</strong></span></p>
+    <a class="indexterm" name="idp47120"></a>
+  </div>
 
-  <p>As mentioned above you'll need a machine running Linux or a Unix variant. If there is no precompiled version or if you want
-  to compile from source you need a C compiler like gcc. </p>
+  <div class="section" title="1.1.2. System requirements">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp63152"></a>1.1.2. <a name="system_requirements"></a>System requirements</h3></div></div></div>
+    
+
+    <p>As mentioned above you'll need a machine running Linux or a Unix variant. If there is no precompiled version or if you want
+    to compile from source you need a C compiler like gcc. </p>
 <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Some compilers may not be suitable. That includes the C compiler on HP-UX which is used to compile a new kernel.</p>
-    </td></tr>
+        <p>Some compilers may not be suitable. That includes the C compiler on HP-UX which is used to compile a new kernel.</p>
+      </td></tr>
 </table></div>
 <p>You may also want to have TCP/IP configured as most checks will require access via the network.</p>
 
-  <p>You are not required to use one of the web interfaces included with Icinga. However, if you do decide to use them, you will
-  need additional software:</p>
+    <p>You are not required to use one of the web interfaces included with Icinga. However, if you do decide to use them, you will
+    need additional software:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>A Web-Server (preferrably <a class="link" href="http://www.apache.org" target="_top">Apache</a>)</p>
-    </li>
+        <p>A Web-Server (preferrably <a class="link" href="http://www.apache.org" target="_top">Apache</a>)</p>
+      </li>
 <li class="listitem">
-      <p>Thomas Boutells <a class="link" href="http://www.boutell.com/gd" target="_top">gd library</a> Version 1.6.3 or higher (required by the <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>- and <a class="link" href="cgis.html#cgis-trends_cgi">trends</a>-CGIs)</p>
-    </li>
+        <p>Thomas Boutells <a class="link" href="http://www.boutell.com/gd" target="_top">gd library</a> Version 1.6.3 or higher (required by the <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>- and <a class="link" href="cgis.html#cgis-trends_cgi">trends</a>-CGIs)</p>
+      </li>
 <li class="listitem">
-      <p>PHP</p>
-    </li>
+        <p>PHP</p>
+      </li>
 </ol></div>
 
-  <p><span class="bold"><strong><a name="licensing"></a>Licensing</strong></span></p>
+    <a class="indexterm" name="idp73328"></a>
+  </div>
 
-  <p>Icinga is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software Foundation.
-  This gives you legal permission to copy, distribute and/or modify Icinga under certain conditions. Read the 'LICENSE' file in the
-  Icinga distribution or read the online version of the license for more details. Icinga is provided AS IS with NO WARRANTY OF
-  ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</p>
+  <div class="section" title="1.1.3. Licensing">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp74336"></a>1.1.3. <a name="licensing"></a>Licensing</h3></div></div></div>
+    
 
-  <p><span class="bold"><strong><a name="acknowledgements"></a>Acknowledgements</strong></span></p>
+    <p>Icinga is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software
+    Foundation. This gives you legal permission to copy, distribute and/or modify Icinga under certain conditions. Read the 'LICENSE'
+    file in the Icinga distribution or read the online version of the license for more details. Icinga is provided AS IS with
+    NO WARRANTY OF ANY KIND, INCLUDING THE WARRANTY OF DESIGN, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</p>
 
-  <p>Several people have contributed to Icinga by either reporting bugs, suggesting improvements, writing plugins, etc. A list of
-  some of the many contributors to the development of Icinga can be found at <a class="link" href="http://www.icinga.org/team" target="_top">http://www.icinga.org/</a>.</p>
+    <a class="indexterm" name="idp74848"></a>
+  </div>
 
-  <p><span class="bold"><strong><a name="downloading"></a>Downloading The Latest Version</strong></span></p>
+  <div class="section" title="1.1.4. Acknowledgements">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp77760"></a>1.1.4. <a name="acknowledgements"></a>Acknowledgements</h3></div></div></div>
+    
 
-  <p>You can check for new versions of Icinga at <a class="link" href="http://www.icinga.org/" target="_top">http://www.icinga.org/</a>.</p>
+    <p>Several people have contributed to Icinga by either reporting bugs, suggesting improvements, writing plugins, etc. A list
+    of some of the many contributors to the development of Icinga can be found at <a class="link" href="http://www.icinga.org/team" target="_top">http://www.icinga.org/</a>.</p>
 
-  <p><span class="bold"><strong><a name="compatibility"></a>Compatibility</strong></span></p>
+    <a class="indexterm" name="idp80528"></a>
+  </div>
 
-  <p>Icinga is a fork of the well-known monitoring system <a class="link" href="http://www.nagios.org/" target="_top">Nagios</a>. Being
-  100% compatible with the internal structures of the latter Icinga enables you to use all plugins and add-ons which were/are
-  developed by several companies and the large community.</p>
+  <div class="section" title="1.1.5. Downloading The Latest Version">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp81920"></a>1.1.5. <a name="downloading"></a>Downloading The Latest Version</h3></div></div></div>
+    
 
-  <a class="indexterm" name="idp82640"></a>
+    <p>You can check for new versions of Icinga at <a class="link" href="http://www.icinga.org/" target="_top">http://www.icinga.org/</a>.</p>
 
-  <a class="indexterm" name="idp83888"></a>
+    <a class="indexterm" name="idp84192"></a>
+  </div>
 
-  <a class="indexterm" name="idp84992"></a>
+  <div class="section" title="1.1.6. Compatibility">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp85584"></a>1.1.6. <a name="compatibility"></a>Compatibility</h3></div></div></div>
+    
 
-  <a class="indexterm" name="idp86208"></a>
+    <p>Icinga is a fork of the well-known monitoring system <a class="link" href="http://www.nagios.org/" target="_top">Nagios</a>. Being
+    100% compatible with the internal structures of the latter Icinga enables you to use all plugins and add-ons which were/are
+    developed by several companies and the large community.</p>
 
-  <a class="indexterm" name="idp87392"></a>
-
-  <a class="indexterm" name="idp88592"></a>
+    <a class="indexterm" name="idp88272"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

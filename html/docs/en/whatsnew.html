@@ -28,150 +28,190 @@
 <div class="section" title="1.2. What's New in Icinga 1.8">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="whatsnew"></a>1.2. What's New in Icinga 1.8</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="whatsnew.html#idp92576">1.2.1. CHANGES</a></span></dt>
+<dt><span class="section"><a href="whatsnew.html#idp98480">1.2.2. Core</a></span></dt>
+<dt><span class="section"><a href="whatsnew.html#idp105728">1.2.3. Classic UI</a></span></dt>
+<dt><span class="section"><a href="whatsnew.html#idp116256">1.2.4. IDOutils</a></span></dt>
+<dt><span class="section"><a href="whatsnew.html#idp123168">1.2.5. Icinga-Web</a></span></dt>
+<dt><span class="section"><a href="whatsnew.html#idp129792">1.2.6. Docs</a></span></dt>
+<dt><span class="section"><a href="whatsnew.html#idp132240">1.2.7. More information</a></span></dt>
+</dl></div>
   
 
   <p>As usual this is only a brief overview. Please take a look at the Changelog as well if you are missing something.</p>
 
-  <p><span class="bold"><strong>CHANGES</strong></span></p>
+  <a class="indexterm" name="idp91568"></a>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+  <div class="section" title="1.2.1. CHANGES">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp92576"></a>1.2.1. CHANGES</h3></div></div></div>
+    
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><span class="color"><font color="red">move bindir/idomod.o to libdir/idomod.so - make sure to update your configs after
-      upgrade!</font></span></p>
-    </li>
+        <p><span class="color"><font color="red">move bindir/idomod.o to libdir/idomod.so - make sure to update your configs after
+        upgrade!</font></span></p>
+      </li>
 <li class="listitem">
-      <p>move from /var/icinga to /var/spool/icinga in icinga.spec (upgrade safe)</p>
-    </li>
+        <p>move from /var/icinga to /var/spool/icinga in icinga.spec (upgrade safe)</p>
+      </li>
 <li class="listitem">
-      <p>rename icinga-idoutils rpm to icinga-idoutils-libdbi-mysql|pgsql in icinga.spec</p>
-    </li>
+        <p>rename icinga-idoutils rpm to icinga-idoutils-libdbi-mysql|pgsql in icinga.spec</p>
+      </li>
 <li class="listitem">
-      <p>--enable-libtap is deprecated, make test now works out-of-the-box with rewritten tests core</p>
-    </li>
+        <p>--enable-libtap is deprecated, make test now works out-of-the-box with rewritten tests core</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Core</strong></span></p>
+  <div class="section" title="1.2.2. Core">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp98480"></a>1.2.2. Core</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182</p>
-    </li>
+        <p>avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182</p>
+      </li>
 <li class="listitem">
-      <p>add a lot of configure params to allow easier packaging (see CHANGES)</p>
-    </li>
+        <p>add a lot of configure params to allow easier packaging (see CHANGES)</p>
+      </li>
 <li class="listitem">
-      <p>introduce lib/ for modules with new .so extension</p>
-    </li>
+        <p>introduce lib/ for modules with new .so extension</p>
+      </li>
 <li class="listitem">
-      <p>add nebmodule version/name check for idomod (this allows future version dependencies) #2569</p>
-    </li>
+        <p>add nebmodule version/name check for idomod (this allows future version dependencies) #2569</p>
+      </li>
 <li class="listitem">
-      <p>add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537</p>
-    </li>
+        <p>add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537</p>
+      </li>
 <li class="listitem">
-      <p>* fix scheduled_downtime_depth falsely incremented if in flexible downtime with duration &lt; end-starttime window #2536</p>
-    </li>
+        <p>* fix scheduled_downtime_depth falsely incremented if in flexible downtime with duration &lt; end-starttime window
+        #2536</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Classic UI </strong></span></p>
+  <div class="section" title="1.2.3. Classic UI">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp105728"></a>1.2.3. Classic UI</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>add option for max log entries displayed in showlog.cgi #2145</p>
-    </li></ul></div>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+        <p>add option for max log entries displayed in showlog.cgi #2145</p>
+      </li></ul></div>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>add statusmap resizing with exclude/include button (thanks to Mat) #2186</p>
-    </li>
+        <p>add statusmap resizing with exclude/include button (thanks to Mat) #2186</p>
+      </li>
 <li class="listitem">
-      <p>add javascript to refresh page/pause easier #2119</p>
-    </li>
+        <p>add javascript to refresh page/pause easier #2119</p>
+      </li>
 <li class="listitem">
-      <p>add display_status_totals as cgi.cfg option in order to allow the status totals to be shown again #2443</p>
-    </li>
+        <p>add display_status_totals as cgi.cfg option in order to allow the status totals to be shown again #2443</p>
+      </li>
 <li class="listitem">
-      <p>add readonly cgi.cfg view into the config section #1776</p>
-    </li>
+        <p>add readonly cgi.cfg view into the config section #1776</p>
+      </li>
 <li class="listitem">
-      <p>add is_in_effect and trigger_time to downtime view for html, csv, json #2538</p>
-    </li>
+        <p>add is_in_effect and trigger_time to downtime view for html, csv, json #2538</p>
+      </li>
 <li class="listitem">
-      <p>add modified attributes view and reset cmd #2473 #2474</p>
-    </li>
+        <p>add modified attributes view and reset cmd #2473 #2474</p>
+      </li>
 <li class="listitem">
-      <p>fix status totals are wrong when searching #1524</p>
-    </li>
+        <p>fix status totals are wrong when searching #1524</p>
+      </li>
 <li class="listitem">
-      <p>fix reset forms on return after submitting command #2117</p>
-    </li>
+        <p>fix reset forms on return after submitting command #2117</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>IDOutils</strong></span></p>
+  <div class="section" title="1.2.4. IDOutils">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp116256"></a>1.2.4. IDOutils</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>change varchar(255) to TEXT in mysql (not cs and address rfc columns) #2181</p>
-    </li>
+        <p>change varchar(255) to TEXT in mysql (not cs and address rfc columns) #2181</p>
+      </li>
 <li class="listitem">
-      <p>set module info in idomod, to be checked on neb module load in future versions #2569</p>
-    </li>
+        <p>set module info in idomod, to be checked on neb module load in future versions #2569</p>
+      </li>
 <li class="listitem">
-      <p>change standard string escaping for postgresql queries to use the E'foo' notation #1974</p>
-    </li>
+        <p>change standard string escaping for postgresql queries to use the E'foo' notation #1974</p>
+      </li>
 <li class="listitem">
-      <p>fix lob handling in Oracle #2303,#2342</p>
-    </li>
+        <p>fix lob handling in Oracle #2303,#2342</p>
+      </li>
 <li class="listitem">
-      <p>fix OCI-21500 when freeing lobs #2509</p>
-    </li>
+        <p>fix OCI-21500 when freeing lobs #2509</p>
+      </li>
 <li class="listitem">
-      <p>fix pgsql unix_timestamp cannot handle timstamp with timezone #2203</p>
-    </li>
+        <p>fix pgsql unix_timestamp cannot handle timstamp with timezone #2203</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Icinga-Web</strong></span></p>
+  <div class="section" title="1.2.5. Icinga-Web">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp123168"></a>1.2.5. Icinga-Web</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>add DQL-views as backend for templates. This means that you can create your XML views based on doctrine query language. It's
-      more flexible to adopt database changes or to connect other systems to your grids like trouble ticket or issue based systems</p>
-    </li>
+        <p>add DQL-views as backend for templates. This means that you can create your XML views based on doctrine query language. It's
+        more flexible to adopt database changes or to connect other systems to your grids like trouble ticket or issue based systems</p>
+      </li>
 <li class="listitem">
-      <p>enable "save" and "save as" for custom cronks. This allows you to modify your views without hacking data</p>
-    </li>
+        <p>enable "save" and "save as" for custom cronks. This allows you to modify your views without hacking data</p>
+      </li>
 <li class="listitem">
-      <p>adjust GUI calculations to be more like in the classic UI. Many calculations had different algorithms compared to the classic
-      user interface which was confusing for the users</p>
-    </li>
+        <p>adjust GUI calculations to be more like in the classic UI. Many calculations had different algorithms compared to the classic
+        user interface which was confusing for the users</p>
+      </li>
 <li class="listitem">
-      <p>many fixes for views (grids and tactical overviews) to work more smoothly</p>
-    </li>
+        <p>many fixes for views (grids and tactical overviews) to work more smoothly</p>
+      </li>
 <li class="listitem">
-      <p>RDBMS fixes for getting data, fixed problems for Oracle and Postgres</p>
-    </li>
+        <p>RDBMS fixes for getting data, fixed problems for Oracle and Postgres</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Docs</strong></span></p>
+  <div class="section" title="1.2.6. Docs">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp129792"></a>1.2.6. Docs</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p>Hints how to use recurring downtimes #1867</p>
-    </li></ul></div>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+        <p>Hints how to use recurring downtimes #1867</p>
+      </li></ul></div>
+  </div>
 
-  <p><a class="link" href="https://wiki.icinga.org/display/Dev/Releases" target="_top">More at Icinga Wiki</a></p>
+  <div class="section" title="1.2.7. More information">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp132240"></a>1.2.7. More information</h3></div></div></div>
+    
 
-  <p>Should you find any issues, please report them to one of the following links:</p>
+    <p><a class="link" href="https://wiki.icinga.org/display/Dev/Releases" target="_top">More at Icinga Wiki</a></p>
 
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga-Core</a></p>
+    <p>Should you find any issues, please report them to one of the following links:</p>
 
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga-Web</a></p>
+    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga-Core</a></p>
 
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Report Issue Icinga-API</a></p>
+    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga-Web</a></p>
 
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga-Reporting</a></p>
+    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Report Issue Icinga-API</a></p>
 
-  <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga-Docs</a></p>
+    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga-Reporting</a></p>
 
-  <a class="indexterm" name="idp137136"></a>
+    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-docs" target="_top">Report Issue Icinga-Docs</a></p>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

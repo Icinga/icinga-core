@@ -28,68 +28,84 @@
 <div class="section" title="7.10. Eskalations-Bedingung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="escalation_condition"></a>7.10. <a name="escalation_cond"></a>Eskalations-Bedingung</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="escalation_condition.html#idp13704400">7.10.1. Einleitung</a></span></dt>
+<dt><span class="section"><a href="escalation_condition.html#idp13712272">7.10.2. Syntax</a></span></dt>
+<dt><span class="section"><a href="escalation_condition.html#idp13712400">7.10.3. Beispiel</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einleitung</strong></span></p>
+  <div class="section" title="7.10.1. Einleitung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13704400"></a>7.10.1. Einleitung</h3></div></div></div>
+    
 
-  <p>Ab Icinga 1.0.1 ist ein Patch implementiert, so dass Sie nun eine Eskalations-Bedingung definieren können (ähnlich wie escalation_options
-  [w,u,c,r]). Eine Eskalation mit einer definierten Bedingung wird nur dann eskalieren, wenn der aktuelle Zustand eines bestimmten
-  Hosts/Services mit der angegebenen Bedingung übereinstimmt. Ein mögliches Anwendungsbeispiel könnte das folgende Szenario
-  sein:</p>
+    <p>Ab Icinga 1.0.1 ist ein Patch implementiert, so dass Sie nun eine Eskalations-Bedingung definieren können (ähnlich wie
+    escalation_options [w,u,c,r]). Eine Eskalation mit einer definierten Bedingung wird nur dann eskalieren, wenn der aktuelle Zustand eines
+    bestimmten Hosts/Services mit der angegebenen Bedingung übereinstimmt. Ein mögliches Anwendungsbeispiel könnte das folgende Szenario
+    sein:</p>
 
-  <p>Stellen Sie sich zwei verschiedene Eskalationen für den selben Service <span class="emphasis"><em>foo</em></span> vor. Eine soll nur dann
-  eskalieren, wenn der Service <span class="emphasis"><em>bar</em></span> OK ist, die andere soll eskalieren, wenn <span class="emphasis"><em>bar</em></span> CRITICAL
-  oder WARNING ist. Nun stellen Sie sich vor, dass <span class="emphasis"><em>foo</em></span> der zentrale Service einer Firma ist und der Administrator sofort reagieren
-  muss, wenn der Service down ist. <span class="emphasis"><em>bar</em></span> könnte ein Service sein, der angibt, ob der Admin im Büro oder zu Hause ist. Die Eskalation
-  würde wie folgt reagieren:</p>
+    <p>Stellen Sie sich zwei verschiedene Eskalationen für den selben Service <span class="emphasis"><em>foo</em></span> vor. Eine soll nur dann
+    eskalieren, wenn der Service <span class="emphasis"><em>bar</em></span> OK ist, die andere soll eskalieren, wenn <span class="emphasis"><em>bar</em></span> CRITICAL oder
+    WARNING ist. Nun stellen Sie sich vor, dass <span class="emphasis"><em>foo</em></span> der zentrale Service einer Firma ist und der Administrator sofort
+    reagieren muss, wenn der Service down ist. <span class="emphasis"><em>bar</em></span> könnte ein Service sein, der angibt, ob der Admin im Büro oder zu
+    Hause ist. Die Eskalation würde wie folgt reagieren:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>wenn der Administrator im Büro ist, dann sende zuerst eine e-Mail, nach 5 Minuten dann eine SMS</p>
-    </li>
+        <p>wenn der Administrator im Büro ist, dann sende zuerst eine e-Mail, nach 5 Minuten dann eine SMS</p>
+      </li>
 <li class="listitem">
-      <p>wenn der Administrator zu Hause ist, dann sende zuerst eine SMS und nach 30 Minuten eine zweite SMS an den
-      Administrator sowie eine SMS an den Abteilungsleiter</p>
-    </li>
+        <p>wenn der Administrator zu Hause ist, dann sende zuerst eine SMS und nach 30 Minuten eine zweite SMS an den Administrator sowie
+        eine SMS an den Abteilungsleiter</p>
+      </li>
 </ul></div>
 
-  <p>Dies kann erreicht werden, ohne Icinga neu zu starten bzw. die Konfiguration neu zu laden.</p>
+    <p>Dies kann erreicht werden, ohne Icinga neu zu starten bzw. die Konfiguration neu zu laden.</p>
+  </div>
 
-  <p><span class="bold"><strong>Syntax</strong></span></p>
+  <div class="section" title="7.10.2. Syntax">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13712272"></a>7.10.2. Syntax</h3></div></div></div>
+    
 
-  <p>Die Direktive escalation_condition ist komplett optional und kann sowohl für Host- als auch für Service-Eskalationen
-  definiert werden. Die Syntax lautet: </p>
+    <p>Die Direktive escalation_condition ist komplett optional und kann sowohl für Host- als auch für Service-Eskalationen definiert
+    werden. Die Syntax lautet:</p>
 
-  <p><code class="literal">escalation_condition &lt;condition&gt; ( [ &amp; / | ] &lt;condition&gt; )</code></p>
+    <p><code class="literal">escalation_condition &lt;condition&gt; ( [ &amp; / | ] &lt;condition&gt; )</code></p>
 
-  <p>wobei &lt;condition&gt; entweder <code class="literal">host hostname = [u,d,o]</code> oder <code class="literal">service
-  hostname.service_description = [w,u,c,o]</code> ist.</p>
+    <p>wobei &lt;condition&gt; entweder <code class="literal">host hostname = [u,d,o]</code> oder <code class="literal">service hostname.service_description =
+    [w,u,c,o]</code> ist.</p>
 
-  <p>Wie Sie sehen können, akzeptiert escalation_condition eine Liste von einer oder mehreren Bedingungen, die durch "&amp;"
-  (logisches UND) oder "|" (logisches ODER) getrennt sind. Die Bedeutungen von [w,u,c,o,d] unterscheiden sich geringfügig von denen,
-  die bei escalation_options benutzt werden: </p>
+    <p>Wie Sie sehen können, akzeptiert escalation_condition eine Liste von einer oder mehreren Bedingungen, die durch "&amp;" (logisches
+    UND) oder "|" (logisches ODER) getrennt sind. Die Bedeutungen von [w,u,c,o,d] unterscheiden sich geringfügig von denen, die bei
+    escalation_options benutzt werden:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>w = WARNING</p>
-    </li>
+        <p>w = WARNING</p>
+      </li>
 <li class="listitem">
-      <p>u = UNKNOWN</p>
-    </li>
+        <p>u = UNKNOWN</p>
+      </li>
 <li class="listitem">
-      <p>c = CRITICAL</p>
-    </li>
+        <p>c = CRITICAL</p>
+      </li>
 <li class="listitem">
-      <p>o = OK für Services oder UP für hosts (man könnte an ONLINE denken)</p>
-    </li>
+        <p>o = OK für Services oder UP für hosts (man könnte an ONLINE denken)</p>
+      </li>
 <li class="listitem">
-      <p>d = Down für hosts</p>
-    </li>
+        <p>d = Down für hosts</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Beispiel</strong></span></p>
+  <div class="section" title="7.10.3. Beispiel">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13712400"></a>7.10.3. Beispiel</h3></div></div></div>
+    
 
-  <pre class="screen">define serviceescalation {
+    <pre class="screen">define serviceescalation {
    host_name               localhost
    service_description     HTTP
    first_notification      5
@@ -97,10 +113,12 @@
    escalation_condition    host linux=d | service linux.SSH=w,c
    }</pre>
 <p> Diese Beispiel-Eskalation würde eskalieren, wenn der HOST 'linux' DOWN ist oder der Service 'linux.SSH' WARNING oder
-  CRITICAL.</p>
+    CRITICAL.</p>
 
-  <p>[ Thanks to: Vitali Voroth, DECOIT GmbH * http://www.decoit.de ]</p>
-  <a class="indexterm" name="idp13661168"></a>
+    <p>[ Thanks to: Vitali Voroth, DECOIT GmbH * http://www.decoit.de ]</p>
+
+    <a class="indexterm" name="idp13723776"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

@@ -28,50 +28,62 @@
 <div class="section" title="9.3. TCP-Wrapper-Integration">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="int-tcpwrappers"></a>9.3. TCP-Wrapper-Integration</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="int-tcpwrappers.html#idp15417616">9.3.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="int-tcpwrappers.html#idp15429504">9.3.2. Einen Service definieren</a></span></dt>
+<dt><span class="section"><a href="int-tcpwrappers.html#idp15439856">9.3.3. TCP-Wrapper konfigurieren</a></span></dt>
+<dt><span class="section"><a href="int-tcpwrappers.html#idp15444752">9.3.4. Das Script schreiben</a></span></dt>
+<dt><span class="section"><a href="int-tcpwrappers.html#idp15450816">9.3.5. Aufräumen</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="9.3.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15417616"></a>9.3.1. Einführung</h3></div></div></div>
+    
 
-  <div class="mediaobject"><img src="../images/tcpwrappers.png"></div>
+    <div class="mediaobject"><img src="../images/tcpwrappers.png"></div>
 
-  <p>Dieses Dokument erklärt, wie einfach in Icinga Alarme für Verbindungsversuche generiert werden können, die von
-  TCP-Wrappern zurückgewiesen werden. Wenn zum Beispiel ein unautorisierter Host versucht, sich mit Ihrem SSH-Server zu verbinden,
-  können Sie in Icinga einen Alarm empfangen, der den Namen des Hosts enthält, der zurückgewiesen wurde. Wenn Sie das auf
-  Ihren Linux/Unix-Boxen installieren, dann werden Sie erstaunt sein, wie viele Port-Scans Sie in Ihrem Netzwerk
-  entdecken.</p>
+    <p>Dieses Dokument erklärt, wie einfach in Icinga Alarme für Verbindungsversuche generiert werden können, die von TCP-Wrappern
+    zurückgewiesen werden. Wenn zum Beispiel ein unautorisierter Host versucht, sich mit Ihrem SSH-Server zu verbinden, können Sie in
+    Icinga einen Alarm empfangen, der den Namen des Hosts enthält, der zurückgewiesen wurde. Wenn Sie das auf Ihren
+    Linux/Unix-Boxen installieren, dann werden Sie erstaunt sein, wie viele Port-Scans Sie in Ihrem Netzwerk entdecken.</p>
 
-  <p>Diese Anweisungen gehen davon aus, dass</p>
+    <p>Diese Anweisungen gehen davon aus, dass</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Sie bereits mit <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passiven Prüfungen</a> vertraut sind und wissen, wie sie
-      arbeiten.</p>
-    </li>
+        <p>Sie bereits mit <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passiven Prüfungen</a> vertraut sind und wissen, wie sie arbeiten.</p>
+      </li>
 <li class="listitem">
-      <p>Sie bereits mit <a class="link" href="volatileservices.html" title="7.4. sprunghafte Services">sprunghaften Services</a> vertraut sind und wissen, wie sie
-      arbeiten.</p>
-    </li>
+        <p>Sie bereits mit <a class="link" href="volatileservices.html" title="7.4. sprunghafte Services">sprunghaften Services</a> vertraut sind und wissen, wie sie
+        arbeiten.</p>
+      </li>
 <li class="listitem">
-      <p>der Host, für den Sie Alarme generieren (d.h. der Host, auf dem Sie TCP-Wrapper benutzen), ein entfernter Host ist (in
-      diesem Beispiel <span class="emphasis"><em>firestorm</em></span> genannt). Wenn Sie Alarme auf dem gleichen Host generieren möchten, müssen
-      Sie ein paar Anpassungen an den Beispielen machen, die wir bereitstellen.</p>
-    </li>
+        <p>der Host, für den Sie Alarme generieren (d.h. der Host, auf dem Sie TCP-Wrapper benutzen), ein entfernter Host ist (in diesem
+        Beispiel <span class="emphasis"><em>firestorm</em></span> genannt). Wenn Sie Alarme auf dem gleichen Host generieren möchten, müssen Sie ein paar
+        Anpassungen an den Beispielen machen, die wir bereitstellen.</p>
+      </li>
 <li class="listitem">
-      <p>Sie den <a class="link" href="addons.html#addons-nsca">NSCA-Daemon</a> auf Ihrem Überwachungs-Server und den NSCA client
-      (<span class="emphasis"><em>send_nsca</em></span>) auf der entfernten Maschine installiert haben, für die Sie TCP-Wrapper-Alarme generieren
-      möchten.</p>
-    </li>
+        <p>Sie den <a class="link" href="addons.html#addons-nsca">NSCA-Daemon</a> auf Ihrem Überwachungs-Server und den NSCA client
+        (<span class="emphasis"><em>send_nsca</em></span>) auf der entfernten Maschine installiert haben, für die Sie TCP-Wrapper-Alarme generieren
+        möchten.</p>
+      </li>
 </ol></div>
+  </div>
 
-  <p><span class="bold"><strong>Einen Service definieren</strong></span></p>
+  <div class="section" title="9.3.2. Einen Service definieren">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15429504"></a>9.3.2. Einen Service definieren</h3></div></div></div>
+    
 
-  <p>Wenn Sie es nicht bereits getan haben, erstellen Sie eine <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a>
-  für den entfernten Host (<span class="emphasis"><em>firestorm</em></span>).</p>
+    <p>Wenn Sie es nicht bereits getan haben, erstellen Sie eine <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a> für den
+    entfernten Host (<span class="emphasis"><em>firestorm</em></span>).</p>
 
-  <p>Als nächstes definieren Sie einen Service in einer Ihrer <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objektkonfigurationsdateien</a>
-  für die TCP-Wrapper-Alarme auf dem Host <span class="emphasis"><em>firestorm</em></span>. Die Service-Definition könnte wie folgt aussehen:</p>
+    <p>Als nächstes definieren Sie einen Service in einer Ihrer <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objektkonfigurationsdateien</a> für die
+    TCP-Wrapper-Alarme auf dem Host <span class="emphasis"><em>firestorm</em></span>. Die Service-Definition könnte wie folgt aussehen:</p>
 
-  <pre class="screen"> define service{
+    <pre class="programlisting"> define service{
         host_name                       firestorm
         service_description             TCP Wrappers
         is_volatile                     1
@@ -82,65 +94,79 @@
         ...
         }</pre>
 
-  <p>Es gibt einige wichtige Dinge zu der obigen Service-Definition anzumerken:</p>
+    <p>Es gibt einige wichtige Dinge zu der obigen Service-Definition anzumerken:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Die <span class="emphasis"><em>volatile</em></span>-Option ist aktiviert. Wir wollen, dass diese Option aktiviert ist, weil wir eine
-      Benachrichtigung für jeden Alarm haben wollen, der herein kommt.</p>
-    </li>
+        <p>Die <span class="emphasis"><em>volatile</em></span>-Option ist aktiviert. Wir wollen, dass diese Option aktiviert ist, weil wir eine
+        Benachrichtigung für jeden Alarm haben wollen, der herein kommt.</p>
+      </li>
 <li class="listitem">
-      <p>Aktive Prüfungen für den Service sind deaktiviert, während passive Prüfungen aktiviert sind. Das bedeutet, dass der
-      Service niemals aktiv von Icinga geprüft wird - alle Alarminformationen müssen passiv von einer externen Quelle
-      empfangen werden.</p>
-    </li>
+        <p>Aktive Prüfungen für den Service sind deaktiviert, während passive Prüfungen aktiviert sind. Das bedeutet, dass der Service
+        niemals aktiv von Icinga geprüft wird - alle Alarminformationen müssen passiv von einer externen Quelle empfangen
+        werden.</p>
+      </li>
 <li class="listitem">
-      <p>Der <span class="emphasis"><em>max_check_attempts</em></span>-Wert wird auf 1 gesetzt. Das gewährleistet, dass Sie eine Benachrichtigung
-      erhalten, sobald der erste Alarm generiert wird.</p>
-    </li>
+        <p>Der <span class="emphasis"><em>max_check_attempts</em></span>-Wert wird auf 1 gesetzt. Das gewährleistet, dass Sie eine Benachrichtigung
+        erhalten, sobald der erste Alarm generiert wird.</p>
+      </li>
 </ol></div>
+  </div>
 
-  <p><span class="bold"><strong>TCP-Wrapper konfigurieren</strong></span></p>
+  <div class="section" title="9.3.3. TCP-Wrapper konfigurieren">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15439856"></a>9.3.3. TCP-Wrapper konfigurieren</h3></div></div></div>
+    
 
-  <p>Nun müssen Sie die <span class="emphasis"><em>/etc/hosts.deny</em></span>-Datei auf <span class="emphasis"><em>firestorm</em></span> editieren. Damit die
-  TCP-Wrapper einen Alarm an den Überwachungs-Host senden, sobald ein Verbindungsversuch verweigert wird, müssen Sie eine Zeile
-  hinzufügen, die der folgenden ähnlich ist.</p>
+    <p>Nun müssen Sie die <span class="emphasis"><em>/etc/hosts.deny</em></span>-Datei auf <span class="emphasis"><em>firestorm</em></span> editieren. Damit die TCP-Wrapper
+    einen Alarm an den Überwachungs-Host senden, sobald ein Verbindungsversuch verweigert wird, müssen Sie eine Zeile hinzufügen, die der
+    folgenden ähnlich ist.</p>
 
-  <pre class="screen"> ALL: ALL: RFC931: twist (/usr/local/icinga/libexec/eventhandlers/handle_tcp_wrapper %h %d) &amp;</pre>
+    <pre class="screen"> ALL: ALL: RFC931: twist (/usr/local/icinga/libexec/eventhandlers/handle_tcp_wrapper %h %d) &amp;</pre>
 
-  <p>Diese Zeile nimmt an, dass es ein Script namens <span class="emphasis"><em>handle_tcp_wrapper</em></span> im
-  <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers/</em></span>-Verzeichnis auf <span class="emphasis"><em>firestorm</em></span> gibt. Wir werden dieses
-  Script als nächstes schreiben.</p>
+    <p>Diese Zeile nimmt an, dass es ein Script namens <span class="emphasis"><em>handle_tcp_wrapper</em></span> im
+    <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers/</em></span>-Verzeichnis auf <span class="emphasis"><em>firestorm</em></span> gibt. Wir werden dieses Script
+    als nächstes schreiben.</p>
+  </div>
 
-  <p><span class="bold"><strong>Das Script schreiben</strong></span></p>
+  <div class="section" title="9.3.4. Das Script schreiben">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15444752"></a>9.3.4. Das Script schreiben</h3></div></div></div>
+    
 
-  <p>Als letztes müssen Sie das <span class="emphasis"><em>handle_tcp_wrapper</em></span>-Script auf <span class="emphasis"><em>firestorm</em></span> schreiben,
-  das den Alarm zurück an den Icinga-Server schickt. Es könnte ungefähr so aussehen:</p>
+    <p>Als letztes müssen Sie das <span class="emphasis"><em>handle_tcp_wrapper</em></span>-Script auf <span class="emphasis"><em>firestorm</em></span> schreiben, das den
+    Alarm zurück an den Icinga-Server schickt. Es könnte ungefähr so aussehen:</p>
 
-  <pre class="screen"> #!/bin/sh 
+    <pre class="programlisting"> #!/bin/sh 
 /usr/local/icinga/libexec/eventhandlers/submit_check_result firestorm "TCP Wrappers" 2 "Denied $2-$1" &gt; /dev/null 2&gt; /dev/null</pre>
 
-  <p>Beachten Sie, dass das <span class="emphasis"><em>handle_tcp_wrapper</em></span>-Script das <span class="emphasis"><em>submit_check_result</em></span>-Script
-  aufruft, um den Alarm zurück an den Überwachungs-Host zu schicken. Angenommen, Ihr Icinga-Server heißt
-  <span class="emphasis"><em>monitor</em></span>, dann könnte das <span class="emphasis"><em>submit check_result</em></span>-Script wie folgt aussehen:</p>
+    <p>Beachten Sie, dass das <span class="emphasis"><em>handle_tcp_wrapper</em></span>-Script das <span class="emphasis"><em>submit_check_result</em></span>-Script aufruft,
+    um den Alarm zurück an den Überwachungs-Host zu schicken. Angenommen, Ihr Icinga-Server heißt <span class="emphasis"><em>monitor</em></span>, dann
+    könnte das <span class="emphasis"><em>submit check_result</em></span>-Script wie folgt aussehen:</p>
 
-  <pre class="screen"> #!/bin/sh
+    <pre class="programlisting"> #!/bin/sh
  # Arguments
  #       $1 = name of host in service definition
  #       $2 = name/description of service in service definition
  #       $3 = return code
  #       $4 = output
  /bin/echo -e "$1\t$2\t$3\t$4\n" | /usr/local/icinga/bin/send_nsca monitor -c /usr/local/icinga/etc/send_nsca.cfg</pre>
+  </div>
 
-  <p><span class="bold"><strong>Aufräumen</strong></span></p>
+  <div class="section" title="9.3.5. Aufräumen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15450816"></a>9.3.5. Aufräumen</h3></div></div></div>
+    
 
-  <p>Sie haben nun alles konfiguriert, was Sie brauchen, so dass Sie nur noch den <span class="emphasis"><em>inetd</em></span>-Prozess auf
-  <span class="emphasis"><em>firestorm</em></span> und Icinga auf Ihrem Überwachungs-Server neu starten müssen. Das war's! Wenn die
-  TCP-Wrapper auf <span class="emphasis"><em>firestorm</em></span> einen Verbindungsversuch verweigern, dann sollten Sie Alarme in Icinga
-  erhalten. Die Plugin-Ausgabe für den Alarm könnte wie folgt aussehen:</p>
+    <p>Sie haben nun alles konfiguriert, was Sie brauchen, so dass Sie nur noch den <span class="emphasis"><em>inetd</em></span>-Prozess auf
+    <span class="emphasis"><em>firestorm</em></span> und Icinga auf Ihrem Überwachungs-Server neu starten müssen. Das war's! Wenn die TCP-Wrapper auf
+    <span class="emphasis"><em>firestorm</em></span> einen Verbindungsversuch verweigern, dann sollten Sie Alarme in Icinga erhalten. Die
+    Plugin-Ausgabe für den Alarm könnte wie folgt aussehen:</p>
 
-  <pre class="screen"> Denied sshd2-sdn-ar-002mnminnP321.dialsprint.net</pre>
-  <a class="indexterm" name="idp15360720"></a>
+    <pre class="screen"> Denied sshd2-sdn-ar-002mnminnP321.dialsprint.net</pre>
+
+    <a class="indexterm" name="idp15454192"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

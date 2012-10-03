@@ -28,50 +28,62 @@
 <div class="section" title="6.3. Executing CGIs on the command line">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cgicmd"></a>6.3. <a name="cgi_cmd"></a>Executing CGIs on the command line</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="cgicmd.html#idp10682672">6.3.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="cgicmd.html#idp11844176">6.3.2. Prerequisites</a></span></dt>
+<dt><span class="section"><a href="cgicmd.html#idp11854048">6.3.3. Examples</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="6.3.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10682672"></a>6.3.1. Introduction</h3></div></div></div>
+    
 
-  <p>In most cases you will use your browser to retrieve the information you need. There may be situations where you want to process the
-  data with other tools to create wiki entries, send mails and so on. Together with the <a class="link" href="cgiparams.html" title="6.2. Information On CGI parameters">information on the CGI
-  parameters</a> you can call the CGIs from the command line.</p>
+    <p>In most cases you will use your browser to retrieve the information you need. There may be situations where you want to process
+    the data with other tools to create wiki entries, send mails and so on. Together with the <a class="link" href="cgiparams.html" title="6.2. Information On CGI parameters">information on the
+    CGI parameters</a> you can call the CGIs from the command line.</p>
+  </div>
 
-  <p><span class="bold"><strong>Prerequisites</strong></span></p>
+  <div class="section" title="6.3.2. Prerequisites">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp11844176"></a>6.3.2. Prerequisites</h3></div></div></div>
+    
 
-  <p>Before actually calling the CGIs you have to set three environment variables: </p>
+    <p>Before actually calling the CGIs you have to set three environment variables: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>REMOTE_USER</p>
+          <p>REMOTE_USER</p>
 
-        <p>This variable is set to the user which has permission to retrieve the information. In most cases this will be "icingaadmin"
-        (<code class="literal">set REMOTE_USER='icingaadmin')</code></p>
-      </li>
+          <p>This variable is set to the user which has permission to retrieve the information. In most cases this will be "icingaadmin"
+          (<code class="literal">set REMOTE_USER='icingaadmin')</code></p>
+        </li>
 <li class="listitem">
-        <p>REQUEST_METHOD</p>
+          <p>REQUEST_METHOD</p>
 
-        <p><code class="literal">set REQUEST_METHOD='GET'</code>. Possible values are "GET", "POST" and "HEAD"</p>
-      </li>
+          <p><code class="literal">set REQUEST_METHOD='GET'</code>. Possible values are "GET", "POST" and "HEAD"</p>
+        </li>
 <li class="listitem">
-        <p>QUERY_STRING</p>
+          <p>QUERY_STRING</p>
 
-        <p>Instead of passing arguments to the CGIs via the command line you have to set the variable "QUERY_STRING" with the appropriate
-        values.</p>
+          <p>Instead of passing arguments to the CGIs via the command line you have to set the variable "QUERY_STRING" with the
+          appropriate values.</p>
 
-        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+          <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>Most people find it difficult to read HTML output so it may be a good idea to add "jsonoutput" or "csvoutput" to this
-          variable (<code class="literal">QUERY_STRING='jsonoutput&amp;...'</code> or <code class="literal">QUERY_STRING='jsonoutput'</code>) .</p>
-        </td></tr>
+            <p>Most people find it difficult to read HTML output so it may be a good idea to add "jsonoutput" or "csvoutput" to this
+            variable (<code class="literal">QUERY_STRING='jsonoutput&amp;...'</code> or <code class="literal">QUERY_STRING='jsonoutput'</code>) .</p>
+          </td></tr>
 </table></div>
-      </li>
+        </li>
 </ul></div>
 
-  <p>If you forgot to set the environment variables you'll receive the following lines:</p>
-<pre class="programlisting"> $&gt; ./status.cgi
+    <p>If you forgot to set the environment variables you'll receive the following lines:</p>
+<pre class="screen"> $&gt; ./status.cgi
  getcgivars(): Unsupported REQUEST_METHOD -&gt; ''
 
  I'm guessing you're trying to execute the CGI from a command line.
@@ -83,57 +95,62 @@
  note: if you've enabled authentication in the CGIs, you must set the
  "REMOTE_USER" environment variable to be the name of the user you're
  "authenticated" as.</pre>
+  </div>
 
-  <p><span class="bold"><strong>Examples</strong></span></p>
+  <div class="section" title="6.3.3. Examples">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp11854048"></a>6.3.3. Examples</h3></div></div></div>
+    
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>The CGIs are called from within the folder which contains the *.cgi files (e.g. <code class="filename">/usr/local/icinga/sbin</code>). This
-    is not necessary but for the sake of simplicity. Unless otherwise specified the REQUEST_METHOD is set to 'GET'.</p>
-  </td></tr>
+      <p>The CGIs are called from within the folder which contains the *.cgi files (e.g. <code class="filename">/usr/local/icinga/sbin</code>).
+      This is not necessary but for the sake of simplicity. Unless otherwise specified the REQUEST_METHOD is set to 'GET'.</p>
+    </td></tr>
 </table></div>
 
-  <p>Tactical overview</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput'
+    <p>Tactical overview</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput'
  $&gt; ./tac.cgi</pre>
 
-  <p>All hosts in DOWN state</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;style=hostdetail&amp;hoststatustypes=4'
+    <p>All hosts in DOWN state</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;style=hostdetail&amp;hoststatustypes=4'
  $&gt; ./status.cgi</pre>
 
-  <p>All hosts in DOWN state being unacknowledged <span class="emphasis"><em>and</em></span> not in a downtime</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;style=hostdetail&amp;hoststatustypes=4&amp;hostprops=10'
+    <p>All hosts in DOWN state being unacknowledged <span class="emphasis"><em>and</em></span> not in a downtime</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;style=hostdetail&amp;hoststatustypes=4&amp;hostprops=10'
  $&gt; ./status.cgi</pre>
 
-  <p>All service in non-OK state</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;style=detail&amp;servicestatustypes=28'
+    <p>All service in non-OK state</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;style=detail&amp;servicestatustypes=28'
  $&gt; ./status.cgi</pre>
 
-  <p>All services being in CRITICAL state and being passive checks</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;style=detail&amp;servicestatustypes=28&amp;serviceprops=65536'
+    <p>All services being in CRITICAL state and being passive checks</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;style=detail&amp;servicestatustypes=28&amp;serviceprops=65536'
  $&gt; ./status.cgi</pre>
 
-  <p>Comments for all objects</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;type=3'
+    <p>Comments for all objects</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;type=3'
  $&gt; ./extinfo.cgi</pre>
 
-  <p>Trends for router_02 specifying a custom timeperiod using unix timestamps</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;host=router_02&amp;timeperiod=custom&amp;t1=130748400&amp;t2=1307570400'
+    <p>Trends for router_02 specifying a custom timeperiod using unix timestamps</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;host=router_02&amp;timeperiod=custom&amp;t1=130748400&amp;t2=1307570400'
  $&gt; ./extinfo.cgi</pre>
 
-  <p>Trends for router_02 specifying a custom timeperiod using date and time</p>
-<pre class="programlisting"> $&gt; set QUERY_STRING='jsonoutput&amp;host=router_02&amp;timeperiod=custom\
+    <p>Trends for router_02 specifying a custom timeperiod using date and time</p>
+<pre class="screen"> $&gt; set QUERY_STRING='jsonoutput&amp;host=router_02&amp;timeperiod=custom\
  &amp;sday=6&amp;smon=6&amp;syear=2011&amp;shour=0&amp;smin=0&amp;ssec=0\
  &amp;eday=7&amp;emon=6&amp;eyear=2011&amp;ehour=0&amp;emin=0&amp;esec=0'
  $&gt; ./extinfo.cgi</pre>
 
-  <p>(to be continued)</p>
+    <p>(to be continued)</p>
 
-  <a class="indexterm" name="idp11807360"></a>
+    <a class="indexterm" name="idp11863824"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

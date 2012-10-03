@@ -28,137 +28,140 @@
 <div class="section" title="11.3. No Icinga-API to install anymore">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="icinga-api"></a>11.3. No Icinga-API to install anymore</h2></div></div></div>
-    
+<div class="toc"><dl><dt><span class="section"><a href="icinga-api.html#idp16068048">11.3.1. Installation and use of the Icinga API</a></span></dt></dl></div>
+  
 
-    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>In the days leading up to the v1.5 release, we bid our Icinga-API goodbye and usher in a new API and Web concept.</p>
+    <p>In the days leading up to the v1.5 release, we bid our Icinga-API goodbye and ushered in a new API and Web concept.</p>
 
-      <p>You may ask yourself, what was this API anyway? Indeed, if you weren’t developing or adapting extensions for the new web
-        interface, you wouldn’t have had much contact with this important project component. When Icinga was conceived, one of the
-        main missions was to facilitate the development of addons and plugins. The API provided a set of commonly used request operations,
-        removing the need to write sql-queries and generally a lot of excess code.</p>
+    <p>You may ask yourself, what was this API anyway? Indeed, if you weren’t developing or adapting extensions for the new web
+    interface, you wouldn’t have had much contact with this important project component. When Icinga was conceived, one of the main
+    missions was to facilitate the development of addons and plugins. The API provided a set of commonly used request operations, removing
+    the need to write sql-queries and generally a lot of excess code.</p>
 
-      <p>All was well until we decided to offer some extra database flexibility. When we added support for Oracle and 
-        PostgreSQL on top of MySQL, we also gave our Icinga-API team some extra work. With each change, bug fix or new feature,
-        Marius, Michael L and Jannis had to edit the queries for each database back-end separately. This process was not only complicated
-        and error-prone, but also a sign that we needed a more flexible architecture.</p>
+    <p>All was well until we decided to offer some extra database flexibility. When we added support for Oracle and
+    PostgreSQL on top of MySQL, we also gave our Icinga-API team some extra work. With each change, bug fix or new feature,
+    Marius, Michael L and Jannis had to edit the queries for each database back-end separately. This process was not only complicated and
+    error-prone, but also a sign that we needed a more flexible architecture.</p>
 
-      <p>As of Icinga 1.5, the external Icinga-API was replaced by an internal database layer Doctrine, and merged into 
-        Icinga-Web. Much like before, queries will run through this layer between the database (IDOUtils) and the web interface.
-        However, with Doctrine we can use several database back-ends and querying the database is now much easier. In contrast to SQL, its
-        object relational mapper (ORM) uses Doctrine Query Language, so we now have the flexibility minus the code duplication.</p>
+    <p>As of Icinga 1.5, the external Icinga-API was replaced by an internal database layer Doctrine, and merged into Icinga-Web.
+    Much like before, queries will run through this layer between the database (IDOUtils) and the web interface. However, with
+    Doctrine we can use several database back-ends and querying the database is now much easier. In contrast to SQL, its object relational
+    mapper (ORM) uses Doctrine Query Language, so we now have the flexibility minus the code duplication.</p>
 
-      <p><span class="inlinemediaobject"><img src="../images/Architecture_1.5_800px.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/Architecture_1.5_800px.png"></span></p>
 
-      <p>That being said, queries from the old API still exist, thanks to the ‘legacy layer’ which will transform old API queries into
-        this new ORM type. In this way, we maintain compatibility with addons designed for older Icinga versions. The Rest API is
-        also still there as part of Icinga-Web, extending on our Doctrine layer with HTTP for addons that require only certain bits of
-        monitoring info.</p>
+    <p>That being said, queries from the old API still exist, thanks to the ‘legacy layer’ which will transform old API queries into this
+    new ORM type. In this way, we maintain compatibility with addons designed for older Icinga versions. The Rest API is also still
+    there as part of Icinga-Web, extending on our Doctrine layer with HTTP for addons that require only certain bits of monitoring
+    info.</p>
 
-      <p>With the departure of a standalone API, the average Icinga user will barely notice a change, apart from the fact that
-        the configuration has now been moved to the <code class="filename">databases.xml</code>. Best of all, every module developer can now easily
-        access the Icinga database without much code overhead– so addon developers get hacking and let us know how you go!</p>
+    <p>With the departure of a standalone API, the average Icinga user will barely notice a change, apart from the fact that the
+    configuration has now been moved to the <code class="filename">databases.xml</code>. Best of all, every module developer can now easily access
+    the Icinga database without much code overhead– so addon developers get hacking and let us know how you go!</p>
 
-      <p>For more information see our Wiki:
-        </p>
+    <p>For more information see our Wiki: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-            <p>
-              <a class="link" href="https://wiki.icinga.org/display/Dev/Development+guide+for+Icinga-Web" target="_top">Development Guide for Icinga-Web</a>
-            </p>
-          </li>
+          <p><a class="link" href="https://wiki.icinga.org/display/Dev/Development+guide+for+Icinga-Web" target="_top">Development Guide for
+          Icinga-Web</a></p>
+        </li>
 <li class="listitem">
-            <p>
-              <a class="link" href="https://wiki.icinga.org/display/Dev/Icinga+Database+essentials" target="_top">Icinga Database Essentials</a>
-            </p>
-          </li>
+          <p><a class="link" href="https://wiki.icinga.org/display/Dev/Icinga+Database+essentials" target="_top">Icinga Database Essentials</a></p>
+        </li>
 <li class="listitem">
-            <p>
-              <a class="link" href="https://wiki.icinga.org/display/Dev/Icinga-Web+REST+API" target="_top">Icinga-Web REST API</a>
-            </p>
-          </li>
+          <p><a class="link" href="https://wiki.icinga.org/display/Dev/Icinga-Web+REST+API" target="_top">Icinga-Web REST API</a></p>
+        </li>
 </ul></div>
-<p>
-      </p>
-    </td></tr>
+  </td></tr>
 </table></div>
 
-    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
-<tr><td align="left" valign="top"><p>The following is deprecated and only kept for reference</p></td></tr>
+<tr><td align="left" valign="top">
+    <p>The following is deprecated and only kept for reference</p>
+  </td></tr>
 </table></div>
-    <p><span class="bold"><strong>Installation and use of the Icinga API</strong></span></p>
-    <p><span class="bold"><strong>Prerequisites</strong></span></p>
 
-    <p>You need Icinga Core and IDOUtils or <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">MKLiveStatus</a>
-    installed and running in order to use the API.</p>
+  <div class="section" title="11.3.1. Installation and use of the Icinga API">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp16068048"></a>11.3.1. Installation and use of the Icinga API</h3></div></div></div>
+    
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><span class="bold"><strong>Prerequisites</strong></span></p>
+
+        <p>You need Icinga Core and IDOUtils or <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">MKLiveStatus</a> installed and running in order to use the
+        API.</p>
+
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>If you don't have Icinga yet please follow the instructions given in the "<a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">quickstart-idoutils</a>" documentation.</p>
-    </td></tr>
+          <p>If you don't have Icinga yet please follow the instructions given in the "<a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">quickstart-idoutils</a>" documentation.</p>
+        </td></tr>
 </table></div>
 
-    <p>If you are using IDOUtils database as data source, install PHP-PDO.</p>
+        <p>If you are using IDOUtils database as data source, install PHP-PDO.</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
             <p><span class="bold"><strong>RHEL/Fedora/CentOS</strong></span></p>
 
             <p>Make sure you have a repository/packages for PHP 5.2.x - RHEL/CentOS only support 5.1.6 out of the box.</p>
 
             <pre class="programlisting"> # yum install php-pdo php-mysql|pgsql</pre>
-        </li>
+          </li>
 <li class="listitem">
             <p><span class="bold"><strong>Debian/Ubuntu</strong></span></p>
 
             <pre class="programlisting"> # apt-get install php5 php5-mysql|pgsql</pre>
-        </li>
+          </li>
 <li class="listitem">
             <p><span class="bold"><strong>openSuSE</strong></span></p>
 
             <p>Please use yast to install the packages php5, php5-pdo, and php5-mysql|php5-pgsql.</p>
-        </li>
+          </li>
 </ul></div>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Installation and Configuration</strong></span></p>
 
-    <p><span class="bold"><strong>Installation and Configuration</strong></span></p>
-
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Icinga-API is already included in the package with Core, IDOUtils and docs and also installed during 'make install'. If you
-        already installed this package, there's no need to install Icinga-API. It is located by default in /usr/local/icinga/share/icinga-api/ and you
-        can skip this section!</p>
-    </td></tr>
+          <p>Icinga-API is already included in the package with Core, IDOUtils and docs and also installed during 'make install'.
+          If you already installed this package, there's no need to install Icinga-API. It is located by default in
+          /usr/local/icinga/share/icinga-api/ and you can skip this section!</p>
+        </td></tr>
 </table></div>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>If you just require Icinga-API for Icinga-Web, and already installed the Core with IDOUtils, skip this Howto and refer directly
-        to <a class="link" href="icinga-web-scratch.html" title="6.4. Installation of the Icinga-Web Frontend">installing Icinga Web</a>.</p>
-    </td></tr>
+          <p>If you just require Icinga-API for Icinga-Web, and already installed the Core with IDOUtils, skip this Howto and
+          refer directly to <a class="link" href="icinga-web-scratch.html" title="6.4. Installation of the Icinga-Web Frontend">installing Icinga Web</a>.</p>
+        </td></tr>
 </table></div>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1">
+        <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
             <p><span class="bold"><strong>Download</strong></span></p>
 
@@ -171,7 +174,7 @@
             <pre class="programlisting"> # cd icinga-api &amp;&amp; git pull origin master</pre>
 
             <p>or download the software using <a class="link" href="https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz" target="_top">https://git.icinga.org/index?p=icinga-api.git;a=snapshot;h=refs/heads/master;sf=tgz</a>.</p>
-        </li>
+          </li>
 <li class="listitem">
             <p><span class="bold"><strong>Installation</strong></span></p>
 
@@ -180,8 +183,9 @@
             <pre class="programlisting"> # tar xzvf icinga-api-(version).tar.gz
  # ./configure</pre>
 
-            <p>You can set the prefix where it will be installed, and point Icinga-API where your Icinga and IDOUtils config is located and which
-            users are required to run (those settings are directly applied when installing the API through Icinga Core Installation).</p>
+            <p>You can set the prefix where it will be installed, and point Icinga-API where your Icinga and IDOUtils config is located
+            and which users are required to run (those settings are directly applied when installing the API through Icinga Core
+            Installation).</p>
 
             <pre class="programlisting"> # ./configure --datarootdir=/usr/local/icinga/share \
    --sysconfdir=/usr/local/icinga/etc \
@@ -191,22 +195,26 @@
    --with-icinga-group=icinga \
    --with-web-user=www-data \
    --with-web-group=www-data</pre>
+
             <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top"><p>The --with-web... directives have to be set. Otherwise the web logs will not be written correctly. This may also lead to
-            an empty main cronk. Please note that the values of user and group differ across distributions.</p></td></tr>
+<tr><td align="left" valign="top">
+              <p>The --with-web... directives have to be set. Otherwise the web logs will not be written correctly. This may also lead to
+              an empty main cronk. Please note that the values of user and group differ across distributions.</p>
+            </td></tr>
 </table></div>
 
             <pre class="programlisting"> # make install</pre>
-        </li>
+          </li>
 </ol></div>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Configuration</strong></span></p>
 
-    <p><span class="bold"><strong>Configuration</strong></span></p>
-
-    <p>If you are developing you own Addon based on the Icinga-API, you need the following associative array. </p>
+        <p>If you are developing you own Addon based on the Icinga-API, you need the following associative array. </p>
 <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; '&lt;Type of database&gt;',
     'host'         =&gt; '&lt;Database hostname&gt;', 
@@ -218,7 +226,7 @@
  );</pre>
 <p> Example:</p>
 
-    <pre class="programlisting"> $idoConfig = array (
+        <pre class="programlisting"> $idoConfig = array (
     'type'         =&gt; 'mysql',
     'host'         =&gt; 'localhost',
     'database'     =&gt; 'ido',
@@ -227,27 +235,30 @@
     'persistent'   =&gt; true,
     'table_prefix' =&gt; 'icinga_',
  );</pre>
-
-    <p><span class="bold"><strong>Supported Backends</strong></span></p>
-
-    <p>Currently the following backend types are available. More information about that can be found in doc/icinga-api-types.txt. </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+      </li>
 <li class="listitem">
-                <p>IDOUtils DB - OK</p>
+        <p><span class="bold"><strong>Supported Backends</strong></span></p>
+
+        <p>Currently the following backend types are available. More information about that can be found in doc/icinga-api-types.txt.
+        </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+              <p>IDOUtils DB - OK</p>
             </li>
 <li class="listitem">
-                <p>Livestatus Module - experimental, not for productive usage</p>
+              <p>Livestatus Module - experimental, not for productive usage</p>
             </li>
 <li class="listitem">
-                <p>Filebased, status.dat - experimental, not for productive usage</p>
+              <p>Filebased, status.dat - experimental, not for productive usage</p>
             </li>
 </ul></div>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Use of the API</strong></span></p>
 
-    <p><span class="bold"><strong>Use of the API</strong></span></p>
+        <p>Examples can be found in doc/examples</p>
 
-    <p>Examples can be found in doc/examples</p>
-
-    <div class="orderedlist"><ol class="orderedlist" type="1">
+        <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
             <p><span class="bold"><strong>Fetching data</strong></span></p>
 
@@ -256,7 +267,8 @@
             <p>Create an instance of class IcingaApi:</p>
 
             <pre class="programlisting"> $api = IcingaApi::getConnection(IcingaApi::CONNECTION_IDO, $idoConfig);</pre>
-<p>Create your search:</p>
+<p>Create your
+            search:</p>
 
             <pre class="programlisting"> $apiRes = $api-&gt;createSearch()
  -&gt;setSearchTarget(IcingaApi::TARGET_HOST)
@@ -270,7 +282,7 @@
  -&gt;setResultColumns(array(’HOST_NAME’, ‘HOST_CURRENT_STATE’))
  -&gt;setSearchFilter(HOST_NAME, ‘Switch%’, IcingaApi::MATCH_LIKE)
  -&gt;fetch();</pre>
-        </li>
+          </li>
 <li class="listitem">
             <p><span class="bold"><strong>Processing results</strong></span></p>
 
@@ -294,7 +306,7 @@
  Host switch75 has the current state 0
  Host switch76 has the current state 0
  Host switch77 has the current state 0</pre>
-        </li>
+          </li>
 <li class="listitem">
             <p><span class="bold"><strong>Complete code without use of filters</strong></span></p>
 
@@ -331,14 +343,17 @@
  }
  ?&gt;</pre>
 
-            <p>Please have a look at the <a class="link" href="http://git.icinga.org/" target="_top">git repository</a> for further information or consult the
-            exmaples in the doc/examples folder.</p>
-        </li>
+            <p>Please have a look at the <a class="link" href="http://git.icinga.org/" target="_top">git repository</a> for further information or
+            consult the examples in the doc/examples folder.</p>
+          </li>
 </ol></div>
+      </li>
+</ul></div>
 
-    <a class="indexterm" name="idp16092912"></a>
+    <a class="indexterm" name="idp16120576"></a>
 
-    <a class="indexterm" name="idp16094176"></a>
+    <a class="indexterm" name="idp16121840"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

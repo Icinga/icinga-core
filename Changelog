@@ -61,10 +61,14 @@ ENHANCEMENTS
 * idoutils: add socket_perm to set unix socket permissions (Lennart Betz) #2659 - MF
 * idoutils: upgradedb script for mysql installs all updates between $version and $currentrelease (Philipp Deneu) #2685 - MF
 * idoutils: add --with-libdbi-driver-dir to configure, libdbi_driver_dir to ido2db.cfg to pass the driver location instead of NULL by default #2691 - MF
+* idoutils: add experimental ido event to en/disable objects to ido2db (unusued in idomod!) #3068 - MF
 
 * install: add --with-mainurl to configure, allowing to set the main frame target url for index.html #2611 - MF
 
+* contrib: add nginx configuration for icinga classicui by Francisco Miguel Biete into contrib/nginx #2253 - MF
+
 * docs: add a new stylesheet and rework docbook.xsl #3046 - MF
+* docs: add tocs for all sections #3193 - WN
 
 * icinga.spec: use --with-mainurl to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29 #2611 - MF
 * icinga.spec: add devel package #2634 - MF
@@ -161,10 +165,12 @@ classic ui: Added/Changed cgi.cfg options
 * idoutils: ido2db.cfg new config options
 	** socket_perm (default 0755) #2659
 	** libdbi_driver_dir (default NULL) #2691
+* idoutils: add experimental IDO_API_{EN,DIS}ABLE_OBJECT in ido2db #3068
 
 * install: add --with-libdbi-driver-dir to configure #2691
 
 * docs: new stylesheet in html/docs/stylesheets/icinga-docs.css #3046
+* docs: add tocs for all sections #3193
 
 * icinga.spec: add devel package #2634
 * icinga.spec: forced update on icinga.cfg change package locations #2923

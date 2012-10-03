@@ -28,128 +28,162 @@
 <div class="section" title="2.16. Router und Switches überwachen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-routers"></a>2.16. Router und Switches überwachen</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="monitoring-routers.html#idp1301120">2.16.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="monitoring-routers.html#idp1312880">2.16.2. Überblick</a></span></dt>
+<dt><span class="section"><a href="monitoring-routers.html#idp1319344">2.16.3. Schritte</a></span></dt>
+<dt><span class="section"><a href="monitoring-routers.html#idp1324016">2.16.4. Was bereits für Sie vorbereitet wurde</a></span></dt>
+<dt><span class="section"><a href="monitoring-routers.html#idp1332512">2.16.5. Voraussetzungen</a></span></dt>
+<dt><span class="section"><a href="monitoring-routers.html#idp1337712">2.16.6. Icinga konfigurieren</a></span></dt>
+<dt><span class="section"><a href="monitoring-routers.html#idp1338032">2.16.7. Icinga neu starten</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <a class="indexterm" name="idp1297808"></a>
 
-  <div class="mediaobject" align="right"><img src="../images/switch.png" align="right"></div>
+  <a class="indexterm" name="idp1299488"></a>
 
-  <p>Dieses Dokument beschreibt, wie Sie den Zustand von Netzwerk-Switches und Routern überwachen können. Einige preiswerte
-  "unmanaged" Switches und Router haben keine IP-Adresse und sind in Ihrem Netzwerk nicht sichtbar, so dass es keinen Weg gibt, um
-  sie zu überwachen. Teurere Switches und Router haben eigene Adressen und können durch Ping überwacht oder über SNMP nach
-  Statusinformationen abgefragt werden.</p>
+  <div class="section" title="2.16.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1301120"></a>2.16.1. Einführung</h3></div></div></div>
+    
 
-  <p>Ich werde beschreiben, wie Sie die folgenden Dinge auf "managed" Switches, Hubs und Routern überwachen können:</p>
+    <div class="mediaobject" align="right"><img src="../images/switch.png" align="right"></div>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <p>Dieses Dokument beschreibt, wie Sie den Zustand von Netzwerk-Switches und Routern überwachen können. Einige preiswerte "unmanaged"
+    Switches und Router haben keine IP-Adresse und sind in Ihrem Netzwerk nicht sichtbar, so dass es keinen Weg gibt, um sie zu überwachen.
+    Teurere Switches und Router haben eigene Adressen und können durch Ping überwacht oder über SNMP nach Statusinformationen abgefragt
+    werden.</p>
+
+    <p>Ich werde beschreiben, wie Sie die folgenden Dinge auf "managed" Switches, Hubs und Routern überwachen können:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Paketverlust, durchschnittliche Umlaufzeiten (round trip average, RTA)</p>
-    </li>
+        <p>Paketverlust, durchschnittliche Umlaufzeiten (round trip average, RTA)</p>
+      </li>
 <li class="listitem">
-      <p>SNMP-Statusinformationen</p>
-    </li>
+        <p>SNMP-Statusinformationen</p>
+      </li>
 <li class="listitem">
-      <p>Bandbreite / Übertragungsrate (traffic rate)</p>
-    </li>
+        <p>Bandbreite / Übertragungsrate (traffic rate)</p>
+      </li>
 </ul></div>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen
-  sich auf Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span>,
-  <span class="emphasis"><em>templates.cfg</em></span>, etc.) definiert sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung
-  folgen.</p>
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
+    Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.)
+    definiert sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung folgen.</p>
+  </div>
 
-  <p><span class="bold"><strong>Überblick</strong></span></p>
+  <div class="section" title="2.16.2. Überblick">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1312880"></a>2.16.2. Überblick</h3></div></div></div>
+    
 
-  <div class="mediaobject"><img src="../images/monitoring-routers.png"></div>
+    <div class="mediaobject"><img src="../images/monitoring-routers.png"></div>
 
-  <p>Die Überwachung von Switches und Routern kann entweder einfach oder auch aufwändiger sein - abhängig davon, welches
-  Equipment Sie haben und was Sie überwachen wollen. Da es sich um kritische Infrastrukturkomponenten handelt, werden Sie diese
-  ohne Zweifel mindestens in grundlegender Art und Weise überwachen.</p>
+    <p>Die Überwachung von Switches und Routern kann entweder einfach oder auch aufwändiger sein - abhängig davon, welches Equipment Sie
+    haben und was Sie überwachen wollen. Da es sich um kritische Infrastrukturkomponenten handelt, werden Sie diese ohne Zweifel mindestens
+    in grundlegender Art und Weise überwachen.</p>
 
-  <p>Switches und Router können einfach per "Ping" überwacht werden, um Paketverlust, RTA usw. zu ermitteln. Wenn Ihr Switch
-  SNMP unterstützt, können Sie mit dem <span class="emphasis"><em>check_snmp</em></span>-Plugin z.B. den Port-Status und (wenn Sie MRTG benutzen)
-  mit dem <span class="emphasis"><em>check_mrtgtraf</em></span>-Plugin die Bandbreite überwachen.</p>
+    <p>Switches und Router können einfach per "Ping" überwacht werden, um Paketverlust, RTA usw. zu ermitteln. Wenn Ihr Switch SNMP
+    unterstützt, können Sie mit dem <span class="emphasis"><em>check_snmp</em></span>-Plugin z.B. den Port-Status und (wenn Sie MRTG benutzen) mit dem
+    <span class="emphasis"><em>check_mrtgtraf</em></span>-Plugin die Bandbreite überwachen.</p>
 
-  <p>Das <span class="emphasis"><em>check_snmp</em></span>-Plugin wird nur dann kompiliert und installiert, wenn Sie die net-snmp- und
-  net-snmp-utils-Pakete auf Ihrem System haben. Stellen Sie sicher, dass das Plugin im
-  <span class="emphasis"><em>/usr/local/icinga/libexec</em></span>-Verzeichnis existiert, bevor Sie fortfahren. Falls nicht, installieren Sie net-snmp
-  und net-snmp-utils und kompilieren und installieren Sie die Icinga-Plugins erneut.</p>
+    <p>Das <span class="emphasis"><em>check_snmp</em></span>-Plugin wird nur dann kompiliert und installiert, wenn Sie die net-snmp- und
+    net-snmp-utils-Pakete auf Ihrem System haben. Stellen Sie sicher, dass das Plugin im
+    <span class="emphasis"><em>/usr/local/icinga/libexec</em></span>-Verzeichnis existiert, bevor Sie fortfahren. Falls nicht, installieren Sie net-snmp und
+    net-snmp-utils und kompilieren und installieren Sie die Icinga-Plugins erneut.</p>
+  </div>
 
-  <p><span class="bold"><strong>Schritte</strong></span></p>
+  <div class="section" title="2.16.3. Schritte">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1319344"></a>2.16.3. Schritte</h3></div></div></div>
+    
 
-  <p>Es gibt einige Schritte, die Sie durchführen müssen, um einen neuen Router oder Switch zu überwachen. Das sind:</p>
+    <p>Es gibt einige Schritte, die Sie durchführen müssen, um einen neuen Router oder Switch zu überwachen. Das sind:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>erfüllen Sie einmalige Voraussetzungen</p>
-    </li>
+        <p>erfüllen Sie einmalige Voraussetzungen</p>
+      </li>
 <li class="listitem">
-      <p>erstellen Sie neue Host- und Service-Definitionen zur Überwachung des Geräts</p>
-    </li>
+        <p>erstellen Sie neue Host- und Service-Definitionen zur Überwachung des Geräts</p>
+      </li>
 <li class="listitem">
-      <p>starten Sie den Icinga-Daemon neu</p>
-    </li>
+        <p>starten Sie den Icinga-Daemon neu</p>
+      </li>
 </ol></div>
+  </div>
 
-  <p><span class="bold"><strong>Was bereits für Sie vorbereitet wurde</strong></span></p>
+  <div class="section" title="2.16.4. Was bereits für Sie vorbereitet wurde">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1324016"></a>2.16.4. Was bereits für Sie vorbereitet wurde</h3></div></div></div>
+    
 
-  <p>Um Ihnen das Leben ein wenig zu erleichtern, wurden bereits ein paar Konfigurationsaufgaben für Sie erledigt:</p>
+    <p>Um Ihnen das Leben ein wenig zu erleichtern, wurden bereits ein paar Konfigurationsaufgaben für Sie erledigt:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Zwei Befehlsdefinitionen (<span class="emphasis"><em>check_snmp</em></span> und <span class="emphasis"><em>check_local_mrtgtraf</em></span>) sind bereits
-      in der <span class="emphasis"><em>commands.cfg</em></span>-Datei vorhanden. Das erlaubt Ihnen die Nutzung des <span class="emphasis"><em>check_snmp</em></span>-
-      bzw. <span class="emphasis"><em>check_mrtgtraf</em></span>-Plugins zur Überwachung von Routern und Switches.</p>
-    </li>
+        <p>Zwei Befehlsdefinitionen (<span class="emphasis"><em>check_snmp</em></span> und <span class="emphasis"><em>check_local_mrtgtraf</em></span>) sind bereits in der
+        <span class="emphasis"><em>commands.cfg</em></span>-Datei vorhanden. Das erlaubt Ihnen die Nutzung des <span class="emphasis"><em>check_snmp</em></span>- bzw.
+        <span class="emphasis"><em>check_mrtgtraf</em></span>-Plugins zur Überwachung von Routern und Switches.</p>
+      </li>
 <li class="listitem">
-      <p>Eine Host-Vorlage für Switches (namens <span class="emphasis"><em>generic-switch</em></span>) wurde bereits in der
-      <span class="emphasis"><em>templates.cfg</em></span>-Datei erstellt. Das erlaubt es Ihnen, Router/Switch-Host-Definitionen auf einfache Weise
-      hinzuzufügen.</p>
-    </li>
+        <p>Eine Host-Vorlage für Switches (namens <span class="emphasis"><em>generic-switch</em></span>) wurde bereits in der
+        <span class="emphasis"><em>templates.cfg</em></span>-Datei erstellt. Das erlaubt es Ihnen, Router/Switch-Host-Definitionen auf einfache Weise
+        hinzuzufügen.</p>
+      </li>
 </ul></div>
 
-  <p>Die o.g. Konfigurationsdateien finden Sie im <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span>-Verzeichnis. Sie können
-  diese und andere Definitionen anpassen, damit Sie Ihren Anforderungen besser entsprechen. Allerdings empfehlen wir Ihnen, noch
-  ein wenig damit zu warten, bis Sie besser mit der Konfiguration von Icinga vertraut sind. Für den Moment folgen Sie
-  einfach den nachfolgenden Anweisungen und Sie werden im Nu Ihre Router/Switches überwachen.</p>
+    <p>Die o.g. Konfigurationsdateien finden Sie im <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span>-Verzeichnis. Sie können diese und
+    andere Definitionen anpassen, damit Sie Ihren Anforderungen besser entsprechen. Allerdings empfehlen wir Ihnen, noch ein wenig damit zu
+    warten, bis Sie besser mit der Konfiguration von Icinga vertraut sind. Für den Moment folgen Sie einfach den nachfolgenden
+    Anweisungen und Sie werden im Nu Ihre Router/Switches überwachen.</p>
+  </div>
 
-  <p><span class="bold"><strong>Voraussetzungen</strong></span></p>
+  <div class="section" title="2.16.5. Voraussetzungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1332512"></a>2.16.5. Voraussetzungen</h3></div></div></div>
+    
 
-  <p>Wenn Sie Icinga das erste Mal konfigurieren, um einen Netzwerk-Switch zu überwachen, dann müssen Sie ein paar
-  zusätzliche Dinge tun. Denken Sie daran, dass Sie dies nur für den *ersten* Switch machen müssen, den Sie überwachen
-  wollen.</p>
+    <p>Wenn Sie Icinga das erste Mal konfigurieren, um einen Netzwerk-Switch zu überwachen, dann müssen Sie ein paar zusätzliche
+    Dinge tun. Denken Sie daran, dass Sie dies nur für den *ersten* Switch machen müssen, den Sie überwachen wollen.</p>
 
-  <p>Editieren Sie die Hauptkonfigurationsdatei.</p>
+    <p>Editieren Sie die Hauptkonfigurationsdatei.</p>
 
-  <pre class="screen">#&gt; vi /usr/local/icinga/etc/icinga.cfg</pre>
+    <pre class="screen">#&gt; vi /usr/local/icinga/etc/icinga.cfg</pre>
 
-  <p>Entfernen Sie das führende Hash-(#)-Zeichen der folgenden Zeile in der Hauptkonfigurationsdatei:</p>
+    <p>Entfernen Sie das führende Hash-(#)-Zeichen der folgenden Zeile in der Hauptkonfigurationsdatei:</p>
 
-  <pre class="screen"> #cfg_file=/usr/local/icinga/etc/objects/switch.cfg</pre>
+    <pre class="programlisting"> #cfg_file=/usr/local/icinga/etc/objects/switch.cfg</pre>
 
-  <p>Speichern Sie die Datei und verlassen den Editor.</p>
+    <p>Speichern Sie die Datei und verlassen den Editor.</p>
 
-  <p>Was haben Sie gerade getan? Sie haben Icinga mitgeteilt, in der
-  <span class="emphasis"><em>/usr/local/icinga/etc/objects/switch.cfg</em></span>-Datei nach weiteren Objektdefinitionen zu schauen. Dort werden Sie
-  Host- und Service-Definitionen für Router- und Switches einfügen. Diese Konfigurationsdatei enthält bereits einige
-  Beispiel-Host-, Hostgroup- und Service-Definitionen. Für den *ersten* Router/Switch, den Sie überwachen, passen Sie einfach die
-  Beispiel-Host- und Service-Definitionen an, statt neue zu erstellen.</p>
+    <p>Was haben Sie gerade getan? Sie haben Icinga mitgeteilt, in der
+    <span class="emphasis"><em>/usr/local/icinga/etc/objects/switch.cfg</em></span>-Datei nach weiteren Objektdefinitionen zu schauen. Dort werden Sie Host-
+    und Service-Definitionen für Router- und Switches einfügen. Diese Konfigurationsdatei enthält bereits einige Beispiel-Host-, Hostgroup-
+    und Service-Definitionen. Für den *ersten* Router/Switch, den Sie überwachen, passen Sie einfach die Beispiel-Host- und
+    Service-Definitionen an, statt neue zu erstellen.</p>
+  </div>
 
-  <p><span class="bold"><strong>Icinga konfigurieren</strong></span></p>
+  <div class="section" title="2.16.6. Icinga konfigurieren">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1337712"></a>2.16.6. Icinga konfigurieren</h3></div></div></div>
+    
 
-  <p>Sie müssen einige <a class="link" href="objectdefinitions.html" title="3.4. Objektdefinitionen">Objektdefinitionen anlegen</a>, um einen neuen Router/Switch zu
-  überwachen.</p>
+    <p>Sie müssen einige <a class="link" href="objectdefinitions.html" title="3.4. Objektdefinitionen">Objektdefinitionen anlegen</a>, um einen neuen Router/Switch zu
+    überwachen.</p>
 
-  <p>Öffnen Sie die <span class="emphasis"><em>switch.cfg</em></span>-Datei.</p>
+    <p>Öffnen Sie die <span class="emphasis"><em>switch.cfg</em></span>-Datei.</p>
 
-  <pre class="screen">#&gt; vi /usr/local/icinga/etc/objects/switch.cfg</pre>
+    <pre class="screen">#&gt; vi /usr/local/icinga/etc/objects/switch.cfg</pre>
 
-  <p>Fügen Sie eine neue <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definition für den Switch hinzu, den Sie überwachen
-  möchten. Wenn dies der *erste* Switch ist, den Sie überwachen, dann können Sie einfach die Beispiel-Definitionen in der
-  <span class="emphasis"><em>switch.cfg</em></span>-Datei anpassen. Ändern Sie die <span class="emphasis"><em>host_name</em></span>-, <span class="emphasis"><em>alias</em></span>- und
-  <span class="emphasis"><em>address</em></span>-Felder auf die entsprechenden Werte des Switches.</p>
+    <p>Fügen Sie eine neue <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definition für den Switch hinzu, den Sie überwachen
+    möchten. Wenn dies der *erste* Switch ist, den Sie überwachen, dann können Sie einfach die Beispiel-Definitionen in der
+    <span class="emphasis"><em>switch.cfg</em></span>-Datei anpassen. Ändern Sie die <span class="emphasis"><em>host_name</em></span>-, <span class="emphasis"><em>alias</em></span>- und
+    <span class="emphasis"><em>address</em></span>-Felder auf die entsprechenden Werte des Switches.</p>
 
-  <pre class="screen"> define host{
+    <pre class="programlisting"> define host{
         use             generic-switch          ; Inherit default values from a template
         host_name       linksys-srw224p         ; The name we're giving to this switch
         alias           Linksys SRW224P Switch  ; A longer name associated with the switch
@@ -157,22 +191,24 @@
         hostgroups      allhosts,switches       ; Host groups this switch is associated with
         }</pre>
 
-  <p><span class="bold"><strong>Services überwachen</strong></span></p>
+    <p><span class="bold"><strong>Services überwachen</strong></span></p>
 
-  <p>Nun können Sie einige Service-Definitionen hinzufügen (in der gleichen Konfigurationsdatei), um Icinga mitzuteilen,
-  welche Dinge auf dem Switch zu überwachen sind. Wenn dies der *erste* Switch ist, den Sie überwachen, dann können Sie einfach
-  die Beispiel-Definitionen in der <span class="emphasis"><em>switch.cfg</em></span>-Datei anpassen.</p>
+    <p>Nun können Sie einige Service-Definitionen hinzufügen (in der gleichen Konfigurationsdatei), um Icinga mitzuteilen, welche
+    Dinge auf dem Switch zu überwachen sind. Wenn dies der *erste* Switch ist, den Sie überwachen, dann können Sie einfach die
+    Beispiel-Definitionen in der <span class="emphasis"><em>switch.cfg</em></span>-Datei anpassen.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Ersetzen Sie "<span class="emphasis"><em>linksys-srw224p</em></span>" in der folgenden Beispiel-Definition durch
-  den Namen, den Sie in der <span class="emphasis"><em>host_name</em></span>-Direktive der Host-Definition angegeben haben, die Sie gerade
-  hinzugefügt haben.</p>
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Ersetzen Sie "<span class="emphasis"><em>linksys-srw224p</em></span>" in der folgenden Beispiel-Definition durch den
+    Namen, den Sie in der <span class="emphasis"><em>host_name</em></span>-Direktive der Host-Definition angegeben haben, die Sie gerade hinzugefügt
+    haben.</p>
 
-  <p><span class="bold"><strong>Paketverlust und RTA überwachen</strong></span></p>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><span class="bold"><strong>Paketverlust und RTA überwachen</strong></span></p>
 
-  <p>Fügen Sie die folgende Service-Definition hinzu, um unter normalen Bedingungen alle fünf Minuten Paketverlust und
-  Round-Trip-Average zwischen dem Icinga-Host und dem Switch zu überwachen.</p>
+        <p>Fügen Sie die folgende Service-Definition hinzu, um unter normalen Bedingungen alle fünf Minuten Paketverlust und
+        Round-Trip-Average zwischen dem Icinga-Host und dem Switch zu überwachen.</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service ; Inherit values from a template
         host_name               linksys-srw224p ; The name of the host the service is associated with
         service_description     PING            ; The service description
@@ -181,100 +217,104 @@
         retry_interval          1               ; Re-check every minute until its final/hard state is determined
         }</pre>
 
-  <p>Dieser Service wird:</p>
+        <p>Dieser Service wird:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-      <p>CRITICAL, falls der Round-Trip-Average (RTA) größer als 600 Millisekunden oder der Paketverlust 60% oder mehr
-      ist</p>
-    </li>
+            <p>CRITICAL, falls der Round-Trip-Average (RTA) größer als 600 Millisekunden oder der Paketverlust 60% oder mehr ist</p>
+          </li>
 <li class="listitem">
-      <p>WARNING, falls der Round-Trip-Average (RTA) größer als 200 Millisekunden oder der Paketverlust 20% oder mehr
-      ist</p>
-    </li>
+            <p>WARNING, falls der Round-Trip-Average (RTA) größer als 200 Millisekunden oder der Paketverlust 20% oder mehr ist</p>
+          </li>
 <li class="listitem">
-      <p>OK, falls der Round-Trip-Average (RTA) kleiner als 200 Millisekunden oder der Paketverlust kleiner als 20% ist</p>
-    </li>
+            <p>OK, falls der Round-Trip-Average (RTA) kleiner als 200 Millisekunden oder der Paketverlust kleiner als 20% ist</p>
+          </li>
 </ul></div>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>SNMP-Statusinformationen überwachen</strong></span></p>
 
-  <p><span class="bold"><strong>SNMP-Statusinformationen überwachen</strong></span></p>
+        <p>Wenn Ihr Switch oder Router SNMP unterstützt, können Sie eine Menge an Informationen mit dem
+        <span class="emphasis"><em>check_snmp</em></span>-Plugin überwachen. Wenn nicht, dann überspringen Sie diesen Abschnitt.</p>
 
-  <p>Wenn Ihr Switch oder Router SNMP unterstützt, können Sie eine Menge an Informationen mit dem
-  <span class="emphasis"><em>check_snmp</em></span>-Plugin überwachen. Wenn nicht, dann überspringen Sie diesen Abschnitt.</p>
+        <p>Fügen Sie die folgende Service-Definition hinzu, um die Laufzeit des Switches zu überwachen.</p>
 
-  <p>Fügen Sie die folgende Service-Definition hinzu, um die Laufzeit des Switches zu überwachen.</p>
-
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service ; Inherit values from a template
         host_name               linksys-srw224p
         service_description     Uptime  
         check_command           check_snmp!-C public -o sysUpTime.0
         }</pre>
 
-  <p>In der <span class="emphasis"><em>check_command</em></span>-Direktive der obigen Service-Definition sagt "-C public", dass der zu benutzende
-  SNMP-Community-Name "public" lautet und "-o sysUpTime.0" gibt an, welche OID überprüft werden soll.</p>
+        <p>In der <span class="emphasis"><em>check_command</em></span>-Direktive der obigen Service-Definition sagt "-C public", dass der zu benutzende
+        SNMP-Community-Name "public" lautet und "-o sysUpTime.0" gibt an, welche OID überprüft werden soll.</p>
 
-  <p>Wenn Sie sicherstellen wollen, dass sich ein bestimmter Port/ein bestimmtes Interface des Switches in einem "UP"-Zustand
-  befindet, dann sollten Sie eine Service-Definition hinzufügen:</p>
+        <p>Wenn Sie sicherstellen wollen, dass sich ein bestimmter Port/ein bestimmtes Interface des Switches in einem "UP"-Zustand
+        befindet, dann sollten Sie eine Service-Definition hinzufügen:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service ; Inherit values from a template
         host_name               linksys-srw224p
         service_description     Port 1 Link Status
         check_command           check_snmp!-C public -o ifOperStatus.1 -r 1 -m RFC1213-MIB
         }</pre>
 
-  <p>In dem obigen Beispiel bezieht sich "-o ifOperStatus.1" auf die OID des Betriebszustands von Port 1 des Switches. Die "-r
-  1"-Option teilt dem <span class="emphasis"><em>check_snmp</em></span>-Plugin mit, einen OK-Zustand zurückzuliefern, wenn "1" im SNMP-Ergebnis
-  gefunden wird (1 deutet einen "UP"-Zustand des Ports an) und CRITICAL, wenn es nicht gefunden wird. "-m RFC1213-MIB" ist
-  optional und teilt dem <span class="emphasis"><em>check_snmp</em></span>-Plugin mit, nur die "RFC1213-MIB" zu laden statt jeder einzelnen MIB, die
-  auf Ihrem System installiert ist, was die Dinge beschleunigen kann.</p>
+        <p>In dem obigen Beispiel bezieht sich "-o ifOperStatus.1" auf die OID des Betriebszustands von Port 1 des Switches. Die "-r
+        1"-Option teilt dem <span class="emphasis"><em>check_snmp</em></span>-Plugin mit, einen OK-Zustand zurückzuliefern, wenn "1" im SNMP-Ergebnis gefunden
+        wird (1 deutet einen "UP"-Zustand des Ports an) und CRITICAL, wenn es nicht gefunden wird. "-m RFC1213-MIB" ist optional und teilt
+        dem <span class="emphasis"><em>check_snmp</em></span>-Plugin mit, nur die "RFC1213-MIB" zu laden statt jeder einzelnen MIB, die auf Ihrem System
+        installiert ist, was die Dinge beschleunigen kann.</p>
 
-  <p>Das war's mit dem SNMP-Überwachungsbeispiel. Es gibt eine Million Dinge, die mit SNMP überwacht werden können, also liegt
-  es an Ihnen zu entscheiden, was Sie brauchen und was Sie überwachen wollen. Viel Erfolg!</p>
+        <p>Das war's mit dem SNMP-Überwachungsbeispiel. Es gibt eine Million Dinge, die mit SNMP überwacht werden können, also liegt es
+        an Ihnen zu entscheiden, was Sie brauchen und was Sie überwachen wollen. Viel Erfolg!</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Normalerweise können Sie mit dem folgenden Befehl die OIDs eines Switches (oder eines anderen
-  SNMP-fähigen Gerätes) herausfinden, die überwacht werden können (ersetzen Sie <span class="emphasis"><em>192.168.1.253</em></span> durch die
-  IP-Adresse des Switches): <span class="emphasis"><em>snmpwalk -v1 -c public 192.168.1.253 -m ALL .1</em></span></p>
+        <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Normalerweise können Sie mit dem folgenden Befehl die OIDs eines Switches (oder eines anderen
+        SNMP-fähigen Gerätes) herausfinden, die überwacht werden können (ersetzen Sie <span class="emphasis"><em>192.168.1.253</em></span> durch die
+        IP-Adresse des Switches): <span class="emphasis"><em>snmpwalk -v1 -c public 192.168.1.253 -m ALL .1</em></span></p>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Bandbreite / Übertragungsrate überwachen</strong></span></p>
 
-  <p><span class="bold"><strong>Bandbreite / Übertragungsrate überwachen</strong></span></p>
+        <p>Wenn Sie die Bandbreitennutzung Ihres Switches oder Routers mit <a class="link" href="http://oss.oetiker.ch/mrtg/" target="_top">MRTG</a>
+        überwachen, dann können Sie durch Icinga alarmiert werden, wenn die Übertragungsraten Schwellwerte überschreiten, die Sie
+        angeben. Mit dem <span class="emphasis"><em>check_mrtgtraf</em></span>-Plugin (das in der Icinga-Plugin-Distribution enthalten ist) können Sie
+        das tun.</p>
 
-  <p>Wenn Sie die Bandbreitennutzung Ihres Switches oder Routers mit <a class="link" href="http://oss.oetiker.ch/mrtg/" target="_top">MRTG</a>
-  überwachen, dann können Sie durch Icinga alarmiert werden, wenn die Übertragungsraten Schwellwerte überschreiten, die Sie
-  angeben. Mit dem <span class="emphasis"><em>check_mrtgtraf</em></span>-Plugin (das in der Icinga-Plugin-Distribution enthalten ist) können
-  Sie das tun.</p>
+        <p>Sie müssen dem <span class="emphasis"><em>check_mrtgtraf</em></span>-Plugin mitteilen, in welcher Log-Datei die MRTG-Daten gespeichert sind,
+        zusammen mit Schwellwerten, usw. In unserem Beispiel überwachen wir einen Port eines Linksys-Switches. Die MRTG-Log-Datei ist
+        abgelegt unter <span class="emphasis"><em>/var/lib/mrtg/192.168.1.253_1.log</em></span>. Hier ist die Service-Definition, die wir benutze, um die
+        Bandbreitendaten zu überwachen, die in der Log-Datei gespeichert sind...</p>
 
-  <p>Sie müssen dem <span class="emphasis"><em>check_mrtgtraf</em></span>-Plugin mitteilen, in welcher Log-Datei die MRTG-Daten gespeichert sind,
-  zusammen mit Schwellwerten, usw. In unserem Beispiel überwachen wir einen Port eines Linksys-Switches. Die MRTG-Log-Datei ist
-  abgelegt unter <span class="emphasis"><em>/var/lib/mrtg/192.168.1.253_1.log</em></span>. Hier ist die Service-Definition, die wir benutze, um die
-  Bandbreitendaten zu überwachen, die in der Log-Datei gespeichert sind...</p>
-
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service ; Inherit values from a template
         host_name               linksys-srw224p
         service_description     Port 1 Bandwidth Usage
         check_command           check_local_mrtgtraf!/var/lib/mrtg/192.168.1.253_1.log!AVG!1000000,2000000!5000000,5000000!10
         }</pre>
 
-  <p>In dem obigen Beispiel teilt "/var/lib/mrtg/192.168.1.253_1.log" im <span class="emphasis"><em>check_local_mrtgtraf</em></span>-Befehl dem
-  Plugin mit, welche MRTG-Log-Datei auszulesen ist. Die "AVG"-Option gibt an, dass Durchschnitts-Bandbreitenstatistiken verwendet
-  werden sollen. "1000000,2000000" sind die Schwellwerte (in Bytes) für Warnungen bei eingehenden Übertragungsraten.
-  "5000000,5000000" sind die kritischen Schwellwerte (in Bytes) bei ausgehenden Übertragungsraten. "10" gibt an, dass das Plugin
-  einen CRITICAL-Zustand zurückliefern soll, wenn die MRTG-Log-Datei älter als zehn Minuten ist (sie sollte alle fünf Minuten
-  aktualisiert werden).</p>
+        <p>In dem obigen Beispiel teilt "/var/lib/mrtg/192.168.1.253_1.log" im <span class="emphasis"><em>check_local_mrtgtraf</em></span>-Befehl dem
+        Plugin mit, welche MRTG-Log-Datei auszulesen ist. Die "AVG"-Option gibt an, dass Durchschnitts-Bandbreitenstatistiken verwendet
+        werden sollen. "1000000,2000000" sind die Schwellwerte (in Bytes) für Warnungen bei eingehenden Übertragungsraten. "5000000,5000000"
+        sind die kritischen Schwellwerte (in Bytes) bei ausgehenden Übertragungsraten. "10" gibt an, dass das Plugin einen CRITICAL-Zustand
+        zurückliefern soll, wenn die MRTG-Log-Datei älter als zehn Minuten ist (sie sollte alle fünf Minuten aktualisiert werden).</p>
+      </li>
+</ul></div>
 
-  <p>Speichern Sie die Datei.</p>
+    <p>Speichern Sie die Datei.</p>
+  </div>
 
-  <p><span class="bold"><strong>Icinga neu starten</strong></span></p>
+  <div class="section" title="2.16.7. Icinga neu starten">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1338032"></a>2.16.7. Icinga neu starten</h3></div></div></div>
+    
 
-  <p>Sobald Sie die neuen Host- und Service-Definitionen in der <span class="emphasis"><em>switch.cfg</em></span>-Datei hinzugefügt haben, sind
-  Sie bereit, mit der Überwachung des Routers/Switches zu beginnen. Um dies zu tun, müssen Sie <a class="link" href="verifyconfig.html" title="4.1. Überprüfen Ihrer Icinga-Konfiguration">die
-  Konfigurationsdateien überprüfen</a> und <a class="link" href="startstop.html" title="4.2. Icinga starten und stoppen">Icinga neu starten</a>.</p>
+    <p>Sobald Sie die neuen Host- und Service-Definitionen in der <span class="emphasis"><em>switch.cfg</em></span>-Datei hinzugefügt haben, sind Sie
+    bereit, mit der Überwachung des Routers/Switches zu beginnen. Um dies zu tun, müssen Sie <a class="link" href="verifyconfig.html" title="4.1. Überprüfen Ihrer Icinga-Konfiguration">die
+    Konfigurationsdateien überprüfen</a> und <a class="link" href="startstop.html" title="4.2. Icinga starten und stoppen">Icinga neu starten</a>.</p>
 
-  <p>Wenn die Überprüfung irgendwelche Fehler enthält, dann müssen Sie diese beheben, bevor Sie fortfahren. Stellen Sie sicher,
-  dass Sie Icinga nicht (erneut) starten, bevor die Überprüfung ohne Fehler durchgelaufen ist!</p>
-  <a class="indexterm" name="idp1365328"></a>
-  <a class="indexterm" name="idp1370416"></a>
+    <p>Wenn die Überprüfung irgendwelche Fehler enthält, dann müssen Sie diese beheben, bevor Sie fortfahren. Stellen Sie sicher, dass
+    Sie Icinga nicht (erneut) starten, bevor die Überprüfung ohne Fehler durchgelaufen ist!</p>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

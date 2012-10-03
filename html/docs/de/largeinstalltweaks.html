@@ -28,46 +28,56 @@
 <div class="section" title="8.5. Large Installation Tweaks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="largeinstalltweaks"></a>8.5. Large Installation Tweaks</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="largeinstalltweaks.html#idp15203776">8.5.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="largeinstalltweaks.html#idp15206176">8.5.2. Effekte</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="8.5.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15203776"></a>8.5.1. Einführung</h3></div></div></div>
+    
 
-  <p>Benutzer mit großen Icinga-Installation können von der <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a>-Konfigurationsoption profitieren. Das
-  Aktivieren dieser Option erlaubt es dem Icinga-Daemon, bestimmte Abkürzungen zu nehmen, die in geringerer Systembelastung
-  und besserer Leistung resultieren.</p>
+    <p>Benutzer mit großen Icinga-Installation können von der <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a>-Konfigurationsoption profitieren. Das Aktivieren
+    dieser Option erlaubt es dem Icinga-Daemon, bestimmte Abkürzungen zu nehmen, die in geringerer Systembelastung und besserer
+    Leistung resultieren.</p>
+  </div>
 
-  <p><span class="bold"><strong>Effekte</strong></span></p>
+  <div class="section" title="8.5.2. Effekte">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15206176"></a>8.5.2. Effekte</h3></div></div></div>
+    
 
-  <p>Wenn Sie die <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a>-Option in Ihrer
-  Icinga-Hauptkonfigurationsdatei aktivieren, werden mehrere Anpassungen gemacht, wie der Icinga-Daemon
-  arbeitet:</p>
+    <p>Wenn Sie die <a class="link" href="configmain.html#configmain-use_large_installation_tweaks">use_large_installation_tweaks</a>-Option in Ihrer
+    Icinga-Hauptkonfigurationsdatei aktivieren, werden mehrere Anpassungen gemacht, wie der Icinga-Daemon arbeitet:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Keine Zusammenfassungsmakros in Umgebungsvariablen</strong></span> - Die <a class="link" href="macrolist.html#macrolist-summary_macros">Zusammenfassungsmakros</a> werden Ihnen nicht als Umgebungsvariablen zur Verfügung
-      stehen. Die Berechnung der Werte dieser Makros kann in großen Konfigurationen ziemlich zeitintensiv sein, so dass sie nicht
-      als Umgebungsvariablen zur Verfügung stehen, wenn Sie diese Option benutzen. Zusammenfassungsmakros sind weiterhin als
-      reguläre Makros verfügbar, wenn Sie diese Ihren Scripts als Parameter übergeben.</p>
-    </li>
+        <p><span class="bold"><strong>Keine Zusammenfassungsmakros in Umgebungsvariablen</strong></span> - Die <a class="link" href="macrolist.html#macrolist-summary_macros">Zusammenfassungsmakros</a> werden Ihnen nicht als Umgebungsvariablen zur Verfügung stehen. Die
+        Berechnung der Werte dieser Makros kann in großen Konfigurationen ziemlich zeitintensiv sein, so dass sie nicht als
+        Umgebungsvariablen zur Verfügung stehen, wenn Sie diese Option benutzen. Zusammenfassungsmakros sind weiterhin als reguläre Makros
+        verfügbar, wenn Sie diese Ihren Scripts als Parameter übergeben.</p>
+      </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Unterschiedliche Speicherbereinigung</strong></span> - Normalerweise wird Icinga den
-      allokierten Speicher in Kind-Prozessen freigeben, bevor sie enden. Dies ist wahrscheinlich die beste Vorgehensweise, aber
-      vielleicht in großen Installationen unnötig, weil die meisten Betriebssysteme selbst darauf achten, allokierten Speicher
-      freizugeben, wenn Prozesse enden. Das Betriebssystem neigt dazu, belegten Speicher schneller freizugeben, als Icinga
-      das kann, so dass Icinga nicht versucht, Speicher in Kind-Prozessen freizugeben, wenn Sie diese Option
-      aktivieren.</p>
-    </li>
+        <p><span class="bold"><strong>Unterschiedliche Speicherbereinigung</strong></span> - Normalerweise wird Icinga den allokierten
+        Speicher in Kind-Prozessen freigeben, bevor sie enden. Dies ist wahrscheinlich die beste Vorgehensweise, aber vielleicht in großen
+        Installationen unnötig, weil die meisten Betriebssysteme selbst darauf achten, allokierten Speicher freizugeben, wenn Prozesse
+        enden. Das Betriebssystem neigt dazu, belegten Speicher schneller freizugeben, als Icinga das kann, so dass Icinga
+        nicht versucht, Speicher in Kind-Prozessen freizugeben, wenn Sie diese Option aktivieren.</p>
+      </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Weniger fork()</strong></span> - Normalerweise wird Icinga zweimal fork() aufrufen, wenn es
-      Host- und Service-Prüfungen ausführt. Das wird getan, um (1) ein hohes Maß an Resistenz sicherzustellen gegen Plugins, die
-      fehlschlagen und einen SegFault erzeugen und (2) dafür sorgen, dass das Betriebssystem sich um die Bereinigung der
-      Enkel-Prozesse kümmert, sobald sie enden. Der zusätzliche fork() ist nicht wirklich nötig, so dass er übersprungen wird,
-      wenn Sie diese Option aktivieren. Als Ergebnis werden Kind-Prozesse von Icinga selbst bereinigt (anstatt diese
-      Aufgabe dem Betriebssystem zu überlassen). Dieses Feature sollte für spürbare Lasteinsparungen in Ihrer
-      Icinga-Installation sorgen.</p>
-    </li>
+        <p><span class="bold"><strong>Weniger fork()</strong></span> - Normalerweise wird Icinga zweimal fork() aufrufen, wenn es Host- und
+        Service-Prüfungen ausführt. Das wird getan, um (1) ein hohes Maß an Resistenz sicherzustellen gegen Plugins, die fehlschlagen und
+        einen SegFault erzeugen und (2) dafür sorgen, dass das Betriebssystem sich um die Bereinigung der Enkel-Prozesse kümmert, sobald sie
+        enden. Der zusätzliche fork() ist nicht wirklich nötig, so dass er übersprungen wird, wenn Sie diese Option aktivieren. Als Ergebnis
+        werden Kind-Prozesse von Icinga selbst bereinigt (anstatt diese Aufgabe dem Betriebssystem zu überlassen). Dieses Feature
+        sollte für spürbare Lasteinsparungen in Ihrer Icinga-Installation sorgen.</p>
+      </li>
 </ol></div>
-  <a class="indexterm" name="idp15122800"></a>
+
+    <a class="indexterm" name="idp15215008"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

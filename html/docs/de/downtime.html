@@ -28,103 +28,135 @@
 <div class="section" title="7.16. Geplante Ausfallzeiten">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="downtime"></a>7.16. Geplante Ausfallzeiten</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="downtime.html#idp14049712">7.16.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="downtime.html#idp14053696">7.16.2. Ausfallzeit einplanen</a></span></dt>
+<dt><span class="section"><a href="downtime.html#idp14056800">7.16.3. Feste und flexible Ausfallzeiten</a></span></dt>
+<dt><span class="section"><a href="downtime.html#idp14060160">7.16.4. ausgelöste Ausfallzeiten</a></span></dt>
+<dt><span class="section"><a href="downtime.html#idp14062336">7.16.5. Wie geplante Ausfallzeiten Benachrichtigungen beeinflussen</a></span></dt>
+<dt><span class="section"><a href="downtime.html#idp14065392">7.16.6. Überlappende geplante Ausfallzeiten</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="7.16.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14049712"></a>7.16.1. Einführung</h3></div></div></div>
+    
 
-  <p>Icinga erlaubt Ihnen, Termine für geplante Ausfallzeiten (downtime) von Hosts und Services zu vergeben, die Sie
-  überwachen. Das ist nützlich, wenn Sie bereits wissen, dass Sie einen Server für einen Upgrade oder etwas Ähnliches
-  herunterfahren müssen.</p>
+    <p>Icinga erlaubt Ihnen, Termine für geplante Ausfallzeiten (downtime) von Hosts und Services zu vergeben, die Sie überwachen.
+    Das ist nützlich, wenn Sie bereits wissen, dass Sie einen Server für einen Upgrade oder etwas Ähnliches herunterfahren müssen.</p>
 
-  <div class="mediaobject" align="right"><img src="../images/downtime.png" align="right"></div>
+    <div class="mediaobject" align="right"><img src="../images/downtime.png" align="right"></div>
+  </div>
 
-  <p><span class="bold"><strong>Ausfallzeit einplanen</strong></span></p>
+  <div class="section" title="7.16.2. Ausfallzeit einplanen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14053696"></a>7.16.2. Ausfallzeit einplanen</h3></div></div></div>
+    
 
-  <p>Sie können eine Ausfallzeit für Hosts und Services über das <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo CGI</a> einplanen
-  (wenn Sie Host- oder Service-Informationen ansehen). Klicken Sie auf den Link "Schedule downtime for this host/service", um die
-  Ausfallzeit zu planen.</p>
+    <p>Sie können eine Ausfallzeit für Hosts und Services über das <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo CGI</a> einplanen (wenn
+    Sie Host- oder Service-Informationen ansehen). Klicken Sie auf den Link "Schedule downtime for this host/service", um die Ausfallzeit zu
+    planen.</p>
 
-  <p>Sobald Sie die Ausfallzeit für einen Host oder Service einplanen, wird Icinga für diesen Host oder Service einen
-  Kommentar hinzufügen, der anzeigt, dass für diese Periode eine Ausfallzeit geplant ist. Wenn die Zeit vorüber ist, wird
-  Icinga diesen Kommentar automatisch löschen. Cool, oder?</p>
+    <p>Sobald Sie die Ausfallzeit für einen Host oder Service einplanen, wird Icinga für diesen Host oder Service einen Kommentar
+    hinzufügen, der anzeigt, dass für diese Periode eine Ausfallzeit geplant ist. Wenn die Zeit vorüber ist, wird Icinga diesen
+    Kommentar automatisch löschen. Cool, oder?</p>
+  </div>
 
-  <p><span class="bold"><strong>Feste und flexible Ausfallzeiten</strong></span></p>
+  <div class="section" title="7.16.3. Feste und flexible Ausfallzeiten">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14056800"></a>7.16.3. Feste und flexible Ausfallzeiten</h3></div></div></div>
+    
 
-  <p>Wenn Sie über das Web-Interface eine Ausfallzeit einplanen, werden Sie gefragt, ob sie fest oder flexibel sein soll. Hier
-  eine Erklärung, wie sich "fest" und "flexibel" unterscheiden:</p>
+    <p>Wenn Sie über das Web-Interface eine Ausfallzeit einplanen, werden Sie gefragt, ob sie fest oder flexibel sein soll. Hier eine
+    Erklärung, wie sich "fest" und "flexibel" unterscheiden:</p>
 
-  <p>"Feste" Ausfallzeiten starten und stoppen genau zu den Zeiten, die Sie bei der Planung festgelegt haben. Okay, das war
-  einfach genug...</p>
+    <p>"Feste" Ausfallzeiten starten und stoppen genau zu den Zeiten, die Sie bei der Planung festgelegt haben. Okay, das war einfach
+    genug...</p>
 
-  <p>"Flexible" Ausfallzeiten sind gedacht für Zeiten, wenn Sie wissen, dass ein Host oder Service für X Minuten (oder Stunden)
-  nicht verfügbar sein wird, aber Sie nicht genau wissen, wann das sein wird. Wenn Sie flexible Ausfallzeiten planen, wird
-  Icinga die geplante Ausfallzeit irgendwann zwischen den Start- und Endzeiten beginnen, die Sie angegeben haben. Die
-  Ausfallzeit wird solange dauern, wie Sie das bei der Planung angegeben haben. Dabei wird angenommen, dass der Host oder Service,
-  für den Sie eine flexible Ausfallzeit geplant haben, ausfällt (oder unerreichbar wird) oder zwischen der angegebenen Start- und
-  Endezeit in einen nicht-OK-Zustand wechselt. Die Zeit, zu der der Host oder Service in einen Problemzustand wechselt, legt die
-  Zeit fest, zu der Icinga tatsächlich die Ausfallzeit startet. Die Ausfallzeit wird die angegebene Zeitspanne dauern, auch
-  wenn sich der Host oder Service vor der definierten Zeit erholt. Das wird aus gutem Grund getan. Wie wir alle wissen, denken Sie
-  vielleicht, dass Sie ein Problem gelöst haben, aber müssen den Server doch noch zehnmal neu starten, bevor es wirklich
-  funktioniert. Geschickt, oder?</p>
+    <p>"Flexible" Ausfallzeiten sind gedacht für Zeiten, wenn Sie wissen, dass ein Host oder Service für X Minuten (oder Stunden) nicht
+    verfügbar sein wird, aber Sie nicht genau wissen, wann das sein wird. Wenn Sie flexible Ausfallzeiten planen, wird Icinga die
+    geplante Ausfallzeit irgendwann zwischen den Start- und Endzeiten beginnen, die Sie angegeben haben. Die Ausfallzeit wird solange
+    dauern, wie Sie das bei der Planung angegeben haben. Dabei wird angenommen, dass der Host oder Service, für den Sie eine flexible
+    Ausfallzeit geplant haben, ausfällt (oder unerreichbar wird) oder zwischen der angegebenen Start- und Endezeit in einen nicht-OK-Zustand
+    wechselt. Die Zeit, zu der der Host oder Service in einen Problemzustand wechselt, legt die Zeit fest, zu der Icinga tatsächlich
+    die Ausfallzeit startet. Die Ausfallzeit wird die angegebene Zeitspanne dauern, auch wenn sich der Host oder Service vor der definierten
+    Zeit erholt. Das wird aus gutem Grund getan. Wie wir alle wissen, denken Sie vielleicht, dass Sie ein Problem gelöst haben, aber müssen
+    den Server doch noch zehnmal neu starten, bevor es wirklich funktioniert. Geschickt, oder?</p>
+  </div>
 
-  <p><span class="bold"><strong>ausgelöste Ausfallzeiten</strong></span></p>
+  <div class="section" title="7.16.4. ausgelöste Ausfallzeiten">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14060160"></a>7.16.4. ausgelöste Ausfallzeiten</h3></div></div></div>
+    
 
-  <p>Während des Planens von Host- oder Service-Ausfallzeiten haben Sie die Möglichkeit, sie zu "ausgelösten" Ausfallzeiten
-  (triggered downtime) zu machen. Was ist eine ausgelöste Ausfallzeit, fragen Sie? Bei ausgelösten Ausfallzeiten wird der Start
-  der Ausfallzeit durch den Start einer anderen geplanten Host- oder Service-Ausfallzeit ausgelöst. Dies ist sehr nützlich, wenn
-  Sie Ausfallzeiten für eine große Zahl von Hosts oder Services planen und die Startzeit der Auszeit von der Startzeit eines
-  anderen Ausfallzeiteintrags abhängt. Wenn Sie zum Beispiel eine flexible Ausfallzeit für einen bestimmten Host planen (weil er
-  zur Wartung heruntergefahren wird), könnten Sie ausgelöste Ausfallzeiten für alle "Kinder" des Hosts planen.</p>
+    <p>Während des Planens von Host- oder Service-Ausfallzeiten haben Sie die Möglichkeit, sie zu "ausgelösten" Ausfallzeiten (triggered
+    downtime) zu machen. Was ist eine ausgelöste Ausfallzeit, fragen Sie? Bei ausgelösten Ausfallzeiten wird der Start der Ausfallzeit durch
+    den Start einer anderen geplanten Host- oder Service-Ausfallzeit ausgelöst. Dies ist sehr nützlich, wenn Sie Ausfallzeiten für eine
+    große Zahl von Hosts oder Services planen und die Startzeit der Auszeit von der Startzeit eines anderen Ausfallzeiteintrags abhängt.
+    Wenn Sie zum Beispiel eine flexible Ausfallzeit für einen bestimmten Host planen (weil er zur Wartung heruntergefahren wird), könnten
+    Sie ausgelöste Ausfallzeiten für alle "Kinder" des Hosts planen.</p>
+  </div>
 
-  <p><span class="bold"><strong>Wie geplante Ausfallzeiten Benachrichtigungen beeinflussen</strong></span></p>
+  <div class="section" title="7.16.5. Wie geplante Ausfallzeiten Benachrichtigungen beeinflussen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14062336"></a>7.16.5. Wie geplante Ausfallzeiten Benachrichtigungen beeinflussen</h3></div></div></div>
+    
 
-  <p>Wenn sich ein Host oder Service in einer Phase geplanter Ausfallzeit befindet, wird Icinga keine normalen
-  Benachrichtigungen für den Host oder Service versenden. Allerdings wird es eine "DOWNTIMESTART"-Benachrichtigung für den Host
-  oder Service versenden, die jeden Admin darüber informiert, dass sie nachfolgend keine Problemalarme erhalten werden.</p>
+    <p>Wenn sich ein Host oder Service in einer Phase geplanter Ausfallzeit befindet, wird Icinga keine normalen
+    Benachrichtigungen für den Host oder Service versenden. Allerdings wird es eine "DOWNTIMESTART"-Benachrichtigung für den Host oder
+    Service versenden, die jeden Admin darüber informiert, dass sie nachfolgend keine Problemalarme erhalten werden.</p>
 
-  <p>Wenn die geplante Ausfallzeit vorbei ist, wird Icinga wieder normale Benachrichtigungen für den Host oder Service
-  versenden. Eine "DOWNTIMEEND"-Benachrichtigung wird an die Admins versandt, dass die geplante Ausfallzeit vorüber ist und dass
-  sie wieder normale Alarme erhalten werden.</p>
+    <p>Wenn die geplante Ausfallzeit vorbei ist, wird Icinga wieder normale Benachrichtigungen für den Host oder Service
+    versenden. Eine "DOWNTIMEEND"-Benachrichtigung wird an die Admins versandt, dass die geplante Ausfallzeit vorüber ist und dass sie
+    wieder normale Alarme erhalten werden.</p>
 
-  <p>Wenn die geplante Auszeit vorzeitig abgebrochen wird (bevor sie endet), wird eine "DOWNTIMECANCELLED"-Benachrichtigung an
-  die betroffenen Admins versandt.</p>
+    <p>Wenn die geplante Auszeit vorzeitig abgebrochen wird (bevor sie endet), wird eine "DOWNTIMECANCELLED"-Benachrichtigung an die
+    betroffenen Admins versandt.</p>
+  </div>
 
-  <p><span class="bold"><strong>Überlappende geplante Ausfallzeiten</strong></span></p>
+  <div class="section" title="7.16.6. Überlappende geplante Ausfallzeiten">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14065392"></a>7.16.6. Überlappende geplante Ausfallzeiten</h3></div></div></div>
+    
 
-  <p>Ich mag es, dieses als das "Oh Mist, es funktioniert nicht"-Syndrom zu bezeichnen. Sie wissen, wovon wir sprechen. Sie
-  fahren einen Server herunter, um einen "Routine"-Hardware-Upgrade zu machen, nur um später festzustellen, dass die OS-Treiber
-  nicht funktionieren, das RAID-Array hochgegangen ist oder Laufwerkskopien fehlgeschlagen und Ihre Original-Platten jetzt nutzlos
-  sind. Moral der Geschichte ist, dass jede Routinearbeit an einem Server durchaus drei- oder viermal länger dauern kann, als Sie
-  ursprünglich geplant haben...</p>
+    <p>Ich mag es, dieses als das "Oh Mist, es funktioniert nicht"-Syndrom zu bezeichnen. Sie wissen, wovon wir sprechen. Sie fahren
+    einen Server herunter, um einen "Routine"-Hardware-Upgrade zu machen, nur um später festzustellen, dass die OS-Treiber nicht
+    funktionieren, das RAID-Array hochgegangen ist oder Laufwerkskopien fehlgeschlagen und Ihre Original-Platten jetzt nutzlos sind. Moral
+    der Geschichte ist, dass jede Routinearbeit an einem Server durchaus drei- oder viermal länger dauern kann, als Sie ursprünglich geplant
+    haben...</p>
 
-  <p>Nehmen wir das folgende Szenario:</p>
+    <p>Nehmen wir das folgende Szenario:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Sie planen eine Auszeit für Host A an einem Montag von 19:30 Uhr bis 21:30 Uhr</p>
-    </li>
+        <p>Sie planen eine Auszeit für Host A an einem Montag von 19:30 Uhr bis 21:30 Uhr</p>
+      </li>
 <li class="listitem">
-      <p>Sie fahren den Server am Montag gegen 19:45 Uhr herunter, um einen Platten-Upgrade durchzuführen</p>
-    </li>
+        <p>Sie fahren den Server am Montag gegen 19:45 Uhr herunter, um einen Platten-Upgrade durchzuführen</p>
+      </li>
 <li class="listitem">
-      <p>nachdem Sie eineinhalb Stunden mit SCSI-Fehlern und Treiberinkompatibilitäten verschwendet haben, können Sie endlich
-      den Server starten</p>
-    </li>
+        <p>nachdem Sie eineinhalb Stunden mit SCSI-Fehlern und Treiberinkompatibilitäten verschwendet haben, können Sie endlich den
+        Server starten</p>
+      </li>
 <li class="listitem">
-      <p>um 21:15 Uhr stellen Sie fest, dass eine Ihrer Partitions nirgends auf der Platte zu finden ist</p>
-    </li>
+        <p>um 21:15 Uhr stellen Sie fest, dass eine Ihrer Partitions nirgends auf der Platte zu finden ist</p>
+      </li>
 <li class="listitem">
-      <p>da Sie wissen, dass es eine lange Nacht wird, gehen Sie zurück und planen eine zusätzliche Auszeit für Host A von
-      Montag 21:20 Uhr bis Dienstagmorgen 1:30 Uhr</p>
-    </li>
+        <p>da Sie wissen, dass es eine lange Nacht wird, gehen Sie zurück und planen eine zusätzliche Auszeit für Host A von Montag 21:20
+        Uhr bis Dienstagmorgen 1:30 Uhr</p>
+      </li>
 </ol></div>
 
-  <p>Wenn Sie überlappende Ausfallzeiten für einen Host oder Service planen (in diesem Fall waren die Zeiten von 19:40 Uhr bis
-  21:30 Uhr und 21:20 bis 1:30 Uhr), wird Icinga warten, bis die letzte Periode geplanter Ausfallzeiten vorüber ist, bevor
-  Benachrichtigungen zu diesem Host oder Service versandt werden. In diesem Beispiel werden Benachrichtigungen für Host A bis
-  Dienstagmorgen 1:30 Uhr unterdrückt.</p>
-  <a class="indexterm" name="idp14007072"></a>
-  <a class="indexterm" name="idp14008240"></a>
+    <p>Wenn Sie überlappende Ausfallzeiten für einen Host oder Service planen (in diesem Fall waren die Zeiten von 19:40 Uhr bis 21:30
+    Uhr und 21:20 bis 1:30 Uhr), wird Icinga warten, bis die letzte Periode geplanter Ausfallzeiten vorüber ist, bevor
+    Benachrichtigungen zu diesem Host oder Service versandt werden. In diesem Beispiel werden Benachrichtigungen für Host A bis
+    Dienstagmorgen 1:30 Uhr unterdrückt.</p>
+
+    <a class="indexterm" name="idp14074160"></a>
+
+    <a class="indexterm" name="idp14075984"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

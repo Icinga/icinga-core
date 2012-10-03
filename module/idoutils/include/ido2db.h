@@ -165,6 +165,7 @@ typedef struct ido2db_dbconninfo_struct{
 	/* update */
 	OCI_Statement* oci_statement_objects_update_inactive;
 	OCI_Statement* oci_statement_objects_update_active;
+	OCI_Statement* oci_statement_object_enable_disable;
 	OCI_Statement* oci_statement_programstatus_update;
 	OCI_Statement* oci_statement_timedevents_update;
 	OCI_Statement* oci_statement_comment_history_update;
@@ -351,6 +352,8 @@ typedef struct ido2db_input_data_info_struct{
 #define IDO2DB_INPUT_DATA_HOSTEXTINFODEFINITION         73
 #define IDO2DB_INPUT_DATA_SERVICEEXTINFODEFINITION      74
 
+#define IDO2DB_INPUT_DATA_ENABLEOBJECT		        100
+#define IDO2DB_INPUT_DATA_DISABLEOBJECT			101
 
 /************* types of config data ************/
 #define IDO2DB_CONFIGTYPE_ORIGINAL                      0

@@ -32,17 +32,119 @@
 <p><b>Inhaltsverzeichnis</b></p>
 <dl>
 <dt><span class="section"><a href="plugins.html">5.1. Icinga Plugins</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="plugins.html#idm122889424">5.1.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idm123008864">5.1.2. Was sind Plugins?</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6787216">5.1.3. Plugins als eine Abstraktionsschicht</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6793648">5.1.4. Welche Plugins sind verfügbar?</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6803824">5.1.5. Plugins beschaffen</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6818752">5.1.6. Zum Icinga-Benutzer wechseln</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6827056">5.1.7. Anpassen der Umgebung</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6827312">5.1.8. Raw command line</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6859744">5.1.9. Schwellwert und Bereiche</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6860064">5.1.10. Aktivieren der Definition</a></span></dt>
+<dt><span class="section"><a href="plugins.html#idp6911632">5.1.11. Plugin API</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="macros.html">5.2. Makros verstehen und wie sie arbeiten</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="macros.html#idp6922736">5.2.1. Makros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp6924368">5.2.2. Makroersetzungen - wie Makros arbeiten</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp6926608">5.2.3. Beispiel 1: Host-Address Makro</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp6931136">5.2.4. Beispiel 2: Befehlsargument-Makros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp6943440">5.2.5. On-Demand-Makros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp6943696">5.2.6. On-Demand-Gruppen-Makros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp6972000">5.2.7. Benutzervariablen-Makros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp6982400">5.2.8. Makrobereinigung</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp6998432">5.2.9. Makros als Umgebungsvariablen</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7003440">5.2.10. Verfügbare Makros</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="macrolist.html">5.3. Standard-Makros in Icinga</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="macrolist.html#idp7012624">5.3.1. Makro-Geltungsbereich</a></span></dt>
+<dt><span class="section"><a href="macrolist.html#idp7028992">5.3.2. Makroverfügbarkeits-Aufstellung</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="hostchecks.html">5.4. Host-Prüfungen (Host checks)</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="hostchecks.html#idp7030512">5.4.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp7031952">5.4.2. Wann werden Host-Prüfungen durchgeführt?</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9582288">5.4.3. zwischengespeicherte Host-Prüfungen (cached host checks)</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9584688">5.4.4. Abhängigkeiten und Prüfungen</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9587568">5.4.5. Parallelisierung von Host-Prüfungen</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9598448">5.4.6. Host-Zustände</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9603504">5.4.7. Host-Statusermittlung</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9639568">5.4.8. Host-Statusänderungen</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="servicechecks.html">5.5. Service-Prüfungen (Service Checks)</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="servicechecks.html#idp9647712">5.5.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9649184">5.5.2. Wann werden Service-Prüfungen durchgeführt?</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9660336">5.5.3. Abhängigkeiten und Prüfungen</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9663248">5.5.4. Parallelisierung von Service-Prüfungen</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9665984">5.5.5. Service-Zustände</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9670784">5.5.6. Service-Statusermittlung</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9673216">5.5.7. Service-Statusänderungen</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="activechecks.html">5.6. Aktive Prüfungen (Active Checks)</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="activechecks.html#idp9681616">5.6.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="activechecks.html#idp9688176">5.6.2. Wie werden aktive Prüfungen durchgeführt?</a></span></dt>
+<dt><span class="section"><a href="activechecks.html#idp9691264">5.6.3. Wann werden aktive Prüfungen ausgeführt?</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="passivechecks.html">5.7. Passive Prüfungen (Passive Checks)</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="passivechecks.html#idp9704768">5.7.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9710416">5.7.2. Einsatzmöglichkeiten für passive Prüfungen</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9716912">5.7.3. Wie passive Prüfungen arbeiten</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9727296">5.7.4. Passive Prüfungen aktivieren</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9734256">5.7.5. Übermitteln von passiven Service-Prüfungsergebnissen</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9750512">5.7.6. Übermitteln von passiven Host-Prüfungsergebnissen</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9762272">5.7.7. Passive Prüfungen und Host-Zustände</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9771232">5.7.8. Übermitteln von passiven Prüfungsergebnissen von entfernten Hosts</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="statetypes.html">5.8. Statustypen</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="statetypes.html#idp9779472">5.8.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9786656">5.8.2. Service- und Host-Prüfungswiederholungen</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9788960">5.8.3. Soft-Zustände</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9801744">5.8.4. Hard-Zustände</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9816896">5.8.5. Beispiel</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="timeperiods.html">5.9. Zeitfenster</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="timeperiods.html#idp9882144">5.9.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="timeperiods.html#idp9890112">5.9.2. Vorrang bei Zeitfenstern</a></span></dt>
+<dt><span class="section"><a href="timeperiods.html#idp9899648">5.9.3. Wie Zeitfenster mit Host- und Service-Prüfungen arbeiten</a></span></dt>
+<dt><span class="section"><a href="timeperiods.html#idp9911536">5.9.4. Wie Zeitfenster mit Kontakt-Benachrichtigungen arbeiten</a></span></dt>
+<dt><span class="section"><a href="timeperiods.html#idp9917712">5.9.5. Wie Zeitfenster mit Benachrichtigungs-Eskalationen arbeiten</a></span></dt>
+<dt><span class="section"><a href="timeperiods.html#idp9921712">5.9.6. Wie Zeitfenster mit Abhängigkeiten arbeiten</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="networkreachability.html">5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="networkreachability.html#idp9927808">5.10.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp9931424">5.10.2. Beispiel-Netzwerk</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp9935456">5.10.3. Definieren von Eltern/Kind-Beziehungen</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp9942288">5.10.4. Erreichbarkeits-Logik in Aktion</a></span></dt>
+<dt><span class="section"><a href="networkreachability.html#idp9951696">5.10.5. UNREACHABLE Zustände und Benachrichtigungen</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="notifications.html">5.11. Benachrichtigungen</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="notifications.html#idp9961488">5.11.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="notifications.html#idp9966224">5.11.2. Wann erfolgen Benachrichtigungen?</a></span></dt>
+<dt><span class="section"><a href="notifications.html#idp9971808">5.11.3. Wer wird benachrichtigt?</a></span></dt>
+<dt><span class="section"><a href="notifications.html#idp9974720">5.11.4. Welche Filter müssen durchlaufen werden, damit Benachrichtigungen versandt werden?</a></span></dt>
+<dt><span class="section"><a href="notifications.html#idp9976512">5.11.5. Programmweite Filter:</a></span></dt>
+<dt><span class="section"><a href="notifications.html#idp9977696">5.11.6. Service- und Host-Filter:</a></span></dt>
+<dt><span class="section"><a href="notifications.html#idp9991024">5.11.7. Kontakt-Filter:</a></span></dt>
+<dt><span class="section"><a href="notifications.html#idp9998000">5.11.8. Benachrichtigungs-Methoden</a></span></dt>
+<dt><span class="section"><a href="notifications.html#idp10005952">5.11.9. Benachrichtigungstyp-Makro</a></span></dt>
+<dt><span class="section"><a href="notifications.html#idp10035680">5.11.10. Hilfreiche Quellen</a></span></dt>
+</dl></dd>
 <dt><span class="section"><a href="notifications2.html">5.12. Benachrichtigungen: Beispiele und Fehlersuche</a></span></dt>
+<dd><dl>
+<dt><span class="section"><a href="notifications2.html#idp10061360">5.12.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="notifications2.html#idp10090672">5.12.2. Einige Beispiele</a></span></dt>
+<dt><span class="section"><a href="notifications2.html#idp10099232">5.12.3. Fehlersuche</a></span></dt>
+</dl></dd>
 </dl>
 </div>
     

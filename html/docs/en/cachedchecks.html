@@ -28,9 +28,19 @@
 <div class="section" title="7.21. Cached Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cachedchecks"></a>7.21. <a name="cached_checks"></a>Cached Checks</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="cachedchecks.html#idp14324800">7.21.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="cachedchecks.html#idp14328208">7.21.2. For On-Demand Checks Only</a></span></dt>
+<dt><span class="section"><a href="cachedchecks.html#idp14328336">7.21.3. How Caching Works</a></span></dt>
+<dt><span class="section"><a href="cachedchecks.html#idp14343104">7.21.4. What This Really Means</a></span></dt>
+<dt><span class="section"><a href="cachedchecks.html#idp14343232">7.21.5. Configuration Variables</a></span></dt>
+<dt><span class="section"><a href="cachedchecks.html#idp14354400">7.21.6. Optimizing Cache Effectiveness</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="7.21.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14324800"></a>7.21.1. Introduction</h3></div></div></div>
 
   <p><span class="inlinemediaobject"><img src="../images/cachedchecks1.png"></span></p>
 
@@ -38,7 +48,10 @@
   checks allow Icinga to forgo executing a host or service check command if it determines a relatively recent check result will do
   instead.</p>
 
-  <p><span class="bold"><strong>For On-Demand Checks Only</strong></span></p>
+  </div>
+<div class="section" title="7.21.2. For On-Demand Checks Only">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14328208"></a>7.21.2. For On-Demand Checks Only</h3></div></div></div>
 
   <p>Regularly scheduled host and service checks will not see a performance improvement with use of cached checks. Cached checks are only
   useful for improving the performance of on-demand host and service checks. Scheduled checks help to ensure that host and service states
@@ -76,7 +89,10 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>How Caching Works</strong></span></p>
+  </div>
+<div class="section" title="7.21.3. How Caching Works">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14328336"></a>7.21.3. How Caching Works</h3></div></div></div>
 
   <p><span class="inlinemediaobject"><img src="../images/cachedchecks.png"></span></p>
 
@@ -89,7 +105,10 @@
   checked, or if the last check falls outside of the cached check horizon timeframe, Icinga will execute a new host or service check
   by running a plugin.</p>
 
-  <p><span class="bold"><strong>What This Really Means</strong></span></p>
+  </div>
+<div class="section" title="7.21.4. What This Really Means">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14343104"></a>7.21.4. What This Really Means</h3></div></div></div>
 
   <p>Icinga performs on-demand checks because it need to know the current state of a host or service <span class="emphasis"><em>at that exact
   moment</em></span> in time. Utilizing cached checks allows you to make Icinga think that recent check results are "good enough" for
@@ -121,7 +140,10 @@
   different horizon timeframes, and their effect on the reliability of status information, is the only want that an individual user will
   find the "right" value for their situation. More information on this is discussed below.</p>
 
-  <p><span class="bold"><strong>Configuration Variables</strong></span></p>
+  </div>
+<div class="section" title="7.21.5. Configuration Variables">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14343232"></a>7.21.5. Configuration Variables</h3></div></div></div>
 
   <p>The following variables determine the timeframes in which a previous host or service check result may be used as a cached host or
   service check result:</p>
@@ -137,7 +159,10 @@
     </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Optimizing Cache Effectiveness</strong></span></p>
+  </div>
+<div class="section" title="7.21.6. Optimizing Cache Effectiveness">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14354400"></a>7.21.6. Optimizing Cache Effectiveness</h3></div></div></div>
 
   <p>In order to make the most effective use of cached checks, you should:</p>
 
@@ -160,7 +185,7 @@
   performance hit is described in detail <a class="link" href="hostchecks.html" title="5.4. Host Checks">here</a>.</p>
 
   <div class="figure">
-<a name="idp14350208"></a><p class="title"><b>Figure 7.1. Cached checks</b></p>
+<a name="idp14362896"></a><p class="title"><b>Figure 7.1. Cached checks</b></p>
 <div class="figure-contents">
     
 
@@ -205,7 +230,8 @@
   appropriately for your situation. Continue to monitor the PNP4Nagios graphs over time to see how changing the horizon variables affected
   cached check statistics. Rinse and repeat as necessary.</p>
 
-  <a class="indexterm" name="idp14363056"></a>
+  <a class="indexterm" name="idp14375648"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

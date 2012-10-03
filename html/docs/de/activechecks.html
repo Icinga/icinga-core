@@ -28,60 +28,76 @@
 <div class="section" title="5.6. Aktive Prüfungen (Active Checks)">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="activechecks"></a>5.6. Aktive Prüfungen (Active Checks)</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="activechecks.html#idp9681616">5.6.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="activechecks.html#idp9688176">5.6.2. Wie werden aktive Prüfungen durchgeführt?</a></span></dt>
+<dt><span class="section"><a href="activechecks.html#idp9691264">5.6.3. Wann werden aktive Prüfungen ausgeführt?</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="5.6.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9681616"></a>5.6.1. Einführung</h3></div></div></div>
+    
 
-  <p>Icinga ist in der Lage, Hosts und Services auf zwei Arten zu überwachen: aktiv und passiv. Passive Prüfungen werden
-  <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">anderswo</a> beschrieben, so dass wir uns hier auf aktive Prüfungen konzentrieren. Aktive
-  Prüfungen sind die gebräuchlichste Methode zur Überwachung von Hosts und Services. Die Hauptmerkmale von aktiven Prüfungen
-  sind</p>
+    <p>Icinga ist in der Lage, Hosts und Services auf zwei Arten zu überwachen: aktiv und passiv. Passive Prüfungen werden <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">anderswo</a> beschrieben, so dass wir uns hier auf aktive Prüfungen konzentrieren. Aktive Prüfungen sind die
+    gebräuchlichste Methode zur Überwachung von Hosts und Services. Die Hauptmerkmale von aktiven Prüfungen sind</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>aktive Prüfungen werden vom Icinga-Prozess veranlasst</p>
-    </li>
+        <p>aktive Prüfungen werden vom Icinga-Prozess veranlasst</p>
+      </li>
 <li class="listitem">
-      <p>aktive Prüfungen laufen auf einer regelmäßig geplanten Basis</p>
-    </li>
+        <p>aktive Prüfungen laufen auf einer regelmäßig geplanten Basis</p>
+      </li>
 </ul></div>
 
-  <div class="mediaobject"><img src="../images/activechecks.png"></div>
+    <div class="mediaobject"><img src="../images/activechecks.png"></div>
+  </div>
 
-  <p><span class="bold"><strong>Wie werden aktive Prüfungen durchgeführt?</strong></span></p>
+  <div class="section" title="5.6.2. Wie werden aktive Prüfungen durchgeführt?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9688176"></a>5.6.2. Wie werden aktive Prüfungen durchgeführt?</h3></div></div></div>
+    
 
-  <p>Aktive Prüfungen werden durch die Prüfungslogik im Icinga-Daemon veranlasst. Wenn Icinga den Status eines
-  Hosts oder Services prüfen muss, wird es ein Plugin ausführen und die Informationen übergeben, was geprüft werden soll. Das
-  Plugin wird dann den Betriebszustand des Hosts oder Service prüfen und die Ergebnisse an den Icinga-Daemon zurückmelden.
-  Icinga wird die Ergebnisse der Host- oder Service-Prüfung verarbeiten und entsprechend notwendige Aktionen ausführen
-  (z.B. Benachrichtigungen versenden, Eventhandler ausfüren, usw.).</p>
+    <p>Aktive Prüfungen werden durch die Prüfungslogik im Icinga-Daemon veranlasst. Wenn Icinga den Status eines Hosts oder
+    Services prüfen muss, wird es ein Plugin ausführen und die Informationen übergeben, was geprüft werden soll. Das Plugin wird dann den
+    Betriebszustand des Hosts oder Service prüfen und die Ergebnisse an den Icinga-Daemon zurückmelden. Icinga wird die
+    Ergebnisse der Host- oder Service-Prüfung verarbeiten und entsprechend notwendige Aktionen ausführen (z.B. Benachrichtigungen versenden,
+    Eventhandler ausfüren, usw.).</p>
 
-  <p>Mehr Informationen, wie Plugins arbeiten, finden Sie <a class="link" href="plugins.html" title="5.1. Icinga Plugins">hier</a>.</p>
+    <p>Mehr Informationen, wie Plugins arbeiten, finden Sie <a class="link" href="plugins.html" title="5.1. Icinga Plugins">hier</a>.</p>
+  </div>
 
-  <p><span class="bold"><strong>Wann werden aktive Prüfungen ausgeführt?</strong></span></p>
+  <div class="section" title="5.6.3. Wann werden aktive Prüfungen ausgeführt?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9691264"></a>5.6.3. Wann werden aktive Prüfungen ausgeführt?</h3></div></div></div>
+    
 
-  <p>Aktive Prüfungen werden ausgeführt</p>
+    <p>Aktive Prüfungen werden ausgeführt</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>in regelmäßigen Intervallen, wie sie in den <span class="emphasis"><em>check_interval</em></span> und
-      <span class="emphasis"><em>retry_interval</em></span>-Optionen in Ihren Host- und Service-Definitionen festgelegt sind</p>
-    </li>
+        <p>in regelmäßigen Intervallen, wie sie in den <span class="emphasis"><em>check_interval</em></span> und
+        <span class="emphasis"><em>retry_interval</em></span>-Optionen in Ihren Host- und Service-Definitionen festgelegt sind</p>
+      </li>
 <li class="listitem">
-      <p>nach Bedarf</p>
-    </li>
+        <p>nach Bedarf</p>
+      </li>
 </ul></div>
 
-  <p>Regelmäßig geplante Prüfungen erfolgen in Intervallen, die den Einstellungen in <span class="emphasis"><em>check_interval</em></span> oder
-  <span class="emphasis"><em>retry_interval</em></span> in Ihren Host- oder Service-Definitionen entsprechen, abhängig davon, in welchem <a class="link" href="statetypes.html" title="5.8. Statustypen">Statustyp</a> sich der Host oder Service befindet.</p>
+    <p>Regelmäßig geplante Prüfungen erfolgen in Intervallen, die den Einstellungen in <span class="emphasis"><em>check_interval</em></span> oder
+    <span class="emphasis"><em>retry_interval</em></span> in Ihren Host- oder Service-Definitionen entsprechen, abhängig davon, in welchem <a class="link" href="statetypes.html" title="5.8. Statustypen">Statustyp</a> sich der Host oder Service befindet.</p>
 
-  <p>Prüfungen nach Bedarf werden ausgeführt, wann immer Icinga die Notwendigkeit sieht, die neuesten
-  Statusinformationen über einen bestimmten Host oder Service zu ermitteln. Wenn Icinga beispielsweise die <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Erreichbarkeit</a> eines Hosts feststellt, wird es oft Prüfungen von Eltern- und Kind-Hosts
-  durchführen, um den genauen Status eines bestimmten Netzwerk-Segments zu ermitteln. Prüfungen nach Bedarf finden sich auch in
-  der <a class="link" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">vorausschauenden Abhängigkeitsprüfung</a>s-Logik, um sicherzustellen, dass Icinga
-  möglichst genaue Statusinformationen hat.</p>
-  <a class="indexterm" name="idp9656736"></a>
-  <a class="indexterm" name="idp9658048"></a>
+    <p>Prüfungen nach Bedarf werden ausgeführt, wann immer Icinga die Notwendigkeit sieht, die neuesten Statusinformationen über
+    einen bestimmten Host oder Service zu ermitteln. Wenn Icinga beispielsweise die <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Erreichbarkeit</a> eines Hosts feststellt, wird es oft Prüfungen von Eltern- und Kind-Hosts
+    durchführen, um den genauen Status eines bestimmten Netzwerk-Segments zu ermitteln. Prüfungen nach Bedarf finden sich auch in der <a class="link" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">vorausschauenden Abhängigkeitsprüfung</a>s-Logik, um sicherzustellen, dass Icinga möglichst genaue
+    Statusinformationen hat.</p>
+
+    <a class="indexterm" name="idp9700128"></a>
+
+    <a class="indexterm" name="idp9697056"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

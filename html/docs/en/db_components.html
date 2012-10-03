@@ -29,17 +29,17 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="db_components"></a>12.2. Components</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="db_components.html#idp16200352">12.2.1. Overview</a></span></dt>
-<dt><span class="section"><a href="db_components.html#idp16208064">12.2.2. IDOMOD</a></span></dt>
-<dt><span class="section"><a href="db_components.html#idp16218688">12.2.3. LOG2IDO</a></span></dt>
-<dt><span class="section"><a href="db_components.html#idp16223584">12.2.4. FILE2SOCK</a></span></dt>
+<dt><span class="section"><a href="db_components.html#idp16231600">12.2.1. Overview</a></span></dt>
+<dt><span class="section"><a href="db_components.html#idp16237456">12.2.2. IDOMOD</a></span></dt>
+<dt><span class="section"><a href="db_components.html#idp16248176">12.2.3. LOG2IDO</a></span></dt>
+<dt><span class="section"><a href="db_components.html#idp16253152">12.2.4. FILE2SOCK</a></span></dt>
 <dt><span class="section"><a href="db_components.html#IDO2DB-description">12.2.IDO2DB. IDO2DB</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="12.2.1. Overview">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16200352"></a>12.2.1. Overview</h3></div></div></div>
+<a name="idp16231600"></a>12.2.1. Overview</h3></div></div></div>
     
 
     <p>There are four main components that make up the IDO utilities:</p>
@@ -64,7 +64,7 @@
 
   <div class="section" title="12.2.2. IDOMOD">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16208064"></a>12.2.2. IDOMOD</h3></div></div></div>
+<a name="idp16237456"></a>12.2.2. IDOMOD</h3></div></div></div>
     
 
     <p>The IDO utilities includes an Icinga event broker module (IDOMOD.O) that exports data from the Icinga daemon.</p>
@@ -74,7 +74,7 @@
     logic present in the running Icinga process.</p>
 
     <div class="figure">
-<a name="idp16210272"></a><p class="title"><b>Figure 12.5. Loaded IDOMOD Event broker Module</b></p>
+<a name="idp16239824"></a><p class="title"><b>Figure 12.5. Loaded IDOMOD Event broker Module</b></p>
 <div class="figure-contents">
       
 
@@ -88,7 +88,7 @@
     TCP socket.</p>
 
     <div class="figure">
-<a name="idp16211296"></a><p class="title"><b>Figure 12.6. IDOMOD Capabilities</b></p>
+<a name="idp16243696"></a><p class="title"><b>Figure 12.6. IDOMOD Capabilities</b></p>
 <div class="figure-contents">
       
 
@@ -110,7 +110,7 @@
 
   <div class="section" title="12.2.3. LOG2IDO">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16218688"></a>12.2.3. LOG2IDO</h3></div></div></div>
+<a name="idp16248176"></a>12.2.3. LOG2IDO</h3></div></div></div>
     
 
     <p>The LOG2IDO utility has been designed to allow you to import historical Icinga, Nagios and NetSaint log files into a
@@ -119,7 +119,7 @@
     then be used to process that output and store the historical logfile information in a database.</p>
 
     <div class="figure">
-<a name="idp16221024"></a><p class="title"><b>Figure 12.7. LOG2IDO Utility</b></p>
+<a name="idp16250480"></a><p class="title"><b>Figure 12.7. LOG2IDO Utility</b></p>
 <div class="figure-contents">
       
 
@@ -131,14 +131,14 @@
 
   <div class="section" title="12.2.4. FILE2SOCK">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16223584"></a>12.2.4. FILE2SOCK</h3></div></div></div>
+<a name="idp16253152"></a>12.2.4. FILE2SOCK</h3></div></div></div>
     
 
     <p>The FILE2SOCK utility is quite simple. It reads input from a standard file (or STDIN) and writes all of that data to either a Unix
     domain socket or TCP socket. The data that is read is not processed in any way before it is sent to the socket.</p>
 
     <div class="figure">
-<a name="idp16224976"></a><p class="title"><b>Figure 12.8. FILE2SOCK Utility</b></p>
+<a name="idp16254640"></a><p class="title"><b>Figure 12.8. FILE2SOCK Utility</b></p>
 <div class="figure-contents">
       
 
@@ -163,7 +163,7 @@
     either as a standalone, multi-process daemon or under INETD (if using a TCP socket).</p>
 
     <div class="figure">
-<a name="idp16231152"></a><p class="title"><b>Figure 12.9. IDO2DB Daemon</b></p>
+<a name="idp16260704"></a><p class="title"><b>Figure 12.9. IDO2DB Daemon</b></p>
 <div class="figure-contents">
       
 
@@ -177,7 +177,7 @@
     processing.</p>
 
     <div class="figure">
-<a name="idp16234368"></a><p class="title"><b>Figure 12.10. IDO2DB with multiple Clients</b></p>
+<a name="idp16263920"></a><p class="title"><b>Figure 12.10. IDO2DB with multiple Clients</b></p>
 <div class="figure-contents">
       
 

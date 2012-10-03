@@ -28,119 +28,153 @@
 <div class="section" title="5.4. Host Checks">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="hostchecks"></a>5.4. <a name="host_checks"></a>Host Checks</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="hostchecks.html#idp7174336">5.4.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp7175776">5.4.2. When Are Host Checks Performed?</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9653760">5.4.3. Cached Host Checks</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9656016">5.4.4. Dependencies and Checks</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9658960">5.4.5. Parallelization of Host Checks</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9668448">5.4.6. Host States</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9673200">5.4.7. Host State Determination</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9707024">5.4.8. Host State Changes</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="5.4.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp7174336"></a>5.4.1. Introduction</h3></div></div></div>
+    
 
-  <p>The basic workings of host checks are described here...</p>
+    <p>The basic workings of host checks are described here...</p>
+  </div>
 
-  <p><span class="bold"><strong>When Are Host Checks Performed?</strong></span></p>
+  <div class="section" title="5.4.2. When Are Host Checks Performed?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp7175776"></a>5.4.2. When Are Host Checks Performed?</h3></div></div></div>
+    
 
-  <p>Hosts are checked by the Icinga daemon:</p>
+    <p>Hosts are checked by the Icinga daemon:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>At regular intervals, as defined by the <span class="emphasis"><em>check_interval</em></span> and <span class="emphasis"><em>retry_interval</em></span>
-      options in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definitions</a>.</p>
-    </li>
+        <p>At regular intervals, as defined by the <span class="emphasis"><em>check_interval</em></span> and <span class="emphasis"><em>retry_interval</em></span> options in
+        your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definitions</a>.</p>
+      </li>
 <li class="listitem">
-      <p>On-demand when a service associated with the host changes state.</p>
-    </li>
+        <p>On-demand when a service associated with the host changes state.</p>
+      </li>
 <li class="listitem">
-      <p>On-demand as needed as part of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
-    </li>
+        <p>On-demand as needed as part of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
+      </li>
 <li class="listitem">
-      <p>On-demand as needed for <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive host dependency checks</a>.</p>
-    </li>
+        <p>On-demand as needed for <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive host dependency checks</a>.</p>
+      </li>
 </ul></div>
 
-  <p>Regularly scheduled host checks are optional. If you set the <span class="emphasis"><em>check_interval</em></span> option in your host
-  definition to zero (0), Icinga will not perform checks of the hosts on a regular basis. It will, however, still perform
-  on-demand checks of the host as needed for other parts of the monitoring logic.</p>
+    <p>Regularly scheduled host checks are optional. If you set the <span class="emphasis"><em>check_interval</em></span> option in your host definition to
+    zero (0), Icinga will not perform checks of the hosts on a regular basis. It will, however, still perform on-demand checks of the
+    host as needed for other parts of the monitoring logic.</p>
 
-  <p>On-demand checks are made when a service associated with the host changes state because Icinga needs to know
-  whether the host has also changed state. Services that change state are often an indicator that the host may have also changed
-  state. For example, if Icinga detects that the HTTP service associated with a host just changed from a CRITICAL to an OK
-  state, it may indicate that the host just recovered from a reboot and is now back up and running.</p>
+    <p>On-demand checks are made when a service associated with the host changes state because Icinga needs to know whether the
+    host has also changed state. Services that change state are often an indicator that the host may have also changed state. For example,
+    if Icinga detects that the HTTP service associated with a host just changed from a CRITICAL to an OK state, it may indicate that
+    the host just recovered from a reboot and is now back up and running.</p>
 
-  <p>On-demand checks of hosts are also made as part of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.
-  Icinga is designed to detect network outages as quickly as possible, and distinguish between DOWN and UNREACHABLE host
-  states. These are very different states and can help an admin quickly locate the cause of a network outage.</p>
+    <p>On-demand checks of hosts are also made as part of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.
+    Icinga is designed to detect network outages as quickly as possible, and distinguish between DOWN and UNREACHABLE host states.
+    These are very different states and can help an admin quickly locate the cause of a network outage.</p>
 
-  <p>On-demand checks are also performed as part of the <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive host dependency
-  check</a> logic. These checks help ensure that the dependency logic is as accurate as possible.</p>
+    <p>On-demand checks are also performed as part of the <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive host dependency check</a> logic.
+    These checks help ensure that the dependency logic is as accurate as possible.</p>
+  </div>
 
-  <p><span class="bold"><strong>Cached Host Checks</strong></span></p>
+  <div class="section" title="5.4.3. Cached Host Checks">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9653760"></a>5.4.3. Cached Host Checks</h3></div></div></div>
+    
 
-  <p>The performance of on-demand host checks can be significantly improved by implementing the use of cached checks, which
-  allow Icinga to forgo executing a host check if it determines a relatively recent check result will do instead. More
-  information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">here</a>.</p>
+    <p>The performance of on-demand host checks can be significantly improved by implementing the use of cached checks, which allow
+    Icinga to forgo executing a host check if it determines a relatively recent check result will do instead. More information on
+    cached checks can be found <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">here</a>.</p>
+  </div>
 
-  <p><span class="bold"><strong>Dependencies and Checks</strong></span></p>
+  <div class="section" title="5.4.4. Dependencies and Checks">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9656016"></a>5.4.4. Dependencies and Checks</h3></div></div></div>
+    
 
-  <p>You can define <a class="link" href="objectdefinitions.html#objectdefinitions-hostdependency">host execution dependencies</a> that prevent
-  Icinga from checking the status of a host depending on the state of one or more other hosts. More information on
-  dependencies can be found <a class="link" href="dependencies.html" title="7.13. Host and Service Dependencies">here</a>.</p>
+    <p>You can define <a class="link" href="objectdefinitions.html#objectdefinitions-hostdependency">host execution dependencies</a> that prevent Icinga from
+    checking the status of a host depending on the state of one or more other hosts. More information on dependencies can be found <a class="link" href="dependencies.html" title="7.13. Host and Service Dependencies">here</a>.</p>
+  </div>
 
-  <p><span class="bold"><strong>Parallelization of Host Checks</strong></span></p>
+  <div class="section" title="5.4.5. Parallelization of Host Checks">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9658960"></a>5.4.5. Parallelization of Host Checks</h3></div></div></div>
+    
 
-  <p>Scheduled host checks are run in parallel. When Icinga needs to run a scheduled host check, it will initiate the
-  host check and then return to doing other work (running service checks, etc). The host check runs in a child process that was
-  fork()ed from the main Icinga daemon. When the host check has completed, the child process will inform the main
-  Icinga process (its parent) of the check results. The main Icinga process then handles the check results and takes
-  appropriate action (running event handlers, sending notifications, etc.).</p>
+    <p>Scheduled host checks are run in parallel. When Icinga needs to run a scheduled host check, it will initiate the host check
+    and then return to doing other work (running service checks, etc). The host check runs in a child process that was fork()ed from the
+    main Icinga daemon. When the host check has completed, the child process will inform the main Icinga process (its parent)
+    of the check results. The main Icinga process then handles the check results and takes appropriate action (running event
+    handlers, sending notifications, etc.).</p>
 
-  <p>On-demand host checks are also run in parallel if needed. As mentioned earlier, Icinga can forgo the actual
-  execution of an on-demand host check if it can use the cached results from a relatively recent host check.</p>
+    <p>On-demand host checks are also run in parallel if needed. As mentioned earlier, Icinga can forgo the actual execution of an
+    on-demand host check if it can use the cached results from a relatively recent host check.</p>
 
-  <p>When Icinga processes the results of scheduled and on-demand host checks, it may initiate (secondary) checks of
-  other hosts. These checks can be initated for two reasons: <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive dependency checks</a>
-  and to determining the status of the host using the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">network reachability</a> logic. The
-  secondary checks that are initiated are usually run in parallel. However, there is one big exception that you should be aware
-  of, as it can have negative effect on performance...</p>
+    <p>When Icinga processes the results of scheduled and on-demand host checks, it may initiate (secondary) checks of other
+    hosts. These checks can be initated for two reasons: <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive dependency checks</a> and to
+    determining the status of the host using the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">network reachability</a> logic. The secondary checks
+    that are initiated are usually run in parallel. However, there is one big exception that you should be aware of, as it can have negative
+    effect on performance...</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Hosts which have their <span class="emphasis"><em>max_check_attempts</em></span> value set to <span class="bold"><strong>1</strong></span> can cause
-    serious performance problems. The reason? If Icinga needs to determine their true state using the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">network reachability</a> logic (to see if they're DOWN or UNREACHABLE), it will have to
-    launch <span class="bold"><strong>serial</strong></span> checks of all of the host's immediate parents. Just to reiterate, those checks
-    are run <span class="emphasis"><em>serially</em></span>, rather than in parallel, so it can cause a big performance hit. For this reason, we
-    would recommend that you always use a value greater than 1 for the <span class="emphasis"><em>max_check_attempts</em></span> directives in your
-    host definitions.</p>
-  </td></tr>
+      <p>Hosts which have their <span class="emphasis"><em>max_check_attempts</em></span> value set to <span class="bold"><strong>1</strong></span> can cause serious
+      performance problems. The reason? If Icinga needs to determine their true state using the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">network reachability</a> logic (to see if they're DOWN or UNREACHABLE), it will have to launch
+      <span class="bold"><strong>serial</strong></span> checks of all of the host's immediate parents. Just to reiterate, those checks are run
+      <span class="emphasis"><em>serially</em></span>, rather than in parallel, so it can cause a big performance hit. For this reason, we would recommend
+      that you always use a value greater than 1 for the <span class="emphasis"><em>max_check_attempts</em></span> directives in your host definitions.</p>
+    </td></tr>
 </table></div>
+  </div>
 
-  <p><span class="bold"><strong>Host States</strong></span></p>
+  <div class="section" title="5.4.6. Host States">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9668448"></a>5.4.6. Host States</h3></div></div></div>
+    
 
-  <p>Hosts that are checked can be in one of three different states:</p>
+    <p>Hosts that are checked can be in one of three different states:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>UP</p>
-    </li>
+        <p>UP</p>
+      </li>
 <li class="listitem">
-      <p>DOWN</p>
-    </li>
+        <p>DOWN</p>
+      </li>
 <li class="listitem">
-      <p>UNREACHABLE</p>
-    </li>
+        <p>UNREACHABLE</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Host State Determination</strong></span></p>
+  <div class="section" title="5.4.7. Host State Determination">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9673200"></a>5.4.7. Host State Determination</h3></div></div></div>
+    
 
-  <p>Host checks are performed by <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a>, which can return a state of OK, WARNING, UNKNOWN, or
-  CRITICAL. How does Icinga translate these plugin return codes into host states of UP, DOWN, or UNREACHABLE? Lets
-  see...</p>
+    <p>Host checks are performed by <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a>, which can return a state of OK, WARNING, UNKNOWN, or
+    CRITICAL. How does Icinga translate these plugin return codes into host states of UP, DOWN, or UNREACHABLE? Lets see...</p>
 
-  <p>The table below shows how plugin return codes correspond with preliminary host states. Some post-processing (which is
-  described later) is done which may then alter the final host state.</p>
+    <p>The table below shows how plugin return codes correspond with preliminary host states. Some post-processing (which is described
+    later) is done which may then alter the final host state.</p>
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -168,26 +202,25 @@
 </tr>
 </tbody>
 </table>
-  </div>
+    </div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>WARNING results usually means the host is UP. However, WARNING results are interpreted to mean the host is DOWN if the
-    <a class="link" href="configmain.html#configmain-use_aggressive_host_checking">use_aggressive_host_checking</a> option is enabled.</p>
-  </td></tr>
+      <p>WARNING results usually means the host is UP. However, WARNING results are interpreted to mean the host is DOWN if the <a class="link" href="configmain.html#configmain-use_aggressive_host_checking">use_aggressive_host_checking</a> option is enabled.</p>
+    </td></tr>
 </table></div>
 
-  <p>If the preliminary host state is DOWN, Icinga will attempt to see if the host is really DOWN or if it is
-  UNREACHABLE. The distinction between DOWN and UNREACHABLE host states is important, as it allows admins to determine root cause
-  of network outages faster. The following table shows how Icinga makes a final state determination based on the state of
-  the hosts parent(s). A host's parents are defined in the <span class="emphasis"><em>parents</em></span> directive in host definition.</p>
+    <p>If the preliminary host state is DOWN, Icinga will attempt to see if the host is really DOWN or if it is UNREACHABLE. The
+    distinction between DOWN and UNREACHABLE host states is important, as it allows admins to determine root cause of network outages
+    faster. The following table shows how Icinga makes a final state determination based on the state of the hosts parent(s). A
+    host's parents are defined in the <span class="emphasis"><em>parents</em></span> directive in host definition.</p>
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -211,23 +244,29 @@
 </tr>
 </tbody>
 </table>
+    </div>
+
+    <p>More information on how Icinga distinguishes between DOWN and UNREACHABLE states can be found <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">here</a>.</p>
   </div>
 
-  <p>More information on how Icinga distinguishes between DOWN and UNREACHABLE states can be found <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">here</a>.</p>
+  <div class="section" title="5.4.8. Host State Changes">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9707024"></a>5.4.8. Host State Changes</h3></div></div></div>
+    
 
-  <p><span class="bold"><strong>Host State Changes</strong></span></p>
+    <p>As you are probably well aware, hosts don't always stay in one state. Things break, patches get applied, and servers need to be
+    rebooted. When Icinga checks the status of hosts, it will be able to detect when a host changes between UP, DOWN, and UNREACHABLE
+    states and take appropriate action. These state changes result in different <a class="link" href="statetypes.html" title="5.8. State Types">state types</a> (HARD or
+    SOFT), which can trigger <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a> to be run and <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a> to be sent out. Detecting and dealing with state changes is what Icinga is all
+    about.</p>
 
-  <p>As you are probably well aware, hosts don't always stay in one state. Things break, patches get applied, and servers need
-  to be rebooted. When Icinga checks the status of hosts, it will be able to detect when a host changes between UP, DOWN,
-  and UNREACHABLE states and take appropriate action. These state changes result in different <a class="link" href="statetypes.html" title="5.8. State Types">state
-  types</a> (HARD or SOFT), which can trigger <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a> to be run and <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a> to be sent out. Detecting and dealing with state changes is what Icinga is
-  all about.</p>
+    <p>When hosts change state too frequently they are considered to be "flapping". A good example of a flapping host would be server
+    that keeps spontaneously rebooting as soon as the operating system loads. That's always a fun scenario to have to deal with.
+    Icinga can detect when hosts start flapping, and can suppress notifications until flapping stops and the host's state stabilizes.
+    More information on the flap detection logic can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>.</p>
 
-  <p>When hosts change state too frequently they are considered to be "flapping". A good example of a flapping host would be
-  server that keeps spontaneously rebooting as soon as the operating system loads. That's always a fun scenario to have to deal
-  with. Icinga can detect when hosts start flapping, and can suppress notifications until flapping stops and the host's
-  state stabilizes. More information on the flap detection logic can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>.</p>
-  <a class="indexterm" name="idp9661824"></a>
+    <a class="indexterm" name="idp9712512"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

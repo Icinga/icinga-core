@@ -28,76 +28,141 @@
 <div class="section" title="7.4. sprunghafte Services">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="volatileservices"></a>7.4. sprunghafte Services</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="volatileservices.html#idp13238096">7.4.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13240272">7.4.2. Wofür sind sie nützlich?</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13244240">7.4.3. Was ist so besonders an flüchtigen Services?</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13255824">7.4.4. Die Macht der Zwei</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13259664">7.4.5. Icinga Konfiguration:</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13269248">7.4.6. PortSentry Konfiguration:</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13272688">7.4.7. Portscan-Script:</a></span></dt>
+</dl></div>
+  
+
+  <div class="section" title="7.4.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13238096"></a>7.4.1. Einführung</h3></div></div></div>
     
-    <p>
-      <span class="bold"><strong>Einführung</strong></span>
-    </p>
-    <p>Icinga hat die Möglichkeit, zwischen "normalen" und "flüchtigen" Services zu unterscheiden. Die <span class="emphasis"><em>is_volatile</em></span>-Option in jeder Service-Definition erlaubt Ihnen festzulegen, ob ein bestimmter Service flüchtig ist oder nicht. Für die meisten Leute wird die Mehrzahl der überwachten Services nicht-flüchtig (d.h. "normal") sein. Trotzdem können flüchtige Services sehr nützlich sein, wenn sie richtig eingesetzt werden...</p>
-    <p>
-      <span class="bold"><strong>Wofür sind sie nützlich?</strong></span>
-    </p>
+
+    <p>Icinga hat die Möglichkeit, zwischen "normalen" und "flüchtigen" Services zu unterscheiden. Die
+    <span class="emphasis"><em>is_volatile</em></span>-Option in jeder Service-Definition erlaubt Ihnen festzulegen, ob ein bestimmter Service flüchtig ist
+    oder nicht. Für die meisten Leute wird die Mehrzahl der überwachten Services nicht-flüchtig (d.h. "normal") sein. Trotzdem können
+    flüchtige Services sehr nützlich sein, wenn sie richtig eingesetzt werden...</p>
+  </div>
+
+  <div class="section" title="7.4.2. Wofür sind sie nützlich?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13240272"></a>7.4.2. Wofür sind sie nützlich?</h3></div></div></div>
+    
+
     <p>Flüchtige Services sind nützlich zur Überwachung von...</p>
+
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p> Dingen, die sich jedes Mal automatisch in einen "OK"-Zustand zurücksetzen, wenn sie geprüft werden</p>
+        <p>Dingen, die sich jedes Mal automatisch in einen "OK"-Zustand zurücksetzen, wenn sie geprüft werden</p>
       </li>
 <li class="listitem">
-        <p> Ereignisse wie Sicherheits-Alarme, die jedes Mal Beachtung erfordern, wenn ein Problem vorliegt (und nicht nur beim ersten Mal)</p>
+        <p>Ereignisse wie Sicherheits-Alarme, die jedes Mal Beachtung erfordern, wenn ein Problem vorliegt (und nicht nur beim ersten
+        Mal)</p>
       </li>
 </ul></div>
-    <p>
-      <span class="bold"><strong>Was ist so besonders an flüchtigen Services?</strong></span>
-    </p>
-    <p>Flüchtige Services unterscheiden sich von "normalen" Services in drei wichtigen Punkten. <span class="emphasis"><em>Jedes Mal</em></span> wenn sie in einem <a class="link" href="statetypes.html" title="5.8. Statustypen">harten</a> nicht-OK-Zustand sind und die Prüfung einen nicht-OK-Zustand ergibt (also keine Statusänderung eintritt)...</p>
+  </div>
+
+  <div class="section" title="7.4.3. Was ist so besonders an flüchtigen Services?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13244240"></a>7.4.3. Was ist so besonders an flüchtigen Services?</h3></div></div></div>
+    
+
+    <p>Flüchtige Services unterscheiden sich von "normalen" Services in drei wichtigen Punkten. <span class="emphasis"><em>Jedes Mal</em></span> wenn sie
+    in einem <a class="link" href="statetypes.html" title="5.8. Statustypen">harten</a> nicht-OK-Zustand sind und die Prüfung einen nicht-OK-Zustand ergibt (also keine
+    Statusänderung eintritt)...</p>
+
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p> wird der nicht-OK-Zustand des Service protokolliert</p>
+        <p>wird der nicht-OK-Zustand des Service protokolliert</p>
       </li>
 <li class="listitem">
-        <p> werden Kontakte über das Problem informiert (falls es das ist, <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">was zu tun ist</a>). Anmerkung: Benachrichtigungsintervalle werden bei flüchtigen Services ignoriert.</p>
+        <p>werden Kontakte über das Problem informiert (falls es das ist, <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">was zu tun ist</a>).
+        Anmerkung: Benachrichtigungsintervalle werden bei flüchtigen Services ignoriert.</p>
       </li>
 <li class="listitem">
-        <p> Der <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> für den Service wird ausgeführt (falls einer definiert ist)</p>
+        <p>Der <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> für den Service wird ausgeführt (falls einer definiert ist)</p>
       </li>
 </ul></div>
-    <p>Diese Ereignisse finden normalerweise nur für Services statt, wenn sie in einem nicht-OK-Zustand sind und gerade ein Hard-Zustandswechsel erfolgte. In anderen Worten, sie passieren nur das erste Mal, wenn ein Service in einen nicht-OK-Zustand geht. Wenn weitere Prüfungen des Service den gleichen nicht-OK-Zustand ergeben, erfolgt kein harter Zustandswechsel und keines der genannten Ereignisse wird stattfinden.</p>
-    <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span>
- Hinweis: Wenn Sie nur an der Protokollierung interessiert sind, dann sehen Sie sich die <a class="link" href="stalking.html" title="7.14. Status Stalking">Stalking</a>-Option an.</p>
-    <p>
-      <span class="bold"><strong>Die Macht der Zwei</strong></span>
-    </p>
-    <p>Wenn Sie die Möglichkeiten von flüchtigen Services und <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passiven Service-Prüfungen</a> kombinieren, können Sie einige sehr nützliche Dinge tun. Beispiele hierfür umfassen u.a. die Behandlung von SNMP-Traps, Sicherheits-Alarme, usw.</p>
-    <p>Wie wäre es mit einem Beispiel... Nehmen wir an, Sie nutzen <a class="link" href="http://sourceforge.net/projects/sentrytools/" target="_top">PortSentry</a>, um Portscans auf Ihrer Maschine zu erkennen und automatisch potenzielle Eindringlinge auszusperren. Wenn Sie wollen, dass Icinga über Portscans erfährt, können Sie das Folgende tun...</p>
-    <p>
-      <span class="bold"><strong>Icinga Konfiguration:</strong></span>
-    </p>
+
+    <p>Diese Ereignisse finden normalerweise nur für Services statt, wenn sie in einem nicht-OK-Zustand sind und gerade ein
+    Hard-Zustandswechsel erfolgte. In anderen Worten, sie passieren nur das erste Mal, wenn ein Service in einen nicht-OK-Zustand geht. Wenn
+    weitere Prüfungen des Service den gleichen nicht-OK-Zustand ergeben, erfolgt kein harter Zustandswechsel und keines der genannten
+    Ereignisse wird stattfinden.</p>
+
+    <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Wenn Sie nur an der Protokollierung interessiert sind, dann sehen Sie sich die <a class="link" href="stalking.html" title="7.14. Status Stalking">Stalking</a>-Option an.</p>
+  </div>
+
+  <div class="section" title="7.4.4. Die Macht der Zwei">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13255824"></a>7.4.4. Die Macht der Zwei</h3></div></div></div>
+    
+
+    <p>Wenn Sie die Möglichkeiten von flüchtigen Services und <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passiven Service-Prüfungen</a>
+    kombinieren, können Sie einige sehr nützliche Dinge tun. Beispiele hierfür umfassen u.a. die Behandlung von SNMP-Traps,
+    Sicherheits-Alarme, usw.</p>
+
+    <p>Wie wäre es mit einem Beispiel... Nehmen wir an, Sie nutzen <a class="link" href="http://sourceforge.net/projects/sentrytools/" target="_top">PortSentry</a>, um Portscans auf Ihrer Maschine zu erkennen und automatisch
+    potenzielle Eindringlinge auszusperren. Wenn Sie wollen, dass Icinga über Portscans erfährt, können Sie das Folgende
+    tun...</p>
+  </div>
+
+  <div class="section" title="7.4.5. Icinga Konfiguration:">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13259664"></a>7.4.5. Icinga Konfiguration:</h3></div></div></div>
+    
+
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p> Legen Sie eine Service-Definition namens <span class="emphasis"><em>Port Scans</em></span> an und verbinden Sie diese mit dem Host, auf dem PortSentry läuft.</p>
+        <p>Legen Sie eine Service-Definition namens <span class="emphasis"><em>Port Scans</em></span> an und verbinden Sie diese mit dem Host, auf dem
+        PortSentry läuft.</p>
       </li>
 <li class="listitem">
-        <p> Setzen Sie die <span class="emphasis"><em>max_check_attempts</em></span>-Direktive in der Service-Definition auf 1. Dies teilt Icinga mit, sofort einen <a class="link" href="statetypes.html" title="5.8. Statustypen">Hard-Zustand</a> für den Service zu erzwingen, wenn ein nicht-OK-Zustand ermittelt wird.</p>
+        <p>Setzen Sie die <span class="emphasis"><em>max_check_attempts</em></span>-Direktive in der Service-Definition auf 1. Dies teilt Icinga
+        mit, sofort einen <a class="link" href="statetypes.html" title="5.8. Statustypen">Hard-Zustand</a> für den Service zu erzwingen, wenn ein nicht-OK-Zustand ermittelt
+        wird.</p>
       </li>
 <li class="listitem">
-        <p> Setzen Sie die <span class="emphasis"><em>active_checks_enabled</em></span>-Direktive in der Service-Definition auf 0. Dies hält Icinga davon ab, den Service aktiv zu prüfen.</p>
+        <p>Setzen Sie die <span class="emphasis"><em>active_checks_enabled</em></span>-Direktive in der Service-Definition auf 0. Dies hält Icinga
+        davon ab, den Service aktiv zu prüfen.</p>
       </li>
 <li class="listitem">
-        <p> Setzen Sie die <span class="emphasis"><em>passive_checks_enabled</em></span>-Direktive in der Service-Definition auf 1. Das erlaubt passive Prüfungen für den Service.</p>
+        <p>Setzen Sie die <span class="emphasis"><em>passive_checks_enabled</em></span>-Direktive in der Service-Definition auf 1. Das erlaubt passive
+        Prüfungen für den Service.</p>
       </li>
 <li class="listitem">
-        <p> Setzen Sie die <span class="emphasis"><em>is_volatile</em></span>-Direktive in der Service-Definition auf 1.</p>
+        <p>Setzen Sie die <span class="emphasis"><em>is_volatile</em></span>-Direktive in der Service-Definition auf 1.</p>
       </li>
 </ul></div>
-    <p>
-      <span class="bold"><strong>PortSentry Konfiguration:</strong></span>
-    </p>
-    <p>Editieren Sie die PortSentry-Konfigurationsdatei (portsentry.conf) und definieren Sie einen Befehl für die <span class="emphasis"><em>KILL_RUN_CMD</em></span>-Direktive wie folgt:</p>
+  </div>
+
+  <div class="section" title="7.4.6. PortSentry Konfiguration:">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13269248"></a>7.4.6. PortSentry Konfiguration:</h3></div></div></div>
+    
+
+    <p>Editieren Sie die PortSentry-Konfigurationsdatei (portsentry.conf) und definieren Sie einen Befehl für die
+    <span class="emphasis"><em>KILL_RUN_CMD</em></span>-Direktive wie folgt:</p>
+
     <pre class="screen"> KILL_RUN_CMD="/usr/local/icinga/libexec/eventhandlers/submit_check_result host_name 'Port Scans' 2 'Port scan from host $TARGET$ on port $PORT$.  Host has been firewalled.'"</pre>
-    <p>Stellen Sie sicher, <span class="emphasis"><em>host_name</em></span> durch den Kurznamen des Hosts zu ersetzen, mit dem der Service verbunden ist.</p>
-    <p>
-      <span class="bold"><strong>Portscan-Script:</strong></span>
-    </p>
-    <p>Erstellen Sie ein Shell-Script im <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span>-Verzeichnis namens <span class="emphasis"><em>submit_check_result</em></span>. Der Inhalt des Shell-Scripts sollte ähnlich dem Folgenden sein...</p>
+
+    <p>Stellen Sie sicher, <span class="emphasis"><em>host_name</em></span> durch den Kurznamen des Hosts zu ersetzen, mit dem der Service verbunden
+    ist.</p>
+  </div>
+
+  <div class="section" title="7.4.7. Portscan-Script:">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13272688"></a>7.4.7. Portscan-Script:</h3></div></div></div>
+    
+
+    <p>Erstellen Sie ein Shell-Script im <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span>-Verzeichnis namens
+    <span class="emphasis"><em>submit_check_result</em></span>. Der Inhalt des Shell-Scripts sollte ähnlich dem Folgenden sein...</p>
+
     <pre class="screen"> #!/bin/sh
  # Write a command to the Icinga command file to cause
  # it to process a service check result
@@ -109,23 +174,30 @@
  cmdline="[$datetime] PROCESS_SERVICE_CHECK_RESULT;$1;$2;$3;$4"
  # append the command to the end of the command file
  `$echocmd $cmdline &gt;&gt; $CommandFile`</pre>
+
     <p>Was passiert, wenn PortSentry in der Zukunft einen Portscan auf der Maschine entdeckt?</p>
+
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p> PortSentry wird den Host ausschließen ("firewall", das ist eine Funktion der PortSentry-Software)</p>
+        <p>PortSentry wird den Host ausschließen ("firewall", das ist eine Funktion der PortSentry-Software)</p>
       </li>
 <li class="listitem">
-        <p> PortSentry wird das <span class="emphasis"><em>submit_check_result</em></span>-Shell-Script ausführen und ein passives Prüfergebnis an Icinga senden</p>
+        <p>PortSentry wird das <span class="emphasis"><em>submit_check_result</em></span>-Shell-Script ausführen und ein passives Prüfergebnis an
+        Icinga senden</p>
       </li>
 <li class="listitem">
-        <p> Icinga wird das external command file lesen und das passive Service-Prüfergebnis von PortSentry verarbeiten</p>
+        <p>Icinga wird das external command file lesen und das passive Service-Prüfergebnis von PortSentry verarbeiten</p>
       </li>
 <li class="listitem">
-        <p> Icinga wird den <span class="emphasis"><em>Port Scans</em></span>-Service in einen harten CRITICAL-Zustand versetzen und Benachrichtigungen an die Kontakte senden</p>
+        <p>Icinga wird den <span class="emphasis"><em>Port Scans</em></span>-Service in einen harten CRITICAL-Zustand versetzen und
+        Benachrichtigungen an die Kontakte senden</p>
       </li>
 </ul></div>
+
     <p>Ziemlich hübsch, oder?</p>
-  <a class="indexterm" name="idp13226928"></a>
+
+    <a class="indexterm" name="idp13282256"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

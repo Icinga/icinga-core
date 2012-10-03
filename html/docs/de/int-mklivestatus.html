@@ -28,76 +28,81 @@
 <div class="section" title="9.4. MKLiveStatus-Integration">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="int-mklivestatus"></a>9.4. MKLiveStatus-Integration</h2></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="int-mklivestatus.html#idp15457056">9.4.1. Einführung</a></span></dt></dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="9.4.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15457056"></a>9.4.1. Einführung</h3></div></div></div>
+    
 
-  <p>MKLiveStatus ist ein Modul von Mathias Kettner zur Anbindung von verschiedene Addons wie z.B. NagVis oder Thruk an
-  Icinga (oder Nagios). Solange Sie keine Datenbank zur Speicherung von historischen Werten benötigen, könnte dies eine gute
-  Wahl sein, weil es relativ klein und einfach zu installieren ist. Auf der <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">offiziellen Website</a> finden Sie die komplette Dokumenation, denn hier
-  beschreiben wir nur in sehr kurzer Form die Installation und Konfiguration von MKLiveStatus für Icinga. Wir nehmen an, dass Sie
-  Icinga in <span class="emphasis"><em>/usr/local/icinga</em></span> installiert haben.</p>
+    <p>MKLiveStatus ist ein Modul von Mathias Kettner zur Anbindung von verschiedene Addons wie z.B. NagVis oder Thruk an
+    Icinga (oder Nagios). Solange Sie keine Datenbank zur Speicherung von historischen Werten benötigen, könnte dies eine gute
+    Wahl sein, weil es relativ klein und einfach zu installieren ist. Auf der <a class="link" href="http://mathias-kettner.de/checkmk_livestatus.html" target="_top">offiziellen Website</a> finden Sie die komplette Dokumenation, denn
+    hier beschreiben wir nur in sehr kurzer Form die Installation und Konfiguration von MKLiveStatus für Icinga. Wir nehmen an, dass
+    Sie Icinga in <span class="emphasis"><em>/usr/local/icinga</em></span> installiert haben.</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>Laden Sie die Software und kompilieren Sie das Modul (bitte schauen Sie auf der Website nach der aktuellsten Version)</p>
+        <p>Laden Sie die Software und kompilieren Sie das Modul (bitte schauen Sie auf der Website nach der aktuellsten Version)</p>
 
-      <pre class="programlisting"> wget http://mathias-kettner.de/download/mk-livestatus-1.2.0p2.tar.gz
+        <pre class="programlisting"> wget http://mathias-kettner.de/download/mk-livestatus-1.2.0p2.tar.gz
  tar xzvf mk-livestatus-1.2.0p2.tar.gz
  cd mk-livestatus-1.2.0p2
  ./configure --prefix=/usr/local/icinga --exec-prefix=/usr/local/icinga
  make
  cp src/livestatus.o /usr/local/icinga/bin</pre>
-    </li>
+      </li>
 <li class="listitem">
-      <p>Editieren Sie <span class="emphasis"><em>icinga.cfg</em></span>, um das Modul zu integrieren. Stellen Sie sicher, dass das Verzeichnis
-      <span class="emphasis"><em>/usr/local/icinga/var/rw</em></span> existiert und dass der Icinga-Benutzer dort Schreibrechte hat. Es sollte das gleiche
-      Verzeichnis sein, das auch für das Command File (meistens icinga.cmd) benutzt wird. "live" ist ein Socket, der nur während der
-      Laufzeit des Moduls vorhanden ist.</p>
+        <p>Editieren Sie <span class="emphasis"><em>icinga.cfg</em></span>, um das Modul zu integrieren. Stellen Sie sicher, dass das Verzeichnis
+        <span class="emphasis"><em>/usr/local/icinga/var/rw</em></span> existiert und dass der Icinga-Benutzer dort Schreibrechte hat. Es sollte das gleiche
+        Verzeichnis sein, das auch für das Command File (meistens icinga.cmd) benutzt wird. "live" ist ein Socket, der nur während der
+        Laufzeit des Moduls vorhanden ist.</p>
 
-      <p><code class="code"> broker_module=/usr/local/icinga/bin/livestatus.o /usr/local/icinga/var/rw/live</code></p>
+        <p><code class="code"> broker_module=/usr/local/icinga/bin/livestatus.o /usr/local/icinga/var/rw/live</code></p>
 
-      <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+        <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Ab Icinga 1.4 können Sie statt des broker_module-Eintrags die neue module-Definition in einer Ihrer
-        Objektkonfigurationsdateien benutzen:</p>
+          <p>Ab Icinga 1.4 können Sie <span class="bold"><strong>anstatt</strong></span> des broker_module-Eintrags die neue
+          module-Definition in einer Ihrer Objektkonfigurationsdateien benutzen:</p>
 
-        <pre class="screen"> define module{
+          <pre class="programlisting"> define module{
         module_name    mklivestatus
         path           /usr/local/icinga/bin/livestatus.o
         module_type    neb
         args           /usr/local/icinga/var/rw/live
         }</pre>
-      </td></tr>
+        </td></tr>
 </table></div>
-    </li>
+      </li>
 <li class="listitem">
-      <p>Restarten Sie Icinga</p>
+        <p>Restarten Sie Icinga</p>
 
-      <pre class="programlisting"> service icinga restart</pre>
+        <pre class="programlisting"> service icinga restart</pre>
 
-      <p>oder</p>
+        <p>oder</p>
 
-      <pre class="programlisting"> /etc/init.d/icinga restart</pre>
-    </li>
+        <pre class="programlisting"> /etc/init.d/icinga restart</pre>
+      </li>
 <li class="listitem">
-      <p>Prüfen Sie, ob das Modul läuft</p>
+        <p>Prüfen Sie, ob das Modul läuft</p>
 
-      <pre class="programlisting"> ps -ef | grep livestatus
+        <pre class="programlisting"> ps -ef | grep livestatus
  ls -la /usr/local/icinga/var/rw/live</pre>
 
-      <p>Falls es keinen Prozess und/oder keinen Socket gibt, dann prüfen Sie das Icinga-Log und bereinigen Sie vorhandene
-      Fehler.</p>
-    </li>
+        <p>Falls es keinen Prozess und/oder keinen Socket gibt, dann prüfen Sie das Icinga-Log und bereinigen Sie vorhandene
+        Fehler.</p>
+      </li>
 </ol></div>
 
-  <a class="indexterm" name="idp15376560"></a>
+    <a class="indexterm" name="idp15471968"></a>
 
-  <a class="indexterm" name="idp15377984"></a>
+    <a class="indexterm" name="idp15473344"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

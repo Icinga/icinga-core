@@ -28,85 +28,101 @@
 <div class="section" title="2.17. Monitoring Publicly Available Services">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-publicservices"></a>2.17. <a name="monitoring_publicservices"></a>Monitoring Publicly Available Services</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1361824">2.17.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1373968">2.17.2. Plugins for Monitoring Services</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1379888">2.17.3. Creating a Host Definition</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1386688">2.17.4. Creating Service Definitions</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1440160">2.17.5. Restarting Icinga</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <a class="indexterm" name="idp1360432"></a>
 
-  <p>This document describes how you can monitor publicly available services, applications and protocols. By "public" we mean
-  services that are accessible across the network - either the local network or the greater Internet. Examples of public services
-  include HTTP, POP3, IMAP, FTP, and SSH. There are many more public services that you probably use on a daily basis. These
-  services and applications, as well as their underlying protocols, can usually be monitored by Icinga without any special
-  access requirements.</p>
+  <div class="section" title="2.17.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1361824"></a>2.17.1. Introduction</h3></div></div></div>
+    
 
-  <p>Private services, in contrast, cannot be monitored with Icinga without an intermediary agent of some kind. Examples
-  of private services associated with hosts are things like CPU load, memory usage, disk usage, current user count, process
-  information, etc. These private services or attributes of hosts are not usually exposed to external clients. This situation
-  requires that an intermediary monitoring agent be installed on any host that you need to monitor such information on. More
-  information on monitoring private services on different types of hosts can be found in the documentation on:</p>
+    <p>This document describes how you can monitor publicly available services, applications and protocols. By "public" we mean services
+    that are accessible across the network - either the local network or the greater Internet. Examples of public services include HTTP,
+    POP3, IMAP, FTP, and SSH. There are many more public services that you probably use on a daily basis. These services and applications,
+    as well as their underlying protocols, can usually be monitored by Icinga without any special access requirements.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <p>Private services, in contrast, cannot be monitored with Icinga without an intermediary agent of some kind. Examples of
+    private services associated with hosts are things like CPU load, memory usage, disk usage, current user count, process information, etc.
+    These private services or attributes of hosts are not usually exposed to external clients. This situation requires that an intermediary
+    monitoring agent be installed on any host that you need to monitor such information on. More information on monitoring private services
+    on different types of hosts can be found in the documentation on:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a class="link" href="monitoring-windows.html" title="2.12. Monitoring Windows Machines">Monitoring Windows machines</a></p>
-    </li>
+        <p><a class="link" href="monitoring-windows.html" title="2.12. Monitoring Windows Machines">Monitoring Windows machines</a></p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="monitoring-netware.html" title="2.14. Monitoring Netware Servers">Monitoring Netware servers</a></p>
-    </li>
+        <p><a class="link" href="monitoring-netware.html" title="2.14. Monitoring Netware Servers">Monitoring Netware servers</a></p>
+      </li>
 <li class="listitem">
-      <p><a class="link" href="monitoring-linux.html" title="2.13. Monitoring Linux/Unix Machines">Monitoring Linux/Unix machines</a></p>
-    </li>
+        <p><a class="link" href="monitoring-linux.html" title="2.13. Monitoring Linux/Unix Machines">Monitoring Linux/Unix machines</a></p>
+      </li>
 </ul></div>
 
-  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Occasionally you will find that information on private services and applications can be monitored with SNMP. The SNMP
-    agent allows you to remotely monitor otherwise private (and inaccessible) information about the host. For more information
-    about monitoring services using SNMP, check out the documentation on <a class="link" href="monitoring-routers.html" title="2.16. Monitoring Routers and Switches">monitoring switches
-    and routers</a>.</p>
-  </td></tr>
+      <p>Occasionally you will find that information on private services and applications can be monitored with SNMP. The SNMP agent
+      allows you to remotely monitor otherwise private (and inaccessible) information about the host. For more information about monitoring
+      services using SNMP, check out the documentation on <a class="link" href="monitoring-routers.html" title="2.16. Monitoring Routers and Switches">monitoring switches and routers</a>.</p>
+    </td></tr>
 </table></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart
-    guide</a>. The sample configuration entries below reference objects that are defined in the sample
-    <span class="emphasis"><em>commands.cfg</em></span> and <span class="emphasis"><em>localhost.cfg</em></span> config files.</p>
-  </td></tr>
+      <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart
+      guide</a>. The sample configuration entries below reference objects that are defined in the sample
+      <span class="emphasis"><em>commands.cfg</em></span> and <span class="emphasis"><em>localhost.cfg</em></span> config files.</p>
+    </td></tr>
 </table></div>
+  </div>
 
-  <p><span class="bold"><strong>Plugins for Monitoring Services</strong></span></p>
+  <div class="section" title="2.17.2. Plugins for Monitoring Services">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1373968"></a>2.17.2. Plugins for Monitoring Services</h3></div></div></div>
+    
 
-  <p>When you find yourself needing to monitor a particular application, service, or protocol, chances are good that a <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugin</a> exists to monitor it. The official Nagios plugins distribution comes with plugins that can be
-  used to monitor a variety of services and protocols. There are also a large number of contributed plugins that can be found in
-  the <span class="emphasis"><em>contrib/</em></span> subdirectory of the plugin distribution. The <a class="link" href="http://www.monitoringexchange.org" target="_top">MonitoringExchange.org</a> website hosts a number of additional plugins that
-  have been written by users, so check it out when you have a chance.</p>
+    <p>When you find yourself needing to monitor a particular application, service, or protocol, chances are good that a <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugin</a> exists to monitor it. The official Nagios plugins distribution comes with plugins that can be used to
+    monitor a variety of services and protocols. There are also a large number of contributed plugins that can be found in the
+    <span class="emphasis"><em>contrib/</em></span> subdirectory of the plugin distribution. The <a class="link" href="http://www.monitoringexchange.org" target="_top">MonitoringExchange.org</a> website hosts a number of additional plugins that have been
+    written by users, so check it out when you have a chance.</p>
 
-  <p>If you don't happen to find an appropriate plugin for monitoring what you need, you can always write your own. Plugins are
-  easy to write, so don't let this thought scare you off. Read the documentation on <a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">developing
-  plugins</a> for more information.</p>
+    <p>If you don't happen to find an appropriate plugin for monitoring what you need, you can always write your own. Plugins are easy to
+    write, so don't let this thought scare you off. Read the documentation on <a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">developing plugins</a> for more
+    information.</p>
 
-  <p>We'll walk you through monitoring some basic services that you'll probably use sooner or later. Each of these services can
-  be monitored using one of the plugins that gets installed as part of the Nagios plugins distribution. Let's get
-  started...</p>
+    <p>We'll walk you through monitoring some basic services that you'll probably use sooner or later. Each of these services can be
+    monitored using one of the plugins that gets installed as part of the Nagios plugins distribution. Let's get started...</p>
+  </div>
 
-  <p><span class="bold"><strong>Creating a Host Definition</strong></span></p>
+  <div class="section" title="2.17.3. Creating a Host Definition">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1379888"></a>2.17.3. Creating a Host Definition</h3></div></div></div>
+    
 
-  <p>Before you can monitor a service, you first need to define a <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> that is
-  associated with the service. You can place host definitions in any object configuration file specified by a <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a> directive or placed in a directory specified by a <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a> directive. If you have already created a host definition, you can skip this
-  step.</p>
+    <p>Before you can monitor a service, you first need to define a <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> that is associated
+    with the service. You can place host definitions in any object configuration file specified by a <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a> directive or placed in a directory specified by a <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a> directive. If you have already created a host definition, you can skip this step.</p>
 
-  <p>For this example, lets say you want to monitor a variety of services on a remote host. Let's call that host
-  <span class="emphasis"><em>remotehost</em></span>. The host definition can be placed in its own file or added to an already exiting object
-  configuration file. Here's what the host definition for <span class="emphasis"><em>remotehost</em></span> might look like:</p>
+    <p>For this example, lets say you want to monitor a variety of services on a remote host. Let's call that host
+    <span class="emphasis"><em>remotehost</em></span>. The host definition can be placed in its own file or added to an already exiting object configuration
+    file. Here's what the host definition for <span class="emphasis"><em>remotehost</em></span> might look like:</p>
 
-  <pre class="screen"> define host{
+    <pre class="programlisting"> define host{
         use             generic-host            ; Inherit default values from a template
         host_name       remotehost              ; The name we're giving to this host
         alias           Some Remote Host        ; A longer name associated with the host
@@ -114,247 +130,262 @@
         hostgroups      allhosts                ; Host groups this host is associated with
         }</pre>
 
-  <p>Now that a definition has been added for the host that will be monitored, we can start defining services that should be
-  monitored. As with host definitions, service definitions can be placed in any object configuration file.</p>
+    <p>Now that a definition has been added for the host that will be monitored, we can start defining services that should be monitored.
+    As with host definitions, service definitions can be placed in any object configuration file.</p>
+  </div>
 
-  <p><span class="bold"><strong>Creating Service Definitions</strong></span></p>
+  <div class="section" title="2.17.4. Creating Service Definitions">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1386688"></a>2.17.4. Creating Service Definitions</h3></div></div></div>
+    
 
-  <p>For each service you want to monitor, you need to define a <a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a> in
-  Icinga that is associated with the host definition you just created. You can place service definitions in any object
-  configuration file specified by a <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a> directive or placed in a directory
-  specified by a <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a> directive.</p>
+    <p>For each service you want to monitor, you need to define a <a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a> in
+    Icinga that is associated with the host definition you just created. You can place service definitions in any object
+    configuration file specified by a <a class="link" href="configmain.html#configmain-cfg_file">cfg_file</a> directive or placed in a directory specified by a
+    <a class="link" href="configmain.html#configmain-cfg_dir">cfg_dir</a> directive.</p>
 
-  <p>Some example service definitions for monitoring common public service (HTTP, FTP, etc) are given below.</p>
+    <p>Some example service definitions for monitoring common public service (HTTP, FTP, etc) are given below.</p>
 
-  <p><span class="bold"><strong>Monitoring HTTP</strong></span></p>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><span class="bold"><strong>Monitoring HTTP</strong></span></p>
 
-  <p>Chances are you're going to want to monitor web servers at some point - either yours or someone else's. The
-  <span class="emphasis"><em>check_http</em></span> plugin is designed to do just that. It understands the HTTP protocol and can monitor response
-  time, error codes, strings in the returned HTML, server certificates, and much more.</p>
+        <p>Chances are you're going to want to monitor web servers at some point - either yours or someone else's. The
+        <span class="emphasis"><em>check_http</em></span> plugin is designed to do just that. It understands the HTTP protocol and can monitor response time,
+        error codes, strings in the returned HTML, server certificates, and much more.</p>
 
-  <p>The <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_http</em></span>
-  plugin. It looks like this:</p>
+        <p>The <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_http</em></span> plugin.
+        It looks like this:</p>
 
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         name            check_http
         command_name    check_http
         command_line    $USER1$/check_http -I $HOSTADDRESS$ $ARG1$
         }</pre>
 
-  <p>A simple service definition for monitoring the HTTP service on the <span class="emphasis"><em>remotehost</em></span> machine might look like
-  this:</p>
+        <p>A simple service definition for monitoring the HTTP service on the <span class="emphasis"><em>remotehost</em></span> machine might look like
+        this:</p>
 
-  <pre class="screen"> define service{
+        <pre class="screen"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     HTTP
         check_command           check_http
         }</pre>
 
-  <p>This simple service definition will monitor the HTTP service running on <span class="emphasis"><em>remotehost</em></span>. It will produce
-  alerts if the web server doesn't respond within 10 seconds or if it returns HTTP errors codes (403, 404, etc.). That's all you
-  need for basic monitoring. Pretty simple, huh?</p>
+        <p>This simple service definition will monitor the HTTP service running on <span class="emphasis"><em>remotehost</em></span>. It will produce
+        alerts if the web server doesn't respond within 10 seconds or if it returns HTTP errors codes (403, 404, etc.). That's all you need
+        for basic monitoring. Pretty simple, huh?</p>
 
-  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+        <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
 <th align="left">Tip</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>For more advanced monitoring, run the <span class="emphasis"><em>check_http</em></span> plugin manually with <span class="emphasis"><em>--help</em></span>
-    as a command-line argument to see all the options you can give the plugin. This <span class="emphasis"><em>--help</em></span> syntax works with
-    all of the plugins we'll cover in this document.</p>
-  </td></tr>
+          <p>For more advanced monitoring, run the <span class="emphasis"><em>check_http</em></span> plugin manually with <span class="emphasis"><em>--help</em></span> as a
+          command-line argument to see all the options you can give the plugin. This <span class="emphasis"><em>--help</em></span> syntax works with all of
+          the plugins we'll cover in this document.</p>
+        </td></tr>
 </table></div>
 
-  <p>A more advanced definition for monitoring the HTTP service is shown below. This service definition will check to see if
-  the /download/index.php URI contains the string "latest-version.tar.gz". It will produce an error if the string isn't found, the
-  URI isn't valid, or the web server takes longer than 5 seconds to respond.</p>
+        <p>A more advanced definition for monitoring the HTTP service is shown below. This service definition will check to see if the
+        /download/index.php URI contains the string "latest-version.tar.gz". It will produce an error if the string isn't found, the URI
+        isn't valid, or the web server takes longer than 5 seconds to respond.</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     Product Download Link
         check_command           check_http!-u /download/index.php -t 5 -s "latest-version.tar.gz"
         }</pre>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Monitoring FTP</strong></span></p>
 
-  <p><span class="bold"><strong>Monitoring FTP</strong></span></p>
+        <p>When you need to monitor FTP servers, you can use the <span class="emphasis"><em>check_ftp</em></span> plugin. The
+        <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_ftp</em></span> plugin, which
+        looks like this:</p>
 
-  <p>When you need to monitor FTP servers, you can use the <span class="emphasis"><em>check_ftp</em></span> plugin. The
-  <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_ftp</em></span> plugin, which
-  looks like this:</p>
-
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         command_name    check_ftp
         command_line    $USER1$/check_ftp -H $HOSTADDRESS$ $ARG1$
         }</pre>
 
-  <p>A simple service definition for monitoring the FTP server on <span class="emphasis"><em>remotehost</em></span> would look like this:</p>
+        <p>A simple service definition for monitoring the FTP server on <span class="emphasis"><em>remotehost</em></span> would look like this:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     FTP
         check_command           check_ftp
         }</pre>
 
-  <p>This service definition will monitor the FTP service and generate alerts if the FTP server doesn't respond within 10
-  seconds.</p>
+        <p>This service definition will monitor the FTP service and generate alerts if the FTP server doesn't respond within 10
+        seconds.</p>
 
-  <p>A more advanced service definition is shown below. This service will check the FTP server running on port 1023 on
-  <span class="emphasis"><em>remotehost</em></span>. It will generate an alert if the server doesn't respond within 5 seconds or if the server
-  response doesn't contain the string "Pure-FTPd [TLS]".</p>
+        <p>A more advanced service definition is shown below. This service will check the FTP server running on port 1023 on
+        <span class="emphasis"><em>remotehost</em></span>. It will generate an alert if the server doesn't respond within 5 seconds or if the server response
+        doesn't contain the string "Pure-FTPd [TLS]".</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     Special FTP 
         check_command           check_ftp!-p 1023 -t 5 -e "Pure-FTPd [TLS]"
         }</pre>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Monitoring SSH</strong></span></p>
 
-  <p><span class="bold"><strong>Monitoring SSH</strong></span></p>
+        <p>When you need to monitor SSH servers, you can use the <span class="emphasis"><em>check_ssh</em></span> plugin. The
+        <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_ssh</em></span> plugin, which
+        looks like this:</p>
 
-  <p>When you need to monitor SSH servers, you can use the <span class="emphasis"><em>check_ssh</em></span> plugin. The
-  <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_ssh</em></span> plugin, which
-  looks like this:</p>
-
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         command_name    check_ssh
         command_line    $USER1$/check_ssh $ARG1$ $HOSTADDRESS$
         }</pre>
 
-  <p>A simple service definition for monitoring the SSH server on <span class="emphasis"><em>remotehost</em></span> would look like this:</p>
+        <p>A simple service definition for monitoring the SSH server on <span class="emphasis"><em>remotehost</em></span> would look like this:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     SSH
         check_command           check_ssh
         }</pre>
 
-  <p>This service definition will monitor the SSH service and generate alerts if the SSH server doesn't respond within 10
-  seconds.</p>
+        <p>This service definition will monitor the SSH service and generate alerts if the SSH server doesn't respond within 10
+        seconds.</p>
 
-  <p>A more advanced service definition is shown below. This service will check the SSH server and generate an alert if the
-  server doesn't respond within 5 seconds or if the server version string string doesn't match "OpenSSH_4.2".</p>
+        <p>A more advanced service definition is shown below. This service will check the SSH server and generate an alert if the server
+        doesn't respond within 5 seconds or if the server version string string doesn't match "OpenSSH_4.2".</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     SSH Version Check 
         check_command           check_ssh!-t 5 -r "OpenSSH_4.2"
         }</pre>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Monitoring SMTP</strong></span></p>
 
-  <p><span class="bold"><strong>Monitoring SMTP</strong></span></p>
+        <p>The <span class="emphasis"><em>check_smtp</em></span> plugin can be using for monitoring your email servers. The
+        <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_smtp</em></span> plugin, which
+        looks like this:</p>
 
-  <p>The <span class="emphasis"><em>check_smtp</em></span> plugin can be using for monitoring your email servers. The
-  <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_smtp</em></span> plugin, which
-  looks like this:</p>
-
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         command_name    check_smtp
         command_line    $USER1$/check_smtp -H $HOSTADDRESS$ $ARG1$
         }</pre>
 
-  <p>A simple service definition for monitoring the SMTP server on <span class="emphasis"><em>remotehost</em></span> would look like this:</p>
+        <p>A simple service definition for monitoring the SMTP server on <span class="emphasis"><em>remotehost</em></span> would look like this:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     SMTP
         check_command           check_smtp
         }</pre>
 
-  <p>This service definition will monitor the SMTP service and generate alerts if the SMTP server doesn't respond within 10
-  seconds.</p>
+        <p>This service definition will monitor the SMTP service and generate alerts if the SMTP server doesn't respond within 10
+        seconds.</p>
 
-  <p>A more advanced service definition is shown below. This service will check the SMTP server and generate an alert if the
-  server doesn't respond within 5 seconds or if the response from the server doesn't contain "mygreatmailserver.com".</p>
+        <p>A more advanced service definition is shown below. This service will check the SMTP server and generate an alert if the server
+        doesn't respond within 5 seconds or if the response from the server doesn't contain "mygreatmailserver.com".</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     SMTP Response Check 
         check_command           check_smtp!-t 5 -e "mygreatmailserver.com"
         }</pre>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Monitoring POP3</strong></span></p>
 
-  <p><span class="bold"><strong>Monitoring POP3</strong></span></p>
+        <p>The <span class="emphasis"><em>check_pop</em></span> plugin can be using for monitoring the POP3 service on your email servers. The
+        <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_pop</em></span> plugin, which
+        looks like this:</p>
 
-  <p>The <span class="emphasis"><em>check_pop</em></span> plugin can be using for monitoring the POP3 service on your email servers. The
-  <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_pop</em></span> plugin, which
-  looks like this:</p>
-
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         command_name    check_pop
         command_line    $USER1$/check_pop -H $HOSTADDRESS$ $ARG1$
         }</pre>
 
-  <p>A simple service definition for monitoring the POP3 service on <span class="emphasis"><em>remotehost</em></span> would look like
-  this:</p>
+        <p>A simple service definition for monitoring the POP3 service on <span class="emphasis"><em>remotehost</em></span> would look like this:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     POP3
         check_command           check_pop
         }</pre>
 
-  <p>This service definition will monitor the POP3 service and generate alerts if the POP3 server doesn't respond within 10
-  seconds.</p>
+        <p>This service definition will monitor the POP3 service and generate alerts if the POP3 server doesn't respond within 10
+        seconds.</p>
 
-  <p>A more advanced service definition is shown below. This service will check the POP3 service and generate an alert if the
-  server doesn't respond within 5 seconds or if the response from the server doesn't contain "mygreatmailserver.com".</p>
+        <p>A more advanced service definition is shown below. This service will check the POP3 service and generate an alert if the
+        server doesn't respond within 5 seconds or if the response from the server doesn't contain "mygreatmailserver.com".</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     POP3 Response Check 
         check_command           check_pop!-t 5 -e "mygreatmailserver.com"
         }</pre>
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Monitoring IMAP</strong></span></p>
 
-  <p><span class="bold"><strong>Monitoring IMAP</strong></span></p>
+        <p>The <span class="emphasis"><em>check_imap</em></span> plugin can be using for monitoring IMAP4 service on your email servers. The
+        <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_imap</em></span> plugin, which
+        looks like this:</p>
 
-  <p>The <span class="emphasis"><em>check_imap</em></span> plugin can be using for monitoring IMAP4 service on your email servers. The
-  <span class="emphasis"><em>commands.cfg</em></span> file contains a command definition for using the <span class="emphasis"><em>check_imap</em></span> plugin, which
-  looks like this:</p>
-
-  <pre class="screen"> define command{
+        <pre class="programlisting"> define command{
         command_name    check_imap
         command_line    $USER1$/check_imap -H $HOSTADDRESS$ $ARG1$
         }</pre>
 
-  <p>A simple service definition for monitoring the IMAP4 service on <span class="emphasis"><em>remotehost</em></span> would look like
-  this:</p>
+        <p>A simple service definition for monitoring the IMAP4 service on <span class="emphasis"><em>remotehost</em></span> would look like this:</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     IMAP
         check_command           check_imap
         }</pre>
 
-  <p>This service definition will monitor the IMAP4 service and generate alerts if the IMAP server doesn't respond within 10
-  seconds.</p>
+        <p>This service definition will monitor the IMAP4 service and generate alerts if the IMAP server doesn't respond within 10
+        seconds.</p>
 
-  <p>A more advanced service definition is shown below. This service will check the IAMP4 service and generate an alert if the
-  server doesn't respond within 5 seconds or if the response from the server doesn't contain "mygreatmailserver.com".</p>
+        <p>A more advanced service definition is shown below. This service will check the IAMP4 service and generate an alert if the
+        server doesn't respond within 5 seconds or if the response from the server doesn't contain "mygreatmailserver.com".</p>
 
-  <pre class="screen"> define service{
+        <pre class="programlisting"> define service{
         use                     generic-service         ; Inherit default values from a template
         host_name               remotehost
         service_description     IMAP4 Response Check 
         check_command           check_imap!-t 5 -e "mygreatmailserver.com"
-        }
-</pre>
+        }</pre>
+      </li>
+</ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Restarting Icinga</strong></span></p>
+  <div class="section" title="2.17.5. Restarting Icinga">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1440160"></a>2.17.5. Restarting Icinga</h3></div></div></div>
+    
 
-  <p>Once you've added the new host and service definitions to your object configuration file(s), you're ready to start
-  monitoring them. To do this, you'll need to <a class="link" href="verifyconfig.html" title="4.1. Verifying Your Configuration">verify your configuration</a> and <a class="link" href="startstop.html" title="4.2. Starting and Stopping Icinga">restart Icinga</a>.</p>
+    <p>Once you've added the new host and service definitions to your object configuration file(s), you're ready to start monitoring
+    them. To do this, you'll need to <a class="link" href="verifyconfig.html" title="4.1. Verifying Your Configuration">verify your configuration</a> and <a class="link" href="startstop.html" title="4.2. Starting and Stopping Icinga">restart
+    Icinga</a>.</p>
 
-  <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that
-  you don't (re)start Icinga until the verification process completes without any errors!</p>
-  <a class="indexterm" name="idp1410960"></a>
+    <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that you don't
+    (re)start Icinga until the verification process completes without any errors!</p>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

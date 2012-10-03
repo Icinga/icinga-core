@@ -28,9 +28,19 @@
 <div class="section" title="7.11. On-Call Rotations">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="oncallrotation"></a>7.11. <a name="oncall_rotation"></a>On-Call Rotations</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="oncallrotation.html#idp13804720">7.11.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13812080">7.11.2. Scenario 1: Holidays and Weekends</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13812208">7.11.3. Scenario 2: Alternating Days</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13812336">7.11.4. Scenario 3: Alternating Weeks</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13825328">7.11.5. Scenario 4: Vacation Days</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13831920">7.11.6. Other Scenarios</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="7.11.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13804720"></a>7.11.1. Introduction</h3></div></div></div>
 
   <p><span class="inlinemediaobject"><img src="../images/objects-contacts.png"></span> <span class="inlinemediaobject"><img src="../images/objects-timeperiods.png"></span></p>
 
@@ -47,7 +57,10 @@
   sick, swapping shifts, or throwing their pagers into the river), but they will allow you to setup a basic structure that should
   work the majority of the time.</p>
 
-  <p><span class="bold"><strong>Scenario 1: Holidays and Weekends</strong></span></p>
+  </div>
+<div class="section" title="7.11.2. Scenario 1: Holidays and Weekends">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13812080"></a>7.11.2. Scenario 1: Holidays and Weekends</h3></div></div></div>
 
   <p>Two admins - John and Bob - are responsible for responding to Icinga alerts. John receives all notifications for
   weekdays (with 24 hour days), excluding holidays; Bob handles notifications during the weekends and holidays. Lucky Bob. Here's
@@ -55,7 +68,7 @@
 
   <p>First, define 3 timeperiods that contains time ranges for holidays, weekdays, and weekends:</p>
 
-  <pre class="screen"> define timeperiod{
+  <pre class="programlisting"> define timeperiod{
         name                    weekdays
         timeperiod_name         weekdays
         monday                  00:00-24:00
@@ -89,7 +102,7 @@
   <p>Next, define a timeperiod for John's on-call times that include weekdays, but excludes the dates/times defined in the
   holidays timeperiod above:</p>
 
-  <pre class="screen"> define timeperiod{
+  <pre class="programlisting"> define timeperiod{
         timeperiod_name         john-oncall
         use                     weekdays        ; Include weekdays
         exclude                 holidays        ; Exclude holiday dates/times defined elsewhere
@@ -97,7 +110,7 @@
 
   <p>You can now reference this timeperiod in John's contact definition:</p>
 
-  <pre class="screen"> define contact{
+  <pre class="programlisting"> define contact{
         contact_name                    john
         ...
         host_notification_period        john-oncall
@@ -107,21 +120,24 @@
   <p>Define a new timeperiod for Bob's on-call times that include weekends and the dates/times defined in the holidays
   timeperiod above:</p>
 
-  <pre class="screen"> define timeperiod{
+  <pre class="programlisting"> define timeperiod{
         timeperiod_name         bob-oncall
         use                     weekends,holidays       ; Include weekend and holiday date/times defined elsewhere
         }</pre>
 
   <p>You can now reference this timeperiod in Bob's contact definition:</p>
 
-  <pre class="screen"> define contact{
+  <pre class="programlisting"> define contact{
         contact_name                    bob
         ...
         host_notification_period        bob-oncall
         service_notification_period     bob-oncall
         }</pre>
 
-  <p><span class="bold"><strong>Scenario 2: Alternating Days</strong></span></p>
+  </div>
+<div class="section" title="7.11.3. Scenario 2: Alternating Days">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13812208"></a>7.11.3. Scenario 2: Alternating Days</h3></div></div></div>
 
   <p>In this scenario John and Bob alternate handling alerts every other day - regardless of whether its a weekend, weekday, or
   holiday.</p>
@@ -129,7 +145,7 @@
   <p>Define a timeperiod for when John should receive notifications. Assuming today's date is August 1st, 2007 and John is
   handling notifications starting today, the definition would look like this:</p>
 
-  <pre class="screen"> define timeperiod{
+  <pre class="programlisting"> define timeperiod{
         timeperiod_name         john-oncall
         2007-08-01 / 2          00:00-24:00     ; Every two days, starting August 1st, 2007
         } </pre>
@@ -137,28 +153,31 @@
   <p>Now define a timeperiod for when Bob should receive notifications. Bob gets notifications on the days that John doesn't,
   so his first on-call day starts tomorrow (August 2nd, 2007).</p>
 
-  <pre class="screen"> define timeperiod{
+  <pre class="programlisting"> define timeperiod{
         timeperiod_name         bob-oncall
         2007-08-02 / 2          00:00-24:00     ; Every two days, starting August 2nd, 2007
         }</pre>
 
   <p>Now you need to reference these timeperiod definitions in the contact definitions for John and Bob:</p>
 
-  <pre class="screen"> define contact{
+  <pre class="programlisting"> define contact{
         contact_name                    john
         ...
         host_notification_period        john-oncall
         service_notification_period     john-oncall
         }</pre>
 
-  <pre class="screen"> define contact{
+  <pre class="programlisting"> define contact{
         contact_name                    bob
         ...
         host_notification_period        bob-oncall
         service_notification_period     bob-oncall
         }</pre>
 
-  <p><span class="bold"><strong>Scenario 3: Alternating Weeks</strong></span></p>
+  </div>
+<div class="section" title="7.11.4. Scenario 3: Alternating Weeks">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13812336"></a>7.11.4. Scenario 3: Alternating Weeks</h3></div></div></div>
 
   <p>In this scenario John and Bob alternate handling alerts every other week. John handles alerts Sunday through Saturday one
   week, and Bob handles alerts for the following seven days. This continues in perpetuity.</p>
@@ -166,7 +185,7 @@
   <p>Define a timeperiod for when John should receive notifications. Assuming today's date is Sunday, July 29th, 2007 and John
   is handling notifications this week (starting today), the definition would look like this:</p>
 
-  <pre class="screen"> define timeperiod{
+  <pre class="programlisting"> define timeperiod{
         timeperiod_name         john-oncall
         2007-07-29 / 14 00:00-24:00     ; Every 14 days (two weeks), starting Sunday, July 29th, 2007
         2007-07-30 / 14 00:00-24:00     ; Every other Monday starting July 30th, 2007
@@ -180,7 +199,7 @@
   <p>Now define a timeperiod for when Bob should receive notifications. Bob gets notifications on the weeks that John doesn't,
   so his first on-call day starts next Sunday (August 5th, 2007).</p>
 
-  <pre class="screen"> define timeperiod{
+  <pre class="programlisting"> define timeperiod{
         timeperiod_name         bob-oncall
         2007-08-05 / 14 00:00-24:00     ; Every 14 days (two weeks), starting Sunday, August 5th, 2007
         2007-08-06 / 14 00:00-24:00     ; Every other Monday starting August 6th, 2007
@@ -193,28 +212,31 @@
 
   <p>Now you need to reference these timeperiod definitions in the contact definitions for John and Bob:</p>
 
-  <pre class="screen"> define contact{
+  <pre class="programlisting"> define contact{
         contact_name                    john
         ...
         host_notification_period        john-oncall
         service_notification_period     john-oncall
         }</pre>
 
-  <pre class="screen"> define contact{
+  <pre class="programlisting"> define contact{
         contact_name                    bob
         ...
         host_notification_period        bob-oncall
         service_notification_period     bob-oncall
         }</pre>
 
-  <p><span class="bold"><strong>Scenario 4: Vacation Days</strong></span></p>
+  </div>
+<div class="section" title="7.11.5. Scenario 4: Vacation Days">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13825328"></a>7.11.5. Scenario 4: Vacation Days</h3></div></div></div>
 
   <p>In this scenarios, John handles notifications for all days except those he has off. He has several standing days off each
   month, as well as some planned vacations. Bob handles notifications when John is on vacation or out of the office.</p>
 
   <p>First, define a timeperiod that contains time ranges for John's vacation days and days off:</p>
 
-  <pre class="screen"> define timeperiod{
+  <pre class="programlisting"> define timeperiod{
         name                    john-out-of-office
         timeperiod_name         john-out-of-office
         day 15                  00:00-24:00     ; 15th day of each month
@@ -227,7 +249,7 @@
 
   <p>Next, define a timeperiod for John's on-call times that excludes the dates/times defined in the timeperiod above:</p>
 
-  <pre class="screen"> define timeperiod{
+  <pre class="programlisting"> define timeperiod{
         timeperiod_name         john-oncall
         monday                  00:00-24:00
         tuesday                 00:00-24:00
@@ -239,7 +261,7 @@
 
   <p>You can now reference this timeperiod in John's contact definition:</p>
 
-  <pre class="screen"> define contact{
+  <pre class="programlisting"> define contact{
         contact_name                    john
         ...
         host_notification_period        john-oncall
@@ -248,27 +270,31 @@
 
   <p>Define a new timeperiod for Bob's on-call times that include the dates/times that John is out of the office:</p>
 
-  <pre class="screen"> define timeperiod{
+  <pre class="programlisting"> define timeperiod{
         timeperiod_name          bob-oncall
         use                     john-out-of-office      ; Include holiday date/times that John is out
         }</pre>
 
   <p>You can now reference this timeperiod in Bob's contact definition:</p>
 
-  <pre class="screen"> define contact{
+  <pre class="programlisting"> define contact{
         contact_name                    bob
         ...
         host_notification_period        bob-oncall
         service_notification_period     bob-oncall
         }</pre>
 
-  <p><span class="bold"><strong>Other Scenarios</strong></span></p>
+  </div>
+<div class="section" title="7.11.6. Other Scenarios">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13831920"></a>7.11.6. Other Scenarios</h3></div></div></div>
 
   <p>There are a lot of other on-call notification rotation scenarios that you might have. The date exception directive in
   <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">timeperiod definitions</a> is capable of handling most dates and date ranges
   that you might need to use, so check out the different formats that you can use. If you make a mistake when creating timeperiod
   definitions, always err on the side of giving someone else more on-call duty time. :-)</p>
-  <a class="indexterm" name="idp13815920"></a>
+  <a class="indexterm" name="idp13841824"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

@@ -28,122 +28,150 @@
 <div class="section" title="5.8. Statustypen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="statetypes"></a>5.8. Statustypen</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="statetypes.html#idp9779472">5.8.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9786656">5.8.2. Service- und Host-Prüfungswiederholungen</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9788960">5.8.3. Soft-Zustände</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9801744">5.8.4. Hard-Zustände</a></span></dt>
+<dt><span class="section"><a href="statetypes.html#idp9816896">5.8.5. Beispiel</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="5.8.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9779472"></a>5.8.1. Einführung</h3></div></div></div>
+    
 
-  <p>Der aktuelle Status von überwachten Services und Host wird durch zwei Komponenten ermittelt:</p>
+    <p>Der aktuelle Status von überwachten Services und Host wird durch zwei Komponenten ermittelt:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>den Status des Service oder Host (d.h. OK, WARNING, UP, DOWN, etc.)</p>
-    </li>
+        <p>den Status des Service oder Host (d.h. OK, WARNING, UP, DOWN, etc.)</p>
+      </li>
 <li class="listitem">
-      <p>den <span class="emphasis"><em>Typ</em></span> des Zustands, in dem der Service oder Host ist</p>
-    </li>
+        <p>den <span class="emphasis"><em>Typ</em></span> des Zustands, in dem der Service oder Host ist</p>
+      </li>
 </ul></div>
 
-  <p>Es gibt zwei Statustypen in Icinga: SOFT- und HARD-Zustände. Diese Statustypen sind ein wichtiger Teil der
-  Überwachungslogik, da sie zur Ermittlung dienen, wann <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> ausgeführt und <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a> zuerst versandt werden.</p>
+    <p>Es gibt zwei Statustypen in Icinga: SOFT- und HARD-Zustände. Diese Statustypen sind ein wichtiger Teil der
+    Überwachungslogik, da sie zur Ermittlung dienen, wann <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> ausgeführt und <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a> zuerst versandt werden.</p>
 
-  <p>Dieses Dokument beschreibt den Unterschied zwischen SOFT- und HARD-Zuständen, wann sie auftreten und was passiert, wenn
-  sie auftreten.</p>
+    <p>Dieses Dokument beschreibt den Unterschied zwischen SOFT- und HARD-Zuständen, wann sie auftreten und was passiert, wenn sie
+    auftreten.</p>
+  </div>
 
-  <p><span class="bold"><strong>Service- und Host-Prüfungswiederholungen</strong></span></p>
+  <div class="section" title="5.8.2. Service- und Host-Prüfungswiederholungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9786656"></a>5.8.2. Service- und Host-Prüfungswiederholungen</h3></div></div></div>
+    
 
-  <p>Um falsche Alarme bei vorübergehenden Problemen zu verhindern, erlaubt Ihnen Icinga zu definieren, wie oft ein
-  Service oder Host (erneut) geprüft werden soll, bevor es als "echtes" Problem angesehen werden soll. Dies wird durch die
-  <span class="emphasis"><em>max_check_attempts</em></span>-Option in den Host- und Service-Definitionen kontrolliert. Zu verstehen, wie Hosts und
-  Services (erneut) geprüft werden, um festzustellen, ob ein echtes Problem besteht, ist wichtig zum Verstehen, wie Statustypen
-  arbeiten.</p>
+    <p>Um falsche Alarme bei vorübergehenden Problemen zu verhindern, erlaubt Ihnen Icinga zu definieren, wie oft ein Service oder
+    Host (erneut) geprüft werden soll, bevor es als "echtes" Problem angesehen werden soll. Dies wird durch die
+    <span class="emphasis"><em>max_check_attempts</em></span>-Option in den Host- und Service-Definitionen kontrolliert. Zu verstehen, wie Hosts und Services
+    (erneut) geprüft werden, um festzustellen, ob ein echtes Problem besteht, ist wichtig zum Verstehen, wie Statustypen arbeiten.</p>
+  </div>
 
-  <p><span class="bold"><strong>Soft-Zustände</strong></span></p>
+  <div class="section" title="5.8.3. Soft-Zustände">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9788960"></a>5.8.3. Soft-Zustände</h3></div></div></div>
+    
 
-  <p>Soft-Zustände treten in den folgenden Situationen auf...</p>
+    <p>Soft-Zustände treten in den folgenden Situationen auf...</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>wenn ein Host- oder Service-Prüfungsergebnis in einem nicht-OK oder nicht-UP-Status resultiert und die Service-Prüfung
-      noch nicht so oft (erneut) durchgeführt wurde, wie es in der <span class="emphasis"><em>max_check_attempts</em></span>-Direktive der Service-
-      oder Host-Definition angegeben wurde. Das wird als Soft-Error bezeichnet.</p>
-    </li>
+        <p>wenn ein Host- oder Service-Prüfungsergebnis in einem nicht-OK oder nicht-UP-Status resultiert und die Service-Prüfung noch
+        nicht so oft (erneut) durchgeführt wurde, wie es in der <span class="emphasis"><em>max_check_attempts</em></span>-Direktive der Service- oder
+        Host-Definition angegeben wurde. Das wird als Soft-Error bezeichnet.</p>
+      </li>
 <li class="listitem">
-      <p>wenn sich ein Service oder Host von einem Soft-Error erholt. Das wird als Soft-Recovery angesehen.</p>
-    </li>
+        <p>wenn sich ein Service oder Host von einem Soft-Error erholt. Das wird als Soft-Recovery angesehen.</p>
+      </li>
 </ul></div>
 
-  <p>Die folgenden Dinge passieren, wenn bei Hosts oder Services SOFT-Zustandsänderungen auftreten:</p>
+    <p>Die folgenden Dinge passieren, wenn bei Hosts oder Services SOFT-Zustandsänderungen auftreten:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>der SOFT-Status wird protokolliert.</p>
-    </li>
+        <p>der SOFT-Status wird protokolliert.</p>
+      </li>
 <li class="listitem">
-      <p>Eventhandler werden zur Behandlung von SOFT-Zuständen ausgeführt</p>
-    </li>
+        <p>Eventhandler werden zur Behandlung von SOFT-Zuständen ausgeführt</p>
+      </li>
 </ul></div>
 
-  <p>SOFT-Zustände werden nur protokolliert, wenn Sie die <a class="link" href="configmain.html#configmain-log_service_retries">log_service_retries</a>- oder die <a class="link" href="configmain.html#configmain-log_host_retries">log_host_retries</a>-Option in Ihrer Hauptkonfigurationsdatei aktiviert haben.</p>
+    <p>SOFT-Zustände werden nur protokolliert, wenn Sie die <a class="link" href="configmain.html#configmain-log_service_retries">log_service_retries</a>-
+    oder die <a class="link" href="configmain.html#configmain-log_host_retries">log_host_retries</a>-Option in Ihrer Hauptkonfigurationsdatei aktiviert
+    haben.</p>
 
-  <p>Das einzig Wichtige, was bei einem Soft-Zustand passiert, ist die Ausführung von Eventhandlern. Eventhandler zu benutzen
-  kann insbesondere dann nützlich sein, wenn Sie versuchen wollen, proaktiv ein Problem zu lösen, bevor es sich in einen
-  HARD-Zustand verwandelt. Die <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a>- oder <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>-Makros werden den Wert "<span class="emphasis"><em>SOFT</em></span>" haben, wenn
-  Eventhandler ausgeführt werden, was es Ihren Eventhandlern erlaubt zu wissen, wann sie fehlerbehebende Aktionen vornehmen
-  sollen. Mehr Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">hier</a>.</p>
+    <p>Das einzig Wichtige, was bei einem Soft-Zustand passiert, ist die Ausführung von Eventhandlern. Eventhandler zu benutzen kann
+    insbesondere dann nützlich sein, wenn Sie versuchen wollen, proaktiv ein Problem zu lösen, bevor es sich in einen HARD-Zustand
+    verwandelt. Die <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a>- oder <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>-Makros werden den Wert "<span class="emphasis"><em>SOFT</em></span>" haben, wenn
+    Eventhandler ausgeführt werden, was es Ihren Eventhandlern erlaubt zu wissen, wann sie fehlerbehebende Aktionen vornehmen sollen. Mehr
+    Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">hier</a>.</p>
+  </div>
 
-  <p><span class="bold"><strong>Hard-Zustände</strong></span></p>
+  <div class="section" title="5.8.4. Hard-Zustände">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9801744"></a>5.8.4. Hard-Zustände</h3></div></div></div>
+    
 
-  <p>Hard-Zustände treten für Hosts und Services in den folgenden Situationen auf...</p>
+    <p>Hard-Zustände treten für Hosts und Services in den folgenden Situationen auf...</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>wenn ein Host- oder Service-Prüfungsergebnis in einem nicht-OK oder nicht-UP-Status resultiert und die Prüfung bereits
-      so oft (erneut) durchgeführt wurde, wie es in der <span class="emphasis"><em>max_check_attempts</em></span>-Direktive der Service- oder
-      Host-Definition angegeben wurde. Das wird als Hard-Error bezeichnet.</p>
-    </li>
+        <p>wenn ein Host- oder Service-Prüfungsergebnis in einem nicht-OK oder nicht-UP-Status resultiert und die Prüfung bereits so oft
+        (erneut) durchgeführt wurde, wie es in der <span class="emphasis"><em>max_check_attempts</em></span>-Direktive der Service- oder Host-Definition
+        angegeben wurde. Das wird als Hard-Error bezeichnet.</p>
+      </li>
 <li class="listitem">
-      <p>wenn ein Host oder Service von einem Hard-Error-Zustand in einen anderen Fehlerzustand wechselt (z.B. von WARNING nach
-      CRITICAL).</p>
-    </li>
+        <p>wenn ein Host oder Service von einem Hard-Error-Zustand in einen anderen Fehlerzustand wechselt (z.B. von WARNING nach
+        CRITICAL).</p>
+      </li>
 <li class="listitem">
-      <p>wenn eine Service-Prüfung in einem nicht-OK-Status resultiert und der zugehörige Host entweder DOWN oder UNREACHABLE
-      ist.</p>
-    </li>
+        <p>wenn eine Service-Prüfung in einem nicht-OK-Status resultiert und der zugehörige Host entweder DOWN oder UNREACHABLE
+        ist.</p>
+      </li>
 <li class="listitem">
-      <p>wenn ein Host oder Service sich von einem Hard-Error-Zustand erholt. Dies wird als Hard-Recovery angesehen.</p>
-    </li>
+        <p>wenn ein Host oder Service sich von einem Hard-Error-Zustand erholt. Dies wird als Hard-Recovery angesehen.</p>
+      </li>
 <li class="listitem">
-      <p>wenn eine <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passive Host-Prüfung</a> empfangen wird. Passive Host-Prüfungen werden als
-      HARD angesehen, wenn nicht die <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a>-Option aktiviert ist.</p>
-    </li>
+        <p>wenn eine <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passive Host-Prüfung</a> empfangen wird. Passive Host-Prüfungen werden als HARD
+        angesehen, wenn nicht die <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a>-Option
+        aktiviert ist.</p>
+      </li>
 </ul></div>
 
-  <p>Die folgenden Dinge passieren, wenn bei Hosts oder Services HARD-Zustandsänderungen auftreten:</p>
+    <p>Die folgenden Dinge passieren, wenn bei Hosts oder Services HARD-Zustandsänderungen auftreten:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>der HARD-Status wird protokolliert.</p>
-    </li>
+        <p>der HARD-Status wird protokolliert.</p>
+      </li>
 <li class="listitem">
-      <p>Eventhandler werden zur Behandlung von HARD-Zuständen ausgeführt.</p>
-    </li>
+        <p>Eventhandler werden zur Behandlung von HARD-Zuständen ausgeführt.</p>
+      </li>
 <li class="listitem">
-      <p>Kontakte werden über das Host- oder Service-Problem bzw. die Erholung informiert.</p>
-    </li>
+        <p>Kontakte werden über das Host- oder Service-Problem bzw. die Erholung informiert.</p>
+      </li>
 </ul></div>
 
-  <p>Die <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> oder <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>-Makros werden den Wert "<span class="emphasis"><em>HARD</em></span>" haben, wenn
-  Eventhandler ausgeführt werden, was es Ihren Eventhandlern erlaubt zu wissen, wann sie fehlerbehebende Aktionen vornehmen
-  sollen. Mehr Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">hier</a>.</p>
+    <p>Die <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> oder <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>-Makros werden den Wert "<span class="emphasis"><em>HARD</em></span>" haben, wenn
+    Eventhandler ausgeführt werden, was es Ihren Eventhandlern erlaubt zu wissen, wann sie fehlerbehebende Aktionen vornehmen sollen. Mehr
+    Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">hier</a>.</p>
+  </div>
 
-  <p><span class="bold"><strong>Beispiel</strong></span></p>
+  <div class="section" title="5.8.5. Beispiel">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9816896"></a>5.8.5. Beispiel</h3></div></div></div>
+    
 
-  <p>Hier ist ein Beispiel, wie Statustypen ermittelt werden, wenn Statusänderungen auftreten und wann Eventhandler ausgeführt
-  und Benachrichtigungen versandt werden. Die nachfolgende Tabelle zeigt aufeinander folgende Prüfungen eines Service. Der Service
-  hat einen <span class="emphasis"><em>max_check_attempts</em></span>-Wert von 3.</p>
+    <p>Hier ist ein Beispiel, wie Statustypen ermittelt werden, wenn Statusänderungen auftreten und wann Eventhandler ausgeführt und
+    Benachrichtigungen versandt werden. Die nachfolgende Tabelle zeigt aufeinander folgende Prüfungen eines Service. Der Service hat einen
+    <span class="emphasis"><em>max_check_attempts</em></span>-Wert von 3.</p>
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -191,9 +219,8 @@
 <td><p>CRITICAL</p></td>
 <td><p>HARD</p></td>
 <td><p>Ja</p></td>
-<td><p>"max_check_attempts" wurde erreicht, deshalb geht der Service in einen HARD-Zustand. Eventhandler wird
-          ausgeführt und eine Benachrichtigung versandt. Die Check-Anzahl wird auf 1 zurückgesetzt, sofort nachdem dies
-          passiert.</p></td>
+<td><p>"max_check_attempts" wurde erreicht, deshalb geht der Service in einen HARD-Zustand. Eventhandler wird ausgeführt
+            und eine Benachrichtigung versandt. Die Check-Anzahl wird auf 1 zurückgesetzt, sofort nachdem dies passiert.</p></td>
 </tr>
 <tr>
 <td><p>4</p></td>
@@ -201,8 +228,8 @@
 <td><p>WARNING</p></td>
 <td><p>HARD</p></td>
 <td><p>Ja</p></td>
-<td><p>Service wechselt in einen HARD-WARNING-Status. Eventhandler wird ausgeführt und eine
-          Problembenachrichtigung versandt.</p></td>
+<td><p>Service wechselt in einen HARD-WARNING-Status. Eventhandler wird ausgeführt und eine Problembenachrichtigung
+            versandt.</p></td>
 </tr>
 <tr>
 <td><p>5</p></td>
@@ -210,8 +237,8 @@
 <td><p>WARNING</p></td>
 <td><p>HARD</p></td>
 <td><p>Nein</p></td>
-<td><p>Service stabilisiert sich zu einem HARD-Problemzustand. Abhängig vom Benachrichtigungsintervall für den
-          Service wird ggf. eine weitere Benachrichtigung verschickt.</p></td>
+<td><p>Service stabilisiert sich zu einem HARD-Problemzustand. Abhängig vom Benachrichtigungsintervall für den Service
+            wird ggf. eine weitere Benachrichtigung verschickt.</p></td>
 </tr>
 <tr>
 <td><p>6</p></td>
@@ -220,7 +247,7 @@
 <td><p>HARD</p></td>
 <td><p>Ja</p></td>
 <td><p>Service erfährt eine HARD-Recovery. Eventhandler wird ausgeführt und eine Erholungs-Benachrichtigung wird
-          versandt.</p></td>
+            versandt.</p></td>
 </tr>
 <tr>
 <td><p>7</p></td>
@@ -237,7 +264,7 @@
 <td><p>SOFT</p></td>
 <td><p>Ja</p></td>
 <td><p>Für den Service wird ein Wechsel zu einem SOFT nicht-OK-Zustand festgestellt. Eventhandler wird
-          ausgeführt.</p></td>
+            ausgeführt.</p></td>
 </tr>
 <tr>
 <td><p>9</p></td>
@@ -245,9 +272,9 @@
 <td><p>OK</p></td>
 <td><p>SOFT</p></td>
 <td><p>Ja</p></td>
-<td><p>Service erfährt eine SOFT-Recovery. Eventhandler wird ausgeführt, aber keine Benachrichtigung versandt,
-          weil dies kein "echtes" Problem war. Der Statustyp wird auf HARD gesetzt und die Check-Anzahl auf 1 zurückgesetzt,
-          sofort nachdem dies passiert.</p></td>
+<td><p>Service erfährt eine SOFT-Recovery. Eventhandler wird ausgeführt, aber keine Benachrichtigung versandt, weil dies
+            kein "echtes" Problem war. Der Statustyp wird auf HARD gesetzt und die Check-Anzahl auf 1 zurückgesetzt, sofort nachdem dies
+            passiert.</p></td>
 </tr>
 <tr>
 <td><p>10</p></td>
@@ -259,8 +286,10 @@
 </tr>
 </tbody>
 </table>
+    </div>
+
+    <a class="indexterm" name="idp9879056"></a>
   </div>
-  <a class="indexterm" name="idp9780064"></a>
 </div>
 <div class="navfooter">
 <hr>

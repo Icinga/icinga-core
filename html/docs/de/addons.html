@@ -28,169 +28,175 @@
 <div class="section" title="10.1. Icinga Addons">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="addons"></a>10.1. Icinga Addons</h2></div></div></div>
+<div class="toc"><dl><dt><span class="section"><a href="addons.html#idp15528368">10.1.1. Einführung</a></span></dt></dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="10.1.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15528368"></a>10.1.1. Einführung</h3></div></div></div>
+    
 
-  <p>Es gibt eine Menge von "Addon"-Software-Paketen, die für Icinga verfügbar sind. Addons können genutzt werden, um
-  die Funktionalität von Icinga zu erweitern oder Icinga mit anderen Applikationen zu integrieren.</p>
+    <p>Es gibt eine Menge von "Addon"-Software-Paketen, die für Icinga verfügbar sind. Addons können genutzt werden, um die
+    Funktionalität von Icinga zu erweitern oder Icinga mit anderen Applikationen zu integrieren.</p>
 
-  <p>Addons gibt es für:</p>
+    <p>Addons gibt es für:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><a name="addons-conf"></a>die Verwaltung der Konfigurationsdateien über ein Web-Interface</p>
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p><a class="link" href="http://www.nconf.org" target="_top">NConf</a>, <a class="link" href="http://www.nagiosql.org" target="_top">NagiosQL</a>,
-          <a class="link" href="http://www.netways.de/nc/de/produkte/icinga/addons/lconf" target="_top">LConf</a>, <a class="link" href="http://sourceforge.net/projects/lilac--reloaded/" target="_top">Lilac</a>, ...</p>
-        </li></ul></div>
-    </li>
+        <p><a name="addons-conf"></a>die Verwaltung der Konfigurationsdateien über ein Web-Interface</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+            <p><a class="link" href="http://www.nconf.org" target="_top">NConf</a>, <a class="link" href="http://www.nagiosql.org" target="_top">NagiosQL</a>, <a class="link" href="http://www.netways.de/nc/de/produkte/icinga/addons/lconf" target="_top">LConf</a>, <a class="link" href="http://sourceforge.net/projects/lilac--reloaded/" target="_top">Lilac</a>, ...</p>
+          </li></ul></div>
+      </li>
 <li class="listitem">
-      <p><a name="addons-mon"></a>die Überwachung von entfernten Hosts (*NIX, Windows, etc.)</p>
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+        <p><a name="addons-mon"></a>die Überwachung von entfernten Hosts (*NIX, Windows, etc.)</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p><a class="link" href="nsca.html" title="10.3. NSCA">NSCA</a>, <a class="link" href="nrpe.html" title="10.2. NRPE">NRPE</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
-        </li>
+            <p><a class="link" href="nsca.html" title="10.3. NSCA">NSCA</a>, <a class="link" href="nrpe.html" title="10.2. NRPE">NRPE</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
+          </li>
 <li class="listitem">
-          <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, ...</p>
-        </li>
+            <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, ...</p>
+          </li>
 </ul></div>
-    </li>
+      </li>
 <li class="listitem">
-      <p>die Erteilung von passiven Prüfungen von entfernten Hosts</p>
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
-        </li></ul></div>
-    </li>
-<li class="listitem">
-      <p><a name="addons-logic"></a>die Vereinfachung/Erweiterung der Überwachungslogik</p>
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p><a class="link" href="http://bp-addon.monitoringexchange.org" target="_top">Business Process Addon</a> ...</p>
-        </li></ul></div>
-    </li>
-<li class="listitem">
-      <p><a name="addons-vis"></a>Visualisierung der Informationen</p>
+        <p>die Erteilung von passiven Prüfungen von entfernten Hosts</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+            <p><a class="link" href="http://www.nsclient.org" target="_top">NSClient++</a>, <a class="link" href="http://mathias-kettner.de/check_mk.html" target="_top">check_mk</a>, ...</p>
+          </li></ul></div>
+      </li>
 <li class="listitem">
-          <p><a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">PNP4Nagios</a></p>
-        </li>
+        <p><a name="addons-logic"></a>die Vereinfachung/Erweiterung der Überwachungslogik</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+            <p><a class="link" href="http://bp-addon.monitoringexchange.org" target="_top">Business Process Addon</a> ...</p>
+          </li></ul></div>
+      </li>
 <li class="listitem">
-          <p><a class="link" href="http://www.nagvis.org" target="_top">NagVis</a></p>
-        </li>
+        <p><a name="addons-vis"></a>Visualisierung der Informationen</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+            <p><a class="link" href="http://docs.pnp4nagios.org/de/pnp-0.6/start" target="_top">PNP4Nagios</a></p>
+          </li>
+<li class="listitem">
+            <p><a class="link" href="http://www.nagvis.org" target="_top">NagVis</a></p>
+          </li>
 </ul></div>
-    </li>
+      </li>
 <li class="listitem">
-      <p><a name="addons-web"></a>alternative Web-Interfaces</p>
+        <p><a name="addons-web"></a>alternative Web-Interfaces</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
-          <p><a class="link" href="http://www.thruk.org" target="_top">Thruk</a>, <a class="link" href="http://mathias-kettner.de/checkmk_multisite.html" target="_top">MultiSite</a></p>
-        </li></ul></div>
-    </li>
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+            <p><a class="link" href="http://www.thruk.org" target="_top">Thruk</a>, <a class="link" href="http://mathias-kettner.de/checkmk_multisite.html" target="_top">MultiSite</a></p>
+          </li></ul></div>
+      </li>
 <li class="listitem">
-      <p>... und vieles mehr</p>
-    </li>
-</ul></div>
-
-  <p>Sie finden viele Addons für Icinga unter:</p>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p><a class="link" href="http://www.icinga.org//" target="_top">http://www.icinga.org/</a></p>
-    </li>
-<li class="listitem">
-      <p><a class="link" href="http://www.sourceforge.net/" target="_top">SourceForge.net</a></p>
-    </li>
-<li class="listitem">
-      <p><a class="link" href="http://www.monitoringexchange.org/" target="_top">http://www.monitoringexchange.org</a></p>
-    </li>
+        <p>... und vieles mehr</p>
+      </li>
 </ul></div>
 
-  <p>Wir werden eine kurze Einführung für ein paar Addons geben, die Ethan Galstad für Nagios entwickelt hat...</p>
+    <p>Sie finden viele Addons für Icinga unter:</p>
 
-  <p><a name="addons-nrpe"></a><span class="bold"><strong>NRPE</strong></span></p>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><a class="link" href="http://www.icinga.org//" target="_top">http://www.icinga.org/</a></p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="http://www.sourceforge.net/" target="_top">SourceForge.net</a></p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="http://www.monitoringexchange.org/" target="_top">http://www.monitoringexchange.org</a></p>
+      </li>
+</ul></div>
 
-  <p><span class="inlinemediaobject"><img src="../images/nrpe.png"></span></p>
+    <p>Wir werden eine kurze Einführung für ein paar Addons geben, die Ethan Galstad für Nagios entwickelt hat...</p>
 
-  <p>NRPE ist ein Addon, das es Ihnen erlaubt, <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> auf entfernten
-  Linux-/Unix-Hosts auszuführen. Dies ist nützlich, wenn Sie lokale Ressourcen/Attribute wie Plattenbelegung, CPU-Last,
-  Speicherbelegung usw. auf entfernten Hosts überwachen wollen. Ähnliche Funktionalitäten können durch das
-  <span class="emphasis"><em>check_by_ssh</em></span>-Plugin erreicht werden, obwohl es auf dem Überwachungsrechner für eine höhere CPU-Belastung
-  sorgen kann - besonders dann, wenn Sie hunderte oder tausende von Hosts überwachen.</p>
+    <p><a name="addons-nrpe"></a><span class="bold"><strong>NRPE</strong></span></p>
 
-  <p>Das NRPE-Addon finden Sie unter <a class="link" href="https://git.icinga.org/?p=icinga-nrpe.git" target="_top">https://git.icinga.org/?p=icinga-nrpe.git</a>.
-  Die <a class="link" href="nrpe.html" title="10.2. NRPE">Dokumentation</a> finden Sie in nächsten Abschnitt.</p>
+    <p><span class="inlinemediaobject"><img src="../images/nrpe.png"></span></p>
 
-  <p><a name="addons-nsca"></a><span class="bold"><strong>NSCA</strong></span></p>
+    <p>NRPE ist ein Addon, das es Ihnen erlaubt, <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> auf entfernten Linux-/Unix-Hosts
+    auszuführen. Dies ist nützlich, wenn Sie lokale Ressourcen/Attribute wie Plattenbelegung, CPU-Last, Speicherbelegung usw. auf entfernten
+    Hosts überwachen wollen. Ähnliche Funktionalitäten können durch das <span class="emphasis"><em>check_by_ssh</em></span>-Plugin erreicht werden, obwohl es
+    auf dem Überwachungsrechner für eine höhere CPU-Belastung sorgen kann - besonders dann, wenn Sie hunderte oder tausende von Hosts
+    überwachen.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/nsca.png"></span></p>
+    <p>Das NRPE-Addon finden Sie unter <a class="link" href="https://git.icinga.org/?p=icinga-nrpe.git" target="_top">https://git.icinga.org/?p=icinga-nrpe.git</a>. Die <a class="link" href="nrpe.html" title="10.2. NRPE">Dokumentation</a> finden Sie in nächsten Abschnitt.</p>
 
-  <p>NSCA ist ein Addon, das es Ihnen erlaubt, <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passive Prüf</a>-Resultate von
-  entfernten Linux-/Unix-Hosts an den Icinga-Daemon zu senden, der auf dem Überwachungs-Server läuft. Das ist sehr
-  hilfreich in <a class="link" href="distributed.html" title="7.6. Verteilte Überwachung">verteilten</a> und <a class="link" href="redundancy.html" title="7.7. Redundante und Failover-Netzwerk-Überwachung">redundanten/Failover</a>-Überwachungs-Umgebungen.</p>
+    <p><a name="addons-nsca"></a><span class="bold"><strong>NSCA</strong></span></p>
 
-  <p>Das NSCA-Addon finden Sie unter <a class="link" href="https://git.icinga.org/?p=icinga-nsca.git" target="_top">https://git.icinga.org/?p=icinga-nsca.git</a>.
-  Die <a class="link" href="nsca.html" title="10.3. NSCA">Dokumentation</a> finden Sie in nächsten Abschnitt.</p>
+    <p><span class="inlinemediaobject"><img src="../images/nsca.png"></span></p>
 
-  <p><a name="addons-idoutils"></a><span class="bold"><strong>IDOUtils</strong></span></p>
+    <p>NSCA ist ein Addon, das es Ihnen erlaubt, <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passive Prüf</a>-Resultate von entfernten
+    Linux-/Unix-Hosts an den Icinga-Daemon zu senden, der auf dem Überwachungs-Server läuft. Das ist sehr hilfreich in <a class="link" href="distributed.html" title="7.6. Verteilte Überwachung">verteilten</a> und <a class="link" href="redundancy.html" title="7.7. Redundante und Failover-Netzwerk-Überwachung">redundanten/Failover</a>-Überwachungs-Umgebungen.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/idoutils.png"></span></p>
+    <p>Das NSCA-Addon finden Sie unter <a class="link" href="https://git.icinga.org/?p=icinga-nsca.git" target="_top">https://git.icinga.org/?p=icinga-nsca.git</a>. Die <a class="link" href="nsca.html" title="10.3. NSCA">Dokumentation</a> finden Sie in nächsten Abschnitt.</p>
 
-  <p>IDOUtils ist ein Addon, das es Ihnen erlaubt, alle Icinga-Statusinformationen in einer Datenbank zu
-  speichern. Mehrere Instanzen von Icinga können all ihre Informationen in einer gemeinsamen Datenbank für ein zentrales
-  Berichtswesen speichern. Dies wird wahrscheinlich in der Zukunft als Basis für ein neues PHP-basiertes Web-Interface für
-  Icinga dienen. Neben MySQL werden auch Oracle und PostgreSQL unterstützt.</p>
+    <p><a name="addons-idoutils"></a><span class="bold"><strong>IDOUtils</strong></span></p>
 
-  <p>Das IDOUtils-Addon und die Dokumentation finden Sie unter <a class="link" href="http://docs.icinga.org/" target="_top">http://docs.icinga.org/</a>.</p>
-  <a class="indexterm" name="idp15494464"></a>
+    <p><span class="inlinemediaobject"><img src="../images/idoutils.png"></span></p>
 
-  <a class="indexterm" name="idp15496112"></a>
+    <p>IDOUtils ist ein Addon, das es Ihnen erlaubt, alle Icinga-Statusinformationen in einer Datenbank zu speichern.
+    Mehrere Instanzen von Icinga können all ihre Informationen in einer gemeinsamen Datenbank für ein zentrales Berichtswesen
+    speichern. Dies wird wahrscheinlich in der Zukunft als Basis für ein neues PHP-basiertes Web-Interface für Icinga dienen.
+    Neben MySQL werden auch Oracle und PostgreSQL unterstützt.</p>
 
-  <a class="indexterm" name="idp15497712"></a>
+    <p>Das IDOUtils-Addon und die Dokumentation finden Sie unter <a class="link" href="http://docs.icinga.org/" target="_top">http://docs.icinga.org/</a>.</p>
 
-  <a class="indexterm" name="idp15499408"></a>
+    <a class="indexterm" name="idp15588016"></a>
 
-  <a class="indexterm" name="idp15500624"></a>
+    <a class="indexterm" name="idp15589664"></a>
 
-  <a class="indexterm" name="idp15502208"></a>
+    <a class="indexterm" name="idp15591280"></a>
 
-  <a class="indexterm" name="idp15503408"></a>
+    <a class="indexterm" name="idp15592896"></a>
 
-  <a class="indexterm" name="idp15504992"></a>
+    <a class="indexterm" name="idp15594128"></a>
 
-  <a class="indexterm" name="idp15506192"></a>
+    <a class="indexterm" name="idp15595760"></a>
 
-  <a class="indexterm" name="idp15507776"></a>
+    <a class="indexterm" name="idp15597040"></a>
 
-  <a class="indexterm" name="idp15508976"></a>
+    <a class="indexterm" name="idp15598608"></a>
 
-  <a class="indexterm" name="idp15510560"></a>
+    <a class="indexterm" name="idp15599808"></a>
 
-  <a class="indexterm" name="idp15511760"></a>
+    <a class="indexterm" name="idp15601392"></a>
 
-  <a class="indexterm" name="idp15513344"></a>
+    <a class="indexterm" name="idp15602624"></a>
 
-  <a class="indexterm" name="idp15514544"></a>
+    <a class="indexterm" name="idp15604256"></a>
 
-  <a class="indexterm" name="idp15516128"></a>
+    <a class="indexterm" name="idp15605536"></a>
 
-  <a class="indexterm" name="idp15517328"></a>
+    <a class="indexterm" name="idp15607104"></a>
 
-  <a class="indexterm" name="idp15518912"></a>
+    <a class="indexterm" name="idp15608304"></a>
 
-  <a class="indexterm" name="idp15520112"></a>
+    <a class="indexterm" name="idp15609888"></a>
 
-  <a class="indexterm" name="idp15521696"></a>
+    <a class="indexterm" name="idp15611120"></a>
 
-  <a class="indexterm" name="idp15522896"></a>
+    <a class="indexterm" name="idp15612752"></a>
 
-  <a class="indexterm" name="idp15524480"></a>
+    <a class="indexterm" name="idp15614032"></a>
 
-  <a class="indexterm" name="idp15525680"></a>
+    <a class="indexterm" name="idp15615424"></a>
 
-  <a class="indexterm" name="idp15527264"></a>
+    <a class="indexterm" name="idp15616432"></a>
 
-  <a class="indexterm" name="idp15528464"></a>
+    <a class="indexterm" name="idp15617824"></a>
+
+    <a class="indexterm" name="idp15619216"></a>
+
+    <a class="indexterm" name="idp15620608"></a>
+
+    <a class="indexterm" name="idp15621968"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

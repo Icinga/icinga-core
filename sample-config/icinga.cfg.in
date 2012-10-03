@@ -631,7 +631,7 @@ soft_state_dependencies=0
 
 # TIME CHANGE ADJUSTMENT THRESHOLDS
 # These options determine when Icinga will react to detected changes
-# in system time (either forward or backwards).
+# in system time (forward into the future).
 
 #time_change_threshold=900
 

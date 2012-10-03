@@ -28,9 +28,32 @@
 <div class="section" title="7.7. Redundant and Failover Network Monitoring">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="redundancy"></a>7.7. <a name="redundancy_failover"></a>Redundant and Failover Network Monitoring</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="redundancy.html#idp13533376">7.7.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13537328">7.7.2. Prerequisites</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13545760">7.7.3. Sample Scripts</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13547792">7.7.4. Scenario 1 - Redundant Monitoring</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13548736">7.7.5. Introduction</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13550112">7.7.6. Goals</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13553840">7.7.7. Network Layout Diagram</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13561248">7.7.8. Initial Program Settings</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13563904">7.7.9. Initial Configuration</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13575040">7.7.10. Event Handler Command Definitions</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13577888">7.7.11. Event Handler Scripts</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13578016">7.7.12. What This Does For Us</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13584672">7.7.13. Time Lags</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13598608">7.7.14. Special Cases</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13619344">7.7.15. Introduction</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13622912">7.7.16. Goals</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13626208">7.7.17. Initial Program Settings</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13629520">7.7.18. Master Process Check</a></span></dt>
+<dt><span class="section"><a href="redundancy.html#idp13636192">7.7.19. Additional Issues</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="7.7.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13533376"></a>7.7.1. Introduction</h3></div></div></div>
 
   <p>This section describes a few scenarios for implementing redundant monitoring hosts an various types of network layouts.
   With redundant hosts, you can maintain the ability to monitor your network when the primary host that runs Icinga fails
@@ -48,24 +71,10 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Index</strong></span></p>
-
-  <p><a class="link" href="redundancy.html#redundancy-prerequisites">Prerequisites</a></p>
-
-  <p><a class="link" href="redundancy.html#redundancy-samples">Sample scripts</a></p>
-
-  <p><a class="link" href="redundancy.html#redundancy-scenario_1">Scenario 1 - Redundant monitoring</a></p>
-
-  <p><a class="link" href="redundancy.html#redundancy-scenario_2">Scenario 2 - Failover monitoring</a></p>
-
-  <p><a name="redundancy-prerequisites"></a></p>
-
-  <div class="informaltable">
-    <table border="0">
-<colgroup><col></colgroup>
-<tbody><tr><td><p> <span class="bold"><strong>Prerequisites</strong></span> </p></td></tr></tbody>
-</table>
   </div>
+<div class="section" title="7.7.2. Prerequisites">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13537328"></a>7.7.2. <a name="redundancy-prerequisites"></a>Prerequisites</h3></div></div></div>
 
   <p>Before you can even think about implementing redundancy with Icinga, you need to be familiar with the
   following...</p>
@@ -86,34 +95,32 @@
     </li>
 </ul></div>
 
-  <p><a name="redundancy-samples"></a></p>
-
-  <div class="informaltable">
-    <table border="0">
-<colgroup><col></colgroup>
-<tbody><tr><td><p> <span class="bold"><strong>Sample Scripts</strong></span> </p></td></tr></tbody>
-</table>
   </div>
+<div class="section" title="7.7.3. Sample Scripts">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13545760"></a>7.7.3. <a name="redundancy-samples"></a>Sample Scripts</h3></div></div></div>
 
   <p>All of the sample scripts that we use in this documentation can be found in the <span class="emphasis"><em>eventhandlers/</em></span>
   subdirectory of the Icinga distribution. You'll probably need to modify them to work on your system...</p>
 
-  <p><a name="redundancy-scenario_1"></a></p>
-
-  <div class="informaltable">
-    <table border="0">
-<colgroup><col></colgroup>
-<tbody><tr><td><p> <span class="bold"><strong>Scenario 1 - Redundant Monitoring</strong></span> </p></td></tr></tbody>
-</table>
   </div>
+<div class="section" title="7.7.4. Scenario 1 - Redundant Monitoring">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13547792"></a>7.7.4. <a name="redundancy-scenario_1"></a>Scenario 1 - Redundant Monitoring</h3></div></div></div>
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  </div>
+<div class="section" title="7.7.5. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13548736"></a>7.7.5. Introduction</h3></div></div></div>
 
   <p>This is an easy (and naive) method of implementing redundant monitoring hosts on your network and it will only protect
   against a limited number of failures. More complex setups are necessary in order to provide smarter redundancy, better
   redundancy across different network segments, etc.</p>
 
-  <p><span class="bold"><strong>Goals</strong></span></p>
+  </div>
+<div class="section" title="7.7.6. Goals">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13550112"></a>7.7.6. Goals</h3></div></div></div>
 
   <p>The goal of this type of redundancy implementation is simple. Both the "master" and "slave" hosts monitor the same hosts
   and service on the network. Under normal circumstances only the "master" host will be sending out notifications to contacts
@@ -129,7 +136,10 @@
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Network Layout Diagram</strong></span></p>
+  </div>
+<div class="section" title="7.7.7. Network Layout Diagram">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13553840"></a>7.7.7. Network Layout Diagram</h3></div></div></div>
 
   <p>The diagram below shows a very simple network setup. For this scenario we will be assuming that hosts A and E are both
   running Icinga and are monitoring all the hosts shown. Host A will be considered the "master" host and host E will be
@@ -142,14 +152,20 @@
 </table>
   </div>
 
-  <p><span class="bold"><strong>Initial Program Settings</strong></span></p>
+  </div>
+<div class="section" title="7.7.8. Initial Program Settings">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13561248"></a>7.7.8. Initial Program Settings</h3></div></div></div>
 
   <p>The slave host (host E) has its initial <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>
   directive disabled, thereby preventing it from sending out any host or service notifications. You also want to make sure that
   the slave host has its <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a> directive enabled. That
   was easy enough...</p>
 
-  <p><span class="bold"><strong>Initial Configuration</strong></span></p>
+  </div>
+<div class="section" title="7.7.9. Initial Configuration">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13563904"></a>7.7.9. Initial Configuration</h3></div></div></div>
 
   <p>Next we need to consider the differences between the <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object configuration file(s)</a> on
   the master and slave hosts...</p>
@@ -176,7 +192,10 @@
   simply doesn't need to. Of course you may be monitoring services on host E from host A, but that has nothing to do with the
   implementation of redundancy...</p>
 
-  <p><span class="bold"><strong>Event Handler Command Definitions</strong></span></p>
+  </div>
+<div class="section" title="7.7.10. Event Handler Command Definitions">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13575040"></a>7.7.10. Event Handler Command Definitions</h3></div></div></div>
 
   <p>We need to stop for a minute and describe what the command definitions for the event handlers on the slave host look like.
   Here is an example...</p>
@@ -195,7 +214,10 @@
   <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span> directory. You may place them anywhere you wish, but you'll need to
   modify the examples that are given here.</p>
 
-  <p><span class="bold"><strong>Event Handler Scripts</strong></span></p>
+  </div>
+<div class="section" title="7.7.11. Event Handler Scripts">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13577888"></a>7.7.11. Event Handler Scripts</h3></div></div></div>
 
   <p>Okay, now lets take a look at what the event handler scripts look like...</p>
 
@@ -260,7 +282,10 @@ HARD)
 esac
 exit 0</pre>
 
-  <p><span class="bold"><strong>What This Does For Us</strong></span></p>
+  </div>
+<div class="section" title="7.7.12. What This Does For Us">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13578016"></a>7.7.12. What This Does For Us</h3></div></div></div>
 
   <p>The slave host (host E) initially has notifications disabled, so it won't send out any host or service notifications while
   the Icinga process on the master host (host A) is still running.</p>
@@ -296,7 +321,10 @@ exit 0</pre>
   or host problems or recoveries. At this point host E has handed over the responsibilities of notifying contacts of problems to
   the Icinga process on host A. Everything is now as it was when we first started!</p>
 
-  <p><span class="bold"><strong>Time Lags</strong></span></p>
+  </div>
+<div class="section" title="7.7.13. Time Lags">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13584672"></a>7.7.13. Time Lags</h3></div></div></div>
 
   <p>Redundancy in Icinga is by no means perfect. One of the more obvious problems is the lag time between the master
   host failing and the slave host taking over. This is affected by the following...</p>
@@ -351,7 +379,10 @@ exit 0</pre>
   defined, the interval at which services are checked, and a lot of pure chance. At any rate, its definitely better than
   nothing.</p>
 
-  <p><span class="bold"><strong>Special Cases</strong></span></p>
+  </div>
+<div class="section" title="7.7.14. Special Cases">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13598608"></a>7.7.14. Special Cases</h3></div></div></div>
 
   <p>Here is one thing you should be aware of... If host A goes down, host E will have notifications enabled and take over the
   responsibilities of notifying contacts of problems. When host A recovers, host E will have notifications disabled. If - when
@@ -374,11 +405,17 @@ exit 0</pre>
 </table>
   </div>
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  </div>
+<div class="section" title="7.7.15. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13619344"></a>7.7.15. Introduction</h3></div></div></div>
 
   <p>Failover monitoring is similiar to, but slightly different than redundant monitoring (as discussed above in <a class="link" href="redundancy.html#redundancy-scenario_1">scenario 1</a>).</p>
 
-  <p><span class="bold"><strong>Goals</strong></span></p>
+  </div>
+<div class="section" title="7.7.16. Goals">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13622912"></a>7.7.16. Goals</h3></div></div></div>
 
   <p>The basic goal of failover monitoring is to have the Icinga process on the slave host sit idle while the
   Icinga process on the master host is running. If the process on the master host stops running (or if the host goes down),
@@ -390,14 +427,20 @@ exit 0</pre>
   cause problems with excessive traffic and load on the machines being monitored if you have a lot of services defined. Here's how
   you can get around that problem...</p>
 
-  <p><span class="bold"><strong>Initial Program Settings</strong></span></p>
+  </div>
+<div class="section" title="7.7.17. Initial Program Settings">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13626208"></a>7.7.17. Initial Program Settings</h3></div></div></div>
 
   <p>Disable active service checks and notifications on the slave host using the <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a> and <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a> directives. This will prevent the slave host from
   monitoring hosts and services and sending out notifications while the Icinga process on the master host is still up and
   running. Make sure you also have the <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a> directive
   enabled on the slave host.</p>
 
-  <p><span class="bold"><strong>Master Process Check</strong></span></p>
+  </div>
+<div class="section" title="7.7.18. Master Process Check">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13629520"></a>7.7.18. Master Process Check</h3></div></div></div>
 
   <p>Set up a cron job on the slave host that periodically (say every minute) runs a script that checks the status of the
   Icinga process on the master host (using the <span class="emphasis"><em>check_nrpe</em></span> plugin on the slave host and the <a class="link" href="addons.html#addons-nrpe">nrpe daemon</a> and <span class="emphasis"><em>check_nagios</em></span> plugin on the master host). The script should
@@ -411,7 +454,10 @@ exit 0</pre>
 
   <p>Also of note, you <span class="emphasis"><em>don't</em></span> need to define host and service handlers as mentioned in <a class="link" href="redundancy.html#redundancy-scenario_1">scenario 1</a> because things are handled differently.</p>
 
-  <p><span class="bold"><strong>Additional Issues</strong></span></p>
+  </div>
+<div class="section" title="7.7.19. Additional Issues">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13636192"></a>7.7.19. Additional Issues</h3></div></div></div>
 
   <p>At this point, you have implemented a very basic failover monitoring setup. However, there is one more thing you should
   consider doing to make things work smoother.</p>
@@ -426,9 +472,10 @@ exit 0</pre>
   monitoring deals with service checks.</p>
 
   <p>That's pretty much it as far as setup goes.</p>
-  <a class="indexterm" name="idp13608864"></a>
-  <a class="indexterm" name="idp13609872"></a>
-  <a class="indexterm" name="idp13611328"></a>
+  <a class="indexterm" name="idp13640640"></a>
+  <a class="indexterm" name="idp13641648"></a>
+  <a class="indexterm" name="idp13642896"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

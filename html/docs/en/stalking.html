@@ -28,16 +28,29 @@
 <div class="section" title="7.14. State Stalking">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="stalking"></a>7.14. <a name="state_stalking"></a>State Stalking</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="stalking.html#idp13961744">7.14.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="stalking.html#idp13963344">7.14.2. How Does It Work?</a></span></dt>
+<dt><span class="section"><a href="stalking.html#idp13963472">7.14.3. Should I Enable Stalking?</a></span></dt>
+<dt><span class="section"><a href="stalking.html#idp14021296">7.14.4. How Do I Enable Stalking?</a></span></dt>
+<dt><span class="section"><a href="stalking.html#idp14023712">7.14.5. How Does Stalking Differ From Volatile Services?</a></span></dt>
+<dt><span class="section"><a href="stalking.html#idp14025440">7.14.6. Caveats</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="7.14.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13961744"></a>7.14.1. Introduction</h3></div></div></div>
 
   <p>State "stalking" is a feature which is probably not going to used by most users. When enabled, it allows you to log
   changes in the output service and host checks even if the state of the host or service does not change. When stalking is enabled
   for a particular host or service, Icinga will watch that host or service very carefully and log any changes it sees in
   the output of check results. As you'll see, it can be very helpful to you in later analysis of the log files.</p>
 
-  <p><span class="bold"><strong>How Does It Work?</strong></span></p>
+  </div>
+<div class="section" title="7.14.2. How Does It Work?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13963344"></a>7.14.2. How Does It Work?</h3></div></div></div>
 
   <p>Under normal circumstances, the result of a host or service check is only logged if the host or service has changed state
   since it was last checked. There are a few exceptions to this, but for the most part, that's the rule.</p>
@@ -143,7 +156,10 @@
   future WARNING states were not due to a 404, but rather some text pattern that could not be found in the returned web
   page.</p>
 
-  <p><span class="bold"><strong>Should I Enable Stalking?</strong></span></p>
+  </div>
+<div class="section" title="7.14.3. Should I Enable Stalking?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13963472"></a>7.14.3. Should I Enable Stalking?</h3></div></div></div>
 
   <p>First, you must decide if you have a real need to analyze archived log data to find the exact cause of a problem. You may
   decide you need this feature for some hosts or services, but not for all. You may also find that you only have a need to enable
@@ -154,16 +170,25 @@
   check that host or service. If the plugin always returns the same text output for a particular state, there is no reason to
   enable stalking for that state.</p>
 
-  <p><span class="bold"><strong>How Do I Enable Stalking?</strong></span></p>
+  </div>
+<div class="section" title="7.14.4. How Do I Enable Stalking?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14021296"></a>7.14.4. How Do I Enable Stalking?</h3></div></div></div>
 
   <p>You can enable state stalking for hosts and services by using the <span class="emphasis"><em>stalking_options</em></span> directive in <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">host and service definitions</a>.</p>
 
-  <p><span class="bold"><strong>How Does Stalking Differ From Volatile Services?</strong></span></p>
+  </div>
+<div class="section" title="7.14.5. How Does Stalking Differ From Volatile Services?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14023712"></a>7.14.5. How Does Stalking Differ From Volatile Services?</h3></div></div></div>
 
   <p><a class="link" href="volatileservices.html" title="7.4. Volatile Services">Volatile services</a> are similar, but will cause notifications and event handlers to
   run. Stalking is purely for logging purposes.</p>
 
-  <p><span class="bold"><strong>Caveats</strong></span></p>
+  </div>
+<div class="section" title="7.14.6. Caveats">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14025440"></a>7.14.6. Caveats</h3></div></div></div>
 
   <p>You should be aware that there are some potential pitfalls with enabling stalking. These all relate to the reporting
   functions found in various <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">CGIs</a> (histogram, alert summary, etc.). Because state stalking will cause
@@ -171,7 +196,8 @@
 
   <p>As a general rule, I would suggest that you <span class="emphasis"><em>not</em></span> enable stalking for hosts and services without
   thinking things through. Still, it's there if you need and want it.</p>
-  <a class="indexterm" name="idp14006928"></a>
+  <a class="indexterm" name="idp14026368"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

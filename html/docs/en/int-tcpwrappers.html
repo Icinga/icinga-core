@@ -28,46 +28,60 @@
 <div class="section" title="9.3. TCP Wrapper Integration">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="int-tcpwrappers"></a>9.3. <a name="int_tcpwrappers"></a>TCP Wrapper Integration</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="int-tcpwrappers.html#idp15438048">9.3.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="int-tcpwrappers.html#idp15449728">9.3.2. Defining A Service</a></span></dt>
+<dt><span class="section"><a href="int-tcpwrappers.html#idp15459792">9.3.3. Configuring TCP Wrappers</a></span></dt>
+<dt><span class="section"><a href="int-tcpwrappers.html#idp15464704">9.3.4. Writing The Script</a></span></dt>
+<dt><span class="section"><a href="int-tcpwrappers.html#idp15470816">9.3.5. Finishing Up</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="9.3.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15438048"></a>9.3.1. Introduction</h3></div></div></div>
+    
 
-  <p><span class="inlinemediaobject"><img src="../images/tcpwrappers.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/tcpwrappers.png"></span></p>
 
-  <p>This document explains how to easily generate alerts in Icinga for connection attempts that are rejected by TCP
-  wrappers. For example, if an unauthorized host attempts to connect to your SSH server, you can receive an alert in Icinga
-  that contains the name of the host that was rejected. If you implement this on your Linux/Unix boxes, you'll be surprised how
-  many port scans you can detect across your network.</p>
+    <p>This document explains how to easily generate alerts in Icinga for connection attempts that are rejected by TCP wrappers.
+    For example, if an unauthorized host attempts to connect to your SSH server, you can receive an alert in Icinga that contains the
+    name of the host that was rejected. If you implement this on your Linux/Unix boxes, you'll be surprised how many port scans you can
+    detect across your network.</p>
 
-  <p>These directions assume:</p>
+    <p>These directions assume:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>You are already familiar with <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive checks</a> and how they work.</p>
-    </li>
+        <p>You are already familiar with <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive checks</a> and how they work.</p>
+      </li>
 <li class="listitem">
-      <p>You are already familiar with <a class="link" href="volatileservices.html" title="7.4. Volatile Services">volatile services</a> and how they work.</p>
-    </li>
+        <p>You are already familiar with <a class="link" href="volatileservices.html" title="7.4. Volatile Services">volatile services</a> and how they work.</p>
+      </li>
 <li class="listitem">
-      <p>The host which you are generating alerts for (i.e. the host you are using TCP wrappers on) is a remote host (called
-      <span class="emphasis"><em>firestorm</em></span> in this example). If you want to generate alerts on the same host that Icinga is
-      running you will need to make a few modifications to the examples we provide.</p>
-    </li>
+        <p>The host which you are generating alerts for (i.e. the host you are using TCP wrappers on) is a remote host (called
+        <span class="emphasis"><em>firestorm</em></span> in this example). If you want to generate alerts on the same host that Icinga is running you
+        will need to make a few modifications to the examples we provide.</p>
+      </li>
 <li class="listitem">
-      <p>You have installed the <a class="link" href="addons.html#addons-nsca">NSCA daemon</a> on your monitoring server and the NSCA client
-      (<span class="emphasis"><em>send_nsca</em></span>) on the remote machine that you are generating TCP wrapper alerts from.</p>
-    </li>
+        <p>You have installed the <a class="link" href="addons.html#addons-nsca">NSCA daemon</a> on your monitoring server and the NSCA client
+        (<span class="emphasis"><em>send_nsca</em></span>) on the remote machine that you are generating TCP wrapper alerts from.</p>
+      </li>
 </ol></div>
+  </div>
 
-  <p><span class="bold"><strong>Defining A Service</strong></span></p>
+  <div class="section" title="9.3.2. Defining A Service">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15449728"></a>9.3.2. Defining A Service</h3></div></div></div>
+    
 
-  <p>If you haven't done so already, create a <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a> for the remote host
-  (<span class="emphasis"><em>firestorm</em></span>).</p>
+    <p>If you haven't done so already, create a <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a> for the remote host
+    (<span class="emphasis"><em>firestorm</em></span>).</p>
 
-  <p>Next, define a service in one of your <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object configuration files</a> for the TCP wrapper
-  alerts on host <span class="emphasis"><em>firestorm</em></span>. The service definition might look something like this:</p>
+    <p>Next, define a service in one of your <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object configuration files</a> for the TCP wrapper alerts on
+    host <span class="emphasis"><em>firestorm</em></span>. The service definition might look something like this:</p>
 
-  <pre class="screen"> define service{
+    <pre class="programlisting"> define service{
         host_name                       firestorm
         service_description             TCP Wrappers
         is_volatile                     1
@@ -78,50 +92,57 @@
         ...
         }</pre>
 
-  <p>There are some important things to note about the above service definition:</p>
+    <p>There are some important things to note about the above service definition:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p>The <span class="emphasis"><em>volatile</em></span> option is enabled. We want this option enabled because we want a notification to be
-      generated for every alert that comes in.</p>
-    </li>
+        <p>The <span class="emphasis"><em>volatile</em></span> option is enabled. We want this option enabled because we want a notification to be
+        generated for every alert that comes in.</p>
+      </li>
 <li class="listitem">
-      <p>Active checks of the service as disabled, while passive checks are enabled. This means that the service will never be
-      actively checked by Icinga - all alert information will have to be received passively from an external source.</p>
-    </li>
+        <p>Active checks of the service as disabled, while passive checks are enabled. This means that the service will never be actively
+        checked by Icinga - all alert information will have to be received passively from an external source.</p>
+      </li>
 <li class="listitem">
-      <p>The <span class="emphasis"><em>max_check_attempts</em></span> value is set to 1. This guarantees you will get a notification when the
-      first alert is generated.</p>
-    </li>
+        <p>The <span class="emphasis"><em>max_check_attempts</em></span> value is set to 1. This guarantees you will get a notification when the first
+        alert is generated.</p>
+      </li>
 </ol></div>
+  </div>
 
-  <p><span class="bold"><strong>Configuring TCP Wrappers</strong></span></p>
+  <div class="section" title="9.3.3. Configuring TCP Wrappers">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15459792"></a>9.3.3. Configuring TCP Wrappers</h3></div></div></div>
+    
 
-  <p>Now you're going to have to modify the <span class="emphasis"><em>/etc/hosts.deny</em></span> file on <span class="emphasis"><em>firestorm</em></span>. In
-  order to have the TCP wrappers send an alert to the monitoring host whenever a connection attempt is denied, you'll have to add
-  a line similiar to the following:</p>
+    <p>Now you're going to have to modify the <span class="emphasis"><em>/etc/hosts.deny</em></span> file on <span class="emphasis"><em>firestorm</em></span>. In order to
+    have the TCP wrappers send an alert to the monitoring host whenever a connection attempt is denied, you'll have to add a line similiar
+    to the following:</p>
 
-  <pre class="screen"> ALL: ALL: RFC931: twist (/usr/local/icinga/libexec/eventhandlers/handle_tcp_wrapper %h %d) &amp;</pre>
+    <pre class="programlisting"> ALL: ALL: RFC931: twist (/usr/local/icinga/libexec/eventhandlers/handle_tcp_wrapper %h %d) &amp;</pre>
 
-  <p>This line assumes that there is a script called <span class="emphasis"><em>handle_tcp_wrapper</em></span> in the
-  <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers/</em></span> directory on <span class="emphasis"><em>firestorm</em></span>. We'll write that
-  script next.</p>
+    <p>This line assumes that there is a script called <span class="emphasis"><em>handle_tcp_wrapper</em></span> in the
+    <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers/</em></span> directory on <span class="emphasis"><em>firestorm</em></span>. We'll write that script
+    next.</p>
+  </div>
 
-  <p><span class="bold"><strong>Writing The Script</strong></span></p>
+  <div class="section" title="9.3.4. Writing The Script">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15464704"></a>9.3.4. Writing The Script</h3></div></div></div>
+    
 
-  <p>The last thing you need to do is write the <span class="emphasis"><em>handle_tcp_wrapper</em></span> script on
-  <span class="emphasis"><em>firestorm</em></span> that will send the alert back to the Icinga server. It might look something like
-  this:</p>
+    <p>The last thing you need to do is write the <span class="emphasis"><em>handle_tcp_wrapper</em></span> script on <span class="emphasis"><em>firestorm</em></span> that
+    will send the alert back to the Icinga server. It might look something like this:</p>
 
-  <pre class="screen">#!/bin/sh
-
+    <pre class="programlisting">#!/bin/sh
+ 
 /usr/local/icinga/libexec/eventhandlers/submit_check_result firestorm "TCP Wrappers" 2 "Denied $2-$1" &gt; /dev/null 2&gt; /dev/null</pre>
 
-  <p>Notice that the <span class="emphasis"><em>handle_tcp_wrapper</em></span> script calls the <span class="emphasis"><em>submit_check_result</em></span> script
-  to actually send the alert back to the monitoring host. Assuming your Icinga server is called
-  <span class="emphasis"><em>monitor</em></span>, the <span class="emphasis"><em>submit check_result</em></span> script might look like this:</p>
+    <p>Notice that the <span class="emphasis"><em>handle_tcp_wrapper</em></span> script calls the <span class="emphasis"><em>submit_check_result</em></span> script to
+    actually send the alert back to the monitoring host. Assuming your Icinga server is called <span class="emphasis"><em>monitor</em></span>, the
+    <span class="emphasis"><em>submit check_result</em></span> script might look like this:</p>
 
-  <pre class="screen">#!/bin/sh
+    <pre class="programlisting">#!/bin/sh
 # Arguments
 #       $1 = name of host in service definition
 #       $2 = name/description of service in service definition
@@ -129,16 +150,22 @@
 #       $4 = output
 
 /bin/echo -e "$1\t$2\t$3\t$4\n" | /usr/local/icinga/bin/send_nsca monitor -c /usr/local/nagios/etc/send_nsca.cfg</pre>
+  </div>
 
-  <p><span class="bold"><strong>Finishing Up</strong></span></p>
+  <div class="section" title="9.3.5. Finishing Up">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp15470816"></a>9.3.5. Finishing Up</h3></div></div></div>
+    
 
-  <p>You've now configured everything you need to, so all you have to do is restart the <span class="emphasis"><em>inetd</em></span> process on
-  <span class="emphasis"><em>firestorm</em></span> and restart Icinga on your monitoring server. That's it! When the TCP wrappers on
-  <span class="emphasis"><em>firestorm</em></span> deny a connection attempt, you should be getting alerts in Icinga. The plugin output for
-  the alert will look something like the following:</p>
+    <p>You've now configured everything you need to, so all you have to do is restart the <span class="emphasis"><em>inetd</em></span> process on
+    <span class="emphasis"><em>firestorm</em></span> and restart Icinga on your monitoring server. That's it! When the TCP wrappers on
+    <span class="emphasis"><em>firestorm</em></span> deny a connection attempt, you should be getting alerts in Icinga. The plugin output for the alert
+    will look something like the following:</p>
 
-  <pre class="screen">Denied sshd2-sdn-ar-002mnminnP321.dialsprint.net </pre>
-  <a class="indexterm" name="idp15454624"></a>
+    <pre class="screen">Denied sshd2-sdn-ar-002mnminnP321.dialsprint.net </pre>
+
+    <a class="indexterm" name="idp15474160"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

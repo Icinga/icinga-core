@@ -28,71 +28,97 @@
 <div class="section" title="7.1. Externe Befehle">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="extcommands"></a>7.1. Externe Befehle</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="extcommands.html#idm105835184">7.1.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="extcommands.html#idm122873408">7.1.2. Externe Befehle aktivieren</a></span></dt>
+<dt><span class="section"><a href="extcommands.html#idp12386144">7.1.3. Wann prüft Icinga auf externe Befehle?</a></span></dt>
+<dt><span class="section"><a href="extcommands.html#idp12390784">7.1.4. Externe Befehle benutzen</a></span></dt>
+<dt><span class="section"><a href="extcommands.html#idp12392336">7.1.5. Befehlsformat</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Einführung</strong></span></p>
+  <div class="section" title="7.1.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idm105835184"></a>7.1.1. Einführung</h3></div></div></div>
+    
 
-  <p>Icinga kann Befehle aus externen Applikationen verarbeiten (einschließlich der CGIs) und verschiedene Aspekte
-  seiner Überwachungsfunktionen aufgrund der Befehle verändern, die es erhält. Externe Applikationen können Befehle "einreichen",
-  indem sie in das <a class="link" href="configmain.html#configmain-command_file">command file</a> schreiben, das regelmäßig vom Icinga-Daemon
-  verarbeitet wird.</p>
+    <p>Icinga kann Befehle aus externen Applikationen verarbeiten (einschließlich der CGIs) und verschiedene Aspekte seiner
+    Überwachungsfunktionen aufgrund der Befehle verändern, die es erhält. Externe Applikationen können Befehle "einreichen", indem sie in
+    das <a class="link" href="configmain.html#configmain-command_file">command file</a> schreiben, das regelmäßig vom Icinga-Daemon verarbeitet
+    wird.</p>
 
-  <div class="mediaobject" align="right"><img src="../images/externalcommands.png" align="right"></div>
+    <div class="mediaobject" align="right"><img src="../images/externalcommands.png" align="right"></div>
+  </div>
 
-  <p><span class="bold"><strong>Externe Befehle aktivieren</strong></span></p>
+  <div class="section" title="7.1.2. Externe Befehle aktivieren">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idm122873408"></a>7.1.2. Externe Befehle aktivieren</h3></div></div></div>
+    
 
-  <p>Damit Icinga externe Befehle verarbeitet, müssen Sie folgendes tun:</p>
+    <p>Damit Icinga externe Befehle verarbeitet, müssen Sie folgendes tun:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>aktivieren Sie die Prüfung auf externe Befehle mit der <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a>-Option.</p>
-    </li>
+        <p>aktivieren Sie die Prüfung auf externe Befehle mit der <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a>-Option.</p>
+      </li>
 <li class="listitem">
-      <p>setzen Sie die Wiederholrate von Befehlsprüfungen mit der <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a>-Option.</p>
-    </li>
+        <p>setzen Sie die Wiederholrate von Befehlsprüfungen mit der <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a>-Option.</p>
+      </li>
 <li class="listitem">
-      <p>definieren Sie den Ort des Command-File mit der <a class="link" href="configmain.html#configmain-command_file">command_file</a>-Option.</p>
-    </li>
+        <p>definieren Sie den Ort des Command-File mit der <a class="link" href="configmain.html#configmain-command_file">command_file</a>-Option.</p>
+      </li>
 <li class="listitem">
-      <p>setzen Sie korrekte Berechtigungen für das Verzeichnis, welches das External-Command-File enthält, wie in der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> beschrieben.</p>
-    </li>
+        <p>setzen Sie korrekte Berechtigungen für das Verzeichnis, welches das External-Command-File enthält, wie in der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> beschrieben.</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Wann prüft Icinga auf externe Befehle?</strong></span></p>
+  <div class="section" title="7.1.3. Wann prüft Icinga auf externe Befehle?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12386144"></a>7.1.3. Wann prüft Icinga auf externe Befehle?</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>in regelmäßigen Intervallen, wie sie durch die Option <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a> in der Hauptkonfigurationsdatei angegeben
-      sind</p>
-    </li>
+        <p>in regelmäßigen Intervallen, wie sie durch die Option <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a> in der Hauptkonfigurationsdatei angegeben sind</p>
+      </li>
 <li class="listitem">
-      <p>direkt nachdem <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> ausgeführt werden. Das passiert zusätzlich zum
-      regelmäßigen Zyklus von externen Befehlsprüfungen und wird getan, um unverzügliche Aktivitäten zu ermöglichen, falls ein
-      Eventhandler Befehle an Icinga schickt.</p>
-    </li>
+        <p>direkt nachdem <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> ausgeführt werden. Das passiert zusätzlich zum regelmäßigen
+        Zyklus von externen Befehlsprüfungen und wird getan, um unverzügliche Aktivitäten zu ermöglichen, falls ein Eventhandler Befehle an
+        Icinga schickt.</p>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Externe Befehle benutzen</strong></span></p>
+  <div class="section" title="7.1.4. Externe Befehle benutzen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12390784"></a>7.1.4. Externe Befehle benutzen</h3></div></div></div>
+    
 
-  <p>Externe Befehle können benutzt werden, um eine Reihe von Dingen zu erreichen, während Icinga läuft. Beispiele
-  dafür, was getan werden kann, umfassen u.a. vorübergehend Benachrichtigungen für Services und Hosts zu deaktivieren,
-  vorübergehend Service-Prüfungen zu deaktivieren, sofortige Service-Prüfungen zu erzwingen, Kommentare für Hosts und Services
-  hinzuzufügen usw.</p>
+    <p>Externe Befehle können benutzt werden, um eine Reihe von Dingen zu erreichen, während Icinga läuft. Beispiele dafür, was
+    getan werden kann, umfassen u.a. vorübergehend Benachrichtigungen für Services und Hosts zu deaktivieren, vorübergehend
+    Service-Prüfungen zu deaktivieren, sofortige Service-Prüfungen zu erzwingen, Kommentare für Hosts und Services hinzuzufügen usw.</p>
+  </div>
 
-  <p><span class="bold"><strong>Befehlsformat</strong></span></p>
+  <div class="section" title="7.1.5. Befehlsformat">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp12392336"></a>7.1.5. Befehlsformat</h3></div></div></div>
+    
 
-  <p>Externe Befehle, die in das <a class="link" href="configmain.html#configmain-command_file">command file</a> geschrieben werden, haben das
-  folgende Format...</p>
+    <p>Externe Befehle, die in das <a class="link" href="configmain.html#configmain-command_file">command file</a> geschrieben werden, haben das folgende
+    Format...</p>
 
-  <pre class="screen"> [<span class="emphasis"><em> Zeit</em></span>] <span class="emphasis"><em> Befehls-ID</em></span>;<span class="emphasis"><em> Befehlsargumente</em></span> </pre>
+    <pre class="screen"> [<span class="emphasis"><em> Zeit</em></span>] <span class="emphasis"><em> Befehls-ID</em></span>;<span class="emphasis"><em> Befehlsargumente</em></span> </pre>
 
-  <p>...wobei <span class="emphasis"><em>Zeit</em></span> die Zeit (im <span class="emphasis"><em>time_t</em></span>-Format) ist, zu der die externe Applikation
-  den externen Befehl an das Command-File geschickt hat. Die Werte für die <span class="emphasis"><em>Befehls-ID</em></span> und die
-  <span class="emphasis"><em>Befehlsargumente</em></span> hängen davon ab, welcher Befehl an Icinga geschickt wird.</p>
+    <p>...wobei <span class="emphasis"><em>Zeit</em></span> die Zeit (im <span class="emphasis"><em>time_t</em></span>-Format) ist, zu der die externe Applikation den
+    externen Befehl an das Command-File geschickt hat. Die Werte für die <span class="emphasis"><em>Befehls-ID</em></span> und die
+    <span class="emphasis"><em>Befehlsargumente</em></span> hängen davon ab, welcher Befehl an Icinga geschickt wird.</p>
 
-  <p>Eine komplette Liste der Befehle, die benutzt werden können, finden Sie in der <a class="link" href="extcommands2.html" title="7.2. Liste der externen Befehle">Liste der
-  externen Befehle</a>.</p>
-  <a class="indexterm" name="idp12345712"></a>
+    <p>Eine komplette Liste der Befehle, die benutzt werden können, finden Sie in der <a class="link" href="extcommands2.html" title="7.2. Liste der externen Befehle">Liste der externen
+    Befehle</a>.</p>
+
+    <a class="indexterm" name="idp12399744"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

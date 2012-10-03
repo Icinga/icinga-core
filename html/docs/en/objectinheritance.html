@@ -28,9 +28,20 @@
 <div class="section" title="7.26. Object Inheritance">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="objectinheritance"></a>7.26. <a name="object_inheritance"></a>Object Inheritance</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="objectinheritance.html#idp14607936">7.26.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="objectinheritance.html#idp14611472">7.26.2. Basics</a></span></dt>
+<dt><span class="section"><a href="objectinheritance.html#idp14621552">7.26.3. Local Variables vs. Inherited Variables</a></span></dt>
+<dt><span class="section"><a href="objectinheritance.html#idp14621680">7.26.4. Inheritance Chaining</a></span></dt>
+<dt><span class="section"><a href="objectinheritance.html#idp14632080">7.26.5. Using Incomplete Object Definitions as Templates</a></span></dt>
+<dt><span class="section"><a href="objectinheritance.html#idp14637856">7.26.6. Custom Object Variables</a></span></dt>
+<dt><span class="section"><a href="objectinheritance.html#idp14646736">7.26.7. Precedence With Multiple Inheritance Sources</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="7.26.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14607936"></a>7.26.1. Introduction</h3></div></div></div>
 
   <p>This documentation attempts to explain object inheritance and how it can be used in your <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object
   definitions</a>.</p>
@@ -39,7 +50,10 @@
   provided in the Icinga distribution. If that still doesn't help, drop an email message with a <span class="emphasis"><em>detailed</em></span>
   description of your problem to the <span class="emphasis"><em>icinga-users</em></span> mailing list.</p>
 
-  <p><span class="bold"><strong>Basics</strong></span></p>
+  </div>
+<div class="section" title="7.26.2. Basics">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14611472"></a>7.26.2. Basics</h3></div></div></div>
 
   <p>There are three variables affecting recursion and inheritance that are present in all object definitions. They are
   <span class="emphasis"><em>"indicated"</em></span> as follows...</p>
@@ -67,7 +81,10 @@
   the need to override an inherited <span class="emphasis"><em>register</em></span> directive with a value of <span class="emphasis"><em>1</em></span> for every object that
   should be registered.</p>
 
-  <p><span class="bold"><strong>Local Variables vs. Inherited Variables</strong></span></p>
+  </div>
+<div class="section" title="7.26.3. Local Variables vs. Inherited Variables">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14621552"></a>7.26.3. Local Variables vs. Inherited Variables</h3></div></div></div>
 
   <p>One important thing to understand with inheritance is that "local" object variables always take precedence over variables defined in
   the template object. Take a look at the following example of two host definitions (not all required variables have been supplied):</p>
@@ -117,7 +134,10 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Inheritance Chaining</strong></span></p>
+  </div>
+<div class="section" title="7.26.4. Inheritance Chaining">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14621680"></a>7.26.4. Inheritance Chaining</h3></div></div></div>
 
   <p>Objects can inherit properties/variables from multiple levels of template objects. Take the following example:</p>
 
@@ -173,7 +193,10 @@
   <p>There is no inherent limit on how "deep" inheritance can go, but you'll probably want to limit yourself to at most a few levels in
   order to maintain sanity.</p>
 
-  <p><span class="bold"><strong>Using Incomplete Object Definitions as Templates</strong></span></p>
+  </div>
+<div class="section" title="7.26.5. Using Incomplete Object Definitions as Templates">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14632080"></a>7.26.5. Using Incomplete Object Definitions as Templates</h3></div></div></div>
 
   <p>It is possible to use imcomplete object definitions as templates for use by other object definitions. By "incomplete" definition, I
   mean that all required variables in the object have not been supplied in the object definition. It may sound odd to use incomplete
@@ -232,7 +255,10 @@
   <p>At the very least, using a template definition for default variables will save you a lot of typing. It'll also save you a lot of
   headaches later if you want to change the default values of variables for a large number of hosts.</p>
 
-  <p><span class="bold"><strong>Custom Object Variables</strong></span></p>
+  </div>
+<div class="section" title="7.26.6. Custom Object Variables">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14637856"></a>7.26.6. Custom Object Variables</h3></div></div></div>
 
   <p>Any <a class="link" href="customobjectvars.html" title="3.5. Custom Object Variables">custom object variables</a> that you define in your host, service, or contact definition
   templates will be inherited just like other standard variables. Take the following example:</p>
@@ -558,7 +584,10 @@ define host{
         ...
         }</pre>
 
-  <p><span class="bold"><strong>Precedence With Multiple Inheritance Sources</strong></span></p>
+  </div>
+<div class="section" title="7.26.7. Precedence With Multiple Inheritance Sources">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14646736"></a>7.26.7. Precedence With Multiple Inheritance Sources</h3></div></div></div>
 
   <p>When you use multiple inheritance sources, it is important to know how Icinga handles variables that are defined in multiple
   sources. In these cases Icinga will use the variable/value from the first source that is specified in the <span class="emphasis"><em>use</em></span>
@@ -586,19 +615,20 @@ define host{
 </table>
   </div>
 
-  <a class="indexterm" name="idp14731120"></a>
+  <a class="indexterm" name="idp14755696"></a>
 
-  <a class="indexterm" name="idp14738704"></a>
+  <a class="indexterm" name="idp14756976"></a>
 
-  <a class="indexterm" name="idp14740304"></a>
+  <a class="indexterm" name="idp14758608"></a>
 
-  <a class="indexterm" name="idp14741872"></a>
+  <a class="indexterm" name="idp14760096"></a>
 
-  <a class="indexterm" name="idp14743440"></a>
+  <a class="indexterm" name="idp14761664"></a>
 
-  <a class="indexterm" name="idp14745088"></a>
+  <a class="indexterm" name="idp14763312"></a>
 
-  <a class="indexterm" name="idp14746672"></a>
+  <a class="indexterm" name="idp14764896"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

@@ -28,36 +28,49 @@
 <div class="section" title="6.2. Information On CGI parameters">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cgiparams"></a>6.2. Information On CGI parameters</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="cgiparams.html#idp10175056">6.2.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="cgiparams.html#idp10668176">6.2.2. Executing CGIs on the command line</a></span></dt>
+<dt><span class="section"><a href="cgiparams.html#idp10674256">6.2.3. Properties / Statustypes</a></span></dt>
+<dt><span class="section"><a href="cgiparams.html#idp10680032">6.2.4. Matrix Parameters / CGIs</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="6.2.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10175056"></a>6.2.1. Introduction</h3></div></div></div>
+    
 
-  <p>The menu on the left side of the classical web interface contains entries which offer a quick way to the information most people
-  need. However you can change the parameters or use other options as well. Some CGIs require an objecttype ("host", "hostgroup", "service",
-  or "servicegroup"), often followed by one or more options. The best way is to take a look at the existing URLs and change them according
-  to your needs.</p>
+    <p>The menu on the left side of the classical web interface contains entries which offer a quick way to the information most people
+    need. However you can change the parameters or use other options as well. Some CGIs require an objecttype ("host", "hostgroup",
+    "service", or "servicegroup"), often followed by one or more options. The best way is to take a look at the existing URLs and change
+    them according to your needs.</p>
 
-  <p>Below you will find a table showing the parameters and the CGIs they apply to. The names of the CGIs are abbreviated. An explanation
-  along with a hint to the source code can be found <a class="link" href="cgiparams.html#cgiparams_abbrev">here</a>.</p>
+    <p>Below you will find a table showing the parameters and the CGIs they apply to. The names of the CGIs are abbreviated. An
+    explanation along with a hint to the source code can be found <a class="link" href="cgiparams.html#cgiparams_abbrev">here</a>.</p>
 
-  <p>Following this table is an explanation of the parameters (work in progress).</p>
+    <p>Following this table is an explanation of the parameters (work in progress).</p>
+  </div>
 
-  <p><span class="bold"><strong>Executing CGIs on the command line</strong></span></p>
+  <div class="section" title="6.2.2. Executing CGIs on the command line">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10668176"></a>6.2.2. Executing CGIs on the command line</h3></div></div></div>
+    
 
-  <p>Instead of using your browser you may want to run the CGIs on the command line and process the results with other tools. For a first
-  impression change to the folder containing the *.cgi modules (e.g. <code class="filename">/usr/local/icinga/sbin</code>), set some environment
-  variables and execute one of the CGIs:</p>
+    <p>Instead of using your browser you may want to run the CGIs on the command line and process the results with other tools. For a
+    first impression change to the folder containing the *.cgi modules (e.g. <code class="filename">/usr/local/icinga/sbin</code>), set some
+    environment variables and execute one of the CGIs:</p>
 <pre class="screen"> $&gt; export REMOTE_USER=icingaadmin   # or choose the appropriate user
  $&gt; export REQUEST_METHOD='GET'      # if you enter queries
  $&gt; export QUERY_STRING='host=all'   # see the tables below 
 
  $&gt; ./status.cgi</pre>
 <p>Depending on the number of hosts this may return a lot of lines containing HTML code in between which most
-  people will find hard to read so you should add "&amp;csvoutput" or "&amp;jsonoutput" to QUERY_STRING along with other arguments.</p>
+    people will find hard to read so you should add "&amp;csvoutput" or "&amp;jsonoutput" to QUERY_STRING along with other arguments.</p>
 
-  <p>Set QUERY_STRING as needed and execute the desired CGI.</p>
+    <p>Set QUERY_STRING as needed and execute the desired CGI.</p>
 
-  <p>If you forgot to set the environment variables you'll receive the following lines:</p>
+    <p>If you forgot to set the environment variables you'll receive the following lines:</p>
 <pre class="screen"> $&gt; ./status.cgi
  getcgivars(): Unsupported REQUEST_METHOD -&gt; ''
 
@@ -71,35 +84,43 @@
  "REMOTE_USER" environment variable to be the name of the user you're
  "authenticated" as.</pre>
 
-  <p>You will find some examples <a class="link" href="cgicmd.html" title="6.3. Executing CGIs on the command line">here</a>.</p>
+    <p>You will find some examples <a class="link" href="cgicmd.html" title="6.3. Executing CGIs on the command line">here</a>.</p>
+  </div>
 
-  <p><span class="bold"><strong>Properties / Statustypes</strong></span></p>
+  <div class="section" title="6.2.3. Properties / Statustypes">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10674256"></a>6.2.3. Properties / Statustypes</h3></div></div></div>
+    
 
-  <p>You can use <code class="filename">status.cgi</code> to show objects with one or more statustype (hoststatustype / servicestatustype) and
-  with certain properties (hostprops / serviceprops). Each statustype / property is identified by a number (shown <a class="link" href="cgiparams.html#cgiparams-filter">here</a> and <a class="link" href="cgiparams.html#cgiparams-statustypes">here</a> at the end of this section). Please sum up
-  the appropriate numbers and use the resulting value for each option.</p>
+    <p>You can use <code class="filename">status.cgi</code> to show objects with one or more statustype (hoststatustype / servicestatustype) and
+    with certain properties (hostprops / serviceprops). Each statustype / property is identified by a number (shown <a class="link" href="cgiparams.html#cgiparams-filter">here</a> and <a class="link" href="cgiparams.html#cgiparams-statustypes">here</a> at the end of this section). Please sum up
+    the appropriate numbers and use the resulting value for each option.</p>
 
-  <p>The example shows all non-OK services which are neither in downtime nor acknowledged:</p>
+    <p>The example shows all non-OK services which are neither in downtime nor acknowledged:</p>
 
-  <pre class="screen"> http://localhost/icinga/cgi-bin/status.cgi?host=all&amp;servicestatustypes=29&amp;serviceprops=10</pre>
+    <pre class="screen"> http://localhost/icinga/cgi-bin/status.cgi?host=all&amp;servicestatustypes=29&amp;serviceprops=10</pre>
 
-  <p>"29" includes PENDING services (not being checked since start up) as well.</p>
+    <p>"29" includes PENDING services (not being checked since start up) as well.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Please note that using properties will only show the objects satisfying ALL conditions whereas the objects are shown when
-    satifying ONE of the statustypes.</p>
-  </td></tr>
+      <p>Please note that using properties will only show the objects satisfying ALL conditions whereas the objects are shown when
+      satifying ONE of the statustypes.</p>
+    </td></tr>
 </table></div>
+  </div>
 
-  <p><span class="bold"><strong>Matrix Parameters / CGIs</strong></span></p>
+  <div class="section" title="6.2.4. Matrix Parameters / CGIs">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp10680032"></a>6.2.4. Matrix Parameters / CGIs</h3></div></div></div>
+    
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -2009,15 +2030,15 @@
 </tr>
 </tbody>
 </table>
-  </div>
+    </div>
 
-  <p><a name="cgiparams_expl"></a><span class="bold"><strong>Parameter Details</strong></span></p>
+    <p><a name="cgiparams_expl"></a><span class="bold"><strong>Parameter Details</strong></span></p>
 
-  <p>Further information regarding the several parameters is given below. For a detailed understanding please have a look at the source
-  code.</p>
+    <p>Further information regarding the several parameters is given below. For a detailed understanding please have a look at the source
+    code.</p>
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -2170,7 +2191,7 @@
 <td><a class="link" href="cgiparams.html#cgiparams-displaytype">displaytype</a></td>
 <td>Type of alert report</td>
 <td>1=recent alerts; 2=alert totals; 3=top alerts; 4=hostgroup alert totals; 5=host alert totals; 6=service alert totals;
-          7=servicegroup alert totals</td>
+            7=servicegroup alert totals</td>
 <td> </td>
 <td> </td>
 </tr>
@@ -2278,7 +2299,7 @@
 <td> </td>
 <td>graphevents=112 (all service problems)</td>
 <td>A boolean OR of: 1=Host up; 2=Host down; 4=Host unreachable; 8=Service OK; 16=Service Warning; 32=Service Unknown;
-          64=Service Critical</td>
+            64=Service Critical</td>
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-graphstatetypes">graphstatetypes</a></td>
@@ -2303,12 +2324,12 @@
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-hostprops">hostprops</a></td>
-<td>Select the hosts (including the services) matching the given bit pattern. Note that the hosts have to match ALL conditions
-          specified</td>
+<td>Select the hosts (including the services) matching the given bit pattern. Note that the hosts have to match ALL
+            conditions specified</td>
 <td> </td>
 <td>hostprops=131088 (active checks being disabled)</td>
 <td>A boolean OR of the states specified in include/cgiutils.c <a class="link" href="cgiparams.html#cgiparams-filter">[1]</a> (HOST AND SERVICE
-          FILTER PROPERTIES)</td>
+            FILTER PROPERTIES)</td>
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-hoststates">hoststates</a></td>
@@ -2554,7 +2575,7 @@
 <td>0=disabled, 1=enabled (default)</td>
 <td>send_notification</td>
 <td>[5] cmd.cgi requires 0|1 vars, if not set, default is 1. View <a class="link" href="https://dev.icinga.org/issues/2926" target="_top">Bug
-          #2926</a> for additional informations.</td>
+            #2926</a> for additional informations.</td>
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-service">service</a></td>
@@ -2583,7 +2604,7 @@
 <td> </td>
 <td>serviceprops=131088 (active checks being disabled)</td>
 <td>A boolean OR of the states specified in include/cgiutils.c <a class="link" href="cgiparams.html#cgiparams-filter">[1]</a> (HOST AND SERVICE
-          FILTER PROPERTIES)</td>
+            FILTER PROPERTIES)</td>
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-servicestates">servicestates</a></td>
@@ -2666,7 +2687,7 @@
 <td><a class="link" href="cgiparams.html#cgiparams-standardreport">standardreport</a></td>
 <td>Standard report</td>
 <td>1=recent alerts; 2=recent host alerts; 3=recent service alerts; 4=top host alert producers; 5=top service alert
-          producers</td>
+            producers</td>
 <td> </td>
 <td> </td>
 </tr>
@@ -2704,15 +2725,15 @@
 <td>0=disabled, 1=enabled (default)</td>
 <td>sticky_ack</td>
 <td>[5] cmd.cgi requires 0|1 vars, if not set, default is 1. View <a class="link" href="https://dev.icinga.org/issues/2926" target="_top">Bug
-          #2926 </a>for additional informations.</td>
+            #2926 </a>for additional informations.</td>
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-style">style</a></td>
 <td>Specify the information to be shown</td>
 <td>overview; detail; summary; grid; hostdetail</td>
 <td> </td>
-<td>only applies to objecttypes "hostgroups" and "servicegroups";hostdetail=host status details; detail=service status details;
-          summary=status summary; grid=status grid;</td>
+<td>only applies to objecttypes "hostgroups" and "servicegroups";hostdetail=host status details; detail=service status
+            details; summary=status summary; grid=status grid;</td>
 </tr>
 <tr>
 <td><a class="link" href="cgiparams.html#cgiparams-syear">syear</a></td>
@@ -2739,7 +2760,7 @@
 <td><a class="link" href="cgiparams.html#cgiparams-timeperiod">timeperiod</a></td>
 <td>Timeperiod which should be used for the availability report</td>
 <td>today; yesterday; thisweek; lastweek; thismonth; lastmonth; thisquarter; lastquarter; thisyear; lastyear; last24hours;
-          last7days; last31days; custom</td>
+            last7days; last31days; custom</td>
 <td>timeperiod=lastmonth</td>
 <td> </td>
 </tr>
@@ -2768,21 +2789,21 @@
 <td><a class="link" href="cgiparams.html#cgiparams-type">type</a></td>
 <td>Objecttype</td>
 <td>hosts; hostgroups; services; servicegroups; contacts; contactgroups; timeperiods; commands; hostescalations;
-          serviceescalations; hostdependencies; servicedependencies</td>
+            serviceescalations; hostdependencies; servicedependencies</td>
 <td>type=hosts</td>
 <td> </td>
 </tr>
 </tbody>
 </table>
-  </div>
+    </div>
 
-  <p><a name="cgiparams_abbrev"></a><span class="bold"><strong>Abbreviations, CGIs, Links</strong></span></p>
+    <p><a name="cgiparams_abbrev"></a><span class="bold"><strong>Abbreviations, CGIs, Links</strong></span></p>
 
-  <p>Abbreviations used in the first table, relations to CGI and menu items, and links to the source code in
-  &lt;icinga-core&gt;/cgis.</p>
+    <p>Abbreviations used in the first table, relations to CGI and menu items, and links to the source code in
+    &lt;icinga-core&gt;/cgis.</p>
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -2882,11 +2903,11 @@
 </tr>
 </tbody>
 </table>
-  </div>
+    </div>
 
-  <p><a name="cgiparams-filter"></a><span class="bold"><strong>Excerpt from include/cgiutils.h</strong></span></p>
+    <p><a name="cgiparams-filter"></a><span class="bold"><strong>Excerpt from include/cgiutils.h</strong></span></p>
 
-  <pre class="programlisting">/****************** HOST AND SERVICE FILTER PROPERTIES  *******************/
+    <pre class="programlisting">/****************** HOST AND SERVICE FILTER PROPERTIES  *******************/
 
 #define HOST_SCHEDULED_DOWNTIME         1
 #define HOST_NO_SCHEDULED_DOWNTIME      2
@@ -2934,9 +2955,9 @@
 #define SERVICE_STATE_HANDLED           1048576
 #define SERVICE_NOT_ALL_CHECKS_DISABLED 2097152</pre>
 
-  <p><a name="cgiparams-statustypes"></a><span class="bold"><strong>Excerpt from include/statusdata.h</strong></span></p>
+    <p><a name="cgiparams-statustypes"></a><span class="bold"><strong>Excerpt from include/statusdata.h</strong></span></p>
 
-  <pre class="programlisting">/*************************** SERVICE STATES ***************************/
+    <pre class="programlisting">/*************************** SERVICE STATES ***************************/
 #define SERVICE_PENDING  1
 #define SERVICE_OK       2
 #define SERVICE_WARNING  4
@@ -2949,241 +2970,243 @@
 #define HOST_DOWN        4
 #define HOST_UNREACHABLE 8</pre>
 
-  <p>[1] Logical OR means that the numbers are added and only the objects will be displayed satisfying ALL conditions
-  (properties).</p>
+    <p>[1] Logical OR means that the numbers are added and only the objects will be displayed satisfying ALL conditions
+    (properties).</p>
 
-  <p>[2] Available starting with Icinga 1.4.</p>
+    <p>[2] Available starting with Icinga 1.4.</p>
 
-  <p>[3] avail, log, notif, out, status, sum: all views/reports support jsonoutput; config: all types except command expansion; ext: all
-  views except hostgroup/servicegroup info (always without performance data); tac: data output in json format. More details in the <a class="link" href="https://wiki.icinga.org/display/howtos/Using+JSON+export+in+Classic-UI" target="_top">Icinga wiki</a>.</p>
+    <p>[3] avail, log, notif, out, status, sum: all views/reports support jsonoutput; config: all types except command expansion; ext:
+    all views except hostgroup/servicegroup info (always without performance data); tac: data output in json format. More details in the
+    <a class="link" href="https://wiki.icinga.org/display/howtos/Using+JSON+export+in+Classic-UI" target="_top">Icinga wiki</a>.</p>
 
-  <p>[4] Available starting with Icinga 1.7.</p>
+    <p>[4] Available starting with Icinga 1.7.</p>
 
-  <p>[5] Available starting with Icinga 1.8.</p>
+    <p>[5] Available starting with Icinga 1.8.</p>
 
-  <p>[6] Removed starting with Icinga 1.8.</p>
+    <p>[6] Removed starting with Icinga 1.8.</p>
 
-  <a class="indexterm" name="idp11606096"></a>
+    <a class="indexterm" name="idp11663904"></a>
 
-  <a class="indexterm" name="idp11607904"></a>
+    <a class="indexterm" name="idp11665536"></a>
 
-  <a class="indexterm" name="idp11609472"></a>
+    <a class="indexterm" name="idp11667200"></a>
 
-  <a class="indexterm" name="idp11610784"></a>
+    <a class="indexterm" name="idp11668480"></a>
 
-  <a class="indexterm" name="idp11611792"></a>
+    <a class="indexterm" name="idp11669664"></a>
 
-  <a class="indexterm" name="idp11613568"></a>
+    <a class="indexterm" name="idp11671296"></a>
 
-  <a class="indexterm" name="idp11614768"></a>
+    <a class="indexterm" name="idp11672544"></a>
 
-  <a class="indexterm" name="idp11615776"></a>
+    <a class="indexterm" name="idp11673552"></a>
 
-  <a class="indexterm" name="idp11617520"></a>
+    <a class="indexterm" name="idp11675200"></a>
 
-  <a class="indexterm" name="idp11619184"></a>
+    <a class="indexterm" name="idp11676816"></a>
 
-  <a class="indexterm" name="idp11620880"></a>
+    <a class="indexterm" name="idp11678432"></a>
 
-  <a class="indexterm" name="idp11622368"></a>
+    <a class="indexterm" name="idp11680016"></a>
 
-  <a class="indexterm" name="idp11624000"></a>
+    <a class="indexterm" name="idp11681600"></a>
 
-  <a class="indexterm" name="idp11625632"></a>
+    <a class="indexterm" name="idp11683232"></a>
 
-  <a class="indexterm" name="idp11627328"></a>
+    <a class="indexterm" name="idp11684896"></a>
 
-  <a class="indexterm" name="idp11628944"></a>
+    <a class="indexterm" name="idp11686560"></a>
 
-  <a class="indexterm" name="idp11630528"></a>
+    <a class="indexterm" name="idp11688192"></a>
 
-  <a class="indexterm" name="idp11632192"></a>
+    <a class="indexterm" name="idp11689856"></a>
 
-  <a class="indexterm" name="idp11633856"></a>
+    <a class="indexterm" name="idp11691520"></a>
 
-  <a class="indexterm" name="idp11635520"></a>
+    <a class="indexterm" name="idp11693184"></a>
 
-  <a class="indexterm" name="idp11637184"></a>
+    <a class="indexterm" name="idp11654416"></a>
 
-  <a class="indexterm" name="idp11638848"></a>
+    <a class="indexterm" name="idp11696064"></a>
 
-  <a class="indexterm" name="idp11640512"></a>
+    <a class="indexterm" name="idp11697456"></a>
 
-  <a class="indexterm" name="idp11642176"></a>
+    <a class="indexterm" name="idp11699264"></a>
 
-  <a class="indexterm" name="idp11643840"></a>
+    <a class="indexterm" name="idp11700720"></a>
 
-  <a class="indexterm" name="idp11645504"></a>
+    <a class="indexterm" name="idp11702544"></a>
 
-  <a class="indexterm" name="idp11647168"></a>
+    <a class="indexterm" name="idp11704000"></a>
 
-  <a class="indexterm" name="idp11648832"></a>
+    <a class="indexterm" name="idp11705824"></a>
 
-  <a class="indexterm" name="idp11650496"></a>
+    <a class="indexterm" name="idp11707280"></a>
 
-  <a class="indexterm" name="idp11652160"></a>
+    <a class="indexterm" name="idp11709104"></a>
 
-  <a class="indexterm" name="idp11653824"></a>
+    <a class="indexterm" name="idp11710560"></a>
 
-  <a class="indexterm" name="idp11655488"></a>
+    <a class="indexterm" name="idp11712384"></a>
 
-  <a class="indexterm" name="idp11657152"></a>
+    <a class="indexterm" name="idp11713840"></a>
 
-  <a class="indexterm" name="idp11658816"></a>
+    <a class="indexterm" name="idp11715664"></a>
 
-  <a class="indexterm" name="idp11660480"></a>
+    <a class="indexterm" name="idp11717120"></a>
 
-  <a class="indexterm" name="idp11662144"></a>
+    <a class="indexterm" name="idp11718944"></a>
 
-  <a class="indexterm" name="idp11663808"></a>
+    <a class="indexterm" name="idp11720400"></a>
 
-  <a class="indexterm" name="idp11665472"></a>
+    <a class="indexterm" name="idp11722224"></a>
 
-  <a class="indexterm" name="idp11667136"></a>
+    <a class="indexterm" name="idp11723680"></a>
 
-  <a class="indexterm" name="idp11668768"></a>
+    <a class="indexterm" name="idp11725440"></a>
 
-  <a class="indexterm" name="idp11670400"></a>
+    <a class="indexterm" name="idp11726832"></a>
 
-  <a class="indexterm" name="idp11672032"></a>
+    <a class="indexterm" name="idp11728640"></a>
 
-  <a class="indexterm" name="idp11673696"></a>
+    <a class="indexterm" name="idp11730112"></a>
 
-  <a class="indexterm" name="idp11675328"></a>
+    <a class="indexterm" name="idp11731584"></a>
 
-  <a class="indexterm" name="idp11676992"></a>
+    <a class="indexterm" name="idp11733408"></a>
 
-  <a class="indexterm" name="idp11678656"></a>
+    <a class="indexterm" name="idp11735104"></a>
 
-  <a class="indexterm" name="idp11680320"></a>
+    <a class="indexterm" name="idp11736496"></a>
 
-  <a class="indexterm" name="idp11681984"></a>
+    <a class="indexterm" name="idp11736624"></a>
 
-  <a class="indexterm" name="idp11683616"></a>
+    <a class="indexterm" name="idp11739648"></a>
 
-  <a class="indexterm" name="idp11685280"></a>
+    <a class="indexterm" name="idp11739776"></a>
 
-  <a class="indexterm" name="idp11686912"></a>
+    <a class="indexterm" name="idp11742896"></a>
 
-  <a class="indexterm" name="idp11688544"></a>
+    <a class="indexterm" name="idp11744720"></a>
 
-  <a class="indexterm" name="idp11690176"></a>
+    <a class="indexterm" name="idp11746352"></a>
 
-  <a class="indexterm" name="idp11691744"></a>
+    <a class="indexterm" name="idp11747824"></a>
 
-  <a class="indexterm" name="idp11693504"></a>
+    <a class="indexterm" name="idp11747952"></a>
 
-  <a class="indexterm" name="idp11694944"></a>
+    <a class="indexterm" name="idp11749744"></a>
 
-  <a class="indexterm" name="idp11696336"></a>
+    <a class="indexterm" name="idp11751168"></a>
 
-  <a class="indexterm" name="idp11697728"></a>
+    <a class="indexterm" name="idp11754592"></a>
 
-  <a class="indexterm" name="idp11699392"></a>
+    <a class="indexterm" name="idp11754720"></a>
 
-  <a class="indexterm" name="idp11700784"></a>
+    <a class="indexterm" name="idp11757984"></a>
 
-  <a class="indexterm" name="idp11702592"></a>
+    <a class="indexterm" name="idp11759376"></a>
 
-  <a class="indexterm" name="idp11704176"></a>
+    <a class="indexterm" name="idp11761216"></a>
 
-  <a class="indexterm" name="idp11705792"></a>
+    <a class="indexterm" name="idp11762736"></a>
 
-  <a class="indexterm" name="idp11707312"></a>
+    <a class="indexterm" name="idp11764464"></a>
 
-  <a class="indexterm" name="idp11708784"></a>
+    <a class="indexterm" name="idp11766080"></a>
 
-  <a class="indexterm" name="idp11708912"></a>
+    <a class="indexterm" name="idp11767712"></a>
 
-  <a class="indexterm" name="idp11712032"></a>
+    <a class="indexterm" name="idp11769376"></a>
 
-  <a class="indexterm" name="idp11712160"></a>
+    <a class="indexterm" name="idp11771040"></a>
 
-  <a class="indexterm" name="idp11713728"></a>
+    <a class="indexterm" name="idp11772704"></a>
 
-  <a class="indexterm" name="idp11715456"></a>
+    <a class="indexterm" name="idp11774368"></a>
 
-  <a class="indexterm" name="idp11718624"></a>
+    <a class="indexterm" name="idp11776000"></a>
 
-  <a class="indexterm" name="idp11720320"></a>
+    <a class="indexterm" name="idp11777664"></a>
 
-  <a class="indexterm" name="idp11721952"></a>
+    <a class="indexterm" name="idp11779328"></a>
 
-  <a class="indexterm" name="idp11723680"></a>
+    <a class="indexterm" name="idp11780992"></a>
 
-  <a class="indexterm" name="idp11725296"></a>
+    <a class="indexterm" name="idp11782656"></a>
 
-  <a class="indexterm" name="idp11726912"></a>
+    <a class="indexterm" name="idp11784320"></a>
 
-  <a class="indexterm" name="idp11728528"></a>
+    <a class="indexterm" name="idp11785984"></a>
 
-  <a class="indexterm" name="idp11730144"></a>
+    <a class="indexterm" name="idp11787648"></a>
 
-  <a class="indexterm" name="idp11731760"></a>
+    <a class="indexterm" name="idp11789312"></a>
 
-  <a class="indexterm" name="idp11733376"></a>
+    <a class="indexterm" name="idp11790976"></a>
 
-  <a class="indexterm" name="idp11734992"></a>
+    <a class="indexterm" name="idp11792640"></a>
 
-  <a class="indexterm" name="idp11736512"></a>
+    <a class="indexterm" name="idp11794272"></a>
 
-  <a class="indexterm" name="idp11737984"></a>
+    <a class="indexterm" name="idp11795936"></a>
 
-  <a class="indexterm" name="idp11738112"></a>
+    <a class="indexterm" name="idp11797600"></a>
 
-  <a class="indexterm" name="idp11741456"></a>
+    <a class="indexterm" name="idp11799264"></a>
 
-  <a class="indexterm" name="idp11741584"></a>
+    <a class="indexterm" name="idp11800928"></a>
 
-  <a class="indexterm" name="idp11744784"></a>
+    <a class="indexterm" name="idp11802592"></a>
 
-  <a class="indexterm" name="idp11746256"></a>
+    <a class="indexterm" name="idp11804224"></a>
 
-  <a class="indexterm" name="idp11748000"></a>
+    <a class="indexterm" name="idp11805856"></a>
 
-  <a class="indexterm" name="idp11749728"></a>
+    <a class="indexterm" name="idp11807520"></a>
 
-  <a class="indexterm" name="idp11751216"></a>
+    <a class="indexterm" name="idp11809152"></a>
 
-  <a class="indexterm" name="idp11752608"></a>
+    <a class="indexterm" name="idp11810784"></a>
 
-  <a class="indexterm" name="idp11752736"></a>
+    <a class="indexterm" name="idp11812448"></a>
 
-  <a class="indexterm" name="idp11756160"></a>
+    <a class="indexterm" name="idp11814112"></a>
 
-  <a class="indexterm" name="idp11757680"></a>
+    <a class="indexterm" name="idp11815776"></a>
 
-  <a class="indexterm" name="idp11759312"></a>
+    <a class="indexterm" name="idp11817440"></a>
 
-  <a class="indexterm" name="idp11760944"></a>
+    <a class="indexterm" name="idp11819104"></a>
 
-  <a class="indexterm" name="idp11762640"></a>
+    <a class="indexterm" name="idp11820736"></a>
 
-  <a class="indexterm" name="idp11764192"></a>
+    <a class="indexterm" name="idp11822400"></a>
 
-  <a class="indexterm" name="idp11765824"></a>
+    <a class="indexterm" name="idp11824064"></a>
 
-  <a class="indexterm" name="idp11767616"></a>
+    <a class="indexterm" name="idp11825728"></a>
 
-  <a class="indexterm" name="idp11769376"></a>
+    <a class="indexterm" name="idp11827392"></a>
 
-  <a class="indexterm" name="idp11770944"></a>
+    <a class="indexterm" name="idp11829056"></a>
 
-  <a class="indexterm" name="idp11772704"></a>
+    <a class="indexterm" name="idp11830480"></a>
 
-  <a class="indexterm" name="idp11774272"></a>
+    <a class="indexterm" name="idp11831872"></a>
 
-  <a class="indexterm" name="idp11776032"></a>
+    <a class="indexterm" name="idp11833264"></a>
 
-  <a class="indexterm" name="idp11777600"></a>
+    <a class="indexterm" name="idp11834656"></a>
 
-  <a class="indexterm" name="idp11779360"></a>
+    <a class="indexterm" name="idp11836352"></a>
 
-  <a class="indexterm" name="idp11780928"></a>
+    <a class="indexterm" name="idp11837872"></a>
 
-  <a class="indexterm" name="idp11782688"></a>
+    <a class="indexterm" name="idp11839504"></a>
 
-  <a class="indexterm" name="idp11784256"></a>
+    <a class="indexterm" name="idp11840976"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

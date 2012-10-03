@@ -28,9 +28,22 @@
 <div class="section" title="2.15. Monitoring Network Printers">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-printers"></a>2.15. <a name="monitoring_printers"></a>Monitoring Network Printers</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="monitoring-printers.html#idp1219504">2.15.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="monitoring-printers.html#idp1219632">2.15.2. Overview</a></span></dt>
+<dt><span class="section"><a href="monitoring-printers.html#idp1242800">2.15.3. Steps</a></span></dt>
+<dt><span class="section"><a href="monitoring-printers.html#idp1247216">2.15.4. What's Already Done For You</a></span></dt>
+<dt><span class="section"><a href="monitoring-printers.html#idp1254416">2.15.5. Prerequisites</a></span></dt>
+<dt><span class="section"><a href="monitoring-printers.html#idp1254544">2.15.6. Configuring Icinga</a></span></dt>
+<dt><span class="section"><a href="monitoring-printers.html#idp1259456">2.15.7. Restarting Icinga</a></span></dt>
+</dl></div>
   
+  <a class="indexterm" name="idp1218496"></a>
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+<div class="section" title="2.15.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1219504"></a>2.15.1. Introduction</h3></div></div></div>
+  
 
   <div class="informalfigure">
       <div class="mediaobject"><img src="../images/printer.png"></div>
@@ -87,7 +100,11 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Overview</strong></span></p>
+</div>
+<div class="section" title="2.15.2. Overview">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1219632"></a>2.15.2. Overview</h3></div></div></div>
+  
 
   <div class="informalfigure">
       <div class="mediaobject"><img src="../images/monitoring-printers.png"></div>
@@ -108,7 +125,11 @@
   </p></td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Steps</strong></span></p>
+</div>
+<div class="section" title="2.15.3. Steps">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1242800"></a>2.15.3. Steps</h3></div></div></div>
+  
 
   <p>There are several steps you'll need to follow in order to monitor a new network printer. They are:</p>
 
@@ -124,7 +145,11 @@
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>What's Already Done For You</strong></span></p>
+</div>
+<div class="section" title="2.15.4. What's Already Done For You">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1247216"></a>2.15.4. What's Already Done For You</h3></div></div></div>
+  
 
   <p>To make your life a bit easier, a few configuration tasks have already been done for you:</p>
 
@@ -144,7 +169,11 @@
   waiting until you're more familiar with configuring Icinga before doing so. For the time being, just follow the
   directions outlined below and you'll be monitoring your network printers in no time.</p>
 
-  <p><span class="bold"><strong>Prerequisites</strong></span></p>
+</div>
+<div class="section" title="2.15.5. Prerequisites">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1254416"></a>2.15.5. Prerequisites</h3></div></div></div>
+  
 
   <p>The first time you configure Icinga to monitor a network printer, you'll need to do a bit of extra work. Remember,
   you only need to do this for the *first* printer you monitor.</p>
@@ -155,7 +184,7 @@
 
   <p>Remove the leading hash (#) sign from the following line in the main configuration file:</p>
 
-  <pre class="screen"> #cfg_file=/usr/local/icinga/etc/objects/printer.cfg</pre>
+  <pre class="programlisting"> #cfg_file=/usr/local/icinga/etc/objects/printer.cfg</pre>
 
   <p>Save the file and exit.</p>
 
@@ -164,7 +193,11 @@
   configuration file already contains some sample host, hostgroup, and service definitions. For the *first* printer you monitor,
   you can simply modify the sample host and service definitions in that file, rather than creating new ones.</p>
 
-  <p><span class="bold"><strong>Configuring Icinga</strong></span></p>
+</div>
+<div class="section" title="2.15.6. Configuring Icinga">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1254544"></a>2.15.6. Configuring Icinga</h3></div></div></div>
+  
 
   <p>You'll need to create some <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object definitions</a> in order to monitor a new
   printer.</p>
@@ -178,13 +211,13 @@
   <span class="emphasis"><em>printer.cfg</em></span>. Change the <span class="emphasis"><em>host_name</em></span>, <span class="emphasis"><em>alias</em></span>, and
   <span class="emphasis"><em>address</em></span> fields to appropriate values for the printer.</p>
 
-  <pre class="screen"> define host{
+  <pre class="programlisting"> define host{
         use             generic-printer ; Inherit default values from a template
         host_name       hplj2605dn      ; The name we're giving to this printer
         alias           HP LaserJet 2605dn      ; A longer name associated with the printer
         address         192.168.1.30            ; IP address of the printer
         hostgroups      allhosts                ; Host groups this printer is associated with
-        } </pre>
+        }</pre>
 
   <p>Now you can add some service definitions (to the same configuration file) to monitor different aspects of the printer. If
   this is the *first* printer you're monitoring, you can simply modify the sample service definition in
@@ -205,7 +238,7 @@
   <span class="emphasis"><em>check_hpjd</em></span> plugin to check the status of the printer every 10 minutes by default. The SNMP community string
   used to query the printer is "public" in this example.</p>
 
-  <pre class="screen"> define service{
+  <pre class="programlisting"> define service{
         use                   generic-service   ; Inherit values from a template
         host_name             hplj2605dn        ; The name of the host the service is associated with
         service_description   Printer Status    ; The service description
@@ -217,7 +250,7 @@
   <p>Add the following service definition to ping the printer every 10 minutes by default. This is useful for monitoring RTA,
   packet loss, and general network connectivity.</p>
 
-  <pre class="screen"> define service{
+  <pre class="programlisting"> define service{
         use                     generic-service
         host_name               hplj2605dn
         service_description     PING
@@ -228,14 +261,18 @@
 
   <p>Save the file.</p>
 
-  <p><span class="bold"><strong>Restarting Icinga</strong></span></p>
+</div>
+<div class="section" title="2.15.7. Restarting Icinga">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp1259456"></a>2.15.7. Restarting Icinga</h3></div></div></div>
+  
 
   <p>Once you've added the new host and service definitions to the <span class="emphasis"><em>printer.cfg</em></span> file, you're ready to start
   monitoring the printer. To do this, you'll need to <a class="link" href="verifyconfig.html" title="4.1. Verifying Your Configuration">verify your configuration</a> and <a class="link" href="startstop.html" title="4.2. Starting and Stopping Icinga">restart Icinga</a>.</p>
 
   <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that
   you don't (re)start Icinga until the verification process completes without any errors!</p>
-  <a class="indexterm" name="idp1253856"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>

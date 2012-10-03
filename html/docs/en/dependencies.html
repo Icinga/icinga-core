@@ -28,15 +28,32 @@
 <div class="section" title="7.13. Host and Service Dependencies">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dependencies"></a>7.13. <a name="host_srv_dependencies"></a>Host and Service Dependencies</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section"><a href="dependencies.html#idp13881024">7.13.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13882224">7.13.2. Service Dependencies Overview</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13889648">7.13.3. Defining Service Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13893360">7.13.4. Example Service Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13893488">7.13.5. How Service Dependencies Are Tested</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13913680">7.13.6. Execution Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13922128">7.13.7. Notification Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13929584">7.13.8. Dependency Inheritance</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13929712">7.13.9. Host Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13949808">7.13.10. Example Host Dependencies</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong>Introduction</strong></span></p>
+  <div class="section" title="7.13.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13881024"></a>7.13.1. Introduction</h3></div></div></div>
 
   <p>Service and host dependencies are an advanced feature of Icinga that allow you to control the behavior of hosts and
   services based on the status of one or more other hosts or services. We'll explain how dependencies work, along with the
   differences between host and service dependencies.</p>
 
-  <p><span class="bold"><strong>Service Dependencies Overview</strong></span></p>
+  </div>
+<div class="section" title="7.13.2. Service Dependencies Overview">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13882224"></a>7.13.2. Service Dependencies Overview</h3></div></div></div>
 
   <p>There are a few things you should know about service dependencies:</p>
 
@@ -59,7 +76,10 @@
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Defining Service Dependencies</strong></span></p>
+  </div>
+<div class="section" title="7.13.3. Defining Service Dependencies">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13889648"></a>7.13.3. Defining Service Dependencies</h3></div></div></div>
 
   <p>First, the basics. You create service dependencies by adding <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service
   dependency definitions</a> in your <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object config file(s)</a>. In each definition you specify
@@ -69,7 +89,10 @@
   <p>You can create several dependencies for a given service, but you must add a separate service dependency definition for
   each dependency you create.</p>
 
-  <p><span class="bold"><strong>Example Service Dependencies</strong></span></p>
+  </div>
+<div class="section" title="7.13.4. Example Service Dependencies">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13893360"></a>7.13.4. Example Service Dependencies</h3></div></div></div>
 
   <p>The image below shows an example logical layout of service notification and execution dependencies. Different services are
   dependent on other services for notifications and check execution.</p>
@@ -79,7 +102,7 @@
   <p>In this example, the dependency definitions for <span class="emphasis"><em>Service F</em></span> on <span class="emphasis"><em>Host C</em></span> would be
   defined as follows:</p>
 
-  <pre class="screen"> define servicedependency{
+  <pre class="programlisting"> define servicedependency{
         host_name                       Host B
         service_description             Service D
         dependent_host_name             Host C
@@ -108,7 +131,7 @@
 
   <p>The other dependency definitions shown in the image above would be defined as follows:</p>
 
-  <pre class="screen"> define servicedependency{
+  <pre class="programlisting"> define servicedependency{
         host_name                       Host A
         service_description             Service A
         dependent_host_name             Host B
@@ -135,7 +158,10 @@
         notification_failure_criteria   w,u,c
         }</pre>
 
-  <p><span class="bold"><strong>How Service Dependencies Are Tested</strong></span></p>
+  </div>
+<div class="section" title="7.13.5. How Service Dependencies Are Tested">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13893488"></a>7.13.5. How Service Dependencies Are Tested</h3></div></div></div>
 
   <p>Before Icinga executes a service check or sends notifications out for a service, it will check to see if the
   service has any dependencies. If it doesn't have any dependencies, the check is executed or the notification is sent out as it
@@ -181,7 +207,10 @@
   </td></tr>
 </table></div>
 
-  <p><span class="bold"><strong>Execution Dependencies</strong></span></p>
+  </div>
+<div class="section" title="7.13.6. Execution Dependencies">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13913680"></a>7.13.6. Execution Dependencies</h3></div></div></div>
 
   <p>Execution dependencies are used to restrict when <a class="link" href="activechecks.html" title="5.6. Active Checks">active checks</a> of a service can be
   performed. <a class="link" href="passivechecks.html" title="5.7. Passive Checks">Passive checks</a> are not restricted by execution dependencies.</p>
@@ -195,7 +224,10 @@
   <p>In the example above, <span class="bold"><strong>Service E</strong></span> would have failed execution dependencies if <span class="bold"><strong>Service B</strong></span> is in a WARNING or UNKNOWN state. If this was the case, the service check would not be
   performed and the check would be scheduled for (potential) execution at a later time.</p>
 
-  <p><span class="bold"><strong>Notification Dependencies</strong></span></p>
+  </div>
+<div class="section" title="7.13.7. Notification Dependencies">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13922128"></a>7.13.7. Notification Dependencies</h3></div></div></div>
 
   <p>If <span class="emphasis"><em>all</em></span> of the notification dependency tests for the service <span class="emphasis"><em>passed</em></span>,
   Icinga will send notifications out for the service as it normally would. If even just one of the notification
@@ -208,7 +240,10 @@
   is in a WARNING or UNKNOWN state, <span class="emphasis"><em>and/or</em></span> if <span class="bold"><strong>Service E</strong></span> is in a WARNING,
   UNKNOWN, or CRITICAL state. If this were the case, notifications for the service would not be sent out.</p>
 
-  <p><span class="bold"><strong>Dependency Inheritance</strong></span></p>
+  </div>
+<div class="section" title="7.13.8. Dependency Inheritance">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13929584"></a>7.13.8. Dependency Inheritance</h3></div></div></div>
 
   <p>As mentioned before, service dependencies are <span class="emphasis"><em>not</em></span> inherited by default. In the example above you can
   see that Service F is dependent on Service E. However, it does not automatically inherit Service E's dependencies on Service B
@@ -226,7 +261,7 @@
   being the <span class="emphasis"><em>master</em></span> service (i.e. the service <span class="emphasis"><em>that is being dependend on</em></span>). You could
   alternatively modify the dependency definition for services D and F to look like this:</p>
 
-  <pre class="screen"> define servicedependency{
+  <pre class="programlisting"> define servicedependency{
         host_name                       Host B
         service_description             Service D
         dependent_host_name             Host C
@@ -243,7 +278,10 @@
   <span class="emphasis"><em>inherits_parent</em></span> directive enable and service A was dependent on some other service (let's call it service
   G), the service F would be dependent on services D, A, and G (each with potentially different criteria).</p>
 
-  <p><span class="bold"><strong>Host Dependencies</strong></span></p>
+  </div>
+<div class="section" title="7.13.9. Host Dependencies">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13929712"></a>7.13.9. Host Dependencies</h3></div></div></div>
 
   <p>As you'd probably expect, host dependencies work in a similiar fashion to service dependencies. The difference is that
   they're for hosts, not services.</p>
@@ -279,7 +317,10 @@
     </li>
 </ol></div>
 
-  <p><span class="bold"><strong>Example Host Dependencies</strong></span></p>
+  </div>
+<div class="section" title="7.13.10. Example Host Dependencies">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13949808"></a>7.13.10. Example Host Dependencies</h3></div></div></div>
 
   <p>The image below shows an example of the logical layout of host notification dependencies. Different hosts are dependent on
   other hosts for notifications.</p>
@@ -288,7 +329,7 @@
 
   <p>In the example above, the dependency definitions for <span class="emphasis"><em>Host C</em></span> would be defined as follows:</p>
 
-  <pre class="screen"> define hostdependency{
+  <pre class="programlisting"> define hostdependency{
         host_name                       Host A
         dependent_host_name             Host C
         notification_failure_criteria   d
@@ -310,8 +351,9 @@
   repress notifications for that (dependent) host. At some point in the future the notification dependency tests for the host may
   all pass. If this happens, Icinga will start sending out notifications again as it normally would for the host. More
   information on the notification logic can be found <a class="link" href="notifications.html" title="5.11. Notifications">here</a>.</p>
-  <a class="indexterm" name="idp13935216"></a>
-  <a class="indexterm" name="idp13936480"></a>
+  <a class="indexterm" name="idp13957984"></a>
+  <a class="indexterm" name="idp13959248"></a>
+</div>
 </div>
 <div class="navfooter">
 <hr>
