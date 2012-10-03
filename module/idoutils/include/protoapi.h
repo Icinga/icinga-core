@@ -104,6 +104,8 @@
 #define IDO_API_HOSTEXTINFODEFINITION                412    /* no longer used */
 #define IDO_API_SERVICEEXTINFODEFINITION             413    /* no longer used */
 
+#define IDO_API_ENABLEOBJECT			     500
+#define IDO_API_DISABLEOBJECT                        501
 
 /************** COMMON DATA ATTRIBUTES **************/
 

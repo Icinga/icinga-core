@@ -72,5 +72,6 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *);
 int ido2db_handle_contactdefinition(ido2db_idi *);
 int ido2db_handle_contactgroupdefinition(ido2db_idi *);
 int ido2db_save_custom_variables(ido2db_idi *,int, unsigned long, char *, unsigned long);
+int ido2db_handle_object_enable_disable(ido2db_idi *, int);
 
 #endif

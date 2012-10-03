@@ -1802,6 +1802,13 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf) {
 				/* deprecated - merged with host definitions */
 			case IDO_API_SERVICEEXTINFODEFINITION:
 				/* deprecated - merged with service definitions */
+			case IDO_API_ENABLEOBJECT:
+				idi->current_input_data = IDO2DB_INPUT_DATA_ENABLEOBJECT;
+				break;
+			case IDO_API_DISABLEOBJECT:
+				idi->current_input_data = IDO2DB_INPUT_DATA_DISABLEOBJECT;
+				break;
+
 			default:
 				break;
 			}
@@ -2283,6 +2290,12 @@ int ido2db_end_input_data(ido2db_idi *idi) {
 		break;
 	case IDO2DB_INPUT_DATA_SERVICEEXTINFODEFINITION:
 		/* deprecated - merged with service definitions */
+		break;
+	case IDO2DB_INPUT_DATA_ENABLEOBJECT:
+		result = ido2db_handle_object_enable_disable(idi, 1);
+		break;
+	case IDO2DB_INPUT_DATA_DISABLEOBJECT:
+		result = ido2db_handle_object_enable_disable(idi, 0);
 		break;
 
 	default:
