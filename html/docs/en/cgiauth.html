@@ -29,22 +29,22 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cgiauth"></a>3.7. <a name="cgi_authentication"></a>Authentication And Authorization In The CGIs</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="cgiauth.html#idp5755440">3.7.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp5757248">3.7.2. Definitions</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6772480">3.7.3. Setting Up Authenticated Users</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6779760">3.7.4. Enabling Authentication/Authorization Functionality In The CGIs</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6785856">3.7.5. Default Permissions To CGI Information</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6786112">3.7.6. Granting Additional Permissions To CGI Information</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6865872">3.7.7. CGI Authorization Requirements</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6868688">3.7.8. Authentication On Secured Web Servers</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp5755456">3.7.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp5757264">3.7.2. Definitions</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6772320">3.7.3. Setting Up Authenticated Users</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6779600">3.7.4. Enabling Authentication/Authorization Functionality In The CGIs</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6785696">3.7.5. Default Permissions To CGI Information</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6785952">3.7.6. Granting Additional Permissions To CGI Information</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6867008">3.7.7. CGI Authorization Requirements</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6872160">3.7.8. Authentication On Secured Web Servers</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idp5754432"></a>
+  <a class="indexterm" name="idp5754448"></a>
 
   <div class="section" title="3.7.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5755440"></a>3.7.1. Introduction</h3></div></div></div>
+<a name="idp5755456"></a>3.7.1. Introduction</h3></div></div></div>
     
 
     <p>This documentation describes how the Icinga CGIs decide who has access to view monitoring and configuration information,
@@ -53,7 +53,7 @@
 
   <div class="section" title="3.7.2. Definitions">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5757248"></a>3.7.2. <a name="cgiauth-definitions"></a>Definitions</h3></div></div></div>
+<a name="idp5757264"></a>3.7.2. <a name="cgiauth-definitions"></a>Definitions</h3></div></div></div>
     
 
     <p>Before continuing, it is important that you understand the meaning of and difference between authenticated users and authenticated
@@ -70,14 +70,14 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp6769216"></a>
+    <a class="indexterm" name="idp6769056"></a>
 
-    <a class="indexterm" name="idp6770864"></a>
+    <a class="indexterm" name="idp6770704"></a>
   </div>
 
   <div class="section" title="3.7.3. Setting Up Authenticated Users">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6772480"></a>3.7.3. <a name="cgiauth-config_web_users"></a>Setting Up Authenticated Users</h3></div></div></div>
+<a name="idp6772320"></a>3.7.3. <a name="cgiauth-config_web_users"></a>Setting Up Authenticated Users</h3></div></div></div>
     
 
     <p>Assuming you configured your web server as described in the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart guide</a>, it should require
@@ -91,12 +91,12 @@
 
     <pre class="screen"> htpasswd /usr/local/icinga/etc/htpasswd.users &lt;username&gt;</pre>
 
-    <a class="indexterm" name="idp6777984"></a>
+    <a class="indexterm" name="idp6777824"></a>
   </div>
 
   <div class="section" title="3.7.4. Enabling Authentication/Authorization Functionality In The CGIs">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6779760"></a>3.7.4. <a name="cgiauth-enable_cgi_auth"></a>Enabling Authentication/Authorization Functionality In The CGIs</h3></div></div></div>
+<a name="idp6779600"></a>3.7.4. <a name="cgiauth-enable_cgi_auth"></a>Enabling Authentication/Authorization Functionality In The CGIs</h3></div></div></div>
     
 
     <p>The next thing you need to do is make sure that the CGIs are configured to use the authentication and authorization functionality
@@ -107,12 +107,12 @@
 
     <p>Okay, you're now done with setting up basic authentication/authorization functionality in the CGIs.</p>
 
-    <a class="indexterm" name="idp6784224"></a>
+    <a class="indexterm" name="idp6784064"></a>
   </div>
 
   <div class="section" title="3.7.5. Default Permissions To CGI Information">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6785856"></a>3.7.5. <a name="cgiauth-default_rights"></a>Default Permissions To CGI Information</h3></div></div></div>
+<a name="idp6785696"></a>3.7.5. <a name="cgiauth-default_rights"></a>Default Permissions To CGI Information</h3></div></div></div>
     
 
     <p>So what default permissions do users have in the CGIs by default when the authentication/authorization functionality is
@@ -270,12 +270,12 @@
     <p>You will undoubtably want to access this information, so you'll have to assign additional rights for yourself (and possibly other
     users) as described below...</p>
 
-    <a class="indexterm" name="idp6851792"></a>
+    <a class="indexterm" name="idp6851520"></a>
   </div>
 
   <div class="section" title="3.7.6. Granting Additional Permissions To CGI Information">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6786112"></a>3.7.6. <a name="cgiauth-additional_rights"></a>Granting Additional Permissions To CGI Information</h3></div></div></div>
+<a name="idp6785952"></a>3.7.6. <a name="cgiauth-additional_rights"></a>Granting Additional Permissions To CGI Information</h3></div></div></div>
     
 
     <p>You can grant <span class="emphasis"><em>authenticated contacts</em></span> or other <span class="emphasis"><em>authenticated users</em></span> permission to
@@ -312,17 +312,17 @@
 
   <div class="section" title="3.7.7. CGI Authorization Requirements">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6865872"></a>3.7.7. <a name="cgiauth-cgi_auth_requirements"></a>CGI Authorization Requirements</h3></div></div></div>
+<a name="idp6867008"></a>3.7.7. <a name="cgiauth-cgi_auth_requirements"></a>CGI Authorization Requirements</h3></div></div></div>
     
 
     <p>If you are confused about the authorization needed to access various information in the CGIs, read the <span class="emphasis"><em> <span class="bold"><strong>Authorization Requirements</strong></span> </em></span> section for each CGI as described <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">here</a>.</p>
 
-    <a class="indexterm" name="idp6870384"></a>
+    <a class="indexterm" name="idp6870416"></a>
   </div>
 
   <div class="section" title="3.7.8. Authentication On Secured Web Servers">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6868688"></a>3.7.8. <a name="cgiauth-secure_web_servers"></a>Authentication On Secured Web Servers</h3></div></div></div>
+<a name="idp6872160"></a>3.7.8. <a name="cgiauth-secure_web_servers"></a>Authentication On Secured Web Servers</h3></div></div></div>
     
 
     <p>If your web server is located in a secure domain (i.e., behind a firewall) or if you are using SSL, you can define a default
@@ -335,7 +335,7 @@
     web server and are sure that everyone who has access to the CGIs has been authenticated in some manner. If you define this variable,
     anyone who has not authenticated to the web server will inherit all rights you assign to this user!</p>
 
-    <a class="indexterm" name="idp6872704"></a>
+    <a class="indexterm" name="idp6877328"></a>
   </div>
 </div>
 <div class="navfooter">

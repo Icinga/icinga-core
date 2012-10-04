@@ -29,19 +29,19 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-publicservices"></a>2.17. <a name="monitoring_publicservices"></a>Monitoring Publicly Available Services</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1361824">2.17.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1373968">2.17.2. Plugins for Monitoring Services</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1379888">2.17.3. Creating a Host Definition</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1386688">2.17.4. Creating Service Definitions</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1440160">2.17.5. Restarting Icinga</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1361760">2.17.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1373904">2.17.2. Plugins for Monitoring Services</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1379824">2.17.3. Creating a Host Definition</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1386624">2.17.4. Creating Service Definitions</a></span></dt>
+<dt><span class="section"><a href="monitoring-publicservices.html#idp1440096">2.17.5. Restarting Icinga</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idp1360432"></a>
+  <a class="indexterm" name="idp1360368"></a>
 
   <div class="section" title="2.17.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1361824"></a>2.17.1. Introduction</h3></div></div></div>
+<a name="idp1361760"></a>2.17.1. Introduction</h3></div></div></div>
     
 
     <p>This document describes how you can monitor publicly available services, applications and protocols. By "public" we mean services
@@ -94,7 +94,7 @@
 
   <div class="section" title="2.17.2. Plugins for Monitoring Services">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1373968"></a>2.17.2. Plugins for Monitoring Services</h3></div></div></div>
+<a name="idp1373904"></a>2.17.2. Plugins for Monitoring Services</h3></div></div></div>
     
 
     <p>When you find yourself needing to monitor a particular application, service, or protocol, chances are good that a <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugin</a> exists to monitor it. The official Nagios plugins distribution comes with plugins that can be used to
@@ -112,7 +112,7 @@
 
   <div class="section" title="2.17.3. Creating a Host Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1379888"></a>2.17.3. Creating a Host Definition</h3></div></div></div>
+<a name="idp1379824"></a>2.17.3. Creating a Host Definition</h3></div></div></div>
     
 
     <p>Before you can monitor a service, you first need to define a <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> that is associated
@@ -136,7 +136,7 @@
 
   <div class="section" title="2.17.4. Creating Service Definitions">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1386688"></a>2.17.4. Creating Service Definitions</h3></div></div></div>
+<a name="idp1386624"></a>2.17.4. Creating Service Definitions</h3></div></div></div>
     
 
     <p>For each service you want to monitor, you need to define a <a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a> in
@@ -376,7 +376,7 @@
 
   <div class="section" title="2.17.5. Restarting Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1440160"></a>2.17.5. Restarting Icinga</h3></div></div></div>
+<a name="idp1440096"></a>2.17.5. Restarting Icinga</h3></div></div></div>
     
 
     <p>Once you've added the new host and service definitions to your object configuration file(s), you're ready to start monitoring

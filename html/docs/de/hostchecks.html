@@ -29,20 +29,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="hostchecks"></a>5.4. Host-Prüfungen (Host checks)</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="hostchecks.html#idp7030512">5.4.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp7031952">5.4.2. Wann werden Host-Prüfungen durchgeführt?</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9582288">5.4.3. zwischengespeicherte Host-Prüfungen (cached host checks)</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9584688">5.4.4. Abhängigkeiten und Prüfungen</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9587568">5.4.5. Parallelisierung von Host-Prüfungen</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9598448">5.4.6. Host-Zustände</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9603504">5.4.7. Host-Statusermittlung</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9639568">5.4.8. Host-Statusänderungen</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp7030256">5.4.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp7031696">5.4.2. Wann werden Host-Prüfungen durchgeführt?</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9581744">5.4.3. zwischengespeicherte Host-Prüfungen (cached host checks)</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9584144">5.4.4. Abhängigkeiten und Prüfungen</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9587024">5.4.5. Parallelisierung von Host-Prüfungen</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9597904">5.4.6. Host-Zustände</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9602960">5.4.7. Host-Statusermittlung</a></span></dt>
+<dt><span class="section"><a href="hostchecks.html#idp9639024">5.4.8. Host-Statusänderungen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.4.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7030512"></a>5.4.1. Einführung</h3></div></div></div>
+<a name="idp7030256"></a>5.4.1. Einführung</h3></div></div></div>
     
 
     <p>Die grundlegenden Tätigkeiten von Host-Prüfungen werden hier beschrieben...</p>
@@ -50,7 +50,7 @@
 
   <div class="section" title="5.4.2. Wann werden Host-Prüfungen durchgeführt?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7031952"></a>5.4.2. Wann werden Host-Prüfungen durchgeführt?</h3></div></div></div>
+<a name="idp7031696"></a>5.4.2. Wann werden Host-Prüfungen durchgeführt?</h3></div></div></div>
     
 
     <p>Hosts werden durch den Icinga-Daemon geprüft</p>
@@ -92,7 +92,7 @@
 
   <div class="section" title="5.4.3. zwischengespeicherte Host-Prüfungen (cached host checks)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9582288"></a>5.4.3. zwischengespeicherte Host-Prüfungen (cached host checks)</h3></div></div></div>
+<a name="idp9581744"></a>5.4.3. zwischengespeicherte Host-Prüfungen (cached host checks)</h3></div></div></div>
     
 
     <p>Die Performance von Host-Prüfungen nach Bedarf kann signifikant durch den Einsatz von "cached checks" erhöht werden, die es
@@ -102,7 +102,7 @@
 
   <div class="section" title="5.4.4. Abhängigkeiten und Prüfungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9584688"></a>5.4.4. Abhängigkeiten und Prüfungen</h3></div></div></div>
+<a name="idp9584144"></a>5.4.4. Abhängigkeiten und Prüfungen</h3></div></div></div>
     
 
     <p>Sie können <a class="link" href="objectdefinitions.html#objectdefinitions-hostdependency">Host-Ausführungs-Abhängigkeiten</a> definieren, die Icinga
@@ -112,7 +112,7 @@
 
   <div class="section" title="5.4.5. Parallelisierung von Host-Prüfungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9587568"></a>5.4.5. Parallelisierung von Host-Prüfungen</h3></div></div></div>
+<a name="idp9587024"></a>5.4.5. Parallelisierung von Host-Prüfungen</h3></div></div></div>
     
 
     <p>Geplante Host-Prüfungen laufen parallel. Wenn Icinga eine geplante Host-Prüfung ausführt, wird es die Host-Prüfung
@@ -140,7 +140,7 @@
 
   <div class="section" title="5.4.6. Host-Zustände">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9598448"></a>5.4.6. Host-Zustände</h3></div></div></div>
+<a name="idp9597904"></a>5.4.6. Host-Zustände</h3></div></div></div>
     
 
     <p>Hosts, die geprüft werden, können in einem von drei unterschiedlichen Zuständen sein</p>
@@ -160,7 +160,7 @@
 
   <div class="section" title="5.4.7. Host-Statusermittlung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9603504"></a>5.4.7. Host-Statusermittlung</h3></div></div></div>
+<a name="idp9602960"></a>5.4.7. Host-Statusermittlung</h3></div></div></div>
     
 
     <p>Host-Prüfungen werden mit Hilfe von <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> durchgeführt, die den Status OK, WARNING, UNKNOWN oder
@@ -242,7 +242,7 @@
 
   <div class="section" title="5.4.8. Host-Statusänderungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9639568"></a>5.4.8. Host-Statusänderungen</h3></div></div></div>
+<a name="idp9639024"></a>5.4.8. Host-Statusänderungen</h3></div></div></div>
     
 
     <p>Wie Ihnen wahrscheinlich bereits bewusst ist, bleiben Hosts nicht immer in einem Zustand. Dinge gehen kaputt, Patches werden
@@ -257,7 +257,7 @@
     unterdrücken, bis das Flattern stoppt und sich der Host-Status stabilisiert. Mehr Informationen über die Erkennungslogik des Flatterns
     finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>.</p>
 
-    <a class="indexterm" name="idp9645232"></a>
+    <a class="indexterm" name="idp9644688"></a>
   </div>
 </div>
 <div class="navfooter">

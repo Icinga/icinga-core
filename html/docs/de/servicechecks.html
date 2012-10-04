@@ -29,19 +29,19 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="servicechecks"></a>5.5. Service-Prüfungen (Service Checks)</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="servicechecks.html#idp9647712">5.5.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9649184">5.5.2. Wann werden Service-Prüfungen durchgeführt?</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9660336">5.5.3. Abhängigkeiten und Prüfungen</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9663248">5.5.4. Parallelisierung von Service-Prüfungen</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9665984">5.5.5. Service-Zustände</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9670784">5.5.6. Service-Statusermittlung</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9673216">5.5.7. Service-Statusänderungen</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9647168">5.5.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9648640">5.5.2. Wann werden Service-Prüfungen durchgeführt?</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9659792">5.5.3. Abhängigkeiten und Prüfungen</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9662704">5.5.4. Parallelisierung von Service-Prüfungen</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9665440">5.5.5. Service-Zustände</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9670240">5.5.6. Service-Statusermittlung</a></span></dt>
+<dt><span class="section"><a href="servicechecks.html#idp9672672">5.5.7. Service-Statusänderungen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.5.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9647712"></a>5.5.1. Einführung</h3></div></div></div>
+<a name="idp9647168"></a>5.5.1. Einführung</h3></div></div></div>
     
 
     <p>Die grundlegenden Tätigkeiten von Service-Prüfungen werden hier beschrieben...</p>
@@ -49,7 +49,7 @@
 
   <div class="section" title="5.5.2. Wann werden Service-Prüfungen durchgeführt?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9649184"></a>5.5.2. Wann werden Service-Prüfungen durchgeführt?</h3></div></div></div>
+<a name="idp9648640"></a>5.5.2. Wann werden Service-Prüfungen durchgeführt?</h3></div></div></div>
     
 
     <p>Services werden durch den Icinga-Daemon geprüft</p>
@@ -80,7 +80,7 @@
 
   <div class="section" title="5.5.3. Abhängigkeiten und Prüfungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9660336"></a>5.5.3. Abhängigkeiten und Prüfungen</h3></div></div></div>
+<a name="idp9659792"></a>5.5.3. Abhängigkeiten und Prüfungen</h3></div></div></div>
     
 
     <p>Sie können <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Ausführungs-Abhängigkeiten</a> definieren, die
@@ -90,7 +90,7 @@
 
   <div class="section" title="5.5.4. Parallelisierung von Service-Prüfungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9663248"></a>5.5.4. Parallelisierung von Service-Prüfungen</h3></div></div></div>
+<a name="idp9662704"></a>5.5.4. Parallelisierung von Service-Prüfungen</h3></div></div></div>
     
 
     <p>Geplante Service-Prüfungen laufen parallel. Wenn Icinga eine geplante Service-Prüfung ausführt, wird es die Service-Prüfung
@@ -106,7 +106,7 @@
 
   <div class="section" title="5.5.5. Service-Zustände">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9665984"></a>5.5.5. Service-Zustände</h3></div></div></div>
+<a name="idp9665440"></a>5.5.5. Service-Zustände</h3></div></div></div>
     
 
     <p>Services, die geprüft werden, können in einem von vier unterschiedlichen Zuständen sein</p>
@@ -129,7 +129,7 @@
 
   <div class="section" title="5.5.6. Service-Statusermittlung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9670784"></a>5.5.6. Service-Statusermittlung</h3></div></div></div>
+<a name="idp9670240"></a>5.5.6. Service-Statusermittlung</h3></div></div></div>
     
 
     <p>Service-Prüfungen werden mit Hilfe von <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> durchgeführt, die den Status OK, WARNING, UNKNOWN
@@ -139,7 +139,7 @@
 
   <div class="section" title="5.5.7. Service-Statusänderungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9673216"></a>5.5.7. Service-Statusänderungen</h3></div></div></div>
+<a name="idp9672672"></a>5.5.7. Service-Statusänderungen</h3></div></div></div>
     
 
     <p>Wenn Icinga den Status von Services prüft, ist es in der Lage festzustellen, wenn ein Service zwischen OK-, WARNING-,
@@ -152,7 +152,7 @@
     Services anfangen zu flattern, und kann Benachrichtigungen unterdrücken, bis das Flattern stoppt und sich der Service-Status
     stabilisiert. Mehr Informationen über die Erkennungslogik des Flatterns finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>.</p>
 
-    <a class="indexterm" name="idp9679152"></a>
+    <a class="indexterm" name="idp9678608"></a>
   </div>
 </div>
 <div class="navfooter">

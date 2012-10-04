@@ -29,22 +29,22 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dependencies"></a>7.13. <a name="host_srv_dependencies"></a>Host and Service Dependencies</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="dependencies.html#idp13881024">7.13.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13882224">7.13.2. Service Dependencies Overview</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13889648">7.13.3. Defining Service Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13893360">7.13.4. Example Service Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13893488">7.13.5. How Service Dependencies Are Tested</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13913680">7.13.6. Execution Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13922128">7.13.7. Notification Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13929584">7.13.8. Dependency Inheritance</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13929712">7.13.9. Host Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13949808">7.13.10. Example Host Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13882320">7.13.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13883520">7.13.2. Service Dependencies Overview</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13890944">7.13.3. Defining Service Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13894656">7.13.4. Example Service Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13894784">7.13.5. How Service Dependencies Are Tested</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13914976">7.13.6. Execution Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13923424">7.13.7. Notification Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13930880">7.13.8. Dependency Inheritance</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13931008">7.13.9. Host Dependencies</a></span></dt>
+<dt><span class="section"><a href="dependencies.html#idp13951104">7.13.10. Example Host Dependencies</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.13.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13881024"></a>7.13.1. Introduction</h3></div></div></div>
+<a name="idp13882320"></a>7.13.1. Introduction</h3></div></div></div>
 
   <p>Service and host dependencies are an advanced feature of Icinga that allow you to control the behavior of hosts and
   services based on the status of one or more other hosts or services. We'll explain how dependencies work, along with the
@@ -53,7 +53,7 @@
   </div>
 <div class="section" title="7.13.2. Service Dependencies Overview">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13882224"></a>7.13.2. Service Dependencies Overview</h3></div></div></div>
+<a name="idp13883520"></a>7.13.2. Service Dependencies Overview</h3></div></div></div>
 
   <p>There are a few things you should know about service dependencies:</p>
 
@@ -79,7 +79,7 @@
   </div>
 <div class="section" title="7.13.3. Defining Service Dependencies">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13889648"></a>7.13.3. Defining Service Dependencies</h3></div></div></div>
+<a name="idp13890944"></a>7.13.3. Defining Service Dependencies</h3></div></div></div>
 
   <p>First, the basics. You create service dependencies by adding <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service
   dependency definitions</a> in your <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object config file(s)</a>. In each definition you specify
@@ -92,7 +92,7 @@
   </div>
 <div class="section" title="7.13.4. Example Service Dependencies">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13893360"></a>7.13.4. Example Service Dependencies</h3></div></div></div>
+<a name="idp13894656"></a>7.13.4. Example Service Dependencies</h3></div></div></div>
 
   <p>The image below shows an example logical layout of service notification and execution dependencies. Different services are
   dependent on other services for notifications and check execution.</p>
@@ -161,7 +161,7 @@
   </div>
 <div class="section" title="7.13.5. How Service Dependencies Are Tested">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13893488"></a>7.13.5. How Service Dependencies Are Tested</h3></div></div></div>
+<a name="idp13894784"></a>7.13.5. How Service Dependencies Are Tested</h3></div></div></div>
 
   <p>Before Icinga executes a service check or sends notifications out for a service, it will check to see if the
   service has any dependencies. If it doesn't have any dependencies, the check is executed or the notification is sent out as it
@@ -210,7 +210,7 @@
   </div>
 <div class="section" title="7.13.6. Execution Dependencies">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13913680"></a>7.13.6. Execution Dependencies</h3></div></div></div>
+<a name="idp13914976"></a>7.13.6. Execution Dependencies</h3></div></div></div>
 
   <p>Execution dependencies are used to restrict when <a class="link" href="activechecks.html" title="5.6. Active Checks">active checks</a> of a service can be
   performed. <a class="link" href="passivechecks.html" title="5.7. Passive Checks">Passive checks</a> are not restricted by execution dependencies.</p>
@@ -227,7 +227,7 @@
   </div>
 <div class="section" title="7.13.7. Notification Dependencies">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13922128"></a>7.13.7. Notification Dependencies</h3></div></div></div>
+<a name="idp13923424"></a>7.13.7. Notification Dependencies</h3></div></div></div>
 
   <p>If <span class="emphasis"><em>all</em></span> of the notification dependency tests for the service <span class="emphasis"><em>passed</em></span>,
   Icinga will send notifications out for the service as it normally would. If even just one of the notification
@@ -243,7 +243,7 @@
   </div>
 <div class="section" title="7.13.8. Dependency Inheritance">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13929584"></a>7.13.8. Dependency Inheritance</h3></div></div></div>
+<a name="idp13930880"></a>7.13.8. Dependency Inheritance</h3></div></div></div>
 
   <p>As mentioned before, service dependencies are <span class="emphasis"><em>not</em></span> inherited by default. In the example above you can
   see that Service F is dependent on Service E. However, it does not automatically inherit Service E's dependencies on Service B
@@ -281,7 +281,7 @@
   </div>
 <div class="section" title="7.13.9. Host Dependencies">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13929712"></a>7.13.9. Host Dependencies</h3></div></div></div>
+<a name="idp13931008"></a>7.13.9. Host Dependencies</h3></div></div></div>
 
   <p>As you'd probably expect, host dependencies work in a similiar fashion to service dependencies. The difference is that
   they're for hosts, not services.</p>
@@ -320,7 +320,7 @@
   </div>
 <div class="section" title="7.13.10. Example Host Dependencies">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13949808"></a>7.13.10. Example Host Dependencies</h3></div></div></div>
+<a name="idp13951104"></a>7.13.10. Example Host Dependencies</h3></div></div></div>
 
   <p>The image below shows an example of the logical layout of host notification dependencies. Different hosts are dependent on
   other hosts for notifications.</p>
@@ -351,8 +351,8 @@
   repress notifications for that (dependent) host. At some point in the future the notification dependency tests for the host may
   all pass. If this happens, Icinga will start sending out notifications again as it normally would for the host. More
   information on the notification logic can be found <a class="link" href="notifications.html" title="5.11. Notifications">here</a>.</p>
-  <a class="indexterm" name="idp13957984"></a>
-  <a class="indexterm" name="idp13959248"></a>
+  <a class="indexterm" name="idp13959280"></a>
+  <a class="indexterm" name="idp13960544"></a>
 </div>
 </div>
 <div class="navfooter">
