@@ -687,9 +687,9 @@ int main(int argc, char **argv) {
 		else {
 
 			if (display_type == DISPLAY_HOST_TRENDS)
-				snprintf(image_template, sizeof(image_template) - 1, "%s/trendshost.png", physical_images_path);
+				snprintf(image_template, sizeof(image_template) - 1, "%s%s", physical_images_path, TRENDSHOSTS_IMAGE);
 			else
-				snprintf(image_template, sizeof(image_template) - 1, "%s/trendssvc.png", physical_images_path);
+				snprintf(image_template, sizeof(image_template) - 1, "%s%s", physical_images_path, TRENDSSERVICES_IMAGE);
 			image_template[sizeof(image_template)-1] = '\x0';
 
 			/* allocate buffer for storing image */
@@ -821,9 +821,15 @@ int main(int argc, char **argv) {
 			gdImagePng(trends_image, image_file);
 #endif
 #ifdef DEBUG
-			image_file = fopen("trends.png", "w");
+			if (display_type == DISPLAY_HOST_TRENDS)
+				snprintf(image_template, sizeof(image_template) - 1, "/tmp/%s", TRENDSHOSTS_IMAGE);
+			else
+				snprintf(image_template, sizeof(image_template) - 1, "/tmp/%s", TRENDSSERVICES_IMAGE);
+			image_template[sizeof(image_template)-1] = '\x0';
+
+			image_file = fopen(image_template, "w");
 			if (image_file == NULL)
-				printf("Could not open trends.png for writing!\n");
+				printf("Could not open \"%s\" for writing!\n", image_template);
 			else {
 				gdImagePng(trends_image, image_file);
 				fclose(image_file);

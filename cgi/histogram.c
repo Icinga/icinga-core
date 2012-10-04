@@ -39,8 +39,6 @@
 /*#define DEBUG			1*/
 
 
-#define HISTOGRAM_IMAGE         "histogram.png"
-
 /* archived state types */
 #define AS_NO_DATA		0
 #define AS_PROGRAM_START	1
@@ -567,7 +565,7 @@ int main(int argc, char **argv) {
 #endif
 
 			/* location of image template */
-			snprintf(image_template, sizeof(image_template) - 1, "%s/%s", physical_images_path, HISTOGRAM_IMAGE);
+			snprintf(image_template, sizeof(image_template) - 1, "%s%s", physical_images_path, HISTOGRAM_IMAGE);
 			image_template[sizeof(image_template)-1] = '\x0';
 
 			/* allocate buffer for storing image */
@@ -615,7 +613,9 @@ int main(int argc, char **argv) {
 			image_file = stdout;
 
 #ifdef DEBUG
-			image_file = fopen("/tmp/histogram.png", "w");
+			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "/tmp/%s", HISTOGRAM_IMAGE);
+			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
+			image_file = fopen(temp_buffer, "w");
 #endif
 
 			/* write the image to to STDOUT */
@@ -1444,7 +1444,7 @@ void graph_all_histogram_data(void) {
 #ifdef DEBUG
 	printf("Done determining max bucket values\n");
 	printf("MAX_VALUE=%lu\n", max_value);
-	printf("DRAWING_HEIGHT=%lu\n", DRAWING_HEIGHT);
+	printf("DRAWING_HEIGHT=%d\n", DRAWING_HEIGHT);
 #endif
 
 	/* min number of values to graph */

@@ -163,20 +163,14 @@ extern "C" {
 #define EXTERNAL_COMMAND_ICON		"command.png"
 #define EXTERNAL_COMMAND_ICON_ALT	"External Command"
 
-#define STATUS_DETAIL_ICON		"status2.gif"
-#define STATUS_OVERVIEW_ICON		"status.gif"
-#define STATUSMAP_ICON			"status3.gif"
-#define STATUSWORLD_ICON		"status4.gif"
-#define EXTINFO_ICON			"extinfo.gif"
+#define STATUS_DETAIL_ICON		"status_detail.gif"
+#define STATUSMAP_ICON			"status_map.gif"
 #define HISTORY_ICON			"history.gif"
-#define CONTACTGROUP_ICON		"contactgroup.gif"
 #define TRENDS_ICON			"trends.gif"
 #define COLLAPSE_ICON			"icon_collapse.gif"
 #define EXPAND_ICON			"icon_expand.gif"
-
 #define DISABLED_ICON			"disabled.gif"
 #define ENABLED_ICON			"enabled.gif"
-#define PASSIVE_ONLY_ICON		"passiveonly.gif"
 #define NOTIFICATIONS_DISABLED_ICON	"ndisabled.gif"
 #define ACKNOWLEDGEMENT_ICON		"ack.gif"
 #define REMOVE_ACKNOWLEDGEMENT_ICON	"noack.gif"
@@ -190,7 +184,6 @@ extern "C" {
 #define UP_ARROW_ICON			"up.gif"
 #define DOWN_ARROW_ICON			"down.gif"
 #define FLAPPING_ICON			"flapping.gif"
-#define SCHEDULED_DOWNTIME_ICON		"downtime.gif"
 #define EMPTY_ICON			"empty.gif"
 #define CMD_STOP_ICON			"cmd_stop.png"
 
@@ -217,21 +210,15 @@ extern "C" {
 #define THERM_WARNING_IMAGE		"thermwarn.png"
 #define THERM_CRITICAL_IMAGE		"thermcrit.png"
 
-#define CONFIGURATION_ICON		"config.gif"
 #define NOTES_ICON			"notes.gif"
 #define ACTION_ICON			"action.gif"
 #define DETAIL_ICON			"detail.gif"
-
-#define PARENT_TRAVERSAL_ICON		"parentup.gif"
-
 #define TAC_DISABLED_ICON		"tacdisabled.png"
 #define TAC_ENABLED_ICON		"tacenabled.png"
-
 #define ZOOM1_ICON			"zoom1.gif"
 #define ZOOM2_ICON			"zoom2.gif"
 
-#define CONTEXT_HELP_ICON1		"contexthelp1.gif"
-#define CONTEXT_HELP_ICON2		"contexthelp2.gif"
+#define CONTEXT_HELP_ICON		"contexthelp.gif"
 
 #define SPLUNK_SMALL_WHITE_ICON		"splunk1.gif"
 #define SPLUNK_SMALL_BLACK_ICON		"splunk2.gif"
@@ -241,6 +228,10 @@ extern "C" {
 #define DAEMON_WARNING_ICON		"warning_triangle.gif"
 #define STATS_ICON			"stats.gif"
 #define RELOAD_ICON			"icon_reload.png"
+
+#define UNKNOWN_GD2_ICON		"unknown.gd2"
+#define UNKNOWN_ICON_IMAGE		"unknown.gif"
+#define ICINGA_GD2_ICON			"icinga.gd2"
 
 #define TAC_HEADER_DEFAULT_LOGO		"Icinga_Header_Webinterface.jpg"
 #define TAC_HEADER_DEFAULT_LOGO_ALT	"Icinga"
@@ -268,6 +259,13 @@ extern "C" {
 #define EXPORT_XML_ICON_ALT		"Export to XML"
 #define EXPORT_LINK_ICON		"export_link.png"
 #define EXPORT_LINK_ICON_ALT		"Link to this page"
+
+/* images */
+#define HISTOGRAM_IMAGE			"histogram.png"
+#define ICINGA_VRML_IMAGE		"icingavrml.png"
+#define TRENDSHOSTS_IMAGE		"trendshost.png"
+#define TRENDSSERVICES_IMAGE		"trendssvc.png"
+
 
 /************************** PLUGIN RETURN VALUES ****************************/
 
