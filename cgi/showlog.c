@@ -771,22 +771,22 @@ void display_logentries() {
 				strcpy(image, FLAPPING_ICON);
 				strcpy(image_alt, "Host flap detection disabled");
 			} else if (temp_entry->type == LOGENTRY_SERVICE_DOWNTIME_STARTED) {
-				strcpy(image, SCHEDULED_DOWNTIME_ICON);
+				strcpy(image, DOWNTIME_ICON);
 				strcpy(image_alt, "Service entered a period of scheduled downtime");
 			} else if (temp_entry->type == LOGENTRY_SERVICE_DOWNTIME_STOPPED) {
-				strcpy(image, SCHEDULED_DOWNTIME_ICON);
+				strcpy(image, DOWNTIME_ICON);
 				strcpy(image_alt, "Service exited a period of scheduled downtime");
 			} else if (temp_entry->type == LOGENTRY_SERVICE_DOWNTIME_CANCELLED) {
-				strcpy(image, SCHEDULED_DOWNTIME_ICON);
+				strcpy(image, DOWNTIME_ICON);
 				strcpy(image_alt, "Service scheduled downtime has been cancelled");
 			} else if (temp_entry->type == LOGENTRY_HOST_DOWNTIME_STARTED) {
-				strcpy(image, SCHEDULED_DOWNTIME_ICON);
+				strcpy(image, DOWNTIME_ICON);
 				strcpy(image_alt, "Host entered a period of scheduled downtime");
 			} else if (temp_entry->type == LOGENTRY_HOST_DOWNTIME_STOPPED) {
-				strcpy(image, SCHEDULED_DOWNTIME_ICON);
+				strcpy(image, DOWNTIME_ICON);
 				strcpy(image_alt, "Host exited a period of scheduled downtime");
 			} else if (temp_entry->type == LOGENTRY_HOST_DOWNTIME_CANCELLED) {
-				strcpy(image, SCHEDULED_DOWNTIME_ICON);
+				strcpy(image, DOWNTIME_ICON);
 				strcpy(image_alt, "Host scheduled downtime has been cancelled");
 			} else if (temp_entry->type == LOGENTRY_IDOMOD) {
 				strcpy(image, DATABASE_ICON);

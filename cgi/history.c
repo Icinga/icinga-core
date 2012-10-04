@@ -747,7 +747,7 @@ void show_history(void) {
 				else
 					entry_service_desc = NULL;
 
-				strcpy(image, SCHEDULED_DOWNTIME_ICON);
+				strcpy(image, DOWNTIME_ICON);
 
 				if (temp_entry->type == LOGENTRY_SERVICE_DOWNTIME_STARTED)
 					strcpy(image_alt, "Service entered a period of scheduled downtime");
@@ -837,7 +837,7 @@ void show_history(void) {
 				else
 					entry_host_name = NULL;
 
-				strcpy(image, SCHEDULED_DOWNTIME_ICON);
+				strcpy(image, DOWNTIME_ICON);
 
 				if (temp_entry->type == LOGENTRY_HOST_DOWNTIME_STARTED)
 					strcpy(image_alt, "Host entered a period of scheduled downtime");

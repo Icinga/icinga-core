@@ -7,7 +7,7 @@ body {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 0.7em;
 	color: #000;
-	background: #ededed url(../images/interface/menu_body.gif) top left repeat-y;
+	background: #ededed url(../images/menu_body.gif) top left repeat-y;
 }
 
 img {
@@ -27,7 +27,7 @@ ul {
 	padding: 0 5px;
 	height: 26px;
 	color: #ef9f1b;
-	background: #ededed url(../images/interface/bar.gif) top left repeat-x;
+	background: #ededed url(../images/menu_bar.gif) top left repeat-x;
 	border-bottom: 1px solid #fff;
 	line-height: 26px;
 	font-size: 1em;
@@ -47,7 +47,7 @@ ul {
 
 #menu ul li a {
 	padding-left: 12px;
-	background: url(../images/interface/menu_li1.gif) 0 0.35em no-repeat;
+	background: url(../images/menu_li1.gif) 0 0.35em no-repeat;
 }
 
 #menu ul li a:link, #menu ul li a:active, #menu ul li a:visited {
@@ -56,7 +56,7 @@ ul {
 }
 
 #menu ul li a:hover {
-	background: url(../images/interface/menu_li2.gif) 0 0.35em no-repeat;
+	background: url(../images/menu_li2.gif) 0 0.35em no-repeat;
 	color: #000;
 }
 
@@ -70,7 +70,7 @@ ul {
 
 #menu a.flag {
 	padding-left: 12px;
-	background: url(../images/interface/menu_blank.gif) 0 0.35em no-repeat;
+	background: url(../images/menu_blank.gif) 0 0.35em no-repeat;
 }
 
 #menu div.flag {
