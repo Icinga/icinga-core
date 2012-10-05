@@ -29,29 +29,29 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="nrpe"></a>10.2. <a name="nrpe_"></a>NRPE</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="nrpe.html#idp15646064">10.2.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15646224">10.2.2. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15663712">10.2.3. Download</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15668384">10.2.4. Optional changes</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15672320">10.2.5. Compile on the Icinga server</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15680384">10.2.6. First test</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15683840">10.2.7. Remote system(s)</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15685536">10.2.8. Prerequisites on the remote host(s)</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15693424">10.2.9. Second test</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15698128">10.2.10. Installation on the remote host</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15723984">10.2.11. Third test</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15727216">10.2.12. Troubleshooting</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15744512">10.2.13. Security</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15746624">10.2.14. Definition of local checks</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15757296">10.2.15. Definitions on the Icinga server</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15757584">10.2.16. More Troubleshooting</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15798320">10.2.17. Upgrading</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15647408">10.2.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15647568">10.2.2. Prerequisites</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15665056">10.2.3. Download</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15669728">10.2.4. Optional changes</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15673664">10.2.5. Compile on the Icinga server</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15681728">10.2.6. First test</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15685184">10.2.7. Remote system(s)</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15686880">10.2.8. Prerequisites on the remote host(s)</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15694768">10.2.9. Second test</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15699472">10.2.10. Installation on the remote host</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15725328">10.2.11. Third test</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15728560">10.2.12. Troubleshooting</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15745856">10.2.13. Security</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15747968">10.2.14. Definition of local checks</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15758640">10.2.15. Definitions on the Icinga server</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15758928">10.2.16. More Troubleshooting</a></span></dt>
+<dt><span class="section"><a href="nrpe.html#idp15799664">10.2.17. Upgrading</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="10.2.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15646064"></a>10.2.1. Introduction</h3></div></div></div>
+<a name="idp15647408"></a>10.2.1. Introduction</h3></div></div></div>
     
 
     <p>Nagios Remote Plugin Executor (or NRPE for short) is an addon used to execute plugins to monitor "local" resources on
@@ -74,7 +74,7 @@
     performance may outweigh the security difference. SSL can be actived though if you need a more secure connection.</p>
 
     <div class="figure">
-<a name="idp15648144"></a><p class="title"><b>Figure 10.1. NRPE</b></p>
+<a name="idp15649488"></a><p class="title"><b>Figure 10.1. NRPE</b></p>
 <div class="figure-contents">
       
 
@@ -101,7 +101,7 @@
     The machine running the NRPE daemon is acting as a relay in this case.</p>
 
     <div class="figure">
-<a name="idp15655344"></a><p class="title"><b>Figure 10.2. NRPE remote</b></p>
+<a name="idp15656688"></a><p class="title"><b>Figure 10.2. NRPE remote</b></p>
 <div class="figure-contents">
       
 
@@ -115,7 +115,7 @@
 
   <div class="section" title="10.2.2. Prerequisites">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15646224"></a>10.2.2. Prerequisites</h3></div></div></div>
+<a name="idp15647568"></a>10.2.2. Prerequisites</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -141,7 +141,7 @@
 
   <div class="section" title="10.2.3. Download">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15663712"></a>10.2.3. Download</h3></div></div></div>
+<a name="idp15665056"></a>10.2.3. Download</h3></div></div></div>
     
 
     <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -172,7 +172,7 @@
 
   <div class="section" title="10.2.4. Optional changes">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15668384"></a>10.2.4. Optional changes</h3></div></div></div>
+<a name="idp15669728"></a>10.2.4. Optional changes</h3></div></div></div>
     
 
     <p>The maximum length of data to be transmitted is set to 2,048 bytes, the maximal length of plugin output is set to 512 bytes. If
@@ -190,7 +190,7 @@
 
   <div class="section" title="10.2.5. Compile on the Icinga server">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15672320"></a>10.2.5. Compile on the Icinga server</h3></div></div></div>
+<a name="idp15673664"></a>10.2.5. Compile on the Icinga server</h3></div></div></div>
     
 
     <p>Change to the newly created directory and call configure and make </p>
@@ -227,7 +227,7 @@
 
   <div class="section" title="10.2.6. First test">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15680384"></a>10.2.6. First test</h3></div></div></div>
+<a name="idp15681728"></a>10.2.6. First test</h3></div></div></div>
     
 
     <p>Startup the daemon and call the plugin </p>
@@ -246,7 +246,7 @@
 
   <div class="section" title="10.2.7. Remote system(s)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15683840"></a>10.2.7. Remote system(s)</h3></div></div></div>
+<a name="idp15685184"></a>10.2.7. Remote system(s)</h3></div></div></div>
     
 
     <p>The configuration and installation on the Icinga server is finished so far. The second part has to be done on the remote
@@ -256,7 +256,7 @@
 
   <div class="section" title="10.2.8. Prerequisites on the remote host(s)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15685536"></a>10.2.8. Prerequisites on the remote host(s)</h3></div></div></div>
+<a name="idp15686880"></a>10.2.8. Prerequisites on the remote host(s)</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -294,7 +294,7 @@
 
   <div class="section" title="10.2.9. Second test">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15693424"></a>10.2.9. Second test</h3></div></div></div>
+<a name="idp15694768"></a>10.2.9. Second test</h3></div></div></div>
     
 
     <p>Startup the daemon on the remote host</p>
@@ -316,7 +316,7 @@
 
   <div class="section" title="10.2.10. Installation on the remote host">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15698128"></a>10.2.10. Installation on the remote host</h3></div></div></div>
+<a name="idp15699472"></a>10.2.10. Installation on the remote host</h3></div></div></div>
     
 
     <p>Independent from the method the NRPE process is running on the remote host you need a config file containing the commands
@@ -405,7 +405,7 @@
 
   <div class="section" title="10.2.11. Third test">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15723984"></a>10.2.11. Third test</h3></div></div></div>
+<a name="idp15725328"></a>10.2.11. Third test</h3></div></div></div>
     
 
     <p>Switch to the Icinga server, change to the Icinga user and run another test</p>
@@ -420,7 +420,7 @@
 
   <div class="section" title="10.2.12. Troubleshooting">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15727216"></a>10.2.12. Troubleshooting</h3></div></div></div>
+<a name="idp15728560"></a>10.2.12. Troubleshooting</h3></div></div></div>
     
 
     <p>Check that the nrpe process is running on the remote server</p>
@@ -476,7 +476,7 @@
 
   <div class="section" title="10.2.13. Security">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15744512"></a>10.2.13. Security</h3></div></div></div>
+<a name="idp15745856"></a>10.2.13. Security</h3></div></div></div>
     
 
     <p>Read the <code class="filename">SECURITY</code> file for more information on the security risks of running NRPE, along with an
@@ -485,7 +485,7 @@
 
   <div class="section" title="10.2.14. Definition of local checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15746624"></a>10.2.14. Definition of local checks</h3></div></div></div>
+<a name="idp15747968"></a>10.2.14. Definition of local checks</h3></div></div></div>
     
 
     <p>Some things have been predefined in <code class="filename">etc/nrpe.cfg</code> on the remote host</p>
@@ -529,7 +529,7 @@
 
   <div class="section" title="10.2.15. Definitions on the Icinga server">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15757296"></a>10.2.15. Definitions on the Icinga server</h3></div></div></div>
+<a name="idp15758640"></a>10.2.15. Definitions on the Icinga server</h3></div></div></div>
     
 
     <p>Now we switch over to the Icinga server to create some object definitions. First add a command definition to your
@@ -607,7 +607,7 @@
 
   <div class="section" title="10.2.16. More Troubleshooting">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15757584"></a>10.2.16. More Troubleshooting</h3></div></div></div>
+<a name="idp15758928"></a>10.2.16. More Troubleshooting</h3></div></div></div>
     
 
     <p>Some errors during the initial setup have been mentioned already. Unfortunately you may encounter others errors. Below you'll find
@@ -709,7 +709,7 @@
 
   <div class="section" title="10.2.17. Upgrading">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15798320"></a>10.2.17. Upgrading</h3></div></div></div>
+<a name="idp15799664"></a>10.2.17. Upgrading</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -754,9 +754,9 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp15805808"></a>
+    <a class="indexterm" name="idp15807152"></a>
 
-    <a class="indexterm" name="idp15807440"></a>
+    <a class="indexterm" name="idp15808784"></a>
   </div>
 </div>
 <div class="navfooter">

@@ -29,18 +29,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="oncallrotation"></a>7.11. <a name="oncall_rotation"></a>On-Call Rotations</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="oncallrotation.html#idp13804720">7.11.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13812080">7.11.2. Scenario 1: Holidays and Weekends</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13812208">7.11.3. Scenario 2: Alternating Days</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13812336">7.11.4. Scenario 3: Alternating Weeks</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13825328">7.11.5. Scenario 4: Vacation Days</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13831920">7.11.6. Other Scenarios</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13806048">7.11.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13813408">7.11.2. Scenario 1: Holidays and Weekends</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13813536">7.11.3. Scenario 2: Alternating Days</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13813664">7.11.4. Scenario 3: Alternating Weeks</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13826656">7.11.5. Scenario 4: Vacation Days</a></span></dt>
+<dt><span class="section"><a href="oncallrotation.html#idp13833216">7.11.6. Other Scenarios</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.11.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13804720"></a>7.11.1. Introduction</h3></div></div></div>
+<a name="idp13806048"></a>7.11.1. Introduction</h3></div></div></div>
 
   <p><span class="inlinemediaobject"><img src="../images/objects-contacts.png"></span> <span class="inlinemediaobject"><img src="../images/objects-timeperiods.png"></span></p>
 
@@ -60,7 +60,7 @@
   </div>
 <div class="section" title="7.11.2. Scenario 1: Holidays and Weekends">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13812080"></a>7.11.2. Scenario 1: Holidays and Weekends</h3></div></div></div>
+<a name="idp13813408"></a>7.11.2. Scenario 1: Holidays and Weekends</h3></div></div></div>
 
   <p>Two admins - John and Bob - are responsible for responding to Icinga alerts. John receives all notifications for
   weekdays (with 24 hour days), excluding holidays; Bob handles notifications during the weekends and holidays. Lucky Bob. Here's
@@ -137,7 +137,7 @@
   </div>
 <div class="section" title="7.11.3. Scenario 2: Alternating Days">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13812208"></a>7.11.3. Scenario 2: Alternating Days</h3></div></div></div>
+<a name="idp13813536"></a>7.11.3. Scenario 2: Alternating Days</h3></div></div></div>
 
   <p>In this scenario John and Bob alternate handling alerts every other day - regardless of whether its a weekend, weekday, or
   holiday.</p>
@@ -177,7 +177,7 @@
   </div>
 <div class="section" title="7.11.4. Scenario 3: Alternating Weeks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13812336"></a>7.11.4. Scenario 3: Alternating Weeks</h3></div></div></div>
+<a name="idp13813664"></a>7.11.4. Scenario 3: Alternating Weeks</h3></div></div></div>
 
   <p>In this scenario John and Bob alternate handling alerts every other week. John handles alerts Sunday through Saturday one
   week, and Bob handles alerts for the following seven days. This continues in perpetuity.</p>
@@ -229,7 +229,7 @@
   </div>
 <div class="section" title="7.11.5. Scenario 4: Vacation Days">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13825328"></a>7.11.5. Scenario 4: Vacation Days</h3></div></div></div>
+<a name="idp13826656"></a>7.11.5. Scenario 4: Vacation Days</h3></div></div></div>
 
   <p>In this scenarios, John handles notifications for all days except those he has off. He has several standing days off each
   month, as well as some planned vacations. Bob handles notifications when John is on vacation or out of the office.</p>
@@ -287,13 +287,13 @@
   </div>
 <div class="section" title="7.11.6. Other Scenarios">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13831920"></a>7.11.6. Other Scenarios</h3></div></div></div>
+<a name="idp13833216"></a>7.11.6. Other Scenarios</h3></div></div></div>
 
   <p>There are a lot of other on-call notification rotation scenarios that you might have. The date exception directive in
   <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">timeperiod definitions</a> is capable of handling most dates and date ranges
   that you might need to use, so check out the different formats that you can use. If you make a mistake when creating timeperiod
   definitions, always err on the side of giving someone else more on-call duty time. :-)</p>
-  <a class="indexterm" name="idp13841824"></a>
+  <a class="indexterm" name="idp13843120"></a>
 </div>
 </div>
 <div class="navfooter">

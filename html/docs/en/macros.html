@@ -29,22 +29,22 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="macros"></a>5.2. <a name="macro_overview"></a>Understanding Macros and How They Work</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="macros.html#idp7066208">5.2.1. Macros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7067824">5.2.2. Macro Substitution - How Macros Work</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7070032">5.2.3. Example 1: Host Address Macro</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7074576">5.2.4. Example 2: Command Argument Macros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7086640">5.2.5. On-Demand Macros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7100720">5.2.6. On-Demand Group Macros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7113584">5.2.7. Custom Variable Macros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7123936">5.2.8. Macro Cleansing</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7139072">5.2.9. Macros as Environment Variables</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7144880">5.2.10. Available Macros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7066112">5.2.1. Macros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7067728">5.2.2. Macro Substitution - How Macros Work</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7069936">5.2.3. Example 1: Host Address Macro</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7074480">5.2.4. Example 2: Command Argument Macros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7086544">5.2.5. On-Demand Macros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7086800">5.2.6. On-Demand Group Macros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7113520">5.2.7. Custom Variable Macros</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7123872">5.2.8. Macro Cleansing</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7139008">5.2.9. Macros as Environment Variables</a></span></dt>
+<dt><span class="section"><a href="macros.html#idp7144816">5.2.10. Available Macros</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.2.1. Macros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7066208"></a>5.2.1. Macros</h3></div></div></div>
+<a name="idp7066112"></a>5.2.1. Macros</h3></div></div></div>
     
 
     <p>One of the main features that make Icinga so flexible is the ability to use macros in command definitions. Macros allow you
@@ -53,7 +53,7 @@
 
   <div class="section" title="5.2.2. Macro Substitution - How Macros Work">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7067824"></a>5.2.2. Macro Substitution - How Macros Work</h3></div></div></div>
+<a name="idp7067728"></a>5.2.2. Macro Substitution - How Macros Work</h3></div></div></div>
     
 
     <p>Before Icinga executes a command, it will replace any macros it finds in the command definition with their corresponding
@@ -66,7 +66,7 @@
 
   <div class="section" title="5.2.3. Example 1: Host Address Macro">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7070032"></a>5.2.3. Example 1: Host Address Macro</h3></div></div></div>
+<a name="idp7069936"></a>5.2.3. Example 1: Host Address Macro</h3></div></div></div>
     
 
     <p>When you use host and service macros in command definitions, they refer to values for the host or service for which the command is
@@ -96,7 +96,7 @@
 
   <div class="section" title="5.2.4. Example 2: Command Argument Macros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7074576"></a>5.2.4. Example 2: Command Argument Macros</h3></div></div></div>
+<a name="idp7074480"></a>5.2.4. Example 2: Command Argument Macros</h3></div></div></div>
     
 
     <p>You can pass arguments to commands as well, which is quite handy if you'd like to keep your command definitions rather generic.
@@ -158,7 +158,7 @@
 
   <div class="section" title="5.2.5. On-Demand Macros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7086640"></a>5.2.5. On-Demand Macros</h3></div></div></div>
+<a name="idp7086544"></a>5.2.5. On-Demand Macros</h3></div></div></div>
     
 
     <p>Normally when you use host and service macros in command definitions, they refer to values for the host or service for which the
@@ -210,7 +210,7 @@
 
   <div class="section" title="5.2.6. On-Demand Group Macros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7100720"></a>5.2.6. On-Demand Group Macros</h3></div></div></div>
+<a name="idp7086800"></a>5.2.6. On-Demand Group Macros</h3></div></div></div>
     
 
     <p>You can obtain the values of a macro across all contacts, hosts, or services in a specific group by using a special format for
@@ -245,7 +245,7 @@
 
   <div class="section" title="5.2.7. Custom Variable Macros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7113584"></a>5.2.7. Custom Variable Macros</h3></div></div></div>
+<a name="idp7113520"></a>5.2.7. Custom Variable Macros</h3></div></div></div>
     
 
     <p>Any <a class="link" href="customobjectvars.html" title="3.5. Custom Object Variables">custom object variables</a> that you define in host, service, or contact definitions are
@@ -278,7 +278,7 @@
 
   <div class="section" title="5.2.8. Macro Cleansing">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7123936"></a>5.2.8. Macro Cleansing</h3></div></div></div>
+<a name="idp7123872"></a>5.2.8. Macro Cleansing</h3></div></div></div>
     
 
     <p>Some macros are stripped of potentially dangerous shell metacharacters before being substituted into commands to be executed.
@@ -321,7 +321,7 @@
 
   <div class="section" title="5.2.9. Macros as Environment Variables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7139072"></a>5.2.9. Macros as Environment Variables</h3></div></div></div>
+<a name="idp7139008"></a>5.2.9. Macros as Environment Variables</h3></div></div></div>
     
 
     <p>Most macros are made available as environment variables for easy reference by scripts or commands that are executed by
@@ -333,16 +333,16 @@
 
   <div class="section" title="5.2.10. Available Macros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7144880"></a>5.2.10. Available Macros</h3></div></div></div>
+<a name="idp7144816"></a>5.2.10. Available Macros</h3></div></div></div>
     
 
     <p>A list of all the macros that are available in Icinga, as well as a chart of when they can be used, can be found <a class="link" href="macrolist.html" title="5.3. Standard Macros in Icinga">here</a>.</p>
 
-    <a class="indexterm" name="idp7146784"></a>
+    <a class="indexterm" name="idp7146720"></a>
 
-    <a class="indexterm" name="idp7148784"></a>
+    <a class="indexterm" name="idp7148720"></a>
 
-    <a class="indexterm" name="idp7150384"></a>
+    <a class="indexterm" name="idp7150320"></a>
   </div>
 </div>
 <div class="navfooter">

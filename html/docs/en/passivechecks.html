@@ -29,20 +29,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="passivechecks"></a>5.7. <a name="passive_checks"></a>Passive Checks</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="passivechecks.html#idp9774864">5.7.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9780336">5.7.2. Uses For Passive Checks</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9786784">5.7.3. How Passive Checks Work</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9797056">5.7.4. Enabling Passive Checks</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9803760">5.7.5. Submitting Passive Service Check Results</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9817296">5.7.6. Submitting Passive Host Check Results</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9826736">5.7.7. Passive Checks and Host States</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9834416">5.7.8. Submitting Passive Check Results From Remote Hosts</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9774544">5.7.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9780016">5.7.2. Uses For Passive Checks</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9786464">5.7.3. How Passive Checks Work</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9796736">5.7.4. Enabling Passive Checks</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9803552">5.7.5. Submitting Passive Service Check Results</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9816960">5.7.6. Submitting Passive Host Check Results</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9826192">5.7.7. Passive Checks and Host States</a></span></dt>
+<dt><span class="section"><a href="passivechecks.html#idp9833952">5.7.8. Submitting Passive Check Results From Remote Hosts</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.7.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9774864"></a>5.7.1. Introduction</h3></div></div></div>
+<a name="idp9774544"></a>5.7.1. Introduction</h3></div></div></div>
     
 
     <p>In most cases you'll use Icinga to monitor your hosts and services using regularly scheduled <a class="link" href="activechecks.html" title="5.6. Active Checks">active checks</a>. Active checks can be used to "poll" a device or service for status information every so
@@ -64,7 +64,7 @@
 
   <div class="section" title="5.7.2. Uses For Passive Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9780336"></a>5.7.2. Uses For Passive Checks</h3></div></div></div>
+<a name="idp9780016"></a>5.7.2. Uses For Passive Checks</h3></div></div></div>
     
 
     <p>Passive checks are useful for monitoring services that are:</p>
@@ -87,7 +87,7 @@
 
   <div class="section" title="5.7.3. How Passive Checks Work">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9786784"></a>5.7.3. How Passive Checks Work</h3></div></div></div>
+<a name="idp9786464"></a>5.7.3. How Passive Checks Work</h3></div></div></div>
     
 
     <p><span class="inlinemediaobject"><img src="../images/passivechecks.png"></span></p>
@@ -121,7 +121,7 @@
 
   <div class="section" title="5.7.4. Enabling Passive Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9797056"></a>5.7.4. Enabling Passive Checks</h3></div></div></div>
+<a name="idp9796736"></a>5.7.4. Enabling Passive Checks</h3></div></div></div>
     
 
     <p>In order to enable passive checks in Icinga, you'll need to do the following:</p>
@@ -144,7 +144,7 @@
 
   <div class="section" title="5.7.5. Submitting Passive Service Check Results">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9803760"></a>5.7.5. Submitting Passive Service Check Results</h3></div></div></div>
+<a name="idp9803552"></a>5.7.5. Submitting Passive Service Check Results</h3></div></div></div>
     
 
     <p>External applications can submit passive service check results to Icinga by writing a PROCESS_SERVICE_CHECK_RESULT <a class="link" href="extcommands.html" title="7.1. External Commands">external command</a> to the external command file.</p>
@@ -199,7 +199,7 @@
 
   <div class="section" title="5.7.6. Submitting Passive Host Check Results">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9817296"></a>5.7.6. Submitting Passive Host Check Results</h3></div></div></div>
+<a name="idp9816960"></a>5.7.6. Submitting Passive Host Check Results</h3></div></div></div>
     
 
     <p>External applications can submit passive host check results to Icinga by writing a PROCESS_HOST_CHECK_RESULT external
@@ -241,7 +241,7 @@
 
   <div class="section" title="5.7.7. Passive Checks and Host States">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9826736"></a>5.7.7. Passive Checks and Host States</h3></div></div></div>
+<a name="idp9826192"></a>5.7.7. Passive Checks and Host States</h3></div></div></div>
     
 
     <p>Unlike with active host checks, Icinga does not (by default) attempt to determine whether or host is DOWN or UNREACHABLE
@@ -266,7 +266,7 @@
 
   <div class="section" title="5.7.8. Submitting Passive Check Results From Remote Hosts">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9834416"></a>5.7.8. Submitting Passive Check Results From Remote Hosts</h3></div></div></div>
+<a name="idp9833952"></a>5.7.8. Submitting Passive Check Results From Remote Hosts</h3></div></div></div>
     
 
     <p><span class="inlinemediaobject"><img src="../images/nsca.png"></span></p>
@@ -281,7 +281,7 @@
     then write the check results directly into the external command file (as described above). More information on the NSCA addon can be
     found <a class="link" href="addons.html#addons-nsca">here</a>.</p>
 
-    <a class="indexterm" name="idp9840288"></a>
+    <a class="indexterm" name="idp9839744"></a>
   </div>
 </div>
 <div class="navfooter">

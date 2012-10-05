@@ -29,19 +29,19 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="volatileservices"></a>7.4. <a name="volatile_services"></a>Volatile Services</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="volatileservices.html#idp13353472">7.4.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13354512">7.4.2. What Are They Useful For?</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13358896">7.4.3. What's So Special About Volatile Services?</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13369472">7.4.4. The Power Of Two</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13372832">7.4.5. Icinga Configuration:</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13381488">7.4.6. PortSentry Configuration:</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13384448">7.4.7. Port Scan Script:</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13354688">7.4.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13355728">7.4.2. What Are They Useful For?</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13360112">7.4.3. What's So Special About Volatile Services?</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13370688">7.4.4. The Power Of Two</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13374048">7.4.5. Icinga Configuration:</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13382704">7.4.6. PortSentry Configuration:</a></span></dt>
+<dt><span class="section"><a href="volatileservices.html#idp13385664">7.4.7. Port Scan Script:</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.4.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13353472"></a>7.4.1. Introduction</h3></div></div></div>
+<a name="idp13354688"></a>7.4.1. Introduction</h3></div></div></div>
 
   <p>Icinga has the ability to distinguish between "normal" services and "volatile" services. The
   <span class="emphasis"><em>is_volatile</em></span> option in each service definition allows you to specify whether a specific service is volatile
@@ -51,7 +51,7 @@
   </div>
 <div class="section" title="7.4.2. What Are They Useful For?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13354512"></a>7.4.2. What Are They Useful For?</h3></div></div></div>
+<a name="idp13355728"></a>7.4.2. What Are They Useful For?</h3></div></div></div>
 
   <p>Volatile services are useful for monitoring...</p>
 
@@ -68,7 +68,7 @@
   </div>
 <div class="section" title="7.4.3. What's So Special About Volatile Services?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13358896"></a>7.4.3. What's So Special About Volatile Services?</h3></div></div></div>
+<a name="idp13360112"></a>7.4.3. What's So Special About Volatile Services?</h3></div></div></div>
 
   <p>Volatile services differ from "normal" services in three important ways. <span class="emphasis"><em>Each time</em></span> they are checked
   when they are in a <a class="link" href="statetypes.html" title="5.8. State Types">hard</a> non-OK state, and the check returns a non-OK state (i.e. no state
@@ -113,7 +113,7 @@
   </div>
 <div class="section" title="7.4.4. The Power Of Two">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13369472"></a>7.4.4. The Power Of Two</h3></div></div></div>
+<a name="idp13370688"></a>7.4.4. The Power Of Two</h3></div></div></div>
 
   <p>If you combine the features of volatile services and <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive service checks</a>, you can
   do some very useful things. Examples of this include handling SNMP traps, security alerts, etc.</p>
@@ -125,7 +125,7 @@
   </div>
 <div class="section" title="7.4.5. Icinga Configuration:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13372832"></a>7.4.5. Icinga Configuration:</h3></div></div></div>
+<a name="idp13374048"></a>7.4.5. Icinga Configuration:</h3></div></div></div>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -152,7 +152,7 @@
   </div>
 <div class="section" title="7.4.6. PortSentry Configuration:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13381488"></a>7.4.6. PortSentry Configuration:</h3></div></div></div>
+<a name="idp13382704"></a>7.4.6. PortSentry Configuration:</h3></div></div></div>
 
   <p>Edit your PortSentry configuration file (portsentry.conf) and define a command for the <span class="emphasis"><em>KILL_RUN_CMD</em></span>
   directive as follows:</p>
@@ -165,7 +165,7 @@
   </div>
 <div class="section" title="7.4.7. Port Scan Script:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13384448"></a>7.4.7. Port Scan Script:</h3></div></div></div>
+<a name="idp13385664"></a>7.4.7. Port Scan Script:</h3></div></div></div>
 
   <p>Create a shell script in the <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span> directory named
   <span class="emphasis"><em>submit_check_result</em></span>. The contents of the shell script should be something similiar to the
@@ -209,7 +209,7 @@ cmdline="[$datetime] PROCESS_SERVICE_CHECK_RESULT;$1;$2;$3;$4"
 </ul></div>
 
   <p>Pretty neat, huh?</p>
-  <a class="indexterm" name="idp13393792"></a>
+  <a class="indexterm" name="idp13395008"></a>
 </div>
 </div>
 <div class="navfooter">
