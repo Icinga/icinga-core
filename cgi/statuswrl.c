@@ -49,8 +49,6 @@ extern service *service_list;
 extern int default_statuswrl_layout_method;
 
 
-#define ICINGA_VRML_IMAGE               "icingavrml.png"
-
 #define DEFAULT_NODE_WIDTH		0.5
 #define DEFAULT_HORIZONTAL_SPACING	1.0
 #define DEFAULT_VERTICAL_SPACING	1.0

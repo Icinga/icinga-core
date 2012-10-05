@@ -43,10 +43,6 @@ static icinga_macros *mac;
 
 /*#define DEBUG*/
 
-#define UNKNOWN_GD2_ICON      "unknown.gd2"
-#define UNKNOWN_ICON_IMAGE    "unknown.gif"
-#define ICINGA_GD2_ICON       "icinga.gd2"
-
 extern char main_config_file[MAX_FILENAME_LENGTH];
 extern char physical_images_path[MAX_FILENAME_LENGTH];
 extern char url_images_path[MAX_FILENAME_LENGTH];
