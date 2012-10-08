@@ -138,8 +138,10 @@
 <li class="listitem">
       <p><a class="link" href="configmain.html#configmain-log_archive_path">Log archive path</a></p>
     </li>
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-use_daemon_log">Logging options for daemon</a></p>
+</li>
 </ul></div>
-
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><a class="link" href="configmain.html#configmain-check_external_commands">External command check option</a></p>
@@ -174,6 +176,9 @@
     </li>
 <li class="listitem">
       <p><a class="link" href="configmain.html#configmain-use_retained_program_state">Use retained program state option</a></p>
+    </li>
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-dump_retained_host_service_states_to_neb">Dump retained host service states to neb</a></p>
     </li>
 <li class="listitem">
       <p><a class="link" href="configmain.html#configmain-use_retained_scheduling_info">Use retained scheduling info option</a></p>
@@ -350,6 +355,10 @@
       <p><a class="link" href="configmain.html#configmain-soft_state_dependencies">Soft state dependencies option</a></p>
     </li></ul></div>
 
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-time_change_threshold">Time change threshold option</a></p>
+    </li></ul></div>
+
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><a class="link" href="configmain.html#configmain-service_check_timeout">Service check timeout</a></p>
@@ -462,8 +471,10 @@
       <p><a class="link" href="configmain.html#configmain-host_freshness_check_interval">Host freshness check interval</a></p>
     </li>
 </ul></div>
-
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-p1_file_location">P1.PL File Location</a></p>
+ </li>
 <li class="listitem">
       <p><a class="link" href="configmain.html#configmain-enable_embedded_perl">Embedded Perl interpreter option</a></p>
     </li>
@@ -506,7 +517,9 @@
       <p><a class="link" href="configmain.html#configmain-admin_pager">Administrator pager</a></p>
     </li>
 </ul></div>
-
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-daemon_dumps_core">Daemon Core Dumps</a></p>
+    </li></ul></div>
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><a class="link" href="configmain.html#configmain-debug_file">Debug file</a></p>
@@ -521,7 +534,9 @@
       <p><a class="link" href="configmain.html#configmain-max_debug_file_size">Maximum debug file size option</a></p>
     </li>
 </ul></div>
-
+<div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+      <p><a class="link" href="configmain.html#configmain-event_profiling">Event profiling</a></p>
+    </li></ul></div>
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><a class="link" href="configmain.html#configmain-allow_empty_hostgroup_assignment">Allow empty hostgroup assignment</a></p>
@@ -948,7 +963,7 @@
 
   <p>This option determines whether or not Icinga will execute service checks when it initially (re)starts. If this option is
   disabled, Icinga will not actively execute any service checks and will remain in a sort of "sleep" mode (it can still accept <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive checks</a> unless you've <a class="link" href="configmain.html#configmain-accept_passive_service_checks">disabled
-  them</a>). This option is most often used when configuring backup monitoring servers, as described in the documentation on <a class="link" href="redundancy.html" title="7.6. Redundant and Failover Network Monitoring">redundancy</a>, or when setting up a <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed</a> monitoring environment.</p>
+  them</a>). This option is most often used when configuring backup monitoring servers, as described in the documentation on <a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">redundancy</a>, or when setting up a <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed</a> monitoring environment.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1048,7 +1063,7 @@
 
   <p>This option determines whether or not Icinga will execute on-demand and regularly scheduled host checks when it initially
   (re)starts. If this option is disabled, Icinga will not actively execute any host checks, although it can still accept <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive host checks</a> unless you've <a class="link" href="configmain.html#configmain-accept_passive_host_checks">disabled
-  them</a>). This option is most often used when configuring backup monitoring servers, as described in the documentation on <a class="link" href="redundancy.html" title="7.6. Redundant and Failover Network Monitoring">redundancy</a>, or when setting up a <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed</a> monitoring environment.</p>
+  them</a>). This option is most often used when configuring backup monitoring servers, as described in the documentation on <a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">redundancy</a>, or when setting up a <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed</a> monitoring environment.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -1146,7 +1161,7 @@
 </table>
   </div>
 
-  <p>This option determines whether or not Icinga will run <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handlers</a> when it initially
+  <p>This option determines whether or not Icinga will run <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a> when it initially
   (re)starts. If this option is disabled, Icinga will not run any host or service event handlers.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -1239,6 +1254,36 @@
   <p>This is the directory where Icinga should place log files that have been rotated. This option is ignored if you choose to not
   use the <a class="link" href="configmain.html#configmain-log_rotation_method">log rotation</a> functionality.</p>
 
+<p><a name="configmain-use_daemon_log"></a><span class="bold"><strong>Logging Options for Daemon</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>use_daemon_log=&lt;0/1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>use_daemon_log=1</strong></span></font></span></p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>This option determines if the log daemon writes to the log file (usually icinga.log).</p>
+ <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = logging disabled</p>
+    </li>
+<li class="listitem">
+      <p>1 = logging enabled (default)</p>
+    </li>
+</ul></div>
   <p><a name="configmain-check_external_commands"></a> <span class="bold"><strong>External Command Check Option</strong></span></p>
 
   <div class="informaltable">
@@ -1300,13 +1345,16 @@
   <p>If you specify a number with an "s" appended to it (i.e. 30s), this is the number of <span class="emphasis"><em>seconds</em></span> to wait between
   external command checks. If you leave off the "s", this is the number of "time units" to wait between external command checks. Unless
   you've changed the <a class="link" href="configmain.html#configmain-interval_length">interval_length</a> value (as defined below) from the default value of
-  60, this number will mean minutes. </p>
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+  60, this number will mean minutes.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
-<tr><td align="left" valign="top">Icinga will also check for external commands after event handlers are executed.</td></tr>
+<tr><td align="left" valign="top">
+    <p>Icinga will also check for external commands after event handlers are executed.</p>
+  </td></tr>
 </table></div>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -1343,9 +1391,9 @@
   </div>
 
   <p>This is the file that Icinga will check for external commands to process. The <a class="link" href="cgis.html#cgis-cmd_cgi">command
-  CGI</a>, Icinga-Web and other addons write commands to this file. The external command file is implemented as a named pipe (FIFO), which is created when
-  Icinga starts and removed when it shuts down. If the file exists when Icinga starts, the Icinga process will
-  terminate with an error message. More information on external commands can be found <a class="link" href="extcommands.html" title="7.1. External Commands">here</a>.</p>
+  CGI</a>, Icinga-Web and other addons write commands to this file. The external command file is implemented as a named pipe (FIFO),
+  which is created when Icinga starts and removed when it shuts down. If the file exists when Icinga starts, the Icinga
+  process will terminate with an error message. More information on external commands can be found <a class="link" href="extcommands.html" title="7.1. External Commands">here</a>.</p>
 
   <p><a name="configmain-external_command_buffer_slots"></a> <span class="bold"><strong>External Command Buffer Slots</strong></span></p>
 
@@ -1378,7 +1426,7 @@
     <p>This is an advanced feature. This option determines how many buffer slots Icinga will reserve for caching external commands
     that have been read from the external command file by a worker thread, but have not yet been processed by the main thread of the
     Icinga deamon. Each slot can hold one external command, so this option essentially determines how many commands can be buffered.
-    For installations where you process a large number of passive checks (e.g. <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed setups</a>), you
+    For installations where you process a large number of passive checks (e.g. <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed setups</a>), you
     may need to increase this number. You should consider using PNP4Nagios to graph Icinga's usage of external command buffers. You
     can read more on how to configure graphing <a class="link" href="perfgraphs.html" title="8.7. Graphing Performance Info With PNP4Nagios">here</a>.</p>
   </td></tr>
@@ -1557,6 +1605,41 @@
     </li>
 <li class="listitem">
       <p>1 = Use retained program state (default)</p>
+    </li>
+</ul></div>
+
+  <p><a name="configmain-dump_retained_host_service_states_to_neb"></a><span class="bold"><strong>Dump Retained Host Service States To
+  Neb</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>dump_retained_host_service_states_to_neb=&lt;0/1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>dump_retained_host_service_states_to_neb=1</strong></span>
+          </font></span> </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>This setting determines whether or not Icinga will dump host and service states based on the values saved in the <a class="link" href="configmain.html#configmain-state_retention_file">retention file</a> to the neb modules. If you don't want that, use at your own risk and
+  disable it.</p>
+
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = Don't dump status informations to neb</p>
+    </li>
+<li class="listitem">
+      <p>1 = Dump status informations to neb (default)</p>
     </li>
 </ul></div>
 
@@ -1958,7 +2041,7 @@
   <p>This variable determines whether or not service check retries are logged. Service check retries occur when a service check results
   in a non-OK state, but you have configured Icinga to retry the service more than once before responding to the error. Services in
   this situation are considered to be in "soft" states. Logging service check retries is mostly useful when attempting to debug
-  Icinga or test out service <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handlers</a>.</p>
+  Icinga or test out service <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -1991,7 +2074,7 @@
   </div>
 
   <p>This variable determines whether or not host check retries are logged. Logging host check retries is mostly useful when attempting
-  to debug Icinga or test out host <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handlers</a>.</p>
+  to debug Icinga or test out host <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -2024,7 +2107,7 @@
 </table>
   </div>
 
-  <p>This variable determines whether or not service and host <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handlers</a> are logged. Event
+  <p>This variable determines whether or not service and host <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a> are logged. Event
   handlers are optional commands that can be run whenever a service or hosts changes state. Logging event handlers is most useful when
   debugging Icinga or first trying out your event handler scripts.</p>
 
@@ -2197,7 +2280,7 @@
   </div>
 
   <p>This variable determines whether or not Icinga will log <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive host and service checks</a>
-  that it receives from the <a class="link" href="configmain.html#configmain-command_file">external command file</a>. If you are setting up a <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed monitoring environment</a> or plan on handling a large number of passive checks on a regular basis,
+  that it receives from the <a class="link" href="configmain.html#configmain-command_file">external command file</a>. If you are setting up a <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed monitoring environment</a> or plan on handling a large number of passive checks on a regular basis,
   you may wish to disable this option so your log file doesn't get too large.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -2321,7 +2404,7 @@
   <p>This option allows you to specify a host event handler command that is to be run for every host state change. The global event
   handler is executed immediately prior to the event handler that you have optionally specified in each host definition. The
   <span class="emphasis"><em>command</em></span> argument is the short name of a command that you define in your <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object
-  configuration file</a>. The maximum amount of time that this command can run is controlled by the <a class="link" href="configmain.html#configmain-event_handler_timeout">event_handler_timeout</a> option. More information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">here</a>.</p>
+  configuration file</a>. The maximum amount of time that this command can run is controlled by the <a class="link" href="configmain.html#configmain-event_handler_timeout">event_handler_timeout</a> option. More information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">here</a>.</p>
 
   <p><a name="configmain-global_service_event_handler"></a> <span class="bold"><strong>Global Service Event Handler
   Option</strong></span></p>
@@ -2348,7 +2431,7 @@
   <p>This option allows you to specify a service event handler command that is to be run for every service state change. The global event
   handler is executed immediately prior to the event handler that you have optionally specified in each service definition. The
   <span class="emphasis"><em>command</em></span> argument is the short name of a command that you define in your <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object
-  configuration file</a>. The maximum amount of time that this command can run is controlled by the <a class="link" href="configmain.html#configmain-event_handler_timeout">event_handler_timeout</a> option. More information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">here</a>.</p>
+  configuration file</a>. The maximum amount of time that this command can run is controlled by the <a class="link" href="configmain.html#configmain-event_handler_timeout">event_handler_timeout</a> option. More information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">here</a>.</p>
 
   <p><a name="configmain-stalking_event_handlers_for_hosts"></a> <span class="bold"><strong> Event handlers for stalked
   hosts</strong></span></p>
@@ -3014,7 +3097,7 @@
 
   <p>This option determines whether or not Icinga will translate DOWN/UNREACHABLE passive host check results to their "correct"
   state from the viewpoint of the local Icinga instance. This can be very useful in distributed and failover monitoring
-  installations. More information on passive check state translation can be found <a class="link" href="passivestatetranslation.html" title="7.21. Passive Host State Translation">here</a>.</p>
+  installations. More information on passive check state translation can be found <a class="link" href="passivestatetranslation.html" title="7.22. Passive Host State Translation">here</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -3086,7 +3169,7 @@
 
   <p>This option determines whether or not Icinga will execute predictive checks of hosts that are being depended upon (as defined
   in <a class="link" href="objectdefinitions.html#objectdefinitions-hostdependency">host dependencies</a>) for a particular host when it changes state. Predictive
-  checks help ensure that the dependency logic is as accurate as possible. More information on how predictive checks work can be found <a class="link" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">here</a>.</p>
+  checks help ensure that the dependency logic is as accurate as possible. More information on how predictive checks work can be found <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">here</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -3122,7 +3205,7 @@
   <p>This option determines whether or not Icinga will execute predictive checks of services that are being depended upon (as
   defined in <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service dependencies</a>) for a particular service when it changes
   state. Predictive checks help ensure that the dependency logic is as accurate as possible. More information on how predictive checks work
-  can be found <a class="link" href="dependencychecks.html" title="7.19. Predictive Dependency Checks">here</a>.</p>
+  can be found <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">here</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -3159,7 +3242,7 @@
   host states (from host checks that were performed more recently than the time specified by this value) can improve host check performance
   immensely. Too high of a value for this option may result in (temporarily) inaccurate host states, while a low value may result in a
   performance hit for host checks. Use a value of 0 if you want to disable host check caching. More information on cached checks can be
-  found <a class="link" href="cachedchecks.html" title="7.20. Cached Checks">here</a>.</p>
+  found <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">here</a>.</p>
 
   <p><a name="configmain-cached_service_check_horizon"></a> <span class="bold"><strong>Cached Service Check Horizon</strong></span></p>
 
@@ -3187,7 +3270,7 @@
   Cached service states (from service checks that were performed more recently than the time specified by this value) can improve service
   check performance when a lot of <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service dependencies</a> are used. Too high of a
   value for this option may result in inaccuracies in the service dependency logic. Use a value of 0 if you want to disable service check
-  caching. More information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.20. Cached Checks">here</a>.</p>
+  caching. More information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">here</a>.</p>
 
   <p><a name="configmain-use_large_installation_tweaks"></a> <span class="bold"><strong>Large Installation Tweaks Option</strong></span></p>
 
@@ -3367,7 +3450,7 @@
   a host or service changes between states too frequently, resulting in a barrage of notifications being sent out. When Icinga
   detects that a host or service is flapping, it will temporarily suppress notifications for that host/service until it stops flapping. Flap
   detection is very experimental at this point, so use this feature with caution! More information on how flap detection and handling works
-  can be found <a class="link" href="flapping.html" title="7.7. Detection and Handling of State Flapping">here</a>.</p>
+  can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -3414,7 +3497,7 @@
   </div>
 
   <p>This option is used to set the low threshold for detection of service flapping. For more information on how flap detection and
-  handling works (and how this option affects things) read <a class="link" href="flapping.html" title="7.7. Detection and Handling of State Flapping">this</a>.</p>
+  handling works (and how this option affects things) read <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">this</a>.</p>
 
   <p><a name="configmain-high_service_flap_threshold"></a> <span class="bold"><strong>High Service Flap Threshold</strong></span></p>
 
@@ -3439,7 +3522,7 @@
   </div>
 
   <p>This option is used to set the high threshold for detection of service flapping. For more information on how flap detection and
-  handling works (and how this option affects things) read <a class="link" href="flapping.html" title="7.7. Detection and Handling of State Flapping">this</a>.</p>
+  handling works (and how this option affects things) read <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">this</a>.</p>
 
   <p><a name="configmain-low_host_flap_threshold"></a> <span class="bold"><strong>Low Host Flap Threshold</strong></span></p>
 
@@ -3464,7 +3547,7 @@
   </div>
 
   <p>This option is used to set the low threshold for detection of host flapping. For more information on how flap detection and handling
-  works (and how this option affects things) read <a class="link" href="flapping.html" title="7.7. Detection and Handling of State Flapping">this</a>.</p>
+  works (and how this option affects things) read <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">this</a>.</p>
 
   <p><a name="configmain-high_host_flap_threshold"></a> <span class="bold"><strong>High Host Flap Threshold</strong></span></p>
 
@@ -3489,7 +3572,7 @@
   </div>
 
   <p>This option is used to set the high threshold for detection of host flapping. For more information on how flap detection and
-  handling works (and how this option affects things) read <a class="link" href="flapping.html" title="7.7. Detection and Handling of State Flapping">this</a>.</p>
+  handling works (and how this option affects things) read <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">this</a>.</p>
 
   <p><a name="configmain-soft_state_dependencies"></a> <span class="bold"><strong>Soft State Dependencies Option</strong></span></p>
 
@@ -3513,7 +3596,7 @@
 </table>
   </div>
 
-  <p>This option determines whether or not Icinga will use soft state information when checking <a class="link" href="dependencies.html" title="7.12. Host and Service Dependencies">host
+  <p>This option determines whether or not Icinga will use soft state information when checking <a class="link" href="dependencies.html" title="7.13. Host and Service Dependencies">host
   and service dependencies</a>. Normally Icinga will only use the latest hard host or service state when checking dependencies. If
   you want it to use the latest state (regardless of whether its a soft or hard <a class="link" href="statetypes.html" title="5.8. State Types">state type</a>), enable this
   option.</p>
@@ -3526,6 +3609,30 @@
       <p>1 = Use soft state dependencies</p>
     </li>
 </ul></div>
+
+  <p><a name="configmain-time_change_threshold"></a><span class="bold"><strong>Time Change Threshold </strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>time_change_threshold=(seconds)</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>time_change_threshold=900</strong></span> </font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>These option determines when Icinga will react to detected changes in system time (just forward).</p>
 
   <p><a name="configmain-service_check_timeout"></a> <span class="bold"><strong>Service Check Timeout</strong></span></p>
 
@@ -3635,7 +3742,7 @@
 </table>
   </div>
 
-  <p>This is the maximum number of seconds that Icinga will allow <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handlers</a> to be run.
+  <p>This is the maximum number of seconds that Icinga will allow <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a> to be run.
   If an event handler exceeds this time limit it will be killed and a warning will be logged.</p>
 
   <p>There is often widespread confusion as to what this option really does. It is meant to be used as a last ditch mechanism to kill off
@@ -3769,7 +3876,7 @@
   </div>
 
   <p>This value determines whether or not Icinga will "obsess" over service checks results and run the <a class="link" href="configmain.html#configmain-ocsp_command">obsessive compulsive service processor command</a> you define. We know - funny name, but it was all
-  Ethan could think of. This option is useful for performing <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed monitoring</a>. If you're not doing
+  Ethan could think of. This option is useful for performing <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed monitoring</a>. If you're not doing
   distributed monitoring, don't enable this option.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -3803,10 +3910,10 @@
 </table>
   </div>
 
-  <p>This option allows you to specify a command to be run after <span class="emphasis"><em>every</em></span> service check, which can be useful in <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed monitoring</a>. This command is executed after any <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handler</a>
+  <p>This option allows you to specify a command to be run after <span class="emphasis"><em>every</em></span> service check, which can be useful in <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed monitoring</a>. This command is executed after any <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handler</a>
   or <a class="link" href="notifications.html" title="5.11. Notifications">notification</a> commands. The <span class="emphasis"><em>command</em></span> argument is the short name of a <a class="link" href="objectdefinitions.html#objectdefinitions-command">command definition</a> that you define in your object configuration file. The maximum amount of
   time that this command can run is controlled by the <a class="link" href="configmain.html#configmain-ocsp_timeout">ocsp_timeout</a> option. More information
-  on distributed monitoring can be found <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">here</a>. This command is only executed if the <a class="link" href="configmain.html#configmain-obsess_over_services">obsess_over_services</a> option is enabled globally and if the
+  on distributed monitoring can be found <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">here</a>. This command is only executed if the <a class="link" href="configmain.html#configmain-obsess_over_services">obsess_over_services</a> option is enabled globally and if the
   <span class="emphasis"><em>obsess_over_service</em></span> directive in the <a class="link" href="objectdefinitions.html#objectdefinitions-service">service definition</a> is
   enabled.</p>
 
@@ -3833,7 +3940,7 @@
   </div>
 
   <p>This value determines whether or not Icinga will "obsess" over host checks results and run the <a class="link" href="configmain.html#configmain-ochp_command">obsessive compulsive host processor command</a> you define. We know - funny name, but it was all
-  Ethan could think of. This option is useful for performing <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed monitoring</a>. If you're not doing
+  Ethan could think of. This option is useful for performing <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed monitoring</a>. If you're not doing
   distributed monitoring, don't enable this option.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -3867,10 +3974,10 @@
 </table>
   </div>
 
-  <p>This option allows you to specify a command to be run after <span class="emphasis"><em>every</em></span> host check, which can be useful in <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed monitoring</a>. This command is executed after any <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handler</a>
+  <p>This option allows you to specify a command to be run after <span class="emphasis"><em>every</em></span> host check, which can be useful in <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed monitoring</a>. This command is executed after any <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handler</a>
   or <a class="link" href="notifications.html" title="5.11. Notifications">notification</a> commands. The <span class="emphasis"><em>command</em></span> argument is the short name of a <a class="link" href="objectdefinitions.html#objectdefinitions-command">command definition</a> that you define in your object configuration file. The maximum amount of
   time that this command can run is controlled by the <a class="link" href="configmain.html#configmain-ochp_timeout">ochp_timeout</a> option. More information
-  on distributed monitoring can be found <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">here</a>. This command is only executed if the <a class="link" href="configmain.html#configmain-obsess_over_hosts">obsess_over_hosts</a> option is enabled globally and if the
+  on distributed monitoring can be found <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">here</a>. This command is only executed if the <a class="link" href="configmain.html#configmain-obsess_over_hosts">obsess_over_hosts</a> option is enabled globally and if the
   <span class="emphasis"><em>obsess_over_host</em></span> directive in the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a> is enabled.</p>
 
   <p><a name="configmain-process_performance_data"></a> <span class="bold"><strong>Performance Data Processing Option</strong></span></p>
@@ -3895,7 +4002,7 @@
 </table>
   </div>
 
-  <p>This value determines whether or not Icinga will process host and service check <a class="link" href="perfdata.html" title="7.14. Performance Data">performance
+  <p>This value determines whether or not Icinga will process host and service check <a class="link" href="perfdata.html" title="7.15. Performance Data">performance
   data</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -3929,7 +4036,7 @@
 </table>
   </div>
 
-  <p>This option allows you to specify a command to be run after <span class="emphasis"><em>every</em></span> host check to process host <a class="link" href="perfdata.html" title="7.14. Performance Data">performance data</a> that may be returned from the check. The <span class="emphasis"><em>command</em></span> argument is the short
+  <p>This option allows you to specify a command to be run after <span class="emphasis"><em>every</em></span> host check to process host <a class="link" href="perfdata.html" title="7.15. Performance Data">performance data</a> that may be returned from the check. The <span class="emphasis"><em>command</em></span> argument is the short
   name of a <a class="link" href="objectdefinitions.html#objectdefinitions-command">command definition</a> that you define in your object configuration file. This
   command is only executed if the <a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a> option is enabled
   globally and if the <span class="emphasis"><em>process_perf_data</em></span> directive in the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a>
@@ -3957,7 +4064,7 @@
 </table>
   </div>
 
-  <p>This option allows you to specify a command to be run after <span class="emphasis"><em>every</em></span> service check to process service <a class="link" href="perfdata.html" title="7.14. Performance Data">performance data</a> that may be returned from the check. The <span class="emphasis"><em>command</em></span> argument is the short
+  <p>This option allows you to specify a command to be run after <span class="emphasis"><em>every</em></span> service check to process service <a class="link" href="perfdata.html" title="7.15. Performance Data">performance data</a> that may be returned from the check. The <span class="emphasis"><em>command</em></span> argument is the short
   name of a <a class="link" href="objectdefinitions.html#objectdefinitions-command">command definition</a> that you define in your object configuration file. This
   command is only executed if the <a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a> option is enabled
   globally and if the <span class="emphasis"><em>process_perf_data</em></span> directive in the <a class="link" href="objectdefinitions.html#objectdefinitions-service">service
@@ -3984,7 +4091,7 @@
 </table>
   </div>
 
-  <p>This option allows you to specify a file to which host <a class="link" href="perfdata.html" title="7.14. Performance Data">performance data</a> will be written after every
+  <p>This option allows you to specify a file to which host <a class="link" href="perfdata.html" title="7.15. Performance Data">performance data</a> will be written after every
   host check. Data will be written to the performance file as specified by the <a class="link" href="configmain.html#configmain-host_perfdata_file_template">host_perfdata_file_template</a> option. Performance data is only written to this file
   if the <a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a> option is enabled globally and if the
   <span class="emphasis"><em>process_perf_data</em></span> directive in the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a> is enabled.</p>
@@ -4010,7 +4117,7 @@
 </table>
   </div>
 
-  <p>This option allows you to specify a file to which service <a class="link" href="perfdata.html" title="7.14. Performance Data">performance data</a> will be written after
+  <p>This option allows you to specify a file to which service <a class="link" href="perfdata.html" title="7.15. Performance Data">performance data</a> will be written after
   every service check. Data will be written to the performance file as specified by the <a class="link" href="configmain.html#configmain-service_perfdata_file_template">service_perfdata_file_template</a> option. Performance data is only written to this
   file if the <a class="link" href="configmain.html#configmain-process_performance_data">process_performance_data</a> option is enabled globally and if the
   <span class="emphasis"><em>process_perf_data</em></span> directive in the <a class="link" href="objectdefinitions.html#objectdefinitions-service">service definition</a> is
@@ -4354,7 +4461,7 @@
 
   <p>This option determines whether or not Icinga will periodically check the "freshness" of service checks. Enabling this option
   is useful for helping to ensure that <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive service checks</a> are received in a timely manner. More
-  information on freshness checking can be found <a class="link" href="freshness.html" title="7.4. Service and Host Freshness Checks">here</a>.</p>
+  information on freshness checking can be found <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">here</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -4390,7 +4497,7 @@
 
   <p>This setting determines how often (in seconds) Icinga will periodically check the "freshness" of service check results. If
   you have disabled service freshness checking (with the <a class="link" href="configmain.html#configmain-check_service_freshness">check_service_freshness</a>
-  option), this option has no effect. More information on freshness checking can be found <a class="link" href="freshness.html" title="7.4. Service and Host Freshness Checks">here</a>.</p>
+  option), this option has no effect. More information on freshness checking can be found <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">here</a>.</p>
 
   <p><a name="configmain-check_host_freshness"></a> <span class="bold"><strong>Host Freshness Checking Option</strong></span></p>
 
@@ -4416,7 +4523,7 @@
 
   <p>This option determines whether or not Icinga will periodically check the "freshness" of host checks. Enabling this option is
   useful for helping to ensure that <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive host checks</a> are received in a timely manner. More
-  information on freshness checking can be found <a class="link" href="freshness.html" title="7.4. Service and Host Freshness Checks">here</a>.</p>
+  information on freshness checking can be found <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">here</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -4451,7 +4558,7 @@
 
   <p>This setting determines how often (in seconds) Icinga will periodically check the "freshness" of host check results. If you
   have disabled host freshness checking (with the <a class="link" href="configmain.html#configmain-check_host_freshness">check_host_freshness</a> option), this
-  option has no effect. More information on freshness checking can be found <a class="link" href="freshness.html" title="7.4. Service and Host Freshness Checks">here</a>.</p>
+  option has no effect. More information on freshness checking can be found <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">here</a>.</p>
 
   <p><a name="configmain-additional_freshness_latency"></a> <span class="bold"><strong>Additional Freshness Threshold Latency
   Option</strong></span></p>
@@ -4477,7 +4584,23 @@
   </div>
 
   <p>This option determines the number of seconds Icinga will add to any host or services freshness threshold it automatically
-  calculates (e.g. those not specified explicity by the user). More information on freshness checking can be found <a class="link" href="freshness.html" title="7.4. Service and Host Freshness Checks">here</a>.</p>
+  calculates (e.g. those not specified explicity by the user). More information on freshness checking can be found <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">here</a>.</p>
+<p><a name="configmain-p1_file_location"></a><span class="bold"><strong>P1.PL File Location</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>p1_file=@P1FILELOC@/p1.pl</strong></span></p></td>
+</tr></tbody>
+</table>
+  </div>
+
+  <p>This value determines where the p1.pl perl script (used by the embedded Perl interpreter) is located. If you didn't compile Icinga with embedded Perl support, this option has no effect.</p>
 
   <p><a name="configmain-enable_embedded_perl"></a> <span class="bold"><strong>Embedded Perl Interpreter Option</strong></span></p>
 
@@ -4503,7 +4626,7 @@
 
   <p>This setting determines whether or not the embedded Perl interpreter is enabled on a program-wide basis. Icinga must be
   compiled with support for embedded Perl for this option to have an effect. More information on the embedded Perl interpreter can be found
-  <a class="link" href="embeddedperl.html" title="7.17. Using The Embedded Perl Interpreter">here</a>.</p>
+  <a class="link" href="embeddedperl.html" title="7.18. Using The Embedded Perl Interpreter">here</a>.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -4540,7 +4663,7 @@
 
   <p>This setting determines whether or not the embedded Perl interpreter should be used for Perl plugins/scripts that do not explicitly
   enable/disable it. Icinga must be compiled with support for embedded Perl for this option to have an effect. More information on
-  the embedded Perl interpreter and the effect of this setting can be found <a class="link" href="embeddedperl.html" title="7.17. Using The Embedded Perl Interpreter">here</a>.</p>
+  the embedded Perl interpreter and the effect of this setting can be found <a class="link" href="embeddedperl.html" title="7.18. Using The Embedded Perl Interpreter">here</a>.</p>
 
   <p><a name="configmain-date_format"></a> <span class="bold"><strong>Date Format</strong></span></p>
 
@@ -4751,7 +4874,7 @@
   </div>
 
   <p>This option determines whether or not various directives in your <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object definitions</a> will be
-  processed as regular expressions. More information on how this works can be found <a class="link" href="objecttricks.html" title="7.26. Time-Saving Tricks For Object Definitions">here</a>.</p>
+  processed as regular expressions. More information on how this works can be found <a class="link" href="objecttricks.html" title="7.27. Time-Saving Tricks For Object Definitions">here</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -4788,7 +4911,7 @@
   <p>If you've enabled regular expression matching of various object directives using the <a class="link" href="configmain.html#configmain-use_regexp_matching">use_regexp_matching</a> option, this option will determine when object directives are treated
   as regular expressions. If this option is disabled (the default), directives will only be treated as regular expressions if they contain
   <span class="bold"><strong>*</strong></span>, <span class="bold"><strong>?</strong></span>, <span class="bold"><strong>+</strong></span>, or <span class="bold"><strong>\.</strong></span>. If this option is enabled, all appropriate directives will be treated as regular expression - be careful when
-  enabling this! More information on how this works can be found <a class="link" href="objecttricks.html" title="7.26. Time-Saving Tricks For Object Definitions">here</a>.</p>
+  enabling this! More information on how this works can be found <a class="link" href="objecttricks.html" title="7.27. Time-Saving Tricks For Object Definitions">here</a>.</p>
 
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -4849,7 +4972,36 @@
   <p>This is the pager number (or pager email gateway) for the administrator of the local machine (i.e. the one that Icinga is
   running on). The pager number/address can be used in notification commands by using the <span class="bold"><strong>$ADMINPAGER$</strong></span>
   <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macro</a>.</p>
+<p><a name="configmain-daemon_dumps_core"></a> <span class="bold"><strong>Daemon Core Dump Option</strong></span></p>
 
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>daemon_dumps_core=&lt;0/1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>daemon_dumps_core=1</strong></span></font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+<p>This option determines whether or not Icinga is allowed to create a core dump when it runs as a daemon.  Note that it is generally considered bad form to allow this, but it may be useful for debugging purposes.  Enabling this option doesn't guarantee that a core file will be produced, but that's just life.</p>
+ <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p>0 = Don't allow core dumps (default)</p>
+    </li>
+<li class="listitem">
+      <p>1 = Allow core dumps</p>
+    </li>
+</ul></div>
   <p><a name="configmain-event_broker_options"></a> <span class="bold"><strong>Event Broker Options</strong></span></p>
 
   <div class="informaltable">
@@ -5007,6 +5159,21 @@
 <li class="listitem">
       <p>64 = Event broker information</p>
     </li>
+<li class="listitem">
+      <p>128 = External commands</p>
+    </li>
+<li class="listitem">
+      <p>256 = Commands</p>
+    </li>
+<li class="listitem">
+      <p>512 = Scheduled downtime</p>
+    </li>
+<li class="listitem">
+      <p>1024 = Comments</p>
+    </li>
+<li class="listitem">
+      <p>2048 = Macros</p>
+    </li>
 </ul></div>
 
   <p><a name="configmain-debug_verbosity"></a> <span class="bold"><strong>Debug Verbosity</strong></span></p>
@@ -5069,6 +5236,30 @@
   <p>This option determines the maximum size (in bytes) of the <a class="link" href="configmain.html#configmain-debug_file">debug file</a>. If the file grows
   larger than this size, it will be renamed with a .old extension. If a file already exists with a .old extension it will automatically be
   deleted. This helps ensure your disk space usage doesn't get out of control when debugging Icinga.</p>
+
+<p><a name="configmain-event_profiling"></a> <span class="bold"><strong>Event Profiling</strong></span></p>
+
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p><span class="bold"><strong>event_profiling_enabled=&lt;0/1&gt;</strong></span></p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p><span class="color"><font color="red"><span class="bold"><strong>event_profiling_enabled=1</strong></span></font></span>
+          </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
+
+  <p>This option enables or disables event profiling for stats of event counts and time taken for events. This option can't be used on Solaris with gcc3.</p>
 
   <p><a name="configmain-allow_empty_hostgroup_assignment"></a> <span class="bold"><strong>Allow Empty Hostgroup
   Assignment</strong></span></p>
@@ -5200,283 +5391,328 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="id1344100"></a>
+  <p><a name="configmain-max_check_result_list_items"></a><span class="bold"><strong>Limit number of items in check result
+  list</strong></span></p>
 
-  <a class="indexterm" name="id1344108"></a>
+  <div class="informaltable">
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p>Format:</p></td>
+<td><p> <span class="bold"><strong>max_check_result_list_items=&lt;n&gt;</strong></span> </p></td>
+</tr>
+<tr>
+<td><p>Example:</p></td>
+<td><p> <span class="color"><font color="red"> <span class="bold"><strong>max_check_result_list_items=1024</strong></span>
+          </font></span> </p></td>
+</tr>
+</tbody>
+</table>
+  </div>
 
-  <a class="indexterm" name="id1344119"></a>
+  <p>This <span class="bold"><strong>experimental</strong></span> option allows you to set the max number of items the checkresult reaper will put
+  onto the checkresult list for further processing by the core. If there are too many, the reaping will be terminated early, allowing the
+  core to process the results sooner. On larger setups, that list might grow too much, and decrease performance on processing. You might
+  experiment with that value, the inner core default is set to 0, disabling that feature. Values: 0 = Disable max check result list items
+  number = set max check result list items</p>
 
-  <a class="indexterm" name="id1344134"></a>
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>These options are available starting with Icinga 1.8</p>
+  </td></tr>
+</table></div>
 
-  <a class="indexterm" name="id1344147"></a>
+  <a class="indexterm" name="idp3595776"></a>
 
-  <a class="indexterm" name="id1344161"></a>
+  <a class="indexterm" name="idp3598784"></a>
 
-  <a class="indexterm" name="id1344173"></a>
+  <a class="indexterm" name="idp3600064"></a>
 
-  <a class="indexterm" name="id1344174"></a>
+  <a class="indexterm" name="idp3601904"></a>
 
-  <a class="indexterm" name="id1344202"></a>
+  <a class="indexterm" name="idp3603424"></a>
 
-  <a class="indexterm" name="id1344216"></a>
+  <a class="indexterm" name="idp3604992"></a>
 
-  <a class="indexterm" name="id1344230"></a>
+  <a class="indexterm" name="idp3606464"></a>
 
-  <a class="indexterm" name="id1344243"></a>
+  <a class="indexterm" name="idp3606592"></a>
 
-  <a class="indexterm" name="id1344256"></a>
+  <a class="indexterm" name="idp3610016"></a>
 
-  <a class="indexterm" name="id1344270"></a>
+  <a class="indexterm" name="idp3611536"></a>
 
-  <a class="indexterm" name="id1344284"></a>
+  <a class="indexterm" name="idp3613168"></a>
 
-  <a class="indexterm" name="id1344297"></a>
+  <a class="indexterm" name="idp3614800"></a>
 
-  <a class="indexterm" name="id1344311"></a>
+  <a class="indexterm" name="idp3616496"></a>
 
-  <a class="indexterm" name="id1344325"></a>
+  <a class="indexterm" name="idp3617984"></a>
 
-  <a class="indexterm" name="id1344339"></a>
+  <a class="indexterm" name="idp3619680"></a>
 
-  <a class="indexterm" name="id1344351"></a>
+  <a class="indexterm" name="idp3621264"></a>
 
-  <a class="indexterm" name="id1344365"></a>
+  <a class="indexterm" name="idp3622864"></a>
 
-  <a class="indexterm" name="id1344379"></a>
+  <a class="indexterm" name="idp3624544"></a>
 
-  <a class="indexterm" name="id1344392"></a>
+  <a class="indexterm" name="idp3626096"></a>
 
-  <a class="indexterm" name="id1344406"></a>
+  <a class="indexterm" name="idp3627152"></a>
 
-  <a class="indexterm" name="id1344420"></a>
+  <a class="indexterm" name="idp3629424"></a>
 
-  <a class="indexterm" name="id1344434"></a>
+  <a class="indexterm" name="idp3631088"></a>
+<a class="indexterm" name="idp3632720"></a>
+  <a class="indexterm" name="idp3634352"></a>
 
-  <a class="indexterm" name="id1344448"></a>
+  <a class="indexterm" name="idp3635984"></a>
 
-  <a class="indexterm" name="id1344461"></a>
+  <a class="indexterm" name="idp3637376"></a>
 
-  <a class="indexterm" name="id1344475"></a>
+  <a class="indexterm" name="idp3637504"></a>
 
-  <a class="indexterm" name="id1344488"></a>
+  <a class="indexterm" name="idp3640976"></a>
 
-  <a class="indexterm" name="id1344501"></a>
+  <a class="indexterm" name="idp3642560"></a>
 
-  <a class="indexterm" name="id1344515"></a>
+  <a class="indexterm" name="idp3644160"></a>
 
-  <a class="indexterm" name="id1344529"></a>
+  <a class="indexterm" name="idp3645552"></a>
 
-  <a class="indexterm" name="id1344543"></a>
+  <a class="indexterm" name="idp3647280"></a>
 
-  <a class="indexterm" name="id1344557"></a>
+  <a class="indexterm" name="idp3648976"></a>
 
-  <a class="indexterm" name="id1344571"></a>
+  <a class="indexterm" name="idp3650752"></a>
 
-  <a class="indexterm" name="id1344585"></a>
+  <a class="indexterm" name="idp3651936"></a>
 
-  <a class="indexterm" name="id1344599"></a>
+  <a class="indexterm" name="idp3653568"></a>
 
-  <a class="indexterm" name="id1344613"></a>
+  <a class="indexterm" name="idp3655808"></a>
 
-  <a class="indexterm" name="id1344626"></a>
+  <a class="indexterm" name="idp3657488"></a>
 
-  <a class="indexterm" name="id1344641"></a>
+  <a class="indexterm" name="idp3659168"></a>
 
-  <a class="indexterm" name="id1344655"></a>
+  <a class="indexterm" name="idp3660848"></a>
 
-  <a class="indexterm" name="id1344669"></a>
+  <a class="indexterm" name="idp3662544"></a>
 
-  <a class="indexterm" name="id1344683"></a>
+  <a class="indexterm" name="idp3664128"></a>
 
-  <a class="indexterm" name="id1344696"></a>
+  <a class="indexterm" name="idp3665920"></a>
 
-  <a class="indexterm" name="id1344710"></a>
+  <a class="indexterm" name="idp3667568"></a>
 
-  <a class="indexterm" name="id1344724"></a>
+  <a class="indexterm" name="idp3669264"></a>
 
-  <a class="indexterm" name="id1344738"></a>
+  <a class="indexterm" name="idp3670912"></a>
 
-  <a class="indexterm" name="id1344751"></a>
+  <a class="indexterm" name="idp3672560"></a>
 
-  <a class="indexterm" name="id1344765"></a>
+  <a class="indexterm" name="idp3674208"></a>
 
-  <a class="indexterm" name="id1344779"></a>
+  <a class="indexterm" name="idp3675856"></a>
 
-  <a class="indexterm" name="id1344792"></a>
+  <a class="indexterm" name="idp3677504"></a>
 
-  <a class="indexterm" name="id1344806"></a>
+  <a class="indexterm" name="idp3679152"></a>
 
-  <a class="indexterm" name="id1344820"></a>
+  <a class="indexterm" name="idp3680800"></a>
 
-  <a class="indexterm" name="id1344834"></a>
+  <a class="indexterm" name="idp3682464"></a>
 
-  <a class="indexterm" name="id1344848"></a>
+  <a class="indexterm" name="idp3684032"></a>
 
-  <a class="indexterm" name="id1344862"></a>
+  <a class="indexterm" name="idp3685712"></a>
 
-  <a class="indexterm" name="id1344876"></a>
+  <a class="indexterm" name="idp3687392"></a>
 
-  <a class="indexterm" name="id1344885"></a>
+  <a class="indexterm" name="idp3689072"></a>
 
-  <a class="indexterm" name="id1344904"></a>
+  <a class="indexterm" name="idp3690656"></a>
 
-  <a class="indexterm" name="id1344917"></a>
+  <a class="indexterm" name="idp3692368"></a>
 
-  <a class="indexterm" name="id1344926"></a>
+  <a class="indexterm" name="idp3694128"></a>
 
-  <a class="indexterm" name="id1344945"></a>
+  <a class="indexterm" name="idp3695744"></a>
 
-  <a class="indexterm" name="id1344959"></a>
+  <a class="indexterm" name="idp3697408"></a>
 
-  <a class="indexterm" name="id1344971"></a>
+  <a class="indexterm" name="idp3699040"></a>
 
-  <a class="indexterm" name="id1344973"></a>
+  <a class="indexterm" name="idp3700720"></a>
 
-  <a class="indexterm" name="id1345000"></a>
+  <a class="indexterm" name="idp3702384"></a>
 
-  <a class="indexterm" name="id1345014"></a>
+  <a class="indexterm" name="idp3704016"></a>
 
-  <a class="indexterm" name="id1345028"></a>
+  <a class="indexterm" name="idp3705648"></a>
 
-  <a class="indexterm" name="id1345036"></a>
+  <a class="indexterm" name="idp3707344"></a>
 
-  <a class="indexterm" name="id1345050"></a>
+  <a class="indexterm" name="idp3708992"></a>
 
-  <a class="indexterm" name="id1345064"></a>
+  <a class="indexterm" name="idp3710624"></a>
 
-  <a class="indexterm" name="id1345083"></a>
+  <a class="indexterm" name="idp3712272"></a>
 
-  <a class="indexterm" name="id1345096"></a>
+  <a class="indexterm" name="idp3713920"></a>
 
-  <a class="indexterm" name="id1345111"></a>
+  <a class="indexterm" name="idp3715584"></a>
 
-  <a class="indexterm" name="id1345126"></a>
+  <a class="indexterm" name="idp3717248"></a>
 
-  <a class="indexterm" name="id1345135"></a>
+  <a class="indexterm" name="idp3718880"></a>
 
-  <a class="indexterm" name="id1345154"></a>
+  <a class="indexterm" name="idp3720464"></a>
 
-  <a class="indexterm" name="id1345163"></a>
+  <a class="indexterm" name="idp3722272"></a>
 
-  <a class="indexterm" name="id1345182"></a>
+  <a class="indexterm" name="idp3723984"></a>
 
-  <a class="indexterm" name="id1345196"></a>
+  <a class="indexterm" name="idp3725104"></a>
 
-  <a class="indexterm" name="id1345204"></a>
+  <a class="indexterm" name="idp3727376"></a>
 
-  <a class="indexterm" name="id1345223"></a>
+  <a class="indexterm" name="idp3728448"></a>
 
-  <a class="indexterm" name="id1345235"></a>
+  <a class="indexterm" name="idp3730720"></a>
 
-  <a class="indexterm" name="id1345251"></a>
+  <a class="indexterm" name="idp3732368"></a>
 
-  <a class="indexterm" name="id1345264"></a>
+  <a class="indexterm" name="idp3733424"></a>
 
-  <a class="indexterm" name="id1345273"></a>
+  <a class="indexterm" name="idp3735696"></a>
 
-  <a class="indexterm" name="id1345292"></a>
+  <a class="indexterm" name="idp3737088"></a>
 
-  <a class="indexterm" name="id1345306"></a>
+  <a class="indexterm" name="idp3738976"></a>
 
-  <a class="indexterm" name="id1345320"></a>
+  <a class="indexterm" name="idp3740624"></a>
 
-  <a class="indexterm" name="id1345333"></a>
+  <a class="indexterm" name="idp3741680"></a>
 
-  <a class="indexterm" name="id1345347"></a>
+  <a class="indexterm" name="idp3743952"></a>
 
-  <a class="indexterm" name="id1345361"></a>
+  <a class="indexterm" name="idp3745600"></a>
 
-  <a class="indexterm" name="id1345375"></a>
+  <a class="indexterm" name="idp3747248"></a>
 
-  <a class="indexterm" name="id1345388"></a>
+  <a class="indexterm" name="idp3748912"></a>
 
-  <a class="indexterm" name="id1345401"></a>
+  <a class="indexterm" name="idp3750560"></a>
 
-  <a class="indexterm" name="id1345415"></a>
+  <a class="indexterm" name="idp3752192"></a>
 
-  <a class="indexterm" name="id1345429"></a>
+  <a class="indexterm" name="idp3753824"></a>
 
-  <a class="indexterm" name="id1345442"></a>
+  <a class="indexterm" name="idp3755520"></a>
 
-  <a class="indexterm" name="id1345456"></a>
+  <a class="indexterm" name="idp3757088"></a>
 
-  <a class="indexterm" name="id1345470"></a>
+  <a class="indexterm" name="idp3758720"></a>
 
-  <a class="indexterm" name="id1345484"></a>
+  <a class="indexterm" name="idp3760368"></a>
 
-  <a class="indexterm" name="id1345497"></a>
+  <a class="indexterm" name="idp3762000"></a>
 
-  <a class="indexterm" name="id1345511"></a>
+  <a class="indexterm" name="idp3763648"></a>
 
-  <a class="indexterm" name="id1345525"></a>
+  <a class="indexterm" name="idp3765280"></a>
 
-  <a class="indexterm" name="id1345539"></a>
+  <a class="indexterm" name="idp3766336"></a>
 
-  <a class="indexterm" name="id1345552"></a>
+  <a class="indexterm" name="idp3768608"></a>
 
-  <a class="indexterm" name="id1345567"></a>
+  <a class="indexterm" name="idp3769664"></a>
 
-  <a class="indexterm" name="id1345581"></a>
+  <a class="indexterm" name="idp3771936"></a>
 
-  <a class="indexterm" name="id1345594"></a>
+  <a class="indexterm" name="idp3773584"></a>
 
-  <a class="indexterm" name="id1345608"></a>
+  <a class="indexterm" name="idp3774640"></a>
 
-  <a class="indexterm" name="id1345622"></a>
+  <a class="indexterm" name="idp3776880"></a>
 
-  <a class="indexterm" name="id1345636"></a>
+  <a class="indexterm" name="idp3778480"></a>
 
-  <a class="indexterm" name="id1345651"></a>
+  <a class="indexterm" name="idp3780176"></a>
 
-  <a class="indexterm" name="id1345665"></a>
+  <a class="indexterm" name="idp3781952"></a>
 
-  <a class="indexterm" name="id1345678"></a>
+  <a class="indexterm" name="idp3783632"></a>
 
-  <a class="indexterm" name="id1345692"></a>
+  <a class="indexterm" name="idp3785344"></a>
 
-  <a class="indexterm" name="id1345706"></a>
+  <a class="indexterm" name="idp3786992"></a>
 
-  <a class="indexterm" name="id1345720"></a>
+  <a class="indexterm" name="idp3788592"></a>
 
-  <a class="indexterm" name="id1345734"></a>
+  <a class="indexterm" name="idp3790400"></a>
 
-  <a class="indexterm" name="id1345748"></a>
+  <a class="indexterm" name="idp3792144"></a>
 
-  <a class="indexterm" name="id1345761"></a>
+  <a class="indexterm" name="idp3793776"></a>
 
-  <a class="indexterm" name="id1345775"></a>
+  <a class="indexterm" name="idp3795472"></a>
 
-  <a class="indexterm" name="id1345789"></a>
+  <a class="indexterm" name="idp3797104"></a>
+<a class="indexterm" name="idp3798784"></a>
+  <a class="indexterm" name="idp3800448"></a>
 
-  <a class="indexterm" name="id1345802"></a>
+  <a class="indexterm" name="idp3802096"></a>
 
-  <a class="indexterm" name="id1345816"></a>
+  <a class="indexterm" name="idp3803744"></a>
 
-  <a class="indexterm" name="id1345830"></a>
+  <a class="indexterm" name="idp3805344"></a>
 
-  <a class="indexterm" name="id1345843"></a>
+  <a class="indexterm" name="idp3807008"></a>
 
-  <a class="indexterm" name="id1345857"></a>
+  <a class="indexterm" name="idp3808640"></a>
 
-  <a class="indexterm" name="id1345870"></a>
+  <a class="indexterm" name="idp3810288"></a>
 
-  <a class="indexterm" name="id1345884"></a>
+  <a class="indexterm" name="idp3811936"></a>
 
-  <a class="indexterm" name="id1345898"></a>
+  <a class="indexterm" name="idp3813568"></a>
 
-  <a class="indexterm" name="id1345912"></a>
+  <a class="indexterm" name="idp3815216"></a>
 
-  <a class="indexterm" name="id1345925"></a>
+  <a class="indexterm" name="idp3816816"></a>
 
-  <a class="indexterm" name="id1345939"></a>
+  <a class="indexterm" name="idp3818448"></a>
 
-  <a class="indexterm" name="id1345952"></a>
+  <a class="indexterm" name="idp3820128"></a>
 
-  <a class="indexterm" name="id1345966"></a>
+  <a class="indexterm" name="idp3821760"></a>
 
-  <a class="indexterm" name="id1345975"></a>
+  <a class="indexterm" name="idp3823424"></a>
 
-  <a class="indexterm" name="id1345994"></a>
+  <a class="indexterm" name="idp3825088"></a>
+
+  <a class="indexterm" name="idp3826720"></a>
+<a class="indexterm" name="idp3828352"></a>
+  <a class="indexterm" name="idp3829984"></a>
+
+  <a class="indexterm" name="idp3831616"></a>
+
+  <a class="indexterm" name="idp3833216"></a>
+
+  <a class="indexterm" name="idp3834896"></a>
 </div>
 <div class="navfooter">
 <hr>

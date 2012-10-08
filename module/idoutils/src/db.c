@@ -95,6 +95,7 @@ int ido2db_oci_prepared_statement_instances_select(ido2db_idi *idi);
 /* update stuff */
 int ido2db_oci_prepared_statement_objects_update_inactive(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_objects_update_active(ido2db_idi *idi);
+int ido2db_oci_prepared_statement_object_enable_disable(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_programstatus_update(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_timedevents_update(ido2db_idi *idi);
 int ido2db_oci_prepared_statement_comment_history_update(ido2db_idi *idi);
@@ -1005,6 +1006,12 @@ int ido2db_db_connect(ido2db_idi *idi) {
 		return IDO_ERROR;
 	}
 
+        /* objects enable disable */
+        if (ido2db_oci_prepared_statement_object_enable_disable(idi) == IDO_ERROR) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_object_enable_disable() failed\n");
+                return IDO_ERROR;
+        }
+
 	/* logentries select  */
 	if (ido2db_oci_prepared_statement_logentries_select(idi) == IDO_ERROR) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_logentries_select() failed\n");
@@ -1279,6 +1286,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_objects_select_cached, "oci_statement_objects_select_cached");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_objects_update_inactive, "oci_statement_objects_update_inactive");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_objects_update_active, "oci_statement_objects_update_active");
+	ido2db_oci_statement_free(idi->dbinfo.oci_statement_object_enable_disable, "oci_statement_object_enable_disable");
 
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_logentries_select, "oci_statement_logentries_select");
 	ido2db_oci_statement_free(idi->dbinfo.oci_statement_programstatus_update, "oci_statement_programstatus_update");
@@ -3671,6 +3679,45 @@ int ido2db_oci_prepared_statement_objects_update_active(ido2db_idi *idi) {
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
 
 	return IDO_OK;
+}
+
+int ido2db_oci_prepared_statement_object_enable_disable(ido2db_idi *idi) {
+
+        char *buf = NULL;
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() start\n");
+
+        if (asprintf(&buf,
+                     "UPDATE %s SET is_active=:X1"
+                     "WHERE instance_id=:X2 "
+                     "AND (((name1 is null) and (:X3 is null)) or (name1=:X3)) "
+                     "AND (((name2 is null) and (:X4 is null)) or (name2=:X4))",
+                     ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS]) == -1) {
+                buf = NULL;
+        }
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() query: %s\n", buf);
+
+        if (idi->dbinfo.oci_connection) {
+
+                idi->dbinfo.oci_statement_object_enable_disable = OCI_StatementCreate(idi->dbinfo.oci_connection);
+
+                /* allow rebinding values */
+                OCI_AllowRebinding(idi->dbinfo.oci_statement_object_enable_disable, 1);
+
+                if (!OCI_Prepare(idi->dbinfo.oci_statement_object_enable_disable, MT(buf))) {
+                        free(buf);
+                        return IDO_ERROR;
+                }
+        } else {
+                free(buf);
+                return IDO_ERROR;
+        }
+        free(buf);
+
+        //ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_() end\n");
+
+        return IDO_OK;
 }
 
 

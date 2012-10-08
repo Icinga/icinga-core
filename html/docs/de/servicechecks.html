@@ -45,11 +45,11 @@
       festgelegt sind.</p>
     </li>
 <li class="listitem">
-      <p>nach Bedarf bei <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende Abhängigkeitsprüfungen">vorausschauende Host-Abhängigkeitsprüfungen</a>.</p>
+      <p>nach Bedarf bei <a class="link" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">vorausschauende Host-Abhängigkeitsprüfungen</a>.</p>
     </li>
 </ul></div>
 
-  <p>Prüfungen nach Bedarf werden als Teil der <a class="link" href="dependencychecks.html" title="7.19. Vorausschauende Abhängigkeitsprüfungen">vorausschauenden
+  <p>Prüfungen nach Bedarf werden als Teil der <a class="link" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">vorausschauenden
   Service-Abhängigkeitsprüfung</a>s-Logik durchgeführt. Diese Prüfungen helfen sicherzustellen, dass die Abhängigkeitslogik so
   genau wie möglich ist. Falls Sie die <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeiten</a> nicht
   nutzen, wird Icinga keine Service-Prüfungen nach Bedarf durchführen.</p>
@@ -59,13 +59,13 @@
   <p>Die Performance von Service-Prüfungen nach Bedarf kann signifikant durch den Einsatz von "cached checks" erhöht werden,
   die es Icinga erlauben, auf eine Service-Prüfung zu verzichten, wenn es feststellt, dass ein relativ frisches
   Prüfungsergebnis genügt. Cached checks werden nur dann einen Performance-Gewinn ergeben, wenn Sie <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeiten</a> nutzen. Mehr Informationen zu "cached checks" finden
-  Sie <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte Prüfungen">hier</a>.</p>
+  Sie <a class="link" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">hier</a>.</p>
 
   <p><span class="bold"><strong>Abhängigkeiten und Prüfungen</strong></span></p>
 
   <p>Sie können <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Ausführungs-Abhängigkeiten</a> definieren, die
   Icinga von der Statusprüfung eines Service abhalten in Abhängigkeit vom Status ein oder mehrerer anderer Services. Mehr
-  Informationen zu Abhängigkeiten finden Sie <a class="link" href="dependencies.html" title="7.12. Host- und Service-Abhängigkeiten">hier</a>.</p>
+  Informationen zu Abhängigkeiten finden Sie <a class="link" href="dependencies.html" title="7.13. Host- und Service-Abhängigkeiten">hier</a>.</p>
 
   <p><span class="bold"><strong>Parallelisierung von Service-Prüfungen</strong></span></p>
 
@@ -109,14 +109,14 @@
 
   <p>Wenn Icinga den Status von Services prüft, ist es in der Lage festzustellen, wenn ein Service zwischen OK-,
   WARNING-, UNKNOWN- und CRITICAL-Zuständen wechselt und geeignete Maßnahmen ergreifen. Diese Zustandsänderungen resultieren in
-  verschiedenen <a class="link" href="statetypes.html" title="5.8. Statustypen">Statustypen</a> (HARD oder SOFT), was zum Auslösen von <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandlern</a> und dem Versenden von <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a>
+  verschiedenen <a class="link" href="statetypes.html" title="5.8. Statustypen">Statustypen</a> (HARD oder SOFT), was zum Auslösen von <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandlern</a> und dem Versenden von <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a>
   führen kann. Service-Statusänderungen können auch zum Auslösen von <a class="link" href="hostchecks.html" title="5.4. Host-Prüfungen (Host checks)">Host-Prüfungen</a> nach Bedarf
   führen. Das Erkennen und Behandeln von Statusänderungen ist das, worum es sich bei Icinga handelt.</p>
 
   <p>Wenn Service-Statusänderungen zu oft erfolgen, werden sie als "flatternd" (flapping) angesehen. Icinga kann
   erkennen, wenn Services anfangen zu flattern, und kann Benachrichtigungen unterdrücken, bis das Flattern stoppt und sich der
-  Service-Status stabilisiert. Mehr Informationen über die Erkennungslogik des Flatterns finden Sie <a class="link" href="flapping.html" title="7.7. Erkennung und Behandlung von Status-Flattern">hier</a>.</p>
-  <a class="indexterm" name="id1600257"></a>
+  Service-Status stabilisiert. Mehr Informationen über die Erkennungslogik des Flatterns finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>.</p>
+  <a class="indexterm" name="idp9636320"></a>
 </div>
 <div class="navfooter">
 <hr>

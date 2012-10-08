@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.5. Verteilte Überwachung</title>
+<title>7.6. Verteilte Überwachung</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="freshness.html" title="7.4. Service- und Host-Frische-Prüfungen">
-<link rel="next" href="redundancy.html" title="7.6. Redundante und Failover-Netzwerk-Überwachung">
+<link rel="prev" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">
+<link rel="next" href="redundancy.html" title="7.7. Redundante und Failover-Netzwerk-Überwachung">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.5. Verteilte Überwachung</th></tr>
+<tr><th colspan="3" align="center">7.6. Verteilte Überwachung</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="freshness.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.5. Verteilte Überwachung">
+<div class="section" title="7.6. Verteilte Überwachung">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="distributed"></a>7.5. Verteilte Überwachung</h2></div></div></div>
+<a name="distributed"></a>7.6. Verteilte Überwachung</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -118,7 +118,7 @@
 </ul></div>
 
   <p>Damit alles zusammenkommt und ordentlich arbeitet, wollen wir, dass der verteilte Server die Ergebnisse
-  <span class="emphasis"><em>aller</em></span> Service-Prüfungen an Icinga meldet. Wir können <a class="link" href="eventhandlers.html" title="7.2. Eventhandler">Eventhandler</a> benutzen, um <span class="emphasis"><em>Änderungen</em></span> am Zustand eines Service mitzuteilen,
+  <span class="emphasis"><em>aller</em></span> Service-Prüfungen an Icinga meldet. Wir können <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> benutzen, um <span class="emphasis"><em>Änderungen</em></span> am Zustand eines Service mitzuteilen,
   aber das bringt's nicht. Um den verteilten Server zu zwingen, alle Prüfergebnisse zu melden, müssen Sie die <a class="link" href="configmain.html#configmain-obsess_over_services">obsess_over_services</a>-Option in der Hauptkonfigurationsdatei aktivieren und ein
   <a class="link" href="configmain.html#configmain-ocsp_command">ocsp_command</a> bereitstellen, was nach jeder Service-Prüfung ausgeführt wird. Wir
   werden das ocsp-Kommando benutzen, um die Ergebnisse aller Service-Prüfungen an den zentralen Server zu senden und den
@@ -270,7 +270,7 @@
   <p><span class="bold"><strong>Frische-Prüfung (Freshness Checking)</strong></span></p>
 
   <p>Icinga unterstützt ein Feature, das eine "Frische"-Prüfung für die Ergebnisse von Service-Prüfungen durchführt.
-  Mehr Informationen über Frische-Prüfung finden Sie <a class="link" href="freshness.html" title="7.4. Service- und Host-Frische-Prüfungen">hier</a>. Dieses Feature sorgt für etwas Schutz
+  Mehr Informationen über Frische-Prüfung finden Sie <a class="link" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">hier</a>. Dieses Feature sorgt für etwas Schutz
   gegen Situationen, in denen entfernte Hosts keine passiven Service-Prüfungen mehr an den zentralen Überwachungs-Server schicken.
   Der Zweck der "Frische"-Prüfung besteht darin, sicherzustellen, dass Service-Prüfungen entweder regelmäßig passiv durch
   verteilte Server oder aktiv durch den zentralen Server durchgeführt werden, falls dies notwendig sein sollte. Wenn die
@@ -364,9 +364,9 @@
 
   <p>Der ochp-Befehl, der zur Verarbeitung von Host-Prüfergebnissen genutzt wird, arbeitet ähnlich wie der ocsp-Befehl, der für
   die Verarbeitung von Service-Prüfergebnissen benutzt wird (siehe oben). Um sicherzustellen, dass passive Host-Prüfergebnisse
-  aktuell sind, sollten Sie <a class="link" href="freshness.html" title="7.4. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> für Hosts aktivieren (ähnlich zu dem, was weiter
+  aktuell sind, sollten Sie <a class="link" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> für Hosts aktivieren (ähnlich zu dem, was weiter
   oben für Services beschrieben wird).</p>
-  <a class="indexterm" name="id1624971"></a>
+  <a class="indexterm" name="idp13370416"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -379,9 +379,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">7.4. Service- und Host-Frische-Prüfungen </td>
+<td width="40%" align="left" valign="top">7.5. Service- und Host-Frische-Prüfungen </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 7.6. Redundante und Failover-Netzwerk-Überwachung</td>
+<td width="40%" align="right" valign="top"> 7.7. Redundante und Failover-Netzwerk-Überwachung</td>
 </tr>
 </table>
 </div>

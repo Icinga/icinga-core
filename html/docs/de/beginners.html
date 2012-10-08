@@ -30,42 +30,49 @@
 <a name="beginners"></a>2.1. Hinweise für Neulinge</h2></div></div></div>
   
 
-  <p>Herzlichen Glückwunsch zur Wahl von Icinga! Icinga ist ziemlich mächtig und flexibel, aber es kann viel
-  Arbeit bedeuten, es so zu konfigurieren, wie Sie es haben wollen. Sobald Sie damit vertraut sind, wie es funktioniert und was es
-  für Sie tun kann, dann werden Sie nicht mehr ohne leben wollen :-). Hier sind einige wichtige Dinge, die zu beachten sind, wenn
-  Sie zum ersten Mal Icinga benutzen:</p>
+  <p>Herzlichen Glückwunsch zur Wahl von Icinga! Icinga ist ziemlich mächtig und flexibel, aber es kann viel Arbeit
+  bedeuten, es so zu konfigurieren, wie Sie es haben wollen. Sobald Sie damit vertraut sind, wie es funktioniert und was es für Sie tun
+  kann, dann werden Sie nicht mehr ohne leben wollen :-). Hier sind einige wichtige Dinge, die zu beachten sind, wenn Sie zum ersten Mal
+  Icinga benutzen:</p>
 
   <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-      <p><span class="bold"><strong>Entspannen Sie sich - es wird einige Zeit dauern.</strong></span> Erwarten Sie nicht, dass alles
-      gleich so funktioniert, wie Sie sich das vorstellen. Das Aufsetzen von Icinga kann ein bisschen an Arbeit erfordern -
-      teilweise wegen der Optionen, die Icinga bietet, teilweise weil Sie wissen müssen, was Sie in Ihrem Netzwerk
-      überwachen wollen (und wie das am Besten zu tun ist).</p>
+      <p><span class="bold"><strong>Entspannen Sie sich - es wird einige Zeit dauern.</strong></span> Erwarten Sie nicht, dass alles gleich so
+      funktioniert, wie Sie sich das vorstellen. Das Aufsetzen von Icinga kann ein bisschen an Arbeit erfordern - teilweise wegen der
+      Optionen, die Icinga bietet, teilweise weil Sie wissen müssen, was Sie in Ihrem Netzwerk überwachen wollen (und wie das am
+      Besten zu tun ist).</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Nutzen Sie die Schnellstartanleitungen.</strong></span> Die <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Installationsanleitung</a> ist so ausgelegt, dass die meisten neuen Benutzer ziemlich
-      schnell ein einfaches Icinga zum Laufen bekommen. Innerhalb von 20 Minuten ist Icinga installiert und
-      überwacht Ihr lokales System. Sobald das erledigt ist, können Sie lernen, wie Icinga konfiguriert wird, um mehr zu
-      tun.</p>
+      <p><span class="bold"><strong>Verwenden Sie Pakete.</strong></span> Inzwischen gibt es für viele Distributionen passende Pakete. Denken Sie
+      über die Verwendung nach anstatt aus Sourcen zu installieren. Es spart Ihnen ein bisschen Zeit. Bitte beachten Sie dabei, dass sich
+      die Pfade von denen unterscheiden, die in der Dokumentation beschrieben sind. Informationen zu Paketen finden Sie <a class="link" href="icinga_packages.html" title="2.7. Icinga Pakete für Linux- Distributionen">hier</a>.</p>
     </li>
 <li class="listitem">
-      <p><span class="bold"><strong>Lesen Sie die Dokumentation.</strong></span> Icinga kann schwierig zu konfigurieren sein, wenn
-      Sie ein Gespür dafür haben, was passiert, und ziemlich unmöglich, wenn Sie keins haben. Stellen Sie sicher, dass Sie die
-      Dokumentation lesen (besonders die Abschnitte "Icinga konfigurieren" und "Die Grundlagen"). Heben Sie sich die
-      fortgeschrittenen Themen auf, bis Sie ein gutes Verständnis der Grundlagen haben.</p>
+      <p><span class="bold"><strong>Nutzen Sie die Schnellstartanleitungen</strong></span> (wenn Sie kein Paket verwenden möchten oder können). Die
+      <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Installationsanleitung</a> ist so ausgelegt, dass die meisten neuen Benutzer ziemlich
+      schnell ein einfaches Icinga zum Laufen bekommen. Innerhalb von 20 Minuten ist Icinga installiert und überwacht Ihr
+      lokales System. Sobald das erledigt ist, können Sie lernen, wie Icinga konfiguriert wird, um mehr zu tun.</p>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Lesen Sie die Dokumentation.</strong></span> Icinga kann schwierig zu konfigurieren sein, wenn Sie ein
+      Gespür dafür haben, was passiert, und ziemlich unmöglich, wenn Sie keins haben. Stellen Sie sicher, dass Sie die Dokumentation lesen
+      (besonders die Abschnitte "Icinga konfigurieren" und "Die Grundlagen"). Es ist wichtig zu wissen wie <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> arbeiten. Werfen Sie auch einen Blick auf den <a class="link" href="monitoring-overview.html" title="2.11. Monitoring-Überblick">Monitoring-Überblick</a>. Heben Sie sich die fortgeschrittenen Themen auf, bis Sie ein gutes
+      Verständnis der Grundlagen haben.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Suchen Sie die Hilfe von anderen.</strong></span> Wenn Sie die Dokumentation gelesen haben, sich die
-      Beispiel-Konfigurationsdateien angesehen und immer noch Probleme haben, dann senden Sie eine e-Mail mit der Beschreibung
-      Ihrer Probleme an die <span class="emphasis"><em>Icinga-users</em></span>-Mailing-Liste. Aufgrund der Arbeit an diesem Projekt können
-      wir die meisten der direkt an uns gesandten Fragen nicht beantworten, so dass die beste Quelle die Mailing-Liste sein
-      dürfte. Wenn Sie bereits einiges gelesen haben und eine gute Problembeschreibung liefern, dann stehen die Chancen gut, dass
-      jemand Ihnen Hinweise geben kann, um die Dinge zum Laufen zu bringen. Mehr (englischsprachige) Informationen, wie Sie sich
-      den Mailing-Listen anschließen oder die Archive durchsuchen können, finden Sie unter <a class="link" href="http://www.Icinga.org/support/" target="_top">http://www.Icinga.org/support/</a>. Das deutsche Icinga-Portal
-      finden Sie unter <a class="link" href="http://www.Icinga-portal.de" target="_top">http://www.Icinga-portal.de</a></p>
+      Beispiel-Konfigurationsdateien angesehen und immer noch Probleme haben, dann senden Sie eine e-Mail mit der Beschreibung Ihrer
+      Probleme an die <span class="emphasis"><em>Icinga-users</em></span>-Mailing-Liste. Aufgrund der Arbeit an diesem Projekt können wir die meisten
+      der direkt an uns gesandten Fragen nicht beantworten, so dass die beste Quelle die Mailing-Liste sein dürfte. Wenn Sie bereits einiges
+      gelesen haben und eine gute Problembeschreibung liefern, dann stehen die Chancen gut, dass jemand Ihnen Hinweise geben kann, um die
+      Dinge zum Laufen zu bringen. Mehr (englischsprachige) Informationen, wie Sie sich den Mailing-Listen anschließen oder die Archive
+      durchsuchen können, finden Sie unter <a class="link" href="http://www.Icinga.org/support/" target="_top">http://www.Icinga.org/support/</a>.
+      Das deutsche Icinga-Portal finden Sie unter <a class="link" href="http://www.Icinga-portal.de" target="_top">http://www.Icinga-portal.de</a>. Eine weitere Quelle für Informationen ist der
+      <a class="link" href="https://wiki.icinga.org/display/howtos/Home" target="_top">Howto-Wiki-Bereich</a>.</p>
     </li>
 </ol></div>
-  <a class="indexterm" name="id1522108"></a>
+
+  <a class="indexterm" name="idp147584"></a>
 </div>
 <div class="navfooter">
 <hr>

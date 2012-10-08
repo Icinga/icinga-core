@@ -696,14 +696,18 @@
 
       <pre class="programlisting"> #&gt; mysql -u root -p
  mysql&gt; CREATE DATABASE icinga;
+
  GRANT USAGE ON icinga.* TO 'icinga'@'localhost'
    IDENTIFIED BY 'icinga'
    WITH MAX_QUERIES_PER_HOUR 0
    MAX_CONNECTIONS_PER_HOUR 0
    MAX_UPDATES_PER_HOUR 0;
- GRANT SELECT , INSERT , UPDATE , DELETE, DROP, CREATE VIEW, INDEX
+
+ GRANT SELECT, INSERT, UPDATE, DELETE, DROP, CREATE VIEW, INDEX, EXECUTE
    ON icinga.* TO 'icinga'@'localhost';
+  
  FLUSH PRIVILEGES;
+
  quit</pre>
 
       <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -712,7 +716,7 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Starting with Icinga 1.6 the icinga user additionally needs DROP and CREATE VIEW privileges.</p>
+        <p>Starting with Icinga 1.8 the icinga user additionally needs EXECUTE privileges.</p>
       </td></tr>
 </table></div>
 
@@ -976,9 +980,9 @@
   no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting Started"</a>
   about "Monitoring ..."</p>
 
-  <a class="indexterm" name="id1320026"></a>
+  <a class="indexterm" name="idp614240"></a>
 
-  <a class="indexterm" name="id1320038"></a>
+  <a class="indexterm" name="idp615728"></a>
 </div>
 <div class="navfooter">
 <hr>

@@ -86,7 +86,7 @@
       However, it is normal for some checks to have small latency values. We would recommend taking the minimum number of maximum concurrent
       checks reported when running Icinga with the <span class="bold"><strong>-s</strong></span> command line argument and doubling it. Keep
       increasing it until the average check latency for your services is fairly low. More information on service check scheduling can be
-      found <a class="link" href="checkscheduling.html" title="7.22. Service and Host Check Scheduling">here</a>.</p>
+      found <a class="link" href="checkscheduling.html" title="7.23. Service and Host Check Scheduling">here</a>.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Use passive checks when possible</strong></span> . The overhead needed to process the results of <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive service checks</a> is much lower than that of "normal" active checks, so make use of that piece of
@@ -104,7 +104,7 @@
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Use the embedded Perl interpreter</strong></span> . If you're using a lot of Perl scripts for service checks,
-      etc., you will probably find that compiling the <a class="link" href="embeddedperl.html" title="7.17. Using The Embedded Perl Interpreter">embedded Perl interpreter</a> into the Icinga
+      etc., you will probably find that compiling the <a class="link" href="embeddedperl.html" title="7.18. Using The Embedded Perl Interpreter">embedded Perl interpreter</a> into the Icinga
       binary will speed things up.</p>
     </li>
 <li class="listitem">
@@ -119,7 +119,7 @@
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Schedule regular host checks</strong></span> . Scheduling regular checks of hosts can actually help performance
-      in Icinga. This is due to the way the <a class="link" href="cachedchecks.html" title="7.20. Cached Checks">cached check logic</a> works (see below). Host checks are
+      in Icinga. This is due to the way the <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">cached check logic</a> works (see below). Host checks are
       run in parallel - just like service checks. To schedule regular checks of a host, set the <span class="emphasis"><em>check_interval</em></span>
       directive in the <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a> to something greater than 0.</p>
     </li>
@@ -129,7 +129,7 @@
       wants to know if the host associated with the service changed state. By enabling cached host checks, you can optimize performance. In
       some cases, Icinga may be able to used the old/cached state of the host, rather than actually executing a host check command.
       This can speed things up and reduce load on monitoring server. In order for cached checks to be effective, you need to schedule
-      regular checks of your hosts (see above). More information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.20. Cached Checks">here</a>.</p>
+      regular checks of your hosts (see above). More information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">here</a>.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Don't use agressive host checking</strong></span>. Unless you're having problems with Icinga recognizing
@@ -142,7 +142,7 @@
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>External command optimizations</strong></span> . If you're processing a lot of external commands (i.e. passive
-      checks in a <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed setup</a>, you'll probably want to set the <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a> variable to <span class="bold"><strong>-1</strong></span>. This will
+      checks in a <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed setup</a>, you'll probably want to set the <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a> variable to <span class="bold"><strong>-1</strong></span>. This will
       cause Icinga to check for external commands as often as possible. You should also consider increasing the number of available
       <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external command buffer slots</a>. Buffers slots are used to hold external
       commands that have been read from the <a class="link" href="configmain.html#configmain-command_file">external command file</a> (by a separate thread)
@@ -171,7 +171,7 @@
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id1433123"></a>
+  <a class="indexterm" name="idp15071936"></a>
 </div>
 <div class="navfooter">
 <hr>

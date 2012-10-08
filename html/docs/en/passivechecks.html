@@ -66,7 +66,7 @@
   alerts. You never know how many (if any) traps or alerts you'll receive in a given time frame, so it's not feasible to just
   monitor their status every few minutes.</p>
 
-  <p>Passive checks are also used when configuring <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed</a> or <a class="link" href="redundancy.html" title="7.6. Redundant and Failover Network Monitoring">redundant</a> monitoring installations.</p>
+  <p>Passive checks are also used when configuring <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed</a> or <a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">redundant</a> monitoring installations.</p>
 
   <p><span class="bold"><strong>How Passive Checks Work</strong></span></p>
 
@@ -166,7 +166,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p>An example shell script of how to submit passive service check results to Icinga can be found in the
-    documentation on <a class="link" href="volatileservices.html" title="7.3. Volatile Services">volatile services</a>.</p>
+    documentation on <a class="link" href="volatileservices.html" title="7.4. Volatile Services">volatile services</a>.</p>
   </td></tr>
 </table></div>
 
@@ -213,12 +213,12 @@
   <p>Unlike with active host checks, Icinga does not (by default) attempt to determine whether or host is DOWN or
   UNREACHABLE with passive checks. Rather, Icinga takes the passive check result to be the actual state the host is in and
   doesn't try to determine the host's actual state using the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">reachability logic</a>. This
-  can cause problems if you are submitting passive checks from a remote host or you have a <a class="link" href="distributed.html" title="7.5. Distributed Monitoring">distributed
+  can cause problems if you are submitting passive checks from a remote host or you have a <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed
   monitoring setup</a> where the parent/child host relationships are different.</p>
 
   <p>You can tell Icinga to translate DOWN/UNREACHABLE passive check result states to their "proper" state by using the
   <a class="link" href="configmain.html#configmain-translate_passive_host_checks">translate_passive_host_checks</a> variable. More information on how
-  this works can be found <a class="link" href="passivestatetranslation.html" title="7.21. Passive Host State Translation">here</a>.</p>
+  this works can be found <a class="link" href="passivestatetranslation.html" title="7.22. Passive Host State Translation">here</a>.</p>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -242,7 +242,7 @@
   and a client that is executed from remote hosts. The daemon will listen for connections from remote clients, perform some basic
   validation on the results being submitted, and then write the check results directly into the external command file (as
   described above). More information on the NSCA addon can be found <a class="link" href="addons.html#addons-nsca">here</a>.</p>
-  <a class="indexterm" name="id1395484"></a>
+  <a class="indexterm" name="idp9786912"></a>
 </div>
 <div class="navfooter">
 <hr>

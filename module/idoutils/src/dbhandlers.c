@@ -970,6 +970,147 @@ int ido2db_set_object_as_active(ido2db_idi *idi, int object_type,
 	return result;
 }
 
+int ido2db_handle_object_enable_disable(ido2db_idi *idi, int enable) {
+	int result = IDO_OK;
+        char *name1 = NULL;
+        char *name2 = NULL;
+#ifdef USE_LIBDBI
+        char *buf = NULL;
+        char *buf1 = NULL;
+        char *buf2 = NULL;
+#endif
+#ifdef USE_ORACLE
+        void *data[4];
+#endif
+        char *es[2];
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_object_enable_disable(enable=%d) start\n", enable);
+
+	if (enable < 0 || enable > 1)
+		return IDO_ERROR;
+
+	name1 = idi->buffered_input[IDO_DATA_HOST];
+	name2 = idi->buffered_input[IDO_DATA_SERVICE];
+
+	es[0] = ido2db_db_escape_string(idi, name1);
+	es[1] = ido2db_db_escape_string(idi, name2);
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_object_enable_disable() name1='%s', name2='%s'\n", es[0] == NULL ? "(null)" : es[0], es[1] == NULL ? "(null)" : es[1]);
+
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+
+	switch (idi->dbinfo.server_type) {
+	case IDO2DB_DBSERVER_PGSQL:
+		if (asprintf(&buf1, "name1=E'%s'", es[0]) == -1)
+			buf1 = NULL;
+		break;
+	default:
+		if (asprintf(&buf1, "name1='%s'", es[0]) == -1)
+			buf1 = NULL;
+		break;
+	}
+
+        if (es[1] == NULL) {
+                if (asprintf(&buf2, "name2 IS NULL") == -1)
+                        buf2 = NULL;
+        } else {
+                switch (idi->dbinfo.server_type) {
+                case IDO2DB_DBSERVER_PGSQL:
+                        if (asprintf(&buf2, "name2=E'%s'", es[1]) == -1)
+                                buf2 = NULL;
+                        break;
+                default:
+                        if (asprintf(&buf2, "name2='%s'", es[1]) == -1)
+                                buf2 = NULL;
+                        break;
+                }
+	}
+
+        if (asprintf(&buf, "UPDATE %s SET is_active=%d WHERE instance_id=%lu AND %s AND %s"
+			,ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS]
+			,enable
+              		,idi->dbinfo.instance_id
+			,buf1
+			,buf2
+			) == -1
+		)
+                buf = NULL;
+
+        result = ido2db_db_query(idi, buf);
+
+        dbi_result_free(idi->dbinfo.dbi_result);
+        idi->dbinfo.dbi_result = NULL;
+        free(buf);
+        free(buf1);
+        free(buf2);
+#endif
+
+#ifdef USE_PGSQL /* pgsql */
+
+#endif
+
+#ifdef USE_ORACLE /* Oracle ocilib specific */
+
+        data[0] = (void *) &idi->dbinfo.instance_id;
+	data[1] = (void *) &enable;
+	data[2] = (void *) &es[0];
+	data[3] = (void *) &es[1];
+
+        if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_object_enable_disable, MT(":X1"), (uint *) data[0])) {
+                return IDO_ERROR;
+        }
+
+        if (!OCI_BindInt(idi->dbinfo.oci_statement_object_enable_disable, MT(":X2"), (int *) data[1])) {
+                return IDO_ERROR;
+        }
+
+        /* check if name1/2 would be NULL, explicitely bind that to NULL so that the IS NULL from the selects match */
+        if (name1 == NULL) {
+                if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_object_enable_disable, ":X3") == IDO_ERROR) {
+                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, " Bind name1=null failed\n");
+                        return IDO_ERROR;
+                }
+        } else {
+                if (!OCI_BindString(idi->dbinfo.oci_statement_object_enable_disable, MT(":X3"), *(char **) data[2], 0)) {
+                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, " Bind name1=%s failed\n", (es[0]==NULL)?"(null)":es[0]);
+                        return IDO_ERROR;
+                }
+        }
+        // Name2
+        if (name2 == NULL) {
+                if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_object_enable_disable, ":X4") == IDO_ERROR) {
+                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, " Bind name2=null failed\n");
+                        return IDO_ERROR;
+                }
+        } else {
+                if (!OCI_BindString(idi->dbinfo.oci_statement_object_enable_disable, MT(":X4"), *(char **) data[3], 0)) {
+                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, " Bind name2=%s failed\n", (es[1]==NULL)?"(null)":es[1]);
+                        return IDO_ERROR;
+                }
+        }
+
+        /* execute statement */
+        if (!OCI_Execute(idi->dbinfo.oci_statement_object_enable_disable)) {
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_objects_enable_disable() execute error\n");
+                return IDO_ERROR;
+        }
+
+        /* commit statement */
+        OCI_Commit(idi->dbinfo.oci_connection);
+
+        /* do not free statement yet! */
+
+#endif /* Oracle ocilib specific */
+
+
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_object_enable_disable() end\n");
+
+	return result;
+
+}
+
+
+
 /****************************************************************************/
 /* ARCHIVED LOG DATA HANDLER                                                */
 /****************************************************************************/

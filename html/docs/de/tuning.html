@@ -88,7 +88,7 @@
       Allerdings ist es normal, dass einige Prüfungen kleine Latenzzeiten haben. Wir würden empfehlen, die niedrigste Zahl der meisten
       gleichzeitigen Prüfungen zu nehmen, wenn Sie Icinga mit der <span class="bold"><strong>-s</strong></span>-Option starten und diesen Wert
       zu verdoppeln. Erhöhen Sie diesen Wert dann soweit, bis die durchschnittlichen Latenzzeiten für Service-Prüfungen ziemlich niedrig
-      ist. Mehr Informationen zur Planung von Service-Prüfungen finden Sie <a class="link" href="checkscheduling.html" title="7.22. Service- und Host-Prüfungsplanung">hier</a>.</p>
+      ist. Mehr Informationen zur Planung von Service-Prüfungen finden Sie <a class="link" href="checkscheduling.html" title="7.23. Service- und Host-Prüfungsplanung">hier</a>.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Nutzen Sie passive Prüfungen, wenn möglich</strong></span>. Der nötige Overhead, um die Ergebnisse von <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passiven Service-Prüfungen</a> zu verarbeiten, ist viel niedriger als bei "normalen" aktiven Prüfungen,
@@ -106,7 +106,7 @@
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Nutzen Sie den eingebetteten Perl-Interpreter</strong></span>. Wenn Sie eine Menge von Perl-Scripten für
-      Prüfungen benutzen, dann werden Sie vielleicht feststellen, dass das Kompilieren des <a class="link" href="embeddedperl.html" title="7.17. Benutzen des Embedded Perl Interpreters">eingebetteten
+      Prüfungen benutzen, dann werden Sie vielleicht feststellen, dass das Kompilieren des <a class="link" href="embeddedperl.html" title="7.18. Benutzen des Embedded Perl Interpreters">eingebetteten
       Perl-Interpreters</a> (embedded Perl interpreter) in das Icinga-Binary die Dinge beschleunigt.</p>
     </li>
 <li class="listitem">
@@ -122,7 +122,7 @@
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Planen Sie regelmäßige Host-Prüfungen</strong></span>. Regelmäßige Host-Prüfungen zu planen kann tatsächlich
-      die Leistung von Icinga steigern. Das liegt an der Art, wie die <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte Prüfungen">Zwischenspeicher-Prüflogik</a>
+      die Leistung von Icinga steigern. Das liegt an der Art, wie die <a class="link" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">Zwischenspeicher-Prüflogik</a>
       (cached check logic) arbeitet (siehe unten). Um regelmäßige Prüfungen eines Hosts zu planen, setzen Sie die
       <span class="emphasis"><em>check_interval</em></span>-Direktive in der <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a> auf einen Wert
       größer als Null.</p>
@@ -135,7 +135,7 @@
       Host-Prüfungsergebnissen können Sie die Leistung optimieren. In einigen Fällen könnte Icinga in der Lage sein, den
       alten/zwischengespeicherten Zustand des Hosts zu benutzen, statt eine Host-Prüfung auszuführen. Das kann die Dinge beschleunigen und
       die Last des Überwachungsservers reduzieren. Damit zwischengespeicherte Prüfungen effektiv sind, müssen Sie regelmäßige Prüfungen für
-      Ihre Hosts planen (siehe oben). Mehr Informationen zu zwischengespeicherten Prüfungen finden Sie <a class="link" href="cachedchecks.html" title="7.20. Zwischengespeicherte Prüfungen">hier</a>.</p>
+      Ihre Hosts planen (siehe oben). Mehr Informationen zu zwischengespeicherten Prüfungen finden Sie <a class="link" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">hier</a>.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Nutzen Sie keine agressiven Host-Prüfungen</strong></span>. Solange Sie keine Probleme damit haben, dass
@@ -148,7 +148,7 @@
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Optimierung externer Befehle</strong></span>. Wenn Sie eine Menge externer Befehle verarbeiten (d.h. passive
-      Prüfungen in einer <a class="link" href="distributed.html" title="7.5. Verteilte Überwachung">verteilten Umgebung</a>, dann wollen Sie vielleicht die <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a>-Variable auf <span class="bold"><strong>-1</strong></span> setzen. Das
+      Prüfungen in einer <a class="link" href="distributed.html" title="7.6. Verteilte Überwachung">verteilten Umgebung</a>, dann wollen Sie vielleicht die <a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval</a>-Variable auf <span class="bold"><strong>-1</strong></span> setzen. Das
       bewirkt, dass Icinga so oft wie möglich auf externe Befehle prüft. Sie sollten außerdem überlegen, die Anzahl verfügbarer <a class="link" href="configmain.html#configmain-external_command_buffer_slots">externer Befehlspuffer</a> zu erhöhen. Puffer werden benutzt, um externe Befehle
       zu speichern, die (durch einen separaten Thread) aus dem <a class="link" href="configmain.html#configmain-command_file">external command file</a> gelesen
       werden, bevor sie vom Icinga-Daemon verarbeitet werden. Wenn Ihr Icinga-Daemon eine Menge von passiven Prüfungen oder
@@ -180,7 +180,7 @@
     </li>
 </ol></div>
 
-  <a class="indexterm" name="id1638281"></a>
+  <a class="indexterm" name="idp15029008"></a>
 </div>
 <div class="navfooter">
 <hr>

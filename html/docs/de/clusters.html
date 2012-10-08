@@ -1,20 +1,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.11. Service- und Host-Gruppen überwachen</title>
+<title>7.12. Service- und Host-Gruppen überwachen</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="oncallrotation.html" title="7.10. Bereitschafts-Rotation">
-<link rel="next" href="dependencies.html" title="7.12. Host- und Service-Abhängigkeiten">
+<link rel="prev" href="oncallrotation.html" title="7.11. Bereitschafts-Rotation">
+<link rel="next" href="dependencies.html" title="7.13. Host- und Service-Abhängigkeiten">
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.11. Service- und Host-Gruppen überwachen</th></tr>
+<tr><th colspan="3" align="center">7.12. Service- und Host-Gruppen überwachen</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="oncallrotation.html">Zurück</a> </td>
@@ -25,9 +25,9 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.11. Service- und Host-Gruppen überwachen">
+<div class="section" title="7.12. Service- und Host-Gruppen überwachen">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="clusters"></a>7.11. Service- und Host-Gruppen überwachen</h2></div></div></div>
+<a name="clusters"></a>7.12. Service- und Host-Gruppen überwachen</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Einführung</strong></span></p>
@@ -129,7 +129,7 @@
   <span class="emphasis"><em>nicht</em></span> mit einem der Hosts im Cluster verbunden werden, weil dies Probleme mit Benachrichtigungen für den
   Cluster erzeugt, wenn der Host "down" geht. Eine gute Idee könnte es sein, den Service mit dem Host zu verbinden, auf dem
   Icinga läuft. Wenn der Host, auf dem Icinga läuft, "down" geht, dann funktioniert auch Icinga nicht mehr
-  und dann können Sie auch nichts mehr tun (es sei denn, Sie hätten eine <a class="link" href="redundancy.html" title="7.6. Redundante und Failover-Netzwerk-Überwachung">redundante
+  und dann können Sie auch nichts mehr tun (es sei denn, Sie hätten eine <a class="link" href="redundancy.html" title="7.7. Redundante und Failover-Netzwerk-Überwachung">redundante
   Host-Überwachung</a> eingerichtet)...</p>
 
   <p>Wie auch immer, lassen Sie uns annehmen, dass Sie einen <span class="emphasis"><em>check_host_cluster</em></span>-Befehl wie folgt definiert
@@ -160,7 +160,7 @@
   Denken Sie daran, dass Sie der Status der einzelnen Hosts weniger interessiert als der Gesamtstatus des Clusters. Abhängig von
   Ihrem Netzwerk-Layout und von dem, was Sie erreichen wollen, möchten Sie vielleicht die Benachrichtigungen für
   UNREACHABLE-Zustände bei den Host-Definitionen aktiviert lassen.</p>
-  <a class="indexterm" name="id1628036"></a>
+  <a class="indexterm" name="idp13740912"></a>
 </div>
 <div class="navfooter">
 <hr>
@@ -173,9 +173,9 @@
 </td>
 </tr>
 <tr>
-<td width="40%" align="left" valign="top">7.10. Bereitschafts-Rotation </td>
+<td width="40%" align="left" valign="top">7.11. Bereitschafts-Rotation </td>
 <td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 7.12. Host- und Service-Abhängigkeiten</td>
+<td width="40%" align="right" valign="top"> 7.13. Host- und Service-Abhängigkeiten</td>
 </tr>
 </table>
 </div>

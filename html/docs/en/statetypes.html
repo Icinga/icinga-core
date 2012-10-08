@@ -44,7 +44,7 @@
 </ul></div>
 
   <p>There are two state types in Icinga - SOFT states and HARD states. These state types are a crucial part of the
-  monitoring logic, as they are used to determine when <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">event handlers</a> are executed and when
+  monitoring logic, as they are used to determine when <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a> are executed and when
   <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a> are initially sent out.</p>
 
   <p>This document describes the difference between SOFT and HARD states, how they occur, and what happens when they
@@ -89,7 +89,7 @@
   <p>The only important thing that really happens during a soft state is the execution of event handlers. Using event handlers
   can be particularly useful if you want to try and proactively fix a problem before it turns into a HARD state. The <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> or <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>
   macros will have a value of "<span class="emphasis"><em>SOFT</em></span>" when event handlers are executed, which allows your event handler
-  scripts to know when they should take corrective action. More information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">here</a>.</p>
+  scripts to know when they should take corrective action. More information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">here</a>.</p>
 
   <p><span class="bold"><strong>Hard States</strong></span></p>
 
@@ -133,7 +133,7 @@
 
   <p>The <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> or <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a> macros will have a value of "<span class="emphasis"><em>HARD</em></span>" when
   event handlers are executed, which allows your event handler scripts to know when they should take corrective action. More
-  information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.2. Event Handlers">here</a>.</p>
+  information on event handlers can be found <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">here</a>.</p>
 
   <p><span class="bold"><strong>Example</strong></span></p>
 
@@ -256,7 +256,7 @@
 </tbody>
 </table>
   </div>
-  <a class="indexterm" name="id1396327"></a>
+  <a class="indexterm" name="idp9888016"></a>
 </div>
 <div class="navfooter">
 <hr>
