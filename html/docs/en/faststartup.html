@@ -29,18 +29,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="faststartup"></a>8.4. <a name="fast_startup"></a>Fast Startup Options</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="faststartup.html#idp15151184">8.4.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="faststartup.html#idp15156576">8.4.2. Background</a></span></dt>
-<dt><span class="section"><a href="faststartup.html#idp15167296">8.4.3. Evaluating Startup Times</a></span></dt>
-<dt><span class="section"><a href="faststartup.html#idp15182720">8.4.4. Pre-Caching Object Configuration</a></span></dt>
-<dt><span class="section"><a href="faststartup.html#idp15206896">8.4.5. Skipping Circular Path Tests</a></span></dt>
-<dt><span class="section"><a href="faststartup.html#idp15212400">8.4.6. Putting It All Together</a></span></dt>
+<dt><span class="section"><a href="faststartup.html#idp15179440">8.4.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="faststartup.html#idp15184832">8.4.2. Background</a></span></dt>
+<dt><span class="section"><a href="faststartup.html#idp15195552">8.4.3. Evaluating Startup Times</a></span></dt>
+<dt><span class="section"><a href="faststartup.html#idp15210976">8.4.4. Pre-Caching Object Configuration</a></span></dt>
+<dt><span class="section"><a href="faststartup.html#idp15234992">8.4.5. Skipping Circular Path Tests</a></span></dt>
+<dt><span class="section"><a href="faststartup.html#idp15240496">8.4.6. Putting It All Together</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="8.4.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15151184"></a>8.4.1. Introduction</h3></div></div></div>
+<a name="idp15179440"></a>8.4.1. Introduction</h3></div></div></div>
     
 
     <p>There are a few things you can do that can decrease the amount of time it take Icinga to startup (or restart). These
@@ -63,7 +63,7 @@
 
   <div class="section" title="8.4.2. Background">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15156576"></a>8.4.2. Background</h3></div></div></div>
+<a name="idp15184832"></a>8.4.2. Background</h3></div></div></div>
     
 
     <p>Whenever Icinga starts/restarts it has to process your configuration files before it can get down to the business of
@@ -105,7 +105,7 @@
 
   <div class="section" title="8.4.3. Evaluating Startup Times">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15167296"></a>8.4.3. Evaluating Startup Times</h3></div></div></div>
+<a name="idp15195552"></a>8.4.3. Evaluating Startup Times</h3></div></div></div>
     
 
     <p>Before we get on to making things faster, we need to see what's possible and whether or not we should even bother with the whole
@@ -177,7 +177,7 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
   <div class="section" title="8.4.4. Pre-Caching Object Configuration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15182720"></a>8.4.4. Pre-Caching Object Configuration</h3></div></div></div>
+<a name="idp15210976"></a>8.4.4. Pre-Caching Object Configuration</h3></div></div></div>
     
 
     <p>Icinga can spend quite a bit of time parsing your config files, especially if you make use of the template features such as
@@ -221,7 +221,7 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
   <div class="section" title="8.4.5. Skipping Circular Path Tests">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15206896"></a>8.4.5. Skipping Circular Path Tests</h3></div></div></div>
+<a name="idp15234992"></a>8.4.5. Skipping Circular Path Tests</h3></div></div></div>
     
 
     <p>The second (and most time-intensive) portion of the configuration startup phase is the circular path check. In the example above,
@@ -243,7 +243,7 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
   <div class="section" title="8.4.6. Putting It All Together">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15212400"></a>8.4.6. Putting It All Together</h3></div></div></div>
+<a name="idp15240496"></a>8.4.6. Putting It All Together</h3></div></div></div>
     
 
     <p>Follow these steps if you want to make use of potential speedups from pre-caching your configuration and skipping circular path
@@ -266,17 +266,17 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
     <p>5. That's it! Enjoy the increased startup speed.</p>
 
-    <a class="indexterm" name="idp15217504"></a>
+    <a class="indexterm" name="idp15245632"></a>
 
-    <a class="indexterm" name="idp15218592"></a>
+    <a class="indexterm" name="idp15246720"></a>
 
-    <a class="indexterm" name="idp15219856"></a>
+    <a class="indexterm" name="idp15248112"></a>
 
-    <a class="indexterm" name="idp15221920"></a>
+    <a class="indexterm" name="idp15250208"></a>
 
-    <a class="indexterm" name="idp15223632"></a>
+    <a class="indexterm" name="idp15251920"></a>
 
-    <a class="indexterm" name="idp15225232"></a>
+    <a class="indexterm" name="idp15253520"></a>
   </div>
 </div>
 <div class="navfooter">

@@ -29,23 +29,23 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="distributed"></a>7.6. Verteilte Überwachung</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="distributed.html#idp13328288">7.6.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13329648">7.6.2. Ziele</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13330576">7.6.3. Referenzdiagramm</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13335712">7.6.4. Zentraler Server vs. Verteilte Server</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13341472">7.6.5. Service-Prüfungsinformationen von verteilten Servern erhalten</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13347840">7.6.6. Verteilte Server-Konfiguration</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13361536">7.6.7. ocsp_command=submit_check_result</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13380112">7.6.8. zentrale Server-Konfiguration</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13397120">7.6.9. Probleme bei passiven Prüfungen</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13399440">7.6.10. Frische-Prüfung (Freshness Checking)</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13419040">7.6.11. Host-Prüfungen durchführen</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13342096">7.6.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13343456">7.6.2. Ziele</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13345792">7.6.3. Referenzdiagramm</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13349552">7.6.4. Zentraler Server vs. Verteilte Server</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13355168">7.6.5. Service-Prüfungsinformationen von verteilten Servern erhalten</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13361504">7.6.6. Verteilte Server-Konfiguration</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13375296">7.6.7. ocsp_command=submit_check_result</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13394032">7.6.8. zentrale Server-Konfiguration</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13410768">7.6.9. Probleme bei passiven Prüfungen</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13413088">7.6.10. Frische-Prüfung (Freshness Checking)</a></span></dt>
+<dt><span class="section"><a href="distributed.html#idp13432688">7.6.11. Host-Prüfungen durchführen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.6.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13328288"></a>7.6.1. Einführung</h3></div></div></div>
+<a name="idp13342096"></a>7.6.1. Einführung</h3></div></div></div>
     
 
     <p>Icinga kann konfiguriert werden, so dass es verteilte Überwachung von Netzwerk-Services und Ressourcen unterstützt. Wir
@@ -54,7 +54,7 @@
 
   <div class="section" title="7.6.2. Ziele">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13329648"></a>7.6.2. Ziele</h3></div></div></div>
+<a name="idp13343456"></a>7.6.2. Ziele</h3></div></div></div>
     
 
     <p>Das Ziel der verteilten Überwachungsumgebung, das wir beschreiben wollen, ist die Reduzierung des Overheads (CPU-Belastung, etc.)
@@ -66,7 +66,7 @@
 
   <div class="section" title="7.6.3. Referenzdiagramm">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13330576"></a>7.6.3. Referenzdiagramm</h3></div></div></div>
+<a name="idp13345792"></a>7.6.3. Referenzdiagramm</h3></div></div></div>
     
 
     <p>Das folgende Diagramm soll Ihnen eine generelle Idee davon geben, wie verteilte Überwachung mit Icinga arbeitet. Wir werden
@@ -77,7 +77,7 @@
 
   <div class="section" title="7.6.4. Zentraler Server vs. Verteilte Server">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13335712"></a>7.6.4. Zentraler Server vs. Verteilte Server</h3></div></div></div>
+<a name="idp13349552"></a>7.6.4. Zentraler Server vs. Verteilte Server</h3></div></div></div>
     
 
     <p>Beim Einrichten einer verteilten Überwachungsumgebung mit Icinga gibt es Unterschiede in der Art, wie zentrale und
@@ -105,7 +105,7 @@
 
   <div class="section" title="7.6.5. Service-Prüfungsinformationen von verteilten Servern erhalten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13341472"></a>7.6.5. Service-Prüfungsinformationen von verteilten Servern erhalten</h3></div></div></div>
+<a name="idp13355168"></a>7.6.5. Service-Prüfungsinformationen von verteilten Servern erhalten</h3></div></div></div>
     
 
     <p>Bevor wir näher auf Konfigurationsdetails eingehen, müssen wir wissen, wie die Service-Prüfungsergebnisse von den verteilten
@@ -123,7 +123,7 @@
 
   <div class="section" title="7.6.6. Verteilte Server-Konfiguration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13347840"></a>7.6.6. Verteilte Server-Konfiguration</h3></div></div></div>
+<a name="idp13361504"></a>7.6.6. Verteilte Server-Konfiguration</h3></div></div></div>
     
 
     <p>Also wie genau wird Icinga auf einem verteilten Server konfiguriert? Grundsätzlich ist es eine einfache Installation. Sie
@@ -163,7 +163,7 @@
 
   <div class="section" title="7.6.7. ocsp_command=submit_check_result">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13361536"></a>7.6.7. ocsp_command=submit_check_result</h3></div></div></div>
+<a name="idp13375296"></a>7.6.7. ocsp_command=submit_check_result</h3></div></div></div>
     
 
     <p>Die Definition für den <span class="emphasis"><em>submit_check_result</em></span>-Befehl sieht ungefähr so aus:</p>
@@ -242,7 +242,7 @@
 
   <div class="section" title="7.6.8. zentrale Server-Konfiguration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13380112"></a>7.6.8. zentrale Server-Konfiguration</h3></div></div></div>
+<a name="idp13394032"></a>7.6.8. zentrale Server-Konfiguration</h3></div></div></div>
     
 
     <p>Wir haben betrachtet, wie verteilte Überwachungs-Server konfiguriert werden sollten, daher wenden wir uns nun dem zentralen Server
@@ -298,7 +298,7 @@
 
   <div class="section" title="7.6.9. Probleme bei passiven Prüfungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13397120"></a>7.6.9. Probleme bei passiven Prüfungen</h3></div></div></div>
+<a name="idp13410768"></a>7.6.9. Probleme bei passiven Prüfungen</h3></div></div></div>
     
 
     <p>Für alle wichtigen Dinge können wir sagen, dass sich der zentrale Server bei Überwachungen allein auf passive Prüfungen verlässt.
@@ -311,7 +311,7 @@
 
   <div class="section" title="7.6.10. Frische-Prüfung (Freshness Checking)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13399440"></a>7.6.10. Frische-Prüfung (Freshness Checking)</h3></div></div></div>
+<a name="idp13413088"></a>7.6.10. Frische-Prüfung (Freshness Checking)</h3></div></div></div>
     
 
     <p>Icinga unterstützt ein Feature, das eine "Frische"-Prüfung für die Ergebnisse von Service-Prüfungen durchführt. Mehr
@@ -373,7 +373,7 @@
 
   <div class="section" title="7.6.11. Host-Prüfungen durchführen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13419040"></a>7.6.11. Host-Prüfungen durchführen</h3></div></div></div>
+<a name="idp13432688"></a>7.6.11. Host-Prüfungen durchführen</h3></div></div></div>
     
 
     <p>An diesem Punkt wissen Sie, wie man Service-Ergebnisse von verteilten Servern auf passive Weise erhält. Das bedeutet, der zentrale
@@ -411,7 +411,7 @@
     sollten Sie <a class="link" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> für Hosts aktivieren (ähnlich zu dem, was weiter oben für Services
     beschrieben wird).</p>
 
-    <a class="indexterm" name="idp13430864"></a>
+    <a class="indexterm" name="idp13444512"></a>
   </div>
 </div>
 <div class="navfooter">
