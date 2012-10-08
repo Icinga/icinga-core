@@ -9,6 +9,7 @@
 <link rel="up" href="ch11.html" title="Chapter 11. Development">
 <link rel="prev" href="icinga-api.html" title="11.3. No Icinga-API to install anymore">
 <link rel="next" href="ch12.html" title="Chapter 12. IDOUtils">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,18 +30,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="icinga-web-api"></a>11.4. The Icinga-Web REST API</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="icinga-web-api.html#idp16163392">11.4.1. Why should I use the API?</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16166448">11.4.2. Features of the Icinga-Web REST API</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16176464">11.4.3. What's the difference between the Icinga-API and the Icinga-Web REST API?</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16178768">11.4.4. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16188720">11.4.5. Reference</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16189984">11.4.6. GET</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16197488">11.4.7. The structure of the URL:</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16201344">11.4.8. The Parameters en detail:</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16214624">11.4.9. Example for GET</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16220400">11.4.10. POST</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16227264">11.4.11. Parameters en detail</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16240304">11.4.12. Example for POST</a></span></dt>
+<dt><span class="section">11.4.1. <a href="icinga-web-api.html#idp16164160">Why should I use the API?</a></span></dt>
+<dt><span class="section">11.4.2. <a href="icinga-web-api.html#idp16167136">Features of the Icinga-Web REST API</a></span></dt>
+<dt><span class="section">11.4.3. <a href="icinga-web-api.html#idp16177984">What's the difference between the Icinga-API and the Icinga-Web REST API?</a></span></dt>
+<dt><span class="section">11.4.4. <a href="icinga-web-api.html#idp16179520">Prerequisites</a></span></dt>
+<dt><span class="section">11.4.5. <a href="icinga-web-api.html#idp16189296">Reference</a></span></dt>
+<dt><span class="section">11.4.6. <a href="icinga-web-api.html#idp16190608">GET</a></span></dt>
+<dt><span class="section">11.4.7. <a href="icinga-web-api.html#idp16198144">The structure of the URL:</a></span></dt>
+<dt><span class="section">11.4.8. <a href="icinga-web-api.html#idp16201888">The Parameters en detail:</a></span></dt>
+<dt><span class="section">11.4.9. <a href="icinga-web-api.html#idp16215008">Example for GET</a></span></dt>
+<dt><span class="section">11.4.10. <a href="icinga-web-api.html#idp16220976">POST</a></span></dt>
+<dt><span class="section">11.4.11. <a href="icinga-web-api.html#idp16227792">Parameters en detail</a></span></dt>
+<dt><span class="section">11.4.12. <a href="icinga-web-api.html#idp16240896">Example for POST</a></span></dt>
 </dl></div>
   
 
@@ -50,7 +51,7 @@
 
   <div class="section" title="11.4.1. Why should I use the API?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16163392"></a>11.4.1. Why should I use the API?</h3></div></div></div>
+<a name="idp16164160"></a>11.4.1. Why should I use the API?</h3></div></div></div>
     
 
     <p>For most people, the combination Icinga/Icinga-Web will fit most needs. You can watch your monitoring status, act on
@@ -64,7 +65,7 @@
 
   <div class="section" title="11.4.2. Features of the Icinga-Web REST API">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16166448"></a>11.4.2. Features of the Icinga-Web REST API</h3></div></div></div>
+<a name="idp16167136"></a>11.4.2. Features of the Icinga-Web REST API</h3></div></div></div>
     
 
     <p>Currently supported (v1.2): </p>
@@ -103,7 +104,7 @@
 
   <div class="section" title="11.4.3. What's the difference between the Icinga-API and the Icinga-Web REST API?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16176464"></a>11.4.3. What's the difference between the Icinga-API and the Icinga-Web REST API?</h3></div></div></div>
+<a name="idp16177984"></a>11.4.3. What's the difference between the Icinga-API and the Icinga-Web REST API?</h3></div></div></div>
     
 
     <p>The Icinga-API can at this point considered as an internal toolkit to access the database informations. In fact, the REST API acts
@@ -112,7 +113,7 @@
 
   <div class="section" title="11.4.4. Prerequisites">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16178768"></a>11.4.4. Prerequisites</h3></div></div></div>
+<a name="idp16179520"></a>11.4.4. Prerequisites</h3></div></div></div>
     
 
     <p>In order to use the API, you first have to enable the Auth provider for it. This can be done under
@@ -163,7 +164,7 @@
 
   <div class="section" title="11.4.5. Reference">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16188720"></a>11.4.5. Reference</h3></div></div></div>
+<a name="idp16189296"></a>11.4.5. Reference</h3></div></div></div>
     
 
     <p>So, here are the goodies. In the next few points we'll explain how the API can be accessed:</p>
@@ -171,7 +172,7 @@
 
   <div class="section" title="11.4.6. GET">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16189984"></a>11.4.6. GET</h3></div></div></div>
+<a name="idp16190608"></a>11.4.6. GET</h3></div></div></div>
     
 
     <p>Advantages:</p>
@@ -202,7 +203,7 @@
 
   <div class="section" title="11.4.7. The structure of the URL:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16197488"></a>11.4.7. The structure of the URL:</h3></div></div></div>
+<a name="idp16198144"></a>11.4.7. The structure of the URL:</h3></div></div></div>
     
 
     <p>To access the api, the URL should look as in the following (italics are optional, bold ones are required)
@@ -212,7 +213,7 @@
 
   <div class="section" title="11.4.8. The Parameters en detail:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16201344"></a>11.4.8. The Parameters en detail:</h3></div></div></div>
+<a name="idp16201888"></a>11.4.8. The Parameters en detail:</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -261,7 +262,7 @@
 
   <div class="section" title="11.4.9. Example for GET">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16214624"></a>11.4.9. Example for GET</h3></div></div></div>
+<a name="idp16215008"></a>11.4.9. Example for GET</h3></div></div></div>
     
 
     <p>Get all services that are critical or warning, but have a host that is ok. Sort descending by the service state and count the
@@ -333,7 +334,7 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
 
   <div class="section" title="11.4.10. POST">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16220400"></a>11.4.10. POST</h3></div></div></div>
+<a name="idp16220976"></a>11.4.10. POST</h3></div></div></div>
     
 
     <p>Advantages:</p>
@@ -359,7 +360,7 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
 
   <div class="section" title="11.4.11. Parameters en detail">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16227264"></a>11.4.11. Parameters en detail</h3></div></div></div>
+<a name="idp16227792"></a>11.4.11. Parameters en detail</h3></div></div></div>
     
 
     <p>The link is almost the same like the GET baselink, but with the output type in it: For example, host.com/icinga-web/web/api/json.
@@ -431,7 +432,7 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
 
   <div class="section" title="11.4.12. Example for POST">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16240304"></a>11.4.12. Example for POST</h3></div></div></div>
+<a name="idp16240896"></a>11.4.12. Example for POST</h3></div></div></div>
     
 
     <p>Let's take the example from Example for GET and use a post request this time. We're going to use curl, so the example can be
@@ -453,7 +454,7 @@ http://localhost/icinga-web/web/api/xml </pre>
 
     <p>This would return the same result as the GET request shown before.</p>
 
-    <a class="indexterm" name="idp16243344"></a>
+    <a class="indexterm" name="idp16244064"></a>
   </div>
 </div>
 <div class="navfooter">

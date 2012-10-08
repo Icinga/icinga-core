@@ -9,6 +9,7 @@
 <link rel="up" href="ch09.html" title="Chapter 9. Integration With Other Software">
 <link rel="prev" href="int-mklivestatus.html" title="9.4. MKLiveStatus Integration">
 <link rel="next" href="ch10.html" title="Chapter 10. Additional software">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,19 +30,19 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="reporting_1.8"></a>9.5. Installation of the Icinga-Reporting with JasperReports Server</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="reporting_1.8.html#idp15524208">9.5.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15527024">9.5.2. Official Docs</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15530320">9.5.3. Requirements</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15554208">9.5.4. Icinga Reporting</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15568160">9.5.5. Configuration</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15575648">9.5.6. Reports</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15580096">9.5.7. Errors</a></span></dt>
+<dt><span class="section">9.5.1. <a href="reporting_1.8.html#idp15524928">Introduction</a></span></dt>
+<dt><span class="section">9.5.2. <a href="reporting_1.8.html#idp15527616">Official Docs</a></span></dt>
+<dt><span class="section">9.5.3. <a href="reporting_1.8.html#idp15530752">Requirements</a></span></dt>
+<dt><span class="section">9.5.4. <a href="reporting_1.8.html#idp15554896">Icinga Reporting</a></span></dt>
+<dt><span class="section">9.5.5. <a href="reporting_1.8.html#idp15568688">Configuration</a></span></dt>
+<dt><span class="section">9.5.6. <a href="reporting_1.8.html#idp15576432">Reports</a></span></dt>
+<dt><span class="section">9.5.7. <a href="reporting_1.8.html#idp15580736">Errors</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="9.5.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15524208"></a>9.5.1. Introduction</h3></div></div></div>
+<a name="idp15524928"></a>9.5.1. Introduction</h3></div></div></div>
     
 
     <p>The Icinga-Reporting is based on the IDOUtils backend and just like the Icinga-Core, it will support all major database
@@ -62,7 +63,7 @@
 
   <div class="section" title="9.5.2. Official Docs">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15527024"></a>9.5.2. Official Docs</h3></div></div></div>
+<a name="idp15527616"></a>9.5.2. Official Docs</h3></div></div></div>
     
 
     <p>For more information, please refer to <a class="link" href="http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.5.0/JasperReports-Server-CP-Install-Guide.pdf" target="_top">http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.5.0/JasperReports-Server-CP-Install-Guide.pdf</a>
@@ -71,7 +72,7 @@
 
   <div class="section" title="9.5.3. Requirements">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15530320"></a>9.5.3. Requirements</h3></div></div></div>
+<a name="idp15530752"></a>9.5.3. Requirements</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
@@ -178,7 +179,7 @@ quit</pre>
 
   <div class="section" title="9.5.4. Icinga Reporting">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15554208"></a>9.5.4. Icinga Reporting</h3></div></div></div>
+<a name="idp15554896"></a>9.5.4. Icinga Reporting</h3></div></div></div>
     
 
     <p>As from Icinga 1.6 on, the package provides configure and make scripts.</p>
@@ -241,7 +242,7 @@ quit</pre>
 
   <div class="section" title="9.5.5. Configuration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15568160"></a>9.5.5. Configuration</h3></div></div></div>
+<a name="idp15568688"></a>9.5.5. Configuration</h3></div></div></div>
     
 
     <p>Open the webinterface, default credentials are jasperadmin:jasperadmin</p>
@@ -269,13 +270,13 @@ quit</pre>
 
   <div class="section" title="9.5.6. Reports">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15575648"></a>9.5.6. Reports</h3></div></div></div>
+<a name="idp15576432"></a>9.5.6. Reports</h3></div></div></div>
     
 
     <p>Verify that the reports are available and working.</p>
 
     <div class="figure">
-<a name="idp15576944"></a><p class="title"><b>Figure 9.1. Icinga reporting</b></p>
+<a name="idp15577696"></a><p class="title"><b>Figure 9.1. Icinga reporting</b></p>
 <div class="figure-contents">
       
 
@@ -289,7 +290,7 @@ quit</pre>
 
   <div class="section" title="9.5.7. Errors">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15580096"></a>9.5.7. Errors</h3></div></div></div>
+<a name="idp15580736"></a>9.5.7. Errors</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -314,7 +315,7 @@ quit</pre>
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp15586112"></a>
+    <a class="indexterm" name="idp15586720"></a>
   </div>
 </div>
 <div class="navfooter">

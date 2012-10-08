@@ -9,6 +9,7 @@
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="prev" href="timeperiods.html" title="5.9. Zeitfenster">
 <link rel="next" href="notifications.html" title="5.11. Benachrichtigungen">
+<script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,17 +30,17 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="networkreachability"></a>5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="networkreachability.html#idp9944544">5.10.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="networkreachability.html#idp9947632">5.10.2. Beispiel-Netzwerk</a></span></dt>
-<dt><span class="section"><a href="networkreachability.html#idp9951808">5.10.3. Definieren von Eltern/Kind-Beziehungen</a></span></dt>
-<dt><span class="section"><a href="networkreachability.html#idp9958672">5.10.4. Erreichbarkeits-Logik in Aktion</a></span></dt>
-<dt><span class="section"><a href="networkreachability.html#idp9968576">5.10.5. UNREACHABLE Zustände und Benachrichtigungen</a></span></dt>
+<dt><span class="section">5.10.1. <a href="networkreachability.html#idp9945712">Einführung</a></span></dt>
+<dt><span class="section">5.10.2. <a href="networkreachability.html#idp9948800">Beispiel-Netzwerk</a></span></dt>
+<dt><span class="section">5.10.3. <a href="networkreachability.html#idp9952784">Definieren von Eltern/Kind-Beziehungen</a></span></dt>
+<dt><span class="section">5.10.4. <a href="networkreachability.html#idp9958704">Erreichbarkeits-Logik in Aktion</a></span></dt>
+<dt><span class="section">5.10.5. <a href="networkreachability.html#idp9969504">UNREACHABLE Zustände und Benachrichtigungen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.10.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9944544"></a>5.10.1. Einführung</h3></div></div></div>
+<a name="idp9945712"></a>5.10.1. Einführung</h3></div></div></div>
     
 
     <p>Falls Sie jemals im technischen Support gearbeitet haben, hatten Sie zweifelsohne Benutzer, die Ihnen erzählt haben, "das Internet
@@ -57,7 +58,7 @@
 
   <div class="section" title="5.10.2. Beispiel-Netzwerk">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9947632"></a>5.10.2. Beispiel-Netzwerk</h3></div></div></div>
+<a name="idp9948800"></a>5.10.2. Beispiel-Netzwerk</h3></div></div></div>
     
 
     <p>Werfen Sie einen Blick auf das einfache Netzwerk-Diagramm. Lassen Sie uns annehmen, dass Sie alle Hosts (Server, Router, Switches,
@@ -69,7 +70,7 @@
 
   <div class="section" title="5.10.3. Definieren von Eltern/Kind-Beziehungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9951808"></a>5.10.3. Definieren von Eltern/Kind-Beziehungen</h3></div></div></div>
+<a name="idp9952784"></a>5.10.3. Definieren von Eltern/Kind-Beziehungen</h3></div></div></div>
     
 
     <p>Um Icinga in die Lage zu versetzen, zwischen DOWN und UNREACHABLE-Zuständen der überwachten Hosts zu unterscheiden, müssen
@@ -128,7 +129,7 @@
 
   <div class="section" title="5.10.4. Erreichbarkeits-Logik in Aktion">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9958672"></a>5.10.4. Erreichbarkeits-Logik in Aktion</h3></div></div></div>
+<a name="idp9958704"></a>5.10.4. Erreichbarkeits-Logik in Aktion</h3></div></div></div>
     
 
     <p>Nachdem Sie Icinga mit den passenden Eltern/Kind-Beziehungen konfiguriert haben, lassen Sie uns sehen, was passiert, wenn
@@ -153,7 +154,7 @@
 
   <div class="section" title="5.10.5. UNREACHABLE Zustände und Benachrichtigungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9968576"></a>5.10.5. UNREACHABLE Zustände und Benachrichtigungen</h3></div></div></div>
+<a name="idp9969504"></a>5.10.5. UNREACHABLE Zustände und Benachrichtigungen</h3></div></div></div>
     
 
     <p>Standardmäßig wird Icinga Kontakte über Hosts im DOWN und UNREACHABLE-Status informieren. Als ein Admin/Techniker möchten
@@ -164,9 +165,9 @@
     Sie die unreachable (u)-Option der <span class="emphasis"><em>notification_options</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen und/oder die <span class="emphasis"><em>host_notification_options</em></span>-Direktive in Ihren
     <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt</a>-Direktiven ausschließen.</p>
 
-    <a class="indexterm" name="idp9973264"></a>
+    <a class="indexterm" name="idp9974272"></a>
 
-    <a class="indexterm" name="idp9974896"></a>
+    <a class="indexterm" name="idp9975936"></a>
   </div>
 </div>
 <div class="navfooter">

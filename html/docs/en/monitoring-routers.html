@@ -9,6 +9,7 @@
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="monitoring-printers.html" title="2.15. Monitoring Network Printers">
 <link rel="next" href="monitoring-publicservices.html" title="2.17. Monitoring Publicly Available Services">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,21 +30,21 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-routers"></a>2.16. <a name="monitoring_routers"></a>Monitoring Routers and Switches</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="monitoring-routers.html#idp1275904">2.16.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1288832">2.16.2. Overview</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1298128">2.16.3. Steps</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1302800">2.16.4. What's Already Done For You</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1311088">2.16.5. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1316080">2.16.6. Configuring Icinga</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1316400">2.16.7. Restarting Icinga</a></span></dt>
+<dt><span class="section">2.16.1. <a href="monitoring-routers.html#idp1277680">Introduction</a></span></dt>
+<dt><span class="section">2.16.2. <a href="monitoring-routers.html#idp1290608">Overview</a></span></dt>
+<dt><span class="section">2.16.3. <a href="monitoring-routers.html#idp1299904">Steps</a></span></dt>
+<dt><span class="section">2.16.4. <a href="monitoring-routers.html#idp1304576">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.16.5. <a href="monitoring-routers.html#idp1312864">Prerequisites</a></span></dt>
+<dt><span class="section">2.16.6. <a href="monitoring-routers.html#idp1317856">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.16.7. <a href="monitoring-routers.html#idp1318176">Restarting Icinga</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idp1278992"></a>
+  <a class="indexterm" name="idp1280768"></a>
 
   <div class="section" title="2.16.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1275904"></a>2.16.1. Introduction</h3></div></div></div>
+<a name="idp1277680"></a>2.16.1. Introduction</h3></div></div></div>
     
 
     <div class="informalfigure">
@@ -84,7 +85,7 @@
 
   <div class="section" title="2.16.2. Overview">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1288832"></a>2.16.2. Overview</h3></div></div></div>
+<a name="idp1290608"></a>2.16.2. Overview</h3></div></div></div>
     
 
     <div class="informalfigure">
@@ -105,7 +106,7 @@
 
   <div class="section" title="2.16.3. Steps">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1298128"></a>2.16.3. Steps</h3></div></div></div>
+<a name="idp1299904"></a>2.16.3. Steps</h3></div></div></div>
     
 
     <p>There are several steps you'll need to follow in order to monitor a new router or switch. They are:</p>
@@ -125,7 +126,7 @@
 
   <div class="section" title="2.16.4. What's Already Done For You">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1302800"></a>2.16.4. What's Already Done For You</h3></div></div></div>
+<a name="idp1304576"></a>2.16.4. What's Already Done For You</h3></div></div></div>
     
 
     <p>To make your life a bit easier, a few configuration tasks have already been done for you:</p>
@@ -150,7 +151,7 @@
 
   <div class="section" title="2.16.5. Prerequisites">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1311088"></a>2.16.5. Prerequisites</h3></div></div></div>
+<a name="idp1312864"></a>2.16.5. Prerequisites</h3></div></div></div>
     
 
     <p>The first time you configure Icinga to monitor a network switch, you'll need to do a bit of extra work. Remember, you only
@@ -174,7 +175,7 @@
 
   <div class="section" title="2.16.6. Configuring Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1316080"></a>2.16.6. Configuring Icinga</h3></div></div></div>
+<a name="idp1317856"></a>2.16.6. Configuring Icinga</h3></div></div></div>
     
 
     <p>You'll need to create some <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object definitions</a> in order to monitor a new
@@ -324,7 +325,7 @@
 
   <div class="section" title="2.16.7. Restarting Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1316400"></a>2.16.7. Restarting Icinga</h3></div></div></div>
+<a name="idp1318176"></a>2.16.7. Restarting Icinga</h3></div></div></div>
     
 
     <p>Once you've added the new host and service definitions to the <span class="emphasis"><em>switch.cfg</em></span> file, you're ready to start
@@ -333,7 +334,7 @@
     <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that you don't
     (re)start Icinga until the verification process completes without any errors!</p>
 
-    <a class="indexterm" name="idp1354416"></a>
+    <a class="indexterm" name="idp1356192"></a>
   </div>
 </div>
 <div class="navfooter">

@@ -9,6 +9,7 @@
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="monitoring-routers.html" title="2.16. Monitoring Routers and Switches">
 <link rel="next" href="ch03.html" title="Chapter 3. Configuring Icinga">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,19 +30,19 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-publicservices"></a>2.17. <a name="monitoring_publicservices"></a>Monitoring Publicly Available Services</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1361552">2.17.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1373696">2.17.2. Plugins for Monitoring Services</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1379616">2.17.3. Creating a Host Definition</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1386416">2.17.4. Creating Service Definitions</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1439888">2.17.5. Restarting Icinga</a></span></dt>
+<dt><span class="section">2.17.1. <a href="monitoring-publicservices.html#idp1363328">Introduction</a></span></dt>
+<dt><span class="section">2.17.2. <a href="monitoring-publicservices.html#idp1375472">Plugins for Monitoring Services</a></span></dt>
+<dt><span class="section">2.17.3. <a href="monitoring-publicservices.html#idp1381392">Creating a Host Definition</a></span></dt>
+<dt><span class="section">2.17.4. <a href="monitoring-publicservices.html#idp1388192">Creating Service Definitions</a></span></dt>
+<dt><span class="section">2.17.5. <a href="monitoring-publicservices.html#idp1441664">Restarting Icinga</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idp1360160"></a>
+  <a class="indexterm" name="idp1361936"></a>
 
   <div class="section" title="2.17.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1361552"></a>2.17.1. Introduction</h3></div></div></div>
+<a name="idp1363328"></a>2.17.1. Introduction</h3></div></div></div>
     
 
     <p>This document describes how you can monitor publicly available services, applications and protocols. By "public" we mean services
@@ -94,7 +95,7 @@
 
   <div class="section" title="2.17.2. Plugins for Monitoring Services">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1373696"></a>2.17.2. Plugins for Monitoring Services</h3></div></div></div>
+<a name="idp1375472"></a>2.17.2. Plugins for Monitoring Services</h3></div></div></div>
     
 
     <p>When you find yourself needing to monitor a particular application, service, or protocol, chances are good that a <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugin</a> exists to monitor it. The official Nagios plugins distribution comes with plugins that can be used to
@@ -112,7 +113,7 @@
 
   <div class="section" title="2.17.3. Creating a Host Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1379616"></a>2.17.3. Creating a Host Definition</h3></div></div></div>
+<a name="idp1381392"></a>2.17.3. Creating a Host Definition</h3></div></div></div>
     
 
     <p>Before you can monitor a service, you first need to define a <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> that is associated
@@ -136,7 +137,7 @@
 
   <div class="section" title="2.17.4. Creating Service Definitions">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1386416"></a>2.17.4. Creating Service Definitions</h3></div></div></div>
+<a name="idp1388192"></a>2.17.4. Creating Service Definitions</h3></div></div></div>
     
 
     <p>For each service you want to monitor, you need to define a <a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a> in
@@ -376,7 +377,7 @@
 
   <div class="section" title="2.17.5. Restarting Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1439888"></a>2.17.5. Restarting Icinga</h3></div></div></div>
+<a name="idp1441664"></a>2.17.5. Restarting Icinga</h3></div></div></div>
     
 
     <p>Once you've added the new host and service definitions to your object configuration file(s), you're ready to start monitoring

@@ -9,6 +9,7 @@
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
 <link rel="prev" href="volatileservices.html" title="7.4. Volatile Services">
 <link rel="next" href="distributed.html" title="7.6. Distributed Monitoring">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,16 +30,16 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="freshness"></a>7.5. <a name="freshness_checks"></a>Service and Host Freshness Checks</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="freshness.html#idp13426224">7.5.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="freshness.html#idp13432352">7.5.2. How Does Freshness Checking Work?</a></span></dt>
-<dt><span class="section"><a href="freshness.html#idp13440448">7.5.3. Enabling Freshness Checking</a></span></dt>
-<dt><span class="section"><a href="freshness.html#idp13454464">7.5.4. Example</a></span></dt>
+<dt><span class="section">7.5.1. <a href="freshness.html#idp13426528">Introduction</a></span></dt>
+<dt><span class="section">7.5.2. <a href="freshness.html#idp13432656">How Does Freshness Checking Work?</a></span></dt>
+<dt><span class="section">7.5.3. <a href="freshness.html#idp13440752">Enabling Freshness Checking</a></span></dt>
+<dt><span class="section">7.5.4. <a href="freshness.html#idp13454448">Example</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.5.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13426224"></a>7.5.1. Introduction</h3></div></div></div>
+<a name="idp13426528"></a>7.5.1. Introduction</h3></div></div></div>
 
   <p>Icinga supports a feature that does "freshness" checking on the results of host and service checks. The purpose of
   freshness checking is to ensure that host and service checks are being provided passively by external applications on a regular
@@ -52,7 +53,7 @@
   </div>
 <div class="section" title="7.5.2. How Does Freshness Checking Work?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13432352"></a>7.5.2. How Does Freshness Checking Work?</h3></div></div></div>
+<a name="idp13432656"></a>7.5.2. How Does Freshness Checking Work?</h3></div></div></div>
 
   <p>Icinga periodically checks the freshness of the results for all hosts services that have freshness checking
   enabled.</p>
@@ -91,7 +92,7 @@
   </div>
 <div class="section" title="7.5.3. Enabling Freshness Checking">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13440448"></a>7.5.3. Enabling Freshness Checking</h3></div></div></div>
+<a name="idp13440752"></a>7.5.3. Enabling Freshness Checking</h3></div></div></div>
 
   <p>Here's what you need to do to enable freshness checking...</p>
 
@@ -137,7 +138,7 @@
   </div>
 <div class="section" title="7.5.4. Example">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13454464"></a>7.5.4. Example</h3></div></div></div>
+<a name="idp13454448"></a>7.5.4. Example</h3></div></div></div>
 
   <p>An example of a service that might require freshness checking might be one that reports the status of your nightly backup
   jobs. Perhaps you have a external script that submit the results of the backup job to Icinga once the backup is
@@ -175,7 +176,7 @@
   as an active service check. This causes the <span class="emphasis"><em>check_dummy</em></span> plugin to be executed, which returns a critical
   state to Icinga. The service will then go into to a critical state (if it isn't already there) and someone will probably
   get notified of the problem.</p>
-  <a class="indexterm" name="idp13461600"></a>
+  <a class="indexterm" name="idp13461776"></a>
 </div>
 </div>
 <div class="navfooter">

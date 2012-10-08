@@ -9,6 +9,7 @@
 <link rel="up" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="prev" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">
 <link rel="next" href="notifications2.html" title="5.12. Notifications: Examples and troubleshooting">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,16 +30,16 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="notifications"></a>5.11. <a name="explanation_notifications"></a>Notifications</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="notifications.html#idp10053472">5.11.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10055968">5.11.2. When Do Notifications Occur?</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10061696">5.11.3. Who Gets Notified?</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10065008">5.11.4. What Filters Must Be Passed In Order For Notifications To Be Sent?</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10066816">5.11.5. Program-Wide Filter:</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10069296">5.11.6. Service and Host Filters:</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10082528">5.11.7. Contact Filters:</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10090672">5.11.8. Notification Methods</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10094896">5.11.9. Notification Type Macro</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10126496">5.11.10. Helpful Resources</a></span></dt>
+<dt><span class="section">5.11.1. <a href="notifications.html#idp10054704">Introduction</a></span></dt>
+<dt><span class="section">5.11.2. <a href="notifications.html#idp10057200">When Do Notifications Occur?</a></span></dt>
+<dt><span class="section">5.11.3. <a href="notifications.html#idp10062928">Who Gets Notified?</a></span></dt>
+<dt><span class="section">5.11.4. <a href="notifications.html#idp10066240">What Filters Must Be Passed In Order For Notifications To Be Sent?</a></span></dt>
+<dt><span class="section">5.11.5. <a href="notifications.html#idp10068048">Program-Wide Filter:</a></span></dt>
+<dt><span class="section">5.11.6. <a href="notifications.html#idp10070528">Service and Host Filters:</a></span></dt>
+<dt><span class="section">5.11.7. <a href="notifications.html#idp10083744">Contact Filters:</a></span></dt>
+<dt><span class="section">5.11.8. <a href="notifications.html#idp10092080">Notification Methods</a></span></dt>
+<dt><span class="section">5.11.9. <a href="notifications.html#idp10095616">Notification Type Macro</a></span></dt>
+<dt><span class="section">5.11.10. <a href="notifications.html#idp10127792">Helpful Resources</a></span></dt>
 </dl></div>
   
 
@@ -46,7 +47,7 @@
 
   <div class="section" title="5.11.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10053472"></a>5.11.1. Introduction</h3></div></div></div>
+<a name="idp10054704"></a>5.11.1. Introduction</h3></div></div></div>
     
 
     <p>I've had a lot of questions as to exactly how notifications work. This will attempt to explain exactly when and how host and
@@ -57,7 +58,7 @@
 
   <div class="section" title="5.11.2. When Do Notifications Occur?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10055968"></a>5.11.2. When Do Notifications Occur?</h3></div></div></div>
+<a name="idp10057200"></a>5.11.2. When Do Notifications Occur?</h3></div></div></div>
     
 
     <p>The decision to send out notifications is made in the service check and host check logic. The calculations for whether a
@@ -79,7 +80,7 @@
 
   <div class="section" title="5.11.3. Who Gets Notified?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10061696"></a>5.11.3. Who Gets Notified?</h3></div></div></div>
+<a name="idp10062928"></a>5.11.3. Who Gets Notified?</h3></div></div></div>
     
 
     <p>Each host and service definition has a &lt;<span class="emphasis"><em>contact_groups</em></span>&gt; option that specifies what contact groups
@@ -92,7 +93,7 @@
 
   <div class="section" title="5.11.4. What Filters Must Be Passed In Order For Notifications To Be Sent?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10065008"></a>5.11.4. What Filters Must Be Passed In Order For Notifications To Be Sent?</h3></div></div></div>
+<a name="idp10066240"></a>5.11.4. What Filters Must Be Passed In Order For Notifications To Be Sent?</h3></div></div></div>
     
 
     <p>Just because there is a need to send out a host or service notification doesn't mean that any contacts are going to get notified.
@@ -103,7 +104,7 @@
 
   <div class="section" title="5.11.5. Program-Wide Filter:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10066816"></a>5.11.5. Program-Wide Filter:</h3></div></div></div>
+<a name="idp10068048"></a>5.11.5. Program-Wide Filter:</h3></div></div></div>
     
 
     <p>The first filter that notifications must pass is a test of whether or not notifications are enabled on a program-wide basis. This
@@ -115,7 +116,7 @@
 
   <div class="section" title="5.11.6. Service and Host Filters:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10069296"></a>5.11.6. Service and Host Filters:</h3></div></div></div>
+<a name="idp10070528"></a>5.11.6. Service and Host Filters:</h3></div></div></div>
     
 
     <p>The first filter for host or service notifications is a check to see if the host or service is in a period of <a class="link" href="downtime.html" title="7.16. Scheduled Downtime">scheduled downtime</a>. It it is in a scheduled downtime, <span class="bold"><strong>no one gets notified</strong></span>.
@@ -171,7 +172,7 @@
 
   <div class="section" title="5.11.7. Contact Filters:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10082528"></a>5.11.7. Contact Filters:</h3></div></div></div>
+<a name="idp10083744"></a>5.11.7. Contact Filters:</h3></div></div></div>
     
 
     <p>At this point the notification has passed the program mode filter and all host or service filters and Icinga starts to
@@ -212,7 +213,7 @@
 
   <div class="section" title="5.11.8. Notification Methods">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10090672"></a>5.11.8. Notification Methods</h3></div></div></div>
+<a name="idp10092080"></a>5.11.8. Notification Methods</h3></div></div></div>
     
 
     <p>You can have Icinga notify you of problems and recoveries pretty much anyway you want: pager, cellphone, email, instant
@@ -242,7 +243,7 @@
 
   <div class="section" title="5.11.9. Notification Type Macro">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10094896"></a>5.11.9. Notification Type Macro</h3></div></div></div>
+<a name="idp10095616"></a>5.11.9. Notification Type Macro</h3></div></div></div>
     
 
     <p>When crafting your notification commands, you need to take into account what type of notification is occurring. The <a class="link" href="macrolist.html#macrolist-notificationtype">$NOTIFICATIONTYPE$</a> macro contains a string that identifies exactly that. The table below
@@ -310,7 +311,7 @@
 
   <div class="section" title="5.11.10. Helpful Resources">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10126496"></a>5.11.10. Helpful Resources</h3></div></div></div>
+<a name="idp10127792"></a>5.11.10. Helpful Resources</h3></div></div></div>
     
 
     <p>There are many ways you could configure Icinga to send notifications out. Its up to you to decide which method(s) you want
@@ -364,13 +365,13 @@
     have audio alerts played on the monitoring server (with synthesized speech), check out <a class="link" href="http://www.cstr.ed.ac.uk/projects/festival/" target="_top">Festival</a>. If you'd rather leave the monitoring box alone and have audio
     alerts played on another box, check out the <a class="link" href="http://radscan.com/nas" target="_top">Network Audio System (NAS)</a> and <a class="link" href="http://rplay.doit.org/" target="_top">rplay</a> projects.</p>
 
-    <a class="indexterm" name="idp10144560"></a>
+    <a class="indexterm" name="idp10145776"></a>
 
-    <a class="indexterm" name="idp10146032"></a>
+    <a class="indexterm" name="idp10147040"></a>
 
-    <a class="indexterm" name="idp10147424"></a>
+    <a class="indexterm" name="idp10148832"></a>
 
-    <a class="indexterm" name="idp10149232"></a>
+    <a class="indexterm" name="idp10150400"></a>
   </div>
 </div>
 <div class="navfooter">

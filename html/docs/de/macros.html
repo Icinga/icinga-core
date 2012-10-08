@@ -9,6 +9,7 @@
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="prev" href="plugins.html" title="5.1. Icinga Plugins">
 <link rel="next" href="macrolist.html" title="5.3. Standard-Makros in Icinga">
+<script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,22 +30,22 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="macros"></a>5.2. Makros verstehen und wie sie arbeiten</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="macros.html#idp6940192">5.2.1. Makros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp6941824">5.2.2. Makroersetzungen - wie Makros arbeiten</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp6944064">5.2.3. Beispiel 1: Host-Address Makro</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp6948592">5.2.4. Beispiel 2: Befehlsargument-Makros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp6960896">5.2.5. On-Demand-Makros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp6961184">5.2.6. On-Demand-Gruppen-Makros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp6989424">5.2.7. Benutzervariablen-Makros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp6999504">5.2.8. Makrobereinigung</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7014720">5.2.9. Makros als Umgebungsvariablen</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7020672">5.2.10. Verfügbare Makros</a></span></dt>
+<dt><span class="section">5.2.1. <a href="macros.html#idp6940944">Makros</a></span></dt>
+<dt><span class="section">5.2.2. <a href="macros.html#idp6942576">Makroersetzungen - wie Makros arbeiten</a></span></dt>
+<dt><span class="section">5.2.3. <a href="macros.html#idp6944816">Beispiel 1: Host-Address Makro</a></span></dt>
+<dt><span class="section">5.2.4. <a href="macros.html#idp6949344">Beispiel 2: Befehlsargument-Makros</a></span></dt>
+<dt><span class="section">5.2.5. <a href="macros.html#idp6961648">On-Demand-Makros</a></span></dt>
+<dt><span class="section">5.2.6. <a href="macros.html#idp6961968">On-Demand-Gruppen-Makros</a></span></dt>
+<dt><span class="section">5.2.7. <a href="macros.html#idp6990016">Benutzervariablen-Makros</a></span></dt>
+<dt><span class="section">5.2.8. <a href="macros.html#idp7000240">Makrobereinigung</a></span></dt>
+<dt><span class="section">5.2.9. <a href="macros.html#idp7016272">Makros als Umgebungsvariablen</a></span></dt>
+<dt><span class="section">5.2.10. <a href="macros.html#idp7021280">Verfügbare Makros</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.2.1. Makros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6940192"></a>5.2.1. Makros</h3></div></div></div>
+<a name="idp6940944"></a>5.2.1. Makros</h3></div></div></div>
     
 
     <p>Eine der Haupteigenschaften, die Icinga so flexibel machen, ist die Fähigkeit, Makros in Befehlsdefinitionen zu benutzen.
@@ -53,7 +54,7 @@
 
   <div class="section" title="5.2.2. Makroersetzungen - wie Makros arbeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6941824"></a>5.2.2. Makroersetzungen - wie Makros arbeiten</h3></div></div></div>
+<a name="idp6942576"></a>5.2.2. Makroersetzungen - wie Makros arbeiten</h3></div></div></div>
     
 
     <p>Bevor Icinga einen Befehl ausführt, ersetzt es jedes Makro, das es in der Befehlsdefinition findet, durch den
@@ -66,7 +67,7 @@
 
   <div class="section" title="5.2.3. Beispiel 1: Host-Address Makro">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6944064"></a>5.2.3. Beispiel 1: Host-Address Makro</h3></div></div></div>
+<a name="idp6944816"></a>5.2.3. Beispiel 1: Host-Address Makro</h3></div></div></div>
     
 
     <p>Wenn Sie Host- und Service-Makros in Befehlsdefinitionen benutzen, beziehen sich diese auf Werte für den Host oder Service, für
@@ -95,7 +96,7 @@
 
   <div class="section" title="5.2.4. Beispiel 2: Befehlsargument-Makros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6948592"></a>5.2.4. Beispiel 2: Befehlsargument-Makros</h3></div></div></div>
+<a name="idp6949344"></a>5.2.4. Beispiel 2: Befehlsargument-Makros</h3></div></div></div>
     
 
     <p>Sie können auch Argumente an Befehle übergeben, was recht handlich ist, wenn Sie Ihre Befehlsdefinitonen ziemlich generisch halten
@@ -157,7 +158,7 @@
 
   <div class="section" title="5.2.5. On-Demand-Makros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6960896"></a>5.2.5. On-Demand-Makros</h3></div></div></div>
+<a name="idp6961648"></a>5.2.5. On-Demand-Makros</h3></div></div></div>
     
 
     <p>Wenn Sie Host- und Service-Makros in Ihren Befehlsdefinitionen benutzen, dann beziehen sie sich normalerweise auf Werte des Hosts
@@ -204,7 +205,7 @@
 
   <div class="section" title="5.2.6. On-Demand-Gruppen-Makros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6961184"></a>5.2.6. On-Demand-Gruppen-Makros</h3></div></div></div>
+<a name="idp6961968"></a>5.2.6. On-Demand-Gruppen-Makros</h3></div></div></div>
     
 
     <p>Sie können die Werte eines Makros über alle Kontakte, Hosts oder Services in einer bestimmten Gruppe mit einem speziellen Format
@@ -239,7 +240,7 @@
 
   <div class="section" title="5.2.7. Benutzervariablen-Makros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6989424"></a>5.2.7. Benutzervariablen-Makros</h3></div></div></div>
+<a name="idp6990016"></a>5.2.7. Benutzervariablen-Makros</h3></div></div></div>
     
 
     <p>Jede <a class="link" href="customobjectvars.html" title="3.5. Maßgeschneiderte Objektvariablen">Benutzerobjekt-Variable</a>, die Sie in Host-, Service- oder Contact-Definitionen
@@ -272,7 +273,7 @@
 
   <div class="section" title="5.2.8. Makrobereinigung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6999504"></a>5.2.8. Makrobereinigung</h3></div></div></div>
+<a name="idp7000240"></a>5.2.8. Makrobereinigung</h3></div></div></div>
     
 
     <p>Einige Makros werden von potenziell gefährlichen Shell-Metazeichen bereinigt, bevor Ersetzungen in Befehlen stattfinden. Welche
@@ -315,7 +316,7 @@
 
   <div class="section" title="5.2.9. Makros als Umgebungsvariablen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7014720"></a>5.2.9. Makros als Umgebungsvariablen</h3></div></div></div>
+<a name="idp7016272"></a>5.2.9. Makros als Umgebungsvariablen</h3></div></div></div>
     
 
     <p>Die meisten Makros werden als Umgebungsvariablen zur Verfügung gestellt, um einen einfachen Einsatz in Scripts oder Befehlen zu
@@ -327,16 +328,16 @@
 
   <div class="section" title="5.2.10. Verfügbare Makros">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7020672"></a>5.2.10. Verfügbare Makros</h3></div></div></div>
+<a name="idp7021280"></a>5.2.10. Verfügbare Makros</h3></div></div></div>
     
 
     <p>Eine Liste aller in Icinga verfügbaren Makros sowie eine Tabelle, wann sie eingesetzt werden können, finden Sie <a class="link" href="macrolist.html" title="5.3. Standard-Makros in Icinga">hier</a>.</p>
 
-    <a class="indexterm" name="idp7022800"></a>
+    <a class="indexterm" name="idp7023392"></a>
 
-    <a class="indexterm" name="idp7024384"></a>
+    <a class="indexterm" name="idp7024912"></a>
 
-    <a class="indexterm" name="idp7026144"></a>
+    <a class="indexterm" name="idp7026752"></a>
   </div>
 </div>
 <div class="navfooter">
