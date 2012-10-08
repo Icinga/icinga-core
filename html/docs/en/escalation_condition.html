@@ -29,15 +29,15 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="escalation_condition"></a>7.10. <a name="escalation_cond"></a>Escalation Condition</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="escalation_condition.html#idp13783904">7.10.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="escalation_condition.html#idp13791408">7.10.2. Syntax</a></span></dt>
-<dt><span class="section"><a href="escalation_condition.html#idp13795488">7.10.3. Example</a></span></dt>
+<dt><span class="section"><a href="escalation_condition.html#idp13812208">7.10.1. Introduction</a></span></dt>
+<dt><span class="section"><a href="escalation_condition.html#idp13820064">7.10.2. Syntax</a></span></dt>
+<dt><span class="section"><a href="escalation_condition.html#idp13820192">7.10.3. Example</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.10.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13783904"></a>7.10.1. Introduction</h3></div></div></div>
+<a name="idp13812208"></a>7.10.1. Introduction</h3></div></div></div>
 
   <p>Starting with Icinga 1.0.1 a patch is implemented which introduces the ability to define an escalation_condition (similar to escalation_options [w,u,c,r]). An
   escalation with a defined condition will only be escalated if the current state of a particular host/service fits the condition.
@@ -64,7 +64,7 @@
   </div>
 <div class="section" title="7.10.2. Syntax">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13791408"></a>7.10.2. Syntax</h3></div></div></div>
+<a name="idp13820064"></a>7.10.2. Syntax</h3></div></div></div>
 
   <p>The escalation_condition option is completely optional and can be defined for host escalations as well as for service
   escalations. The syntax is:</p>
@@ -98,7 +98,7 @@
   </div>
 <div class="section" title="7.10.3. Example">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13795488"></a>7.10.3. Example</h3></div></div></div>
+<a name="idp13820192"></a>7.10.3. Example</h3></div></div></div>
 
   <pre class="programlisting">define serviceescalation {
    host_name               localhost
@@ -111,7 +111,7 @@
   CRITICAL.</p>
 
   <p>[ Thanks to: Vitali Voroth, DECOIT GmbH * http://www.decoit.de ]</p>
-  <a class="indexterm" name="idp13802560"></a>
+  <a class="indexterm" name="idp13830992"></a>
 </div>
 </div>
 <div class="navfooter">

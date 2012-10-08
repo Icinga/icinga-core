@@ -29,21 +29,21 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="flapping"></a>7.8. Erkennung und Behandlung von Status-Flattern</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="flapping.html#idp13557248">7.8.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13559120">7.8.2. Wie Flatter-Erkennung arbeitet</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13569104">7.8.3. Beispiel</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13569424">7.8.4. Flatter-Erkennung für Services</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13590272">7.8.5. Flatter-Erkennung für Hosts</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13596208">7.8.6. Flatter-Erkennungsschwellwerte</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13621136">7.8.7. Zustände, die für die Flatter-Erkennung benutzt werden</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13625424">7.8.8. Flatter-Behandlung</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13637456">7.8.9. Aktivieren der Flatter-Erkennung</a></span></dt>
+<dt><span class="section"><a href="flapping.html#idp13570960">7.8.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="flapping.html#idp13572832">7.8.2. Wie Flatter-Erkennung arbeitet</a></span></dt>
+<dt><span class="section"><a href="flapping.html#idp13582816">7.8.3. Beispiel</a></span></dt>
+<dt><span class="section"><a href="flapping.html#idp13583072">7.8.4. Flatter-Erkennung für Services</a></span></dt>
+<dt><span class="section"><a href="flapping.html#idp13603728">7.8.5. Flatter-Erkennung für Hosts</a></span></dt>
+<dt><span class="section"><a href="flapping.html#idp13609728">7.8.6. Flatter-Erkennungsschwellwerte</a></span></dt>
+<dt><span class="section"><a href="flapping.html#idp13632096">7.8.7. Zustände, die für die Flatter-Erkennung benutzt werden</a></span></dt>
+<dt><span class="section"><a href="flapping.html#idp13639056">7.8.8. Flatter-Behandlung</a></span></dt>
+<dt><span class="section"><a href="flapping.html#idp13651008">7.8.9. Aktivieren der Flatter-Erkennung</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.8.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13557248"></a>7.8.1. Einführung</h3></div></div></div>
+<a name="idp13570960"></a>7.8.1. Einführung</h3></div></div></div>
     
 
     <p>Icinga unterstützt die Erkennung von Hosts und Services, die "flattern". Flattern tritt auf, wenn Hosts oder Services zu
@@ -54,7 +54,7 @@
 
   <div class="section" title="7.8.2. Wie Flatter-Erkennung arbeitet">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13559120"></a>7.8.2. Wie Flatter-Erkennung arbeitet</h3></div></div></div>
+<a name="idp13572832"></a>7.8.2. Wie Flatter-Erkennung arbeitet</h3></div></div></div>
     
 
     <p>Bevor wir darauf eingehen, lassen Sie uns sagen, dass es etwas schwierig war, Flatter-Erkennung zu implementieren. Wie genau legt
@@ -91,7 +91,7 @@
 
   <div class="section" title="7.8.3. Beispiel">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13569104"></a>7.8.3. Beispiel</h3></div></div></div>
+<a name="idp13582816"></a>7.8.3. Beispiel</h3></div></div></div>
     
 
     <p>Lassen Sie uns etwas detaillierter beschreiben, wie Flatter-Erkennung bei Services arbeitet...</p>
@@ -148,7 +148,7 @@
 
   <div class="section" title="7.8.4. Flatter-Erkennung für Services">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13569424"></a>7.8.4. Flatter-Erkennung für Services</h3></div></div></div>
+<a name="idp13583072"></a>7.8.4. Flatter-Erkennung für Services</h3></div></div></div>
     
 
     <p>Icinga prüft jedes Mal, wenn der Service geprüft wird (egal ob aktiv oder passiv), ob ein Service flattert.</p>
@@ -158,7 +158,7 @@
 
   <div class="section" title="7.8.5. Flatter-Erkennung für Hosts">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13590272"></a>7.8.5. Flatter-Erkennung für Hosts</h3></div></div></div>
+<a name="idp13603728"></a>7.8.5. Flatter-Erkennung für Hosts</h3></div></div></div>
     
 
     <p>Host-Flatter-Erkennung arbeitet in einer ähnlichen Weise wie die Service-Flatter-Erkennung, mit einem wichtigen Unterschied:
@@ -185,7 +185,7 @@
 
   <div class="section" title="7.8.6. Flatter-Erkennungsschwellwerte">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13596208"></a>7.8.6. Flatter-Erkennungsschwellwerte</h3></div></div></div>
+<a name="idp13609728"></a>7.8.6. Flatter-Erkennungsschwellwerte</h3></div></div></div>
     
 
     <p>Icinga benutzt verschiedene Variablen, um die Schwellwert-Prozentsätze der Statusänderungen festzulegen, die es für die
@@ -282,7 +282,7 @@
 
   <div class="section" title="7.8.7. Zustände, die für die Flatter-Erkennung benutzt werden">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13621136"></a>7.8.7. Zustände, die für die Flatter-Erkennung benutzt werden</h3></div></div></div>
+<a name="idp13632096"></a>7.8.7. Zustände, die für die Flatter-Erkennung benutzt werden</h3></div></div></div>
     
 
     <p>Normalerweise wird Icinga die Ergebnisse der letzten 21 Präfungen eines Hosts oder Service verfolgen, unabhängig vom
@@ -297,7 +297,7 @@
 
   <div class="section" title="7.8.8. Flatter-Behandlung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13625424"></a>7.8.8. Flatter-Behandlung</h3></div></div></div>
+<a name="idp13639056"></a>7.8.8. Flatter-Behandlung</h3></div></div></div>
     
 
     <p>Wenn bei einem Service- oder Host das erste Mal Flattern erkannt wird, wird Icinga:</p>
@@ -338,7 +338,7 @@
 
   <div class="section" title="7.8.9. Aktivieren der Flatter-Erkennung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13637456"></a>7.8.9. Aktivieren der Flatter-Erkennung</h3></div></div></div>
+<a name="idp13651008"></a>7.8.9. Aktivieren der Flatter-Erkennung</h3></div></div></div>
     
 
     <p>Um die Flatter-Erkennungsmöglichkeiten in Icinga zu aktivieren, müssen Sie folgendes tun:</p>
@@ -357,7 +357,7 @@
     <p>Wenn Sie die Flatter-Erkennung nur für einige Hosts oder Services deaktivieren wollen, nutzen Sie die
     <span class="emphasis"><em>flap_detection_enabled</em></span>-Direktive in den Host- oder Service-Definitionen, um das zu tun.</p>
 
-    <a class="indexterm" name="idp13644528"></a>
+    <a class="indexterm" name="idp13658208"></a>
   </div>
 </div>
 <div class="navfooter">

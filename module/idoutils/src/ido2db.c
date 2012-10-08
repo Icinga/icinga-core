@@ -1357,6 +1357,13 @@ int ido2db_handle_client_connection(int sd) {
 			}
 #endif
 
+
+			//cpu hogger for debugging only
+			//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "received 0 bytes from socket. ido2db will try again.\n");
+			//continue;
+
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "received 0 bytes from socket. ido2db will disconnect.\n");
+
 			/* gracefully back out of current operation... */
 			ido2db_db_goodbye(&idi);
 
@@ -1366,6 +1373,7 @@ int ido2db_handle_client_connection(int sd) {
 #ifdef DEBUG_IDO2DB2
 		printf("BYTESREAD: %d\n", result);
 #endif
+		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "BYTESREAD: %d\n", result);
 
 		/* append data we just read to dynamic buffer */
 		buf[result] = '\x0';
@@ -1385,6 +1393,8 @@ int ido2db_handle_client_connection(int sd) {
 		/* should we disconnect the client? */
 		if (idi.disconnect_client == IDO_TRUE) {
 
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "client input data ended, told to disconnect.\n");
+
 			/* gracefully back out of current operation... */
 			ido2db_db_goodbye(&idi);
 
@@ -1395,6 +1405,7 @@ int ido2db_handle_client_connection(int sd) {
 #ifdef DEBUG_IDO2DB2
 	printf("BYTES: %lu, LINES: %lu\n", idi.bytes_processed, idi.lines_processed);
 #endif
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "BYTES: %lu, LINES: %lu\n", idi.bytes_processed, idi.lines_processed);
 
 	/* terminate threads */
 	ido2db_terminate_threads();

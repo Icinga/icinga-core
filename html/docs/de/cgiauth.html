@@ -29,19 +29,19 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cgiauth"></a>3.7. Authentifizierung und Autorisierung in den CGIs</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="cgiauth.html#idp5587456">3.7.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp5589088">3.7.2. Definitionen</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6612960">3.7.3. Erstellen von authentifizierten Benutzern</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6618384">3.7.4. Aktivieren der Authentifizierungs/Autorisierungsfunktionalität in den CGIs</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6618896">3.7.5. Standardberechtigungen für CGI-Informationen</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6623136">3.7.6. CGI-Autorisierungsanforderungen</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6705952">3.7.7. Authentifizierung auf sicheren Web-Servern</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp5589008">3.7.1. Einführung</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp5590640">3.7.2. Definitionen</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6614496">3.7.3. Erstellen von authentifizierten Benutzern</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6619920">3.7.4. Aktivieren der Authentifizierungs/Autorisierungsfunktionalität in den CGIs</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6620432">3.7.5. Standardberechtigungen für CGI-Informationen</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6624704">3.7.6. CGI-Autorisierungsanforderungen</a></span></dt>
+<dt><span class="section"><a href="cgiauth.html#idp6707328">3.7.7. Authentifizierung auf sicheren Web-Servern</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="3.7.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5587456"></a>3.7.1. Einführung</h3></div></div></div>
+<a name="idp5589008"></a>3.7.1. Einführung</h3></div></div></div>
     
 
     <p>Dieses Dokument beschreibt, wie die Icinga-CGIs entscheiden, wer die Überwachungs- und Konfigurationsinformationen sehen
@@ -50,7 +50,7 @@
 
   <div class="section" title="3.7.2. Definitionen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5589088"></a>3.7.2. <a name="cgiauth-definitions"></a>Definitionen</h3></div></div></div>
+<a name="idp5590640"></a>3.7.2. <a name="cgiauth-definitions"></a>Definitionen</h3></div></div></div>
     
 
     <p>Bevor wir fortfahren, ist es wichtig, dass Sie die Bedeutung und den Unterschied zwischen authentifizierten Benutzern und
@@ -70,7 +70,7 @@
 
   <div class="section" title="3.7.3. Erstellen von authentifizierten Benutzern">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6612960"></a>3.7.3. <a name="cgiauth-config_web_users"></a>Erstellen von authentifizierten Benutzern</h3></div></div></div>
+<a name="idp6614496"></a>3.7.3. <a name="cgiauth-config_web_users"></a>Erstellen von authentifizierten Benutzern</h3></div></div></div>
     
 
     <p>Wenn wir annehmen, dass Sie Ihren Web-Server wie in der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> konfiguriert
@@ -87,7 +87,7 @@
 
   <div class="section" title="3.7.4. Aktivieren der Authentifizierungs/Autorisierungsfunktionalität in den CGIs">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6618384"></a>3.7.4. <a name="cgiauth-enable_cgi_auth"></a>Aktivieren der Authentifizierungs/Autorisierungsfunktionalität in den CGIs</h3></div></div></div>
+<a name="idp6619920"></a>3.7.4. <a name="cgiauth-enable_cgi_auth"></a>Aktivieren der Authentifizierungs/Autorisierungsfunktionalität in den CGIs</h3></div></div></div>
     
 
     <p>Als nächstes sollten Sie sicherstellen, dass die CGI so konfiguriert sind, dass sie die Authentifizierungs- und
@@ -102,7 +102,7 @@
 
   <div class="section" title="3.7.5. Standardberechtigungen für CGI-Informationen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6618896"></a>3.7.5. <a name="cgiauth-default_rights"></a>Standardberechtigungen für CGI-Informationen</h3></div></div></div>
+<a name="idp6620432"></a>3.7.5. <a name="cgiauth-default_rights"></a>Standardberechtigungen für CGI-Informationen</h3></div></div></div>
     
 
     <p>Welche Standardberechtigungen haben Benutzer in den CGIs, wenn die Authentifizierungs- und Autorisierungsfunktionalität aktiviert
@@ -298,7 +298,7 @@
 
   <div class="section" title="3.7.6. CGI-Autorisierungsanforderungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6623136"></a>3.7.6. <a name="cgiauth-cgi_auth_requirements"></a>CGI-Autorisierungsanforderungen</h3></div></div></div>
+<a name="idp6624704"></a>3.7.6. <a name="cgiauth-cgi_auth_requirements"></a>CGI-Autorisierungsanforderungen</h3></div></div></div>
     
 
     <p>Wenn Sie verwirrt sind, welche Autorisierung Sie benötigen, um Zugang zu verschiedenen Informationen in den CGIs zu bekommen,
@@ -308,7 +308,7 @@
 
   <div class="section" title="3.7.7. Authentifizierung auf sicheren Web-Servern">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6705952"></a>3.7.7. <a name="cgiauth-secure_web_servers"></a>Authentifizierung auf sicheren Web-Servern</h3></div></div></div>
+<a name="idp6707328"></a>3.7.7. <a name="cgiauth-secure_web_servers"></a>Authentifizierung auf sicheren Web-Servern</h3></div></div></div>
     
 
     <p>Wenn Ihr Web-Server in einer sicheren Domäne steht (d.h. hinter einer Firewall) oder wenn Sie SSL benutzen, dann können Sie einen
@@ -321,21 +321,21 @@
     einen sicheren Web-Server haben und sicher sind, dass sich jeder, der die CGIs aufruft, in irgendeiner Weise authentifiziert hat. Wenn
     Sie diese Variable definieren, dann wird jeder, der sich am Web-Server authentifiziert, alle Rechte dieses Benutzers erben!</p>
 
-    <a class="indexterm" name="idp6711728"></a>
+    <a class="indexterm" name="idp6713072"></a>
 
-    <a class="indexterm" name="idp6712624"></a>
+    <a class="indexterm" name="idp6714080"></a>
 
-    <a class="indexterm" name="idp6714352"></a>
+    <a class="indexterm" name="idp6715808"></a>
 
-    <a class="indexterm" name="idp6715968"></a>
+    <a class="indexterm" name="idp6717328"></a>
 
-    <a class="indexterm" name="idp6717248"></a>
+    <a class="indexterm" name="idp6718960"></a>
 
-    <a class="indexterm" name="idp6719088"></a>
+    <a class="indexterm" name="idp6720672"></a>
 
-    <a class="indexterm" name="idp6720736"></a>
+    <a class="indexterm" name="idp6722336"></a>
 
-    <a class="indexterm" name="idp6722432"></a>
+    <a class="indexterm" name="idp6723984"></a>
   </div>
 </div>
 <div class="navfooter">
