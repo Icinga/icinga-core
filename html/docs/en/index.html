@@ -7,6 +7,7 @@
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
 <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
 <link rel="next" href="ch01.html" title="Chapter 1. About">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -32,14 +33,14 @@
       <p>Copyright 2009-2012 Icinga Development Team.</p>
     </div></div>
 <div><div class="legalnotice" title="Legal Notice">
-<a name="idm103658736"></a>
+<a name="idp8784"></a>
       <p>Portions copyright © by Nagios/Icinga community members - see the THANKS file in the Icinga core sources for more
       information..</p>
 
       <p>Credits to Yoann LAMY for creating the Vautour Style we use for the Icinga Classic UI</p>
     </div></div>
 <div><div class="legalnotice" title="Legal Notice">
-<a name="idp26448"></a>
+<a name="idp4224"></a>
       <p>Icinga is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software
       Foundation. This gives you legal permission to copy, distribute and/or modify Icinga under certain conditions. Read the
       'LICENSE' file in the Icinga distribution or read the online version of the license for more details.</p>
@@ -48,7 +49,7 @@
       MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE.</span>”</span></p>
     </div></div>
 <div><div class="legalnotice" title="Legal Notice">
-<a name="idm103668336"></a>
+<a name="idp28224"></a>
       <p>Nagios is licensed under the terms of the GNU General Public License Version 2 as published by the Free Software
       Foundation. This gives you legal permission to copy, distribute and/or modify Nagios under certain conditions. Read the
       'LICENSE' file in the Nagios distribution or read the online version of the license for more details.</p>
@@ -86,787 +87,787 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="chapter"><a href="ch01.html">1. About</a></span></dt>
+<dt><span class="chapter">1. <a href="ch01.html">About</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="about.html">1.1. About Icinga</a></span></dt>
+<dt><span class="section">1.1. <a href="about.html">About Icinga</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="about.html#idp40048">1.1.1. What is Icinga?</a></span></dt>
-<dt><span class="section"><a href="about.html#idp61488">1.1.2. System requirements</a></span></dt>
-<dt><span class="section"><a href="about.html#idp72672">1.1.3. Licensing</a></span></dt>
-<dt><span class="section"><a href="about.html#idp76032">1.1.4. Acknowledgements</a></span></dt>
-<dt><span class="section"><a href="about.html#idp80208">1.1.5. Downloading The Latest Version</a></span></dt>
-<dt><span class="section"><a href="about.html#idp83968">1.1.6. Compatibility</a></span></dt>
+<dt><span class="section">1.1.1. <a href="about.html#idp39776">What is Icinga?</a></span></dt>
+<dt><span class="section">1.1.2. <a href="about.html#idp63344">System requirements</a></span></dt>
+<dt><span class="section">1.1.3. <a href="about.html#idp74224">Licensing</a></span></dt>
+<dt><span class="section">1.1.4. <a href="about.html#idp77904">Acknowledgements</a></span></dt>
+<dt><span class="section">1.1.5. <a href="about.html#idp81808">Downloading The Latest Version</a></span></dt>
+<dt><span class="section">1.1.6. <a href="about.html#idp85472">Compatibility</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="whatsnew.html">1.2. What's New in Icinga 1.8</a></span></dt>
+<dt><span class="section">1.2. <a href="whatsnew.html">What's New in Icinga 1.8</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="whatsnew.html#idp90960">1.2.1. CHANGES</a></span></dt>
-<dt><span class="section"><a href="whatsnew.html#idp96848">1.2.2. Core</a></span></dt>
-<dt><span class="section"><a href="whatsnew.html#idp103984">1.2.3. Classic UI</a></span></dt>
-<dt><span class="section"><a href="whatsnew.html#idp114480">1.2.4. IDOutils</a></span></dt>
-<dt><span class="section"><a href="whatsnew.html#idp121360">1.2.5. Icinga-Web</a></span></dt>
-<dt><span class="section"><a href="whatsnew.html#idp128080">1.2.6. Docs</a></span></dt>
-<dt><span class="section"><a href="whatsnew.html#idp130544">1.2.7. More information</a></span></dt>
-</dl></dd>
-</dl></dd>
-<dt><span class="chapter"><a href="ch02.html">2. Getting Started</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="beginners.html">2.1. Advice for beginners</a></span></dt>
-<dt><span class="section"><a href="quickstart.html">2.2. Quickstart Installation Guides</a></span></dt>
-<dt><span class="section"><a href="quickstart-icinga.html">2.3. Icinga Quickstart</a></span></dt>
-<dt><span class="section"><a href="quickstart-icinga-freebsd.html">2.4. Icinga Quickstart FreeBSD</a></span></dt>
-<dt><span class="section"><a href="quickstart-idoutils.html">2.5. Icinga with IDOUtils Quickstart</a></span></dt>
-<dt><span class="section"><a href="quickstart-idoutils-freebsd.html">2.6. Icinga and IDOUtils Quickstart on FreeBSD</a></span></dt>
-<dt><span class="section"><a href="icinga_packages.html">2.7. Icinga Packages for Linux Distributions</a></span></dt>
-<dt><span class="section"><a href="howtos.html">2.8. Links to other published Howtos</a></span></dt>
-<dt><span class="section"><a href="upgrading.html">2.9. Upgrading (to) Icinga</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="upgrading.html#idp846192">2.9.1. Upgrading from previous Icinga Releases</a></span></dt>
-<dt><span class="section"><a href="upgrading.html#idp850032">2.9.2. Upgrading from Nagios 3.x Releases</a></span></dt>
-<dt><span class="section"><a href="upgrading.html#idp866672">2.9.3. Upgrading from Nagios 2.x Releases</a></span></dt>
-<dt><span class="section"><a href="upgrading.html#idp937008">2.9.4. Upgrading from an RPM Installation</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="upgrading_idoutils.html">2.10. Upgrading IDOUtils Database</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="upgrading_idoutils.html#idp976880">2.10.1. Upgrading IDOUtils to 1.7</a></span></dt>
-<dt><span class="section"><a href="upgrading_idoutils.html#idp982976">2.10.2. Upgrading IDOUtils to 1.5</a></span></dt>
-<dt><span class="section"><a href="upgrading_idoutils.html#idp990960">2.10.3. Upgrading IDOUtils to 1.4</a></span></dt>
-<dt><span class="section"><a href="upgrading_idoutils.html#idp1008496">2.10.4. Upgrading IDOUtils to 1.3</a></span></dt>
-<dt><span class="section"><a href="upgrading_idoutils.html#idp1013040">2.10.5. Upgrading IDOUtils to 1.0.3</a></span></dt>
-<dt><span class="section"><a href="upgrading_idoutils.html#idp1018656">2.10.6. Upgrading IDOUtils to 1.0.2</a></span></dt>
-<dt><span class="section"><a href="upgrading_idoutils.html#idp1025424">2.10.7. Upgrading IDOUtils to 1.0.1</a></span></dt>
-<dt><span class="section"><a href="upgrading_idoutils.html#idp1040896">2.10.8. Upgrading IDOUtils to 1.0</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="monitoring-overview.html">2.11. Monitoring Overview</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html">2.12. Monitoring Windows Machines</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="monitoring-windows.html#idp1088400">2.12.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1098656">2.12.2. Overview</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1107952">2.12.3. Steps</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1113680">2.12.4. What's Already Done For You</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1121104">2.12.5. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1126032">2.12.6. Installing the Windows Agent</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1126288">2.12.7. Configuring Icinga</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1141168">2.12.8. Password Protection</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1169216">2.12.9. Restarting Icinga</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="monitoring-linux.html">2.13. Monitoring Linux/Unix Machines</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="monitoring-linux.html#idp1175952">2.13.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="monitoring-linux.html#idp1187648">2.13.2. Overview</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="monitoring-netware.html">2.14. Monitoring Netware Servers</a></span></dt>
-<dt><span class="section"><a href="monitoring-printers.html">2.15. Monitoring Network Printers</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="monitoring-printers.html#idp1219232">2.15.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="monitoring-printers.html#idp1219360">2.15.2. Overview</a></span></dt>
-<dt><span class="section"><a href="monitoring-printers.html#idp1242528">2.15.3. Steps</a></span></dt>
-<dt><span class="section"><a href="monitoring-printers.html#idp1246944">2.15.4. What's Already Done For You</a></span></dt>
-<dt><span class="section"><a href="monitoring-printers.html#idp1254144">2.15.5. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="monitoring-printers.html#idp1254272">2.15.6. Configuring Icinga</a></span></dt>
-<dt><span class="section"><a href="monitoring-printers.html#idp1259184">2.15.7. Restarting Icinga</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="monitoring-routers.html">2.16. Monitoring Routers and Switches</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="monitoring-routers.html#idp1275904">2.16.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1288832">2.16.2. Overview</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1298128">2.16.3. Steps</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1302800">2.16.4. What's Already Done For You</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1311088">2.16.5. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1316080">2.16.6. Configuring Icinga</a></span></dt>
-<dt><span class="section"><a href="monitoring-routers.html#idp1316400">2.16.7. Restarting Icinga</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="monitoring-publicservices.html">2.17. Monitoring Publicly Available Services</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1361552">2.17.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1373696">2.17.2. Plugins for Monitoring Services</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1379616">2.17.3. Creating a Host Definition</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1386416">2.17.4. Creating Service Definitions</a></span></dt>
-<dt><span class="section"><a href="monitoring-publicservices.html#idp1439888">2.17.5. Restarting Icinga</a></span></dt>
+<dt><span class="section">1.2.1. <a href="whatsnew.html#idp92464">CHANGES</a></span></dt>
+<dt><span class="section">1.2.2. <a href="whatsnew.html#idp98368">Core</a></span></dt>
+<dt><span class="section">1.2.3. <a href="whatsnew.html#idp105616">Classic UI</a></span></dt>
+<dt><span class="section">1.2.4. <a href="whatsnew.html#idp116144">IDOutils</a></span></dt>
+<dt><span class="section">1.2.5. <a href="whatsnew.html#idp123056">Icinga-Web</a></span></dt>
+<dt><span class="section">1.2.6. <a href="whatsnew.html#idp129680">Docs</a></span></dt>
+<dt><span class="section">1.2.7. <a href="whatsnew.html#idp132128">More information</a></span></dt>
 </dl></dd>
 </dl></dd>
-<dt><span class="chapter"><a href="ch03.html">3. Configuring Icinga</a></span></dt>
+<dt><span class="chapter">2. <a href="ch02.html">Getting Started</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="config.html">3.1. Configuration Overview</a></span></dt>
+<dt><span class="section">2.1. <a href="beginners.html">Advice for beginners</a></span></dt>
+<dt><span class="section">2.2. <a href="quickstart.html">Quickstart Installation Guides</a></span></dt>
+<dt><span class="section">2.3. <a href="quickstart-icinga.html">Icinga Quickstart</a></span></dt>
+<dt><span class="section">2.4. <a href="quickstart-icinga-freebsd.html">Icinga Quickstart FreeBSD</a></span></dt>
+<dt><span class="section">2.5. <a href="quickstart-idoutils.html">Icinga with IDOUtils Quickstart</a></span></dt>
+<dt><span class="section">2.6. <a href="quickstart-idoutils-freebsd.html">Icinga and IDOUtils Quickstart on FreeBSD</a></span></dt>
+<dt><span class="section">2.7. <a href="icinga_packages.html">Icinga Packages for Linux Distributions</a></span></dt>
+<dt><span class="section">2.8. <a href="howtos.html">Links to other published Howtos</a></span></dt>
+<dt><span class="section">2.9. <a href="upgrading.html">Upgrading (to) Icinga</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="config.html#idm123112160">3.1.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="config.html#idp1449744">3.1.2. File names</a></span></dt>
-<dt><span class="section"><a href="config.html#idp1458096">3.1.3. Main Configuration File</a></span></dt>
-<dt><span class="section"><a href="config.html#idp1460912">3.1.4. Resource File(s)</a></span></dt>
-<dt><span class="section"><a href="config.html#idp1463808">3.1.5. Object Definition Files</a></span></dt>
-<dt><span class="section"><a href="config.html#idp1470608">3.1.6. CGI Configuration File</a></span></dt>
+<dt><span class="section">2.9.1. <a href="upgrading.html#idp847728">Upgrading from previous Icinga Releases</a></span></dt>
+<dt><span class="section">2.9.2. <a href="upgrading.html#idp851568">Upgrading from Nagios 3.x Releases</a></span></dt>
+<dt><span class="section">2.9.3. <a href="upgrading.html#idp868208">Upgrading from Nagios 2.x Releases</a></span></dt>
+<dt><span class="section">2.9.4. <a href="upgrading.html#idp938544">Upgrading from an RPM Installation</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="configmain.html">3.2. Main Configuration File Options</a></span></dt>
-<dt><span class="section"><a href="configobject.html">3.3. Object Configuration Overview</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html">3.4. Object Definitions</a></span></dt>
+<dt><span class="section">2.10. <a href="upgrading_idoutils.html">Upgrading IDOUtils Database</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="objectdefinitions.html#idp4003344">3.4.1. Host definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp4003600">3.4.2. Hostgroup Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp4326912">3.4.3. Service Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp4391632">3.4.4. Servicegroup Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp4680048">3.4.5. Contact Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp4746672">3.4.6. Contactgroup Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp4890144">3.4.7. Timeperiod Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp4937584">3.4.8. Command Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp4991952">3.4.9. Servicedependency Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp5040288">3.4.10. Serviceescalation Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp5141280">3.4.11. Hostdependency Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp5282144">3.4.12. Hostescalation Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp5365936">3.4.13. Hostextinfo Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp5474480">3.4.14. Serviceextinfo Definition</a></span></dt>
-<dt><span class="section"><a href="objectdefinitions.html#idp5577456">3.4.15. Module Definition</a></span></dt>
+<dt><span class="section">2.10.1. <a href="upgrading_idoutils.html#idp978416">Upgrading IDOUtils to 1.7</a></span></dt>
+<dt><span class="section">2.10.2. <a href="upgrading_idoutils.html#idp984512">Upgrading IDOUtils to 1.5</a></span></dt>
+<dt><span class="section">2.10.3. <a href="upgrading_idoutils.html#idp992496">Upgrading IDOUtils to 1.4</a></span></dt>
+<dt><span class="section">2.10.4. <a href="upgrading_idoutils.html#idp1010032">Upgrading IDOUtils to 1.3</a></span></dt>
+<dt><span class="section">2.10.5. <a href="upgrading_idoutils.html#idp1014576">Upgrading IDOUtils to 1.0.3</a></span></dt>
+<dt><span class="section">2.10.6. <a href="upgrading_idoutils.html#idp1020192">Upgrading IDOUtils to 1.0.2</a></span></dt>
+<dt><span class="section">2.10.7. <a href="upgrading_idoutils.html#idp1026960">Upgrading IDOUtils to 1.0.1</a></span></dt>
+<dt><span class="section">2.10.8. <a href="upgrading_idoutils.html#idp1042432">Upgrading IDOUtils to 1.0</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="customobjectvars.html">3.5. Custom Object Variables</a></span></dt>
+<dt><span class="section">2.11. <a href="monitoring-overview.html">Monitoring Overview</a></span></dt>
+<dt><span class="section">2.12. <a href="monitoring-windows.html">Monitoring Windows Machines</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="customobjectvars.html#idp5702128">3.5.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="customobjectvars.html#idp5705088">3.5.2. Custom Variable Basics</a></span></dt>
-<dt><span class="section"><a href="customobjectvars.html#idp5716704">3.5.3. Examples</a></span></dt>
-<dt><span class="section"><a href="customobjectvars.html#idp5719296">3.5.4. Custom Variables As Macros</a></span></dt>
-<dt><span class="section"><a href="customobjectvars.html#idp5750224">3.5.5. Custom Variables And Inheritance</a></span></dt>
+<dt><span class="section">2.12.1. <a href="monitoring-windows.html#idp1089936">Introduction</a></span></dt>
+<dt><span class="section">2.12.2. <a href="monitoring-windows.html#idp1100192">Overview</a></span></dt>
+<dt><span class="section">2.12.3. <a href="monitoring-windows.html#idp1109488">Steps</a></span></dt>
+<dt><span class="section">2.12.4. <a href="monitoring-windows.html#idp1115216">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.12.5. <a href="monitoring-windows.html#idp1122640">Prerequisites</a></span></dt>
+<dt><span class="section">2.12.6. <a href="monitoring-windows.html#idp1127568">Installing the Windows Agent</a></span></dt>
+<dt><span class="section">2.12.7. <a href="monitoring-windows.html#idp1127824">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.12.8. <a href="monitoring-windows.html#idp1142704">Password Protection</a></span></dt>
+<dt><span class="section">2.12.9. <a href="monitoring-windows.html#idp1170752">Restarting Icinga</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="configcgi.html">3.6. CGI Configuration File Options</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html">3.7. Authentication And Authorization In The CGIs</a></span></dt>
+<dt><span class="section">2.13. <a href="monitoring-linux.html">Monitoring Linux/Unix Machines</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="cgiauth.html#idp5755472">3.7.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp5757280">3.7.2. Definitions</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6772384">3.7.3. Setting Up Authenticated Users</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6779664">3.7.4. Enabling Authentication/Authorization Functionality In The CGIs</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6785760">3.7.5. Default Permissions To CGI Information</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6786016">3.7.6. Granting Additional Permissions To CGI Information</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6867072">3.7.7. CGI Authorization Requirements</a></span></dt>
-<dt><span class="section"><a href="cgiauth.html#idp6872224">3.7.8. Authentication On Secured Web Servers</a></span></dt>
+<dt><span class="section">2.13.1. <a href="monitoring-linux.html#idp1177488">Introduction</a></span></dt>
+<dt><span class="section">2.13.2. <a href="monitoring-linux.html#idp1189184">Overview</a></span></dt>
 </dl></dd>
+<dt><span class="section">2.14. <a href="monitoring-netware.html">Monitoring Netware Servers</a></span></dt>
+<dt><span class="section">2.15. <a href="monitoring-printers.html">Monitoring Network Printers</a></span></dt>
+<dd><dl>
+<dt><span class="section">2.15.1. <a href="monitoring-printers.html#idp1220768">Introduction</a></span></dt>
+<dt><span class="section">2.15.2. <a href="monitoring-printers.html#idp1220896">Overview</a></span></dt>
+<dt><span class="section">2.15.3. <a href="monitoring-printers.html#idp1244064">Steps</a></span></dt>
+<dt><span class="section">2.15.4. <a href="monitoring-printers.html#idp1248480">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.15.5. <a href="monitoring-printers.html#idp1255680">Prerequisites</a></span></dt>
+<dt><span class="section">2.15.6. <a href="monitoring-printers.html#idp1255808">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.15.7. <a href="monitoring-printers.html#idp1260720">Restarting Icinga</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch04.html">4. Running Icinga</a></span></dt>
+<dt><span class="section">2.16. <a href="monitoring-routers.html">Monitoring Routers and Switches</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="verifyconfig.html">4.1. Verifying Your Configuration</a></span></dt>
-<dt><span class="section"><a href="startstop.html">4.2. Starting and Stopping Icinga</a></span></dt>
+<dt><span class="section">2.16.1. <a href="monitoring-routers.html#idp1277440">Introduction</a></span></dt>
+<dt><span class="section">2.16.2. <a href="monitoring-routers.html#idp1290368">Overview</a></span></dt>
+<dt><span class="section">2.16.3. <a href="monitoring-routers.html#idp1299664">Steps</a></span></dt>
+<dt><span class="section">2.16.4. <a href="monitoring-routers.html#idp1304336">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.16.5. <a href="monitoring-routers.html#idp1312624">Prerequisites</a></span></dt>
+<dt><span class="section">2.16.6. <a href="monitoring-routers.html#idp1317616">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.16.7. <a href="monitoring-routers.html#idp1317936">Restarting Icinga</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch05.html">5. The Basics</a></span></dt>
+<dt><span class="section">2.17. <a href="monitoring-publicservices.html">Monitoring Publicly Available Services</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="plugins.html">5.1. Icinga Plugins</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="plugins.html#idm105808656">5.1.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idm106022272">5.1.2. What Are Plugins?</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp6941536">5.1.3. Plugins As An Abstraction Layer</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp6947808">5.1.4. What Plugins Are Available?</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp6954592">5.1.5. Obtaining Plugins</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp6966448">5.1.6. Switch to the Icinga user</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp6980512">5.1.7. Extending the environment</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp6986064">5.1.8. How Do I Use Plugin X?</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp6989568">5.1.9. Integrating a new plugin</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp6989824">5.1.10. Raw command line</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp7025984">5.1.11. Threshold and ranges</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp7026304">5.1.12. Activating the definition</a></span></dt>
-<dt><span class="section"><a href="plugins.html#idp7077936">5.1.13. Plugin API</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="macros.html">5.2. Understanding Macros and How They Work</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="macros.html#idp7097872">5.2.1. Macros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7099424">5.2.2. Macro Substitution - How Macros Work</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7101568">5.2.3. Example 1: Host Address Macro</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7105664">5.2.4. Example 2: Command Argument Macros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7116976">5.2.5. On-Demand Macros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7117296">5.2.6. On-Demand Group Macros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7144672">5.2.7. Custom Variable Macros</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7155120">5.2.8. Macro Cleansing</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7171168">5.2.9. Macros as Environment Variables</a></span></dt>
-<dt><span class="section"><a href="macros.html#idp7176224">5.2.10. Available Macros</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="macrolist.html">5.3. Standard Macros in Icinga</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="macrolist.html#idp7185744">5.3.1. Macro Validity</a></span></dt>
-<dt><span class="section"><a href="macrolist.html#idp7202848">5.3.2. Macro Availability Chart</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="hostchecks.html">5.4. Host Checks</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="hostchecks.html#idp7205600">5.4.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp7207040">5.4.2. When Are Host Checks Performed?</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9684336">5.4.3. Cached Host Checks</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9686592">5.4.4. Dependencies and Checks</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9689392">5.4.5. Parallelization of Host Checks</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9699040">5.4.6. Host States</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9703680">5.4.7. Host State Determination</a></span></dt>
-<dt><span class="section"><a href="hostchecks.html#idp9737504">5.4.8. Host State Changes</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="servicechecks.html">5.5. Service Checks</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="servicechecks.html#idp9745840">5.5.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9747200">5.5.2. When Are Service Checks Performed?</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9755504">5.5.3. Cached Service Checks</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9758512">5.5.4. Dependencies and Checks</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9761456">5.5.5. Parallelization of Service Checks</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9764016">5.5.6. Service States</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9769520">5.5.7. Service State Determination</a></span></dt>
-<dt><span class="section"><a href="servicechecks.html#idp9771856">5.5.8. Services State Changes</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="activechecks.html">5.6. Active Checks</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="activechecks.html#idp9780464">5.6.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="activechecks.html#idp9787312">5.6.2. How Are Active Checks Performed?</a></span></dt>
-<dt><span class="section"><a href="activechecks.html#idp9790352">5.6.3. When Are Active Checks Executed?</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="passivechecks.html">5.7. Passive Checks</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="passivechecks.html#idp9805408">5.7.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9810400">5.7.2. Uses For Passive Checks</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9816896">5.7.3. How Passive Checks Work</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9826912">5.7.4. Enabling Passive Checks</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9834016">5.7.5. Submitting Passive Service Check Results</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9847552">5.7.6. Submitting Passive Host Check Results</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9857136">5.7.7. Passive Checks and Host States</a></span></dt>
-<dt><span class="section"><a href="passivechecks.html#idp9864672">5.7.8. Submitting Passive Check Results From Remote Hosts</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="statetypes.html">5.8. State Types</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="statetypes.html#idp9873296">5.8.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="statetypes.html#idp9873456">5.8.2. Service and Host Check Retries</a></span></dt>
-<dt><span class="section"><a href="statetypes.html#idp9882544">5.8.3. Soft States</a></span></dt>
-<dt><span class="section"><a href="statetypes.html#idp9894992">5.8.4. Hard States</a></span></dt>
-<dt><span class="section"><a href="statetypes.html#idp9910944">5.8.5. Example</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="timeperiods.html">5.9. Time Periods</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="timeperiods.html#idp9975248">5.9.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="timeperiods.html#idp9982672">5.9.2. Precedence in Time Periods</a></span></dt>
-<dt><span class="section"><a href="timeperiods.html#idp9992032">5.9.3. How Time Periods Work With Host and Service Checks</a></span></dt>
-<dt><span class="section"><a href="timeperiods.html#idp9992160">5.9.4. How Time Periods Work With Contact Notifications</a></span></dt>
-<dt><span class="section"><a href="timeperiods.html#idp10007712">5.9.5. How Time Periods Work With Notification Escalations</a></span></dt>
-<dt><span class="section"><a href="timeperiods.html#idp10008352">5.9.6. How Time Periods Work With Dependencies</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="networkreachability.html">5.10. Determining Status and Reachability of Network Hosts</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="networkreachability.html#idp10017472">5.10.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="networkreachability.html#idp10020592">5.10.2. Example Network</a></span></dt>
-<dt><span class="section"><a href="networkreachability.html#idp10024704">5.10.3. Defining Parent/Child Relationships</a></span></dt>
-<dt><span class="section"><a href="networkreachability.html#idp10030784">5.10.4. Reachability Logic in Action</a></span></dt>
-<dt><span class="section"><a href="networkreachability.html#idp10041904">5.10.5. UNREACHABLE States and Notifications</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="notifications.html">5.11. Notifications</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="notifications.html#idp10053472">5.11.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10055968">5.11.2. When Do Notifications Occur?</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10061696">5.11.3. Who Gets Notified?</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10065008">5.11.4. What Filters Must Be Passed In Order For Notifications To Be Sent?</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10066816">5.11.5. Program-Wide Filter:</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10069296">5.11.6. Service and Host Filters:</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10082528">5.11.7. Contact Filters:</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10090672">5.11.8. Notification Methods</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10094896">5.11.9. Notification Type Macro</a></span></dt>
-<dt><span class="section"><a href="notifications.html#idp10126496">5.11.10. Helpful Resources</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="notifications2.html">5.12. Notifications: Examples and troubleshooting</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="notifications2.html#idp10151488">5.12.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="notifications2.html#idp10181088">5.12.2. Some examples</a></span></dt>
-<dt><span class="section"><a href="notifications2.html#idp10190176">5.12.3. Troubleshooting</a></span></dt>
+<dt><span class="section">2.17.1. <a href="monitoring-publicservices.html#idp1363088">Introduction</a></span></dt>
+<dt><span class="section">2.17.2. <a href="monitoring-publicservices.html#idp1375232">Plugins for Monitoring Services</a></span></dt>
+<dt><span class="section">2.17.3. <a href="monitoring-publicservices.html#idp1381152">Creating a Host Definition</a></span></dt>
+<dt><span class="section">2.17.4. <a href="monitoring-publicservices.html#idp1387952">Creating Service Definitions</a></span></dt>
+<dt><span class="section">2.17.5. <a href="monitoring-publicservices.html#idp1441424">Restarting Icinga</a></span></dt>
 </dl></dd>
 </dl></dd>
-<dt><span class="chapter"><a href="ch06.html">6. User Interfaces</a></span></dt>
+<dt><span class="chapter">3. <a href="ch03.html">Configuring Icinga</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="cgis.html">6.1. Icinga Classic UI: Information On The CGIs</a></span></dt>
-<dt><span class="section"><a href="cgiparams.html">6.2. Information On CGI parameters</a></span></dt>
+<dt><span class="section">3.1. <a href="config.html">Configuration Overview</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="cgiparams.html#idp10204160">6.2.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="cgiparams.html#idp10698800">6.2.2. Executing CGIs on the command line</a></span></dt>
-<dt><span class="section"><a href="cgiparams.html#idp10704704">6.2.3. Properties / Statustypes</a></span></dt>
-<dt><span class="section"><a href="cgiparams.html#idp10711024">6.2.4. Matrix Parameters / CGIs</a></span></dt>
+<dt><span class="section">3.1.1. <a href="config.html#idm123452096">Introduction</a></span></dt>
+<dt><span class="section">3.1.2. <a href="config.html#idp1451280">File names</a></span></dt>
+<dt><span class="section">3.1.3. <a href="config.html#idp1459632">Main Configuration File</a></span></dt>
+<dt><span class="section">3.1.4. <a href="config.html#idp1462448">Resource File(s)</a></span></dt>
+<dt><span class="section">3.1.5. <a href="config.html#idp1465344">Object Definition Files</a></span></dt>
+<dt><span class="section">3.1.6. <a href="config.html#idp1472144">CGI Configuration File</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="cgicmd.html">6.3. Executing CGIs on the command line</a></span></dt>
+<dt><span class="section">3.2. <a href="configmain.html">Main Configuration File Options</a></span></dt>
+<dt><span class="section">3.3. <a href="configobject.html">Object Configuration Overview</a></span></dt>
+<dt><span class="section">3.4. <a href="objectdefinitions.html">Object Definitions</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="cgicmd.html#idp10712496">6.3.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="cgicmd.html#idp11872576">6.3.2. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="cgicmd.html#idp11882336">6.3.3. Examples</a></span></dt>
+<dt><span class="section">3.4.1. <a href="objectdefinitions.html#idp4004704">Host definition</a></span></dt>
+<dt><span class="section">3.4.2. <a href="objectdefinitions.html#idp4004960">Hostgroup Definition</a></span></dt>
+<dt><span class="section">3.4.3. <a href="objectdefinitions.html#idp4328400">Service Definition</a></span></dt>
+<dt><span class="section">3.4.4. <a href="objectdefinitions.html#idp4393152">Servicegroup Definition</a></span></dt>
+<dt><span class="section">3.4.5. <a href="objectdefinitions.html#idp4681616">Contact Definition</a></span></dt>
+<dt><span class="section">3.4.6. <a href="objectdefinitions.html#idp4748368">Contactgroup Definition</a></span></dt>
+<dt><span class="section">3.4.7. <a href="objectdefinitions.html#idp4891888">Timeperiod Definition</a></span></dt>
+<dt><span class="section">3.4.8. <a href="objectdefinitions.html#idp4938736">Command Definition</a></span></dt>
+<dt><span class="section">3.4.9. <a href="objectdefinitions.html#idp4993792">Servicedependency Definition</a></span></dt>
+<dt><span class="section">3.4.10. <a href="objectdefinitions.html#idp5042064">Serviceescalation Definition</a></span></dt>
+<dt><span class="section">3.4.11. <a href="objectdefinitions.html#idp5142944">Hostdependency Definition</a></span></dt>
+<dt><span class="section">3.4.12. <a href="objectdefinitions.html#idp5283888">Hostescalation Definition</a></span></dt>
+<dt><span class="section">3.4.13. <a href="objectdefinitions.html#idp5367632">Hostextinfo Definition</a></span></dt>
+<dt><span class="section">3.4.14. <a href="objectdefinitions.html#idp5476128">Serviceextinfo Definition</a></span></dt>
+<dt><span class="section">3.4.15. <a href="objectdefinitions.html#idp5578832">Module Definition</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="icinga-web-scratch.html">6.4. Installation of the Icinga-Web Frontend</a></span></dt>
+<dt><span class="section">3.5. <a href="customobjectvars.html">Custom Object Variables</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="icinga-web-scratch.html#idp11895280">6.4.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="icinga-web-scratch.html#idp11897120">6.4.2. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="icinga-web-scratch.html#idp11930624">6.4.3. The installation</a></span></dt>
-<dt><span class="section"><a href="icinga-web-scratch.html#idp11978032">6.4.4. Settings</a></span></dt>
-<dt><span class="section"><a href="icinga-web-scratch.html#idp12014320">6.4.5. Use It!</a></span></dt>
-<dt><span class="section"><a href="icinga-web-scratch.html#idp12017312">6.4.6. Test &amp; Errors?</a></span></dt>
+<dt><span class="section">3.5.1. <a href="customobjectvars.html#idp5703712">Introduction</a></span></dt>
+<dt><span class="section">3.5.2. <a href="customobjectvars.html#idp5706672">Custom Variable Basics</a></span></dt>
+<dt><span class="section">3.5.3. <a href="customobjectvars.html#idp5718288">Examples</a></span></dt>
+<dt><span class="section">3.5.4. <a href="customobjectvars.html#idp5720880">Custom Variables As Macros</a></span></dt>
+<dt><span class="section">3.5.5. <a href="customobjectvars.html#idp5751552">Custom Variables And Inheritance</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="upgrading_icingaweb.html">6.5. Upgrading Icinga-Web and Icinga-Web Database</a></span></dt>
+<dt><span class="section">3.6. <a href="configcgi.html">CGI Configuration File Options</a></span></dt>
+<dt><span class="section">3.7. <a href="cgiauth.html">Authentication And Authorization In The CGIs</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="upgrading_icingaweb.html#idp12070880">6.5.1. Upgrading Icinga-Web</a></span></dt>
-<dt><span class="section"><a href="upgrading_icingaweb.html#idp12083648">6.5.2. The Upgrade</a></span></dt>
-<dt><span class="section"><a href="upgrading_icingaweb.html#idp12083904">6.5.3. Upgrading the Icinga-Web Database</a></span></dt>
+<dt><span class="section">3.7.1. <a href="cgiauth.html#idp5757136">Introduction</a></span></dt>
+<dt><span class="section">3.7.2. <a href="cgiauth.html#idp5758944">Definitions</a></span></dt>
+<dt><span class="section">3.7.3. <a href="cgiauth.html#idp6774096">Setting Up Authenticated Users</a></span></dt>
+<dt><span class="section">3.7.4. <a href="cgiauth.html#idp6781376">Enabling Authentication/Authorization Functionality In The CGIs</a></span></dt>
+<dt><span class="section">3.7.5. <a href="cgiauth.html#idp6787472">Default Permissions To CGI Information</a></span></dt>
+<dt><span class="section">3.7.6. <a href="cgiauth.html#idp6787760">Granting Additional Permissions To CGI Information</a></span></dt>
+<dt><span class="section">3.7.7. <a href="cgiauth.html#idp6867440">CGI Authorization Requirements</a></span></dt>
+<dt><span class="section">3.7.8. <a href="cgiauth.html#idp6873696">Authentication On Secured Web Servers</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="icinga-web-config.html">6.6. Configuration Overview of Icinga-Web</a></span></dt>
+</dl></dd>
+<dt><span class="chapter">4. <a href="ch04.html">Running Icinga</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="icinga-web-config.html#idp12119808">6.6.1. Where are my config files?</a></span></dt>
-<dt><span class="section"><a href="icinga-web-config.html#idp12125408">6.6.2. Index</a></span></dt>
-<dt><span class="section"><a href="icinga-web-config.html#idp12178064">6.6.3. Global Configuration Section</a></span></dt>
-<dt><span class="section"><a href="icinga-web-config.html#idp12299744">6.6.4. Troubleshooting</a></span></dt>
-<dt><span class="section"><a href="icinga-web-config.html#idp12305760">6.6.5. Module Configuration</a></span></dt>
-<dt><span class="section"><a href="icinga-web-config.html#idp12327440">6.6.6. Customised Configuration</a></span></dt>
+<dt><span class="section">4.1. <a href="verifyconfig.html">Verifying Your Configuration</a></span></dt>
+<dt><span class="section">4.2. <a href="startstop.html">Starting and Stopping Icinga</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="icinga-web-introduction.html">6.7. Introduction to Icinga-Web</a></span></dt>
-<dd><dl><dt><span class="section"><a href="icinga-web-introduction.html#icinga-web-intro_1.8">6.7.1. Introduction to Icinga-Web (&gt;= 1.8)</a></span></dt></dl></dd>
-<dt><span class="section"><a href="icinga-web-pnp.html">6.8. Integration of PNP4Nagios into Icinga-Web</a></span></dt>
+<dt><span class="chapter">5. <a href="ch05.html">The Basics</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="icinga-web-pnp.html#idp12498096">6.8.1. Install PNP4Nagios</a></span></dt>
-<dt><span class="section"><a href="icinga-web-pnp.html#idp12506128">6.8.2. Templates Extension</a></span></dt>
-<dt><span class="section"><a href="icinga-web-pnp.html#idp12511184">6.8.3. Create a configuration to include PNP4Nagios host pages in Icinga-Web</a></span></dt>
-<dt><span class="section"><a href="icinga-web-pnp.html#idp12520352">6.8.4. Create a configuration to include pnp4nagios service pages in icinga-web</a></span></dt>
-<dt><span class="section"><a href="icinga-web-pnp.html#idp12533072">6.8.5. Clearing the cache</a></span></dt>
-</dl></dd>
-</dl></dd>
-<dt><span class="chapter"><a href="ch07.html">7. Advanced Topics</a></span></dt>
+<dt><span class="section">5.1. <a href="plugins.html">Icinga Plugins</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="extcommands.html">7.1. External Commands</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="extcommands.html#idm122963792">7.1.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="extcommands.html#idm122971424">7.1.2. Enabling External Commands</a></span></dt>
-<dt><span class="section"><a href="extcommands.html#idp12540592">7.1.3. When Does Icinga Check For External Commands?</a></span></dt>
-<dt><span class="section"><a href="extcommands.html#idp12545296">7.1.4. Using External Commands</a></span></dt>
-<dt><span class="section"><a href="extcommands.html#idp12547040">7.1.5. Command Format</a></span></dt>
+<dt><span class="section">5.1.1. <a href="plugins.html#idm106117136">Introduction</a></span></dt>
+<dt><span class="section">5.1.2. <a href="plugins.html#idm107323632">What Are Plugins?</a></span></dt>
+<dt><span class="section">5.1.3. <a href="plugins.html#idp6943504">Plugins As An Abstraction Layer</a></span></dt>
+<dt><span class="section">5.1.4. <a href="plugins.html#idp6949776">What Plugins Are Available?</a></span></dt>
+<dt><span class="section">5.1.5. <a href="plugins.html#idp6956560">Obtaining Plugins</a></span></dt>
+<dt><span class="section">5.1.6. <a href="plugins.html#idp6968112">Switch to the Icinga user</a></span></dt>
+<dt><span class="section">5.1.7. <a href="plugins.html#idp6982256">Extending the environment</a></span></dt>
+<dt><span class="section">5.1.8. <a href="plugins.html#idp6987904">How Do I Use Plugin X?</a></span></dt>
+<dt><span class="section">5.1.9. <a href="plugins.html#idp6988704">Integrating a new plugin</a></span></dt>
+<dt><span class="section">5.1.10. <a href="plugins.html#idp6991872">Raw command line</a></span></dt>
+<dt><span class="section">5.1.11. <a href="plugins.html#idp7027472">Threshold and ranges</a></span></dt>
+<dt><span class="section">5.1.12. <a href="plugins.html#idp7027792">Activating the definition</a></span></dt>
+<dt><span class="section">5.1.13. <a href="plugins.html#idp7079440">Plugin API</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="extcommands2.html">7.2. List of External Commands</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html">7.3. Event Handlers</a></span></dt>
+<dt><span class="section">5.2. <a href="macros.html">Understanding Macros and How They Work</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="eventhandlers.html#idp12556304">7.3.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp12556432">7.3.2. When Are Event Handlers Executed?</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp12571648">7.3.3. Event Handler Types</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13339424">7.3.4. Enabling Event Handlers</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13344480">7.3.5. Event Handler Execution Order</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13346048">7.3.6. Writing Event Handler Commands</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13346176">7.3.7. Permissions For Event Handler Commands</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13364032">7.3.8. Service Event Handler Example</a></span></dt>
+<dt><span class="section">5.2.1. <a href="macros.html#idp7099264">Macros</a></span></dt>
+<dt><span class="section">5.2.2. <a href="macros.html#idp7100640">Macro Substitution - How Macros Work</a></span></dt>
+<dt><span class="section">5.2.3. <a href="macros.html#idp7102672">Example 1: Host Address Macro</a></span></dt>
+<dt><span class="section">5.2.4. <a href="macros.html#idp7106768">Example 2: Command Argument Macros</a></span></dt>
+<dt><span class="section">5.2.5. <a href="macros.html#idp7116384">On-Demand Macros</a></span></dt>
+<dt><span class="section">5.2.6. <a href="macros.html#idp7118832">On-Demand Group Macros</a></span></dt>
+<dt><span class="section">5.2.7. <a href="macros.html#idp7146272">Custom Variable Macros</a></span></dt>
+<dt><span class="section">5.2.8. <a href="macros.html#idp7156768">Macro Cleansing</a></span></dt>
+<dt><span class="section">5.2.9. <a href="macros.html#idp7172880">Macros as Environment Variables</a></span></dt>
+<dt><span class="section">5.2.10. <a href="macros.html#idp7177872">Available Macros</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="volatileservices.html">7.4. Volatile Services</a></span></dt>
+<dt><span class="section">5.3. <a href="macrolist.html">Standard Macros in Icinga</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="volatileservices.html#idp13382864">7.4.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13384672">7.4.2. What Are They Useful For?</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13388432">7.4.3. What's So Special About Volatile Services?</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13399232">7.4.4. The Power Of Two</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13402640">7.4.5. Icinga Configuration:</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13411648">7.4.6. PortSentry Configuration:</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13414480">7.4.7. Port Scan Script:</a></span></dt>
+<dt><span class="section">5.3.1. <a href="macrolist.html#idp7187392">Macro Validity</a></span></dt>
+<dt><span class="section">5.3.2. <a href="macrolist.html#idp7204496">Macro Availability Chart</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="freshness.html">7.5. Service and Host Freshness Checks</a></span></dt>
+<dt><span class="section">5.4. <a href="hostchecks.html">Host Checks</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="freshness.html#idp13426224">7.5.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="freshness.html#idp13432352">7.5.2. How Does Freshness Checking Work?</a></span></dt>
-<dt><span class="section"><a href="freshness.html#idp13440448">7.5.3. Enabling Freshness Checking</a></span></dt>
-<dt><span class="section"><a href="freshness.html#idp13454464">7.5.4. Example</a></span></dt>
+<dt><span class="section">5.4.1. <a href="hostchecks.html#idp7207248">Introduction</a></span></dt>
+<dt><span class="section">5.4.2. <a href="hostchecks.html#idp7208656">When Are Host Checks Performed?</a></span></dt>
+<dt><span class="section">5.4.3. <a href="hostchecks.html#idp9685776">Cached Host Checks</a></span></dt>
+<dt><span class="section">5.4.4. <a href="hostchecks.html#idp9688016">Dependencies and Checks</a></span></dt>
+<dt><span class="section">5.4.5. <a href="hostchecks.html#idp9690896">Parallelization of Host Checks</a></span></dt>
+<dt><span class="section">5.4.6. <a href="hostchecks.html#idp9700592">Host States</a></span></dt>
+<dt><span class="section">5.4.7. <a href="hostchecks.html#idp9705168">Host State Determination</a></span></dt>
+<dt><span class="section">5.4.8. <a href="hostchecks.html#idp9739408">Host State Changes</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="distributed.html">7.6. Distributed Monitoring</a></span></dt>
+<dt><span class="section">5.5. <a href="servicechecks.html">Service Checks</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="distributed.html#idp13464432">7.6.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13465504">7.6.2. Goals</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13467184">7.6.3. Reference Diagram</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13469904">7.6.4. Central Server vs. Distributed Servers</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13475664">7.6.5. Obtaining Service Check Information From Distributed Monitors</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13481584">7.6.6. Distributed Server Configuration</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13481712">7.6.7. ocsp_command=submit_check_result</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13494976">7.6.8. Central Server Configuration</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13512608">7.6.9. Problems With Passive Checks</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13530928">7.6.10. Freshness Checking</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13531056">7.6.11. Performing Host Checks</a></span></dt>
+<dt><span class="section">5.5.1. <a href="servicechecks.html#idp9747744">Introduction</a></span></dt>
+<dt><span class="section">5.5.2. <a href="servicechecks.html#idp9749104">When Are Service Checks Performed?</a></span></dt>
+<dt><span class="section">5.5.3. <a href="servicechecks.html#idp9757152">Cached Service Checks</a></span></dt>
+<dt><span class="section">5.5.4. <a href="servicechecks.html#idp9760224">Dependencies and Checks</a></span></dt>
+<dt><span class="section">5.5.5. <a href="servicechecks.html#idp9763136">Parallelization of Service Checks</a></span></dt>
+<dt><span class="section">5.5.6. <a href="servicechecks.html#idp9765696">Service States</a></span></dt>
+<dt><span class="section">5.5.7. <a href="servicechecks.html#idp9771200">Service State Determination</a></span></dt>
+<dt><span class="section">5.5.8. <a href="servicechecks.html#idp9773536">Services State Changes</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="redundancy.html">7.7. Redundant and Failover Network Monitoring</a></span></dt>
+<dt><span class="section">5.6. <a href="activechecks.html">Active Checks</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="redundancy.html#idp13563184">7.7.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13567136">7.7.2. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13575568">7.7.3. Sample Scripts</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13577600">7.7.4. Scenario 1 - Redundant Monitoring</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13578544">7.7.5. Introduction</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13579920">7.7.6. Goals</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13583648">7.7.7. Network Layout Diagram</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13591056">7.7.8. Initial Program Settings</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13593424">7.7.9. Initial Configuration</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13601280">7.7.10. Event Handler Command Definitions</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13606944">7.7.11. Event Handler Scripts</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13607072">7.7.12. What This Does For Us</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13613760">7.7.13. Time Lags</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13628144">7.7.14. Special Cases</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13648992">7.7.15. Introduction</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13652512">7.7.16. Goals</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13655792">7.7.17. Initial Program Settings</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13656688">7.7.18. Master Process Check</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13665872">7.7.19. Additional Issues</a></span></dt>
+<dt><span class="section">5.6.1. <a href="activechecks.html#idp9782144">Introduction</a></span></dt>
+<dt><span class="section">5.6.2. <a href="activechecks.html#idp9788848">How Are Active Checks Performed?</a></span></dt>
+<dt><span class="section">5.6.3. <a href="activechecks.html#idp9791888">When Are Active Checks Executed?</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="flapping.html">7.8. Detection and Handling of State Flapping</a></span></dt>
+<dt><span class="section">5.7. <a href="passivechecks.html">Passive Checks</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="flapping.html#idp13675664">7.8.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13677168">7.8.2. How Flap Detection Works</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13677296">7.8.3. Example</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13686688">7.8.4. Flap Detection for Services</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13706816">7.8.5. Flap Detection for Hosts</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13712048">7.8.6. Flap Detection Thresholds</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13736704">7.8.7. States Used For Flap Detection</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13739360">7.8.8. Flap Handling</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13750944">7.8.9. Enabling Flap Detection</a></span></dt>
+<dt><span class="section">5.7.1. <a href="passivechecks.html#idp9806768">Introduction</a></span></dt>
+<dt><span class="section">5.7.2. <a href="passivechecks.html#idp9811824">Uses For Passive Checks</a></span></dt>
+<dt><span class="section">5.7.3. <a href="passivechecks.html#idp9818416">How Passive Checks Work</a></span></dt>
+<dt><span class="section">5.7.4. <a href="passivechecks.html#idp9828512">Enabling Passive Checks</a></span></dt>
+<dt><span class="section">5.7.5. <a href="passivechecks.html#idp9835248">Submitting Passive Service Check Results</a></span></dt>
+<dt><span class="section">5.7.6. <a href="passivechecks.html#idp9849040">Submitting Passive Host Check Results</a></span></dt>
+<dt><span class="section">5.7.7. <a href="passivechecks.html#idp9858352">Passive Checks and Host States</a></span></dt>
+<dt><span class="section">5.7.8. <a href="passivechecks.html#idp9866112">Submitting Passive Check Results From Remote Hosts</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="escalations.html">7.9. Notification Escalations</a></span></dt>
+<dt><span class="section">5.8. <a href="statetypes.html">State Types</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="escalations.html#idp13760528">7.9.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13767040">7.9.2. When Are Notifications Escalated?</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13771952">7.9.3. Contact Groups</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13779328">7.9.4. Overlapping Escalation Ranges</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13786864">7.9.5. Recovery Notifications</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13790416">7.9.6. Notification Intervals</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13798928">7.9.7. Time Period Restrictions</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13807504">7.9.8. State Restrictions</a></span></dt>
+<dt><span class="section">5.8.1. <a href="statetypes.html#idp9874960">Introduction</a></span></dt>
+<dt><span class="section">5.8.2. <a href="statetypes.html#idp9875120">Service and Host Check Retries</a></span></dt>
+<dt><span class="section">5.8.3. <a href="statetypes.html#idp9884144">Soft States</a></span></dt>
+<dt><span class="section">5.8.4. <a href="statetypes.html#idp9896592">Hard States</a></span></dt>
+<dt><span class="section">5.8.5. <a href="statetypes.html#idp9912544">Example</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="escalation_condition.html">7.10. Escalation Condition</a></span></dt>
+<dt><span class="section">5.9. <a href="timeperiods.html">Time Periods</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="escalation_condition.html#idp13812208">7.10.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="escalation_condition.html#idp13820064">7.10.2. Syntax</a></span></dt>
-<dt><span class="section"><a href="escalation_condition.html#idp13820192">7.10.3. Example</a></span></dt>
+<dt><span class="section">5.9.1. <a href="timeperiods.html#idp9976912">Introduction</a></span></dt>
+<dt><span class="section">5.9.2. <a href="timeperiods.html#idp9984464">Precedence in Time Periods</a></span></dt>
+<dt><span class="section">5.9.3. <a href="timeperiods.html#idp9993216">How Time Periods Work With Host and Service Checks</a></span></dt>
+<dt><span class="section">5.9.4. <a href="timeperiods.html#idp9993632">How Time Periods Work With Contact Notifications</a></span></dt>
+<dt><span class="section">5.9.5. <a href="timeperiods.html#idp10009328">How Time Periods Work With Notification Escalations</a></span></dt>
+<dt><span class="section">5.9.6. <a href="timeperiods.html#idp10012720">How Time Periods Work With Dependencies</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="oncallrotation.html">7.11. On-Call Rotations</a></span></dt>
+<dt><span class="section">5.10. <a href="networkreachability.html">Determining Status and Reachability of Network Hosts</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="oncallrotation.html#idp13834480">7.11.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13841840">7.11.2. Scenario 1: Holidays and Weekends</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13841968">7.11.3. Scenario 2: Alternating Days</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13842096">7.11.4. Scenario 3: Alternating Weeks</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13855120">7.11.5. Scenario 4: Vacation Days</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13861712">7.11.6. Other Scenarios</a></span></dt>
+<dt><span class="section">5.10.1. <a href="networkreachability.html#idp10018928">Introduction</a></span></dt>
+<dt><span class="section">5.10.2. <a href="networkreachability.html#idp10022048">Example Network</a></span></dt>
+<dt><span class="section">5.10.3. <a href="networkreachability.html#idp10026160">Defining Parent/Child Relationships</a></span></dt>
+<dt><span class="section">5.10.4. <a href="networkreachability.html#idp10032240">Reachability Logic in Action</a></span></dt>
+<dt><span class="section">5.10.5. <a href="networkreachability.html#idp10043360">UNREACHABLE States and Notifications</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="clusters.html">7.12. Monitoring Service and Host Clusters</a></span></dt>
+<dt><span class="section">5.11. <a href="notifications.html">Notifications</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="clusters.html#idp13874032">7.12.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="clusters.html#idp13878816">7.12.2. Plan of Attack</a></span></dt>
-<dt><span class="section"><a href="clusters.html#idp13888512">7.12.3. Using the check_cluster Plugin</a></span></dt>
-<dt><span class="section"><a href="clusters.html#idp13891664">7.12.4. Monitoring Service Clusters</a></span></dt>
-<dt><span class="section"><a href="clusters.html#idp13891792">7.12.5. Monitoring Host Clusters</a></span></dt>
+<dt><span class="section">5.11.1. <a href="notifications.html#idp10054928">Introduction</a></span></dt>
+<dt><span class="section">5.11.2. <a href="notifications.html#idp10057424">When Do Notifications Occur?</a></span></dt>
+<dt><span class="section">5.11.3. <a href="notifications.html#idp10063152">Who Gets Notified?</a></span></dt>
+<dt><span class="section">5.11.4. <a href="notifications.html#idp10066464">What Filters Must Be Passed In Order For Notifications To Be Sent?</a></span></dt>
+<dt><span class="section">5.11.5. <a href="notifications.html#idp10068272">Program-Wide Filter:</a></span></dt>
+<dt><span class="section">5.11.6. <a href="notifications.html#idp10070752">Service and Host Filters:</a></span></dt>
+<dt><span class="section">5.11.7. <a href="notifications.html#idp10084048">Contact Filters:</a></span></dt>
+<dt><span class="section">5.11.8. <a href="notifications.html#idp10092192">Notification Methods</a></span></dt>
+<dt><span class="section">5.11.9. <a href="notifications.html#idp10096416">Notification Type Macro</a></span></dt>
+<dt><span class="section">5.11.10. <a href="notifications.html#idp10128016">Helpful Resources</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="dependencies.html">7.13. Host and Service Dependencies</a></span></dt>
+<dt><span class="section">5.12. <a href="notifications2.html">Notifications: Examples and troubleshooting</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="dependencies.html#idp13910608">7.13.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13911760">7.13.2. Service Dependencies Overview</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13918944">7.13.3. Defining Service Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13922944">7.13.4. Example Service Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13923104">7.13.5. How Service Dependencies Are Tested</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13944656">7.13.6. Execution Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13951840">7.13.7. Notification Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13959232">7.13.8. Dependency Inheritance</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13959360">7.13.9. Host Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13979232">7.13.10. Example Host Dependencies</a></span></dt>
+<dt><span class="section">5.12.1. <a href="notifications2.html#idp10153232">Introduction</a></span></dt>
+<dt><span class="section">5.12.2. <a href="notifications2.html#idp10182560">Some examples</a></span></dt>
+<dt><span class="section">5.12.3. <a href="notifications2.html#idp10191744">Troubleshooting</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="stalking.html">7.14. State Stalking</a></span></dt>
+</dl></dd>
+<dt><span class="chapter">6. <a href="ch06.html">User Interfaces</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="stalking.html#idp13991168">7.14.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="stalking.html#idp13992768">7.14.2. How Does It Work?</a></span></dt>
-<dt><span class="section"><a href="stalking.html#idp13992896">7.14.3. Should I Enable Stalking?</a></span></dt>
-<dt><span class="section"><a href="stalking.html#idp14050704">7.14.4. How Do I Enable Stalking?</a></span></dt>
-<dt><span class="section"><a href="stalking.html#idp14053056">7.14.5. How Does Stalking Differ From Volatile Services?</a></span></dt>
-<dt><span class="section"><a href="stalking.html#idp14054768">7.14.6. Caveats</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="perfdata.html">7.15. Performance Data</a></span></dt>
+<dt><span class="section">6.1. <a href="cgis.html">Icinga Classic UI: Information On The CGIs</a></span></dt>
+<dt><span class="section">6.2. <a href="cgiparams.html">Information On CGI parameters</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="perfdata.html#idp14060528">7.15.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14062560">7.15.2. Types of Performance Data</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14073744">7.15.3. Plugin Performance Data</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14073872">7.15.4. Processing Performance Data</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14090976">7.15.5. Processing Performance Data Using Commands</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14096272">7.15.6. Writing Performance Data To Files</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14108272">7.15.7. Performance Data Format</a></span></dt>
+<dt><span class="section">6.2.1. <a href="cgiparams.html#idp10205744">Introduction</a></span></dt>
+<dt><span class="section">6.2.2. <a href="cgiparams.html#idp10700368">Executing CGIs on the command line</a></span></dt>
+<dt><span class="section">6.2.3. <a href="cgiparams.html#idp10706272">Properties / Statustypes</a></span></dt>
+<dt><span class="section">6.2.4. <a href="cgiparams.html#idp10712592">Matrix Parameters / CGIs</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="downtime.html">7.16. Scheduled Downtime</a></span></dt>
+<dt><span class="section">6.3. <a href="cgicmd.html">Executing CGIs on the command line</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="downtime.html#idp14139504">7.16.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="downtime.html#idp14143024">7.16.2. Scheduling Downtime</a></span></dt>
-<dt><span class="section"><a href="downtime.html#idp14145648">7.16.3. Fixed vs. Flexible Downtime</a></span></dt>
-<dt><span class="section"><a href="downtime.html#idp14148784">7.16.4. Triggered Downtime</a></span></dt>
-<dt><span class="section"><a href="downtime.html#idp14150352">7.16.5. How Scheduled Downtime Affects Notifications</a></span></dt>
-<dt><span class="section"><a href="downtime.html#idp14152816">7.16.6. Overlapping Scheduled Downtime</a></span></dt>
+<dt><span class="section">6.3.1. <a href="cgicmd.html#idp10715008">Introduction</a></span></dt>
+<dt><span class="section">6.3.2. <a href="cgicmd.html#idp11873504">Prerequisites</a></span></dt>
+<dt><span class="section">6.3.3. <a href="cgicmd.html#idp11874512">Examples</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="recurring_downtimes.html">7.17. Recurring Downtimes</a></span></dt>
+<dt><span class="section">6.4. <a href="icinga-web-scratch.html">Installation of the Icinga-Web Frontend</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14164544">7.17.1. Downtime definition</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14167504">7.17.2. Variable dates</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14210704">7.17.3. Local holidays</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14210864">7.17.4. Entering downtimes</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14223216">7.17.5. Planning downtimes</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14223376">7.17.6. Converting downtime definitions</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14238000">7.17.7. Files</a></span></dt>
+<dt><span class="section">6.4.1. <a href="icinga-web-scratch.html#idp11896304">Introduction</a></span></dt>
+<dt><span class="section">6.4.2. <a href="icinga-web-scratch.html#idp11900912">Prerequisites</a></span></dt>
+<dt><span class="section">6.4.3. <a href="icinga-web-scratch.html#idp11931632">The installation</a></span></dt>
+<dt><span class="section">6.4.4. <a href="icinga-web-scratch.html#idp11979184">Settings</a></span></dt>
+<dt><span class="section">6.4.5. <a href="icinga-web-scratch.html#idp12015456">Use It!</a></span></dt>
+<dt><span class="section">6.4.6. <a href="icinga-web-scratch.html#idp12016544">Test &amp; Errors?</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="embeddedperl.html">7.18. Using The Embedded Perl Interpreter</a></span></dt>
+<dt><span class="section">6.5. <a href="upgrading_icingaweb.html">Upgrading Icinga-Web and Icinga-Web Database</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="embeddedperl.html#idp14256320">7.18.1. Advantages</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html#idp14263568">7.18.2. Disadvantages</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html#idp14273072">7.18.3. Using The Embedded Perl Interpreter</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html#idp14277824">7.18.4. Compiling Icinga With Embedded Perl</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html#idp14279984">7.18.5. Plugin-Specific Use of the Perl Interpreter</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html#idp14293232">7.18.6. Developing Plugins For Use With Embedded Perl</a></span></dt>
+<dt><span class="section">6.5.1. <a href="upgrading_icingaweb.html#idp12071776">Upgrading Icinga-Web</a></span></dt>
+<dt><span class="section">6.5.2. <a href="upgrading_icingaweb.html#idp12084544">The Upgrade</a></span></dt>
+<dt><span class="section">6.5.3. <a href="upgrading_icingaweb.html#idp12084800">Upgrading the Icinga-Web Database</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="adaptive.html">7.19. Adaptive Monitoring</a></span></dt>
+<dt><span class="section">6.6. <a href="icinga-web-config.html">Configuration Overview of Icinga-Web</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="adaptive.html#idp14300288">7.19.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="adaptive.html#idp14301520">7.19.2. What Can Be Changed?</a></span></dt>
-<dt><span class="section"><a href="adaptive.html#idp14301648">7.19.3. External Commands For Adaptive Monitoring</a></span></dt>
+<dt><span class="section">6.6.1. <a href="icinga-web-config.html#idp12120912">Where are my config files?</a></span></dt>
+<dt><span class="section">6.6.2. <a href="icinga-web-config.html#idp12126480">Index</a></span></dt>
+<dt><span class="section">6.6.3. <a href="icinga-web-config.html#idp12179184">Global Configuration Section</a></span></dt>
+<dt><span class="section">6.6.4. <a href="icinga-web-config.html#idp12300576">Troubleshooting</a></span></dt>
+<dt><span class="section">6.6.5. <a href="icinga-web-config.html#idp12307072">Module Configuration</a></span></dt>
+<dt><span class="section">6.6.6. <a href="icinga-web-config.html#idp12328512">Customised Configuration</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="dependencychecks.html">7.20. Predictive Dependency Checks</a></span></dt>
+<dt><span class="section">6.7. <a href="icinga-web-introduction.html">Introduction to Icinga-Web</a></span></dt>
+<dd><dl><dt><span class="section">6.7.1. <a href="icinga-web-introduction.html#icinga-web-intro_1.8">Introduction to Icinga-Web (&gt;= 1.8)</a></span></dt></dl></dd>
+<dt><span class="section">6.8. <a href="icinga-web-pnp.html">Integration of PNP4Nagios into Icinga-Web</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="dependencychecks.html#idp14327792">7.20.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="dependencychecks.html#idp14330736">7.20.2. How Do Predictive Checks Work?</a></span></dt>
-<dt><span class="section"><a href="dependencychecks.html#idp14330864">7.20.3. Enabling Predictive Checks</a></span></dt>
-<dt><span class="section"><a href="dependencychecks.html#idp14348800">7.20.4. Cached Checks</a></span></dt>
+<dt><span class="section">6.8.1. <a href="icinga-web-pnp.html#idp12499264">Install PNP4Nagios</a></span></dt>
+<dt><span class="section">6.8.2. <a href="icinga-web-pnp.html#idp12437616">Templates Extension</a></span></dt>
+<dt><span class="section">6.8.3. <a href="icinga-web-pnp.html#idp12511792">Create a configuration to include PNP4Nagios host pages in Icinga-Web</a></span></dt>
+<dt><span class="section">6.8.4. <a href="icinga-web-pnp.html#idp12521344">Create a configuration to include pnp4nagios service pages in icinga-web</a></span></dt>
+<dt><span class="section">6.8.5. <a href="icinga-web-pnp.html#idp12534400">Clearing the cache</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="cachedchecks.html">7.21. Cached Checks</a></span></dt>
+</dl></dd>
+<dt><span class="chapter">7. <a href="ch07.html">Advanced Topics</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="cachedchecks.html#idp14354352">7.21.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14357632">7.21.2. For On-Demand Checks Only</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14357760">7.21.3. How Caching Works</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14372400">7.21.4. What This Really Means</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14372528">7.21.5. Configuration Variables</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14383696">7.21.6. Optimizing Cache Effectiveness</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="passivestatetranslation.html">7.22. Passive Host State Translation</a></span></dt>
+<dt><span class="section">7.1. <a href="extcommands.html">External Commands</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="passivestatetranslation.html#idp14407056">7.22.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="passivestatetranslation.html#idp14408400">7.22.2. Different World Views</a></span></dt>
-<dt><span class="section"><a href="passivestatetranslation.html#idp14408560">7.22.3. Enabling State Translation</a></span></dt>
+<dt><span class="section">7.1.1. <a href="extcommands.html#idm123304080">Introduction</a></span></dt>
+<dt><span class="section">7.1.2. <a href="extcommands.html#idm123309776">Enabling External Commands</a></span></dt>
+<dt><span class="section">7.1.3. <a href="extcommands.html#idp12541872">When Does Icinga Check For External Commands?</a></span></dt>
+<dt><span class="section">7.1.4. <a href="extcommands.html#idp12546448">Using External Commands</a></span></dt>
+<dt><span class="section">7.1.5. <a href="extcommands.html#idp12547920">Command Format</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="checkscheduling.html">7.23. Service and Host Check Scheduling</a></span></dt>
+<dt><span class="section">7.2. <a href="extcommands2.html">List of External Commands</a></span></dt>
+<dt><span class="section">7.3. <a href="eventhandlers.html">Event Handlers</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="checkscheduling.html#idp14436048">7.23.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14438160">7.23.2. Configuration Options</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14454800">7.23.3. Initial Scheduling</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14460768">7.23.4. Inter-Check Delay</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14466448">7.23.5. Service Interleaving</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14498064">7.23.6. Maximum Concurrent Service Checks</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14498320">7.23.7. Time Restraints</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14520512">7.23.8. Normal Scheduling</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14522880">7.23.9. Scheduling During Problems</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14531216">7.23.10. Host Checks</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14535568">7.23.11. Scheduling Delays</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14537776">7.23.12. Scheduling Example</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14554816">7.23.13. Service Definition Options That Affect Scheduling</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14567920">7.23.14. TODO</a></span></dt>
+<dt><span class="section">7.3.1. <a href="eventhandlers.html#idp12557584">Introduction</a></span></dt>
+<dt><span class="section">7.3.2. <a href="eventhandlers.html#idp12557712">When Are Event Handlers Executed?</a></span></dt>
+<dt><span class="section">7.3.3. <a href="eventhandlers.html#idp12572928">Event Handler Types</a></span></dt>
+<dt><span class="section">7.3.4. <a href="eventhandlers.html#idp13340560">Enabling Event Handlers</a></span></dt>
+<dt><span class="section">7.3.5. <a href="eventhandlers.html#idp13345616">Event Handler Execution Order</a></span></dt>
+<dt><span class="section">7.3.6. <a href="eventhandlers.html#idp13347184">Writing Event Handler Commands</a></span></dt>
+<dt><span class="section">7.3.7. <a href="eventhandlers.html#idp13347312">Permissions For Event Handler Commands</a></span></dt>
+<dt><span class="section">7.3.8. <a href="eventhandlers.html#idp13365168">Service Event Handler Example</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="cgiincludes.html">7.24. Custom CGI Headers and
+<dt><span class="section">7.4. <a href="volatileservices.html">Volatile Services</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.4.1. <a href="volatileservices.html#idp13384000">Introduction</a></span></dt>
+<dt><span class="section">7.4.2. <a href="volatileservices.html#idp13385808">What Are They Useful For?</a></span></dt>
+<dt><span class="section">7.4.3. <a href="volatileservices.html#idp13389664">What's So Special About Volatile Services?</a></span></dt>
+<dt><span class="section">7.4.4. <a href="volatileservices.html#idp13400272">The Power Of Two</a></span></dt>
+<dt><span class="section">7.4.5. <a href="volatileservices.html#idp13403680">Icinga Configuration:</a></span></dt>
+<dt><span class="section">7.4.6. <a href="volatileservices.html#idp13412688">PortSentry Configuration:</a></span></dt>
+<dt><span class="section">7.4.7. <a href="volatileservices.html#idp13415520">Port Scan Script:</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.5. <a href="freshness.html">Service and Host Freshness Checks</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.5.1. <a href="freshness.html#idp13427264">Introduction</a></span></dt>
+<dt><span class="section">7.5.2. <a href="freshness.html#idp13433392">How Does Freshness Checking Work?</a></span></dt>
+<dt><span class="section">7.5.3. <a href="freshness.html#idp13441488">Enabling Freshness Checking</a></span></dt>
+<dt><span class="section">7.5.4. <a href="freshness.html#idp13455056">Example</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.6. <a href="distributed.html">Distributed Monitoring</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.6.1. <a href="distributed.html#idp13465232">Introduction</a></span></dt>
+<dt><span class="section">7.6.2. <a href="distributed.html#idp13466304">Goals</a></span></dt>
+<dt><span class="section">7.6.3. <a href="distributed.html#idp13468352">Reference Diagram</a></span></dt>
+<dt><span class="section">7.6.4. <a href="distributed.html#idp13469824">Central Server vs. Distributed Servers</a></span></dt>
+<dt><span class="section">7.6.5. <a href="distributed.html#idp13476816">Obtaining Service Check Information From Distributed Monitors</a></span></dt>
+<dt><span class="section">7.6.6. <a href="distributed.html#idp13482640">Distributed Server Configuration</a></span></dt>
+<dt><span class="section">7.6.7. <a href="distributed.html#idp13482768">ocsp_command=submit_check_result</a></span></dt>
+<dt><span class="section">7.6.8. <a href="distributed.html#idp13495872">Central Server Configuration</a></span></dt>
+<dt><span class="section">7.6.9. <a href="distributed.html#idp13513456">Problems With Passive Checks</a></span></dt>
+<dt><span class="section">7.6.10. <a href="distributed.html#idp13531840">Freshness Checking</a></span></dt>
+<dt><span class="section">7.6.11. <a href="distributed.html#idp13531968">Performing Host Checks</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.7. <a href="redundancy.html">Redundant and Failover Network Monitoring</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.7.1. <a href="redundancy.html#idp13563952">Introduction</a></span></dt>
+<dt><span class="section">7.7.2. <a href="redundancy.html#idp13567904">Prerequisites</a></span></dt>
+<dt><span class="section">7.7.3. <a href="redundancy.html#idp13576336">Sample Scripts</a></span></dt>
+<dt><span class="section">7.7.4. <a href="redundancy.html#idp13578368">Scenario 1 - Redundant Monitoring</a></span></dt>
+<dt><span class="section">7.7.5. <a href="redundancy.html#idp13579312">Introduction</a></span></dt>
+<dt><span class="section">7.7.6. <a href="redundancy.html#idp13580688">Goals</a></span></dt>
+<dt><span class="section">7.7.7. <a href="redundancy.html#idp13584416">Network Layout Diagram</a></span></dt>
+<dt><span class="section">7.7.8. <a href="redundancy.html#idp13591632">Initial Program Settings</a></span></dt>
+<dt><span class="section">7.7.9. <a href="redundancy.html#idp13593904">Initial Configuration</a></span></dt>
+<dt><span class="section">7.7.10. <a href="redundancy.html#idp13602320">Event Handler Command Definitions</a></span></dt>
+<dt><span class="section">7.7.11. <a href="redundancy.html#idp13607744">Event Handler Scripts</a></span></dt>
+<dt><span class="section">7.7.12. <a href="redundancy.html#idp13607872">What This Does For Us</a></span></dt>
+<dt><span class="section">7.7.13. <a href="redundancy.html#idp13613488">Time Lags</a></span></dt>
+<dt><span class="section">7.7.14. <a href="redundancy.html#idp13629184">Special Cases</a></span></dt>
+<dt><span class="section">7.7.15. <a href="redundancy.html#idp13650656">Introduction</a></span></dt>
+<dt><span class="section">7.7.16. <a href="redundancy.html#idp13653952">Goals</a></span></dt>
+<dt><span class="section">7.7.17. <a href="redundancy.html#idp13657280">Initial Program Settings</a></span></dt>
+<dt><span class="section">7.7.18. <a href="redundancy.html#idp13660480">Master Process Check</a></span></dt>
+<dt><span class="section">7.7.19. <a href="redundancy.html#idp13667040">Additional Issues</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.8. <a href="flapping.html">Detection and Handling of State Flapping</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.8.1. <a href="flapping.html#idp13676816">Introduction</a></span></dt>
+<dt><span class="section">7.8.2. <a href="flapping.html#idp13678320">How Flap Detection Works</a></span></dt>
+<dt><span class="section">7.8.3. <a href="flapping.html#idp13678448">Example</a></span></dt>
+<dt><span class="section">7.8.4. <a href="flapping.html#idp13687840">Flap Detection for Services</a></span></dt>
+<dt><span class="section">7.8.5. <a href="flapping.html#idp13708112">Flap Detection for Hosts</a></span></dt>
+<dt><span class="section">7.8.6. <a href="flapping.html#idp13713344">Flap Detection Thresholds</a></span></dt>
+<dt><span class="section">7.8.7. <a href="flapping.html#idp13737920">States Used For Flap Detection</a></span></dt>
+<dt><span class="section">7.8.8. <a href="flapping.html#idp13740336">Flap Handling</a></span></dt>
+<dt><span class="section">7.8.9. <a href="flapping.html#idp13752288">Enabling Flap Detection</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.9. <a href="escalations.html">Notification Escalations</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.9.1. <a href="escalations.html#idp13761920">Introduction</a></span></dt>
+<dt><span class="section">7.9.2. <a href="escalations.html#idp13768000">When Are Notifications Escalated?</a></span></dt>
+<dt><span class="section">7.9.3. <a href="escalations.html#idp13772896">Contact Groups</a></span></dt>
+<dt><span class="section">7.9.4. <a href="escalations.html#idp13779680">Overlapping Escalation Ranges</a></span></dt>
+<dt><span class="section">7.9.5. <a href="escalations.html#idp13787872">Recovery Notifications</a></span></dt>
+<dt><span class="section">7.9.6. <a href="escalations.html#idp13791616">Notification Intervals</a></span></dt>
+<dt><span class="section">7.9.7. <a href="escalations.html#idp13791776">Time Period Restrictions</a></span></dt>
+<dt><span class="section">7.9.8. <a href="escalations.html#idp13808576">State Restrictions</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.10. <a href="escalation_condition.html">Escalation Condition</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.10.1. <a href="escalation_condition.html#idp13813280">Introduction</a></span></dt>
+<dt><span class="section">7.10.2. <a href="escalation_condition.html#idp13821136">Syntax</a></span></dt>
+<dt><span class="section">7.10.3. <a href="escalation_condition.html#idp13821264">Example</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.11. <a href="oncallrotation.html">On-Call Rotations</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.11.1. <a href="oncallrotation.html#idp13835552">Introduction</a></span></dt>
+<dt><span class="section">7.11.2. <a href="oncallrotation.html#idp13842912">Scenario 1: Holidays and Weekends</a></span></dt>
+<dt><span class="section">7.11.3. <a href="oncallrotation.html#idp13843040">Scenario 2: Alternating Days</a></span></dt>
+<dt><span class="section">7.11.4. <a href="oncallrotation.html#idp13843168">Scenario 3: Alternating Weeks</a></span></dt>
+<dt><span class="section">7.11.5. <a href="oncallrotation.html#idp13856192">Scenario 4: Vacation Days</a></span></dt>
+<dt><span class="section">7.11.6. <a href="oncallrotation.html#idp13862704">Other Scenarios</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.12. <a href="clusters.html">Monitoring Service and Host Clusters</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.12.1. <a href="clusters.html#idp13875088">Introduction</a></span></dt>
+<dt><span class="section">7.12.2. <a href="clusters.html#idp13880080">Plan of Attack</a></span></dt>
+<dt><span class="section">7.12.3. <a href="clusters.html#idp13889712">Using the check_cluster Plugin</a></span></dt>
+<dt><span class="section">7.12.4. <a href="clusters.html#idp13892688">Monitoring Service Clusters</a></span></dt>
+<dt><span class="section">7.12.5. <a href="clusters.html#idp13892816">Monitoring Host Clusters</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.13. <a href="dependencies.html">Host and Service Dependencies</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.13.1. <a href="dependencies.html#idp13911696">Introduction</a></span></dt>
+<dt><span class="section">7.13.2. <a href="dependencies.html#idp13912896">Service Dependencies Overview</a></span></dt>
+<dt><span class="section">7.13.3. <a href="dependencies.html#idp13920160">Defining Service Dependencies</a></span></dt>
+<dt><span class="section">7.13.4. <a href="dependencies.html#idp13921040">Example Service Dependencies</a></span></dt>
+<dt><span class="section">7.13.5. <a href="dependencies.html#idp13924240">How Service Dependencies Are Tested</a></span></dt>
+<dt><span class="section">7.13.6. <a href="dependencies.html#idp13945840">Execution Dependencies</a></span></dt>
+<dt><span class="section">7.13.7. <a href="dependencies.html#idp13953024">Notification Dependencies</a></span></dt>
+<dt><span class="section">7.13.8. <a href="dependencies.html#idp13960416">Dependency Inheritance</a></span></dt>
+<dt><span class="section">7.13.9. <a href="dependencies.html#idp13960544">Host Dependencies</a></span></dt>
+<dt><span class="section">7.13.10. <a href="dependencies.html#idp13980416">Example Host Dependencies</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.14. <a href="stalking.html">State Stalking</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.14.1. <a href="stalking.html#idp13992352">Introduction</a></span></dt>
+<dt><span class="section">7.14.2. <a href="stalking.html#idp13993744">How Does It Work?</a></span></dt>
+<dt><span class="section">7.14.3. <a href="stalking.html#idp13993872">Should I Enable Stalking?</a></span></dt>
+<dt><span class="section">7.14.4. <a href="stalking.html#idp14051904">How Do I Enable Stalking?</a></span></dt>
+<dt><span class="section">7.14.5. <a href="stalking.html#idp14054256">How Does Stalking Differ From Volatile Services?</a></span></dt>
+<dt><span class="section">7.14.6. <a href="stalking.html#idp14055968">Caveats</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.15. <a href="perfdata.html">Performance Data</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.15.1. <a href="perfdata.html#idp14061728">Introduction</a></span></dt>
+<dt><span class="section">7.15.2. <a href="perfdata.html#idp14063760">Types of Performance Data</a></span></dt>
+<dt><span class="section">7.15.3. <a href="perfdata.html#idp14075056">Plugin Performance Data</a></span></dt>
+<dt><span class="section">7.15.4. <a href="perfdata.html#idp14075184">Processing Performance Data</a></span></dt>
+<dt><span class="section">7.15.5. <a href="perfdata.html#idp14092288">Processing Performance Data Using Commands</a></span></dt>
+<dt><span class="section">7.15.6. <a href="perfdata.html#idp14097584">Writing Performance Data To Files</a></span></dt>
+<dt><span class="section">7.15.7. <a href="perfdata.html#idp14109424">Performance Data Format</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.16. <a href="downtime.html">Scheduled Downtime</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.16.1. <a href="downtime.html#idp14140592">Introduction</a></span></dt>
+<dt><span class="section">7.16.2. <a href="downtime.html#idp14144080">Scheduling Downtime</a></span></dt>
+<dt><span class="section">7.16.3. <a href="downtime.html#idp14146784">Fixed vs. Flexible Downtime</a></span></dt>
+<dt><span class="section">7.16.4. <a href="downtime.html#idp14149920">Triggered Downtime</a></span></dt>
+<dt><span class="section">7.16.5. <a href="downtime.html#idp14151488">How Scheduled Downtime Affects Notifications</a></span></dt>
+<dt><span class="section">7.16.6. <a href="downtime.html#idp14153952">Overlapping Scheduled Downtime</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.17. <a href="recurring_downtimes.html">Recurring Downtimes</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.17.1. <a href="recurring_downtimes.html#idp14165680">Downtime definition</a></span></dt>
+<dt><span class="section">7.17.2. <a href="recurring_downtimes.html#idp14168640">Variable dates</a></span></dt>
+<dt><span class="section">7.17.3. <a href="recurring_downtimes.html#idp14211984">Local holidays</a></span></dt>
+<dt><span class="section">7.17.4. <a href="recurring_downtimes.html#idp14212144">Entering downtimes</a></span></dt>
+<dt><span class="section">7.17.5. <a href="recurring_downtimes.html#idp14224496">Planning downtimes</a></span></dt>
+<dt><span class="section">7.17.6. <a href="recurring_downtimes.html#idp14224656">Converting downtime definitions</a></span></dt>
+<dt><span class="section">7.17.7. <a href="recurring_downtimes.html#idp14239184">Files</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.18. <a href="embeddedperl.html">Using The Embedded Perl Interpreter</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.18.1. <a href="embeddedperl.html#idp14257504">Advantages</a></span></dt>
+<dt><span class="section">7.18.2. <a href="embeddedperl.html#idp14264576">Disadvantages</a></span></dt>
+<dt><span class="section">7.18.3. <a href="embeddedperl.html#idp14273856">Using The Embedded Perl Interpreter</a></span></dt>
+<dt><span class="section">7.18.4. <a href="embeddedperl.html#idp14281120">Compiling Icinga With Embedded Perl</a></span></dt>
+<dt><span class="section">7.18.5. <a href="embeddedperl.html#idp14281248">Plugin-Specific Use of the Perl Interpreter</a></span></dt>
+<dt><span class="section">7.18.6. <a href="embeddedperl.html#idp14294288">Developing Plugins For Use With Embedded Perl</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.19. <a href="adaptive.html">Adaptive Monitoring</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.19.1. <a href="adaptive.html#idp14301344">Introduction</a></span></dt>
+<dt><span class="section">7.19.2. <a href="adaptive.html#idp14302576">What Can Be Changed?</a></span></dt>
+<dt><span class="section">7.19.3. <a href="adaptive.html#idp14302704">External Commands For Adaptive Monitoring</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.20. <a href="dependencychecks.html">Predictive Dependency Checks</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.20.1. <a href="dependencychecks.html#idp14328848">Introduction</a></span></dt>
+<dt><span class="section">7.20.2. <a href="dependencychecks.html#idp14331792">How Do Predictive Checks Work?</a></span></dt>
+<dt><span class="section">7.20.3. <a href="dependencychecks.html#idp14331920">Enabling Predictive Checks</a></span></dt>
+<dt><span class="section">7.20.4. <a href="dependencychecks.html#idp14350192">Cached Checks</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.21. <a href="cachedchecks.html">Cached Checks</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.21.1. <a href="cachedchecks.html#idp14355744">Introduction</a></span></dt>
+<dt><span class="section">7.21.2. <a href="cachedchecks.html#idp14359024">For On-Demand Checks Only</a></span></dt>
+<dt><span class="section">7.21.3. <a href="cachedchecks.html#idp14359152">How Caching Works</a></span></dt>
+<dt><span class="section">7.21.4. <a href="cachedchecks.html#idp14373792">What This Really Means</a></span></dt>
+<dt><span class="section">7.21.5. <a href="cachedchecks.html#idp14373920">Configuration Variables</a></span></dt>
+<dt><span class="section">7.21.6. <a href="cachedchecks.html#idp14385088">Optimizing Cache Effectiveness</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.22. <a href="passivestatetranslation.html">Passive Host State Translation</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.22.1. <a href="passivestatetranslation.html#idp14408416">Introduction</a></span></dt>
+<dt><span class="section">7.22.2. <a href="passivestatetranslation.html#idp14409760">Different World Views</a></span></dt>
+<dt><span class="section">7.22.3. <a href="passivestatetranslation.html#idp14431296">Enabling State Translation</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.23. <a href="checkscheduling.html">Service and Host Check Scheduling</a></span></dt>
+<dd><dl>
+<dt><span class="section">7.23.1. <a href="checkscheduling.html#idp14436976">Introduction</a></span></dt>
+<dt><span class="section">7.23.2. <a href="checkscheduling.html#idp14439168">Configuration Options</a></span></dt>
+<dt><span class="section">7.23.3. <a href="checkscheduling.html#idp14455840">Initial Scheduling</a></span></dt>
+<dt><span class="section">7.23.4. <a href="checkscheduling.html#idp14461936">Inter-Check Delay</a></span></dt>
+<dt><span class="section">7.23.5. <a href="checkscheduling.html#idp14467680">Service Interleaving</a></span></dt>
+<dt><span class="section">7.23.6. <a href="checkscheduling.html#idp14499120">Maximum Concurrent Service Checks</a></span></dt>
+<dt><span class="section">7.23.7. <a href="checkscheduling.html#idp14499376">Time Restraints</a></span></dt>
+<dt><span class="section">7.23.8. <a href="checkscheduling.html#idp14521568">Normal Scheduling</a></span></dt>
+<dt><span class="section">7.23.9. <a href="checkscheduling.html#idp14523936">Scheduling During Problems</a></span></dt>
+<dt><span class="section">7.23.10. <a href="checkscheduling.html#idp14532272">Host Checks</a></span></dt>
+<dt><span class="section">7.23.11. <a href="checkscheduling.html#idp14536448">Scheduling Delays</a></span></dt>
+<dt><span class="section">7.23.12. <a href="checkscheduling.html#idp14538576">Scheduling Example</a></span></dt>
+<dt><span class="section">7.23.13. <a href="checkscheduling.html#idp14555776">Service Definition Options That Affect Scheduling</a></span></dt>
+<dt><span class="section">7.23.14. <a href="checkscheduling.html#idp14567696">TODO</a></span></dt>
+</dl></dd>
+<dt><span class="section">7.24. <a href="cgiincludes.html">Custom CGI Headers and
   Footers</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="cgiincludes.html#idp14594400">7.24.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="cgiincludes.html#idp14598528">7.24.2. How Does It Work?</a></span></dt>
+<dt><span class="section">7.24.1. <a href="cgiincludes.html#idp14596560">Introduction</a></span></dt>
+<dt><span class="section">7.24.2. <a href="cgiincludes.html#idp14597616">How Does It Work?</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="modified_attr.html">7.25. Modified attributes</a></span></dt>
+<dt><span class="section">7.25. <a href="modified_attr.html">Modified attributes</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="modified_attr.html#idp14612560">7.25.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="modified_attr.html#idp14612688">7.25.2. Example</a></span></dt>
+<dt><span class="section">7.25.1. <a href="modified_attr.html#idp14613568">Introduction</a></span></dt>
+<dt><span class="section">7.25.2. <a href="modified_attr.html#idp14613696">Example</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="objectinheritance.html">7.26. Object Inheritance</a></span></dt>
+<dt><span class="section">7.26. <a href="objectinheritance.html">Object Inheritance</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="objectinheritance.html#idp14637376">7.26.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14640912">7.26.2. Basics</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14650992">7.26.3. Local Variables vs. Inherited Variables</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14651120">7.26.4. Inheritance Chaining</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14661520">7.26.5. Using Incomplete Object Definitions as Templates</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14667296">7.26.6. Custom Object Variables</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14675968">7.26.7. Precedence With Multiple Inheritance Sources</a></span></dt>
+<dt><span class="section">7.26.1. <a href="objectinheritance.html#idp14638384">Introduction</a></span></dt>
+<dt><span class="section">7.26.2. <a href="objectinheritance.html#idp14641920">Basics</a></span></dt>
+<dt><span class="section">7.26.3. <a href="objectinheritance.html#idp14652000">Local Variables vs. Inherited Variables</a></span></dt>
+<dt><span class="section">7.26.4. <a href="objectinheritance.html#idp14652128">Inheritance Chaining</a></span></dt>
+<dt><span class="section">7.26.5. <a href="objectinheritance.html#idp14663632">Using Incomplete Object Definitions as Templates</a></span></dt>
+<dt><span class="section">7.26.6. <a href="objectinheritance.html#idp14676640">Custom Object Variables</a></span></dt>
+<dt><span class="section">7.26.7. <a href="objectinheritance.html#idp14676768">Precedence With Multiple Inheritance Sources</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="objecttricks.html">7.27. Time-Saving Tricks For Object Definitions</a></span></dt>
+<dt><span class="section">7.27. <a href="objecttricks.html">Time-Saving Tricks For Object Definitions</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch08.html">8. Security and Performance Tuning</a></span></dt>
+<dt><span class="chapter">8. <a href="ch08.html">Security and Performance Tuning</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="security.html">8.1. Security Considerations</a></span></dt>
+<dt><span class="section">8.1. <a href="security.html">Security Considerations</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="security.html#idm107083280">8.1.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="security.html#idp14796816">8.1.2. Best Practices</a></span></dt>
+<dt><span class="section">8.1.1. <a href="security.html#idm107325536">Introduction</a></span></dt>
+<dt><span class="section">8.1.2. <a href="security.html#idp14797808">Best Practices</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="cgisecurity.html">8.2. Enhanced CGI Security and Authentication</a></span></dt>
+<dt><span class="section">8.2. <a href="cgisecurity.html">Enhanced CGI Security and Authentication</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="cgisecurity.html#idp15055616">8.2.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="cgisecurity.html#idp15060400">8.2.2. Additional Techniques</a></span></dt>
-<dt><span class="section"><a href="cgisecurity.html#idp15071472">8.2.3. Implementing Digest Authentication</a></span></dt>
-<dt><span class="section"><a href="cgisecurity.html#idp15079568">8.2.4. Implementing Forced TLS/SSL</a></span></dt>
-<dt><span class="section"><a href="cgisecurity.html#idp15087904">8.2.5. Implementing IP subnet lockdown</a></span></dt>
-<dt><span class="section"><a href="cgisecurity.html#idp15092816">8.2.6. Important Notes</a></span></dt>
+<dt><span class="section">8.2.1. <a href="cgisecurity.html#idp15056560">Introduction</a></span></dt>
+<dt><span class="section">8.2.2. <a href="cgisecurity.html#idp15061344">Additional Techniques</a></span></dt>
+<dt><span class="section">8.2.3. <a href="cgisecurity.html#idp15072416">Implementing Digest Authentication</a></span></dt>
+<dt><span class="section">8.2.4. <a href="cgisecurity.html#idp15080128">Implementing Forced TLS/SSL</a></span></dt>
+<dt><span class="section">8.2.5. <a href="cgisecurity.html#idp15088832">Implementing IP subnet lockdown</a></span></dt>
+<dt><span class="section">8.2.6. <a href="cgisecurity.html#idp15093744">Important Notes</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="tuning.html">8.3. Tuning Icinga For Maximum Performance</a></span></dt>
+<dt><span class="section">8.3. <a href="tuning.html">Tuning Icinga For Maximum Performance</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="tuning.html#idp15113872">8.3.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="tuning.html#idp15116208">8.3.2. Optimization Tips</a></span></dt>
+<dt><span class="section">8.3.1. <a href="tuning.html#idp15114800">Introduction</a></span></dt>
+<dt><span class="section">8.3.2. <a href="tuning.html#idp15117136">Optimization Tips</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="faststartup.html">8.4. Fast Startup Options</a></span></dt>
+<dt><span class="section">8.4. <a href="faststartup.html">Fast Startup Options</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="faststartup.html#idp15179440">8.4.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="faststartup.html#idp15184832">8.4.2. Background</a></span></dt>
-<dt><span class="section"><a href="faststartup.html#idp15195552">8.4.3. Evaluating Startup Times</a></span></dt>
-<dt><span class="section"><a href="faststartup.html#idp15210976">8.4.4. Pre-Caching Object Configuration</a></span></dt>
-<dt><span class="section"><a href="faststartup.html#idp15234992">8.4.5. Skipping Circular Path Tests</a></span></dt>
-<dt><span class="section"><a href="faststartup.html#idp15240496">8.4.6. Putting It All Together</a></span></dt>
+<dt><span class="section">8.4.1. <a href="faststartup.html#idp15180464">Introduction</a></span></dt>
+<dt><span class="section">8.4.2. <a href="faststartup.html#idp15185856">Background</a></span></dt>
+<dt><span class="section">8.4.3. <a href="faststartup.html#idp15196576">Evaluating Startup Times</a></span></dt>
+<dt><span class="section">8.4.4. <a href="faststartup.html#idp15211792">Pre-Caching Object Configuration</a></span></dt>
+<dt><span class="section">8.4.5. <a href="faststartup.html#idp15233760">Skipping Circular Path Tests</a></span></dt>
+<dt><span class="section">8.4.6. <a href="faststartup.html#idp15241296">Putting It All Together</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="largeinstalltweaks.html">8.5. Large Installation Tweaks</a></span></dt>
+<dt><span class="section">8.5. <a href="largeinstalltweaks.html">Large Installation Tweaks</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="largeinstalltweaks.html#idp15256528">8.5.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="largeinstalltweaks.html#idp15258896">8.5.2. Effects</a></span></dt>
+<dt><span class="section">8.5.1. <a href="largeinstalltweaks.html#idp15257360">Introduction</a></span></dt>
+<dt><span class="section">8.5.2. <a href="largeinstalltweaks.html#idp15259808">Effects</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="icingastats.html">8.6. Using The Icingastats Utility</a></span></dt>
+<dt><span class="section">8.6. <a href="icingastats.html">Using The Icingastats Utility</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="icingastats.html#idp15271136">8.6.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="icingastats.html#idp15273968">8.6.2. Usage Information</a></span></dt>
-<dt><span class="section"><a href="icingastats.html#idp15276368">8.6.3. Human-Readable Output</a></span></dt>
-<dt><span class="section"><a href="icingastats.html#idp15283200">8.6.4. PNP4Nagios Integration</a></span></dt>
+<dt><span class="section">8.6.1. <a href="icingastats.html#idp15271632">Introduction</a></span></dt>
+<dt><span class="section">8.6.2. <a href="icingastats.html#idp15274736">Usage Information</a></span></dt>
+<dt><span class="section">8.6.3. <a href="icingastats.html#idp15277344">Human-Readable Output</a></span></dt>
+<dt><span class="section">8.6.4. <a href="icingastats.html#idp15284096">PNP4Nagios Integration</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="perfgraphs.html">8.7. Graphing Performance Info With PNP4Nagios</a></span></dt>
+<dt><span class="section">8.7. <a href="perfgraphs.html">Graphing Performance Info With PNP4Nagios</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="perfgraphs.html#idp15295712">8.7.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="perfgraphs.html#idp15302016">8.7.2. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="perfgraphs.html#idp15329840">8.7.3. Average Host / Service Check Latency</a></span></dt>
-<dt><span class="section"><a href="perfgraphs.html#idp15346000">8.7.4. Service Statistics</a></span></dt>
-<dt><span class="section"><a href="perfgraphs.html#idp15355376">8.7.5. Host Statistics</a></span></dt>
-<dt><span class="section"><a href="perfgraphs.html#idp15365248">8.7.6. Average Execution Times</a></span></dt>
-<dt><span class="section"><a href="perfgraphs.html#idp15377664">8.7.7. External Commands</a></span></dt>
-<dt><span class="section"><a href="perfgraphs.html#idp15386416">8.7.8. External Command Buffers</a></span></dt>
-<dt><span class="section"><a href="perfgraphs.html#idp15392480">8.7.9. Cached Host and Service Checks</a></span></dt>
-<dt><span class="section"><a href="perfgraphs.html#idp15399936">8.7.10. Average State Changes</a></span></dt>
+<dt><span class="section">8.7.1. <a href="perfgraphs.html#idp15296672">Introduction</a></span></dt>
+<dt><span class="section">8.7.2. <a href="perfgraphs.html#idp15302976">Prerequisites</a></span></dt>
+<dt><span class="section">8.7.3. <a href="perfgraphs.html#idp15330800">Average Host / Service Check Latency</a></span></dt>
+<dt><span class="section">8.7.4. <a href="perfgraphs.html#idp15346784">Service Statistics</a></span></dt>
+<dt><span class="section">8.7.5. <a href="perfgraphs.html#idp15355280">Host Statistics</a></span></dt>
+<dt><span class="section">8.7.6. <a href="perfgraphs.html#idp15366320">Average Execution Times</a></span></dt>
+<dt><span class="section">8.7.7. <a href="perfgraphs.html#idp15378416">External Commands</a></span></dt>
+<dt><span class="section">8.7.8. <a href="perfgraphs.html#idp15387504">External Command Buffers</a></span></dt>
+<dt><span class="section">8.7.9. <a href="perfgraphs.html#idp15393552">Cached Host and Service Checks</a></span></dt>
+<dt><span class="section">8.7.10. <a href="perfgraphs.html#idp15400832">Average State Changes</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="temp_data.html">8.8. Temporary Data</a></span></dt>
+<dt><span class="section">8.8. <a href="temp_data.html">Temporary Data</a></span></dt>
 </dl></dd>
-<dt><span class="chapter"><a href="ch09.html">9. Integration With Other Software</a></span></dt>
+<dt><span class="chapter">9. <a href="ch09.html">Integration With Other Software</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="integration.html">9.1. Integration Overview</a></span></dt>
+<dt><span class="section">9.1. <a href="integration.html">Integration Overview</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="integration.html#idm107083968">9.1.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="integration.html#idp15429536">9.1.2. Integration Points</a></span></dt>
-<dt><span class="section"><a href="integration.html#idp15449296">9.1.3. Integration Examples</a></span></dt>
+<dt><span class="section">9.1.1. <a href="integration.html#idm104035200">Introduction</a></span></dt>
+<dt><span class="section">9.1.2. <a href="integration.html#idp15430560">Integration Points</a></span></dt>
+<dt><span class="section">9.1.3. <a href="integration.html#idp15450320">Integration Examples</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="int-snmptrap.html">9.2. SNMP Trap Integration</a></span></dt>
-<dt><span class="section"><a href="int-tcpwrappers.html">9.3. TCP Wrapper Integration</a></span></dt>
+<dt><span class="section">9.2. <a href="int-snmptrap.html">SNMP Trap Integration</a></span></dt>
+<dt><span class="section">9.3. <a href="int-tcpwrappers.html">TCP Wrapper Integration</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="int-tcpwrappers.html#idp15467760">9.3.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="int-tcpwrappers.html#idp15479440">9.3.2. Defining A Service</a></span></dt>
-<dt><span class="section"><a href="int-tcpwrappers.html#idp15488864">9.3.3. Configuring TCP Wrappers</a></span></dt>
-<dt><span class="section"><a href="int-tcpwrappers.html#idp15493408">9.3.4. Writing The Script</a></span></dt>
-<dt><span class="section"><a href="int-tcpwrappers.html#idp15499440">9.3.5. Finishing Up</a></span></dt>
+<dt><span class="section">9.3.1. <a href="int-tcpwrappers.html#idp15468784">Introduction</a></span></dt>
+<dt><span class="section">9.3.2. <a href="int-tcpwrappers.html#idp15480256">Defining A Service</a></span></dt>
+<dt><span class="section">9.3.3. <a href="int-tcpwrappers.html#idp15489952">Configuring TCP Wrappers</a></span></dt>
+<dt><span class="section">9.3.4. <a href="int-tcpwrappers.html#idp15494432">Writing The Script</a></span></dt>
+<dt><span class="section">9.3.5. <a href="int-tcpwrappers.html#idp15500256">Finishing Up</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="int-mklivestatus.html">9.4. MKLiveStatus Integration</a></span></dt>
+<dt><span class="section">9.4. <a href="int-mklivestatus.html">MKLiveStatus Integration</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="int-mklivestatus.html#idp15505760">9.4.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="int-mklivestatus.html#idp15508544">9.4.2. Installation / Configuration</a></span></dt>
+<dt><span class="section">9.4.1. <a href="int-mklivestatus.html#idp15506640">Introduction</a></span></dt>
+<dt><span class="section">9.4.2. <a href="int-mklivestatus.html#idp15509296">Installation / Configuration</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="reporting_1.8.html">9.5. Installation of the Icinga-Reporting with JasperReports Server</a></span></dt>
+<dt><span class="section">9.5. <a href="reporting_1.8.html">Installation of the Icinga-Reporting with JasperReports Server</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="reporting_1.8.html#idp15524208">9.5.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15527024">9.5.2. Official Docs</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15530320">9.5.3. Requirements</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15554208">9.5.4. Icinga Reporting</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15568160">9.5.5. Configuration</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15575648">9.5.6. Reports</a></span></dt>
-<dt><span class="section"><a href="reporting_1.8.html#idp15580096">9.5.7. Errors</a></span></dt>
-</dl></dd>
-</dl></dd>
-<dt><span class="chapter"><a href="ch10.html">10. Additional software</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="addons.html">10.1. Icinga Addons</a></span></dt>
-<dd><dl><dt><span class="section"><a href="addons.html#idp15588688">10.1.1. Introduction</a></span></dt></dl></dd>
-<dt><span class="section"><a href="nrpe.html">10.2. NRPE</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="nrpe.html#idp15684720">10.2.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15697264">10.2.2. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15702592">10.2.3. Download</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15707552">10.2.4. Optional changes</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15711280">10.2.5. Compile on the Icinga server</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15719296">10.2.6. First test</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15722800">10.2.7. Remote system(s)</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15724400">10.2.8. Prerequisites on the remote host(s)</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15732352">10.2.9. Second test</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15737056">10.2.10. Installation on the remote host</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15762064">10.2.11. Third test</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15765200">10.2.12. Troubleshooting</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15782560">10.2.13. Security</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15784256">10.2.14. Definition of local checks</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15795760">10.2.15. Definitions on the Icinga server</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15796080">10.2.16. More Troubleshooting</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15837440">10.2.17. Upgrading</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="nsca.html">10.3. NSCA</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="nsca.html#idp15849904">10.3.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15855520">10.3.2. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15865168">10.3.3. Download and compile</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15865424">10.3.4. Customise</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15881104">10.3.5. First test</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15886960">10.3.6. Install</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15903904">10.3.7. Remote system(s)</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15906000">10.3.8. Copy files</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15908144">10.3.9. Second test</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15912032">10.3.10. Troubleshooting</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15918208">10.3.11. Security</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15919760">10.3.12. Operation</a></span></dt>
-<dt><span class="section"><a href="nsca.html#idp15920016">10.3.13. Integration into Icinga</a></span></dt>
+<dt><span class="section">9.5.1. <a href="reporting_1.8.html#idp15525008">Introduction</a></span></dt>
+<dt><span class="section">9.5.2. <a href="reporting_1.8.html#idp15527792">Official Docs</a></span></dt>
+<dt><span class="section">9.5.3. <a href="reporting_1.8.html#idp15530976">Requirements</a></span></dt>
+<dt><span class="section">9.5.4. <a href="reporting_1.8.html#idp15555376">Icinga Reporting</a></span></dt>
+<dt><span class="section">9.5.5. <a href="reporting_1.8.html#idp15569072">Configuration</a></span></dt>
+<dt><span class="section">9.5.6. <a href="reporting_1.8.html#idp15576816">Reports</a></span></dt>
+<dt><span class="section">9.5.7. <a href="reporting_1.8.html#idp15581120">Errors</a></span></dt>
 </dl></dd>
 </dl></dd>
-<dt><span class="chapter"><a href="ch11.html">11. Development</a></span></dt>
+<dt><span class="chapter">10. <a href="ch10.html">Additional software</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="pluginapi.html">11.1. Icinga Plugin API</a></span></dt>
+<dt><span class="section">10.1. <a href="addons.html">Icinga Addons</a></span></dt>
+<dd><dl><dt><span class="section">10.1.1. <a href="addons.html#idp15589680">Introduction</a></span></dt></dl></dd>
+<dt><span class="section">10.2. <a href="nrpe.html">NRPE</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="pluginapi.html#idp15939952">11.1.1. Other Resources</a></span></dt>
-<dt><span class="section"><a href="pluginapi.html#idp15943680">11.1.2. Plugin Overview</a></span></dt>
-<dt><span class="section"><a href="pluginapi.html#idp15949344">11.1.3. Return Code</a></span></dt>
-<dt><span class="section"><a href="pluginapi.html#idp15969088">11.1.4. Plugin Output Spec</a></span></dt>
-<dt><span class="section"><a href="pluginapi.html#idp15978944">11.1.5. Plugin Output Examples</a></span></dt>
-<dt><span class="section"><a href="pluginapi.html#idp16029744">11.1.6. Plugin Output Length Restrictions</a></span></dt>
-<dt><span class="section"><a href="pluginapi.html#idp16031952">11.1.7. Examples</a></span></dt>
-<dt><span class="section"><a href="pluginapi.html#idp16034272">11.1.8. Perl Plugins</a></span></dt>
+<dt><span class="section">10.2.1. <a href="nrpe.html#idp15685200">Introduction</a></span></dt>
+<dt><span class="section">10.2.2. <a href="nrpe.html#idp15697808">Prerequisites</a></span></dt>
+<dt><span class="section">10.2.3. <a href="nrpe.html#idp15703136">Download</a></span></dt>
+<dt><span class="section">10.2.4. <a href="nrpe.html#idp15708096">Optional changes</a></span></dt>
+<dt><span class="section">10.2.5. <a href="nrpe.html#idp15711824">Compile on the Icinga server</a></span></dt>
+<dt><span class="section">10.2.6. <a href="nrpe.html#idp15719840">First test</a></span></dt>
+<dt><span class="section">10.2.7. <a href="nrpe.html#idp15723344">Remote system(s)</a></span></dt>
+<dt><span class="section">10.2.8. <a href="nrpe.html#idp15724944">Prerequisites on the remote host(s)</a></span></dt>
+<dt><span class="section">10.2.9. <a href="nrpe.html#idp15732896">Second test</a></span></dt>
+<dt><span class="section">10.2.10. <a href="nrpe.html#idp15737600">Installation on the remote host</a></span></dt>
+<dt><span class="section">10.2.11. <a href="nrpe.html#idp15762672">Third test</a></span></dt>
+<dt><span class="section">10.2.12. <a href="nrpe.html#idp15765920">Troubleshooting</a></span></dt>
+<dt><span class="section">10.2.13. <a href="nrpe.html#idp15783088">Security</a></span></dt>
+<dt><span class="section">10.2.14. <a href="nrpe.html#idp15784784">Definition of local checks</a></span></dt>
+<dt><span class="section">10.2.15. <a href="nrpe.html#idp15796256">Definitions on the Icinga server</a></span></dt>
+<dt><span class="section">10.2.16. <a href="nrpe.html#idp15796512">More Troubleshooting</a></span></dt>
+<dt><span class="section">10.2.17. <a href="nrpe.html#idp15838016">Upgrading</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="epnplugins.html">11.2. Developing Plugins For Use With Embedded Perl</a></span></dt>
+<dt><span class="section">10.3. <a href="nsca.html">NSCA</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="epnplugins.html#idp16040304">11.2.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="epnplugins.html#idp16042096">11.2.2. Target Audience</a></span></dt>
-<dt><span class="section"><a href="epnplugins.html#idp16046528">11.2.3. Things you should do when developing a Perl Plugin (ePN or not)</a></span></dt>
-<dt><span class="section"><a href="epnplugins.html#idp16055312">11.2.4. Things you must do to develop a Perl plugin for ePN</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="icinga-api.html">11.3. No Icinga-API to install anymore</a></span></dt>
-<dd><dl><dt><span class="section"><a href="icinga-api.html#idp16108464">11.3.1. Installation and use of the Icinga API</a></span></dt></dl></dd>
-<dt><span class="section"><a href="icinga-web-api.html">11.4. The Icinga-Web REST API</a></span></dt>
-<dd><dl>
-<dt><span class="section"><a href="icinga-web-api.html#idp16163392">11.4.1. Why should I use the API?</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16166448">11.4.2. Features of the Icinga-Web REST API</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16176464">11.4.3. What's the difference between the Icinga-API and the Icinga-Web REST API?</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16178768">11.4.4. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16188720">11.4.5. Reference</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16189984">11.4.6. GET</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16197488">11.4.7. The structure of the URL:</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16201344">11.4.8. The Parameters en detail:</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16214624">11.4.9. Example for GET</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16220400">11.4.10. POST</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16227264">11.4.11. Parameters en detail</a></span></dt>
-<dt><span class="section"><a href="icinga-web-api.html#idp16240304">11.4.12. Example for POST</a></span></dt>
+<dt><span class="section">10.3.1. <a href="nsca.html#idp15850480">Introduction</a></span></dt>
+<dt><span class="section">10.3.2. <a href="nsca.html#idp15856096">Prerequisites</a></span></dt>
+<dt><span class="section">10.3.3. <a href="nsca.html#idp15865744">Download and compile</a></span></dt>
+<dt><span class="section">10.3.4. <a href="nsca.html#idp15866000">Customise</a></span></dt>
+<dt><span class="section">10.3.5. <a href="nsca.html#idp15881680">First test</a></span></dt>
+<dt><span class="section">10.3.6. <a href="nsca.html#idp15887520">Install</a></span></dt>
+<dt><span class="section">10.3.7. <a href="nsca.html#idp15904496">Remote system(s)</a></span></dt>
+<dt><span class="section">10.3.8. <a href="nsca.html#idp15906352">Copy files</a></span></dt>
+<dt><span class="section">10.3.9. <a href="nsca.html#idp15908544">Second test</a></span></dt>
+<dt><span class="section">10.3.10. <a href="nsca.html#idp15912352">Troubleshooting</a></span></dt>
+<dt><span class="section">10.3.11. <a href="nsca.html#idp15918336">Security</a></span></dt>
+<dt><span class="section">10.3.12. <a href="nsca.html#idp15920288">Operation</a></span></dt>
+<dt><span class="section">10.3.13. <a href="nsca.html#idp15920544">Integration into Icinga</a></span></dt>
 </dl></dd>
 </dl></dd>
-<dt><span class="chapter"><a href="ch12.html">12. IDOUtils</a></span></dt>
+<dt><span class="chapter">11. <a href="ch11.html">Development</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_intro.html">12.1. Introduction</a></span></dt>
+<dt><span class="section">11.1. <a href="pluginapi.html">Icinga Plugin API</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_intro.html#idm122944400">12.1.1. Purpose</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#idp16247872">12.1.2. Design Overview</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#idp16258560">12.1.3. Instances</a></span></dt>
-<dt><span class="section"><a href="db_intro.html#idp16267184">12.1.4. Installation</a></span></dt>
+<dt><span class="section">11.1.1. <a href="pluginapi.html#idp15940384">Other Resources</a></span></dt>
+<dt><span class="section">11.1.2. <a href="pluginapi.html#idp15945712">Plugin Overview</a></span></dt>
+<dt><span class="section">11.1.3. <a href="pluginapi.html#idp15949840">Return Code</a></span></dt>
+<dt><span class="section">11.1.4. <a href="pluginapi.html#idp15969984">Plugin Output Spec</a></span></dt>
+<dt><span class="section">11.1.5. <a href="pluginapi.html#idp15979696">Plugin Output Examples</a></span></dt>
+<dt><span class="section">11.1.6. <a href="pluginapi.html#idp16029888">Plugin Output Length Restrictions</a></span></dt>
+<dt><span class="section">11.1.7. <a href="pluginapi.html#idp16032096">Examples</a></span></dt>
+<dt><span class="section">11.1.8. <a href="pluginapi.html#idp16034752">Perl Plugins</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="db_components.html">12.2. Components</a></span></dt>
+<dt><span class="section">11.2. <a href="epnplugins.html">Developing Plugins For Use With Embedded Perl</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_components.html#idp16270384">12.2.1. Overview</a></span></dt>
-<dt><span class="section"><a href="db_components.html#idp16276240">12.2.2. IDOMOD</a></span></dt>
-<dt><span class="section"><a href="db_components.html#idp16286960">12.2.3. LOG2IDO</a></span></dt>
-<dt><span class="section"><a href="db_components.html#idp16291936">12.2.4. FILE2SOCK</a></span></dt>
-<dt><span class="section"><a href="db_components.html#IDO2DB-description">12.2.IDO2DB. IDO2DB</a></span></dt>
+<dt><span class="section">11.2.1. <a href="epnplugins.html#idp16040784">Introduction</a></span></dt>
+<dt><span class="section">11.2.2. <a href="epnplugins.html#idp16042576">Target Audience</a></span></dt>
+<dt><span class="section">11.2.3. <a href="epnplugins.html#idp16047008">Things you should do when developing a Perl Plugin (ePN or not)</a></span></dt>
+<dt><span class="section">11.2.4. <a href="epnplugins.html#idp16055792">Things you must do to develop a Perl plugin for ePN</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="configido.html">12.3. Configuration of IDOUtils</a></span></dt>
+<dt><span class="section">11.3. <a href="icinga-api.html">No Icinga-API to install anymore</a></span></dt>
+<dd><dl><dt><span class="section">11.3.1. <a href="icinga-api.html#idp16109280">Installation and use of the Icinga API</a></span></dt></dl></dd>
+<dt><span class="section">11.4. <a href="icinga-web-api.html">The Icinga-Web REST API</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="configido.html#idp16379456">12.3.1. IDOMOD config options</a></span></dt>
-<dt><span class="section"><a href="configido.html#idp16380400">12.3.2. IDO2DB config options</a></span></dt>
+<dt><span class="section">11.4.1. <a href="icinga-web-api.html#idp16164176">Why should I use the API?</a></span></dt>
+<dt><span class="section">11.4.2. <a href="icinga-web-api.html#idp16167120">Features of the Icinga-Web REST API</a></span></dt>
+<dt><span class="section">11.4.3. <a href="icinga-web-api.html#idp16178064">What's the difference between the Icinga-API and the Icinga-Web REST API?</a></span></dt>
+<dt><span class="section">11.4.4. <a href="icinga-web-api.html#idp16179488">Prerequisites</a></span></dt>
+<dt><span class="section">11.4.5. <a href="icinga-web-api.html#idp16189264">Reference</a></span></dt>
+<dt><span class="section">11.4.6. <a href="icinga-web-api.html#idp16190496">GET</a></span></dt>
+<dt><span class="section">11.4.7. <a href="icinga-web-api.html#idp16198048">The structure of the URL:</a></span></dt>
+<dt><span class="section">11.4.8. <a href="icinga-web-api.html#idp16201856">The Parameters en detail:</a></span></dt>
+<dt><span class="section">11.4.9. <a href="icinga-web-api.html#idp16214896">Example for GET</a></span></dt>
+<dt><span class="section">11.4.10. <a href="icinga-web-api.html#idp16219920">POST</a></span></dt>
+<dt><span class="section">11.4.11. <a href="icinga-web-api.html#idp16227744">Parameters en detail</a></span></dt>
+<dt><span class="section">11.4.12. <a href="icinga-web-api.html#idp16241024">Example for POST</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="db_example-configs.html">12.4. Example Configurations</a></span></dt>
+</dl></dd>
+<dt><span class="chapter">12. <a href="ch12.html">IDOUtils</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_example-configs.html#idp16595072">12.4.1. Single Server, Single Instance Setup</a></span></dt>
-<dt><span class="section"><a href="db_example-configs.html#idp17046528">12.4.2. Single Server, Multiple Instance Setup</a></span></dt>
-<dt><span class="section"><a href="db_example-configs.html#idp17057888">12.4.3. Single Server, Single Instance Log File Import</a></span></dt>
-</dl></dd>
-<dt><span class="section"><a href="db_model.html">12.5. IDOUtils Database Model</a></span></dt>
+<dt><span class="section">12.1. <a href="db_intro.html">Introduction</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="db_model.html#idp17091536">12.5.1. Central Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#idp17091824">12.5.2.  Debugging Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#idp17144864">12.5.3. Historical Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#idp17205648">12.5.4.  Current Status Tables</a></span></dt>
-<dt><span class="section"><a href="db_model.html#idp17207216">12.5.5.  Configuration Tables</a></span></dt>
+<dt><span class="section">12.1.1. <a href="db_intro.html#idm123283936">Purpose</a></span></dt>
+<dt><span class="section">12.1.2. <a href="db_intro.html#idp16248592">Design Overview</a></span></dt>
+<dt><span class="section">12.1.3. <a href="db_intro.html#idp16259280">Instances</a></span></dt>
+<dt><span class="section">12.1.4. <a href="db_intro.html#idp16267904">Installation</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="db_changes.html">12.6. Database changes/alterations</a></span></dt>
+<dt><span class="section">12.2. <a href="db_components.html">Components</a></span></dt>
+<dd><dl>
+<dt><span class="section">12.2.1. <a href="db_components.html#idp16271104">Overview</a></span></dt>
+<dt><span class="section">12.2.2. <a href="db_components.html#idp16276960">IDOMOD</a></span></dt>
+<dt><span class="section">12.2.3. <a href="db_components.html#idp16287680">LOG2IDO</a></span></dt>
+<dt><span class="section">12.2.4. <a href="db_components.html#idp16292448">FILE2SOCK</a></span></dt>
+<dt><span class="section">12.2.IDO2DB. <a href="db_components.html#IDO2DB-description">IDO2DB</a></span></dt>
+</dl></dd>
+<dt><span class="section">12.3. <a href="configido.html">Configuration of IDOUtils</a></span></dt>
+<dd><dl>
+<dt><span class="section">12.3.1. <a href="configido.html#idp16380272">IDOMOD config options</a></span></dt>
+<dt><span class="section">12.3.2. <a href="configido.html#idp16381216">IDO2DB config options</a></span></dt>
+</dl></dd>
+<dt><span class="section">12.4. <a href="db_example-configs.html">Example Configurations</a></span></dt>
+<dd><dl>
+<dt><span class="section">12.4.1. <a href="db_example-configs.html#idp16595456">Single Server, Single Instance Setup</a></span></dt>
+<dt><span class="section">12.4.2. <a href="db_example-configs.html#idp17047520">Single Server, Multiple Instance Setup</a></span></dt>
+<dt><span class="section">12.4.3. <a href="db_example-configs.html#idp17058832">Single Server, Single Instance Log File Import</a></span></dt>
+</dl></dd>
+<dt><span class="section">12.5. <a href="db_model.html">IDOUtils Database Model</a></span></dt>
+<dd><dl>
+<dt><span class="section">12.5.1. <a href="db_model.html#idp17092480">Central Tables</a></span></dt>
+<dt><span class="section">12.5.2. <a href="db_model.html#idp17092736"> Debugging Tables</a></span></dt>
+<dt><span class="section">12.5.3. <a href="db_model.html#idp17146016">Historical Tables</a></span></dt>
+<dt><span class="section">12.5.4. <a href="db_model.html#idp17206432"> Current Status Tables</a></span></dt>
+<dt><span class="section">12.5.5. <a href="db_model.html#idp17207968"> Configuration Tables</a></span></dt>
+</dl></dd>
+<dt><span class="section">12.6. <a href="db_changes.html">Database changes/alterations</a></span></dt>
 </dl></dd>
 <dt><span class="index"><a href="ix01.html">Index</a></span></dt>
 </dl>
@@ -874,137 +875,137 @@
 <div class="list-of-figures">
 <p><b>List of Figures</b></p>
 <dl>
-<dt>3.1. <a href="configcgi.html#idp6494304">Example of new header</a>
+<dt>3.1. <a href="configcgi.html#idp6496160">Example of new header</a>
 </dt>
-<dt>6.1. <a href="icinga-web-introduction.html#idp12354096">Icinga-Web login screen</a>
+<dt>6.1. <a href="icinga-web-introduction.html#idp12355168">Icinga-Web login screen</a>
 </dt>
-<dt>6.2. <a href="icinga-web-introduction.html#idp12357648">Icinga-Web overview</a>
+<dt>6.2. <a href="icinga-web-introduction.html#idp12358720">Icinga-Web overview</a>
 </dt>
-<dt>6.3. <a href="icinga-web-introduction.html#idp12362352">Icinga-Web top menu</a>
+<dt>6.3. <a href="icinga-web-introduction.html#idp12363424">Icinga-Web top menu</a>
 </dt>
-<dt>6.4. <a href="icinga-web-introduction.html#idp12366448">Icinga-Web live search</a>
+<dt>6.4. <a href="icinga-web-introduction.html#idp12367520">Icinga-Web live search</a>
 </dt>
-<dt>6.5. <a href="icinga-web-introduction.html#idp12373904">Icinga-Web status cronk</a>
+<dt>6.5. <a href="icinga-web-introduction.html#idp12374176">Icinga-Web status cronk</a>
 </dt>
-<dt>6.6. <a href="icinga-web-introduction.html#idp12378368">Icinga-Web data cronks</a>
+<dt>6.6. <a href="icinga-web-introduction.html#idp12378960">Icinga-Web data cronks</a>
 </dt>
-<dt>6.7. <a href="icinga-web-introduction.html#idp12380240">Icinga-Web tactical overview cronks</a>
+<dt>6.7. <a href="icinga-web-introduction.html#idp12381120">Icinga-Web tactical overview cronks</a>
 </dt>
-<dt>6.8. <a href="icinga-web-introduction.html#idp12383920">Icinga-Web reporting cronk</a>
+<dt>6.8. <a href="icinga-web-introduction.html#idp12386608">Icinga-Web reporting cronk</a>
 </dt>
-<dt>6.9. <a href="icinga-web-introduction.html#idp12389504">Icinga-Web misc cronks</a>
+<dt>6.9. <a href="icinga-web-introduction.html#idp12390576">Icinga-Web misc cronks</a>
 </dt>
-<dt>6.10. <a href="icinga-web-introduction.html#idp12393952">Icinga-Web main screen</a>
+<dt>6.10. <a href="icinga-web-introduction.html#idp12394784">Icinga-Web main screen</a>
 </dt>
-<dt>6.11. <a href="icinga-web-introduction.html#idp12397824">Icinga-Web host status</a>
+<dt>6.11. <a href="icinga-web-introduction.html#idp12398624">Icinga-Web host status</a>
 </dt>
-<dt>6.12. <a href="icinga-web-introduction.html#idp12402912">Icinga-Web host object information</a>
+<dt>6.12. <a href="icinga-web-introduction.html#idp12403920">Icinga-Web host object information</a>
 </dt>
-<dt>6.13. <a href="icinga-web-introduction.html#idp12406704">Icinga-Web service status</a>
+<dt>6.13. <a href="icinga-web-introduction.html#idp12407792">Icinga-Web service status</a>
 </dt>
-<dt>6.14. <a href="icinga-web-introduction.html#idp12410384">Icinga-Web service object Information</a>
+<dt>6.14. <a href="icinga-web-introduction.html#idp12411680">Icinga-Web service object Information</a>
 </dt>
-<dt>6.15. <a href="icinga-web-introduction.html#idp12414592">Icinga-Web hostgroup status</a>
+<dt>6.15. <a href="icinga-web-introduction.html#idp12415696">Icinga-Web hostgroup status</a>
 </dt>
-<dt>6.16. <a href="icinga-web-introduction.html#idp12418512">Icinga-Web log</a>
+<dt>6.16. <a href="icinga-web-introduction.html#idp12419584">Icinga-Web log</a>
 </dt>
-<dt>6.17. <a href="icinga-web-introduction.html#idp12422992">Icinga-Web cronk bar</a>
+<dt>6.17. <a href="icinga-web-introduction.html#idp12424016">Icinga-Web cronk bar</a>
 </dt>
-<dt>6.18. <a href="icinga-web-introduction.html#idp12428848">Icinga-Web cronk bar</a>
+<dt>6.18. <a href="icinga-web-introduction.html#idp12429744">Icinga-Web cronk bar</a>
 </dt>
-<dt>6.19. <a href="icinga-web-introduction.html#idp12438128">Icinga-Web host commands</a>
+<dt>6.19. <a href="icinga-web-introduction.html#idp12439200">Icinga-Web host commands</a>
 </dt>
-<dt>6.20. <a href="icinga-web-introduction.html#idp12442320">Icinga-Web service commands</a>
+<dt>6.20. <a href="icinga-web-introduction.html#idp12443504">Icinga-Web service commands</a>
 </dt>
-<dt>6.21. <a href="icinga-web-introduction.html#idp12447152">Icinga-Web filter restriction</a>
+<dt>6.21. <a href="icinga-web-introduction.html#idp12448208">Icinga-Web filter restriction</a>
 </dt>
-<dt>6.22. <a href="icinga-web-introduction.html#idp12450512">Icinga-Web filter condition</a>
+<dt>6.22. <a href="icinga-web-introduction.html#idp12451728">Icinga-Web filter condition</a>
 </dt>
-<dt>6.23. <a href="icinga-web-introduction.html#idp12454032">Icinga-Web filter active</a>
+<dt>6.23. <a href="icinga-web-introduction.html#idp12455136">Icinga-Web filter active</a>
 </dt>
-<dt>6.24. <a href="icinga-web-introduction.html#idp12459472">Icinga-Web top menu admin</a>
+<dt>6.24. <a href="icinga-web-introduction.html#idp12460640">Icinga-Web top menu admin</a>
 </dt>
-<dt>6.25. <a href="icinga-web-introduction.html#idp12463264">Icinga-Web user admin</a>
+<dt>6.25. <a href="icinga-web-introduction.html#idp12464432">Icinga-Web user admin</a>
 </dt>
-<dt>6.26. <a href="icinga-web-introduction.html#idp12470832">Icinga-Web edit user</a>
+<dt>6.26. <a href="icinga-web-introduction.html#idp12472000">Icinga-Web edit user</a>
 </dt>
-<dt>6.27. <a href="icinga-web-introduction.html#idp12474992">Icinga-Web group admin</a>
+<dt>6.27. <a href="icinga-web-introduction.html#idp12476160">Icinga-Web group admin</a>
 </dt>
-<dt>6.28. <a href="icinga-web-introduction.html#idp12478576">Icinga-Web groups</a>
+<dt>6.28. <a href="icinga-web-introduction.html#idp12479744">Icinga-Web groups</a>
 </dt>
-<dt>6.29. <a href="icinga-web-introduction.html#idp12484320">Icinga-Web logs</a>
+<dt>6.29. <a href="icinga-web-introduction.html#idp12485488">Icinga-Web logs</a>
 </dt>
-<dt>6.30. <a href="icinga-web-introduction.html#idp12488368">Icinga-Web Tasks</a>
+<dt>6.30. <a href="icinga-web-introduction.html#idp12489536">Icinga-Web Tasks</a>
 </dt>
-<dt>6.31. <a href="icinga-web-pnp.html#idp12495120">PNP4Nagios integrated in Icinga-Web</a>
+<dt>6.31. <a href="icinga-web-pnp.html#idp12496288">PNP4Nagios integrated in Icinga-Web</a>
 </dt>
-<dt>7.1. <a href="cachedchecks.html#idp14392192">Cached checks</a>
+<dt>7.1. <a href="cachedchecks.html#idp14393584">Cached checks</a>
 </dt>
-<dt>8.1. <a href="perfgraphs.html#idp15330688">Average Host / Service Check Latency</a>
+<dt>8.1. <a href="perfgraphs.html#idp15331648">Average Host / Service Check Latency</a>
 </dt>
-<dt>8.2. <a href="perfgraphs.html#idp15346640">Service Statistics</a>
+<dt>8.2. <a href="perfgraphs.html#idp15347424">Service Statistics</a>
 </dt>
-<dt>8.3. <a href="perfgraphs.html#idp15355888">Host Statistics</a>
+<dt>8.3. <a href="perfgraphs.html#idp15356976">Host Statistics</a>
 </dt>
-<dt>8.4. <a href="perfgraphs.html#idp15365936">Average Execution Times</a>
+<dt>8.4. <a href="perfgraphs.html#idp15367200">Average Execution Times</a>
 </dt>
-<dt>8.5. <a href="perfgraphs.html#idp15378304">External Commands</a>
+<dt>8.5. <a href="perfgraphs.html#idp15379232">External Commands</a>
 </dt>
-<dt>8.6. <a href="perfgraphs.html#idp15386928">External Command Buffers</a>
+<dt>8.6. <a href="perfgraphs.html#idp15388144">External Command Buffers</a>
 </dt>
-<dt>8.7. <a href="perfgraphs.html#idp15392992">Cached Host and Service Checks</a>
+<dt>8.7. <a href="perfgraphs.html#idp15394192">Cached Host and Service Checks</a>
 </dt>
-<dt>8.8. <a href="perfgraphs.html#idp15400624">Average State Changes</a>
+<dt>8.8. <a href="perfgraphs.html#idp15401584">Average State Changes</a>
 </dt>
-<dt>9.1. <a href="reporting_1.8.html#idp15576944">Icinga reporting</a>
+<dt>9.1. <a href="reporting_1.8.html#idp15578080">Icinga reporting</a>
 </dt>
-<dt>10.1. <a href="nrpe.html#idp15689408">NRPE</a>
+<dt>10.1. <a href="nrpe.html#idp15690080">NRPE</a>
 </dt>
-<dt>10.2. <a href="nrpe.html#idp15694288">NRPE remote</a>
+<dt>10.2. <a href="nrpe.html#idp15694896">NRPE remote</a>
 </dt>
-<dt>10.3. <a href="nsca.html#idp15851696">NSCA</a>
+<dt>10.3. <a href="nsca.html#idp15852272">NSCA</a>
 </dt>
-<dt>12.1. <a href="db_intro.html#idp16253152">Multiple instances</a>
+<dt>12.1. <a href="db_intro.html#idp16253872">Multiple instances</a>
 </dt>
-<dt>12.2. <a href="db_intro.html#idp16256368">Future development: One Instance, multiple databases</a>
+<dt>12.2. <a href="db_intro.html#idp16257088">Future development: One Instance, multiple databases</a>
 </dt>
-<dt>12.3. <a href="db_intro.html#idp16260944">Instance names based on geographical locations</a>
+<dt>12.3. <a href="db_intro.html#idp16261664">Instance names based on geographical locations</a>
 </dt>
-<dt>12.4. <a href="db_intro.html#idp16263728">Instance names based on their purpose</a>
+<dt>12.4. <a href="db_intro.html#idp16264448">Instance names based on their purpose</a>
 </dt>
-<dt>12.5. <a href="db_components.html#idp16278608">Loaded IDOMOD Event broker Module</a>
+<dt>12.5. <a href="db_components.html#idp16279328">Loaded IDOMOD Event broker Module</a>
 </dt>
-<dt>12.6. <a href="db_components.html#idp16282480">IDOMOD Capabilities</a>
+<dt>12.6. <a href="db_components.html#idp16283200">IDOMOD Capabilities</a>
 </dt>
-<dt>12.7. <a href="db_components.html#idp16289264">LOG2IDO Utility</a>
+<dt>12.7. <a href="db_components.html#idp16289984">LOG2IDO Utility</a>
 </dt>
-<dt>12.8. <a href="db_components.html#idp16293424">FILE2SOCK Utility</a>
+<dt>12.8. <a href="db_components.html#idp16293728">FILE2SOCK Utility</a>
 </dt>
-<dt>12.9. <a href="db_components.html#idp16299040">IDO2DB Daemon</a>
+<dt>12.9. <a href="db_components.html#idp16299520">IDO2DB Daemon</a>
 </dt>
-<dt>12.10. <a href="db_components.html#idp16301760">IDO2DB with multiple Clients</a>
+<dt>12.10. <a href="db_components.html#idp16302320">IDO2DB with multiple Clients</a>
 </dt>
-<dt>12.11. <a href="db_example-configs.html#idp16597536">Single Server, Single Instance Setup</a>
+<dt>12.11. <a href="db_example-configs.html#idp16597792">Single Server, Single Instance Setup</a>
 </dt>
-<dt>12.12. <a href="db_example-configs.html#idp17048752">Single Server, Multiple Instance Setup</a>
+<dt>12.12. <a href="db_example-configs.html#idp17049840">Single Server, Multiple Instance Setup</a>
 </dt>
-<dt>12.13. <a href="db_example-configs.html#idp17062432">Single Server, Single Instance Log File Import</a>
+<dt>12.13. <a href="db_example-configs.html#idp17063376">Single Server, Single Instance Log File Import</a>
 </dt>
-<dt>12.14. <a href="db_model.html#idp17099616">Relationship of Central Tables</a>
+<dt>12.14. <a href="db_model.html#idp17100560">Relationship of Central Tables</a>
 </dt>
-<dt>12.15. <a href="db_model.html#idp17149440">Relationship of Debugging Tables</a>
+<dt>12.15. <a href="db_model.html#idp17150624">Relationship of Debugging Tables</a>
 </dt>
-<dt>12.16. <a href="db_model.html#idp17237424">Relationship of Historical Tables</a>
+<dt>12.16. <a href="db_model.html#idp17238096">Relationship of Historical Tables</a>
 </dt>
-<dt>12.17. <a href="db_model.html#idp18091696">Relationship of Current Status Tables</a>
+<dt>12.17. <a href="db_model.html#idp18093408">Relationship of Current Status Tables</a>
 </dt>
-<dt>12.18. <a href="db_model.html#idp18689248">Relationship of Configuration Tables</a>
+<dt>12.18. <a href="db_model.html#idp18729616">Relationship of Configuration Tables</a>
 </dt>
 </dl>
 </div>
 <div class="list-of-tables">
 <p><b>List of Tables</b></p>
-<dl><dt>6.1. <a href="icinga-web-config.html#idp12126048">Configuration files</a>
+<dl><dt>6.1. <a href="icinga-web-config.html#idp12127360">Configuration files</a>
 </dt></dl>
 </div>
   

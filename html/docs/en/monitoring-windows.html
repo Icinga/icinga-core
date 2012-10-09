@@ -9,6 +9,7 @@
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="monitoring-overview.html" title="2.11. Monitoring Overview">
 <link rel="next" href="monitoring-linux.html" title="2.13. Monitoring Linux/Unix Machines">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,25 +30,25 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-windows"></a>2.12. <a name="monitoring_windows"></a>Monitoring Windows Machines</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="monitoring-windows.html#idp1088400">2.12.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1098656">2.12.2. Overview</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1107952">2.12.3. Steps</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1113680">2.12.4. What's Already Done For You</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1121104">2.12.5. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1126032">2.12.6. Installing the Windows Agent</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1126288">2.12.7. Configuring Icinga</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1141168">2.12.8. Password Protection</a></span></dt>
-<dt><span class="section"><a href="monitoring-windows.html#idp1169216">2.12.9. Restarting Icinga</a></span></dt>
+<dt><span class="section">2.12.1. <a href="monitoring-windows.html#idp1089936">Introduction</a></span></dt>
+<dt><span class="section">2.12.2. <a href="monitoring-windows.html#idp1100192">Overview</a></span></dt>
+<dt><span class="section">2.12.3. <a href="monitoring-windows.html#idp1109488">Steps</a></span></dt>
+<dt><span class="section">2.12.4. <a href="monitoring-windows.html#idp1115216">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.12.5. <a href="monitoring-windows.html#idp1122640">Prerequisites</a></span></dt>
+<dt><span class="section">2.12.6. <a href="monitoring-windows.html#idp1127568">Installing the Windows Agent</a></span></dt>
+<dt><span class="section">2.12.7. <a href="monitoring-windows.html#idp1127824">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.12.8. <a href="monitoring-windows.html#idp1142704">Password Protection</a></span></dt>
+<dt><span class="section">2.12.9. <a href="monitoring-windows.html#idp1170752">Restarting Icinga</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idp1085200"></a>
+  <a class="indexterm" name="idp1086736"></a>
 
-  <a class="indexterm" name="idp1086768"></a>
+  <a class="indexterm" name="idp1088304"></a>
 
   <div class="section" title="2.12.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1088400"></a>2.12.1. Introduction</h3></div></div></div>
+<a name="idp1089936"></a>2.12.1. Introduction</h3></div></div></div>
     
 
     <p>This document describes how you can monitor "private" services and attributes of Windows machines, such as:</p>
@@ -91,7 +92,7 @@
 
   <div class="section" title="2.12.2. Overview">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1098656"></a>2.12.2. Overview</h3></div></div></div>
+<a name="idp1100192"></a>2.12.2. Overview</h3></div></div></div>
     
 
     <div class="informalfigure">
@@ -115,7 +116,7 @@
 
   <div class="section" title="2.12.3. Steps">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1107952"></a>2.12.3. Steps</h3></div></div></div>
+<a name="idp1109488"></a>2.12.3. Steps</h3></div></div></div>
     
 
     <p>There are several steps you'll need to follow in order to monitor a new Windows machine. They are:</p>
@@ -138,7 +139,7 @@
 
   <div class="section" title="2.12.4. What's Already Done For You">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1113680"></a>2.12.4. What's Already Done For You</h3></div></div></div>
+<a name="idp1115216"></a>2.12.4. What's Already Done For You</h3></div></div></div>
     
 
     <p>To make your life a bit easier, a few configuration tasks have already been done for you:</p>
@@ -162,7 +163,7 @@
 
   <div class="section" title="2.12.5. Prerequisites">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1121104"></a>2.12.5. Prerequisites</h3></div></div></div>
+<a name="idp1122640"></a>2.12.5. Prerequisites</h3></div></div></div>
     
 
     <p>The first time you configure Icinga to monitor a Windows machine, you'll need to do a bit of extra work. Remember, you only
@@ -186,7 +187,7 @@
 
   <div class="section" title="2.12.6. Installing the Windows Agent">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1126032"></a>2.12.6. Installing the Windows Agent</h3></div></div></div>
+<a name="idp1127568"></a>2.12.6. Installing the Windows Agent</h3></div></div></div>
     
 
     <p>Before you can begin monitoring private services and attributes of Windows machines, you'll need to install an agent on those
@@ -236,7 +237,7 @@
 
   <div class="section" title="2.12.7. Configuring Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1126288"></a>2.12.7. Configuring Icinga</h3></div></div></div>
+<a name="idp1127824"></a>2.12.7. Configuring Icinga</h3></div></div></div>
     
 
     <p>Now it's time to define some <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object definitions</a> in your Icinga configuration files
@@ -360,7 +361,7 @@
 
   <div class="section" title="2.12.8. Password Protection">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1141168"></a>2.12.8. Password Protection</h3></div></div></div>
+<a name="idp1142704"></a>2.12.8. Password Protection</h3></div></div></div>
     
 
     <p>If you specified a password in the NSClient++ configuration file on the Windows machine, you'll need to modify the
@@ -396,7 +397,7 @@
 
   <div class="section" title="2.12.9. Restarting Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1169216"></a>2.12.9. Restarting Icinga</h3></div></div></div>
+<a name="idp1170752"></a>2.12.9. Restarting Icinga</h3></div></div></div>
     
 
     <p>You're done with modifying the Icinga configuration, so you'll need to <a class="link" href="verifyconfig.html" title="4.1. Verifying Your Configuration">verify your

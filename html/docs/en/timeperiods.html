@@ -9,6 +9,7 @@
 <link rel="up" href="ch05.html" title="Chapter 5. The Basics">
 <link rel="prev" href="statetypes.html" title="5.8. State Types">
 <link rel="next" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,18 +30,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="timeperiods"></a>5.9. <a name="time_periods"></a>Time Periods</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="timeperiods.html#idp9975248">5.9.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="timeperiods.html#idp9982672">5.9.2. Precedence in Time Periods</a></span></dt>
-<dt><span class="section"><a href="timeperiods.html#idp9992032">5.9.3. How Time Periods Work With Host and Service Checks</a></span></dt>
-<dt><span class="section"><a href="timeperiods.html#idp9992160">5.9.4. How Time Periods Work With Contact Notifications</a></span></dt>
-<dt><span class="section"><a href="timeperiods.html#idp10007712">5.9.5. How Time Periods Work With Notification Escalations</a></span></dt>
-<dt><span class="section"><a href="timeperiods.html#idp10008352">5.9.6. How Time Periods Work With Dependencies</a></span></dt>
+<dt><span class="section">5.9.1. <a href="timeperiods.html#idp9976912">Introduction</a></span></dt>
+<dt><span class="section">5.9.2. <a href="timeperiods.html#idp9984464">Precedence in Time Periods</a></span></dt>
+<dt><span class="section">5.9.3. <a href="timeperiods.html#idp9993216">How Time Periods Work With Host and Service Checks</a></span></dt>
+<dt><span class="section">5.9.4. <a href="timeperiods.html#idp9993632">How Time Periods Work With Contact Notifications</a></span></dt>
+<dt><span class="section">5.9.5. <a href="timeperiods.html#idp10009328">How Time Periods Work With Notification Escalations</a></span></dt>
+<dt><span class="section">5.9.6. <a href="timeperiods.html#idp10012720">How Time Periods Work With Dependencies</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.9.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9975248"></a>5.9.1. Introduction</h3></div></div></div>
+<a name="idp9976912"></a>5.9.1. Introduction</h3></div></div></div>
 
   <p><span class="inlinemediaobject"><img src="../images/objects-timeperiods.png"></span></p>
 
@@ -65,7 +66,7 @@
   </div>
 <div class="section" title="5.9.2. Precedence in Time Periods">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9982672"></a>5.9.2. Precedence in Time Periods</h3></div></div></div>
+<a name="idp9984464"></a>5.9.2. Precedence in Time Periods</h3></div></div></div>
 
   <p>Timeperiod <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">definitions</a> may contain multiple types of directives,
   including weekdays, days of the month, and calendar dates. Different types of directives have different precendence levels and
@@ -98,7 +99,7 @@
   </div>
 <div class="section" title="5.9.3. How Time Periods Work With Host and Service Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9992032"></a>5.9.3. How Time Periods Work With Host and Service Checks</h3></div></div></div>
+<a name="idp9993216"></a>5.9.3. How Time Periods Work With Host and Service Checks</h3></div></div></div>
 
   <p>Host and service definitions have an optional <span class="emphasis"><em>check_period</em></span> directive that allows you to specify a
   timeperiod that should be used to restrict when regularly scheduled, active checks of the host or service can be made.</p>
@@ -143,7 +144,7 @@
   </div>
 <div class="section" title="5.9.4. How Time Periods Work With Contact Notifications">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9992160"></a>5.9.4. How Time Periods Work With Contact Notifications</h3></div></div></div>
+<a name="idp9993632"></a>5.9.4. How Time Periods Work With Contact Notifications</h3></div></div></div>
 
   <p>By specifying a timeperiod in the <span class="emphasis"><em>notification_period</em></span> directive of a host or service definition, you
   can control when Icinga is allowed to send notifications out regarding problems or recoveries for that host or service.
@@ -161,7 +162,7 @@
   </div>
 <div class="section" title="5.9.5. How Time Periods Work With Notification Escalations">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10007712"></a>5.9.5. How Time Periods Work With Notification Escalations</h3></div></div></div>
+<a name="idp10009328"></a>5.9.5. How Time Periods Work With Notification Escalations</h3></div></div></div>
 
   <p>Service and host <a class="link" href="escalations.html" title="7.9. Notification Escalations">notification escalations</a> have an optional
   <span class="emphasis"><em>escalation_period</em></span> directive that allows you to specify a timeperiod when the escalation is valid and can be
@@ -172,14 +173,14 @@
   </div>
 <div class="section" title="5.9.6. How Time Periods Work With Dependencies">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10008352"></a>5.9.6. How Time Periods Work With Dependencies</h3></div></div></div>
+<a name="idp10012720"></a>5.9.6. How Time Periods Work With Dependencies</h3></div></div></div>
 
   <p>Service and host <a class="link" href="dependencies.html" title="7.13. Host and Service Dependencies">dependencies</a> have an optional <span class="emphasis"><em>dependency_period</em></span>
   directive that allows you to specify a timeperiod when the dependendies are valid and can be used. If you do not use the
   <span class="emphasis"><em>dependency_period</em></span> directive in a dependency definition, the dependency can be used at any time. If you
   specify a timeperiod in the <span class="emphasis"><em>dependency_period</em></span> directive, Icinga will only use the dependency
   definition during times that are valid in the timeperiod definition.</p>
-  <a class="indexterm" name="idp10014736"></a>
+  <a class="indexterm" name="idp10016192"></a>
 </div>
 </div>
 <div class="navfooter">

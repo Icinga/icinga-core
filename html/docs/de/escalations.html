@@ -9,6 +9,7 @@
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">
 <link rel="next" href="escalation_condition.html" title="7.10. Eskalations-Bedingung">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,20 +30,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="escalations"></a>7.9. Benachrichtigungseskalationen</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="escalations.html#idp13660864">7.9.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13669040">7.9.2. Wann werden Benachrichtigungen eskaliert?</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13674640">7.9.3. Kontaktgruppen</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13682672">7.9.4. Überlappende Eskalationsbereiche</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13690208">7.9.5. Erholungsbenachrichtigungen</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13694464">7.9.6. Benachrichtigungsintervalle</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13694592">7.9.7. Zeitfenster-Beschränkungen</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13713744">7.9.8. Status-Beschränkungen</a></span></dt>
+<dt><span class="section">7.9.1. <a href="escalations.html#idp13699472">Einführung</a></span></dt>
+<dt><span class="section">7.9.2. <a href="escalations.html#idp13707584">Wann werden Benachrichtigungen eskaliert?</a></span></dt>
+<dt><span class="section">7.9.3. <a href="escalations.html#idp13712800">Kontaktgruppen</a></span></dt>
+<dt><span class="section">7.9.4. <a href="escalations.html#idp13720992">Überlappende Eskalationsbereiche</a></span></dt>
+<dt><span class="section">7.9.5. <a href="escalations.html#idp13728720">Erholungsbenachrichtigungen</a></span></dt>
+<dt><span class="section">7.9.6. <a href="escalations.html#idp13732976">Benachrichtigungsintervalle</a></span></dt>
+<dt><span class="section">7.9.7. <a href="escalations.html#idp13733104">Zeitfenster-Beschränkungen</a></span></dt>
+<dt><span class="section">7.9.8. <a href="escalations.html#idp13752256">Status-Beschränkungen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.9.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13660864"></a>7.9.1. Einführung</h3></div></div></div>
+<a name="idp13699472"></a>7.9.1. Einführung</h3></div></div></div>
     
 
     <div class="mediaobject" align="right"><img src="../images/objects-contacts.png" align="right"></div>
@@ -56,7 +57,7 @@
 
   <div class="section" title="7.9.2. Wann werden Benachrichtigungen eskaliert?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13669040"></a>7.9.2. Wann werden Benachrichtigungen eskaliert?</h3></div></div></div>
+<a name="idp13707584"></a>7.9.2. Wann werden Benachrichtigungen eskaliert?</h3></div></div></div>
     
 
     <p>Benachrichtigungen werden eskaliert, <span class="emphasis"><em>wenn, und nur wenn</em></span> eine oder mehrere Eskalationsdefinitionen mit der
@@ -91,7 +92,7 @@
 
   <div class="section" title="7.9.3. Kontaktgruppen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13674640"></a>7.9.3. Kontaktgruppen</h3></div></div></div>
+<a name="idp13712800"></a>7.9.3. Kontaktgruppen</h3></div></div></div>
     
 
     <p>Beim Definieren von Benachrichtigungs-Eskalationen ist es wichtig zu wissen, dass alle Kontaktgruppen, die Mitglieder von
@@ -129,7 +130,7 @@
 
   <div class="section" title="7.9.4. Überlappende Eskalationsbereiche">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13682672"></a>7.9.4. Überlappende Eskalationsbereiche</h3></div></div></div>
+<a name="idp13720992"></a>7.9.4. Überlappende Eskalationsbereiche</h3></div></div></div>
     
 
     <p>Benachrichtigungs-Eskalationsdefinitionen können Benachrichtigungs-Bereiche haben, die überlappen. Nehmen Sie das folgende
@@ -171,7 +172,7 @@
 
   <div class="section" title="7.9.5. Erholungsbenachrichtigungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13690208"></a>7.9.5. Erholungsbenachrichtigungen</h3></div></div></div>
+<a name="idp13728720"></a>7.9.5. Erholungsbenachrichtigungen</h3></div></div></div>
     
 
     <p>Erholungsbenachrichtigungen unterscheiden sich geringfügig von Problembenachrichtigungen, wenn es um Eskalationen geht. Nehmen Sie
@@ -203,7 +204,7 @@
 
   <div class="section" title="7.9.6. Benachrichtigungsintervalle">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13694464"></a>7.9.6. Benachrichtigungsintervalle</h3></div></div></div>
+<a name="idp13732976"></a>7.9.6. Benachrichtigungsintervalle</h3></div></div></div>
     
 
     <p>Sie können die Häufigkeit, mit der eskalierte Benachrichtigungen für einen bestimmten Host oder Service versandt werden, mit der
@@ -295,7 +296,7 @@
 
   <div class="section" title="7.9.7. Zeitfenster-Beschränkungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13694592"></a>7.9.7. Zeitfenster-Beschränkungen</h3></div></div></div>
+<a name="idp13733104"></a>7.9.7. Zeitfenster-Beschränkungen</h3></div></div></div>
     
 
     <p>Unter normalen Umständen können Eskalationen zu jeder Zeit benutzt werden, zu der Benachrichtigungen für einen Host oder Service
@@ -316,7 +317,7 @@
 
   <div class="section" title="7.9.8. Status-Beschränkungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13713744"></a>7.9.8. Status-Beschränkungen</h3></div></div></div>
+<a name="idp13752256"></a>7.9.8. Status-Beschränkungen</h3></div></div></div>
     
 
     <p>Wenn Sie die Eskalationsdefinition beschränken wollen, damit sie nur benutzt wird, während sich der Host oder Service in einem
@@ -324,7 +325,7 @@
     Service-Eskalationsdefinition benutzen. Wenn Sie die <span class="emphasis"><em>escalation_options</em></span>-Direktive nicht verwenden, werden die
     Eskalationen in jedem Status der Hosts oder Services benutzt.</p>
 
-    <a class="indexterm" name="idp13716272"></a>
+    <a class="indexterm" name="idp13754784"></a>
   </div>
 </div>
 <div class="navfooter">

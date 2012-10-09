@@ -9,6 +9,7 @@
 <link rel="up" href="ch09.html" title="Chapter 9. Integration With Other Software">
 <link rel="prev" href="int-snmptrap.html" title="9.2. SNMP Trap Integration">
 <link rel="next" href="int-mklivestatus.html" title="9.4. MKLiveStatus Integration">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,17 +30,17 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="int-tcpwrappers"></a>9.3. <a name="int_tcpwrappers"></a>TCP Wrapper Integration</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="int-tcpwrappers.html#idp15467760">9.3.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="int-tcpwrappers.html#idp15479440">9.3.2. Defining A Service</a></span></dt>
-<dt><span class="section"><a href="int-tcpwrappers.html#idp15488864">9.3.3. Configuring TCP Wrappers</a></span></dt>
-<dt><span class="section"><a href="int-tcpwrappers.html#idp15493408">9.3.4. Writing The Script</a></span></dt>
-<dt><span class="section"><a href="int-tcpwrappers.html#idp15499440">9.3.5. Finishing Up</a></span></dt>
+<dt><span class="section">9.3.1. <a href="int-tcpwrappers.html#idp15468784">Introduction</a></span></dt>
+<dt><span class="section">9.3.2. <a href="int-tcpwrappers.html#idp15480256">Defining A Service</a></span></dt>
+<dt><span class="section">9.3.3. <a href="int-tcpwrappers.html#idp15489952">Configuring TCP Wrappers</a></span></dt>
+<dt><span class="section">9.3.4. <a href="int-tcpwrappers.html#idp15494432">Writing The Script</a></span></dt>
+<dt><span class="section">9.3.5. <a href="int-tcpwrappers.html#idp15500256">Finishing Up</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="9.3.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15467760"></a>9.3.1. Introduction</h3></div></div></div>
+<a name="idp15468784"></a>9.3.1. Introduction</h3></div></div></div>
     
 
     <p><span class="inlinemediaobject"><img src="../images/tcpwrappers.png"></span></p>
@@ -72,7 +73,7 @@
 
   <div class="section" title="9.3.2. Defining A Service">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15479440"></a>9.3.2. Defining A Service</h3></div></div></div>
+<a name="idp15480256"></a>9.3.2. Defining A Service</h3></div></div></div>
     
 
     <p>If you haven't done so already, create a <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a> for the remote host
@@ -112,7 +113,7 @@
 
   <div class="section" title="9.3.3. Configuring TCP Wrappers">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15488864"></a>9.3.3. Configuring TCP Wrappers</h3></div></div></div>
+<a name="idp15489952"></a>9.3.3. Configuring TCP Wrappers</h3></div></div></div>
     
 
     <p>Now you're going to have to modify the <span class="emphasis"><em>/etc/hosts.deny</em></span> file on <span class="emphasis"><em>firestorm</em></span>. In order to
@@ -128,7 +129,7 @@
 
   <div class="section" title="9.3.4. Writing The Script">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15493408"></a>9.3.4. Writing The Script</h3></div></div></div>
+<a name="idp15494432"></a>9.3.4. Writing The Script</h3></div></div></div>
     
 
     <p>The last thing you need to do is write the <span class="emphasis"><em>handle_tcp_wrapper</em></span> script on <span class="emphasis"><em>firestorm</em></span> that
@@ -154,7 +155,7 @@
 
   <div class="section" title="9.3.5. Finishing Up">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15499440"></a>9.3.5. Finishing Up</h3></div></div></div>
+<a name="idp15500256"></a>9.3.5. Finishing Up</h3></div></div></div>
     
 
     <p>You've now configured everything you need to, so all you have to do is restart the <span class="emphasis"><em>inetd</em></span> process on
@@ -164,7 +165,7 @@
 
     <pre class="screen">Denied sshd2-sdn-ar-002mnminnP321.dialsprint.net </pre>
 
-    <a class="indexterm" name="idp15502656"></a>
+    <a class="indexterm" name="idp15503600"></a>
   </div>
 </div>
 <div class="navfooter">

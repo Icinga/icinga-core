@@ -9,6 +9,7 @@
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">
 <link rel="next" href="passivestatetranslation.html" title="7.22. Passive Host-Zustandsübersetzung">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,18 +30,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cachedchecks"></a>7.21. Zwischengespeicherte Prüfungen</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="cachedchecks.html#idp14298160">7.21.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14302336">7.21.2. Nur für Prüfungen nach Bedarf</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14314048">7.21.3. Wie Zwischenspeicherung arbeitet</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14319344">7.21.4. Was dies wirklich bedeutet</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14326144">7.21.5. Konfigurationsvariablen</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14331216">7.21.6. Zwischenspeichereffektivität optimieren</a></span></dt>
+<dt><span class="section">7.21.1. <a href="cachedchecks.html#idp14336512">Einführung</a></span></dt>
+<dt><span class="section">7.21.2. <a href="cachedchecks.html#idp14340640">Nur für Prüfungen nach Bedarf</a></span></dt>
+<dt><span class="section">7.21.3. <a href="cachedchecks.html#idp14352336">Wie Zwischenspeicherung arbeitet</a></span></dt>
+<dt><span class="section">7.21.4. <a href="cachedchecks.html#idp14357664">Was dies wirklich bedeutet</a></span></dt>
+<dt><span class="section">7.21.5. <a href="cachedchecks.html#idp14364464">Konfigurationsvariablen</a></span></dt>
+<dt><span class="section">7.21.6. <a href="cachedchecks.html#idp14369536">Zwischenspeichereffektivität optimieren</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.21.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14298160"></a>7.21.1. Einführung</h3></div></div></div>
+<a name="idp14336512"></a>7.21.1. Einführung</h3></div></div></div>
     
 
     <div class="mediaobject" align="right"><img src="../images/cachedchecks1.png" align="right"></div>
@@ -52,7 +53,7 @@
 
   <div class="section" title="7.21.2. Nur für Prüfungen nach Bedarf">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14302336"></a>7.21.2. Nur für Prüfungen nach Bedarf</h3></div></div></div>
+<a name="idp14340640"></a>7.21.2. Nur für Prüfungen nach Bedarf</h3></div></div></div>
     
 
     <p>Regelmäßig eingeplante Host- und Service-Prüfungen werden keine Leistungssteigerung durch zwischengespeicherte Prüfungen erfahren.
@@ -87,7 +88,7 @@
 
   <div class="section" title="7.21.3. Wie Zwischenspeicherung arbeitet">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14314048"></a>7.21.3. Wie Zwischenspeicherung arbeitet</h3></div></div></div>
+<a name="idp14352336"></a>7.21.3. Wie Zwischenspeicherung arbeitet</h3></div></div></div>
     
 
     <div class="mediaobject" align="right"><img src="../images/cachedchecks.png" align="right"></div>
@@ -105,7 +106,7 @@
 
   <div class="section" title="7.21.4. Was dies wirklich bedeutet">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14319344"></a>7.21.4. Was dies wirklich bedeutet</h3></div></div></div>
+<a name="idp14357664"></a>7.21.4. Was dies wirklich bedeutet</h3></div></div></div>
     
 
     <p>Icinga führt Prüfungen nach Bedarf durch, weil es den aktuellen Status eines Hosts oder Service <span class="emphasis"><em>in diesem
@@ -145,7 +146,7 @@
 
   <div class="section" title="7.21.5. Konfigurationsvariablen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14326144"></a>7.21.5. Konfigurationsvariablen</h3></div></div></div>
+<a name="idp14364464"></a>7.21.5. Konfigurationsvariablen</h3></div></div></div>
     
 
     <p>Die folgenden Variablen legen die Zeitfenster fest, in denen ein vorangegangenes Prüfergebnis als ein zwischengespeichertes
@@ -165,7 +166,7 @@
 
   <div class="section" title="7.21.6. Zwischenspeichereffektivität optimieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14331216"></a>7.21.6. Zwischenspeichereffektivität optimieren</h3></div></div></div>
+<a name="idp14369536"></a>7.21.6. Zwischenspeichereffektivität optimieren</h3></div></div></div>
     
 
     <p>Um den größten Nutzen aus zwischengespeicherten Prüfungen zu ziehen, sollten Sie:</p>
@@ -229,9 +230,9 @@
     wie die Änderung der horizon-Variablen die zwischengespeicherten Prüf-Statistiken beeinflusst. Ändern und wiederholen Sie, falls
     erforderlich.</p>
 
-    <a class="indexterm" name="idp14351936"></a>
+    <a class="indexterm" name="idp14390112"></a>
 
-    <a class="indexterm" name="idp14353120"></a>
+    <a class="indexterm" name="idp14391328"></a>
   </div>
 </div>
 <div class="navfooter">

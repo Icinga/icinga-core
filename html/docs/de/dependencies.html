@@ -9,6 +9,7 @@
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="clusters.html" title="7.12. Service- und Host-Gruppen überwachen">
 <link rel="next" href="stalking.html" title="7.14. Status Stalking">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,22 +30,22 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dependencies"></a>7.13. Host- und Service-Abhängigkeiten</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="dependencies.html#idp13822944">7.13.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13824720">7.13.2. Überblick Service-Abhängigkeiten</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13832448">7.13.3. Service-Abhängigkeiten definieren</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13836848">7.13.4. Beispiel Service-Abhängigkeiten</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13843760">7.13.5. Wie Service-Abhängigkeiten getestet werden</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13860288">7.13.6. Ausführungsabhängigkeiten</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13867936">7.13.7. Benachrichtigungsabhängigkeiten</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13875536">7.13.8. Abhängigkeitsvererbung</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13885216">7.13.9. Host-Abhängigkeiten</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13897584">7.13.10. Beispiel Host-Abhängigkeiten</a></span></dt>
+<dt><span class="section">7.13.1. <a href="dependencies.html#idp13861328">Einführung</a></span></dt>
+<dt><span class="section">7.13.2. <a href="dependencies.html#idp13863152">Überblick Service-Abhängigkeiten</a></span></dt>
+<dt><span class="section">7.13.3. <a href="dependencies.html#idp13870896">Service-Abhängigkeiten definieren</a></span></dt>
+<dt><span class="section">7.13.4. <a href="dependencies.html#idp13875296">Beispiel Service-Abhängigkeiten</a></span></dt>
+<dt><span class="section">7.13.5. <a href="dependencies.html#idp13882208">Wie Service-Abhängigkeiten getestet werden</a></span></dt>
+<dt><span class="section">7.13.6. <a href="dependencies.html#idp13898800">Ausführungsabhängigkeiten</a></span></dt>
+<dt><span class="section">7.13.7. <a href="dependencies.html#idp13906512">Benachrichtigungsabhängigkeiten</a></span></dt>
+<dt><span class="section">7.13.8. <a href="dependencies.html#idp13914016">Abhängigkeitsvererbung</a></span></dt>
+<dt><span class="section">7.13.9. <a href="dependencies.html#idp13924224">Host-Abhängigkeiten</a></span></dt>
+<dt><span class="section">7.13.10. <a href="dependencies.html#idp13935952">Beispiel Host-Abhängigkeiten</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.13.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13822944"></a>7.13.1. Einführung</h3></div></div></div>
+<a name="idp13861328"></a>7.13.1. Einführung</h3></div></div></div>
     
 
     <p>Service- und Hostabhängigkeiten sind ein fortgeschrittenes Feature von Icinga, dass Ihnen die Kontrolle über Hosts und
@@ -54,7 +55,7 @@
 
   <div class="section" title="7.13.2. Überblick Service-Abhängigkeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13824720"></a>7.13.2. Überblick Service-Abhängigkeiten</h3></div></div></div>
+<a name="idp13863152"></a>7.13.2. Überblick Service-Abhängigkeiten</h3></div></div></div>
     
 
     <p>Es gibt ein paar Dinge, die Sie über Service-Abhängigkeiten wissen sollten:</p>
@@ -81,7 +82,7 @@
 
   <div class="section" title="7.13.3. Service-Abhängigkeiten definieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13832448"></a>7.13.3. Service-Abhängigkeiten definieren</h3></div></div></div>
+<a name="idp13870896"></a>7.13.3. Service-Abhängigkeiten definieren</h3></div></div></div>
     
 
     <p>Zuerst die Grundlagen. Sie erstellen Service-Abhängigkeiten durch Hinzufügen von <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeitsdefinitionen</a> in der/n <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>. In jeder Definition geben Sie den <span class="emphasis"><em>abhängigen</em></span> Service
@@ -94,7 +95,7 @@
 
   <div class="section" title="7.13.4. Beispiel Service-Abhängigkeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13836848"></a>7.13.4. Beispiel Service-Abhängigkeiten</h3></div></div></div>
+<a name="idp13875296"></a>7.13.4. Beispiel Service-Abhängigkeiten</h3></div></div></div>
     
 
     <p>Das folgende Bild zeigt ein beispielhaftes Logik-Layout von Service-Benachrichtigungen und Ausführungsabhängigkeiten. Verschiedene
@@ -160,7 +161,7 @@
 
   <div class="section" title="7.13.5. Wie Service-Abhängigkeiten getestet werden">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13843760"></a>7.13.5. Wie Service-Abhängigkeiten getestet werden</h3></div></div></div>
+<a name="idp13882208"></a>7.13.5. Wie Service-Abhängigkeiten getestet werden</h3></div></div></div>
     
 
     <p>Bevor Icinga eine Service-Prüfung ausführt oder Benachrichtigungen für einen Service versendet, wird es prüfen, ob der
@@ -199,7 +200,7 @@
 
   <div class="section" title="7.13.6. Ausführungsabhängigkeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13860288"></a>7.13.6. Ausführungsabhängigkeiten</h3></div></div></div>
+<a name="idp13898800"></a>7.13.6. Ausführungsabhängigkeiten</h3></div></div></div>
     
 
     <p>Ausführungsabhängigkeiten werden benutzt, um einzuschränken, wann <a class="link" href="activechecks.html" title="5.6. Aktive Prüfungen (Active Checks)">aktive Prüfungen</a> eines
@@ -220,7 +221,7 @@
 
   <div class="section" title="7.13.7. Benachrichtigungsabhängigkeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13867936"></a>7.13.7. Benachrichtigungsabhängigkeiten</h3></div></div></div>
+<a name="idp13906512"></a>7.13.7. Benachrichtigungsabhängigkeiten</h3></div></div></div>
     
 
     <p>Wenn <span class="emphasis"><em>alle</em></span> der Benachrichtigungsabhängigkeitstests für den Service <span class="emphasis"><em>erfolgreich</em></span>
@@ -238,7 +239,7 @@
 
   <div class="section" title="7.13.8. Abhängigkeitsvererbung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13875536"></a>7.13.8. Abhängigkeitsvererbung</h3></div></div></div>
+<a name="idp13914016"></a>7.13.8. Abhängigkeitsvererbung</h3></div></div></div>
     
 
     <p>Wie bereits erwähnt werden Service-Abhängigkeiten <span class="emphasis"><em>nicht</em></span> per Default vererbt. Im obigen Beispiel sehen Sie,
@@ -277,7 +278,7 @@
 
   <div class="section" title="7.13.9. Host-Abhängigkeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13885216"></a>7.13.9. Host-Abhängigkeiten</h3></div></div></div>
+<a name="idp13924224"></a>7.13.9. Host-Abhängigkeiten</h3></div></div></div>
     
 
     <p>Wie Sie vielleicht erwarten, arbeiten Host-Abhängigkeiten in einer ähnlichen Weise wie Service-Abhängigkeiten. Der Unterschied
@@ -308,7 +309,7 @@
 
   <div class="section" title="7.13.10. Beispiel Host-Abhängigkeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13897584"></a>7.13.10. Beispiel Host-Abhängigkeiten</h3></div></div></div>
+<a name="idp13935952"></a>7.13.10. Beispiel Host-Abhängigkeiten</h3></div></div></div>
     
 
     <p>Das folgende Bild zeigt ein Beispiel für das logische Layout von Benachrichtigungsabhängigkeiten. Verschiedene Hosts sind bzgl.
@@ -341,9 +342,9 @@
     durchlaufen werden. Wenn dies geschieht, wird Icinga mit dem Versand von Benachrichtigungen für diesen Host beginnen, wie es das
     normal tun würde. Mehr Informationen über die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a>.</p>
 
-    <a class="indexterm" name="idp13904544"></a>
+    <a class="indexterm" name="idp13942928"></a>
 
-    <a class="indexterm" name="idp13907696"></a>
+    <a class="indexterm" name="idp13946080"></a>
   </div>
 </div>
 <div class="navfooter">

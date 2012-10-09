@@ -9,6 +9,7 @@
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="eventhandlers.html" title="7.3. Eventhandler">
 <link rel="next" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,19 +30,19 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="volatileservices"></a>7.4. sprunghafte Services</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="volatileservices.html#idp13253216">7.4.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13255536">7.4.2. Wofür sind sie nützlich?</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13259552">7.4.3. Was ist so besonders an flüchtigen Services?</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13271104">7.4.4. Die Macht der Zwei</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13274944">7.4.5. Icinga Konfiguration:</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13284592">7.4.6. PortSentry Konfiguration:</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13288032">7.4.7. Portscan-Script:</a></span></dt>
+<dt><span class="section">7.4.1. <a href="volatileservices.html#idp13291728">Einführung</a></span></dt>
+<dt><span class="section">7.4.2. <a href="volatileservices.html#idp13293904">Wofür sind sie nützlich?</a></span></dt>
+<dt><span class="section">7.4.3. <a href="volatileservices.html#idp13297872">Was ist so besonders an flüchtigen Services?</a></span></dt>
+<dt><span class="section">7.4.4. <a href="volatileservices.html#idp13309408">Die Macht der Zwei</a></span></dt>
+<dt><span class="section">7.4.5. <a href="volatileservices.html#idp13313248">Icinga Konfiguration:</a></span></dt>
+<dt><span class="section">7.4.6. <a href="volatileservices.html#idp13322832">PortSentry Konfiguration:</a></span></dt>
+<dt><span class="section">7.4.7. <a href="volatileservices.html#idp13326272">Portscan-Script:</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.4.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13253216"></a>7.4.1. Einführung</h3></div></div></div>
+<a name="idp13291728"></a>7.4.1. Einführung</h3></div></div></div>
     
 
     <p>Icinga hat die Möglichkeit, zwischen "normalen" und "flüchtigen" Services zu unterscheiden. Die
@@ -52,7 +53,7 @@
 
   <div class="section" title="7.4.2. Wofür sind sie nützlich?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13255536"></a>7.4.2. Wofür sind sie nützlich?</h3></div></div></div>
+<a name="idp13293904"></a>7.4.2. Wofür sind sie nützlich?</h3></div></div></div>
     
 
     <p>Flüchtige Services sind nützlich zur Überwachung von...</p>
@@ -70,7 +71,7 @@
 
   <div class="section" title="7.4.3. Was ist so besonders an flüchtigen Services?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13259552"></a>7.4.3. Was ist so besonders an flüchtigen Services?</h3></div></div></div>
+<a name="idp13297872"></a>7.4.3. Was ist so besonders an flüchtigen Services?</h3></div></div></div>
     
 
     <p>Flüchtige Services unterscheiden sich von "normalen" Services in drei wichtigen Punkten. <span class="emphasis"><em>Jedes Mal</em></span> wenn sie
@@ -100,7 +101,7 @@
 
   <div class="section" title="7.4.4. Die Macht der Zwei">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13271104"></a>7.4.4. Die Macht der Zwei</h3></div></div></div>
+<a name="idp13309408"></a>7.4.4. Die Macht der Zwei</h3></div></div></div>
     
 
     <p>Wenn Sie die Möglichkeiten von flüchtigen Services und <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passiven Service-Prüfungen</a>
@@ -114,7 +115,7 @@
 
   <div class="section" title="7.4.5. Icinga Konfiguration:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13274944"></a>7.4.5. Icinga Konfiguration:</h3></div></div></div>
+<a name="idp13313248"></a>7.4.5. Icinga Konfiguration:</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -143,7 +144,7 @@
 
   <div class="section" title="7.4.6. PortSentry Konfiguration:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13284592"></a>7.4.6. PortSentry Konfiguration:</h3></div></div></div>
+<a name="idp13322832"></a>7.4.6. PortSentry Konfiguration:</h3></div></div></div>
     
 
     <p>Editieren Sie die PortSentry-Konfigurationsdatei (portsentry.conf) und definieren Sie einen Befehl für die
@@ -157,7 +158,7 @@
 
   <div class="section" title="7.4.7. Portscan-Script:">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13288032"></a>7.4.7. Portscan-Script:</h3></div></div></div>
+<a name="idp13326272"></a>7.4.7. Portscan-Script:</h3></div></div></div>
     
 
     <p>Erstellen Sie ein Shell-Script im <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span>-Verzeichnis namens
@@ -196,7 +197,7 @@
 
     <p>Ziemlich hübsch, oder?</p>
 
-    <a class="indexterm" name="idp13297600"></a>
+    <a class="indexterm" name="idp13335840"></a>
   </div>
 </div>
 <div class="navfooter">

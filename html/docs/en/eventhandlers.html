@@ -9,6 +9,7 @@
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
 <link rel="prev" href="extcommands2.html" title="7.2. List of External Commands">
 <link rel="next" href="volatileservices.html" title="7.4. Volatile Services">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,20 +30,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="eventhandlers"></a>7.3. <a name="event_handlers"></a>Event Handlers</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="eventhandlers.html#idp12556304">7.3.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp12556432">7.3.2. When Are Event Handlers Executed?</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp12571648">7.3.3. Event Handler Types</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13339424">7.3.4. Enabling Event Handlers</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13344480">7.3.5. Event Handler Execution Order</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13346048">7.3.6. Writing Event Handler Commands</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13346176">7.3.7. Permissions For Event Handler Commands</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13364032">7.3.8. Service Event Handler Example</a></span></dt>
+<dt><span class="section">7.3.1. <a href="eventhandlers.html#idp12557584">Introduction</a></span></dt>
+<dt><span class="section">7.3.2. <a href="eventhandlers.html#idp12557712">When Are Event Handlers Executed?</a></span></dt>
+<dt><span class="section">7.3.3. <a href="eventhandlers.html#idp12572928">Event Handler Types</a></span></dt>
+<dt><span class="section">7.3.4. <a href="eventhandlers.html#idp13340560">Enabling Event Handlers</a></span></dt>
+<dt><span class="section">7.3.5. <a href="eventhandlers.html#idp13345616">Event Handler Execution Order</a></span></dt>
+<dt><span class="section">7.3.6. <a href="eventhandlers.html#idp13347184">Writing Event Handler Commands</a></span></dt>
+<dt><span class="section">7.3.7. <a href="eventhandlers.html#idp13347312">Permissions For Event Handler Commands</a></span></dt>
+<dt><span class="section">7.3.8. <a href="eventhandlers.html#idp13365168">Service Event Handler Example</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.3.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12556304"></a>7.3.1. Introduction</h3></div></div></div>
+<a name="idp12557584"></a>7.3.1. Introduction</h3></div></div></div>
 
   <p><span class="inlinemediaobject"><img src="../images/eventhandlers.png"></span></p>
 
@@ -76,7 +77,7 @@
   </div>
 <div class="section" title="7.3.2. When Are Event Handlers Executed?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12556432"></a>7.3.2. When Are Event Handlers Executed?</h3></div></div></div>
+<a name="idp12557712"></a>7.3.2. When Are Event Handlers Executed?</h3></div></div></div>
 
   <p>Event handlers are executed when a service or host:</p>
 
@@ -97,7 +98,7 @@
   </div>
 <div class="section" title="7.3.3. Event Handler Types">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12571648"></a>7.3.3. Event Handler Types</h3></div></div></div>
+<a name="idp12572928"></a>7.3.3. Event Handler Types</h3></div></div></div>
 
   <p>There are different types of optional event handlers that you can define to handle host and state changes:</p>
 
@@ -129,7 +130,7 @@
   </div>
 <div class="section" title="7.3.4. Enabling Event Handlers">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13339424"></a>7.3.4. Enabling Event Handlers</h3></div></div></div>
+<a name="idp13340560"></a>7.3.4. Enabling Event Handlers</h3></div></div></div>
 
   <p>Event handlers can be enabled or disabled on a program-wide basis by using the <a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a> in your main configuration file.</p>
 
@@ -140,7 +141,7 @@
   </div>
 <div class="section" title="7.3.5. Event Handler Execution Order">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13344480"></a>7.3.5. Event Handler Execution Order</h3></div></div></div>
+<a name="idp13345616"></a>7.3.5. Event Handler Execution Order</h3></div></div></div>
 
   <p>As already mentioned, global host and service event handlers are executed immediately before host- or service-specific
   event handlers.</p>
@@ -150,7 +151,7 @@
   </div>
 <div class="section" title="7.3.6. Writing Event Handler Commands">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13346048"></a>7.3.6. Writing Event Handler Commands</h3></div></div></div>
+<a name="idp13347184"></a>7.3.6. Writing Event Handler Commands</h3></div></div></div>
 
   <p>Event handler commands will likely be shell or perl scripts, but they can be any type of executable that can run from a
   command prompt. At a minimum, the scripts should take the following <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> as arguments:</p>
@@ -178,7 +179,7 @@
   </div>
 <div class="section" title="7.3.7. Permissions For Event Handler Commands">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13346176"></a>7.3.7. Permissions For Event Handler Commands</h3></div></div></div>
+<a name="idp13347312"></a>7.3.7. Permissions For Event Handler Commands</h3></div></div></div>
 
   <p>Event handler commands will normally execute with the same permissions as the user under which Icinga is running on
   your machine. This can present a problem if you want to write an event handler that restarts system services, as root privileges
@@ -192,7 +193,7 @@
   </div>
 <div class="section" title="7.3.8. Service Event Handler Example">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13364032"></a>7.3.8. Service Event Handler Example</h3></div></div></div>
+<a name="idp13365168"></a>7.3.8. Service Event Handler Example</h3></div></div></div>
 
   <p>The example below assumes that you are monitoring the HTTP server on the local machine and have specified
   <span class="emphasis"><em>restart-httpd</em></span> as the event handler command for the HTTP service definition. Also, I will be assuming that
@@ -304,8 +305,8 @@ exit 0</pre>
 
   <p>That's all there is to it! Event handlers are pretty simple to write and implement, so give it a try and see what you can
   do.</p>
-  <a class="indexterm" name="idp13379424"></a>
-  <a class="indexterm" name="idp13380256"></a>
+  <a class="indexterm" name="idp13380560"></a>
+  <a class="indexterm" name="idp13381392"></a>
 </div>
 </div>
 <div class="navfooter">

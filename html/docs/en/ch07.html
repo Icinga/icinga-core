@@ -9,6 +9,7 @@
 <link rel="up" href="index.html" title="Icinga Version 1.8 Documentation">
 <link rel="prev" href="icinga-web-pnp.html" title="6.8. Integration of PNP4Nagios into Icinga-Web">
 <link rel="next" href="extcommands.html" title="7.1. External Commands">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -31,252 +32,252 @@
 <div class="toc">
 <p><b>Table of Contents</b></p>
 <dl>
-<dt><span class="section"><a href="extcommands.html">7.1. External Commands</a></span></dt>
+<dt><span class="section">7.1. <a href="extcommands.html">External Commands</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="extcommands.html#idm122963792">7.1.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="extcommands.html#idm122971424">7.1.2. Enabling External Commands</a></span></dt>
-<dt><span class="section"><a href="extcommands.html#idp12540592">7.1.3. When Does Icinga Check For External Commands?</a></span></dt>
-<dt><span class="section"><a href="extcommands.html#idp12545296">7.1.4. Using External Commands</a></span></dt>
-<dt><span class="section"><a href="extcommands.html#idp12547040">7.1.5. Command Format</a></span></dt>
+<dt><span class="section">7.1.1. <a href="extcommands.html#idm123304080">Introduction</a></span></dt>
+<dt><span class="section">7.1.2. <a href="extcommands.html#idm123309776">Enabling External Commands</a></span></dt>
+<dt><span class="section">7.1.3. <a href="extcommands.html#idp12541872">When Does Icinga Check For External Commands?</a></span></dt>
+<dt><span class="section">7.1.4. <a href="extcommands.html#idp12546448">Using External Commands</a></span></dt>
+<dt><span class="section">7.1.5. <a href="extcommands.html#idp12547920">Command Format</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="extcommands2.html">7.2. List of External Commands</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html">7.3. Event Handlers</a></span></dt>
+<dt><span class="section">7.2. <a href="extcommands2.html">List of External Commands</a></span></dt>
+<dt><span class="section">7.3. <a href="eventhandlers.html">Event Handlers</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="eventhandlers.html#idp12556304">7.3.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp12556432">7.3.2. When Are Event Handlers Executed?</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp12571648">7.3.3. Event Handler Types</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13339424">7.3.4. Enabling Event Handlers</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13344480">7.3.5. Event Handler Execution Order</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13346048">7.3.6. Writing Event Handler Commands</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13346176">7.3.7. Permissions For Event Handler Commands</a></span></dt>
-<dt><span class="section"><a href="eventhandlers.html#idp13364032">7.3.8. Service Event Handler Example</a></span></dt>
+<dt><span class="section">7.3.1. <a href="eventhandlers.html#idp12557584">Introduction</a></span></dt>
+<dt><span class="section">7.3.2. <a href="eventhandlers.html#idp12557712">When Are Event Handlers Executed?</a></span></dt>
+<dt><span class="section">7.3.3. <a href="eventhandlers.html#idp12572928">Event Handler Types</a></span></dt>
+<dt><span class="section">7.3.4. <a href="eventhandlers.html#idp13340560">Enabling Event Handlers</a></span></dt>
+<dt><span class="section">7.3.5. <a href="eventhandlers.html#idp13345616">Event Handler Execution Order</a></span></dt>
+<dt><span class="section">7.3.6. <a href="eventhandlers.html#idp13347184">Writing Event Handler Commands</a></span></dt>
+<dt><span class="section">7.3.7. <a href="eventhandlers.html#idp13347312">Permissions For Event Handler Commands</a></span></dt>
+<dt><span class="section">7.3.8. <a href="eventhandlers.html#idp13365168">Service Event Handler Example</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="volatileservices.html">7.4. Volatile Services</a></span></dt>
+<dt><span class="section">7.4. <a href="volatileservices.html">Volatile Services</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="volatileservices.html#idp13382864">7.4.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13384672">7.4.2. What Are They Useful For?</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13388432">7.4.3. What's So Special About Volatile Services?</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13399232">7.4.4. The Power Of Two</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13402640">7.4.5. Icinga Configuration:</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13411648">7.4.6. PortSentry Configuration:</a></span></dt>
-<dt><span class="section"><a href="volatileservices.html#idp13414480">7.4.7. Port Scan Script:</a></span></dt>
+<dt><span class="section">7.4.1. <a href="volatileservices.html#idp13384000">Introduction</a></span></dt>
+<dt><span class="section">7.4.2. <a href="volatileservices.html#idp13385808">What Are They Useful For?</a></span></dt>
+<dt><span class="section">7.4.3. <a href="volatileservices.html#idp13389664">What's So Special About Volatile Services?</a></span></dt>
+<dt><span class="section">7.4.4. <a href="volatileservices.html#idp13400272">The Power Of Two</a></span></dt>
+<dt><span class="section">7.4.5. <a href="volatileservices.html#idp13403680">Icinga Configuration:</a></span></dt>
+<dt><span class="section">7.4.6. <a href="volatileservices.html#idp13412688">PortSentry Configuration:</a></span></dt>
+<dt><span class="section">7.4.7. <a href="volatileservices.html#idp13415520">Port Scan Script:</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="freshness.html">7.5. Service and Host Freshness Checks</a></span></dt>
+<dt><span class="section">7.5. <a href="freshness.html">Service and Host Freshness Checks</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="freshness.html#idp13426224">7.5.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="freshness.html#idp13432352">7.5.2. How Does Freshness Checking Work?</a></span></dt>
-<dt><span class="section"><a href="freshness.html#idp13440448">7.5.3. Enabling Freshness Checking</a></span></dt>
-<dt><span class="section"><a href="freshness.html#idp13454464">7.5.4. Example</a></span></dt>
+<dt><span class="section">7.5.1. <a href="freshness.html#idp13427264">Introduction</a></span></dt>
+<dt><span class="section">7.5.2. <a href="freshness.html#idp13433392">How Does Freshness Checking Work?</a></span></dt>
+<dt><span class="section">7.5.3. <a href="freshness.html#idp13441488">Enabling Freshness Checking</a></span></dt>
+<dt><span class="section">7.5.4. <a href="freshness.html#idp13455056">Example</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="distributed.html">7.6. Distributed Monitoring</a></span></dt>
+<dt><span class="section">7.6. <a href="distributed.html">Distributed Monitoring</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="distributed.html#idp13464432">7.6.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13465504">7.6.2. Goals</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13467184">7.6.3. Reference Diagram</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13469904">7.6.4. Central Server vs. Distributed Servers</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13475664">7.6.5. Obtaining Service Check Information From Distributed Monitors</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13481584">7.6.6. Distributed Server Configuration</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13481712">7.6.7. ocsp_command=submit_check_result</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13494976">7.6.8. Central Server Configuration</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13512608">7.6.9. Problems With Passive Checks</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13530928">7.6.10. Freshness Checking</a></span></dt>
-<dt><span class="section"><a href="distributed.html#idp13531056">7.6.11. Performing Host Checks</a></span></dt>
+<dt><span class="section">7.6.1. <a href="distributed.html#idp13465232">Introduction</a></span></dt>
+<dt><span class="section">7.6.2. <a href="distributed.html#idp13466304">Goals</a></span></dt>
+<dt><span class="section">7.6.3. <a href="distributed.html#idp13468352">Reference Diagram</a></span></dt>
+<dt><span class="section">7.6.4. <a href="distributed.html#idp13469824">Central Server vs. Distributed Servers</a></span></dt>
+<dt><span class="section">7.6.5. <a href="distributed.html#idp13476816">Obtaining Service Check Information From Distributed Monitors</a></span></dt>
+<dt><span class="section">7.6.6. <a href="distributed.html#idp13482640">Distributed Server Configuration</a></span></dt>
+<dt><span class="section">7.6.7. <a href="distributed.html#idp13482768">ocsp_command=submit_check_result</a></span></dt>
+<dt><span class="section">7.6.8. <a href="distributed.html#idp13495872">Central Server Configuration</a></span></dt>
+<dt><span class="section">7.6.9. <a href="distributed.html#idp13513456">Problems With Passive Checks</a></span></dt>
+<dt><span class="section">7.6.10. <a href="distributed.html#idp13531840">Freshness Checking</a></span></dt>
+<dt><span class="section">7.6.11. <a href="distributed.html#idp13531968">Performing Host Checks</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="redundancy.html">7.7. Redundant and Failover Network Monitoring</a></span></dt>
+<dt><span class="section">7.7. <a href="redundancy.html">Redundant and Failover Network Monitoring</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="redundancy.html#idp13563184">7.7.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13567136">7.7.2. Prerequisites</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13575568">7.7.3. Sample Scripts</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13577600">7.7.4. Scenario 1 - Redundant Monitoring</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13578544">7.7.5. Introduction</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13579920">7.7.6. Goals</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13583648">7.7.7. Network Layout Diagram</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13591056">7.7.8. Initial Program Settings</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13593424">7.7.9. Initial Configuration</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13601280">7.7.10. Event Handler Command Definitions</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13606944">7.7.11. Event Handler Scripts</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13607072">7.7.12. What This Does For Us</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13613760">7.7.13. Time Lags</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13628144">7.7.14. Special Cases</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13648992">7.7.15. Introduction</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13652512">7.7.16. Goals</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13655792">7.7.17. Initial Program Settings</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13656688">7.7.18. Master Process Check</a></span></dt>
-<dt><span class="section"><a href="redundancy.html#idp13665872">7.7.19. Additional Issues</a></span></dt>
+<dt><span class="section">7.7.1. <a href="redundancy.html#idp13563952">Introduction</a></span></dt>
+<dt><span class="section">7.7.2. <a href="redundancy.html#idp13567904">Prerequisites</a></span></dt>
+<dt><span class="section">7.7.3. <a href="redundancy.html#idp13576336">Sample Scripts</a></span></dt>
+<dt><span class="section">7.7.4. <a href="redundancy.html#idp13578368">Scenario 1 - Redundant Monitoring</a></span></dt>
+<dt><span class="section">7.7.5. <a href="redundancy.html#idp13579312">Introduction</a></span></dt>
+<dt><span class="section">7.7.6. <a href="redundancy.html#idp13580688">Goals</a></span></dt>
+<dt><span class="section">7.7.7. <a href="redundancy.html#idp13584416">Network Layout Diagram</a></span></dt>
+<dt><span class="section">7.7.8. <a href="redundancy.html#idp13591632">Initial Program Settings</a></span></dt>
+<dt><span class="section">7.7.9. <a href="redundancy.html#idp13593904">Initial Configuration</a></span></dt>
+<dt><span class="section">7.7.10. <a href="redundancy.html#idp13602320">Event Handler Command Definitions</a></span></dt>
+<dt><span class="section">7.7.11. <a href="redundancy.html#idp13607744">Event Handler Scripts</a></span></dt>
+<dt><span class="section">7.7.12. <a href="redundancy.html#idp13607872">What This Does For Us</a></span></dt>
+<dt><span class="section">7.7.13. <a href="redundancy.html#idp13613488">Time Lags</a></span></dt>
+<dt><span class="section">7.7.14. <a href="redundancy.html#idp13629184">Special Cases</a></span></dt>
+<dt><span class="section">7.7.15. <a href="redundancy.html#idp13650656">Introduction</a></span></dt>
+<dt><span class="section">7.7.16. <a href="redundancy.html#idp13653952">Goals</a></span></dt>
+<dt><span class="section">7.7.17. <a href="redundancy.html#idp13657280">Initial Program Settings</a></span></dt>
+<dt><span class="section">7.7.18. <a href="redundancy.html#idp13660480">Master Process Check</a></span></dt>
+<dt><span class="section">7.7.19. <a href="redundancy.html#idp13667040">Additional Issues</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="flapping.html">7.8. Detection and Handling of State Flapping</a></span></dt>
+<dt><span class="section">7.8. <a href="flapping.html">Detection and Handling of State Flapping</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="flapping.html#idp13675664">7.8.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13677168">7.8.2. How Flap Detection Works</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13677296">7.8.3. Example</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13686688">7.8.4. Flap Detection for Services</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13706816">7.8.5. Flap Detection for Hosts</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13712048">7.8.6. Flap Detection Thresholds</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13736704">7.8.7. States Used For Flap Detection</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13739360">7.8.8. Flap Handling</a></span></dt>
-<dt><span class="section"><a href="flapping.html#idp13750944">7.8.9. Enabling Flap Detection</a></span></dt>
+<dt><span class="section">7.8.1. <a href="flapping.html#idp13676816">Introduction</a></span></dt>
+<dt><span class="section">7.8.2. <a href="flapping.html#idp13678320">How Flap Detection Works</a></span></dt>
+<dt><span class="section">7.8.3. <a href="flapping.html#idp13678448">Example</a></span></dt>
+<dt><span class="section">7.8.4. <a href="flapping.html#idp13687840">Flap Detection for Services</a></span></dt>
+<dt><span class="section">7.8.5. <a href="flapping.html#idp13708112">Flap Detection for Hosts</a></span></dt>
+<dt><span class="section">7.8.6. <a href="flapping.html#idp13713344">Flap Detection Thresholds</a></span></dt>
+<dt><span class="section">7.8.7. <a href="flapping.html#idp13737920">States Used For Flap Detection</a></span></dt>
+<dt><span class="section">7.8.8. <a href="flapping.html#idp13740336">Flap Handling</a></span></dt>
+<dt><span class="section">7.8.9. <a href="flapping.html#idp13752288">Enabling Flap Detection</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="escalations.html">7.9. Notification Escalations</a></span></dt>
+<dt><span class="section">7.9. <a href="escalations.html">Notification Escalations</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="escalations.html#idp13760528">7.9.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13767040">7.9.2. When Are Notifications Escalated?</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13771952">7.9.3. Contact Groups</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13779328">7.9.4. Overlapping Escalation Ranges</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13786864">7.9.5. Recovery Notifications</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13790416">7.9.6. Notification Intervals</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13798928">7.9.7. Time Period Restrictions</a></span></dt>
-<dt><span class="section"><a href="escalations.html#idp13807504">7.9.8. State Restrictions</a></span></dt>
+<dt><span class="section">7.9.1. <a href="escalations.html#idp13761920">Introduction</a></span></dt>
+<dt><span class="section">7.9.2. <a href="escalations.html#idp13768000">When Are Notifications Escalated?</a></span></dt>
+<dt><span class="section">7.9.3. <a href="escalations.html#idp13772896">Contact Groups</a></span></dt>
+<dt><span class="section">7.9.4. <a href="escalations.html#idp13779680">Overlapping Escalation Ranges</a></span></dt>
+<dt><span class="section">7.9.5. <a href="escalations.html#idp13787872">Recovery Notifications</a></span></dt>
+<dt><span class="section">7.9.6. <a href="escalations.html#idp13791616">Notification Intervals</a></span></dt>
+<dt><span class="section">7.9.7. <a href="escalations.html#idp13791776">Time Period Restrictions</a></span></dt>
+<dt><span class="section">7.9.8. <a href="escalations.html#idp13808576">State Restrictions</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="escalation_condition.html">7.10. Escalation Condition</a></span></dt>
+<dt><span class="section">7.10. <a href="escalation_condition.html">Escalation Condition</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="escalation_condition.html#idp13812208">7.10.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="escalation_condition.html#idp13820064">7.10.2. Syntax</a></span></dt>
-<dt><span class="section"><a href="escalation_condition.html#idp13820192">7.10.3. Example</a></span></dt>
+<dt><span class="section">7.10.1. <a href="escalation_condition.html#idp13813280">Introduction</a></span></dt>
+<dt><span class="section">7.10.2. <a href="escalation_condition.html#idp13821136">Syntax</a></span></dt>
+<dt><span class="section">7.10.3. <a href="escalation_condition.html#idp13821264">Example</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="oncallrotation.html">7.11. On-Call Rotations</a></span></dt>
+<dt><span class="section">7.11. <a href="oncallrotation.html">On-Call Rotations</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="oncallrotation.html#idp13834480">7.11.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13841840">7.11.2. Scenario 1: Holidays and Weekends</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13841968">7.11.3. Scenario 2: Alternating Days</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13842096">7.11.4. Scenario 3: Alternating Weeks</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13855120">7.11.5. Scenario 4: Vacation Days</a></span></dt>
-<dt><span class="section"><a href="oncallrotation.html#idp13861712">7.11.6. Other Scenarios</a></span></dt>
+<dt><span class="section">7.11.1. <a href="oncallrotation.html#idp13835552">Introduction</a></span></dt>
+<dt><span class="section">7.11.2. <a href="oncallrotation.html#idp13842912">Scenario 1: Holidays and Weekends</a></span></dt>
+<dt><span class="section">7.11.3. <a href="oncallrotation.html#idp13843040">Scenario 2: Alternating Days</a></span></dt>
+<dt><span class="section">7.11.4. <a href="oncallrotation.html#idp13843168">Scenario 3: Alternating Weeks</a></span></dt>
+<dt><span class="section">7.11.5. <a href="oncallrotation.html#idp13856192">Scenario 4: Vacation Days</a></span></dt>
+<dt><span class="section">7.11.6. <a href="oncallrotation.html#idp13862704">Other Scenarios</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="clusters.html">7.12. Monitoring Service and Host Clusters</a></span></dt>
+<dt><span class="section">7.12. <a href="clusters.html">Monitoring Service and Host Clusters</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="clusters.html#idp13874032">7.12.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="clusters.html#idp13878816">7.12.2. Plan of Attack</a></span></dt>
-<dt><span class="section"><a href="clusters.html#idp13888512">7.12.3. Using the check_cluster Plugin</a></span></dt>
-<dt><span class="section"><a href="clusters.html#idp13891664">7.12.4. Monitoring Service Clusters</a></span></dt>
-<dt><span class="section"><a href="clusters.html#idp13891792">7.12.5. Monitoring Host Clusters</a></span></dt>
+<dt><span class="section">7.12.1. <a href="clusters.html#idp13875088">Introduction</a></span></dt>
+<dt><span class="section">7.12.2. <a href="clusters.html#idp13880080">Plan of Attack</a></span></dt>
+<dt><span class="section">7.12.3. <a href="clusters.html#idp13889712">Using the check_cluster Plugin</a></span></dt>
+<dt><span class="section">7.12.4. <a href="clusters.html#idp13892688">Monitoring Service Clusters</a></span></dt>
+<dt><span class="section">7.12.5. <a href="clusters.html#idp13892816">Monitoring Host Clusters</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="dependencies.html">7.13. Host and Service Dependencies</a></span></dt>
+<dt><span class="section">7.13. <a href="dependencies.html">Host and Service Dependencies</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="dependencies.html#idp13910608">7.13.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13911760">7.13.2. Service Dependencies Overview</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13918944">7.13.3. Defining Service Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13922944">7.13.4. Example Service Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13923104">7.13.5. How Service Dependencies Are Tested</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13944656">7.13.6. Execution Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13951840">7.13.7. Notification Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13959232">7.13.8. Dependency Inheritance</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13959360">7.13.9. Host Dependencies</a></span></dt>
-<dt><span class="section"><a href="dependencies.html#idp13979232">7.13.10. Example Host Dependencies</a></span></dt>
+<dt><span class="section">7.13.1. <a href="dependencies.html#idp13911696">Introduction</a></span></dt>
+<dt><span class="section">7.13.2. <a href="dependencies.html#idp13912896">Service Dependencies Overview</a></span></dt>
+<dt><span class="section">7.13.3. <a href="dependencies.html#idp13920160">Defining Service Dependencies</a></span></dt>
+<dt><span class="section">7.13.4. <a href="dependencies.html#idp13921040">Example Service Dependencies</a></span></dt>
+<dt><span class="section">7.13.5. <a href="dependencies.html#idp13924240">How Service Dependencies Are Tested</a></span></dt>
+<dt><span class="section">7.13.6. <a href="dependencies.html#idp13945840">Execution Dependencies</a></span></dt>
+<dt><span class="section">7.13.7. <a href="dependencies.html#idp13953024">Notification Dependencies</a></span></dt>
+<dt><span class="section">7.13.8. <a href="dependencies.html#idp13960416">Dependency Inheritance</a></span></dt>
+<dt><span class="section">7.13.9. <a href="dependencies.html#idp13960544">Host Dependencies</a></span></dt>
+<dt><span class="section">7.13.10. <a href="dependencies.html#idp13980416">Example Host Dependencies</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="stalking.html">7.14. State Stalking</a></span></dt>
+<dt><span class="section">7.14. <a href="stalking.html">State Stalking</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="stalking.html#idp13991168">7.14.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="stalking.html#idp13992768">7.14.2. How Does It Work?</a></span></dt>
-<dt><span class="section"><a href="stalking.html#idp13992896">7.14.3. Should I Enable Stalking?</a></span></dt>
-<dt><span class="section"><a href="stalking.html#idp14050704">7.14.4. How Do I Enable Stalking?</a></span></dt>
-<dt><span class="section"><a href="stalking.html#idp14053056">7.14.5. How Does Stalking Differ From Volatile Services?</a></span></dt>
-<dt><span class="section"><a href="stalking.html#idp14054768">7.14.6. Caveats</a></span></dt>
+<dt><span class="section">7.14.1. <a href="stalking.html#idp13992352">Introduction</a></span></dt>
+<dt><span class="section">7.14.2. <a href="stalking.html#idp13993744">How Does It Work?</a></span></dt>
+<dt><span class="section">7.14.3. <a href="stalking.html#idp13993872">Should I Enable Stalking?</a></span></dt>
+<dt><span class="section">7.14.4. <a href="stalking.html#idp14051904">How Do I Enable Stalking?</a></span></dt>
+<dt><span class="section">7.14.5. <a href="stalking.html#idp14054256">How Does Stalking Differ From Volatile Services?</a></span></dt>
+<dt><span class="section">7.14.6. <a href="stalking.html#idp14055968">Caveats</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="perfdata.html">7.15. Performance Data</a></span></dt>
+<dt><span class="section">7.15. <a href="perfdata.html">Performance Data</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="perfdata.html#idp14060528">7.15.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14062560">7.15.2. Types of Performance Data</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14073744">7.15.3. Plugin Performance Data</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14073872">7.15.4. Processing Performance Data</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14090976">7.15.5. Processing Performance Data Using Commands</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14096272">7.15.6. Writing Performance Data To Files</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14108272">7.15.7. Performance Data Format</a></span></dt>
+<dt><span class="section">7.15.1. <a href="perfdata.html#idp14061728">Introduction</a></span></dt>
+<dt><span class="section">7.15.2. <a href="perfdata.html#idp14063760">Types of Performance Data</a></span></dt>
+<dt><span class="section">7.15.3. <a href="perfdata.html#idp14075056">Plugin Performance Data</a></span></dt>
+<dt><span class="section">7.15.4. <a href="perfdata.html#idp14075184">Processing Performance Data</a></span></dt>
+<dt><span class="section">7.15.5. <a href="perfdata.html#idp14092288">Processing Performance Data Using Commands</a></span></dt>
+<dt><span class="section">7.15.6. <a href="perfdata.html#idp14097584">Writing Performance Data To Files</a></span></dt>
+<dt><span class="section">7.15.7. <a href="perfdata.html#idp14109424">Performance Data Format</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="downtime.html">7.16. Scheduled Downtime</a></span></dt>
+<dt><span class="section">7.16. <a href="downtime.html">Scheduled Downtime</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="downtime.html#idp14139504">7.16.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="downtime.html#idp14143024">7.16.2. Scheduling Downtime</a></span></dt>
-<dt><span class="section"><a href="downtime.html#idp14145648">7.16.3. Fixed vs. Flexible Downtime</a></span></dt>
-<dt><span class="section"><a href="downtime.html#idp14148784">7.16.4. Triggered Downtime</a></span></dt>
-<dt><span class="section"><a href="downtime.html#idp14150352">7.16.5. How Scheduled Downtime Affects Notifications</a></span></dt>
-<dt><span class="section"><a href="downtime.html#idp14152816">7.16.6. Overlapping Scheduled Downtime</a></span></dt>
+<dt><span class="section">7.16.1. <a href="downtime.html#idp14140592">Introduction</a></span></dt>
+<dt><span class="section">7.16.2. <a href="downtime.html#idp14144080">Scheduling Downtime</a></span></dt>
+<dt><span class="section">7.16.3. <a href="downtime.html#idp14146784">Fixed vs. Flexible Downtime</a></span></dt>
+<dt><span class="section">7.16.4. <a href="downtime.html#idp14149920">Triggered Downtime</a></span></dt>
+<dt><span class="section">7.16.5. <a href="downtime.html#idp14151488">How Scheduled Downtime Affects Notifications</a></span></dt>
+<dt><span class="section">7.16.6. <a href="downtime.html#idp14153952">Overlapping Scheduled Downtime</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="recurring_downtimes.html">7.17. Recurring Downtimes</a></span></dt>
+<dt><span class="section">7.17. <a href="recurring_downtimes.html">Recurring Downtimes</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14164544">7.17.1. Downtime definition</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14167504">7.17.2. Variable dates</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14210704">7.17.3. Local holidays</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14210864">7.17.4. Entering downtimes</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14223216">7.17.5. Planning downtimes</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14223376">7.17.6. Converting downtime definitions</a></span></dt>
-<dt><span class="section"><a href="recurring_downtimes.html#idp14238000">7.17.7. Files</a></span></dt>
+<dt><span class="section">7.17.1. <a href="recurring_downtimes.html#idp14165680">Downtime definition</a></span></dt>
+<dt><span class="section">7.17.2. <a href="recurring_downtimes.html#idp14168640">Variable dates</a></span></dt>
+<dt><span class="section">7.17.3. <a href="recurring_downtimes.html#idp14211984">Local holidays</a></span></dt>
+<dt><span class="section">7.17.4. <a href="recurring_downtimes.html#idp14212144">Entering downtimes</a></span></dt>
+<dt><span class="section">7.17.5. <a href="recurring_downtimes.html#idp14224496">Planning downtimes</a></span></dt>
+<dt><span class="section">7.17.6. <a href="recurring_downtimes.html#idp14224656">Converting downtime definitions</a></span></dt>
+<dt><span class="section">7.17.7. <a href="recurring_downtimes.html#idp14239184">Files</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="embeddedperl.html">7.18. Using The Embedded Perl Interpreter</a></span></dt>
+<dt><span class="section">7.18. <a href="embeddedperl.html">Using The Embedded Perl Interpreter</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="embeddedperl.html#idp14256320">7.18.1. Advantages</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html#idp14263568">7.18.2. Disadvantages</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html#idp14273072">7.18.3. Using The Embedded Perl Interpreter</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html#idp14277824">7.18.4. Compiling Icinga With Embedded Perl</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html#idp14279984">7.18.5. Plugin-Specific Use of the Perl Interpreter</a></span></dt>
-<dt><span class="section"><a href="embeddedperl.html#idp14293232">7.18.6. Developing Plugins For Use With Embedded Perl</a></span></dt>
+<dt><span class="section">7.18.1. <a href="embeddedperl.html#idp14257504">Advantages</a></span></dt>
+<dt><span class="section">7.18.2. <a href="embeddedperl.html#idp14264576">Disadvantages</a></span></dt>
+<dt><span class="section">7.18.3. <a href="embeddedperl.html#idp14273856">Using The Embedded Perl Interpreter</a></span></dt>
+<dt><span class="section">7.18.4. <a href="embeddedperl.html#idp14281120">Compiling Icinga With Embedded Perl</a></span></dt>
+<dt><span class="section">7.18.5. <a href="embeddedperl.html#idp14281248">Plugin-Specific Use of the Perl Interpreter</a></span></dt>
+<dt><span class="section">7.18.6. <a href="embeddedperl.html#idp14294288">Developing Plugins For Use With Embedded Perl</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="adaptive.html">7.19. Adaptive Monitoring</a></span></dt>
+<dt><span class="section">7.19. <a href="adaptive.html">Adaptive Monitoring</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="adaptive.html#idp14300288">7.19.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="adaptive.html#idp14301520">7.19.2. What Can Be Changed?</a></span></dt>
-<dt><span class="section"><a href="adaptive.html#idp14301648">7.19.3. External Commands For Adaptive Monitoring</a></span></dt>
+<dt><span class="section">7.19.1. <a href="adaptive.html#idp14301344">Introduction</a></span></dt>
+<dt><span class="section">7.19.2. <a href="adaptive.html#idp14302576">What Can Be Changed?</a></span></dt>
+<dt><span class="section">7.19.3. <a href="adaptive.html#idp14302704">External Commands For Adaptive Monitoring</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="dependencychecks.html">7.20. Predictive Dependency Checks</a></span></dt>
+<dt><span class="section">7.20. <a href="dependencychecks.html">Predictive Dependency Checks</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="dependencychecks.html#idp14327792">7.20.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="dependencychecks.html#idp14330736">7.20.2. How Do Predictive Checks Work?</a></span></dt>
-<dt><span class="section"><a href="dependencychecks.html#idp14330864">7.20.3. Enabling Predictive Checks</a></span></dt>
-<dt><span class="section"><a href="dependencychecks.html#idp14348800">7.20.4. Cached Checks</a></span></dt>
+<dt><span class="section">7.20.1. <a href="dependencychecks.html#idp14328848">Introduction</a></span></dt>
+<dt><span class="section">7.20.2. <a href="dependencychecks.html#idp14331792">How Do Predictive Checks Work?</a></span></dt>
+<dt><span class="section">7.20.3. <a href="dependencychecks.html#idp14331920">Enabling Predictive Checks</a></span></dt>
+<dt><span class="section">7.20.4. <a href="dependencychecks.html#idp14350192">Cached Checks</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="cachedchecks.html">7.21. Cached Checks</a></span></dt>
+<dt><span class="section">7.21. <a href="cachedchecks.html">Cached Checks</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="cachedchecks.html#idp14354352">7.21.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14357632">7.21.2. For On-Demand Checks Only</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14357760">7.21.3. How Caching Works</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14372400">7.21.4. What This Really Means</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14372528">7.21.5. Configuration Variables</a></span></dt>
-<dt><span class="section"><a href="cachedchecks.html#idp14383696">7.21.6. Optimizing Cache Effectiveness</a></span></dt>
+<dt><span class="section">7.21.1. <a href="cachedchecks.html#idp14355744">Introduction</a></span></dt>
+<dt><span class="section">7.21.2. <a href="cachedchecks.html#idp14359024">For On-Demand Checks Only</a></span></dt>
+<dt><span class="section">7.21.3. <a href="cachedchecks.html#idp14359152">How Caching Works</a></span></dt>
+<dt><span class="section">7.21.4. <a href="cachedchecks.html#idp14373792">What This Really Means</a></span></dt>
+<dt><span class="section">7.21.5. <a href="cachedchecks.html#idp14373920">Configuration Variables</a></span></dt>
+<dt><span class="section">7.21.6. <a href="cachedchecks.html#idp14385088">Optimizing Cache Effectiveness</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="passivestatetranslation.html">7.22. Passive Host State Translation</a></span></dt>
+<dt><span class="section">7.22. <a href="passivestatetranslation.html">Passive Host State Translation</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="passivestatetranslation.html#idp14407056">7.22.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="passivestatetranslation.html#idp14408400">7.22.2. Different World Views</a></span></dt>
-<dt><span class="section"><a href="passivestatetranslation.html#idp14408560">7.22.3. Enabling State Translation</a></span></dt>
+<dt><span class="section">7.22.1. <a href="passivestatetranslation.html#idp14408416">Introduction</a></span></dt>
+<dt><span class="section">7.22.2. <a href="passivestatetranslation.html#idp14409760">Different World Views</a></span></dt>
+<dt><span class="section">7.22.3. <a href="passivestatetranslation.html#idp14431296">Enabling State Translation</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="checkscheduling.html">7.23. Service and Host Check Scheduling</a></span></dt>
+<dt><span class="section">7.23. <a href="checkscheduling.html">Service and Host Check Scheduling</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="checkscheduling.html#idp14436048">7.23.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14438160">7.23.2. Configuration Options</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14454800">7.23.3. Initial Scheduling</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14460768">7.23.4. Inter-Check Delay</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14466448">7.23.5. Service Interleaving</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14498064">7.23.6. Maximum Concurrent Service Checks</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14498320">7.23.7. Time Restraints</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14520512">7.23.8. Normal Scheduling</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14522880">7.23.9. Scheduling During Problems</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14531216">7.23.10. Host Checks</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14535568">7.23.11. Scheduling Delays</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14537776">7.23.12. Scheduling Example</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14554816">7.23.13. Service Definition Options That Affect Scheduling</a></span></dt>
-<dt><span class="section"><a href="checkscheduling.html#idp14567920">7.23.14. TODO</a></span></dt>
+<dt><span class="section">7.23.1. <a href="checkscheduling.html#idp14436976">Introduction</a></span></dt>
+<dt><span class="section">7.23.2. <a href="checkscheduling.html#idp14439168">Configuration Options</a></span></dt>
+<dt><span class="section">7.23.3. <a href="checkscheduling.html#idp14455840">Initial Scheduling</a></span></dt>
+<dt><span class="section">7.23.4. <a href="checkscheduling.html#idp14461936">Inter-Check Delay</a></span></dt>
+<dt><span class="section">7.23.5. <a href="checkscheduling.html#idp14467680">Service Interleaving</a></span></dt>
+<dt><span class="section">7.23.6. <a href="checkscheduling.html#idp14499120">Maximum Concurrent Service Checks</a></span></dt>
+<dt><span class="section">7.23.7. <a href="checkscheduling.html#idp14499376">Time Restraints</a></span></dt>
+<dt><span class="section">7.23.8. <a href="checkscheduling.html#idp14521568">Normal Scheduling</a></span></dt>
+<dt><span class="section">7.23.9. <a href="checkscheduling.html#idp14523936">Scheduling During Problems</a></span></dt>
+<dt><span class="section">7.23.10. <a href="checkscheduling.html#idp14532272">Host Checks</a></span></dt>
+<dt><span class="section">7.23.11. <a href="checkscheduling.html#idp14536448">Scheduling Delays</a></span></dt>
+<dt><span class="section">7.23.12. <a href="checkscheduling.html#idp14538576">Scheduling Example</a></span></dt>
+<dt><span class="section">7.23.13. <a href="checkscheduling.html#idp14555776">Service Definition Options That Affect Scheduling</a></span></dt>
+<dt><span class="section">7.23.14. <a href="checkscheduling.html#idp14567696">TODO</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="cgiincludes.html">7.24. Custom CGI Headers and
+<dt><span class="section">7.24. <a href="cgiincludes.html">Custom CGI Headers and
   Footers</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="cgiincludes.html#idp14594400">7.24.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="cgiincludes.html#idp14598528">7.24.2. How Does It Work?</a></span></dt>
+<dt><span class="section">7.24.1. <a href="cgiincludes.html#idp14596560">Introduction</a></span></dt>
+<dt><span class="section">7.24.2. <a href="cgiincludes.html#idp14597616">How Does It Work?</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="modified_attr.html">7.25. Modified attributes</a></span></dt>
+<dt><span class="section">7.25. <a href="modified_attr.html">Modified attributes</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="modified_attr.html#idp14612560">7.25.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="modified_attr.html#idp14612688">7.25.2. Example</a></span></dt>
+<dt><span class="section">7.25.1. <a href="modified_attr.html#idp14613568">Introduction</a></span></dt>
+<dt><span class="section">7.25.2. <a href="modified_attr.html#idp14613696">Example</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="objectinheritance.html">7.26. Object Inheritance</a></span></dt>
+<dt><span class="section">7.26. <a href="objectinheritance.html">Object Inheritance</a></span></dt>
 <dd><dl>
-<dt><span class="section"><a href="objectinheritance.html#idp14637376">7.26.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14640912">7.26.2. Basics</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14650992">7.26.3. Local Variables vs. Inherited Variables</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14651120">7.26.4. Inheritance Chaining</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14661520">7.26.5. Using Incomplete Object Definitions as Templates</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14667296">7.26.6. Custom Object Variables</a></span></dt>
-<dt><span class="section"><a href="objectinheritance.html#idp14675968">7.26.7. Precedence With Multiple Inheritance Sources</a></span></dt>
+<dt><span class="section">7.26.1. <a href="objectinheritance.html#idp14638384">Introduction</a></span></dt>
+<dt><span class="section">7.26.2. <a href="objectinheritance.html#idp14641920">Basics</a></span></dt>
+<dt><span class="section">7.26.3. <a href="objectinheritance.html#idp14652000">Local Variables vs. Inherited Variables</a></span></dt>
+<dt><span class="section">7.26.4. <a href="objectinheritance.html#idp14652128">Inheritance Chaining</a></span></dt>
+<dt><span class="section">7.26.5. <a href="objectinheritance.html#idp14663632">Using Incomplete Object Definitions as Templates</a></span></dt>
+<dt><span class="section">7.26.6. <a href="objectinheritance.html#idp14676640">Custom Object Variables</a></span></dt>
+<dt><span class="section">7.26.7. <a href="objectinheritance.html#idp14676768">Precedence With Multiple Inheritance Sources</a></span></dt>
 </dl></dd>
-<dt><span class="section"><a href="objecttricks.html">7.27. Time-Saving Tricks For Object Definitions</a></span></dt>
+<dt><span class="section">7.27. <a href="objecttricks.html">Time-Saving Tricks For Object Definitions</a></span></dt>
 </dl>
 </div>
     

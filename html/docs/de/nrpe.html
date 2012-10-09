@@ -9,6 +9,7 @@
 <link rel="up" href="ch10.html" title="Kapitel 10. weitere Software">
 <link rel="prev" href="addons.html" title="10.1. Icinga Addons">
 <link rel="next" href="nsca.html" title="10.3. NSCA">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,29 +30,29 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="nrpe"></a>10.2. <a name="nrpe_"></a>NRPE</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="nrpe.html#idp15650208">10.2.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15663152">10.2.2. Voraussetzungen</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15668320">10.2.3. Download</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15673232">10.2.4. Optionale Anpassungen</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15677072">10.2.5. Kompilieren auf dem Icinga-Server</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15685328">10.2.6. Erster Test</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15688912">10.2.7. Entfernte/s System/e</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15690592">10.2.8. Voraussetzungen auf dem entfernten System</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15698560">10.2.9. Zweiter Test</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15703360">10.2.10. Installation auf dem entfernten Host</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15729696">10.2.11. Dritter Test</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15733040">10.2.12. Fehlersuche</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15750928">10.2.13. Sicherheit</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15752912">10.2.14. Definition von lokalen Prüfungen</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15763728">10.2.15. Definitionen auf dem Icinga-Server</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15763984">10.2.16. Weitere Fehlersuche</a></span></dt>
-<dt><span class="section"><a href="nrpe.html#idp15804560">10.2.17. Aktualisierung</a></span></dt>
+<dt><span class="section">10.2.1. <a href="nrpe.html#idp15688496">Einführung</a></span></dt>
+<dt><span class="section">10.2.2. <a href="nrpe.html#idp15701152">Voraussetzungen</a></span></dt>
+<dt><span class="section">10.2.3. <a href="nrpe.html#idp15706784">Download</a></span></dt>
+<dt><span class="section">10.2.4. <a href="nrpe.html#idp15711488">Optionale Anpassungen</a></span></dt>
+<dt><span class="section">10.2.5. <a href="nrpe.html#idp15715280">Kompilieren auf dem Icinga-Server</a></span></dt>
+<dt><span class="section">10.2.6. <a href="nrpe.html#idp15723520">Erster Test</a></span></dt>
+<dt><span class="section">10.2.7. <a href="nrpe.html#idp15727088">Entfernte/s System/e</a></span></dt>
+<dt><span class="section">10.2.8. <a href="nrpe.html#idp15728752">Voraussetzungen auf dem entfernten System</a></span></dt>
+<dt><span class="section">10.2.9. <a href="nrpe.html#idp15732480">Zweiter Test</a></span></dt>
+<dt><span class="section">10.2.10. <a href="nrpe.html#idp15741280">Installation auf dem entfernten Host</a></span></dt>
+<dt><span class="section">10.2.11. <a href="nrpe.html#idp15767952">Dritter Test</a></span></dt>
+<dt><span class="section">10.2.12. <a href="nrpe.html#idp15771296">Fehlersuche</a></span></dt>
+<dt><span class="section">10.2.13. <a href="nrpe.html#idp15789264">Sicherheit</a></span></dt>
+<dt><span class="section">10.2.14. <a href="nrpe.html#idp15791248">Definition von lokalen Prüfungen</a></span></dt>
+<dt><span class="section">10.2.15. <a href="nrpe.html#idp15802832">Definitionen auf dem Icinga-Server</a></span></dt>
+<dt><span class="section">10.2.16. <a href="nrpe.html#idp15803120">Weitere Fehlersuche</a></span></dt>
+<dt><span class="section">10.2.17. <a href="nrpe.html#idp15842912">Aktualisierung</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="10.2.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15650208"></a>10.2.1. Einführung</h3></div></div></div>
+<a name="idp15688496"></a>10.2.1. Einführung</h3></div></div></div>
     
 
     <p>Nagios Remote Plugin Executor (oder kurz NRPE) ist ein Addon, das benutzt wird, um Plugins auszuführen, die "lokale"
@@ -76,7 +77,7 @@
     die Abstriche bei der Sicherheit überwiegen. SSL kann übrigens aktiviert werden, wenn Sie eine sicherere Verbindung benötigen.</p>
 
     <div class="figure">
-<a name="idp15652816"></a><p class="title"><b>Abbildung 10.1. NRPE</b></p>
+<a name="idp15690640"></a><p class="title"><b>Abbildung 10.1. NRPE</b></p>
 <div class="figure-contents">
       
 
@@ -105,7 +106,7 @@
     Relais.</p>
 
     <div class="figure">
-<a name="idp15659712"></a><p class="title"><b>Abbildung 10.2. NRPE remote</b></p>
+<a name="idp15698128"></a><p class="title"><b>Abbildung 10.2. NRPE remote</b></p>
 <div class="figure-contents">
       
 
@@ -120,7 +121,7 @@
 
   <div class="section" title="10.2.2. Voraussetzungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15663152"></a>10.2.2. Voraussetzungen</h3></div></div></div>
+<a name="idp15701152"></a>10.2.2. Voraussetzungen</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -146,7 +147,7 @@
 
   <div class="section" title="10.2.3. Download">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15668320"></a>10.2.3. Download</h3></div></div></div>
+<a name="idp15706784"></a>10.2.3. Download</h3></div></div></div>
     
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -180,7 +181,7 @@
 
   <div class="section" title="10.2.4. Optionale Anpassungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15673232"></a>10.2.4. Optionale Anpassungen</h3></div></div></div>
+<a name="idp15711488"></a>10.2.4. Optionale Anpassungen</h3></div></div></div>
     
 
     <p>Die maximale Länge von Daten, die übertragen werden können, ist auf 2.048 Bytes begrenzt, die maximale Länge von Plugin-Ausgaben
@@ -198,7 +199,7 @@
 
   <div class="section" title="10.2.5. Kompilieren auf dem Icinga-Server">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15677072"></a>10.2.5. Kompilieren auf dem Icinga-Server</h3></div></div></div>
+<a name="idp15715280"></a>10.2.5. Kompilieren auf dem Icinga-Server</h3></div></div></div>
     
 
     <p>Wechseln Sie in das neu angelegte Verzeichnis und führen Sie "configure" und "make " aus </p>
@@ -235,7 +236,7 @@
 
   <div class="section" title="10.2.6. Erster Test">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15685328"></a>10.2.6. Erster Test</h3></div></div></div>
+<a name="idp15723520"></a>10.2.6. Erster Test</h3></div></div></div>
     
 
     <p>Starten Sie den Daemon-Prozess und rufen Sie das Plugin auf </p>
@@ -254,7 +255,7 @@
 
   <div class="section" title="10.2.7. Entfernte/s System/e">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15688912"></a>10.2.7. Entfernte/s System/e</h3></div></div></div>
+<a name="idp15727088"></a>10.2.7. Entfernte/s System/e</h3></div></div></div>
     
 
     <p>Die Konfiguration und Installation auf dem Icinga-Server ist vorerst abgeschlossen. Der zweite Teil erfolgt auf dem
@@ -264,7 +265,7 @@
 
   <div class="section" title="10.2.8. Voraussetzungen auf dem entfernten System">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15690592"></a>10.2.8. Voraussetzungen auf dem entfernten System</h3></div></div></div>
+<a name="idp15728752"></a>10.2.8. Voraussetzungen auf dem entfernten System</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -302,7 +303,7 @@
 
   <div class="section" title="10.2.9. Zweiter Test">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15698560"></a>10.2.9. Zweiter Test</h3></div></div></div>
+<a name="idp15732480"></a>10.2.9. Zweiter Test</h3></div></div></div>
     
 
     <p>Starten Sie den Daemon-Prozess auf dem entfernten Host</p>
@@ -325,7 +326,7 @@
 
   <div class="section" title="10.2.10. Installation auf dem entfernten Host">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15703360"></a>10.2.10. Installation auf dem entfernten Host</h3></div></div></div>
+<a name="idp15741280"></a>10.2.10. Installation auf dem entfernten Host</h3></div></div></div>
     
 
     <p>Unabhängig vom verwendeten Modus, in dem der NRPE-Prozess auf dem entfernten Host läuft, benötigen Sie eine
@@ -415,7 +416,7 @@
 
   <div class="section" title="10.2.11. Dritter Test">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15729696"></a>10.2.11. Dritter Test</h3></div></div></div>
+<a name="idp15767952"></a>10.2.11. Dritter Test</h3></div></div></div>
     
 
     <p>Wechseln Sie auf dem Icinga-Server zum Icinga-Benutzer und führen Sie einen weiteren Test aus</p>
@@ -430,7 +431,7 @@
 
   <div class="section" title="10.2.12. Fehlersuche">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15733040"></a>10.2.12. Fehlersuche</h3></div></div></div>
+<a name="idp15771296"></a>10.2.12. Fehlersuche</h3></div></div></div>
     
 
     <p>Prüfen Sie auf dem entfernten Host, ob der nrpe-Prozess läuft</p>
@@ -489,7 +490,7 @@
 
   <div class="section" title="10.2.13. Sicherheit">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15750928"></a>10.2.13. Sicherheit</h3></div></div></div>
+<a name="idp15789264"></a>10.2.13. Sicherheit</h3></div></div></div>
     
 
     <p>Konsultieren Sie die Datei <code class="filename">SECURITY</code>, um mehr Informationen zu den Sicherheitsrisiken zu kommen, die beim
@@ -498,7 +499,7 @@
 
   <div class="section" title="10.2.14. Definition von lokalen Prüfungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15752912"></a>10.2.14. Definition von lokalen Prüfungen</h3></div></div></div>
+<a name="idp15791248"></a>10.2.14. Definition von lokalen Prüfungen</h3></div></div></div>
     
 
     <p>Einige Dinge wurden bereits in <code class="filename">etc/nrpe.cfg</code> auf dem entfernten Host vorkonfiguriert</p>
@@ -542,7 +543,7 @@
 
   <div class="section" title="10.2.15. Definitionen auf dem Icinga-Server">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15763728"></a>10.2.15. Definitionen auf dem Icinga-Server</h3></div></div></div>
+<a name="idp15802832"></a>10.2.15. Definitionen auf dem Icinga-Server</h3></div></div></div>
     
 
     <p>Nun wechseln wir auf den Icinga-Server, um einige Objekt-Definitionen anzulegen. Zuerst fügen Sie eine command-Definition
@@ -622,7 +623,7 @@
 
   <div class="section" title="10.2.16. Weitere Fehlersuche">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15763984"></a>10.2.16. Weitere Fehlersuche</h3></div></div></div>
+<a name="idp15803120"></a>10.2.16. Weitere Fehlersuche</h3></div></div></div>
     
 
     <p>Einige Fehler während der Installation wurden bereits angesprochen. Unglücklicherweise gibt es weitere Fehlermöglichkeiten.
@@ -725,7 +726,7 @@
 
   <div class="section" title="10.2.17. Aktualisierung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15804560"></a>10.2.17. Aktualisierung</h3></div></div></div>
+<a name="idp15842912"></a>10.2.17. Aktualisierung</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -770,9 +771,9 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp15812096"></a>
+    <a class="indexterm" name="idp15850416"></a>
 
-    <a class="indexterm" name="idp15813728"></a>
+    <a class="indexterm" name="idp15841872"></a>
   </div>
 </div>
 <div class="navfooter">

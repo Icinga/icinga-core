@@ -9,6 +9,7 @@
 <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
 <link rel="prev" href="cachedchecks.html" title="7.21. Cached Checks">
 <link rel="next" href="checkscheduling.html" title="7.23. Service and Host Check Scheduling">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,15 +30,15 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="passivestatetranslation"></a>7.22. <a name="passive_state_translation"></a>Passive Host State Translation</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="passivestatetranslation.html#idp14407056">7.22.1. Introduction</a></span></dt>
-<dt><span class="section"><a href="passivestatetranslation.html#idp14408400">7.22.2. Different World Views</a></span></dt>
-<dt><span class="section"><a href="passivestatetranslation.html#idp14408560">7.22.3. Enabling State Translation</a></span></dt>
+<dt><span class="section">7.22.1. <a href="passivestatetranslation.html#idp14408416">Introduction</a></span></dt>
+<dt><span class="section">7.22.2. <a href="passivestatetranslation.html#idp14409760">Different World Views</a></span></dt>
+<dt><span class="section">7.22.3. <a href="passivestatetranslation.html#idp14431296">Enabling State Translation</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.22.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14407056"></a>7.22.1. Introduction</h3></div></div></div>
+<a name="idp14408416"></a>7.22.1. Introduction</h3></div></div></div>
 
   <p>When Icinga receives passive host checks from remote sources (i.e other Icinga instances in distributed or
   failover setups), the host state reported by the remote source may not accurately reflect the state of the host from
@@ -47,7 +48,7 @@
   </div>
 <div class="section" title="7.22.2. Different World Views">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14408400"></a>7.22.2. Different World Views</h3></div></div></div>
+<a name="idp14409760"></a>7.22.2. Different World Views</h3></div></div></div>
 
   <p>The image below shows a simplified view of a failover monitoring setup.</p>
 
@@ -110,7 +111,7 @@
   </div>
 <div class="section" title="7.22.3. Enabling State Translation">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14408560"></a>7.22.3. Enabling State Translation</h3></div></div></div>
+<a name="idp14431296"></a>7.22.3. Enabling State Translation</h3></div></div></div>
 
   <p>By default, Icinga will <span class="emphasis"><em>not</em></span> automatically translate DOWN/UNREACHABLE states from passive check
   results. You will need to enable this feature if you need and want it.</p>
@@ -118,7 +119,7 @@
   <p>The automatic translation of passive host check states is controlled by the <a class="link" href="configmain.html#configmain-translate_passive_host_checks">translate_passive_host_checks</a> variable. Enable it and Icinga
   will automatically translate DOWN and UNREACHABLE states from remote sources to their correct state for the local instance of
   Icinga.</p>
-  <a class="indexterm" name="idp14431968"></a>
+  <a class="indexterm" name="idp14434448"></a>
 </div>
 </div>
 <div class="navfooter">

@@ -9,6 +9,7 @@
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="stalking.html" title="7.14. Status Stalking">
 <link rel="next" href="downtime.html" title="7.16. Geplante Ausfallzeiten">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -29,19 +30,19 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="perfdata"></a>7.15. <a name="perf_data"></a>Performance-Daten</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section"><a href="perfdata.html#idp13984304">7.15.1. Einführung</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp13986752">7.15.2. Typen von Performance-Daten</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp13998176">7.15.3. Plugin-Performance-Daten</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp13998432">7.15.4. Performance-Daten verarbeiten</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14015184">7.15.5. Performance-Daten verarbeiten durch Befehle</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14022064">7.15.6. Performance-Daten in Dateien schreiben</a></span></dt>
-<dt><span class="section"><a href="perfdata.html#idp14033216">7.15.7. Format Performance-Daten</a></span></dt>
+<dt><span class="section">7.15.1. <a href="perfdata.html#idp14022256">Einführung</a></span></dt>
+<dt><span class="section">7.15.2. <a href="perfdata.html#idp14024704">Typen von Performance-Daten</a></span></dt>
+<dt><span class="section">7.15.3. <a href="perfdata.html#idp14036480">Plugin-Performance-Daten</a></span></dt>
+<dt><span class="section">7.15.4. <a href="perfdata.html#idp14036768">Performance-Daten verarbeiten</a></span></dt>
+<dt><span class="section">7.15.5. <a href="perfdata.html#idp14053824">Performance-Daten verarbeiten durch Befehle</a></span></dt>
+<dt><span class="section">7.15.6. <a href="perfdata.html#idp14060544">Performance-Daten in Dateien schreiben</a></span></dt>
+<dt><span class="section">7.15.7. <a href="perfdata.html#idp14071600">Format Performance-Daten</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.15.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13984304"></a>7.15.1. Einführung</h3></div></div></div>
+<a name="idp14022256"></a>7.15.1. Einführung</h3></div></div></div>
     
 
     <p>Icinga ist ausgelegt, dass <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> neben den normalen Statusinformationen optional auch
@@ -52,7 +53,7 @@
 
   <div class="section" title="7.15.2. Typen von Performance-Daten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13986752"></a>7.15.2. Typen von Performance-Daten</h3></div></div></div>
+<a name="idp14024704"></a>7.15.2. Typen von Performance-Daten</h3></div></div></div>
     
 
     <p>Es gibt zwei grundlegende Kategorien von Performance-Daten, die von Icinga erhalten werden können:</p>
@@ -84,7 +85,7 @@
 
   <div class="section" title="7.15.3. Plugin-Performance-Daten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13998176"></a>7.15.3. Plugin-Performance-Daten</h3></div></div></div>
+<a name="idp14036480"></a>7.15.3. Plugin-Performance-Daten</h3></div></div></div>
     
 
     <p>Als Minimum müssen Icinga-Plugins eine einzelne Zeile mit menschlich lesbarem Text zurückliefern, die den Status eines Typs
@@ -138,7 +139,7 @@
 
   <div class="section" title="7.15.4. Performance-Daten verarbeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13998432"></a>7.15.4. Performance-Daten verarbeiten</h3></div></div></div>
+<a name="idp14036768"></a>7.15.4. Performance-Daten verarbeiten</h3></div></div></div>
     
 
     <p>Wenn Sie die Performance-Daten, die von den Plugins und in Icinga verfügbar sind, müssen Sie folgendes tun:</p>
@@ -159,7 +160,7 @@
 
   <div class="section" title="7.15.5. Performance-Daten verarbeiten durch Befehle">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14015184"></a>7.15.5. Performance-Daten verarbeiten durch Befehle</h3></div></div></div>
+<a name="idp14053824"></a>7.15.5. Performance-Daten verarbeiten durch Befehle</h3></div></div></div>
     
 
     <p>Der flexibelste Weg, um Performance-Daten zu verarbeiten, besteht darin, Icinga Befehle ausführen zu lassen (die Sie
@@ -182,7 +183,7 @@
 
   <div class="section" title="7.15.6. Performance-Daten in Dateien schreiben">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14022064"></a>7.15.6. Performance-Daten in Dateien schreiben</h3></div></div></div>
+<a name="idp14060544"></a>7.15.6. Performance-Daten in Dateien schreiben</h3></div></div></div>
     
 
     <p>Sie können Icinga mit Hilfe der <a class="link" href="configmain.html#configmain-host_perfdata_file">host_perfdata_file</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file">service_perfdata_file</a>-Optionen anweisen, die Host- und Service-Performance-Daten
@@ -206,7 +207,7 @@
 
   <div class="section" title="7.15.7. Format Performance-Daten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14033216"></a>7.15.7. <a name="perfdata-format"></a>Format Performance-Daten</h3></div></div></div>
+<a name="idp14071600"></a>7.15.7. <a name="perfdata-format"></a>Format Performance-Daten</h3></div></div></div>
     
 
     <p>Die Nagios-Entwicklerrichtlinien (<a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html" target="_top">http://nagiosplug.sourceforge.net/developer-guidelines.html</a>)
@@ -317,9 +318,9 @@
       </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idp14061344"></a>
+    <a class="indexterm" name="idp14099728"></a>
 
-    <a class="indexterm" name="idp14060240"></a>
+    <a class="indexterm" name="idp14100960"></a>
   </div>
 </div>
 <div class="navfooter">
