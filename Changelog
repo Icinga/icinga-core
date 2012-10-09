@@ -69,6 +69,7 @@ ENHANCEMENTS
 
 * docs: add a new stylesheet and rework docbook.xsl #3046 - MF
 * docs: add tocs for all sections #3193 - WN
+* docs: add jquery toggle for toc #3193 - MF
 
 * icinga.spec: use --with-mainurl to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29 #2611 - MF
 * icinga.spec: add devel package #2634 - MF
@@ -171,6 +172,7 @@ classic ui: Added/Changed cgi.cfg options
 
 * docs: new stylesheet in html/docs/stylesheets/icinga-docs.css #3046
 * docs: add tocs for all sections #3193
+* docs: add toc toogle javascript in html/docs/js/{icinga-docs.js,jquery-min.js} #3193
 
 * icinga.spec: add devel package #2634
 * icinga.spec: forced update on icinga.cfg change package locations #2923
