@@ -9,7 +9,7 @@
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="oncallrotation.html" title="7.11. Bereitschafts-Rotation">
 <link rel="next" href="dependencies.html" title="7.13. Host- und Service-Abhängigkeiten">
-<script src="../js/icinga-docs.js" type="text/javascript"></script>
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -30,17 +30,17 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="clusters"></a>7.12. Service- und Host-Gruppen überwachen</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.12.1. <a href="clusters.html#idp13785696">Einführung</a></span></dt>
-<dt><span class="section">7.12.2. <a href="clusters.html#idp13791024">Angriffsplan</a></span></dt>
-<dt><span class="section">7.12.3. <a href="clusters.html#idp13801280">Das check_cluster-Plugin benutzen</a></span></dt>
-<dt><span class="section">7.12.4. <a href="clusters.html#idp13804752">Service-Cluster überwachen</a></span></dt>
-<dt><span class="section">7.12.5. <a href="clusters.html#idp13812224">Host-Cluster überwachen</a></span></dt>
+<dt><span class="section">7.12.1. <a href="clusters.html#idp13822208">Einführung</a></span></dt>
+<dt><span class="section">7.12.2. <a href="clusters.html#idp13827760">Angriffsplan</a></span></dt>
+<dt><span class="section">7.12.3. <a href="clusters.html#idp13837840">Das check_cluster-Plugin benutzen</a></span></dt>
+<dt><span class="section">7.12.4. <a href="clusters.html#idp13841360">Service-Cluster überwachen</a></span></dt>
+<dt><span class="section">7.12.5. <a href="clusters.html#idp13848720">Host-Cluster überwachen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.12.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13785696"></a>7.12.1. Einführung</h3></div></div></div>
+<a name="idp13822208"></a>7.12.1. Einführung</h3></div></div></div>
     
 
     <p>Einige Leute haben gefragt, wie man Gruppen (Cluster) von Hosts und Services überwacht, also möchten wir hier schreiben, wie man
@@ -62,7 +62,7 @@
 
   <div class="section" title="7.12.2. Angriffsplan">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13791024"></a>7.12.2. Angriffsplan</h3></div></div></div>
+<a name="idp13827760"></a>7.12.2. Angriffsplan</h3></div></div></div>
     
 
     <p>Es gibt mehrere Wege, wie Sie eventuell Service- oder Host-Gruppen überwachen können. Wir werden die Methode beschreiben, von der
@@ -97,7 +97,7 @@
 
   <div class="section" title="7.12.3. Das check_cluster-Plugin benutzen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13801280"></a>7.12.3. Das check_cluster-Plugin benutzen</h3></div></div></div>
+<a name="idp13837840"></a>7.12.3. Das check_cluster-Plugin benutzen</h3></div></div></div>
     
 
     <p>Das check_cluster-Plugin ist dafür ausgelegt, den Gesamtstatus eines Host- oder Service-Clusters durch die Prüfung der
@@ -108,7 +108,7 @@
 
   <div class="section" title="7.12.4. Service-Cluster überwachen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13804752"></a>7.12.4. Service-Cluster überwachen</h3></div></div></div>
+<a name="idp13841360"></a>7.12.4. Service-Cluster überwachen</h3></div></div></div>
     
 
     <p>Nehmen wir an, dass Sie drei DNS-Server haben, die redundante Dienste in Ihrem Netzwerk bereitstellen. Zuerst müssen Sie jeden
@@ -143,7 +143,7 @@
 
   <div class="section" title="7.12.5. Host-Cluster überwachen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13812224"></a>7.12.5. Host-Cluster überwachen</h3></div></div></div>
+<a name="idp13848720"></a>7.12.5. Host-Cluster überwachen</h3></div></div></div>
     
 
     <p>Host-Cluster zu überwachen ist ziemlich ähnlich zur Überwachung von Service-Clustern. Offenkundig besteht der Hauptunterschied
@@ -183,7 +183,7 @@
     Netzwerk-Layout und von dem, was Sie erreichen wollen, möchten Sie vielleicht die Benachrichtigungen für UNREACHABLE-Zustände bei den
     Host-Definitionen aktiviert lassen.</p>
 
-    <a class="indexterm" name="idp13821152"></a>
+    <a class="indexterm" name="idp13857648"></a>
   </div>
 </div>
 <div class="navfooter">

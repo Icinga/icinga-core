@@ -9,7 +9,7 @@
 <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
 <link rel="prev" href="extcommands2.html" title="7.2. Liste der externen Befehle">
 <link rel="next" href="volatileservices.html" title="7.4. sprunghafte Services">
-<script src="../js/icinga-docs.js" type="text/javascript"></script>
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -30,19 +30,19 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="eventhandlers"></a>7.3. Eventhandler</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.3.1. <a href="eventhandlers.html#idp12419664">Einführung</a></span></dt>
-<dt><span class="section">7.3.2. <a href="eventhandlers.html#idp12430080">Wann werden Eventhandler ausgeführt?</a></span></dt>
-<dt><span class="section">7.3.3. <a href="eventhandlers.html#idp12436000">Eventhandler-Typen</a></span></dt>
-<dt><span class="section">7.3.4. <a href="eventhandlers.html#idp13208192">Eventhandler aktivieren</a></span></dt>
-<dt><span class="section">7.3.5. <a href="eventhandlers.html#idp13213584">Eventhandler-Ausführungsreihenfolge</a></span></dt>
-<dt><span class="section">7.3.6. <a href="eventhandlers.html#idp13215472">Eventhandler-Kommandos schreiben</a></span></dt>
-<dt><span class="section">7.3.7. <a href="eventhandlers.html#idp13233616">Berechtigungen für Eventhandler-Befehle</a></span></dt>
+<dt><span class="section">7.3.1. <a href="eventhandlers.html#idp12456640">Einführung</a></span></dt>
+<dt><span class="section">7.3.2. <a href="eventhandlers.html#idp12457008">Wann werden Eventhandler ausgeführt?</a></span></dt>
+<dt><span class="section">7.3.3. <a href="eventhandlers.html#idp12473216">Eventhandler-Typen</a></span></dt>
+<dt><span class="section">7.3.4. <a href="eventhandlers.html#idp13244976">Eventhandler aktivieren</a></span></dt>
+<dt><span class="section">7.3.5. <a href="eventhandlers.html#idp13250336">Eventhandler-Ausführungsreihenfolge</a></span></dt>
+<dt><span class="section">7.3.6. <a href="eventhandlers.html#idp13252176">Eventhandler-Kommandos schreiben</a></span></dt>
+<dt><span class="section">7.3.7. <a href="eventhandlers.html#idp13270336">Berechtigungen für Eventhandler-Befehle</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.3.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12419664"></a>7.3.1. Einführung</h3></div></div></div>
+<a name="idp12456640"></a>7.3.1. Einführung</h3></div></div></div>
     
 
     <div class="mediaobject" align="right"><img src="../images/eventhandlers.png" align="right"></div>
@@ -77,7 +77,7 @@
 
   <div class="section" title="7.3.2. Wann werden Eventhandler ausgeführt?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12430080"></a>7.3.2. Wann werden Eventhandler ausgeführt?</h3></div></div></div>
+<a name="idp12457008"></a>7.3.2. Wann werden Eventhandler ausgeführt?</h3></div></div></div>
     
 
     <p>Eventhandler werden ausgeführt, wenn ein Service oder Host</p>
@@ -99,7 +99,7 @@
 
   <div class="section" title="7.3.3. Eventhandler-Typen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12436000"></a>7.3.3. Eventhandler-Typen</h3></div></div></div>
+<a name="idp12473216"></a>7.3.3. Eventhandler-Typen</h3></div></div></div>
     
 
     <p>Es gibt unterschiedliche Typen von optionalen Eventhandlern, die Sie definieren können, um Host- und Statuswechsel zu
@@ -133,7 +133,7 @@
 
   <div class="section" title="7.3.4. Eventhandler aktivieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13208192"></a>7.3.4. Eventhandler aktivieren</h3></div></div></div>
+<a name="idp13244976"></a>7.3.4. Eventhandler aktivieren</h3></div></div></div>
     
 
     <p>Eventhandler können durch die <a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a>-Direktive in Ihrer
@@ -145,7 +145,7 @@
 
   <div class="section" title="7.3.5. Eventhandler-Ausführungsreihenfolge">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13213584"></a>7.3.5. Eventhandler-Ausführungsreihenfolge</h3></div></div></div>
+<a name="idp13250336"></a>7.3.5. Eventhandler-Ausführungsreihenfolge</h3></div></div></div>
     
 
     <p>Wie bereits erwähnt werden globale Host- und Service-Eventhandler direkt vor Host- oder Service-spezifischen Eventhandlern
@@ -156,7 +156,7 @@
 
   <div class="section" title="7.3.6. Eventhandler-Kommandos schreiben">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13215472"></a>7.3.6. Eventhandler-Kommandos schreiben</h3></div></div></div>
+<a name="idp13252176"></a>7.3.6. Eventhandler-Kommandos schreiben</h3></div></div></div>
     
 
     <p>Eventhandler werden wahrscheinlich Shell- oder Perl-Scripte sein, aber es ist jede Art von ausführbarer Datei denkbar, die von der
@@ -179,7 +179,7 @@
 
   <div class="section" title="7.3.7. Berechtigungen für Eventhandler-Befehle">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13233616"></a>7.3.7. Berechtigungen für Eventhandler-Befehle</h3></div></div></div>
+<a name="idp13270336"></a>7.3.7. Berechtigungen für Eventhandler-Befehle</h3></div></div></div>
     
 
     <p>Eventhandler werden normalerweise mit den gleichen Berechtigungen ausgeführt wie der Benutzer, der Icinga auf Ihrer
@@ -291,9 +291,9 @@ exit 0</pre>
     <p>Das ist alles! Eventhandler sind ziemlich einfach zu schreiben und zu implementieren, also versuchen Sie es und sehen, was Sie tun
     können.</p>
 
-    <a class="indexterm" name="idp13249456"></a>
+    <a class="indexterm" name="idp13286176"></a>
 
-    <a class="indexterm" name="idp13252448"></a>
+    <a class="indexterm" name="idp13289168"></a>
   </div>
 </div>
 <div class="navfooter">

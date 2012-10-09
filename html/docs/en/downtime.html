@@ -30,18 +30,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="downtime"></a>7.16. <a name="schedule_downtime"></a>Scheduled Downtime</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.16.1. <a href="downtime.html#idp14140048">Introduction</a></span></dt>
-<dt><span class="section">7.16.2. <a href="downtime.html#idp14142816">Scheduling Downtime</a></span></dt>
-<dt><span class="section">7.16.3. <a href="downtime.html#idp14146080">Fixed vs. Flexible Downtime</a></span></dt>
-<dt><span class="section">7.16.4. <a href="downtime.html#idp14149088">Triggered Downtime</a></span></dt>
-<dt><span class="section">7.16.5. <a href="downtime.html#idp14150656">How Scheduled Downtime Affects Notifications</a></span></dt>
-<dt><span class="section">7.16.6. <a href="downtime.html#idp14153424">Overlapping Scheduled Downtime</a></span></dt>
+<dt><span class="section">7.16.1. <a href="downtime.html#idp14140592">Introduction</a></span></dt>
+<dt><span class="section">7.16.2. <a href="downtime.html#idp14144080">Scheduling Downtime</a></span></dt>
+<dt><span class="section">7.16.3. <a href="downtime.html#idp14146784">Fixed vs. Flexible Downtime</a></span></dt>
+<dt><span class="section">7.16.4. <a href="downtime.html#idp14149920">Triggered Downtime</a></span></dt>
+<dt><span class="section">7.16.5. <a href="downtime.html#idp14151488">How Scheduled Downtime Affects Notifications</a></span></dt>
+<dt><span class="section">7.16.6. <a href="downtime.html#idp14153952">Overlapping Scheduled Downtime</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.16.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14140048"></a>7.16.1. Introduction</h3></div></div></div>
+<a name="idp14140592"></a>7.16.1. Introduction</h3></div></div></div>
 
   <p>Icinga allows you to schedule periods of planned downtime for hosts and service that you're monitoring. This is
   useful in the event that you actually know you're going to be taking a server down for an upgrade, etc.</p>
@@ -51,7 +51,7 @@
   </div>
 <div class="section" title="7.16.2. Scheduling Downtime">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14142816"></a>7.16.2. Scheduling Downtime</h3></div></div></div>
+<a name="idp14144080"></a>7.16.2. Scheduling Downtime</h3></div></div></div>
 
   <p>You can schedule downtime for hosts and service through the <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo CGI</a> (either
   when viewing host or service information). Click in the "Schedule downtime for this host/service" link to actually schedule the
@@ -64,7 +64,7 @@
   </div>
 <div class="section" title="7.16.3. Fixed vs. Flexible Downtime">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14146080"></a>7.16.3. Fixed vs. Flexible Downtime</h3></div></div></div>
+<a name="idp14146784"></a>7.16.3. Fixed vs. Flexible Downtime</h3></div></div></div>
 
   <p>When you schedule downtime for a host or service through the web interface you'll be asked if the downtime is fixed or
   flexible. Here's an explanation of how "fixed" and "flexible" downtime differs:</p>
@@ -85,7 +85,7 @@
   </div>
 <div class="section" title="7.16.4. Triggered Downtime">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14149088"></a>7.16.4. Triggered Downtime</h3></div></div></div>
+<a name="idp14149920"></a>7.16.4. Triggered Downtime</h3></div></div></div>
 
   <p>When scheduling host or service downtime you have the option of making it "triggered" downtime. What is triggered
   downtime, you ask? With triggered downtime the start of the downtime is triggered by the start of some other scheduled host or
@@ -97,7 +97,7 @@
   </div>
 <div class="section" title="7.16.5. How Scheduled Downtime Affects Notifications">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14150656"></a>7.16.5. How Scheduled Downtime Affects Notifications</h3></div></div></div>
+<a name="idp14151488"></a>7.16.5. How Scheduled Downtime Affects Notifications</h3></div></div></div>
 
   <p>When a host or service is in a period of scheduled downtime, Icinga will not allow normal notifications to be sent
   out for the host or service. However, a "DOWNTIMESTART" notification will get sent out for the host or service, which will serve
@@ -113,7 +113,7 @@
   </div>
 <div class="section" title="7.16.6. Overlapping Scheduled Downtime">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14153424"></a>7.16.6. Overlapping Scheduled Downtime</h3></div></div></div>
+<a name="idp14153952"></a>7.16.6. Overlapping Scheduled Downtime</h3></div></div></div>
 
   <p>I like to refer to this as the "Oh crap, its not working" syndrome. You know what I'm talking about. You take a server
   down to perform a "routine" hardware upgrade, only to later realize that the OS drivers aren't working, the RAID array blew up,
@@ -146,7 +146,7 @@
   9:20pm-1:30am), Icinga will wait until the last period of scheduled downtime is over before it allows notifications to be
   sent out for that host or service. In this example notifications would be suppressed for host A until 1:30am Tuesday
   morning.</p>
-  <a class="indexterm" name="idp14161744"></a>
+  <a class="indexterm" name="idp14162288"></a>
 </div>
 </div>
 <div class="navfooter">

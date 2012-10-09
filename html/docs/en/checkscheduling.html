@@ -30,26 +30,26 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="checkscheduling"></a>7.23. <a name="checkscheduling-check_scheduling"></a>Service and Host Check Scheduling</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.23.1. <a href="checkscheduling.html#idp14436688">Introduction</a></span></dt>
-<dt><span class="section">7.23.2. <a href="checkscheduling.html#idp14438800">Configuration Options</a></span></dt>
-<dt><span class="section">7.23.3. <a href="checkscheduling.html#idp14455440">Initial Scheduling</a></span></dt>
-<dt><span class="section">7.23.4. <a href="checkscheduling.html#idp14461408">Inter-Check Delay</a></span></dt>
-<dt><span class="section">7.23.5. <a href="checkscheduling.html#idp14467088">Service Interleaving</a></span></dt>
-<dt><span class="section">7.23.6. <a href="checkscheduling.html#idp14498672">Maximum Concurrent Service Checks</a></span></dt>
-<dt><span class="section">7.23.7. <a href="checkscheduling.html#idp14498928">Time Restraints</a></span></dt>
-<dt><span class="section">7.23.8. <a href="checkscheduling.html#idp14521120">Normal Scheduling</a></span></dt>
-<dt><span class="section">7.23.9. <a href="checkscheduling.html#idp14523488">Scheduling During Problems</a></span></dt>
-<dt><span class="section">7.23.10. <a href="checkscheduling.html#idp14531824">Host Checks</a></span></dt>
-<dt><span class="section">7.23.11. <a href="checkscheduling.html#idp14536048">Scheduling Delays</a></span></dt>
-<dt><span class="section">7.23.12. <a href="checkscheduling.html#idp14538416">Scheduling Example</a></span></dt>
-<dt><span class="section">7.23.13. <a href="checkscheduling.html#idp14555360">Service Definition Options That Affect Scheduling</a></span></dt>
-<dt><span class="section">7.23.14. <a href="checkscheduling.html#idp14567248">TODO</a></span></dt>
+<dt><span class="section">7.23.1. <a href="checkscheduling.html#idp14436976">Introduction</a></span></dt>
+<dt><span class="section">7.23.2. <a href="checkscheduling.html#idp14439168">Configuration Options</a></span></dt>
+<dt><span class="section">7.23.3. <a href="checkscheduling.html#idp14455840">Initial Scheduling</a></span></dt>
+<dt><span class="section">7.23.4. <a href="checkscheduling.html#idp14461936">Inter-Check Delay</a></span></dt>
+<dt><span class="section">7.23.5. <a href="checkscheduling.html#idp14467680">Service Interleaving</a></span></dt>
+<dt><span class="section">7.23.6. <a href="checkscheduling.html#idp14499120">Maximum Concurrent Service Checks</a></span></dt>
+<dt><span class="section">7.23.7. <a href="checkscheduling.html#idp14499376">Time Restraints</a></span></dt>
+<dt><span class="section">7.23.8. <a href="checkscheduling.html#idp14521568">Normal Scheduling</a></span></dt>
+<dt><span class="section">7.23.9. <a href="checkscheduling.html#idp14523936">Scheduling During Problems</a></span></dt>
+<dt><span class="section">7.23.10. <a href="checkscheduling.html#idp14532272">Host Checks</a></span></dt>
+<dt><span class="section">7.23.11. <a href="checkscheduling.html#idp14536448">Scheduling Delays</a></span></dt>
+<dt><span class="section">7.23.12. <a href="checkscheduling.html#idp14538576">Scheduling Example</a></span></dt>
+<dt><span class="section">7.23.13. <a href="checkscheduling.html#idp14555776">Service Definition Options That Affect Scheduling</a></span></dt>
+<dt><span class="section">7.23.14. <a href="checkscheduling.html#idp14567696">TODO</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.23.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14436688"></a>7.23.1. <a name="checkscheduling-introduction"></a>Introduction</h3></div></div></div>
+<a name="idp14436976"></a>7.23.1. <a name="checkscheduling-introduction"></a>Introduction</h3></div></div></div>
     
 
     <p>There were a lot of questions regarding how service checks are scheduled in certain situations, along with how the scheduling
@@ -59,7 +59,7 @@
 
   <div class="section" title="7.23.2. Configuration Options">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14438800"></a>7.23.2. <a name="checkscheduling-configuration_options"></a>Configuration Options</h3></div></div></div>
+<a name="idp14439168"></a>7.23.2. <a name="checkscheduling-configuration_options"></a>Configuration Options</h3></div></div></div>
     
 
     <p>Before we begin, there are several configuration options that affect how service checks are scheduled, executed, and processed.
@@ -113,7 +113,7 @@
 
   <div class="section" title="7.23.3. Initial Scheduling">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14455440"></a>7.23.3. <a name="checkscheduling-initial_scheduling"></a>Initial Scheduling</h3></div></div></div>
+<a name="idp14455840"></a>7.23.3. <a name="checkscheduling-initial_scheduling"></a>Initial Scheduling</h3></div></div></div>
     
 
     <p>When Icinga (re)starts, it will attempt to schedule the initial check of all services in a manner that will minimize the
@@ -144,7 +144,7 @@
 
   <div class="section" title="7.23.4. Inter-Check Delay">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14461408"></a>7.23.4. <a name="checkscheduling-service_inter_check_delay"></a>Inter-Check Delay</h3></div></div></div>
+<a name="idp14461936"></a>7.23.4. <a name="checkscheduling-service_inter_check_delay"></a>Inter-Check Delay</h3></div></div></div>
     
 
     <p>As mentioned before, Icinga attempts to equalize the load placed on the machine that is running Icinga by equally
@@ -169,7 +169,7 @@
 
   <div class="section" title="7.23.5. Service Interleaving">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14467088"></a>7.23.5. <a name="checkscheduling-service_interleaving"></a>Service Interleaving</h3></div></div></div>
+<a name="idp14467680"></a>7.23.5. <a name="checkscheduling-service_interleaving"></a>Service Interleaving</h3></div></div></div>
     
 
     <p>As discussed above, the inter-check delay helps to equalize the load that Icinga imposes on the local host. What about
@@ -229,7 +229,7 @@
 
   <div class="section" title="7.23.6. Maximum Concurrent Service Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14498672"></a>7.23.6. <a name="checkscheduling-max_concurrent_checks"></a>Maximum Concurrent Service Checks</h3></div></div></div>
+<a name="idp14499120"></a>7.23.6. <a name="checkscheduling-max_concurrent_checks"></a>Maximum Concurrent Service Checks</h3></div></div></div>
     
 
     <p>In order to prevent Icinga from consuming all of your CPU resources, you can restrict the maximum number of concurrent
@@ -284,7 +284,7 @@
 
   <div class="section" title="7.23.7. Time Restraints">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14498928"></a>7.23.7. <a name="checkscheduling-time_restraints"></a>Time Restraints</h3></div></div></div>
+<a name="idp14499376"></a>7.23.7. <a name="checkscheduling-time_restraints"></a>Time Restraints</h3></div></div></div>
     
 
     <p>The <span class="emphasis"><em>check_period</em></span> option determines the <a class="link" href="timeperiods.html" title="5.9. Time Periods">time period</a> during which
@@ -312,7 +312,7 @@
 
   <div class="section" title="7.23.8. Normal Scheduling">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14521120"></a>7.23.8. <a name="checkscheduling-normal_scheduling"></a>Normal Scheduling</h3></div></div></div>
+<a name="idp14521568"></a>7.23.8. <a name="checkscheduling-normal_scheduling"></a>Normal Scheduling</h3></div></div></div>
     
 
     <p>In an ideal world you wouldn't have network problems. But if that were the case, you wouldn't need a network monitoring tool.
@@ -322,7 +322,7 @@
 
   <div class="section" title="7.23.9. Scheduling During Problems">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14523488"></a>7.23.9. <a name="checkscheduling-problem_scheduling"></a>Scheduling During Problems</h3></div></div></div>
+<a name="idp14523936"></a>7.23.9. <a name="checkscheduling-problem_scheduling"></a>Scheduling During Problems</h3></div></div></div>
     
 
     <p>So what happens when there are problems with a service? Well, one of the things that happens is the service check scheduling
@@ -344,7 +344,7 @@
 
   <div class="section" title="7.23.10. Host Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14531824"></a>7.23.10. <a name="checkscheduling-host_checks"></a>Host Checks</h3></div></div></div>
+<a name="idp14532272"></a>7.23.10. <a name="checkscheduling-host_checks"></a>Host Checks</h3></div></div></div>
     
 
     <p>Unlike service checks, host checks are <span class="emphasis"><em>not</em></span> scheduled on a regular basis. Instead they are run on demand, as
@@ -363,7 +363,7 @@
 
   <div class="section" title="7.23.11. Scheduling Delays">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14536048"></a>7.23.11. <a name="checkscheduling-scheduling_delays"></a>Scheduling Delays</h3></div></div></div>
+<a name="idp14536448"></a>7.23.11. <a name="checkscheduling-scheduling_delays"></a>Scheduling Delays</h3></div></div></div>
     
 
     <p>It should be noted that service check scheduling and execution is done on a best effort basis. Individual service checks are
@@ -374,7 +374,7 @@
 
   <div class="section" title="7.23.12. Scheduling Example">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14538416"></a>7.23.12. <a name="checkscheduling-scheduling_example"></a>Scheduling Example</h3></div></div></div>
+<a name="idp14538576"></a>7.23.12. <a name="checkscheduling-scheduling_example"></a>Scheduling Example</h3></div></div></div>
     
 
     <p>The scheduling of service checks, their execution, and the processing of their results can be a bit difficult to understand, so
@@ -406,7 +406,7 @@
 
   <div class="section" title="7.23.13. Service Definition Options That Affect Scheduling">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14555360"></a>7.23.13. <a name="checkscheduling-service_options"></a>Service Definition Options That Affect Scheduling</h3></div></div></div>
+<a name="idp14555776"></a>7.23.13. <a name="checkscheduling-service_options"></a>Service Definition Options That Affect Scheduling</h3></div></div></div>
     
 
     <p>Each service definition contains a <span class="emphasis"><em>check_interval</em></span> and <span class="emphasis"><em>retry_interval</em></span> option. Hopefully
@@ -432,7 +432,7 @@
 
   <div class="section" title="7.23.14. TODO">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14567248"></a>7.23.14. TODO</h3></div></div></div>
+<a name="idp14567696"></a>7.23.14. TODO</h3></div></div></div>
     
 
     <p><a name="checkscheduling-host_inter_check_delay"></a><span class="bold"><strong>Host Check Directives</strong></span></p>
@@ -441,33 +441,33 @@
 
     <p>This documentation is being rewritten. Stay tuned for more information in a later beta release...</p>
 
-    <a class="indexterm" name="idp14571792"></a>
+    <a class="indexterm" name="idp14572240"></a>
 
-    <a class="indexterm" name="idp14573552"></a>
+    <a class="indexterm" name="idp14574000"></a>
 
-    <a class="indexterm" name="idp14575200"></a>
+    <a class="indexterm" name="idp14575648"></a>
 
-    <a class="indexterm" name="idp14576960"></a>
+    <a class="indexterm" name="idp14577408"></a>
 
-    <a class="indexterm" name="idp14578352"></a>
+    <a class="indexterm" name="idp14578800"></a>
 
-    <a class="indexterm" name="idp14578480"></a>
+    <a class="indexterm" name="idp14578928"></a>
 
-    <a class="indexterm" name="idp14581568"></a>
+    <a class="indexterm" name="idp14582016"></a>
 
-    <a class="indexterm" name="idp14581696"></a>
+    <a class="indexterm" name="idp14582144"></a>
 
-    <a class="indexterm" name="idp14584880"></a>
+    <a class="indexterm" name="idp14585328"></a>
 
-    <a class="indexterm" name="idp14585008"></a>
+    <a class="indexterm" name="idp14585456"></a>
 
-    <a class="indexterm" name="idp14586608"></a>
+    <a class="indexterm" name="idp14587056"></a>
 
-    <a class="indexterm" name="idp14588240"></a>
+    <a class="indexterm" name="idp14588688"></a>
 
-    <a class="indexterm" name="idp14589872"></a>
+    <a class="indexterm" name="idp14590320"></a>
 
-    <a class="indexterm" name="idp14593136"></a>
+    <a class="indexterm" name="idp14593584"></a>
   </div>
 </div>
 <div class="navfooter">

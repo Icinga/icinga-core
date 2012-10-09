@@ -30,13 +30,13 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="recurring_downtimes"></a>7.17. <a name="recurring_downtime"></a>Recurring Downtimes</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.17.1. <a href="recurring_downtimes.html#idp14165472">Downtime definition</a></span></dt>
-<dt><span class="section">7.17.2. <a href="recurring_downtimes.html#idp14168064">Variable dates</a></span></dt>
-<dt><span class="section">7.17.3. <a href="recurring_downtimes.html#idp14211520">Local holidays</a></span></dt>
-<dt><span class="section">7.17.4. <a href="recurring_downtimes.html#idp14211680">Entering downtimes</a></span></dt>
-<dt><span class="section">7.17.5. <a href="recurring_downtimes.html#idp14224032">Planning downtimes</a></span></dt>
-<dt><span class="section">7.17.6. <a href="recurring_downtimes.html#idp14224192">Converting downtime definitions</a></span></dt>
-<dt><span class="section">7.17.7. <a href="recurring_downtimes.html#idp14238720">Files</a></span></dt>
+<dt><span class="section">7.17.1. <a href="recurring_downtimes.html#idp14165680">Downtime definition</a></span></dt>
+<dt><span class="section">7.17.2. <a href="recurring_downtimes.html#idp14168640">Variable dates</a></span></dt>
+<dt><span class="section">7.17.3. <a href="recurring_downtimes.html#idp14211984">Local holidays</a></span></dt>
+<dt><span class="section">7.17.4. <a href="recurring_downtimes.html#idp14212144">Entering downtimes</a></span></dt>
+<dt><span class="section">7.17.5. <a href="recurring_downtimes.html#idp14224496">Planning downtimes</a></span></dt>
+<dt><span class="section">7.17.6. <a href="recurring_downtimes.html#idp14224656">Converting downtime definitions</a></span></dt>
+<dt><span class="section">7.17.7. <a href="recurring_downtimes.html#idp14239184">Files</a></span></dt>
 </dl></div>
   
 
@@ -47,7 +47,7 @@
 
   <div class="section" title="7.17.1. Downtime definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14165472"></a>7.17.1. Downtime definition</h3></div></div></div>
+<a name="idp14165680"></a>7.17.1. Downtime definition</h3></div></div></div>
 
   <p>Icinga introduces a new format for these downtimes based on existing definitions taken from the status file and time periods
   resulting in:</p>
@@ -138,7 +138,7 @@
   </div>
 <div class="section" title="7.17.2. Variable dates">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14168064"></a>7.17.2. Variable dates</h3></div></div></div>
+<a name="idp14168640"></a>7.17.2. Variable dates</h3></div></div></div>
 
   <p>The definitions above will work for most dates but some are calculated based on easter sunday which is on a different date each
   year. We tried to bypass these limitations by calculating the dates based on easter sunday and giving them names you can refer to. The
@@ -242,7 +242,7 @@
   </div>
 <div class="section" title="7.17.3. Local holidays">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14211520"></a>7.17.3. Local holidays</h3></div></div></div>
+<a name="idp14211984"></a>7.17.3. Local holidays</h3></div></div></div>
 
   <p>Looking at the calendars of several countries there are a lot of holidays which only apply to a single country. Unfortunately some
   of these dates are on a weekday in a week within a month. You can already define these dates using "monday 3 february" or "monday -1 may"
@@ -296,7 +296,7 @@ Pentecote             date_easter(49)</pre>
   </div>
 <div class="section" title="7.17.4. Entering downtimes">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14211680"></a>7.17.4. Entering downtimes</h3></div></div></div>
+<a name="idp14212144"></a>7.17.4. Entering downtimes</h3></div></div></div>
 
   <p>So far there is no way to enter the definitions via your browser so you have to use your favourite text editor to create the
   definitions. Sorry.</p>
@@ -304,7 +304,7 @@ Pentecote             date_easter(49)</pre>
   </div>
 <div class="section" title="7.17.5. Planning downtimes">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14224032"></a>7.17.5. Planning downtimes</h3></div></div></div>
+<a name="idp14224496"></a>7.17.5. Planning downtimes</h3></div></div></div>
 
   <p>Once you have created a file holding the downtime definitions you will want to schedule the downtimes automatically. This can be
   done using the Perl script "sched_down.pl" being called from the crontab. The script itself requires the Perl module "Date::Calc".</p>
@@ -383,7 +383,7 @@ Setting environment variables influences the behaviour:
   </div>
 <div class="section" title="7.17.6. Converting downtime definitions">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14224192"></a>7.17.6. Converting downtime definitions</h3></div></div></div>
+<a name="idp14224656"></a>7.17.6. Converting downtime definitions</h3></div></div></div>
 
   <p>Steve Shipway has created files to plan downtimes via a CGI and schedule them for several Nagios versions a long time ago (<a class="link" href="https://www.monitoringexchange.org/inventory/Utilities/AddOn-Projects/Downtimes/downtime_sched%253A-recurring-downtime-scheduler" target="_top">see
   here</a>).</p>
@@ -398,11 +398,11 @@ Setting environment variables influences the behaviour:
   </div>
 <div class="section" title="7.17.7. Files">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14238720"></a>7.17.7. Files</h3></div></div></div>
+<a name="idp14239184"></a>7.17.7. Files</h3></div></div></div>
 
   <p>You will find the perl scripts in <code class="filename">contrib/downtimes</code>.</p>
 
-  <a class="indexterm" name="idp14240176"></a>
+  <a class="indexterm" name="idp14240640"></a>
 </div>
 </div>
 <div class="navfooter">

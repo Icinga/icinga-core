@@ -30,20 +30,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="hostchecks"></a>5.4. <a name="host_checks"></a>Host Checks</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">5.4.1. <a href="hostchecks.html#idp7206848">Introduction</a></span></dt>
-<dt><span class="section">5.4.2. <a href="hostchecks.html#idp7208288">When Are Host Checks Performed?</a></span></dt>
-<dt><span class="section">5.4.3. <a href="hostchecks.html#idp9685488">Cached Host Checks</a></span></dt>
-<dt><span class="section">5.4.4. <a href="hostchecks.html#idp9687936">Dependencies and Checks</a></span></dt>
-<dt><span class="section">5.4.5. <a href="hostchecks.html#idp9690848">Parallelization of Host Checks</a></span></dt>
-<dt><span class="section">5.4.6. <a href="hostchecks.html#idp9700512">Host States</a></span></dt>
-<dt><span class="section">5.4.7. <a href="hostchecks.html#idp9704992">Host State Determination</a></span></dt>
-<dt><span class="section">5.4.8. <a href="hostchecks.html#idp9739200">Host State Changes</a></span></dt>
+<dt><span class="section">5.4.1. <a href="hostchecks.html#idp7207248">Introduction</a></span></dt>
+<dt><span class="section">5.4.2. <a href="hostchecks.html#idp7208656">When Are Host Checks Performed?</a></span></dt>
+<dt><span class="section">5.4.3. <a href="hostchecks.html#idp9685776">Cached Host Checks</a></span></dt>
+<dt><span class="section">5.4.4. <a href="hostchecks.html#idp9688016">Dependencies and Checks</a></span></dt>
+<dt><span class="section">5.4.5. <a href="hostchecks.html#idp9690896">Parallelization of Host Checks</a></span></dt>
+<dt><span class="section">5.4.6. <a href="hostchecks.html#idp9700592">Host States</a></span></dt>
+<dt><span class="section">5.4.7. <a href="hostchecks.html#idp9705168">Host State Determination</a></span></dt>
+<dt><span class="section">5.4.8. <a href="hostchecks.html#idp9739408">Host State Changes</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.4.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7206848"></a>5.4.1. Introduction</h3></div></div></div>
+<a name="idp7207248"></a>5.4.1. Introduction</h3></div></div></div>
     
 
     <p>The basic workings of host checks are described here...</p>
@@ -51,7 +51,7 @@
 
   <div class="section" title="5.4.2. When Are Host Checks Performed?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp7208288"></a>5.4.2. When Are Host Checks Performed?</h3></div></div></div>
+<a name="idp7208656"></a>5.4.2. When Are Host Checks Performed?</h3></div></div></div>
     
 
     <p>Hosts are checked by the Icinga daemon:</p>
@@ -91,7 +91,7 @@
 
   <div class="section" title="5.4.3. Cached Host Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9685488"></a>5.4.3. Cached Host Checks</h3></div></div></div>
+<a name="idp9685776"></a>5.4.3. Cached Host Checks</h3></div></div></div>
     
 
     <p>The performance of on-demand host checks can be significantly improved by implementing the use of cached checks, which allow
@@ -101,7 +101,7 @@
 
   <div class="section" title="5.4.4. Dependencies and Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9687936"></a>5.4.4. Dependencies and Checks</h3></div></div></div>
+<a name="idp9688016"></a>5.4.4. Dependencies and Checks</h3></div></div></div>
     
 
     <p>You can define <a class="link" href="objectdefinitions.html#objectdefinitions-hostdependency">host execution dependencies</a> that prevent Icinga from
@@ -110,7 +110,7 @@
 
   <div class="section" title="5.4.5. Parallelization of Host Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9690848"></a>5.4.5. Parallelization of Host Checks</h3></div></div></div>
+<a name="idp9690896"></a>5.4.5. Parallelization of Host Checks</h3></div></div></div>
     
 
     <p>Scheduled host checks are run in parallel. When Icinga needs to run a scheduled host check, it will initiate the host check
@@ -145,7 +145,7 @@
 
   <div class="section" title="5.4.6. Host States">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9700512"></a>5.4.6. Host States</h3></div></div></div>
+<a name="idp9700592"></a>5.4.6. Host States</h3></div></div></div>
     
 
     <p>Hosts that are checked can be in one of three different states:</p>
@@ -165,7 +165,7 @@
 
   <div class="section" title="5.4.7. Host State Determination">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9704992"></a>5.4.7. Host State Determination</h3></div></div></div>
+<a name="idp9705168"></a>5.4.7. Host State Determination</h3></div></div></div>
     
 
     <p>Host checks are performed by <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a>, which can return a state of OK, WARNING, UNKNOWN, or
@@ -252,7 +252,7 @@
 
   <div class="section" title="5.4.8. Host State Changes">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9739200"></a>5.4.8. Host State Changes</h3></div></div></div>
+<a name="idp9739408"></a>5.4.8. Host State Changes</h3></div></div></div>
     
 
     <p>As you are probably well aware, hosts don't always stay in one state. Things break, patches get applied, and servers need to be
@@ -266,7 +266,7 @@
     Icinga can detect when hosts start flapping, and can suppress notifications until flapping stops and the host's state stabilizes.
     More information on the flap detection logic can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>.</p>
 
-    <a class="indexterm" name="idp9744672"></a>
+    <a class="indexterm" name="idp9744800"></a>
   </div>
 </div>
 <div class="navfooter">

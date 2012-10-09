@@ -30,18 +30,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cgisecurity"></a>8.2. <a name="cgi_security"></a>Enhanced CGI Security and Authentication</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">8.2.1. <a href="cgisecurity.html#idp15056208">Introduction</a></span></dt>
-<dt><span class="section">8.2.2. <a href="cgisecurity.html#idp15060992">Additional Techniques</a></span></dt>
-<dt><span class="section">8.2.3. <a href="cgisecurity.html#idp15072064">Implementing Digest Authentication</a></span></dt>
-<dt><span class="section">8.2.4. <a href="cgisecurity.html#idp15079776">Implementing Forced TLS/SSL</a></span></dt>
-<dt><span class="section">8.2.5. <a href="cgisecurity.html#idp15088480">Implementing IP subnet lockdown</a></span></dt>
-<dt><span class="section">8.2.6. <a href="cgisecurity.html#idp15093392">Important Notes</a></span></dt>
+<dt><span class="section">8.2.1. <a href="cgisecurity.html#idp15056560">Introduction</a></span></dt>
+<dt><span class="section">8.2.2. <a href="cgisecurity.html#idp15061344">Additional Techniques</a></span></dt>
+<dt><span class="section">8.2.3. <a href="cgisecurity.html#idp15072416">Implementing Digest Authentication</a></span></dt>
+<dt><span class="section">8.2.4. <a href="cgisecurity.html#idp15080128">Implementing Forced TLS/SSL</a></span></dt>
+<dt><span class="section">8.2.5. <a href="cgisecurity.html#idp15088832">Implementing IP subnet lockdown</a></span></dt>
+<dt><span class="section">8.2.6. <a href="cgisecurity.html#idp15093744">Important Notes</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="8.2.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15056208"></a>8.2.1. <a name="cgisecurity.xml-intro"></a>Introduction</h3></div></div></div>
+<a name="idp15056560"></a>8.2.1. <a name="cgisecurity.xml-intro"></a>Introduction</h3></div></div></div>
     
 
     <p><span class="inlinemediaobject"><img src="../images/security.png"></span></p>
@@ -57,7 +57,7 @@
 
   <div class="section" title="8.2.2. Additional Techniques">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15060992"></a>8.2.2. <a name="cgisecurity.xml-additionaltechniques"></a>Additional Techniques</h3></div></div></div>
+<a name="idp15061344"></a>8.2.2. <a name="cgisecurity.xml-additionaltechniques"></a>Additional Techniques</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -80,7 +80,7 @@
 
   <div class="section" title="8.2.3. Implementing Digest Authentication">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15072064"></a>8.2.3. <a name="cgisecurity.xml-implementation-digest"></a>Implementing Digest Authentication</h3></div></div></div>
+<a name="idp15072416"></a>8.2.3. <a name="cgisecurity.xml-implementation-digest"></a>Implementing Digest Authentication</h3></div></div></div>
     
 
     <p>The implementation of Digest Authentication is simple. You will have to create the new type of password file using the <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htdigest" target="_top">'htdigest'</a> tool, then modify the Apache configuration for Icinga
@@ -128,7 +128,7 @@ Alias /icinga "/usr/local/icinga/share"
 
   <div class="section" title="8.2.4. Implementing Forced TLS/SSL">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15079776"></a>8.2.4. <a name="cgisecurity.xml-implementation-ssl"></a>Implementing Forced TLS/SSL</h3></div></div></div>
+<a name="idp15080128"></a>8.2.4. <a name="cgisecurity.xml-implementation-ssl"></a>Implementing Forced TLS/SSL</h3></div></div></div>
     
 
     <p>Make sure you've installed Apache and OpenSSL. By default you should have <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_ssl" target="_top">mod_ssl</a> support if you are still having trouble you may find help
@@ -164,7 +164,7 @@ Alias /icinga "/usr/local/icinga/share"
 
   <div class="section" title="8.2.5. Implementing IP subnet lockdown">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15088480"></a>8.2.5. <a name="cgisecurity.xml-implementation-lockdown"></a>Implementing IP subnet lockdown</h3></div></div></div>
+<a name="idp15088832"></a>8.2.5. <a name="cgisecurity.xml-implementation-lockdown"></a>Implementing IP subnet lockdown</h3></div></div></div>
     
 
     <p>The following example will show how to lock down Icinga CGIs to a specific IP address, IP address range, or IP subnet using
@@ -202,7 +202,7 @@ Alias /icinga "/usr/local/icinga/share"
 
   <div class="section" title="8.2.6. Important Notes">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15093392"></a>8.2.6. <a name="cgisecurity.xml-importantnotes"></a>Important Notes</h3></div></div></div>
+<a name="idp15093744"></a>8.2.6. <a name="cgisecurity.xml-importantnotes"></a>Important Notes</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -226,15 +226,15 @@ Alias /icinga "/usr/local/icinga/share"
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp15104704"></a>
+    <a class="indexterm" name="idp15105056"></a>
 
-    <a class="indexterm" name="idp15106352"></a>
+    <a class="indexterm" name="idp15106704"></a>
 
-    <a class="indexterm" name="idp15108128"></a>
+    <a class="indexterm" name="idp15108480"></a>
 
-    <a class="indexterm" name="idp15109728"></a>
+    <a class="indexterm" name="idp15110080"></a>
 
-    <a class="indexterm" name="idp15111360"></a>
+    <a class="indexterm" name="idp15111712"></a>
   </div>
 </div>
 <div class="navfooter">

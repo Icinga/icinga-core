@@ -1,14 +1,33 @@
 // javascript helper with jquery for docbook toc toggle, namely the second section
-// written by Michael Friedrich
+// only works with dd, dl, dt output of docbook xml in html
+// written by Michael Friedrich <michael.friedrich@gmail.com>
 // (c) 2012 Icinga Development Team
 
 
 $(document).ready(function() {
-    $('div.toc dl dd dl dd').hide();
 
-    $("div.toc dl dd dl dt span.section").click(function(e) {
-        $(e.target).parent().nextUntil('div.toc dl dd dl dt span.section').toggle();
-        return false;
-    });
+	//by default, hide all sub sections (x.y.z)
+	$('div.toc dl dd dl dd').hide();
+
+	//only the second nested section, but not below with a [+]
+	$("div.toc>dl>dd>dl>dt>span.section").each(function(index) {
+
+		//the next element after 'dt' must be 'dd' to start a new subsection
+		//so let's trigger that one, checking the length of the element>0 == exists
+		if($(this).parent().next('dd').length > 0) {
+			$(this).html($(this).html() + ' [+]');
+		}
+	});
+
+	// the x.y will be the toggle element
+	$("div.toc dl dd dl dt span.section").click(function(e) {
+
+		//toggle everything from x.y.z til last-1 level
+		//if taken.span.section, this will match til the end, which we don't want
+		$(e.target).parent().nextUntil('div.toc dl dd dl dt').toggle();
+
+		//FIXME find a way to replace the [+] on toggle with [-], and allow retoggle.
+	        return false;
+	});
 });
 

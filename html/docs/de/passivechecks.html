@@ -9,7 +9,7 @@
 <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
 <link rel="prev" href="activechecks.html" title="5.6. Aktive Prüfungen (Active Checks)">
 <link rel="next" href="statetypes.html" title="5.8. Statustypen">
-<script src="../js/icinga-docs.js" type="text/javascript"></script>
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -30,20 +30,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="passivechecks"></a>5.7. Passive Prüfungen (Passive Checks)</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">5.7.1. <a href="passivechecks.html#idp9717968">Einführung</a></span></dt>
-<dt><span class="section">5.7.2. <a href="passivechecks.html#idp9728288">Einsatzmöglichkeiten für passive Prüfungen</a></span></dt>
-<dt><span class="section">5.7.3. <a href="passivechecks.html#idp9734928">Wie passive Prüfungen arbeiten</a></span></dt>
-<dt><span class="section">5.7.4. <a href="passivechecks.html#idp9745216">Passive Prüfungen aktivieren</a></span></dt>
-<dt><span class="section">5.7.5. <a href="passivechecks.html#idp9752560">Übermitteln von passiven Service-Prüfungsergebnissen</a></span></dt>
-<dt><span class="section">5.7.6. <a href="passivechecks.html#idp9768512">Übermitteln von passiven Host-Prüfungsergebnissen</a></span></dt>
-<dt><span class="section">5.7.7. <a href="passivechecks.html#idp9780272">Passive Prüfungen und Host-Zustände</a></span></dt>
-<dt><span class="section">5.7.8. <a href="passivechecks.html#idp9789232">Übermitteln von passiven Prüfungsergebnissen von entfernten Hosts</a></span></dt>
+<dt><span class="section">5.7.1. <a href="passivechecks.html#idp9755280">Einführung</a></span></dt>
+<dt><span class="section">5.7.2. <a href="passivechecks.html#idp9765600">Einsatzmöglichkeiten für passive Prüfungen</a></span></dt>
+<dt><span class="section">5.7.3. <a href="passivechecks.html#idp9772240">Wie passive Prüfungen arbeiten</a></span></dt>
+<dt><span class="section">5.7.4. <a href="passivechecks.html#idp9782368">Passive Prüfungen aktivieren</a></span></dt>
+<dt><span class="section">5.7.5. <a href="passivechecks.html#idp9789312">Übermitteln von passiven Service-Prüfungsergebnissen</a></span></dt>
+<dt><span class="section">5.7.6. <a href="passivechecks.html#idp9805632">Übermitteln von passiven Host-Prüfungsergebnissen</a></span></dt>
+<dt><span class="section">5.7.7. <a href="passivechecks.html#idp9817392">Passive Prüfungen und Host-Zustände</a></span></dt>
+<dt><span class="section">5.7.8. <a href="passivechecks.html#idp9826352">Übermitteln von passiven Prüfungsergebnissen von entfernten Hosts</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.7.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9717968"></a>5.7.1. Einführung</h3></div></div></div>
+<a name="idp9755280"></a>5.7.1. Einführung</h3></div></div></div>
     
 
     <p>In den meisten Fällen werden Sie Icinga nutzen, um Ihre Hosts und Services mit Hilfe von regelmäßig geplanten <a class="link" href="activechecks.html" title="5.6. Aktive Prüfungen (Active Checks)">aktiven Prüfungen</a> zu überwachen. Aktive Prüfungen können genutzt werden, um ein Gerät oder Service
@@ -65,7 +65,7 @@
 
   <div class="section" title="5.7.2. Einsatzmöglichkeiten für passive Prüfungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9728288"></a>5.7.2. Einsatzmöglichkeiten für passive Prüfungen</h3></div></div></div>
+<a name="idp9765600"></a>5.7.2. Einsatzmöglichkeiten für passive Prüfungen</h3></div></div></div>
     
 
     <p>passive Prüfungen sind nützlich, um Services zu überwachen, die</p>
@@ -89,7 +89,7 @@
 
   <div class="section" title="5.7.3. Wie passive Prüfungen arbeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9734928"></a>5.7.3. Wie passive Prüfungen arbeiten</h3></div></div></div>
+<a name="idp9772240"></a>5.7.3. Wie passive Prüfungen arbeiten</h3></div></div></div>
     
 
     <div class="mediaobject"><img src="../images/passivechecks.png"></div>
@@ -123,7 +123,7 @@
 
   <div class="section" title="5.7.4. Passive Prüfungen aktivieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9745216"></a>5.7.4. Passive Prüfungen aktivieren</h3></div></div></div>
+<a name="idp9782368"></a>5.7.4. Passive Prüfungen aktivieren</h3></div></div></div>
     
 
     <p>Um passive Prüfungen in Icinga zu aktivieren, müssen Sie folgendes tun:</p>
@@ -146,7 +146,7 @@
 
   <div class="section" title="5.7.5. Übermitteln von passiven Service-Prüfungsergebnissen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9752560"></a>5.7.5. Übermitteln von passiven Service-Prüfungsergebnissen</h3></div></div></div>
+<a name="idp9789312"></a>5.7.5. Übermitteln von passiven Service-Prüfungsergebnissen</h3></div></div></div>
     
 
     <p>Externe Applikationen können passive Prüfungsergebisse an Icinga übermitteln, indem sie ein PROCESS_SERVICE_CHECK_RESULT
@@ -187,7 +187,7 @@
 
   <div class="section" title="5.7.6. Übermitteln von passiven Host-Prüfungsergebnissen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9768512"></a>5.7.6. Übermitteln von passiven Host-Prüfungsergebnissen</h3></div></div></div>
+<a name="idp9805632"></a>5.7.6. Übermitteln von passiven Host-Prüfungsergebnissen</h3></div></div></div>
     
 
     <p>Externe Applikationen können passive Host-Prüfungsergebisse an Icinga übermitteln, indem sie ein PROCESS_HOST_CHECK_RESULT
@@ -222,7 +222,7 @@
 
   <div class="section" title="5.7.7. Passive Prüfungen und Host-Zustände">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9780272"></a>5.7.7. Passive Prüfungen und Host-Zustände</h3></div></div></div>
+<a name="idp9817392"></a>5.7.7. Passive Prüfungen und Host-Zustände</h3></div></div></div>
     
 
     <p>Icinga versucht bei passiven Prüfungen - anders bei aktiven Prüfungen - nicht festzustellen, ob der Host DOWN oder
@@ -241,7 +241,7 @@
 
   <div class="section" title="5.7.8. Übermitteln von passiven Prüfungsergebnissen von entfernten Hosts">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9789232"></a>5.7.8. Übermitteln von passiven Prüfungsergebnissen von entfernten Hosts</h3></div></div></div>
+<a name="idp9826352"></a>5.7.8. Übermitteln von passiven Prüfungsergebnissen von entfernten Hosts</h3></div></div></div>
     
 
     <div class="mediaobject"><img src="../images/nsca.png"></div>
@@ -255,7 +255,7 @@
     Hosts, führt mit den Ergebnissen einige grundlegende Gültigkeitsprüfungen durch und schreibt die Prüfergebnisse direkt in das "external
     command file" (wie oben beschrieben). Mehr Informationen über das NSCA-Addon finden Sie <a class="link" href="addons.html#addons-nsca">hier</a>.</p>
 
-    <a class="indexterm" name="idp9795120"></a>
+    <a class="indexterm" name="idp9832240"></a>
   </div>
 </div>
 <div class="navfooter">

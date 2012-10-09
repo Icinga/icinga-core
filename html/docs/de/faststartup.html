@@ -9,7 +9,7 @@
 <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
 <link rel="prev" href="tuning.html" title="8.3. Icinga für maximale Leistung optimieren">
 <link rel="next" href="largeinstalltweaks.html" title="8.5. Large Installation Tweaks">
-<script src="../js/icinga-docs.js" type="text/javascript"></script>
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
 </head>
 <body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
@@ -30,18 +30,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="faststartup"></a>8.4. <a name="fast_startup"></a>Schnellstart-Optionen</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">8.4.1. <a href="faststartup.html#idp15140592">Einführung</a></span></dt>
-<dt><span class="section">8.4.2. <a href="faststartup.html#idp15145968">Hintergrund</a></span></dt>
-<dt><span class="section">8.4.3. <a href="faststartup.html#idp15156928">Bewertung von Anlaufzeiten</a></span></dt>
-<dt><span class="section">8.4.4. <a href="faststartup.html#idp15172384">Pre-Caching der Objektkonfiguration</a></span></dt>
-<dt><span class="section">8.4.5. <a href="faststartup.html#idp15196992">Überspringen der Tests von zirkulären Pfaden</a></span></dt>
-<dt><span class="section">8.4.6. <a href="faststartup.html#idp15203904">Alles zusammenfassen</a></span></dt>
+<dt><span class="section">8.4.1. <a href="faststartup.html#idp15177024">Einführung</a></span></dt>
+<dt><span class="section">8.4.2. <a href="faststartup.html#idp15182400">Hintergrund</a></span></dt>
+<dt><span class="section">8.4.3. <a href="faststartup.html#idp15193008">Bewertung von Anlaufzeiten</a></span></dt>
+<dt><span class="section">8.4.4. <a href="faststartup.html#idp15208608">Pre-Caching der Objektkonfiguration</a></span></dt>
+<dt><span class="section">8.4.5. <a href="faststartup.html#idp15233184">Überspringen der Tests von zirkulären Pfaden</a></span></dt>
+<dt><span class="section">8.4.6. <a href="faststartup.html#idp15240096">Alles zusammenfassen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="8.4.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15140592"></a>8.4.1. Einführung</h3></div></div></div>
+<a name="idp15177024"></a>8.4.1. Einführung</h3></div></div></div>
     
 
     <p>Es gibt einige Dinge, die Sie tun können, um die Zeit zu verringern, die Icinga zum (Neu-)Start benötigt. Diese
@@ -64,7 +64,7 @@
 
   <div class="section" title="8.4.2. Hintergrund">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15145968"></a>8.4.2. Hintergrund</h3></div></div></div>
+<a name="idp15182400"></a>8.4.2. Hintergrund</h3></div></div></div>
     
 
     <p>Bei jedem (erneuten) Start von Icinga müssen die Konfigurationsdateien verarbeitet werden, bevor die Überwachung beginnen
@@ -106,7 +106,7 @@
 
   <div class="section" title="8.4.3. Bewertung von Anlaufzeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15156928"></a>8.4.3. Bewertung von Anlaufzeiten</h3></div></div></div>
+<a name="idp15193008"></a>8.4.3. Bewertung von Anlaufzeiten</h3></div></div></div>
     
 
     <p>Bevor wir weitermachen, die Dinge zu beschleunigen, müssen wir sehen was möglich ist und ob wir uns mit der ganzen Sache
@@ -166,7 +166,7 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
   <div class="section" title="8.4.4. Pre-Caching der Objektkonfiguration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15172384"></a>8.4.4. Pre-Caching der Objektkonfiguration</h3></div></div></div>
+<a name="idp15208608"></a>8.4.4. Pre-Caching der Objektkonfiguration</h3></div></div></div>
     
 
     <p>Icinga kann einige Zeit beim analysieren Ihrer Konfigurationsdateien verbringen, besonders dann, wenn Sie Template-Features
@@ -216,7 +216,7 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
   <div class="section" title="8.4.5. Überspringen der Tests von zirkulären Pfaden">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15196992"></a>8.4.5. Überspringen der Tests von zirkulären Pfaden</h3></div></div></div>
+<a name="idp15233184"></a>8.4.5. Überspringen der Tests von zirkulären Pfaden</h3></div></div></div>
     
 
     <p>Der zweite (und zeitintensivste) Teil der Konfigurationsanlaufphase ist die Prüfung auf zirkuläre Pfade. Im obigen Beispiel
@@ -240,7 +240,7 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
   <div class="section" title="8.4.6. Alles zusammenfassen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15203904"></a>8.4.6. Alles zusammenfassen</h3></div></div></div>
+<a name="idp15240096"></a>8.4.6. Alles zusammenfassen</h3></div></div></div>
     
 
     <p>Folgen Sie diesen Schritten, wenn Sie mögliche Beschleunigungen durch pre-Caching Ihrer Konfiguration und überspringen der
@@ -267,19 +267,19 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
     <p>5. Das war's! Erfreuen Sie sich am Geschwindigkeitsgewinn beim Start.</p>
 
-    <a class="indexterm" name="idp15209472"></a>
+    <a class="indexterm" name="idp15245792"></a>
 
-    <a class="indexterm" name="idp15210480"></a>
+    <a class="indexterm" name="idp15247200"></a>
 
-    <a class="indexterm" name="idp15211488"></a>
+    <a class="indexterm" name="idp15248448"></a>
 
-    <a class="indexterm" name="idp15212880"></a>
+    <a class="indexterm" name="idp15250016"></a>
 
-    <a class="indexterm" name="idp15214272"></a>
+    <a class="indexterm" name="idp15251776"></a>
 
-    <a class="indexterm" name="idp15216016"></a>
+    <a class="indexterm" name="idp15253296"></a>
 
-    <a class="indexterm" name="idp15217408"></a>
+    <a class="indexterm" name="idp15254864"></a>
   </div>
 </div>
 <div class="navfooter">
