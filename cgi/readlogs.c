@@ -337,9 +337,7 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 		if (timestamp > ts_end)
 			continue;
 
-		/* file found where timestamp range matches ts_end */
-		if (timestamp < ts_end && (last_timestamp > ts_end || last_timestamp == 0L))
-			in_range = TRUE;
+		in_range = TRUE;
 
 		/* the priviouse file holds range for ts_start */
 		if (last_timestamp != 0L && last_timestamp < ts_start)
