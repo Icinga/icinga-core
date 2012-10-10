@@ -54,7 +54,6 @@ ENHANCEMENTS
 * classic ui: Added state type to JSON in status.cgi #3195 - RB
 
 * idoutils: do not pass host and port if not set in the config, letting mysql|pgsql drivers autoselect the socket #2698 - MF
-* idoutils: fix mismatched types for uint casts in bulkops (oracle) #2646 - TD
 * idoutils: fix doubled quotes by skipping escaping data (Oracle only) #2534 - TD
 * idoutils: change hasfunc to use sdbm algorithm for hashing precached objects #2792i - MF/GB
 * idoutils: add disable_notif_expire_time to programstatus table - #905 - MF
@@ -70,6 +69,11 @@ ENHANCEMENTS
 * docs: add a new stylesheet and rework docbook.xsl #3046 - MF
 * docs: add tocs for all sections #3193 - WN
 * docs: add jquery toggle for toc #3193 - MF
+* docs: create a dedicated page for packages and their customizations #2905 - LB
+* docs: create a howto define a command, translate macros and testdrive plugins manually #2692 - WN
+* docs: add a hint to debian backports, ubuntu ppa and rhel repoforge and link to wiki url for quickstart guides #2803 - WN
+* docs: add new icinga-web-intro, icinga reporting for 1.8 #3218 #3264 - LB
+* docs: all other new config options due to 1.8 features, please check https://dev.icinga.org/projects/icinga-docs/versions/80
 
 * icinga.spec: use --with-mainurl to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29 #2611 - MF
 * icinga.spec: add devel package #2634 - MF
@@ -87,7 +91,7 @@ FIXES
 * core: fsync() files before fclose() (Andreas Ericsson) #2949 - MF
 * ocre: remove weird switch() statement when scanning checkresult queue (Andreas Ericsson) #2950 - MF
 * core: fix deleting too old check result files (Andreas Ericsson) #2951 - MF
-* core: avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993
+* core: avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993 - MF
 * core: unknown macros are not replaced, and misleading to single dollar signs #2291 - MF
 	** you can revert to the old behaviour with keep_unknown_macros=1 in icinga.cfg
 * core: fix having empty host/servicegroups, $HOST|SERVICEGROUPMEMBERS$ on-demand macro returns garbage on realloc (thx roguelazer) #2913 - MF
@@ -113,6 +117,21 @@ FIXES
 * idoutils: fix IDOUtils on PostgreSQL, recreates service objects in icinga_objects (thx Torsten Fohrer) #3166 - MF
 
 * install: fix icinga.xml for solaris pkg not updated #2609 - CF
+
+* docs: fix wrong charset UTF-8 set in documentation #2091 - MF
+* docs: update the beginners page #3213 - WN
+* docs: update external command descriptions for DEL_DOWNTIME_BY_HOST_NAME, DEL_DOWNTIME_BY_START_TIME_COMMENT, DEL_DOWNTIME_BY_HOSTGROUP_NAME #3165 - WN
+* docs: add tar.gz urls to nsca and nrpe docs #2797 - WN
+* docs: fix cgi.conf - HTML and inline documentation mess and errors #2891 - WN
+* docs: cgiparams: cmd.cgi: send_notifications and sticky_ack now require 0|1 values, default is enabled #2927 - WN
+* docs: replace make db-doc2sql with location of plain schema sqls in etc/schema #2936 - WN
+* docs: fix icinga.conf and HTML documentation mess #2941 - LB
+* docs: fix an illegal_macro_output_char is missing from the sample config #2842 - WN
+* docs: fix Erronous example in Macros documentation #2966 - WN
+* docs: Names of config files irrelevant #3097 - WN
+* docs: fix idoutils db user grants miss EXECUTE #3192 - MF
+* docs: fix rong restart command in list of external commands #3214 - MF
+
 
 * icinga.spec: fix permissions on ido2db.cfg potentially world readable (Aaron Russo) #2897 - MF
 * icinga.spec: drop unsupported configure flags #3037 - MF
