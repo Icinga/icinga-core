@@ -30,21 +30,21 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="objectdefinitions"></a>3.4. Objektdefinitionen</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">3.4.1. <a href="objectdefinitions.html#idp3879920">Host-Definition</a></span></dt>
-<dt><span class="section">3.4.2. <a href="objectdefinitions.html#idp3880208">Hostgruppen-Definition</a></span></dt>
-<dt><span class="section">3.4.3. <a href="objectdefinitions.html#idp4192048">Service-Definition</a></span></dt>
-<dt><span class="section">3.4.4. <a href="objectdefinitions.html#idp4256432">Servicegruppen-Definition</a></span></dt>
-<dt><span class="section">3.4.5. <a href="objectdefinitions.html#idp4540208">Kontakt-Definition</a></span></dt>
-<dt><span class="section">3.4.6. <a href="objectdefinitions.html#idp4606256">Kontaktgruppen-Definition</a></span></dt>
-<dt><span class="section">3.4.7. <a href="objectdefinitions.html#idp4751776">Zeitfenster-Definition (timeperiod)</a></span></dt>
-<dt><span class="section">3.4.8. <a href="objectdefinitions.html#idp4798464">Befehls-Definition (command)</a></span></dt>
-<dt><span class="section">3.4.9. <a href="objectdefinitions.html#idp4851472">Service-Abhängigkeits-Definition (servicedependency)</a></span></dt>
-<dt><span class="section">3.4.10. <a href="objectdefinitions.html#idp4899872">Serviceeskalations-Definition</a></span></dt>
-<dt><span class="section">3.4.11. <a href="objectdefinitions.html#idp5000288">Host-Abhängigkeits-Definition (hostdependency)</a></span></dt>
-<dt><span class="section">3.4.12. <a href="objectdefinitions.html#idp5138592">Host-Eskalations-Definition</a></span></dt>
-<dt><span class="section">3.4.13. <a href="objectdefinitions.html#idp5222272">erweiterte Hostinformations-Definition (hostextinfo)</a></span></dt>
-<dt><span class="section">3.4.14. <a href="objectdefinitions.html#idp5334256">erweiterte Serviceinformations-Definition (serviceextinfo)</a></span></dt>
-<dt><span class="section">3.4.15. <a href="objectdefinitions.html#idp5432288">Module-Definition</a></span></dt>
+<dt><span class="section">3.4.1. <a href="objectdefinitions.html#idp3880256">Host-Definition</a></span></dt>
+<dt><span class="section">3.4.2. <a href="objectdefinitions.html#idp3880576">Hostgruppen-Definition</a></span></dt>
+<dt><span class="section">3.4.3. <a href="objectdefinitions.html#idp4183984">Service-Definition</a></span></dt>
+<dt><span class="section">3.4.4. <a href="objectdefinitions.html#idp4248160">Servicegruppen-Definition</a></span></dt>
+<dt><span class="section">3.4.5. <a href="objectdefinitions.html#idp4532288">Kontakt-Definition</a></span></dt>
+<dt><span class="section">3.4.6. <a href="objectdefinitions.html#idp4597760">Kontaktgruppen-Definition</a></span></dt>
+<dt><span class="section">3.4.7. <a href="objectdefinitions.html#idp4743600">Zeitfenster-Definition (timeperiod)</a></span></dt>
+<dt><span class="section">3.4.8. <a href="objectdefinitions.html#idp4790336">Befehls-Definition (command)</a></span></dt>
+<dt><span class="section">3.4.9. <a href="objectdefinitions.html#idp4843312">Service-Abhängigkeits-Definition (servicedependency)</a></span></dt>
+<dt><span class="section">3.4.10. <a href="objectdefinitions.html#idp4891536">Serviceeskalations-Definition</a></span></dt>
+<dt><span class="section">3.4.11. <a href="objectdefinitions.html#idp4992112">Host-Abhängigkeits-Definition (hostdependency)</a></span></dt>
+<dt><span class="section">3.4.12. <a href="objectdefinitions.html#idp5130464">Host-Eskalations-Definition</a></span></dt>
+<dt><span class="section">3.4.13. <a href="objectdefinitions.html#idp5214080">erweiterte Hostinformations-Definition (hostextinfo)</a></span></dt>
+<dt><span class="section">3.4.14. <a href="objectdefinitions.html#idp5326160">erweiterte Serviceinformations-Definition (serviceextinfo)</a></span></dt>
+<dt><span class="section">3.4.15. <a href="objectdefinitions.html#idp5417984">Module-Definition</a></span></dt>
 </dl></div>
   
 
@@ -133,14 +133,25 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-serviceextinfo">erweiterte Service-Informationsdefinitionen</a></p>
 
-  <a class="indexterm" name="idp3877056"></a>
+  <a class="indexterm" name="idp3877392"></a>
 
-  <a class="indexterm" name="idp3878256"></a>
+  <a class="indexterm" name="idp3878592"></a>
 
   <div class="section" title="3.4.1. Host-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp3879920"></a>3.4.1. <a name="objectdefinitions-host"></a>Host-Definition</h3></div></div></div>
+<a name="idp3880256"></a>3.4.1. <a name="objectdefinitions-host"></a>Host-Definition</h3></div></div></div>
     
+
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+            <p>vrml_image und 3d_coords sind veraltet seit 1.8 und der entefernten 3d Statusmap.
+            </p>
+    </td></tr>
+</table></div>
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
@@ -368,11 +379,6 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>vrml_image</p></td>
-<td>image_file</td>
-</tr>
-<tr>
-<td><p></p></td>
 <td><p>statusmap_image</p></td>
 <td>image_file</td>
 </tr>
@@ -380,11 +386,6 @@
 <td><p></p></td>
 <td><p>2d_coords</p></td>
 <td>x_coord,y_coord</td>
-</tr>
-<tr>
-<td><p></p></td>
-<td><p>3d_coords</p></td>
-<td>x_coord,y_coord,z_coord</td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -720,10 +721,6 @@
             das durch das <span class="emphasis"><em>&lt;icon_image&gt;</em></span>-Argument angegeben wurde.</p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p><span class="bold"><strong>vrml_image</strong></span>:</p></td>
-<td><p>Diese Direktive wird in Icinga nicht unterstützt.</p></td>
-</tr>
-<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>statusmap_image</strong></span>:</p></td>
 <td><p>Diese Variable wird benutzt, um den Namen eines Bildes anzugeben, das mit diesem Host im <a class="link" href="cgis-statusmap_cgi" target="_top">statusmap</a>-CGI verbunden werden soll. Sie können ein JPG-, PNG- oder GIF-Bild angeben,
             aber wir würden zu einem Bild im GD2-Format raten, weil andere Bildformate zu hohen CPU-Belastungen führen können, wenn
@@ -744,22 +741,18 @@
             benutzen können. Das CGI wird automatisch die maximale Größe des zu erstellenden Bildes aufgrund der größten X- und
             Y-Koordinaten festlegen, die Sie angegeben haben.</p></td>
 </tr>
-<tr>
-<td align="left" valign="top"><p><span class="bold"><strong>3d_coords</strong></span>:</p></td>
-<td><p>Diese Direktive wird in Icinga nicht unterstützt.</p></td>
-</tr>
 </tbody>
 </table>
     </div>
 
-    <a class="indexterm" name="idp3993488"></a>
+    <a class="indexterm" name="idp3991376"></a>
 
-    <a class="indexterm" name="idp4190496"></a>
+    <a class="indexterm" name="idp4180400"></a>
   </div>
 
   <div class="section" title="3.4.2. Hostgruppen-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp3880208"></a>3.4.2. <a name="objectdefinitions-hostgroup"></a>Hostgruppen-Definition</h3></div></div></div>
+<a name="idp3880576"></a>3.4.2. <a name="objectdefinitions-hostgroup"></a>Hostgruppen-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -887,14 +880,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4253552"></a>
+    <a class="indexterm" name="idp4245280"></a>
 
-    <a class="indexterm" name="idp4254736"></a>
+    <a class="indexterm" name="idp4246464"></a>
   </div>
 
   <div class="section" title="3.4.3. Service-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4192048"></a>3.4.3. <a name="objectdefinitions-service"></a>Service-Definition</h3></div></div></div>
+<a name="idp4183984"></a>3.4.3. <a name="objectdefinitions-service"></a>Service-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -1445,14 +1438,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4363808"></a>
+    <a class="indexterm" name="idp4354624"></a>
 
-    <a class="indexterm" name="idp4538800"></a>
+    <a class="indexterm" name="idp4530608"></a>
   </div>
 
   <div class="section" title="3.4.4. Servicegruppen-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4256432"></a>3.4.4. <a name="objectdefinitions-servicegroup"></a>Servicegruppen-Definition</h3></div></div></div>
+<a name="idp4248160"></a>3.4.4. <a name="objectdefinitions-servicegroup"></a>Servicegruppen-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -1586,14 +1579,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4603280"></a>
+    <a class="indexterm" name="idp4595232"></a>
 
-    <a class="indexterm" name="idp4604672"></a>
+    <a class="indexterm" name="idp4596240"></a>
   </div>
 
   <div class="section" title="3.4.5. Kontakt-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4540208"></a>3.4.5. <a name="objectdefinitions-contact"></a>Kontakt-Definition</h3></div></div></div>
+<a name="idp4532288"></a>3.4.5. <a name="objectdefinitions-contact"></a>Kontakt-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -1853,14 +1846,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4748880"></a>
+    <a class="indexterm" name="idp4740832"></a>
 
-    <a class="indexterm" name="idp4749888"></a>
+    <a class="indexterm" name="idp4741840"></a>
   </div>
 
   <div class="section" title="3.4.6. Kontaktgruppen-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4606256"></a>3.4.6. <a name="objectdefinitions-contactgroup"></a>Kontaktgruppen-Definition</h3></div></div></div>
+<a name="idp4597760"></a>3.4.6. <a name="objectdefinitions-contactgroup"></a>Kontaktgruppen-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -1952,14 +1945,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4795680"></a>
+    <a class="indexterm" name="idp4787552"></a>
 
-    <a class="indexterm" name="idp4796784"></a>
+    <a class="indexterm" name="idp4788656"></a>
   </div>
 
   <div class="section" title="3.4.7. Zeitfenster-Definition (timeperiod)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4751776"></a>3.4.7. <a name="objectdefinitions-timeperiod"></a>Zeitfenster-Definition (timeperiod)</h3></div></div></div>
+<a name="idp4743600"></a>3.4.7. <a name="objectdefinitions-timeperiod"></a>Zeitfenster-Definition (timeperiod)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2107,14 +2100,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4849008"></a>
+    <a class="indexterm" name="idp4840848"></a>
 
-    <a class="indexterm" name="idp4850016"></a>
+    <a class="indexterm" name="idp4841856"></a>
   </div>
 
   <div class="section" title="3.4.8. Befehls-Definition (command)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4798464"></a>3.4.8. <a name="objectdefinitions-command"></a>Befehls-Definition (command)</h3></div></div></div>
+<a name="idp4790336"></a>3.4.8. <a name="objectdefinitions-command"></a>Befehls-Definition (command)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2206,14 +2199,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4896912"></a>
+    <a class="indexterm" name="idp4888576"></a>
 
-    <a class="indexterm" name="idp4898144"></a>
+    <a class="indexterm" name="idp4889808"></a>
   </div>
 
   <div class="section" title="3.4.9. Service-Abhängigkeits-Definition (servicedependency)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4851472"></a>3.4.9. <a name="objectdefinitions-servicedependency"></a>Service-Abhängigkeits-Definition (servicedependency)</h3></div></div></div>
+<a name="idp4843312"></a>3.4.9. <a name="objectdefinitions-servicedependency"></a>Service-Abhängigkeits-Definition (servicedependency)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2391,14 +2384,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4997728"></a>
+    <a class="indexterm" name="idp4989552"></a>
 
-    <a class="indexterm" name="idp4998736"></a>
+    <a class="indexterm" name="idp4990560"></a>
   </div>
 
   <div class="section" title="3.4.10. Serviceeskalations-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4899872"></a>3.4.10. <a name="objectdefinitions-serviceescalation"></a>Serviceeskalations-Definition</h3></div></div></div>
+<a name="idp4891536"></a>3.4.10. <a name="objectdefinitions-serviceescalation"></a>Serviceeskalations-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2673,14 +2666,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5136112"></a>
+    <a class="indexterm" name="idp5127984"></a>
 
-    <a class="indexterm" name="idp5137008"></a>
+    <a class="indexterm" name="idp5128880"></a>
   </div>
 
   <div class="section" title="3.4.11. Host-Abhängigkeits-Definition (hostdependency)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5000288"></a>3.4.11. <a name="objectdefinitions-hostdependency"></a>Host-Abhängigkeits-Definition (hostdependency)</h3></div></div></div>
+<a name="idp4992112"></a>3.4.11. <a name="objectdefinitions-hostdependency"></a>Host-Abhängigkeits-Definition (hostdependency)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -2828,14 +2821,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5219808"></a>
+    <a class="indexterm" name="idp5211616"></a>
 
-    <a class="indexterm" name="idp5220816"></a>
+    <a class="indexterm" name="idp5212624"></a>
   </div>
 
   <div class="section" title="3.4.12. Host-Eskalations-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5138592"></a>3.4.12. <a name="objectdefinitions-hostescalation"></a>Host-Eskalations-Definition</h3></div></div></div>
+<a name="idp5130464"></a>3.4.12. <a name="objectdefinitions-hostescalation"></a>Host-Eskalations-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -3062,19 +3055,20 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5331328"></a>
+    <a class="indexterm" name="idp5323328"></a>
 
-    <a class="indexterm" name="idp5332336"></a>
+    <a class="indexterm" name="idp5324336"></a>
   </div>
 
   <div class="section" title="3.4.13. erweiterte Hostinformations-Definition (hostextinfo)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5222272"></a>3.4.13. <a name="objectdefinitions-hostextinfo"></a>erweiterte Hostinformations-Definition (hostextinfo)</h3></div></div></div>
+<a name="idp5214080"></a>3.4.13. <a name="objectdefinitions-hostextinfo"></a>erweiterte Hostinformations-Definition (hostextinfo)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
 
-    <p>Einträge für erweiterte Hostinformationen sind grundsätzlich dazu gedacht, die Ausgaben der <a class="link" href="cgis.html#cgis-status_cgi">status</a>-, <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>-  und <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a>-CGIs schöner aussehen zu lassen. Sie haben keinen Einfluss auf die Überwachung und
+    <p>Einträge für erweiterte Hostinformationen sind grundsätzlich dazu gedacht, die Ausgaben der status-, <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>- und
+	    <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a>-CGIs schöner aussehen zu lassen. Sie haben keinen Einfluss auf die Überwachung und
     sind vollständig optional.</p>
 
     <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Alle Direktiven der erweiterten Hostinformations-Definition sind auch in den <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definitionen</a> verfügbar. Dadurch können Sie entscheiden, die nachstehenden Direktiven in
@@ -3132,11 +3126,6 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>vrml_image</p></td>
-<td>image_file</td>
-</tr>
-<tr>
-<td><p></p></td>
 <td><p>statusmap_image</p></td>
 <td>image_file</td>
 </tr>
@@ -3144,11 +3133,6 @@
 <td><p></p></td>
 <td><p>2d_coords</p></td>
 <td>x_coord,y_coord</td>
-</tr>
-<tr>
-<td><p></p></td>
-<td><p>3d_coords</p></td>
-<td>x_coord,y_coord,z_coord</td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -3270,14 +3254,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5429424"></a>
+    <a class="indexterm" name="idp5415040"></a>
 
-    <a class="indexterm" name="idp5430672"></a>
+    <a class="indexterm" name="idp5416224"></a>
   </div>
 
   <div class="section" title="3.4.14. erweiterte Serviceinformations-Definition (serviceextinfo)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5334256"></a>3.4.14. <a name="objectdefinitions-serviceextinfo"></a>erweiterte Serviceinformations-Definition (serviceextinfo)</h3></div></div></div>
+<a name="idp5326160"></a>3.4.14. <a name="objectdefinitions-serviceextinfo"></a>erweiterte Serviceinformations-Definition (serviceextinfo)</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -3445,14 +3429,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5510832"></a>
+    <a class="indexterm" name="idp5496544"></a>
 
-    <a class="indexterm" name="idp5511840"></a>
+    <a class="indexterm" name="idp5497552"></a>
   </div>
 
   <div class="section" title="3.4.15. Module-Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5432288"></a>3.4.15. <a name="objectdefinitions-module"></a>Module-Definition</h3></div></div></div>
+<a name="idp5417984"></a>3.4.15. <a name="objectdefinitions-module"></a>Module-Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Beschreibung:</em></span></p>
@@ -3576,7 +3560,7 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idp5557712"></a>
+    <a class="indexterm" name="idp5543040"></a>
   </div>
 </div>
 <div class="navfooter">
