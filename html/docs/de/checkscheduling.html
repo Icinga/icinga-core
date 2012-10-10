@@ -1,40 +1,55 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.23. Service- und Host-Prüfungsplanung</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen" />
-    <link rel="prev" href="passivestatetranslation.html" title="7.22. Passive Host-Zustandsübersetzung" />
-    <link rel="next" href="cgiincludes.html" title="7.24. Angepasste CGI-Kopf- und Fußzeilen" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.23. Service- und Host-Prüfungsplanung</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="passivestatetranslation.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-          <td width="20%" align="right"> <a accesskey="n" href="cgiincludes.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.23. Service- und Host-Prüfungsplanung"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="checkscheduling"></a>7.23. <a id="checkscheduling-check_scheduling"></a>Service- und Host-Prüfungsplanung</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.23.1. <a href="checkscheduling.html#idp14384688">Einführung</a></span></dt><dt><span class="section">7.23.2. <a href="checkscheduling.html#idp14386736">Konfigurationsoptionen</a></span></dt><dt><span class="section">7.23.3. <a href="checkscheduling.html#idp14405584">Initiale Planung</a></span></dt><dt><span class="section">7.23.4. <a href="checkscheduling.html#idp14411632">Inter-Check-Verzögerung (inter-check delay)</a></span></dt><dt><span class="section">7.23.5. <a href="checkscheduling.html#idp14417936">Service-Verschachtelung (service interleaving)</a></span></dt><dt><span class="section">7.23.6. <a href="checkscheduling.html#idp14452128">Maximale Zahl gleichzeitiger Service-Prüfungen</a></span></dt><dt><span class="section">7.23.7. <a href="checkscheduling.html#idp14452384">Zeitbeschränkungen</a></span></dt><dt><span class="section">7.23.8. <a href="checkscheduling.html#idp14474432">Normale Planung</a></span></dt><dt><span class="section">7.23.9. <a href="checkscheduling.html#idp14477024">Planung bei Problemen</a></span></dt><dt><span class="section">7.23.10. <a href="checkscheduling.html#idp14485680">Host-Prüfungen</a></span></dt><dt><span class="section">7.23.11. <a href="checkscheduling.html#idp14487792">Planungsverzögerungen</a></span></dt><dt><span class="section">7.23.12. <a href="checkscheduling.html#idp14490000">Planungsbeispiel</a></span></dt><dt><span class="section">7.23.13. <a href="checkscheduling.html#idp14507968">Service-Definitionsoptionen, die die Planung beeinflussen</a></span></dt><dt><span class="section">7.23.14. <a href="checkscheduling.html#idp14508128">TODO</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.23. Service- und Host-Prüfungsplanung</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
+<link rel="prev" href="passivestatetranslation.html" title="7.22. Passive Host-Zustandsübersetzung">
+<link rel="next" href="cgiincludes.html" title="7.24. Angepasste CGI-Kopf- und Fußzeilen">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.23. Service- und Host-Prüfungsplanung</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="passivestatetranslation.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="cgiincludes.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.23. Service- und Host-Prüfungsplanung">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="checkscheduling"></a>7.23. <a name="checkscheduling-check_scheduling"></a>Service- und Host-Prüfungsplanung</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.23.1. <a href="checkscheduling.html#idp14409888">Einführung</a></span></dt>
+<dt><span class="section">7.23.2. <a href="checkscheduling.html#idp14411824">Konfigurationsoptionen</a></span></dt>
+<dt><span class="section">7.23.3. <a href="checkscheduling.html#idp14430560">Initiale Planung</a></span></dt>
+<dt><span class="section">7.23.4. <a href="checkscheduling.html#idp14434880">Inter-Check-Verzögerung (inter-check delay)</a></span></dt>
+<dt><span class="section">7.23.5. <a href="checkscheduling.html#idp14443168">Service-Verschachtelung (service interleaving)</a></span></dt>
+<dt><span class="section">7.23.6. <a href="checkscheduling.html#idp14477632">Maximale Zahl gleichzeitiger Service-Prüfungen</a></span></dt>
+<dt><span class="section">7.23.7. <a href="checkscheduling.html#idp14477888">Zeitbeschränkungen</a></span></dt>
+<dt><span class="section">7.23.8. <a href="checkscheduling.html#idp14500448">Normale Planung</a></span></dt>
+<dt><span class="section">7.23.9. <a href="checkscheduling.html#idp14503040">Planung bei Problemen</a></span></dt>
+<dt><span class="section">7.23.10. <a href="checkscheduling.html#idp14511696">Host-Prüfungen</a></span></dt>
+<dt><span class="section">7.23.11. <a href="checkscheduling.html#idp14513808">Planungsverzögerungen</a></span></dt>
+<dt><span class="section">7.23.12. <a href="checkscheduling.html#idp14516016">Planungsbeispiel</a></span></dt>
+<dt><span class="section">7.23.13. <a href="checkscheduling.html#idp14533984">Service-Definitionsoptionen, die die Planung beeinflussen</a></span></dt>
+<dt><span class="section">7.23.14. <a href="checkscheduling.html#idp14534144">TODO</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.23.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp14384688"></a>7.23.1. <a id="checkscheduling-introduction"></a>Einführung</h3></div></div></div>
+  <div class="section" title="7.23.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14409888"></a>7.23.1. <a name="checkscheduling-introduction"></a>Einführung</h3></div></div></div>
     
 
     <p>Es gab eine Menge Fragen dazu, wie Service-Prüfungen in bestimmten Situationen geplant werden, außerdem wie sich Planung und
@@ -42,65 +57,84 @@
     gehen, wie dies alles funktioniert...</p>
   </div>
 
-  <div class="section" title="7.23.2. Konfigurationsoptionen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14386736"></a>7.23.2. <a id="checkscheduling-configuration_options"></a>Konfigurationsoptionen</h3></div></div></div>
+  <div class="section" title="7.23.2. Konfigurationsoptionen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14411824"></a>7.23.2. <a name="checkscheduling-configuration_options"></a>Konfigurationsoptionen</h3></div></div></div>
     
 
     <p>Es gibt es verschiedene Konfigurationsoptionen, die beeinflussen, wie Service-Prüfungen geplant, ausgeführt und verarbeitet
     werden. Als Anfang enthält jede <a class="link" href="objectdefinitions.html#objectdefinitions-service">Service-Definition</a> drei Optionen, die festlegen, wann
     und wie jede einzelne Service-Prüfung geplant und ausgeführt wird Diese drei Optionen sind:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>
           <span class="emphasis"><em>check_interval</em></span>
         </p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>
           <span class="emphasis"><em>retry_interval</em></span>
         </p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>
           <span class="emphasis"><em>check_period</em></span>
         </p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Es gibt außerdem vier Konfigurationsoptionen in der <a class="link" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a>, die
     Service-Prüfungen beeinflussen. Dies sind:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>
           <a class="link" href="configmain.html#configmain-service_inter_check_delay_method">
             <span class="emphasis"><em>service_inter_check_delay_method</em></span>
           </a>
         </p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>
           <a class="link" href="configmain.html#configmain-service_interleave_factor">
             <span class="emphasis"><em>service_interleave_factor</em></span>
           </a>
         </p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>
           <a class="link" href="configmain.html#configmain-max_concurrent_checks">
             <span class="emphasis"><em>max_concurrent_checks</em></span>
           </a>
         </p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>
           <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">
             <span class="emphasis"><em>check_result_reaper_frequency</em></span>
           </a>
         </p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Die letzte Direktive betrifft auch Host-Prüfungen.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
 
     <p>Wir werden nun mehr ins Detail gehen, wie all diese Optionen die Service-Prüfungsplaung beeinflussen. Lassen Sie uns zuerst
     betrachten, wie Services beim ersten (Neu-)Start von Icinga eingeplant werden...</p>
   </div>
 
-  <div class="section" title="7.23.3. Initiale Planung"><div class="titlepage"><div><div><h3 class="title"><a id="idp14405584"></a>7.23.3. <a id="checkscheduling-initial_scheduling"></a>Initiale Planung</h3></div></div></div>
+  <div class="section" title="7.23.3. Initiale Planung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14430560"></a>7.23.3. <a name="checkscheduling-initial_scheduling"></a>Initiale Planung</h3></div></div></div>
     
 
     <p>Wenn Icinga (neu) startet, wird es versuchen, die initialen Prüfungen aller Services in einer Art und Weise so zu planen,
@@ -115,16 +149,24 @@
     das Timing von ein oder mehreren Services verändern können, etc. Wenigstens versuchen wir, die Dinge gut zu beginnen. Hoffentlich hält
     die initiale Planung die Last auf dem lokalen und den entfernten Hosts im Laufe der Zeit relativ ausgeglichen...</p>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Wenn Sie die initiale Service-Prüfungs-Planungsinformationen ansehen möchten, dann starten Sie Icinga mit der <span class="bold"><strong>-s</strong></span> Kommandozeilenoption. Dabei werden Ihnen grundlegende Planungsinformationen (inter-check-Verzögerung,
       Verschachtelungsfaktor, erste und letzte Service-Prüfzeit, etc., angezeigt) und es wird ein neues Status-Log angezeigt, das die
       genauen Zeiten darstellt, zu denen alle Services initial eingeplant werden. Weil diese Option das Status-Log überschreibt, sollte Sie
       sie nicht nutzen, solange eine weitere Icinga-Instanz läuft. Icinga wird <span class="emphasis"><em>nicht</em></span> die Überwachung
       starten, wenn diese Option benutzt wird.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
   </div>
 
-  <div class="section" title="7.23.4. Inter-Check-Verzögerung (inter-check delay)"><div class="titlepage"><div><div><h3 class="title"><a id="idp14411632"></a>7.23.4. <a id="checkscheduling-service_inter_check_delay"></a>Inter-Check-Verzögerung (inter-check delay)</h3></div></div></div>
+  <div class="section" title="7.23.4. Inter-Check-Verzögerung (inter-check delay)">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14434880"></a>7.23.4. <a name="checkscheduling-service_inter_check_delay"></a>Inter-Check-Verzögerung (inter-check delay)</h3></div></div></div>
     
 
     <p>Wie bereits erwähnt, versucht Icinga die Last auf dem Rechner, auf dem Icinga läuft, auszugleichen, indem die
@@ -150,7 +192,9 @@
     Icinga läuft, in etwa gleich bleibt.</p>
   </div>
 
-  <div class="section" title="7.23.5. Service-Verschachtelung (service interleaving)"><div class="titlepage"><div><div><h3 class="title"><a id="idp14417936"></a>7.23.5. <a id="checkscheduling-service_interleaving"></a>Service-Verschachtelung (service interleaving)</h3></div></div></div>
+  <div class="section" title="7.23.5. Service-Verschachtelung (service interleaving)">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14443168"></a>7.23.5. <a name="checkscheduling-service_interleaving"></a>Service-Verschachtelung (service interleaving)</h3></div></div></div>
     
 
     <p>Wie oben erläutert hilft die inter-check-Verzögerung dabei, die Last auf dem lokalen Host auszugleichen. Was ist aber mit
@@ -183,35 +227,60 @@
     verschachtelt werden.</p>
 
     <div class="informaltable">
-      <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td>
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td>
               <p>nicht verschachtelte Prüfungen</p>
-            </td><td>
+            </td>
+<td>
               <p>verschachtelte Prüfungen</p>
-            </td></tr><tr><td align="left" valign="middle">
+            </td>
+</tr>
+<tr>
+<td align="left" valign="middle">
               <p>
-                <span class="inlinemediaobject"><img src="../images/noninterleaved1.png" width="500" /></span>
+                <span class="inlinemediaobject"><img src="../images/noninterleaved1.png" width="500"></span>
               </p>
-            </td><td align="left" valign="middle">
+            </td>
+<td align="left" valign="middle">
               <p>
-                <span class="inlinemediaobject"><img src="../images/interleaved1.png" width="500" /></span>
+                <span class="inlinemediaobject"><img src="../images/interleaved1.png" width="500"></span>
               </p>
-            </td></tr><tr><td align="left" valign="middle">
+            </td>
+</tr>
+<tr>
+<td align="left" valign="middle">
               <p>
-                <span class="inlinemediaobject"><img src="../images/noninterleaved2.png" width="500" /></span>
+                <span class="inlinemediaobject"><img src="../images/noninterleaved2.png" width="500"></span>
               </p>
-            </td><td align="left" valign="middle">
+            </td>
+<td align="left" valign="middle">
               <p>
-                <span class="inlinemediaobject"><img src="../images/interleaved2.png" width="500" /></span>
+                <span class="inlinemediaobject"><img src="../images/interleaved2.png" width="500"></span>
               </p>
-            </td></tr><tr><td> </td><td align="left" valign="middle">
+            </td>
+</tr>
+<tr>
+<td> </td>
+<td align="left" valign="middle">
               <p>
-                <span class="inlinemediaobject"><img src="../images/interleaved3.png" width="500" /></span>
+                <span class="inlinemediaobject"><img src="../images/interleaved3.png" width="500"></span>
               </p>
-            </td></tr></tbody></table>
+            </td>
+</tr>
+</tbody>
+</table>
     </div>
   </div>
 
-  <div class="section" title="7.23.6. Maximale Zahl gleichzeitiger Service-Prüfungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14452128"></a>7.23.6. <a id="checkscheduling-max_concurrent_checks"></a>Maximale Zahl gleichzeitiger Service-Prüfungen</h3></div></div></div>
+  <div class="section" title="7.23.6. Maximale Zahl gleichzeitiger Service-Prüfungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14477632"></a>7.23.6. <a name="checkscheduling-max_concurrent_checks"></a>Maximale Zahl gleichzeitiger Service-Prüfungen</h3></div></div></div>
     
 
     <p>Um Icinga davon abzuhalten, all Ihre CPU-Ressourcen zu verbrauchen, können Sie die maximale Zahl von gleichzeitigen
@@ -227,16 +296,20 @@
 
     <p>Zuerst müssen Sie einige Dinge wissen...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>die inter-check-Verzögerung, die Icinga benutzt, um die initialen Service-Prüfungen einzuplanen (nutzen Sie die Option
         <span class="bold"><strong>-s</strong></span>, um den Wert zu kontrollieren)</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>die Häufigkeit (in Sekunden) von "reaper events", wie sie in der <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a>-Variable in der Hauptkonfigurationsdatei
         angegeben ist</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>eine Vorstellung der durchschnittlichen Zeit, die Service-Prüfungen wirklich zur Ausführung benötigen (die meisten Plugins
         haben einen Timeout von 10 Sekunden, so dass der Durchschnitt wahrscheinlich niedriger liegt)</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Dann benutzen Sie die folgende Berechnung, um einen geeigneten Wert für die maximale Zahl von gleichzeitig erlaubten Prüfungen zu
     errechnen...</p>
@@ -268,7 +341,9 @@
     haben...</p>
   </div>
 
-  <div class="section" title="7.23.7. Zeitbeschränkungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14452384"></a>7.23.7. <a id="checkscheduling-time_restraints"></a>Zeitbeschränkungen</h3></div></div></div>
+  <div class="section" title="7.23.7. Zeitbeschränkungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14477888"></a>7.23.7. <a name="checkscheduling-time_restraints"></a>Zeitbeschränkungen</h3></div></div></div>
     
 
     <p>Die Option <span class="emphasis"><em>check_period</em></span> legt den <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitraum</a> fest, in dem Icinga
@@ -277,7 +352,12 @@
     Service. Statt dessen wird Icinga die Service-Prüfung für die nächste gültige Zeit des Zeitraums einplanen. Wenn die Prüfung
     gestartet werden kann (d.h. die Zeit ist gültig innerhalb des Zeitraums), wird die Service-Prüfung ausgeführt.</p>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Auch wenn eine Service-Prüfung nicht zu einer bestimmten Zeit ausgeführt werden kann, könnte Icinga sie trotzdem
       <span class="emphasis"><em>einplanen</em></span>. Das wird höchstwahrscheinlich während der initialen Planung von Services passieren, aber es kann auch
       in anderen Fällen passieren. Das bedeutet nicht, dass Icinga die Prüfung ausführen wird. Wenn es Zeit wird, die Prüfung
@@ -285,10 +365,13 @@
       kann. Falls nicht, wird Icinga die Service-Prüfung nicht ausführen, sondern sie zu einer späteren Zeit einplanen. Lassen Sie
       sich nicht verwirren! Die Planung und Ausführunge von Service-Prüfungen sind zwei unterschiedliche (wenn auch, zusammenhängende)
       Dinge.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
   </div>
 
-  <div class="section" title="7.23.8. Normale Planung"><div class="titlepage"><div><div><h3 class="title"><a id="idp14474432"></a>7.23.8. <a id="checkscheduling-normal_scheduling"></a>Normale Planung</h3></div></div></div>
+  <div class="section" title="7.23.8. Normale Planung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14500448"></a>7.23.8. <a name="checkscheduling-normal_scheduling"></a>Normale Planung</h3></div></div></div>
     
 
     <p>In einer idealen Welt hätten Sie keine Netzwerkprobleme. Aber wenn das so wäre, dann hätten Sie auch kein
@@ -297,7 +380,9 @@
     angegeben ist. Das war's. Einfach, oder?</p>
   </div>
 
-  <div class="section" title="7.23.9. Planung bei Problemen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14477024"></a>7.23.9. <a id="checkscheduling-problem_scheduling"></a>Planung bei Problemen</h3></div></div></div>
+  <div class="section" title="7.23.9. Planung bei Problemen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14503040"></a>7.23.9. <a name="checkscheduling-problem_scheduling"></a>Planung bei Problemen</h3></div></div></div>
     
 
     <p>Also, was passiert, wenn es Probleme mit einem Service gibt? Nun, eins der Dinge ist, dass sich die Service-Prüfungsplanung
@@ -319,7 +404,9 @@
     <span class="emphasis"><em>retry_interval</em></span>.</p>
   </div>
 
-  <div class="section" title="7.23.10. Host-Prüfungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14485680"></a>7.23.10. <a id="checkscheduling-host_checks"></a>Host-Prüfungen</h3></div></div></div>
+  <div class="section" title="7.23.10. Host-Prüfungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14511696"></a>7.23.10. <a name="checkscheduling-host_checks"></a>Host-Prüfungen</h3></div></div></div>
     
 
     <p>Ein Fall, wo Icinga den Status eines Hosts prüft, ist, wenn ein Service-Prüfung einen nicht-OK-Zustand ergibt.
@@ -327,7 +414,9 @@
     Wenn die erste Host-Prüfung einen nicht-OK-Zustand ergibt, wird Icinga Host-Prüfungen wie bei den Services durchführen.</p>
   </div>
 
-  <div class="section" title="7.23.11. Planungsverzögerungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14487792"></a>7.23.11. <a id="checkscheduling-scheduling_delays"></a>Planungsverzögerungen</h3></div></div></div>
+  <div class="section" title="7.23.11. Planungsverzögerungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14513808"></a>7.23.11. <a name="checkscheduling-scheduling_delays"></a>Planungsverzögerungen</h3></div></div></div>
     
 
     <p>Es sollte erwähnt werden, dass Service-Prüfungsplanung und -ausführung geschieht, so gut es geht. Individuelle Service-Prüfungen
@@ -336,7 +425,9 @@
     Befehlsprüfungen und Prüfergebnis-Ernteereignisse.</p>
   </div>
 
-  <div class="section" title="7.23.12. Planungsbeispiel"><div class="titlepage"><div><div><h3 class="title"><a id="idp14490000"></a>7.23.12. <a id="checkscheduling-scheduling_example"></a>Planungsbeispiel</h3></div></div></div>
+  <div class="section" title="7.23.12. Planungsbeispiel">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14516016"></a>7.23.12. <a name="checkscheduling-scheduling_example"></a>Planungsbeispiel</h3></div></div></div>
     
 
     <p>Die Planung von Service-Prüfungen, ihre Ausführung und die Verarbeitung ihrer Ergebnisse können ein bisschen schwierig zu
@@ -344,7 +435,7 @@
     beziehen, während wir die Dinge erklären.</p>
 
     <p>
-      <span class="inlinemediaobject"><img src="../images/checktiming.png" /></span>
+      <span class="inlinemediaobject"><img src="../images/checktiming.png"></span>
     </p>
 
     <p>Zuallererst sind <span class="bold"><strong>X</strong></span><sub>n</sub> Prüfergebnis-Ernteereignisse, die in der Häufigkeit
@@ -375,7 +466,9 @@
     planen...?</p>
   </div>
 
-  <div class="section" title="7.23.13. Service-Definitionsoptionen, die die Planung beeinflussen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14507968"></a>7.23.13. <a id="checkscheduling-service_options"></a>Service-Definitionsoptionen, die die Planung beeinflussen</h3></div></div></div>
+  <div class="section" title="7.23.13. Service-Definitionsoptionen, die die Planung beeinflussen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14533984"></a>7.23.13. <a name="checkscheduling-service_options"></a>Service-Definitionsoptionen, die die Planung beeinflussen</h3></div></div></div>
     
 
     <p>Jede Service-Definition enthält eine <span class="emphasis"><em>check_interval</em></span>- und eine <span class="emphasis"><em>retry_interval</em></span>-Option.
@@ -401,11 +494,13 @@
     festgelegten Intervall geprüft.</p>
   </div>
 
-  <div class="section" title="7.23.14. TODO"><div class="titlepage"><div><div><h3 class="title"><a id="idp14508128"></a>7.23.14. TODO</h3></div></div></div>
+  <div class="section" title="7.23.14. TODO">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14534144"></a>7.23.14. TODO</h3></div></div></div>
     
 
     <p>
-      <span class="bold"><strong><a id="checkscheduling-host_inter_check_delay"></a>Host-Prüfungs-Direktiven</strong></span>
+      <span class="bold"><strong><a name="checkscheduling-host_inter_check_delay"></a>Host-Prüfungs-Direktiven</strong></span>
     </p>
 
     <p>Die meisten der o.g. Informationen treffen auch auf Host-Prüfungen zu.</p>
@@ -413,53 +508,51 @@
     <p>Dieser Abschnitt wird aktualisiert. Voraussichtlich gibt es mehr Informationen in einer der nächsten Ausgaben...</p>
   </div>
 
-  <a id="idp14524608" class="indexterm"></a>
+  <a class="indexterm" name="idp14549888"></a>
 
-  <a id="idp14526432" class="indexterm"></a>
+  <a class="indexterm" name="idp14551280"></a>
 
-  <a id="idp14527920" class="indexterm"></a>
+  <a class="indexterm" name="idp14552992"></a>
 
-  <a id="idp14529552" class="indexterm"></a>
+  <a class="indexterm" name="idp14554624"></a>
 
-  <a id="idp14531248" class="indexterm"></a>
+  <a class="indexterm" name="idp14556304"></a>
 
-  <a id="idp14533008" class="indexterm"></a>
+  <a class="indexterm" name="idp14557936"></a>
 
-  <a id="idp14467888" class="indexterm"></a>
+  <a class="indexterm" name="idp14559600"></a>
 
-  <a id="idp14535840" class="indexterm"></a>
+  <a class="indexterm" name="idp14561296"></a>
 
-  <a id="idp14537632" class="indexterm"></a>
+  <a class="indexterm" name="idp14562928"></a>
 
-  <a id="idp14539184" class="indexterm"></a>
+  <a class="indexterm" name="idp14564560"></a>
 
-  <a id="idp14540816" class="indexterm"></a>
+  <a class="indexterm" name="idp14566192"></a>
 
-  <a id="idp14542288" class="indexterm"></a>
+  <a class="indexterm" name="idp14567824"></a>
 
-  <a id="idp14542416" class="indexterm"></a>
+  <a class="indexterm" name="idp14569456"></a>
 
-  <a id="idp14545760" class="indexterm"></a>
+  <a class="indexterm" name="idp14571088"></a>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="passivestatetranslation.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="cgiincludes.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.22. Passive Host-Zustandsübersetzung </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.24. Angepasste CGI-Kopf- und Fußzeilen</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="passivestatetranslation.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="cgiincludes.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.22. Passive Host-Zustandsübersetzung </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 7.24. Angepasste CGI-Kopf- und Fußzeilen</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

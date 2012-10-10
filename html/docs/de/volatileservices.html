@@ -1,40 +1,48 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.4. sprunghafte Services</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen" />
-    <link rel="prev" href="eventhandlers.html" title="7.3. Eventhandler" />
-    <link rel="next" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.4. sprunghafte Services</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="eventhandlers.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-          <td width="20%" align="right"> <a accesskey="n" href="freshness.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.4. sprunghafte Services"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="volatileservices"></a>7.4. sprunghafte Services</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.4.1. <a href="volatileservices.html#idp13251632">Einführung</a></span></dt><dt><span class="section">7.4.2. <a href="volatileservices.html#idp13253808">Wofür sind sie nützlich?</a></span></dt><dt><span class="section">7.4.3. <a href="volatileservices.html#idp13257904">Was ist so besonders an flüchtigen Services?</a></span></dt><dt><span class="section">7.4.4. <a href="volatileservices.html#idp13269456">Die Macht der Zwei</a></span></dt><dt><span class="section">7.4.5. <a href="volatileservices.html#idp13273152">Icinga Konfiguration:</a></span></dt><dt><span class="section">7.4.6. <a href="volatileservices.html#idp13282752">PortSentry Konfiguration:</a></span></dt><dt><span class="section">7.4.7. <a href="volatileservices.html#idp13286272">Portscan-Script:</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.4. sprunghafte Services</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
+<link rel="prev" href="eventhandlers.html" title="7.3. Eventhandler">
+<link rel="next" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.4. sprunghafte Services</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="eventhandlers.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="freshness.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.4. sprunghafte Services">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="volatileservices"></a>7.4. sprunghafte Services</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.4.1. <a href="volatileservices.html#idp13276480">Einführung</a></span></dt>
+<dt><span class="section">7.4.2. <a href="volatileservices.html#idp13278816">Wofür sind sie nützlich?</a></span></dt>
+<dt><span class="section">7.4.3. <a href="volatileservices.html#idp13282672">Was ist so besonders an flüchtigen Services?</a></span></dt>
+<dt><span class="section">7.4.4. <a href="volatileservices.html#idp13294160">Die Macht der Zwei</a></span></dt>
+<dt><span class="section">7.4.5. <a href="volatileservices.html#idp13298000">Icinga Konfiguration:</a></span></dt>
+<dt><span class="section">7.4.6. <a href="volatileservices.html#idp13307648">PortSentry Konfiguration:</a></span></dt>
+<dt><span class="section">7.4.7. <a href="volatileservices.html#idp13311088">Portscan-Script:</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.4.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp13251632"></a>7.4.1. Einführung</h3></div></div></div>
+  <div class="section" title="7.4.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13276480"></a>7.4.1. Einführung</h3></div></div></div>
     
 
     <p>Icinga hat die Möglichkeit, zwischen "normalen" und "flüchtigen" Services zu unterscheiden. Die
@@ -43,77 +51,100 @@
     flüchtige Services sehr nützlich sein, wenn sie richtig eingesetzt werden...</p>
   </div>
 
-  <div class="section" title="7.4.2. Wofür sind sie nützlich?"><div class="titlepage"><div><div><h3 class="title"><a id="idp13253808"></a>7.4.2. Wofür sind sie nützlich?</h3></div></div></div>
+  <div class="section" title="7.4.2. Wofür sind sie nützlich?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13278816"></a>7.4.2. Wofür sind sie nützlich?</h3></div></div></div>
     
 
     <p>Flüchtige Services sind nützlich zur Überwachung von...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Dingen, die sich jedes Mal automatisch in einen "OK"-Zustand zurücksetzen, wenn sie geprüft werden</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Ereignisse wie Sicherheits-Alarme, die jedes Mal Beachtung erfordern, wenn ein Problem vorliegt (und nicht nur beim ersten
         Mal)</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="7.4.3. Was ist so besonders an flüchtigen Services?"><div class="titlepage"><div><div><h3 class="title"><a id="idp13257904"></a>7.4.3. Was ist so besonders an flüchtigen Services?</h3></div></div></div>
+  <div class="section" title="7.4.3. Was ist so besonders an flüchtigen Services?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13282672"></a>7.4.3. Was ist so besonders an flüchtigen Services?</h3></div></div></div>
     
 
     <p>Flüchtige Services unterscheiden sich von "normalen" Services in drei wichtigen Punkten. <span class="emphasis"><em>Jedes Mal</em></span> wenn sie
     in einem <a class="link" href="statetypes.html" title="5.8. Statustypen">harten</a> nicht-OK-Zustand sind und die Prüfung einen nicht-OK-Zustand ergibt (also keine
     Statusänderung eintritt)...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>wird der nicht-OK-Zustand des Service protokolliert</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>werden Kontakte über das Problem informiert (falls es das ist, <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">was zu tun ist</a>).
         Anmerkung: Benachrichtigungsintervalle werden bei flüchtigen Services ignoriert.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Der <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> für den Service wird ausgeführt (falls einer definiert ist)</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Diese Ereignisse finden normalerweise nur für Services statt, wenn sie in einem nicht-OK-Zustand sind und gerade ein
     Hard-Zustandswechsel erfolgte. In anderen Worten, sie passieren nur das erste Mal, wenn ein Service in einen nicht-OK-Zustand geht. Wenn
     weitere Prüfungen des Service den gleichen nicht-OK-Zustand ergeben, erfolgt kein harter Zustandswechsel und keines der genannten
     Ereignisse wird stattfinden.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/tip.gif" /></span> Hinweis: Wenn Sie nur an der Protokollierung interessiert sind, dann sehen Sie sich die <a class="link" href="stalking.html" title="7.14. Status Stalking">Stalking</a>-Option an.</p>
+    <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Wenn Sie nur an der Protokollierung interessiert sind, dann sehen Sie sich die <a class="link" href="stalking.html" title="7.14. Status Stalking">Stalking</a>-Option an.</p>
   </div>
 
-  <div class="section" title="7.4.4. Die Macht der Zwei"><div class="titlepage"><div><div><h3 class="title"><a id="idp13269456"></a>7.4.4. Die Macht der Zwei</h3></div></div></div>
+  <div class="section" title="7.4.4. Die Macht der Zwei">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13294160"></a>7.4.4. Die Macht der Zwei</h3></div></div></div>
     
 
     <p>Wenn Sie die Möglichkeiten von flüchtigen Services und <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passiven Service-Prüfungen</a>
     kombinieren, können Sie einige sehr nützliche Dinge tun. Beispiele hierfür umfassen u.a. die Behandlung von SNMP-Traps,
     Sicherheits-Alarme, usw.</p>
 
-    <p>Wie wäre es mit einem Beispiel... Nehmen wir an, Sie nutzen <a class="ulink" href="http://sourceforge.net/projects/sentrytools/" target="_top">PortSentry</a>, um Portscans auf Ihrer Maschine zu erkennen und automatisch
+    <p>Wie wäre es mit einem Beispiel... Nehmen wir an, Sie nutzen <a class="link" href="http://sourceforge.net/projects/sentrytools/" target="_top">PortSentry</a>, um Portscans auf Ihrer Maschine zu erkennen und automatisch
     potenzielle Eindringlinge auszusperren. Wenn Sie wollen, dass Icinga über Portscans erfährt, können Sie das Folgende
     tun...</p>
   </div>
 
-  <div class="section" title="7.4.5. Icinga Konfiguration:"><div class="titlepage"><div><div><h3 class="title"><a id="idp13273152"></a>7.4.5. Icinga Konfiguration:</h3></div></div></div>
+  <div class="section" title="7.4.5. Icinga Konfiguration:">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13298000"></a>7.4.5. Icinga Konfiguration:</h3></div></div></div>
     
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Legen Sie eine Service-Definition namens <span class="emphasis"><em>Port Scans</em></span> an und verbinden Sie diese mit dem Host, auf dem
         PortSentry läuft.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Setzen Sie die <span class="emphasis"><em>max_check_attempts</em></span>-Direktive in der Service-Definition auf 1. Dies teilt Icinga
         mit, sofort einen <a class="link" href="statetypes.html" title="5.8. Statustypen">Hard-Zustand</a> für den Service zu erzwingen, wenn ein nicht-OK-Zustand ermittelt
         wird.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Setzen Sie die <span class="emphasis"><em>active_checks_enabled</em></span>-Direktive in der Service-Definition auf 0. Dies hält Icinga
         davon ab, den Service aktiv zu prüfen.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Setzen Sie die <span class="emphasis"><em>passive_checks_enabled</em></span>-Direktive in der Service-Definition auf 1. Das erlaubt passive
         Prüfungen für den Service.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Setzen Sie die <span class="emphasis"><em>is_volatile</em></span>-Direktive in der Service-Definition auf 1.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="7.4.6. PortSentry Konfiguration:"><div class="titlepage"><div><div><h3 class="title"><a id="idp13282752"></a>7.4.6. PortSentry Konfiguration:</h3></div></div></div>
+  <div class="section" title="7.4.6. PortSentry Konfiguration:">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13307648"></a>7.4.6. PortSentry Konfiguration:</h3></div></div></div>
     
 
     <p>Editieren Sie die PortSentry-Konfigurationsdatei (portsentry.conf) und definieren Sie einen Befehl für die
@@ -125,7 +156,9 @@
     ist.</p>
   </div>
 
-  <div class="section" title="7.4.7. Portscan-Script:"><div class="titlepage"><div><div><h3 class="title"><a id="idp13286272"></a>7.4.7. Portscan-Script:</h3></div></div></div>
+  <div class="section" title="7.4.7. Portscan-Script:">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13311088"></a>7.4.7. Portscan-Script:</h3></div></div></div>
     
 
     <p>Erstellen Sie ein Shell-Script im <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers</em></span>-Verzeichnis namens
@@ -145,42 +178,45 @@
 
     <p>Was passiert, wenn PortSentry in der Zukunft einen Portscan auf der Maschine entdeckt?</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>PortSentry wird den Host ausschließen ("firewall", das ist eine Funktion der PortSentry-Software)</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>PortSentry wird das <span class="emphasis"><em>submit_check_result</em></span>-Shell-Script ausführen und ein passives Prüfergebnis an
         Icinga senden</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Icinga wird das external command file lesen und das passive Service-Prüfergebnis von PortSentry verarbeiten</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Icinga wird den <span class="emphasis"><em>Port Scans</em></span>-Service in einen harten CRITICAL-Zustand versetzen und
         Benachrichtigungen an die Kontakte senden</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Ziemlich hübsch, oder?</p>
 
-    <a id="idp13295840" class="indexterm"></a>
+    <a class="indexterm" name="idp13320528"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="eventhandlers.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="freshness.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.3. Eventhandler </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.5. Service- und Host-Frische-Prüfungen</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="eventhandlers.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="freshness.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.3. Eventhandler </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 7.5. Service- und Host-Frische-Prüfungen</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

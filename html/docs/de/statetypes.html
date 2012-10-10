@@ -1,49 +1,58 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>5.8. Statustypen</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen" />
-    <link rel="prev" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)" />
-    <link rel="next" href="timeperiods.html" title="5.9. Zeitfenster" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">5.8. Statustypen</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="passivechecks.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
-          <td width="20%" align="right"> <a accesskey="n" href="timeperiods.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="5.8. Statustypen"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="statetypes"></a>5.8. Statustypen</h2></div></div></div><div class="toc"><dl><dt><span class="section">5.8.1. <a href="statetypes.html#idp9798352">Einführung</a></span></dt><dt><span class="section">5.8.2. <a href="statetypes.html#idp9805296">Service- und Host-Prüfungswiederholungen</a></span></dt><dt><span class="section">5.8.3. <a href="statetypes.html#idp9807328">Soft-Zustände</a></span></dt><dt><span class="section">5.8.4. <a href="statetypes.html#idp9819424">Hard-Zustände</a></span></dt><dt><span class="section">5.8.5. <a href="statetypes.html#idp9835424">Beispiel</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.8. Statustypen</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
+<link rel="prev" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">
+<link rel="next" href="timeperiods.html" title="5.9. Zeitfenster">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">5.8. Statustypen</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="passivechecks.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
+<td width="20%" align="right"> <a accesskey="n" href="timeperiods.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="5.8. Statustypen">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="statetypes"></a>5.8. Statustypen</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">5.8.1. <a href="statetypes.html#idp9817120">Einführung</a></span></dt>
+<dt><span class="section">5.8.2. <a href="statetypes.html#idp9824240">Service- und Host-Prüfungswiederholungen</a></span></dt>
+<dt><span class="section">5.8.3. <a href="statetypes.html#idp9826272">Soft-Zustände</a></span></dt>
+<dt><span class="section">5.8.4. <a href="statetypes.html#idp9838928">Hard-Zustände</a></span></dt>
+<dt><span class="section">5.8.5. <a href="statetypes.html#idp9855056">Beispiel</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="5.8.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp9798352"></a>5.8.1. Einführung</h3></div></div></div>
+  <div class="section" title="5.8.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9817120"></a>5.8.1. Einführung</h3></div></div></div>
     
 
     <p>Der aktuelle Status von überwachten Services und Host wird durch zwei Komponenten ermittelt:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>den Status des Service oder Host (d.h. OK, WARNING, UP, DOWN, etc.)</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>den <span class="emphasis"><em>Typ</em></span> des Zustands, in dem der Service oder Host ist</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Es gibt zwei Statustypen in Icinga: SOFT- und HARD-Zustände. Diese Statustypen sind ein wichtiger Teil der
     Überwachungslogik, da sie zur Ermittlung dienen, wann <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a> ausgeführt und <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a> zuerst versandt werden.</p>
@@ -52,7 +61,9 @@
     auftreten.</p>
   </div>
 
-  <div class="section" title="5.8.2. Service- und Host-Prüfungswiederholungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp9805296"></a>5.8.2. Service- und Host-Prüfungswiederholungen</h3></div></div></div>
+  <div class="section" title="5.8.2. Service- und Host-Prüfungswiederholungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9824240"></a>5.8.2. Service- und Host-Prüfungswiederholungen</h3></div></div></div>
     
 
     <p>Um falsche Alarme bei vorübergehenden Problemen zu verhindern, erlaubt Ihnen Icinga zu definieren, wie oft ein Service oder
@@ -61,26 +72,34 @@
     (erneut) geprüft werden, um festzustellen, ob ein echtes Problem besteht, ist wichtig zum Verstehen, wie Statustypen arbeiten.</p>
   </div>
 
-  <div class="section" title="5.8.3. Soft-Zustände"><div class="titlepage"><div><div><h3 class="title"><a id="idp9807328"></a>5.8.3. Soft-Zustände</h3></div></div></div>
+  <div class="section" title="5.8.3. Soft-Zustände">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9826272"></a>5.8.3. Soft-Zustände</h3></div></div></div>
     
 
     <p>Soft-Zustände treten in den folgenden Situationen auf...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>wenn ein Host- oder Service-Prüfungsergebnis in einem nicht-OK oder nicht-UP-Status resultiert und die Service-Prüfung noch
         nicht so oft (erneut) durchgeführt wurde, wie es in der <span class="emphasis"><em>max_check_attempts</em></span>-Direktive der Service- oder
         Host-Definition angegeben wurde. Das wird als Soft-Error bezeichnet.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>wenn sich ein Service oder Host von einem Soft-Error erholt. Das wird als Soft-Recovery angesehen.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Die folgenden Dinge passieren, wenn bei Hosts oder Services SOFT-Zustandsänderungen auftreten:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>der SOFT-Status wird protokolliert.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Eventhandler werden zur Behandlung von SOFT-Zuständen ausgeführt</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>SOFT-Zustände werden nur protokolliert, wenn Sie die <a class="link" href="configmain.html#configmain-log_service_retries">log_service_retries</a>-
     oder die <a class="link" href="configmain.html#configmain-log_host_retries">log_host_retries</a>-Option in Ihrer Hauptkonfigurationsdatei aktiviert
@@ -93,45 +112,59 @@
     Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">hier</a>.</p>
   </div>
 
-  <div class="section" title="5.8.4. Hard-Zustände"><div class="titlepage"><div><div><h3 class="title"><a id="idp9819424"></a>5.8.4. Hard-Zustände</h3></div></div></div>
+  <div class="section" title="5.8.4. Hard-Zustände">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9838928"></a>5.8.4. Hard-Zustände</h3></div></div></div>
     
 
     <p>Hard-Zustände treten für Hosts und Services in den folgenden Situationen auf...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>wenn ein Host- oder Service-Prüfungsergebnis in einem nicht-OK oder nicht-UP-Status resultiert und die Prüfung bereits so oft
         (erneut) durchgeführt wurde, wie es in der <span class="emphasis"><em>max_check_attempts</em></span>-Direktive der Service- oder Host-Definition
         angegeben wurde. Das wird als Hard-Error bezeichnet.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>wenn ein Host oder Service von einem Hard-Error-Zustand in einen anderen Fehlerzustand wechselt (z.B. von WARNING nach
         CRITICAL).</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>wenn eine Service-Prüfung in einem nicht-OK-Status resultiert und der zugehörige Host entweder DOWN oder UNREACHABLE
         ist.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>wenn ein Host oder Service sich von einem Hard-Error-Zustand erholt. Dies wird als Hard-Recovery angesehen.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>wenn eine <a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">passive Host-Prüfung</a> empfangen wird. Passive Host-Prüfungen werden als HARD
         angesehen, wenn nicht die <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a>-Option
         aktiviert ist.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Die folgenden Dinge passieren, wenn bei Hosts oder Services HARD-Zustandsänderungen auftreten:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>der HARD-Status wird protokolliert.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Eventhandler werden zur Behandlung von HARD-Zuständen ausgeführt.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Kontakte werden über das Host- oder Service-Problem bzw. die Erholung informiert.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Die <a class="link" href="macrolist.html#macrolist-hoststatetype">$HOSTSTATETYPE$</a> oder <a class="link" href="macrolist.html#macrolist-servicestatetype">$SERVICESTATETYPE$</a>-Makros werden den Wert "<span class="emphasis"><em>HARD</em></span>" haben, wenn
     Eventhandler ausgeführt werden, was es Ihren Eventhandlern erlaubt zu wissen, wann sie fehlerbehebende Aktionen vornehmen sollen. Mehr
     Informationen zu Eventhandlern finden Sie <a class="link" href="eventhandlers.html" title="7.3. Eventhandler">hier</a>.</p>
   </div>
 
-  <div class="section" title="5.8.5. Beispiel"><div class="titlepage"><div><div><h3 class="title"><a id="idp9835424"></a>5.8.5. Beispiel</h3></div></div></div>
+  <div class="section" title="5.8.5. Beispiel">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp9855056"></a>5.8.5. Beispiel</h3></div></div></div>
     
 
     <p>Hier ist ein Beispiel, wie Statustypen ermittelt werden, wenn Statusänderungen auftreten und wann Eventhandler ausgeführt und
@@ -139,38 +172,143 @@
     <span class="emphasis"><em>max_check_attempts</em></span>-Wert von 3.</p>
 
     <div class="informaltable">
-      <table border="1"><colgroup><col /><col /><col /><col /><col /><col /></colgroup><tbody><tr><td><p> <span class="bold"><strong>Zeit</strong></span> </p></td><td><p> <span class="bold"><strong>Prüfung #</strong></span> </p></td><td><p> <span class="bold"><strong>Status</strong></span> </p></td><td><p> <span class="bold"><strong>Statustyp</strong></span> </p></td><td><p> <span class="bold"><strong>Statuswechsel</strong></span> </p></td><td><p> <span class="bold"><strong>Anmerkungen</strong></span> </p></td></tr><tr><td><p>0</p></td><td><p>1</p></td><td><p>OK</p></td><td><p>HARD</p></td><td><p>Nein</p></td><td><p>Initialer Zustand des Service</p></td></tr><tr><td><p>1</p></td><td><p>1</p></td><td><p>CRITICAL</p></td><td><p>SOFT</p></td><td><p>Ja</p></td><td><p>erstes Erkennen eines nicht-OK-Zustandes. Eventhandler wird ausgeführt.</p></td></tr><tr><td><p>2</p></td><td><p>2</p></td><td><p>WARNING</p></td><td><p>SOFT</p></td><td><p>Ja</p></td><td><p>Service bleibt in einem nicht-OK-Zustand. Eventhandler wird ausgeführt.</p></td></tr><tr><td><p>3</p></td><td><p>3</p></td><td><p>CRITICAL</p></td><td><p>HARD</p></td><td><p>Ja</p></td><td><p>"max_check_attempts" wurde erreicht, deshalb geht der Service in einen HARD-Zustand. Eventhandler wird ausgeführt
-            und eine Benachrichtigung versandt. Die Check-Anzahl wird auf 1 zurückgesetzt, sofort nachdem dies passiert.</p></td></tr><tr><td><p>4</p></td><td><p>1</p></td><td><p>WARNING</p></td><td><p>HARD</p></td><td><p>Ja</p></td><td><p>Service wechselt in einen HARD-WARNING-Status. Eventhandler wird ausgeführt und eine Problembenachrichtigung
-            versandt.</p></td></tr><tr><td><p>5</p></td><td><p>1</p></td><td><p>WARNING</p></td><td><p>HARD</p></td><td><p>Nein</p></td><td><p>Service stabilisiert sich zu einem HARD-Problemzustand. Abhängig vom Benachrichtigungsintervall für den Service
-            wird ggf. eine weitere Benachrichtigung verschickt.</p></td></tr><tr><td><p>6</p></td><td><p>1</p></td><td><p>OK</p></td><td><p>HARD</p></td><td><p>Ja</p></td><td><p>Service erfährt eine HARD-Recovery. Eventhandler wird ausgeführt und eine Erholungs-Benachrichtigung wird
-            versandt.</p></td></tr><tr><td><p>7</p></td><td><p>1</p></td><td><p>OK</p></td><td><p>HARD</p></td><td><p>Nein</p></td><td><p>Service ist weiterhin OK.</p></td></tr><tr><td><p>8</p></td><td><p>1</p></td><td><p>UNKNOWN</p></td><td><p>SOFT</p></td><td><p>Ja</p></td><td><p>Für den Service wird ein Wechsel zu einem SOFT nicht-OK-Zustand festgestellt. Eventhandler wird
-            ausgeführt.</p></td></tr><tr><td><p>9</p></td><td><p>2</p></td><td><p>OK</p></td><td><p>SOFT</p></td><td><p>Ja</p></td><td><p>Service erfährt eine SOFT-Recovery. Eventhandler wird ausgeführt, aber keine Benachrichtigung versandt, weil dies
+      <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Zeit</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Prüfung #</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Status</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Statustyp</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Statuswechsel</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Anmerkungen</strong></span> </p></td>
+</tr>
+<tr>
+<td><p>0</p></td>
+<td><p>1</p></td>
+<td><p>OK</p></td>
+<td><p>HARD</p></td>
+<td><p>Nein</p></td>
+<td><p>Initialer Zustand des Service</p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>1</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>SOFT</p></td>
+<td><p>Ja</p></td>
+<td><p>erstes Erkennen eines nicht-OK-Zustandes. Eventhandler wird ausgeführt.</p></td>
+</tr>
+<tr>
+<td><p>2</p></td>
+<td><p>2</p></td>
+<td><p>WARNING</p></td>
+<td><p>SOFT</p></td>
+<td><p>Ja</p></td>
+<td><p>Service bleibt in einem nicht-OK-Zustand. Eventhandler wird ausgeführt.</p></td>
+</tr>
+<tr>
+<td><p>3</p></td>
+<td><p>3</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>HARD</p></td>
+<td><p>Ja</p></td>
+<td><p>"max_check_attempts" wurde erreicht, deshalb geht der Service in einen HARD-Zustand. Eventhandler wird ausgeführt
+            und eine Benachrichtigung versandt. Die Check-Anzahl wird auf 1 zurückgesetzt, sofort nachdem dies passiert.</p></td>
+</tr>
+<tr>
+<td><p>4</p></td>
+<td><p>1</p></td>
+<td><p>WARNING</p></td>
+<td><p>HARD</p></td>
+<td><p>Ja</p></td>
+<td><p>Service wechselt in einen HARD-WARNING-Status. Eventhandler wird ausgeführt und eine Problembenachrichtigung
+            versandt.</p></td>
+</tr>
+<tr>
+<td><p>5</p></td>
+<td><p>1</p></td>
+<td><p>WARNING</p></td>
+<td><p>HARD</p></td>
+<td><p>Nein</p></td>
+<td><p>Service stabilisiert sich zu einem HARD-Problemzustand. Abhängig vom Benachrichtigungsintervall für den Service
+            wird ggf. eine weitere Benachrichtigung verschickt.</p></td>
+</tr>
+<tr>
+<td><p>6</p></td>
+<td><p>1</p></td>
+<td><p>OK</p></td>
+<td><p>HARD</p></td>
+<td><p>Ja</p></td>
+<td><p>Service erfährt eine HARD-Recovery. Eventhandler wird ausgeführt und eine Erholungs-Benachrichtigung wird
+            versandt.</p></td>
+</tr>
+<tr>
+<td><p>7</p></td>
+<td><p>1</p></td>
+<td><p>OK</p></td>
+<td><p>HARD</p></td>
+<td><p>Nein</p></td>
+<td><p>Service ist weiterhin OK.</p></td>
+</tr>
+<tr>
+<td><p>8</p></td>
+<td><p>1</p></td>
+<td><p>UNKNOWN</p></td>
+<td><p>SOFT</p></td>
+<td><p>Ja</p></td>
+<td><p>Für den Service wird ein Wechsel zu einem SOFT nicht-OK-Zustand festgestellt. Eventhandler wird
+            ausgeführt.</p></td>
+</tr>
+<tr>
+<td><p>9</p></td>
+<td><p>2</p></td>
+<td><p>OK</p></td>
+<td><p>SOFT</p></td>
+<td><p>Ja</p></td>
+<td><p>Service erfährt eine SOFT-Recovery. Eventhandler wird ausgeführt, aber keine Benachrichtigung versandt, weil dies
             kein "echtes" Problem war. Der Statustyp wird auf HARD gesetzt und die Check-Anzahl auf 1 zurückgesetzt, sofort nachdem dies
-            passiert.</p></td></tr><tr><td><p>10</p></td><td><p>1</p></td><td><p>OK</p></td><td><p>HARD</p></td><td><p>Nein</p></td><td><p>Service stabilisiert sind zu einem OK-Status.</p></td></tr></tbody></table>
+            passiert.</p></td>
+</tr>
+<tr>
+<td><p>10</p></td>
+<td><p>1</p></td>
+<td><p>OK</p></td>
+<td><p>HARD</p></td>
+<td><p>Nein</p></td>
+<td><p>Service stabilisiert sind zu einem OK-Status.</p></td>
+</tr>
+</tbody>
+</table>
     </div>
 
-    <a id="idp9898288" class="indexterm"></a>
+    <a class="indexterm" name="idp9918336"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="passivechecks.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch05.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="timeperiods.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">5.7. Passive Prüfungen (Passive Checks) </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 5.9. Zeitfenster</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="passivechecks.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="timeperiods.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">5.7. Passive Prüfungen (Passive Checks) </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 5.9. Zeitfenster</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

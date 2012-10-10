@@ -1,40 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.10. Escalation Condition</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
-    <link rel="prev" href="escalations.html" title="7.9. Notification Escalations" />
-    <link rel="next" href="oncallrotation.html" title="7.11. On-Call Rotations" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.10. Escalation Condition</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="escalations.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="oncallrotation.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.10. Escalation Condition"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="escalation_condition"></a>7.10. <a id="escalation_cond"></a>Escalation Condition</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.10.1. <a href="escalation_condition.html#idp13802128">Introduction</a></span></dt><dt><span class="section">7.10.2. <a href="escalation_condition.html#idp13809984">Syntax</a></span></dt><dt><span class="section">7.10.3. <a href="escalation_condition.html#idp13810112">Example</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.10. Escalation Condition</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="escalations.html" title="7.9. Notification Escalations">
+<link rel="next" href="oncallrotation.html" title="7.11. On-Call Rotations">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.10. Escalation Condition</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="escalations.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="oncallrotation.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.10. Escalation Condition">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="escalation_condition"></a>7.10. <a name="escalation_cond"></a>Escalation Condition</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.10.1. <a href="escalation_condition.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.10.2. <a href="escalation_condition.html#syntax">Syntax</a></span></dt>
+<dt><span class="section">7.10.3. <a href="escalation_condition.html#example">Example</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.10.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp13802128"></a>7.10.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.10.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>7.10.1. Introduction</h3></div></div></div>
+	  
 
   <p>Starting with Icinga 1.0.1 a patch is implemented which introduces the ability to define an escalation_condition (similar to escalation_options [w,u,c,r]). An
   escalation with a defined condition will only be escalated if the current state of a particular host/service fits the condition.
@@ -46,16 +51,24 @@
   <span class="emphasis"><em>bar</em></span> could be a service indicating if the admin is in the office or at home and the escalation would react
   as following:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>If the admin is in the office, send an email first, after 5 minutes send an SMS</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>If the admin is at home, send an SMS first and after 30 minutes a second SMS to the admin and the head of
       department</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p><span class="emphasis"><em>This should be achieved without reloading or restarting the Icinga service.</em></span></p>
 
-  </div><div class="section" title="7.10.2. Syntax"><div class="titlepage"><div><div><h3 class="title"><a id="idp13809984"></a>7.10.2. Syntax</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.10.2. Syntax">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="syntax"></a>7.10.2. Syntax</h3></div></div></div>
+	  
 
   <p>The escalation_condition option is completely optional and can be defined for host escalations as well as for service
   escalations. The syntax is:</p>
@@ -68,19 +81,30 @@
   <p>As you can see, the escalation_condition accepts a list of one or more conditions separated by "&amp;" (logical AND) or "|"
   (logical OR). The meanings of [w,u,c,o,d] differ a bit from the ones used for escalation_options:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>w = WARNING</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>u = UNKNOWN</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>c = CRITICAL</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>o = OK for services or UP for hosts (one could think of ONLINE)</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>d = Down for hosts</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
-  </div><div class="section" title="7.10.3. Example"><div class="titlepage"><div><div><h3 class="title"><a id="idp13810112"></a>7.10.3. Example</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.10.3. Example">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="example"></a>7.10.3. Example</h3></div></div></div>
+	  
 
   <pre class="programlisting">define serviceescalation {
    host_name               localhost
@@ -88,32 +112,31 @@
    first_notification      5
    contact_groups          admins, managers
    escalation_condition    host linux=d | service linux.SSH=w,c
-   }</pre><p> This example escalation would be escalated if the HOST 'linux' is DOWN or the Service 'linux.SSH' is WARNING or
+   }</pre>
+<p> This example escalation would be escalated if the HOST 'linux' is DOWN or the Service 'linux.SSH' is WARNING or
   CRITICAL.</p>
 
   <p>[ Thanks to: Vitali Voroth, DECOIT GmbH * http://www.decoit.de ]</p>
-  <a id="idp13820912" class="indexterm"></a>
+  <a class="indexterm" name="idp13955200"></a>
 </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="escalations.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="oncallrotation.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.9. Notification Escalations </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.11. On-Call Rotations</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="escalations.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="oncallrotation.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.9. Notification Escalations </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 7.11. On-Call Rotations</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

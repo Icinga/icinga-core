@@ -1,47 +1,60 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>2.10. Upgrading IDOUtils Database</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch02.html" title="Chapter 2. Getting Started" />
-    <link rel="prev" href="upgrading.html" title="2.9. Upgrading (to) Icinga" />
-    <link rel="next" href="monitoring-overview.html" title="2.11. Monitoring Overview" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">2.10. Upgrading IDOUtils Database</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="upgrading.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 2. Getting Started</th>
-          <td width="20%" align="right"> <a accesskey="n" href="monitoring-overview.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="2.10. Upgrading IDOUtils Database"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="upgrading_idoutils"></a>2.10. <a id="upgrading_idoutils2"></a>Upgrading IDOUtils Database</h2></div></div></div><div class="toc"><dl><dt><span class="section">2.10.1. <a href="upgrading_idoutils.html#idp980128">Upgrading IDOUtils to 1.7</a></span></dt><dt><span class="section">2.10.2. <a href="upgrading_idoutils.html#idp985952">Upgrading IDOUtils to 1.5</a></span></dt><dt><span class="section">2.10.3. <a href="upgrading_idoutils.html#idp993632">Upgrading IDOUtils to 1.4</a></span></dt><dt><span class="section">2.10.4. <a href="upgrading_idoutils.html#idp1011280">Upgrading IDOUtils to 1.3</a></span></dt><dt><span class="section">2.10.5. <a href="upgrading_idoutils.html#idp1015856">Upgrading IDOUtils to 1.0.3</a></span></dt><dt><span class="section">2.10.6. <a href="upgrading_idoutils.html#idp1021376">Upgrading IDOUtils to 1.0.2</a></span></dt><dt><span class="section">2.10.7. <a href="upgrading_idoutils.html#idp1021504">Upgrading IDOUtils to 1.0.1</a></span></dt><dt><span class="section">2.10.8. <a href="upgrading_idoutils.html#idp1043616">Upgrading IDOUtils to 1.0</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>2.10. Upgrading IDOUtils Database</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
+<link rel="prev" href="upgrading.html" title="2.9. Upgrading (to) Icinga">
+<link rel="next" href="monitoring-overview.html" title="2.11. Monitoring Overview">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">2.10. Upgrading IDOUtils Database</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="upgrading.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 2. Getting Started</th>
+<td width="20%" align="right"> <a accesskey="n" href="monitoring-overview.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="2.10. Upgrading IDOUtils Database">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="upgrading_idoutils"></a>2.10. <a name="upgrading_idoutils2"></a>Upgrading IDOUtils Database</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">2.10.1. <a href="upgrading_idoutils.html#upgrade1.7">Upgrading IDOUtils to 1.7</a></span></dt>
+<dt><span class="section">2.10.2. <a href="upgrading_idoutils.html#upgrade1.5">Upgrading IDOUtils to 1.5</a></span></dt>
+<dt><span class="section">2.10.3. <a href="upgrading_idoutils.html#upgrade1.4">Upgrading IDOUtils to 1.4</a></span></dt>
+<dt><span class="section">2.10.4. <a href="upgrading_idoutils.html#upgrade1.3">Upgrading IDOUtils to 1.3</a></span></dt>
+<dt><span class="section">2.10.5. <a href="upgrading_idoutils.html#upgrade1.0.3">Upgrading IDOUtils to 1.0.3</a></span></dt>
+<dt><span class="section">2.10.6. <a href="upgrading_idoutils.html#upgrade1.0.2">Upgrading IDOUtils to 1.0.2</a></span></dt>
+<dt><span class="section">2.10.7. <a href="upgrading_idoutils.html#upgrade1.0.1">Upgrading IDOUtils to 1.0.1</a></span></dt>
+<dt><span class="section">2.10.8. <a href="upgrading_idoutils.html#upgrade1.0">Upgrading IDOUtils to 1.0</a></span></dt>
+</dl></div>
   
 
   <p>There may be a bug within the database scheme which has been fixed. If you are upgrading from an older IDOUtils version you
   also need to apply those fixes manually. If you are using rpm/deb packages please read the notes and/or ask the maintainer if he has added
   those modifications to the install routine.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>Depending on the changes to be done and the size of your database it may take a while to update your database. Please try to be
     patient and don't abort the script as it may leave the data being corrupt.</p>
-  </td></tr></table></div>
+  </td></tr>
+</table></div>
 
   <p>The upgrade files can be found next to the database install files in
   <code class="literal">/path/to/icinga-src/module/idoutils/db/yourrdbm/</code>. The syntax is as follows:</p>
@@ -50,117 +63,175 @@
 
   <p>where &lt;rdbm&gt; could be mysql, pgsql or oracle and &lt;version&gt; points to the version you want to upgrade to.</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>If you are upgrading from an older version and there are other versions in between be advised that you need to apply those upgrade
     files with incremental steps!</p>
-  </td></tr></table></div>
+  </td></tr>
+</table></div>
 
   <p>E.g. you have 1.0RC1 installed and want to upgrade to 1.0.1 - you will have to upgrade to 1.0 Stable first and then apply the
   upgrade to 1.0.1.</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
       <p>Backup your current database before upgrading!</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Check current IDOUtils version and the target version. Check if there are any version in between and upgrade incremental
       if necessary.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Apply the upgrade(s) using a rdbm user with appropriate rights. You may use the upgradedb script, but this is not recommended
       (for MySQL only).</p>
-    </li></ol></div>
+    </li>
+</ol></div>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-      <p><span class="bold"><strong>MySQL</strong></span> </p><pre class="programlisting"> $ mysql -u root -p &lt;dbname&gt; &lt; /path/to/icinga-src/module/idoutils/db/mysql/mysql-upgrade-&lt;version&gt;.sql</pre>
-    </li><li class="listitem">
-      <p><span class="bold"><strong>Postgresql</strong></span> </p><pre class="programlisting"> # su - postgres
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+      <p><span class="bold"><strong>MySQL</strong></span> </p>
+<pre class="programlisting"> $ mysql -u root -p &lt;dbname&gt; &lt; /path/to/icinga-src/module/idoutils/db/mysql/mysql-upgrade-&lt;version&gt;.sql</pre>
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Postgresql</strong></span> </p>
+<pre class="programlisting"> # su - postgres
  $ psql -U icinga -d icinga &lt; /path/to/icinga-src/module/idoutils/db/pgsql/pgsql-upgrade-&lt;version&gt;.sql</pre>
-    </li><li class="listitem">
-      <p><span class="bold"><strong>Oracle</strong></span> </p><pre class="programlisting"> # su - oracle
+    </li>
+<li class="listitem">
+      <p><span class="bold"><strong>Oracle</strong></span> </p>
+<pre class="programlisting"> # su - oracle
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
-    </li></ul></div>
+    </li>
+</ul></div>
 
-  <a id="idp979120" class="indexterm"></a>
+  <a class="indexterm" name="idp1006400"></a>
 
-  <div class="section" title="2.10.1. Upgrading IDOUtils to 1.7"><div class="titlepage"><div><div><h3 class="title"><a id="idp980128"></a>2.10.1. <a id="upgrading_idoutils_1.7"></a>Upgrading IDOUtils to 1.7</h3></div></div></div>
+  <div class="section" title="2.10.1. Upgrading IDOUtils to 1.7">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="upgrade1.7"></a>2.10.1. <a name="upgrading_idoutils_1.7"></a>Upgrading IDOUtils to 1.7</h3></div></div></div>
     
 
-    <p><span class="color">Starting with Icinga 1.7 the location of the idomod shared library changed from
+    <p><span class="color"><font color="red">Starting with Icinga 1.7 the location of the idomod shared library changed from
     <code class="filename">$bindir/idomod.o</code> to <code class="filename">$libdir/idomod.so</code>. Please note that the extension ".o" changed to ".so" as
     well. Depending on the method you are using you have to alter the "broker_module" entry in <code class="filename">icinga.cfg</code> OR the module
-    definition in <code class="filename">module/idomod.cfg</code> to reflect the changes.</span> The old file <code class="filename">idomod.o</code> will
+    definition in <code class="filename">module/idomod.cfg</code> to reflect the changes.</font></span> The old file <code class="filename">idomod.o</code> will
     be removed if found. You will receive a warning during "make install-idoutils" about this change.</p>
 
     <p>Please have a look at the section "CHANGES for users" in the <code class="filename">changelog</code> as well.</p>
   </div>
 
-  <div class="section" title="2.10.2. Upgrading IDOUtils to 1.5"><div class="titlepage"><div><div><h3 class="title"><a id="idp985952"></a>2.10.2. <a id="upgrading_idoutils_1.5"></a>Upgrading IDOUtils to 1.5</h3></div></div></div>
+  <div class="section" title="2.10.2. Upgrading IDOUtils to 1.5">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="upgrade1.5"></a>2.10.2. <a name="upgrading_idoutils_1.5"></a>Upgrading IDOUtils to 1.5</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><span class="bold"><strong>Oracle</strong></span></p>
 
-        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
           <p>Using IDOUtils 1.5.0 with Oracle requires at least OCILIB 3.9.2 - don't install 3.9.0 or 3.9.1 as they remain
           buggy.</p>
-        </td></tr></table></div>
+        </td></tr>
+</table></div>
 
         <p>Modify <code class="filename">oracle-upgrade-1.5.0.sql</code> and set the tablespaces for DATA, LOB, and IXT similar to the following
-        lines. You can provide your existing tablespace names for all defines. </p><pre class="programlisting"> /* set real TBS names on which you have quota, no checks are implemented!*/
+        lines. You can provide your existing tablespace names for all defines. </p>
+<pre class="programlisting"> /* set real TBS names on which you have quota, no checks are implemented!*/
  define DATATBS='icinga';
  define LOBTBS='icinga';
  define IXTBS='icinga';</pre>
 
-        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
-          <p>More detailed instructions using IDOUtils with Oracle you can find in our wiki howto series about <a class="ulink" href="https://wiki.icinga.org/display/howtos/Icinga+and+Oracle" target="_top">Oracle</a>.</p>
-        </td></tr></table></div>
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+          <p>More detailed instructions using IDOUtils with Oracle you can find in our wiki howto series about <a class="link" href="https://wiki.icinga.org/display/howtos/Icinga+and+Oracle" target="_top">Oracle</a>.</p>
+        </td></tr>
+</table></div>
       </li></ul></div>
   </div>
 
-  <div class="section" title="2.10.3. Upgrading IDOUtils to 1.4"><div class="titlepage"><div><div><h3 class="title"><a id="idp993632"></a>2.10.3. <a id="upgrading_idoutils_1.4"></a>Upgrading IDOUtils to 1.4</h3></div></div></div>
+  <div class="section" title="2.10.3. Upgrading IDOUtils to 1.4">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="upgrade1.4"></a>2.10.3. <a name="upgrading_idoutils_1.4"></a>Upgrading IDOUtils to 1.4</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><span class="bold"><strong>Oracle</strong></span></p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
             <p>The minimum supported version is Oracle 10g R2. Older versions may still work.</p>
-          </li><li class="listitem">
+          </li>
+<li class="listitem">
             <p>The optional separation of data, index and lob tablespaces is introduced. Modify
             <code class="filename">oracle-upgrade-1.4.0.sql</code> and define your tablespaces. You can provide your existing tablespace names for
             all defines.</p>
 
             <p>Actions:</p>
 
-            <div class="itemizedlist"><ul class="itemizedlist" type="square"><li class="listitem">
+            <div class="itemizedlist"><ul class="itemizedlist" type="square">
+<li class="listitem">
                 <p>remove number limitations</p>
-              </li><li class="listitem">
+              </li>
+<li class="listitem">
                 <p>drop most of existing NOT NULL constraints</p>
-              </li><li class="listitem">
+              </li>
+<li class="listitem">
                 <p>label constraints</p>
-              </li><li class="listitem">
+              </li>
+<li class="listitem">
                 <p>recreate index and LOBs in new tablespaces</p>
-              </li><li class="listitem">
+              </li>
+<li class="listitem">
                 <p>set sequences NOCACHE</p>
-              </li><li class="listitem">
+              </li>
+<li class="listitem">
                 <p>changes Oracle functions to trap NO_DATA exceptions</p>
-              </li></ul></div>
-          </li></ul></div>
+              </li>
+</ul></div>
+          </li>
+</ul></div>
 
-        <div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png" /></td><th align="left">Caution</th></tr><tr><td align="left" valign="top">
+        <div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top">
           <p>Upgrading IDOUtils for Oracle to 1.4 requires some kind of "magic". Make sure to</p>
 
-          <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+          <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
               <p>copy the complete <code class="filename">upgrade</code> folder</p>
-            </li><li class="listitem">
+            </li>
+<li class="listitem">
               <p>edit <code class="filename">oracle-upgrade-1.4.0.sql</code> and set the tablespaces for DATA, LOB and IXT</p>
-            </li><li class="listitem">
+            </li>
+<li class="listitem">
               <p>run the upgrade script</p>
-            </li></ol></div>
-        </td></tr></table></div>
+            </li>
+</ol></div>
+        </td></tr>
+</table></div>
       </li></ul></div>
   </div>
 
-  <div class="section" title="2.10.4. Upgrading IDOUtils to 1.3"><div class="titlepage"><div><div><h3 class="title"><a id="idp1011280"></a>2.10.4. <a id="upgrading_idoutils_1.3"></a>Upgrading IDOUtils to 1.3</h3></div></div></div>
+  <div class="section" title="2.10.4. Upgrading IDOUtils to 1.3">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="upgrade1.3"></a>2.10.4. <a name="upgrading_idoutils_1.3"></a>Upgrading IDOUtils to 1.3</h3></div></div></div>
     
 
     <p>IDOUtils 1.3 re-introduces the usage of the dbversion table in IDOUtils schema. The upgrade scripts will make sure that
@@ -175,28 +246,42 @@
 
     <pre class="programlisting"> SQL&gt; SELECT * FROM icinga_dbversion;</pre>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>The Oracle tablename is "dbversion" (instead of "icinga_dbversion").</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
   </div>
 
-  <div class="section" title="2.10.5. Upgrading IDOUtils to 1.0.3"><div class="titlepage"><div><div><h3 class="title"><a id="idp1015856"></a>2.10.5. <a id="upgrading_idoutils_1.0.3"></a>Upgrading IDOUtils to 1.0.3</h3></div></div></div>
+  <div class="section" title="2.10.5. Upgrading IDOUtils to 1.0.3">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="upgrade1.0.3"></a>2.10.5. <a name="upgrading_idoutils_1.0.3"></a>Upgrading IDOUtils to 1.0.3</h3></div></div></div>
     
 
     <p>There were some few minor changes:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>change display_name to varchar(255) for mysql/oracle</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>update pgsql schema, replace varchar(n) by text</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>change configfile variables value to 1024 length for mysql/oracle</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Apply the upgrading scripts for IDOUtils 1.0.3 as the general procedure applies for your RDBMS.</p>
   </div>
 
-  <div class="section" title="2.10.6. Upgrading IDOUtils to 1.0.2"><div class="titlepage"><div><div><h3 class="title"><a id="idp1021376"></a>2.10.6. <a id="upgrading_idoutils_1.0.2"></a>Upgrading IDOUtils to 1.0.2</h3></div></div></div>
+  <div class="section" title="2.10.6. Upgrading IDOUtils to 1.0.2">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="upgrade1.0.2"></a>2.10.6. <a name="upgrading_idoutils_1.0.2"></a>Upgrading IDOUtils to 1.0.2</h3></div></div></div>
     
 
     <p>There was a significant long lasting bug in IDOUtils which is now resolved in Icinga 1.0.2: Everytime the core was
@@ -229,7 +314,9 @@
     <p>* mysql-upgrade-1.0.2.sql</p>
   </div>
 
-  <div class="section" title="2.10.7. Upgrading IDOUtils to 1.0.1"><div class="titlepage"><div><div><h3 class="title"><a id="idp1021504"></a>2.10.7. <a id="upgrading_idoutils_1.0.1"></a>Upgrading IDOUtils to 1.0.1</h3></div></div></div>
+  <div class="section" title="2.10.7. Upgrading IDOUtils to 1.0.1">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="upgrade1.0.1"></a>2.10.7. <a name="upgrading_idoutils_1.0.1"></a>Upgrading IDOUtils to 1.0.1</h3></div></div></div>
     
 
     <p>Please make sure that you already have upgraded to Icinga IDOUtils 1.0 before reading this section! There have been several (big)
@@ -237,7 +324,8 @@
     Changes for all RDBMS are setting more indexes and also size modifications for the command_line column in several tables which exceeded
     255 characters. RDBMS specific changes and howtos are listed below:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p><span class="bold"><strong>MySQL</strong></span></p>
 
         <p>Change of the database engine from MYISAM to InnoDB. Reason for that mainly is row locks/transactions/rollbacks instead of a
@@ -245,21 +333,27 @@
 
         <p>The upgrade script performs an ALTER TABLE statement. If you don't like that idea, you can also do the following:</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
             <p>Dump your existing database e.g.</p>
 
             <pre class="programlisting">#&gt; mysqldump -u root -p icinga &gt; icinga.sql</pre>
-          </li><li class="listitem">
+          </li>
+<li class="listitem">
             <p>Change all entries from "MYISAM" to "InnoDB"</p>
-          </li><li class="listitem">
+          </li>
+<li class="listitem">
             <p>Import the adapted dataset into a new database (if you want to use the old one make sure to drop that in the first place,
             and recreate only the database)</p>
-          </li></ul></div>
-      </li><li class="listitem">
+          </li>
+</ul></div>
+      </li>
+<li class="listitem">
         <p><span class="bold"><strong>PostgreSQL</strong></span></p>
 
         <p>The systemcommands table was missing the column named output. This will be added during upgrading.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p><span class="bold"><strong>Oracle</strong></span></p>
 
         <p>First of all, make sure that you set open_cursors to more than the default 50. This will increase performance at several
@@ -277,22 +371,29 @@
         <p>Please be advised to use that procedure yourself for all tables or on separated tables - it highly depends on your needs. The
         procedure is commented out, and provided as is without any warranty regarding data loss. Ask your DBA in case of upgrading with
         existing data.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="2.10.8. Upgrading IDOUtils to 1.0"><div class="titlepage"><div><div><h3 class="title"><a id="idp1043616"></a>2.10.8. <a id="upgrading_idoutils_1.0"></a>Upgrading IDOUtils to 1.0</h3></div></div></div>
+  <div class="section" title="2.10.8. Upgrading IDOUtils to 1.0">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="upgrade1.0"></a>2.10.8. <a name="upgrading_idoutils_1.0"></a>Upgrading IDOUtils to 1.0</h3></div></div></div>
     
 
     <p>There was a unique key failure in MySQL coming through the fork causing several tables to keep duplicated and useless rows. This
     concerns the following tables:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>timedevents, timedeventqueue</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>servicechecks</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>systemcommands</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>If you look at the table creation e.g. servicechecks:</p>
 
@@ -322,20 +423,27 @@
 
     <p>The patch will do the following through MySQL statements:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>add a temporary column named 'active' to mark the updated row</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>extract the needed information of two duplicate rows based on the unique constraint, update the second row and mark
         first=inactive, second=active</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>delete all inactive marked rows</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>drop false keys</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>add unique key</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>drop temporary column 'active'</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>This procedure will be executed for each table, so it might take quite a long time depending on your table size and/or db
     specs.</p>
@@ -344,25 +452,23 @@
     the script will fail.</p>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="upgrading.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch02.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="monitoring-overview.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">2.9. Upgrading (to) Icinga </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 2.11. Monitoring Overview</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="upgrading.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="monitoring-overview.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">2.9. Upgrading (to) Icinga </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 2.11. Monitoring Overview</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

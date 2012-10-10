@@ -1,43 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>8.1. Security Considerations</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning" />
-    <link rel="prev" href="ch08.html" title="Chapter 8. Security and Performance Tuning" />
-    <link rel="next" href="cgisecurity.html" title="8.2. Enhanced CGI Security and Authentication" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">8.1. Security Considerations</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="ch08.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
-          <td width="20%" align="right"> <a accesskey="n" href="cgisecurity.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="8.1. Security Considerations"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="security"></a>8.1. <a id="security_considerations"></a>Security Considerations</h2></div></div></div><div class="toc"><dl><dt><span class="section">8.1.1. <a href="security.html#idm106767824">Introduction</a></span></dt><dt><span class="section">8.1.2. <a href="security.html#idp14785536">Best Practices</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>8.1. Security Considerations</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
+<link rel="prev" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
+<link rel="next" href="cgisecurity.html" title="8.2. Enhanced CGI Security and Authentication">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">8.1. Security Considerations</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch08.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
+<td width="20%" align="right"> <a accesskey="n" href="cgisecurity.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="8.1. Security Considerations">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="security"></a>8.1. <a name="security_considerations"></a>Security Considerations</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">8.1.1. <a href="security.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">8.1.2. <a href="security.html#bestpractices">Best Practices</a></span></dt>
+</dl></div>
   
 
 
-  <div class="section" title="8.1.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idm106767824"></a>8.1.1. <a id="security-intro"></a>Introduction</h3></div></div></div>
+  <div class="section" title="8.1.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>8.1.1. <a name="security-intro"></a>Introduction</h3></div></div></div>
+	  
 
-  <p><span class="inlinemediaobject"><img src="../images/security.png" /></span></p>
+  <p><span class="inlinemediaobject"><img src="../images/security.png"></span></p>
 
   <p>This is intended to be a brief overview of some things you should keep in mind when installing Icinga, so as set it
   up in a secure manner.</p>
@@ -64,9 +68,15 @@
   <p>Here are some tips to help ensure that you keep your systems secure when implementing a Icinga-based monitoring
   solution...</p>
 
-  </div><div class="section" title="8.1.2. Best Practices"><div class="titlepage"><div><div><h3 class="title"><a id="idp14785536"></a>8.1.2. <a id="security-bestpractices"></a>Best Practices</h3></div></div></div>
+  </div>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+  <div class="section" title="8.1.2. Best Practices">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="bestpractices"></a>8.1.2. <a name="security-bestpractices"></a>Best Practices</h3></div></div></div>
+	  
+
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
       <p><span class="bold"><strong>Use a Dedicated Monitoring Box</strong></span> . We would recommend that you install Icinga on
       a server that is dedicated to monitoring (and possibly other admin tasks). Protect your monitoring server as if it were one
       of the most important servers on your network. Keep running services to a minimum and lock down access to it via TCP
@@ -74,19 +84,22 @@
       your firewalls, allowing users access to your monitoring server can be a security risk. Remember, its always easier to gain
       root access through a system security hole if you have a local account on a box.</p>
 
-      <p><span class="inlinemediaobject"><img src="../images/security3.png" /></span></p>
-    </li><li class="listitem">
+      <p><span class="inlinemediaobject"><img src="../images/security3.png"></span></p>
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Don't Run Icinga As Root</strong></span> . Icinga doesn't need to run as root, so don't
       do it. You can tell Icinga to drop privileges after startup and run as another user/group by using the <a class="link" href="configmain.html#configmain-icinga_user">icinga_user</a> and <a class="link" href="configmain.html#configmain-icinga_group">icinga_group</a>
       directives in the main config file. If you need to execute event handlers or plugins which require root access, you might
-      want to try using <a class="ulink" href="http://www.courtesan.com/sudo/sudo" target="_top">sudo</a>.</p>
-    </li><li class="listitem">
+      want to try using <a class="link" href="http://www.courtesan.com/sudo/sudo" target="_top">sudo</a>.</p>
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Lock Down The Check Result Directory</strong></span> . Make sure that only the
       <span class="emphasis"><em>icinga</em></span> user is able to read/write in the <a class="link" href="configmain.html#configmain-check_result_path">check result
       path</a>. If users other than <span class="emphasis"><em>icinga</em></span> (or <span class="emphasis"><em>root</em></span>) are able to write to this
       directory, they could send fake host/service check results to the Icinga daemon. This could result in annoyances
       (bogus notifications) or security problems (event handlers being kicked off).</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Lock Down The External Command File</strong></span> . If you enable <a class="link" href="extcommands.html" title="7.1. External Commands">external commands</a>, make sure you set proper permissions on the
       <span class="emphasis"><em>/usr/local/icinga/var/rw</em></span> directory. You only want the Icinga user (usually
       <span class="emphasis"><em>icinga</em></span>) and the web server user (usually <span class="emphasis"><em>nobody</em></span>, <span class="emphasis"><em>httpd</em></span>,
@@ -95,9 +108,10 @@
       that should be fine. If you've installed it on a public or multi-user machine (not recommended), allowing the web server
       user to have write access to the command file can be a security problem. After all, you don't want just any user on your
       system controlling Icinga through the external command file. In this case, we would suggest only granting write
-      access on the command file to the <span class="emphasis"><em>icinga</em></span> user and using something like <a class="ulink" href="http://cgiwrap.sourceforge.net/" target="_top">CGIWrap</a> to run the CGIs as the <span class="emphasis"><em>icinga</em></span> user instead
+      access on the command file to the <span class="emphasis"><em>icinga</em></span> user and using something like <a class="link" href="http://cgiwrap.sourceforge.net/" target="_top">CGIWrap</a> to run the CGIs as the <span class="emphasis"><em>icinga</em></span> user instead
       of <span class="emphasis"><em>nobody</em></span>.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Require Authentication In The CGIs</strong></span> . We would strongly suggest requiring
       authentication for accessing the CGIs. Once you do that, read the documentation on the default rights that authenticated
       contacts have, and only authorize specific contacts for additional rights as necessary. Instructions on setting up
@@ -105,15 +119,18 @@
       authentication features using the <a class="link" href="configcgi.html#configcgi-use_authentication">use_authentication</a> directive in the
       CGI config file, the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a> will refuse to write any commands to the <a class="link" href="configmain.html#configmain-command_file">external command file</a>. After all, you don't want the world to be able to control
       Icinga do you?</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Implement Enhanced CGI Security Measures</strong></span> . We would strongly suggest that you
       consider implementing enhanced security measures for the CGIs as described <a class="link" href="cgisecurity.html" title="8.2. Enhanced CGI Security and Authentication">here</a>. These
       measures can help ensure that the username/password you use to access the Icinga web interface are not intercepted by
       third parties.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Use Full Paths In Command Definitions</strong></span> . When you define commands, make sure you
       specify the <span class="emphasis"><em>full path</em></span> (not a relative one) to any scripts or binaries you're executing.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Hide Sensitive Information With $USERn$ Macros</strong></span> . The CGIs read the <a class="link" href="configmain.html" title="3.2. Main Configuration File Options">main config file</a> and <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object config file(s)</a>, so you don't
       want to keep any sensitive information (usernames, passwords, etc) in there. If you need to specify a username and/or
       password in a command definition use a $USERn$ <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macro</a> to hide it. $USERn$ macros are defined in
@@ -121,7 +138,8 @@
       of resource files, so you can set more restrictive permissions (600 or 660) on them. See the sample
       <span class="emphasis"><em>resource.cfg</em></span> file in the base of the Icinga distribution for an example of how to define $USERn$
       macros.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Strip Dangerous Characters From Macros</strong></span> . Use the <a class="link" href="configmain.html#configmain-illegal_macro_output_chars">illegal_macro_output_chars</a> directive to strip dangerous characters
       from the $HOSTOUTPUT$, $SERVICEOUTPUT$, $HOSTPERFDATA$, and $SERVICEPERFDATA$ macros before they're used in notifications,
       etc. Dangerous characters can be anything that might be interpreted by the shell, thereby opening a security hole. An
@@ -129,42 +147,43 @@
       $SERVICEPERFDATA$ macros, which could allow an attacker to execute an arbitrary command as the icinga user (one good reason
       not to run Icinga as the root user).</p>
 
-      <p><span class="inlinemediaobject"><img src="../images/security1.png" /></span></p>
-    </li><li class="listitem">
+      <p><span class="inlinemediaobject"><img src="../images/security1.png"></span></p>
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Secure Access to Remote Agents</strong></span> . Make sure you lock down access to agents (NRPE,
       NSClient, SNMP, etc.) on remote systems using firewalls, access lists, etc. You don't want everyone to be able to query your
       systems for status information. This information could be used by an attacker to execute remote event handler scripts or to
       determine the best times to go unnoticed.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Secure Communication Channels</strong></span> . Make sure you encrypt communication channels between
       different Icinga installations and between your Icinga servers and your monitoring agents whenever possible.
       You don't want someone to be able to sniff status information going across your network. This information could be used by
       an attacker to determine the best times to go unnoticed.</p>
 
-      <p><span class="inlinemediaobject"><img src="../images/security2.png" /></span></p>
-    </li></ol></div>
-  <a id="idp15041440" class="indexterm"></a>
+      <p><span class="inlinemediaobject"><img src="../images/security2.png"></span></p>
+    </li>
+</ol></div>
+  <a class="indexterm" name="idp15180496"></a>
 </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="ch08.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch08.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="cgisecurity.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">Chapter 8. Security and Performance Tuning </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 8.2. Enhanced CGI Security and Authentication</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch08.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="cgisecurity.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 8. Security and Performance Tuning </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 8.2. Enhanced CGI Security and Authentication</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

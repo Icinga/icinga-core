@@ -1,37 +1,65 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Kapitel 9. Integration mit anderer Software</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="prev" href="temp_data.html" title="8.8. Temporäre Daten" />
-    <link rel="next" href="integration.html" title="9.1. Integrationsüberblick" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">Kapitel 9. Integration mit anderer Software</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="temp_data.html">Zurück</a> </td>
-          <th width="60%" align="center"> </th>
-          <td width="20%" align="right"> <a accesskey="n" href="integration.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="chapter" title="Kapitel 9. Integration mit anderer Software"><div class="titlepage"><div><div><h2 class="title"><a id="ch09"></a>Kapitel 9. Integration mit anderer Software</h2></div></div></div><div class="toc"><p><b>Inhaltsverzeichnis</b></p><dl><dt><span class="section">9.1. <a href="integration.html">Integrationsüberblick</a></span></dt><dd><dl><dt><span class="section">9.1.1. <a href="integration.html#idm122966928">Einführung</a></span></dt><dt><span class="section">9.1.2. <a href="integration.html#idp15387712">Integrationsstellen</a></span></dt><dt><span class="section">9.1.3. <a href="integration.html#idp15407312">Integrationsbeispiele</a></span></dt></dl></dd><dt><span class="section">9.2. <a href="int-snmptrap.html">SNMP-Trap-Integration</a></span></dt><dt><span class="section">9.3. <a href="int-tcpwrappers.html">TCP-Wrapper-Integration</a></span></dt><dd><dl><dt><span class="section">9.3.1. <a href="int-tcpwrappers.html#idp15426288">Einführung</a></span></dt><dt><span class="section">9.3.2. <a href="int-tcpwrappers.html#idp15438176">Einen Service definieren</a></span></dt><dt><span class="section">9.3.3. <a href="int-tcpwrappers.html#idp15448528">TCP-Wrapper konfigurieren</a></span></dt><dt><span class="section">9.3.4. <a href="int-tcpwrappers.html#idp15453424">Das Script schreiben</a></span></dt><dt><span class="section">9.3.5. <a href="int-tcpwrappers.html#idp15459488">Aufräumen</a></span></dt></dl></dd><dt><span class="section">9.4. <a href="int-mklivestatus.html">MKLiveStatus-Integration</a></span></dt><dd><dl><dt><span class="section">9.4.1. <a href="int-mklivestatus.html#idp15465728">Einführung</a></span></dt></dl></dd><dt><span class="section">9.5. <a href="reporting_1.8.html">Installation von Icinga-Reporting mit JasperReports Server</a></span></dt><dd><dl><dt><span class="section">9.5.1. <a href="reporting_1.8.html#idp15485216">Offizielle Dokumentation</a></span></dt><dt><span class="section">9.5.2. <a href="reporting_1.8.html#idp15487776">Voraussetzungen</a></span></dt><dt><span class="section">9.5.3. <a href="reporting_1.8.html#idp15512848">Icinga Reporting</a></span></dt><dt><span class="section">9.5.4. <a href="reporting_1.8.html#idp15527056">Konfiguration</a></span></dt><dt><span class="section">9.5.5. <a href="reporting_1.8.html#idp15534640">Reports</a></span></dt><dt><span class="section">9.5.6. <a href="reporting_1.8.html#idp15539024">Fehler</a></span></dt></dl></dd></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Kapitel 9. Integration mit anderer Software</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="prev" href="temp_data.html" title="8.8. Temporäre Daten">
+<link rel="next" href="integration.html" title="9.1. Integrationsüberblick">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Kapitel 9. Integration mit anderer Software</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="temp_data.html">Zurück</a> </td>
+<th width="60%" align="center"> </th>
+<td width="20%" align="right"> <a accesskey="n" href="integration.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" title="Kapitel 9. Integration mit anderer Software">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ch09"></a>Kapitel 9. Integration mit anderer Software</h2></div></div></div>
+<div class="toc">
+<p><b>Inhaltsverzeichnis</b></p>
+<dl>
+<dt><span class="section">9.1. <a href="integration.html">Integrationsüberblick</a></span></dt>
+<dd><dl>
+<dt><span class="section">9.1.1. <a href="integration.html#idm123256704">Einführung</a></span></dt>
+<dt><span class="section">9.1.2. <a href="integration.html#idp15416848">Integrationsstellen</a></span></dt>
+<dt><span class="section">9.1.3. <a href="integration.html#idp15436784">Integrationsbeispiele</a></span></dt>
+</dl></dd>
+<dt><span class="section">9.2. <a href="int-snmptrap.html">SNMP-Trap-Integration</a></span></dt>
+<dt><span class="section">9.3. <a href="int-tcpwrappers.html">TCP-Wrapper-Integration</a></span></dt>
+<dd><dl>
+<dt><span class="section">9.3.1. <a href="int-tcpwrappers.html#idp15456416">Einführung</a></span></dt>
+<dt><span class="section">9.3.2. <a href="int-tcpwrappers.html#idp15468304">Einen Service definieren</a></span></dt>
+<dt><span class="section">9.3.3. <a href="int-tcpwrappers.html#idp15478512">TCP-Wrapper konfigurieren</a></span></dt>
+<dt><span class="section">9.3.4. <a href="int-tcpwrappers.html#idp15483408">Das Script schreiben</a></span></dt>
+<dt><span class="section">9.3.5. <a href="int-tcpwrappers.html#idp15488672">Aufräumen</a></span></dt>
+</dl></dd>
+<dt><span class="section">9.4. <a href="int-mklivestatus.html">MKLiveStatus-Integration</a></span></dt>
+<dd><dl><dt><span class="section">9.4.1. <a href="int-mklivestatus.html#idp15494720">Einführung</a></span></dt></dl></dd>
+<dt><span class="section">9.5. <a href="reporting_1.8.html">Installation von Icinga-Reporting mit JasperReports Server</a></span></dt>
+<dd><dl>
+<dt><span class="section">9.5.1. <a href="reporting_1.8.html#idp15514688">Offizielle Dokumentation</a></span></dt>
+<dt><span class="section">9.5.2. <a href="reporting_1.8.html#idp15517808">Voraussetzungen</a></span></dt>
+<dt><span class="section">9.5.3. <a href="reporting_1.8.html#idp15543120">Icinga Reporting</a></span></dt>
+<dt><span class="section">9.5.4. <a href="reporting_1.8.html#idp15557376">Konfiguration</a></span></dt>
+<dt><span class="section">9.5.5. <a href="reporting_1.8.html#idp15565072">Reports</a></span></dt>
+<dt><span class="section">9.5.6. <a href="reporting_1.8.html#idp15569504">Fehler</a></span></dt>
+</dl></dd>
+</dl>
+</div>
     
 
     
@@ -44,23 +72,23 @@
 
     
   </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="temp_data.html">Zurück</a> </td>
-          <td width="20%" align="center"> </td>
-          <td width="40%" align="right"> <a accesskey="n" href="integration.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">8.8. Temporäre Daten </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 9.1. Integrationsüberblick</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="temp_data.html">Zurück</a> </td>
+<td width="20%" align="center"> </td>
+<td width="40%" align="right"> <a accesskey="n" href="integration.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">8.8. Temporäre Daten </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 9.1. Integrationsüberblick</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

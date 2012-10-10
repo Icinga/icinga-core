@@ -1,47 +1,60 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.14. State Stalking</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
-    <link rel="prev" href="dependencies.html" title="7.13. Host and Service Dependencies" />
-    <link rel="next" href="perfdata.html" title="7.15. Performance Data" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.14. State Stalking</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="dependencies.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="perfdata.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.14. State Stalking"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="stalking"></a>7.14. <a id="state_stalking"></a>State Stalking</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.14.1. <a href="stalking.html#idp13980944">Introduction</a></span></dt><dt><span class="section">7.14.2. <a href="stalking.html#idp13982544">How Does It Work?</a></span></dt><dt><span class="section">7.14.3. <a href="stalking.html#idp13982672">Should I Enable Stalking?</a></span></dt><dt><span class="section">7.14.4. <a href="stalking.html#idp14040560">How Do I Enable Stalking?</a></span></dt><dt><span class="section">7.14.5. <a href="stalking.html#idp14042848">How Does Stalking Differ From Volatile Services?</a></span></dt><dt><span class="section">7.14.6. <a href="stalking.html#idp14044560">Caveats</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.14. State Stalking</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="dependencies.html" title="7.13. Host and Service Dependencies">
+<link rel="next" href="perfdata.html" title="7.15. Performance Data">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.14. State Stalking</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="dependencies.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="perfdata.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.14. State Stalking">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="stalking"></a>7.14. <a name="state_stalking"></a>State Stalking</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.14.1. <a href="stalking.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.14.2. <a href="stalking.html#howitworks">How Does It Work?</a></span></dt>
+<dt><span class="section">7.14.3. <a href="stalking.html#whyenable">Should I Enable Stalking?</a></span></dt>
+<dt><span class="section">7.14.4. <a href="stalking.html#howenable">How Do I Enable Stalking?</a></span></dt>
+<dt><span class="section">7.14.5. <a href="stalking.html#differtovolatile">How Does Stalking Differ From Volatile Services?</a></span></dt>
+<dt><span class="section">7.14.6. <a href="stalking.html#caveats">Caveats</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.14.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp13980944"></a>7.14.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.14.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>7.14.1. Introduction</h3></div></div></div>
+	  
 
   <p>State "stalking" is a feature which is probably not going to used by most users. When enabled, it allows you to log
   changes in the output service and host checks even if the state of the host or service does not change. When stalking is enabled
   for a particular host or service, Icinga will watch that host or service very carefully and log any changes it sees in
   the output of check results. As you'll see, it can be very helpful to you in later analysis of the log files.</p>
 
-  </div><div class="section" title="7.14.2. How Does It Work?"><div class="titlepage"><div><div><h3 class="title"><a id="idp13982544"></a>7.14.2. How Does It Work?</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.14.2. How Does It Work?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="howitworks"></a>7.14.2. How Does It Work?</h3></div></div></div>
+	  
 
   <p>Under normal circumstances, the result of a host or service check is only logged if the host or service has changed state
   since it was last checked. There are a few exceptions to this, but for the most part, that's the rule.</p>
@@ -51,7 +64,80 @@
   of eight consecutive checks of a service:</p>
 
   <div class="informaltable">
-    <table border="1"><colgroup><col /><col /><col /><col /><col /></colgroup><tbody><tr><td><p> <span class="bold"><strong>Service Check #:</strong></span> </p></td><td><p> <span class="bold"><strong>Service State:</strong></span> </p></td><td><p> <span class="bold"><strong>Service Check Output:</strong></span> </p></td><td><p> <span class="bold"><strong>Logged Normally</strong></span> </p></td><td><p> <span class="bold"><strong>Logged With Stalking</strong></span> </p></td></tr><tr><td><p>x</p></td><td><p>OK</p></td><td><p>RAID array optimal</p></td><td><p>-</p></td><td><p>-</p></td></tr><tr><td><p>x+1</p></td><td><p>OK</p></td><td><p>RAID array optimal</p></td><td><p>-</p></td><td><p>-</p></td></tr><tr><td><p>x+2</p></td><td><p>WARNING</p></td><td><p>RAID array degraded (1 drive bad, 1 hot spare rebuilding)</p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td></tr><tr><td><p>x+3</p></td><td><p>CRITICAL</p></td><td><p>RAID array degraded (2 drives bad, 1 host spare online, 1 hot spare rebuilding)</p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td></tr><tr><td><p>x+4</p></td><td><p>CRITICAL</p></td><td><p>RAID array degraded (3 drives bad, 2 hot spares online)</p></td><td><p>-</p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td></tr><tr><td><p>x+5</p></td><td><p>CRITICAL</p></td><td><p>RAID array failed</p></td><td><p>-</p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td></tr><tr><td><p>x+6</p></td><td><p>CRITICAL</p></td><td><p>RAID array failed</p></td><td><p>-</p></td><td><p>-</p></td></tr><tr><td><p>x+7</p></td><td><p>CRITICAL</p></td><td><p>RAID array failed</p></td><td><p>-</p></td><td><p>-</p></td></tr></tbody></table>
+    <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Service Check #:</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service State:</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service Check Output:</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Logged Normally</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Logged With Stalking</strong></span> </p></td>
+</tr>
+<tr>
+<td><p>x</p></td>
+<td><p>OK</p></td>
+<td><p>RAID array optimal</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+</tr>
+<tr>
+<td><p>x+1</p></td>
+<td><p>OK</p></td>
+<td><p>RAID array optimal</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+</tr>
+<tr>
+<td><p>x+2</p></td>
+<td><p>WARNING</p></td>
+<td><p>RAID array degraded (1 drive bad, 1 hot spare rebuilding)</p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+</tr>
+<tr>
+<td><p>x+3</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>RAID array degraded (2 drives bad, 1 host spare online, 1 hot spare rebuilding)</p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+</tr>
+<tr>
+<td><p>x+4</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>RAID array degraded (3 drives bad, 2 hot spares online)</p></td>
+<td><p>-</p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+</tr>
+<tr>
+<td><p>x+5</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>RAID array failed</p></td>
+<td><p>-</p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+</tr>
+<tr>
+<td><p>x+6</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>RAID array failed</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+</tr>
+<tr>
+<td><p>x+7</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>RAID array failed</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+</tr>
+</tbody>
+</table>
   </div>
 
   <p>Given this sequence of checks, you would normally only see two log entries for this catastrophe. The first one would occur
@@ -74,7 +160,12 @@
   future WARNING states were not due to a 404, but rather some text pattern that could not be found in the returned web
   page.</p>
 
-  </div><div class="section" title="7.14.3. Should I Enable Stalking?"><div class="titlepage"><div><div><h3 class="title"><a id="idp13982672"></a>7.14.3. Should I Enable Stalking?</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.14.3. Should I Enable Stalking?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="whyenable"></a>7.14.3. Should I Enable Stalking?</h3></div></div></div>
+	  
 
   <p>First, you must decide if you have a real need to analyze archived log data to find the exact cause of a problem. You may
   decide you need this feature for some hosts or services, but not for all. You may also find that you only have a need to enable
@@ -85,16 +176,31 @@
   check that host or service. If the plugin always returns the same text output for a particular state, there is no reason to
   enable stalking for that state.</p>
 
-  </div><div class="section" title="7.14.4. How Do I Enable Stalking?"><div class="titlepage"><div><div><h3 class="title"><a id="idp14040560"></a>7.14.4. How Do I Enable Stalking?</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.14.4. How Do I Enable Stalking?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="howenable"></a>7.14.4. How Do I Enable Stalking?</h3></div></div></div>
+	  
 
   <p>You can enable state stalking for hosts and services by using the <span class="emphasis"><em>stalking_options</em></span> directive in <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">host and service definitions</a>.</p>
 
-  </div><div class="section" title="7.14.5. How Does Stalking Differ From Volatile Services?"><div class="titlepage"><div><div><h3 class="title"><a id="idp14042848"></a>7.14.5. How Does Stalking Differ From Volatile Services?</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.14.5. How Does Stalking Differ From Volatile Services?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="differtovolatile"></a>7.14.5. How Does Stalking Differ From Volatile Services?</h3></div></div></div>
+	  
 
   <p><a class="link" href="volatileservices.html" title="7.4. Volatile Services">Volatile services</a> are similar, but will cause notifications and event handlers to
   run. Stalking is purely for logging purposes.</p>
 
-  </div><div class="section" title="7.14.6. Caveats"><div class="titlepage"><div><div><h3 class="title"><a id="idp14044560"></a>7.14.6. Caveats</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.14.6. Caveats">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="caveats"></a>7.14.6. Caveats</h3></div></div></div>
+	  
 
   <p>You should be aware that there are some potential pitfalls with enabling stalking. These all relate to the reporting
   functions found in various <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">CGIs</a> (histogram, alert summary, etc.). Because state stalking will cause
@@ -102,28 +208,26 @@
 
   <p>As a general rule, I would suggest that you <span class="emphasis"><em>not</em></span> enable stalking for hosts and services without
   thinking things through. Still, it's there if you need and want it.</p>
-  <a id="idp14045616" class="indexterm"></a>
+  <a class="indexterm" name="idp14194880"></a>
 </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="dependencies.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="perfdata.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.13. Host and Service Dependencies </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.15. Performance Data</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="dependencies.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="perfdata.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.13. Host and Service Dependencies </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 7.15. Performance Data</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

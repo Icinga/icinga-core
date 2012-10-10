@@ -1,47 +1,63 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>5.1. Icinga Plugins</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch05.html" title="Chapter 5. The Basics" />
-    <link rel="prev" href="ch05.html" title="Chapter 5. The Basics" />
-    <link rel="next" href="macros.html" title="5.2. Understanding Macros and How They Work" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">5.1. Icinga Plugins</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="ch05.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 5. The Basics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="macros.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="5.1. Icinga Plugins"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="plugins"></a>5.1. <a id="Icinga_plugins"></a>Icinga Plugins</h2></div></div></div><div class="toc"><dl><dt><span class="section">5.1.1. <a href="plugins.html#idm107022800">Introduction</a></span></dt><dt><span class="section">5.1.2. <a href="plugins.html#idm106269888">What Are Plugins?</a></span></dt><dt><span class="section">5.1.3. <a href="plugins.html#idp6941536">Plugins As An Abstraction Layer</a></span></dt><dt><span class="section">5.1.4. <a href="plugins.html#idp6947808">What Plugins Are Available?</a></span></dt><dt><span class="section">5.1.5. <a href="plugins.html#idp6954592">Obtaining Plugins</a></span></dt><dt><span class="section">5.1.6. <a href="plugins.html#idp6965936">Switch to the Icinga user</a></span></dt><dt><span class="section">5.1.7. <a href="plugins.html#idp6980064">Extending the environment</a></span></dt><dt><span class="section">5.1.8. <a href="plugins.html#idp6985808">How Do I Use Plugin X?</a></span></dt><dt><span class="section">5.1.9. <a href="plugins.html#idp6986608">Integrating a new plugin</a></span></dt><dt><span class="section">5.1.10. <a href="plugins.html#idp6989568">Raw command line</a></span></dt><dt><span class="section">5.1.11. <a href="plugins.html#idp7025424">Threshold and ranges</a></span></dt><dt><span class="section">5.1.12. <a href="plugins.html#idp7025744">Activating the definition</a></span></dt><dt><span class="section">5.1.13. <a href="plugins.html#idp7077088">Plugin API</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.1. Icinga Plugins</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
+<link rel="prev" href="ch05.html" title="Chapter 5. The Basics">
+<link rel="next" href="macros.html" title="5.2. Understanding Macros and How They Work">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">5.1. Icinga Plugins</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch05.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. The Basics</th>
+<td width="20%" align="right"> <a accesskey="n" href="macros.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="5.1. Icinga Plugins">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="plugins"></a>5.1. <a name="Icinga_plugins"></a>Icinga Plugins</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">5.1.1. <a href="plugins.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">5.1.2. <a href="plugins.html#overview">What Are Plugins?</a></span></dt>
+<dt><span class="section">5.1.3. <a href="plugins.html#abstractionlayer">Plugins As An Abstraction Layer</a></span></dt>
+<dt><span class="section">5.1.4. <a href="plugins.html#available">What Plugins Are Available?</a></span></dt>
+<dt><span class="section">5.1.5. <a href="plugins.html#obtaining">Obtaining Plugins</a></span></dt>
+<dt><span class="section">5.1.6. <a href="plugins.html#hints">Switch to the Icinga user</a></span></dt>
+<dt><span class="section">5.1.7. <a href="plugins.html#extending">Extending the environment</a></span></dt>
+<dt><span class="section">5.1.8. <a href="plugins.html#howto">How Do I Use Plugin X?</a></span></dt>
+<dt><span class="section">5.1.9. <a href="plugins.html#newplugins">Integrating a new plugin</a></span></dt>
+<dt><span class="section">5.1.10. <a href="plugins.html#rawcommandline">Raw command line</a></span></dt>
+<dt><span class="section">5.1.11. <a href="plugins.html#thresholdranges">Threshold and ranges</a></span></dt>
+<dt><span class="section">5.1.12. <a href="plugins.html#errors">Activating the definition</a></span></dt>
+<dt><span class="section">5.1.13. <a href="plugins.html#pluginsapi">Plugin API</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="5.1.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idm107022800"></a>5.1.1. Introduction</h3></div></div></div>
+  <div class="section" title="5.1.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>5.1.1. Introduction</h3></div></div></div>
     
 
     <p>Unlike many other monitoring tools, Icinga does not include any internal mechanisms for checking the status of hosts and
     services on your network. Instead, Icinga relies on external programs (called plugins) to do all the dirty work.</p>
   </div>
 
-  <div class="section" title="5.1.2. What Are Plugins?"><div class="titlepage"><div><div><h3 class="title"><a id="idm106269888"></a>5.1.2. What Are Plugins?</h3></div></div></div>
+  <div class="section" title="5.1.2. What Are Plugins?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="overview"></a>5.1.2. What Are Plugins?</h3></div></div></div>
     
 
     <p>Plugins are compiled executables or scripts (Perl scripts, shell scripts, etc.) that can be run from a command line to check the
@@ -53,10 +69,12 @@
     Icinga will process the results that it receives from the plugin and take any necessary actions (running <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a>, sending out <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a>, etc).</p>
   </div>
 
-  <div class="section" title="5.1.3. Plugins As An Abstraction Layer"><div class="titlepage"><div><div><h3 class="title"><a id="idp6941536"></a>5.1.3. Plugins As An Abstraction Layer</h3></div></div></div>
+  <div class="section" title="5.1.3. Plugins As An Abstraction Layer">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="abstractionlayer"></a>5.1.3. Plugins As An Abstraction Layer</h3></div></div></div>
     
 
-    <p><span class="inlinemediaobject"><img src="../images/plugins.png" /></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/plugins.png"></span></p>
 
     <p>Plugins act as an abstraction layer between the monitoring logic present in the Icinga daemon and the actual services and
     hosts that are being monitored.</p>
@@ -73,37 +91,51 @@
     the plugins themselves know exactly what they're monitoring and how to perform the actual checks.</p>
   </div>
 
-  <div class="section" title="5.1.4. What Plugins Are Available?"><div class="titlepage"><div><div><h3 class="title"><a id="idp6947808"></a>5.1.4. <a id="plugins-avail"></a>What Plugins Are Available?</h3></div></div></div>
+  <div class="section" title="5.1.4. What Plugins Are Available?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="available"></a>5.1.4. <a name="plugins-avail"></a>What Plugins Are Available?</h3></div></div></div>
     
 
     <p>There are plugins currently available to monitor many different kinds of devices and services, including:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>HTTP, POP3, IMAP, FTP, SSH, DHCP</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>CPU Load, Disk Usage, Memory Usage, Current Users</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Unix/Linux, Windows, and Netware Servers</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Routers and Switches</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>etc.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="5.1.5. Obtaining Plugins"><div class="titlepage"><div><div><h3 class="title"><a id="idp6954592"></a>5.1.5. <a id="plugins-obtaining"></a>Obtaining Plugins</h3></div></div></div>
+  <div class="section" title="5.1.5. Obtaining Plugins">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="obtaining"></a>5.1.5. <a name="plugins-obtaining"></a>Obtaining Plugins</h3></div></div></div>
     
 
     <p>Plugins are not distributed with Icinga, but you can download the official Nagios plugins and many additional
     plugins created and maintained by Nagios and Icinga users from the following locations:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-        <p>Nagios Plugins Project: <a class="ulink" href="http://nagiosplug.sourceforge.net/" target="_top">http://nagiosplug.sourceforge.net/</a></p>
-      </li><li class="listitem">
-        <p>Nagios Downloads Page: <a class="ulink" href="http://www.nagios.org/download/" target="_top">http://www.nagios.org/download/</a></p>
-      </li><li class="listitem">
-        <p>MonitoringExchange.org: <a class="ulink" href="http://www.monitoringexchange.org" target="_top">http://www.monitoringexchange.org</a></p>
-      </li></ul></div>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>Nagios Plugins Project: <a class="link" href="http://nagiosplug.sourceforge.net/" target="_top">http://nagiosplug.sourceforge.net/</a></p>
+      </li>
+<li class="listitem">
+        <p>Nagios Downloads Page: <a class="link" href="http://www.nagios.org/download/" target="_top">http://www.nagios.org/download/</a></p>
+      </li>
+<li class="listitem">
+        <p>MonitoringExchange.org: <a class="link" href="http://www.monitoringexchange.org" target="_top">http://www.monitoringexchange.org</a></p>
+      </li>
+</ul></div>
 
     <p>After downloading you have to install the plugin(s). Please check the accompanied documentation on how to do that. It may contain
     important information about the prerequisites like additional packages, (perl) modules and on how to install the plugin together with
@@ -121,16 +153,29 @@
     <pre class="programlisting"> $&gt; mkdir /usr/local/nagios
  $&gt; ln -s /usr/local/icinga/libexec /usr/local/nagios/libexec</pre>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Using packages the path to the plugins directory might be different (e.g. <code class="filename">/usr/lib/plugins</code>) so please
       change that accordingly.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
   </div>
 
-  <div class="section" title="5.1.6. Switch to the Icinga user"><div class="titlepage"><div><div><h3 class="title"><a id="idp6965936"></a>5.1.6. <a id="plugins-hints"></a>Switch to the Icinga user</h3></div></div></div>
+  <div class="section" title="5.1.6. Switch to the Icinga user">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="hints"></a>5.1.6. <a name="plugins-hints"></a>Switch to the Icinga user</h3></div></div></div>
     
 
-    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png" /></td><th align="left">Important</th></tr><tr><td align="left" valign="top">
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Always execute the plugin using the Icinga user (specified using the directive icinga_user in
       <code class="filename">icinga.cfg</code>) because some plugins will create temporary files. If you're testing plugins with another user then
       the Icinga user may not have the permissions to overwrite existing files later on. Using another user you will not be able to
@@ -145,7 +190,8 @@
       process. Furthermore the process will not use a shell per default but execute calls to popen/execvp instead depending on the command
       (popen in case the command line contains meta characters meaningful to the shell like
       <code class="literal">!$^&amp;*()~[]\|{};&lt;&gt;?'"</code>, execvp if no meta characters are present).</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
 
     <p>Switch to the Icinga user as defined in <code class="filename">icinga.cfg</code> unless already done and clear the
     environment</p>
@@ -158,20 +204,28 @@
     <p>Due to security awareness of the packager / sys admin this might fail because the account is not allowed to login. Please ask your
     sys admin to change that temporarily or do one of the following</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-        <p>get the current shell from <code class="filename">/etc/passwd</code> and change it by issuing something similar to </p><pre class="screen"> #&gt; OLD_SHELL=`grep icinga /etc/passwd | sed 's/.*://'`
- #&gt; usermod -s /bin/sh icinga</pre><p>execute the command(s) after switching to the Icinga user and clearing the environment as
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>get the current shell from <code class="filename">/etc/passwd</code> and change it by issuing something similar to </p>
+<pre class="screen"> #&gt; OLD_SHELL=`grep icinga /etc/passwd | sed 's/.*://'`
+ #&gt; usermod -s /bin/sh icinga</pre>
+<p>execute the command(s) after switching to the Icinga user and clearing the environment as
         described above</p>
 
-        <p>don't forget to restore the shell setting after testing and leaving the session </p><pre class="screen"> #&gt; usermod -s $OLD_SHELL icinga</pre>
-      </li><li class="listitem">
+        <p>don't forget to restore the shell setting after testing and leaving the session </p>
+<pre class="screen"> #&gt; usermod -s $OLD_SHELL icinga</pre>
+      </li>
+<li class="listitem">
         <p>execute the command using "sudo -u icinga"</p>
 
         <pre class="screen"> #&gt; sudo -u icinga /usr/local/icinga/libexec/sample-plugin.pl ...</pre>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="5.1.7. Extending the environment"><div class="titlepage"><div><div><h3 class="title"><a id="idp6980064"></a>5.1.7. <a id="plugins-extending"></a>Extending the environment</h3></div></div></div>
+  <div class="section" title="5.1.7. Extending the environment">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="extending"></a>5.1.7. <a name="plugins-extending"></a>Extending the environment</h3></div></div></div>
     
 
     <p>Several checks (like check_oracle_health) depend on various environment variables to be set. Don't put these in
@@ -183,14 +237,19 @@
 
     <pre class="programlisting"> export ORACLE_HOME=/usr/lib/oracle/11.2/client64
  export LD_LIBRARY_PATH=$ORACLE_HOME/lib
- export PATH=$PATH:$ORACLE_HOME</pre><p>After you logged in these variables are not set but doing so is pretty easy</p>
+ export PATH=$PATH:$ORACLE_HOME</pre>
+<p>After you logged in these variables are not set but doing so is pretty easy</p>
 
-    <pre class="screen"> $&gt; . /etc/sysconfig/icinga</pre><p>Please verify the settings</p><pre class="screen"> $&gt; echo $ORACLE_HOME
+    <pre class="screen"> $&gt; . /etc/sysconfig/icinga</pre>
+<p>Please verify the settings</p>
+<pre class="screen"> $&gt; echo $ORACLE_HOME
  $&gt; echo $LD_LIBRARY_PATH
  $&gt; echo $PATH</pre>
   </div>
 
-  <div class="section" title="5.1.8. How Do I Use Plugin X?"><div class="titlepage"><div><div><h3 class="title"><a id="idp6985808"></a>5.1.8. <a id="plugins-howto"></a>How Do I Use Plugin X?</h3></div></div></div>
+  <div class="section" title="5.1.8. How Do I Use Plugin X?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="howto"></a>5.1.8. <a name="plugins-howto"></a>How Do I Use Plugin X?</h3></div></div></div>
     
 
     <p>Nearly all plugins will display basic usage information when you execute them using '<code class="code">-h</code>' or '<code class="code">--help</code>' on
@@ -200,7 +259,9 @@
     <pre class="screen"> $&gt; ./check_http --help</pre>
   </div>
 
-  <div class="section" title="5.1.9. Integrating a new plugin"><div class="titlepage"><div><div><h3 class="title"><a id="idp6986608"></a>5.1.9. <a id="plugins-new_plugin"></a>Integrating a new plugin</h3></div></div></div>
+  <div class="section" title="5.1.9. Integrating a new plugin">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="newplugins"></a>5.1.9. <a name="plugins-new_plugin"></a>Integrating a new plugin</h3></div></div></div>
     
 
     <p>After the installation of the plugin (see "<a class="link" href="plugins.html#plugins-obtaining">Obtaining plugins</a>") call it from the command
@@ -212,14 +273,17 @@
 
     <p>The command definition has to contain two directives</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>command_name: this is a short name identifying the command, let's use <span class="emphasis"><em>check_sample</em></span></p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>command_line: here you define the command to execute. You can specify the command you executed on the command line but that
         would be very inflexible. Normally the plugin directory (/usr/local/icinga/libexec) remains the same so we can use a <a class="link" href="macrolist.html#macrolist-user">$USERn$</a> variable which is defined in <code class="filename">resource.cfg</code>. The IP-address changes from
         host to host. There is a macro called <a class="link" href="macrolist.html#macrolist-hostaddress">$HOSTADDRESS$</a> which we can use for that purpose.
         The value of the arguments may vary so these should be flexible, too. This may lead to the following definition:</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <pre class="programlisting"> define command{
     command_name check_sample
@@ -250,39 +314,48 @@ results in:
 
  /usr/local/icinga/libexec/sample-plugin.pl -H 192.168.1.2 -a argument1 -p parameter -n 5</pre>
 
-    <p><a id="plugins-hints2"></a>In addition to the <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> already mentioned there are a lot of
+    <p><a name="plugins-hints2"></a>In addition to the <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> already mentioned there are a lot of
     others making life easier. Please note:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>All Icinga macros use all upper case and are enclosed in dollar signs ($)</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Most macros are only valid for some types of commands. If you try to use a macro for a type of command for which it is not
         valid you'll get a dollar sign ($) instead of the expected value</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>The <a class="link" href="macrolist.html#macrolist-user">$USERn$</a> macros can be used to "hide" sensitive information like passwords because
         these values are not shown in the web interface. Additionally they can be used to specify special characters which otherwise may
         lead to problems. One example would be <code class="literal">USER99=;</code>. This way you can use a semicolon which otherwise would be
         treated as start of a comment within your definitions</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Native non-english speaking persons should note that <a class="link" href="macrolist.html#macrolist-hostaddress">$HOSTADDRESS$</a> is written
         with a double "D"</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
-    <p><a id="plugins-nrpe"></a><span class="bold"><strong>NRPE and "dont_blame_nrpe=1"</strong></span></p>
+    <p><a name="plugins-nrpe"></a><span class="bold"><strong>NRPE and "dont_blame_nrpe=1"</strong></span></p>
 
     <p>Using NRPE with arguments requires some attention. Given that you have enabled argument processing on the remote server in
     <code class="filename">nrpe.cfg</code> using "dont_blame_nrpe=1" (or "allow_arguments=1" in <code class="filename">nsc.ini</code>) you can pass parameters
     from the Icinga server to the remote machine. Let us assume some definitions</p>
 
-    <p>On the Icinga server</p><pre class="programlisting"> define command{
+    <p>On the Icinga server</p>
+<pre class="programlisting"> define command{
     command_name check_nrpe
     command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$ -a $ARG2$
     }
 
  define service{
     ...
-    check_command check_nrpe!check_process!cupsd</pre><p>on the remote server in the NRPE config file</p><pre class="programlisting">...
-command[check_process]=your_plugin "$ARG1$"</pre><p> The Icinga process will resolve the definitions as follows</p>
+    check_command check_nrpe!check_process!cupsd</pre>
+<p>on the remote server in the NRPE config file</p>
+<pre class="programlisting">...
+command[check_process]=your_plugin "$ARG1$"</pre>
+<p> The Icinga process will resolve the definitions as follows</p>
 
     <pre class="programlisting"> check_command check_nrpe!check_process!cupsd
                                 |         |
@@ -302,12 +375,20 @@ results in:
     <p>On the remote machine the NRPE process receives a call providing two parameters: "check_process" and "cupsd". The first is
     stripped to determine the command to be executed so only <span class="bold"><strong>one</strong></span> argument is passed to the command!</p>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>$ARG1$ on the remote machine is <span class="bold"><strong>not</strong></span> the same as on the Icinga server!</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
   </div>
 
-  <div class="section" title="5.1.10. Raw command line"><div class="titlepage"><div><div><h3 class="title"><a id="idp6989568"></a>5.1.10. <a id="plugins-raw"></a>Raw command line</h3></div></div></div>
+  <div class="section" title="5.1.10. Raw command line">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="rawcommandline"></a>5.1.10. <a name="plugins-raw"></a>Raw command line</h3></div></div></div>
     
 
     <p>Starting with Icinga 1.6 the classic UI allows to inspect the raw command line including values from
@@ -327,11 +408,13 @@ results in:
  max_debug_file_size=1000000000</pre>
   </div>
 
-  <div class="section" title="5.1.11. Threshold and ranges"><div class="titlepage"><div><div><h3 class="title"><a id="idp7025424"></a>5.1.11. <a id="plugins-threshold"></a>Threshold and ranges</h3></div></div></div>
+  <div class="section" title="5.1.11. Threshold and ranges">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="thresholdranges"></a>5.1.11. <a name="plugins-threshold"></a>Threshold and ranges</h3></div></div></div>
     
 
     <p>Some plugins support specifying ranges for the warning and critical values. Please check the documentation if this is the case for
-    the plugin you want to use. The following is an excerpt from the <a class="ulink" href="http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT" target="_top">developer guidelines</a>:</p>
+    the plugin you want to use. The following is an excerpt from the <a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html#THRESHOLDFORMAT" target="_top">developer guidelines</a>:</p>
 
     <p>A range is defined as a start and end point (inclusive) on a numeric scale (possibly negative or positive infinity).</p>
 
@@ -346,117 +429,221 @@ results in:
 
     <p>Notes:</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
         <p>start = end if :end is not specified</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>start and ":" is not required if start=0</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>if range is of format "start:" and end is not specified, assume end is infinity</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>to specify negative infinity, use "~"</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>alert is raised if metric is outside start and end range (inclusive of endpoints)</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>if range starts with "@", then alert if inside this range (inclusive of endpoints)</p>
-      </li></ol></div>
+      </li>
+</ol></div>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Not all plugins are coded to expect ranges in this format yet.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
 
-    <p>Example ranges</p><div class="informaltable">
-        <table border="1"><colgroup><col /><col /></colgroup><tbody><tr><td><span class="bold"><strong>Range definition</strong></span></td><td><span class="bold"><strong>Generate an alert if x...</strong></span></td></tr><tr><td>10</td><td>&lt; 0 or &gt; 10, (outside the range of {0 .. 10})</td></tr><tr><td>10:</td><td>&lt; 10, (outside {10 .. infinity})</td></tr><tr><td>~:10</td><td>&gt; 10, (outside the range of {-infinity .. 10})</td></tr><tr><td>10:20</td><td>&lt; 10 or &gt; 20, (outside the range of {10 .. 20})</td></tr><tr><td>@10:20</td><td>&lt;= 10 and &gt;= 20, (inside the range of {10 .. 20})</td></tr></tbody></table>
+    <p>Example ranges</p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Range definition</strong></span></td>
+<td><span class="bold"><strong>Generate an alert if x...</strong></span></td>
+</tr>
+<tr>
+<td>10</td>
+<td>&lt; 0 or &gt; 10, (outside the range of {0 .. 10})</td>
+</tr>
+<tr>
+<td>10:</td>
+<td>&lt; 10, (outside {10 .. infinity})</td>
+</tr>
+<tr>
+<td>~:10</td>
+<td>&gt; 10, (outside the range of {-infinity .. 10})</td>
+</tr>
+<tr>
+<td>10:20</td>
+<td>&lt; 10 or &gt; 20, (outside the range of {10 .. 20})</td>
+</tr>
+<tr>
+<td>@10:20</td>
+<td>&lt;= 10 and &gt;= 20, (inside the range of {10 .. 20})</td>
+</tr>
+</tbody>
+</table>
       </div>
 
-    <p>Command line examples</p><div class="informaltable">
-        <table border="1"><colgroup><col /><col /></colgroup><tbody><tr><td><span class="bold"><strong>Command line</strong></span></td><td><span class="bold"><strong>Meaning</strong></span></td></tr><tr><td>check_stuff -w10 -c20</td><td>Critical if "stuff" is over 20, else warn if over 10 (will be critical if "stuff" is less than 0)</td></tr><tr><td>check_stuff -w~:10 -c~:20</td><td>Same as above. Negative "stuff" is OK</td></tr><tr><td>check_stuff -w10: -c20</td><td>Critical if "stuff" is over 20, else warn if "stuff" is below 10 (will be critical if "stuff" is less than 0)</td></tr><tr><td>check_stuff -c1:</td><td>Critical if "stuff" is less than 1</td></tr><tr><td>check_stuff -w~:0 -c10</td><td>Critical if "stuff" is above 10; Warn if "stuff" is above zero</td></tr><tr><td>check_stuff -c5:6</td><td>The only noncritical range is 5:6</td></tr><tr><td>check_stuff -c@10:20</td><td>Critical if "stuff" is 10 to 20 <span class="bold"><strong>[1]</strong></span></td></tr><tr><td>check_stuff -w20:30 -c10:40</td><td>Warning if "stuff" below 20 or above 30, critical if "stuff" is below 10 or above 40 <span class="bold"><strong>[2]</strong></span></td></tr></tbody></table>
+    <p>Command line examples</p>
+<div class="informaltable">
+        <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><span class="bold"><strong>Command line</strong></span></td>
+<td><span class="bold"><strong>Meaning</strong></span></td>
+</tr>
+<tr>
+<td>check_stuff -w10 -c20</td>
+<td>Critical if "stuff" is over 20, else warn if over 10 (will be critical if "stuff" is less than 0)</td>
+</tr>
+<tr>
+<td>check_stuff -w~:10 -c~:20</td>
+<td>Same as above. Negative "stuff" is OK</td>
+</tr>
+<tr>
+<td>check_stuff -w10: -c20</td>
+<td>Critical if "stuff" is over 20, else warn if "stuff" is below 10 (will be critical if "stuff" is less than 0)</td>
+</tr>
+<tr>
+<td>check_stuff -c1:</td>
+<td>Critical if "stuff" is less than 1</td>
+</tr>
+<tr>
+<td>check_stuff -w~:0 -c10</td>
+<td>Critical if "stuff" is above 10; Warn if "stuff" is above zero</td>
+</tr>
+<tr>
+<td>check_stuff -c5:6</td>
+<td>The only noncritical range is 5:6</td>
+</tr>
+<tr>
+<td>check_stuff -c@10:20</td>
+<td>Critical if "stuff" is 10 to 20 <span class="bold"><strong>[1]</strong></span>
+</td>
+</tr>
+<tr>
+<td>check_stuff -w20:30 -c10:40</td>
+<td>Warning if "stuff" below 20 or above 30, critical if "stuff" is below 10 or above 40 <span class="bold"><strong>[2]</strong></span>
+</td>
+</tr>
+</tbody>
+</table>
       </div>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>[1]: The command line of the developer guidelines seems to be lacking "@" otherwise the meaning would be wrong (and there
       wouldn't be an example for the @ notation)</p>
 
       <p>[2]: Please note that the last example shows nested ranges. This might not even work with every plugin supporting ranges. It was
       tested using check_snmp.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
   </div>
 
-  <div class="section" title="5.1.12. Activating the definition"><div class="titlepage"><div><div><h3 class="title"><a id="idp7025744"></a>5.1.12. <a id="plugins-errors"></a>Activating the definition</h3></div></div></div>
+  <div class="section" title="5.1.12. Activating the definition">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="errors"></a>5.1.12. <a name="plugins-errors"></a>Activating the definition</h3></div></div></div>
     
 
     <p>Check the configuration using "/etc/init.d/icinga show-errors" and resolve any errors before issuing "/etc/init.d/icinga restart".
     Wait until the object is checked and look at the status details. There might be errors.</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>"...resulted in a return code of 127" / "out of bounds"</p>
 
         <p>This means the plugin was not found at the specified location or that a file called from within the plugin was not found. If
         you use $USERn$ macros calling the plugin then make sure that the macro really points to the location where the plugin is (is the
         macro defined in resource.cfg?). Notification commands often call a mail program. Make sure that the path to the mail program is
         correct.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>"...resulted in a return code of 126"</p>
 
         <p>Mostly this indicates a permissions problem. The process might not be able to access / execute the plugin and/or other related
         files.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>"...resulted in a return code of 13".</p>
 
         <p>Mostly this indicates a permissions problem. The user might not be able to access / execute the plugin and/or other related
         files. This might happen if you tested a plugin as root which creates temporary files. The Icinga user is not allowed to
         overwrite these files.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>"(null)"</p>
 
         <p>The internal call to execvp didn't return anything.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="5.1.13. Plugin API"><div class="titlepage"><div><div><h3 class="title"><a id="idp7077088"></a>5.1.13. Plugin API</h3></div></div></div>
+  <div class="section" title="5.1.13. Plugin API">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="pluginsapi"></a>5.1.13. Plugin API</h3></div></div></div>
     
 
     <p>You can find information on the technical aspects of plugins, as well as how to go about creating your own custom plugins <a class="link" href="pluginapi.html" title="11.1. Icinga Plugin API">here</a>.</p>
 
-    <a id="idp7079456" class="indexterm"></a>
+    <a class="indexterm" name="idp7134416"></a>
 
-    <a id="idp7081104" class="indexterm"></a>
+    <a class="indexterm" name="idp7136080"></a>
 
-    <a id="idp7082336" class="indexterm"></a>
+    <a class="indexterm" name="idp7137216"></a>
 
-    <a id="idp7083968" class="indexterm"></a>
+    <a class="indexterm" name="idp7138784"></a>
 
-    <a id="idp7085600" class="indexterm"></a>
+    <a class="indexterm" name="idp7140432"></a>
 
-    <a id="idp7087264" class="indexterm"></a>
+    <a class="indexterm" name="idp7142256"></a>
 
-    <a id="idp7088896" class="indexterm"></a>
+    <a class="indexterm" name="idp7143776"></a>
 
-    <a id="idp7090528" class="indexterm"></a>
+    <a class="indexterm" name="idp7145376"></a>
 
-    <a id="idp7092192" class="indexterm"></a>
+    <a class="indexterm" name="idp7146848"></a>
 
-    <a id="idp7093856" class="indexterm"></a>
+    <a class="indexterm" name="idp7146976"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="ch05.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch05.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="macros.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">Chapter 5. The Basics </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 5.2. Understanding Macros and How They Work</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch05.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="macros.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 5. The Basics </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 5.2. Understanding Macros and How They Work</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

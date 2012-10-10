@@ -1,52 +1,63 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.9. Benachrichtigungseskalationen</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen" />
-    <link rel="prev" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern" />
-    <link rel="next" href="escalation_condition.html" title="7.10. Eskalations-Bedingung" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.9. Benachrichtigungseskalationen</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="flapping.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-          <td width="20%" align="right"> <a accesskey="n" href="escalation_condition.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.9. Benachrichtigungseskalationen"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="escalations"></a>7.9. Benachrichtigungseskalationen</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.9.1. <a href="escalations.html#idp13659200">Einführung</a></span></dt><dt><span class="section">7.9.2. <a href="escalations.html#idp13667376">Wann werden Benachrichtigungen eskaliert?</a></span></dt><dt><span class="section">7.9.3. <a href="escalations.html#idp13672976">Kontaktgruppen</a></span></dt><dt><span class="section">7.9.4. <a href="escalations.html#idp13681008">Überlappende Eskalationsbereiche</a></span></dt><dt><span class="section">7.9.5. <a href="escalations.html#idp13688544">Erholungsbenachrichtigungen</a></span></dt><dt><span class="section">7.9.6. <a href="escalations.html#idp13692800">Benachrichtigungsintervalle</a></span></dt><dt><span class="section">7.9.7. <a href="escalations.html#idp13692928">Zeitfenster-Beschränkungen</a></span></dt><dt><span class="section">7.9.8. <a href="escalations.html#idp13712080">Status-Beschränkungen</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.9. Benachrichtigungseskalationen</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
+<link rel="prev" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">
+<link rel="next" href="escalation_condition.html" title="7.10. Eskalations-Bedingung">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.9. Benachrichtigungseskalationen</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="flapping.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="escalation_condition.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.9. Benachrichtigungseskalationen">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="escalations"></a>7.9. Benachrichtigungseskalationen</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.9.1. <a href="escalations.html#idp13684352">Einführung</a></span></dt>
+<dt><span class="section">7.9.2. <a href="escalations.html#idp13692336">Wann werden Benachrichtigungen eskaliert?</a></span></dt>
+<dt><span class="section">7.9.3. <a href="escalations.html#idp13697936">Kontaktgruppen</a></span></dt>
+<dt><span class="section">7.9.4. <a href="escalations.html#idp13705968">Überlappende Eskalationsbereiche</a></span></dt>
+<dt><span class="section">7.9.5. <a href="escalations.html#idp13713504">Erholungsbenachrichtigungen</a></span></dt>
+<dt><span class="section">7.9.6. <a href="escalations.html#idp13717760">Benachrichtigungsintervalle</a></span></dt>
+<dt><span class="section">7.9.7. <a href="escalations.html#idp13718048">Zeitfenster-Beschränkungen</a></span></dt>
+<dt><span class="section">7.9.8. <a href="escalations.html#idp13736640">Status-Beschränkungen</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.9.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp13659200"></a>7.9.1. Einführung</h3></div></div></div>
+  <div class="section" title="7.9.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13684352"></a>7.9.1. Einführung</h3></div></div></div>
     
 
-    <div class="mediaobject" align="right"><img src="../images/objects-contacts.png" align="right" /></div>
+    <div class="mediaobject" align="right"><img src="../images/objects-contacts.png" align="right"></div>
 
     <p>Icinga unterstützt optionale Eskalation von Kontakt-Benachrichtigungen für Hosts und Services. Eskalationen von Host- oder
     Service-Benachrichtigungen werden erreichen durch das Definieren von <a class="link" href="objectdefinitions.html#objectdefinitions-hostescalation">Host-Eskalationen</a> bzw. <a class="link" href="objectdefinitions.html#objectdefinitions-serviceescalation">Service-Eskalationen</a> in Ihrer/Ihren <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/note.gif" /></span> Anmerkung: Das Beispiel, das wir unten zeigen, benutzt Service-Eskalationsdefinitionen, aber Host-Eskalationen
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Das Beispiel, das wir unten zeigen, benutzt Service-Eskalationsdefinitionen, aber Host-Eskalationen
     arbeiten genau so. Außer, dass sie für Hosts sind statt für Services. :-)</p>
   </div>
 
-  <div class="section" title="7.9.2. Wann werden Benachrichtigungen eskaliert?"><div class="titlepage"><div><div><h3 class="title"><a id="idp13667376"></a>7.9.2. Wann werden Benachrichtigungen eskaliert?</h3></div></div></div>
+  <div class="section" title="7.9.2. Wann werden Benachrichtigungen eskaliert?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13692336"></a>7.9.2. Wann werden Benachrichtigungen eskaliert?</h3></div></div></div>
     
 
     <p>Benachrichtigungen werden eskaliert, <span class="emphasis"><em>wenn, und nur wenn</em></span> eine oder mehrere Eskalationsdefinitionen mit der
@@ -79,7 +90,9 @@
     lautet.</p>
   </div>
 
-  <div class="section" title="7.9.3. Kontaktgruppen"><div class="titlepage"><div><div><h3 class="title"><a id="idp13672976"></a>7.9.3. Kontaktgruppen</h3></div></div></div>
+  <div class="section" title="7.9.3. Kontaktgruppen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13697936"></a>7.9.3. Kontaktgruppen</h3></div></div></div>
     
 
     <p>Beim Definieren von Benachrichtigungs-Eskalationen ist es wichtig zu wissen, dass alle Kontaktgruppen, die Mitglieder von
@@ -115,7 +128,9 @@
     enthalten.</p>
   </div>
 
-  <div class="section" title="7.9.4. Überlappende Eskalationsbereiche"><div class="titlepage"><div><div><h3 class="title"><a id="idp13681008"></a>7.9.4. Überlappende Eskalationsbereiche</h3></div></div></div>
+  <div class="section" title="7.9.4. Überlappende Eskalationsbereiche">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13705968"></a>7.9.4. Überlappende Eskalationsbereiche</h3></div></div></div>
     
 
     <p>Benachrichtigungs-Eskalationsdefinitionen können Benachrichtigungs-Bereiche haben, die überlappen. Nehmen Sie das folgende
@@ -140,18 +155,24 @@
 
     <p>Im obigen Beispiel:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>die <span class="emphasis"><em>nt-admins</em></span>- und <span class="emphasis"><em>managers</em></span>-Kontaktgruppen werden bei der dritten Benachrichtung
         informiert</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>alle drei Kontaktgruppen werden bei der vierten und fünften Benachrichtigung informiert</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>nur die <span class="emphasis"><em>on-call-support</em></span>-Kontaktgruppe wird bei der sechsten (und höheren) Benachrichtigung
         informiert</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="7.9.5. Erholungsbenachrichtigungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp13688544"></a>7.9.5. Erholungsbenachrichtigungen</h3></div></div></div>
+  <div class="section" title="7.9.5. Erholungsbenachrichtigungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13713504"></a>7.9.5. Erholungsbenachrichtigungen</h3></div></div></div>
     
 
     <p>Erholungsbenachrichtigungen unterscheiden sich geringfügig von Problembenachrichtigungen, wenn es um Eskalationen geht. Nehmen Sie
@@ -181,7 +202,9 @@
     werden.</p>
   </div>
 
-  <div class="section" title="7.9.6. Benachrichtigungsintervalle"><div class="titlepage"><div><div><h3 class="title"><a id="idp13692800"></a>7.9.6. Benachrichtigungsintervalle</h3></div></div></div>
+  <div class="section" title="7.9.6. Benachrichtigungsintervalle">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13717760"></a>7.9.6. Benachrichtigungsintervalle</h3></div></div></div>
     
 
     <p>Sie können die Häufigkeit, mit der eskalierte Benachrichtigungen für einen bestimmten Host oder Service versandt werden, mit der
@@ -271,7 +294,9 @@
     Eskalationsdefinition keinerlei Auswirkungen, denn es wird nie mehr als vier Benachrichtigungen geben.</p>
   </div>
 
-  <div class="section" title="7.9.7. Zeitfenster-Beschränkungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp13692928"></a>7.9.7. Zeitfenster-Beschränkungen</h3></div></div></div>
+  <div class="section" title="7.9.7. Zeitfenster-Beschränkungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13718048"></a>7.9.7. Zeitfenster-Beschränkungen</h3></div></div></div>
     
 
     <p>Unter normalen Umständen können Eskalationen zu jeder Zeit benutzt werden, zu der Benachrichtigungen für einen Host oder Service
@@ -285,12 +310,14 @@
     <span class="emphasis"><em>escalation_period</em></span>-Direktive angeben, kann die Eskalation zu jeder Zeit innerhalb des
     "Benachrichtigungs-Zeitfensters" des Hosts oder Service benutzt werden.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/note.gif" /></span> Anmerkung: eskalierte Benachrichtigungen unterliegen weiterhin den normalen Zeitbeschränkungen, die durch die
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: eskalierte Benachrichtigungen unterliegen weiterhin den normalen Zeitbeschränkungen, die durch die
     <span class="emphasis"><em>notification_period</em></span>-Direktive in einer Host- oder Service-Definition festgelegt wurden, so dass die Zeitspanne, die
     Sie in einer Eskalationsdefinition angeben, ein Teil des größeren "Benachrichtigungs-Zeitfensters" sein sollte.</p>
   </div>
 
-  <div class="section" title="7.9.8. Status-Beschränkungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp13712080"></a>7.9.8. Status-Beschränkungen</h3></div></div></div>
+  <div class="section" title="7.9.8. Status-Beschränkungen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13736640"></a>7.9.8. Status-Beschränkungen</h3></div></div></div>
     
 
     <p>Wenn Sie die Eskalationsdefinition beschränken wollen, damit sie nur benutzt wird, während sich der Host oder Service in einem
@@ -298,28 +325,26 @@
     Service-Eskalationsdefinition benutzen. Wenn Sie die <span class="emphasis"><em>escalation_options</em></span>-Direktive nicht verwenden, werden die
     Eskalationen in jedem Status der Hosts oder Services benutzt.</p>
 
-    <a id="idp13714608" class="indexterm"></a>
+    <a class="indexterm" name="idp13738704"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="flapping.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="escalation_condition.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.8. Erkennung und Behandlung von Status-Flattern </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.10. Eskalations-Bedingung</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="flapping.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="escalation_condition.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.8. Erkennung und Behandlung von Status-Flattern </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 7.10. Eskalations-Bedingung</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

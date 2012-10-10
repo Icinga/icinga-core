@@ -1,41 +1,53 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.18. Benutzen des Embedded Perl Interpreters</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen" />
-    <link rel="prev" href="recurring_downtimes.html" title="7.17. Wiederkehrende Ausfallzeiten" />
-    <link rel="next" href="adaptive.html" title="7.19. Adaptive Überwachung" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.18. Benutzen des Embedded Perl Interpreters</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="recurring_downtimes.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-          <td width="20%" align="right"> <a accesskey="n" href="adaptive.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.18. Benutzen des Embedded Perl Interpreters"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="embeddedperl"></a>7.18. Benutzen des Embedded Perl Interpreters</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.18.1. <a href="embeddedperl.html#idp14189312">Vorteile</a></span></dt><dt><span class="section">7.18.2. <a href="embeddedperl.html#idp14196192">Nachteile</a></span></dt><dt><span class="section">7.18.3. <a href="embeddedperl.html#idp14206832">Benutzung des eingebetteten Perl-Interpreters</a></span></dt><dt><span class="section">7.18.4. <a href="embeddedperl.html#idp14214864">Icinga mit eingebettetem Perl kompilieren</a></span></dt><dt><span class="section">7.18.5. <a href="embeddedperl.html#idp14222672">Plugin-spezifische Benutzung des Perl-Interpreters</a></span></dt><dt><span class="section">7.18.6. <a href="embeddedperl.html#idp14222960">Plugins für die Nutzung mit Embedded Perl entwickeln</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.18. Benutzen des Embedded Perl Interpreters</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
+<link rel="prev" href="recurring_downtimes.html" title="7.17. Wiederkehrende Ausfallzeiten">
+<link rel="next" href="adaptive.html" title="7.19. Adaptive Überwachung">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.18. Benutzen des Embedded Perl Interpreters</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="recurring_downtimes.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="adaptive.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.18. Benutzen des Embedded Perl Interpreters">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="embeddedperl"></a>7.18. Benutzen des Embedded Perl Interpreters</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.18.1. <a href="embeddedperl.html#idp14214864">Vorteile</a></span></dt>
+<dt><span class="section">7.18.2. <a href="embeddedperl.html#idp14222480">Nachteile</a></span></dt>
+<dt><span class="section">7.18.3. <a href="embeddedperl.html#idp14232864">Benutzung des eingebetteten Perl-Interpreters</a></span></dt>
+<dt><span class="section">7.18.4. <a href="embeddedperl.html#idp14240800">Icinga mit eingebettetem Perl kompilieren</a></span></dt>
+<dt><span class="section">7.18.5. <a href="embeddedperl.html#idp14248608">Plugin-spezifische Benutzung des Perl-Interpreters</a></span></dt>
+<dt><span class="section">7.18.6. <a href="embeddedperl.html#idp14248896">Plugins für die Nutzung mit Embedded Perl entwickeln</a></span></dt>
+</dl></div>
   
 
   <div class="informaltable">
-    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>
+    <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td align="left" valign="top">
+<p>
                
 
               <span class="bold"><strong>Einführung</strong></span>
@@ -46,7 +58,7 @@
           wenn Sie sich viel auf Plugins verlassen, die in Perl geschrieben sind.</p> <p>Ohne den eingebetteten Perl-Interpreter führt
           Icinga Perl- (und andere) Plugins durch "forking" und ausführen als einen externen Befehl aus. Wenn der eingebettete
           Perl-Interpreter benutzt wird, kann Icinga Perl-Plugins durch einen einfachen Library-Call ausführen.</p>
-          <p><span class="inlinemediaobject"><img src="../images/tip.gif" /></span> Hinweis: Der Perl-Interpreter arbeitet mit allen Perl-Scripten, die Icinga ausführt - nicht nur
+          <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Der Perl-Interpreter arbeitet mit allen Perl-Scripten, die Icinga ausführt - nicht nur
           Plugins. Diese Dokumentation behandelt den eingebetteten Perl-Interpreter in Verbindung mit Plugins für Host- und
           Service-Prüfungen, aber sie trifft genauso auf andere Arten von Perl-Scripten zu, die Sie vielleicht für andere Arten von Befehlen
           benutzen (z.B. Benachrichtigungs-Scripte, Eventhandler-Scripte usw.).</p> <p>Stephen Davis hat den originalen eingebetteten
@@ -54,93 +66,128 @@
           Perl-Interpreter-Code zu verbessern und die die Vor- und Nachteile bei der Benutzung kommentiert hat. Er hat auch verschiedene
           hilfreiche Hinweise zur Erstellung von Perl-Plugins gegeben, die sauber mit dem eingebetteten Interpreter arbeiten.</p>
           <p>Es sollte angemerkt werden, dass sich "ePN" - wie in dieser Dokumentation benutzt - auf "embedded Perl Icinga"
-          bezieht, oder wenn Sie das bevorzugen, Icinga mit eingebettetem Perl-Interpreter.</p></td><td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/epn.png" /></span> </p></td></tr></tbody></table>
+          bezieht, oder wenn Sie das bevorzugen, Icinga mit eingebettetem Perl-Interpreter.</p>
+</td>
+<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/epn.png"></span> </p></td>
+</tr></tbody>
+</table>
   </div>
 
-  <div class="section" title="7.18.1. Vorteile"><div class="titlepage"><div><div><h3 class="title"><a id="idp14189312"></a>7.18.1. Vorteile</h3></div></div></div>
+  <div class="section" title="7.18.1. Vorteile">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14214864"></a>7.18.1. Vorteile</h3></div></div></div>
     
 
     <p>Einige Vorteile von ePN (embedded Perl Icinga) umfassen:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Icinga wird viel weniger Zeit bei der Ausführung Ihrer Perl-Plugins verbringen, weil es nicht länger "fork"t, um das
         Plugin auszuführen (das Laden des Perl-Interpreters entfällt). Statt dessen führt es das Plugin durch einen Library-Call
         durch.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>es reduziert die Systembelastung durch Perl-Plugins und/oder erlaubt es Ihnen, mehr Prüfungen mit Perl-Plugins durchzuführen,
         als Ihnen das sonst möglich wäre. Mit anderen Worten haben Sie weniger Anreiz, Plugins in anderen Sprachen wie z.B. C/C++, oder
         Expect/TCL zu schreiben, die bei den Entwicklungszeiten eine Zehnerpotenz langsamer angesehen werden als Perl (wobei sie auch
         zehnmal schneller ablaufen, von TCL mal abgesehen).</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Wenn Sie kein C-Programmierer sind, dann können Sie trotzdem eine Menge mit Perl erledigen, ohne dass es Icinga viel
         langsamer macht. Beachten Sie, dass ePN Ihre Plugins nicht schneller macht (außer, dass es die Ladezeit eliminiert). Wenn Sie
         schnelle Plugins wollen, dann berücksichtigen Sie Perl XSUBs (XS) oder C, <span class="emphasis"><em>nachdem</em></span> Sie sicher sind, dass Sie Ihr
         Perl getuned haben und dass Sie einen angemessenen Algorithmus haben (Benchmark.pm is <span class="emphasis"><em>unbezahlbar</em></span> für den
         Vergleich von Perl-Sprachelementen).</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>ePN zu benutzen ist eine exzellente Gelegenheit, mehr über Perl zu lernen.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="7.18.2. Nachteile"><div class="titlepage"><div><div><h3 class="title"><a id="idp14196192"></a>7.18.2. Nachteile</h3></div></div></div>
+  <div class="section" title="7.18.2. Nachteile">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14222480"></a>7.18.2. Nachteile</h3></div></div></div>
     
 
     <p>Die Nachteile von ePN (embedded Perl Icinga) sind ziemlich die gleichen wie bei Apache mod_perl (d.h. Apache
     mit einem eingebetteten Interpreter) verglichen mit einem schlichten Apache:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Ein Perl-Programm, das <span class="emphasis"><em>wunderbar</em></span> mit schlichtem Icinga arbeitet, muss <span class="emphasis"><em>nicht</em></span>
         mit ePN funktionieren. Möglicherweise müssen Sie Ihre Plugins modifizieren, damit sie funktionieren.</p>
 
-        <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png" /></td><th align="left">Wichtig</th></tr><tr><td align="left" valign="top">
+        <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top">
           <p>Bitte beachten Sie, dass Ihr Plugin ggf. "Memory-Leaks" enthält, so dass es wichtig ist, dass Sie es mit
           <code class="filename">new_mini_epn</code> testen/verifizieren (das Sie im contrib-Verzeichnis finden).</p>
-        </td></tr></table></div>
-      </li><li class="listitem">
+        </td></tr>
+</table></div>
+      </li>
+<li class="listitem">
         <p>Perl-Plugins sind unter ePN schwieriger zu debuggen als unter schlichtem Icinga.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Ihr ePN wird eine größere SIZE (Speichernutzung) haben als ein schlichtes Icinga.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Einige Perl-Konstrukte können nicht genutzt werden oder mögen sich anders verhalten als Sie das erwarten würden.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Sie sollte sich bewusst sein, dass es 'mehr als einen Weg gibt, es zu tun' und ggf. einen Weg wählen, der weniger attraktiv
         oder offensichtlich ist.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Sie werden mehr Perl-Know-How benötigen (aber nichts sehr esoterisches oder Zeug über Perl-Interna - außer, wenn Ihre Plugins
         XSUBS benutzen).</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="7.18.3. Benutzung des eingebetteten Perl-Interpreters"><div class="titlepage"><div><div><h3 class="title"><a id="idp14206832"></a>7.18.3. Benutzung des eingebetteten Perl-Interpreters</h3></div></div></div>
+  <div class="section" title="7.18.3. Benutzung des eingebetteten Perl-Interpreters">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14232864"></a>7.18.3. Benutzung des eingebetteten Perl-Interpreters</h3></div></div></div>
     
 
     <p>Wenn Sie den eingebetteten Perl-Interpreter benutzen wollen, um Ihre Perl-Plugins und Scripts auszuführen, dann lesen Sie hier,
     was Sie tun müssen:</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
         <p>Kompilieren Sie Icinga mit Unterstützung für den eingebetteten Perl-Interpreter (Anweisungen s.u.).</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>aktivieren Sie die <a class="link" href="configmain.html#configmain-enable_embedded_perl">enable_embedded_perl</a>-Option in der
         Hauptkonfigurationsdatei.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>setzen Sie die <a class="link" href="configmain.html#configmain-use_embedded_perl_implicitly">use_embedded_perl_implicitly</a>-Option entsprechend
         Ihren Anforderungen. Diese Option legt fest, ob der Perl-Interpreter per Default für einzelne Perl-Plugins und Scripts benutzt
         werden sollte.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Optional sollten Sie bei verschiedenen Perl-Plugins und Scripts die Ausführung durch den eingebetteten Perl-Interpreter
         aktivieren oder deaktivieren. Das kann nützlich sein, wenn bestimmte Perl-Scripte Probleme bei der Ausführung mit dem
         Perl-Interpreter haben. Beachten Sie die Anweisungen weiter unten für mehr Informationen, wie das zu tun ist.</p>
-      </li></ol></div>
+      </li>
+</ol></div>
   </div>
 
-  <div class="section" title="7.18.4. Icinga mit eingebettetem Perl kompilieren"><div class="titlepage"><div><div><h3 class="title"><a id="idp14214864"></a>7.18.4. Icinga mit eingebettetem Perl kompilieren</h3></div></div></div>
+  <div class="section" title="7.18.4. Icinga mit eingebettetem Perl kompilieren">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14240800"></a>7.18.4. Icinga mit eingebettetem Perl kompilieren</h3></div></div></div>
     
 
     <p>Wenn Sie den eingebetteten Perl-Interpreter benutzen möchten, müssen Sie zuerst Icinga mit der Unterstützung dafür
-    kompilieren. Um dies zu tun, starten Sie einfach das configure-Script zusätzlich mit der <span class="color">
-    <span class="emphasis"><em>--enable-embedded-perl</em></span> </span> -Option. Wenn Sie aktivieren wollen, dass der Perl-Interpreter intern
-    kompilierte Scripts in einem Cache ablegen soll, dann nutzen Sie die <span class="color">
-    <span class="emphasis"><em>--with-perlcache</em></span> </span> -Option. Beispiel:</p>
+    kompilieren. Um dies zu tun, starten Sie einfach das configure-Script zusätzlich mit der <span class="color"><font color="red">
+    <span class="emphasis"><em>--enable-embedded-perl</em></span> </font></span> -Option. Wenn Sie aktivieren wollen, dass der Perl-Interpreter intern
+    kompilierte Scripts in einem Cache ablegen soll, dann nutzen Sie die <span class="color"><font color="red">
+    <span class="emphasis"><em>--with-perlcache</em></span> </font></span> -Option. Beispiel:</p>
 
     <pre class="screen"> ./configure --enable-embedded-perl --with-perlcache <span class="emphasis"><em> otheroptions...</em></span> </pre>
 
@@ -151,7 +198,9 @@
     <pre class="screen"> ./configure --with-p1-file-dir=&lt;path&gt;</pre>
   </div>
 
-  <div class="section" title="7.18.5. Plugin-spezifische Benutzung des Perl-Interpreters"><div class="titlepage"><div><div><h3 class="title"><a id="idp14222672"></a>7.18.5. Plugin-spezifische Benutzung des Perl-Interpreters</h3></div></div></div>
+  <div class="section" title="7.18.5. Plugin-spezifische Benutzung des Perl-Interpreters">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14248608"></a>7.18.5. Plugin-spezifische Benutzung des Perl-Interpreters</h3></div></div></div>
     
 
     <p>Beginnend mit Icinga 1.8 können Sie angeben, welche Perl-Plugins oder Scripts mit dem eingebetteten
@@ -173,45 +222,51 @@
 
     <p>Eine der beiden Zeilen muss innerhalb der ersten zehn Zeilen stehen, damit sie von Icinga erkannt wird.</p>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>"icinga: +/- epn" wird seit Icinga 1.2.1 unterstützt. Vorher mussten Sie "nagios: +/-epn" benutzen, was aus
       Kompatibilitätsgründen weiterhin unterstützt wird.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
 
-    <p><span class="inlinemediaobject"><img src="../images/tip.gif" /></span> Hinweis: Wenn Sie nicht <span class="emphasis"><em>explizit</em></span> die oben genannte Methode nutzen, um Icinga
+    <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Wenn Sie nicht <span class="emphasis"><em>explizit</em></span> die oben genannte Methode nutzen, um Icinga
     mitzuteilen, den Perl-Interpreter für ein einzelnes Plugin zu nutzen, wird Icinga eine Entscheidung für Sie treffen. Dieser
     Entscheidungsprozess wird von der <a class="link" href="configmain.html#configmain-use_embedded_perl_implicitly">use_embedded_perl_implicitly</a>-Variable
     kontrolliert. Wenn der Wert auf 1 gesetzt ist, werden alle Perl-Plugins/Scripts (bei denen nicht explizit der ePN aktiviert/deaktiviert
     ist) mit dem Perl-Interpreter ausgeführt. Wenn der Wert auf 0 gesetzt ist, werden sie NICHT mit dem Perl-Interpreter ausgeführt.</p>
   </div>
 
-  <div class="section" title="7.18.6. Plugins für die Nutzung mit Embedded Perl entwickeln"><div class="titlepage"><div><div><h3 class="title"><a id="idp14222960"></a>7.18.6. Plugins für die Nutzung mit Embedded Perl entwickeln</h3></div></div></div>
+  <div class="section" title="7.18.6. Plugins für die Nutzung mit Embedded Perl entwickeln">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14248896"></a>7.18.6. Plugins für die Nutzung mit Embedded Perl entwickeln</h3></div></div></div>
     
 
     <p>Informationen über die Entwicklung von Plugins zur Nutzung mit dem eingebetteten Perl-Interpreter finden Sie <a class="link" href="epnplugins.html" title="11.2. Entwickeln von Plugins für die Nutzung mit Embedded Perl">hier</a>.</p>
 
-    <a id="idp14234864" class="indexterm"></a>
+    <a class="indexterm" name="idp14260800"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="recurring_downtimes.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="adaptive.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.17. Wiederkehrende Ausfallzeiten </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.19. Adaptive Überwachung</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="recurring_downtimes.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="adaptive.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.17. Wiederkehrende Ausfallzeiten </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 7.19. Adaptive Überwachung</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

@@ -1,37 +1,34 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>8.8. Temporäre Daten</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung" />
-    <link rel="prev" href="perfgraphs.html" title="8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios" />
-    <link rel="next" href="ch09.html" title="Kapitel 9. Integration mit anderer Software" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">8.8. Temporäre Daten</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="perfgraphs.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 8. Sicherheit und Leistungsoptimierung</th>
-          <td width="20%" align="right"> <a accesskey="n" href="ch09.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="8.8. Temporäre Daten"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="temp_data"></a>8.8. <a id="temp-data"></a>Temporäre Daten</h2></div></div></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>8.8. Temporäre Daten</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
+<link rel="prev" href="perfgraphs.html" title="8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios">
+<link rel="next" href="ch09.html" title="Kapitel 9. Integration mit anderer Software">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">8.8. Temporäre Daten</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="perfgraphs.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 8. Sicherheit und Leistungsoptimierung</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch09.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="8.8. Temporäre Daten">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="temp_data"></a>8.8. <a name="temp-data"></a>Temporäre Daten</h2></div></div></div>
   
 
   <p>Verschiedene Dateien werden beim Start von Icinga angelegt und während der Laufzeit sehr oft verarbeitet. Abhängig von der
@@ -39,71 +36,96 @@
   I/O-Operationen zu reduzieren kann es sinnvoll sein, temporäre Daten auf einer RAM-Disk abzulegen. Die folgenden Zeilen zeigen die
   Schritte zum Anlegen einer RAM-Disk und die Änderungen an der Hauptkonfigurationsdatei.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>Bitte denken Sie daran, dass die Dateien verloren sind, wenn Sie das System neu starten. Beachten Sie auch, dass es teilweise
     schwierig ist, die Größe der Dateien zu ermitteln, was ggf. zu einer vollen RAM-Disk führen kann.</p>
-  </td></tr></table></div>
+  </td></tr>
+</table></div>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
       <p>Werfen Sie einen Blick auf den aktuellen Standort des <a class="link" href="configmain.html#configmain-status_file">status file</a> (z.B.
       <code class="filename">/usr/local/icinga/var/status.dat</code>) und des <a class="link" href="configmain.html#configmain-object_cache_file">object cache file</a>
-      (z.B. <code class="filename">/usr/local/icnga/var/objects.cache</code>) und ermitteln Sie die Größe der beiden Dateien.</p><pre class="programlisting"> #&gt; ls -la /usr/local/icinga/var/
+      (z.B. <code class="filename">/usr/local/icnga/var/objects.cache</code>) und ermitteln Sie die Größe der beiden Dateien.</p>
+<pre class="programlisting"> #&gt; ls -la /usr/local/icinga/var/
  -rw-rw-r--   1 icinga icinga 8.2M Jun 10 11:57 status.dat
  -rw-r--r--   1 icinga icinga 5.9M Jun 10 11:58 objects.cache</pre>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Erhöhen Sie die Zahl um einen nennenswerten Betrag, um auch zukünftiges Wachstum zu ermöglichen (100 MB sollten in diesem Fall
-      ausreichen) und legen Sie die RAM-Disk an. </p><div class="caution" title="Achtung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Achtung]" src="../images/caution.png" /></td><th align="left">Achtung</th></tr><tr><td align="left" valign="top">
+      ausreichen) und legen Sie die RAM-Disk an. </p>
+<div class="caution" title="Achtung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Achtung]" src="../images/caution.png"></td>
+<th align="left">Achtung</th>
+</tr>
+<tr><td align="left" valign="top">
           <p>Wenn der Wert zu groß gewählt ist, wird dies Ihr System drosseln, weil es dann anfängt zu "swappen", was wieder zu
           physikalischem I/O führt.</p>
-        </td></tr></table></div><pre class="programlisting"> #&gt; mkdir /var/icinga/ramdisk
+        </td></tr>
+</table></div>
+<pre class="programlisting"> #&gt; mkdir /var/icinga/ramdisk
  #&gt; mount -t tmpfs tmpfs /var/icinga/ramdisk -o size=100m
- #&gt; chown icinga:icinga /var/icinga/ramdisk</pre><p>Passen Sie die Angaben von Benutzer und Gruppe auf die Werte an, die in Ihrer
+ #&gt; chown icinga:icinga /var/icinga/ramdisk</pre>
+<p>Passen Sie die Angaben von Benutzer und Gruppe auf die Werte an, die in Ihrer
       Konfiguration benutzt werden (falls notwendig).</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Fügen Sie einen Eintrag zur Datei <code class="filename">/etc/fstab</code> hinzu, um die Änderungen permanent zu machen, damit die
-      RAM-Disk beim nächsten Systemneustart automatisch angelegt wird.</p><pre class="programlisting">tmpfs                /var/icinga/ramdisk     tmpfs   size=100m        0 0</pre>
-    </li><li class="listitem">
+      RAM-Disk beim nächsten Systemneustart automatisch angelegt wird.</p>
+<pre class="programlisting">tmpfs                /var/icinga/ramdisk     tmpfs   size=100m        0 0</pre>
+    </li>
+<li class="listitem">
       <p>Editieren Sie die Icinga Hauptkonfigurationsdatei und ändern Sie die Einstellungen der betreffenden
-      Direktiven</p><pre class="programlisting"> #object_cache_file=/usr/local/icinga/var/objects.cache
+      Direktiven</p>
+<pre class="programlisting"> #object_cache_file=/usr/local/icinga/var/objects.cache
  object_cache_file=/var/icinga/ramdisk/objects.cache
 
  #status_file=/usr/local/icinga/var/status.dat
  status_file=/var/icinga/ramdisk/status.dat</pre>
-    </li><li class="listitem">
-      <p>Starten Sie Icinga neu, damit die Änderungen aktiv werden</p><pre class="programlisting"> #&gt; /etc/init.d/icinga restart</pre>
-    </li></ol></div>
+    </li>
+<li class="listitem">
+      <p>Starten Sie Icinga neu, damit die Änderungen aktiv werden</p>
+<pre class="programlisting"> #&gt; /etc/init.d/icinga restart</pre>
+    </li>
+</ol></div>
 
   <p>Möglicherweise möchten Sie die RAM-Disk auch für anderen Dateien wie z.B. die check results benutzen. Bitte erhöhen Sie die Größe
-  der RAM-Disk - falls notwendig - und ändern Sie die Direktive in der Hauptkonfigurationsdatei</p><pre class="programlisting"> check_result_path=/var/icinga/ramdisk/checkresults</pre><p>
+  der RAM-Disk - falls notwendig - und ändern Sie die Direktive in der Hauptkonfigurationsdatei</p>
+<pre class="programlisting"> check_result_path=/var/icinga/ramdisk/checkresults</pre>
+<p>
   Stellen Sie sicher, dass auch anderen Addons wie z.B. check_mk diese Änderungen bekannt sind.</p>
 
-  <a id="idp15381168" class="indexterm"></a>
+  <a class="indexterm" name="idp15410256"></a>
 
-  <a id="idp15382256" class="indexterm"></a>
+  <a class="indexterm" name="idp15411424"></a>
 
-  <a id="idp15383792" class="indexterm"></a>
+  <a class="indexterm" name="idp15410384"></a>
 
-  <a id="idp15384688" class="indexterm"></a>
+  <a class="indexterm" name="idp15413904"></a>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="perfgraphs.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch08.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="ch09.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> Kapitel 9. Integration mit anderer Software</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="perfgraphs.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch08.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch09.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> Kapitel 9. Integration mit anderer Software</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

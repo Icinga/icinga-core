@@ -1,37 +1,43 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.17. Wiederkehrende Ausfallzeiten</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen" />
-    <link rel="prev" href="downtime.html" title="7.16. Geplante Ausfallzeiten" />
-    <link rel="next" href="embeddedperl.html" title="7.18. Benutzen des Embedded Perl Interpreters" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.17. Wiederkehrende Ausfallzeiten</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="downtime.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-          <td width="20%" align="right"> <a accesskey="n" href="embeddedperl.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.17. Wiederkehrende Ausfallzeiten"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="recurring_downtimes"></a>7.17. <a id="recurring_downtime"></a>Wiederkehrende Ausfallzeiten</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.17.1. <a href="recurring_downtimes.html#idp14093376">Ausfallzeiten definieren</a></span></dt><dt><span class="section">7.17.2. <a href="recurring_downtimes.html#idp14108704">Variable Daten</a></span></dt><dt><span class="section">7.17.3. <a href="recurring_downtimes.html#idp14139536">Lokale Feiertage</a></span></dt><dt><span class="section">7.17.4. <a href="recurring_downtimes.html#idp14151264">Eingaben von Ausfallzeiten</a></span></dt><dt><span class="section">7.17.5. <a href="recurring_downtimes.html#idp14152608">Planen von Ausfallzeiten</a></span></dt><dt><span class="section">7.17.6. <a href="recurring_downtimes.html#idp14152864">Konvertieren von Ausfallzeitdefinitionen</a></span></dt><dt><span class="section">7.17.7. <a href="recurring_downtimes.html#idp14168192">Dateien</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.17. Wiederkehrende Ausfallzeiten</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
+<link rel="prev" href="downtime.html" title="7.16. Geplante Ausfallzeiten">
+<link rel="next" href="embeddedperl.html" title="7.18. Benutzen des Embedded Perl Interpreters">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.17. Wiederkehrende Ausfallzeiten</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="downtime.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="embeddedperl.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.17. Wiederkehrende Ausfallzeiten">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="recurring_downtimes"></a>7.17. <a name="recurring_downtime"></a>Wiederkehrende Ausfallzeiten</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.17.1. <a href="recurring_downtimes.html#idp14118640">Ausfallzeiten definieren</a></span></dt>
+<dt><span class="section">7.17.2. <a href="recurring_downtimes.html#idp14133968">Variable Daten</a></span></dt>
+<dt><span class="section">7.17.3. <a href="recurring_downtimes.html#idp14164560">Lokale Feiertage</a></span></dt>
+<dt><span class="section">7.17.4. <a href="recurring_downtimes.html#idp14176096">Eingaben von Ausfallzeiten</a></span></dt>
+<dt><span class="section">7.17.5. <a href="recurring_downtimes.html#idp14177712">Planen von Ausfallzeiten</a></span></dt>
+<dt><span class="section">7.17.6. <a href="recurring_downtimes.html#idp14177968">Konvertieren von Ausfallzeitdefinitionen</a></span></dt>
+<dt><span class="section">7.17.7. <a href="recurring_downtimes.html#idp14193552">Dateien</a></span></dt>
+</dl></div>
   
 
   <p>Viele Leute haben regelmäßige Ausfallzeiten zu verschiedenen Zeiten und es wäre eine mühselige Arbeit, sie immer wieder manuell
@@ -40,7 +46,9 @@
   auf, dass diese Definitionen liest, bereits existierende Ausfallzeiten berücksichtigt und neue Ausfallzeiten plant, falls
   notwendig.</p>
 
-  <div class="section" title="7.17.1. Ausfallzeiten definieren"><div class="titlepage"><div><div><h3 class="title"><a id="idp14093376"></a>7.17.1. Ausfallzeiten definieren</h3></div></div></div>
+  <div class="section" title="7.17.1. Ausfallzeiten definieren">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14118640"></a>7.17.1. Ausfallzeiten definieren</h3></div></div></div>
     
 
     <p>Icinga nutzt ein neues Format für diese Ausfallzeiten, das auf existierenden Definitionen basiert, die aus der Statusdatei
@@ -62,24 +70,31 @@
 
     <p>Anmerkungen zu den obigen Definitionen:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>"host_name", "hostgroups" und "servicegroups" sind zwingend und schließen sich gegenseitig aus.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>"service_description" ist optional. Wenn nicht definiert, dann wird eine Ausfallzeit für eine/n Host / Hostgruppe(n) /
         Servicegruppe(n) geplant. Wenn es definiert wird, dann kann es ein einzelner Service oder "all" für alle Services eines einzelnen
         Hosts oder alle Hosts einer Hostgruppe sein.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>"duration" ist optional, muss aber definiert sein, wenn eine flexible Ausfallzeit geplant werden soll.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>"fixed" ist optional und wird "0" sein, wenn "duration" definiert ist und die Differenz von start time-end time davon
         abweicht.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>"propagate" ist optional und der Default-Wert ist "0". Wenn gesetzt, dann wird die Ausfallzeit auch an abhängige Hosts des
         angegebenen Hosts "propagiert".</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>"register" kann genutzt werden, um diese Definition zu deaktieren. Es hat den gleichen Effekt, als würde die Definition nicht
         existieren.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>"downtime_period" ist ähnlich zu der Definition, die in <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">time periods</a> zu
         finden ist. Das bedeutet, dass jede der folgenden Zeilen gültig sein sollte:</p>
 
@@ -123,10 +138,13 @@
 
         <p>Nun, es gibt ein kleines Manko. Auf diese Weise können Sie keine flexiblen Ausfallzeiten mit unterschiedlichen Zeiten
         definieren.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="7.17.2. Variable Daten"><div class="titlepage"><div><div><h3 class="title"><a id="idp14108704"></a>7.17.2. Variable Daten</h3></div></div></div>
+  <div class="section" title="7.17.2. Variable Daten">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14133968"></a>7.17.2. Variable Daten</h3></div></div></div>
     
 
     <p>Die obigen Definitionen funktionieren für die meisten Daten, aber es gibt einige, die auf dem Osterfest basieren, das jedes Jahr
@@ -135,7 +153,90 @@
     ebenfalls benutzen können:</p>
 
     <div class="informaltable">
-      <table border="1"><colgroup><col /><col /></colgroup><thead><tr><th align="center">Variablenname</th><th align="center">Offset / Datum</th></tr></thead><tbody><tr><td>Twelfth_day (Heilige_drei_Koenige)</td><td>6. Januar</td></tr><tr><td>Labour_day (Tag_der_Arbeit)</td><td>1. Mai</td></tr><tr><td>Carnival_monday (Rosenmontag)</td><td>-48</td></tr><tr><td>Mardi_gras (Faschingsdienstag)</td><td>-47</td></tr><tr><td>Ash_wednesday (Aschermittwoch)</td><td>-46</td></tr><tr><td>Maundy_thursday (Gruendonnerstag)</td><td>-3</td></tr><tr><td>Good_friday (Karfreitag)</td><td>-2</td></tr><tr><td>Easter_sunday (Ostersonntag)</td><td>0</td></tr><tr><td>Easter_monday (Ostermontag)</td><td>1</td></tr><tr><td>Ascension_day (Chr_Himmelfahrt)</td><td>+39</td></tr><tr><td>Whit_sunday (Pfingstsonntag)</td><td>+49</td></tr><tr><td>Whit_monday (Pfingstmontag)</td><td>+50</td></tr><tr><td>Trinity (Trinitatis)</td><td>+56</td></tr><tr><td>Corpus_christi (Fronleichnam)</td><td>+70</td></tr><tr><td>Assumption_day (Maria_Himmelfahrt)</td><td>8. August</td></tr><tr><td>Penance_day (Buss_und_Bettag)</td><td>Mittwoch vor dem 23. Nov.</td></tr><tr><td>Christmas_day (Weihnachtstag_1)</td><td>25. Dezember</td></tr><tr><td>Boxing_day (Weihnachtstag_2)</td><td>26. Dezember, 26th</td></tr></tbody></table>
+      <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<thead><tr>
+<th align="center">Variablenname</th>
+<th align="center">Offset / Datum</th>
+</tr></thead>
+<tbody>
+<tr>
+<td>Twelfth_day (Heilige_drei_Koenige)</td>
+<td>6. Januar</td>
+</tr>
+<tr>
+<td>Labour_day (Tag_der_Arbeit)</td>
+<td>1. Mai</td>
+</tr>
+<tr>
+<td>Carnival_monday (Rosenmontag)</td>
+<td>-48</td>
+</tr>
+<tr>
+<td>Mardi_gras (Faschingsdienstag)</td>
+<td>-47</td>
+</tr>
+<tr>
+<td>Ash_wednesday (Aschermittwoch)</td>
+<td>-46</td>
+</tr>
+<tr>
+<td>Maundy_thursday (Gruendonnerstag)</td>
+<td>-3</td>
+</tr>
+<tr>
+<td>Good_friday (Karfreitag)</td>
+<td>-2</td>
+</tr>
+<tr>
+<td>Easter_sunday (Ostersonntag)</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Easter_monday (Ostermontag)</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Ascension_day (Chr_Himmelfahrt)</td>
+<td>+39</td>
+</tr>
+<tr>
+<td>Whit_sunday (Pfingstsonntag)</td>
+<td>+49</td>
+</tr>
+<tr>
+<td>Whit_monday (Pfingstmontag)</td>
+<td>+50</td>
+</tr>
+<tr>
+<td>Trinity (Trinitatis)</td>
+<td>+56</td>
+</tr>
+<tr>
+<td>Corpus_christi (Fronleichnam)</td>
+<td>+70</td>
+</tr>
+<tr>
+<td>Assumption_day (Maria_Himmelfahrt)</td>
+<td>8. August</td>
+</tr>
+<tr>
+<td>Penance_day (Buss_und_Bettag)</td>
+<td>Mittwoch vor dem 23. Nov.</td>
+</tr>
+<tr>
+<td>Christmas_day (Weihnachtstag_1)</td>
+<td>25. Dezember</td>
+</tr>
+<tr>
+<td>Boxing_day (Weihnachtstag_2)</td>
+<td>26. Dezember, 26th</td>
+</tr>
+</tbody>
+</table>
     </div>
 
     <p>Auf diese Weise können Sie eine Ausfallzeit für Rosenmontag wie folgt definieren:</p>
@@ -147,7 +248,9 @@
  }</pre>
   </div>
 
-  <div class="section" title="7.17.3. Lokale Feiertage"><div class="titlepage"><div><div><h3 class="title"><a id="idp14139536"></a>7.17.3. Lokale Feiertage</h3></div></div></div>
+  <div class="section" title="7.17.3. Lokale Feiertage">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14164560"></a>7.17.3. Lokale Feiertage</h3></div></div></div>
     
 
     <p>Beim Blick auf die Kalender verschiedener Länder gibt es eine Reihe von Feiertagen, die nur in einem bestimmten Land gelten.
@@ -169,19 +272,26 @@ Pentecote             date_easter(49)</pre>
 
     <p>Es gibt zwei "Funktionen", mit denen flexible Daten definiert werden können:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>"day_in_week_of_month": Sie müssen drei Parameter angeben</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
             <p>Monat: 1 = Januar ... 12 = Dezember</p>
-          </li><li class="listitem">
+          </li>
+<li class="listitem">
             <p>Tag: 1 = Montag ... 7 = Sonntag</p>
-          </li><li class="listitem">
+          </li>
+<li class="listitem">
             <p>Woche: 1 .. 5 für die Woche im Monat oder -1 für die letzte Woche des Monats</p>
-          </li></ul></div>
-      </li><li class="listitem">
+          </li>
+</ul></div>
+      </li>
+<li class="listitem">
         <p>"date_easter": Die Zahl gibt den Abstand zum Ostersonntag an</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Jetzt können Sie eine Ausfallzeit wie folgt definieren:</p>
 
@@ -194,14 +304,18 @@ Pentecote             date_easter(49)</pre>
     <p>Bitte beachten Sie, dass Sie den Standort der Datei über die Option "-l" angeben müssen.</p>
   </div>
 
-  <div class="section" title="7.17.4. Eingaben von Ausfallzeiten"><div class="titlepage"><div><div><h3 class="title"><a id="idp14151264"></a>7.17.4. Eingaben von Ausfallzeiten</h3></div></div></div>
+  <div class="section" title="7.17.4. Eingaben von Ausfallzeiten">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14176096"></a>7.17.4. Eingaben von Ausfallzeiten</h3></div></div></div>
     
 
     <p>Bisher gibt es keine Möglichkeit, die Definitionen über den Browser einzugeben, so dass Sie Ihren bevorzugten Editor benutzen
     müssen, um die Ausfallzeiten einzugeben. Sorry.</p>
   </div>
 
-  <div class="section" title="7.17.5. Planen von Ausfallzeiten"><div class="titlepage"><div><div><h3 class="title"><a id="idp14152608"></a>7.17.5. Planen von Ausfallzeiten</h3></div></div></div>
+  <div class="section" title="7.17.5. Planen von Ausfallzeiten">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14177712"></a>7.17.5. Planen von Ausfallzeiten</h3></div></div></div>
     
 
     <p>Sobald Sie eine Datei angelegt haben, die die Definitionen von Ausfallzeiten enthält, möchten Sie sicherlich, dass die
@@ -248,7 +362,8 @@ Setting environment variables influences the behaviour:
 
     <p>Es gibt zwei Möglichkeiten, das Script auszuführen:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Als eine aktive Prüfung</p>
 
         <p>Sie können das Script mit einem passenden Prüfintervall wie eine normale aktive Prüfung aufrufen</p>
@@ -267,24 +382,28 @@ Setting environment variables influences the behaviour:
     command_name          schedule_script
     command_line          $USER1$/sched_down.pl $ARG1$
  }</pre>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Über die crontab</p>
 
         <p>Eine Zeile in der crontab des Icinga-Benutzers, das das Script jede volle Stunde aufruft, könnte wie folgt
         aussehen</p>
 
         <pre class="programlisting"> 0 * * * * /usr/local/icinga/bin/sched_down.pl -d0</pre>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Solange die Ausfallzeiten nicht sehr kurzfristig geplant werden, sollte das ausreichen. Das Script wird lediglich neue
     Ausfallzeiten planen, so dass es keine Schwierigkeiten gibt, wenn es öfter aufgerufen wird.</p>
   </div>
 
-  <div class="section" title="7.17.6. Konvertieren von Ausfallzeitdefinitionen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14152864"></a>7.17.6. Konvertieren von Ausfallzeitdefinitionen</h3></div></div></div>
+  <div class="section" title="7.17.6. Konvertieren von Ausfallzeitdefinitionen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14177968"></a>7.17.6. Konvertieren von Ausfallzeitdefinitionen</h3></div></div></div>
     
 
     <p>Steve Shipway hat bereits vor längerer Zeit Skripte geschrieben, um Ausfallzeiten per CGI zu erzeugen und sie für verschiedene
-    Nagios-Versionen zu planen (<a class="ulink" href="https://www.monitoringexchange.org/inventory/Utilities/AddOn-Projects/Downtimes/downtime_sched%253A-recurring-downtime-scheduler" target="_top">siehe
+    Nagios-Versionen zu planen (<a class="link" href="https://www.monitoringexchange.org/inventory/Utilities/AddOn-Projects/Downtimes/downtime_sched%253A-recurring-downtime-scheduler" target="_top">siehe
     hier</a>).</p>
 
     <p>Die kommerzielle Nagios-Version hat ebenfalls wiederkehrende Ausfallzeiten, aber anstatt alle Skripte von Steve zu nutzen haben
@@ -295,35 +414,35 @@ Setting environment variables influences the behaviour:
     die Option "-h" benutzen, um ein wenig Hilfe zu erhalten.</p>
   </div>
 
-  <div class="section" title="7.17.7. Dateien"><div class="titlepage"><div><div><h3 class="title"><a id="idp14168192"></a>7.17.7. Dateien</h3></div></div></div>
+  <div class="section" title="7.17.7. Dateien">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14193552"></a>7.17.7. Dateien</h3></div></div></div>
     
 
     <p>Die Perl-Scripte finden Sie im Ordner <code class="filename">contrib/downtimes</code>.</p>
 
-    <a id="idp14169600" class="indexterm"></a>
+    <a class="indexterm" name="idp14194960"></a>
 
-    <a id="idp14169728" class="indexterm"></a>
+    <a class="indexterm" name="idp14195088"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="downtime.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="embeddedperl.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.16. Geplante Ausfallzeiten </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.18. Benutzen des Embedded Perl Interpreters</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="downtime.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="embeddedperl.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.16. Geplante Ausfallzeiten </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 7.18. Benutzen des Embedded Perl Interpreters</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

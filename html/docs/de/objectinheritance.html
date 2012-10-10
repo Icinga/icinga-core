@@ -1,40 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.26. Objektvererbung</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen" />
-    <link rel="prev" href="modified_attr.html" title="7.25. Modifizierte Attribute" />
-    <link rel="next" href="objecttricks.html" title="7.27. Zeitsparende Tricks für Objektdefinitionen" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.26. Objektvererbung</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="modified_attr.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-          <td width="20%" align="right"> <a accesskey="n" href="objecttricks.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.26. Objektvererbung"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="objectinheritance"></a>7.26. Objektvererbung</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.26.1. <a href="objectinheritance.html#idp14590848">Einführung</a></span></dt><dt><span class="section">7.26.2. <a href="objectinheritance.html#idp14594688">Grundlagen</a></span></dt><dt><span class="section">7.26.3. <a href="objectinheritance.html#idp14604640">Lokale Variablen gegenüber vererbten Variablen</a></span></dt><dt><span class="section">7.26.4. <a href="objectinheritance.html#idp14617216">Vererbungsverkettung</a></span></dt><dt><span class="section">7.26.5. <a href="objectinheritance.html#idp14623328">Unvollständige Objektdefinitionen als Vorlagen nutzen</a></span></dt><dt><span class="section">7.26.6. <a href="objectinheritance.html#idp14624368">Vorrang bei mehreren Vererbungsquellen</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.26. Objektvererbung</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
+<link rel="prev" href="modified_attr.html" title="7.25. Modifizierte Attribute">
+<link rel="next" href="objecttricks.html" title="7.27. Zeitsparende Tricks für Objektdefinitionen">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.26. Objektvererbung</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="modified_attr.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="objecttricks.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.26. Objektvererbung">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="objectinheritance"></a>7.26. Objektvererbung</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.26.1. <a href="objectinheritance.html#idp14616512">Einführung</a></span></dt>
+<dt><span class="section">7.26.2. <a href="objectinheritance.html#idp14620496">Grundlagen</a></span></dt>
+<dt><span class="section">7.26.3. <a href="objectinheritance.html#idp14630672">Lokale Variablen gegenüber vererbten Variablen</a></span></dt>
+<dt><span class="section">7.26.4. <a href="objectinheritance.html#idp14642848">Vererbungsverkettung</a></span></dt>
+<dt><span class="section">7.26.5. <a href="objectinheritance.html#idp14648960">Unvollständige Objektdefinitionen als Vorlagen nutzen</a></span></dt>
+<dt><span class="section">7.26.6. <a href="objectinheritance.html#idp14649936">Vorrang bei mehreren Vererbungsquellen</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.26.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp14590848"></a>7.26.1. Einführung</h3></div></div></div>
+  <div class="section" title="7.26.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14616512"></a>7.26.1. Einführung</h3></div></div></div>
     
 
     <p>Dieses Dokument versucht Objektvererbung zu erklären und wie sie in Ihren <a class="link" href="objectdefinitions.html" title="3.4. Objektdefinitionen">Objektdefinitionen</a> genutzt werden kann.</p>
@@ -45,7 +52,9 @@
     <span class="emphasis"><em>icinga-users</em></span>-Mailing-List.</p>
   </div>
 
-  <div class="section" title="7.26.2. Grundlagen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14594688"></a>7.26.2. Grundlagen</h3></div></div></div>
+  <div class="section" title="7.26.2. Grundlagen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14620496"></a>7.26.2. Grundlagen</h3></div></div></div>
     
 
     <p>Es gibt drei Variablen in allen Objektdefinitionen, die Rekursion und Vererbung beeinflussen. Sie sind wie folgt
@@ -75,7 +84,9 @@
     einem Wert von <span class="emphasis"><em>1</em></span> zu übersteuern.</p>
   </div>
 
-  <div class="section" title="7.26.3. Lokale Variablen gegenüber vererbten Variablen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14604640"></a>7.26.3. Lokale Variablen gegenüber vererbten Variablen</h3></div></div></div>
+  <div class="section" title="7.26.3. Lokale Variablen gegenüber vererbten Variablen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14630672"></a>7.26.3. Lokale Variablen gegenüber vererbten Variablen</h3></div></div></div>
     
 
     <p>Bei der Vererbung ist es wichtig zu wissen, dass "lokale" Objektvariablen immer Vorrang vor Variablen aus der Vorlage haben.
@@ -112,12 +123,14 @@
     von einem Vorlagenobjekt geerbte Variablen von lokal definierten Variablen überschrieben werden. Das sollte ein ziemlich einfach zu
     verstehendes Konzept sein.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/tip.gif" /></span> Hinweis: wenn Sie möchten, dass lokale Zeichenketten-Variablen an geerbte Zeichenkettenwerte angehängt werden,
+    <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: wenn Sie möchten, dass lokale Zeichenketten-Variablen an geerbte Zeichenkettenwerte angehängt werden,
     können Sie das tun. Lesen Sie <a class="link" href="objectinheritance.html#objectinheritance-add_string">weiter unten</a> mehr darüber, wie das erreicht werden
     kann.</p>
   </div>
 
-  <div class="section" title="7.26.4. Vererbungsverkettung"><div class="titlepage"><div><div><h3 class="title"><a id="idp14617216"></a>7.26.4. Vererbungsverkettung</h3></div></div></div>
+  <div class="section" title="7.26.4. Vererbungsverkettung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14642848"></a>7.26.4. Vererbungsverkettung</h3></div></div></div>
     
 
     <p>Objekte können Eigenschaften/Variablen aus mehreren Ebenen von Vorlagenobjekten erben. Nehmen Sie das folgende Beispiel:</p>
@@ -167,7 +180,9 @@
     Ebenen beschränken, um die Übersicht zu behalten.</p>
   </div>
 
-  <div class="section" title="7.26.5. Unvollständige Objektdefinitionen als Vorlagen nutzen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14623328"></a>7.26.5. Unvollständige Objektdefinitionen als Vorlagen nutzen</h3></div></div></div>
+  <div class="section" title="7.26.5. Unvollständige Objektdefinitionen als Vorlagen nutzen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14648960"></a>7.26.5. Unvollständige Objektdefinitionen als Vorlagen nutzen</h3></div></div></div>
     
 
     <p>Es ist möglich, unvollständige Objektdefinitionen als Vorlage für andere Objektdefinitionen zu nutzen. Mit "unvollständiger"
@@ -249,7 +264,7 @@
         _snmp_community         public
         }</pre>
 
-    <p><a id="objectinheritance-cancel_string"></a><span class="bold"><strong>Vererbung für Zeichenketten-Werte
+    <p><a name="objectinheritance-cancel_string"></a><span class="bold"><strong>Vererbung für Zeichenketten-Werte
     aufheben</strong></span></p>
 
     <p>In einigen Fällen möchten Sie vielleicht nicht, dass Ihre Host-, Service- oder Kontakt-Definitionen Werte von
@@ -277,7 +292,7 @@
         address                 192.168.1.3
         }</pre>
 
-    <p><a id="objectinheritance-add_string"></a><span class="bold"><strong>additive Vererbung von Zeichenketten-Werten</strong></span></p>
+    <p><a name="objectinheritance-add_string"></a><span class="bold"><strong>additive Vererbung von Zeichenketten-Werten</strong></span></p>
 
     <p>Icinga gibt lokalen Variablen Vorrang vor Werten, die von Vorlagen vererbt werden. In den meisten Fällen überschreiben
     lokale Variablenwerte jene, die in Vorlagen definiert sind. In einigen Fällen ist es sinnvoll, dass Icinga die Werte von geerbten
@@ -307,7 +322,7 @@
         hostgroups              all-servers,linux-servers,web-servers
         }</pre>
 
-    <p><a id="objectinheritance-implied_inheritance"></a><span class="bold"><strong>Implizite Vererbung</strong></span></p>
+    <p><a name="objectinheritance-implied_inheritance"></a><span class="bold"><strong>Implizite Vererbung</strong></span></p>
 
     <p>Normalerweise müssen Sie entweder explizit den Wert einer erforderlichen Variable in einer Objektdefinition angeben oder sie von
     einer Vorlage erben. Es gibt ein paar Ausnahmen zu dieser Regel, in denen Icinga annimmt, dass Sie einen Wert benutzen wollen,
@@ -318,16 +333,86 @@
     nicht explizit angeben oder sie von einer Vorlage erben.</p>
 
     <div class="informaltable">
-      <table border="1"><colgroup><col /><col /><col /></colgroup><tbody><tr><td><p> <span class="bold"><strong>Objekttyp</strong></span> </p></td><td><p> <span class="bold"><strong>Objektvariable</strong></span> </p></td><td><p> <span class="bold"><strong>implizite Quelle</strong></span> </p></td></tr><tr><td rowspan="4" align="center" valign="middle"><p> <span class="bold"><strong>Services</strong></span> </p></td><td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td><td><p><span class="emphasis"><em>contact_groups</em></span> in der verbundenen Host-Definition</p></td></tr><tr><td><p> <span class="emphasis"><em>contacts</em></span> </p></td><td><p><span class="emphasis"><em>contacts</em></span> in der verbundenen Host-Definition</p></td></tr><tr><td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td><td><p><span class="emphasis"><em>notification_interval</em></span> in der verbundenen Host-Definition</p></td></tr><tr><td><p> <span class="emphasis"><em>notification_period</em></span> </p></td><td><p><span class="emphasis"><em>notification_period</em></span> in der verbundenen Host-Definition</p></td></tr><tr><td rowspan="4" align="center" valign="middle"><p> <span class="bold"><strong>Host Escalations</strong></span> </p></td><td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td><td><p><span class="emphasis"><em>contact_groups</em></span> in der verbundenen Host-Definition</p></td></tr><tr><td><p> <span class="emphasis"><em>contacts</em></span> </p></td><td><p><span class="emphasis"><em>contacts</em></span> in der verbundenen Host-Definition</p></td></tr><tr><td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td><td><p><span class="emphasis"><em>notification_interval</em></span> in der verbundenen Host-Definition</p></td></tr><tr><td><p> <span class="emphasis"><em>escalation_period</em></span> </p></td><td><p><span class="emphasis"><em>notification_period</em></span> in der verbundenen Host-Definition</p></td></tr><tr><td rowspan="4" align="center" valign="middle"><p> <span class="bold"><strong>Service Escalations</strong></span> </p></td><td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td><td><p><span class="emphasis"><em>contact_groups</em></span> in der verbundenen Service-Definition</p></td></tr><tr><td><p> <span class="emphasis"><em>contacts</em></span> </p></td><td><p><span class="emphasis"><em>contacts</em></span> in der verbundenen Service-Definition</p></td></tr><tr><td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td><td><p><span class="emphasis"><em>notification_interval</em></span> in der verbundenen Service-Definition</p></td></tr><tr><td><p> <span class="emphasis"><em>escalation_period</em></span> </p></td><td><p><span class="emphasis"><em>notification_period</em></span> in der verbundenen Service-Definition</p></td></tr></tbody></table>
+      <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Objekttyp</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Objektvariable</strong></span> </p></td>
+<td><p> <span class="bold"><strong>implizite Quelle</strong></span> </p></td>
+</tr>
+<tr>
+<td rowspan="4" align="center" valign="middle"><p> <span class="bold"><strong>Services</strong></span> </p></td>
+<td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
+<td><p><span class="emphasis"><em>contact_groups</em></span> in der verbundenen Host-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><p><span class="emphasis"><em>contacts</em></span> in der verbundenen Host-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td>
+<td><p><span class="emphasis"><em>notification_interval</em></span> in der verbundenen Host-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>notification_period</em></span> </p></td>
+<td><p><span class="emphasis"><em>notification_period</em></span> in der verbundenen Host-Definition</p></td>
+</tr>
+<tr>
+<td rowspan="4" align="center" valign="middle"><p> <span class="bold"><strong>Host Escalations</strong></span> </p></td>
+<td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
+<td><p><span class="emphasis"><em>contact_groups</em></span> in der verbundenen Host-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><p><span class="emphasis"><em>contacts</em></span> in der verbundenen Host-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td>
+<td><p><span class="emphasis"><em>notification_interval</em></span> in der verbundenen Host-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>escalation_period</em></span> </p></td>
+<td><p><span class="emphasis"><em>notification_period</em></span> in der verbundenen Host-Definition</p></td>
+</tr>
+<tr>
+<td rowspan="4" align="center" valign="middle"><p> <span class="bold"><strong>Service Escalations</strong></span> </p></td>
+<td><p> <span class="emphasis"><em>contact_groups</em></span> </p></td>
+<td><p><span class="emphasis"><em>contact_groups</em></span> in der verbundenen Service-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>contacts</em></span> </p></td>
+<td><p><span class="emphasis"><em>contacts</em></span> in der verbundenen Service-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>notification_interval</em></span> </p></td>
+<td><p><span class="emphasis"><em>notification_interval</em></span> in der verbundenen Service-Definition</p></td>
+</tr>
+<tr>
+<td><p> <span class="emphasis"><em>escalation_period</em></span> </p></td>
+<td><p><span class="emphasis"><em>notification_period</em></span> in der verbundenen Service-Definition</p></td>
+</tr>
+</tbody>
+</table>
     </div>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Diese Werte werden nur im Falle des Zustandswechsels eines Objekts vererbt, so dass sich "in der verbundenen ... Definition" nur
       auf die eine Host/Service-Kombination bezieht, die fehlschlägt/sich erholt, obwohl es möglich ist, einen Service für ein oder mehrere
       Hostgruppen auszuführen.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
 
-    <p><a id="objectinheritance-impliedescalations"></a><span class="bold"><strong>implizite/additive Vererbung bei
+    <p><a name="objectinheritance-impliedescalations"></a><span class="bold"><strong>implizite/additive Vererbung bei
     Eskalationen</strong></span></p>
 
     <p>Service- und Host-Eskalationsdefinitionen können eine spezielle Regel benutzen, die die Möglichkeiten von impliziter und additiver
@@ -358,7 +443,7 @@
         ...
         }</pre>
 
-    <p><a id="objectinheritance-important_values"></a><span class="bold"><strong>Wichtige Werte</strong></span> (important values)</p>
+    <p><a name="objectinheritance-important_values"></a><span class="bold"><strong>Wichtige Werte</strong></span> (important values)</p>
 
     <p>Service-Vorlagen können eine spezielle Regel benutzen, die ihrem check_command-Wert Vorrang gibt. Wenn das check_command mit einem
     Ausrufungszeichen (!) beginnt, dann wird das check_command der Vorlage als wichtig markiert und wird statt des im Service definierten
@@ -395,19 +480,34 @@ define service {
         ...
         }</pre>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Bitte beachten Sie, dass nur eine Vererbungsebene bei diesen wichtigen Werten möglich ist. Das bedeutet, dass Sie nicht das
-      check_command von einer Vorlage zu einer weiteren und von dort zum Service vererben können. </p><pre class="programlisting"> Template1 =&gt; Service1                &lt;== funktioniert
+      check_command von einer Vorlage zu einer weiteren und von dort zum Service vererben können. </p>
+<pre class="programlisting"> Template1 =&gt; Service1                &lt;== funktioniert
  Template1 =&gt; Template2 =&gt; Service1   &lt;== funktioniert NICHT</pre>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
 
-    <p><a id="objectinheritance-multiple_templates"></a><span class="bold"><strong>Mehrere Vererbungsquellen</strong></span></p>
+    <p><a name="objectinheritance-multiple_templates"></a><span class="bold"><strong>Mehrere Vererbungsquellen</strong></span></p>
 
     <p>Bisher haben alle Beispiele Objektdefinitionen gezeigt, die Variablen/Werte von einer einzelnen Quelle erben. Sie können für
     komplexere Konfigurationen auch Variablen/Werte von mehreren Quellen erben, wie unten gezeigt.</p>
 
     <div class="informaltable">
-      <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td><p> </p><pre class="screen"> # Generic host template
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td>
+<p> </p>
+<pre class="screen"> # Generic host template
  define host{
         name                    generic-host
         active_checks_enabled   1
@@ -428,7 +528,12 @@ define service {
         use                     generic-host,development-server
         host_name               devweb1
         ...
-        }</pre><p> </p></td><td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/multiple-templates1.png" /></span> </p></td></tr></tbody></table>
+        }</pre>
+<p> </p>
+</td>
+<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/multiple-templates1.png"></span> </p></td>
+</tr></tbody>
+</table>
     </div>
 
     <p>Im obigen Beispiel erbt <span class="emphasis"><em>devweb1</em></span> Variablen/Werte von zwei Quellen: <span class="emphasis"><em>generic-host</em></span> und
@@ -448,7 +553,9 @@ define service {
         }</pre>
   </div>
 
-  <div class="section" title="7.26.6. Vorrang bei mehreren Vererbungsquellen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14624368"></a>7.26.6. Vorrang bei mehreren Vererbungsquellen</h3></div></div></div>
+  <div class="section" title="7.26.6. Vorrang bei mehreren Vererbungsquellen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14649936"></a>7.26.6. Vorrang bei mehreren Vererbungsquellen</h3></div></div></div>
     
 
     <p>Wenn Sie mehrere Vererbungsquellen nutzen, ist es wichtig zu wissen, wie Icinga Variablen behandelt, die in mehreren
@@ -457,48 +564,57 @@ define service {
     können, kann es kompliziert werden herauszufinden, welche Variablen/Werte-Paare Vorrang haben.</p>
 
     <div class="informaltable">
-      <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p> Betrachten Sie die folgende Host-Definition, die drei Vorlagen referenziert:</p>
+      <table border="0">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody><tr>
+<td align="left" valign="top">
+<p> Betrachten Sie die folgende Host-Definition, die drei Vorlagen referenziert:</p>
             <pre class="screen"> # Development web server
  define host{
         use  1,  4,  8
         host_name devweb1 ...
  } </pre> <p>Wenn einige dieser referenzierten Vorlagen selbst Variablen/Werte von ein oder mehreren Vorlagen erben, werden die
             Vorrangregeln auf der rechten Seite gezeigt.</p> <p>Test, Versuch und Irrtum werden Ihnen helfen, besser zu verstehen, wie
-            die Dinge in komplexen Vererbungssituationen wie dieser funktionieren. :-)</p></td><td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/multiple-templates2.png" /></span> </p></td></tr></tbody></table>
+            die Dinge in komplexen Vererbungssituationen wie dieser funktionieren. :-)</p>
+</td>
+<td align="center" valign="top"><p> <span class="inlinemediaobject"><img src="../images/multiple-templates2.png"></span> </p></td>
+</tr></tbody>
+</table>
     </div>
 
-    <a id="idp14742480" class="indexterm"></a>
+    <a class="indexterm" name="idp14768208"></a>
 
-    <a id="idp14743680" class="indexterm"></a>
+    <a class="indexterm" name="idp14769488"></a>
 
-    <a id="idp14745280" class="indexterm"></a>
+    <a class="indexterm" name="idp14771120"></a>
 
-    <a id="idp14747040" class="indexterm"></a>
+    <a class="indexterm" name="idp14772752"></a>
 
-    <a id="idp14748608" class="indexterm"></a>
+    <a class="indexterm" name="idp14774384"></a>
 
-    <a id="idp14750256" class="indexterm"></a>
+    <a class="indexterm" name="idp14776016"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="modified_attr.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="objecttricks.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.25. Modifizierte Attribute </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.27. Zeitsparende Tricks für Objektdefinitionen</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="modified_attr.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="objecttricks.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.25. Modifizierte Attribute </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 7.27. Zeitsparende Tricks für Objektdefinitionen</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

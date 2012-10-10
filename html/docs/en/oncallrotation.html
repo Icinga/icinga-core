@@ -1,42 +1,50 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.11. On-Call Rotations</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
-    <link rel="prev" href="escalation_condition.html" title="7.10. Escalation Condition" />
-    <link rel="next" href="clusters.html" title="7.12. Monitoring Service and Host Clusters" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.11. On-Call Rotations</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="escalation_condition.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="clusters.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.11. On-Call Rotations"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="oncallrotation"></a>7.11. <a id="oncall_rotation"></a>On-Call Rotations</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.11.1. <a href="oncallrotation.html#idp13824400">Introduction</a></span></dt><dt><span class="section">7.11.2. <a href="oncallrotation.html#idp13831760">Scenario 1: Holidays and Weekends</a></span></dt><dt><span class="section">7.11.3. <a href="oncallrotation.html#idp13831888">Scenario 2: Alternating Days</a></span></dt><dt><span class="section">7.11.4. <a href="oncallrotation.html#idp13832016">Scenario 3: Alternating Weeks</a></span></dt><dt><span class="section">7.11.5. <a href="oncallrotation.html#idp13845040">Scenario 4: Vacation Days</a></span></dt><dt><span class="section">7.11.6. <a href="oncallrotation.html#idp13851760">Other Scenarios</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.11. On-Call Rotations</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="escalation_condition.html" title="7.10. Escalation Condition">
+<link rel="next" href="clusters.html" title="7.12. Monitoring Service and Host Clusters">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.11. On-Call Rotations</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="escalation_condition.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="clusters.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.11. On-Call Rotations">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="oncallrotation"></a>7.11. <a name="oncall_rotation"></a>On-Call Rotations</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.11.1. <a href="oncallrotation.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.11.2. <a href="oncallrotation.html#holidaysweekends">Scenario 1: Holidays and Weekends</a></span></dt>
+<dt><span class="section">7.11.3. <a href="oncallrotation.html#alternatingdays">Scenario 2: Alternating Days</a></span></dt>
+<dt><span class="section">7.11.4. <a href="oncallrotation.html#alternatingweeks">Scenario 3: Alternating Weeks</a></span></dt>
+<dt><span class="section">7.11.5. <a href="oncallrotation.html#vacationdays">Scenario 4: Vacation Days</a></span></dt>
+<dt><span class="section">7.11.6. <a href="oncallrotation.html#others">Other Scenarios</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.11.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp13824400"></a>7.11.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.11.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>7.11.1. Introduction</h3></div></div></div>
+	  
 
-  <p><span class="inlinemediaobject"><img src="../images/objects-contacts.png" /></span> <span class="inlinemediaobject"><img src="../images/objects-timeperiods.png" /></span></p>
+  <p><span class="inlinemediaobject"><img src="../images/objects-contacts.png"></span> <span class="inlinemediaobject"><img src="../images/objects-timeperiods.png"></span></p>
 
   <p>Admins often have to shoulder the burden of answering pagers, cell phone calls, etc. when they least desire them. No one
   likes to be woken up at 4 am to fix a problem. But its often better to fix the problem in the middle of the night, rather than
@@ -51,7 +59,12 @@
   sick, swapping shifts, or throwing their pagers into the river), but they will allow you to setup a basic structure that should
   work the majority of the time.</p>
 
-  </div><div class="section" title="7.11.2. Scenario 1: Holidays and Weekends"><div class="titlepage"><div><div><h3 class="title"><a id="idp13831760"></a>7.11.2. Scenario 1: Holidays and Weekends</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.11.2. Scenario 1: Holidays and Weekends">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="holidaysweekends"></a>7.11.2. Scenario 1: Holidays and Weekends</h3></div></div></div>
+	  
 
   <p>Two admins - John and Bob - are responsible for responding to Icinga alerts. John receives all notifications for
   weekdays (with 24 hour days), excluding holidays; Bob handles notifications during the weekends and holidays. Lucky Bob. Here's
@@ -125,7 +138,12 @@
         service_notification_period     bob-oncall
         }</pre>
 
-  </div><div class="section" title="7.11.3. Scenario 2: Alternating Days"><div class="titlepage"><div><div><h3 class="title"><a id="idp13831888"></a>7.11.3. Scenario 2: Alternating Days</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.11.3. Scenario 2: Alternating Days">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="alternatingdays"></a>7.11.3. Scenario 2: Alternating Days</h3></div></div></div>
+	  
 
   <p>In this scenario John and Bob alternate handling alerts every other day - regardless of whether its a weekend, weekday, or
   holiday.</p>
@@ -162,7 +180,12 @@
         service_notification_period     bob-oncall
         }</pre>
 
-  </div><div class="section" title="7.11.4. Scenario 3: Alternating Weeks"><div class="titlepage"><div><div><h3 class="title"><a id="idp13832016"></a>7.11.4. Scenario 3: Alternating Weeks</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.11.4. Scenario 3: Alternating Weeks">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="alternatingweeks"></a>7.11.4. Scenario 3: Alternating Weeks</h3></div></div></div>
+	  
 
   <p>In this scenario John and Bob alternate handling alerts every other week. John handles alerts Sunday through Saturday one
   week, and Bob handles alerts for the following seven days. This continues in perpetuity.</p>
@@ -211,7 +234,12 @@
         service_notification_period     bob-oncall
         }</pre>
 
-  </div><div class="section" title="7.11.5. Scenario 4: Vacation Days"><div class="titlepage"><div><div><h3 class="title"><a id="idp13845040"></a>7.11.5. Scenario 4: Vacation Days</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.11.5. Scenario 4: Vacation Days">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="vacationdays"></a>7.11.5. Scenario 4: Vacation Days</h3></div></div></div>
+	  
 
   <p>In this scenarios, John handles notifications for all days except those he has off. He has several standing days off each
   month, as well as some planned vacations. Bob handles notifications when John is on vacation or out of the office.</p>
@@ -266,34 +294,37 @@
         service_notification_period     bob-oncall
         }</pre>
 
-  </div><div class="section" title="7.11.6. Other Scenarios"><div class="titlepage"><div><div><h3 class="title"><a id="idp13851760"></a>7.11.6. Other Scenarios</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.11.6. Other Scenarios">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="others"></a>7.11.6. Other Scenarios</h3></div></div></div>
+	  
 
   <p>There are a lot of other on-call notification rotation scenarios that you might have. The date exception directive in
   <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">timeperiod definitions</a> is capable of handling most dates and date ranges
   that you might need to use, so check out the different formats that you can use. If you make a mistake when creating timeperiod
   definitions, always err on the side of giving someone else more on-call duty time. :-)</p>
-  <a id="idp13860192" class="indexterm"></a>
+  <a class="indexterm" name="idp13999120"></a>
 </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="escalation_condition.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="clusters.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.10. Escalation Condition </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.12. Monitoring Service and Host Clusters</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="escalation_condition.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="clusters.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.10. Escalation Condition </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 7.12. Monitoring Service and Host Clusters</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

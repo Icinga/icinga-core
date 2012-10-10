@@ -1,42 +1,52 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.3. Event Handlers</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
-    <link rel="prev" href="extcommands2.html" title="7.2. List of External Commands" />
-    <link rel="next" href="volatileservices.html" title="7.4. Volatile Services" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.3. Event Handlers</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="extcommands2.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="volatileservices.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.3. Event Handlers"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="eventhandlers"></a>7.3. <a id="event_handlers"></a>Event Handlers</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.3.1. <a href="eventhandlers.html#idp12547344">Introduction</a></span></dt><dt><span class="section">7.3.2. <a href="eventhandlers.html#idp12547472">When Are Event Handlers Executed?</a></span></dt><dt><span class="section">7.3.3. <a href="eventhandlers.html#idp12562816">Event Handler Types</a></span></dt><dt><span class="section">7.3.4. <a href="eventhandlers.html#idp13329952">Enabling Event Handlers</a></span></dt><dt><span class="section">7.3.5. <a href="eventhandlers.html#idp13334960">Event Handler Execution Order</a></span></dt><dt><span class="section">7.3.6. <a href="eventhandlers.html#idp13336528">Writing Event Handler Commands</a></span></dt><dt><span class="section">7.3.7. <a href="eventhandlers.html#idp13336656">Permissions For Event Handler Commands</a></span></dt><dt><span class="section">7.3.8. <a href="eventhandlers.html#idp13354384">Service Event Handler Example</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.3. Event Handlers</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="extcommands2.html" title="7.2. List of External Commands">
+<link rel="next" href="volatileservices.html" title="7.4. Volatile Services">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.3. Event Handlers</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="extcommands2.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="volatileservices.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.3. Event Handlers">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="eventhandlers"></a>7.3. <a name="event_handlers"></a>Event Handlers</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.3.1. <a href="eventhandlers.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.3.2. <a href="eventhandlers.html#execution">When Are Event Handlers Executed?</a></span></dt>
+<dt><span class="section">7.3.3. <a href="eventhandlers.html#types">Event Handler Types</a></span></dt>
+<dt><span class="section">7.3.4. <a href="eventhandlers.html#enable">Enabling Event Handlers</a></span></dt>
+<dt><span class="section">7.3.5. <a href="eventhandlers.html#executionorder">Event Handler Execution Order</a></span></dt>
+<dt><span class="section">7.3.6. <a href="eventhandlers.html#writingcommands">Writing Event Handler Commands</a></span></dt>
+<dt><span class="section">7.3.7. <a href="eventhandlers.html#commandpermissions">Permissions For Event Handler Commands</a></span></dt>
+<dt><span class="section">7.3.8. <a href="eventhandlers.html#serviceexample">Service Event Handler Example</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.3.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp12547344"></a>7.3.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.3.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>7.3.1. Introduction</h3></div></div></div>
+	  
 
-  <p><span class="inlinemediaobject"><img src="../images/eventhandlers.png" /></span></p>
+  <p><span class="inlinemediaobject"><img src="../images/eventhandlers.png"></span></p>
 
   <p>Event handlers are optional system commands (scripts or executables) that are run whenever a host or service state change
   occurs. They are executed on the system where the check is scheduled (initiated).</p>
@@ -44,48 +54,73 @@
   <p>An obvious use for event handlers is the ability for Icinga to proactively fix problems before anyone is notified.
   Some other uses for event handlers include:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>Restarting a failed service</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Entering a trouble ticket into a helpdesk system</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Logging event information to a database</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Cycling power on a host*</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>etc.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>* Cycling power on a host that is experiencing problems with an auomated script should not be implemented lightly.
   Consider the consequences of this carefully before implementing automatic reboots. :-)</p>
 
-  </div><div class="section" title="7.3.2. When Are Event Handlers Executed?"><div class="titlepage"><div><div><h3 class="title"><a id="idp12547472"></a>7.3.2. When Are Event Handlers Executed?</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.3.2. When Are Event Handlers Executed?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="execution"></a>7.3.2. When Are Event Handlers Executed?</h3></div></div></div>
+	  
 
   <p>Event handlers are executed when a service or host:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>Is in a SOFT problem state</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Initially goes into a HARD problem state</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Initially recovers from a SOFT or HARD problem state</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>SOFT and HARD states are described in detail <a class="link" href="statetypes.html" title="5.8. State Types">here</a> .</p>
 
-  </div><div class="section" title="7.3.3. Event Handler Types"><div class="titlepage"><div><div><h3 class="title"><a id="idp12562816"></a>7.3.3. Event Handler Types</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.3.3. Event Handler Types">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="types"></a>7.3.3. Event Handler Types</h3></div></div></div>
+	  
 
   <p>There are different types of optional event handlers that you can define to handle host and state changes:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>Global host event handler</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Global service event handler</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Host-specific event handlers</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Service-specific event handlers</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>Global host and service event handlers are run for <span class="emphasis"><em>every</em></span> host or service state change that occurs,
   immediately prior to any host- or service-specific event handler that may be run. You can specify global event handler commands
@@ -97,7 +132,12 @@
   host- and service-specific event handlers are executed immediately after the (optional) global host or service event handler is
   executed.</p>
 
-  </div><div class="section" title="7.3.4. Enabling Event Handlers"><div class="titlepage"><div><div><h3 class="title"><a id="idp13329952"></a>7.3.4. Enabling Event Handlers</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.3.4. Enabling Event Handlers">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="enable"></a>7.3.4. Enabling Event Handlers</h3></div></div></div>
+	  
 
   <p>Event handlers can be enabled or disabled on a program-wide basis by using the <a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a> in your main configuration file.</p>
 
@@ -105,14 +145,24 @@
   <span class="emphasis"><em>event_handler_enabled</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a> and <a class="link" href="objectdefinitions.html#objectdefinitions-service">service</a> definitions. Host- and service-specific event handlers will not be executed
   if the global <a class="link" href="configmain.html#configmain-enable_event_handlers">enable_event_handlers</a> option is disabled.</p>
 
-  </div><div class="section" title="7.3.5. Event Handler Execution Order"><div class="titlepage"><div><div><h3 class="title"><a id="idp13334960"></a>7.3.5. Event Handler Execution Order</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.3.5. Event Handler Execution Order">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="executionorder"></a>7.3.5. Event Handler Execution Order</h3></div></div></div>
+	  
 
   <p>As already mentioned, global host and service event handlers are executed immediately before host- or service-specific
   event handlers.</p>
 
   <p>Event handlers are executed for HARD problem and recovery states immediately after notifications are sent out.</p>
 
-  </div><div class="section" title="7.3.6. Writing Event Handler Commands"><div class="titlepage"><div><div><h3 class="title"><a id="idp13336528"></a>7.3.6. Writing Event Handler Commands</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.3.6. Writing Event Handler Commands">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="writingcommands"></a>7.3.6. Writing Event Handler Commands</h3></div></div></div>
+	  
 
   <p>Event handler commands will likely be shell or perl scripts, but they can be any type of executable that can run from a
   command prompt. At a minimum, the scripts should take the following <a class="link" href="macros.html" title="5.2. Understanding Macros and How They Work">macros</a> as arguments:</p>
@@ -124,25 +174,41 @@
   <p>The scripts should examine the values of the arguments passed to it and take any necessary action based upon those values.
   The best way to understand how event handlers work is to see an example. Lucky for you, one is provided <a class="link" href="eventhandlers.html#eventhandlers-example">below</a>.</p>
 
-  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png" /></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>Additional sample event handler scripts can be found in the <span class="emphasis"><em>contrib/eventhandlers/</em></span> subdirectory of
     the Icinga distribution. Some of these sample scripts demonstrate the use of <a class="link" href="extcommands.html" title="7.1. External Commands">external
     commands</a> to implement a <a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">redundant</a> and <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed</a>
     monitoring environments.</p>
-  </td></tr></table></div>
+  </td></tr>
+</table></div>
 
-  </div><div class="section" title="7.3.7. Permissions For Event Handler Commands"><div class="titlepage"><div><div><h3 class="title"><a id="idp13336656"></a>7.3.7. Permissions For Event Handler Commands</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.3.7. Permissions For Event Handler Commands">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="commandpermissions"></a>7.3.7. Permissions For Event Handler Commands</h3></div></div></div>
+	  
 
   <p>Event handler commands will normally execute with the same permissions as the user under which Icinga is running on
   your machine. This can present a problem if you want to write an event handler that restarts system services, as root privileges
   are generally required to do these sorts of tasks.</p>
 
   <p>Ideally you should evaluate the types of event handlers you will be implementing and grant just enough permissions to the
-  Icinga user for executing the necessary system commands. You might want to try using <a class="ulink" href="http://www.courtesan.com/sudo/sudo" target="_top">sudo</a> to accomplish this.</p>
+  Icinga user for executing the necessary system commands. You might want to try using <a class="link" href="http://www.courtesan.com/sudo/sudo" target="_top">sudo</a> to accomplish this.</p>
 
-  <p><a id="eventhandlers-example"></a></p>
+  <p><a name="eventhandlers-example"></a></p>
 
-  </div><div class="section" title="7.3.8. Service Event Handler Example"><div class="titlepage"><div><div><h3 class="title"><a id="idp13354384"></a>7.3.8. Service Event Handler Example</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.3.8. Service Event Handler Example">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="serviceexample"></a>7.3.8. Service Event Handler Example</h3></div></div></div>
+	  
 
   <p>The example below assumes that you are monitoring the HTTP server on the local machine and have specified
   <span class="emphasis"><em>restart-httpd</em></span> as the event handler command for the HTTP service definition. Also, I will be assuming that
@@ -237,11 +303,14 @@ exit 0</pre>
   <p>The sample script provided above will attempt to restart the web server on the local machine in two different
   instances:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>After the service has been rechecked for the 3rd time and is in a SOFT CRITICAL state</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>After the service first goes into a HARD CRITICAL state</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>The script should theoretically restart and web server and fix the problem before the service goes into a HARD problem
   state, but we include a fallback case in the event it doesn't work the first time. It should be noted that the event handler
@@ -251,29 +320,27 @@ exit 0</pre>
 
   <p>That's all there is to it! Event handlers are pretty simple to write and implement, so give it a try and see what you can
   do.</p>
-  <a id="idp13369824" class="indexterm"></a>
-  <a id="idp13370656" class="indexterm"></a>
+  <a class="indexterm" name="idp13471520"></a>
+  <a class="indexterm" name="idp13472576"></a>
 </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="extcommands2.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="volatileservices.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.2. List of External Commands </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.4. Volatile Services</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="extcommands2.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="volatileservices.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.2. List of External Commands </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 7.4. Volatile Services</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

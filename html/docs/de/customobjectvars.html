@@ -1,42 +1,48 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>3.5. Maßgeschneiderte Objektvariablen</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren" />
-    <link rel="prev" href="objectdefinitions.html" title="3.4. Objektdefinitionen" />
-    <link rel="next" href="configcgi.html" title="3.6. Optionen CGI-Konfigurationsdatei" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">3.5. Maßgeschneiderte Objektvariablen</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="objectdefinitions.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 3. Icinga konfigurieren</th>
-          <td width="20%" align="right"> <a accesskey="n" href="configcgi.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="3.5. Maßgeschneiderte Objektvariablen"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="customobjectvars"></a>3.5. Maßgeschneiderte Objektvariablen</h2></div></div></div><div class="toc"><dl><dt><span class="section">3.5.1. <a href="customobjectvars.html#idp5537344">Einführung</a></span></dt><dt><span class="section">3.5.2. <a href="customobjectvars.html#idp5540224">Grundlagen zu maßgeschneiderten Variablen</a></span></dt><dt><span class="section">3.5.3. <a href="customobjectvars.html#idp5552352">Beispiele</a></span></dt><dt><span class="section">3.5.4. <a href="customobjectvars.html#idp5555024">maßgeschneiderte Variablen als Makros</a></span></dt><dt><span class="section">3.5.5. <a href="customobjectvars.html#idp5586432">maßgeschneiderte Variablen und Vererbung</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>3.5. Maßgeschneiderte Objektvariablen</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
+<link rel="prev" href="objectdefinitions.html" title="3.4. Objektdefinitionen">
+<link rel="next" href="configcgi.html" title="3.6. Optionen CGI-Konfigurationsdatei">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">3.5. Maßgeschneiderte Objektvariablen</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="objectdefinitions.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 3. Icinga konfigurieren</th>
+<td width="20%" align="right"> <a accesskey="n" href="configcgi.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="3.5. Maßgeschneiderte Objektvariablen">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="customobjectvars"></a>3.5. Maßgeschneiderte Objektvariablen</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">3.5.1. <a href="customobjectvars.html#idp5556704">Einführung</a></span></dt>
+<dt><span class="section">3.5.2. <a href="customobjectvars.html#idp5560000">Grundlagen zu maßgeschneiderten Variablen</a></span></dt>
+<dt><span class="section">3.5.3. <a href="customobjectvars.html#idp5560160">Beispiele</a></span></dt>
+<dt><span class="section">3.5.4. <a href="customobjectvars.html#idp5574448">maßgeschneiderte Variablen als Makros</a></span></dt>
+<dt><span class="section">3.5.5. <a href="customobjectvars.html#idp5605744">maßgeschneiderte Variablen und Vererbung</a></span></dt>
+</dl></div>
   
 
-  <a id="idp5536448" class="indexterm"></a>
+  <a class="indexterm" name="idp5555696"></a>
 
-  <div class="section" title="3.5.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp5537344"></a>3.5.1. Einführung</h3></div></div></div>
+  <div class="section" title="3.5.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5556704"></a>3.5.1. Einführung</h3></div></div></div>
     
 
     <p>Benutzer fragen oft nach neuen Variablen in Host-, Service- und Kontaktdefinitionen. Dazu gehören Variablen für die
@@ -53,37 +59,52 @@
     Benachrichtigungen, Eventhandlern sowie Host- und Service-Prüfungen zu benutzen.</p>
   </div>
 
-  <div class="section" title="3.5.2. Grundlagen zu maßgeschneiderten Variablen"><div class="titlepage"><div><div><h3 class="title"><a id="idp5540224"></a>3.5.2. Grundlagen zu maßgeschneiderten Variablen</h3></div></div></div>
+  <div class="section" title="3.5.2. Grundlagen zu maßgeschneiderten Variablen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5560000"></a>3.5.2. Grundlagen zu maßgeschneiderten Variablen</h3></div></div></div>
     
 
     <p>Es gibt ein paar wichtige Dinge, die Sie bei maßgeschneiderten Variablen beachten sollten:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>maßgeschneiderte Variablennamen müssen mit einem Unterstrich (_) beginnen, um einen Namenskonflikt mit Standardvariablen zu
         verhindern</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>maßgeschneiderten Variablennamen werden vor der Benutzung in Großbuchstaben umgewandelt</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>maßgeschneiderten Variablen werden von Objektvorlagen wie normale Variablen <a class="link" href="objectinheritance.html" title="7.26. Objektvererbung">geerbt</a></p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Scripts können sich mit <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros und Umgebungsvariablen</a> auf die Werte von maßgeschneiderten
         Variablen beziehen</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
-    <a id="customobjectvars-runtime"></a>
+    <a name="customobjectvars-runtime"></a>
 
-    <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png" /></td><th align="left">Wichtig</th></tr><tr><td align="left" valign="top">
+    <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
+<th align="left">Wichtig</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Maßgeschneiderte Variablen werden erst <span class="emphasis"><em>zur Laufzeit</em></span> ersetzt, weder bei der Überprüfungsphase (icinga -v
       icinga.cfg) noch während des Icinga-Startprozesses, so dass das Platzieren in Host-Namen, Service-Beschreibungen oder
       verschiedenen anderen Stellen der Objektdefinition während der Überprüfung zu einer Fehlermeldung ähnlich "<code class="literal">&lt;object&gt;
       contains one or more illegal characters.</code>" führt. Das Ändern der Direktive "illegal_object_name_chars" wird <span class="emphasis"><em>
       nicht</em></span> das Problem lösen.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
 
-    <a id="idp5550528" class="indexterm"></a>
+    <a class="indexterm" name="idp5570096"></a>
   </div>
 
-  <div class="section" title="3.5.3. Beispiele"><div class="titlepage"><div><div><h3 class="title"><a id="idp5552352"></a>3.5.3. Beispiele</h3></div></div></div>
+  <div class="section" title="3.5.3. Beispiele">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5560160"></a>3.5.3. Beispiele</h3></div></div></div>
     
 
     <p>Hier ein Beispiel, wie maßgeschneiderte Variablen in verschiedenen Arten von Objektdefinitionen definiert werden können:</p>
@@ -109,7 +130,9 @@
         }</pre>
   </div>
 
-  <div class="section" title="3.5.4. maßgeschneiderte Variablen als Makros"><div class="titlepage"><div><div><h3 class="title"><a id="idp5555024"></a>3.5.4. maßgeschneiderte Variablen als Makros</h3></div></div></div>
+  <div class="section" title="3.5.4. maßgeschneiderte Variablen als Makros">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5574448"></a>3.5.4. maßgeschneiderte Variablen als Makros</h3></div></div></div>
     
 
     <p>Maßgeschneiderte Variablen können über <a class="link" href="macros.html" title="5.2. Makros verstehen und wie sie arbeiten">Makros</a> oder Umgebungsvariablen in Scripts und Programmen
@@ -121,35 +144,86 @@
     wurden.</p>
 
     <div class="informaltable">
-      <table border="1"><colgroup><col /><col /><col /><col /></colgroup><tbody><tr><td><p> <span class="bold"><strong>Objekttyp</strong></span> </p></td><td><p> <span class="bold"><strong>Variablenname</strong></span> </p></td><td><p> <span class="bold"><strong>Makroname</strong></span> </p></td><td><p> <span class="bold"><strong>Umgebungsvariable</strong></span> </p></td></tr><tr><td><p>Host</p></td><td><p>MAC_ADDRESS</p></td><td><p>$_HOSTMAC_ADDRESS$</p></td><td><p>ICINGA__HOSTMAC_ADDRESS</p></td></tr><tr><td><p>Host</p></td><td><p>RACK_NUMBER</p></td><td><p>$_HOSTRACK_NUMBER$</p></td><td><p>ICINGA__HOSTRACK_NUMBER</p></td></tr><tr><td><p>Service</p></td><td><p>SNMP_COMMUNITY</p></td><td><p>$_SERVICESNMP_COMMUNITY$</p></td><td><p>ICINGA__SERVICESNMP_COMMUNITY</p></td></tr><tr><td><p>Service</p></td><td><p>TECHCONTACT</p></td><td><p>$_SERVICETECHCONTACT$</p></td><td><p>ICINGA__SERVICETECHCONTACT</p></td></tr><tr><td><p>Contact</p></td><td><p>AIM_USERNAME</p></td><td><p>$_CONTACTAIM_USERNAME$</p></td><td><p>ICINGA__CONTACTAIM_USERNAME</p></td></tr><tr><td><p>Contact</p></td><td><p>YAHOOID</p></td><td><p>$_CONTACTYAHOOID$</p></td><td><p>ICINGA__CONTACTYAHOOID</p></td></tr></tbody></table>
+      <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Objekttyp</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Variablenname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Makroname</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Umgebungsvariable</strong></span> </p></td>
+</tr>
+<tr>
+<td><p>Host</p></td>
+<td><p>MAC_ADDRESS</p></td>
+<td><p>$_HOSTMAC_ADDRESS$</p></td>
+<td><p>ICINGA__HOSTMAC_ADDRESS</p></td>
+</tr>
+<tr>
+<td><p>Host</p></td>
+<td><p>RACK_NUMBER</p></td>
+<td><p>$_HOSTRACK_NUMBER$</p></td>
+<td><p>ICINGA__HOSTRACK_NUMBER</p></td>
+</tr>
+<tr>
+<td><p>Service</p></td>
+<td><p>SNMP_COMMUNITY</p></td>
+<td><p>$_SERVICESNMP_COMMUNITY$</p></td>
+<td><p>ICINGA__SERVICESNMP_COMMUNITY</p></td>
+</tr>
+<tr>
+<td><p>Service</p></td>
+<td><p>TECHCONTACT</p></td>
+<td><p>$_SERVICETECHCONTACT$</p></td>
+<td><p>ICINGA__SERVICETECHCONTACT</p></td>
+</tr>
+<tr>
+<td><p>Contact</p></td>
+<td><p>AIM_USERNAME</p></td>
+<td><p>$_CONTACTAIM_USERNAME$</p></td>
+<td><p>ICINGA__CONTACTAIM_USERNAME</p></td>
+</tr>
+<tr>
+<td><p>Contact</p></td>
+<td><p>YAHOOID</p></td>
+<td><p>$_CONTACTYAHOOID$</p></td>
+<td><p>ICINGA__CONTACTYAHOOID</p></td>
+</tr>
+</tbody>
+</table>
     </div>
   </div>
 
-  <div class="section" title="3.5.5. maßgeschneiderte Variablen und Vererbung"><div class="titlepage"><div><div><h3 class="title"><a id="idp5586432"></a>3.5.5. maßgeschneiderte Variablen und Vererbung</h3></div></div></div>
+  <div class="section" title="3.5.5. maßgeschneiderte Variablen und Vererbung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp5605744"></a>3.5.5. maßgeschneiderte Variablen und Vererbung</h3></div></div></div>
     
 
     <p>Maßgeschneiderte Objektvariablen werden genau wie Standard-Host-, Service- oder Kontaktvariablen <a class="link" href="objectinheritance.html" title="7.26. Objektvererbung">vererbt</a>.</p>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="objectdefinitions.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch03.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="configcgi.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">3.4. Objektdefinitionen </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 3.6. Optionen CGI-Konfigurationsdatei</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="objectdefinitions.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch03.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="configcgi.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">3.4. Objektdefinitionen </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 3.6. Optionen CGI-Konfigurationsdatei</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

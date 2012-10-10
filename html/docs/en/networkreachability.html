@@ -1,40 +1,46 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>5.10. Determining Status and Reachability of Network Hosts</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch05.html" title="Chapter 5. The Basics" />
-    <link rel="prev" href="timeperiods.html" title="5.9. Time Periods" />
-    <link rel="next" href="notifications.html" title="5.11. Notifications" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">5.10. Determining Status and Reachability of Network Hosts</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="timeperiods.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 5. The Basics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="notifications.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="5.10. Determining Status and Reachability of Network Hosts"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="networkreachability"></a>5.10. <a id="network_reachability"></a>Determining Status and Reachability of Network Hosts</h2></div></div></div><div class="toc"><dl><dt><span class="section">5.10.1. <a href="networkreachability.html#idp10016800">Introduction</a></span></dt><dt><span class="section">5.10.2. <a href="networkreachability.html#idp10019920">Example Network</a></span></dt><dt><span class="section">5.10.3. <a href="networkreachability.html#idp10024032">Defining Parent/Child Relationships</a></span></dt><dt><span class="section">5.10.4. <a href="networkreachability.html#idp10030112">Reachability Logic in Action</a></span></dt><dt><span class="section">5.10.5. <a href="networkreachability.html#idp10041232">UNREACHABLE States and Notifications</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>5.10. Determining Status and Reachability of Network Hosts</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
+<link rel="prev" href="timeperiods.html" title="5.9. Time Periods">
+<link rel="next" href="notifications.html" title="5.11. Notifications">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">5.10. Determining Status and Reachability of Network Hosts</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="timeperiods.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 5. The Basics</th>
+<td width="20%" align="right"> <a accesskey="n" href="notifications.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="5.10. Determining Status and Reachability of Network Hosts">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="networkreachability"></a>5.10. <a name="network_reachability"></a>Determining Status and Reachability of Network Hosts</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">5.10.1. <a href="networkreachability.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">5.10.2. <a href="networkreachability.html#examplenetwork">Example Network</a></span></dt>
+<dt><span class="section">5.10.3. <a href="networkreachability.html#parentchildrelations">Defining Parent/Child Relationships</a></span></dt>
+<dt><span class="section">5.10.4. <a href="networkreachability.html#logicinaction">Reachability Logic in Action</a></span></dt>
+<dt><span class="section">5.10.5. <a href="networkreachability.html#unreachableandnotifications">UNREACHABLE States and Notifications</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="5.10.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp10016800"></a>5.10.1. Introduction</h3></div></div></div>
+  <div class="section" title="5.10.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>5.10.1. Introduction</h3></div></div></div>
     
 
     <p>If you've ever work in tech support, you've undoubtably had users tell you "the Internet is down". As a techie, you're pretty sure
@@ -50,16 +56,20 @@
     logic works to distinguish between these two states...</p>
   </div>
 
-  <div class="section" title="5.10.2. Example Network"><div class="titlepage"><div><div><h3 class="title"><a id="idp10019920"></a>5.10.2. Example Network</h3></div></div></div>
+  <div class="section" title="5.10.2. Example Network">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="examplenetwork"></a>5.10.2. Example Network</h3></div></div></div>
     
 
     <p>Take a look at the simple network diagram below. For this example, lets assume you're monitoring all the hosts (server, routers,
     switches, etc) that are pictured. Icinga is installed and running on the <span class="emphasis"><em>Icinga</em></span> host.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/reachability1.png" /></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability1.png"></span></p>
   </div>
 
-  <div class="section" title="5.10.3. Defining Parent/Child Relationships"><div class="titlepage"><div><div><h3 class="title"><a id="idp10024032"></a>5.10.3. Defining Parent/Child Relationships</h3></div></div></div>
+  <div class="section" title="5.10.3. Defining Parent/Child Relationships">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="parentchildrelations"></a>5.10.3. Defining Parent/Child Relationships</h3></div></div></div>
     
 
     <p>In order for Icinga to be able to distinguish between DOWN and UNREACHABLE states for the hosts that are being monitored,
@@ -68,7 +78,7 @@
     server the packet encounters or passes through is considered a "hop" and will require that you define a parent/child host relationship
     in Icinga. Here's what the host parent/child relationships look like from the viewpoint of Icinga:</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/reachability2.png" /></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability2.png"></span></p>
 
     <p>Now that you know what the parent/child relationships look like for hosts that are being monitored, how do you configure
     Icinga to reflect them? The <span class="emphasis"><em>parents</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host
@@ -125,19 +135,21 @@
         }</pre>
   </div>
 
-  <div class="section" title="5.10.4. Reachability Logic in Action"><div class="titlepage"><div><div><h3 class="title"><a id="idp10030112"></a>5.10.4. Reachability Logic in Action</h3></div></div></div>
+  <div class="section" title="5.10.4. Reachability Logic in Action">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="logicinaction"></a>5.10.4. Reachability Logic in Action</h3></div></div></div>
     
 
     <p>Now that you're configured Icinga with the proper parent/child relationships for your hosts, let's see what happen when
     problems arise. Assume that two hosts - <span class="emphasis"><em>Web</em></span> and <span class="emphasis"><em>Router1</em></span> - go offline...</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/reachability3.png" /></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability3.png"></span></p>
 
     <p>When hosts change state (i.e. from UP to DOWN), the host reachability logic in Icinga kicks in. The reachability logic will
     initiate parallel checks of the parents and children of whatever hosts change state. This allows Icinga to quickly determine the
     current status of your network infrastructure when changes occur.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/reachability4.png" /></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/reachability4.png"></span></p>
 
     <p>In this example, Icinga will determine that <span class="emphasis"><em>Web</em></span> and <span class="emphasis"><em>Router1</em></span> are both in DOWN
     states because the "path" to those hosts is not being blocked.</p>
@@ -148,7 +160,9 @@
     be UNREACHABLE instead of DOWN.</p>
   </div>
 
-  <div class="section" title="5.10.5. UNREACHABLE States and Notifications"><div class="titlepage"><div><div><h3 class="title"><a id="idp10041232"></a>5.10.5. UNREACHABLE States and Notifications</h3></div></div></div>
+  <div class="section" title="5.10.5. UNREACHABLE States and Notifications">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="unreachableandnotifications"></a>5.10.5. UNREACHABLE States and Notifications</h3></div></div></div>
     
 
     <p>By default, Icinga will notify contacts about both DOWN and UNREACHABLE host states. As an admin/tech, you might not want
@@ -159,30 +173,28 @@
     (u) option from the <span class="emphasis"><em>notification_options</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a>
     definitions and/or the <span class="emphasis"><em>host_notification_options</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact</a> definitions.</p>
 
-    <a id="idp10045760" class="indexterm"></a>
+    <a class="indexterm" name="idp10118704"></a>
 
-    <a id="idp10047440" class="indexterm"></a>
+    <a class="indexterm" name="idp10116720"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="timeperiods.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch05.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="notifications.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">5.9. Time Periods </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 5.11. Notifications</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="timeperiods.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="notifications.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">5.9. Time Periods </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 5.11. Notifications</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

@@ -1,43 +1,50 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>8.2. Enhanced CGI Security and Authentication</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning" />
-    <link rel="prev" href="security.html" title="8.1. Security Considerations" />
-    <link rel="next" href="tuning.html" title="8.3. Tuning Icinga For Maximum Performance" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">8.2. Enhanced CGI Security and Authentication</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="security.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
-          <td width="20%" align="right"> <a accesskey="n" href="tuning.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="8.2. Enhanced CGI Security and Authentication"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="cgisecurity"></a>8.2. <a id="cgi_security"></a>Enhanced CGI Security and Authentication</h2></div></div></div><div class="toc"><dl><dt><span class="section">8.2.1. <a href="cgisecurity.html#idp15044096">Introduction</a></span></dt><dt><span class="section">8.2.2. <a href="cgisecurity.html#idp15048880">Additional Techniques</a></span></dt><dt><span class="section">8.2.3. <a href="cgisecurity.html#idp15059536">Implementing Digest Authentication</a></span></dt><dt><span class="section">8.2.4. <a href="cgisecurity.html#idp15067152">Implementing Forced TLS/SSL</a></span></dt><dt><span class="section">8.2.5. <a href="cgisecurity.html#idp15074720">Implementing IP subnet lockdown</a></span></dt><dt><span class="section">8.2.6. <a href="cgisecurity.html#idp15079392">Important Notes</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>8.2. Enhanced CGI Security and Authentication</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
+<link rel="prev" href="security.html" title="8.1. Security Considerations">
+<link rel="next" href="tuning.html" title="8.3. Tuning Icinga For Maximum Performance">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">8.2. Enhanced CGI Security and Authentication</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="security.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
+<td width="20%" align="right"> <a accesskey="n" href="tuning.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="8.2. Enhanced CGI Security and Authentication">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="cgisecurity"></a>8.2. <a name="cgi_security"></a>Enhanced CGI Security and Authentication</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">8.2.1. <a href="cgisecurity.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">8.2.2. <a href="cgisecurity.html#additionaltechniques">Additional Techniques</a></span></dt>
+<dt><span class="section">8.2.3. <a href="cgisecurity.html#implementationdigest">Implementing Digest Authentication</a></span></dt>
+<dt><span class="section">8.2.4. <a href="cgisecurity.html#implementationssl">Implementing Forced TLS/SSL</a></span></dt>
+<dt><span class="section">8.2.5. <a href="cgisecurity.html#implementationlockdown">Implementing IP subnet lockdown</a></span></dt>
+<dt><span class="section">8.2.6. <a href="cgisecurity.html#importantnotes">Important Notes</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="8.2.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp15044096"></a>8.2.1. <a id="cgisecurity.xml-intro"></a>Introduction</h3></div></div></div>
+  <div class="section" title="8.2.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>8.2.1. <a name="cgisecurity.xml-intro"></a>Introduction</h3></div></div></div>
     
 
-    <p><span class="inlinemediaobject"><img src="../images/security.png" /></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/security.png"></span></p>
 
     <p>This is intended to be an introduction for implementation of stronger authentication and server security focused around the CGI
     web interface.</p>
@@ -48,31 +55,39 @@
     the most important server in your network and you shall be rewarded.</p>
   </div>
 
-  <div class="section" title="8.2.2. Additional Techniques"><div class="titlepage"><div><div><h3 class="title"><a id="idp15048880"></a>8.2.2. <a id="cgisecurity.xml-additionaltechniques"></a>Additional Techniques</h3></div></div></div>
+  <div class="section" title="8.2.2. Additional Techniques">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="additionaltechniques"></a>8.2.2. <a name="cgisecurity.xml-additionaltechniques"></a>Additional Techniques</h3></div></div></div>
     
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-        <p><span class="bold"><strong>Stronger Authentication using Digest Authentication</strong></span> . If you have followed the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart guides</a>, chances are that you are using Apache's <a class="ulink" href="http://httpd.apache.org/docs/2.2/mod/mod_auth_basic" target="_top">Basic Authentication</a>. Basic Authentication will send your
-        username and password in "clear text" with every http request. Consider using a more secure method of authentication such as <a class="ulink" href="http://httpd.apache.org/docs/2.2/mod/mod_auth_digest" target="_top">Digest Authentication</a> which creates a MD5 Hash of your
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><span class="bold"><strong>Stronger Authentication using Digest Authentication</strong></span> . If you have followed the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart guides</a>, chances are that you are using Apache's <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_auth_basic" target="_top">Basic Authentication</a>. Basic Authentication will send your
+        username and password in "clear text" with every http request. Consider using a more secure method of authentication such as <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_auth_digest" target="_top">Digest Authentication</a> which creates a MD5 Hash of your
         username and password to send with each request.</p>
-      </li><li class="listitem">
-        <p><span class="bold"><strong>Forcing TLS/SSL for all Web Communication</strong></span> . Apache provides <a class="ulink" href="http://en.wikipedia.org/wiki/Transport_Layer_Security" target="_top">TLS/SSL</a> through the <a class="ulink" href="http://httpd.apache.org/docs/2.2/mod/mod_ssl" target="_top">mod_ssl</a> module. TLS/SSL provides a secure tunnel between the client
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Forcing TLS/SSL for all Web Communication</strong></span> . Apache provides <a class="link" href="http://en.wikipedia.org/wiki/Transport_Layer_Security" target="_top">TLS/SSL</a> through the <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_ssl" target="_top">mod_ssl</a> module. TLS/SSL provides a secure tunnel between the client
         and server that prevents eavesdropping and tampering using strong publickey/privatekey cryptography.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p><span class="bold"><strong>Locking Down Apache Using Access Controls</strong></span> . Consider locking down access to the Icinga
         box to your IP address, IP address range, or IP subnet. If you require access outside your network you could use VPN or SSH Tunnels.
         This is a easy and strong to limit access to HTTP/HTTPS on your system.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="8.2.3. Implementing Digest Authentication"><div class="titlepage"><div><div><h3 class="title"><a id="idp15059536"></a>8.2.3. <a id="cgisecurity.xml-implementation-digest"></a>Implementing Digest Authentication</h3></div></div></div>
+  <div class="section" title="8.2.3. Implementing Digest Authentication">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="implementationdigest"></a>8.2.3. <a name="cgisecurity.xml-implementation-digest"></a>Implementing Digest Authentication</h3></div></div></div>
     
 
-    <p>The implementation of Digest Authentication is simple. You will have to create the new type of password file using the <a class="ulink" href="http://httpd.apache.org/docs/2.2/programs/htdigest" target="_top">'htdigest'</a> tool, then modify the Apache configuration for Icinga
+    <p>The implementation of Digest Authentication is simple. You will have to create the new type of password file using the <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htdigest" target="_top">'htdigest'</a> tool, then modify the Apache configuration for Icinga
     (typically /etc/httpd/conf.d/icinga.conf).</p>
 
-    <p>Create a new passwords file using the <a class="ulink" href="http://httpd.apache.org/docs/2.2/programs/htdigest" target="_top">'htdigest'</a>
-    tool. The difference that you will notice if you are familiar with <a class="ulink" href="http://httpd.apache.org/docs/2.2/programs/htpasswd" target="_top">'htpasswd'</a> tools is the requirement to supply a 'realm' argument.
+    <p>Create a new passwords file using the <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htdigest" target="_top">'htdigest'</a>
+    tool. The difference that you will notice if you are familiar with <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htpasswd" target="_top">'htpasswd'</a> tools is the requirement to supply a 'realm' argument.
     Where 'realm' in this case refers to the value of the 'AuthName' directive in the Apache configuration.</p>
 
     <pre class="screen"> htdigest -c /usr/local/icinga/etc/.digest_pw "Icinga Access" icingaadmin</pre>
@@ -111,15 +126,17 @@ Alias /icinga "/usr/local/icinga/share"
     <pre class="screen"> /etc/init.d/httpd restart</pre>
   </div>
 
-  <div class="section" title="8.2.4. Implementing Forced TLS/SSL"><div class="titlepage"><div><div><h3 class="title"><a id="idp15067152"></a>8.2.4. <a id="cgisecurity.xml-implementation-ssl"></a>Implementing Forced TLS/SSL</h3></div></div></div>
+  <div class="section" title="8.2.4. Implementing Forced TLS/SSL">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="implementationssl"></a>8.2.4. <a name="cgisecurity.xml-implementation-ssl"></a>Implementing Forced TLS/SSL</h3></div></div></div>
     
 
-    <p>Make sure you've installed Apache and OpenSSL. By default you should have <a class="ulink" href="http://httpd.apache.org/docs/2.2/mod/mod_ssl" target="_top">mod_ssl</a> support if you are still having trouble you may find help
-    reading Apache's <a class="ulink" href="http://httpd.apache.org/docs/2.0/ssl" target="_top">TLS/SSL Encryption Documentation</a>.</p>
+    <p>Make sure you've installed Apache and OpenSSL. By default you should have <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_ssl" target="_top">mod_ssl</a> support if you are still having trouble you may find help
+    reading Apache's <a class="link" href="http://httpd.apache.org/docs/2.0/ssl" target="_top">TLS/SSL Encryption Documentation</a>.</p>
 
     <p>Next, verify that TLS/SSL support is working by visiting your Icinga Web Interface using HTTPS
     (https://your.domain/Icinga). If it is working you can continue on to the next steps that will force using HTTPS and block all HTTP
-    requests for the Icinga Web Interface. If you are having trouble visit Apache's <a class="ulink" href="http://httpd.apache.org/docs/2.0/ssl" target="_top">TLS/SSL Encryption Documentation</a> and <a class="ulink" href="http://www.google.com" target="_top">Google</a> for troubleshooting your specific Apache installation.</p>
+    requests for the Icinga Web Interface. If you are having trouble visit Apache's <a class="link" href="http://httpd.apache.org/docs/2.0/ssl" target="_top">TLS/SSL Encryption Documentation</a> and <a class="link" href="http://www.google.com" target="_top">Google</a> for troubleshooting your specific Apache installation.</p>
 
     <p>Next, edit the Apache configuration file for Icinga (typically /etc/httpd/conf.d/icinga.conf) by adding the 'SSLRequireSSL'
     directive to both the 'sbin' and 'share' directories.</p>
@@ -145,11 +162,13 @@ Alias /icinga "/usr/local/icinga/share"
     <pre class="screen"> /etc/init.d/httpd restart</pre>
   </div>
 
-  <div class="section" title="8.2.5. Implementing IP subnet lockdown"><div class="titlepage"><div><div><h3 class="title"><a id="idp15074720"></a>8.2.5. <a id="cgisecurity.xml-implementation-lockdown"></a>Implementing IP subnet lockdown</h3></div></div></div>
+  <div class="section" title="8.2.5. Implementing IP subnet lockdown">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="implementationlockdown"></a>8.2.5. <a name="cgisecurity.xml-implementation-lockdown"></a>Implementing IP subnet lockdown</h3></div></div></div>
     
 
     <p>The following example will show how to lock down Icinga CGIs to a specific IP address, IP address range, or IP subnet using
-    Apache's <a class="ulink" href="http://httpd.apache.org/docs/2.2/howto/access" target="_top">access controls</a>.</p>
+    Apache's <a class="link" href="http://httpd.apache.org/docs/2.2/howto/access" target="_top">access controls</a>.</p>
 
     <p>Edit the Apache configuration file for Icinga (typically /etc/httpd/conf.d/icinga.conf) by using the 'Allow', 'Deny', and
     'Order' directives using the following as an example.</p>
@@ -181,54 +200,60 @@ Alias /icinga "/usr/local/icinga/share"
 ## END APACHE CONFIG SNIPPET</pre>
   </div>
 
-  <div class="section" title="8.2.6. Important Notes"><div class="titlepage"><div><div><h3 class="title"><a id="idp15079392"></a>8.2.6. <a id="cgisecurity.xml-importantnotes"></a>Important Notes</h3></div></div></div>
+  <div class="section" title="8.2.6. Important Notes">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="importantnotes"></a>8.2.6. <a name="cgisecurity.xml-importantnotes"></a>Important Notes</h3></div></div></div>
     
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p><span class="bold"><strong>Digest Authentication sends data in the clear but not your username and password</strong></span> .</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p><span class="bold"><strong>Digest Authentication is not as universally supported as Basic Authentication</strong></span> .</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p><span class="bold"><strong>TLS/SSL has potential for "man-in-the-middle attacks"</strong></span> . MITM attacks are vulnerable if an
         attacker is able to insert itself between the server and client such as in a Phishing attack, ISP monitoring, or corporate LAN
         firewall certificate resigning. So read up on certificate verification!</p>
-      </li><li class="listitem">
-        <p><span class="bold"><strong>Apache access controls only protect the HTTP/HTTPS protocols</strong></span> . Look into <a class="ulink" href="http://www.netfilter.org/projects/iptables/index" target="_top">IPtables</a> for strong system wide firewall control.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
+        <p><span class="bold"><strong>Apache access controls only protect the HTTP/HTTPS protocols</strong></span> . Look into <a class="link" href="http://www.netfilter.org/projects/iptables/index" target="_top">IPtables</a> for strong system wide firewall control.</p>
+      </li>
+<li class="listitem">
         <p><span class="bold"><strong>Most importantly, Security is a moving target so stay informed and do research</strong></span> ! Perhaps by
-        listening to a Podcast such as "<a class="ulink" href="http://www.grc.com/securitynow.htm" target="_top">Security Now!</a>".</p>
-      </li></ul></div>
+        listening to a Podcast such as "<a class="link" href="http://www.grc.com/securitynow.htm" target="_top">Security Now!</a>".</p>
+      </li>
+</ul></div>
 
-    <a id="idp15089744" class="indexterm"></a>
+    <a class="indexterm" name="idp15278224"></a>
 
-    <a id="idp15092416" class="indexterm"></a>
+    <a class="indexterm" name="idp15279920"></a>
 
-    <a id="idp15094000" class="indexterm"></a>
+    <a class="indexterm" name="idp15281520"></a>
 
-    <a id="idp15095632" class="indexterm"></a>
+    <a class="indexterm" name="idp15283184"></a>
 
-    <a id="idp15097264" class="indexterm"></a>
+    <a class="indexterm" name="idp15284672"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="security.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch08.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="tuning.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">8.1. Security Considerations </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 8.3. Tuning Icinga For Maximum Performance</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="security.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="tuning.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">8.1. Security Considerations </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 8.3. Tuning Icinga For Maximum Performance</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

@@ -1,48 +1,61 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.21. Cached Checks</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
-    <link rel="prev" href="dependencychecks.html" title="7.20. Predictive Dependency Checks" />
-    <link rel="next" href="passivestatetranslation.html" title="7.22. Passive Host State Translation" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.21. Cached Checks</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="dependencychecks.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.21. Cached Checks"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="cachedchecks"></a>7.21. <a id="cached_checks"></a>Cached Checks</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.21.1. <a href="cachedchecks.html#idp14343584">Introduction</a></span></dt><dt><span class="section">7.21.2. <a href="cachedchecks.html#idp14346864">For On-Demand Checks Only</a></span></dt><dt><span class="section">7.21.3. <a href="cachedchecks.html#idp14346992">How Caching Works</a></span></dt><dt><span class="section">7.21.4. <a href="cachedchecks.html#idp14361632">What This Really Means</a></span></dt><dt><span class="section">7.21.5. <a href="cachedchecks.html#idp14361760">Configuration Variables</a></span></dt><dt><span class="section">7.21.6. <a href="cachedchecks.html#idp14372928">Optimizing Cache Effectiveness</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.21. Cached Checks</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">
+<link rel="next" href="passivestatetranslation.html" title="7.22. Passive Host State Translation">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.21. Cached Checks</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="dependencychecks.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.21. Cached Checks">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="cachedchecks"></a>7.21. <a name="cached_checks"></a>Cached Checks</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.21.1. <a href="cachedchecks.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.21.2. <a href="cachedchecks.html#ondemandchecks">For On-Demand Checks Only</a></span></dt>
+<dt><span class="section">7.21.3. <a href="cachedchecks.html#howitworks">How Caching Works</a></span></dt>
+<dt><span class="section">7.21.4. <a href="cachedchecks.html#whatthismeans">What This Really Means</a></span></dt>
+<dt><span class="section">7.21.5. <a href="cachedchecks.html#configvars">Configuration Variables</a></span></dt>
+<dt><span class="section">7.21.6. <a href="cachedchecks.html#optimizeeffectiveness">Optimizing Cache Effectiveness</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.21.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp14343584"></a>7.21.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.21.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>7.21.1. Introduction</h3></div></div></div>
+	  
 
-  <p><span class="inlinemediaobject"><img src="../images/cachedchecks1.png" /></span></p>
+  <p><span class="inlinemediaobject"><img src="../images/cachedchecks1.png"></span></p>
 
   <p>The performance of Icinga' monitoring logic can be significantly improved by implementing the use of cached checks. Cached
   checks allow Icinga to forgo executing a host or service check command if it determines a relatively recent check result will do
   instead.</p>
 
-  </div><div class="section" title="7.21.2. For On-Demand Checks Only"><div class="titlepage"><div><div><h3 class="title"><a id="idp14346864"></a>7.21.2. For On-Demand Checks Only</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.21.2. For On-Demand Checks Only">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="ondemandchecks"></a>7.21.2. For On-Demand Checks Only</h3></div></div></div>
+	  
 
   <p>Regularly scheduled host and service checks will not see a performance improvement with use of cached checks. Cached checks are only
   useful for improving the performance of on-demand host and service checks. Scheduled checks help to ensure that host and service states
@@ -50,13 +63,17 @@
 
   <p>For reference, on-demand host checks occur...</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>When a service associated with the host changes state.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>As needed as part of the <a class="link" href="networkreachability.html" title="5.10. Determining Status and Reachability of Network Hosts">host reachability</a> logic.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>As needed for <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive host dependency checks</a>.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>And on-demand service checks occur...</p>
 
@@ -64,15 +81,26 @@
       <p>As needed for <a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">predictive service dependency checks</a>.</p>
     </li></ul></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>Unless you make use of service dependencies, Icinga will not be able to use cached check results to improve the performance
     of service checks. Don't worry about that - its normal. Cached host checks are where the big performance improvements lie, and everyone
     should see a benefit there.</p>
-  </td></tr></table></div>
+  </td></tr>
+</table></div>
 
-  </div><div class="section" title="7.21.3. How Caching Works"><div class="titlepage"><div><div><h3 class="title"><a id="idp14346992"></a>7.21.3. How Caching Works</h3></div></div></div>
+  </div>
 
-  <p><span class="inlinemediaobject"><img src="../images/cachedchecks.png" /></span></p>
+  <div class="section" title="7.21.3. How Caching Works">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="howitworks"></a>7.21.3. How Caching Works</h3></div></div></div>
+	  
+
+  <p><span class="inlinemediaobject"><img src="../images/cachedchecks.png"></span></p>
 
   <p>When Icinga needs to perform an on-demand host or service check, it will make a determination as to whether it can used a
   cached check result or if it needs to perform an actual check by executing a plugin. It does this by checking to see if the last check of
@@ -83,7 +111,12 @@
   checked, or if the last check falls outside of the cached check horizon timeframe, Icinga will execute a new host or service check
   by running a plugin.</p>
 
-  </div><div class="section" title="7.21.4. What This Really Means"><div class="titlepage"><div><div><h3 class="title"><a id="idp14361632"></a>7.21.4. What This Really Means</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.21.4. What This Really Means">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="whatthismeans"></a>7.21.4. What This Really Means</h3></div></div></div>
+	  
 
   <p>Icinga performs on-demand checks because it need to know the current state of a host or service <span class="emphasis"><em>at that exact
   moment</em></span> in time. Utilizing cached checks allows you to make Icinga think that recent check results are "good enough" for
@@ -115,42 +148,63 @@
   different horizon timeframes, and their effect on the reliability of status information, is the only want that an individual user will
   find the "right" value for their situation. More information on this is discussed below.</p>
 
-  </div><div class="section" title="7.21.5. Configuration Variables"><div class="titlepage"><div><div><h3 class="title"><a id="idp14361760"></a>7.21.5. Configuration Variables</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.21.5. Configuration Variables">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="configvars"></a>7.21.5. Configuration Variables</h3></div></div></div>
+	  
 
   <p>The following variables determine the timeframes in which a previous host or service check result may be used as a cached host or
   service check result:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>The <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a> variable controls cached host
       checks.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The <a class="link" href="configmain.html#configmain-cached_service_check_horizon">cached_service_check_horizon</a> variable controls cached service
       checks.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
-  </div><div class="section" title="7.21.6. Optimizing Cache Effectiveness"><div class="titlepage"><div><div><h3 class="title"><a id="idp14372928"></a>7.21.6. Optimizing Cache Effectiveness</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.21.6. Optimizing Cache Effectiveness">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="optimizeeffectiveness"></a>7.21.6. Optimizing Cache Effectiveness</h3></div></div></div>
+	  
 
   <p>In order to make the most effective use of cached checks, you should:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>Schedule regular checks of your hosts</p>
-    </li><li class="listitem">
-      <p>Use <a class="ulink" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">PNP4Nagios</a> to graph statistics for 1) on-demand checks
+    </li>
+<li class="listitem">
+      <p>Use <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">PNP4Nagios</a> to graph statistics for 1) on-demand checks
       and 2) cached checks</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Adjust cached check horizon variables to fit your needs</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>You can schedule regular checks of your hosts by specifying a value greater than 0 for <span class="emphasis"><em>check_interval</em></span> option in
   your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definitions</a>. If you do this, make sure that you set the
   <span class="emphasis"><em>max_check_attempts</em></span> option to a value greater than 1, or it will cause a big performance hit. This potential
   performance hit is described in detail <a class="link" href="hostchecks.html" title="5.4. Host Checks">here</a>.</p>
 
-  <div class="figure"><a id="idp14381184"></a><p class="title"><b>Figure 7.1. Cached checks</b></p><div class="figure-contents">
+  <div class="figure">
+<a name="idp14553184"></a><p class="title"><b>Figure 7.1. Cached checks</b></p>
+<div class="figure-contents">
     
 
-    <p><span class="inlinemediaobject"><img src="../images/perfdata_cached2.png" alt="Cached checks" /></span></p>
-  </div></div><br class="figure-break" />
+    <p><span class="inlinemediaobject"><img src="../images/perfdata_cached2.png" alt="Cached checks"></span></p>
+  </div>
+</div>
+<br class="figure-break">
 
   <p>A good way to determine the proper value for the cached check horizon option is to compare how many on-demand checks Icinga
   has to actually run versus how may it can use cached values for. The <a class="link" href="icingastats.html" title="8.6. Using The Icingastats Utility">icingastats</a> utility can produce
@@ -159,13 +213,17 @@
 
   <p>The monitoring installation which produced the graphs had:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>A total of 110 hosts, all of which were checked at regular intervals</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>An average (regularly scheduled) host check interval of 30 minutes with a 5 minute retry interval</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>A <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a> of 15 seconds</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>The graph shows how many regularly scheduled host checks compared to how many cached host checks have occurred. In this example, an
   average of 77 host checks occur every five minutes. 59 of these (76%) are on-demand checks.</p>
@@ -184,28 +242,26 @@
   appropriately for your situation. Continue to monitor the PNP4Nagios graphs over time to see how changing the horizon variables affected
   cached check statistics. Rinse and repeat as necessary.</p>
 
-  <a id="idp14394096" class="indexterm"></a>
+  <a class="indexterm" name="idp14565584"></a>
 </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="dependencychecks.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.20. Predictive Dependency Checks </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.22. Passive Host State Translation</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="dependencychecks.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.20. Predictive Dependency Checks </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 7.22. Passive Host State Translation</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

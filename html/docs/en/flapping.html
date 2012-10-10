@@ -1,46 +1,62 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.8. Detection and Handling of State Flapping</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
-    <link rel="prev" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring" />
-    <link rel="next" href="escalations.html" title="7.9. Notification Escalations" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.8. Detection and Handling of State Flapping</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="redundancy.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="escalations.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.8. Detection and Handling of State Flapping"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="flapping"></a>7.8. <a id="state_flapping"></a>Detection and Handling of State Flapping</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.8.1. <a href="flapping.html#idp13665776">Introduction</a></span></dt><dt><span class="section">7.8.2. <a href="flapping.html#idp13667280">How Flap Detection Works</a></span></dt><dt><span class="section">7.8.3. <a href="flapping.html#idp13667440">Example</a></span></dt><dt><span class="section">7.8.4. <a href="flapping.html#idp13676784">Flap Detection for Services</a></span></dt><dt><span class="section">7.8.5. <a href="flapping.html#idp13697104">Flap Detection for Hosts</a></span></dt><dt><span class="section">7.8.6. <a href="flapping.html#idp13702336">Flap Detection Thresholds</a></span></dt><dt><span class="section">7.8.7. <a href="flapping.html#idp13726848">States Used For Flap Detection</a></span></dt><dt><span class="section">7.8.8. <a href="flapping.html#idp13729392">Flap Handling</a></span></dt><dt><span class="section">7.8.9. <a href="flapping.html#idp13741072">Enabling Flap Detection</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.8. Detection and Handling of State Flapping</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">
+<link rel="next" href="escalations.html" title="7.9. Notification Escalations">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.8. Detection and Handling of State Flapping</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="redundancy.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="escalations.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.8. Detection and Handling of State Flapping">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="flapping"></a>7.8. <a name="state_flapping"></a>Detection and Handling of State Flapping</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.8.1. <a href="flapping.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.8.2. <a href="flapping.html#howitworks">How Flap Detection Works</a></span></dt>
+<dt><span class="section">7.8.3. <a href="flapping.html#example">Example</a></span></dt>
+<dt><span class="section">7.8.4. <a href="flapping.html#services">Flap Detection for Services</a></span></dt>
+<dt><span class="section">7.8.5. <a href="flapping.html#hosts">Flap Detection for Hosts</a></span></dt>
+<dt><span class="section">7.8.6. <a href="flapping.html#thresholds">Flap Detection Thresholds</a></span></dt>
+<dt><span class="section">7.8.7. <a href="flapping.html#statesused">States Used For Flap Detection</a></span></dt>
+<dt><span class="section">7.8.8. <a href="flapping.html#handling">Flap Handling</a></span></dt>
+<dt><span class="section">7.8.9. <a href="flapping.html#enable">Enabling Flap Detection</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.8.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp13665776"></a>7.8.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.8.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>7.8.1. Introduction</h3></div></div></div>
+	  
 
   <p>Icinga supports optional detection of hosts and services that are "flapping". Flapping occurs when a service or
   host changes state too frequently, resulting in a storm of problem and recovery notifications. Flapping can be indicative of
   configuration problems (i.e. thresholds set too low), troublesome services, or real network problems.</p>
 
-  </div><div class="section" title="7.8.2. How Flap Detection Works"><div class="titlepage"><div><div><h3 class="title"><a id="idp13667280"></a>7.8.2. How Flap Detection Works</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.8.2. How Flap Detection Works">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="howitworks"></a>7.8.2. How Flap Detection Works</h3></div></div></div>
+	  
 
   <p>Before we get into this, it is time to say that flapping detection has been a little difficult to implement. How exactly
   does one determine what "too frequently" means in regards to state changes for a particular host or service? When Ethan Galstad
@@ -51,16 +67,21 @@
   <p>Whenever Icinga checks the status of a host or service, it will check to see if it has started or stopped flapping.
   It does this by:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>Storing the results of the last 21 checks of the host or service</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Analyzing the historical check results and determine where state changes/transitions occur</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Using the state transitions to determine a percent state change value (a measure of change) for the host or
       service</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Comparing the percent state change value against low and high flapping thresholds</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>A host or service is determined to have <span class="emphasis"><em>started</em></span> flapping when its percent state change first exceeds
   a <span class="emphasis"><em>high</em></span> flapping threshold.</p>
@@ -68,14 +89,19 @@
   <p>A host or service is determined to have <span class="emphasis"><em>stopped</em></span> flapping when its percent state goes below a
   <span class="emphasis"><em>low</em></span> flapping threshold (assuming that is was previously flapping).</p>
 
-  </div><div class="section" title="7.8.3. Example"><div class="titlepage"><div><div><h3 class="title"><a id="idp13667440"></a>7.8.3. Example</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.8.3. Example">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="example"></a>7.8.3. Example</h3></div></div></div>
+	  
 
   <p>Let's describe in more detail how flap detection works with services...</p>
 
   <p>The image below shows a chronological history of service states from the most recent 21 service checks. OK states are
   shown in green, WARNING states in yellow, CRITICAL states in red, and UNKNOWN states in orange.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/statetransitions.png" /></span></p>
+  <p><span class="inlinemediaobject"><img src="../images/statetransitions.png"></span></p>
 
   <p>The historical service check results are examined to determine where state changes/transitions occur. State changes occur
   when an archived state is different from the archived state that immediately precedes it chronologically. Since we keep the
@@ -92,7 +118,7 @@
   change carry 50% more weight than the oldest possible state change. The image below shows how recent state changes are given
   more weight than older state changes when calculating the overall or total percent state change for a particular service.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/statetransitions2.png" /></span></p>
+  <p><span class="inlinemediaobject"><img src="../images/statetransitions2.png"></span></p>
 
   <p>Using the images above, lets do a calculation of percent state change for the service. You will notice that there are a
   total of 7 state changes (at t<sub>3</sub>, t<sub>4</sub>, t<sub>5</sub>,
@@ -108,36 +134,52 @@
   <p>The calculated percent state change for the service (31%) will then be compared against flapping thresholds to see what
   should happen:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>If the service was <span class="emphasis"><em>not</em></span> previously flapping and 31% is <span class="emphasis"><em>equal to or greater
       than</em></span> the high flap threshold, Icinga considers the service to have just started flapping.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>If the service <span class="emphasis"><em>was</em></span> previously flapping and 31% is <span class="emphasis"><em>less than</em></span> the low flap
       threshold, Icinga considers the service to have just stopped flapping.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>If neither of those two conditions are met, the flap detection logic won't do anything else with the service, since it is
   either not currently flapping or it is still flapping.</p>
 
-  </div><div class="section" title="7.8.4. Flap Detection for Services"><div class="titlepage"><div><div><h3 class="title"><a id="idp13676784"></a>7.8.4. Flap Detection for Services</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.8.4. Flap Detection for Services">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="services"></a>7.8.4. Flap Detection for Services</h3></div></div></div>
+	  
 
   <p>Icinga checks to see if a service is flapping whenever the service is checked (either actively or
   passively).</p>
 
   <p>The flap detection logic for services works as described in the example above.</p>
 
-  </div><div class="section" title="7.8.5. Flap Detection for Hosts"><div class="titlepage"><div><div><h3 class="title"><a id="idp13697104"></a>7.8.5. Flap Detection for Hosts</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.8.5. Flap Detection for Hosts">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="hosts"></a>7.8.5. Flap Detection for Hosts</h3></div></div></div>
+	  
 
   <p>Host flap detection works in a similiar manner to service flap detection, with one important difference: Icinga
   will attempt to check to see if a host is flapping whenever:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>The host is checked (actively or passively)</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Sometimes when a service associated with that host is checked. More specifically, when at least <span class="emphasis"><em>x</em></span>
       amount of time has passed since the flap detection was last performed, where <span class="emphasis"><em>x</em></span> is equal to the average
       check interval of all services associated with the host.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>Why is this done? With services we know that the minimum amount of time between consecutive flap detection routines is
   going to be equal to the service check interval. However, you might not be monitoring hosts on a regular basis, so there might
@@ -146,7 +188,12 @@
   rate, that's the best method I could come up with for determining how often flap detection could be performed on a host, so
   there you have it.</p>
 
-  </div><div class="section" title="7.8.6. Flap Detection Thresholds"><div class="titlepage"><div><div><h3 class="title"><a id="idp13702336"></a>7.8.6. Flap Detection Thresholds</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.8.6. Flap Detection Thresholds">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="thresholds"></a>7.8.6. Flap Detection Thresholds</h3></div></div></div>
+	  
 
   <p>Icinga uses several variables to determine the percent state change thresholds is uses for flap detection. For both
   hosts and services, there are <span class="emphasis"><em>global</em></span> high and low thresholds and <span class="emphasis"><em>host-</em></span> or
@@ -157,7 +204,22 @@
   detection.</p>
 
   <div class="informaltable">
-    <table border="1"><colgroup><col /><col /><col /></colgroup><tbody><tr><td><p> <span class="bold"><strong>Object Type</strong></span> </p></td><td><p> <span class="bold"><strong>Global Variables</strong></span> </p></td><td><p> <span class="bold"><strong>Object-Specific Variables</strong></span> </p></td></tr><tr><td><p>Host</p></td><td><p>
+    <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Object Type</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Global Variables</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Object-Specific Variables</strong></span> </p></td>
+</tr>
+<tr>
+<td><p>Host</p></td>
+<td>
+<p>
                
 
               <a class="link" href="configmain.html#configmain-low_host_flap_threshold">low_host_flap_threshold</a>
@@ -169,7 +231,10 @@
               <a class="link" href="configmain.html#configmain-high_host_flap_threshold">high_host_flap_threshold</a>
 
                
-            </p></td><td><p>
+            </p>
+</td>
+<td>
+<p>
                
 
               <a class="link" href="objectdefinitions.html#objectdefinitions-host">low_flap_threshold</a>
@@ -181,7 +246,13 @@
               <a class="link" href="objectdefinitions.html#objectdefinitions-host">high_flap_threshold</a>
 
                
-            </p></td></tr><tr><td><p>Service</p></td><td><p>
+            </p>
+</td>
+</tr>
+<tr>
+<td><p>Service</p></td>
+<td>
+<p>
                
 
               <a class="link" href="configmain.html#configmain-low_service_flap_threshold">low_service_flap_threshold</a>
@@ -193,7 +264,10 @@
               <a class="link" href="configmain.html#configmain-high_service_flap_threshold">high_service_flap_threshold</a>
 
                
-            </p></td><td><p>
+            </p>
+</td>
+<td>
+<p>
                
 
               <a class="link" href="objectdefinitions.html#objectdefinitions-service">low_flap_threshold</a>
@@ -205,83 +279,119 @@
               <a class="link" href="objectdefinitions.html#objectdefinitions-service">high_flap_threshold</a>
 
                
-            </p></td></tr></tbody></table>
+            </p>
+</td>
+</tr>
+</tbody>
+</table>
   </div>
 
-  </div><div class="section" title="7.8.7. States Used For Flap Detection"><div class="titlepage"><div><div><h3 class="title"><a id="idp13726848"></a>7.8.7. States Used For Flap Detection</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.8.7. States Used For Flap Detection">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="statesused"></a>7.8.7. States Used For Flap Detection</h3></div></div></div>
+	  
 
   <p>Normally Icinga will track the results of the last 21 checks of a host or service, regardless of the check result
   (host/service state), for use in the flap detection logic.</p>
 
-  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png" /></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>You can exclude certain host or service states from use in flap detection logic by using the
     <span class="emphasis"><em>flap_detection_options</em></span> directive in your host or service definitions. This directive allows you to
     specify what host or service states (i.e. "UP, "DOWN", "OK, "CRITICAL") you want to use for flap detection. If you don't use
     this directive, all host or service states are used in flap detection.</p>
-  </td></tr></table></div>
+  </td></tr>
+</table></div>
 
-  </div><div class="section" title="7.8.8. Flap Handling"><div class="titlepage"><div><div><h3 class="title"><a id="idp13729392"></a>7.8.8. Flap Handling</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.8.8. Flap Handling">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="handling"></a>7.8.8. Flap Handling</h3></div></div></div>
+	  
 
   <p>When a service or host is first detected as flapping, Icinga will:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
       <p>Log a message indicating that the service or host is flapping.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Add a non-persistent comment to the host or service indicating that it is flapping.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Send a "flapping start" notification for the host or service to appropriate contacts.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Suppress other notifications for the service or host (this is one of the filters in the <a class="link" href="notifications.html" title="5.11. Notifications">notification logic</a>).</p>
-    </li></ol></div>
+    </li>
+</ol></div>
 
   <p>When a service or host stops flapping, Icinga will:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
       <p>Log a message indicating that the service or host has stopped flapping.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Delete the comment that was originally added to the service or host when it started flapping.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Send a "flapping stop" notification for the host or service to appropriate contacts.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Remove the block on notifications for the service or host (notifications will still be bound to the normal <a class="link" href="notifications.html" title="5.11. Notifications">notification logic</a>).</p>
-    </li></ol></div>
+    </li>
+</ol></div>
 
-  </div><div class="section" title="7.8.9. Enabling Flap Detection"><div class="titlepage"><div><div><h3 class="title"><a id="idp13741072"></a>7.8.9. Enabling Flap Detection</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.8.9. Enabling Flap Detection">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="enable"></a>7.8.9. Enabling Flap Detection</h3></div></div></div>
+	  
 
   <p>In order to enable the flap detection features in Icinga, you'll need to:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>Set <a class="link" href="configmain.html#configmain-enable_flap_detection">enable_flap_detection</a> directive is set to 1.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Set the <span class="emphasis"><em>flap_detection_enabled</em></span> directive in your host and service definitions is set to 1.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>If you want to disable flap detection on a global basis, set the <a class="link" href="configmain.html#configmain-enable_flap_detection">enable_flap_detection</a> directive to 0.</p>
 
   <p>If you would like to disable flap detection for just a few hosts or services, use the
   <span class="emphasis"><em>flap_detection_enabled</em></span> directive in the host and/or service definitions to do so.</p>
-  <a id="idp13746320" class="indexterm"></a>
+  <a class="indexterm" name="idp13875776"></a>
 </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="redundancy.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="escalations.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.7. Redundant and Failover Network Monitoring </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.9. Notification Escalations</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="redundancy.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="escalations.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.7. Redundant and Failover Network Monitoring </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 7.9. Notification Escalations</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

@@ -1,46 +1,54 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>2.16. Monitoring Routers and Switches</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch02.html" title="Chapter 2. Getting Started" />
-    <link rel="prev" href="monitoring-printers.html" title="2.15. Monitoring Network Printers" />
-    <link rel="next" href="monitoring-publicservices.html" title="2.17. Monitoring Publicly Available Services" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">2.16. Monitoring Routers and Switches</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="monitoring-printers.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 2. Getting Started</th>
-          <td width="20%" align="right"> <a accesskey="n" href="monitoring-publicservices.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="2.16. Monitoring Routers and Switches"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="monitoring-routers"></a>2.16. <a id="monitoring_routers"></a>Monitoring Routers and Switches</h2></div></div></div><div class="toc"><dl><dt><span class="section">2.16.1. <a href="monitoring-routers.html#idp1281184">Introduction</a></span></dt><dt><span class="section">2.16.2. <a href="monitoring-routers.html#idp1291920">Overview</a></span></dt><dt><span class="section">2.16.3. <a href="monitoring-routers.html#idp1298832">Steps</a></span></dt><dt><span class="section">2.16.4. <a href="monitoring-routers.html#idp1303520">What's Already Done For You</a></span></dt><dt><span class="section">2.16.5. <a href="monitoring-routers.html#idp1311696">Prerequisites</a></span></dt><dt><span class="section">2.16.6. <a href="monitoring-routers.html#idp1316832">Configuring Icinga</a></span></dt><dt><span class="section">2.16.7. <a href="monitoring-routers.html#idp1317120">Restarting Icinga</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>2.16. Monitoring Routers and Switches</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
+<link rel="prev" href="monitoring-printers.html" title="2.15. Monitoring Network Printers">
+<link rel="next" href="monitoring-publicservices.html" title="2.17. Monitoring Publicly Available Services">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">2.16. Monitoring Routers and Switches</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="monitoring-printers.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 2. Getting Started</th>
+<td width="20%" align="right"> <a accesskey="n" href="monitoring-publicservices.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="2.16. Monitoring Routers and Switches">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="monitoring-routers"></a>2.16. <a name="monitoring_routers"></a>Monitoring Routers and Switches</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">2.16.1. <a href="monitoring-routers.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.16.2. <a href="monitoring-routers.html#overview">Overview</a></span></dt>
+<dt><span class="section">2.16.3. <a href="monitoring-routers.html#steps">Steps</a></span></dt>
+<dt><span class="section">2.16.4. <a href="monitoring-routers.html#whatsdone">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.16.5. <a href="monitoring-routers.html#prereuisites">Prerequisites</a></span></dt>
+<dt><span class="section">2.16.6. <a href="monitoring-routers.html#configicinga">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.16.7. <a href="monitoring-routers.html#restarticinga">Restarting Icinga</a></span></dt>
+</dl></div>
   
 
-  <a id="idp1279728" class="indexterm"></a>
+  <a class="indexterm" name="idp1317568"></a>
 
-  <div class="section" title="2.16.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp1281184"></a>2.16.1. Introduction</h3></div></div></div>
+  <div class="section" title="2.16.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>2.16.1. Introduction</h3></div></div></div>
     
 
     <div class="informalfigure">
-        <div class="mediaobject"><img src="../images/switch.png" /></div>
+        <div class="mediaobject"><img src="../images/switch.png"></div>
       </div>
 
     <p>This document describes how you can monitor the status of network switches and routers. Some cheaper "unmanaged" switches and hubs
@@ -49,27 +57,39 @@
 
     <p>We'll describe how you can monitor the following things on managed switches, hubs, and routers:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Packet loss, round trip average</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>SNMP status information</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Bandwidth / traffic rate</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>These instructions assume that you've installed Icinga according to the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart
       guide</a>. The sample configuration entries below reference objects that are defined in the sample config files
       (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.) that are installed when you follow the
       quickstart.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
   </div>
 
-  <div class="section" title="2.16.2. Overview"><div class="titlepage"><div><div><h3 class="title"><a id="idp1291920"></a>2.16.2. Overview</h3></div></div></div>
+  <div class="section" title="2.16.2. Overview">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="overview"></a>2.16.2. Overview</h3></div></div></div>
     
 
     <div class="informalfigure">
-        <div class="mediaobject"><img src="../images/monitoring-routers.png" /></div>
+        <div class="mediaobject"><img src="../images/monitoring-routers.png"></div>
       </div>
 
     <p>Monitoring switches and routers can either be easy or more involved - depending on what equipment you have and what you want to
@@ -84,33 +104,44 @@
     it doesn't, install net-snmp and net-snmp-utils and recompile/reinstall the Icinga plugins.</p>
   </div>
 
-  <div class="section" title="2.16.3. Steps"><div class="titlepage"><div><div><h3 class="title"><a id="idp1298832"></a>2.16.3. Steps</h3></div></div></div>
+  <div class="section" title="2.16.3. Steps">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="steps"></a>2.16.3. Steps</h3></div></div></div>
     
 
     <p>There are several steps you'll need to follow in order to monitor a new router or switch. They are:</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+    <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
         <p>Perform first-time prerequisites</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Create new host and service definitions for monitoring the device</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Restart the Icinga daemon</p>
-      </li></ol></div>
+      </li>
+</ol></div>
   </div>
 
-  <div class="section" title="2.16.4. What's Already Done For You"><div class="titlepage"><div><div><h3 class="title"><a id="idp1303520"></a>2.16.4. What's Already Done For You</h3></div></div></div>
+  <div class="section" title="2.16.4. What's Already Done For You">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="whatsdone"></a>2.16.4. What's Already Done For You</h3></div></div></div>
     
 
     <p>To make your life a bit easier, a few configuration tasks have already been done for you:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Two command definitions (<span class="emphasis"><em>check_snmp</em></span> and <span class="emphasis"><em>check_local_mrtgtraf</em></span>) have been added to the
         <span class="emphasis"><em>commands.cfg</em></span> file. These allows you to use the <span class="emphasis"><em>check_snmp</em></span> and
         <span class="emphasis"><em>check_mrtgtraf</em></span> plugins to monitor network routers.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>A switch host template (called <span class="emphasis"><em>generic-switch</em></span>) has already been created in the
         <span class="emphasis"><em>templates.cfg</em></span> file. This allows you to add new router/switch host definitions in a simple manner.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>The above-mentioned config files can be found in the <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span> directory. You can modify
     the definitions in these and other definitions to suit your needs better if you'd like. However, we'd recommend waiting until you're
@@ -118,7 +149,9 @@
     be monitoring your network routers/switches in no time.</p>
   </div>
 
-  <div class="section" title="2.16.5. Prerequisites"><div class="titlepage"><div><div><h3 class="title"><a id="idp1311696"></a>2.16.5. Prerequisites</h3></div></div></div>
+  <div class="section" title="2.16.5. Prerequisites">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="prereuisites"></a>2.16.5. Prerequisites</h3></div></div></div>
     
 
     <p>The first time you configure Icinga to monitor a network switch, you'll need to do a bit of extra work. Remember, you only
@@ -140,7 +173,9 @@
     modify the sample host and service definitions in that file, rather than creating new ones.</p>
   </div>
 
-  <div class="section" title="2.16.6. Configuring Icinga"><div class="titlepage"><div><div><h3 class="title"><a id="idp1316832"></a>2.16.6. Configuring Icinga</h3></div></div></div>
+  <div class="section" title="2.16.6. Configuring Icinga">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="configicinga"></a>2.16.6. Configuring Icinga</h3></div></div></div>
     
 
     <p>You'll need to create some <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object definitions</a> in order to monitor a new
@@ -168,12 +203,19 @@
     <p>Now you can add some service definitions (to the same configuration file) to monitor different aspects of the switch. If this is
     the *first* switch you're monitoring, you can simply modify the sample service definition in <span class="emphasis"><em>switch.cfg</em></span>.</p>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Replace "<span class="emphasis"><em>linksys-srw224p</em></span>" in the example definitions below with the name you specified in the
       <span class="emphasis"><em>host_name</em></span> directive of the host definition you just added.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p><span class="bold"><strong>Monitoring Packet Loss and RTA</strong></span></p>
 
         <p>Add the following service definition in order to monitor packet loss and round trip average between the Icinga host and
@@ -190,14 +232,19 @@
 
         <p>This service will be:</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
             <p>CRITICAL if the round trip average (RTA) is greater than 600 milliseconds or the packet loss is 60% or more</p>
-          </li><li class="listitem">
+          </li>
+<li class="listitem">
             <p>WARNING if the RTA is greater than 200 ms or the packet loss is 20% or more</p>
-          </li><li class="listitem">
+          </li>
+<li class="listitem">
             <p>OK if the RTA is less than 200 ms and the packet loss is less than 20%</p>
-          </li></ul></div>
-      </li><li class="listitem">
+          </li>
+</ul></div>
+      </li>
+<li class="listitem">
         <p><span class="bold"><strong>Monitoring SNMP Status Information</strong></span></p>
 
         <p>If your switch or router supports SNMP, you can monitor a lot of information by using the <span class="emphasis"><em>check_snmp</em></span>
@@ -234,15 +281,22 @@
         <p>That's it for the SNMP monitoring example. There are a million things that can be monitored via SNMP, so it's up to you to
         decide what you need and want to monitor. Good luck!</p>
 
-        <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png" /></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+        <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top">
           <p>You can usually find the OIDs that can be monitored on a switch by running the following command (replace
           <span class="emphasis"><em>192.168.1.253</em></span> with the IP address of the switch): <span class="emphasis"><em>snmpwalk -v1 -c public 192.168.1.253 -m ALL
           .1</em></span></p>
-        </td></tr></table></div>
-      </li><li class="listitem">
+        </td></tr>
+</table></div>
+      </li>
+<li class="listitem">
         <p><span class="bold"><strong>Monitoring Bandwidth / Traffic Rate</strong></span></p>
 
-        <p>If you're monitoring bandwidth usage on your switches or routers using <a class="ulink" href="http://oss.oetiker.ch/mrtg/" target="_top">MRTG</a>, you can have Icinga alert you when traffic rates exceed thresholds you
+        <p>If you're monitoring bandwidth usage on your switches or routers using <a class="link" href="http://oss.oetiker.ch/mrtg/" target="_top">MRTG</a>, you can have Icinga alert you when traffic rates exceed thresholds you
         specify. The <span class="emphasis"><em>check_mrtgtraf</em></span> plugin (which is included in the Icinga plugins distribution) allows you to
         do this.</p>
 
@@ -263,12 +317,15 @@
         it should use average bandwidth statistics. The "1000000,2000000" options are the warning thresholds (in bytes) for incoming traffic
         rates. The "5000000,5000000" are critical thresholds (in bytes) for outgoing traffic rates. The "10" option causes the plugin to
         return a CRITICAL state if the MRTG log file is older than 10 minutes (it should be updated every 5 minutes).</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Save the file.</p>
   </div>
 
-  <div class="section" title="2.16.7. Restarting Icinga"><div class="titlepage"><div><div><h3 class="title"><a id="idp1317120"></a>2.16.7. Restarting Icinga</h3></div></div></div>
+  <div class="section" title="2.16.7. Restarting Icinga">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="restarticinga"></a>2.16.7. Restarting Icinga</h3></div></div></div>
     
 
     <p>Once you've added the new host and service definitions to the <span class="emphasis"><em>switch.cfg</em></span> file, you're ready to start
@@ -277,28 +334,26 @@
     <p>If the verification process produces any errors messages, fix your configuration file before continuing. Make sure that you don't
     (re)start Icinga until the verification process completes without any errors!</p>
 
-    <a id="idp1355120" class="indexterm"></a>
+    <a class="indexterm" name="idp1395120"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="monitoring-printers.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch02.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="monitoring-publicservices.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">2.15. Monitoring Network Printers </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 2.17. Monitoring Publicly Available Services</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="monitoring-printers.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch02.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="monitoring-publicservices.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">2.15. Monitoring Network Printers </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 2.17. Monitoring Publicly Available Services</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

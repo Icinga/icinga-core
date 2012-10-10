@@ -1,172 +1,262 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>11.1. Icinga Plugin API</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch11.html" title="Chapter 11. Development" />
-    <link rel="prev" href="ch11.html" title="Chapter 11. Development" />
-    <link rel="next" href="epnplugins.html" title="11.2. Developing Plugins For Use With Embedded Perl" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">11.1. Icinga Plugin API</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="ch11.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 11. Development</th>
-          <td width="20%" align="right"> <a accesskey="n" href="epnplugins.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="11.1. Icinga Plugin API"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="pluginapi"></a>11.1. <a id="plugin_api"></a>Icinga Plugin API</h2></div></div></div><div class="toc"><dl><dt><span class="section">11.1.1. <a href="pluginapi.html#idp15921792">Other Resources</a></span></dt><dt><span class="section">11.1.2. <a href="pluginapi.html#idp15926640">Plugin Overview</a></span></dt><dt><span class="section">11.1.3. <a href="pluginapi.html#idp15931056">Return Code</a></span></dt><dt><span class="section">11.1.4. <a href="pluginapi.html#idp15950592">Plugin Output Spec</a></span></dt><dt><span class="section">11.1.5. <a href="pluginapi.html#idp15960144">Plugin Output Examples</a></span></dt><dt><span class="section">11.1.6. <a href="pluginapi.html#idp16011920">Plugin Output Length Restrictions</a></span></dt><dt><span class="section">11.1.7. <a href="pluginapi.html#idp16014384">Examples</a></span></dt><dt><span class="section">11.1.8. <a href="pluginapi.html#idp16016720">Perl Plugins</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>11.1. Icinga Plugin API</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch11.html" title="Chapter 11. Development">
+<link rel="prev" href="ch11.html" title="Chapter 11. Development">
+<link rel="next" href="epnplugins.html" title="11.2. Developing Plugins For Use With Embedded Perl">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">11.1. Icinga Plugin API</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="ch11.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 11. Development</th>
+<td width="20%" align="right"> <a accesskey="n" href="epnplugins.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="11.1. Icinga Plugin API">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="pluginapi"></a>11.1. <a name="plugin_api"></a>Icinga Plugin API</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">11.1.1. <a href="pluginapi.html#otherresources">Other Resources</a></span></dt>
+<dt><span class="section">11.1.2. <a href="pluginapi.html#overview">Plugin Overview</a></span></dt>
+<dt><span class="section">11.1.3. <a href="pluginapi.html#returncode">Return Code</a></span></dt>
+<dt><span class="section">11.1.4. <a href="pluginapi.html#outputspec">Plugin Output Spec</a></span></dt>
+<dt><span class="section">11.1.5. <a href="pluginapi.html#outputexamples">Plugin Output Examples</a></span></dt>
+<dt><span class="section">11.1.6. <a href="pluginapi.html#outputlengthrestrictions">Plugin Output Length Restrictions</a></span></dt>
+<dt><span class="section">11.1.7. <a href="pluginapi.html#examples">Examples</a></span></dt>
+<dt><span class="section">11.1.8. <a href="pluginapi.html#perlplugins">Perl Plugins</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="11.1.1. Other Resources"><div class="titlepage"><div><div><h3 class="title"><a id="idp15921792"></a>11.1.1. Other Resources</h3></div></div></div>
+  <div class="section" title="11.1.1. Other Resources">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="otherresources"></a>11.1.1. Other Resources</h3></div></div></div>
     
 
     <p>If you're looking at writing your own plugins for Icinga, please make sure to visit these other resources:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-        <p>The official <a class="ulink" href="http://sourceforge.net/projects/nagiosplug/" target="_top">Nagios plugin project website</a></p>
-      </li><li class="listitem">
-        <p>The official <a class="ulink" href="http://nagiosplug.sourceforge.net/developer-guidelines.html" target="_top">Nagios plugin development
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>The official <a class="link" href="http://sourceforge.net/projects/nagiosplug/" target="_top">Nagios plugin project website</a></p>
+      </li>
+<li class="listitem">
+        <p>The official <a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html" target="_top">Nagios plugin development
         guidelines</a></p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="11.1.2. Plugin Overview"><div class="titlepage"><div><div><h3 class="title"><a id="idp15926640"></a>11.1.2. Plugin Overview</h3></div></div></div>
+  <div class="section" title="11.1.2. Plugin Overview">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="overview"></a>11.1.2. Plugin Overview</h3></div></div></div>
     
 
     <p>Scripts and executables must do two things (at a minimum) in order to function as Icinga plugins:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Exit with one of several possible return values</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Return at least one line of text output to STDOUT</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>The inner workings of your plugin are unimportant to Icinga. Your plugin could check the status of a TCP port, run a
     database query, check disk free space, or do whatever else it needs to check something. The details will depend on what needs to be
     checked - that's up to you.</p>
   </div>
 
-  <div class="section" title="11.1.3. Return Code"><div class="titlepage"><div><div><h3 class="title"><a id="idp15931056"></a>11.1.3. Return Code</h3></div></div></div>
+  <div class="section" title="11.1.3. Return Code">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="returncode"></a>11.1.3. Return Code</h3></div></div></div>
     
 
     <p>Icinga determines the status of a host or service by evaluating the return code from plugins. The following tables shows a
     list of valid return codes, along with their corresponding service or host states.</p>
 
     <div class="informaltable">
-      <table border="1"><colgroup><col /><col /><col /></colgroup><tbody><tr><td><p> <span class="bold"><strong>Plugin Return Code</strong></span> </p></td><td><p> <span class="bold"><strong>Service State</strong></span> </p></td><td><p> <span class="bold"><strong>Host State</strong></span> </p></td></tr><tr><td><p>0</p></td><td><p>OK</p></td><td><p>UP</p></td></tr><tr><td><p>1</p></td><td><p>WARNING</p></td><td><p>UP or DOWN/UNREACHABLE*</p></td></tr><tr><td><p>2</p></td><td><p>CRITICAL</p></td><td><p>DOWN/UNREACHABLE</p></td></tr><tr><td><p>3</p></td><td><p>UNKNOWN</p></td><td><p>DOWN/UNREACHABLE</p></td></tr></tbody></table>
+      <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Plugin Return Code</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service State</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Host State</strong></span> </p></td>
+</tr>
+<tr>
+<td><p>0</p></td>
+<td><p>OK</p></td>
+<td><p>UP</p></td>
+</tr>
+<tr>
+<td><p>1</p></td>
+<td><p>WARNING</p></td>
+<td><p>UP or DOWN/UNREACHABLE*</p></td>
+</tr>
+<tr>
+<td><p>2</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>DOWN/UNREACHABLE</p></td>
+</tr>
+<tr>
+<td><p>3</p></td>
+<td><p>UNKNOWN</p></td>
+<td><p>DOWN/UNREACHABLE</p></td>
+</tr>
+</tbody>
+</table>
     </div>
   </div>
 
-  <div class="section" title="11.1.4. Plugin Output Spec"><div class="titlepage"><div><div><h3 class="title"><a id="idp15950592"></a>11.1.4. Plugin Output Spec</h3></div></div></div>
+  <div class="section" title="11.1.4. Plugin Output Spec">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="outputspec"></a>11.1.4. Plugin Output Spec</h3></div></div></div>
     
 
     <p>At a minimum, plugins should return at least one of text output but they can optionally return multiple lines of output. Plugins
     may also return optional performance data that can be processed by external applications. The basic format for plugin output is shown
     below:</p>
 
-    <p><span class="color">TEXT OUTPUT</span> | <span class="color">OPTIONAL
-    PERFDATA</span></p>
+    <p><span class="color"><font color="red">TEXT OUTPUT</font></span> | <span class="color"><font color="#FFA500">OPTIONAL
+    PERFDATA</font></span></p>
 
-    <p><span class="color">LONG TEXT LINE 1 LONG TEXT LINE 2 ... LONG TEXT LINE N</span> | <span class="color">PERFDATA LINE 2</span></p>
+    <p><span class="color"><font color="blue">LONG TEXT LINE 1 LONG TEXT LINE 2 ... LONG TEXT LINE N</font></span> | <span class="color"><font color="#FFA500">PERFDATA LINE 2</font></span></p>
 
-    <p><span class="color">PERFDATA LINE 3 ... PERFDATA LINE N</span></p>
+    <p><span class="color"><font color="#FFA500">PERFDATA LINE 3 ... PERFDATA LINE N</font></span></p>
 
-    <p>The performance data (shown in <span class="color">orange</span>) is optional. If a plugin returns
+    <p>The performance data (shown in <span class="color"><font color="#FFA500">orange</font></span>) is optional. If a plugin returns
     performance data in its output, it must separate the performance data from the other text output using a pipe (|) symbol. Additional
-    lines of long text output (shown in <span class="color">blue</span>) are also optional.</p>
+    lines of long text output (shown in <span class="color"><font color="blue">blue</font></span>) are also optional.</p>
   </div>
 
-  <div class="section" title="11.1.5. Plugin Output Examples"><div class="titlepage"><div><div><h3 class="title"><a id="idp15960144"></a>11.1.5. Plugin Output Examples</h3></div></div></div>
+  <div class="section" title="11.1.5. Plugin Output Examples">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="outputexamples"></a>11.1.5. Plugin Output Examples</h3></div></div></div>
     
 
     <p>Let's see some examples of possible plugin output...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p><span class="bold"><strong>Case 1: One line of output (text only)</strong></span></p>
 
         <p>Assume we have a plugin that returns one line of output that looks like this:</p>
 
         <p>DISK OK - free space: / 3326 MB (56%); If this plugin was used to perform a service check, the entire line of output will be
         stored in the <a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a> macro.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p><span class="bold"><strong>Case 2: One line of output (text and perfdata)</strong></span></p>
 
         <p>A plugin can return optional performance data for use by external applications. To do this, the performance data must be
         separated from the text output with a pipe (|) symbol like such:</p>
 
-        <p><span class="color">DISK OK - free space: / 3326 MB (56%);</span> | <span class="color">/=2643MB;5948;5958;0;5968</span></p>
+        <p><span class="color"><font color="red">DISK OK - free space: / 3326 MB (56%);</font></span> | <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968</font></span></p>
 
-        <p>If this plugin was used to perform a service check, the <span class="color">red</span> portion of
+        <p>If this plugin was used to perform a service check, the <span class="color"><font color="red">red</font></span> portion of
         output (left of the pipe separator) will be stored in the <a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a> macro and
-        the  <span class="color">orange</span> portion of output (right of the pipe separator) will be stored in the
+        the  <span class="color"><font color="red">orange</font></span> portion of output (right of the pipe separator) will be stored in the
         <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a> macro.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p><span class="bold"><strong>Case 3: Multiple lines of output (text and perfdata)</strong></span></p>
 
         <p>A plugin optionally returns multiple lines of both text output and perfdata, like such:</p>
 
-        <p class="simpara"><span class="color">DISK OK - free space: / 3326 MB (56%);</span></p>
+        <p class="simpara"><span class="color"><font color="red">DISK OK - free space: / 3326 MB (56%);</font></span></p>
 
-        <p> | <span class="color">/=2643MB;5948;5958;0;5968</span></p>
+        <p> | <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968</font></span></p>
 
-        <p><span class="color">/ 15272 MB (77%);</span></p>
+        <p><span class="color"><font color="blue">/ 15272 MB (77%);</font></span></p>
 
-        <p><span class="color">/boot 68 MB (69%);</span></p>
+        <p><span class="color"><font color="blue">/boot 68 MB (69%);</font></span></p>
 
-        <p><span class="color">/home 69357 MB (27%);</span></p>
+        <p><span class="color"><font color="blue">/home 69357 MB (27%);</font></span></p>
 
-        <p><span class="color">/var/log 819 MB (84%);</span> | <span class="color">/boot=68MB;88;93;0;98</span></p>
+        <p><span class="color"><font color="blue">/var/log 819 MB (84%);</font></span> | <span class="color"><font color="#FFA500">/boot=68MB;88;93;0;98</font></span></p>
 
-        <p><span class="color">/home=69357MB;253404;253409;0;253414</span></p>
+        <p><span class="color"><font color="#FFA500">/home=69357MB;253404;253409;0;253414</font></span></p>
 
-        <p><span class="color">/var/log=818MB;970;975;0;980</span></p>
+        <p><span class="color"><font color="#FFA500">/var/log=818MB;970;975;0;980</font></span></p>
 
-        <p>If this plugin was used to perform a service check, the <span class="color">red</span> portion of first
+        <p>If this plugin was used to perform a service check, the <span class="color"><font color="red">red</font></span> portion of first
         line of output (left of the pipe separator) will be stored in the <a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a>
-        macro. The <span class="color">orange</span> portions of the first and subsequent lines are concatenated
-        (with spaces) are stored in the <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a> macro. The <span class="color">blue</span> portions of the 2nd - 5th lines of output will be concatenated (with escaped newlines)
+        macro. The <span class="color"><font color="#FFA500">orange</font></span> portions of the first and subsequent lines are concatenated
+        (with spaces) are stored in the <a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a> macro. The <span class="color"><font color="blue">blue</font></span> portions of the 2nd - 5th lines of output will be concatenated (with escaped newlines)
         and stored in the <a class="link" href="macrolist.html#macrolist-longserviceoutput">$LONGSERVICEOUTPUT$</a> macro.</p>
 
         <p>The final contents of each macro are listed below:</p>
 
         <div class="informaltable">
-          <table border="1"><colgroup><col /><col /></colgroup><tbody><tr><td><p> <span class="bold"><strong>Macro</strong></span> </p></td><td><p> <span class="bold"><strong>Value</strong></span> </p></td></tr><tr><td><p>$SERVICEOUTPUT$</p></td><td><p> <span class="color">DISK OK - free space: / 3326 MB (56%);</span> </p></td></tr><tr><td><p>$SERVICEPERFDATA$</p></td><td><p> <span class="color">/=2643MB;5948;5958;0;5968 /boot=68MB;88;93;0;98 /home=69357MB;253404;253409;0;253414 /var/log=818MB;970;975;0;980</span>
-                </p></td></tr><tr><td><p>$LONGSERVICEOUTPUT$</p></td><td><p> <span class="color">/ 15272 MB (77%);\n/boot 68 MB (69%);\n/var/log 819 MB
-                (84%);</span> </p></td></tr></tbody></table>
+          <table border="1">
+<colgroup>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Macro</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Value</strong></span> </p></td>
+</tr>
+<tr>
+<td><p>$SERVICEOUTPUT$</p></td>
+<td><p> <span class="color"><font color="red">DISK OK - free space: / 3326 MB (56%);</font></span> </p></td>
+</tr>
+<tr>
+<td><p>$SERVICEPERFDATA$</p></td>
+<td><p> <span class="color"><font color="#FFA500">/=2643MB;5948;5958;0;5968 /boot=68MB;88;93;0;98 /home=69357MB;253404;253409;0;253414 /var/log=818MB;970;975;0;980</font></span>
+                </p></td>
+</tr>
+<tr>
+<td><p>$LONGSERVICEOUTPUT$</p></td>
+<td><p> <span class="color"><font color="blue">/ 15272 MB (77%);\n/boot 68 MB (69%);\n/var/log 819 MB
+                (84%);</font></span> </p></td>
+</tr>
+</tbody>
+</table>
         </div>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>With regards to multiple lines of output, you have the following options for returning performance data:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>You can choose to return no performance data whatsoever</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>You can return performance data on the first line only</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>You can return performance data only in subsequent lines (after the first)</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>You can return performance data in both the first line and subsequent lines (as shown above)</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="11.1.6. Plugin Output Length Restrictions"><div class="titlepage"><div><div><h3 class="title"><a id="idp16011920"></a>11.1.6. Plugin Output Length Restrictions</h3></div></div></div>
+  <div class="section" title="11.1.6. Plugin Output Length Restrictions">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="outputlengthrestrictions"></a>11.1.6. Plugin Output Length Restrictions</h3></div></div></div>
     
 
     <p>Icinga will only read the first 8 KB of data that a plugin returns. This is done in order to prevent runaway plugins from
@@ -177,7 +267,9 @@
     through the external command file.</p>
   </div>
 
-  <div class="section" title="11.1.7. Examples"><div class="titlepage"><div><div><h3 class="title"><a id="idp16014384"></a>11.1.7. Examples</h3></div></div></div>
+  <div class="section" title="11.1.7. Examples">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="examples"></a>11.1.7. Examples</h3></div></div></div>
     
 
     <p>If you're looking for some example plugins to study, we would recommend that you download the official Nagios plugins and
@@ -185,34 +277,34 @@
     found <a class="link" href="plugins.html" title="5.1. Icinga Plugins">here</a>.</p>
   </div>
 
-  <div class="section" title="11.1.8. Perl Plugins"><div class="titlepage"><div><div><h3 class="title"><a id="idp16016720"></a>11.1.8. Perl Plugins</h3></div></div></div>
+  <div class="section" title="11.1.8. Perl Plugins">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="perlplugins"></a>11.1.8. Perl Plugins</h3></div></div></div>
     
 
     <p>Icinga features an optional <a class="link" href="embeddedperl.html" title="7.18. Using The Embedded Perl Interpreter">embedded Perl interpreter</a> which can speed up the execution
     of Perl plugins. More information on developing Perl plugins for use with the embedded Perl interpreter can be found <a class="link" href="embeddedperl.html" title="7.18. Using The Embedded Perl Interpreter">here</a>.</p>
 
-    <a id="idp16019472" class="indexterm"></a>
+    <a class="indexterm" name="idp16229568"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="ch11.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch11.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="epnplugins.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">Chapter 11. Development </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 11.2. Developing Plugins For Use With Embedded Perl</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="ch11.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch11.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="epnplugins.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">Chapter 11. Development </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 11.2. Developing Plugins For Use With Embedded Perl</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

@@ -1,51 +1,69 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>10.3. NSCA</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch10.html" title="Chapter 10. Additional software" />
-    <link rel="prev" href="nrpe.html" title="10.2. NRPE" />
-    <link rel="next" href="ch11.html" title="Chapter 11. Development" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">10.3. NSCA</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="nrpe.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 10. Additional software</th>
-          <td width="20%" align="right"> <a accesskey="n" href="ch11.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="10.3. NSCA"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="nsca"></a>10.3. <a id="nsca_"></a>NSCA</h2></div></div></div><div class="toc"><dl><dt><span class="section">10.3.1. <a href="nsca.html#idp15831744">Introduction</a></span></dt><dt><span class="section">10.3.2. <a href="nsca.html#idp15837360">Prerequisites</a></span></dt><dt><span class="section">10.3.3. <a href="nsca.html#idp15847104">Download and compile</a></span></dt><dt><span class="section">10.3.4. <a href="nsca.html#idp15847360">Customise</a></span></dt><dt><span class="section">10.3.5. <a href="nsca.html#idp15862896">First test</a></span></dt><dt><span class="section">10.3.6. <a href="nsca.html#idp15868752">Install</a></span></dt><dt><span class="section">10.3.7. <a href="nsca.html#idp15886144">Remote system(s)</a></span></dt><dt><span class="section">10.3.8. <a href="nsca.html#idp15888000">Copy files</a></span></dt><dt><span class="section">10.3.9. <a href="nsca.html#idp15889888">Second test</a></span></dt><dt><span class="section">10.3.10. <a href="nsca.html#idp15894048">Troubleshooting</a></span></dt><dt><span class="section">10.3.11. <a href="nsca.html#idp15899856">Security</a></span></dt><dt><span class="section">10.3.12. <a href="nsca.html#idp15901808">Operation</a></span></dt><dt><span class="section">10.3.13. <a href="nsca.html#idp15908016">Integration into Icinga</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>10.3. NSCA</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch10.html" title="Chapter 10. Additional software">
+<link rel="prev" href="nrpe.html" title="10.2. NRPE">
+<link rel="next" href="ch11.html" title="Chapter 11. Development">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">10.3. NSCA</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="nrpe.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 10. Additional software</th>
+<td width="20%" align="right"> <a accesskey="n" href="ch11.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="10.3. NSCA">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="nsca"></a>10.3. <a name="nsca_"></a>NSCA</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">10.3.1. <a href="nsca.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">10.3.2. <a href="nsca.html#prerequisites">Prerequisites</a></span></dt>
+<dt><span class="section">10.3.3. <a href="nsca.html#downloadcompile">Download and compile</a></span></dt>
+<dt><span class="section">10.3.4. <a href="nsca.html#customise">Customise</a></span></dt>
+<dt><span class="section">10.3.5. <a href="nsca.html#firsttest">First test</a></span></dt>
+<dt><span class="section">10.3.6. <a href="nsca.html#install">Install</a></span></dt>
+<dt><span class="section">10.3.7. <a href="nsca.html#remotesystem">Remote system(s)</a></span></dt>
+<dt><span class="section">10.3.8. <a href="nsca.html#copyfiles">Copy files</a></span></dt>
+<dt><span class="section">10.3.9. <a href="nsca.html#secondtest">Second test</a></span></dt>
+<dt><span class="section">10.3.10. <a href="nsca.html#troubleshooting">Troubleshooting</a></span></dt>
+<dt><span class="section">10.3.11. <a href="nsca.html#security">Security</a></span></dt>
+<dt><span class="section">10.3.12. <a href="nsca.html#operation">Operation</a></span></dt>
+<dt><span class="section">10.3.13. <a href="nsca.html#icingaintegration">Integration into Icinga</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="10.3.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp15831744"></a>10.3.1. Introduction</h3></div></div></div>
+  <div class="section" title="10.3.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>10.3.1. Introduction</h3></div></div></div>
     
 
     <p>Nagios Service Check Acceptor (or NSCA for short) is an addon to transmit check results from one system to another. It
     consists of two modules: the sender (send_nsca) and the receiver (nsca). The data is sent in a secure manner. Despite its name host
     check results are transmitted as well.</p>
 
-    <div class="figure"><a id="idp15833536"></a><p class="title"><b>Figure 10.3. NSCA</b></p><div class="figure-contents">
+    <div class="figure">
+<a name="idp16038432"></a><p class="title"><b>Figure 10.3. NSCA</b></p>
+<div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/nsca.png" alt="NSCA" /></div>
-    </div></div><br class="figure-break" />
+      <div class="mediaobject"><img src="../images/nsca.png" alt="NSCA"></div>
+    </div>
+</div>
+<br class="figure-break">
 
     <p>NSCA is running as a daemon on the Icinga server. It listens for information sent from remote machines using the
     send_nsca program (on Unix/Linux machines) or NSClient++ (often used on Windows machines). The data will be encrypted using the method
@@ -56,54 +74,79 @@
     <p>The following instructions are mainly based on the README included in the NSCA package.</p>
   </div>
 
-  <div class="section" title="10.3.2. Prerequisites"><div class="titlepage"><div><div><h3 class="title"><a id="idp15837360"></a>10.3.2. Prerequisites</h3></div></div></div>
+  <div class="section" title="10.3.2. Prerequisites">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="prerequisites"></a>10.3.2. Prerequisites</h3></div></div></div>
     
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Icinga should be up and running</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p><span class="emphasis"><em><a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands = 1</a></em></span> should be set in
         <code class="literal">icinga.cfg</code></p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p><span class="emphasis"><em><a class="link" href="configmain.html#configmain-command_check_interval">command_check_interval = &lt;n&gt;[s]</a></em></span> should be
         set in <code class="literal">icinga.cfg</code></p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p><span class="emphasis"><em><a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks = 1</a></em></span> should be set in
         <code class="literal">icinga.cfg</code> while testing, otherwise there will be no messages about incoming passive checks</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>libmcrypt and libmcrypt-devel packages are installed (which may be named similar depending on the distribution used),
         otherwise use one of the following commands to install the packages:</p>
 
         <pre class="programlisting"> #&gt; apt-get install libmcrypt libmcrypt-devel # Debian / Ubuntu
  #&gt; yum install libmcrypt libmcrypt-devel     # RHEL / Fedora / CentOS
  #&gt; zypper install libmcrypt libmcrypt-devel  # SLES / OpenSuSE (or use Yast instead)</pre>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="10.3.3. Download and compile"><div class="titlepage"><div><div><h3 class="title"><a id="idp15847104"></a>10.3.3. Download and compile</h3></div></div></div>
+  <div class="section" title="10.3.3. Download and compile">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="downloadcompile"></a>10.3.3. Download and compile</h3></div></div></div>
     
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Instead of installing NSCA from scratch you may want to use a package which might be available for your OS. Please take a
-      look at the <a class="ulink" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.</p>
+      look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.</p>
 
-      <p>If you are planning to install from source then please use the official release tarball using something like </p><pre class="programlisting"> #&gt; wget http://sourceforge.net/projects/nagios/files/nsca-2.x/nsca-2.7.2/nsca-2.7.2.tar.gz -O nsca-2.7.2.tar.gz</pre>
-    </td></tr></table></div>
+      <p>If you are planning to install from source then please use the official release tarball using something like </p>
+<pre class="programlisting"> #&gt; wget http://sourceforge.net/projects/nagios/files/nsca-2.x/nsca-2.7.2/nsca-2.7.2.tar.gz -O nsca-2.7.2.tar.gz</pre>
+    </td></tr>
+</table></div>
 
-    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png" /></td><th align="left">Important</th></tr><tr><td align="left" valign="top">
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
 
     <p>The maximum length of data to be transmitted is set to 2,048 bytes, the maximal length of plugin output is set to 512 bytes. If
     that is not sufficient then you have to alter the appropriate value in <code class="literal">icinga-nsca/include/common.h</code>.</p>
 
     <pre class="programlisting"> #define MAX_INPUT_BUFFER        2048    /* max size of most buffers we use */
- #define MAX_PLUGINOUTPUT_LENGTH 512 </pre><p>Please keep in mind that you have to recompile the programs if you change this values
+ #define MAX_PLUGINOUTPUT_LENGTH 512 </pre>
+<p>Please keep in mind that you have to recompile the programs if you change this values
     at a later stage.</p>
 
     <p>Due to the setting of the following define in include/common.h (in Icinga core) the max. value cannot exceed 8,192 bytes.</p>
 
-    <pre class="programlisting"> #define MAX_EXTERNAL_COMMAND_LENGTH             8192    /* max length of an external command */</pre><p>After
+    <pre class="programlisting"> #define MAX_EXTERNAL_COMMAND_LENGTH             8192    /* max length of an external command */</pre>
+<p>After
     setting the owner change to the newly created directory and call configure and make</p>
 
     <pre class="programlisting"> #&gt; chown -R icinga icinga-nsca
@@ -113,11 +156,19 @@
 
     <p>Afterwards two programs (send and send_nsca) are created in the <code class="literal">src</code> directory.</p>
 
-    <div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png" /></td><th align="left">Caution</th></tr><tr><td align="left" valign="top">
+    <div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top">
       <p>If the libmcrypt packages are not found "./configure" will complain but will NOT end with a non-zero return code so please check
-      <span class="emphasis"><em>config.log</em></span> using </p><pre class="programlisting"> #&gt; grep mcrypt.h: config.log</pre><p> This command should return no
+      <span class="emphasis"><em>config.log</em></span> using </p>
+<pre class="programlisting"> #&gt; grep mcrypt.h: config.log</pre>
+<p> This command should return no
       lines.</p>
-    </td></tr></table></div>
+    </td></tr>
+</table></div>
 
     <p>If the libmcrypt modules are not found, the user or group deviate from "icinga" or the port to be used is not the default 5667 you
     can use several options to specify different values. Call "<code class="literal">./configure -h</code>" to see the options available.</p>
@@ -126,7 +177,9 @@
     described in the README file.</p>
   </div>
 
-  <div class="section" title="10.3.4. Customise"><div class="titlepage"><div><div><h3 class="title"><a id="idp15847360"></a>10.3.4. Customise</h3></div></div></div>
+  <div class="section" title="10.3.4. Customise">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="customise"></a>10.3.4. Customise</h3></div></div></div>
     
 
     <p>The sample-config directory contains <code class="literal">nsca.cfg</code> and <code class="literal">send_nsca.cfg</code>. At least the settings of
@@ -136,7 +189,9 @@
     inetd/xinetd.</p>
   </div>
 
-  <div class="section" title="10.3.5. First test"><div class="titlepage"><div><div><h3 class="title"><a id="idp15862896"></a>10.3.5. First test</h3></div></div></div>
+  <div class="section" title="10.3.5. First test">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="firsttest"></a>10.3.5. First test</h3></div></div></div>
     
 
     <p>Switch to the Icinga user and run a first test</p>
@@ -159,7 +214,9 @@
     <code class="literal">icinga.cfg</code>.</p>
   </div>
 
-  <div class="section" title="10.3.6. Install"><div class="titlepage"><div><div><h3 class="title"><a id="idp15868752"></a>10.3.6. Install</h3></div></div></div>
+  <div class="section" title="10.3.6. Install">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="install"></a>10.3.6. Install</h3></div></div></div>
     
 
     <p>"make install" will do nothing (yet) so you have to copy some files to new locations. The following commands will copy the nsca
@@ -185,16 +242,23 @@
         <p>If you want the daemon to be started by (x)inetd you have to extend /etc/services, alter/copy another file and restart
         (x)inetd. Don't forget to stop the nsca daemon you started during "First test".</p>
 
-        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
           <p>The setting of "server_port" specified in nsca.cfg is ignored when you use inetd/xinetd.</p>
-        </td></tr></table></div>
+        </td></tr>
+</table></div>
 
         <pre class="programlisting"> #&gt; kill &lt; /var/run/nsca.pid
  #&gt; echo "nsca 5667/tcp # NSCA" &gt;&gt; /etc/services</pre>
 
         <p>Depending on the superserver which is installed on your system there are three alternatives</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
             <p>inetd WITH tcpwrappers</p>
 
             <p>Add entries to your /etc/hosts.allow and /etc/hosts.deny file to enable TCP wrapper protection for the nsca service. This
@@ -203,14 +267,16 @@
 
             <pre class="programlisting"> #&gt; echo "nsca stream tcp nowait icinga /usr/sbin/tcpd /usr/local/icinga/bin/nsca -c /usr/local/icinga/etc/nsca.cfg --inetd" &gt;&gt; /etc/inetd.conf
  #&gt; /etc/init.d/inetd restart</pre>
-          </li><li class="listitem">
+          </li>
+<li class="listitem">
             <p>inetd WITHOUT tcpwrappers</p>
 
             <p>Add "nsca stream tcp nowait &lt;user&gt; &lt;nsca-binary&gt; -c &lt;nsca-cfg&gt; --inetd" to /etc/inetd.conf, e.g.</p>
 
             <pre class="programlisting"> #&gt; echo "nsca stream tcp nowait icinga /usr/local/icinga/bin/nsca -c /usr/local/icinga/etc/nsca.cfg --inetd" &gt;&gt; /etc/inetd.conf
  #&gt; /etc/init.d/inetd restart</pre>
-          </li><li class="listitem">
+          </li>
+<li class="listitem">
             <p>xinetd</p>
 
             <p>Consider editing the config file nsca.xinetd in the sample-config folder and replacing &lt;ipaddress1&gt;... by the IP
@@ -222,11 +288,14 @@
 
             <pre class="programlisting"> #&gt; cp -p ../sample-config/nsca.xinetd /etc/xinetd.d/
  #&gt; /etc/init.d/xinetd restart</pre>
-          </li></ul></div>
+          </li>
+</ul></div>
       </li></ul></div>
   </div>
 
-  <div class="section" title="10.3.7. Remote system(s)"><div class="titlepage"><div><div><h3 class="title"><a id="idp15886144"></a>10.3.7. Remote system(s)</h3></div></div></div>
+  <div class="section" title="10.3.7. Remote system(s)">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="remotesystem"></a>10.3.7. Remote system(s)</h3></div></div></div>
     
 
     <p>You're done on the local system but apparently send_nsca has to be copied to the remote system(s).</p>
@@ -235,7 +304,9 @@
     packages and configure/make as described above on multiple servers.</p>
   </div>
 
-  <div class="section" title="10.3.8. Copy files"><div class="titlepage"><div><div><h3 class="title"><a id="idp15888000"></a>10.3.8. Copy files</h3></div></div></div>
+  <div class="section" title="10.3.8. Copy files">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="copyfiles"></a>10.3.8. Copy files</h3></div></div></div>
     
 
     <p>You're free where to place binary and config file. We assume that you have a directory structure similar to the Icinga
@@ -245,7 +316,9 @@
  #&gt; scp -p &lt;Icinga server&gt;:/usr/local/icinga-nsca/sample-config/send_nsca.cfg /usr/local/icinga/etc/</pre>
   </div>
 
-  <div class="section" title="10.3.9. Second test"><div class="titlepage"><div><div><h3 class="title"><a id="idp15889888"></a>10.3.9. Second test</h3></div></div></div>
+  <div class="section" title="10.3.9. Second test">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="secondtest"></a>10.3.9. Second test</h3></div></div></div>
     
 
     <p>Now you can rerun the test on the remote system(s)</p>
@@ -257,7 +330,9 @@
     the Icinga server similar to the ones mentioned above. If there are no messages check the setting of <a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks</a> in <code class="literal">icinga.cfg</code>.</p>
   </div>
 
-  <div class="section" title="10.3.10. Troubleshooting"><div class="titlepage"><div><div><h3 class="title"><a id="idp15894048"></a>10.3.10. Troubleshooting</h3></div></div></div>
+  <div class="section" title="10.3.10. Troubleshooting">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="troubleshooting"></a>10.3.10. Troubleshooting</h3></div></div></div>
     
 
     <p>If the daemon is not permitted to write to the command pipe then the data will be lost! You should run the daemon using the same
@@ -280,7 +355,9 @@
     <code class="literal">nsca.log</code>.</p>
   </div>
 
-  <div class="section" title="10.3.11. Security"><div class="titlepage"><div><div><h3 class="title"><a id="idp15899856"></a>10.3.11. Security</h3></div></div></div>
+  <div class="section" title="10.3.11. Security">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="security"></a>10.3.11. Security</h3></div></div></div>
     
 
     <p>There are some security implications with allowing remote clients to provide check results to Icinga. Because of this, you
@@ -289,7 +366,9 @@
     you.</p>
   </div>
 
-  <div class="section" title="10.3.12. Operation"><div class="titlepage"><div><div><h3 class="title"><a id="idp15901808"></a>10.3.12. Operation</h3></div></div></div>
+  <div class="section" title="10.3.12. Operation">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="operation"></a>10.3.12. Operation</h3></div></div></div>
     
 
     <p>send_nsca is used to send the check results from the remote host to the Icinga server. The syntax differs depending on the
@@ -314,7 +393,9 @@
     <p>&lt;host_name&gt;[tab]&lt;return_code&gt;[tab]&lt;plugin_output&gt;[newline]</p>
   </div>
 
-  <div class="section" title="10.3.13. Integration into Icinga"><div class="titlepage"><div><div><h3 class="title"><a id="idp15908016"></a>10.3.13. Integration into Icinga</h3></div></div></div>
+  <div class="section" title="10.3.13. Integration into Icinga">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="icingaintegration"></a>10.3.13. Integration into Icinga</h3></div></div></div>
     
 
     <p>So far you only created some prerequisites for running passive checks but didn't define any host or service actually using the
@@ -327,7 +408,8 @@
     <pre class="programlisting"> define command{
     command_name check_dummy
     command_line $USER1$/check_dummy $ARG1$ $ARG2$
-    }</pre><p>You may want to create a service template. The host template might look similiar to that (just replace "service" by
+    }</pre>
+<p>You may want to create a service template. The host template might look similiar to that (just replace "service" by
     "host")</p>
 
     <pre class="programlisting"> define service{
@@ -339,19 +421,23 @@
     check_period            24x7              ; check active all the time
     check_freshness         0                 ; don't check if check result is "stale"
     register                0                 ; this is a template, not a real service
-    }</pre><p>Using the template above the service definition might look like</p>
+    }</pre>
+<p>Using the template above the service definition might look like</p>
 
     <pre class="programlisting"> define service{
     use                     passive-service   ; template to inherit from
     host_name               remotehost        ; host where send_nsca is located
     service_description     Diskspace         ; service to be checked
-    }</pre><p>Restart Icinga to include the definitions in your running configuration</p>
+    }</pre>
+<p>Restart Icinga to include the definitions in your running configuration</p>
 
-    <pre class="programlisting"> #&gt; /etc/init.d/icinga restart</pre><p>Change to your remote host, switch to the Icinga user and
+    <pre class="programlisting"> #&gt; /etc/init.d/icinga restart</pre>
+<p>Change to your remote host, switch to the Icinga user and
     execute send_nsca replacing &lt;Icinga server&gt; by the IP address of the server running Icinga</p>
 
     <pre class="programlisting"> #&gt; su - icinga
- $&gt; echo -e "remotehost\tDiskspace\t0\t/var=78%\n" | /usr/local/icinga/bin/send_nsca -H &lt;Icinga server&gt; -c /usr/local/icinga/etc/send_nsca.cfg</pre><p>Please
+ $&gt; echo -e "remotehost\tDiskspace\t0\t/var=78%\n" | /usr/local/icinga/bin/send_nsca -H &lt;Icinga server&gt; -c /usr/local/icinga/etc/send_nsca.cfg</pre>
+<p>Please
     keep in mind to specify the host name and service description exactly as defined in your Icinga definition (because the processing is
     case sensitive). Otherwise you'll get messages in icinga.log that the object could not be found. If there are no messages check the
     setting of <a class="link" href="configmain.html#configmain-log_passive_checks">log_passive_checks</a> in <code class="literal">icinga.cfg</code>.</p>
@@ -359,30 +445,28 @@
     <p>After a short while you should see messages in icinga.log showing that the information submitted was processed. You should see the
     information in the classic UI as well turning the service state from "Pending" to "OK" and containing the data you specified.</p>
 
-    <a id="idp15915904" class="indexterm"></a>
+    <a class="indexterm" name="idp16126768"></a>
 
-    <a id="idp15917760" class="indexterm"></a>
+    <a class="indexterm" name="idp16128352"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="nrpe.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch10.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="ch11.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">10.2. NRPE </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> Chapter 11. Development</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="nrpe.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch10.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="ch11.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">10.2. NRPE </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> Chapter 11. Development</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

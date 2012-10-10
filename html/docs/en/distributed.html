@@ -1,59 +1,87 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.6. Distributed Monitoring</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
-    <link rel="prev" href="freshness.html" title="7.5. Service and Host Freshness Checks" />
-    <link rel="next" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.6. Distributed Monitoring</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="freshness.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="redundancy.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.6. Distributed Monitoring"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="distributed"></a>7.6. <a id="distributed_monitoring"></a>Distributed Monitoring</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.6.1. <a href="distributed.html#idp13454560">Introduction</a></span></dt><dt><span class="section">7.6.2. <a href="distributed.html#idp13455632">Goals</a></span></dt><dt><span class="section">7.6.3. <a href="distributed.html#idp13457312">Reference Diagram</a></span></dt><dt><span class="section">7.6.4. <a href="distributed.html#idp13460784">Central Server vs. Distributed Servers</a></span></dt><dt><span class="section">7.6.5. <a href="distributed.html#idp13465824">Obtaining Service Check Information From Distributed Monitors</a></span></dt><dt><span class="section">7.6.6. <a href="distributed.html#idp13468464">Distributed Server Configuration</a></span></dt><dt><span class="section">7.6.7. <a href="distributed.html#idp13471856">ocsp_command=submit_check_result</a></span></dt><dt><span class="section">7.6.8. <a href="distributed.html#idp13501264">Central Server Configuration</a></span></dt><dt><span class="section">7.6.9. <a href="distributed.html#idp13485232">Problems With Passive Checks</a></span></dt><dt><span class="section">7.6.10. <a href="distributed.html#idp13520544">Freshness Checking</a></span></dt><dt><span class="section">7.6.11. <a href="distributed.html#idp13520800">Performing Host Checks</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.6. Distributed Monitoring</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="freshness.html" title="7.5. Service and Host Freshness Checks">
+<link rel="next" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.6. Distributed Monitoring</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="freshness.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="redundancy.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.6. Distributed Monitoring">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="distributed"></a>7.6. <a name="distributed_monitoring"></a>Distributed Monitoring</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.6.1. <a href="distributed.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.6.2. <a href="distributed.html#goals">Goals</a></span></dt>
+<dt><span class="section">7.6.3. <a href="distributed.html#refrencediagram">Reference Diagram</a></span></dt>
+<dt><span class="section">7.6.4. <a href="distributed.html#centralvsdistributed">Central Server vs. Distributed Servers</a></span></dt>
+<dt><span class="section">7.6.5. <a href="distributed.html#servicecheckinfo">Obtaining Service Check Information From Distributed Monitors</a></span></dt>
+<dt><span class="section">7.6.6. <a href="distributed.html#distributedconfig">Distributed Server Configuration</a></span></dt>
+<dt><span class="section">7.6.7. <a href="distributed.html#oscpsubmitcheckresult">ocsp_command=submit_check_result</a></span></dt>
+<dt><span class="section">7.6.8. <a href="distributed.html#centralconfig">Central Server Configuration</a></span></dt>
+<dt><span class="section">7.6.9. <a href="distributed.html#problemspassive">Problems With Passive Checks</a></span></dt>
+<dt><span class="section">7.6.10. <a href="distributed.html#freshnesschecks">Freshness Checking</a></span></dt>
+<dt><span class="section">7.6.11. <a href="distributed.html#hostcheckperforming">Performing Host Checks</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.6.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp13454560"></a>7.6.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.6.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>7.6.1. Introduction</h3></div></div></div>
+	  
 
   <p>Icinga can be configured to support distributed monitoring of network services and resources. We'll try to briefly
   explan how this can be accomplished...</p>
 
-  </div><div class="section" title="7.6.2. Goals"><div class="titlepage"><div><div><h3 class="title"><a id="idp13455632"></a>7.6.2. Goals</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.6.2. Goals">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="goals"></a>7.6.2. Goals</h3></div></div></div>
+	  
 
   <p>The goal in the distributed monitoring environment that we will describe is to offload the overhead (CPU usage, etc.) of
   performing service checks from a "central" server onto one or more "distributed" servers. Most small to medium sized shops will
   not have a real need for setting up such an environment. However, when you want to start monitoring hundreds or even thousands
   of <span class="emphasis"><em>hosts</em></span> (and several times that many services) using Icinga, this becomes quite important.</p>
 
-  </div><div class="section" title="7.6.3. Reference Diagram"><div class="titlepage"><div><div><h3 class="title"><a id="idp13457312"></a>7.6.3. Reference Diagram</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.6.3. Reference Diagram">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="refrencediagram"></a>7.6.3. Reference Diagram</h3></div></div></div>
+	  
 
   <p>The diagram below should help give you a general idea of how distributed monitoring works with Icinga. We'll be
   referring to the items shown in the diagram as we explain things...</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/distributed.png" /></span></p>
+  <p><span class="inlinemediaobject"><img src="../images/distributed.png"></span></p>
 
-  </div><div class="section" title="7.6.4. Central Server vs. Distributed Servers"><div class="titlepage"><div><div><h3 class="title"><a id="idp13460784"></a>7.6.4. Central Server vs. Distributed Servers</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.6.4. Central Server vs. Distributed Servers">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="centralvsdistributed"></a>7.6.4. Central Server vs. Distributed Servers</h3></div></div></div>
+	  
 
   <p>When setting up a distributed monitoring environment with Icinga, there are differences in the way the central and
   distributed servers are configured. We'll show you how to configure both types of servers and explain what effects the changes
@@ -75,7 +103,12 @@
   serves as the focal point for all monitoring logic (i.e. it sends out notifications, runs event handler scripts, determines host
   states, has the web interface installed, etc).</p>
 
-  </div><div class="section" title="7.6.5. Obtaining Service Check Information From Distributed Monitors"><div class="titlepage"><div><div><h3 class="title"><a id="idp13465824"></a>7.6.5. Obtaining Service Check Information From Distributed Monitors</h3></div></div></div>
+  </div>
+  
+  <div class="section" title="7.6.5. Obtaining Service Check Information From Distributed Monitors">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="servicecheckinfo"></a>7.6.5. Obtaining Service Check Information From Distributed Monitors</h3></div></div></div>
+	  
 
   <p>Okay, before we go jumping into configuration detail we need to know how to send the service check results from the
   distributed servers to the central server. We've already discussed how to submit passive check results to Icinga from
@@ -92,7 +125,12 @@
   commands</a>, it will find the passive service check information that was sent from the distributed server and process it.
   Easy, huh?</p>
 
-  </div><div class="section" title="7.6.6. Distributed Server Configuration"><div class="titlepage"><div><div><h3 class="title"><a id="idp13468464"></a>7.6.6. Distributed Server Configuration</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.6.6. Distributed Server Configuration">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="distributedconfig"></a>7.6.6. Distributed Server Configuration</h3></div></div></div>
+	  
 
   <p>So how exactly is Icinga configured on a distributed server? Basically, its just a bare-bones installation. You
   don't need to install the web interface or have notifications sent out from the server, as this will all be handled by the
@@ -100,18 +138,23 @@
 
   <p>Key configuration changes:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>Only those services and hosts which are being monitored directly by the distributed server are defined in the <a class="link" href="configobject.html" title="3.3. Object Configuration Overview">object configuration file</a>.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The distributed server has its <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a> directive
       set to 0. This will prevent any notifications from being sent out by the server.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The distributed server is configured to <a class="link" href="configmain.html#configmain-obsess_over_services">obsess over
       services</a>.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The distributed server has an <a class="link" href="configmain.html#configmain-ocsp_command">ocsp command</a> defined (as described
       below).</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>In order to make everything come together and work properly, we want the distributed server to report the results of
   <span class="emphasis"><em>all</em></span> service checks to Icinga. We could use <a class="link" href="eventhandlers.html" title="7.3. Event Handlers">event handlers</a> to
@@ -122,7 +165,12 @@
 
   <p>In order to accomplish this, you'll need to define an ocsp command like this:</p>
 
-  </div><div class="section" title="7.6.7. ocsp_command=submit_check_result"><div class="titlepage"><div><div><h3 class="title"><a id="idp13471856"></a>7.6.7. ocsp_command=submit_check_result</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.6.7. ocsp_command=submit_check_result">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="oscpsubmitcheckresult"></a>7.6.7. ocsp_command=submit_check_result</h3></div></div></div>
+	  
 
   <p>The command definition for the <span class="emphasis"><em>submit_check_result</em></span> command looks something like this:</p>
 
@@ -178,61 +226,81 @@ esac
   Let's go over exactly what happens with the distributed server and how it sends service check results to Icinga (the
   steps outlined below correspond to the numbers in the reference diagram above):</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
+  <div class="orderedlist"><ol class="orderedlist" type="1">
+<li class="listitem">
       <p>After the distributed server finishes executing a service check, it executes the command you defined by the <a class="link" href="configmain.html#configmain-ocsp_command">ocsp_command</a> variable. In our example, this is the
       <span class="emphasis"><em>/usr/local/icinga/libexec/eventhandlers/submit_check_result</em></span> script. Note that the definition for the
       <span class="emphasis"><em>submit_check_result</em></span> command passed four pieces of information to the script: the name of the host the
       service is associated with, the service description, the return code from the service check, and the plugin output from the
       service check.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The <span class="emphasis"><em>submit_check_result</em></span> script pipes the service check information (host name, description,
       return code, and output) to the <span class="emphasis"><em>send_nsca</em></span> client program.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The <span class="emphasis"><em>send_nsca</em></span> program transmits the service check information to the <span class="emphasis"><em>nsca</em></span>
       daemon on the central monitoring server.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The <span class="emphasis"><em>nsca</em></span> daemon on the central server takes the service check information and writes it to the
       external command file for later pickup by Icinga.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The Icinga process on the central server reads the external command file and processes the passive service
       check information that originated from the distributed monitoring server.</p>
-    </li></ol></div>
+    </li>
+</ol></div>
 
-  </div><div class="section" title="7.6.8. Central Server Configuration"><div class="titlepage"><div><div><h3 class="title"><a id="idp13501264"></a>7.6.8. Central Server Configuration</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.6.8. Central Server Configuration">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="centralconfig"></a>7.6.8. Central Server Configuration</h3></div></div></div>
+	  
 
   <p>We've looked at how distributed monitoring servers should be configured, so let's turn to the central server. For all
   intensive purposes, the central is configured as you would normally configure a standalone server. It is setup as
   follows:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>The central server has the web interface installed (optional, but recommended)</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The central server has its <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a> directive set
       to 1. This will enable notifications. (optional, but recommended)</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The central server has <a class="link" href="configmain.html#configmain-execute_service_checks">active service checks</a> disabled
       (optional, but recommended - see notes below)</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The central server has <a class="link" href="configmain.html#configmain-check_external_commands">external command checks</a> enabled
       (required)</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The central server has <a class="link" href="configmain.html#configmain-accept_passive_service_checks">passive service checks</a> enabled
       (required)</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>There are three other very important things that you need to keep in mind when configuring the central server:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>The central server must have service definitions for <span class="emphasis"><em>all services</em></span> that are being monitored by all
       the distributed servers. Icinga will ignore passive check results if they do not correspond to a service that has
       been defined.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>If you're only using the central server to process services whose results are going to be provided by distributed
       hosts, you can simply disable all active service checks on a program-wide basis by setting the <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a> directive to 0. If you're using the central server
       to actively monitor a few services on its own (without the aid of distributed servers), the
       <span class="emphasis"><em>active_checks_enabled</em></span> option of the definitions for service being monitored by distributed servers should
       be set to 0. This will prevent Icinga from actively checking those services.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>It is important that you either disable all service checks on a program-wide basis or disable the
   <span class="emphasis"><em>enable_active_checks</em></span> option in the definitions for each service that is monitored by a distributed server.
@@ -242,7 +310,12 @@ esac
 
   <p>That's it! Easy, huh?</p>
 
-  </div><div class="section" title="7.6.9. Problems With Passive Checks"><div class="titlepage"><div><div><h3 class="title"><a id="idp13485232"></a>7.6.9. Problems With Passive Checks</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.6.9. Problems With Passive Checks">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="problemspassive"></a>7.6.9. Problems With Passive Checks</h3></div></div></div>
+	  
 
   <p>For all intensive purposes we can say that the central server is relying solely on passive checks for monitoring. The main
   problem with relying completely on passive checks for monitoring is the fact that Icinga must rely on something else to
@@ -251,7 +324,12 @@ esac
 
   <p>Fortunately, there is a way we can handle these types of problems...</p>
 
-  </div><div class="section" title="7.6.10. Freshness Checking"><div class="titlepage"><div><div><h3 class="title"><a id="idp13520544"></a>7.6.10. Freshness Checking</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.6.10. Freshness Checking">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="freshnesschecks"></a>7.6.10. Freshness Checking</h3></div></div></div>
+	  
 
   <p>Icinga supports a feature that does "freshness" checking on the results of service checks. More information
   freshness checking can be found <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">here</a>. This features gives some protection against situations
@@ -263,16 +341,20 @@ esac
   <p>So how do you do this? On the central monitoring server you need to configure services that are being monitoring by
   distributed servers as follows...</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>The <span class="emphasis"><em>check_freshness</em></span> option in the service definitions should be set to 1. This enables
       "freshness" checking for the services.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The <span class="emphasis"><em>freshness_threshold</em></span> option in the service definitions should be set to a value (in seconds)
       which reflects how "fresh" the results for the services (provided by the distributed servers) should be.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The <span class="emphasis"><em>check_command</em></span> option in the service definitions should reflect valid commands that can be
       used to actively check the service from the central monitoring server.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>Icinga periodically checks the "freshness" of the results for all services that have freshness checking enabled.
   The <span class="emphasis"><em>freshness_threshold</em></span> option in each service definition is used to determine how "fresh" the results for
@@ -304,7 +386,12 @@ esac
   <p>When Icinga detects that the service results are stale and runs the <span class="bold"><strong>service-is-stale</strong></span> command, the <span class="emphasis"><em>check_dummy</em></span> plugin is executed and the service will go
   into a critical state. This would likely cause notifications to be sent out, so you'll know that there's a problem.</p>
 
-  </div><div class="section" title="7.6.11. Performing Host Checks"><div class="titlepage"><div><div><h3 class="title"><a id="idp13520800"></a>7.6.11. Performing Host Checks</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.6.11. Performing Host Checks">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="hostcheckperforming"></a>7.6.11. Performing Host Checks</h3></div></div></div>
+	  
 
   <p>At this point you know how to obtain service check results passivly from distributed servers. This means that the central
   server is not actively checking services on its own. But what about host checks? You still need to do them, so how?</p>
@@ -322,41 +409,43 @@ esac
 
   <p>If you do want to send passive host checks to a central server in your distributed monitoring setup, make sure:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>The central server has <a class="link" href="configmain.html#configmain-accept_passive_host_checks">passive host checks</a> enabled
       (required)</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The distributed server is configured to <a class="link" href="configmain.html#configmain-obsess_over_hosts">obsess over hosts</a>.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The distributed server has an <a class="link" href="configmain.html#configmain-ochp_command">ochp command</a> defined.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>The ochp command, which is used for processing host check results, works in a similiar manner to the ocsp command, which
   is used for processing service check results (see documentation above). In order to make sure passive host check results are up
   to date, you'll want to enable <a class="link" href="freshness.html" title="7.5. Service and Host Freshness Checks">freshness checking</a> for hosts (similiar to what is described
   above for services).</p>
-  <a id="idp13550400" class="indexterm"></a>
+  <a class="indexterm" name="idp13665184"></a>
 </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="freshness.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="redundancy.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.5. Service and Host Freshness Checks </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.7. Redundant and Failover Network Monitoring</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="freshness.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="redundancy.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.5. Service and Host Freshness Checks </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 7.7. Redundant and Failover Network Monitoring</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

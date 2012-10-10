@@ -1,40 +1,46 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.5. Service and Host Freshness Checks</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
-    <link rel="prev" href="volatileservices.html" title="7.4. Volatile Services" />
-    <link rel="next" href="distributed.html" title="7.6. Distributed Monitoring" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.5. Service and Host Freshness Checks</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="volatileservices.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="distributed.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.5. Service and Host Freshness Checks"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="freshness"></a>7.5. <a id="freshness_checks"></a>Service and Host Freshness Checks</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.5.1. <a href="freshness.html#idp13416320">Introduction</a></span></dt><dt><span class="section">7.5.2. <a href="freshness.html#idp13422448">How Does Freshness Checking Work?</a></span></dt><dt><span class="section">7.5.3. <a href="freshness.html#idp13430544">Enabling Freshness Checking</a></span></dt><dt><span class="section">7.5.4. <a href="freshness.html#idp13444560">Example</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.5. Service and Host Freshness Checks</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="volatileservices.html" title="7.4. Volatile Services">
+<link rel="next" href="distributed.html" title="7.6. Distributed Monitoring">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.5. Service and Host Freshness Checks</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="volatileservices.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="distributed.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.5. Service and Host Freshness Checks">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="freshness"></a>7.5. <a name="freshness_checks"></a>Service and Host Freshness Checks</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.5.1. <a href="freshness.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.5.2. <a href="freshness.html#howitworks">How Does Freshness Checking Work?</a></span></dt>
+<dt><span class="section">7.5.3. <a href="freshness.html#enable">Enabling Freshness Checking</a></span></dt>
+<dt><span class="section">7.5.4. <a href="freshness.html#example">Example</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.5.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp13416320"></a>7.5.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.5.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>7.5.1. Introduction</h3></div></div></div>
+	  
 
   <p>Icinga supports a feature that does "freshness" checking on the results of host and service checks. The purpose of
   freshness checking is to ensure that host and service checks are being provided passively by external applications on a regular
@@ -43,64 +49,103 @@
   <p>Freshness checking is useful when you want to ensure that <a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive checks</a> are being
   received as frequently as you want. This can be very useful in <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed</a> and <a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">failover</a> monitoring environments.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/freshness.png" /></span></p>
+  <p><span class="inlinemediaobject"><img src="../images/freshness.png"></span></p>
 
-  </div><div class="section" title="7.5.2. How Does Freshness Checking Work?"><div class="titlepage"><div><div><h3 class="title"><a id="idp13422448"></a>7.5.2. How Does Freshness Checking Work?</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.5.2. How Does Freshness Checking Work?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="howitworks"></a>7.5.2. How Does Freshness Checking Work?</h3></div></div></div>
+	  
 
   <p>Icinga periodically checks the freshness of the results for all hosts services that have freshness checking
   enabled.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>A freshness threshold is calculated for each host or service.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>For each host/service, the age of its last check result is compared with the freshness threshold.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>If the age of the last check result is greater than the freshness threshold, the check result is considered
       "stale".</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>If the check results is found to be stale, Icinga will force an <a class="link" href="activechecks.html" title="5.6. Active Checks">active
       check</a> of the host or service by executing the command specified by in the host or service definition.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
-  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png" /></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>An active check is executed even if active checks are disabled on a program-wide or host- or service-specific
     basis.</p>
-  </td></tr></table></div>
+  </td></tr>
+</table></div>
 
   <p>For example, if you have a freshness threshold of 60 for one of your services, Icinga will consider that service to
   be stale if its last check result is older than 60 seconds.</p>
 
-  </div><div class="section" title="7.5.3. Enabling Freshness Checking"><div class="titlepage"><div><div><h3 class="title"><a id="idp13430544"></a>7.5.3. Enabling Freshness Checking</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.5.3. Enabling Freshness Checking">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="enable"></a>7.5.3. Enabling Freshness Checking</h3></div></div></div>
+	  
 
   <p>Here's what you need to do to enable freshness checking...</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>Enable freshness checking on a program-wide basis with the <a class="link" href="configmain.html#configmain-check_service_freshness">check_service_freshness</a> and <a class="link" href="configmain.html#configmain-check_host_freshness">check_host_freshness</a> directives.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Use <a class="link" href="configmain.html#configmain-service_freshness_check_interval">service_freshness_check_interval</a> and <a class="link" href="configmain.html#configmain-host_freshness_check_interval">host_freshness_check_interval</a> options to tell Icinga how
       often in should check the freshness of service and host results.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Enable freshness checking on a host- and service-specific basis by setting the <span class="emphasis"><em>check_freshness</em></span>
       option in your host and service definitions to a value of 1.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Configure freshness thresholds by setting the <span class="emphasis"><em>freshness_threshold</em></span> option in your host and service
       definitions.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>Configure the <span class="emphasis"><em>check_command</em></span> option in your host or service definitions to reflect a valid command
       that should be used to actively check the host or service when it is detected as stale.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>The <span class="emphasis"><em>check_period</em></span> option in your host and service definitions is used when Icinga
       determines when a host or service can be checked for freshness, so make sure it is set to a valid timeperiod.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
-  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png" /></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+  <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
+<th align="left">Tip</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>If you do not specify a host- or service-specific <span class="emphasis"><em>freshness_threshold</em></span> value (or you set it to
     zero), Icinga will automatically calculate a threshold automatically, based on a how often you monitor that particular
     host or service. We would recommend that you explicitly specify a freshness threshold, rather than let Icinga pick one
     for you.</p>
-  </td></tr></table></div>
+  </td></tr>
+</table></div>
 
-  </div><div class="section" title="7.5.4. Example"><div class="titlepage"><div><div><h3 class="title"><a id="idp13444560"></a>7.5.4. Example</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.5.4. Example">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="example"></a>7.5.4. Example</h3></div></div></div>
+	  
 
   <p>An example of a service that might require freshness checking might be one that reports the status of your nightly backup
   jobs. Perhaps you have a external script that submit the results of the backup job to Icinga once the backup is
@@ -138,28 +183,26 @@
   as an active service check. This causes the <span class="emphasis"><em>check_dummy</em></span> plugin to be executed, which returns a critical
   state to Icinga. The service will then go into to a critical state (if it isn't already there) and someone will probably
   get notified of the problem.</p>
-  <a id="idp13452112" class="indexterm"></a>
+  <a class="indexterm" name="idp13560256"></a>
 </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="volatileservices.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="distributed.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.4. Volatile Services </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.6. Distributed Monitoring</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="volatileservices.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="distributed.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.4. Volatile Services </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 7.6. Distributed Monitoring</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

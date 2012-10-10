@@ -1,42 +1,46 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.24. Custom CGI Headers and Footers</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
-    <link rel="prev" href="checkscheduling.html" title="7.23. Service and Host Check Scheduling" />
-    <link rel="next" href="modified_attr.html" title="7.25. Modified attributes" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.24. Custom CGI Headers and
-  Footers</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="checkscheduling.html">Prev</a> </td>
-          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
-          <td width="20%" align="right"> <a accesskey="n" href="modified_attr.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.24. Custom CGI Headers and Footers"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="cgiincludes"></a>7.24. <a id="cgi_includes"></a>Custom CGI Headers and
-  Footers</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.24.1. <a href="cgiincludes.html#idp14584144">Introduction</a></span></dt><dt><span class="section">7.24.2. <a href="cgiincludes.html#idp14585376">How Does It Work?</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.24. Custom CGI Headers and Footers</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
+<link rel="prev" href="checkscheduling.html" title="7.23. Service and Host Check Scheduling">
+<link rel="next" href="modified_attr.html" title="7.25. Modified attributes">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.24. Custom CGI Headers and
+  Footers</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="checkscheduling.html">Prev</a> </td>
+<th width="60%" align="center">Chapter 7. Advanced Topics</th>
+<td width="20%" align="right"> <a accesskey="n" href="modified_attr.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.24. Custom CGI Headers and Footers">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="cgiincludes"></a>7.24. <a name="cgi_includes"></a>Custom CGI Headers and
+  Footers</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.24.1. <a href="cgiincludes.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.24.2. <a href="cgiincludes.html#howitworks">How Does It Work?</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.24.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp14584144"></a>7.24.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.24.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>7.24.1. Introduction</h3></div></div></div>
+	  
 
   <p>If you're doing custom installs of Icinga for clients, you may
   want to have a custom header and/or footer displayed in the output of the
@@ -59,7 +63,12 @@
   information, authenticated user information, etc. to produce appropriate
   output.</p>
 
-  </div><div class="section" title="7.24.2. How Does It Work?"><div class="titlepage"><div><div><h3 class="title"><a id="idp14585376"></a>7.24.2. How Does It Work?</h3></div></div></div>
+  </div>
+
+  <div class="section" title="7.24.2. How Does It Work?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="howitworks"></a>7.24.2. How Does It Work?</h3></div></div></div>
+	  
 
   <p>You can include custom headers and footers in the output of the CGIs
   by dropping some appropriately named HTML files in the
@@ -72,12 +81,14 @@
 
   <p>There are two types of customer headers and footers:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
       <p>Global headers/footers. These files should be named
       <span class="emphasis"><em>common-header.ssi</em></span> and
       <span class="emphasis"><em>common-footer.ssi</em></span>, respectively. If these files
       exist, they will be included in the output of all CGIs.</p>
-    </li><li class="listitem">
+    </li>
+<li class="listitem">
       <p>CGI-specific headers/footers. These files should be named in the
       format <span class="emphasis"><em>CGINAME-header.ssi</em></span> and
       <span class="emphasis"><em>CGINAME-footer.ssi</em></span>, where
@@ -85,34 +96,33 @@
       .cgi extension. For example, the header and footer files for the <a class="link" href="cgis.html#cgis-summary_cgi">alert summary CGI</a> (summary.cgi) would
       be named <span class="emphasis"><em>summary-header.ssi</em></span> and
       <span class="emphasis"><em>summary-footer.ssi</em></span>, respectively.</p>
-    </li></ul></div>
+    </li>
+</ul></div>
 
   <p>You are not required to use any custom headers or footers. You can use
   only a global header if you wish. You can use only CGI-specific headers and
   a global footer if you wish. Whatever you want. Really.</p>
 
-  <a id="idp14596144" class="indexterm"></a>
+  <a class="indexterm" name="idp14775728"></a>
 </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="checkscheduling.html">Prev</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Up</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="modified_attr.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.23. Service and Host Check Scheduling </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.25. Modified attributes</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="checkscheduling.html">Prev</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="modified_attr.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.23. Service and Host Check Scheduling </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 7.25. Modified attributes</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

@@ -1,40 +1,47 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.14. Status Stalking</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen" />
-    <link rel="prev" href="dependencies.html" title="7.13. Host- und Service-Abhängigkeiten" />
-    <link rel="next" href="perfdata.html" title="7.15. Performance-Daten" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.14. Status Stalking</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="dependencies.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-          <td width="20%" align="right"> <a accesskey="n" href="perfdata.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.14. Status Stalking"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="stalking"></a>7.14. Status Stalking</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.14.1. <a href="stalking.html#idp13908160">Einführung</a></span></dt><dt><span class="section">7.14.2. <a href="stalking.html#idp13910128">Wie funktioniert es?</a></span></dt><dt><span class="section">7.14.3. <a href="stalking.html#idp13968800">Sollte ich die Verfolgung aktivieren?</a></span></dt><dt><span class="section">7.14.4. <a href="stalking.html#idp13971328">Wie aktiviere ich die Verfolgung?</a></span></dt><dt><span class="section">7.14.5. <a href="stalking.html#idp13973776">Wie unterschieden sich Verfolgung und "flüchtige Services"?</a></span></dt><dt><span class="section">7.14.6. <a href="stalking.html#idp13976000">Risiken</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.14. Status Stalking</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
+<link rel="prev" href="dependencies.html" title="7.13. Host- und Service-Abhängigkeiten">
+<link rel="next" href="perfdata.html" title="7.15. Performance-Daten">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.14. Status Stalking</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="dependencies.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="perfdata.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.14. Status Stalking">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="stalking"></a>7.14. Status Stalking</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.14.1. <a href="stalking.html#idp13933056">Einführung</a></span></dt>
+<dt><span class="section">7.14.2. <a href="stalking.html#idp13935104">Wie funktioniert es?</a></span></dt>
+<dt><span class="section">7.14.3. <a href="stalking.html#idp13993888">Sollte ich die Verfolgung aktivieren?</a></span></dt>
+<dt><span class="section">7.14.4. <a href="stalking.html#idp13996160">Wie aktiviere ich die Verfolgung?</a></span></dt>
+<dt><span class="section">7.14.5. <a href="stalking.html#idp13998320">Wie unterschieden sich Verfolgung und "flüchtige Services"?</a></span></dt>
+<dt><span class="section">7.14.6. <a href="stalking.html#idp14000224">Risiken</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.14.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp13908160"></a>7.14.1. Einführung</h3></div></div></div>
+  <div class="section" title="7.14.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13933056"></a>7.14.1. Einführung</h3></div></div></div>
     
 
     <p>Statusverfolgung ("state stalking") ist ein Feature, welches wahrscheinlich von den meisten Benutzern nicht eingesetzt wird. Wenn
@@ -44,7 +51,9 @@
     werden, kann es sehr hilfreich bei der späteren Analyse der Log-Files sein.</p>
   </div>
 
-  <div class="section" title="7.14.2. Wie funktioniert es?"><div class="titlepage"><div><div><h3 class="title"><a id="idp13910128"></a>7.14.2. Wie funktioniert es?</h3></div></div></div>
+  <div class="section" title="7.14.2. Wie funktioniert es?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13935104"></a>7.14.2. Wie funktioniert es?</h3></div></div></div>
     
 
     <p>Unter normalen Umständen wird das Ergebnis einer Host- oder Service-Prüfung nur protokolliert, wenn der Host oder Service seit der
@@ -55,7 +64,80 @@
     unterscheiden. Nehmen Sie das folgende Beispiel von acht aufeinander folgenden Prüfungen eines Service:</p>
 
     <div class="informaltable">
-      <table border="1"><colgroup><col /><col /><col /><col /><col /></colgroup><tbody><tr><td><p> <span class="bold"><strong>Service Check #:</strong></span> </p></td><td><p> <span class="bold"><strong>Service State:</strong></span> </p></td><td><p> <span class="bold"><strong>Service Check Output:</strong></span> </p></td><td><p> <span class="bold"><strong>Logged Normally</strong></span> </p></td><td><p> <span class="bold"><strong>Logged With Stalking</strong></span> </p></td></tr><tr><td><p>x</p></td><td><p>OK</p></td><td><p>RAID array optimal</p></td><td><p>-</p></td><td><p>-</p></td></tr><tr><td><p>x+1</p></td><td><p>OK</p></td><td><p>RAID array optimal</p></td><td><p>-</p></td><td><p>-</p></td></tr><tr><td><p>x+2</p></td><td><p>WARNING</p></td><td><p>RAID array degraded (1 drive bad, 1 hot spare rebuilding)</p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td></tr><tr><td><p>x+3</p></td><td><p>CRITICAL</p></td><td><p>RAID array degraded (2 drives bad, 1 host spare online, 1 hot spare rebuilding)</p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td></tr><tr><td><p>x+4</p></td><td><p>CRITICAL</p></td><td><p>RAID array degraded (3 drives bad, 2 hot spares online)</p></td><td><p>-</p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td></tr><tr><td><p>x+5</p></td><td><p>CRITICAL</p></td><td><p>RAID array failed</p></td><td><p>-</p></td><td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png" /></span> </p></td></tr><tr><td><p>x+6</p></td><td><p>CRITICAL</p></td><td><p>RAID array failed</p></td><td><p>-</p></td><td><p>-</p></td></tr><tr><td><p>x+7</p></td><td><p>CRITICAL</p></td><td><p>RAID array failed</p></td><td><p>-</p></td><td><p>-</p></td></tr></tbody></table>
+      <table border="1">
+<colgroup>
+<col>
+<col>
+<col>
+<col>
+<col>
+</colgroup>
+<tbody>
+<tr>
+<td><p> <span class="bold"><strong>Service Check #:</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service State:</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Service Check Output:</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Logged Normally</strong></span> </p></td>
+<td><p> <span class="bold"><strong>Logged With Stalking</strong></span> </p></td>
+</tr>
+<tr>
+<td><p>x</p></td>
+<td><p>OK</p></td>
+<td><p>RAID array optimal</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+</tr>
+<tr>
+<td><p>x+1</p></td>
+<td><p>OK</p></td>
+<td><p>RAID array optimal</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+</tr>
+<tr>
+<td><p>x+2</p></td>
+<td><p>WARNING</p></td>
+<td><p>RAID array degraded (1 drive bad, 1 hot spare rebuilding)</p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+</tr>
+<tr>
+<td><p>x+3</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>RAID array degraded (2 drives bad, 1 host spare online, 1 hot spare rebuilding)</p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+</tr>
+<tr>
+<td><p>x+4</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>RAID array degraded (3 drives bad, 2 hot spares online)</p></td>
+<td><p>-</p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+</tr>
+<tr>
+<td><p>x+5</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>RAID array failed</p></td>
+<td><p>-</p></td>
+<td><p> <span class="inlinemediaobject"><img src="../images/checkmark.png"></span> </p></td>
+</tr>
+<tr>
+<td><p>x+6</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>RAID array failed</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+</tr>
+<tr>
+<td><p>x+7</p></td>
+<td><p>CRITICAL</p></td>
+<td><p>RAID array failed</p></td>
+<td><p>-</p></td>
+<td><p>-</p></td>
+</tr>
+</tbody>
+</table>
     </div>
 
     <p>Bei dieser Reihenfolge von Prüfungen würden Sie normalerweise nur zwei Einträge dieser Katastrophe sehen. Der erste würde bei
@@ -80,7 +162,9 @@
     nicht in der untersuchten Web-Seite zu finden waren.</p>
   </div>
 
-  <div class="section" title="7.14.3. Sollte ich die Verfolgung aktivieren?"><div class="titlepage"><div><div><h3 class="title"><a id="idp13968800"></a>7.14.3. Sollte ich die Verfolgung aktivieren?</h3></div></div></div>
+  <div class="section" title="7.14.3. Sollte ich die Verfolgung aktivieren?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13993888"></a>7.14.3. Sollte ich die Verfolgung aktivieren?</h3></div></div></div>
     
 
     <p>Zuerst müssen Sie entscheiden, ob Sie wirklich Bedarf zur Untersuchung archivierter Protokolldaten haben, um die genaue Ursache
@@ -93,20 +177,26 @@
     Prüfung des Hosts oder Service einsetzen.</p>
   </div>
 
-  <div class="section" title="7.14.4. Wie aktiviere ich die Verfolgung?"><div class="titlepage"><div><div><h3 class="title"><a id="idp13971328"></a>7.14.4. Wie aktiviere ich die Verfolgung?</h3></div></div></div>
+  <div class="section" title="7.14.4. Wie aktiviere ich die Verfolgung?">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13996160"></a>7.14.4. Wie aktiviere ich die Verfolgung?</h3></div></div></div>
     
 
     <p>Sie können die Verfolgung für Hosts und Services durch die <span class="emphasis"><em>stalking_options</em></span>-Direktive in den <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Host- und Service-Definitionen</a> aktivieren.</p>
   </div>
 
-  <div class="section" title="7.14.5. Wie unterschieden sich Verfolgung und &quot;flüchtige Services&quot;?"><div class="titlepage"><div><div><h3 class="title"><a id="idp13973776"></a>7.14.5. Wie unterschieden sich Verfolgung und "flüchtige Services"?</h3></div></div></div>
+  <div class="section" title='7.14.5. Wie unterschieden sich Verfolgung und "flüchtige Services"?'>
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp13998320"></a>7.14.5. Wie unterschieden sich Verfolgung und "flüchtige Services"?</h3></div></div></div>
     
 
     <p><a class="link" href="volatileservices.html" title="7.4. sprunghafte Services">Flüchtige Services</a> (volatile services) sind ähnlich, aber sie verursachen
     Benachrichtigungen und führen Eventhandler aus. Die Verfolgung dient lediglich der Protokollierung.</p>
   </div>
 
-  <div class="section" title="7.14.6. Risiken"><div class="titlepage"><div><div><h3 class="title"><a id="idp13976000"></a>7.14.6. Risiken</h3></div></div></div>
+  <div class="section" title="7.14.6. Risiken">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14000224"></a>7.14.6. Risiken</h3></div></div></div>
     
 
     <p>Sie sollten beachten, dass es einige potenzielle Fallstricke bei der Aktivierung von Verfolgungen gibt. Sie beziehen sich alle auf
@@ -116,28 +206,26 @@
     <p>Als generelle Regel würden wir empfehlen, dass Sie die Verfolgung für Hosts und Services <span class="emphasis"><em>nicht</em></span> aktivieren,
     ohne gründlich darüber nachgedacht zu haben. Auf jeden Fall ist sie da, wenn Sie sie brauchen.</p>
 
-    <a id="idp13979472" class="indexterm"></a>
+    <a class="indexterm" name="idp14003264"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="dependencies.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="perfdata.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.13. Host- und Service-Abhängigkeiten </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.15. Performance-Daten</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="dependencies.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="perfdata.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.13. Host- und Service-Abhängigkeiten </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 7.15. Performance-Daten</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

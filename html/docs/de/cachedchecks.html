@@ -1,50 +1,59 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.21. Zwischengespeicherte Prüfungen</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen" />
-    <link rel="prev" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen" />
-    <link rel="next" href="passivestatetranslation.html" title="7.22. Passive Host-Zustandsübersetzung" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.21. Zwischengespeicherte Prüfungen</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="dependencychecks.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-          <td width="20%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.21. Zwischengespeicherte Prüfungen"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="cachedchecks"></a>7.21. Zwischengespeicherte Prüfungen</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.21.1. <a href="cachedchecks.html#idp14295552">Einführung</a></span></dt><dt><span class="section">7.21.2. <a href="cachedchecks.html#idp14299792">Nur für Prüfungen nach Bedarf</a></span></dt><dt><span class="section">7.21.3. <a href="cachedchecks.html#idp14311360">Wie Zwischenspeicherung arbeitet</a></span></dt><dt><span class="section">7.21.4. <a href="cachedchecks.html#idp14316576">Was dies wirklich bedeutet</a></span></dt><dt><span class="section">7.21.5. <a href="cachedchecks.html#idp14323584">Konfigurationsvariablen</a></span></dt><dt><span class="section">7.21.6. <a href="cachedchecks.html#idp14327872">Zwischenspeichereffektivität optimieren</a></span></dt></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.21. Zwischengespeicherte Prüfungen</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
+<link rel="prev" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">
+<link rel="next" href="passivestatetranslation.html" title="7.22. Passive Host-Zustandsübersetzung">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.21. Zwischengespeicherte Prüfungen</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="dependencychecks.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.21. Zwischengespeicherte Prüfungen">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="cachedchecks"></a>7.21. Zwischengespeicherte Prüfungen</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.21.1. <a href="cachedchecks.html#idp14316096">Einführung</a></span></dt>
+<dt><span class="section">7.21.2. <a href="cachedchecks.html#idp14324992">Nur für Prüfungen nach Bedarf</a></span></dt>
+<dt><span class="section">7.21.3. <a href="cachedchecks.html#idp14336912">Wie Zwischenspeicherung arbeitet</a></span></dt>
+<dt><span class="section">7.21.4. <a href="cachedchecks.html#idp14342288">Was dies wirklich bedeutet</a></span></dt>
+<dt><span class="section">7.21.5. <a href="cachedchecks.html#idp14349472">Konfigurationsvariablen</a></span></dt>
+<dt><span class="section">7.21.6. <a href="cachedchecks.html#idp14354848">Zwischenspeichereffektivität optimieren</a></span></dt>
+</dl></div>
   
 
-  <div class="section" title="7.21.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp14295552"></a>7.21.1. Einführung</h3></div></div></div>
+  <div class="section" title="7.21.1. Einführung">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14316096"></a>7.21.1. Einführung</h3></div></div></div>
     
 
-    <div class="mediaobject" align="right"><img src="../images/cachedchecks1.png" align="right" /></div>
+    <div class="mediaobject" align="right"><img src="../images/cachedchecks1.png" align="right"></div>
 
     <p>Die Leistung der Überwachungslogik von Icinga kann mit Hilfe von zwischengespeicherten Prüfungen (cached checks)
     nennenswert gesteigert werden. Zwischengespeicherte Prüfungen erlauben es Icinga, auf die Ausführung einer Host- oder
     Service-Prüfung zu verzichten, wenn es feststellt, dass ein recht aktuelles Prüfergebnis ausreicht.</p>
   </div>
 
-  <div class="section" title="7.21.2. Nur für Prüfungen nach Bedarf"><div class="titlepage"><div><div><h3 class="title"><a id="idp14299792"></a>7.21.2. Nur für Prüfungen nach Bedarf</h3></div></div></div>
+  <div class="section" title="7.21.2. Nur für Prüfungen nach Bedarf">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14324992"></a>7.21.2. Nur für Prüfungen nach Bedarf</h3></div></div></div>
     
 
     <p>Regelmäßig eingeplante Host- und Service-Prüfungen werden keine Leistungssteigerung durch zwischengespeicherte Prüfungen erfahren.
@@ -54,13 +63,17 @@
 
     <p>Zur Erinnerung: Host-Prüfungen nach Bedarf treten auf...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>wenn ein mit einem Host verbundener Service den Status wechselt</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>wenn nötig als Teil der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Erreichbarkeit</a>s-Logik</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>wenn nötig für <a class="link" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">vorausschauende Host-Abhängigkeitsprüfungen</a></p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>und Service-Prüfungen nach Bedarf treten auf...</p>
 
@@ -68,15 +81,17 @@
         <p>wenn nötig für <a class="link" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">vorausschauende Service-Abhängigkeitsprüfungen</a></p>
       </li></ul></div>
 
-    <p><span class="inlinemediaobject"><img src="../images/note.gif" /></span> Hinweis: Solange Sie keinen Gebrauch von Service-Abhängigkeiten machen, wird Icinga nicht in der Lage
+    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Hinweis: Solange Sie keinen Gebrauch von Service-Abhängigkeiten machen, wird Icinga nicht in der Lage
     sein, zwischengespeicherte Prüfungen zur Leistungssteigerung von Service-Prüfungen zu nutzen. Keine Bange - das ist normal.
     Zwischengespeicherte Host-Prüfungen sorgen für große Leistungssteigerungen und jeder sollte dort einen Vorteil sehen.</p>
   </div>
 
-  <div class="section" title="7.21.3. Wie Zwischenspeicherung arbeitet"><div class="titlepage"><div><div><h3 class="title"><a id="idp14311360"></a>7.21.3. Wie Zwischenspeicherung arbeitet</h3></div></div></div>
+  <div class="section" title="7.21.3. Wie Zwischenspeicherung arbeitet">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14336912"></a>7.21.3. Wie Zwischenspeicherung arbeitet</h3></div></div></div>
     
 
-    <div class="mediaobject" align="right"><img src="../images/cachedchecks.png" align="right" /></div>
+    <div class="mediaobject" align="right"><img src="../images/cachedchecks.png" align="right"></div>
 
     <p>Wenn Icinga eine Host- oder Service-Prüfung nach Bedarf durchführen muss, wird es eine Festlegung treffen, ob es ein
     zwischengespeichertes Ergebnis benutzen kann oder ob es wirklich eine Prüfung durchführen muss. Es tut dies, indem es schaut, ob die
@@ -89,7 +104,9 @@
     Icinga durch ein Plugin eine neue Host- oder Service-Prüfung durchführen.</p>
   </div>
 
-  <div class="section" title="7.21.4. Was dies wirklich bedeutet"><div class="titlepage"><div><div><h3 class="title"><a id="idp14316576"></a>7.21.4. Was dies wirklich bedeutet</h3></div></div></div>
+  <div class="section" title="7.21.4. Was dies wirklich bedeutet">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14342288"></a>7.21.4. Was dies wirklich bedeutet</h3></div></div></div>
     
 
     <p>Icinga führt Prüfungen nach Bedarf durch, weil es den aktuellen Status eines Hosts oder Service <span class="emphasis"><em>in diesem
@@ -127,41 +144,52 @@
     hat, um den "richtigen" Wert für seine Situation zu finden.</p>
   </div>
 
-  <div class="section" title="7.21.5. Konfigurationsvariablen"><div class="titlepage"><div><div><h3 class="title"><a id="idp14323584"></a>7.21.5. Konfigurationsvariablen</h3></div></div></div>
+  <div class="section" title="7.21.5. Konfigurationsvariablen">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14349472"></a>7.21.5. Konfigurationsvariablen</h3></div></div></div>
     
 
     <p>Die folgenden Variablen legen die Zeitfenster fest, in denen ein vorangegangenes Prüfergebnis als ein zwischengespeichertes
     Prüfergebnis genutzt werden kann:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Die <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a>-Variable kontrolliert
         zwischengespeicherte Host-Prüfungen.</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>Die <a class="link" href="configmain.html#configmain-cached_service_check_horizon">cached_service_check_horizon</a>-Variable kontrolliert
         zwischengespeicherte Service-Prüfungen.</p>
-      </li></ul></div>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="7.21.6. Zwischenspeichereffektivität optimieren"><div class="titlepage"><div><div><h3 class="title"><a id="idp14327872"></a>7.21.6. Zwischenspeichereffektivität optimieren</h3></div></div></div>
+  <div class="section" title="7.21.6. Zwischenspeichereffektivität optimieren">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="idp14354848"></a>7.21.6. Zwischenspeichereffektivität optimieren</h3></div></div></div>
     
 
     <p>Um den größten Nutzen aus zwischengespeicherten Prüfungen zu ziehen, sollten Sie:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>regelmäßige Host-Prüfungen einplanen</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>z.B. PNP4Nagios benutzen, um grafische Auswertungen von 1) Prüfungen nach Bedarf und 2) zwischengespeicherten Prüfungen zu
         erstellen</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>die cached-check-horizon-Variable Ihren Anforderungen entsprechend anpassen</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Sie können regelmäßige Prüfungen für Ihre Hosts durch einen größeren Wert als 0 in der <span class="emphasis"><em>check_interval</em></span>-Option
     in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definitionen</a> einplanen. Wenn Sie das tun, sollten Sie die
     <span class="emphasis"><em>max_check_attempts</em></span>-Option auf einen Wert größer als 1 setzen, oder es wird ein Performance-Problem geben. Das
     potenzielle Performance-Problem ist <a class="link" href="hostchecks.html" title="5.4. Host-Prüfungen (Host checks)">hier</a> genauer beschrieben.</p>
 
-    <div class="mediaobject"><img src="../images/perfdata_cached2.png" /></div>
+    <div class="mediaobject"><img src="../images/perfdata_cached2.png"></div>
 
     <p>Ein guter Weg, um den richtigen Wert für die cached-check-horizon-Optionen zu ermitteln, besteht im Vergleich der Anzahl von
     Prüfungen nach Bedarf gegen die Anzahl, in denen zwischengespeicherte Ergebnisse benutzt werden. Das <a class="link" href="icingastats.html" title="8.6. Nutzung des Icingastats-Utilitys">icingastats</a>-Dienstprogramm kann Informationen über zwischengespeicherte Prüfungen erzeugen, die dann mit
@@ -170,13 +198,17 @@
 
     <p>Bei der Testumgebung, aus der dieser Graph stammt, gab es...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>insgesamt 110 Hosts, die alle in regelmäßigen Abständen geprüft wurden</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>ein durchschnittliches (regelmäßig geplantes) Host-Prüfintervall von 30 Minuten</p>
-      </li><li class="listitem">
+      </li>
+<li class="listitem">
         <p>ein <a class="link" href="configmain.html#configmain-cached_host_check_horizon">cached_host_check_horizon</a> von 15 Sekunden</p>
-      </li></ul></div>
+      </li>
+</ul></div>
 
     <p>Das Diagramm zeigt, wie viele regelmäßig geplante Host-Prüfungen im Vergleich zu zwischengespeicherten Host-Prüfungen erfolgt
     sind. In diesem Beispiel wurden alle fünf Minuten ein Durchschnitt von 77 Host-Prüfungen durchgeführt. 59 von diesen (76%) sind
@@ -198,30 +230,28 @@
     wie die Änderung der horizon-Variablen die zwischengespeicherten Prüf-Statistiken beeinflusst. Ändern und wiederholen Sie, falls
     erforderlich.</p>
 
-    <a id="idp14349440" class="indexterm"></a>
+    <a class="indexterm" name="idp14375024"></a>
 
-    <a id="idp14350624" class="indexterm"></a>
+    <a class="indexterm" name="idp14376208"></a>
   </div>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="dependencychecks.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.20. Vorausschauende Abhängigkeitsprüfungen </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.22. Passive Host-Zustandsübersetzung</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="dependencychecks.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="passivestatetranslation.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.20. Vorausschauende Abhängigkeitsprüfungen </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 7.22. Passive Host-Zustandsübersetzung</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

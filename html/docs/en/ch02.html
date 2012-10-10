@@ -1,37 +1,149 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Chapter 2. Getting Started</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="up" href="index.html" title="Icinga Version 1.8 Documentation" />
-    <link rel="prev" href="whatsnew.html" title="1.2. What's New in Icinga 1.8" />
-    <link rel="next" href="beginners.html" title="2.1. Advice for beginners" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">Chapter 2. Getting Started</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="whatsnew.html">Prev</a> </td>
-          <th width="60%" align="center"> </th>
-          <td width="20%" align="right"> <a accesskey="n" href="beginners.html">Next</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="chapter" title="Chapter 2. Getting Started"><div class="titlepage"><div><div><h2 class="title"><a id="ch02"></a>Chapter 2. Getting Started</h2></div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt><span class="section">2.1. <a href="beginners.html">Advice for beginners</a></span></dt><dt><span class="section">2.2. <a href="quickstart.html">Quickstart Installation Guides</a></span></dt><dt><span class="section">2.3. <a href="quickstart-icinga.html">Icinga Quickstart</a></span></dt><dd><dl><dt><span class="section">2.3.1. <a href="quickstart-icinga.html#idp178144">Introduction</a></span></dt><dt><span class="section">2.3.2. <a href="quickstart-icinga.html#idp178400">Prerequisites</a></span></dt><dt><span class="section">2.3.3. <a href="quickstart-icinga.html#idp213664">Install packages</a></span></dt><dt><span class="section">2.3.4. <a href="quickstart-icinga.html#idp231984">Create Account Information</a></span></dt><dt><span class="section">2.3.5. <a href="quickstart-icinga.html#idp232688">Download Icinga and the Plugins</a></span></dt><dt><span class="section">2.3.6. <a href="quickstart-icinga.html#idp245088">Compile and install Icinga</a></span></dt><dt><span class="section">2.3.7. <a href="quickstart-icinga.html#idp245216">Customise Configuration</a></span></dt><dt><span class="section">2.3.8. <a href="quickstart-icinga.html#idp259600">Configure the Classic Web Interface</a></span></dt><dt><span class="section">2.3.9. <a href="quickstart-icinga.html#idp259888">Compile and Install the Nagios Plugins</a></span></dt><dt><span class="section">2.3.10. <a href="quickstart-icinga.html#idp275152">Adjusting the SELinux settings</a></span></dt><dt><span class="section">2.3.11. <a href="quickstart-icinga.html#idp275440">Start Icinga</a></span></dt><dt><span class="section">2.3.12. <a href="quickstart-icinga.html#idp291856">Login to the Classic Web Interface</a></span></dt><dt><span class="section">2.3.13. <a href="quickstart-icinga.html#idp297600">Other Modifications</a></span></dt><dt><span class="section">2.3.14. <a href="quickstart-icinga.html#idp301840">You're Done</a></span></dt></dl></dd><dt><span class="section">2.4. <a href="quickstart-icinga-freebsd.html">Icinga Quickstart FreeBSD</a></span></dt><dt><span class="section">2.5. <a href="quickstart-idoutils.html">Icinga with IDOUtils Quickstart</a></span></dt><dd><dl><dt><span class="section">2.5.1. <a href="quickstart-idoutils.html#idp308752">Introduction</a></span></dt><dt><span class="section">2.5.2. <a href="quickstart-idoutils.html#idp415296">Prerequisites</a></span></dt><dt><span class="section">2.5.3. <a href="quickstart-idoutils.html#idp429104">New features for the IDOUtils:</a></span></dt><dt><span class="section">2.5.4. <a href="quickstart-idoutils.html#idp456512">Install Packages</a></span></dt><dt><span class="section">2.5.5. <a href="quickstart-idoutils.html#idp500752">Create Account Information</a></span></dt><dt><span class="section">2.5.6. <a href="quickstart-idoutils.html#idp501072">Download Icinga and the Plugins</a></span></dt><dt><span class="section">2.5.7. <a href="quickstart-idoutils.html#idp510800">Compile and Install Icinga with IDOUtils</a></span></dt><dt><span class="section">2.5.8. <a href="quickstart-idoutils.html#idp526496">Compile and Install</a></span></dt><dt><span class="section">2.5.9. <a href="quickstart-idoutils.html#idp538112">Customise Configuration</a></span></dt><dt><span class="section">2.5.10. <a href="quickstart-idoutils.html#idp538368">Enable the idomod event broker module</a></span></dt><dt><span class="section">2.5.11. <a href="quickstart-idoutils.html#idp549728">Creation of Database and IDOUtils</a></span></dt><dt><span class="section">2.5.12. <a href="quickstart-idoutils.html#idp576016">Configure the Classic Web Interface</a></span></dt><dt><span class="section">2.5.13. <a href="quickstart-idoutils.html#idp576336">Compile and Install the Nagios Plugins</a></span></dt><dt><span class="section">2.5.14. <a href="quickstart-idoutils.html#idp594224">Adjusting the SELinux settings</a></span></dt><dt><span class="section">2.5.15. <a href="quickstart-idoutils.html#idp600320">Start IDOUtils and Icinga</a></span></dt><dt><span class="section">2.5.16. <a href="quickstart-idoutils.html#idp600640">Configure Icinga Startup</a></span></dt><dt><span class="section">2.5.17. <a href="quickstart-idoutils.html#idp623424">Login to the Classic Web Interface</a></span></dt><dt><span class="section">2.5.18. <a href="quickstart-idoutils.html#idp626896">Other Modifications</a></span></dt><dt><span class="section">2.5.19. <a href="quickstart-idoutils.html#idp630848">You're Done</a></span></dt></dl></dd><dt><span class="section">2.6. <a href="quickstart-idoutils-freebsd.html">Icinga and IDOUtils Quickstart on FreeBSD</a></span></dt><dt><span class="section">2.7. <a href="icinga_packages.html">Icinga Packages for Linux Distributions</a></span></dt><dt><span class="section">2.8. <a href="howtos.html">Links to other published Howtos</a></span></dt><dt><span class="section">2.9. <a href="upgrading.html">Upgrading (to) Icinga</a></span></dt><dd><dl><dt><span class="section">2.9.1. <a href="upgrading.html#idp849424">Upgrading from previous Icinga Releases</a></span></dt><dt><span class="section">2.9.2. <a href="upgrading.html#idp853264">Upgrading from Nagios 3.x Releases</a></span></dt><dt><span class="section">2.9.3. <a href="upgrading.html#idp869520">Upgrading from Nagios 2.x Releases</a></span></dt><dt><span class="section">2.9.4. <a href="upgrading.html#idp939808">Upgrading from an RPM Installation</a></span></dt></dl></dd><dt><span class="section">2.10. <a href="upgrading_idoutils.html">Upgrading IDOUtils Database</a></span></dt><dd><dl><dt><span class="section">2.10.1. <a href="upgrading_idoutils.html#idp980128">Upgrading IDOUtils to 1.7</a></span></dt><dt><span class="section">2.10.2. <a href="upgrading_idoutils.html#idp985952">Upgrading IDOUtils to 1.5</a></span></dt><dt><span class="section">2.10.3. <a href="upgrading_idoutils.html#idp993632">Upgrading IDOUtils to 1.4</a></span></dt><dt><span class="section">2.10.4. <a href="upgrading_idoutils.html#idp1011280">Upgrading IDOUtils to 1.3</a></span></dt><dt><span class="section">2.10.5. <a href="upgrading_idoutils.html#idp1015856">Upgrading IDOUtils to 1.0.3</a></span></dt><dt><span class="section">2.10.6. <a href="upgrading_idoutils.html#idp1021376">Upgrading IDOUtils to 1.0.2</a></span></dt><dt><span class="section">2.10.7. <a href="upgrading_idoutils.html#idp1021504">Upgrading IDOUtils to 1.0.1</a></span></dt><dt><span class="section">2.10.8. <a href="upgrading_idoutils.html#idp1043616">Upgrading IDOUtils to 1.0</a></span></dt></dl></dd><dt><span class="section">2.11. <a href="monitoring-overview.html">Monitoring Overview</a></span></dt><dt><span class="section">2.12. <a href="monitoring-windows.html">Monitoring Windows Machines</a></span></dt><dd><dl><dt><span class="section">2.12.1. <a href="monitoring-windows.html#idp1090960">Introduction</a></span></dt><dt><span class="section">2.12.2. <a href="monitoring-windows.html#idp1102368">Overview</a></span></dt><dt><span class="section">2.12.3. <a href="monitoring-windows.html#idp1110128">Steps</a></span></dt><dt><span class="section">2.12.4. <a href="monitoring-windows.html#idp1116048">What's Already Done For You</a></span></dt><dt><span class="section">2.12.5. <a href="monitoring-windows.html#idp1123184">Prerequisites</a></span></dt><dt><span class="section">2.12.6. <a href="monitoring-windows.html#idp1128336">Installing the Windows Agent</a></span></dt><dt><span class="section">2.12.7. <a href="monitoring-windows.html#idp1128528">Configuring Icinga</a></span></dt><dt><span class="section">2.12.8. <a href="monitoring-windows.html#idp1143296">Password Protection</a></span></dt><dt><span class="section">2.12.9. <a href="monitoring-windows.html#idp1171712">Restarting Icinga</a></span></dt></dl></dd><dt><span class="section">2.13. <a href="monitoring-linux.html">Monitoring Linux/Unix Machines</a></span></dt><dd><dl><dt><span class="section">2.13.1. <a href="monitoring-linux.html#idp1178272">Introduction</a></span></dt><dt><span class="section">2.13.2. <a href="monitoring-linux.html#idp1187744">Overview</a></span></dt></dl></dd><dt><span class="section">2.14. <a href="monitoring-netware.html">Monitoring Netware Servers</a></span></dt><dt><span class="section">2.15. <a href="monitoring-printers.html">Monitoring Network Printers</a></span></dt><dd><dl><dt><span class="section">2.15.1. <a href="monitoring-printers.html#idp1220144">Introduction</a></span></dt><dt><span class="section">2.15.2. <a href="monitoring-printers.html#idp1235856">Overview</a></span></dt><dt><span class="section">2.15.3. <a href="monitoring-printers.html#idp1243136">Steps</a></span></dt><dt><span class="section">2.15.4. <a href="monitoring-printers.html#idp1247504">What's Already Done For You</a></span></dt><dt><span class="section">2.15.5. <a href="monitoring-printers.html#idp1254496">Prerequisites</a></span></dt><dt><span class="section">2.15.6. <a href="monitoring-printers.html#idp1254624">Configuring Icinga</a></span></dt><dt><span class="section">2.15.7. <a href="monitoring-printers.html#idp1274080">Restarting Icinga</a></span></dt></dl></dd><dt><span class="section">2.16. <a href="monitoring-routers.html">Monitoring Routers and Switches</a></span></dt><dd><dl><dt><span class="section">2.16.1. <a href="monitoring-routers.html#idp1281184">Introduction</a></span></dt><dt><span class="section">2.16.2. <a href="monitoring-routers.html#idp1291920">Overview</a></span></dt><dt><span class="section">2.16.3. <a href="monitoring-routers.html#idp1298832">Steps</a></span></dt><dt><span class="section">2.16.4. <a href="monitoring-routers.html#idp1303520">What's Already Done For You</a></span></dt><dt><span class="section">2.16.5. <a href="monitoring-routers.html#idp1311696">Prerequisites</a></span></dt><dt><span class="section">2.16.6. <a href="monitoring-routers.html#idp1316832">Configuring Icinga</a></span></dt><dt><span class="section">2.16.7. <a href="monitoring-routers.html#idp1317120">Restarting Icinga</a></span></dt></dl></dd><dt><span class="section">2.17. <a href="monitoring-publicservices.html">Monitoring Publicly Available Services</a></span></dt><dd><dl><dt><span class="section">2.17.1. <a href="monitoring-publicservices.html#idp1359088">Introduction</a></span></dt><dt><span class="section">2.17.2. <a href="monitoring-publicservices.html#idp1374176">Plugins for Monitoring Services</a></span></dt><dt><span class="section">2.17.3. <a href="monitoring-publicservices.html#idp1379840">Creating a Host Definition</a></span></dt><dt><span class="section">2.17.4. <a href="monitoring-publicservices.html#idp1386496">Creating Service Definitions</a></span></dt><dt><span class="section">2.17.5. <a href="monitoring-publicservices.html#idp1440256">Restarting Icinga</a></span></dt></dl></dd></dl></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Chapter 2. Getting Started</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="up" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="prev" href="whatsnew.html" title="1.2. What's New in Icinga 1.8">
+<link rel="next" href="beginners.html" title="2.1. Advice for beginners">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">Chapter 2. Getting Started</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="whatsnew.html">Prev</a> </td>
+<th width="60%" align="center"> </th>
+<td width="20%" align="right"> <a accesskey="n" href="beginners.html">Next</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="chapter" title="Chapter 2. Getting Started">
+<div class="titlepage"><div><div><h2 class="title">
+<a name="ch02"></a>Chapter 2. Getting Started</h2></div></div></div>
+<div class="toc">
+<p><b>Table of Contents</b></p>
+<dl>
+<dt><span class="section">2.1. <a href="beginners.html">Advice for beginners</a></span></dt>
+<dt><span class="section">2.2. <a href="quickstart.html">Quickstart Installation Guides</a></span></dt>
+<dt><span class="section">2.3. <a href="quickstart-icinga.html">Icinga Quickstart</a></span></dt>
+<dd><dl>
+<dt><span class="section">2.3.1. <a href="quickstart-icinga.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.3.2. <a href="quickstart-icinga.html#prerequisites">Prerequisites</a></span></dt>
+<dt><span class="section">2.3.3. <a href="quickstart-icinga.html#installpackages">Install packages</a></span></dt>
+<dt><span class="section">2.3.4. <a href="quickstart-icinga.html#createaccount">Create Account Information</a></span></dt>
+<dt><span class="section">2.3.5. <a href="quickstart-icinga.html#downloadicingaandplugins">Download Icinga and the Plugins</a></span></dt>
+<dt><span class="section">2.3.6. <a href="quickstart-icinga.html#compileinstall">Compile and install Icinga</a></span></dt>
+<dt><span class="section">2.3.7. <a href="quickstart-icinga.html#customiseconfig">Customise Configuration</a></span></dt>
+<dt><span class="section">2.3.8. <a href="quickstart-icinga.html#configclassicui">Configure the Classic Web Interface</a></span></dt>
+<dt><span class="section">2.3.9. <a href="quickstart-icinga.html#compileinstallplugins">Compile and Install the Nagios Plugins</a></span></dt>
+<dt><span class="section">2.3.10. <a href="quickstart-icinga.html#selinuxsettings">Adjusting the SELinux settings</a></span></dt>
+<dt><span class="section">2.3.11. <a href="quickstart-icinga.html#starticinga">Start Icinga</a></span></dt>
+<dt><span class="section">2.3.12. <a href="quickstart-icinga.html#loginclassicui">Login to the Classic Web Interface</a></span></dt>
+<dt><span class="section">2.3.13. <a href="quickstart-icinga.html#othermods">Other Modifications</a></span></dt>
+<dt><span class="section">2.3.14. <a href="quickstart-icinga.html#done">You're Done</a></span></dt>
+</dl></dd>
+<dt><span class="section">2.4. <a href="quickstart-icinga-freebsd.html">Icinga Quickstart FreeBSD</a></span></dt>
+<dt><span class="section">2.5. <a href="quickstart-idoutils.html">Icinga with IDOUtils Quickstart</a></span></dt>
+<dd><dl>
+<dt><span class="section">2.5.1. <a href="quickstart-idoutils.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.5.2. <a href="quickstart-idoutils.html#prerequisites">Prerequisites</a></span></dt>
+<dt><span class="section">2.5.3. <a href="quickstart-idoutils.html#newfeatures">New features for the IDOUtils:</a></span></dt>
+<dt><span class="section">2.5.4. <a href="quickstart-idoutils.html#installpackages">Install Packages</a></span></dt>
+<dt><span class="section">2.5.5. <a href="quickstart-idoutils.html#createaccount">Create Account Information</a></span></dt>
+<dt><span class="section">2.5.6. <a href="quickstart-idoutils.html#downloadicingaandplugins">Download Icinga and the Plugins</a></span></dt>
+<dt><span class="section">2.5.7. <a href="quickstart-idoutils.html#compileinstallidoutils">Compile and Install Icinga with IDOUtils</a></span></dt>
+<dt><span class="section">2.5.8. <a href="quickstart-idoutils.html#compileinstall">Compile and Install</a></span></dt>
+<dt><span class="section">2.5.9. <a href="quickstart-idoutils.html#customiseconfig">Customise Configuration</a></span></dt>
+<dt><span class="section">2.5.10. <a href="quickstart-idoutils.html#enableidomod">Enable the idomod event broker module</a></span></dt>
+<dt><span class="section">2.5.11. <a href="quickstart-idoutils.html#createidoutilsdatabase">Creation of Database and IDOUtils</a></span></dt>
+<dt><span class="section">2.5.12. <a href="quickstart-idoutils.html#configclassicui">Configure the Classic Web Interface</a></span></dt>
+<dt><span class="section">2.5.13. <a href="quickstart-idoutils.html#compileinstallplugins">Compile and Install the Nagios Plugins</a></span></dt>
+<dt><span class="section">2.5.14. <a href="quickstart-idoutils.html#selinuxsettings">Adjusting the SELinux settings</a></span></dt>
+<dt><span class="section">2.5.15. <a href="quickstart-idoutils.html#startiido2dbandicinga">Start IDOUtils and Icinga</a></span></dt>
+<dt><span class="section">2.5.16. <a href="quickstart-idoutils.html#configstartup">Configure Icinga Startup</a></span></dt>
+<dt><span class="section">2.5.17. <a href="quickstart-idoutils.html#loginclassicui">Login to the Classic Web Interface</a></span></dt>
+<dt><span class="section">2.5.18. <a href="quickstart-idoutils.html#othermods">Other Modifications</a></span></dt>
+<dt><span class="section">2.5.19. <a href="quickstart-idoutils.html#done">You're Done</a></span></dt>
+</dl></dd>
+<dt><span class="section">2.6. <a href="quickstart-idoutils-freebsd.html">Icinga and IDOUtils Quickstart on FreeBSD</a></span></dt>
+<dt><span class="section">2.7. <a href="icinga_packages.html">Icinga Packages for Linux Distributions</a></span></dt>
+<dt><span class="section">2.8. <a href="howtos.html">Links to other published Howtos</a></span></dt>
+<dt><span class="section">2.9. <a href="upgrading.html">Upgrading (to) Icinga</a></span></dt>
+<dd><dl>
+<dt><span class="section">2.9.1. <a href="upgrading.html#upgradepreviousrelease">Upgrading from previous Icinga Releases</a></span></dt>
+<dt><span class="section">2.9.2. <a href="upgrading.html#upgradenagios3x">Upgrading from Nagios 3.x Releases</a></span></dt>
+<dt><span class="section">2.9.3. <a href="upgrading.html#upgradenagios2x">Upgrading from Nagios 2.x Releases</a></span></dt>
+<dt><span class="section">2.9.4. <a href="upgrading.html#ipgradefromrpm">Upgrading from an RPM Installation</a></span></dt>
+</dl></dd>
+<dt><span class="section">2.10. <a href="upgrading_idoutils.html">Upgrading IDOUtils Database</a></span></dt>
+<dd><dl>
+<dt><span class="section">2.10.1. <a href="upgrading_idoutils.html#upgrade1.7">Upgrading IDOUtils to 1.7</a></span></dt>
+<dt><span class="section">2.10.2. <a href="upgrading_idoutils.html#upgrade1.5">Upgrading IDOUtils to 1.5</a></span></dt>
+<dt><span class="section">2.10.3. <a href="upgrading_idoutils.html#upgrade1.4">Upgrading IDOUtils to 1.4</a></span></dt>
+<dt><span class="section">2.10.4. <a href="upgrading_idoutils.html#upgrade1.3">Upgrading IDOUtils to 1.3</a></span></dt>
+<dt><span class="section">2.10.5. <a href="upgrading_idoutils.html#upgrade1.0.3">Upgrading IDOUtils to 1.0.3</a></span></dt>
+<dt><span class="section">2.10.6. <a href="upgrading_idoutils.html#upgrade1.0.2">Upgrading IDOUtils to 1.0.2</a></span></dt>
+<dt><span class="section">2.10.7. <a href="upgrading_idoutils.html#upgrade1.0.1">Upgrading IDOUtils to 1.0.1</a></span></dt>
+<dt><span class="section">2.10.8. <a href="upgrading_idoutils.html#upgrade1.0">Upgrading IDOUtils to 1.0</a></span></dt>
+</dl></dd>
+<dt><span class="section">2.11. <a href="monitoring-overview.html">Monitoring Overview</a></span></dt>
+<dt><span class="section">2.12. <a href="monitoring-windows.html">Monitoring Windows Machines</a></span></dt>
+<dd><dl>
+<dt><span class="section">2.12.1. <a href="monitoring-windows.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.12.2. <a href="monitoring-windows.html#overview">Overview</a></span></dt>
+<dt><span class="section">2.12.3. <a href="monitoring-windows.html#steps">Steps</a></span></dt>
+<dt><span class="section">2.12.4. <a href="monitoring-windows.html#whatsdone">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.12.5. <a href="monitoring-windows.html#prequisites">Prerequisites</a></span></dt>
+<dt><span class="section">2.12.6. <a href="monitoring-windows.html#installwindowsagent">Installing the Windows Agent</a></span></dt>
+<dt><span class="section">2.12.7. <a href="monitoring-windows.html#configicinga">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.12.8. <a href="monitoring-windows.html#passwordprotect">Password Protection</a></span></dt>
+<dt><span class="section">2.12.9. <a href="monitoring-windows.html#restarticinga">Restarting Icinga</a></span></dt>
+</dl></dd>
+<dt><span class="section">2.13. <a href="monitoring-linux.html">Monitoring Linux/Unix Machines</a></span></dt>
+<dd><dl>
+<dt><span class="section">2.13.1. <a href="monitoring-linux.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.13.2. <a href="monitoring-linux.html#overview">Overview</a></span></dt>
+</dl></dd>
+<dt><span class="section">2.14. <a href="monitoring-netware.html">Monitoring Netware Servers</a></span></dt>
+<dt><span class="section">2.15. <a href="monitoring-printers.html">Monitoring Network Printers</a></span></dt>
+<dd><dl>
+<dt><span class="section">2.15.1. <a href="monitoring-printers.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.15.2. <a href="monitoring-printers.html#overview">Overview</a></span></dt>
+<dt><span class="section">2.15.3. <a href="monitoring-printers.html#steps">Steps</a></span></dt>
+<dt><span class="section">2.15.4. <a href="monitoring-printers.html#whatsdone">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.15.5. <a href="monitoring-printers.html#prerequisites">Prerequisites</a></span></dt>
+<dt><span class="section">2.15.6. <a href="monitoring-printers.html#configicinga">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.15.7. <a href="monitoring-printers.html#restarticinga">Restarting Icinga</a></span></dt>
+</dl></dd>
+<dt><span class="section">2.16. <a href="monitoring-routers.html">Monitoring Routers and Switches</a></span></dt>
+<dd><dl>
+<dt><span class="section">2.16.1. <a href="monitoring-routers.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.16.2. <a href="monitoring-routers.html#overview">Overview</a></span></dt>
+<dt><span class="section">2.16.3. <a href="monitoring-routers.html#steps">Steps</a></span></dt>
+<dt><span class="section">2.16.4. <a href="monitoring-routers.html#whatsdone">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.16.5. <a href="monitoring-routers.html#prereuisites">Prerequisites</a></span></dt>
+<dt><span class="section">2.16.6. <a href="monitoring-routers.html#configicinga">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.16.7. <a href="monitoring-routers.html#restarticinga">Restarting Icinga</a></span></dt>
+</dl></dd>
+<dt><span class="section">2.17. <a href="monitoring-publicservices.html">Monitoring Publicly Available Services</a></span></dt>
+<dd><dl>
+<dt><span class="section">2.17.1. <a href="monitoring-publicservices.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.17.2. <a href="monitoring-publicservices.html#pluginsformonitoringservices">Plugins for Monitoring Services</a></span></dt>
+<dt><span class="section">2.17.3. <a href="monitoring-publicservices.html#createhostdefinition">Creating a Host Definition</a></span></dt>
+<dt><span class="section">2.17.4. <a href="monitoring-publicservices.html#createservicedefinition">Creating Service Definitions</a></span></dt>
+<dt><span class="section">2.17.5. <a href="monitoring-publicservices.html#restarticinga">Restarting Icinga</a></span></dt>
+</dl></dd>
+</dl>
+</div>
     
 
     
@@ -68,23 +180,23 @@
 
     
   </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="whatsnew.html">Prev</a> </td>
-          <td width="20%" align="center"> </td>
-          <td width="40%" align="right"> <a accesskey="n" href="beginners.html">Next</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">1.2. What's New in Icinga 1.8 </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Home</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 2.1. Advice for beginners</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="whatsnew.html">Prev</a> </td>
+<td width="20%" align="center"> </td>
+<td width="40%" align="right"> <a accesskey="n" href="beginners.html">Next</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">1.2. What's New in Icinga 1.8 </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
+<td width="40%" align="right" valign="top"> 2.1. Advice for beginners</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>

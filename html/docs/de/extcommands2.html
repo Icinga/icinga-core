@@ -1,37 +1,34 @@
-<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>7.2. Liste der externen Befehle</title>
-    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
-    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
-    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
-    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
-    <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen" />
-    <link rel="prev" href="extcommands.html" title="7.1. Externe Befehle" />
-    <link rel="next" href="eventhandlers.html" title="7.3. Eventhandler" />
-    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
-    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
-  </head>
-  <body>
-    <CENTER xmlns="">
-      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
-    </CENTER>
-    <div class="navheader">
-      <table width="100%" summary="Navigation header">
-        <tr>
-          <th colspan="3" align="center">7.2. Liste der externen Befehle</th>
-        </tr>
-        <tr>
-          <td width="20%" align="left"><a accesskey="p" href="extcommands.html">Zurück</a> </td>
-          <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-          <td width="20%" align="right"> <a accesskey="n" href="eventhandlers.html">Weiter</a></td>
-        </tr>
-      </table>
-      <hr />
-    </div>
-    <div class="section" title="7.2. Liste der externen Befehle"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="extcommands2"></a>7.2. <a id="extcmd2"></a>Liste der externen Befehle</h2></div></div></div>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>7.2. Liste der externen Befehle</title>
+<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
+<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
+<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
+<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
+<link rel="prev" href="extcommands.html" title="7.1. Externe Befehle">
+<link rel="next" href="eventhandlers.html" title="7.3. Eventhandler">
+<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
+</head>
+<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
+<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
+<div class="navheader">
+<table width="100%" summary="Navigation header">
+<tr><th colspan="3" align="center">7.2. Liste der externen Befehle</th></tr>
+<tr>
+<td width="20%" align="left">
+<a accesskey="p" href="extcommands.html">Zurück</a> </td>
+<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+<td width="20%" align="right"> <a accesskey="n" href="eventhandlers.html">Weiter</a>
+</td>
+</tr>
+</table>
+<hr>
+</div>
+<div class="section" title="7.2. Liste der externen Befehle">
+<div class="titlepage"><div><div><h2 class="title" style="clear: both">
+<a name="extcommands2"></a>7.2. <a name="extcmd2"></a>Liste der externen Befehle</h2></div></div></div>
   
 
   <p>Nachfolgend finden Sie Beschreibungen für jeden externen Befehl. Es ist ziemlich einfach, externe Befehle an Icinga zu senden
@@ -50,7 +47,7 @@
 
   
 
-  <p><a id="extcmd2-acknowledge_host_problem"></a> <span class="bold"><strong>ACKNOWLEDGE_HOST_PROBLEM</strong></span></p>
+  <p><a name="extcmd2-acknowledge_host_problem"></a> <span class="bold"><strong>ACKNOWLEDGE_HOST_PROBLEM</strong></span></p>
 
   <p><code class="code">ACKNOWLEDGE_HOST_PROBLEM;</code>&lt;host_name&gt;;&lt;sticky&gt;;&lt;notify&gt;;&lt;persistent&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -66,17 +63,23 @@
   <p>Wenn die "persistent"-Option auf eins (1) gesetzt wird, bleibt der Kommentar der Bestätigung auch nach der Erholung des Hosts
   bestehen.</p>
 
-  <p><a id="extcmd2-acknowledge_host_problem_expire"></a> <span class="bold"><strong>ACKNOWLEDGE_HOST_PROBLEM_EXPIRE</strong></span></p>
+  <p><a name="extcmd2-acknowledge_host_problem_expire"></a> <span class="bold"><strong>ACKNOWLEDGE_HOST_PROBLEM_EXPIRE</strong></span></p>
 
   <p><code class="code">ACKNOWLEDGE_HOST_PROBLEM_EXPIRE;</code>&lt;host_name&gt;;&lt;sticky&gt;;&lt;notify&gt;;&lt;persistent&gt;;&lt;timestamp&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
   <p>Erlaubt Ihnen, die Verfallszeit (in Sekunden seit der UNIX-Epoche) der Bestätigung (acknowledgement) zu setzen.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
-  </td></tr></table></div>
+  </td></tr>
+</table></div>
 
-  <p><a id="extcmd2-acknowledge_svc_problem"></a> <span class="bold"><strong>ACKNOWLEDGE_SVC_PROBLEM</strong></span></p>
+  <p><a name="extcmd2-acknowledge_svc_problem"></a> <span class="bold"><strong>ACKNOWLEDGE_SVC_PROBLEM</strong></span></p>
 
   <p><code class="code">ACKNOWLEDGE_SVC_PROBLEM;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;sticky&gt;;&lt;notify&gt;;&lt;persistent&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -92,17 +95,23 @@
   <p>Wenn die "persistent"-Option auf eins (1) gesetzt wird, bleibt der Kommentar der Bestätigung auch nach der Erholung des Service
   bestehen.</p>
 
-  <p><a id="extcmd2-acknowledge_svc_problem_expire"></a> <span class="bold"><strong>ACKNOWLEDGE_SVC_PROBLEM_EXPIRE</strong></span></p>
+  <p><a name="extcmd2-acknowledge_svc_problem_expire"></a> <span class="bold"><strong>ACKNOWLEDGE_SVC_PROBLEM_EXPIRE</strong></span></p>
 
   <p><code class="code">ACKNOWLEDGE_SVC_PROBLEM_EXPIRE;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;sticky&gt;;&lt;notify&gt;;&lt;persistent&gt;;&lt;timestamp&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
   <p>Erlaubt Ihnen, die Verfallszeit (in Sekunden seit der UNIX-Epoche) der Bestätigung (acknowledgement) zu setzen.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
-  </td></tr></table></div>
+  </td></tr>
+</table></div>
 
-  <p><a id="extcmd2-add_host_comment"></a> <span class="bold"><strong>ADD_HOST_COMMENT</strong></span></p>
+  <p><a name="extcmd2-add_host_comment"></a> <span class="bold"><strong>ADD_HOST_COMMENT</strong></span></p>
 
   <p><code class="code">ADD_HOST_COMMENT;</code>&lt;host_name&gt;;&lt;persistent&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -110,7 +119,7 @@
   diesem Host auch über Neustarts des Icinga-Prozesses hinweg aufbewahrt. Anderenfalls wird der Kommentar beim nächsten Neustart des
   Icinga-Prozesses gelöscht.</p>
 
-  <p><a id="extcmd2-add_svc_comment"></a> <span class="bold"><strong>ADD_SVC_COMMENT</strong></span></p>
+  <p><a name="extcmd2-add_svc_comment"></a> <span class="bold"><strong>ADD_SVC_COMMENT</strong></span></p>
 
   <p><code class="code">ADD_SVC_COMMENT;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;persistent&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -118,7 +127,7 @@
   zu diesem Service auch über Neustarts des Icinga-Prozesses hinweg aufbewahrt. Anderenfalls wird der Kommentar beim nächsten
   Neustart des Icinga-Prozesses gelöscht.</p>
 
-  <p><a id="extcmd2-change_contact_host_notification_timeperiod"></a> <span class="bold"><strong>CHANGE_CONTACT_HOST_NOTIFICATION_TIMEPERIOD</strong></span></p>
+  <p><a name="extcmd2-change_contact_host_notification_timeperiod"></a> <span class="bold"><strong>CHANGE_CONTACT_HOST_NOTIFICATION_TIMEPERIOD</strong></span></p>
 
   <p><code class="code">CHANGE_CONTACT_HOST_NOTIFICATION_TIMEPERIOD;</code>&lt;contact_name&gt;;&lt;notification_timeperiod&gt;</p>
 
@@ -127,7 +136,7 @@
   Host-Benachrichtigungs-Zeitfenster für den Kontakt benutzt werden soll. Das Zeitfenster muss bereits existieren, also beim letzten
   (Neu-)Start des Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_contact_modattr"></a> <span class="bold"><strong>CHANGE_CONTACT_MODATTR</strong></span></p>
+  <p><a name="extcmd2-change_contact_modattr"></a> <span class="bold"><strong>CHANGE_CONTACT_MODATTR</strong></span></p>
 
   <p><code class="code">CHANGE_CONTACT_MODATTR;</code>&lt;contact_name&gt;;&lt;value&gt;</p>
 
@@ -136,7 +145,7 @@
   dass die Änderung des Wertes die Datenaufbewahrung beeinflussen kann. Dies ist eine fortgeschrittene Option und sollte nur von Personen
   benutzt werden, die fundierte Kenntnisse von der Aufbewahrungslogik in Icinga besitzen.</p>
 
-  <p><a id="extcmd2-change_contact_modhattr"></a> <span class="bold"><strong>CHANGE_CONTACT_MODHATTR</strong></span></p>
+  <p><a name="extcmd2-change_contact_modhattr"></a> <span class="bold"><strong>CHANGE_CONTACT_MODHATTR</strong></span></p>
 
   <p><code class="code">CHANGE_CONTACT_MODHATTR;</code>&lt;contact_name&gt;;&lt;value&gt;</p>
 
@@ -145,7 +154,7 @@
   dass die Änderung des Wertes die Datenaufbewahrung beeinflussen kann. Dies ist eine fortgeschrittene Option und sollte nur von Personen
   benutzt werden, die fundierte Kenntnisse von der Aufbewahrungslogik in Icinga besitzen.</p>
 
-  <p><a id="extcmd2-change_contact_modsattr"></a> <span class="bold"><strong>CHANGE_CONTACT_MODSATTR</strong></span></p>
+  <p><a name="extcmd2-change_contact_modsattr"></a> <span class="bold"><strong>CHANGE_CONTACT_MODSATTR</strong></span></p>
 
   <p><code class="code">CHANGE_CONTACT_MODSATTR;</code>&lt;contact_name&gt;;&lt;value&gt;</p>
 
@@ -154,7 +163,7 @@
   dass die Änderung des Wertes die Datenaufbewahrung beeinflussen kann. Dies ist eine fortgeschrittene Option und sollte nur von Personen
   benutzt werden, die fundierte Kenntnisse von der Aufbewahrungslogik in Icinga besitzen.</p>
 
-  <p><a id="extcmd2-change_contact_svc_notification_timeperiod"></a> <span class="bold"><strong>CHANGE_CONTACT_SVC_NOTIFICATION_TIMEPERIOD</strong></span></p>
+  <p><a name="extcmd2-change_contact_svc_notification_timeperiod"></a> <span class="bold"><strong>CHANGE_CONTACT_SVC_NOTIFICATION_TIMEPERIOD</strong></span></p>
 
   <p><code class="code">CHANGE_CONTACT_SVC_NOTIFICATION_TIMEPERIOD;</code>&lt;contact_name&gt;;&lt;notification_timeperiod&gt;</p>
 
@@ -163,25 +172,25 @@
   Service-Benachrichtigungs-Zeitfenster für den Kontakt benutzt werden soll. Das Zeitfenster muss bereits existieren, also beim letzten
   (Neu-)Start des Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_custom_contact_var"></a> <span class="bold"><strong>CHANGE_CUSTOM_CONTACT_VAR</strong></span></p>
+  <p><a name="extcmd2-change_custom_contact_var"></a> <span class="bold"><strong>CHANGE_CUSTOM_CONTACT_VAR</strong></span></p>
 
   <p><code class="code">CHANGE_CUSTOM_CONTACT_VAR;</code>&lt;contact_name&gt;;&lt;varname&gt;;&lt;varvalue&gt;</p>
 
   <p>Ändert den Wert einer benutzerdefinierten Kontakt-Variable.</p>
 
-  <p><a id="extcmd2-change_custom_host_var"></a> <span class="bold"><strong>CHANGE_CUSTOM_HOST_VAR</strong></span></p>
+  <p><a name="extcmd2-change_custom_host_var"></a> <span class="bold"><strong>CHANGE_CUSTOM_HOST_VAR</strong></span></p>
 
   <p><code class="code">CHANGE_CUSTOM_HOST_VAR;</code>&lt;host_name&gt;;&lt;varname&gt;;&lt;varvalue&gt;</p>
 
   <p>Ändert den Wert einer benutzerdefinierten Host-Variable.</p>
 
-  <p><a id="extcmd2-change_custom_svc_var"></a> <span class="bold"><strong>CHANGE_CUSTOM_SVC_VAR</strong></span></p>
+  <p><a name="extcmd2-change_custom_svc_var"></a> <span class="bold"><strong>CHANGE_CUSTOM_SVC_VAR</strong></span></p>
 
   <p><code class="code">CHANGE_CUSTOM_SVC_VAR;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;varname&gt;;&lt;varvalue&gt;</p>
 
   <p>Ändert den Wert einer benutzerdefinierten Service-Variable.</p>
 
-  <p><a id="extcmd2-change_global_host_event_handler"></a> <span class="bold"><strong>CHANGE_GLOBAL_HOST_EVENT_HANDLER</strong></span></p>
+  <p><a name="extcmd2-change_global_host_event_handler"></a> <span class="bold"><strong>CHANGE_GLOBAL_HOST_EVENT_HANDLER</strong></span></p>
 
   <p><code class="code">CHANGE_GLOBAL_HOST_EVENT_HANDLER;</code>&lt;event_handler_command&gt;</p>
 
@@ -189,7 +198,7 @@
   Kurznamen des Befehls an, der als globaler Host-Eventhandler-Befehl benutzt werden soll. Der Befehl muss bereits existieren, also beim
   letzten (Neu-)Start des Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_global_svc_event_handler"></a> <span class="bold"><strong>CHANGE_GLOBAL_SVC_EVENT_HANDLER</strong></span></p>
+  <p><a name="extcmd2-change_global_svc_event_handler"></a> <span class="bold"><strong>CHANGE_GLOBAL_SVC_EVENT_HANDLER</strong></span></p>
 
   <p><code class="code">CHANGE_GLOBAL_SVC_EVENT_HANDLER;</code>&lt;event_handler_command&gt;</p>
 
@@ -197,7 +206,7 @@
   den Kurznamen des Befehls an, der als globaler Service-Eventhandler-Befehl benutzt werden soll. Der Befehl muss bereits existieren, also
   beim letzten (Neu-)Start des Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_host_check_command"></a> <span class="bold"><strong>CHANGE_HOST_CHECK_COMMAND</strong></span></p>
+  <p><a name="extcmd2-change_host_check_command"></a> <span class="bold"><strong>CHANGE_HOST_CHECK_COMMAND</strong></span></p>
 
   <p><code class="code">CHANGE_HOST_CHECK_COMMAND;</code>&lt;host_name&gt;;&lt;check_command&gt;</p>
 
@@ -205,7 +214,7 @@
   Kurznamen des Befehls enthalten, der als Prüfbefehl für den Host benutzt werden soll. Der Befehl muss bereits existieren, also beim
   letzten (Neu-)Start des Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_host_check_timeperiod"></a> <span class="bold"><strong>CHANGE_HOST_CHECK_TIMEPERIOD</strong></span></p>
+  <p><a name="extcmd2-change_host_check_timeperiod"></a> <span class="bold"><strong>CHANGE_HOST_CHECK_TIMEPERIOD</strong></span></p>
 
   <p><code class="code">CHANGE_HOST_CHECK_TIMEPERIOD;</code>&lt;host_name&gt;;&lt;timeperiod&gt;</p>
 
@@ -213,7 +222,7 @@
   Diese Option gibt den Kurznamen des Zeitfensters an, das als Prüf-Zeitfenster für den Host benutzt werden soll. Das Zeitfenster muss
   bereits existieren, also beim letzten (Neu-)Start des Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_host_event_handler"></a> <span class="bold"><strong>CHANGE_HOST_EVENT_HANDLER</strong></span></p>
+  <p><a name="extcmd2-change_host_event_handler"></a> <span class="bold"><strong>CHANGE_HOST_EVENT_HANDLER</strong></span></p>
 
   <p><code class="code">CHANGE_HOST_EVENT_HANDLER;</code>&lt;host_name&gt;;&lt;event_handler_command&gt;</p>
 
@@ -221,7 +230,7 @@
   Option gibt den Kurznamen des Befehls an, der als neuer Eventhandler-Befehl für diesen Host benutzt werden soll. Der Befehl muss bereits
   existieren, also beim letzten (Neu-)Start des Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_host_modattr"></a> <span class="bold"><strong>CHANGE_HOST_MODATTR</strong></span></p>
+  <p><a name="extcmd2-change_host_modattr"></a> <span class="bold"><strong>CHANGE_HOST_MODATTR</strong></span></p>
 
   <p><code class="code">CHANGE_HOST_MODATTR;</code>&lt;host_name&gt;;&lt;value&gt;</p>
 
@@ -230,7 +239,7 @@
   dass die Änderung des Wertes die Datenaufbewahrung beeinflussen kann. Dies ist eine fortgeschrittene Option und sollte nur von Personen
   benutzt werden, die fundierte Kenntnisse von der Aufbewahrungslogik in Icinga besitzen</p>
 
-  <p><a id="extcmd2-change_host_notification_timeperiod"></a> <span class="bold"><strong>CHANGE_HOST_NOTIFICATION_TIMEPERIOD</strong></span></p>
+  <p><a name="extcmd2-change_host_notification_timeperiod"></a> <span class="bold"><strong>CHANGE_HOST_NOTIFICATION_TIMEPERIOD</strong></span></p>
 
   <p><code class="code">CHANGE_HOST_NOTIFICATION_TIMEPERIOD;</code>&lt;host_name&gt;;&lt;notification_timeperiod&gt;</p>
 
@@ -239,43 +248,43 @@
   Benachrichtigungs-Zeitfenster für den Host benutzt werden soll. Das Zeitfenster muss bereits existieren, also beim letzten (Neu-)Start des
   Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_max_host_check_attempts"></a> <span class="bold"><strong>CHANGE_MAX_HOST_CHECK_ATTEMPTS</strong></span></p>
+  <p><a name="extcmd2-change_max_host_check_attempts"></a> <span class="bold"><strong>CHANGE_MAX_HOST_CHECK_ATTEMPTS</strong></span></p>
 
   <p><code class="code">CHANGE_MAX_HOST_CHECK_ATTEMPTS;</code>&lt;host_name&gt;;&lt;check_attempts&gt;</p>
 
   <p>Ändert die maximale Anzahl von erneuten Prüf-Versuchen (Wiederholungen) für einen bestimmten Host.</p>
 
-  <p><a id="extcmd2-change_max_svc_check_attempts"></a> <span class="bold"><strong>CHANGE_MAX_SVC_CHECK_ATTEMPTS</strong></span></p>
+  <p><a name="extcmd2-change_max_svc_check_attempts"></a> <span class="bold"><strong>CHANGE_MAX_SVC_CHECK_ATTEMPTS</strong></span></p>
 
   <p><code class="code">CHANGE_MAX_SVC_CHECK_ATTEMPTS;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;check_attempts&gt;</p>
 
   <p>Ändert die maximale Anzahl von erneuten Prüf-Versuchen (Wiederholungen) für einen bestimmten Service.</p>
 
-  <p><a id="extcmd2-change_normal_host_check_interval"></a> <span class="bold"><strong>CHANGE_NORMAL_HOST_CHECK_INTERVAL</strong></span></p>
+  <p><a name="extcmd2-change_normal_host_check_interval"></a> <span class="bold"><strong>CHANGE_NORMAL_HOST_CHECK_INTERVAL</strong></span></p>
 
   <p><code class="code">CHANGE_NORMAL_HOST_CHECK_INTERVAL;</code>&lt;host_name&gt;;&lt;check_interval&gt;</p>
 
   <p>Ändert das normale Prüfintervall (für regelmäßige Prüfungen) für einen bestimmten Host.</p>
 
-  <p><a id="extcmd2-change_normal_svc_check_interval"></a> <span class="bold"><strong>CHANGE_NORMAL_SVC_CHECK_INTERVAL</strong></span></p>
+  <p><a name="extcmd2-change_normal_svc_check_interval"></a> <span class="bold"><strong>CHANGE_NORMAL_SVC_CHECK_INTERVAL</strong></span></p>
 
   <p><code class="code">CHANGE_NORMAL_SVC_CHECK_INTERVAL;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;check_interval&gt;</p>
 
   <p>Ändert das normale Prüfintervall (für regelmäßige Prüfungen) für einen bestimmten Service</p>
 
-  <p><a id="extcmd2-change_retry_host_check_interval"></a> <span class="bold"><strong>CHANGE_RETRY_HOST_CHECK_INTERVAL</strong></span></p>
+  <p><a name="extcmd2-change_retry_host_check_interval"></a> <span class="bold"><strong>CHANGE_RETRY_HOST_CHECK_INTERVAL</strong></span></p>
 
   <p><code class="code">CHANGE_RETRY_HOST_CHECK_INTERVAL;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;check_interval&gt;</p>
 
   <p>Ändert das Prüfintervall (für Wiederholungsprüfungen) für einen bestimmten Host.</p>
 
-  <p><a id="extcmd2-change_retry_svc_check_interval"></a> <span class="bold"><strong>CHANGE_RETRY_SVC_CHECK_INTERVAL</strong></span></p>
+  <p><a name="extcmd2-change_retry_svc_check_interval"></a> <span class="bold"><strong>CHANGE_RETRY_SVC_CHECK_INTERVAL</strong></span></p>
 
   <p><code class="code">CHANGE_RETRY_SVC_CHECK_INTERVAL;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;check_interval&gt;</p>
 
   <p>Ändert das Prüfintervall (für Wiederholungsprüfungen) für einen bestimmten Service.</p>
 
-  <p><a id="extcmd2-change_svc_check_command"></a> <span class="bold"><strong>CHANGE_SVC_CHECK_COMMAND</strong></span></p>
+  <p><a name="extcmd2-change_svc_check_command"></a> <span class="bold"><strong>CHANGE_SVC_CHECK_COMMAND</strong></span></p>
 
   <p><code class="code">CHANGE_SVC_CHECK_COMMAND;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;check_command&gt;</p>
 
@@ -283,7 +292,7 @@
   den Kurznamen des Befehls enthalten, der als Prüfbefehl für den Service benutzt werden soll. Der Befehl muss bereits existieren, also beim
   letzten (Neu-)Start des Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_svc_check_timeperiod"></a> <span class="bold"><strong>CHANGE_SVC_CHECK_TIMEPERIOD</strong></span></p>
+  <p><a name="extcmd2-change_svc_check_timeperiod"></a> <span class="bold"><strong>CHANGE_SVC_CHECK_TIMEPERIOD</strong></span></p>
 
   <p><code class="code">CHANGE_SVC_CHECK_TIMEPERIOD;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;check_timeperiod&gt;</p>
 
@@ -291,7 +300,7 @@
   wird. Diese Option gibt den Kurznamen des Zeitfensters an, das als Prüf-Zeitfenster für den Service benutzt werden soll. Das Zeitfenster
   muss bereits existieren, also beim letzten (Neu-)Start des Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_svc_event_handler"></a> <span class="bold"><strong>CHANGE_SVC_EVENT_HANDLER</strong></span></p>
+  <p><a name="extcmd2-change_svc_event_handler"></a> <span class="bold"><strong>CHANGE_SVC_EVENT_HANDLER</strong></span></p>
 
   <p><code class="code">CHANGE_SVC_EVENT_HANDLER;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;event_handler_command&gt;</p>
 
@@ -299,7 +308,7 @@
   Option gibt den Kurznamen des Befehls an, der als neuer Eventhandler-Befehl für diesen Service benutzt werden soll. Der Befehl muss
   bereits existieren, also beim letzten (Neu-)Start des Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-change_svc_modattr"></a> <span class="bold"><strong>CHANGE_SVC_MODATTR</strong></span></p>
+  <p><a name="extcmd2-change_svc_modattr"></a> <span class="bold"><strong>CHANGE_SVC_MODATTR</strong></span></p>
 
   <p><code class="code">CHANGE_SVC_MODATTR;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;value&gt;</p>
 
@@ -308,7 +317,7 @@
   dass die Änderung des Wertes die Datenaufbewahrung beeinflussen kann. Dies ist eine fortgeschrittene Option und sollte nur von Personen
   benutzt werden, die fundierte Kenntnisse von der Aufbewahrungslogik in Icinga besitzen.</p>
 
-  <p><a id="extcmd2-change_svc_notification_timeperiod"></a> <span class="bold"><strong>CHANGE_SVC_NOTIFICATION_TIMEPERIOD</strong></span></p>
+  <p><a name="extcmd2-change_svc_notification_timeperiod"></a> <span class="bold"><strong>CHANGE_SVC_NOTIFICATION_TIMEPERIOD</strong></span></p>
 
   <p><code class="code">CHANGE_SVC_NOTIFICATION_TIMEPERIOD;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;notification_timeperiod&gt;</p>
 
@@ -317,71 +326,89 @@
   Benachrichtigungs-Zeitfenster für den Host benutzt werden soll. Das Zeitfenster muss bereits existieren, also beim letzten (Neu-)Start des
   Icinga-Prozesses konfiguriert gewesen sein.</p>
 
-  <p><a id="extcmd2-del_all_host_comments"></a> <span class="bold"><strong>DEL_ALL_HOST_COMMENTS</strong></span></p>
+  <p><a name="extcmd2-del_all_host_comments"></a> <span class="bold"><strong>DEL_ALL_HOST_COMMENTS</strong></span></p>
 
   <p><code class="code">DEL_ALL_HOST_COMMENTS;</code>&lt;host_name&gt;</p>
 
   <p>Löscht alle Kommentare, die mit einem bestimmten Host verbunden sind.</p>
 
-  <p><a id="extcmd2-del_all_svc_comments"></a> <span class="bold"><strong>DEL_ALL_SVC_COMMENTS</strong></span></p>
+  <p><a name="extcmd2-del_all_svc_comments"></a> <span class="bold"><strong>DEL_ALL_SVC_COMMENTS</strong></span></p>
 
   <p><code class="code">DEL_ALL_SVC_COMMENTS;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Löscht alle Kommentare, die mit einem bestimmten Service verbunden sind.</p>
 
-  <p><a id="extcmd2-del_host_comment"></a> <span class="bold"><strong>DEL_HOST_COMMENT</strong></span></p>
+  <p><a name="extcmd2-del_host_comment"></a> <span class="bold"><strong>DEL_HOST_COMMENT</strong></span></p>
 
   <p><code class="code">DEL_HOST_COMMENT;</code>&lt;comment_id&gt;</p>
 
   <p>Löscht einen Host-Kommentar. Die ID-Nummer des zu löschenden Kommentars muss angegeben werden.</p>
 
-  <p><a id="extcmd2-del_downtime_by_host_name"></a> <span class="bold"><strong>DEL_DOWNTIME_BY_HOST_NAME</strong></span></p>
+  <p><a name="extcmd2-del_downtime_by_host_name"></a> <span class="bold"><strong>DEL_DOWNTIME_BY_HOST_NAME</strong></span></p>
 
   <p><code class="code">DEL_DOWNTIME_BY_HOST_NAME;</code>&lt;host_name&gt;[;&lt;servicedesc&gt;[;&lt;starttime&gt;[;&lt;commentstring&gt;]]]</p>
 
   <p>Löscht die Ausfallzeiten des Hosts, der über "host_name" angegeben wurde, sowie dessen verbundene Services. Bitte beachten Sie, dass
   Sie den Bereich mit optionalen "Filtern" weiter einschränken können.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
-    <p>Dieser Befehl ist ab Icinga 1.4 verfügbar. Die Änderungen stammen vom <a class="ulink" href="http://www.opsview.com/" target="_top">Opsview</a>-Team.</p>
-  </td></tr></table></div>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Dieser Befehl ist ab Icinga 1.4 verfügbar. Die Änderungen stammen vom <a class="link" href="http://www.opsview.com/" target="_top">Opsview</a>-Team.</p>
+  </td></tr>
+</table></div>
 
-  <p><a id="extcmd2-del_downtime_by_hostgroup_name"></a> <span class="bold"><strong>DEL_DOWNTIME_BY_HOSTGROUP_NAME</strong></span></p>
+  <p><a name="extcmd2-del_downtime_by_hostgroup_name"></a> <span class="bold"><strong>DEL_DOWNTIME_BY_HOSTGROUP_NAME</strong></span></p>
 
   <p><code class="code">DEL_DOWNTIME_BY_HOSTGROUP_NAME;</code>&lt;hostgroup_name&gt;[host_name&gt;[;&lt;servicedesc&gt;[;&lt;starttime&gt;[;&lt;commentstring&gt;]]]]</p>
 
   <p>Löscht die Ausfallzeiten aller Hosts der Hostgruppe, die über "hostgroup_name" angegeben wurde, sowie deren verbundene Services.
   Bitte beachten Sie, dass Sie den Bereich mit optionalen "Filtern" weiter einschränken können.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
-    <p>Dieser Befehl ist ab Icinga 1.4 verfügbar. Die Änderungen stammen vom <a class="ulink" href="http://www.opsview.com/" target="_top">Opsview</a>-Team.</p>
-  </td></tr></table></div>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Dieser Befehl ist ab Icinga 1.4 verfügbar. Die Änderungen stammen vom <a class="link" href="http://www.opsview.com/" target="_top">Opsview</a>-Team.</p>
+  </td></tr>
+</table></div>
 
-  <p><a id="extcmd2-del_downtime_by_start_time_comment"></a> <span class="bold"><strong>DEL_DOWNTIME_BY_START_TIME_COMMENT</strong></span></p>
+  <p><a name="extcmd2-del_downtime_by_start_time_comment"></a> <span class="bold"><strong>DEL_DOWNTIME_BY_START_TIME_COMMENT</strong></span></p>
 
   <p><code class="code">DEL_DOWNTIME_BY_START_TIME_COMMENT;</code>&lt;start time[;commentstring]&gt;</p>
 
   <p>Löscht die Ausfallzeiten mit Startzeiten, die dem Zeitstempel entsprechen, der über "start time" angegeben wurde. Optional wird
   zusätzlich auch der Kommentar überprüft.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
-    <p>Dieser Befehl ist ab Icinga 1.4 verfügbar. Die Änderungen stammen vom <a class="ulink" href="http://www.opsview.com/" target="_top">Opsview</a>-Team.</p>
-  </td></tr></table></div>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Dieser Befehl ist ab Icinga 1.4 verfügbar. Die Änderungen stammen vom <a class="link" href="http://www.opsview.com/" target="_top">Opsview</a>-Team.</p>
+  </td></tr>
+</table></div>
 
-  <p><a id="extcmd2-del_host_downtime"></a> <span class="bold"><strong>DEL_HOST_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-del_host_downtime"></a> <span class="bold"><strong>DEL_HOST_DOWNTIME</strong></span></p>
 
   <p><code class="code">DEL_HOST_DOWNTIME;</code>&lt;downtime_id&gt;</p>
 
   <p>Löscht den Host-Ausfallzeit-Eintrag mit der durch "downtime_id" angegebenen Nummer. Falls die Ausfallzeit gerade aktiv ist, wird die
   Ausfallzeit des Hosts damit beendet (solange es keine weiteren aktiven überlappenden Ausfallzeiteinträge für diesen Host gibt).</p>
 
-  <p><a id="extcmd2-del_svc_comment"></a> <span class="bold"><strong>DEL_SVC_COMMENT</strong></span></p>
+  <p><a name="extcmd2-del_svc_comment"></a> <span class="bold"><strong>DEL_SVC_COMMENT</strong></span></p>
 
   <p><code class="code">DEL_SVC_COMMENT;</code>&lt;comment_id&gt;</p>
 
   <p>Löscht einen Service-Kommentar. Die ID-Nummer des zu löschenden Kommentars muss angegeben werden.</p>
 
-  <p><a id="extcmd2-del_svc_downtime"></a> <span class="bold"><strong>DEL_SVC_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-del_svc_downtime"></a> <span class="bold"><strong>DEL_SVC_DOWNTIME</strong></span></p>
 
   <p><code class="code">DEL_SVC_DOWNTIME;</code>&lt;downtime_id&gt;</p>
 
@@ -389,7 +416,7 @@
   die Ausfallzeit des Service damit beendet (solange es keine weiteren aktiven überlappenden Ausfallzeiteinträge für diesen Service
   gibt).</p>
 
-  <p><a id="extcmd2-delay_host_notification"></a> <span class="bold"><strong>DELAY_HOST_NOTIFICATION</strong></span></p>
+  <p><a name="extcmd2-delay_host_notification"></a> <span class="bold"><strong>DELAY_HOST_NOTIFICATION</strong></span></p>
 
   <p><code class="code">DELAY_HOST_NOTIFICATION;</code>&lt;host_name&gt;;&lt;notification_time&gt;</p>
 
@@ -399,7 +426,7 @@
   wird ggf. eine neue Benachrichtigung versandt, bevor die Zeit erreicht ist, die Sie als "notification_time"-Argument angegeben
   haben.</p>
 
-  <p><a id="extcmd2-delay_svc_notification"></a> <span class="bold"><strong>DELAY_SVC_NOTIFICATION</strong></span></p>
+  <p><a name="extcmd2-delay_svc_notification"></a> <span class="bold"><strong>DELAY_SVC_NOTIFICATION</strong></span></p>
 
   <p><code class="code">DELAY_SVC_NOTIFICATION;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;notification_time&gt;</p>
 
@@ -409,148 +436,148 @@
   wechselt, wird ggf. eine neue Benachrichtigung versandt, bevor die Zeit erreicht ist, die Sie als "notification_time"-Argument angegeben
   haben.</p>
 
-  <p><a id="extcmd2-disable_all_notifications_beyond_host"></a> <span class="bold"><strong>DISABLE_ALL_NOTIFICATIONS_BEYOND_HOST</strong></span></p>
+  <p><a name="extcmd2-disable_all_notifications_beyond_host"></a> <span class="bold"><strong>DISABLE_ALL_NOTIFICATIONS_BEYOND_HOST</strong></span></p>
 
   <p><code class="code">DISABLE_ALL_NOTIFICATIONS_BEYOND_HOST;</code>&lt;host_name&gt;</p>
 
   <p>Deaktiviert die Benachrichtigungen für alle Host und Services "jenseits" (d.h. auf alles "Child-"Hosts) des angegebenen Hosts. Die
   aktuelle Benachrichtigungseinstellung auf dem angegebenen Host ist davon nicht betroffen.</p>
 
-  <p><a id="extcmd2-disable_contact_host_notifications"></a> <span class="bold"><strong>DISABLE_CONTACT_HOST_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_contact_host_notifications"></a> <span class="bold"><strong>DISABLE_CONTACT_HOST_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_CONTACT_HOST_NOTIFICATIONS;</code>&lt;contact_name&gt;</p>
 
   <p>Deaktiviert Host-Benachrichtigungen für einen bestimmten Kontakt.</p>
 
-  <p><a id="extcmd2-disable_contact_svc_notifications"></a> <span class="bold"><strong>DISABLE_CONTACT_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_contact_svc_notifications"></a> <span class="bold"><strong>DISABLE_CONTACT_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_CONTACT_SVC_NOTIFICATIONS;</code>&lt;contact_name&gt;</p>
 
   <p>Deaktiviert Service-Benachrichtigungen für einen bestimmten Kontakt.</p>
 
-  <p><a id="extcmd2-disable_contactgroup_host_notifications"></a> <span class="bold"><strong>DISABLE_CONTACTGROUP_HOST_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_contactgroup_host_notifications"></a> <span class="bold"><strong>DISABLE_CONTACTGROUP_HOST_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_CONTACTGROUP_HOST_NOTIFICATIONS;</code>&lt;contactgroup_name&gt;</p>
 
   <p>Deaktiviert Host-Benachrichtigungen für alle Kontakte einer bestimmten Kontaktgruppe.</p>
 
-  <p><a id="extcmd2-disable_contactgroup_svc_notifications"></a> <span class="bold"><strong>DISABLE_CONTACTGROUP_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_contactgroup_svc_notifications"></a> <span class="bold"><strong>DISABLE_CONTACTGROUP_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_CONTACTGROUP_SVC_NOTIFICATIONS;</code>&lt;contactgroup_name&gt;</p>
 
   <p>Deaktiviert Service-Benachrichtigungen für alle Kontakte einer bestimmten Kontaktgruppe.</p>
 
-  <p><a id="extcmd2-disable_event_handlers"></a> <span class="bold"><strong>DISABLE_EVENT_HANDLERS</strong></span></p>
+  <p><a name="extcmd2-disable_event_handlers"></a> <span class="bold"><strong>DISABLE_EVENT_HANDLERS</strong></span></p>
 
   <p><code class="code">DISABLE_EVENT_HANDLERS</code></p>
 
   <p>Deaktiviert Host- und Service-Eventhandler auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-disable_failure_prediction"></a> <span class="bold"><strong>DISABLE_FAILURE_PREDICTION</strong></span></p>
+  <p><a name="extcmd2-disable_failure_prediction"></a> <span class="bold"><strong>DISABLE_FAILURE_PREDICTION</strong></span></p>
 
   <p><code class="code">DISABLE_FAILURE_PREDICTION</code></p>
 
   <p>Deaktiviert Fehlervorhersage auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-disable_flap_detection"></a> <span class="bold"><strong>DISABLE_FLAP_DETECTION</strong></span></p>
+  <p><a name="extcmd2-disable_flap_detection"></a> <span class="bold"><strong>DISABLE_FLAP_DETECTION</strong></span></p>
 
   <p><code class="code">DISABLE_FLAP_DETECTION</code></p>
 
   <p>Deaktiviert Host- und Service-Flattererkennung auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-disable_host_and_child_notifications"></a> <span class="bold"><strong>DISABLE_HOST_AND_CHILD_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_host_and_child_notifications"></a> <span class="bold"><strong>DISABLE_HOST_AND_CHILD_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_HOST_AND_CHILD_NOTIFICATIONS;</code>&lt;host_name&gt;</p>
 
   <p>Deaktiviert Benachrichtigungen für den angegebenen Host sowie die "Child"-Hosts des angegebenen Hosts.</p>
 
-  <p><a id="extcmd2-disable_host_check"></a> <span class="bold"><strong>DISABLE_HOST_CHECK</strong></span></p>
+  <p><a name="extcmd2-disable_host_check"></a> <span class="bold"><strong>DISABLE_HOST_CHECK</strong></span></p>
 
   <p><code class="code">DISABLE_HOST_CHECK;</code>&lt;host_name&gt;</p>
 
   <p>Deaktiviert (regelmäßig geplante) aktive Prüfungen des angegebenen Hosts. "On-demand"-Prüfungen finden weiterhin statt (?).</p>
 
-  <p><a id="extcmd2-disable_host_event_handler"></a> <span class="bold"><strong>DISABLE_HOST_EVENT_HANDLER</strong></span></p>
+  <p><a name="extcmd2-disable_host_event_handler"></a> <span class="bold"><strong>DISABLE_HOST_EVENT_HANDLER</strong></span></p>
 
   <p><code class="code">DISABLE_HOST_EVENT_HANDLER;</code>&lt;host_name&gt;</p>
 
   <p>Deaktiviert den Eventhandler für den angegebenen Host.</p>
 
-  <p><a id="extcmd2-disable_host_flap_detection"></a> <span class="bold"><strong>DISABLE_HOST_FLAP_DETECTION</strong></span></p>
+  <p><a name="extcmd2-disable_host_flap_detection"></a> <span class="bold"><strong>DISABLE_HOST_FLAP_DETECTION</strong></span></p>
 
   <p><code class="code">DISABLE_HOST_FLAP_DETECTION;</code>&lt;host_name&gt;</p>
 
   <p>Deaktiviert die Flattererkennung für den angegebenen Host.</p>
 
-  <p><a id="extcmd2-disable_host_freshness_checks"></a> <span class="bold"><strong>DISABLE_HOST_FRESHNESS_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_host_freshness_checks"></a> <span class="bold"><strong>DISABLE_HOST_FRESHNESS_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_HOST_FRESHNESS_CHECKS</code></p>
 
   <p>Deaktiviert Frische-Prüfungen für alle Hosts auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-disable_host_notifications"></a> <span class="bold"><strong>DISABLE_HOST_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_host_notifications"></a> <span class="bold"><strong>DISABLE_HOST_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_HOST_NOTIFICATIONS;</code>&lt;host_name&gt;</p>
 
   <p>Deaktiviert Benachrichtigungen für den angegebenen Host.</p>
 
-  <p><a id="extcmd2-disable_host_svc_checks"></a> <span class="bold"><strong>DISABLE_HOST_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_host_svc_checks"></a> <span class="bold"><strong>DISABLE_HOST_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_HOST_SVC_CHECKS;</code>&lt;host_name&gt;</p>
 
   <p>Deaktiviert aktive Prüfungen für alle Services des angegebenen Hosts.</p>
 
-  <p><a id="extcmd2-disable_host_svc_notifications"></a> <span class="bold"><strong>DISABLE_HOST_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_host_svc_notifications"></a> <span class="bold"><strong>DISABLE_HOST_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_HOST_SVC_NOTIFICATIONS;</code>&lt;host_name&gt;</p>
 
   <p>Deaktiviert Benachrichtigungen für alle Services des angegebenen Hosts.</p>
 
-  <p><a id="extcmd2-disable_hostgroup_host_checks"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_hostgroup_host_checks"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_HOSTGROUP_HOST_CHECKS;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Deaktiviert aktive Prüfungen für alle Hosts der angegebenen Hostgruppe.</p>
 
-  <p><a id="extcmd2-disable_hostgroup_host_notifications"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_HOST_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_hostgroup_host_notifications"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_HOST_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_HOSTGROUP_HOST_NOTIFICATIONS;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Deaktiviert Benachrichtigungen für alle Hosts der angegebenen Hostgruppe. Dies deaktiviert NICHT die Benachrichtigungen für die
   Services der betroffenen Hosts - siehe DISABLE_HOSTGROUP_SVC_NOTIFICATIONS.</p>
 
-  <p><a id="extcmd2-disable_hostgroup_passive_host_checks"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_PASSIVE_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_hostgroup_passive_host_checks"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_PASSIVE_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_HOSTGROUP_PASSIVE_HOST_CHECKS;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Deaktiviert passive Prüfungen für alle Hosts der angegebenen Hostgruppe.</p>
 
-  <p><a id="extcmd2-disable_hostgroup_passive_svc_checks"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_PASSIVE_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_hostgroup_passive_svc_checks"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_PASSIVE_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_HOSTGROUP_PASSIVE_SVC_CHECKS;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Deaktiviert passive Prüfungen für alle Services, die mit den Hosts der angegebenen Hostgruppe verbunden sind.</p>
 
-  <p><a id="extcmd2-disable_hostgroup_svc_checks"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_hostgroup_svc_checks"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_HOSTGROUP_SVC_CHECKS;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Deaktiviert aktive Prüfungen für alle Services, die mit den Hosts der angegebenen Hostgruppe verbunden sind.</p>
 
-  <p><a id="extcmd2-disable_hostgroup_svc_notifications"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_hostgroup_svc_notifications"></a> <span class="bold"><strong>DISABLE_HOSTGROUP_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_HOSTGROUP_SVC_NOTIFICATIONS;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Deaktiviert Benachrichtigungen für alle Services, die mit den Hosts der angegebenen Hostgruppe verbunden sind. Dies deaktiviert
   NICHT die Benachrichtigungen für die Hosts der angegebenen Hostgruppe - siehe DISABLE_HOSTGROUP_HOST_NOTIFICATIONS.</p>
 
-  <p><a id="extcmd2-disable_notifications"></a> <span class="bold"><strong>DISABLE_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_notifications"></a> <span class="bold"><strong>DISABLE_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_NOTIFICATIONS</code></p>
 
   <p>Deaktiviert Host- und Service-Benachrichtigungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-disable_notifications_expire_time"></a> <span class="bold"><strong>DISABLE_NOTIFICATIONS_EXPIRE_TIME</strong></span></p>
+  <p><a name="extcmd2-disable_notifications_expire_time"></a> <span class="bold"><strong>DISABLE_NOTIFICATIONS_EXPIRE_TIME</strong></span></p>
 
   <p><code class="code">DISABLE_NOTIFICATIONS_EXPIRE_TIME;&lt;schedule_time&gt;;&lt;expire_time&gt;</code></p>
 
@@ -558,98 +585,98 @@
 
   <p>Deaktiviert Host- und Service-Benachrichtigungen auf programmweiter Ebene bis zur angegbenen Verfallszeit.</p>
 
-  <p><a id="extcmd2-disable_passive_host_checks"></a> <span class="bold"><strong>DISABLE_PASSIVE_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_passive_host_checks"></a> <span class="bold"><strong>DISABLE_PASSIVE_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_PASSIVE_HOST_CHECKS;</code>&lt;host_name&gt;</p>
 
   <p>Deaktiviert Annahme und Verarbeitung von passiven Host-Prüfungen für den angegebenen Host.</p>
 
-  <p><a id="extcmd2-disable_passive_svc_checks"></a> <span class="bold"><strong>DISABLE_PASSIVE_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_passive_svc_checks"></a> <span class="bold"><strong>DISABLE_PASSIVE_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_PASSIVE_SVC_CHECKS;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Deaktiviert Annahme und Verarbeitung von passiven Service-Prüfungen für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-disable_performance_data"></a> <span class="bold"><strong>DISABLE_PERFORMANCE_DATA</strong></span></p>
+  <p><a name="extcmd2-disable_performance_data"></a> <span class="bold"><strong>DISABLE_PERFORMANCE_DATA</strong></span></p>
 
   <p><code class="code">DISABLE_PERFORMANCE_DATA</code></p>
 
   <p>Deaktiviert die Verarbeitung von Host- und Service-Performance-Daten auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-disable_service_flap_detection"></a> <span class="bold"><strong>DISABLE_SERVICE_FLAP_DETECTION</strong></span></p>
+  <p><a name="extcmd2-disable_service_flap_detection"></a> <span class="bold"><strong>DISABLE_SERVICE_FLAP_DETECTION</strong></span></p>
 
   <p><code class="code">DISABLE_SERVICE_FLAP_DETECTION;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Deaktiviert Flattererkennung für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-disable_service_freshness_checks"></a> <span class="bold"><strong>DISABLE_SERVICE_FRESHNESS_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_service_freshness_checks"></a> <span class="bold"><strong>DISABLE_SERVICE_FRESHNESS_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_SERVICE_FRESHNESS_CHECKS</code></p>
 
   <p>Deaktiviert Frische-Prüfungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-disable_servicegroup_host_checks"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_servicegroup_host_checks"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_SERVICEGROUP_HOST_CHECKS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Deaktiviert aktive Prüfungen für alle Hosts, die mit Services aus der angegebenen Servicegruppe verbunden sind.</p>
 
-  <p><a id="extcmd2-disable_servicegroup_host_notifications"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_HOST_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_servicegroup_host_notifications"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_HOST_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_SERVICEGROUP_HOST_NOTIFICATIONS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Deaktiviert Benachrichtigungen für alle Hosts, die mit Services aus der angegebenen Servicegruppe verbunden sind.</p>
 
-  <p><a id="extcmd2-disable_servicegroup_passive_host_checks"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_PASSIVE_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_servicegroup_passive_host_checks"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_PASSIVE_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_SERVICEGROUP_PASSIVE_HOST_CHECKS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Deaktiviert Annahme und Verarbeitung von passiven Prüfungen für alle Hosts, die mit Services aus der angegebenen Servicegruppe
   verbunden sind.</p>
 
-  <p><a id="extcmd2-disable_servicegroup_passive_svc_checks"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_PASSIVE_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_servicegroup_passive_svc_checks"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_PASSIVE_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_SERVICEGROUP_PASSIVE_SVC_CHECKS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Deaktiviert Annahme und Verarbeitung von passiven Prüfungen für alle Services aus der angegebenen Servicegruppe.</p>
 
-  <p><a id="extcmd2-disable_servicegroup_svc_checks"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-disable_servicegroup_svc_checks"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">DISABLE_SERVICEGROUP_SVC_CHECKS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Deaktiviert aktive Prüfungen für alle Services aus der angegebenen Servicegruppe.</p>
 
-  <p><a id="extcmd2-disable_servicegroup_svc_notifications"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_servicegroup_svc_notifications"></a> <span class="bold"><strong>DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Deaktiviert Benachrichtigungen für alle Services aus der angegebenen Servicegruppe.</p>
 
-  <p><a id="extcmd2-disable_svc_check"></a> <span class="bold"><strong>DISABLE_SVC_CHECK</strong></span></p>
+  <p><a name="extcmd2-disable_svc_check"></a> <span class="bold"><strong>DISABLE_SVC_CHECK</strong></span></p>
 
   <p><code class="code">DISABLE_SVC_CHECK;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Deaktiviert aktive Prüfungen für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-disable_svc_event_handler"></a> <span class="bold"><strong>DISABLE_SVC_EVENT_HANDLER</strong></span></p>
+  <p><a name="extcmd2-disable_svc_event_handler"></a> <span class="bold"><strong>DISABLE_SVC_EVENT_HANDLER</strong></span></p>
 
   <p><code class="code">DISABLE_SVC_EVENT_HANDLER;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Deaktiviert den Eventhandler für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-disable_svc_flap_detection"></a> <span class="bold"><strong>DISABLE_SVC_FLAP_DETECTION</strong></span></p>
+  <p><a name="extcmd2-disable_svc_flap_detection"></a> <span class="bold"><strong>DISABLE_SVC_FLAP_DETECTION</strong></span></p>
 
   <p><code class="code">DISABLE_SVC_FLAP_DETECTION;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Deaktiviert die Flattererkennung für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-disable_svc_notifications"></a> <span class="bold"><strong>DISABLE_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-disable_svc_notifications"></a> <span class="bold"><strong>DISABLE_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">DISABLE_SVC_NOTIFICATIONS;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Deaktiviert Benachrichtigungen für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-enable_all_notifications_beyond_host"></a> <span class="bold"><strong>ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST</strong></span></p>
+  <p><a name="extcmd2-enable_all_notifications_beyond_host"></a> <span class="bold"><strong>ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST</strong></span></p>
 
   <p><code class="code">ENABLE_ALL_NOTIFICATIONS_BEYOND_HOST;</code>&lt;host_name&gt;</p>
 
@@ -657,108 +684,108 @@
   aktuelle Benachrichtigungseinstellung auf dem angegebenen Host ist davon nicht betroffen. Benachrichtigungen für diese Hosts und Services
   werden nur versandt, wenn Benachrichtigungen auch auf programmweiter Ebene aktiviert sind.</p>
 
-  <p><a id="extcmd2-enable_contact_host_notifications"></a> <span class="bold"><strong>ENABLE_CONTACT_HOST_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_contact_host_notifications"></a> <span class="bold"><strong>ENABLE_CONTACT_HOST_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_CONTACT_HOST_NOTIFICATIONS;</code>&lt;contact_name&gt;</p>
 
   <p>Aktiviert Host-Benachrichtigungen für einen bestimmten Kontakt..</p>
 
-  <p><a id="extcmd2-enable_contact_svc_notifications"></a> <span class="bold"><strong>ENABLE_CONTACT_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_contact_svc_notifications"></a> <span class="bold"><strong>ENABLE_CONTACT_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_CONTACT_SVC_NOTIFICATIONS;</code>&lt;contact_name&gt;</p>
 
   <p>Aktiviert Service-Benachrichtigungen für einen bestimmten Kontakt.</p>
 
-  <p><a id="extcmd2-enable_contactgroup_host_notifications"></a> <span class="bold"><strong>ENABLE_CONTACTGROUP_HOST_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_contactgroup_host_notifications"></a> <span class="bold"><strong>ENABLE_CONTACTGROUP_HOST_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_CONTACTGROUP_HOST_NOTIFICATIONS;</code>&lt;contactgroup_name&gt;</p>
 
   <p>Aktiviert Host-Benachrichtigungen für alle Kontakte der angegebenen Kontaktgruppe.</p>
 
-  <p><a id="extcmd2-enable_contactgroup_svc_notifications"></a> <span class="bold"><strong>ENABLE_CONTACTGROUP_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_contactgroup_svc_notifications"></a> <span class="bold"><strong>ENABLE_CONTACTGROUP_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_CONTACTGROUP_SVC_NOTIFICATIONS;</code>&lt;contactgroup_name&gt;</p>
 
   <p>Aktiviert Service-Benachrichtigungen für alle Kontakte der angegebenen Kontaktgruppe.</p>
 
-  <p><a id="extcmd2-enable_event_handlers"></a> <span class="bold"><strong>ENABLE_EVENT_HANDLERS</strong></span></p>
+  <p><a name="extcmd2-enable_event_handlers"></a> <span class="bold"><strong>ENABLE_EVENT_HANDLERS</strong></span></p>
 
   <p><code class="code">ENABLE_EVENT_HANDLERS</code></p>
 
   <p>Aktiviert Host- und Service-Eventhandler auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-enable_failure_prediction"></a> <span class="bold"><strong>ENABLE_FAILURE_PREDICTION</strong></span></p>
+  <p><a name="extcmd2-enable_failure_prediction"></a> <span class="bold"><strong>ENABLE_FAILURE_PREDICTION</strong></span></p>
 
   <p><code class="code">ENABLE_FAILURE_PREDICTION</code></p>
 
   <p>Aktiviert Fehlervorhersage auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-enable_flap_detection"></a> <span class="bold"><strong>ENABLE_FLAP_DETECTION</strong></span></p>
+  <p><a name="extcmd2-enable_flap_detection"></a> <span class="bold"><strong>ENABLE_FLAP_DETECTION</strong></span></p>
 
   <p><code class="code">ENABLE_FLAP_DETECTION</code></p>
 
   <p>Aktiviert Host- und Service-Flattererkennung auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-enable_host_and_child_notifications"></a> <span class="bold"><strong>ENABLE_HOST_AND_CHILD_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_host_and_child_notifications"></a> <span class="bold"><strong>ENABLE_HOST_AND_CHILD_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_HOST_AND_CHILD_NOTIFICATIONS;</code>&lt;host_name&gt;</p>
 
   <p>Aktiviert Benachrichtigungen für den angegebenen Host sowie die "Child"-Hosts des angegebenen Hosts. Benachrichtigungen für diese
   Hosts werden nur versandt, wenn Benachrichtigungen auch auf programmweiter Ebene aktiviert sind.</p>
 
-  <p><a id="extcmd2-enable_host_check"></a> <span class="bold"><strong>ENABLE_HOST_CHECK</strong></span></p>
+  <p><a name="extcmd2-enable_host_check"></a> <span class="bold"><strong>ENABLE_HOST_CHECK</strong></span></p>
 
   <p><code class="code">ENABLE_HOST_CHECK;</code>&lt;host_name&gt;</p>
 
   <p>Aktiviert (regelmäßig geplante) aktive Prüfungen des angegebenen Hosts.</p>
 
-  <p><a id="extcmd2-enable_host_event_handler"></a> <span class="bold"><strong>ENABLE_HOST_EVENT_HANDLER</strong></span></p>
+  <p><a name="extcmd2-enable_host_event_handler"></a> <span class="bold"><strong>ENABLE_HOST_EVENT_HANDLER</strong></span></p>
 
   <p><code class="code">ENABLE_HOST_EVENT_HANDLER;</code>&lt;host_name&gt;</p>
 
   <p>Aktiviert den Eventhandler für den angegebenen Host.</p>
 
-  <p><a id="extcmd2-enable_host_flap_detection"></a> <span class="bold"><strong>ENABLE_HOST_FLAP_DETECTION</strong></span></p>
+  <p><a name="extcmd2-enable_host_flap_detection"></a> <span class="bold"><strong>ENABLE_HOST_FLAP_DETECTION</strong></span></p>
 
   <p><code class="code">ENABLE_HOST_FLAP_DETECTION;</code>&lt;host_name&gt;</p>
 
   <p>Aktiviert die Flattererkennung für den angegebenen Host. Die Flattererkennung muss auch auf programmweiter Ebene aktiviert
   sind.</p>
 
-  <p><a id="extcmd2-enable_host_freshness_checks"></a> <span class="bold"><strong>ENABLE_HOST_FRESHNESS_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_host_freshness_checks"></a> <span class="bold"><strong>ENABLE_HOST_FRESHNESS_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_HOST_FRESHNESS_CHECKS</code></p>
 
   <p>Aktiviert Frische-Prüfungen für alle Hosts auf programmweiter Ebene. Einzelne Hosts, bei denen die Frische-Prüfung deaktivert ist,
   sind davon nicht betroffen. Sie werden weiterhin nicht auf Frische geprüft.</p>
 
-  <p><a id="extcmd2-enable_host_notifications"></a> <span class="bold"><strong>ENABLE_HOST_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_host_notifications"></a> <span class="bold"><strong>ENABLE_HOST_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_HOST_NOTIFICATIONS;</code>&lt;host_name&gt;</p>
 
   <p>Aktiviert Benachrichtigungen für den angegebenen Host. Benachrichtigungen für diesen Host werden nur versandt, wenn
   Benachrichtigungen auch auf programmweiter Ebene aktiviert sind.</p>
 
-  <p><a id="extcmd2-enable_host_svc_checks"></a> <span class="bold"><strong>ENABLE_HOST_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_host_svc_checks"></a> <span class="bold"><strong>ENABLE_HOST_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_HOST_SVC_CHECKS;</code>&lt;host_name&gt;</p>
 
   <p>Aktiviert aktive Prüfungen für alles Services des angegebenen Hosts.</p>
 
-  <p><a id="extcmd2-enable_host_svc_notifications"></a> <span class="bold"><strong>ENABLE_HOST_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_host_svc_notifications"></a> <span class="bold"><strong>ENABLE_HOST_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_HOST_SVC_NOTIFICATIONS;</code>&lt;host_name&gt;</p>
 
   <p>Aktiviert Benachrichtigungen für alle Services des angegebenen Hosts. Benachrichtigungen werden nur versandt, wenn
   Benachrichtigungen auch auf programmweiter Ebene aktiviert sind.</p>
 
-  <p><a id="extcmd2-enable_hostgroup_host_checks"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_hostgroup_host_checks"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_HOSTGROUP_HOST_CHECKS;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Aktiviert aktive Prüfungen für alle Host der angegebenen Hostgruppe.</p>
 
-  <p><a id="extcmd2-enable_hostgroup_host_notifications"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_HOST_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_hostgroup_host_notifications"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_HOST_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_HOSTGROUP_HOST_NOTIFICATIONS;</code>&lt;hostgroup_name&gt;</p>
 
@@ -766,25 +793,25 @@
   Services, die mit den Hosts der angegebenen Hostgruppe verbunden sind. - siehe ENABLE_HOSTGROUP_SVC_NOTIFICATIONS. Benachrichtigungen für
   diese Hosts werden nur versandt, wenn Benachrichtigungen auch auf programmweiter Ebene aktiviert sind.</p>
 
-  <p><a id="extcmd2-enable_hostgroup_passive_host_checks"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_PASSIVE_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_hostgroup_passive_host_checks"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_PASSIVE_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_HOSTGROUP_PASSIVE_HOST_CHECKS;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Aktiviert passive Prüfungen für alle Hosts der angegebenen Hostgruppe.</p>
 
-  <p><a id="extcmd2-enable_hostgroup_passive_svc_checks"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_PASSIVE_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_hostgroup_passive_svc_checks"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_PASSIVE_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_HOSTGROUP_PASSIVE_SVC_CHECKS;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Aktiviert passive Prüfungen für alle Host der angegebenen Hostgruppe.</p>
 
-  <p><a id="extcmd2-enable_hostgroup_svc_checks"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_hostgroup_svc_checks"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_HOSTGROUP_SVC_CHECKS;</code>&lt;hostgroup_name&gt;</p>
 
   <p>Aktiviert aktive Prüfungen für alle Services, die mit den Hosts der angegebenen Hostgruppe verbunden sind.</p>
 
-  <p><a id="extcmd2-enable_hostgroup_svc_notifications"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_hostgroup_svc_notifications"></a> <span class="bold"><strong>ENABLE_HOSTGROUP_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_HOSTGROUP_SVC_NOTIFICATIONS;</code>&lt;hostgroup_name&gt;</p>
 
@@ -792,103 +819,103 @@
   Benachrichtigungen für die Hosts der angegebenen Hostgruppe. - siehe ENABLE_HOSTGROUP_HOST_NOTIFICATIONS. Benachrichtigungen für diese
   Services werden nur versandt, wenn Benachrichtigungen auch auf programmweiter Ebene aktiviert sind</p>
 
-  <p><a id="extcmd2-enable_notifications"></a> <span class="bold"><strong>ENABLE_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_notifications"></a> <span class="bold"><strong>ENABLE_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_NOTIFICATIONS</code></p>
 
   <p>Aktiviert Host- und Service-Benachrichtigungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-enable_passive_host_checks"></a> <span class="bold"><strong>ENABLE_PASSIVE_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_passive_host_checks"></a> <span class="bold"><strong>ENABLE_PASSIVE_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_PASSIVE_HOST_CHECKS;</code>&lt;host_name&gt;</p>
 
   <p>Aktiviert Annahme und Verarbeitung von passiven Host-Prüfungen für den angegebenen Hosts.</p>
 
-  <p><a id="extcmd2-enable_passive_svc_checks"></a> <span class="bold"><strong>ENABLE_PASSIVE_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_passive_svc_checks"></a> <span class="bold"><strong>ENABLE_PASSIVE_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_PASSIVE_SVC_CHECKS;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Aktiviert passive Prüfungen für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-enable_performance_data"></a> <span class="bold"><strong>ENABLE_PERFORMANCE_DATA</strong></span></p>
+  <p><a name="extcmd2-enable_performance_data"></a> <span class="bold"><strong>ENABLE_PERFORMANCE_DATA</strong></span></p>
 
   <p><code class="code">ENABLE_PERFORMANCE_DATA</code></p>
 
   <p>Aktiviert die Verarbeitung von Host- und Service-Performance-Daten auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-enable_service_freshness_checks"></a> <span class="bold"><strong>ENABLE_SERVICE_FRESHNESS_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_service_freshness_checks"></a> <span class="bold"><strong>ENABLE_SERVICE_FRESHNESS_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_SERVICE_FRESHNESS_CHECKS</code></p>
 
   <p>Aktiviert Frische-Prüfungen für alle Services auf programmweiter Ebene. Einzelne Services, bei denen die Frische-Prüfung deaktivert
   ist, sind davon nicht betroffen. Sie werden weiterhin nicht auf Frische geprüft.</p>
 
-  <p><a id="extcmd2-enable_servicegroup_host_checks"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_servicegroup_host_checks"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_SERVICEGROUP_HOST_CHECKS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Aktiviert aktive Prüfungen für alle Hosts, die mit Services aus der angegebenen Servicegruppe verbunden sind.</p>
 
-  <p><a id="extcmd2-enable_servicegroup_host_notifications"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_servicegroup_host_notifications"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Aktiviert Benachrichtigungen für alle Hosts, die mit Services aus der angegebenen Servicegruppe verbunden sind. Benachrichtigungen
   für diese Hosts werden nur versandt, wenn Benachrichtigungen auch auf programmweiter Ebene aktiviert sind.</p>
 
-  <p><a id="extcmd2-enable_servicegroup_passive_host_checks"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_PASSIVE_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_servicegroup_passive_host_checks"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_PASSIVE_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_SERVICEGROUP_PASSIVE_HOST_CHECKS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Aktiviert Annahme und Verarbeitung von passiven Prüfungen für alle Hosts, die mit Services aus der angegebenen Servicegruppe
   verbunden sind.</p>
 
-  <p><a id="extcmd2-enable_servicegroup_passive_svc_checks"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_PASSIVE_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_servicegroup_passive_svc_checks"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_PASSIVE_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_SERVICEGROUP_PASSIVE_SVC_CHECKS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Aktiviert Annahme und Verarbeitung von passiven Prüfungen für alle Services aus der angegebenen Servicegruppe.</p>
 
-  <p><a id="extcmd2-enable_servicegroup_svc_checks"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-enable_servicegroup_svc_checks"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">ENABLE_SERVICEGROUP_SVC_CHECKS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Aktiviert aktive Prüfungen für alle Services aus der angegebenen Servicegruppe.</p>
 
-  <p><a id="extcmd2-enable_servicegroup_svc_notifications"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_servicegroup_svc_notifications"></a> <span class="bold"><strong>ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS;</code>&lt;servicegroup_name&gt;</p>
 
   <p>Aktiviert Benachrichtigungen für alle Services aus der angegebenen Servicegruppe. Benachrichtigungen für diese Service werden nur
   versandt, wenn Benachrichtigungen auch auf programmweiter Ebene aktiviert sind.</p>
 
-  <p><a id="extcmd2-enable_svc_check"></a> <span class="bold"><strong>ENABLE_SVC_CHECK</strong></span></p>
+  <p><a name="extcmd2-enable_svc_check"></a> <span class="bold"><strong>ENABLE_SVC_CHECK</strong></span></p>
 
   <p><code class="code">ENABLE_SVC_CHECK;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Aktiviert aktive Prüfungen für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-enable_svc_event_handler"></a> <span class="bold"><strong>ENABLE_SVC_EVENT_HANDLER</strong></span></p>
+  <p><a name="extcmd2-enable_svc_event_handler"></a> <span class="bold"><strong>ENABLE_SVC_EVENT_HANDLER</strong></span></p>
 
   <p><code class="code">ENABLE_SVC_EVENT_HANDLER;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Aktiviert den Eventhandler für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-enable_svc_flap_detection"></a> <span class="bold"><strong>ENABLE_SVC_FLAP_DETECTION</strong></span></p>
+  <p><a name="extcmd2-enable_svc_flap_detection"></a> <span class="bold"><strong>ENABLE_SVC_FLAP_DETECTION</strong></span></p>
 
   <p><code class="code">ENABLE_SVC_FLAP_DETECTION;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Aktiviert die Flattererkennung für den angegebenen Service. Die Flattererkennung muss auch auf programmweiter Ebene aktiviert
   sind.</p>
 
-  <p><a id="extcmd2-enable_svc_notifications"></a> <span class="bold"><strong>ENABLE_SVC_NOTIFICATIONS</strong></span></p>
+  <p><a name="extcmd2-enable_svc_notifications"></a> <span class="bold"><strong>ENABLE_SVC_NOTIFICATIONS</strong></span></p>
 
   <p><code class="code">ENABLE_SVC_NOTIFICATIONS;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Aktiviert Benachrichtigungen für den angegebenen Service. Benachrichtigungen für diesen Service werden nur versandt, wenn
   Benachrichtigungen auch auf programmweiter Ebene aktiviert sind.</p>
 
-  <p><a id="extcmd2-process_file"></a> <span class="bold"><strong>PROCESS_FILE</strong></span></p>
+  <p><a name="extcmd2-process_file"></a> <span class="bold"><strong>PROCESS_FILE</strong></span></p>
 
   <p><code class="code">PROCESS_FILE;</code>&lt;file_name&gt;;&lt;delete&gt;</p>
 
@@ -896,7 +923,7 @@
   &lt;file_name&gt;-Argument angegeben wird. Falls die &lt;delete&gt;-Option nicht-Null ist, wird die Datei nach der Verarbeitung gelöscht.
   Falls die &lt;delete&gt;-Option Null (0) ist, bleibt die Datei erhalten.</p>
 
-  <p><a id="extcmd2-process_host_check_result"></a> <span class="bold"><strong>PROCESS_HOST_CHECK_RESULT</strong></span></p>
+  <p><a name="extcmd2-process_host_check_result"></a> <span class="bold"><strong>PROCESS_HOST_CHECK_RESULT</strong></span></p>
 
   <p><code class="code">PROCESS_HOST_CHECK_RESULT;</code>&lt;host_name&gt;;&lt;status_code&gt;;&lt;plugin_output&gt;</p>
 
@@ -904,7 +931,7 @@
   Host-Prüfung an und sollte einen der folgenden Werte haben: 0=UP, 1=DOWN, 2=UNREACHABLE. Das "plugin_output"-Argument enthält den Text der
   Host-Prüfung, zusammen mit optionalen Performance-Daten.</p>
 
-  <p><a id="extcmd2-process_service_check_result"></a> <span class="bold"><strong>PROCESS_SERVICE_CHECK_RESULT</strong></span></p>
+  <p><a name="extcmd2-process_service_check_result"></a> <span class="bold"><strong>PROCESS_SERVICE_CHECK_RESULT</strong></span></p>
 
   <p><code class="code">PROCESS_SERVICE_CHECK_RESULT;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;return_code&gt;;&lt;plugin_output&gt;</p>
 
@@ -912,7 +939,7 @@
   Service-Prüfung an und sollte einen der folgenden Werte haben: 0=OK, 1=WARNING, 2=CRITICAL, 3=UNKNOWN. Das "plugin_output"-Argument
   enthält den Text der Service-Prüfungen, zusammen mit optionalen Performance-Daten.</p>
 
-  <p><a id="extcmd2-read_state_information"></a> <span class="bold"><strong>READ_STATE_INFORMATION</strong></span></p>
+  <p><a name="extcmd2-read_state_information"></a> <span class="bold"><strong>READ_STATE_INFORMATION</strong></span></p>
 
   <p><code class="code">READ_STATE_INFORMATION</code></p>
 
@@ -921,27 +948,27 @@
   Dieser Befehl bewirkt, dass Icinga die aktuellen Überwachungs-Statusinformationen verwirft und stattdessen die Informatonen aus der
   Statusaufbewahrungsdatei liest. <span class="emphasis"><em>Vorsicht!</em></span></p>
 
-  <p><a id="extcmd2-remove_host_acknowledgement"></a> <span class="bold"><strong>REMOVE_HOST_ACKNOWLEDGEMENT</strong></span></p>
+  <p><a name="extcmd2-remove_host_acknowledgement"></a> <span class="bold"><strong>REMOVE_HOST_ACKNOWLEDGEMENT</strong></span></p>
 
   <p><code class="code">REMOVE_HOST_ACKNOWLEDGEMENT;</code>&lt;host_name&gt;</p>
 
   <p>Dies entfernt die Problem-Bestätigung für den angegebenen Host. Sobald die Bestätigung entfernt ist, können wieder
   Benachrichtigungen für den Host versandt werden.</p>
 
-  <p><a id="extcmd2-remove_svc_acknowledgement"></a> <span class="bold"><strong>REMOVE_SVC_ACKNOWLEDGEMENT</strong></span></p>
+  <p><a name="extcmd2-remove_svc_acknowledgement"></a> <span class="bold"><strong>REMOVE_SVC_ACKNOWLEDGEMENT</strong></span></p>
 
   <p><code class="code">REMOVE_SVC_ACKNOWLEDGEMENT;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Dies entfernt die Problem-Bestätigung für den angegebenen Service. Sobald die Bestätigung entfernt ist, können wieder
   Benachrichtigungen für den Service versandt werden.</p>
 
-  <p><a id="extcmd2-restart_process"></a> <span class="bold"><strong>RESTART_PROCESS</strong></span></p>
+  <p><a name="extcmd2-restart_process"></a> <span class="bold"><strong>RESTART_PROCESS</strong></span></p>
 
   <p><code class="code">RESTART_PROCESS</code></p>
 
   <p>Veranlasst einen Restart des Icinga-Prozesses. Hinweis: Sie können nachwievor den veralteten Befelh RESTART_PROGRAM verwenden.</p>
 
-  <p><a id="extcmd2-save_state_information"></a> <span class="bold"><strong>SAVE_STATE_INFORMATION</strong></span></p>
+  <p><a name="extcmd2-save_state_information"></a> <span class="bold"><strong>SAVE_STATE_INFORMATION</strong></span></p>
 
   <p><code class="code">SAVE_STATE_INFORMATION</code></p>
 
@@ -950,7 +977,7 @@
   geplanten Intervallen) geschrieben. Dieser Befehl erlaubt Ihnen, dass Icinga diese Informationen sofort in die Datei schreibt. Dies
   beeinflusst nicht die aktuellen Statusinformationen des Icinga-Prozesses.</p>
 
-  <p><a id="extcmd2-schedule_and_propagate_host_downtime"></a> <span class="bold"><strong>SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-schedule_and_propagate_host_downtime"></a> <span class="bold"><strong>SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME</strong></span></p>
 
   <p><code class="code">SCHEDULE_AND_PROPAGATE_HOST_DOWNTIME;</code>&lt;host_name&gt;;&lt;start_time&gt;;&lt;end_time&gt;;&lt;fixed&gt;;&lt;trigger_id&gt;;&lt;duration&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -962,7 +989,7 @@
   hat. Setzen Sie den Wert von "trigger_id" auf Null (0), wenn die Ausfallzeit des angegebenen (Eltern-) Hosts nicht von einem anderen
   Ausfallzeiteintrag ausgelöst werden soll.</p>
 
-  <p><a id="extcmd2-schedule_and_propagate_triggered_host_downtime"></a> <span class="bold"><strong>SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-schedule_and_propagate_triggered_host_downtime"></a> <span class="bold"><strong>SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME</strong></span></p>
 
   <p><code class="code">SCHEDULE_AND_PROPAGATE_TRIGGERED_HOST_DOWNTIME;</code>&lt;host_name&gt;;&lt;start_time&gt;;&lt;end_time&gt;;&lt;fixed&gt;;&lt;trigger_id&gt;;&lt;duration&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -975,7 +1002,7 @@
   "trigger_id" auf Null (0), wenn die Ausfallzeit des angegebenen (Eltern-) Hosts nicht von einem anderen Ausfallzeiteintrag ausgelöst
   werden soll.</p>
 
-  <p><a id="extcmd2-schedule_forced_host_check"></a> <span class="bold"><strong>SCHEDULE_FORCED_HOST_CHECK</strong></span></p>
+  <p><a name="extcmd2-schedule_forced_host_check"></a> <span class="bold"><strong>SCHEDULE_FORCED_HOST_CHECK</strong></span></p>
 
   <p><code class="code">SCHEDULE_FORCED_HOST_CHECK;</code>&lt;host_name&gt;;&lt;check_time&gt;</p>
 
@@ -984,7 +1011,7 @@
   Zeitfenster-Einschränkungen ignoriert) und davon, ob aktive Prüfungen für bestimmte Hosts oder auf programmweiter Ebene aktiviert sind
   oder nicht.</p>
 
-  <p><a id="extcmd2-schedule_forced_host_svc_checks"></a> <span class="bold"><strong>SCHEDULE_FORCED_HOST_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-schedule_forced_host_svc_checks"></a> <span class="bold"><strong>SCHEDULE_FORCED_HOST_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">SCHEDULE_FORCED_HOST_SVC_CHECKS;</code>&lt;host_name&gt;;&lt;check_time&gt;</p>
 
@@ -993,7 +1020,7 @@
   (z.B. werden Zeitfenster-Einschränkungen ignoriert) und davon, ob aktive Prüfungen für bestimmte Hosts oder auf programmweiter Ebene
   aktiviert sind oder nicht.</p>
 
-  <p><a id="extcmd2-schedule_forced_svc_check"></a> <span class="bold"><strong>SCHEDULE_FORCED_SVC_CHECK</strong></span></p>
+  <p><a name="extcmd2-schedule_forced_svc_check"></a> <span class="bold"><strong>SCHEDULE_FORCED_SVC_CHECK</strong></span></p>
 
   <p><code class="code">SCHEDULE_FORCED_SVC_CHECK;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;check_time&gt;</p>
 
@@ -1002,7 +1029,7 @@
   (z.B. werden Zeitfenster-Einschränkungen ignoriert) und davon, ob aktive Prüfungen für bestimmte Hosts oder auf programmweiter Ebene
   aktiviert sind oder nicht.</p>
 
-  <p><a id="extcmd2-schedule_host_check"></a> <span class="bold"><strong>SCHEDULE_HOST_CHECK</strong></span></p>
+  <p><a name="extcmd2-schedule_host_check"></a> <span class="bold"><strong>SCHEDULE_HOST_CHECK</strong></span></p>
 
   <p><code class="code">SCHEDULE_HOST_CHECK;</code>&lt;host_name&gt;;&lt;check_time&gt;</p>
 
@@ -1012,7 +1039,7 @@
   einen früheren Zeitpunkt geplant, usw. Wenn Sie die Host-Prüfung erzwingen wollen, dann schauen Sie beim
   SCHEDULE_FORCED_HOST_CHECK-Befehl.</p>
 
-  <p><a id="extcmd2-schedule_host_downtime"></a> <span class="bold"><strong>SCHEDULE_HOST_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-schedule_host_downtime"></a> <span class="bold"><strong>SCHEDULE_HOST_DOWNTIME</strong></span></p>
 
   <p><code class="code">SCHEDULE_HOST_DOWNTIME;</code>&lt;host_name&gt;;&lt;start_time&gt;;&lt;end_time&gt;;&lt;fixed&gt;;&lt;trigger_id&gt;;&lt;duration&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -1024,7 +1051,7 @@
   "trigger_id" auf Null (0), wenn die Ausfallzeit des angegebenen Hosts nicht von einem anderen Ausfallzeiteintrag ausgelöst werden
   soll.</p>
 
-  <p><a id="extcmd2-schedule_host_svc_checks"></a> <span class="bold"><strong>SCHEDULE_HOST_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-schedule_host_svc_checks"></a> <span class="bold"><strong>SCHEDULE_HOST_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">SCHEDULE_HOST_SVC_CHECKS;</code>&lt;host_name&gt;;&lt;check_time&gt;</p>
 
@@ -1034,7 +1061,7 @@
   Service-Prüfungen sind bereits für einen früheren Zeitpunkt geplant, usw. Wenn Sie die Service-Prüfungen erzwingen wollen, dann schauen
   Sie beim SCHEDULE_FORCED_HOST_SVC_CHECKS-Befehl.</p>
 
-  <p><a id="extcmd2-schedule_host_svc_downtime"></a> <span class="bold"><strong>SCHEDULE_HOST_SVC_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-schedule_host_svc_downtime"></a> <span class="bold"><strong>SCHEDULE_HOST_SVC_DOWNTIME</strong></span></p>
 
   <p><code class="code">SCHEDULE_HOST_SVC_DOWNTIME;</code>&lt;host_name&gt;;&lt;start_time&gt;;&lt;end_time&gt;;&lt;fixed&gt;;&lt;trigger_id&gt;;&lt;duration&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -1045,7 +1072,7 @@
   Ausfallzeiteintrag ausgelöst werden, wenn die "trigger_id" den Wert der ID eines anderen Ausfallzeiteintrag hat. Setzen Sie den Wert von
   "trigger_id" auf Null (0), wenn die Ausfallzeit der Services nicht von einem anderen Ausfallzeiteintrag ausgelöst werden soll.</p>
 
-  <p><a id="extcmd2-schedule_hostgroup_host_downtime"></a> <span class="bold"><strong>SCHEDULE_HOSTGROUP_HOST_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-schedule_hostgroup_host_downtime"></a> <span class="bold"><strong>SCHEDULE_HOSTGROUP_HOST_DOWNTIME</strong></span></p>
 
   <p><code class="code">SCHEDULE_HOSTGROUP_HOST_DOWNTIME;</code>&lt;hostgroup_name&gt;;&lt;start_time&gt;;&lt;end_time&gt;;&lt;fixed&gt;;&lt;trigger_id&gt;;&lt;duration&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -1056,7 +1083,7 @@
   Ausfallzeiteintrag ausgelöst werden, wenn die "trigger_id" den Wert der ID eines anderen Ausfallzeiteintrag hat. Setzen Sie den Wert von
   "trigger_id" auf Null (0), wenn die Ausfallzeit der Hosts nicht von einem anderen Ausfallzeiteintrag ausgelöst werden soll.</p>
 
-  <p><a id="extcmd2-schedule_hostgroup_svc_downtime"></a> <span class="bold"><strong>SCHEDULE_HOSTGROUP_SVC_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-schedule_hostgroup_svc_downtime"></a> <span class="bold"><strong>SCHEDULE_HOSTGROUP_SVC_DOWNTIME</strong></span></p>
 
   <p><code class="code">SCHEDULE_HOSTGROUP_SVC_DOWNTIME;</code>&lt;hostgroup_name&gt;;&lt;start_time&gt;;&lt;end_time&gt;;&lt;fixed&gt;;&lt;trigger_id&gt;;&lt;duration&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -1067,7 +1094,7 @@
   Ausfallzeiteintrag ausgelöst werden, wenn die "trigger_id" den Wert der ID eines anderen Ausfallzeiteintrag hat. Setzen Sie den Wert von
   "trigger_id" auf Null (0), wenn die Ausfallzeit der Services nicht von einem anderen Ausfallzeiteintrag ausgelöst werden soll.</p>
 
-  <p><a id="extcmd2-schedule_servicegroup_host_downtime"></a> <span class="bold"><strong>SCHEDULE_SERVICEGROUP_HOST_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-schedule_servicegroup_host_downtime"></a> <span class="bold"><strong>SCHEDULE_SERVICEGROUP_HOST_DOWNTIME</strong></span></p>
 
   <p><code class="code">SCHEDULE_SERVICEGROUP_HOST_DOWNTIME;</code>&lt;servicegroup_name&gt;;&lt;start_time&gt;;&lt;end_time&gt;;&lt;fixed&gt;;&lt;trigger_id&gt;;&lt;duration&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -1079,7 +1106,7 @@
   Setzen Sie den Wert von "trigger_id" auf Null (0), wenn die Ausfallzeit der Hosts nicht von einem anderen Ausfallzeiteintrag ausgelöst
   werden soll.</p>
 
-  <p><a id="extcmd2-schedule_servicegroup_svc_downtime"></a> <span class="bold"><strong>SCHEDULE_SERVICEGROUP_SVC_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-schedule_servicegroup_svc_downtime"></a> <span class="bold"><strong>SCHEDULE_SERVICEGROUP_SVC_DOWNTIME</strong></span></p>
 
   <p><code class="code">SCHEDULE_SERVICEGROUP_SVC_DOWNTIME;</code>&lt;servicegroup_name&gt;;&lt;start_time&gt;;&lt;end_time&gt;;&lt;fixed&gt;;&lt;trigger_id&gt;;&lt;duration&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -1090,7 +1117,7 @@
   Ausfallzeiteintrag ausgelöst werden, wenn die "trigger_id" den Wert der ID eines anderen Ausfallzeiteintrag hat. Setzen Sie den Wert von
   "trigger_id" auf Null (0), wenn die Ausfallzeit der Services nicht von einem anderen Ausfallzeiteintrag ausgelöst werden soll.</p>
 
-  <p><a id="extcmd2-schedule_svc_check"></a> <span class="bold"><strong>SCHEDULE_SVC_CHECK</strong></span></p>
+  <p><a name="extcmd2-schedule_svc_check"></a> <span class="bold"><strong>SCHEDULE_SVC_CHECK</strong></span></p>
 
   <p><code class="code">SCHEDULE_SVC_CHECK;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;check_time&gt;</p>
 
@@ -1100,7 +1127,7 @@
   für einen früheren Zeitpunkt geplant, usw. Wenn Sie die Service-Prüfung erzwingen wollen, dann schauen Sie beim
   SCHEDULE_FORCED_SVC_CHECK-Befehl.</p>
 
-  <p><a id="extcmd2-schedule_svc_downtime"></a> <span class="bold"><strong>SCHEDULE_SVC_DOWNTIME</strong></span></p>
+  <p><a name="extcmd2-schedule_svc_downtime"></a> <span class="bold"><strong>SCHEDULE_SVC_DOWNTIME</strong></span></p>
 
   <p><code class="code">SCHEDULE_SVC_DOWNTIME;</code>&lt;host_name&gt;;&lt;service_desription&gt;&lt;start_time&gt;;&lt;end_time&gt;;&lt;fixed&gt;;&lt;trigger_id&gt;;&lt;duration&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -1112,7 +1139,7 @@
   "trigger_id" auf Null (0), wenn die Ausfallzeit des angegebenen Service nicht von einem anderen Ausfallzeiteintrag ausgelöst werden
   soll.</p>
 
-  <p><a id="extcmd2-send_custom_host_notification"></a> <span class="bold"><strong>SEND_CUSTOM_HOST_NOTIFICATION</strong></span></p>
+  <p><a name="extcmd2-send_custom_host_notification"></a> <span class="bold"><strong>SEND_CUSTOM_HOST_NOTIFICATION</strong></span></p>
 
   <p><code class="code">SEND_CUSTOM_HOST_NOTIFICATION;</code>&lt;host_name&gt;;&lt;options&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -1125,7 +1152,7 @@
   automatisch bei angepassten Benachrichtigungen gemacht). Das Kommentarfeld kann über das $NOTIFICATIONCOMMENT$-Makro in
   Benachrichtigungsbefehlen benutzt werden.</p>
 
-  <p><a id="extcmd2-send_custom_svc_notification"></a> <span class="bold"><strong>SEND_CUSTOM_SVC_NOTIFICATION</strong></span></p>
+  <p><a name="extcmd2-send_custom_svc_notification"></a> <span class="bold"><strong>SEND_CUSTOM_SVC_NOTIFICATION</strong></span></p>
 
   <p><code class="code">SEND_CUSTOM_SVC_NOTIFICATION;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;options&gt;;&lt;author&gt;;&lt;comment&gt;</p>
 
@@ -1138,7 +1165,7 @@
   automatisch bei angepassten Benachrichtigungen gemacht). Das Kommentarfeld kann über das $NOTIFICATIONCOMMENT$-Makro in
   Benachrichtigungsbefehlen benutzt werden.</p>
 
-  <p><a id="extcmd2-set_host_notification_number"></a> <span class="bold"><strong>SET_HOST_NOTIFICATION_NUMBER</strong></span></p>
+  <p><a name="extcmd2-set_host_notification_number"></a> <span class="bold"><strong>SET_HOST_NOTIFICATION_NUMBER</strong></span></p>
 
   <p><code class="code">SET_HOST_NOTIFICATION_NUMBER;</code>&lt;host_name&gt;;&lt;notification_number&gt;</p>
 
@@ -1148,7 +1175,7 @@
   Benachrichtigungsnummern größer Null haben keinen spürbaren Einfluss auf den Benachrichtigungsprozess, falls sich der Host gerade in einem
   UP-Zustand befindet.</p>
 
-  <p><a id="extcmd2-set_svc_notification_number"></a> <span class="bold"><strong>SET_SVC_NOTIFICATION_NUMBER</strong></span></p>
+  <p><a name="extcmd2-set_svc_notification_number"></a> <span class="bold"><strong>SET_SVC_NOTIFICATION_NUMBER</strong></span></p>
 
   <p><code class="code">SET_SVC_NOTIFICATION_NUMBER;</code>&lt;host_name&gt;;&lt;service_description&gt;;&lt;notification_number&gt;</p>
 
@@ -1158,447 +1185,445 @@
   Benachrichtigungsnummern größer Null haben keinen spürbaren Einfluss auf den Benachrichtigungsprozess, falls sich der Service gerade in
   einem OK-Zustand befindet.</p>
 
-  <p><a id="extcmd2-shutdown_program"></a> <span class="bold"><strong>SHUTDOWN_PROGRAM</strong></span></p>
+  <p><a name="extcmd2-shutdown_program"></a> <span class="bold"><strong>SHUTDOWN_PROGRAM</strong></span></p>
 
   <p><code class="code">SHUTDOWN_PROGRAM</code></p>
 
   <p>Stoppt den Icinga-Prozess.</p>
 
-  <p><a id="extcmd2-start_accepting_passive_host_checks"></a> <span class="bold"><strong>START_ACCEPTING_PASSIVE_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-start_accepting_passive_host_checks"></a> <span class="bold"><strong>START_ACCEPTING_PASSIVE_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">START_ACCEPTING_PASSIVE_HOST_CHECKS</code></p>
 
   <p>Aktiviert Annahme und Verarbeitung von passiven Host-Prüfungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-start_accepting_passive_svc_checks"></a> <span class="bold"><strong>START_ACCEPTING_PASSIVE_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-start_accepting_passive_svc_checks"></a> <span class="bold"><strong>START_ACCEPTING_PASSIVE_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">START_ACCEPTING_PASSIVE_SVC_CHECKS</code></p>
 
   <p>Aktiviert Annahme und Verarbeitung von passiven Service-Prüfungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-start_executing_host_checks"></a> <span class="bold"><strong>START_EXECUTING_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-start_executing_host_checks"></a> <span class="bold"><strong>START_EXECUTING_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">START_EXECUTING_HOST_CHECKS</code></p>
 
   <p>Aktiviert aktive Host-Prüfungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-start_executing_svc_checks"></a> <span class="bold"><strong>START_EXECUTING_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-start_executing_svc_checks"></a> <span class="bold"><strong>START_EXECUTING_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">START_EXECUTING_SVC_CHECKS</code></p>
 
   <p>Aktiviert aktive Service-Prüfungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-start_obsessing_over_host"></a> <span class="bold"><strong>START_OBSESSING_OVER_HOST</strong></span></p>
+  <p><a name="extcmd2-start_obsessing_over_host"></a> <span class="bold"><strong>START_OBSESSING_OVER_HOST</strong></span></p>
 
   <p><code class="code">START_OBSESSING_OVER_HOST;</code>&lt;host_name&gt;</p>
 
   <p>Aktiviert die Verarbeitung von Host-Prüfungen mit Hilfe des OCHP-Befehls für den angegebenen Host.</p>
 
-  <p><a id="extcmd2-start_obsessing_over_host_checks"></a> <span class="bold"><strong>START_OBSESSING_OVER_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-start_obsessing_over_host_checks"></a> <span class="bold"><strong>START_OBSESSING_OVER_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">START_OBSESSING_OVER_HOST_CHECKS</code></p>
 
   <p>Aktiviert die Verarbeitung von Host-Prüfungen mit Hilfe des OCHP-Befehls auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-start_obsessing_over_svc"></a> <span class="bold"><strong>START_OBSESSING_OVER_SVC</strong></span></p>
+  <p><a name="extcmd2-start_obsessing_over_svc"></a> <span class="bold"><strong>START_OBSESSING_OVER_SVC</strong></span></p>
 
   <p><code class="code">START_OBSESSING_OVER_SVC;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Aktiviert die Verarbeitung von Service-Prüfungen mit Hilfe des OCSP-Befehls für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-start_obsessing_over_svc_checks"></a> <span class="bold"><strong>START_OBSESSING_OVER_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-start_obsessing_over_svc_checks"></a> <span class="bold"><strong>START_OBSESSING_OVER_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">START_OBSESSING_OVER_SVC_CHECKS</code></p>
 
   <p>Aktiviert die Verarbeitung von Service-Prüfungen mit Hilfe des OCSP-Befehls auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-stop_accepting_passive_host_checks"></a> <span class="bold"><strong>STOP_ACCEPTING_PASSIVE_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-stop_accepting_passive_host_checks"></a> <span class="bold"><strong>STOP_ACCEPTING_PASSIVE_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">STOP_ACCEPTING_PASSIVE_HOST_CHECKS</code></p>
 
   <p>Deaktiviert Annahme und Verarbeitung von passiven Host-Prüfungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-stop_accepting_passive_svc_checks"></a> <span class="bold"><strong>STOP_ACCEPTING_PASSIVE_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-stop_accepting_passive_svc_checks"></a> <span class="bold"><strong>STOP_ACCEPTING_PASSIVE_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">STOP_ACCEPTING_PASSIVE_SVC_CHECKS</code></p>
 
   <p>Deaktiviert Annahme und Verarbeitung von passiven Service-Prüfungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-stop_executing_host_checks"></a> <span class="bold"><strong>STOP_EXECUTING_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-stop_executing_host_checks"></a> <span class="bold"><strong>STOP_EXECUTING_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">STOP_EXECUTING_HOST_CHECKS</code></p>
 
   <p>Deaktiviert aktive Host-Prüfungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-stop_executing_svc_checks"></a> <span class="bold"><strong>STOP_EXECUTING_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-stop_executing_svc_checks"></a> <span class="bold"><strong>STOP_EXECUTING_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">STOP_EXECUTING_SVC_CHECKS</code></p>
 
   <p>Deaktiviert aktive Service-Prüfungen auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-stop_obsessing_over_host"></a> <span class="bold"><strong>STOP_OBSESSING_OVER_HOST</strong></span></p>
+  <p><a name="extcmd2-stop_obsessing_over_host"></a> <span class="bold"><strong>STOP_OBSESSING_OVER_HOST</strong></span></p>
 
   <p><code class="code">STOP_OBSESSING_OVER_HOST;</code>&lt;host_name&gt;</p>
 
   <p>Deaktiviert die Verarbeitung von Host-Prüfungen mit Hilfe des OCHP-Befehls für den angegebenen Host.</p>
 
-  <p><a id="extcmd2-stop_obsessing_over_host_checks"></a> <span class="bold"><strong>STOP_OBSESSING_OVER_HOST_CHECKS</strong></span></p>
+  <p><a name="extcmd2-stop_obsessing_over_host_checks"></a> <span class="bold"><strong>STOP_OBSESSING_OVER_HOST_CHECKS</strong></span></p>
 
   <p><code class="code">STOP_OBSESSING_OVER_HOST_CHECKS</code></p>
 
   <p>Deaktiviert die Verarbeitung von Host-Prüfungen mit Hilfe des OCHP-Befehls auf programmweiter Ebene.</p>
 
-  <p><a id="extcmd2-stop_obsessing_over_svc"></a> <span class="bold"><strong>STOP_OBSESSING_OVER_SVC</strong></span></p>
+  <p><a name="extcmd2-stop_obsessing_over_svc"></a> <span class="bold"><strong>STOP_OBSESSING_OVER_SVC</strong></span></p>
 
   <p><code class="code">STOP_OBSESSING_OVER_SVC;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
 
   <p>Deaktiviert die Verarbeitung von Service-Prüfungen mit Hilfe des OCSP-Befehls für den angegebenen Service.</p>
 
-  <p><a id="extcmd2-stop_obsessing_over_svc_checks"></a> <span class="bold"><strong>STOP_OBSESSING_OVER_SVC_CHECKS</strong></span></p>
+  <p><a name="extcmd2-stop_obsessing_over_svc_checks"></a> <span class="bold"><strong>STOP_OBSESSING_OVER_SVC_CHECKS</strong></span></p>
 
   <p><code class="code">STOP_OBSESSING_OVER_SVC_CHECKS</code></p>
 
   <p>Deaktiviert die Verarbeitung von Service-Prüfungen mit Hilfe des OCSP-Befehls auf programmweiter Ebene.</p>
 
-  <a id="idp12933184" class="indexterm"></a>
+  <a class="indexterm" name="idp12957568"></a>
 
-  <a id="idp12935008" class="indexterm"></a>
+  <a class="indexterm" name="idp12959440"></a>
 
-  <a id="idp12936656" class="indexterm"></a>
+  <a class="indexterm" name="idp12961088"></a>
 
-  <a id="idp12938288" class="indexterm"></a>
+  <a class="indexterm" name="idp12962720"></a>
 
-  <a id="idp12939984" class="indexterm"></a>
+  <a class="indexterm" name="idp12964416"></a>
 
-  <a id="idp12941616" class="indexterm"></a>
+  <a class="indexterm" name="idp12966048"></a>
 
-  <a id="idp12943280" class="indexterm"></a>
+  <a class="indexterm" name="idp12967712"></a>
 
-  <a id="idp12944912" class="indexterm"></a>
+  <a class="indexterm" name="idp12969344"></a>
 
-  <a id="idp12946544" class="indexterm"></a>
+  <a class="indexterm" name="idp12970976"></a>
 
-  <a id="idp12948240" class="indexterm"></a>
+  <a class="indexterm" name="idp12972656"></a>
 
-  <a id="idp12949872" class="indexterm"></a>
+  <a class="indexterm" name="idp12974288"></a>
 
-  <a id="idp12951504" class="indexterm"></a>
+  <a class="indexterm" name="idp12975920"></a>
 
-  <a id="idp12953104" class="indexterm"></a>
+  <a class="indexterm" name="idp12977520"></a>
 
-  <a id="idp12954832" class="indexterm"></a>
+  <a class="indexterm" name="idp12979248"></a>
 
-  <a id="idp12956384" class="indexterm"></a>
+  <a class="indexterm" name="idp12980800"></a>
 
-  <a id="idp12958032" class="indexterm"></a>
+  <a class="indexterm" name="idp12982448"></a>
 
-  <a id="idp12959680" class="indexterm"></a>
+  <a class="indexterm" name="idp12984096"></a>
 
-  <a id="idp12961328" class="indexterm"></a>
+  <a class="indexterm" name="idp12985744"></a>
 
-  <a id="idp12962976" class="indexterm"></a>
+  <a class="indexterm" name="idp12987392"></a>
 
-  <a id="idp12964640" class="indexterm"></a>
+  <a class="indexterm" name="idp12989024"></a>
 
-  <a id="idp12966272" class="indexterm"></a>
+  <a class="indexterm" name="idp12990672"></a>
 
-  <a id="idp12967936" class="indexterm"></a>
+  <a class="indexterm" name="idp12992304"></a>
 
-  <a id="idp12969600" class="indexterm"></a>
+  <a class="indexterm" name="idp12994000"></a>
 
-  <a id="idp12971264" class="indexterm"></a>
+  <a class="indexterm" name="idp12995632"></a>
 
-  <a id="idp12972912" class="indexterm"></a>
+  <a class="indexterm" name="idp12997312"></a>
 
-  <a id="idp12974560" class="indexterm"></a>
+  <a class="indexterm" name="idp12998960"></a>
 
-  <a id="idp12976208" class="indexterm"></a>
+  <a class="indexterm" name="idp13000608"></a>
 
-  <a id="idp12977856" class="indexterm"></a>
+  <a class="indexterm" name="idp13002256"></a>
 
-  <a id="idp12979504" class="indexterm"></a>
+  <a class="indexterm" name="idp13003904"></a>
 
-  <a id="idp12981168" class="indexterm"></a>
+  <a class="indexterm" name="idp13005600"></a>
 
-  <a id="idp12982800" class="indexterm"></a>
+  <a class="indexterm" name="idp13007200"></a>
 
-  <a id="idp12984496" class="indexterm"></a>
+  <a class="indexterm" name="idp13008832"></a>
 
-  <a id="idp12986144" class="indexterm"></a>
+  <a class="indexterm" name="idp13010464"></a>
 
-  <a id="idp12987792" class="indexterm"></a>
+  <a class="indexterm" name="idp13012112"></a>
 
-  <a id="idp12989424" class="indexterm"></a>
+  <a class="indexterm" name="idp13013744"></a>
 
-  <a id="idp12991104" class="indexterm"></a>
+  <a class="indexterm" name="idp13015424"></a>
 
-  <a id="idp12992736" class="indexterm"></a>
+  <a class="indexterm" name="idp13017056"></a>
 
-  <a id="idp12994400" class="indexterm"></a>
+  <a class="indexterm" name="idp13018720"></a>
 
-  <a id="idp12996032" class="indexterm"></a>
+  <a class="indexterm" name="idp13020352"></a>
 
-  <a id="idp12997664" class="indexterm"></a>
+  <a class="indexterm" name="idp13021984"></a>
 
-  <a id="idp12999296" class="indexterm"></a>
+  <a class="indexterm" name="idp13023616"></a>
 
-  <a id="idp13000992" class="indexterm"></a>
+  <a class="indexterm" name="idp13025312"></a>
 
-  <a id="idp13002624" class="indexterm"></a>
+  <a class="indexterm" name="idp13026944"></a>
 
-  <a id="idp13004320" class="indexterm"></a>
+  <a class="indexterm" name="idp13028640"></a>
 
-  <a id="idp13005952" class="indexterm"></a>
+  <a class="indexterm" name="idp13030272"></a>
 
-  <a id="idp13007648" class="indexterm"></a>
+  <a class="indexterm" name="idp13031968"></a>
 
-  <a id="idp13009216" class="indexterm"></a>
+  <a class="indexterm" name="idp13033536"></a>
 
-  <a id="idp13010800" class="indexterm"></a>
+  <a class="indexterm" name="idp13035120"></a>
 
-  <a id="idp13012560" class="indexterm"></a>
+  <a class="indexterm" name="idp13036880"></a>
 
-  <a id="idp13014192" class="indexterm"></a>
+  <a class="indexterm" name="idp13038512"></a>
 
-  <a id="idp13015824" class="indexterm"></a>
+  <a class="indexterm" name="idp13040144"></a>
 
-  <a id="idp13017456" class="indexterm"></a>
+  <a class="indexterm" name="idp13041776"></a>
 
-  <a id="idp13019056" class="indexterm"></a>
+  <a class="indexterm" name="idp13043376"></a>
 
-  <a id="idp13020704" class="indexterm"></a>
+  <a class="indexterm" name="idp13045024"></a>
 
-  <a id="idp13022352" class="indexterm"></a>
+  <a class="indexterm" name="idp13046672"></a>
 
-  <a id="idp13024000" class="indexterm"></a>
+  <a class="indexterm" name="idp13048320"></a>
 
-  <a id="idp13025632" class="indexterm"></a>
+  <a class="indexterm" name="idp13049824"></a>
 
-  <a id="idp13027280" class="indexterm"></a>
+  <a class="indexterm" name="idp13051632"></a>
 
-  <a id="idp13028912" class="indexterm"></a>
+  <a class="indexterm" name="idp13053296"></a>
 
-  <a id="idp13030608" class="indexterm"></a>
+  <a class="indexterm" name="idp13054960"></a>
 
-  <a id="idp13032240" class="indexterm"></a>
+  <a class="indexterm" name="idp13056624"></a>
 
-  <a id="idp13033920" class="indexterm"></a>
+  <a class="indexterm" name="idp13058272"></a>
 
-  <a id="idp13035552" class="indexterm"></a>
+  <a class="indexterm" name="idp13059936"></a>
 
-  <a id="idp13037232" class="indexterm"></a>
+  <a class="indexterm" name="idp13061584"></a>
 
-  <a id="idp13038928" class="indexterm"></a>
+  <a class="indexterm" name="idp13063248"></a>
 
-  <a id="idp13040528" class="indexterm"></a>
+  <a class="indexterm" name="idp13064880"></a>
 
-  <a id="idp13042176" class="indexterm"></a>
+  <a class="indexterm" name="idp13066528"></a>
 
-  <a id="idp13043824" class="indexterm"></a>
+  <a class="indexterm" name="idp13068176"></a>
 
-  <a id="idp13045472" class="indexterm"></a>
+  <a class="indexterm" name="idp13069824"></a>
 
-  <a id="idp13047104" class="indexterm"></a>
+  <a class="indexterm" name="idp13071488"></a>
 
-  <a id="idp13048560" class="indexterm"></a>
+  <a class="indexterm" name="idp13073152"></a>
 
-  <a id="idp13050432" class="indexterm"></a>
+  <a class="indexterm" name="idp13074816"></a>
 
-  <a id="idp13052096" class="indexterm"></a>
+  <a class="indexterm" name="idp13076480"></a>
 
-  <a id="idp13053760" class="indexterm"></a>
+  <a class="indexterm" name="idp13078144"></a>
 
-  <a id="idp13055360" class="indexterm"></a>
+  <a class="indexterm" name="idp13079792"></a>
 
-  <a id="idp13057024" class="indexterm"></a>
+  <a class="indexterm" name="idp13081456"></a>
 
-  <a id="idp13058672" class="indexterm"></a>
+  <a class="indexterm" name="idp13083104"></a>
 
-  <a id="idp13060336" class="indexterm"></a>
+  <a class="indexterm" name="idp13084768"></a>
 
-  <a id="idp13061968" class="indexterm"></a>
+  <a class="indexterm" name="idp13086400"></a>
 
-  <a id="idp13063616" class="indexterm"></a>
+  <a class="indexterm" name="idp13088048"></a>
 
-  <a id="idp13065280" class="indexterm"></a>
+  <a class="indexterm" name="idp13089712"></a>
 
-  <a id="idp13066944" class="indexterm"></a>
+  <a class="indexterm" name="idp13091376"></a>
 
-  <a id="idp13068608" class="indexterm"></a>
+  <a class="indexterm" name="idp13093040"></a>
 
-  <a id="idp13070272" class="indexterm"></a>
+  <a class="indexterm" name="idp13094704"></a>
 
-  <a id="idp13071936" class="indexterm"></a>
+  <a class="indexterm" name="idp13096368"></a>
 
-  <a id="idp13073584" class="indexterm"></a>
+  <a class="indexterm" name="idp13098016"></a>
 
-  <a id="idp13074976" class="indexterm"></a>
+  <a class="indexterm" name="idp13099408"></a>
 
-  <a id="idp13076864" class="indexterm"></a>
+  <a class="indexterm" name="idp13101296"></a>
 
-  <a id="idp13078560" class="indexterm"></a>
+  <a class="indexterm" name="idp13102992"></a>
 
-  <a id="idp13080176" class="indexterm"></a>
+  <a class="indexterm" name="idp13104608"></a>
 
-  <a id="idp13081808" class="indexterm"></a>
+  <a class="indexterm" name="idp13106240"></a>
 
-  <a id="idp13083456" class="indexterm"></a>
+  <a class="indexterm" name="idp13107888"></a>
 
-  <a id="idp13085104" class="indexterm"></a>
+  <a class="indexterm" name="idp13109536"></a>
 
-  <a id="idp13086752" class="indexterm"></a>
+  <a class="indexterm" name="idp13111184"></a>
 
-  <a id="idp13088400" class="indexterm"></a>
+  <a class="indexterm" name="idp13112832"></a>
 
-  <a id="idp13089792" class="indexterm"></a>
+  <a class="indexterm" name="idp13114224"></a>
 
-  <a id="idp13091680" class="indexterm"></a>
+  <a class="indexterm" name="idp13116112"></a>
 
-  <a id="idp13093216" class="indexterm"></a>
+  <a class="indexterm" name="idp13117648"></a>
 
-  <a id="idp13094960" class="indexterm"></a>
+  <a class="indexterm" name="idp13119392"></a>
 
-  <a id="idp13096624" class="indexterm"></a>
+  <a class="indexterm" name="idp13121056"></a>
 
-  <a id="idp13098320" class="indexterm"></a>
+  <a class="indexterm" name="idp13122752"></a>
 
-  <a id="idp13099984" class="indexterm"></a>
+  <a class="indexterm" name="idp13124384"></a>
 
-  <a id="idp13101648" class="indexterm"></a>
+  <a class="indexterm" name="idp13126064"></a>
 
-  <a id="idp13103280" class="indexterm"></a>
+  <a class="indexterm" name="idp13127696"></a>
 
-  <a id="idp13104912" class="indexterm"></a>
+  <a class="indexterm" name="idp13129344"></a>
 
-  <a id="idp13106560" class="indexterm"></a>
+  <a class="indexterm" name="idp13130992"></a>
 
-  <a id="idp13108224" class="indexterm"></a>
+  <a class="indexterm" name="idp13132624"></a>
 
-  <a id="idp13109856" class="indexterm"></a>
+  <a class="indexterm" name="idp13134272"></a>
 
-  <a id="idp13111520" class="indexterm"></a>
+  <a class="indexterm" name="idp13135904"></a>
 
-  <a id="idp13113184" class="indexterm"></a>
+  <a class="indexterm" name="idp13137600"></a>
 
-  <a id="idp13114848" class="indexterm"></a>
+  <a class="indexterm" name="idp13139232"></a>
 
-  <a id="idp13116496" class="indexterm"></a>
+  <a class="indexterm" name="idp13140912"></a>
 
-  <a id="idp13118160" class="indexterm"></a>
+  <a class="indexterm" name="idp13142544"></a>
 
-  <a id="idp13119808" class="indexterm"></a>
+  <a class="indexterm" name="idp13144224"></a>
 
-  <a id="idp13121520" class="indexterm"></a>
+  <a class="indexterm" name="idp13145856"></a>
 
-  <a id="idp13123168" class="indexterm"></a>
+  <a class="indexterm" name="idp13147504"></a>
 
-  <a id="idp13124816" class="indexterm"></a>
+  <a class="indexterm" name="idp13149152"></a>
 
-  <a id="idp13126448" class="indexterm"></a>
+  <a class="indexterm" name="idp13150784"></a>
 
-  <a id="idp13128080" class="indexterm"></a>
+  <a class="indexterm" name="idp13152416"></a>
 
-  <a id="idp13129728" class="indexterm"></a>
+  <a class="indexterm" name="idp13154064"></a>
 
-  <a id="idp13131376" class="indexterm"></a>
+  <a class="indexterm" name="idp13155712"></a>
 
-  <a id="idp13133008" class="indexterm"></a>
+  <a class="indexterm" name="idp13157344"></a>
 
-  <a id="idp13134656" class="indexterm"></a>
+  <a class="indexterm" name="idp13158992"></a>
 
-  <a id="idp13136288" class="indexterm"></a>
+  <a class="indexterm" name="idp13160624"></a>
 
-  <a id="idp13137920" class="indexterm"></a>
+  <a class="indexterm" name="idp13162256"></a>
 
-  <a id="idp13139616" class="indexterm"></a>
+  <a class="indexterm" name="idp13163952"></a>
 
-  <a id="idp13141312" class="indexterm"></a>
+  <a class="indexterm" name="idp13165648"></a>
 
-  <a id="idp13142944" class="indexterm"></a>
+  <a class="indexterm" name="idp13167280"></a>
 
-  <a id="idp13144544" class="indexterm"></a>
+  <a class="indexterm" name="idp13168880"></a>
 
-  <a id="idp13146192" class="indexterm"></a>
+  <a class="indexterm" name="idp13170528"></a>
 
-  <a id="idp13147840" class="indexterm"></a>
+  <a class="indexterm" name="idp13172176"></a>
 
-  <a id="idp13149472" class="indexterm"></a>
+  <a class="indexterm" name="idp13173808"></a>
 
-  <a id="idp13151104" class="indexterm"></a>
+  <a class="indexterm" name="idp13175440"></a>
 
-  <a id="idp13152752" class="indexterm"></a>
+  <a class="indexterm" name="idp13177088"></a>
 
-  <a id="idp13154384" class="indexterm"></a>
+  <a class="indexterm" name="idp13178720"></a>
 
-  <a id="idp13156064" class="indexterm"></a>
+  <a class="indexterm" name="idp13180400"></a>
 
-  <a id="idp13157696" class="indexterm"></a>
+  <a class="indexterm" name="idp13182032"></a>
 
-  <a id="idp13159392" class="indexterm"></a>
+  <a class="indexterm" name="idp13183728"></a>
 
-  <a id="idp13161040" class="indexterm"></a>
+  <a class="indexterm" name="idp13185248"></a>
 
-  <a id="idp13162672" class="indexterm"></a>
+  <a class="indexterm" name="idp13185376"></a>
 
-  <a id="idp13164304" class="indexterm"></a>
+  <a class="indexterm" name="idp13188656"></a>
 
-  <a id="idp13165952" class="indexterm"></a>
+  <a class="indexterm" name="idp13190304"></a>
 
-  <a id="idp13167600" class="indexterm"></a>
+  <a class="indexterm" name="idp13191952"></a>
 
-  <a id="idp13169248" class="indexterm"></a>
+  <a class="indexterm" name="idp13193600"></a>
 
-  <a id="idp13170896" class="indexterm"></a>
+  <a class="indexterm" name="idp13195248"></a>
 
-  <a id="idp13172592" class="indexterm"></a>
+  <a class="indexterm" name="idp13196976"></a>
 
-  <a id="idp13174224" class="indexterm"></a>
+  <a class="indexterm" name="idp13198688"></a>
 
-  <a id="idp13175856" class="indexterm"></a>
+  <a class="indexterm" name="idp13200336"></a>
 
-  <a id="idp13177504" class="indexterm"></a>
+  <a class="indexterm" name="idp13201984"></a>
 
-  <a id="idp13179152" class="indexterm"></a>
+  <a class="indexterm" name="idp13203632"></a>
 
-  <a id="idp13180784" class="indexterm"></a>
+  <a class="indexterm" name="idp13205168"></a>
 
-  <a id="idp13182464" class="indexterm"></a>
+  <a class="indexterm" name="idp13206976"></a>
 
-  <a id="idp13183904" class="indexterm"></a>
+  <a class="indexterm" name="idp13208496"></a>
 
-  <a id="idp13185680" class="indexterm"></a>
+  <a class="indexterm" name="idp13210144"></a>
 
-  <a id="idp13187344" class="indexterm"></a>
+  <a class="indexterm" name="idp13211808"></a>
 
-  <a id="idp13188992" class="indexterm"></a>
+  <a class="indexterm" name="idp13213440"></a>
 
-  <a id="idp13190640" class="indexterm"></a>
+  <a class="indexterm" name="idp13215088"></a>
 
-  <a id="idp13192288" class="indexterm"></a>
+  <a class="indexterm" name="idp13216736"></a>
 
-  <a id="idp13193936" class="indexterm"></a>
+  <a class="indexterm" name="idp13218384"></a>
 
-  <a id="idp13195584" class="indexterm"></a>
+  <a class="indexterm" name="idp13220032"></a>
 </div>
-    <div class="navfooter">
-      <hr />
-      <table width="100%" summary="Navigation footer">
-        <tr>
-          <td width="40%" align="left"><a accesskey="p" href="extcommands.html">Zurück</a> </td>
-          <td width="20%" align="center">
-            <a accesskey="u" href="ch07.html">Nach oben</a>
-          </td>
-          <td width="40%" align="right"> <a accesskey="n" href="eventhandlers.html">Weiter</a></td>
-        </tr>
-        <tr>
-          <td width="40%" align="left" valign="top">7.1. Externe Befehle </td>
-          <td width="20%" align="center">
-            <a accesskey="h" href="index.html">Zum Anfang</a>
-          </td>
-          <td width="40%" align="right" valign="top"> 7.3. Eventhandler</td>
-        </tr>
-      </table>
-    </div>
-    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-  </body>
+<div class="navfooter">
+<hr>
+<table width="100%" summary="Navigation footer">
+<tr>
+<td width="40%" align="left">
+<a accesskey="p" href="extcommands.html">Zurück</a> </td>
+<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
+<td width="40%" align="right"> <a accesskey="n" href="eventhandlers.html">Weiter</a>
+</td>
+</tr>
+<tr>
+<td width="40%" align="left" valign="top">7.1. Externe Befehle </td>
+<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
+<td width="40%" align="right" valign="top"> 7.3. Eventhandler</td>
+</tr>
+</table>
+</div>
+<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+</body>
 </html>
