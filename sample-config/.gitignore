@@ -1,2 +1,6 @@
-*.cfg
+cgiauth.cfg
+cgi.cfg
+icinga.cfg
+mrtg.cfg
+resource.cfg
 httpd.conf

@@ -4,6 +4,14 @@ Icinga 1.8.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+UPGRADE NOTES
+
+* for idoutils database upgrades, check the following for upgrade sql scripts
+	- module/idoutils/db/<yourrdbms>/upgrade/
+* for configuration file changes, check the following for added/removed config options
+	- core, classic ui: sample-config/updates/
+	- idoutils: module/idoutils/config/updates
+
 
 1.8.0 - 18/10/2012
 
@@ -63,6 +71,9 @@ ENHANCEMENTS
 * idoutils: add experimental ido event to en/disable objects to ido2db (unusued in idomod!) #3068 - MF
 
 * install: add --with-mainurl to configure, allowing to set the main frame target url for index.html #2611 - MF
+
+* config: add config added/removed diffs between versions for better upgrading #2608 - MF
+	** sample-config/updates/ and module/idoutils/config/updates/
 
 * contrib: add nginx configuration for icinga classicui by Francisco Miguel Biete into contrib/nginx #2253 - MF
 
