@@ -1,53 +1,51 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>12.6. Datenbank-Anpassungen/Änderungen</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
-<link rel="up" href="ch12.html" title="Kapitel 12. IDOUtils">
-<link rel="prev" href="db_model.html" title="12.5. IDOUtils Database Model">
-<link rel="next" href="ix01.html" title="Stichwortverzeichnis">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">12.6. Datenbank-Anpassungen/Änderungen</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="db_model.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 12. IDOUtils</th>
-<td width="20%" align="right"> <a accesskey="n" href="ix01.html">Weiter</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="12.6. Datenbank-Anpassungen/Änderungen">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="db_changes"></a>12.6. Datenbank-Anpassungen/Änderungen</h2></div></div></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>12.6. Datenbank-Anpassungen/Änderungen</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
+    <link rel="up" href="ch12.html" title="Kapitel 12. IDOUtils" />
+    <link rel="prev" href="db_model.html" title="12.5. IDOUtils Database Model" />
+    <link rel="next" href="ix01.html" title="Stichwortverzeichnis" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">12.6. Datenbank-Anpassungen/Änderungen</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="db_model.html">Zurück</a> </td>
+          <th width="60%" align="center">Kapitel 12. IDOUtils</th>
+          <td width="20%" align="right"> <a accesskey="n" href="ix01.html">Weiter</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="12.6. Datenbank-Anpassungen/Änderungen"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="db_changes"></a>12.6. Datenbank-Anpassungen/Änderungen</h2></div></div></div>
   
 
-  <p><a name="db_changes-instancename"></a> <span class="bold"><strong>Ändern des Instance-Namens</strong></span></p>
+  <p><a id="db_changes-instancename"></a> <span class="bold"><strong>Ändern des Instance-Namens</strong></span></p>
 
   <p>Möglicherweise möchten Sie den Instance-Namen ändern. Es gibt einige Schritte, die im folgenden Abschnitt beschrieben sind. Danke an
-  <a class="link" href="https://dev.icinga.org/users/210" target="_top">ralfk</a>, der uns diese Anleitung geliefert hat.</p>
+  <a class="ulink" href="https://dev.icinga.org/users/210" target="_top">ralfk</a>, der uns diese Anleitung geliefert hat.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>Stoppen Sie Icinga und die ido2db-Daemonen (denn anderenfalls wird statt einer Änderung automatisch ein neuer Instanzname
-      zur Datenbank hinzugefügt)</p>
-<pre class="programlisting"> #&gt; /etc/init.d/icinga stop
+      zur Datenbank hinzugefügt)</p><pre class="programlisting"> #&gt; /etc/init.d/icinga stop
  #&gt; /etc/init.d/ido2db stop</pre>
-    </li>
-<li class="listitem">
-      <p>Ändern Sie den Instanznamen in der Datei <code class="filename">/usr/local/icinga/etc/idomod.cfg</code> </p>
-<pre class="programlisting"> instance_name=newinstance</pre>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
+      <p>Ändern Sie den Instanznamen in der Datei <code class="filename">/usr/local/icinga/etc/idomod.cfg</code> </p><pre class="programlisting"> instance_name=newinstance</pre>
+    </li><li class="listitem">
       <p>Ändern Sie den Instanznamen in der Datenbanktabelle "icinga_instances" bzw. "instances"</p>
 
       <p><span class="bold"><strong>MySQL/PostgreSQL</strong></span></p>
@@ -57,50 +55,43 @@
       <p><span class="bold"><strong>Oracle</strong></span></p>
 
       <pre class="programlisting"> SQL&gt; UPDATE instances SET instance_name='NEWNAME' WHERE instance_name='OLDNAME';</pre>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Ändern Sie den Instanznamen in der command pipe-Konfiguration in einer der folgenden Dateien (Site-Datei an erster
       Stelle)</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
           <p><code class="filename">/usr/local/icinga-web/app/modules/Web/config/icinga-io.xml</code></p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p><code class="filename">/usr/local/icinga-web/app/modules/Web/config/icinga-io.site.xml</code></p>
-        </li>
-</ul></div>
-    </li>
-<li class="listitem">
-      <p>Löschen Sie den Web-Cache</p>
-<pre class="programlisting"> #&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
-    </li>
-<li class="listitem">
-      <p>Starten Sie Icinga und die ido2db-Daemonen</p>
-<pre class="programlisting"> #&gt; /etc/init.d/ido2db start
+        </li></ul></div>
+    </li><li class="listitem">
+      <p>Löschen Sie den Web-Cache</p><pre class="programlisting"> #&gt; /usr/local/icinga-web/bin/clearcache.sh</pre>
+    </li><li class="listitem">
+      <p>Starten Sie Icinga und die ido2db-Daemonen</p><pre class="programlisting"> #&gt; /etc/init.d/ido2db start
  #&gt; /etc/init.d/icinga start</pre>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <a class="indexterm" name="idp19722800"></a>
+  <a id="idp19671648" class="indexterm"></a>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="db_model.html">Zurück</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch12.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ix01.html">Weiter</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">12.5. IDOUtils Database Model </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Stichwortverzeichnis</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="db_model.html">Zurück</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch12.html">Nach oben</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="ix01.html">Weiter</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">12.5. IDOUtils Database Model </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Zum Anfang</a>
+          </td>
+          <td width="40%" align="right" valign="top"> Stichwortverzeichnis</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

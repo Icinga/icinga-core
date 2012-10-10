@@ -1,60 +1,47 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>5.2. Understanding Macros and How They Work</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
-<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
-<link rel="prev" href="plugins.html" title="5.1. Icinga Plugins">
-<link rel="next" href="macrolist.html" title="5.3. Standard Macros in Icinga">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">5.2. Understanding Macros and How They Work</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="plugins.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 5. The Basics</th>
-<td width="20%" align="right"> <a accesskey="n" href="macrolist.html">Next</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="5.2. Understanding Macros and How They Work">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="macros"></a>5.2. <a name="macro_overview"></a>Understanding Macros and How They Work</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">5.2.1. <a href="macros.html#idp7099264">Macros</a></span></dt>
-<dt><span class="section">5.2.2. <a href="macros.html#idp7100640">Macro Substitution - How Macros Work</a></span></dt>
-<dt><span class="section">5.2.3. <a href="macros.html#idp7102672">Example 1: Host Address Macro</a></span></dt>
-<dt><span class="section">5.2.4. <a href="macros.html#idp7106768">Example 2: Command Argument Macros</a></span></dt>
-<dt><span class="section">5.2.5. <a href="macros.html#idp7116384">On-Demand Macros</a></span></dt>
-<dt><span class="section">5.2.6. <a href="macros.html#idp7118832">On-Demand Group Macros</a></span></dt>
-<dt><span class="section">5.2.7. <a href="macros.html#idp7146272">Custom Variable Macros</a></span></dt>
-<dt><span class="section">5.2.8. <a href="macros.html#idp7156768">Macro Cleansing</a></span></dt>
-<dt><span class="section">5.2.9. <a href="macros.html#idp7172880">Macros as Environment Variables</a></span></dt>
-<dt><span class="section">5.2.10. <a href="macros.html#idp7177872">Available Macros</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.2. Understanding Macros and How They Work</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
+    <link rel="up" href="ch05.html" title="Chapter 5. The Basics" />
+    <link rel="prev" href="plugins.html" title="5.1. Icinga Plugins" />
+    <link rel="next" href="macrolist.html" title="5.3. Standard Macros in Icinga" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">5.2. Understanding Macros and How They Work</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="plugins.html">Prev</a> </td>
+          <th width="60%" align="center">Chapter 5. The Basics</th>
+          <td width="20%" align="right"> <a accesskey="n" href="macrolist.html">Next</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="5.2. Understanding Macros and How They Work"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="macros"></a>5.2. <a id="macro_overview"></a>Understanding Macros and How They Work</h2></div></div></div><div class="toc"><dl><dt><span class="section">5.2.1. <a href="macros.html#idp7097024">Macros</a></span></dt><dt><span class="section">5.2.2. <a href="macros.html#idp7098576">Macro Substitution - How Macros Work</a></span></dt><dt><span class="section">5.2.3. <a href="macros.html#idp7100608">Example 1: Host Address Macro</a></span></dt><dt><span class="section">5.2.4. <a href="macros.html#idp7104704">Example 2: Command Argument Macros</a></span></dt><dt><span class="section">5.2.5. <a href="macros.html#idp7116400">On-Demand Macros</a></span></dt><dt><span class="section">5.2.6. <a href="macros.html#idp7130528">On-Demand Group Macros</a></span></dt><dt><span class="section">5.2.7. <a href="macros.html#idp7144272">Custom Variable Macros</a></span></dt><dt><span class="section">5.2.8. <a href="macros.html#idp7154480">Macro Cleansing</a></span></dt><dt><span class="section">5.2.9. <a href="macros.html#idp7170736">Macros as Environment Variables</a></span></dt><dt><span class="section">5.2.10. <a href="macros.html#idp7175664">Available Macros</a></span></dt></dl></div>
   
 
-  <div class="section" title="5.2.1. Macros">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7099264"></a>5.2.1. Macros</h3></div></div></div>
+  <div class="section" title="5.2.1. Macros"><div class="titlepage"><div><div><h3 class="title"><a id="idp7097024"></a>5.2.1. Macros</h3></div></div></div>
     
 
     <p>One of the main features that make Icinga so flexible is the ability to use macros in command definitions. Macros allow you
     to reference information from hosts, services, and other sources in your commands.</p>
   </div>
 
-  <div class="section" title="5.2.2. Macro Substitution - How Macros Work">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7100640"></a>5.2.2. Macro Substitution - How Macros Work</h3></div></div></div>
+  <div class="section" title="5.2.2. Macro Substitution - How Macros Work"><div class="titlepage"><div><div><h3 class="title"><a id="idp7098576"></a>5.2.2. Macro Substitution - How Macros Work</h3></div></div></div>
     
 
     <p>Before Icinga executes a command, it will replace any macros it finds in the command definition with their corresponding
@@ -65,9 +52,7 @@
     $SERVICENOTES$, $SERVICENOTESURL$, and $SERVICEACTIONURL$ macros.</p>
   </div>
 
-  <div class="section" title="5.2.3. Example 1: Host Address Macro">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7102672"></a>5.2.3. Example 1: Host Address Macro</h3></div></div></div>
+  <div class="section" title="5.2.3. Example 1: Host Address Macro"><div class="titlepage"><div><div><h3 class="title"><a id="idp7100608"></a>5.2.3. Example 1: Host Address Macro</h3></div></div></div>
     
 
     <p>When you use host and service macros in command definitions, they refer to values for the host or service for which the command is
@@ -95,9 +80,7 @@
     before execution.</p>
   </div>
 
-  <div class="section" title="5.2.4. Example 2: Command Argument Macros">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7106768"></a>5.2.4. Example 2: Command Argument Macros</h3></div></div></div>
+  <div class="section" title="5.2.4. Example 2: Command Argument Macros"><div class="titlepage"><div><div><h3 class="title"><a id="idp7104704"></a>5.2.4. Example 2: Command Argument Macros</h3></div></div></div>
     
 
     <p>You can pass arguments to commands as well, which is quite handy if you'd like to keep your command definitions rather generic.
@@ -111,8 +94,8 @@
         ...
         }</pre>
 
-    <p>In the example above, the service check command has two arguments (which can be referenced with <a class="link" href="macrolist.html#macrolist-arg">$ARGn$</a> macros). The $ARG1$ macro will be "<span class="color"><font color="red">200.0,25%</font></span>"
-    and $ARG2$ will be "<span class="color"><font color="red">400.0,50%</font></span>" (both without quotes). Assuming we are using the host
+    <p>In the example above, the service check command has two arguments (which can be referenced with <a class="link" href="macrolist.html#macrolist-arg">$ARGn$</a> macros). The $ARG1$ macro will be "<span class="color">200.0,25%</span>"
+    and $ARG2$ will be "<span class="color">400.0,50%</span>" (both without quotes). Assuming we are using the host
     definition given earlier and a <span class="emphasis"><em>check_ping</em></span> command defined like this:</p>
 
     <pre class="programlisting"> define command{
@@ -124,42 +107,25 @@
 
     <pre class="screen">$&gt; /usr/local/icinga/libexec/check_ping -H 192.168.1.2 -w 200.0,25% -c 400.0,50%</pre>
 
-    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
-<th align="left">Tip</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p><a name="macros-bang"></a>If you need to pass bang (!) characters in your command arguments, you can do so by escaping them
+    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png" /></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+      <p><a id="macros-bang"></a>If you need to pass bang (!) characters in your command arguments, you can do so by escaping them
       with a backslash (\). If you need to include backslashes in your command arguments, they should also be escaped with a
       backslash.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
 
-    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
-<th align="left">Tip</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p><a name="macros-semicolon"></a>If you need to pass a semicolon (;) character in your command arguments, you cannot write the
+    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png" /></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
+      <p><a id="macros-semicolon"></a>If you need to pass a semicolon (;) character in your command arguments, you cannot write the
       character in the definition because it is handled as the start of a comment. You define a $USER$-variable in the resource file instead
       and use that variable in your definition.</p>
 
-      <p>Resource file</p>
-<pre class="programlisting">$USER255$=;</pre>
-<p>Command definition</p>
-<pre class="programlisting">define command{ 
+      <p>Resource file</p><pre class="programlisting">$USER255$=;</pre><p>Command definition</p><pre class="programlisting">define command{ 
        command_name   ...
        command_line   $USER1$/your_plugin "some text with a semicolor ($USER255$)"
 }</pre>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
   </div>
 
-  <div class="section" title="5.2.5. On-Demand Macros">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7116384"></a>5.2.5. On-Demand Macros</h3></div></div></div>
+  <div class="section" title="5.2.5. On-Demand Macros"><div class="titlepage"><div><div><h3 class="title"><a id="idp7116400"></a>5.2.5. On-Demand Macros</h3></div></div></div>
     
 
     <p>Normally when you use host and service macros in command definitions, they refer to values for the host or service for which the
@@ -169,14 +135,11 @@
     use what are called "on-demand" macros. On-demand macros look like normal macros, except for the fact that they contain an identifier
     for the host or service from which they should get their value. Here's the basic format for on-demand macros:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>$<span class="emphasis"><em>HOSTMACRONAME</em></span>:<span class="emphasis"><em>host_name</em></span>$</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>$<span class="emphasis"><em>SERVICEMACRONAME</em></span>:<span class="emphasis"><em>host_name</em></span>:<span class="emphasis"><em>service_description</em></span>$</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Replace <span class="emphasis"><em>HOSTMACRONAME</em></span> and <span class="emphasis"><em>SERVICEMACRONAME</em></span> with the name of one of the standard host of
     service macros found <a class="link" href="macrolist.html" title="5.3. Standard Macros in Icinga">here</a>.</p>
@@ -184,16 +147,10 @@
     <p>Note that the macro name is separated from the host or service identifier by a colon (:). For on-demand service macros, the
     service identifier consists of both a host name and a service description - these are separated by a colon (:) as well.</p>
 
-    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
-<th align="left">Tip</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png" /></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
       <p>On-demand service macros can contain an empty host name field. In this case the name of the host associated with the service
       will automatically be used.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
 
     <p>Examples of on-demand host and service macros follow:</p>
 
@@ -209,26 +166,20 @@
  $SERVICEGROUPALIAS:DNS-Cluster$              &lt;--- On-demand servicegroup macro</pre>
   </div>
 
-  <div class="section" title="5.2.6. On-Demand Group Macros">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7118832"></a>5.2.6. On-Demand Group Macros</h3></div></div></div>
+  <div class="section" title="5.2.6. On-Demand Group Macros"><div class="titlepage"><div><div><h3 class="title"><a id="idp7130528"></a>5.2.6. On-Demand Group Macros</h3></div></div></div>
     
 
     <p>You can obtain the values of a macro across all contacts, hosts, or services in a specific group by using a special format for
     your on-demand macro declaration. You do this by referencing a specific host group, service group, or contact group name in an on-demand
     macro, like so:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>$<span class="emphasis"><em>HOSTMACRONAME</em></span>:<span class="emphasis"><em>hostgroup_name</em></span>:<span class="emphasis"><em>delimiter</em></span>$</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>$<span class="emphasis"><em>SERVICEMACRONAME</em></span>:<span class="emphasis"><em>servicegroup_name</em></span>:<span class="emphasis"><em>delimiter</em></span>$</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>$<span class="emphasis"><em>CONTACTMACRONAME</em></span>:<span class="emphasis"><em>contactgroup_name</em></span>:<span class="emphasis"><em>delimiter</em></span>$</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Replace <span class="emphasis"><em>HOSTMACRONAME</em></span>, <span class="emphasis"><em>SERVICEMACRONAME</em></span>, and <span class="emphasis"><em>CONTACTMACRONAME</em></span> with
     the name of one of the standard host, service, or contact macros found <a class="link" href="macrolist.html" title="5.3. Standard Macros in Icinga">here</a>. The delimiter you specify
@@ -244,25 +195,19 @@
     <pre class="screen"> 0,2,1,1,0,0,2</pre>
   </div>
 
-  <div class="section" title="5.2.7. Custom Variable Macros">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7146272"></a>5.2.7. Custom Variable Macros</h3></div></div></div>
+  <div class="section" title="5.2.7. Custom Variable Macros"><div class="titlepage"><div><div><h3 class="title"><a id="idp7144272"></a>5.2.7. Custom Variable Macros</h3></div></div></div>
     
 
     <p>Any <a class="link" href="customobjectvars.html" title="3.5. Custom Object Variables">custom object variables</a> that you define in host, service, or contact definitions are
     also available as macros. Custom variable macros are named as follows:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>$_HOST<span class="emphasis"><em>varname</em></span>$</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>$_SERVICE<span class="emphasis"><em>varname</em></span>$</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>$_CONTACT<span class="emphasis"><em>varname</em></span>$</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Take the following host definition with a custom variable called "_MACADDRESS"...</p>
 
@@ -273,56 +218,41 @@
         ...
         }</pre>
 
-    <p>The _MACADDRESS custom variable would be available in a macro called <span class="color"><font color="red">$_HOSTMACADDRESS$</font></span>. More information on custom object variables and how they can be used in macros can be found
+    <p>The _MACADDRESS custom variable would be available in a macro called <span class="color">$_HOSTMACADDRESS$</span>. More information on custom object variables and how they can be used in macros can be found
     <a class="link" href="customobjectvars.html" title="3.5. Custom Object Variables">here</a>.</p>
   </div>
 
-  <div class="section" title="5.2.8. Macro Cleansing">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7156768"></a>5.2.8. Macro Cleansing</h3></div></div></div>
+  <div class="section" title="5.2.8. Macro Cleansing"><div class="titlepage"><div><div><h3 class="title"><a id="idp7154480"></a>5.2.8. Macro Cleansing</h3></div></div></div>
     
 
     <p>Some macros are stripped of potentially dangerous shell metacharacters before being substituted into commands to be executed.
     Which characters are stripped from the macros depends on the setting of the <a class="link" href="configmain.html#configmain-illegal_macro_output_chars">illegal_macro_output_chars</a> directive. The following macros are stripped of
     potentially dangerous characters:</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
+    <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
         <p><a class="link" href="macrolist.html#macrolist-hostoutput">$HOSTOUTPUT$</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="macrolist.html#macrolist-longhostoutput">$LONGHOSTOUTPUT$</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="macrolist.html#macrolist-hostperfdata">$HOSTPERFDATA$</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="macrolist.html#macrolist-hostackauthor">$HOSTACKAUTHOR$</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="macrolist.html#macrolist-hostackcomment">$HOSTACKCOMMENT$</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="macrolist.html#macrolist-serviceoutput">$SERVICEOUTPUT$</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="macrolist.html#macrolist-longserviceoutput">$LONGSERVICEOUTPUT$</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="macrolist.html#macrolist-serviceperfdata">$SERVICEPERFDATA$</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="macrolist.html#macrolist-serviceackauthor">$SERVICEACKAUTHOR$</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="macrolist.html#macrolist-serviceackcomment">$SERVICEACKCOMMENT$</a></p>
-      </li>
-</ol></div>
+      </li></ol></div>
   </div>
 
-  <div class="section" title="5.2.9. Macros as Environment Variables">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7172880"></a>5.2.9. Macros as Environment Variables</h3></div></div></div>
+  <div class="section" title="5.2.9. Macros as Environment Variables"><div class="titlepage"><div><div><h3 class="title"><a id="idp7170736"></a>5.2.9. Macros as Environment Variables</h3></div></div></div>
     
 
     <p>Most macros are made available as environment variables for easy reference by scripts or commands that are executed by
@@ -332,37 +262,37 @@
     <p>Environment variables that contain standard macros are named the same as their corresponding macro names (listed <a class="link" href="macrolist.html" title="5.3. Standard Macros in Icinga">here</a>), with "ICINGA_" prepended to their names. For example, the <a class="link" href="macrolist.html#macrolist-hostname">$HOSTNAME$</a> macro would be available as an environment variable named "ICINGA_HOSTNAME".</p>
   </div>
 
-  <div class="section" title="5.2.10. Available Macros">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7177872"></a>5.2.10. Available Macros</h3></div></div></div>
+  <div class="section" title="5.2.10. Available Macros"><div class="titlepage"><div><div><h3 class="title"><a id="idp7175664"></a>5.2.10. Available Macros</h3></div></div></div>
     
 
     <p>A list of all the macros that are available in Icinga, as well as a chart of when they can be used, can be found <a class="link" href="macrolist.html" title="5.3. Standard Macros in Icinga">here</a>.</p>
 
-    <a class="indexterm" name="idp7180016"></a>
+    <a id="idp7177808" class="indexterm"></a>
 
-    <a class="indexterm" name="idp7181664"></a>
+    <a id="idp7179456" class="indexterm"></a>
 
-    <a class="indexterm" name="idp7183248"></a>
+    <a id="idp7181040" class="indexterm"></a>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="plugins.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="macrolist.html">Next</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">5.1. Icinga Plugins </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 5.3. Standard Macros in Icinga</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="plugins.html">Prev</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch05.html">Up</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="macrolist.html">Next</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">5.1. Icinga Plugins </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Home</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 5.3. Standard Macros in Icinga</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

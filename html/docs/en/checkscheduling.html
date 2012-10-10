@@ -1,55 +1,40 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.23. Service and Host Check Scheduling</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
-<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
-<link rel="prev" href="passivestatetranslation.html" title="7.22. Passive Host State Translation">
-<link rel="next" href="cgiincludes.html" title="7.24. Custom CGI Headers and Footers">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.23. Service and Host Check Scheduling</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="passivestatetranslation.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 7. Advanced Topics</th>
-<td width="20%" align="right"> <a accesskey="n" href="cgiincludes.html">Next</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="7.23. Service and Host Check Scheduling">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="checkscheduling"></a>7.23. <a name="checkscheduling-check_scheduling"></a>Service and Host Check Scheduling</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">7.23.1. <a href="checkscheduling.html#idp14436976">Introduction</a></span></dt>
-<dt><span class="section">7.23.2. <a href="checkscheduling.html#idp14439168">Configuration Options</a></span></dt>
-<dt><span class="section">7.23.3. <a href="checkscheduling.html#idp14455840">Initial Scheduling</a></span></dt>
-<dt><span class="section">7.23.4. <a href="checkscheduling.html#idp14461936">Inter-Check Delay</a></span></dt>
-<dt><span class="section">7.23.5. <a href="checkscheduling.html#idp14467680">Service Interleaving</a></span></dt>
-<dt><span class="section">7.23.6. <a href="checkscheduling.html#idp14499120">Maximum Concurrent Service Checks</a></span></dt>
-<dt><span class="section">7.23.7. <a href="checkscheduling.html#idp14499376">Time Restraints</a></span></dt>
-<dt><span class="section">7.23.8. <a href="checkscheduling.html#idp14521568">Normal Scheduling</a></span></dt>
-<dt><span class="section">7.23.9. <a href="checkscheduling.html#idp14523936">Scheduling During Problems</a></span></dt>
-<dt><span class="section">7.23.10. <a href="checkscheduling.html#idp14532272">Host Checks</a></span></dt>
-<dt><span class="section">7.23.11. <a href="checkscheduling.html#idp14536448">Scheduling Delays</a></span></dt>
-<dt><span class="section">7.23.12. <a href="checkscheduling.html#idp14538576">Scheduling Example</a></span></dt>
-<dt><span class="section">7.23.13. <a href="checkscheduling.html#idp14555776">Service Definition Options That Affect Scheduling</a></span></dt>
-<dt><span class="section">7.23.14. <a href="checkscheduling.html#idp14567696">TODO</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.23. Service and Host Check Scheduling</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
+    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
+    <link rel="prev" href="passivestatetranslation.html" title="7.22. Passive Host State Translation" />
+    <link rel="next" href="cgiincludes.html" title="7.24. Custom CGI Headers and Footers" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">7.23. Service and Host Check Scheduling</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="passivestatetranslation.html">Prev</a> </td>
+          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
+          <td width="20%" align="right"> <a accesskey="n" href="cgiincludes.html">Next</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="7.23. Service and Host Check Scheduling"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="checkscheduling"></a>7.23. <a id="checkscheduling-check_scheduling"></a>Service and Host Check Scheduling</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.23.1. <a href="checkscheduling.html#idp14425040">Introduction</a></span></dt><dt><span class="section">7.23.2. <a href="checkscheduling.html#idp14427072">Configuration Options</a></span></dt><dt><span class="section">7.23.3. <a href="checkscheduling.html#idp14443616">Initial Scheduling</a></span></dt><dt><span class="section">7.23.4. <a href="checkscheduling.html#idp14449840">Inter-Check Delay</a></span></dt><dt><span class="section">7.23.5. <a href="checkscheduling.html#idp14455360">Service Interleaving</a></span></dt><dt><span class="section">7.23.6. <a href="checkscheduling.html#idp14486960">Maximum Concurrent Service Checks</a></span></dt><dt><span class="section">7.23.7. <a href="checkscheduling.html#idp14487216">Time Restraints</a></span></dt><dt><span class="section">7.23.8. <a href="checkscheduling.html#idp14509408">Normal Scheduling</a></span></dt><dt><span class="section">7.23.9. <a href="checkscheduling.html#idp14511776">Scheduling During Problems</a></span></dt><dt><span class="section">7.23.10. <a href="checkscheduling.html#idp14520112">Host Checks</a></span></dt><dt><span class="section">7.23.11. <a href="checkscheduling.html#idp14524464">Scheduling Delays</a></span></dt><dt><span class="section">7.23.12. <a href="checkscheduling.html#idp14526672">Scheduling Example</a></span></dt><dt><span class="section">7.23.13. <a href="checkscheduling.html#idp14543808">Service Definition Options That Affect Scheduling</a></span></dt><dt><span class="section">7.23.14. <a href="checkscheduling.html#idp14557040">TODO</a></span></dt></dl></div>
   
 
-  <div class="section" title="7.23.1. Introduction">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14436976"></a>7.23.1. <a name="checkscheduling-introduction"></a>Introduction</h3></div></div></div>
+  <div class="section" title="7.23.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp14425040"></a>7.23.1. <a id="checkscheduling-introduction"></a>Introduction</h3></div></div></div>
     
 
     <p>There were a lot of questions regarding how service checks are scheduled in certain situations, along with how the scheduling
@@ -57,63 +42,44 @@
     this all works...</p>
   </div>
 
-  <div class="section" title="7.23.2. Configuration Options">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14439168"></a>7.23.2. <a name="checkscheduling-configuration_options"></a>Configuration Options</h3></div></div></div>
+  <div class="section" title="7.23.2. Configuration Options"><div class="titlepage"><div><div><h3 class="title"><a id="idp14427072"></a>7.23.2. <a id="checkscheduling-configuration_options"></a>Configuration Options</h3></div></div></div>
     
 
     <p>Before we begin, there are several configuration options that affect how service checks are scheduled, executed, and processed.
     For starters, each <a class="link" href="objectdefinitions.html#objectdefinitions-service">service definition</a> contains three options that determine when and
     how each specific service check is scheduled and executed. Those three options are:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><span class="emphasis"><em>check_interval</em></span></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><span class="emphasis"><em>retry_interval</em></span></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><span class="emphasis"><em>check_period</em></span></p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>There are also four configuration options in the <a class="link" href="configmain.html" title="3.2. Main Configuration File Options">main configuration file</a> that affect service
     checks. These include:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="configmain.html#configmain-service_inter_check_delay_method"> <span class="emphasis"><em>service_inter_check_delay_method</em></span>
         </a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configmain.html#configmain-service_interleave_factor"> <span class="emphasis"><em>service_interleave_factor</em></span> </a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configmain.html#configmain-max_concurrent_checks"> <span class="emphasis"><em>max_concurrent_checks</em></span> </a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configmain.html#configmain-check_result_reaper_frequency"> <span class="emphasis"><em>check_result_reaper_frequency</em></span> </a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
       <p>The last directive affects host checks as well.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
 
     <p>We'll go into more detail on how all these options affect service check scheduling as we progress. First off, let's see how
     services are initially scheduled when Icinga first starts or restarts...</p>
   </div>
 
-  <div class="section" title="7.23.3. Initial Scheduling">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14455840"></a>7.23.3. <a name="checkscheduling-initial_scheduling"></a>Initial Scheduling</h3></div></div></div>
+  <div class="section" title="7.23.3. Initial Scheduling"><div class="titlepage"><div><div><h3 class="title"><a id="idp14443616"></a>7.23.3. <a id="checkscheduling-initial_scheduling"></a>Initial Scheduling</h3></div></div></div>
     
 
     <p>When Icinga (re)starts, it will attempt to schedule the initial check of all services in a manner that will minimize the
@@ -128,23 +94,15 @@
     checks, etc. At least we try to get things off to a good start. Hopefully the initial scheduling will keep the load on the local and
     remote hosts fairly balanced as time goes by...</p>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
       <p>If you want to view the initial service check scheduling information, start Icinga using the <span class="bold"><strong>-s</strong></span> command line option. Doing so will display basic scheduling information (inter-check delay, interleave
       factor, first and last service check time, etc) and will create a new status log that shows the exact time that all services are
       initially scheduled. Because this option will overwrite the status log, you should not use it when another copy of Icinga is
       running. Icinga does <span class="emphasis"><em>not</em></span> start monitoring anything when this argument is used.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
   </div>
 
-  <div class="section" title="7.23.4. Inter-Check Delay">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14461936"></a>7.23.4. <a name="checkscheduling-service_inter_check_delay"></a>Inter-Check Delay</h3></div></div></div>
+  <div class="section" title="7.23.4. Inter-Check Delay"><div class="titlepage"><div><div><h3 class="title"><a id="idp14449840"></a>7.23.4. <a id="checkscheduling-service_inter_check_delay"></a>Inter-Check Delay</h3></div></div></div>
     
 
     <p>As mentioned before, Icinga attempts to equalize the load placed on the machine that is running Icinga by equally
@@ -167,9 +125,7 @@
     over time like this, we can hope that the load on the local server that is running Icinga remains somewhat balanced.</p>
   </div>
 
-  <div class="section" title="7.23.5. Service Interleaving">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14467680"></a>7.23.5. <a name="checkscheduling-service_interleaving"></a>Service Interleaving</h3></div></div></div>
+  <div class="section" title="7.23.5. Service Interleaving"><div class="titlepage"><div><div><h3 class="title"><a id="idp14455360"></a>7.23.5. <a id="checkscheduling-service_interleaving"></a>Service Interleaving</h3></div></div></div>
     
 
     <p>As discussed above, the inter-check delay helps to equalize the load that Icinga imposes on the local host. What about
@@ -200,36 +156,11 @@
     variable equal to 4.</p>
 
     <div class="informaltable">
-      <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p>Noninterleaved Checks</p></td>
-<td><p>Interleaved Checks</p></td>
-</tr>
-<tr>
-<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/noninterleaved1.png" width="500"></span> </p></td>
-<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved1.png" width="500"></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/noninterleaved2.png" width="500"></span> </p></td>
-<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved2.png" width="500"></span> </p></td>
-</tr>
-<tr>
-<td> </td>
-<td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved3.png" width="500"></span> </p></td>
-</tr>
-</tbody>
-</table>
+      <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td><p>Noninterleaved Checks</p></td><td><p>Interleaved Checks</p></td></tr><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/noninterleaved1.png" width="500" /></span> </p></td><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved1.png" width="500" /></span> </p></td></tr><tr><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/noninterleaved2.png" width="500" /></span> </p></td><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved2.png" width="500" /></span> </p></td></tr><tr><td> </td><td align="left" valign="middle"><p> <span class="inlinemediaobject"><img src="../images/interleaved3.png" width="500" /></span> </p></td></tr></tbody></table>
     </div>
   </div>
 
-  <div class="section" title="7.23.6. Maximum Concurrent Service Checks">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14499120"></a>7.23.6. <a name="checkscheduling-max_concurrent_checks"></a>Maximum Concurrent Service Checks</h3></div></div></div>
+  <div class="section" title="7.23.6. Maximum Concurrent Service Checks"><div class="titlepage"><div><div><h3 class="title"><a id="idp14486960"></a>7.23.6. <a id="checkscheduling-max_concurrent_checks"></a>Maximum Concurrent Service Checks</h3></div></div></div>
     
 
     <p>In order to prevent Icinga from consuming all of your CPU resources, you can restrict the maximum number of concurrent
@@ -244,18 +175,14 @@
 
     <p>First off, you need to know the following things...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>The inter-check delay that Icinga uses to initially schedule service checks (use the <span class="bold"><strong>-s</strong></span> command line argument to check this)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>The frequency (in seconds) of reaper events, as specified by the <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a> variable in the main config file.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>A general idea of the average time that service checks actually take to execute (most plugins timeout after 10 seconds, so the
         average is probably going to be lower)</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Next, use the following calculation to determine a reasonable value for the maximum number of concurrent checks that are
     allowed...</p>
@@ -282,9 +209,7 @@
     running smoothly on your system, but hopefully this provided some general guidelines...</p>
   </div>
 
-  <div class="section" title="7.23.7. Time Restraints">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14499376"></a>7.23.7. <a name="checkscheduling-time_restraints"></a>Time Restraints</h3></div></div></div>
+  <div class="section" title="7.23.7. Time Restraints"><div class="titlepage"><div><div><h3 class="title"><a id="idp14487216"></a>7.23.7. <a id="checkscheduling-time_restraints"></a>Time Restraints</h3></div></div></div>
     
 
     <p>The <span class="emphasis"><em>check_period</em></span> option determines the <a class="link" href="timeperiods.html" title="5.9. Time Periods">time period</a> during which
@@ -293,12 +218,7 @@
     Instead, Icinga will reschedule the service check for the next valid time in the time period. If the check can be run (e.g. the
     time is valid within the time period), the service check is executed.</p>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
       <p>Even though a service check may not be able to be executed at a given time, Icinga may still
       <span class="emphasis"><em>schedule</em></span> it to be run at that time. This is most likely to happen during the initial scheduling of services,
       although it may happen in other instances as well. This does <span class="emphasis"><em>not</em></span> mean that Icinga will execute the check!
@@ -306,13 +226,10 @@
       the current time. If it cannot, Icinga will not execute the service check, but will instead just reschedule it for a later
       time. Don't let this one throw you confuse you! The scheduling and execution of service checks are two distinctly different (although
       related) things.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
   </div>
 
-  <div class="section" title="7.23.8. Normal Scheduling">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14521568"></a>7.23.8. <a name="checkscheduling-normal_scheduling"></a>Normal Scheduling</h3></div></div></div>
+  <div class="section" title="7.23.8. Normal Scheduling"><div class="titlepage"><div><div><h3 class="title"><a id="idp14509408"></a>7.23.8. <a id="checkscheduling-normal_scheduling"></a>Normal Scheduling</h3></div></div></div>
     
 
     <p>In an ideal world you wouldn't have network problems. But if that were the case, you wouldn't need a network monitoring tool.
@@ -320,9 +237,7 @@
     scheduled at the frequency specified by the <span class="emphasis"><em>check_interval</em></span> option. That's it. Simple, huh?</p>
   </div>
 
-  <div class="section" title="7.23.9. Scheduling During Problems">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14523936"></a>7.23.9. <a name="checkscheduling-problem_scheduling"></a>Scheduling During Problems</h3></div></div></div>
+  <div class="section" title="7.23.9. Scheduling During Problems"><div class="titlepage"><div><div><h3 class="title"><a id="idp14511776"></a>7.23.9. <a id="checkscheduling-problem_scheduling"></a>Scheduling During Problems</h3></div></div></div>
     
 
     <p>So what happens when there are problems with a service? Well, one of the things that happens is the service check scheduling
@@ -342,9 +257,7 @@
     <span class="emphasis"><em>check_interval</em></span> option instead of the <span class="emphasis"><em>retry_interval</em></span> option.</p>
   </div>
 
-  <div class="section" title="7.23.10. Host Checks">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14532272"></a>7.23.10. <a name="checkscheduling-host_checks"></a>Host Checks</h3></div></div></div>
+  <div class="section" title="7.23.10. Host Checks"><div class="titlepage"><div><div><h3 class="title"><a id="idp14520112"></a>7.23.10. <a id="checkscheduling-host_checks"></a>Host Checks</h3></div></div></div>
     
 
     <p>Unlike service checks, host checks are <span class="emphasis"><em>not</em></span> scheduled on a regular basis. Instead they are run on demand, as
@@ -361,9 +274,7 @@
     are having problems.</p>
   </div>
 
-  <div class="section" title="7.23.11. Scheduling Delays">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14536448"></a>7.23.11. <a name="checkscheduling-scheduling_delays"></a>Scheduling Delays</h3></div></div></div>
+  <div class="section" title="7.23.11. Scheduling Delays"><div class="titlepage"><div><div><h3 class="title"><a id="idp14524464"></a>7.23.11. <a id="checkscheduling-scheduling_delays"></a>Scheduling Delays</h3></div></div></div>
     
 
     <p>It should be noted that service check scheduling and execution is done on a best effort basis. Individual service checks are
@@ -372,15 +283,13 @@
     will slow down the execution and processing of service checks.</p>
   </div>
 
-  <div class="section" title="7.23.12. Scheduling Example">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14538576"></a>7.23.12. <a name="checkscheduling-scheduling_example"></a>Scheduling Example</h3></div></div></div>
+  <div class="section" title="7.23.12. Scheduling Example"><div class="titlepage"><div><div><h3 class="title"><a id="idp14526672"></a>7.23.12. <a id="checkscheduling-scheduling_example"></a>Scheduling Example</h3></div></div></div>
     
 
     <p>The scheduling of service checks, their execution, and the processing of their results can be a bit difficult to understand, so
     let's look at a simple example. Look at the diagram below - we'll refer to it as we explain how things are done.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/checktiming.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/checktiming.png" /></span></p>
 
     <p>First off, the <span class="bold"><strong>X</strong></span><sub>n</sub> events are check result reaper events that are scheduled
     at a frequency specified by the <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a> option in
@@ -404,9 +313,7 @@
     service checks if it comes under heavy load. Besides, what's the point of scheduling something in the past...?</p>
   </div>
 
-  <div class="section" title="7.23.13. Service Definition Options That Affect Scheduling">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14555776"></a>7.23.13. <a name="checkscheduling-service_options"></a>Service Definition Options That Affect Scheduling</h3></div></div></div>
+  <div class="section" title="7.23.13. Service Definition Options That Affect Scheduling"><div class="titlepage"><div><div><h3 class="title"><a id="idp14543808"></a>7.23.13. <a id="checkscheduling-service_options"></a>Service Definition Options That Affect Scheduling</h3></div></div></div>
     
 
     <p>Each service definition contains a <span class="emphasis"><em>check_interval</em></span> and <span class="emphasis"><em>retry_interval</em></span> option. Hopefully
@@ -430,64 +337,64 @@
     option.</p>
   </div>
 
-  <div class="section" title="7.23.14. TODO">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14567696"></a>7.23.14. TODO</h3></div></div></div>
+  <div class="section" title="7.23.14. TODO"><div class="titlepage"><div><div><h3 class="title"><a id="idp14557040"></a>7.23.14. TODO</h3></div></div></div>
     
 
-    <p><a name="checkscheduling-host_inter_check_delay"></a><span class="bold"><strong>Host Check Directives</strong></span></p>
+    <p><a id="checkscheduling-host_inter_check_delay"></a><span class="bold"><strong>Host Check Directives</strong></span></p>
 
     <p>Most of the above applies to host checks as well.</p>
 
     <p>This documentation is being rewritten. Stay tuned for more information in a later beta release...</p>
 
-    <a class="indexterm" name="idp14572240"></a>
+    <a id="idp14560192" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14574000"></a>
+    <a id="idp14561888" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14575648"></a>
+    <a id="idp14563376" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14577408"></a>
+    <a id="idp14565008" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14578800"></a>
+    <a id="idp14566704" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14578928"></a>
+    <a id="idp14568304" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14582016"></a>
+    <a id="idp14569936" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14582144"></a>
+    <a id="idp14571568" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14585328"></a>
+    <a id="idp14573168" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14585456"></a>
+    <a id="idp14574800" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14587056"></a>
+    <a id="idp14576432" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14588688"></a>
+    <a id="idp14578096" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14590320"></a>
+    <a id="idp14579728" class="indexterm"></a>
 
-    <a class="indexterm" name="idp14593584"></a>
+    <a id="idp14581360" class="indexterm"></a>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="passivestatetranslation.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="cgiincludes.html">Next</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">7.22. Passive Host State Translation </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 7.24. Custom CGI Headers and
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="passivestatetranslation.html">Prev</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch07.html">Up</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="cgiincludes.html">Next</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">7.22. Passive Host State Translation </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Home</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 7.24. Custom CGI Headers and
   Footers</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

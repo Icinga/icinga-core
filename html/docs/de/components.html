@@ -1,71 +1,58 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>12.2. Komponenten</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
-<link rel="up" href="ch12.html" title="Kapitel 12. IDOUtils">
-<link rel="prev" href="db_intro.html" title="12.1. Einleitung">
-<link rel="next" href="configido.html" title="12.3. Konfiguration der IDOUtils">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">12.2. Komponenten</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="db_intro.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 12. IDOUtils</th>
-<td width="20%" align="right"> <a accesskey="n" href="configido.html">Weiter</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="12.2. Komponenten">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="components"></a>12.2. Komponenten</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">12.2.1. <a href="components.html#idp16295360">Überblick</a></span></dt>
-<dt><span class="section">12.2.2. <a href="components.html#idp16301424">IDOMOD</a></span></dt>
-<dt><span class="section">12.2.3. <a href="components.html#idp16312192">LOG2IDO</a></span></dt>
-<dt><span class="section">12.2.4. <a href="components.html#idp16317184">FILE2SOCK</a></span></dt>
-<dt><span class="section">12.2.IDO2DB. <a href="components.html#IDO2DB-description">IDO2DB</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>12.2. Komponenten</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
+    <link rel="up" href="ch12.html" title="Kapitel 12. IDOUtils" />
+    <link rel="prev" href="db_intro.html" title="12.1. Einleitung" />
+    <link rel="next" href="configido.html" title="12.3. Konfiguration der IDOUtils" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">12.2. Komponenten</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="db_intro.html">Zurück</a> </td>
+          <th width="60%" align="center">Kapitel 12. IDOUtils</th>
+          <td width="20%" align="right"> <a accesskey="n" href="configido.html">Weiter</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="12.2. Komponenten"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="components"></a>12.2. Komponenten</h2></div></div></div><div class="toc"><dl><dt><span class="section">12.2.1. <a href="components.html#idp16245072">Überblick</a></span></dt><dt><span class="section">12.2.2. <a href="components.html#idp16251136">IDOMOD</a></span></dt><dt><span class="section">12.2.3. <a href="components.html#idp16261904">LOG2IDO</a></span></dt><dt><span class="section">12.2.4. <a href="components.html#idp16266896">FILE2SOCK</a></span></dt><dt><span class="section">12.2.5. <a href="components.html#IDO2DB-description">IDO2DB</a></span></dt></dl></div>
   
 
-  <div class="section" title="12.2.1. Überblick">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16295360"></a>12.2.1. Überblick</h3></div></div></div>
+  <div class="section" title="12.2.1. Überblick"><div class="titlepage"><div><div><h3 class="title"><a id="idp16245072"></a>12.2.1. Überblick</h3></div></div></div>
     
 
     <p>Es gibt vier Hauptkomponenten, aus denen die IDO-Utilities bestehen:</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
+    <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
         <p>IDOMOD-Event-Broker-Modul</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>LOG2IDO-Utility</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>FILE2SOCK-Utility</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>IDO2DB-Daemon</p>
-      </li>
-</ol></div>
+      </li></ol></div>
 
     <p>Jede Komponente wird auf den folgenden Seiten genauer beschrieben.</p>
   </div>
 
-  <div class="section" title="12.2.2. IDOMOD">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16301424"></a>12.2.2. IDOMOD</h3></div></div></div>
+  <div class="section" title="12.2.2. IDOMOD"><div class="titlepage"><div><div><h3 class="title"><a id="idp16251136"></a>12.2.2. IDOMOD</h3></div></div></div>
     
 
     <p>Die IDO-Utilities enthalten ein Icinga-Event-Broker-Modul (IDOMOD.O), das die Daten des Icinga-Daemon
@@ -75,29 +62,21 @@
     Icinga konfigurieren, dass das IDOMOD-Modul während der Laufzeit geladen wird. Sobald das Modul vom Icinga-Daemon geladen
     wird, kann es auf die Daten und die Logik des laufenden Icinga-Prozesses zugreifen.</p>
 
-    <div class="figure">
-<a name="idp16303664"></a><p class="title"><b>Abbildung 12.5. Geladenes IDOMOD-Event-Broker-Modul</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp16253376"></a><p class="title"><b>Abbildung 12.5. Geladenes IDOMOD-Event-Broker-Modul</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/fig5.png" alt="Geladenes IDOMOD-Event-Broker-Modul"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/fig5.png" alt="Geladenes IDOMOD-Event-Broker-Modul" /></div>
+    </div></div><br class="figure-break" />
 
     <p>Das IDOMOD-Modul wurde konzipiert, um sowohl Konfigurationsdaten als auch Informationen über verschiedene Laufzeitereignisse, die
     während des Überwachungsprozesses auftreten, aus dem Icinga-Daemon zu exportieren. Das Modul kann diese Daten an eine normale
     Datei, einen Unix-Domain- oder einen TCP-Socket senden.</p>
 
-    <div class="figure">
-<a name="idp16307568"></a><p class="title"><b>Abbildung 12.6. IDOMOD-Möglichkeiten</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp16257280"></a><p class="title"><b>Abbildung 12.6. IDOMOD-Möglichkeiten</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/fig6.png" alt="IDOMOD-Möglichkeiten"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/fig6.png" alt="IDOMOD-Möglichkeiten" /></div>
+    </div></div><br class="figure-break" />
 
     <p>Das IDOMOD-Modul schreibt die Daten in einem Format, dass der IDO2DB-Daemon (wird später beschrieben) verstehen kann.</p>
 
@@ -111,55 +90,41 @@
     Dies ist hilfreich, wenn der Prozess, der den Socket anlegt bzw. darauf lauscht, (erneut) gestartet werden muss.</p>
   </div>
 
-  <div class="section" title="12.2.3. LOG2IDO">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16312192"></a>12.2.3. LOG2IDO</h3></div></div></div>
+  <div class="section" title="12.2.3. LOG2IDO"><div class="titlepage"><div><div><h3 class="title"><a id="idp16261904"></a>12.2.3. LOG2IDO</h3></div></div></div>
     
 
-    <p>Das LOG2IDO-Utility wurde entwickelt, damit Sie über den IDO2DB-Daemon (<a class="link" href="components.html#IDO2DB-description" title="12.2.IDO2DB. IDO2DB">wird später
+    <p>Das LOG2IDO-Utility wurde entwickelt, damit Sie über den IDO2DB-Daemon (<a class="link" href="components.html#IDO2DB-description" title="12.2.5. IDO2DB">wird später
     beschrieben</a>) historische Datei aus Icinga-, Nagios- und NetSaint-Log-Dateien in eine Datenbank importieren können. Das
     Utility funktioniert, indem historische Log-Dateidaten in einem Format, das der IDO2DB-Daemon versteht, an eine normale Datei, ein
     Unix-Domain- oder ein TCP-Socket geschickt werden. Der IDO2DB-Daemon kann dann genutzt werden, um diese Ausgaben zu verarbeiten und die
     Informationen in einer Datenbank zu speichern.</p>
 
-    <div class="figure">
-<a name="idp16314464"></a><p class="title"><b>Abbildung 12.7. LOG2IDO-Utility</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp16264176"></a><p class="title"><b>Abbildung 12.7. LOG2IDO-Utility</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/fig7.png" alt="LOG2IDO-Utility"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/fig7.png" alt="LOG2IDO-Utility" /></div>
+    </div></div><br class="figure-break" />
   </div>
 
-  <div class="section" title="12.2.4. FILE2SOCK">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16317184"></a>12.2.4. FILE2SOCK</h3></div></div></div>
+  <div class="section" title="12.2.4. FILE2SOCK"><div class="titlepage"><div><div><h3 class="title"><a id="idp16266896"></a>12.2.4. FILE2SOCK</h3></div></div></div>
     
 
     <p>Das FILE2SOCK-Utility ist ziemlich simpel. Es liest Eingaben von einer normalen Daten (oder STDIN) und schickt diese Daten
     entweder an einen Unix-Domain- oder einen TCP-Socket. Die gelesenen Datei werden nicht bearbeitet, bevor sie an den Socket geschickt
     werden.</p>
 
-    <div class="figure">
-<a name="idp16318704"></a><p class="title"><b>Abbildung 12.8. FILE2SOCK-Utility</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp16268416"></a><p class="title"><b>Abbildung 12.8. FILE2SOCK-Utility</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/fig8.png" alt="FILE2SOCK-Utility"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/fig8.png" alt="FILE2SOCK-Utility" /></div>
+    </div></div><br class="figure-break" />
 
     <p>Dieses Utility ist nützlich, wenn Sie die Ausgaben den IDOMOD-Event-Broker-Moduls und/oder des LOG2IDO-Utilitys in eine normale
     Datei umleiten. Sobald diese Komponenten ihre Ausgaben in eine Datei geschrieben haben, können Sie das FILE2SOCK-Utility nutzen, um den
     Inhalt der Datei an den TCP- oder den Unix-Domain-Socket des IDO2DB-Daemons zu schicken.</p>
   </div>
 
-  <div class="section" title="12.2.IDO2DB. IDO2DB">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="IDO2DB-description"></a>12.2.IDO2DB. IDO2DB</h3></div></div></div>
+  <div class="section" title="12.2.5. IDO2DB"><div class="titlepage"><div><div><h3 class="title"><a id="IDO2DB-description"></a>12.2.5. IDO2DB</h3></div></div></div>
     
 
     <p>Das IDO2DB-Utility ist gedacht, um die Datenausgaben der IDOMOD- und LOG2IDO-Komponenten zu nehmen und in einer MySQL, Oracle-
@@ -169,50 +134,44 @@
     verbinden. IDO2DB kann entweder als einzelner, als Multiprozess-Daemon oder unter INETD laufen (wenn ein TCP-Socket verwendet
     wird).</p>
 
-    <div class="figure">
-<a name="idp16324912"></a><p class="title"><b>Abbildung 12.9. IDO2DB-Daemon</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp16274352"></a><p class="title"><b>Abbildung 12.9. IDO2DB-Daemon</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/fig9.png" alt="IDO2DB-Daemon"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/fig9.png" alt="IDO2DB-Daemon" /></div>
+    </div></div><br class="figure-break" />
 
     <p>Mehrere Clients können sich mit dem Socket des IDO2DB-Daemons verbinden und gleichzeitig Daten übertragen. Für jeden neuen Client,
     der sich verbindet, wird ein separater IDO2DB-Prozess erzeugt. Die Daten jedes Clients werden gelesen und in einer benutzerdefinierten
     Datenbank für spätere Abfragen und Verarbeitung gespeichert.</p>
 
-    <div class="figure">
-<a name="idp16328128"></a><p class="title"><b>Abbildung 12.10. IDO2DB mit mehreren Clients</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp16277568"></a><p class="title"><b>Abbildung 12.10. IDO2DB mit mehreren Clients</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/fig10.png" alt="IDO2DB mit mehreren Clients"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/fig10.png" alt="IDO2DB mit mehreren Clients" /></div>
+    </div></div><br class="figure-break" />
 
     <p>Der IDO2DB-Daemon unterstützt im Moment MySQL-, Oracle- und PostgreSQL-Datenbanken.</p>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="db_intro.html">Zurück</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch12.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="configido.html">Weiter</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">12.1. Einleitung </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 12.3. Konfiguration der IDOUtils</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="db_intro.html">Zurück</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch12.html">Nach oben</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="configido.html">Weiter</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">12.1. Einleitung </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Zum Anfang</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 12.3. Konfiguration der IDOUtils</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

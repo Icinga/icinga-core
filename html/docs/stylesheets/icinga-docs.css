@@ -53,7 +53,6 @@ pre {
 	word-wrap: normal;
 	padding-bottom: 1.5em;
 	overflow-y: hidden;
-	width: 99%;
 }
 abbr[title], acronym[title] {
 	border-bottom: 1px dotted;
@@ -130,6 +129,7 @@ pre.programlisting {
 	border-color: #CFCFCF;
 	background-color: #EFEFEF;
 	border: 1px dashed black;
+	margin-right: 0.5in;
 }
 
 /* informaltable special */
@@ -205,3 +205,7 @@ pre.literallayout, .screen, .synopsis, .programlisting {
 var		{ font-family: monospace; font-style: italic; }
 /* Konqueror's standard style for ACRONYM is italic. */
 acronym		{ font-style: inherit; }
+
+.screen {
+	margin-right: 0.5in;
+}

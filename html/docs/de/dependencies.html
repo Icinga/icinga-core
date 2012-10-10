@@ -1,51 +1,40 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.13. Host- und Service-Abhängigkeiten</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
-<link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen">
-<link rel="prev" href="clusters.html" title="7.12. Service- und Host-Gruppen überwachen">
-<link rel="next" href="stalking.html" title="7.14. Status Stalking">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.13. Host- und Service-Abhängigkeiten</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="clusters.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
-<td width="20%" align="right"> <a accesskey="n" href="stalking.html">Weiter</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="7.13. Host- und Service-Abhängigkeiten">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="dependencies"></a>7.13. Host- und Service-Abhängigkeiten</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">7.13.1. <a href="dependencies.html#idp13861328">Einführung</a></span></dt>
-<dt><span class="section">7.13.2. <a href="dependencies.html#idp13863152">Überblick Service-Abhängigkeiten</a></span></dt>
-<dt><span class="section">7.13.3. <a href="dependencies.html#idp13870896">Service-Abhängigkeiten definieren</a></span></dt>
-<dt><span class="section">7.13.4. <a href="dependencies.html#idp13875296">Beispiel Service-Abhängigkeiten</a></span></dt>
-<dt><span class="section">7.13.5. <a href="dependencies.html#idp13882208">Wie Service-Abhängigkeiten getestet werden</a></span></dt>
-<dt><span class="section">7.13.6. <a href="dependencies.html#idp13898800">Ausführungsabhängigkeiten</a></span></dt>
-<dt><span class="section">7.13.7. <a href="dependencies.html#idp13906512">Benachrichtigungsabhängigkeiten</a></span></dt>
-<dt><span class="section">7.13.8. <a href="dependencies.html#idp13914016">Abhängigkeitsvererbung</a></span></dt>
-<dt><span class="section">7.13.9. <a href="dependencies.html#idp13924224">Host-Abhängigkeiten</a></span></dt>
-<dt><span class="section">7.13.10. <a href="dependencies.html#idp13935952">Beispiel Host-Abhängigkeiten</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.13. Host- und Service-Abhängigkeiten</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
+    <link rel="up" href="ch07.html" title="Kapitel 7. Fortgeschrittene Themen" />
+    <link rel="prev" href="clusters.html" title="7.12. Service- und Host-Gruppen überwachen" />
+    <link rel="next" href="stalking.html" title="7.14. Status Stalking" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">7.13. Host- und Service-Abhängigkeiten</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="clusters.html">Zurück</a> </td>
+          <th width="60%" align="center">Kapitel 7. Fortgeschrittene Themen</th>
+          <td width="20%" align="right"> <a accesskey="n" href="stalking.html">Weiter</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="7.13. Host- und Service-Abhängigkeiten"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="dependencies"></a>7.13. Host- und Service-Abhängigkeiten</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.13.1. <a href="dependencies.html#idp13821184">Einführung</a></span></dt><dt><span class="section">7.13.2. <a href="dependencies.html#idp13823008">Überblick Service-Abhängigkeiten</a></span></dt><dt><span class="section">7.13.3. <a href="dependencies.html#idp13830704">Service-Abhängigkeiten definieren</a></span></dt><dt><span class="section">7.13.4. <a href="dependencies.html#idp13835104">Beispiel Service-Abhängigkeiten</a></span></dt><dt><span class="section">7.13.5. <a href="dependencies.html#idp13842016">Wie Service-Abhängigkeiten getestet werden</a></span></dt><dt><span class="section">7.13.6. <a href="dependencies.html#idp13858608">Ausführungsabhängigkeiten</a></span></dt><dt><span class="section">7.13.7. <a href="dependencies.html#idp13866032">Benachrichtigungsabhängigkeiten</a></span></dt><dt><span class="section">7.13.8. <a href="dependencies.html#idp13873520">Abhängigkeitsvererbung</a></span></dt><dt><span class="section">7.13.9. <a href="dependencies.html#idp13883760">Host-Abhängigkeiten</a></span></dt><dt><span class="section">7.13.10. <a href="dependencies.html#idp13895536">Beispiel Host-Abhängigkeiten</a></span></dt></dl></div>
   
 
-  <div class="section" title="7.13.1. Einführung">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13861328"></a>7.13.1. Einführung</h3></div></div></div>
+  <div class="section" title="7.13.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp13821184"></a>7.13.1. Einführung</h3></div></div></div>
     
 
     <p>Service- und Hostabhängigkeiten sind ein fortgeschrittenes Feature von Icinga, dass Ihnen die Kontrolle über Hosts und
@@ -53,36 +42,26 @@
     arbeiten, zusammen mit den Unterschieden zwischen Host- und Service-Abhängigkeiten.</p>
   </div>
 
-  <div class="section" title="7.13.2. Überblick Service-Abhängigkeiten">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13863152"></a>7.13.2. Überblick Service-Abhängigkeiten</h3></div></div></div>
+  <div class="section" title="7.13.2. Überblick Service-Abhängigkeiten"><div class="titlepage"><div><div><h3 class="title"><a id="idp13823008"></a>7.13.2. Überblick Service-Abhängigkeiten</h3></div></div></div>
     
 
     <p>Es gibt ein paar Dinge, die Sie über Service-Abhängigkeiten wissen sollten:</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
+    <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
         <p>ein Service kann von einem oder mehreren Services abhängig sein</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>ein Service kann von Services abhängig sein, die nicht mit dem gleichen Host verbunden sind</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Service-Abhängigkeiten werden nicht vererbt (solange es nicht explizit konfiguriert wurde)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Service-Abhängigkeiten können benutzt werden, um Service-Prüfungen auszuführen und Service-Benachrichtigungen können unter
         verschiedenen Umständen unterdrückt werden (OK, WARNING, UNKNOWN und/oder CRITICAL-Zustände)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Service-Abhängigkeiten sind ggf. nur während bestimmter <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitfenster</a> gültig</p>
-      </li>
-</ol></div>
+      </li></ol></div>
   </div>
 
-  <div class="section" title="7.13.3. Service-Abhängigkeiten definieren">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13870896"></a>7.13.3. Service-Abhängigkeiten definieren</h3></div></div></div>
+  <div class="section" title="7.13.3. Service-Abhängigkeiten definieren"><div class="titlepage"><div><div><h3 class="title"><a id="idp13830704"></a>7.13.3. Service-Abhängigkeiten definieren</h3></div></div></div>
     
 
     <p>Zuerst die Grundlagen. Sie erstellen Service-Abhängigkeiten durch Hinzufügen von <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">Service-Abhängigkeitsdefinitionen</a> in der/n <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei(en)</a>. In jeder Definition geben Sie den <span class="emphasis"><em>abhängigen</em></span> Service
@@ -93,15 +72,13 @@
     Service-Abhängigkeitsdefinition anlegen für jede Abhängigkeit, die Sie erstellen.</p>
   </div>
 
-  <div class="section" title="7.13.4. Beispiel Service-Abhängigkeiten">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13875296"></a>7.13.4. Beispiel Service-Abhängigkeiten</h3></div></div></div>
+  <div class="section" title="7.13.4. Beispiel Service-Abhängigkeiten"><div class="titlepage"><div><div><h3 class="title"><a id="idp13835104"></a>7.13.4. Beispiel Service-Abhängigkeiten</h3></div></div></div>
     
 
     <p>Das folgende Bild zeigt ein beispielhaftes Logik-Layout von Service-Benachrichtigungen und Ausführungsabhängigkeiten. Verschiedene
     Services sind abhängig von anderen Services bzgl. Benachrichtigungen und Prüfausführung.</p>
 
-    <div class="mediaobject"><img src="../images/service-dependencies.png"></div>
+    <div class="mediaobject"><img src="../images/service-dependencies.png" /></div>
 
     <p>In diesem Beispiel würde die Abhängigkeitsdefinition für <span class="emphasis"><em>Service F</em></span> auf <span class="emphasis"><em>Host C</em></span> wie folgt
     aussehen:</p>
@@ -159,9 +136,7 @@
         }</pre>
   </div>
 
-  <div class="section" title="7.13.5. Wie Service-Abhängigkeiten getestet werden">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13882208"></a>7.13.5. Wie Service-Abhängigkeiten getestet werden</h3></div></div></div>
+  <div class="section" title="7.13.5. Wie Service-Abhängigkeiten getestet werden"><div class="titlepage"><div><div><h3 class="title"><a id="idp13842016"></a>7.13.5. Wie Service-Abhängigkeiten getestet werden</h3></div></div></div>
     
 
     <p>Bevor Icinga eine Service-Prüfung ausführt oder Benachrichtigungen für einen Service versendet, wird es prüfen, ob der
@@ -169,38 +144,31 @@
     versandt, wie es sein sollte. Falls der Service ein oder mehrere Abhängigkeiten <span class="emphasis"><em>hat</em></span>, wird Icinga jeden
     Abhängigkeitseintrag wie folgt prüfen:</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
+    <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
         <p>Icinga erhält den aktuellen Status<sup> <a class="link" href="dependencies.html#dependencies-hard_dependencies">*</a> </sup>
         des Services, von dem der Eintrag <span class="emphasis"><em>abhängig</em></span> ist.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Icinga vergleicht den Status des Services, von dem der Eintrag <span class="emphasis"><em>abhängig</em></span> ist, gegen die
         Ausführungs- oder Benachrichtigungsfehleroptionen in der Abhängigkeitsdefinition (je nachdem, welche zu dieser Zeit relevant
         ist).</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>wenn der aktuelle Status des Services, von dem der Eintrag <span class="emphasis"><em>abhängig</em></span> ist, mit einer der Fehleroptionen
         übereinstimmt, dann wird die Abhängigkeit als fehlerhaft angesehen und Icinga verlässt die Abhängigkeits-Prüfschleife.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>wenn der aktuelle Status des Services, von dem der Eintrag <span class="emphasis"><em>abhängig</em></span> ist, nicht mit einer der
         Fehleroptionen übereinstimmt, dann wird die Abhängigkeit als korrekt durchlaufen angesehen und Icinga wird fortfahren und den
         nächsten Abhängigkeitseintrag prüfen.</p>
-      </li>
-</ol></div>
+      </li></ol></div>
 
     <p>Dieser Ablauf wird ausgeführt, bis entweder alle Abhängigkeiten für diesen Service geprüft wurden oder eine Abhängigkeitsprüfung
     fehlschlägt.</p>
 
-    <p><a name="dependencies-hard_dependencies"></a><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: <sup>*</sup>Bitte beachten Sie, dass Icinga per Default den aktuellsten <a class="link" href="statetypes.html" title="5.8. Statustypen">Hard-Status</a> des/r Services benutzt, von dem der Eintrag abhängig ist, wenn es die Abhängigkeitsprüfungen
+    <p><a id="dependencies-hard_dependencies"></a><span class="inlinemediaobject"><img src="../images/note.gif" /></span> Anmerkung: <sup>*</sup>Bitte beachten Sie, dass Icinga per Default den aktuellsten <a class="link" href="statetypes.html" title="5.8. Statustypen">Hard-Status</a> des/r Services benutzt, von dem der Eintrag abhängig ist, wenn es die Abhängigkeitsprüfungen
     durchführt. Wenn Icinga den aktuellsten Status des/r Services benutzen soll (egal, ob es sich um einen Hard- oder Soft-Zustand
     handelt), dann aktivieren Sie die <a class="link" href="configmain.html#configmain-soft_state_dependencies">soft_state_dependencies</a>-Option.</p>
   </div>
 
-  <div class="section" title="7.13.6. Ausführungsabhängigkeiten">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13898800"></a>7.13.6. Ausführungsabhängigkeiten</h3></div></div></div>
+  <div class="section" title="7.13.6. Ausführungsabhängigkeiten"><div class="titlepage"><div><div><h3 class="title"><a id="idp13858608"></a>7.13.6. Ausführungsabhängigkeiten</h3></div></div></div>
     
 
     <p>Ausführungsabhängigkeiten werden benutzt, um einzuschränken, wann <a class="link" href="activechecks.html" title="5.6. Aktive Prüfungen (Active Checks)">aktive Prüfungen</a> eines
@@ -219,9 +187,7 @@
     Service-Prüfung nicht ausgeführt und die Prüfung würde für eine (mögliche) Ausführung zu einem späteren Zeitpunkt geplant.</p>
   </div>
 
-  <div class="section" title="7.13.7. Benachrichtigungsabhängigkeiten">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13906512"></a>7.13.7. Benachrichtigungsabhängigkeiten</h3></div></div></div>
+  <div class="section" title="7.13.7. Benachrichtigungsabhängigkeiten"><div class="titlepage"><div><div><h3 class="title"><a id="idp13866032"></a>7.13.7. Benachrichtigungsabhängigkeiten</h3></div></div></div>
     
 
     <p>Wenn <span class="emphasis"><em>alle</em></span> der Benachrichtigungsabhängigkeitstests für den Service <span class="emphasis"><em>erfolgreich</em></span>
@@ -237,9 +203,7 @@
     werden.</p>
   </div>
 
-  <div class="section" title="7.13.8. Abhängigkeitsvererbung">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13914016"></a>7.13.8. Abhängigkeitsvererbung</h3></div></div></div>
+  <div class="section" title="7.13.8. Abhängigkeitsvererbung"><div class="titlepage"><div><div><h3 class="title"><a id="idp13873520"></a>7.13.8. Abhängigkeitsvererbung</h3></div></div></div>
     
 
     <p>Wie bereits erwähnt werden Service-Abhängigkeiten <span class="emphasis"><em>nicht</em></span> per Default vererbt. Im obigen Beispiel sehen Sie,
@@ -276,46 +240,37 @@
     dann wäre Service F von den Services D, A und G abhängig (jeder mit möglicherweise unterschiedlichen Kriterien).</p>
   </div>
 
-  <div class="section" title="7.13.9. Host-Abhängigkeiten">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13924224"></a>7.13.9. Host-Abhängigkeiten</h3></div></div></div>
+  <div class="section" title="7.13.9. Host-Abhängigkeiten"><div class="titlepage"><div><div><h3 class="title"><a id="idp13883760"></a>7.13.9. Host-Abhängigkeiten</h3></div></div></div>
     
 
     <p>Wie Sie vielleicht erwarten, arbeiten Host-Abhängigkeiten in einer ähnlichen Weise wie Service-Abhängigkeiten. Der Unterschied
     ist, dass sie für Hosts gelten und nicht für Services.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: Verwechseln Sie Host-Abhängigkeiten nicht mit Eltern/Kind-Beziehungen. Sie sollten in den meisten Fällen
+    <p><span class="inlinemediaobject"><img src="../images/tip.gif" /></span> Hinweis: Verwechseln Sie Host-Abhängigkeiten nicht mit Eltern/Kind-Beziehungen. Sie sollten in den meisten Fällen
     Eltern/Kind-Beziehungen (mit Hilfe der <span class="emphasis"><em>parents</em></span>-Direktive in den <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen) benutzen statt Host-Abhängigkeiten. Eine Beschreibung, wie
     Eltern/Kind-Beziehungen arbeiten, finden Sie in der Dokumentation zur <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerkerreichbarkeit</a>.</p>
 
     <p>Hier die Grundlagen zu Host-Abhängigkeiten:</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
+    <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
         <p>ein Host kann von einem oder mehreren Hosts abhängig sein</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Host-Abhängigkeiten werden nicht vererbt (solange es nicht explizit konfiguriert wurde)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Host-Abhängigkeiten können genutzt werden, um Host-Prüfungen auszuführen und Host-Benachrichtigungen unter bestimmten
         Umständen zu unterdrücken (UP, DOWN- und/oder UNREACHABLE-Zustände)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Host-Abhängigkeiten sind ggf. nur während bestimmter <a class="link" href="timeperiods.html" title="5.9. Zeitfenster">Zeitfenster</a> gültig</p>
-      </li>
-</ol></div>
+      </li></ol></div>
   </div>
 
-  <div class="section" title="7.13.10. Beispiel Host-Abhängigkeiten">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13935952"></a>7.13.10. Beispiel Host-Abhängigkeiten</h3></div></div></div>
+  <div class="section" title="7.13.10. Beispiel Host-Abhängigkeiten"><div class="titlepage"><div><div><h3 class="title"><a id="idp13895536"></a>7.13.10. Beispiel Host-Abhängigkeiten</h3></div></div></div>
     
 
     <p>Das folgende Bild zeigt ein Beispiel für das logische Layout von Benachrichtigungsabhängigkeiten. Verschiedene Hosts sind bzgl.
     Benachrichtigungen abhängig von anderen Hosts.</p>
 
-    <div class="mediaobject"><img src="../images/host-dependencies.png"></div>
+    <div class="mediaobject"><img src="../images/host-dependencies.png" /></div>
 
     <p>Im obigen Beispiel würden die Abhängigkeitsdefinitionen für <span class="emphasis"><em>Host C</em></span> wie folgt aussehen:</p>
 
@@ -342,28 +297,30 @@
     durchlaufen werden. Wenn dies geschieht, wird Icinga mit dem Versand von Benachrichtigungen für diesen Host beginnen, wie es das
     normal tun würde. Mehr Informationen über die Benachrichtigungslogik finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a>.</p>
 
-    <a class="indexterm" name="idp13942928"></a>
+    <a id="idp13903856" class="indexterm"></a>
 
-    <a class="indexterm" name="idp13946080"></a>
+    <a id="idp13905552" class="indexterm"></a>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="clusters.html">Zurück</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch07.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="stalking.html">Weiter</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">7.12. Service- und Host-Gruppen überwachen </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 7.14. Status Stalking</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="clusters.html">Zurück</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch07.html">Nach oben</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="stalking.html">Weiter</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">7.12. Service- und Host-Gruppen überwachen </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Zum Anfang</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 7.14. Status Stalking</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

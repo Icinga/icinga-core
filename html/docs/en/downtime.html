@@ -1,57 +1,47 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.16. Scheduled Downtime</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
-<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
-<link rel="prev" href="perfdata.html" title="7.15. Performance Data">
-<link rel="next" href="recurring_downtimes.html" title="7.17. Recurring Downtimes">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.16. Scheduled Downtime</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="perfdata.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 7. Advanced Topics</th>
-<td width="20%" align="right"> <a accesskey="n" href="recurring_downtimes.html">Next</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="7.16. Scheduled Downtime">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="downtime"></a>7.16. <a name="schedule_downtime"></a>Scheduled Downtime</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">7.16.1. <a href="downtime.html#idp14140592">Introduction</a></span></dt>
-<dt><span class="section">7.16.2. <a href="downtime.html#idp14144080">Scheduling Downtime</a></span></dt>
-<dt><span class="section">7.16.3. <a href="downtime.html#idp14146784">Fixed vs. Flexible Downtime</a></span></dt>
-<dt><span class="section">7.16.4. <a href="downtime.html#idp14149920">Triggered Downtime</a></span></dt>
-<dt><span class="section">7.16.5. <a href="downtime.html#idp14151488">How Scheduled Downtime Affects Notifications</a></span></dt>
-<dt><span class="section">7.16.6. <a href="downtime.html#idp14153952">Overlapping Scheduled Downtime</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.16. Scheduled Downtime</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
+    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
+    <link rel="prev" href="perfdata.html" title="7.15. Performance Data" />
+    <link rel="next" href="recurring_downtimes.html" title="7.17. Recurring Downtimes" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">7.16. Scheduled Downtime</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="perfdata.html">Prev</a> </td>
+          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
+          <td width="20%" align="right"> <a accesskey="n" href="recurring_downtimes.html">Next</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="7.16. Scheduled Downtime"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="downtime"></a>7.16. <a id="schedule_downtime"></a>Scheduled Downtime</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.16.1. <a href="downtime.html#idp14128928">Introduction</a></span></dt><dt><span class="section">7.16.2. <a href="downtime.html#idp14132240">Scheduling Downtime</a></span></dt><dt><span class="section">7.16.3. <a href="downtime.html#idp14134688">Fixed vs. Flexible Downtime</a></span></dt><dt><span class="section">7.16.4. <a href="downtime.html#idp14137824">Triggered Downtime</a></span></dt><dt><span class="section">7.16.5. <a href="downtime.html#idp14139392">How Scheduled Downtime Affects Notifications</a></span></dt><dt><span class="section">7.16.6. <a href="downtime.html#idp14142128">Overlapping Scheduled Downtime</a></span></dt></dl></div>
   
 
-  <div class="section" title="7.16.1. Introduction">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14140592"></a>7.16.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.16.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp14128928"></a>7.16.1. Introduction</h3></div></div></div>
 
   <p>Icinga allows you to schedule periods of planned downtime for hosts and service that you're monitoring. This is
   useful in the event that you actually know you're going to be taking a server down for an upgrade, etc.</p>
 
-  <p><span class="inlinemediaobject"><img src="../images/downtime.png"></span></p>
+  <p><span class="inlinemediaobject"><img src="../images/downtime.png" /></span></p>
 
-  </div>
-<div class="section" title="7.16.2. Scheduling Downtime">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14144080"></a>7.16.2. Scheduling Downtime</h3></div></div></div>
+  </div><div class="section" title="7.16.2. Scheduling Downtime"><div class="titlepage"><div><div><h3 class="title"><a id="idp14132240"></a>7.16.2. Scheduling Downtime</h3></div></div></div>
 
   <p>You can schedule downtime for hosts and service through the <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo CGI</a> (either
   when viewing host or service information). Click in the "Schedule downtime for this host/service" link to actually schedule the
@@ -61,10 +51,7 @@
   is scheduled for downtime during the period of time you indicated. When that period of downtime passes, Icinga will
   automatically delete the comment that it added. Nice, huh?</p>
 
-  </div>
-<div class="section" title="7.16.3. Fixed vs. Flexible Downtime">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14146784"></a>7.16.3. Fixed vs. Flexible Downtime</h3></div></div></div>
+  </div><div class="section" title="7.16.3. Fixed vs. Flexible Downtime"><div class="titlepage"><div><div><h3 class="title"><a id="idp14134688"></a>7.16.3. Fixed vs. Flexible Downtime</h3></div></div></div>
 
   <p>When you schedule downtime for a host or service through the web interface you'll be asked if the downtime is fixed or
   flexible. Here's an explanation of how "fixed" and "flexible" downtime differs:</p>
@@ -82,10 +69,7 @@
   downtime expires. This is done for a very good reason. As we all know, you might think you've got a problem fixed, but then have
   to restart a server ten times before it actually works right. Smart, eh?</p>
 
-  </div>
-<div class="section" title="7.16.4. Triggered Downtime">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14149920"></a>7.16.4. Triggered Downtime</h3></div></div></div>
+  </div><div class="section" title="7.16.4. Triggered Downtime"><div class="titlepage"><div><div><h3 class="title"><a id="idp14137824"></a>7.16.4. Triggered Downtime</h3></div></div></div>
 
   <p>When scheduling host or service downtime you have the option of making it "triggered" downtime. What is triggered
   downtime, you ask? With triggered downtime the start of the downtime is triggered by the start of some other scheduled host or
@@ -94,10 +78,7 @@
   for a particular host (because its going down for maintenance), you might want to schedule triggered downtime for all of that
   hosts's "children".</p>
 
-  </div>
-<div class="section" title="7.16.5. How Scheduled Downtime Affects Notifications">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14151488"></a>7.16.5. How Scheduled Downtime Affects Notifications</h3></div></div></div>
+  </div><div class="section" title="7.16.5. How Scheduled Downtime Affects Notifications"><div class="titlepage"><div><div><h3 class="title"><a id="idp14139392"></a>7.16.5. How Scheduled Downtime Affects Notifications</h3></div></div></div>
 
   <p>When a host or service is in a period of scheduled downtime, Icinga will not allow normal notifications to be sent
   out for the host or service. However, a "DOWNTIMESTART" notification will get sent out for the host or service, which will serve
@@ -110,10 +91,7 @@
   <p>If the scheduled downtime is cancelled prematurely (before it expires), a "DOWNTIMECANCELLED" notification will get sent
   out to the appropriate admins.</p>
 
-  </div>
-<div class="section" title="7.16.6. Overlapping Scheduled Downtime">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp14153952"></a>7.16.6. Overlapping Scheduled Downtime</h3></div></div></div>
+  </div><div class="section" title="7.16.6. Overlapping Scheduled Downtime"><div class="titlepage"><div><div><h3 class="title"><a id="idp14142128"></a>7.16.6. Overlapping Scheduled Downtime</h3></div></div></div>
 
   <p>I like to refer to this as the "Oh crap, its not working" syndrome. You know what I'm talking about. You take a server
   down to perform a "routine" hardware upgrade, only to later realize that the OS drivers aren't working, the RAID array blew up,
@@ -122,50 +100,46 @@
 
   <p>Let's take the following scenario:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
+  <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
       <p>You schedule downtime for host A from 7:30pm-9:30pm on a Monday</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>You bring the server down about 7:45pm Monday evening to start a hard drive upgrade</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>After wasting an hour and a half battling with SCSI errors and driver incompatibilities, you finally get the machine
       to boot up</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>At 9:15 you realize that one of your partitions is either hosed or doesn't seem to exist anywhere on the drive</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Knowing you're in for a long night, you go back and schedule additional downtime for host A from 9:20pm Monday evening
       to 1:30am Tuesday Morning.</p>
-    </li>
-</ol></div>
+    </li></ol></div>
 
   <p>If you schedule overlapping periods of downtime for a host or service (in this case the periods were 7:40pm-9:30pm and
   9:20pm-1:30am), Icinga will wait until the last period of scheduled downtime is over before it allows notifications to be
   sent out for that host or service. In this example notifications would be suppressed for host A until 1:30am Tuesday
   morning.</p>
-  <a class="indexterm" name="idp14162288"></a>
+  <a id="idp14150480" class="indexterm"></a>
 </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="perfdata.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="recurring_downtimes.html">Next</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">7.15. Performance Data </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 7.17. Recurring Downtimes</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="perfdata.html">Prev</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch07.html">Up</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="recurring_downtimes.html">Next</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">7.15. Performance Data </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Home</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 7.17. Recurring Downtimes</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

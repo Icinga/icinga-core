@@ -1,47 +1,40 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>8.4. Fast Startup Options</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
-<link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
-<link rel="prev" href="tuning.html" title="8.3. Tuning Icinga For Maximum Performance">
-<link rel="next" href="largeinstalltweaks.html" title="8.5. Large Installation Tweaks">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">8.4. Fast Startup Options</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="tuning.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
-<td width="20%" align="right"> <a accesskey="n" href="largeinstalltweaks.html">Next</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="8.4. Fast Startup Options">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="faststartup"></a>8.4. <a name="fast_startup"></a>Fast Startup Options</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">8.4.1. <a href="faststartup.html#idp15180464">Introduction</a></span></dt>
-<dt><span class="section">8.4.2. <a href="faststartup.html#idp15185856">Background</a></span></dt>
-<dt><span class="section">8.4.3. <a href="faststartup.html#idp15196576">Evaluating Startup Times</a></span></dt>
-<dt><span class="section">8.4.4. <a href="faststartup.html#idp15211792">Pre-Caching Object Configuration</a></span></dt>
-<dt><span class="section">8.4.5. <a href="faststartup.html#idp15233760">Skipping Circular Path Tests</a></span></dt>
-<dt><span class="section">8.4.6. <a href="faststartup.html#idp15241296">Putting It All Together</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>8.4. Fast Startup Options</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
+    <link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning" />
+    <link rel="prev" href="tuning.html" title="8.3. Tuning Icinga For Maximum Performance" />
+    <link rel="next" href="largeinstalltweaks.html" title="8.5. Large Installation Tweaks" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">8.4. Fast Startup Options</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="tuning.html">Prev</a> </td>
+          <th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
+          <td width="20%" align="right"> <a accesskey="n" href="largeinstalltweaks.html">Next</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="8.4. Fast Startup Options"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="faststartup"></a>8.4. <a id="fast_startup"></a>Fast Startup Options</h2></div></div></div><div class="toc"><dl><dt><span class="section">8.4.1. <a href="faststartup.html#idp15165920">Introduction</a></span></dt><dt><span class="section">8.4.2. <a href="faststartup.html#idp15171312">Background</a></span></dt><dt><span class="section">8.4.3. <a href="faststartup.html#idp15182032">Evaluating Startup Times</a></span></dt><dt><span class="section">8.4.4. <a href="faststartup.html#idp15197456">Pre-Caching Object Configuration</a></span></dt><dt><span class="section">8.4.5. <a href="faststartup.html#idp15221488">Skipping Circular Path Tests</a></span></dt><dt><span class="section">8.4.6. <a href="faststartup.html#idp15227056">Putting It All Together</a></span></dt></dl></div>
   
 
-  <div class="section" title="8.4.1. Introduction">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15180464"></a>8.4.1. Introduction</h3></div></div></div>
+  <div class="section" title="8.4.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp15165920"></a>8.4.1. Introduction</h3></div></div></div>
     
 
     <p>There are a few things you can do that can decrease the amount of time it take Icinga to startup (or restart). These
@@ -49,64 +42,46 @@
 
     <p>Using these techniques is particularly useful when you have one or more of the following:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Large configurations</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Complex configurations (heavy use of template features)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Installations where frequest restarts are necessary</p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="8.4.2. Background">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15185856"></a>8.4.2. Background</h3></div></div></div>
+  <div class="section" title="8.4.2. Background"><div class="titlepage"><div><div><h3 class="title"><a id="idp15171312"></a>8.4.2. Background</h3></div></div></div>
     
 
     <p>Whenever Icinga starts/restarts it has to process your configuration files before it can get down to the business of
     monitoring. This configuration startup process involves a number of steps:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Reading the config files</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Resolving template definitions</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>"Recombobulating" your objects (Ethan Galstads term for the various types of work that occurs)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Duplicating object definitions</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Inheriting object properties</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Sorting your object definitions</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Verifying object relationship integrity</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Checking for circular paths</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>and more...</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Some of these steps can be quite time-consuming when you have large or complex configurations. Is there a way to speed any of
     these steps up? Yes!</p>
   </div>
 
-  <div class="section" title="8.4.3. Evaluating Startup Times">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15196576"></a>8.4.3. Evaluating Startup Times</h3></div></div></div>
+  <div class="section" title="8.4.3. Evaluating Startup Times"><div class="titlepage"><div><div><h3 class="title"><a id="idp15182032"></a>8.4.3. Evaluating Startup Times</h3></div></div></div>
     
 
     <p>Before we get on to making things faster, we need to see what's possible and whether or not we should even bother with the whole
@@ -176,9 +151,7 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
     do it.</p>
   </div>
 
-  <div class="section" title="8.4.4. Pre-Caching Object Configuration">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15211792"></a>8.4.4. Pre-Caching Object Configuration</h3></div></div></div>
+  <div class="section" title="8.4.4. Pre-Caching Object Configuration"><div class="titlepage"><div><div><h3 class="title"><a id="idp15197456"></a>8.4.4. Pre-Caching Object Configuration</h3></div></div></div>
     
 
     <p>Icinga can spend quite a bit of time parsing your config files, especially if you make use of the template features such as
@@ -186,43 +159,22 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
     config files for future use.</p>
 
     <div class="informaltable">
-      <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top">
-<p> When you run Icinga with the <span class="bold"><strong>-p</strong></span> command line
+      <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p> When you run Icinga with the <span class="bold"><strong>-p</strong></span> command line
             option, Icinga will read your config files in, process them, and save them to a pre-cached object config file (specified
             by the <a class="link" href="configmain.html#configmain-precached_object_file">precached_object_file</a> directive). This pre-cached config file
             will contain pre-processed configuration entries that are easier/faster for Icinga to process in the future.</p>
             <p>You must use the <span class="bold"><strong>-p</strong></span> command line option along with either the <span class="bold"><strong>-v</strong></span> or <span class="bold"><strong>-s</strong></span> command line options, as shown below. This ensures that your
             configuration is verified before the precached file is created.</p> <pre class="screen"> /usr/local/icinga/bin/icinga -pv /usr/local/icinga/etc/icinga.cfg </pre>
             <p>The size of your precached config file will most likely be significantly larger than the sum of the sizes of your object
-            config files. This is normal and by design.</p>
-</td>
-<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/fast-startup1.png"></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top">
-<p> Once the precached object configuration file have been created, you can start
+            config files. This is normal and by design.</p></td><td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/fast-startup1.png" /></span> </p></td></tr><tr><td align="left" valign="top"><p> Once the precached object configuration file have been created, you can start
             Icinga and tell it to use the precached config file instead of your object config file(s) by using the <span class="bold"><strong>-u</strong></span> command line option.</p> <pre class="screen"> /usr/local/icinga/bin/icinga -ud /usr/local/icinga/etc/icinga.cfg </pre>
-            <p><span class="inlinemediaobject"><img src="../images/important.gif"></span> If you modify your configuration files, you will need to re-verify and re-cache your configuration files
+            <p><span class="inlinemediaobject"><img src="../images/important.gif" /></span> If you modify your configuration files, you will need to re-verify and re-cache your configuration files
             before restarting Icinga. If you don't re-generate the precached object file, Icinga will continue to use your old
-            configuration because it is now reading from the precached file, rather than your source configuration files.</p>
-</td>
-<td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/fast-startup2.png"></span> </p></td>
-</tr>
-</tbody>
-</table>
+            configuration because it is now reading from the precached file, rather than your source configuration files.</p></td><td align="left" valign="top"><p> <span class="inlinemediaobject"><img src="../images/fast-startup2.png" /></span> </p></td></tr></tbody></table>
     </div>
   </div>
 
-  <div class="section" title="8.4.5. Skipping Circular Path Tests">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15233760"></a>8.4.5. Skipping Circular Path Tests</h3></div></div></div>
+  <div class="section" title="8.4.5. Skipping Circular Path Tests"><div class="titlepage"><div><div><h3 class="title"><a id="idp15221488"></a>8.4.5. Skipping Circular Path Tests</h3></div></div></div>
     
 
     <p>The second (and most time-intensive) portion of the configuration startup phase is the circular path check. In the example above,
@@ -238,13 +190,11 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
     <pre class="screen"> /usr/local/icinga/bin/icinga -xd /usr/local/icinga/etc/icinga.cfg </pre>
 
-    <p><span class="inlinemediaobject"><img src="../images/important.gif"></span> It is of utmost importance that you verify your configuration before starting/restarting Icinga when
+    <p><span class="inlinemediaobject"><img src="../images/important.gif" /></span> It is of utmost importance that you verify your configuration before starting/restarting Icinga when
     skipping circular path checks. Failure to do so could lead to deadlocks in the Icinga logic. You have been warned.</p>
   </div>
 
-  <div class="section" title="8.4.6. Putting It All Together">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15241296"></a>8.4.6. Putting It All Together</h3></div></div></div>
+  <div class="section" title="8.4.6. Putting It All Together"><div class="titlepage"><div><div><h3 class="title"><a id="idp15227056"></a>8.4.6. Putting It All Together</h3></div></div></div>
     
 
     <p>Follow these steps if you want to make use of potential speedups from pre-caching your configuration and skipping circular path
@@ -267,36 +217,38 @@ TOTAL:                56.084353 sec  * = 54.676622 sec (97.5%) estimated savings
 
     <p>5. That's it! Enjoy the increased startup speed.</p>
 
-    <a class="indexterm" name="idp15246464"></a>
+    <a id="idp15232128" class="indexterm"></a>
 
-    <a class="indexterm" name="idp15248096"></a>
+    <a id="idp15233296" class="indexterm"></a>
 
-    <a class="indexterm" name="idp15249616"></a>
+    <a id="idp15234688" class="indexterm"></a>
 
-    <a class="indexterm" name="idp15251216"></a>
+    <a id="idp15236768" class="indexterm"></a>
 
-    <a class="indexterm" name="idp15252608"></a>
+    <a id="idp15238032" class="indexterm"></a>
 
-    <a class="indexterm" name="idp15252736"></a>
+    <a id="idp15240160" class="indexterm"></a>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="tuning.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="largeinstalltweaks.html">Next</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">8.3. Tuning Icinga For Maximum Performance </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 8.5. Large Installation Tweaks</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="tuning.html">Prev</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch08.html">Up</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="largeinstalltweaks.html">Next</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">8.3. Tuning Icinga For Maximum Performance </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Home</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 8.5. Large Installation Tweaks</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

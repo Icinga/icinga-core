@@ -1,83 +1,66 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>5.7. Passive Checks</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
-<link rel="up" href="ch05.html" title="Chapter 5. The Basics">
-<link rel="prev" href="activechecks.html" title="5.6. Active Checks">
-<link rel="next" href="statetypes.html" title="5.8. State Types">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">5.7. Passive Checks</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="activechecks.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 5. The Basics</th>
-<td width="20%" align="right"> <a accesskey="n" href="statetypes.html">Next</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="5.7. Passive Checks">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="passivechecks"></a>5.7. <a name="passive_checks"></a>Passive Checks</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">5.7.1. <a href="passivechecks.html#idp9806768">Introduction</a></span></dt>
-<dt><span class="section">5.7.2. <a href="passivechecks.html#idp9811824">Uses For Passive Checks</a></span></dt>
-<dt><span class="section">5.7.3. <a href="passivechecks.html#idp9818416">How Passive Checks Work</a></span></dt>
-<dt><span class="section">5.7.4. <a href="passivechecks.html#idp9828512">Enabling Passive Checks</a></span></dt>
-<dt><span class="section">5.7.5. <a href="passivechecks.html#idp9835248">Submitting Passive Service Check Results</a></span></dt>
-<dt><span class="section">5.7.6. <a href="passivechecks.html#idp9849040">Submitting Passive Host Check Results</a></span></dt>
-<dt><span class="section">5.7.7. <a href="passivechecks.html#idp9858352">Passive Checks and Host States</a></span></dt>
-<dt><span class="section">5.7.8. <a href="passivechecks.html#idp9866112">Submitting Passive Check Results From Remote Hosts</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.7. Passive Checks</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
+    <link rel="up" href="ch05.html" title="Chapter 5. The Basics" />
+    <link rel="prev" href="activechecks.html" title="5.6. Active Checks" />
+    <link rel="next" href="statetypes.html" title="5.8. State Types" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">5.7. Passive Checks</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="activechecks.html">Prev</a> </td>
+          <th width="60%" align="center">Chapter 5. The Basics</th>
+          <td width="20%" align="right"> <a accesskey="n" href="statetypes.html">Next</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="5.7. Passive Checks"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="passivechecks"></a>5.7. <a id="passive_checks"></a>Passive Checks</h2></div></div></div><div class="toc"><dl><dt><span class="section">5.7.1. <a href="passivechecks.html#idp9804544">Introduction</a></span></dt><dt><span class="section">5.7.2. <a href="passivechecks.html#idp9809680">Uses For Passive Checks</a></span></dt><dt><span class="section">5.7.3. <a href="passivechecks.html#idp9816064">How Passive Checks Work</a></span></dt><dt><span class="section">5.7.4. <a href="passivechecks.html#idp9826304">Enabling Passive Checks</a></span></dt><dt><span class="section">5.7.5. <a href="passivechecks.html#idp9833152">Submitting Passive Service Check Results</a></span></dt><dt><span class="section">5.7.6. <a href="passivechecks.html#idp9846768">Submitting Passive Host Check Results</a></span></dt><dt><span class="section">5.7.7. <a href="passivechecks.html#idp9856352">Passive Checks and Host States</a></span></dt><dt><span class="section">5.7.8. <a href="passivechecks.html#idp9863888">Submitting Passive Check Results From Remote Hosts</a></span></dt></dl></div>
   
 
-  <div class="section" title="5.7.1. Introduction">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9806768"></a>5.7.1. Introduction</h3></div></div></div>
+  <div class="section" title="5.7.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp9804544"></a>5.7.1. Introduction</h3></div></div></div>
     
 
     <p>In most cases you'll use Icinga to monitor your hosts and services using regularly scheduled <a class="link" href="activechecks.html" title="5.6. Active Checks">active checks</a>. Active checks can be used to "poll" a device or service for status information every so
     often. Icinga also supports a way to monitor hosts and services passively instead of actively. They key features of passive
     checks are as follows:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Passive checks are initiated and performed external applications/processes</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Passive check results are submitted to Icinga for processing</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>The major difference between active and passive checks is that active checks are initiated and performed by Icinga, while
     passive checks are performed by external applications.</p>
   </div>
 
-  <div class="section" title="5.7.2. Uses For Passive Checks">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9811824"></a>5.7.2. Uses For Passive Checks</h3></div></div></div>
+  <div class="section" title="5.7.2. Uses For Passive Checks"><div class="titlepage"><div><div><h3 class="title"><a id="idp9809680"></a>5.7.2. Uses For Passive Checks</h3></div></div></div>
     
 
     <p>Passive checks are useful for monitoring services that are:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Asynchronous in nature and cannot be monitored effectively by polling their status on a regularly scheduled basis</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Located behind a firewall and cannot be checked actively from the monitoring host</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Examples of asynchronous services that lend themselves to being monitored passively include SNMP traps and security alerts. You
     never know how many (if any) traps or alerts you'll receive in a given time frame, so it's not feasible to just monitor their status
@@ -86,56 +69,44 @@
     <p>Passive checks are also used when configuring <a class="link" href="distributed.html" title="7.6. Distributed Monitoring">distributed</a> or <a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">redundant</a> monitoring installations.</p>
   </div>
 
-  <div class="section" title="5.7.3. How Passive Checks Work">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9818416"></a>5.7.3. How Passive Checks Work</h3></div></div></div>
+  <div class="section" title="5.7.3. How Passive Checks Work"><div class="titlepage"><div><div><h3 class="title"><a id="idp9816064"></a>5.7.3. How Passive Checks Work</h3></div></div></div>
     
 
-    <p><span class="inlinemediaobject"><img src="../images/passivechecks.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/passivechecks.png" /></span></p>
 
     <p>Here's how passive checks work in more detail...</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
+    <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
         <p>An external application checks the status of a host or service.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>The external application writes the results of the check to the <a class="link" href="configmain.html#configmain-command_file">external command
         file</a>.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>The next time Icinga reads the external command file it will place the results of all passive checks into a queue for
         later processing. The same queue that is used for storing results from active checks is also used to store the results from passive
         checks.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Icinga will periodically execute a <a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check result reaper
         event</a> and scan the check result queue. Each service check result that is found in the queue is processed in the same manner -
         regardless of whether the check was active or passive. Icinga may send out notifications, log alerts, etc. depending on the
         check result information.</p>
-      </li>
-</ol></div>
+      </li></ol></div>
 
     <p>The processing of active and passive check results is essentially identical. This allows for seamless integration of status
     information from external applications with Icinga.</p>
   </div>
 
-  <div class="section" title="5.7.4. Enabling Passive Checks">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9828512"></a>5.7.4. Enabling Passive Checks</h3></div></div></div>
+  <div class="section" title="5.7.4. Enabling Passive Checks"><div class="titlepage"><div><div><h3 class="title"><a id="idp9826304"></a>5.7.4. Enabling Passive Checks</h3></div></div></div>
     
 
     <p>In order to enable passive checks in Icinga, you'll need to do the following:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Set <a class="link" href="configmain.html#configmain-accept_passive_service_checks">accept_passive_service_checks</a> directive is set to
         1.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Set the <span class="emphasis"><em>passive_checks_enabled</em></span> directive in your host and service definitions is set to 1.</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>If you want to disable processing of passive checks on a global basis, set the <a class="link" href="configmain.html#configmain-accept_passive_service_checks">accept_passive_service_checks</a> directive to 0.</p>
 
@@ -143,9 +114,7 @@
     directive in the host and/or service definitions to do so.</p>
   </div>
 
-  <div class="section" title="5.7.5. Submitting Passive Service Check Results">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9835248"></a>5.7.5. Submitting Passive Service Check Results</h3></div></div></div>
+  <div class="section" title="5.7.5. Submitting Passive Service Check Results"><div class="titlepage"><div><div><h3 class="title"><a id="idp9833152"></a>5.7.5. Submitting Passive Service Check Results</h3></div></div></div>
     
 
     <p>External applications can submit passive service check results to Icinga by writing a PROCESS_SERVICE_CHECK_RESULT <a class="link" href="extcommands.html" title="7.1. External Commands">external command</a> to the external command file.</p>
@@ -156,51 +125,31 @@
 
     <p>where...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><span class="emphasis"><em>timestamp</em></span> is the time in time_t format (seconds since the UNIX epoch) that the service check was perfomed
         (or submitted). Please note the single space after the right bracket.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><span class="emphasis"><em>host_name</em></span> is the short name of the host associated with the service in the service definition</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><span class="emphasis"><em>svc_description</em></span> is the description of the service as specified in the service definition</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><span class="emphasis"><em>return_code</em></span> is the return code of the check (0=OK, 1=WARNING, 2=CRITICAL, 3=UNKNOWN)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><span class="emphasis"><em>plugin_output</em></span> is the text output of the service check (i.e. the plugin output)</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
       <p>A service must be defined in Icinga before you can submit passive check results for it! Icinga will ignore all
       check results for services that had not been configured before it was last (re)started.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
 
-    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png"></td>
-<th align="left">Tip</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="tip" title="Tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="../images/tip.png" /></td><th align="left">Tip</th></tr><tr><td align="left" valign="top">
       <p>An example shell script of how to submit passive service check results to Icinga can be found in the documentation on
       <a class="link" href="volatileservices.html" title="7.4. Volatile Services">volatile services</a>.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
   </div>
 
-  <div class="section" title="5.7.6. Submitting Passive Host Check Results">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9849040"></a>5.7.6. Submitting Passive Host Check Results</h3></div></div></div>
+  <div class="section" title="5.7.6. Submitting Passive Host Check Results"><div class="titlepage"><div><div><h3 class="title"><a id="idp9846768"></a>5.7.6. Submitting Passive Host Check Results</h3></div></div></div>
     
 
     <p>External applications can submit passive host check results to Icinga by writing a PROCESS_HOST_CHECK_RESULT external
@@ -212,37 +161,24 @@
 
     <p>where...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><span class="emphasis"><em>timestamp</em></span> is the time in time_t format (seconds since the UNIX epoch) that the host check was perfomed
         (or submitted). Please note the single space after the right bracket.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><span class="emphasis"><em>host_name</em></span> is the short name of the host (as defined in the host definition)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><span class="emphasis"><em>host_status</em></span> is the status of the host (0=UP, 1=DOWN, 2=UNREACHABLE)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><span class="emphasis"><em>plugin_output</em></span> is the text output of the host check</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
       <p>A host must be defined in Icinga before you can submit passive check results for it! Icinga will ignore all check
       results for hosts that had not been configured before it was last (re)started.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
   </div>
 
-  <div class="section" title="5.7.7. Passive Checks and Host States">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9858352"></a>5.7.7. Passive Checks and Host States</h3></div></div></div>
+  <div class="section" title="5.7.7. Passive Checks and Host States"><div class="titlepage"><div><div><h3 class="title"><a id="idp9856352"></a>5.7.7. Passive Checks and Host States</h3></div></div></div>
     
 
     <p>Unlike with active host checks, Icinga does not (by default) attempt to determine whether or host is DOWN or UNREACHABLE
@@ -254,23 +190,15 @@
     <p>You can tell Icinga to translate DOWN/UNREACHABLE passive check result states to their "proper" state by using the <a class="link" href="configmain.html#configmain-translate_passive_host_checks">translate_passive_host_checks</a> variable. More information on how this works can
     be found <a class="link" href="passivestatetranslation.html" title="7.22. Passive Host State Translation">here</a>.</p>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
       <p>Passive host checks are normally treated as <a class="link" href="statetypes.html" title="5.8. State Types">HARD states</a>, unless the <a class="link" href="configmain.html#configmain-passive_host_checks_are_soft">passive_host_checks_are_soft</a> option is enabled.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
   </div>
 
-  <div class="section" title="5.7.8. Submitting Passive Check Results From Remote Hosts">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9866112"></a>5.7.8. Submitting Passive Check Results From Remote Hosts</h3></div></div></div>
+  <div class="section" title="5.7.8. Submitting Passive Check Results From Remote Hosts"><div class="titlepage"><div><div><h3 class="title"><a id="idp9863888"></a>5.7.8. Submitting Passive Check Results From Remote Hosts</h3></div></div></div>
     
 
-    <p><span class="inlinemediaobject"><img src="../images/nsca.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/nsca.png" /></span></p>
 
     <p>If an application that resides on the same host as Icinga is sending passive host or service check results, it can simply
     write the results directly to the external command file as outlined above. However, applications on remote hosts can't do this so
@@ -282,26 +210,28 @@
     then write the check results directly into the external command file (as described above). More information on the NSCA addon can be
     found <a class="link" href="addons.html#addons-nsca">here</a>.</p>
 
-    <a class="indexterm" name="idp9871952"></a>
+    <a id="idp9869680" class="indexterm"></a>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="activechecks.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="statetypes.html">Next</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">5.6. Active Checks </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 5.8. State Types</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="activechecks.html">Prev</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch05.html">Up</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="statetypes.html">Next</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">5.6. Active Checks </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Home</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 5.8. State Types</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

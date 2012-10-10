@@ -1,152 +1,121 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>2.12. Windows-Maschinen überwachen</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
-<link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
-<link rel="prev" href="monitoring-overview.html" title="2.11. Monitoring-Überblick">
-<link rel="next" href="monitoring-linux.html" title="2.13. Linux/Unix-Rechner überwachen">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">2.12. Windows-Maschinen überwachen</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="monitoring-overview.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 2. Los geht's</th>
-<td width="20%" align="right"> <a accesskey="n" href="monitoring-linux.html">Weiter</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="2.12. Windows-Maschinen überwachen">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="monitoring-windows"></a>2.12. Windows-Maschinen überwachen</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">2.12.1. <a href="monitoring-windows.html#idp1138960">Einführung</a></span></dt>
-<dt><span class="section">2.12.2. <a href="monitoring-windows.html#idp1151648">Überblick</a></span></dt>
-<dt><span class="section">2.12.3. <a href="monitoring-windows.html#idp1158896">Schritte</a></span></dt>
-<dt><span class="section">2.12.4. <a href="monitoring-windows.html#idp1164736">Was bereits für Sie vorbereitet wurde</a></span></dt>
-<dt><span class="section">2.12.5. <a href="monitoring-windows.html#idp1172048">Voraussetzungen</a></span></dt>
-<dt><span class="section">2.12.6. <a href="monitoring-windows.html#idp1177216">Installation des Windows-Agenten</a></span></dt>
-<dt><span class="section">2.12.7. <a href="monitoring-windows.html#idp1177408">Icinga konfigurieren</a></span></dt>
-<dt><span class="section">2.12.8. <a href="monitoring-windows.html#idp1192720">Passwortschutz</a></span></dt>
-<dt><span class="section">2.12.9. <a href="monitoring-windows.html#idp1218896">Icinga neu starten</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>2.12. Windows-Maschinen überwachen</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
+    <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's" />
+    <link rel="prev" href="monitoring-overview.html" title="2.11. Monitoring-Überblick" />
+    <link rel="next" href="monitoring-linux.html" title="2.13. Linux/Unix-Rechner überwachen" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">2.12. Windows-Maschinen überwachen</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="monitoring-overview.html">Zurück</a> </td>
+          <th width="60%" align="center">Kapitel 2. Los geht's</th>
+          <td width="20%" align="right"> <a accesskey="n" href="monitoring-linux.html">Weiter</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="2.12. Windows-Maschinen überwachen"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="monitoring-windows"></a>2.12. Windows-Maschinen überwachen</h2></div></div></div><div class="toc"><dl><dt><span class="section">2.12.1. <a href="monitoring-windows.html#idp1105984">Einführung</a></span></dt><dt><span class="section">2.12.2. <a href="monitoring-windows.html#idp1118672">Überblick</a></span></dt><dt><span class="section">2.12.3. <a href="monitoring-windows.html#idp1125632">Schritte</a></span></dt><dt><span class="section">2.12.4. <a href="monitoring-windows.html#idp1131296">Was bereits für Sie vorbereitet wurde</a></span></dt><dt><span class="section">2.12.5. <a href="monitoring-windows.html#idp1138784">Voraussetzungen</a></span></dt><dt><span class="section">2.12.6. <a href="monitoring-windows.html#idp1143968">Installation des Windows-Agenten</a></span></dt><dt><span class="section">2.12.7. <a href="monitoring-windows.html#idp1144160">Icinga konfigurieren</a></span></dt><dt><span class="section">2.12.8. <a href="monitoring-windows.html#idp1159248">Passwortschutz</a></span></dt><dt><span class="section">2.12.9. <a href="monitoring-windows.html#idp1185424">Icinga neu starten</a></span></dt></dl></div>
   
 
-  <a class="indexterm" name="idp1133888"></a>
+  <a id="idp1100992" class="indexterm"></a>
 
-  <a class="indexterm" name="idp1135696"></a>
+  <a id="idp1102720" class="indexterm"></a>
 
-  <a class="indexterm" name="idp1137296"></a>
+  <a id="idp1104320" class="indexterm"></a>
 
-  <div class="section" title="2.12.1. Einführung">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp1138960"></a>2.12.1. Einführung</h3></div></div></div>
+  <div class="section" title="2.12.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp1105984"></a>2.12.1. Einführung</h3></div></div></div>
     
 
     <p>Dieses Dokument beschreibt, wie Sie "private" Dienste und Attribute von Windows-Rechnern überwachen können, wie z.B.:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Speicherbelegung</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>CPU-Auslastung</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Plattenbelegung</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Zustände von Diensten</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>laufende Prozesse</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>etc.</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Öffentlich nutzbare Dienste, die von Windows-Rechnern zur Verfügung gestellt werden (HTTP, FTP, POP3, etc.), können einfach mit
     Hilfe der Dokumentation <a class="link" href="monitoring-publicservices.html" title="2.17. Öffentlich zugängliche Dienste überwachen">öffentlich zugängliche Dienste überwachen</a> kontrolliert
     werden.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
+    <p><span class="inlinemediaobject"><img src="../images/note.gif" /></span> Anmerkung: Diese Anweisungen gehen davon aus, dass Sie Icinga anhand der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstartanleitung</a> installiert haben. Die nachfolgenden Beispiel-Konfigurationseinträge beziehen sich auf
     Objekte, die in den Beispiel-Konfigurationsdateien (<span class="emphasis"><em>commands.cfg</em></span>, <span class="emphasis"><em>templates.cfg</em></span>, etc.)
     definiert sind. Diese Dateien werden installiert, wenn Sie der Schnellstartanleitung folgen.</p>
   </div>
 
-  <div class="section" title="2.12.2. Überblick">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp1151648"></a>2.12.2. Überblick</h3></div></div></div>
+  <div class="section" title="2.12.2. Überblick"><div class="titlepage"><div><div><h3 class="title"><a id="idp1118672"></a>2.12.2. Überblick</h3></div></div></div>
     
 
-    <div class="mediaobject"><img src="../images/monitoring-windows.png"></div>
+    <div class="mediaobject"><img src="../images/monitoring-windows.png" /></div>
 
     <p>Die Überwachung von privaten Diensten oder Attributen eines Windows-Rechners erfordert die Installation eines Agenten. Dieser
     Agent dient als ein Bindeglied zwischen der Überwachung und dem eigentlichen Dienst oder Attribut auf dem Windows-Rechner. Ohne diesen
     Agenten wäre Icinga nicht in der Lage, private Dienste oder Attribute auf dem Window-Rechner zu überwachen.</p>
 
-    <p>Für dieses Beispiel installieren wir das <a class="link" href="http://sourceforge.net/projects/nscplus" target="_top">NSClient++</a>-Addon
+    <p>Für dieses Beispiel installieren wir das <a class="ulink" href="http://sourceforge.net/projects/nscplus" target="_top">NSClient++</a>-Addon
     auf dem Windows-Rechner und werden das <span class="emphasis"><em>check_nt</em></span>-Plugin zur Kommunikation mit dem NSClient++-Addon benutzen.
     Das <span class="emphasis"><em>check_nt</em></span>-Plugin sollte bereits auf dem Icinga-Server installiert sein, wenn Sie der
     Schnellstartanleitung gefolgt sind.</p>
 
-    <p>Andere Windows-Agenten (wie <a class="link" href="http://sourceforge.net/projects/nc-net" target="_top">NC_Net</a>) können statt NSClient++
+    <p>Andere Windows-Agenten (wie <a class="ulink" href="http://sourceforge.net/projects/nc-net" target="_top">NC_Net</a>) können statt NSClient++
     genutzt werden, wenn Sie möchten - vorausgesetzt, Sie passen die Befehls- und Service-Definitionen usw. entsprechend an. Aus Gründen der
     Einfachheit werden wir nur das NSClient++-Addon in diesen Anweisungen berücksichtigen.</p>
   </div>
 
-  <div class="section" title="2.12.3. Schritte">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp1158896"></a>2.12.3. Schritte</h3></div></div></div>
+  <div class="section" title="2.12.3. Schritte"><div class="titlepage"><div><div><h3 class="title"><a id="idp1125632"></a>2.12.3. Schritte</h3></div></div></div>
     
 
     <p>Es gibt einige Schritte, die Sie durchführen müssen, um einen neuen Windows-Rechner zu überwachen. Das sind:</p>
 
-    <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
+    <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
         <p>erfüllen Sie einmalige Voraussetzungen</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>installieren Sie einen Überwachungsagenten auf dem Windows-Rechner</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>erstellen Sie neue Host- und Service-Definitione zur Überwachung des Windows-Rechners</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>starten Sie den Icinga-Daemon neu</p>
-      </li>
-</ol></div>
+      </li></ol></div>
   </div>
 
-  <div class="section" title="2.12.4. Was bereits für Sie vorbereitet wurde">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp1164736"></a>2.12.4. Was bereits für Sie vorbereitet wurde</h3></div></div></div>
+  <div class="section" title="2.12.4. Was bereits für Sie vorbereitet wurde"><div class="titlepage"><div><div><h3 class="title"><a id="idp1131296"></a>2.12.4. Was bereits für Sie vorbereitet wurde</h3></div></div></div>
     
 
     <p>Um Ihnen das Leben ein wenig zu erleichtern, wurden bereits ein paar Konfigurationsaufgaben für Sie erledigt:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Eine <span class="emphasis"><em>check_nt</em></span>-Befehlsdefinition ist in der <span class="emphasis"><em>commands.cfg</em></span>-Datei vorhanden. Das erlaubt
         Ihnen die Nutzung des <span class="emphasis"><em>check_nt</em></span>-Plugins zur Überwachung von Windows-Diensten.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Eine Host-Vorlage für Windows-Server (namens <span class="emphasis"><em>windows-server</em></span>) wurde bereits in der
         <span class="emphasis"><em>templates.cfg</em></span>-Datei erstellt. Das erlaubt es Ihnen, Windows-Host-Definitionen auf einfache Weise
         hinzuzufügen.</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Die o.g. Konfigurationsdateien finden Sie im <span class="emphasis"><em>/usr/local/icinga/etc/objects/</em></span>-Verzeichnis. Sie können diese und
     andere Definitionen anpassen, damit Sie Ihren Anforderungen besser entsprechen. Allerdings empfehlen wir Ihnen, noch ein wenig damit zu
@@ -154,9 +123,7 @@
     Anweisungen und Sie werden im Nu Ihre Windows-Rechner überwachen.</p>
   </div>
 
-  <div class="section" title="2.12.5. Voraussetzungen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp1172048"></a>2.12.5. Voraussetzungen</h3></div></div></div>
+  <div class="section" title="2.12.5. Voraussetzungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp1138784"></a>2.12.5. Voraussetzungen</h3></div></div></div>
     
 
     <p>Wenn Sie Icinga das erste Mal konfigurieren, um einen Windows-Rechner zu überwachen, dann müssen Sie ein paar zusätzliche
@@ -179,16 +146,14 @@
     Service-Definitionen an, statt neue zu erstellen.</p>
   </div>
 
-  <div class="section" title="2.12.6. Installation des Windows-Agenten">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp1177216"></a>2.12.6. Installation des Windows-Agenten</h3></div></div></div>
+  <div class="section" title="2.12.6. Installation des Windows-Agenten"><div class="titlepage"><div><div><h3 class="title"><a id="idp1143968"></a>2.12.6. Installation des Windows-Agenten</h3></div></div></div>
     
 
     <p>Bevor Sie mit der Überwachung von privaten Diensten und Attributen von Windows-Rechnern beginnen, müssen Sie einen Agenten auf
-    diesen Rechnern installieren. Wir empfehlen das NSClient++-Addon zu nutzen, das Sie unter <a class="link" href="http://sourceforge.net/projects/nscplus" target="_top">http://sourceforge.net/projects/nscplus</a> finden. Diese Anweisungen werden Sie durch eine
+    diesen Rechnern installieren. Wir empfehlen das NSClient++-Addon zu nutzen, das Sie unter <a class="ulink" href="http://sourceforge.net/projects/nscplus" target="_top">http://sourceforge.net/projects/nscplus</a> finden. Diese Anweisungen werden Sie durch eine
     Basisinstallation des NSClient++-Addons und die Icinga-Konfiguration für die Überwachung des Windows-Rechners führen.</p>
 
-    <p>1. Laden Sie die letzte stabile Version des NSClient++-Addons von <a class="link" href="http://sourceforge.net/projects/nscplus" target="_top">http://sourceforge.net/projects/nscplus</a></p>
+    <p>1. Laden Sie die letzte stabile Version des NSClient++-Addons von <a class="ulink" href="http://sourceforge.net/projects/nscplus" target="_top">http://sourceforge.net/projects/nscplus</a></p>
 
     <p>2. Entpacken Sie die NSClient++-Dateien in ein neues C:\NSClient++-Verzeichnis</p>
 
@@ -201,27 +166,22 @@
     <p>5. Öffnen Sie die Dienste-Applikation und stellen Sie sicher, dass der NSClient++-Dienst mit dem Desktop kommunizieren darf
     (Reiter "Anmelden", Häkchen bei "Datenaustausch zwischen Dienst und Desktop zulassen" gesetzt). Setzen Sie ggf. das Häkchen.</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/nscpp.png"></span></p>
+    <p><span class="inlinemediaobject"><img src="../images/nscpp.png" /></span></p>
 
     <p>6. Editieren Sie die NSC.INI-Datei (im C:\NSClient++-Verzeichnis) und machen Sie folgende Änderungen:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>entfernen Sie die Kommentarzeichen (;) im [modules]-Abschnitt, außer für CheckWMI.dll und RemoteConfiguration.dll</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>definieren Sie optional ein Passwort für Clients, indem Sie die 'password'-Option im [Settings]-Abschnitt setzen.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>entfernen Sie das Kommentarzeichen (;) vor der 'allowed_hosts'-Option im [Settings]-Abschnitt. Fügen Sie die IP-Adresse des
         Icinga-Servers ein, mit ip.add.ress/Bits einen Bereich oder lassen Sie diese Angabe leer, so dass sich alle Hosts verbinden
         können.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>entfernen Sie ggf. das Kommentarzeichen vor der 'port'-Option im [NSClient]-Abschnitt und setzen Sie den Wert auf '12489'
         (Standard).</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>7. Starten Sie den NSClient++-Dienst mit dem folgenden Befehl:</p>
 
@@ -230,9 +190,7 @@
     <p>8. Geschafft! Der Windows-Rechner kann nun der Icinga-Überwachungskonfiguration hinzugefügt werden...</p>
   </div>
 
-  <div class="section" title="2.12.7. Icinga konfigurieren">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp1177408"></a>2.12.7. Icinga konfigurieren</h3></div></div></div>
+  <div class="section" title="2.12.7. Icinga konfigurieren"><div class="titlepage"><div><div><h3 class="title"><a id="idp1144160"></a>2.12.7. Icinga konfigurieren</h3></div></div></div>
     
 
     <p>Nun ist es Zeit, einige <a class="link" href="objectdefinitions.html" title="3.4. Objektdefinitionen">Objektdefinitionen</a> in Ihren Icinga-Konfigurationsdateien
@@ -259,16 +217,10 @@
     welche Dinge auf dem Windows-Server zu überwachen sind. Wenn dies der *erste* Windows-Rechner ist, den Sie überwachen, dann können Sie
     einfach die Beispiel-Definitionen in der <span class="emphasis"><em>windows.cfg</em></span>-Datei anpassen.</p>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
       <p>Ersetzen Sie "<span class="emphasis"><em>winserver</em></span>" in den folgenden Beispiel-Definitionen durch den Namen, den Sie in der
       <span class="emphasis"><em>host_name</em></span>-Direktive der Host-Definitionen angegeben haben, die Sie gerade hinzugefügt haben.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
 
     <p>Fügen Sie die folgende Service-Definition hinzu, um die Version des NSClient++-Addons zu überwachen, das auf dem
     Windows-Rechner läuft. Dies ist nützlich, wenn Sie Ihre Windows-Server mit einer neueren Version des Addons aktualisieren möchten, weil
@@ -343,24 +295,16 @@
         check_command           check_nt!PROCSTATE!-d SHOWALL -l Explorer.exe
         }</pre>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
       <p>Nun ja. Eigentlich ist es ziemlich unsinnig, zu überwachen, ob der Explorer läuft. Allerdings läßt sich auf diese Weise sehr
       einfach prüfen, ob alles wie gewünscht funktioniert ;-)</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
 
     <p>Das war es vorerst. Sie haben einige grundlegende Dienste hinzugefügt, die auf dem Windows-Rechner überwacht werden sollen.
     Speichern Sie die Konfigurationsdatei.</p>
   </div>
 
-  <div class="section" title="2.12.8. Passwortschutz">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp1192720"></a>2.12.8. Passwortschutz</h3></div></div></div>
+  <div class="section" title="2.12.8. Passwortschutz"><div class="titlepage"><div><div><h3 class="title"><a id="idp1159248"></a>2.12.8. Passwortschutz</h3></div></div></div>
     
 
     <p>Wenn Sie ein Passwort in der NSClient++-Konfigurationsdatei auf dem Windows-Rechner angegeben haben, dann müssen Sie die
@@ -380,9 +324,7 @@
     <p>Speichern Sie die Datei</p>
   </div>
 
-  <div class="section" title="2.12.9. Icinga neu starten">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp1218896"></a>2.12.9. Icinga neu starten</h3></div></div></div>
+  <div class="section" title="2.12.9. Icinga neu starten"><div class="titlepage"><div><div><h3 class="title"><a id="idp1185424"></a>2.12.9. Icinga neu starten</h3></div></div></div>
     
 
     <p>Sie sind fertig mit der Anpassung der Icinga-Konfiguration, so dass Sie nun <a class="link" href="verifyconfig.html" title="4.1. Überprüfen Ihrer Icinga-Konfiguration">die
@@ -392,23 +334,25 @@
     Sie Icinga nicht (erneut) starten, bevor die Überprüfung ohne Fehler durchgelaufen ist!</p>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="monitoring-overview.html">Zurück</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch02.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="monitoring-linux.html">Weiter</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">2.11. Monitoring-Überblick </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 2.13. Linux/Unix-Rechner überwachen</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="monitoring-overview.html">Zurück</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch02.html">Nach oben</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="monitoring-linux.html">Weiter</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">2.11. Monitoring-Überblick </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Zum Anfang</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 2.13. Linux/Unix-Rechner überwachen</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

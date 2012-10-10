@@ -1,55 +1,54 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>3.6. Optionen CGI-Konfigurationsdatei</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
-<link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren">
-<link rel="prev" href="customobjectvars.html" title="3.5. Maßgeschneiderte Objektvariablen">
-<link rel="next" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">3.6. Optionen CGI-Konfigurationsdatei</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="customobjectvars.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 3. Icinga konfigurieren</th>
-<td width="20%" align="right"> <a accesskey="n" href="cgiauth.html">Weiter</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="3.6. Optionen CGI-Konfigurationsdatei">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="configcgi"></a>3.6. Optionen CGI-Konfigurationsdatei</h2></div></div></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.6. Optionen CGI-Konfigurationsdatei</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
+    <link rel="up" href="ch03.html" title="Kapitel 3. Icinga konfigurieren" />
+    <link rel="prev" href="customobjectvars.html" title="3.5. Maßgeschneiderte Objektvariablen" />
+    <link rel="next" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">3.6. Optionen CGI-Konfigurationsdatei</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="customobjectvars.html">Zurück</a> </td>
+          <th width="60%" align="center">Kapitel 3. Icinga konfigurieren</th>
+          <td width="20%" align="right"> <a accesskey="n" href="cgiauth.html">Weiter</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="3.6. Optionen CGI-Konfigurationsdatei"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="configcgi"></a>3.6. Optionen CGI-Konfigurationsdatei</h2></div></div></div>
   
 
   <p><span class="bold"><strong>Anmerkungen</strong></span></p>
 
   <p>Wenn Sie Konfigurationsdateien erstellen oder anpassen, beachten Sie bitte folgendes:</p>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
+  <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
       <p>Zeilen, die mit einem '#'-Zeichen beginnen, werden als Kommentar betrachtet und nicht verarbeitet</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Variablennamen müssen am Zeilenanfang beginnen - "white space" sind vor dem Namen NICHT erlaubt</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Variablennamen sind abhängig von Groß- und Kleinschreibung</p>
-    </li>
-</ol></div>
+    </li></ol></div>
 
   <p><span class="bold"><strong>Beispielkonfiguration</strong></span></p>
 
-  <p><span class="inlinemediaobject"><img src="../images/tip.gif"></span> Hinweis: eine Beispiel-CGI-Konfigurationsdatei (<span class="emphasis"><em>/usr/local/icinga/etc/cgi.cfg</em></span>) wird für Sie
+  <p><span class="inlinemediaobject"><img src="../images/tip.gif" /></span> Hinweis: eine Beispiel-CGI-Konfigurationsdatei (<span class="emphasis"><em>/usr/local/icinga/etc/cgi.cfg</em></span>) wird für Sie
   installiert, wenn Sie der <a class="link" href="quickstart.html" title="2.2. Schnellstart-Installationsanleitungen">Schnellstart-Anleitung</a> folgen.</p>
 
   <p><span class="bold"><strong>Position der Konfigurationsdatei</strong></span></p>
@@ -64,128 +63,53 @@
 
   <p>Nachfolgend finden Sie Beschreibungen jeder Option der Hauptkonfigurationsdatei...</p>
 
-  <p><a name="configcgi-main_cfg_file"></a><span class="bold"><strong>Position der Hauptkonfigurationsdatei</strong></span></p>
+  <p><a id="configcgi-main_cfg_file"></a><span class="bold"><strong>Position der Hauptkonfigurationsdatei</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>main_config_file=&lt;file_name&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>main_config_file=/usr/local/icinga/etc/icinga.cfg</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>main_config_file=&lt;file_name&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>main_config_file=/usr/local/icinga/etc/icinga.cfg</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies gibt die Position Ihrer <a class="link" href="configmain.html" title="3.2. Optionen der Hauptkonfigurationsdatei">Hauptkonfigurationsdatei</a> an. Die CGIs müssen wissen, wo sie zu finden
   ist, um Informationen zu Konfigurationsinformationen, aktuellen Host- und Service-Zuständen usw. zu bekommen.</p>
 
-  <p><a name="configcgi-physical_html_path"></a><span class="bold"><strong>vollständiger (physical) HTML-Pfad</strong></span></p>
+  <p><a id="configcgi-physical_html_path"></a><span class="bold"><strong>vollständiger (physical) HTML-Pfad</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>physical_html_path=&lt;Pfad&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>physical_html_path=/usr/local/icinga/share</strong></span>
-          </font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>physical_html_path=&lt;Pfad&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>physical_html_path=/usr/local/icinga/share</strong></span>
+          </span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist der <span class="emphasis"><em>vollständige</em></span> Pfad zu den HTML-Dateien von Icinga auf Ihrer Workstation oder Ihrem Server.
   Icinga nimmt an, dass die Dokumentation und die Bilddateien (die von den CGIs benutzt werden) in Unterverzeichnissen namens
   <span class="emphasis"><em>docs/</em></span> und <span class="emphasis"><em>images/</em></span> gespeichert sind.</p>
 
-  <p><a name="configcgi-url_html_path"></a><span class="bold"><strong>URL-HTML-Pfad</strong></span></p>
+  <p><a id="configcgi-url_html_path"></a><span class="bold"><strong>URL-HTML-Pfad</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>url_html_path=&lt;Pfad&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>url_html_path=/icinga</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>url_html_path=&lt;Pfad&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>url_html_path=/icinga</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Wenn Sie Icinga über einen Web-Browser mit einem URL wie <span class="bold"><strong>http://www.myhost.com/icinga</strong></span>,
   aufrufen, sollte dieser Wert <span class="emphasis"><em>/icinga</em></span> sein. Grundsätzlich ist es der Pfadanteil des URL, der zum Aufruf der
   Icinga-HTML-Seiten benutzt wird.</p>
 
-  <p><a name="configcgi-url_stylesheet_path"></a> <span class="bold"><strong>URL Stylesheet Path</strong></span></p>
+  <p><a id="configcgi-url_stylesheet_path"></a> <span class="bold"><strong>URL Stylesheet Path</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>url_stylesheet_path=&lt;path&gt;/stylesheets</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>url_stylesheet_path=/icinga/stylesheets</strong></span>
-          </font></span></p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>url_stylesheet_path=&lt;path&gt;/stylesheets</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>url_stylesheet_path=/icinga/stylesheets</strong></span>
+          </span></p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option erlaubt Ihnen die Angabe einer alternativen Stylesheet URL. Dies ist nützlich, wenn Sie benutzerdefinierte Stylesheets
   aus einem anderen Verzeichnis hinzufügen möchten.Wird sie nicht gesetzt, wird der Standard-Speicherort verwendet
   (url_stylesheets_path=url_html_path/stylesheets).</p>
 
-  <p><a name="configcgi-use_authentication"></a><span class="bold"><strong>Nutzung der Authentifizierung</strong></span></p>
+  <p><a id="configcgi-use_authentication"></a><span class="bold"><strong>Nutzung der Authentifizierung</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>use_authentication=[0/1]</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>use_authentication=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>use_authentication=[0/1]</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>use_authentication=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option kontrolliert, ob die CGIs die Authentifizierungs- und Autorisierungsfunktionalität nutzen, um den Zugang von Benutzern
@@ -195,35 +119,17 @@
   entfernen, damit man auf der sicheren Seite ist. Mehr Informationen zur Einstellung der Authentifizierung und der Konfiguration von
   Autorisierung für die CGIs finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>0 = die Authentifizierungsfunktionalität nicht nutzen</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>1 = die Authentifizierungs- und Autorisierungsfunktionalität nutzen (Default)</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <p><a name="configcgi-use_ssl_authentication"></a> <span class="bold"><strong>Nutzung von Client-Zertifikaten</strong></span></p>
+  <p><a id="configcgi-use_ssl_authentication"></a> <span class="bold"><strong>Nutzung von Client-Zertifikaten</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>use_ssl_authentication=[0/1]</strong></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>use_ssl_authentication=0</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>use_ssl_authentication=[0/1]</strong></span></p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>use_ssl_authentication=0</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option kontrolliert, ob der Inhalt der Web-Server-Umgebungsvariable <code class="literal">REMOTE_USER</code> oder
@@ -232,36 +138,18 @@
   "<code class="literal">SSLUserName SSL_CLIENT_S_DN_CN</code>" und verschiedene andere Optionen in Ihrer Web-Server-Konfiguration. Bitte lesen Sie
   die Web-Server-Dokumentation für weitere Einzelheiten..</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>0 = Die Web-Server-Umgebungsvariable <code class="literal">REMOTE_USER</code> verwenden. Keine Client-Zertifikate benutzen
       (Default)</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>1 = Die Web-Server-Umgebungsvariable <code class="literal">SSL_CLIENT_S_DN_CN</code> verwenden. Client-Zertifikate benutzen</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <p><a name="configcgi-default_user_name"></a><span class="bold"><strong>Standard-Benutzername</strong></span></p>
+  <p><a id="configcgi-default_user_name"></a><span class="bold"><strong>Standard-Benutzername</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>default_user_name=&lt;username&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>default_user_name=guest</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>default_user_name=&lt;username&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>default_user_name=guest</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Das Setzen dieser Variable definiert einen Standard-Benutzernamen, der die CGIs aufrufen kann. Dies erlaubt es Leuten in einer
@@ -273,27 +161,12 @@
   sicheren Web-Server haben und sicher sind, dass sich jeder, der die CGIs aufruft, in irgendeiner Weise authentifiziert hat. Wenn Sie diese
   Variable definieren, dann wird jeder, der sich am Web-Server authentifiziert, alle Rechte dieses Benutzers erben!</p>
 
-  <p><a name="configcgi-authorized_for_system_information"></a><span class="bold"><strong>Zugang zu
+  <p><a id="configcgi-authorized_for_system_information"></a><span class="bold"><strong>Zugang zu
   System/Prozessinformationen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_system_information=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
-          </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_system_information=icingaadmin,theboss</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_system_information=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+          </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_system_information=icingaadmin,theboss</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die System/Prozessinformationen
@@ -302,37 +175,16 @@
   System/Prozessbefehle erteilen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">authorized_for_system_commands</a>-Variable hinzufügen. Mehr Informationen, wie man
   Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_system_information</code> angeben, um statt
     eines contact eine contactgroup zu autorisieren.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-authorized_for_system_commands"></a><span class="bold"><strong>Zugang zu System/Prozessbefehlen</strong></span></p>
+  <p><a id="configcgi-authorized_for_system_commands"></a><span class="bold"><strong>Zugang zu System/Prozessbefehlen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_system_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_system_commands=icingaadmin</strong></span>
-          </font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_system_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_system_commands=icingaadmin</strong></span>
+          </span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die System/Prozessbefehle über
@@ -341,38 +193,17 @@
   können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_system_information">authorized_for_system_information</a>-Variable hinzufügen. Mehr Informationen,
   wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_system_commands</code> angeben, um statt
     eines contact eine contactgroup zu autorisieren.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-authorized_for_configuration_information"></a><span class="bold"><strong>Zugang zu
+  <p><a id="configcgi-authorized_for_configuration_information"></a><span class="bold"><strong>Zugang zu
   Konfigurationsinformationen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_configuration_information=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
-          </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_configuration_information=icingaadmin</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_configuration_information=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+          </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_configuration_information=icingaadmin</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Konfigurationsinformationen
@@ -380,38 +211,17 @@
   konfigurierten Hosts, Hostgruppen, Kontakten, Kontaktgruppen, Zeitfenstern und Befehlen ansehen. Mehr Informationen, wie man
   Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_configartion_information</code> angeben, um
     statt eines contact eine contactgroup zu autorisieren.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-authorized_for_all_hosts"></a><span class="bold"><strong>Global Host Information Access</strong></span></p>
+  <p><a id="configcgi-authorized_for_all_hosts"></a><span class="bold"><strong>Global Host Information Access</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_all_hosts=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
-          </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_all_hosts=icingaadmin,theboss</strong></span>
-          </font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_all_hosts=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+          </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_all_hosts=icingaadmin,theboss</strong></span>
+          </span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Status- und
@@ -421,38 +231,17 @@
   <a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">authorized_for_all_host_commands</a>-Variable hinzufügen. Mehr
   Informationen, wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_all_hosts</code> angeben, um statt eines
     contact eine contactgroup zu autorisieren.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-authorized_for_all_host_commands"></a><span class="bold"><strong>Zugang zu globalen
+  <p><a id="configcgi-authorized_for_all_host_commands"></a><span class="bold"><strong>Zugang zu globalen
   Host-Befehlen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_all_host_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_all_host_commands=icingaadmin</strong></span>
-          </font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_all_host_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_all_host_commands=icingaadmin</strong></span>
+          </span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Befehle für alle Hosts über
@@ -462,37 +251,16 @@
   Konfigurationsinformationen für alle Hosts oder Services ansehen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">authorized_for_all_hosts</a>-Variable hinzufügen. Mehr Informationen, wie man
   Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_all_host_commands</code> angeben, um statt
     eines contact eine contactgroup zu autorisieren.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-authorized_for_all_services"></a><span class="bold"><strong>Zugang zu globalen
+  <p><a id="configcgi-authorized_for_all_services"></a><span class="bold"><strong>Zugang zu globalen
   Service-Informationen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_all_services=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_all_services=icingaadmin,theboss</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_all_services=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_all_services=icingaadmin,theboss</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Status- und
@@ -502,38 +270,17 @@
   diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">authorized_for_all_service_commands</a>-Variable hinzufügen.
   Mehr Informationen, wie man Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_all_services</code> angeben, um statt eines
     contact eine contactgroup zu autorisieren.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-authorized_for_all_service_commands"></a><span class="bold"><strong>Zugang zu globalen
+  <p><a id="configcgi-authorized_for_all_service_commands"></a><span class="bold"><strong>Zugang zu globalen
   Service-Befehlen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_all_service_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
-          </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_all_service_commands=icingaadmin</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_all_service_commands=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+          </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_all_service_commands=icingaadmin</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Befehle für alle Services
@@ -543,66 +290,30 @@
   Konfigurationsinformationen für alle Services ansehen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a>-Variable hinzufügen. Mehr Informationen, wie man
   Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_all_service_commands</code> angeben, um statt
     eines contact eine contactgroup zu autorisieren.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-show_all_services_host_is_authorized_for"></a> <span class="bold"><strong>Zeige alle Services für einen
+  <p><a id="configcgi-show_all_services_host_is_authorized_for"></a> <span class="bold"><strong>Zeige alle Services für einen
   berechtigten Host</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>show_all_services_host_is_authorized_for=[0|1]</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>show_all_services_host_is_authorized_for=1</strong></span>
-          </font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>show_all_services_host_is_authorized_for=[0|1]</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>show_all_services_host_is_authorized_for=1</strong></span>
+          </span> </p></td></tr></tbody></table>
   </div>
 
   <p>Per Default kann ein Benutzer alle Services eines Hosts sehen, wenn er als Kontakt für den Host autorisiert ist. Durch deaktivieren
   dieser Option muss der Benutzer auch autorisierter Kontakt des Service sein, um diesen ansehen zu können. Bitte beachten Sie, dass diese
   Option keine Auswirkung hat, wenn die Option authorized_for_all_services für den Benutzer gesetzt ist (seit Icinga 1.0.2).</p>
 
-  <p><a name="configcgi-authorized_for_read_only"></a> <span class="bold"><strong>Zugang zu Befehlen und Kommentaren
+  <p><a id="configcgi-authorized_for_read_only"></a> <span class="bold"><strong>Zugang zu Befehlen und Kommentaren
   verweigern</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_read_only=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
-          </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_read_only=icingalook</strong></span>
-          </font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_read_only=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span>
+          </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_read_only=icingalook</strong></span>
+          </span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span>, die Nur-Lesen-Zugriff auf die
@@ -612,39 +323,15 @@
   auch Status- und Konfigurationsinformationen für alle Services ansehen können, dann müssen Sie diese der <a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a>-Variable hinzufügen. Mehr Informationen, wie man
   Authentifizierung einrichtet und Autorisierung für die CGIs konfiguriert, finden Sie <a class="link" href="cgiauth.html" title="3.7. Authentifizierung und Autorisierung in den CGIs">hier</a>.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Ab Icinga 1.5.0 können Sie alternativ <code class="literal">authorized_contactgroup_for_read_only</code> angeben, um statt eines
     contact eine contactgroup zu autorisieren.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-authorized_for_comments_read_only"></a> <span class="bold"><strong>Read-Only für Kommentare</strong></span></p>
+  <p><a id="configcgi-authorized_for_comments_read_only"></a> <span class="bold"><strong>Read-Only für Kommentare</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_comments_read_only=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span></p></td>
-<td><p><span class="bold"><strong>authorized_contactgroup_for_comments_read_only=&lt;contactgroup1&gt;,&lt;contactgroup2&gt;,...&lt;contactgroupn&gt;</strong></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Example:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_comments_read_only=icingalook</strong></span></font></span> </p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_contactgroup_for_comments_read_only=readonlyusers</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_comments_read_only=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;</strong></span></p></td><td><p><span class="bold"><strong>authorized_contactgroup_for_comments_read_only=&lt;contactgroup1&gt;,&lt;contactgroup2&gt;,...&lt;contactgroupn&gt;</strong></span></p></td></tr><tr><td align="left" valign="top"><p>Example:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_comments_read_only=icingalook</strong></span></span> </p></td><td><p><span class="color"><span class="bold"><strong>authorized_contactgroup_for_comments_read_only=readonlyusers</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span> die Nur-Lesen-Zugriff auf die
@@ -653,39 +340,15 @@
   NICHT als "authorized_for_read_only" definiert wurde, bewirkt "authorized_for_comments_read_only", dass der Benutzer nur noch lesenden
   Zugriff auf die Kommentare hat.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist ab Icinga 1.8 verfügbar.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-authorized_for_downtimes_read_only"></a> <span class="bold"><strong>Read-Only für Downtimes</strong></span></p>
+  <p><a id="configcgi-authorized_for_downtimes_read_only"></a> <span class="bold"><strong>Read-Only für Downtimes</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_downtimes_read_only=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;
-          </strong></span></p></td>
-<td><p><span class="bold"><strong>authorized_contactgroup_for_downtimes_read_only=&lt;contactgroup1&gt;,&lt;contactgroup2&gt;,...&lt;contactgroupn&gt;</strong></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Example:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_downtimes_read_only=icingalook</strong></span></font></span> </p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_contactgroup_for_downtimes_read_only=readonlyusers</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_downtimes_read_only=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt;
+          </strong></span></p></td><td><p><span class="bold"><strong>authorized_contactgroup_for_downtimes_read_only=&lt;contactgroup1&gt;,&lt;contactgroup2&gt;,...&lt;contactgroupn&gt;</strong></span></p></td></tr><tr><td align="left" valign="top"><p>Example:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_downtimes_read_only=icingalook</strong></span></span> </p></td><td><p><span class="color"><span class="bold"><strong>authorized_contactgroup_for_downtimes_read_only=readonlyusers</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist eine Komma-separierte Liste von Namen von <span class="emphasis"><em>authentifizierten Benutzern</em></span> die Lesen-Zugriff auf die
@@ -694,71 +357,32 @@
   NICHT als "authorized_for_read_only" definiert wurde, bewirkt "authorized_for_downtimes_read_only", dass der Benutzer keine Downtimes mehr
   löschen kann, die Option delete downtime in der extinfo.cgi wird nicht mehr angezeigt.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist ab Icinga 1.8 verfügbar.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-lock_author_names"></a><span class="bold"><strong>Autorennamen sperren</strong></span></p>
+  <p><a id="configcgi-lock_author_names"></a><span class="bold"><strong>Autorennamen sperren</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>lock_author_names=[0/1]</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>lock_author_names=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>lock_author_names=[0/1]</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>lock_author_names=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option erlaubt es Ihnen, Benutzer daran zu hindern, den Autorennamen zu ändern, wenn sie Kommentare, Bestätigungen und
   geplanten Ausfallzeiten über das Web-Interface eingeben. Wenn diese Option aktiviert ist, können Benutzer nicht mit der Befehlsanfrage
   verbundene Autorennamen ändern.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>0 = Benutzern erlauben, den Autorennamen bei der Erteilung von Befehlen zu ändern</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>1 = Benutzer daran hindern, den Autorennamen zu ändern (default)</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <p><a name="configcgi-default_expiring_disabled_notifictions_duration"></a> <span class="bold"><strong>Standard- Verfallsdauer für
+  <p><a id="configcgi-default_expiring_disabled_notifictions_duration"></a> <span class="bold"><strong>Standard- Verfallsdauer für
   global deaktivierte Benachrichtigungen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>default_expiring_disabled_notifications_duration=[seconds]</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong><span class="bold"><strong><span class="bold"><strong>default_expiring_disabled_notifications_duration=86400</strong></span></strong></span> </strong></span></font></span></p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>default_expiring_disabled_notifications_duration=[seconds]</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong><span class="bold"><strong><span class="bold"><strong>default_expiring_disabled_notifications_duration=86400</strong></span></strong></span> </strong></span></span></p></td></tr></tbody></table>
   </div>
 
   <p>Ab Icinga 1.8 kann die globale Deaktivierung von Benachrichtigungen mit einer Ablaufzeit versehen werden. Der Standardwert
@@ -766,70 +390,31 @@
   extinfo.cgi) die Benachrichtigungen global deaktivieren und die Option <span class="bold"><strong>Expire time</strong></span> verwenden, werden nach
   1 Tag die Benachrichtigungen wieder global aktiviert.</p>
 
-  <p><a name="configcgi-status_show_long_plugin_output"></a> <span class="bold"><strong>Status Show Long Plugin Output</strong></span></p>
+  <p><a id="configcgi-status_show_long_plugin_output"></a> <span class="bold"><strong>Status Show Long Plugin Output</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>status_show_long_plugin_output=[0/1]</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>status_show_long_plugin_output=1</strong></span> </font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>status_show_long_plugin_output=[0/1]</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>status_show_long_plugin_output=1</strong></span> </span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option erlaubt es Ihnen, den Umfang der Statusinformationen von Plugins festzulegen, die in der status.cgi angezeigt werden.
   Wenn Sie den Wert auf 1 setzen, dann wird die komplette Ausgabe angezeigt, sonst nur die erste Zeile.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>0 = Nur die erste Zeile der Plugin-Ausgabe anzeigen (default)</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>1 = Die komplette Plugin-Ausgabe anzeigen</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.0.3.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-statusmap_background_image"></a><span class="bold"><strong>Statusmap CGI Background Image</strong></span></p>
+  <p><a id="configcgi-statusmap_background_image"></a><span class="bold"><strong>Statusmap CGI Background Image</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>statusmap_background_image=&lt;image_file&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>statusmap_background_image=smbackground.gd2</strong></span>
-          </font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>statusmap_background_image=&lt;image_file&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>statusmap_background_image=smbackground.gd2</strong></span>
+          </span> </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option erlaubt es Ihnen, ein Bild anzugeben, das als Hintergrund im <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap CGI</a>
@@ -839,19 +424,10 @@
   oder GD2-Format sein. Das GD2-Format (vorzugsweise im unkomprimierten Format) wird empfohlen, weil es die CPU-Belastung
   reduziert, wenn das CGI das Kartenbild generiert.</p>
 
-  <p><a name="configcgi-color_transparency_index"></a> <span class="bold"><strong>Statusmap Transparency Index Colour</strong></span></p>
+  <p><a id="configcgi-color_transparency_index"></a> <span class="bold"><strong>Statusmap Transparency Index Colour</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td>
-<p>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p>
                
 
               <span class="bold"><strong>color_transparency_index_r=&lt;0...255&gt;</strong></span>
@@ -869,158 +445,51 @@
               <span class="bold"><strong>color_transparency_index_b=&lt;0...255&gt;</strong></span>
 
                
-            </p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>color_transparency_index_r=255</strong></span>
-          </font></span></p></td>
-</tr>
-</tbody>
-</table>
+            </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>color_transparency_index_r=255</strong></span>
+          </span></p></td></tr></tbody></table>
   </div>
 
   <p>Diese Optionen geben die RGB-Werte der Hintergrundfarbe an, die in der Statusmap-CGI benutzt werden soll, so dass bei Browsern, die
   keine PNG-Transparenz anzeigen können, stattdessen diese Farbe angezeigt wird. Default ist weiß: (R,G,B) = (255,255,255).</p>
 
-  <p><a name="configcgi-default_statusmap_layout"></a><span class="bold"><strong>Standard-Statusmap-Layout-Methode</strong></span></p>
+  <p><a id="configcgi-default_statusmap_layout"></a><span class="bold"><strong>Standard-Statusmap-Layout-Methode</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>default_statusmap_layout=&lt;layout_number&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>default_statusmap_layout=4</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>default_statusmap_layout=&lt;layout_number&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>default_statusmap_layout=4</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Gültige Werte sind:</p>
 
   <div class="informaltable">
-    <table border="1">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p><span class="bold"><strong>&lt;layout_number&gt;-Wert</strong></span> </p></td>
-<td><p><span class="bold"><strong>Layout-Methode</strong></span> </p></td>
-</tr>
-<tr>
-<td><p>0</p></td>
-<td><p>User-defined coordinates</p></td>
-</tr>
-<tr>
-<td><p>1</p></td>
-<td><p>Depth layers</p></td>
-</tr>
-<tr>
-<td><p>2</p></td>
-<td><p>Collapsed tree</p></td>
-</tr>
-<tr>
-<td><p>3</p></td>
-<td><p>Balanced tree</p></td>
-</tr>
-<tr>
-<td><p>4</p></td>
-<td><p>Circular</p></td>
-</tr>
-<tr>
-<td><p>5</p></td>
-<td><p>Circular (Marked Up)</p></td>
-</tr>
-<tr>
-<td><p>6</p></td>
-<td><p>Circular (Balloon)</p></td>
-</tr>
-</tbody>
-</table>
+    <table border="1"><colgroup><col /><col /></colgroup><tbody><tr><td><p><span class="bold"><strong>&lt;layout_number&gt;-Wert</strong></span> </p></td><td><p><span class="bold"><strong>Layout-Methode</strong></span> </p></td></tr><tr><td><p>0</p></td><td><p>User-defined coordinates</p></td></tr><tr><td><p>1</p></td><td><p>Depth layers</p></td></tr><tr><td><p>2</p></td><td><p>Collapsed tree</p></td></tr><tr><td><p>3</p></td><td><p>Balanced tree</p></td></tr><tr><td><p>4</p></td><td><p>Circular</p></td></tr><tr><td><p>5</p></td><td><p>Circular (Marked Up)</p></td></tr><tr><td><p>6</p></td><td><p>Circular (Balloon)</p></td></tr></tbody></table>
   </div>
 
-  <p><a name="configcgi-refresh_rate"></a><span class="bold"><strong>CGI-Aktualisierungsrate</strong></span></p>
+  <p><a id="configcgi-refresh_rate"></a><span class="bold"><strong>CGI-Aktualisierungsrate</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>refresh_rate=&lt;rate_in_seconds&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>refresh_rate=90</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>refresh_rate=&lt;rate_in_seconds&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>refresh_rate=90</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option erlaubt es Ihnen, die Anzahl von Sekunden zwischen Seitenaktualisierungen für die <a class="link" href="cgis.html#cgis-status_cgi">status</a>-, <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>- und <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a>-CGIs festzulegen.</p>
 
-  <p><a name="configcgi-refresh_type"></a><span class="bold"><strong>CGI-Refresh-Typ</strong></span></p>
+  <p><a id="configcgi-refresh_type"></a><span class="bold"><strong>CGI-Refresh-Typ</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>refresh_type=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>refresh_type=1</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>refresh_type=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>refresh_type=1</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, welche Art von Refresh benutzt wird. Sie können zwischen HTTP-Header und JavaScript wählen. Als Standard ist
   JavaScript (1) aktiviert. Falls Sie Schwierigkeiten damit haben, dann sollten Sie HTTP-Header (0) einstellen.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.7.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-audio_alerts"></a><span class="bold"><strong>Audio-Alarme</strong></span></p>
+  <p><a id="configcgi-audio_alerts"></a><span class="bold"><strong>Audio-Alarme</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td>
-<p>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p>
                
 
               <span class="bold"><strong>host_unreachable_sound=&lt;sound_file&gt;</strong></span>
@@ -1056,89 +525,79 @@
               <span class="bold"><strong>normal_sound=&lt;sound_file&gt;</strong></span>
 
                
-            </p>
-</td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiele:</p></td>
-<td>
-<p>
+            </p></td></tr><tr><td align="left" valign="top"><p>Beispiele:</p></td><td><p>
                
 
-              <span class="color"><font color="red">
+              <span class="color">
                  
 
                 <span class="bold"><strong>host_unreachable_sound=hostu.wav</strong></span>
 
                  
-              </font></span>
+              </span>
 
                
             </p> <p>
                
 
-              <span class="color"><font color="red">
+              <span class="color">
                  
 
                 <span class="bold"><strong>host_down_sound=hostd.wav</strong></span>
 
                  
-              </font></span>
+              </span>
 
                
             </p> <p>
                
 
-              <span class="color"><font color="red">
+              <span class="color">
                  
 
                 <span class="bold"><strong>service_critical_sound=critical.wav</strong></span>
 
                  
-              </font></span>
+              </span>
 
                
             </p> <p>
                
 
-              <span class="color"><font color="red">
+              <span class="color">
                  
 
                 <span class="bold"><strong>service_warning_sound=warning.wav</strong></span>
 
                  
-              </font></span>
+              </span>
 
                
             </p> <p>
                
 
-              <span class="color"><font color="red">
+              <span class="color">
                  
 
                 <span class="bold"><strong>service_unknown_sound=unknown.wav</strong></span>
 
                  
-              </font></span>
+              </span>
 
                
             </p> <p>
                
 
-              <span class="color"><font color="red">
+              <span class="color">
                  
 
                 <span class="bold"><strong>normal_sound=noproblem.wav</strong></span>
 
                  
-              </font></span>
+              </span>
 
                
-            </p>
-</td>
-</tr>
-</tbody>
-</table>
+            </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option erlaubt es Ihnen, eine Audio-Datei anzugeben, die in Ihrem Browser abgespielt wird, wenn es ein Problem gibt, während
@@ -1147,463 +606,199 @@
   Services in einem UNKNOWN-Zustand sind (beachten Sie die Reihenfolge im obigen Beispiel). Audio-Dateien werden im <span class="bold"><strong>media</strong></span>-Unterverzeichnis Ihres HTML-Verzeichnisses erwartet (d.h.
   <span class="emphasis"><em>/usr/local/icinga/share/media</em></span>).</p>
 
-  <p><a name="configcgi-escape_html_tags"></a><span class="bold"><strong>Escape HTML Tags Option</strong></span></p>
+  <p><a id="configcgi-escape_html_tags"></a><span class="bold"><strong>Escape HTML Tags Option</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>escape_html_tags=[0/1]</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>escape_html_tags=1</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>escape_html_tags=[0/1]</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>escape_html_tags=1</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, ob HTML-Tags in Host- und Service-(Plugin-)Ausgaben in CGIs unberücksichtigt bleiben oder nicht. Wenn Sie
   diese Option aktivieren, wird die Plugin-Ausgabe keine anklickbaren Hyperlinks enthalten.</p>
 
-  <p><a name="configcgi-notes_url_target"></a><span class="bold"><strong>Notes URL Target</strong></span></p>
+  <p><a id="configcgi-notes_url_target"></a><span class="bold"><strong>Notes URL Target</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>notes_url_target=[target]</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>notes_url_target=_blank</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>notes_url_target=[target]</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>notes_url_target=_blank</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt den Namen des Ziel-Frames fest, in dem Anmerkungs-URLs angezeigt werden sollen. Gültige Optionen umfassen
   <span class="emphasis"><em>_blank</em></span>, <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>, <span class="emphasis"><em>_parent</em></span> oder jeden anderen
   gültigen Zielnamen.</p>
 
-  <p><a name="configcgi-action_url_target"></a><span class="bold"><strong>Action URL Target</strong></span></p>
+  <p><a id="configcgi-action_url_target"></a><span class="bold"><strong>Action URL Target</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>action_url_target=[target]</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>action_url_target=_blank</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>action_url_target=[target]</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>action_url_target=_blank</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt den Namen des Ziel-Frames fest, in dem Aktions-URLs angezeigt werden sollen. Gültige Optionen umfassen
   <span class="emphasis"><em>_blank</em></span>, <span class="emphasis"><em>_self</em></span>, <span class="emphasis"><em>_top</em></span>, <span class="emphasis"><em>_parent</em></span> oder jeden anderen
   gültigen Zielnamen.</p>
 
-  <p><a name="configcgi-show_only_hard_states"></a><span class="bold"><strong>Tac Show Only Hard State</strong></span></p>
+  <p><a id="configcgi-show_only_hard_states"></a><span class="bold"><strong>Tac Show Only Hard State</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>tac_show_only_hard_state=[0/1]</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>tac_show_only_hard_state=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>tac_show_only_hard_state=[0/1]</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>tac_show_only_hard_state=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option erlaubt Ihnen in der Tactical Overview nur HARD States von Host und Services anzeigen zu lassen. Standardmäßig ist
   diese Option deaktiviert. Setzen Sie tac_show_only_hard_state=1, werden in der Tactical Overview nur noch HARD States angezeigt.</p>
 
-  <p><a name="configcgi-enable_splunk_integration"></a><span class="bold"><strong>Splunk-Integrationsoption</strong></span></p>
+  <p><a id="configcgi-enable_splunk_integration"></a><span class="bold"><strong>Splunk-Integrationsoption</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>enable_splunk_integration=[0/1]</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>enable_splunk_integration=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>enable_splunk_integration=[0/1]</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>enable_splunk_integration=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, ob die Integration mit Splunk im Web-Interface aktiviert ist oder nicht. Wenn sie aktiviert ist, werden an
   verschiedenen Stellen "Splunk It"-Links in den CGIs angezeigt (Log-Datei, Alarmhistorie, Host-/Service-Details, usw.). Das ist nützlich,
-  wenn Sie nach den Ursachen suchen, warum ein bestimmtes Problem auftrat. Für mehr Informationen über Splunk besuchen Sie <a class="link" href="http://www.splunk.com/" target="_top">http://www.splunk.com/</a>.</p>
+  wenn Sie nach den Ursachen suchen, warum ein bestimmtes Problem auftrat. Für mehr Informationen über Splunk besuchen Sie <a class="ulink" href="http://www.splunk.com/" target="_top">http://www.splunk.com/</a>.</p>
 
-  <p><a name="configcgi-splunk_url"></a><span class="bold"><strong>Splunk-URL</strong></span></p>
+  <p><a id="configcgi-splunk_url"></a><span class="bold"><strong>Splunk-URL</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>splunk_url=&lt;path&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>splunk_url=http://127.0.0.1:8000/</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>splunk_url=&lt;path&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>splunk_url=http://127.0.0.1:8000/</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option wird benutzt, um den Basis-URL zu Ihrem Splunk-Interface zu definieren. Dieser URL wird von den CGIs benutzt, wenn
   Links erzeugt werden, falls die <a class="link" href="configcgi.html#configcgi-enable_splunk_integration">enable_splunk_integration</a>-Option aktiviert
   ist.</p>
 
-  <p><a name="configcgi-persistent_ack_comments"></a> <span class="bold"><strong>Persistente Bestätigungskommentare</strong></span></p>
+  <p><a id="configcgi-persistent_ack_comments"></a> <span class="bold"><strong>Persistente Bestätigungskommentare</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>persistent_ack_comments=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>persistent_ack_comments=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>persistent_ack_comments=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>persistent_ack_comments=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, ob die Check-Box "persistent comment" zur Bestätigung von Problem-Hosts oder -Services aktiviert ist. Sie
   kann benutzt werden, um das Verhalten von Nagios 2 wiederherzustellen. Default ist "0", um kompatibel mit Nagios 3 zu
   sein.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>0 = Check-Box "persistent comment" deaktiviert lassen (Default)</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>1 = Check-Box "persistent comment" aktivieren</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.0.3.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-csv_delimiter"></a> <span class="bold"><strong>Feldtrennzeichen für CSV-Export setzen</strong></span></p>
+  <p><a id="configcgi-csv_delimiter"></a> <span class="bold"><strong>Feldtrennzeichen für CSV-Export setzen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>csv_delimiter=&lt;char&gt;</strong></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>csv_delimiter=,</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>csv_delimiter=&lt;char&gt;</strong></span></p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>csv_delimiter=,</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, welche Zeichen als Feldtrenner benutzt werden soll. Default ist Semikolon (;).</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar seit Icinga 1.2.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-csv_data_enclosure"></a> <span class="bold"><strong>Set field enclosure character for CSV export</strong></span></p>
+  <p><a id="configcgi-csv_data_enclosure"></a> <span class="bold"><strong>Set field enclosure character for CSV export</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>csv_data_enclosure=&lt;char&gt;</strong></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>csv_data_enclosure='</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>csv_data_enclosure=&lt;char&gt;</strong></span></p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>csv_data_enclosure='</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, mit welchem Zeichen Felder begrenzt werden sollen. Default ist ein Apostroph (').</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar seit Icinga 1.2.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-showlog_initial_states"></a> <span class="bold"><strong>Initialen Status anzeigen</strong></span></p>
+  <p><a id="configcgi-showlog_initial_states"></a> <span class="bold"><strong>Initialen Status anzeigen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>showlog_initial_states=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>showlog_initial_states=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>showlog_initial_states=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>showlog_initial_states=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, ob die initialen Zustände von Hosts und Services in showlog.cgi angezeigt werden sollen.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option hat nur Auswirkungen, wenn die Option "log_initial_states" in der icinga.cfg gesetzt wurde.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>0 = initiale Zustände in showlog.cgi nicht anzeigen</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>1 = initiale Zustände in showlog.cgi anzeigen (Default)</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-showlog_current_states"></a> <span class="bold"><strong>Aktuellen Status anzeigen</strong></span></p>
+  <p><a id="configcgi-showlog_current_states"></a> <span class="bold"><strong>Aktuellen Status anzeigen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>showlog_current_states=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>showlog_current_states=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>showlog_current_states=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>showlog_current_states=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, ob die aktuellen Zustände von Hosts und Services in showlog.cgi angezeigt werden sollen.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option hat nur Auswirkungen, wenn die Option "log_current_states" in der icinga.cfg gesetzt wurde.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>0 = aktuelle Zustände in showlog.cgi nicht anzeigen</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>1 = aktuelle Zustände in showlog.cgi anzeigen (Default)</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-tab_friendly_titles"></a> <span class="bold"><strong>Objekttyp in Tab-Titel anzeigen</strong></span></p>
+  <p><a id="configcgi-tab_friendly_titles"></a> <span class="bold"><strong>Objekttyp in Tab-Titel anzeigen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>tab_friendly_titles=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>tab_friendly_titles=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>tab_friendly_titles=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>tab_friendly_titles=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Durch Aktivieren dieser Option ändern sich die Titel der Reiter im Browser, um den jeweiligen Objekttyp anzuzeigen. Sie zeigen
   dann:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>[Host]</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>{Hostgruppe}</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Service-Beschreibung @ Host</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>(Servicegruppe)</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
   <p>Diese sind einfache zu lesen (und zu finden), wenn Sie (viele) Reiter in Ihrem Browser anzeigen.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>0 = Objekttyp im Reiter nicht anzeigen</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>1 = Objekttyp im Reiter anzeigen (Default)</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-add_notif_num"></a> <span class="bold"><strong>Service-Zustand und Benachrichtigungsnummer
+  <p><a id="configcgi-add_notif_num"></a> <span class="bold"><strong>Service-Zustand und Benachrichtigungsnummer
   anzeigen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>add_notif_num_hard=n</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p></p></td>
-<td><p><span class="bold"><strong>add_notif_num_soft=n</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>add_notif_num_hard=28</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>add_notif_num_hard=n</strong></span> </p></td></tr><tr><td align="left" valign="top"><p></p></td><td><p><span class="bold"><strong>add_notif_num_soft=n</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>add_notif_num_hard=28</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Wenn der Wert der Direktive(n) größer Null ist, werden in der status.cgi neben dem "Versuch" (z.B. "3/3" für einen
@@ -1611,8 +806,7 @@
   versandt wurde) angezeigt. Dies ist hilfreich, um Services zu identifizieren, die oft zwischen verschiedenen Nicht-OK-Zuständen wechseln,
   oder Services, bei denen first_notification_delay gesetzt ist, die aber noch nicht "in Schwierigkeiten" sind.</p>
 
-  <p>Relevante Werte aus include/statusdata.h (sehen Sie *dort* nach, um *wirklich* sicher zu sein): </p>
-<pre class="programlisting"> #define    SERVICE_PENDING     1
+  <p>Relevante Werte aus include/statusdata.h (sehen Sie *dort* nach, um *wirklich* sicher zu sein): </p><pre class="programlisting"> #define    SERVICE_PENDING     1
  #define    SERVICE_OK          2
  #define    SERVICE_WARNING     4
  #define    SERVICE_UNKNOWN     8
@@ -1622,302 +816,123 @@
 
   <p>Der Vollständigkeit halber gibt es auch add_notif_num_soft für Services im SOFT-Zustand.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-http_charset"></a> <span class="bold"><strong>HTTP-Zeichensatz einstellen</strong></span></p>
+  <p><a id="configcgi-http_charset"></a> <span class="bold"><strong>HTTP-Zeichensatz einstellen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>http_charset=&lt;Zeichensatz&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>http_charset=utf-8</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>http_charset=&lt;Zeichensatz&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>http_charset=utf-8</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Hiermit kann der Zeichensatz eingestellt werden, der mit den HTTP-Headern gesendet wird. Default ist utf-8.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.3.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-first_day_of_week"></a> <span class="bold"><strong>Ersten Tag der Woche setzen</strong></span></p>
+  <p><a id="configcgi-first_day_of_week"></a> <span class="bold"><strong>Ersten Tag der Woche setzen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>first_day_of_week=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>first_day_of_week=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>first_day_of_week=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>first_day_of_week=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt den ersten Tag der Woche fest, der in verschiedenen CGI-Reports benutzt wird. Default ist 0 = Sonntag. 1 = Montag
   gilt für Länder, die sich nach ISO 8601 richten.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-use_logging"></a><span class="bold"><strong>CGI-Protokoll</strong></span> (use logging)</p>
+  <p><a id="configcgi-use_logging"></a><span class="bold"><strong>CGI-Protokoll</strong></span> (use logging)</p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p>Format:</p></td>
-<td><p><span class="bold"><strong>use_logging=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>use_logging=1</strong></span></font></span></p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td><p>Format:</p></td><td><p><span class="bold"><strong>use_logging=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>use_logging=1</strong></span></span></p></td></tr></tbody></table>
   </div>
 
   <p>Diese Variable gibt an, ob die CGI-Kommandos protokolliert werden sollen. 0 = nicht protokollieren (Default), 1 =
   protokollieren.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-cgi_log_file"></a><span class="bold"><strong>CGI-Protokolldatei</strong></span> (CGI-Log File)</p>
+  <p><a id="configcgi-cgi_log_file"></a><span class="bold"><strong>CGI-Protokolldatei</strong></span> (CGI-Log File)</p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p>Format:</p></td>
-<td><p><span class="bold"><strong>cgi_log_file=&lt;file_name&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>cgi_log_file=/usr/local/icinga/share/log/icinga-cgi.log</strong></span></font></span></p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td><p>Format:</p></td><td><p><span class="bold"><strong>cgi_log_file=&lt;file_name&gt;</strong></span> </p></td></tr><tr><td><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>cgi_log_file=/usr/local/icinga/share/log/icinga-cgi.log</strong></span></span></p></td></tr></tbody></table>
   </div>
 
   <p>Diese Variable gibt an, wo Icinga die CGI-Protokolldatei anlegen soll.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-cgi_log_rotation_method"></a><span class="bold"><strong>CGI-Protokollrotationsmethode</strong></span> (CGI Log Rotation
+  <p><a id="configcgi-cgi_log_rotation_method"></a><span class="bold"><strong>CGI-Protokollrotationsmethode</strong></span> (CGI Log Rotation
   Method)</p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p>Format:</p></td>
-<td><p><span class="bold"><strong>cgi_log_rotation_method=&lt;d/w/m&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>cgi_log_rotation_method=d</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td><p>Format:</p></td><td><p><span class="bold"><strong>cgi_log_rotation_method=&lt;d/w/m&gt;</strong></span> </p></td></tr><tr><td><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>cgi_log_rotation_method=d</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist die Rotationsmethode, die Icinga für Ihre CGI-Protokolldatei nutzen soll. Die Werte sind wie folgt:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>n = niemals ("none" - die Protokolldatei wird nie rotieren)</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>d = täglich ("daily" - die Protokolldatei jeden Tag um Mitternacht rotieren - Default)</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>w = wöchentlich ("weekly" - die Protokolldatei jeden Samstag um Mitternacht rotieren)</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>m = monatlich ("monthly" - die Protokolldatei am letzten Tag des Monats um Mitternacht rotieren)</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-cgi_log_archive_path"></a><span class="bold"><strong>CGI-Protokollarchiv-Pfad</strong></span> (CGI Log Archiv
+  <p><a id="configcgi-cgi_log_archive_path"></a><span class="bold"><strong>CGI-Protokollarchiv-Pfad</strong></span> (CGI Log Archiv
   Path)</p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p>Format:</p></td>
-<td><p><span class="bold"><strong>cgi_log_archive_path=&lt;path&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>cgi_log_archive_path=/usr/local/icinga/share/log/</strong></span></font></span></p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td><p>Format:</p></td><td><p><span class="bold"><strong>cgi_log_archive_path=&lt;path&gt;</strong></span> </p></td></tr><tr><td><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>cgi_log_archive_path=/usr/local/icinga/share/log/</strong></span></span></p></td></tr></tbody></table>
   </div>
 
   <p>Dies ist das Verzeichnis, in dem Icinga die CGI-Protokolldateien ablegen soll, die rotiert wurden. Diese Option wird
   ignoriert, wenn Sie die Funktionalität der <a class="link" href="configcgi.html#configcgi-cgi_log_rotation_method">CGI-Protokollrotation</a> (CGI log
   rotation) nicht nutzen.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-enforce_comments_on_actions"></a> <span class="bold"><strong>Erzwingen von Kommentaren bei
+  <p><a id="configcgi-enforce_comments_on_actions"></a> <span class="bold"><strong>Erzwingen von Kommentaren bei
   Aktionen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>enforce_comments_on_actions=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>enforce_comments_on_actions=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>enforce_comments_on_actions=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>enforce_comments_on_actions=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Erzwingt die Notwendigkeit zur Eingabe eines Kommentares bei Aktionen per CGI. 0 = keine Kommentare erzwingen (Default), 1 =
   Kommentar erzwingen.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Die Option use_logging muss aktiviert sein, anderenfalls werden keine Kommentare protokolliert.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-show_tac_header"></a> <span class="bold"><strong>Tactical Overview-Header anzeigen</strong></span></p>
+  <p><a id="configcgi-show_tac_header"></a> <span class="bold"><strong>Tactical Overview-Header anzeigen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>show_tac_header=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>show_tac_header=0</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>show_tac_header=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>show_tac_header=0</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Innerhalb der CGIs gibt es einen neuen Header, der per Default aktiviert ist. Die neue Ansicht hat ein ähnliches Aussehen wie der
@@ -1930,14 +945,7 @@
   <p>Das Layout der Anzeige für die Einträge jedes Typs lautet "X / Y / Z", wobei:</p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup><col></colgroup>
-<tbody>
-<tr><td align="left" valign="top"><p>X = Aktiv, unbestätigt (active unacknowledged)</p></td></tr>
-<tr><td align="left" valign="top"><p>Y = Passiv, unbestätigt (passive unacknowledged)</p></td></tr>
-<tr><td align="left" valign="top"><p>Z = Bestätigt (acknowledged)</p></td></tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /></colgroup><tbody><tr><td align="left" valign="top"><p>X = Aktiv, unbestätigt (active unacknowledged)</p></td></tr><tr><td align="left" valign="top"><p>Y = Passiv, unbestätigt (passive unacknowledged)</p></td></tr><tr><td align="left" valign="top"><p>Z = Bestätigt (acknowledged)</p></td></tr></tbody></table>
   </div>
 
   <p>Die X/Y/Z-Zahlen selbst sind anklickbar und führen Sie zu einer Liste mit allen Hosts bzw. Services mit der o.g. Eigenschaft.</p>
@@ -1954,118 +962,51 @@
   Sie z.B. eine verteilte Umgebung haben und primär passive Prüfungen einsetzen, dann möchten Sie ggf., dass passive Prüfungen farblich wie
   aktive Prüfungen dargestellt werden.</p>
 
-  <div class="figure">
-<a name="idp6378000"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p>
-<div class="figure-contents">
+  <div class="figure"><a id="idp6342080"></a><p class="title"><b>Abbildung 3.1. Beispiel des neuen Headers</b></p><div class="figure-contents">
     
 
-    <div class="mediaobject"><img src="../images/tac_header2.png" alt="Beispiel des neuen Headers"></div>
-  </div>
-</div>
-<br class="figure-break">
+    <div class="mediaobject"><img src="../images/tac_header2.png" alt="Beispiel des neuen Headers" /></div>
+  </div></div><br class="figure-break" />
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.4.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-show_tac_header_pending"></a> <span class="bold"><strong>Pending-Anzahlen in Tactical Overview-Header
+  <p><a id="configcgi-show_tac_header_pending"></a> <span class="bold"><strong>Pending-Anzahlen in Tactical Overview-Header
   anzeigen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>show_tac_header_pending=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>show_tac_header_pending=0</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>show_tac_header_pending=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>show_tac_header_pending=0</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option aktiviert die Anzeige von Pending-Anzahlen im Tactical-Overview-Header. Wenn Ihre Auflösung kleiner als 1024x768 und
   diese Option aktiviert ist, dann passen die taktischen Informationen ggf. nicht in den verfügbaren Platz. Diese Option ist per Default
   deaktiviert.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.4.1.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-default_downtime_duration"></a> <span class="bold"><strong>Default-Ausfallzeit-Dauer setzen</strong></span></p>
+  <p><a id="configcgi-default_downtime_duration"></a> <span class="bold"><strong>Default-Ausfallzeit-Dauer setzen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>default_downtime_duration=n</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>default_downtime_duration=7200</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>default_downtime_duration=n</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>default_downtime_duration=7200</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option setzt die Default-Dauer (in Sekunden) von festen und flexiblen Ausfallzeiten. Default ist 7200 Sekunden (2
   Stunden).</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-suppress_maintenance_downtime"></a> <span class="bold"><strong>Maintenance/Downtime anzeigen</strong></span></p>
+  <p><a id="configcgi-suppress_maintenance_downtime"></a> <span class="bold"><strong>Maintenance/Downtime anzeigen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>suppress_maintenance_downtime=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>suppress_maintenance_downtime=0</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>suppress_maintenance_downtime=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>suppress_maintenance_downtime=0</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Die aktuelle Classic-UI-Ansicht zeigt den Status von Hosts zusammen mit Aufmerksamkeit erregenden Farben, selbst wenn der Host/
@@ -2076,36 +1017,15 @@
   dass ein Host/Service wieder online ist, an dem gearbeitet wird. Außerdem werden Hosts in einer geplanten Ausfallzeit in der statusmap.cgi
   in grau dargestellt.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-show_partial_hostgroups"></a> <span class="bold"><strong>Unvollständige Hostgruppen anzeigen</strong></span></p>
+  <p><a id="configcgi-show_partial_hostgroups"></a> <span class="bold"><strong>Unvollständige Hostgruppen anzeigen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>show_partial_hostgroups=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>show_partial_hostgroups=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>show_partial_hostgroups=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>show_partial_hostgroups=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Per Default (gleichbedeutend mit einer nicht vorhandenen oder deaktivierten Direktive) sieht ein Benutzer eine Hostgruppe und deren
@@ -2124,199 +1044,84 @@
   dann deaktivieren Sie diese Option wieder und ermuntern Sie den/die Entwickler des Programms, statt dessen JSON zur Ermittlung der Daten
   zu nutzen.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-highlight_table_rows"></a> <span class="bold"><strong>Zeilen in status.cgi hervorheben</strong></span></p>
+  <p><a id="configcgi-highlight_table_rows"></a> <span class="bold"><strong>Zeilen in status.cgi hervorheben</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>highlight_table_rows=&lt;0|1&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>highlight_table_rows=0</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>highlight_table_rows=&lt;0|1&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>highlight_table_rows=0</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Mit dieser Option können Zeilen in der status.cgi hervorgehoben werden. Das kann bei vielen Zeilen oder einer hohen
   Bildschirmauflösung nützlich sein. Werte: 0 = deaktivieren der Hervorhebung, 1 = aktivieren der Hervorhebung (Default).</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.5.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-use_pending_states"></a> <span class="bold"><strong>Anzeige für PENDING-Status auswählen</strong></span></p>
+  <p><a id="configcgi-use_pending_states"></a> <span class="bold"><strong>Anzeige für PENDING-Status auswählen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>use_pending_states=&lt;0|1&gt;</strong></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>use_pending_states=0</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>use_pending_states=&lt;0|1&gt;</strong></span></p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>use_pending_states=0</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, welcher Zustand im Web-Interface für Hosts/Services angezeigt werden soll, die bisher noch nicht geprüft
   wirden. Werte: 0 = Hosts/Services, die noch nicht geprüft wurden, in ihrem ursprünglichen Zustand belassen; 1 = Hosts/Services, die noch
   nicht geprüft wurden, als PENDING anzeigen (default).</p>
 
-  <p><a name="configcgi-default_expiring_acknowledgement_duration"></a> <span class="bold"><strong>Verfallszeit von Bestätigungen
+  <p><a id="configcgi-default_expiring_acknowledgement_duration"></a> <span class="bold"><strong>Verfallszeit von Bestätigungen
   setzen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>default_expiring_acknowledgement_duration=&lt;n&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>default_expiring_acknowledgement_duration=86400</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>default_expiring_acknowledgement_duration=&lt;n&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>default_expiring_acknowledgement_duration=86400</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Mit dieser Option kann die Verfallszeit von Bestätigungen (acknowledgements) festgelegt werden. Nach Ablauf dieser Zeit werden
   Bestätigungen automatisch gelöscht. Default ist 86.400 Sekunden (ein Tag).</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-extinfo_show_child_hosts"></a> <span class="bold"><strong>Child-Host(s) zeigen</strong></span></p>
+  <p><a id="configcgi-extinfo_show_child_hosts"></a> <span class="bold"><strong>Child-Host(s) zeigen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>extinfo_show_child_hosts=&lt;0|1|2&gt;</strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>extinfo_show_child_hosts=1</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>extinfo_show_child_hosts=&lt;0|1|2&gt;</strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>extinfo_show_child_hosts=1</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Mit dieser Option wird festgelegt, ob Child-Host(s) für den ausgewählten Host im Hostextinfo-CGI angezeigt werden.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>0 = deaktiviert (Default)</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>1 = nur direkte Child-Hosts anzeigen</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>2 = direkte und darunter liegende Child-Hosts anzeigen</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
-<th align="left">Wichtig</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png" /></td><th align="left">Wichtig</th></tr><tr><td align="left" valign="top">
     <p>Option 2 kann ein richtiger Performance-Killer in großen Installationen sein, deshalb bitte mit Vorsicht einsetzen.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist per Default deaktiviert, da sie die gesamte Performance beeinträchtigen kann.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-authorized_for_full_command_resolution"></a> <span class="bold"><strong>Benutzer(n) VOLLEN Zugriff auf
+  <p><a id="configcgi-authorized_for_full_command_resolution"></a> <span class="bold"><strong>Benutzer(n) VOLLEN Zugriff auf
   Kommandozeilenanzeigen erlauben</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>authorized_for_full_command_resolution=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt; </strong></span>
-          </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>authorized_for_full_command_resolution=icingaadmin</strong></span></font></span> </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>authorized_for_full_command_resolution=&lt;user1&gt;,&lt;user2&gt;,&lt;user3&gt;,...&lt;usern&gt; </strong></span>
+          </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>authorized_for_full_command_resolution=icingaadmin</strong></span></span> </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option ist eine kommaseparierte Liste von Benutzern, die im "Config Command Expander" den Befehl so sehen, wie er von
@@ -2325,278 +1130,205 @@
 
   <p>Alternativ können Sie auch Kontaktgruppen angeben.</p>
 
-  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
-<th align="left">Wichtig</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png" /></td><th align="left">Wichtig</th></tr><tr><td align="left" valign="top">
     <p>$USERn$- und benutzerdefinierte Variable können sensible Daten enthalten, so dass Sie den Zugriff strikt begrenzen sollten.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.6.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-display_status_totals"></a> <span class="bold"><strong>Host-/Service-Status-Gesamtanzahlen
+  <p><a id="configcgi-display_status_totals"></a> <span class="bold"><strong>Host-/Service-Status-Gesamtanzahlen
   anzeigen</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>display_status_totals=0|1 </strong></span> </p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>display_status_totals=0</strong></span></font></span>
-          </p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>display_status_totals=0|1 </strong></span> </p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>display_status_totals=0</strong></span></span>
+          </p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, ob die Gesamtanzahlen von Host-/Service-Zuständen angezeigt werden sollen. Default ist 0.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.7.</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-result_limit"></a><span class="bold"><strong>Anzahl anzuzeigender Seiteneinträge beschränken</strong></span></p>
+  <p><a id="configcgi-result_limit"></a><span class="bold"><strong>Anzahl anzuzeigender Seiteneinträge beschränken</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>result_limit=&lt;n&gt;</strong></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>result_limit=50</strong></span></font></span></p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>result_limit=&lt;n&gt;</strong></span></p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>result_limit=50</strong></span></span></p></td></tr></tbody></table>
   </div>
 
   <p>Mit dieser Option können Sie die Anzahl von Einträgen pro Seite in diversen CGI's einstellen. Um standardmäßig alle Einträge
   anzeigen zu lassen, setzen Sie diese Option auf 0.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.8</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <p><a name="configcgi-lowercase_user_name"></a> <span class="bold"><strong>Benutzername in Kleinbuchstaben umwandeln</strong></span></p>
+  <p><a id="configcgi-lowercase_user_name"></a> <span class="bold"><strong>Benutzername in Kleinbuchstaben umwandeln</strong></span></p>
 
   <div class="informaltable">
-    <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td align="left" valign="top"><p>Format:</p></td>
-<td><p><span class="bold"><strong>lowercase_user_name=0|1</strong></span></p></td>
-</tr>
-<tr>
-<td align="left" valign="top"><p>Beispiel:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>lowercase_user_name=1</strong></span></font></span></p></td>
-</tr>
-</tbody>
-</table>
+    <table border="0"><colgroup><col /><col /></colgroup><tbody><tr><td align="left" valign="top"><p>Format:</p></td><td><p><span class="bold"><strong>lowercase_user_name=0|1</strong></span></p></td></tr><tr><td align="left" valign="top"><p>Beispiel:</p></td><td><p><span class="color"><span class="bold"><strong>lowercase_user_name=1</strong></span></span></p></td></tr></tbody></table>
   </div>
 
   <p>Diese Option legt fest, ob der Benutzername in Kleinbuchstaben umgewandelt werden soll. Das kann sinnvoll sein, wenn der
   Benutzername im Active Directory gespeichert wird.</p>
 
-  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
     <p>Diese Option ist verfügbar ab Icinga 1.8</p>
-  </td></tr>
-</table></div>
+  </td></tr></table></div>
 
-  <a class="indexterm" name="idp6543296"></a>
+  <a id="idp6507824" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6544688"></a>
+  <a id="idp6509456" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6546112"></a>
+  <a id="idp6511088" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6547872"></a>
+  <a id="idp6512656" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6549472"></a>
+  <a id="idp6514320" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6551056"></a>
+  <a id="idp6515952" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6552816"></a>
+  <a id="idp6517520" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6554384"></a>
+  <a id="idp6519152" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6556080"></a>
+  <a id="idp6520848" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6557840"></a>
+  <a id="idp6522608" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6559536"></a>
+  <a id="idp6524304" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6561296"></a>
+  <a id="idp6526064" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6563056"></a>
+  <a id="idp6527824" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6564816"></a>
+  <a id="idp6529584" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6566448"></a>
+  <a id="idp6531216" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6568080"></a>
+  <a id="idp6532848" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6569776"></a>
+  <a id="idp6534544" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6571536"></a>
+  <a id="idp6536304" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6573168"></a>
+  <a id="idp6537936" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6574864"></a>
+  <a id="idp6539632" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6576560"></a>
+  <a id="idp6541328" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6578320"></a>
+  <a id="idp6543088" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6579952"></a>
+  <a id="idp6544720" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6581584"></a>
+  <a id="idp6546352" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6583280"></a>
+  <a id="idp6548048" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6584976"></a>
+  <a id="idp6549744" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6586656"></a>
+  <a id="idp6551424" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6588288"></a>
+  <a id="idp6553056" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6589920"></a>
+  <a id="idp6554688" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6591584"></a>
+  <a id="idp6556288" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6593248"></a>
+  <a id="idp6557776" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6594848"></a>
+  <a id="idp6559344" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6596512"></a>
+  <a id="idp6560800" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6598176"></a>
+  <a id="idp6562192" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6599808"></a>
+  <a id="idp6563760" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6601440"></a>
+  <a id="idp6565392" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6603072"></a>
+  <a id="idp6567024" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6604704"></a>
+  <a id="idp6568656" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6606320"></a>
+  <a id="idp6569664" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6607920"></a>
+  <a id="idp6571872" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6609600"></a>
+  <a id="idp6573440" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6611200"></a>
+  <a id="idp6575184" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6612896"></a>
+  <a id="idp6576864" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6614560"></a>
+  <a id="idp6578528" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6616192"></a>
+  <a id="idp6580160" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6617840"></a>
+  <a id="idp6581808" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6619472"></a>
+  <a id="idp6583440" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6621200"></a>
+  <a id="idp6585168" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6622480"></a>
+  <a id="idp6586448" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6624000"></a>
+  <a id="idp6587968" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6625632"></a>
+  <a id="idp6589600" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6627264"></a>
+  <a id="idp6591232" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6628320"></a>
+  <a id="idp6592288" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6630592"></a>
+  <a id="idp6594560" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6631648"></a>
+  <a id="idp6595616" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6633920"></a>
+  <a id="idp6597888" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6634976"></a>
+  <a id="idp6598944" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6637200"></a>
+  <a id="idp6601168" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6638800"></a>
+  <a id="idp6602768" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6640624"></a>
+  <a id="idp6604592" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6642272"></a>
+  <a id="idp6606240" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6643936"></a>
+  <a id="idp6607904" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6645056"></a>
+  <a id="idp6609024" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6646768"></a>
+  <a id="idp6610736" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6649088"></a>
+  <a id="idp6613056" class="indexterm"></a>
 
-  <a class="indexterm" name="idp6650752"></a>
+  <a id="idp6614720" class="indexterm"></a>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="customobjectvars.html">Zurück</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch03.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="cgiauth.html">Weiter</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">3.5. Maßgeschneiderte Objektvariablen </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 3.7. Authentifizierung und Autorisierung in den CGIs</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="customobjectvars.html">Zurück</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch03.html">Nach oben</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="cgiauth.html">Weiter</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">3.5. Maßgeschneiderte Objektvariablen </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Zum Anfang</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 3.7. Authentifizierung und Autorisierung in den CGIs</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

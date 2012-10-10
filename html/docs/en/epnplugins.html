@@ -1,45 +1,40 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>11.2. Developing Plugins For Use With Embedded Perl</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
-<link rel="up" href="ch11.html" title="Chapter 11. Development">
-<link rel="prev" href="pluginapi.html" title="11.1. Icinga Plugin API">
-<link rel="next" href="icinga-api.html" title="11.3. No Icinga-API to install anymore">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">11.2. Developing Plugins For Use With Embedded Perl</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="pluginapi.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 11. Development</th>
-<td width="20%" align="right"> <a accesskey="n" href="icinga-api.html">Next</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="11.2. Developing Plugins For Use With Embedded Perl">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="epnplugins"></a>11.2. <a name="epn_plugins"></a>Developing Plugins For Use With Embedded Perl</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">11.2.1. <a href="epnplugins.html#idp16040784">Introduction</a></span></dt>
-<dt><span class="section">11.2.2. <a href="epnplugins.html#idp16042576">Target Audience</a></span></dt>
-<dt><span class="section">11.2.3. <a href="epnplugins.html#idp16047008">Things you should do when developing a Perl Plugin (ePN or not)</a></span></dt>
-<dt><span class="section">11.2.4. <a href="epnplugins.html#idp16055792">Things you must do to develop a Perl plugin for ePN</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>11.2. Developing Plugins For Use With Embedded Perl</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
+    <link rel="up" href="ch11.html" title="Chapter 11. Development" />
+    <link rel="prev" href="pluginapi.html" title="11.1. Icinga Plugin API" />
+    <link rel="next" href="icinga-api.html" title="11.3. No Icinga-API to install anymore" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">11.2. Developing Plugins For Use With Embedded Perl</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="pluginapi.html">Prev</a> </td>
+          <th width="60%" align="center">Chapter 11. Development</th>
+          <td width="20%" align="right"> <a accesskey="n" href="icinga-api.html">Next</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="11.2. Developing Plugins For Use With Embedded Perl"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="epnplugins"></a>11.2. <a id="epn_plugins"></a>Developing Plugins For Use With Embedded Perl</h2></div></div></div><div class="toc"><dl><dt><span class="section">11.2.1. <a href="epnplugins.html#idp16022240">Introduction</a></span></dt><dt><span class="section">11.2.2. <a href="epnplugins.html#idp16024032">Target Audience</a></span></dt><dt><span class="section">11.2.3. <a href="epnplugins.html#idp16028176">Things you should do when developing a Perl Plugin (ePN or not)</a></span></dt><dt><span class="section">11.2.4. <a href="epnplugins.html#idp16037328">Things you must do to develop a Perl plugin for ePN</a></span></dt></dl></div>
   
 
-  <div class="section" title="11.2.1. Introduction">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16040784"></a>11.2.1. Introduction</h3></div></div></div>
+  <div class="section" title="11.2.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp16022240"></a>11.2.1. Introduction</h3></div></div></div>
 
   <p>Stanley Hopcroft has worked with the embedded Perl interpreter quite a bit and has commented on the advantages/disadvanges
   of using it. He has also given several helpful hints on creating Perl plugins that work properly with the embedded interpreter.
@@ -48,67 +43,43 @@
   <p>It should be noted that "ePN", as used in this documentation, refers to embedded Perl Nagios, or if you prefer,
   Icinga compiled with an embedded Perl interpreter.</p>
 
-  </div>
-<div class="section" title="11.2.2. Target Audience">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16042576"></a>11.2.2. Target Audience</h3></div></div></div>
+  </div><div class="section" title="11.2.2. Target Audience"><div class="titlepage"><div><div><h3 class="title"><a id="idp16024032"></a>11.2.2. Target Audience</h3></div></div></div>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>Average Perl developers; those with an appreciation of the languages powerful features without knowledge of internals
       or an in depth knowledge of those features.</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Those with a utilitarian appreciation rather than a great depth of understanding.</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>If you are happy with Perl objects, name management, data structures, and the debugger, that's probably
       sufficient.</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
-  </div>
-<div class="section" title="11.2.3. Things you should do when developing a Perl Plugin (ePN or not)">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16047008"></a>11.2.3. Things you should do when developing a Perl Plugin (ePN or not)</h3></div></div></div>
+  </div><div class="section" title="11.2.3. Things you should do when developing a Perl Plugin (ePN or not)"><div class="titlepage"><div><div><h3 class="title"><a id="idp16028176"></a>11.2.3. Things you should do when developing a Perl Plugin (ePN or not)</h3></div></div></div>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>Always always generate some output</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Use 'use utils' and import the stuff it exports ($TIMEOUT %ERRORS &amp;print_revision &amp;support)</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Have a look at how the standard Perl plugins do their stuff e.g.</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
+      <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
           <p>Always exit with $ERRORS{CRITICAL}, $ERRORS{OK}, etc.</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Use getopt to read command line arguments</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Manage timeouts</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Call print_usage (supplied by you) when there are no command line arguments</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Use standard switch names (e.g. H 'host', V 'version')</p>
-        </li>
-</ul></div>
-    </li>
-</ul></div>
+        </li></ul></div>
+    </li></ul></div>
 
-  </div>
-<div class="section" title="11.2.4. Things you must do to develop a Perl plugin for ePN">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16055792"></a>11.2.4. Things you must do to develop a Perl plugin for ePN</h3></div></div></div>
+  </div><div class="section" title="11.2.4. Things you must do to develop a Perl plugin for ePN"><div class="titlepage"><div><div><h3 class="title"><a id="idp16037328"></a>11.2.4. Things you must do to develop a Perl plugin for ePN</h3></div></div></div>
 
-  <div class="orderedlist"><ol class="orderedlist" type="1">
-<li class="listitem">
+  <div class="orderedlist"><ol class="orderedlist" type="1"><li class="listitem">
       <p>&lt;DATA&gt; can not be used; use here documents instead e.g.</p>
 
       <pre class="screen">my $data = &lt;&lt;DATA;
@@ -123,33 +94,25 @@ rup 100001
 DATA
 
 %prognum = map { my($a, $b) = split; ($a, $b) } split(/\n/, $data) ;</pre>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>BEGIN blocks will not work as you expect. May be best to avoid.</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Ensure that it is squeaky clean at compile time i.e.</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           <p>use strict</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>use perl -w (other switches [T notably] may not help)</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>use perl -c</p>
-        </li>
-</ul></div>
-    </li>
-<li class="listitem">
+        </li></ul></div>
+    </li><li class="listitem">
       <p>Avoid lexical variables (my) with global scope as a means of passing __variable__ data into subroutines. In fact this
       is __fatal__ if the subroutine is called by the plugin more than once when the check is run. Such subroutines act as
       'closures' that lock the global lexicals first value into subsequent calls of the subroutine. If however, your global is
-      read-only (a complicated structure for example) this is not a problem. What Bekman <a class="link" href="http://perl.apache.org/docs/1.0/guide/" target="_top">recommends you do instead</a>, is any of the following:</p>
+      read-only (a complicated structure for example) this is not a problem. What Bekman <a class="ulink" href="http://perl.apache.org/docs/1.0/guide/" target="_top">recommends you do instead</a>, is any of the following:</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           <p>make the subroutine anonymous and call it via a code ref e.g.</p>
 
           <pre class="screen">turn this                     into  
@@ -163,24 +126,19 @@ $x = 2                        $x = 2 ;
 a ;                           &amp;$a_cr ;
 
 # anon closures __always__ rebind the current lexical value</pre>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>put the global lexical and the subroutine using it in their own package (as an object or a module)</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>pass info to subs as references or aliases (\$lex_var or $_[n])</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>replace lexicals with package globals and exclude them from 'use strict' objections with 'use vars qw(global1
           global2 ..)'</p>
-        </li>
-</ul></div>
-    </li>
-<li class="listitem">
+        </li></ul></div>
+    </li><li class="listitem">
       <p>Be aware of where you can get more information.</p>
 
       <p>Useful information can be had from the usual suspects (the O'Reilly books, plus Damien Conways "Object Oriented Perl")
-      but for the really useful stuff in the right context start at Stas Bekman's mod_perl guide at <a class="link" href="http://perl.apache.org/guide/" target="_top">http://perl.apache.org/guide/</a>.</p>
+      but for the really useful stuff in the right context start at Stas Bekman's mod_perl guide at <a class="ulink" href="http://perl.apache.org/guide/" target="_top">http://perl.apache.org/guide/</a>.</p>
 
       <p>This wonderful book sized document has nothing whatsoever about Icinga, but all about writing Perl programs for
       the embedded Perl interpreter in Apache (i.e. Doug MacEacherns mod_perl).</p>
@@ -189,36 +147,27 @@ a ;                           &amp;$a_cr ;
 
       <p>On the basis that Lincoln Stein and Doug MacEachern know a thing or two about Perl and embedding Perl, their book
       'Writing Apache Modules with Perl and C' is almost certainly worth looking at.</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Be aware that your plugin may return strange values with an ePN and that this is likely to be caused by the problem in
       item #4 above</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Be prepared to debug via:</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           <p>having a test ePN and</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>adding print statements to your plugin to display variable values to STDERR (can't use STDOUT)</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>adding print statements to p1.pl to display what ePN thinks your plugin is before it tries to run it (vi)</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>running the ePN in foreground mode (probably in conjunction with the former recommendations)</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>use the 'Deparse' module on your plugin to see how the parser has optimised it and what the interpreter will
           actually get. (see 'Constants in Perl' by Sean M. Burke, The Perl Journal, Fall 2001)</p>
-        </li>
-</ul></div>
+        </li></ul></div>
 
       <pre class="screen"> perl -MO::Deparse &lt;your_program&gt;</pre>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Be aware of what ePN is transforming your plugin too, and if all else fails try and debug the transformed
       version.</p>
 
@@ -264,39 +213,38 @@ package Embed::check_5frpc; sub hndlr { shift(@_);
 <span class="emphasis"><em> ... rest of plugin code goes here (it was removed for brevity) ...</em></span>
 
 }</pre>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Don't use 'use diagnostics' in a plugin run by your production ePN. We think it causes__all__ the Perl plugins to
       return CRITICAL.</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Consider using a mini embedded Perl C program to check your plugin. This is not sufficient to guarantee your plugin
-      will perform Ok with an ePN but if the plugin fails this test it will certainly fail with your ePN. <span class="color"><font color="red">[ A sample mini ePN is included in the <span class="emphasis"><em>contrib/</em></span> directory of the
+      will perform Ok with an ePN but if the plugin fails this test it will certainly fail with your ePN. <span class="color">[ A sample mini ePN is included in the <span class="emphasis"><em>contrib/</em></span> directory of the
       Icinga distribution for use in testing Perl plugins. Change to the contrib/ directory and type 'make mini_epn' to
       compile it. It must be executed from the same directory that the p1.pl file resides in (this file is distributed with
-      Icinga). ]</font></span></p>
-    </li>
-</ol></div>
-  <a class="indexterm" name="idp16056768"></a>
+      Icinga). ]</span></p>
+    </li></ol></div>
+  <a id="idp16071632" class="indexterm"></a>
 </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="pluginapi.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch11.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="icinga-api.html">Next</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">11.1. Icinga Plugin API </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 11.3. No Icinga-API to install anymore</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="pluginapi.html">Prev</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch11.html">Up</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="icinga-api.html">Next</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">11.1. Icinga Plugin API </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Home</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 11.3. No Icinga-API to install anymore</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

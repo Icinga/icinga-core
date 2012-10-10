@@ -1,62 +1,49 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>11.4. Die Icinga-Web REST API</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
-<link rel="up" href="ch11.html" title="Kapitel 11. Entwicklung">
-<link rel="prev" href="icinga-api.html" title="11.3. Keine Icinga-API mehr zu installieren">
-<link rel="next" href="ch12.html" title="Kapitel 12. IDOUtils">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">11.4. Die Icinga-Web REST API</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="icinga-api.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 11. Entwicklung</th>
-<td width="20%" align="right"> <a accesskey="n" href="ch12.html">Weiter</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="11.4. Die Icinga-Web REST API">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="icinga-web-api"></a>11.4. Die Icinga-Web REST API</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">11.4.1. <a href="icinga-web-api.html#idp16186192">Warum sollten Sie die API benutzen?</a></span></dt>
-<dt><span class="section">11.4.2. <a href="icinga-web-api.html#idp16190592">Features der Icinga-Web REST API</a></span></dt>
-<dt><span class="section">11.4.3. <a href="icinga-web-api.html#idp16201680">Was ist der Unterschied zwischen der Icinga-API und der Icinga-Web REST API?</a></span></dt>
-<dt><span class="section">11.4.4. <a href="icinga-web-api.html#idp16203296">Voraussetzungen</a></span></dt>
-<dt><span class="section">11.4.5. <a href="icinga-web-api.html#idp16213584">Referenzen</a></span></dt>
-<dt><span class="section">11.4.6. <a href="icinga-web-api.html#idp16214736">GET</a></span></dt>
-<dt><span class="section">11.4.7. <a href="icinga-web-api.html#idp16221312">Die Struktur der URL:</a></span></dt>
-<dt><span class="section">11.4.8. <a href="icinga-web-api.html#idp16225024">Die Parameter en Detail:</a></span></dt>
-<dt><span class="section">11.4.9. <a href="icinga-web-api.html#idp16238304">Beispiele für GET</a></span></dt>
-<dt><span class="section">11.4.10. <a href="icinga-web-api.html#idp16245120">POST</a></span></dt>
-<dt><span class="section">11.4.11. <a href="icinga-web-api.html#idp16251984">Die Parameter en Detail</a></span></dt>
-<dt><span class="section">11.4.12. <a href="icinga-web-api.html#idp16265216">Beispiele für POST</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>11.4. Die Icinga-Web REST API</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
+    <link rel="up" href="ch11.html" title="Kapitel 11. Entwicklung" />
+    <link rel="prev" href="icinga-api.html" title="11.3. Keine Icinga-API mehr zu installieren" />
+    <link rel="next" href="ch12.html" title="Kapitel 12. IDOUtils" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">11.4. Die Icinga-Web REST API</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="icinga-api.html">Zurück</a> </td>
+          <th width="60%" align="center">Kapitel 11. Entwicklung</th>
+          <td width="20%" align="right"> <a accesskey="n" href="ch12.html">Weiter</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="11.4. Die Icinga-Web REST API"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="icinga-web-api"></a>11.4. Die Icinga-Web REST API</h2></div></div></div><div class="toc"><dl><dt><span class="section">11.4.1. <a href="icinga-web-api.html#idp16136240">Warum sollten Sie die API benutzen?</a></span></dt><dt><span class="section">11.4.2. <a href="icinga-web-api.html#idp16140464">Features der Icinga-Web REST API</a></span></dt><dt><span class="section">11.4.3. <a href="icinga-web-api.html#idp16151664">Was ist der Unterschied zwischen der Icinga-API und der Icinga-Web REST API?</a></span></dt><dt><span class="section">11.4.4. <a href="icinga-web-api.html#idp16153296">Voraussetzungen</a></span></dt><dt><span class="section">11.4.5. <a href="icinga-web-api.html#idp16163120">Referenzen</a></span></dt><dt><span class="section">11.4.6. <a href="icinga-web-api.html#idp16164272">GET</a></span></dt><dt><span class="section">11.4.7. <a href="icinga-web-api.html#idp16171040">Die Struktur der URL:</a></span></dt><dt><span class="section">11.4.8. <a href="icinga-web-api.html#idp16174720">Die Parameter en Detail:</a></span></dt><dt><span class="section">11.4.9. <a href="icinga-web-api.html#idp16187008">Beispiele für GET</a></span></dt><dt><span class="section">11.4.10. <a href="icinga-web-api.html#idp16194800">POST</a></span></dt><dt><span class="section">11.4.11. <a href="icinga-web-api.html#idp16201664">Die Parameter en Detail</a></span></dt><dt><span class="section">11.4.12. <a href="icinga-web-api.html#idp16214576">Beispiele für POST</a></span></dt></dl></div>
   
 
   <p>In dieser Anleitung beschreiben wir Ihnen die Icinga-Web REST API. Sie erlaubt Ihnen Ihre Überwachungsinformationen via GET oder
   POST abzufragen (in Zukunft (&gt;1.2) auch via PUT).</p>
 
-  <div class="section" title="11.4.1. Warum sollten Sie die API benutzen?">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16186192"></a>11.4.1. Warum sollten Sie die API benutzen?</h3></div></div></div>
+  <div class="section" title="11.4.1. Warum sollten Sie die API benutzen?"><div class="titlepage"><div><div><h3 class="title"><a id="idp16136240"></a>11.4.1. Warum sollten Sie die API benutzen?</h3></div></div></div>
     
 
     <p>Den meisten Anwendern genügt der Einsatz von Icinga und Icinga-Web. Sie können den Status Ihres Monitoring sehen, auf
     aktuelle Probleme reagieren und Icinga-Web um gewünschte Module und Cronks erweitern.</p>
 
-    <p>Wenn Sie allerdings eine zusätzliche Software einsetzen möchten, die Ihre Monitoring-Daten abfragen soll (zum Beispiel: <a class="link" href="http://www.icinga.org/2010/07/16/icinga-chromed-status-for-google-chrome/chromium/" target="_top">Icinga-Chromed-Status</a>), kann
+    <p>Wenn Sie allerdings eine zusätzliche Software einsetzen möchten, die Ihre Monitoring-Daten abfragen soll (zum Beispiel: <a class="ulink" href="http://www.icinga.org/2010/07/16/icinga-chromed-status-for-google-chrome/chromium/" target="_top">Icinga-Chromed-Status</a>), kann
     Ihnen die Icinga-Web API sehr dienlich sein.</p>
 
     <p>Sie können natürlich die Ausgabe des Icinga Classic UI analysieren (parsen) (so verfahren zur Zeit viele Programme, wie zum Beispiel
@@ -67,38 +54,26 @@
     standardisierten, maschinenlesbaren Format wie JSON oder XML zur Verfügung gestellt.</p>
   </div>
 
-  <div class="section" title="11.4.2. Features der Icinga-Web REST API">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16190592"></a>11.4.2. Features der Icinga-Web REST API</h3></div></div></div>
+  <div class="section" title="11.4.2. Features der Icinga-Web REST API"><div class="titlepage"><div><div><h3 class="title"><a id="idp16140464"></a>11.4.2. Features der Icinga-Web REST API</h3></div></div></div>
     
 
-    <p>Derzeit unterstützt (v1.2): </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <p>Derzeit unterstützt (v1.2): </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           <p>Verfügbarkeit von nahezu allen Überwachungsdaten via GET oder POST.</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Rückgabe der Daten als xml oder json.</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>AND &amp; OR- Suche über Filtergruppen mit unbegrenzten Verschachtelungsebenen (AND)).</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Sie wählen, welche Spalten zurückgegeben werden sollen, nicht die API (weniger Overhead).</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Unterstützung von "of limit, offset, order oder group by".</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Rückgabe eines zusätzlichen Gesamtwert-Feldes.</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Autorisierung über auth_key in Requests oder Cookies.</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Respektiert Icinga-Web Prinzipien (z.B. die Begrenzung auf bestimmte Hostgruppen).</p>
-        </li>
-</ul></div>
+        </li></ul></div>
 
     <p>Zukünftig unterstützt(&gt; 1.2):</p>
 
@@ -107,9 +82,7 @@
       </li></ul></div>
   </div>
 
-  <div class="section" title="11.4.3. Was ist der Unterschied zwischen der Icinga-API und der Icinga-Web REST API?">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16201680"></a>11.4.3. Was ist der Unterschied zwischen der Icinga-API und der Icinga-Web REST API?</h3></div></div></div>
+  <div class="section" title="11.4.3. Was ist der Unterschied zwischen der Icinga-API und der Icinga-Web REST API?"><div class="titlepage"><div><div><h3 class="title"><a id="idp16151664"></a>11.4.3. Was ist der Unterschied zwischen der Icinga-API und der Icinga-Web REST API?</h3></div></div></div>
     
 
     <p>Die Icinga-API kann als ein internes Toolkit für den Zugriff auf die Datenbankinformationen angesehen werden. In der Tat wirkt die
@@ -117,34 +90,23 @@
     werden.</p>
   </div>
 
-  <div class="section" title="11.4.4. Voraussetzungen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16203296"></a>11.4.4. Voraussetzungen</h3></div></div></div>
+  <div class="section" title="11.4.4. Voraussetzungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp16153296"></a>11.4.4. Voraussetzungen</h3></div></div></div>
     
 
     <p>Um die API verwenden zu können, müssen Sie zunächst den Auth-Provider aktivieren icinga-web/app/modules/AppKit/config/auth.xml
     .</p>
 
-    <p>Ändern von "auth_enabled" zu 'true': </p>
-<pre class="programlisting">&gt;# vi icinga-web/app/modules/AppKit/config/auth.xml</pre>
-<p>
-    </p>
-<pre class="programlisting">&lt;ae:parameter name="auth_key"&gt;
+    <p>Ändern von "auth_enabled" zu 'true': </p><pre class="programlisting">&gt;# vi icinga-web/app/modules/AppKit/config/auth.xml</pre><p>
+    </p><pre class="programlisting">&lt;ae:parameter name="auth_key"&gt;
     &lt;ae:parameter name="auth_module"&gt;AppKit&lt;/ae:parameter&gt;
     &lt;ae:parameter name="auth_provider"&gt;Auth.Provider.AuthKey&lt;/ae:parameter&gt;
     &lt;ae:parameter name="auth_enable"&gt;true&lt;/ae:parameter&gt;
     &lt;ae:parameter name="auth_authoritative"&gt;true&lt;/ae:parameter&gt;
 &lt;/ae:parameter&gt;</pre>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
       <p>Wenn Sie ein *.xml-File editieren, müssen Sie anschließend den Cache leeren!</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
 
     <pre class="programlisting">rm -f app/cache/config/*.php</pre>
 
@@ -152,64 +114,46 @@
 
     <pre class="programlisting">icinga-web/bin/clearcache.sh</pre>
 
-    <p>Nun brauchen Sie in Icinga-Web einen Benutzer mit API-Zugriffsberechtigung, bitte anlegen in Ihrem Icinga-Web : </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <p>Nun brauchen Sie in Icinga-Web einen Benutzer mit API-Zugriffsberechtigung, bitte anlegen in Ihrem Icinga-Web : </p><div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
           <p>Anlegen eine neuen Benutzers</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Auswählen von auth_key in dem Auth_via Feld</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Einfügen des zu nutzenden API-Schlüssels</p>
-        </li>
-<li class="listitem">
+        </li><li class="listitem">
           <p>Unter principals, hinzufügen von appkit.api.access principal</p>
-        </li>
-</ul></div>
+        </li></ul></div>
 
     <p>Das war es, nun können Sie starten.</p>
   </div>
 
-  <div class="section" title="11.4.5. Referenzen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16213584"></a>11.4.5. Referenzen</h3></div></div></div>
+  <div class="section" title="11.4.5. Referenzen"><div class="titlepage"><div><div><h3 class="title"><a id="idp16163120"></a>11.4.5. Referenzen</h3></div></div></div>
     
 
     <p>In den nächsten Sätzen erläutern wir, wie auf die API zugegriffen werden kann:</p>
   </div>
 
-  <div class="section" title="11.4.6. GET">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16214736"></a>11.4.6. GET</h3></div></div></div>
+  <div class="section" title="11.4.6. GET"><div class="titlepage"><div><div><h3 class="title"><a id="idp16164272"></a>11.4.6. GET</h3></div></div></div>
     
 
     <p>Vorteile:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Leicht zu nutzen, es ist eine URL!</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Sie können immer nachvollziehen, welche Parameter angefragt wurden.</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Nachteile:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Wenn Sie in einem Browser Ihre Anfrage absetzen, könnte Ihr API-Key in der Browser-History gespeichert werden.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>In einem Browser können Sie keine URLs mit unbegrenzter Größe ansprechen (2.083 Zeichen beim Internet Explorer).</p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="11.4.7. Die Struktur der URL:">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16221312"></a>11.4.7. Die Struktur der URL:</h3></div></div></div>
+  <div class="section" title="11.4.7. Die Struktur der URL:"><div class="titlepage"><div><div><h3 class="title"><a id="idp16171040"></a>11.4.7. Die Struktur der URL:</h3></div></div></div>
     
 
     <p>Um die API anzusprechen, sollte die URL folgendermaßen aufgebaut sein (Fett markierte Werte sind erforderlich)
@@ -217,19 +161,14 @@
     GROUPING / LIMIT / COUNTFIELD / <span class="bold"><strong>OUTPUT_TYPE</strong></span></p>
   </div>
 
-  <div class="section" title="11.4.8. Die Parameter en Detail:">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16225024"></a>11.4.8. Die Parameter en Detail:</h3></div></div></div>
+  <div class="section" title="11.4.8. Die Parameter en Detail:"><div class="titlepage"><div><div><h3 class="title"><a id="idp16174720"></a>11.4.8. Die Parameter en Detail:</h3></div></div></div>
     
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>TARGET: Welches Feld wird angesprochen, es ist ein einfacher String wie host.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>COLUMNS: Liste der angefragten Spalten, die Syntax muss wie folgt aussehen: columns[COL1|COL2|COL3|...]</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>FILTER: Definiert welche Filter im Request verwendet werden. Gültig sind AND oder OR Gruppen.</p>
 
         <p>Der Filter sieht wie folgt aus:</p>
@@ -238,38 +177,28 @@
 
         <p>Beispiel: Select auf alle Services, deren Name "snmp" enthält, wenn sie sich im Status ok oder unknown befinden</p>
 
-        <p class="bold">Falsch: </p>
-<pre class="programlisting">filters[SERVICE_NAME|like|*smtp*;OR(SERVICE_CURRENT_STATE|=|0;SERVICE_CURRENT_STATE|=|3)]</pre>
+        <p class="bold">Falsch: </p><pre class="programlisting">filters[SERVICE_NAME|like|*smtp*;OR(SERVICE_CURRENT_STATE|=|0;SERVICE_CURRENT_STATE|=|3)]</pre>
 
         <p>Sie benötigen immer eine Schachtelungsebene am Beginn:</p>
 
-        <p class="bold">Korrekt:</p>
-<pre class="programlisting">filters[AND ( SERVICE_NAME|like|*smtp*;OR ( SERVICE_CURRENT_STATE|=|0;SERVICE_CURRENT_STATE|=|3 ) )]
+        <p class="bold">Korrekt:</p><pre class="programlisting">filters[AND ( SERVICE_NAME|like|*smtp*;OR ( SERVICE_CURRENT_STATE|=|0;SERVICE_CURRENT_STATE|=|3 ) )]
 </pre>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>ORDER: Definiert welches Feld für die Ordnung verwendet wird und ob eine aufsteigende oder absteigende Sortierung verwendet
         wird. Beispiel: order[COLUMN|ASC or DESC]</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>GROUPING: Definiert ein Gruppierungsfeld: group[COL]</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>LIMIT: Definiert eine Start-Offset und / oder eine Begrenzung: limit[START;END ( if needed ) ]</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>COUNTFIELD: Fügt ein INSGESAMT-Feld dem Ergebnis hinzu, welches hochgezählt wird (in den meisten Fällen, die id):
         countColumn=COL</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>OUTPUT: zur Zeit json order xml</p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="11.4.9. Beispiele für GET">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16238304"></a>11.4.9. Beispiele für GET</h3></div></div></div>
+  <div class="section" title="11.4.9. Beispiele für GET"><div class="titlepage"><div><div><h3 class="title"><a id="idp16187008"></a>11.4.9. Beispiele für GET</h3></div></div></div>
     
 
     <p>GET alle Dienste die kritisch oder warning sind und deren Host im Status ok ist. Absteigend sortiert nach Dienststatus und
@@ -337,35 +266,23 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
    "total":"2" 
 }</pre>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png" /></td><th align="left">Anmerkung</th></tr><tr><td align="left" valign="top">
       <p>Wenn Sie den countField-Parameter nicht verwenden, bekommen Sie eine "flat" json-Datei mit diesem Ergebnis.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
   </div>
 
-  <div class="section" title="11.4.10. POST">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16245120"></a>11.4.10. POST</h3></div></div></div>
+  <div class="section" title="11.4.10. POST"><div class="titlepage"><div><div><h3 class="title"><a id="idp16194800"></a>11.4.10. POST</h3></div></div></div>
     
 
     <p>Vorteile:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Unbegrenzte Parametergröße für große Anfragen.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Ihre verwendeten Parameter erscheinen nicht in der Browser-Historie, lediglich die Basis-URL.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Leichter in Applikationen zu integrieren</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Nachteile:</p>
 
@@ -375,19 +292,15 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
       </li></ul></div>
   </div>
 
-  <div class="section" title="11.4.11. Die Parameter en Detail">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16251984"></a>11.4.11. Die Parameter en Detail</h3></div></div></div>
+  <div class="section" title="11.4.11. Die Parameter en Detail"><div class="titlepage"><div><div><h3 class="title"><a id="idp16201664"></a>11.4.11. Die Parameter en Detail</h3></div></div></div>
     
 
     <p>Der Link entspricht dem GET-Basislink, allerdings mit der Angabe des Ausgabeformates: Zum Beispiel:
     host.com/icinga-web/web/api/json. Folgende Parameter werden unterstützt:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>'target': Welches Feld wird angesprochen, es ist ein einfacher String wie "host"</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>'columns[]': Ein Array von Spalten</p>
 
         <p>Example:</p>
@@ -395,11 +308,9 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
         <p>columns [0] = SERVICE_NAME</p>
 
         <p>columns [1] = SERVICE_ID</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>'groups[]' : nach diesem Feld gruppieren</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>'filters_json' : Ein json beschreibender "how to" Filter</p>
 
         <p>Example:</p>
@@ -428,28 +339,20 @@ order(SERVICE_CURRENT_STATE;DESC)/countColumn=SERVICE_ID/authkey=APITEST123456/x
 }]
 
 </pre>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>'order_col' : Spalte nach der sortiert wird</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>'order_dir' : Sortierungsreihenfolge (asc oder desc)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>'limit_start' : Start-Offset des Records</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>'limit' : Begrenzt das Ergebnis auf x Antworten</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>'countColumn' : Fügt ein INSGESAMT-Feld dem Ergebnis hinzu</p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="11.4.12. Beispiele für POST">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp16265216"></a>11.4.12. Beispiele für POST</h3></div></div></div>
+  <div class="section" title="11.4.12. Beispiele für POST"><div class="titlepage"><div><div><h3 class="title"><a id="idp16214576"></a>11.4.12. Beispiele für POST</h3></div></div></div>
     
 
     <p>Nehmen wir das Beispiel aus "Beispiel für GET" und benutzen nun eine POST-Anfrage. Wir werden curl verwenden, so dass das Beispiel
@@ -471,26 +374,28 @@ http://localhost/icinga-web/web/api/xml </pre>
 
     <p>Dies gibt uns das gleiche Ergebnis zurück, wie zuvor in der GET-Anfrage.</p>
 
-    <a class="indexterm" name="idp16268032"></a>
+    <a id="idp16217584" class="indexterm"></a>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="icinga-api.html">Zurück</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch11.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ch12.html">Weiter</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">11.3. Keine Icinga-API mehr zu installieren </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> Kapitel 12. IDOUtils</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="icinga-api.html">Zurück</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch11.html">Nach oben</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="ch12.html">Weiter</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">11.3. Keine Icinga-API mehr zu installieren </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Zum Anfang</a>
+          </td>
+          <td width="40%" align="right" valign="top"> Kapitel 12. IDOUtils</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

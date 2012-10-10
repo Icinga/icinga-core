@@ -1,46 +1,40 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.12. Monitoring Service and Host Clusters</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
-<link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics">
-<link rel="prev" href="oncallrotation.html" title="7.11. On-Call Rotations">
-<link rel="next" href="dependencies.html" title="7.13. Host and Service Dependencies">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.12. Monitoring Service and Host Clusters</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="oncallrotation.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 7. Advanced Topics</th>
-<td width="20%" align="right"> <a accesskey="n" href="dependencies.html">Next</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="7.12. Monitoring Service and Host Clusters">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="clusters"></a>7.12. <a name="monitoring_clusters"></a>Monitoring Service and Host Clusters</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">7.12.1. <a href="clusters.html#idp13875088">Introduction</a></span></dt>
-<dt><span class="section">7.12.2. <a href="clusters.html#idp13880080">Plan of Attack</a></span></dt>
-<dt><span class="section">7.12.3. <a href="clusters.html#idp13889712">Using the check_cluster Plugin</a></span></dt>
-<dt><span class="section">7.12.4. <a href="clusters.html#idp13892688">Monitoring Service Clusters</a></span></dt>
-<dt><span class="section">7.12.5. <a href="clusters.html#idp13892816">Monitoring Host Clusters</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>7.12. Monitoring Service and Host Clusters</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
+    <link rel="up" href="ch07.html" title="Chapter 7. Advanced Topics" />
+    <link rel="prev" href="oncallrotation.html" title="7.11. On-Call Rotations" />
+    <link rel="next" href="dependencies.html" title="7.13. Host and Service Dependencies" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">7.12. Monitoring Service and Host Clusters</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="oncallrotation.html">Prev</a> </td>
+          <th width="60%" align="center">Chapter 7. Advanced Topics</th>
+          <td width="20%" align="right"> <a accesskey="n" href="dependencies.html">Next</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="7.12. Monitoring Service and Host Clusters"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="clusters"></a>7.12. <a id="monitoring_clusters"></a>Monitoring Service and Host Clusters</h2></div></div></div><div class="toc"><dl><dt><span class="section">7.12.1. <a href="clusters.html#idp13864080">Introduction</a></span></dt><dt><span class="section">7.12.2. <a href="clusters.html#idp13868608">Plan of Attack</a></span></dt><dt><span class="section">7.12.3. <a href="clusters.html#idp13878432">Using the check_cluster Plugin</a></span></dt><dt><span class="section">7.12.4. <a href="clusters.html#idp13881168">Monitoring Service Clusters</a></span></dt><dt><span class="section">7.12.5. <a href="clusters.html#idp13881296">Monitoring Host Clusters</a></span></dt></dl></div>
   
 
-  <div class="section" title="7.12.1. Introduction">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13875088"></a>7.12.1. Introduction</h3></div></div></div>
+  <div class="section" title="7.12.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp13864080"></a>7.12.1. Introduction</h3></div></div></div>
 
   <p>Several people have asked how to go about monitoring clusters of hosts or services, so this little documentation should
   provide you with some information on how to do this. It's fairly straightforward, so hopefully you find things easy to
@@ -56,25 +50,19 @@
 
   <p>If your organization has a group of hosts that provide a high-availability (clustering) solution, that would be considered
   to be a <span class="emphasis"><em>host</em></span> cluster. If one particular host fails, another will step in to take over all the duties of the
-  failed server. As a side note, check out the <a class="link" href="http://www.linux-ha.org" target="_top">High-Availability Linux Project</a>
+  failed server. As a side note, check out the <a class="ulink" href="http://www.linux-ha.org" target="_top">High-Availability Linux Project</a>
   for information on providing host and service redundancy with Linux.</p>
 
-  </div>
-<div class="section" title="7.12.2. Plan of Attack">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13880080"></a>7.12.2. Plan of Attack</h3></div></div></div>
+  </div><div class="section" title="7.12.2. Plan of Attack"><div class="titlepage"><div><div><h3 class="title"><a id="idp13868608"></a>7.12.2. Plan of Attack</h3></div></div></div>
 
   <p>There are several ways you could potentially monitor service or host clusters. We'll describe one method to do that.
   Monitoring service or host clusters involves two things:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+  <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
       <p>Monitoring individual cluster elements</p>
-    </li>
-<li class="listitem">
+    </li><li class="listitem">
       <p>Monitoring the cluster as a collective entity</p>
-    </li>
-</ul></div>
+    </li></ul></div>
 
   <p>Monitoring individual host or service cluster elements is easier than you think. In fact, you're probably already doing
   it. For service clusters, just make sure that you are monitoring each service element of the cluster. If you've got a cluster of
@@ -93,21 +81,15 @@
   file. <span class="bold"><strong>Important:</strong></span> Although you didn't enable notifications for individual elements of the
   cluster, you will want them enabled for the overall cluster status check.</p>
 
-  </div>
-<div class="section" title="7.12.3. Using the check_cluster Plugin">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13889712"></a>7.12.3. Using the check_cluster Plugin</h3></div></div></div>
+  </div><div class="section" title="7.12.3. Using the check_cluster Plugin"><div class="titlepage"><div><div><h3 class="title"><a id="idp13878432"></a>7.12.3. Using the check_cluster Plugin</h3></div></div></div>
 
   <p>The check_cluster plugin is designed to report the overall status of a host or service cluster by checking the status
   information of each individual host or service cluster elements.</p>
 
   <p>More to come... The <span class="emphasis"><em>check_cluster</em></span> plugin can be found in the contrib directory of the Nagios
-  Plugins release at <a class="link" href="http://sourceforge.net/projects/nagiosplug" target="_top">http://sourceforge.net/projects/nagiosplug</a>.</p>
+  Plugins release at <a class="ulink" href="http://sourceforge.net/projects/nagiosplug" target="_top">http://sourceforge.net/projects/nagiosplug</a>.</p>
 
-  </div>
-<div class="section" title="7.12.4. Monitoring Service Clusters">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13892688"></a>7.12.4. Monitoring Service Clusters</h3></div></div></div>
+  </div><div class="section" title="7.12.4. Monitoring Service Clusters"><div class="titlepage"><div><div><h3 class="title"><a id="idp13881168"></a>7.12.4. Monitoring Service Clusters</h3></div></div></div>
 
   <p>Let's say you have three DNS servers that provide redundant services on your network. First off, you need to be monitoring
   each of these DNS servers separately before you can monitor them as a cluster. We'll assume that you already have three separate
@@ -138,10 +120,7 @@
   on-demand macros in with the current service state IDs (numerical values, rather than text strings) of the individual members of
   the cluster.</p>
 
-  </div>
-<div class="section" title="7.12.5. Monitoring Host Clusters">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13892816"></a>7.12.5. Monitoring Host Clusters</h3></div></div></div>
+  </div><div class="section" title="7.12.5. Monitoring Host Clusters"><div class="titlepage"><div><div><h3 class="title"><a id="idp13881296"></a>7.12.5. Monitoring Host Clusters</h3></div></div></div>
 
   <p>Monitoring host clusters is very similiar to monitoring service clusters. Obviously, the main difference is that the
   cluster members are hosts and not services. In order to monitor the status of a host cluster, you must define a service that
@@ -177,26 +156,28 @@
   member, you will most likely want to disable notifications when the host goes down . Remeber that you don't care as much about
   the status of any individual host as you do the overall status of the cluster. Depending on your network layout and what you're
   trying to accomplish, you may wish to leave notifications for unreachable states enabled for the host definitions.</p>
-  <a class="indexterm" name="idp13908240"></a>
+  <a id="idp13897312" class="indexterm"></a>
 </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="oncallrotation.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch07.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="dependencies.html">Next</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">7.11. On-Call Rotations </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 7.13. Host and Service Dependencies</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="oncallrotation.html">Prev</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch07.html">Up</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="dependencies.html">Next</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">7.11. On-Call Rotations </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Home</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 7.13. Host and Service Dependencies</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

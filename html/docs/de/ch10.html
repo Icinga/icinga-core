@@ -1,100 +1,60 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Kapitel 10. weitere Software</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
-<link rel="up" href="index.html" title="Icinga Version 1.8 Dokumentation">
-<link rel="prev" href="reporting_1.8.html" title="9.5. Installation von Icinga-Reporting mit JasperReports Server">
-<link rel="next" href="addons.html" title="10.1. Icinga Addons">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">Kapitel 10. weitere Software</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="reporting_1.8.html">Zurück</a> </td>
-<th width="60%" align="center"> </th>
-<td width="20%" align="right"> <a accesskey="n" href="addons.html">Weiter</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="chapter" title="Kapitel 10. weitere Software">
-<div class="titlepage"><div><div><h2 class="title">
-<a name="ch10"></a>Kapitel 10. weitere Software</h2></div></div></div>
-<div class="toc">
-<p><b>Inhaltsverzeichnis</b></p>
-<dl>
-<dt><span class="section">10.1. <a href="addons.html">Icinga Addons</a></span></dt>
-<dd><dl><dt><span class="section">10.1.1. <a href="addons.html#idp15592608">Einführung</a></span></dt></dl></dd>
-<dt><span class="section">10.2. <a href="nrpe.html">NRPE</a></span></dt>
-<dd><dl>
-<dt><span class="section">10.2.1. <a href="nrpe.html#idp15688496">Einführung</a></span></dt>
-<dt><span class="section">10.2.2. <a href="nrpe.html#idp15701152">Voraussetzungen</a></span></dt>
-<dt><span class="section">10.2.3. <a href="nrpe.html#idp15706784">Download</a></span></dt>
-<dt><span class="section">10.2.4. <a href="nrpe.html#idp15711488">Optionale Anpassungen</a></span></dt>
-<dt><span class="section">10.2.5. <a href="nrpe.html#idp15715280">Kompilieren auf dem Icinga-Server</a></span></dt>
-<dt><span class="section">10.2.6. <a href="nrpe.html#idp15723520">Erster Test</a></span></dt>
-<dt><span class="section">10.2.7. <a href="nrpe.html#idp15727088">Entfernte/s System/e</a></span></dt>
-<dt><span class="section">10.2.8. <a href="nrpe.html#idp15728752">Voraussetzungen auf dem entfernten System</a></span></dt>
-<dt><span class="section">10.2.9. <a href="nrpe.html#idp15732480">Zweiter Test</a></span></dt>
-<dt><span class="section">10.2.10. <a href="nrpe.html#idp15741280">Installation auf dem entfernten Host</a></span></dt>
-<dt><span class="section">10.2.11. <a href="nrpe.html#idp15767952">Dritter Test</a></span></dt>
-<dt><span class="section">10.2.12. <a href="nrpe.html#idp15771296">Fehlersuche</a></span></dt>
-<dt><span class="section">10.2.13. <a href="nrpe.html#idp15789264">Sicherheit</a></span></dt>
-<dt><span class="section">10.2.14. <a href="nrpe.html#idp15791248">Definition von lokalen Prüfungen</a></span></dt>
-<dt><span class="section">10.2.15. <a href="nrpe.html#idp15802832">Definitionen auf dem Icinga-Server</a></span></dt>
-<dt><span class="section">10.2.16. <a href="nrpe.html#idp15803120">Weitere Fehlersuche</a></span></dt>
-<dt><span class="section">10.2.17. <a href="nrpe.html#idp15842912">Aktualisierung</a></span></dt>
-</dl></dd>
-<dt><span class="section">10.3. <a href="nsca.html">NSCA</a></span></dt>
-<dd><dl>
-<dt><span class="section">10.3.1. <a href="nsca.html#idp15855712">Einführung</a></span></dt>
-<dt><span class="section">10.3.2. <a href="nsca.html#idp15861920">Voraussetzungen</a></span></dt>
-<dt><span class="section">10.3.3. <a href="nsca.html#idp15872432">Download und Compile</a></span></dt>
-<dt><span class="section">10.3.4. <a href="nsca.html#idp15872688">Anpassen</a></span></dt>
-<dt><span class="section">10.3.5. <a href="nsca.html#idp15889456">Erster Test</a></span></dt>
-<dt><span class="section">10.3.6. <a href="nsca.html#idp15895664">Installation</a></span></dt>
-<dt><span class="section">10.3.7. <a href="nsca.html#idp15916608">Entfernte/s System/e</a></span></dt>
-<dt><span class="section">10.3.8. <a href="nsca.html#idp15918736">Dateien kopieren</a></span></dt>
-<dt><span class="section">10.3.9. <a href="nsca.html#idp15920848">Zweiter Test</a></span></dt>
-<dt><span class="section">10.3.10. <a href="nsca.html#idp15924656">Fehlersuche</a></span></dt>
-<dt><span class="section">10.3.11. <a href="nsca.html#idp15932000">Sicherheit</a></span></dt>
-<dt><span class="section">10.3.12. <a href="nsca.html#idp15933808">Betrieb</a></span></dt>
-<dt><span class="section">10.3.13. <a href="nsca.html#idp15934064">Integration in Icinga</a></span></dt>
-</dl></dd>
-</dl>
-</div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Kapitel 10. weitere Software</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
+    <link rel="up" href="index.html" title="Icinga Version 1.8 Dokumentation" />
+    <link rel="prev" href="reporting_1.8.html" title="9.5. Installation von Icinga-Reporting mit JasperReports Server" />
+    <link rel="next" href="addons.html" title="10.1. Icinga Addons" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">Kapitel 10. weitere Software</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="reporting_1.8.html">Zurück</a> </td>
+          <th width="60%" align="center"> </th>
+          <td width="20%" align="right"> <a accesskey="n" href="addons.html">Weiter</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="chapter" title="Kapitel 10. weitere Software"><div class="titlepage"><div><div><h2 class="title"><a id="ch10"></a>Kapitel 10. weitere Software</h2></div></div></div><div class="toc"><p><b>Inhaltsverzeichnis</b></p><dl><dt><span class="section">10.1. <a href="addons.html">Icinga Addons</a></span></dt><dd><dl><dt><span class="section">10.1.1. <a href="addons.html#idp15547024">Einführung</a></span></dt></dl></dd><dt><span class="section">10.2. <a href="nrpe.html">NRPE</a></span></dt><dd><dl><dt><span class="section">10.2.1. <a href="nrpe.html#idp15640400">Einführung</a></span></dt><dt><span class="section">10.2.2. <a href="nrpe.html#idp15651824">Voraussetzungen</a></span></dt><dt><span class="section">10.2.3. <a href="nrpe.html#idp15658592">Download</a></span></dt><dt><span class="section">10.2.4. <a href="nrpe.html#idp15662944">Optionale Anpassungen</a></span></dt><dt><span class="section">10.2.5. <a href="nrpe.html#idp15666752">Kompilieren auf dem Icinga-Server</a></span></dt><dt><span class="section">10.2.6. <a href="nrpe.html#idp15675200">Erster Test</a></span></dt><dt><span class="section">10.2.7. <a href="nrpe.html#idp15678656">Entfernte/s System/e</a></span></dt><dt><span class="section">10.2.8. <a href="nrpe.html#idp15680432">Voraussetzungen auf dem entfernten System</a></span></dt><dt><span class="section">10.2.9. <a href="nrpe.html#idp15688192">Zweiter Test</a></span></dt><dt><span class="section">10.2.10. <a href="nrpe.html#idp15693184">Installation auf dem entfernten Host</a></span></dt><dt><span class="section">10.2.11. <a href="nrpe.html#idp15719440">Dritter Test</a></span></dt><dt><span class="section">10.2.12. <a href="nrpe.html#idp15722784">Fehlersuche</a></span></dt><dt><span class="section">10.2.13. <a href="nrpe.html#idp15740672">Sicherheit</a></span></dt><dt><span class="section">10.2.14. <a href="nrpe.html#idp15742656">Definition von lokalen Prüfungen</a></span></dt><dt><span class="section">10.2.15. <a href="nrpe.html#idp15753744">Definitionen auf dem Icinga-Server</a></span></dt><dt><span class="section">10.2.16. <a href="nrpe.html#idp15754032">Weitere Fehlersuche</a></span></dt><dt><span class="section">10.2.17. <a href="nrpe.html#idp15794064">Aktualisierung</a></span></dt></dl></dd><dt><span class="section">10.3. <a href="nsca.html">NSCA</a></span></dt><dd><dl><dt><span class="section">10.3.1. <a href="nsca.html#idp15806800">Einführung</a></span></dt><dt><span class="section">10.3.2. <a href="nsca.html#idp15813136">Voraussetzungen</a></span></dt><dt><span class="section">10.3.3. <a href="nsca.html#idp15824064">Download und Compile</a></span></dt><dt><span class="section">10.3.4. <a href="nsca.html#idp15824320">Anpassen</a></span></dt><dt><span class="section">10.3.5. <a href="nsca.html#idp15840784">Erster Test</a></span></dt><dt><span class="section">10.3.6. <a href="nsca.html#idp15846912">Installation</a></span></dt><dt><span class="section">10.3.7. <a href="nsca.html#idp15867856">Entfernte/s System/e</a></span></dt><dt><span class="section">10.3.8. <a href="nsca.html#idp15869984">Dateien kopieren</a></span></dt><dt><span class="section">10.3.9. <a href="nsca.html#idp15872096">Zweiter Test</a></span></dt><dt><span class="section">10.3.10. <a href="nsca.html#idp15875904">Fehlersuche</a></span></dt><dt><span class="section">10.3.11. <a href="nsca.html#idp15883248">Sicherheit</a></span></dt><dt><span class="section">10.3.12. <a href="nsca.html#idp15885056">Betrieb</a></span></dt><dt><span class="section">10.3.13. <a href="nsca.html#idp15890912">Integration in Icinga</a></span></dt></dl></dd></dl></div>
     
 
     
     
     
   </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="reporting_1.8.html">Zurück</a> </td>
-<td width="20%" align="center"> </td>
-<td width="40%" align="right"> <a accesskey="n" href="addons.html">Weiter</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">9.5. Installation von Icinga-Reporting mit JasperReports Server </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 10.1. Icinga Addons</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="reporting_1.8.html">Zurück</a> </td>
+          <td width="20%" align="center"> </td>
+          <td width="40%" align="right"> <a accesskey="n" href="addons.html">Weiter</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">9.5. Installation von Icinga-Reporting mit JasperReports Server </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Zum Anfang</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 10.1. Icinga Addons</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

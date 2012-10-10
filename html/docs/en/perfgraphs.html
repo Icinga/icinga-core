@@ -1,132 +1,102 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>8.7. Graphing Performance Info With PNP4Nagios</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
-<link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
-<link rel="prev" href="icingastats.html" title="8.6. Using The Icingastats Utility">
-<link rel="next" href="temp_data.html" title="8.8. Temporary Data">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">8.7. Graphing Performance Info With PNP4Nagios</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="icingastats.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
-<td width="20%" align="right"> <a accesskey="n" href="temp_data.html">Next</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="8.7. Graphing Performance Info With PNP4Nagios">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="perfgraphs"></a>8.7. <a name="perf_graphs"></a>Graphing Performance Info With PNP4Nagios</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">8.7.1. <a href="perfgraphs.html#idp15296672">Introduction</a></span></dt>
-<dt><span class="section">8.7.2. <a href="perfgraphs.html#idp15302976">Prerequisites</a></span></dt>
-<dt><span class="section">8.7.3. <a href="perfgraphs.html#idp15330800">Average Host / Service Check Latency</a></span></dt>
-<dt><span class="section">8.7.4. <a href="perfgraphs.html#idp15346784">Service Statistics</a></span></dt>
-<dt><span class="section">8.7.5. <a href="perfgraphs.html#idp15355280">Host Statistics</a></span></dt>
-<dt><span class="section">8.7.6. <a href="perfgraphs.html#idp15366320">Average Execution Times</a></span></dt>
-<dt><span class="section">8.7.7. <a href="perfgraphs.html#idp15378416">External Commands</a></span></dt>
-<dt><span class="section">8.7.8. <a href="perfgraphs.html#idp15387504">External Command Buffers</a></span></dt>
-<dt><span class="section">8.7.9. <a href="perfgraphs.html#idp15393552">Cached Host and Service Checks</a></span></dt>
-<dt><span class="section">8.7.10. <a href="perfgraphs.html#idp15400832">Average State Changes</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>8.7. Graphing Performance Info With PNP4Nagios</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
+    <link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning" />
+    <link rel="prev" href="icingastats.html" title="8.6. Using The Icingastats Utility" />
+    <link rel="next" href="temp_data.html" title="8.8. Temporary Data" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">8.7. Graphing Performance Info With PNP4Nagios</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="icingastats.html">Prev</a> </td>
+          <th width="60%" align="center">Chapter 8. Security and Performance Tuning</th>
+          <td width="20%" align="right"> <a accesskey="n" href="temp_data.html">Next</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="8.7. Graphing Performance Info With PNP4Nagios"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="perfgraphs"></a>8.7. <a id="perf_graphs"></a>Graphing Performance Info With PNP4Nagios</h2></div></div></div><div class="toc"><dl><dt><span class="section">8.7.1. <a href="perfgraphs.html#idp15282320">Introduction</a></span></dt><dt><span class="section">8.7.2. <a href="perfgraphs.html#idp15288528">Prerequisites</a></span></dt><dt><span class="section">8.7.3. <a href="perfgraphs.html#idp15315984">Average Host / Service Check Latency</a></span></dt><dt><span class="section">8.7.4. <a href="perfgraphs.html#idp15332144">Service Statistics</a></span></dt><dt><span class="section">8.7.5. <a href="perfgraphs.html#idp15341952">Host Statistics</a></span></dt><dt><span class="section">8.7.6. <a href="perfgraphs.html#idp15351504">Average Execution Times</a></span></dt><dt><span class="section">8.7.7. <a href="perfgraphs.html#idp15363424">External Commands</a></span></dt><dt><span class="section">8.7.8. <a href="perfgraphs.html#idp15372416">External Command Buffers</a></span></dt><dt><span class="section">8.7.9. <a href="perfgraphs.html#idp15378480">Cached Host and Service Checks</a></span></dt><dt><span class="section">8.7.10. <a href="perfgraphs.html#idp15385936">Average State Changes</a></span></dt></dl></div>
   
 
-  <div class="section" title="8.7.1. Introduction">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15296672"></a>8.7.1. Introduction</h3></div></div></div>
+  <div class="section" title="8.7.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp15282320"></a>8.7.1. Introduction</h3></div></div></div>
     
 
     <p>The <a class="link" href="icingastats.html" title="8.6. Using The Icingastats Utility">icingastats</a> utility allows you to graph various Icinga performance statistics over
-    time using <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">PNP4Nagios</a>. This is important because it can help you
+    time using <a class="ulink" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">PNP4Nagios</a>. This is important because it can help you
     to:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Ensure Icinga is operating efficiently</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Locate problem areas in the monitoring process</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Observe the performance impacts of changes in your Icinga configuration</p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="8.7.2. Prerequisites">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15302976"></a>8.7.2. Prerequisites</h3></div></div></div>
+  <div class="section" title="8.7.2. Prerequisites"><div class="titlepage"><div><div><h3 class="title"><a id="idp15288528"></a>8.7.2. Prerequisites</h3></div></div></div>
     
 
     <p>PNP4Nagios is one of the most popular addons due to easy installation and little maintenance during operation. The documentation
-    along with further links to download the software can be found at <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">http://docs.pnp4nagios.org/pnp-0.6/start</a>.</p>
+    along with further links to download the software can be found at <a class="ulink" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">http://docs.pnp4nagios.org/pnp-0.6/start</a>.</p>
 
-    <p><a class="link" href="https://www.monitoringexchange.org/inventory/Check-Plugins/Software/Nagios/check_nagiostats" target="_top">check_nagiostats</a> was
-    published by <a class="link" href="http://www.nagios-portal.org/wbb/index.php?page=User&amp;userID=7773" target="_top">Jochen Bern</a> and can be
+    <p><a class="ulink" href="https://www.monitoringexchange.org/inventory/Check-Plugins/Software/Nagios/check_nagiostats" target="_top">check_nagiostats</a> was
+    published by <a class="ulink" href="http://www.nagios-portal.org/wbb/index.php?page=User&amp;userID=7773" target="_top">Jochen Bern</a> and can be
     called as an active service check or via crontab to submit passive check results. Despite its name it can be used for Icinga as
     well.</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>After downloading the plugin and placing it into the plugin directory (e.g. <code class="filename">/usr/local/icinga/libexec</code> if
         you used the quickstart installation guides) you have to check the values of the configuration section within the script.</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
             <p>Most <span class="bold"><strong>important</strong></span> is "<code class="literal">EXEC=</code><code class="filename">/path/to/icingastats</code>"
             (e.g. <code class="filename">/usr/local/icinga/bin/icingastats</code>) pointing to the <code class="filename">icingastats</code> binary.</p>
-          </li>
-<li class="listitem">
+          </li><li class="listitem">
             <p>Depending on your likings you may want to change the value of <code class="literal">CUMULATE</code> from "AVG" to "MIN" or "MAX",
             respectively. The setting of <code class="literal">TIMEFRAME</code> influences the timeperiod which will be used for cumulated values in
             the output of the plugin.</p>
-          </li>
-<li class="listitem">
+          </li><li class="listitem">
             <p>Changing the values of <code class="literal">PASSIVE_EMERGENCY_HOST</code> and <code class="literal">PASSIVE_EMERGENCY_SERVICE</code>
             shouldn't be necessary because you pass the values as arguments to the script.</p>
-          </li>
-</ul></div>
-      </li>
-<li class="listitem">
+          </li></ul></div>
+      </li><li class="listitem">
         <p>You can call the plugin using active or passive checks</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
             <p>Active</p>
 
-            <p>Make sure that your object configuration files contain a matching service definition such as</p>
-<pre class="programlisting"> define service{
+            <p>Make sure that your object configuration files contain a matching service definition such as</p><pre class="programlisting"> define service{
     host_name               &lt;the Icinga server&gt;
     service_description     icingastats # (or something appropriate)
     check_command           check_stats
     check_interval          1
     retry_interval          1
     ...
- }</pre>
-<p>and a command definition</p>
-<pre class="programlisting"> define command{
+ }</pre><p>and a command definition</p><pre class="programlisting"> define command{
     command_name            check_stats
     command_line            $USER1$/check_nagiostats
- }</pre>
-<p>Don't forget to restart Icinga after these changes.</p>
-          </li>
-<li class="listitem">
+ }</pre><p>Don't forget to restart Icinga after these changes.</p>
+          </li><li class="listitem">
             <p>Passive</p>
 
-            <p>Make sure that your object configuration files contain a matching service definition such as</p>
-<pre class="programlisting"> define service{
+            <p>Make sure that your object configuration files contain a matching service definition such as</p><pre class="programlisting"> define service{
     host_name               &lt;the Icinga server&gt;
     service_description     icingastats # (or something appropriate)
     active_checks_enabled   0
@@ -146,186 +116,125 @@
             <p>Don't forget to restart Icinga after this change.</p>
 
             <p>Add a line to the crontab of the Icinga user which will call the <code class="filename">icingastats</code> binary and submit
-            the results to the command pipe</p>
-<pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; icingastats &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre>
-<p>
+            the results to the command pipe</p><pre class="programlisting"> * * * * * /usr/local/icinga/libexec/check_nagiostats --passive &lt;host&gt; icingastats &gt;&gt; /usr/local/icinga/var/rw/icinga.cmd</pre><p>
             This way the values are updated in regular intervals.</p>
-          </li>
-</ul></div>
-      </li>
-<li class="listitem">
-        <p>Create a symbolic link in the (user) templates folder of PNP4Nagios</p>
-<pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php check_stats.php</pre>
-<p>Make
+          </li></ul></div>
+      </li><li class="listitem">
+        <p>Create a symbolic link in the (user) templates folder of PNP4Nagios</p><pre class="programlisting"> $&gt; ln -s ../templates.dist/nagiostats.php check_stats.php</pre><p>Make
         sure that <span class="emphasis"><em>check_stats</em></span> (without the extension .php) matches the value you specified as first parameter in the
         check_command.</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p><span class="bold"><strong>Example Graphs</strong></span></p>
 
     <p>We'll describe what the graphs produced by <code class="filename">check_nagiostats</code> mean and what they can be used for...</p>
   </div>
 
-  <div class="section" title="8.7.3. Average Host / Service Check Latency">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15330800"></a>8.7.3. Average Host / Service Check Latency</h3></div></div></div>
+  <div class="section" title="8.7.3. Average Host / Service Check Latency"><div class="titlepage"><div><div><h3 class="title"><a id="idp15315984"></a>8.7.3. Average Host / Service Check Latency</h3></div></div></div>
     
 
-    <div class="figure">
-<a name="idp15331648"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp15316832"></a><p class="title"><b>Figure 8.1. Average Host / Service Check Latency</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/perfdata_lat.png" alt="Average Host / Service Check Latency"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/perfdata_lat.png" alt="Average Host / Service Check Latency" /></div>
+    </div></div><br class="figure-break" />
 
     <p>This graph shows the average latency times of hosts and services over time for both active and passive checks, respectively.
     Useful for understanding:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="hostchecks.html" title="5.4. Host Checks">Host checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="servicechecks.html" title="5.5. Service Checks">Service checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="activechecks.html" title="5.6. Active Checks">Active checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="passivechecks.html" title="5.7. Passive Checks">Passive checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="tuning.html" title="8.3. Tuning Icinga For Maximum Performance">Performance tuning</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Consistently high latencies can be an indication that one or more of the following variables need tweaking:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="configmain.html#configmain-max_concurrent_checks">max_concurrent_checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configmain.html#configmain-check_result_reaper_frequency">check_result_reaper_frequency</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configmain.html#configmain-max_check_result_reaper_time">max_check_result_reaper_time</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="8.7.4. Service Statistics">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15346784"></a>8.7.4. Service Statistics</h3></div></div></div>
+  <div class="section" title="8.7.4. Service Statistics"><div class="titlepage"><div><div><h3 class="title"><a id="idp15332144"></a>8.7.4. Service Statistics</h3></div></div></div>
     
 
-    <div class="figure">
-<a name="idp15347424"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp15332784"></a><p class="title"><b>Figure 8.2. Service Statistics</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/perfdata_svc.png" alt="Service Statistics"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/perfdata_svc.png" alt="Service Statistics" /></div>
+    </div></div><br class="figure-break" />
 
     <p>This graph shows the values for the several service states along with the average number of services being checked
     actively/passively within the timeperiod you specified. Useful for understanding:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="servicechecks.html" title="5.5. Service Checks">Service checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">Predictive service dependency checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="cachedchecks.html" title="7.21. Cached Checks">Cached checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">Flap detection</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="8.7.5. Host Statistics">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15355280"></a>8.7.5. Host Statistics</h3></div></div></div>
+  <div class="section" title="8.7.5. Host Statistics"><div class="titlepage"><div><div><h3 class="title"><a id="idp15341952"></a>8.7.5. Host Statistics</h3></div></div></div>
     
 
-    <div class="figure">
-<a name="idp15356976"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp15342800"></a><p class="title"><b>Figure 8.3. Host Statistics</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/perfdata_host.png" alt="Host Statistics"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/perfdata_host.png" alt="Host Statistics" /></div>
+    </div></div><br class="figure-break" />
 
     <p>This graph shows the values for the several host states along with the average number of hosts being checked actively/passively
     within the timeperiod you specified. Useful for understanding:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="hostchecks.html" title="5.4. Host Checks">Host checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">Predictive host dependency checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="cachedchecks.html" title="7.21. Cached Checks">Cached checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">Flap detection</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="8.7.6. Average Execution Times">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15366320"></a>8.7.6. Average Execution Times</h3></div></div></div>
+  <div class="section" title="8.7.6. Average Execution Times"><div class="titlepage"><div><div><h3 class="title"><a id="idp15351504"></a>8.7.6. Average Execution Times</h3></div></div></div>
     
 
-    <div class="figure">
-<a name="idp15367200"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp15352640"></a><p class="title"><b>Figure 8.4. Average Execution Times</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/perfdata_exec.png" alt="Average Execution Times"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/perfdata_exec.png" alt="Average Execution Times" /></div>
+    </div></div><br class="figure-break" />
 
     <p>This graph shows the average execution times of hosts and services over time. Useful for understanding:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="hostchecks.html" title="5.4. Host Checks">Host checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="servicechecks.html" title="5.5. Service Checks">Service checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="tuning.html" title="8.3. Tuning Icinga For Maximum Performance">Performance tuning</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
-    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png" /></td><th align="left">Note</th></tr><tr><td align="left" valign="top">
       <p>To be honest: We tweaked the graphs a bit, meaning the colours. Yellow is sometimes hard to distinguish from the background so
       we changed some lines in the PNP4Nagios template file <code class="filename">template.dist/nagiostats.php</code> from <code class="code">$i=0;</code> to
       <code class="code">$i=1;</code>.</p>
-    </td></tr>
-</table></div>
+    </td></tr></table></div>
 
     <p><span class="bold"><strong>Additional graphs</strong></span></p>
 
@@ -333,52 +242,36 @@
     the template file it is very easy to add the lines if you really need the following graphs).</p>
   </div>
 
-  <div class="section" title="8.7.7. External Commands">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15378416"></a>8.7.7. External Commands</h3></div></div></div>
+  <div class="section" title="8.7.7. External Commands"><div class="titlepage"><div><div><h3 class="title"><a id="idp15363424"></a>8.7.7. External Commands</h3></div></div></div>
     
 
-    <div class="figure">
-<a name="idp15379232"></a><p class="title"><b>Figure 8.5. External Commands</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp15364304"></a><p class="title"><b>Figure 8.5. External Commands</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/perfdata_extcmd.png" alt="External Commands"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/perfdata_extcmd.png" alt="External Commands" /></div>
+    </div></div><br class="figure-break" />
 
     <p>This graph shows how may external commands have been processed by the Icinga daemon over time. Unless you're processing a
     large number of external commands (as in the case with distributed monitoring setups), this graph may appear mostly empty. Monitoring
     external commands can be useful for understanding the impacts of:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="passivechecks.html" title="5.7. Passive Checks">Passive checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="distributed.html" title="7.6. Distributed Monitoring">Distributed monitoring</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="redundancy.html" title="7.7. Redundant and Failover Network Monitoring">Redundant/failover monitoring</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="8.7.8. External Command Buffers">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15387504"></a>8.7.8. External Command Buffers</h3></div></div></div>
+  <div class="section" title="8.7.8. External Command Buffers"><div class="titlepage"><div><div><h3 class="title"><a id="idp15372416"></a>8.7.8. External Command Buffers</h3></div></div></div>
     
 
-    <div class="figure">
-<a name="idp15388144"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp15372928"></a><p class="title"><b>Figure 8.6. External Command Buffers</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/perfdata_cmdbuf.png" alt="External Command Buffers"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/perfdata_cmdbuf.png" alt="External Command Buffers" /></div>
+    </div></div><br class="figure-break" />
 
     <p>This graph shows how many external command buffer slots are in use over time. If the number of used buffers is near the number of
     available buffers on a regular basis, it is likely you need to increase the available <a class="link" href="configmain.html#configmain-external_command_buffer_slots">external command buffer slots</a>. Each buffer slot can hold one external command.
@@ -387,47 +280,32 @@
     <p>As you can see just one buffer is used and that's the one for the graphs as mentioned above.</p>
   </div>
 
-  <div class="section" title="8.7.9. Cached Host and Service Checks">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15393552"></a>8.7.9. Cached Host and Service Checks</h3></div></div></div>
+  <div class="section" title="8.7.9. Cached Host and Service Checks"><div class="titlepage"><div><div><h3 class="title"><a id="idp15378480"></a>8.7.9. Cached Host and Service Checks</h3></div></div></div>
     
 
-    <div class="figure">
-<a name="idp15394192"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp15378992"></a><p class="title"><b>Figure 8.7. Cached Host and Service Checks</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/perfdata_cached.png" alt="Cached Host and Service Checks"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/perfdata_cached.png" alt="Cached Host and Service Checks" /></div>
+    </div></div><br class="figure-break" />
 
     <p>This graph shows how may cached host and service checks have occurred over time. Useful for understanding:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="cachedchecks.html" title="7.21. Cached Checks">Cached checks</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="dependencychecks.html" title="7.20. Predictive Dependency Checks">Predictive host and service dependency checks</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="8.7.10. Average State Changes">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15400832"></a>8.7.10. Average State Changes</h3></div></div></div>
+  <div class="section" title="8.7.10. Average State Changes"><div class="titlepage"><div><div><h3 class="title"><a id="idp15385936"></a>8.7.10. Average State Changes</h3></div></div></div>
     
 
-    <div class="figure">
-<a name="idp15401584"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p>
-<div class="figure-contents">
+    <div class="figure"><a id="idp15386624"></a><p class="title"><b>Figure 8.8. Average State Changes</b></p><div class="figure-contents">
       
 
-      <div class="mediaobject"><img src="../images/perfdata_state_chg.png" alt="Average State Changes"></div>
-    </div>
-</div>
-<br class="figure-break">
+      <div class="mediaobject"><img src="../images/perfdata_state_chg.png" alt="Average State Changes" /></div>
+    </div></div><br class="figure-break" />
 
     <p>This graph shows the average percent state change (a measure of volatility) over time, broken down by hosts and services that were
     last checked either actively or passively. Useful for understanding:</p>
@@ -436,26 +314,28 @@
         <p><a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">Flap detection</a></p>
       </li></ul></div>
 
-    <a class="indexterm" name="idp15406784"></a>
+    <a id="idp15391840" class="indexterm"></a>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="icingastats.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch08.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="temp_data.html">Next</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">8.6. Using The Icingastats Utility </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> 8.8. Temporary Data</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="icingastats.html">Prev</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch08.html">Up</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="temp_data.html">Next</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">8.6. Using The Icingastats Utility </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Home</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 8.8. Temporary Data</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

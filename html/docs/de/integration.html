@@ -1,44 +1,40 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>9.1. Integrationsüberblick</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
-<link rel="up" href="ch09.html" title="Kapitel 9. Integration mit anderer Software">
-<link rel="prev" href="ch09.html" title="Kapitel 9. Integration mit anderer Software">
-<link rel="next" href="int-snmptrap.html" title="9.2. SNMP-Trap-Integration">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">9.1. Integrationsüberblick</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="ch09.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 9. Integration mit anderer Software</th>
-<td width="20%" align="right"> <a accesskey="n" href="int-snmptrap.html">Weiter</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="9.1. Integrationsüberblick">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="integration"></a>9.1. Integrationsüberblick</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">9.1.1. <a href="integration.html#idm123340240">Einführung</a></span></dt>
-<dt><span class="section">9.1.2. <a href="integration.html#idp15432048">Integrationsstellen</a></span></dt>
-<dt><span class="section">9.1.3. <a href="integration.html#idp15451856">Integrationsbeispiele</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>9.1. Integrationsüberblick</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
+    <link rel="up" href="ch09.html" title="Kapitel 9. Integration mit anderer Software" />
+    <link rel="prev" href="ch09.html" title="Kapitel 9. Integration mit anderer Software" />
+    <link rel="next" href="int-snmptrap.html" title="9.2. SNMP-Trap-Integration" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">9.1. Integrationsüberblick</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="ch09.html">Zurück</a> </td>
+          <th width="60%" align="center">Kapitel 9. Integration mit anderer Software</th>
+          <td width="20%" align="right"> <a accesskey="n" href="int-snmptrap.html">Weiter</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="9.1. Integrationsüberblick"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="integration"></a>9.1. Integrationsüberblick</h2></div></div></div><div class="toc"><dl><dt><span class="section">9.1.1. <a href="integration.html#idm122966928">Einführung</a></span></dt><dt><span class="section">9.1.2. <a href="integration.html#idp15387712">Integrationsstellen</a></span></dt><dt><span class="section">9.1.3. <a href="integration.html#idp15407312">Integrationsbeispiele</a></span></dt></dl></div>
   
 
-  <div class="section" title="9.1.1. Einführung">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idm123340240"></a>9.1.1. Einführung</h3></div></div></div>
+  <div class="section" title="9.1.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idm122966928"></a>9.1.1. Einführung</h3></div></div></div>
     
 
     <p>Einer der Gründe, warum Icinga solch eine populäre Überwachungsapplikation ist, liegt in der Tatsache, dass es einfach in
@@ -47,99 +43,80 @@
     überwachen, die Sie haben.</p>
   </div>
 
-  <div class="section" title="9.1.2. Integrationsstellen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15432048"></a>9.1.2. Integrationsstellen</h3></div></div></div>
+  <div class="section" title="9.1.2. Integrationsstellen"><div class="titlepage"><div><div><h3 class="title"><a id="idp15387712"></a>9.1.2. Integrationsstellen</h3></div></div></div>
     
 
-    <div class="mediaobject"><img src="../images/integrationoverview.png"></div>
+    <div class="mediaobject"><img src="../images/integrationoverview.png" /></div>
 
     <p>Um neue Hardware, Services oder Applikationen zu überwachen, prüfen Sie die Dokumentationen zu:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="pluginapi.html" title="11.1. Nagios Plugin API">Plugin API</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">Passive Prüfungen</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandler</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Um Daten aus externen Applikationen in Icinga zu bekommen, prüfen Sie die Dokumentationen zu:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="passivechecks.html" title="5.7. Passive Prüfungen (Passive Checks)">Passive Prüfungen</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="extcommands.html" title="7.1. Externe Befehle">Externe Befehle</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Um Zustands-, Leistungs- oder Benachrichtigungsinformationen von Icinga an externe Applikationen zu senden, prüfen Sie die
     Dokumentationen zu:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="eventhandlers.html" title="7.3. Eventhandler">Eventhandlers</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configmain.html#configmain-ocsp_command">OCSP</a> - und <a class="link" href="configmain.html#configmain-ochp_command">OCHP</a>-Befehlen</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="perfdata.html" title="7.15. Performance-Daten">Performance-Daten</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="notifications.html" title="5.11. Benachrichtigungen">Benachrichtigungen</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="9.1.3. Integrationsbeispiele">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp15451856"></a>9.1.3. Integrationsbeispiele</h3></div></div></div>
+  <div class="section" title="9.1.3. Integrationsbeispiele"><div class="titlepage"><div><div><h3 class="title"><a id="idp15407312"></a>9.1.3. Integrationsbeispiele</h3></div></div></div>
     
 
     <p>Wir haben ein paar Beispiele dokumentiert, wie Icinga mit externen Applikationen integriert wird:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="int-tcpwrappers.html" title="9.3. TCP-Wrapper-Integration">TCP-Wrappers</a> (Sicherheitsalarme)</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="int-snmptrap.html" title="9.2. SNMP-Trap-Integration">SNMP-Traps</a> (Arcserve Backup-Job-Status)</p>
-      </li>
-<li class="listitem">
-        <p><a class="link" href="int-mklivestatus.html" title="9.4. MKLiveStatus-Integration">mklivestatus</a> (Interface von Icinga zu verschiedenen Addons wie <a class="link" href="" target="_top">NagVis</a> und <a class="link" href="" target="_top">Thruk</a>)</p>
-      </li>
-</ul></div>
+      </li><li class="listitem">
+        <p><a class="link" href="int-mklivestatus.html" title="9.4. MKLiveStatus-Integration">mklivestatus</a> (Interface von Icinga zu verschiedenen Addons wie <a class="ulink" href="" target="_top">NagVis</a> und <a class="ulink" href="" target="_top">Thruk</a>)</p>
+      </li></ul></div>
 
-    <a class="indexterm" name="idp15459680"></a>
+    <a id="idp15414960" class="indexterm"></a>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="ch09.html">Zurück</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch09.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="int-snmptrap.html">Weiter</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">Kapitel 9. Integration mit anderer Software </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 9.2. SNMP-Trap-Integration</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="ch09.html">Zurück</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch09.html">Nach oben</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="int-snmptrap.html">Weiter</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">Kapitel 9. Integration mit anderer Software </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Zum Anfang</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 9.2. SNMP-Trap-Integration</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

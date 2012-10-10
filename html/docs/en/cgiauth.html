@@ -1,84 +1,68 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>3.7. Authentication And Authorization In The CGIs</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
-<link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga">
-<link rel="prev" href="configcgi.html" title="3.6. CGI Configuration File Options">
-<link rel="next" href="ch04.html" title="Chapter 4. Running Icinga">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">3.7. Authentication And Authorization In The CGIs</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="configcgi.html">Prev</a> </td>
-<th width="60%" align="center">Chapter 3. Configuring Icinga</th>
-<td width="20%" align="right"> <a accesskey="n" href="ch04.html">Next</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="3.7. Authentication And Authorization In The CGIs">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="cgiauth"></a>3.7. <a name="cgi_authentication"></a>Authentication And Authorization In The CGIs</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">3.7.1. <a href="cgiauth.html#idp5757136">Introduction</a></span></dt>
-<dt><span class="section">3.7.2. <a href="cgiauth.html#idp5758944">Definitions</a></span></dt>
-<dt><span class="section">3.7.3. <a href="cgiauth.html#idp6774096">Setting Up Authenticated Users</a></span></dt>
-<dt><span class="section">3.7.4. <a href="cgiauth.html#idp6781376">Enabling Authentication/Authorization Functionality In The CGIs</a></span></dt>
-<dt><span class="section">3.7.5. <a href="cgiauth.html#idp6787472">Default Permissions To CGI Information</a></span></dt>
-<dt><span class="section">3.7.6. <a href="cgiauth.html#idp6787760">Granting Additional Permissions To CGI Information</a></span></dt>
-<dt><span class="section">3.7.7. <a href="cgiauth.html#idp6867440">CGI Authorization Requirements</a></span></dt>
-<dt><span class="section">3.7.8. <a href="cgiauth.html#idp6873696">Authentication On Secured Web Servers</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>3.7. Authentication And Authorization In The CGIs</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Documentation" />
+    <link rel="up" href="ch03.html" title="Chapter 3. Configuring Icinga" />
+    <link rel="prev" href="configcgi.html" title="3.6. CGI Configuration File Options" />
+    <link rel="next" href="ch04.html" title="Chapter 4. Running Icinga" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">3.7. Authentication And Authorization In The CGIs</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="configcgi.html">Prev</a> </td>
+          <th width="60%" align="center">Chapter 3. Configuring Icinga</th>
+          <td width="20%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="3.7. Authentication And Authorization In The CGIs"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="cgiauth"></a>3.7. <a id="cgi_authentication"></a>Authentication And Authorization In The CGIs</h2></div></div></div><div class="toc"><dl><dt><span class="section">3.7.1. <a href="cgiauth.html#idp5755824">Introduction</a></span></dt><dt><span class="section">3.7.2. <a href="cgiauth.html#idp5757632">Definitions</a></span></dt><dt><span class="section">3.7.3. <a href="cgiauth.html#idp6772400">Setting Up Authenticated Users</a></span></dt><dt><span class="section">3.7.4. <a href="cgiauth.html#idp6779680">Enabling Authentication/Authorization Functionality In The CGIs</a></span></dt><dt><span class="section">3.7.5. <a href="cgiauth.html#idp6785776">Default Permissions To CGI Information</a></span></dt><dt><span class="section">3.7.6. <a href="cgiauth.html#idp6786096">Granting Additional Permissions To CGI Information</a></span></dt><dt><span class="section">3.7.7. <a href="cgiauth.html#idp6866832">CGI Authorization Requirements</a></span></dt><dt><span class="section">3.7.8. <a href="cgiauth.html#idp6872048">Authentication On Secured Web Servers</a></span></dt></dl></div>
   
 
-  <a class="indexterm" name="idp5756128"></a>
+  <a id="idp5754816" class="indexterm"></a>
 
-  <div class="section" title="3.7.1. Introduction">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp5757136"></a>3.7.1. Introduction</h3></div></div></div>
+  <div class="section" title="3.7.1. Introduction"><div class="titlepage"><div><div><h3 class="title"><a id="idp5755824"></a>3.7.1. Introduction</h3></div></div></div>
     
 
     <p>This documentation describes how the Icinga CGIs decide who has access to view monitoring and configuration information,
     and who can submit commands to the Icinga daemon through the web interface.</p>
   </div>
 
-  <div class="section" title="3.7.2. Definitions">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp5758944"></a>3.7.2. <a name="cgiauth-definitions"></a>Definitions</h3></div></div></div>
+  <div class="section" title="3.7.2. Definitions"><div class="titlepage"><div><div><h3 class="title"><a id="idp5757632"></a>3.7.2. <a id="cgiauth-definitions"></a>Definitions</h3></div></div></div>
     
 
     <p>Before continuing, it is important that you understand the meaning of and difference between authenticated users and authenticated
     contacts:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>An <span class="bold"><strong>authenticated user</strong></span> is someone who has authenticated to the web server with a username and
         password and has been granted access to the Icinga web interface.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>An <span class="bold"><strong>authenticated contact</strong></span> is an authenticated user whose username matches the short name of a
         <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact definition</a>.</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
-    <a class="indexterm" name="idp6770832"></a>
+    <a id="idp6769136" class="indexterm"></a>
 
-    <a class="indexterm" name="idp6772480"></a>
+    <a id="idp6770784" class="indexterm"></a>
   </div>
 
-  <div class="section" title="3.7.3. Setting Up Authenticated Users">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp6774096"></a>3.7.3. <a name="cgiauth-config_web_users"></a>Setting Up Authenticated Users</h3></div></div></div>
+  <div class="section" title="3.7.3. Setting Up Authenticated Users"><div class="titlepage"><div><div><h3 class="title"><a id="idp6772400"></a>3.7.3. <a id="cgiauth-config_web_users"></a>Setting Up Authenticated Users</h3></div></div></div>
     
 
     <p>Assuming you configured your web server as described in the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart guide</a>, it should require
@@ -92,12 +76,10 @@
 
     <pre class="screen"> htpasswd /usr/local/icinga/etc/htpasswd.users &lt;username&gt;</pre>
 
-    <a class="indexterm" name="idp6779600"></a>
+    <a id="idp6777904" class="indexterm"></a>
   </div>
 
-  <div class="section" title="3.7.4. Enabling Authentication/Authorization Functionality In The CGIs">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp6781376"></a>3.7.4. <a name="cgiauth-enable_cgi_auth"></a>Enabling Authentication/Authorization Functionality In The CGIs</h3></div></div></div>
+  <div class="section" title="3.7.4. Enabling Authentication/Authorization Functionality In The CGIs"><div class="titlepage"><div><div><h3 class="title"><a id="idp6779680"></a>3.7.4. <a id="cgiauth-enable_cgi_auth"></a>Enabling Authentication/Authorization Functionality In The CGIs</h3></div></div></div>
     
 
     <p>The next thing you need to do is make sure that the CGIs are configured to use the authentication and authorization functionality
@@ -108,175 +90,74 @@
 
     <p>Okay, you're now done with setting up basic authentication/authorization functionality in the CGIs.</p>
 
-    <a class="indexterm" name="idp6785840"></a>
+    <a id="idp6784144" class="indexterm"></a>
   </div>
 
-  <div class="section" title="3.7.5. Default Permissions To CGI Information">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp6787472"></a>3.7.5. <a name="cgiauth-default_rights"></a>Default Permissions To CGI Information</h3></div></div></div>
+  <div class="section" title="3.7.5. Default Permissions To CGI Information"><div class="titlepage"><div><div><h3 class="title"><a id="idp6785776"></a>3.7.5. <a id="cgiauth-default_rights"></a>Default Permissions To CGI Information</h3></div></div></div>
     
 
     <p>So what default permissions do users have in the CGIs by default when the authentication/authorization functionality is
     enabled?</p>
 
     <div class="informaltable">
-      <table border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p>CGI Data</p></td>
-<td><p>Authenticated Contacts<sup> <a class="link" href="cgiauth.html#cgiauth-definitions">*</a> </sup> </p></td>
-<td><p>Other Authenticated Users<sup> <a class="link" href="cgiauth.html#cgiauth-definitions">*</a> </sup> </p></td>
-</tr>
-<tr>
-<td><p>Host Status Information</p></td>
-<td><p>Yes</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>Host Configuration Information</p></td>
-<td><p>Yes</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>Host History</p></td>
-<td><p>Yes</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>Host Notifications</p></td>
-<td><p>Yes</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>Host Commands</p></td>
-<td><p>Yes</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>Service Status Information</p></td>
-<td><p>Yes</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>Service Configuration Information</p></td>
-<td><p>Yes</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>Service History</p></td>
-<td><p>Yes</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>Service Notifications</p></td>
-<td><p>Yes</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>Service Commands</p></td>
-<td><p>Yes</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>All Configuration Information</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>System/Process Information</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-</tr>
-<tr>
-<td><p>System/Process Commands</p></td>
-<td><p>No</p></td>
-<td><p>No</p></td>
-</tr>
-</tbody>
-</table>
+      <table border="1"><colgroup><col /><col /><col /></colgroup><tbody><tr><td><p>CGI Data</p></td><td><p>Authenticated Contacts<sup> <a class="link" href="cgiauth.html#cgiauth-definitions">*</a> </sup> </p></td><td><p>Other Authenticated Users<sup> <a class="link" href="cgiauth.html#cgiauth-definitions">*</a> </sup> </p></td></tr><tr><td><p>Host Status Information</p></td><td><p>Yes</p></td><td><p>No</p></td></tr><tr><td><p>Host Configuration Information</p></td><td><p>Yes</p></td><td><p>No</p></td></tr><tr><td><p>Host History</p></td><td><p>Yes</p></td><td><p>No</p></td></tr><tr><td><p>Host Notifications</p></td><td><p>Yes</p></td><td><p>No</p></td></tr><tr><td><p>Host Commands</p></td><td><p>Yes</p></td><td><p>No</p></td></tr><tr><td><p>Service Status Information</p></td><td><p>Yes</p></td><td><p>No</p></td></tr><tr><td><p>Service Configuration Information</p></td><td><p>Yes</p></td><td><p>No</p></td></tr><tr><td><p>Service History</p></td><td><p>Yes</p></td><td><p>No</p></td></tr><tr><td><p>Service Notifications</p></td><td><p>Yes</p></td><td><p>No</p></td></tr><tr><td><p>Service Commands</p></td><td><p>Yes</p></td><td><p>No</p></td></tr><tr><td><p>All Configuration Information</p></td><td><p>No</p></td><td><p>No</p></td></tr><tr><td><p>System/Process Information</p></td><td><p>No</p></td><td><p>No</p></td></tr><tr><td><p>System/Process Commands</p></td><td><p>No</p></td><td><p>No</p></td></tr></tbody></table>
     </div>
 
     <p><span class="emphasis"><em>Authenticated contacts<sup> <a class="link" href="cgiauth.html#cgiauth-definitions">*</a> </sup> </em></span> are granted
     the following permissions for each <span class="bold"><strong>service</strong></span> for which they are contacts (but not for services for which
     they are not contacts)...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Authorization to view service status information</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Authorization to view service configuration information</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Authorization to view history and notifications for the service</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Authorization to issue service commands</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p><span class="emphasis"><em>Authenticated contacts<sup> <a class="link" href="cgiauth.html#cgiauth-definitions">*</a> </sup> </em></span> are granted
     the following permissions for each <span class="bold"><strong>host</strong></span> for which they are contacts (but not for hosts for which they
     are not contacts)...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Authorization to view host status information</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Authorization to view host configuration information</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Authorization to view history and notifications for the host</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Authorization to issue host commands</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Authorization to view status information for all services on the host</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Authorization to view configuration information for all services on the host</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Authorization to view history and notification information for all services on the host</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Authorization to issue commands for all services on the host</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>It is important to note that by default <span class="bold"><strong>no one</strong></span> is authorized for the following...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>Viewing the raw log file via the <a class="link" href="cgis.html#cgis-showlog_cgi">showlog CGI</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Viewing Icinga process information via the <a class="link" href="cgis.html#cgis-extinfo_cgi">extended information CGI</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Issuing Icinga process commands via the <a class="link" href="cgis.html#cgis-cmd_cgi">command CGI</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>Viewing host group, contact, contact group, time period, and command definitions via the <a class="link" href="cgis.html#cgis-config_cgi">configuration CGI</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>You will undoubtably want to access this information, so you'll have to assign additional rights for yourself (and possibly other
     users) as described below...</p>
 
-    <a class="indexterm" name="idp6853360"></a>
+    <a id="idp6848624" class="indexterm"></a>
   </div>
 
-  <div class="section" title="3.7.6. Granting Additional Permissions To CGI Information">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp6787760"></a>3.7.6. <a name="cgiauth-additional_rights"></a>Granting Additional Permissions To CGI Information</h3></div></div></div>
+  <div class="section" title="3.7.6. Granting Additional Permissions To CGI Information"><div class="titlepage"><div><div><h3 class="title"><a id="idp6786096"></a>3.7.6. <a id="cgiauth-additional_rights"></a>Granting Additional Permissions To CGI Information</h3></div></div></div>
     
 
     <p>You can grant <span class="emphasis"><em>authenticated contacts</em></span> or other <span class="emphasis"><em>authenticated users</em></span> permission to
@@ -286,44 +167,32 @@
 
     <p>Additional authorization can be given to users by adding them to the following variables in the CGI configuration file...</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p><a class="link" href="configcgi.html#configcgi-authorized_for_system_information">authorized_for_system_information</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configcgi.html#configcgi-authorized_for_system_commands">authorized_for_system_commands</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configcgi.html#configcgi-authorized_for_configuration_information">authorized_for_configuration_information</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_hosts">authorized_for_all_hosts</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_host_commands">authorized_for_all_host_commands</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_services">authorized_for_all_services</a></p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p><a class="link" href="configcgi.html#configcgi-authorized_for_all_service_commands">authorized_for_all_service_commands</a></p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="3.7.7. CGI Authorization Requirements">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp6867440"></a>3.7.7. <a name="cgiauth-cgi_auth_requirements"></a>CGI Authorization Requirements</h3></div></div></div>
+  <div class="section" title="3.7.7. CGI Authorization Requirements"><div class="titlepage"><div><div><h3 class="title"><a id="idp6866832"></a>3.7.7. <a id="cgiauth-cgi_auth_requirements"></a>CGI Authorization Requirements</h3></div></div></div>
     
 
     <p>If you are confused about the authorization needed to access various information in the CGIs, read the <span class="emphasis"><em> <span class="bold"><strong>Authorization Requirements</strong></span> </em></span> section for each CGI as described <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">here</a>.</p>
 
-    <a class="indexterm" name="idp6870448"></a>
+    <a id="idp6870272" class="indexterm"></a>
   </div>
 
-  <div class="section" title="3.7.8. Authentication On Secured Web Servers">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp6873696"></a>3.7.8. <a name="cgiauth-secure_web_servers"></a>Authentication On Secured Web Servers</h3></div></div></div>
+  <div class="section" title="3.7.8. Authentication On Secured Web Servers"><div class="titlepage"><div><div><h3 class="title"><a id="idp6872048"></a>3.7.8. <a id="cgiauth-secure_web_servers"></a>Authentication On Secured Web Servers</h3></div></div></div>
     
 
     <p>If your web server is located in a secure domain (i.e., behind a firewall) or if you are using SSL, you can define a default
@@ -336,26 +205,28 @@
     web server and are sure that everyone who has access to the CGIs has been authenticated in some manner. If you define this variable,
     anyone who has not authenticated to the web server will inherit all rights you assign to this user!</p>
 
-    <a class="indexterm" name="idp6874208"></a>
+    <a id="idp6877520" class="indexterm"></a>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="configcgi.html">Prev</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch03.html">Up</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="ch04.html">Next</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">3.6. CGI Configuration File Options </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td>
-<td width="40%" align="right" valign="top"> Chapter 4. Running Icinga</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="configcgi.html">Prev</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch03.html">Up</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="ch04.html">Next</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">3.6. CGI Configuration File Options </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Home</a>
+          </td>
+          <td width="40%" align="right" valign="top"> Chapter 4. Running Icinga</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>

@@ -1,77 +1,61 @@
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>5.4. Host-Prüfungen (Host checks)</title>
-<link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
-<meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
-<meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
-<link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen">
-<link rel="prev" href="macrolist.html" title="5.3. Standard-Makros in Icinga">
-<link rel="next" href="servicechecks.html" title="5.5. Service-Prüfungen (Service Checks)">
-<script src="../js/jquery-min.js" type="text/javascript"></script><script src="../js/icinga-docs.js" type="text/javascript"></script>
-</head>
-<body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF">
-<CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
-<div class="navheader">
-<table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">5.4. Host-Prüfungen (Host checks)</th></tr>
-<tr>
-<td width="20%" align="left">
-<a accesskey="p" href="macrolist.html">Zurück</a> </td>
-<th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
-<td width="20%" align="right"> <a accesskey="n" href="servicechecks.html">Weiter</a>
-</td>
-</tr>
-</table>
-<hr>
-</div>
-<div class="section" title="5.4. Host-Prüfungen (Host checks)">
-<div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="hostchecks"></a>5.4. Host-Prüfungen (Host checks)</h2></div></div></div>
-<div class="toc"><dl>
-<dt><span class="section">5.4.1. <a href="hostchecks.html#idp7085744">Einführung</a></span></dt>
-<dt><span class="section">5.4.2. <a href="hostchecks.html#idp7087184">Wann werden Host-Prüfungen durchgeführt?</a></span></dt>
-<dt><span class="section">5.4.3. <a href="hostchecks.html#idp9637312">zwischengespeicherte Host-Prüfungen (cached host checks)</a></span></dt>
-<dt><span class="section">5.4.4. <a href="hostchecks.html#idp9639712">Abhängigkeiten und Prüfungen</a></span></dt>
-<dt><span class="section">5.4.5. <a href="hostchecks.html#idp9642592">Parallelisierung von Host-Prüfungen</a></span></dt>
-<dt><span class="section">5.4.6. <a href="hostchecks.html#idp9653472">Host-Zustände</a></span></dt>
-<dt><span class="section">5.4.7. <a href="hostchecks.html#idp9658528">Host-Statusermittlung</a></span></dt>
-<dt><span class="section">5.4.8. <a href="hostchecks.html#idp9694592">Host-Statusänderungen</a></span></dt>
-</dl></div>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>5.4. Host-Prüfungen (Host checks)</title>
+    <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css" />
+    <meta name="generator" content="DocBook XSL Stylesheets V1.75.2" />
+    <meta name="keywords" content="Supervision, Icinga, Nagios, Linux" />
+    <link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation" />
+    <link rel="up" href="ch05.html" title="Kapitel 5. Die Grundlagen" />
+    <link rel="prev" href="macrolist.html" title="5.3. Standard-Makros in Icinga" />
+    <link rel="next" href="servicechecks.html" title="5.5. Service-Prüfungen (Service Checks)" />
+    <script xmlns="" src="../js/jquery-min.js" type="text/javascript"></script>
+    <script xmlns="" src="../js/icinga-docs.js" type="text/javascript"></script>
+  </head>
+  <body>
+    <CENTER xmlns="">
+      <IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></IMG>
+    </CENTER>
+    <div class="navheader">
+      <table width="100%" summary="Navigation header">
+        <tr>
+          <th colspan="3" align="center">5.4. Host-Prüfungen (Host checks)</th>
+        </tr>
+        <tr>
+          <td width="20%" align="left"><a accesskey="p" href="macrolist.html">Zurück</a> </td>
+          <th width="60%" align="center">Kapitel 5. Die Grundlagen</th>
+          <td width="20%" align="right"> <a accesskey="n" href="servicechecks.html">Weiter</a></td>
+        </tr>
+      </table>
+      <hr />
+    </div>
+    <div class="section" title="5.4. Host-Prüfungen (Host checks)"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a id="hostchecks"></a>5.4. Host-Prüfungen (Host checks)</h2></div></div></div><div class="toc"><dl><dt><span class="section">5.4.1. <a href="hostchecks.html#idp7049824">Einführung</a></span></dt><dt><span class="section">5.4.2. <a href="hostchecks.html#idp7051264">Wann werden Host-Prüfungen durchgeführt?</a></span></dt><dt><span class="section">5.4.3. <a href="hostchecks.html#idp9601024">zwischengespeicherte Host-Prüfungen (cached host checks)</a></span></dt><dt><span class="section">5.4.4. <a href="hostchecks.html#idp9603424">Abhängigkeiten und Prüfungen</a></span></dt><dt><span class="section">5.4.5. <a href="hostchecks.html#idp9606336">Parallelisierung von Host-Prüfungen</a></span></dt><dt><span class="section">5.4.6. <a href="hostchecks.html#idp9617504">Host-Zustände</a></span></dt><dt><span class="section">5.4.7. <a href="hostchecks.html#idp9622320">Host-Statusermittlung</a></span></dt><dt><span class="section">5.4.8. <a href="hostchecks.html#idp9658208">Host-Statusänderungen</a></span></dt></dl></div>
   
 
-  <div class="section" title="5.4.1. Einführung">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7085744"></a>5.4.1. Einführung</h3></div></div></div>
+  <div class="section" title="5.4.1. Einführung"><div class="titlepage"><div><div><h3 class="title"><a id="idp7049824"></a>5.4.1. Einführung</h3></div></div></div>
     
 
     <p>Die grundlegenden Tätigkeiten von Host-Prüfungen werden hier beschrieben...</p>
   </div>
 
-  <div class="section" title="5.4.2. Wann werden Host-Prüfungen durchgeführt?">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp7087184"></a>5.4.2. Wann werden Host-Prüfungen durchgeführt?</h3></div></div></div>
+  <div class="section" title="5.4.2. Wann werden Host-Prüfungen durchgeführt?"><div class="titlepage"><div><div><h3 class="title"><a id="idp7051264"></a>5.4.2. Wann werden Host-Prüfungen durchgeführt?</h3></div></div></div>
     
 
     <p>Hosts werden durch den Icinga-Daemon geprüft</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>in regelmäßigen Intervallen, wie sie durch die <span class="emphasis"><em>check_interval</em></span> und
         <span class="emphasis"><em>retry_interval</em></span>-Optionen in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definitionen</a> festgelegt
         sind.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>nach Bedarf, wenn ein mit dem Host verbundener Service den Status wechselt.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>nach Bedarf als Teil der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Host-Verfügbarkeit</a>s-Logik.</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>nach Bedarf bei <a class="link" href="dependencychecks.html" title="7.20. Vorausschauende Abhängigkeitsprüfungen">vorausschauenden Host-Abhängigkeitsprüfungen</a>.</p>
-      </li>
-</ul></div>
+      </li></ul></div>
 
     <p>Regelmäßige Host-Prüfungen sind optional. Wenn Sie die <span class="emphasis"><em>check_interval</em></span>-Option in Ihrer Host-Definition auf
     Null (0) setzen, wird Icinga keine Host-Prüfungen auf planmäßiger Basis durchführen. Es wird jedoch weiterhin nach Bedarf
@@ -91,9 +75,7 @@
     Host-Abhängigkeitsprüfung</a>s-Logik durchgeführt.</p>
   </div>
 
-  <div class="section" title="5.4.3. zwischengespeicherte Host-Prüfungen (cached host checks)">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9637312"></a>5.4.3. zwischengespeicherte Host-Prüfungen (cached host checks)</h3></div></div></div>
+  <div class="section" title="5.4.3. zwischengespeicherte Host-Prüfungen (cached host checks)"><div class="titlepage"><div><div><h3 class="title"><a id="idp9601024"></a>5.4.3. zwischengespeicherte Host-Prüfungen (cached host checks)</h3></div></div></div>
     
 
     <p>Die Performance von Host-Prüfungen nach Bedarf kann signifikant durch den Einsatz von "cached checks" erhöht werden, die es
@@ -101,9 +83,7 @@
     Informationen zu "cached checks" finden Sie <a class="link" href="cachedchecks.html" title="7.21. Zwischengespeicherte Prüfungen">hier</a>.</p>
   </div>
 
-  <div class="section" title="5.4.4. Abhängigkeiten und Prüfungen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9639712"></a>5.4.4. Abhängigkeiten und Prüfungen</h3></div></div></div>
+  <div class="section" title="5.4.4. Abhängigkeiten und Prüfungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp9603424"></a>5.4.4. Abhängigkeiten und Prüfungen</h3></div></div></div>
     
 
     <p>Sie können <a class="link" href="objectdefinitions.html#objectdefinitions-hostdependency">Host-Ausführungs-Abhängigkeiten</a> definieren, die Icinga
@@ -111,9 +91,7 @@
     Abhängigkeiten finden Sie <a class="link" href="dependencies.html" title="7.13. Host- und Service-Abhängigkeiten">hier</a>.</p>
   </div>
 
-  <div class="section" title="5.4.5. Parallelisierung von Host-Prüfungen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9642592"></a>5.4.5. Parallelisierung von Host-Prüfungen</h3></div></div></div>
+  <div class="section" title="5.4.5. Parallelisierung von Host-Prüfungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp9606336"></a>5.4.5. Parallelisierung von Host-Prüfungen</h3></div></div></div>
     
 
     <p>Geplante Host-Prüfungen laufen parallel. Wenn Icinga eine geplante Host-Prüfung ausführt, wird es die Host-Prüfung
@@ -131,7 +109,7 @@
     parallel ausgeführt. Allerdings gibt es eine große Ausnahme, der Sie sich bewusst sein sollten, da sie einen negativen Einfluss auf die
     Performance haben kann...</p>
 
-    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Hosts, deren <span class="emphasis"><em>max_check_attempts</em></span>-Wert auf <span class="bold"><strong>1</strong></span> gesetzt sind,
+    <p><span class="inlinemediaobject"><img src="../images/note.gif" /></span> Hosts, deren <span class="emphasis"><em>max_check_attempts</em></span>-Wert auf <span class="bold"><strong>1</strong></span> gesetzt sind,
     können schwerwiegende Performance-Probleme verursachen. Der Grund? Wenn Icinga den richtigen Status mit Hilfe der <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">Netzwerk-Erreichbarkeit</a>s-Logik ermitteln muss (um zu sehen, ob sie DOWN oder UNREACHABLE sind),
     muss es <span class="bold"><strong>aufeinanderfolgende</strong></span> Prüfungen für alle direkten Eltern des Hosts starten. Um es noch einmal zu
     wiederholen, diese Prüfungen laufen <span class="emphasis"><em>nacheinander</em></span> statt parallel, also kann es zu einem Performance-Einbruch kommen.
@@ -139,29 +117,21 @@
     in Ihren Host-Definitionen benutzen.</p>
   </div>
 
-  <div class="section" title="5.4.6. Host-Zustände">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9653472"></a>5.4.6. Host-Zustände</h3></div></div></div>
+  <div class="section" title="5.4.6. Host-Zustände"><div class="titlepage"><div><div><h3 class="title"><a id="idp9617504"></a>5.4.6. Host-Zustände</h3></div></div></div>
     
 
     <p>Hosts, die geprüft werden, können in einem von drei unterschiedlichen Zuständen sein</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
         <p>UP</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>DOWN</p>
-      </li>
-<li class="listitem">
+      </li><li class="listitem">
         <p>UNREACHABLE</p>
-      </li>
-</ul></div>
+      </li></ul></div>
   </div>
 
-  <div class="section" title="5.4.7. Host-Statusermittlung">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9658528"></a>5.4.7. Host-Statusermittlung</h3></div></div></div>
+  <div class="section" title="5.4.7. Host-Statusermittlung"><div class="titlepage"><div><div><h3 class="title"><a id="idp9622320"></a>5.4.7. Host-Statusermittlung</h3></div></div></div>
     
 
     <p>Host-Prüfungen werden mit Hilfe von <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> durchgeführt, die den Status OK, WARNING, UNKNOWN oder
@@ -172,37 +142,10 @@
     Nachbearbeitung (die später beschrieben wird) ergibt den endgültigen Host-Zustand.</p>
 
     <div class="informaltable">
-      <table border="1">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p> <span class="bold"><strong>Plugin-Ergebnis</strong></span> </p></td>
-<td><p> <span class="bold"><strong>vorläufiger Host-Zustand</strong></span> </p></td>
-</tr>
-<tr>
-<td><p>OK</p></td>
-<td><p>UP</p></td>
-</tr>
-<tr>
-<td><p>WARNING</p></td>
-<td><p>UP oder DOWN<sup>*</sup></p></td>
-</tr>
-<tr>
-<td><p>UNKNOWN</p></td>
-<td><p>DOWN</p></td>
-</tr>
-<tr>
-<td><p>CRITICAL</p></td>
-<td><p>DOWN</p></td>
-</tr>
-</tbody>
-</table>
+      <table border="1"><colgroup><col /><col /></colgroup><tbody><tr><td><p> <span class="bold"><strong>Plugin-Ergebnis</strong></span> </p></td><td><p> <span class="bold"><strong>vorläufiger Host-Zustand</strong></span> </p></td></tr><tr><td><p>OK</p></td><td><p>UP</p></td></tr><tr><td><p>WARNING</p></td><td><p>UP oder DOWN<sup>*</sup></p></td></tr><tr><td><p>UNKNOWN</p></td><td><p>DOWN</p></td></tr><tr><td><p>CRITICAL</p></td><td><p>DOWN</p></td></tr></tbody></table>
     </div>
 
-    <p><span class="inlinemediaobject"><img src="../images/note.gif"></span> Anmerkung: Das Ergebnis WARNING bedeutet normalerweise, dass der Host UP ist. Trotzdem werden WARNING-Ergebnisse
+    <p><span class="inlinemediaobject"><img src="../images/note.gif" /></span> Anmerkung: Das Ergebnis WARNING bedeutet normalerweise, dass der Host UP ist. Trotzdem werden WARNING-Ergebnisse
     so interpretiert, dass der Host DOWN ist, wenn die <a class="link" href="configmain.html#configmain-use_aggressive_host_checking">use_aggressive_host_checking</a>-Option aktiviert ist.</p>
 
     <p>Wenn der vorläufige Host-Status DOWN ist, wird Icinga versuchen festzustellen, ob der Host wirklich DOWN ist oder
@@ -212,38 +155,13 @@
     Host-Definition festgelegt.</p>
 
     <div class="informaltable">
-      <table border="1">
-<colgroup>
-<col>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p> <span class="bold"><strong>vorläufiger Host-Zustand</strong></span> </p></td>
-<td><p> <span class="bold"><strong>Zustand Host-Eltern</strong></span> </p></td>
-<td><p> <span class="bold"><strong>endgültiger Host-Zustand</strong></span> </p></td>
-</tr>
-<tr>
-<td><p>DOWN</p></td>
-<td><p>mindestens ein Elternteil ist UP</p></td>
-<td><p>DOWN</p></td>
-</tr>
-<tr>
-<td><p>DOWN</p></td>
-<td><p>alle Eltern sind entweder DOWN oder UNREACHABLE</p></td>
-<td><p>UNREACHABLE</p></td>
-</tr>
-</tbody>
-</table>
+      <table border="1"><colgroup><col /><col /><col /></colgroup><tbody><tr><td><p> <span class="bold"><strong>vorläufiger Host-Zustand</strong></span> </p></td><td><p> <span class="bold"><strong>Zustand Host-Eltern</strong></span> </p></td><td><p> <span class="bold"><strong>endgültiger Host-Zustand</strong></span> </p></td></tr><tr><td><p>DOWN</p></td><td><p>mindestens ein Elternteil ist UP</p></td><td><p>DOWN</p></td></tr><tr><td><p>DOWN</p></td><td><p>alle Eltern sind entweder DOWN oder UNREACHABLE</p></td><td><p>UNREACHABLE</p></td></tr></tbody></table>
     </div>
 
     <p>Mehr Informationen, wie Icinga zwischen DOWN- und UNREACHABLE-Zuständen unterscheidet, finden Sie <a class="link" href="networkreachability.html" title="5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts">hier</a>.</p>
   </div>
 
-  <div class="section" title="5.4.8. Host-Statusänderungen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp9694592"></a>5.4.8. Host-Statusänderungen</h3></div></div></div>
+  <div class="section" title="5.4.8. Host-Statusänderungen"><div class="titlepage"><div><div><h3 class="title"><a id="idp9658208"></a>5.4.8. Host-Statusänderungen</h3></div></div></div>
     
 
     <p>Wie Ihnen wahrscheinlich bereits bewusst ist, bleiben Hosts nicht immer in einem Zustand. Dinge gehen kaputt, Patches werden
@@ -258,26 +176,28 @@
     unterdrücken, bis das Flattern stoppt und sich der Host-Status stabilisiert. Mehr Informationen über die Erkennungslogik des Flatterns
     finden Sie <a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">hier</a>.</p>
 
-    <a class="indexterm" name="idp9700256"></a>
+    <a id="idp9663872" class="indexterm"></a>
   </div>
 </div>
-<div class="navfooter">
-<hr>
-<table width="100%" summary="Navigation footer">
-<tr>
-<td width="40%" align="left">
-<a accesskey="p" href="macrolist.html">Zurück</a> </td>
-<td width="20%" align="center"><a accesskey="u" href="ch05.html">Nach oben</a></td>
-<td width="40%" align="right"> <a accesskey="n" href="servicechecks.html">Weiter</a>
-</td>
-</tr>
-<tr>
-<td width="40%" align="left" valign="top">5.3. Standard-Makros in Icinga </td>
-<td width="20%" align="center"><a accesskey="h" href="index.html">Zum Anfang</a></td>
-<td width="40%" align="right" valign="top"> 5.5. Service-Prüfungen (Service Checks)</td>
-</tr>
-</table>
-</div>
-<P class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
-</body>
+    <div class="navfooter">
+      <hr />
+      <table width="100%" summary="Navigation footer">
+        <tr>
+          <td width="40%" align="left"><a accesskey="p" href="macrolist.html">Zurück</a> </td>
+          <td width="20%" align="center">
+            <a accesskey="u" href="ch05.html">Nach oben</a>
+          </td>
+          <td width="40%" align="right"> <a accesskey="n" href="servicechecks.html">Weiter</a></td>
+        </tr>
+        <tr>
+          <td width="40%" align="left" valign="top">5.3. Standard-Makros in Icinga </td>
+          <td width="20%" align="center">
+            <a accesskey="h" href="index.html">Zum Anfang</a>
+          </td>
+          <td width="40%" align="right" valign="top"> 5.5. Service-Prüfungen (Service Checks)</td>
+        </tr>
+      </table>
+    </div>
+    <P xmlns="" class="copyright">© 2009-2012 Icinga Development Team, http://www.icinga.org</P>
+  </body>
 </html>
