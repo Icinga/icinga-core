@@ -30,25 +30,25 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="plugins"></a>5.1. Icinga Plugins</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">5.1.1. <a href="plugins.html#idm123288560">Einführung</a></span></dt>
-<dt><span class="section">5.1.2. <a href="plugins.html#idm123406768">Was sind Plugins?</a></span></dt>
-<dt><span class="section">5.1.3. <a href="plugins.html#idp6809456">Plugins als eine Abstraktionsschicht</a></span></dt>
-<dt><span class="section">5.1.4. <a href="plugins.html#idp6815840">Welche Plugins sind verfügbar?</a></span></dt>
-<dt><span class="section">5.1.5. <a href="plugins.html#idp6826016">Plugins beschaffen</a></span></dt>
-<dt><span class="section">5.1.6. <a href="plugins.html#idp6838080">Zum Icinga-Benutzer wechseln</a></span></dt>
-<dt><span class="section">5.1.7. <a href="plugins.html#idp6852128">Anpassen der Umgebung</a></span></dt>
-<dt><span class="section">5.1.8. <a href="plugins.html#idp6857360">Wie benutze ich Plugin X?</a></span></dt>
-<dt><span class="section">5.1.9. <a href="plugins.html#idp6858064">Integration eines neuen Plugins</a></span></dt>
-<dt><span class="section">5.1.10. <a href="plugins.html#idp6890016">Raw command line</a></span></dt>
-<dt><span class="section">5.1.11. <a href="plugins.html#idp6896096">Schwellwert und Bereiche</a></span></dt>
-<dt><span class="section">5.1.12. <a href="plugins.html#idp6896416">Aktivieren der Definition</a></span></dt>
-<dt><span class="section">5.1.13. <a href="plugins.html#idp6948496">Plugin API</a></span></dt>
+<dt><span class="section">5.1.1. <a href="plugins.html#idm123103072">Einführung</a></span></dt>
+<dt><span class="section">5.1.2. <a href="plugins.html#idm123220240">Was sind Plugins?</a></span></dt>
+<dt><span class="section">5.1.3. <a href="plugins.html#idp6813216">Plugins als eine Abstraktionsschicht</a></span></dt>
+<dt><span class="section">5.1.4. <a href="plugins.html#idp6819648">Welche Plugins sind verfügbar?</a></span></dt>
+<dt><span class="section">5.1.5. <a href="plugins.html#idp6829824">Plugins beschaffen</a></span></dt>
+<dt><span class="section">5.1.6. <a href="plugins.html#idp6841920">Zum Icinga-Benutzer wechseln</a></span></dt>
+<dt><span class="section">5.1.7. <a href="plugins.html#idp6855840">Anpassen der Umgebung</a></span></dt>
+<dt><span class="section">5.1.8. <a href="plugins.html#idp6861184">Wie benutze ich Plugin X?</a></span></dt>
+<dt><span class="section">5.1.9. <a href="plugins.html#idp6861952">Integration eines neuen Plugins</a></span></dt>
+<dt><span class="section">5.1.10. <a href="plugins.html#idp6895312">Raw command line</a></span></dt>
+<dt><span class="section">5.1.11. <a href="plugins.html#idp6899776">Schwellwert und Bereiche</a></span></dt>
+<dt><span class="section">5.1.12. <a href="plugins.html#idp6900096">Aktivieren der Definition</a></span></dt>
+<dt><span class="section">5.1.13. <a href="plugins.html#idp6952272">Plugin API</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.1.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idm123288560"></a>5.1.1. Einführung</h3></div></div></div>
+<a name="idm123103072"></a>5.1.1. Einführung</h3></div></div></div>
     
 
     <p>Icinga enthält nicht, wie viele andere Überwachungs-Tools, interne Mechanismen zur Prüfung des Zustands von Hosts und
@@ -58,7 +58,7 @@
 
   <div class="section" title="5.1.2. Was sind Plugins?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idm123406768"></a>5.1.2. Was sind Plugins?</h3></div></div></div>
+<a name="idm123220240"></a>5.1.2. Was sind Plugins?</h3></div></div></div>
     
 
     <p>Plugins sind kompilierte Programme oder Scripts (Perl-Scripts, Shell-Scripts, usw.), die von einer Kommandozeile aus laufen
@@ -73,7 +73,7 @@
 
   <div class="section" title="5.1.3. Plugins als eine Abstraktionsschicht">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6809456"></a>5.1.3. Plugins als eine Abstraktionsschicht</h3></div></div></div>
+<a name="idp6813216"></a>5.1.3. Plugins als eine Abstraktionsschicht</h3></div></div></div>
     
 
     <p><span class="inlinemediaobject"><img src="../images/plugins.png"></span></p>
@@ -97,7 +97,7 @@
 
   <div class="section" title="5.1.4. Welche Plugins sind verfügbar?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6815840"></a>5.1.4. Welche Plugins sind verfügbar?</h3></div></div></div>
+<a name="idp6819648"></a>5.1.4. Welche Plugins sind verfügbar?</h3></div></div></div>
     
 
     <p>Es gibt bereits zahlreiche Plugins, um viele verschiedene Arten von Geräten und Services zu überwachen, u.a.:</p>
@@ -123,7 +123,7 @@
 
   <div class="section" title="5.1.5. Plugins beschaffen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6826016"></a>5.1.5. <a name="plugins-obtaining"></a>Plugins beschaffen</h3></div></div></div>
+<a name="idp6829824"></a>5.1.5. <a name="plugins-obtaining"></a>Plugins beschaffen</h3></div></div></div>
     
 
     <p>Plugins werden nicht mit Icinga verteilt, aber Sie finden die offiziellen Nagios-Plugins zum Download und viele
@@ -170,7 +170,7 @@
 
   <div class="section" title="5.1.6. Zum Icinga-Benutzer wechseln">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6838080"></a>5.1.6. <a name="plugins-hints"></a>Zum Icinga-Benutzer wechseln</h3></div></div></div>
+<a name="idp6841920"></a>5.1.6. <a name="plugins-hints"></a>Zum Icinga-Benutzer wechseln</h3></div></div></div>
     
 
     <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
@@ -229,7 +229,7 @@
 
   <div class="section" title="5.1.7. Anpassen der Umgebung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6852128"></a>5.1.7. Anpassen der Umgebung</h3></div></div></div>
+<a name="idp6855840"></a>5.1.7. Anpassen der Umgebung</h3></div></div></div>
     
 
     <p>Einige Prüfungen (wie check_oracle_health) hängen davon ab, dass verschiedene Umgebungsvariablen gesetzt sind. Setzen Sie diese
@@ -254,7 +254,7 @@
 
   <div class="section" title="5.1.8. Wie benutze ich Plugin X?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6857360"></a>5.1.8. <a name="plugins-howto"></a>Wie benutze ich Plugin X?</h3></div></div></div>
+<a name="idp6861184"></a>5.1.8. <a name="plugins-howto"></a>Wie benutze ich Plugin X?</h3></div></div></div>
     
 
     <p>Fast alle Plugins zeigen grundlegende Bedienungshinweise an, wenn sie von der Kommandozeile mit der Option '-h' oder '--help'
@@ -266,7 +266,7 @@
 
   <div class="section" title="5.1.9. Integration eines neuen Plugins">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6858064"></a>5.1.9. <a name="plugins-new_plugin"></a>Integration eines neuen Plugins</h3></div></div></div>
+<a name="idp6861952"></a>5.1.9. <a name="plugins-new_plugin"></a>Integration eines neuen Plugins</h3></div></div></div>
     
 
     <p>Nach der Installation des Plugins rufen Sie es mit den nötigen Optionen von der Kommandozeile aus auf. Wenn dies funktioniert,
@@ -404,7 +404,7 @@ resultiert in:
 
   <div class="section" title="5.1.10. Raw command line">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6890016"></a>5.1.10. Raw command line</h3></div></div></div>
+<a name="idp6895312"></a>5.1.10. Raw command line</h3></div></div></div>
     
 
     <p>Beginnend mit Icinga 1.6 ermöglicht das klassische UI die Anzeige der Kommandozeile mit aufgelösten Variablen
@@ -426,7 +426,7 @@ resultiert in:
 
   <div class="section" title="5.1.11. Schwellwert und Bereiche">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6896096"></a>5.1.11. Schwellwert und Bereiche</h3></div></div></div>
+<a name="idp6899776"></a>5.1.11. Schwellwert und Bereiche</h3></div></div></div>
     
 
     <p>Einige Plugins unterstützen Bereichsangaben für die Warn- und Kritisch-Werte. Bitte überprüfen Sie die Dokumentation, ob das der
@@ -584,7 +584,7 @@ resultiert in:
 
   <div class="section" title="5.1.12. Aktivieren der Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6896416"></a>5.1.12. Aktivieren der Definition</h3></div></div></div>
+<a name="idp6900096"></a>5.1.12. Aktivieren der Definition</h3></div></div></div>
     
 
     <p>Prüfen Sie die Konfiguration mit "/etc/init.d/icinga show-errors" und bereinigen Sie eventuelle Fehler, bevor Sie Icinga
@@ -623,22 +623,22 @@ resultiert in:
 
   <div class="section" title="5.1.13. Plugin API">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp6948496"></a>5.1.13. Plugin API</h3></div></div></div>
+<a name="idp6952272"></a>5.1.13. Plugin API</h3></div></div></div>
     
 
     <p>Informationen zu technischen Aspekten von Plugins sowie zur Erstellung Ihrer eigenen Plugins finden Sie <a class="link" href="pluginapi.html" title="11.1. Nagios Plugin API">hier</a>.</p>
 
-    <a class="indexterm" name="idp6950704"></a>
+    <a class="indexterm" name="idp6954480"></a>
 
-    <a class="indexterm" name="idp6952352"></a>
+    <a class="indexterm" name="idp6956128"></a>
 
-    <a class="indexterm" name="idp6953584"></a>
+    <a class="indexterm" name="idp6957360"></a>
 
-    <a class="indexterm" name="idp6955184"></a>
+    <a class="indexterm" name="idp6958960"></a>
 
-    <a class="indexterm" name="idp6956848"></a>
+    <a class="indexterm" name="idp6960624"></a>
 
-    <a class="indexterm" name="idp6958512"></a>
+    <a class="indexterm" name="idp6962288"></a>
   </div>
 </div>
 <div class="navfooter">

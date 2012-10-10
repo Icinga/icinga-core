@@ -30,14 +30,26 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="upgrading"></a>2.9. Icinga aktualisieren</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.9.1. <a href="upgrading.html#idp877648">Aktualisierung von Icinga</a></span></dt>
-<dt><span class="section">2.9.2. <a href="upgrading.html#idp889376">Upgrade von Nagios 3.x</a></span></dt>
-<dt><span class="section">2.9.3. <a href="upgrading.html#idp890096">Upgrade von Nagios 2.x</a></span></dt>
-<dt><span class="section">2.9.4. <a href="upgrading.html#idp960976">Aktualisierung einer RPM-Installation</a></span></dt>
+<dt><span class="section">2.9.1. <a href="upgrading.html#idp879904">Aktualisierung von Icinga</a></span></dt>
+<dt><span class="section">2.9.2. <a href="upgrading.html#idp880160">Upgrade von Nagios 3.x</a></span></dt>
+<dt><span class="section">2.9.3. <a href="upgrading.html#idp892240">Upgrade von Nagios 2.x</a></span></dt>
+<dt><span class="section">2.9.4. <a href="upgrading.html#idp963296">Aktualisierung einer RPM-Installation</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idp873024"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"> 
+    <p>Seit 1.8 finden Sie neue Konfigurationsoptionen, die in einer neuen Version hinzugefügt wurden, in <code class="filename">sample-config/updates/</code>
+          sowie <code class="filename">module/idoutils/config/updates</code>, z.B. <code class="filename">cgi.cfg_added_1.7_to_1.8.cfg</code>.
+    </p>
+  </td></tr>
+</table></div>
+
+  <a class="indexterm" name="idp875152"></a>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -62,7 +74,7 @@
 
   <div class="section" title="2.9.1. Aktualisierung von Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp877648"></a>2.9.1. <a name="upgrading-icinga"></a>Aktualisierung von Icinga</h3></div></div></div>
+<a name="idp879904"></a>2.9.1. <a name="upgrading-icinga"></a>Aktualisierung von Icinga</h3></div></div></div>
     
 
     <p>Sobald neuere Versionen von Icinga herauskommen, sollten Sie dringend über eine Aktualisierung nachdenken. Neuere Ausgaben
@@ -102,12 +114,12 @@
 
     <p>Das war's - Sie sind fertig!</p>
 
-    <a class="indexterm" name="idp887952"></a>
+    <a class="indexterm" name="idp890224"></a>
   </div>
 
   <div class="section" title="2.9.2. Upgrade von Nagios 3.x">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp889376"></a>2.9.2. <a name="upgrading-nagios3x"></a>Upgrade von Nagios 3.x</h3></div></div></div>
+<a name="idp880160"></a>2.9.2. <a name="upgrading-nagios3x"></a>Upgrade von Nagios 3.x</h3></div></div></div>
     
 
     <p>Icinga ist aus Nagios 3.x hervorgegangen, so dass die Aktualisierung problemlos sein sollte.</p>
@@ -254,16 +266,16 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp937616"></a>
+    <a class="indexterm" name="idp939936"></a>
 
-    <a class="indexterm" name="idp939312"></a>
+    <a class="indexterm" name="idp941632"></a>
 
-    <a class="indexterm" name="idp940992"></a>
+    <a class="indexterm" name="idp943312"></a>
   </div>
 
   <div class="section" title="2.9.3. Upgrade von Nagios 2.x">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp890096"></a>2.9.3. <a name="upgrading-nagios2x"></a>Upgrade von Nagios 2.x</h3></div></div></div>
+<a name="idp892240"></a>2.9.3. <a name="upgrading-nagios2x"></a>Upgrade von Nagios 2.x</h3></div></div></div>
     
 
     <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.8 zu aktualisieren. Die Aktualisierung
@@ -312,7 +324,7 @@
 
   <div class="section" title="2.9.4. Aktualisierung einer RPM-Installation">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp960976"></a>2.9.4. <a name="upgrading-rpm"></a>Aktualisierung einer RPM-Installation</h3></div></div></div>
+<a name="idp963296"></a>2.9.4. <a name="upgrading-rpm"></a>Aktualisierung einer RPM-Installation</h3></div></div></div>
     
 
     <p>Wenn Sie momentan eine RPM- oder Debian/Ubuntu-APT-paketbasierte Nagios-Installation haben und nun den
@@ -377,7 +389,7 @@
     installieren. Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder
     APT-Paket entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-    <a class="indexterm" name="idp981696"></a>
+    <a class="indexterm" name="idp984016"></a>
   </div>
 </div>
 <div class="navfooter">
