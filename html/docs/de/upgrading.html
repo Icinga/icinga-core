@@ -46,10 +46,17 @@
     <p>Seit 1.8 finden Sie neue Konfigurationsoptionen, die in einer neuen Version hinzugefügt wurden, in <code class="filename">sample-config/updates/</code>
           sowie <code class="filename">module/idoutils/config/updates</code>, z.B. <code class="filename">cgi.cfg_added_1.7_to_1.8.cfg</code>.
     </p>
+
+    <p><span class="color"><font color="red">Der Core wird unbekannte Macros nicht mehr "as is" belassen, sondern diese entfernen und eine Warnung ins Log
+    schreiben.</font></span> Entweder korrigieren Sie die Konfiguration (falsche Macros, Dollarzeichen mit einem weiteren absichern) oder Sie setzen keep_unknown_macros=1
+    in der icinga.cfg Datei um zum alten Verhalten zurueckzukehren.
+    </p>
+
+    <p>Please have a look at the section "CHANGES" in the <code class="filename">changelog</code> as well.</p>
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp882320"></a>
+  <a class="indexterm" name="idp885232"></a>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -114,7 +121,7 @@
 
     <p>Das war's - Sie sind fertig!</p>
 
-    <a class="indexterm" name="idp897264"></a>
+    <a class="indexterm" name="idp899904"></a>
   </div>
 
   <div class="section" title="2.9.2. Upgrade von Nagios 3.x">
@@ -266,11 +273,11 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp946848"></a>
+    <a class="indexterm" name="idp949488"></a>
 
-    <a class="indexterm" name="idp948544"></a>
+    <a class="indexterm" name="idp951184"></a>
 
-    <a class="indexterm" name="idp950224"></a>
+    <a class="indexterm" name="idp952864"></a>
   </div>
 
   <div class="section" title="2.9.3. Upgrade von Nagios 2.x">
@@ -389,7 +396,7 @@
     installieren. Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder
     APT-Paket entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-    <a class="indexterm" name="idp993184"></a>
+    <a class="indexterm" name="idp995824"></a>
   </div>
 </div>
 <div class="navfooter">
