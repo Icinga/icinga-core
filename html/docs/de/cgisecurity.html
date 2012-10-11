@@ -30,18 +30,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="cgisecurity"></a>8.2. Verbesserte CGI-Sicherheit und Authentifizierung</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">8.2.1. <a href="cgisecurity.html#idp15051952">Einführung</a></span></dt>
-<dt><span class="section">8.2.2. <a href="cgisecurity.html#idp15053232">Zusätzliche Techniken</a></span></dt>
-<dt><span class="section">8.2.3. <a href="cgisecurity.html#idp15067760">Implementieren der Digest Authentication</a></span></dt>
-<dt><span class="section">8.2.4. <a href="cgisecurity.html#idp15076112">Implementieren erzwungener TLS/SSL-Kommunikation</a></span></dt>
-<dt><span class="section">8.2.5. <a href="cgisecurity.html#idp15084992">Implementieren von IP-Subnetz-Beschränkung</a></span></dt>
-<dt><span class="section">8.2.6. <a href="cgisecurity.html#idp15089776">Wichtige Anmerkungen</a></span></dt>
+<dt><span class="section">8.2.1. <a href="cgisecurity.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">8.2.2. <a href="cgisecurity.html#additionaltechniques">Zusätzliche Techniken</a></span></dt>
+<dt><span class="section">8.2.3. <a href="cgisecurity.html#implementationdigest">Implementieren der Digest Authentication</a></span></dt>
+<dt><span class="section">8.2.4. <a href="cgisecurity.html#implementationssl">Implementieren erzwungener TLS/SSL-Kommunikation</a></span></dt>
+<dt><span class="section">8.2.5. <a href="cgisecurity.html#implementationlockdown">Implementieren von IP-Subnetz-Beschränkung</a></span></dt>
+<dt><span class="section">8.2.6. <a href="cgisecurity.html#importantnotes">Wichtige Anmerkungen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="8.2.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15051952"></a>8.2.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>8.2.1. Einführung</h3></div></div></div>
     
 
     <div class="mediaobject" align="right"><img src="../images/security.png" align="right"></div>
@@ -57,7 +57,7 @@
 
   <div class="section" title="8.2.2. Zusätzliche Techniken">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15053232"></a>8.2.2. <a name="cgisecurity-additionaltechniques"></a>Zusätzliche Techniken</h3></div></div></div>
+<a name="additionaltechniques"></a>8.2.2. Zusätzliche Techniken</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -82,7 +82,7 @@
 
   <div class="section" title="8.2.3. Implementieren der Digest Authentication">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15067760"></a>8.2.3. <a name="cgisecurity-implementation-digest"></a>Implementieren der Digest Authentication</h3></div></div></div>
+<a name="implementationdigest"></a>8.2.3. Implementieren der Digest Authentication</h3></div></div></div>
     
 
     <p>Die Implementierung der Digest Authentication ist einfach. Dazu müssen Sie den neuen Typ der Passwort-Datei mit dem <a class="link" href="http://httpd.apache.org/docs/2.2/programs/htdigest.html" target="_top">'htdigest'</a>-Tool anlegen, dann die
@@ -130,7 +130,7 @@
 
   <div class="section" title="8.2.4. Implementieren erzwungener TLS/SSL-Kommunikation">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15076112"></a>8.2.4. <a name="cgisecurity-implementation-ssl"></a>Implementieren erzwungener TLS/SSL-Kommunikation</h3></div></div></div>
+<a name="implementationssl"></a>8.2.4. Implementieren erzwungener TLS/SSL-Kommunikation</h3></div></div></div>
     
 
     <p>Stellen Sie sicher, dass Sie Apache und OpenSSL installiert haben. Normalerweise sollten Sie <a class="link" href="http://httpd.apache.org/docs/2.2/mod/mod_ssl.html" target="_top">mod_ssl</a>-Unterstützung haben. Falls Sie trotzdem Schwierigkeiten
@@ -167,7 +167,7 @@
 
   <div class="section" title="8.2.5. Implementieren von IP-Subnetz-Beschränkung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15084992"></a>8.2.5. <a name="cgisecurity-implementation-lockdown"></a>Implementieren von IP-Subnetz-Beschränkung</h3></div></div></div>
+<a name="implementationlockdown"></a>8.2.5. Implementieren von IP-Subnetz-Beschränkung</h3></div></div></div>
     
 
     <p>Das folgende Beispiel zeigt, wie Sie den Zugang auf die Icinga-CGIs auf eine bestimmte IP-Adresse, einen IP-Adressbereich
@@ -205,7 +205,7 @@
 
   <div class="section" title="8.2.6. Wichtige Anmerkungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15089776"></a>8.2.6. <a name="cgisecurity-importantnotes"></a>Wichtige Anmerkungen</h3></div></div></div>
+<a name="importantnotes"></a>8.2.6. Wichtige Anmerkungen</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -232,15 +232,15 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp15101344"></a>
+    <a class="indexterm" name="idp15165136"></a>
 
-    <a class="indexterm" name="idp15103168"></a>
+    <a class="indexterm" name="idp15166960"></a>
 
-    <a class="indexterm" name="idp15104736"></a>
+    <a class="indexterm" name="idp15168528"></a>
 
-    <a class="indexterm" name="idp15106384"></a>
+    <a class="indexterm" name="idp15170176"></a>
 
-    <a class="indexterm" name="idp15108032"></a>
+    <a class="indexterm" name="idp15171824"></a>
   </div>
 </div>
 <div class="navfooter">

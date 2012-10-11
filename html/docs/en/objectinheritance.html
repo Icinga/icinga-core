@@ -30,19 +30,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="objectinheritance"></a>7.26. <a name="object_inheritance"></a>Object Inheritance</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.26.1. <a href="objectinheritance.html#idp14638384">Introduction</a></span></dt>
-<dt><span class="section">7.26.2. <a href="objectinheritance.html#idp14641920">Basics</a></span></dt>
-<dt><span class="section">7.26.3. <a href="objectinheritance.html#idp14652000">Local Variables vs. Inherited Variables</a></span></dt>
-<dt><span class="section">7.26.4. <a href="objectinheritance.html#idp14652128">Inheritance Chaining</a></span></dt>
-<dt><span class="section">7.26.5. <a href="objectinheritance.html#idp14663632">Using Incomplete Object Definitions as Templates</a></span></dt>
-<dt><span class="section">7.26.6. <a href="objectinheritance.html#idp14676640">Custom Object Variables</a></span></dt>
-<dt><span class="section">7.26.7. <a href="objectinheritance.html#idp14676768">Precedence With Multiple Inheritance Sources</a></span></dt>
+<dt><span class="section">7.26.1. <a href="objectinheritance.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.26.2. <a href="objectinheritance.html#basics">Basics</a></span></dt>
+<dt><span class="section">7.26.3. <a href="objectinheritance.html#localvsinveritedvars">Local Variables vs. Inherited Variables</a></span></dt>
+<dt><span class="section">7.26.4. <a href="objectinheritance.html#inheritancechaining">Inheritance Chaining</a></span></dt>
+<dt><span class="section">7.26.5. <a href="objectinheritance.html#templates">Using Incomplete Object Definitions as Templates</a></span></dt>
+<dt><span class="section">7.26.6. <a href="objectinheritance.html#customobjectvariables">Custom Object Variables</a></span></dt>
+<dt><span class="section">7.26.7. <a href="objectinheritance.html#multipleinheritancesources">Precedence With Multiple Inheritance Sources</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.26.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14638384"></a>7.26.1. Introduction</h3></div></div></div>
+<a name="introduction"></a>7.26.1. Introduction</h3></div></div></div>
+	  
 
   <p>This documentation attempts to explain object inheritance and how it can be used in your <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object
   definitions</a>.</p>
@@ -52,9 +53,11 @@
   description of your problem to the <span class="emphasis"><em>icinga-users</em></span> mailing list.</p>
 
   </div>
-<div class="section" title="7.26.2. Basics">
+
+  <div class="section" title="7.26.2. Basics">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14641920"></a>7.26.2. Basics</h3></div></div></div>
+<a name="basics"></a>7.26.2. Basics</h3></div></div></div>
+	  
 
   <p>There are three variables affecting recursion and inheritance that are present in all object definitions. They are
   <span class="emphasis"><em>"indicated"</em></span> as follows...</p>
@@ -83,9 +86,11 @@
   should be registered.</p>
 
   </div>
-<div class="section" title="7.26.3. Local Variables vs. Inherited Variables">
+
+  <div class="section" title="7.26.3. Local Variables vs. Inherited Variables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14652000"></a>7.26.3. Local Variables vs. Inherited Variables</h3></div></div></div>
+<a name="localvsinveritedvars"></a>7.26.3. Local Variables vs. Inherited Variables</h3></div></div></div>
+	  
 
   <p>One important thing to understand with inheritance is that "local" object variables always take precedence over variables defined in
   the template object. Take a look at the following example of two host definitions (not all required variables have been supplied):</p>
@@ -136,9 +141,11 @@
 </table></div>
 
   </div>
-<div class="section" title="7.26.4. Inheritance Chaining">
+
+  <div class="section" title="7.26.4. Inheritance Chaining">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14652128"></a>7.26.4. Inheritance Chaining</h3></div></div></div>
+<a name="inheritancechaining"></a>7.26.4. Inheritance Chaining</h3></div></div></div>
+	  
 
   <p>Objects can inherit properties/variables from multiple levels of template objects. Take the following example:</p>
 
@@ -195,9 +202,11 @@
   order to maintain sanity.</p>
 
   </div>
-<div class="section" title="7.26.5. Using Incomplete Object Definitions as Templates">
+
+  <div class="section" title="7.26.5. Using Incomplete Object Definitions as Templates">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14663632"></a>7.26.5. Using Incomplete Object Definitions as Templates</h3></div></div></div>
+<a name="templates"></a>7.26.5. Using Incomplete Object Definitions as Templates</h3></div></div></div>
+	  
 
   <p>It is possible to use imcomplete object definitions as templates for use by other object definitions. By "incomplete" definition, I
   mean that all required variables in the object have not been supplied in the object definition. It may sound odd to use incomplete
@@ -257,9 +266,11 @@
   headaches later if you want to change the default values of variables for a large number of hosts.</p>
 
   </div>
-<div class="section" title="7.26.6. Custom Object Variables">
+
+  <div class="section" title="7.26.6. Custom Object Variables">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14676640"></a>7.26.6. Custom Object Variables</h3></div></div></div>
+<a name="customobjectvariables"></a>7.26.6. Custom Object Variables</h3></div></div></div>
+	  
 
   <p>Any <a class="link" href="customobjectvars.html" title="3.5. Custom Object Variables">custom object variables</a> that you define in your host, service, or contact definition
   templates will be inherited just like other standard variables. Take the following example:</p>
@@ -586,9 +597,11 @@ define host{
         }</pre>
 
   </div>
-<div class="section" title="7.26.7. Precedence With Multiple Inheritance Sources">
+
+  <div class="section" title="7.26.7. Precedence With Multiple Inheritance Sources">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14676768"></a>7.26.7. Precedence With Multiple Inheritance Sources</h3></div></div></div>
+<a name="multipleinheritancesources"></a>7.26.7. Precedence With Multiple Inheritance Sources</h3></div></div></div>
+	  
 
   <p>When you use multiple inheritance sources, it is important to know how Icinga handles variables that are defined in multiple
   sources. In these cases Icinga will use the variable/value from the first source that is specified in the <span class="emphasis"><em>use</em></span>
@@ -616,19 +629,19 @@ define host{
 </table>
   </div>
 
-  <a class="indexterm" name="idp14786352"></a>
+  <a class="indexterm" name="idp14905664"></a>
 
-  <a class="indexterm" name="idp14787632"></a>
+  <a class="indexterm" name="idp14906944"></a>
 
-  <a class="indexterm" name="idp14789264"></a>
+  <a class="indexterm" name="idp14908576"></a>
 
-  <a class="indexterm" name="idp14790752"></a>
+  <a class="indexterm" name="idp14910064"></a>
 
-  <a class="indexterm" name="idp14792320"></a>
+  <a class="indexterm" name="idp14911632"></a>
 
-  <a class="indexterm" name="idp14793968"></a>
+  <a class="indexterm" name="idp14913280"></a>
 
-  <a class="indexterm" name="idp14795552"></a>
+  <a class="indexterm" name="idp14914864"></a>
 </div>
 </div>
 <div class="navfooter">

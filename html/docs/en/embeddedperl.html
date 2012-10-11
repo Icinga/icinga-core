@@ -30,12 +30,12 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="embeddedperl"></a>7.18. <a name="embedded_perl"></a>Using The Embedded Perl Interpreter</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.18.1. <a href="embeddedperl.html#idp14257504">Advantages</a></span></dt>
-<dt><span class="section">7.18.2. <a href="embeddedperl.html#idp14264576">Disadvantages</a></span></dt>
-<dt><span class="section">7.18.3. <a href="embeddedperl.html#idp14273856">Using The Embedded Perl Interpreter</a></span></dt>
-<dt><span class="section">7.18.4. <a href="embeddedperl.html#idp14281120">Compiling Icinga With Embedded Perl</a></span></dt>
-<dt><span class="section">7.18.5. <a href="embeddedperl.html#idp14281248">Plugin-Specific Use of the Perl Interpreter</a></span></dt>
-<dt><span class="section">7.18.6. <a href="embeddedperl.html#idp14294288">Developing Plugins For Use With Embedded Perl</a></span></dt>
+<dt><span class="section">7.18.1. <a href="embeddedperl.html#pros">Advantages</a></span></dt>
+<dt><span class="section">7.18.2. <a href="embeddedperl.html#cons">Disadvantages</a></span></dt>
+<dt><span class="section">7.18.3. <a href="embeddedperl.html#interpreter">Using The Embedded Perl Interpreter</a></span></dt>
+<dt><span class="section">7.18.4. <a href="embeddedperl.html#compileicinga">Compiling Icinga With Embedded Perl</a></span></dt>
+<dt><span class="section">7.18.5. <a href="embeddedperl.html#plugspecs">Plugin-Specific Use of the Perl Interpreter</a></span></dt>
+<dt><span class="section">7.18.6. <a href="embeddedperl.html#devlopplugs">Developing Plugins For Use With Embedded Perl</a></span></dt>
 </dl></div>
   
 
@@ -81,7 +81,8 @@
 
   <div class="section" title="7.18.1. Advantages">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14257504"></a>7.18.1. Advantages</h3></div></div></div>
+<a name="pros"></a>7.18.1. Advantages</h3></div></div></div>
+	  
 
   <p>Some advantages of ePN (embedded Perl Icinga) include:</p>
 
@@ -109,9 +110,11 @@
 </ul></div>
 
   </div>
-<div class="section" title="7.18.2. Disadvantages">
+
+  <div class="section" title="7.18.2. Disadvantages">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14264576"></a>7.18.2. Disadvantages</h3></div></div></div>
+<a name="cons"></a>7.18.2. Disadvantages</h3></div></div></div>
+	  
 
   <p>The disadvantages of ePN (embedded Perl Icinga) are much the same as Apache mod_perl (i.e. Apache with an embedded
   interpreter) compared to a plain Apache:</p>
@@ -151,9 +154,11 @@
 </ul></div>
 
   </div>
-<div class="section" title="7.18.3. Using The Embedded Perl Interpreter">
+
+  <div class="section" title="7.18.3. Using The Embedded Perl Interpreter">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14273856"></a>7.18.3. Using The Embedded Perl Interpreter</h3></div></div></div>
+<a name="interpreter"></a>7.18.3. Using The Embedded Perl Interpreter</h3></div></div></div>
+	  
 
   <p>If you want to use the embedded Perl interpreter to run your Perl plugins and scripts, here's what you'll need to do:</p>
 
@@ -177,9 +182,11 @@
 </ol></div>
 
   </div>
-<div class="section" title="7.18.4. Compiling Icinga With Embedded Perl">
+
+  <div class="section" title="7.18.4. Compiling Icinga With Embedded Perl">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14281120"></a>7.18.4. Compiling Icinga With Embedded Perl</h3></div></div></div>
+<a name="compileicinga"></a>7.18.4. Compiling Icinga With Embedded Perl</h3></div></div></div>
+	  
 
   <p>If you want to use the embedded Perl interpreter, you'll first need to compile Icinga with support for it. To do this, simply
   run the configure script with the addition of the <span class="color"><font color="red"> <span class="emphasis"><em>--enable-embedded-perl</em></span>
@@ -194,9 +201,11 @@
   <pre class="screen"> ./configure --with-p1-file-dir=&lt;path&gt;</pre>
 
   </div>
-<div class="section" title="7.18.5. Plugin-Specific Use of the Perl Interpreter">
+
+  <div class="section" title="7.18.5. Plugin-Specific Use of the Perl Interpreter">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14281248"></a>7.18.5. Plugin-Specific Use of the Perl Interpreter</h3></div></div></div>
+<a name="plugspecs"></a>7.18.5. Plugin-Specific Use of the Perl Interpreter</h3></div></div></div>
+	  
 
   <p>Beginning with Icinga 1.8, you can specify which Perl plugins or scripts should or should not be run under the
   embedded Perl interpreter. This is particularly useful if you have troublesome Perl scripts which do not work well with the Perl
@@ -240,13 +249,15 @@
 </table></div>
 
   </div>
-<div class="section" title="7.18.6. Developing Plugins For Use With Embedded Perl">
+
+  <div class="section" title="7.18.6. Developing Plugins For Use With Embedded Perl">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14294288"></a>7.18.6. Developing Plugins For Use With Embedded Perl</h3></div></div></div>
+<a name="devlopplugs"></a>7.18.6. Developing Plugins For Use With Embedded Perl</h3></div></div></div>
+	  
 
   <p>Information on developing plugins for use with the embedded Perl interpreter can be found <a class="link" href="epnplugins.html" title="11.2. Developing Plugins For Use With Embedded Perl">here</a>.</p>
 
-  <a class="indexterm" name="idp14298160"></a>
+  <a class="indexterm" name="idp14403520"></a>
 </div>
 </div>
 <div class="navfooter">

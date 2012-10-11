@@ -30,184 +30,214 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="whatsnew"></a>1.2. What's New in Icinga 1.8</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">1.2.1. <a href="whatsnew.html#idp92464">CHANGES</a></span></dt>
-<dt><span class="section">1.2.2. <a href="whatsnew.html#idp98368">Core</a></span></dt>
-<dt><span class="section">1.2.3. <a href="whatsnew.html#idp105616">Classic UI</a></span></dt>
-<dt><span class="section">1.2.4. <a href="whatsnew.html#idp116144">IDOutils</a></span></dt>
-<dt><span class="section">1.2.5. <a href="whatsnew.html#idp123056">Icinga-Web</a></span></dt>
-<dt><span class="section">1.2.6. <a href="whatsnew.html#idp129680">Docs</a></span></dt>
-<dt><span class="section">1.2.7. <a href="whatsnew.html#idp132128">More information</a></span></dt>
+<dt><span class="section">1.2.1. <a href="whatsnew.html#changes">CHANGES</a></span></dt>
+<dt><span class="section">1.2.2. <a href="whatsnew.html#core">Core</a></span></dt>
+<dt><span class="section">1.2.3. <a href="whatsnew.html#classicui">Classic UI</a></span></dt>
+<dt><span class="section">1.2.4. <a href="whatsnew.html#idoutils">IDOutils</a></span></dt>
+<dt><span class="section">1.2.5. <a href="whatsnew.html#web">Icinga-Web</a></span></dt>
+<dt><span class="section">1.2.6. <a href="whatsnew.html#web">Icinga-Reporting</a></span></dt>
+<dt><span class="section">1.2.7. <a href="whatsnew.html#docs">Docs</a></span></dt>
+<dt><span class="section">1.2.8. <a href="whatsnew.html#moreinfo">More information</a></span></dt>
 </dl></div>
   
 
-  <p>As usual this is only a brief overview. Please take a look at the Changelog as well if you are missing something.</p>
+  <p>As usual this is only a brief overview. Please take a look at the <a class="link" href="whatsnew.html#moreinfo" title="1.2.8. More information">Changelog</a> as well if you are missing something.</p>
 
-  <a class="indexterm" name="idp91456"></a>
+  <a class="indexterm" name="idp91184"></a>
 
   <div class="section" title="1.2.1. CHANGES">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp92464"></a>1.2.1. CHANGES</h3></div></div></div>
+<a name="changes"></a>1.2.1. CHANGES</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p><span class="color"><font color="red">move bindir/idomod.o to libdir/idomod.so - make sure to update your configs after
-        upgrade!</font></span></p>
+	      <p>core: <span class="color"><font color="red">unknown macros are not left on the output anymore, logging a warning instead.</font></span>
+	      either fix your config (i.e. wrong macros, escape dollar signs with another one) or set keep_unknown_macros=1 in icinga.cfg to revert
+	      to the old behaviour.
+	</p>
       </li>
 <li class="listitem">
-        <p>move from /var/icinga to /var/spool/icinga in icinga.spec (upgrade safe)</p>
+	      <p>classic ui: Changed cgi GET params, Added/Changed cgi.cfg options, change strings in json output (more on Changelog</p>
       </li>
 <li class="listitem">
-        <p>rename icinga-idoutils rpm to icinga-idoutils-libdbi-mysql|pgsql in icinga.spec</p>
-      </li>
-<li class="listitem">
-        <p>--enable-libtap is deprecated, make test now works out-of-the-box with rewritten tests core</p>
+	      <p>docs: new stylesheet in html/docs/stylesheets/icinga-docs.css, javascript in html/docs/js/{icinga-docs.js,jquery-min.js}</p>
       </li>
 </ul></div>
   </div>
 
   <div class="section" title="1.2.2. Core">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp98368"></a>1.2.2. Core</h3></div></div></div>
+<a name="core"></a>1.2.2. Core</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>avoid insane looping through event list when rescheduling checks (Mathias Kettner, Andreas Ericsson) #2182</p>
+        <p>add a command to disable notifications program-wide with expire time as scheduled event #905</p>
       </li>
 <li class="listitem">
-        <p>add a lot of configure params to allow easier packaging (see CHANGES)</p>
+        <p>only reap results when checkresult_list is not overloaded (max_check_result_list_items) (thx Thomas Gelf) #3099</p>
       </li>
 <li class="listitem">
-        <p>introduce lib/ for modules with new .so extension</p>
+        <p>avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993</p>
       </li>
 <li class="listitem">
-        <p>add nebmodule version/name check for idomod (this allows future version dependencies) #2569</p>
+        <p>unknown macros are not replaced, and misleading to single dollar signs #2291</p>
       </li>
 <li class="listitem">
-        <p>add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537</p>
-      </li>
-<li class="listitem">
-        <p>* fix scheduled_downtime_depth falsely incremented if in flexible downtime with duration &lt; end-starttime window
-        #2536</p>
+        <p>fix next_check attribute not updated after scheduling new check #2265</p>
       </li>
 </ul></div>
   </div>
 
   <div class="section" title="1.2.3. Classic UI">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp105616"></a>1.2.3. Classic UI</h3></div></div></div>
+<a name="classicui"></a>1.2.3. Classic UI</h3></div></div></div>
     
-
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-        <p>add option for max log entries displayed in showlog.cgi #2145</p>
-      </li></ul></div>
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>add statusmap resizing with exclude/include button (thanks to Mat) #2186</p>
+        <p>Added pagination to various cgi's (thx to ideas and partly source from Nagios, Thruk, Icinga Web) #2725</p>
       </li>
 <li class="listitem">
-        <p>add javascript to refresh page/pause easier #2119</p>
+        <p>Changed search in config.cgi to regex #2884</p>
       </li>
 <li class="listitem">
-        <p>add display_status_totals as cgi.cfg option in order to allow the status totals to be shown again #2443</p>
+        <p>Added selection of timeperiod for notifications and history #2341</p>
       </li>
 <li class="listitem">
-        <p>add readonly cgi.cfg view into the config section #1776</p>
+        <p>Added date/time selection for all date/time input fields #2576</p>
       </li>
 <li class="listitem">
-        <p>add is_in_effect and trigger_time to downtime view for html, csv, json #2538</p>
+	      <p>Added host/service selection for commands, leaving out passive only checks on check reschedule in cmd.cgi #2697</p>
       </li>
 <li class="listitem">
-        <p>add modified attributes view and reset cmd #2473 #2474</p>
+	      <p>Added host/service group filter to notifications.cgi and history.cgi #2679</p>
       </li>
 <li class="listitem">
-        <p>fix status totals are wrong when searching #1524</p>
+        <p>javascript refresh jumps to page top, not restoring previous scrolling position; add url param 'scroll=' #2855</p>
       </li>
 <li class="listitem">
-        <p>fix reset forms on return after submitting command #2117</p>
+        <p>add command to delete host downtime and all associated service downtimes (extinfo.cgi, status.cgi command drop down) #1572</p>
+      </li>
+<li class="listitem">
+        <p>Added a refresh button to tac.cgi in header mode #3164</p>
       </li>
 </ul></div>
   </div>
 
   <div class="section" title="1.2.4. IDOutils">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp116144"></a>1.2.4. IDOutils</h3></div></div></div>
+<a name="idoutils"></a>1.2.4. IDOutils</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>change varchar(255) to TEXT in mysql (not cs and address rfc columns) #2181</p>
+	      <p>fix insert on duplicate key with multiple unique keys marked unsafe in mysql &gt;= 5.5.24; rewrite all queries #3008</p>
       </li>
 <li class="listitem">
-        <p>set module info in idomod, to be checked on neb module load in future versions #2569</p>
+        <p>fix redundant indexes in MySQL schema (thx Michael Renner) #3018</p>
       </li>
 <li class="listitem">
-        <p>change standard string escaping for postgresql queries to use the E'foo' notation #1974</p>
-      </li>
-<li class="listitem">
-        <p>fix lob handling in Oracle #2303,#2342</p>
-      </li>
-<li class="listitem">
-        <p>fix OCI-21500 when freeing lobs #2509</p>
-      </li>
-<li class="listitem">
-        <p>fix pgsql unix_timestamp cannot handle timstamp with timezone #2203</p>
+        <p>re-add missing indexes from #1110 resolving performance issues on all supported rdbms #2618</p>
       </li>
 </ul></div>
   </div>
 
   <div class="section" title="1.2.5. Icinga-Web">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp123056"></a>1.2.5. Icinga-Web</h3></div></div></div>
+<a name="web"></a>1.2.5. Icinga-Web</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>add DQL-views as backend for templates. This means that you can create your XML views based on doctrine query language. It's
-        more flexible to adopt database changes or to connect other systems to your grids like trouble ticket or issue based systems</p>
+        <p>Permission of Cronks and categories editable in frontend</p>
       </li>
 <li class="listitem">
-        <p>enable "save" and "save as" for custom cronks. This allows you to modify your views without hacking data</p>
+        <p>host- and servicename credentials</p>
       </li>
 <li class="listitem">
-        <p>adjust GUI calculations to be more like in the classic UI. Many calculations had different algorithms compared to the classic
-        user interface which was confusing for the users</p>
+        <p>new credential model reduces join overhead</p>
       </li>
 <li class="listitem">
-        <p>many fixes for views (grids and tactical overviews) to work more smoothly</p>
+        <p>more space in grids due new event integration</p>
       </li>
 <li class="listitem">
-        <p>RDBMS fixes for getting data, fixed problems for Oracle and Postgres</p>
+        <p>running downtimes view</p>
+      </li>
+<li class="listitem">
+        <p>new beautiful statusmap</p>
+      </li>
+<li class="listitem">
+        <p>Code namespace organizing</p>
+      </li>
+<li class="listitem">
+        <p>many many bugfixes</p>
       </li>
 </ul></div>
   </div>
 
-  <div class="section" title="1.2.6. Docs">
+  <div class="section" title="1.2.6. Icinga-Reporting">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp129680"></a>1.2.6. Docs</h3></div></div></div>
+<a name="web"></a>1.2.6. Icinga-Reporting</h3></div></div></div>
     
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
-        <p>Hints how to use recurring downtimes #1867</p>
-      </li></ul></div>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>added new template design and corrected some template issues</p>
+      </li>
+<li class="listitem">
+        <p>deleted all weekly, monthly and yearly SLA reports and created a combined one</p>
+      </li>
+<li class="listitem">
+        <p>integrated SLA function for MySQL -&gt; Thanks to Thomas Gelf</p>
+      </li>
+<li class="listitem">
+        <p>enable preselected timeranges in every report</p>
+      </li>
+<li class="listitem">
+        <p>added servicegroup availability, morning report</p>
+      </li>
+<li class="listitem">
+        <p>added easy availability report for given host and dependant services</p>
+      </li>
+</ul></div>
   </div>
 
-  <div class="section" title="1.2.7. More information">
+
+  <div class="section" title="1.2.7. Docs">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp132128"></a>1.2.7. More information</h3></div></div></div>
+<a name="docs"></a>1.2.7. Docs</h3></div></div></div>
     
 
-    <p><a class="link" href="https://wiki.icinga.org/display/Dev/Releases" target="_top">More at Icinga Wiki</a></p>
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>add a new stylesheet and rework docbook.xsl #3046</p>
+      </li>
+<li class="listitem">
+        <p>add tocs for all sections, add jquery toggle for toc #3193</p>
+      </li>
+<li class="listitem">
+        <p>create a dedicated page for packages and their customizations #2905</p>
+      </li>
+<li class="listitem">
+        <p>create a howto define a command, translate macros and testdrive plugins manually #2692</p>
+      </li>
+</ul></div>
+  </div>
+
+  <div class="section" title="1.2.8. More information">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="moreinfo"></a>1.2.8. More information</h3></div></div></div>
+    
+
+    <p><a class="link" href="https://wiki.icinga.org/display/Dev/Changelogs" target="_top">More at Icinga Wiki</a></p>
 
     <p>Should you find any issues, please report them to one of the following links:</p>
 
     <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-core" target="_top">Report Issue Icinga-Core</a></p>
 
     <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-web" target="_top">Report Issue Icinga-Web</a></p>
-
-    <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-api" target="_top">Report Issue Icinga-API</a></p>
 
     <p><a class="link" href="https://dev.icinga.org/projects/show/icinga-reporting" target="_top">Report Issue Icinga-Reporting</a></p>
 

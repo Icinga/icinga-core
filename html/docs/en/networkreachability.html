@@ -30,17 +30,17 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="networkreachability"></a>5.10. <a name="network_reachability"></a>Determining Status and Reachability of Network Hosts</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">5.10.1. <a href="networkreachability.html#idp10018928">Introduction</a></span></dt>
-<dt><span class="section">5.10.2. <a href="networkreachability.html#idp10022048">Example Network</a></span></dt>
-<dt><span class="section">5.10.3. <a href="networkreachability.html#idp10026160">Defining Parent/Child Relationships</a></span></dt>
-<dt><span class="section">5.10.4. <a href="networkreachability.html#idp10032240">Reachability Logic in Action</a></span></dt>
-<dt><span class="section">5.10.5. <a href="networkreachability.html#idp10043360">UNREACHABLE States and Notifications</a></span></dt>
+<dt><span class="section">5.10.1. <a href="networkreachability.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">5.10.2. <a href="networkreachability.html#examplenetwork">Example Network</a></span></dt>
+<dt><span class="section">5.10.3. <a href="networkreachability.html#parentchildrelations">Defining Parent/Child Relationships</a></span></dt>
+<dt><span class="section">5.10.4. <a href="networkreachability.html#logicinaction">Reachability Logic in Action</a></span></dt>
+<dt><span class="section">5.10.5. <a href="networkreachability.html#unreachableandnotifications">UNREACHABLE States and Notifications</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.10.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10018928"></a>5.10.1. Introduction</h3></div></div></div>
+<a name="introduction"></a>5.10.1. Introduction</h3></div></div></div>
     
 
     <p>If you've ever work in tech support, you've undoubtably had users tell you "the Internet is down". As a techie, you're pretty sure
@@ -58,7 +58,7 @@
 
   <div class="section" title="5.10.2. Example Network">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10022048"></a>5.10.2. Example Network</h3></div></div></div>
+<a name="examplenetwork"></a>5.10.2. Example Network</h3></div></div></div>
     
 
     <p>Take a look at the simple network diagram below. For this example, lets assume you're monitoring all the hosts (server, routers,
@@ -69,7 +69,7 @@
 
   <div class="section" title="5.10.3. Defining Parent/Child Relationships">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10026160"></a>5.10.3. Defining Parent/Child Relationships</h3></div></div></div>
+<a name="parentchildrelations"></a>5.10.3. Defining Parent/Child Relationships</h3></div></div></div>
     
 
     <p>In order for Icinga to be able to distinguish between DOWN and UNREACHABLE states for the hosts that are being monitored,
@@ -137,7 +137,7 @@
 
   <div class="section" title="5.10.4. Reachability Logic in Action">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10032240"></a>5.10.4. Reachability Logic in Action</h3></div></div></div>
+<a name="logicinaction"></a>5.10.4. Reachability Logic in Action</h3></div></div></div>
     
 
     <p>Now that you're configured Icinga with the proper parent/child relationships for your hosts, let's see what happen when
@@ -162,7 +162,7 @@
 
   <div class="section" title="5.10.5. UNREACHABLE States and Notifications">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10043360"></a>5.10.5. UNREACHABLE States and Notifications</h3></div></div></div>
+<a name="unreachableandnotifications"></a>5.10.5. UNREACHABLE States and Notifications</h3></div></div></div>
     
 
     <p>By default, Icinga will notify contacts about both DOWN and UNREACHABLE host states. As an admin/tech, you might not want
@@ -173,9 +173,9 @@
     (u) option from the <span class="emphasis"><em>notification_options</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-host">host</a>
     definitions and/or the <span class="emphasis"><em>host_notification_options</em></span> directive in your <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contact</a> definitions.</p>
 
-    <a class="indexterm" name="idp10047888"></a>
+    <a class="indexterm" name="idp10076320"></a>
 
-    <a class="indexterm" name="idp10049568"></a>
+    <a class="indexterm" name="idp10077904"></a>
   </div>
 </div>
 <div class="navfooter">

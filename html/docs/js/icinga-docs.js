@@ -19,6 +19,21 @@ $(document).ready(function() {
 		}
 	});
 
+	//bail early if the url of section x.y was clicked (no toggling here!)
+	$("div.toc dl dd dl dt span.section a").click(function(e) {
+		var target = $(e.target).attr('target');
+		var href = $(e.target).attr('href');
+
+		//if target was undefined, open in the same window,
+		//otherwise open a new window with the target identifier
+		if(target !== undefined) {
+			window.open(href, target);
+		} else {
+			window.location.href = href;
+		}
+		return false;
+	});
+
 	// the x.y will be the toggle element
 	$("div.toc dl dd dl dt span.section").click(function(e) {
 

@@ -30,20 +30,33 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="upgrading_idoutils"></a>2.10. <a name="upgrading_idoutils2"></a>Upgrading IDOUtils Database</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.10.1. <a href="upgrading_idoutils.html#idp978416">Upgrading IDOUtils to 1.7</a></span></dt>
-<dt><span class="section">2.10.2. <a href="upgrading_idoutils.html#idp984512">Upgrading IDOUtils to 1.5</a></span></dt>
-<dt><span class="section">2.10.3. <a href="upgrading_idoutils.html#idp992496">Upgrading IDOUtils to 1.4</a></span></dt>
-<dt><span class="section">2.10.4. <a href="upgrading_idoutils.html#idp1010032">Upgrading IDOUtils to 1.3</a></span></dt>
-<dt><span class="section">2.10.5. <a href="upgrading_idoutils.html#idp1014576">Upgrading IDOUtils to 1.0.3</a></span></dt>
-<dt><span class="section">2.10.6. <a href="upgrading_idoutils.html#idp1020192">Upgrading IDOUtils to 1.0.2</a></span></dt>
-<dt><span class="section">2.10.7. <a href="upgrading_idoutils.html#idp1026960">Upgrading IDOUtils to 1.0.1</a></span></dt>
-<dt><span class="section">2.10.8. <a href="upgrading_idoutils.html#idp1042432">Upgrading IDOUtils to 1.0</a></span></dt>
+<dt><span class="section">2.10.1. <a href="upgrading_idoutils.html#upgrade1.8">Upgrading IDOUtils to 1.8</a></span></dt>
+<dt><span class="section">2.10.2. <a href="upgrading_idoutils.html#upgrade1.7">Upgrading IDOUtils to 1.7</a></span></dt>
+<dt><span class="section">2.10.3. <a href="upgrading_idoutils.html#upgrade1.5">Upgrading IDOUtils to 1.5</a></span></dt>
+<dt><span class="section">2.10.4. <a href="upgrading_idoutils.html#upgrade1.4">Upgrading IDOUtils to 1.4</a></span></dt>
+<dt><span class="section">2.10.5. <a href="upgrading_idoutils.html#upgrade1.3">Upgrading IDOUtils to 1.3</a></span></dt>
+<dt><span class="section">2.10.6. <a href="upgrading_idoutils.html#upgrade1.0.3">&gt;Upgrading IDOUtils to 1.0.3</a></span></dt>
+<dt><span class="section">2.10.7. <a href="upgrading_idoutils.html#upgrade1.0.2">Upgrading IDOUtils to 1.0.2</a></span></dt>
+<dt><span class="section">2.10.8. <a href="upgrading_idoutils.html#upgrade1.0.1">Upgrading IDOUtils to 1.0.1</a></span></dt>
+<dt><span class="section">2.10.9. <a href="upgrading_idoutils.html#upgrade1.0">Upgrading IDOUtils to 1.0</a></span></dt>
 </dl></div>
   
 
   <p>There may be a bug within the database scheme which has been fixed. If you are upgrading from an older IDOUtils version you
   also need to apply those fixes manually. If you are using rpm/deb packages please read the notes and/or ask the maintainer if he has added
   those modifications to the install routine.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Starting with 1.8, you will find newly added config options in version diffed config files in <code class="filename">module/idoutils/config/updates</code>
+    e.g. <code class="filename">ido2db.cfg_added_1.7_to_1.8.cfg</code>.
+    </p>
+  </td></tr>
+</table></div>
 
   <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -109,11 +122,22 @@
     </li>
 </ul></div>
 
-  <a class="indexterm" name="idp977408"></a>
+  <a class="indexterm" name="idp999024"></a>
 
-  <div class="section" title="2.10.1. Upgrading IDOUtils to 1.7">
+  <div class="section" title="2.10.1. Upgrading IDOUtils to 1.8">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp978416"></a>2.10.1. <a name="upgrading_idoutils_1.7"></a>Upgrading IDOUtils to 1.7</h3></div></div></div>
+<a name="upgrade1.8"></a>2.10.1. Upgrading IDOUtils to 1.8</h3></div></div></div>
+    
+
+    <p>There are some important fixes regarding on redundant indexes in MySQL, as well as missing indexes for proper performance (e.g. Icinga Web).
+    Furthermore, there's a new column for the programstatus table for the new global disable notification expire time.</p>
+    
+    <p>Please have a look at the section "CHANGES" in the <code class="filename">changelog</code> as well.</p>
+  </div>
+
+  <div class="section" title="2.10.2. Upgrading IDOUtils to 1.7">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="upgrade1.7"></a>2.10.2. Upgrading IDOUtils to 1.7</h3></div></div></div>
     
 
     <p><span class="color"><font color="red">Starting with Icinga 1.7 the location of the idomod shared library changed from
@@ -125,9 +149,9 @@
     <p>Please have a look at the section "CHANGES for users" in the <code class="filename">changelog</code> as well.</p>
   </div>
 
-  <div class="section" title="2.10.2. Upgrading IDOUtils to 1.5">
+  <div class="section" title="2.10.3. Upgrading IDOUtils to 1.5">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp984512"></a>2.10.2. <a name="upgrading_idoutils_1.5"></a>Upgrading IDOUtils to 1.5</h3></div></div></div>
+<a name="upgrade1.5"></a>2.10.3. Upgrading IDOUtils to 1.5</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
@@ -163,9 +187,9 @@
       </li></ul></div>
   </div>
 
-  <div class="section" title="2.10.3. Upgrading IDOUtils to 1.4">
+  <div class="section" title="2.10.4. Upgrading IDOUtils to 1.4">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp992496"></a>2.10.3. <a name="upgrading_idoutils_1.4"></a>Upgrading IDOUtils to 1.4</h3></div></div></div>
+<a name="upgrade1.4"></a>2.10.4. Upgrading IDOUtils to 1.4</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
@@ -229,9 +253,9 @@
       </li></ul></div>
   </div>
 
-  <div class="section" title="2.10.4. Upgrading IDOUtils to 1.3">
+  <div class="section" title="2.10.5. Upgrading IDOUtils to 1.3">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1010032"></a>2.10.4. <a name="upgrading_idoutils_1.3"></a>Upgrading IDOUtils to 1.3</h3></div></div></div>
+<a name="upgrade1.3"></a>2.10.5. Upgrading IDOUtils to 1.3</h3></div></div></div>
     
 
     <p>IDOUtils 1.3 re-introduces the usage of the dbversion table in IDOUtils schema. The upgrade scripts will make sure that
@@ -257,9 +281,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.10.5. Upgrading IDOUtils to 1.0.3">
+  <div class="section" title="2.10.6. &gt;Upgrading IDOUtils to 1.0.3">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1014576"></a>2.10.5. <a name="upgrading_idoutils_1.0.3"></a>Upgrading IDOUtils to 1.0.3</h3></div></div></div>
+<a name="upgrade1.0.3"></a>2.10.6. &gt;Upgrading IDOUtils to 1.0.3</h3></div></div></div>
     
 
     <p>There were some few minor changes:</p>
@@ -279,9 +303,9 @@
     <p>Apply the upgrading scripts for IDOUtils 1.0.3 as the general procedure applies for your RDBMS.</p>
   </div>
 
-  <div class="section" title="2.10.6. Upgrading IDOUtils to 1.0.2">
+  <div class="section" title="2.10.7. Upgrading IDOUtils to 1.0.2">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1020192"></a>2.10.6. <a name="upgrading_idoutils_1.0.2"></a>Upgrading IDOUtils to 1.0.2</h3></div></div></div>
+<a name="upgrade1.0.2"></a>2.10.7. Upgrading IDOUtils to 1.0.2</h3></div></div></div>
     
 
     <p>There was a significant long lasting bug in IDOUtils which is now resolved in Icinga 1.0.2: Everytime the core was
@@ -314,9 +338,9 @@
     <p>* mysql-upgrade-1.0.2.sql</p>
   </div>
 
-  <div class="section" title="2.10.7. Upgrading IDOUtils to 1.0.1">
+  <div class="section" title="2.10.8. Upgrading IDOUtils to 1.0.1">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1026960"></a>2.10.7. <a name="upgrading_idoutils_1.0.1"></a>Upgrading IDOUtils to 1.0.1</h3></div></div></div>
+<a name="upgrade1.0.1"></a>2.10.8. Upgrading IDOUtils to 1.0.1</h3></div></div></div>
     
 
     <p>Please make sure that you already have upgraded to Icinga IDOUtils 1.0 before reading this section! There have been several (big)
@@ -375,9 +399,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.10.8. Upgrading IDOUtils to 1.0">
+  <div class="section" title="2.10.9. Upgrading IDOUtils to 1.0">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1042432"></a>2.10.8. <a name="upgrading_idoutils_1.0"></a>Upgrading IDOUtils to 1.0</h3></div></div></div>
+<a name="upgrade1.0"></a>2.10.9. Upgrading IDOUtils to 1.0</h3></div></div></div>
     
 
     <p>There was a unique key failure in MySQL coming through the fork causing several tables to keep duplicated and useless rows. This

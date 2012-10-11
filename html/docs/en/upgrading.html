@@ -30,10 +30,10 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="upgrading"></a>2.9. <a name="upgrading_nagios"></a>Upgrading (to) Icinga</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.9.1. <a href="upgrading.html#idp847728">Upgrading from previous Icinga Releases</a></span></dt>
-<dt><span class="section">2.9.2. <a href="upgrading.html#idp851568">Upgrading from Nagios 3.x Releases</a></span></dt>
-<dt><span class="section">2.9.3. <a href="upgrading.html#idp868208">Upgrading from Nagios 2.x Releases</a></span></dt>
-<dt><span class="section">2.9.4. <a href="upgrading.html#idp938544">Upgrading from an RPM Installation</a></span></dt>
+<dt><span class="section">2.9.1. <a href="upgrading.html#upgradepreviousrelease">Upgrading from previous Icinga Releases</a></span></dt>
+<dt><span class="section">2.9.2. <a href="upgrading.html#upgradenagios3x">Upgrading from Nagios 3.x Releases</a></span></dt>
+<dt><span class="section">2.9.3. <a href="upgrading.html#upgradenagios2x">Upgrading from Nagios 2.x Releases</a></span></dt>
+<dt><span class="section">2.9.4. <a href="upgrading.html#ipgradefromrpm">Upgrading from an RPM Installation</a></span></dt>
 </dl></div>
   
 
@@ -43,16 +43,25 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
+    <p>Starting with 1.8, you will find newly added config options in version diffed config files in <code class="filename">sample-config/updates/</code>
+	  as well as <code class="filename">module/idoutils/config/updates</code>, e.g. <code class="filename">cgi.cfg_added_1.7_to_1.8.cfg</code>.
+    </p>
+    <p><span class="color"><font color="red">On the core, unknown macros are not left on the output anymore, logging a warning instead.</font></span>
+    Either fix your config (i.e. wrong macros, escape dollar signs with another one) or set keep_unknown_macros=1 in icinga.cfg to revert to the old behaviour.
+    </p>
+
+    <p>Please have a look at the section "CHANGES" in the <code class="filename">changelog</code> as well.</p>
+  </td></tr>
+</table></div>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
     <p>If you are using IDOUtils then you have to update it, too. Please take a look at <a class="link" href="upgrading_idoutils.html" title="2.10. Upgrading IDOUtils Database">
     upgrading_idoutils</a> as well.</p>
-
-    <p><span class="color"><font color="red">Starting with Icinga 1.7 the location of the idomod shared library changed from
-    <code class="filename">$bindir/idomod.o</code> to <code class="filename">$libdir/idomod.so</code>. Please note that the extension ".o" changed to ".so" as
-    well. Depending on the method you are using you have to alter the "broker_module" entry in <code class="filename">icinga.cfg</code> OR the module
-    definition in <code class="filename">module/idomod.cfg</code> to reflect the changes.</font></span> The old file <code class="filename">idomod.o</code> will
-    be removed if found. You will receive a warning during "make install-idoutils" about this change.</p>
-
-    <p>Please have a look at the section "CHANGES for users" in the <code class="filename">changelog</code> as well.</p>
   </td></tr>
 </table></div>
 
@@ -67,13 +76,13 @@
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp848656"></a>
+  <a class="indexterm" name="idp869952"></a>
 
-  <a class="indexterm" name="idp849872"></a>
+  <a class="indexterm" name="idp871136"></a>
 
   <div class="section" title="2.9.1. Upgrading from previous Icinga Releases">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp847728"></a>2.9.1. <a name="upgrading-icinga"></a>Upgrading from previous Icinga Releases</h3></div></div></div>
+<a name="upgradepreviousrelease"></a>2.9.1. Upgrading from previous Icinga Releases</h3></div></div></div>
     
 
     <p>During development there may be cases where the handling of bugfixes might touch the userspace. We try to avoid this as far as
@@ -131,7 +140,7 @@
 
   <div class="section" title="2.9.2. Upgrading from Nagios 3.x Releases">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp851568"></a>2.9.2. <a name="upgrading-nagios3x"></a>Upgrading from Nagios 3.x Releases</h3></div></div></div>
+<a name="upgradenagios3x"></a>2.9.2. Upgrading from Nagios 3.x Releases</h3></div></div></div>
     
 
     <p>We try to be compatible with the configuration files of the current Nagios 3.x versions so there should be very little you
@@ -283,16 +292,16 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp916128"></a>
+    <a class="indexterm" name="idp937152"></a>
 
-    <a class="indexterm" name="idp916288"></a>
+    <a class="indexterm" name="idp937312"></a>
 
-    <a class="indexterm" name="idp919616"></a>
+    <a class="indexterm" name="idp940640"></a>
   </div>
 
   <div class="section" title="2.9.3. Upgrading from Nagios 2.x Releases">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp868208"></a>2.9.3. <a name="upgrading-nagios2x"></a>Upgrading from Nagios 2.x Releases</h3></div></div></div>
+<a name="upgradenagios2x"></a>2.9.3. Upgrading from Nagios 2.x Releases</h3></div></div></div>
     
 
     <p>It shouldn't be too difficult to upgrade from Nagios 2.x to Icinga 1.8. The upgrade is essentially the same
@@ -337,7 +346,7 @@
 
   <div class="section" title="2.9.4. Upgrading from an RPM Installation">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp938544"></a>2.9.4. <a name="upgrading-rpm"></a>Upgrading from an RPM Installation</h3></div></div></div>
+<a name="ipgradefromrpm"></a>2.9.4. <a name="upgrading-rpm"></a>Upgrading from an RPM Installation</h3></div></div></div>
     
 
     <p>If you currently have an RPM- or Debian/Ubuntu APT package-based installation of Nagios and you would like to transition to
@@ -395,7 +404,7 @@
     backed up all your critical Nagios files before removing the original RPM or APT package, so you can revert back if you encounter
     problems.</p>
 
-    <a class="indexterm" name="idp956528"></a>
+    <a class="indexterm" name="idp980320"></a>
   </div>
 </div>
 <div class="navfooter">

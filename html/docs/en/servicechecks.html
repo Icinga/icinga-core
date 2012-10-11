@@ -30,20 +30,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="servicechecks"></a>5.5. <a name="service_checks"></a>Service Checks</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">5.5.1. <a href="servicechecks.html#idp9747744">Introduction</a></span></dt>
-<dt><span class="section">5.5.2. <a href="servicechecks.html#idp9749104">When Are Service Checks Performed?</a></span></dt>
-<dt><span class="section">5.5.3. <a href="servicechecks.html#idp9757152">Cached Service Checks</a></span></dt>
-<dt><span class="section">5.5.4. <a href="servicechecks.html#idp9760224">Dependencies and Checks</a></span></dt>
-<dt><span class="section">5.5.5. <a href="servicechecks.html#idp9763136">Parallelization of Service Checks</a></span></dt>
-<dt><span class="section">5.5.6. <a href="servicechecks.html#idp9765696">Service States</a></span></dt>
-<dt><span class="section">5.5.7. <a href="servicechecks.html#idp9771200">Service State Determination</a></span></dt>
-<dt><span class="section">5.5.8. <a href="servicechecks.html#idp9773536">Services State Changes</a></span></dt>
+<dt><span class="section">5.5.1. <a href="servicechecks.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">5.5.2. <a href="servicechecks.html#when">When Are Service Checks Performed?</a></span></dt>
+<dt><span class="section">5.5.3. <a href="servicechecks.html#caching">Cached Service Checks</a></span></dt>
+<dt><span class="section">5.5.4. <a href="servicechecks.html#dependencieschecks">Dependencies and Checks</a></span></dt>
+<dt><span class="section">5.5.5. <a href="servicechecks.html#parallelization">Parallelization of Service Checks</a></span></dt>
+<dt><span class="section">5.5.6. <a href="servicechecks.html#servicestates">Service States</a></span></dt>
+<dt><span class="section">5.5.7. <a href="servicechecks.html#servicestatedetermination">Service State Determination</a></span></dt>
+<dt><span class="section">5.5.8. <a href="servicechecks.html#servicestatechanges">Services State Changes</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.5.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9747744"></a>5.5.1. Introduction</h3></div></div></div>
+<a name="introduction"></a>5.5.1. Introduction</h3></div></div></div>
     
 
     <p>The basic workings of service checks are described here...</p>
@@ -51,7 +51,7 @@
 
   <div class="section" title="5.5.2. When Are Service Checks Performed?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9749104"></a>5.5.2. When Are Service Checks Performed?</h3></div></div></div>
+<a name="when"></a>5.5.2. When Are Service Checks Performed?</h3></div></div></div>
     
 
     <p>Services are checked by the Icinga daemon:</p>
@@ -73,7 +73,7 @@
 
   <div class="section" title="5.5.3. Cached Service Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9757152"></a>5.5.3. Cached Service Checks</h3></div></div></div>
+<a name="caching"></a>5.5.3. Cached Service Checks</h3></div></div></div>
     
 
     <p>The performance of on-demand service checks can be significantly improved by implementing the use of cached checks, which allow
@@ -84,7 +84,7 @@
 
   <div class="section" title="5.5.4. Dependencies and Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9760224"></a>5.5.4. Dependencies and Checks</h3></div></div></div>
+<a name="dependencieschecks"></a>5.5.4. Dependencies and Checks</h3></div></div></div>
     
 
     <p>You can define <a class="link" href="objectdefinitions.html#objectdefinitions-servicedependency">service execution dependencies</a> that prevent
@@ -94,7 +94,7 @@
 
   <div class="section" title="5.5.5. Parallelization of Service Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9763136"></a>5.5.5. Parallelization of Service Checks</h3></div></div></div>
+<a name="parallelization"></a>5.5.5. Parallelization of Service Checks</h3></div></div></div>
     
 
     <p>Scheduled service checks are run in parallel. When Icinga needs to run a scheduled service check, it will initiate the
@@ -109,7 +109,7 @@
 
   <div class="section" title="5.5.6. Service States">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9765696"></a>5.5.6. Service States</h3></div></div></div>
+<a name="servicestates"></a>5.5.6. Service States</h3></div></div></div>
     
 
     <p>Services that are checked can be in one of four different states:</p>
@@ -132,7 +132,7 @@
 
   <div class="section" title="5.5.7. Service State Determination">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9771200"></a>5.5.7. Service State Determination</h3></div></div></div>
+<a name="servicestatedetermination"></a>5.5.7. Service State Determination</h3></div></div></div>
     
 
     <p>Service checks are performed by <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a>, which can return a state of OK, WARNING, UNKNOWN, or
@@ -142,7 +142,7 @@
 
   <div class="section" title="5.5.8. Services State Changes">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9773536"></a>5.5.8. Services State Changes</h3></div></div></div>
+<a name="servicestatechanges"></a>5.5.8. Services State Changes</h3></div></div></div>
     
 
     <p>When Icinga checks the status of services, it will be able to detect when a service changes between OK, WARNING, UNKNOWN,
@@ -153,7 +153,7 @@
     flapping, and can suppress notifications until flapping stops and the service's state stabilizes. More information on the flap detection
     logic can be found <a class="link" href="flapping.html" title="7.8. Detection and Handling of State Flapping">here</a>.</p>
 
-    <a class="indexterm" name="idp9779440"></a>
+    <a class="indexterm" name="idp9798640"></a>
   </div>
 </div>
 <div class="navfooter">

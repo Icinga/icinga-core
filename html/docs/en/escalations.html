@@ -30,20 +30,21 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="escalations"></a>7.9. <a name="notification_escalations"></a>Notification Escalations</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.9.1. <a href="escalations.html#idp13761920">Introduction</a></span></dt>
-<dt><span class="section">7.9.2. <a href="escalations.html#idp13768000">When Are Notifications Escalated?</a></span></dt>
-<dt><span class="section">7.9.3. <a href="escalations.html#idp13772896">Contact Groups</a></span></dt>
-<dt><span class="section">7.9.4. <a href="escalations.html#idp13779680">Overlapping Escalation Ranges</a></span></dt>
-<dt><span class="section">7.9.5. <a href="escalations.html#idp13787872">Recovery Notifications</a></span></dt>
-<dt><span class="section">7.9.6. <a href="escalations.html#idp13791616">Notification Intervals</a></span></dt>
-<dt><span class="section">7.9.7. <a href="escalations.html#idp13791776">Time Period Restrictions</a></span></dt>
-<dt><span class="section">7.9.8. <a href="escalations.html#idp13808576">State Restrictions</a></span></dt>
+<dt><span class="section">7.9.1. <a href="escalations.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.9.2. <a href="escalations.html#notificationsescalated">When Are Notifications Escalated?</a></span></dt>
+<dt><span class="section">7.9.3. <a href="escalations.html#contactgroups">Contact Groups</a></span></dt>
+<dt><span class="section">7.9.4. <a href="escalations.html#overlappingranges">Overlapping Escalation Ranges</a></span></dt>
+<dt><span class="section">7.9.5. <a href="escalations.html#recoverynotifications">Recovery Notifications</a></span></dt>
+<dt><span class="section">7.9.6. <a href="escalations.html#notificationintervals">Notification Intervals</a></span></dt>
+<dt><span class="section">7.9.7. <a href="escalations.html#timeperiodrestrictions">Time Period Restrictions</a></span></dt>
+<dt><span class="section">7.9.8. <a href="escalations.html#staterestrictions">State Restrictions</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.9.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13761920"></a>7.9.1. Introduction</h3></div></div></div>
+<a name="introduction"></a>7.9.1. Introduction</h3></div></div></div>
+	  
 
   <p><span class="inlinemediaobject"><img src="../images/objects-contacts.png"></span></p>
 
@@ -63,9 +64,11 @@
 </table></div>
 
   </div>
-<div class="section" title="7.9.2. When Are Notifications Escalated?">
+
+  <div class="section" title="7.9.2. When Are Notifications Escalated?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13768000"></a>7.9.2. When Are Notifications Escalated?</h3></div></div></div>
+<a name="notificationsescalated"></a>7.9.2. When Are Notifications Escalated?</h3></div></div></div>
+	  
 
   <p>Notifications are escalated <span class="emphasis"><em>if and only if</em></span> one or more escalation definitions matches the current
   notification that is being sent out. If a host or service notification <span class="emphasis"><em>does not</em></span> have any valid escalation
@@ -97,9 +100,11 @@
   called <span class="emphasis"><em>nt-admins</em></span>.</p>
 
   </div>
-<div class="section" title="7.9.3. Contact Groups">
+
+  <div class="section" title="7.9.3. Contact Groups">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13772896"></a>7.9.3. Contact Groups</h3></div></div></div>
+<a name="contactgroups"></a>7.9.3. Contact Groups</h3></div></div></div>
+	  
 
   <p>When defining notification escalations, it is important to keep in mind that any contact groups that were members of
   "lower" escalations (i.e. those with lower notification number ranges) should also be included in "higher" escalation
@@ -134,9 +139,11 @@
   notifications, so they are also included in the "higher" escalation definition.</p>
 
   </div>
-<div class="section" title="7.9.4. Overlapping Escalation Ranges">
+
+  <div class="section" title="7.9.4. Overlapping Escalation Ranges">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13779680"></a>7.9.4. Overlapping Escalation Ranges</h3></div></div></div>
+<a name="overlappingranges"></a>7.9.4. Overlapping Escalation Ranges</h3></div></div></div>
+	  
 
   <p>Notification escalation definitions can have notification ranges that overlap. Take the following example:</p>
 
@@ -174,9 +181,11 @@
 </ul></div>
 
   </div>
-<div class="section" title="7.9.5. Recovery Notifications">
+
+  <div class="section" title="7.9.5. Recovery Notifications">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13787872"></a>7.9.5. Recovery Notifications</h3></div></div></div>
+<a name="recoverynotifications"></a>7.9.5. Recovery Notifications</h3></div></div></div>
+	  
 
   <p>Recovery notifications are slightly different than problem notifications when it comes to escalations. Take the following
   example:</p>
@@ -206,9 +215,11 @@
   recovery.</p>
 
   </div>
-<div class="section" title="7.9.6. Notification Intervals">
+
+  <div class="section" title="7.9.6. Notification Intervals">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13791616"></a>7.9.6. Notification Intervals</h3></div></div></div>
+<a name="notificationintervals"></a>7.9.6. Notification Intervals</h3></div></div></div>
+	  
 
   <p>You can change the frequency at which escalated notifications are sent out for a particular host or service by using the
   <span class="emphasis"><em>notification_interval</em></span> option of the hostgroup or service escalation definition. Example:</p>
@@ -301,9 +312,11 @@
   notifications.</p>
 
   </div>
-<div class="section" title="7.9.7. Time Period Restrictions">
+
+  <div class="section" title="7.9.7. Time Period Restrictions">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13791776"></a>7.9.7. Time Period Restrictions</h3></div></div></div>
+<a name="timeperiodrestrictions"></a>7.9.7. Time Period Restrictions</h3></div></div></div>
+	  
 
   <p>Under normal circumstances, escalations can be used at any time that a notification could normally be sent out for the
   host or service. This "notification time window" is determined by the <span class="emphasis"><em>notification_period</em></span> directive in the
@@ -330,15 +343,17 @@
 </table></div>
 
   </div>
-<div class="section" title="7.9.8. State Restrictions">
+
+  <div class="section" title="7.9.8. State Restrictions">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13808576"></a>7.9.8. State Restrictions</h3></div></div></div>
+<a name="staterestrictions"></a>7.9.8. State Restrictions</h3></div></div></div>
+	  
 
   <p>If you would like to restrict the escalation definition so that it is only used when the host or service is in a
   particular state, you can use the <span class="emphasis"><em>escalation_options</em></span> directive in the host or service escalation
   definition. If you do not use the <span class="emphasis"><em>escalation_options</em></span> directive, the escalation can be used when the host or
   service is in any state.</p>
-  <a class="indexterm" name="idp13810576"></a>
+  <a class="indexterm" name="idp13883856"></a>
 </div>
 </div>
 <div class="navfooter">

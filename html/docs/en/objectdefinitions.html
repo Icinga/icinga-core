@@ -30,21 +30,21 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="objectdefinitions"></a>3.4. <a name="object_definitions"></a>Object Definitions</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">3.4.1. <a href="objectdefinitions.html#idp4004704">Host definition</a></span></dt>
-<dt><span class="section">3.4.2. <a href="objectdefinitions.html#idp4004960">Hostgroup Definition</a></span></dt>
-<dt><span class="section">3.4.3. <a href="objectdefinitions.html#idp4328400">Service Definition</a></span></dt>
-<dt><span class="section">3.4.4. <a href="objectdefinitions.html#idp4393152">Servicegroup Definition</a></span></dt>
-<dt><span class="section">3.4.5. <a href="objectdefinitions.html#idp4681616">Contact Definition</a></span></dt>
-<dt><span class="section">3.4.6. <a href="objectdefinitions.html#idp4748368">Contactgroup Definition</a></span></dt>
-<dt><span class="section">3.4.7. <a href="objectdefinitions.html#idp4891888">Timeperiod Definition</a></span></dt>
-<dt><span class="section">3.4.8. <a href="objectdefinitions.html#idp4938736">Command Definition</a></span></dt>
-<dt><span class="section">3.4.9. <a href="objectdefinitions.html#idp4993792">Servicedependency Definition</a></span></dt>
-<dt><span class="section">3.4.10. <a href="objectdefinitions.html#idp5042064">Serviceescalation Definition</a></span></dt>
-<dt><span class="section">3.4.11. <a href="objectdefinitions.html#idp5142944">Hostdependency Definition</a></span></dt>
-<dt><span class="section">3.4.12. <a href="objectdefinitions.html#idp5283888">Hostescalation Definition</a></span></dt>
-<dt><span class="section">3.4.13. <a href="objectdefinitions.html#idp5367632">Hostextinfo Definition</a></span></dt>
-<dt><span class="section">3.4.14. <a href="objectdefinitions.html#idp5476128">Serviceextinfo Definition</a></span></dt>
-<dt><span class="section">3.4.15. <a href="objectdefinitions.html#idp5578832">Module Definition</a></span></dt>
+<dt><span class="section">3.4.1. <a href="objectdefinitions.html#host">Host definition</a></span></dt>
+<dt><span class="section">3.4.2. <a href="objectdefinitions.html#hostgroup">Hostgroup Definition</a></span></dt>
+<dt><span class="section">3.4.3. <a href="objectdefinitions.html#service">Service Definition</a></span></dt>
+<dt><span class="section">3.4.4. <a href="objectdefinitions.html#servicegroup">Servicegroup Definition</a></span></dt>
+<dt><span class="section">3.4.5. <a href="objectdefinitions.html#contact">Contact Definition</a></span></dt>
+<dt><span class="section">3.4.6. <a href="objectdefinitions.html#contactgroup">Contactgroup Definition</a></span></dt>
+<dt><span class="section">3.4.7. <a href="objectdefinitions.html#timeperiod">Timeperiod Definition</a></span></dt>
+<dt><span class="section">3.4.8. <a href="objectdefinitions.html#command">Command Definition</a></span></dt>
+<dt><span class="section">3.4.9. <a href="objectdefinitions.html#servicedepdency">Servicedependency Definition</a></span></dt>
+<dt><span class="section">3.4.10. <a href="objectdefinitions.html#serviceescalation">Serviceescalation Definition</a></span></dt>
+<dt><span class="section">3.4.11. <a href="objectdefinitions.html#hostdependency">Hostdependency Definition</a></span></dt>
+<dt><span class="section">3.4.12. <a href="objectdefinitions.html#hostescalation">Hostescalation Definition</a></span></dt>
+<dt><span class="section">3.4.13. <a href="objectdefinitions.html#hostextinfo">Hostextinfo Definition</a></span></dt>
+<dt><span class="section">3.4.14. <a href="objectdefinitions.html#serviceextinfo">Serviceextinfo Definition</a></span></dt>
+<dt><span class="section">3.4.15. <a href="objectdefinitions.html#module">Module Definition</a></span></dt>
 </dl></div>
   
 
@@ -146,14 +146,25 @@
 
   <p><a class="link" href="objectdefinitions.html#objectdefinitions-module">Module definitions</a></p>
 
-  <a class="indexterm" name="idp4001872"></a>
+  <a class="indexterm" name="idp4037584"></a>
 
-  <a class="indexterm" name="idp4003072"></a>
+  <a class="indexterm" name="idp4038816"></a>
 
   <div class="section" title="3.4.1. Host definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4004704"></a>3.4.1. <a name="objectdefinitions-host"></a>Host definition</h3></div></div></div>
+<a name="host"></a>3.4.1. <a name="objectdefinitions-host"></a>Host definition</h3></div></div></div>
     
+
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+	    <p>vrml_image and 3d_coords have been deprecated since 1.8 and removal of the 3d statusmap.
+	    </p>
+    </td></tr>
+</table></div>
 
     <p><span class="emphasis"><em>Description:</em></span></p>
 
@@ -388,11 +399,6 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>vrml_image</p></td>
-<td><p>image_file</p></td>
-</tr>
-<tr>
-<td><p></p></td>
 <td><p>statusmap_image</p></td>
 <td><p> image_file </p></td>
 </tr>
@@ -400,11 +406,6 @@
 <td><p></p></td>
 <td><p>2d_coords</p></td>
 <td><p>x_coord,y_coord</p></td>
-</tr>
-<tr>
-<td><p></p></td>
-<td><p>3d_coords</p></td>
-<td><p>x_coord,y_coord,z_coord</p></td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -772,25 +773,6 @@
             <span class="emphasis"><em>&lt;icon_image&gt;</em></span> argument.</p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p><span class="bold"><strong>vrml_image</strong></span>:</p></td>
-<td>
-<p>This variable is used to define the name of a GIF, PNG, or JPG image that should be associated with this host. This
-            image will be used as the texture map for the specified host in the <a class="link" href="cgis.html#cgis-statuswrl_cgi">statuswrl</a> CGI.
-            Unlike the image you use for the <span class="emphasis"><em>&lt;icon_image&gt;</em></span> variable, this one should probably
-            <span class="emphasis"><em>not</em></span> have any transparency. If it does, the host object will look a bit weird. Images for hosts are assumed
-            to be in the <span class="bold"><strong>logos/</strong></span> subdirectory in your HTML images directory (i.e.
-            <span class="emphasis"><em>/usr/local/icinga/share/images/logos</em></span>).</p> <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-                <p>This directive has no effect in Icinga</p>
-              </td></tr>
-</table></div>
-</td>
-</tr>
-<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>statusmap_image</strong></span>:</p></td>
 <td><p>This variable is used to define the name of an image that should be associated with this host in the <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a> CGI. You can specify a JPEG, PNG, and GIF image if you want, although we would
             strongly suggest using a GD2 format image, as other image formats will result in a lot of wasted CPU time when the statusmap
@@ -820,35 +802,18 @@
 </table></div>
 </td>
 </tr>
-<tr>
-<td align="left" valign="top"><p><span class="bold"><strong>3d_coords</strong></span>:</p></td>
-<td>
-<p>This variable is used to define coordinates to use when drawing the host in the <a class="link" href="cgis.html#cgis-statuswrl_cgi">statuswrl</a> CGI. Coordinates can be positive or negative real numbers. The origin for drawing
-            is (0.0,0.0,0.0). For reference, the size of the host cubes drawn is 0.5 units on each side (text takes a little more space).
-            The coordinates you specify here are used as the center of the host cube.</p>
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-                <p>This directive has no effect in Icinga.</p>
-              </td></tr>
-</table></div>
-</td>
-</tr>
 </tbody>
 </table>
     </div>
 
-    <a class="indexterm" name="idp4123248"></a>
+    <a class="indexterm" name="idp4153744"></a>
 
-    <a class="indexterm" name="idp4324656"></a>
+    <a class="indexterm" name="idp4348448"></a>
   </div>
 
   <div class="section" title="3.4.2. Hostgroup Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4004960"></a>3.4.2. <a name="objectdefinitions-hostgroup"></a>Hostgroup Definition</h3></div></div></div>
+<a name="hostgroup"></a>3.4.2. <a name="objectdefinitions-hostgroup"></a>Hostgroup Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -982,14 +947,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4390240"></a>
+    <a class="indexterm" name="idp4411216"></a>
 
-    <a class="indexterm" name="idp4391424"></a>
+    <a class="indexterm" name="idp4412224"></a>
   </div>
 
   <div class="section" title="3.4.3. Service Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4328400"></a>3.4.3. <a name="objectdefinitions-service"></a>Service Definition</h3></div></div></div>
+<a name="service"></a>3.4.3. <a name="objectdefinitions-service"></a>Service Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -1551,14 +1516,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4501472"></a>
+    <a class="indexterm" name="idp4523872"></a>
 
-    <a class="indexterm" name="idp4680064"></a>
+    <a class="indexterm" name="idp4702432"></a>
   </div>
 
   <div class="section" title="3.4.4. Servicegroup Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4393152"></a>3.4.4. <a name="objectdefinitions-servicegroup"></a>Servicegroup Definition</h3></div></div></div>
+<a name="servicegroup"></a>3.4.4. <a name="objectdefinitions-servicegroup"></a>Servicegroup Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -1698,14 +1663,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4745424"></a>
+    <a class="indexterm" name="idp4768080"></a>
 
-    <a class="indexterm" name="idp4746608"></a>
+    <a class="indexterm" name="idp4769264"></a>
   </div>
 
   <div class="section" title="3.4.5. Contact Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4681616"></a>3.4.5. <a name="objectdefinitions-contact"></a>Contact Definition</h3></div></div></div>
+<a name="contact"></a>3.4.5. <a name="objectdefinitions-contact"></a>Contact Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -1966,14 +1931,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4889136"></a>
+    <a class="indexterm" name="idp4911872"></a>
 
-    <a class="indexterm" name="idp4890144"></a>
+    <a class="indexterm" name="idp4912880"></a>
   </div>
 
   <div class="section" title="3.4.6. Contactgroup Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4748368"></a>3.4.6. <a name="objectdefinitions-contactgroup"></a>Contactgroup Definition</h3></div></div></div>
+<a name="contactgroup"></a>3.4.6. <a name="objectdefinitions-contactgroup"></a>Contactgroup Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2072,14 +2037,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4935376"></a>
+    <a class="indexterm" name="idp4958976"></a>
 
-    <a class="indexterm" name="idp4937216"></a>
+    <a class="indexterm" name="idp4959872"></a>
   </div>
 
   <div class="section" title="3.4.7. Timeperiod Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4891888"></a>3.4.7. <a name="objectdefinitions-timeperiod"></a>Timeperiod Definition</h3></div></div></div>
+<a name="timeperiod"></a>3.4.7. <a name="objectdefinitions-timeperiod"></a>Timeperiod Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2238,14 +2203,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp4991264"></a>
+    <a class="indexterm" name="idp5014512"></a>
 
-    <a class="indexterm" name="idp4992272"></a>
+    <a class="indexterm" name="idp5015696"></a>
   </div>
 
   <div class="section" title="3.4.8. Command Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4938736"></a>3.4.8. <a name="objectdefinitions-command"></a>Command Definition</h3></div></div></div>
+<a name="command"></a>3.4.8. <a name="objectdefinitions-command"></a>Command Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2343,14 +2308,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5039136"></a>
+    <a class="indexterm" name="idp5062960"></a>
 
-    <a class="indexterm" name="idp5040368"></a>
+    <a class="indexterm" name="idp5064192"></a>
   </div>
 
   <div class="section" title="3.4.9. Servicedependency Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp4993792"></a>3.4.9. <a name="objectdefinitions-servicedependency"></a>Servicedependency Definition</h3></div></div></div>
+<a name="servicedepdency"></a>3.4.9. <a name="objectdefinitions-servicedependency"></a>Servicedependency Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2533,14 +2498,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5140432"></a>
+    <a class="indexterm" name="idp5164128"></a>
 
-    <a class="indexterm" name="idp5139200"></a>
+    <a class="indexterm" name="idp5165312"></a>
   </div>
 
   <div class="section" title="3.4.10. Serviceescalation Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5042064"></a>3.4.10. <a name="objectdefinitions-serviceescalation"></a>Serviceescalation Definition</h3></div></div></div>
+<a name="serviceescalation"></a>3.4.10. <a name="objectdefinitions-serviceescalation"></a>Serviceescalation Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2825,14 +2790,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5280912"></a>
+    <a class="indexterm" name="idp5305024"></a>
 
-    <a class="indexterm" name="idp5282096"></a>
+    <a class="indexterm" name="idp5306032"></a>
   </div>
 
   <div class="section" title="3.4.11. Hostdependency Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5142944"></a>3.4.11. <a name="objectdefinitions-hostdependency"></a>Hostdependency Definition</h3></div></div></div>
+<a name="hostdependency"></a>3.4.11. <a name="objectdefinitions-hostdependency"></a>Hostdependency Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -2990,14 +2955,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5365200"></a>
+    <a class="indexterm" name="idp5389504"></a>
 
-    <a class="indexterm" name="idp5366080"></a>
+    <a class="indexterm" name="idp5388208"></a>
   </div>
 
   <div class="section" title="3.4.12. Hostescalation Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5283888"></a>3.4.12. <a name="objectdefinitions-hostescalation"></a>Hostescalation Definition</h3></div></div></div>
+<a name="hostescalation"></a>3.4.12. <a name="objectdefinitions-hostescalation"></a>Hostescalation Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -3229,14 +3194,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5473344"></a>
+    <a class="indexterm" name="idp5497472"></a>
 
-    <a class="indexterm" name="idp5474352"></a>
+    <a class="indexterm" name="idp5498480"></a>
   </div>
 
   <div class="section" title="3.4.13. Hostextinfo Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5367632"></a>3.4.13. <a name="objectdefinitions-hostextinfo"></a>Hostextinfo Definition</h3></div></div></div>
+<a name="hostextinfo"></a>3.4.13. <a name="objectdefinitions-hostextinfo"></a>Hostextinfo Definition</h3></div></div></div>
     
 
     <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
@@ -3253,7 +3218,8 @@
     <p><span class="emphasis"><em>Description:</em></span></p>
 
     <p>Extended host information entries are basically used to make the output from the <a class="link" href="cgis.html#cgis-status_cgi">status</a>,
-    <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>,  and <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a> CGIs look pretty. They have no effect on monitoring and are completely optional.</p>
+	    <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a>, and <a class="link" href="cgis.html#cgis-extinfo_cgi">extinfo</a> CGIs look pretty. They have
+	    no effect on monitoring and are completely optional.</p>
 
     <p><span class="emphasis"><em>Definition Format:</em></span></p>
 
@@ -3314,11 +3280,6 @@
 </tr>
 <tr>
 <td><p></p></td>
-<td><p>vrml_image</p></td>
-<td>image_file</td>
-</tr>
-<tr>
-<td><p></p></td>
 <td><p>statusmap_image</p></td>
 <td>image_file</td>
 </tr>
@@ -3326,11 +3287,6 @@
 <td><p></p></td>
 <td><p>2d_coords</p></td>
 <td>x_coord,y_coord</td>
-</tr>
-<tr>
-<td><p></p></td>
-<td><p>3d_coords</p></td>
-<td>x_coord,y_coord,z_coord</td>
 </tr>
 <tr>
 <td><p>   </p></td>
@@ -3348,10 +3304,8 @@
         notes_url       http://webserver.localhost.localdomain/hostinfo.pl?host=netware1
         icon_image      novell40.png 
         icon_image_alt  IntranetWare 4.11
-        vrml_image      novell40.png
         statusmap_image novell40.gd2
         2d_coords       100,250
-        3d_coords       100.0,50.0,75.0
         }</pre>
 
     <p><span class="emphasis"><em>Variable Descriptions:</em></span></p>
@@ -3412,26 +3366,6 @@
             CGIs.</p></td>
 </tr>
 <tr>
-<td align="left" valign="top"><p><span class="bold"><strong>vrml_image</strong></span>:</p></td>
-<td>
-<p>This variable is used to define the name of a GIF, PNG, or JPG image that should be associated with this host. This
-            image will be used as the texture map for the specified host in the <a class="link" href="cgis.html#cgis-statuswrl_cgi">statuswrl</a> CGI.
-            Unlike the image you use for the <span class="emphasis"><em>&lt;icon_image&gt;</em></span> variable, this one should probably
-            <span class="emphasis"><em>not</em></span> have any transparency. If it does, the host object will look a bit weird. Images for hosts are assumed
-            to be in the <span class="bold"><strong>logos/</strong></span> subdirectory in your HTML images directory (i.e.
-            <span class="emphasis"><em>/usr/local/icinga/share/images/logos</em></span>).</p>
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-                <p>This directive has no effect in Icinga.</p>
-              </td></tr>
-</table></div>
-</td>
-</tr>
-<tr>
 <td align="left" valign="top"><p><span class="bold"><strong>statusmap_image</strong></span>:</p></td>
 <td><p>This variable is used to define the name of an image that should be associated with this host in the <a class="link" href="cgis.html#cgis-statusmap_cgi">statusmap</a> CGI. You can specify a JPEG, PNG, and GIF image if you want, although we would
             strongly suggest using a GD2 format image, as other image formats will result in a lot of wasted CPU time when the statusmap
@@ -3461,35 +3395,18 @@
 </table></div>
 </td>
 </tr>
-<tr>
-<td align="left" valign="top"><p><span class="bold"><strong>3d_coords</strong></span>:</p></td>
-<td>
-<p>This variable is used to define coordinates to use when drawing the host in the <a class="link" href="cgis.html#cgis-statuswrl_cgi">statuswrl</a> CGI. Coordinates can be positive or negative real numbers. The origin for drawing
-            is (0.0,0.0,0.0). For reference, the size of the host cubes drawn is 0.5 units on each side (text takes a little more space).
-            The coordinates you specify here are used as the center of the host cube.</p>
-<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
-<th align="left">Note</th>
-</tr>
-<tr><td align="left" valign="top">
-                <p>This directive has no effect in Icinga.</p>
-              </td></tr>
-</table></div>
-</td>
-</tr>
 </tbody>
 </table>
     </div>
 
-    <a class="indexterm" name="idp5576224"></a>
+    <a class="indexterm" name="idp5585248"></a>
 
-    <a class="indexterm" name="idp5577120"></a>
+    <a class="indexterm" name="idp5586256"></a>
   </div>
 
   <div class="section" title="3.4.14. Serviceextinfo Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5476128"></a>3.4.14. <a name="objectdefinitions-serviceextinfo"></a>Serviceextinfo Definition</h3></div></div></div>
+<a name="serviceextinfo"></a>3.4.14. <a name="objectdefinitions-serviceextinfo"></a>Serviceextinfo Definition</h3></div></div></div>
     
 
     <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
@@ -3655,14 +3572,14 @@
 </table>
     </div>
 
-    <a class="indexterm" name="idp5653616"></a>
+    <a class="indexterm" name="idp5663184"></a>
 
-    <a class="indexterm" name="idp5654816"></a>
+    <a class="indexterm" name="idp5664192"></a>
   </div>
 
   <div class="section" title="3.4.15. Module Definition">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp5578832"></a>3.4.15. <a name="objectdefinitions-module"></a>Module Definition</h3></div></div></div>
+<a name="module"></a>3.4.15. <a name="objectdefinitions-module"></a>Module Definition</h3></div></div></div>
     
 
     <p><span class="emphasis"><em>Description:</em></span></p>
@@ -3792,7 +3709,7 @@
     </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idp5700464"></a>
+    <a class="indexterm" name="idp5710544"></a>
   </div>
 </div>
 <div class="navfooter">

@@ -30,17 +30,17 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="networkreachability"></a>5.10. Ermitteln des Zustands und der Erreichbarkeit von Netzwerk-Hosts</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">5.10.1. <a href="networkreachability.html#idp9982896">Einführung</a></span></dt>
-<dt><span class="section">5.10.2. <a href="networkreachability.html#idp9986512">Beispiel-Netzwerk</a></span></dt>
-<dt><span class="section">5.10.3. <a href="networkreachability.html#idp9990544">Definieren von Eltern/Kind-Beziehungen</a></span></dt>
-<dt><span class="section">5.10.4. <a href="networkreachability.html#idp9997376">Erreichbarkeits-Logik in Aktion</a></span></dt>
-<dt><span class="section">5.10.5. <a href="networkreachability.html#idp10006784">UNREACHABLE Zustände und Benachrichtigungen</a></span></dt>
+<dt><span class="section">5.10.1. <a href="networkreachability.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">5.10.2. <a href="networkreachability.html#examplenetwork">Beispiel-Netzwerk</a></span></dt>
+<dt><span class="section">5.10.3. <a href="networkreachability.html#parentchildrelations">Definieren von Eltern/Kind-Beziehungen</a></span></dt>
+<dt><span class="section">5.10.4. <a href="networkreachability.html#logicinaction">Erreichbarkeits-Logik in Aktion</a></span></dt>
+<dt><span class="section">5.10.5. <a href="networkreachability.html#unreachableandnotifications">UNREACHABLE Zustände und Benachrichtigungen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="5.10.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9982896"></a>5.10.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>5.10.1. Einführung</h3></div></div></div>
     
 
     <p>Falls Sie jemals im technischen Support gearbeitet haben, hatten Sie zweifelsohne Benutzer, die Ihnen erzählt haben, "das Internet
@@ -58,7 +58,7 @@
 
   <div class="section" title="5.10.2. Beispiel-Netzwerk">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9986512"></a>5.10.2. Beispiel-Netzwerk</h3></div></div></div>
+<a name="examplenetwork"></a>5.10.2. Beispiel-Netzwerk</h3></div></div></div>
     
 
     <p>Werfen Sie einen Blick auf das einfache Netzwerk-Diagramm. Lassen Sie uns annehmen, dass Sie alle Hosts (Server, Router, Switches,
@@ -70,7 +70,7 @@
 
   <div class="section" title="5.10.3. Definieren von Eltern/Kind-Beziehungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9990544"></a>5.10.3. Definieren von Eltern/Kind-Beziehungen</h3></div></div></div>
+<a name="parentchildrelations"></a>5.10.3. Definieren von Eltern/Kind-Beziehungen</h3></div></div></div>
     
 
     <p>Um Icinga in die Lage zu versetzen, zwischen DOWN und UNREACHABLE-Zuständen der überwachten Hosts zu unterscheiden, müssen
@@ -129,7 +129,7 @@
 
   <div class="section" title="5.10.4. Erreichbarkeits-Logik in Aktion">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp9997376"></a>5.10.4. Erreichbarkeits-Logik in Aktion</h3></div></div></div>
+<a name="logicinaction"></a>5.10.4. Erreichbarkeits-Logik in Aktion</h3></div></div></div>
     
 
     <p>Nachdem Sie Icinga mit den passenden Eltern/Kind-Beziehungen konfiguriert haben, lassen Sie uns sehen, was passiert, wenn
@@ -154,7 +154,7 @@
 
   <div class="section" title="5.10.5. UNREACHABLE Zustände und Benachrichtigungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp10006784"></a>5.10.5. UNREACHABLE Zustände und Benachrichtigungen</h3></div></div></div>
+<a name="unreachableandnotifications"></a>5.10.5. UNREACHABLE Zustände und Benachrichtigungen</h3></div></div></div>
     
 
     <p>Standardmäßig wird Icinga Kontakte über Hosts im DOWN und UNREACHABLE-Status informieren. Als ein Admin/Techniker möchten
@@ -165,9 +165,9 @@
     Sie die unreachable (u)-Option der <span class="emphasis"><em>notification_options</em></span>-Direktive in Ihren <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host</a>-Definitionen und/oder die <span class="emphasis"><em>host_notification_options</em></span>-Direktive in Ihren
     <a class="link" href="objectdefinitions.html#objectdefinitions-contact">Kontakt</a>-Direktiven ausschließen.</p>
 
-    <a class="indexterm" name="idp10009632"></a>
+    <a class="indexterm" name="idp10025920"></a>
 
-    <a class="indexterm" name="idp10013408"></a>
+    <a class="indexterm" name="idp10027552"></a>
   </div>
 </div>
 <div class="navfooter">

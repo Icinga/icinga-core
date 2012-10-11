@@ -72,7 +72,7 @@ highlight_table_rows=1
 # This option determines what states should be displayed in the web
 # interface for hosts/services that have not yet been checked.
 # Values: 0 = leave hosts/services that have not been check yet in their original state
-#         1 = mark hosts/services that have not been checked yet as PENDING
+#         1 = mark hosts/services that have not been checked yet as PENDING (default)
 
 use_pending_states=1
 
@@ -152,10 +152,20 @@ use_authentication=1
 
 
 
-# x509 CERT AUTHENTICATION
-# When enabled, this option allows you to use x509 cert (SSL)
-# authentication in the CGIs.  This is an advanced option and should
-# not be enabled unless you know what you're doing.
+# USE CLIENT CERTIFICATTES
+# This option controls whether the value of the web server environment
+# variable REMOTE_USER or SSL_CLIENT_S_DN_CN will be used. The name of
+# the directive is a bit misleading because unless you set up the use
+# of client certificates the value has to be set to zero (0). Setting
+# the value to one (1) requires "SSLUserName SSL_CLIENT_S_DN_CN" and
+# several other options in your web server config. Please consult your
+# web server configuration documentation for details.
+# 
+# Values:
+# 0 = Use web server environment variable REMOTE_USER to get the user
+#	logged in. Don't use client certificates (default)
+# 1 = Use web server environment variable SSL_CLIENT_S_DN_CN to get
+#	the user logged in. Use client certificates
 
 use_ssl_authentication=0
 
@@ -253,8 +263,10 @@ authorized_for_system_commands=icingaadmin
 # for hosts or services that they are contacts for (unless you
 # you choose to not use authorization). You may use an asterisk (*)
 # to authorize any user who has authenticated to the web server.
-# Alternatively you can specify contactgroups too, starting
-# with Icinga 1.5.0
+# Alternatively you can specify contactgroups too.
+#
+# NOTE: Users in authorized_for_all_hosts are also automatically
+# authorised to view information for all services.
 
 
 authorized_for_all_services=icingaadmin
@@ -271,8 +283,10 @@ authorized_for_all_hosts=icingaadmin
 # that they are contacts for (unless you you choose to not use
 # authorization).  You may use an asterisk (*) to authorize any
 # user who has authenticated to the web server.
-# Alternatively you can specify contactgroups too, starting
-# with Icinga 1.5.0
+# Alternatively you can specify contactgroups too.
+#
+# NOTE: Users in authorized_for_all_host_commands are also automatically
+# authorised to issue commands for all services.
 
 authorized_for_all_service_commands=icingaadmin
 authorized_for_all_host_commands=icingaadmin
@@ -326,26 +340,41 @@ show_all_services_host_is_authorized_for=1
 
 
 # SHOW PARTIAL HOSTGROUPS
-# By default, a user only sees a hostgroup and the hosts within it if
-# they are an authorized contact for all of the hosts of the group. By
-# enabling this option hostgroups will show a partial listing of hosts
-# the user is an authorized contact for in the hostgroups.
+# By default (meaning the directive is not present or disabled), a user
+# only sees a hostgroup and the hosts within it if they are an authorised
+# contact for all of the hosts of the group. The behaviour can be changed
+# using the directive show_partial_hostgroups=1.
+# When enabled, the hostgroups overview will show a partial listing of hosts
+# that the user is an authorised contact for within each hostgroup.
+# It will also add the string "(Partial Hostgroups Enabled)" to the top of
+# the Hostgroup Overview to help prevent any confusion over whether the option
+# is in use or not. However for privacy reasons, hostgroups that are only showing
+# a partial listing are not specifically indicated.
+# 
+# COMPATIBILITY NOTICE: As with any tweak made to the output of the CGIs, enabling
+# this option may adversely impact third party programs that rely on 'screen scraping'
+# to get their information. If you encounter such a problem, turn this option back
+# to its default of off and encourage the developer(s) of the program to use JSON
+# for their data needs instead.
+# 
 # Values: 0 - disabled, user only sees full hostgroups (default)
 #         1 - enabled, user sees partial hostgroups
 
 show_partial_hostgroups=0
 
 
+
 # STATUSMAP BACKGROUND IMAGE
-# This option allows you to specify an image to be used as a
-# background in the statusmap CGI.  It is assumed that the image
-# resides in the HTML images path (i.e. /usr/local/icinga/share/images).
-# This path is automatically determined by appending "/images"
-# to the path specified by the 'physical_html_path' directive.
-# Note:  The image file may be in GIF, PNG, JPEG, or GD2 format.
-# However, I recommend that you convert your image to GD2 format
-# (uncompressed), as this will cause less CPU load when the CGI
-# generates the image.
+# This option allows you to specify an image to be used as a background
+# in the statusmap CGI if you use the user-supplied coordinates layout method.
+# The background image is not be available in any other layout methods. It is
+# assumed that the image resides in the HTML images path (i.e. 
+# /usr/local/icinga/share/images). This path is automatically determined by
+# appending "/images" to the path specified by the physical_html_path directive.
+#
+# NOTE: The image file can be in GIF, JPEG, PNG, or GD2 format. However, GD2
+# format (preferably in uncompressed format) is recommended, as it will reduce
+# the CPU load when the CGI generates the map image.
 
 #statusmap_background_image=smbackground.gd2
 
@@ -376,6 +405,7 @@ show_partial_hostgroups=0
 #       3 = Balanced tree
 #       4 = Circular
 #       5 = Circular (Marked Up)
+#       6 = Baloon (Marked Up)
 
 default_statusmap_layout=5
 
@@ -453,11 +483,13 @@ notes_url_target=main
 
 
 # LOCK AUTHOR NAMES OPTION
-# This option determines whether users can change the author name
-# when submitting comments, scheduling downtime.  If disabled, the
-# author names will be locked into their contact name, as defined in Icinga.
-# Values: 0 = allow editing author names
-#         1 = lock author names (disallow editing)
+# This option allows you to restrict users from changing the author name
+# when submitting comments, acknowledgements, and scheduled downtime from
+# the web interface. If this option is enabled, users will be unable to
+# change the author name associated with the command request.
+#
+# Values: 0 = Allow users to change author names when submitting commands
+#         1 = Prevent users from changing author names (default)
 
 lock_author_names=1
 
@@ -575,7 +607,7 @@ show_tac_header_pending=1
 # of hosts and services should be shown in showlog.cgi
 # Note: This Option only works if the option
 # "log_current_states" in icinga.cfg is set to 1.
-# By default it's enabled. Default is 0.
+# By default it's disabled. Default is 0.
 
 #showlog_current_states=0
 

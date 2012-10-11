@@ -30,12 +30,12 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="reporting_1.8"></a>9.5. Installation von Icinga-Reporting mit JasperReports Server</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">9.5.1. <a href="reporting_1.8.html#idp15532160">Offizielle Dokumentation</a></span></dt>
-<dt><span class="section">9.5.2. <a href="reporting_1.8.html#idp15534992">Voraussetzungen</a></span></dt>
-<dt><span class="section">9.5.3. <a href="reporting_1.8.html#idp15558544">Icinga Reporting</a></span></dt>
-<dt><span class="section">9.5.4. <a href="reporting_1.8.html#idp15572784">Konfiguration</a></span></dt>
-<dt><span class="section">9.5.5. <a href="reporting_1.8.html#idp15580368">Reports</a></span></dt>
-<dt><span class="section">9.5.6. <a href="reporting_1.8.html#idp15584752">Fehler</a></span></dt>
+<dt><span class="section">9.5.1. <a href="reporting_1.8.html#introduction">Offizielle Dokumentation</a></span></dt>
+<dt><span class="section">9.5.2. <a href="reporting_1.8.html#officialdocs">Voraussetzungen</a></span></dt>
+<dt><span class="section">9.5.3. <a href="reporting_1.8.html#icingareporting">Icinga Reporting</a></span></dt>
+<dt><span class="section">9.5.4. <a href="reporting_1.8.html#configuration">Konfiguration</a></span></dt>
+<dt><span class="section">9.5.5. <a href="reporting_1.8.html#reports">Reports</a></span></dt>
+<dt><span class="section">9.5.6. <a href="reporting_1.8.html#errors">Fehler</a></span></dt>
 </dl></div>
   
 
@@ -44,28 +44,18 @@
 
   <p>Hier geben wir Ihnen einige Hinweise, wie Sie das Icinga-Reporting mit JasperReports Server installieren.</p>
 
-  <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
-<th align="left">Wichtig</th>
-</tr>
-<tr><td align="left" valign="top">
-    <p>Das Icinga-Reporting scheint im Moment nicht mit JasperReports Server 4.7.0 zu funktionieren. Bitte nutzen Sie derzeit JasperReports Server 4.5.0.</p>
-  </td></tr>
-</table></div>
-
   <div class="section" title="9.5.1. Offizielle Dokumentation">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15532160"></a>9.5.1. Offizielle Dokumentation</h3></div></div></div>
+<a name="introduction"></a>9.5.1. Offizielle Dokumentation</h3></div></div></div>
     
 
-    <p>Mehr Information finden Sie unter <a class="link" href="http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.5.0/JasperReports-Server-CP-Install-Guide.pdf" target="_top">http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.5.0/JasperReports-Server-CP-Install-Guide.pdf</a>
+    <p>Mehr Information finden Sie unter <a class="link" href="http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.7.0/JasperReports-Server-CP-Install-Guide.pdf" target="_top">http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.7.0/JasperReports-Server-CP-Install-Guide.pdf</a>
     oder <a class="link" href="http://jasperforge.org/espdocs/espbrowse.php?id=86&amp;type=folder&amp;group_id=112&amp;parent=86" target="_top">http://jasperforge.org/espdocs/espbrowse.php?id=86&amp;type=folder&amp;group_id=112&amp;parent=86</a></p>
   </div>
 
   <div class="section" title="9.5.2. Voraussetzungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15534992"></a>9.5.2. Voraussetzungen</h3></div></div></div>
+<a name="officialdocs"></a>9.5.2. Voraussetzungen</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
@@ -121,12 +111,23 @@ quit</pre>
 <li class="listitem">
         <p>JasperReports Server</p>
 
+        <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+          <p>JasperReports Server 4.7.0 wird erst ab Icinga-Reporting 1.8 unterstützt! Für die Installation Version des Icinga-Reporting- Paketes &lt; 1.8 ,
+          nutzen Sie bitte JasperReports Server 4.5.0 oder eine ältere Version.</p>
+        </td></tr>
+</table></div>
+
         <p>Abhängig von Ihrer Architektur (<code class="code">uname -a</code>) holen Sie sich den entsprechenden Installer - hier im Beispiel
         x64</p>
-<pre class="screen"> $&gt; wget http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.5.0/jasperreports-server-cp-4.5.0-linux-x64-installer.run
+<pre class="screen"> $&gt; wget http://sourceforge.net/projects/jasperserver/files/JasperServer/JasperServer%204.7.0/jasperreports-server-cp-4.7.0-linux-x64-installer.run
 
- $&gt; chmod +x jasperreports-server-cp-4.5.0-linux-x64-installer.run
- $&gt; sudo ./jasperreports-server-cp-4.5.0-linux-x64-installer.run</pre>
+ $&gt; chmod +x jasperreports-server-cp-4.7.0-linux-x64-installer.run
+ $&gt; sudo ./jasperreports-server-cp-4.7.0-linux-x64-installer.run</pre>
 
         <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
@@ -156,14 +157,14 @@ quit</pre>
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>Die standardmäßig wird JasperReports Server nach /opt/jasperreports-server-cp-4.5.0/ installiert. Wenn Sie den JasperReports Server
+          <p>Die standardmäßig wird JasperReports Server nach /opt/jasperreports-server-cp-4.7.0/ installiert. Wenn Sie den JasperReports Server
           aktualisieren, versichern Sie sich mit der richtigen Version zu arbeiten!</p>
         </td></tr>
 </table></div>
 
         <p><span class="emphasis"><em>Start</em></span></p>
 
-        <pre class="screen"> #&gt; cd /opt/jasperreports-server-cp-4.5.0/
+        <pre class="screen"> #&gt; cd /opt/jasperreports-server-cp-4.7.0/
  #&gt; ./ctlscript.sh start</pre>
 <p>Für einzelne Komponenten</p>
 <pre class="screen"> #&gt; ./ctlscript.sh postgresql start|stop
@@ -174,7 +175,7 @@ quit</pre>
 
   <div class="section" title="9.5.3. Icinga Reporting">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15558544"></a>9.5.3. Icinga Reporting</h3></div></div></div>
+<a name="icingareporting"></a>9.5.3. Icinga Reporting</h3></div></div></div>
     
 
     <p>Beginnend mit Icinga 1.6 liefert das Paket configure- und make-Skripte.</p>
@@ -203,7 +204,7 @@ quit</pre>
 
         <p>Falls Sie den JasperReports Server vorher nicht mit dem Default-Präfix installiert haben, dann müssen Sie configure den Standort
         mitteilen. </p>
-<pre class="screen"> $&gt; ./configure --with-jasper-server=/opt/jasperreports-server-cp-4.5.0</pre>
+<pre class="screen"> $&gt; ./configure --with-jasper-server=/opt/jasperreports-server-cp-4.7.0</pre>
       </li>
 <li class="listitem">
         <p>Make</p>
@@ -219,7 +220,7 @@ quit</pre>
 <pre class="screen"> #&gt; make install-mysql-connector</pre>
 <p>Starten Sie den
             Tomcat-Server neu</p>
-<pre class="screen"> #&gt; cd /opt/jasperreports-server-cp-4.5.0
+<pre class="screen"> #&gt; cd /opt/jasperreports-server-cp-4.7.0
  #&gt; ./ctlscript.sh stop tomcat
  #&gt; ./ctlscript.sh start tomcat</pre>
           </li>
@@ -229,7 +230,7 @@ quit</pre>
             <p>Der JasperReports Server muss gestartet sein! </p>
 <pre class="screen"> #&gt; make install</pre>
 <p>Starten Sie den Tomcat-Server neu</p>
-<pre class="screen"> #&gt; cd /opt/jasperreports-server-cp-4.5.0
+<pre class="screen"> #&gt; cd /opt/jasperreports-server-cp-4.7.0
  #&gt; ./ctlscript.sh stop tomcat
  #&gt; ./ctlscript.sh start tomcat</pre>
           </li>
@@ -240,7 +241,7 @@ quit</pre>
 
   <div class="section" title="9.5.4. Konfiguration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15572784"></a>9.5.4. Konfiguration</h3></div></div></div>
+<a name="configuration"></a>9.5.4. Konfiguration</h3></div></div></div>
     
 
     <p>Öffnen Sie das Web-Interface, Standardwerte sind jasperadmin:jasperadmin</p>
@@ -269,13 +270,13 @@ quit</pre>
 
   <div class="section" title="9.5.5. Reports">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15580368"></a>9.5.5. Reports</h3></div></div></div>
+<a name="reports"></a>9.5.5. Reports</h3></div></div></div>
     
 
     <p>Überprüfen Sie, dass die Reports verfügbar und lauffähig sind.</p>
 
     <div class="figure">
-<a name="idp15581392"></a><p class="title"><b>Abbildung 9.1. Icinga reporting</b></p>
+<a name="idp15656528"></a><p class="title"><b>Abbildung 9.1. Icinga reporting</b></p>
 <div class="figure-contents">
       
 
@@ -289,7 +290,7 @@ quit</pre>
 
   <div class="section" title="9.5.6. Fehler">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15584752"></a>9.5.6. Fehler</h3></div></div></div>
+<a name="errors"></a>9.5.6. Fehler</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -312,13 +313,13 @@ quit</pre>
 <p>Es könnte Sun AWT sein, das versucht, auf
         X11-Klassen zuzugreifen, aber tatsächlich ist es die PDF-Generierung für einen Report.</p>
 <pre class="screen"> $&gt; sudo apt-get install msttcorefonts
- $&gt; cd /opt/jasperreports-server-cp-4.5.0
+ $&gt; cd /opt/jasperreports-server-cp-4.7.0
  $&gt; sudo sh ctlscript.sh stop
  $&gt; sudo sh ctlscript.sh start</pre>
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp15590480"></a>
+    <a class="indexterm" name="idp15665376"></a>
   </div>
 </div>
 <div class="navfooter">

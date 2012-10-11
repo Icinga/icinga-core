@@ -30,20 +30,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="monitoring-printers"></a>2.15. <a name="monitoring_printers"></a>Monitoring Network Printers</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.15.1. <a href="monitoring-printers.html#idp1220768">Introduction</a></span></dt>
-<dt><span class="section">2.15.2. <a href="monitoring-printers.html#idp1220896">Overview</a></span></dt>
-<dt><span class="section">2.15.3. <a href="monitoring-printers.html#idp1244064">Steps</a></span></dt>
-<dt><span class="section">2.15.4. <a href="monitoring-printers.html#idp1248480">What's Already Done For You</a></span></dt>
-<dt><span class="section">2.15.5. <a href="monitoring-printers.html#idp1255680">Prerequisites</a></span></dt>
-<dt><span class="section">2.15.6. <a href="monitoring-printers.html#idp1255808">Configuring Icinga</a></span></dt>
-<dt><span class="section">2.15.7. <a href="monitoring-printers.html#idp1260720">Restarting Icinga</a></span></dt>
+<dt><span class="section">2.15.1. <a href="monitoring-printers.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.15.2. <a href="monitoring-printers.html#overview">Overview</a></span></dt>
+<dt><span class="section">2.15.3. <a href="monitoring-printers.html#steps">Steps</a></span></dt>
+<dt><span class="section">2.15.4. <a href="monitoring-printers.html#whatsdone">What's Already Done For You</a></span></dt>
+<dt><span class="section">2.15.5. <a href="monitoring-printers.html#prerequisites">Prerequisites</a></span></dt>
+<dt><span class="section">2.15.6. <a href="monitoring-printers.html#configicinga">Configuring Icinga</a></span></dt>
+<dt><span class="section">2.15.7. <a href="monitoring-printers.html#restarticinga">Restarting Icinga</a></span></dt>
 </dl></div>
   
-  <a class="indexterm" name="idp1219760"></a>
+  <a class="indexterm" name="idp1247472"></a>
 
 <div class="section" title="2.15.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1220768"></a>2.15.1. Introduction</h3></div></div></div>
+<a name="introduction"></a>2.15.1. Introduction</h3></div></div></div>
   
 
   <div class="informalfigure">
@@ -101,11 +101,12 @@
   </td></tr>
 </table></div>
 
-</div>
-<div class="section" title="2.15.2. Overview">
+  </div>
+
+  <div class="section" title="2.15.2. Overview">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1220896"></a>2.15.2. Overview</h3></div></div></div>
-  
+<a name="overview"></a>2.15.2. Overview</h3></div></div></div>
+  	
 
   <div class="informalfigure">
       <div class="mediaobject"><img src="../images/monitoring-printers.png"></div>
@@ -126,11 +127,12 @@
   </p></td></tr>
 </table></div>
 
-</div>
-<div class="section" title="2.15.3. Steps">
+  </div>
+
+  <div class="section" title="2.15.3. Steps">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1244064"></a>2.15.3. Steps</h3></div></div></div>
-  
+<a name="steps"></a>2.15.3. Steps</h3></div></div></div>
+  	
 
   <p>There are several steps you'll need to follow in order to monitor a new network printer. They are:</p>
 
@@ -146,11 +148,12 @@
     </li>
 </ol></div>
 
-</div>
-<div class="section" title="2.15.4. What's Already Done For You">
+  </div>
+
+  <div class="section" title="2.15.4. What's Already Done For You">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1248480"></a>2.15.4. What's Already Done For You</h3></div></div></div>
-  
+<a name="whatsdone"></a>2.15.4. What's Already Done For You</h3></div></div></div>
+  	
 
   <p>To make your life a bit easier, a few configuration tasks have already been done for you:</p>
 
@@ -170,11 +173,12 @@
   waiting until you're more familiar with configuring Icinga before doing so. For the time being, just follow the
   directions outlined below and you'll be monitoring your network printers in no time.</p>
 
-</div>
-<div class="section" title="2.15.5. Prerequisites">
+  </div>
+
+  <div class="section" title="2.15.5. Prerequisites">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1255680"></a>2.15.5. Prerequisites</h3></div></div></div>
-  
+<a name="prerequisites"></a>2.15.5. Prerequisites</h3></div></div></div>
+  	
 
   <p>The first time you configure Icinga to monitor a network printer, you'll need to do a bit of extra work. Remember,
   you only need to do this for the *first* printer you monitor.</p>
@@ -194,11 +198,12 @@
   configuration file already contains some sample host, hostgroup, and service definitions. For the *first* printer you monitor,
   you can simply modify the sample host and service definitions in that file, rather than creating new ones.</p>
 
-</div>
-<div class="section" title="2.15.6. Configuring Icinga">
+  </div>
+
+  <div class="section" title="2.15.6. Configuring Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1255808"></a>2.15.6. Configuring Icinga</h3></div></div></div>
-  
+<a name="configicinga"></a>2.15.6. Configuring Icinga</h3></div></div></div>
+  	
 
   <p>You'll need to create some <a class="link" href="objectdefinitions.html" title="3.4. Object Definitions">object definitions</a> in order to monitor a new
   printer.</p>
@@ -262,11 +267,12 @@
 
   <p>Save the file.</p>
 
-</div>
-<div class="section" title="2.15.7. Restarting Icinga">
+  </div>
+
+  <div class="section" title="2.15.7. Restarting Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp1260720"></a>2.15.7. Restarting Icinga</h3></div></div></div>
-  
+<a name="restarticinga"></a>2.15.7. Restarting Icinga</h3></div></div></div>
+  	
 
   <p>Once you've added the new host and service definitions to the <span class="emphasis"><em>printer.cfg</em></span> file, you're ready to start
   monitoring the printer. To do this, you'll need to <a class="link" href="verifyconfig.html" title="4.1. Verifying Your Configuration">verify your configuration</a> and <a class="link" href="startstop.html" title="4.2. Starting and Stopping Icinga">restart Icinga</a>.</p>

@@ -30,28 +30,31 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="perfdata"></a>7.15. <a name="perf_data"></a>Performance Data</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.15.1. <a href="perfdata.html#idp14061728">Introduction</a></span></dt>
-<dt><span class="section">7.15.2. <a href="perfdata.html#idp14063760">Types of Performance Data</a></span></dt>
-<dt><span class="section">7.15.3. <a href="perfdata.html#idp14075056">Plugin Performance Data</a></span></dt>
-<dt><span class="section">7.15.4. <a href="perfdata.html#idp14075184">Processing Performance Data</a></span></dt>
-<dt><span class="section">7.15.5. <a href="perfdata.html#idp14092288">Processing Performance Data Using Commands</a></span></dt>
-<dt><span class="section">7.15.6. <a href="perfdata.html#idp14097584">Writing Performance Data To Files</a></span></dt>
-<dt><span class="section">7.15.7. <a href="perfdata.html#idp14109424">Performance Data Format</a></span></dt>
+<dt><span class="section">7.15.1. <a href="perfdata.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.15.2. <a href="perfdata.html#typesperfdata">Types of Performance Data</a></span></dt>
+<dt><span class="section">7.15.3. <a href="perfdata.html#pluginperfdata">Plugin Performance Data</a></span></dt>
+<dt><span class="section">7.15.4. <a href="perfdata.html#processing">Processing Performance Data</a></span></dt>
+<dt><span class="section">7.15.5. <a href="perfdata.html#processingcommands">Processing Performance Data Using Commands</a></span></dt>
+<dt><span class="section">7.15.6. <a href="perfdata.html#writingtofiles">Writing Performance Data To Files</a></span></dt>
+<dt><span class="section">7.15.7. <a href="perfdata.html#formatperfdata">Performance Data Format</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.15.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14061728"></a>7.15.1. Introduction</h3></div></div></div>
+<a name="introduction"></a>7.15.1. Introduction</h3></div></div></div>
+	  
 
   <p>Icinga is designed to allow <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a> to return optional performance data in addition to normal
   status data, as well as allow you to pass that performance data to external applications for processing. A description of the different
   types of performance data, as well as information on how to go about processing that data is described below...</p>
 
   </div>
-<div class="section" title="7.15.2. Types of Performance Data">
+
+  <div class="section" title="7.15.2. Types of Performance Data">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14063760"></a>7.15.2. Types of Performance Data</h3></div></div></div>
+<a name="typesperfdata"></a>7.15.2. Types of Performance Data</h3></div></div></div>
+	  
 
   <p>There are two basic categories of performance data that can be obtained from Icinga:</p>
 
@@ -78,9 +81,11 @@
   on how plugins can return performance data to Icinga for inclusion in the $HOSTPERFDATA$ and $SERVICEPERFDATA$ macros.</p>
 
   </div>
-<div class="section" title="7.15.3. Plugin Performance Data">
+
+  <div class="section" title="7.15.3. Plugin Performance Data">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14075056"></a>7.15.3. Plugin Performance Data</h3></div></div></div>
+<a name="pluginperfdata"></a>7.15.3. Plugin Performance Data</h3></div></div></div>
+	  
 
   <p>At a minimum, Icinga plugins must return a single line of human-readable text that indicates the status of some type of
   measurable data. For example, the check_ping plugin might return a line of text like the following:</p>
@@ -129,9 +134,11 @@
 </table></div>
 
   </div>
-<div class="section" title="7.15.4. Processing Performance Data">
+
+  <div class="section" title="7.15.4. Processing Performance Data">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14075184"></a>7.15.4. Processing Performance Data</h3></div></div></div>
+<a name="processing"></a>7.15.4. Processing Performance Data</h3></div></div></div>
+	  
 
   <p>If you want to process the performance data that is available from Icinga and the plugins, you'll need to do the
   following:</p>
@@ -148,9 +155,11 @@
   <p>Read on for information on how to process performance data by writing to files or executing commands.</p>
 
   </div>
-<div class="section" title="7.15.5. Processing Performance Data Using Commands">
+
+  <div class="section" title="7.15.5. Processing Performance Data Using Commands">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14092288"></a>7.15.5. Processing Performance Data Using Commands</h3></div></div></div>
+<a name="processingcommands"></a>7.15.5. Processing Performance Data Using Commands</h3></div></div></div>
+	  
 
   <p>The most flexible way to process performance data is by having Icinga execute commands (that you specify) to process or
   redirect the data for later processing by external applications. The commands that Icinga executes to process host and service
@@ -177,9 +186,11 @@
 </table></div>
 
   </div>
-<div class="section" title="7.15.6. Writing Performance Data To Files">
+
+  <div class="section" title="7.15.6. Writing Performance Data To Files">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14097584"></a>7.15.6. Writing Performance Data To Files</h3></div></div></div>
+<a name="writingtofiles"></a>7.15.6. Writing Performance Data To Files</h3></div></div></div>
+	  
 
   <p>You can have Icinga write all host and service performance data directly to text files using the <a class="link" href="configmain.html#configmain-host_perfdata_file">host_perfdata_file</a> and <a class="link" href="configmain.html#configmain-service_perfdata_file">service_perfdata_file</a> options. The format in which host and service performance data is
   written to those files is determined by the <a class="link" href="configmain.html#configmain-host_perfdata_file_template">host_perfdata_file_template</a> and
@@ -211,9 +222,11 @@
   respectively.</p>
 
   </div>
-<div class="section" title="7.15.7. Performance Data Format">
+
+  <div class="section" title="7.15.7. Performance Data Format">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14109424"></a>7.15.7. <a name="perfdata-format"></a>Performance Data Format</h3></div></div></div>
+<a name="formatperfdata"></a>7.15.7. <a name="perfdata-format"></a>Performance Data Format</h3></div></div></div>
+	  
 
   <p>The Nagios Developer Guidelines (<a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html" target="_top">http://nagiosplug.sourceforge.net/developer-guidelines.html</a>)
   contain in <a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html#AEN201" target="_top">section 2.6</a> the specification and an
@@ -318,9 +331,9 @@
     </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp14136608"></a>
+  <a class="indexterm" name="idp14230960"></a>
 
-  <a class="indexterm" name="idp14137616"></a>
+  <a class="indexterm" name="idp14232160"></a>
 </div>
 </div>
 <div class="navfooter">

@@ -30,30 +30,33 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="flapping"></a>7.8. <a name="state_flapping"></a>Detection and Handling of State Flapping</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.8.1. <a href="flapping.html#idp13676816">Introduction</a></span></dt>
-<dt><span class="section">7.8.2. <a href="flapping.html#idp13678320">How Flap Detection Works</a></span></dt>
-<dt><span class="section">7.8.3. <a href="flapping.html#idp13678448">Example</a></span></dt>
-<dt><span class="section">7.8.4. <a href="flapping.html#idp13687840">Flap Detection for Services</a></span></dt>
-<dt><span class="section">7.8.5. <a href="flapping.html#idp13708112">Flap Detection for Hosts</a></span></dt>
-<dt><span class="section">7.8.6. <a href="flapping.html#idp13713344">Flap Detection Thresholds</a></span></dt>
-<dt><span class="section">7.8.7. <a href="flapping.html#idp13737920">States Used For Flap Detection</a></span></dt>
-<dt><span class="section">7.8.8. <a href="flapping.html#idp13740336">Flap Handling</a></span></dt>
-<dt><span class="section">7.8.9. <a href="flapping.html#idp13752288">Enabling Flap Detection</a></span></dt>
+<dt><span class="section">7.8.1. <a href="flapping.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.8.2. <a href="flapping.html#howitworks">How Flap Detection Works</a></span></dt>
+<dt><span class="section">7.8.3. <a href="flapping.html#example">Example</a></span></dt>
+<dt><span class="section">7.8.4. <a href="flapping.html#detectionservices">Flap Detection for Services</a></span></dt>
+<dt><span class="section">7.8.5. <a href="flapping.html#detectionhosts">Flap Detection for Hosts</a></span></dt>
+<dt><span class="section">7.8.6. <a href="flapping.html#thresholds">Flap Detection Thresholds</a></span></dt>
+<dt><span class="section">7.8.7. <a href="flapping.html#statesused">States Used For Flap Detection</a></span></dt>
+<dt><span class="section">7.8.8. <a href="flapping.html#handling">Flap Handling</a></span></dt>
+<dt><span class="section">7.8.9. <a href="flapping.html#enable">Enabling Flap Detection</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.8.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13676816"></a>7.8.1. Introduction</h3></div></div></div>
+<a name="introduction"></a>7.8.1. Introduction</h3></div></div></div>
+	  
 
   <p>Icinga supports optional detection of hosts and services that are "flapping". Flapping occurs when a service or
   host changes state too frequently, resulting in a storm of problem and recovery notifications. Flapping can be indicative of
   configuration problems (i.e. thresholds set too low), troublesome services, or real network problems.</p>
 
   </div>
-<div class="section" title="7.8.2. How Flap Detection Works">
+
+  <div class="section" title="7.8.2. How Flap Detection Works">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13678320"></a>7.8.2. How Flap Detection Works</h3></div></div></div>
+<a name="howitworks"></a>7.8.2. How Flap Detection Works</h3></div></div></div>
+	  
 
   <p>Before we get into this, it is time to say that flapping detection has been a little difficult to implement. How exactly
   does one determine what "too frequently" means in regards to state changes for a particular host or service? When Ethan Galstad
@@ -87,9 +90,11 @@
   <span class="emphasis"><em>low</em></span> flapping threshold (assuming that is was previously flapping).</p>
 
   </div>
-<div class="section" title="7.8.3. Example">
+
+  <div class="section" title="7.8.3. Example">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13678448"></a>7.8.3. Example</h3></div></div></div>
+<a name="example"></a>7.8.3. Example</h3></div></div></div>
+	  
 
   <p>Let's describe in more detail how flap detection works with services...</p>
 
@@ -144,9 +149,11 @@
   either not currently flapping or it is still flapping.</p>
 
   </div>
-<div class="section" title="7.8.4. Flap Detection for Services">
+
+  <div class="section" title="7.8.4. Flap Detection for Services">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13687840"></a>7.8.4. Flap Detection for Services</h3></div></div></div>
+<a name="detectionservices"></a>7.8.4. Flap Detection for Services</h3></div></div></div>
+	  
 
   <p>Icinga checks to see if a service is flapping whenever the service is checked (either actively or
   passively).</p>
@@ -154,9 +161,11 @@
   <p>The flap detection logic for services works as described in the example above.</p>
 
   </div>
-<div class="section" title="7.8.5. Flap Detection for Hosts">
+
+  <div class="section" title="7.8.5. Flap Detection for Hosts">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13708112"></a>7.8.5. Flap Detection for Hosts</h3></div></div></div>
+<a name="detectionhosts"></a>7.8.5. Flap Detection for Hosts</h3></div></div></div>
+	  
 
   <p>Host flap detection works in a similiar manner to service flap detection, with one important difference: Icinga
   will attempt to check to see if a host is flapping whenever:</p>
@@ -180,9 +189,11 @@
   there you have it.</p>
 
   </div>
-<div class="section" title="7.8.6. Flap Detection Thresholds">
+
+  <div class="section" title="7.8.6. Flap Detection Thresholds">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13713344"></a>7.8.6. Flap Detection Thresholds</h3></div></div></div>
+<a name="thresholds"></a>7.8.6. Flap Detection Thresholds</h3></div></div></div>
+	  
 
   <p>Icinga uses several variables to determine the percent state change thresholds is uses for flap detection. For both
   hosts and services, there are <span class="emphasis"><em>global</em></span> high and low thresholds and <span class="emphasis"><em>host-</em></span> or
@@ -276,9 +287,11 @@
   </div>
 
   </div>
-<div class="section" title="7.8.7. States Used For Flap Detection">
+
+  <div class="section" title="7.8.7. States Used For Flap Detection">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13737920"></a>7.8.7. States Used For Flap Detection</h3></div></div></div>
+<a name="statesused"></a>7.8.7. States Used For Flap Detection</h3></div></div></div>
+	  
 
   <p>Normally Icinga will track the results of the last 21 checks of a host or service, regardless of the check result
   (host/service state), for use in the flap detection logic.</p>
@@ -297,9 +310,11 @@
 </table></div>
 
   </div>
-<div class="section" title="7.8.8. Flap Handling">
+
+  <div class="section" title="7.8.8. Flap Handling">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13740336"></a>7.8.8. Flap Handling</h3></div></div></div>
+<a name="handling"></a>7.8.8. Flap Handling</h3></div></div></div>
+	  
 
   <p>When a service or host is first detected as flapping, Icinga will:</p>
 
@@ -336,9 +351,11 @@
 </ol></div>
 
   </div>
-<div class="section" title="7.8.9. Enabling Flap Detection">
+
+  <div class="section" title="7.8.9. Enabling Flap Detection">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13752288"></a>7.8.9. Enabling Flap Detection</h3></div></div></div>
+<a name="enable"></a>7.8.9. Enabling Flap Detection</h3></div></div></div>
+	  
 
   <p>In order to enable the flap detection features in Icinga, you'll need to:</p>
 
@@ -355,7 +372,7 @@
 
   <p>If you would like to disable flap detection for just a few hosts or services, use the
   <span class="emphasis"><em>flap_detection_enabled</em></span> directive in the host and/or service definitions to do so.</p>
-  <a class="indexterm" name="idp13758864"></a>
+  <a class="indexterm" name="idp13828752"></a>
 </div>
 </div>
 <div class="navfooter">

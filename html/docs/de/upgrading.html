@@ -30,14 +30,33 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="upgrading"></a>2.9. Icinga aktualisieren</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.9.1. <a href="upgrading.html#idp895216">Aktualisierung von Icinga</a></span></dt>
-<dt><span class="section">2.9.2. <a href="upgrading.html#idp906944">Upgrade von Nagios 3.x</a></span></dt>
-<dt><span class="section">2.9.3. <a href="upgrading.html#idp907664">Upgrade von Nagios 2.x</a></span></dt>
-<dt><span class="section">2.9.4. <a href="upgrading.html#idp978544">Aktualisierung einer RPM-Installation</a></span></dt>
+<dt><span class="section">2.9.1. <a href="upgrading.html#upgradepreviousrelease">Aktualisierung von Icinga</a></span></dt>
+<dt><span class="section">2.9.2. <a href="upgrading.html#upgradenagios3x">Upgrade von Nagios 3.x</a></span></dt>
+<dt><span class="section">2.9.3. <a href="upgrading.html#upgradenagios2x">Upgrade von Nagios 2.x</a></span></dt>
+<dt><span class="section">2.9.4. <a href="upgrading.html#ipgradefromrpm">Aktualisierung einer RPM-Installation</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idp890592"></a>
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top"> 
+    <p>Seit 1.8 finden Sie neue Konfigurationsoptionen, die in einer neuen Version hinzugefügt wurden, in <code class="filename">sample-config/updates/</code>
+          sowie <code class="filename">module/idoutils/config/updates</code>, z.B. <code class="filename">cgi.cfg_added_1.7_to_1.8.cfg</code>.
+    </p>
+
+    <p><span class="color"><font color="red">Der Core wird unbekannte Macros nicht mehr "as is" belassen, sondern diese entfernen und eine Warnung ins Log
+    schreiben.</font></span> Entweder korrigieren Sie die Konfiguration (falsche Macros, Dollarzeichen mit einem weiteren absichern) oder Sie setzen keep_unknown_macros=1
+    in der icinga.cfg Datei um zum alten Verhalten zurueckzukehren.
+    </p>
+
+    <p>Please have a look at the section "CHANGES" in the <code class="filename">changelog</code> as well.</p>
+  </td></tr>
+</table></div>
+
+  <a class="indexterm" name="idp885232"></a>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -62,7 +81,7 @@
 
   <div class="section" title="2.9.1. Aktualisierung von Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp895216"></a>2.9.1. <a name="upgrading-icinga"></a>Aktualisierung von Icinga</h3></div></div></div>
+<a name="upgradepreviousrelease"></a>2.9.1. Aktualisierung von Icinga</h3></div></div></div>
     
 
     <p>Sobald neuere Versionen von Icinga herauskommen, sollten Sie dringend über eine Aktualisierung nachdenken. Neuere Ausgaben
@@ -102,12 +121,12 @@
 
     <p>Das war's - Sie sind fertig!</p>
 
-    <a class="indexterm" name="idp905520"></a>
+    <a class="indexterm" name="idp899904"></a>
   </div>
 
   <div class="section" title="2.9.2. Upgrade von Nagios 3.x">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp906944"></a>2.9.2. <a name="upgrading-nagios3x"></a>Upgrade von Nagios 3.x</h3></div></div></div>
+<a name="upgradenagios3x"></a>2.9.2. Upgrade von Nagios 3.x</h3></div></div></div>
     
 
     <p>Icinga ist aus Nagios 3.x hervorgegangen, so dass die Aktualisierung problemlos sein sollte.</p>
@@ -254,16 +273,16 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp955184"></a>
+    <a class="indexterm" name="idp949488"></a>
 
-    <a class="indexterm" name="idp956880"></a>
+    <a class="indexterm" name="idp951184"></a>
 
-    <a class="indexterm" name="idp958560"></a>
+    <a class="indexterm" name="idp952864"></a>
   </div>
 
   <div class="section" title="2.9.3. Upgrade von Nagios 2.x">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp907664"></a>2.9.3. <a name="upgrading-nagios2x"></a>Upgrade von Nagios 2.x</h3></div></div></div>
+<a name="upgradenagios2x"></a>2.9.3. Upgrade von Nagios 2.x</h3></div></div></div>
     
 
     <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.8 zu aktualisieren. Die Aktualisierung
@@ -312,7 +331,7 @@
 
   <div class="section" title="2.9.4. Aktualisierung einer RPM-Installation">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp978544"></a>2.9.4. <a name="upgrading-rpm"></a>Aktualisierung einer RPM-Installation</h3></div></div></div>
+<a name="ipgradefromrpm"></a>2.9.4. Aktualisierung einer RPM-Installation</h3></div></div></div>
     
 
     <p>Wenn Sie momentan eine RPM- oder Debian/Ubuntu-APT-paketbasierte Nagios-Installation haben und nun den
@@ -377,7 +396,7 @@
     installieren. Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder
     APT-Paket entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-    <a class="indexterm" name="idp999264"></a>
+    <a class="indexterm" name="idp995824"></a>
   </div>
 </div>
 <div class="navfooter">

@@ -29,275 +29,321 @@
 <div class="section" title="2.3. Icinga Quickstart">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="quickstart-icinga"></a>2.3. Icinga Quickstart</h2></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">2.3.1. <a href="quickstart-icinga.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">2.3.2. <a href="quickstart-icinga.html#prerequisites">Prerequisites</a></span></dt>
+<dt><span class="section">2.3.3. <a href="quickstart-icinga.html#installpackages">Install packages</a></span></dt>
+<dt><span class="section">2.3.4. <a href="quickstart-icinga.html#createaccount">Create Account Information</a></span></dt>
+<dt><span class="section">2.3.5. <a href="quickstart-icinga.html#downloadicingaandplugins">Download Icinga and the Plugins</a></span></dt>
+<dt><span class="section">2.3.6. <a href="quickstart-icinga.html#compileinstall">Compile and install Icinga</a></span></dt>
+<dt><span class="section">2.3.7. <a href="quickstart-icinga.html#customiseconfig">Customise Configuration</a></span></dt>
+<dt><span class="section">2.3.8. <a href="quickstart-icinga.html#configclassicui">Configure the Classic Web Interface</a></span></dt>
+<dt><span class="section">2.3.9. <a href="quickstart-icinga.html#compileinstallplugins">Compile and Install the Nagios Plugins</a></span></dt>
+<dt><span class="section">2.3.10. <a href="quickstart-icinga.html#selinuxsettings">Adjusting the SELinux settings</a></span></dt>
+<dt><span class="section">2.3.11. <a href="quickstart-icinga.html#starticinga">Start Icinga</a></span></dt>
+<dt><span class="section">2.3.12. <a href="quickstart-icinga.html#loginclassicui">Login to the Classic Web Interface</a></span></dt>
+<dt><span class="section">2.3.13. <a href="quickstart-icinga.html#othermods">Other Modifications</a></span></dt>
+<dt><span class="section">2.3.14. <a href="quickstart-icinga.html#done">You're Done</a></span></dt>
+</dl></div>
   
 
-  <p><span class="bold"><strong><a name="introduction_quickstart_icinga"></a>Introduction</strong></span></p>
+  <div class="section" title="2.3.1. Introduction">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="introduction"></a>2.3.1. Introduction</h3></div></div></div>
+    
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Instead of installing Icinga from scratch you may want to use a package which might be available for your OS. Please take a
-    look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.</p>
+      <p>Instead of installing Icinga from scratch you may want to use a package which might be available for your OS. Please take
+      a look at the <a class="link" href="https://www.icinga.org/download/packages" target="_top">table of packages</a>.</p>
 
-    <p>Please keep in mind that the upstream packages might be outdated so using backport packages is a way to get a recent version.
-    Please take a look at wiki articles for detailed descriptions:</p>
+      <p>Please keep in mind that the upstream packages might be outdated so using backport packages is a way to get a recent version.
+      Please take a look at wiki articles for detailed descriptions:</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+      <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+Debian" target="_top">Debian</a></p>
-      </li>
+          <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+Debian" target="_top">Debian</a></p>
+        </li>
 <li class="listitem">
-        <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+Ubuntu" target="_top">Ubuntu</a></p>
-      </li>
+          <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+Ubuntu" target="_top">Ubuntu</a></p>
+        </li>
 <li class="listitem">
-        <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+RHEL" target="_top">RHEL/CentOS</a></p>
-      </li>
+          <p><a class="link" href="https://wiki.icinga.org/display/howtos/Setting+up+Icinga+with+IDOUtils+on+RHEL" target="_top">RHEL/CentOS</a></p>
+        </li>
 </ul></div>
 
-    <p>If you are planning to install from source then please use the official release tarball.</p>
-  </td></tr>
+      <p>If you are planning to install from source then please use the official release tarball.</p>
+    </td></tr>
 </table></div>
 
-  <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
 <th align="left">Important</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
-  </td></tr>
+      <p>Please don't use git snapshots unless you have an issue which might be solved in the current developer version.</p>
+    </td></tr>
 </table></div>
 
-  <p>This guide is intended to provide you with simple instructions on how to install Icinga from source (code) and have it
-  monitoring your local machine within 20 minutes.</p>
+    <p>This guide is intended to provide you with simple instructions on how to install Icinga from source (code) and have it
+    monitoring your local machine within 20 minutes.</p>
 
-  <p>No advanced installation options are discussed here - just the basics that will work for most of the users who want to get
-  started.</p>
+    <p>No advanced installation options are discussed here - just the basics that will work for most of the users who want to get
+    started.</p>
 
-  <p>This guide will give you examples for currently three different Linux distributions: <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>, <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a> and <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>. Similar distributions may work as well. That should include <a class="link" href="http://www.redhat.com/" target="_top">RedHat</a>, <a class="link" href="http://www.centos.org/" target="_top">CentOS</a>, <a class="link" href="http://www.debian.org/" target="_top">Debian</a> and <a class="link" href="http://www.novell.com/products/server/" target="_top">SLES</a>.</p>
+    <p>This guide will give you examples for currently three different Linux distributions: <a class="link" href="http://fedoraproject.org/" target="_top">Fedora</a>, <a class="link" href="http://www.ubuntu.com/" target="_top">Ubuntu</a> and <a class="link" href="http://www.opensuse.org/" target="_top">openSuSE</a>. Similar distributions may work as well. That should include <a class="link" href="http://www.redhat.com/" target="_top">RedHat</a>, <a class="link" href="http://www.centos.org/" target="_top">CentOS</a>, <a class="link" href="http://www.debian.org/" target="_top">Debian</a> and <a class="link" href="http://www.novell.com/products/server/" target="_top">SLES</a>.</p>
 
-  <p>For instructions on how to install Icinga on FreeBSD please read <a class="link" href="quickstart-icinga-freebsd.html" title="2.4. Icinga Quickstart FreeBSD">Icinga on FreeBSD</a> instead.</p>
+    <p>For instructions on how to install Icinga on FreeBSD please read <a class="link" href="quickstart-icinga-freebsd.html" title="2.4. Icinga Quickstart FreeBSD">Icinga on FreeBSD</a> instead.</p>
 
-  <p>Other distributions may inherit from these examples.</p>
+    <p>Other distributions may inherit from these examples.</p>
 
-  <p><span class="bold"><strong>If you are planning to use a database with IDOUtils, or wish to use the new web interface then please
-  read <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">Icinga with IDOUtils</a> instead!</strong></span></p>
+    <div class="important" title="Important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="../images/important.png"></td>
+<th align="left">Important</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>If you are planning to use a database with IDOUtils, or wish to use the new web interface then please read <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">Icinga with IDOUtils</a> instead!</p>
+    </td></tr>
+</table></div>
 
-  <p><span class="bold"><strong>What You'll End Up With</strong></span></p>
+    <p><span class="bold"><strong>What You'll End Up With</strong></span></p>
 
-  <p>If you follow these instructions, here's what you'll end up with:</p>
+    <p>If you follow these instructions, here's what you'll end up with:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>Icinga and the plugins will be installed underneath /usr/local/icinga</p>
-    </li>
+        <p>Icinga and the plugins will be installed underneath /usr/local/icinga</p>
+      </li>
 <li class="listitem">
-      <p>Icinga will be configured to monitor a few aspects of your local system (CPU load, disk usage, etc.)</p>
-    </li>
+        <p>Icinga will be configured to monitor a few aspects of your local system (CPU load, disk usage, etc.)</p>
+      </li>
 <li class="listitem">
-      <p>The Icinga classic web interface will be accessible at <code class="uri">http://localhost/icinga/</code> or
-      <code class="uri">http://yourdomain.com/icinga</code></p>
-    </li>
+        <p>The Icinga classic web interface will be accessible at <code class="uri">http://localhost/icinga/</code> or
+        <code class="uri">http://yourdomain.com/icinga</code></p>
+      </li>
+</ul></div>
+  </div>
+
+  <div class="section" title="2.3.2. Prerequisites">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="prerequisites"></a>2.3.2. Prerequisites</h3></div></div></div>
+    
+
+    <p>During portions of the installation you'll need to have <span class="bold"><strong>root</strong></span> access to your machine.</p>
+
+    <p>Make sure you've installed the following packages on your system before continuing.</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p><a class="link" href="http://www.apache.org" target="_top">Apache</a></p>
+      </li>
+<li class="listitem">
+        <p>GCC compiler</p>
+      </li>
+<li class="listitem">
+        <p>C/C++ development libraries</p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="http://www.boutell.com/gd/" target="_top">GD</a> development libraries</p>
+      </li>
 </ul></div>
 
-  <p><span class="bold"><strong>Prerequisites</strong></span></p>
+    <p><span class="bold"><strong>Optional</strong></span></p>
 
-  <p>During portions of the installation you'll need to have <span class="bold"><strong>root</strong></span> access to your machine.</p>
+    <p>At one time or another you may need to use SNMP-based checks so it is a good idea to install the required packages now. Otherwise
+    some plugins are not compiled i.e. not available when you need them and it would require a recompile of the plugins.</p>
+  </div>
 
-  <p>Make sure you've installed the following packages on your system before continuing.</p>
+  <div class="section" title="2.3.3. Install packages">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="installpackages"></a>2.3.3. Install packages</h3></div></div></div>
+    
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-      <p><a class="link" href="http://www.apache.org" target="_top">Apache</a></p>
-    </li>
-<li class="listitem">
-      <p>GCC compiler</p>
-    </li>
-<li class="listitem">
-      <p>C/C++ development libraries</p>
-    </li>
-<li class="listitem">
-      <p><a class="link" href="http://www.boutell.com/gd/" target="_top">GD</a> development libraries</p>
-    </li>
-</ul></div>
+    <p>You can install these packages by running the following commands (as root or using <code class="filename">sudo</code>).</p>
 
-  <p><span class="bold"><strong>Optional</strong></span></p>
-
-  <p>At one time or another you may need to use SNMP-based checks so it is a good idea to install the required packages now. Otherwise
-  some plugins are not compiled i.e. not available when you need them and it would require a recompile of the plugins.</p>
-
-  <p><span class="bold"><strong>Install packages</strong></span></p>
-
-  <p>You can install these packages by running the following commands (as root or using <code class="filename">sudo</code>).</p>
-
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Unfortunately sometimes the names of packages change between different releases of the same distribution so if you get a message
-    that one of the packages cannot be found then please use the search option of your package manager to get the new name: </p>
+      <p>Unfortunately sometimes the names of packages change between different releases of the same distribution so if you get a message
+      that one of the packages cannot be found then please use the search option of your package manager to get the new name: </p>
 <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-          <p><code class="code">yum search &lt;package name&gt;</code> (<span class="emphasis"><em>Fedora/RHEL/CentOS</em></span>)</p>
-        </li>
+            <p><code class="code">yum search &lt;package name&gt;</code> (<span class="emphasis"><em>Fedora/RHEL/CentOS</em></span>)</p>
+          </li>
 <li class="listitem">
-          <p><code class="code">apt-cache search &lt;package name&gt;</code> (<span class="emphasis"><em>Debian/Ubuntu</em></span>)</p>
-        </li>
+            <p><code class="code">apt-cache search &lt;package name&gt;</code> (<span class="emphasis"><em>Debian/Ubuntu</em></span>)</p>
+          </li>
 <li class="listitem">
-          <p><code class="code">zypper search &lt;package name&gt;</code> (<span class="emphasis"><em>openSuSE/SLES</em></span>)</p>
-        </li>
+            <p><code class="code">zypper search &lt;package name&gt;</code> (<span class="emphasis"><em>openSuSE/SLES</em></span>)</p>
+          </li>
 </ul></div>
-  </td></tr>
+    </td></tr>
 </table></div>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><span class="emphasis"><em>Fedora/RHEL/CentOS</em></span></p>
+        <p><span class="emphasis"><em>Fedora/RHEL/CentOS</em></span></p>
 
-      <pre class="programlisting"> #&gt; yum install httpd gcc glibc glibc-common gd gd-devel
+        <pre class="programlisting"> #&gt; yum install httpd gcc glibc glibc-common gd gd-devel
  #&gt; yum install libjpeg libjpeg-devel libpng libpng-devel
  #&gt; yum install net-snmp net-snmp-devel net-snmp-utils</pre>
 
-      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>You may have to use libjpeg-turbo and libjpeg-turbo-devel instead</p>
-      </td></tr>
+          <p>You may have to use libjpeg-turbo and libjpeg-turbo-devel instead</p>
+        </td></tr>
 </table></div>
-    </li>
+      </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
+        <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
 
-      <pre class="programlisting"> #&gt; apt-get install apache2 build-essential libgd2-xpm-dev
+        <pre class="programlisting"> #&gt; apt-get install apache2 build-essential libgd2-xpm-dev
  #&gt; apt-get install libjpeg62 libjpeg62-dev libpng12 libpng12-dev
  #&gt; apt-get install snmp libsnmp5-dev</pre>
 
-      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>The numbers &lt;62/12&gt; might differ, depending on your distribution</p>
-      </td></tr>
+          <p>The numbers &lt;62/12&gt; might differ, depending on your distribution</p>
+        </td></tr>
 </table></div>
 
-      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Starting with Debian 6.0 / Ubuntu 10.10 the package is called libpng-12-0, the name of the dev-package hasn't
-        changed.</p>
-      </td></tr>
+          <p>Starting with Debian 6.0 / Ubuntu 10.10 the package is called libpng-12-0, the name of the dev-package hasn't
+          changed.</p>
+        </td></tr>
 </table></div>
-    </li>
+      </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>openSuSE/SLES</em></span></p>
+        <p><span class="emphasis"><em>openSuSE/SLES</em></span></p>
 
-      <p>Please use YaST to install at least the packages gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel and, optionally,
-      net-snmp, net-snmp-devel and perl-Net-SNMP.</p>
+        <p>Please use YaST to install at least the packages gd, gd-devel, libjpeg, libjpeg-devel, libpng, libpng-devel and, optionally,
+        net-snmp, net-snmp-devel and perl-Net-SNMP.</p>
 
-      <p>Using zypper should work as well:</p>
+        <p>Using zypper should work as well:</p>
 
-      <pre class="programlisting"> #&gt; zypper install gd gd-devel libjpeg libjpeg-devel libpng libpng-devel
+        <pre class="programlisting"> #&gt; zypper install gd gd-devel libjpeg libjpeg-devel libpng libpng-devel
  #&gt; zypper install net-snmp net-snmp-devel perl-Net-SNMP</pre>
 
-      <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-        <p>Depending on the software selection during the installation of the OS you may need to install additional packages (i.e.
-        apache2, gcc). The devel packages might be placed on the SDK DVDs.</p>
-      </td></tr>
+          <p>Depending on the software selection during the installation of the OS you may need to install additional packages (i.e.
+          apache2, gcc). The devel packages might be placed on the SDK DVDs.</p>
+        </td></tr>
 </table></div>
-    </li>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Create Account Information</strong></span></p>
+  <div class="section" title="2.3.4. Create Account Information">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="createaccount"></a>2.3.4. Create Account Information</h3></div></div></div>
+    
 
-  <p>Become the root user.</p>
+    <p>Become the root user.</p>
 
-  <pre class="programlisting"> $&gt; su -l</pre>
+    <pre class="programlisting"> $&gt; su -l</pre>
 
-  <p>Create a new <span class="emphasis"><em>icinga</em></span> user account and give it a password:</p>
+    <p>Create a new <span class="emphasis"><em>icinga</em></span> user account and give it a password:</p>
 
-  <pre class="programlisting"> #&gt; /usr/sbin/useradd -m icinga 
+    <pre class="programlisting"> #&gt; /usr/sbin/useradd -m icinga 
  #&gt; passwd icinga  </pre>
 
-  <p>On some distributions you'll need to add the group in a single step:</p>
+    <p>On some distributions you'll need to add the group in a single step:</p>
 
-  <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga</pre>
+    <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga</pre>
 
-  <p>For sending commands from the classic web interface to Icinga, you'll need to create a new group icinga-cmd. Add the webuser
-  and the Icinga user to this group:</p>
+    <p>For sending commands from the classic web interface to Icinga, you'll need to create a new group icinga-cmd. Add the
+    webuser and the Icinga user to this group:</p>
 
-  <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga-cmd
+    <pre class="programlisting"> #&gt; /usr/sbin/groupadd icinga-cmd
  #&gt; /usr/sbin/usermod -a -G icinga-cmd icinga
  #&gt; /usr/sbin/usermod -a -G icinga-cmd www-data</pre>
 
-  <p>(or www, wwwrun, apache, depending on the distribution)</p>
+    <p>(or www, wwwrun, apache, depending on the distribution)</p>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Some usermod-versions (e.g. in OpenSuSE 11 and SLES 11, resp.) are lacking the option -a. In this case please omit the option
-    -a.</p>
-  </td></tr>
+      <p>Some usermod-versions (e.g. in OpenSuSE 11 and SLES 11, resp.) are lacking the option -a. In this case please omit the option
+      -a.</p>
+    </td></tr>
 </table></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Solaris only supports groupnames with max. 8 characters, please use icingcmd instead of icinga-cmd.</p>
-  </td></tr>
+      <p>Solaris only supports groupnames with max. 8 characters, please use icingcmd instead of icinga-cmd.</p>
+    </td></tr>
 </table></div>
+  </div>
 
-  <p><span class="bold"><strong>Download Icinga and the Plugins</strong></span></p>
+  <div class="section" title="2.3.5. Download Icinga and the Plugins">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="downloadicingaandplugins"></a>2.3.5. Download Icinga and the Plugins</h3></div></div></div>
+    
 
-  <p>Change to your local source directory i.e. /usr/src</p>
+    <p>Change to your local source directory i.e. /usr/src</p>
 
-  <pre class="programlisting"> #&gt; cd /usr/src</pre>
+    <pre class="programlisting"> #&gt; cd /usr/src</pre>
 
-  <p>Get the current source from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
+    <p>Get the current source from the <a class="link" href="http://www.icinga.org/" target="_top">Icinga Website</a>.</p>
 
-  <p>Don't forget to download the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a>.</p>
+    <p>Don't forget to download the <a class="link" href="http://www.nagiosplugins.org/" target="_top">Nagios Plugins</a>.</p>
+  </div>
 
-  <p><span class="bold"><strong>Compile and install Icinga</strong></span></p>
+  <div class="section" title="2.3.6. Compile and install Icinga">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="compileinstall"></a>2.3.6. Compile and install Icinga</h3></div></div></div>
+    
 
-  <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
+    <p>Extract the Icinga source code tarball (or change directory to the GIT snapshot)</p>
 
-  <pre class="programlisting"> #&gt; cd /usr/src/
+    <pre class="programlisting"> #&gt; cd /usr/src/
  #&gt; tar xvzf icinga-1.8.tar.gz
  #&gt; cd icinga-1.8</pre>
 
-  <p>Run the Icinga configure script. You will get help by using the --help flag.</p>
+    <p>Run the Icinga configure script. You will get help by using the --help flag.</p>
 
-  <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd</pre>
+    <pre class="programlisting"> #&gt; ./configure --with-command-group=icinga-cmd</pre>
 
-  <p>Compile the Icinga source code. To see available options, only use "make".</p>
+    <p>Compile the Icinga source code. To see available options, only use "make".</p>
 
-  <pre class="programlisting"> #&gt; make all</pre>
+    <pre class="programlisting"> #&gt; make all</pre>
 
-  <p>Install binaries, init script, sample config files, some eventhandlers, and set permissions on the external command directory.
-  </p>
+    <p>Install binaries, init script, sample config files, some eventhandlers, and set permissions on the external command directory.
+    </p>
 <pre class="programlisting"> #&gt; make install
  #&gt; make install-init
  #&gt; make install-config
@@ -307,209 +353,242 @@
 <pre class="programlisting"> #&gt; make fullinstall
  #&gt; make install-config</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
-    </code>anymore to avoid accidently overwriting of your config files.</p>
-  </td></tr>
+      <p>Starting with Icinga 1.5.0 <code class="literal">make install-config</code> is NOT included in <code class="literal">make fullinstall
+      </code>anymore to avoid accidently overwriting of your config files.</p>
+    </td></tr>
 </table></div>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Starting with Icinga 1.7.0 <code class="literal">make install-eventhandlers</code> will install some event handler routines. To
-    prevent undesired behaviour it is only included when you use <code class="literal">make fullinstall</code>.</p>
-  </td></tr>
+      <p>Starting with Icinga 1.7.0 <code class="literal">make install-eventhandlers</code> will install some event handler routines. To
+      prevent undesired behaviour it is only included when you use <code class="literal">make fullinstall</code>.</p>
+    </td></tr>
 </table></div>
 
-  <p>Don't start Icinga yet - there's still more that needs to be done...</p>
+    <p>Don't start Icinga yet - there's still more that needs to be done...</p>
+  </div>
 
-  <p><span class="bold"><strong>Customise Configuration</strong></span></p>
+  <div class="section" title="2.3.7. Customise Configuration">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="customiseconfig"></a>2.3.7. Customise Configuration</h3></div></div></div>
+    
 
-  <p>Sample configuration files have been installed by using </p>
+    <p>Sample configuration files have been installed by using </p>
 <pre class="programlisting"> #&gt; make install-config</pre>
 <p>into
-  /usr/local/icinga/etc/. You'll need to make just one change before you proceed...</p>
+    /usr/local/icinga/etc/. You'll need to make just one change before you proceed...</p>
 
-  <p>Edit the <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span> config file with your favourite editor and change the email
-  address associated with the <span class="emphasis"><em>icingaadmin</em></span> contact definition to the address you'd like to use for receiving
-  alerts.</p>
+    <p>Edit the <span class="emphasis"><em>/usr/local/icinga/etc/objects/contacts.cfg</em></span> config file with your favourite editor and change the
+    email address associated with the <span class="emphasis"><em>icingaadmin</em></span> contact definition to the address you'd like to use for receiving
+    alerts.</p>
 
-  <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
+    <pre class="programlisting"> #&gt; vi /usr/local/icinga/etc/objects/contacts.cfg</pre>
+  </div>
 
-  <p><span class="bold"><strong>Configure the Classic Web Interface</strong></span></p>
+  <div class="section" title="2.3.8. Configure the Classic Web Interface">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="configclassicui"></a>2.3.8. Configure the Classic Web Interface</h3></div></div></div>
+    
 
-  <p>Icinga ships with the Classic Web Interface ("the CGIs") which can be installed via</p>
+    <p>Icinga ships with the Classic Web Interface ("the CGIs") which can be installed via</p>
 
-  <pre class="programlisting"> #&gt; make cgis
+    <pre class="programlisting"> #&gt; make cgis
  #&gt; make install-cgis
  #&gt; make install-html</pre>
 
-  <p>If you are interested in the new Icinga Web, please refer to <a class="link" href="icinga-web-scratch.html" title="6.4. Installation of the Icinga-Web Frontend">Install Icinga Web
-  Interface</a>.</p>
+    <p>If you are interested in the new Icinga Web, please refer to <a class="link" href="icinga-web-scratch.html" title="6.4. Installation of the Icinga-Web Frontend">Install Icinga Web
+    Interface</a>.</p>
 
-  <p>Install the Icinga Classic web config file in the Apache conf.d directory.</p>
+    <p>Install the Icinga Classic web config file in the Apache conf.d directory.</p>
 
-  <pre class="programlisting"> #&gt; make install-webconf</pre>
+    <pre class="programlisting"> #&gt; make install-webconf</pre>
 
-  <p>Create an <span class="emphasis"><em>icingaadmin</em></span> account for logging into the Icinga classic web interface. If you want to change it
-  later, use the same command. Remember the password you assign to this account - you'll need it later.</p>
+    <p>Create an <span class="emphasis"><em>icingaadmin</em></span> account for logging into the Icinga classic web interface. If you want to change it
+    later, use the same command. Remember the password you assign to this account - you'll need it later.</p>
 
-  <pre class="programlisting"> #&gt; htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
+    <pre class="programlisting"> #&gt; htpasswd -c /usr/local/icinga/etc/htpasswd.users icingaadmin</pre>
 
-  <p>If you want to change it later or want to add another user, use the following command:</p>
+    <p>If you want to change it later or want to add another user, use the following command:</p>
 
-  <pre class="programlisting"> #&gt; htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
+    <pre class="programlisting"> #&gt; htpasswd /usr/local/icinga/etc/htpasswd.users &lt;USERNAME&gt;</pre>
 
-  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Depending on your distribution/Apache-version you may have to use <span class="emphasis"><em>htpasswd2</em></span> instead.</p>
-  </td></tr>
+      <p>Depending on your distribution/Apache-version you may have to use <span class="emphasis"><em>htpasswd2</em></span> instead.</p>
+    </td></tr>
 </table></div>
 
-  <p>Reload/Restart Apache to make the new settings take effect.</p>
+    <p>Reload/Restart Apache to make the new settings take effect.</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><span class="emphasis"><em>Fedora/RHEL/CentOS</em></span></p>
+        <p><span class="emphasis"><em>Fedora/RHEL/CentOS</em></span></p>
 
-      <pre class="programlisting"> #&gt; service httpd restart</pre>
-    </li>
+        <pre class="programlisting"> #&gt; service httpd restart</pre>
+      </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>Debian/Ubuntu/openSuSE</em></span></p>
+        <p><span class="emphasis"><em>Debian/Ubuntu/openSuSE</em></span></p>
 
-      <pre class="programlisting"> #&gt; /etc/init.d/apache2 reload</pre>
-    </li>
+        <pre class="programlisting"> #&gt; /etc/init.d/apache2 reload</pre>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Compile and Install the Nagios Plugins</strong></span></p>
+  <div class="section" title="2.3.9. Compile and Install the Nagios Plugins">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="compileinstallplugins"></a>2.3.9. Compile and Install the Nagios Plugins</h3></div></div></div>
+    
 
-  <p>Extract the Nagios plugins source code tarball.</p>
+    <p>Extract the Nagios plugins source code tarball.</p>
 
-  <pre class="programlisting"> #&gt; cd /usr/src
+    <pre class="programlisting"> #&gt; cd /usr/src
  #&gt; tar xvzf nagios-plugins-1.4.16.tar.gz
  #&gt; cd nagios-plugins-1.4.16 </pre>
 
-  <p>Compile and install the plugins by changing install directory to /usr/local/icinga</p>
+    <p>Compile and install the plugins by changing install directory to /usr/local/icinga</p>
 
-  <pre class="programlisting"> #&gt; ./configure \
+    <pre class="programlisting"> #&gt; ./configure \
     --prefix=/usr/local/icinga --with-cgiurl=/icinga/cgi-bin --with-htmurl=/icinga \
     --with-nagios-user=icinga --with-nagios-group=icinga
  #&gt; make
  #&gt; make install</pre>
+  </div>
 
-  <p><span class="bold"><strong>Adjusting the SELinux settings</strong></span></p>
+  <div class="section" title="2.3.10. Adjusting the SELinux settings">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="selinuxsettings"></a>2.3.10. Adjusting the SELinux settings</h3></div></div></div>
+    
 
-  <p>RHEL and derived distributions like Fedora and CentOS are shipped with activated SELinux (Security
-  Enhanced Linux) running in "enforcing" mode. This may lead to "Internal Server Error" messages when you try to invoke the
-  Icinga-CGIs.</p>
+    <p>RHEL and derived distributions like Fedora and CentOS are shipped with activated SELinux (Security
+    Enhanced Linux) running in "enforcing" mode. This may lead to "Internal Server Error" messages when you try to invoke the
+    Icinga-CGIs.</p>
 
-  <p>Check if SELinux runs in enforcing mode</p>
+    <p>Check if SELinux runs in enforcing mode</p>
 
-  <pre class="screen"> #&gt; getenforce</pre>
+    <pre class="screen"> #&gt; getenforce</pre>
 
-  <p>Set SELinux in "permissive" mode</p>
+    <p>Set SELinux in "permissive" mode</p>
 
-  <pre class="screen"> #&gt; setenforce 0</pre>
+    <pre class="screen"> #&gt; setenforce 0</pre>
 
-  <p>To make this change permanent you have to adjust this setting in <span class="emphasis"><em>/etc/selinux/config</em></span> and restart the
-  system.</p>
+    <p>To make this change permanent you have to adjust this setting in <span class="emphasis"><em>/etc/selinux/config</em></span> and restart the
+    system.</p>
 
-  <p>Instead of deactivating SELinux or setting it into permissive mode you can use the following commands to run the CGIs in
-  enforcing/targeted mode:</p>
+    <p>Instead of deactivating SELinux or setting it into permissive mode you can use the following commands to run the CGIs in
+    enforcing/targeted mode:</p>
 
-  <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
+    <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
  #&gt; chcon -R -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/</pre>
 
-  <p>Visit the NagiosCommunity.org-Wiki at <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a> to
-  get information how to run the Icinga-CGIs in enforcing mode with a targeted policy.</p>
+    <p>Visit the NagiosCommunity.org-Wiki at <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>
+    to get information how to run the Icinga-CGIs in enforcing mode with a targeted policy.</p>
+  </div>
 
-  <p><span class="bold"><strong>Start Icinga</strong></span></p>
+  <div class="section" title="2.3.11. Start Icinga">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="starticinga"></a>2.3.11. Start Icinga</h3></div></div></div>
+    
 
-  <p>Add Icinga to the list of system services and have it automatically start when the system boots (make sure you have installed
-  the init script before).</p>
+    <p>Add Icinga to the list of system services and have it automatically start when the system boots (make sure you have
+    installed the init script before).</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p><span class="emphasis"><em>Fedora/RHEL/CentOS/openSuSE</em></span></p>
+        <p><span class="emphasis"><em>Fedora/RHEL/CentOS/openSuSE</em></span></p>
 
-      <pre class="programlisting"> #&gt; chkconfig --add icinga 
+        <pre class="programlisting"> #&gt; chkconfig --add icinga 
  #&gt; chkconfig icinga on </pre>
-    </li>
+      </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
+        <p><span class="emphasis"><em>Debian/Ubuntu</em></span></p>
 
-      <pre class="programlisting"> #&gt; update-rc.d icinga defaults</pre>
+        <pre class="programlisting"> #&gt; update-rc.d icinga defaults</pre>
 
-      <p>Verify the sample Icinga configuration files.</p>
+        <p>Verify the sample Icinga configuration files.</p>
 
-      <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
+        <pre class="programlisting"> #&gt; /usr/local/icinga/bin/icinga -v /usr/local/icinga/etc/icinga.cfg</pre>
 
-      <p>Instead of specifying the paths to binary and config file you can issue </p>
+        <p>Instead of specifying the paths to binary and config file you can issue </p>
 <pre class="programlisting"> #&gt; /etc/init.d/icinga show-errors</pre>
 <p>which
-      results in an OK message if everything is fine or several lines which show the location of the error(s).</p>
+        results in an OK message if everything is fine or several lines which show the location of the error(s).</p>
 
-      <p>If there are no errors, start Icinga.</p>
-    </li>
+        <p>If there are no errors, start Icinga.</p>
+      </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>Fedora/RHEL/CentOS/Ubuntu</em></span></p>
+        <p><span class="emphasis"><em>Fedora/RHEL/CentOS/Ubuntu</em></span></p>
 
-      <pre class="programlisting"> #&gt; service icinga start</pre>
-    </li>
+        <pre class="programlisting"> #&gt; service icinga start</pre>
+      </li>
 <li class="listitem">
-      <p><span class="emphasis"><em>Debian/openSuSE</em></span></p>
+        <p><span class="emphasis"><em>Debian/openSuSE</em></span></p>
 
-      <pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
-    </li>
+        <pre class="programlisting"> #&gt; /etc/init.d/icinga start</pre>
+      </li>
 </ul></div>
+  </div>
 
-  <p><span class="bold"><strong>Login to the Classic Web Interface</strong></span></p>
+  <div class="section" title="2.3.12. Login to the Classic Web Interface">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="loginclassicui"></a>2.3.12. Login to the Classic Web Interface</h3></div></div></div>
+    
 
-  <p>You should now be able to access the Icinga classic web interface at the URL below. You'll be prompted for the username (
-  <span class="emphasis"><em>icingaadmin</em></span>) and password you specified earlier.</p>
+    <p>You should now be able to access the Icinga classic web interface at the URL below. You'll be prompted for the username (
+    <span class="emphasis"><em>icingaadmin</em></span>) and password you specified earlier.</p>
 
-  <pre class="programlisting"> http://localhost/icinga/</pre>
+    <pre class="programlisting"> http://localhost/icinga/</pre>
 
-  <p>or</p>
+    <p>or</p>
 
-  <pre class="programlisting"> http://yourdomain.com/icinga/</pre>
+    <pre class="programlisting"> http://yourdomain.com/icinga/</pre>
 
-  <p>Click on the "Service Detail" navbar link to see details of what's being monitored on your local machine. It will take a few minutes
-  for Icinga to check all the services associated with your machine.</p>
+    <p>Click on the "Service Detail" navbar link to see details of what's being monitored on your local machine. It will take a few
+    minutes for Icinga to check all the services associated with your machine.</p>
+  </div>
 
-  <p><span class="bold"><strong>Other Modifications</strong></span></p>
+  <div class="section" title="2.3.13. Other Modifications">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="othermods"></a>2.3.13. Other Modifications</h3></div></div></div>
+    
 
-  <p>Make sure your system's firewall rules are configured to allow access to the web server if you want to access the Icinga
-  classic interface remotely.</p>
+    <p>Make sure your system's firewall rules are configured to allow access to the web server if you want to access the Icinga
+    classic interface remotely.</p>
 
-  <pre class="programlisting"> #&gt; iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</pre>
+    <pre class="programlisting"> #&gt; iptables -A INPUT -p tcp -m tcp --dport 80 -j ACCEPT</pre>
 
-  <p>Setting up your mail transfer agent (MTA) like exim, sendmail or postfix to allow Icinga sending notification emails won't be
-  explained here.</p>
+    <p>Setting up your mail transfer agent (MTA) like exim, sendmail or postfix to allow Icinga sending notification emails won't
+    be explained here.</p>
 
-  <p>Please refer to the <a class="link" href="http://www.nagioswiki.org/" target="_top">Nagios-Wiki</a> for more resources.</p>
+    <p>Please refer to the <a class="link" href="http://www.nagioswiki.org/" target="_top">Nagios-Wiki</a> for more resources.</p>
+  </div>
 
-  <p><span class="bold"><strong>You're Done</strong></span></p>
+  <div class="section" title="2.3.14. You're Done">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="done"></a>2.3.14. <a name="q_ic-done"></a>You're Done</h3></div></div></div>
+    
 
-  <p>Congratulations! You successfully installed Icinga. Your journey into monitoring has just begun.</p>
+    <p>Congratulations! You successfully installed Icinga. Your journey into monitoring has just begun.</p>
 
-  <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
-  Started"</a> about "Monitoring ..."</p>
+    <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
+    Started"</a> about "Monitoring ..."</p>
 
-  <a class="indexterm" name="idp305744"></a>
+    <a class="indexterm" name="idp317120"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>

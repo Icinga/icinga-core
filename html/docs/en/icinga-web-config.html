@@ -30,18 +30,18 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="icinga-web-config"></a>6.6. Configuration Overview of Icinga-Web</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">6.6.1. <a href="icinga-web-config.html#idp12120912">Where are my config files?</a></span></dt>
-<dt><span class="section">6.6.2. <a href="icinga-web-config.html#idp12126480">Index</a></span></dt>
-<dt><span class="section">6.6.3. <a href="icinga-web-config.html#idp12179184">Global Configuration Section</a></span></dt>
-<dt><span class="section">6.6.4. <a href="icinga-web-config.html#idp12300576">Troubleshooting</a></span></dt>
-<dt><span class="section">6.6.5. <a href="icinga-web-config.html#idp12307072">Module Configuration</a></span></dt>
-<dt><span class="section">6.6.6. <a href="icinga-web-config.html#idp12328512">Customised Configuration</a></span></dt>
+<dt><span class="section">6.6.1. <a href="icinga-web-config.html#configfilelocation">Where are my config files?</a></span></dt>
+<dt><span class="section">6.6.2. <a href="icinga-web-config.html#confogfileindex">Index</a></span></dt>
+<dt><span class="section">6.6.3. <a href="icinga-web-config.html#globalconfig">Global Configuration Section</a></span></dt>
+<dt><span class="section">6.6.4. <a href="icinga-web-config.html#troubleshooting">Troubleshooting</a></span></dt>
+<dt><span class="section">6.6.5. <a href="icinga-web-config.html#moduleconfig">Module Configuration</a></span></dt>
+<dt><span class="section">6.6.6. <a href="icinga-web-config.html#customconfig">Customised Configuration</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="6.6.1. Where are my config files?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12120912"></a>6.6.1. Where are my config files?</h3></div></div></div>
+<a name="configfilelocation"></a>6.6.1. Where are my config files?</h3></div></div></div>
     
 
     <p>Starting with Icinga 1.7 the location of some config files changed once again to ease maintenance for users, packagers, and
@@ -69,10 +69,10 @@ app/modules/AppKit/
 
   <div class="section" title="6.6.2. Index">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12126480"></a>6.6.2. Index</h3></div></div></div>
+<a name="confogfileindex"></a>6.6.2. Index</h3></div></div></div>
     
 
-    <table border="1" id="idp12127360">
+    <table border="1" id="idp12163872">
       <caption>Table 6.1. Configuration files</caption>
 
       <tr>
@@ -206,7 +206,7 @@ app/modules/AppKit/
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p><a class="link" href="icinga-web-config.html#configweb-globalconfig">Global Configuration Section</a></p>
+        <p><a class="link" href="icinga-web-config.html#globalconfig" title="6.6.3. Global Configuration Section">Global Configuration Section</a></p>
 
         <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
@@ -237,20 +237,20 @@ app/modules/AppKit/
         <p><a class="link" href="icinga-web-config.html#configweb-timezone">Change default Timezone</a></p>
       </li>
 <li class="listitem">
-        <p><a class="link" href="icinga-web-config.html#configweb-module">Module Configuration</a></p>
+        <p><a class="link" href="icinga-web-config.html#moduleconfig" title="6.6.5. Module Configuration">Module Configuration</a></p>
       </li>
 <li class="listitem">
         <p><a class="link" href="icinga-web-config.html#configweb-auth">Authentication</a></p>
       </li>
 <li class="listitem">
-        <p><a class="link" href="icinga-web-config.html#configweb-customconfig">Customised Configuration</a></p>
+        <p><a class="link" href="icinga-web-config.html#customconfig" title="6.6.6. Customised Configuration">Customised Configuration</a></p>
       </li>
 </ul></div>
   </div>
 
   <div class="section" title="6.6.3. Global Configuration Section">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12179184"></a>6.6.3. <a name="configweb-globalconfig"></a>Global Configuration Section</h3></div></div></div>
+<a name="globalconfig"></a>6.6.3. Global Configuration Section</h3></div></div></div>
     
 
     <p><span class="bold"><strong>app/config</strong></span></p>
@@ -828,7 +828,7 @@ app/modules/AppKit/
 
   <div class="section" title="6.6.4. Troubleshooting">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12300576"></a>6.6.4. Troubleshooting</h3></div></div></div>
+<a name="troubleshooting"></a>6.6.4. Troubleshooting</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
@@ -851,7 +851,7 @@ app/modules/AppKit/
 
   <div class="section" title="6.6.5. Module Configuration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12307072"></a>6.6.5. <a name="configweb-module"></a>Module Configuration</h3></div></div></div>
+<a name="moduleconfig"></a>6.6.5. Module Configuration</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -932,7 +932,7 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
   <div class="section" title="6.6.6. Customised Configuration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp12328512"></a>6.6.6. <a name="configweb-customconfig"></a>Customised Configuration</h3></div></div></div>
+<a name="customconfig"></a>6.6.6. Customised Configuration</h3></div></div></div>
     
 
     <p><span class="bold"><strong>Notes</strong></span></p>
@@ -966,17 +966,17 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
     <p>You need more information? Please have a look at our <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top">Development Wiki.</a></p>
 
-    <a class="indexterm" name="idp12337200"></a>
+    <a class="indexterm" name="idp12373712"></a>
 
-    <a class="indexterm" name="idp12338960"></a>
+    <a class="indexterm" name="idp12375104"></a>
 
-    <a class="indexterm" name="idp12340528"></a>
+    <a class="indexterm" name="idp12376800"></a>
 
-    <a class="indexterm" name="idp12342160"></a>
+    <a class="indexterm" name="idp12378288"></a>
 
-    <a class="indexterm" name="idp12343824"></a>
+    <a class="indexterm" name="idp12379680"></a>
 
-    <a class="indexterm" name="idp12345488"></a>
+    <a class="indexterm" name="idp12379808"></a>
   </div>
 </div>
 <div class="navfooter">

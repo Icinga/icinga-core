@@ -30,16 +30,17 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="dependencychecks"></a>7.20. <a name="dependency_checks"></a>Predictive Dependency Checks</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.20.1. <a href="dependencychecks.html#idp14328848">Introduction</a></span></dt>
-<dt><span class="section">7.20.2. <a href="dependencychecks.html#idp14331792">How Do Predictive Checks Work?</a></span></dt>
-<dt><span class="section">7.20.3. <a href="dependencychecks.html#idp14331920">Enabling Predictive Checks</a></span></dt>
-<dt><span class="section">7.20.4. <a href="dependencychecks.html#idp14350192">Cached Checks</a></span></dt>
+<dt><span class="section">7.20.1. <a href="dependencychecks.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.20.2. <a href="dependencychecks.html#howitworks">How Do Predictive Checks Work?</a></span></dt>
+<dt><span class="section">7.20.3. <a href="dependencychecks.html#enable">Enabling Predictive Checks</a></span></dt>
+<dt><span class="section">7.20.4. <a href="dependencychecks.html#cacheddependencychecks">Cached Checks</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.20.1. Introduction">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14328848"></a>7.20.1. Introduction</h3></div></div></div>
+<a name="introduction"></a>7.20.1. Introduction</h3></div></div></div>
+	  
 
   <p>Host and service <a class="link" href="dependencies.html" title="7.13. Host and Service Dependencies">dependencies</a> can be defined to allow you greater control over when
   checks are executed and when notifications are sent out. As dependencies are used to control basic aspects of the monitoring
@@ -50,9 +51,11 @@
   allow active checks of a host or service.</p>
 
   </div>
-<div class="section" title="7.20.2. How Do Predictive Checks Work?">
+
+  <div class="section" title="7.20.2. How Do Predictive Checks Work?">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14331792"></a>7.20.2. How Do Predictive Checks Work?</h3></div></div></div>
+<a name="howitworks"></a>7.20.2. How Do Predictive Checks Work?</h3></div></div></div>
+	  
 
   <p>The image below shows a basic diagram of hosts that are being monitored by Icinga, along with their parent/child
   relationships and dependencies.</p>
@@ -86,9 +89,11 @@
 </table></div>
 
   </div>
-<div class="section" title="7.20.3. Enabling Predictive Checks">
+
+  <div class="section" title="7.20.3. Enabling Predictive Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14331920"></a>7.20.3. Enabling Predictive Checks</h3></div></div></div>
+<a name="enable"></a>7.20.3. Enabling Predictive Checks</h3></div></div></div>
+	  
 
   <p>Predictive dependency checks involve rather little overhead, so I would recommend that you enable them. In most cases, the
   benefits of having accurate information for the dependency logic outweighs the extra overhead imposed by these checks.</p>
@@ -106,14 +111,16 @@
 </ul></div>
 
   </div>
-<div class="section" title="7.20.4. Cached Checks">
+
+  <div class="section" title="7.20.4. Cached Checks">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14350192"></a>7.20.4. Cached Checks</h3></div></div></div>
+<a name="cacheddependencychecks"></a>7.20.4. Cached Checks</h3></div></div></div>
+	  
 
   <p>Predictive dependency checks are on-demand checks and are therefore subject to the rules of <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">cached checks</a>. Cached checks can provide you with performance improvements by allowing
   Icinga to forgo running an actual host or service check if it can use a relatively recent check result instead. More
   information on cached checks can be found <a class="link" href="cachedchecks.html" title="7.21. Cached Checks">here</a>.</p>
-  <a class="indexterm" name="idp14352944"></a>
+  <a class="indexterm" name="idp14461648"></a>
 </div>
 </div>
 <div class="navfooter">

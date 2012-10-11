@@ -30,17 +30,17 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="int-tcpwrappers"></a>9.3. TCP-Wrapper-Integration</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">9.3.1. <a href="int-tcpwrappers.html#idp15470944">Einführung</a></span></dt>
-<dt><span class="section">9.3.2. <a href="int-tcpwrappers.html#idp15482992">Einen Service definieren</a></span></dt>
-<dt><span class="section">9.3.3. <a href="int-tcpwrappers.html#idp15493344">TCP-Wrapper konfigurieren</a></span></dt>
-<dt><span class="section">9.3.4. <a href="int-tcpwrappers.html#idp15498240">Das Script schreiben</a></span></dt>
-<dt><span class="section">9.3.5. <a href="int-tcpwrappers.html#idp15504304">Aufräumen</a></span></dt>
+<dt><span class="section">9.3.1. <a href="int-tcpwrappers.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">9.3.2. <a href="int-tcpwrappers.html#servicedefinitiontcpwrapper">Einen Service definieren</a></span></dt>
+<dt><span class="section">9.3.3. <a href="int-tcpwrappers.html#configtcpwrappers">TCP-Wrapper konfigurieren</a></span></dt>
+<dt><span class="section">9.3.4. <a href="int-tcpwrappers.html#tcpwrapperscript">Das Script schreiben</a></span></dt>
+<dt><span class="section">9.3.5. <a href="int-tcpwrappers.html#finish">Aufräumen</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="9.3.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15470944"></a>9.3.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>9.3.1. Einführung</h3></div></div></div>
     
 
     <div class="mediaobject"><img src="../images/tcpwrappers.png"></div>
@@ -75,7 +75,7 @@
 
   <div class="section" title="9.3.2. Einen Service definieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15482992"></a>9.3.2. Einen Service definieren</h3></div></div></div>
+<a name="servicedefinitiontcpwrapper"></a>9.3.2. Einen Service definieren</h3></div></div></div>
     
 
     <p>Wenn Sie es nicht bereits getan haben, erstellen Sie eine <a class="link" href="objectdefinitions.html#objectdefinitions-host">Host-Definition</a> für den
@@ -116,7 +116,7 @@
 
   <div class="section" title="9.3.3. TCP-Wrapper konfigurieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15493344"></a>9.3.3. TCP-Wrapper konfigurieren</h3></div></div></div>
+<a name="configtcpwrappers"></a>9.3.3. TCP-Wrapper konfigurieren</h3></div></div></div>
     
 
     <p>Nun müssen Sie die <span class="emphasis"><em>/etc/hosts.deny</em></span>-Datei auf <span class="emphasis"><em>firestorm</em></span> editieren. Damit die TCP-Wrapper
@@ -132,7 +132,7 @@
 
   <div class="section" title="9.3.4. Das Script schreiben">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15498240"></a>9.3.4. Das Script schreiben</h3></div></div></div>
+<a name="tcpwrapperscript"></a>9.3.4. Das Script schreiben</h3></div></div></div>
     
 
     <p>Als letztes müssen Sie das <span class="emphasis"><em>handle_tcp_wrapper</em></span>-Script auf <span class="emphasis"><em>firestorm</em></span> schreiben, das den
@@ -156,7 +156,7 @@
 
   <div class="section" title="9.3.5. Aufräumen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15504304"></a>9.3.5. Aufräumen</h3></div></div></div>
+<a name="finish"></a>9.3.5. Aufräumen</h3></div></div></div>
     
 
     <p>Sie haben nun alles konfiguriert, was Sie brauchen, so dass Sie nur noch den <span class="emphasis"><em>inetd</em></span>-Prozess auf
@@ -166,7 +166,7 @@
 
     <pre class="screen"> Denied sshd2-sdn-ar-002mnminnP321.dialsprint.net</pre>
 
-    <a class="indexterm" name="idp15507680"></a>
+    <a class="indexterm" name="idp15579536"></a>
   </div>
 </div>
 <div class="navfooter">

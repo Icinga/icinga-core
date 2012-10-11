@@ -30,20 +30,20 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="pluginapi"></a>11.1. Nagios Plugin API</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">11.1.1. <a href="pluginapi.html#idm123334208">Andere Ressourcen</a></span></dt>
-<dt><span class="section">11.1.2. <a href="pluginapi.html#idp15958304">Plugin-Überblick</a></span></dt>
-<dt><span class="section">11.1.3. <a href="pluginapi.html#idp15962528">Return-Code</a></span></dt>
-<dt><span class="section">11.1.4. <a href="pluginapi.html#idp15985664">Spezifikation der Plugin-Ausgabe(n)</a></span></dt>
-<dt><span class="section">11.1.5. <a href="pluginapi.html#idp15995152">Plugin-Beispielausgaben</a></span></dt>
-<dt><span class="section">11.1.6. <a href="pluginapi.html#idp16046720">Längenbeschränkungen von Plugin-Ausgaben</a></span></dt>
-<dt><span class="section">11.1.7. <a href="pluginapi.html#idp16049296">Beispiele</a></span></dt>
-<dt><span class="section">11.1.8. <a href="pluginapi.html#idp16051792">Perl-Plugins</a></span></dt>
+<dt><span class="section">11.1.1. <a href="pluginapi.html#otherresources">Andere Ressourcen</a></span></dt>
+<dt><span class="section">11.1.2. <a href="pluginapi.html#overview">Plugin-Überblick</a></span></dt>
+<dt><span class="section">11.1.3. <a href="pluginapi.html#returncode">Return-Code</a></span></dt>
+<dt><span class="section">11.1.4. <a href="pluginapi.html#outputspec">Spezifikation der Plugin-Ausgabe(n)</a></span></dt>
+<dt><span class="section">11.1.5. <a href="pluginapi.html#outputexamples">Plugin-Beispielausgaben</a></span></dt>
+<dt><span class="section">11.1.6. <a href="pluginapi.html#outputlengthrestrictions">Längenbeschränkungen von Plugin-Ausgaben</a></span></dt>
+<dt><span class="section">11.1.7. <a href="pluginapi.html#examples">Beispiele</a></span></dt>
+<dt><span class="section">11.1.8. <a href="pluginapi.html#perlplugins">Perl-Plugins</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="11.1.1. Andere Ressourcen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idm123334208"></a>11.1.1. Andere Ressourcen</h3></div></div></div>
+<a name="otherresources"></a>11.1.1. Andere Ressourcen</h3></div></div></div>
     
 
     <p>Wenn Sie planen, Ihren eigenen Plugins für Icinga zu schreiben, dann besuchen Sie folgende Ressourcen:</p>
@@ -60,7 +60,7 @@
 
   <div class="section" title="11.1.2. Plugin-Überblick">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15958304"></a>11.1.2. Plugin-Überblick</h3></div></div></div>
+<a name="overview"></a>11.1.2. Plugin-Überblick</h3></div></div></div>
     
 
     <p>Scripts und ausführbare Programme müssen (mindestens) zwei Dinge tun, um als Icinga-Plugins zu funktionieren:</p>
@@ -81,7 +81,7 @@
 
   <div class="section" title="11.1.3. Return-Code">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15962528"></a>11.1.3. Return-Code</h3></div></div></div>
+<a name="returncode"></a>11.1.3. Return-Code</h3></div></div></div>
     
 
     <p>Icinga ermittelt den Zustand eines Hosts oder Service über die Auswertung des Return-Codes des Plugins. Die folgenden
@@ -131,7 +131,7 @@
 
   <div class="section" title="11.1.4. Spezifikation der Plugin-Ausgabe(n)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15985664"></a>11.1.4. Spezifikation der Plugin-Ausgabe(n)</h3></div></div></div>
+<a name="outputspec"></a>11.1.4. Spezifikation der Plugin-Ausgabe(n)</h3></div></div></div>
     
 
     <p>Als Minimum sollten Plugins mindestens eine Zeile Textausgabe zurückliefern, es können aber auch mehrere Zeilen Ausgaben sein.
@@ -153,7 +153,7 @@
 
   <div class="section" title="11.1.5. Plugin-Beispielausgaben">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15995152"></a>11.1.5. Plugin-Beispielausgaben</h3></div></div></div>
+<a name="outputexamples"></a>11.1.5. Plugin-Beispielausgaben</h3></div></div></div>
     
 
     <p>Nun ein paar Beispiele von möglichen Plugin-Ausgaben...</p>
@@ -254,7 +254,7 @@
 
   <div class="section" title="11.1.6. Längenbeschränkungen von Plugin-Ausgaben">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16046720"></a>11.1.6. Längenbeschränkungen von Plugin-Ausgaben</h3></div></div></div>
+<a name="outputlengthrestrictions"></a>11.1.6. Längenbeschränkungen von Plugin-Ausgaben</h3></div></div></div>
     
 
     <p>Icinga wird nur die ersten acht KB an Daten lesen, die ein Plugin zurückliefert. Dies wird getan, um durchgedrehte Plugins
@@ -268,7 +268,7 @@
 
   <div class="section" title="11.1.7. Beispiele">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16049296"></a>11.1.7. Beispiele</h3></div></div></div>
+<a name="examples"></a>11.1.7. Beispiele</h3></div></div></div>
     
 
     <p>Wenn Sie nach Beispiel-Plugins suchen, um sie zu studieren, würden wir empfehlen, dass Sie die offiziellen Icinga-Plugins
@@ -278,14 +278,14 @@
 
   <div class="section" title="11.1.8. Perl-Plugins">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp16051792"></a>11.1.8. Perl-Plugins</h3></div></div></div>
+<a name="perlplugins"></a>11.1.8. Perl-Plugins</h3></div></div></div>
     
 
     <p>Icinga bietet einen optionalen <a class="link" href="embeddedperl.html" title="7.18. Benutzen des Embedded Perl Interpreters">eingebauten Perl-Interpreter</a> (embedded Perl
     interpreter), der die Ausführung von Perl-Plugins beschleunigen kann. Mehr Informationen zur Entwicklung von Perl-Plugins zur Nutzung
     mit dem eingebauten Perl-Interpreter finden Sie <a class="link" href="embeddedperl.html" title="7.18. Benutzen des Embedded Perl Interpreters">hier</a>.</p>
 
-    <a class="indexterm" name="idp16054656"></a>
+    <a class="indexterm" name="idp16139024"></a>
   </div>
 </div>
 <div class="navfooter">
