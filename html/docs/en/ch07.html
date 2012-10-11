@@ -38,7 +38,7 @@
 <dt><span class="section">7.1.2. <a href="extcommands.html#enable">Enabling External Commands</a></span></dt>
 <dt><span class="section">7.1.3. <a href="extcommands.html#whenchecked">When Does Icinga Check For External Commands?</a></span></dt>
 <dt><span class="section">7.1.4. <a href="extcommands.html#usage">Using External Commands</a></span></dt>
-<dt><span class="section">7.1.5. <a href="extcommands.html#idp12609328">Command Format</a></span></dt>
+<dt><span class="section">7.1.5. <a href="extcommands.html#format">Command Format</a></span></dt>
 </dl></dd>
 <dt><span class="section">7.2. <a href="extcommands2.html">List of External Commands</a></span></dt>
 <dt><span class="section">7.3. <a href="eventhandlers.html">Event Handlers</a></span></dt>
@@ -86,7 +86,7 @@
 <dt><span class="section">7.7. <a href="redundancy.html">Redundant and Failover Network Monitoring</a></span></dt>
 <dd><dl>
 <dt><span class="section">7.7.1. <a href="redundancy.html#introduction">Introduction</a></span></dt>
-<dt><span class="section">7.7.2. <a href="redundancy.html#prerequisites">Prerequisites</a></span></dt>
+<dt><span class="section">7.7.2. <a href="redundancy.html#redprerequisites">Prerequisites</a></span></dt>
 <dt><span class="section">7.7.3. <a href="redundancy.html#samplescripts">Sample Scripts</a></span></dt>
 <dt><span class="section">7.7.4. <a href="redundancy.html#redundantmonitoring">Scenario 1 - Redundant Monitoring</a></span></dt>
 <dt><span class="section">7.7.5. <a href="redundancy.html#failovermonitoring">Scenario 2 - Failover Monitoring</a></span></dt>
@@ -96,8 +96,8 @@
 <dt><span class="section">7.8.1. <a href="flapping.html#introduction">Introduction</a></span></dt>
 <dt><span class="section">7.8.2. <a href="flapping.html#howitworks">How Flap Detection Works</a></span></dt>
 <dt><span class="section">7.8.3. <a href="flapping.html#example">Example</a></span></dt>
-<dt><span class="section">7.8.4. <a href="flapping.html#services">Flap Detection for Services</a></span></dt>
-<dt><span class="section">7.8.5. <a href="flapping.html#hosts">Flap Detection for Hosts</a></span></dt>
+<dt><span class="section">7.8.4. <a href="flapping.html#detectionservices">Flap Detection for Services</a></span></dt>
+<dt><span class="section">7.8.5. <a href="flapping.html#detectionhosts">Flap Detection for Hosts</a></span></dt>
 <dt><span class="section">7.8.6. <a href="flapping.html#thresholds">Flap Detection Thresholds</a></span></dt>
 <dt><span class="section">7.8.7. <a href="flapping.html#statesused">States Used For Flap Detection</a></span></dt>
 <dt><span class="section">7.8.8. <a href="flapping.html#handling">Flap Handling</a></span></dt>
@@ -145,7 +145,7 @@
 <dt><span class="section">7.13.4. <a href="dependencies.html#example">Example Service Dependencies</a></span></dt>
 <dt><span class="section">7.13.5. <a href="dependencies.html#test">How Service Dependencies Are Tested</a></span></dt>
 <dt><span class="section">7.13.6. <a href="dependencies.html#execution">Execution Dependencies</a></span></dt>
-<dt><span class="section">7.13.7. <a href="dependencies.html#idp14059152">Notification Dependencies</a></span></dt>
+<dt><span class="section">7.13.7. <a href="dependencies.html#idp14032560">Notification Dependencies</a></span></dt>
 <dt><span class="section">7.13.8. <a href="dependencies.html#inheritance">Dependency Inheritance</a></span></dt>
 <dt><span class="section">7.13.9. <a href="dependencies.html#host">Host Dependencies</a></span></dt>
 <dt><span class="section">7.13.10. <a href="dependencies.html#examplehost">Example Host Dependencies</a></span></dt>
@@ -162,12 +162,12 @@
 <dt><span class="section">7.15. <a href="perfdata.html">Performance Data</a></span></dt>
 <dd><dl>
 <dt><span class="section">7.15.1. <a href="perfdata.html#introduction">Introduction</a></span></dt>
-<dt><span class="section">7.15.2. <a href="perfdata.html#types">Types of Performance Data</a></span></dt>
+<dt><span class="section">7.15.2. <a href="perfdata.html#typesperfdata">Types of Performance Data</a></span></dt>
 <dt><span class="section">7.15.3. <a href="perfdata.html#pluginperfdata">Plugin Performance Data</a></span></dt>
 <dt><span class="section">7.15.4. <a href="perfdata.html#processing">Processing Performance Data</a></span></dt>
 <dt><span class="section">7.15.5. <a href="perfdata.html#processingcommands">Processing Performance Data Using Commands</a></span></dt>
 <dt><span class="section">7.15.6. <a href="perfdata.html#writingtofiles">Writing Performance Data To Files</a></span></dt>
-<dt><span class="section">7.15.7. <a href="perfdata.html#format">Performance Data Format</a></span></dt>
+<dt><span class="section">7.15.7. <a href="perfdata.html#formatperfdata">Performance Data Format</a></span></dt>
 </dl></dd>
 <dt><span class="section">7.16. <a href="downtime.html">Scheduled Downtime</a></span></dt>
 <dd><dl>
@@ -221,9 +221,9 @@
 </dl></dd>
 <dt><span class="section">7.22. <a href="passivestatetranslation.html">Passive Host State Translation</a></span></dt>
 <dd><dl>
-<dt><span class="section">7.22.1. <a href="passivestatetranslation.html#idp14542272">Introduction</a></span></dt>
-<dt><span class="section">7.22.2. <a href="passivestatetranslation.html#idp14543792">Different World Views</a></span></dt>
-<dt><span class="section">7.22.3. <a href="passivestatetranslation.html#idp14543920">Enabling State Translation</a></span></dt>
+<dt><span class="section">7.22.1. <a href="passivestatetranslation.html#introduction">Introduction</a></span></dt>
+<dt><span class="section">7.22.2. <a href="passivestatetranslation.html#differentviews">Different World Views</a></span></dt>
+<dt><span class="section">7.22.3. <a href="passivestatetranslation.html#enablestatetranslation">Enabling State Translation</a></span></dt>
 </dl></dd>
 <dt><span class="section">7.23. <a href="checkscheduling.html">Service and Host Check Scheduling</a></span></dt>
 <dd><dl>

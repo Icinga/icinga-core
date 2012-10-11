@@ -31,7 +31,7 @@
 <a name="redundancy"></a>7.7. <a name="redundancy_failover"></a>Redundant and Failover Network Monitoring</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section">7.7.1. <a href="redundancy.html#introduction">Introduction</a></span></dt>
-<dt><span class="section">7.7.2. <a href="redundancy.html#prerequisites">Prerequisites</a></span></dt>
+<dt><span class="section">7.7.2. <a href="redundancy.html#redprerequisites">Prerequisites</a></span></dt>
 <dt><span class="section">7.7.3. <a href="redundancy.html#samplescripts">Sample Scripts</a></span></dt>
 <dt><span class="section">7.7.4. <a href="redundancy.html#redundantmonitoring">Scenario 1 - Redundant Monitoring</a></span></dt>
 <dt><span class="section">7.7.5. <a href="redundancy.html#failovermonitoring">Scenario 2 - Failover Monitoring</a></span></dt>
@@ -54,7 +54,7 @@
 </tr>
 <tr><td align="left" valign="top">
     <p><span class="color"><font color="red"></font></span> If you are just learning how to use Icinga, we would suggest
-    not trying to implement redundancy until you have becoming familiar with the <a class="link" href="redundancy.html#redundancy-prerequisites">prerequisites</a> that have been laid out. Redundancy is a relatively complicated
+    not trying to implement redundancy until you have becoming familiar with the <a class="link" href="redundancy.html#redprerequisites" title="7.7.2. Prerequisites">prerequisites</a> that have been laid out. Redundancy is a relatively complicated
     issue to understand, and even more difficult to implement properly.</p>
   </td></tr>
 </table></div>
@@ -63,7 +63,7 @@
 
   <div class="section" title="7.7.2. Prerequisites">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="prerequisites"></a>7.7.2. <a name="redundancy-prerequisites"></a>Prerequisites</h3></div></div></div>
+<a name="redprerequisites"></a>7.7.2. Prerequisites</h3></div></div></div>
 	  
 
   <p>Before you can even think about implementing redundancy with Icinga, you need to be familiar with the
@@ -89,7 +89,7 @@
 
   <div class="section" title="7.7.3. Sample Scripts">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="samplescripts"></a>7.7.3. <a name="redundancy-samples"></a>Sample Scripts</h3></div></div></div>
+<a name="samplescripts"></a>7.7.3. Sample Scripts</h3></div></div></div>
 	  
 
   <p>All of the sample scripts that we use in this documentation can be found in the <span class="emphasis"><em>eventhandlers/</em></span>
@@ -99,7 +99,7 @@
 
   <div class="section" title="7.7.4. Scenario 1 - Redundant Monitoring">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="redundantmonitoring"></a>7.7.4. <a name="redundancy-scenario_1"></a>Scenario 1 - Redundant Monitoring</h3></div></div></div>
+<a name="redundantmonitoring"></a>7.7.4. Scenario 1 - Redundant Monitoring</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section">7.7.4.1. <a href="redundancy.html#redundantmonitoring-introduction">Introduction</a></span></dt>
 <dt><span class="section">7.7.4.2. <a href="redundancy.html#redundantmonitoring-goals">Goals</a></span></dt>
@@ -424,7 +424,7 @@ exit 0</pre>
   </div>
   <div class="section" title="7.7.5. Scenario 2 - Failover Monitoring">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="failovermonitoring"></a>7.7.5. <a name="redundancy-scenario_2"></a>Scenario 2 - Failover Monitoring</h3></div></div></div>
+<a name="failovermonitoring"></a>7.7.5. Scenario 2 - Failover Monitoring</h3></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section">7.7.5.1. <a href="redundancy.html#failovermonitoring-introduction">Introduction</a></span></dt>
 <dt><span class="section">7.7.5.2. <a href="redundancy.html#failovermonitoring-goals">Goals</a></span></dt>
@@ -440,7 +440,7 @@ exit 0</pre>
 <a name="failovermonitoring-introduction"></a>7.7.5.1. Introduction</h4></div></div></div>
 	  
 
-  <p>Failover monitoring is similiar to, but slightly different than redundant monitoring (as discussed above in <a class="link" href="redundancy.html#redundancy-scenario_1">scenario 1</a>).</p>
+  <p>Failover monitoring is similiar to, but slightly different than redundant monitoring (as discussed above in <a class="link" href="redundancy.html#redundantmonitoring" title="7.7.4. Scenario 1 - Redundant Monitoring">scenario 1</a>).</p>
 
   </div>
 
@@ -453,7 +453,7 @@ exit 0</pre>
   Icinga process on the master host is running. If the process on the master host stops running (or if the host goes down),
   the Icinga process on the slave host starts monitoring everything.</p>
 
-  <p>While the method described in <a class="link" href="redundancy.html#redundancy-scenario_1">scenario 1</a> will allow you to continue
+  <p>While the method described in <a class="link" href="redundancy.html#redundantmonitoring" title="7.7.4. Scenario 1 - Redundant Monitoring">scenario 1</a> will allow you to continue
   receive notifications if the master monitoring hosts goes down, it does have some pitfalls. The biggest problem is that the
   slave host is monitoring the same hosts and servers as the master <span class="emphasis"><em>at the same time as the master</em></span>! This can
   cause problems with excessive traffic and load on the machines being monitored if you have a lot of services defined. Here's how
@@ -488,7 +488,7 @@ exit 0</pre>
   <p>By doing this you end up with only one process monitoring hosts and services at a time, which is much more efficient that
   monitoring everything twice.</p>
 
-  <p>Also of note, you <span class="emphasis"><em>don't</em></span> need to define host and service handlers as mentioned in <a class="link" href="redundancy.html#redundancy-scenario_1">scenario 1</a> because things are handled differently.</p>
+  <p>Also of note, you <span class="emphasis"><em>don't</em></span> need to define host and service handlers as mentioned in <a class="link" href="redundancy.html#redundantmonitoring" title="7.7.4. Scenario 1 - Redundant Monitoring">scenario 1</a> because things are handled differently.</p>
 
   </div>
 
@@ -510,9 +510,9 @@ exit 0</pre>
   monitoring deals with service checks.</p>
 
   <p>That's pretty much it as far as setup goes.</p>
-  <a class="indexterm" name="idp13756224"></a>
-  <a class="indexterm" name="idp13757312"></a>
-  <a class="indexterm" name="idp13758608"></a>
+  <a class="indexterm" name="idp13729456"></a>
+  <a class="indexterm" name="idp13723344"></a>
+  <a class="indexterm" name="idp13731792"></a>
 
   </div>
 

@@ -30,19 +30,19 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="perfdata"></a>7.15. <a name="perf_data"></a>Performance-Daten</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.15.1. <a href="perfdata.html#idp13996800">Einführung</a></span></dt>
-<dt><span class="section">7.15.2. <a href="perfdata.html#idp13998944">Typen von Performance-Daten</a></span></dt>
-<dt><span class="section">7.15.3. <a href="perfdata.html#idp14009936">Plugin-Performance-Daten</a></span></dt>
-<dt><span class="section">7.15.4. <a href="perfdata.html#idp14019776">Performance-Daten verarbeiten</a></span></dt>
-<dt><span class="section">7.15.5. <a href="perfdata.html#idp14027824">Performance-Daten verarbeiten durch Befehle</a></span></dt>
-<dt><span class="section">7.15.6. <a href="perfdata.html#idp14034816">Performance-Daten in Dateien schreiben</a></span></dt>
-<dt><span class="section">7.15.7. <a href="perfdata.html#idp14046192">Format Performance-Daten</a></span></dt>
+<dt><span class="section">7.15.1. <a href="perfdata.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">7.15.2. <a href="perfdata.html#typesperfdata">Typen von Performance-Daten</a></span></dt>
+<dt><span class="section">7.15.3. <a href="perfdata.html#pluginperfdata">Plugin-Performance-Daten</a></span></dt>
+<dt><span class="section">7.15.4. <a href="perfdata.html#processing">Performance-Daten verarbeiten</a></span></dt>
+<dt><span class="section">7.15.5. <a href="perfdata.html#processingcommands">Performance-Daten verarbeiten durch Befehle</a></span></dt>
+<dt><span class="section">7.15.6. <a href="perfdata.html#writingtofiles">Performance-Daten in Dateien schreiben</a></span></dt>
+<dt><span class="section">7.15.7. <a href="perfdata.html#formatperfdata">Format Performance-Daten</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.15.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13996800"></a>7.15.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>7.15.1. Einführung</h3></div></div></div>
     
 
     <p>Icinga ist ausgelegt, dass <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> neben den normalen Statusinformationen optional auch
@@ -53,7 +53,7 @@
 
   <div class="section" title="7.15.2. Typen von Performance-Daten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13998944"></a>7.15.2. Typen von Performance-Daten</h3></div></div></div>
+<a name="typesperfdata"></a>7.15.2. Typen von Performance-Daten</h3></div></div></div>
     
 
     <p>Es gibt zwei grundlegende Kategorien von Performance-Daten, die von Icinga erhalten werden können:</p>
@@ -85,7 +85,7 @@
 
   <div class="section" title="7.15.3. Plugin-Performance-Daten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14009936"></a>7.15.3. Plugin-Performance-Daten</h3></div></div></div>
+<a name="pluginperfdata"></a>7.15.3. Plugin-Performance-Daten</h3></div></div></div>
     
 
     <p>Als Minimum müssen Icinga-Plugins eine einzelne Zeile mit menschlich lesbarem Text zurückliefern, die den Status eines Typs
@@ -139,7 +139,7 @@
 
   <div class="section" title="7.15.4. Performance-Daten verarbeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14019776"></a>7.15.4. Performance-Daten verarbeiten</h3></div></div></div>
+<a name="processing"></a>7.15.4. Performance-Daten verarbeiten</h3></div></div></div>
     
 
     <p>Wenn Sie die Performance-Daten, die von den Plugins und in Icinga verfügbar sind, müssen Sie folgendes tun:</p>
@@ -160,7 +160,7 @@
 
   <div class="section" title="7.15.5. Performance-Daten verarbeiten durch Befehle">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14027824"></a>7.15.5. Performance-Daten verarbeiten durch Befehle</h3></div></div></div>
+<a name="processingcommands"></a>7.15.5. Performance-Daten verarbeiten durch Befehle</h3></div></div></div>
     
 
     <p>Der flexibelste Weg, um Performance-Daten zu verarbeiten, besteht darin, Icinga Befehle ausführen zu lassen (die Sie
@@ -183,7 +183,7 @@
 
   <div class="section" title="7.15.6. Performance-Daten in Dateien schreiben">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14034816"></a>7.15.6. Performance-Daten in Dateien schreiben</h3></div></div></div>
+<a name="writingtofiles"></a>7.15.6. Performance-Daten in Dateien schreiben</h3></div></div></div>
     
 
     <p>Sie können Icinga mit Hilfe der <a class="link" href="configmain.html#configmain-host_perfdata_file">host_perfdata_file</a>- und <a class="link" href="configmain.html#configmain-service_perfdata_file">service_perfdata_file</a>-Optionen anweisen, die Host- und Service-Performance-Daten
@@ -207,7 +207,7 @@
 
   <div class="section" title="7.15.7. Format Performance-Daten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp14046192"></a>7.15.7. <a name="perfdata-format"></a>Format Performance-Daten</h3></div></div></div>
+<a name="formatperfdata"></a>7.15.7. <a name="perfdata-format"></a>Format Performance-Daten</h3></div></div></div>
     
 
     <p>Die Nagios-Entwicklerrichtlinien (<a class="link" href="http://nagiosplug.sourceforge.net/developer-guidelines.html" target="_top">http://nagiosplug.sourceforge.net/developer-guidelines.html</a>)
@@ -318,9 +318,9 @@
       </td></tr>
 </table></div>
 
-    <a class="indexterm" name="idp14074560"></a>
+    <a class="indexterm" name="idp14138864"></a>
 
-    <a class="indexterm" name="idp14075792"></a>
+    <a class="indexterm" name="idp14139872"></a>
   </div>
 </div>
 <div class="navfooter">

@@ -30,26 +30,26 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="quickstart-icinga"></a>2.3. Icinga-Schnellstart auf Linux</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.3.1. <a href="quickstart-icinga.html#idp179008">Einführung</a></span></dt>
-<dt><span class="section">2.3.2. <a href="quickstart-icinga.html#idp203952">Voraussetzungen</a></span></dt>
-<dt><span class="section">2.3.3. <a href="quickstart-icinga.html#idp214592">Installation der Pakete</a></span></dt>
-<dt><span class="section">2.3.4. <a href="quickstart-icinga.html#idp214848">Benutzerinformationen erstellen</a></span></dt>
-<dt><span class="section">2.3.5. <a href="quickstart-icinga.html#idp231312">Icinga und die Plugins herunterladen</a></span></dt>
-<dt><span class="section">2.3.6. <a href="quickstart-icinga.html#idp244320">Icinga kompilieren und installieren</a></span></dt>
-<dt><span class="section">2.3.7. <a href="quickstart-icinga.html#idp255360">Anpassen der Konfiguration</a></span></dt>
-<dt><span class="section">2.3.8. <a href="quickstart-icinga.html#idp259792">Installieren und konfigurieren des klassischen Web-Interface</a></span></dt>
-<dt><span class="section">2.3.9. <a href="quickstart-icinga.html#idp271696">Kompilieren und installieren der Nagios-Plugins</a></span></dt>
-<dt><span class="section">2.3.10. <a href="quickstart-icinga.html#idp276240">Anpassen der SELinux-Einstellungen</a></span></dt>
-<dt><span class="section">2.3.11. <a href="quickstart-icinga.html#idp283072">Icinga starten</a></span></dt>
-<dt><span class="section">2.3.12. <a href="quickstart-icinga.html#idp284240">Anmelden am klassischen Web-Interface</a></span></dt>
-<dt><span class="section">2.3.13. <a href="quickstart-icinga.html#idp297152">Andere Anpassungen</a></span></dt>
-<dt><span class="section">2.3.14. <a href="quickstart-icinga.html#idp302336">Fertig</a></span></dt>
+<dt><span class="section">2.3.1. <a href="quickstart-icinga.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">2.3.2. <a href="quickstart-icinga.html#prerequisites">Voraussetzungen</a></span></dt>
+<dt><span class="section">2.3.3. <a href="quickstart-icinga.html#installpackages">Installation der Pakete</a></span></dt>
+<dt><span class="section">2.3.4. <a href="quickstart-icinga.html#createaccount">Benutzerinformationen erstellen</a></span></dt>
+<dt><span class="section">2.3.5. <a href="quickstart-icinga.html#downloadicingaandplugins">Icinga und die Plugins herunterladen</a></span></dt>
+<dt><span class="section">2.3.6. <a href="quickstart-icinga.html#compileinstall">Icinga kompilieren und installieren</a></span></dt>
+<dt><span class="section">2.3.7. <a href="quickstart-icinga.html#customiseconfig">Anpassen der Konfiguration</a></span></dt>
+<dt><span class="section">2.3.8. <a href="quickstart-icinga.html#configclassicui">Installieren und konfigurieren des klassischen Web-Interface</a></span></dt>
+<dt><span class="section">2.3.9. <a href="quickstart-icinga.html#compileinstallplugins">Kompilieren und installieren der Nagios-Plugins</a></span></dt>
+<dt><span class="section">2.3.10. <a href="quickstart-icinga.html#selinuxsettings">Anpassen der SELinux-Einstellungen</a></span></dt>
+<dt><span class="section">2.3.11. <a href="quickstart-icinga.html#starticinga">Icinga starten</a></span></dt>
+<dt><span class="section">2.3.12. <a href="quickstart-icinga.html#loginclassicui">Anmelden am klassischen Web-Interface</a></span></dt>
+<dt><span class="section">2.3.13. <a href="quickstart-icinga.html#othermods">Andere Anpassungen</a></span></dt>
+<dt><span class="section">2.3.14. <a href="quickstart-icinga.html#done">Fertig</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="2.3.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp179008"></a>2.3.1. <a name="q_ic-introduction"></a>Einführung</h3></div></div></div>
+<a name="introduction"></a>2.3.1. Einführung</h3></div></div></div>
     
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -134,7 +134,7 @@
 
   <div class="section" title="2.3.2. Voraussetzungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp203952"></a>2.3.2. <a name="q_ic-prerequisites"></a>Voraussetzungen</h3></div></div></div>
+<a name="prerequisites"></a>2.3.2. Voraussetzungen</h3></div></div></div>
     
 
     <p>Während einiger Teile der Installation benötigen Sie <span class="bold"><strong>root</strong></span>-Zugang zu Ihrer Maschine.</p>
@@ -165,7 +165,7 @@
 
   <div class="section" title="2.3.3. Installation der Pakete">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp214592"></a>2.3.3. <a name="q_ic-install_packages"></a>Installation der Pakete</h3></div></div></div>
+<a name="installpackages"></a>2.3.3. Installation der Pakete</h3></div></div></div>
     
 
     <p>Sie können diese Pakete mit Hilfe der folgenden Befehle installieren (als root oder mit sudo).</p>
@@ -259,7 +259,7 @@
 
   <div class="section" title="2.3.4. Benutzerinformationen erstellen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp214848"></a>2.3.4. <a name="q_ic-account"></a>Benutzerinformationen erstellen</h3></div></div></div>
+<a name="createaccount"></a>2.3.4. Benutzerinformationen erstellen</h3></div></div></div>
     
 
     <p>Werden Sie zum root-Benutzer.</p>
@@ -308,7 +308,7 @@
 
   <div class="section" title="2.3.5. Icinga und die Plugins herunterladen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp231312"></a>2.3.5. <a name="q_ic-download"></a>Icinga und die Plugins herunterladen</h3></div></div></div>
+<a name="downloadicingaandplugins"></a>2.3.5. Icinga und die Plugins herunterladen</h3></div></div></div>
     
 
     <p>Wechseln Sie in Ihr lokales Source-Verzeichnis, z.B. /usr/src</p>
@@ -322,7 +322,7 @@
 
   <div class="section" title="2.3.6. Icinga kompilieren und installieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp244320"></a>2.3.6. <a name="q_ic-compile"></a>Icinga kompilieren und installieren</h3></div></div></div>
+<a name="compileinstall"></a>2.3.6. Icinga kompilieren und installieren</h3></div></div></div>
     
 
     <p>Entpacken Sie das Icinga-Archiv (oder wechseln Sie in den GIT Snapshot)</p>
@@ -383,7 +383,7 @@
 
   <div class="section" title="2.3.7. Anpassen der Konfiguration">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp255360"></a>2.3.7. <a name="q_ic-customise"></a>Anpassen der Konfiguration</h3></div></div></div>
+<a name="customiseconfig"></a>2.3.7. Anpassen der Konfiguration</h3></div></div></div>
     
 
     <p>Beispiel-Konfigurationsdateien werden durch </p>
@@ -400,7 +400,7 @@
 
   <div class="section" title="2.3.8. Installieren und konfigurieren des klassischen Web-Interface">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp259792"></a>2.3.8. <a name="q_ic-config_classic"></a>Installieren und konfigurieren des klassischen Web-Interface</h3></div></div></div>
+<a name="configclassicui"></a>2.3.8. Installieren und konfigurieren des klassischen Web-Interface</h3></div></div></div>
     
 
     <p>Icinga stellt das klassische Webinterface zur Verfügung ("Classic Web", "die CGIs"). Sie können dieses wie folgt
@@ -460,7 +460,7 @@
 
   <div class="section" title="2.3.9. Kompilieren und installieren der Nagios-Plugins">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp271696"></a>2.3.9. <a name="q_ic-compile_plugins"></a>Kompilieren und installieren der Nagios-Plugins</h3></div></div></div>
+<a name="compileinstallplugins"></a>2.3.9. Kompilieren und installieren der Nagios-Plugins</h3></div></div></div>
     
 
     <p>Entpacken Sie die Nagios-Plugins-Quellcode-Archivdatei.</p>
@@ -480,7 +480,7 @@
 
   <div class="section" title="2.3.10. Anpassen der SELinux-Einstellungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp276240"></a>2.3.10. <a name="q_ic-selinux"></a>Anpassen der SELinux-Einstellungen</h3></div></div></div>
+<a name="selinuxsettings"></a>2.3.10. Anpassen der SELinux-Einstellungen</h3></div></div></div>
     
 
     <p>RHEL und ähnliche Distributionen wie Fedora oder CentOS werden mit installiertem SELinux (Security
@@ -511,7 +511,7 @@
 
   <div class="section" title="2.3.11. Icinga starten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp283072"></a>2.3.11. <a name="q_ic-start"></a>Icinga starten</h3></div></div></div>
+<a name="starticinga"></a>2.3.11. Icinga starten</h3></div></div></div>
     
 
     <p>Fügen Sie Icinga zu der Liste der System-Services hinzu und sorgen Sie für einen automatischen Start, wenn das System
@@ -549,7 +549,7 @@
 
   <div class="section" title="2.3.12. Anmelden am klassischen Web-Interface">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp284240"></a>2.3.12. <a name="q_ic-login_classic"></a>Anmelden am klassischen Web-Interface</h3></div></div></div>
+<a name="loginclassicui"></a>2.3.12. Anmelden am klassischen Web-Interface</h3></div></div></div>
     
 
     <p>Sie sollten nun auf das klassische Icinga-Web-Interface zugreifen können. Sie werden nach dem Benutzernamen
@@ -568,7 +568,7 @@
 
   <div class="section" title="2.3.13. Andere Anpassungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp297152"></a>2.3.13. <a name="q_ic-other_mods"></a>Andere Anpassungen</h3></div></div></div>
+<a name="othermods"></a>2.3.13. Andere Anpassungen</h3></div></div></div>
     
 
     <p>Stellen Sie sicher, dass die Firewall-Einstellungen Ihrer Maschine einen Zugriff auf das klassische Web-Interface ermöglichen,
@@ -585,16 +585,16 @@
 
   <div class="section" title="2.3.14. Fertig">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp302336"></a>2.3.14. <a name="q_ic-done"></a>Fertig</h3></div></div></div>
+<a name="done"></a>2.3.14. Fertig</h3></div></div></div>
     
 
     <p>Glückwunsch! Sie haben erfolgreich Icinga installiert. Ihre Reise in die Überwachung hat gerade begonnen. Sie werden ohne
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp304880"></a>
+    <a class="indexterm" name="idp303280"></a>
 
-    <a class="indexterm" name="idp302816"></a>
+    <a class="indexterm" name="idp304752"></a>
   </div>
 </div>
 <div class="navfooter">

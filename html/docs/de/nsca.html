@@ -30,25 +30,25 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="nsca"></a>10.3. <a name="nsca_"></a>NSCA</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">10.3.1. <a href="nsca.html#idp15830720">Einführung</a></span></dt>
-<dt><span class="section">10.3.2. <a href="nsca.html#idp15837264">Voraussetzungen</a></span></dt>
-<dt><span class="section">10.3.3. <a href="nsca.html#idp15848048">Download und Compile</a></span></dt>
-<dt><span class="section">10.3.4. <a href="nsca.html#idp15848304">Anpassen</a></span></dt>
-<dt><span class="section">10.3.5. <a href="nsca.html#idp15864832">Erster Test</a></span></dt>
-<dt><span class="section">10.3.6. <a href="nsca.html#idp15870960">Installation</a></span></dt>
-<dt><span class="section">10.3.7. <a href="nsca.html#idp15891296">Entfernte/s System/e</a></span></dt>
-<dt><span class="section">10.3.8. <a href="nsca.html#idp15893184">Dateien kopieren</a></span></dt>
-<dt><span class="section">10.3.9. <a href="nsca.html#idp15895328">Zweiter Test</a></span></dt>
-<dt><span class="section">10.3.10. <a href="nsca.html#idp15899088">Fehlersuche</a></span></dt>
-<dt><span class="section">10.3.11. <a href="nsca.html#idp15905280">Sicherheit</a></span></dt>
-<dt><span class="section">10.3.12. <a href="nsca.html#idp15907792">Betrieb</a></span></dt>
-<dt><span class="section">10.3.13. <a href="nsca.html#idp15914368">Integration in Icinga</a></span></dt>
+<dt><span class="section">10.3.1. <a href="nsca.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">10.3.2. <a href="nsca.html#prerequisites">Voraussetzungen</a></span></dt>
+<dt><span class="section">10.3.3. <a href="nsca.html#downloadcompile">Download und Compile</a></span></dt>
+<dt><span class="section">10.3.4. <a href="nsca.html#customise">Anpassen</a></span></dt>
+<dt><span class="section">10.3.5. <a href="nsca.html#firsttest">Erster Test</a></span></dt>
+<dt><span class="section">10.3.6. <a href="nsca.html#installnsca">Installation</a></span></dt>
+<dt><span class="section">10.3.7. <a href="nsca.html#remotesystem">Entfernte/s System/e</a></span></dt>
+<dt><span class="section">10.3.8. <a href="nsca.html#copyfiles">Dateien kopieren</a></span></dt>
+<dt><span class="section">10.3.9. <a href="nsca.html#secondtest">Zweiter Test</a></span></dt>
+<dt><span class="section">10.3.10. <a href="nsca.html#troubleshooting">Fehlersuche</a></span></dt>
+<dt><span class="section">10.3.11. <a href="nsca.html#security">Sicherheit</a></span></dt>
+<dt><span class="section">10.3.12. <a href="nsca.html#operation">Betrieb</a></span></dt>
+<dt><span class="section">10.3.13. <a href="nsca.html#icingaintegration">Integration in Icinga</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="10.3.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15830720"></a>10.3.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>10.3.1. Einführung</h3></div></div></div>
     
 
     <p>Nagios Service Check Acceptor (oder kurz NSCA) ist ein Addon, um Prüfergebnisse von einem System zu einem anderen zu
@@ -56,7 +56,7 @@
     Trotz des Namens werden auch Host-Prüfergebnisse übertragen.</p>
 
     <div class="figure">
-<a name="idp15832512"></a><p class="title"><b>Abbildung 10.3. NSCA</b></p>
+<a name="idp15921376"></a><p class="title"><b>Abbildung 10.3. NSCA</b></p>
 <div class="figure-contents">
       
 
@@ -77,7 +77,7 @@
 
   <div class="section" title="10.3.2. Voraussetzungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15837264"></a>10.3.2. Voraussetzungen</h3></div></div></div>
+<a name="prerequisites"></a>10.3.2. Voraussetzungen</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -109,7 +109,7 @@
 
   <div class="section" title="10.3.3. Download und Compile">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15848048"></a>10.3.3. Download und Compile</h3></div></div></div>
+<a name="downloadcompile"></a>10.3.3. Download und Compile</h3></div></div></div>
     
 
     <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
@@ -185,7 +185,7 @@
 
   <div class="section" title="10.3.4. Anpassen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15848304"></a>10.3.4. Anpassen</h3></div></div></div>
+<a name="customise"></a>10.3.4. Anpassen</h3></div></div></div>
     
 
     <p>Das <code class="filename">sample-config</code>-Verzeichnis enthält <code class="filename">nsca.cfg</code> und <code class="filename">send_nsca.cfg</code>.
@@ -198,7 +198,7 @@
 
   <div class="section" title="10.3.5. Erster Test">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15864832"></a>10.3.5. Erster Test</h3></div></div></div>
+<a name="firsttest"></a>10.3.5. Erster Test</h3></div></div></div>
     
 
     <p>Wechseln Sie zum Icinga-Benutzer und starten Sie einen ersten Test</p>
@@ -223,7 +223,7 @@
 
   <div class="section" title="10.3.6. Installation">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15870960"></a>10.3.6. Installation</h3></div></div></div>
+<a name="installnsca"></a>10.3.6. Installation</h3></div></div></div>
     
 
     <p>"make install" macht (im Moment) nichts, so dass Sie selbst einige Dateien kopieren müssen. Die folgenden Befehle kopieren das
@@ -307,7 +307,7 @@
 
   <div class="section" title="10.3.7. Entfernte/s System/e">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15891296"></a>10.3.7. Entfernte/s System/e</h3></div></div></div>
+<a name="remotesystem"></a>10.3.7. Entfernte/s System/e</h3></div></div></div>
     
 
     <p>Sie sind mit dem lokalen System fertig, aber natürlich muss send_nsca noch auf entfernte Systeme kopiert werden.</p>
@@ -318,7 +318,7 @@
 
   <div class="section" title="10.3.8. Dateien kopieren">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15893184"></a>10.3.8. Dateien kopieren</h3></div></div></div>
+<a name="copyfiles"></a>10.3.8. Dateien kopieren</h3></div></div></div>
     
 
     <p>Sie können frei entscheiden, wo Sie Binary und Konfigurationsdatei ablegen möchten. Wir nehmen an, dass Sie eine
@@ -330,7 +330,7 @@
 
   <div class="section" title="10.3.9. Zweiter Test">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15895328"></a>10.3.9. Zweiter Test</h3></div></div></div>
+<a name="secondtest"></a>10.3.9. Zweiter Test</h3></div></div></div>
     
 
     <p>Nun können Sie den Test auf dem entfernten System ausführen</p>
@@ -344,7 +344,7 @@
 
   <div class="section" title="10.3.10. Fehlersuche">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15899088"></a>10.3.10. Fehlersuche</h3></div></div></div>
+<a name="troubleshooting"></a>10.3.10. Fehlersuche</h3></div></div></div>
     
 
     <p>Wenn der Daemon nicht berechtigt ist, in die Command-Pipe zu schreiben, dann sind die Daten verloren! Der Daemon sollte mit dem
@@ -372,7 +372,7 @@
 
   <div class="section" title="10.3.11. Sicherheit">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15905280"></a>10.3.11. Sicherheit</h3></div></div></div>
+<a name="security"></a>10.3.11. Sicherheit</h3></div></div></div>
     
 
     <p>Es gibt einige Sicherheitsimplikationen, wenn Sie entfernten Clients erlauben, Prüfergebnisse an Icinga zu senden. Daher
@@ -383,7 +383,7 @@
 
   <div class="section" title="10.3.12. Betrieb">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15907792"></a>10.3.12. Betrieb</h3></div></div></div>
+<a name="operation"></a>10.3.12. Betrieb</h3></div></div></div>
     
 
     <p>send_nsca wird benutzt, um die Prüfergebnisse vom entfernten Rechner zum Icinga-Server zu senden. Die Syntax hängt vom
@@ -410,7 +410,7 @@
 
   <div class="section" title="10.3.13. Integration in Icinga">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15914368"></a>10.3.13. Integration in Icinga</h3></div></div></div>
+<a name="icingaintegration"></a>10.3.13. Integration in Icinga</h3></div></div></div>
     
 
     <p>Bisher haben Sie lediglich einige Voraussetzungen geschaffen, um passive Prüfergebnisse zu übermitteln, aber Sie haben noch keinen
@@ -463,9 +463,9 @@
     sollten die Daten dann auch im klassischen Web-Interface sehen sowie feststellen, dass der Service-Status von "Pending" auf "OK"
     gewechselt ist und die Ausgabe die Daten enthält, die Sie versandt haben.</p>
 
-    <a class="indexterm" name="idp15922400"></a>
+    <a class="indexterm" name="idp16017888"></a>
 
-    <a class="indexterm" name="idp15926128"></a>
+    <a class="indexterm" name="idp16019552"></a>
   </div>
 </div>
 <div class="navfooter">

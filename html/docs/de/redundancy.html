@@ -30,29 +30,17 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="redundancy"></a>7.7. Redundante und Failover-Netzwerk-Überwachung</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">7.7.1. <a href="redundancy.html#idp13459408">Einführung</a></span></dt>
-<dt><span class="section">7.7.2. <a href="redundancy.html#idp13464368">Index</a></span></dt>
-<dt><span class="section">7.7.3. <a href="redundancy.html#idp13464656">Einführung</a></span></dt>
-<dt><span class="section">7.7.4. <a href="redundancy.html#idp13482656">Ziele</a></span></dt>
-<dt><span class="section">7.7.5. <a href="redundancy.html#idp13486960">Netzwork-Layout-Diagramm</a></span></dt>
-<dt><span class="section">7.7.6. <a href="redundancy.html#idp13491664">anfängliche Programmeinstellungen</a></span></dt>
-<dt><span class="section">7.7.7. <a href="redundancy.html#idp13497088">anfängliche Konfiguration</a></span></dt>
-<dt><span class="section">7.7.8. <a href="redundancy.html#idp13506128">Eventhandler-Befehlsdefinitionen</a></span></dt>
-<dt><span class="section">7.7.9. <a href="redundancy.html#idp13512080">Eventhandler-Scripte</a></span></dt>
-<dt><span class="section">7.7.10. <a href="redundancy.html#idp13519152">Was tun sie für uns</a></span></dt>
-<dt><span class="section">7.7.11. <a href="redundancy.html#idp13534368">Zeitverzögerungen</a></span></dt>
-<dt><span class="section">7.7.12. <a href="redundancy.html#idp13550224">Spezialfälle</a></span></dt>
-<dt><span class="section">7.7.13. <a href="redundancy.html#idp13554704">Einführung</a></span></dt>
-<dt><span class="section">7.7.14. <a href="redundancy.html#idp13556576">Ziele</a></span></dt>
-<dt><span class="section">7.7.15. <a href="redundancy.html#idp13560400">Initiale Programm-Einstellungen</a></span></dt>
-<dt><span class="section">7.7.16. <a href="redundancy.html#idp13564160">Master-Prozess-Prüfungen</a></span></dt>
-<dt><span class="section">7.7.17. <a href="redundancy.html#idp13571168">Zusätzliche Themen</a></span></dt>
+<dt><span class="section">7.7.1. <a href="redundancy.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">7.7.2. <a href="redundancy.html#redprerequisites">Voraussetzungen</a></span></dt>
+<dt><span class="section">7.7.3. <a href="redundancy.html#samplescripts">Beispielscripts</a></span></dt>
+<dt><span class="section">7.7.4. <a href="redundancy.html#redundantmonitoring">Scenario 1 - Redundante Üverwachung</a></span></dt>
+<dt><span class="section">7.7.5. <a href="redundancy.html#failovermonitoring">Scenario 2 - Failover Überwachung</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="7.7.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13459408"></a>7.7.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>7.7.1. Einführung</h3></div></div></div>
     
 
     <p>Dieser Abschnitt beschreibt einige Szenarien zum Implementieren von redundanten Überwachungs-Hosts auf verschiedenen Arten von
@@ -60,24 +48,14 @@
     Icinga läuft, ausfällt oder wenn Teile Ihres Netzwerkes unerreichbar werden.</p>
 
     <p><span class="color"><font color="red"> <span class="bold"><strong>Anmerkung:</strong></span> </font></span> Wenn Sie gerade lernen, wie
-    Icinga zu nutzen ist, würden wir empfehlen, Redundanz so lange nicht zu implementieren, bis Sie mit den <a class="link" href="redundancy.html#redundancy-prerequisites">Voraussetzungen</a> vertraut sind. Redundanz ist ein relativ komplexes Thema und es ist noch
+    Icinga zu nutzen ist, würden wir empfehlen, Redundanz so lange nicht zu implementieren, bis Sie mit den <a class="link" href="redundancy.html#redprerequisites" title="7.7.2. Voraussetzungen">Voraussetzungen</a> vertraut sind. Redundanz ist ein relativ komplexes Thema und es ist noch
     schwieriger, es zu implementieren.</p>
   </div>
 
-  <div class="section" title="7.7.2. Index">
+  <div class="section" title="7.7.2. Voraussetzungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13464368"></a>7.7.2. Index</h3></div></div></div>
-    
-
-    <p><a class="link" href="redundancy.html#redundancy-prerequisites">Voraussetzungen</a></p>
-
-    <p><a class="link" href="redundancy.html#redundancy-samples">Beispiel-Scripte</a></p>
-
-    <p><a class="link" href="redundancy.html#redundancy-scenario_1">Szenario 1 - Redundante Überwachung</a></p>
-
-    <p><a class="link" href="redundancy.html#redundancy-scenario_2">Szenario 2 - Failover Überwachung</a></p>
-
-    <p><a name="redundancy-prerequisites"></a> <span class="bold"><strong>Voraussetzungen</strong></span></p>
+<a name="redprerequisites"></a>7.7.2. Voraussetzungen</h3></div></div></div>
+          
 
     <p>Bevor Sie überhaupt daran denken können, Redundanz mit Icinga zu implementieren, müssen Sie mit folgenden Dingen vertraut
     werden...</p>
@@ -98,18 +76,39 @@
       </li>
 </ul></div>
 
-    <p><a name="redundancy-samples"></a> <span class="bold"><strong>Beispiel-Scripte</strong></span></p>
+  </div>
+
+  <div class="section" title="7.7.3. Beispielscripts">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="samplescripts"></a>7.7.3. Beispielscripts</h3></div></div></div>
+          
 
     <p>Jedes dieser Beispiel-Scripte, die wir in dieser Dokumentation benutzen, finden Sie im
     <span class="emphasis"><em>eventhandlers/</em></span>-Unterverzeichnis der Icinga-Distribution. Vielleicht müssen Sie sie modifizieren, damit sie
     auf Ihrem System funktionieren...</p>
-
-    <p><a name="redundancy-scenario_1"></a> <span class="bold"><strong>Szenario 1 - Redundante Überwachung</strong></span></p>
   </div>
 
-  <div class="section" title="7.7.3. Einführung">
+
+  <div class="section" title="7.7.4. Scenario 1 - Redundante Üverwachung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13464656"></a>7.7.3. Einführung</h3></div></div></div>
+<a name="redundantmonitoring"></a>7.7.4. <a name="redundancy-scenario_1"></a>Scenario 1 - Redundante Üverwachung</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.7.4.1. <a href="redundancy.html#redundantmonitoring-introduction">Einführung</a></span></dt>
+<dt><span class="section">7.7.4.2. <a href="redundancy.html#redundantmonitoring-goals">Ziele</a></span></dt>
+<dt><span class="section">7.7.4.3. <a href="redundancy.html#redundantmonitoring-networklayoutdiagram">Netzwork-Layout-Diagramm</a></span></dt>
+<dt><span class="section">7.7.4.4. <a href="redundancy.html#redundantmonitoring-initialprogramsettings">anfängliche Programmeinstellungen</a></span></dt>
+<dt><span class="section">7.7.4.5. <a href="redundancy.html#redundantmonitoring-initialconfig">anfängliche Konfiguration</a></span></dt>
+<dt><span class="section">7.7.4.6. <a href="redundancy.html#redundantmonitoring-eventhandlercmddefinition">Eventhandler-Befehlsdefinitionen</a></span></dt>
+<dt><span class="section">7.7.4.7. <a href="redundancy.html#redundantmonitoring-eventhandlerscript">Eventhandler-Scripte</a></span></dt>
+<dt><span class="section">7.7.4.8. <a href="redundancy.html#redundantmonitoring-usage">Was tun sie für uns</a></span></dt>
+<dt><span class="section">7.7.4.9. <a href="redundancy.html#redundantmonitoring-timelags">Zeitverzögerungen</a></span></dt>
+<dt><span class="section">7.7.4.10. <a href="redundancy.html#redundantmonitoring-specialcases">Spezialfälle</a></span></dt>
+</dl></div>
+          
+
+  <div class="section" title="7.7.4.1. Einführung">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="redundantmonitoring-introduction"></a>7.7.4.1. Einführung</h4></div></div></div>
     
 
     <p>Dies ist eine einfache (und harmlose) Methode, redundante Überwachungs-Hosts zu implementieren, und es wird nur gegen eine
@@ -117,9 +116,9 @@
     verschiedene Netzwerk-Segmente hinweg zu bieten.</p>
   </div>
 
-  <div class="section" title="7.7.4. Ziele">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13482656"></a>7.7.4. Ziele</h3></div></div></div>
+  <div class="section" title="7.7.4.2. Ziele">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="redundantmonitoring-goals"></a>7.7.4.2. Ziele</h4></div></div></div>
     
 
     <p>Das Ziel dieser Art von Redundanz-Implementierung ist einfach. Sowohl der "Master"- als auch der "Slave"-Host überwachen die
@@ -136,9 +135,9 @@
 </ol></div>
   </div>
 
-  <div class="section" title="7.7.5. Netzwork-Layout-Diagramm">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13486960"></a>7.7.5. Netzwork-Layout-Diagramm</h3></div></div></div>
+  <div class="section" title="7.7.4.3. Netzwork-Layout-Diagramm">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="redundantmonitoring-networklayoutdiagram"></a>7.7.4.3. Netzwork-Layout-Diagramm</h4></div></div></div>
     
 
     <p>Das untenstehende Diagramm zeigt ein sehr simples Netzwerk-Setup. Bei diesem Szenario nehmen wir an, dass auf den Hosts A und E
@@ -152,18 +151,18 @@
     </div>
   </div>
 
-  <div class="section" title="7.7.6. anfängliche Programmeinstellungen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13491664"></a>7.7.6. anfängliche Programmeinstellungen</h3></div></div></div>
+  <div class="section" title="7.7.4.4. anfängliche Programmeinstellungen">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="redundantmonitoring-initialprogramsettings"></a>7.7.4.4. anfängliche Programmeinstellungen</h4></div></div></div>
     
 
     <p>Auf dem Slave-Host (Host E) wird die ursprüngliche <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktive deaktiviert, so dass dadurch der Versand von Host- oder
     Service-Benachrichtigungen verhindert wird. Sie sollten auch sicherstellen, dass die <a class="link" href="configmain.html#configmain-check_external_commands">check_external_commands</a>-Direktive deaktiviert ist. Das war einfach genug...</p>
   </div>
 
-  <div class="section" title="7.7.7. anfängliche Konfiguration">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13497088"></a>7.7.7. anfängliche Konfiguration</h3></div></div></div>
+  <div class="section" title="7.7.4.5. anfängliche Konfiguration">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="redundantmonitoring-initialconfig"></a>7.7.4.5. anfängliche Konfiguration</h4></div></div></div>
     
 
     <p>Als nächstes sollten wir die Unterschiede zwischen den <a class="link" href="configobject.html" title="3.3. Überblick Objektkonfiguration">Objekt-Konfigurationsdatei</a> von Master-
@@ -192,9 +191,9 @@
     Implementierung von Redundanz zu tun...</p>
   </div>
 
-  <div class="section" title="7.7.8. Eventhandler-Befehlsdefinitionen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13506128"></a>7.7.8. Eventhandler-Befehlsdefinitionen</h3></div></div></div>
+  <div class="section" title="7.7.4.6. Eventhandler-Befehlsdefinitionen">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="redundantmonitoring-eventhandlercmddefinition"></a>7.7.4.6. Eventhandler-Befehlsdefinitionen</h4></div></div></div>
     
 
     <p>Wir müssen kurz innehalten und beschreiben, wie die Befehlsdefinitionen für die Eventhandler auf dem Slave-Host aussehen. Hier ist
@@ -213,9 +212,9 @@
     abgelegt haben. Sie können sie ablegen, wohin Sie wollen, aber dann müssen Sie die beigefügten Beispiele anpassen.</p>
   </div>
 
-  <div class="section" title="7.7.9. Eventhandler-Scripte">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13512080"></a>7.7.9. Eventhandler-Scripte</h3></div></div></div>
+  <div class="section" title="7.7.4.7. Eventhandler-Scripte">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="redundantmonitoring-eventhandlerscript"></a>7.7.4.7. Eventhandler-Scripte</h4></div></div></div>
     
 
     <p>Okay, lassen Sie uns nun einen Blick darauf werden, wie die Eventhandler-Scripte aussehen...</p>
@@ -280,9 +279,9 @@
  exit 0</pre>
   </div>
 
-  <div class="section" title="7.7.10. Was tun sie für uns">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13519152"></a>7.7.10. Was tun sie für uns</h3></div></div></div>
+  <div class="section" title="7.7.4.8. Was tun sie für uns">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="redundantmonitoring-usage"></a>7.7.4.8. Was tun sie für uns</h4></div></div></div>
     
 
     <p>Auf dem Slave-Host (Host E) sind anfänglich die Benachrichtigungen deaktiviert, so dass er keine Host- oder
@@ -321,9 +320,9 @@
     haben!</p>
   </div>
 
-  <div class="section" title="7.7.11. Zeitverzögerungen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13534368"></a>7.7.11. Zeitverzögerungen</h3></div></div></div>
+  <div class="section" title="7.7.4.9. Zeitverzögerungen">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="redundantmonitoring-timelags"></a>7.7.4.9. Zeitverzögerungen</h4></div></div></div>
     
 
     <p>Redundanz bei Icinga ist in keinster Weise perfekt. Eins der offenkundigeren Probleme ist die Verzögerung zwischen dem
@@ -380,9 +379,9 @@
     Intervall, in dem Services geprüft werden, und einer Menge pures Glück. Auf jeden Falls ist es besser als nichts.</p>
   </div>
 
-  <div class="section" title="7.7.12. Spezialfälle">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13550224"></a>7.7.12. Spezialfälle</h3></div></div></div>
+  <div class="section" title="7.7.4.10. Spezialfälle">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="redundantmonitoring-specialcases"></a>7.7.4.10. Spezialfälle</h4></div></div></div>
     
 
     <p>Eins sollten Sie beachten: Wenn Host A "down" geht, werden bei Host E die Benachrichtigungen aktiviert und er übernimmt die
@@ -397,21 +396,33 @@
     diese Zeit durch die Erhöhung der Frequenz von Service-Prüfungen (auf Host E) für Host A minimiert werden. Der Rest ist purer Zufall,
     aber die gesamte "Blackout"-Zeit sollte nicht allzu hoch sein.</p>
 
-    <p><a name="redundancy-scenario_2"></a> <span class="bold"><strong>Szenario 2 - Failover-Überwachung</strong></span></p>
   </div>
 
-  <div class="section" title="7.7.13. Einführung">
+  </div>
+  <div class="section" title="7.7.5. Scenario 2 - Failover Überwachung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp13554704"></a>7.7.13. Einführung</h3></div></div></div>
+<a name="failovermonitoring"></a>7.7.5. Scenario 2 - Failover Überwachung</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">7.7.5.1. <a href="redundancy.html#failovermonitoring-introduction">Einführung</a></span></dt>
+<dt><span class="section">7.7.5.2. <a href="redundancy.html#failovermonitoring-goals">Ziele</a></span></dt>
+<dt><span class="section">7.7.5.3. <a href="redundancy.html#failovermonitoring-initialprogramsettings">Initiale Programm-Einstellungen</a></span></dt>
+<dt><span class="section">7.7.5.4. <a href="redundancy.html#failovermonitoring-masterprocesscheck">Master-Prozess-Prüfungen</a></span></dt>
+<dt><span class="section">7.7.5.5. <a href="redundancy.html#failovermonitoring-additionalissues">Zusätzliche Themen</a></span></dt>
+</dl></div>
+          
+
+  <div class="section" title="7.7.5.1. Einführung">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="failovermonitoring-introduction"></a>7.7.5.1. Einführung</h4></div></div></div>
     
 
     <p>Failover-Überwachung ist ähnlich wie die redundante Überwachung (wie beschrieben in <a class="link" href="redundancy.html#redundancy-scenario_1">Szenario
     1</a>).</p>
   </div>
 
-  <div class="section" title="7.7.14. Ziele">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13556576"></a>7.7.14. Ziele</h3></div></div></div>
+  <div class="section" title="7.7.5.2. Ziele">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="failovermonitoring-goals"></a>7.7.5.2. Ziele</h4></div></div></div>
     
 
     <p>Das grundlegende Ziel der Failover-Überwachung besteht darin, dass der Icinga-Prozess auf dem Slave-Host untätig ist,
@@ -425,9 +436,9 @@
     nun, wie Sie das Problem umgehen können.</p>
   </div>
 
-  <div class="section" title="7.7.15. Initiale Programm-Einstellungen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13560400"></a>7.7.15. Initiale Programm-Einstellungen</h3></div></div></div>
+  <div class="section" title="7.7.5.3. Initiale Programm-Einstellungen">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="failovermonitoring-initialprogramsettings"></a>7.7.5.3. Initiale Programm-Einstellungen</h4></div></div></div>
     
 
     <p>Deaktivieren Sie aktive Service-Prüfungen und Benachrichtigungen auf dem Slave-Host durch die <a class="link" href="configmain.html#configmain-execute_service_checks">execute_service_checks</a>- und die <a class="link" href="configmain.html#configmain-enable_notifications">enable_notifications</a>-Direktiven. Dies wird den Slave-Host davon abhalten, Services und
@@ -436,9 +447,9 @@
     aktiviert ist.</p>
   </div>
 
-  <div class="section" title="7.7.16. Master-Prozess-Prüfungen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13564160"></a>7.7.16. Master-Prozess-Prüfungen</h3></div></div></div>
+  <div class="section" title="7.7.5.4. Master-Prozess-Prüfungen">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="failovermonitoring-masterprocesscheck"></a>7.7.5.4. Master-Prozess-Prüfungen</h4></div></div></div>
     
 
     <p>Setzen Sie einen cron-Job auf dem Slave-Host auf, der periodisch (sagen wir jede Minute) läuft und den Status des
@@ -455,9 +466,9 @@
     beschrieben die Host- und Service-Handler definieren, weil die Dinge anders behandelt werden.</p>
   </div>
 
-  <div class="section" title="7.7.17. Zusätzliche Themen">
-<div class="titlepage"><div><div><h3 class="title">
-<a name="idp13571168"></a>7.7.17. Zusätzliche Themen</h3></div></div></div>
+  <div class="section" title="7.7.5.5. Zusätzliche Themen">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="failovermonitoring-additionalissues"></a>7.7.5.5. Zusätzliche Themen</h4></div></div></div>
     
 
     <p>An diesem Punkt haben Sie ein sehr einfaches Failover-Überwachungs-Setup implementiert. Trotzdem gibt es einen weiteren Punkt, den
@@ -473,13 +484,16 @@
 
     <p>Das ist eigentlich alles, was das Setup betrifft.</p>
 
-    <a class="indexterm" name="idp13575840"></a>
+    <a class="indexterm" name="idp13622640"></a>
 
-    <a class="indexterm" name="idp13577552"></a>
+    <a class="indexterm" name="idp13627024"></a>
 
-    <a class="indexterm" name="idp13579344"></a>
+    <a class="indexterm" name="idp13628736"></a>
 
-    <a class="indexterm" name="idp13580976"></a>
+    <a class="indexterm" name="idp13630448"></a>
+
+  </div>
+
   </div>
 </div>
 <div class="navfooter">

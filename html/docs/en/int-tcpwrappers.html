@@ -31,9 +31,9 @@
 <a name="int-tcpwrappers"></a>9.3. <a name="int_tcpwrappers"></a>TCP Wrapper Integration</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section">9.3.1. <a href="int-tcpwrappers.html#introduction">Introduction</a></span></dt>
-<dt><span class="section">9.3.2. <a href="int-tcpwrappers.html#servicedefinition">Defining A Service</a></span></dt>
+<dt><span class="section">9.3.2. <a href="int-tcpwrappers.html#servicedefinitiontcpwrapper">Defining A Service</a></span></dt>
 <dt><span class="section">9.3.3. <a href="int-tcpwrappers.html#configtcpwrappers">Configuring TCP Wrappers</a></span></dt>
-<dt><span class="section">9.3.4. <a href="int-tcpwrappers.html#script">Writing The Script</a></span></dt>
+<dt><span class="section">9.3.4. <a href="int-tcpwrappers.html#tcpwrapperscript">Writing The Script</a></span></dt>
 <dt><span class="section">9.3.5. <a href="int-tcpwrappers.html#finish">Finishing Up</a></span></dt>
 </dl></div>
   
@@ -73,7 +73,7 @@
 
   <div class="section" title="9.3.2. Defining A Service">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="servicedefinition"></a>9.3.2. Defining A Service</h3></div></div></div>
+<a name="servicedefinitiontcpwrapper"></a>9.3.2. Defining A Service</h3></div></div></div>
     
 
     <p>If you haven't done so already, create a <a class="link" href="objectdefinitions.html#objectdefinitions-host">host definition</a> for the remote host
@@ -129,7 +129,7 @@
 
   <div class="section" title="9.3.4. Writing The Script">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="script"></a>9.3.4. Writing The Script</h3></div></div></div>
+<a name="tcpwrapperscript"></a>9.3.4. Writing The Script</h3></div></div></div>
     
 
     <p>The last thing you need to do is write the <span class="emphasis"><em>handle_tcp_wrapper</em></span> script on <span class="emphasis"><em>firestorm</em></span> that
@@ -165,7 +165,7 @@
 
     <pre class="screen">Denied sshd2-sdn-ar-002mnminnP321.dialsprint.net </pre>
 
-    <a class="indexterm" name="idp15656080"></a>
+    <a class="indexterm" name="idp15625408"></a>
   </div>
 </div>
 <div class="navfooter">

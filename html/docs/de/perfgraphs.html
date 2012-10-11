@@ -30,22 +30,22 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="perfgraphs"></a>8.7. <a name="perf_graphs"></a>Grafische Darstellung von Performance-Informationen mit PNP4Nagios</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">8.7.1. <a href="perfgraphs.html#idp15271552">Einführung</a></span></dt>
-<dt><span class="section">8.7.2. <a href="perfgraphs.html#idp15278128">Voraussetzungen</a></span></dt>
-<dt><span class="section">8.7.3. <a href="perfgraphs.html#idp15305840">Durchschnittliche Host-/Service-Prüfungslatenz</a></span></dt>
-<dt><span class="section">8.7.4. <a href="perfgraphs.html#idp15322288">Service-Statistiken</a></span></dt>
-<dt><span class="section">8.7.5. <a href="perfgraphs.html#idp15332400">Host-Statistiken</a></span></dt>
-<dt><span class="section">8.7.6. <a href="perfgraphs.html#idp15342528">Durchschnittliche Ausführungszeiten</a></span></dt>
-<dt><span class="section">8.7.7. <a href="perfgraphs.html#idp15354832">Externe Befehle (external commands)</a></span></dt>
-<dt><span class="section">8.7.8. <a href="perfgraphs.html#idp15363680">Puffer für externe Befehle (external command buffers)</a></span></dt>
-<dt><span class="section">8.7.9. <a href="perfgraphs.html#idp15369840">Zwischengespeicherte Host- und Service-Prüfungen (cached host and service checks)</a></span></dt>
-<dt><span class="section">8.7.10. <a href="perfgraphs.html#idp15377600">Durchschnittliche Zustandswechsel</a></span></dt>
+<dt><span class="section">8.7.1. <a href="perfgraphs.html#introduction">Einführung</a></span></dt>
+<dt><span class="section">8.7.2. <a href="perfgraphs.html#prerequisites">Voraussetzungen</a></span></dt>
+<dt><span class="section">8.7.3. <a href="perfgraphs.html#avghostsvcchecklatency">Durchschnittliche Host-/Service-Prüfungslatenz</a></span></dt>
+<dt><span class="section">8.7.4. <a href="perfgraphs.html#servicestatistics">Service-Statistiken</a></span></dt>
+<dt><span class="section">8.7.5. <a href="perfgraphs.html#hoststatistics">Host-Statistiken</a></span></dt>
+<dt><span class="section">8.7.6. <a href="perfgraphs.html#avgexecutiontimes">Durchschnittliche Ausführungszeiten</a></span></dt>
+<dt><span class="section">8.7.7. <a href="perfgraphs.html#externalcommands">Externe Befehle (external commands)</a></span></dt>
+<dt><span class="section">8.7.8. <a href="perfgraphs.html#externalcommandbuffers">Puffer für externe Befehle (external command buffers)</a></span></dt>
+<dt><span class="section">8.7.9. <a href="perfgraphs.html#avgstatechanges">Zwischengespeicherte Host- und Service-Prüfungen (cached host and service checks)</a></span></dt>
+<dt><span class="section">8.7.10. <a href="perfgraphs.html#idp15458016">Durchschnittliche Zustandswechsel</a></span></dt>
 </dl></div>
   
 
   <div class="section" title="8.7.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15271552"></a>8.7.1. Einführung</h3></div></div></div>
+<a name="introduction"></a>8.7.1. Einführung</h3></div></div></div>
     
 
     <p>Das <a class="link" href="icingastats.html" target="_top">icingastats</a>-Utility erlaubt Ihnen zusammen mit <a class="link" href="http://docs.pnp4nagios.org/pnp-0.6/start" target="_top">PNP4Nagios</a>, verschiedene Icinga-Performance-Statistiken über eine
@@ -66,7 +66,7 @@
 
   <div class="section" title="8.7.2. Voraussetzungen">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15278128"></a>8.7.2. Voraussetzungen</h3></div></div></div>
+<a name="prerequisites"></a>8.7.2. Voraussetzungen</h3></div></div></div>
     
 
     <p>PNP4Nagios ist eines der populärsten Addons wegen der einfachen Installation und geringem Wartungsaufwand während des Betriebs.
@@ -172,11 +172,11 @@
 
   <div class="section" title="8.7.3. Durchschnittliche Host-/Service-Prüfungslatenz">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15305840"></a>8.7.3. Durchschnittliche Host-/Service-Prüfungslatenz</h3></div></div></div>
+<a name="avghostsvcchecklatency"></a>8.7.3. Durchschnittliche Host-/Service-Prüfungslatenz</h3></div></div></div>
     
 
     <div class="figure">
-<a name="idp15306752"></a><p class="title"><b>Abbildung 8.1. Durchschnittliche Host-/Service-Prüfungslatenz</b></p>
+<a name="idp15385248"></a><p class="title"><b>Abbildung 8.1. Durchschnittliche Host-/Service-Prüfungslatenz</b></p>
 <div class="figure-contents">
       
 
@@ -224,11 +224,11 @@
 
   <div class="section" title="8.7.4. Service-Statistiken">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15322288"></a>8.7.4. Service-Statistiken</h3></div></div></div>
+<a name="servicestatistics"></a>8.7.4. Service-Statistiken</h3></div></div></div>
     
 
     <div class="figure">
-<a name="idp15322928"></a><p class="title"><b>Abbildung 8.2. Service-Statistiken</b></p>
+<a name="idp15399856"></a><p class="title"><b>Abbildung 8.2. Service-Statistiken</b></p>
 <div class="figure-contents">
       
 
@@ -259,11 +259,11 @@
 
   <div class="section" title="8.7.5. Host-Statistiken">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15332400"></a>8.7.5. Host-Statistiken</h3></div></div></div>
+<a name="hoststatistics"></a>8.7.5. Host-Statistiken</h3></div></div></div>
     
 
     <div class="figure">
-<a name="idp15333104"></a><p class="title"><b>Abbildung 8.3. Host-Statistiken</b></p>
+<a name="idp15410240"></a><p class="title"><b>Abbildung 8.3. Host-Statistiken</b></p>
 <div class="figure-contents">
       
 
@@ -294,11 +294,11 @@
 
   <div class="section" title="8.7.6. Durchschnittliche Ausführungszeiten">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15342528"></a>8.7.6. Durchschnittliche Ausführungszeiten</h3></div></div></div>
+<a name="avgexecutiontimes"></a>8.7.6. Durchschnittliche Ausführungszeiten</h3></div></div></div>
     
 
     <div class="figure">
-<a name="idp15343376"></a><p class="title"><b>Abbildung 8.4. Durchschnittliche Ausführungszeiten</b></p>
+<a name="idp15420416"></a><p class="title"><b>Abbildung 8.4. Durchschnittliche Ausführungszeiten</b></p>
 <div class="figure-contents">
       
 
@@ -342,11 +342,11 @@
 
   <div class="section" title="8.7.7. Externe Befehle (external commands)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15354832"></a>8.7.7. Externe Befehle (external commands)</h3></div></div></div>
+<a name="externalcommands"></a>8.7.7. Externe Befehle (external commands)</h3></div></div></div>
     
 
     <div class="figure">
-<a name="idp15355344"></a><p class="title"><b>Abbildung 8.5. Externe Befehle</b></p>
+<a name="idp15435248"></a><p class="title"><b>Abbildung 8.5. Externe Befehle</b></p>
 <div class="figure-contents">
       
 
@@ -374,11 +374,11 @@
 
   <div class="section" title="8.7.8. Puffer für externe Befehle (external command buffers)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15363680"></a>8.7.8. Puffer für externe Befehle (external command buffers)</h3></div></div></div>
+<a name="externalcommandbuffers"></a>8.7.8. Puffer für externe Befehle (external command buffers)</h3></div></div></div>
     
 
     <div class="figure">
-<a name="idp15364192"></a><p class="title"><b>Abbildung 8.6. Puffer für externe Befehle</b></p>
+<a name="idp15444576"></a><p class="title"><b>Abbildung 8.6. Puffer für externe Befehle</b></p>
 <div class="figure-contents">
       
 
@@ -399,11 +399,11 @@
 
   <div class="section" title="8.7.9. Zwischengespeicherte Host- und Service-Prüfungen (cached host and service checks)">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15369840"></a>8.7.9. Zwischengespeicherte Host- und Service-Prüfungen (cached host and service checks)</h3></div></div></div>
+<a name="avgstatechanges"></a>8.7.9. Zwischengespeicherte Host- und Service-Prüfungen (cached host and service checks)</h3></div></div></div>
     
 
     <div class="figure">
-<a name="idp15370480"></a><p class="title"><b>Abbildung 8.7. Zwischengespeicherte Host- und Service-Prüfungen</b></p>
+<a name="idp15451328"></a><p class="title"><b>Abbildung 8.7. Zwischengespeicherte Host- und Service-Prüfungen</b></p>
 <div class="figure-contents">
       
 
@@ -428,11 +428,11 @@
 
   <div class="section" title="8.7.10. Durchschnittliche Zustandswechsel">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="idp15377600"></a>8.7.10. Durchschnittliche Zustandswechsel</h3></div></div></div>
+<a name="idp15458016"></a>8.7.10. Durchschnittliche Zustandswechsel</h3></div></div></div>
     
 
     <div class="figure">
-<a name="idp15375040"></a><p class="title"><b>Abbildung 8.8. Durchschnittliche Zustandswechsel</b></p>
+<a name="idp15458960"></a><p class="title"><b>Abbildung 8.8. Durchschnittliche Zustandswechsel</b></p>
 <div class="figure-contents">
       
 
@@ -448,7 +448,7 @@
         <p><a class="link" href="flapping.html" title="7.8. Erkennung und Behandlung von Status-Flattern">Flattererkennung (flap detection)</a></p>
       </li></ul></div>
 
-    <a class="indexterm" name="idp15383440"></a>
+    <a class="indexterm" name="idp15464064"></a>
   </div>
 </div>
 <div class="navfooter">
