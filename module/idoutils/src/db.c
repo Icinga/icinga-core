@@ -1340,7 +1340,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 int ido2db_db_version_check(ido2db_idi *idi) {
 	char *buf;
 	char *name;
-	int result;;
+	int result;
 	void *data[1];
 	/*
 	#ifdef USE_ORACLE
