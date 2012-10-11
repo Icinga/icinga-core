@@ -256,18 +256,47 @@ quit</pre>
 
         <p>Go to <code class="uri">/root/Icinga/datasource</code> (be sure that Refine contains "changed by anyone").</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+    <div class="figure">
+<a name="idp15705024"></a><p class="title"><b>Figure 9.1. Icinga reporting datasource IDO</b></p>
+<div class="figure-contents">
+      
+
+      <div class="screenshot">
+        <div class="mediaobject"><img src="../images/icinga-reporting-datasource-ido_1.8.png" alt="Icinga reporting datasource IDO"></div>
+      </div>
+    </div>
+</div>
+<br class="figure-break">
+
+
+        <div class="itemizedlist">
+<div class="figure">
+<a name="idp15709504"></a><p class="title"><b>Figure 9.2. Icinga reporting datasource ido mysql</b></p>
+<div class="figure-contents">
+      
+
+      <div class="screenshot">
+        <div class="mediaobject"><img src="../images/icinga-reporting-datasource-ido-mysql_1.8.png" alt="Icinga reporting datasource ido mysql"></div>
+      </div>
+    </div>
+</div>
+<br class="figure-break"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-            <p>edit the existing datasource and configure your values.</p>
-          </li>
+		  <p>edit the existing datasource and configure your values.
+			  MySQL driver: com.mysql.jdbc.Driver
+			  MySQL URL: jdbc:mysql://localhost:3306/icinga
+		  </p>
+	  </li>
 <li class="listitem">
             <p>test the configuration and save the connection.</p>
           </li>
 <li class="listitem">
             <p>all reports in our package point to this datasource and should be able to run.</p>
           </li>
-</ul></div>
+</ul>
+</div>
       </li></ul></div>
+
   </div>
 
   <div class="section" title="9.5.6. Reports">
@@ -278,12 +307,12 @@ quit</pre>
     <p>Verify that the reports are available and working.</p>
 
     <div class="figure">
-<a name="idp15710368"></a><p class="title"><b>Figure 9.1. Icinga reporting</b></p>
+<a name="idp15716240"></a><p class="title"><b>Figure 9.3. Icinga reporting</b></p>
 <div class="figure-contents">
       
 
       <div class="screenshot">
-        <div class="mediaobject"><img src="../images/icinga-reporting_1.6.png" alt="Icinga reporting"></div>
+        <div class="mediaobject"><img src="../images/icinga-reporting-overview_1.8.png" alt="Icinga reporting"></div>
       </div>
     </div>
 </div>
@@ -317,7 +346,7 @@ quit</pre>
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp15719568"></a>
+    <a class="indexterm" name="idp15725536"></a>
   </div>
 </div>
 <div class="navfooter">
