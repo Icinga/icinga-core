@@ -58,7 +58,7 @@ ENHANCEMENTS
 * classic ui: Added host/service group filter to notifications.cgi & history.cgi #2679 - RB
 * classic ui: javascript refresh jumps to page top, not restoring previous scrolling position; add url param 'scroll=' #2855 - MF
 * classic ui: Cleaned up "linkBox" in all cgi's #3154 - RB
-* classic ui: add command to delete host downtime and all associated service downtimes (extinfo.cgi, status.cgi command drop down) - RD/MF
+* classic ui: add command to delete host downtime and all associated service downtimes (extinfo.cgi, status.cgi command drop down) #1572 - RD/MF
 * classic ui: Added config option to convert login username to lower case #3171 - AH
 * classic ui: Added a refresh button to tac.cgi in header mode #3164 - RB
 * classic ui: Added state type to JSON in status.cgi #3195 - RB
