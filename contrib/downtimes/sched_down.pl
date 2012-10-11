@@ -503,12 +503,13 @@ sub plan_downtimes {
 						($year,$mon,$mday) = Add_Delta_YMD ((Localtime($dt->{end_ts}))[0..2],0,0,$midnight);
 						$dt->{end_ts} = Mktime ($year,$mon,$mday,$dt->{end_hh},$dt->{end_mm},0);
 		
-						if (exists($cDowntimes{"$key;$dt->{start_ts};$dt->{end_ts}"})) {
-							info (1,"Rejected: ==> already planned $key:".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
+						if (exists($cDowntimes{"$h;$s;$dt->{start_ts};$dt->{end_ts}"})) {
+							info (1,"Rejected: > already planned $h;$s:".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
 							next;
 						}
 						my $diff = $dt->{end_ts} - $dt->{start_ts};
 						$f = ($diff == ($duration*60)) ? 1 : 0;
+						$f = 1 if ($duration == 0);
 						my $data = "$dt->{start_ts};$dt->{end_ts};$f;$t;".($duration*60).";$a;$c";
 						next if (set_cmd(\@cmd,$dt,$key,$data,$hg,$sg,$h,$s,$c,$p,$duration));
 	
@@ -853,7 +854,7 @@ sub set_cmd {
 	my ($cmd,$dt,$key,$data,$hg,$sg,$h,$s,$c,$p,$duration) = @_;
 	my $extcmd = "";
 	my $f = ($dt->{end_ts} - $dt->{start_ts} == $duration * 60) ? 1 : 0;
-	my $key2 = "$s;$c;$dt->{start_ts};$dt->{end_ts}";
+	my $key2 = "$s;$dt->{start_ts};$dt->{end_ts}";
 	info (1, "possibly on: ".localtime($dt->{start_ts})." to ".localtime($dt->{end_ts})." for $duration mins");
 	if ("$h;$s" =~ /;$/) {	# no service_description
 		if ($hg) {	# host_groups defined
