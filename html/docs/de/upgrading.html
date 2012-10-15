@@ -42,21 +42,21 @@
 <td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
 <th align="left">Anmerkung</th>
 </tr>
-<tr><td align="left" valign="top"> 
-    <p>Seit 1.8 finden Sie neue Konfigurationsoptionen, die in einer neuen Version hinzugefügt wurden, in <code class="filename">sample-config/updates/</code>
-          sowie <code class="filename">module/idoutils/config/updates</code>, z.B. <code class="filename">cgi.cfg_added_1.7_to_1.8.cfg</code>.
-    </p>
+<tr><td align="left" valign="top">
+    <p>Seit 1.8 finden Sie neue Konfigurationsoptionen, die in einer neuen Version hinzugefügt wurden, in
+    <code class="filename">sample-config/updates/</code> sowie <code class="filename">module/idoutils/config/updates</code>, z.B.
+    <code class="filename">cgi.cfg_added_1.7_to_1.8.cfg</code>.</p>
 
-    <p><span class="color"><font color="red">Der Core wird unbekannte Macros nicht mehr "as is" belassen, sondern diese entfernen und eine Warnung ins Log
-    schreiben.</font></span> Entweder korrigieren Sie die Konfiguration (falsche Macros, Dollarzeichen mit einem weiteren absichern) oder Sie setzen keep_unknown_macros=1
-    in der icinga.cfg Datei um zum alten Verhalten zurueckzukehren.
-    </p>
+    <p><span class="color"><font color="red">Der Core wird unbekannte Macros nicht mehr "as is" belassen, sondern diese entfernen und
+    eine Warnung ins Log schreiben.</font></span> Entweder korrigieren Sie die Konfiguration (falsche Macros, Dollarzeichen mit einem weiteren
+    absichern) oder Sie setzen keep_unknown_macros=1 in der <code class="filename">icinga.cfg</code>-Datei, um zum alten Verhalten
+    zurückzukehren.</p>
 
-    <p>Please have a look at the section "CHANGES" in the <code class="filename">changelog</code> as well.</p>
+    <p>Bitte werfen Sie auch einen Blick in den Abschnitt "CHANGES" in der Datei <code class="filename">changelog</code>.</p>
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp885024"></a>
+  <a class="indexterm" name="idp923440"></a>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -121,7 +121,7 @@
 
     <p>Das war's - Sie sind fertig!</p>
 
-    <a class="indexterm" name="idp899696"></a>
+    <a class="indexterm" name="idp938112"></a>
   </div>
 
   <div class="section" title="2.9.2. Upgrade von Nagios 3.x">
@@ -133,17 +133,28 @@
 
     <p>Falls Sie einen Upgrade von Nagios-Version 3.0.x durchführen, dann fehlt Ihnen ggf. PHP.</p>
 
-    <p><span class="emphasis"><em>Debian / Ubuntu</em></span> </p>
-<pre class="programlisting"> #&gt; apt-get install php5 libapache2-mod-php5</pre>
+    <p>
+      <span class="emphasis"><em>Debian / Ubuntu</em></span>
 
-    <p><span class="emphasis"><em>Fedora / RedHat</em></span></p>
+      </p>
+<pre class="programlisting"> #&gt; apt-get install php5 libapache2-mod-php5</pre>
+<p>
+    </p>
+
+    <p>
+      <span class="emphasis"><em>Fedora / RedHat</em></span>
+    </p>
 
     <pre class="programlisting"> #&gt; yum install php mod_php</pre>
 
     <p><span class="emphasis"><em>openSuSE / SLES:</em></span> Nutzen Sie yast zur Installation der Pakete <span class="emphasis"><em>php5</em></span> und
     <span class="emphasis"><em>apache2-mod_php5</em></span> oder benutzen Sie zypper</p>
 
-    <pre class="programlisting"> #&gt; zypper install php5 apache2-mod_php5</pre>
+    <p>
+      </p>
+<pre class="programlisting"> #&gt; zypper install php5 apache2-mod_php5</pre>
+<p>
+    </p>
 
     <p>Stellen Sie sicher, dass Sie eine gute Datensicherung Ihrer bestehenden Nagios-Installation und der Konfigurationsdateien
     haben. Wenn irgendetwas schief geht oder nicht funktioniert, dann können Sie auf diese Weise schnell Ihre alte Nagios-Version
@@ -225,7 +236,11 @@
         in <code class="filename">/usr/local/icinga/etc/icinga.cfg</code> die Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in
         "icinga_group". Das betrifft ggf. auch die Pfade in der Datei.</p>
 
-        <pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./icinga.cfg/</pre>
+        <p>
+          </p>
+<pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./icinga.cfg/</pre>
+<p>
+        </p>
       </li>
 <li class="listitem">
         <p>Ändern Sie in der CGI-Konfigurationsdatei <code class="filename">cgi.cfg</code> die Pfad-Angaben.</p>
@@ -273,11 +288,11 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp949280"></a>
+    <a class="indexterm" name="idp988944"></a>
 
-    <a class="indexterm" name="idp950976"></a>
+    <a class="indexterm" name="idp990640"></a>
 
-    <a class="indexterm" name="idp952656"></a>
+    <a class="indexterm" name="idp992320"></a>
   </div>
 
   <div class="section" title="2.9.3. Upgrade von Nagios 2.x">
@@ -344,9 +359,13 @@
 <li class="listitem">
         <p>Konfigurationsdateien</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+        <p>
+          </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-              <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+              <p>
+                </p>
+<div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
                     <p>Hauptkonfigurationsdatei (normalerweise <code class="filename">nagios.cfg</code>)</p>
                   </li>
@@ -360,6 +379,8 @@
                     <p>all Ihre Objektdefinitionsdateien</p>
                   </li>
 </ul></div>
+<p>
+              </p>
             </li>
 <li class="listitem">
               <p>Aufbewahrungsdatei (normalerweise <code class="filename">retention.dat</code>)</p>
@@ -371,6 +392,8 @@
               <p>archivierte Nagios-Protokolldateien</p>
             </li>
 </ul></div>
+<p>
+        </p>
       </li>
 <li class="listitem">
         <p>Deinstallieren Sie die originalen RPM- oder APT-Pakete</p>
@@ -396,7 +419,7 @@
     installieren. Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder
     APT-Paket entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-    <a class="indexterm" name="idp995616"></a>
+    <a class="indexterm" name="idp1035952"></a>
   </div>
 </div>
 <div class="navfooter">
