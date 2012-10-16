@@ -719,7 +719,7 @@ AC_ARG_WITH(cgiurl,AC_HELP_STRING([--with-cgiurl=<local-url>],[sets URL for cgi 
 AC_SUBST(cgiurl)
 AC_ARG_WITH(htmurl,AC_HELP_STRING([--with-htmurl=<local-url>],[sets URL for public html]),htmurl=$withval,htmurl=/icinga)
 AC_SUBST(htmurl)
-AC_ARG_WITH(mainurl,AC_HELP_STRING([--with-mainurl=<local-url>],[sets URL for default main frame in index.html (use quotes if special chars like & used)]),mainurl=$withval,mainurl=/icinga/cgi-bin/tac.cgi)
+AC_ARG_WITH(mainurl,AC_HELP_STRING([--with-mainurl=<local-url>],[sets URL for default main frame in index.html (use quotes if special chars like & used)]),mainurl=$withval,mainurl=$cgiurl/tac.cgi)
 AC_SUBST(mainurl)
 
 USE_NANOSLEEP=yes
