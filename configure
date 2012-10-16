@@ -6110,7 +6110,7 @@ fi
 if test "${with_mainurl+set}" = set; then :
   withval=$with_mainurl; mainurl=$withval
 else
-  mainurl=/icinga/cgi-bin/tac.cgi
+  mainurl=$cgiurl/tac.cgi
 fi
 
 
