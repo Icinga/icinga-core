@@ -15,11 +15,11 @@
 
 CREATE OR REPLACE FUNCTION from_unixtime(integer) RETURNS timestamp with time zone AS '
          SELECT to_timestamp($1) AS result
-' LANGUAGE 'SQL';
+' LANGUAGE sql;
 
 CREATE OR REPLACE FUNCTION unix_timestamp(timestamp with time zone) RETURNS bigint AS '
         SELECT EXTRACT(EPOCH FROM $1)::bigint AS result;
-' LANGUAGE 'SQL';
+' LANGUAGE sql;
 
 
 -- -----------------------------------------
