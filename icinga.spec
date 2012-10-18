@@ -408,7 +408,7 @@ fi
 
 
 %changelog
-* Fri Jul 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.8.0-1
+* Thu Oct 18 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.8.0-1
 - bump version
 - add devel package, installing header files to include/
 - use --with-mainurl from upstream to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29
