@@ -408,7 +408,7 @@ fi
 
 
 %changelog
-* Fri Jul 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.8.0-1
+* Thu Oct 18 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.8.0-1
 - bump version
 - add devel package, installing header files to include/
 - use --with-mainurl from upstream to set the default to /icinga/cgi-bin/status.cgi?host=all&type=detail&servicestatustypes=29
@@ -416,6 +416,15 @@ fi
 - change permissions on ido2db.cfg, not being world readable (Aaron Russo) #2987
 - drop unsupported configure options causing warnings #3037
 - fix new jquery-ui files from icinga-gui datetime picker #3009
+
+* Thu Aug 30 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.2-2
+- include a fix for epn failure from upstream
+
+* Tue Aug 21 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.2-1
+- bump version
+
+* Mon Jun 18 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.1-1
+- bump to 1.7.1
 
 * Sun May 06 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.0-1
 - drop idoutils, add idoutils-libdbi-mysql and idoutils-libdbi-pgsql
