@@ -4202,6 +4202,7 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 	int x = 0;
 	int result = IDO_OK;
 	void *data[56];
+	const int PLUGIN_OUTPUT_SIZE = 2048; /* table servicestatus column output length */
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hoststatusdata() start\n");
 
@@ -4253,6 +4254,9 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERHOST], &obsess_over_host);
 	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_NORMALCHECKINTERVAL], &normal_check_interval);
 	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_RETRYCHECKINTERVAL], &retry_check_interval);
+
+	if (strlen(idi->buffered_input[IDO_DATA_OUTPUT]) > PLUGIN_OUTPUT_SIZE)
+		idi->buffered_input[IDO_DATA_OUTPUT][PLUGIN_OUTPUT_SIZE] = '\0';
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_OUTPUT]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_LONGOUTPUT]);
@@ -4417,6 +4421,7 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 	int x = 0;
 	int result = IDO_OK;
 	void *data[58];
+	const int PLUGIN_OUTPUT_SIZE = 2048; /* table servicestatus column output length */
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicestatusdata() start\n");
 
@@ -4469,6 +4474,9 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERSERVICE], &obsess_over_service);
 	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_NORMALCHECKINTERVAL], &normal_check_interval);
 	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_RETRYCHECKINTERVAL], &retry_check_interval);
+
+	if (strlen(idi->buffered_input[IDO_DATA_OUTPUT]) > PLUGIN_OUTPUT_SIZE)
+		idi->buffered_input[IDO_DATA_OUTPUT][PLUGIN_OUTPUT_SIZE] = '\0';
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_OUTPUT]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_LONGOUTPUT]);

@@ -176,7 +176,7 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text,OCI_Lob
 int ido2db_oci_set_trace_event(OCI_Connection *,unsigned int);
 int ido2db_oci_execute_out(OCI_Statement *,char *);
 int ido2db_oci_set_session_info(OCI_Connection *, char *);
-void ido2db_oci_print_binds(OCI_Statement *,int,char **);
+int ido2db_oci_print_binds(OCI_Statement *,char **);
 void ido2db_oci_statement_free(OCI_Statement *,char *);
 /* Helper */
 int ido2db_oci_StringUTF8Length(const char *str);
