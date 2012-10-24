@@ -408,6 +408,9 @@ fi
 
 
 %changelog
+* Thu Oct 25 2012 Michael Friedrich <michael.friedrich@gmail.com> - 1.8.1-1
+- 1.8.1 release with a quickfix for faulty macros
+
 * Thu Oct 18 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.8.0-1
 - bump version
 - add devel package, installing header files to include/
