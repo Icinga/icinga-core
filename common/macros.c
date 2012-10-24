@@ -204,7 +204,7 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 
 			/* an error occurred - we couldn't parse the macro, so continue on */
 			if (result == ERROR) {
-				log_debug_info(DEBUGL_MACROS, 0, " WARNING: An error occurred processing macro '%s'!\n", temp_buffer);
+				logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: An error occurred processing macro '%s'!\n", temp_buffer);
 				if (free_macro == TRUE)
 					my_free(selected_macro);
 			}
@@ -2700,13 +2700,39 @@ int init_macros(void) {
 		macro_keys[x].code = x;
 		macro_keys[x].name = macro_x_names[x];
 
-		/* host/service output/perfdata and author/comment macros should get cleaned */
-		if ((x >= 16 && x <= 19) || (x >= 49 && x <= 52) || (x >= 99 && x <= 100) || (x >= 124 && x <= 127)) {
-			macro_keys[x].clean_options = (STRIP_ILLEGAL_MACRO_CHARS | ESCAPE_MACRO_CHARS);
-		}
-		/* url macros should get cleaned */
-		if ((x >= 125 && x <= 126) || (x >= 128 && x <= 129) || (x >= 77 && x <= 78) || (x >= 74 && x <= 75)) {
-			macro_keys[x].clean_options = URL_ENCODE_MACRO_CHARS;
+		switch (x) {
+			/* host/service output/perfdata and author/comment macros should get cleaned */
+			case MACRO_HOSTOUTPUT:
+			case MACRO_SERVICEOUTPUT:
+			case MACRO_HOSTPERFDATA:
+			case MACRO_SERVICEPERFDATA:
+			case MACRO_HOSTACKAUTHOR:
+			case MACRO_HOSTACKCOMMENT:
+			case MACRO_SERVICEACKAUTHOR:
+			case MACRO_SERVICEACKCOMMENT:
+			case MACRO_LONGHOSTOUTPUT:
+			case MACRO_LONGSERVICEOUTPUT:
+			case MACRO_HOSTGROUPNOTES:
+			case MACRO_SERVICEGROUPNOTES:
+				macro_keys[x].clean_options = (STRIP_ILLEGAL_MACRO_CHARS | ESCAPE_MACRO_CHARS);
+				break;
+
+			/* url macros should get cleaned */
+			case MACRO_HOSTACTIONURL:
+			case MACRO_HOSTNOTESURL:
+			case MACRO_SERVICEACTIONURL:
+			case MACRO_SERVICENOTESURL:
+			case MACRO_HOSTGROUPNOTESURL:
+			case MACRO_HOSTGROUPACTIONURL:
+			case MACRO_SERVICEGROUPNOTESURL:
+			case MACRO_SERVICEGROUPACTIONURL:
+				macro_keys[x].clean_options = URL_ENCODE_MACRO_CHARS;
+				break;
+
+			/* by default, we do not clean anything */
+			default:
+				macro_keys[x].clean_options = 0;
+				break;
 		}
 	}
 
