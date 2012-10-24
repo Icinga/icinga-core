@@ -12,6 +12,10 @@ UPGRADE NOTES
 	- core, classic ui: sample-config/updates/
 	- idoutils: module/idoutils/config/updates
 
+1.8.1 - 25/10/2012
+
+FIXES
+* core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
 
 1.8.0 - 18/10/2012
 
