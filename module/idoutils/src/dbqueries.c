@@ -801,6 +801,11 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit commandline size #3324 */
+		if ( strlen(*(char **)data[5])  > OCI_COMMAND_LINE_SIZE ) {
+			(*(char **)data[5])[OCI_COMMAND_LINE_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_systemcommand() output shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_systemcommanddata, MT(":X6"), *(char **) data[5], 0)) {
 			return IDO_ERROR;
 		}
@@ -822,6 +827,11 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[10])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+			(*(char **)data[10])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_systemcommand() output shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_systemcommanddata, MT(":X11"), *(char **) data[10], 0)) {
 			return IDO_ERROR;
 		}
@@ -1100,6 +1110,12 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_args size #3324 */
+		if ( strlen(*(char **)data[10])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[10])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_eventhandler() command_args shorted\n");
+		}
+
 		if (!OCI_BindString(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X11"), *(char **) data[10], 0)) {
 			return IDO_ERROR;
 		}
@@ -1109,6 +1125,11 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit commandline size #3324 */
+		if ( strlen(*(char **)data[11])  > OCI_COMMAND_LINE_SIZE ) {
+			(*(char **)data[11])[OCI_COMMAND_LINE_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_eventhandler() commandline shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X12"), *(char **) data[11], 0)) {
 			return IDO_ERROR;
 		}
@@ -1130,6 +1151,11 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[16])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+			(*(char **)data[16])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_eventhandler() output shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X17"), *(char **) data[16], 0)) {
 			return IDO_ERROR;
 		}
@@ -1384,7 +1410,11 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 			return IDO_ERROR;
 		}
 	} else {
-
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[9])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+			(*(char **)data[9])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() output shorted");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_notificationdata, MT(":X10"), *(char **) data[9], 0)) {
 			return IDO_ERROR;
 		}
@@ -1795,6 +1825,11 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[7])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[7])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_contactnotificationmethods() command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X8"), *(char **) data[7], 0)) {
 			return IDO_ERROR;
 		}
@@ -2002,6 +2037,11 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[16])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+			(*(char **)data[16])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicechecks() output shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X17"), *(char **) data[16], 0)) {
 			return IDO_ERROR;
 		}
@@ -2015,6 +2055,11 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[20])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[20])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicechecks() command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X21"), *(char **) data[20], 0)) {
 			return IDO_ERROR;
 		}
@@ -2025,6 +2070,11 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_line size #3324 */
+		if ( strlen(*(char **)data[21])  > OCI_COMMAND_LINE_SIZE ) {
+			(*(char **)data[21])[OCI_COMMAND_LINE_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicechecks() command_line shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X22"), *(char **) data[21], 0)) {
 			return IDO_ERROR;
 		}
@@ -2202,6 +2252,11 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[1])  > OCI_COMMAND_ARG_SIZE ) {
+				(*(char **)data[1])[OCI_COMMAND_ARG_SIZE] = '\0';
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostchecks() command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X2"), *(char **) data[1], 0)) {
 			return IDO_ERROR;
 		}
@@ -2211,6 +2266,11 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit commandline size #3324 */
+		if ( strlen(*(char **)data[2])  > OCI_COMMAND_LINE_SIZE ) {
+					(*(char **)data[2])[OCI_COMMAND_LINE_SIZE] = '\0';
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostchecks() commandline shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X3"), *(char **) data[2], 0)) {
 			return IDO_ERROR;
 		}
@@ -2271,6 +2331,11 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[20])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+			(*(char **)data[20])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostchecks() output shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X21"), *(char **) data[20], 0)) {
 			return IDO_ERROR;
 		}
@@ -4012,6 +4077,12 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 			return IDO_ERROR;
 		}
 	} else {
+		 /* limit output size #3325 */
+		if ( strlen(*(char **)data[3])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+				(*(char **)data[3])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() output shorted\n");
+		}
+
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X4"), *(char **) data[3], 0)) {
 			return IDO_ERROR;
 		}
@@ -4529,6 +4600,10 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[3])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+				(*(char **)data[3])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X4"), *(char **) data[3], 0)) {
 			return IDO_ERROR;
 		}
@@ -5661,6 +5736,11 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[7])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[7])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostdefinition() check_command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X8"), *(char **) data[7], 0)) {
 			return IDO_ERROR;
 		}
@@ -6879,6 +6959,11 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[6])  > OCI_COMMAND_ARG_SIZE ) {
+				(*(char **)data[6])[OCI_COMMAND_ARG_SIZE] = '\0';
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicedefinition() check_command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X7"), *(char **) data[6], 0)) {
 			return IDO_ERROR;
 		}
@@ -6891,6 +6976,11 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[8])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[8])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_servicedefinition_definition() eventhandler_command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X9"), *(char **) data[8], 0)) {
 			return IDO_ERROR;
 		}
@@ -9216,6 +9306,11 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit commandline size #3324 */
+		if ( strlen(*(char **)data[3])  > OCI_COMMAND_LINE_SIZE ) {
+			(*(char **)data[3])[OCI_COMMAND_LINE_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_commanddefinition() commandline shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_commanddefinition_definition, MT(":X4"), *(char **) data[3], 0)) {
 			return IDO_ERROR;
 		}
@@ -10212,6 +10307,11 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[4])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[4])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_contact_notification() command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_contact_notificationcommands, MT(":X5"), *(char **) data[4], 0)) {
 			return IDO_ERROR;
 		}

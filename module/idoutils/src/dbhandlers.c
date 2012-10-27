@@ -4834,6 +4834,11 @@ int ido2db_handle_externalcommanddata(ido2db_idi *idi) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[4])  > OCI_COMMAND_ARG_SIZE ) {
+				(*(char **)data[4])[OCI_COMMAND_ARG_SIZE] = '\0';
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_external_commands() command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_external_commands, MT(":X5"), *(char **) data[4], 0)) {
 			return IDO_ERROR;
 		}
