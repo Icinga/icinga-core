@@ -7544,7 +7544,7 @@ int ido2db_oci_execute_out(OCI_Statement *st, char * fname) {
 	/**
 	 * enable dbms_output, execute statement and retrieve dbms_output lines
 	 */
-	OCI_ServerEnableOutput(cn , OCI_OUTPUT_BUFFER_SIZE, 1, 2000);
+	OCI_ServerEnableOutput(cn , OCI_DBMS_OUTPUT_BUFFER_SIZE, 1, 2000);
 	ret = OCI_Execute(st);
 	while ((p = OCI_ServerGetOutput(cn))) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s DBMSOUT:%s\n", fname, p);

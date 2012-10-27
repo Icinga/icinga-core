@@ -166,7 +166,7 @@ int ido2db_db_trim_data_table(ido2db_idi *,char *,char *,unsigned long);
 #define OCI_VARCHAR_SIZE 4096 /* max allowed string size for varchar2 (+1) */
 #define OCI_STR_SIZE 256 /* default small string buffer size */
 #define OCI_BINDARRAY_MAX_SIZE 5000 /* default array buffer and commit size for bulk ops */
-#define OCI_OUTPUT_BUFFER_SIZE 32000 /* Buffer size for dbms_output calls */
+#define OCI_DBMS_OUTPUT_BUFFER_SIZE 32000 /* Buffer size for dbms_output calls */
 #define OCI_LOB_CHUNK_SIZE 2048 /* Buffer size for LOB operations */
 
 void ido2db_ocilib_err_handler(OCI_Error *);
