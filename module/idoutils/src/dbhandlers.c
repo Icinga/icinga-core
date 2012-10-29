@@ -535,10 +535,8 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 	if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
 		while (idi->dbinfo.dbi_result) {
 			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-				object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result,
-				                                     "object_id");
-				objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result,
-				                "objecttype_id");
+				object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "object_id");
+				objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "objecttype_id");
 
 				/* get string and free it later on */
 				if (asprintf(&tmp1, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name1")) == -1)
@@ -551,10 +549,14 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 				free(tmp1);
 				free(tmp2);
 
+			} else {
+				dbi_result_free(idi->dbinfo.dbi_result);
+				idi->dbinfo.dbi_result = NULL;
 			}
-			dbi_result_free(idi->dbinfo.dbi_result);
-			idi->dbinfo.dbi_result = NULL;
 		}
+	} else {
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 	}
 
 	free(buf);
