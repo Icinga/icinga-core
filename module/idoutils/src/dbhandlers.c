@@ -516,13 +516,13 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 	int result = IDO_OK;
 	unsigned long object_id = 0L;
 	int objecttype_id = 0;
+	char *tmp1 = NULL;
+	char *tmp2 = NULL;
 #ifdef USE_LIBDBI
 	char *buf = NULL;
 #endif
 
 #ifdef USE_ORACLE
-	char *tmp1 = NULL;
-	char *tmp2 = NULL;
 	void *data[1];
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_cached_object_ids() start\n");
@@ -539,10 +539,18 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 				                                     "object_id");
 				objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result,
 				                "objecttype_id");
-				ido2db_add_cached_object_id(idi, objecttype_id,
-				                            dbi_result_get_string_copy(idi->dbinfo.dbi_result,
-				                                    "name1"), dbi_result_get_string_copy(
-				                                idi->dbinfo.dbi_result, "name2"), object_id);
+
+				/* get string and free it later on */
+				if (asprintf(&tmp1, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name1")) == -1)
+					tmp1 = NULL;
+				if (asprintf(&tmp2, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name2")) == -1)
+					tmp2 = NULL;
+
+				ido2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
+
+				free(tmp1);
+				free(tmp2);
+
 			}
 			dbi_result_free(idi->dbinfo.dbi_result);
 			idi->dbinfo.dbi_result = NULL;
