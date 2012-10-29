@@ -972,6 +972,7 @@ int ido2db_set_object_as_active(ido2db_idi *idi, int object_type,
 
 int ido2db_handle_object_enable_disable(ido2db_idi *idi, int enable) {
 	int result = IDO_OK;
+	int x = 0;
         char *name1 = NULL;
         char *name2 = NULL;
 #ifdef USE_LIBDBI
@@ -1102,6 +1103,10 @@ int ido2db_handle_object_enable_disable(ido2db_idi *idi, int enable) {
 
 #endif /* Oracle ocilib specific */
 
+	/* free memory */
+	for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++) {
+		free(es[x]);
+	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_object_enable_disable() end\n");
 
@@ -4125,6 +4130,16 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	result = ido2db_query_insert_or_update_programstatusdata_add(idi, data);
 
 	if (result == IDO_ERROR) {
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
+#endif
+		/* free memory */
+		for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
+			free(ts[x]);
+		for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++)
+			free(es[x]);
+
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_programstatusdata() error\n");
 		return result;
 	}
@@ -5417,6 +5432,10 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 #endif /* Oracle ocilib specific */
 
 	} else {
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
+#endif
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
 		                      " preceeding ido2db_query_insert_or_update_configfilevariables_add ERROR \n");
 		return IDO_ERROR;
@@ -6142,6 +6161,14 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 	} else {
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
+#endif
+		for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++) {
+			free(es[x]);
+		}
+
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() "
 		                      "preceeding ido2db_query_insert_or_update_hostdefinition_definition_add ERROR \n");
 		return IDO_ERROR;
@@ -6685,6 +6712,11 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 	} else {
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
+#endif
+		free(es[0]);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition() "
 		                      "preeceding ido2db_query_insert_or_update_hostgroupdefinition_definition_add ERROR \n");
 		return IDO_ERROR;
@@ -7115,6 +7147,14 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 	} else {
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
+#endif
+		for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++) {
+			free(es[x]);
+		}
+
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() "
 		                      "preceeding ido2db_query_insert_or_update_servicedefinition_definition_add ERROR \n");
 		return IDO_ERROR;
@@ -7534,6 +7574,11 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 	} else {
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
+#endif
+		free(es[0]);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition() "
 		                      "preeceding ido2db_query_insert_or_update_servicegroupdefinition_definition_add ERROR \n");
 		return IDO_ERROR;
@@ -8446,6 +8491,10 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 #endif /* Oracle ocilib specific */
 
 	} else {
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
+#endif
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition() "
 		                      "preceeding do2db_query_insert_or_update_timeperiodefinition_definition_add "
 		                      "ERROR \n");
@@ -9178,6 +9227,11 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 
 #endif /* Oracle ocilib specific */
 	} else {
+#ifdef USE_LIBDBI /* everything else will be libdbi */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
+#endif
+		free(es[0]);
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactroupdefinition() "
 		                      "preeceding ido2db_query_insert_or_update_contactgroupdefinition_definition_add ERROR \n");
 		return IDO_ERROR;

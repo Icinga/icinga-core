@@ -1491,6 +1491,11 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
+		/* free query buffer on error as well */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
+		free(buf);
+
 		/* bail out, but do not exit the child yet */
 		return IDO_ERROR;
 	}
