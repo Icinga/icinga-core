@@ -12,10 +12,19 @@ UPGRADE NOTES
 	- core, classic ui: sample-config/updates/
 	- idoutils: module/idoutils/config/updates
 
+1.8.2 - XX/11/2012
+
+FIXES
+* idoutils: fix many memory leaks in ido2db on dbi_result_free and others (thx Klaus Wagner) #3406 - MF
+* idoutils: fix ido2db crashes when Oracle queries fail #3324 - GB
+* idoutils: fix ORA-1461 writing data to varchar2 exceeding field size limit output, command_arg and commandline data written to Oracle #3324 #3325 - TD
+
+
 1.8.1 - 25/10/2012
 
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
+
 
 1.8.0 - 18/10/2012
 

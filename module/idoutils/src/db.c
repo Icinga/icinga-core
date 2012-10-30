@@ -1491,6 +1491,11 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() query against existing instance not possible, cleaning up and exiting\n");
 
+		/* free query buffer on error as well */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
+		free(buf);
+
 		/* bail out, but do not exit the child yet */
 		return IDO_ERROR;
 	}
@@ -3124,16 +3129,11 @@ void ido2db_ocilib_err_handler(OCI_Error *err) {
 				}
 		*/
 		if (OCI_GetBindCount(st) > 0) {
-			binds = malloc(OCI_VARCHAR_SIZE * 16);
-			if (binds == NULL) {
-				binds = strdup("Error:Memory Allocation Error");
-			} else {
-				ido2db_oci_print_binds(st, sizeof(binds), (char **)binds);
+			if (ido2db_oci_print_binds(st, &binds) >= 0) {
 				asprintf(&buf, "%s - MSG %s at pos %u in QUERY '%s' -->%s",
 				         errt_msg, err_msg, err_pos, sql, binds);
 				free(binds);
 			}
-
 		} else {
 			asprintf(&buf, "%s - MSG %s at pos %u in QUERY '%s'",
 			         errt_msg, err_msg, err_pos, sql);
@@ -7542,16 +7542,14 @@ int ido2db_oci_execute_out(OCI_Statement *st, char * fname) {
 	cn = OCI_StatementGetConnection(st);
 
 	/* print binds in Level SQL */
-	binds = malloc(OCI_VARCHAR_SIZE * 4);
-	if (binds) {
-		ido2db_oci_print_binds(st, sizeof(binds), (char **)binds);
+	if (ido2db_oci_print_binds(st, &binds) >= 0) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s Binds:%s\n", fname, binds);
 		free(binds);
 	}
 	/**
 	 * enable dbms_output, execute statement and retrieve dbms_output lines
 	 */
-	OCI_ServerEnableOutput(cn , OCI_OUTPUT_BUFFER_SIZE, 1, 2000);
+	OCI_ServerEnableOutput(cn , OCI_DBMS_OUTPUT_BUFFER_SIZE, 1, 2000);
 	ret = OCI_Execute(st);
 	while ((p = OCI_ServerGetOutput(cn))) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 2, "%s DBMSOUT:%s\n", fname, p);
@@ -7627,18 +7625,17 @@ int ido2db_oci_set_session_info(OCI_Connection *cn, char * action) {
 /**
  * print bind names and values
  * @param OCI_Connection
- * @param buffer size
  * @param buffer pointer
+ * @returns new output buffer length or -1 if an error occured
  */
-void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
+int ido2db_oci_print_binds(OCI_Statement *st, char **outp) {
 	OCI_Bind *bn;
-	char *text = NULL;
-	char *val = NULL;
-	char *fmt = NULL;
+	char temp[128];
+	char *type, *val, *field;
 	const mtext * name;
-	unsigned int type = 0;
+	unsigned int btype = 0;
 	unsigned int subtype = 0;
-	void * data;
+	void *data;
 	OCI_Date *dt;
 	OCI_Timestamp *ts;
 	OCI_Interval *inv;
@@ -7646,195 +7643,212 @@ void ido2db_oci_print_binds(OCI_Statement *st, int bsize, char ** outp) {
 	unsigned int size = 0;
 	unsigned int count = 0;
 	unsigned int i;
+	int rc;
+	size_t outp_len;
 
-	if (st == NULL) return;
-	text = malloc(OCI_VARCHAR_SIZE + 20);
-	val = malloc(OCI_VARCHAR_SIZE + 5);
-	fmt = malloc(OCI_STR_SIZE + 5);
-	if (text == NULL || val == NULL || fmt == NULL) {
-		if (text) free(text);
-		if (val) free(val);
-		if (fmt) free(fmt);
-		strcpy((char *)outp, "Memory Allocation Error!");
-		return;
-	}
+	outp_len = 0;
+
+	if (st == NULL)
+		return -1;
+
 	/* get bind count */
 	count = OCI_GetBindCount(st);
-	if (count == 0) return;
-	sprintf(text, "%u BindVars", count);
 	i = OCI_BindArrayGetSize(st);
-	if (i > 1) {
-		sprintf(text, "%s, Array %u Rows, Binds for first row", text, i);
-	}
-	strcat(text, " -->");
-	strcpy((char *)outp, text);
+
+	if (i > 1)
+		rc = asprintf(outp, "%d BindVars (Array %u Rows), Binds for first row: ", count, i);
+	else
+		rc = asprintf(outp, "%d BindVars: ", count);
+
+	if (rc < 0)
+		return -1;
+
+	outp_len = rc;
+
 	/* loop through bind vars */
 	for (i = 1; i <= count; i++) {
 		/* get bind parameter */
 		bn = OCI_GetBind(st, i);
 		name = OCI_BindGetName(bn);
-		type = OCI_BindGetType(bn);
+		btype = OCI_BindGetType(bn);
 		subtype = OCI_BindGetSubtype(bn);
 		data = OCI_BindGetData(bn);
 		size = OCI_BindGetDataSize(bn);
+
 		/*
 		 * different handling per data type
 		 * build string values
-		 * type in 'fmt'
+		 * type in 'type'
 		 * values in 'val'
 		*/
-		strcpy(val, "");
-		switch (type) {
+		type = NULL;
+		val = NULL;
+		switch (btype) {
 		case OCI_CDT_NUMERIC : //short, int, long long, double
 			switch (subtype) {
 			case OCI_NUM_SHORT:
-				strcpy(fmt, "Short");
-				sprintf(val, "'%i'", *(short *) data);
+				type = "Short";
+				if (asprintf(&val, "'%i'", *(short *)data) < 0)
+					val = NULL;
 				break;
 			case OCI_NUM_INT:
-				strcpy(fmt, "Int");
-				sprintf(val, "'%d'", *(int *) data);
+				type = "Int";
+				if (asprintf(&val, "'%d'", *(int *)data) < 0)
+					val = NULL;
 				break;
 			case OCI_NUM_BIGINT:
-				strcpy(fmt, "BigInt");
-				sprintf(val, "'%lld'", *(long long *) data);
+				type = "BigInt";
+				if (asprintf(&val, "'%lld'", *(long long *)data) < 0)
+					val = NULL;
 				break;
 			case OCI_NUM_USHORT:
-				strcpy(fmt, "ushort");
-				sprintf(val, "'%u'", *(unsigned short *) data);
+				type = "ushort";
+				if (asprintf(&val, "'%u'", *(unsigned short *)data) < 0)
+					val = NULL;
 				break;
 			case OCI_NUM_UINT:
-				strcpy(fmt, "uInt");
-				sprintf(val, "'%u'", *(unsigned int *) data);
+				type = "uInt";
+				if (asprintf(&val, "'%u'", *(unsigned int *)data) < 0)
+					val = NULL;
 				break;
 			case OCI_NUM_BIGUINT:
-				strcpy(fmt, "Big uInt");
-				sprintf(val, "'%llu'", *(unsigned long long *) data);
+				type = "Big uInt";
+				if (asprintf(&val, "'%llu'", *(unsigned long long *)data) < 0)
+					val = NULL;
 				break;
 			case OCI_NUM_DOUBLE:
-				strcpy(fmt, "Double");
-				sprintf(val, "'%f'", *(double *) data);
+				type = "Double";
+				if (asprintf(&val, "'%f'", *(double *)data) < 0)
+					val = NULL;
 				break;
 			}
 			break;
 
 		case OCI_CDT_DATETIME : //OCI_Date *
-			strcpy(fmt, "Date");
+			type = "Date";
 			dt = (OCI_Date *)data;
-			OCI_DateToText(dt, "YYYY-MM-DD HH24:MI:SS", OCI_VARCHAR_SIZE, text);
-			sprintf(val, "'%s'", text);
+			OCI_DateToText(dt, "YYYY-MM-DD HH24:MI:SS", sizeof(temp) - 1, temp);
+			if (asprintf(&val, "'%s'", temp) < 0)
+				val = NULL;
 			break;
 		case OCI_CDT_TEXT : //dtext *
-			strncpy(text, (char *)data, OCI_VARCHAR_SIZE);
-			sprintf(val, "'%s'", text);
-			if (strlen(val) < strlen(data) + 2) {
-				strcat(val, "...");
-			}
-			sprintf(fmt, "Text Size:%u", (unsigned int)strlen(data));
+			type = "Text";
+			if (asprintf(&val, "'%s', Text Size:%u", (char *)data, (unsigned int)strlen(data)) < 0)
+				val = NULL;
 			break;
 		case OCI_CDT_LONG : //OCI_Long *
 			switch (subtype) {
 			}
-			strcpy(fmt, "Long");
-			sprintf(val, "(n/a) Size: %u", size);
+			type = "Long";
+			if (asprintf(&val, "(n/a) Size: %u", size) < 0)
+				val = NULL;
 			break;
 		case OCI_CDT_CURSOR : //OCI_Statement *
-			strcpy(fmt, "Cursor");
-			sprintf(val, "(n/a)");
+			type = "Cursor";
+			if (asprintf(&val, "(n/a)") < 0)
+				val = NULL;
 			break;
 		case OCI_CDT_LOB : //OCI_Lob *
 			switch (subtype) {
 			case OCI_BLOB:
-				strcpy(fmt, "BLob");
-				sprintf(val, "(n/a) Size: %u", size);
+				type = "BLob";
+				if (asprintf(&val, "(n/a) Size: %u", size) < 0)
+					val = NULL;
 				break;
 			case OCI_CLOB:
-				strcpy(fmt, "CLob");
-				sprintf(val, "(n/a) Size: %u", size);
+				type = "CLob";
+				if (asprintf(&val, "(n/a) Size: %u", size) < 0)
+					val = NULL;
 				break;
 			case OCI_NCLOB:
-				strcpy(fmt, "NCLob");
-				sprintf(val, "(n/a) Size: %u", size);
+				type = "NCLob";
+				if (asprintf(&val, "(n/a) Size: %u", size) < 0)
+					val = NULL;
 				break;
 			}
 			break;
 		case OCI_CDT_FILE : //OCI_File *
 			switch (subtype) {
 			case OCI_BFILE:
-				strcpy(fmt, "BFile");
+				type = "BFile";
 				break;
 			case OCI_CFILE:
-				strcpy(fmt, "CFile");
+				type = "CFile";
 				break;
 			}
 			file = (OCI_File *)data;
-			strncpy(text, (char *)OCI_FileGetName(file), OCI_VARCHAR_SIZE);
-			sprintf(val, "(FileName: '%s')", text);
+			if (asprintf(&val, "(FileName: '%s')", OCI_FileGetName(file)) < 0)
+				val = NULL;
 			break;
 		case OCI_CDT_TIMESTAMP : //OCI_Timestamp *
 			switch (subtype) {
 			case OCI_TIMESTAMP:
-				strcpy(fmt, "Timestamp");
+				type = "Timestamp";
 				break;
 			case OCI_TIMESTAMP_TZ:
-				strcpy(fmt, "TimeStamp TZ");
+				type = "TimeStamp TZ";
 				break;
 			case OCI_TIMESTAMP_LTZ:
-				strcpy(fmt, "TimeStamp LTZ");
+				type = "TimeStamp LTZ";
 				break;
 			}
 			ts = (OCI_Timestamp *)data;
-			OCI_TimestampToText(ts, "YYYY-MM-DD HH24:MI:SS FF6", OCI_VARCHAR_SIZE, text, 6);
-			sprintf(val, "'%s'", text);
+			OCI_TimestampToText(ts, "YYYY-MM-DD HH24:MI:SS FF6", sizeof(temp) - 1, temp, 6);
+			if (asprintf(&val, "'%s'", temp) < 0)
+				val = NULL;
 			break;
 		case OCI_CDT_INTERVAL : //OCI_Interval *
 			switch (subtype) {
 			case OCI_INTERVAL_YM:
-				strcpy(fmt, "Interval YM");
+				type = "Interval YM";
 				break;
 			case OCI_INTERVAL_DS:
-				strcpy(fmt, "Interval DS");
+				type = "Interval DS";
 				break;
 			}
 			inv = (OCI_Interval *)data;
-			OCI_IntervalToText(inv, 10, 6, OCI_VARCHAR_SIZE, text);
-			sprintf(val, "'%s'", text);
+			OCI_IntervalToText(inv, 10, 6, sizeof(temp) - 1, temp);
+			if (asprintf(&val, "'%s'", temp) < 0)
+				val = NULL;
 			break;
 		case OCI_CDT_RAW : //void *
-			strcpy(fmt, "RAW");
-			sprintf(val, "(n/a) Size: %u", size);
+			type = "RAW";
+			if (asprintf(&val, "(n/a) Size: %u", size) < 0)
+				val = NULL;
 			break;
 		case OCI_CDT_OBJECT : //OCI_Object *
-			strcpy(fmt, "Object");
-			sprintf(val, "(n/a)");
+			type = "Object";
+			if (asprintf(&val, "(n/a)") < 0)
+				val = NULL;
 			break;
 		case OCI_CDT_COLLECTION : //OCI_Coll *
-			strcpy(fmt, "Collection");
-			sprintf(val, "(n/a)");
+			type = "Collection";
+			if (asprintf(&val, "(n/a)") < 0)
+				val = NULL;
 			break;
 		case OCI_CDT_REF : //OCI_Ref *
-			strcpy(fmt, "Ref");
-			sprintf(val, "(n/a)");
+			type = "Ref";
+			if (asprintf(&val, "(n/a)") < 0)
+				val = NULL;
 			break;
 			//case OCI_CDT_UNKNOWN: //not known
-		default:
-			strcpy(fmt, "Unknown");
-			break;
-		}//switch
-
-		sprintf(text, "[Name:'%s',Type:%s,Val:%s]", name, fmt, val);
-		/* add to provided buffer, short strings is needed */
-		strncat((char *)outp, text, bsize - strlen((char*)outp) - 15);
-		if (strlen((char *)outp) > bsize - 14) {
-			/* buffer full, notice this and exit */
-			strcat((char *)outp, "...->shorted!");
-			break;
 		}
 
-	}//for
-	free(text);
-	free(val);
-	free(fmt);
+		rc = asprintf(&field, "[Name:'%s', Type:%s, Value:%s]",
+		        name, type ? type : "Unknown", val ? val : "Unknown");
+
+		if (val != NULL)
+			free(val);
+
+		if (rc >= 0) {
+			outp_len += rc;
+			*outp = realloc(*outp, outp_len + 1);
+			strcat(*outp, field);
+			free(field);
+		}
+	}
+
+	return outp_len;
 }
 
 /**
