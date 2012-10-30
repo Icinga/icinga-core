@@ -6146,7 +6146,7 @@ int xodtemplate_resolve_timeperiod(xodtemplate_timeperiod *this_timeperiod) {
 
 		template_timeperiod = xodtemplate_find_timeperiod(temp_ptr);
 		if (template_timeperiod == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in timeperiod definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_timeperiod->_config_file), this_timeperiod->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in timeperiod definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_timeperiod->_config_file), this_timeperiod->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -6244,7 +6244,7 @@ int xodtemplate_resolve_command(xodtemplate_command *this_command) {
 
 		template_command = xodtemplate_find_command(temp_ptr);
 		if (template_command == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in command definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_command->_config_file), this_command->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in command definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_command->_config_file), this_command->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -6297,7 +6297,7 @@ int xodtemplate_resolve_contactgroup(xodtemplate_contactgroup *this_contactgroup
 
 		template_contactgroup = xodtemplate_find_contactgroup(temp_ptr);
 		if (template_contactgroup == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in contactgroup definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_contactgroup->_config_file), this_contactgroup->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in contactgroup definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_contactgroup->_config_file), this_contactgroup->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -6354,7 +6354,7 @@ int xodtemplate_resolve_hostgroup(xodtemplate_hostgroup *this_hostgroup) {
 
 		template_hostgroup = xodtemplate_find_hostgroup(temp_ptr);
 		if (template_hostgroup == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in hostgroup definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_hostgroup->_config_file), this_hostgroup->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in hostgroup definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_hostgroup->_config_file), this_hostgroup->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -6426,7 +6426,7 @@ int xodtemplate_resolve_servicegroup(xodtemplate_servicegroup *this_servicegroup
 
 		template_servicegroup = xodtemplate_find_servicegroup(temp_ptr);
 		if (template_servicegroup == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in servicegroup definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_servicegroup->_config_file), this_servicegroup->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in servicegroup definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_servicegroup->_config_file), this_servicegroup->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -6496,7 +6496,7 @@ int xodtemplate_resolve_servicedependency(xodtemplate_servicedependency *this_se
 
 		template_servicedependency = xodtemplate_find_servicedependency(temp_ptr);
 		if (template_servicedependency == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in service dependency definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_servicedependency->_config_file), this_servicedependency->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in service dependency definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_servicedependency->_config_file), this_servicedependency->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -6577,7 +6577,7 @@ int xodtemplate_resolve_serviceescalation(xodtemplate_serviceescalation *this_se
 
 		template_serviceescalation = xodtemplate_find_serviceescalation(temp_ptr);
 		if (template_serviceescalation == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in service escalation definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_serviceescalation->_config_file), this_serviceescalation->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in service escalation definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_serviceescalation->_config_file), this_serviceescalation->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -6685,7 +6685,7 @@ int xodtemplate_resolve_contact(xodtemplate_contact *this_contact) {
 
 		template_contact = xodtemplate_find_contact(temp_ptr);
 		if (template_contact == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in contact definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_contact->_config_file), this_contact->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in contact definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_contact->_config_file), this_contact->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -6823,7 +6823,7 @@ int xodtemplate_resolve_host(xodtemplate_host *this_host) {
 
 		template_host = xodtemplate_find_host(temp_ptr);
 		if (template_host == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in host definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_host->_config_file), this_host->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in host definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_host->_config_file), this_host->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -7077,7 +7077,7 @@ int xodtemplate_resolve_service(xodtemplate_service *this_service) {
 
 		template_service = xodtemplate_find_service(temp_ptr);
 		if (template_service == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in service definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_service->_config_file), this_service->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in service definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_service->_config_file), this_service->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -7322,7 +7322,7 @@ int xodtemplate_resolve_hostdependency(xodtemplate_hostdependency *this_hostdepe
 
 		template_hostdependency = xodtemplate_find_hostdependency(temp_ptr);
 		if (template_hostdependency == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in host dependency definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_hostdependency->_config_file), this_hostdependency->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in host dependency definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_hostdependency->_config_file), this_hostdependency->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -7398,7 +7398,7 @@ int xodtemplate_resolve_hostescalation(xodtemplate_hostescalation *this_hostesca
 
 		template_hostescalation = xodtemplate_find_hostescalation(temp_ptr);
 		if (template_hostescalation == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in host escalation definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_hostescalation->_config_file), this_hostescalation->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in host escalation definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_hostescalation->_config_file), this_hostescalation->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -7492,7 +7492,7 @@ int xodtemplate_resolve_hostextinfo(xodtemplate_hostextinfo *this_hostextinfo) {
 
 		template_hostextinfo = xodtemplate_find_hostextinfo(temp_ptr);
 		if (template_hostextinfo == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in extended host info definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_hostextinfo->_config_file), this_hostextinfo->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in extended host info definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_hostextinfo->_config_file), this_hostextinfo->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -7596,7 +7596,7 @@ int xodtemplate_resolve_serviceextinfo(xodtemplate_serviceextinfo *this_servicee
 
 		template_serviceextinfo = xodtemplate_find_serviceextinfo(temp_ptr);
 		if (template_serviceextinfo == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in extended service info definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_serviceextinfo->_config_file), this_serviceextinfo->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in extended service info definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_serviceextinfo->_config_file), this_serviceextinfo->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
@@ -7683,7 +7683,7 @@ int xodtemplate_resolve_module(xodtemplate_module *this_module) {
 
 		template_module = xodtemplate_find_module(temp_ptr);
 		if (template_module == NULL) {
-			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in module definition could not be not found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_module->_config_file), this_module->_start_line);
+			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Template '%s' specified in module definition could not be found (config file '%s', starting on line %d)\n", temp_ptr, xodtemplate_config_file_name(this_module->_config_file), this_module->_start_line);
 			my_free(template_names);
 			return ERROR;
 		}
