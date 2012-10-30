@@ -1629,5 +1629,5 @@ CREATE INDEX tperiod_tid_d_ss_es ON icinga_timeperiod_timeranges (timeperiod_id,
 -- set dbversion
 -- -----------------------------------------
 
-SELECT updatedbversion('1.9.0');
+SELECT updatedbversion('1.8.0');
 
