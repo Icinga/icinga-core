@@ -8,7 +8,7 @@
 --
 -- initial version: 2008-02-20 David Schmidt
 --                  2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
--- current version: 2012-01-29 Thomas Dressler
+-- current version: 2012-10-31 Thomas Dressler
 -- -- --------------------------------------------------------
 */
 -- -----------------------------------------
@@ -708,10 +708,11 @@ CREATE TABLE eventhandlers (
   early_timeout integer default 0 ,
   execution_time number default 0 ,
   return_code integer default 0 ,
-  output varchar2(2048),
+  output clob,
   long_output clob
 )
-lob (long_output) store as eventhandlers_out_lob(tablespace &&LOBTBS)
+lob (output) store as eventhandlers_outp_lob(tablespace &&LOBTBS)
+lob (long_output) store as eventhandlers_loutp_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;
 
 alter table eventhandlers add constraint eventhandlers_pk PRIMARY KEY  (id)
@@ -844,10 +845,11 @@ CREATE TABLE hostchecks (
   execution_time number default 0 ,
   latency number default 0 ,
   return_code integer default 0 ,
-  output varchar2(2048),
+  output clob,
   long_output clob,
   perfdata clob)
-  lob (long_output) store as hostchecks_out_lob(tablespace &&LOBTBS)
+  lob (output) store as hostchecks_outp_lob(tablespace &&LOBTBS)
+  lob (long_output) store as hostchecks_loutp_lob(tablespace &&LOBTBS)
   lob (perfdata) store as hostchecks_perf_lob(tablespace &&LOBTBS)
   tablespace &&DATATBS;
 
@@ -1066,7 +1068,7 @@ CREATE TABLE hoststatus (
   instance_id integer default 0 ,
   host_object_id integer default 0 ,
   status_update_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  output varchar2(2048),
+  output clob,
   long_output clob,
   perfdata clob,
   current_state integer default 0 ,
@@ -1110,7 +1112,8 @@ CREATE TABLE hoststatus (
   retry_check_interval number default 0 ,
   check_timeperiod_object_id integer default 0 
 )
-lob (long_output) store as hoststatus_out_lob(tablespace &&LOBTBS)
+lob (output) store as hoststatus_outp_lob(tablespace &&LOBTBS)
+lob (long_output) store as hoststatus_loutp_lob(tablespace &&LOBTBS)
 lob (perfdata) store as hoststatus_perf_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;
 
@@ -1178,12 +1181,13 @@ CREATE TABLE notifications (
   end_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
   end_time_usec integer default 0 ,
   state integer default 0 ,
-  output varchar2(2048),
+  output clob,
   long_output clob,
   escalated integer default 0 ,
   contacts_notified integer default 0 
 )
-lob (long_output) store as notific_out_lob(tablespace &&LOBTBS)
+lob (output) store as notifications_outp_lob(tablespace &&LOBTBS)
+lob (long_output) store as notifications_loutp_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;
 
 alter table notifications add constraint notifications_pk PRIMARY KEY  (id)
@@ -1391,11 +1395,12 @@ CREATE TABLE servicechecks (
   execution_time number default 0 ,
   latency number default 0 ,
   return_code integer default 0 ,
-  output varchar2(2048),
+  output clob,
   long_output clob,
   perfdata clob
 )
-lob (long_output) store as servicechecks_out_lob(tablespace &&LOBTBS)
+lob (output) store as servicechecks_outp_lob(tablespace &&LOBTBS)
+lob (long_output) store as servicechecks_loutp_lob(tablespace &&LOBTBS)
 lob (perfdata) store as servicechecks_perf_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;
 
@@ -1606,7 +1611,7 @@ CREATE TABLE servicestatus (
   instance_id integer default 0 ,
   service_object_id integer default 0 ,
   status_update_time TIMESTAMP(0) WITH LOCAL TIME ZONE default TO_TIMESTAMP_TZ('01.01.1970 UTC','DD.MM.YYYY TZR') ,
-  output varchar2(2048),
+  output clob,
   long_output clob,
   perfdata clob,
   current_state integer default 0 ,
@@ -1651,7 +1656,8 @@ CREATE TABLE servicestatus (
   retry_check_interval number default 0 ,
   check_timeperiod_object_id integer default 0 
 )
-lob (long_output) store as servicestatus_out_lob(tablespace &&LOBTBS)
+lob (output) store as servicestatus_outp_lob(tablespace &&LOBTBS)
+lob (long_output) store as servicestatus_loutp_lob(tablespace &&LOBTBS)
 lob (perfdata) store as servicestatus_perf_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;
 
@@ -1680,10 +1686,11 @@ CREATE TABLE statehistory (
   max_check_attempts integer default 0 ,
   last_state integer default -1 ,
   last_hard_state integer default -1 ,
-  output varchar2(2048),
+  output clob,
   long_output clob
 )
-lob (long_output) store as statehistory_out_lob(tablespace &&LOBTBS)
+lob (output) store as statehistory_outp_lob(tablespace &&LOBTBS)
+lob (long_output) store as statehistory_loutp_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;
 alter table statehistory add constraint statehistory_pk PRIMARY KEY  (id)
 	using index tablespace &&IDXTBS;
@@ -1708,10 +1715,11 @@ CREATE TABLE systemcommands (
   early_timeout integer default 0 ,
   execution_time number default 0 ,
   return_code integer default 0 ,
-  output varchar2(2048),
+  output clob,
   long_output clob
 )
-lob (long_output) store as systemcommands_out_lob(tablespace &&LOBTBS)
+lob (output) store as systemcommands_outp_lob(tablespace &&LOBTBS)
+lob (long_output) store as systemcommands_loutp_lob(tablespace &&LOBTBS)
 tablespace &&DATATBS;
 
 alter table systemcommands add constraint systemcommands_pk PRIMARY KEY  (id)
