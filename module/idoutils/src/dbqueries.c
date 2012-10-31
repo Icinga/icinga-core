@@ -2221,7 +2221,9 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 	if (!OCI_BindInt(idi->dbinfo.oci_statement_servicechecks, MT(":X16"), (int *) data[15])) {
 		return IDO_ERROR;
 	}
-
+	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_servicechecks, MT(":X20"), (uint *) data[19])) {
+			return IDO_ERROR;
+	}
 
 	if (*(char **) data[20] == NULL) {
 		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_servicechecks, ":X21") == IDO_ERROR) {
