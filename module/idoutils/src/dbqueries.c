@@ -1148,18 +1148,20 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 /* NOTIFICATIONS                    */
 /************************************/
 
-int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **data, int type) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long notification_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
 	OCI_Lob *lob_i;
 	OCI_Lob *lob_u;
+	char * seq_name = NULL;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() start\n");
 
@@ -1250,8 +1252,49 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
         	                /* send query to db */
                 	        result = ido2db_db_query(idi, query2);
                         	free(query2);
+
+			        /* save the notification id for later use... */
+			        if (type == NEBTYPE_NOTIFICATION_START)
+			                idi->dbinfo.last_notification_id = 0L;
+			        if (result == IDO_OK && type == NEBTYPE_NOTIFICATION_START) {
+		                        /* mysql doesn't use sequences */
+		                        idi->dbinfo.last_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
+				}
+
+			        dbi_result_free(idi->dbinfo.dbi_result);
+			        idi->dbinfo.dbi_result = NULL;
 			}
-                }
+                } else {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
+			/* if we actually did an update, we cannot just call dbi_conn_sequence_last, but rather select the id we updated */
+                        dummy = asprintf(&query, "SELECT notification_id FROM %s WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(char **) data[3],
+                                 *(unsigned long *) data[4],
+                                 *(unsigned long *) data[7]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                idi->dbinfo.last_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "notification_id");
+                                        } 
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        } else {
+				dbi_result_free(idi->dbinfo.dbi_result);
+				idi->dbinfo.dbi_result = NULL;
+
+			}
+                        free(query);
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -1300,7 +1343,53 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
-		}
+
+		        /* save the notification id for later use... */
+		        if (type == NEBTYPE_NOTIFICATION_START)
+		                idi->dbinfo.last_notification_id = 0L;
+		        if (result == IDO_OK && type == NEBTYPE_NOTIFICATION_START) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_notification_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS]) == -1)
+                	                buf = NULL;
+
+	                        idi->dbinfo.last_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%s=%lu) last_notification_id\n", buf, idi->dbinfo.last_notification_id);
+	                        free(buf);
+			}
+
+		        dbi_result_free(idi->dbinfo.dbi_result);
+		        idi->dbinfo.dbi_result = NULL;
+
+                } else {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
+                        /* if we actually did an update, we cannot just call dbi_conn_sequence_last, but rather select the id we updated */
+                        dummy = asprintf(&query, "SELECT notification_id FROM %s WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(char **) data[3],
+                                 *(unsigned long *) data[4],
+                                 *(unsigned long *) data[7]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                idi->dbinfo.last_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "notification_id");
+                                        } 
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        } else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+
+                        }
+                        free(query);
+                }
 		break;
 	default:
 		break;
@@ -1387,6 +1476,20 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 		}
 	} else {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata() clob bind error\n");
+	}
+
+        /* save the notification id for later use... */
+        if (type == NEBTYPE_NOTIFICATION_START)
+                idi->dbinfo.last_notification_id = 0L;
+        if (result == IDO_OK && type == NEBTYPE_NOTIFICATION_START) {
+
+                if (asprintf(&seq_name, "seq_notifications") == -1)
+                        seq_name = NULL;
+
+		/* this hopefully works if we update the colum as well */
+                idi->dbinfo.last_notification_id = ido2db_oci_sequence_lastid(idi, seq_name);
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
+                free(seq_name);
 	}
 
 	if (lob_i) OCI_LobFree(lob_i);

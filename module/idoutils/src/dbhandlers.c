@@ -2437,62 +2437,8 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 	data[13] = (void *) &start_time.tv_sec;
 	data[14] = (void *) &end_time.tv_sec;
 
-	result = ido2db_query_insert_or_update_notificationdata_add(idi, data);
-
-	/* save the notification id for later use... */
-	if (type == NEBTYPE_NOTIFICATION_START)
-		idi->dbinfo.last_notification_id = 0L;
-	if (result == IDO_OK && type == NEBTYPE_NOTIFICATION_START) {
-
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-		switch (idi->dbinfo.server_type) {
-		case IDO2DB_DBSERVER_MYSQL:
-			/* mysql doesn't use sequences */
-			idi->dbinfo.last_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
-			break;
-		case IDO2DB_DBSERVER_PGSQL:
-			/* depending on tableprefix/tablename a sequence will be used */
-			if (asprintf(&buf, "%s_notification_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS]) == -1)
-				buf = NULL;
-
-			idi->dbinfo.last_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%s=%lu) last_notification_id\n", buf, idi->dbinfo.last_notification_id);
-			free(buf);
-			break;
-		default:
-			break;
-		}
-
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-		if (asprintf(&seq_name, "seq_notifications") == -1)
-			seq_name = NULL;
-		idi->dbinfo.last_notification_id = ido2db_oci_sequence_lastid(idi, seq_name);
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
-		free(seq_name);
-
-#endif /* Oracle ocilib specific */
-	}
-
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-	dbi_result_free(idi->dbinfo.dbi_result);
-	idi->dbinfo.dbi_result = NULL;
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-
-#endif /* Oracle ocilib specific */
+	/* idi->dbinfo.last_notification_id is fetched inside */
+	result = ido2db_query_insert_or_update_notificationdata_add(idi, data, type);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
