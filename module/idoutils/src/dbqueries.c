@@ -1507,15 +1507,20 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 /* CONTACTNOTIFICATIONS             */
 /************************************/
 
-int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, void **data, int type) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long contactnotification_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactnotificationdata_add() start\n");
 
 	if (idi == NULL)
@@ -1587,8 +1592,49 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 	                        /* send query to db */
         	                result = ido2db_db_query(idi, query2);
                 	        free(query2);
+
+			        /* save the contact notification id for later use... */
+			        if (type == NEBTYPE_CONTACTNOTIFICATION_START)
+			                idi->dbinfo.last_contact_notification_id = 0L;
+			        if (result == IDO_OK && type == NEBTYPE_CONTACTNOTIFICATION_START) {
+		                        /* mysql doesn't use sequences */
+		                        idi->dbinfo.last_contact_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%lu) contactnotification_id\n", idi->dbinfo.last_contact_notification_id);
+				}
+
+                		dbi_result_free(idi->dbinfo.dbi_result);
+	                	idi->dbinfo.dbi_result = NULL;
 			}
-                }
+                } else {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
+			/* hey, update happened, select the id we just updated */
+                        dummy = asprintf(&query, "SELECT contactnotification_id FROM %s WHERE instance_id=%lu AND contact_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(unsigned long *) data[6],
+                                 *(char **) data[2],
+                                 *(unsigned long *) data[3]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                idi->dbinfo.last_contact_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactnotification_id");
+                                        } 
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+				}
+                        } else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+		}
+
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -1625,7 +1671,53 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
-		}
+
+		        /* save the contact notification id for later use... */
+		        if (type == NEBTYPE_CONTACTNOTIFICATION_START)
+		                idi->dbinfo.last_contact_notification_id = 0L;
+		        if (result == IDO_OK && type == NEBTYPE_CONTACTNOTIFICATION_START) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+	                        if (asprintf(&buf, "%s_contactnotification_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONS]) == -1)
+        	                        buf = NULL;
+
+	                        idi->dbinfo.last_contact_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%s=%lu) contactnotification_id\n", buf, idi->dbinfo.last_contact_notification_id);
+	                        free(buf);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                } else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* hey, update happened, select the id we just updated */
+                        dummy = asprintf(&query, "SELECT contactnotification_id FROM %s WHERE instance_id=%lu AND contact_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(unsigned long *) data[6],
+                                 *(char **) data[2],
+                                 *(unsigned long *) data[3]      /* unique constraint end */
+                                );
+        
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                idi->dbinfo.last_contact_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactnotification_id");
+                                        } 
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        } else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+                }
+
 		break;
 	default:
 		break;
@@ -1673,6 +1765,17 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+        /* save the contact notification id for later use... */
+        if (type == NEBTYPE_CONTACTNOTIFICATION_START)
+                idi->dbinfo.last_contact_notification_id = 0L;
+        if (result == IDO_OK && type == NEBTYPE_CONTACTNOTIFICATION_START) {
+                if (asprintf(&seq_name, "seq_contactnotifications") == -1)
+                        seq_name = NULL;
+                idi->dbinfo.last_contact_notification_id = ido2db_oci_sequence_lastid(idi, seq_name);
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%lu) \n", idi->dbinfo.last_contact_notification_id);
+                free(seq_name);
+	}
 
 	/* do not free statement yet! */
 #endif

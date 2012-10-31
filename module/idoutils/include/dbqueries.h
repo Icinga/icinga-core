@@ -29,7 +29,7 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **data, int type);
 
 /* CONTACTNOTIFICATIONS */
-int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, void **data, int type);
 int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *idi, void **data);
 
 /* SERVICECHECKS */
