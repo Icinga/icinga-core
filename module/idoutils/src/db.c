@@ -1583,22 +1583,6 @@ int ido2db_db_hello(ido2db_idi *idi) {
 				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(%s=%lu) instance_id\n", buf1, idi->dbinfo.instance_id);
 				free(buf1);
 				break;
-			case IDO2DB_DBSERVER_DB2:
-				break;
-			case IDO2DB_DBSERVER_FIREBIRD:
-				break;
-			case IDO2DB_DBSERVER_FREETDS:
-				break;
-			case IDO2DB_DBSERVER_INGRES:
-				break;
-			case IDO2DB_DBSERVER_MSQL:
-				break;
-			case IDO2DB_DBSERVER_ORACLE:
-				break;
-			case IDO2DB_DBSERVER_SQLITE:
-				break;
-			case IDO2DB_DBSERVER_SQLITE3:
-				break;
 			default:
 				break;
 			}
@@ -1705,22 +1689,6 @@ int ido2db_db_hello(ido2db_idi *idi) {
 			idi->dbinfo.conninfo_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello(%s=%lu) conninfo_id\n", buf1, idi->dbinfo.conninfo_id);
 			free(buf1);
-			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
 			break;
 		default:
 			break;
@@ -2037,22 +2005,6 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 			idi->dbinfo.conninfo_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello(%s=%lu) conninfo_id\n", buf1, idi->dbinfo.conninfo_id);
 			free(buf1);
-			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
 			break;
 		default:
 			break;
@@ -2502,25 +2454,6 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
 		if (asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t) == -1)
 			buf = NULL;
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-
-
-
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -2553,24 +2486,6 @@ char *ido2db_db_sql_to_timet(ido2db_idi *idi, char *field) {
 		/* unix_timestamp is a PL/SQL function (defined in db/pgsql.sql) */
 		if (asprintf(&buf, "UNIX_TIMESTAMP(%s)", (field == NULL) ? "" : field) == -1)
 			buf = NULL;
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-
-
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;

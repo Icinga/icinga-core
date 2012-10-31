@@ -167,22 +167,6 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -360,22 +344,6 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -547,22 +515,6 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -773,22 +725,6 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -1073,22 +1009,6 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -1382,22 +1302,6 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -1620,22 +1524,6 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -1816,22 +1704,6 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -1998,22 +1870,6 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 		/* send query to db */
 		result = ido2db_db_query(idi, query1);
 		free(query1);
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -2259,22 +2115,6 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 		/* send query to db */
 		result = ido2db_db_query(idi, query1);
 		free(query1);
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -2580,22 +2420,6 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -2829,22 +2653,6 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -3095,22 +2903,6 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -3363,22 +3155,6 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -3687,22 +3463,6 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -4114,22 +3874,6 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -4644,22 +4388,6 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -5007,22 +4735,6 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -5205,22 +4917,6 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -5375,22 +5071,6 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -5773,22 +5453,6 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -6189,22 +5853,6 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -6349,22 +5997,6 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *i
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -6519,22 +6151,6 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -6688,22 +6304,6 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2d
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -7041,22 +6641,6 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -7417,22 +7001,6 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -7586,22 +7154,6 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -7758,22 +7310,6 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -7958,22 +7494,6 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -8185,22 +7705,6 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -8406,22 +7910,6 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -8586,22 +8074,6 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -8752,22 +8224,6 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -8953,22 +8409,6 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -9138,22 +8578,6 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -9305,22 +8729,6 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -9475,22 +8883,6 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -9660,22 +9052,6 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -9838,22 +9214,6 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -10085,22 +9445,6 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -10325,22 +9669,6 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -10503,22 +9831,6 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -10692,22 +10004,6 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -10874,22 +10170,6 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -11069,22 +10349,6 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -11270,22 +10534,6 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -11439,22 +10687,6 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;

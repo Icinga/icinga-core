@@ -89,22 +89,6 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 	} else {
 		es[0] = ido2db_db_escape_string(idi, name1);
 		switch (idi->dbinfo.server_type) {
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
-			break;
 		case IDO2DB_DBSERVER_PGSQL:
 			/* Postgres does case sensitive compare  */
 			if (asprintf(&buf1, "name1=E'%s'", es[0]) == -1)
@@ -126,22 +110,6 @@ int ido2db_get_object_id(ido2db_idi *idi, int object_type, char *n1, char *n2, u
 	} else {
 		es[1] = ido2db_db_escape_string(idi, name2);
 		switch (idi->dbinfo.server_type) {
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
-			break;
                 case IDO2DB_DBSERVER_PGSQL:
                         /* Postgres does case sensitive compare  */
                         if (asprintf(&buf2, "name2=E'%s'", es[1]) == -1)
@@ -363,22 +331,6 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 			*object_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, tmp);
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_object_id_with_insert(%s=%lu) object_id\n", tmp, *object_id);
 			free(tmp);
-			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
 			break;
 		default:
 			break;
@@ -2508,22 +2460,6 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%s=%lu) last_notification_id\n", buf, idi->dbinfo.last_notification_id);
 			free(buf);
 			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
-			break;
 		default:
 			break;
 		}
@@ -2643,22 +2579,6 @@ int ido2db_handle_contactnotificationdata(ido2db_idi *idi) {
 			idi->dbinfo.last_contact_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%s=%lu) contactnotification_id\n", buf, idi->dbinfo.last_contact_notification_id);
 			free(buf);
-			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
 			break;
 		default:
 			break;
@@ -5406,22 +5326,6 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%s=%lu) configfilevariables_id\n", buf1, configfile_id);
 			free(buf1);
 			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
-			break;
 		default:
 			break;
 		}
@@ -6137,22 +6041,6 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinitio(%s=%lu) host_id\n", buf, host_id);
 			free(buf);
 			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
-			break;
 		default:
 			break;
 		}
@@ -6688,22 +6576,6 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition(%s=%lu) hostgroup_id\n", buf, group_id);
 			free(buf);
 			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
-			break;
 		default:
 			break;
 		}
@@ -7123,22 +6995,6 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition(%s=%lu) service_id\n", buf, service_id);
 			free(buf);
 			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
-			break;
 		default:
 			break;
 		}
@@ -7549,22 +7405,6 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 			group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition(%s=%lu) group_id\n", buf, group_id);
 			free(buf);
-			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
 			break;
 		default:
 			break;
@@ -7995,22 +7835,6 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%s=%lu) escalation_id\n", buf, escalation_id);
 			free(buf);
 			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
-			break;
 		default:
 			break;
 		}
@@ -8203,22 +8027,6 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 			escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_serviceescalationdefinition(%s=%lu) escalation_id\n", buf, escalation_id);
 			free(buf);
-			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
 			break;
 		default:
 			break;
@@ -8465,22 +8273,6 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 			timeperiod_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%s=%lu) timeperiod_id\n", buf, timeperiod_id);
 			free(buf);
-			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
 			break;
 		default:
 			break;
@@ -8829,22 +8621,6 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 			contact_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactdefinition(ido2db_idi *idi)(%s=%lu) contact_id\n", buf, contact_id);
 			free(buf);
-			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
 			break;
 		default:
 			break;
@@ -9203,22 +8979,6 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 			group_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
 			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition(%s=%lu) group_id\n", buf, group_id);
 			free(buf);
-			break;
-		case IDO2DB_DBSERVER_DB2:
-			break;
-		case IDO2DB_DBSERVER_FIREBIRD:
-			break;
-		case IDO2DB_DBSERVER_FREETDS:
-			break;
-		case IDO2DB_DBSERVER_INGRES:
-			break;
-		case IDO2DB_DBSERVER_MSQL:
-			break;
-		case IDO2DB_DBSERVER_ORACLE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE:
-			break;
-		case IDO2DB_DBSERVER_SQLITE3:
 			break;
 		default:
 			break;
