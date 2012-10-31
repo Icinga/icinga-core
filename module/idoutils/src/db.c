@@ -3936,7 +3936,8 @@ int ido2db_oci_prepared_statement_statehistory(ido2db_idi *idi) {
 	             "last_hard_state, output, long_output) "
 	             "VALUES (seq_statehistory.nextval, :X1, unixts2localts(:X2), :X3, "
 	             ":X4, :X5, :X6, :X7, "
-	             ":X8, :X9, :X10, :X11, :X12, :X13)",
+	             ":X8, :X9, :X10, "
+	             ":X11, :X12, :X13)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_STATEHISTORY]) == -1) {
 		buf = NULL;
 	}
@@ -4176,7 +4177,7 @@ int ido2db_oci_prepared_statement_hoststatus(ido2db_idi *idi) {
 	             "MERGE INTO %s USING DUAL ON (host_object_id=:X2) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET instance_id=:X1, status_update_time=unixts2localts(:X3), "
-	             "output=:X4, long_output=:X5u, perfdata=:X6u, "
+	             "output=:X4u, long_output=:X5u, perfdata=:X6u, "
 	             "current_state=:X7, has_been_checked=:X8, should_be_scheduled=:X9, "
 	             "current_check_attempt=:X10, max_check_attempts=:X11, "
 	             "last_check=unixts2localts(:X12), next_check=unixts2localts(:X13), check_type=:X14, "
@@ -4209,7 +4210,7 @@ int ido2db_oci_prepared_statement_hoststatus(ido2db_idi *idi) {
 	             "failure_prediction_enabled, process_performance_data, obsess_over_host, "
 	             "modified_host_attributes, event_handler, check_command, normal_check_interval, "
 	             "retry_check_interval, check_timeperiod_object_id) "
-	             "VALUES (seq_hoststatus.nextval, :X1, :X2, unixts2localts(:X3), :X4, :X5i, :X6i, "
+	             "VALUES (seq_hoststatus.nextval, :X1, :X2, unixts2localts(:X3), :X4i, :X5i, :X6i, "
 	             ":X7, :X8, :X9, :X10, "
 	             ":X11, unixts2localts(:X12), unixts2localts(:X13), :X14, "
 	             "unixts2localts(:X15), unixts2localts(:X16), :X17, "
@@ -4312,7 +4313,7 @@ int ido2db_oci_prepared_statement_servicestatus(ido2db_idi *idi) {
 	             "MERGE INTO %s USING DUAL ON (service_object_id=:X2) "
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET instance_id=:X1, status_update_time=unixts2localts(:X3), "
-	             "output=:X4, long_output=:X5u, perfdata=:X6u, current_state=:X7, "
+	             "output=:X4u, long_output=:X5u, perfdata=:X6u, current_state=:X7, "
 	             "has_been_checked=:X8, should_be_scheduled=:X9, "
 	             "current_check_attempt=:X10, max_check_attempts=:X11, "
 	             "last_check=unixts2localts(:X12), next_check=unixts2localts(:X13), "
@@ -4350,7 +4351,7 @@ int ido2db_oci_prepared_statement_servicestatus(ido2db_idi *idi) {
 	             "normal_check_interval, retry_check_interval, check_timeperiod_object_id) "
 	             "VALUES "
 	             "(seq_servicestatus.nextval, :X1, :X2, unixts2localts(:X3), "
-	             ":X4, :X5i, :X6i, :X7, :X8, :X9, :X10, :X11, "
+	             ":X4i, :X5i, :X6i, :X7, :X8, :X9, :X10, :X11, "
 	             "unixts2localts(:X12), unixts2localts(:X13), :X14, unixts2localts(:X15), "
 	             "unixts2localts(:X16), :X17, unixts2localts(:X18), "
 	             "unixts2localts(:X19), unixts2localts(:X20), unixts2localts(:X21), "
@@ -4398,16 +4399,16 @@ int ido2db_oci_prepared_statement_servicechecks(ido2db_idi *idi) {
 	             "current_check_attempt, max_check_attempts, state, "
 	             "state_type, start_time, start_time_usec, end_time, "
 	             "end_time_usec, timeout, early_timeout, "
-	             "execution_time, latency, return_code, output, "
-	             "command_object_id, command_args, command_line,"
-	             "long_output, perfdata ) "
+	             "execution_time, latency, return_code, "
+				 "output, long_output, perfdata, "
+	             "command_object_id, command_args, command_line) "
 	             "VALUES (seq_servicechecks.nextval, :X1, :X2, :X3, "
 	             ":X4, :X5, :X6, "
 	             ":X7, unixts2localts(:X8), :X9, unixts2localts(:X10), "
 	             ":X11, :X12, :X13, "
-	             ":X14, :X15, :X16, :X17, "
-	             ":X20, :X21, :X22,"
-	             ":X18, :X19 )",
+	             ":X14, :X15, :X16, "
+	             ":X17, :X18, :X19, "
+	             ":X20, :X21, :X22)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECHECKS]) == -1) {
 		buf = NULL;
 	}
@@ -4617,14 +4618,14 @@ int ido2db_oci_prepared_statement_systemcommanddata(ido2db_idi *idi) {
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET end_time=unixts2localts(:X4), end_time_usec=:X5, "
 	             "command_line=:X6, timeout=:X7, early_timeout=:X8, "
-	             "execution_time=:X9, return_code=:X10, output=:X11, long_output=:X12u "
+	             "execution_time=:X9, return_code=:X10, output=:X11u, long_output=:X12u "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, start_time, start_time_usec, "
 	             "end_time, end_time_usec, command_line, timeout, early_timeout, "
 	             "execution_time, return_code, output, long_output) "
 	             "VALUES (seq_systemcommands.nextval, :X1, unixts2localts(:X2), :X3, "
 	             "unixts2localts(:X4), :X5, :X6, :X7, :X8, "
-	             ":X9, :X10, :X11, :X12i)",
+	             ":X9, :X10, :X11i, :X12i)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_SYSTEMCOMMANDS]) == -1) {
 		buf = NULL;
 	}
@@ -4675,7 +4676,7 @@ int ido2db_oci_prepared_statement_eventhandlerdata(ido2db_idi *idi) {
 	             "end_time_usec=:X9, command_object_id=:X10, "
 	             "command_args=:X11, command_line=:X12, "
 	             "timeout=:X13, early_timeout=:X14, execution_time=:X15, "
-	             "return_code=:X16, output=:X17, long_output=:X18u "
+	             "return_code=:X16, output=:X17u, long_output=:X18u "
 	             "WHEN NOT MATCHED THEN "
 	             "INSERT (id, instance_id, eventhandler_type, object_id, "
 	             "state, state_type, start_time, start_time_usec, "
@@ -4686,7 +4687,7 @@ int ido2db_oci_prepared_statement_eventhandlerdata(ido2db_idi *idi) {
 	             "VALUES (seq_eventhandlers.nextval, :X1, :X2, "
 	             ":X3, :X4, :X5, unixts2localts(:X6), :X7, "
 	             "unixts2localts(:X8), :X9, :X10, :X11, :X12, "
-	             ":X13, :X14, :X15, :X16, :X17, :X18i)",
+	             ":X13, :X14, :X15, :X16, :X17i, :X18i)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_EVENTHANDLERS]) == -1) {
 		buf = NULL;
 	}
@@ -4736,14 +4737,14 @@ int ido2db_oci_prepared_statement_notificationdata(ido2db_idi *idi) {
 	             "WHEN MATCHED THEN "
 	             "UPDATE SET notification_type=:X2, notification_reason=:X3, "
 	             "end_time=unixts2localts(:X6), end_time_usec=:X7, state=:X9, "
-	             "output=:X10, long_output=:X11u, escalated=:X12, contacts_notified=:X13 "
+	             "output=:X10u, long_output=:X11u, escalated=:X12, contacts_notified=:X13 "
 	             "WHEN NOT MATCHED "
 	             "THEN INSERT (id, instance_id, notification_type, notification_reason, "
 	             "start_time, start_time_usec, end_time, end_time_usec, object_id, state, "
 	             "output, long_output, escalated, contacts_notified) "
 	             "VALUES (seq_notifications.nextval, :X1, :X2, :X3, "
 	             "unixts2localts(:X4), :X5, unixts2localts(:X6), :X7, :X8, :X9, "
-	             ":X10, :X11i, :X12, :X13)",
+	             ":X10i, :X11i, :X12, :X13)",
 	             ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS]) == -1) {
 		buf = NULL;
 	}

@@ -42,6 +42,7 @@ ENHANCEMENTS
 * idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
 * idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB
 * idoutils: add more indexes for sla reporting #3649 - MF
+* idoutils: Oracle - change output fields to clob #3412 - TD
 
 * install: set --enable-idoutils/event-broker to true as default configure flags #3813 - MF
 * install: add lighttp config samples to contrib/lighttp #2253 - RB

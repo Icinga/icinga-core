@@ -4706,7 +4706,8 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
 
 #ifdef USE_ORACLE
 	void *data[13];
-	OCI_Lob *lob_i;
+	OCI_Lob *lob_oi;
+	OCI_Lob *lob_loi;
 #endif
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_statechangedata() start\n");
@@ -4838,20 +4839,14 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
 	if (!OCI_BindInt(idi->dbinfo.oci_statement_statehistory, MT(":X11"), (int *) data[10])) {
 		return IDO_ERROR;
 	}
-	if (es[0] == NULL) {
-		if (ido2db_oci_prepared_statement_bind_null_param(idi->dbinfo.oci_statement_statehistory, ":X12") == IDO_ERROR) {
-			return IDO_ERROR;
-		}
-	} else {
-		if (!OCI_BindString(idi->dbinfo.oci_statement_statehistory, MT(":X12"), *(char **) data[11], 0)) {
-			return IDO_ERROR;
-		}
-	}
 
 	//bind clob
-	lob_i = OCI_LobCreate(idi->dbinfo.oci_connection, OCI_CLOB);
+	lob_oi = OCI_LobCreate(idi->dbinfo.oci_connection, OCI_CLOB);
+	lob_loi = OCI_LobCreate(idi->dbinfo.oci_connection, OCI_CLOB);
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_statehistory() bind clob\n");
-	result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_statehistory, ":X13", *(char **)data[12], &lob_i);
+	result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_statehistory, ":X12", *(char **)data[11], &lob_oi);
+	if (result == IDO_OK) result = ido2db_oci_bind_clob(idi->dbinfo.oci_statement_statehistory, ":X13", *(char **)data[12], &lob_loi);
 	if (result == IDO_OK) {
 		/* execute statement */
 		result = OCI_Execute(idi->dbinfo.oci_statement_statehistory) ? IDO_OK : IDO_ERROR;
@@ -4868,7 +4863,8 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_statehistory() bind clob error\n");
 	}
 	//free lobs
-	if (lob_i) OCI_LobFree(lob_i);
+	if (lob_oi !=NULL) OCI_LobFree(lob_oi);
+	if (lob_loi !=NULL) OCI_LobFree(lob_loi);
 	/* do not free statement yet! */
 
 #endif /* Oracle ocilib specific */
