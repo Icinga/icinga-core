@@ -6693,74 +6693,14 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	data[49] = (void *) &es[6];
 	data[50] = (void *) &es[7];
 
-	result = ido2db_query_insert_or_update_servicedefinition_definition_add(idi, data);
-
-	if (result == IDO_OK) {
-
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-		switch (idi->dbinfo.server_type) {
-		case IDO2DB_DBSERVER_MYSQL:
-			/* mysql doesn't use sequences */
-			service_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition(%lu) service_id\n", service_id);
-			break;
-		case IDO2DB_DBSERVER_PGSQL:
-			/* depending on tableprefix/tablename a sequence will be used */
-			if (asprintf(&buf, "%s_service_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES]) == -1)
-				buf = NULL;
-
-			service_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition(%s=%lu) service_id\n", buf, service_id);
-			free(buf);
-			break;
-		default:
-			break;
-		}
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-		if (asprintf(&seq_name, "seq_services") == -1)
-			seq_name = NULL;
-		service_id = ido2db_oci_sequence_lastid(idi, seq_name);
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition(%lu) service_id\n", service_id);
-		free(seq_name);
-
-#endif /* Oracle ocilib specific */
-	} else {
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
-		idi->dbinfo.dbi_result = NULL;
-#endif
-		for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++) {
-			free(es[x]);
-		}
-
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() "
-		                      "preceeding ido2db_query_insert_or_update_servicedefinition_definition_add ERROR \n");
-		return IDO_ERROR;
-	}
-
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-	dbi_result_free(idi->dbinfo.dbi_result);
-	idi->dbinfo.dbi_result = NULL;
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-
-#endif /* Oracle ocilib specific */
+	result = ido2db_query_insert_or_update_servicedefinition_definition_add(idi, data, &service_id);
 
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++) {
 		free(es[x]);
 	}
+
+	if (result == IDO_ERROR)
+		return IDO_ERROR;
 
 	/* save contact groups to db */
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition() contactgroups start\n");
