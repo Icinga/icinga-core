@@ -105,7 +105,7 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
 int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi *idi, void **data);
 
 /* CONTACTDEFINITION */
-int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id);
 int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido2db_idi *idi, void **data);
 
