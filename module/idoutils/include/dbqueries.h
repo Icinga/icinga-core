@@ -78,7 +78,7 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi *idi, void **data);
 
 /* SERVICEGROUPDEFINITION */
-int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id);
 int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi *idi, void **data);
 
 /* HOSTDEPENDENCYDEFINITION */
