@@ -5197,65 +5197,8 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	data[1] = (void *) &configfile_type;
 	data[2] = (void *) &es[0];
 
-	result = ido2db_query_insert_or_update_configfilevariables_add(idi, data);
+	result = ido2db_query_insert_or_update_configfilevariables_add(idi, data, &configfile_id);
 	free(es[0]);
-	if (result == IDO_OK) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
-		                      " preceeding ido2db_query_insert_or_update_configfilevariables_add OK \n");
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-		switch (idi->dbinfo.server_type) {
-		case IDO2DB_DBSERVER_MYSQL:
-			/* mysql doesn't use sequences */
-			configfile_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%lu) configfilevariables_id\n", configfile_id);
-			break;
-		case IDO2DB_DBSERVER_PGSQL:
-			/* depending on tableprefix/tablename a sequence will be used */
-			if (asprintf(&buf1, "%s_configfile_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILES]) == -1)
-				buf1 = NULL;
-
-			configfile_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%s=%lu) configfilevariables_id\n", buf1, configfile_id);
-			free(buf1);
-			break;
-		default:
-			break;
-		}
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-		/* retrieve last inserted configfile_id */
-		if (asprintf(&seq_name, "seq_configfiles") == -1)
-			seq_name = NULL;
-		configfile_id = ido2db_oci_sequence_lastid(idi, seq_name);
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(id %lu) \n", configfile_id);
-		free(seq_name);
-
-#endif /* Oracle ocilib specific */
-
-	} else {
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
-		idi->dbinfo.dbi_result = NULL;
-#endif
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
-		                      " preceeding ido2db_query_insert_or_update_configfilevariables_add ERROR \n");
-		return IDO_ERROR;
-	}
-
-
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-	dbi_result_free(idi->dbinfo.dbi_result);
-	idi->dbinfo.dbi_result = NULL;
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
 
 	/* save config file variables to db */
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables_elements()  start\n");

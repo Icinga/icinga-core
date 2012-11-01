@@ -59,7 +59,7 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **data);
 
 /* CONFIGFILEVARIABLES */
-int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void **data, unsigned long *id);
 
 /* RUNTIMEVARIABLES */
 int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **data);

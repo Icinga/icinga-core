@@ -1283,6 +1283,7 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
                                                 idi->dbinfo.last_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "notification_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
                                         } 
 
                                         dbi_result_free(idi->dbinfo.dbi_result);
@@ -1378,6 +1379,7 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
                                                 idi->dbinfo.last_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "notification_id");
+	                        		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%s=%lu) last_notification_id\n", buf, idi->dbinfo.last_notification_id);
                                         } 
 
                                         dbi_result_free(idi->dbinfo.dbi_result);
@@ -1623,6 +1625,7 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
                                                 idi->dbinfo.last_contact_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactnotification_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%lu) contactnotification_id\n", idi->dbinfo.last_contact_notification_id);
                                         } 
 
                                         dbi_result_free(idi->dbinfo.dbi_result);
@@ -1706,6 +1709,7 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
                                                 idi->dbinfo.last_contact_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactnotification_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%lu) contactnotification_id\n", idi->dbinfo.last_contact_notification_id);
                                         } 
 
                                         dbi_result_free(idi->dbinfo.dbi_result);
@@ -5010,15 +5014,20 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 /* CONFIGFILEVARIABLES              */
 /************************************/
 
-int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf1 = NULL;
         unsigned long configfile_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_configfilevariables_add() start\n");
 
 	if (idi == NULL)
@@ -5086,8 +5095,48 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
                 	        /* send query to db */
                         	result = ido2db_db_query(idi, query2);
 	                        free(query2);
+
+			        if (result == IDO_OK) {
+			                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
+		                                      " preceeding ido2db_query_insert_or_update_configfilevariables_add OK \n");
+		                        /* mysql doesn't use sequences */
+                		        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%lu) configfilevariables_id\n", *id);
+				}
+
+                		dbi_result_free(idi->dbinfo.dbi_result);
+	                	idi->dbinfo.dbi_result = NULL;
 			}
-                }
+                } else {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
+			/* we did an update, get the id */
+                        dummy = asprintf(&query, "SELECT configfile_id FROM %s WHERE instance_id=%lu AND configfile_type=%d AND configfile_path='%s'",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILES],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(char **) data[2]             /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "configfile_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%lu) configfilevariables_id\n", *id);
+                                        } 
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        } else {
+				dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -5121,7 +5170,52 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
-		}
+
+		        if (result == IDO_OK) {
+		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
+                		                      " preceeding ido2db_query_insert_or_update_configfilevariables_add OK \n");
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf1, "%s_configfile_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILES]) == -1)
+                	                buf1 = NULL;
+
+                        	*id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%s=%lu) configfilevariables_id\n", buf1, *id);
+        	                free(buf1);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+                } else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* we did an update, get the id */
+                        dummy = asprintf(&query, "SELECT configfile_id FROM %s WHERE instance_id=%lu AND configfile_type=%d AND configfile_path='%s'",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILES],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(char **) data[2]             /* unique constraint end */
+                                );
+                                 
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "configfile_id");
+	                        		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%s=%lu) configfilevariables_id\n", buf1, *id);
+                                        } 
+                
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        } else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+
+                }
+
 		break;
 	default:
 		break;
@@ -5163,6 +5257,14 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+
+	/* retrieve last inserted configfile_id */
+	if (asprintf(&seq_name, "seq_configfiles") == -1)
+                seq_name = NULL;
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(id %lu) \n", *id);
+        free(seq_name);
 
 	/* do not free statement yet! */
 #endif
