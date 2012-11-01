@@ -114,7 +114,7 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add(ido2db_idi *idi, void **data);
 
 /* CONTACTGROUPDEFINITION */
-int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id);
 int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add(ido2db_idi *idi, void **data);
 
 #endif
