@@ -88,7 +88,7 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
 int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido2db_idi *idi, void **data);
 
 /* HOSTESCALATIONDEFINITION */
-int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id);
 int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_idi *idi, void **data);
 

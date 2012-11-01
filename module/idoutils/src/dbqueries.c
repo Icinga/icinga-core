@@ -8455,15 +8455,20 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
 /* HOSTESCALATIONDEFINITION         */
 /************************************/
 
-int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long hostescalation_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_definition_add() start\n");
 
 	if (idi == NULL)
@@ -8543,8 +8548,49 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 	                        /* send query to db */
         	                result = ido2db_db_query(idi, query2);
                 	        free(query2);
+
+				if (result == IDO_OK) {
+		                        /* mysql doesn't use sequences */
+		                        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%lu) escalation_id\n", *id);
+				}
+
+	                        dbi_result_free(idi->dbinfo.dbi_result);
+        	                idi->dbinfo.dbi_result = NULL;
 			}
                 }
+		else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+			/* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT hostescalation_id FROM %s WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2],
+                                 *(unsigned long *) data[3],
+                                 *(int *) data[4],
+                                 *(int *) data[5]               /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hostescalation_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%lu) escalation_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        } else {
+                        	dbi_result_free(idi->dbinfo.dbi_result);
+	                        idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -8587,7 +8633,52 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
+
+			if (result == IDO_OK) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_hostescalation_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONS]) == -1)
+                	                buf = NULL;
+
+                        	*id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%s=%lu) escalation_id\n", buf, *id);
+        	                free(buf);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
 		}
+                else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT hostescalation_id FROM %s WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2],
+                                 *(unsigned long *) data[3],
+                                 *(int *) data[4],
+                                 *(int *) data[5]               /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hostescalation_id");
+                                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%lu) escalation_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        } else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+                }
 		break;
 	default:
 		break;
@@ -8644,6 +8735,13 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+	if (asprintf(&seq_name, "seq_hostescalations") == -1)
+		seq_name = NULL;
+
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%lu) escalation_id\n", *id);
+	free(seq_name);
 
 	/* do not free statement yet! */
 #endif
