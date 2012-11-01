@@ -7752,72 +7752,11 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	data[2] = (void *) &object_id;
 	data[3] = (void *) &es[0];
 
-	result = ido2db_query_insert_or_update_timeperiodefinition_definition_add(idi, data);
+	result = ido2db_query_insert_or_update_timeperiodefinition_definition_add(idi, data, &timeperiod_id);
 	free(es[0]);
-	if (result == IDO_OK) {
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition() "
-		                      "preceeding do2db_query_insert_or_update_timeperiodefinition_definition_add OK \n");
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-		switch (idi->dbinfo.server_type) {
-		case IDO2DB_DBSERVER_MYSQL:
-			/* mysql doesn't use sequences */
-			timeperiod_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%lu) timeperiod_id\n", timeperiod_id);
-			break;
-		case IDO2DB_DBSERVER_PGSQL:
-			/* depending on tableprefix/tablename a sequence will be used */
-			if (asprintf(&buf, "%s_timeperiod_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODS]) == -1)
-				buf = NULL;
 
-			timeperiod_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%s=%lu) timeperiod_id\n", buf, timeperiod_id);
-			free(buf);
-			break;
-		default:
-			break;
-		}
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-		if (asprintf(&seq_name, "seq_timeperiods") == -1)
-			seq_name = NULL;
-		timeperiod_id = ido2db_oci_sequence_lastid(idi, seq_name);
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%lu) "
-		                      "timeperiod_id\n", timeperiod_id);
-		free(seq_name);
-#endif /* Oracle ocilib specific */
-
-	} else {
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
-		idi->dbinfo.dbi_result = NULL;
-#endif
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition() "
-		                      "preceeding do2db_query_insert_or_update_timeperiodefinition_definition_add "
-		                      "ERROR \n");
+	if (result == IDO_ERROR) 
 		return IDO_ERROR;
-	}
-
-
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-	dbi_result_free(idi->dbinfo.dbi_result);
-	idi->dbinfo.dbi_result = NULL;
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-
-#endif /* Oracle ocilib specific */
-
-
 
 	/* save timeranges to db */
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition() "

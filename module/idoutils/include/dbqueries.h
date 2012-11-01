@@ -101,7 +101,7 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *idi, void **data);
 
 /*  TIMEPERIODDEFINITION */
-int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id);
 int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi *idi, void **data);
 
 /* CONTACTDEFINITION */
