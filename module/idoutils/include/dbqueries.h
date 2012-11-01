@@ -65,7 +65,7 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **data);
 
 /* HOSTDEFINITION */
-int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id);
 int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *idi, void **data);
 

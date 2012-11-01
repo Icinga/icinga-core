@@ -5856,76 +5856,16 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	data[56] = (void *) &z_3d;
 	data[57] = (void *) &es[13]; /* HOSTADDRESS6 */
 
-	result = ido2db_query_insert_or_update_hostdefinition_definition_add(idi, data);
-
-	if (result == IDO_OK) {
-
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-		switch (idi->dbinfo.server_type) {
-		case IDO2DB_DBSERVER_MYSQL:
-			/* mysql doesn't use sequences */
-			host_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinitio(%lu) host_id\n", host_id);
-			break;
-		case IDO2DB_DBSERVER_PGSQL:
-			/* depending on tableprefix/tablename a sequence will be used */
-			if (asprintf(&buf, "%s_host_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS]) == -1)
-				buf = NULL;
-
-			host_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinitio(%s=%lu) host_id\n", buf, host_id);
-			free(buf);
-			break;
-		default:
-			break;
-		}
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-		if (asprintf(&seq_name, "seq_hosts") == -1)
-			seq_name = NULL;
-		host_id = ido2db_oci_sequence_lastid(idi, seq_name);
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition(%lu) \n", host_id);
-		free(seq_name);
-
-#endif /* Oracle ocilib specific */
-	} else {
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-		dbi_result_free(idi->dbinfo.dbi_result);
-		idi->dbinfo.dbi_result = NULL;
-#endif
-		for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++) {
-			free(es[x]);
-		}
-
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() "
-		                      "preceeding ido2db_query_insert_or_update_hostdefinition_definition_add ERROR \n");
-		return IDO_ERROR;
-	}
-
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-	dbi_result_free(idi->dbinfo.dbi_result);
-	idi->dbinfo.dbi_result = NULL;
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-
-#endif /* Oracle ocilib specific */
+	result = ido2db_query_insert_or_update_hostdefinition_definition_add(idi, data, &host_id);
 
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++) {
 		free(es[x]);
 	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() free es\n");
+
+	if (result == IDO_ERROR)
+		return IDO_ERROR;
 
 	/* save parent hosts to db */
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition() parent_hosts start\n");
