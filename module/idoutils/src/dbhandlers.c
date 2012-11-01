@@ -7558,58 +7558,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 	data[9] = (void *) &escalate_unknown;
 	data[10] = (void *) &escalate_critical;
 
-	result = ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(idi, data);
-
-	if (result == IDO_OK) {
-
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-		switch (idi->dbinfo.server_type) {
-		case IDO2DB_DBSERVER_MYSQL:
-			/* mysql doesn't use sequences */
-			escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_serviceescalationdefinition(%lu) escalation_id\n", escalation_id);
-			break;
-		case IDO2DB_DBSERVER_PGSQL:
-			/* depending on tableprefix/tablename a sequence will be used */
-			if (asprintf(&buf, "%s_serviceescalation_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONS]) == -1)
-				buf = NULL;
-
-			escalation_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_serviceescalationdefinition(%s=%lu) escalation_id\n", buf, escalation_id);
-			free(buf);
-			break;
-		default:
-			break;
-		}
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-		if (asprintf(&seq_name, "seq_serviceescalations") == -1)
-			seq_name = NULL;
-		escalation_id = ido2db_oci_sequence_lastid(idi, seq_name);
-		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_serviceescalationdefinition(%lu) escalation_id\n", escalation_id);
-		free(seq_name);
-
-#endif /* Oracle ocilib specific */
-	}
-
-#ifdef USE_LIBDBI /* everything else will be libdbi */
-	dbi_result_free(idi->dbinfo.dbi_result);
-	idi->dbinfo.dbi_result = NULL;
-#endif
-
-#ifdef USE_PGSQL /* pgsql */
-
-#endif
-
-#ifdef USE_ORACLE /* Oracle ocilib specific */
-
-
-#endif /* Oracle ocilib specific */
+	result = ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(idi, data, &escalation_id);
 
 	/* save contact groups to db */
 	mbuf = idi->mbuf[IDO2DB_MBUF_CONTACTGROUP];

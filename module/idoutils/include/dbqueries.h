@@ -93,7 +93,7 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
 int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_idi *idi, void **data);
 
 /* SERVICEESCALATIONDEFINITION */
-int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido2db_idi *idi, void **data);
+int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id);
 int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(ido2db_idi *idi, void **data);
 int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2db_idi *idi, void **data);
 
