@@ -2311,12 +2311,6 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 	char *ts[2];
 	char *es[2];
 	int x = 0;
-#ifdef USE_LIBDBI
-	char *buf = NULL;
-#endif
-#ifdef USE_ORACLE
-	char *seq_name = NULL;
-#endif
 
 	void *data[15];
 
@@ -2391,12 +2385,6 @@ int ido2db_handle_contactnotificationdata(ido2db_idi *idi) {
 	int result = IDO_OK;
 	char *ts[2];
 	int x = 0;
-#ifdef USE_LIBDBI
-	char *buf = NULL;
-#endif
-#ifdef USE_ORACLE
-	char *seq_name = NULL;
-#endif
 	void *data[9];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata() start\n");
@@ -4915,7 +4903,6 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	char *varvalue = NULL;
 	ido2db_mbuf mbuf;
 #ifdef USE_ORACLE
-	char *seq_name = NULL;
 	int len = 0;
 	/* definitions for array binding */
 	const int CONFIG_VARNAME_SIZE = 64; /* table configfilevariables column varname length */
@@ -5454,7 +5441,6 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	char *cmdptr = NULL;
 	char *argptr = NULL;
 #ifdef USE_ORACLE
-	char *seq_name = NULL;
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
@@ -6053,7 +6039,6 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 	char *buf1 = NULL;
 	ido2db_mbuf mbuf;
 #ifdef USE_ORACLE
-	char *seq_name = NULL;
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
@@ -6302,7 +6287,6 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	char *cmdptr = NULL;
 	char *argptr = NULL;
 #ifdef USE_ORACLE
-	char *seq_name = NULL;
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
@@ -6766,7 +6750,6 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 	char *hptr = NULL;
 	char *sptr = NULL;
 #ifdef USE_ORACLE
-	char *seq_name = NULL;
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
@@ -7100,13 +7083,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 	int escalate_unreachable = 0;
 	int result = IDO_OK;
 	int x = 0;
-#ifdef USE_LIBDBI
-	char *buf = NULL;
-#endif
 	ido2db_mbuf mbuf;
-#ifdef USE_ORACLE
-	char *seq_name = NULL;
-#endif
 	void *data[10];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition() start\n");
@@ -7210,13 +7187,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 	int escalate_critical = 0;
 	int result = IDO_OK;
 	int x = 0;
-#ifdef USE_LIBDBI
-	char *buf = NULL;
-#endif
 	ido2db_mbuf mbuf;
-#ifdef USE_ORACLE
-	char *seq_name = NULL;
-#endif
 	void *data[11];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicetescalationdefinition() start\n");
@@ -7370,7 +7341,6 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	char *buf1 = NULL;
 	ido2db_mbuf mbuf;
 #ifdef USE_ORACLE
-	char *seq_name = NULL;
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
@@ -7608,18 +7578,12 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 	int result = IDO_OK;
 	char *es[3];
 	int x = 0;
-#ifdef USE_LIBDBI
-	char *buf = NULL;
-#endif
 	ido2db_mbuf mbuf;
 	char *numptr = NULL;
 	char *addressptr = NULL;
 	int address_number = 0;
 	char *cmdptr = NULL;
 	char *argptr = NULL;
-#ifdef USE_ORACLE
-	char *seq_name = NULL;
-#endif
 	void *data[22];
 
 	int tmp1 = HOST_NOTIFICATION;
@@ -7895,7 +7859,6 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 	char *buf1 = NULL;
 	ido2db_mbuf mbuf;
 #ifdef USE_ORACLE
-	char *seq_name = NULL;
 	/* definitions for array binding */
 	int  arrsize = 0;
 	int count = 0;
