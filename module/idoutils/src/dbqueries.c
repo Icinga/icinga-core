@@ -131,6 +131,10 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
 	                        free(query2);
 			}
                 }
+
+		/* free last dbi_result */
+                dbi_result_free(idi->dbinfo.dbi_result);
+                idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -170,6 +174,10 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+
+		/* free last dbi_result */
+                dbi_result_free(idi->dbinfo.dbi_result);
+                idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -312,6 +320,9 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -351,6 +362,9 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -491,6 +505,9 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 	case IDO2DB_DBSERVER_PGSQL:
 		dummy = asprintf(&query1, "UPDATE %s SET event_time=%s, event_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
@@ -527,6 +544,9 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -694,6 +714,9 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -741,6 +764,9 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -970,6 +996,9 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -1029,6 +1058,9 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -1910,6 +1942,9 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -1949,6 +1984,9 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -2086,6 +2124,9 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
                 /* send query to db */
                 result = ido2db_db_query(idi, query1);
                 free(query1);
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 	case IDO2DB_DBSERVER_PGSQL:
 		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (%lu, %lu, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, E'%s', E'%s', E'%s', %lu, E'%s', E'%s')",
@@ -2116,6 +2157,9 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 		/* send query to db */
 		result = ido2db_db_query(idi, query1);
 		free(query1);
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -2330,6 +2374,9 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
                 /* send query to db */
                 result = ido2db_db_query(idi, query1);
                 free(query1);
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 	case IDO2DB_DBSERVER_PGSQL:
 		dummy = asprintf(&query1, "INSERT INTO %s (command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (%lu, E'%s', E'%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, E'%s', E'%s', E'%s')",
@@ -2361,6 +2408,9 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 		/* send query to db */
 		result = ido2db_db_query(idi, query1);
 		free(query1);
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -2620,6 +2670,9 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -2669,6 +2722,9 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -2858,6 +2914,9 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -2907,6 +2966,9 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -3106,6 +3168,9 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
                         	free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -3161,6 +3226,9 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -3358,6 +3426,9 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
                         	free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -3417,6 +3488,9 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -3644,6 +3718,9 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -3729,6 +3806,9 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -4027,6 +4107,9 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
                         	free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 
@@ -4144,6 +4227,9 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -4542,6 +4628,9 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -4661,6 +4750,9 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -4969,6 +5061,9 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -5012,6 +5107,9 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -8253,6 +8351,9 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
                 	        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -8296,6 +8397,9 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -8465,6 +8569,9 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
                 	        free(query2);  
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -8510,6 +8617,9 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -8959,6 +9069,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -8987,6 +9100,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -9110,6 +9226,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
                 	        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -9142,6 +9261,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -9574,6 +9696,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -9603,6 +9728,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -9727,6 +9855,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
                 	        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -9759,6 +9890,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -9886,6 +10020,9 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -9917,6 +10054,9 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -10877,6 +11017,9 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -10908,6 +11051,9 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -11042,6 +11188,9 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -11075,6 +11224,9 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -11387,6 +11539,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                 	        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -11422,6 +11577,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -11570,6 +11728,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                 	        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -11605,6 +11766,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
