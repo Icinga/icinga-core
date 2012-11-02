@@ -82,6 +82,9 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add(%lu) update rows matched\n", (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result)));
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
                         dummy = asprintf(&query, "SELECT timedevent_id FROM %s WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS],
                                  *(unsigned long *) data[0],    /* unique constraint start */
@@ -145,6 +148,9 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedevents_add(%lu) update rows matched\n", (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result)));
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (%lu, %d, %s, %lu, %s, %d, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS],
@@ -269,6 +275,9 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedeventqueue_add(%lu) update rows matched\n", (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result)));  
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
                         dummy = asprintf(&query, "SELECT timedeventqueue_id FROM %s WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE],
                                  *(unsigned long *) data[0],    /* unique constraint start */
@@ -332,6 +341,9 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timedeventqueue_add(%lu) update rows matched\n", (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result)));
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, event_type, queued_time, queued_time_usec, scheduled_time, recurring_event, object_id) VALUES (%lu, %d, %s, %lu, %s, %d, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE],
@@ -454,6 +466,9 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
                         dummy = asprintf(&query, "SELECT timedevent_id FROM %s WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS],
                                  *(unsigned long *) data[0],     /* unique constraint start */
@@ -514,6 +529,9 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, event_type, event_time, event_time_usec, scheduled_time, recurring_event, object_id) VALUES (%lu, %d, %s, %lu, %s, %d, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTS],
@@ -657,6 +675,9 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT systemcommand_id FROM %s WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SYSTEMCOMMANDS],
@@ -729,6 +750,9 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, start_time, start_time_usec, end_time, end_time_usec, command_line, timeout, early_timeout, execution_time, return_code, output, long_output) VALUES (%lu, %s, %lu, %s, %lu, E'%s', %d, %d, %lf, %d, E'%s', E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SYSTEMCOMMANDS],
@@ -801,6 +825,11 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit commandline size #3324 */
+		if ( strlen(*(char **)data[5])  > OCI_COMMAND_LINE_SIZE ) {
+			(*(char **)data[5])[OCI_COMMAND_LINE_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_systemcommand() output shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_systemcommanddata, MT(":X6"), *(char **) data[5], 0)) {
 			return IDO_ERROR;
 		}
@@ -822,6 +851,11 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[10])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+			(*(char **)data[10])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_systemcommand() output shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_systemcommanddata, MT(":X11"), *(char **) data[10], 0)) {
 			return IDO_ERROR;
 		}
@@ -924,6 +958,9 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT eventhandler_id FROM %s WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_EVENTHANDLERS],
@@ -1007,6 +1044,9 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, eventhandler_type, object_id, state, state_type, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args, command_line, timeout, early_timeout, execution_time, return_code, output, long_output) VALUES (%lu, %d, %lu, %d, %d, %s, %lu, %s, %lu, %lu, E'%s', E'%s', %d, %d, %lf, %d, E'%s', E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_EVENTHANDLERS],
@@ -1100,6 +1140,12 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_args size #3324 */
+		if ( strlen(*(char **)data[10])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[10])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_eventhandler() command_args shorted\n");
+		}
+
 		if (!OCI_BindString(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X11"), *(char **) data[10], 0)) {
 			return IDO_ERROR;
 		}
@@ -1109,6 +1155,11 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit commandline size #3324 */
+		if ( strlen(*(char **)data[11])  > OCI_COMMAND_LINE_SIZE ) {
+			(*(char **)data[11])[OCI_COMMAND_LINE_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_eventhandler() commandline shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X12"), *(char **) data[11], 0)) {
 			return IDO_ERROR;
 		}
@@ -1130,6 +1181,11 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[16])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+			(*(char **)data[16])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_eventhandler() output shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_eventhandlerdata, MT(":X17"), *(char **) data[16], 0)) {
 			return IDO_ERROR;
 		}
@@ -1224,6 +1280,9 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT notification_id FROM %s WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS],
@@ -1298,6 +1357,9 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, notification_type, notification_reason, start_time, start_time_usec, end_time, end_time_usec, object_id, state, output, long_output, escalated, contacts_notified) VALUES (%lu, %d, %d, %s, %lu, %s, %lu, %lu, %d, E'%s', E'%s', %d, %d)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS],
@@ -1384,7 +1446,11 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 			return IDO_ERROR;
 		}
 	} else {
-
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[9])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+			(*(char **)data[9])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() output shorted");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_notificationdata, MT(":X10"), *(char **) data[9], 0)) {
 			return IDO_ERROR;
 		}
@@ -1470,6 +1536,9 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT contactnotification_id FROM %s WHERE instance_id=%lu AND contact_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONS],
@@ -1532,6 +1601,9 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, notification_id, start_time, start_time_usec, end_time, end_time_usec, contact_object_id) VALUES (%lu, %lu, %s, %lu, %s, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONS],
@@ -1657,6 +1729,9 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT contactnotificationmethod_id FROM %s WHERE instance_id=%lu AND contactnotification_id=%lu AND start_time=%s AND start_time_usec=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS],
@@ -1721,6 +1796,9 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, contactnotification_id, start_time, start_time_usec, end_time, end_time_usec, command_object_id, command_args) VALUES (%lu, %lu, %s, %lu, %s, %lu, %lu, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONMETHODS],
@@ -1795,6 +1873,11 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[7])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[7])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_contactnotificationmethods() command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_contactnotificationmethoddata, MT(":X8"), *(char **) data[7], 0)) {
 			return IDO_ERROR;
 		}
@@ -2002,6 +2085,11 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[16])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+			(*(char **)data[16])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicechecks() output shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X17"), *(char **) data[16], 0)) {
 			return IDO_ERROR;
 		}
@@ -2015,6 +2103,11 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[20])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[20])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicechecks() command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X21"), *(char **) data[20], 0)) {
 			return IDO_ERROR;
 		}
@@ -2025,6 +2118,11 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_line size #3324 */
+		if ( strlen(*(char **)data[21])  > OCI_COMMAND_LINE_SIZE ) {
+			(*(char **)data[21])[OCI_COMMAND_LINE_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicechecks() command_line shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicechecks, MT(":X22"), *(char **) data[21], 0)) {
 			return IDO_ERROR;
 		}
@@ -2202,6 +2300,11 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[1])  > OCI_COMMAND_ARG_SIZE ) {
+				(*(char **)data[1])[OCI_COMMAND_ARG_SIZE] = '\0';
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostchecks() command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X2"), *(char **) data[1], 0)) {
 			return IDO_ERROR;
 		}
@@ -2211,6 +2314,11 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit commandline size #3324 */
+		if ( strlen(*(char **)data[2])  > OCI_COMMAND_LINE_SIZE ) {
+					(*(char **)data[2])[OCI_COMMAND_LINE_SIZE] = '\0';
+					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostchecks() commandline shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X3"), *(char **) data[2], 0)) {
 			return IDO_ERROR;
 		}
@@ -2271,6 +2379,11 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[20])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+			(*(char **)data[20])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostchecks() output shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hostchecks, MT(":X21"), *(char **) data[20], 0)) {
 			return IDO_ERROR;
 		}
@@ -2367,6 +2480,9 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 		 * be sure about it.
 		 */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 	                dummy = asprintf(&query, "SELECT comment_id FROM %s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
 					ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS],
 					*(unsigned long *) data[2],     /* unique constraint start */
@@ -2438,6 +2554,9 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, E'%s', E'%s', %d, %d, %d, %s)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS],
@@ -2610,6 +2729,9 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
                  * be sure about it.
                  */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 	                dummy = asprintf(&query, "SELECT commenthistory_id FROM %s WHERE instance_id=%lu AND comment_time=%s AND internal_comment_id=%lu",
 				ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTHISTORY],
 				*(unsigned long *) data[2],     /* unique constraint start */
@@ -2682,6 +2804,9 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (entry_time, entry_time_usec, instance_id, comment_type, entry_type, object_id, comment_time, internal_comment_id, author_name, comment_data, is_persistent, comment_source, expires, expiration_time) VALUES (%s, %lu, %lu, %d, %d, %lu, %s, %lu, E'%s', E'%s', %d, %d, %d, %s)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTHISTORY],
@@ -2860,6 +2985,9 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT scheduleddowntime_id FROM %s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SCHEDULEDDOWNTIME]
@@ -2940,6 +3068,9 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s "
 							"(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time, is_in_effect, trigger_time) "
@@ -3117,6 +3248,9 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT downtimehistory_id FROM %s WHERE instance_id=%lu AND object_id=%lu AND entry_time=%s AND internal_downtime_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_DOWNTIMEHISTORY]
@@ -3200,6 +3334,9 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s "
 							"(instance_id, downtime_type, object_id, entry_time, author_name, comment_data, internal_downtime_id, triggered_by_id, is_fixed, duration, scheduled_start_time, scheduled_end_time, is_in_effect, trigger_time) "
@@ -3398,6 +3535,9 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT programstatus_id FROM %s WHERE instance_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS],
@@ -3505,6 +3645,9 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, status_update_time, program_start_time, "
 							"is_currently_running, process_id, daemon_mode, "
@@ -3774,6 +3917,9 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() dbi_result_get_numrows_affected=%lu\n", dbi_result_get_numrows_affected(idi->dbinfo.dbi_result));
 
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			dummy = asprintf(&query, "SELECT hoststatus_id FROM %s WHERE host_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS],
                                 *(unsigned long *) data[1]     /* unique constraint start/end */
@@ -3911,6 +4057,9 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, host_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_up, last_time_down, last_time_unreachable, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_host, modified_host_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, E'%s', E'%s', E'%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %lf, %d, %d, %d, %d, %lu, E'%s', E'%s', %lf, %lf, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS],
@@ -4012,6 +4161,12 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 			return IDO_ERROR;
 		}
 	} else {
+		 /* limit output size #3325 */
+		if ( strlen(*(char **)data[3])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+				(*(char **)data[3])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() output shorted\n");
+		}
+
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hoststatus, MT(":X4"), *(char **) data[3], 0)) {
 			return IDO_ERROR;
 		}
@@ -4287,6 +4442,9 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
 	                dummy = asprintf(&query, "SELECT servicestatus_id FROM %s WHERE service_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICESTATUS],
@@ -4427,6 +4585,9 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, service_object_id, status_update_time, output, long_output, perfdata, current_state, has_been_checked, should_be_scheduled, current_check_attempt, max_check_attempts, last_check, next_check, check_type, last_state_change, last_hard_state_change, last_hard_state, last_time_ok, last_time_warning, last_time_unknown, last_time_critical, state_type, last_notification, next_notification, no_more_notifications, notifications_enabled, problem_has_been_acknowledged, acknowledgement_type, current_notification_number, passive_checks_enabled, active_checks_enabled, event_handler_enabled, flap_detection_enabled, is_flapping, percent_state_change, latency, execution_time, scheduled_downtime_depth, failure_prediction_enabled, process_performance_data, obsess_over_service, modified_service_attributes, event_handler, check_command, normal_check_interval, retry_check_interval, check_timeperiod_object_id) VALUES (%lu, %lu, %s, E'%s', E'%s', E'%s', %d, %d, %d, %d, %d, %s, %s, %d, %s, %s, %d, %s, %s, %s, %s, %d, %s, %s, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, '%lf', '%lf', '%lf', %d, %d, %d, %d, %lu, E'%s', E'%s', '%lf', '%lf', %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICESTATUS],
@@ -4529,6 +4690,10 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit output size #3325 */
+		if ( strlen(*(char **)data[3])  > OCI_PLUGIN_OUTPUT_SIZE ) {
+				(*(char **)data[3])[OCI_PLUGIN_OUTPUT_SIZE] = '\0';
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicestatus, MT(":X4"), *(char **) data[3], 0)) {
 			return IDO_ERROR;
 		}
@@ -4752,6 +4917,9 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT contactstatus_id FROM %s WHERE contact_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTSTATUS],
@@ -4817,6 +4985,9 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, contact_object_id, status_update_time, host_notifications_enabled, service_notifications_enabled, last_host_notification, last_service_notification, modified_attributes, modified_host_attributes, modified_service_attributes) VALUES (%lu, %lu, %s, %d, %d, %s, %s, %lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTSTATUS],
@@ -4958,6 +5129,9 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT configfile_id FROM %s WHERE instance_id=%lu AND configfile_type=%d AND configfile_path='%s'",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILES],
@@ -5016,6 +5190,9 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, configfile_type, configfile_path) VALUES (%lu, %d, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILES],
@@ -5129,6 +5306,9 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT runtimevariable_id FROM %s WHERE instance_id=%lu AND varname='%s'",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_RUNTIMEVARIABLES],
@@ -5181,6 +5361,9 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, varname, varvalue) VALUES (%lu, E'%s', E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_RUNTIMEVARIABLES],
@@ -5355,6 +5538,9 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT host_id FROM %s WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS],
@@ -5518,6 +5704,9 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, alias, display_name, address, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_down, notify_on_unreachable, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_up, stalk_on_down, stalk_on_unreachable, flap_detection_enabled, flap_detection_on_up, flap_detection_on_down, flap_detection_on_unreachable, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_host, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt, vrml_image, statusmap_image, have_2d_coords, x_2d, y_2d, have_3d_coords, x_3d, y_3d, z_3d, address6) VALUES (%lu, %d, %lu, E'%s', E'%s', E'%s', %lu, E'%s', %lu, E'%s', %lu, %lu, E'%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, E'%s', E'%s', E'%s', E'%s', E'%s', E'%s', E'%s', %d, %d, %d, %d, %lf, %lf, %lf, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS],
@@ -5661,6 +5850,11 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[7])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[7])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostdefinition() check_command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_hostdefinition_definition, MT(":X8"), *(char **) data[7], 0)) {
 			return IDO_ERROR;
 		}
@@ -5926,6 +6120,9 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
                         dummy = asprintf(&query, "SELECT host_parenthost_id FROM %s WHERE host_id=%lu AND parent_host_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTPARENTHOSTS],
                                  *(unsigned long *) data[1],            /* unique constraint start */
@@ -5977,6 +6174,9 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, host_id, parent_host_object_id) VALUES (%lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTPARENTHOSTS],
@@ -6080,6 +6280,9 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *i
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT host_contactgroup_id FROM %s WHERE host_id=%lu AND contactgroup_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTGROUPS],
@@ -6132,6 +6335,9 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *i
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, host_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTCONTACTGROUPS],
@@ -6240,6 +6446,9 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT hostgroup_id FROM %s WHERE instance_id=%lu AND hostgroup_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPS],
@@ -6294,6 +6503,9 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, hostgroup_object_id, alias) VALUES (%lu, %d, %lu, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPS],
@@ -6407,6 +6619,9 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2d
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT hostgroup_member_id FROM %s WHERE hostgroup_id=%lu AND host_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPMEMBERS],
@@ -6459,6 +6674,9 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2d
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, hostgroup_id, host_object_id) VALUES (%lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPMEMBERS],
@@ -6609,6 +6827,9 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT service_id FROM %s WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
@@ -6758,6 +6979,9 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, service_object_id, display_name, check_command_object_id, check_command_args, eventhandler_command_object_id, eventhandler_command_args, check_timeperiod_object_id, notification_timeperiod_object_id, failure_prediction_options, check_interval, retry_interval, max_check_attempts, first_notification_delay, notification_interval, notify_on_warning, notify_on_unknown, notify_on_critical, notify_on_recovery, notify_on_flapping, notify_on_downtime, stalk_on_ok, stalk_on_warning, stalk_on_unknown, stalk_on_critical, is_volatile, flap_detection_enabled, flap_detection_on_ok, flap_detection_on_warning, flap_detection_on_unknown, flap_detection_on_critical, low_flap_threshold, high_flap_threshold, process_performance_data, freshness_checks_enabled, freshness_threshold, passive_checks_enabled, event_handler_enabled, active_checks_enabled, retain_status_information, retain_nonstatus_information, notifications_enabled, obsess_over_service, failure_prediction_enabled, notes, notes_url, action_url, icon_image, icon_image_alt) VALUES (%lu, %d, %lu, %lu, E'%s', %lu, E'%s', %lu, E'%s', %lu, %lu, E'%s', %lf, %lf, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %lf, %lf, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, E'%s', E'%s', E'%s', E'%s', E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
@@ -6879,6 +7103,11 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[6])  > OCI_COMMAND_ARG_SIZE ) {
+				(*(char **)data[6])[OCI_COMMAND_ARG_SIZE] = '\0';
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicedefinition() check_command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X7"), *(char **) data[6], 0)) {
 			return IDO_ERROR;
 		}
@@ -6891,6 +7120,11 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[8])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[8])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_servicedefinition_definition() eventhandler_command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_servicedefinition_definition, MT(":X9"), *(char **) data[8], 0)) {
 			return IDO_ERROR;
 		}
@@ -7113,6 +7347,9 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT service_contactgroup_id FROM %s WHERE service_id=%lu AND contactgroup_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS],
@@ -7165,6 +7402,9 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, service_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICECONTACTGROUPS],
@@ -7273,6 +7513,9 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT servicegroup_id FROM %s WHERE instance_id=%lu AND config_type=%d AND servicegroup_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPS],
@@ -7328,6 +7571,9 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, servicegroup_object_id, alias) VALUES (%lu, %d, %lu, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPS],
@@ -7441,6 +7687,9 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi 
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT servicegroup_member_id FROM %s WHERE servicegroup_id=%lu AND service_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPMEMBERS],
@@ -7494,6 +7743,9 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi 
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, servicegroup_id, service_object_id) VALUES (%lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPMEMBERS],
@@ -7609,6 +7861,9 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT hostdependency_id FROM %s WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu AND dependent_host_object_id=%lu AND dependency_type=%d AND inherits_parent=%d AND fail_on_up=%d AND fail_on_down=%d AND fail_on_unreachable=%d",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTDEPENDENCIES],
@@ -7682,6 +7937,9 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, dependent_host_object_id, dependency_type, inherits_parent, timeperiod_object_id, fail_on_up, fail_on_down, fail_on_unreachable) VALUES (%lu, %d, %lu, %lu, %d, %d, %lu, %d, %d, %d)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTDEPENDENCIES],
@@ -7825,6 +8083,9 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT servicedependency_id FROM %s WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu AND dependent_service_object_id=%lu AND dependency_type=%d AND inherits_parent=%d AND fail_on_ok=%d AND fail_on_warning=%d AND fail_on_unknown=%d AND fail_on_critical=%d",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEDEPENDENCIES],
@@ -7901,6 +8162,9 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, service_object_id, dependent_service_object_id, dependency_type, inherits_parent, timeperiod_object_id, fail_on_ok, fail_on_warning, fail_on_unknown, fail_on_critical) VALUES (%lu, %d, %lu, %lu, %d, %d, %lu, %d, %d, %d, %d)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEDEPENDENCIES],
@@ -8047,6 +8311,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT hostescalation_id FROM %s WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONS],
@@ -8117,6 +8384,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, host_object_id, timeperiod_object_id, first_notification, last_notification, notification_interval, escalate_on_recovery, escalate_on_down, escalate_on_unreachable) VALUES (%lu, %d, %lu, %lu, %d, %d, %lf, %d, %d, %d)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONS],
@@ -8247,6 +8517,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT hostescalation_contactgroup_id FROM %s WHERE hostescalation_id=%lu AND contactgroup_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS],
@@ -8298,6 +8571,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, hostescalation_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONCONTACTGROUPS],
@@ -8404,6 +8680,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
                         dummy = asprintf(&query, "SELECT hostescalation_contact_id FROM %s WHERE instance_id=%lu AND hostescalation_id=%lu AND contact_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONCONTACTS],
                                  *(unsigned long *) data[0],     /* unique constraint start */
@@ -8459,6 +8738,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, hostescalation_id, contact_object_id) VALUES (%lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONCONTACTS],
@@ -8574,6 +8856,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
                         dummy = asprintf(&query, "SELECT serviceescalation_id FROM %s WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONS],
                                  *(unsigned long *) data[0],            /* unique constraint start */
@@ -8645,6 +8930,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, service_object_id, timeperiod_object_id, first_notification, last_notification, notification_interval, escalate_on_recovery, escalate_on_warning, escalate_on_unknown, escalate_on_critical) VALUES (%lu, %d, %lu, %lu, %d, %d, %lf, %d, %d, %d, %d)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONS],
@@ -8780,6 +9068,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT serviceescalation_contactgroup_id FROM %s WHERE serviceescalation_id=%lu AND contactgroup_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS],
@@ -8832,6 +9123,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, serviceescalation_id, contactgroup_object_id) VALUES (%lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONCONTACTGROUPS],
@@ -8938,6 +9232,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT serviceescalation_contact_id FROM %s WHERE instance_id=%lu AND serviceescalation_id=%lu AND contact_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS],
@@ -8994,6 +9291,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, serviceescalation_id, contact_object_id) VALUES (%lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONCONTACTS],
@@ -9102,6 +9402,9 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT command_id FROM %s WHERE instance_id=%lu AND object_id=%lu AND config_type=%d",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_COMMANDS],
@@ -9157,6 +9460,9 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, object_id, config_type, command_line) VALUES (%lu, %lu, %d, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_COMMANDS],
@@ -9216,6 +9522,11 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit commandline size #3324 */
+		if ( strlen(*(char **)data[3])  > OCI_COMMAND_LINE_SIZE ) {
+			(*(char **)data[3])[OCI_COMMAND_LINE_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_commanddefinition() commandline shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_commanddefinition_definition, MT(":X4"), *(char **) data[3], 0)) {
 			return IDO_ERROR;
 		}
@@ -9276,6 +9587,9 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
                         dummy = asprintf(&query, "SELECT timeperiod_id FROM %s WHERE instance_id=%lu AND config_type=%d AND timeperiod_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODS],
                                  *(unsigned long *) data[0],            /* unique constraint start */
@@ -9330,6 +9644,9 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, timeperiod_object_id, alias) VALUES (%lu, %d, %lu, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODS],
@@ -9445,6 +9762,9 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi 
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
                         dummy = asprintf(&query, "SELECT timeperiod_timerange_id FROM %s WHERE timeperiod_id=%lu AND day=%d AND start_sec=%lu AND end_sec=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES],
                                  *(unsigned long *) data[1],    /* unique constraint start */
@@ -9502,6 +9822,9 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi 
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, timeperiod_id, day, start_sec, end_sec) VALUES (%lu, %lu, %d, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODTIMERANGES],
@@ -9634,6 +9957,9 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT contact_id FROM %s WHERE instance_id=%lu AND config_type=%d AND contact_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTS],
@@ -9725,6 +10051,9 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, contact_object_id, alias, email_address, pager_address, host_timeperiod_object_id, service_timeperiod_object_id, host_notifications_enabled, service_notifications_enabled, can_submit_commands, notify_service_recovery, notify_service_warning, notify_service_unknown, notify_service_critical, notify_service_flapping, notify_service_downtime, notify_host_recovery, notify_host_down, notify_host_unreachable, notify_host_flapping, notify_host_downtime) VALUES (%lu, %d, %lu, E'%s', E'%s', E'%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d, %d)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTS],
@@ -9923,6 +10252,9 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT contactaddress_id FROM %s WHERE contact_id=%lu AND address_number=%d",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTADDRESSES],
@@ -9977,6 +10309,9 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, contact_id, address_number, address) VALUES (%lu, %lu, %d, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTADDRESSES],
@@ -10092,6 +10427,9 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
                         dummy = asprintf(&query, "SELECT contact_notificationcommand_id FROM %s WHERE instance_id=%lu AND contact_id=%lu AND notification_type=%d AND command_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS],
                                  *(unsigned long *) data[0],     /* unique constraint start */
@@ -10149,6 +10487,9 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, contact_id, notification_type, command_object_id, command_args) VALUES (%lu, %lu, %d, %lu, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS],
@@ -10212,6 +10553,11 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 			return IDO_ERROR;
 		}
 	} else {
+		/* limit command_arg size #3324 */
+		if ( strlen(*(char **)data[4])  > OCI_COMMAND_ARG_SIZE ) {
+			(*(char **)data[4])[OCI_COMMAND_ARG_SIZE] = '\0';
+			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_contact_notification() command_args shorted\n");
+		}
 		if (!OCI_BindString(idi->dbinfo.oci_statement_contact_notificationcommands, MT(":X5"), *(char **) data[4], 0)) {
 			return IDO_ERROR;
 		}
@@ -10268,6 +10614,9 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT contact_notificationcommand_id FROM %s WHERE instance_id=%lu AND contact_id=%lu AND notification_type=%d AND command_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS],
@@ -10326,6 +10675,9 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, contact_id, notification_type, command_object_id, command_args) VALUES (%lu, %lu, %d, %lu, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONCOMMANDS],
@@ -10444,6 +10796,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT customvariable_id FROM %s WHERE object_id=%lu AND varname='%s'",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLES],
@@ -10502,6 +10857,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, object_id, config_type, has_been_modified, varname, varvalue) VALUES (%lu, %lu, %d, %d, E'%s', E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLES],
@@ -10634,6 +10992,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT customvariablestatus_id FROM %s WHERE object_id=%lu AND varname='%s'",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS],
@@ -10691,6 +11052,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, object_id, status_update_time, has_been_modified, varname, varvalue) VALUES (%lu, %lu, %s, %d, E'%s', E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS],
@@ -10832,6 +11196,9 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT contactgroup_id FROM %s WHERE instance_id=%lu AND config_type=%d AND contactgroup_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPS],
@@ -10887,6 +11254,9 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, config_type, contactgroup_object_id, alias) VALUES (%lu, %d, %lu, E'%s')",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPS],
@@ -11000,6 +11370,9 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
 
                 /* check result if update was ok */
                 if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
 
                         dummy = asprintf(&query, "SELECT contactgroup_member_id FROM %s WHERE contactgroup_id=%lu AND contact_object_id=%lu",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPMEMBERS],
@@ -11052,6 +11425,9 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
 
 		/* check result if update was ok */
 		if (dbi_result_get_numrows_affected(idi->dbinfo.dbi_result) == 0) {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
 			/* try insert instead */
 			dummy = asprintf(&query2, "INSERT INTO %s (instance_id, contactgroup_id, contact_object_id) VALUES (%lu, %lu, %lu)",
 			                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPMEMBERS],

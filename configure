@@ -2456,9 +2456,9 @@ ac_config_headers="$ac_config_headers include/config.h"
 
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.8.0dev"
+PKG_VERSION="1.9.0dev"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="10-17-2012"
+PKG_REL_DATE="04-25-2013"
 
 ac_aux_dir=
 for ac_dir in "$srcdir" "$srcdir/.." "$srcdir/../.."; do
@@ -7152,7 +7152,7 @@ $as_echo_n "checking for -Wall based on os/compiler... " >&6; }
         esac
 
 
-ac_config_files="$ac_config_files Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl"
+ac_config_files="$ac_config_files Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl"
 
 
 
@@ -7785,7 +7785,6 @@ do
     "module/idoutils/Makefile") CONFIG_FILES="$CONFIG_FILES module/idoutils/Makefile" ;;
     "xdata/Makefile") CONFIG_FILES="$CONFIG_FILES xdata/Makefile" ;;
     "daemon-init") CONFIG_FILES="$CONFIG_FILES daemon-init" ;;
-    "daemon-init-redhat") CONFIG_FILES="$CONFIG_FILES daemon-init-redhat" ;;
     "rc.ido2db") CONFIG_FILES="$CONFIG_FILES rc.ido2db" ;;
     "module/idoutils/src/Makefile") CONFIG_FILES="$CONFIG_FILES module/idoutils/src/Makefile" ;;
     "t-tap/Makefile") CONFIG_FILES="$CONFIG_FILES t-tap/Makefile" ;;

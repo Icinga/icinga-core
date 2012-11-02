@@ -78,7 +78,7 @@ MKDIR=/bin/mkdir
 ###############################
 # Global
 ###############################
-ICINGA_VERSION=1.8.0dev
+ICINGA_VERSION=1.9.0dev
 
 CP=@CP@
 
@@ -267,7 +267,7 @@ distclean: clean
 	cd $(SRC_TAP) && $(MAKE) $@; \
 
 	rm -f sample-config/*.cfg sample-config/*.conf sample-config/template-object/*.cfg
-	rm -f daemon-init pkginfo rc.ido2db daemon-init-redhat
+	rm -f daemon-init pkginfo rc.ido2db
 	rm -f include/dh.h
 	rm -f Makefile subst p1.pl
 	rm -f config.log config.status config.cache
