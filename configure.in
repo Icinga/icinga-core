@@ -9,9 +9,9 @@ AC_CONFIG_HEADER(include/config.h)
 AC_PREFIX_DEFAULT(/usr/local/icinga)
 
 PKG_NAME=icinga-core
-PKG_VERSION="1.8.0dev"
+PKG_VERSION="1.9.0dev"
 PKG_HOME_URL="http://www.icinga.org/"
-PKG_REL_DATE="10-17-2012"
+PKG_REL_DATE="04-25-2013"
 
 dnl Figure out how to invoke "install" and what install options to use.
 AC_PROG_INSTALL
@@ -1313,7 +1313,7 @@ AC_MSG_CHECKING(for -Wall based on os/compiler)
 
 
 dnl OUTPUT
-AC_OUTPUT(Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init daemon-init-redhat rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl)
+AC_OUTPUT(Makefile subst solaris/pkginfo solaris/icinga.xml base/Makefile common/Makefile contrib/Makefile cgi/Makefile html/Makefile module/Makefile module/idoutils/Makefile xdata/Makefile daemon-init rc.ido2db module/idoutils/src/Makefile t-tap/Makefile t/Makefile module/idoutils/db/scripts/installdb module/idoutils/db/scripts/upgradedb module/idoutils/db/scripts/prepsql p1.pl)
 
 perl subst $srcdir/include/locations.h
 

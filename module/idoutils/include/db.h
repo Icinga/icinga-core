@@ -166,8 +166,11 @@ int ido2db_db_trim_data_table(ido2db_idi *,char *,char *,unsigned long);
 #define OCI_VARCHAR_SIZE 4096 /* max allowed string size for varchar2 (+1) */
 #define OCI_STR_SIZE 256 /* default small string buffer size */
 #define OCI_BINDARRAY_MAX_SIZE 5000 /* default array buffer and commit size for bulk ops */
-#define OCI_OUTPUT_BUFFER_SIZE 32000 /* Buffer size for dbms_output calls */
+#define OCI_DBMS_OUTPUT_BUFFER_SIZE 32000 /* Buffer size for dbms_output calls */
 #define OCI_LOB_CHUNK_SIZE 2048 /* Buffer size for LOB operations */
+#define OCI_PLUGIN_OUTPUT_SIZE 2048 /* field len for all output columns */
+#define OCI_COMMAND_ARG_SIZE 1024 /* field len for all command_arg columns */
+#define OCI_COMMAND_LINE_SIZE 2048 /* field len for all command_line columns */
 
 void ido2db_ocilib_err_handler(OCI_Error *);
 unsigned long ido2db_oci_sequence_lastid(ido2db_idi *, char *);
@@ -176,7 +179,7 @@ int ido2db_oci_bind_clob(OCI_Statement *st, char * bindname, char * text,OCI_Lob
 int ido2db_oci_set_trace_event(OCI_Connection *,unsigned int);
 int ido2db_oci_execute_out(OCI_Statement *,char *);
 int ido2db_oci_set_session_info(OCI_Connection *, char *);
-void ido2db_oci_print_binds(OCI_Statement *,int,char **);
+int ido2db_oci_print_binds(OCI_Statement *,char **);
 void ido2db_oci_statement_free(OCI_Statement *,char *);
 /* Helper */
 int ido2db_oci_StringUTF8Length(const char *str);
