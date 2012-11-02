@@ -1419,12 +1419,12 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 	/* check dbversion against program version */
 	if (idi->dbinfo.dbversion == NULL) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() dbversion is NULL\n");
-		syslog(LOG_ERR, "Error: DB Version cannot be retrieved. Please check the upgrade docs and verify the db schema!");
+		syslog(LOG_USER | LOG_INFO, "Error: DB Version cannot be retrieved. Please check the upgrade docs and verify the db schema!");
 		return IDO_ERROR;
 	}
 	if (strcmp(idi->dbinfo.dbversion, IDO_SCHEMA_VERSION) != 0) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() db version %s does not match schema version %s\n", idi->dbinfo.dbversion, IDO_SCHEMA_VERSION);
-		syslog(LOG_ERR, "Error: DB Version %s does not match needed schema version %s. Please check the upgrade docs!", idi->dbinfo.dbversion, IDO_SCHEMA_VERSION);
+		syslog(LOG_USER | LOG_INFO, "Error: DB Version %s does not match needed schema version %s. Please check the upgrade docs!", idi->dbinfo.dbversion, IDO_SCHEMA_VERSION);
 		return IDO_ERROR;
 	}
 
@@ -1459,8 +1459,6 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 	if (result == IDO_ERROR) {
                 syslog(LOG_USER | LOG_INFO, "Error: DB Version Check against %s database query failed! Please check %s database configuration and schema!", ido2db_db_settings.dbserver, ido2db_db_settings.dbserver);
-                syslog(LOG_USER | LOG_INFO, "Exiting ...");
-
                 ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check() query against existing instance not possible, cleaning up and exiting\n");
 
 		return IDO_ERROR;
