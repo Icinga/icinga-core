@@ -20,7 +20,7 @@
 
 Summary: Open Source host, service and network monitoring program
 Name: icinga
-Version: 1.7.2
+Version: 1.7.3
 Release: %{revision}%{?dist}
 License: GPLv2
 Group: Applications/System
@@ -396,6 +396,9 @@ fi
 
 
 %changelog
+* Thu Nov 08 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.3-1
+- bump version
+
 * Tue Aug 21 2012 Michael Friedrich <michael.friedrich@univie.ac.at> - 1.7.2-1
 - bump version
 - forgot to check on old icinga.cfg entries not matching - enforce that once
