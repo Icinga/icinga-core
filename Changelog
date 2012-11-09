@@ -29,6 +29,7 @@ FIXES
 * classic ui: fix cmd.cgi does not honor commandpipe location; overwrites from empty environment variable #3418 - MF
 * classic ui: fixed Double-listed host dependencies in host extinfo.cgi #3295 - RB
 * classic ui: fixed sort_icinga_logfiles_by_name() in readlogs.c fails to take NULL pointers into consideration #3398 - CF
+* classic ui: fixed committing acknowledgement cmd negates flags for send_notification and sticky_ack #3329 - RB
 
 CHANGES
 
