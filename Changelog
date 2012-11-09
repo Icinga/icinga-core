@@ -27,6 +27,7 @@ FIXES
 * idoutils: fix ido2db does not cleanly exit the client on wrong schema version check in db_hello #3419 - MF
 
 * install: drop unused daemon-init-readhat script (spec uses daemon-init) #3402 - MF
+* install: fix broken configure ssl detection for idoutils on ubuntu/debian (Oliver Skibbe) #3413 - MF
 
 CHANGES
 
