@@ -27,6 +27,7 @@ FIXES
 * install: drop unused daemon-init-readhat script (spec uses daemon-init) #3402 - MF
 
 * classic ui: fix cmd.cgi does not honor commandpipe location; overwrites from empty environment variable #3418 - MF
+* classic ui: fixed Double-listed host dependencies in host extinfo.cgi #3295 - RB
 
 CHANGES
 
