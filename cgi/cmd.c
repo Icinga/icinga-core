@@ -1010,9 +1010,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Sticky Acknowledgement:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		/* http://iamcam.wordpress.com/2008/01/15/unchecked-checkbox-values/ */
-		printf("<INPUT TYPE='hidden' NAME='sticky_ack' value='%d'>", (sticky_ack == TRUE) ? 0 : 1); /* negate value hack, if checkbox is unchecked */
-		printf("<INPUT TYPE='checkbox' NAME='sticky_ack' value='%d' %s></td></tr>\n", (sticky_ack == TRUE) ? 1 : 0, (sticky_ack == TRUE) ? "CHECKED" : "");
+		printf("<INPUT TYPE='checkbox' NAME='sticky_ack' %s></td></tr>\n", (sticky_ack == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_SEND_NOTFICATION:
@@ -1022,9 +1020,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Send Notification:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		/* http://iamcam.wordpress.com/2008/01/15/unchecked-checkbox-values/ */
-		printf("<INPUT TYPE='hidden' NAME='send_notification' value='%d'>", (send_notification == TRUE) ? 0 : 1); /* negate value hack, if checkbox is unchecked */
-		printf("<INPUT TYPE='checkbox' NAME='send_notification' value='%d' %s></td></tr>\n", (send_notification == TRUE) ? 1 : 0, (send_notification == TRUE) ? "CHECKED" : "");
+		printf("<INPUT TYPE='checkbox' NAME='send_notification' %s></td></tr>\n", (send_notification == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_PERSISTENT:
