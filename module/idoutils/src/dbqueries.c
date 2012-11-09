@@ -107,6 +107,10 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -127,6 +131,10 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
 	                        free(query2);
 			}
                 }
+
+		/* free last dbi_result */
+                dbi_result_free(idi->dbinfo.dbi_result);
+                idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -166,22 +174,10 @@ int ido2db_query_insert_or_update_timedevent_add(ido2db_idi *idi, void **data) {
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+
+		/* free last dbi_result */
+                dbi_result_free(idi->dbinfo.dbi_result);
+                idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -300,6 +296,10 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -320,6 +320,9 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -359,22 +362,9 @@ int ido2db_query_insert_or_update_timedeventqueue_add(ido2db_idi *idi, void **da
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -491,6 +481,10 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -511,6 +505,9 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 	case IDO2DB_DBSERVER_PGSQL:
 		dummy = asprintf(&query1, "UPDATE %s SET event_time=%s, event_time_usec=%lu, recurring_event=%d WHERE instance_id=%lu AND event_type=%d AND scheduled_time=%s AND object_id=%lu",
@@ -547,22 +544,9 @@ int ido2db_query_insert_or_update_timedevents_execute_add(ido2db_idi *idi, void 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -700,6 +684,10 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -726,6 +714,9 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -773,22 +764,9 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -983,6 +961,10 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -1014,6 +996,9 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -1073,22 +1058,9 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -1228,18 +1200,20 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 /* NOTIFICATIONS                    */
 /************************************/
 
-int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **data, int type) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long notification_id;
         int mysql_update = FALSE;
 #endif
 #ifdef USE_ORACLE
 	OCI_Lob *lob_i;
 	OCI_Lob *lob_u;
+	char * seq_name = NULL;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() start\n");
 
@@ -1306,6 +1280,10 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -1330,8 +1308,51 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
         	                /* send query to db */
                 	        result = ido2db_db_query(idi, query2);
                         	free(query2);
+
+			        /* save the notification id for later use... */
+			        if (type == NEBTYPE_NOTIFICATION_START)
+			                idi->dbinfo.last_notification_id = 0L;
+			        if (result == IDO_OK && type == NEBTYPE_NOTIFICATION_START) {
+		                        /* mysql doesn't use sequences */
+		                        idi->dbinfo.last_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
+				}
+
+			        dbi_result_free(idi->dbinfo.dbi_result);
+			        idi->dbinfo.dbi_result = NULL;
 			}
-                }
+                } else {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
+			/* if we actually did an update, we cannot just call dbi_conn_sequence_last, but rather select the id we updated */
+                        dummy = asprintf(&query, "SELECT notification_id FROM %s WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(char **) data[3],
+                                 *(unsigned long *) data[4],
+                                 *(unsigned long *) data[7]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                idi->dbinfo.last_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "notification_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
+                                        } 
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+				dbi_result_free(idi->dbinfo.dbi_result);
+				idi->dbinfo.dbi_result = NULL;
+
+			}
+                        free(query);
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -1380,23 +1401,55 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
-		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+
+		        /* save the notification id for later use... */
+		        if (type == NEBTYPE_NOTIFICATION_START)
+		                idi->dbinfo.last_notification_id = 0L;
+		        if (result == IDO_OK && type == NEBTYPE_NOTIFICATION_START) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_notification_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS]) == -1)
+                	                buf = NULL;
+
+	                        idi->dbinfo.last_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%s=%lu) last_notification_id\n", buf, idi->dbinfo.last_notification_id);
+	                        free(buf);
+			}
+
+		        dbi_result_free(idi->dbinfo.dbi_result);
+		        idi->dbinfo.dbi_result = NULL;
+
+                } else {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
+
+                        /* if we actually did an update, we cannot just call dbi_conn_sequence_last, but rather select the id we updated */
+                        dummy = asprintf(&query, "SELECT notification_id FROM %s WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_NOTIFICATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(char **) data[3],
+                                 *(unsigned long *) data[4],
+                                 *(unsigned long *) data[7]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                idi->dbinfo.last_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "notification_id");
+	                        		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
+                                        } 
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+
+                        }
+                        free(query);
+                }
 		break;
 	default:
 		break;
@@ -1485,6 +1538,20 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata() clob bind error\n");
 	}
 
+        /* save the notification id for later use... */
+        if (type == NEBTYPE_NOTIFICATION_START)
+                idi->dbinfo.last_notification_id = 0L;
+        if (result == IDO_OK && type == NEBTYPE_NOTIFICATION_START) {
+
+                if (asprintf(&seq_name, "seq_notifications") == -1)
+                        seq_name = NULL;
+
+		/* this hopefully works if we update the colum as well */
+                idi->dbinfo.last_notification_id = ido2db_oci_sequence_lastid(idi, seq_name);
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_notificationdata(%lu) last_notification_id\n", idi->dbinfo.last_notification_id);
+                free(seq_name);
+	}
+
 	if (lob_i) OCI_LobFree(lob_i);
 	if (lob_u) OCI_LobFree(lob_u);
 
@@ -1500,15 +1567,20 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 /* CONTACTNOTIFICATIONS             */
 /************************************/
 
-int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, void **data, int type) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long contactnotification_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactnotificationdata_add() start\n");
 
 	if (idi == NULL)
@@ -1562,6 +1634,10 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -1580,8 +1656,51 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 	                        /* send query to db */
         	                result = ido2db_db_query(idi, query2);
                 	        free(query2);
+
+			        /* save the contact notification id for later use... */
+			        if (type == NEBTYPE_CONTACTNOTIFICATION_START)
+			                idi->dbinfo.last_contact_notification_id = 0L;
+			        if (result == IDO_OK && type == NEBTYPE_CONTACTNOTIFICATION_START) {
+		                        /* mysql doesn't use sequences */
+		                        idi->dbinfo.last_contact_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%lu) contactnotification_id\n", idi->dbinfo.last_contact_notification_id);
+				}
+
+                		dbi_result_free(idi->dbinfo.dbi_result);
+	                	idi->dbinfo.dbi_result = NULL;
 			}
-                }
+                } else {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
+			/* hey, update happened, select the id we just updated */
+                        dummy = asprintf(&query, "SELECT contactnotification_id FROM %s WHERE instance_id=%lu AND contact_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(unsigned long *) data[6],
+                                 *(char **) data[2],
+                                 *(unsigned long *) data[3]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                idi->dbinfo.last_contact_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactnotification_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%lu) contactnotification_id\n", idi->dbinfo.last_contact_notification_id);
+                                        } 
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+				}
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+		}
+
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -1618,23 +1737,55 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
-		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+
+		        /* save the contact notification id for later use... */
+		        if (type == NEBTYPE_CONTACTNOTIFICATION_START)
+		                idi->dbinfo.last_contact_notification_id = 0L;
+		        if (result == IDO_OK && type == NEBTYPE_CONTACTNOTIFICATION_START) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+	                        if (asprintf(&buf, "%s_contactnotification_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONS]) == -1)
+        	                        buf = NULL;
+
+	                        idi->dbinfo.last_contact_notification_id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%s=%lu) contactnotification_id\n", buf, idi->dbinfo.last_contact_notification_id);
+	                        free(buf);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                } else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* hey, update happened, select the id we just updated */
+                        dummy = asprintf(&query, "SELECT contactnotification_id FROM %s WHERE instance_id=%lu AND contact_object_id=%lu AND start_time=%s AND start_time_usec=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTNOTIFICATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(unsigned long *) data[6],
+                                 *(char **) data[2],
+                                 *(unsigned long *) data[3]      /* unique constraint end */
+                                );
+        
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                idi->dbinfo.last_contact_notification_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactnotification_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%lu) contactnotification_id\n", idi->dbinfo.last_contact_notification_id);
+                                        } 
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+                }
+
 		break;
 	default:
 		break;
@@ -1682,6 +1833,17 @@ int ido2db_query_insert_or_update_contactnotificationdata_add(ido2db_idi *idi, v
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+        /* save the contact notification id for later use... */
+        if (type == NEBTYPE_CONTACTNOTIFICATION_START)
+                idi->dbinfo.last_contact_notification_id = 0L;
+        if (result == IDO_OK && type == NEBTYPE_CONTACTNOTIFICATION_START) {
+                if (asprintf(&seq_name, "seq_contactnotifications") == -1)
+                        seq_name = NULL;
+                idi->dbinfo.last_contact_notification_id = ido2db_oci_sequence_lastid(idi, seq_name);
+                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactnotificationdata(%lu) \n", idi->dbinfo.last_contact_notification_id);
+                free(seq_name);
+	}
 
 	/* do not free statement yet! */
 #endif
@@ -1755,6 +1917,10 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -1776,6 +1942,9 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -1815,22 +1984,9 @@ int ido2db_query_insert_or_update_contactnotificationmethoddata_add(ido2db_idi *
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -1968,6 +2124,9 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
                 /* send query to db */
                 result = ido2db_db_query(idi, query1);
                 free(query1);
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 	case IDO2DB_DBSERVER_PGSQL:
 		dummy = asprintf(&query1, "INSERT INTO %s (instance_id, service_object_id, check_type, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata, command_object_id, command_args, command_line) VALUES (%lu, %lu, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, E'%s', E'%s', E'%s', %lu, E'%s', E'%s')",
@@ -1998,22 +2157,9 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 		/* send query to db */
 		result = ido2db_db_query(idi, query1);
 		free(query1);
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -2228,6 +2374,9 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
                 /* send query to db */
                 result = ido2db_db_query(idi, query1);
                 free(query1);
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 	case IDO2DB_DBSERVER_PGSQL:
 		dummy = asprintf(&query1, "INSERT INTO %s (command_object_id, command_args, command_line, instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, max_check_attempts, state, state_type, start_time, start_time_usec, end_time, end_time_usec, timeout, early_timeout, execution_time, latency, return_code, output, long_output, perfdata) VALUES (%lu, E'%s', E'%s', %lu, %lu, %d, %d, %d, %d, %d, %d, %s, %lu, %s, %lu, %d, %d, %lf, %lf, %d, E'%s', E'%s', E'%s')",
@@ -2259,22 +2408,9 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 		/* send query to db */
 		result = ido2db_db_query(idi, query1);
 		free(query1);
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -2504,6 +2640,10 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 					idi->dbinfo.dbi_result = NULL;
 				}
 			}
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                 	free(query);
 
 			if (mysql_update == FALSE) {
@@ -2530,6 +2670,9 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -2579,22 +2722,9 @@ int ido2db_query_insert_or_update_commentdata_add(ido2db_idi *idi, void **data) 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -2753,6 +2883,10 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 					idi->dbinfo.dbi_result = NULL;
 				}
 			}
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
         	        free(query);
 
 			if (mysql_update == FALSE) {
@@ -2780,6 +2914,9 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -2829,22 +2966,9 @@ int ido2db_query_insert_or_update_commentdata_history_add(ido2db_idi *idi, void 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -3011,6 +3135,10 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
                         if (mysql_update == FALSE) {
@@ -3040,6 +3168,9 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
                         	free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -3095,22 +3226,9 @@ int ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(ido2db_idi
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -3274,6 +3392,10 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
                         if (mysql_update == FALSE) {
@@ -3304,6 +3426,9 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
                         	free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -3363,22 +3488,9 @@ int ido2db_query_insert_or_update_downtimedata_downtime_history_add(ido2db_idi *
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -3558,6 +3670,10 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -3602,6 +3718,9 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -3687,22 +3806,9 @@ int ido2db_query_insert_or_update_programstatusdata_add(ido2db_idi *idi, void **
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -3939,6 +4045,10 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
         	                        idi->dbinfo.dbi_result = NULL;
 	                        }
 	                }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
         	        free(query);
 
 			if (mysql_update == FALSE) {
@@ -3997,6 +4107,9 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
                         	free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 
@@ -4114,22 +4227,9 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -4465,6 +4565,10 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 	                                idi->dbinfo.dbi_result = NULL;
 	                        }
 	                }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
         	        free(query);
 
 			if (mysql_update == FALSE) {
@@ -4524,6 +4628,9 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -4643,22 +4750,9 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -4940,6 +5034,10 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -4963,6 +5061,9 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -5006,22 +5107,9 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -5092,15 +5180,20 @@ int ido2db_query_insert_or_update_contactstatusdata_add(ido2db_idi *idi, void **
 /* CONFIGFILEVARIABLES              */
 /************************************/
 
-int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf1 = NULL;
         unsigned long configfile_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_configfilevariables_add() start\n");
 
 	if (idi == NULL)
@@ -5154,6 +5247,10 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -5168,8 +5265,49 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
                 	        /* send query to db */
                         	result = ido2db_db_query(idi, query2);
 	                        free(query2);
+
+			        if (result == IDO_OK) {
+			                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
+		                                      " preceeding ido2db_query_insert_or_update_configfilevariables_add OK \n");
+		                        /* mysql doesn't use sequences */
+                		        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%lu) configfile_id\n", *id);
+				}
+
+                		dbi_result_free(idi->dbinfo.dbi_result);
+	                	idi->dbinfo.dbi_result = NULL;
 			}
-                }
+                } else {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+
+			/* we did an update, get the id */
+                        dummy = asprintf(&query, "SELECT configfile_id FROM %s WHERE instance_id=%lu AND configfile_type=%d AND configfile_path='%s'",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILES],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(char **) data[2]             /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "configfile_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%lu) configfile_id\n", *id);
+                                        } 
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        } 
+			else {
+				dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -5203,23 +5341,53 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
-		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+
+		        if (result == IDO_OK) {
+		                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables"
+                		                      " preceeding ido2db_query_insert_or_update_configfilevariables_add OK \n");
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf1, "%s_configfile_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILES]) == -1)
+                	                buf1 = NULL;
+
+                        	*id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf1);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%s=%lu) configfile_id\n", buf1, *id);
+        	                free(buf1);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+                } else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* we did an update, get the id */
+                        dummy = asprintf(&query, "SELECT configfile_id FROM %s WHERE instance_id=%lu AND configfile_type=%d AND configfile_path='%s'",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONFIGFILES],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(char **) data[2]             /* unique constraint end */
+                                );
+                                 
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "configfile_id");
+	                        		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(%lu) configfile_id\n", *id);
+                                        } 
+                
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+
+                }
+
 		break;
 	default:
 		break;
@@ -5261,6 +5429,14 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+
+	/* retrieve last inserted configfile_id */
+	if (asprintf(&seq_name, "seq_configfiles") == -1)
+                seq_name = NULL;
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configfilevariables(id %lu) \n", *id);
+        free(seq_name);
 
 	/* do not free statement yet! */
 #endif
@@ -5330,6 +5506,10 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -5375,22 +5555,6 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -5451,15 +5615,20 @@ int ido2db_query_insert_or_update_runtimevariables_add(ido2db_idi *idi, void **d
 /* HOSTDEFINITION                   */
 /************************************/
 
-int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long host_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_definition_add() start\n");
 
 	if (idi == NULL)
@@ -5563,6 +5732,11 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+			else {
+                		dbi_result_free(idi->dbinfo.dbi_result);
+	                	idi->dbinfo.dbi_result = NULL;
+			}
+
                         free(query);
 
                         if (mysql_update == FALSE) {
@@ -5632,8 +5806,48 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 	                        /* send query to db */
         	                result = ido2db_db_query(idi, query2);
                 	        free(query2);
+
+			        if (result == IDO_OK) {
+		                        /* mysql doesn't use sequences */
+                		        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition(%lu) host_id\n", *id);
+				}
+
+                		dbi_result_free(idi->dbinfo.dbi_result);
+	                	idi->dbinfo.dbi_result = NULL;
 			}
                 }
+		else {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+	
+			/* we actually did an update, select the host id */
+                        dummy = asprintf(&query, "SELECT host_id FROM %s WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "host_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition(%lu) host_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                		dbi_result_free(idi->dbinfo.dbi_result);
+	                	idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -5772,23 +5986,51 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
+
+		        if (result == IDO_OK) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+	                        if (asprintf(&buf, "%s_host_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS]) == -1)
+        	                        buf = NULL;
+
+	                        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition(%s=%lu) host_id\n", buf, *id);
+        	                free(buf);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+                else { 
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* we actually did an update, select the host id */
+                        dummy = asprintf(&query, "SELECT host_id FROM %s WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "host_id");
+                                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinitio(%lu) host_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+
+                }
 		break;
 	default:
 		break;
@@ -6080,6 +6322,13 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
 
+	if (asprintf(&seq_name, "seq_hosts") == -1)
+		seq_name = NULL;
+
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdefinition(%lu) \n", *id);
+	free(seq_name);
+
 	/* do not free statement yet! */
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostdefinition_definition_add() end\n");
@@ -6143,6 +6392,10 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -6188,22 +6441,6 @@ int ido2db_query_insert_or_update_hostdefinition_parenthosts_add(ido2db_idi *idi
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -6304,6 +6541,10 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *i
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -6349,22 +6590,6 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *i
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -6413,14 +6638,18 @@ int ido2db_query_insert_or_update_hostdefinition_contactgroups_add(ido2db_idi *i
 /* HOSTGROUPDEFINITION              */
 /************************************/
 
-int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long hostgroup_id;
         int mysql_update = FALSE;
+#endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostgroupdefinition_definition_add() start\n");
 
@@ -6470,6 +6699,10 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -6485,8 +6718,46 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
                 	        /* send query to db */
                         	result = ido2db_db_query(idi, query2);
 	                        free(query2);
+
+			        if (result == IDO_OK) {
+		                        /* mysql doesn't use sequences */
+		                        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition(%lu) hostgroup_id\n", *id);
+				}
+
+                		dbi_result_free(idi->dbinfo.dbi_result);
+	                	idi->dbinfo.dbi_result = NULL;
 			}
                 }
+		else {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+		
+			/* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT hostgroup_id FROM %s WHERE instance_id=%lu AND hostgroup_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(unsigned long *) data[2]     /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hostgroup_id");
+			                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition(%lu) hostgroup_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                		dbi_result_free(idi->dbinfo.dbi_result);
+	                	idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -6517,23 +6788,49 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
+
+			if (result == IDO_OK) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_hostgroup_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPS]) == -1)
+                	                buf = NULL;
+
+	                        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+        	                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition(%s=%lu) hostgroup_id\n", buf, *id);
+                	        free(buf);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+                else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT hostgroup_id FROM %s WHERE instance_id=%lu AND hostgroup_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTGROUPS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(unsigned long *) data[2]     /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hostgroup_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition(%lu) hostgroup_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+                }
 		break;
 	default:
 		break;
@@ -6578,6 +6875,13 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+	if (asprintf(&seq_name, "seq_hostgroups") == -1)
+		seq_name = NULL;
+
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostgroupdefinition(%lu) hostgroup_id\n", *id);
+	free(seq_name);
 
 	/* do not free statement yet! */
 #endif
@@ -6643,6 +6947,10 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2d
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -6689,22 +6997,6 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2d
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -6747,15 +7039,20 @@ int ido2db_query_insert_or_update_hostgroupdefinition_hostgroupmembers_add(ido2d
 /* SERVICEDEFINITION                */
 /************************************/
 
-int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long service_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() start\n");
 
 	if (idi == NULL)
@@ -6852,6 +7149,10 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
                         if (mysql_update == FALSE) {
@@ -6914,8 +7215,47 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 	                        /* send query to db */
         	                result = ido2db_db_query(idi, query2);
                 	        free(query2);
+
+				if (result == IDO_OK) {
+		                        /* mysql doesn't use sequences */
+                		        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition(%lu) service_id\n", *id);
+				} 
+
+	                	dbi_result_free(idi->dbinfo.dbi_result);
+        	        	idi->dbinfo.dbi_result = NULL;
 			}
                 }
+		else {
+                	dbi_result_free(idi->dbinfo.dbi_result);
+                	idi->dbinfo.dbi_result = NULL;
+			
+			/* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT service_id FROM %s WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[3]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "service_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition(%lu) service_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                		dbi_result_free(idi->dbinfo.dbi_result);
+	                	idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -7040,23 +7380,51 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
+
+			if (result == IDO_OK) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_service_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES]) == -1)
+                	                buf = NULL;
+
+                        	*id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition(%s=%lu) service_id\n", buf, *id);
+        	                free(buf);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+                else { 
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT service_id FROM %s WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICES],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[3]      /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "service_id");
+                                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition(%lu) service_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+                }
+
 		break;
 	default:
 		break;
@@ -7307,6 +7675,13 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
 
+	if (asprintf(&seq_name, "seq_services") == -1)
+		seq_name = NULL;
+
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedefinition(%lu) service_id\n", *id);
+	free(seq_name);
+
 	/* do not free statement yet! */
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicedefinition_definition_add() end\n");
@@ -7371,6 +7746,10 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -7416,22 +7795,6 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -7480,14 +7843,18 @@ int ido2db_query_insert_or_update_servicedefinition_contactgroups_add(ido2db_idi
 /* SERVICEGROUPDEFINITION           */
 /************************************/
 
-int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long servicegroup_id;
         int mysql_update = FALSE;
+#endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicegroupdefinition_definition_add() start\n");
 
@@ -7538,6 +7905,10 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -7553,8 +7924,47 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
                 	        /* send query to db */
 	                        result = ido2db_db_query(idi, query2);
         	                free(query2);
+
+				if (result == IDO_OK) {
+		                        /* mysql doesn't use sequences */
+                		        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition(%lu) group_id\n", *id);
+				}
+
+                        	dbi_result_free(idi->dbinfo.dbi_result);
+	                        idi->dbinfo.dbi_result = NULL;
 			}
                 }
+		else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+			/* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT servicegroup_id FROM %s WHERE instance_id=%lu AND config_type=%d AND servicegroup_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]     /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "servicegroup_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition(%lu) group_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                        	dbi_result_free(idi->dbinfo.dbi_result);
+	                        idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -7585,23 +7995,50 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
+
+			if (result == IDO_OK) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_servicegroup_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPS]) == -1)
+                	                buf = NULL;
+
+                        	*id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition(%s=%lu) group_id\n", buf, *id);
+                        	free(buf);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+                else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT servicegroup_id FROM %s WHERE instance_id=%lu AND config_type=%d AND servicegroup_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEGROUPS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]     /* unique constraint end */
+                                );
+                                 
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "servicegroup_id");
+                                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition(%lu) group_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+                }
 		break;
 	default:
 		break;
@@ -7646,6 +8083,13 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+	if (asprintf(&seq_name, "seq_servicegroups") == -1)
+		seq_name = NULL;
+
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicegroupdefinition(%lu) group_id\n", *id);
+	free(seq_name);
 
 	/* do not free statement yet! */
 #endif
@@ -7711,6 +8155,10 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi 
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -7758,22 +8206,6 @@ int ido2db_query_insert_or_update_servicegroupdefinition_members_add(ido2db_idi 
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -7892,6 +8324,10 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -7915,6 +8351,9 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
                 	        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -7958,22 +8397,9 @@ int ido2db_query_insert_or_update_hostdependencydefinition_definition_add(ido2db
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -8115,6 +8541,10 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -8139,6 +8569,9 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
                 	        free(query2);  
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -8184,22 +8617,9 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -8272,15 +8692,20 @@ int ido2db_query_insert_or_update_servicedependencydefinition_definition_add(ido
 /* HOSTESCALATIONDEFINITION         */
 /************************************/
 
-int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long hostescalation_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hostescalationdefinition_definition_add() start\n");
 
 	if (idi == NULL)
@@ -8339,6 +8764,10 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -8360,8 +8789,50 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 	                        /* send query to db */
         	                result = ido2db_db_query(idi, query2);
                 	        free(query2);
+
+				if (result == IDO_OK) {
+		                        /* mysql doesn't use sequences */
+		                        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%lu) escalation_id\n", *id);
+				}
+
+	                        dbi_result_free(idi->dbinfo.dbi_result);
+        	                idi->dbinfo.dbi_result = NULL;
 			}
                 }
+		else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+			/* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT hostescalation_id FROM %s WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2],
+                                 *(unsigned long *) data[3],
+                                 *(int *) data[4],
+                                 *(int *) data[5]               /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hostescalation_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%lu) escalation_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                        	dbi_result_free(idi->dbinfo.dbi_result);
+	                        idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -8404,23 +8875,53 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
+
+			if (result == IDO_OK) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_hostescalation_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONS]) == -1)
+                	                buf = NULL;
+
+                        	*id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%s=%lu) escalation_id\n", buf, *id);
+        	                free(buf);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+                else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT hostescalation_id FROM %s WHERE instance_id=%lu AND config_type=%d AND host_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTESCALATIONS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2],
+                                 *(unsigned long *) data[3],
+                                 *(int *) data[4],
+                                 *(int *) data[5]               /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hostescalation_id");
+                                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%lu) escalation_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+                }
 		break;
 	default:
 		break;
@@ -8477,6 +8978,13 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+	if (asprintf(&seq_name, "seq_hostescalations") == -1)
+		seq_name = NULL;
+
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition(%lu) escalation_id\n", *id);
+	free(seq_name);
 
 	/* do not free statement yet! */
 #endif
@@ -8541,6 +9049,10 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -8557,6 +9069,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -8585,22 +9100,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(ido
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -8704,6 +9206,10 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -8720,6 +9226,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
                 	        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -8752,22 +9261,9 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -8816,15 +9312,20 @@ int ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(ido2db_i
 /* SERVICEESCALATIONDEFINITION      */
 /************************************/
 
-int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long serviceescalation_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_serviceescalationdefinition_definition_add() start\n");
 
 	if (idi == NULL)
@@ -8883,6 +9384,10 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -8905,8 +9410,50 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
                 	        /* send query to db */
 	                        result = ido2db_db_query(idi, query2);
         	                free(query2);
+
+				if (result == IDO_OK) {
+		                        /* mysql doesn't use sequences */
+                		       	*id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_serviceescalationdefinition(%lu) escalation_id\n", *id);
+				}
+
+	                        dbi_result_free(idi->dbinfo.dbi_result);
+        	                idi->dbinfo.dbi_result = NULL;
 			}
                 }
+		else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+			/* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT serviceescalation_id FROM %s WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONS],
+                                 *(unsigned long *) data[0],            /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2],
+                                 *(unsigned long *) data[3],
+                                 *(int *) data[4],
+                                 *(int *) data[5]               /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "serviceescalation_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_serviceescalationdefinition(%lu) escalation_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                        	dbi_result_free(idi->dbinfo.dbi_result);
+	                        idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -8951,23 +9498,53 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
+
+			if (result == IDO_OK) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_serviceescalation_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONS]) == -1)
+                	                buf = NULL;
+
+                        	*id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_serviceescalationdefinition(%s=%lu) escalation_id\n", buf, *id);
+        	                free(buf);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+                else { 
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+                        /* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT serviceescalation_id FROM %s WHERE instance_id=%lu AND config_type=%d AND service_object_id=%lu AND timeperiod_object_id=%lu AND first_notification=%d AND last_notification=%d",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICEESCALATIONS],
+                                 *(unsigned long *) data[0],            /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2],
+                                 *(unsigned long *) data[3],
+                                 *(int *) data[4],
+                                 *(int *) data[5]               /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "serviceescalation_id");
+                                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_serviceescalationdefinition(%lu) escalation_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+                }
 		break;
 	default:
 		break;
@@ -9027,6 +9604,13 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+	if (asprintf(&seq_name, "seq_serviceescalations") == -1)
+		seq_name = NULL;
+
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_serviceescalationdefinition(%lu) escalation_id\n", *id);
+	free(seq_name);
 
 	/* do not free statement yet! */
 #endif
@@ -9092,6 +9676,10 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -9108,6 +9696,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -9137,22 +9728,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -9257,6 +9835,10 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -9273,6 +9855,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
                 	        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -9305,22 +9890,9 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(ido2d
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -9427,6 +9999,10 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -9444,6 +10020,9 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -9475,22 +10054,9 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -9554,15 +10120,20 @@ int ido2db_query_insert_or_update_commanddefinition_definition_add(ido2db_idi *i
 /*  TIMEPERIODDEFINITION            */
 /************************************/
 
-int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long timeperiod_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_timeperiodefinition_definition_add() start\n");
 
 	if (idi == NULL)
@@ -9611,6 +10182,10 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -9626,8 +10201,47 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
                 	        /* send query to db */
 	                        result = ido2db_db_query(idi, query2);
         	                free(query2);
+
+				if (result == IDO_OK) {
+		                        /* mysql doesn't use sequences */
+                		        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%lu) timeperiod_id\n", *id);
+				}
++
+                        	dbi_result_free(idi->dbinfo.dbi_result);
+	                        idi->dbinfo.dbi_result = NULL;
 			}
                 }
+		else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+			/* we hit an update, fetch the id */                
+                        dummy = asprintf(&query, "SELECT timeperiod_id FROM %s WHERE instance_id=%lu AND config_type=%d AND timeperiod_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODS],
+                                 *(unsigned long *) data[0],            /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]     /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "timeperiod_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%lu) timeperiod_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                        	dbi_result_free(idi->dbinfo.dbi_result);
+	                        idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -9658,23 +10272,50 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
+
+			if (result == IDO_OK) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_timeperiod_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODS]) == -1)
+                	                buf = NULL;
+
+	                        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+        	                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%s=%lu) timeperiod_id\n", buf, *id);
+                	        free(buf);
+			}
+
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+                else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+			/* we hit an update, fetch the id */                
+                        dummy = asprintf(&query, "SELECT timeperiod_id FROM %s WHERE instance_id=%lu AND config_type=%d AND timeperiod_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEPERIODS],
+                                 *(unsigned long *) data[0],            /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]     /* unique constraint end */
+                                );
+                                 
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "timeperiod_id");
+                                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%lu) timeperiod_id\n", *id);
+                                        }
+                        
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+                }
 		break;
 	default:
 		break;
@@ -9719,6 +10360,13 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+	if (asprintf(&seq_name, "seq_timeperiods") == -1)
+		seq_name = NULL;
+
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_timeperiodefinition(%lu) timeperiod_id\n", *id);
+	free(seq_name);
 
 	/* do not free statement yet! */
 #endif
@@ -9787,6 +10435,10 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi 
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -9839,22 +10491,6 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi 
 			free(query2);
 		}
 		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
-		break;
 	default:
 		break;
 	}
@@ -9906,15 +10542,20 @@ int ido2db_query_insert_or_update_timeperiodefinition_timeranges_add(ido2db_idi 
 /* CONTACTDEFINITION                */
 /************************************/
 
-int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long contact_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_definition_add() start\n");
 
 	if (idi == NULL)
@@ -9982,6 +10623,10 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -10015,8 +10660,48 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
                         	/* send query to db */
                 	        result = ido2db_db_query(idi, query2);
 	                        free(query2);
+
+				if (result == IDO_OK) {
+		                        /* mysql doesn't use sequences */
+                		        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactdefinition(%lu) contact_id\n", *id);
+				}
+
+	                        dbi_result_free(idi->dbinfo.dbi_result);
+        	                idi->dbinfo.dbi_result = NULL;
 			}
                 }
+		else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+			/* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT contact_id FROM %s WHERE instance_id=%lu AND config_type=%d AND contact_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]     /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contact_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactdefinition(%lu) contact_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                        	dbi_result_free(idi->dbinfo.dbi_result);
+	                        idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -10083,23 +10768,51 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
+
+			if (result == IDO_OK) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_contact_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTS]) == -1)
+                	                buf = NULL;
+
+                        	*id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactdefinition(ido2db_idi *idi)(%s=%lu) contact_id\n", buf, *id);
+	                        free(buf);
+			}
+
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+                else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+                
+                        /* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT contact_id FROM %s WHERE instance_id=%lu AND config_type=%d AND contact_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTS],
+                                 *(unsigned long *) data[0],     /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]     /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contact_id");
+                                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactdefinition(%lu) contact_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+
+                }
 		break;
 	default:
 		break;
@@ -10211,6 +10924,13 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
 
+	if (asprintf(&seq_name, "seq_contacts") == -1)
+	seq_name = NULL;
+
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactdefinition(%lu) contact_id\n", *id);
+	free(seq_name);
+
 	/* do not free statement yet! */
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_definition_add() end\n");
@@ -10276,6 +10996,10 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -10293,6 +11017,9 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
         	                free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -10324,22 +11051,9 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -10452,6 +11166,10 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -10470,6 +11188,9 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 	                        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -10503,22 +11224,9 @@ int ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(ido
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -10640,6 +11348,10 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -10691,22 +11403,6 @@ int ido2db_query_insert_or_update_contactdefinition_servicenotificationcommands_
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;
@@ -10820,6 +11516,10 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
                         if (mysql_update == FALSE) {
@@ -10839,6 +11539,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
                 	        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -10874,22 +11577,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariables_add(ido2
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -11016,6 +11706,10 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
                         if (mysql_update == FALSE) {
@@ -11034,6 +11728,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
                 	        free(query2);
 			}
                 }
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -11069,22 +11766,9 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+		/* free last dbi_result */
+		dbi_result_free(idi->dbinfo.dbi_result);
+		idi->dbinfo.dbi_result = NULL;
 		break;
 	default:
 		break;
@@ -11163,15 +11847,20 @@ int ido2db_query_insert_or_update_save_custom_variables_customvariablestatus_add
 /* CONTACTGROUPDEFINITION           */
 /************************************/
 
-int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_idi *idi, void **data) {
+int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_idi *idi, void **data, unsigned long *id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
+	char * buf = NULL;
         unsigned long contactgroup_id;
         int mysql_update = FALSE;
 #endif
+#ifdef USE_ORACLE
+	char * seq_name = NULL;
+#endif
+
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactgroupdefinition_definition_add() start\n");
 
 	if (idi == NULL)
@@ -11221,6 +11910,10 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -11236,8 +11929,47 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
                 	        /* send query to db */
 	                        result = ido2db_db_query(idi, query2);
         	                free(query2);
+
+				if (result == IDO_OK) {
+		                        /* mysql doesn't use sequences */
+                		        *id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, NULL);
+		                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition(%lu) group_id\n", *id);
+				}
+
+        	                dbi_result_free(idi->dbinfo.dbi_result);
+                	        idi->dbinfo.dbi_result = NULL;
 			}
                 }
+		else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+
+			/* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT contactgroup_id FROM %s WHERE instance_id=%lu AND config_type=%d AND contactgroup_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPS],
+                                 *(unsigned long *) data[0],    /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]     /* unique constraint end */
+                                );
+
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactgroup_id");
+		                        	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition(%lu) group_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                        	dbi_result_free(idi->dbinfo.dbi_result);
+	                        idi->dbinfo.dbi_result = NULL;
+			}
+                        free(query);
+		}
                 break;
 
 	case IDO2DB_DBSERVER_PGSQL:
@@ -11268,23 +12000,50 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
 			/* send query to db */
 			result = ido2db_db_query(idi, query2);
 			free(query2);
+
+			if (result == IDO_OK) {
+	                        /* depending on tableprefix/tablename a sequence will be used */
+        	                if (asprintf(&buf, "%s_contactgroup_id_seq", ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPS]) == -1)
+                	                buf = NULL;
+
+                        	*id = dbi_conn_sequence_last(idi->dbinfo.dbi_conn, buf);
+	                        ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition(%s=%lu) group_id\n", buf, *id);
+	                        free(buf);
+			}
+
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
+                else {
+                        dbi_result_free(idi->dbinfo.dbi_result);
+                        idi->dbinfo.dbi_result = NULL;
+                
+                        /* we hit an update, fetch the id */
+                        dummy = asprintf(&query, "SELECT contactgroup_id FROM %s WHERE instance_id=%lu AND config_type=%d AND contactgroup_object_id=%lu",
+                                ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTGROUPS],
+                                 *(unsigned long *) data[0],    /* unique constraint start */
+                                 *(int *) data[1],
+                                 *(unsigned long *) data[2]     /* unique constraint end */
+                                );
+                                 
+                        /* send query to db */
+                        if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
+                                if (idi->dbinfo.dbi_result != NULL) {
+                                        if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactgroup_id");
+                                                ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition(%lu) group_id\n", *id);
+                                        }
+
+                                        dbi_result_free(idi->dbinfo.dbi_result);
+                                        idi->dbinfo.dbi_result = NULL;
+                                }
+                        }
+			else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
+                        free(query);
+                }
 		break;
 	default:
 		break;
@@ -11329,6 +12088,11 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
 
 	/* commit statement */
 	OCI_Commit(idi->dbinfo.oci_connection);
+
+	dummy = asprintf(&seq_name, "seq_contactgroups");
+	*id = ido2db_oci_sequence_lastid(idi, seq_name);
+	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactgroupdefinition(%lu) group_id\n", *id);
+	free(seq_name);
 
 	/* do not free statement yet! */
 #endif
@@ -11394,6 +12158,10 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
                                         idi->dbinfo.dbi_result = NULL;
                                 }
                         }
+                        else {
+                                dbi_result_free(idi->dbinfo.dbi_result);
+                                idi->dbinfo.dbi_result = NULL;
+                        }
                         free(query);
 
 
@@ -11439,22 +12207,6 @@ int ido2db_query_insert_or_update_contactgroupdefinition_contactgroupmembers_add
 			result = ido2db_db_query(idi, query2);
 			free(query2);
 		}
-		break;
-	case IDO2DB_DBSERVER_DB2:
-		break;
-	case IDO2DB_DBSERVER_FIREBIRD:
-		break;
-	case IDO2DB_DBSERVER_FREETDS:
-		break;
-	case IDO2DB_DBSERVER_INGRES:
-		break;
-	case IDO2DB_DBSERVER_MSQL:
-		break;
-	case IDO2DB_DBSERVER_ORACLE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE:
-		break;
-	case IDO2DB_DBSERVER_SQLITE3:
 		break;
 	default:
 		break;

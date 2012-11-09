@@ -1603,8 +1603,13 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf) {
 
 			idi->current_input_section = IDO2DB_INPUT_SECTION_DATA;
 
-			/* save connection info to DB */
-			ido2db_db_hello(idi);
+			/* save connection info to DB , bail out if dbversion check was not ok*/
+			if(ido2db_db_hello(idi) == IDO_ERROR) {
+				syslog(LOG_USER | LOG_INFO, "Error: Initial DB Handshake failed.  Disconnecting client...");
+				idi->disconnect_client = IDO_TRUE;
+				idi->ignore_client_data = IDO_TRUE;
+				return IDO_ERROR;
+			}
 
 		}
 
