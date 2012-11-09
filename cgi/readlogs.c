@@ -58,8 +58,12 @@ int sort_icinga_logfiles_by_name(const void *a_in, const void *b_in) {
 	struct file_data *a = (struct file_data *)a_in;
 	struct file_data *b = (struct file_data *)b_in;
 
-	if (a->file_name == NULL || b->file_name == NULL)
+	if (a->file_name == NULL && b->file_name == NULL)
 		return 0;
+	if (a->file_name != NULL && b->file_name == NULL)
+		return 1;
+	if (a->file_name == NULL && b->file_name != NULL)
+		return -1;
 
 	// year
 	date_a[0]  = a->file_name[13];
@@ -265,14 +269,15 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 		while ((dptr=readdir(dirp)) != NULL) {
 
 			/* filter dir for icinga / nagios log files */
-			if ((strncmp("icinga-",dptr->d_name,7) == 0 || strncmp("nagios-",dptr->d_name,7) == 0 ) && strstr(dptr->d_name, ".log"))
+			if ((strncmp("icinga-",dptr->d_name,7) == 0 || strncmp("nagios-",dptr->d_name,7) == 0 ) &&
+			    strstr(dptr->d_name, ".log") && strlen(dptr->d_name) == 24)
 				files[file_num++].file_name = strdup(dptr->d_name);
 		}
 		closedir(dirp);
 	}
 
 	/* sort log files, newest first */
-	qsort(files, sizeof(files) / sizeof(struct file_data) , sizeof(struct file_data), sort_icinga_logfiles_by_name);
+	qsort((void *)files, file_num, sizeof(struct file_data), sort_icinga_logfiles_by_name);
 
 	/* define which log files to use */
 	for (i=0; i< file_num; i++) {
