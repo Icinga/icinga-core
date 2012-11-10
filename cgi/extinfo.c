@@ -183,6 +183,7 @@ int main(void) {
 	service *temp_service = NULL;
 	servicegroup *temp_servicegroup = NULL;
 	servicedependency *temp_sd = NULL;
+	char *last_hd_hostname = "";
 	char *last_sd_svc_desc = "";
 	char *last_sd_hostname = "";
 	hostdependency *temp_hd = NULL;
@@ -464,17 +465,20 @@ int main(void) {
 				/* Host Dependencies */
 				found = FALSE;
 
-				printf("<DIV CLASS='data'>Host Dependencies</DIV><DIV CLASS='dataTitle'>");
+				printf("<DIV CLASS='data'>Host Dependencies ");
+				printf("<img id='expand_image_hd' src='%s%s' border=0 onClick=\"if (document.getElementById('host_dependencies').style.display == 'none') { document.getElementById('host_dependencies').style.display = ''; document.getElementById('host_dependencies_gap').style.display = 'none'; document.getElementById('expand_image_hd').src = '%s%s'; } else { document.getElementById('host_dependencies').style.display = 'none'; document.getElementById('host_dependencies_gap').style.display = ''; document.getElementById('expand_image_hd').src = '%s%s'; }\">", url_images_path, EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
+				printf("</DIV><DIV CLASS='dataTitle' id='host_dependencies_gap' style='display:;'>&nbsp;</DIV><DIV CLASS='dataTitle' id='host_dependencies' style='display:none;'>");
 
 				for (temp_hd = hostdependency_list; temp_hd != NULL; temp_hd = temp_hd->next) {
 
-					if (!strcmp(temp_hd->dependent_host_name, temp_host->name)) {
+					if (!strcmp(temp_hd->dependent_host_name, temp_host->name) && !strcmp(temp_hd->host_name, last_hd_hostname)) {
 						if (found == TRUE)
 							printf(", ");
 
 						printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
 						found = TRUE;
 					}
+					last_hd_hostname = temp_hd->host_name;
 				}
 
 				if (found == FALSE)
@@ -516,7 +520,9 @@ int main(void) {
 				/* Service Dependencies */
 				found = FALSE;
 
-				printf("<DIV CLASS='data'>Service Dependencies</DIV><DIV CLASS='dataTitle'>");
+				printf("<DIV CLASS='data'>Service Dependencies ");
+				printf("<img id='expand_image_sd' src='%s%s' border=0 onClick=\"if (document.getElementById('service_dependencies').style.display == 'none') { document.getElementById('service_dependencies').style.display = ''; document.getElementById('service_dependencies_gap').style.display = 'none'; document.getElementById('expand_image_sd').src = '%s%s'; } else { document.getElementById('service_dependencies').style.display = 'none'; document.getElementById('service_dependencies_gap').style.display = ''; document.getElementById('expand_image_sd').src = '%s%s'; }\">", url_images_path, EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
+				printf("</DIV><DIV CLASS='dataTitle' id='service_dependencies_gap' style='display:;'>&nbsp;</DIV><DIV CLASS='dataTitle' id='service_dependencies' style='display:none;'>");
 
 				for (temp_sd = servicedependency_list; temp_sd != NULL; temp_sd = temp_sd->next) {
 

@@ -77,36 +77,32 @@ extern comment *comment_list;
 
 /** @name ELEMET TEMPLATE TYPES
  @{**/
-#define PRINT_COMMON_HEADER		1
-#define PRINT_AUTHOR			2
-#define PRINT_STICKY_ACK		3
-#define PRINT_PERSISTENT		4
-#define PRINT_SEND_NOTFICATION		5
-#define PRINT_COMMENT_BOX		6
-#define PRINT_NOTIFICATION_DELAY	7
-#define PRINT_START_TIME		8
-#define PRINT_END_TIME			9
-#define PRINT_CHECK_TIME		10
-#define PRINT_FORCE_CHECK		11
-#define PRINT_CHECK_OUTPUT_BOX		12
-#define PRINT_PERFORMANCE_DATA_BOX	13
-#define PRINT_FIXED_FLEXIBLE_TYPE	14
-#define PRINT_BROADCAST_NOTIFICATION	15
-#define PRINT_FORCE_NOTIFICATION	16
-#define PRINT_EXPIRE_ACKNOWLEDGEMENT	17
+#define PRINT_COMMON_HEADER			1
+#define PRINT_AUTHOR				2
+#define PRINT_STICKY_ACK			3
+#define PRINT_PERSISTENT			4
+#define PRINT_SEND_NOTFICATION			5
+#define PRINT_COMMENT_BOX			6
+#define PRINT_NOTIFICATION_DELAY		7
+#define PRINT_START_TIME			8
+#define PRINT_END_TIME				9
+#define PRINT_CHECK_TIME			10
+#define PRINT_FORCE_CHECK			11
+#define PRINT_CHECK_OUTPUT_BOX			12
+#define PRINT_PERFORMANCE_DATA_BOX		13
+#define PRINT_FIXED_FLEXIBLE_TYPE		14
+#define PRINT_BROADCAST_NOTIFICATION		15
+#define PRINT_FORCE_NOTIFICATION		16
+#define PRINT_EXPIRE_ACKNOWLEDGEMENT		17
+#define PRINT_EXPIRE_DISABLE_NOTIFICATIONS	18
 /** @}*/
 
 /** @name OBJECT LIST TYPES
  @{**/
-#define PRINT_HOST_LIST			17
-#define PRINT_SERVICE_LIST		18
-#define PRINT_COMMENT_LIST		19
-#define PRINT_DOWNTIME_LIST		20
-/** @}*/
-
-/** @name NOTIFICATION LIST TYPES
- @{**/
-#define PRINT_EXPIRE_DISABLE_NOTIFICATIONS	21
+#define PRINT_HOST_LIST				19
+#define PRINT_SERVICE_LIST			20
+#define PRINT_COMMENT_LIST			21
+#define PRINT_DOWNTIME_LIST			22
 /** @}*/
 
 /** @brief host/service list structure
@@ -410,6 +406,8 @@ int process_cgivars(void) {
 	int error = FALSE;
 	int x;
 	int z = 0;
+	int sticky_ack_set = FALSE;		/* default is TRUE */
+	int send_notification_set = FALSE;	/* default is TRUE */
 
 	variables = getcgivars();
 
@@ -609,24 +607,12 @@ int process_cgivars(void) {
 			persistent_comment = TRUE;
 
 		/* we got the notification option for an acknowledgement */
-		else if (!strcmp(variables[x], "send_notification")) {
-			x++;
-			if (variables[x] == NULL) {
-				error = TRUE;
-				break;
-			}
-			send_notification = (atoi(variables[x]) > 0) ? TRUE : FALSE;
-		}
+		else if (!strcmp(variables[x], "send_notification"))
+			send_notification_set = TRUE;
 
 		/* we got the acknowledgement type */
-		else if (!strcmp(variables[x], "sticky_ack")) {
-			x++;
-			if (variables[x] == NULL) {
-				error = TRUE;
-				break;
-			}
-			sticky_ack = (atoi(variables[x]) > 0) ? TRUE : FALSE;
-		}
+		else if (!strcmp(variables[x], "sticky_ack"))
+			sticky_ack_set = TRUE;
 
 		/* we use the end_time as expire time */
 		else if (!strcmp(variables[x], "use_ack_end_time"))
@@ -796,6 +782,11 @@ int process_cgivars(void) {
 		else if (!strcmp(variables[x], "nodaemoncheck"))
 			daemon_check = FALSE;
 
+	}
+
+	if (command_mode == CMDMODE_COMMIT) {
+		send_notification = send_notification_set;
+		sticky_ack = sticky_ack_set;
 	}
 
 	/* free memory allocated to the CGI variables */
