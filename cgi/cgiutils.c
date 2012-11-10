@@ -346,7 +346,7 @@ char * get_cmd_file_location(void) {
 			/* stay compatible */
 			cmdloc = getenv("NAGIOS_COMMAND_FILE");
 			if (!cmdloc) {
-				cmdloc = DEFAULT_COMMAND_FILE;
+				cmdloc = command_file;
 			}
 		}
 	}
