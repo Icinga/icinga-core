@@ -36,6 +36,8 @@ FIXES
 * classic ui: fixed backtrack_archives only getting calculated on a daily log rotation basis #3416 - RB
 * classic ui: fixed invalid freeing of last_check in 'scheduling queue' for first time checks #3444 - RB
 
+* docs: add missing cmd_mod description in cgi params #3438 - MF
+* docs: search_string as cgi GET param works also for status.cgi #3451 - MF
 
 CHANGES
 
