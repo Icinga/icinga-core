@@ -2868,7 +2868,7 @@ void read_archived_state_data(void) {
 	logentry *entry_list = NULL;
 	logfilter *filter_list = NULL;
 
-	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, FALSE, t1 - (60 * 60 * 24 * backtrack_archives), t2);
+	status = get_log_entries(&entry_list, &filter_list, &error_text, NULL, FALSE, t1 - get_backtrack_seconds(backtrack_archives), t2);
 
 	if (status != READLOG_ERROR_FATAL) {
 
