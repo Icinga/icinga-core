@@ -1345,7 +1345,7 @@ int ido2db_wait_for_connections(void) {
 int ido2db_handle_client_connection(int sd) {
 	int dbuf_chunk = 2048;
 	ido2db_idi idi;
-	char buf[512];
+	char buf[16 * 1024];
 	int result = 0;
 	int error = IDO_FALSE;
 
@@ -1528,8 +1528,14 @@ int ido2db_handle_client_connection(int sd) {
 		/* 2011-02-23 MF: only do that in a worker thread */
 		/* 2011-05-02 MF: redo it the old way */
 
+		result = ido2db_db_tx_begin(&idi);
 		ido2db_check_for_client_input(&idi);
 
+		if (result == IDO_OK) {
+			if (ido2db_db_tx_commit(&idi) != IDO_OK) {
+				syslog(LOG_ERR, "IDO2DB commit failed. Some data may have been lost.\n");
+			}
+		}
 
 		/* should we disconnect the client? */
 		if (idi.disconnect_client == IDO_TRUE) {

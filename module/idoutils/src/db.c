@@ -2904,6 +2904,22 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 	return IDO_OK;
 }
 
+int ido2db_db_tx_begin(ido2db_idi *idi) {
+#ifdef USE_LIBDBI
+	return ido2db_db_query(idi, "BEGIN");
+#else /* USE_LIBDBI */
+	return IDO_OK;
+#endif /* USE_LIBDBI */
+}
+
+int ido2db_db_tx_commit(ido2db_idi *idi) {
+#ifdef USE_LIBDBI
+	return ido2db_db_query(idi, "COMMIT");
+#else /* USE_LIBDBI */
+	return IDO_OK;
+#endif /* USE_LIBDBI */
+}
+
 /************************************/
 /* check database driver (libdbi)   */
 /************************************/

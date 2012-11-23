@@ -162,6 +162,9 @@ int ido2db_db_get_latest_data_time(ido2db_idi *,char *,char *,unsigned long *);
 int ido2db_db_perform_maintenance(ido2db_idi *);
 int ido2db_db_trim_data_table(ido2db_idi *,char *,char *,unsigned long);
 
+int ido2db_db_tx_begin(ido2db_idi *idi);
+int ido2db_db_tx_commit(ido2db_idi *idi);
+
 #ifdef USE_ORACLE /* Oracle ocilib specific */
 #define OCI_VARCHAR_SIZE 4096 /* max allowed string size for varchar2 (+1) */
 #define OCI_STR_SIZE 256 /* default small string buffer size */
