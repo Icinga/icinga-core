@@ -228,6 +228,7 @@ extern unsigned long    max_debug_file_size;
 extern int              allow_empty_hostgroup_assignment;
 
 extern unsigned long    max_check_result_list_items;
+extern int		enable_state_based_escalation_ranges;
 
 /* make sure gcc3 won't hit here */
 #ifndef GCCTOOOLD
@@ -1469,6 +1470,16 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "max_check_result_list_items"))
 			max_check_result_list_items = strtoul(value, NULL, 0);
 
+                else if (!strcmp(variable, "enable_state_based_escalation_ranges")) {
+
+                        if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+                                dummy = asprintf(&error_message, "Illegal value for enable_state_based_escalation_ranges");
+                                error = TRUE;
+                                break;
+                        }
+
+                        enable_state_based_escalation_ranges = (atoi(value) > 0) ? TRUE : FALSE;
+                }
 
 		/*** AUTH_FILE VARIABLE USED BY EMBEDDED PERL INTERPRETER ***/
 		else if (!strcmp(variable, "auth_file")) {

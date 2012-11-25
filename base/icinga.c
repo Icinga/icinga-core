@@ -287,6 +287,8 @@ unsigned long   max_debug_file_size = DEFAULT_MAX_DEBUG_FILE_SIZE;
 
 unsigned long   max_check_result_list_items = DEFAULT_MAX_CHECK_RESULT_LIST_ITEMS;
 
+int		enable_state_based_escalation_ranges = FALSE;
+
 int dummy;	/* reduce compiler warnings */
 
 

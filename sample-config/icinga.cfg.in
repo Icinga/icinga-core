@@ -918,6 +918,20 @@ enable_event_handlers=1
 
 
 
+# STATE BASED ESCALATION RANGES !!!Experimental!!!
+# This option allows you to enable state based escalation ranges which
+# will allow a more detailed granularity on when an escalation notification
+# may happen, adding a filter based on the current host or service state
+# when checking the escalation for notification viability.
+# This is a behavioural change to the default, and therefore intentionally
+# disabled. Enable at your own risk, as this remains an experimental feature.
+# Values: 1 = enable state based escalation ranges,
+# 0 = disable state based escalation ranges
+
+#enable_state_based_escalation_ranges=0
+
+
+
 # PROCESS PERFORMANCE DATA OPTION
 # This determines whether or not Icinga will process performance
 # data returned from service and host checks.  If this option is

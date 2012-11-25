@@ -50,6 +50,8 @@ extern unsigned long   next_notification_id;
 
 extern char            *generic_summary;
 
+extern int		enable_state_based_escalation_ranges;
+
 int check_escalation_condition(escalation_condition*);
 
 int dummy;	/* reduce compiler warnings */
@@ -964,59 +966,62 @@ int is_valid_escalation_for_service_notification(service *svc, serviceescalation
 	if (options & NOTIFICATION_OPTION_BROADCAST)
 		return TRUE;
 
-	/* state based escalation ranges */
-	/* skip this escalation if it happens later
-	 * Only skip if none of the notifications numbers match */
+	/* skip this escalation if it happens later */
+	if (enable_state_based_escalation_ranges == FALSE) {
+		if (se->first_notification > notification_number)
+			return FALSE;
+	} else {
+		/* state based escalation ranges
+		 * Only skip if none of the notifications numbers match */
+		if (se->first_notification == -2 || se->first_notification > notification_number)
+			widematch = 0;
 
-	if (se->first_notification == -2 || se->first_notification > notification_number)
-		widematch = 0;
-
-	if (!widematch) {
-		switch (svc->current_state) {
-		case STATE_WARNING: {
-			if (se->first_warning_notification == -2 || se->first_warning_notification > warning_notification_number)
-				return FALSE;
-			break;
-		}
-		case STATE_CRITICAL: {
-			if (se->first_critical_notification == -2 || se->first_critical_notification > critical_notification_number)
-				return FALSE;
-			break;
-		}
-		case STATE_UNKNOWN: {
-			if (se->first_unknown_notification == -2 || se->first_unknown_notification > unknown_notification_number)
-				return FALSE;
-			break;
-		}
+		if (!widematch) {
+			switch (svc->current_state) {
+			case STATE_WARNING:
+				if (se->first_warning_notification == -2 || se->first_warning_notification > warning_notification_number)
+					return FALSE;
+				break;
+			case STATE_CRITICAL:
+				if (se->first_critical_notification == -2 || se->first_critical_notification > critical_notification_number)
+					return FALSE;
+				break;
+			case STATE_UNKNOWN:
+				if (se->first_unknown_notification == -2 || se->first_unknown_notification > unknown_notification_number)
+					return FALSE;
+				break;
+			}
 		}
 	}
 
 
-	/* skip this escalation if it has already passed
-	 * only skip if none of the notifications numbers match */
+	/* skip this escalation if it has already passed */
+	if (enable_state_based_escalation_ranges == FALSE) {
+		if (se->last_notification != 0 && se->last_notification < notification_number)
+			return FALSE;
+	} else {
+		/* state based escalation ranges
+		 * only skip if none of the notifications numbers match */
+		widematch = 1;
+		if (se->last_notification == -2 || ((se->last_notification != 0) && (se->last_notification < notification_number)))
+			widematch = 0;
 
-	widematch = 1;
-	if (se->last_notification == -2 || ((se->last_notification != 0) && (se->last_notification < notification_number)))
-		widematch = 0;
 
-
-	if (!widematch) {
-		switch (svc->current_state) {
-		case STATE_WARNING: {
-			if (se->last_warning_notification == -2 || ((se->last_warning_notification != 0) && (se->last_warning_notification < warning_notification_number)))
-				return FALSE;
-			break;
-		}
-		case STATE_CRITICAL: {
-			if (se->last_critical_notification == -2 || ((se->last_critical_notification != 0) && (se->last_critical_notification < critical_notification_number)))
-				return FALSE;
-			break;
-		}
-		case STATE_UNKNOWN: {
-			if (se->last_unknown_notification == -2 || ((se->last_unknown_notification != 0) && (se->last_unknown_notification < unknown_notification_number)))
-				return FALSE;
-			break;
-		}
+		if (!widematch) {
+			switch (svc->current_state) {
+			case STATE_WARNING:
+				if (se->last_warning_notification == -2 || ((se->last_warning_notification != 0) && (se->last_warning_notification < warning_notification_number)))
+					return FALSE;
+				break;
+			case STATE_CRITICAL:
+				if (se->last_critical_notification == -2 || ((se->last_critical_notification != 0) && (se->last_critical_notification < critical_notification_number)))
+					return FALSE;
+				break;
+			case STATE_UNKNOWN:
+				if (se->last_unknown_notification == -2 || ((se->last_unknown_notification != 0) && (se->last_unknown_notification < unknown_notification_number)))
+					return FALSE;
+				break;
+			}
 		}
 	}
 
@@ -2073,43 +2078,50 @@ int is_valid_escalation_for_host_notification(host *hst, hostescalation *he, int
 	if (options & NOTIFICATION_OPTION_BROADCAST)
 		return TRUE;
 
-	/* state based escalation ranges */
 	/* skip this escalation if it happens later */
-	if (he->first_notification == -2 || he->first_notification > notification_number)
-		widematch = 0;
+	if (enable_state_based_escalation_ranges == FALSE) {
+		if (he->first_notification > notification_number)
+			return FALSE;
+	} else {
+		/* state based escalation ranges */
+		if (he->first_notification == -2 || he->first_notification > notification_number)
+			widematch = 0;
 
-	if (!widematch) {
-		switch (hst->current_state) {
-		case HOST_DOWN: {
-			if (he->first_down_notification == -2 || he->first_down_notification > down_notification_number)
-				return FALSE;
-			break;
-		}
-		case HOST_UNREACHABLE: {
-			if (he->first_unreachable_notification == -2 || he->first_unreachable_notification > unreachable_notification_number)
-				return FALSE;
-			break;
-		}
+		if (!widematch) {
+			switch (hst->current_state) {
+			case HOST_DOWN:
+				if (he->first_down_notification == -2 || he->first_down_notification > down_notification_number)
+					return FALSE;
+				break;
+			case HOST_UNREACHABLE:
+				if (he->first_unreachable_notification == -2 || he->first_unreachable_notification > unreachable_notification_number)
+					return FALSE;
+				break;
+			}
 		}
 	}
 
-	/* skip this escalation if it has already passed. only skip if none match */
-	widematch = 1;
-	if ((he->last_notification == -2) || ((he->last_notification != 0) && (he->last_notification < notification_number)))
-		widematch = 0;
+	/* skip this escalation if it has already passed */
+	if (enable_state_based_escalation_ranges == FALSE) {
+		if (he->last_notification != 0 && he->last_notification < notification_number)
+			return FALSE;
+	} else {
+		/* state based escalation ranges */
+		widematch = 1;
+		if ((he->last_notification == -2) || ((he->last_notification != 0) && (he->last_notification < notification_number)))
+			widematch = 0;
 
-	if (!widematch) {
-		switch (hst->current_state) {
-		case HOST_DOWN: {
-			if ((he->last_down_notification == -2) || ((he->last_down_notification != 0) && (he->last_down_notification < down_notification_number)))
-				return FALSE;
-			break;
-		}
-		case HOST_UNREACHABLE: {
-			if ((he->last_unreachable_notification == -2) || ((he->last_unreachable_notification) && (he->last_unreachable_notification < unreachable_notification_number)))
-				return FALSE;
-			break;
-		}
+		if (!widematch) {
+			switch (hst->current_state) {
+			case HOST_DOWN:
+				if ((he->last_down_notification == -2) || ((he->last_down_notification != 0) && (he->last_down_notification < down_notification_number)))
+					return FALSE;
+				break;
+			case HOST_UNREACHABLE:
+				if ((he->last_unreachable_notification == -2) || ((he->last_unreachable_notification) && (he->last_unreachable_notification < unreachable_notification_number)))
+					return FALSE;
+				break;
+			}
 		}
 	}
 
