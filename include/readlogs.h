@@ -141,6 +141,7 @@ int add_log_filter(logfilter **filter_list, int requested_filter, int include_ex
 int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error_text, char *search_string, int reverse, time_t ts_start, time_t ts_end);
 void free_log_filters(logfilter **filter_list);
 void free_log_entries(logentry **entry_list);
+time_t get_backtrack_seconds(int backtrack_archives);
 /**@}*/
 
 #ifdef __cplusplus

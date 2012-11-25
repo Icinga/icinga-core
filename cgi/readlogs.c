@@ -41,6 +41,7 @@ struct file_data {
     @{ **/
 extern char	log_file[MAX_FILENAME_LENGTH];		/**< the full file name of the main icinga log file */
 extern char	log_archive_path[MAX_FILENAME_LENGTH];	/**< the full path to the archived log files */
+extern int	log_rotation_method;			/**< time interval of log rotation */
 /** @} */
 
 
@@ -590,4 +591,25 @@ void free_log_entries(logentry **entry_list) {
 	*entry_list = NULL;
 
 	return;
+}
+
+/** @brief returns amount of backtrack_seconds to substract from start_time_stamp
+ *  @param [in] backtrack_archives number of backtrack_archives
+ *  @return amount of backtrack_seconds
+ *  @author Ricardo Bartels
+ *
+ * returns amount of backtrack_seconds to substract from start_time_stamp
+ * when reading logs, based on @log_rotation_method and @ backtrack_archives
+**/
+time_t get_backtrack_seconds(int backtrack_archives) {
+
+	if (log_rotation_method == LOG_ROTATION_MONTHLY)
+		return ( 60 * 60 * 24 * 31 * backtrack_archives);
+	else if (log_rotation_method == LOG_ROTATION_DAILY)
+		return ( 60 * 60 * 24  * backtrack_archives);
+	else if (log_rotation_method == LOG_ROTATION_HOURLY)
+		return ( 60 * 60 * backtrack_archives);
+	else	// LOG_ROTATION_WEEKLY
+		return ( 60 * 60 * 24 * 7 * backtrack_archives);
+
 }
