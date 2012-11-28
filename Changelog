@@ -40,6 +40,7 @@ FIXES
 
 * docs: add missing cmd_mod description in cgi params #3438 - MF
 * docs: search_string as cgi GET param works also for status.cgi #3451 - MF
+* docs: fix typo pqsql -> pgsql #3461 - WN
 
 CHANGES
 
