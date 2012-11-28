@@ -134,7 +134,7 @@
 <li class="listitem">
             <p><span class="bold"><strong>Ubuntu / Debian</strong></span></p>
 
-            <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-ldap php5-gd php5-pqsql</pre>
+            <pre class="screen"> #&gt; apt-get install php5 php5-cli php-pear php5-xmlrpc php5-xsl php5-pdo php5-ldap php5-gd php5-pgsql</pre>
 
             <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -142,7 +142,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-              <p>Für Ubuntu gibt es kein php5-pdo-Paket, die benötigten PDO-Extensions sind in den Paketen php5 und php5-pqsql
+              <p>Für Ubuntu gibt es kein php5-pdo-Paket, die benötigten PDO-Extensions sind in den Paketen php5 und php5-pgsql
               enthalten!</p>
             </td></tr>
 </table></div>
@@ -153,7 +153,7 @@
             <p>Stellen Sie sicher, dass Sie ein Repository bzw. Pakete für PHP 5.2.3 und PCRE 7.6 haben - RHEL/CentOS &lt;= 5.x enthalten
             bisher lediglich PHP 5.1.6 und PCRE 6.6.</p>
 
-            <pre class="screen"> #&gt; yum install php php-cli php-pear php-xmlrpc php-xsl php-pdo php-ldap php-gd php-pqsql</pre>
+            <pre class="screen"> #&gt; yum install php php-cli php-pear php-xmlrpc php-xsl php-pdo php-ldap php-gd php-pgsql</pre>
 
             <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -254,7 +254,7 @@
 
         <pre class="screen"> #&gt; ./configure --with-db-type=pgsql --with-db-port=5432</pre>
 
-        <p>Falls auch Icinga mit pqsql läuft, sind die api-Optionen mit anzugeben:</p>
+        <p>Falls auch Icinga mit pgsql läuft, sind die api-Optionen mit anzugeben:</p>
 
         <pre class="screen"> #&gt; ./configure --with-db-type=pgsql --with-db-port=5432 \
  --with-api-subtype=pgsql --with-api-port=5432</pre>
@@ -947,9 +947,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
 
-    <a class="indexterm" name="idp12309744"></a>
+    <a class="indexterm" name="idp12309824"></a>
 
-    <a class="indexterm" name="idp12311088"></a>
+    <a class="indexterm" name="idp12311168"></a>
   </div>
 </div>
 <div class="navfooter">

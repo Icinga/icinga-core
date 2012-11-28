@@ -2437,10 +2437,10 @@ char *ido2db_db_timet_to_sql(ido2db_idi *idi, time_t t) {
 	case IDO2DB_DBSERVER_MYSQL:
 		/* mysql from_unixtime treats 0 as 'Out of range value for column '...' at row 1'
 		 * which basically is a mess, when doing updates at all. in order to stay sane, we
-		 * set the value explicitely to NULL. mysql, you suck hard.
+		 * set the value explicitely to the null timestamp. mysql, you suck hard.
 		 */
 		if (t == 0) {
-			if (asprintf(&buf, "FROM_UNIXTIME(NULL)") == -1)
+			if (asprintf(&buf, "'0000-00-00 00:00:00'") == -1)
 			buf = NULL;
 		} else {
 			if (asprintf(&buf, "FROM_UNIXTIME(%lu)", (unsigned long) t) == -1)

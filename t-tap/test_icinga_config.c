@@ -276,6 +276,7 @@ time_t disable_notifications_expire_time = 0L;
 void enable_all_notifications() {}
 
 int             keep_unknown_macros = FALSE;
+int		enable_state_based_escalation_ranges = FALSE;
 
 /* Dummy variables */
 sched_info scheduling_info;
