@@ -46,6 +46,43 @@ CHANGES
 
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
 
+1.8.2 - 28/11/2012
+
+FIXES
+* core: fix macro escaping logs incorrect warning for $$escapes #3404 - MF
+* core: fix wrong escalation notification due to state based escalation range behaviour changes #3441 - MF
+
+* idoutils: fix many memory leaks in ido2db on dbi_result_free and others (thx Klaus Wagner) #3406 - MF
+* idoutils: fix ido2db crashes when Oracle queries fail #3324 - GB
+* idoutils: fix ORA-1461 writing data to varchar2 exceeding field size limit output, command_arg and commandline data written to Oracle #3324 #3325 - TD
+* idoutils: fix unsafe handling of dbi_conn_sequence_last, rewrite last_insert_id/sequence fetching #3408 - MF
+* idoutils: fix ido2db does not cleanly exit the client on wrong schema version check in db_hello #3419 - MF
+* idoutils: fix FROM_UNIXTIME(NULL) does not work with MySQL 5.0.x #3399 #3466 - CF
+
+* install: drop unused daemon-init-readhat script (spec uses daemon-init) #3402 - MF
+* install: fix broken configure ssl detection for idoutils on ubuntu/debian (Oliver Skibbe) #3413 - MF
+
+* classic ui: fix cmd.cgi does not honor commandpipe location; overwrites from empty environment variable #3418 - MF
+* classic ui: fixed double-listed host dependencies in host extinfo.cgi #3295 - RB
+* classic ui: fixed sort_icinga_logfiles_by_name() in readlogs.c fails to take NULL pointers into consideration #3398 - CF
+* classic ui: fixed committing acknowledgement cmd negates flags for send_notification and sticky_ack #3329 - RB
+* classic ui: fixed backtrack_archives only getting calculated on a daily log rotation basis #3416 - RB
+* classic ui: fixed invalid freeing of last_check in 'scheduling queue' for first time checks #3444 - RB
+
+* docs: add missing cmd_mod description in cgi params #3438 - MF
+* docs: search_string as cgi GET param works also for status.cgi #3451 - MF
+* docs: fix typo pqsql -> pgsql #3461 - WN
+
+CHANGES
+
+* icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
+
+
+1.8.1 - 25/10/2012
+
+FIXES
+* core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
+
 
 1.8.0 - 18/10/2012
 
