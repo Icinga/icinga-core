@@ -257,6 +257,10 @@ typedef struct ido2db_input_data_info_struct{
 	ido2db_dbconninfo dbinfo;
         }ido2db_idi;
 
+typedef struct ido2db_proxy_args_struct{
+	int fd_left;
+	int fd_right;
+	}ido2db_proxy_args;
 
 
 /*************** DB server types ***************/
