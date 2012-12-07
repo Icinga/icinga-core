@@ -106,10 +106,17 @@ extern int      daemon_mode;
 extern int      enable_notifications;
 extern int      execute_service_checks;
 extern int      accept_passive_service_checks;
+extern int      execute_host_checks;
+extern int      accept_passive_host_checks;
+extern int      obsess_over_hosts;
+extern int      enable_flap_detection;
 extern int      enable_event_handlers;
 extern int      obsess_over_services;
 extern int      enable_failure_prediction;
 extern int      process_performance_data;
+extern int      check_service_freshness;
+extern int      check_host_freshness;
+extern time_t   disable_notifications_expire_time;
 extern time_t   last_command_check;
 extern time_t   last_log_rotation;
 extern time_t	status_file_creation_time;
@@ -982,11 +989,19 @@ int read_icinga_resource_file(char *resource_file) {
 
 void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	char date_time[MAX_DATETIME_LENGTH];
+	char run_time_string[24];
 	char *cgi_name = NULL;
 	char *cgi_css = NULL;
 	char *cgi_body_class = NULL;
+	char *timezone = "";
 	time_t expire_time;
 	time_t current_time;
+	int result = 0;
+	int days = 0;
+	int hours = 0;
+	int minutes = 0;
+	int seconds = 0;
+	struct tm *tm_ptr = NULL;
 
 	switch (cgi_id) {
 	case STATUS_CGI_ID:
@@ -1082,6 +1097,8 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT)
 		refresh = FALSE;
 
+	time(&current_time);
+
 	// send top http header
 	if (cgi_id != ERROR_CGI_ID) {
 		printf("Cache-Control: no-store\r\n");
@@ -1090,7 +1107,6 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		if (refresh_type == HTTPHEADER_REFRESH && refresh == TRUE)
 			printf("Refresh: %d\r\n", refresh_rate);
 
-		time(&current_time);
 		get_time_string(&current_time, date_time, (int)sizeof(date_time), HTTP_DATE_TIME);
 		printf("Last-Modified: %s\r\n", date_time);
 
@@ -1110,8 +1126,57 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	}
 
 	if (content_type == JSON_CONTENT) {
+
+		/* read program status */
+		result = read_all_status_data(get_cgi_config_location(), READ_PROGRAM_STATUS);
+
+		/* total running time */
+		get_time_breakdown(current_time - program_start, &days, &hours, &minutes, &seconds);
+		sprintf(run_time_string, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+
+		tm_ptr = localtime(&current_time);
+
+#ifdef HAVE_TM_ZONE
+		timezone = (char *)tm_ptr->tm_zone;
+#else
+		timezone = (tm_ptr->tm_isdst) ? tzname[1] : tzname[0];
+#endif
+
 		printf("Content-type: text/json; charset=\"%s\"\r\n\r\n", http_charset);
 		printf("{ \"cgi_json_version\": \"%s\",\n", JSON_OUTPUT_VERSION);
+		printf("\"icinga_status\": {\n");
+
+		printf("\"status_data_age\": %lu,\n", current_time - status_file_creation_time);
+		printf("\"process_state_ok\": %s,\n", (nagios_process_state == STATE_OK) ? "true" : "false");
+		printf("\"reading_status_data_ok\": %s,\n", (result == ERROR && daemon_check == TRUE) ? "false" : "true");
+		printf("\"program_version\": \"%s\",\n", PROGRAM_VERSION);
+		printf("\"icinga_pid\": %d,\n", nagios_pid);
+#ifdef USE_OLDCRUD
+		printf(",\"running_as_a_daemon\": %s\n", (daemon_mode == TRUE) ? "true" : "false");
+#endif
+		printf("\"timezone\": \"%s\",\n", timezone);
+		printf("\"program_start\": %lu,\n", program_start);
+		printf("\"total_running_time\": \"%s\",\n", run_time_string);
+		printf("\"last_external_command_check\": %lu,\n", last_command_check);
+		printf("\"last_log_file_rotation\": %lu,\n", last_log_rotation);
+		printf("\"notifications_enabled\": %s,\n", (enable_notifications == TRUE) ? "true" : "false");
+		printf("\"disable_notifications_expire_time\": %lu,\n", disable_notifications_expire_time);
+		printf("\"service_checks_being_executed\": %s,\n", (execute_service_checks == TRUE) ? "true" : "false");
+		printf("\"passive_service_checks_being_accepted\": %s,\n", (accept_passive_service_checks == TRUE) ? "true" : "false");
+		printf("\"host_checks_being_executed\": %s,\n", (execute_host_checks == TRUE) ? "true" : "false");
+		printf("\"passive_host_checks_being_accepted\": %s,\n", (accept_passive_host_checks == TRUE) ? "true" : "false");
+		printf("\"obsessing_over_services\": %s,\n", (obsess_over_services == TRUE) ? "true" : "false");
+		printf("\"obsessing_over_hosts\": %s,\n", (obsess_over_hosts == TRUE) ? "true" : "false");
+		printf("\"check_service_freshness\": %s,\n", (check_service_freshness == TRUE) ? "true" : "false");
+		printf("\"check_host_freshness\": %s,\n", (check_host_freshness == TRUE) ? "true" : "false");
+		printf("\"event_handlers_enabled\": %s,\n", (enable_event_handlers == TRUE) ? "true" : "false");
+		printf("\"flap_detection_enabled\": %s,\n", (enable_flap_detection == TRUE) ? "true" : "false");
+		printf("\"performance_data_being_processed\": %s\n", (process_performance_data == TRUE) ? "true" : "false");
+#ifdef PREDICT_FAILURES
+		printf(",\"failure_prediction_enabled\": %s\n", (enable_failure_prediction == TRUE) ? "true" : "false");
+#endif
+
+		printf("}, \n");
 		printf("\"%s\": {\n", cgi_body_class);
 		return;
 	}
