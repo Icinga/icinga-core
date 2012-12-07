@@ -10945,7 +10945,7 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
         char * query = NULL;
         char * query1 = NULL;
         char * query2 = NULL;
-        unsigned long contactaddress_id;
+        unsigned long contact_address_id;
         int mysql_update = FALSE;
 #endif
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_contactdefinition_addresses_add() start\n");
@@ -10976,7 +10976,7 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
                 	idi->dbinfo.dbi_result = NULL;
 
 
-                        dummy = asprintf(&query, "SELECT contactaddress_id FROM %s WHERE contact_id=%lu AND address_number=%d",
+                        dummy = asprintf(&query, "SELECT contact_address_id FROM %s WHERE contact_id=%lu AND address_number=%d",
                                 ido2db_db_tablenames[IDO2DB_DBTABLE_CONTACTADDRESSES],
                                  *(unsigned long *) data[1],    /* unique constraint start */
                                  *(int *) data[2]               /* unique constraint end */
@@ -10986,7 +10986,7 @@ int ido2db_query_insert_or_update_contactdefinition_addresses_add(ido2db_idi *id
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                contactaddress_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactaddress_id");
+                                                contact_address_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contact_address_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
