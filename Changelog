@@ -14,6 +14,8 @@ UPGRADE NOTES
 
 1.8.3 - 12/12/2012
 
+* classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
+
 FIXES
 * idoutils: fix unknown column contactaddress_id (thx fmbiete) #3483 - MF
 

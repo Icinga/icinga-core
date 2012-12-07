@@ -1090,7 +1090,7 @@ void print_form_element(int element, int cmd) {
 		printf("</td><td align=\"left\">\n");
 		printf("\t<table border=0  cellspacing=0 cellpadding=0>\n");
 		printf("\t\t<tr>\n");
-		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='hours' VALUE='%d' SIZE=2 MAXLENGTH=2></td>\n", t_hour);
+		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='hours' VALUE='%d' SIZE=4 MAXLENGTH=4></td>\n", t_hour);
 		printf("\t\t\t<td width=\"50\">&nbsp;Hours</td>\n");
 		printf("\t\t\t<td><INPUT TYPE='TEXT' NAME='minutes' VALUE='%d' SIZE=2 MAXLENGTH=2></td>\n", t_min);
 		printf("\t\t\t<td width=\"50\">&nbsp;Minutes</td>\n");
