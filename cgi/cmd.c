@@ -53,6 +53,7 @@ extern int  check_external_commands;
 extern int  use_authentication;
 extern int  lock_author_names;
 extern int  persistent_ack_comments;
+extern int  set_ack_notifications;
 extern int  default_expiring_acknowledgement_duration;
 extern int  set_expire_ack_by_default;
 extern int  default_expiring_disabled_notifications_duration;
@@ -1012,7 +1013,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Send Notification:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' NAME='send_notification' %s></td></tr>\n", (send_notification == TRUE) ? "CHECKED" : "");
+		printf("<INPUT TYPE='checkbox' NAME='send_notification' %s></td></tr>\n", (set_ack_notifications == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_PERSISTENT:

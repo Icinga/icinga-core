@@ -146,6 +146,7 @@ int             refresh_type = JAVASCRIPT_REFRESH;
 int             escape_html_tags = FALSE;
 
 int             persistent_ack_comments = FALSE;
+int		set_ack_notifications = TRUE;
 
 int             use_ssl_authentication = FALSE;
 
@@ -557,6 +558,9 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "persistent_ack_comments"))
 			persistent_ack_comments = (atoi(val) > 0) ? TRUE : FALSE;
+
+		else if (!strcmp(var, "set_ack_notifications"))
+			set_ack_notifications = (atoi(val) > 0) ? TRUE : FALSE;
 
 		else if (!strcmp(var, "default_expiring_acknowledgement_duration"))
 			default_expiring_acknowledgement_duration = atoi(val);

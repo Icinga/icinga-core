@@ -15,6 +15,7 @@ UPGRADE NOTES
 1.9.0 - 25/04/2012
 
 ENHANCEMENTS
+* classic ui: Add "set_ack_notifications" to cgi configuration (TheCry) #3467 - CF
 
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
