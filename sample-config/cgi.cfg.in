@@ -502,6 +502,15 @@ lock_author_names=1
 default_downtime_duration=7200
 
 
+# SET EXPIRE ACK BY DEFAULT
+# This option either sets or clears the checkbox for "Use Expire Time"
+# in the acknowledgement menu.  Valid values are 0 (DO NOT tick the
+# checkbox by default) or 1 (tick the checkbox by default).  The default
+# is 0 (leave the checkbox blank).
+
+set_expire_ack_by_default=0
+
+
 
 # DEFAULT EXPIRING ACKNOWLEDGEMENT DURATION
 # This option defines the default duration (in seconds) of a expiring

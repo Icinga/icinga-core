@@ -174,6 +174,7 @@ int		week_starts_on_monday = FALSE;
 int		show_partial_hostgroups = FALSE;
 int		default_downtime_duration = 7200;
 int		default_expiring_acknowledgement_duration = 86400;
+int		set_expire_ack_by_default = FALSE;
 int		default_expiring_disabled_notifications_duration = 86400;
 
 int		result_limit = 50;
@@ -559,6 +560,9 @@ int read_cgi_config_file(char *filename) {
 
 		else if (!strcmp(var, "default_expiring_acknowledgement_duration"))
 			default_expiring_acknowledgement_duration = atoi(val);
+
+		else if (!strcmp(var, "set_expire_ack_by_default"))
+			set_expire_ack_by_default = (atoi(val) > 0) ? TRUE : FALSE;
 
 		else if (!strcmp(var, "default_expiring_disabled_notifications_duration"))
 			default_expiring_disabled_notifications_duration = atoi(val);
