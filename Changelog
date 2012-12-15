@@ -15,6 +15,7 @@ UPGRADE NOTES
 1.9.0 - 25/04/2012
 
 ENHANCEMENTS
+* classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
 * classic ui: Add "set_ack_notifications" to cgi configuration (TheCry) #3467 - CF
 
 FIXES
