@@ -53,7 +53,9 @@ extern int  check_external_commands;
 extern int  use_authentication;
 extern int  lock_author_names;
 extern int  persistent_ack_comments;
+extern int  set_ack_notifications;
 extern int  default_expiring_acknowledgement_duration;
+extern int  set_expire_ack_by_default;
 extern int  default_expiring_disabled_notifications_duration;
 
 extern int  display_header;
@@ -1011,7 +1013,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Send Notification:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' NAME='send_notification' %s></td></tr>\n", (send_notification == TRUE) ? "CHECKED" : "");
+		printf("<INPUT TYPE='checkbox' NAME='send_notification' %s></td></tr>\n", (set_ack_notifications == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_PERSISTENT:
@@ -1106,7 +1108,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Use Expire Time:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' ID='expire_checkbox' NAME='use_ack_end_time' onClick=\"if (document.getElementById('expire_checkbox').checked == true) document.getElementById('expired_date_row').style.display = ''; else document.getElementById('expired_date_row').style.display = 'none';\"></td></tr>\n");
+		printf("<INPUT TYPE='checkbox' ID='expire_checkbox' NAME='use_ack_end_time' onClick=\"if (document.getElementById('expire_checkbox').checked == true) document.getElementById('expired_date_row').style.display = ''; else document.getElementById('expired_date_row').style.display = 'none';\" %s></td></tr>\n", (set_expire_ack_by_default == TRUE) ? "CHECKED" : "");
 
 		snprintf(help_text, sizeof(help_text), "Enter here the expire date/time for this acknowledgement. %s will automatically delete the acknowledgement after this time expired.", PROGRAM_NAME);
 		help_text[sizeof(help_text)-1] = '\x0';
@@ -1115,7 +1117,7 @@ void print_form_element(int element, int cmd) {
 		t += (unsigned long)default_expiring_acknowledgement_duration;
 		get_time_string(&t, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
 
-		printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
+		printf("<tr id=\"expired_date_row\" style=\"display:%s;\"><td class=\"objectDescription descriptionleft\">Expire Time:", (set_expire_ack_by_default == TRUE) ? "" : "none");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\"><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr>\n", buffer);
 		break;

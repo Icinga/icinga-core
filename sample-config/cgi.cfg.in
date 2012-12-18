@@ -436,6 +436,16 @@ escape_html_tags=1
 
 
 
+# SET ACK NOTIFICATIONS
+# This options determines whether the initial state of the
+# checkbox "Send Notifications" when acknowledging a problem.
+# A value of 1 ticks the checkbox and 0 does not.  The default
+# is 1, which will send notifications on acknowledged problems.
+
+set_ack_notifications=1
+
+
+
 # PERSISTENT ACKNOWLEDGEMENT COMMENTS
 # This options determines whether the initial state of the
 # checkbox "Persistent Comment:" for service and host problem
@@ -500,6 +510,15 @@ lock_author_names=1
 # flexible downtimes. Default is 7200 seconds (2 hours).
 
 default_downtime_duration=7200
+
+
+# SET EXPIRE ACK BY DEFAULT
+# This option either sets or clears the checkbox for "Use Expire Time"
+# in the acknowledgement menu.  Valid values are 0 (DO NOT tick the
+# checkbox by default) or 1 (tick the checkbox by default).  The default
+# is 0 (leave the checkbox blank).
+
+set_expire_ack_by_default=0
 
 
 

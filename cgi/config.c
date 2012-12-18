@@ -106,7 +106,9 @@ extern int color_transparency_index_g;
 extern int color_transparency_index_r;
 extern int cgi_log_rotation_method;
 extern int default_downtime_duration;
+extern int set_ack_notifications;
 extern int default_expiring_acknowledgement_duration;
+extern int set_expire_ack_by_default;
 extern int display_status_totals;
 extern int default_statusmap_layout_method;
 extern int enable_splunk_integration;
@@ -225,7 +227,9 @@ int org_color_transparency_index_g;
 int org_color_transparency_index_r;
 int org_cgi_log_rotation_method;
 int org_default_downtime_duration;
+int org_set_ack_notifications;
 int org_default_expiring_acknowledgement_duration;
+int org_set_expire_ack_by_default;
 int org_display_status_totals;
 int org_default_statusmap_layout;
 int org_enable_splunk_integration;
@@ -4113,6 +4117,8 @@ void display_cgiconfig(void) {
 	PRINT_CONFIG_LINE_STRING(service_critical_sound, org_service_critical_sound)
 	PRINT_CONFIG_LINE_STRING(service_unknown_sound, org_service_unknown_sound)
 	PRINT_CONFIG_LINE_STRING(service_warning_sound, org_service_warning_sound)
+	PRINT_CONFIG_LINE_INT(set_ack_notifications, org_set_ack_notifications, "bool")
+	PRINT_CONFIG_LINE_INT(set_expire_ack_by_default, org_set_expire_ack_by_default, "bool")
 	PRINT_CONFIG_LINE_INT(show_all_services_host_is_authorized_for, org_show_all_services_host_is_authorized_for, "bool")
 	PRINT_CONFIG_LINE_INT(show_partial_hostgroups, org_show_partial_hostgroups, "bool")
 	PRINT_CONFIG_LINE_INT(show_tac_header, org_show_tac_header, "bool")
@@ -4520,7 +4526,9 @@ void store_default_settings(void) {
 	org_color_transparency_index_r = color_transparency_index_r;
 	org_cgi_log_rotation_method = org_cgi_log_rotation_method;
 	org_default_downtime_duration = default_downtime_duration;
+	org_set_ack_notifications = set_ack_notifications;
 	org_default_expiring_acknowledgement_duration = default_expiring_acknowledgement_duration;
+	org_set_expire_ack_by_default = set_expire_ack_by_default;
 	org_display_status_totals = display_status_totals;
 	org_default_statusmap_layout = default_statusmap_layout_method;
 	org_enable_splunk_integration = enable_splunk_integration;
