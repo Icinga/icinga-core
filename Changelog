@@ -12,9 +12,14 @@ UPGRADE NOTES
 	- core, classic ui: sample-config/updates/
 	- idoutils: module/idoutils/config/updates
 
-1.8.3 - 12/12/2012
+1.8.4 - XX/XX/XXXX
 
+FIXES
 * classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
+* classic ui: fixed Warning and Unknown States are mixed up in Alert Summary Report #3488 - RB
+
+
+1.8.3 - 12/12/2012
 
 FIXES
 * idoutils: fix unknown column contactaddress_id (thx fmbiete) #3483 - MF
