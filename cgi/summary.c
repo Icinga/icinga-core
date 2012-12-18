@@ -1188,9 +1188,9 @@ void read_archived_event_data(void) {
 				if (temp_entry->type == LOGENTRY_SERVICE_CRITICAL)
 					state = AE_SERVICE_CRITICAL;
 				else if (temp_entry->type == LOGENTRY_SERVICE_WARNING)
-					state = AE_SERVICE_UNKNOWN;
-				else if (temp_entry->type == LOGENTRY_SERVICE_UNKNOWN)
 					state = AE_SERVICE_WARNING;
+				else if (temp_entry->type == LOGENTRY_SERVICE_UNKNOWN)
+					state = AE_SERVICE_UNKNOWN;
 				else if (temp_entry->type == LOGENTRY_SERVICE_RECOVERY || temp_entry->type == LOGENTRY_SERVICE_OK)
 					state = AE_SERVICE_OK;
 				else
