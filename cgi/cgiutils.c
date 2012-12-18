@@ -1934,6 +1934,7 @@ char * escape_string(char *input) {
 
 void display_info_table(char *title, authdata *current_authdata, int daemon_check) {
 	char date_time[MAX_DATETIME_LENGTH];
+	char disable_notif_expire_time[MAX_DATETIME_LENGTH];
 	char *dir_to_check = NULL;
 	time_t current_time;
 	int result;
@@ -1948,6 +1949,9 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 
 	time(&current_time);
 	get_time_string(&current_time, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
+
+	/* disabled notifications expire time */
+	get_time_string(&disable_notifications_expire_time, disable_notif_expire_time, (int)sizeof(disable_notif_expire_time), SHORT_DATE_TIME);
 
 	printf("Last Updated: %s ", date_time);
 
@@ -2007,8 +2011,12 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Could not read program status information!</DIV>");
 
 	else {
-		if (enable_notifications == FALSE)
-			printf("<DIV CLASS='infoBoxBadProcStatus'>- Notifications are disabled</DIV>");
+		if (enable_notifications == FALSE) {
+			printf("<DIV CLASS='infoBoxBadProcStatus'>- Notifications are disabled");
+			if (disable_notifications_expire_time != 0)
+				printf(" until %s", disable_notif_expire_time);
+			printf("</DIV>");
+		}
 
 		if (execute_service_checks == FALSE)
 			printf("<DIV CLASS='infoBoxBadProcStatus'>- Service checks are disabled</DIV>");

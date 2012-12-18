@@ -1065,6 +1065,10 @@ void show_process_info(void) {
 
 		printf("\"icinga_pid\": %d,\n", nagios_pid);
 		printf("\"notifications_enabled\": %s,\n", (enable_notifications == TRUE) ? "true" : "false");
+		if (disable_notifications_expire_time == (time_t)0)
+			printf("\"disable_notifications_expire_time\": null,\n");
+		else
+			printf("\"disable_notifications_expire_time\": \"%s\",\n", disable_notif_expire_time);
 		printf("\"service_checks_being_executed\": %s,\n", (execute_service_checks == TRUE) ? "true" : "false");
 		printf("\"passive_service_checks_being_accepted\": %s,\n", (accept_passive_service_checks == TRUE) ? "true" : "false");
 		printf("\"host_checks_being_executed\": %s,\n", (execute_host_checks == TRUE) ? "true" : "false");
@@ -1090,6 +1094,7 @@ void show_process_info(void) {
 		printf("%sLAST_LOG_FILE_ROTATION%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sICINGA_PID%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sNOTIFICATIONS_ENABLED%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sNOTIFICATIONS_DISABLED_EXPIRE_TIME%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sSERVICE_CHECKS_BEING_EXECUTED%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sPASSIVE_SERVICE_CHECKS_BEING_ACCEPTED%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sHOST_CHECKS_BEING_EXECUTED%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
@@ -1115,6 +1120,7 @@ void show_process_info(void) {
 		printf("%s%s%s%s", csv_data_enclosure, (last_log_rotation == (time_t)0) ? "N/A" : last_log_rotation_time, csv_data_enclosure, csv_delimiter);
 		printf("%s%d%s%s", csv_data_enclosure, nagios_pid, csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, (enable_notifications == TRUE) ? "YES" : "NO", csv_data_enclosure, csv_delimiter);
+		printf("%s%s%s%s", csv_data_enclosure, (disable_notifications_expire_time == (time_t)0) ? "N/A" : disable_notif_expire_time, csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, (execute_service_checks == TRUE) ? "YES" : "NO", csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, (accept_passive_service_checks == TRUE) ? "YES" : "NO", csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, (execute_host_checks == TRUE) ? "YES" : "NO", csv_data_enclosure, csv_delimiter);
@@ -1170,7 +1176,7 @@ void show_process_info(void) {
 
 		/* notifications enabled */
 		printf("<TR><TD CLASS='dataVar'>Notifications Enabled?</TD><TD CLASS='dataVal'><DIV CLASS='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n", (enable_notifications == TRUE) ? "ENABLED" : "DISABLED", (enable_notifications == TRUE) ? "YES" : "NO");
-		if (enable_notifications == FALSE)
+		if (enable_notifications == FALSE && disable_notifications_expire_time != 0)
 			printf("<TR><TD CLASS='dataVar'>Notifications Disabled Expire Time:</TD><TD CLASS='dataVal'>%s</TD></TR>\n", disable_notif_expire_time);
 		else
 			printf("<TR><TD CLASS='dataVar'>Notifications Disabled Expire Time:</TD><TD CLASS='dataVal'><DIV CLASS='notificationsUNKNOWN'>&nbsp;&nbsp;NOT SET&nbsp;&nbsp;</DIV></TD></TR>\n");
