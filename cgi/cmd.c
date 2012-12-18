@@ -53,7 +53,7 @@ extern int  check_external_commands;
 extern int  use_authentication;
 extern int  lock_author_names;
 extern int  persistent_ack_comments;
-extern int  set_ack_notifications;
+extern int  send_ack_notifications;
 extern int  default_expiring_acknowledgement_duration;
 extern int  set_expire_ack_by_default;
 extern int  default_expiring_disabled_notifications_duration;
@@ -145,7 +145,7 @@ int schedule_delay = 0;				/**< delay for sheduled actions in minutes (Icinga re
 							!not implemented in GUI! */
 int persistent_comment = FALSE;			/**< bool if omment should survive Icinga restart */
 int sticky_ack = TRUE;				/**< bool to disable notifications until recover */
-int send_notification = TRUE;			/**< bool sends a notification if service gets acknowledged */
+int send_notification = FALSE;			/**< bool sends a notification if service gets acknowledged */
 int use_ack_end_time = FALSE;			/**< bool if expire acknowledgement is selected or not */
 int use_disabled_notif_end_time = FALSE;	/**< bool if expire disabled notifications is selected or not */
 int force_check = FALSE;			/**< bool if check should be forced */
@@ -409,7 +409,6 @@ int process_cgivars(void) {
 	int x;
 	int z = 0;
 	int sticky_ack_set = FALSE;		/* default is TRUE */
-	int send_notification_set = FALSE;	/* default is TRUE */
 
 	variables = getcgivars();
 
@@ -610,7 +609,7 @@ int process_cgivars(void) {
 
 		/* we got the notification option for an acknowledgement */
 		else if (!strcmp(variables[x], "send_notification"))
-			send_notification_set = TRUE;
+			send_notification = TRUE;
 
 		/* we got the acknowledgement type */
 		else if (!strcmp(variables[x], "sticky_ack"))
@@ -787,7 +786,6 @@ int process_cgivars(void) {
 	}
 
 	if (command_mode == CMDMODE_COMMIT) {
-		send_notification = send_notification_set;
 		sticky_ack = sticky_ack_set;
 	}
 
@@ -1013,7 +1011,7 @@ void print_form_element(int element, int cmd) {
 		printf("<tr><td class=\"objectDescription descriptionleft\">Send Notification:");
 		print_help_box(help_text);
 		printf("</td><td align=\"left\">");
-		printf("<INPUT TYPE='checkbox' NAME='send_notification' %s></td></tr>\n", (set_ack_notifications == TRUE) ? "CHECKED" : "");
+		printf("<INPUT TYPE='checkbox' NAME='send_notification' %s></td></tr>\n", (send_ack_notifications == TRUE) ? "CHECKED" : "");
 		break;
 
 	case PRINT_PERSISTENT:

@@ -436,13 +436,13 @@ escape_html_tags=1
 
 
 
-# SET ACK NOTIFICATIONS
+# SEND ACK NOTIFICATIONS
 # This options determines whether the initial state of the
 # checkbox "Send Notifications" when acknowledging a problem.
 # A value of 1 ticks the checkbox and 0 does not.  The default
 # is 1, which will send notifications on acknowledged problems.
 
-set_ack_notifications=1
+send_ack_notifications=1
 
 
 
