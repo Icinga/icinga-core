@@ -1,9 +1,16 @@
 #################################################################
 #
-# CGI.CFG - Sample CGI Configuration File for Icinga
+# CGI.CFG - CGI Configuration File for Icinga
 #
 #################################################################
 
+
+
+######################################
+#
+#    COMMON (ALL CGIs)
+#
+######################################
 
 # MAIN CONFIGURATION FILE
 # This tells the CGIs where to find your main configuration file.
@@ -12,12 +19,6 @@
 
 main_config_file=@sysconfdir@/icinga.cfg
 
-
-# ATTRIBUTE BASED AUTHORIZATION FILE
-# This option will include a file defining authroization based on
-# attributes.
-
-#authorization_config_file=@sysconfdir@/cgiauth.cfg
 
 
 # PHYSICAL HTML PATH
@@ -58,13 +59,49 @@ http_charset=utf-8
 
 
 
-# HIGHLIGHT TABLE ROWS
-# This option allows you to define if table rows in status.cgi
-# will be highlighted or not.
-# Values: 0 = disables row highlighting
-#	  1 = enables row highlighting
+# REFRESH RATE
+# This option allows you to specify the refresh rate in seconds
+# of various CGIs (extinfo, outages, status, statusmap and tac).
 
-highlight_table_rows=1
+refresh_rate=90
+
+
+
+# REFRESH TYPE
+# This option determines what type of refresh should be used.
+# You can choose between http header and javascript. By
+# default javascript (1) is activated. If you have trouble
+# using javascript then try refresh via http header (0).
+
+refresh_type=1
+
+
+
+# ESCAPE HTML TAGS
+# This option determines whether HTML tags in host and service
+# status output is escaped in the web interface.  If enabled,
+# your plugin output will not be able to contain clickable links.
+
+escape_html_tags=1
+
+
+
+# RESULT LIMIT
+# This options specifies the number of page entries
+# displayed by default in various cgi's. To display
+# all entries by default set this value to 0.
+# Default is 50.
+
+result_limit=50
+
+
+
+# SHOW TAC INFORMATION IN TOP FRAME
+# This options places tactical overview information in
+# the top frame similar to the view that's in icinga-web.
+# By default it is enabled.
+
+show_tac_header=1
 
 
 
@@ -77,57 +114,66 @@ highlight_table_rows=1
 use_pending_states=1
 
 
-# Logging
-
-# USE LOGGING
-# If you want to log information from cgi's (e.g. all submitted commands)
-# then set this option to 1, default is 0 (off).
-# WARNING:
-# This log is highly experimental and changes may occure without notice. Use at your own risk!!
-
-use_logging=@ENABLECGILOG@
-
-
-# CGI LOG FILE
-# This is the cgi log file for information about what users are doing.
-# At the moment only submitted commands from cmd.cgi will be logged.
-
-cgi_log_file=@CGILOGDIR@/icinga-cgi.log
-
-
-# CGI LOG ROTATION METHOD
-# This is the log rotation method that should be used to rotate
-# the cgi log file. Values are as follows..
-#	n	= None - don't rotate the log
-#	h	= Hourly rotation (top of the hour)
-#	d	= Daily rotation (midnight every day)
-#	w	= Weekly rotation (midnight on Saturday evening)
-#	m	= Monthly rotation (midnight last day of month)
-
-cgi_log_rotation_method=d
-
-
-# CGI LOG ARCHIVE PATH
-# This is the directory where archived (rotated) cgi log files should be
-# placed (assuming you've chosen to do log rotation).
-
-cgi_log_archive_path=@CGILOGDIR@
-
-
-# FORCE COMMENT
-# This option forces the users of to comment every action they perform.
-# The comments get logged into cgi log file. This option only has effect
-# if logging is switched on. See option "use_logging"
-# Default  is 0 (off), to activate it set it to 1 (on).
-
-enforce_comments_on_actions=0
-
 
 # FIRST DAY OF WEEK
 # Here you can set if your week starts on sunday or monday.
 # Default is 0 (Sunday), set it to 1 if your week start monday.
 
 first_day_of_week=0
+
+
+
+# CSV DELIMITER
+# This option determines the character which should act as
+# delimiter. Default is ";".
+
+#csv_delimiter=;
+
+
+
+# CSV DATA ENCLOSURE
+# This option determines the character which should act as
+# data enclosure to wrap in the data. Default is "'".
+
+#csv_data_enclosure='
+
+
+
+# SUPPRESS MAINTENANCE DOWNTIME
+# This options suppresses the state coloring of hosts and services
+# that are in a scheduled downtime. It sets their coloring to gray,
+# so they no longer draw extra attention to themselves, making it
+# so only actual problems are the ones that stand out.
+# By default it is disabled.
+
+suppress_maintenance_downtime=0
+
+
+
+# URL TARGET FRAMES
+# These options determine the target frames in which notes and
+# action URLs will open. Default is main frame.
+
+action_url_target=main
+notes_url_target=main
+#action_url_target=_blank
+#notes_url_target=_blank
+
+
+
+
+######################################
+#
+#   AUTHENTICATION (ALL CGIs)
+#
+######################################
+
+# ATTRIBUTE BASED AUTHORIZATION FILE
+# This option will include a file defining authroization based on
+# attributes.
+
+#authorization_config_file=@sysconfdir@/cgiauth.cfg
+
 
 
 # AUTHENTICATION USAGE
@@ -151,7 +197,6 @@ use_authentication=1
 
 
 
-
 # USE CLIENT CERTIFICATTES
 # This option controls whether the value of the web server environment
 # variable REMOTE_USER or SSL_CLIENT_S_DN_CN will be used. The name of
@@ -171,14 +216,12 @@ use_ssl_authentication=0
 
 
 
-
 # LOWERCASE USER NAME
 # This option controls whether or not the username is converted
 # to all lowercase letters. Can be useful if the username is stored
 # in Active Directory (case-insensitive).
 
 lowercase_user_name=0
-
 
 
 
@@ -214,6 +257,7 @@ authorized_for_system_information=icingaadmin
 #authorized_contactgroup_for_system_information=
 
 
+
 # CONFIGURATION INFORMATION ACCESS
 # This option is a comma-delimited list of all usernames that
 # can view ALL configuration information (hosts, commands, etc).
@@ -228,6 +272,7 @@ authorized_for_configuration_information=icingaadmin
 #authorized_contactgroup_for_configuration_information=
 
 
+
 # RAW COMMANDLINE CONFIGURATION INFORMATION ACCESS
 # This option is a comma-delimited list of all usernames that
 # can view a command in config command expander as icinga would
@@ -239,6 +284,7 @@ authorized_for_configuration_information=icingaadmin
 
 authorized_for_full_command_resolution=icingaadmin
 #authorized_contactgroup_for_full_command_resolution=
+
 
 
 # SYSTEM/PROCESS COMMAND ACCESS
@@ -256,6 +302,7 @@ authorized_for_system_commands=icingaadmin
 #authorized_contactgroup_for_system_commands=
 
 
+
 # GLOBAL HOST/SERVICE VIEW ACCESS
 # These two options are comma-delimited lists of all usernames that
 # can view information for all hosts and services that are being
@@ -268,11 +315,11 @@ authorized_for_system_commands=icingaadmin
 # NOTE: Users in authorized_for_all_hosts are also automatically
 # authorised to view information for all services.
 
-
 authorized_for_all_services=icingaadmin
 authorized_for_all_hosts=icingaadmin
 #authorized_contactgroup_for_all_services=
 #authorized_contactgroup_for_all_hosts=
+
 
 
 # GLOBAL HOST/SERVICE COMMAND ACCESS
@@ -294,6 +341,7 @@ authorized_for_all_host_commands=icingaadmin
 #authorized_contactgroup_for_all_host_commands=
 
 
+
 # READ-ONLY USERS
 # A comma-delimited list of usernames that have read-only rights in
 # the CGIs.  This will block any service or host commands normally shown
@@ -304,6 +352,7 @@ authorized_for_all_host_commands=icingaadmin
 
 #authorized_for_read_only=user1,user2
 #authorized_contactgroup_for_read_only=
+
 
 
 # READ-ONLY FOR COMMENTS USERS
@@ -317,6 +366,7 @@ authorized_for_all_host_commands=icingaadmin
 #authorized_contactgroup_for_comments_read_only=
 
 
+
 # READ-ONLY FOR DOWNTIMES USERS
 # A comma-delimited list of usernames that have rights to view downtimes in
 # the CGIs. If user is defined as read-only and you add the same user to
@@ -328,6 +378,7 @@ authorized_for_all_host_commands=icingaadmin
 #authorized_contactgroup_for_downtimes_read_only=
 
 
+
 # SHOW ALL SERVICES THE HOST IS AUTHORIZED FOR
 # By default, a user can see all services on a host, if the user is
 # authorized as contact for the host only. By disabling this option,
@@ -337,6 +388,7 @@ authorized_for_all_host_commands=icingaadmin
 #         1 - enabled, user can view all services on authorized host
 
 show_all_services_host_is_authorized_for=1
+
 
 
 # SHOW PARTIAL HOSTGROUPS
@@ -364,6 +416,13 @@ show_partial_hostgroups=0
 
 
 
+
+######################################
+#
+#   STATUSMAP (statusmap.cgi)
+#
+######################################
+
 # STATUSMAP BACKGROUND IMAGE
 # This option allows you to specify an image to be used as a background
 # in the statusmap CGI if you use the user-supplied coordinates layout method.
@@ -380,7 +439,6 @@ show_partial_hostgroups=0
 
 
 
-
 # STATUSMAP TRANSPARENCY INDEX COLOR
 # These options set the r,g,b values of the background color used the statusmap CGI,
 # so normal browsers that can't show real png transparency set the desired color as
@@ -390,7 +448,6 @@ show_partial_hostgroups=0
 #color_transparency_index_r=255
 #color_transparency_index_g=255
 #color_transparency_index_b=255
-
 
 
 
@@ -411,48 +468,12 @@ default_statusmap_layout=5
 
 
 
-# REFRESH RATE
-# This option allows you to specify the refresh rate in seconds
-# of various CGIs (extinfo, outages, status, statusmap and tac).
 
-refresh_rate=90
-
-
-# REFRESH TYPE
-# This option determines what type of refresh should be used.
-# You can choose between http header and javascript. By
-# default javascript (1) is activated. If you have trouble
-# using javascript then try refresh via http header (0).
-
-refresh_type=1
-
-
-# ESCAPE HTML TAGS
-# This option determines whether HTML tags in host and service
-# status output is escaped in the web interface.  If enabled,
-# your plugin output will not be able to contain clickable links.
-
-escape_html_tags=1
-
-
-
-# SEND ACK NOTIFICATIONS
-# This options determines whether the initial state of the
-# checkbox "Send Notifications" when acknowledging a problem.
-# A value of 1 ticks the checkbox and 0 does not.  The default
-# is 1, which will send notifications on acknowledged problems.
-
-send_ack_notifications=1
-
-
-
-# PERSISTENT ACKNOWLEDGEMENT COMMENTS
-# This options determines whether the initial state of the
-# checkbox "Persistent Comment:" for service and host problem
-# acknowledgements is checked or unchecked
-
-persistent_ack_comments=0
-
+######################################
+#
+#   STATUS (status.cgi)
+#
+######################################
 
 # SOUND OPTIONS
 # These options allow you to specify an optional audio file
@@ -480,64 +501,6 @@ persistent_ack_comments=0
 
 
 
-# URL TARGET FRAMES
-# These options determine the target frames in which notes and
-# action URLs will open. Default is main frame.
-
-action_url_target=main
-notes_url_target=main
-#action_url_target=_blank
-#notes_url_target=_blank
-
-
-
-
-# LOCK AUTHOR NAMES OPTION
-# This option allows you to restrict users from changing the author name
-# when submitting comments, acknowledgements, and scheduled downtime from
-# the web interface. If this option is enabled, users will be unable to
-# change the author name associated with the command request.
-#
-# Values: 0 = Allow users to change author names when submitting commands
-#         1 = Prevent users from changing author names (default)
-
-lock_author_names=1
-
-
-
-# DEFAULT DOWNTIME DURATION
-# This option defines the default duration (in seconds) of fixed and
-# flexible downtimes. Default is 7200 seconds (2 hours).
-
-default_downtime_duration=7200
-
-
-# SET EXPIRE ACK BY DEFAULT
-# This option either sets or clears the checkbox for "Use Expire Time"
-# in the acknowledgement menu.  Valid values are 0 (DO NOT tick the
-# checkbox by default) or 1 (tick the checkbox by default).  The default
-# is 0 (leave the checkbox blank).
-
-set_expire_ack_by_default=0
-
-
-
-# DEFAULT EXPIRING ACKNOWLEDGEMENT DURATION
-# This option defines the default duration (in seconds) of a expiring
-# acknowledgement. Default is 86400 seconds (1 day).
-
-default_expiring_acknowledgement_duration=86400
-
-
-
-# DEFAULT EXPIRING DISABLED NOTIFICATIONS DURATION
-# This option defines the default duration (in seconds) of a expiring
-# disabled notifications. Default is 86400 seconds (1 day).
-
-default_expiring_disabled_notifications_duration=86400
-
-
-
 # SHOW LONG PLUGIN OUTPUT IN STATUS OPTION
 # This option allows you to specify the length of status information
 # in output of status.cgi. If you set the value to 1 it shows the
@@ -558,119 +521,14 @@ display_status_totals=0
 
 
 
-# SHOW ONLY HARD STATES IN TAC OPTION
-# This options allows you to specify if the tactical overview
-# should only show hard states on hosts and services.
-# By default disabled, all states will be shown.
+# HIGHLIGHT TABLE ROWS
+# This option allows you to define if table rows in status.cgi
+# will be highlighted or not.
+# Values: 0 = disables row highlighting
+#	  1 = enables row highlighting
 
-tac_show_only_hard_state=0
+highlight_table_rows=1
 
-
-
-# SHOW CHILD HOSTS IN EXTINFO OPTION
-# This Option allows you to specify if the extended host information
-# cgi will show child hosts for the selected host.
-#	0 = disabled
-#	1 = only show immediate child hosts
-#	2 = show immediate and all child hosts
-# NOTE: Option 2 could be a real performance killer in
-# large installations, so use with care.
-# By default disabled, as this could be a performance killer.
-
-extinfo_show_child_hosts=0
-
-
-
-# SUPPRESS MAINTENANCE DOWNTIME
-# This options suppresses the state coloring of hosts and services
-# that are in a scheduled downtime. It sets their coloring to gray,
-# so they no longer draw extra attention to themselves, making it
-# so only actual problems are the ones that stand out.
-# By default it is disabled.
-
-suppress_maintenance_downtime=0
-
-
-# SHOW TAC INFORMATION IN TOP FRAME
-# This options places tactical overview information in
-# the top frame similar to the view that's in icinga-web.
-# By default it is enabled.
-
-show_tac_header=1
-
-
-# SHOW PENDING IN TAC HEADER
-# This options enables the display of pending counts in
-# the tac header. If your display is less than 1024x768
-# and this is enabled, the tactical information may not
-# fit well in the top frame.
-# By default it is enabled.
-
-show_tac_header_pending=1
-
-
-
-# SHOW INITIAL STATES IN SHOWLOG OPTION
-# This options allows you to specify if initial states
-# of hosts and services should be shown in showlog.cgi
-# Note: This Option only works if the option
-# "log_initial_states" in icinga.cfg is set to 1.
-# By default it's disabled. Default is 0.
-
-#showlog_initial_states=0
-
-
-
-# SHOW CURRENT STATES IN SHOWLOG OPTION
-# This options allows you to specify if current states
-# of hosts and services should be shown in showlog.cgi
-# Note: This Option only works if the option
-# "log_current_states" in icinga.cfg is set to 1.
-# By default it's disabled. Default is 0.
-
-#showlog_current_states=0
-
-
-
-# RESULT LIMIT
-# This options specifies the number of page entries
-# displayed by default in various cgi's. To display
-# all entries by default set this value to 0.
-# Default is 50.
-
-result_limit=50
-
-
-
-# CSV DELIMITER
-# This option determines the character which should act as
-# delimiter. Default is ";".
-
-#csv_delimiter=;
-
-
-
-# CSV DATA ENCLOSURE
-# This option determines the character which should act as
-# data enclosure to wrap in the data. Default is "'".
-
-#csv_data_enclosure='
-
-
-
-# TAB-FRIENDLY <TITLE>S
-# Activating this option changes the <title> of status.cgi
-# and extinfo.cgi when they refer to a single host, service,
-# or group. They will then read:
-#	[Host]
-#	{HostGroup}
-#	ServiceDesc @ Host
-#	(ServiceGroup)
-# These are easier to read and find if you use (many) tabs
-# in your browser.
-# Default is enabled. 0=disabled, 1=enabled
-
-tab_friendly_titles=1
 
 
 # SERVICE STATES TO ANNOTATE WITH CURRENT NOTIFICATION NO.
@@ -700,6 +558,230 @@ tab_friendly_titles=1
 
 
 
+
+######################################
+#
+#   SEND COMMANDS (cmd.cgi)
+#
+######################################
+
+# Logging
+
+# USE LOGGING
+# If you want to log information from cgi's (e.g. all submitted commands)
+# then set this option to 1, default is 0 (off).
+# WARNING:
+# This log is highly experimental and changes may occure without notice. Use at your own risk!!
+
+use_logging=@ENABLECGILOG@
+
+
+
+# CGI LOG FILE
+# This is the cgi log file for information about what users are doing.
+# At the moment only submitted commands from cmd.cgi will be logged.
+
+cgi_log_file=@CGILOGDIR@/icinga-cgi.log
+
+
+
+# CGI LOG ROTATION METHOD
+# This is the log rotation method that should be used to rotate
+# the cgi log file. Values are as follows..
+#	n	= None - don't rotate the log
+#	h	= Hourly rotation (top of the hour)
+#	d	= Daily rotation (midnight every day)
+#	w	= Weekly rotation (midnight on Saturday evening)
+#	m	= Monthly rotation (midnight last day of month)
+
+cgi_log_rotation_method=d
+
+
+
+# CGI LOG ARCHIVE PATH
+# This is the directory where archived (rotated) cgi log files should be
+# placed (assuming you've chosen to do log rotation).
+
+cgi_log_archive_path=@CGILOGDIR@
+
+
+
+# FORCE COMMENT
+# This option forces the users of to comment every action they perform.
+# The comments get logged into cgi log file. This option only has effect
+# if logging is switched on. See option "use_logging"
+# Default  is 0 (off), to activate it set it to 1 (on).
+
+enforce_comments_on_actions=0
+
+
+
+# SEND ACK NOTIFICATIONS
+# This options determines whether the initial state of the
+# checkbox "Send Notifications" when acknowledging a problem.
+# A value of 1 ticks the checkbox and 0 does not.  The default
+# is 1, which will send notifications on acknowledged problems.
+
+send_ack_notifications=1
+
+
+
+# PERSISTENT ACKNOWLEDGEMENT COMMENTS
+# This options determines whether the initial state of the
+# checkbox "Persistent Comment:" for service and host problem
+# acknowledgements is checked or unchecked
+
+persistent_ack_comments=0
+
+
+
+# LOCK AUTHOR NAMES OPTION
+# This option allows you to restrict users from changing the author name
+# when submitting comments, acknowledgements, and scheduled downtime from
+# the web interface. If this option is enabled, users will be unable to
+# change the author name associated with the command request.
+#
+# Values: 0 = Allow users to change author names when submitting commands
+#         1 = Prevent users from changing author names (default)
+
+lock_author_names=1
+
+
+
+# DEFAULT DOWNTIME DURATION
+# This option defines the default duration (in seconds) of fixed and
+# flexible downtimes. Default is 7200 seconds (2 hours).
+
+default_downtime_duration=7200
+
+
+
+# SET EXPIRE ACK BY DEFAULT
+# This option either sets or clears the checkbox for "Use Expire Time"
+# in the acknowledgement menu.  Valid values are 0 (DO NOT tick the
+# checkbox by default) or 1 (tick the checkbox by default).  The default
+# is 0 (leave the checkbox blank).
+
+set_expire_ack_by_default=0
+
+
+
+# DEFAULT EXPIRING ACKNOWLEDGEMENT DURATION
+# This option defines the default duration (in seconds) of a expiring
+# acknowledgement. Default is 86400 seconds (1 day).
+
+default_expiring_acknowledgement_duration=86400
+
+
+
+# DEFAULT EXPIRING DISABLED NOTIFICATIONS DURATION
+# This option defines the default duration (in seconds) of a expiring
+# disabled notifications. Default is 86400 seconds (1 day).
+
+default_expiring_disabled_notifications_duration=86400
+
+
+
+
+######################################
+#
+#   TACTICAL OVERVIEW (tac.cgi)
+#
+######################################
+
+# SHOW ONLY HARD STATES IN TAC OPTION
+# This options allows you to specify if the tactical overview
+# should only show hard states on hosts and services.
+# By default disabled, all states will be shown.
+
+tac_show_only_hard_state=0
+
+
+
+# SHOW PENDING IN TAC HEADER
+# This options enables the display of pending counts in
+# the tac header. If your display is less than 1024x768
+# and this is enabled, the tactical information may not
+# fit well in the top frame.
+# By default it is enabled.
+
+show_tac_header_pending=1
+
+
+
+
+######################################
+#
+#   EXTENDED INFO (extinfo.cgi)
+#
+######################################
+
+# SHOW CHILD HOSTS IN EXTINFO OPTION
+# This Option allows you to specify if the extended host information
+# cgi will show child hosts for the selected host.
+#	0 = disabled
+#	1 = only show immediate child hosts
+#	2 = show immediate and all child hosts
+# NOTE: Option 2 could be a real performance killer in
+# large installations, so use with care.
+# By default disabled, as this could be a performance killer.
+
+extinfo_show_child_hosts=0
+
+
+
+# TAB-FRIENDLY <TITLE>S
+# Activating this option changes the <title> of status.cgi
+# and extinfo.cgi when they refer to a single host, service,
+# or group. They will then read:
+#	[Host]
+#	{HostGroup}
+#	ServiceDesc @ Host
+#	(ServiceGroup)
+# These are easier to read and find if you use (many) tabs
+# in your browser.
+# Default is enabled. 0=disabled, 1=enabled
+
+tab_friendly_titles=1
+
+
+
+
+######################################
+#
+#   SHOWLOG (showlog.cgi)
+#
+######################################
+
+# SHOW INITIAL STATES IN SHOWLOG OPTION
+# This options allows you to specify if initial states
+# of hosts and services should be shown in showlog.cgi
+# Note: This Option only works if the option
+# "log_initial_states" in icinga.cfg is set to 1.
+# By default it's disabled. Default is 0.
+
+#showlog_initial_states=0
+
+
+
+# SHOW CURRENT STATES IN SHOWLOG OPTION
+# This options allows you to specify if current states
+# of hosts and services should be shown in showlog.cgi
+# Note: This Option only works if the option
+# "log_current_states" in icinga.cfg is set to 1.
+# By default it's disabled. Default is 0.
+
+#showlog_current_states=0
+
+
+
+
+######################################
+#
+#   SPLUNK INTEGRATION (VARIOUS CGIs)
+#
+######################################
+
 # SPLUNK INTEGRATION OPTIONS
 # These options allow you to enable integration with Splunk
 # in the web interface.  If enabled, you'll be presented with
@@ -715,9 +797,11 @@ tab_friendly_titles=1
 #enable_splunk_integration=1
 
 
+
 # This option should be the URL used to access your instance of Splunk
 
 #splunk_url=http://127.0.0.1:8000/
 
 
 
+#   EOF
