@@ -2,6 +2,9 @@
 Classic-UI JSON Change Log
 #######################
 
+1.9.0 - only values added, no existing values changed
+* added icinga_status to every json response #3172
+
 1.8.0 - IMPORTANT: strings changed (making string names more consitent throughout all cgis) #2693
 * changed host -> host_name  !!!!!
 * changed service or description -> service_description  !!!!
