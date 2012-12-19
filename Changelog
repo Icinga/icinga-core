@@ -15,6 +15,7 @@ UPGRADE NOTES
 1.9.0 - 25/04/2012
 
 ENHANCEMENTS
+* core: introduce warning level -vv on config verification #3510 - MF
 
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
@@ -45,6 +46,8 @@ FIXES
 CHANGES
 
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
+* core: -v param can be used more than once #3510
+* core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510
 
 1.8.2 - 28/11/2012
 
