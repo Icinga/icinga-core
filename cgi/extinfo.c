@@ -471,14 +471,16 @@ int main(void) {
 
 				for (temp_hd = hostdependency_list; temp_hd != NULL; temp_hd = temp_hd->next) {
 
-					if (!strcmp(temp_hd->dependent_host_name, temp_host->name) && !strcmp(temp_hd->host_name, last_hd_hostname)) {
-						if (found == TRUE)
-							printf(", ");
+					if (!strcmp(temp_hd->dependent_host_name, temp_host->name)) {
+						if (!strcmp(temp_hd->host_name, last_hd_hostname)) {
+							if (found == TRUE)
+								printf(", ");
 
-						printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
-						found = TRUE;
+							printf("<A HREF='%s?type=%d&host=%s'>%s</A><BR>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
+							found = TRUE;
+						}
+						last_hd_hostname = temp_hd->host_name;
 					}
-					last_hd_hostname = temp_hd->host_name;
 				}
 
 				if (found == FALSE)
@@ -526,17 +528,18 @@ int main(void) {
 
 				for (temp_sd = servicedependency_list; temp_sd != NULL; temp_sd = temp_sd->next) {
 
-					if (!strcmp(temp_sd->dependent_service_description, temp_service->description) && !strcmp(temp_sd->dependent_host_name, temp_host->name) && \
-					        !(!strcmp(temp_sd->service_description, last_sd_svc_desc) && !strcmp(temp_sd->host_name, last_sd_hostname))) {
-						if (found == TRUE)
-							printf(", ");
+					if (!strcmp(temp_sd->dependent_service_description, temp_service->description) && !strcmp(temp_sd->dependent_host_name, temp_host->name)) {
+					        if (!(!strcmp(temp_sd->service_description, last_sd_svc_desc) && !strcmp(temp_sd->host_name, last_sd_hostname))) {
+							if (found == TRUE)
+								printf(", ");
 
-						printf("<A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_sd->host_name));
-						printf("&service=%s'>%s on %s</A>\n", url_encode(temp_sd->service_description), html_encode(temp_sd->service_description, FALSE), html_encode(temp_sd->host_name, FALSE));
-						found = TRUE;
+							printf("<A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_sd->host_name));
+							printf("&service=%s'>%s on %s</A>\n", url_encode(temp_sd->service_description), html_encode(temp_sd->service_description, FALSE), html_encode(temp_sd->host_name, FALSE));
+							found = TRUE;
+						}
+						last_sd_svc_desc = temp_sd->service_description;
+						last_sd_hostname = temp_sd->host_name;
 					}
-					last_sd_svc_desc = temp_sd->service_description;
-					last_sd_hostname = temp_sd->host_name;
 				}
 
 				if (found == FALSE)
