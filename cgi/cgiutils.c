@@ -1093,13 +1093,10 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		cgi_body_class  = "trends";
 		refresh         = FALSE;
 		break;
-	case ERROR_CGI_ID:
-		cgi_name        = "";
-		cgi_css         = CMD_CSS;
-		cgi_body_class  = "error";
-		break;
 	}
 
+	if (!strcmp(cgi_title, "Error"))
+		cgi_body_class = "error";
 
 	// don't refresh non html output
 	if (content_type == JSON_CONTENT || content_type == CSV_CONTENT)
@@ -1108,20 +1105,18 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	time(&current_time);
 
 	// send top http header
-	if (cgi_id != ERROR_CGI_ID) {
-		printf("Cache-Control: no-store\r\n");
-		printf("Pragma: no-cache\r\n");
+	printf("Cache-Control: no-store\r\n");
+	printf("Pragma: no-cache\r\n");
 
-		if (refresh_type == HTTPHEADER_REFRESH && refresh == TRUE)
-			printf("Refresh: %d\r\n", refresh_rate);
+	if (refresh_type == HTTPHEADER_REFRESH && refresh == TRUE)
+		printf("Refresh: %d\r\n", refresh_rate);
 
-		get_time_string(&current_time, date_time, (int)sizeof(date_time), HTTP_DATE_TIME);
-		printf("Last-Modified: %s\r\n", date_time);
+	get_time_string(&current_time, date_time, (int)sizeof(date_time), HTTP_DATE_TIME);
+	printf("Last-Modified: %s\r\n", date_time);
 
-		expire_time = (time_t)0L;
-		get_time_string(&expire_time, date_time, (int)sizeof(date_time), HTTP_DATE_TIME);
-		printf("Expires: %s\r\n", date_time);
-	}
+	expire_time = (time_t)0L;
+	get_time_string(&expire_time, date_time, (int)sizeof(date_time), HTTP_DATE_TIME);
+	printf("Expires: %s\r\n", date_time);
 
 	if (content_type == IMAGE_CONTENT) {
 		printf("Content-Type: image/png\r\n\r\n");
@@ -1195,10 +1190,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		return;
 	}
 
-	if (cgi_id != ERROR_CGI_ID) {
-		// send HTML CONTENT
-		printf("Content-type: text/html; charset=\"%s\"\r\n\r\n", http_charset);
-	}
+	printf("Content-type: text/html; charset=\"%s\"\r\n\r\n", http_charset);
 
 	if (embedded == TRUE)
 		return;
@@ -1210,6 +1202,24 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
 	printf("<meta http-equiv=\"content-type\" content=\"text/html; charset=%s\">\n", http_charset);
 	printf("<title>%s</title>\n", cgi_title);
+
+	// static style sheet for error messages.
+	if (!strcmp(cgi_title, "Error")) {
+		printf("<style type=\"text/css\">\n");
+		printf(".errorBox {\n");
+		printf("\tborder:1px red solid;\n");
+		printf("\tbackground-color: #FFE5E5;\n");
+		printf("\twidth: 600px;\n");
+		printf("}\n\n");
+		printf(".errorMessage {\n");
+		printf("\tfont-family: arial, verdana, serif;\n");
+		printf("\tcolor: #000;\n");
+		printf("\tfont-size: 10pt;\n");
+		printf("\ttext-align:left;\n");
+		printf("\tmargin:1em;\n");
+		printf("}\n");
+		printf("</style>\n");
+	}
 
 	if (cgi_id == TAC_CGI_ID && tac_header == TRUE) {
 		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, (show_tac_header == TRUE) ? TAC_HEADER_CSS : COMMON_CSS);
@@ -2324,7 +2334,26 @@ void include_ssi_file(char *filename) {
 }
 
 /* displays an error if CGI config file could not be read */
-void cgi_config_file_error(char *config_file) {
+void cgi_config_file_error(char *config_file, int tac_header) {
+
+	if (content_type == CSV_CONTENT) {
+		printf("Error: Could not open CGI config file '%s' for reading!\n", config_file);
+		return;
+	}
+
+	if (content_type == JSON_CONTENT) {
+		printf("\"title\": \"Could not open CGI config file '%s' for reading!\"\n,", config_file);
+		printf("\"text\": \"");
+		printf("Make sure you've installed a CGI config file in its proper location. A sample CGI configuration file (named cgi.cfg) can be found in the 'sample-config' subdirectory of the %s source code distribution. ", PROGRAM_NAME);
+		printf("Also make sure the user your web server is running as has permission to read the CGI config file.");
+		printf("\"\n");
+		return;
+	}
+
+	if (tac_header == TRUE) {
+		printf("<P><STRONG><FONT COLOR='RED'>Error: Could not open CGI config file '%s' for reading!</FONT></STRONG></P>\n", config_file);
+		return;
+	}
 
 	printf("<H1>Whoops!</H1>\n");
 
@@ -2334,14 +2363,10 @@ void cgi_config_file_error(char *config_file) {
 	printf("Here are some things you should check in order to resolve this error:\n");
 	printf("</P>\n");
 
-	printf("<P>\n");
 	printf("<OL>\n");
-
-	printf("<LI>Make sure you've installed a CGI config file in its proper location.  A sample CGI configuration file (named <b>cgi.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
+	printf("<LI>Make sure you've installed a CGI config file in its proper location. A sample CGI configuration file (named <b>cgi.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
 	printf("<LI>Make sure the user your web server is running as has permission to read the CGI config file.\n");
-
 	printf("</OL>\n");
-	printf("</P>\n");
 
 	printf("<P>\n");
 	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
@@ -2351,7 +2376,26 @@ void cgi_config_file_error(char *config_file) {
 }
 
 /* displays an error if main config file could not be read */
-void main_config_file_error(char *config_file) {
+void main_config_file_error(char *config_file, int tac_header) {
+
+	if (content_type == CSV_CONTENT) {
+		printf("Error: Could not open main config file '%s' for reading!\n", config_file);
+		return;
+	}
+
+	if (content_type == JSON_CONTENT) {
+		printf("\"title\": \"Could not open CGI config file '%s' for reading!\"\n,", config_file);
+		printf("\"text\": \"");
+		printf("Make sure you've installed a CGI config file in its proper location. A sample main configuration file (named icinga.cfg) can be found in the 'sample-config' subdirectory of the %s source code distribution. ", PROGRAM_NAME);
+		printf("Also make sure the user your web server is running as has permission to read the main config file.");
+		printf("\"\n");
+		return;
+	}
+
+	if (tac_header == TRUE) {
+		printf("<P><STRONG><FONT COLOR='RED'>Error: Could not open main config file '%s' for reading!</FONT></STRONG></P>\n", config_file);
+		return;
+	}
 
 	printf("<H1>Whoops!</H1>\n");
 
@@ -2361,14 +2405,10 @@ void main_config_file_error(char *config_file) {
 	printf("Here are some things you should check in order to resolve this error:\n");
 	printf("</P>\n");
 
-	printf("<P>\n");
 	printf("<OL>\n");
-
 	printf("<LI>Make sure you've installed a main config file in its proper location. A sample main configuration file (named <b>icinga.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
-	printf("<LI>Make sure the user your web server is running as has permission to read the main config file.\n");
-
+	printf("<LI>Make sure the user your web server has permission to read the main config file.\n");
 	printf("</OL>\n");
-	printf("</P>\n");
 
 	printf("<P>\n");
 	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
@@ -2377,37 +2417,28 @@ void main_config_file_error(char *config_file) {
 	return;
 }
 
-/* displays an error if resource file could not be read */
-void icinga_resource_file_error(char *config_file) {
-
-	printf("<H1>Whoops!</H1>\n");
-
-	printf("<P><STRONG><FONT COLOR='RED'>Error: Could not open resource file '%s' for reading!</FONT></STRONG></P>\n", config_file);
-
-	printf("<P>\n");
-	printf("It seems that you enabled the cgis to read your local resource file (verify that in your cgi.cfg)\n");
-	printf("Here are some things you should check in order to resolve this error:\n");
-	printf("</P>\n");
-
-	printf("<P>\n");
-	printf("<OL>\n");
-
-	printf("<LI>Make sure you've installed the resource file in its proper location, defined in main config. A sample resource file (named <b>resource.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
-	printf("<LI>Make sure the user your web server is running as has permission to read the resource file.\n");
-	printf("<LI>If you don't want to read your resource file (used e.g. for command expander in config.cgi) then disable it in cgi.cfg.\n");
-
-	printf("</OL>\n");
-	printf("</P>\n");
-
-	printf("<P>\n");
-	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
-	printf("</P>\n");
-
-	return;
-}
 
 /* displays an error if object data could not be read */
-void object_data_error(void) {
+void object_data_error(int tac_header) {
+
+	if (content_type == CSV_CONTENT) {
+		printf("Error: Could not read object configuration data!\n");
+		return;
+	}
+
+	if (content_type == JSON_CONTENT) {
+		printf("\"title\": \"Could not read object configuration data!\"\n,");
+		printf("\"text\": \"");
+		printf("Verify configuration options using the '-v' command-line option to check for errors. ");
+		printf("Check the %s log file for messages relating to startup or status data errors.", PROGRAM_NAME);
+		printf("\"\n");
+		return;
+	}
+
+	if (tac_header == TRUE) {
+		printf("<P><STRONG><FONT COLOR='RED'>Error: Could not read object configuration data!</FONT></STRONG></P>\n");
+		return;
+	}
 
 	printf("<H1>Whoops!</H1>\n");
 
@@ -2417,14 +2448,10 @@ void object_data_error(void) {
 	printf("Here are some things you should check in order to resolve this error:\n");
 	printf("</P>\n");
 
-	printf("<P>\n");
 	printf("<OL>\n");
-
 	printf("<LI>Verify configuration options using the <b>-v</b> command-line option to check for errors.\n");
 	printf("<LI>Check the %s log file for messages relating to startup or status data errors.\n", PROGRAM_NAME);
-
 	printf("</OL>\n");
-	printf("</P>\n");
 
 	printf("<P>\n");
 	printf("Make sure you read the documentation on installing, configuring and running %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
@@ -2434,7 +2461,26 @@ void object_data_error(void) {
 }
 
 /* displays an error if status data could not be read */
-void status_data_error(void) {
+void status_data_error(int tac_header) {
+
+	if (content_type == CSV_CONTENT) {
+		printf("Error: Could not read host and service status information!\n");
+		return;
+	}
+
+	if (content_type == JSON_CONTENT) {
+		printf("\"title\": \"Could not read host and service status information!\"\n,");
+		printf("\"text\": \"");
+		printf("It seems that %s is not running or has not yet finished the startup procedure and then creating the status data file. If %s is indeed not running, this is a normal error message. ", PROGRAM_NAME, PROGRAM_NAME);
+		printf("Please note that event broker modules and/or rdbms backends may slow down the overall (re)start and the cgis cannot retrieve any status information.");
+		printf("\"\n");
+		return;
+	}
+
+	if (tac_header == TRUE) {
+		printf("<P><STRONG><FONT COLOR='RED'>Error: Could not read host and service status information!</FONT></STRONG></P>\n");
+		return;
+	}
 
 	printf("<H1>Whoops!</H1>\n");
 
@@ -2449,15 +2495,11 @@ void status_data_error(void) {
 	printf("Things to check in order to resolve this error include:\n");
 	printf("</P>\n");
 
-	printf("<P>\n");
 	printf("<OL>\n");
-
 	printf("<LI>Check the %s log file for messages relating to startup or status data errors.\n", PROGRAM_NAME);
 	printf("<LI>Always verify configuration options using the <b>-v</b> command-line option before starting or restarting %s!\n", PROGRAM_NAME);
 	printf("<LI>If using any event broker module for %s, look into their respective logs and/or on their behavior!\n", PROGRAM_NAME);
-
 	printf("</OL>\n");
-	printf("</P>\n");
 
 	printf("<P>\n");
 	printf("Make sure you read the documentation on installing, configuring and running %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
@@ -2467,45 +2509,46 @@ void status_data_error(void) {
 }
 
 /** print an error depending on error_type */
-void print_error(char *config_file, int error_type) {
-
-	/* if cgi.cfg is missing, we don't know which fancy style to use, take our own */
-	if (error_type != ERROR_CGI_CFG_FILE) {
-		document_header(ERROR_CGI_ID, TRUE, "Error");
-	}
+void print_error(char *config_file, int error_type, int tac_header) {
 
 	/* Giving credits to stop.png image source */
-	printf("\n<!-- Image \"stop.png\" has been taken from \"http://fedoraproject.org/wiki/Template:Admon/caution\" -->\n\n");
+	if (content_type == HTML_CONTENT) {
 
-	printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
-	if (error_type == ERROR_CGI_CFG_FILE) {
-		printf("<DIV style='font-family:  Helvetica, serif; background-color: #fff; color: #000; font-size: 8pt; text-align:left; font-weight: bold; margin:1em; border:1px red solid; background-color: #FFE5E5;' CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55 valign=top></td>");
-	} else {
-		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55 valign=top><img src=\"%s%s\" border=0></td>", url_images_path, CMD_STOP_ICON);
+		if (tac_header == TRUE) {
+			printf("<DIV align='center'><DIV CLASS='errorBox' style='margin-top:0.7em;'>\n");
+			printf("<DIV CLASS='errorMessage' style=\"margin:0.1em\"><table width=100%% cellspacing=0 cellpadding=0 border=0><tr>");
+			printf("<td class='errorDescription' align=\"center\">");
+		} else {
+			printf("\n<!-- Image \"stop.png\" has been taken from \"http://fedoraproject.org/wiki/Template:Admon/caution\" -->\n\n");
+
+			printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
+			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55 valign=top>");
+			if (error_type != ERROR_CGI_CFG_FILE)
+				printf("<img src=\"%s%s\" border=0>", url_images_path, CMD_STOP_ICON);
+
+			printf("</td><td class='errorDescription'>");
+		}
 	}
-	printf("<td class='errorDescription'>");
 
 	switch (error_type) {
 	case ERROR_CGI_STATUS_DATA:
-		status_data_error();
+		status_data_error(tac_header);
 		break;
 	case ERROR_CGI_OBJECT_DATA:
-		object_data_error();
+		object_data_error(tac_header);
 		break;
 	case ERROR_CGI_CFG_FILE:
-		cgi_config_file_error(config_file);
+		cgi_config_file_error(config_file, tac_header);
 		break;
 	case ERROR_CGI_MAIN_CFG:
-		main_config_file_error(config_file);
-		break;
-	case ERROR_CGI_RESOURCE_CFG:
-		icinga_resource_file_error(config_file);
+		main_config_file_error(config_file, tac_header);
 		break;
 	}
 
-	printf("</td></tr></table></DIV>\n");
-	printf("</DIV>\n");
-
+	if (content_type == HTML_CONTENT) {
+		printf("</td></tr></table></DIV>\n");
+		printf("</DIV>\n");
+	}
 	return;
 }
 
