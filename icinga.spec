@@ -334,6 +334,7 @@ fi
 %{logdir}
 %{logdir}/archives
 %dir %{_localstatedir}/spool/%{name}
+%dir %{_localstatedir}/spool/%{name}/perfdata
 %dir %{_localstatedir}/spool/%{name}/checkresults
 %attr(2755,icinga,icingacmd) %{_localstatedir}/spool/%{name}/cmd
 
