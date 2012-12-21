@@ -16,7 +16,7 @@ UPGRADE NOTES
 
 ENHANCEMENTS
 * classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
-* classic ui: Add "set_ack_notifications" to cgi configuration (TheCry) #3467 - CF
+* classic ui: Add "send_ack_notifications" to cgi configuration (TheCry) #3467 - CF
 
 * classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
 * classic ui: Added process status to JSON response #3172 - RB
@@ -45,6 +45,8 @@ FIXES
 * classic ui: fixed backtrack_archives only getting calculated on a daily log rotation basis #3416 - RB
 * classic ui: fixed invalid freeing of last_check in 'scheduling queue' for first time checks #3444 - RB
 * classic ui: fixed Warning and Unknown States are mixed up in Alert Summary Report #3488 - RB
+* classic ui: fixed extinfo.cgi shows localtime(0) instead of "NOT SET" when global notifications are not set to expire #3482 - RB
+* classic ui: fixed CGIs generating invalid html code/ json when throwing error #3507 - RB
 
 * docs: add missing cmd_mod description in cgi params #3438 - MF
 * docs: search_string as cgi GET param works also for status.cgi #3451 - MF

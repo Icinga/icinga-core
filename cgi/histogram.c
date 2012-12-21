@@ -231,9 +231,9 @@ int main(int argc, char **argv) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		if (content_type == HTML_CONTENT) {
+		if (content_type != IMAGE_CONTENT) {
 			document_header(CGI_ID, FALSE, "Error");
-			print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
+			print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE, FALSE);
 			document_footer(CGI_ID);
 		}
 		return ERROR;
@@ -242,9 +242,9 @@ int main(int argc, char **argv) {
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
-		if (content_type == HTML_CONTENT) {
+		if (content_type != IMAGE_CONTENT) {
 			document_header(CGI_ID, FALSE, "Error");
-			print_error(main_config_file, ERROR_CGI_MAIN_CFG);
+			print_error(main_config_file, ERROR_CGI_MAIN_CFG, FALSE);
 			document_footer(CGI_ID);
 		}
 		return ERROR;
@@ -253,9 +253,9 @@ int main(int argc, char **argv) {
 	/* read all object configuration data */
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
-		if (content_type == HTML_CONTENT) {
+		if (content_type != IMAGE_CONTENT) {
 			document_header(CGI_ID, FALSE, "Error");
-			print_error(NULL, ERROR_CGI_OBJECT_DATA);
+			print_error(NULL, ERROR_CGI_OBJECT_DATA, FALSE);
 			document_footer(CGI_ID);
 		}
 		return ERROR;
@@ -264,9 +264,9 @@ int main(int argc, char **argv) {
 	/* read all status data */
 	result = read_all_status_data(get_cgi_config_location(), READ_ALL_STATUS_DATA);
 	if (result == ERROR && daemon_check == TRUE) {
-		if (content_type == HTML_CONTENT) {
+		if (content_type != IMAGE_CONTENT) {
 			document_header(CGI_ID, FALSE, "Error");
-			print_error(NULL, ERROR_CGI_STATUS_DATA);
+			print_error(NULL, ERROR_CGI_STATUS_DATA, FALSE);
 			document_footer(CGI_ID);
 		}
 		free_memory();

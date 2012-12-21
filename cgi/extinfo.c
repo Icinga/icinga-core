@@ -201,7 +201,7 @@ int main(void) {
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
 		document_header(CGI_ID, FALSE, "Error");
-		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE);
+		print_error(get_cgi_config_location(), ERROR_CGI_CFG_FILE, FALSE);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -210,7 +210,7 @@ int main(void) {
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
 		document_header(CGI_ID, FALSE, "Error");
-		print_error(main_config_file, ERROR_CGI_MAIN_CFG);
+		print_error(main_config_file, ERROR_CGI_MAIN_CFG, FALSE);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -219,7 +219,7 @@ int main(void) {
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
 		document_header(CGI_ID, FALSE, "Error");
-		print_error(NULL, ERROR_CGI_OBJECT_DATA);
+		print_error(NULL, ERROR_CGI_OBJECT_DATA, FALSE);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -228,7 +228,7 @@ int main(void) {
 	result = read_all_status_data(get_cgi_config_location(), READ_ALL_STATUS_DATA);
 	if (result == ERROR && daemon_check == TRUE) {
 		document_header(CGI_ID, FALSE, "Error");
-		print_error(NULL, ERROR_CGI_STATUS_DATA);
+		print_error(NULL, ERROR_CGI_STATUS_DATA, FALSE);
 		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;
@@ -471,14 +471,16 @@ int main(void) {
 
 				for (temp_hd = hostdependency_list; temp_hd != NULL; temp_hd = temp_hd->next) {
 
-					if (!strcmp(temp_hd->dependent_host_name, temp_host->name) && !strcmp(temp_hd->host_name, last_hd_hostname)) {
-						if (found == TRUE)
-							printf(", ");
+					if (!strcmp(temp_hd->dependent_host_name, temp_host->name)) {
+						if (!strcmp(temp_hd->host_name, last_hd_hostname)) {
+							if (found == TRUE)
+								printf(", ");
 
-						printf("<A HREF='%s?type=%d&host=%s'>%s</A>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
-						found = TRUE;
+							printf("<A HREF='%s?type=%d&host=%s'>%s</A><BR>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
+							found = TRUE;
+						}
+						last_hd_hostname = temp_hd->host_name;
 					}
-					last_hd_hostname = temp_hd->host_name;
 				}
 
 				if (found == FALSE)
@@ -526,17 +528,18 @@ int main(void) {
 
 				for (temp_sd = servicedependency_list; temp_sd != NULL; temp_sd = temp_sd->next) {
 
-					if (!strcmp(temp_sd->dependent_service_description, temp_service->description) && !strcmp(temp_sd->dependent_host_name, temp_host->name) && \
-					        !(!strcmp(temp_sd->service_description, last_sd_svc_desc) && !strcmp(temp_sd->host_name, last_sd_hostname))) {
-						if (found == TRUE)
-							printf(", ");
+					if (!strcmp(temp_sd->dependent_service_description, temp_service->description) && !strcmp(temp_sd->dependent_host_name, temp_host->name)) {
+					        if (!(!strcmp(temp_sd->service_description, last_sd_svc_desc) && !strcmp(temp_sd->host_name, last_sd_hostname))) {
+							if (found == TRUE)
+								printf(", ");
 
-						printf("<A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_sd->host_name));
-						printf("&service=%s'>%s on %s</A>\n", url_encode(temp_sd->service_description), html_encode(temp_sd->service_description, FALSE), html_encode(temp_sd->host_name, FALSE));
-						found = TRUE;
+							printf("<A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_sd->host_name));
+							printf("&service=%s'>%s on %s</A>\n", url_encode(temp_sd->service_description), html_encode(temp_sd->service_description, FALSE), html_encode(temp_sd->host_name, FALSE));
+							found = TRUE;
+						}
+						last_sd_svc_desc = temp_sd->service_description;
+						last_sd_hostname = temp_sd->host_name;
 					}
-					last_sd_svc_desc = temp_sd->service_description;
-					last_sd_hostname = temp_sd->host_name;
 				}
 
 				if (found == FALSE)
@@ -1065,6 +1068,10 @@ void show_process_info(void) {
 
 		printf("\"icinga_pid\": %d,\n", nagios_pid);
 		printf("\"notifications_enabled\": %s,\n", (enable_notifications == TRUE) ? "true" : "false");
+		if (disable_notifications_expire_time == (time_t)0)
+			printf("\"disable_notifications_expire_time\": null,\n");
+		else
+			printf("\"disable_notifications_expire_time\": \"%s\",\n", disable_notif_expire_time);
 		printf("\"service_checks_being_executed\": %s,\n", (execute_service_checks == TRUE) ? "true" : "false");
 		printf("\"passive_service_checks_being_accepted\": %s,\n", (accept_passive_service_checks == TRUE) ? "true" : "false");
 		printf("\"host_checks_being_executed\": %s,\n", (execute_host_checks == TRUE) ? "true" : "false");
@@ -1090,6 +1097,7 @@ void show_process_info(void) {
 		printf("%sLAST_LOG_FILE_ROTATION%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sICINGA_PID%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sNOTIFICATIONS_ENABLED%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
+		printf("%sNOTIFICATIONS_DISABLED_EXPIRE_TIME%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sSERVICE_CHECKS_BEING_EXECUTED%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sPASSIVE_SERVICE_CHECKS_BEING_ACCEPTED%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sHOST_CHECKS_BEING_EXECUTED%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
@@ -1115,6 +1123,7 @@ void show_process_info(void) {
 		printf("%s%s%s%s", csv_data_enclosure, (last_log_rotation == (time_t)0) ? "N/A" : last_log_rotation_time, csv_data_enclosure, csv_delimiter);
 		printf("%s%d%s%s", csv_data_enclosure, nagios_pid, csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, (enable_notifications == TRUE) ? "YES" : "NO", csv_data_enclosure, csv_delimiter);
+		printf("%s%s%s%s", csv_data_enclosure, (disable_notifications_expire_time == (time_t)0) ? "N/A" : disable_notif_expire_time, csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, (execute_service_checks == TRUE) ? "YES" : "NO", csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, (accept_passive_service_checks == TRUE) ? "YES" : "NO", csv_data_enclosure, csv_delimiter);
 		printf("%s%s%s%s", csv_data_enclosure, (execute_host_checks == TRUE) ? "YES" : "NO", csv_data_enclosure, csv_delimiter);
@@ -1170,7 +1179,7 @@ void show_process_info(void) {
 
 		/* notifications enabled */
 		printf("<TR><TD CLASS='dataVar'>Notifications Enabled?</TD><TD CLASS='dataVal'><DIV CLASS='notifications%s'>&nbsp;&nbsp;%s&nbsp;&nbsp;</DIV></TD></TR>\n", (enable_notifications == TRUE) ? "ENABLED" : "DISABLED", (enable_notifications == TRUE) ? "YES" : "NO");
-		if (enable_notifications == FALSE)
+		if (enable_notifications == FALSE && disable_notifications_expire_time != 0)
 			printf("<TR><TD CLASS='dataVar'>Notifications Disabled Expire Time:</TD><TD CLASS='dataVal'>%s</TD></TR>\n", disable_notif_expire_time);
 		else
 			printf("<TR><TD CLASS='dataVar'>Notifications Disabled Expire Time:</TD><TD CLASS='dataVal'><DIV CLASS='notificationsUNKNOWN'>&nbsp;&nbsp;NOT SET&nbsp;&nbsp;</DIV></TD></TR>\n");
