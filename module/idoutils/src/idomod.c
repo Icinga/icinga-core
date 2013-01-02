@@ -1800,6 +1800,18 @@ int idomod_broker_data(int event_type, void *data) {
 		es[6] = ido_escape_buffer(scdata->long_output);
 		es[7] = ido_escape_buffer(scdata->perf_data);
 
+		if(es[6] != NULL) {
+			if(strlen(es[6]) > IDOMOD_MAX_TEXT_LEN) {
+				es[6][IDOMOD_MAX_TEXT_LEN] = '\0';
+			}
+		}
+
+		if(es[7] != NULL) {
+			if(strlen(es[7]) > IDOMOD_MAX_TEXT_LEN) {
+				es[7][IDOMOD_MAX_TEXT_LEN] = '\0';
+			}
+		}
+
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
 		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d\n\n"
 		         , IDO_API_SERVICECHECKDATA
@@ -1877,6 +1889,18 @@ int idomod_broker_data(int event_type, void *data) {
 		es[4] = ido_escape_buffer(hcdata->output);
 		es[5] = ido_escape_buffer(hcdata->long_output);
 		es[6] = ido_escape_buffer(hcdata->perf_data);
+
+		if(es[5] != NULL) {
+			if(strlen(es[5]) > IDOMOD_MAX_TEXT_LEN) {
+				es[5][IDOMOD_MAX_TEXT_LEN] = '\0';
+			}
+		}
+
+		if(es[6] != NULL) {
+			if(strlen(es[6]) > IDOMOD_MAX_TEXT_LEN) {
+				es[6][IDOMOD_MAX_TEXT_LEN] = '\0';
+			}
+		}
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
 		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d=%ld.%ld\n%d=%ld.%ld\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%s\n%d=%s\n%d=%s\n%d\n\n"
@@ -2182,6 +2206,18 @@ int idomod_broker_data(int event_type, void *data) {
 		es[5] = ido_escape_buffer(temp_host->host_check_command);
 		es[6] = ido_escape_buffer(temp_host->check_period);
 
+		if(es[2] != NULL) {
+			if(strlen(es[2]) > IDOMOD_MAX_TEXT_LEN) {
+				es[2][IDOMOD_MAX_TEXT_LEN] = '\0';
+			}
+		}
+
+		if(es[3] != NULL) {
+			if(strlen(es[3]) > IDOMOD_MAX_TEXT_LEN) {
+				es[3][IDOMOD_MAX_TEXT_LEN] = '\0';
+			}
+		}
+
 		retry_interval = temp_host->retry_interval;
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
@@ -2340,6 +2376,18 @@ int idomod_broker_data(int event_type, void *data) {
 		es[5] = ido_escape_buffer(temp_service->event_handler);
 		es[6] = ido_escape_buffer(temp_service->service_check_command);
 		es[7] = ido_escape_buffer(temp_service->check_period);
+
+		if(es[3] != NULL) {
+			if(strlen(es[3]) > IDOMOD_MAX_TEXT_LEN) {
+				es[3][IDOMOD_MAX_TEXT_LEN] = '\0';
+			}
+		}
+
+		if(es[4] != NULL) {
+			if(strlen(es[4]) > IDOMOD_MAX_TEXT_LEN) {
+				es[4][IDOMOD_MAX_TEXT_LEN] = '\0';
+			}
+		}
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
 		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%lu\n%d=%d\n%d=%lu\n%d=%lu\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%.5lf\n%d=%.5lf\n%d=%.5lf\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%lu\n%d=%s\n%d=%s\n%d=%lf\n%d=%lf\n%d=%s\n"
@@ -3041,6 +3089,12 @@ int idomod_broker_data(int event_type, void *data) {
 		es[1] = ido_escape_buffer(schangedata->service_description);
 		es[2] = ido_escape_buffer(schangedata->output);
 		es[3] = ido_escape_buffer(schangedata->long_output);
+
+		if(es[3] != NULL) {
+			if(strlen(es[3]) > IDOMOD_MAX_TEXT_LEN) {
+				es[3][IDOMOD_MAX_TEXT_LEN] = '\0';
+			}
+		}
 
 		snprintf(temp_buffer, IDOMOD_MAX_BUFLEN - 1
 		         , "\n%d:\n%d=%d\n%d=%d\n%d=%d\n%d=%ld.%ld\n%d=%d\n%d=%s\n%d=%s\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%d\n%d=%s\n%d=%s\n%d\n\n"
