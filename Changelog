@@ -28,6 +28,10 @@ FIXES
 * idoutils: fix unsafe handling of dbi_conn_sequence_last, rewrite last_insert_id/sequence fetching #3408 - MF
 * idoutils: fix ido2db does not cleanly exit the client on wrong schema version check in db_hello #3419 - MF
 * idoutils: fix FROM_UNIXTIME(NULL) does not work with MySQL 5.0.x #3399 #3466 - CF
+* idoutils: fix empty output/perfdata segfaults for mysql string truncate #3516 - MF
+* idoutils: unlink leftover socket on startup, if using unix sockets - MF
+* idoutils: fix long output data causes wrong data in database #2342 - MF
+
 
 * install: drop unused daemon-init-readhat script (spec uses daemon-init) #3402 - MF
 * install: fix broken configure ssl detection for idoutils on ubuntu/debian (Oliver Skibbe) #3413 - MF
