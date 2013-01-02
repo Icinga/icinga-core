@@ -633,9 +633,11 @@ int ido2db_query_insert_or_update_systemcommanddata_add(ido2db_idi *idi, void **
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
 		/* truncate long_output #2342 */
-		if (strlen(*(char **) data[11]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-			(*(char **) data[11])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() Warning:long_output truncated\n");
+		if (*(char **) data[11] != NULL) {
+			if (strlen(*(char **) data[11]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[11])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_systemcommanddata_add() Warning:long_output truncated\n");
+			}
 		}
 
                 dummy = asprintf(&query1, "UPDATE %s SET end_time=%s, end_time_usec=%lu, command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s' WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu",
@@ -904,9 +906,11 @@ int ido2db_query_insert_or_update_eventhandlerdata_add(ido2db_idi *idi, void **d
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
 		/* truncate long_output #2342 */
-		if (strlen(*(char **) data[17]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-			(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() Warning:long_output truncated\n");
+		if (*(char **) data[17] != NULL) {
+			if (strlen(*(char **) data[17]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_eventhandlerdata_add() Warning:long_output truncated\n");
+			}
 		}
 
                 dummy = asprintf(&query1, "UPDATE %s SET eventhandler_type=%d, object_id=%lu, state=%d, state_type=%d, end_time=%s, end_time_usec=%lu, command_object_id=%lu, command_args='%s', command_line='%s', timeout=%d, early_timeout=%d, execution_time=%lf, return_code=%d, output='%s', long_output='%s' WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu",
@@ -1227,9 +1231,11 @@ int ido2db_query_insert_or_update_notificationdata_add(ido2db_idi *idi, void **d
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
 		/* truncate long_output #2342 */
-		if (strlen(*(char **) data[10]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-			(*(char **) data[10])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() Warning:long_output truncated\n");
+		if (*(char **) data[10] != NULL) {
+			if (strlen(*(char **) data[10]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[10])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_notificationdata_add() Warning:long_output truncated\n");
+			}
 		}
 
                 dummy = asprintf(&query1, "UPDATE %s SET notification_type=%d, notification_reason=%d, end_time=%s, end_time_usec=%lu, state=%d, output='%s', long_output='%s', escalated=%d, contacts_notified=%d  WHERE instance_id=%lu AND start_time=%s AND start_time_usec=%lu AND object_id=%lu",
@@ -2081,15 +2087,19 @@ int ido2db_query_insert_servicecheckdata_add(ido2db_idi *idi, void **data) {
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
-				/* truncate long_output #2342 */
-				if (strlen(*(char **) data[17]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-					(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-					ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:long_output truncated\n");
-				}
-				if (strlen(*(char **) data[18]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-									(*(char **) data[18])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-									ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:perfdata truncated\n");
-				}
+		/* truncate long_output #2342 */
+		if (*(char **) data[17] != NULL) {
+			if (strlen(*(char **) data[17]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[17])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:long_output truncated\n");
+			}
+		}
+		if (*(char **) data[18] != NULL) {
+			if (strlen(*(char **) data[18]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[18])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_servicecheckdata_add() Warning:perfdata truncated\n");
+			}
+		}
                 dummy = asprintf(&query1,
                 		"INSERT INTO %s (instance_id, service_object_id, check_type, "
                 		"current_check_attempt, max_check_attempts, state, state_type, "
@@ -2332,14 +2342,18 @@ int ido2db_query_insert_hostcheckdata_add(ido2db_idi *idi, void **data) {
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
 		/* truncate long_output #2342 */
-				if (strlen(*(char **) data[21]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-						(*(char **) data[21])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-						ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:long_output truncated\n");
-				}
-				if (strlen(*(char **) data[22]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-						(*(char **) data[22])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-						ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:perfdata truncated\n");
-				}
+		if (*(char **) data[21] != NULL) {
+			if (strlen(*(char **) data[21]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[21])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:long_output truncated\n");
+			}
+		}
+		if (*(char **) data[22] != NULL) {
+			if (strlen(*(char **) data[22]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[22])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_hostcheckdata_add() Warning:perfdata truncated\n");
+			}
+		}
                 dummy = asprintf(&query1, "INSERT INTO %s (command_object_id, command_args, command_line, "
                 				"instance_id, host_object_id, check_type, is_raw_check, current_check_attempt, "
                 				"max_check_attempts, state, state_type, start_time, start_time_usec, end_time, "
@@ -3958,13 +3972,17 @@ int ido2db_query_insert_or_update_hoststatusdata_add(ido2db_idi *idi, void **dat
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
 		/* truncate long_output #2342 */
-		if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-			(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:long_output truncated\n");
+		if (*(char **) data[4] != NULL) {
+			if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:long_output truncated\n");
+			}
 		}
-		if (strlen(*(char **) data[5]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-			(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:perfdata truncated\n");
+		if (*(char **) data[5] != NULL) {
+			if (strlen(*(char **) data[5]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_hoststatusdata_add() Warning:perfdata truncated\n");
+			}
 		}
 	        dummy = asprintf(&query1, "UPDATE %s SET instance_id=%lu, host_object_id=%lu, status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_up=%s, last_time_down=%s, last_time_unreachable=%s, state_type=%d, last_notification=%s, next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_host=%d, modified_host_attributes=%lu, event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id=%lu WHERE host_object_id=%lu",
                                  ido2db_db_tablenames[IDO2DB_DBTABLE_HOSTSTATUS],
@@ -4474,13 +4492,17 @@ int ido2db_query_insert_or_update_servicestatusdata_add(ido2db_idi *idi, void **
 	switch (idi->dbinfo.server_type) {
 	case IDO2DB_DBSERVER_MYSQL:
 		/* truncate long_output #2342 */
-		if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-			(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:long_output truncated\n");
-		}
-		if (strlen(*(char **) data[5]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
-			(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
-			ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:perfdata truncated\n");
+		if (*(char **) data[4] != NULL) {
+			if (strlen(*(char **) data[4]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[4])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:long_output truncated\n");
+			}
+		}	
+		if (*(char **) data[5] != NULL) {
+			if (strlen(*(char **) data[5]) > IDO2DB_MYSQL_MAX_TEXT_LEN ) {
+				(*(char **) data[5])[IDO2DB_MYSQL_MAX_TEXT_LEN]=0;
+				ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_query_insert_or_update_servicestatusdata_add() Warning:perfdata truncated\n");
+			}
 		}
                 dummy = asprintf(&query1, "UPDATE %s SET instance_id=%lu, service_object_id=%lu, status_update_time=%s, output='%s', long_output='%s', perfdata='%s', current_state=%d, has_been_checked=%d, should_be_scheduled=%d, current_check_attempt=%d, max_check_attempts=%d, last_check=%s, next_check=%s, check_type=%d, last_state_change=%s, last_hard_state_change=%s, last_hard_state=%d, last_time_ok=%s, last_time_warning=%s, last_time_unknown=%s, last_time_critical=%s, state_type=%d, last_notification=%s, next_notification=%s, no_more_notifications=%d, notifications_enabled=%d, problem_has_been_acknowledged=%d, acknowledgement_type=%d, current_notification_number=%d, passive_checks_enabled=%d, active_checks_enabled=%d, event_handler_enabled=%d, flap_detection_enabled=%d, is_flapping=%d, percent_state_change='%lf', latency='%lf', execution_time='%lf', scheduled_downtime_depth=%d, failure_prediction_enabled=%d, process_performance_data=%d, obsess_over_service=%d, modified_service_attributes=%lu, event_handler='%s', check_command='%s', normal_check_interval='%lf', retry_check_interval='%lf', check_timeperiod_object_id=%lu WHERE service_object_id=%lu",
                                  ido2db_db_tablenames[IDO2DB_DBTABLE_SERVICESTATUS],
