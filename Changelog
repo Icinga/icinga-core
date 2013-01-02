@@ -15,12 +15,12 @@ UPGRADE NOTES
 1.9.0 - 25/04/2012
 
 ENHANCEMENTS
+* core: introduce warning level -vv on config verification #3510 - MF
+
 * classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
 * classic ui: Add "send_ack_notifications" to cgi configuration (TheCry) #3467 - CF
-
 * classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
 * classic ui: Added process status to JSON response #3172 - RB
-
 
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
@@ -34,6 +34,9 @@ FIXES
 * idoutils: fix ido2db does not cleanly exit the client on wrong schema version check in db_hello #3419 - MF
 * idoutils: fix FROM_UNIXTIME(NULL) does not work with MySQL 5.0.x #3399 #3466 - CF
 * idoutils: fix unknown column contactaddress_id (thx fmbiete) #3483 - MF
+* idoutils: fix empty output/perfdata segfaults for mysql string truncate #3516 - MF
+* idoutils: unlink leftover socket on startup, if using unix sockets - MF
+* idoutils: fix long output data causes wrong data in database #2342 - MF
 
 * install: drop unused daemon-init-readhat script (spec uses daemon-init) #3402 - MF
 * install: fix broken configure ssl detection for idoutils on ubuntu/debian (Oliver Skibbe) #3413 - MF
@@ -55,6 +58,8 @@ FIXES
 CHANGES
 
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
+* core: -v param can be used more than once #3510
+* core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510
 
 1.8.2 - 28/11/2012
 

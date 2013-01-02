@@ -251,11 +251,11 @@ int read_all_object_data(char *main_config_file) {
 	options = READ_ALL_OBJECT_DATA;
 
 	/* cache object definitions if we're up and running */
-	if (verify_config == FALSE && test_scheduling == FALSE)
+	if (verify_config && test_scheduling == FALSE)
 		cache = TRUE;
 
 	/* precache object definitions */
-	if (precache_objects == TRUE && (verify_config == TRUE || test_scheduling == TRUE))
+	if (precache_objects == TRUE && (verify_config || test_scheduling == TRUE))
 		precache = TRUE;
 
 	/* read in all host configuration data from external sources */
@@ -1712,7 +1712,7 @@ int pre_flight_check(void) {
 	/********************************************/
 	/* check global event handler commands...   */
 	/********************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking global event handlers...\n");
 	if (global_host_event_handler != NULL) {
 
@@ -1757,7 +1757,7 @@ int pre_flight_check(void) {
 	/**************************************************/
 	/* check obsessive processor commands...          */
 	/**************************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking obsessive compulsive processor commands...\n");
 	if (ocsp_command != NULL) {
 
@@ -1800,7 +1800,7 @@ int pre_flight_check(void) {
 	/**************************************************/
 	/* check various settings...                      */
 	/**************************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking misc settings...\n");
 
 	/* check if we can write to temp_path */
@@ -1839,7 +1839,7 @@ int pre_flight_check(void) {
 		}
 	}
 
-	if (verify_config == TRUE) {
+	if (verify_config) {
 		printf("\n");
 		printf("Total Warnings: %d\n", warnings);
 		printf("Total Errors:   %d\n", errors);
@@ -1933,7 +1933,7 @@ int pre_flight_object_check(int *w, int *e) {
 	/*****************************************/
 	/* check each service...                 */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking services...\n");
 	if (get_service_count() == 0) {
 		logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: There are no services defined!");
@@ -2088,7 +2088,7 @@ int pre_flight_object_check(int *w, int *e) {
 		}
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d services.\n", total_objects);
 
 
@@ -2096,7 +2096,7 @@ int pre_flight_object_check(int *w, int *e) {
 	/*****************************************/
 	/* check all hosts...                    */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking hosts...\n");
 
 	if (get_host_count() == 0) {
@@ -2122,7 +2122,7 @@ int pre_flight_object_check(int *w, int *e) {
 			}
 
 			/* we couldn't find a service associated with this host! */
-			if (found == FALSE) {
+			if (found == FALSE && verify_config >= 2) {
 				logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Host '%s' has no services associated with it!", temp_host->name);
 				warnings++;
 			}
@@ -2261,14 +2261,14 @@ int pre_flight_object_check(int *w, int *e) {
 	}
 
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d hosts.\n", total_objects);
 
 
 	/*****************************************/
 	/* check each host group...              */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking host groups...\n");
 	for (temp_hostgroup = hostgroup_list, total_objects = 0; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next, total_objects++) {
 
@@ -2298,14 +2298,14 @@ int pre_flight_object_check(int *w, int *e) {
 		}
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d host groups.\n", total_objects);
 
 
 	/*****************************************/
 	/* check each service group...           */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking service groups...\n");
 	for (temp_servicegroup = servicegroup_list, total_objects = 0; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next, total_objects++) {
 
@@ -2335,7 +2335,7 @@ int pre_flight_object_check(int *w, int *e) {
 		}
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d service groups.\n", total_objects);
 
 
@@ -2343,7 +2343,7 @@ int pre_flight_object_check(int *w, int *e) {
 	/*****************************************/
 	/* check all contacts...                 */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking contacts...\n");
 	if (contact_list == NULL) {
 		logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: There are no contacts defined!");
@@ -2454,7 +2454,7 @@ int pre_flight_object_check(int *w, int *e) {
 		}
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d contacts.\n", total_objects);
 
 
@@ -2462,7 +2462,7 @@ int pre_flight_object_check(int *w, int *e) {
 	/*****************************************/
 	/* check each contact group...           */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking contact groups...\n");
 	for (temp_contactgroup = contactgroup_list, total_objects = 0; temp_contactgroup != NULL; temp_contactgroup = temp_contactgroup->next, total_objects++) {
 
@@ -2494,7 +2494,7 @@ int pre_flight_object_check(int *w, int *e) {
 		}
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d contact groups.\n", total_objects);
 
 
@@ -2502,7 +2502,7 @@ int pre_flight_object_check(int *w, int *e) {
 	/*****************************************/
 	/* check all service escalations...     */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking service escalations...\n");
 
 	for (temp_se = serviceescalation_list, total_objects = 0; temp_se != NULL; temp_se = temp_se->next, total_objects++) {
@@ -2579,7 +2579,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d service escalations.\n", total_objects);
 
 
@@ -2587,7 +2587,7 @@ int pre_flight_object_check(int *w, int *e) {
 	/*****************************************/
 	/* check all service dependencies...     */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking service dependencies...\n");
 
 	for (temp_sd = servicedependency_list, total_objects = 0; temp_sd != NULL; temp_sd = temp_sd->next, total_objects++) {
@@ -2631,7 +2631,7 @@ int pre_flight_object_check(int *w, int *e) {
 		}
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d service dependencies.\n", total_objects);
 
 
@@ -2639,7 +2639,7 @@ int pre_flight_object_check(int *w, int *e) {
 	/*****************************************/
 	/* check all host escalations...     */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking host escalations...\n");
 
 	for (temp_he = hostescalation_list, total_objects = 0; temp_he != NULL; temp_he = temp_he->next, total_objects++) {
@@ -2716,7 +2716,7 @@ int pre_flight_object_check(int *w, int *e) {
 
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d host escalations.\n", total_objects);
 
 
@@ -2724,7 +2724,7 @@ int pre_flight_object_check(int *w, int *e) {
 	/*****************************************/
 	/* check all host dependencies...     */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking host dependencies...\n");
 
 	for (temp_hd = hostdependency_list, total_objects = 0; temp_hd != NULL; temp_hd = temp_hd->next, total_objects++) {
@@ -2768,7 +2768,7 @@ int pre_flight_object_check(int *w, int *e) {
 		}
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d host dependencies.\n", total_objects);
 
 
@@ -2776,7 +2776,7 @@ int pre_flight_object_check(int *w, int *e) {
 	/*****************************************/
 	/* check all commands...                 */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking commands...\n");
 
 	for (temp_command = command_list, total_objects = 0; temp_command != NULL; temp_command = temp_command->next, total_objects++) {
@@ -2790,7 +2790,7 @@ int pre_flight_object_check(int *w, int *e) {
 		}
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d commands.\n", total_objects);
 
 
@@ -2798,7 +2798,7 @@ int pre_flight_object_check(int *w, int *e) {
 	/*****************************************/
 	/* check all timeperiods...              */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking time periods...\n");
 
 	for (temp_timeperiod = timeperiod_list, total_objects = 0; temp_timeperiod != NULL; temp_timeperiod = temp_timeperiod->next, total_objects++) {
@@ -2825,14 +2825,14 @@ int pre_flight_object_check(int *w, int *e) {
 		}
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d time periods.\n", total_objects);
 
 
 	/*****************************************/
 	/* check all modules...                  */
 	/*****************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking modules...\n");
 
 	for (temp_module = module_list, total_objects = 0; temp_module != NULL; temp_module = temp_module->next, total_objects++) {
@@ -2846,7 +2846,7 @@ int pre_flight_object_check(int *w, int *e) {
 		}
 	}
 
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("\tChecked %d modules.\n", total_objects);
 
 
@@ -2944,7 +2944,7 @@ int pre_flight_circular_check(int *w, int *e) {
 	/********************************************/
 	/* check for circular paths between hosts   */
 	/********************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking for circular paths between hosts...\n");
 
 	/* check routes between all hosts */
@@ -2973,7 +2973,7 @@ int pre_flight_circular_check(int *w, int *e) {
 	/********************************************/
 	/* check for circular dependencies         */
 	/********************************************/
-	if (verify_config == TRUE)
+	if (verify_config)
 		printf("Checking for circular host and service dependencies...\n");
 
 	/* check execution dependencies between all services */

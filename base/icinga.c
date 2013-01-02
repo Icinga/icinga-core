@@ -179,7 +179,7 @@ int             sig_id = 0;
 
 int             restarting = FALSE;
 
-int             verify_config = FALSE;
+int             verify_config = 0;
 int             verify_object_relationships = TRUE;
 int             verify_circular_paths = TRUE;
 int             test_scheduling = FALSE;
@@ -355,7 +355,7 @@ int main(int argc, char **argv, char **env) {
 			break;
 
 		case 'v': /* verify */
-			verify_config = TRUE;
+			verify_config++;
 			break;
 
 		case 's': /* scheduling check */
@@ -396,7 +396,7 @@ int main(int argc, char **argv, char **env) {
 	}
 
 	/* make sure we have the right combination of arguments */
-	if (precache_objects == TRUE && (test_scheduling == FALSE && verify_config == FALSE)) {
+	if (precache_objects == TRUE && (test_scheduling == FALSE && verify_config == 0)) {
 		error = TRUE;
 		display_help = TRUE;
 	}
@@ -497,7 +497,7 @@ int main(int argc, char **argv, char **env) {
 
 
 	/* we're just verifying the configuration... */
-	if (verify_config == TRUE) {
+	if (verify_config) {
 
 		/* reset program variables */
 		reset_variables();
