@@ -18,6 +18,9 @@ FIXES
 * classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
 * classic ui: fixed Warning and Unknown States are mixed up in Alert Summary Report #3488 - RB
 
+* idoutils: fix empty output/perfdata segfaults for mysql string truncate #3516 - MF
+* idoutils: unlink leftover socket on startup, if using unix sockets - MF
+* idoutils: fix long output data causes wrong data in database #2342 - MF
 
 1.8.3 - 12/12/2012
 
