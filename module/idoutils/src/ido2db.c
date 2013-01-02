@@ -297,6 +297,10 @@ int main(int argc, char **argv) {
 	/* open debug log */
 	ido2db_open_debug_log();
 
+        /* unlink leftover socket */
+        if (ido2db_socket_type == IDO_SINK_UNIXSOCKET)
+                unlink(ido2db_socket_name);
+
 	/* if we're running under inetd... */
 	if (ido2db_use_inetd == IDO_TRUE) {
 
