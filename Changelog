@@ -66,6 +66,12 @@ CHANGES
 * ido2db.cfg - use_transactions #3527
 
 
+1.8.3 - 12/12/2012
+
+FIXES
+* idoutils: fix unknown column contactaddress_id (thx fmbiete) #3483 - MF
+
+
 1.8.2 - 28/11/2012
 
 FIXES
