@@ -610,6 +610,7 @@ int ido2db_process_config_var(char *arg) {
 	} else if (!strcmp(var, "oracle_trace_level")) {
 		ido2db_db_settings.oracle_trace_level = atoi(val);
 	} else if (!strcmp(var, "enable_sla")) {
+		syslog(LOG_USER | LOG_INFO, "Warning: enable_sla is deprecated!\n");
 		enable_sla = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "debug_readable_timestamp")) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
