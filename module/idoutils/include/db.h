@@ -39,6 +39,7 @@ typedef struct ido2db_dbconfig_struct{
         unsigned long clean_config_tables_on_core_startup;
 	unsigned long oci_errors_to_syslog;
 	unsigned int oracle_trace_level;
+	unsigned int use_transactions;
         }ido2db_dbconfig;
 
 /*************** DB server types ***************/

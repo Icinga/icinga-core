@@ -613,6 +613,8 @@ int ido2db_process_config_var(char *arg) {
 		enable_sla = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "debug_readable_timestamp")) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
+	} else if (!strcmp(var, "use_transactions")) {
+		ido2db_db_settings.use_transactions = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	}
 	else if (!strcmp(var, "libdbi_driver_dir")) {
 		if ((libdbi_driver_dir = strdup(val)) == NULL)
@@ -656,6 +658,7 @@ int ido2db_initialize_variables(void) {
 	ido2db_db_settings.clean_config_tables_on_core_startup = IDO_TRUE;
 	ido2db_db_settings.oci_errors_to_syslog = DEFAULT_OCI_ERRORS_TO_SYSLOG;
 	ido2db_db_settings.oracle_trace_level = ORACLE_TRACE_LEVEL_OFF;
+	ido2db_db_settings.use_transactions = IDO_FALSE;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_initialize_variables() end\n");
 	return IDO_OK;
@@ -1391,10 +1394,12 @@ int ido2db_handle_client_connection(int sd) {
 		/* 2011-02-23 MF: only do that in a worker thread */
 		/* 2011-05-02 MF: redo it the old way */
 
-		result = ido2db_db_tx_begin(&idi);
+		if(ido2db_db_settings.use_transactions == IDO_TRUE) {
+			result = ido2db_db_tx_begin(&idi);
+		}
 		ido2db_check_for_client_input(&idi);
 
-		if (result == IDO_OK) {
+		if (ido2db_db_settings.use_transactions == IDO_TRUE && result == IDO_OK) {
 			if (ido2db_db_tx_commit(&idi) != IDO_OK) {
 				syslog(LOG_ERR, "IDO2DB commit failed. Some data may have been lost.\n");
 			}

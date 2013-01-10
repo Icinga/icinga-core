@@ -352,3 +352,15 @@ oracle_trace_level=0
 # occur, remark that you are explicitely using it. You've been warned.
 
 enable_sla=0
+
+# ENABLE TRANSACTIONS - EXPERIMENTAL!
+# This setting enables a SQL transaction around the data processing
+# block. The feature ist mostly useful for the config dump at start
+# of a big Icinga instance - or every other big chunk of data coming
+# from the Idomod. (In normal operation every event is still a single
+# transaction)
+#
+# WARNING: uses BEGIN / COMMIT for the transactions - make sure this
+# works with your DBMS!
+
+use_transactions=0

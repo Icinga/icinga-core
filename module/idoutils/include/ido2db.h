@@ -225,6 +225,7 @@ typedef struct ido2db_dbconninfo_struct{
 	unsigned long clean_realtime_tables_on_core_startup;
 	unsigned long clean_config_tables_on_core_startup;
 	unsigned long oci_errors_to_syslog;
+	unsigned int use_transactions;
 	time_t last_table_trim_time;
 	time_t last_logentry_time;
 	char *last_logentry_data;
