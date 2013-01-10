@@ -22,6 +22,8 @@ ENHANCEMENTS
 * classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
 * classic ui: Added process status to JSON response #3172 - RB
 
+* idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
+
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
 * core: fix macro escaping logs incorrect warning for $$escapes #3404 - MF
@@ -60,6 +62,9 @@ CHANGES
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
 * core: -v param can be used more than once #3510
 * core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510
+
+* ido2db.cfg - use_transactions #3527
+
 
 1.8.2 - 28/11/2012
 
