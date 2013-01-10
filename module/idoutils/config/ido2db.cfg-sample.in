@@ -354,11 +354,11 @@ oracle_trace_level=0
 enable_sla=0
 
 # ENABLE TRANSACTIONS - EXPERIMENTAL!
-# This setting enables a SQL transaction around the data processing
-# block. The feature ist mostly useful for the config dump at start
-# of a big Icinga instance - or every other big chunk of data coming
-# from the Idomod. (In normal operation every event is still a single
-# transaction)
+# This setting enables SQL transactions during data processing. It will
+# be useful when dumping config objects and their relations (contacts, etc),
+# during normal operations it won't help that much.
+# The intention is clearly to reduce the reload/restart time when idomod
+# dumps the config data, blocking the core.
 #
 # WARNING: uses BEGIN / COMMIT for the transactions - make sure this
 # works with your DBMS!
