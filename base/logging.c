@@ -568,6 +568,22 @@ int open_debug_log(void) {
 	return OK;
 }
 
+/* change ownership of the debug log file */
+int chown_debug_log(uid_t uid, gid_t gid) {
+
+	/* bail early if not running */
+	if (verify_config == TRUE || test_scheduling == TRUE)
+		return OK;
+
+	/* we do not debug anything, bail early */
+	if (debug_level == DEBUGL_NONE)
+		return OK;
+
+	if (chown(debug_file, uid, gid) < 0)
+		return ERROR;
+
+	return OK;
+}
 
 /* closes the debug log */
 int close_debug_log(void) {

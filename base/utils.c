@@ -2612,6 +2612,17 @@ int drop_privileges(char *user, char *group) {
 			}
 		}
 #endif
+
+		/* change ownership of debug log file
+		 * this is required in order to re-open
+		 * the file when receiving a SIGHUP, after
+		 * creating the file with root privileges
+		 */
+		if (chown_debug_log(uid, gid) == ERROR) {
+			logit(NSLOG_RUNTIME_WARNING, TRUE, "Failed to change ownership (UID=%d, GID=%d) on debug log file '%s': %s.", (int)uid, (int)gid, debug_file, strerror(errno));
+			result = ERROR;
+		}
+
 		if (setuid(uid) == -1) {
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not set effective UID=%d", (int)uid);
 			result = ERROR;
