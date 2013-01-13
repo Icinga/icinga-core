@@ -4,7 +4,7 @@ Icinga 1.6.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
-1.6.2 - XX/05/2012
+1.6.2 - 13/01/2013
 
 ENHANCEMENTS
 * core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
@@ -13,6 +13,7 @@ ENHANCEMENTS
 
 FIXES
 * core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
+* core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
 
 * classic ui: fixed invalid json output for tac.cgi #2160
 * classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343
