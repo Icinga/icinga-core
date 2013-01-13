@@ -6938,6 +6938,10 @@ void status_page_num_selector(int local_result_start, int status_type) {
 
 	/* get url options but filter out "limit" and "status" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
+		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+			printf("status_page_num_selector(): Could not allocate memory for stripped_query_string\n");
+			exit(1);
+		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
 

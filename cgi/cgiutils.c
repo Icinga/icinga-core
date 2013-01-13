@@ -1983,6 +1983,10 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 
 	/* get url options but filter out "limit" and "status" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
+		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+			printf("display_nav_table(): Could not allocate memory for stripped_query_string\n");
+			exit(1);
+		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
 
@@ -2558,6 +2562,10 @@ void print_export_link(int content_type, char *cgi, char *add_to_url) {
 
 	/* just do stuff if some options are requested */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
+		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+			printf("print_export_link(): Could not allocate memory for stripped_query_string\n");
+			exit(1);
+		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
 		strcat(link, "?");
@@ -3373,6 +3381,10 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 
 	/* get url options but filter out "limit" and "status" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
+		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+			printf("page_num_selector(): Could not allocate memory for stripped_query_string\n");
+			exit(1);
+		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
 
@@ -3486,6 +3498,10 @@ void page_limit_selector(int result_start) {
 
 	/* get url options but filter out "limit" and "status" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
+		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+			printf("display_nav_table(): Could not allocate memory for stripped_query_string\n");
+			exit(1);
+		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
 

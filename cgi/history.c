@@ -899,14 +899,14 @@ void show_history(void) {
 				else if (display_type == DISPLAY_HOSTS || display_type == DISPLAY_HOSTGROUPS) {
 
 					if (history_type == HOST_HISTORY || history_type == SERVICE_HISTORY) {
-						sprintf(match1, " HOST ALERT: %s;", host_name);
-						sprintf(match2, " SERVICE ALERT: %s;", host_name);
+						snprintf(match1, sizeof(match1), " HOST ALERT: %s;", host_name);
+						snprintf(match2, sizeof(match2), " SERVICE ALERT: %s;", host_name);
 					} else if (history_type == HOST_FLAPPING_HISTORY || history_type == SERVICE_FLAPPING_HISTORY) {
-						sprintf(match1, " HOST FLAPPING ALERT: %s;", host_name);
-						sprintf(match2, " SERVICE FLAPPING ALERT: %s;", host_name);
+						snprintf(match1, sizeof(match1), " HOST FLAPPING ALERT: %s;", host_name);
+						snprintf(match2, sizeof(match2), " SERVICE FLAPPING ALERT: %s;", host_name);
 					} else if (history_type == HOST_DOWNTIME_HISTORY || history_type == SERVICE_DOWNTIME_HISTORY) {
-						sprintf(match1, " HOST DOWNTIME ALERT: %s;", host_name);
-						sprintf(match2, " SERVICE DOWNTIME ALERT: %s;", host_name);
+						snprintf(match1, sizeof(match1), " HOST DOWNTIME ALERT: %s;", host_name);
+						snprintf(match2, sizeof(match2), " SERVICE DOWNTIME ALERT: %s;", host_name);
 					}
 
 					if (show_all_hosts == TRUE)
@@ -945,11 +945,11 @@ void show_history(void) {
 				else if (display_type == DISPLAY_SERVICES || display_type == DISPLAY_SERVICEGROUPS) {
 
 					if (history_type == SERVICE_HISTORY)
-						sprintf(match1, " SERVICE ALERT: %s;%s;", host_name, service_desc);
+						snprintf(match1, sizeof(match1), " SERVICE ALERT: %s;%s;", host_name, service_desc);
 					else if (history_type == SERVICE_FLAPPING_HISTORY)
-						sprintf(match1, " SERVICE FLAPPING ALERT: %s;%s;", host_name, service_desc);
+						snprintf(match1, sizeof(match1), " SERVICE FLAPPING ALERT: %s;%s;", host_name, service_desc);
 					else if (history_type == SERVICE_DOWNTIME_HISTORY)
-						sprintf(match1, " SERVICE DOWNTIME ALERT: %s;%s;", host_name, service_desc);
+						snprintf(match1, sizeof(match1), " SERVICE DOWNTIME ALERT: %s;%s;", host_name, service_desc);
 
 					if (display_type == DISPLAY_SERVICEGROUPS)
 						display_line = TRUE;
