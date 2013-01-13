@@ -408,6 +408,9 @@ fi
 
 
 %changelog
+* Sun Jan 13 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.8.4-1
+- 1.8.4 bump
+
 * Wed Dec 12 2012 Michael Friedrich <michael.friedrich@netways.de> - 1.8.3-1
 - 1.8.3 bump
 
