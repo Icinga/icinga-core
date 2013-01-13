@@ -157,13 +157,15 @@ char **getcgivars(void) {
 		/* check for NULL query string environment variable - 04/28/00 (Ludo Bosmans) */
 		if (getenv("QUERY_STRING") == NULL) {
 			cgiinput = (char *)malloc(1);
+			if (cgiinput != NULL) {
+				cgiinput[0] = '\x0';
+			}
+		} else
+			cgiinput = strdup(getenv("QUERY_STRING"));
 			if (cgiinput == NULL) {
 				printf("getcgivars(): Could not allocate memory for CGI input.\n");
 				exit(1);
 			}
-			cgiinput[0] = '\x0';
-		} else
-			cgiinput = strdup(getenv("QUERY_STRING"));
 	}
 
 	else if (!strcmp(request_method, "POST") || !strcmp(request_method, "PUT")) {
@@ -232,7 +234,11 @@ char **getcgivars(void) {
 	paircount = 0;
 	nvpair = strtok(cgiinput, "&");
 	while (nvpair) {
-		pairlist[paircount++] = strdup(nvpair);
+		pairlist[paircount] = strdup(nvpair);
+		if(pairlist[paircount++] == NULL) {
+			printf("getcgivars(): Could not allocate memory for name-value pair element #%d.\n", paircount);
+			exit(1);
+		}
 		if (paircount > MAX_CGI_INPUT_PAIRS)
 			break;
 		if (!(paircount % 256)) {
@@ -259,12 +265,27 @@ char **getcgivars(void) {
 		/* get the variable name preceding the equal (=) sign */
 		if ((eqpos = strchr(pairlist[i], '=')) != NULL) {
 			*eqpos = '\0';
-			unescape_cgi_input(cgivars[i*2+1] = strdup(eqpos + 1));
+			cgivars[i*2+1] = strdup(eqpos + 1);
+			if(cgivars[i*2+1] == NULL) {
+				printf("getcgivars(): Could not allocate memory for cgi param value #%d.\n", i);
+				exit(1);
+			}
+			unescape_cgi_input(cgivars[i*2+1]);
 		} else
-			unescape_cgi_input(cgivars[i*2+1] = strdup(""));
+			cgivars[i*2+1] = strdup("");
+			if(cgivars[i*2+1] == NULL) {
+				printf("getcgivars(): Could not allocate memory for empty cgi param value #%d.\n", i);
+				exit(1);
+			}
+			unescape_cgi_input(cgivars[i*2+1]);
 
 		/* get the variable value (or name/value of there was no real "pair" in the first place) */
-		unescape_cgi_input(cgivars[i*2] = strdup(pairlist[i]));
+		cgivars[i*2] = strdup(pairlist[i]);
+		if(cgivars[i*2] == NULL) {
+			printf("getcgivars(): Could not allocate memory for cgi param name #%d.\n", i);
+			exit(1);
+		}
+		unescape_cgi_input(cgivars[i*2]);
 	}
 
 	/* terminate the name-value list */

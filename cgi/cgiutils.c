@@ -2490,6 +2490,10 @@ void print_export_link(int content_type, char *cgi, char *add_to_url) {
 
 	/* just do stuff if some options are requested */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
+		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+			printf("print_export_link(): Could not allocate memory for stripped_query_string\n");
+			exit(1);
+		}
 		strcpy(stripped_query_string, getenv("QUERY_STRING"));
 		strip_html_brackets(stripped_query_string);
 		strcat(link, "?");
