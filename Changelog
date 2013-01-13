@@ -12,9 +12,11 @@ UPGRADE NOTES
 	- core, classic ui: sample-config/updates/
 	- idoutils: module/idoutils/config/updates
 
-1.8.4 - XX/XX/XXXX
+1.8.4 - 13/01/2013
 
 FIXES
+* core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
+
 * classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
 * classic ui: fixed Warning and Unknown States are mixed up in Alert Summary Report #3488 - RB
 
