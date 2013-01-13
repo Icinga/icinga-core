@@ -4,9 +4,15 @@ Icinga 1.7.x Change Log
 
 Thanks to all contributers, testers and developers. Please read AUTHORS and THANKS for a detailed list :-)
 
+1.7.4 - 13/01/2013
+
+FIXES
+* core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
+
 
 1.7.3 - 08/11/2012
 
+FIXES
 * core: fix embedded perl segfault #3027 - MF
 
 * idoutils: fix IDOUtils on PostgreSQL, recreates service objects in icinga_objects (thx Torsten Fohrer) #3166 - MF
