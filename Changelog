@@ -46,6 +46,7 @@ FIXES
 
 * install: drop unused daemon-init-readhat script (spec uses daemon-init) #3402 - MF
 * install: fix broken configure ssl detection for idoutils on ubuntu/debian (Oliver Skibbe) #3413 - MF
+* install: fix ido2db initscript uses same chkconfig line as icinga (Dirk Götz) #3490 - MF
 
 * classic ui: fix cmd.cgi does not honor commandpipe location; overwrites from empty environment variable #3418 - MF
 * classic ui: fixed Double-listed host dependencies in host extinfo.cgi #3295 - RB
