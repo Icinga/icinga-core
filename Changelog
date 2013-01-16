@@ -25,9 +25,7 @@ FIXES
 * icinga.spec: add idoutils as transitional package (thx Stefan Marx, Michael Grüner) #3640 - MF
 * icinga.spec: fix double %{logdir}/gui/ definitions in icinga and icinga-gui (thx René Koch) #3802 - MF
 
-CHANGES
-
-* icinga.spec: add idoutils as transitional package #3640
+* install: fix ido2db initscript uses same chkconfig line as icinga (Dirk Götz) #3490 - MF
 
 
 1.8.4 - 13/01/2013
