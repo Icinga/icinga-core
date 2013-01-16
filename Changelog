@@ -26,6 +26,7 @@ ENHANCEMENTS
 * classic ui: Added process status to JSON response #3172 - RB
 
 * idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
+* idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB
 
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
@@ -46,6 +47,7 @@ FIXES
 
 * install: drop unused daemon-init-readhat script (spec uses daemon-init) #3402 - MF
 * install: fix broken configure ssl detection for idoutils on ubuntu/debian (Oliver Skibbe) #3413 - MF
+* install: fix ido2db initscript uses same chkconfig line as icinga (Dirk Götz) #3490 - MF
 
 * classic ui: fix cmd.cgi does not honor commandpipe location; overwrites from empty environment variable #3418 - MF
 * classic ui: fixed Double-listed host dependencies in host extinfo.cgi #3295 - RB
@@ -67,7 +69,9 @@ CHANGES
 * core: -v param can be used more than once #3510
 * core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510
 
-* ido2db.cfg - use_transactions #3527
+* ido2db.cfg:
+	** use_transactions #3527
+	** enable_socket_queue #3533
 
 
 1.8.3 - 12/12/2012
