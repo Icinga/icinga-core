@@ -352,3 +352,16 @@ oracle_trace_level=0
 # occur, remark that you are explicitely using it. You've been warned.
 
 enable_sla=0
+
+
+# ENABLE SOCKET QUEUE - EXPERIMENTAL!
+# This setting enables a socket queue which will proxy the data received
+# from ido socket and the data(base) actions.
+# Values: 0 = disabled, 1 = enabled
+#
+# WARNING: This setting is highly experimental and may cause data loss on
+# your system if enabled. This is especially harmful when dumping the config
+# during core reload/restart. If problems occur, explicitely tell that you
+# are using this feature. You've been warned.
+
+enable_socket_queue=0

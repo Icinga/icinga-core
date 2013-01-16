@@ -87,6 +87,8 @@ int ido2db_debug_verbosity = IDO2DB_DEBUGV_BASIC;
 FILE *ido2db_debug_file_fp = NULL;
 unsigned long ido2db_max_debug_file_size = 0L;
 
+int enable_socket_queue = IDO_FALSE;
+
 int enable_sla = IDO_FALSE;
 int ido2db_debug_readable_timestamp = IDO_FALSE;
 
@@ -611,7 +613,9 @@ int ido2db_process_config_var(char *arg) {
 		enable_sla = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "debug_readable_timestamp")) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
-	}
+        } else if (!strcmp(var, "enable_socket_queue")) {
+                enable_socket_queue = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
+        }
 	else if (!strcmp(var, "libdbi_driver_dir")) {
 		if ((libdbi_driver_dir = strdup(val)) == NULL)
 			return IDO_ERROR;
@@ -1256,20 +1260,22 @@ int ido2db_wait_for_connections(void) {
 
 			new_sd = accept(ido2db_sd, (ido2db_socket_type == IDO_SINK_TCPSOCKET) ? (struct sockaddr *)&client_address_i : (struct sockaddr *)&client_address_u, (socklen_t *)&client_address_length);
 
-			if (socketpair(AF_UNIX, SOCK_STREAM, PF_UNIX, fds) == 0) {
-				pthread_t tid;
+			if (enable_socket_queue == IDO_TRUE) {
+				if (socketpair(AF_UNIX, SOCK_STREAM, PF_UNIX, fds) == 0) {
+					pthread_t tid;
 
-				ido2db_proxy_args *pa = (ido2db_proxy_args *)malloc(sizeof(ido2db_proxy_args));
-				pa->fd_left = new_sd;
-				pa->fd_right = fds[0];
+					ido2db_proxy_args *pa = (ido2db_proxy_args *)malloc(sizeof(ido2db_proxy_args));
+					pa->fd_left = new_sd;
+					pa->fd_right = fds[0];
 
-				if (pthread_create(&tid, NULL, ido2db_proxy_thread_proc, pa) == 0) {
-					(void) pthread_detach(tid);
+					if (pthread_create(&tid, NULL, ido2db_proxy_thread_proc, pa) == 0) {
+						(void) pthread_detach(tid);
 
-					new_sd = fds[1];
-				} else {
-					close(fds[0]);
-					close(fds[1]);
+						new_sd = fds[1];
+					} else {
+						close(fds[0]);
+						close(fds[1]);
+					}
 				}
 			}
 
