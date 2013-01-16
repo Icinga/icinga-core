@@ -74,6 +74,19 @@ CHANGES
 	** enable_socket_queue #3533
 
 
+1.8.4 - 13/01/2013
+
+FIXES
+* core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
+
+* classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
+* classic ui: fixed Warning and Unknown States are mixed up in Alert Summary Report #3488 - RB
+
+* idoutils: fix empty output/perfdata segfaults for mysql string truncate #3516 - MF
+* idoutils: unlink leftover socket on startup, if using unix sockets - MF
+* idoutils: fix long output data causes wrong data in database #2342 - MF
+
+
 1.8.3 - 12/12/2012
 
 FIXES
@@ -313,6 +326,20 @@ classic ui: Added/Changed cgi.cfg options
 
 * icinga.spec: add devel package #2634
 * icinga.spec: forced update on icinga.cfg change package locations #2923
+
+
+1.7.4 - 13/01/2013
+
+FIXES
+* core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
+
+
+1.7.3 - 08/11/2012
+
+FIXES
+* core: fix embedded perl segfault #3027 - MF
+
+* idoutils: fix IDOUtils on PostgreSQL, recreates service objects in icinga_objects (thx Torsten Fohrer) #3166 - MF
 
 
 
@@ -614,6 +641,31 @@ CHANGES
 
 * idoutils: add create_time and modify_time to dbversion table #2562
 	** allows to determine the initial import plus modified date
+
+1.6.2 - 13/01/2013
+
+ENHANCEMENTS
+* core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
+
+* classic ui: add is_in_effect and trigger_time to downtime view for html, csv, json #2538 - MF
+
+FIXES
+* core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
+* core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
+
+* classic ui: fixed invalid json output for tac.cgi #2160
+* classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343
+* classic ui: fixed Truncated HTML table when displaying outages in outages.cgi #2323
++ classic ui: fixed Extra leading space in status.cgi CSV output #2535
++ classic ui: fixed msdropdown jquery issues with opera #2515
+
+* idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
+* idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
+* idoutils: partly cherry-pick fixes for solaris segfaults from #2271
+* idoutils: fix OCI-21500 when freeing lobs #2509
+
+
+CHANGES
 
 
 1.6.1 - 02/12/2011
