@@ -3059,15 +3059,19 @@ char *json_encode(char *input) {
 
 	for (i = 0, j = 0; i < len; i++) {
 
-		/* escape quotes */
-		if ((char)input[i] == (char)'"') {
+		/* escape quotes and backslashes */
+		if ((char)input[i] == (char)'"' || (char)input[i] == (char)'\\') {
 			encoded_string[j++] = '\\';
 			encoded_string[j++] = input[i];
 
-			/* escape newlines */
+		/* escape newlines */
 		} else if ((char)input[i] == (char)'\n') {
 			encoded_string[j++] = '\\';
 			encoded_string[j++] = 'n';
+
+		/* ignore control caracters */
+		} else if (input[i] < 32 || input[i] == 127) {
+			continue;
 
 		} else
 			encoded_string[j++] = input[i];
