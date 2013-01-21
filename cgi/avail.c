@@ -3536,7 +3536,7 @@ void display_specific_hostgroup_availability(hostgroup *hg) {
 
 			/* host name */
 			printf("{ \"%s\": \"%s\", ", hheader[0], json_encode(temp_subject->host_name));
-			printf("{ \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+			printf(" \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 
 			/* up times */
 			printf(" \"%s\": %lu, ", hheader[1], temp_subject->scheduled_time_up);
@@ -3935,7 +3935,7 @@ void display_specific_servicegroup_availability(servicegroup *sg) {
 
 			/* host name */
 			printf("{ \"%s\": \"%s\", ", hheader[0], json_encode(temp_subject->host_name));
-			printf("{ \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+			printf(" \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 
 			/* up times */
 			printf(" \"%s\": %lu, ", hheader[1], temp_subject->scheduled_time_up);
@@ -4695,7 +4695,7 @@ void display_host_availability(void) {
 
 				/* host name */
 				printf("{ \"%s\": \"%s\", ", hheader[0], json_encode(temp_subject->host_name));
-				printf("{ \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+				printf(" \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 
 				/* up times */
 				printf(" \"%s\": %lu, ", hheader[1], temp_subject->scheduled_time_up);
@@ -5123,7 +5123,7 @@ void display_host_availability(void) {
 
 				/* host name */
 				printf("{ \"%s\": \"%s\", ", hheader[0], json_encode(temp_subject->host_name));
-				printf("{ \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+				printf(" \"%s\": \"%s\", ", hheader[37], (temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
 
 				/* up times */
 				printf(" \"%s\": %lu, ", hheader[1], temp_subject->scheduled_time_up);
