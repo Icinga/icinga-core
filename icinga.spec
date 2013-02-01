@@ -409,6 +409,15 @@ fi
 
 
 %changelog
+* Fri Feb 01 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.8.4-2
+- fix sf.net url
+
+* Sun Jan 13 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.8.4-1
+- 1.8.4 bump
+
+* Wed Dec 12 2012 Michael Friedrich <michael.friedrich@netways.de> - 1.8.3-1
+- 1.8.3 bump
+
 * Tue Oct 30 2012 Michael Friedrich <michael.friedrich@gmail.com> - 1.8.2-1
 - 1.8.2 bump
 
