@@ -382,7 +382,11 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 
 			/* get timestamp */
 			temp_buffer = strtok(input, "]");
-			timestamp = (temp_buffer == NULL) ? 0L : strtoul(temp_buffer + 1, NULL, 10);
+
+			if (temp_buffer == NULL)
+				continue;
+
+			timestamp = strtoul(temp_buffer + 1, NULL, 10);
 
 			/* skip line if out of range */
 			if ((ts_end >= 0 && timestamp > ts_end) || (ts_start >= 0 && timestamp < ts_start))
@@ -390,6 +394,9 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 
 			/* get log entry text */
 			temp_buffer = strtok(NULL, "\n");
+
+			if (temp_buffer == NULL)
+				continue;
 
 			/* if we search for something, check if it entry matches search_string */
 			if (search_string != NULL) {
