@@ -1242,7 +1242,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_MAIN_JS);
 
 	/* datetimepicker libs and css */
-	if (cgi_id == CMD_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID) {
+	if (cgi_id == CMD_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID || cgi_id == HISTORY_CGI_ID) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_CORE_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_WIDGET_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_MOUSE_JS);
@@ -1254,7 +1254,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_TIMEPICKER_CSS);
 
 		printf("<script type=\"text/javascript\">\n");
-		printf("$(function() {\n");
+		printf("$(document).ready(function() {\n");
 		printf("\t$( \".timepicker\" ).datetimepicker({\n");
 		printf("\t\tfirstDay: %d,\n", week_starts_on_monday);
 
@@ -1270,6 +1270,52 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("\t\tchangeMonth: true,\n");
 		printf("\t\tchangeYear: true\n");
 		printf("\t});\n");
+
+		printf("\t$(\"#history-datepicker\").datepicker({\n");
+		printf("\t\tfirstDay: %d,\n", week_starts_on_monday);
+		printf("\t\tdateFormat: '@',\n");
+		printf("\t\tmaxDate: '+0d',\n");
+		printf("\t\tshowWeek: true,\n");
+		printf("\t\tchangeMonth: true,\n");
+		printf("\t\tchangeYear: true,\n");
+		printf("\t\tbeforeShow: function (input, instance) {\n");
+		printf("\t\t\tinstance.dpDiv.css({\n");
+		printf("\t\t\t\tmarginTop: '15px',\n");
+		printf("\t\t\t\tmarginLeft: '-67px'\n");
+		printf("\t\t\t});\n");
+		printf("\t\t},\n");
+		printf("\t\tonSelect: function (date) {\n");
+		printf("\t\t\tif (date == '' || date < 0) { return false;}\n");
+		printf("\t\t\tts_start = date.substring(0,date.length-3);\n");
+		printf("\t\t\tts_end = parseInt(ts_start,10) + parseInt(86399,10);\n");
+		printf("\t\t\turl = window.location.href;\n");
+		printf("\t\t\toptions = '';\n");
+		printf("\t\t\tnewoptionsArray = new Array();\n");
+		printf("\t\t\tif (url.indexOf('?') === -1) {\n");
+		printf("\t\t\t\tbase_url = url;\n");
+		printf("\t\t\t} else {\n");
+		printf("\t\t\t\tbase_url = url.substring(0,url.indexOf('?'));\n");
+		printf("\t\t\t\toptions = url.substring(url.indexOf('?')+1);\n");
+		printf("\t\t\t\toptionsArray = options.split('&');\n");
+		printf("\t\t\t\tfor (var i=0; i<optionsArray.length; i++) {\n");
+		printf("\t\t\t\t\tswitch (optionsArray[i].substring(0,optionsArray[i].indexOf('='))) {\n");
+		printf("\t\t\t\t\t\tcase 'ts_start':\n");
+		printf("\t\t\t\t\t\tcase 'ts_end':\n");
+		printf("\t\t\t\t\t\tcase 'start':\n");
+		printf("\t\t\t\t\t\tcase 'start_time':\n");
+		printf("\t\t\t\t\t\tcase 'end_time':\n");
+		printf("\t\t\t\t\t\tcase '':\n");
+		printf("\t\t\t\t\t\t\tbreak;\n");
+		printf("\t\t\t\t\t\tdefault:\n");
+		printf("\t\t\t\t\t\t\tnewoptionsArray.push(optionsArray[i]);\n");
+		printf("\t\t\t\t\t}\n");
+		printf("\t\t\t\t}\n");
+		printf("\t\t\t}\n");
+		printf("\t\t\tnewoptionsArray.push('ts_start=' + ts_start, 'ts_end=' + ts_end);\n");
+		printf("\t\t\twindow.location.href = base_url + '?' + newoptionsArray.join('&');\n");
+		printf("\t\t}\n");
+		printf("\t});\n");
+
 		printf("});\n");
 		printf("</script>\n");
 	}
@@ -2072,7 +2118,7 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 		break;
 	}
 
-	/* get url options but filter out "limit" and "status" */
+	/* get url options but filter out "ts_end", "ts_start" and "start" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
 		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
 			printf("display_nav_table(): Could not allocate memory for stripped_query_string\n");
@@ -2150,7 +2196,15 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 
 	printf("</tr>\n");
 
+	printf("<tr><td colspan=2></td><td align=center valign=center><input id='history-datepicker' type='hidden'><a href='#' onclick=\"$.datepicker._showDatepicker($('#history-datepicker')[0]); return false;\">Select a day ...</a></td><td colspan=2></td></tr>\n");
+
 	printf("</table>\n");
+
+	printf("<script type=\"text/javascript\">\n");
+	printf("$(function() {\n");
+	printf("\t$(\"#history-datepicker\").datepicker( \"setDate\", \"%lu000\" );\n",ts_start);
+	printf("});\n");
+	printf("</script>\n");
 
 	return;
 }
