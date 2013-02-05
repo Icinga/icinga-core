@@ -145,11 +145,11 @@ int main(void) {
 	if (display_header == TRUE) {
 
 		/* begin top table */
-		printf("<table border=0 width=100%%>\n");
+		printf("<table border='0' width='100%%'>\n");
 		printf("<tr>\n");
 
 		/* left column of the first row */
-		printf("<td align=left valign=top width=33%%>\n");
+		printf("<td align='left' valign='top' width='33%%'>\n");
 
 		if (display_type == DISPLAY_HOSTS)
 			display_info_table("Host Alert History", &current_authdata, daemon_check);
@@ -162,8 +162,8 @@ int main(void) {
 		else
 			display_info_table("Alert History", &current_authdata, daemon_check);
 
-		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
-		printf("<TR><TD CLASS='linkBox'>\n");
+		printf("<table border='1' cellpadding='0' cellspacing='0' class='linkBox'>\n");
+		printf("<tr><td class='linkBox'>\n");
 		if (display_type == DISPLAY_HOSTS) {
 			printf("<a href='%s?host=%s'>View <b>Service Status Detail</b> For <b>%s</b></a><br>\n", STATUS_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
 			printf("<a href='%s?host=%s'>View <b>Notifications</b> For <b>%s</b></a><br>\n", NOTIFICATIONS_CGI, (show_all_hosts == TRUE) ? "all" : url_encode(host_name), (show_all_hosts == TRUE) ? "All Hosts" : "This Host");
@@ -188,15 +188,15 @@ int main(void) {
 			printf("<a href='%s?servicegroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(servicegroup_name));
 			printf("<a href='%s?servicegroup=%s'>View <b>Notifications</b> For <b>This Servicegroup</b></a>\n", NOTIFICATIONS_CGI, url_encode(servicegroup_name));
 		}
-		printf("</TD></TR>\n");
-		printf("</TABLE>\n");
+		printf("</td></tr>\n");
+		printf("</table>\n");
 
 		printf("</td>\n");
 
 		/* middle column of top row */
-		printf("<td align=center valign=top width=33%%>\n");
+		printf("<td align='center' valign='top' width='33%%'>\n");
 
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
+		printf("<div align='center' class='dataTitle'>\n");
 		if (display_type == DISPLAY_SERVICES)
 			printf("Service '%s' On Host '%s'", html_encode(service_desc, TRUE), html_encode(host_name, TRUE));
 		else if (display_type == DISPLAY_HOSTS) {
@@ -208,15 +208,15 @@ int main(void) {
 			printf("Host Group '%s'", html_encode(hostgroup_name, TRUE));
 		else if (display_type == DISPLAY_SERVICEGROUPS)
 			printf("Service Group '%s'", html_encode(servicegroup_name, TRUE));
-		printf("</DIV>\n");
-		printf("<BR />\n");
+		printf("</div>\n");
+		printf("<br />\n");
 
 		display_nav_table(ts_start, ts_end);
 
 		printf("</td>\n");
 
 		/* right hand column of top row */
-		printf("<td align=right valign=top width=33%%>\n");
+		printf("<td align='right' valign='top' width='33%%'>\n");
 
 		printf("<form method=\"GET\" action=\"%s\">\n", HISTORY_CGI);
 		printf("<input type='hidden' name='ts_start' value='%lu'>\n", ts_start);
@@ -232,22 +232,22 @@ int main(void) {
 			if (display_type == DISPLAY_SERVICES)
 				printf("<input type='hidden' name='service' value='%s'>\n", escape_string(service_desc));
 		}
-		printf("<table border=0 CLASS='optBox'>\n");
+		printf("<table border='0' class='optBox'>\n");
 
 		printf("<tr>\n");
-		printf("<td align=left CLASS='optBoxItem'>State type options:</td>\n");
+		printf("<td align='left' class='optBoxItem'>State type options:</td>\n");
 		printf("</tr>\n");
 
 		printf("<tr>\n");
-		printf("<td align=left CLASS='optBoxItem'><select name='statetype'>\n");
-		printf("<option value=%d %s>All state types</option>\n", STATE_ALL, (state_options == STATE_ALL) ? "selected" : "");
-		printf("<option value=%d %s>Soft states</option>\n", STATE_SOFT, (state_options == STATE_SOFT) ? "selected" : "");
-		printf("<option value=%d %s>Hard states</option>\n", STATE_HARD, (state_options == STATE_HARD) ? "selected" : "");
+		printf("<td align='left' class='optBoxItem'><select name='statetype'>\n");
+		printf("<option value='%d' %s>All state types</option>\n", STATE_ALL, (state_options == STATE_ALL) ? "selected" : "");
+		printf("<option value='%d' %s>Soft states</option>\n", STATE_SOFT, (state_options == STATE_SOFT) ? "selected" : "");
+		printf("<option value='%d' %s>Hard states</option>\n", STATE_HARD, (state_options == STATE_HARD) ? "selected" : "");
 		printf("</select></td>\n");
 		printf("</tr>\n");
 
 		printf("<tr>\n");
-		printf("<td align=left CLASS='optBoxItem'>History detail level for ");
+		printf("<td align='left' class='optBoxItem'>History detail level for ");
 		if (display_type == DISPLAY_HOSTGROUPS || display_type == DISPLAY_SERVICEGROUPS)
 			printf("this %sgroup", (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service");
 		else if (display_type == DISPLAY_HOSTS)
@@ -257,40 +257,40 @@ int main(void) {
 		printf(":</td>\n");
 		printf("</tr>\n");
 		printf("<tr>\n");
-		printf("<td align=left CLASS='optBoxItem'><select name='type'>\n");
+		printf("<td align='left' class='optBoxItem'><select name='type'>\n");
 		if (display_type == DISPLAY_HOSTS || display_type == DISPLAY_HOSTGROUPS)
-			printf("<option value=%d %s>All alerts</option>\n", HISTORY_ALL, (history_options == HISTORY_ALL) ? "selected" : "");
-		printf("<option value=%d %s>All service alerts</option>\n", HISTORY_SERVICE_ALL, (history_options == HISTORY_SERVICE_ALL) ? "selected" : "");
+			printf("<option value='%d' %s>All alerts</option>\n", HISTORY_ALL, (history_options == HISTORY_ALL) ? "selected" : "");
+		printf("<option value='%d' %s>All service alerts</option>\n", HISTORY_SERVICE_ALL, (history_options == HISTORY_SERVICE_ALL) ? "selected" : "");
 		if (display_type == DISPLAY_HOSTS || display_type == DISPLAY_HOSTGROUPS)
-			printf("<option value=%d %s>All host alerts</option>\n", HISTORY_HOST_ALL, (history_options == HISTORY_HOST_ALL) ? "selected" : "");
-		printf("<option value=%d %s>Service warning</option>\n", HISTORY_SERVICE_WARNING, (history_options == HISTORY_SERVICE_WARNING) ? "selected" : "");
-		printf("<option value=%d %s>Service unknown</option>\n", HISTORY_SERVICE_UNKNOWN, (history_options == HISTORY_SERVICE_UNKNOWN) ? "selected" : "");
-		printf("<option value=%d %s>Service critical</option>\n", HISTORY_SERVICE_CRITICAL, (history_options == HISTORY_SERVICE_CRITICAL) ? "selected" : "");
-		printf("<option value=%d %s>Service recovery</option>\n", HISTORY_SERVICE_RECOVERY, (history_options == HISTORY_SERVICE_RECOVERY) ? "selected" : "");
+			printf("<option value='%d' %s>All host alerts</option>\n", HISTORY_HOST_ALL, (history_options == HISTORY_HOST_ALL) ? "selected" : "");
+		printf("<option value='%d' %s>Service warning</option>\n", HISTORY_SERVICE_WARNING, (history_options == HISTORY_SERVICE_WARNING) ? "selected" : "");
+		printf("<option value='%d' %s>Service unknown</option>\n", HISTORY_SERVICE_UNKNOWN, (history_options == HISTORY_SERVICE_UNKNOWN) ? "selected" : "");
+		printf("<option value='%d' %s>Service critical</option>\n", HISTORY_SERVICE_CRITICAL, (history_options == HISTORY_SERVICE_CRITICAL) ? "selected" : "");
+		printf("<option value='%d' %s>Service recovery</option>\n", HISTORY_SERVICE_RECOVERY, (history_options == HISTORY_SERVICE_RECOVERY) ? "selected" : "");
 		if (display_type == DISPLAY_HOSTS || display_type == DISPLAY_HOSTGROUPS) {
-			printf("<option value=%d %s>Host down</option>\n", HISTORY_HOST_DOWN, (history_options == HISTORY_HOST_DOWN) ? "selected" : "");
-			printf("<option value=%d %s>Host unreachable</option>\n", HISTORY_HOST_UNREACHABLE, (history_options == HISTORY_HOST_UNREACHABLE) ? "selected" : "");
-			printf("<option value=%d %s>Host recovery</option>\n", HISTORY_HOST_RECOVERY, (history_options == HISTORY_HOST_RECOVERY) ? "selected" : "");
+			printf("<option value='%d' %s>Host down</option>\n", HISTORY_HOST_DOWN, (history_options == HISTORY_HOST_DOWN) ? "selected" : "");
+			printf("<option value='%d' %s>Host unreachable</option>\n", HISTORY_HOST_UNREACHABLE, (history_options == HISTORY_HOST_UNREACHABLE) ? "selected" : "");
+			printf("<option value='%d' %s>Host recovery</option>\n", HISTORY_HOST_RECOVERY, (history_options == HISTORY_HOST_RECOVERY) ? "selected" : "");
 		}
 		printf("</select></td>\n");
 		printf("</tr>\n");
 
 		printf("<tr>\n");
-		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='noflapping' %s> Hide Flapping Alerts</td>", (display_flapping_alerts == FALSE) ? "checked" : "");
+		printf("<td align='left' valign='bottom' class='optBoxItem'><input type='checkbox' name='noflapping' %s> Hide Flapping Alerts</td>", (display_flapping_alerts == FALSE) ? "checked" : "");
 		printf("</tr>\n");
 		printf("<tr>\n");
-		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='nodowntime' %s> Hide Downtime Alerts</td>", (display_downtime_alerts == FALSE) ? "checked" : "");
-		printf("</tr>\n");
-
-		printf("<tr>\n");
-		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='nosystem' %s> Hide Process Messages</td>", (display_system_messages == FALSE) ? "checked" : "");
-		printf("</tr>\n");
-		printf("<tr>\n");
-		printf("<td align=left valign=bottom CLASS='optBoxItem'><input type='checkbox' name='order' value='old2new' %s> Older Entries First</td>", (reverse == TRUE) ? "checked" : "");
+		printf("<td align='left' valign='bottom' class='optBoxItem'><input type='checkbox' name='nodowntime' %s> Hide Downtime Alerts</td>", (display_downtime_alerts == FALSE) ? "checked" : "");
 		printf("</tr>\n");
 
 		printf("<tr>\n");
-		printf("<td align=left CLASS='optBoxItem'><input type='submit' value='Update'></td>\n");
+		printf("<td align='left' valign='bottom' class='optBoxItem'><input type='checkbox' name='nosystem' %s> Hide Process Messages</td>", (display_system_messages == FALSE) ? "checked" : "");
+		printf("</tr>\n");
+		printf("<tr>\n");
+		printf("<td align='left' valign='bottom' class='optBoxItem'><input type='checkbox' name='order' value='old2new' %s> Older Entries First</td>", (reverse == TRUE) ? "checked" : "");
+		printf("</tr>\n");
+
+		printf("<tr>\n");
+		printf("<td align='left' class='optBoxItem'><input type='submit' value='Update'></td>\n");
 		printf("</tr>\n");
 
 		printf("</table>\n");
@@ -629,7 +629,7 @@ void show_history(void) {
 	/* now we start displaying the log entries */
 	} else {
 
-		printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
+		printf("<table width='100%%' cellspacing='0' cellpadding='0'><tr><td width='33%%'></td><td width='33%%' nowrap>");
 		printf("<div class='page_selector' id='hist_page_selector'>\n");
 		printf("<div id='page_navigation_copy'></div>");
 		page_limit_selector(result_start);
@@ -638,7 +638,7 @@ void show_history(void) {
 		print_export_link(HTML_CONTENT, HISTORY_CGI, NULL);
 		printf("</td></tr></table>");
 
-		printf("<DIV CLASS='logEntries'>\n");
+		printf("<div class='logEntries'>\n");
 
 		for (temp_entry = entry_list; temp_entry != NULL; temp_entry = temp_entry->next) {
 
@@ -1020,15 +1020,15 @@ void show_history(void) {
 					total_entries++;
 
 					if (strcmp(last_message_date, current_message_date) != 0 && display_timebreaks == TRUE) {
-						printf("</DIV><BR CLEAR='all' />\n");
-						printf("<DIV CLASS='dateTimeBreak'>\n");
-						printf("<table border=0 width=95%%><tr>");
-						printf("<td width=40%%><hr width=100%%></td>");
-						printf("<td align=center CLASS='dateTimeBreak'>%s</td>", current_message_date);
-						printf("<td width=40%%><hr width=100%%></td>");
+						printf("</div><br CLEAR='all' />\n");
+						printf("<div class='dateTimeBreak'>\n");
+						printf("<table border='0' width='95%%'><tr>");
+						printf("<td width=40%%><hr width='100%%'></td>");
+						printf("<td align='center' class='dateTimeBreak'>%s</td>", current_message_date);
+						printf("<td width=40%%><hr width='100%%'></td>");
 						printf("</tr></table>\n");
-						printf("</DIV>\n");
-						printf("<BR CLEAR='all' /><DIV CLASS='logEntries'>\n");
+						printf("</div>\n");
+						printf("<br CLEAR='all' /><div class='logEntries'>\n");
 						strncpy(last_message_date, current_message_date, sizeof(last_message_date));
 						last_message_date[sizeof(last_message_date) - 1] = '\x0';
 					}
@@ -1054,19 +1054,19 @@ void show_history(void) {
 
 	free_log_entries(&entry_list);
 
-	printf("</DIV>\n");
+	printf("</div>\n");
 
 	if (total_entries == 0) {
-		printf("<HR>\n");
-		printf("<DIV CLASS='errorMessage' style='text-align:center'>No history information was found ");
+		printf("<hr>\n");
+		printf("<div class='errorMessage' style='text-align:center'>No history information was found ");
 		if (display_type == DISPLAY_HOSTS)
 			printf("%s", (show_all_hosts == TRUE) ? "" : "for this host ");
 		else
 			printf("for this service ");
-		printf("in log files for selected date.</DIV>");
+		printf("in log files for selected date.</div>");
 		printf("<script type='text/javascript'>document.getElementById('hist_page_selector').style.display='none';</script>");
 	} else {
-		printf("<HR>\n");
+		printf("<hr>\n");
 		page_num_selector(result_start, total_entries, displayed_entries);
 	}
 

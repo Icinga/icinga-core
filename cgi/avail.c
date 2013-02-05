@@ -356,11 +356,11 @@ int main(int argc, char **argv) {
 	if (display_header == TRUE) {
 
 		/* begin top table */
-		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+		printf("<table border='0' width='100%%' cellspacing='0' cellpadding='0'>\n");
 		printf("<tr>\n");
 
 		/* left column of the first row */
-		printf("<td align=left valign=top width=33%%>\n");
+		printf("<td align='left' valign='top' width='33%%'>\n");
 
 		switch (display_type) {
 		case DISPLAY_HOST_AVAIL:
@@ -384,12 +384,12 @@ int main(int argc, char **argv) {
 
 		if (((display_type == DISPLAY_HOST_AVAIL && show_all_hosts == FALSE) || (display_type == DISPLAY_SERVICE_AVAIL && show_all_services == FALSE)) && get_date_parts == FALSE) {
 
-			printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
-			printf("<TR><TD CLASS='linkBox'>\n");
+			printf("<table border='1' cellpadding='0' cellspacing='0' class='linkBox'>\n");
+			printf("<tr><td class='linkBox'>\n");
 
 			if (display_type == DISPLAY_HOST_AVAIL && show_all_hosts == FALSE) {
 				host_report_url("all", "View <b>Availability Report</b> For <b>All Hosts</b>");
-				printf("<BR>\n");
+				printf("<br>\n");
 #ifdef USE_TRENDS
 				printf("<a href='%s?host=%s&t1=%lu&t2=%lu&assumestateretention=%s&assumeinitialstates=%s&includesoftstates=%s&assumestatesduringnotrunning=%s&initialassumedhoststate=%d&backtrack=%d'>View <b>Trends</b> For <b>This Host</b></a><br>\n", TRENDS_CGI, url_encode(host_name), t1, t2, (include_soft_states == TRUE) ? "yes" : "no", (assume_state_retention == TRUE) ? "yes" : "no", (assume_initial_states == TRUE) ? "yes" : "no", (assume_states_during_notrunning == TRUE) ? "yes" : "no", initial_assumed_host_state, backtrack_archives);
 #endif
@@ -402,9 +402,9 @@ int main(int argc, char **argv) {
 				printf("<a href='%s?host=%s'>View <b>Notifications</b> For <b>This Host</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(host_name));
 			} else if (display_type == DISPLAY_SERVICE_AVAIL && show_all_services == FALSE) {
 				host_report_url(host_name, "View <b>Availability Report</b> For <b>This Host</b>");
-				printf("<BR>\n");
+				printf("<br>\n");
 				service_report_url("null", "all", "View <b>Availability Report</b> For <b>All Services</b>");
-				printf("<BR>\n");
+				printf("<br>\n");
 #ifdef USE_TRENDS
 				printf("<a href='%s?host=%s", TRENDS_CGI, url_encode(host_name));
 				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s&includesoftstates=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedservicestate=%d&backtrack=%d'>View <b>Trends</b> For <b>This Service</b></a><br>\n", url_encode(service_desc), t1, t2, (include_soft_states == TRUE) ? "yes" : "no", (assume_state_retention == TRUE) ? "yes" : "no", (assume_initial_states == TRUE) ? "yes" : "no", (assume_states_during_notrunning == TRUE) ? "yes" : "no", initial_assumed_service_state, backtrack_archives);
@@ -417,14 +417,14 @@ int main(int argc, char **argv) {
 				printf("<a href='%s?host=%s&service=%s'>View <b>Notifications</b> For <b>This Service</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(host_name), url_encode(service_desc));
 			}
 
-			printf("</TD></TR>\n");
-			printf("</TABLE>\n");
+			printf("</td></tr>\n");
+			printf("</table>\n");
 		}
 
 		printf("</td>\n");
 
 		/* center column of top row */
-		printf("<td align=center valign=top width=33%%>\n");
+		printf("<td align='center' valign='top' width='33%%'>\n");
 
 		if (display_type != DISPLAY_NO_AVAIL && get_date_parts == FALSE) {
 
@@ -434,7 +434,7 @@ int main(int argc, char **argv) {
 			/* find the service */
 			temp_service = find_service(host_name, service_desc);
 
-			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
+			printf("<div align='center' class='dataTitle'>\n");
 			if (display_type == DISPLAY_HOST_AVAIL) {
 				if (show_all_hosts == TRUE)
 					printf("All Hosts");
@@ -456,35 +456,35 @@ int main(int argc, char **argv) {
 				else
 					printf("Servicegroup '%s'", servicegroup_name);
 			}
-			printf("</DIV>\n");
+			printf("</div>\n");
 
-			printf("<BR>\n");
+			printf("<br>\n");
 
-			printf("<IMG SRC='%s%s' BORDER=0 ALT='Availability Report' TITLE='Availability Report'>\n", url_images_path, TRENDS_ICON);
+			printf("<img src='%s%s' border='0' alt='Availability Report' TITLE='Availability Report'>\n", url_images_path, TRENDS_ICON);
 
-			printf("<BR CLEAR=ALL>\n");
+			printf("<br clear='all'>\n");
 
 			get_time_string(&t1, start_timestring, sizeof(start_timestring) - 1, SHORT_DATE_TIME);
 			get_time_string(&t2, end_timestring, sizeof(end_timestring) - 1, SHORT_DATE_TIME);
-			printf("<div align=center class='reportRange'>%s to %s</div>\n", start_timestring, end_timestring);
+			printf("<div align='center' class='reportRange'>%s to %s</div>\n", start_timestring, end_timestring);
 
 			get_time_breakdown((time_t)(t2 - t1), &days, &hours, &minutes, &seconds);
-			printf("<div align=center class='reportDuration'>Duration: %dd %dh %dm %ds</div>\n", days, hours, minutes, seconds);
+			printf("<div align='center' class='reportDuration'>Duration: %dd %dh %dm %ds</div>\n", days, hours, minutes, seconds);
 		}
 
 		printf("</td>\n");
 
 		/* right hand column of top row */
-		printf("<td align=right valign=bottom width=33%%>\n");
+		printf("<td align='right' valign='bottom' width='33%%'>\n");
 
 		printf("<form method=\"GET\" action=\"%s\">\n", AVAIL_CGI);
-		printf("<table border=0 CLASS='optBox'>\n");
+		printf("<table border='0' class='optBox'>\n");
 
 		if (display_type != DISPLAY_NO_AVAIL && get_date_parts == FALSE) {
 
-			printf("<tr><td valign=top align=left class='optBoxItem'>First assumed %s state:</td><td valign=top align=left class='optBoxItem'>%s</td></tr>\n", (display_type == DISPLAY_SERVICE_AVAIL) ? "service" : "host", (display_type == DISPLAY_HOST_AVAIL || display_type == DISPLAY_HOSTGROUP_AVAIL || display_type == DISPLAY_SERVICEGROUP_AVAIL) ? "First assumed service state" : "");
+			printf("<tr><td valign='top' align='left' class='optBoxItem'>First assumed %s state:</td><td valign='top' align='left' class='optBoxItem'>%s</td></tr>\n", (display_type == DISPLAY_SERVICE_AVAIL) ? "service" : "host", (display_type == DISPLAY_HOST_AVAIL || display_type == DISPLAY_HOSTGROUP_AVAIL || display_type == DISPLAY_SERVICEGROUP_AVAIL) ? "First assumed service state" : "");
 			printf("<tr>\n");
-			printf("<td valign=top align=left class='optBoxItem'>\n");
+			printf("<td valign='top' align='left' class='optBoxItem'>\n");
 
 			printf("<input type='hidden' name='t1' value='%lu'>\n", (unsigned long)t1);
 			printf("<input type='hidden' name='t2' value='%lu'>\n", (unsigned long)t2);
@@ -508,63 +508,63 @@ int main(int argc, char **argv) {
 
 			if (display_type == DISPLAY_HOST_AVAIL || display_type == DISPLAY_HOSTGROUP_AVAIL || display_type == DISPLAY_SERVICEGROUP_AVAIL) {
 				printf("<select name='initialassumedhoststate'>\n");
-				printf("<option value=%d %s>Unspecified\n", AS_NO_DATA, (initial_assumed_host_state == AS_NO_DATA) ? "SELECTED" : "");
-				printf("<option value=%d %s>Current State\n", AS_CURRENT_STATE, (initial_assumed_host_state == AS_CURRENT_STATE) ? "SELECTED" : "");
-				printf("<option value=%d %s>Host Up\n", AS_HOST_UP, (initial_assumed_host_state == AS_HOST_UP) ? "SELECTED" : "");
-				printf("<option value=%d %s>Host Down\n", AS_HOST_DOWN, (initial_assumed_host_state == AS_HOST_DOWN) ? "SELECTED" : "");
-				printf("<option value=%d %s>Host Unreachable\n", AS_HOST_UNREACHABLE, (initial_assumed_host_state == AS_HOST_UNREACHABLE) ? "SELECTED" : "");
+				printf("<option value='%d' %s>Unspecified\n", AS_NO_DATA, (initial_assumed_host_state == AS_NO_DATA) ? "selected" : "");
+				printf("<option value='%d' %s>Current State\n", AS_CURRENT_STATE, (initial_assumed_host_state == AS_CURRENT_STATE) ? "selected" : "");
+				printf("<option value='%d' %s>Host Up\n", AS_HOST_UP, (initial_assumed_host_state == AS_HOST_UP) ? "selected" : "");
+				printf("<option value='%d' %s>Host Down\n", AS_HOST_DOWN, (initial_assumed_host_state == AS_HOST_DOWN) ? "selected" : "");
+				printf("<option value='%d' %s>Host Unreachable\n", AS_HOST_UNREACHABLE, (initial_assumed_host_state == AS_HOST_UNREACHABLE) ? "selected" : "");
 				printf("</select>\n");
 			} else {
 				printf("<input type='hidden' name='initialassumedhoststate' value='%d'>", initial_assumed_host_state);
 				printf("<select name='initialassumedservicestate'>\n");
-				printf("<option value=%d %s>Unspecified\n", AS_NO_DATA, (initial_assumed_service_state == AS_NO_DATA) ? "SELECTED" : "");
-				printf("<option value=%d %s>Current State\n", AS_CURRENT_STATE, (initial_assumed_service_state == AS_CURRENT_STATE) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Ok\n", AS_SVC_OK, (initial_assumed_service_state == AS_SVC_OK) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Warning\n", AS_SVC_WARNING, (initial_assumed_service_state == AS_SVC_WARNING) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Unknown\n", AS_SVC_UNKNOWN, (initial_assumed_service_state == AS_SVC_UNKNOWN) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Critical\n", AS_SVC_CRITICAL, (initial_assumed_service_state == AS_SVC_CRITICAL) ? "SELECTED" : "");
+				printf("<option value='%d' %s>Unspecified\n", AS_NO_DATA, (initial_assumed_service_state == AS_NO_DATA) ? "selected" : "");
+				printf("<option value='%d' %s>Current State\n", AS_CURRENT_STATE, (initial_assumed_service_state == AS_CURRENT_STATE) ? "selected" : "");
+				printf("<option value='%d' %s>Service Ok\n", AS_SVC_OK, (initial_assumed_service_state == AS_SVC_OK) ? "selected" : "");
+				printf("<option value='%d' %s>Service Warning\n", AS_SVC_WARNING, (initial_assumed_service_state == AS_SVC_WARNING) ? "selected" : "");
+				printf("<option value='%d' %s>Service Unknown\n", AS_SVC_UNKNOWN, (initial_assumed_service_state == AS_SVC_UNKNOWN) ? "selected" : "");
+				printf("<option value='%d' %s>Service Critical\n", AS_SVC_CRITICAL, (initial_assumed_service_state == AS_SVC_CRITICAL) ? "selected" : "");
 				printf("</select>\n");
 			}
 			printf("</td>\n");
-			printf("<td CLASS='optBoxItem'>\n");
+			printf("<td class='optBoxItem'>\n");
 			if (display_type == DISPLAY_HOST_AVAIL || display_type == DISPLAY_HOSTGROUP_AVAIL || display_type == DISPLAY_SERVICEGROUP_AVAIL) {
 				printf("<select name='initialassumedservicestate'>\n");
-				printf("<option value=%d %s>Unspecified\n", AS_NO_DATA, (initial_assumed_service_state == AS_NO_DATA) ? "SELECTED" : "");
-				printf("<option value=%d %s>Current State\n", AS_CURRENT_STATE, (initial_assumed_service_state == AS_CURRENT_STATE) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Ok\n", AS_SVC_OK, (initial_assumed_service_state == AS_SVC_OK) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Warning\n", AS_SVC_WARNING, (initial_assumed_service_state == AS_SVC_WARNING) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Unknown\n", AS_SVC_UNKNOWN, (initial_assumed_service_state == AS_SVC_UNKNOWN) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Critical\n", AS_SVC_CRITICAL, (initial_assumed_service_state == AS_SVC_CRITICAL) ? "SELECTED" : "");
+				printf("<option value='%d' %s>Unspecified\n", AS_NO_DATA, (initial_assumed_service_state == AS_NO_DATA) ? "selected" : "");
+				printf("<option value='%d' %s>Current State\n", AS_CURRENT_STATE, (initial_assumed_service_state == AS_CURRENT_STATE) ? "selected" : "");
+				printf("<option value='%d' %s>Service Ok\n", AS_SVC_OK, (initial_assumed_service_state == AS_SVC_OK) ? "selected" : "");
+				printf("<option value='%d' %s>Service Warning\n", AS_SVC_WARNING, (initial_assumed_service_state == AS_SVC_WARNING) ? "selected" : "");
+				printf("<option value='%d' %s>Service Unknown\n", AS_SVC_UNKNOWN, (initial_assumed_service_state == AS_SVC_UNKNOWN) ? "selected" : "");
+				printf("<option value='%d' %s>Service Critical\n", AS_SVC_CRITICAL, (initial_assumed_service_state == AS_SVC_CRITICAL) ? "selected" : "");
 				printf("</select>\n");
 			}
 			printf("</td>\n");
 			printf("</tr>\n");
 
-			printf("<tr><td valign=top align=left class='optBoxItem'>Report period:</td><td valign=top align=left class='optBoxItem'>Backtracked archives:</td></tr>\n");
+			printf("<tr><td valign='top' align='left' class='optBoxItem'>Report period:</td><td valign='top' align='left' class='optBoxItem'>Backtracked archives:</td></tr>\n");
 			printf("<tr>\n");
-			printf("<td valign=top align=left class='optBoxItem'>\n");
+			printf("<td valign='top' align='left' class='optBoxItem'>\n");
 			printf("<select name='timeperiod'>\n");
-			printf("<option SELECTED>[ Current time range ]\n");
-			printf("<option value=today %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "SELECTED" : "");
-			printf("<option value=last24hours %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "SELECTED" : "");
-			printf("<option value=yesterday %s>Yesterday\n", (timeperiod_type == TIMEPERIOD_YESTERDAY) ? "SELECTED" : "");
-			printf("<option value=thisweek %s>This Week\n", (timeperiod_type == TIMEPERIOD_THISWEEK) ? "SELECTED" : "");
-			printf("<option value=last7days %s>Last 7 Days\n", (timeperiod_type == TIMEPERIOD_LAST7DAYS) ? "SELECTED" : "");
-			printf("<option value=lastweek %s>Last Week\n", (timeperiod_type == TIMEPERIOD_LASTWEEK) ? "SELECTED" : "");
-			printf("<option value=thismonth %s>This Month\n", (timeperiod_type == TIMEPERIOD_THISMONTH) ? "SELECTED" : "");
-			printf("<option value=last31days %s>Last 31 Days\n", (timeperiod_type == TIMEPERIOD_LAST31DAYS) ? "SELECTED" : "");
-			printf("<option value=lastmonth %s>Last Month\n", (timeperiod_type == TIMEPERIOD_LASTMONTH) ? "SELECTED" : "");
-			printf("<option value=thisyear %s>This Year\n", (timeperiod_type == TIMEPERIOD_THISYEAR) ? "SELECTED" : "");
-			printf("<option value=lastyear %s>Last Year\n", (timeperiod_type == TIMEPERIOD_LASTYEAR) ? "SELECTED" : "");
+			printf("<option selected>[ Current time range ]\n");
+			printf("<option value='today' %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "selected" : "");
+			printf("<option value='last24hours' %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "selected" : "");
+			printf("<option value='yesterday' %s>Yesterday\n", (timeperiod_type == TIMEPERIOD_YESTERDAY) ? "selected" : "");
+			printf("<option value='thisweek' %s>This Week\n", (timeperiod_type == TIMEPERIOD_THISWEEK) ? "selected" : "");
+			printf("<option value='last7days' %s>Last 7 Days\n", (timeperiod_type == TIMEPERIOD_LAST7DAYS) ? "selected" : "");
+			printf("<option value='lastweek' %s>Last Week\n", (timeperiod_type == TIMEPERIOD_LASTWEEK) ? "selected" : "");
+			printf("<option value='thismonth' %s>This Month\n", (timeperiod_type == TIMEPERIOD_THISMONTH) ? "selected" : "");
+			printf("<option value='last31days' %s>Last 31 Days\n", (timeperiod_type == TIMEPERIOD_LAST31DAYS) ? "selected" : "");
+			printf("<option value='lastmonth' %s>Last Month\n", (timeperiod_type == TIMEPERIOD_LASTMONTH) ? "selected" : "");
+			printf("<option value='thisyear' %s>This Year\n", (timeperiod_type == TIMEPERIOD_THISYEAR) ? "selected" : "");
+			printf("<option value='lastyear' %s>Last Year\n", (timeperiod_type == TIMEPERIOD_LASTYEAR) ? "selected" : "");
 			printf("</select>\n");
 			printf("</td>\n");
-			printf("<td valign=top align=left CLASS='optBoxItem'>\n");
+			printf("<td valign='top' align='left' class='optBoxItem'>\n");
 			printf("<input type='text' size='2' maxlength='2' name='backtrack' value='%d'>\n", backtrack_archives);
 			printf("</td>\n");
 			printf("</tr>\n");
 
-			printf("<tr><td valign=top align=left></td>\n");
-			printf("<td valign=top align=left CLASS='optBoxItem'>\n");
+			printf("<tr><td valign='top' align='left'></td>\n");
+			printf("<td valign='top' align='left' class='optBoxItem'>\n");
 			printf("<input type='submit' value='Update'>\n");
 			printf("</td>\n");
 			printf("</tr>\n");
@@ -594,7 +594,7 @@ int main(int argc, char **argv) {
 		end_day = t->tm_mday;
 		end_year = t->tm_year + 1900;
 
-		printf("<DIV ALIGN=CENTER CLASS='dateSelectTitle'>Step 3: Select Report Options</DIV>\n");
+		printf("<div align='center' class='dateSelectTitle'>Step 3: Select Report Options</div>\n");
 
 		printf("<form method=\"get\" action=\"%s\">\n", AVAIL_CGI);
 		printf("<input type='hidden' name='show_log_entries' value=''>\n");
@@ -607,46 +607,46 @@ int main(int argc, char **argv) {
 		if (display_type == DISPLAY_SERVICEGROUP_AVAIL)
 			printf("<input type='hidden' name='servicegroup' value='%s'>\n", escape_string(servicegroup_name));
 
-		printf("<table border=0 cellpadding=5 align='center'>\n");
+		printf("<table border='0' cellpadding='5' align='center'>\n");
 
 		printf("<tr>");
-		printf("<td valign=top class='reportSelectSubTitle'>Report Period:</td>\n");
-		printf("<td valign=top align=left class='optBoxItem'>\n");
+		printf("<td valign='top' class='reportSelectSubTitle'>Report Period:</td>\n");
+		printf("<td valign='top' align='left' class='optBoxItem'>\n");
 		printf("<select name='timeperiod'>\n");
-		printf("<option value=today>Today\n");
-		printf("<option value=last24hours>Last 24 Hours\n");
-		printf("<option value=yesterday>Yesterday\n");
-		printf("<option value=thisweek>This Week\n");
-		printf("<option value=last7days SELECTED>Last 7 Days\n");
-		printf("<option value=lastweek>Last Week\n");
-		printf("<option value=thismonth>This Month\n");
-		printf("<option value=last31days>Last 31 Days\n");
-		printf("<option value=lastmonth>Last Month\n");
-		printf("<option value=thisyear>This Year\n");
-		printf("<option value=lastyear>Last Year\n");
-		printf("<option value=custom>* CUSTOM REPORT PERIOD *\n");
+		printf("<option value='today'>Today\n");
+		printf("<option value='last24hours'>Last 24 Hours\n");
+		printf("<option value='yesterday'>Yesterday\n");
+		printf("<option value='thisweek'>This Week\n");
+		printf("<option value='last7days' selected>Last 7 Days\n");
+		printf("<option value='lastweek'>Last Week\n");
+		printf("<option value='thismonth'>This Month\n");
+		printf("<option value='last31days'>Last 31 Days\n");
+		printf("<option value='lastmonth'>Last Month\n");
+		printf("<option value='thisyear'>This Year\n");
+		printf("<option value='lastyear'>Last Year\n");
+		printf("<option value='custom'>* CUSTOM REPORT PERIOD *\n");
 		printf("</select>\n");
 		printf("</td>\n");
 		printf("</tr>\n");
 
-		printf("<tr><td valign=top class='reportSelectSubTitle'>If Custom Report Period...</td></tr>\n");
+		printf("<tr><td valign='top' class='reportSelectSubTitle'>If Custom Report Period...</td></tr>\n");
 
 		printf("<tr>");
-		printf("<td valign=top class='reportSelectSubTitle'>Start Date (Inclusive):</td>\n");
-		printf("<td align=left valign=top class='reportSelectItem'>");
+		printf("<td valign='top' class='reportSelectSubTitle'>Start Date (Inclusive):</td>\n");
+		printf("<td align='left' valign='top' class='reportSelectItem'>");
 		printf("<select name='smon'>\n");
-		printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "SELECTED" : "");
-		printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "SELECTED" : "");
-		printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "SELECTED" : "");
-		printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "SELECTED" : "");
-		printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "SELECTED" : "");
-		printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "SELECTED" : "");
-		printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "SELECTED" : "");
-		printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "SELECTED" : "");
-		printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "SELECTED" : "");
-		printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "SELECTED" : "");
-		printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "SELECTED" : "");
-		printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "SELECTED" : "");
+		printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "selected" : "");
+		printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "selected" : "");
+		printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "selected" : "");
+		printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "selected" : "");
+		printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "selected" : "");
+		printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "selected" : "");
+		printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "selected" : "");
+		printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "selected" : "");
+		printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "selected" : "");
+		printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "selected" : "");
+		printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "selected" : "");
+		printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "selected" : "");
 		printf("</select>\n ");
 		printf("<input type='text' size='2' maxlength='2' name='sday' value='%d'> ", start_day);
 		printf("<input type='text' size='4' maxlength='4' name='syear' value='%d'>", start_year);
@@ -657,21 +657,21 @@ int main(int argc, char **argv) {
 		printf("</tr>\n");
 
 		printf("<tr>");
-		printf("<td valign=top class='reportSelectSubTitle'>End Date (Inclusive):</td>\n");
-		printf("<td align=left valign=top class='reportSelectItem'>");
+		printf("<td valign='top' class='reportSelectSubTitle'>End Date (Inclusive):</td>\n");
+		printf("<td align='left' valign='top' class='reportSelectItem'>");
 		printf("<select name='emon'>\n");
-		printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "SELECTED" : "");
-		printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "SELECTED" : "");
-		printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "SELECTED" : "");
-		printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "SELECTED" : "");
-		printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "SELECTED" : "");
-		printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "SELECTED" : "");
-		printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "SELECTED" : "");
-		printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "SELECTED" : "");
-		printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "SELECTED" : "");
-		printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "SELECTED" : "");
-		printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "SELECTED" : "");
-		printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "SELECTED" : "");
+		printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "selected" : "");
+		printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "selected" : "");
+		printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "selected" : "");
+		printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "selected" : "");
+		printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "selected" : "");
+		printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "selected" : "");
+		printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "selected" : "");
+		printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "selected" : "");
+		printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "selected" : "");
+		printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "selected" : "");
+		printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "selected" : "");
+		printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "selected" : "");
 		printf("</select>\n ");
 		printf("<input type='text' size='2' maxlength='2' name='eday' value='%d'> ", end_day);
 		printf("<input type='text' size='4' maxlength='4' name='eyear' value='%d'>", end_year);
@@ -681,95 +681,95 @@ int main(int argc, char **argv) {
 		printf("</td>\n");
 		printf("</tr>\n");
 
-		printf("<tr><td colspan=2><br></td></tr>\n");
+		printf("<tr><td colspan='2'><br></td></tr>\n");
 
 		printf("<tr>");
-		printf("<td valign=top class='reportSelectSubTitle'>Report time Period:</td>\n");
-		printf("<td valign=top align=left class='optBoxItem'>\n");
+		printf("<td valign='top' class='reportSelectSubTitle'>Report time Period:</td>\n");
+		printf("<td valign='top' align='left' class='optBoxItem'>\n");
 		printf("<select name='rpttimeperiod'>\n");
-		printf("<option value=\"\">None\n");
+		printf("<option value=''>None\n");
 		/* check all the time periods... */
 		for (temp_timeperiod = timeperiod_list; temp_timeperiod != NULL; temp_timeperiod = temp_timeperiod->next)
-			printf("<option value=%s>%s\n", escape_string(temp_timeperiod->name), temp_timeperiod->name);
+			printf("<option value='%s'>%s\n", escape_string(temp_timeperiod->name), temp_timeperiod->name);
 		printf("</select>\n");
 		printf("</td>\n");
 		printf("</tr>\n");
-		printf("<tr><td colspan=2><br></td></tr>\n");
+		printf("<tr><td colspan='2'><br></td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Assume Initial States:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Assume Initial States:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='assumeinitialstates'>\n");
-		printf("<option value=yes>Yes\n");
-		printf("<option value=no>No\n");
+		printf("<option value='yes'>Yes\n");
+		printf("<option value='no'>No\n");
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Assume State Retention:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Assume State Retention:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='assumestateretention'>\n");
-		printf("<option value=yes>Yes\n");
-		printf("<option value=no>No\n");
+		printf("<option value='yes'>Yes\n");
+		printf("<option value='no'>No\n");
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Assume States During Program Downtime:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Assume States During Program Downtime:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='assumestatesduringnotrunning'>\n");
-		printf("<option value=yes>Yes\n");
-		printf("<option value=no>No\n");
+		printf("<option value='yes'>Yes\n");
+		printf("<option value='no'>No\n");
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Include Soft States:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Include Soft States:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='includesoftstates'>\n");
-		printf("<option value=yes>Yes\n");
-		printf("<option value=no SELECTED>No\n");
+		printf("<option value='yes'>Yes\n");
+		printf("<option value='no' selected>No\n");
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
 		if (display_type != DISPLAY_SERVICE_AVAIL) {
-			printf("<tr><td class='reportSelectSubTitle' align=right>First Assumed Host State:</td>\n");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>First Assumed Host State:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='initialassumedhoststate'>\n");
-			printf("<option value=%d>Unspecified\n", AS_NO_DATA);
-			printf("<option value=%d>Current State\n", AS_CURRENT_STATE);
-			printf("<option value=%d>Host Up\n", AS_HOST_UP);
-			printf("<option value=%d>Host Down\n", AS_HOST_DOWN);
-			printf("<option value=%d>Host Unreachable\n", AS_HOST_UNREACHABLE);
+			printf("<option value='%d'>Unspecified\n", AS_NO_DATA);
+			printf("<option value='%d'>Current State\n", AS_CURRENT_STATE);
+			printf("<option value='%d'>Host Up\n", AS_HOST_UP);
+			printf("<option value='%d'>Host Down\n", AS_HOST_DOWN);
+			printf("<option value='%d'>Host Unreachable\n", AS_HOST_UNREACHABLE);
 			printf("</select>\n");
 			printf("</td></tr>\n");
 		}
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>First Assumed Service State:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>First Assumed Service State:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='initialassumedservicestate'>\n");
-		printf("<option value=%d>Unspecified\n", AS_NO_DATA);
-		printf("<option value=%d>Current State\n", AS_CURRENT_STATE);
-		printf("<option value=%d>Service Ok\n", AS_SVC_OK);
-		printf("<option value=%d>Service Warning\n", AS_SVC_WARNING);
-		printf("<option value=%d>Service Unknown\n", AS_SVC_UNKNOWN);
-		printf("<option value=%d>Service Critical\n", AS_SVC_CRITICAL);
+		printf("<option value='%d'>Unspecified\n", AS_NO_DATA);
+		printf("<option value='%d'>Current State\n", AS_CURRENT_STATE);
+		printf("<option value='%d'>Service Ok\n", AS_SVC_OK);
+		printf("<option value='%d'>Service Warning\n", AS_SVC_WARNING);
+		printf("<option value='%d'>Service Unknown\n", AS_SVC_UNKNOWN);
+		printf("<option value='%d'>Service Critical\n", AS_SVC_CRITICAL);
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Backtracked Archives (To Scan For Initial States):</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Backtracked Archives (To Scan For Initial States):</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<input type='text' name='backtrack' size='2' maxlength='2' value='%d'>\n", backtrack_archives);
 		printf("</td></tr>\n");
 
 		/* CSV Output is available in all selections */
 		printf("<tr>");
-		printf("<td valign=top class='reportSelectSubTitle' style='vertical-align:middle'>Output Format:</td>\n");
-		printf("<td valign=top class='reportSelectItem'>");
-		printf("<DIV><input type='radio' name='content_type' value='html' checked> HTML</DIV>\n");
-		printf("<DIV><input type='radio' name='content_type' value='csv'> CSV</DIV>\n");
-		printf("<DIV><input type='radio' name='content_type' value='json'> JSON</DIV>\n");
-		printf("<DIV><input type='radio' name='content_type' value='xml'> XML</DIV>\n");
+		printf("<td valign='top' class='reportSelectSubTitle' style='vertical-align:middle'>Output Format:</td>\n");
+		printf("<td valign='top' class='reportSelectItem'>");
+		printf("<div><input type='radio' name='content_type' value='html' checked> HTML</div>\n");
+		printf("<div><input type='radio' name='content_type' value='csv'> CSV</div>\n");
+		printf("<div><input type='radio' name='content_type' value='json'> JSON</div>\n");
+		printf("<div><input type='radio' name='content_type' value='xml'> XML</div>\n");
 		printf("</td>\n");
 		printf("</tr>\n");
 
-		printf("<tr><td></td><td align=left class='dateSelectItem'><input type='submit' value='Create Availability Report!'></td></tr>\n");
+		printf("<tr><td></td><td align='left' class='dateSelectItem'><input type='submit' value='Create Availability Report!'></td></tr>\n");
 
 		printf("</table>\n");
 
@@ -779,14 +779,14 @@ int main(int argc, char **argv) {
 
 	/* step 2 - the user wants to select a hostgroup */
 	else if (select_hostgroups == TRUE) {
-		printf("<div align=center class='reportSelectTitle'>Step 2: Select Hostgroup</div>\n");
+		printf("<div align='center' class='reportSelectTitle'>Step 2: Select Hostgroup</div>\n");
 
 		printf("<form method=\"get\" action=\"%s\">\n", AVAIL_CGI);
 		printf("<input type='hidden' name='get_date_parts'>\n");
 
-		printf("<table border=0 cellpadding=5 align='center'>\n");
+		printf("<table border='0' cellpadding='5' align='center'>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' valign=center>Hostgroup(s):</td><td align=left valign=center class='reportSelectItem'>\n");
+		printf("<tr><td class='reportSelectSubTitle' valign='middle'>Hostgroup(s):</td><td align='left' valign='middle' class='reportSelectItem'>\n");
 		printf("<select name='hostgroup'>\n");
 		printf("<option value='all'>** ALL HOSTGROUPS **\n");
 		for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
@@ -796,7 +796,7 @@ int main(int argc, char **argv) {
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td></td><td align=left class='dateSelectItem'><input type='submit' value='Continue to Step 3'></td></tr>\n");
+		printf("<tr><td></td><td align='left' class='dateSelectItem'><input type='submit' value='Continue to Step 3'></td></tr>\n");
 
 		printf("</table>\n");
 
@@ -805,14 +805,14 @@ int main(int argc, char **argv) {
 
 	/* step 2 - the user wants to select a host */
 	else if (select_hosts == TRUE) {
-		printf("<div align=center class='reportSelectTitle'>Step 2: Select Host</div>\n");
+		printf("<div align='center' class='reportSelectTitle'>Step 2: Select Host</div>\n");
 
 		printf("<form method=\"get\" action=\"%s\">\n", AVAIL_CGI);
 		printf("<input type='hidden' name='get_date_parts'>\n");
 
-		printf("<table border=0 cellpadding=5 align='center'>\n");
+		printf("<table border='0' cellpadding='5' align='center'>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' valign=center>Host(s):</td><td align=left valign=center class='reportSelectItem'>\n");
+		printf("<tr><td class='reportSelectSubTitle' valign='middle'>Host(s):</td><td align='left' valign='middle' class='reportSelectItem'>\n");
 		printf("<select name='host'>\n");
 		printf("<option value='all'>** ALL HOSTS **\n");
 		for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
@@ -822,7 +822,7 @@ int main(int argc, char **argv) {
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td></td><td align=left class='dateSelectItem'><input type='submit' value='Continue to Step 3'></td></tr>\n");
+		printf("<tr><td></td><td align='left' class='dateSelectItem'><input type='submit' value='Continue to Step 3'></td></tr>\n");
 
 		printf("</table>\n");
 
@@ -831,14 +831,14 @@ int main(int argc, char **argv) {
 
 	/* step 2 - the user wants to select a servicegroup */
 	else if (select_servicegroups == TRUE) {
-		printf("<div align=center class='reportSelectTitle'>Step 2: Select Servicegroup</div>\n");
+		printf("<div align='center' class='reportSelectTitle'>Step 2: Select Servicegroup</div>\n");
 
 		printf("<form method=\"get\" action=\"%s\">\n", AVAIL_CGI);
 		printf("<input type='hidden' name='get_date_parts'>\n");
 
-		printf("<table border=0 cellpadding=5 align='center'>\n");
+		printf("<table border='0' cellpadding='5' align='center'>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' valign=center>Servicegroup(s):</td><td align=left valign=center class='reportSelectItem'>\n");
+		printf("<tr><td class='reportSelectSubTitle' valign='middle'>Servicegroup(s):</td><td align='left' valign='middle' class='reportSelectItem'>\n");
 		printf("<select name='servicegroup'>\n");
 		printf("<option value='all'>** ALL SERVICEGROUPS **\n");
 		for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
@@ -848,7 +848,7 @@ int main(int argc, char **argv) {
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td></td><td align=left class='dateSelectItem'><input type='submit' value='Continue to Step 3'></td></tr>\n");
+		printf("<tr><td></td><td align='left' class='dateSelectItem'><input type='submit' value='Continue to Step 3'></td></tr>\n");
 
 		printf("</table>\n");
 
@@ -858,14 +858,14 @@ int main(int argc, char **argv) {
 	/* step 2 - the user wants to select a service */
 	else if (select_services == TRUE) {
 
-		printf("<div align=center class='reportSelectTitle'>Step 2: Select Service</div>\n");
+		printf("<div align='center' class='reportSelectTitle'>Step 2: Select Service</div>\n");
 
 		printf("<form method=\"post\" action=\"%s\" name='serviceform'>\n", AVAIL_CGI);
 		printf("<input type='hidden' name='get_date_parts'>\n");
 
-		printf("<table border=0 cellpadding=5 align='center'>\n");
+		printf("<table border='0' cellpadding='5' align='center'>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' valign=center>Service(s):</td><td align=left valign=center class='reportSelectItem'>\n");
+		printf("<tr><td class='reportSelectSubTitle' valign='middle'>Service(s):</td><td align='left' valign='middle' class='reportSelectItem'>\n");
 		printf("<select name='hostservice' >\n");
 		printf("<option value='all^all'>** ALL SERVICES **\n");
 		for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
@@ -876,7 +876,7 @@ int main(int argc, char **argv) {
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td></td><td align=left class='dateSelectItem'><input type='submit' value='Continue to Step 3'></td></tr>\n");
+		printf("<tr><td></td><td align='left' class='dateSelectItem'><input type='submit' value='Continue to Step 3'></td></tr>\n");
 
 		printf("</table>\n");
 
@@ -920,17 +920,17 @@ int main(int argc, char **argv) {
 
 			if (content_type == HTML_CONTENT) {
 				get_time_breakdown((time_t)(report_end_time - report_start_time), &days, &hours, &minutes, &seconds);
-				printf("<div align=center class='reportTime'>[ Availability report completed in %d min %d sec ]</div>\n", minutes, seconds);
+				printf("<div align='center' class='reportTime'>[ Availability report completed in %d min %d sec ]</div>\n", minutes, seconds);
 
 				/* add export to csv, json, xml, link */
-				printf("<div class='csv_export_link' align=right>");
+				printf("<div class='csv_export_link' align='right'>");
 				print_export_link(CSV_CONTENT, AVAIL_CGI, NULL);
 				print_export_link(JSON_CONTENT, AVAIL_CGI, NULL);
 				print_export_link(XML_CONTENT, AVAIL_CGI, NULL);
 				print_export_link(HTML_CONTENT, AVAIL_CGI, NULL);
 				printf("</div>\n");
 
-				printf("<BR><BR>\n");
+				printf("<br><br>\n");
 			}
 
 			/* devine host header for non HTML output */
@@ -1067,23 +1067,23 @@ int main(int argc, char **argv) {
 	/* step 1 - ask the user what kind of report they want */
 	else {
 
-		printf("<div align=center class='reportSelectTitle'>Step 1: Select Report Type</div>\n");
+		printf("<div align='center' class='reportSelectTitle'>Step 1: Select Report Type</div>\n");
 
 		printf("<form method=\"get\" action=\"%s\">\n", AVAIL_CGI);
 
-		printf("<table border=0 cellpadding=5 align='center'>\n");
+		printf("<table border='0' cellpadding='5' align='center'>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Type:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Type:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='report_type'>\n");
-		printf("<option value=hostgroups>Hostgroup(s)\n");
-		printf("<option value=hosts>Host(s)\n");
-		printf("<option value=servicegroups>Servicegroup(s)\n");
-		printf("<option value=services>Service(s)\n");
+		printf("<option value='hostgroups'>Hostgroup(s)\n");
+		printf("<option value='hosts'>Host(s)\n");
+		printf("<option value='servicegroups'>Servicegroup(s)\n");
+		printf("<option value='services'>Service(s)\n");
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td></td><td align=left class='dateSelectItem'><input type='submit' value='Continue to Step 2'></td></tr>\n");
+		printf("<tr><td></td><td align='left' class='dateSelectItem'><input type='submit' value='Continue to Step 2'></td></tr>\n");
 
 		printf("</table>\n");
 
@@ -1898,7 +1898,7 @@ void compute_subject_availability(avail_subject *subject, time_t current_time) {
 
 
 #ifdef DEBUG
-	printf("--- BEGINNING/MIDDLE SECTION ---<BR>\n");
+	printf("--- BEGINNING/MIDDLE SECTION ---<br>\n");
 #endif
 
 	/**********************************/
@@ -1975,7 +1975,7 @@ void compute_subject_availability(avail_subject *subject, time_t current_time) {
 
 
 #ifdef DEBUG
-	printf("--- END SECTION ---<BR>\n");
+	printf("--- END SECTION ---<br>\n");
 #endif
 
 	/**********************************/
@@ -2297,7 +2297,7 @@ void compute_subject_downtime_times(time_t start_time, time_t end_time, avail_su
 	archived_state *last = NULL;
 
 #ifdef DEBUG2
-	printf("<P><b>ENTERING COMPUTE_SUBJECT_DOWNTIME_TIMES: start=%lu, end=%lu, t1=%lu, t2=%lu </b></P>", start_time, end_time, t1, t2);
+	printf("<p><b>ENTERING COMPUTE_SUBJECT_DOWNTIME_TIMES: start=%lu, end=%lu, t1=%lu, t2=%lu </b></p>", start_time, end_time, t1, t2);
 #endif
 
 	/* times are weird, so bail out... */
@@ -2309,22 +2309,22 @@ void compute_subject_downtime_times(time_t start_time, time_t end_time, avail_su
 	/* find starting point in archived state list */
 	if (sd == NULL) {
 #ifdef DEBUG2
-		printf("<P>TEMP_AS=SUBJECT->AS_LIST </P>");
+		printf("<p>TEMP_AS=SUBJECT->AS_LIST </p>");
 #endif
 		temp_as = subject->as_list;
 	} else if (sd->misc_ptr == NULL) {
 #ifdef DEBUG2
-		printf("<P>TEMP_AS=SUBJECT->AS_LIST</P>");
+		printf("<p>TEMP_AS=SUBJECT->AS_LIST</p>");
 #endif
 		temp_as = subject->as_list;
 	} else if (sd->misc_ptr->next == NULL) {
 #ifdef DEBUG2
-		printf("<P>TEMP_AS=SD->MISC_PTR</P>");
+		printf("<p>TEMP_AS=SD->MISC_PTR</p>");
 #endif
 		temp_as = sd->misc_ptr;
 	} else {
 #ifdef DEBUG2
-		printf("<P>TEMP_AS=SD->MISC_PTR->NEXT</P>");
+		printf("<p>TEMP_AS=SD->MISC_PTR->NEXT</p>");
 #endif
 		temp_as = sd->misc_ptr->next;
 	}
@@ -2335,19 +2335,19 @@ void compute_subject_downtime_times(time_t start_time, time_t end_time, avail_su
 		part_subject_state = AS_NO_DATA;
 	else if (temp_as->processed_state == AS_PROGRAM_START || temp_as->processed_state == AS_PROGRAM_END || temp_as->processed_state == AS_NO_DATA) {
 #ifdef DEBUG2
-		printf("<P>ENTRY TYPE #1: %d</P>", temp_as->entry_type);
+		printf("<p>ENTRY TYPE #1: %d</p>", temp_as->entry_type);
 #endif
 		part_subject_state = AS_NO_DATA;
 	} else {
 #ifdef DEBUG2
-		printf("<P>ENTRY TYPE #2: %d</P>", temp_as->entry_type);
+		printf("<p>ENTRY TYPE #2: %d</p>", temp_as->entry_type);
 #endif
 		part_subject_state = temp_as->processed_state;
 	}
 
 #ifdef DEBUG2
-	printf("<P>TEMP_AS=%s</P>", (temp_as == NULL) ? "NULL" : "Not NULL");
-	printf("<P>SD=%s</P>", (sd == NULL) ? "NULL" : "Not NULL");
+	printf("<p>TEMP_AS=%s</p>", (temp_as == NULL) ? "NULL" : "Not NULL");
+	printf("<p>SD=%s</p>", (sd == NULL) ? "NULL" : "Not NULL");
 #endif
 
 	/* temp_as now points to first event to possibly "break" this chunk */
@@ -3177,11 +3177,11 @@ void write_log_entries(avail_subject *subject) {
 	}
 
 	if (content_type == HTML_CONTENT) {
-		printf("<BR><BR>\n");
+		printf("<br><br>\n");
 
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>%s Log Entries:</DIV>\n", (subject->type == HOST_SUBJECT) ? "Host" : "Service");
+		printf("<div align='center' class='dataTitle'>%s Log Entries:</div>\n", (subject->type == HOST_SUBJECT) ? "Host" : "Service");
 
-		printf("<DIV ALIGN=CENTER CLASS='infoMessage'>");
+		printf("<div align='center' class='infoMessage'>");
 		if (full_log_entries == TRUE) {
 			full_log_entries = FALSE;
 			if (subject->type == HOST_SUBJECT)
@@ -3197,9 +3197,9 @@ void write_log_entries(avail_subject *subject) {
 				service_report_url(subject->host_name, subject->service_description, "[ View full log entries ]");
 			full_log_entries = FALSE;
 		}
-		printf("</DIV>\n");
+		printf("</div>\n");
 
-		printf("<table border=1 cellspacing=0 cellpadding=3 class='logEntries' align='center'>\n");
+		printf("<table border='1' cellspacing='0' cellpadding='3' class='logEntries' align='center'>\n");
 		printf("<tr><th class='logEntries'>Event Start Time</th><th class='logEntries'>Event End Time</th><th class='logEntries'>Event Duration</th><th class='logEntries'>Event/State Type</th><th class='logEntries'>Event/State Information</th></tr>\n");
 
 	} else if (content_type == XML_CONTENT)
@@ -3459,10 +3459,10 @@ void display_specific_hostgroup_availability(hostgroup *hg) {
 
 
 	if (content_type == HTML_CONTENT) {
-		printf("<BR><BR>\n");
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Hostgroup '%s' Host State Breakdowns:</DIV>\n", hg->group_name);
-		printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
-		printf("<TR><TH CLASS='data'>Host</TH><TH CLASS='data'>%% Time Up</TH><TH CLASS='data'>%% Time Down</TH><TH CLASS='data'>%% Time Unreachable</TH><TH CLASS='data'>%% Time Undetermined</TH></TR>\n");
+		printf("<br><br>\n");
+		printf("<div align='center' class='dataTitle'>Hostgroup '%s' Host State Breakdowns:</div>\n", hg->group_name);
+		printf("<table border='0' class='data' align='center'>\n");
+		printf("<tr><th class='data'>Host</th><th class='data'>%% Time Up</th><th class='data'>%% Time Down</th><th class='data'>%% Time Unreachable</th><th class='data'>%% Time Undetermined</th></tr>\n");
 	} else if (content_type == JSON_CONTENT) {
 		printf("\"hostgroup\": {\n");
 		printf("\"hostgroup_name\": \"%s\",\n", json_encode(hg->group_name));
@@ -3526,9 +3526,9 @@ void display_specific_hostgroup_availability(hostgroup *hg) {
 
 		if (content_type == HTML_CONTENT) {
 
-			printf("<tr CLASS='data%s'><td CLASS='data%s'>", bgclass, bgclass);
+			printf("<tr class='data%s'><td class='data%s'>", bgclass, bgclass);
 			host_report_url(temp_subject->host_name, temp_subject->host_name);
-			printf("</td><td CLASS='hostUP'>%2.3f%% (%2.3f%%)</td><td CLASS='hostDOWN'>%2.3f%% (%2.3f%%)</td><td CLASS='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_up, percent_time_up_known, percent_time_down, percent_time_down_known, percent_time_unreachable, percent_time_unreachable_known, bgclass, percent_time_indeterminate);
+			printf("</td><td class='hostUP'>%2.3f%% (%2.3f%%)</td><td class='hostDOWN'>%2.3f%% (%2.3f%%)</td><td class='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_up, percent_time_up_known, percent_time_down, percent_time_down_known, percent_time_unreachable, percent_time_unreachable_known, bgclass, percent_time_indeterminate);
 
 		} else if (content_type == JSON_CONTENT) {
 			if (json_start != TRUE)
@@ -3697,7 +3697,7 @@ void display_specific_hostgroup_availability(hostgroup *hg) {
 	}
 
 	if (content_type == HTML_CONTENT) {
-		printf("<tr CLASS='data%s'><td CLASS='data%s'>Average</td><td CLASS='hostUP'>%2.3f%% (%2.3f%%)</td><td CLASS='hostDOWN'>%2.3f%% (%2.3f%%)</td><td CLASS='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>", bgclass, bgclass, average_percent_time_up, average_percent_time_up_known, average_percent_time_down, average_percent_time_down_known, average_percent_time_unreachable, average_percent_time_unreachable_known, bgclass, average_percent_time_indeterminate);
+		printf("<tr class='data%s'><td class='data%s'>Average</td><td class='hostUP'>%2.3f%% (%2.3f%%)</td><td class='hostDOWN'>%2.3f%% (%2.3f%%)</td><td class='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>", bgclass, bgclass, average_percent_time_up, average_percent_time_up_known, average_percent_time_down, average_percent_time_down_known, average_percent_time_unreachable, average_percent_time_unreachable_known, bgclass, average_percent_time_indeterminate);
 		printf("</table>\n");
 	} else if (content_type == JSON_CONTENT) {
 		printf("],\n");
@@ -3857,10 +3857,10 @@ void display_specific_servicegroup_availability(servicegroup *sg) {
 	total_time = calculate_total_time(t1, t2);
 
 	if (content_type == HTML_CONTENT) {
-		printf("<BR><BR>\n");
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Servicegroup '%s' Host State Breakdowns:</DIV>\n", sg->group_name);
-		printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
-		printf("<TR><TH CLASS='data'>Host</TH><TH CLASS='data'>%% Time Up</TH><TH CLASS='data'>%% Time Down</TH><TH CLASS='data'>%% Time Unreachable</TH><TH CLASS='data'>%% Time Undetermined</TH></TR>\n");
+		printf("<br><br>\n");
+		printf("<div align='center' class='dataTitle'>Servicegroup '%s' Host State Breakdowns:</div>\n", sg->group_name);
+		printf("<table border='0' class='data' align='center'>\n");
+		printf("<tr><th class='data'>Host</th><th class='data'>%% Time Up</th><th class='data'>%% Time Down</th><th class='data'>%% Time Unreachable</th><th class='data'>%% Time Undetermined</th></tr>\n");
 	} else if (content_type == XML_CONTENT) {
 		printf("<servicegroup name=\"%s\">\n", sg->group_name);
 		printf("<hosts>\n");
@@ -3925,9 +3925,9 @@ void display_specific_servicegroup_availability(servicegroup *sg) {
 
 		if (content_type == HTML_CONTENT) {
 
-			printf("<tr CLASS='data%s'><td CLASS='data%s'>", bgclass, bgclass);
+			printf("<tr class='data%s'><td class='data%s'>", bgclass, bgclass);
 			host_report_url(temp_subject->host_name, temp_subject->host_name);
-			printf("</td><td CLASS='hostUP'>%2.3f%% (%2.3f%%)</td><td CLASS='hostDOWN'>%2.3f%% (%2.3f%%)</td><td CLASS='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_up, percent_time_up_known, percent_time_down, percent_time_down_known, percent_time_unreachable, percent_time_unreachable_known, bgclass, percent_time_indeterminate);
+			printf("</td><td class='hostUP'>%2.3f%% (%2.3f%%)</td><td class='hostDOWN'>%2.3f%% (%2.3f%%)</td><td class='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_up, percent_time_up_known, percent_time_down, percent_time_down_known, percent_time_unreachable, percent_time_unreachable_known, bgclass, percent_time_indeterminate);
 
 		} else if (content_type == JSON_CONTENT) {
 			if (json_start != TRUE)
@@ -4095,15 +4095,15 @@ void display_specific_servicegroup_availability(servicegroup *sg) {
 
 	if (content_type == HTML_CONTENT) {
 
-		printf("<tr CLASS='data%s'><td CLASS='data%s'>Average</td><td CLASS='hostUP'>%2.3f%% (%2.3f%%)</td><td CLASS='hostDOWN'>%2.3f%% (%2.3f%%)</td><td CLASS='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>", bgclass, bgclass, average_percent_time_up, average_percent_time_up_known, average_percent_time_down, average_percent_time_down_known, average_percent_time_unreachable, average_percent_time_unreachable_known, bgclass, average_percent_time_indeterminate);
+		printf("<tr class='data%s'><td class='data%s'>Average</td><td class='hostUP'>%2.3f%% (%2.3f%%)</td><td class='hostDOWN'>%2.3f%% (%2.3f%%)</td><td class='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>", bgclass, bgclass, average_percent_time_up, average_percent_time_up_known, average_percent_time_down, average_percent_time_down_known, average_percent_time_unreachable, average_percent_time_unreachable_known, bgclass, average_percent_time_indeterminate);
 
 		printf("</table>\n");
 
-		printf("<BR>\n");
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Servicegroup '%s' Service State Breakdowns:</DIV>\n", sg->group_name);
+		printf("<br>\n");
+		printf("<div align='center' class='dataTitle'>Servicegroup '%s' Service State Breakdowns:</div>\n", sg->group_name);
 
-		printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
-		printf("<TR><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>%% Time OK</TH><TH CLASS='data'>%% Time Warning</TH><TH CLASS='data'>%% Time Unknown</TH><TH CLASS='data'>%% Time Critical</TH><TH CLASS='data'>%% Time Undetermined</TH></TR>\n");
+		printf("<table border='0' class='data' align='center'>\n");
+		printf("<tr><th class='data'>Host</th><th class='data'>Service</th><th class='data'>%% Time OK</th><th class='data'>%% Time Warning</th><th class='data'>%% Time Unknown</th><th class='data'>%% Time Critical</th><th class='data'>%% Time Undetermined</th></tr>\n");
 
 	} else if (content_type == JSON_CONTENT) {
 		printf(" ],\n");
@@ -4197,12 +4197,12 @@ void display_specific_servicegroup_availability(servicegroup *sg) {
 
 		if (content_type == HTML_CONTENT) {
 
-			printf("<tr CLASS='data%s'><td CLASS='data%s'>", bgclass, bgclass);
+			printf("<tr class='data%s'><td class='data%s'>", bgclass, bgclass);
 			if (strcmp(temp_subject->host_name, last_host))
 				host_report_url(temp_subject->host_name, temp_subject->host_name);
-			printf("</td><td CLASS='data%s'>", bgclass);
+			printf("</td><td class='data%s'>", bgclass);
 			service_report_url(temp_subject->host_name, temp_subject->service_description, (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
-			printf("</td><td CLASS='serviceOK'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_ok, percent_time_ok_known, percent_time_warning, percent_time_warning_known, percent_time_unknown, percent_time_unknown_known, percent_time_critical, percent_time_critical_known, bgclass, percent_time_indeterminate);
+			printf("</td><td class='serviceOK'>%2.3f%% (%2.3f%%)</td><td class='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td class='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_ok, percent_time_ok_known, percent_time_warning, percent_time_warning_known, percent_time_unknown, percent_time_unknown_known, percent_time_critical, percent_time_critical_known, bgclass, percent_time_indeterminate);
 
 			strncpy(last_host, temp_subject->host_name, sizeof(last_host) - 1);
 			last_host[sizeof(last_host)-1] = '\x0';
@@ -4415,7 +4415,7 @@ void display_specific_servicegroup_availability(servicegroup *sg) {
 	}
 
 	if (content_type == HTML_CONTENT) {
-		printf("<tr CLASS='data%s'><td CLASS='data%s' colspan='2'>Average</td><td CLASS='serviceOK'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", bgclass, bgclass, average_percent_time_ok, average_percent_time_ok_known, average_percent_time_warning, average_percent_time_warning_known, average_percent_time_unknown, average_percent_time_unknown_known, average_percent_time_critical, average_percent_time_critical_known, bgclass, average_percent_time_indeterminate);
+		printf("<tr class='data%s'><td class='data%s' colspan='2'>Average</td><td class='serviceOK'>%2.3f%% (%2.3f%%)</td><td class='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td class='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", bgclass, bgclass, average_percent_time_ok, average_percent_time_ok_known, average_percent_time_warning, average_percent_time_warning_known, average_percent_time_unknown, average_percent_time_unknown_known, average_percent_time_critical, average_percent_time_critical_known, bgclass, average_percent_time_indeterminate);
 		printf("</table>\n");
 	} else if (content_type == JSON_CONTENT) {
 		printf(" ],\n");
@@ -4636,57 +4636,57 @@ void display_host_availability(void) {
 		if (content_type == HTML_CONTENT || content_type == JSON_CONTENT || content_type == XML_CONTENT) {
 
 			if (content_type == HTML_CONTENT) {
-				printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Host State Breakdowns:</DIV>\n");
+				printf("<div align='center' class='dataTitle'>Host State Breakdowns:</div>\n");
 
 #ifdef USE_TRENDS
 				printf("<p align='center'>\n");
 				printf("<a href='%s?host=%s", TRENDS_CGI, url_encode(host_name));
 				printf("&t1=%lu&t2=%lu&includesoftstates=%s&assumestateretention=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedhoststate=%d&backtrack=%d'>", t1, t2, (include_soft_states == TRUE) ? "yes" : "no", (assume_state_retention == TRUE) ? "yes" : "no", (assume_initial_states == TRUE) ? "yes" : "no", (assume_states_during_notrunning == TRUE) ? "yes" : "no", initial_assumed_host_state, backtrack_archives);
 				printf("<img src='%s?createimage&smallimage&host=%s", TRENDS_CGI, url_encode(host_name));
-				printf("&t1=%lu&t2=%lu&includesoftstates=%s&assumestateretention=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedhoststate=%d&backtrack=%d' border=1 alt='Host State Trends' title='Host State Trends' width='500' height='20'>", t1, t2, (include_soft_states == TRUE) ? "yes" : "no", (assume_state_retention == TRUE) ? "yes" : "no", (assume_initial_states == TRUE) ? "yes" : "no", (assume_states_during_notrunning == TRUE) ? "yes" : "no", initial_assumed_host_state, backtrack_archives);
+				printf("&t1=%lu&t2=%lu&includesoftstates=%s&assumestateretention=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedhoststate=%d&backtrack=%d' border='1' alt='Host State Trends' title='Host State Trends' width='500' height='20'>", t1, t2, (include_soft_states == TRUE) ? "yes" : "no", (assume_state_retention == TRUE) ? "yes" : "no", (assume_initial_states == TRUE) ? "yes" : "no", (assume_states_during_notrunning == TRUE) ? "yes" : "no", initial_assumed_host_state, backtrack_archives);
 				printf("</a><br>\n");
 				printf("</p>\n");
 #endif
-				printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
-				printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Type / Reason</TH><TH CLASS='data'>Time</TH><TH CLASS='data'>%% Total Time</TH><TH CLASS='data'>%% Known Time</TH></TR>\n");
+				printf("<table border='0' class='data' align='center'>\n");
+				printf("<tr><th class='data'>State</th><th class='data'>Type / Reason</th><th class='data'>Time</th><th class='data'>%% Total Time</th><th class='data'>%% Known Time</th></tr>\n");
 
 				/* up times */
-				printf("<tr CLASS='dataEven'><td CLASS='hostUP' rowspan=3>UP</td>");
-				printf("<td CLASS='dataEven'>Unscheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_up_unscheduled_string, percent_time_up, percent_time_up_known);
-				printf("<tr CLASS='dataEven'><td CLASS='dataEven'>Scheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_up_scheduled_string, percent_time_up_scheduled, percent_time_up_scheduled_known);
-				printf("<tr CLASS='hostUP'><td CLASS='hostUP'>Total</td><td CLASS='hostUP'>%s</td><td CLASS='hostUP'>%2.3f%%</td><td class='hostUP'>%2.3f%%</td></tr>\n", time_up_string, percent_time_up, percent_time_up_known);
+				printf("<tr class='dataEven'><td class='hostUP' rowspan=3>UP</td>");
+				printf("<td class='dataEven'>Unscheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_up_unscheduled_string, percent_time_up, percent_time_up_known);
+				printf("<tr class='dataEven'><td class='dataEven'>Scheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_up_scheduled_string, percent_time_up_scheduled, percent_time_up_scheduled_known);
+				printf("<tr class='hostUP'><td class='hostUP'>Total</td><td class='hostUP'>%s</td><td class='hostUP'>%2.3f%%</td><td class='hostUP'>%2.3f%%</td></tr>\n", time_up_string, percent_time_up, percent_time_up_known);
 
 				/* down times */
-				printf("<tr CLASS='dataOdd'><td CLASS='hostDOWN' rowspan=3>DOWN</td>");
-				printf("<td CLASS='dataOdd'>Unscheduled</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td class='dataOdd'>%2.3f%%</td></tr>\n", time_down_unscheduled_string, percent_time_down_unscheduled, percent_time_down_unscheduled_known);
-				printf("<tr CLASS='dataOdd'><td CLASS='dataOdd'>Scheduled</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td class='dataOdd'>%2.3f%%</td></tr>\n", time_down_scheduled_string, percent_time_down_scheduled, percent_time_down_scheduled_known);
-				printf("<tr CLASS='hostDOWN'><td CLASS='hostDOWN'>Total</td><td CLASS='hostDOWN'>%s</td><td CLASS='hostDOWN'>%2.3f%%</td><td class='hostDOWN'>%2.3f%%</td></tr>\n", time_down_string, percent_time_down, percent_time_down_known);
+				printf("<tr class='dataOdd'><td class='hostDOWN' rowspan=3>DOWN</td>");
+				printf("<td class='dataOdd'>Unscheduled</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'>%2.3f%%</td></tr>\n", time_down_unscheduled_string, percent_time_down_unscheduled, percent_time_down_unscheduled_known);
+				printf("<tr class='dataOdd'><td class='dataOdd'>Scheduled</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'>%2.3f%%</td></tr>\n", time_down_scheduled_string, percent_time_down_scheduled, percent_time_down_scheduled_known);
+				printf("<tr class='hostDOWN'><td class='hostDOWN'>Total</td><td class='hostDOWN'>%s</td><td class='hostDOWN'>%2.3f%%</td><td class='hostDOWN'>%2.3f%%</td></tr>\n", time_down_string, percent_time_down, percent_time_down_known);
 
 				/* unreachable times */
-				printf("<tr CLASS='dataEven'><td CLASS='hostUNREACHABLE' rowspan=3>UNREACHABLE</td>");
-				printf("<td CLASS='dataEven'>Unscheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_unreachable_unscheduled_string, percent_time_unreachable, percent_time_unreachable_known);
-				printf("<tr CLASS='dataEven'><td CLASS='dataEven'>Scheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_unreachable_scheduled_string, percent_time_unreachable_scheduled, percent_time_unreachable_scheduled_known);
-				printf("<tr CLASS='hostUNREACHABLE'><td CLASS='hostUNREACHABLE'>Total</td><td CLASS='hostUNREACHABLE'>%s</td><td CLASS='hostUNREACHABLE'>%2.3f%%</td><td class='hostUNREACHABLE'>%2.3f%%</td></tr>\n", time_unreachable_string, percent_time_unreachable, percent_time_unreachable_known);
+				printf("<tr class='dataEven'><td class='hostUNREACHABLE' rowspan=3>UNREACHABLE</td>");
+				printf("<td class='dataEven'>Unscheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_unreachable_unscheduled_string, percent_time_unreachable, percent_time_unreachable_known);
+				printf("<tr class='dataEven'><td class='dataEven'>Scheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_unreachable_scheduled_string, percent_time_unreachable_scheduled, percent_time_unreachable_scheduled_known);
+				printf("<tr class='hostUNREACHABLE'><td class='hostUNREACHABLE'>Total</td><td class='hostUNREACHABLE'>%s</td><td class='hostUNREACHABLE'>%2.3f%%</td><td class='hostUNREACHABLE'>%2.3f%%</td></tr>\n", time_unreachable_string, percent_time_unreachable, percent_time_unreachable_known);
 
 				/* indeterminate times */
-				printf("<tr CLASS='dataOdd'><td CLASS='dataOdd' rowspan=3>Undetermined</td>");
-				printf("<td CLASS='dataOdd'>%s Not Running</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'></td></tr>\n", PROGRAM_VERSION, time_indeterminate_notrunning_string, percent_time_indeterminate_notrunning);
-				printf("<tr CLASS='dataOdd'><td CLASS='dataOdd'>Insufficient Data</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'></td></tr>\n", time_indeterminate_nodata_string, percent_time_indeterminate_nodata);
-				printf("<tr CLASS='dataOdd'><td CLASS='dataOdd'>Total</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'></td></tr>\n", time_indeterminate_string, percent_time_indeterminate);
+				printf("<tr class='dataOdd'><td class='dataOdd' rowspan=3>Undetermined</td>");
+				printf("<td class='dataOdd'>%s Not Running</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'></td></tr>\n", PROGRAM_VERSION, time_indeterminate_notrunning_string, percent_time_indeterminate_notrunning);
+				printf("<tr class='dataOdd'><td class='dataOdd'>Insufficient Data</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'></td></tr>\n", time_indeterminate_nodata_string, percent_time_indeterminate_nodata);
+				printf("<tr class='dataOdd'><td class='dataOdd'>Total</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'></td></tr>\n", time_indeterminate_string, percent_time_indeterminate);
 
-				printf("<tr><td colspan=3></td></tr>\n");
+				printf("<tr><td colspan='3'></td></tr>\n");
 
-				printf("<tr CLASS='dataEven'><td CLASS='dataEven'>All</td><td class='dataEven'>Total</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>100.000%%</td><td CLASS='dataEven'>100.000%%</td></tr>\n", total_time_string);
+				printf("<tr class='dataEven'><td class='dataEven'>All</td><td class='dataEven'>Total</td><td class='dataEven'>%s</td><td class='dataEven'>100.000%%</td><td class='dataEven'>100.000%%</td></tr>\n", total_time_string);
 				printf("</table>\n");
 
 
 				/* display state breakdowns for all services on this host */
 
-				printf("<BR><BR>\n");
-				printf("<DIV ALIGN=CENTER CLASS='dataTitle'>State Breakdowns For Host Services:</DIV>\n");
+				printf("<br><br>\n");
+				printf("<div align='center' class='dataTitle'>State Breakdowns For Host Services:</div>\n");
 
-				printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
-				printf("<TR><TH CLASS='data'>Service</TH><TH CLASS='data'>%% Time OK</TH><TH CLASS='data'>%% Time Warning</TH><TH CLASS='data'>%% Time Unknown</TH><TH CLASS='data'>%% Time Critical</TH><TH CLASS='data'>%% Time Undetermined</TH></TR>\n");
+				printf("<table border='0' class='data' align='center'>\n");
+				printf("<tr><th class='data'>Service</th><th class='data'>%% Time OK</th><th class='data'>%% Time Warning</th><th class='data'>%% Time Unknown</th><th class='data'>%% Time Critical</th><th class='data'>%% Time Undetermined</th></tr>\n");
 
 			} else if (content_type == JSON_CONTENT) {
 
@@ -4851,9 +4851,9 @@ void display_host_availability(void) {
 				}
 
 				if (content_type == HTML_CONTENT) {
-					printf("<tr CLASS='data%s'><td CLASS='data%s'>", bgclass, bgclass);
+					printf("<tr class='data%s'><td class='data%s'>", bgclass, bgclass);
 					service_report_url(temp_subject->host_name, temp_subject->service_description, temp_subject->service_description);
-					printf("</td><td CLASS='serviceOK'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_ok, percent_time_ok_known, percent_time_warning, percent_time_warning_known, percent_time_unknown, percent_time_unknown_known, percent_time_critical, percent_time_critical_known, bgclass, percent_time_indeterminate);
+					printf("</td><td class='serviceOK'>%2.3f%% (%2.3f%%)</td><td class='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td class='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_ok, percent_time_ok_known, percent_time_warning, percent_time_warning_known, percent_time_unknown, percent_time_unknown_known, percent_time_critical, percent_time_critical_known, bgclass, percent_time_indeterminate);
 				} else if (content_type == XML_CONTENT) {
 					printf("<service name=\"%s\">\n", temp_subject->service_description);
 					printf("<percent_time_ok>%2.3f</percent_time_ok>\n", percent_time_ok);
@@ -4905,7 +4905,7 @@ void display_host_availability(void) {
 			}
 
 			if (content_type == HTML_CONTENT) {
-				printf("<tr CLASS='data%s'><td CLASS='data%s'>Average</td><td CLASS='serviceOK'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", bgclass, bgclass, average_percent_time_ok, average_percent_time_ok_known, average_percent_time_warning, average_percent_time_warning_known, average_percent_time_unknown, average_percent_time_unknown_known, average_percent_time_critical, average_percent_time_critical_known, bgclass, average_percent_time_indeterminate);
+				printf("<tr class='data%s'><td class='data%s'>Average</td><td class='serviceOK'>%2.3f%% (%2.3f%%)</td><td class='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td class='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", bgclass, bgclass, average_percent_time_ok, average_percent_time_ok_known, average_percent_time_warning, average_percent_time_warning_known, average_percent_time_unknown, average_percent_time_unknown_known, average_percent_time_critical, average_percent_time_critical_known, bgclass, average_percent_time_indeterminate);
 				printf("</table>\n");
 			} else if (content_type == XML_CONTENT) {
 				printf("<all_services_average>\n");
@@ -5011,11 +5011,11 @@ void display_host_availability(void) {
 
 		if (content_type == HTML_CONTENT) {
 
-			printf("<BR><BR>\n");
-			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Host State Breakdowns:</DIV>\n");
+			printf("<br><br>\n");
+			printf("<div align='center' class='dataTitle'>Host State Breakdowns:</div>\n");
 
-			printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
-			printf("<TR><TH CLASS='data'>Host</TH><TH CLASS='data'>%% Time Up</TH><TH CLASS='data'>%% Time Down</TH><TH CLASS='data'>%% Time Unreachable</TH><TH CLASS='data'>%% Time Undetermined</TH></TR>\n");
+			printf("<table border='0' class='data' align='center'>\n");
+			printf("<tr><th class='data'>Host</th><th class='data'>%% Time Up</th><th class='data'>%% Time Down</th><th class='data'>%% Time Unreachable</th><th class='data'>%% Time Undetermined</th></tr>\n");
 		} else if (content_type == JSON_CONTENT) {
 			printf("\"host_availability\": {\n");
 			printf("\"hosts\": [\n");
@@ -5114,9 +5114,9 @@ void display_host_availability(void) {
 					bgclass = "Even";
 				}
 
-				printf("<tr CLASS='data%s'><td CLASS='data%s'>", bgclass, bgclass);
+				printf("<tr class='data%s'><td class='data%s'>", bgclass, bgclass);
 				host_report_url(temp_subject->host_name, temp_subject->host_name);
-				printf("</td><td CLASS='hostUP'>%2.3f%% (%2.3f%%)</td><td CLASS='hostDOWN'>%2.3f%% (%2.3f%%)</td><td CLASS='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_up, percent_time_up_known, percent_time_down, percent_time_down_known, percent_time_unreachable, percent_time_unreachable_known, bgclass, percent_time_indeterminate);
+				printf("</td><td class='hostUP'>%2.3f%% (%2.3f%%)</td><td class='hostDOWN'>%2.3f%% (%2.3f%%)</td><td class='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_up, percent_time_up_known, percent_time_down, percent_time_down_known, percent_time_unreachable, percent_time_unreachable_known, bgclass, percent_time_indeterminate);
 			} else if (content_type == JSON_CONTENT) {
 				if (json_start != TRUE)
 					printf(",\n");
@@ -5297,7 +5297,7 @@ void display_host_availability(void) {
 				odd = 1;
 				bgclass = "Even";
 			}
-			printf("<tr CLASS='data%s'><td CLASS='data%s'>Average</td><td CLASS='hostUP'>%2.3f%% (%2.3f%%)</td><td CLASS='hostDOWN'>%2.3f%% (%2.3f%%)</td><td CLASS='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s'  align='center'>%2.3f%%</td></tr>", bgclass, bgclass, average_percent_time_up, average_percent_time_up_known, average_percent_time_down, average_percent_time_down_known, average_percent_time_unreachable, average_percent_time_unreachable_known, bgclass, average_percent_time_indeterminate);
+			printf("<tr class='data%s'><td class='data%s'>Average</td><td class='hostUP'>%2.3f%% (%2.3f%%)</td><td class='hostDOWN'>%2.3f%% (%2.3f%%)</td><td class='hostUNREACHABLE'>%2.3f%% (%2.3f%%)</td><td class='data%s'  align='center'>%2.3f%%</td></tr>", bgclass, bgclass, average_percent_time_up, average_percent_time_up_known, average_percent_time_down, average_percent_time_down_known, average_percent_time_unreachable, average_percent_time_unreachable_known, bgclass, average_percent_time_indeterminate);
 			printf("</table>\n");
 		} else if (content_type == JSON_CONTENT) {
 			printf(" ],\n");
@@ -5519,56 +5519,56 @@ void display_service_availability(void) {
 
 		if (content_type == HTML_CONTENT) {
 
-			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Service State Breakdowns:</DIV>\n");
+			printf("<div align='center' class='dataTitle'>Service State Breakdowns:</div>\n");
 #ifdef USE_TRENDS
 			printf("<p align='center'>\n");
 			printf("<a href='%s?host=%s", TRENDS_CGI, url_encode(host_name));
 			printf("&service=%s&t1=%lu&t2=%lu&includesoftstates=%s&assumestateretention=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedservicestate=%d&backtrack=%d'>", url_encode(service_desc), t1, t2, (include_soft_states == TRUE) ? "yes" : "no", (assume_state_retention == TRUE) ? "yes" : "no", (assume_initial_states == TRUE) ? "yes" : "no", (assume_states_during_notrunning == TRUE) ? "yes" : "no", initial_assumed_service_state, backtrack_archives);
 			printf("<img src='%s?createimage&smallimage&host=%s", TRENDS_CGI, url_encode(host_name));
-			printf("&service=%s&t1=%lu&t2=%lu&includesoftstates=%s&assumestateretention=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedservicestate=%d&backtrack=%d' border=1 alt='Service State Trends' title='Service State Trends' width='500' height='20'>", url_encode(service_desc), t1, t2, (include_soft_states == TRUE) ? "yes" : "no", (assume_state_retention == TRUE) ? "yes" : "no", (assume_initial_states == TRUE) ? "yes" : "no", (assume_states_during_notrunning == TRUE) ? "yes" : "no", initial_assumed_service_state, backtrack_archives);
+			printf("&service=%s&t1=%lu&t2=%lu&includesoftstates=%s&assumestateretention=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedservicestate=%d&backtrack=%d' border='1' alt='Service State Trends' title='Service State Trends' width='500' height='20'>", url_encode(service_desc), t1, t2, (include_soft_states == TRUE) ? "yes" : "no", (assume_state_retention == TRUE) ? "yes" : "no", (assume_initial_states == TRUE) ? "yes" : "no", (assume_states_during_notrunning == TRUE) ? "yes" : "no", initial_assumed_service_state, backtrack_archives);
 			printf("</a><br>\n");
 			printf("</p>\n");
 #endif
 
-			printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
-			printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Type / Reason</TH><TH CLASS='data'>Time</TH><TH CLASS='data'>%% Total Time</TH><TH CLASS='data'>%% Known Time</TH></TR>\n");
+			printf("<table border='0' class='data' align='center'>\n");
+			printf("<tr><th class='data'>State</th><th class='data'>Type / Reason</th><th class='data'>Time</th><th class='data'>%% Total Time</th><th class='data'>%% Known Time</th></tr>\n");
 
 			/* ok states */
-			printf("<tr CLASS='dataEven'><td CLASS='serviceOK' rowspan=3>OK</td>");
-			printf("<td CLASS='dataEven'>Unscheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'>%2.3f%%</td></tr>\n", time_ok_unscheduled_string, percent_time_ok_unscheduled, percent_time_ok_unscheduled_known);
-			printf("<tr CLASS='dataEven'><td CLASS='dataEven'>Scheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'>%2.3f%%</td></tr>\n", time_ok_scheduled_string, percent_time_ok_scheduled, percent_time_ok_scheduled_known);
-			printf("<tr CLASS='serviceOK'><td CLASS='serviceOK'>Total</td><td CLASS='serviceOK'>%s</td><td CLASS='serviceOK'>%2.3f%%</td><td CLASS='serviceOK'>%2.3f%%</td></tr>\n", time_ok_string, percent_time_ok, percent_time_ok_known);
+			printf("<tr class='dataEven'><td class='serviceOK' rowspan=3>OK</td>");
+			printf("<td class='dataEven'>Unscheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_ok_unscheduled_string, percent_time_ok_unscheduled, percent_time_ok_unscheduled_known);
+			printf("<tr class='dataEven'><td class='dataEven'>Scheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_ok_scheduled_string, percent_time_ok_scheduled, percent_time_ok_scheduled_known);
+			printf("<tr class='serviceOK'><td class='serviceOK'>Total</td><td class='serviceOK'>%s</td><td class='serviceOK'>%2.3f%%</td><td class='serviceOK'>%2.3f%%</td></tr>\n", time_ok_string, percent_time_ok, percent_time_ok_known);
 
 			/* warning states */
-			printf("<tr CLASS='dataOdd'><td CLASS='serviceWARNING' rowspan=3>WARNING</td>");
-			printf("<td CLASS='dataOdd'>Unscheduled</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'>%2.3f%%</td></tr>\n", time_warning_unscheduled_string, percent_time_warning_unscheduled, percent_time_warning_unscheduled_known);
-			printf("<tr CLASS='dataOdd'><td CLASS='dataOdd'>Scheduled</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'>%2.3f%%</td></tr>\n", time_warning_scheduled_string, percent_time_warning_scheduled, percent_time_warning_scheduled_known);
-			printf("<tr CLASS='serviceWARNING'><td CLASS='serviceWARNING'>Total</td><td CLASS='serviceWARNING'>%s</td><td CLASS='serviceWARNING'>%2.3f%%</td><td CLASS='serviceWARNING'>%2.3f%%</td></tr>\n", time_warning_string, percent_time_warning, percent_time_warning_known);
+			printf("<tr class='dataOdd'><td class='serviceWARNING' rowspan=3>WARNING</td>");
+			printf("<td class='dataOdd'>Unscheduled</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'>%2.3f%%</td></tr>\n", time_warning_unscheduled_string, percent_time_warning_unscheduled, percent_time_warning_unscheduled_known);
+			printf("<tr class='dataOdd'><td class='dataOdd'>Scheduled</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'>%2.3f%%</td></tr>\n", time_warning_scheduled_string, percent_time_warning_scheduled, percent_time_warning_scheduled_known);
+			printf("<tr class='serviceWARNING'><td class='serviceWARNING'>Total</td><td class='serviceWARNING'>%s</td><td class='serviceWARNING'>%2.3f%%</td><td class='serviceWARNING'>%2.3f%%</td></tr>\n", time_warning_string, percent_time_warning, percent_time_warning_known);
 
 			/* unknown states */
-			printf("<tr CLASS='dataEven'><td CLASS='serviceUNKNOWN' rowspan=3>UNKNOWN</td>");
-			printf("<td CLASS='dataEven'>Unscheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'>%2.3f%%</td></tr>\n", time_unknown_unscheduled_string, percent_time_unknown_unscheduled, percent_time_unknown_unscheduled_known);
-			printf("<tr CLASS='dataEven'><td CLASS='dataEven'>Scheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'>%2.3f%%</td></tr>\n", time_unknown_scheduled_string, percent_time_unknown_scheduled, percent_time_unknown_scheduled_known);
-			printf("<tr CLASS='serviceUNKNOWN'><td CLASS='serviceUNKNOWN'>Total</td><td CLASS='serviceUNKNOWN'>%s</td><td CLASS='serviceUNKNOWN'>%2.3f%%</td><td CLASS='serviceUNKNOWN'>%2.3f%%</td></tr>\n", time_unknown_string, percent_time_unknown, percent_time_unknown_known);
+			printf("<tr class='dataEven'><td class='serviceUNKNOWN' rowspan=3>UNKNOWN</td>");
+			printf("<td class='dataEven'>Unscheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_unknown_unscheduled_string, percent_time_unknown_unscheduled, percent_time_unknown_unscheduled_known);
+			printf("<tr class='dataEven'><td class='dataEven'>Scheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'>%2.3f%%</td></tr>\n", time_unknown_scheduled_string, percent_time_unknown_scheduled, percent_time_unknown_scheduled_known);
+			printf("<tr class='serviceUNKNOWN'><td class='serviceUNKNOWN'>Total</td><td class='serviceUNKNOWN'>%s</td><td class='serviceUNKNOWN'>%2.3f%%</td><td class='serviceUNKNOWN'>%2.3f%%</td></tr>\n", time_unknown_string, percent_time_unknown, percent_time_unknown_known);
 
 			/* critical states */
-			printf("<tr CLASS='dataOdd'><td CLASS='serviceCRITICAL' rowspan=3>CRITICAL</td>");
-			printf("<td CLASS='dataOdd'>Unscheduled</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'>%2.3f%%</td></tr>\n", time_critical_unscheduled_string, percent_time_critical_unscheduled, percent_time_critical_unscheduled_known);
-			printf("<tr CLASS='dataOdd'><td CLASS='dataOdd'>Scheduled</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>%2.3f%%</td><td CLASS='dataOdd'>%2.3f%%</td></tr>\n", time_critical_scheduled_string, percent_time_critical_scheduled, percent_time_critical_scheduled_known);
-			printf("<tr CLASS='serviceCRITICAL'><td CLASS='serviceCRITICAL'>Total</td><td CLASS='serviceCRITICAL'>%s</td><td CLASS='serviceCRITICAL'>%2.3f%%</td><td CLASS='serviceCRITICAL'>%2.3f%%</td></tr>\n", time_critical_string, percent_time_critical, percent_time_critical_known);
+			printf("<tr class='dataOdd'><td class='serviceCRITICAL' rowspan=3>CRITICAL</td>");
+			printf("<td class='dataOdd'>Unscheduled</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'>%2.3f%%</td></tr>\n", time_critical_unscheduled_string, percent_time_critical_unscheduled, percent_time_critical_unscheduled_known);
+			printf("<tr class='dataOdd'><td class='dataOdd'>Scheduled</td><td class='dataOdd'>%s</td><td class='dataOdd'>%2.3f%%</td><td class='dataOdd'>%2.3f%%</td></tr>\n", time_critical_scheduled_string, percent_time_critical_scheduled, percent_time_critical_scheduled_known);
+			printf("<tr class='serviceCRITICAL'><td class='serviceCRITICAL'>Total</td><td class='serviceCRITICAL'>%s</td><td class='serviceCRITICAL'>%2.3f%%</td><td class='serviceCRITICAL'>%2.3f%%</td></tr>\n", time_critical_string, percent_time_critical, percent_time_critical_known);
 
 
-			printf("<tr CLASS='dataEven'><td CLASS='dataEven' rowspan=3>Undetermined</td>");
+			printf("<tr class='dataEven'><td class='dataEven' rowspan=3>Undetermined</td>");
 			/*
-			printf("<td CLASS='dataEven'>Unscheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n",time_indeterminate_unscheduled_string,percent_time_indeterminate_unscheduled);
-			printf("<tr CLASS='dataEven'><td CLASS='dataEven'>Scheduled</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n",time_indeterminate_scheduled_string,percent_time_indeterminate_scheduled);
+			printf("<td class='dataEven'>Unscheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n",time_indeterminate_unscheduled_string,percent_time_indeterminate_unscheduled);
+			printf("<tr class='dataEven'><td class='dataEven'>Scheduled</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n",time_indeterminate_scheduled_string,percent_time_indeterminate_scheduled);
 			*/
-			printf("<td CLASS='dataEven'>%s Not Running</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n", PROGRAM_VERSION, time_indeterminate_notrunning_string, percent_time_indeterminate_notrunning);
-			printf("<tr CLASS='dataEven'><td CLASS='dataEven'>Insufficient Data</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n", time_indeterminate_nodata_string, percent_time_indeterminate_nodata);
-			printf("<tr CLASS='dataEven'><td CLASS='dataEven'>Total</td><td CLASS='dataEven'>%s</td><td CLASS='dataEven'>%2.3f%%</td><td CLASS='dataEven'></td></tr>\n", time_indeterminate_string, percent_time_indeterminate);
+			printf("<td class='dataEven'>%s Not Running</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n", PROGRAM_VERSION, time_indeterminate_notrunning_string, percent_time_indeterminate_notrunning);
+			printf("<tr class='dataEven'><td class='dataEven'>Insufficient Data</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n", time_indeterminate_nodata_string, percent_time_indeterminate_nodata);
+			printf("<tr class='dataEven'><td class='dataEven'>Total</td><td class='dataEven'>%s</td><td class='dataEven'>%2.3f%%</td><td class='dataEven'></td></tr>\n", time_indeterminate_string, percent_time_indeterminate);
 
-			printf("<tr><td colspan=3></td></tr>\n");
-			printf("<tr CLASS='dataOdd'><td CLASS='dataOdd'>All</td><td CLASS='dataOdd'>Total</td><td CLASS='dataOdd'>%s</td><td CLASS='dataOdd'>100.000%%</td><td CLASS='dataOdd'>100.000%%</td></tr>\n", total_time_string);
+			printf("<tr><td colspan='3'></td></tr>\n");
+			printf("<tr class='dataOdd'><td class='dataOdd'>All</td><td class='dataOdd'>Total</td><td class='dataOdd'>%s</td><td class='dataOdd'>100.000%%</td><td class='dataOdd'>100.000%%</td></tr>\n", total_time_string);
 			printf("</table>\n");
 
 		} else if (content_type == JSON_CONTENT) {
@@ -5791,10 +5791,10 @@ void display_service_availability(void) {
 
 		if (content_type == HTML_CONTENT) {
 
-			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>Service State Breakdowns:</DIV>\n");
+			printf("<div align='center' class='dataTitle'>Service State Breakdowns:</div>\n");
 
-			printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
-			printf("<TR><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>%% Time OK</TH><TH CLASS='data'>%% Time Warning</TH><TH CLASS='data'>%% Time Unknown</TH><TH CLASS='data'>%% Time Critical</TH><TH CLASS='data'>%% Time Undetermined</TH></TR>\n");
+			printf("<table border='0' class='data' align='center'>\n");
+			printf("<tr><th class='data'>Host</th><th class='data'>Service</th><th class='data'>%% Time OK</th><th class='data'>%% Time Warning</th><th class='data'>%% Time Unknown</th><th class='data'>%% Time Critical</th><th class='data'>%% Time Undetermined</th></tr>\n");
 
 		} else if (content_type == JSON_CONTENT) {
 			printf("\"service_availability\": {\n");
@@ -5906,12 +5906,12 @@ void display_service_availability(void) {
 					bgclass = "Even";
 				}
 
-				printf("<tr CLASS='data%s'><td CLASS='data%s'>", bgclass, bgclass);
+				printf("<tr class='data%s'><td class='data%s'>", bgclass, bgclass);
 				if (strcmp(temp_subject->host_name, last_host))
 					host_report_url(temp_subject->host_name, temp_subject->host_name);
-				printf("</td><td CLASS='data%s'>", bgclass);
+				printf("</td><td class='data%s'>", bgclass);
 				service_report_url(temp_subject->host_name, temp_subject->service_description, temp_subject->service_description);
-				printf("</td><td CLASS='serviceOK'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_ok, percent_time_ok_known, percent_time_warning, percent_time_warning_known, percent_time_unknown, percent_time_unknown_known, percent_time_critical, percent_time_critical_known, bgclass, percent_time_indeterminate);
+				printf("</td><td class='serviceOK'>%2.3f%% (%2.3f%%)</td><td class='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td class='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", percent_time_ok, percent_time_ok_known, percent_time_warning, percent_time_warning_known, percent_time_unknown, percent_time_unknown_known, percent_time_critical, percent_time_critical_known, bgclass, percent_time_indeterminate);
 
 			} else if (content_type == JSON_CONTENT) {
 				if (json_start != TRUE)
@@ -6138,7 +6138,7 @@ void display_service_availability(void) {
 				odd = 1;
 				bgclass = "Even";
 			}
-			printf("<tr CLASS='data%s'><td CLASS='data%s' colspan='2'>Average</td><td CLASS='serviceOK'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td CLASS='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", bgclass, bgclass, average_percent_time_ok, average_percent_time_ok_known, average_percent_time_warning, average_percent_time_warning_known, average_percent_time_unknown, average_percent_time_unknown_known, average_percent_time_critical, average_percent_time_critical_known, bgclass, average_percent_time_indeterminate);
+			printf("<tr class='data%s'><td class='data%s' colspan='2'>Average</td><td class='serviceOK'>%2.3f%% (%2.3f%%)</td><td class='serviceWARNING'>%2.3f%% (%2.3f%%)</td><td class='serviceUNKNOWN'>%2.3f%% (%2.3f%%)</td><td class='serviceCRITICAL'>%2.3f%% (%2.3f%%)</td><td class='data%s' align='center'>%2.3f%%</td></tr>\n", bgclass, bgclass, average_percent_time_ok, average_percent_time_ok_known, average_percent_time_warning, average_percent_time_warning_known, average_percent_time_unknown, average_percent_time_unknown_known, average_percent_time_critical, average_percent_time_critical_known, bgclass, average_percent_time_indeterminate);
 			printf("</table>\n");
 		} else if (content_type == XML_CONTENT) {
 			printf("<all_services_average>\n");

@@ -120,7 +120,7 @@ int main(void) {
 	/* read the CGI configuration file */
 	result = read_cgi_config_file(get_cgi_config_location());
 	if (result == ERROR) {
-		printf("<P>Error: Could not open CGI configuration file '%s' for reading!</P>\n", get_cgi_config_location());
+		printf("<p>Error: Could not open CGI configuration file '%s' for reading!</p>\n", get_cgi_config_location());
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -128,7 +128,7 @@ int main(void) {
 	/* read the main configuration file */
 	result = read_main_config_file(main_config_file);
 	if (result == ERROR) {
-		printf("<P>Error: Could not open main configuration file '%s' for reading!</P>\n", main_config_file);
+		printf("<p>Error: Could not open main configuration file '%s' for reading!</p>\n", main_config_file);
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -136,7 +136,7 @@ int main(void) {
 	/* read all object configuration data */
 	result = read_all_object_configuration_data(main_config_file, READ_ALL_OBJECT_DATA);
 	if (result == ERROR) {
-		printf("<P>Error: Could not read some or all object configuration data!</P>\n");
+		printf("<p>Error: Could not read some or all object configuration data!</p>\n");
 		document_footer(CGI_ID);
 		return ERROR;
 	}
@@ -144,7 +144,7 @@ int main(void) {
 	/* read all status data */
 	result = read_all_status_data(main_config_file, READ_ALL_STATUS_DATA);
 	if (result == ERROR && daemon_check == TRUE) {
-		printf("<P>Error: Could not read host and service status information!</P>\n");
+		printf("<p>Error: Could not read host and service status information!</p>\n");
 		document_footer(CGI_ID);
 		free_memory();
 		return ERROR;

@@ -520,46 +520,46 @@ void display_page_header(void) {
 	if (display_header == TRUE) {
 
 		/* begin top table */
-		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+		printf("<table border='0' width='100%%' cellspacing='0' cellpadding='0'>\n");
 		printf("<tr>\n");
 
 		/* left column of the first row */
-		printf("<td align=left valign=top>\n");
+		printf("<td align='left' valign='top'>\n");
 
 		if (show_all_hosts == TRUE)
 			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Network Map For All Hosts");
 		else
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Network Map For Host <I>%s</I>", host_name);
+			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Network Map For Host <i>%s</i>", host_name);
 		temp_buffer[sizeof(temp_buffer) - 1] = '\x0';
 		display_info_table(temp_buffer, &current_authdata, daemon_check);
 
-		printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
-		printf("<TR><TD CLASS='linkBox'>\n");
+		printf("<table border='1' cellpadding='0' cellspacing='0' class='linkBox'>\n");
+		printf("<tr><td class='linkBox'>\n");
 
 		if (show_all_hosts == FALSE) {
-			printf("<a href='%s?host=all&max_width=%d&max_height=%d'>View <b>Status Map</b> For <b>All Hosts</b></a><br>", STATUSMAP_CGI, max_image_width, max_image_height);
+			printf("<a href='%s?host=all&max_width='%d'&max_height=%d'>View <b>Status Map</b> For <b>All Hosts</b></a><br>", STATUSMAP_CGI, max_image_width, max_image_height);
 			printf("<a href='%s?host=%s'>View <b>Service Status Detail</b> For <b>This Host</b></a><br>\n", STATUS_CGI, url_encode(host_name));
 		}
 		printf("<a href='%s?host=all&style=hostdetail'>View <b>Host Status Detail</b> For <b>All Hosts</b></a><br>\n", STATUS_CGI);
 		printf("<a href='%s?host=all'>View <b>Service Status Detail</b> For <b>All Hosts</b></a>\n", STATUS_CGI);
 
-		printf("</TD></TR>\n");
-		printf("</TABLE>\n");
+		printf("</td></tr>\n");
+		printf("</table>\n");
 
 		printf("</td>\n");
 
 
 
 		/* center column of top row */
-		printf("<td align=center valign=center>\n");
+		printf("<td align='center' valign='middle'>\n");
 
 		/* print image size and scaling info */
 #ifdef DEBUG
-		printf("<p><div align=center><font size=-1>\n");
+		printf("<p><div align='center'><font size=-1>\n");
 		printf("[ Raw Image Size: %d x %d pixels | Scaling Factor: %1.2lf | Scaled Image Size: %d x %d pixels ]", canvas_width, canvas_height, scaling_factor, (int)(canvas_width * scaling_factor), (int)(canvas_height * scaling_factor));
 		printf("</font></div></p>\n");
 
-		printf("<p><div align=center><font size=-1>\n");
+		printf("<p><div align='center'><font size=-1>\n");
 		printf("[ Canvas_x: %d | Canvas_y: %d | Canvas_width: %d | Canvas_height: %d ]", canvas_x, canvas_y, canvas_width, canvas_height);
 		printf("</font></div></p>\n");
 #endif
@@ -567,7 +567,7 @@ void display_page_header(void) {
 		/* zoom links */
 		if (user_supplied_canvas == FALSE && strcmp(host_name, "all") && display_header == TRUE) {
 
-			printf("<p><div align=center>\n");
+			printf("<p><div align='center'>\n");
 
 			zoom_width_granularity = ((total_image_width - MINIMUM_PROXIMITY_WIDTH) / 11);
 			if (zoom_width_granularity == 0)
@@ -581,24 +581,24 @@ void display_page_header(void) {
 			if (current_zoom_granularity > 10)
 				current_zoom_granularity = 10;
 
-			printf("<table border=0 cellpadding=0 cellspacing=2>\n");
+			printf("<table border='0' cellpadding='0' cellspacing='2'>\n");
 			printf("<tr>\n");
-			printf("<td valign=center class='zoomTitle'>Zoom Out&nbsp;&nbsp;</td>\n");
+			printf("<td valign='middle' class='zoomTitle'>Zoom Out&nbsp;&nbsp;</td>\n");
 
 			for (zoom = 0; zoom <= 10; zoom++) {
 
 				zoom_width = total_image_width - (zoom * zoom_width_granularity);
 				zoom_height = total_image_height - (zoom * zoom_height_granularity);
 
-				printf("<td valign=center><a href='%s?host=%s&layout=%d&max_width=%d&max_height=%d&proximity_width=%d&proximity_height=%d%s%s", STATUSMAP_CGI, url_encode(host_name), layout_method, max_image_width, max_image_height, zoom_width, zoom_height, (display_header == TRUE) ? "" : "&noheader", (display_popups == FALSE) ? "&nopopups" : "");
+				printf("<td valign='middle'><a href='%s?host=%s&layout=%d&max_width='%d'&max_height=%d&proximity_width='%d'&proximity_height=%d%s%s", STATUSMAP_CGI, url_encode(host_name), layout_method, max_image_width, max_image_height, zoom_width, zoom_height, (display_header == TRUE) ? "" : "&noheader", (display_popups == FALSE) ? "&nopopups" : "");
 				if (user_supplied_scaling == TRUE)
 					printf("&scaling_factor=%2.1f", user_scaling_factor);
 				print_layer_url(TRUE);
 				printf("'>");
-				printf("<img src='%s%s' border=0 alt='%d' title='%d'></a></td>\n", url_images_path, (current_zoom_granularity == zoom) ? ZOOM2_ICON : ZOOM1_ICON, zoom, zoom);
+				printf("<img src='%s%s' border='0' alt='%d' title='%d'></a></td>\n", url_images_path, (current_zoom_granularity == zoom) ? ZOOM2_ICON : ZOOM1_ICON, zoom, zoom);
 			}
 
-			printf("<td valign=center class='zoomTitle'>&nbsp;&nbsp;Zoom In</td>\n");
+			printf("<td valign='middle' class='zoomTitle'>&nbsp;&nbsp;Zoom In</td>\n");
 			printf("</tr>\n");
 			printf("</table>\n");
 
@@ -610,52 +610,52 @@ void display_page_header(void) {
 
 
 		/* right hand column of top row */
-		printf("<td align=right valign=top>\n");
+		printf("<td align='right' valign='top'>\n");
 
 		printf("<form method=\"POST\" action=\"%s\">\n", STATUSMAP_CGI);
-		printf("<table border=0 CLASS='optBox'>\n");
-		printf("<tr><td valign=top>\n");
+		printf("<table border='0' class='optBox'>\n");
+		printf("<tr><td valign='top'>\n");
 		printf("<input type='hidden' name='host' value='%s'>\n", escape_string(host_name));
 		printf("<input type='hidden' name='layout' value='%d'>\n", layout_method);
 
-		printf("</td><td valign=top>\n");
+		printf("</td><td valign='top'>\n");
 
-		printf("<table border=0>\n");
+		printf("<table border='0'>\n");
 
-		printf("<tr><td CLASS='optBoxItem'>\n");
+		printf("<tr><td class='optBoxItem'>\n");
 		printf("Layout Method:<br>\n");
 		printf("<select name='layout'>\n");
 #ifndef DUMMY_INSTALL
-		printf("<option value=%d %s>User-supplied coords\n", LAYOUT_USER_SUPPLIED, (layout_method == LAYOUT_USER_SUPPLIED) ? "selected" : "");
+		printf("<option value='%d' %s>User-supplied coords\n", LAYOUT_USER_SUPPLIED, (layout_method == LAYOUT_USER_SUPPLIED) ? "selected" : "");
 #endif
-		printf("<option value=%d %s>Depth layers\n", LAYOUT_SUBLAYERS, (layout_method == LAYOUT_SUBLAYERS) ? "selected" : "");
-		printf("<option value=%d %s>Collapsed tree\n", LAYOUT_COLLAPSED_TREE, (layout_method == LAYOUT_COLLAPSED_TREE) ? "selected" : "");
-		printf("<option value=%d %s>Balanced tree\n", LAYOUT_BALANCED_TREE, (layout_method == LAYOUT_BALANCED_TREE) ? "selected" : "");
-		printf("<option value=%d %s>Circular\n", LAYOUT_CIRCULAR, (layout_method == LAYOUT_CIRCULAR) ? "selected" : "");
-		printf("<option value=%d %s>Circular (Marked Up)\n", LAYOUT_CIRCULAR_MARKUP, (layout_method == LAYOUT_CIRCULAR_MARKUP) ? "selected" : "");
-		printf("<option value=%d %s>Circular (Balloon)\n", LAYOUT_CIRCULAR_BALLOON, (layout_method == LAYOUT_CIRCULAR_BALLOON) ? "selected" : "");
+		printf("<option value='%d' %s>Depth layers\n", LAYOUT_SUBLAYERS, (layout_method == LAYOUT_SUBLAYERS) ? "selected" : "");
+		printf("<option value='%d' %s>Collapsed tree\n", LAYOUT_COLLAPSED_TREE, (layout_method == LAYOUT_COLLAPSED_TREE) ? "selected" : "");
+		printf("<option value='%d' %s>Balanced tree\n", LAYOUT_BALANCED_TREE, (layout_method == LAYOUT_BALANCED_TREE) ? "selected" : "");
+		printf("<option value='%d' %s>Circular\n", LAYOUT_CIRCULAR, (layout_method == LAYOUT_CIRCULAR) ? "selected" : "");
+		printf("<option value='%d' %s>Circular (Marked Up)\n", LAYOUT_CIRCULAR_MARKUP, (layout_method == LAYOUT_CIRCULAR_MARKUP) ? "selected" : "");
+		printf("<option value='%d' %s>Circular (Balloon)\n", LAYOUT_CIRCULAR_BALLOON, (layout_method == LAYOUT_CIRCULAR_BALLOON) ? "selected" : "");
 		printf("</select>\n");
 		printf("</td>\n");
-		printf("<td CLASS='optBoxItem'>\n");
+		printf("<td class='optBoxItem'>\n");
 		printf("Scaling factor:<br>\n");
 		printf("<input type='text' name='scaling_factor' maxlength='5' size='4' value='%2.1f'>\n", (user_supplied_scaling == TRUE) ? user_scaling_factor : 0.0);
 		printf("</td></tr>\n");
 
 		/*
-		printf("<tr><td CLASS='optBoxItem'>\n");
+		printf("<tr><td class='optBoxItem'>\n");
 		printf("Max image width:<br>\n");
 		printf("<input type='text' name='max_width' maxlength='5' size='4' value='%d'>\n",max_image_width);
 		printf("</td>\n");
-		printf("<td CLASS='optBoxItem'>\n");
+		printf("<td class='optBoxItem'>\n");
 		printf("Max image height:<br>\n");
 		printf("<input type='text' name='max_height' maxlength='5' size='4' value='%d'>\n",max_image_height);
 		printf("</td></tr>\n");
 
-		printf("<tr><td CLASS='optBoxItem'>\n");
+		printf("<tr><td class='optBoxItem'>\n");
 		printf("Proximity width:<br>\n");
 		printf("<input type='text' name='proximity_width' maxlength='5' size='4' value='%d'>\n",proximity_width);
 		printf("</td>\n");
-		printf("<td CLASS='optBoxItem'>\n");
+		printf("<td class='optBoxItem'>\n");
 		printf("Proximity height:<br>\n");
 		printf("<input type='text' name='proximity_height' maxlength='5' size='4' value='%d'>\n",proximity_height);
 		printf("</td></tr>\n");
@@ -666,7 +666,7 @@ void display_page_header(void) {
 		printf("<input type='hidden' name='proximity_width' value='%d'>\n", proximity_width);
 		printf("<input type='hidden' name='proximity_height' value='%d'>\n", proximity_height);
 
-		printf("<tr><td CLASS='optBoxItem'>Drawing Layers:<br>\n");
+		printf("<tr><td class='optBoxItem'>Drawing Layers:<br>\n");
 		printf("<select multiple name='layer' size='4'>\n");
 		for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
 			if (is_authorized_for_hostgroup(temp_hostgroup, &current_authdata) == FALSE)
@@ -678,18 +678,18 @@ void display_page_header(void) {
 					break;
 				}
 			}
-			printf("<option value='%s' %s>%s\n", escape_string(temp_hostgroup->group_name), (found == 1) ? "SELECTED" : "", temp_hostgroup->alias);
+			printf("<option value='%s' %s>%s\n", escape_string(temp_hostgroup->group_name), (found == 1) ? "selected" : "", temp_hostgroup->alias);
 		}
 		printf("</select>\n");
-		printf("</td><td CLASS='optBoxItem' valign=top>Layer mode:<br>");
+		printf("</td><td class='optBoxItem' valign='top'>Layer mode:<br>");
 		printf("<input type='radio' name='layermode' value='include' %s>Include<br>\n", (exclude_layers == FALSE) ? "CHECKED" : "");
 		printf("<input type='radio' name='layermode' value='exclude' %s>Exclude\n", (exclude_layers == TRUE) ? "CHECKED" : "");
 		printf("</td></tr>\n");
 
-		printf("<tr><td CLASS='optBoxItem'>\n");
+		printf("<tr><td class='optBoxItem'>\n");
 		printf("Suppress popups:<br>\n");
 		printf("<input type='checkbox' name='nopopups' %s>\n", (display_popups == FALSE) ? "CHECKED" : "");
-		printf("</td><td CLASS='optBoxItem'>\n");
+		printf("</td><td class='optBoxItem'>\n");
 		printf("<input type='submit' value='Update'>\n");
 		printf("</td></tr>\n");
 		printf("</table>\n");
@@ -743,12 +743,12 @@ void display_map(void) {
 
 	/* write the URL location for the image we just generated - the web browser will come and get it... */
 	if (content_type == HTML_CONTENT) {
-		printf("<P><DIV ALIGN=center>\n");
+		printf("<p><div align='center'>\n");
 		printf("<img src='%s?host=%s&createimage&time=%lu", STATUSMAP_CGI, url_encode(host_name), (unsigned long)time(NULL));
-		printf("&canvas_x=%d&canvas_y=%d&canvas_width=%d&canvas_height=%d&max_width=%d&max_height=%d&layout=%d%s%s%s", canvas_x, canvas_y, canvas_width, canvas_height, max_image_width, max_image_height, layout_method, (use_links == FALSE) ? "&nolinks" : "", (use_text == FALSE) ? "&notext" : "", (use_highlights == FALSE) ? "&nohighlights" : "");
+		printf("&canvas_x=%d&canvas_y=%d&canvas_width='%d'&canvas_height=%d&max_width='%d'&max_height=%d&layout=%d%s%s%s", canvas_x, canvas_y, canvas_width, canvas_height, max_image_width, max_image_height, layout_method, (use_links == FALSE) ? "&nolinks" : "", (use_text == FALSE) ? "&notext" : "", (use_highlights == FALSE) ? "&nohighlights" : "");
 		print_layer_url(TRUE);
-		printf("' width=%d height=%d border=0 name='statusimage' useMap='#statusmap'>\n", (int)(canvas_width * scaling_factor), (int)(canvas_height * scaling_factor));
-		printf("</DIV></P>\n");
+		printf("' width='%d' height='%d' border='0' name='statusimage' useMap='#statusmap'>\n", (int)(canvas_width * scaling_factor), (int)(canvas_height * scaling_factor));
+		printf("</div></p>\n");
 	}
 
 	return;
@@ -1766,7 +1766,7 @@ void draw_hosts(void) {
 
 		/* we're creating HTML image map... */
 		else {
-			printf("<AREA shape='rect' ");
+			printf("<aREA shape='rect' ");
 
 			/* coordinates */
 			printf("coords='%d,%d,%d,%d' ", (int)(x1 * scaling_factor), (int)(y1 * scaling_factor), (int)((x1 + DEFAULT_NODE_WIDTH)*scaling_factor), (int)((y1 + DEFAULT_NODE_HEIGHT)*scaling_factor));
@@ -1775,7 +1775,7 @@ void draw_hosts(void) {
 			if (!strcmp(host_name, temp_host->name))
 				printf("href='%s?host=%s' ", STATUS_CGI, url_encode(temp_host->name));
 			else {
-				printf("href='%s?host=%s&layout=%d&max_width=%d&max_height=%d&proximity_width=%d&proximity_height=%d%s%s%s%s%s", STATUSMAP_CGI, url_encode(temp_host->name), layout_method, max_image_width, max_image_height, proximity_width, proximity_height, (display_header == TRUE) ? "" : "&noheader", (use_links == FALSE) ? "&nolinks" : "", (use_text == FALSE) ? "&notext" : "", (use_highlights == FALSE) ? "&nohighlights" : "", (display_popups == FALSE) ? "&nopopups" : "");
+				printf("href='%s?host=%s&layout=%d&max_width='%d'&max_height=%d&proximity_width='%d'&proximity_height=%d%s%s%s%s%s", STATUSMAP_CGI, url_encode(temp_host->name), layout_method, max_image_width, max_image_height, proximity_width, proximity_height, (display_header == TRUE) ? "" : "&noheader", (use_links == FALSE) ? "&nolinks" : "", (use_text == FALSE) ? "&notext" : "", (use_highlights == FALSE) ? "&nohighlights" : "", (display_popups == FALSE) ? "&nopopups" : "");
 				if (user_supplied_scaling == TRUE)
 					printf("&scaling_factor=%2.1f", user_scaling_factor);
 				print_layer_url(TRUE);
@@ -1909,7 +1909,7 @@ void write_host_popup_text(host *hst) {
 	/* strip nasty stuff from plugin output */
 	sanitize_plugin_output(temp_status->plugin_output);
 
-	printf("<table border=0 cellpadding=0 cellspacing=5>");
+	printf("<table border='0' cellpadding='0' cellspacing='5'>");
 
 	printf("<tr><td><img src=\\\"%s", url_logo_images_path);
 	if (hst->icon_image == NULL)
@@ -1919,7 +1919,7 @@ void write_host_popup_text(host *hst) {
 		printf("%s", processed_string);
 		free(processed_string);
 	}
-	printf("\\\" border=0 width=40 height=40></td>");
+	printf("\\\" border='0' width='40' height='40'></td>");
 	printf("<td class=\\\"popupText\\\"><i>%s</i></td></tr>", (hst->icon_image_alt == NULL) ? "" : html_encode(hst->icon_image_alt, TRUE));
 
 	printf("<tr><td class=\\\"popupText\\\">Name:</td><td class=\\\"popupText\\\"><b>%s</b></td></tr>", escape_string(hst->name));
