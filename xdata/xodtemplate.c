@@ -1128,13 +1128,12 @@ int xodtemplate_begin_object_definition(char *input, int options, int config_fil
 		xod_begin_def(hostescalation);
 		new_hostescalation->first_notification = -2;
 		new_hostescalation->last_notification = -2;
-#ifdef USE_ST_BASED_ESCAL_RANGE
+		/* state based escalation ranges */
 		new_hostescalation->first_down_notification = -2;
 		new_hostescalation->last_down_notification = -2;
 		new_hostescalation->first_unreachable_notification = -2;
 		new_hostescalation->last_unreachable_notification = -2;
 		new_hostescalation->notification_interval = -2.0;
-#endif
 		break;
 
 	case XODTEMPLATE_HOSTEXTINFO:
