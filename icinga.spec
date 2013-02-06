@@ -188,6 +188,9 @@ install -D -m 0644 icinga.htpasswd %{buildroot}%{_sysconfdir}/%{name}/passwd
 install -d -m0755 "%{buildroot}%{_includedir}/%{name}/"
 install -m0644 include/*.h "%{buildroot}%{_includedir}/%{name}"
 
+# create perfdata dir by default
+install -d -m0755 "%{buildroot}%{_localstatedir}/spool/%{name}/perfdata"
+
 %pre
 # Add icinga user
 %{_sbindir}/groupadd icinga 2> /dev/null || :
