@@ -64,7 +64,6 @@ extern int accept_passive_service_checks;
 extern int accept_passive_host_checks;
 extern int enable_event_handlers;
 extern int enable_flap_detection;
-extern int nagios_process_state;
 extern int tac_show_only_hard_state;
 extern int show_tac_header;
 extern int show_tac_header_pending;

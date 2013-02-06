@@ -69,7 +69,6 @@ int		highlight_table_rows = TRUE;
 
 char            nagios_check_command[MAX_INPUT_BUFFER] = "";
 char            nagios_process_info[MAX_INPUT_BUFFER] = "";
-int             nagios_process_state = STATE_OK;
 
 int             enable_splunk_integration = FALSE;
 char            *splunk_url = NULL;
@@ -268,7 +267,6 @@ void reset_cgi_vars(void) {
 
 	strcpy(nagios_check_command, "");
 	strcpy(nagios_process_info, "");
-	nagios_process_state = STATE_OK;
 
 	log_rotation_method = LOG_ROTATION_NONE;
 	cgi_log_rotation_method = LOG_ROTATION_NONE;
@@ -1150,7 +1148,6 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("\"icinga_status\": {\n");
 
 		printf("\"status_data_age\": %lu,\n", current_time - status_file_creation_time);
-		printf("\"process_state_ok\": %s,\n", (nagios_process_state == STATE_OK) ? "true" : "false");
 		printf("\"reading_status_data_ok\": %s,\n", (result == ERROR && daemon_check == TRUE) ? "false" : "true");
 		printf("\"program_version\": \"%s\",\n", PROGRAM_VERSION);
 		printf("\"icinga_pid\": %d,\n", nagios_pid);
@@ -2065,9 +2062,6 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 		}
 		free(dir_to_check);
 	}
-
-	if (nagios_process_state != STATE_OK)
-		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Monitoring process may not be running!<BR>Click <A HREF='%s?type=%d'>here</A> for more info.</DIV>", EXTINFO_CGI, DISPLAY_PROCESS_INFO);
 
 	if (result == ERROR && daemon_check == TRUE)
 		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Could not read program status information!</DIV>");

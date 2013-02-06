@@ -43,7 +43,6 @@ extern servicestatus *servicestatus_list;
 extern int	use_ssl_authentication;
 extern int      enable_notifications;
 extern int      execute_service_checks;
-extern int      nagios_process_state;
 
 extern char     *ping_syntax;
 
@@ -447,11 +446,6 @@ void display_process(void) {
 		printf("</card>\n");
 		return;
 	}
-
-	if (nagios_process_state == STATE_OK)
-		printf("%s process is running<br/>\n", PROGRAM_NAME);
-	else
-		printf("<b>%s process may not be running</b><br/>\n", PROGRAM_NAME);
 
 	if (enable_notifications == TRUE)
 		printf("Notifications are enabled<br/>\n");
