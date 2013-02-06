@@ -1132,8 +1132,13 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		result = read_all_status_data(get_cgi_config_location(), READ_PROGRAM_STATUS);
 
 		/* total running time */
-		get_time_breakdown(current_time - program_start, &days, &hours, &minutes, &seconds);
-		sprintf(run_time_string, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+		if ( program_start != 0L) {
+			get_time_breakdown(current_time - program_start, &days, &hours, &minutes, &seconds);
+			sprintf(run_time_string, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+		} else {
+			run_time_string[0] = '0';
+			run_time_string[1] = '\0';
+		}
 
 		tm_ptr = localtime(&current_time);
 
@@ -1148,6 +1153,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("\"icinga_status\": {\n");
 
 		printf("\"status_data_age\": %lu,\n", current_time - status_file_creation_time);
+		printf("\"status_update_interval\": %d,\n", status_update_interval);
 		printf("\"reading_status_data_ok\": %s,\n", (result == ERROR && daemon_check == TRUE) ? "false" : "true");
 		printf("\"program_version\": \"%s\",\n", PROGRAM_VERSION);
 		printf("\"icinga_pid\": %d,\n", nagios_pid);
