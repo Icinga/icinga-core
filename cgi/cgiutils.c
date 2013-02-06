@@ -1158,6 +1158,12 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf(",\"running_as_a_daemon\": %s\n", (daemon_mode == TRUE) ? "true" : "false");
 #endif
 		printf("\"timezone\": \"%s\",\n", timezone);
+		if (date_format == DATE_FORMAT_EURO)
+			printf("\"date_format\": \"euro\",\n");
+		else if (date_format == DATE_FORMAT_ISO8601 || date_format == DATE_FORMAT_STRICT_ISO8601)
+			printf("\"date_format\": \"%siso8601\",\n", (date_format == DATE_FORMAT_STRICT_ISO8601) ? "strict-" : "");
+		else
+			printf("\"date_format\": \"us\",\n");
 		printf("\"program_start\": %lu,\n", program_start);
 		printf("\"total_running_time\": \"%s\",\n", run_time_string);
 		printf("\"last_external_command_check\": %lu,\n", last_command_check);
