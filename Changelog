@@ -65,6 +65,8 @@ FIXES
 * docs: search_string as cgi GET param works also for status.cgi #3451 - MF
 * docs: fix typo pqsql -> pgsql #3461 - WN
 
+* icinga.spec: add idoutils as transitional package (thx Stefan Marx, Michael Grüner) #3640
+
 CHANGES
 
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
@@ -74,6 +76,8 @@ CHANGES
 * ido2db.cfg:
 	** use_transactions #3527
 	** enable_socket_queue #3533
+
+* icinga.spec: add idoutils as transitional package #3640
 
 
 1.8.4 - 13/01/2013

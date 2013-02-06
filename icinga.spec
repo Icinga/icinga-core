@@ -71,6 +71,19 @@ Requires: %{name} = %{version}
 This package provides include files that Icinga-related applications
 may compile against.
 
+%package idoutils
+Summary: transitional package, use idoutils-libdbi-* instead
+Group: Applications/System 
+Requires: %{name} = %{version}-%{release}
+Requires: %{name}-idoutils-libdbi-mysql
+
+%description idoutils
+Transitional package. Idoutils has been splitted into
+idoutils-libdbi-mysql and idoutils-libdbi-pgsql. Use one
+of these. This package pulls in idoutils-libdbi-mysql.
+This package can be safely uninstalled, it provides no
+files and nothing depends on it.
+
 %package idoutils-libdbi-mysql
 Summary: database broker module for %{name}
 Group: Applications/System
@@ -104,6 +117,14 @@ Documentation for %{name}
 
 %prep
 %setup -qn %{name}-%{version}
+
+cat << EOF > README.idoutils.transitional
+Transitional package. Idoutils has been splitted into
+idoutils-libdbi-mysql and idoutils-libdbi-pgsql. Use one
+of these. This package pulls in idoutils-libdbi-mysql.
+This package can be safely uninstalled, it provides no
+files and nothing depends on it.
+EOF
 
 %build
 %configure \
@@ -386,6 +407,9 @@ fi
 %defattr(-,root,root)
 %{_includedir}/%{name}/
 
+%files idoutils
+%doc README.idoutils.transitional
+
 %files idoutils-libdbi-mysql
 %defattr(-,root,root,-)
 %doc README LICENSE Changelog UPGRADING module/idoutils/db README.RHEL README.RHEL.idoutils
@@ -414,6 +438,7 @@ fi
 %changelog
 * Wed Feb 06 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.9.0-1
 - bump 1.9.0
+- add idoutils as transitional package (thx Stefan Marx, Michael Grüner)
 
 * Fri Feb 01 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.8.4-2
 - fix sf.net url
