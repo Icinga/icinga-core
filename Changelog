@@ -12,6 +12,15 @@ UPGRADE NOTES
 	- core, classic ui: sample-config/updates/
 	- idoutils: module/idoutils/config/updates
 
+1.8.5 XX/XX/2013
+
+* icinga.spec: add idoutils as transitional package (thx Stefan Marx, Michael Grüner) #3640
+
+CHANGES
+
+* icinga.spec: add idoutils as transitional package #3640
+
+
 1.8.4 - 13/01/2013
 
 FIXES
