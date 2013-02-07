@@ -14,7 +14,7 @@
 # Description: 	     Icinga Data Out Daemon
 ### END INIT INFO
 
-# chkconfig: 345 99 01
+# chkconfig: 345 98 01
 #
 # File : ido2db
 #

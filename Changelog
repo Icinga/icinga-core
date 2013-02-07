@@ -27,6 +27,7 @@ ENHANCEMENTS
 * classic ui: Added data/time selection to 'log file navigation' #3168 - RB
 
 * idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
+* idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB
 
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
@@ -47,6 +48,7 @@ FIXES
 
 * install: drop unused daemon-init-readhat script (spec uses daemon-init) #3402 - MF
 * install: fix broken configure ssl detection for idoutils on ubuntu/debian (Oliver Skibbe) #3413 - MF
+* install: fix ido2db initscript uses same chkconfig line as icinga (Dirk Götz) #3490 - MF
 
 * classic ui: fix cmd.cgi does not honor commandpipe location; overwrites from empty environment variable #3418 - MF
 * classic ui: fixed Double-listed host dependencies in host extinfo.cgi #3295 - RB
@@ -64,13 +66,32 @@ FIXES
 * docs: search_string as cgi GET param works also for status.cgi #3451 - MF
 * docs: fix typo pqsql -> pgsql #3461 - WN
 
+* icinga.spec: add idoutils as transitional package (thx Stefan Marx, Michael Grüner) #3640
+
 CHANGES
 
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
 * core: -v param can be used more than once #3510
 * core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510
 
-* ido2db.cfg - use_transactions #3527
+* ido2db.cfg:
+	** use_transactions #3527
+	** enable_socket_queue #3533
+
+* icinga.spec: add idoutils as transitional package #3640
+
+
+1.8.4 - 13/01/2013
+
+FIXES
+* core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
+
+* classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
+* classic ui: fixed Warning and Unknown States are mixed up in Alert Summary Report #3488 - RB
+
+* idoutils: fix empty output/perfdata segfaults for mysql string truncate #3516 - MF
+* idoutils: unlink leftover socket on startup, if using unix sockets - MF
+* idoutils: fix long output data causes wrong data in database #2342 - MF
 
 
 1.8.3 - 12/12/2012
@@ -312,6 +333,20 @@ classic ui: Added/Changed cgi.cfg options
 
 * icinga.spec: add devel package #2634
 * icinga.spec: forced update on icinga.cfg change package locations #2923
+
+
+1.7.4 - 13/01/2013
+
+FIXES
+* core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
+
+
+1.7.3 - 08/11/2012
+
+FIXES
+* core: fix embedded perl segfault #3027 - MF
+
+* idoutils: fix IDOUtils on PostgreSQL, recreates service objects in icinga_objects (thx Torsten Fohrer) #3166 - MF
 
 
 
@@ -613,6 +648,31 @@ CHANGES
 
 * idoutils: add create_time and modify_time to dbversion table #2562
 	** allows to determine the initial import plus modified date
+
+1.6.2 - 13/01/2013
+
+ENHANCEMENTS
+* core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
+
+* classic ui: add is_in_effect and trigger_time to downtime view for html, csv, json #2538 - MF
+
+FIXES
+* core: add trigger_time to downtimes to allow calculating of flexible downtimes endtime #2537 - MF
+* core: add fix for CVE-2012-6096 - history.cgi remote command execution (Eric Stanley, Markus Frosch) #3532 - MF
+
+* classic ui: fixed invalid json output for tac.cgi #2160
+* classic ui: fixed json output for comments and downtimes in extinfo.cgi sometimes invalid #2343
+* classic ui: fixed Truncated HTML table when displaying outages in outages.cgi #2323
++ classic ui: fixed Extra leading space in status.cgi CSV output #2535
++ classic ui: fixed msdropdown jquery issues with opera #2515
+
+* idoutils: change standard string escaping for postgresql queries to use the E'foo' notation #1974
+* idoutils: fix ORA-00913 too many values when MERGE INTO eventhandlers #2319
+* idoutils: partly cherry-pick fixes for solaris segfaults from #2271
+* idoutils: fix OCI-21500 when freeing lobs #2509
+
+
+CHANGES
 
 
 1.6.1 - 02/12/2011

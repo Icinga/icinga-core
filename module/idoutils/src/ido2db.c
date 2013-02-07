@@ -87,8 +87,12 @@ int ido2db_debug_verbosity = IDO2DB_DEBUGV_BASIC;
 FILE *ido2db_debug_file_fp = NULL;
 unsigned long ido2db_max_debug_file_size = 0L;
 
+int enable_socket_queue = IDO_FALSE;
+
 int enable_sla = IDO_FALSE;
 int ido2db_debug_readable_timestamp = IDO_FALSE;
+
+static time_t ido2db_proxy_last_report = 0;
 
 char *libdbi_driver_dir = NULL;
 
@@ -616,7 +620,9 @@ int ido2db_process_config_var(char *arg) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "use_transactions")) {
 		ido2db_db_settings.use_transactions = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
-	}
+        } else if (!strcmp(var, "enable_socket_queue")) {
+                enable_socket_queue = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
+        }
 	else if (!strcmp(var, "libdbi_driver_dir")) {
 		if ((libdbi_driver_dir = strdup(val)) == NULL)
 			return IDO_ERROR;
@@ -1043,6 +1049,128 @@ void ido2db_child_sighandler(int sig) {
 /* UTILITY FUNCTIONS                                                        */
 /****************************************************************************/
 
+static int ido2db_proxy_fill_buffer(void **buffer, size_t *size, int fd) {
+	size_t offset = *size;
+	char temp[4096];
+	int rc;
+
+	rc = read(fd, temp, sizeof(temp));
+
+	if (rc <= 0)
+		return -1;
+
+	*size += rc;
+	*buffer = realloc(*buffer, *size);
+	memcpy((char *)*buffer + offset, temp, rc);
+
+	return 0;
+}
+
+static int ido2db_proxy_flush_buffer(void **buffer, size_t *size, int fd) {
+	int rc;
+	void *new_buffer;
+
+	rc = write(fd, *buffer, *size);
+
+	if (rc <= 0)
+		return -1;
+
+	new_buffer = malloc(*size - rc);
+	memcpy(new_buffer, (char *)*buffer + rc, *size - rc);
+	free(*buffer);
+	*buffer = new_buffer;
+	*size -= rc;
+
+	return 0;
+}
+
+static void *ido2db_proxy_thread_proc(void *pargs) {
+	ido2db_proxy_args args = *(ido2db_proxy_args *)pargs;
+	fd_set readfds, writefds, exceptfds;
+	void *buffer_left = NULL, *buffer_right = NULL;
+	size_t size_left = 0, size_right = 0;
+	int flags, max_fd;
+	time_t now;
+
+	free(pargs);
+
+	flags = fcntl(args.fd_left, F_GETFL, NULL);
+	fcntl(args.fd_left, F_SETFL, flags | O_NONBLOCK);
+
+	flags = fcntl(args.fd_right, F_GETFL, NULL);
+	fcntl(args.fd_right, F_SETFL, flags | O_NONBLOCK);
+
+	max_fd = args.fd_left;
+
+	if (args.fd_right > max_fd)
+		max_fd = args.fd_right;
+
+	for (;;) {
+		int rc;
+
+		FD_ZERO(&readfds);
+		FD_ZERO(&writefds);
+		FD_ZERO(&exceptfds);
+
+		if (size_left < 128 * 1024 * 1024)
+			FD_SET(args.fd_left, &readfds);
+
+		if (size_right < 128 * 1024 * 1024)
+			FD_SET(args.fd_right, &readfds);
+
+		if (size_right > 0)
+			FD_SET(args.fd_left, &writefds);
+
+		if (size_left > 0)
+			FD_SET(args.fd_right, &writefds);
+
+		FD_SET(args.fd_left, &exceptfds);
+		FD_SET(args.fd_right, &exceptfds);
+
+		rc = select(max_fd + 1, &readfds, &writefds, &exceptfds, NULL);
+
+		if (rc < 0) {
+			perror("select() failed");
+			break;
+		}
+
+		if (FD_ISSET(args.fd_left, &exceptfds) || FD_ISSET(args.fd_right, &exceptfds))
+			break;
+
+		if (FD_ISSET(args.fd_left, &writefds))
+			if (ido2db_proxy_flush_buffer(&buffer_right, &size_right, args.fd_left) < 0)
+				break;
+
+		if (FD_ISSET(args.fd_right, &writefds))
+			if (ido2db_proxy_flush_buffer(&buffer_left, &size_left, args.fd_right) < 0)
+				break;
+
+		time(&now);
+		if (ido2db_proxy_last_report < now - 15 && (size_left > 0 || size_right > 0)) {
+			syslog(LOG_INFO, "IDO2DB buffer sizes: left=%d, right=%d\n", (int)size_left, (int)size_right);
+			ido2db_proxy_last_report = now;
+		}
+
+		if (FD_ISSET(args.fd_left, &readfds))
+			if (ido2db_proxy_fill_buffer(&buffer_left, &size_left, args.fd_left) < 0)
+				break;
+
+		if (FD_ISSET(args.fd_right, &readfds))
+			if (ido2db_proxy_fill_buffer(&buffer_right, &size_right, args.fd_right) < 0)
+				break;
+	}
+
+	shutdown(args.fd_left, SHUT_RDWR);
+	close(args.fd_left);
+
+	shutdown(args.fd_right, SHUT_RDWR);
+	close(args.fd_right);
+
+	free(buffer_left);
+	free(buffer_right);
+
+	return NULL;
+}
 
 int ido2db_wait_for_connections(void) {
 	int sd_flag = 1;
@@ -1136,9 +1264,28 @@ int ido2db_wait_for_connections(void) {
 	while (1) {
 
 		while (1) {
+			int fds[2];
 
 			new_sd = accept(ido2db_sd, (ido2db_socket_type == IDO_SINK_TCPSOCKET) ? (struct sockaddr *)&client_address_i : (struct sockaddr *)&client_address_u, (socklen_t *)&client_address_length);
 
+			if (enable_socket_queue == IDO_TRUE) {
+				if (socketpair(AF_UNIX, SOCK_STREAM, PF_UNIX, fds) == 0) {
+					pthread_t tid;
+
+					ido2db_proxy_args *pa = (ido2db_proxy_args *)malloc(sizeof(ido2db_proxy_args));
+					pa->fd_left = new_sd;
+					pa->fd_right = fds[0];
+
+					if (pthread_create(&tid, NULL, ido2db_proxy_thread_proc, pa) == 0) {
+						(void) pthread_detach(tid);
+
+						new_sd = fds[1];
+					} else {
+						close(fds[0]);
+						close(fds[1]);
+					}
+				}
+			}
 
 			/* ToDo:  Hendrik 08/12/2009
 			 * If both ends think differently about SSL encryption, data from a idomod will
