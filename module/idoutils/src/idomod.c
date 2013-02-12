@@ -242,6 +242,8 @@ int idomod_deinit(void) {
 
 	/* save unprocessed data to buffer file */
 	idomod_save_unprocessed_data(idomod_buffer_file);
+	free(idomod_buffer_file);
+	idomod_buffer_file = NULL;
 
 	/* clear sink buffer */
 	idomod_sink_buffer_deinit(&sinkbuf);
@@ -254,6 +256,16 @@ int idomod_deinit(void) {
 
 	/* close debug log */
 	idomod_close_debug_log();
+
+	/* free variables */
+	free(idomod_instance_name);
+	idomod_instance_name = NULL;
+
+	free(idomod_sink_name);
+	idomod_sink_name = NULL;
+
+	free(idomod_sink_rotation_command);
+	idomod_sink_rotation_command = NULL;
 
 	return IDO_OK;
 }
@@ -4706,6 +4718,9 @@ int idomod_close_debug_log(void) {
 
 	if (idomod_debug_file_fp != NULL)
 		fclose(idomod_debug_file_fp);
+
+	free(idomod_debug_file);
+	idomod_debug_file = NULL;
 
 	idomod_debug_file_fp = NULL;
 
