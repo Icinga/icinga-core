@@ -65,6 +65,8 @@ unsigned long idomod_max_debug_file_size = 0L;
 int idomod_open_debug_log(void);
 int idomod_close_debug_log(void);
 
+static char *broker_data_temp_buffer;
+
 extern int errno;
 
 /**** Icinga VARIABLES ****/
@@ -266,6 +268,10 @@ int idomod_deinit(void) {
 
 	free(idomod_sink_rotation_command);
 	idomod_sink_rotation_command = NULL;
+
+	/* free temp buffer */
+	free(broker_data_temp_buffer);
+	broker_data_temp_buffer = NULL;
 
 	return IDO_OK;
 }
@@ -1250,7 +1256,7 @@ int idomod_deregister_callbacks(void) {
 /* handles brokered event data */
 int idomod_broker_data(int event_type, void *data) {
 	//char temp_buffer[IDOMOD_MAX_BUFLEN];
-	static char *temp_buffer;
+	char *temp_buffer;
 	ido_dbuf dbuf;
 	int write_to_sink = IDO_TRUE;
 	host *temp_host = NULL;
@@ -1292,11 +1298,13 @@ int idomod_broker_data(int event_type, void *data) {
 	int last_state = -1;
 	int last_hard_state = -1;
 
-	if (temp_buffer == NULL) {
-		temp_buffer = (char *)malloc(IDOMOD_MAX_BUFLEN);
-		if (temp_buffer == NULL)
+	if (broker_data_temp_buffer == NULL) {
+		broker_data_temp_buffer = (char *)malloc(IDOMOD_MAX_BUFLEN);
+		if (broker_data_temp_buffer == NULL)
 			return 0;
 	}
+
+	temp_buffer = broker_data_temp_buffer;
 
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_broker_data() start\n");
