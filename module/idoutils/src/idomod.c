@@ -3321,10 +3321,6 @@ int idomod_write_object_config(int config_type) {
 	/* initialize dynamic buffer (2KB chunk size) */
 	ido_dbuf_init(&dbuf, 2048);
 
-	/* initialize buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++)
-		es[x] = NULL;
-
 	/****** dump command config ******/
 	for (temp_command = command_list; temp_command != NULL; temp_command = temp_command->next) {
 
@@ -3347,12 +3343,9 @@ int idomod_write_object_config(int config_type) {
 		/* write data to sink */
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		idomod_write_to_sink(temp_buffer, IDO_TRUE, IDO_TRUE);
-	}
 
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
+		free(es[0]);
+		free(es[1]);
 	}
 
 	/****** dump timeperiod config ******/
@@ -3374,6 +3367,9 @@ int idomod_write_object_config(int config_type) {
 		        );
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
+
+		free(es[0]);
+		free(es[1]);
 
 		/* dump timeranges for each day */
 		for (x = 0; x < 7; x++) {
@@ -3403,12 +3399,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	/****** dump contact config ******/
 	for (temp_contact = contact_list; temp_contact != NULL; temp_contact = temp_contact->next) {
@@ -3477,7 +3467,11 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
 		free(es[0]);
-		es[0] = NULL;
+		free(es[1]);
+		free(es[2]);
+		free(es[3]);
+		free(es[4]);
+		free(es[5]);
 
 		/* dump addresses for each contact */
 		for (x = 0; x < MAX_CONTACT_ADDRESSES; x++) {
@@ -3494,7 +3488,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		/* dump host notification commands for each contact */
@@ -3511,7 +3504,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		/* dump service notification commands for each contact */
@@ -3528,7 +3520,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		/* dump customvars */
@@ -3547,10 +3538,8 @@ int idomod_write_object_config(int config_type) {
 			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
-			for (x = 0; x < 2; x++) {
-				free(es[x]);
-				es[x] = NULL;
-			}
+			free(es[0]);
+			free(es[1]);
 		}
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
@@ -3565,12 +3554,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	/****** dump contactgroup config ******/
 	for (temp_contactgroup = contactgroup_list; temp_contactgroup != NULL; temp_contactgroup = temp_contactgroup->next) {
@@ -3593,7 +3576,7 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
 		free(es[0]);
-		es[0] = NULL;
+		free(es[1]);
 
 		/* dump members for each contactgroup */
 		for (temp_contactsmember = temp_contactgroup->members; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {
@@ -3609,7 +3592,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
@@ -3624,12 +3606,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	/****** dump host config ******/
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
@@ -3785,8 +3761,8 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		free(es[0]);
-		es[0] = NULL;
+		for (x = 0; x < 16; x++)
+			free(es[x]);
 
 		/* dump parent hosts */
 		for (temp_hostsmember = temp_host->parent_hosts; temp_hostsmember != NULL; temp_hostsmember = temp_hostsmember->next) {
@@ -3802,7 +3778,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		/* dump contactgroups */
@@ -3819,7 +3794,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		/* dump individual contacts */
@@ -3836,7 +3810,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 
@@ -3856,10 +3829,8 @@ int idomod_write_object_config(int config_type) {
 			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
-			for (x = 0; x < 2; x++) {
-				free(es[x]);
-				es[x] = NULL;
-			}
+			free(es[0]);
+			free(es[1]);
 		}
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
@@ -3874,12 +3845,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	/****** dump hostgroup config ******/
 	for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
@@ -3902,7 +3867,7 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
 		free(es[0]);
-		es[0] = NULL;
+		free(es[1]);
 
 		/* dump members for each hostgroup */
 		for (temp_hostsmember = temp_hostgroup->members; temp_hostsmember != NULL; temp_hostsmember = temp_hostsmember->next) {
@@ -3918,7 +3883,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
@@ -3933,12 +3897,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	/****** dump service config ******/
 	for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
@@ -4068,8 +4026,8 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
-		free(es[0]);
-		es[0] = NULL;
+		for (x = 0; x < 13; x++)
+			free(es[x]);
 
 		/* dump contactgroups */
 		for (temp_contactgroupsmember = temp_service->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
@@ -4085,7 +4043,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		/* dump individual contacts  */
@@ -4102,7 +4059,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		/* dump customvars */
@@ -4121,10 +4077,8 @@ int idomod_write_object_config(int config_type) {
 			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
-			for (x = 0; x < 2; x++) {
-				free(es[x]);
-				es[x] = NULL;
-			}
+			free(es[0]);
+			free(es[1]);
 		}
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
@@ -4139,12 +4093,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	/****** dump servicegroup config ******/
 	for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
@@ -4168,8 +4116,6 @@ int idomod_write_object_config(int config_type) {
 
 		free(es[0]);
 		free(es[1]);
-		es[0] = NULL;
-		es[1] = NULL;
 
 		/* dump members for each servicegroup */
 		for (temp_servicesmember = temp_servicegroup->members; temp_servicesmember != NULL; temp_servicesmember = temp_servicesmember->next) {
@@ -4188,8 +4134,6 @@ int idomod_write_object_config(int config_type) {
 
 			free(es[0]);
 			free(es[1]);
-			es[0] = NULL;
-			es[1] = NULL;
 		}
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
@@ -4204,12 +4148,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	/****** dump host escalation config ******/
 	for (temp_hostescalation = hostescalation_list; temp_hostescalation != NULL; temp_hostescalation = temp_hostescalation->next) {
@@ -4244,7 +4182,7 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
 		free(es[0]);
-		es[0] = NULL;
+		free(es[1]);
 
 		/* dump contactgroups */
 		for (temp_contactgroupsmember = temp_hostescalation->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
@@ -4260,7 +4198,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		/* dump individual contacts */
@@ -4277,7 +4214,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
@@ -4292,12 +4228,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	/****** dump service escalation config ******/
 	for (temp_serviceescalation = serviceescalation_list; temp_serviceescalation != NULL; temp_serviceescalation = temp_serviceescalation->next) {
@@ -4337,7 +4267,8 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
 		free(es[0]);
-		es[0] = NULL;
+		free(es[1]);
+		free(es[2]);
 
 		/* dump contactgroups */
 		for (temp_contactgroupsmember = temp_serviceescalation->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
@@ -4353,7 +4284,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		/* dump individual contacts */
@@ -4370,7 +4300,6 @@ int idomod_write_object_config(int config_type) {
 			ido_dbuf_strcat(&dbuf, temp_buffer);
 
 			free(es[0]);
-			es[0] = NULL;
 		}
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
@@ -4385,12 +4314,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	/****** dump host dependency config ******/
 	for (temp_hostdependency = hostdependency_list; temp_hostdependency != NULL; temp_hostdependency = temp_hostdependency->next) {
@@ -4426,6 +4349,10 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
+		free(es[0]);
+		free(es[1]);
+		free(es[2]);
+
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
 		         , "%d\n\n"
 		         , IDO_API_ENDDATA
@@ -4438,12 +4365,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	/****** dump service dependency config ******/
 	for (temp_servicedependency = servicedependency_list; temp_servicedependency != NULL; temp_servicedependency = temp_servicedependency->next) {
@@ -4487,6 +4408,12 @@ int idomod_write_object_config(int config_type) {
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 		ido_dbuf_strcat(&dbuf, temp_buffer);
 
+		free(es[0]);
+		free(es[1]);
+		free(es[2]);
+		free(es[3]);
+		free(es[4]);
+
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1
 		         , "%d\n\n"
 		         , IDO_API_ENDDATA
@@ -4499,12 +4426,6 @@ int idomod_write_object_config(int config_type) {
 		ido_dbuf_free(&dbuf);
 	}
 
-
-	/* free buffers */
-	for (x = 0; x < OBJECTCONFIG_ES_ITEMS; x++) {
-		free(es[x]);
-		es[x] = NULL;
-	}
 
 	idomod_log_debug_info(IDOMOD_DEBUGL_PROCESSINFO, 2, "idomod_write_object_config() end\n");
 
