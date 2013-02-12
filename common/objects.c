@@ -64,6 +64,7 @@ hostescalation  *hostescalation_list = NULL, *hostescalation_list_tail = NULL;
 module		*module_list = NULL, *module_list_tail = NULL;
 
 skiplist *object_skiplists[NUM_OBJECT_SKIPLISTS];
+static int object_skiplists_valid = 0;
 
 
 #ifdef NSCORE
@@ -106,10 +107,8 @@ int read_object_config_data(char *main_config_file, int options, int cache, int 
 /******************************************************************/
 
 int init_object_skiplists(void) {
-	int x = 0;
-
-	for (x = 0; x < NUM_OBJECT_SKIPLISTS; x++)
-		object_skiplists[x] = NULL;
+	if (object_skiplists_valid)
+		free_object_skiplists();
 
 	object_skiplists[HOST_SKIPLIST] = skiplist_new(15, 0.5, FALSE, FALSE, skiplist_compare_host);
 	object_skiplists[SERVICE_SKIPLIST] = skiplist_new(15, 0.5, FALSE, FALSE, skiplist_compare_service);
@@ -128,6 +127,8 @@ int init_object_skiplists(void) {
 
 	object_skiplists[MODULE_SKIPLIST] = skiplist_new(10, 0.5, FALSE, FALSE, skiplist_compare_module);
 
+	object_skiplists_valid = 1;
+
 	return OK;
 }
 
@@ -138,6 +139,8 @@ int free_object_skiplists(void) {
 
 	for (x = 0; x < NUM_OBJECT_SKIPLISTS; x++)
 		skiplist_free(&object_skiplists[x]);
+
+	object_skiplists_valid = 0;
 
 	return OK;
 }
