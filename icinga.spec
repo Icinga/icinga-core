@@ -64,7 +64,7 @@ This package contains the webgui (html,css,cgi etc.) for %{name}
 
 %package devel
 Summary: Provides include files that Icinga-related applications may compile against
-Group: Development/Libraries/C and C++
+Group: Development/Libraries
 Requires: %{name} = %{version}
 
 %description devel
@@ -246,14 +246,14 @@ fi
 # cgi.cfg luckily knows where icinga.cfg is and does not need an update
 # retention.dat, objects.cache, objects.precache, status.dat, cmdfile, pidfile, checkresults
 %{__perl} -pi -e '
-        s|/var/icinga/retention.dat|%{spooldir}/retention.dat|;
-        s|/var/icinga/objects.precache|%{spooldir}/objects.precache|;
-        s|/var/icinga/objects.cache|%{spooldir}/objects.cache|;
-        s|/var/icinga/status.dat|%{spooldir}/status.dat|;
-        s|/var/icinga/rw/icinga.cmd|%{spooldir}/cmd/icinga.cmd|;
-        s|/var/icinga/icinga.pid|/var/run/icinga.pid|;
+	s|/var/icinga/retention.dat|%{spooldir}/retention.dat|;
+	s|/var/icinga/objects.precache|%{spooldir}/objects.precache|;
+	s|/var/icinga/objects.cache|%{spooldir}/objects.cache|;
+	s|/var/icinga/status.dat|%{spooldir}/status.dat|;
+	s|/var/icinga/rw/icinga.cmd|%{spooldir}/cmd/icinga.cmd|;
+	s|/var/icinga/icinga.pid|/var/run/icinga.pid|;
 	s|/var/icinga/checkresults|%{spooldir}/checkresults|;
-   ' /etc/icinga/icinga.cfg
+	' /etc/icinga/icinga.cfg
 
 # start icinga
 /sbin/service icinga start &>/dev/null || :
@@ -408,6 +408,7 @@ fi
 %{_includedir}/%{name}/
 
 %files idoutils
+%defattr(-,root,root)
 %doc README.idoutils.transitional
 
 %files idoutils-libdbi-mysql
@@ -436,8 +437,13 @@ fi
 
 
 %changelog
-* Wed Feb 06 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.9.0-1
+* Thu Apr 25 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.9.0-1
 - bump 1.9.0
+
+* Fri Feb 15 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.8.4-4
+- fix rpmlint errors/warnings
+
+* Wed Feb 06 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.8.4-3
 - add idoutils as transitional package (thx Stefan Marx, Michael Grüner)
 
 * Fri Feb 01 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.8.4-2
