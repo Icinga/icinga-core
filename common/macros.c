@@ -200,13 +200,20 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 
 			/* grab the macro value */
 			result = grab_macro_value_r(mac, temp_buffer, &selected_macro, &clean_options, &free_macro);
-			log_debug_info(DEBUGL_MACROS, 2, "  Processed '%s', Clean Options: %d, Free: %d\n", temp_buffer, clean_options, free_macro);
+			log_debug_info(DEBUGL_MACROS, 2, "  Processed '%s', Clean Options: %d, Free: %d\n, Value: '%s'", temp_buffer, clean_options, free_macro, selected_macro ? selected_macro : "");
 
 			/* an error occurred - we couldn't parse the macro, so continue on */
 			if (result == ERROR) {
 				/* empty string still could mean that we hit the escaped $, so log an error in all other cases */
-				if(strcmp(temp_buffer, ""))
-					logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: An error occurred processing macro '%s'!\n", temp_buffer);
+				/* the error tells the user that the macro is valid, but value fetching contained error*/
+				if(strcmp(temp_buffer, "")) {
+					log_debug_info(DEBUGL_MACROS, 2, " Warning: Error grabbing macro '%s' value '%s'! Maybe used in the wrong scope? Check the docs.\n", temp_buffer, selected_macro ? selected_macro : "" );
+#ifdef NSCORE
+					if (keep_unknown_macros == FALSE) {
+						logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Error grabbing macro '%s' value '%s'! Maybe used in the wrong scope? Check the docs.\n", temp_buffer, selected_macro ? selected_macro : "" );
+					}
+#endif
+				}
 
 				if (free_macro == TRUE)
 					my_free(selected_macro);

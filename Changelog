@@ -15,6 +15,8 @@ UPGRADE NOTES
 1.8.5 - XX/XX/2013
 
 FIXES
+* core: fix keep_unknown_macros still exposes wrong warnings to logs #3725 - MF
+
 * classic ui: fixed JSON output is insufficiently escaped #3541 - RB
 * classic ui: fixed segfault when reading malformed log entries #3528 - RB
 
