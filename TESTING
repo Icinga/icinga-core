@@ -64,7 +64,7 @@ $ vi ..subject..commitmsg
 $ git format-patch -1
 
 Attach the gotten patch to the new issue you may create at dev.icinga.org in the appropriate section.
-Or via mail onto our mailinglists - http://www.icinga.org/community/
+Or via mail onto our mailinglists - http://www.icinga.org/support/
 
 Thanks :)
 
