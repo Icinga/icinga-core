@@ -384,8 +384,8 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>Starting with Debian 6.0 / Ubuntu 10.10 the package is called libpng-12-0, the name of the dev-package hasn't
-          changed.</p>
+		<p>Starting with Debian 6.0 / Ubuntu 10.10 the packages are called libpng12-0 and libdbi0, as well as Debian 6.0 uses
+			libdbi0-dev while Debian 7.0 will use libdbi-dev.</p>
         </td></tr>
 </table></div>
 
@@ -398,7 +398,7 @@
 <li class="listitem">
             <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
 
-            <pre class="screen"> #&gt; apt-get install postgresql libdbi1 libdbi-dev libdbd-pgsql</pre>
+            <pre class="screen"> #&gt; apt-get install postgresql libdbi1 libdbi-dev libdbd-pgsql libpq-dev</pre>
           </li>
 </ul></div>
       </li>
@@ -1000,7 +1000,7 @@
     <p>Compile and install the plugins by changing install directory to <code class="filename">/usr/local/icinga</code></p>
 
     <pre class="screen"> #&gt; ./configure --prefix=/usr/local/icinga \
-    --with-cgiurl=/icinga/cgi-bin --with-htmurl=/icinga \
+    --with-cgiurl=/icinga/cgi-bin \
     --with-nagios-user=icinga --with-nagios-group=icinga
  #&gt; make 
  #&gt; make install </pre>
@@ -1153,9 +1153,9 @@
     You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
     Started"</a> about "Monitoring ..."</p>
 
-    <a class="indexterm" name="idp648096"></a>
+    <a class="indexterm" name="idp654672"></a>
 
-    <a class="indexterm" name="idp646016"></a>
+    <a class="indexterm" name="idp652592"></a>
   </div>
 </div>
 <div class="navfooter">

@@ -102,8 +102,9 @@
 <li class="listitem">
             <p><span class="bold"><strong>OpenSuSE</strong></span></p>
 
-            <p>Please use yast to install the packages "php5", "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-&lt;rdbm&gt;", "php5-soap",
-            "php5-gettext", "php5-ldap", "php5-gd" and "php5-mysql". The CLI is contained in the php5 package.</p>
+            <p>Please use yast to install the packages "php5", "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-json", "php5-sockets",
+            "php5-soap", "php5-gettext", "php5-pdo", "php5-ldap", "php5-gd", "php5-mysql" and "apache2-mod_php5". The CLI is contained in
+            the php5 package.</p>
 
             <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -114,6 +115,11 @@
                 <p>At least in SLES10 SP2 the function "hash_hmac" is missing.</p>
               </td></tr>
 </table></div>
+
+            <p>If zypper is installed then you can use it instead of yast</p>
+
+            <pre class="screen"> #&gt; zypper install php5 php5-pear php5-xmlrpc php5-xsl php5-json php5-sockets \
+    php5-soap php5-gettext php5-pdo php5-ldap php5-gd php5-mysql apache2-mod_php5</pre>
 
             <p>Installing Icinga with IDOUtils is described in the <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">Icinga with IDOUtils Quickstart
             Guide</a></p>
@@ -164,8 +170,9 @@
 <li class="listitem">
             <p><span class="bold"><strong>OpenSuSE</strong></span></p>
 
-            <p>Please use yast to install the packages "php5", "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-&lt;rdbm&gt;", "php5-soap",
-            "php5-gettext", "php5-ldap", "php5-gd" and "php5-mysql". The CLI is contained in the php5 package.</p>
+            <p>Please use yast to install the packages "php5", "php5-pear", "php5-xmlrpc", "php5-xsl", "php5-json", "php5-sockets",
+            "php5-soap", "php5-gettext", "php5-pdo", "php5-ldap", "php5-gd", "php5-pgsql" and "apache2-mod_php5". The CLI is contained in
+            the php5 package.</p>
 
             <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -176,6 +183,11 @@
                 <p>At least in SLES10 SP2 the function "hash_hmac" is missing.</p>
               </td></tr>
 </table></div>
+
+            <p>If zypper is installed then you can use it instead of yast</p>
+
+            <pre class="screen"> #&gt; zypper install php5 php5-pear php5-xmlrpc php5-xsl php5-json php5-sockets \
+    php5-soap php5-gettext php5-pdo php5-ldap php5-gd php5-pgsql apache2-mod_php5</pre>
 
             <p>Installing Icinga with IDOUtils is described in the <a class="link" href="quickstart-idoutils.html" title="2.5. Icinga with IDOUtils Quickstart">Icinga with IDOUtils Quickstart
             Guide</a></p>
@@ -932,11 +944,11 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>If you have any updates on that please do not hesitate to report back! :-)</p>
 
-    <a class="indexterm" name="idp12103568"></a>
+    <a class="indexterm" name="idp12135696"></a>
 
-    <a class="indexterm" name="idp12105072"></a>
+    <a class="indexterm" name="idp12137344"></a>
 
-    <a class="indexterm" name="idp12103696"></a>
+    <a class="indexterm" name="idp12135824"></a>
   </div>
 </div>
 <div class="navfooter">

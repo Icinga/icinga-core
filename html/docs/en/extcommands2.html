@@ -596,11 +596,7 @@
 
   <p>Disables the processing of host and service performance data on a program-wide basis.</p>
 
-  <p><a name="extcmd2-disable_service_flap_detection"></a> <span class="bold"><strong>DISABLE_SERVICE_FLAP_DETECTION</strong></span></p>
-
-  <p><code class="code">DISABLE_SERVICE_FLAP_DETECTION;</code>&lt;host_name&gt;;&lt;service_description&gt;</p>
-
-  <p>Disables flap detection for the specified service.</p>
+  
 
   <p><a name="extcmd2-disable_service_freshness_checks"></a> <span class="bold"><strong>DISABLE_SERVICE_FRESHNESS_CHECKS</strong></span></p>
 
@@ -959,7 +955,7 @@
 
   <p><code class="code">RESTART_PROCESS</code></p>
 
-  <p>Restarts the Icinga process. Note: You can still use the old deprecated RESTART_PROGRAM</p>
+  <p>Restarts the Icinga process.</p>
 
   <p><a name="extcmd2-save_state_information"></a> <span class="bold"><strong>SAVE_STATE_INFORMATION</strong></span></p>
 
@@ -1126,7 +1122,8 @@
   &lt;options&gt; field is a logical OR of the following integer values that affect aspects of the notification that are sent out: 0 = No
   option (default), 1 = Broadcast (send notification to all normal and all escalated contacts for the host), 2 = Forced (notification is
   sent out regardless of current time, whether or not notifications are enabled, etc.), 4 = Increment current notification # for the host
-  (this is not done by default for custom notifications). The comment field can be used with the</p>
+  (this is not done by default for custom notifications). The contents of the comment field is available in notification commands using the
+  $NOTIFICATIONCOMMENT$ macro.</p>
 
   <p><a name="extcmd2-send_custom_svc_notification"></a> <span class="bold"><strong>SEND_CUSTOM_SVC_NOTIFICATION</strong></span></p>
 
@@ -1137,7 +1134,8 @@
   The &lt;options&gt; field is a logical OR of the following integer values that affect aspects of the notification that are sent out: 0 =
   No option (default), 1 = Broadcast (send notification to all normal and all escalated contacts for the service), 2 = Forced (notification
   is sent out regardless of current time, whether or not notifications are enabled, etc.), 4 = Increment current notification # for the
-  service(this is not done by default for custom notifications). The comment field can be used with the</p>
+  service(this is not done by default for custom notifications). The contents of the comment field is available in notification commands
+  using the $NOTIFICATIONCOMMENT$ macro.</p>
 
   <p><a name="extcmd2-set_host_notification_number"></a> <span class="bold"><strong>SET_HOST_NOTIFICATION_NUMBER</strong></span></p>
 
@@ -1157,9 +1155,9 @@
   redundant monitoring environments. Notification numbers greater than zero have no noticeable affect on the notification process if the
   service is currently in an OK state.</p>
 
-  <p><a name="extcmd2-shutdown_program"></a> <span class="bold"><strong>SHUTDOWN_PROGRAM</strong></span></p>
+  <p><a name="extcmd2-shutdown_process"></a> <span class="bold"><strong>SHUTDOWN_PROCESS</strong></span></p>
 
-  <p><code class="code">SHUTDOWN_PROGRAM</code></p>
+  <p><code class="code">SHUTDOWN_PROCESS</code></p>
 
   <p>Shuts down the Icinga process.</p>
 
@@ -1259,327 +1257,327 @@
 
   <p>Disables processing of service checks via the OCSP command on a program-wide basis.</p>
 
-  <a class="indexterm" name="idp13111792"></a>
+  <a class="indexterm" name="idp13142528"></a>
 
-  <a class="indexterm" name="idp13112048"></a>
+  <a class="indexterm" name="idp13144272"></a>
 
-  <a class="indexterm" name="idp13115296"></a>
+  <a class="indexterm" name="idp13145968"></a>
 
-  <a class="indexterm" name="idp13117072"></a>
+  <a class="indexterm" name="idp13147600"></a>
 
-  <a class="indexterm" name="idp13118736"></a>
+  <a class="indexterm" name="idp13149264"></a>
 
-  <a class="indexterm" name="idp13120432"></a>
+  <a class="indexterm" name="idp13150896"></a>
 
-  <a class="indexterm" name="idp13122192"></a>
+  <a class="indexterm" name="idp13152656"></a>
 
-  <a class="indexterm" name="idp13123824"></a>
+  <a class="indexterm" name="idp13154288"></a>
 
-  <a class="indexterm" name="idp13125456"></a>
+  <a class="indexterm" name="idp13155920"></a>
 
-  <a class="indexterm" name="idp13127056"></a>
+  <a class="indexterm" name="idp13157520"></a>
 
-  <a class="indexterm" name="idp13128816"></a>
+  <a class="indexterm" name="idp13159280"></a>
 
-  <a class="indexterm" name="idp13130416"></a>
+  <a class="indexterm" name="idp13160880"></a>
 
-  <a class="indexterm" name="idp13132048"></a>
+  <a class="indexterm" name="idp13162512"></a>
 
-  <a class="indexterm" name="idp13133744"></a>
+  <a class="indexterm" name="idp13164208"></a>
 
-  <a class="indexterm" name="idp13135344"></a>
+  <a class="indexterm" name="idp13165808"></a>
 
-  <a class="indexterm" name="idp13136992"></a>
+  <a class="indexterm" name="idp13167456"></a>
 
-  <a class="indexterm" name="idp13138640"></a>
+  <a class="indexterm" name="idp13169104"></a>
 
-  <a class="indexterm" name="idp13140288"></a>
+  <a class="indexterm" name="idp13170752"></a>
 
-  <a class="indexterm" name="idp13141936"></a>
+  <a class="indexterm" name="idp13172400"></a>
 
-  <a class="indexterm" name="idp13143632"></a>
+  <a class="indexterm" name="idp13174096"></a>
 
-  <a class="indexterm" name="idp13145232"></a>
+  <a class="indexterm" name="idp13175696"></a>
 
-  <a class="indexterm" name="idp13146880"></a>
+  <a class="indexterm" name="idp13177344"></a>
 
-  <a class="indexterm" name="idp13148512"></a>
+  <a class="indexterm" name="idp13178976"></a>
 
-  <a class="indexterm" name="idp13150208"></a>
+  <a class="indexterm" name="idp13180672"></a>
 
-  <a class="indexterm" name="idp13151840"></a>
+  <a class="indexterm" name="idp13182304"></a>
 
-  <a class="indexterm" name="idp13153520"></a>
+  <a class="indexterm" name="idp13183984"></a>
 
-  <a class="indexterm" name="idp13155168"></a>
+  <a class="indexterm" name="idp13185632"></a>
 
-  <a class="indexterm" name="idp13156816"></a>
+  <a class="indexterm" name="idp13187280"></a>
 
-  <a class="indexterm" name="idp13158464"></a>
+  <a class="indexterm" name="idp13188800"></a>
 
-  <a class="indexterm" name="idp13160112"></a>
+  <a class="indexterm" name="idp13190432"></a>
 
-  <a class="indexterm" name="idp13161808"></a>
+  <a class="indexterm" name="idp13192160"></a>
 
-  <a class="indexterm" name="idp13163408"></a>
+  <a class="indexterm" name="idp13193808"></a>
 
-  <a class="indexterm" name="idp13165040"></a>
+  <a class="indexterm" name="idp13195456"></a>
 
-  <a class="indexterm" name="idp13166672"></a>
+  <a class="indexterm" name="idp13197088"></a>
 
-  <a class="indexterm" name="idp13168320"></a>
+  <a class="indexterm" name="idp13198720"></a>
 
-  <a class="indexterm" name="idp13169952"></a>
+  <a class="indexterm" name="idp13200384"></a>
 
-  <a class="indexterm" name="idp13171632"></a>
+  <a class="indexterm" name="idp13201984"></a>
 
-  <a class="indexterm" name="idp13173264"></a>
+  <a class="indexterm" name="idp13203376"></a>
 
-  <a class="indexterm" name="idp13174928"></a>
+  <a class="indexterm" name="idp13203504"></a>
 
-  <a class="indexterm" name="idp13176560"></a>
+  <a class="indexterm" name="idp13206912"></a>
 
-  <a class="indexterm" name="idp13178192"></a>
+  <a class="indexterm" name="idp13208512"></a>
 
-  <a class="indexterm" name="idp13179824"></a>
+  <a class="indexterm" name="idp13210144"></a>
 
-  <a class="indexterm" name="idp13181520"></a>
+  <a class="indexterm" name="idp13211856"></a>
 
-  <a class="indexterm" name="idp13183040"></a>
+  <a class="indexterm" name="idp13213472"></a>
 
-  <a class="indexterm" name="idp13184656"></a>
+  <a class="indexterm" name="idp13215136"></a>
 
-  <a class="indexterm" name="idp13186320"></a>
+  <a class="indexterm" name="idp13216800"></a>
 
-  <a class="indexterm" name="idp13187984"></a>
+  <a class="indexterm" name="idp13218464"></a>
 
-  <a class="indexterm" name="idp13189584"></a>
+  <a class="indexterm" name="idp13220064"></a>
 
-  <a class="indexterm" name="idp13191248"></a>
+  <a class="indexterm" name="idp13221728"></a>
 
-  <a class="indexterm" name="idp13192880"></a>
+  <a class="indexterm" name="idp13223360"></a>
 
-  <a class="indexterm" name="idp13194544"></a>
+  <a class="indexterm" name="idp13225024"></a>
 
-  <a class="indexterm" name="idp13196176"></a>
+  <a class="indexterm" name="idp13226656"></a>
 
-  <a class="indexterm" name="idp13197568"></a>
+  <a class="indexterm" name="idp13228048"></a>
 
-  <a class="indexterm" name="idp13199456"></a>
+  <a class="indexterm" name="idp13229936"></a>
 
-  <a class="indexterm" name="idp13200976"></a>
+  <a class="indexterm" name="idp13231456"></a>
 
-  <a class="indexterm" name="idp13202752"></a>
+  <a class="indexterm" name="idp13233232"></a>
 
-  <a class="indexterm" name="idp13204416"></a>
+  <a class="indexterm" name="idp13234896"></a>
 
-  <a class="indexterm" name="idp13206048"></a>
+  <a class="indexterm" name="idp13236528"></a>
 
-  <a class="indexterm" name="idp13207680"></a>
+  <a class="indexterm" name="idp13238160"></a>
 
-  <a class="indexterm" name="idp13209344"></a>
+  <a class="indexterm" name="idp13239824"></a>
 
-  <a class="indexterm" name="idp13211008"></a>
+  <a class="indexterm" name="idp13241488"></a>
 
-  <a class="indexterm" name="idp13212672"></a>
+  <a class="indexterm" name="idp13243152"></a>
 
-  <a class="indexterm" name="idp13214320"></a>
+  <a class="indexterm" name="idp13244800"></a>
 
-  <a class="indexterm" name="idp13215984"></a>
+  <a class="indexterm" name="idp13246464"></a>
 
-  <a class="indexterm" name="idp13217632"></a>
+  <a class="indexterm" name="idp13248112"></a>
 
-  <a class="indexterm" name="idp13219360"></a>
+  <a class="indexterm" name="idp13249840"></a>
 
-  <a class="indexterm" name="idp13221008"></a>
+  <a class="indexterm" name="idp13251488"></a>
 
-  <a class="indexterm" name="idp13222656"></a>
+  <a class="indexterm" name="idp13253136"></a>
 
-  <a class="indexterm" name="idp13224304"></a>
+  <a class="indexterm" name="idp13254784"></a>
 
-  <a class="indexterm" name="idp13225952"></a>
+  <a class="indexterm" name="idp13256432"></a>
 
-  <a class="indexterm" name="idp13227664"></a>
+  <a class="indexterm" name="idp13258144"></a>
 
-  <a class="indexterm" name="idp13229200"></a>
+  <a class="indexterm" name="idp13259888"></a>
 
-  <a class="indexterm" name="idp13231072"></a>
+  <a class="indexterm" name="idp13261600"></a>
 
-  <a class="indexterm" name="idp13232640"></a>
+  <a class="indexterm" name="idp13263296"></a>
 
-  <a class="indexterm" name="idp13234096"></a>
+  <a class="indexterm" name="idp13265056"></a>
 
-  <a class="indexterm" name="idp13234224"></a>
+  <a class="indexterm" name="idp13266624"></a>
 
-  <a class="indexterm" name="idp13237648"></a>
+  <a class="indexterm" name="idp13268320"></a>
 
-  <a class="indexterm" name="idp13239296"></a>
+  <a class="indexterm" name="idp13269888"></a>
 
-  <a class="indexterm" name="idp13241008"></a>
+  <a class="indexterm" name="idp13271472"></a>
 
-  <a class="indexterm" name="idp13242544"></a>
+  <a class="indexterm" name="idp13273056"></a>
 
-  <a class="indexterm" name="idp13244176"></a>
+  <a class="indexterm" name="idp13274752"></a>
 
-  <a class="indexterm" name="idp13245840"></a>
+  <a class="indexterm" name="idp13276384"></a>
 
-  <a class="indexterm" name="idp13247504"></a>
+  <a class="indexterm" name="idp13278080"></a>
 
-  <a class="indexterm" name="idp13249168"></a>
+  <a class="indexterm" name="idp13279712"></a>
 
-  <a class="indexterm" name="idp13250832"></a>
+  <a class="indexterm" name="idp13281408"></a>
 
-  <a class="indexterm" name="idp13252496"></a>
+  <a class="indexterm" name="idp13283040"></a>
 
-  <a class="indexterm" name="idp13254176"></a>
+  <a class="indexterm" name="idp13284720"></a>
 
-  <a class="indexterm" name="idp13255808"></a>
+  <a class="indexterm" name="idp13286352"></a>
 
-  <a class="indexterm" name="idp13257456"></a>
+  <a class="indexterm" name="idp13288000"></a>
 
-  <a class="indexterm" name="idp13259152"></a>
+  <a class="indexterm" name="idp13289696"></a>
 
-  <a class="indexterm" name="idp13260752"></a>
+  <a class="indexterm" name="idp13291296"></a>
 
-  <a class="indexterm" name="idp13262384"></a>
+  <a class="indexterm" name="idp13292928"></a>
 
-  <a class="indexterm" name="idp13264032"></a>
+  <a class="indexterm" name="idp13294576"></a>
 
-  <a class="indexterm" name="idp13265680"></a>
+  <a class="indexterm" name="idp13296224"></a>
 
-  <a class="indexterm" name="idp13267328"></a>
+  <a class="indexterm" name="idp13297872"></a>
 
-  <a class="indexterm" name="idp13268976"></a>
+  <a class="indexterm" name="idp13299520"></a>
 
-  <a class="indexterm" name="idp13270608"></a>
+  <a class="indexterm" name="idp13301152"></a>
 
-  <a class="indexterm" name="idp13272256"></a>
+  <a class="indexterm" name="idp13302800"></a>
 
-  <a class="indexterm" name="idp13273888"></a>
+  <a class="indexterm" name="idp13304432"></a>
 
-  <a class="indexterm" name="idp13275584"></a>
+  <a class="indexterm" name="idp13306128"></a>
 
-  <a class="indexterm" name="idp13277216"></a>
+  <a class="indexterm" name="idp13307760"></a>
 
-  <a class="indexterm" name="idp13278896"></a>
+  <a class="indexterm" name="idp13309440"></a>
 
-  <a class="indexterm" name="idp13280528"></a>
+  <a class="indexterm" name="idp13311072"></a>
 
-  <a class="indexterm" name="idp13282208"></a>
+  <a class="indexterm" name="idp13312752"></a>
 
-  <a class="indexterm" name="idp13283840"></a>
+  <a class="indexterm" name="idp13314384"></a>
 
-  <a class="indexterm" name="idp13285488"></a>
+  <a class="indexterm" name="idp13316032"></a>
 
-  <a class="indexterm" name="idp13287136"></a>
+  <a class="indexterm" name="idp13317680"></a>
 
-  <a class="indexterm" name="idp13288768"></a>
+  <a class="indexterm" name="idp13319312"></a>
 
-  <a class="indexterm" name="idp13290416"></a>
+  <a class="indexterm" name="idp13320960"></a>
 
-  <a class="indexterm" name="idp13292048"></a>
+  <a class="indexterm" name="idp13322592"></a>
 
-  <a class="indexterm" name="idp13293744"></a>
+  <a class="indexterm" name="idp13324160"></a>
 
-  <a class="indexterm" name="idp13295376"></a>
+  <a class="indexterm" name="idp13325872"></a>
 
-  <a class="indexterm" name="idp13297056"></a>
+  <a class="indexterm" name="idp13327424"></a>
 
-  <a class="indexterm" name="idp13298688"></a>
+  <a class="indexterm" name="idp13329088"></a>
 
-  <a class="indexterm" name="idp13300368"></a>
+  <a class="indexterm" name="idp13330736"></a>
 
-  <a class="indexterm" name="idp13302000"></a>
+  <a class="indexterm" name="idp13332400"></a>
 
-  <a class="indexterm" name="idp13303648"></a>
+  <a class="indexterm" name="idp13334032"></a>
 
-  <a class="indexterm" name="idp13305296"></a>
+  <a class="indexterm" name="idp13335680"></a>
 
-  <a class="indexterm" name="idp13306928"></a>
+  <a class="indexterm" name="idp13337312"></a>
 
-  <a class="indexterm" name="idp13308560"></a>
+  <a class="indexterm" name="idp13338704"></a>
 
-  <a class="indexterm" name="idp13310208"></a>
+  <a class="indexterm" name="idp13340592"></a>
 
-  <a class="indexterm" name="idp13311856"></a>
+  <a class="indexterm" name="idp13342112"></a>
 
-  <a class="indexterm" name="idp13313488"></a>
+  <a class="indexterm" name="idp13343888"></a>
 
-  <a class="indexterm" name="idp13315136"></a>
+  <a class="indexterm" name="idp13345536"></a>
 
-  <a class="indexterm" name="idp13316768"></a>
+  <a class="indexterm" name="idp13347168"></a>
 
-  <a class="indexterm" name="idp13318368"></a>
+  <a class="indexterm" name="idp13348832"></a>
 
-  <a class="indexterm" name="idp13320032"></a>
+  <a class="indexterm" name="idp13350544"></a>
 
-  <a class="indexterm" name="idp13321680"></a>
+  <a class="indexterm" name="idp13352160"></a>
 
-  <a class="indexterm" name="idp13323440"></a>
+  <a class="indexterm" name="idp13353776"></a>
 
-  <a class="indexterm" name="idp13325008"></a>
+  <a class="indexterm" name="idp13355424"></a>
 
-  <a class="indexterm" name="idp13326640"></a>
+  <a class="indexterm" name="idp13357072"></a>
 
-  <a class="indexterm" name="idp13328240"></a>
+  <a class="indexterm" name="idp13358720"></a>
 
-  <a class="indexterm" name="idp13329904"></a>
+  <a class="indexterm" name="idp13360384"></a>
 
-  <a class="indexterm" name="idp13331536"></a>
+  <a class="indexterm" name="idp13362016"></a>
 
-  <a class="indexterm" name="idp13333168"></a>
+  <a class="indexterm" name="idp13363648"></a>
 
-  <a class="indexterm" name="idp13334832"></a>
+  <a class="indexterm" name="idp13365312"></a>
 
-  <a class="indexterm" name="idp13336480"></a>
+  <a class="indexterm" name="idp13366960"></a>
 
-  <a class="indexterm" name="idp13338144"></a>
+  <a class="indexterm" name="idp13368624"></a>
 
-  <a class="indexterm" name="idp13339808"></a>
+  <a class="indexterm" name="idp13370288"></a>
 
-  <a class="indexterm" name="idp13341456"></a>
+  <a class="indexterm" name="idp13371936"></a>
 
-  <a class="indexterm" name="idp13342848"></a>
+  <a class="indexterm" name="idp13373328"></a>
 
-  <a class="indexterm" name="idp13343008"></a>
+  <a class="indexterm" name="idp13373488"></a>
 
-  <a class="indexterm" name="idp13346352"></a>
+  <a class="indexterm" name="idp13376832"></a>
 
-  <a class="indexterm" name="idp13348016"></a>
+  <a class="indexterm" name="idp13378496"></a>
 
-  <a class="indexterm" name="idp13349648"></a>
+  <a class="indexterm" name="idp13380128"></a>
 
-  <a class="indexterm" name="idp13351296"></a>
+  <a class="indexterm" name="idp13381776"></a>
 
-  <a class="indexterm" name="idp13353024"></a>
+  <a class="indexterm" name="idp13383504"></a>
 
-  <a class="indexterm" name="idp13354736"></a>
+  <a class="indexterm" name="idp13385216"></a>
 
-  <a class="indexterm" name="idp13356384"></a>
+  <a class="indexterm" name="idp13386864"></a>
 
-  <a class="indexterm" name="idp13358032"></a>
+  <a class="indexterm" name="idp13388512"></a>
 
-  <a class="indexterm" name="idp13359680"></a>
+  <a class="indexterm" name="idp13390160"></a>
 
-  <a class="indexterm" name="idp13361216"></a>
+  <a class="indexterm" name="idp13391696"></a>
 
-  <a class="indexterm" name="idp13363024"></a>
+  <a class="indexterm" name="idp13393504"></a>
 
-  <a class="indexterm" name="idp13364544"></a>
+  <a class="indexterm" name="idp13395024"></a>
 
-  <a class="indexterm" name="idp13366192"></a>
+  <a class="indexterm" name="idp13396800"></a>
 
-  <a class="indexterm" name="idp13367856"></a>
+  <a class="indexterm" name="idp13398432"></a>
 
-  <a class="indexterm" name="idp13369488"></a>
+  <a class="indexterm" name="idp13400064"></a>
 
-  <a class="indexterm" name="idp13371136"></a>
+  <a class="indexterm" name="idp13401712"></a>
 
-  <a class="indexterm" name="idp13372784"></a>
+  <a class="indexterm" name="idp13403360"></a>
 
-  <a class="indexterm" name="idp13374432"></a>
+  <a class="indexterm" name="idp13405008"></a>
 
-  <a class="indexterm" name="idp13376080"></a>
+  <a class="indexterm" name="idp13406656"></a>
 </div>
 <div class="navfooter">
 <hr>

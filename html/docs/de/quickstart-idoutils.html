@@ -387,7 +387,7 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>Ab Debian 6.0/Ubuntu 10.10 heißt das Paket libpng12-0, der Name des dev-Pakets ändert sich nicht.</p>
+          <p>Ab Debian 6.0/Ubuntu 10.10 heißen die Pakete libpng12-0 und libdbi0, Debian 6.0 verwendet zudem libdbi0-dev, Debian 7.0 wird hingegen libdbi-dev benötigen.</p>
         </td></tr>
 </table></div>
 
@@ -395,12 +395,12 @@
 <li class="listitem">
             <p><span class="bold"><strong>MySQL:</strong></span></p>
 
-            <pre class="programlisting"> #&gt; apt-get install mysql-server mysql-client libdbi0 libdbi0-dev libdbd-mysql</pre>
+            <pre class="programlisting"> #&gt; apt-get install mysql-server mysql-client libdbi1 libdbi-dev libdbd-mysql</pre>
           </li>
 <li class="listitem">
             <p><span class="bold"><strong>PostgreSQL:</strong></span></p>
 
-            <pre class="programlisting"> #&gt; apt-get install postgresql libdbi1 libdbi-dev libdbd-pgsql libpg-dev</pre>
+            <pre class="programlisting"> #&gt; apt-get install postgresql libdbi1 libdbi-dev libdbd-pgsql libpq-dev</pre>
           </li>
 </ul></div>
       </li>
@@ -1021,7 +1021,7 @@
     <p>Kompilieren und installieren Sie die Plugins.</p>
 
     <pre class="screen"> #&gt; ./configure --prefix=/usr/local/icinga --with-cgiurl=/icinga/cgi-bin \
-    --with-htmurl=/icinga --with-nagios-user=icinga --with-nagios-group=icinga
+    --with-nagios-user=icinga --with-nagios-group=icinga
  #&gt; make
  #&gt; make install</pre>
   </div>
@@ -1053,8 +1053,6 @@
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
  #&gt; chcon -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/icinga.cmd</pre>
 
-    <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darüber zu erhalten, wie die
-    Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgeführt werden.</p>
   </div>
 
   <div class="section" title="2.5.15. IDOUtils und Icinga starten">
@@ -1176,8 +1174,7 @@
 
     <p>Die Konfiguration von e-Mail-Benachrichtigungen ist nicht Gegenstand dieser Anleitung. Icinga ist konfiguriert, um
     e-Mail-Benachrichtigungen zu versenden, aber möglicherweise ist auf Ihrem System noch kein Mail-Programm installiert bzw. konfiguriert.
-    Schauen Sie in Ihre Systemdokumentation, suchen Sie im Web oder gucken Sie im <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">
-    NagiosCommunity.org-Wiki</a> nach genauen Anweisungen, wie Ihr System konfiguriert werden muss, damit es e-Mail-Mitteilungen an
+    Schauen Sie in Ihre Systemdokumentation oder suchen Sie im Web nach genauen Anweisungen, wie Ihr System konfiguriert werden muss, damit es e-Mail-Mitteilungen an
     externe Adressen versendet. Mehr Informationen zu Benachrichtigungen finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a></p>
   </div>
 
@@ -1190,9 +1187,9 @@
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp656592"></a>
+    <a class="indexterm" name="idp657296"></a>
 
-    <a class="indexterm" name="idp652144"></a>
+    <a class="indexterm" name="idp658992"></a>
   </div>
 </div>
 <div class="navfooter">

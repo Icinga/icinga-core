@@ -472,7 +472,7 @@
     <p>Kompilieren und installieren Sie die Plugins.</p>
 
     <pre class="programlisting"> #&gt; ./configure --prefix=/usr/local/icinga \
-    --with-cgiurl=/icinga/cgi-bin --with-htmurl=/icinga \
+    --with-cgiurl=/icinga/cgi-bin \
     --with-nagios-user=icinga --with-nagios-group=icinga
  #&gt; make
  #&gt; make install</pre>
@@ -505,8 +505,6 @@
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
  #&gt; chcon -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/icinga.cmd</pre>
 
-    <p>Besuchen Sie das NagiosCommunity.org-Wiki unter <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">http://www.nagioscommunity.org/wiki</a>, um Informationen darüber zu erhalten, wie die
-    Icinga-CGIs im Enforcing-Modus mit einer Targeted-Richtlinie ausgeführt werden.</p>
   </div>
 
   <div class="section" title="2.3.11. Icinga starten">
@@ -578,7 +576,7 @@
 
     <p>Die Konfiguration von e-Mail-Benachrichtigungen ist nicht Gegenstand dieser Anleitung. Icinga ist konfiguriert, um
     e-Mail-Benachrichtigungen zu versenden, aber möglicherweise ist auf Ihrem System noch kein Mail-Programm installiert bzw. konfiguriert.
-    Schauen Sie in Ihre Systemdokumentation, suchen Sie im Web oder gucken Sie im <a class="link" href="http://www.nagioscommunity.org/wiki" target="_top">NagiosCommunity.org-Wiki</a> nach genauen Anweisungen, wie Ihr System
+    Schauen Sie in Ihre Systemdokumentation oder suchen Sie im Web nach genauen Anweisungen, wie Ihr System
     konfiguriert werden muss, damit es e-Mail-Mitteilungen an externe Adressen versendet. Mehr Informationen zu Benachrichtigungen finden
     Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a>.</p>
   </div>
@@ -592,9 +590,9 @@
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel</a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp313504"></a>
+    <a class="indexterm" name="idp316416"></a>
 
-    <a class="indexterm" name="idp314896"></a>
+    <a class="indexterm" name="idp318016"></a>
   </div>
 </div>
 <div class="navfooter">

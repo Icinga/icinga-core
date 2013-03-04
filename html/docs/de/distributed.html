@@ -32,7 +32,7 @@
 <div class="toc"><dl>
 <dt><span class="section">7.6.1. <a href="distributed.html#introduction">Einführung</a></span></dt>
 <dt><span class="section">7.6.2. <a href="distributed.html#goals">Ziele</a></span></dt>
-<dt><span class="section">7.6.3. <a href="distributed.html#refrencediagram">Referenzdiagramm</a></span></dt>
+<dt><span class="section">7.6.3. <a href="distributed.html#referencediagram">Referenzdiagramm</a></span></dt>
 <dt><span class="section">7.6.4. <a href="distributed.html#centralvsdistributed">Zentraler Server vs. Verteilte Server</a></span></dt>
 <dt><span class="section">7.6.5. <a href="distributed.html#servicecheckinfo">Service-Prüfungsinformationen von verteilten Servern erhalten</a></span></dt>
 <dt><span class="section">7.6.6. <a href="distributed.html#distributedconfig">Verteilte Server-Konfiguration</a></span></dt>
@@ -67,7 +67,7 @@
 
   <div class="section" title="7.6.3. Referenzdiagramm">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="refrencediagram"></a>7.6.3. Referenzdiagramm</h3></div></div></div>
+<a name="referencediagram"></a>7.6.3. Referenzdiagramm</h3></div></div></div>
     
 
     <p>Das folgende Diagramm soll Ihnen eine generelle Idee davon geben, wie verteilte Überwachung mit Icinga arbeitet. Wir werden
@@ -169,14 +169,15 @@
 
     <p>Die Definition für den <span class="emphasis"><em>submit_check_result</em></span>-Befehl sieht ungefähr so aus:</p>
 
-    <pre class="screen">
- <span class="bold"><strong>define command{ command_name submit_check_result command_line /usr/local/icinga/libexec/eventhandlers/submit_check_result $HOSTNAME$ '$SERVICEDESC$' $SERVICESTATE$ '$SERVICEOUTPUT$' }</strong></span>
-    </pre>
+    <pre class="programlisting"> define command{ 
+    command_name submit_check_result
+    command_line /usr/local/icinga/libexec/eventhandlers/submit_check_result $HOSTNAME$ '$SERVICEDESC$' $SERVICESTATE$ '$SERVICEOUTPUT$'
+ }</pre>
 
     <p>Die <span class="emphasis"><em>submit_check_result</em></span> Shell-Scripte sehen ungefähr so aus (ersetzen Sie <span class="emphasis"><em>central_server</em></span>
     durch die IP-Adresse des zentralen Servers):</p>
 
-    <pre class="screen"> #!/bin/sh
+    <pre class="programlisting"> #!/bin/sh
  # Arguments:
  #  $1 = host_name (Short name of host that the service is
  #       associated with)
@@ -206,7 +207,7 @@
  # pipe the service check info into the send_nsca program, which
  # in turn transmits the data to the nsca daemon on the central
  # monitoring server
- /bin/printf "%s\t%s\t%s\t%s\n" "$1" "$2" "$return_code" "$4" | /usr/local/icinga/bin/send_nsca -H <span class="emphasis"><em> central_server</em></span> -c /usr/local/icinga/etc/send_nsca.cfg</pre>
+ /bin/printf "%s\t%s\t%s\t%s\n" "$1" "$2" "$return_code" "$4" | /usr/local/icinga/bin/send_nsca -H <span class="emphasis"><strong> central_server</strong></span> -c /usr/local/icinga/etc/send_nsca.cfg</pre>
 
     <p>Das Script oben geht davon aus, dass das send_nsca-Programm und die Konfigurationsdatei (send_nsca.cfg) in den Verzeichnissen
     <span class="emphasis"><em>/usr/local/icinga/bin/</em></span> und <span class="emphasis"><em>/usr/local/icinga/etc/</em></span> zu finden sind.</p>
@@ -363,9 +364,10 @@
     Befehl namens 'service-is-stale' und benutzen den Befehlsnamen in der <span class="emphasis"><em>check_command</em></span>-Option Ihrer Services. Hier
     nun, wie die Definition aussehen könnte...</p>
 
-    <pre class="screen">
- <span class="bold"><strong> define command{ command_name service-is-stale command_line /usr/local/icinga/libexec/check_dummy 2 "CRITICAL: Service results are stale" }</strong></span>
-    </pre>
+    <pre class="programlisting"> define command{
+    command_name service-is-stale
+    command_line /usr/local/icinga/libexec/check_dummy 2 "CRITICAL: Service results are stale"
+ }</pre>
 
     <p>Wenn Icinga feststellt, dass das Service-Ergebnis abgestanden ist und das <span class="bold"><strong>service-is-stale</strong></span>-Kommando aufruft, wird das <span class="emphasis"><em>/usr/local/icinga/libexec/check_dummy</em></span>-Plugin
     ausgeführt und der Service geht in einen kritischen Zustand. Das wird wahrscheinlich dazu führen, dass Benachrichtigungen versandt
@@ -412,7 +414,7 @@
     sollten Sie <a class="link" href="freshness.html" title="7.5. Service- und Host-Frische-Prüfungen">Frische-Prüfungen</a> für Hosts aktivieren (ähnlich zu dem, was weiter oben für Services
     beschrieben wird).</p>
 
-    <a class="indexterm" name="idp13849712"></a>
+    <a class="indexterm" name="idp13870736"></a>
   </div>
 </div>
 <div class="navfooter">

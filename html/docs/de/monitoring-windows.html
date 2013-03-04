@@ -39,14 +39,15 @@
 <dt><span class="section">2.12.7. <a href="monitoring-windows.html#configicinga">Icinga konfigurieren</a></span></dt>
 <dt><span class="section">2.12.8. <a href="monitoring-windows.html#passwordprotect">Passwortschutz</a></span></dt>
 <dt><span class="section">2.12.9. <a href="monitoring-windows.html#restarticinga">Icinga neu starten</a></span></dt>
+<dt><span class="section">2.12.10. <a href="monitoring-windows.html#troubleshooting">Troubleshooting</a></span></dt>
 </dl></div>
   
 
-  <a class="indexterm" name="idp1134496"></a>
+  <a class="indexterm" name="idp1134944"></a>
 
-  <a class="indexterm" name="idp1136128"></a>
+  <a class="indexterm" name="idp1136576"></a>
 
-  <a class="indexterm" name="idp1137648"></a>
+  <a class="indexterm" name="idp1138096"></a>
 
   <div class="section" title="2.12.1. Einführung">
 <div class="titlepage"><div><div><h3 class="title">
@@ -390,6 +391,52 @@
 
     <p>Wenn die Überprüfung irgendwelche Fehler enthält, dann müssen Sie diese beheben, bevor Sie fortfahren. Stellen Sie sicher, dass
     Sie Icinga nicht (erneut) starten, bevor die Überprüfung ohne Fehler durchgelaufen ist!</p>
+  </div>
+
+  <div class="section" title="2.12.10. Troubleshooting">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="troubleshooting"></a>2.12.10. Troubleshooting</h3></div></div></div>
+    
+
+    <p>Manchmal funktioniert es nicht. Der einfachste Weg ist es, das Plugin als Icinga-Benutzer auf der Kommandozeile
+    auszuführen: </p>
+<pre class="screen"> $&gt; /usr/local/icinga/libexec/check_nt -H &lt;ip address&gt; -p &lt;port&gt; -s &lt;password&gt; -v UPTIME</pre>
+<p>&lt;ip
+    address&gt; ist die Adresse des Windows-Rechners, &lt;port&gt; und &lt;password&gt; die Werte aus <code class="filename">nsc.ini</code>. Bitte
+    beachten Sie, dass ein leeres Passwort ggf. als "" (zwei Anführungszeichen) anzugeben ist. Das Ergebnis könnte eins der folgenden
+    sein:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>CRITICAL: Socket timeout after 10 seconds</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+            <p>Eine Firewall blockiert auf dem Windows-Rechner, auf dem Icinga-Server oder dazwischen.</p>
+          </li>
+<li class="listitem">
+            <p>Der NSClient++-Dienst läuft nicht</p>
+          </li>
+<li class="listitem">
+            <p>Der angegebene Port ist falsch</p>
+          </li>
+</ul></div>
+      </li>
+<li class="listitem">
+        <p>could not fetch information from server</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+            <p>Der angegebene Port ist falsch (ältere NSClient-Versionen)</p>
+          </li></ul></div>
+      </li>
+<li class="listitem">
+        <p>NSCLIENT: wrong password</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle"><li class="listitem">
+            <p>Die Lösung bleibt dem Leser überlassen</p>
+          </li></ul></div>
+      </li>
+</ul></div>
   </div>
 </div>
 <div class="navfooter">

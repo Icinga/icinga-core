@@ -46,7 +46,9 @@
 <li class="listitem">
       <p><span class="bold"><strong>Verwenden Sie Pakete.</strong></span> Inzwischen gibt es für viele Distributionen passende Pakete. Denken Sie
       über die Verwendung nach anstatt aus Sourcen zu installieren. Es spart Ihnen ein bisschen Zeit. Bitte beachten Sie dabei, dass sich
-      die Pfade von denen unterscheiden, die in der Dokumentation beschrieben sind. Informationen zu Paketen finden Sie <a class="link" href="icinga_packages.html" title="2.7. Icinga Pakete für Linux-Distributionen">hier</a>.</p>
+      die Pfade von denen unterscheiden, die in der Dokumentation beschrieben sind. Eine detailierte Liste finden Sie auf dieser 
+      <a class="link" href="https://wiki.icinga.org/display/howtos/Package+Specific+Locations" target="_top">Wiki Seite</a>.
+      Informationen zu Paketen finden Sie <a class="link" href="icinga_packages.html" title="2.7. Icinga Pakete für Linux-Distributionen">hier</a>.</p>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Nutzen Sie die Schnellstartanleitungen</strong></span> (wenn Sie kein Paket verwenden möchten oder können). Die
@@ -61,6 +63,17 @@
       Verständnis der Grundlagen haben.</p>
     </li>
 <li class="listitem">
+      <p><span class="bold"><strong>Verstehen Sie die Architektur.</strong></span> Icinga Core wird mit 2 GUIs ausgeliefert, Icinga Classic UI und Icinga-Web Icinga Classic UI verwendet
+      die nativen Status und Log Dateien, während Icinga-Web IDOUtils mit Datenbankbackend benötigt. Beide GUIs können am
+      am selben Host installiert sein, unterhalb von /icinga und /icinga-web.
+      Die IDOUtils Datenbank wird ebenso von Icinga-Reporting auf Basis von JasperReports Server verwendet, welches als Cronk in Icinga-Web
+      integriert werden kann. Lesen Sie im <a class="link" href="ch12.html" title="Kapitel 12. IDOUtils">IDOUtils Kapitel</a> weiter, um weitere Information zu den
+      IDOUtils Komponenten zu erhalten.
+      <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> sind für Ihre Checks essenziell, ebenso sollten Sie sich Gedanken über <a class="link" href="ch10.html" title="Kapitel 10. weitere Software">Addons</a>
+      in Ihrem Setup machen.
+      </p>
+    </li>
+<li class="listitem">
       <p><span class="bold"><strong>Suchen Sie die Hilfe von anderen.</strong></span> Wenn Sie die Dokumentation gelesen haben, sich die
       Beispiel-Konfigurationsdateien angesehen und immer noch Probleme haben, dann senden Sie eine e-Mail mit der Beschreibung Ihrer
       Probleme an die <span class="emphasis"><em>Icinga-users</em></span>-Mailing-Liste. Aufgrund der Arbeit an diesem Projekt können wir die meisten
@@ -73,7 +86,7 @@
     </li>
 </ol></div>
 
-  <a class="indexterm" name="idp157888"></a>
+  <a class="indexterm" name="idp163072"></a>
 </div>
 <div class="navfooter">
 <hr>

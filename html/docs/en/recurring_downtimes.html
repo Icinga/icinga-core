@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>7.17. Recurring Downtimes</title>
+<title>7.17. Recurring Downtimes (experimental/development)</title>
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
@@ -15,7 +15,8 @@
 <CENTER><IMG src="../images/logofullsize.png" border="0" alt="Icinga" title="Icinga"></CENTER>
 <div class="navheader">
 <table width="100%" summary="Navigation header">
-<tr><th colspan="3" align="center">7.17. Recurring Downtimes</th></tr>
+<tr><th colspan="3" align="center">7.17. Recurring Downtimes
+  (experimental/development)</th></tr>
 <tr>
 <td width="20%" align="left">
 <a accesskey="p" href="downtime.html">Prev</a> </td>
@@ -26,9 +27,10 @@
 </table>
 <hr>
 </div>
-<div class="section" title="7.17. Recurring Downtimes">
+<div class="section" title="7.17. Recurring Downtimes (experimental/development)">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
-<a name="recurring_downtimes"></a>7.17. <a name="recurring_downtime"></a>Recurring Downtimes</h2></div></div></div>
+<a name="recurring_downtimes"></a>7.17. <a name="recurring_downtime"></a>Recurring Downtimes
+  (experimental/development)</h2></div></div></div>
 <div class="toc"><dl>
 <dt><span class="section">7.17.1. <a href="recurring_downtimes.html#introduction">Downtime definition</a></span></dt>
 <dt><span class="section">7.17.2. <a href="recurring_downtimes.html#variabledates">Variable dates</a></span></dt>
@@ -40,20 +42,23 @@
 </dl></div>
   
 
-  <p>Many people have regular downtimes at different times and it would be a tedious task to reschedule them manually every time. So far
-  there is no official format for defining such schedules. That means that these definitions have to be stored in a separate file which
-  cannot be included into the other object definitions. A cronjob will call a script which will read the definitions, already existing
+  <p>Many people have regular downtimes at different times and it would be
+  a tedious task to reschedule them manually every time. <span class="bold"><strong>So far there is no official format for defining such schedules.
+  That means that these definitions have to be stored in a separate file which
+  cannot be included into the other object definitions.</strong></span> A cronjob
+  will call a script which will read the definitions, already existing
   downtimes, and plan new downtimes if necessary.</p>
 
   <div class="section" title="7.17.1. Downtime definition">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="introduction"></a>7.17.1. Downtime definition</h3></div></div></div>
-	  
+    
 
-  <p>Icinga introduces a new format for these downtimes based on existing definitions taken from the status file and time periods
-  resulting in:</p>
+    <p>The script introduces a new format for these downtimes based on
+    existing definitions taken from the status file and time periods resulting
+    in:</p>
 
-  <pre class="programlisting"> define downtime {
+    <pre class="programlisting"> define downtime {
     host_name           some host 
     hostgroups          some hostgroup
     servicegroups       some servicegroup
@@ -67,34 +72,40 @@
     register            0
 }</pre>
 
-  <p>Notes on the above definition:</p>
+    <p>Notes on the above definition:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>"host_name", "hostgroups", and "servicegroups" are mandatory and mutually exclusive.</p>
-    </li>
+        <p>"host_name", "hostgroups", and "servicegroups" are mandatory and
+        mutually exclusive.</p>
+      </li>
 <li class="listitem">
-      <p>"service_description" is optional. If not defined a downtime for a host / hostgroup(s) / servicegroup(s) is/are scheduled. If
-      defined it can be a single service or "all" for all services of a single host or all hosts of a hostgroup.</p>
-    </li>
+        <p>"service_description" is optional. If not defined a downtime for
+        a host / hostgroup(s) / servicegroup(s) is/are scheduled. If defined
+        it can be a single service or "all" for all services of a single host
+        or all hosts of a hostgroup.</p>
+      </li>
 <li class="listitem">
-      <p>"duration" is optional and must be defined if a flexible downtime is to be scheduled.</p>
-    </li>
+        <p>"duration" is optional and must be defined if a flexible
+        downtime is to be scheduled.</p>
+      </li>
 <li class="listitem">
-      <p>"fixed" is optional and will be "0" if duration is defined or if it differs from start time-end time.</p>
-    </li>
+        <p>"fixed" is optional and will be "0" if duration is defined or if
+        it differs from start time-end time.</p>
+      </li>
 <li class="listitem">
-      <p>"propagate" is optional and defaults to "0". If set the downtime will be propagated to child hosts of the host specified.</p>
-    </li>
+        <p>"propagate" is optional and defaults to "0". If set the downtime
+        will be propagated to child hosts of the host specified.</p>
+      </li>
 <li class="listitem">
-      <p>"register" may be used to deactive the definition ("0"). It will have the same effect as if the definition would not
-      exist.</p>
-    </li>
+        <p>"register" may be used to deactive the definition ("0"). It will
+        have the same effect as if the definition would not exist.</p>
+      </li>
 <li class="listitem">
-      <p>"downtime_period" is similar to the definition found in <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">time periods</a> meaning
-      that any of the following should be valid:</p>
+        <p>"downtime_period" is similar to the definition found in <a class="link" href="objectdefinitions.html#objectdefinitions-timeperiod">time periods</a> meaning
+        that any of the following should be valid:</p>
 
-      <pre class="programlisting">   downtime_period     2011-10-01              20:00-02:00
+        <pre class="programlisting">   downtime_period     2011-10-01              20:00-02:00
    downtime_period     2011-10-10 - 2011-10-20 10:00-12:00
    downtime_period     day 1 - 3               04:00-12:00
    downtime_period     sunday                  00:00-24:00
@@ -108,7 +119,7 @@
    downtime_period     february -1             00:00-24:00
    downtime_period     friday -2               00:00-24:00
    downtime_period     thursday -1 november    00:00-24:00
-   downtime_period     2007-01-01 - 2008-02-01 00:00-24:00
+   downtime_period     2007-01-01 - 2008-02-01 00:00-24:00   (see note)
    downtime_period     monday 3 - thursday 4   00:00-24:00
    downtime_period     day 1 - 15              00:00-24:00
    downtime_period     day 20 - -1             00:00-24:00
@@ -122,33 +133,48 @@
    downtime_period     july 10 - 15 / 2                    00:00-24:00
    downtime_period     tuesday 1 april - friday 2 may / 6  00:00-24:00</pre>
 
-      <p>Please note that similiar to time periods multiple "downtime_period" entries per definition are possible to define different
-      times for a single object like the following:</p>
+        <p>Please note that similiar to time periods multiple
+        "downtime_period" entries per definition are possible to define
+        different times for a single object like the following:</p>
 
-      <pre class="programlisting"> define downtime {
+        <pre class="programlisting"> define downtime {
     ...
     comment            Backup: incr on wed, full on sat
     downtime_period    wednesday 20:00-21:00
     downtime_period    saturday  20:00-23:30
 }</pre>
 
-      <p>Well, there is one drawback. This way you cannot define different flexible downtimes within one definition.</p>
-    </li>
-</ul></div>
+        <p>Well, there is one drawback. This way you cannot define
+        different flexible downtimes within one definition.</p>
 
+        <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+          <p>Please note that although the downtime is running all day from
+          2007-01-01 to 2008-02-01 not a single downtime is planned but one
+          each day from 00:00 to 24:00.</p>
+        </td></tr>
+</table></div>
+      </li>
+</ul></div>
   </div>
 
   <div class="section" title="7.17.2. Variable dates">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="variabledates"></a>7.17.2. Variable dates</h3></div></div></div>
-	  
+    
 
-  <p>The definitions above will work for most dates but some are calculated based on easter sunday which is on a different date each
-  year. We tried to bypass these limitations by calculating the dates based on easter sunday and giving them names you can refer to. The
-  variable names are not case sensitive.</p>
+    <p>The definitions above will work for most dates but some are
+    calculated based on easter sunday which is on a different date each year.
+    We tried to bypass these limitations by calculating the dates based on
+    easter sunday and giving them names you can refer to. The variable names
+    are not case sensitive.</p>
 
-  <div class="informaltable">
-    <table border="1">
+    <div class="informaltable">
+      <table border="1">
 <colgroup>
 <col>
 <col>
@@ -232,32 +258,37 @@
 </tr>
 </tbody>
 </table>
-  </div>
+    </div>
 
-  <p>So now you can define a downtime for Carnival Monday using something like:</p>
+    <p>So now you can define a downtime for Carnival Monday using something
+    like:</p>
 
-  <pre class="programlisting"> define downtime {
+    <pre class="programlisting"> define downtime {
     ...
     comment            Cheer up, lads
     downtime_period    carnival_monday 09:00-17:00
  }</pre>
-
   </div>
 
   <div class="section" title="7.17.3. Local holidays">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="localholidays"></a>7.17.3. Local holidays</h3></div></div></div>
-	  
+    
 
-  <p>Looking at the calendars of several countries there are a lot of holidays which only apply to a single country. Unfortunately some
-  of these dates are on a weekday in a week within a month. You can already define these dates using "monday 3 february" or "monday -1 may"
-  but you may want to use variables names as well. Defining these names and their corresponding calculations in a separate file and
-  processing them enables you to do so. The default name for this file is <code class="filename">holiday.cfg</code> located in
-  <code class="filename">/usr/local/icinga/etc</code>. The location can be altered using the option "-l".</p>
+    <p>Looking at the calendars of several countries there are a lot of
+    holidays which only apply to a single country. Unfortunately some of these
+    dates are on a weekday in a week within a month. You can already define
+    these dates using "monday 3 february" or "monday -1 may" but you may want
+    to use variables names as well. Defining these names and their
+    corresponding calculations in a separate file and processing them enables
+    you to do so. The default name for this file is
+    <code class="filename">holiday.cfg</code> located in
+    <code class="filename">/usr/local/icinga/etc</code>. The location can be altered
+    using the option "-l".</p>
 
-  <p>We only picked three dates to give you the idea how to do it:</p>
+    <p>We only picked three dates to give you the idea how to do it:</p>
 
-  <pre class="programlisting"># example of local holiday definitions
+    <pre class="programlisting"># example of local holiday definitions
 # please don't use local characters
 # variable names must not contain spaces
 #
@@ -265,62 +296,69 @@ Presidents_day        day_in_week_of_month(2,1,3)
 Spring_Bank_Holiday   day_in_week_of_month(5,1,-1)
 Pentecote             date_easter(49)</pre>
 
-  <p>There are two "functions" available to define these flexible dates:</p>
+    <p>There are two "functions" available to define these flexible
+    dates:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>"day_in_week_of_month": You have to specify three parameters</p>
+        <p>"day_in_week_of_month": You have to specify three
+        parameters</p>
 
-      <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
-          <p>month: 1 = january ... 12 = december</p>
-        </li>
+            <p>month: 1 = january ... 12 = december</p>
+          </li>
 <li class="listitem">
-          <p>day: 1 = monday ... 7 = sunday</p>
-        </li>
+            <p>day: 1 = monday ... 7 = sunday</p>
+          </li>
 <li class="listitem">
-          <p>week: 1 .. 5 for the week within the month or -1 for last week within the month</p>
-        </li>
+            <p>week: 1 .. 5 for the week within the month or -1 for last
+            week within the month</p>
+          </li>
 </ul></div>
-    </li>
+      </li>
 <li class="listitem">
-      <p>"date_easter": The number specifies the offset from easter sunday</p>
-    </li>
+        <p>"date_easter": The number specifies the offset from easter
+        sunday</p>
+      </li>
 </ul></div>
 
-  <p>So now you can define a downtime using something like:</p>
+    <p>So now you can define a downtime using something like:</p>
 
-  <pre class="programlisting"> define downtime {
+    <pre class="programlisting"> define downtime {
     ...
     comment            Don't shut down the cash machines
     downtime_period    spring_bank_holiday  09:00-17:00
  }</pre>
 
-  <p>Please note that you have to specify the location of this file using the option "-l".</p>
-
+    <p>Please note that you have to specify the location of this file using
+    the option "-l".</p>
   </div>
 
   <div class="section" title="7.17.4. Entering downtimes">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="enteringdowntimes"></a>7.17.4. Entering downtimes</h3></div></div></div>
-	  
+    
 
-  <p>So far there is no way to enter the definitions via your browser so you have to use your favourite text editor to create the
-  definitions. Sorry.</p>
-
+    <p>So far there is no way to enter the definitions via your browser so
+    you have to use your favourite text editor to create the definitions.
+    Sorry.</p>
   </div>
 
   <div class="section" title="7.17.5. Planning downtimes">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="planningdowntimes"></a>7.17.5. Planning downtimes</h3></div></div></div>
-	  
+    
 
-  <p>Once you have created a file holding the downtime definitions you will want to schedule the downtimes automatically. This can be
-  done using the Perl script "sched_down.pl" being called from the crontab. The script itself requires the Perl module "Date::Calc".</p>
+    <p>Once you have created a file holding the downtime definitions you
+    will want to schedule the downtimes automatically. This can be done using
+    the Perl script "sched_down.pl" being called from the crontab. The script
+    itself requires the Perl module "Date::Calc".</p>
 
-  <p>The easiest way is to execute "/path/to/script/sched_down.pl". Adding the option "-h" will output some information:</p>
+    <p>The easiest way is to execute "/path/to/script/sched_down.pl".
+    Adding the option "-h" will output some information:</p>
 
-  <pre class="programlisting">   -c | --config=s     Icinga main config
+    <pre class="programlisting">   -c | --config=s     Icinga main config
                        default: /usr/local/icinga/etc/icinga.cfg
    -s | --schedule=s   schedule definitions
                        default: /usr/local/icinga/etc/downtime.cfg
@@ -345,24 +383,29 @@ Setting environment variables influences the behaviour:
   0 = no debugging / cmds are sent to external command pipe!
   Note: command line options take precedence over environment variables </pre>
 
-  <p>All arguments are optional. Just to test the function of the script it might be helpful to use the "examine" option followed by a
-  downtime period:</p>
+    <p>All arguments are optional. Just to test the function of the script
+    it might be helpful to use the "examine" option followed by a downtime
+    period:</p>
 
-  <pre class="programlisting"> /usr/local/icinga/bin/sched_down.pl -e "tuesday 20:00-21:00"</pre>
+    <pre class="programlisting"> /usr/local/icinga/bin/sched_down.pl -e "tuesday 20:00-21:00"</pre>
 
-  <p>This will return a string similar to the actual command if the downtime is within the planning period (default two days) which can
-  be altered using the option "-m". To test downtimes in the future you may set the environment variable FAKE_DATE (e.g.
-  "FAKE_DATE=20130127") prior calling the script although it might be easier to use the option "-t".</p>
+    <p>This will return a string similar to the actual command if the
+    downtime is within the planning period (default two days) which can be
+    altered using the option "-m". To test downtimes in the future you may set
+    the environment variable FAKE_DATE (e.g. "FAKE_DATE=20130127") prior
+    calling the script although it might be easier to use the option
+    "-t".</p>
 
-  <p>There are two ways to execute the script:</p>
+    <p>There are two ways to execute the script:</p>
 
-  <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-      <p>As an active check</p>
+        <p>As an active check</p>
 
-      <p>You can execute the script like a normal active check with a convenient check interval</p>
+        <p>You can execute the script like a normal active check with a
+        convenient check interval</p>
 
-      <pre class="programlisting"> define service {
+        <pre class="programlisting"> define service {
     host_name             icinga-server
     service_description   schedule_downtimes
     check_command         schedule_script!-d0
@@ -376,47 +419,63 @@ Setting environment variables influences the behaviour:
     command_name          schedule_script
     command_line          $USER1$/sched_down.pl $ARG1$
  }</pre>
-    </li>
+
+        <div class="caution" title="Caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="../images/caution.png"></td>
+<th align="left">Caution</th>
+</tr>
+<tr><td align="left" valign="top">
+          <p>Please note that this service is only to be run on the
+          (central) Icinga server, not on any others in a distributed
+          environment.</p>
+        </td></tr>
+</table></div>
+      </li>
 <li class="listitem">
-      <p>Via the crontab</p>
+        <p>Via the crontab</p>
 
-      <p>A line in the crontab of the Icinga user executing the script every full hour might look like</p>
+        <p>A line in the crontab of the Icinga user executing the
+        script every full hour might look like</p>
 
-      <pre class="programlisting"> 0 * * * * /usr/local/icinga/bin/sched_down.pl -d0</pre>
-    </li>
+        <pre class="programlisting"> 0 * * * * /usr/local/icinga/bin/sched_down.pl -d0</pre>
+      </li>
 </ul></div>
 
-  <p>Unless you get the downtimes on short notice this should be sufficient. The script will only plan non-existing downtimes so no harm
-  will be done if it is called more often.</p>
-
+    <p>Unless you get the downtimes on short notice this should be
+    sufficient. The script will only plan non-existing downtimes so no harm
+    will be done if it is called more often.</p>
   </div>
 
   <div class="section" title="7.17.6. Converting downtime definitions">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="conversion"></a>7.17.6. Converting downtime definitions</h3></div></div></div>
-	  
+    
 
-  <p>Steve Shipway has created files to plan downtimes via a CGI and schedule them for several Nagios versions a long time ago (<a class="link" href="https://www.monitoringexchange.org/inventory/Utilities/AddOn-Projects/Downtimes/downtime_sched%253A-recurring-downtime-scheduler" target="_top">see
-  here</a>).</p>
+    <p>Steve Shipway has created files to plan downtimes via a CGI and
+    schedule them for several Nagios versions a long time ago (<a class="link" href="https://www.monitoringexchange.org/inventory/Utilities/AddOn-Projects/Downtimes/downtime_sched%253A-recurring-downtime-scheduler" target="_top">see
+    here</a>).</p>
 
-  <p>The commercial Nagios version has added recurring downtimes as well but instead of using all of Steve's scripts they decided to take
-  the scheduling script and write a new CGI which doesn't seem to be able to plan flexible downtimes (well, at least not in the 2011
-  VM).</p>
+    <p>The commercial Nagios version has added recurring downtimes as well
+    but instead of using all of Steve's scripts they decided to take the
+    scheduling script and write a new CGI which doesn't seem to be able to
+    plan flexible downtimes (well, at least not in the 2011 VM).</p>
 
-  <p>The Perl script "sched_conv.pl" will try to convert files created by these two scripts mentioned above into a new file. You may want
-  to call the script adding the option "-h" to get some help.</p>
-
+    <p>The Perl script "sched_conv.pl" will try to convert files created by
+    these two scripts mentioned above into a new file. You may want to call
+    the script adding the option "-h" to get some help.</p>
   </div>
 
   <div class="section" title="7.17.7. Files">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="files"></a>7.17.7. Files</h3></div></div></div>
-	  
+    
 
-  <p>You will find the perl scripts in <code class="filename">contrib/downtimes</code>.</p>
+    <p>You will find the perl scripts in
+    <code class="filename">contrib/downtimes</code>.</p>
 
-  <a class="indexterm" name="idp14345216"></a>
-</div>
+    <a class="indexterm" name="idp14380048"></a>
+  </div>
 </div>
 <div class="navfooter">
 <hr>
