@@ -60,7 +60,7 @@ automatically.
 
 5. Optional: install additional Icinga guis like Icinga Web or Icinga Reporting as well
    as addons such as PNP4Nagios, Check_MK or NagVis. For a suggested list please
-   either consult the docs or the wiki, or ask community members at icinga-portal.org
+   either consult the docs or the wiki, or ask community members at monitoring-portal.org
 
 
 Troubleshooting
