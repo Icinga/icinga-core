@@ -24,6 +24,8 @@ ENHANCEMENTS
 * classic ui: Add "send_ack_notifications" to cgi configuration (TheCry) #3467 - CF
 * classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
 * classic ui: Added process status to JSON response #3172 - RB
+* classic ui: Added data/time selection to 'log file navigation' #3168 - RB
+* classic ui: Added setting focus to main frame on first site load #3202 - RB
 
 * idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
 * idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB

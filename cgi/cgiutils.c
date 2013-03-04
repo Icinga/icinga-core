@@ -69,7 +69,6 @@ int		highlight_table_rows = TRUE;
 
 char            nagios_check_command[MAX_INPUT_BUFFER] = "";
 char            nagios_process_info[MAX_INPUT_BUFFER] = "";
-int             nagios_process_state = STATE_OK;
 
 int             enable_splunk_integration = FALSE;
 char            *splunk_url = NULL;
@@ -268,7 +267,6 @@ void reset_cgi_vars(void) {
 
 	strcpy(nagios_check_command, "");
 	strcpy(nagios_process_info, "");
-	nagios_process_state = STATE_OK;
 
 	log_rotation_method = LOG_ROTATION_NONE;
 	cgi_log_rotation_method = LOG_ROTATION_NONE;
@@ -1134,8 +1132,13 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		result = read_all_status_data(get_cgi_config_location(), READ_PROGRAM_STATUS);
 
 		/* total running time */
-		get_time_breakdown(current_time - program_start, &days, &hours, &minutes, &seconds);
-		sprintf(run_time_string, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+		if ( program_start != 0L) {
+			get_time_breakdown(current_time - program_start, &days, &hours, &minutes, &seconds);
+			sprintf(run_time_string, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+		} else {
+			run_time_string[0] = '0';
+			run_time_string[1] = '\0';
+		}
 
 		tm_ptr = localtime(&current_time);
 
@@ -1150,7 +1153,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("\"icinga_status\": {\n");
 
 		printf("\"status_data_age\": %lu,\n", current_time - status_file_creation_time);
-		printf("\"process_state_ok\": %s,\n", (nagios_process_state == STATE_OK) ? "true" : "false");
+		printf("\"status_update_interval\": %d,\n", status_update_interval);
 		printf("\"reading_status_data_ok\": %s,\n", (result == ERROR && daemon_check == TRUE) ? "false" : "true");
 		printf("\"program_version\": \"%s\",\n", PROGRAM_VERSION);
 		printf("\"icinga_pid\": %d,\n", nagios_pid);
@@ -1158,6 +1161,12 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf(",\"running_as_a_daemon\": %s\n", (daemon_mode == TRUE) ? "true" : "false");
 #endif
 		printf("\"timezone\": \"%s\",\n", timezone);
+		if (date_format == DATE_FORMAT_EURO)
+			printf("\"date_format\": \"euro\",\n");
+		else if (date_format == DATE_FORMAT_ISO8601 || date_format == DATE_FORMAT_STRICT_ISO8601)
+			printf("\"date_format\": \"%siso8601\",\n", (date_format == DATE_FORMAT_STRICT_ISO8601) ? "strict-" : "");
+		else
+			printf("\"date_format\": \"us\",\n");
 		printf("\"program_start\": %lu,\n", program_start);
 		printf("\"total_running_time\": \"%s\",\n", run_time_string);
 		printf("\"last_external_command_check\": %lu,\n", last_command_check);
@@ -1242,7 +1251,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	printf("<script type='text/javascript' src='%s%s'></script>\n", url_js_path, JQUERY_MAIN_JS);
 
 	/* datetimepicker libs and css */
-	if (cgi_id == CMD_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID) {
+	if (cgi_id == CMD_CGI_ID || cgi_id == NOTIFICATIONS_CGI_ID || cgi_id == SHOWLOG_CGI_ID || cgi_id == HISTORY_CGI_ID) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_CORE_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_WIDGET_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_MOUSE_JS);
@@ -1254,7 +1263,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_TIMEPICKER_CSS);
 
 		printf("<script type=\"text/javascript\">\n");
-		printf("$(function() {\n");
+		printf("$(document).ready(function() {\n");
 		printf("\t$( \".timepicker\" ).datetimepicker({\n");
 		printf("\t\tfirstDay: %d,\n", week_starts_on_monday);
 
@@ -1270,6 +1279,52 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("\t\tchangeMonth: true,\n");
 		printf("\t\tchangeYear: true\n");
 		printf("\t});\n");
+
+		printf("\t$(\"#history-datepicker\").datepicker({\n");
+		printf("\t\tfirstDay: %d,\n", week_starts_on_monday);
+		printf("\t\tdateFormat: '@',\n");
+		printf("\t\tmaxDate: '+0d',\n");
+		printf("\t\tshowWeek: true,\n");
+		printf("\t\tchangeMonth: true,\n");
+		printf("\t\tchangeYear: true,\n");
+		printf("\t\tbeforeShow: function (input, instance) {\n");
+		printf("\t\t\tinstance.dpDiv.css({\n");
+		printf("\t\t\t\tmarginTop: '15px',\n");
+		printf("\t\t\t\tmarginLeft: '-67px'\n");
+		printf("\t\t\t});\n");
+		printf("\t\t},\n");
+		printf("\t\tonSelect: function (date) {\n");
+		printf("\t\t\tif (date == '' || date < 0) { return false;}\n");
+		printf("\t\t\tts_start = date.substring(0,date.length-3);\n");
+		printf("\t\t\tts_end = parseInt(ts_start,10) + parseInt(86399,10);\n");
+		printf("\t\t\turl = window.location.href;\n");
+		printf("\t\t\toptions = '';\n");
+		printf("\t\t\tnewoptionsArray = new Array();\n");
+		printf("\t\t\tif (url.indexOf('?') === -1) {\n");
+		printf("\t\t\t\tbase_url = url;\n");
+		printf("\t\t\t} else {\n");
+		printf("\t\t\t\tbase_url = url.substring(0,url.indexOf('?'));\n");
+		printf("\t\t\t\toptions = url.substring(url.indexOf('?')+1);\n");
+		printf("\t\t\t\toptionsArray = options.split('&');\n");
+		printf("\t\t\t\tfor (var i=0; i<optionsArray.length; i++) {\n");
+		printf("\t\t\t\t\tswitch (optionsArray[i].substring(0,optionsArray[i].indexOf('='))) {\n");
+		printf("\t\t\t\t\t\tcase 'ts_start':\n");
+		printf("\t\t\t\t\t\tcase 'ts_end':\n");
+		printf("\t\t\t\t\t\tcase 'start':\n");
+		printf("\t\t\t\t\t\tcase 'start_time':\n");
+		printf("\t\t\t\t\t\tcase 'end_time':\n");
+		printf("\t\t\t\t\t\tcase '':\n");
+		printf("\t\t\t\t\t\t\tbreak;\n");
+		printf("\t\t\t\t\t\tdefault:\n");
+		printf("\t\t\t\t\t\t\tnewoptionsArray.push(optionsArray[i]);\n");
+		printf("\t\t\t\t\t}\n");
+		printf("\t\t\t\t}\n");
+		printf("\t\t\t}\n");
+		printf("\t\t\tnewoptionsArray.push('ts_start=' + ts_start, 'ts_end=' + ts_end);\n");
+		printf("\t\t\twindow.location.href = base_url + '?' + newoptionsArray.join('&');\n");
+		printf("\t\t}\n");
+		printf("\t});\n");
+
 		printf("});\n");
 		printf("</script>\n");
 	}
@@ -2014,9 +2069,6 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 		free(dir_to_check);
 	}
 
-	if (nagios_process_state != STATE_OK)
-		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Monitoring process may not be running!<BR>Click <A HREF='%s?type=%d'>here</A> for more info.</DIV>", EXTINFO_CGI, DISPLAY_PROCESS_INFO);
-
 	if (result == ERROR && daemon_check == TRUE)
 		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Could not read program status information!</DIV>");
 
@@ -2072,7 +2124,7 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 		break;
 	}
 
-	/* get url options but filter out "limit" and "status" */
+	/* get url options but filter out "ts_end", "ts_start" and "start" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
 		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
 			printf("display_nav_table(): Could not allocate memory for stripped_query_string\n");
@@ -2150,7 +2202,15 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 
 	printf("</tr>\n");
 
+	printf("<tr><td colspan=2></td><td align=center valign=center><input id='history-datepicker' type='hidden'><a href='#' onclick=\"$.datepicker._showDatepicker($('#history-datepicker')[0]); return false;\">Select a day ...</a></td><td colspan=2></td></tr>\n");
+
 	printf("</table>\n");
+
+	printf("<script type=\"text/javascript\">\n");
+	printf("$(function() {\n");
+	printf("\t$(\"#history-datepicker\").datepicker( \"setDate\", \"%lu000\" );\n",ts_start);
+	printf("});\n");
+	printf("</script>\n");
 
 	return;
 }
