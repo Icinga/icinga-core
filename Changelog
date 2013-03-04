@@ -44,6 +44,7 @@ FIXES
 * idoutils: fix empty output/perfdata segfaults for mysql string truncate #3516 - MF
 * idoutils: unlink leftover socket on startup, if using unix sockets - MF
 * idoutils: fix long output data causes wrong data in database #2342 - MF
+* idoutils: fix idomod leaks memory on core reload #3749 - GB
 
 * install: drop unused daemon-init-readhat script (spec uses daemon-init) #3402 - MF
 * install: fix broken configure ssl detection for idoutils on ubuntu/debian (Oliver Skibbe) #3413 - MF
