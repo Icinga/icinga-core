@@ -22,6 +22,12 @@ FIXES
 
 * idoutils: idomod leaks memory on core reload #3749 - GB
 
+* icinga.spec: add idoutils as transitional package (thx Stefan Marx, Michael Grüner) #3640
+
+CHANGES
+
+* icinga.spec: add idoutils as transitional package #3640
+
 
 1.8.4 - 13/01/2013
 
