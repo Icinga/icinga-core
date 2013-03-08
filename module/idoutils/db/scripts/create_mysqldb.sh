@@ -3,7 +3,7 @@
 #-- create_mysqldb.sh
 #-- DB definition for MySQL
 #--
-#-- Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+#-- Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 #--
 #-- current version: 2011-05-03 Thomas Dressler
 #-- -- --------------------------------------------------------

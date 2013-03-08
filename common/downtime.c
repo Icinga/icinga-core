@@ -3,8 +3,8 @@
  * DOWNTIME.C - Scheduled downtime functions for Icinga
  *
  * Copyright (c) 2000-2008 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -155,6 +155,8 @@ int unschedule_downtime(int type, unsigned long downtime_id) {
 		else
 			svc->pending_flex_downtime--;
 	}
+
+    log_debug_info(DEBUGL_DOWNTIME, 0, "Cancelling %s downtime (id=%lu)\n", temp_downtime->type == HOST_DOWNTIME ? "host" : "service", temp_downtime->downtime_id);
 
 	/* decrement the downtime depth variable and update status data if necessary */
 	if (temp_downtime->is_in_effect == TRUE) {

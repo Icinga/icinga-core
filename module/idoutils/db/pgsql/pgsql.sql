@@ -2,7 +2,7 @@
 -- pgsql.sql
 -- DB definition for Postgresql
 --
--- Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 --
 -- initial version: 2009-05-13 Markus Manzke
 -- current version: 2012-04-19 Michael Friedrich <michael.friedrich@univie.ac.at>

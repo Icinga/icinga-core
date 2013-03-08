@@ -6,7 +6,7 @@
 -- fixes command_line size
 -- adds index for deleting
 -- -----------------------------------------
--- Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 --
 -- Initial Revision: 2009-12-30 Michael Friedrich <michael.friedrich(at)univie.ac.at>
 -- Current Revision: 2010-02-04 Michael Friedrich <michael.friedrich(at)univie.ac.at>
