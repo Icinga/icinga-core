@@ -3,8 +3,8 @@
  * SKIPLIST.C - Skiplist functions for use in Icinga event/object lists
  *
  * Copyright (c) 2008 Ethan Galstad
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * Notes:
  *

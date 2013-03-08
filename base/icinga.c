@@ -3,8 +3,8 @@
  * ICINGA.C - Core Program Code For Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * Description:
  *
@@ -407,8 +407,8 @@ int main(int argc, char **argv, char **env) {
 
 	if (daemon_mode == FALSE) {
 		printf("\n%s %s\n", PROGRAM_NAME , PROGRAM_VERSION);
-		printf("Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)\n");
-		printf("Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors\n");
+		printf("Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)\n");
+		printf("Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors\n");
 		printf("Copyright (c) 1999-2009 Ethan Galstad\n");
 		printf("Last Modified: %s\n", PROGRAM_MODIFICATION_DATE);
 		printf("License: GPL\n\n");
