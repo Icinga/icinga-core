@@ -22,7 +22,8 @@ FIXES
 
 * idoutils: idomod leaks memory on core reload #3749 - GB
 
-* icinga.spec: add idoutils as transitional package (thx Stefan Marx, Michael Grüner) #3640
+* icinga.spec: add idoutils as transitional package (thx Stefan Marx, Michael Grüner) #3640 - MF
+* icinga.spec: fix double %{logdir}/gui/ definitions in icinga and icinga-gui (thx René Koch) #3802 - MF
 
 CHANGES
 

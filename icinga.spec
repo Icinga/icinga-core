@@ -6,7 +6,7 @@
 #
 # ExclusiveDist: el5 el6
 
-%define revision 4
+%define revision 5
 
 %define logmsg logger -t %{name}/rpm
 
@@ -352,8 +352,8 @@ fi
 %attr(755,-,-) %{_libdir}/icinga/p1.pl
 %{_libdir}/%{name}/eventhandlers
 %defattr(-,icinga,icinga,-)
-%{logdir}
-%{logdir}/archives
+%dir %{logdir}
+%dir %{logdir}/archives
 %dir %{_localstatedir}/spool/%{name}
 %dir %{_localstatedir}/spool/%{name}/checkresults
 %attr(2755,icinga,icingacmd) %{_localstatedir}/spool/%{name}/cmd
@@ -433,6 +433,9 @@ fi
 
 
 %changelog
+* Tue Mar 05 2013 Rene Koch <r.koch@ovido.at> - 1.8.4-5
+- fixed double logdir/gui/ definitions in icinga and icinga-gui
+
 * Fri Feb 15 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.8.4-4
 - fix rpmlint errors/warnings
 
