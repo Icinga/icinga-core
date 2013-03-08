@@ -30,6 +30,8 @@ ENHANCEMENTS
 * idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
 * idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB
 
+* install: set --enable-idoutils/event-broker to true as default configure flags #3813 - MF
+
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
 * core: fix macro escaping logs incorrect warning for $$escapes #3404 - MF
@@ -82,6 +84,8 @@ CHANGES
 	** enable_socket_queue #3533
 
 * icinga.spec: add idoutils as transitional package #3640
+
+* install: set --enable-idoutils/event-broker to true as default configure flags #3813
 
 
 1.8.4 - 13/01/2013
