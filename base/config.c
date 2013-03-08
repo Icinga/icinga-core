@@ -2931,7 +2931,6 @@ int pre_flight_circular_check(int *w, int *e) {
 	hostdependency *temp_hd = NULL;
 	hostdependency *temp_hd2 = NULL;
 	int found = FALSE;
-	int result = OK;
 	int warnings = 0;
 	int errors = 0;
 
@@ -2949,7 +2948,6 @@ int pre_flight_circular_check(int *w, int *e) {
 
 	/* check routes between all hosts */
 	found = FALSE;
-	result = OK;
 
 
 	/* We clean the dsf status from previous check */

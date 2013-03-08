@@ -159,7 +159,7 @@ int neb_load_all_modules(void) {
 		result = neb_load_module(temp_module);
 	}
 
-	return OK;
+	return result;
 }
 
 #ifndef PATH_MAX
