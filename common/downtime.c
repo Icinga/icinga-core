@@ -156,6 +156,8 @@ int unschedule_downtime(int type, unsigned long downtime_id) {
 			svc->pending_flex_downtime--;
 	}
 
+    log_debug_info(DEBUGL_DOWNTIME, 0, "Cancelling %s downtime (id=%lu)\n", temp_downtime->type == HOST_DOWNTIME ? "host" : "service", temp_downtime->downtime_id);
+
 	/* decrement the downtime depth variable and update status data if necessary */
 	if (temp_downtime->is_in_effect == TRUE) {
 
