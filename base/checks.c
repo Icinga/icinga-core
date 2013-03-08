@@ -664,6 +664,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	check_result_info.host_name = (char *)strdup(svc->host_name);
 	check_result_info.service_description = (char *)strdup(svc->description);
 	check_result_info.output_file = (check_result_info.output_file_fd < 0 || output_file == NULL) ? NULL : strdup(output_file);
+	check_result_info.executed_command = strdup(processed_command);
 
 	/* free memory */
 	my_free(output_file);
@@ -686,6 +687,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 		fprintf(check_result_info.output_file_fp, "reschedule_check=%d\n", check_result_info.reschedule_check);
 		fprintf(check_result_info.output_file_fp, "latency=%f\n", svc->latency);
 		fprintf(check_result_info.output_file_fp, "start_time=%lu.%lu\n", check_result_info.start_time.tv_sec, check_result_info.start_time.tv_usec);
+		fprintf(check_result_info.output_file_fp, "executed_command=%s\n", check_result_info.executed_command);
 
 		/* flush output or it'll get written again when we fork() */
 		fflush(check_result_info.output_file_fp);
@@ -1082,8 +1084,18 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 	/* get the current time */
 	time(&current_time);
 
-	log_debug_info(DEBUGL_CHECKS, 0, "** Handling check result for service '%s' on host '%s'...\n", temp_service->description, temp_service->host_name);
-	log_debug_info(DEBUGL_CHECKS, 1, "HOST: %s, SERVICE: %s, CHECK TYPE: %s, OPTIONS: %d, SCHEDULED: %s, RESCHEDULE: %s, EXITED OK: %s, RETURN CODE: %d, OUTPUT: %s\n", temp_service->host_name, temp_service->description, (queued_check_result->check_type == SERVICE_CHECK_ACTIVE) ? "Active" : "Passive", queued_check_result->check_options, (queued_check_result->scheduled_check == TRUE) ? "Yes" : "No", (queued_check_result->reschedule_check == TRUE) ? "Yes" : "No", (queued_check_result->exited_ok == TRUE) ? "Yes" : "No", queued_check_result->return_code, queued_check_result->output);
+    log_debug_info(DEBUGL_CHECKS, 0, "** Handling async check result for service '%s' on host '%s'...\n", temp_service->description,  temp_service->host_name);
+
+    log_debug_info(DEBUGL_CHECKS, 2, "\tCheck Type:         %s\n", (queued_check_result->check_type == HOST_CHECK_ACTIVE) ? "Active" : "Passive");
+    log_debug_info(DEBUGL_CHECKS, 2, "\tCheck Options:      %d\n", queued_check_result->check_options);
+    log_debug_info(DEBUGL_CHECKS, 2, "\tScheduled Check?:   %s\n", (queued_check_result->scheduled_check == TRUE) ? "Yes" : "No");
+    log_debug_info(DEBUGL_CHECKS, 2, "\tReschedule Check?:  %s\n", (queued_check_result->reschedule_check == TRUE) ? "Yes" : "No");
+    log_debug_info(DEBUGL_CHECKS, 2, "\tExited OK?:         %s\n", (queued_check_result->exited_ok == TRUE) ? "Yes" : "No");
+    log_debug_info(DEBUGL_CHECKS, 2, "\tExec Time:          %.3f\n", temp_service->execution_time);
+    log_debug_info(DEBUGL_CHECKS, 2, "\tLatency:            %.3f\n", temp_service->latency);
+    log_debug_info(DEBUGL_CHECKS, 2, "\tReturn Status:      %d\n", queued_check_result->return_code);
+    log_debug_info(DEBUGL_CHECKS, 2, "\tOutput:             %s\n", (queued_check_result == NULL) ? "NULL" : queued_check_result->output);
+    log_debug_info(DEBUGL_CHECKS, 2, "\tExecuted Command:   %s\n", (queued_check_result->executed_command == NULL) ? "NULL" : queued_check_result->executed_command);
 
 	/* decrement the number of service checks still out there... */
 	if (queued_check_result->check_type == SERVICE_CHECK_ACTIVE && currently_running_service_checks > 0)
@@ -1150,6 +1162,10 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 	my_free(temp_service->plugin_output);
 	my_free(temp_service->long_plugin_output);
 	my_free(temp_service->perf_data);
+	my_free(temp_service->executed_command);
+
+    /* get the executed command */
+    temp_service->executed_command = strdup(queued_check_result->executed_command);
 
 	/* if there was some error running the command, just skip it (this shouldn't be happening) */
 	if (queued_check_result->exited_ok == FALSE) {
@@ -3264,6 +3280,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 	check_result_info.exited_ok = TRUE;
 	check_result_info.return_code = STATE_OK;
 	check_result_info.output = NULL;
+	check_result_info.executed_command = strdup(processed_command);
 
 	/* free memory */
 	my_free(output_file);
@@ -3285,6 +3302,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 		fprintf(check_result_info.output_file_fp, "reschedule_check=%d\n", check_result_info.reschedule_check);
 		fprintf(check_result_info.output_file_fp, "latency=%f\n", hst->latency);
 		fprintf(check_result_info.output_file_fp, "start_time=%lu.%lu\n", check_result_info.start_time.tv_sec, check_result_info.start_time.tv_usec);
+		fprintf(check_result_info.output_file_fp, "executed_command=%s\n", check_result_info.executed_command);
 
 		/* flush buffer or we'll end up writing twice when we fork() */
 		fflush(check_result_info.output_file_fp);
@@ -3493,6 +3511,7 @@ int handle_async_host_check_result_3x(host *temp_host, check_result *queued_chec
 	log_debug_info(DEBUGL_CHECKS, 2, "\tLatency:            %.3f\n", temp_host->latency);
 	log_debug_info(DEBUGL_CHECKS, 2, "\tReturn Status:      %d\n", queued_check_result->return_code);
 	log_debug_info(DEBUGL_CHECKS, 2, "\tOutput:             %s\n", (queued_check_result == NULL) ? "NULL" : queued_check_result->output);
+	log_debug_info(DEBUGL_CHECKS, 2, "\tExecuted Command:   %s\n", (queued_check_result->executed_command == NULL) ? "NULL" : queued_check_result->executed_command);
 
 	/* decrement the number of host checks still out there... */
 	if (queued_check_result->check_type == HOST_CHECK_ACTIVE && currently_running_host_checks > 0)
@@ -3567,6 +3586,10 @@ int handle_async_host_check_result_3x(host *temp_host, check_result *queued_chec
 	my_free(temp_host->plugin_output);
 	my_free(temp_host->long_plugin_output);
 	my_free(temp_host->perf_data);
+	my_free(temp_host->executed_command);
+
+    /* get the executed command */
+    temp_host->executed_command = strdup(queued_check_result->executed_command);
 
 	/* parse check output to get: (1) short output, (2) long output, (3) perf data */
 	parse_check_output(queued_check_result->output, &temp_host->plugin_output, &temp_host->long_plugin_output, &temp_host->perf_data, TRUE, TRUE);

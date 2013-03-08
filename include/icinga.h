@@ -331,6 +331,7 @@ typedef struct check_result_struct{
 	int return_code;				/* plugin return code */
 	char *output;	                                /* plugin output */
 	struct check_result_struct *next;
+    char *executed_command;
 	}check_result;
 
 

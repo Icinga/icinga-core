@@ -2941,6 +2941,8 @@ int process_check_result_file(char *fname) {
 				new_cr->return_code = atoi(val);
 			else if (!strcmp(var, "output"))
 				new_cr->output = (char *)strdup(val);
+			else if (!strcmp(var, "executed_command"))
+				new_cr->executed_command = (char *)strdup(val);
 		}
 	}
 
@@ -3038,6 +3040,7 @@ int init_check_result(check_result *info) {
 	info->return_code = 0;
 	info->output = NULL;
 	info->next = NULL;
+    info->executed_command = NULL;
 
 	return OK;
 }
@@ -3114,6 +3117,7 @@ int free_check_result(check_result *info) {
 	my_free(info->service_description);
 	my_free(info->output_file);
 	my_free(info->output);
+	my_free(info->executed_command);
 
 	return OK;
 }
