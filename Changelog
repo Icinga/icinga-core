@@ -19,6 +19,7 @@ NOTES
 
 ENHANCEMENTS
 * core: introduce warning level -vv on config verification #3510 - MF
+* core: refuse to start if neb modules fail to load (Andreas Ericsson) #3812 - MF
 
 * classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
 * classic ui: Add "send_ack_notifications" to cgi configuration (TheCry) #3467 - CF
@@ -77,8 +78,10 @@ FIXES
 CHANGES
 
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
+
 * core: -v param can be used more than once #3510
 * core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510
+* core: refuse to start if neb modules fail to load #3812
 
 * ido2db.cfg:
 	** use_transactions #3527

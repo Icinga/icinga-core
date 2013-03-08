@@ -154,12 +154,18 @@ int neb_free_module_list(void) {
 int neb_load_all_modules(void) {
 	nebmodule *temp_module = NULL;
 	int result = OK;
+    int errors = 0;
 
 	for (temp_module = neb_module_list; temp_module; temp_module = temp_module->next) {
 		result = neb_load_module(temp_module);
+
+        if (result != OK) {
+            logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Failed to load module '%s'.\n", temp_module->filename ? temp_module->filename : "(no file?)");
+            errors++;
+        }
 	}
 
-	return result;
+	return errors ? ERROR : OK;
 }
 
 #ifndef PATH_MAX
