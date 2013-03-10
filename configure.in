@@ -859,9 +859,9 @@ dnl Configure IDOUtils
 dnl set dummy for ocilib
 OCILIB_LIB=""
 
-USE_IDOUTILS=no
+USE_IDOUTILS=yes
 USE_IDOUTILS_ORACLE=no
-AC_ARG_ENABLE(idoutils,AC_HELP_STRING([--enable-idoutils],[enables database connectivity using idoutils]),USE_IDOUTILS=$enableval,USE_IDOUTILS=no)
+AC_ARG_ENABLE(idoutils,AC_HELP_STRING([--enable-idoutils],[enables database connectivity using idoutils (default: enabled)]),USE_IDOUTILS=$enableval,USE_IDOUTILS=yes)
 if test x$USE_IDOUTILS = xyes; then
 	if test x$USE_EVENTBROKER = xno; then
 		AC_MSG_ERROR([--enable-idoutils needs also --enable-event-broker])

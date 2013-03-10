@@ -2,7 +2,7 @@
  *
  * PROTOAPI.H - IDO Protocol Definition
  * Copyright (c) 2005-2006 Ethan Galstad
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  ************************************************************************/
 

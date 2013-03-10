@@ -3,8 +3,8 @@
  * UTILS.C - Miscellaneous utility functions for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -852,7 +852,6 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod) {
 	time_t day_range_end = (time_t)0L;
 	int test_time_year = 0;
 	int test_time_mon = 0;
-	int test_time_mday = 0;
 	int test_time_wday = 0;
 	int year = 0;
 	int shift;
@@ -879,7 +878,6 @@ int check_time_against_period(time_t test_time, timeperiod *tperiod) {
 	t = localtime_r(&test_time, &tm_s);
 	test_time_year = t->tm_year;
 	test_time_mon = t->tm_mon;
-	test_time_mday = t->tm_mday;
 	test_time_wday = t->tm_wday;
 
 	/* calculate the start of the day (midnight, 00:00 hours) when the specified test time occurs */
@@ -2819,7 +2817,6 @@ int process_check_result_file(char *fname) {
 	char *var = NULL;
 	char *val = NULL;
 	char *v1 = NULL, *v2 = NULL;
-	int delete_file = FALSE;
 	time_t current_time;
 	check_result *new_cr = NULL;
 
@@ -2889,7 +2886,6 @@ int process_check_result_file(char *fname) {
 			/* file is too old - ignore check results it contains and delete it */
 			/* this will only work as intended if file_time comes before check results */
 			if (max_check_result_file_age > 0 && (current_time - (strtoul(val, NULL, 0)) > max_check_result_file_age)) {
-				delete_file = TRUE;
 				break;
 			}
 		}
@@ -2945,6 +2941,8 @@ int process_check_result_file(char *fname) {
 				new_cr->return_code = atoi(val);
 			else if (!strcmp(var, "output"))
 				new_cr->output = (char *)strdup(val);
+			else if (!strcmp(var, "executed_command"))
+				new_cr->executed_command = (char *)strdup(val);
 		}
 	}
 
@@ -3042,6 +3040,7 @@ int init_check_result(check_result *info) {
 	info->return_code = 0;
 	info->output = NULL;
 	info->next = NULL;
+    info->executed_command = NULL;
 
 	return OK;
 }
@@ -3118,6 +3117,7 @@ int free_check_result(check_result *info) {
 	my_free(info->service_description);
 	my_free(info->output_file);
 	my_free(info->output);
+	my_free(info->executed_command);
 
 	return OK;
 }
@@ -3248,7 +3248,6 @@ char *get_next_string_from_buf(char *buf, int *start_index, int bufsize) {
 int contains_illegal_object_chars(char *name) {
 	register int x = 0;
 	register int y = 0;
-	register int ch = 0;
 
 	if (name == NULL)
 		return FALSE;
@@ -3256,8 +3255,6 @@ int contains_illegal_object_chars(char *name) {
 	x = (int)strlen(name) - 1;
 
 	for (; x >= 0; x--) {
-
-		ch = (int)name[x];
 
 		/* illegal user-specified characters */
 		if (illegal_object_chars != NULL)

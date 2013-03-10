@@ -3,8 +3,8 @@
  * STATUSDATA.H - Header for external status data routines
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -108,6 +108,7 @@ typedef struct hoststatus_struct{
          */
 	int     current_down_notification_number;
 	int     current_unreachable_notification_number;
+    char    *executed_command;
         }hoststatus;
 
 
@@ -168,6 +169,7 @@ typedef struct servicestatus_struct{
 	int     current_warning_notification_number;
 	int     current_critical_notification_number;
 	int     current_unknown_notification_number;
+    char    *executed_command;
         }servicestatus;
 
 

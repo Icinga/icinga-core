@@ -3,7 +3,7 @@
  * EXTINFO.C -  Icinga Extended Information CGI
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -1593,6 +1593,12 @@ void show_host_info(void) {
 			print_modified_attributes(HTML_CONTENT, EXTINFO_CGI, temp_hoststatus->modified_attributes);
 			printf("</td></tr>\n");
 
+			if (is_authorized_for_full_command_resolution(&current_authdata)) {
+				printf("<TR><TD CLASS='dataVar' VALIGN='top'>Executed Command:</td><td CLASS='dataVal'>");
+				printf("%s", (temp_hoststatus->executed_command == NULL) ? "" : html_encode(temp_hoststatus->executed_command, TRUE));
+				printf("</td></tr>\n");
+			}
+
 			printf("</TABLE>\n");
 			printf("</TD></TR>\n");
 			printf("</TABLE>\n");
@@ -2026,6 +2032,12 @@ void show_service_info(void) {
 			printf("<TR><TD CLASS='dataVar'>Modified Attributes:</td><td CLASS='dataVal'>");
 			print_modified_attributes(HTML_CONTENT, EXTINFO_CGI, temp_svcstatus->modified_attributes);
 			printf("</td></tr>\n");
+
+			if (is_authorized_for_full_command_resolution(&current_authdata)) {
+				printf("<TR><TD CLASS='dataVar' VALIGN='top'>Executed Command:</td><td CLASS='dataVal'>");
+				printf("%s", (temp_svcstatus->executed_command == NULL) ? "" : html_encode(temp_svcstatus->executed_command, TRUE));
+				printf("</td></tr>\n");
+			}
 
 			printf("</TABLE>\n");
 			printf("</TD></TR>\n");

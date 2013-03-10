@@ -3,8 +3,8 @@
  * XSDDEFAULT.C - Default external status data input routines for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -506,6 +506,7 @@ int xsddefault_save_status_data(void) {
 		fprintf(fp, "\tplugin_output=%s\n", (temp_host->plugin_output == NULL) ? "" : temp_host->plugin_output);
 		fprintf(fp, "\tlong_plugin_output=%s\n", (temp_host->long_plugin_output == NULL) ? "" : temp_host->long_plugin_output);
 		fprintf(fp, "\tperformance_data=%s\n", (temp_host->perf_data == NULL) ? "" : temp_host->perf_data);
+		fprintf(fp, "\texecuted_command=%s\n", (temp_host->executed_command == NULL) ? "" : temp_host->executed_command);
 		fprintf(fp, "\tlast_check=%lu\n", temp_host->last_check);
 		fprintf(fp, "\tnext_check=%lu\n", temp_host->next_check);
 		fprintf(fp, "\tcheck_options=%d\n", temp_host->check_options);
@@ -593,6 +594,7 @@ int xsddefault_save_status_data(void) {
 		fprintf(fp, "\tplugin_output=%s\n", (temp_service->plugin_output == NULL) ? "" : temp_service->plugin_output);
 		fprintf(fp, "\tlong_plugin_output=%s\n", (temp_service->long_plugin_output == NULL) ? "" : temp_service->long_plugin_output);
 		fprintf(fp, "\tperformance_data=%s\n", (temp_service->perf_data == NULL) ? "" : temp_service->perf_data);
+		fprintf(fp, "\texecuted_command=%s\n", (temp_service->executed_command == NULL) ? "" : temp_service->executed_command);
 		fprintf(fp, "\tlast_check=%lu\n", temp_service->last_check);
 		fprintf(fp, "\tnext_check=%lu\n", temp_service->next_check);
 		fprintf(fp, "\tcheck_options=%d\n", temp_service->check_options);
@@ -1096,6 +1098,8 @@ int xsddefault_read_status_data(char *config_file, int options) {
 						unescape_newlines(temp_hoststatus->long_plugin_output);
 					} else if (!strcmp(var, "performance_data"))
 						temp_hoststatus->perf_data = (char *)strdup(val);
+					else if (!strcmp(var, "executed_command"))
+						temp_hoststatus->executed_command = (char *)strdup(val);
 					else if (!strcmp(var, "current_attempt"))
 						temp_hoststatus->current_attempt = atoi(val);
 					else if (!strcmp(var, "max_attempts"))
@@ -1224,6 +1228,8 @@ int xsddefault_read_status_data(char *config_file, int options) {
 						unescape_newlines(temp_servicestatus->long_plugin_output);
 					} else if (!strcmp(var, "performance_data"))
 						temp_servicestatus->perf_data = (char *)strdup(val);
+					else if (!strcmp(var, "executed_command"))
+						temp_servicestatus->executed_command = (char *)strdup(val);
 					else if (!strcmp(var, "last_check"))
 						temp_servicestatus->last_check = strtoul(val, NULL, 10);
 					else if (!strcmp(var, "next_check"))

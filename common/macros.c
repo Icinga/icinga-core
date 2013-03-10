@@ -3,8 +3,8 @@
  * MACROS.C - Common macro functions for Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -135,7 +135,6 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 	char *original_macro = NULL;
 	char *cleaned_macro = NULL;
 	int clean_macro = FALSE;
-	int found_macro_x = FALSE;
 	int result = OK;
 	int clean_options = 0;
 	int free_macro = FALSE;
@@ -177,7 +176,6 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 		log_debug_info(DEBUGL_MACROS, 2, "  Processing part: '%s'\n", temp_buffer);
 
 		selected_macro = NULL;
-		found_macro_x = FALSE;
 		clean_macro = FALSE;
 
 		/* we're in plain text... */
