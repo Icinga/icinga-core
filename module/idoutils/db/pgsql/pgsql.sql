@@ -772,6 +772,7 @@ CREATE TABLE  icinga_hoststatus (
   normal_check_interval double precision  default 0,
   retry_check_interval double precision  default 0,
   check_timeperiod_object_id bigint default 0,
+  executed_command TEXT,
   CONSTRAINT PK_hoststatus_id PRIMARY KEY (hoststatus_id) ,
   CONSTRAINT UQ_hoststatus UNIQUE (host_object_id)
 ) ;
@@ -1249,6 +1250,7 @@ CREATE TABLE  icinga_servicestatus (
   normal_check_interval double precision  default 0,
   retry_check_interval double precision  default 0,
   check_timeperiod_object_id bigint default 0,
+  executed_command TEXT,
   CONSTRAINT PK_servicestatus_id PRIMARY KEY (servicestatus_id) ,
   CONSTRAINT UQ_servicestatus UNIQUE (service_object_id)
 ) ;

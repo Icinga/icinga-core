@@ -8,8 +8,11 @@
 -- -----------------------------------------
 
 -- -----------------------------------------
--- 
+-- #3810 executed_command
 -- -----------------------------------------
+
+ALTER TABLE icinga_hoststatus ADD executed_command TEXT;
+ALTER TABLE icinga_servicestatus ADD executed_command TEXT;
 
 -- -----------------------------------------
 -- update dbversion
