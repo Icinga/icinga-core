@@ -20,6 +20,7 @@ NOTES
 ENHANCEMENTS
 * core: introduce warning level -vv on config verification #3510 - MF
 * core: refuse to start if neb modules fail to load (Andreas Ericsson) #3812 - MF
+* core: keep logfile open, reducing open/close performance decreases (Andreas Ericsson) #3390 - MF
 
 * classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
 * classic ui: Add "send_ack_notifications" to cgi configuration (TheCry) #3467 - CF
