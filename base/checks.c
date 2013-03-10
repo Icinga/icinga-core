@@ -3239,11 +3239,6 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 	/* get the command start time */
 	gettimeofday(&start_time, NULL);
 
-	/* set check time for on-demand checks, so they're not incorrectly detected as being orphaned - Luke Ross 5/16/08 */
-	/* NOTE: 06/23/08 EG not sure if there will be side effects to this or not.... */
-	if (scheduled_check == FALSE)
-		hst->next_check = start_time.tv_sec;
-
 	/* increment number of host checks that are currently running... */
 	currently_running_host_checks++;
 
