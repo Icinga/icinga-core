@@ -2,7 +2,7 @@
 -- pgsql.sql
 -- DB definition for Postgresql
 --
--- Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 --
 -- initial version: 2009-05-13 Markus Manzke
 -- current version: 2012-04-19 Michael Friedrich <michael.friedrich@univie.ac.at>
@@ -772,6 +772,7 @@ CREATE TABLE  icinga_hoststatus (
   normal_check_interval double precision  default 0,
   retry_check_interval double precision  default 0,
   check_timeperiod_object_id bigint default 0,
+  executed_command TEXT,
   CONSTRAINT PK_hoststatus_id PRIMARY KEY (hoststatus_id) ,
   CONSTRAINT UQ_hoststatus UNIQUE (host_object_id)
 ) ;
@@ -1249,6 +1250,7 @@ CREATE TABLE  icinga_servicestatus (
   normal_check_interval double precision  default 0,
   retry_check_interval double precision  default 0,
   check_timeperiod_object_id bigint default 0,
+  executed_command TEXT,
   CONSTRAINT PK_servicestatus_id PRIMARY KEY (servicestatus_id) ,
   CONSTRAINT UQ_servicestatus UNIQUE (service_object_id)
 ) ;

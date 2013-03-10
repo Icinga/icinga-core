@@ -1453,6 +1453,7 @@ Optional Features:
                           timing
   --enable-event-broker   enables integration of event broker routines
   --enable-idoutils       enables database connectivity using idoutils
+                          (default: enabled)
   --enable-oracle         enables idoutils with ocilib and oracle
   --enable-pgsql          !use libdbis pgsql support instead, libpq not yet
                           implemented! enables idoutils with libpq and pgsql
@@ -6421,13 +6422,13 @@ fi
 
 OCILIB_LIB=""
 
-USE_IDOUTILS=no
+USE_IDOUTILS=yes
 USE_IDOUTILS_ORACLE=no
 # Check whether --enable-idoutils was given.
 if test "${enable_idoutils+set}" = set; then :
   enableval=$enable_idoutils; USE_IDOUTILS=$enableval
 else
-  USE_IDOUTILS=no
+  USE_IDOUTILS=yes
 fi
 
 if test x$USE_IDOUTILS = xyes; then

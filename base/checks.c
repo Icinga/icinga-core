@@ -3,8 +3,8 @@
  * CHECKS.C - Service and host check functions for Icinga
  *
  * Copyright (c) 1999-2010 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -545,6 +545,12 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	/* send data to event broker */
 	neb_result = broker_service_check(NEBTYPE_SERVICECHECK_ASYNC_PRECHECK, NEBFLAG_NONE, NEBATTR_NONE, svc, SERVICE_CHECK_ACTIVE, start_time, end_time, svc->service_check_command, svc->latency, 0.0, 0, FALSE, 0, NULL, NULL);
 
+    if (neb_result == NEBERROR_CALLBACKCANCEL || neb_result == NEBERROR_CALLBACKOVERRIDE) {
+        log_debug_info(DEBUGL_CHECKS, 0, "Check of service '%s' on host '%s' was %s by a module\n",
+                svc->description, svc->host_name,
+                neb_result == NEBERROR_CALLBACKCANCEL ? "cancelled" : "overridden");
+    }
+
 	/* neb module wants to cancel the service check - the check will be rescheduled for a later time by the scheduling logic */
 	if (neb_result == NEBERROR_CALLBACKCANCEL) {
 		if (preferred_time)
@@ -658,6 +664,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	check_result_info.host_name = (char *)strdup(svc->host_name);
 	check_result_info.service_description = (char *)strdup(svc->description);
 	check_result_info.output_file = (check_result_info.output_file_fd < 0 || output_file == NULL) ? NULL : strdup(output_file);
+	check_result_info.executed_command = strdup(processed_command);
 
 	/* free memory */
 	my_free(output_file);
@@ -680,6 +687,7 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 		fprintf(check_result_info.output_file_fp, "reschedule_check=%d\n", check_result_info.reschedule_check);
 		fprintf(check_result_info.output_file_fp, "latency=%f\n", svc->latency);
 		fprintf(check_result_info.output_file_fp, "start_time=%lu.%lu\n", check_result_info.start_time.tv_sec, check_result_info.start_time.tv_usec);
+		fprintf(check_result_info.output_file_fp, "executed_command=%s\n", check_result_info.executed_command);
 
 		/* flush output or it'll get written again when we fork() */
 		fflush(check_result_info.output_file_fp);
@@ -1076,8 +1084,18 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 	/* get the current time */
 	time(&current_time);
 
-	log_debug_info(DEBUGL_CHECKS, 0, "** Handling check result for service '%s' on host '%s'...\n", temp_service->description, temp_service->host_name);
-	log_debug_info(DEBUGL_CHECKS, 1, "HOST: %s, SERVICE: %s, CHECK TYPE: %s, OPTIONS: %d, SCHEDULED: %s, RESCHEDULE: %s, EXITED OK: %s, RETURN CODE: %d, OUTPUT: %s\n", temp_service->host_name, temp_service->description, (queued_check_result->check_type == SERVICE_CHECK_ACTIVE) ? "Active" : "Passive", queued_check_result->check_options, (queued_check_result->scheduled_check == TRUE) ? "Yes" : "No", (queued_check_result->reschedule_check == TRUE) ? "Yes" : "No", (queued_check_result->exited_ok == TRUE) ? "Yes" : "No", queued_check_result->return_code, queued_check_result->output);
+    log_debug_info(DEBUGL_CHECKS, 0, "** Handling async check result for service '%s' on host '%s'...\n", temp_service->description,  temp_service->host_name);
+
+    log_debug_info(DEBUGL_CHECKS, 2, "\tCheck Type:         %s\n", (queued_check_result->check_type == HOST_CHECK_ACTIVE) ? "Active" : "Passive");
+    log_debug_info(DEBUGL_CHECKS, 2, "\tCheck Options:      %d\n", queued_check_result->check_options);
+    log_debug_info(DEBUGL_CHECKS, 2, "\tScheduled Check?:   %s\n", (queued_check_result->scheduled_check == TRUE) ? "Yes" : "No");
+    log_debug_info(DEBUGL_CHECKS, 2, "\tReschedule Check?:  %s\n", (queued_check_result->reschedule_check == TRUE) ? "Yes" : "No");
+    log_debug_info(DEBUGL_CHECKS, 2, "\tExited OK?:         %s\n", (queued_check_result->exited_ok == TRUE) ? "Yes" : "No");
+    log_debug_info(DEBUGL_CHECKS, 2, "\tExec Time:          %.3f\n", temp_service->execution_time);
+    log_debug_info(DEBUGL_CHECKS, 2, "\tLatency:            %.3f\n", temp_service->latency);
+    log_debug_info(DEBUGL_CHECKS, 2, "\tReturn Status:      %d\n", queued_check_result->return_code);
+    log_debug_info(DEBUGL_CHECKS, 2, "\tOutput:             %s\n", (queued_check_result == NULL) ? "NULL" : queued_check_result->output);
+    log_debug_info(DEBUGL_CHECKS, 2, "\tExecuted Command:   %s\n", (queued_check_result->executed_command == NULL) ? "NULL" : queued_check_result->executed_command);
 
 	/* decrement the number of service checks still out there... */
 	if (queued_check_result->check_type == SERVICE_CHECK_ACTIVE && currently_running_service_checks > 0)
@@ -1144,6 +1162,10 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 	my_free(temp_service->plugin_output);
 	my_free(temp_service->long_plugin_output);
 	my_free(temp_service->perf_data);
+	my_free(temp_service->executed_command);
+
+    /* get the executed command */
+    temp_service->executed_command = strdup(queued_check_result->executed_command);
 
 	/* if there was some error running the command, just skip it (this shouldn't be happening) */
 	if (queued_check_result->exited_ok == FALSE) {
@@ -2143,9 +2165,12 @@ void check_for_orphaned_services(void) {
 		if (expected_time < current_time) {
 
 			/* log a warning */
-			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: The check of service '%s' on host '%s' looks like it was orphaned (results never came back).  I'm scheduling an immediate check of the service...\n", temp_service->description, temp_service->host_name);
+			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: The check of service '%s' on host '%s' looks like it was orphaned (results never came back; last_check=%s; next_check=%s).  I'm scheduling an immediate check of the service...\n", temp_service->description, temp_service->host_name, ctime(&temp_service->last_check), ctime(&temp_service->next_check));
 
 			log_debug_info(DEBUGL_CHECKS, 1, "Service '%s' on host '%s' was orphaned, so we're scheduling an immediate check...\n", temp_service->description, temp_service->host_name);
+            log_debug_info(DEBUGL_CHECKS, 1, "  next_check=%lu (%s); last_check=%lu (%s);\n",
+                    temp_service->next_check, ctime(&temp_service->next_check),
+                    temp_service->last_check, ctime(&temp_service->last_check));
 
 			/* decrement the number of running service checks */
 			if (currently_running_service_checks > 0)
@@ -2893,14 +2918,20 @@ int execute_sync_host_check_3x(host *hst) {
 	/* send data to event broker */
 	neb_result = broker_host_check(NEBTYPE_HOSTCHECK_SYNC_PRECHECK, NEBFLAG_NONE, NEBATTR_NONE, hst, HOST_CHECK_ACTIVE, hst->current_state, hst->state_type, start_time, end_time, hst->host_check_command, hst->latency, 0.0, host_check_timeout, FALSE, 0, NULL, NULL, NULL, NULL, NULL);
 
-	/* neb module wants to cancel the host check - return the current state of the host */
-	if (neb_result == NEBERROR_CALLBACKCANCEL)
+	/*
+     * neb module wants to cancel/override the host check
+     * then return the current state of the host
+     * NOTE: if a module does this, it must check the status of the host
+     * and populate the data structures BEFORE it returns from the callback!
+     */
+	if (neb_result == NEBERROR_CALLBACKCANCEL || neb_result == NEBERROR_CALLBACKOVERRIDE) {
+        log_debug_info(DEBUGL_CHECKS, 0, "Check of host '%s' was %s by a module. Returning %d\n",
+                hst->name,
+                neb_result == NEBERROR_CALLBACKCANCEL ? "cancelled" : "overridden",
+                hst->current_state);
 		return hst->current_state;
+    }
 
-	/* neb module wants to override the host check - perhaps it will check the host itself */
-	/* NOTE: if a module does this, it must check the status of the host and populate the data structures BEFORE it returns from the callback! */
-	if (neb_result == NEBERROR_CALLBACKOVERRIDE)
-		return hst->current_state;
 #endif
 
 	/* grab the host macros */
@@ -3208,11 +3239,6 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 	/* get the command start time */
 	gettimeofday(&start_time, NULL);
 
-	/* set check time for on-demand checks, so they're not incorrectly detected as being orphaned - Luke Ross 5/16/08 */
-	/* NOTE: 06/23/08 EG not sure if there will be side effects to this or not.... */
-	if (scheduled_check == FALSE)
-		hst->next_check = start_time.tv_sec;
-
 	/* increment number of host checks that are currently running... */
 	currently_running_host_checks++;
 
@@ -3249,6 +3275,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 	check_result_info.exited_ok = TRUE;
 	check_result_info.return_code = STATE_OK;
 	check_result_info.output = NULL;
+	check_result_info.executed_command = strdup(processed_command);
 
 	/* free memory */
 	my_free(output_file);
@@ -3270,6 +3297,7 @@ int run_async_host_check_3x(host *hst, int check_options, double latency, int sc
 		fprintf(check_result_info.output_file_fp, "reschedule_check=%d\n", check_result_info.reschedule_check);
 		fprintf(check_result_info.output_file_fp, "latency=%f\n", hst->latency);
 		fprintf(check_result_info.output_file_fp, "start_time=%lu.%lu\n", check_result_info.start_time.tv_sec, check_result_info.start_time.tv_usec);
+		fprintf(check_result_info.output_file_fp, "executed_command=%s\n", check_result_info.executed_command);
 
 		/* flush buffer or we'll end up writing twice when we fork() */
 		fflush(check_result_info.output_file_fp);
@@ -3478,6 +3506,7 @@ int handle_async_host_check_result_3x(host *temp_host, check_result *queued_chec
 	log_debug_info(DEBUGL_CHECKS, 2, "\tLatency:            %.3f\n", temp_host->latency);
 	log_debug_info(DEBUGL_CHECKS, 2, "\tReturn Status:      %d\n", queued_check_result->return_code);
 	log_debug_info(DEBUGL_CHECKS, 2, "\tOutput:             %s\n", (queued_check_result == NULL) ? "NULL" : queued_check_result->output);
+	log_debug_info(DEBUGL_CHECKS, 2, "\tExecuted Command:   %s\n", (queued_check_result->executed_command == NULL) ? "NULL" : queued_check_result->executed_command);
 
 	/* decrement the number of host checks still out there... */
 	if (queued_check_result->check_type == HOST_CHECK_ACTIVE && currently_running_host_checks > 0)
@@ -3552,6 +3581,10 @@ int handle_async_host_check_result_3x(host *temp_host, check_result *queued_chec
 	my_free(temp_host->plugin_output);
 	my_free(temp_host->long_plugin_output);
 	my_free(temp_host->perf_data);
+	my_free(temp_host->executed_command);
+
+    /* get the executed command */
+    temp_host->executed_command = strdup(queued_check_result->executed_command);
 
 	/* parse check output to get: (1) short output, (2) long output, (3) perf data */
 	parse_check_output(queued_check_result->output, &temp_host->plugin_output, &temp_host->long_plugin_output, &temp_host->perf_data, TRUE, TRUE);

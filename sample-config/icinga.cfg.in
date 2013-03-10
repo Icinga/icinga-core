@@ -71,6 +71,10 @@ cfg_dir=@sysconfdir@/modules
 # this cache file (rather than looking at the object config files
 # directly) in order to prevent inconsistencies that can occur
 # when the config files are modified after Icinga starts.
+# If you explicitely set it to /dev/null the core will skip writing
+# the objects cache file entirely.
+# Tip: Use that file to debug your configuration with fully resolved
+# objects like the core sees them.
 
 object_cache_file=@STATEDIR@/objects.cache
 
@@ -109,7 +113,10 @@ resource_file=@sysconfdir@/resource.cfg
 # This is where the current status of all monitored services and
 # hosts is stored.  Its contents are read and processed by the CGIs.
 # The contents of the status file are deleted every time Icinga
-#  restarts.
+# restarts.
+# If you explicitely set it to /dev/null the core will skip writing
+# the status file entirely. This becomes handy when using other methods
+# for data retrieval (e.g. IDOUtils DB)
 
 status_file=@STATEDIR@/status.dat
 

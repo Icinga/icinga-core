@@ -2,7 +2,7 @@
  *
  * PROTOAPI.H - IDO Protocol Definition
  * Copyright (c) 2005-2006 Ethan Galstad
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  ************************************************************************/
 
@@ -109,7 +109,7 @@
 
 /************** COMMON DATA ATTRIBUTES **************/
 
-#define IDO_MAX_DATA_TYPES                           271
+#define IDO_MAX_DATA_TYPES                           272
 
 #define IDO_DATA_NONE                                0
 
@@ -393,4 +393,5 @@
 #define IDO_DATA_DOWNTIMEISINEFFECT		     268
 #define IDO_DATA_DOWNTIMETRIGGERTIME		     269
 #define IDO_DATA_DISABLED_NOTIFICATIONS_EXPIRE_TIME  270
+#define IDO_DATA_EXECUTEDCOMMAND		     271
 #endif

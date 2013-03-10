@@ -3,8 +3,8 @@
  * OBJECTS.H - Header file for object addition/search functions
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -413,6 +413,7 @@ struct host_struct{
 	int     current_down_notification_number;
 	int     current_unreachable_notification_number;
 #endif
+    char    *executed_command;
         };
 
 
@@ -557,6 +558,7 @@ struct service_struct{
 	int     current_critical_notification_number;
 	int     current_unknown_notification_number;
 #endif
+    char    *executed_command;
 	};
 
 /* ESCALATION CONDITION STRUCTURE 

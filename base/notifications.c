@@ -3,8 +3,8 @@
  * NOTIFICATIONS.C - Service and host notification functions for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -56,6 +56,20 @@ int check_escalation_condition(escalation_condition*);
 
 int dummy;	/* reduce compiler warnings */
 
+const char *notification_reason_name (unsigned int reason_type) {
+	static const char *names[] = {
+		"NORMAL", "ACKNOWLEDGEMENT",
+		"FLAPPINGSTART", "FLAPPINGSTOP", "FLAPPINGDISABLED",
+		"DOWNTIMESTART", "DOWNTIMEEND", "DOWNTIMECANCELLED",
+		"CUSTOM", "STALKING"
+	};
+
+	if (reason_type < sizeof(names))
+		return names[reason_type];
+
+	return "(unknown)";
+}
+
 /******************************************************************/
 /***************** SERVICE NOTIFICATION FUNCTIONS *****************/
 /******************************************************************/
@@ -82,7 +96,7 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 	time(&current_time);
 	gettimeofday(&start_time, NULL);
 
-	log_debug_info(DEBUGL_NOTIFICATIONS, 0, "** Service Notification Attempt ** Host: '%s', Service: '%s', Type: %d, Options: %d, Current State: %d, Last Notification: %s", svc->host_name, svc->description, type, options, svc->current_state, ctime(&svc->last_notification));
+	log_debug_info(DEBUGL_NOTIFICATIONS, 0, "** Service Notification Attempt ** Host: '%s', Service: '%s', Type: %s, Options: %d, Current State: %d, Last Notification: %s", svc->host_name, svc->description, notification_reason_name(type), options, svc->current_state, ctime(&svc->last_notification));
 
 	/* if we couldn't find the host, return an error */
 	if ((temp_host = svc->host_ptr) == NULL) {
@@ -1279,7 +1293,7 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 	time(&current_time);
 	gettimeofday(&start_time, NULL);
 
-	log_debug_info(DEBUGL_NOTIFICATIONS, 0, "** Host Notification Attempt ** Host: '%s', Type: %d, Options: %d, Current State: %d, Last Notification: %s", hst->name, type, options, hst->current_state, ctime(&hst->last_host_notification));
+	log_debug_info(DEBUGL_NOTIFICATIONS, 0, "** Host Notification Attempt ** Host: '%s', Type: %s, Options: %d, Current State: %d, Last Notification: %s", hst->name, notification_reason_name(type), options, hst->current_state, ctime(&hst->last_host_notification));
 
 
 	/* check viability of sending out a host notification */

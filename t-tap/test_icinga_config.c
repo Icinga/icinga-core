@@ -70,6 +70,7 @@ command         *ochp_command_ptr = NULL;
 
 char            *illegal_object_chars = NULL;
 char            *illegal_output_chars = NULL;
+char           illegal_output_char_map[] = CHAR_MAP_INIT(0);
 
 int             use_regexp_matches = FALSE;
 int             use_true_regexp_matching = FALSE;
@@ -294,6 +295,8 @@ int log_debug_info(int level, int verbosity, const char *fmt, ...) {
 	/* vprintf( fmt, ap ); */
 	va_end(ap);
 }
+int close_log_file(void) {}
+int chown_debug_log(uid_t uid, gid_t gid) {}
 
 int neb_free_callback_list(void) {}
 void broker_program_status(int type, int flags, int attr, struct timeval *timestamp) {}

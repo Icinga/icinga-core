@@ -2,7 +2,7 @@
  * IDO2DB.C - IDO To Database Daemon
  *
  * Copyright (c) 2005-2008 Ethan Galstad
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  **************************************************************/
 
@@ -2104,6 +2104,8 @@ int ido2db_add_input_data_item(ido2db_idi *idi, int type, char *buf) {
 	case IDO_DATA_OUTPUT:
 	case IDO_DATA_LONGOUTPUT:
 	case IDO_DATA_PERFDATA:
+	case IDO_DATA_EXECUTEDCOMMAND:
+
 	case IDO_DATA_SERVICE:
 	case IDO_DATA_PROGRAMNAME:
 	case IDO_DATA_PROGRAMVERSION:

@@ -4,7 +4,7 @@
 -- icinga DB object definition for Oracle
 -- called and defines set from oracle.sql
 --
--- Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 --
 -- initial version: 2008-02-20 David Schmidt
 --                  2011-01-17 Michael Friedrich <michael.friedrich(at)univie.ac.at>
@@ -1108,7 +1108,8 @@ CREATE TABLE hoststatus (
   check_command varchar2(1024),
   normal_check_interval number default 0 ,
   retry_check_interval number default 0 ,
-  check_timeperiod_object_id integer default 0 
+  check_timeperiod_object_id integer default 0,
+  executed_command varchar2(2048)
 )
 lob (long_output) store as hoststatus_out_lob(tablespace &&LOBTBS)
 lob (perfdata) store as hoststatus_perf_lob(tablespace &&LOBTBS)
@@ -1649,7 +1650,8 @@ CREATE TABLE servicestatus (
   check_command varchar2(1024),
   normal_check_interval number default 0 ,
   retry_check_interval number default 0 ,
-  check_timeperiod_object_id integer default 0 
+  check_timeperiod_object_id integer default 0,
+  executed_command varchar2(2048)
 )
 lob (long_output) store as servicestatus_out_lob(tablespace &&LOBTBS)
 lob (perfdata) store as servicestatus_perf_lob(tablespace &&LOBTBS)

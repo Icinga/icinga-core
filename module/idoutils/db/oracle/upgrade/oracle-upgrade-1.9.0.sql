@@ -34,7 +34,12 @@ whenever sqlerror exit failure
 spool oracle-upgrade-&&ICINGA_VERSION..log
 
 -- -----------------------------------------
--- 
+-- #3810 - executed command
+-- -----------------------------------------
+
+ALTER TABLE hoststatus ADD executed_command varchar2(2048);
+ALTER TABLE servicestatus ADD executed_command varchar2(2048);
+
 -- -----------------------------------------
 -- finally update dbversion
 -- -----------------------------------------

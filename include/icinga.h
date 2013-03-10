@@ -3,8 +3,8 @@
  * Icinga Main Header File
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 as
@@ -211,8 +211,8 @@ extern "C" {
 #define NOTIFICATION_DOWNTIMESTART      5
 #define NOTIFICATION_DOWNTIMEEND        6
 #define NOTIFICATION_DOWNTIMECANCELLED  7
-#define NOTIFICATION_CUSTOM             99
-#define NOTIFICATION_STALKING		16211	
+#define NOTIFICATION_CUSTOM             8
+#define NOTIFICATION_STALKING		9	
 
 
 
@@ -331,6 +331,7 @@ typedef struct check_result_struct{
 	int return_code;				/* plugin return code */
 	char *output;	                                /* plugin output */
 	struct check_result_struct *next;
+    char *executed_command;
 	}check_result;
 
 

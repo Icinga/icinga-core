@@ -2,7 +2,7 @@
 -- mysql.sql
 -- DB definition for MySQL
 --
--- Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+-- Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 --
 -- -- --------------------------------------------------------
 
@@ -743,6 +743,7 @@ CREATE TABLE IF NOT EXISTS icinga_hoststatus (
   normal_check_interval double  default '0',
   retry_check_interval double  default '0',
   check_timeperiod_object_id bigint unsigned default 0,
+  executed_command TEXT,
   PRIMARY KEY  (hoststatus_id),
   UNIQUE KEY object_id (host_object_id)
 ) ENGINE=InnoDB  COMMENT='Current host status information';
@@ -1220,6 +1221,7 @@ CREATE TABLE IF NOT EXISTS icinga_servicestatus (
   normal_check_interval double  default '0',
   retry_check_interval double  default '0',
   check_timeperiod_object_id bigint unsigned default 0,
+  executed_command TEXT,
   PRIMARY KEY  (servicestatus_id),
   UNIQUE KEY object_id (service_object_id)
 ) ENGINE=InnoDB  COMMENT='Current service status information';

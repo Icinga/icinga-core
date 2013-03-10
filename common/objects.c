@@ -3,8 +3,8 @@
  * OBJECTS.C - Object addition and search functions for Icinga
  *
  * Copyright (c) 1999-2008 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * License:
  *
@@ -961,6 +961,11 @@ servicesmember *add_service_link_to_host(host *hst, service *service_ptr) {
 	/* initialize values */
 #ifdef NSCORE
 	new_servicesmember->service_ptr = service_ptr;
+
+	/* increment host->service counter for later processing */
+	hst->total_services++;
+	/* calculate check interval total for flapping */
+	hst->total_service_check_interval += service_ptr->check_interval;
 #endif
 
 	/* add the child entry to the host definition */

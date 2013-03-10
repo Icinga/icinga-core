@@ -3,8 +3,8 @@
  * XODTEMPLATE.C - Template-based object configuration data input routines
  *
  * Copyright (c) 1999-2009 Ethan Galstad (egalstad@nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * Description:
  *
@@ -4058,7 +4058,9 @@ int xodtemplate_duplicate_services(void) {
 				} else {
 					/* User is ok with hostgroup -> service mappings with no hosts */
 					if (allow_empty_hostgroup_assignment == 1) {
-						continue;
+						/* skip the service only if it doesn't have host_name entry either */
+						if (temp_service->host_name == NULL)
+							continue;
 					}
 				}
 			}
@@ -10487,6 +10489,9 @@ int xodtemplate_cache_objects(char *cache_file) {
 	time_t current_time = 0L;
 	void *ptr = NULL;
 
+	/* skip if set to /dev/null */
+	if (!cache_file || !strcmp(cache_file, "/dev/null"))
+		return OK;
 
 	time(&current_time);
 

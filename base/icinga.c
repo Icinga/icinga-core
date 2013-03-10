@@ -3,8 +3,8 @@
  * ICINGA.C - Core Program Code For Icinga
  *
  * Copyright (c) 1999-2009 Ethan Galstad (http://www.nagios.org)
- * Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors
- * Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)
+ * Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors
+ * Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
  *
  * Description:
  *
@@ -81,6 +81,7 @@ command         *ochp_command_ptr = NULL;
 
 char            *illegal_object_chars = NULL;
 char            *illegal_output_chars = NULL;
+char		illegal_output_char_map[] = CHAR_MAP_INIT(0);
 
 int             use_regexp_matches = FALSE;
 int             use_true_regexp_matching = FALSE;
@@ -407,8 +408,8 @@ int main(int argc, char **argv, char **env) {
 
 	if (daemon_mode == FALSE) {
 		printf("\n%s %s\n", PROGRAM_NAME , PROGRAM_VERSION);
-		printf("Copyright (c) 2009-2012 Icinga Development Team (http://www.icinga.org)\n");
-		printf("Copyright (c) 2009-2012 Nagios Core Development Team and Community Contributors\n");
+		printf("Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)\n");
+		printf("Copyright (c) 2009-2013 Nagios Core Development Team and Community Contributors\n");
 		printf("Copyright (c) 1999-2009 Ethan Galstad\n");
 		printf("Last Modified: %s\n", PROGRAM_MODIFICATION_DATE);
 		printf("License: GPL\n\n");
@@ -724,7 +725,14 @@ int main(int argc, char **argv, char **env) {
 
 #ifdef USE_EVENT_BROKER
 			/* load modules */
-			neb_load_all_modules();
+			if (neb_load_all_modules() != OK) {
+                logit(NSLOG_CONFIG_ERROR, ERROR, "Error: NEB module loading failed. Aborting.\n");
+
+                if (daemon_dumps_core)
+                    neb_unload_all_modules(NEBMODULE_FORCE_UNLOAD, NEBMODULE_NEB_SHUTDOWN);
+
+                exit(EXIT_FAILURE);
+            }
 
 			/* send program data to broker */
 			broker_program_state(NEBTYPE_PROCESS_PRELAUNCH, NEBFLAG_NONE, NEBATTR_NONE, NULL);
