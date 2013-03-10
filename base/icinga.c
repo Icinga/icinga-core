@@ -81,6 +81,7 @@ command         *ochp_command_ptr = NULL;
 
 char            *illegal_object_chars = NULL;
 char            *illegal_output_chars = NULL;
+char		illegal_output_char_map[] = CHAR_MAP_INIT(0);
 
 int             use_regexp_matches = FALSE;
 int             use_true_regexp_matching = FALSE;

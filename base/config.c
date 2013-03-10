@@ -60,6 +60,7 @@ extern command  *ochp_command_ptr;
 
 extern char     *illegal_object_chars;
 extern char     *illegal_output_chars;
+extern char	illegal_output_char_map[256];
 
 extern int      use_regexp_matches;
 extern int      use_true_regexp_matching;
@@ -1830,12 +1831,10 @@ int pre_flight_check(void) {
 		logit(NSLOG_VERIFICATION_WARNING, TRUE, "%s", "Warning: Nothing specified for illegal_macro_output_chars variable!\n");
 		warnings++;
 	}
-
-	/* count number of services associated with each host (we need this for flap detection)... */
-	for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
-		if ((temp_host = find_host(temp_service->host_name))) {
-			temp_host->total_services++;
-			temp_host->total_service_check_interval += temp_service->check_interval;
+	else {
+		char *p;
+		for (p = illegal_output_chars; *p; p++) {
+			illegal_output_char_map[(int)*p] = 1;
 		}
 	}
 
@@ -1905,7 +1904,6 @@ int pre_flight_object_check(int *w, int *e) {
 	module *temp_module = NULL;
 	char *buf = NULL;
 	char *temp_command_name = "";
-	int found = FALSE;
 	int total_objects = 0;
 	int warnings = 0;
 	int errors = 0;
@@ -1943,7 +1941,6 @@ int pre_flight_object_check(int *w, int *e) {
 	for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
 
 		total_objects++;
-		found = FALSE;
 
 		/* check for a valid host */
 		temp_host = find_host(temp_service->host_name);
@@ -2003,9 +2000,6 @@ int pre_flight_object_check(int *w, int *e) {
 			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Recovery notification option in service '%s' for host '%s' doesn't make any sense - specify warning and/or critical options as well", temp_service->description, temp_service->host_name);
 			warnings++;
 		}
-
-		/* reset the found flag */
-		found = FALSE;
 
 		/* check for valid contacts */
 		for (temp_contactsmember = temp_service->contacts; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {
@@ -2108,26 +2102,11 @@ int pre_flight_object_check(int *w, int *e) {
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
 
 		total_objects++;
-		found = FALSE;
 
 		/* make sure each host has at least one service associated with it */
-		/* 02/21/08 NOTE: this is extremely inefficient */
-		if (use_precached_objects == FALSE && use_large_installation_tweaks == FALSE) {
-
-			for (temp_service = service_list; temp_service != NULL; temp_service = temp_service->next) {
-				if (!strcmp(temp_service->host_name, temp_host->name)) {
-					found = TRUE;
-					break;
-				}
-			}
-
-			/* we couldn't find a service associated with this host! */
-			if (found == FALSE && verify_config >= 2) {
-				logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Host '%s' has no services associated with it!", temp_host->name);
-				warnings++;
-			}
-
-			found = FALSE;
+		if(temp_host->total_services == 0 && verify_config >= 2) {
+			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Host '%s' has no services associated with it!", temp_host->name);
+			warnings++;
 		}
 
 		/* check the event handler command */
@@ -2465,8 +2444,6 @@ int pre_flight_object_check(int *w, int *e) {
 	if (verify_config)
 		printf("Checking contact groups...\n");
 	for (temp_contactgroup = contactgroup_list, total_objects = 0; temp_contactgroup != NULL; temp_contactgroup = temp_contactgroup->next, total_objects++) {
-
-		found = FALSE;
 
 		/* check all the group members */
 		for (temp_contactsmember = temp_contactgroup->members; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {

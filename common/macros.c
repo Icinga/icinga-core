@@ -44,6 +44,7 @@ extern int	keep_unknown_macros;
 int dummy;	/* reduce compiler warnings */
 
 extern char     *illegal_output_chars;
+extern char	illegal_output_char_map[256];
 
 extern contact		*contact_list;
 extern contactgroup	*contactgroup_list;
@@ -2563,10 +2564,8 @@ int grab_custom_object_macro(char *macro_name, customvariablesmember *vars, char
 char *clean_macro_chars(char *macro, int options) {
 	register int x = 0;
 	register int y = 0;
-	register int z = 0;
 	register int ch = 0;
 	register int len = 0;
-	register int illegal_char = 0;
 
 	if (macro == NULL)
 		return "";
@@ -2578,26 +2577,10 @@ char *clean_macro_chars(char *macro, int options) {
 
 		for (y = 0, x = 0; x < len; x++) {
 
-			/*ch=(int)macro[x];*/
-			/* allow non-ASCII characters (Japanese, etc) */
 			ch = macro[x] & 0xff;
 
-			/* illegal ASCII characters */
-			if (ch < 32 || ch == 127)
-				continue;
-
-			/* illegal user-specified characters */
-			illegal_char = FALSE;
-			if (illegal_output_chars != NULL) {
-				for (z = 0; illegal_output_chars[z] != '\x0'; z++) {
-					if (ch == (int)illegal_output_chars[z]) {
-						illegal_char = TRUE;
-						break;
-					}
-				}
-			}
-
-			if (illegal_char == FALSE)
+			/* illegal chars are skipped */
+			if (!illegal_output_char_map[ch])
 				macro[y++] = macro[x];
 		}
 
@@ -2683,6 +2666,11 @@ int init_macros(void) {
 	int x;
 
 	init_macrox_names();
+
+	for (x = 0; x < 32; x++)
+		illegal_output_char_map[x] = 1;
+
+	illegal_output_char_map[127] = 1;
 
 	/*
 	 * non-volatile macros are free()'d when they're set.

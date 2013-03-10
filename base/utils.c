@@ -3249,7 +3249,7 @@ int contains_illegal_object_chars(char *name) {
 	register int x = 0;
 	register int y = 0;
 
-	if (name == NULL)
+	if (name == NULL || illegal_object_chars == NULL)
 		return FALSE;
 
 	x = (int)strlen(name) - 1;
@@ -4264,6 +4264,9 @@ void cleanup(void) {
 
 	/* free all allocated memory - including macros */
 	free_memory(get_global_macros());
+
+	/* close the log file */
+	close_log_file();
 
 	return;
 }
