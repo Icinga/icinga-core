@@ -18,6 +18,7 @@ NOTES
 * ido2db.cfg enable_sla is now deprecated! #3450
 
 ENHANCEMENTS
+* core: add executed_command to host/service status (passed from checkresults) #3810 - MF
 * core: introduce warning level -vv on config verification #3510 - MF
 * core: refuse to start if neb modules fail to load (Andreas Ericsson) #3812 - MF
 * core: keep logfile open, reducing open/close performance decreases (Andreas Ericsson) #3390 - MF
@@ -27,6 +28,7 @@ ENHANCEMENTS
 * core: avoid writing objects.cache if set to /dev/null (Andreas Ericsson) #3819 - MF
 * core: increase performance on host->service relation counter (config reading, flapping) #3820 - MF
 
+* classic ui: add executed_command to extinfo.cgi (if user is authorized for full command resultion only) #3810 - MF
 * classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
 * classic ui: Add "send_ack_notifications" to cgi configuration (TheCry) #3467 - CF
 * classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
@@ -34,6 +36,7 @@ ENHANCEMENTS
 * classic ui: Added data/time selection to 'log file navigation' #3168 - RB
 * classic ui: Added setting focus to main frame on first site load #3202 - RB
 
+* idoutils: add executed_command to host/servicestatus tables #3810 - MF
 * idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
 * idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB
 
@@ -87,18 +90,22 @@ FIXES
 
 CHANGES
 
-* icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
-* icinga.cfg - set status_file=/dev/null to disable its creation #3819
-* icinga.cfg - set object_cache_file=/dev/null to disable its creation #3819
+* icinga.cfg
+	** enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
+	** set status_file=/dev/null to disable its creation #3819
+	** set object_cache_file=/dev/null to disable its creation #3819
 
 * core: -v param can be used more than once #3510
 * core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510
 * core: refuse to start if neb modules fail to load #3812
 * core: notification type nr CUSTOM=8 and STALKING=9 (reflected in idoutils tables) #3818
+* core: if checkresults injected from other sources like addons do, the executed_command attribute may be empty #3810
 
 * ido2db.cfg:
 	** use_transactions #3527
 	** enable_socket_queue #3533
+
+* idoutils: add executed_command to host/servicestatus table #3810
 
 * icinga.spec: add idoutils as transitional package #3640
 
