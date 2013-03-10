@@ -41,6 +41,7 @@ FIXES
 * core: fix keep_unknown_macros still exposes wrong warnings to logs #3725 - MF
 * core: fix host_check, last_check == next_check wrong in scheduling queue #2195 - MF
 * core: fix triggered downtimes for child hosts are missing after icinga restart (thx Michael Lucka) #3390 - MF
+* core: fix services with empty hostgroups aren't processed even if it has host_name specified (allow_empty_hostgroups=1) (thx Viranch Metha) #3736 - MF
 
 * idoutils: fix many memory leaks in ido2db on dbi_result_free and others (thx Klaus Wagner) #3406 - MF
 * idoutils: fix ido2db crashes when Oracle queries fail #3324 - GB
