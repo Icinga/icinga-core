@@ -437,6 +437,25 @@
 #define FALSE				0
 #endif
 
+/** character map initialization for .bss-allocated char maps */
+#define CHAR_MAP_INIT(k) { \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, k, \
+        }
 
 /****************** HOST CONFIG FILE READING OPTIONS ********************/
 

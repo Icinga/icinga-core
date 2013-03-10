@@ -60,6 +60,7 @@ extern command  *ochp_command_ptr;
 
 extern char     *illegal_object_chars;
 extern char     *illegal_output_chars;
+extern char	illegal_output_char_map[256];
 
 extern int      use_regexp_matches;
 extern int      use_true_regexp_matching;
@@ -1829,6 +1830,12 @@ int pre_flight_check(void) {
 	if (illegal_output_chars == NULL) {
 		logit(NSLOG_VERIFICATION_WARNING, TRUE, "%s", "Warning: Nothing specified for illegal_macro_output_chars variable!\n");
 		warnings++;
+	}
+	else {
+		char *p;
+		for (p = illegal_output_chars; *p; p++) {
+			illegal_output_char_map[(int)*p] = 1;
+		}
 	}
 
 	/* count number of services associated with each host (we need this for flap detection)... */
