@@ -71,6 +71,10 @@ cfg_dir=@sysconfdir@/modules
 # this cache file (rather than looking at the object config files
 # directly) in order to prevent inconsistencies that can occur
 # when the config files are modified after Icinga starts.
+# If you explicitely set it to /dev/null the core will skip writing
+# the objects cache file entirely.
+# Tip: Use that file to debug your configuration with fully resolved
+# objects like the core sees them.
 
 object_cache_file=@STATEDIR@/objects.cache
 
