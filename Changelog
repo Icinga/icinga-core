@@ -23,6 +23,7 @@ ENHANCEMENTS
 * core: keep logfile open, reducing open/close performance decreases (Andreas Ericsson) #3390 - MF
 * core: enhance illegal macro character processing performance (Andreas Ericsson) #3389 - MF
 * core: add the notification type by string to debug logs; set CUSTOM=8, STALKING=9 (Andreas Ericsson) #3818 - MF
+* core: skip writing status.dat if explicitely set to /dev/null (e.g. when using alternate data retrieval methods like IDOUtils) (Andreas Ericsson) #3819 - MF
 
 * classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
 * classic ui: Add "send_ack_notifications" to cgi configuration (TheCry) #3467 - CF
@@ -85,6 +86,7 @@ FIXES
 CHANGES
 
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
+* icinga.cfg - set status_file=/dev/null to disable its creation #3819
 
 * core: -v param can be used more than once #3510
 * core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510

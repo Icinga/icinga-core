@@ -357,6 +357,10 @@ int xsddefault_save_status_data(void) {
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "save_status_data()\n");
 
+	/* if this is set to /dev/null, skip it */
+	if (!xsddefault_status_log || !strcmp(xsddefault_status_log, "/dev/null"))
+		return OK;
+
 	/* open a safe temp file for output */
 	if (xsddefault_temp_file == NULL)
 		return ERROR;

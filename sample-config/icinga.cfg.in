@@ -109,7 +109,10 @@ resource_file=@sysconfdir@/resource.cfg
 # This is where the current status of all monitored services and
 # hosts is stored.  Its contents are read and processed by the CGIs.
 # The contents of the status file are deleted every time Icinga
-#  restarts.
+# restarts.
+# If you explicitely set it to /dev/null the core will skip writing
+# the status file entirely. This becomes handy when using other methods
+# for data retrieval (e.g. IDOUtils DB)
 
 status_file=@STATEDIR@/status.dat
 
