@@ -25,6 +25,7 @@ ENHANCEMENTS
 * core: add the notification type by string to debug logs; set CUSTOM=8, STALKING=9 (Andreas Ericsson) #3818 - MF
 * core: skip writing status.dat if explicitely set to /dev/null (e.g. when using alternate data retrieval methods like IDOUtils) (Andreas Ericsson) #3819 - MF
 * core: avoid writing objects.cache if set to /dev/null (Andreas Ericsson) #3819 - MF
+* core: increase performance on host->service relation counter (config reading, flapping) #3820 - MF
 
 * classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
 * classic ui: Add "send_ack_notifications" to cgi configuration (TheCry) #3467 - CF
