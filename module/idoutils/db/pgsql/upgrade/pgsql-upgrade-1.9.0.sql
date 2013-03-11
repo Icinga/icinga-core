@@ -8,8 +8,12 @@
 -- -----------------------------------------
 
 -- -----------------------------------------
--- 
+-- #3649 sla index
 -- -----------------------------------------
+
+CREATE INDEX sla_idx_sthist ON icinga_statehistory (object_id, state_time DESC);
+CREATE INDEX sla_idx_dohist ON icinga_downtimehistory (object_id, actual_start_time, actual_end_time);
+CREATE INDEX sla_idx_obj ON icinga_objects (objecttype_id, is_active, name1);
 
 -- -----------------------------------------
 -- update dbversion

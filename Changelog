@@ -38,6 +38,7 @@ ENHANCEMENTS
 
 * idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
 * idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB
+* idoutils: add more indexes for sla reporting #3649 - MF
 
 * install: set --enable-idoutils/event-broker to true as default configure flags #3813 - MF
 
