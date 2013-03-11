@@ -216,11 +216,35 @@ FILE *open_log_file(void) {
 
 	log_fp = fopen(log_file, "a+");
 
-	if (log_fp == NULL && daemon_mode == FALSE) {
-		printf("Warnings: Cannot open log file '%s' for writing\n", log_file);
+	if (log_fp == NULL) {
+		if (daemon_mode == FALSE) {
+			printf("Warnings: Cannot open log file '%s' for writing\n", log_file);
+		}
+		return NULL;
 	}
 
+	(void)fcntl(fileno(log_fp), F_SETFD, FD_CLOEXEC);
+
 	return log_fp;
+}
+
+int fix_log_file_owner(uid_t uid, gid_t gid) {
+
+	int r1 = 0, r2 = 0;
+
+	if (!(log_fp = open_log_file()))
+		return -1;
+
+	r1 = fchown(fileno(log_fp), uid, gid);
+
+	if (open_debug_log() != OK)
+		return -1;
+
+	if (debug_file_fp)
+		r2 = fchown(fileno(debug_file_fp), uid, gid);
+
+	/* return 0 if both are 0 and otherwise < 0 */
+	return r1 < r2 ? r1 : r2;
 }
 
 int close_log_file(void) {
@@ -257,6 +281,9 @@ int write_to_log(char *buffer, unsigned long data_type, time_t *timestamp) {
 		return OK;
 
 	fp = open_log_file();
+
+	if (fp == NULL)
+		return ERROR;
 
 	/* what timestamp should we use? */
 	if (timestamp == NULL)
@@ -590,22 +617,7 @@ int open_debug_log(void) {
 	if ((debug_file_fp = fopen(debug_file, "a+")) == NULL)
 		return ERROR;
 
-	return OK;
-}
-
-/* change ownership of the debug log file */
-int chown_debug_log(uid_t uid, gid_t gid) {
-
-	/* bail early if not running */
-	if (verify_config == TRUE || test_scheduling == TRUE)
-		return OK;
-
-	/* we do not debug anything, bail early */
-	if (debug_level == DEBUGL_NONE)
-		return OK;
-
-	if (chown(debug_file, uid, gid) < 0)
-		return ERROR;
+	(void)fcntl(fileno(debug_file_fp), F_SETFD, FD_CLOEXEC);
 
 	return OK;
 }

@@ -2568,16 +2568,7 @@ int drop_privileges(char *user, char *group) {
 		else
 			gid = (gid_t)atoi(group);
 
-		/* set effective group ID if other than current EGID */
-		if (gid != getegid()) {
-
-			if (setgid(gid) == -1) {
-				logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not set effective GID=%d", (int)gid);
-				result = ERROR;
-			}
-		}
 	}
-
 
 	/* set effective user ID */
 	if (user != NULL) {
@@ -2594,37 +2585,39 @@ int drop_privileges(char *user, char *group) {
 		/* else we were passed the UID */
 		else
 			uid = (uid_t)atoi(user);
+	}
+
+	/* now that we know what to change to, we fix log file permissions */
+	fix_log_file_owner(uid, gid);
+
+	/* set effective group ID if other than current EGID */
+	if (gid != getegid()) {
+
+		if (setgid(gid) == -1) {
+			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not set effective GID=%d", (int)gid);
+			result = ERROR;
+		}
+	}
 
 #ifdef HAVE_INITGROUPS
 
-		if (uid != geteuid()) {
+	if (uid != geteuid()) {
 
-			/* initialize supplementary groups */
-			if (initgroups(user, gid) == -1) {
-				if (errno == EPERM)
-					logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Unable to change supplementary groups using initgroups() -- I hope you know what you're doing");
-				else {
-					logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Possibly root user failed dropping privileges with initgroups()");
-					return ERROR;
-				}
+		/* initialize supplementary groups */
+		if (initgroups(user, gid) == -1) {
+			if (errno == EPERM)
+				logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Unable to change supplementary groups using initgroups() -- I hope you know what you're doing");
+			else {
+				logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Possibly root user failed dropping privileges with initgroups()");
+				return ERROR;
 			}
 		}
+	}
 #endif
 
-		/* change ownership of debug log file
-		 * this is required in order to re-open
-		 * the file when receiving a SIGHUP, after
-		 * creating the file with root privileges
-		 */
-		if (chown_debug_log(uid, gid) == ERROR) {
-			logit(NSLOG_RUNTIME_WARNING, TRUE, "Failed to change ownership (UID=%d, GID=%d) on debug log file '%s': %s.", (int)uid, (int)gid, debug_file, strerror(errno));
-			result = ERROR;
-		}
-
-		if (setuid(uid) == -1) {
-			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not set effective UID=%d", (int)uid);
-			result = ERROR;
-		}
+	if (setuid(uid) == -1) {
+		logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not set effective UID=%d", (int)uid);
+		result = ERROR;
 	}
 
 	log_debug_info(DEBUGL_PROCESS, 0, "New UID/GID: %d/%d\n", (int)getuid(), (int)getgid());
