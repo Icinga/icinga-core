@@ -1679,9 +1679,7 @@ int read_resource_file(char *resource_file) {
 
 /* do a pre-flight check to make sure object relationships, etc. make sense */
 int pre_flight_check(void) {
-	host *temp_host = NULL;
 	char *buf = NULL;
-	service *temp_service = NULL;
 	command *temp_command = NULL;
 	char *temp_command_name = "";
 	int warnings = 0;
