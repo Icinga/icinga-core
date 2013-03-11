@@ -108,7 +108,6 @@ typedef struct hoststatus_struct{
          */
 	int     current_down_notification_number;
 	int     current_unreachable_notification_number;
-    char    *executed_command;
         }hoststatus;
 
 
@@ -169,7 +168,6 @@ typedef struct servicestatus_struct{
 	int     current_warning_notification_number;
 	int     current_critical_notification_number;
 	int     current_unknown_notification_number;
-    char    *executed_command;
         }servicestatus;
 
 

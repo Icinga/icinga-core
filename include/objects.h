@@ -413,7 +413,6 @@ struct host_struct{
 	int     current_down_notification_number;
 	int     current_unreachable_notification_number;
 #endif
-    char    *executed_command;
         };
 
 
@@ -558,7 +557,6 @@ struct service_struct{
 	int     current_critical_notification_number;
 	int     current_unknown_notification_number;
 #endif
-    char    *executed_command;
 	};
 
 /* ESCALATION CONDITION STRUCTURE 
