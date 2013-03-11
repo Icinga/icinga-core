@@ -1108,8 +1108,7 @@ CREATE TABLE hoststatus (
   check_command varchar2(1024),
   normal_check_interval number default 0 ,
   retry_check_interval number default 0 ,
-  check_timeperiod_object_id integer default 0,
-  executed_command varchar2(2048)
+  check_timeperiod_object_id integer default 0 
 )
 lob (long_output) store as hoststatus_out_lob(tablespace &&LOBTBS)
 lob (perfdata) store as hoststatus_perf_lob(tablespace &&LOBTBS)
@@ -1650,8 +1649,7 @@ CREATE TABLE servicestatus (
   check_command varchar2(1024),
   normal_check_interval number default 0 ,
   retry_check_interval number default 0 ,
-  check_timeperiod_object_id integer default 0,
-  executed_command varchar2(2048)
+  check_timeperiod_object_id integer default 0 
 )
 lob (long_output) store as servicestatus_out_lob(tablespace &&LOBTBS)
 lob (perfdata) store as servicestatus_perf_lob(tablespace &&LOBTBS)
