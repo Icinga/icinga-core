@@ -48,6 +48,7 @@ extern int mmap_fclose(mmapfile *temp_mmapfile);
 extern char *mmap_fgets(mmapfile *temp_mmapfile);
 extern char *mmap_fgets_multiline(mmapfile * temp_mmapfile);
 extern void strip(char *buffer);
+extern unsigned long sdbm(const char *str);
 extern int hashfunc(const char *name1, const char *name2, int hashslots);
 extern int compare_hashdata(const char *val1a, const char *val1b, const char *val2a,
 			    const char *val2b);

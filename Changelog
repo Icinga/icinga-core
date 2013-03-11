@@ -18,6 +18,7 @@ NOTES
 * ido2db.cfg enable_sla is now deprecated! #3450
 
 ENHANCEMENTS
+* core: increase performance with hash comparing hosts/services on config read #3722 - GB
 * core: introduce warning level -vv on config verification #3510 - MF
 * core: refuse to start if neb modules fail to load (Andreas Ericsson) #3812 - MF
 * core: keep logfile open, reducing open/close performance decreases (Andreas Ericsson) #3390 - MF
@@ -27,6 +28,7 @@ ENHANCEMENTS
 * core: avoid writing objects.cache if set to /dev/null (Andreas Ericsson) #3819 - MF
 * core: increase performance on host->service relation counter (config reading, flapping) #3820 - MF
 
+* classic ui: increase performance with hash comparing hosts/services to show/filter #3722 - GB
 * classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
 * classic ui: Add "send_ack_notifications" to cgi configuration (TheCry) #3467 - CF
 * classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB

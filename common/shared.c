@@ -353,7 +353,7 @@ void strip(char *buffer) {
 /**************************************************
  *************** HASH FUNCTIONS *******************
  **************************************************/
-static unsigned long sdbm(const char *str) {
+unsigned long sdbm(const char *str) {
 	unsigned long hash = 0;
 	int c;
 
@@ -376,6 +376,18 @@ int hashfunc(const char *name1, const char *name2, int hashslots) {
 	result = result % hashslots;
 
 	return result;
+}
+
+int hc_compare(const char *field1, unsigned long hash1,
+	       const char *field2, unsigned long hash2)
+{
+	if (field1 == field2)
+		return 0;
+
+	if (hash1 == hash2)
+		return strcmp(field1, field2);
+	else
+		return hash2 - hash1;
 }
 
 /* dual hash data comparison */
@@ -409,6 +421,7 @@ int compare_hashdata(const char *val1a, const char *val1b, const char *val2a,
 
 	return result;
 }
+
 /*
  * given a date/time in time_t format, produce a corresponding
  * date/time string, including timezone
