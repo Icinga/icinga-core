@@ -63,6 +63,7 @@ extern int      debug_level;
 extern int      debug_verbosity;
 extern unsigned long max_debug_file_size;
 FILE            *debug_file_fp = NULL;
+static FILE	*log_fp;
 
 int dummy;	/* reduce compiler warnings */
 
@@ -208,10 +209,60 @@ static void write_to_all_logs_with_timestamp(char *buffer, unsigned long data_ty
 	write_to_log(buffer, data_type, timestamp);
 }
 
+FILE *open_log_file(void) {
+
+	if (log_fp) /* keep it open unless we rotate */
+		return log_fp;
+
+	log_fp = fopen(log_file, "a+");
+
+	if (log_fp == NULL) {
+		if (daemon_mode == FALSE) {
+			printf("Warnings: Cannot open log file '%s' for writing\n", log_file);
+		}
+		return NULL;
+	}
+
+	(void)fcntl(fileno(log_fp), F_SETFD, FD_CLOEXEC);
+
+	return log_fp;
+}
+
+int fix_log_file_owner(uid_t uid, gid_t gid) {
+
+	int r1 = 0, r2 = 0;
+
+	if (!(log_fp = open_log_file()))
+		return -1;
+
+	r1 = fchown(fileno(log_fp), uid, gid);
+
+	if (open_debug_log() != OK)
+		return -1;
+
+	if (debug_file_fp)
+		r2 = fchown(fileno(debug_file_fp), uid, gid);
+
+	/* return 0 if both are 0 and otherwise < 0 */
+	return r1 < r2 ? r1 : r2;
+}
+
+int close_log_file(void) {
+
+	if (!log_fp)
+		return 0;
+
+	fflush(log_fp);
+	fclose(log_fp);
+	log_fp = NULL;
+
+	return 0;
+}
+
 
 /* write something to the icinga log file */
 int write_to_log(char *buffer, unsigned long data_type, time_t *timestamp) {
-	FILE *fp = NULL;
+	FILE *fp;
 	time_t log_time = 0L;
 
 	if (buffer == NULL)
@@ -229,12 +280,10 @@ int write_to_log(char *buffer, unsigned long data_type, time_t *timestamp) {
 	if (!(data_type & logging_options))
 		return OK;
 
-	fp = fopen(log_file, "a+");
-	if (fp == NULL) {
-		if (daemon_mode == FALSE)
-			printf("Warning: Cannot open log file '%s' for writing\n", log_file);
+	fp = open_log_file();
+
+	if (fp == NULL)
 		return ERROR;
-	}
 
 	/* what timestamp should we use? */
 	if (timestamp == NULL)
@@ -247,8 +296,7 @@ int write_to_log(char *buffer, unsigned long data_type, time_t *timestamp) {
 
 	/* write the buffer to the log file */
 	fprintf(fp, "[%lu] %s\n", log_time, buffer);
-
-	fclose(fp);
+	fflush(fp);
 
 #ifdef USE_EVENT_BROKER
 	/* send data to the event broker */
@@ -501,11 +549,15 @@ int rotate_log_file(time_t rotation_time) {
 
 	stat_result = stat(log_file, &log_file_stat);
 
+	close_log_file();
+
 	/* get the archived filename to use */
 	dummy = asprintf(&log_archive, "%s%sicinga-%02d-%02d-%d-%02d.log", log_archive_path, (log_archive_path[strlen(log_archive_path)-1] == '/') ? "" : "/", t->tm_mon + 1, t->tm_mday, t->tm_year + 1900, t->tm_hour);
 
 	/* rotate the log file */
 	rename_result = my_rename(log_file, log_archive);
+
+	log_fp = open_log_file();
 
 	if (rename_result) {
 		my_free(log_archive);
@@ -565,22 +617,7 @@ int open_debug_log(void) {
 	if ((debug_file_fp = fopen(debug_file, "a+")) == NULL)
 		return ERROR;
 
-	return OK;
-}
-
-/* change ownership of the debug log file */
-int chown_debug_log(uid_t uid, gid_t gid) {
-
-	/* bail early if not running */
-	if (verify_config == TRUE || test_scheduling == TRUE)
-		return OK;
-
-	/* we do not debug anything, bail early */
-	if (debug_level == DEBUGL_NONE)
-		return OK;
-
-	if (chown(debug_file, uid, gid) < 0)
-		return ERROR;
+	(void)fcntl(fileno(debug_file_fp), F_SETFD, FD_CLOEXEC);
 
 	return OK;
 }

@@ -18,9 +18,17 @@ NOTES
 * ido2db.cfg enable_sla is now deprecated! #3450
 
 ENHANCEMENTS
+* core: increase performance with hash comparing hosts/services on config read #3722 - GB
 * core: introduce warning level -vv on config verification #3510 - MF
 * core: refuse to start if neb modules fail to load (Andreas Ericsson) #3812 - MF
+* core: keep logfile open, reducing open/close performance decreases (Andreas Ericsson) #3390 - MF
+* core: enhance illegal macro character processing performance (Andreas Ericsson) #3389 - MF
+* core: add the notification type by string to debug logs; set CUSTOM=8, STALKING=9 (Andreas Ericsson) #3818 - MF
+* core: skip writing status.dat if explicitely set to /dev/null (e.g. when using alternate data retrieval methods like IDOUtils) (Andreas Ericsson) #3819 - MF
+* core: avoid writing objects.cache if set to /dev/null (Andreas Ericsson) #3819 - MF
+* core: increase performance on host->service relation counter (config reading, flapping) #3820 - MF
 
+* classic ui: increase performance with hash comparing hosts/services to show/filter #3722 - GB
 * classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
 * classic ui: Add "send_ack_notifications" to cgi configuration (TheCry) #3467 - CF
 * classic ui: Changed field size for hours to 4 when setting flexible downtime #3484 - RB
@@ -33,13 +41,18 @@ ENHANCEMENTS
 * idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB
 
 * install: set --enable-idoutils/event-broker to true as default configure flags #3813 - MF
+* install: add lighttp config samples to contrib/lighttp #2253 - RB
 
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
 * core: fix macro escaping logs incorrect warning for $$escapes #3404 - MF
 * core: fix wrong escalation notification due to state based escalation range behaviour changes #3441 - MF
-* core: change ownership of debug log file before dropping privileges (Eric Stanley) #3521 - MF
+* core: change ownership of (debug) log file before dropping privileges (Andreas Ericsson) #3521 - MF
 * core: fix keep_unknown_macros still exposes wrong warnings to logs #3725 - MF
+* core: fix host_check, last_check == next_check wrong in scheduling queue #2195 - MF
+* core: fix triggered downtimes for child hosts are missing after icinga restart (thx Michael Lucka) #3390 - MF
+* core: fix services with empty hostgroups aren't processed even if it has host_name specified (allow_empty_hostgroups=1) (thx Viranch Metha) #3736 - MF
+* core: revamp USE_LTDL definitions in nebmods (Andreas Ericsson) #3817 - MF
 
 * idoutils: fix many memory leaks in ido2db on dbi_result_free and others (thx Klaus Wagner) #3406 - MF
 * idoutils: fix ido2db crashes when Oracle queries fail #3324 - GB
@@ -79,10 +92,13 @@ FIXES
 CHANGES
 
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
+* icinga.cfg - set status_file=/dev/null to disable its creation #3819
+* icinga.cfg - set object_cache_file=/dev/null to disable its creation #3819
 
 * core: -v param can be used more than once #3510
 * core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510
 * core: refuse to start if neb modules fail to load #3812
+* core: notification type nr CUSTOM=8 and STALKING=9 (reflected in idoutils tables) #3818
 
 * ido2db.cfg:
 	** use_transactions #3527

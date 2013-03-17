@@ -1,0 +1,5 @@
+Use lighttp_icinga.conf and put it into /etc/lighttp/
+Add the include directive to /etc/lighttp/lighttp.conf
+
+The related issue is https://dev.icinga.org/issues/2253
+if you want to contribute some more content.

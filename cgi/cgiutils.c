@@ -56,6 +56,7 @@ char            *normal_sound = NULL;
 char            *statusmap_background_image = NULL;
 
 char            *illegal_output_chars = NULL;
+char		illegal_output_char_map[] = CHAR_MAP_INIT(0);
 
 char            *http_charset = NULL;
 
@@ -366,6 +367,7 @@ int read_cgi_config_file(char *filename) {
 	mmapfile *thefile;
 	char *var = NULL;
 	char *val = NULL;
+	char *p = NULL;
 
 
 	if ((thefile = mmap_fopen(filename)) == NULL)
@@ -735,6 +737,9 @@ int read_cgi_config_file(char *filename) {
 			strip(default_user_name);
 		}
 	}
+
+	for (p = illegal_output_chars; p && *p; p++)
+		illegal_output_char_map[(int)*p] = 1;
 
 	/* free memory and close the file */
 	free(input);

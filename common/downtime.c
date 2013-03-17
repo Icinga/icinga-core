@@ -47,6 +47,15 @@
 
 
 scheduled_downtime *scheduled_downtime_list = NULL;
+/*
+ * downtimes are not sorted by id, but starttime
+ * this leads into https://dev.icinga.org/issues/2688
+ * where child downtimes are considered invalid when
+ * looking up the parent
+ * setting this to 1 could cause unresolvable issues.
+ * the fix for child downtimes can be found in 
+ * downtime_compar()
+ */
 int		   defer_downtime_sorting = 0;
 
 #ifdef NSCORE
@@ -1067,7 +1076,17 @@ int add_downtime(int downtime_type, char *host_name, char *svc_description, time
 static int downtime_compar(const void *p1, const void *p2) {
 	scheduled_downtime *d1 = *(scheduled_downtime **)p1;
 	scheduled_downtime *d2 = *(scheduled_downtime **)p2;
+
+	/* if the valid parent is read from status/retention.dat
+	 * after the child downtime, this comparison is considered
+	 * invalid then.
+	 * the fix assumes that:
+	 * - parent and child downtimes have the same start time
+	 * - downtime_id is ascending, and parent/trigger id before child id
+	 *
 	return (d1->start_time < d2->start_time) ? -1 : (d1->start_time - d2->start_time);
+	 */
+	return (d1->start_time == d2->start_time) ? (d1->downtime_id - d2->downtime_id) : (d1->start_time - d2->start_time);
 }
 
 int sort_downtime(void) {

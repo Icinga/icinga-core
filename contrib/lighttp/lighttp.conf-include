@@ -1,0 +1,1 @@
+include "/etc/lighttpd/lighttpd_icinga.conf"

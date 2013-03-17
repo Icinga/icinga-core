@@ -34,6 +34,15 @@
   extern "C" {
 #endif
 
+/*************** HASH COMPARISON HELPERS **************/
+
+extern int hc_compare(const char *field1, unsigned long hash1,
+		      const char *field2, unsigned long hash2);
+
+#define DECLARE_HASH(field)		unsigned long field ## _hash
+#define FILL_HASH(field)		field ## _hash = sdbm(field)
+#define CMP_HASH(field1, field2)	hc_compare(field1, field1 ## _hash, field2, field2 ## _hash)
+#define COPY_HASH(field1, field2)	field2 ## _hash = field1 ## _hash
 
 
 /*************** CURRENT OBJECT REVISION **************/
@@ -249,6 +258,8 @@ typedef struct servicesmember_struct{
 	service *service_ptr;
 #endif
 	struct servicesmember_struct *next;
+	DECLARE_HASH(host_name);
+	DECLARE_HASH(service_description);
         }servicesmember;
 
 
@@ -259,6 +270,7 @@ typedef struct hostsmember_struct{
 	host    *host_ptr;
 #endif
 	struct hostsmember_struct *next;
+	DECLARE_HASH(host_name);
         }hostsmember;
 
 
@@ -413,6 +425,7 @@ struct host_struct{
 	int     current_down_notification_number;
 	int     current_unreachable_notification_number;
 #endif
+	DECLARE_HASH(name);
         };
 
 
@@ -557,6 +570,8 @@ struct service_struct{
 	int     current_critical_notification_number;
 	int     current_unknown_notification_number;
 #endif
+	DECLARE_HASH(host_name);
+	DECLARE_HASH(description);
 	};
 
 /* ESCALATION CONDITION STRUCTURE 
@@ -863,9 +878,6 @@ int check_for_circular_hostdependency_path(hostdependency *,hostdependency *,int
 
 /**** Object Cleanup Functions ****/
 int free_object_data(void);                             /* frees all allocated memory for the object definitions */
-
-
-
 
 #ifdef __cplusplus
   }
