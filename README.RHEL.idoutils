@@ -145,10 +145,15 @@ http://docs.icinga.org/latest/en/upgrading_idoutils.html
 
 Remember - the upgrade steps need to be applied incremential, version by version.
 
-e.g.
-# cd /usr/share/doc/icinga-idoutils/db/mysql/upgrade/
-# mysql -u root -p icinga < mysql-upgrade-1.7.0.sql
+Make sure to stop ido2db before applying the db upgrade!
 
+# service ido2db stop
+
+# cd /usr/share/doc/icinga-idoutils/db/mysql/upgrade/
+# mysql -u root -p icinga < mysql-upgrade-1.9.0.sql
+
+# service ido2db start
+# service icinga restart
 
 ===========
 = Advanced
