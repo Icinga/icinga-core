@@ -768,7 +768,7 @@ if test x$USE_EVENTBROKER = xyes; then
 	# Otherwise we assume that if the linker accepts the flag, it is needed.
 	AC_MSG_CHECKING(for extra flags needed to export symbols)
 	case $host_os in
-		aix4*|aix5*)
+		aix4*|aix5*|aix6*|aix7*)
 			BROKER_LDFLAGS="$BROKER_LDFLAGS -Wl,-bexpall,-brtl"
 		;;
 		bsdi*)
@@ -799,7 +799,7 @@ if test x$USE_EVENTBROKER = xyes; then
 			INIT_OPTS="-o root -g root"
 			SNPRINTF_BROKEN="yes"
 		;;
-		aix4*|aix5*)
+		aix4*|aix5*|aix6*|aix7*)
 			#MOD_LDFLAGS="-G -bnoentry -bexpall"
 			MOD_LDFLAGS="-G -bM:SRE -bnoentry -bexpall"
 			INIT_OPTS="-o root -g root"
@@ -1294,7 +1294,7 @@ AC_MSG_CHECKING(for -Wall based on os/compiler)
         case $host_os in
                 solaris2*|sysv4*)
                 ;;
-                aix4*|aix5*)
+                aix4*|aix5*|aix6*|aix7*)
 			CFLAGS="-Wall $CFLAGS"
                 ;;
                 freebsd2*)
