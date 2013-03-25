@@ -743,12 +743,12 @@ void display_map(void) {
 
 	/* write the URL location for the image we just generated - the web browser will come and get it... */
 	if (content_type == HTML_CONTENT) {
-		printf("<p><div align='center'>\n");
+		printf("<div align='center'>\n");
 		printf("<img src='%s?host=%s&createimage&time=%lu", STATUSMAP_CGI, url_encode(host_name), (unsigned long)time(NULL));
-		printf("&canvas_x=%d&canvas_y=%d&canvas_width='%d'&canvas_height=%d&max_width='%d'&max_height=%d&layout=%d%s%s%s", canvas_x, canvas_y, canvas_width, canvas_height, max_image_width, max_image_height, layout_method, (use_links == FALSE) ? "&nolinks" : "", (use_text == FALSE) ? "&notext" : "", (use_highlights == FALSE) ? "&nohighlights" : "");
+		printf("&canvas_x=%d&canvas_y=%d&canvas_width=%d&canvas_height=%d&max_width=%d&max_height=%d&layout=%d%s%s%s", canvas_x, canvas_y, canvas_width, canvas_height, max_image_width, max_image_height, layout_method, (use_links == FALSE) ? "&nolinks" : "", (use_text == FALSE) ? "&notext" : "", (use_highlights == FALSE) ? "&nohighlights" : "");
 		print_layer_url(TRUE);
 		printf("' width='%d' height='%d' border='0' name='statusimage' useMap='#statusmap'>\n", (int)(canvas_width * scaling_factor), (int)(canvas_height * scaling_factor));
-		printf("</div></p>\n");
+		printf("</div>\n");
 	}
 
 	return;
@@ -1766,7 +1766,7 @@ void draw_hosts(void) {
 
 		/* we're creating HTML image map... */
 		else {
-			printf("<aREA shape='rect' ");
+			printf("<area shape='rect' ");
 
 			/* coordinates */
 			printf("coords='%d,%d,%d,%d' ", (int)(x1 * scaling_factor), (int)(y1 * scaling_factor), (int)((x1 + DEFAULT_NODE_WIDTH)*scaling_factor), (int)((y1 + DEFAULT_NODE_HEIGHT)*scaling_factor));
@@ -1775,7 +1775,7 @@ void draw_hosts(void) {
 			if (!strcmp(host_name, temp_host->name))
 				printf("href='%s?host=%s' ", STATUS_CGI, url_encode(temp_host->name));
 			else {
-				printf("href='%s?host=%s&layout=%d&max_width='%d'&max_height=%d&proximity_width='%d'&proximity_height=%d%s%s%s%s%s", STATUSMAP_CGI, url_encode(temp_host->name), layout_method, max_image_width, max_image_height, proximity_width, proximity_height, (display_header == TRUE) ? "" : "&noheader", (use_links == FALSE) ? "&nolinks" : "", (use_text == FALSE) ? "&notext" : "", (use_highlights == FALSE) ? "&nohighlights" : "", (display_popups == FALSE) ? "&nopopups" : "");
+				printf("href='%s?host=%s&layout=%d&max_width=%d&max_height=%d&proximity_width=%d&proximity_height=%d%s%s%s%s%s", STATUSMAP_CGI, url_encode(temp_host->name), layout_method, max_image_width, max_image_height, proximity_width, proximity_height, (display_header == TRUE) ? "" : "&noheader", (use_links == FALSE) ? "&nolinks" : "", (use_text == FALSE) ? "&notext" : "", (use_highlights == FALSE) ? "&nohighlights" : "", (display_popups == FALSE) ? "&nopopups" : "");
 				if (user_supplied_scaling == TRUE)
 					printf("&scaling_factor=%2.1f", user_scaling_factor);
 				print_layer_url(TRUE);
@@ -1909,7 +1909,7 @@ void write_host_popup_text(host *hst) {
 	/* strip nasty stuff from plugin output */
 	sanitize_plugin_output(temp_status->plugin_output);
 
-	printf("<table border='0' cellpadding='0' cellspacing='5'>");
+	printf("<table border=0 cellpadding=0 cellspacing=5>");
 
 	printf("<tr><td><img src=\\\"%s", url_logo_images_path);
 	if (hst->icon_image == NULL)
@@ -1919,7 +1919,7 @@ void write_host_popup_text(host *hst) {
 		printf("%s", processed_string);
 		free(processed_string);
 	}
-	printf("\\\" border='0' width='40' height='40'></td>");
+	printf("\\\" border=0 width=40 height=40></td>");
 	printf("<td class=\\\"popupText\\\"><i>%s</i></td></tr>", (hst->icon_image_alt == NULL) ? "" : html_encode(hst->icon_image_alt, TRUE));
 
 	printf("<tr><td class=\\\"popupText\\\">Name:</td><td class=\\\"popupText\\\"><b>%s</b></td></tr>", escape_string(hst->name));
