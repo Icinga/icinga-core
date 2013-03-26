@@ -212,15 +212,12 @@ int update_contact_status(contact *cntct, int aggregated_dump) {
 
 
 /* reads in all status data */
-int read_status_data(char *config_file, int options) {
+int read_status_data(char *main_config_file, int options) {
 	int result = OK;
 
 	/**** IMPLEMENTATION-SPECIFIC CALLS ****/
 #ifdef USE_XSDDEFAULT
-	result = xsddefault_read_status_data(config_file, options);
-#endif
-#ifdef USE_XSDDB
-	result = xsddb_read_status_data(config_file, options);
+	result = xsddefault_read_status_data(main_config_file, options);
 #endif
 
 	return result;
