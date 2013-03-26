@@ -1682,10 +1682,12 @@ void display_recent_alerts(void) {
 			odd = 1;
 
 		/* find the host */
-		temp_host = find_host(temp_event->host_name);
+		if ((temp_host = find_host(temp_event->host_name)) == NULL)
+			continue;
 
 		/* find the service */
-		temp_service = find_service(temp_event->host_name, temp_event->service_description);
+		if ((temp_service = find_service(temp_event->host_name, temp_event->service_description)) == NULL)
+			continue;
 
 		get_time_string(&temp_event->time_stamp, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
 
@@ -1991,7 +1993,7 @@ void display_top_alerts(void) {
 			printf(" \"host_name\": \"%s\", ", json_encode(temp_producer->host_name));
 
 			temp_host = find_host(temp_producer->host_name);
-			printf("\"host_display_name\": \"%s\", ", (temp_host != NULL && temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_host->name));
+			printf("\"host_display_name\": \"%s\", ", (temp_host != NULL && temp_host->display_name != NULL) ? json_encode(temp_host->display_name) : json_encode(temp_producer->host_name));
 			if (temp_producer->producer_type == AE_HOST_PRODUCER) {
 				printf(" \"service_description\": null, ");
 				printf(" \"service_display_name\": null, ");
@@ -1999,7 +2001,7 @@ void display_top_alerts(void) {
 				printf(" \"service_description\": \"%s\", ", json_encode(temp_producer->service_description));
 
 				temp_service = find_service(temp_producer->host_name, temp_producer->service_description);
-				printf("\"service_display_name\": \"%s\", ", (temp_service != NULL && temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_service->description));
+				printf("\"service_display_name\": \"%s\", ", (temp_service != NULL && temp_service->display_name != NULL) ? json_encode(temp_service->display_name) : json_encode(temp_producer->service_description));
 			}
 			printf(" \"total_alerts\": %d}", temp_producer->total_alerts);
 		} else if (content_type == CSV_CONTENT) {

@@ -471,9 +471,9 @@ int main(int argc, char **argv) {
 
 			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
 			if (display_type == DISPLAY_HOST_TRENDS)
-				printf("Host '%s'", (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+				printf("Host '%s'", (temp_host != NULL && temp_host->display_name != NULL) ? temp_host->display_name : host_name);
 			else if (display_type == DISPLAY_SERVICE_TRENDS)
-				printf("Service '%s' On Host '%s'", (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description, (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+				printf("Service '%s' On Host '%s'", (temp_service != NULL && temp_service->display_name != NULL) ? temp_service->display_name : service_desc, (temp_host != NULL && temp_host->display_name != NULL) ? temp_host->display_name : host_name);
 			printf("</DIV>\n");
 
 			printf("<BR>\n");
@@ -599,11 +599,11 @@ int main(int argc, char **argv) {
 	/* check authorization... */
 	if (display_type == DISPLAY_HOST_TRENDS) {
 		temp_host = find_host(host_name);
-		if (temp_host == NULL || is_authorized_for_host(temp_host, &current_authdata) == FALSE)
+		if (is_authorized_for_host(temp_host, &current_authdata) == FALSE)
 			is_authorized = FALSE;
 	} else if (display_type == DISPLAY_SERVICE_TRENDS) {
 		temp_service = find_service(host_name, service_desc);
-		if (temp_service == NULL || is_authorized_for_service(temp_service, &current_authdata) == FALSE)
+		if (is_authorized_for_service(temp_service, &current_authdata) == FALSE)
 			is_authorized = FALSE;
 	}
 	if (is_authorized == FALSE) {
