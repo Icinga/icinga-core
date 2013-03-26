@@ -2550,7 +2550,6 @@ void draw_time_breakdowns(void) {
 	unsigned long total_time = 0L;
 	unsigned long total_state_time;
 	unsigned long time_indeterminate = 0L;
-	int string_height;
 
 	if (content_type == HTML_CONTENT)
 		return;
@@ -2569,8 +2568,6 @@ void draw_time_breakdowns(void) {
 		time_indeterminate = 0L;
 	else
 		time_indeterminate = total_time - total_state_time;
-
-	string_height = gdFontSmall->h;
 
 	if (display_type == DISPLAY_HOST_TRENDS) {
 

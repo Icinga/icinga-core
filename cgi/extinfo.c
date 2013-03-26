@@ -156,9 +156,6 @@ int result_start = 1;
 int total_entries = 0;
 int displayed_entries = 0;
 
-
-int dummy;	/* reduce compiler warnings */
-
 extern int embedded;
 extern int refresh;
 extern int display_header;
@@ -245,13 +242,13 @@ int main(void) {
 
 	if (tab_friendly_titles == TRUE) {
 		if (display_type == DISPLAY_HOST_INFO && host_name && (*host_name != '\0'))
-			dummy = asprintf(&cgi_title, "[%s]", html_encode(host_name, FALSE));
+			asprintf(&cgi_title, "[%s]", html_encode(host_name, FALSE));
 		else if (display_type == DISPLAY_SERVICE_INFO && service_desc && *service_desc != '\0' && host_name && *host_name != '\0')
-			dummy = asprintf(&cgi_title, "%s @ %s", html_encode(service_desc, FALSE), html_encode(host_name, FALSE));
+			asprintf(&cgi_title, "%s @ %s", html_encode(service_desc, FALSE), html_encode(host_name, FALSE));
 		else if (display_type == DISPLAY_HOSTGROUP_INFO && hostgroup_name && *hostgroup_name != '\0')
-			dummy = asprintf(&cgi_title, "{%s}", html_encode(hostgroup_name, FALSE));
+			asprintf(&cgi_title, "{%s}", html_encode(hostgroup_name, FALSE));
 		else if (display_type == DISPLAY_SERVICEGROUP_INFO && servicegroup_name && *servicegroup_name != '\0')
-			dummy = asprintf(&cgi_title, "(%s)", html_encode(servicegroup_name, FALSE));
+			asprintf(&cgi_title, "(%s)", html_encode(servicegroup_name, FALSE));
 	}
 
 	document_header(CGI_ID, TRUE, (tab_friendly_titles == TRUE && cgi_title != NULL) ? cgi_title : "Extended Information");
@@ -1535,7 +1532,7 @@ void show_host_info(void) {
 			printf("<tr><td class='dataVar' valign='top'>Status Information:</td><td class='dataVal'>%s", (temp_hoststatus->plugin_output == NULL) ? "" : html_encode(temp_hoststatus->plugin_output, TRUE));
 			if (enable_splunk_integration == TRUE) {
 				printf("&nbsp;&nbsp;");
-				dummy = asprintf(&buf, "%s %s", temp_host->name, temp_hoststatus->plugin_output);
+				asprintf(&buf, "%s %s", temp_host->name, temp_hoststatus->plugin_output);
 				buf[sizeof(buf) - 1] = '\x0';
 				display_splunk_generic_url(buf, 1);
 				free(buf);
@@ -1970,7 +1967,7 @@ void show_service_info(void) {
 			printf("<tr><td class='dataVar' valign='top'>Status Information:</td><td class='dataVal'>%s", (temp_svcstatus->plugin_output == NULL) ? "" : html_encode(temp_svcstatus->plugin_output, TRUE));
 			if (enable_splunk_integration == TRUE) {
 				printf("&nbsp;&nbsp;");
-				dummy = asprintf(&buf, "%s %s %s", temp_service->host_name, temp_service->description, temp_svcstatus->plugin_output);
+				asprintf(&buf, "%s %s %s", temp_service->host_name, temp_service->description, temp_svcstatus->plugin_output);
 				buf[sizeof(buf) - 1] = '\x0';
 				display_splunk_generic_url(buf, 1);
 				free(buf);
