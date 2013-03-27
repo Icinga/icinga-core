@@ -1618,7 +1618,7 @@ void graph_all_trend_data(void) {
 	hoststatus *hststatus = NULL;
 	servicestatus *svcstatus = NULL;
 	unsigned long wobble = 300;
-	int first_real_state = AS_NO_DATA;
+//	int first_real_state = AS_NO_DATA;			<- unused, but why, FIXME
 	time_t initial_assumed_time;
 	int initial_assumed_state = AS_SVC_OK;
 	int error = FALSE;
@@ -1663,7 +1663,7 @@ void graph_all_trend_data(void) {
 				add_archived_state(last_known_state, AS_HARD_STATE, t1, "Current Host State Assumed (Faked Log Entry)");
 
 				/* use the current state as the last known real state */
-				first_real_state = last_known_state;
+//				first_real_state = last_known_state;
 			}
 		} else {
 			if (svcstatus != NULL) {
@@ -1681,7 +1681,7 @@ void graph_all_trend_data(void) {
 				add_archived_state(last_known_state, AS_HARD_STATE, t1, "Current Service State Assumed (Faked Log Entry)");
 
 				/* use the current state as the last known real state */
-				first_real_state = last_known_state;
+//				first_real_state = last_known_state;
 			}
 		}
 	}
@@ -1920,7 +1920,7 @@ void graph_all_trend_data(void) {
 /* graphs trend data */
 void graph_trend_data(int first_state, int last_state, time_t real_start_time, time_t start_time, time_t end_time, char *state_info) {
 	int start_state;
-	int end_state;
+//	int end_state;				<- unused, but why, FIXME
 	int start_pixel = 0;
 	int end_pixel = 0;
 	int color_to_use = 0;
@@ -1988,10 +1988,10 @@ void graph_trend_data(int first_state, int last_state, time_t real_start_time, t
 	}
 
 	/* special case if last entry was program stop */
-	if (last_state == AS_PROGRAM_END)
-		end_state = first_state;
-	else
-		end_state = last_state;
+//	if (last_state == AS_PROGRAM_END)
+//		end_state = first_state;
+//	else
+//		end_state = last_state;
 
 #ifdef DEBUG
 	printf("Graphing state %d\n", start_state);

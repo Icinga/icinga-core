@@ -1716,7 +1716,7 @@ void compute_subject_availability(avail_subject *subject, time_t current_time) {
 	int have_some_real_data = FALSE;
 	hoststatus *hststatus = NULL;
 	servicestatus *svcstatus = NULL;
-	int first_real_state = AS_NO_DATA;
+//	int first_real_state = AS_NO_DATA;		<- unused, but why, FIXME
 	time_t initial_assumed_time;
 	int initial_assumed_state = AS_NO_DATA;
 	int error;
@@ -1762,7 +1762,7 @@ void compute_subject_availability(avail_subject *subject, time_t current_time) {
 					add_archived_state(subject->last_known_state, AS_HARD_STATE, t1, "Current Host State Assumed (Faked Log Entry)", subject);
 
 					/* use the current state as the last known real state */
-					first_real_state = subject->last_known_state;
+//					first_real_state = subject->last_known_state;
 				}
 			}
 		} else {
@@ -1785,7 +1785,7 @@ void compute_subject_availability(avail_subject *subject, time_t current_time) {
 					add_archived_state(subject->last_known_state, AS_HARD_STATE, t1, "Current Service State Assumed (Faked Log Entry)", subject);
 
 					/* use the current state as the last known real state */
-					first_real_state = subject->last_known_state;
+//					first_real_state = subject->last_known_state;
 				}
 			}
 		}
@@ -2015,7 +2015,7 @@ void compute_subject_availability(avail_subject *subject, time_t current_time) {
 /* computes availability times */
 void compute_subject_availability_times(int first_state, int last_state, time_t real_start_time, time_t start_time, time_t end_time, avail_subject *subject, archived_state *as) {
 	int start_state;
-	int end_state;
+//	int end_state;					<- not used, but why, FIXME
 	unsigned long state_duration;
 	struct tm *t;
 	unsigned long midnight_today;
@@ -2148,10 +2148,10 @@ void compute_subject_availability_times(int first_state, int last_state, time_t 
 	}
 
 	/* special case if last entry was program stop */
-	if (last_state == AS_PROGRAM_END)
-		end_state = first_state;
-	else
-		end_state = last_state;
+//	if (last_state == AS_PROGRAM_END)
+//		end_state = first_state;
+//	else
+//		end_state = last_state;
 
 	/* save "processed state" info */
 	as->processed_state = start_state;
@@ -2288,7 +2288,7 @@ void compute_subject_downtime(avail_subject *subject, time_t current_time) {
 /* computes downtime times */
 void compute_subject_downtime_times(time_t start_time, time_t end_time, avail_subject *subject, archived_state *sd) {
 	archived_state *temp_as = NULL;
-	time_t part_start_time = 0L;
+//	time_t part_start_time = 0L;		<- unused, but why, FIXME
 	time_t part_subject_state = 0L;
 	int saved_status = 0;
 	int saved_stamp = 0;
@@ -2330,7 +2330,7 @@ void compute_subject_downtime_times(time_t start_time, time_t end_time, avail_su
 	}
 
 	/* initialize values */
-	part_start_time = start_time;
+//	part_start_time = start_time;
 	if (temp_as == NULL)
 		part_subject_state = AS_NO_DATA;
 	else if (temp_as->processed_state == AS_PROGRAM_START || temp_as->processed_state == AS_PROGRAM_END || temp_as->processed_state == AS_NO_DATA) {
@@ -4504,8 +4504,8 @@ void display_host_availability(void) {
 
 	char time_indeterminate_scheduled_string[48];
 	char time_indeterminate_unscheduled_string[48];
-	double percent_time_indeterminate_scheduled = 0.0;
-	double percent_time_indeterminate_unscheduled = 0.0;
+//	double percent_time_indeterminate_scheduled = 0.0;
+//	double percent_time_indeterminate_unscheduled = 0.0;
 	char time_indeterminate_notrunning_string[48];
 	char time_indeterminate_nodata_string[48];
 	double percent_time_indeterminate_notrunning = 0.0;
@@ -4616,8 +4616,8 @@ void display_host_availability(void) {
 			percent_time_unreachable_scheduled = (double)(((double)temp_subject->scheduled_time_unreachable * 100.0) / (double)total_time);
 			percent_time_unreachable_unscheduled = percent_time_unreachable - percent_time_unreachable_scheduled;
 			percent_time_indeterminate = (double)(((double)time_indeterminate * 100.0) / (double)total_time);
-			percent_time_indeterminate_scheduled = (double)(((double)temp_subject->scheduled_time_indeterminate * 100.0) / (double)total_time);
-			percent_time_indeterminate_unscheduled = percent_time_indeterminate - percent_time_indeterminate_scheduled;
+//			percent_time_indeterminate_scheduled = (double)(((double)temp_subject->scheduled_time_indeterminate * 100.0) / (double)total_time);
+//			percent_time_indeterminate_unscheduled = percent_time_indeterminate - percent_time_indeterminate_scheduled;
 			percent_time_indeterminate_notrunning = (double)(((double)temp_subject->time_indeterminate_notrunning * 100.0) / (double)total_time);
 			percent_time_indeterminate_nodata = (double)(((double)temp_subject->time_indeterminate_nodata * 100.0) / (double)total_time);
 			if (time_determinate > 0) {
@@ -5062,8 +5062,8 @@ void display_host_availability(void) {
 			percent_time_unreachable_scheduled = 0.0;
 			percent_time_unreachable_unscheduled = 0.0;
 			percent_time_indeterminate = 0.0;
-			percent_time_indeterminate_scheduled = 0.0;
-			percent_time_indeterminate_unscheduled = 0.0;
+//			percent_time_indeterminate_scheduled = 0.0;
+//			percent_time_indeterminate_unscheduled = 0.0;
 			percent_time_indeterminate_notrunning = 0.0;
 			percent_time_indeterminate_nodata = 0.0;
 			percent_time_up_known = 0.0;
@@ -5087,8 +5087,8 @@ void display_host_availability(void) {
 				percent_time_unreachable_scheduled = (double)(((double)temp_subject->scheduled_time_unreachable * 100.0) / (double)total_time);
 				percent_time_unreachable_unscheduled = percent_time_unreachable - percent_time_unreachable_scheduled;
 				percent_time_indeterminate = (double)(((double)time_indeterminate * 100.0) / (double)total_time);
-				percent_time_indeterminate_scheduled = (double)(((double)temp_subject->scheduled_time_indeterminate * 100.0) / (double)total_time);
-				percent_time_indeterminate_unscheduled = percent_time_indeterminate - percent_time_indeterminate_scheduled;
+//				percent_time_indeterminate_scheduled = (double)(((double)temp_subject->scheduled_time_indeterminate * 100.0) / (double)total_time);
+//				percent_time_indeterminate_unscheduled = percent_time_indeterminate - percent_time_indeterminate_scheduled;
 				percent_time_indeterminate_notrunning = (double)(((double)temp_subject->time_indeterminate_notrunning * 100.0) / (double)total_time);
 				percent_time_indeterminate_nodata = (double)(((double)temp_subject->time_indeterminate_nodata * 100.0) / (double)total_time);
 				if (time_determinate > 0) {
@@ -5395,8 +5395,8 @@ void display_service_availability(void) {
 
 	char time_indeterminate_scheduled_string[48];
 	char time_indeterminate_unscheduled_string[48];
-	double percent_time_indeterminate_scheduled = 0.0;
-	double percent_time_indeterminate_unscheduled = 0.0;
+//	double percent_time_indeterminate_scheduled = 0.0;
+//	double percent_time_indeterminate_unscheduled = 0.0;
 	char time_indeterminate_notrunning_string[48];
 	char time_indeterminate_nodata_string[48];
 	double percent_time_indeterminate_notrunning = 0.0;
@@ -5497,8 +5497,8 @@ void display_service_availability(void) {
 			percent_time_critical_scheduled = (double)(((double)temp_subject->scheduled_time_critical * 100.0) / (double)total_time);
 			percent_time_critical_unscheduled = percent_time_critical - percent_time_critical_scheduled;
 			percent_time_indeterminate = (double)(((double)time_indeterminate * 100.0) / (double)total_time);
-			percent_time_indeterminate_scheduled = (double)(((double)temp_subject->scheduled_time_indeterminate * 100.0) / (double)total_time);
-			percent_time_indeterminate_unscheduled = percent_time_indeterminate - percent_time_indeterminate_scheduled;
+//			percent_time_indeterminate_scheduled = (double)(((double)temp_subject->scheduled_time_indeterminate * 100.0) / (double)total_time);
+//			percent_time_indeterminate_unscheduled = percent_time_indeterminate - percent_time_indeterminate_scheduled;
 			percent_time_indeterminate_notrunning = (double)(((double)temp_subject->time_indeterminate_notrunning * 100.0) / (double)total_time);
 			percent_time_indeterminate_nodata = (double)(((double)temp_subject->time_indeterminate_nodata * 100.0) / (double)total_time);
 			if (time_determinate > 0) {
@@ -5845,8 +5845,8 @@ void display_service_availability(void) {
 			percent_time_critical_scheduled = 0.0;
 			percent_time_critical_unscheduled = 0.0;
 			percent_time_indeterminate = 0.0;
-			percent_time_indeterminate_scheduled = 0.0;
-			percent_time_indeterminate_unscheduled = 0.0;
+//			percent_time_indeterminate_scheduled = 0.0;
+//			percent_time_indeterminate_unscheduled = 0.0;
 			percent_time_indeterminate_notrunning = 0.0;
 			percent_time_indeterminate_nodata = 0.0;
 			percent_time_ok_known = 0.0;
@@ -5876,8 +5876,8 @@ void display_service_availability(void) {
 				percent_time_critical_scheduled = (double)(((double)temp_subject->scheduled_time_critical * 100.0) / (double)total_time);
 				percent_time_critical_unscheduled = percent_time_critical - percent_time_critical_scheduled;
 				percent_time_indeterminate = (double)(((double)time_indeterminate * 100.0) / (double)total_time);
-				percent_time_indeterminate_scheduled = (double)(((double)temp_subject->scheduled_time_indeterminate * 100.0) / (double)total_time);
-				percent_time_indeterminate_unscheduled = percent_time_indeterminate - percent_time_indeterminate_scheduled;
+//				percent_time_indeterminate_scheduled = (double)(((double)temp_subject->scheduled_time_indeterminate * 100.0) / (double)total_time);
+//				percent_time_indeterminate_unscheduled = percent_time_indeterminate - percent_time_indeterminate_scheduled;
 				percent_time_indeterminate_notrunning = (double)(((double)temp_subject->time_indeterminate_notrunning * 100.0) / (double)total_time);
 				percent_time_indeterminate_nodata = (double)(((double)temp_subject->time_indeterminate_nodata * 100.0) / (double)total_time);
 				if (time_determinate > 0) {
