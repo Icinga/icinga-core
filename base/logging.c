@@ -65,8 +65,6 @@ extern unsigned long max_debug_file_size;
 FILE            *debug_file_fp = NULL;
 static FILE	*log_fp;
 
-int dummy;	/* reduce compiler warnings */
-
 static pthread_mutex_t debug_fp_lock;
 
 /*
@@ -389,7 +387,7 @@ int log_service_event(service *svc) {
 
 	/* either log only the output, or if enabled, add long_output */
 	if (log_long_plugin_output == TRUE && svc->long_plugin_output != NULL) {
-		dummy = asprintf(&temp_buffer, "SERVICE ALERT: %s;%s;%s;%s;%d;%s\\n%s\n",
+		asprintf(&temp_buffer, "SERVICE ALERT: %s;%s;%s;%s;%d;%s\\n%s\n",
 				svc->host_name, svc->description,
 				service_state_name(svc->current_state),
 				state_type_name(svc->state_type),
@@ -398,7 +396,7 @@ int log_service_event(service *svc) {
 				svc->long_plugin_output
 				);
 	} else {
-		dummy = asprintf(&temp_buffer, "SERVICE ALERT: %s;%s;%s;%s;%d;%s\n",
+		asprintf(&temp_buffer, "SERVICE ALERT: %s;%s;%s;%s;%d;%s\n",
 				svc->host_name, svc->description,
 				service_state_name(svc->current_state),
 				state_type_name(svc->state_type),
@@ -429,7 +427,7 @@ int log_host_event(host *hst) {
 
 	/* either log only the output, or if enabled, add long_output */
 	if (log_long_plugin_output == TRUE && hst->long_plugin_output != NULL) {
-		dummy = asprintf(&temp_buffer, "HOST ALERT: %s;%s;%s;%d;%s\\n%s\n",
+		asprintf(&temp_buffer, "HOST ALERT: %s;%s;%s;%d;%s\\n%s\n",
 				hst->name,
 				host_state_name(hst->current_state),
 				state_type_name(hst->state_type),
@@ -438,7 +436,7 @@ int log_host_event(host *hst) {
 				hst->long_plugin_output
 				);
 	} else {
-		dummy = asprintf(&temp_buffer, "HOST ALERT: %s;%s;%s;%d;%s\n",
+		asprintf(&temp_buffer, "HOST ALERT: %s;%s;%s;%d;%s\n",
 				hst->name,
 				host_state_name(hst->current_state),
 				state_type_name(hst->state_type),
@@ -465,7 +463,7 @@ int log_host_states(int type, time_t *timestamp) {
 
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
 
-		dummy = asprintf(&temp_buffer, "%s HOST STATE: %s;%s;%s;%d;%s\n",
+		asprintf(&temp_buffer, "%s HOST STATE: %s;%s;%s;%d;%s\n",
 				(type == INITIAL_STATES) ? "INITIAL" : "CURRENT",
 				temp_host->name,
 				host_state_name(temp_host->current_state),
@@ -499,7 +497,7 @@ int log_service_states(int type, time_t *timestamp) {
 		if ((temp_host = temp_service->host_ptr) == NULL)
 			continue;
 
-		dummy = asprintf(&temp_buffer, "%s SERVICE STATE: %s;%s;%s;%s;%d;%s\n",
+		asprintf(&temp_buffer, "%s SERVICE STATE: %s;%s;%s;%s;%d;%s\n",
 				(type == INITIAL_STATES) ? "INITIAL" : "CURRENT",
 				temp_service->host_name,
 				temp_service->description,
@@ -552,7 +550,7 @@ int rotate_log_file(time_t rotation_time) {
 	close_log_file();
 
 	/* get the archived filename to use */
-	dummy = asprintf(&log_archive, "%s%sicinga-%02d-%02d-%d-%02d.log", log_archive_path, (log_archive_path[strlen(log_archive_path)-1] == '/') ? "" : "/", t->tm_mon + 1, t->tm_mday, t->tm_year + 1900, t->tm_hour);
+	asprintf(&log_archive, "%s%sicinga-%02d-%02d-%d-%02d.log", log_archive_path, (log_archive_path[strlen(log_archive_path)-1] == '/') ? "" : "/", t->tm_mon + 1, t->tm_mday, t->tm_year + 1900, t->tm_hour);
 
 	/* rotate the log file */
 	rename_result = my_rename(log_file, log_archive);
@@ -565,7 +563,7 @@ int rotate_log_file(time_t rotation_time) {
 	}
 
 	/* record the log rotation after it has been done... */
-	dummy = asprintf(&temp_buffer, "LOG ROTATION: %s\n", method_string);
+	asprintf(&temp_buffer, "LOG ROTATION: %s\n", method_string);
 	write_to_all_logs_with_timestamp(temp_buffer, NSLOG_PROCESS_INFO, &rotation_time);
 	my_free(temp_buffer);
 
@@ -574,7 +572,7 @@ int rotate_log_file(time_t rotation_time) {
 
 	if (stat_result == 0) {
 		chmod(log_file, log_file_stat.st_mode);
-		dummy = chown(log_file, log_file_stat.st_uid, log_file_stat.st_gid);
+		chown(log_file, log_file_stat.st_uid, log_file_stat.st_gid);
 	}
 
 	/* log current host and service state if activated*/
@@ -595,7 +593,7 @@ int write_log_file_info(time_t *timestamp) {
 	char *temp_buffer = NULL;
 
 	/* write log version */
-	dummy = asprintf(&temp_buffer, "LOG VERSION: %s\n", LOG_VERSION_2);
+	asprintf(&temp_buffer, "LOG VERSION: %s\n", LOG_VERSION_2);
 	write_to_all_logs_with_timestamp(temp_buffer, NSLOG_PROCESS_INFO, timestamp);
 	my_free(temp_buffer);
 
@@ -677,7 +675,7 @@ int log_debug_info(int level, int verbosity, const char *fmt, ...) {
 		close_debug_log();
 
 		/* rotate the log file */
-		dummy = asprintf(&temp_path, "%s.old", debug_file);
+		asprintf(&temp_path, "%s.old", debug_file);
 		if (temp_path) {
 
 			/* unlink the old debug file */

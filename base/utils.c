@@ -287,8 +287,6 @@ extern unsigned long   max_check_result_list_items;
 extern int errno;
 #endif
 
-int dummy;	/* reduce compiler warnings */
-
 /******************************************************************/
 /******************** SYSTEM COMMAND FUNCTIONS ********************/
 /******************************************************************/
@@ -380,7 +378,7 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 			 */
 			(void) POPs ;
 
-			dummy = asprintf(&temp_buffer, "%s", SvPVX(ERRSV));
+			asprintf(&temp_buffer, "%s", SvPVX(ERRSV));
 
 			log_debug_info(DEBUGL_COMMANDS, 0, "Embedded perl failed to compile %s, compile error %s\n", fname, temp_buffer);
 
@@ -402,7 +400,7 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 #endif
 
 	/* create a pipe */
-	dummy = pipe(fd);
+	pipe(fd);
 
 	/* make the pipe non-blocking */
 	fcntl(fd[0], F_SETFL, O_NONBLOCK);
@@ -496,7 +494,7 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 			log_debug_info(DEBUGL_COMMANDS, 0, "Embedded perl ran command %s with output %d, %s\n", fname, status, buffer);
 
 			/* write the output back to the parent process */
-			dummy = write(fd[1], buffer, strlen(buffer) + 1);
+			write(fd[1], buffer, strlen(buffer) + 1);
 
 			/* close pipe for writing */
 			close(fd[1]);
@@ -520,14 +518,14 @@ int my_system_r(icinga_macros *mac, char *cmd, int timeout, int *early_timeout, 
 			buffer[sizeof(buffer)-1] = '\x0';
 
 			/* write the error back to the parent process */
-			dummy = write(fd[1], buffer, strlen(buffer) + 1);
+			write(fd[1], buffer, strlen(buffer) + 1);
 
 			result = STATE_CRITICAL;
 		} else {
 
 			/* write all the lines of output back to the parent process */
 			while (fgets(buffer, sizeof(buffer) - 1, fp))
-				dummy = write(fd[1], buffer, strlen(buffer));
+				write(fd[1], buffer, strlen(buffer));
 
 			/* close the command and get termination status */
 			status = pclose(fp);
@@ -792,7 +790,7 @@ int set_environment_var(char *name, char *value, int set) {
 #else
 		/* needed for Solaris and systems that don't have setenv() */
 		/* this will leak memory, but in a "controlled" way, since lost memory should be freed when the child process exits */
-		dummy = asprintf(&env_string, "%s=%s", name, (value == NULL) ? "" : value);
+		asprintf(&env_string, "%s=%s", name, (value == NULL) ? "" : value);
 		if (env_string)
 			putenv(env_string);
 #endif
@@ -1233,12 +1231,10 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 
 	int pref_time_year = 0;
 	int pref_time_mon = 0;
-	int pref_time_mday = 0;
 	int pref_time_wday = 0;
 	int current_time_year = 0;
 	int current_time_mon = 0;
 	int current_time_mday = 0;
-	int current_time_wday = 0;
 	int shift;
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "get_next_valid_time_per_timeperiod()\n");
@@ -1262,7 +1258,7 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	/* save pref time values for later */
 	pref_time_year = t->tm_year;
 	pref_time_mon = t->tm_mon;
-	pref_time_mday = t->tm_mday;
+//	pref_time_mday = t->tm_mday;		<- somehow unused
 	pref_time_wday = t->tm_wday;
 
 	/* save current time values for later */
@@ -1270,7 +1266,7 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	current_time_year = t->tm_year;
 	current_time_mon = t->tm_mon;
 	current_time_mday = t->tm_mday;
-	current_time_wday = t->tm_wday;
+//	current_time_wday = t->tm_wday;		<- somehow unused
 
 #ifdef TEST_TIMEPERIODS_B
 	printf("PREF TIME:    %lu = %s", (unsigned long)preferred_time, ctime(&preferred_time));
@@ -1621,7 +1617,9 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	time_t midnight = 0L;
 	struct tm *t, tm_s;
 	time_t day_start = (time_t)0L;
+#ifdef TEST_TIMEPERIODS_B
 	time_t day_range_start = (time_t)0L;
+#endif
 	time_t day_range_end = (time_t)0L;
 	time_t start_time = (time_t)0L;
 	time_t end_time = (time_t)0L;
@@ -1640,12 +1638,10 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 
 	int pref_time_year = 0;
 	int pref_time_mon = 0;
-	int pref_time_mday = 0;
 	int pref_time_wday = 0;
 	int current_time_year = 0;
 	int current_time_mon = 0;
 	int current_time_mday = 0;
-	int current_time_wday = 0;
 	int shift;
 
 	log_debug_info(DEBUGL_FUNCTIONS, 0, "get_min_valid_time_per_timeperiod()\n");
@@ -1669,7 +1665,7 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	/* save pref time values for later */
 	pref_time_year = t->tm_year;
 	pref_time_mon = t->tm_mon;
-	pref_time_mday = t->tm_mday;
+//	pref_time_mday = t->tm_mday;		<- unused
 	pref_time_wday = t->tm_wday;
 
 	/* save current time values for later */
@@ -1677,7 +1673,7 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	current_time_year = t->tm_year;
 	current_time_mon = t->tm_mon;
 	current_time_mday = t->tm_mday;
-	current_time_wday = t->tm_wday;
+//	current_time_wday = t->tm_wday;		<- unused
 
 #ifdef TEST_TIMEPERIODS_B
 	printf("PREF TIME:    %lu = %s",(unsigned long)preferred_time,ctime(&preferred_time));
@@ -1911,10 +1907,10 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 					 *    continue;
 					 */
 
-					day_range_start = (time_t)(day_start + temp_timerange->range_start);
 					day_range_end = (time_t)(day_start + temp_timerange->range_end);
 
 #ifdef TEST_TIMEPERIODS_B
+					day_range_start = (time_t)(day_start + temp_timerange->range_start);
 					printf("  RANGE START: %lu (%lu) = %s",temp_timerange->range_start,(unsigned long)day_range_start,ctime(&day_range_start));
 					printf("  RANGE END:   %lu (%lu) = %s",temp_timerange->range_end,(unsigned long)day_range_end,ctime(&day_range_end));
 #endif
@@ -1975,8 +1971,10 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 		/* check all time ranges for this day of the week */
 		for (temp_timerange = tperiod->days[weekday]; temp_timerange != NULL; temp_timerange = temp_timerange->next) {
 
+#ifdef TEST_TIMEPERIODS_B
 			/* calculate the time for the start of this time range */
 			day_range_start = (time_t)(day_start + temp_timerange->range_start);
+#endif
 			/*
 			 * also calculate day_range_end to assign to lastest_time again
 			 */
@@ -2425,9 +2423,9 @@ int daemon_init(void) {
 	/* change working directory. scuttle home if we're dumping core */
 	homedir = getenv("HOME");
 	if (daemon_dumps_core == TRUE && homedir != NULL)
-		dummy = chdir(homedir);
+		chdir(homedir);
 	else
-		dummy = chdir("/");
+		chdir("/");
 
 	umask(S_IWGRP | S_IWOTH);
 
@@ -2503,9 +2501,9 @@ int daemon_init(void) {
 
 	/* write PID to lockfile... */
 	lseek(lockfile, 0, SEEK_SET);
-	dummy = ftruncate(lockfile, 0);
+	ftruncate(lockfile, 0);
 	sprintf(buf, "%d\n", (int)getpid());
-	dummy = write(lockfile, buf, strlen(buf));
+	write(lockfile, buf, strlen(buf));
 
 	/* make sure lock file stays open while program is executing... */
 	val = fcntl(lockfile, F_GETFD, 0);
@@ -2645,7 +2643,7 @@ int move_check_result_to_queue(char *checkresult_file) {
 	old_umask = umask(new_umask);
 
 	/* create a safe temp file */
-	dummy = asprintf(&output_file, "%s/cXXXXXX", check_result_path);
+	asprintf(&output_file, "%s/cXXXXXX", check_result_path);
 	output_file_fd = mkstemp(output_file);
 
 	/* file created okay */
@@ -2668,7 +2666,7 @@ int move_check_result_to_queue(char *checkresult_file) {
 #endif
 
 		/* create an ok-to-go indicator file */
-		dummy = asprintf(&temp_buffer, "%s.ok", output_file);
+		asprintf(&temp_buffer, "%s.ok", output_file);
 		if ((output_file_fd = open(temp_buffer, O_CREAT | O_WRONLY | O_TRUNC, S_IRUSR | S_IWUSR)) >= 0)
 			close(output_file_fd);
 		my_free(temp_buffer);
@@ -2779,7 +2777,7 @@ int process_check_result_queue(char *dirname) {
 			}
 
 			/* can we find the associated ok-to-go file ? */
-			dummy = asprintf(&temp_buffer, "%s.ok", file);
+			asprintf(&temp_buffer, "%s.ok", file);
 			result = stat(temp_buffer, &ok_stat_buf);
 			my_free(temp_buffer);
 			if (result == -1)
@@ -2980,7 +2978,7 @@ int delete_check_result_file(char *fname) {
 	unlink(fname);
 
 	/* delete the ok-to-go file */
-	dummy = asprintf(&temp_buffer, "%s.ok", fname);
+	asprintf(&temp_buffer, "%s.ok", fname);
 	unlink(temp_buffer);
 	my_free(temp_buffer);
 
@@ -3950,7 +3948,7 @@ int submit_raw_external_command(char *cmd, time_t *ts, int *buffer_items) {
 		time(&timestamp);
 
 	/* create the command string */
-	dummy = asprintf(&newcmd, "[%lu] %s", (unsigned long)timestamp, cmd);
+	asprintf(&newcmd, "[%lu] %s", (unsigned long)timestamp, cmd);
 
 	/* submit the command */
 	result = submit_external_command(newcmd, buffer_items);
@@ -4084,8 +4082,8 @@ int generate_check_stats(void) {
 	int check_type = 0;
 	float this_bucket_weight = 0.0;
 	float last_bucket_weight = 0.0;
-	int left_value = 0;
-	int right_value = 0;
+//	int left_value = 0;			<- unused, is this intendet?
+//	int right_value = 0;			<- unused, is this intendet?
 
 
 	time(&current_time);
@@ -4170,14 +4168,14 @@ int generate_check_stats(void) {
 			/* determine value by weighting this/last buckets... */
 			/* if this is the current bucket, use its full value + weighted % of last bucket */
 			if (x == 0) {
-				right_value = this_bucket_value;
-				left_value = (int)floor(last_bucket_value * last_bucket_weight);
+//				right_value = this_bucket_value;
+//				left_value = (int)floor(last_bucket_value * last_bucket_weight);
 				bucket_value = (int)(this_bucket_value + floor(last_bucket_value * last_bucket_weight));
 			}
 			/* otherwise use weighted % of this and last bucket */
 			else {
-				right_value = (int)ceil(this_bucket_value * this_bucket_weight);
-				left_value = (int)floor(last_bucket_value * last_bucket_weight);
+//				right_value = (int)ceil(this_bucket_value * this_bucket_weight);
+//				left_value = (int)floor(last_bucket_value * last_bucket_weight);
 				bucket_value = (int)(ceil(this_bucket_value * this_bucket_weight) + floor(last_bucket_value * last_bucket_weight));
 			}
 

@@ -41,8 +41,6 @@ extern int      enable_environment_macros;
 extern int	keep_unknown_macros;
 #endif
 
-int dummy;	/* reduce compiler warnings */
-
 extern char     *illegal_output_chars;
 extern char	illegal_output_char_map[256];
 
@@ -1302,22 +1300,22 @@ int grab_macrox_value_r(icinga_macros *mac, int macro_type, char *arg1, char *ar
 			/* these macros are time-intensive to compute, and will likely be used together, so save them all for future use */
 			for (x = MACRO_TOTALHOSTSUP; x <= MACRO_TOTALSERVICEPROBLEMSUNHANDLED; x++)
 				my_free(mac->x[x]);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTSUP], "%d", hosts_up);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTSDOWN], "%d", hosts_down);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTSUNREACHABLE], "%d", hosts_unreachable);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTSDOWNUNHANDLED], "%d", hosts_down_unhandled);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTSUNREACHABLEUNHANDLED], "%d", hosts_unreachable_unhandled);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTPROBLEMS], "%d", host_problems);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTPROBLEMSUNHANDLED], "%d", host_problems_unhandled);
-			dummy = asprintf(&mac->x[MACRO_TOTALSERVICESOK], "%d", services_ok);
-			dummy = asprintf(&mac->x[MACRO_TOTALSERVICESWARNING], "%d", services_warning);
-			dummy = asprintf(&mac->x[MACRO_TOTALSERVICESCRITICAL], "%d", services_critical);
-			dummy = asprintf(&mac->x[MACRO_TOTALSERVICESUNKNOWN], "%d", services_unknown);
-			dummy = asprintf(&mac->x[MACRO_TOTALSERVICESWARNINGUNHANDLED], "%d", services_warning_unhandled);
-			dummy = asprintf(&mac->x[MACRO_TOTALSERVICESCRITICALUNHANDLED], "%d", services_critical_unhandled);
-			dummy = asprintf(&mac->x[MACRO_TOTALSERVICESUNKNOWNUNHANDLED], "%d", services_unknown_unhandled);
-			dummy = asprintf(&mac->x[MACRO_TOTALSERVICEPROBLEMS], "%d", service_problems);
-			dummy = asprintf(&mac->x[MACRO_TOTALSERVICEPROBLEMSUNHANDLED], "%d", service_problems_unhandled);
+			asprintf(&mac->x[MACRO_TOTALHOSTSUP], "%d", hosts_up);
+			asprintf(&mac->x[MACRO_TOTALHOSTSDOWN], "%d", hosts_down);
+			asprintf(&mac->x[MACRO_TOTALHOSTSUNREACHABLE], "%d", hosts_unreachable);
+			asprintf(&mac->x[MACRO_TOTALHOSTSDOWNUNHANDLED], "%d", hosts_down_unhandled);
+			asprintf(&mac->x[MACRO_TOTALHOSTSUNREACHABLEUNHANDLED], "%d", hosts_unreachable_unhandled);
+			asprintf(&mac->x[MACRO_TOTALHOSTPROBLEMS], "%d", host_problems);
+			asprintf(&mac->x[MACRO_TOTALHOSTPROBLEMSUNHANDLED], "%d", host_problems_unhandled);
+			asprintf(&mac->x[MACRO_TOTALSERVICESOK], "%d", services_ok);
+			asprintf(&mac->x[MACRO_TOTALSERVICESWARNING], "%d", services_warning);
+			asprintf(&mac->x[MACRO_TOTALSERVICESCRITICAL], "%d", services_critical);
+			asprintf(&mac->x[MACRO_TOTALSERVICESUNKNOWN], "%d", services_unknown);
+			asprintf(&mac->x[MACRO_TOTALSERVICESWARNINGUNHANDLED], "%d", services_warning_unhandled);
+			asprintf(&mac->x[MACRO_TOTALSERVICESCRITICALUNHANDLED], "%d", services_critical_unhandled);
+			asprintf(&mac->x[MACRO_TOTALSERVICESUNKNOWNUNHANDLED], "%d", services_unknown_unhandled);
+			asprintf(&mac->x[MACRO_TOTALSERVICEPROBLEMS], "%d", service_problems);
+			asprintf(&mac->x[MACRO_TOTALSERVICEPROBLEMSUNHANDLED], "%d", service_problems_unhandled);
 		}
 
 		/* return only the macro the user requested */
@@ -1560,9 +1558,9 @@ int grab_custom_macro_value(char *macro_name, char *arg1, char *arg2, char **out
  */
 int grab_datetime_macro_r(icinga_macros *mac, int macro_type, char *arg1, char *arg2, char **output) {
 	time_t current_time = 0L;
+#ifdef NSCORE
 	timeperiod *temp_timeperiod = NULL;
 	time_t test_time = 0L;
-#ifdef NSCORE
 	time_t next_valid_time = 0L;
 #endif
 
@@ -1572,6 +1570,7 @@ int grab_datetime_macro_r(icinga_macros *mac, int macro_type, char *arg1, char *
 	/* get the current time */
 	time(&current_time);
 
+#ifdef NSCORE
 	/* parse args, do prep work */
 	switch (macro_type) {
 
@@ -1592,6 +1591,7 @@ int grab_datetime_macro_r(icinga_macros *mac, int macro_type, char *arg1, char *
 	default:
 		break;
 	}
+#endif
 
 	/* calculate the value */
 	switch (macro_type) {
@@ -1625,19 +1625,19 @@ int grab_datetime_macro_r(icinga_macros *mac, int macro_type, char *arg1, char *
 		break;
 
 	case MACRO_TIMET:
-		dummy = asprintf(output, "%lu", (unsigned long)current_time);
+		asprintf(output, "%lu", (unsigned long)current_time);
 		break;
 
 #ifdef NSCORE
 	case MACRO_ISVALIDTIME:
-		dummy = asprintf(output, "%d", (check_time_against_period(test_time, temp_timeperiod) == OK) ? 1 : 0);
+		asprintf(output, "%d", (check_time_against_period(test_time, temp_timeperiod) == OK) ? 1 : 0);
 		break;
 
 	case MACRO_NEXTVALIDTIME:
 		get_next_valid_time(test_time, &next_valid_time, temp_timeperiod);
 		if (next_valid_time == test_time && check_time_against_period(test_time, temp_timeperiod) == ERROR)
 			next_valid_time = (time_t)0L;
-		dummy = asprintf(output, "%lu", (unsigned long)next_valid_time);
+		asprintf(output, "%lu", (unsigned long)next_valid_time);
 		break;
 #endif
 
@@ -1714,7 +1714,7 @@ int grab_standard_host_macro_r(icinga_macros *mac, int macro_type, host *temp_ho
 			*output = (char *)strdup("UP");
 		break;
 	case MACRO_HOSTSTATEID:
-		dummy = asprintf(output, "%d", temp_host->current_state);
+		asprintf(output, "%d", temp_host->current_state);
 		break;
 	case MACRO_LASTHOSTSTATE:
 		if (temp_host->last_state == HOST_DOWN)
@@ -1725,13 +1725,13 @@ int grab_standard_host_macro_r(icinga_macros *mac, int macro_type, host *temp_ho
 			*output = (char *)strdup("UP");
 		break;
 	case MACRO_LASTHOSTSTATEID:
-		dummy = asprintf(output, "%d", temp_host->last_state);
+		asprintf(output, "%d", temp_host->last_state);
 		break;
 	case MACRO_HOSTCHECKTYPE:
-		dummy = asprintf(output, "%s", (temp_host->check_type == HOST_CHECK_PASSIVE) ? "PASSIVE" : "ACTIVE");
+		asprintf(output, "%s", (temp_host->check_type == HOST_CHECK_PASSIVE) ? "PASSIVE" : "ACTIVE");
 		break;
 	case MACRO_HOSTSTATETYPE:
-		dummy = asprintf(output, "%s", (temp_host->state_type == HARD_STATE) ? "HARD" : "SOFT");
+		asprintf(output, "%s", (temp_host->state_type == HARD_STATE) ? "HARD" : "SOFT");
 		break;
 	case MACRO_HOSTOUTPUT:
 		if (temp_host->plugin_output)
@@ -1752,16 +1752,16 @@ int grab_standard_host_macro_r(icinga_macros *mac, int macro_type, host *temp_ho
 		break;
 #ifdef NSCORE
 	case MACRO_HOSTATTEMPT:
-		dummy = asprintf(output, "%d", temp_host->current_attempt);
+		asprintf(output, "%d", temp_host->current_attempt);
 		break;
 	case MACRO_MAXHOSTATTEMPTS:
-		dummy = asprintf(output, "%d", temp_host->max_attempts);
+		asprintf(output, "%d", temp_host->max_attempts);
 		break;
 	case MACRO_HOSTDOWNTIME:
-		dummy = asprintf(output, "%d", temp_host->scheduled_downtime_depth);
+		asprintf(output, "%d", temp_host->scheduled_downtime_depth);
 		break;
 	case MACRO_HOSTPERCENTCHANGE:
-		dummy = asprintf(output, "%.2f", temp_host->percent_state_change);
+		asprintf(output, "%.2f", temp_host->percent_state_change);
 		break;
 	case MACRO_HOSTDURATIONSEC:
 	case MACRO_HOSTDURATION:
@@ -1769,7 +1769,7 @@ int grab_standard_host_macro_r(icinga_macros *mac, int macro_type, host *temp_ho
 		duration = (unsigned long)(current_time - temp_host->last_state_change);
 
 		if (macro_type == MACRO_HOSTDURATIONSEC)
-			dummy = asprintf(output, "%lu", duration);
+			asprintf(output, "%lu", duration);
 		else {
 
 			days = duration / 86400;
@@ -1779,47 +1779,47 @@ int grab_standard_host_macro_r(icinga_macros *mac, int macro_type, host *temp_ho
 			minutes = duration / 60;
 			duration -= (minutes * 60);
 			seconds = duration;
-			dummy = asprintf(output, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+			asprintf(output, "%dd %dh %dm %ds", days, hours, minutes, seconds);
 		}
 		break;
 	case MACRO_HOSTEXECUTIONTIME:
-		dummy = asprintf(output, "%.3f", temp_host->execution_time);
+		asprintf(output, "%.3f", temp_host->execution_time);
 		break;
 	case MACRO_HOSTLATENCY:
-		dummy = asprintf(output, "%.3f", temp_host->latency);
+		asprintf(output, "%.3f", temp_host->latency);
 		break;
 	case MACRO_LASTHOSTCHECK:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_host->last_check);
+		asprintf(output, "%lu", (unsigned long)temp_host->last_check);
 		break;
 	case MACRO_LASTHOSTSTATECHANGE:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_host->last_state_change);
+		asprintf(output, "%lu", (unsigned long)temp_host->last_state_change);
 		break;
 	case MACRO_LASTHOSTUP:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_host->last_time_up);
+		asprintf(output, "%lu", (unsigned long)temp_host->last_time_up);
 		break;
 	case MACRO_LASTHOSTDOWN:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_host->last_time_down);
+		asprintf(output, "%lu", (unsigned long)temp_host->last_time_down);
 		break;
 	case MACRO_LASTHOSTUNREACHABLE:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_host->last_time_unreachable);
+		asprintf(output, "%lu", (unsigned long)temp_host->last_time_unreachable);
 		break;
 	case MACRO_HOSTNOTIFICATIONNUMBER:
-		dummy = asprintf(output, "%d", temp_host->current_notification_number);
+		asprintf(output, "%d", temp_host->current_notification_number);
 		break;
 	case MACRO_HOSTNOTIFICATIONID:
-		dummy = asprintf(output, "%lu", temp_host->current_notification_id);
+		asprintf(output, "%lu", temp_host->current_notification_id);
 		break;
 	case MACRO_HOSTEVENTID:
-		dummy = asprintf(output, "%lu", temp_host->current_event_id);
+		asprintf(output, "%lu", temp_host->current_event_id);
 		break;
 	case MACRO_LASTHOSTEVENTID:
-		dummy = asprintf(output, "%lu", temp_host->last_event_id);
+		asprintf(output, "%lu", temp_host->last_event_id);
 		break;
 	case MACRO_HOSTPROBLEMID:
-		dummy = asprintf(output, "%lu", temp_host->current_problem_id);
+		asprintf(output, "%lu", temp_host->current_problem_id);
 		break;
 	case MACRO_LASTHOSTPROBLEMID:
-		dummy = asprintf(output, "%lu", temp_host->last_problem_id);
+		asprintf(output, "%lu", temp_host->last_problem_id);
 		break;
 #endif
 	case MACRO_HOSTACTIONURL:
@@ -1842,7 +1842,7 @@ int grab_standard_host_macro_r(icinga_macros *mac, int macro_type, host *temp_ho
 			if ((temp_hostgroup = (hostgroup *)temp_objectlist->object_ptr) == NULL)
 				continue;
 
-			dummy = asprintf(&buf1, "%s%s%s", (buf2) ? buf2 : "", (buf2) ? "," : "", temp_hostgroup->group_name);
+			asprintf(&buf1, "%s%s%s", (buf2) ? buf2 : "", (buf2) ? "," : "", temp_hostgroup->group_name);
 			my_free(buf2);
 			buf2 = buf1;
 		}
@@ -1886,15 +1886,15 @@ int grab_standard_host_macro_r(icinga_macros *mac, int macro_type, host *temp_ho
 
 			/* these macros are time-intensive to compute, and will likely be used together, so save them all for future use */
 			my_free(mac->x[MACRO_TOTALHOSTSERVICES]);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTSERVICES], "%d", total_host_services);
+			asprintf(&mac->x[MACRO_TOTALHOSTSERVICES], "%d", total_host_services);
 			my_free(mac->x[MACRO_TOTALHOSTSERVICESOK]);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTSERVICESOK], "%d", total_host_services_ok);
+			asprintf(&mac->x[MACRO_TOTALHOSTSERVICESOK], "%d", total_host_services_ok);
 			my_free(mac->x[MACRO_TOTALHOSTSERVICESWARNING]);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTSERVICESWARNING], "%d", total_host_services_warning);
+			asprintf(&mac->x[MACRO_TOTALHOSTSERVICESWARNING], "%d", total_host_services_warning);
 			my_free(mac->x[MACRO_TOTALHOSTSERVICESUNKNOWN]);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTSERVICESUNKNOWN], "%d", total_host_services_unknown);
+			asprintf(&mac->x[MACRO_TOTALHOSTSERVICESUNKNOWN], "%d", total_host_services_unknown);
 			my_free(mac->x[MACRO_TOTALHOSTSERVICESCRITICAL]);
-			dummy = asprintf(&mac->x[MACRO_TOTALHOSTSERVICESCRITICAL], "%d", total_host_services_critical);
+			asprintf(&mac->x[MACRO_TOTALHOSTSERVICESCRITICAL], "%d", total_host_services_critical);
 		}
 
 		/* return only the macro the user requested */
@@ -2119,7 +2119,7 @@ int grab_standard_service_macro_r(icinga_macros *mac, int macro_type, service *t
 			*output = (char *)strdup("UNKNOWN");
 		break;
 	case MACRO_SERVICESTATEID:
-		dummy = asprintf(output, "%d", temp_service->current_state);
+		asprintf(output, "%d", temp_service->current_state);
 		break;
 	case MACRO_LASTSERVICESTATE:
 		if (temp_service->last_state == STATE_OK)
@@ -2132,48 +2132,48 @@ int grab_standard_service_macro_r(icinga_macros *mac, int macro_type, service *t
 			*output = (char *)strdup("UNKNOWN");
 		break;
 	case MACRO_LASTSERVICESTATEID:
-		dummy = asprintf(output, "%d", temp_service->last_state);
+		asprintf(output, "%d", temp_service->last_state);
 		break;
 #endif
 	case MACRO_SERVICEISVOLATILE:
-		dummy = asprintf(output, "%d", temp_service->is_volatile);
+		asprintf(output, "%d", temp_service->is_volatile);
 		break;
 #ifdef NSCORE
 	case MACRO_SERVICEATTEMPT:
-		dummy = asprintf(output, "%d", temp_service->current_attempt);
+		asprintf(output, "%d", temp_service->current_attempt);
 		break;
 	case MACRO_MAXSERVICEATTEMPTS:
-		dummy = asprintf(output, "%d", temp_service->max_attempts);
+		asprintf(output, "%d", temp_service->max_attempts);
 		break;
 	case MACRO_SERVICEEXECUTIONTIME:
-		dummy = asprintf(output, "%.3f", temp_service->execution_time);
+		asprintf(output, "%.3f", temp_service->execution_time);
 		break;
 	case MACRO_SERVICELATENCY:
-		dummy = asprintf(output, "%.3f", temp_service->latency);
+		asprintf(output, "%.3f", temp_service->latency);
 		break;
 	case MACRO_LASTSERVICECHECK:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_service->last_check);
+		asprintf(output, "%lu", (unsigned long)temp_service->last_check);
 		break;
 	case MACRO_LASTSERVICESTATECHANGE:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_service->last_state_change);
+		asprintf(output, "%lu", (unsigned long)temp_service->last_state_change);
 		break;
 	case MACRO_LASTSERVICEOK:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_service->last_time_ok);
+		asprintf(output, "%lu", (unsigned long)temp_service->last_time_ok);
 		break;
 	case MACRO_LASTSERVICEWARNING:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_service->last_time_warning);
+		asprintf(output, "%lu", (unsigned long)temp_service->last_time_warning);
 		break;
 	case MACRO_LASTSERVICEUNKNOWN:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_service->last_time_unknown);
+		asprintf(output, "%lu", (unsigned long)temp_service->last_time_unknown);
 		break;
 	case MACRO_LASTSERVICECRITICAL:
-		dummy = asprintf(output, "%lu", (unsigned long)temp_service->last_time_critical);
+		asprintf(output, "%lu", (unsigned long)temp_service->last_time_critical);
 		break;
 	case MACRO_SERVICEDOWNTIME:
-		dummy = asprintf(output, "%d", temp_service->scheduled_downtime_depth);
+		asprintf(output, "%d", temp_service->scheduled_downtime_depth);
 		break;
 	case MACRO_SERVICEPERCENTCHANGE:
-		dummy = asprintf(output, "%.2f", temp_service->percent_state_change);
+		asprintf(output, "%.2f", temp_service->percent_state_change);
 		break;
 	case MACRO_SERVICEDURATIONSEC:
 	case MACRO_SERVICEDURATION:
@@ -2183,7 +2183,7 @@ int grab_standard_service_macro_r(icinga_macros *mac, int macro_type, service *t
 
 		/* get the state duration in seconds */
 		if (macro_type == MACRO_SERVICEDURATIONSEC)
-			dummy = asprintf(output, "%lu", duration);
+			asprintf(output, "%lu", duration);
 
 		/* get the state duration */
 		else {
@@ -2194,26 +2194,26 @@ int grab_standard_service_macro_r(icinga_macros *mac, int macro_type, service *t
 			minutes = duration / 60;
 			duration -= (minutes * 60);
 			seconds = duration;
-			dummy = asprintf(output, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+			asprintf(output, "%dd %dh %dm %ds", days, hours, minutes, seconds);
 		}
 		break;
 	case MACRO_SERVICENOTIFICATIONNUMBER:
-		dummy = asprintf(output, "%d", temp_service->current_notification_number);
+		asprintf(output, "%d", temp_service->current_notification_number);
 		break;
 	case MACRO_SERVICENOTIFICATIONID:
-		dummy = asprintf(output, "%lu", temp_service->current_notification_id);
+		asprintf(output, "%lu", temp_service->current_notification_id);
 		break;
 	case MACRO_SERVICEEVENTID:
-		dummy = asprintf(output, "%lu", temp_service->current_event_id);
+		asprintf(output, "%lu", temp_service->current_event_id);
 		break;
 	case MACRO_LASTSERVICEEVENTID:
-		dummy = asprintf(output, "%lu", temp_service->last_event_id);
+		asprintf(output, "%lu", temp_service->last_event_id);
 		break;
 	case MACRO_SERVICEPROBLEMID:
-		dummy = asprintf(output, "%lu", temp_service->current_problem_id);
+		asprintf(output, "%lu", temp_service->current_problem_id);
 		break;
 	case MACRO_LASTSERVICEPROBLEMID:
-		dummy = asprintf(output, "%lu", temp_service->last_problem_id);
+		asprintf(output, "%lu", temp_service->last_problem_id);
 		break;
 #endif
 	case MACRO_SERVICEACTIONURL:
@@ -2236,7 +2236,7 @@ int grab_standard_service_macro_r(icinga_macros *mac, int macro_type, service *t
 			if ((temp_servicegroup = (servicegroup *)temp_objectlist->object_ptr) == NULL)
 				continue;
 
-			dummy = asprintf(&buf1, "%s%s%s", (buf2) ? buf2 : "", (buf2) ? "," : "", temp_servicegroup->group_name);
+			asprintf(&buf1, "%s%s%s", (buf2) ? buf2 : "", (buf2) ? "," : "", temp_servicegroup->group_name);
 			my_free(buf2);
 			buf2 = buf1;
 		}
@@ -2431,7 +2431,7 @@ int grab_standard_contact_macro_r(icinga_macros *mac, int macro_type, contact *t
 			if ((temp_contactgroup = (contactgroup *)temp_objectlist->object_ptr) == NULL)
 				continue;
 
-			dummy = asprintf(&buf1, "%s%s%s", (buf2) ? buf2 : "", (buf2) ? "," : "", temp_contactgroup->group_name);
+			asprintf(&buf1, "%s%s%s", (buf2) ? buf2 : "", (buf2) ? "," : "", temp_contactgroup->group_name);
 			my_free(buf2);
 			buf2 = buf1;
 		}
@@ -3433,7 +3433,7 @@ int set_argv_macro_environment_vars_r(icinga_macros *mac, int set) {
 
 	/* set each of the argv macro environment variables */
 	for (x = 0; x < MAX_COMMAND_ARGUMENTS; x++) {
-		dummy = asprintf(&macro_name, "ARG%d", x + 1);
+		asprintf(&macro_name, "ARG%d", x + 1);
 		set_macro_environment_var(macro_name, mac->argv[x], set);
 		my_free(macro_name);
 	}
@@ -3459,7 +3459,7 @@ int set_custom_macro_environment_vars_r(icinga_macros *mac, int set) {
 	/* generate variables and save them for later */
 	if ((temp_host = mac->host_ptr) && set == TRUE) {
 		for (temp_customvariablesmember = temp_host->custom_variables; temp_customvariablesmember != NULL; temp_customvariablesmember = temp_customvariablesmember->next) {
-			dummy = asprintf(&customvarname, "_HOST%s", temp_customvariablesmember->variable_name);
+			asprintf(&customvarname, "_HOST%s", temp_customvariablesmember->variable_name);
 			add_custom_variable_to_object(&mac->custom_host_vars, customvarname, temp_customvariablesmember->variable_value);
 			my_free(customvarname);
 		}
@@ -3473,7 +3473,7 @@ int set_custom_macro_environment_vars_r(icinga_macros *mac, int set) {
 	/* generate variables and save them for later */
 	if ((temp_service = mac->service_ptr) && set == TRUE) {
 		for (temp_customvariablesmember = temp_service->custom_variables; temp_customvariablesmember != NULL; temp_customvariablesmember = temp_customvariablesmember->next) {
-			dummy = asprintf(&customvarname, "_SERVICE%s", temp_customvariablesmember->variable_name);
+			asprintf(&customvarname, "_SERVICE%s", temp_customvariablesmember->variable_name);
 			add_custom_variable_to_object(&mac->custom_service_vars, customvarname, temp_customvariablesmember->variable_value);
 			my_free(customvarname);
 		}
@@ -3486,7 +3486,7 @@ int set_custom_macro_environment_vars_r(icinga_macros *mac, int set) {
 	/* generate variables and save them for later */
 	if ((temp_contact = mac->contact_ptr) && set == TRUE) {
 		for (temp_customvariablesmember = temp_contact->custom_variables; temp_customvariablesmember != NULL; temp_customvariablesmember = temp_customvariablesmember->next) {
-			dummy = asprintf(&customvarname, "_CONTACT%s", temp_customvariablesmember->variable_name);
+			asprintf(&customvarname, "_CONTACT%s", temp_customvariablesmember->variable_name);
 			add_custom_variable_to_object(&mac->custom_contact_vars, customvarname, temp_customvariablesmember->variable_value);
 			my_free(customvarname);
 		}
@@ -3515,7 +3515,7 @@ int set_contact_address_environment_vars_r(icinga_macros *mac, int set) {
 		return OK;
 
 	for (x = 0; x < MAX_CONTACT_ADDRESSES; x++) {
-		dummy = asprintf(&varname, "CONTACTADDRESS%d", x);
+		asprintf(&varname, "CONTACTADDRESS%d", x);
 		set_macro_environment_var(varname, mac->contact_ptr->address[x], set);
 		my_free(varname);
 	}
@@ -3539,7 +3539,7 @@ int set_macro_environment_var(char *name, char *value, int set) {
 		return ERROR;
 
 	/* create environment var name */
-	dummy = asprintf(&env_macro_name, "%s%s", MACRO_ENV_VAR_PREFIX, name);
+	asprintf(&env_macro_name, "%s%s", MACRO_ENV_VAR_PREFIX, name);
 
 	/* set or unset the environment variable */
 	set_environment_var(env_macro_name, value, set);

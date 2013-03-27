@@ -21,8 +21,6 @@ extern int errno;
 
 //extern int ido2db_log_debug_info(int , int , const char *, ...);
 
-int dummy;	/* reduce compiler warnings */
-
 /* point to prepared statements after db initialize */
 #ifdef USE_ORACLE
 int ido2db_oci_prepared_statement_objects_insert(ido2db_idi *idi);
@@ -557,7 +555,7 @@ int ido2db_db_connect(ido2db_idi *idi) {
 
 #ifdef USE_PGSQL /* pgsql */
 
-	dummy = asprintf(&temp_port, "%d", ido2db_db_settings.port);
+	asprintf(&temp_port, "%d", ido2db_db_settings.port);
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_connect() pgsql start\n");
 
 	/* check if config matches */
@@ -1341,7 +1339,9 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 	char *buf;
 	char *name;
 	int result;
+#ifdef USE_ORACLE
 	void *data[1];
+#endif
 	/*
 	#ifdef USE_ORACLE
 		char *dbversion;
@@ -1357,7 +1357,9 @@ int ido2db_db_version_check(ido2db_idi *idi) {
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_version_check () start \n");
 
 	name = strdup("idoutils");
+#ifdef USE_ORACLE
 	data[0] = (void *) &name;
+#endif
 
 #ifdef USE_LIBDBI
 
@@ -7385,7 +7387,7 @@ int ido2db_oci_prepared_statement_bind_null_param(OCI_Statement *oci_statement_n
 	//ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_oci_prepared_statement_bind_null_param() start\n");
 	//syslog(LOG_USER | LOG_INFO, "bind null param %s\n", param_name);
 
-	dummy = asprintf(&oci_tmp, "a"); /* just malloc sth that ocilib is happy */
+	asprintf(&oci_tmp, "a"); /* just malloc sth that ocilib is happy */
 
 	if (param_name == NULL)
 		return IDO_ERROR;

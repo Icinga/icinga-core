@@ -99,9 +99,6 @@ int stop_signal_detected = IDO_FALSE;
 char *sigs[35] = {"EXIT", "HUP", "INT", "QUIT", "ILL", "TRAP", "ABRT", "BUS", "FPE", "KILL", "USR1", "SEGV", "USR2", "PIPE", "ALRM", "TERM", "STKFLT", "CHLD", "CONT", "STOP", "TSTP", "TTIN", "TTOU", "URG", "XCPU", "XFSZ", "VTALRM", "PROF", "WINCH", "IO", "PWR", "UNUSED", "ZERR", "DEBUG", (char *)NULL};
 
 
-int dummy;	/* reduce compiler warnings */
-
-
 int main(int argc, char **argv) {
 	int result = IDO_OK;
 
@@ -921,9 +918,9 @@ int ido2db_daemonize(void) {
 	if (lock_file) {
 		/* write PID to lockfile... */
 		lseek(lockfile, 0, SEEK_SET);
-		dummy = ftruncate(lockfile, 0);
+		ftruncate(lockfile, 0);
 		sprintf(buf, "%d\n", (int)getpid());
-		dummy = write(lockfile, buf, strlen(buf));
+		write(lockfile, buf, strlen(buf));
 
 		/* make sure lock file stays open while program is executing... */
 		val = fcntl(lockfile, F_GETFD, 0);
@@ -2068,7 +2065,6 @@ int ido2db_start_input_data(ido2db_idi *idi) {
 
 int ido2db_add_input_data_item(ido2db_idi *idi, int type, char *buf) {
 	char *newbuf = NULL;
-	int mbuf_used = IDO_TRUE;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_add_input_data_item() start\n");
 
@@ -2227,8 +2223,6 @@ int ido2db_add_input_data_item(ido2db_idi *idi, int type, char *buf) {
 		/* NORMAL DATA */
 		/* normal data items appear only once per data type */
 	default:
-
-		mbuf_used = IDO_FALSE;
 
 		/* if there was already a matching item, discard the old one */
 		if (idi->buffered_input[type] != NULL) {
@@ -2930,15 +2924,13 @@ static void *ido2db_thread_cleanup_exit_handler(void * arg) {
 
 int ido2db_terminate_threads(void) {
 
-	int result;
-
 	/* from cleaner thread */
 	ido2db_db_disconnect(&thread_idi);
 	ido2db_db_deinit(&thread_idi);
 
 	/* terminate each thread on its own */
 	/*result=terminate_worker_thread();*/
-	result = terminate_cleanup_thread();
+	terminate_cleanup_thread();
 
 	return IDO_OK;
 }

@@ -236,8 +236,6 @@ extern int		enable_state_based_escalation_ranges;
 extern int              event_profiling_enabled;
 #endif
 
-int dummy;	/* reduce compiler warnings */
-
 /******************************************************************/
 /************** CONFIGURATION INPUT FUNCTIONS *********************/
 /******************************************************************/
@@ -319,24 +317,24 @@ int read_main_config_file(char *main_config_file) {
 
 		/* get the variable name */
 		if ((temp_ptr = my_strtok(input, "=")) == NULL) {
-			dummy = asprintf(&error_message, "NULL variable");
+			asprintf(&error_message, "NULL variable");
 			error = TRUE;
 			break;
 		}
 		if ((variable = (char *)strdup(temp_ptr)) == NULL) {
-			dummy = asprintf(&error_message, "malloc() error");
+			asprintf(&error_message, "malloc() error");
 			error = TRUE;
 			break;
 		}
 
 		/* get the value */
 		if ((temp_ptr = my_strtok(NULL, "\n")) == NULL) {
-			dummy = asprintf(&error_message, "NULL value");
+			asprintf(&error_message, "NULL value");
 			error = TRUE;
 			break;
 		}
 		if ((value = (char *)strdup(temp_ptr)) == NULL) {
-			dummy = asprintf(&error_message, "malloc() error");
+			asprintf(&error_message, "malloc() error");
 			error = TRUE;
 			break;
 		}
@@ -353,7 +351,7 @@ int read_main_config_file(char *main_config_file) {
 
 			/* process the resource file */
 			if(read_resource_file(value) == ERROR) {
-                                dummy = asprintf(&error_message, "Resource file parsing failed");
+                                asprintf(&error_message, "Resource file parsing failed");
 				error = TRUE;
 				break;
 			}
@@ -362,7 +360,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_file")) {
 
 			if (strlen(value) > MAX_FILENAME_LENGTH - 1) {
-				dummy = asprintf(&error_message, "Log file is too long");
+				asprintf(&error_message, "Log file is too long");
 				error = TRUE;
 				break;
 			}
@@ -384,7 +382,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "debug_file")) {
 
 			if (strlen(value) > MAX_FILENAME_LENGTH - 1) {
-				dummy = asprintf(&error_message, "Debug log file is too long");
+				asprintf(&error_message, "Debug log file is too long");
 				error = TRUE;
 				break;
 			}
@@ -399,7 +397,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "command_file")) {
 
 			if (strlen(value) > MAX_FILENAME_LENGTH - 1) {
-				dummy = asprintf(&error_message, "Command file is too long");
+				asprintf(&error_message, "Command file is too long");
 				error = TRUE;
 				break;
 			}
@@ -415,7 +413,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "temp_file")) {
 
 			if (strlen(value) > MAX_FILENAME_LENGTH - 1) {
-				dummy = asprintf(&error_message, "Temp file is too long");
+				asprintf(&error_message, "Temp file is too long");
 				error = TRUE;
 				break;
 			}
@@ -431,13 +429,13 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "temp_path")) {
 
 			if (strlen(value) > MAX_FILENAME_LENGTH - 1) {
-				dummy = asprintf(&error_message, "Temp path is too long");
+				asprintf(&error_message, "Temp path is too long");
 				error = TRUE;
 				break;
 			}
 
 			if ((tmpdir = opendir((char *)value)) == NULL) {
-				dummy = asprintf(&error_message, "Temp path is not a valid directory");
+				asprintf(&error_message, "Temp path is not a valid directory");
 				error = TRUE;
 				break;
 			}
@@ -459,13 +457,13 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "check_result_path")) {
 
 			if (strlen(value) > MAX_FILENAME_LENGTH - 1) {
-				dummy = asprintf(&error_message, "Check result path is too long");
+				asprintf(&error_message, "Check result path is too long");
 				error = TRUE;
 				break;
 			}
 
 			if ((tmpdir = opendir((char *)value)) == NULL) {
-				dummy = asprintf(&error_message, "Check result path is not a valid directory");
+				asprintf(&error_message, "Check result path is not a valid directory");
 				error = TRUE;
 				break;
 			}
@@ -486,7 +484,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "lock_file")) {
 
 			if (strlen(value) > MAX_FILENAME_LENGTH - 1) {
-				dummy = asprintf(&error_message, "Lock file is too long");
+				asprintf(&error_message, "Lock file is too long");
 				error = TRUE;
 				break;
 			}
@@ -542,7 +540,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "use_daemon_log")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for use_daemon_log");
+				asprintf(&error_message, "Illegal value for use_daemon_log");
 				error = TRUE;
 				break;
 			}
@@ -553,7 +551,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "use_syslog")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for use_syslog");
+				asprintf(&error_message, "Illegal value for use_syslog");
 				error = TRUE;
 				break;
 			}
@@ -564,7 +562,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "use_syslog_local_facility")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for use_syslog_local_facility");
+				asprintf(&error_message, "Illegal value for use_syslog_local_facility");
 				error = TRUE;
 				break;
 			}
@@ -575,7 +573,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "syslog_local_facility")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '7') {
-				dummy = asprintf(&error_message, "Illegal value for syslog_local_facility");
+				asprintf(&error_message, "Illegal value for syslog_local_facility");
 				error = TRUE;
 				break;
 			}
@@ -586,7 +584,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_notifications")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for log_notifications");
+				asprintf(&error_message, "Illegal value for log_notifications");
 				error = TRUE;
 				break;
 			}
@@ -597,7 +595,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_service_retries")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for log_service_retries");
+				asprintf(&error_message, "Illegal value for log_service_retries");
 				error = TRUE;
 				break;
 			}
@@ -608,7 +606,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_host_retries")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for log_host_retries");
+				asprintf(&error_message, "Illegal value for log_host_retries");
 				error = TRUE;
 				break;
 			}
@@ -619,7 +617,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_event_handlers")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for log_event_handlers");
+				asprintf(&error_message, "Illegal value for log_event_handlers");
 				error = TRUE;
 				break;
 			}
@@ -630,7 +628,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_external_commands")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for log_external_commands");
+				asprintf(&error_message, "Illegal value for log_external_commands");
 				error = TRUE;
 				break;
 			}
@@ -645,7 +643,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_passive_checks")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for log_passive_checks");
+				asprintf(&error_message, "Illegal value for log_passive_checks");
 				error = TRUE;
 				break;
 			}
@@ -656,7 +654,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_long_plugin_output")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for log_long_plugin_output");
+				asprintf(&error_message, "Illegal value for log_long_plugin_output");
 				error = TRUE;
 				break;
 			}
@@ -667,7 +665,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_initial_states")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for log_initial_states");
+				asprintf(&error_message, "Illegal value for log_initial_states");
 				error = TRUE;
 				break;
 			}
@@ -678,7 +676,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_current_states")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for log_current_states");
+				asprintf(&error_message, "Illegal value for log_current_states");
 				error = TRUE;
 				break;
 			}
@@ -689,7 +687,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "retain_state_information")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for retain_state_information");
+				asprintf(&error_message, "Illegal value for retain_state_information");
 				error = TRUE;
 				break;
 			}
@@ -701,7 +699,7 @@ int read_main_config_file(char *main_config_file) {
 
 			retention_update_interval = atoi(value);
 			if (retention_update_interval < 0) {
-				dummy = asprintf(&error_message, "Illegal value for retention_update_interval");
+				asprintf(&error_message, "Illegal value for retention_update_interval");
 				error = TRUE;
 				break;
 			}
@@ -710,7 +708,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "use_retained_program_state")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for use_retained_program_state");
+				asprintf(&error_message, "Illegal value for use_retained_program_state");
 				error = TRUE;
 				break;
 			}
@@ -721,7 +719,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "dump_retained_host_service_states_to_neb")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for dump_retained_host_service_states_to_neb");
+				asprintf(&error_message, "Illegal value for dump_retained_host_service_states_to_neb");
 				error = TRUE;
 				break;
 			}
@@ -732,7 +730,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "use_retained_scheduling_info")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for use_retained_scheduling_info");
+				asprintf(&error_message, "Illegal value for use_retained_scheduling_info");
 				error = TRUE;
 				break;
 			}
@@ -745,7 +743,7 @@ int read_main_config_file(char *main_config_file) {
 			retention_scheduling_horizon = atoi(value);
 
 			if (retention_scheduling_horizon <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for retention_scheduling_horizon");
+				asprintf(&error_message, "Illegal value for retention_scheduling_horizon");
 				error = TRUE;
 				break;
 			}
@@ -775,7 +773,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "obsess_over_services")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for obsess_over_services");
+				asprintf(&error_message, "Illegal value for obsess_over_services");
 				error = TRUE;
 				break;
 			}
@@ -786,7 +784,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "obsess_over_hosts")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for obsess_over_hosts");
+				asprintf(&error_message, "Illegal value for obsess_over_hosts");
 				error = TRUE;
 				break;
 			}
@@ -797,7 +795,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "translate_passive_host_checks")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for translate_passive_host_checks");
+				asprintf(&error_message, "Illegal value for translate_passive_host_checks");
 				error = TRUE;
 				break;
 			}
@@ -813,7 +811,7 @@ int read_main_config_file(char *main_config_file) {
 			service_check_timeout = atoi(value);
 
 			if (service_check_timeout <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for service_check_timeout");
+				asprintf(&error_message, "Illegal value for service_check_timeout");
 				error = TRUE;
 				break;
 			}
@@ -830,7 +828,7 @@ int read_main_config_file(char *main_config_file) {
 			else if (!strcmp(value, "u"))
 				service_check_timeout_state = STATE_UNKNOWN;
 			else {
-				dummy = asprintf(&error_message, "Illegal value for service_check_timeout_state");
+				asprintf(&error_message, "Illegal value for service_check_timeout_state");
 				error = TRUE;
 				break;
 			}
@@ -841,7 +839,7 @@ int read_main_config_file(char *main_config_file) {
 			host_check_timeout = atoi(value);
 
 			if (host_check_timeout <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for host_check_timeout");
+				asprintf(&error_message, "Illegal value for host_check_timeout");
 				error = TRUE;
 				break;
 			}
@@ -852,7 +850,7 @@ int read_main_config_file(char *main_config_file) {
 			event_handler_timeout = atoi(value);
 
 			if (event_handler_timeout <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for event_handler_timeout");
+				asprintf(&error_message, "Illegal value for event_handler_timeout");
 				error = TRUE;
 				break;
 			}
@@ -863,7 +861,7 @@ int read_main_config_file(char *main_config_file) {
 			notification_timeout = atoi(value);
 
 			if (notification_timeout <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for notification_timeout");
+				asprintf(&error_message, "Illegal value for notification_timeout");
 				error = TRUE;
 				break;
 			}
@@ -874,7 +872,7 @@ int read_main_config_file(char *main_config_file) {
 			ocsp_timeout = atoi(value);
 
 			if (ocsp_timeout <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for ocsp_timeout");
+				asprintf(&error_message, "Illegal value for ocsp_timeout");
 				error = TRUE;
 				break;
 			}
@@ -885,7 +883,7 @@ int read_main_config_file(char *main_config_file) {
 			ochp_timeout = atoi(value);
 
 			if (ochp_timeout <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for ochp_timeout");
+				asprintf(&error_message, "Illegal value for ochp_timeout");
 				error = TRUE;
 				break;
 			}
@@ -894,7 +892,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "use_agressive_host_checking") || !strcmp(variable, "use_aggressive_host_checking")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for use_aggressive_host_checking");
+				asprintf(&error_message, "Illegal value for use_aggressive_host_checking");
 				error = TRUE;
 				break;
 			}
@@ -916,7 +914,7 @@ int read_main_config_file(char *main_config_file) {
 
 		else if (!strcmp(variable, "soft_state_dependencies")) {
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for soft_state_dependencies");
+				asprintf(&error_message, "Illegal value for soft_state_dependencies");
 				error = TRUE;
 				break;
 			}
@@ -936,7 +934,7 @@ int read_main_config_file(char *main_config_file) {
 			else if (!strcmp(value, "m"))
 				log_rotation_method = LOG_ROTATION_MONTHLY;
 			else {
-				dummy = asprintf(&error_message, "Illegal value for log_rotation_method");
+				asprintf(&error_message, "Illegal value for log_rotation_method");
 				error = TRUE;
 				break;
 			}
@@ -945,7 +943,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "log_archive_path")) {
 
 			if (strlen(value) > MAX_FILENAME_LENGTH - 1) {
-				dummy = asprintf(&error_message, "Log archive path too long");
+				asprintf(&error_message, "Log archive path too long");
 				error = TRUE;
 				break;
 			}
@@ -983,7 +981,7 @@ int read_main_config_file(char *main_config_file) {
 				service_inter_check_delay_method = ICD_USER;
 				scheduling_info.service_inter_check_delay = strtod(value, NULL);
 				if (scheduling_info.service_inter_check_delay <= 0.0) {
-					dummy = asprintf(&error_message, "Illegal value for service_inter_check_delay_method");
+					asprintf(&error_message, "Illegal value for service_inter_check_delay_method");
 					error = TRUE;
 					break;
 				}
@@ -994,7 +992,7 @@ int read_main_config_file(char *main_config_file) {
 			strip(value);
 			max_service_check_spread = atoi(value);
 			if (max_service_check_spread < 1) {
-				dummy = asprintf(&error_message, "Illegal value for max_service_check_spread");
+				asprintf(&error_message, "Illegal value for max_service_check_spread");
 				error = TRUE;
 				break;
 			}
@@ -1012,7 +1010,7 @@ int read_main_config_file(char *main_config_file) {
 				host_inter_check_delay_method = ICD_USER;
 				scheduling_info.host_inter_check_delay = strtod(value, NULL);
 				if (scheduling_info.host_inter_check_delay <= 0.0) {
-					dummy = asprintf(&error_message, "Illegal value for host_inter_check_delay_method");
+					asprintf(&error_message, "Illegal value for host_inter_check_delay_method");
 					error = TRUE;
 					break;
 				}
@@ -1023,7 +1021,7 @@ int read_main_config_file(char *main_config_file) {
 
 			max_host_check_spread = atoi(value);
 			if (max_host_check_spread < 1) {
-				dummy = asprintf(&error_message, "Illegal value for max_host_check_spread");
+				asprintf(&error_message, "Illegal value for max_host_check_spread");
 				error = TRUE;
 				break;
 			}
@@ -1044,7 +1042,7 @@ int read_main_config_file(char *main_config_file) {
 
 			max_parallel_service_checks = atoi(value);
 			if (max_parallel_service_checks < 0) {
-				dummy = asprintf(&error_message, "Illegal value for max_concurrent_checks");
+				asprintf(&error_message, "Illegal value for max_concurrent_checks");
 				error = TRUE;
 				break;
 			}
@@ -1054,7 +1052,7 @@ int read_main_config_file(char *main_config_file) {
 
 			check_reaper_interval = atoi(value);
 			if (check_reaper_interval < 1) {
-				dummy = asprintf(&error_message, "Illegal value for check_result_reaper_frequency");
+				asprintf(&error_message, "Illegal value for check_result_reaper_frequency");
 				error = TRUE;
 				break;
 			}
@@ -1064,7 +1062,7 @@ int read_main_config_file(char *main_config_file) {
 
 			max_check_reaper_time = atoi(value);
 			if (max_check_reaper_time < 1) {
-				dummy = asprintf(&error_message, "Illegal value for max_check_result_reaper_time");
+				asprintf(&error_message, "Illegal value for max_check_result_reaper_time");
 				error = TRUE;
 				break;
 			}
@@ -1074,7 +1072,7 @@ int read_main_config_file(char *main_config_file) {
 
 			sleep_time = atof(value);
 			if (sleep_time <= 0.0) {
-				dummy = asprintf(&error_message, "Illegal value for sleep_time");
+				asprintf(&error_message, "Illegal value for sleep_time");
 				error = TRUE;
 				break;
 			}
@@ -1084,7 +1082,7 @@ int read_main_config_file(char *main_config_file) {
 
 			interval_length = atoi(value);
 			if (interval_length < 1) {
-				dummy = asprintf(&error_message, "Illegal value for interval_length");
+				asprintf(&error_message, "Illegal value for interval_length");
 				error = TRUE;
 				break;
 			}
@@ -1093,7 +1091,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "check_external_commands")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for check_external_commands");
+				asprintf(&error_message, "Illegal value for check_external_commands");
 				error = TRUE;
 				break;
 			}
@@ -1106,7 +1104,7 @@ int read_main_config_file(char *main_config_file) {
 			command_check_interval_is_seconds = (strstr(value, "s")) ? TRUE : FALSE;
 			command_check_interval = atoi(value);
 			if (command_check_interval < -1 || command_check_interval == 0) {
-				dummy = asprintf(&error_message, "Illegal value for command_check_interval");
+				asprintf(&error_message, "Illegal value for command_check_interval");
 				error = TRUE;
 				break;
 			}
@@ -1115,7 +1113,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "check_for_orphaned_services")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for check_for_orphaned_services");
+				asprintf(&error_message, "Illegal value for check_for_orphaned_services");
 				error = TRUE;
 				break;
 			}
@@ -1126,7 +1124,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "check_for_orphaned_hosts")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for check_for_orphaned_hosts");
+				asprintf(&error_message, "Illegal value for check_for_orphaned_hosts");
 				error = TRUE;
 				break;
 			}
@@ -1137,7 +1135,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "check_service_freshness")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for check_service_freshness");
+				asprintf(&error_message, "Illegal value for check_service_freshness");
 				error = TRUE;
 				break;
 			}
@@ -1148,7 +1146,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "check_host_freshness")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for check_host_freshness");
+				asprintf(&error_message, "Illegal value for check_host_freshness");
 				error = TRUE;
 				break;
 			}
@@ -1160,7 +1158,7 @@ int read_main_config_file(char *main_config_file) {
 
 			service_freshness_check_interval = atoi(value);
 			if (service_freshness_check_interval <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for service_freshness_check_interval");
+				asprintf(&error_message, "Illegal value for service_freshness_check_interval");
 				error = TRUE;
 				break;
 			}
@@ -1170,14 +1168,14 @@ int read_main_config_file(char *main_config_file) {
 
 			host_freshness_check_interval = atoi(value);
 			if (host_freshness_check_interval <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for host_freshness_check_interval");
+				asprintf(&error_message, "Illegal value for host_freshness_check_interval");
 				error = TRUE;
 				break;
 			}
 		} else if (!strcmp(variable, "auto_reschedule_checks")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for auto_reschedule_checks");
+				asprintf(&error_message, "Illegal value for auto_reschedule_checks");
 				error = TRUE;
 				break;
 			}
@@ -1189,7 +1187,7 @@ int read_main_config_file(char *main_config_file) {
 
 			auto_rescheduling_interval = atoi(value);
 			if (auto_rescheduling_interval <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for auto_rescheduling_interval");
+				asprintf(&error_message, "Illegal value for auto_rescheduling_interval");
 				error = TRUE;
 				break;
 			}
@@ -1199,7 +1197,7 @@ int read_main_config_file(char *main_config_file) {
 
 			auto_rescheduling_window = atoi(value);
 			if (auto_rescheduling_window <= 0) {
-				dummy = asprintf(&error_message, "Illegal value for auto_rescheduling_window");
+				asprintf(&error_message, "Illegal value for auto_rescheduling_window");
 				error = TRUE;
 				break;
 			}
@@ -1214,7 +1212,7 @@ int read_main_config_file(char *main_config_file) {
 
 			status_update_interval = atoi(value);
 			if (status_update_interval <= 1) {
-				dummy = asprintf(&error_message, "Illegal value for status_update_interval");
+				asprintf(&error_message, "Illegal value for status_update_interval");
 				error = TRUE;
 				break;
 			}
@@ -1225,7 +1223,7 @@ int read_main_config_file(char *main_config_file) {
 			time_change_threshold = atoi(value);
 
 			if (time_change_threshold <= 5) {
-				dummy = asprintf(&error_message, "Illegal value for time_change_threshold");
+				asprintf(&error_message, "Illegal value for time_change_threshold");
 				error = TRUE;
 				break;
 			}
@@ -1244,7 +1242,7 @@ int read_main_config_file(char *main_config_file) {
 
 			low_service_flap_threshold = strtod(value, NULL);
 			if (low_service_flap_threshold <= 0.0 || low_service_flap_threshold >= 100.0) {
-				dummy = asprintf(&error_message, "Illegal value for low_service_flap_threshold");
+				asprintf(&error_message, "Illegal value for low_service_flap_threshold");
 				error = TRUE;
 				break;
 			}
@@ -1254,7 +1252,7 @@ int read_main_config_file(char *main_config_file) {
 
 			high_service_flap_threshold = strtod(value, NULL);
 			if (high_service_flap_threshold <= 0.0 ||  high_service_flap_threshold > 100.0) {
-				dummy = asprintf(&error_message, "Illegal value for high_service_flap_threshold");
+				asprintf(&error_message, "Illegal value for high_service_flap_threshold");
 				error = TRUE;
 				break;
 			}
@@ -1264,7 +1262,7 @@ int read_main_config_file(char *main_config_file) {
 
 			low_host_flap_threshold = strtod(value, NULL);
 			if (low_host_flap_threshold <= 0.0 || low_host_flap_threshold >= 100.0) {
-				dummy = asprintf(&error_message, "Illegal value for low_host_flap_threshold");
+				asprintf(&error_message, "Illegal value for low_host_flap_threshold");
 				error = TRUE;
 				break;
 			}
@@ -1274,7 +1272,7 @@ int read_main_config_file(char *main_config_file) {
 
 			high_host_flap_threshold = strtod(value, NULL);
 			if (high_host_flap_threshold <= 0.0 || high_host_flap_threshold > 100.0) {
-				dummy = asprintf(&error_message, "Illegal value for high_host_flap_threshold");
+				asprintf(&error_message, "Illegal value for high_host_flap_threshold");
 				error = TRUE;
 				break;
 			}
@@ -1300,7 +1298,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "p1_file")) {
 
 			if (strlen(value) > MAX_FILENAME_LENGTH - 1) {
-				dummy = asprintf(&error_message, "P1 file is too long");
+				asprintf(&error_message, "P1 file is too long");
 				error = TRUE;
 				break;
 			}
@@ -1341,7 +1339,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "daemon_dumps_core")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for daemon_dumps_core");
+				asprintf(&error_message, "Illegal value for daemon_dumps_core");
 				error = TRUE;
 				break;
 			}
@@ -1352,7 +1350,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "use_large_installation_tweaks")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for use_large_installation_tweaks ");
+				asprintf(&error_message, "Illegal value for use_large_installation_tweaks ");
 				error = TRUE;
 				break;
 			}
@@ -1372,7 +1370,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "enable_embedded_perl")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for enable_embedded_perl");
+				asprintf(&error_message, "Illegal value for enable_embedded_perl");
 				error = TRUE;
 				break;
 			}
@@ -1383,7 +1381,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "use_embedded_perl_implicitly")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for use_embedded_perl_implicitly");
+				asprintf(&error_message, "Illegal value for use_embedded_perl_implicitly");
 				error = TRUE;
 				break;
 			}
@@ -1394,7 +1392,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "stalking_event_handlers_for_hosts")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "stalking_event_handlers_for_hosts");
+				asprintf(&error_message, "stalking_event_handlers_for_hosts");
 				error = TRUE;
 				break;
 			}
@@ -1405,7 +1403,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "stalking_event_handlers_for_services")) {
 
 			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "stalking_event_handlers_for_services");
+				asprintf(&error_message, "stalking_event_handlers_for_services");
 				error = TRUE;
 				break;
 			}
@@ -1416,7 +1414,7 @@ int read_main_config_file(char *main_config_file) {
                 else if (!strcmp(variable, "stalking_notifications_for_hosts")) {
 
                         if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-                                dummy = asprintf(&error_message, "stalking_notifications_for_hosts");
+                                asprintf(&error_message, "stalking_notifications_for_hosts");
                                 error = TRUE;
                                 break;
                         }
@@ -1427,7 +1425,7 @@ int read_main_config_file(char *main_config_file) {
                 else if (!strcmp(variable, "stalking_notifications_for_services")) {
 
                         if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-                                dummy = asprintf(&error_message, "stalking_notifications_for_services");
+                                asprintf(&error_message, "stalking_notifications_for_services");
                                 error = TRUE;
                                 break;
                         }
@@ -1460,7 +1458,7 @@ int read_main_config_file(char *main_config_file) {
                 else if (!strcmp(variable, "keep_unknown_macros")) {
 
                         if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-                                dummy = asprintf(&error_message, "Illegal value for check_service_freshness");
+                                asprintf(&error_message, "Illegal value for check_service_freshness");
                                 error = TRUE;
                                 break;
                         }
@@ -1474,7 +1472,7 @@ int read_main_config_file(char *main_config_file) {
                 else if (!strcmp(variable, "enable_state_based_escalation_ranges")) {
 
                         if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-                                dummy = asprintf(&error_message, "Illegal value for enable_state_based_escalation_ranges");
+                                asprintf(&error_message, "Illegal value for enable_state_based_escalation_ranges");
                                 error = TRUE;
                                 break;
                         }
@@ -1486,7 +1484,7 @@ int read_main_config_file(char *main_config_file) {
 		else if (!strcmp(variable, "auth_file")) {
 
 			if (strlen(value) > MAX_FILENAME_LENGTH - 1) {
-				dummy = asprintf(&error_message, "Auth file is too long");
+				asprintf(&error_message, "Auth file is too long");
 				error = TRUE;
 				break;
 			}
@@ -1528,7 +1526,7 @@ int read_main_config_file(char *main_config_file) {
 
 		/* we don't know what this variable is... */
 		else {
-			dummy = asprintf(&error_message, "UNKNOWN VARIABLE");
+			asprintf(&error_message, "UNKNOWN VARIABLE");
 			error = TRUE;
 			break;
 		}
@@ -1803,7 +1801,7 @@ int pre_flight_check(void) {
 		printf("Checking misc settings...\n");
 
 	/* check if we can write to temp_path */
-	dummy = asprintf(&buf, "%s/nagiosXXXXXX", temp_path);
+	asprintf(&buf, "%s/nagiosXXXXXX", temp_path);
 	if ((temp_path_fd = mkstemp(buf)) == -1) {
 		logit(NSLOG_VERIFICATION_ERROR, TRUE, "\tError: Unable to write to temp_path ('%s') - %s\n", temp_path, strerror(errno));
 		errors++;
@@ -1814,7 +1812,7 @@ int pre_flight_check(void) {
 	my_free(buf);
 
 	/* check if we can write to check_result_path */
-	dummy = asprintf(&buf, "%s/nagiosXXXXXX", check_result_path);
+	asprintf(&buf, "%s/nagiosXXXXXX", check_result_path);
 	if ((temp_path_fd = mkstemp(buf)) == -1) {
 		logit(NSLOG_VERIFICATION_WARNING, TRUE, "\tError: Unable to write to check_result_path ('%s') - %s\n", check_result_path, strerror(errno));
 		errors++;

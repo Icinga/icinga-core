@@ -32,8 +32,6 @@ extern ido2db_dbconfig ido2db_db_settings; /* for tables cleanup settings */
 
 extern int enable_sla;
 
-int dummy;	/* reduce compiler warnings */
-
 /****************************************************************************/
 /* OBJECT ROUTINES                                                          */
 /****************************************************************************/
@@ -284,10 +282,10 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 		tmp = ido2db_db_escape_string(idi, name1);
                 switch (idi->dbinfo.server_type) {
                 case IDO2DB_DBSERVER_PGSQL:
-			dummy = asprintf(&es[0], "E'%s'", tmp);
+			asprintf(&es[0], "E'%s'", tmp);
                         break;
                 default:
-			dummy = asprintf(&es[0], "'%s'", tmp);
+			asprintf(&es[0], "'%s'", tmp);
                         break;
                 }
 		if (tmp) {
@@ -295,16 +293,16 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 			tmp = NULL;
 		}
 	} else
-		dummy = asprintf(&es[0], "NULL");
+		asprintf(&es[0], "NULL");
 
 	if (name2 != NULL) {
 		tmp = ido2db_db_escape_string(idi, name2);
                 switch (idi->dbinfo.server_type) {
                 case IDO2DB_DBSERVER_PGSQL:
-                        dummy = asprintf(&es[1], "E'%s'", tmp);
+                        asprintf(&es[1], "E'%s'", tmp);
                         break;
                 default:
-                        dummy = asprintf(&es[1], "'%s'", tmp);
+                        asprintf(&es[1], "'%s'", tmp);
                         break;
                 }
 		if (tmp) {
@@ -312,7 +310,7 @@ int ido2db_get_object_id_with_insert(ido2db_idi *idi, int object_type, char *n1,
 			tmp = NULL;
 		}
 	} else
-		dummy = asprintf(&es[1], "NULL");
+		asprintf(&es[1], "NULL");
 
 	if (asprintf(&buf,
 	             "INSERT INTO %s (instance_id, objecttype_id, name1, name2) VALUES (%lu, %d, %s, %s)",
@@ -1343,7 +1341,6 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 	int type, flags, attr;
 	struct timeval tstamp;
 	unsigned long process_id;
-	int result = IDO_OK;
 	char *ts[1];
 	char *es[3];
 	int x = 0;
@@ -1359,12 +1356,10 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
-	         &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* convert vars */
-	result = ido2db_convert_string_to_unsignedlong(
-	             idi->buffered_input[IDO_DATA_PROCESSID], &process_id);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_PROCESSID], &process_id);
 
 	ts[0] = ido2db_db_timet_to_sql(idi, tstamp.tv_sec);
 
@@ -1391,7 +1386,7 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
                 break;
         }
 
-	result = ido2db_db_query(idi, buf);
+	ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	idi->dbinfo.dbi_result = NULL;
@@ -1557,7 +1552,7 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 		             ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS], ts[0],
 		             idi->dbinfo.instance_id) == -1)
 			buf = NULL;
-		result = ido2db_db_query(idi, buf);
+		ido2db_db_query(idi, buf);
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
 		free(buf);
@@ -1622,7 +1617,6 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 	unsigned long run_time = 0L;
 	int recurring_event = 0;
 	unsigned long object_id = 0L;
-	int result = IDO_OK;
 	char *ts[2];
 	int x = 0;
 #ifdef USE_LIBDBI
@@ -1636,13 +1630,13 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTTYPE], &event_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RECURRING], &recurring_event);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_RUNTIME], &run_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTTYPE], &event_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RECURRING], &recurring_event);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_RUNTIME], &run_time);
 
 	/* skip sleep events.... */
 	if (type == NEBTYPE_TIMEDEVENT_SLEEP) {
@@ -1656,10 +1650,10 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 
 	/* get the object id (if applicable) */
 	if (event_type == EVENT_SERVICE_CHECK || (event_type == EVENT_SCHEDULED_DOWNTIME && idi->buffered_input[IDO_DATA_SERVICE] != NULL && strcmp(idi->buffered_input[IDO_DATA_SERVICE], "")))
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
 
 	if (event_type == EVENT_HOST_CHECK || (event_type == EVENT_SCHEDULED_DOWNTIME && (idi->buffered_input[IDO_DATA_SERVICE] == NULL || !strcmp(idi->buffered_input[IDO_DATA_SERVICE], ""))))
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* HISTORICAL TIMED EVENTS */
 
@@ -1678,7 +1672,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		data[8] = (void *) &run_time;
 
 
-		result = ido2db_query_insert_or_update_timedevent_add(idi, data);
+		ido2db_query_insert_or_update_timedevent_add(idi, data);
 	}
 
 	/* save a record of timed events that get executed.... */
@@ -1696,7 +1690,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		data[7] = (void *) &tstamp.tv_sec;
 		data[8] = (void *) &run_time;
 
-		result = ido2db_query_insert_or_update_timedevents_execute_add(idi, data);
+		ido2db_query_insert_or_update_timedevents_execute_add(idi, data);
 	}
 
 	/* save a record of timed events that get removed.... */
@@ -1710,7 +1704,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		             recurring_event, object_id) == -1)
 			buf = NULL;
 
-		result = ido2db_db_query(idi, buf);
+		ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
@@ -1787,7 +1781,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE],
 		             idi->dbinfo.instance_id, ts[0]) == -1)
 			buf = NULL;
-		result = ido2db_db_query(idi, buf);
+		ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
@@ -1846,7 +1840,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		data[8] = (void *) &run_time;
 
 
-		result = ido2db_query_insert_or_update_timedeventqueue_add(idi, data);
+		ido2db_query_insert_or_update_timedeventqueue_add(idi, data);
 	}
 
 	/* REMOVE QUEUED TIMED EVENTS */
@@ -1862,7 +1856,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 		             idi->dbinfo.instance_id, event_type, ts[1], recurring_event,
 		             object_id) == -1)
 			buf = NULL;
-		result = ido2db_db_query(idi, buf);
+		ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
@@ -1927,7 +1921,7 @@ int ido2db_handle_timedeventdata(ido2db_idi *idi) {
 			             ido2db_db_tablenames[IDO2DB_DBTABLE_TIMEDEVENTQUEUE],
 			             idi->dbinfo.instance_id, ts[1]) == -1)
 				buf = NULL;
-			result = ido2db_db_query(idi, buf);
+			ido2db_db_query(idi, buf);
 
 			dbi_result_free(idi->dbinfo.dbi_result);
 			idi->dbinfo.dbi_result = NULL;
@@ -2148,7 +2142,6 @@ int ido2db_handle_systemcommanddata(ido2db_idi *idi) {
 	int return_code = 0;
 	char *ts[2];
 	char *es[3];
-	int result = IDO_OK;
 	void *data[14];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_systemcommanddata() start\n");
@@ -2157,15 +2150,15 @@ int ido2db_handle_systemcommanddata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* covert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_TIMEOUT], &timeout);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EARLYTIMEOUT], &early_timeout);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RETURNCODE], &return_code);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_TIMEOUT], &timeout);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EARLYTIMEOUT], &early_timeout);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RETURNCODE], &return_code);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDLINE]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_OUTPUT]);
@@ -2191,7 +2184,7 @@ int ido2db_handle_systemcommanddata(ido2db_idi *idi) {
 	data[12] = (void *) &start_time.tv_sec;
 	data[13] = (void *) &end_time.tv_sec;
 
-	result = ido2db_query_insert_or_update_systemcommanddata_add(idi, data);
+	ido2db_query_insert_or_update_systemcommanddata_add(idi, data);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -2221,7 +2214,6 @@ int ido2db_handle_eventhandlerdata(ido2db_idi *idi) {
 	int return_code = 0;
 	unsigned long object_id = 0L;
 	unsigned long command_id = 0L;
-	int result = IDO_OK;
 	void *data[20];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_eventhandlerdata() start\n");
@@ -2230,18 +2222,18 @@ int ido2db_handle_eventhandlerdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* covert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTHANDLERTYPE], &eventhandler_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATE], &state);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATETYPE], &state_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_TIMEOUT], &timeout);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EARLYTIMEOUT], &early_timeout);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RETURNCODE], &return_code);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTHANDLERTYPE], &eventhandler_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATE], &state);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATETYPE], &state_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_TIMEOUT], &timeout);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EARLYTIMEOUT], &early_timeout);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RETURNCODE], &return_code);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDARGS]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDLINE]);
@@ -2253,12 +2245,12 @@ int ido2db_handle_eventhandlerdata(ido2db_idi *idi) {
 
 	/* get the object id */
 	if (eventhandler_type == SERVICE_EVENTHANDLER || eventhandler_type == GLOBAL_SERVICE_EVENTHANDLER)
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
 	else
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* get the command id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
 
 	/* save entry to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -2283,7 +2275,7 @@ int ido2db_handle_eventhandlerdata(ido2db_idi *idi) {
 	data[18] = (void *) &start_time.tv_sec;
 	data[19] = (void *) &end_time.tv_sec;
 
-	result = ido2db_query_insert_or_update_eventhandlerdata_add(idi, data);
+	ido2db_query_insert_or_update_eventhandlerdata_add(idi, data);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -2307,7 +2299,6 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 	int state = 0;
 	int escalated = 0;
 	int contacts_notified = 0;
-	int result = IDO_OK;
 	char *ts[2];
 	char *es[2];
 	int x = 0;
@@ -2320,17 +2311,17 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFICATIONTYPE], &notification_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFICATIONREASON], &notification_reason);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATE], &state);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATED], &escalated);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CONTACTSNOTIFIED], &contacts_notified);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFICATIONTYPE], &notification_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFICATIONREASON], &notification_reason);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATE], &state);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATED], &escalated);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CONTACTSNOTIFIED], &contacts_notified);
 
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_OUTPUT]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_LONGOUTPUT]);
@@ -2340,9 +2331,9 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 
 	/* get the object id */
 	if (notification_type == SERVICE_NOTIFICATION)
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
 	if (notification_type == HOST_NOTIFICATION)
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* save entry to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -2363,7 +2354,7 @@ int ido2db_handle_notificationdata(ido2db_idi *idi) {
 	data[14] = (void *) &end_time.tv_sec;
 
 	/* idi->dbinfo.last_notification_id is fetched inside */
-	result = ido2db_query_insert_or_update_notificationdata_add(idi, data, type);
+	ido2db_query_insert_or_update_notificationdata_add(idi, data, type);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -2382,7 +2373,6 @@ int ido2db_handle_contactnotificationdata(ido2db_idi *idi) {
 	unsigned long contact_id = 0L;
 	struct timeval start_time;
 	struct timeval end_time;
-	int result = IDO_OK;
 	char *ts[2];
 	int x = 0;
 	void *data[9];
@@ -2393,21 +2383,21 @@ int ido2db_handle_contactnotificationdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* convert vars */
 
-	result = ido2db_convert_string_to_timeval(
+	ido2db_convert_string_to_timeval(
 	             idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
-	result = ido2db_convert_string_to_timeval(
+	ido2db_convert_string_to_timeval(
 	             idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
 
 	ts[0] = ido2db_db_timet_to_sql(idi, start_time.tv_sec);
 	ts[1] = ido2db_db_timet_to_sql(idi, end_time.tv_sec);
 
 	/* get the contact id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACT,
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACT,
 	         idi->buffered_input[IDO_DATA_CONTACTNAME], NULL, &contact_id);
 
 	/* save entry to db */
@@ -2422,7 +2412,7 @@ int ido2db_handle_contactnotificationdata(ido2db_idi *idi) {
 	data[7] = (void *) &start_time.tv_sec;
 	data[8] = (void *) &end_time.tv_sec;
 
-	result = ido2db_query_insert_or_update_contactnotificationdata_add(idi, data, type);
+	ido2db_query_insert_or_update_contactnotificationdata_add(idi, data, type);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -2439,7 +2429,6 @@ int ido2db_handle_contactnotificationmethoddata(ido2db_idi *idi) {
 	unsigned long command_id = 0L;
 	struct timeval start_time;
 	struct timeval end_time;
-	int result = IDO_OK;
 	char *ts[2];
 	char *es[1];
 	int x = 0;
@@ -2451,13 +2440,13 @@ int ido2db_handle_contactnotificationmethoddata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* convert vars */
 
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDARGS]);
 
@@ -2465,7 +2454,7 @@ int ido2db_handle_contactnotificationmethoddata(ido2db_idi *idi) {
 	ts[1] = ido2db_db_timet_to_sql(idi, end_time.tv_sec);
 
 	/* get the command id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND,
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND,
 	         idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
 
 	/* save entry to db */
@@ -2481,7 +2470,7 @@ int ido2db_handle_contactnotificationmethoddata(ido2db_idi *idi) {
 	data[8] = (void *) &start_time.tv_sec;
 	data[9] = (void *) &end_time.tv_sec;
 
-	result = ido2db_query_insert_or_update_contactnotificationmethoddata_add(idi, data);
+	ido2db_query_insert_or_update_contactnotificationmethoddata_add(idi, data);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -2514,9 +2503,7 @@ int ido2db_handle_servicecheckdata(ido2db_idi *idi) {
 	unsigned long object_id = 0L;
 	unsigned long command_id = 0L;
 	void *data[24];
-
 	int x = 0;
-	int result = IDO_OK;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicecheckdata() start\n");
 
@@ -2524,7 +2511,7 @@ int ido2db_handle_servicecheckdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* only process finished service checks... */
@@ -2540,18 +2527,18 @@ int ido2db_handle_servicecheckdata(ido2db_idi *idi) {
 		return IDO_OK;
 
 	/* covert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CHECKTYPE], &check_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTCHECKATTEMPT], &current_check_attempt);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_MAXCHECKATTEMPTS], &max_check_attempts);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATE], &state);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATETYPE], &state_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_TIMEOUT], &timeout);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EARLYTIMEOUT], &early_timeout);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RETURNCODE], &return_code);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_LATENCY], &latency);
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CHECKTYPE], &check_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTCHECKATTEMPT], &current_check_attempt);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_MAXCHECKATTEMPTS], &max_check_attempts);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATE], &state);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATETYPE], &state_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_TIMEOUT], &timeout);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EARLYTIMEOUT], &early_timeout);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RETURNCODE], &return_code);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_LATENCY], &latency);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDARGS]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDLINE]);
@@ -2563,13 +2550,13 @@ int ido2db_handle_servicecheckdata(ido2db_idi *idi) {
 	ts[1] = ido2db_db_timet_to_sql(idi, end_time.tv_sec);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE,
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE,
 	         idi->buffered_input[IDO_DATA_HOST],
 	         idi->buffered_input[IDO_DATA_SERVICE], &object_id);
 
 	/* get the command id */
 	if (idi->buffered_input[IDO_DATA_COMMANDNAME] != NULL && strcmp(idi->buffered_input[IDO_DATA_COMMANDNAME], ""))
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
 	else
 		command_id = 0L;
 
@@ -2600,7 +2587,7 @@ int ido2db_handle_servicecheckdata(ido2db_idi *idi) {
 	data[22] = (void *) &start_time.tv_sec;
 	data[23] = (void *) &end_time.tv_sec;
 
-	result = ido2db_query_insert_servicecheckdata_add(idi, data);
+	ido2db_query_insert_servicecheckdata_add(idi, data);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -2634,7 +2621,6 @@ int ido2db_handle_hostcheckdata(ido2db_idi *idi) {
 	unsigned long object_id = 0L;
 	unsigned long command_id = 0L;
 	int x = 0;
-	int result = IDO_OK;
 	void *data[25];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostcheckdata() start\n");
@@ -2643,7 +2629,7 @@ int ido2db_handle_hostcheckdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* only process finished host checks... */
@@ -2655,18 +2641,18 @@ int ido2db_handle_hostcheckdata(ido2db_idi *idi) {
 		return IDO_OK;
 
 	/* covert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CHECKTYPE], &check_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTCHECKATTEMPT], &current_check_attempt);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_MAXCHECKATTEMPTS], &max_check_attempts);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATE], &state);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATETYPE], &state_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_TIMEOUT], &timeout);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EARLYTIMEOUT], &early_timeout);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RETURNCODE], &return_code);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_LATENCY], &latency);
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
-	result = ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CHECKTYPE], &check_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTCHECKATTEMPT], &current_check_attempt);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_MAXCHECKATTEMPTS], &max_check_attempts);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATE], &state);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATETYPE], &state_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_TIMEOUT], &timeout);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EARLYTIMEOUT], &early_timeout);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_RETURNCODE], &return_code);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_LATENCY], &latency);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
+	ido2db_convert_string_to_timeval(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDARGS]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDLINE]);
@@ -2678,11 +2664,11 @@ int ido2db_handle_hostcheckdata(ido2db_idi *idi) {
 	ts[1] = ido2db_db_timet_to_sql(idi, end_time.tv_sec);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* get the command id */
 	if (idi->buffered_input[IDO_DATA_COMMANDNAME] != NULL && strcmp(idi->buffered_input[IDO_DATA_COMMANDNAME], ""))
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &command_id);
 	else
 		command_id = 0L;
 
@@ -2720,7 +2706,7 @@ int ido2db_handle_hostcheckdata(ido2db_idi *idi) {
 	data[23] = (void *) &start_time.tv_sec;
 	data[24] = (void *) &end_time.tv_sec;
 
-	result = ido2db_query_insert_hostcheckdata_add(idi, data);
+	ido2db_query_insert_hostcheckdata_add(idi, data);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -2745,7 +2731,6 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 	int comment_source = 0;
 	int expires = 0;
 	unsigned long expire_time = 0L;
-	int result = IDO_OK;
 	char *ts[3];
 	char *es[2];
 	int x = 0;
@@ -2759,17 +2744,17 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_COMMENTTYPE], &comment_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ENTRYTYPE], &entry_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PERSISTENT], &is_persistent);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SOURCE], &comment_source);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EXPIRES], &expires);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_COMMENTID], &internal_comment_id);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_ENTRYTIME], &comment_time);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_EXPIRATIONTIME], &expire_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_COMMENTTYPE], &comment_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ENTRYTYPE], &entry_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PERSISTENT], &is_persistent);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SOURCE], &comment_source);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EXPIRES], &expires);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_COMMENTID], &internal_comment_id);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_ENTRYTIME], &comment_time);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_EXPIRATIONTIME], &expire_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_AUTHORNAME]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMENT]);
@@ -2780,10 +2765,10 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 
 	/* get the object id */
 	if (comment_type == SERVICE_COMMENT)
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
 
 	if (comment_type == HOST_COMMENT)
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* ADD HISTORICAL COMMENTS */
 	/* save a record of comments that get added (or get loaded and weren't previously recorded).... */
@@ -2810,7 +2795,7 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 		data[15] = &comment_time;
 		data[16] = &expire_time;
 
-		result = ido2db_query_insert_or_update_commentdata_history_add(idi, data);
+		ido2db_query_insert_or_update_commentdata_history_add(idi, data);
 	}
 
 	/* UPDATE HISTORICAL COMMENTS */
@@ -2827,7 +2812,7 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 		            tstamp.tv_usec, idi->dbinfo.instance_id, ts[1],
 		            internal_comment_id) == -1)
 			buf = NULL;
-		result = ido2db_db_query(idi, buf);
+		ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
@@ -2909,7 +2894,7 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 		data[15] = &comment_time;
 		data[16] = &expire_time;
 
-		result = ido2db_query_insert_or_update_commentdata_add(idi, data);
+		ido2db_query_insert_or_update_commentdata_add(idi, data);
 	}
 
 	/* REMOVE CURRENT COMMENTS */
@@ -2925,7 +2910,7 @@ int ido2db_handle_commentdata(ido2db_idi *idi) {
 		            ido2db_db_tablenames[IDO2DB_DBTABLE_COMMENTS],
 		            idi->dbinfo.instance_id, ts[1], internal_comment_id) == -1)
 			buf = NULL;
-		result = ido2db_db_query(idi, buf);
+		ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
@@ -2998,7 +2983,6 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 	unsigned long object_id = 0L;
 	int is_in_effect = 0L;
 	unsigned long trigger_time = 0L;
-	int result = IDO_OK;
 	char *ts[5];
 	char *es[2];
 	int x = 0;
@@ -3017,20 +3001,20 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_DOWNTIMETYPE], &downtime_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FIXED], &fixed);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_DOWNTIMEISINEFFECT], &is_in_effect);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_DURATION], &duration);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_DOWNTIMEID], &internal_downtime_id);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_TRIGGEREDBY], &triggered_by);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_ENTRYTIME], &entry_time);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_DOWNTIMETRIGGERTIME], &trigger_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_DOWNTIMETYPE], &downtime_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FIXED], &fixed);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_DOWNTIMEISINEFFECT], &is_in_effect);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_DURATION], &duration);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_DOWNTIMEID], &internal_downtime_id);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_TRIGGEREDBY], &triggered_by);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_ENTRYTIME], &entry_time);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_STARTTIME], &start_time);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_ENDTIME], &end_time);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_DOWNTIMETRIGGERTIME], &trigger_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_AUTHORNAME]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMENT]);
@@ -3043,11 +3027,11 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 
 	/* get the object id */
 	if (downtime_type == SERVICE_DOWNTIME)
-		result = ido2db_get_object_id_with_insert(idi,
+		ido2db_get_object_id_with_insert(idi,
 		         IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST],
 		         idi->buffered_input[IDO_DATA_SERVICE], &object_id);
 	if (downtime_type == HOST_DOWNTIME)
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST,
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST,
 		         idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* HISTORICAL DOWNTIME */
@@ -3078,7 +3062,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 		data[17] = (void *) &trigger_time;
 
 
-		result = ido2db_query_insert_or_update_downtimedata_downtime_history_add(idi, data);
+		ido2db_query_insert_or_update_downtimedata_downtime_history_add(idi, data);
 
 		if (enable_sla)
 			sla_process_downtime_history(idi, object_id, start_time, end_time);
@@ -3105,7 +3089,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 			     ) == -1)
 			buf = NULL;
 
-		result = ido2db_db_query(idi, buf);
+		ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
@@ -3206,7 +3190,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 			    ) == -1)
 			buf = NULL;
 
-		result = ido2db_db_query(idi, buf);
+		ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
@@ -3322,7 +3306,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
                 data[16] = (void *) &ts[4];
                 data[17] = (void *) &trigger_time;
 
-		result = ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(idi, data);
+		ido2db_query_insert_or_update_downtimedata_scheduled_downtime_add(idi, data);
 	}
 
 	/* save a record of scheduled downtime that starts */
@@ -3342,7 +3326,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 			     ) == -1)
 			buf = NULL;
 
-		result = ido2db_db_query(idi, buf);
+		ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
@@ -3441,7 +3425,7 @@ int ido2db_handle_downtimedata(ido2db_idi *idi) {
 		             ts[2], ts[3]) == -1)
 			buf = NULL;
 
-		result = ido2db_db_query(idi, buf);
+		ido2db_db_query(idi, buf);
 
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
@@ -3523,7 +3507,6 @@ int ido2db_handle_flappingdata(ido2db_idi *idi) {
 	double high_threshold = 0.0;
 	unsigned long comment_time = 0L;
 	unsigned long internal_comment_id = 0L;
-	int result = IDO_OK;
 	char *ts[2];
 	char *buf = NULL;
 
@@ -3537,26 +3520,26 @@ int ido2db_handle_flappingdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FLAPPINGTYPE], &flapping_type);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_PERCENTSTATECHANGE], &percent_state_change);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_LOWTHRESHOLD], &low_threshold);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_HIGHTHRESHOLD], &high_threshold);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_COMMENTTIME], &comment_time);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_COMMENTID], &internal_comment_id);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FLAPPINGTYPE], &flapping_type);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_PERCENTSTATECHANGE], &percent_state_change);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_LOWTHRESHOLD], &low_threshold);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_HIGHTHRESHOLD], &high_threshold);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_COMMENTTIME], &comment_time);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_COMMENTID], &internal_comment_id);
 
 	ts[0] = ido2db_db_timet_to_sql(idi, tstamp.tv_sec);
 	ts[1] = ido2db_db_timet_to_sql(idi, comment_time);
 
 	/* get the object id (if applicable) */
 	if (flapping_type == SERVICE_FLAPPING)
-		result = ido2db_get_object_id_with_insert(idi,
+		ido2db_get_object_id_with_insert(idi,
 		         IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST],
 		         idi->buffered_input[IDO_DATA_SERVICE], &object_id);
 	if (flapping_type == HOST_FLAPPING)
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST,
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST,
 		         idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* save entry to db */
@@ -3569,7 +3552,7 @@ int ido2db_handle_flappingdata(ido2db_idi *idi) {
 	            flapping_type, object_id, percent_state_change, low_threshold,
 	            high_threshold, ts[1], internal_comment_id) == -1)
 		buf = NULL;
-	result = ido2db_db_query(idi, buf);
+	ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	idi->dbinfo.dbi_result = NULL;
@@ -3682,11 +3665,11 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	int process_performance_data = 0;
 	int obsess_over_hosts = 0;
 	int obsess_over_services = 0;
+	int result = IDO_OK;
 	unsigned long modified_host_attributes = 0L;
 	unsigned long modified_service_attributes = 0L;
 	char *ts[5];
 	char *es[2];
-	int result = IDO_OK;
 	void *data[28];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_programstatusdata() start\n");
@@ -3695,7 +3678,7 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* don't store old data */
 	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time) {
@@ -3704,25 +3687,25 @@ int ido2db_handle_programstatusdata(ido2db_idi *idi) {
 	}
 
 	/* covert vars */
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_PROGRAMSTARTTIME], &program_start_time);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_PROCESSID], &process_id);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_DAEMONMODE], &daemon_mode);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTCOMMANDCHECK], &last_command_check);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTLOGROTATION], &last_log_rotation);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFICATIONSENABLED], &notifications_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACTIVESERVICECHECKSENABLED], &active_service_checks_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PASSIVESERVICECHECKSENABLED], &passive_service_checks_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACTIVEHOSTCHECKSENABLED], &active_host_checks_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PASSIVEHOSTCHECKSENABLED], &passive_host_checks_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTHANDLERSENABLED], &event_handlers_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FLAPDETECTIONENABLED], &flap_detection_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILUREPREDICTIONENABLED], &failure_prediction_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PROCESSPERFORMANCEDATA], &process_performance_data);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERHOSTS], &obsess_over_hosts);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERSERVICES], &obsess_over_services);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDHOSTATTRIBUTES], &modified_host_attributes);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDSERVICEATTRIBUTES], &modified_service_attributes);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_DISABLED_NOTIFICATIONS_EXPIRE_TIME], &disable_notifications_expire_time);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_PROGRAMSTARTTIME], &program_start_time);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_PROCESSID], &process_id);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_DAEMONMODE], &daemon_mode);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTCOMMANDCHECK], &last_command_check);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTLOGROTATION], &last_log_rotation);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFICATIONSENABLED], &notifications_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACTIVESERVICECHECKSENABLED], &active_service_checks_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PASSIVESERVICECHECKSENABLED], &passive_service_checks_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACTIVEHOSTCHECKSENABLED], &active_host_checks_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PASSIVEHOSTCHECKSENABLED], &passive_host_checks_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTHANDLERSENABLED], &event_handlers_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FLAPDETECTIONENABLED], &flap_detection_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILUREPREDICTIONENABLED], &failure_prediction_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PROCESSPERFORMANCEDATA], &process_performance_data);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERHOSTS], &obsess_over_hosts);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERSERVICES], &obsess_over_services);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDHOSTATTRIBUTES], &modified_host_attributes);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDSERVICEATTRIBUTES], &modified_service_attributes);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_DISABLED_NOTIFICATIONS_EXPIRE_TIME], &disable_notifications_expire_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_GLOBALHOSTEVENTHANDLER]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_GLOBALSERVICEEVENTHANDLER]);
@@ -3828,7 +3811,6 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 	unsigned long object_id = 0L;
 	unsigned long check_timeperiod_object_id = 0L;
 	int x = 0;
-	int result = IDO_OK;
 	void *data[56];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hoststatusdata() start\n");
@@ -3837,50 +3819,50 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* don't store old data */
 	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time)
 		return IDO_OK;
 
 	/* covert vars */
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTHOSTCHECK], &last_check);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_NEXTHOSTCHECK], &next_check);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTSTATECHANGE], &last_state_change);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTHARDSTATECHANGE], &last_hard_state_change);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEUP], &last_time_up);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEDOWN], &last_time_down);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEUNREACHABLE], &last_time_unreachable);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTHOSTNOTIFICATION], &last_notification);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_NEXTHOSTNOTIFICATION], &next_notification);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDHOSTATTRIBUTES], &modified_host_attributes);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_PERCENTSTATECHANGE], &percent_state_change);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_LATENCY], &latency);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTSTATE], &current_state);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_HASBEENCHECKED], &has_been_checked);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SHOULDBESCHEDULED], &should_be_scheduled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTCHECKATTEMPT], &current_check_attempt);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_MAXCHECKATTEMPTS], &max_check_attempts);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CHECKTYPE], &check_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_LASTHARDSTATE], &last_hard_state);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATETYPE], &state_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOMORENOTIFICATIONS], &no_more_notifications);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFICATIONSENABLED], &notifications_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PROBLEMHASBEENACKNOWLEDGED], &problem_has_been_acknowledged);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACKNOWLEDGEMENTTYPE], &acknowledgement_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTNOTIFICATIONNUMBER], &current_notification_number);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PASSIVEHOSTCHECKSENABLED], &passive_checks_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACTIVEHOSTCHECKSENABLED], &active_checks_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTHANDLERENABLED], &event_handler_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FLAPDETECTIONENABLED], &flap_detection_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ISFLAPPING], &is_flapping);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SCHEDULEDDOWNTIMEDEPTH], &scheduled_downtime_depth);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILUREPREDICTIONENABLED], &failure_prediction_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PROCESSPERFORMANCEDATA], &process_performance_data);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERHOST], &obsess_over_host);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_NORMALCHECKINTERVAL], &normal_check_interval);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_RETRYCHECKINTERVAL], &retry_check_interval);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTHOSTCHECK], &last_check);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_NEXTHOSTCHECK], &next_check);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTSTATECHANGE], &last_state_change);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTHARDSTATECHANGE], &last_hard_state_change);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEUP], &last_time_up);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEDOWN], &last_time_down);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEUNREACHABLE], &last_time_unreachable);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTHOSTNOTIFICATION], &last_notification);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_NEXTHOSTNOTIFICATION], &next_notification);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDHOSTATTRIBUTES], &modified_host_attributes);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_PERCENTSTATECHANGE], &percent_state_change);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_LATENCY], &latency);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTSTATE], &current_state);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_HASBEENCHECKED], &has_been_checked);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SHOULDBESCHEDULED], &should_be_scheduled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTCHECKATTEMPT], &current_check_attempt);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_MAXCHECKATTEMPTS], &max_check_attempts);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CHECKTYPE], &check_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_LASTHARDSTATE], &last_hard_state);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATETYPE], &state_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOMORENOTIFICATIONS], &no_more_notifications);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFICATIONSENABLED], &notifications_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PROBLEMHASBEENACKNOWLEDGED], &problem_has_been_acknowledged);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACKNOWLEDGEMENTTYPE], &acknowledgement_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTNOTIFICATIONNUMBER], &current_notification_number);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PASSIVEHOSTCHECKSENABLED], &passive_checks_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACTIVEHOSTCHECKSENABLED], &active_checks_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTHANDLERENABLED], &event_handler_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FLAPDETECTIONENABLED], &flap_detection_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ISFLAPPING], &is_flapping);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SCHEDULEDDOWNTIMEDEPTH], &scheduled_downtime_depth);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILUREPREDICTIONENABLED], &failure_prediction_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PROCESSPERFORMANCEDATA], &process_performance_data);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERHOST], &obsess_over_host);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_NORMALCHECKINTERVAL], &normal_check_interval);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_RETRYCHECKINTERVAL], &retry_check_interval);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_OUTPUT]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_LONGOUTPUT]);
@@ -3900,8 +3882,8 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 	ts[9] = ido2db_db_timet_to_sql(idi, next_notification);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_HOSTCHECKPERIOD], NULL, &check_timeperiod_object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_HOSTCHECKPERIOD], NULL, &check_timeperiod_object_id);
 
 	if (enable_sla)
 		sla_process_acknowledgement(idi, object_id, tstamp.tv_sec, problem_has_been_acknowledged);
@@ -3967,10 +3949,10 @@ int ido2db_handle_hoststatusdata(ido2db_idi *idi) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hoststatusdata() LongLen:%d\n", strlen(es[1]));
 
-	result = ido2db_query_insert_or_update_hoststatusdata_add(idi, data);
+	ido2db_query_insert_or_update_hoststatusdata_add(idi, data);
 
 	/* save custom variables to db */
-	result = ido2db_save_custom_variables(idi, IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS, object_id, ts[0], tstamp.tv_sec);
+	ido2db_save_custom_variables(idi, IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS, object_id, ts[0], tstamp.tv_sec);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -4029,7 +4011,6 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 	unsigned long object_id = 0L;
 	unsigned long check_timeperiod_object_id = 0L;
 	int x = 0;
-	int result = IDO_OK;
 	void *data[58];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicestatusdata() start\n");
@@ -4038,51 +4019,51 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* don't store old data */
 	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time)
 		return IDO_OK;
 
 	/* covert vars */
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTSERVICECHECK], &last_check);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_NEXTSERVICECHECK], &next_check);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTSTATECHANGE], &last_state_change);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTHARDSTATECHANGE], &last_hard_state_change);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEOK], &last_time_ok);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEWARNING], &last_time_warning);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEUNKNOWN], &last_time_unknown);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMECRITICAL], &last_time_critical);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTSERVICENOTIFICATION], &last_notification);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_NEXTSERVICENOTIFICATION], &next_notification);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDSERVICEATTRIBUTES], &modified_service_attributes);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_PERCENTSTATECHANGE], &percent_state_change);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_LATENCY], &latency);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTSTATE], &current_state);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_HASBEENCHECKED], &has_been_checked);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SHOULDBESCHEDULED], &should_be_scheduled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTCHECKATTEMPT], &current_check_attempt);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_MAXCHECKATTEMPTS], &max_check_attempts);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CHECKTYPE], &check_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_LASTHARDSTATE], &last_hard_state);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATETYPE], &state_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOMORENOTIFICATIONS], &no_more_notifications);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFICATIONSENABLED], &notifications_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PROBLEMHASBEENACKNOWLEDGED], &problem_has_been_acknowledged);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACKNOWLEDGEMENTTYPE], &acknowledgement_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTNOTIFICATIONNUMBER], &current_notification_number);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PASSIVESERVICECHECKSENABLED], &passive_checks_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACTIVESERVICECHECKSENABLED], &active_checks_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTHANDLERENABLED], &event_handler_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FLAPDETECTIONENABLED], &flap_detection_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ISFLAPPING], &is_flapping);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SCHEDULEDDOWNTIMEDEPTH], &scheduled_downtime_depth);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILUREPREDICTIONENABLED], &failure_prediction_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PROCESSPERFORMANCEDATA], &process_performance_data);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERSERVICE], &obsess_over_service);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_NORMALCHECKINTERVAL], &normal_check_interval);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_RETRYCHECKINTERVAL], &retry_check_interval);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTSERVICECHECK], &last_check);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_NEXTSERVICECHECK], &next_check);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTSTATECHANGE], &last_state_change);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTHARDSTATECHANGE], &last_hard_state_change);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEOK], &last_time_ok);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEWARNING], &last_time_warning);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMEUNKNOWN], &last_time_unknown);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTTIMECRITICAL], &last_time_critical);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTSERVICENOTIFICATION], &last_notification);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_NEXTSERVICENOTIFICATION], &next_notification);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDSERVICEATTRIBUTES], &modified_service_attributes);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_PERCENTSTATECHANGE], &percent_state_change);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_LATENCY], &latency);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_EXECUTIONTIME], &execution_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTSTATE], &current_state);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_HASBEENCHECKED], &has_been_checked);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SHOULDBESCHEDULED], &should_be_scheduled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTCHECKATTEMPT], &current_check_attempt);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_MAXCHECKATTEMPTS], &max_check_attempts);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CHECKTYPE], &check_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_LASTHARDSTATE], &last_hard_state);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATETYPE], &state_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOMORENOTIFICATIONS], &no_more_notifications);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFICATIONSENABLED], &notifications_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PROBLEMHASBEENACKNOWLEDGED], &problem_has_been_acknowledged);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACKNOWLEDGEMENTTYPE], &acknowledgement_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CURRENTNOTIFICATIONNUMBER], &current_notification_number);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PASSIVESERVICECHECKSENABLED], &passive_checks_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACTIVESERVICECHECKSENABLED], &active_checks_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_EVENTHANDLERENABLED], &event_handler_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FLAPDETECTIONENABLED], &flap_detection_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ISFLAPPING], &is_flapping);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SCHEDULEDDOWNTIMEDEPTH], &scheduled_downtime_depth);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILUREPREDICTIONENABLED], &failure_prediction_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PROCESSPERFORMANCEDATA], &process_performance_data);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_OBSESSOVERSERVICE], &obsess_over_service);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_NORMALCHECKINTERVAL], &normal_check_interval);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_RETRYCHECKINTERVAL], &retry_check_interval);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_OUTPUT]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_LONGOUTPUT]);
@@ -4103,10 +4084,10 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 	ts[10] = ido2db_db_timet_to_sql(idi, next_notification);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE,
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE,
 	         idi->buffered_input[IDO_DATA_HOST],
 	         idi->buffered_input[IDO_DATA_SERVICE], &object_id);
-	result = ido2db_get_object_id_with_insert(idi,
+	ido2db_get_object_id_with_insert(idi,
 	         IDO2DB_OBJECTTYPE_TIMEPERIOD,
 	         idi->buffered_input[IDO_DATA_SERVICECHECKPERIOD], NULL,
 	         &check_timeperiod_object_id);
@@ -4175,14 +4156,14 @@ int ido2db_handle_servicestatusdata(ido2db_idi *idi) {
 	data[56] = (void *) &last_notification;
 	data[57] = (void *) &next_notification;
 
-	result = ido2db_query_insert_or_update_servicestatusdata_add(idi, data);
+	ido2db_query_insert_or_update_servicestatusdata_add(idi, data);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++)
 		free(es[x]);
 
 	/* save custom variables to db */
-	result = ido2db_save_custom_variables(idi, IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS, object_id, ts[0], tstamp.tv_sec);
+	ido2db_save_custom_variables(idi, IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS, object_id, ts[0], tstamp.tv_sec);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -4206,7 +4187,6 @@ int ido2db_handle_contactstatusdata(ido2db_idi *idi) {
 	char *ts[3];
 	unsigned long object_id = 0L;
 	int x = 0;
-	int result = IDO_OK;
 	void *data[13];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactstatusdata() start\n");
@@ -4215,7 +4195,7 @@ int ido2db_handle_contactstatusdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* don't store old data */
@@ -4223,20 +4203,20 @@ int ido2db_handle_contactstatusdata(ido2db_idi *idi) {
 		return IDO_OK;
 
 	/* covert vars */
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTHOSTNOTIFICATION], &last_host_notification);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTSERVICENOTIFICATION], &last_service_notification);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDCONTACTATTRIBUTES], &modified_attributes);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDHOSTATTRIBUTES], &modified_host_attributes);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDSERVICEATTRIBUTES], &modified_service_attributes);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_HOSTNOTIFICATIONSENABLED], &host_notifications_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SERVICENOTIFICATIONSENABLED], &service_notifications_enabled);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTHOSTNOTIFICATION], &last_host_notification);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_LASTSERVICENOTIFICATION], &last_service_notification);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDCONTACTATTRIBUTES], &modified_attributes);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDHOSTATTRIBUTES], &modified_host_attributes);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_MODIFIEDSERVICEATTRIBUTES], &modified_service_attributes);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_HOSTNOTIFICATIONSENABLED], &host_notifications_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SERVICENOTIFICATIONSENABLED], &service_notifications_enabled);
 
 	ts[0] = ido2db_db_timet_to_sql(idi, tstamp.tv_sec);
 	ts[1] = ido2db_db_timet_to_sql(idi, last_host_notification);
 	ts[2] = ido2db_db_timet_to_sql(idi, last_service_notification);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACT, idi->buffered_input[IDO_DATA_CONTACTNAME], NULL, &object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACT, idi->buffered_input[IDO_DATA_CONTACTNAME], NULL, &object_id);
 
 	/* save entry to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -4254,10 +4234,10 @@ int ido2db_handle_contactstatusdata(ido2db_idi *idi) {
 	data [11] = (void *) &last_host_notification;
 	data [12] = (void *) &last_service_notification;
 
-	result = ido2db_query_insert_or_update_contactstatusdata_add(idi, data);
+	ido2db_query_insert_or_update_contactstatusdata_add(idi, data);
 
 	/* save custom variables to db */
-	result = ido2db_save_custom_variables(idi, IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS, object_id, ts[0], tstamp.tv_sec);
+	ido2db_save_custom_variables(idi, IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS, object_id, ts[0], tstamp.tv_sec);
 
 	/* free memory */
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(ts); x++)
@@ -4329,7 +4309,6 @@ int ido2db_handle_externalcommanddata(ido2db_idi *idi) {
 	int command_type = 0;
 	unsigned long entry_time = 0L;
 	char *buf = NULL;
-	int result = IDO_OK;
 
 #ifdef USE_ORACLE
 	void *data[5];
@@ -4341,7 +4320,7 @@ int ido2db_handle_externalcommanddata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* only handle start events */
@@ -4349,8 +4328,8 @@ int ido2db_handle_externalcommanddata(ido2db_idi *idi) {
 		return IDO_OK;
 
 	/* covert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_COMMANDTYPE], &command_type);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_ENTRYTIME], &entry_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_COMMANDTYPE], &command_type);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_ENTRYTIME], &entry_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDSTRING]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDARGS]);
@@ -4374,7 +4353,7 @@ int ido2db_handle_externalcommanddata(ido2db_idi *idi) {
                 break;
         }
 
-	result = ido2db_db_query(idi, buf);
+	ido2db_db_query(idi, buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
 	idi->dbinfo.dbi_result = NULL;
@@ -4490,7 +4469,6 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 	int persistent_comment = 0;
 	int notify_contacts = 0;
 	unsigned long object_id = 0L;
-	int result = IDO_OK;
 	unsigned long end_time;
 	char *ts[2];
 	char *es[2];
@@ -4510,16 +4488,16 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACKNOWLEDGEMENTTYPE], &acknowledgement_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATE], &state);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STICKY], &is_sticky);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PERSISTENT], &persistent_comment);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYCONTACTS], &notify_contacts);
-	result = ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_END_TIME], &end_time);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ACKNOWLEDGEMENTTYPE], &acknowledgement_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STATE], &state);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_STICKY], &is_sticky);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_PERSISTENT], &persistent_comment);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYCONTACTS], &notify_contacts);
+	ido2db_convert_string_to_unsignedlong(idi->buffered_input[IDO_DATA_END_TIME], &end_time);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_AUTHORNAME]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMENT]);
@@ -4529,9 +4507,9 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 
 	/* get the object id */
 	if (acknowledgement_type == SERVICE_ACKNOWLEDGEMENT)
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOST], idi->buffered_input[IDO_DATA_SERVICE], &object_id);
 	if (acknowledgement_type == HOST_ACKNOWLEDGEMENT)
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOST], NULL, &object_id);
 
 	/* save entry to db */
 	/* NOTE Primary Key and only unique key is auto_increment thus ON DUPLICATE KEY will not occur ever */
@@ -4583,7 +4561,7 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 
 	free(buf1);
 
-	result = ido2db_db_query(idi, buf);
+	ido2db_db_query(idi, buf);
 	free(buf);
 
 	dbi_result_free(idi->dbinfo.dbi_result);
@@ -4687,7 +4665,7 @@ int ido2db_handle_acknowledgementdata(ido2db_idi *idi) {
 }
 
 int ido2db_handle_statechangedata(ido2db_idi *idi) {
-	int result = IDO_OK;
+
 	int type, flags, attr;
 	int x = 0;
 	struct timeval tstamp;
@@ -4699,6 +4677,7 @@ int ido2db_handle_statechangedata(ido2db_idi *idi) {
 	int max_attempts = 0;
 	int last_state = -1;
 	int last_hard_state = -1;
+	int result = IDO_OK;
 	unsigned long object_id = 0L;
 	char *ts[1];
 	char *es[2];
@@ -4890,7 +4869,6 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	int type, flags, attr;
 	struct timeval tstamp;
 	unsigned long configfile_id = 0L;
-	int result = IDO_OK;
 	char *es[3];
 	int x = 0;
 	char *buf = NULL;
@@ -4921,7 +4899,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_SQL, 0, "HANDLE_CONFIGFILEVARS [2]\n");
@@ -4940,7 +4918,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 	data[1] = (void *) &configfile_type;
 	data[2] = (void *) &es[0];
 
-	result = ido2db_query_insert_or_update_configfilevariables_add(idi, data, &configfile_id);
+	ido2db_query_insert_or_update_configfilevariables_add(idi, data, &configfile_id);
 	free(es[0]);
 
 	/* save config file variables to db */
@@ -5086,7 +5064,7 @@ int ido2db_handle_configfilevariables(ido2db_idi *idi, int configfile_type) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (first == 0) {
-		result = ido2db_db_query(idi, buf1);
+		ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
 	}
@@ -5139,7 +5117,6 @@ int ido2db_handle_configvariables(ido2db_idi *idi) {
 int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 	int type, flags, attr;
 	struct timeval tstamp;
-	int result = IDO_OK;
 	char *es[2];
 	int x = 0;
 	char *buf = NULL;
@@ -5165,7 +5142,7 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* don't store old data */
@@ -5331,7 +5308,7 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (first == 0) {
-		result = ido2db_db_query(idi, buf1);
+		ido2db_db_query(idi, buf1);
 		dbi_result_free(idi->dbinfo.dbi_result);
 		idi->dbinfo.dbi_result = NULL;
 	}
@@ -5354,13 +5331,11 @@ int ido2db_handle_runtimevariables(ido2db_idi *idi) {
 int ido2db_handle_configdumpstart(ido2db_idi *idi) {
 	int type, flags, attr;
 	struct timeval tstamp;
-	int result = IDO_OK;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_configdumpstart() start\n");
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
-	         &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* set config dump type */
 	if (idi->buffered_input[IDO_DATA_CONFIGDUMPTYPE] != NULL && !strcmp(
@@ -6956,7 +6931,6 @@ int ido2db_handle_hostdependencydefinition(ido2db_idi *idi) {
 	int fail_on_up = 0;
 	int fail_on_down = 0;
 	int fail_on_unreachable = 0;
-	int result = IDO_OK;
 	void *data[10];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdependencydefinition() start\n");
@@ -6965,7 +6939,7 @@ int ido2db_handle_hostdependencydefinition(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* don't store old data */
@@ -6973,16 +6947,16 @@ int ido2db_handle_hostdependencydefinition(ido2db_idi *idi) {
 		return IDO_OK;
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_DEPENDENCYTYPE], &dependency_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_INHERITSPARENT], &inherits_parent);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONUP], &fail_on_up);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILOIDOWN], &fail_on_down);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONUNREACHABLE], &fail_on_unreachable);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_DEPENDENCYTYPE], &dependency_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_INHERITSPARENT], &inherits_parent);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONUP], &fail_on_up);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILOIDOWN], &fail_on_down);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONUNREACHABLE], &fail_on_unreachable);
 
 	/* get the object ids */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &object_id);
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_DEPENDENTHOSTNAME], NULL, &dependent_object_id);
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_DEPENDENCYPERIOD], NULL, &timeperiod_object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_DEPENDENTHOSTNAME], NULL, &dependent_object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_DEPENDENCYPERIOD], NULL, &timeperiod_object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -6996,7 +6970,7 @@ int ido2db_handle_hostdependencydefinition(ido2db_idi *idi) {
 	data[8] = (void *) &fail_on_down;
 	data[9] = (void *) &fail_on_unreachable;
 
-	result = ido2db_query_insert_or_update_hostdependencydefinition_definition_add(idi, data);
+	ido2db_query_insert_or_update_hostdependencydefinition_definition_add(idi, data);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostdependencydefinition() end\n");
 
@@ -7015,7 +6989,6 @@ int ido2db_handle_servicedependencydefinition(ido2db_idi *idi) {
 	int fail_on_warning = 0;
 	int fail_on_unknown = 0;
 	int fail_on_critical = 0;
-	int result = IDO_OK;
 	void *data[11];
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedependencydefinition() start\n");
@@ -7024,7 +6997,7 @@ int ido2db_handle_servicedependencydefinition(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* don't store old data */
@@ -7032,17 +7005,17 @@ int ido2db_handle_servicedependencydefinition(ido2db_idi *idi) {
 		return IDO_OK;
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_DEPENDENCYTYPE], &dependency_type);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_INHERITSPARENT], &inherits_parent);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONOK], &fail_on_ok);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONWARNING], &fail_on_warning);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONUNKNOWN], &fail_on_unknown);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONCRITICAL], &fail_on_critical);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_DEPENDENCYTYPE], &dependency_type);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_INHERITSPARENT], &inherits_parent);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONOK], &fail_on_ok);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONWARNING], &fail_on_warning);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONUNKNOWN], &fail_on_unknown);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FAILONCRITICAL], &fail_on_critical);
 
 	/* get the object ids */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOSTNAME], idi->buffered_input[IDO_DATA_SERVICEDESCRIPTION], &object_id);
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_DEPENDENTHOSTNAME], idi->buffered_input[IDO_DATA_DEPENDENTSERVICEDESCRIPTION], &dependent_object_id);
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_DEPENDENCYPERIOD], NULL, &timeperiod_object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOSTNAME], idi->buffered_input[IDO_DATA_SERVICEDESCRIPTION], &object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_DEPENDENTHOSTNAME], idi->buffered_input[IDO_DATA_DEPENDENTSERVICEDESCRIPTION], &dependent_object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_DEPENDENCYPERIOD], NULL, &timeperiod_object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7057,7 +7030,7 @@ int ido2db_handle_servicedependencydefinition(ido2db_idi *idi) {
 	data[9] = (void *) &fail_on_unknown;
 	data[10] = (void *) &fail_on_critical;
 
-	result = ido2db_query_insert_or_update_servicedependencydefinition_definition_add(idi, data);
+	ido2db_query_insert_or_update_servicedependencydefinition_definition_add(idi, data);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicedependencydefinition() end\n");
 
@@ -7077,7 +7050,6 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 	int escalate_recovery = 0;
 	int escalate_down = 0;
 	int escalate_unreachable = 0;
-	int result = IDO_OK;
 	int x = 0;
 	ido2db_mbuf mbuf;
 	void *data[10];
@@ -7088,7 +7060,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* don't store old data */
@@ -7096,18 +7068,18 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 		return IDO_OK;
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FIRSTNOTIFICATION], &first_notification);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_LASTNOTIFICATION], &last_notification);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_NOTIFICATIONINTERVAL], &notification_interval);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONRECOVERY], &escalate_recovery);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEOIDOWN], &escalate_down);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONUNREACHABLE], &escalate_unreachable);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FIRSTNOTIFICATION], &first_notification);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_LASTNOTIFICATION], &last_notification);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_NOTIFICATIONINTERVAL], &notification_interval);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONRECOVERY], &escalate_recovery);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEOIDOWN], &escalate_down);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONUNREACHABLE], &escalate_unreachable);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &object_id);
 
 	/* get the timeperiod id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_ESCALATIONPERIOD], NULL, &timeperiod_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_ESCALATIONPERIOD], NULL, &timeperiod_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7121,7 +7093,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 	data[8] = (void *) &escalate_down;
 	data[9] = (void *) &escalate_unreachable;
 
-	result = ido2db_query_insert_or_update_hostescalationdefinition_definition_add(idi, data, &escalation_id);
+	ido2db_query_insert_or_update_hostescalationdefinition_definition_add(idi, data, &escalation_id);
 
 	/* save contact groups to db */
 	mbuf = idi->mbuf[IDO2DB_MBUF_CONTACTGROUP];
@@ -7131,7 +7103,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 			continue;
 
 		/* get the object id of the member */
-		result = ido2db_get_object_id_with_insert(idi,
+		ido2db_get_object_id_with_insert(idi,
 		         IDO2DB_OBJECTTYPE_CONTACTGROUP, mbuf.buffer[x], NULL,
 		         &member_id);
 
@@ -7140,7 +7112,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 		data[1] = (void *) &escalation_id;
 		data[2] = (void *) &member_id;
 
-		result = ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(idi, data);
+		ido2db_query_insert_or_update_hostescalationdefinition_contactgroups_add(idi, data);
 	}
 
 	/* save contacts to db */
@@ -7151,7 +7123,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 			continue;
 
 		/* get the object id of the member */
-		result = ido2db_get_object_id_with_insert(idi,
+		ido2db_get_object_id_with_insert(idi,
 		         IDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
 		/* save entry tp db */
@@ -7159,7 +7131,7 @@ int ido2db_handle_hostescalationdefinition(ido2db_idi *idi) {
 		data[1] = (void *) &escalation_id;
 		data[2] = (void *) &member_id;
 
-		result = ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(idi, data);
+		ido2db_query_insert_or_update_hostescalationdefinition_contacts_add(idi, data);
 	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_hostescalationdefinition() end\n");
@@ -7181,7 +7153,6 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 	int escalate_warning = 0;
 	int escalate_unknown = 0;
 	int escalate_critical = 0;
-	int result = IDO_OK;
 	int x = 0;
 	ido2db_mbuf mbuf;
 	void *data[11];
@@ -7192,7 +7163,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* don't store old data */
@@ -7200,19 +7171,19 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 		return IDO_OK;
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FIRSTNOTIFICATION], &first_notification);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_LASTNOTIFICATION], &last_notification);
-	result = ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_NOTIFICATIONINTERVAL], &notification_interval);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONRECOVERY], &escalate_recovery);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONWARNING], &escalate_warning);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONUNKNOWN], &escalate_unknown);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONCRITICAL], &escalate_critical);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_FIRSTNOTIFICATION], &first_notification);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_LASTNOTIFICATION], &last_notification);
+	ido2db_convert_string_to_double(idi->buffered_input[IDO_DATA_NOTIFICATIONINTERVAL], &notification_interval);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONRECOVERY], &escalate_recovery);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONWARNING], &escalate_warning);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONUNKNOWN], &escalate_unknown);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_ESCALATEONCRITICAL], &escalate_critical);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOSTNAME], idi->buffered_input[IDO_DATA_SERVICEDESCRIPTION], &object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICE, idi->buffered_input[IDO_DATA_HOSTNAME], idi->buffered_input[IDO_DATA_SERVICEDESCRIPTION], &object_id);
 
 	/* get the timeperiod id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_ESCALATIONPERIOD], NULL, &timeperiod_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_ESCALATIONPERIOD], NULL, &timeperiod_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7227,7 +7198,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 	data[9] = (void *) &escalate_unknown;
 	data[10] = (void *) &escalate_critical;
 
-	result = ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(idi, data, &escalation_id);
+	ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(idi, data, &escalation_id);
 
 	/* save contact groups to db */
 	mbuf = idi->mbuf[IDO2DB_MBUF_CONTACTGROUP];
@@ -7237,7 +7208,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 			continue;
 
 		/* get the object id of the member */
-		result = ido2db_get_object_id_with_insert(idi,
+		ido2db_get_object_id_with_insert(idi,
 		         IDO2DB_OBJECTTYPE_CONTACTGROUP, mbuf.buffer[x], NULL,
 		         &member_id);
 
@@ -7246,7 +7217,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 		data[1] = (void *) &escalation_id;
 		data[2] = (void *) &member_id;
 
-		result = ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(idi, data);
+		ido2db_query_insert_or_update_serviceescalationdefinition_contactgroups_add(idi, data);
 	}
 
 	/* save contacts to db */
@@ -7257,7 +7228,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 			continue;
 
 		/* get the object id of the member */
-		result = ido2db_get_object_id_with_insert(idi,
+		ido2db_get_object_id_with_insert(idi,
 		         IDO2DB_OBJECTTYPE_CONTACT, mbuf.buffer[x], NULL, &member_id);
 
 		/* save entry to db */
@@ -7265,7 +7236,7 @@ int ido2db_handle_serviceescalationdefinition(ido2db_idi *idi) {
 		data[1] = (void *) &escalation_id;
 		data[2] = (void *) &member_id;
 
-		result = ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(idi, data);
+		ido2db_query_insert_or_update_serviceescalationdefinition_contacts_add(idi, data);
 	}
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_servicetescalationdefinition() end\n");
@@ -7277,7 +7248,6 @@ int ido2db_handle_commanddefinition(ido2db_idi *idi) {
 	int type, flags, attr;
 	struct timeval tstamp;
 	unsigned long object_id = 0L;
-	int result = IDO_OK;
 	char *es[1];
 	int x = 0;
 	void *data[4];
@@ -7288,7 +7258,7 @@ int ido2db_handle_commanddefinition(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr,
 	         &tstamp);
 
 	/* don't store old data */
@@ -7298,7 +7268,7 @@ int ido2db_handle_commanddefinition(ido2db_idi *idi) {
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_COMMANDLINE]);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &object_id);
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &object_id);
 
 	/* flag the object as being active */
 	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_COMMAND, object_id);
@@ -7309,7 +7279,7 @@ int ido2db_handle_commanddefinition(ido2db_idi *idi) {
 	data[2] = (void *) &idi->current_object_config_type;
 	data[3] = (void *) &es[0];
 
-	result = ido2db_query_insert_or_update_commanddefinition_definition_add(idi, data);
+	ido2db_query_insert_or_update_commanddefinition_definition_add(idi, data);
 
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++)
 		free(es[x]);
@@ -7571,7 +7541,6 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 	int notify_host_flapping = 0;
 	int notify_host_downtime = 0;
 	unsigned long command_id = 0L;
-	int result = IDO_OK;
 	char *es[3];
 	int x = 0;
 	ido2db_mbuf mbuf;
@@ -7591,42 +7560,42 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* convert timestamp, etc */
-	result = ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
+	ido2db_convert_standard_data_elements(idi, &type, &flags, &attr, &tstamp);
 
 	/* don't store old data */
 	if (tstamp.tv_sec < idi->dbinfo.latest_realtime_data_time)
 		return IDO_OK;
 
 	/* convert vars */
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_HOSTNOTIFICATIONSENABLED], &host_notifications_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SERVICENOTIFICATIONSENABLED], &service_notifications_enabled);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CANSUBMITCOMMANDS], &can_submit_commands);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICEWARNING], &notify_service_warning);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICEUNKNOWN], &notify_service_unknown);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICECRITICAL], &notify_service_critical);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICERECOVERY], &notify_service_recovery);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICEFLAPPING], &notify_service_flapping);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICEDOWNTIME], &notify_service_downtime);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYHOSTDOWN], &notify_host_down);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYHOSTUNREACHABLE], &notify_host_unreachable);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYHOSTRECOVERY], &notify_host_recovery);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYHOSTFLAPPING],	&notify_host_flapping);
-	result = ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYHOSTDOWNTIME], &notify_host_downtime);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_HOSTNOTIFICATIONSENABLED], &host_notifications_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_SERVICENOTIFICATIONSENABLED], &service_notifications_enabled);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_CANSUBMITCOMMANDS], &can_submit_commands);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICEWARNING], &notify_service_warning);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICEUNKNOWN], &notify_service_unknown);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICECRITICAL], &notify_service_critical);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICERECOVERY], &notify_service_recovery);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICEFLAPPING], &notify_service_flapping);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYSERVICEDOWNTIME], &notify_service_downtime);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYHOSTDOWN], &notify_host_down);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYHOSTUNREACHABLE], &notify_host_unreachable);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYHOSTRECOVERY], &notify_host_recovery);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYHOSTFLAPPING],	&notify_host_flapping);
+	ido2db_convert_string_to_int(idi->buffered_input[IDO_DATA_NOTIFYHOSTDOWNTIME], &notify_host_downtime);
 
 	es[0] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_CONTACTALIAS]);
 	es[1] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_EMAILADDRESS]);
 	es[2] = ido2db_db_escape_string(idi, idi->buffered_input[IDO_DATA_PAGERADDRESS]);
 
 	/* get the object id */
-	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACT,
+	ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACT,
 	         idi->buffered_input[IDO_DATA_CONTACTNAME], NULL, &contact_id);
 
 	/* get the timeperiod ids */
-	result = ido2db_get_object_id_with_insert(idi,
+	ido2db_get_object_id_with_insert(idi,
 	         IDO2DB_OBJECTTYPE_TIMEPERIOD,
 	         idi->buffered_input[IDO_DATA_HOSTNOTIFICATIONPERIOD], NULL,
 	         &host_timeperiod_id);
-	result = ido2db_get_object_id_with_insert(idi,
+	ido2db_get_object_id_with_insert(idi,
 	         IDO2DB_OBJECTTYPE_TIMEPERIOD,
 	         idi->buffered_input[IDO_DATA_SERVICENOTIFICATIONPERIOD], NULL,
 	         &service_timeperiod_id);
@@ -7658,7 +7627,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 	data[20] = (void *) &notify_host_flapping;
 	data[21] = (void *) &notify_host_downtime;
 
-	result = ido2db_query_insert_or_update_contactdefinition_definition_add(idi, data, &contact_id);
+	ido2db_query_insert_or_update_contactdefinition_definition_add(idi, data, &contact_id);
 
 	for (x = 0; x < ICINGA_SIZEOF_ARRAY(es); x++)
 		free(es[x]);
@@ -7685,7 +7654,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 		data[2] = (void *) &address_number;
 		data[3] = (void *) &es[0];
 
-		result = ido2db_query_insert_or_update_contactdefinition_addresses_add(idi, data);
+		ido2db_query_insert_or_update_contactdefinition_addresses_add(idi, data);
 
 		free(es[0]);
 	}
@@ -7705,7 +7674,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 			continue;
 
 		/* find the command */
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
 
 		es[0] = ido2db_db_escape_string(idi, argptr);
 
@@ -7716,7 +7685,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 		data[3] = (void *) &command_id;
 		data[4] = (void *) &es[0];
 
-		result = ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(idi, data);
+		ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(idi, data);
 
 		free(es[0]);
 	}
@@ -7736,7 +7705,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 			continue;
 
 		/* find the command */
-		result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
+		ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, cmdptr, NULL, &command_id);
 
 		es[0] = ido2db_db_escape_string(idi, argptr);
 
@@ -7748,13 +7717,13 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 		data[3] = (void *) &command_id;
 		data[4] = (void *) &es[0];
 
-		result = ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(idi, data);
+		ido2db_query_insert_or_update_contactdefinition_notificationcommands_add(idi, data);
 
 		free(es[0]);
 	}
 
 	/* save custom variables to db */
-	result = ido2db_save_custom_variables(idi, IDO2DB_DBTABLE_CUSTOMVARIABLES, contact_id, NULL, -1);
+	ido2db_save_custom_variables(idi, IDO2DB_DBTABLE_CUSTOMVARIABLES, contact_id, NULL, -1);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_handle_contactdefinition() end\n");
 

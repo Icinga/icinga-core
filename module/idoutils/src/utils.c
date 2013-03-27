@@ -103,7 +103,6 @@ int my_rename(char *source, char *dest) {
 	int source_fd = -1;
 	int dest_fd = -1;
 	int bytes_read = 0;
-	int dummy = 0;
 
 
 	/* make sure we have something */
@@ -126,7 +125,7 @@ int my_rename(char *source, char *dest) {
 				if ((source_fd = open(source, O_RDONLY, 0644)) > 0) {
 
 					while ((bytes_read = read(source_fd, buffer, sizeof(buffer))) > 0)
-						dummy = write(dest_fd, buffer, bytes_read);
+						write(dest_fd, buffer, bytes_read);
 
 					close(source_fd);
 					close(dest_fd);
