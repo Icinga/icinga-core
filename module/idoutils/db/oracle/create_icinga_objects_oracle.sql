@@ -2002,6 +2002,11 @@ CREATE INDEX sgmbrs_sgid_soid ON servicegroup_members (servicegroup_id,service_o
 CREATE INDEX scgrps_sid_cgoid ON service_contactgroups (service_id,contactgroup_object_id) tablespace &&IDXTBS;
 CREATE INDEX tperiod_tid_d_ss_es ON timeperiod_timeranges (timeperiod_id,day,start_sec,end_sec) tablespace &&IDXTBS;
 
+-- #3649
+CREATE INDEX sla_idx_sthist ON statehistory (object_id, state_time DESC) tablespace &&IDXTBS;
+CREATE INDEX sla_idx_dohist ON downtimehistory (object_id, actual_start_time, actual_end_time) tablespace &&IDXTBS;
+CREATE INDEX sla_idx_obj ON objects (objecttype_id, is_active, name1) tablespace &&IDXTBS;
+
 -- -----------------------------------------
 -- sequences
 -- -----------------------------------------
