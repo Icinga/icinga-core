@@ -881,6 +881,7 @@ xodtemplate_memberlist *xodtemplate_expand_hostgroups_and_hosts(char *,char *,in
 int xodtemplate_expand_hostgroups(xodtemplate_memberlist **,xodtemplate_memberlist **,char *,int,int);
 int xodtemplate_expand_hosts(xodtemplate_memberlist **,xodtemplate_memberlist **,char *,int,int);
 int xodtemplate_add_hostgroup_members_to_memberlist(xodtemplate_memberlist **,xodtemplate_hostgroup *,int,int);
+int xodtemplate_reject_hosts_from_hostgroup(xodtemplate_memberlist **, xodtemplate_memberlist **);
 
 xodtemplate_memberlist *xodtemplate_expand_servicegroups_and_services(char *,char *,char *,int,int);
 int xodtemplate_expand_servicegroups(xodtemplate_memberlist **,xodtemplate_memberlist **,char *,int,int);
@@ -946,7 +947,7 @@ int xodtemplate_recombobulate_contactgroups(void);
 int xodtemplate_recombobulate_contactgroup_subgroups(xodtemplate_contactgroup *,char **);
 int xodtemplate_recombobulate_object_contacts(void);
 int xodtemplate_recombobulate_hostgroups(void);
-int xodtemplate_recombobulate_hostgroup_subgroups(xodtemplate_hostgroup *, char **);
+int xodtemplate_recombobulate_hostgroup_subgroups(xodtemplate_hostgroup *, xodtemplate_memberlist **, xodtemplate_memberlist **);
 int xodtemplate_recombobulate_servicegroups(void);
 int xodtemplate_recombobulate_servicegroup_subgroups(xodtemplate_servicegroup *,char **);
 

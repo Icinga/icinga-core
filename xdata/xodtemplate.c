@@ -7897,6 +7897,7 @@ int xodtemplate_recombobulate_hostgroups(void) {
 	xodtemplate_host *temp_host = NULL;
 	xodtemplate_hostgroup *temp_hostgroup = NULL;
 	xodtemplate_memberlist *temp_memberlist = NULL;
+	xodtemplate_memberlist *reject_memberlist = NULL;
 	xodtemplate_memberlist *this_memberlist = NULL;
 	char *hostgroup_names = NULL;
 	char *temp_ptr = NULL;
@@ -7971,9 +7972,30 @@ int xodtemplate_recombobulate_hostgroups(void) {
 #endif
 
 	/* expand subgroup membership recursively */
-	for (temp_hostgroup = xodtemplate_hostgroup_list; temp_hostgroup; temp_hostgroup = temp_hostgroup->next)
-		if (xodtemplate_recombobulate_hostgroup_subgroups(temp_hostgroup, NULL) != OK)
+	for (temp_hostgroup = xodtemplate_hostgroup_list; temp_hostgroup; temp_hostgroup = temp_hostgroup->next) {
+		if (xodtemplate_recombobulate_hostgroup_subgroups(temp_hostgroup, &temp_memberlist, &reject_memberlist) != OK) {
+			xodtemplate_free_memberlist(&temp_memberlist);
 			return ERROR;
+		}
+
+		xodtemplate_reject_hosts_from_hostgroup(&temp_memberlist, &reject_memberlist);
+
+		for (this_memberlist = temp_memberlist; this_memberlist; this_memberlist = this_memberlist->next) {
+			/* add this host to the hostgroup members directive */
+			if (temp_hostgroup->members == NULL)
+				temp_hostgroup->members = (char *)strdup(this_memberlist->name1);
+			else {
+				new_members = (char *)realloc(temp_hostgroup->members, strlen(temp_hostgroup->members) + strlen(this_memberlist->name1) + 2);
+				if (new_members != NULL) {
+					temp_hostgroup->members = new_members;
+					strcat(temp_hostgroup->members, ",");
+					strcat(temp_hostgroup->members, this_memberlist->name1);
+				}
+			}
+		}
+		xodtemplate_free_memberlist(&temp_memberlist);
+
+	}
 
 	/* expand members of all hostgroups - this could be done in xodtemplate_register_hostgroup(), but we can save the CGIs some work if we do it here */
 	for (temp_hostgroup = xodtemplate_hostgroup_list; temp_hostgroup; temp_hostgroup = temp_hostgroup->next) {
@@ -8027,13 +8049,14 @@ int xodtemplate_recombobulate_hostgroups(void) {
 
 
 
-int xodtemplate_recombobulate_hostgroup_subgroups(xodtemplate_hostgroup *temp_hostgroup, char **members) {
+int xodtemplate_recombobulate_hostgroup_subgroups(xodtemplate_hostgroup *temp_hostgroup, xodtemplate_memberlist **member_list, xodtemplate_memberlist **reject_list) {
 	xodtemplate_hostgroup *sub_group = NULL;
+	xodtemplate_memberlist *reject_memberlist = NULL;
 	char *orig_hgmembers = NULL;
 	char *hgmembers = NULL;
-	char *newmembers = NULL;
 	char *buf = NULL;
 	char *ptr = NULL;
+	int reject_item = FALSE;
 
 	if (temp_hostgroup == NULL)
 		return ERROR;
@@ -8061,21 +8084,26 @@ int xodtemplate_recombobulate_hostgroup_subgroups(xodtemplate_hostgroup *temp_ho
 			strip(buf);
 
 			/* find subgroup and recurse */
+			if (buf[0] == '!') {
+				reject_item = TRUE;
+				buf++;
+				logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: Excluding member group '%s' specified in hostgroup (config file '%s', starting on line %d)\n", buf, xodtemplate_config_file_name(temp_hostgroup->_config_file), temp_hostgroup->_start_line);
+			}
+			else {
+				reject_item = FALSE;
+			}
+
 			if ((sub_group = xodtemplate_find_real_hostgroup(buf)) == NULL) {
 				logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not find member group '%s' specified in hostgroup (config file '%s', starting on line %d)\n", buf, xodtemplate_config_file_name(temp_hostgroup->_config_file), temp_hostgroup->_start_line);
 				return ERROR;
 			}
-			xodtemplate_recombobulate_hostgroup_subgroups(sub_group, &newmembers);
 
-			/* add new (sub) members */
-			if (newmembers != NULL) {
-				if (temp_hostgroup->members == NULL)
-					temp_hostgroup->members = (char *)strdup(newmembers);
-				else if ((temp_hostgroup->members = realloc(temp_hostgroup->members, strlen(temp_hostgroup->members) + strlen(newmembers) + 2))) {
-					strcat(temp_hostgroup->members, ",");
-					strcat(temp_hostgroup->members, newmembers);
-				}
-			}
+			if (reject_item)
+				xodtemplate_recombobulate_hostgroup_subgroups(sub_group, &reject_memberlist, member_list);
+			else
+				xodtemplate_recombobulate_hostgroup_subgroups(sub_group, member_list, &reject_memberlist);
+
+			xodtemplate_reject_hosts_from_hostgroup(member_list, &reject_memberlist);
 		}
 
 		/* free memory */
@@ -8086,8 +8114,7 @@ int xodtemplate_recombobulate_hostgroup_subgroups(xodtemplate_hostgroup *temp_ho
 	}
 
 	/* return host members */
-	if (members != NULL)
-		*members = temp_hostgroup->members;
+	xodtemplate_expand_hosts(member_list, reject_list, temp_hostgroup->members, temp_hostgroup->_config_file, temp_hostgroup->_start_line);
 
 	return OK;
 }
@@ -12988,6 +13015,28 @@ int xodtemplate_add_hostgroup_members_to_memberlist(xodtemplate_memberlist **lis
 	return OK;
 }
 
+
+int xodtemplate_reject_hosts_from_hostgroup(xodtemplate_memberlist **member_list, xodtemplate_memberlist **reject_list) {
+	xodtemplate_memberlist *member_list_ptr = NULL;
+	xodtemplate_memberlist *reject_list_ptr = NULL;
+
+	if (member_list == NULL || reject_list == NULL) {
+		return ERROR;
+	}
+
+	/* remove rejects (if any) from the list (no duplicate entries exist in either list) */
+	for (reject_list_ptr = *reject_list; reject_list_ptr; reject_list_ptr = reject_list_ptr->next) {
+		for (member_list_ptr = *member_list; member_list_ptr; member_list_ptr = member_list_ptr->next) {
+			if (!strcmp(reject_list_ptr->name1, member_list_ptr->name1)) {
+				xodtemplate_remove_memberlist_item(member_list_ptr, member_list);
+				break;
+			}
+		}
+	}
+
+	xodtemplate_free_memberlist(reject_list);
+	return OK;
+}
 
 
 /* expands a comma-delimited list of servicegroups and/or service descriptions */
