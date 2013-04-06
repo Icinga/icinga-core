@@ -5259,7 +5259,12 @@ int ido2db_query_insert_or_update_configfilevariables_add(ido2db_idi *idi, void 
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                configfile_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "configfile_id");
+						/* this condition should never happen, as libdbi UPDATE and affected rows
+						 * should take care of it. it seems that newer mysql versions got problems
+						 * with libdbi (https://dev.icinga.org/issues/3728) so we return the selected id
+						 * as fallback here
+						 */
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "configfile_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
@@ -5744,7 +5749,12 @@ int ido2db_query_insert_or_update_hostdefinition_definition_add(ido2db_idi *idi,
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                host_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "host_id");
+                                                /* this condition should never happen, as libdbi UPDATE and affected rows
+                                                 * should take care of it. it seems that newer mysql versions got problems
+                                                 * with libdbi (https://dev.icinga.org/issues/3728) so we return the selected id
+                                                 * as fallback here
+                                                 */
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "host_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
@@ -6711,7 +6721,12 @@ int ido2db_query_insert_or_update_hostgroupdefinition_definition_add(ido2db_idi 
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                hostgroup_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hostgroup_id");
+                                                /* this condition should never happen, as libdbi UPDATE and affected rows
+                                                 * should take care of it. it seems that newer mysql versions got problems
+                                                 * with libdbi (https://dev.icinga.org/issues/3728) so we return the selected id
+                                                 * as fallback here
+                                                 */
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hostgroup_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
@@ -7161,7 +7176,12 @@ int ido2db_query_insert_or_update_servicedefinition_definition_add(ido2db_idi *i
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                service_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "service_id");
+                                                /* this condition should never happen, as libdbi UPDATE and affected rows
+                                                 * should take care of it. it seems that newer mysql versions got problems
+                                                 * with libdbi (https://dev.icinga.org/issues/3728) so we return the selected id
+                                                 * as fallback here
+                                                 */
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "service_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
@@ -7917,7 +7937,12 @@ int ido2db_query_insert_or_update_servicegroupdefinition_definition_add(ido2db_i
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                servicegroup_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "servicegroup_id");
+                                                /* this condition should never happen, as libdbi UPDATE and affected rows
+                                                 * should take care of it. it seems that newer mysql versions got problems
+                                                 * with libdbi (https://dev.icinga.org/issues/3728) so we return the selected id
+                                                 * as fallback here
+                                                 */
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "servicegroup_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
@@ -8776,7 +8801,12 @@ int ido2db_query_insert_or_update_hostescalationdefinition_definition_add(ido2db
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                hostescalation_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hostescalation_id");
+                                                /* this condition should never happen, as libdbi UPDATE and affected rows
+                                                 * should take care of it. it seems that newer mysql versions got problems
+                                                 * with libdbi (https://dev.icinga.org/issues/3728) so we return the selected id
+                                                 * as fallback here
+                                                 */
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "hostescalation_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
@@ -9396,7 +9426,12 @@ int ido2db_query_insert_or_update_serviceescalationdefinition_definition_add(ido
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                serviceescalation_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "serviceescalation_id");
+                                                /* this condition should never happen, as libdbi UPDATE and affected rows
+                                                 * should take care of it. it seems that newer mysql versions got problems
+                                                 * with libdbi (https://dev.icinga.org/issues/3728) so we return the selected id
+                                                 * as fallback here
+                                                 */
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "serviceescalation_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
@@ -10194,7 +10229,12 @@ int ido2db_query_insert_or_update_timeperiodefinition_definition_add(ido2db_idi 
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                timeperiod_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "timeperiod_id");
+                                                /* this condition should never happen, as libdbi UPDATE and affected rows
+                                                 * should take care of it. it seems that newer mysql versions got problems
+                                                 * with libdbi (https://dev.icinga.org/issues/3728) so we return the selected id
+                                                 * as fallback here
+                                                 */
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "timeperiod_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
@@ -10635,7 +10675,12 @@ int ido2db_query_insert_or_update_contactdefinition_definition_add(ido2db_idi *i
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                contact_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contact_id");
+                                                /* this condition should never happen, as libdbi UPDATE and affected rows
+                                                 * should take care of it. it seems that newer mysql versions got problems
+                                                 * with libdbi (https://dev.icinga.org/issues/3728) so we return the selected id
+                                                 * as fallback here
+                                                 */
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contact_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
@@ -11922,7 +11967,12 @@ int ido2db_query_insert_or_update_contactgroupdefinition_definition_add(ido2db_i
                         if ((result = ido2db_db_query(idi, query)) == IDO_OK) {
                                 if (idi->dbinfo.dbi_result != NULL) {
                                         if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-                                                contactgroup_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactgroup_id");
+                                                /* this condition should never happen, as libdbi UPDATE and affected rows
+                                                 * should take care of it. it seems that newer mysql versions got problems
+                                                 * with libdbi (https://dev.icinga.org/issues/3728) so we return the selected id
+                                                 * as fallback here
+                                                 */
+                                                *id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "contactgroup_id");
                                                 mysql_update = TRUE;
                                         } else {
                                                 mysql_update = FALSE;
