@@ -642,7 +642,7 @@ int main(void) {
 	}
 
 	/* read all status data */
-	result = read_all_status_data(get_cgi_config_location(), READ_ALL_STATUS_DATA);
+	result = read_all_status_data(main_config_file, READ_ALL_STATUS_DATA);
 	if (result == ERROR && daemon_check == TRUE) {
 		document_header(CGI_ID, FALSE, "Error");
 		print_error(NULL, ERROR_CGI_STATUS_DATA, FALSE);
@@ -1022,6 +1022,9 @@ int main(void) {
 		/* get the host status information */
 		temp_hoststatus = find_hoststatus(temp_service->host_name);
 
+		if (temp_hoststatus == NULL)
+			continue;
+
 		/* check host properties filter */
 		if (passes_host_properties_filter(temp_hoststatus) == FALSE)
 			continue;
@@ -1037,7 +1040,7 @@ int main(void) {
 		if (display_type == DISPLAY_HOSTS && show_all_hosts == FALSE && search_string == NULL) {
 			found = FALSE;
 			for (i = 0; req_hosts[i].entry != NULL; i++) {
-				if (!strcmp(req_hosts[i].entry, temp_hoststatus->host_name) || !strcmp(req_hosts[i].entry, temp_host->display_name)) {
+				if (!strcmp(req_hosts[i].entry, temp_hoststatus->host_name) || (temp_host != NULL && !strcmp(req_hosts[i].entry, temp_host->display_name))) {
 					found = TRUE;
 					break;
 				}
@@ -1072,7 +1075,7 @@ int main(void) {
 			temp_hoststatus->added |= STATUS_COUNTED_UNFILTERED;
 		}
 
-		/* see if we should display services for hosts with tis type of status */
+		/* see if we should display services for hosts with this type of status */
 		if (!(host_status_types & temp_hoststatus->status))
 			continue;
 
@@ -2348,6 +2351,9 @@ void show_service_detail(void) {
 
 		/* find the host */
 		temp_host = find_host(temp_status->host_name);
+
+		if (temp_host == NULL)
+			continue;
 
 		/* find the service  */
 		temp_service = find_service(temp_status->host_name, temp_status->svc_description);

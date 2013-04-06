@@ -368,6 +368,7 @@ int read_cgi_config_file(char *filename) {
 	char *var = NULL;
 	char *val = NULL;
 	char *p = NULL;
+	int standalone_installation = 0;
 
 
 	if ((thefile = mmap_fopen(filename)) == NULL)
@@ -395,6 +396,9 @@ int read_cgi_config_file(char *filename) {
 			main_config_file[sizeof(main_config_file) - 1] = '\x0';
 			strip(main_config_file);
 		}
+
+		else if (!strcmp(var, "standalone_installation"))
+			standalone_installation = (atoi(val) > 0) ? TRUE : FALSE;
 
 		else if (!strcmp(var, "show_all_services_host_is_authorized_for"))
 			show_all_services_host_is_authorized_for = (atoi(val) > 0) ? TRUE : FALSE;
@@ -451,11 +455,6 @@ int read_cgi_config_file(char *filename) {
 
 			snprintf(url_logo_images_path, sizeof(url_logo_images_path), "%slogos/", url_images_path);
 			url_logo_images_path[sizeof(url_logo_images_path) - 1] = '\x0';
-
-			/*
-			snprintf(url_stylesheets_path,sizeof(url_stylesheets_path),"%sstylesheets/",url_html_path);
-			url_stylesheets_path[sizeof(url_stylesheets_path)-1]='\x0';
-			*/
 
 			snprintf(url_js_path, sizeof(url_js_path), "%sjs/", url_html_path);
 			url_js_path[sizeof(url_js_path) - 1] = '\x0';
@@ -751,10 +750,22 @@ int read_cgi_config_file(char *filename) {
 		url_stylesheets_path[sizeof(url_stylesheets_path) - 1] = '\x0';
 	}
 
-	if (!strcmp(main_config_file, ""))
-		return ERROR;
-	else
-		return OK;
+	if (!strcmp(main_config_file, "")) {
+
+		//	If standalone_installation is switched on, we assume that
+		//	all vars are defined in cgi.cfg
+		if (standalone_installation == TRUE) {
+			strncpy(main_config_file, filename, sizeof(main_config_file));
+			main_config_file[sizeof(main_config_file) - 1] = '\x0';
+
+		//	If not, we assume default location for main_config_file
+		} else {
+			strncpy(main_config_file, DEFAULT_CONFIG_FILE, sizeof(main_config_file));
+			main_config_file[sizeof(main_config_file) - 1] = '\x0';
+		}
+	}
+
+	return OK;
 }
 
 /* read the main configuration file */
@@ -766,6 +777,12 @@ int read_main_config_file(char *filename) {
 
 	if ((thefile = mmap_fopen(filename)) == NULL)
 		return ERROR;
+
+	/*
+		Icinga 2 compat layer:
+		when adding config lines to this function,
+		DON'T forget to add them to cgi.cfg.in as well
+	*/
 
 	while (1) {
 
@@ -1134,7 +1151,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	if (content_type == JSON_CONTENT) {
 
 		/* read program status */
-		result = read_all_status_data(get_cgi_config_location(), READ_PROGRAM_STATUS);
+		result = read_all_status_data(main_config_file, READ_PROGRAM_STATUS);
 
 		/* total running time */
 		if ( program_start != 0L) {
@@ -1209,7 +1226,9 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	if (embedded == TRUE)
 		return;
 
-	printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
+	if (cgi_id != STATUSMAP_CGI_ID)
+		printf("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">\n");
+
 	printf("<html>\n");
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n", url_images_path);
@@ -2011,7 +2030,7 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 	int x, last = 0, dummy;
 
 	/* read program status */
-	result = read_all_status_data(get_cgi_config_location(), READ_PROGRAM_STATUS);
+	result = read_all_status_data(main_config_file, READ_PROGRAM_STATUS);
 
 	printf("<TABLE CLASS='infoBox' BORDER=1 CELLSPACING=0 CELLPADDING=0>\n");
 	printf("<TR><TD CLASS='infoBox' nowrap>\n");
@@ -2453,9 +2472,9 @@ void main_config_file_error(char *config_file, int tac_header) {
 	}
 
 	if (content_type == JSON_CONTENT) {
-		printf("\"title\": \"Could not open CGI config file '%s' for reading!\"\n,", config_file);
+		printf("\"title\": \"Could not open main config file '%s' for reading!\"\n,", config_file);
 		printf("\"text\": \"");
-		printf("Make sure you've installed a CGI config file in its proper location. A sample main configuration file (named icinga.cfg) can be found in the 'sample-config' subdirectory of the %s source code distribution. ", PROGRAM_NAME);
+		printf("Make sure you've installed a main config file in its proper location. A sample main configuration file (named icinga.cfg) can be found in the 'sample-config' subdirectory of the %s source code distribution. ", PROGRAM_NAME);
 		printf("Also make sure the user your web server is running as has permission to read the main config file.");
 		printf("\"\n");
 		return;
@@ -2518,6 +2537,7 @@ void object_data_error(int tac_header) {
 	printf("</P>\n");
 
 	printf("<OL>\n");
+	printf("<LI>Make sure you set option <b>\"object_cache_file\"</b> in <b>\"%s\"</b> properly.\n", main_config_file);
 	printf("<LI>Verify configuration options using the <b>-v</b> command-line option to check for errors.\n");
 	printf("<LI>Check the %s log file for messages relating to startup or status data errors.\n", PROGRAM_NAME);
 	printf("</OL>\n");
@@ -2565,6 +2585,7 @@ void status_data_error(int tac_header) {
 	printf("</P>\n");
 
 	printf("<OL>\n");
+	printf("<LI>Make sure you set option <b>\"status_file\"</b> in <b>\"%s\"</b> properly.\n", main_config_file);
 	printf("<LI>Check the %s log file for messages relating to startup or status data errors.\n", PROGRAM_NAME);
 	printf("<LI>Always verify configuration options using the <b>-v</b> command-line option before starting or restarting %s!\n", PROGRAM_NAME);
 	printf("<LI>If using any event broker module for %s, look into their respective logs and/or on their behavior!\n", PROGRAM_NAME);

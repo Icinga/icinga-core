@@ -26,8 +26,6 @@
 #define DEFAULT_LOG_FILE			"@LOGDIR@/icinga.log"
 #define DEFAULT_LOG_ARCHIVE_PATH		"@LOGDIR@/archives/"
 #define DEFAULT_DEBUG_FILE                      "@LOGDIR@/icinga.debug"
-#define DEFAULT_COMMENT_FILE			"@STATEDIR@/comments.dat"
-#define DEFAULT_DOWNTIME_FILE			"@STATEDIR@/downtime.dat"
 #define DEFAULT_RETENTION_FILE			"@STATEDIR@/retention.dat"
 #define DEFAULT_COMMAND_FILE			"@EXTCMDFILEDIR@/icinga.cmd"
 #define DEFAULT_CONFIG_FILE			"@sysconfdir@/icinga.cfg"
@@ -39,6 +37,5 @@
 #define DEFAULT_LOCK_FILE			"@lockfile@"
 #define DEFAULT_OBJECT_CACHE_FILE		"@STATEDIR@/objects.cache"
 #define DEFAULT_PRECACHED_OBJECT_FILE		"@STATEDIR@/objects.precache"
-#define DEFAULT_EVENT_BROKER_FILE		"@STATEDIR@/broker.socket"
 #define DEFAULT_P1_FILE				"@P1FILELOC@/p1.pl"	/**** EMBEDDED PERL ****/
 #define DEFAULT_AUTH_FILE			""			/**** EMBEDDED PERL - IS THIS USED? ****/

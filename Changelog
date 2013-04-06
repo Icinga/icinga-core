@@ -36,6 +36,7 @@ ENHANCEMENTS
 * classic ui: Added data/time selection to 'log file navigation' #3168 - RB
 * classic ui: Added setting focus to main frame on first site load #3202 - RB
 * classic ui: Made sort buttons larger #3814 - RB
+* classic ui: Made classic ui work standalone #3869 - RB
 
 * idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
 * idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB
@@ -82,6 +83,8 @@ FIXES
 * classic ui: fixed CGIs generating invalid html code/ json when throwing error #3507 - RB
 * classic ui: fixed JSON output is insufficiently escaped #3541 - RB
 * classic ui: fixed segfault when reading malformed log entries #3528 - RB
+* classic ui: "fixed" Incorrect positioning status popup in statusmap #3861 - RB
+* classic ui: fixed possible NULL dereference-bug in summary.c #3740 - RB
 
 * docs: add missing cmd_mod description in cgi params #3438 - MF
 * docs: search_string as cgi GET param works also for status.cgi #3451 - MF
