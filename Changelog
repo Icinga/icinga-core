@@ -37,6 +37,7 @@ ENHANCEMENTS
 * classic ui: Added setting focus to main frame on first site load #3202 - RB
 * classic ui: Made sort buttons larger #3814 - RB
 * classic ui: Made classic ui work standalone #3869 - RB
+* classic ui: add 'executed command' to extinfo.cgi linking to command expander #3901 - MF
 
 * idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
 * idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB

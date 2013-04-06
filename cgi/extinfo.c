@@ -1593,6 +1593,9 @@ void show_host_info(void) {
 			print_modified_attributes(HTML_CONTENT, EXTINFO_CGI, temp_hoststatus->modified_attributes);
 			printf("</td></tr>\n");
 
+			printf("<TR><TD CLASS='dataVar'>Executed Command:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&expand=%s'>Command Expander</A></TD></TR>\n", CONFIG_CGI, host_name, url_encode(temp_host->host_check_command));
+
+
 			printf("</TABLE>\n");
 			printf("</TD></TR>\n");
 			printf("</TABLE>\n");
@@ -2026,6 +2029,8 @@ void show_service_info(void) {
 			printf("<TR><TD CLASS='dataVar'>Modified Attributes:</td><td CLASS='dataVal'>");
 			print_modified_attributes(HTML_CONTENT, EXTINFO_CGI, temp_svcstatus->modified_attributes);
 			printf("</td></tr>\n");
+
+			printf("<TR><TD CLASS='dataVar'>Executed Command:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&service=%s&expand=%s'>Command Expander</A></TD></TR>\n", CONFIG_CGI, host_name, service_desc, url_encode(temp_service->service_check_command));
 
 			printf("</TABLE>\n");
 			printf("</TD></TR>\n");
