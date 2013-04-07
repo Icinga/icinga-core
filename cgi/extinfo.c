@@ -1553,7 +1553,7 @@ void show_host_info(void) {
 			printf("<TR><TD CLASS='dataVar'>Last Check Time:</td><td CLASS='dataVal'>%s</td></tr>\n", date_time);
 
 			if (temp_hoststatus->checks_enabled == TRUE)
-				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&expand=%s'>ACTIVE</A></TD></TR>\n", CONFIG_CGI, host_name, url_encode(temp_host->host_check_command));
+				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&expand=%s'>ACTIVE</A></TD></TR>\n", CONFIG_CGI, url_encode(host_name), url_encode(temp_host->host_check_command));
 			else if (temp_hoststatus->accept_passive_host_checks == TRUE)
 				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>PASSIVE</TD></TR>\n");
 			else
@@ -1593,8 +1593,7 @@ void show_host_info(void) {
 			print_modified_attributes(HTML_CONTENT, EXTINFO_CGI, temp_hoststatus->modified_attributes);
 			printf("</td></tr>\n");
 
-			printf("<TR><TD CLASS='dataVar'>Executed Command:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&expand=%s'>Command Expander</A></TD></TR>\n", CONFIG_CGI, host_name, url_encode(temp_host->host_check_command));
-
+			printf("<TR><TD CLASS='dataVar'>Executed Command:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&expand=%s'>Command Expander</A></TD></TR>\n", CONFIG_CGI, url_encode(host_name), url_encode(temp_host->host_check_command));
 
 			printf("</TABLE>\n");
 			printf("</TD></TR>\n");
@@ -1990,7 +1989,7 @@ void show_service_info(void) {
 
 			if (temp_svcstatus->checks_enabled == TRUE)
 				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&service=%s&expand=%s'>ACTIVE</A></TD></TR>\n",
-				       CONFIG_CGI, host_name, service_desc, url_encode(temp_service->service_check_command));
+				       CONFIG_CGI, url_encode(host_name), url_encode(service_desc), url_encode(temp_service->service_check_command));
 			else if (temp_svcstatus->accept_passive_service_checks == TRUE)
 				printf("<TR><TD CLASS='dataVar'>Check Type:</TD><TD CLASS='dataVal'>PASSIVE</TD></TR>\n");
 			else
@@ -2030,7 +2029,7 @@ void show_service_info(void) {
 			print_modified_attributes(HTML_CONTENT, EXTINFO_CGI, temp_svcstatus->modified_attributes);
 			printf("</td></tr>\n");
 
-			printf("<TR><TD CLASS='dataVar'>Executed Command:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&service=%s&expand=%s'>Command Expander</A></TD></TR>\n", CONFIG_CGI, host_name, service_desc, url_encode(temp_service->service_check_command));
+			printf("<TR><TD CLASS='dataVar'>Executed Command:</TD><TD CLASS='dataVal'><A HREF='%s?type=command&host=%s&service=%s&expand=%s'>Command Expander</A></TD></TR>\n", CONFIG_CGI, url_encode(host_name), url_encode(service_desc), url_encode(temp_service->service_check_command));
 
 			printf("</TABLE>\n");
 			printf("</TD></TR>\n");
