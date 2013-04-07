@@ -120,15 +120,15 @@ extern "C" {
 
 /**************************** JQUERY-UI PATH ******************************/
 
-#define JQ_UI_CORE_JS		"jquery.ui.core.min.js"
-#define JQ_UI_WIDGET_JS		"jquery.ui.widget.min.js"
-#define JQ_UI_MOUSE_JS		"jquery.ui.mouse.min.js"
-#define JQ_UI_SLIDER_JS		"jquery.ui.slider.min.js"
-#define JQ_UI_DATEPICKER_JS	"jquery.ui.datepicker.min.js"
+#define JQ_UI_CORE_JS		"ui/jquery.ui.core.js"
+#define JQ_UI_WIDGET_JS		"ui/jquery.ui.widget.js"
+#define JQ_UI_MOUSE_JS		"ui/jquery.ui.mouse.js"
+#define JQ_UI_SLIDER_JS		"ui/jquery.ui.slider.js"
+#define JQ_UI_DATEPICKER_JS	"ui/jquery.ui.datepicker.js"
 #define JQ_UI_TIMEPICKER_JS	"jquery.ui.timepicker-addon.min.js"
 
-#define JQ_UI_ALL_CSS		"theme/jquery.ui.all.css"
-#define JQ_UI_TIMEPICKER_CSS	"theme/jquery.ui.timepicker-addon.css"
+#define JQ_UI_ALL_CSS		"themes/base/jquery.ui.all.css"
+#define JQ_UI_TIMEPICKER_CSS	"jquery.ui.timepicker-addon.css"
 
 
 /********************************* ICONS ************************************/

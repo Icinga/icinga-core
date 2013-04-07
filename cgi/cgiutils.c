@@ -45,6 +45,7 @@ char            url_logo_images_path[MAX_FILENAME_LENGTH];
 char            url_stylesheets_path[MAX_FILENAME_LENGTH];
 char            url_js_path[MAX_FILENAME_LENGTH];
 char            url_jquiryui_path[MAX_FILENAME_LENGTH];
+char            url_jquiryui_addon_path[MAX_FILENAME_LENGTH];
 char            url_media_path[MAX_FILENAME_LENGTH];
 
 char            *service_critical_sound = NULL;
@@ -459,6 +460,9 @@ int read_cgi_config_file(char *filename) {
 
 			snprintf(url_jquiryui_path, sizeof(url_jquiryui_path), "%sjquery-ui/", url_html_path);
 			url_jquiryui_path[sizeof(url_jquiryui_path) - 1] = '\x0';
+
+			snprintf(url_jquiryui_addon_path, sizeof(url_jquiryui_addon_path), "%sjquery-ui-addon/", url_html_path);
+			url_jquiryui_addon_path[sizeof(url_jquiryui_addon_path) - 1] = '\x0';
 
 			snprintf(url_media_path, sizeof(url_media_path), "%smedia/", url_html_path);
 			url_media_path[sizeof(url_media_path) - 1] = '\x0';
@@ -1276,10 +1280,10 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_MOUSE_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_SLIDER_JS);
 		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_DATEPICKER_JS);
-		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_path, JQ_UI_TIMEPICKER_JS);
+		printf("<script type='text/javascript' src='%s%s'></script>\n", url_jquiryui_addon_path, JQ_UI_TIMEPICKER_JS);
 
 		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_ALL_CSS);
-		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_path, JQ_UI_TIMEPICKER_CSS);
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_jquiryui_addon_path, JQ_UI_TIMEPICKER_CSS);
 
 		printf("<script type=\"text/javascript\">\n");
 		printf("$(document).ready(function() {\n");
