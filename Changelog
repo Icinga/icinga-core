@@ -19,6 +19,7 @@ FIXES
 
 * classic ui: fixed JSON output is insufficiently escaped #3541 - RB
 * classic ui: fixed segfault when reading malformed log entries #3528 - RB
+* classic ui: fixed Command expansion problem with percentage signs #3929 - RB
 
 * idoutils: idomod leaks memory on core reload #3749 - GB
 
