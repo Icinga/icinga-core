@@ -66,6 +66,7 @@ FIXES
 * classic ui: fixed segfault when reading malformed log entries #3528 - RB
 * classic ui: "fixed" Incorrect positioning status popup in statusmap #3861 - RB
 * classic ui: fixed possible NULL dereference-bug in summary.c #3740 - RB
+* classic ui: fixed Command expansion problem with percentage signs #3929 - RB
 
 * docs: add missing cmd_mod description in cgi params #3438 - MF
 * docs: search_string as cgi GET param works also for status.cgi #3451 - MF
