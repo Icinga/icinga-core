@@ -109,15 +109,27 @@ void unescape_cgi_input(char *input) {
 	len = strlen(input);
 	for (x = 0, y = 0; x < len; x++, y++) {
 
-		if (input[x] == '\x0')
+		if (input[x] == '\x0') {
 			break;
-		else if (input[x] == '%') {
+
+		// RB 2013-04-07
+		// only allow hex conversion if '%' is follow by a valid character
+		} else if (input[x] == '%' && (
+			// 0 - 9
+			(input[x+1] >= 48 && input[x+1] <= 57) ||
+			// A - F
+			(input[x+1] >= 65 && input[x+1] <= 70) ||
+			// a - f
+			(input[x+1] >= 97 && input[x+1] <= 102))
+			) {
+
 			input[y] = hex_to_char(&input[x+1]);
 			x += 2;
+
 		// RB 2011-09-08
 		// convert plus as well that it can bu used in service and host names
 		} else if (input[x] == '+') {
-				input[y] = ' ';
+			input[y] = ' ';
 		} else
 			input[y] = input[x];
 	}
