@@ -57,6 +57,7 @@ FIXES
 * core: fix services with empty hostgroups aren't processed even if it has host_name specified (allow_empty_hostgroups=1) (thx Viranch Metha) #3736 - MF
 * core: revamp USE_LTDL definitions in nebmods (Andreas Ericsson, op5 Team) #3817 - MF
 * core: fix unable to exclude hostgroups when using nested hostgroups (Alexander Sulfrian) #2619 - MF
+* core: fix checkresult reaper cleanup fails due to relative file path #3937 - MaF
 
 * idoutils: fix many memory leaks in ido2db on dbi_result_free and others (thx Klaus Wagner) #3406 - MF
 * idoutils: fix ido2db crashes when Oracle queries fail #3324 - GB

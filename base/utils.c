@@ -2774,7 +2774,7 @@ int process_check_result_queue(char *dirname) {
 			 * otherwise we will leave old files there
 			 */
 			if (stat_buf.st_mtime + max_check_result_file_age < time(NULL)) {
-				delete_check_result_file(dirfile->d_name);
+				delete_check_result_file(file);
 				continue;
 			}
 
