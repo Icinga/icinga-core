@@ -46,6 +46,8 @@ ENHANCEMENTS
 * install: set --enable-idoutils/event-broker to true as default configure flags #3813 - MF
 * install: add lighttp config samples to contrib/lighttp #2253 - RB
 
+* docs: Temporary files should mention temp_file option in icinga.cfg #3748 - WN
+
 FIXES
 * core: fix faulty macro cleaning, replacing spaces with pluses where they shouldn't be cleaned #3397 - MF
 * core: fix macro escaping logs incorrect warning for $$escapes #3404 - MF
@@ -96,6 +98,7 @@ FIXES
 * docs: add missing cmd_mod description in cgi params #3438 - MF
 * docs: search_string as cgi GET param works also for status.cgi #3451 - MF
 * docs: fix typo pqsql -> pgsql #3461 - WN
+* docs: recurring downtimes: should tell about dev/experimental state living in contrib/ better #3647 - WN
 
 * icinga.spec: add idoutils as transitional package (thx Stefan Marx, Michael Grüner) #3640 - MF
 * icinga.spec: fix double %{logdir}/gui/ definitions in icinga and icinga-gui (thx René Koch) #3802 - MF
