@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.9 Dokumentation">
 <link rel="up" href="ch08.html" title="Kapitel 8. Sicherheit und Leistungsoptimierung">
 <link rel="prev" href="perfgraphs.html" title="8.7. Grafische Darstellung von Performance-Informationen mit PNP4Nagios">
 <link rel="next" href="ch09.html" title="Kapitel 9. Integration mit anderer Software">
@@ -51,7 +51,8 @@
 <li class="listitem">
       <p>Werfen Sie einen Blick auf den aktuellen Standort des <a class="link" href="configmain.html#configmain-status_file">status file</a> (z.B.
       <code class="filename">/usr/local/icinga/var/status.dat</code>) und des <a class="link" href="configmain.html#configmain-object_cache_file">object cache file</a>
-      (z.B. <code class="filename">/usr/local/icnga/var/objects.cache</code>) und ermitteln Sie die Größe der beiden Dateien.</p>
+      (z.B. <code class="filename">/usr/local/icnga/var/objects.cache</code>) und ermitteln Sie die Größe der beiden Dateien. Addieren Sie die Größe
+      der Statusdatei (status_file) für temporäre Daten (<a class="link" href="configmain.html#configmain-temp_file">temp_file</a>).</p>
 <pre class="programlisting"> #&gt; ls -la /usr/local/icinga/var/
  -rw-rw-r--   1 icinga icinga 8.2M Jun 10 11:57 status.dat
  -rw-r--r--   1 icinga icinga 5.9M Jun 10 11:58 objects.cache</pre>
@@ -87,7 +88,10 @@
  object_cache_file=/var/icinga/ramdisk/objects.cache
 
  #status_file=/usr/local/icinga/var/status.dat
- status_file=/var/icinga/ramdisk/status.dat</pre>
+ status_file=/var/icinga/ramdisk/status.dat
+ 
+ #temp_file=/usr/local/icinga/var/icinga.tmp
+ temp_file=/var/icinga/ramdisk/icinga.tmp</pre>
     </li>
 <li class="listitem">
       <p>Starten Sie Icinga neu, damit die Änderungen aktiv werden</p>
@@ -101,13 +105,13 @@
 <p>
   Stellen Sie sicher, dass auch anderen Addons wie z.B. check_mk diese Änderungen bekannt sind.</p>
 
-  <a class="indexterm" name="idp15846320"></a>
+  <a class="indexterm" name="idp15908384"></a>
 
-  <a class="indexterm" name="idp15847520"></a>
+  <a class="indexterm" name="idp15909856"></a>
 
-  <a class="indexterm" name="idp15848768"></a>
+  <a class="indexterm" name="idp15910752"></a>
 
-  <a class="indexterm" name="idp15849952"></a>
+  <a class="indexterm" name="idp15911840"></a>
 </div>
 <div class="navfooter">
 <hr>

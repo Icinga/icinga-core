@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.9 Documentation">
 <link rel="up" href="ch08.html" title="Chapter 8. Security and Performance Tuning">
 <link rel="prev" href="perfgraphs.html" title="8.7. Graphing Performance Info With PNP4Nagios">
 <link rel="next" href="ch09.html" title="Chapter 9. Integration With Other Software">
@@ -51,7 +51,8 @@
 <li class="listitem">
       <p>Have a look at the current location of the <a class="link" href="configmain.html#configmain-status_file">status file</a> (e.g.
       <code class="filename">/usr/local/icinga/var/status.dat</code>) and the <a class="link" href="configmain.html#configmain-object_cache_file">object cache file</a>
-      (e.g. <code class="filename">/usr/local/icnga/var/objects.cache</code>) and determine the size of both files.</p>
+      (e.g. <code class="filename">/usr/local/icinga/var/objects.cache</code>) and determine the size of both files. Add the size of the status file
+      for temporary data (<a class="link" href="configmain.html#configmain-temp_file">temp_file</a>).</p>
 <pre class="programlisting"> #&gt; ls -la /usr/local/icinga/var/
  -rw-rw-r--   1 icinga icinga 8.2M Jun 10 11:57 status.dat
  -rw-r--r--   1 icinga icinga 5.9M Jun 10 11:58 objects.cache</pre>
@@ -81,12 +82,15 @@
 <pre class="programlisting">tmpfs                /var/icinga/ramdisk     tmpfs   size=100m        0 0</pre>
     </li>
 <li class="listitem">
-      <p>Edit the Icinga main configuration file and change the setting of the two appropriate directives</p>
+      <p>Edit the Icinga main configuration file and change the setting of the appropriate directives</p>
 <pre class="programlisting"> #object_cache_file=/usr/local/icinga/var/objects.cache
  object_cache_file=/var/icinga/ramdisk/objects.cache
 
  #status_file=/usr/local/icinga/var/status.dat
- status_file=/var/icinga/ramdisk/status.dat</pre>
+ status_file=/var/icinga/ramdisk/status.dat
+
+ #temp_file=/usr/local/icinga/var/icinga.tmp
+ temp_file=/var/icinga/ramdisk/icinga.tmp</pre>
     </li>
 <li class="listitem">
       <p>Restart Icinga to put the changes into effect</p>
@@ -100,13 +104,13 @@
 <p>
   Please make sure that addons like check_mk are aware of this change.</p>
 
-  <a class="indexterm" name="idp15586208"></a>
+  <a class="indexterm" name="idp15648512"></a>
 
-  <a class="indexterm" name="idp15587408"></a>
+  <a class="indexterm" name="idp15650080"></a>
 
-  <a class="indexterm" name="idp15588656"></a>
+  <a class="indexterm" name="idp15650976"></a>
 
-  <a class="indexterm" name="idp15589840"></a>
+  <a class="indexterm" name="idp15652064"></a>
 </div>
 <div class="navfooter">
 <hr>

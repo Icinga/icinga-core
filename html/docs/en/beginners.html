@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Documentation">
+<link rel="home" href="index.html" title="Icinga Version 1.9 Documentation">
 <link rel="up" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="prev" href="ch02.html" title="Chapter 2. Getting Started">
 <link rel="next" href="quickstart.html" title="2.2. Quickstart Installation Guides">
@@ -29,6 +29,7 @@
 <div class="section" title="2.1. Advice for beginners">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="beginners"></a>2.1. <a name="advice_for_beginners"></a>Advice for beginners</h2></div></div></div>
+<div class="toc"><dl><dt><span class="section">2.1.1. <a href="beginners.html#icinga-overview">Icinga Overview</a></span></dt></dl></div>
   
 
   <p>Thanks for choosing Icinga! Icinga is quite powerful and
@@ -105,7 +106,45 @@
       </li>
 </ol></div>
 
-  <a class="indexterm" name="idp156144"></a>
+    <div class="section" title="2.1.1. Icinga Overview">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="icinga-overview"></a>2.1.1. Icinga Overview</h3></div></div></div>
+  
+
+  <p><span class="bold"><strong><a name="icinga_overview"></a>Overview</strong></span></p>
+
+  <p>This section should give you a short overview on what is included and what isn't. It might be incomplete but we're working on
+  that.</p>
+
+  <p>Icinga consists of a core processing results from checks which are initiated by the core (<a class="link" href="activechecks.html" title="5.6. Active Checks">active
+  checks</a>), or delivered from other machines (<a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive checks</a>), deciding if <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a> have to be sent, providing information by writing log files and showing it via a <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">web interface</a>, and several other tasks.</p>
+
+  <p>The core does <span class="emphasis"><em>not</em></span> contain any checks itself but they are executed by <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a>
+  instead. Notifying <a class="link" href="objectdefinitions.html#objectdefinitions-contact">contacts</a> is done by methods provided by the operating system (i.e.
+  sendmail/postfix/..., sms, pager). </p>
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Installation and configuration of plugins, addons, and os related software is mostly beyond the scope of this documentation so
+      please consult the documentation provided by the manufacturer first, use your favourite search engine if that doesn't help, and seek
+      help in forums. Consulting instructions from blogs or other personal stuff you will often find information that is outdated or doesn't
+      fit your environment so try to avoid such sources.</p>
+    </td></tr>
+</table></div>
+<p>Extending the functionality can be accomplished by installing <a class="link" href="addons.html" title="10.1. Icinga Addons">addons</a>. There you will find hints on
+  web-based configuration tools, alternative web interfaces, presenting performance data, notifying contacts, and more.</p>
+
+  <p>The configuration is based on text files and managing them requires just a text editor like vi. <a class="link" href="objectinheritance.html" title="7.26. Object Inheritance">Inheritance</a> using templates simplifies defining objects because it enables you to reduce the definition
+  to a minimum.</p>
+
+  <p>Accessing the information can be done via the cgi-based classic ui, the Icinga-Web ui, or several other interfaces like mentioned in
+  <a class="link" href="addons.html" title="10.1. Icinga Addons">addons</a> as well.</p>
+</div>
+
+  <a class="indexterm" name="idp168464"></a>
 </div>
 <div class="navfooter">
 <hr>

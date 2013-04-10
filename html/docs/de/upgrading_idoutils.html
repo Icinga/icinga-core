@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.9 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="upgrading.html" title="2.9. Icinga aktualisieren">
 <link rel="next" href="monitoring-overview.html" title="2.11. Monitoring-Überblick">
@@ -30,15 +30,16 @@
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="upgrading_idoutils"></a>2.10. <a name="upgrading_idoutils2"></a>IDOUtils-Datenbank aktualisieren</h2></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.10.1. <a href="upgrading_idoutils.html#upgrade1.8">Upgrading IDOUtils to 1.8</a></span></dt>
-<dt><span class="section">2.10.2. <a href="upgrading_idoutils.html#upgrade1.7">Aktualisierung der IDOUtils auf 1.7</a></span></dt>
-<dt><span class="section">2.10.3. <a href="upgrading_idoutils.html#upgrade1.5">Aktualisierung der IDOUtils auf 1.5</a></span></dt>
-<dt><span class="section">2.10.4. <a href="upgrading_idoutils.html#upgrade1.4">Aktualisierung der IDOUtils auf 1.4</a></span></dt>
-<dt><span class="section">2.10.5. <a href="upgrading_idoutils.html#upgrade1.3">Aktualisieren der IDOUtils auf 1.3</a></span></dt>
-<dt><span class="section">2.10.6. <a href="upgrading_idoutils.html#upgrade1.0.3">Aktualisieren der IDOUtils auf 1.0.3</a></span></dt>
-<dt><span class="section">2.10.7. <a href="upgrading_idoutils.html#upgrade1.0.2">Aktualisieren der IDOUtils auf 1.0.2</a></span></dt>
-<dt><span class="section">2.10.8. <a href="upgrading_idoutils.html#upgrade1.0.1">Aktualisieren der IDOUtils auf 1.0.1</a></span></dt>
-<dt><span class="section">2.10.9. <a href="upgrading_idoutils.html#upgrade1.0">Aktualisieren der IDOUtils auf 1.0</a></span></dt>
+<dt><span class="section">2.10.1. <a href="upgrading_idoutils.html#upgrade1.9">Upgrading IDOUtils to 1.9</a></span></dt>
+<dt><span class="section">2.10.2. <a href="upgrading_idoutils.html#upgrade1.8">Upgrading IDOUtils to 1.8</a></span></dt>
+<dt><span class="section">2.10.3. <a href="upgrading_idoutils.html#upgrade1.7">Aktualisierung der IDOUtils auf 1.7</a></span></dt>
+<dt><span class="section">2.10.4. <a href="upgrading_idoutils.html#upgrade1.5">Aktualisierung der IDOUtils auf 1.5</a></span></dt>
+<dt><span class="section">2.10.5. <a href="upgrading_idoutils.html#upgrade1.4">Aktualisierung der IDOUtils auf 1.4</a></span></dt>
+<dt><span class="section">2.10.6. <a href="upgrading_idoutils.html#upgrade1.3">Aktualisieren der IDOUtils auf 1.3</a></span></dt>
+<dt><span class="section">2.10.7. <a href="upgrading_idoutils.html#upgrade1.0.3">Aktualisieren der IDOUtils auf 1.0.3</a></span></dt>
+<dt><span class="section">2.10.8. <a href="upgrading_idoutils.html#upgrade1.0.2">Aktualisieren der IDOUtils auf 1.0.2</a></span></dt>
+<dt><span class="section">2.10.9. <a href="upgrading_idoutils.html#upgrade1.0.1">Aktualisieren der IDOUtils auf 1.0.1</a></span></dt>
+<dt><span class="section">2.10.10. <a href="upgrading_idoutils.html#upgrade1.0">Aktualisieren der IDOUtils auf 1.0</a></span></dt>
 </dl></div>
   
 
@@ -52,12 +53,20 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-    <p>Seit 1.8 finden Sie neue Konfigurationsoptionen, die in einer neuen Version hinzugefügt wurden, in <code class="filename">module/idoutils/config/updates</code>,
-    z.B. <code class="filename">ido2db.cfg_added_1.7_to_1.8.cfg</code>.
-    </p>
+    <p>Seit 1.9 ist die Direktive <code class="literal">enable_sla</code> in <code class="filename">ido2db.cfg</code> veraltet.</p>
   </td></tr>
 </table></div>
 
+  <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>Seit 1.8 finden Sie neue Konfigurationsoptionen, die in einer neuen Version hinzugefügt wurden, in
+    <code class="filename">module/idoutils/config/updates</code>, z.B. <code class="filename">ido2db.cfg_added_1.7_to_1.8.cfg</code>.</p>
+  </td></tr>
+</table></div>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -71,7 +80,7 @@
 </table></div>
 
   <p>Die Update-Dateien finden Sie zusammen mit den Datenbank-Installationsdateien in
-  <code class="code">/path/to/icinga-src/module/idoutils/db/DeineDB/</code></p>
+  <code class="code">/path/to/icinga-src/module/idoutils/db/DeineDB/upgrade</code></p>
 
   <p>Die Syntax ist wie folgt</p>
 
@@ -111,26 +120,37 @@
   <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
       <p><span class="bold"><strong>MySQL:</strong></span> </p>
-<pre class="programlisting"> $ mysql -u root -p &lt;dbname&gt; &lt; /path/to/icinga-src/module/idoutils/db/mysql/mysql-upgrade-&lt;version&gt;.sql</pre>
+<pre class="programlisting"> $ mysql -u root -p &lt;dbname&gt; &lt; /path/to/icinga-src/module/idoutils/db/mysql/upgrade/mysql-upgrade-&lt;version&gt;.sql</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>PostgreSQL:</strong></span> </p>
 <pre class="programlisting"> # su - postgres
- $ psql -U icinga -d icinga &lt; /path/to/icinga-src/module/idoutils/db/pgsql/pgsql-upgrade-&lt;version&gt;.sql</pre>
+ $ psql -U icinga -d icinga &lt; /path/to/icinga-src/module/idoutils/db/pgsql/upgrade/pgsql-upgrade-&lt;version&gt;.sql</pre>
     </li>
 <li class="listitem">
       <p><span class="bold"><strong>Oracle:</strong></span> </p>
 <pre class="programlisting"> # su - oracle
+ $ cd /path/to/icinga-src/module/idoutils/db/oracle/upgrade
  $ sqlplus dbuser/dbpass
  SQL&gt; @oracle-upgrade-&lt;version&gt;.sql</pre>
     </li>
 </ul></div>
 
-  <a class="indexterm" name="idp1018576"></a>
+  <a class="indexterm" name="idp1040192"></a>
 
-  <div class="section" title="2.10.1. Upgrading IDOUtils to 1.8">
+  <div class="section" title="2.10.1. Upgrading IDOUtils to 1.9">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgrade1.8"></a>2.10.1. Upgrading IDOUtils to 1.8</h3></div></div></div>
+<a name="upgrade1.9"></a>2.10.1. Upgrading IDOUtils to 1.9</h3></div></div></div>
+    
+
+    <p>Seit 1.9 ist die Direktive <code class="literal">enable_sla</code> in <code class="filename">ido2db.cfg</code> veraltet.</p>
+
+    <p>Bitte lesen Sie auch den Abschnitt "CHANGES" in <code class="filename">changelog</code>.</p>
+  </div>
+
+  <div class="section" title="2.10.2. Upgrading IDOUtils to 1.8">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="upgrade1.8"></a>2.10.2. Upgrading IDOUtils to 1.8</h3></div></div></div>
     
 
     <p>Es gibt wichtige Korrekturen für redundante Indizes in MySQL, sowie fehlende Indizies generell für bessere Performance (z.B. in
@@ -140,9 +160,9 @@
     <p>Bitte lesen Sie auch den Abschnitt "CHANGES" in <code class="filename">changelog</code>.</p>
   </div>
 
-  <div class="section" title="2.10.2. Aktualisierung der IDOUtils auf 1.7">
+  <div class="section" title="2.10.3. Aktualisierung der IDOUtils auf 1.7">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgrade1.7"></a>2.10.2. Aktualisierung der IDOUtils auf 1.7</h3></div></div></div>
+<a name="upgrade1.7"></a>2.10.3. Aktualisierung der IDOUtils auf 1.7</h3></div></div></div>
     
 
     <p><span class="color"><font color="red">Beginnend mit Icinga 1.7 wurden Ort und Name der idomod shared-Library von
@@ -155,9 +175,9 @@
     <p>Bitte lesen Sie auch den Abschnitt "CHANGES for users" in <code class="filename">changelog</code>.</p>
   </div>
 
-  <div class="section" title="2.10.3. Aktualisierung der IDOUtils auf 1.5">
+  <div class="section" title="2.10.4. Aktualisierung der IDOUtils auf 1.5">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgrade1.5"></a>2.10.3. Aktualisierung der IDOUtils auf 1.5</h3></div></div></div>
+<a name="upgrade1.5"></a>2.10.4. Aktualisierung der IDOUtils auf 1.5</h3></div></div></div>
     
 
     <p><span class="bold"><strong>Oracle</strong></span></p>
@@ -191,9 +211,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.10.4. Aktualisierung der IDOUtils auf 1.4">
+  <div class="section" title="2.10.5. Aktualisierung der IDOUtils auf 1.4">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgrade1.4"></a>2.10.4. Aktualisierung der IDOUtils auf 1.4</h3></div></div></div>
+<a name="upgrade1.4"></a>2.10.5. Aktualisierung der IDOUtils auf 1.4</h3></div></div></div>
     
 
     <p><span class="bold"><strong>Oracle</strong></span></p>
@@ -256,9 +276,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.10.5. Aktualisieren der IDOUtils auf 1.3">
+  <div class="section" title="2.10.6. Aktualisieren der IDOUtils auf 1.3">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgrade1.3"></a>2.10.5. Aktualisieren der IDOUtils auf 1.3</h3></div></div></div>
+<a name="upgrade1.3"></a>2.10.6. Aktualisieren der IDOUtils auf 1.3</h3></div></div></div>
     
 
     <p>Mit IDOUtils 1.3 wird die Verwendung der Tabelle dbversion im IDOUtils Schema wieder eingeführt. Das Aktualisierungsskript
@@ -284,9 +304,9 @@
 </table></div>
   </div>
 
-  <div class="section" title="2.10.6. Aktualisieren der IDOUtils auf 1.0.3">
+  <div class="section" title="2.10.7. Aktualisieren der IDOUtils auf 1.0.3">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgrade1.0.3"></a>2.10.6. Aktualisieren der IDOUtils auf 1.0.3</h3></div></div></div>
+<a name="upgrade1.0.3"></a>2.10.7. Aktualisieren der IDOUtils auf 1.0.3</h3></div></div></div>
     
 
     <p>Es gab ein paar kleinere Änderungen:</p>
@@ -306,9 +326,9 @@
     <p>Bitte verwenden Sie das Update-Skript für ihre Datenbank wie oben beschrieben.</p>
   </div>
 
-  <div class="section" title="2.10.7. Aktualisieren der IDOUtils auf 1.0.2">
+  <div class="section" title="2.10.8. Aktualisieren der IDOUtils auf 1.0.2">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgrade1.0.2"></a>2.10.7. Aktualisieren der IDOUtils auf 1.0.2</h3></div></div></div>
+<a name="upgrade1.0.2"></a>2.10.8. Aktualisieren der IDOUtils auf 1.0.2</h3></div></div></div>
     
 
     <p>Es gab einen signifikanten Bug in den IDOUtils, der erst in Icinga 1.0.2 bereinigt werden konnte.</p>
@@ -348,9 +368,9 @@
     <p>* mysql-upgrade-1.0.2.sql</p>
   </div>
 
-  <div class="section" title="2.10.8. Aktualisieren der IDOUtils auf 1.0.1">
+  <div class="section" title="2.10.9. Aktualisieren der IDOUtils auf 1.0.1">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgrade1.0.1"></a>2.10.8. Aktualisieren der IDOUtils auf 1.0.1</h3></div></div></div>
+<a name="upgrade1.0.1"></a>2.10.9. Aktualisieren der IDOUtils auf 1.0.1</h3></div></div></div>
     
 
     <p>Bitte vergewissern Sie sich, dass Sie bereits auf Icinga IDOUtils 1.0 aktualisiert haben, bevor Sie diesen Abschnitt
@@ -413,9 +433,9 @@
 </ul></div>
   </div>
 
-  <div class="section" title="2.10.9. Aktualisieren der IDOUtils auf 1.0">
+  <div class="section" title="2.10.10. Aktualisieren der IDOUtils auf 1.0">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="upgrade1.0"></a>2.10.9. Aktualisieren der IDOUtils auf 1.0</h3></div></div></div>
+<a name="upgrade1.0"></a>2.10.10. Aktualisieren der IDOUtils auf 1.0</h3></div></div></div>
     
 
     <p>Es gab einen Unique-Key-Fehler durch den Fork, der bei einigen Tabellen zu doppelten und nutzlosen Zeilen führt. Dies betrifft die

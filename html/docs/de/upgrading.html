@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="../stylesheets/icinga-docs.css" type="text/css">
 <meta name="generator" content="DocBook XSL Stylesheets V1.75.1">
 <meta name="keywords" content="Supervision, Icinga, Nagios, Linux">
-<link rel="home" href="index.html" title="Icinga Version 1.8 Dokumentation">
+<link rel="home" href="index.html" title="Icinga Version 1.9 Dokumentation">
 <link rel="up" href="ch02.html" title="Kapitel 2. Los geht's">
 <link rel="prev" href="howtos.html" title="2.8. Links zu weiteren Howtos">
 <link rel="next" href="upgrading_idoutils.html" title="2.10. IDOUtils-Datenbank aktualisieren">
@@ -52,17 +52,15 @@
     absichern) oder Sie setzen keep_unknown_macros=1 in der <code class="filename">icinga.cfg</code>-Datei, um zum alten Verhalten
     zurückzukehren.</p>
 
-    <p>
-	Die klassische GUI (Classic UI) liefert kein WAP Interface (statuswml.cgi) sowie keine 3D Statusmap (statuswrl.cgi) mehr mit, weil diese nicht mehr aktiv
-	weiterentwickelt und verwendet werden. Aus diesem Grund wurden auch die Hostkonfigurationsattribute "vrml_image" und "3dcoords" als veraltet markiert.
-    </p> 
-
+    <p>Die klassische GUI (Classic UI) liefert kein WAP Interface (statuswml.cgi) sowie keine 3D Statusmap (statuswrl.cgi) mehr mit, weil
+    diese nicht mehr aktiv weiterentwickelt und verwendet werden. Aus diesem Grund wurden auch die Hostkonfigurationsattribute "vrml_image"
+    und "3dcoords" als veraltet markiert.</p>
 
     <p>Bitte werfen Sie auch einen Blick in den Abschnitt "CHANGES" in der Datei <code class="filename">changelog</code>.</p>
   </td></tr>
 </table></div>
 
-  <a class="indexterm" name="idp886112"></a>
+  <a class="indexterm" name="idp903776"></a>
 
   <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
 <tr>
@@ -127,7 +125,7 @@
 
     <p>Das war's - Sie sind fertig!</p>
 
-    <a class="indexterm" name="idp900944"></a>
+    <a class="indexterm" name="idp916928"></a>
   </div>
 
   <div class="section" title="2.9.2. Upgrade von Nagios 3.x">
@@ -139,28 +137,17 @@
 
     <p>Falls Sie einen Upgrade von Nagios-Version 3.0.x durchführen, dann fehlt Ihnen ggf. PHP.</p>
 
-    <p>
-      <span class="emphasis"><em>Debian / Ubuntu</em></span>
-
-      </p>
+    <p><span class="emphasis"><em>Debian / Ubuntu</em></span> </p>
 <pre class="programlisting"> #&gt; apt-get install php5 libapache2-mod-php5</pre>
-<p>
-    </p>
 
-    <p>
-      <span class="emphasis"><em>Fedora / RedHat</em></span>
-    </p>
+    <p><span class="emphasis"><em>Fedora / RedHat</em></span></p>
 
     <pre class="programlisting"> #&gt; yum install php mod_php</pre>
 
     <p><span class="emphasis"><em>openSuSE / SLES:</em></span> Nutzen Sie yast zur Installation der Pakete <span class="emphasis"><em>php5</em></span> und
     <span class="emphasis"><em>apache2-mod_php5</em></span> oder benutzen Sie zypper</p>
 
-    <p>
-      </p>
-<pre class="programlisting"> #&gt; zypper install php5 apache2-mod_php5</pre>
-<p>
-    </p>
+    <pre class="programlisting"> #&gt; zypper install php5 apache2-mod_php5</pre>
 
     <p>Stellen Sie sicher, dass Sie eine gute Datensicherung Ihrer bestehenden Nagios-Installation und der Konfigurationsdateien
     haben. Wenn irgendetwas schief geht oder nicht funktioniert, dann können Sie auf diese Weise schnell Ihre alte Nagios-Version
@@ -194,12 +181,12 @@
 
     <p>Holen Sie sich das Quellcode-Archiv der letzten Icinga-Version (besuchen Sie <a class="link" href="http://www.icinga.org//" target="_top">http://www.icinga.org/</a> für den Verweis auf die letzte Version).</p>
 
-    <pre class="programlisting"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><strong>1.8</strong></span>.tar.gz</pre>
+    <pre class="programlisting"> #&gt; wget http://osdn.dl.sourceforge.net/sourceforge/icinga/icinga-<span class="emphasis"><strong>1.9</strong></span>.tar.gz</pre>
 
     <p>Entpacken Sie das Quellcode-Archiv.</p>
 
-    <pre class="programlisting"> #&gt; tar xzf icinga-<span class="emphasis"><strong>1.8</strong></span>.tar.gz
- #&gt; cd icinga-<span class="emphasis"><strong>1.8</strong></span> </pre>
+    <pre class="programlisting"> #&gt; tar xzf icinga-<span class="emphasis"><strong>1.9</strong></span>.tar.gz
+ #&gt; cd icinga-<span class="emphasis"><strong>1.9</strong></span> </pre>
 
     <p>Starten Sie das Icinga-configure-Script mit den Optionen, die Sie beim <code class="code">./configure</code> von Nagios benutzt
     haben. Den Aufruf finden Sie in der Datei <code class="filename">config.log</code>. Beispiel:</p>
@@ -242,11 +229,7 @@
         in <code class="filename">/usr/local/icinga/etc/icinga.cfg</code> die Namen der Direktiven "nagios_user" in "icinga_user" und "nagios_group" in
         "icinga_group". Das betrifft ggf. auch die Pfade in der Datei.</p>
 
-        <p>
-          </p>
-<pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./icinga.cfg/</pre>
-<p>
-        </p>
+        <pre class="programlisting"> #&gt; sed -i 's/nagios/icinga/g' ./icinga.cfg/</pre>
       </li>
 <li class="listitem">
         <p>Ändern Sie in der CGI-Konfigurationsdatei <code class="filename">cgi.cfg</code> die Pfad-Angaben.</p>
@@ -294,11 +277,11 @@
       </li>
 </ul></div>
 
-    <a class="indexterm" name="idp951840"></a>
+    <a class="indexterm" name="idp969488"></a>
 
-    <a class="indexterm" name="idp953664"></a>
+    <a class="indexterm" name="idp971024"></a>
 
-    <a class="indexterm" name="idp955088"></a>
+    <a class="indexterm" name="idp972896"></a>
   </div>
 
   <div class="section" title="2.9.3. Upgrade von Nagios 2.x">
@@ -306,9 +289,9 @@
 <a name="upgradenagios2x"></a>2.9.3. Upgrade von Nagios 2.x</h3></div></div></div>
     
 
-    <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.8 zu aktualisieren. Die Aktualisierung
+    <p>Es sollte nicht allzu schwierig sein, von Nagios 2.x auf Icinga 1.9 zu aktualisieren. Die Aktualisierung
     ist im Wesentlichen die gleiche wie die von bestehenden Nagios 3.x-Versionen. Allerdings müssen Sie Ihre Konfigurationsdateien
-    ein wenig ändern, damit sie mit Icinga 1.8 funktionieren:</p>
+    ein wenig ändern, damit sie mit Icinga 1.9 funktionieren:</p>
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
@@ -346,7 +329,7 @@
       </li>
 </ul></div>
 
-    <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="1.2. What's New in Icinga 1.8">Was gibt's Neues</a>"-Abschnitt in der Dokumentation lesen.
+    <p>Stellen Sie außerdem sicher, dass Sie den "<a class="link" href="whatsnew.html" title="1.2. What's New in Icinga 1.9">Was gibt's Neues</a>"-Abschnitt in der Dokumentation lesen.
     Er beschreibt all die Änderungen am Icinga-Code.</p>
   </div>
 
@@ -365,13 +348,9 @@
 <li class="listitem">
         <p>Konfigurationsdateien</p>
 
-        <p>
-          </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
+        <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-              <p>
-                </p>
-<div class="itemizedlist"><ul class="itemizedlist" type="circle">
+              <div class="itemizedlist"><ul class="itemizedlist" type="circle">
 <li class="listitem">
                     <p>Hauptkonfigurationsdatei (normalerweise <code class="filename">nagios.cfg</code>)</p>
                   </li>
@@ -385,8 +364,6 @@
                     <p>all Ihre Objektdefinitionsdateien</p>
                   </li>
 </ul></div>
-<p>
-              </p>
             </li>
 <li class="listitem">
               <p>Aufbewahrungsdatei (normalerweise <code class="filename">retention.dat</code>)</p>
@@ -398,8 +375,6 @@
               <p>archivierte Nagios-Protokolldateien</p>
             </li>
 </ul></div>
-<p>
-        </p>
       </li>
 <li class="listitem">
         <p>Deinstallieren Sie die originalen RPM- oder APT-Pakete</p>
@@ -425,7 +400,7 @@
     installieren. Stellen Sie sicher, dass Sie all Ihre kritischen Nagios-Dateien gesichert haben, bevor Sie das Original-RPM- oder
     APT-Paket entfernen, so dass Sie darauf zurückgreifen können, wenn Sie auf Probleme stoßen.</p>
 
-    <a class="indexterm" name="idp996096"></a>
+    <a class="indexterm" name="idp1016816"></a>
   </div>
 </div>
 <div class="navfooter">
