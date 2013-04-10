@@ -817,6 +817,26 @@ Alias /icinga-web /usr/local/icinga-web/pub
 <li class="listitem">
         <p>.htaccess/vhost config =&gt; paths not correct?</p>
       </li>
+<li class="listitem">
+        <p>"I cannot see my newly installed cronk?" or "after upgrade, I cannot access the reporting cronk"</p>
+
+        <p>Starting with 1.8.2, a new session cache was added which may cause irritations when upgrading icinga web / installing a new
+        cronk or module. The resolution is rather simple</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+            <p>clear the xml cache</p>
+          </li>
+<li class="listitem">
+            <p>reset the users application state (top right corner -&gt; preferences)</p>
+          </li>
+<li class="listitem">
+            <p>logout and re-login (top right corner)</p>
+
+            <p><span class="inlinemediaobject"><img src="../images/icinga-web-user-prefs-logout.png"></span></p>
+          </li>
+</ul></div>
+      </li>
 </ul></div>
 
     <p>Icinga Web does not show any data?</p>
@@ -944,11 +964,11 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>If you have any updates on that please do not hesitate to report back! :-)</p>
 
-    <a class="indexterm" name="idp12195024"></a>
+    <a class="indexterm" name="idp12201840"></a>
 
-    <a class="indexterm" name="idp12196288"></a>
+    <a class="indexterm" name="idp12203488"></a>
 
-    <a class="indexterm" name="idp12197296"></a>
+    <a class="indexterm" name="idp12201968"></a>
   </div>
 </div>
 <div class="navfooter">

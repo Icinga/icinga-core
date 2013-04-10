@@ -809,11 +809,37 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>Icinga-Web zeigt eine leere Seite?</p>
 
-    <div class="itemizedlist"><ul class="itemizedlist" type="disc"><li class="listitem">
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
         <p>Apache Errors Logs =&gt; mod_rewrite enabled, PHP-Abhängigkeiten ok? 'make testdeps'. Bei Debian gibt es u.a. die folgende
         Fehlermeldung: ".htaccess: Invalid command 'RewriteEngine', perhaps misspelled or defined by a module not included in the server
         configuration"</p>
-      </li></ul></div>
+      </li>
+<li class="listitem">
+        <p>.htaccess/VHost-Konfiguration =&gt; Pfade nicht korrekt? Icinga-Web zeigt keine Daten?</p>
+      </li>
+<li class="listitem">
+        <p>"Ich kann meinen neu installierten Cronk nicht sehen" oder "nach einem Update kann ich nicht auf das Reporting-Cronk
+        zugreifen"</p>
+
+        <p>Beginnend mit 1.8.2 gibt es einen neuen Session-Cache, der beim Update von Icinga-Web bzw. der Installation eines neuen Cronks
+        oder Moduls ggf. zu Irritationen führen kann. Die Lösung ist recht einfach</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+            <p>Löschen Sie den xml-Cache</p>
+          </li>
+<li class="listitem">
+            <p>Zurücksetzen des Applikationszustands des Benutzers (rechte obere Ecke -&gt; Preferences)</p>
+          </li>
+<li class="listitem">
+            <p>Abmelden und neu anmelden (rechte obere Ecke)</p>
+
+            <p><span class="inlinemediaobject"><img src="../images/icinga-web-user-prefs-logout.png"></span></p>
+          </li>
+</ul></div>
+      </li>
+</ul></div>
 
     <p>Icinga Web - Login erfolgt- aber die Seite lädt und lädt...</p>
 
@@ -821,9 +847,6 @@ Alias /icinga-web /usr/local/icinga-web/pub
 <li class="listitem">
         <p>Request failed, Ressource /icinga-web/appkit/ext/application State could not be loaded - is the url correct? =&gt; mod_rewrite
         enabled ?</p>
-      </li>
-<li class="listitem">
-        <p>.htaccess/VHost-Konfiguration =&gt; Pfade nicht korrekt? Icinga-Web zeigt keine Daten?</p>
       </li>
 <li class="listitem">
         <p>Datenbankzugriff verweigert =&gt; Überprüfen Sie, ob die Datenbankeinstellungen für Icinga-Web korrekt sind.</p>
@@ -947,9 +970,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
 
-    <a class="indexterm" name="idp12392688"></a>
+    <a class="indexterm" name="idp12399280"></a>
 
-    <a class="indexterm" name="idp12394112"></a>
+    <a class="indexterm" name="idp12401760"></a>
   </div>
 </div>
 <div class="navfooter">
