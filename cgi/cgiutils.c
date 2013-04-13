@@ -756,18 +756,29 @@ int read_cgi_config_file(char *filename) {
 
 	if (!strcmp(main_config_file, "")) {
 
-		//	If standalone_installation is switched on, we assume that
-		//	all vars are defined in cgi.cfg
 		if (standalone_installation == TRUE) {
+			/*
+			 * if standalone_installation is switched on, we assume that
+			 * all vars are defined in cgi.cfg
+			 */
 			strncpy(main_config_file, filename, sizeof(main_config_file));
 			main_config_file[sizeof(main_config_file) - 1] = '\x0';
 
-		//	If not, we assume default location for main_config_file
+			/*
+			 * If not, we assume default location for main_config_file
+			 */
 		} else {
 			strncpy(main_config_file, DEFAULT_CONFIG_FILE, sizeof(main_config_file));
 			main_config_file[sizeof(main_config_file) - 1] = '\x0';
 		}
 	}
+
+	/* if we are standalone install, we force to use cgi.cfg instead of icinga.cfg! */
+	if (standalone_installation == TRUE) {
+		strncpy(main_config_file, filename, sizeof(main_config_file));
+		main_config_file[sizeof(main_config_file) - 1] = '\x0';
+	}
+
 
 	return OK;
 }
