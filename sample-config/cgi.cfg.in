@@ -28,7 +28,7 @@ main_config_file=@sysconfdir@/icinga.cfg
 # NOTE: Check also the "Icinga 2 section" at the bottom if
 #       this is switched on!
 
-standalone_installation=0
+standalone_installation=@CLASSICUI_STANDALONE_FLAG@
 
 
 

@@ -127,6 +127,8 @@ CHANGES
 	** this is important when installing standalone classic ui for e.g. Icinga2
 * install: make install-webconf installs htpasswd.users, allowing default icingaadmin login out-of-the-box #3963
 	** can be invoked with install-webconf-auth standalone too
+* install: add --enable-classicui-standalone #3869
+	** sets cgi.cfg standalone_installation=1
 
 
 1.8.4 - 13/01/2013

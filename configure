@@ -647,6 +647,7 @@ ido2db_name
 icingastats_name
 icinga_name
 LIBDBIDRIVERDIR
+CLASSICUI_STANDALONE_FLAG
 DBLIBS
 IDO_INSTANCE_NAME
 BROKER_H
@@ -817,6 +818,7 @@ with_pgsql_lib
 with_psql_inc
 with_dbi_lib
 with_dbi_inc
+enable_classicui_standalone
 with_libdbi_driver_dir
 enable_embedded_perl
 with_perlcache
@@ -1459,6 +1461,8 @@ Optional Features:
   --enable-oracle         enables idoutils with ocilib and oracle
   --enable-pgsql          !use libdbis pgsql support instead, libpq not yet
                           implemented! enables idoutils with libpq and pgsql
+  --enable-classicui-standalone
+                          enables standalone Classic UI (default: disabled)
   --enable-embedded-perl  will enable embedded Perl interpreter
   --enable-cygwin         enables building under the CYGWIN environment
   --enable-libtap         this is deprecated, libtap is built with make test
@@ -6768,6 +6772,22 @@ _ACEOF
 
 	fi
 fi
+
+CLASSICUI_STANDALONE=no
+# Check whether --enable-classicui-standalone was given.
+if test "${enable_classicui_standalone+set}" = set; then :
+  enableval=$enable_classicui_standalone; CLASSICUI_STANDALONE=$enableval
+else
+  CLASSICUI_STANDALONE=no
+fi
+
+if test x$CLASSICUI_STANDALONE = xyes; then
+	CLASSICUI_STANDALONE_FLAG="1"
+fi
+if test x$CLASSICUI_STANDALONE = xno; then
+	CLASSICUI_STANDALONE_FLAG="0"
+fi
+
 
 LIBDBIDRIVERDIR=no
 

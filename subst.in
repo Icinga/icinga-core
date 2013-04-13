@@ -44,6 +44,7 @@ while ($f = shift @ARGV) {
 		s|\@IDO_INSTANCE_NAME\@|@IDO_INSTANCE_NAME@|g;
 		s|\@CHECKRESULTDIR\@|@CHECKRESULTDIR@|g;
 		s|\@LIBDBIDRIVERDIR\@|@LIBDBIDRIVERDIR@|g;
+		s|\@CLASSICUI_STANDALONE_FLAG\@|@CLASSICUI_STANDALONE_FLAG@|g;
 		s|\@datadir\@|@datarootdir@|g;
 		s|\@sbindir\@|@sbindir@|g;
 		s|\@bindir\@|@bindir@|g;
