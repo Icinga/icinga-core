@@ -46,6 +46,7 @@ ENHANCEMENTS
 * install: set --enable-idoutils/event-broker to true as default configure flags #3813 - MF
 * install: add lighttp config samples to contrib/lighttp #2253 - RB
 * install: add --with-httpd-conf-file to allow specific apache config to be installed #3962 - MF
+* install: make install-webconf should install htpasswd.users automatically, allowing default icingaadmin login out-of-the-box #3963 - MF
 
 * docs: Temporary files should mention temp_file option in icinga.cfg #3748 - WN
 
@@ -124,6 +125,8 @@ CHANGES
 * install: set --enable-idoutils/event-broker to true as default configure flags #3813
 * install: add --with-httpd-conf-file to allow specific apache config to be installed #3962
 	** this is important when installing standalone classic ui for e.g. Icinga2
+* install: make install-webconf installs htpasswd.users, allowing default icingaadmin login out-of-the-box #3963
+	** can be invoked with install-webconf-auth standalone too
 
 
 1.8.4 - 13/01/2013

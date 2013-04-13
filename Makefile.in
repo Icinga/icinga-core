@@ -50,6 +50,7 @@ INSTALL_OPTS_WEB=@INSTALL_OPTS_WEB@
 COMMAND_OPTS=@COMMAND_OPTS@
 HTTPD_CONF=@HTTPD_CONF@
 HTTPDCONFFILE=@HTTPDCONFFILE@
+HTTPAUTHFILE=@HTTPAUTHFILE@
 INIT_DIR=@init_dir@
 INIT_OPTS=@INIT_OPTS@
 CGICFGDIR=$(CGIDIR)
@@ -110,7 +111,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-cgis" "install classical web"
 	@printf "\t%-23s - %s\n" "install-html" "install html files"
 	@printf "\t%-23s - %s\n" "install-config" "install sample config"
-	@printf "\t%-23s - %s\n" "install-webconf" "install apache config for classical web"
+	@printf "\t%-23s - %s\n" "install-webconf" "install apache config and http auth file for Classic UI"
 	@printf "\t%-23s - %s\n" "install-init" "install init script"
 	@printf "\t%-23s - %s\n" "install-commandmode" "install external command file"
 	@printf "\t%-23s - %s\n" "install-idoutils" "install idoutils module"
@@ -169,8 +170,8 @@ all:
 	@echo "       things get monitored!"
 	@echo ""
 	@echo "  make install-webconf"
-	@echo "     - This installs the Apache config file for the classical"
-	@echo "       Icinga web interface"
+	@echo "     - This installs the Apache config file and http auth file for"
+	@echo "       the Icinga Classic UI"
 	@echo ""
 	@echo ""
 	@echo "*** Support Notes *******************************************"
@@ -402,7 +403,7 @@ install-basic:
 	@echo "     - This installs sample config files in $(DESTDIR)$(CFGDIR)"
 	@echo ""
 	@echo "  make install-webconf"
-	@echo "     - This installs the Apache config file for the web interface"
+	@echo "     - This installs the Apache config file and http auth file for the Classic UI"
 	@echo ""
 	@echo ""
 	@echo "*** Make sure to check Changelog for introduced changes! ***"
@@ -444,13 +445,22 @@ install-testconfig:
 	do $(INSTALL) -b -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(CFGDIR)/tests; done
 
 
-install-webconf:
+install-webconf: install-webconf-auth
 	$(MKDIR) -p -m 775 $(DESTDIR)$(HTTPD_CONF)
 	$(INSTALL) -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPDCONFFILE)
 
 	@echo ""
 	@echo "*** Icinga/Apache conf file installed ***"
 	@echo ""
+
+install-webconf-auth:
+
+	$(INSTALL) -m 644 icinga.htpasswd $(DESTDIR)$(HTTPAUTHFILE)
+
+	@echo ""
+	@echo "*** Icinga http auth file installed ***"
+	@echo ""
+
 
 install-idoutils:
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
