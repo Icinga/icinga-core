@@ -22,11 +22,14 @@ main_config_file=@sysconfdir@/icinga.cfg
 
 
 # STANDALONE INSTALLATION
-# This is only usefull in an Icinga 2 setup. If you installed
+# This is only useful in an Icinga 2 setup (or any other setup
+# containing multiple Classic UI installs). If you have installed
 # Icinga 2 with compat layer and classic-ui, you can set this
 # to 1. Otherwise leave it at 0.
-# NOTE: Check also the "Icinga 2 section" at the bottom if
-#       this is switched on!
+# Enabling this option ignores main_config_file setting.
+#
+# NOTE: Check also the "Standalone (Icinga2) section" at the bottom
+# if this option is switched on!
 
 standalone_installation=@CLASSICUI_STANDALONE_FLAG@
 
@@ -818,16 +821,18 @@ tab_friendly_titles=1
 
 ######################################
 #
-#    ICINGA 2 COMPAT OPTIONS
+#    STANDALONE (ICINGA 2) OPTIONS
+#    requires standalone_installation=1
 #
 ######################################
 
 # OBJECT CACHE FILE
 # This option determines where object definitions are cached when
-# Icinga starts/restarts.  The CGIs read object definitions from
+# Icinga starts/restarts. The CGIs read object definitions from
 # this cache file (rather than looking at the object config files
 # directly) in order to prevent inconsistencies that can occur
 # when the config files are modified after Icinga starts.
+# Icinga 2 provides this file through its compat component, if enabled.
 
 object_cache_file=@STATEDIR@/objects.cache
 
@@ -837,7 +842,8 @@ object_cache_file=@STATEDIR@/objects.cache
 # This is where the current status of all monitored services and
 # hosts is stored.  Its contents are read and processed by the CGIs.
 # The contents of the status file are deleted every time Icinga
-#  restarts.
+# restarts.
+# Icinga 2 provides this file through its compat component, if enabled.
 
 status_file=@STATEDIR@/status.dat
 
@@ -863,6 +869,7 @@ resource_file=@sysconfdir@/resource.cfg
 # is running as (usually 'nobody').  Permissions should be set at the
 # directory level instead of on the file, as the file is deleted every
 # time its contents are processed.
+# Icinga 2 provides this file through its compat component, if enabled.
 
 command_file=@EXTCMDFILEDIR@/icinga.cmd
 
@@ -905,6 +912,7 @@ status_update_interval=10
 # This is the main log file where service and host events are logged
 # for historical purposes.  This should be the first option specified
 # in the config file!!!
+# Icinga 2 provides this file through its compat component, if enabled.
 
 log_file=@LOGDIR@/icinga.log
 
@@ -926,6 +934,7 @@ log_rotation_method=d
 # LOG ARCHIVE PATH
 # This is the directory where archived (rotated) log files should be
 # placed (assuming you've chosen to do log rotation).
+# Icinga 2 provides this file through its compat component, if enabled.
 
 log_archive_path=@LOGDIR@/archives
 
