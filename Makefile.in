@@ -55,6 +55,7 @@ INIT_DIR=@init_dir@
 INIT_OPTS=@INIT_OPTS@
 CGICFGDIR=$(CGIDIR)
 PERLDIR=@PERLDIR@
+STATEDIR=@STATEDIR@
 
 ###############################
 # Modules
@@ -100,10 +101,11 @@ none:
 
 	@printf "\nCompile targets:\n"
 	@printf "\t%-23s - %s\n" "icinga" "icinga core"
-	@printf "\t%-23s - %s\n" "cgis" "classical web"
+	@printf "\t%-23s - %s\n" "cgis" "classic ui"
 	@printf "\t%-23s - %s\n" "contrib" "contrib dir"
 	@printf "\t%-23s - %s\n" "modules" "icinga modules"
 	@printf "\t%-23s - %s\n" "idoutils" "icinga idoutils"
+	@printf "\t%-23s - %s\n" "classicui-standalone" "standalone classic ui"
 
 	@printf "\nInstall targets:\n"
 	@printf "\t%-23s - %s\n" "install" "install core, cgis, html"
@@ -118,6 +120,7 @@ none:
 	@printf "\t%-23s - %s\n" "install-eventhandlers" "install sample eventhandlers"
 	@printf "\t%-23s - %s\n" "install-dev-docu" "install doxygen development documentation"
 	@printf "\t%-23s - %s\n" "install-testconfig" "install test config"
+	@printf "\t%-23s - %s\n" "install-classicui-standalone" "install standalone classic ui"
 
 
 # FreeBSD make does not support -C option, so we'll use the Apache style... (patch by Stanley Hopcroft 12/27/1999)
@@ -232,6 +235,13 @@ contrib:
 
 modules:
 	cd $(SRC_MODULE) && $(MAKE)
+
+classicui-standalone: cgis
+
+	@echo ""
+	@echo "Standalone Classic UI CGIs built."
+	@echo "Proceed with 'make install-classicui-standalone'."
+	@echo ""
 
 ###############################
 # Clean
@@ -370,6 +380,7 @@ install-unstripped:
 	$(MAKE) install-basic
 
 install-basic:
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(STATEDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LIBEXECDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)/archives
@@ -411,6 +422,11 @@ install-basic:
 	@echo "    http://docs.icinga.org/latest/en/upgrading.html"
 	@echo ""
 
+install-cgiconf:
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
+	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgi.cfg $(DESTDIR)$(CFGDIR)/cgi.cfg
+	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgiauth.cfg $(DESTDIR)$(CFGDIR)/cgiauth.cfg
+
 
 install-config:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)
@@ -419,8 +435,6 @@ install-config:
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(CFGDIR)/modules
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/icinga.cfg $(DESTDIR)$(CFGDIR)/icinga.cfg
 	$(INSTALL) -b -m 660 $(INSTALL_OPTS) sample-config/resource.cfg $(DESTDIR)$(CFGDIR)/resource.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgi.cfg $(DESTDIR)$(CFGDIR)/cgi.cfg
-	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/cgiauth.cfg $(DESTDIR)$(CFGDIR)/cgiauth.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/templates.cfg $(DESTDIR)$(CFGDIR)/objects/templates.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/commands.cfg $(DESTDIR)$(CFGDIR)/objects/commands.cfg
 	$(INSTALL) -b -m 664 $(INSTALL_OPTS) sample-config/template-object/contacts.cfg $(DESTDIR)$(CFGDIR)/objects/contacts.cfg
@@ -529,6 +543,18 @@ install-eventhandlers:
 	@echo "*** Sample Eventhandlers installed ***"
 	@echo ""
 
+
+install-classicui-standalone: install-cgis install-html install-cgiconf install-webconf
+
+	# make sure we keep all the needed dirs for data
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(STATEDIR)
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)
+	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LOGDIR)/archives
+	$(INSTALL) -m 775 $(COMMAND_OPTS) -d $(DESTDIR)$(EXTCMDFILEDIR)
+
+	@echo ""
+	@echo "*** Icinga Classic UI Standalone installed ***"
+	@echo ""
 
 fullinstall:
 	@if [ x$(USE_IDOUTILS) = xyes ]; then \
