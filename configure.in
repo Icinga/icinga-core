@@ -343,6 +343,14 @@ if test x$HTTPAUTHFILE = xno; then
         fi
 AC_SUBST(HTTPAUTHFILE)
 
+dnl Location of apache conf file
+HTTPDCONFFILE=no
+AC_ARG_WITH(httpd-conf-file,AC_HELP_STRING([--with-httpd-conf-file=<filepath>],[sets path to Icinga HTTPD config file]),HTTPDCONFFILE=$withval,HTTPDCONFFILE=no)
+if test x$HTTPDCONFFILE = xno; then
+                HTTPDCONFFILE="$HTTPD_CONF/icinga.conf"
+        fi
+AC_SUBST(HTTPDCONFFILE)
+
 
 dnl Location of plugin path
 PLUGINDIR=no
@@ -1419,6 +1427,7 @@ AC_MSG_RESULT([          State directory:  $STATEDIR])
 AC_MSG_RESULT([   Ext Cmd file directory:  $EXTCMDFILEDIR])
 AC_MSG_RESULT([           Init directory:  $init_dir])
 AC_MSG_RESULT([  Apache conf.d directory:  $HTTPD_CONF])
+AC_MSG_RESULT([       Apache config file:  $HTTPDCONFFILE])
 AC_MSG_RESULT([             Mail program:  $MAIL_PROG])
 AC_MSG_RESULT([                  Host OS:  $host_os])
 AC_MSG_RESULT([       Environment Prefix:  $env_prefix])
