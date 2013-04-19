@@ -399,6 +399,7 @@ fi
 %{_datadir}/%{name}/ssi
 %{_datadir}/%{name}/stylesheets
 %{_datadir}/%{name}/jquery-ui
+%{_datadir}/%{name}/jquery-ui-addon
 %attr(2775,icinga,icingacmd) %dir %{logdir}/gui
 %attr(664,icinga,icingacmd) %{logdir}/gui/index.htm
 %attr(664,icinga,icingacmd) %{logdir}/gui/.htaccess
