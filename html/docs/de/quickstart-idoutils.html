@@ -387,7 +387,8 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-          <p>Ab Debian 6.0/Ubuntu 10.10 heißen die Pakete libpng12-0 und libdbi0, Debian 6.0 verwendet zudem libdbi0-dev, Debian 7.0 wird hingegen libdbi-dev benötigen.</p>
+          <p>Ab Debian 6.0/Ubuntu 10.10 heißen die Pakete libpng12-0 und libdbi0, Debian 6.0 verwendet zudem libdbi0-dev,
+          Debian 7.0 wird hingegen libdbi-dev benötigen.</p>
         </td></tr>
 </table></div>
 
@@ -956,6 +957,18 @@
     <pre class="programlisting"> #&gt; cd /path/to/icinga-src
  #&gt; make install-webconf</pre>
 
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Ab Icinga 1.9 installiert dieser Befehl zusätzlich die Datei <code class="filename">htpasswd.users</code>, die
+      Anmeldeinformationen für den Benutzer <span class="emphasis"><em>icingaadmin</em></span> enthält, so dass Sie den nächsten Schritt überspringen können.
+      Das Passwort lautet <span class="emphasis"><em>icingaadmin</em></span>.</p>
+    </td></tr>
+</table></div>
+
     <p>Legen Sie ein <span class="emphasis"><em>icingaadmin</em></span>-Konto an, um sich am klassischen Web-Interface anmelden zu können. Merken Sie sich
     das Passwort, das Sie diesem Konto geben - Sie brauchen es später.</p>
 
@@ -1052,7 +1065,6 @@
     <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
  #&gt; chcon -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/icinga.cmd</pre>
-
   </div>
 
   <div class="section" title="2.5.15. IDOUtils und Icinga starten">
@@ -1091,13 +1103,12 @@
         <pre class="programlisting"> #&gt; /etc/init.d/ido2db stop</pre>
       </li>
 </ul></div>
+  </div>
 
-    </div>
-
-    <div class="section" title="2.5.16. Automatischer Start von IDOUtils">
+  <div class="section" title="2.5.16. Automatischer Start von IDOUtils">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="configstartup"></a>2.5.16. Automatischer Start von IDOUtils</h3></div></div></div>
-	    
+    
 
     <p>Fügen Sie IDOUtils zu der Liste der System-Services hinzu und sorgen Sie für einen automatischen Start, wenn das System
     hochfährt (stellen Sie sicher, dass Sie vorher das Init-Script installiert haben).</p>
@@ -1174,8 +1185,8 @@
 
     <p>Die Konfiguration von e-Mail-Benachrichtigungen ist nicht Gegenstand dieser Anleitung. Icinga ist konfiguriert, um
     e-Mail-Benachrichtigungen zu versenden, aber möglicherweise ist auf Ihrem System noch kein Mail-Programm installiert bzw. konfiguriert.
-    Schauen Sie in Ihre Systemdokumentation oder suchen Sie im Web nach genauen Anweisungen, wie Ihr System konfiguriert werden muss, damit es e-Mail-Mitteilungen an
-    externe Adressen versendet. Mehr Informationen zu Benachrichtigungen finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a></p>
+    Schauen Sie in Ihre Systemdokumentation oder suchen Sie im Web nach genauen Anweisungen, wie Ihr System konfiguriert werden muss, damit
+    es e-Mail-Mitteilungen an externe Adressen versendet. Mehr Informationen zu Benachrichtigungen finden Sie <a class="link" href="notifications.html" title="5.11. Benachrichtigungen">hier</a></p>
   </div>
 
   <div class="section" title="2.5.19. Fertig">
@@ -1187,9 +1198,9 @@
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp674784"></a>
+    <a class="indexterm" name="idp807296"></a>
 
-    <a class="indexterm" name="idp676480"></a>
+    <a class="indexterm" name="idp808992"></a>
   </div>
 </div>
 <div class="navfooter">

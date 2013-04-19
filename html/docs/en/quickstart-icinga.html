@@ -413,6 +413,18 @@
 
     <pre class="programlisting"> #&gt; make install-webconf</pre>
 
+    <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Starting with Icinga 1.9 this command additionally installs the file <code class="filename">htpasswd.users</code> which contains
+      credentials for the user <span class="emphasis"><em>icingaadmin</em></span> so you can skip the following step. The password is
+      <span class="emphasis"><em>icingaadmin</em></span>.</p>
+    </td></tr>
+</table></div>
+
     <p>Create an <span class="emphasis"><em>icingaadmin</em></span> account for logging into the Icinga classic web interface. If you want to change it
     later, use the same command. Remember the password you assign to this account - you'll need it later.</p>
 
@@ -494,7 +506,6 @@
     <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
  #&gt; chcon -R -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/</pre>
-
   </div>
 
   <div class="section" title="2.3.11. Start Icinga">
@@ -585,7 +596,7 @@
     <p>You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
     Started"</a> about "Monitoring ..."</p>
 
-    <a class="indexterm" name="idp341168"></a>
+    <a class="indexterm" name="idp468992"></a>
   </div>
 </div>
 <div class="navfooter">

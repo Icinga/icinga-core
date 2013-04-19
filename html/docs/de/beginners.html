@@ -29,7 +29,10 @@
 <div class="section" title="2.1. Hinweise für Neulinge">
 <div class="titlepage"><div><div><h2 class="title" style="clear: both">
 <a name="beginners"></a>2.1. Hinweise für Neulinge</h2></div></div></div>
-<div class="toc"><dl><dt><span class="section">2.1.1. <a href="beginners.html#icinga-overview">Icinga-Überblick</a></span></dt></dl></div>
+<div class="toc"><dl>
+<dt><span class="section">2.1.1. <a href="beginners.html#icinga-overview">Icinga-Überblick</a></span></dt>
+<dt><span class="section">2.1.2. <a href="beginners.html#icinga_gui_comparison">Icinga Web-GUI-Vergleich</a></span></dt>
+</dl></div>
   
 
   <p>Herzlichen Glückwunsch zur Wahl von Icinga! Icinga ist ziemlich mächtig und flexibel, aber es kann viel Arbeit
@@ -128,7 +131,391 @@
   erfolgen, die ebenfalls in <a class="link" href="addons.html" title="10.1. Icinga Addons">Addons</a> genannt werden.</p>
 </div>
 
-  <a class="indexterm" name="idp180432"></a>
+  <div class="section" title="2.1.2. Icinga Web-GUI-Vergleich">
+<div class="titlepage"><div><div><h3 class="title">
+<a name="icinga_gui_comparison"></a>2.1.2. <a name="icinga-gui-comparison"></a>Icinga Web-GUI-Vergleich</h3></div></div></div>
+<div class="toc"><dl>
+<dt><span class="section">2.1.2.1. <a href="beginners.html#idp181344">Icinga-Classic-Web</a></span></dt>
+<dt><span class="section">2.1.2.2. <a href="beginners.html#idp227968">Icinga-New-Web</a></span></dt>
+</dl></div>
+  
+
+  <p>Icinga bietet für Benutzer zwei Web-Interfaces an, um Icinga-Monitoring-Ergebnisse anzusehen und Befehle an den Core zu senden. In
+  Icinga-New- und Classic-Web sind Host- und Service-Status, Historie, Benachrichtungen und Status-Map verfügbar, um einen Überblick über
+  den aktuellen Zustand Ihres Netzwerks zu erhalten. Beide unterstützen sowohl IPv4 als auch IPv6-Adressen.</p>
+
+  <div class="section" title="2.1.2.1. Icinga-Classic-Web">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="idp181344"></a>2.1.2.1. Icinga-Classic-Web</h4></div></div></div>
+    <a name="icinga_gui_classic"></a>
+
+    
+
+    <p>Traditional im Design ist dies Icingas Benutzer-Interface für diejenigen, die das bekannte Ein-Fenster-Format wie in Nagios mögen,
+    kombiniert mit coolen Ergänzungen:</p>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>JSON-Ausgaben für schnelleren Datenzugriff</p>
+      </li>
+<li class="listitem">
+        <p>CSV-Export in den CGIs, um Addon-Entwicklung zu unterstützen</p>
+      </li>
+<li class="listitem">
+        <p>Log-Datei-Suche mit Filtern, regulären Ausdrücken und Wildcard-Fähigkeiten</p>
+      </li>
+<li class="listitem">
+        <p>Host-Suche mit Wildcard-Fähigkeiten</p>
+      </li>
+<li class="listitem">
+        <p>Zusammengesetzte Befehle, die simultan für mehrere Hosts/Services gesandt werden</p>
+      </li>
+<li class="listitem">
+        <p>Abhängigkeiten, die in Host-/Service-Details angezeigt werden</p>
+      </li>
+<li class="listitem">
+        <p>Integierter Konfigurationsbefehl-Expander für Endbenutzer</p>
+      </li>
+<li class="listitem">
+        <p>Taktische Übersicht im Header, um stets einen Blick auf die wichtigsten Details zu haben</p>
+      </li>
+<li class="listitem">
+        <p>CGI-Konfigurationsoptionen, um die Benutzerberechtigungen sehen zu können</p>
+      </li>
+<li class="listitem">
+        <p>Modifizierte Attribute, um die Unterschiede zwischen Host- und Service-Konfigurationseinstellungen und den letzten
+        Attributänderungen im Frontend zu sehen</p>
+      </li>
+</ul></div>
+
+    <p>Weil das Icinga-Classic-Web ständig weiter entwickelt wird, können Sie sicher sein, dass jedes Addon, das Sie mit Nagios nutzen,
+    auch mit Icinga funktionieren wird.</p>
+
+    <table border="1" id="idp194032">
+      <caption>Tabelle 2.1. Screenshots Icinga-Classic-Web</caption>
+
+      <tr>
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_TacticalOverview.png" width="100%"></td></tr></table>
+<div class="caption">Taktische Übersicht</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_HostGroup.png" width="100%"></td></tr></table>
+<div class="caption">Host-Gruppen</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_ServiceStatus.png" width="100%"></td></tr></table>
+<div class="caption">Service-Status</div>
+</div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_Commands.png" width="100%"></td></tr></table>
+<div class="caption">Befehle</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_CGIConfig.png" width="100%"></td></tr></table>
+<div class="caption">CGI-konfiguration</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_Downtimes.png" width="100%"></td></tr></table>
+<div class="caption">Ausfallzeiten</div>
+</div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_DatePicker.png" width="100%"></td></tr></table>
+<div class="caption">Datumauswahl</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_PaginationLogs.png" width="100%"></td></tr></table>
+<div class="caption">Seitenweise Log-Anzeige</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/Icinga_Classic_Trending.png" width="100%"></td></tr></table>
+<div class="caption">Trending</div>
+</div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="section" title="2.1.2.2. Icinga-New-Web">
+<div class="titlepage"><div><div><h4 class="title">
+<a name="idp227968"></a>2.1.2.2. Icinga-New-Web</h4></div></div></div>
+    <a name="icinga_gui_new_web"></a>
+
+    
+
+    <p>Dynamisch und benutzerfreundlich ist dieses Agavi-basierende, Ajax-getriebene, Web-2.0-inspirierte Icinga-Frontend.</p>
+
+    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+      <p>Icinga-Web benötigt eine Datenbank zum Betrieb. Bisher werden MySQL, PostgreSQL und Oracle
+      unterstützt.</p>
+    </td></tr>
+</table></div>
+
+    <div class="itemizedlist"><ul class="itemizedlist" type="disc">
+<li class="listitem">
+        <p>
+          <span class="bold"><strong>Betrachten Sie Ihr Monitoring wie Sie möchten</strong></span>
+        </p>
+
+        <p>Icinga-New-Web zeigt aktuelle Statusdaten in einem konfigurierbaren Datenblatt, so dass Sie:</p>
+
+        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
+<li class="listitem">
+            <p>Daten nach Spalten sortieren und gruppieren können (z.B. Host oder Status)</p>
+          </li>
+<li class="listitem">
+            <p>Daten im Detail filtern können (z.B. HTTP-Services,die nicht "OK" sind)</p>
+          </li>
+<li class="listitem">
+            <p>durch Anklicken von Kästchen gleichzeitig Befehle mehrere Host-/Services senden können</p>
+          </li>
+<li class="listitem">
+            <p>Host- oder Service-Details und Historie im gleichen Fenster anzeigen können</p>
+          </li>
+</ul></div>
+      </li>
+<li class="listitem">
+        <p>
+          <span class="bold"><strong>Suche mit Ajax-Leichtigkeit</strong></span>
+        </p>
+
+        <p>Das mächtige Ajax-Suchwerkzeug erlaubt es Ihnen, die ersten Buchstaben einer Zeichenkette einzugeben, aus den angezeigten
+        Ergebnissen aus Hosts, Services und Gruppen auszuwählen, die zusammen mit dem farblich kodierten Status dargestellt werden. Unnötig
+        zu sagen, dass das Tool nur die Ergebnisse anzeigt, die den Benutzerberechtigugen entsprechen - ideal für größere
+        Unternehmen.</p>
+      </li>
+<li class="listitem">
+        <p>
+          <span class="bold"><strong>Customize-a-Cronk ‘n’ Dashboard</strong></span>
+        </p>
+
+        <p>Eine Bibliothek von Cronks (Widgets) bietet verschiedene Ansichten, die per "Drag-and-Drop" auf dem Bildschirm eingestellt,
+        verändert, minimiert, vergrößert und kategorisiert werden können. Weil die Änderungen persistent sind, können Sie später wieder zu
+        Ihrem angepassten Cronk oder einer Anordnung von Cronks zurückkehren, die Ihr persönliches Armaturenbrett (Dashboard)
+        darstellen.</p>
+      </li>
+<li class="listitem">
+        <p>
+          <span class="bold"><strong>Benutzerrechte exakt verwalten</strong></span>
+        </p>
+
+        <p>Jenseits der Standard-Gruppenbeschränkungen können Benutzereinstellungen individualisiert werden, um den Zugang auf bestimmte
+        Host- oder Service-Gruppen zu beschränken, die Fähigkeit zum Senden von Befehlen zu entziehen, oder sogar das Ansehen von
+        benutzerdefinierten Variablen bestimmter Hosts oder Services zu verhindern. Alles vom Frontend aus. Mit LDAP- oder
+        Active-Directory-Unterstützung macht Icinga-Web auch das Leben für große Unternehmen leichter.</p>
+      </li>
+</ul></div>
+
+    <table border="1" id="idp245920">
+      <caption>Tabelle 2.2. Screenshots Icinga-New-Web</caption>
+
+      <tr>
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Portal2.png" width="100%"></td></tr></table>
+<div class="caption">Portal-Ansicht</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_TacticalOverview.png" width="100%"></td></tr></table>
+<div class="caption">Taktische Übersicht</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_OpenProblems.png" width="100%"></td></tr></table>
+<div class="caption">Offene Probleme</div>
+</div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_HostStatus_Events.png" width="100%"></td></tr></table>
+<div class="caption">Host-Status-Ereignisse</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Host_filtered.png" width="100%"></td></tr></table>
+<div class="caption">Host-Filter</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Downtimes.png" width="100%"></td></tr></table>
+<div class="caption">Ausfallzeiten</div>
+</div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Search.png" width="100%"></td></tr></table>
+<div class="caption">Suche</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Commands.png" width="100%"></td></tr></table>
+<div class="caption">Befehle</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Reporting.png" width="100%"></td></tr></table>
+<div class="caption">Reporting</div>
+</div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_BusinessProcess.png" width="100%"></td></tr></table>
+<div class="caption">Business Process</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_LogViewer.png" width="100%"></td></tr></table>
+<div class="caption">Log-Datei-Anzeige</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_UserAdmin.png" width="100%"></td></tr></table>
+<div class="caption">Benutzer-Administration</div>
+</div>
+          </div>
+        </td>
+      </tr>
+
+      <tr>
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_CronkBuilder.png" width="100%"></td></tr></table>
+<div class="caption">Cronk-Builder</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_Cronk_Configuration.png" width="100%"></td></tr></table>
+<div class="caption">Cronk-Konfiguration</div>
+</div>
+          </div>
+        </td>
+
+        <td>
+          <div class="screenshot">
+            <div class="mediaobject">
+<table border="0" summary="manufactured viewport for HTML img" cellspacing="0" cellpadding="0" width="100%"><tr><td><img src="../images/IcingaWeb_StatusMap.png" width="100%"></td></tr></table>
+<div class="caption">Status-Map</div>
+</div>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+
+  <a class="indexterm" name="idp301312"></a>
+
+  <a class="indexterm" name="idp302448"></a>
+
+  <a class="indexterm" name="idp304048"></a>
+</div>
+
+  <a class="indexterm" name="idp179632"></a>
 </div>
 <div class="navfooter">
 <hr>
