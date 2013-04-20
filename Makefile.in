@@ -414,7 +414,10 @@ install-basic:
 	@echo "     - This installs sample config files in $(DESTDIR)$(CFGDIR)"
 	@echo ""
 	@echo "  make install-webconf"
-	@echo "     - This installs the Apache config file and http auth file for the Classic UI"
+	@echo "     - This installs the Apache config file for the Classic UI"
+	@echo ""
+	@echo "  make install-webconf-auth"
+	@echo "     - This installs the Apache http auth file for the Classic UI"
 	@echo ""
 	@echo ""
 	@echo "*** Make sure to check Changelog for introduced changes! ***"
@@ -459,9 +462,9 @@ install-testconfig:
 	do $(INSTALL) -b -m 664 $(INSTALL_OPTS) $$file $(DESTDIR)$(CFGDIR)/tests; done
 
 
-install-webconf: install-webconf-auth
+install-webconf:
 	$(MKDIR) -p -m 775 $(DESTDIR)$(HTTPD_CONF)
-	$(INSTALL) -m 644 sample-config/httpd.conf $(DESTDIR)$(HTTPDCONFFILE)
+	$(INSTALL) -b -m 644 $(INSTALL_OPTS) sample-config/httpd.conf $(DESTDIR)$(HTTPDCONFFILE)
 
 	@echo ""
 	@echo "*** Icinga/Apache conf file installed ***"
@@ -469,7 +472,7 @@ install-webconf: install-webconf-auth
 
 install-webconf-auth:
 
-	$(INSTALL) -m 644 icinga.htpasswd $(DESTDIR)$(HTTPAUTHFILE)
+	$(INSTALL) -b -m 644 $(INSTALL_OPTS) icinga.htpasswd $(DESTDIR)$(HTTPAUTHFILE)
 
 	@echo ""
 	@echo "*** Icinga http auth file installed ***"
