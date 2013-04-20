@@ -3337,11 +3337,14 @@ void show_downtime(int type) {
 
 		get_time_string(&temp_downtime->trigger_time, date_time, (int)sizeof(date_time), SHORT_DATE_TIME);
 		if (content_type == JSON_CONTENT) {
-			printf("\"trigger_time\": \"%s\", ", date_time);
+			if (temp_downtime->trigger_time != 0)
+				printf("\"trigger_time\": \"%s\", ", date_time);
+			else
+				printf("\"trigger_time\": null, ");
 		} else if (content_type == CSV_CONTENT) {
-			printf("%s%s%s%s", csv_data_enclosure, date_time, csv_data_enclosure, csv_delimiter);
+			printf("%s%s%s%s", csv_data_enclosure, (temp_downtime->trigger_time != 0) ? date_time : "N/A", csv_data_enclosure, csv_delimiter);
 		} else {
-			printf("<td CLASS='%s'>%s</td>", bg_class, date_time);
+			printf("<td CLASS='%s'>%s</td>", bg_class, (temp_downtime->trigger_time != 0) ? date_time : "N/A");
 		}
 
 		get_time_breakdown(temp_downtime->duration, &days, &hours, &minutes, &seconds);

@@ -99,6 +99,7 @@ FIXES
 * classic ui: fixed possible NULL dereference-bug in summary.c #3740 - RB
 * classic ui: fixed Command expansion problem with percentage signs #3929 - RB
 * classic ui: cleaned up the jquery-ui includes to allow debian pkg dependencies #3808 - RB
+* classic ui: fixed Trigger Time in Scheduled Downtime displaying 01-01-1970 01:00:00 when not triggered #3980 - RB
 
 * docs: add missing cmd_mod description in cgi params #3438 - MF
 * docs: search_string as cgi GET param works also for status.cgi #3451 - MF
