@@ -35,15 +35,16 @@
 <dt><span class="section">1.2.3. <a href="whatsnew.html#classicui">Classic UI</a></span></dt>
 <dt><span class="section">1.2.4. <a href="whatsnew.html#idoutils">IDOutils</a></span></dt>
 <dt><span class="section">1.2.5. <a href="whatsnew.html#whatsnew-web">Icinga-Web</a></span></dt>
-<dt><span class="section">1.2.6. <a href="whatsnew.html#web">Icinga-Reporting</a></span></dt>
+<dt><span class="section">1.2.6. <a href="whatsnew.html#reporting">Icinga-Reporting</a></span></dt>
 <dt><span class="section">1.2.7. <a href="whatsnew.html#docs">Docs</a></span></dt>
 <dt><span class="section">1.2.8. <a href="whatsnew.html#moreinfo">More information</a></span></dt>
 </dl></div>
   
 
-  <p>As usual this is only a brief overview. Please take a look at the <a class="link" href="whatsnew.html#moreinfo" title="1.2.8. More information">Changelog</a> as well if you are missing something.</p>
+  <p>As usual this is only a brief overview. Please take a look at the <a class="link" href="whatsnew.html#moreinfo" title="1.2.8. More information">Changelog</a> as well if you are
+  missing something.</p>
 
-  <a class="indexterm" name="idp91248"></a>
+  <a class="indexterm" name="idp91440"></a>
 
   <div class="section" title="1.2.1. CHANGES">
 <div class="titlepage"><div><div><h3 class="title">
@@ -52,16 +53,10 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-	      <p>core: <span class="color"><font color="red">unknown macros are not left on the output anymore, logging a warning instead.</font></span>
-	      either fix your config (i.e. wrong macros, escape dollar signs with another one) or set keep_unknown_macros=1 in icinga.cfg to revert
-	      to the old behaviour.
-	</p>
+        <p>IDOUtils: ido2db.cfg enable_sla is now deprecated! #3450</p>
       </li>
 <li class="listitem">
-	      <p>classic ui: Changed cgi GET params, Added/Changed cgi.cfg options, change strings in json output (more on Changelog</p>
-      </li>
-<li class="listitem">
-	      <p>docs: new stylesheet in html/docs/stylesheets/icinga-docs.css, javascript in html/docs/js/{icinga-docs.js,jquery-min.js}</p>
+        <p>Icinga-Web: tackle cronk is now deprecated</p>
       </li>
 </ul></div>
   </div>
@@ -73,19 +68,25 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>add a command to disable notifications program-wide with expire time as scheduled event #905</p>
+        <p>increase core performance on config read with hash compare #3722 </p>
       </li>
 <li class="listitem">
-        <p>only reap results when checkresult_list is not overloaded (max_check_result_list_items) (thx Thomas Gelf) #3099</p>
+	      <p>keep logfile open, reduce open/close performance decreases #3390 </p>
       </li>
 <li class="listitem">
-        <p>avoid duplicate events when scheduling forced host|service check (Imri Zvik) #2993</p>
+        <p>enhance performance on illegal macro and host-service relation processing #3389 #3820 </p>
       </li>
 <li class="listitem">
-        <p>unknown macros are not replaced, and misleading to single dollar signs #2291</p>
+	      <p>add skipping of status.dat/objects.cache write by setting to /dev/null #3819 </p>
       </li>
 <li class="listitem">
-        <p>fix next_check attribute not updated after scheduling new check #2265</p>
+        <p>fix host_check last_check == next_check wrong in scheduling queue #2195 </p>
+      </li>
+<li class="listitem">
+        <p>fix triggered downtimes for child hosts are missing after restart #3390 </p>
+      </li>
+<li class="listitem">
+        <p>fix unable to exclude hostgroups when using nested hostgroups #2619 </p>
       </li>
 </ul></div>
   </div>
@@ -97,31 +98,25 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Added pagination to various cgi's (thx to ideas and partly source from Nagios, Thruk, Icinga Web) #2725</p>
+	      <p>increase performance with hash compare on host/service show/filter #3722 </p>
       </li>
 <li class="listitem">
-        <p>Changed search in config.cgi to regex #2884</p>
+	      <p>add date/time selector to logfile navigation #3168 </p>
       </li>
 <li class="listitem">
-        <p>Added selection of timeperiod for notifications and history #2341</p>
+        <p>classicui can be installed standalone (icinga2 compat) #3869 </p>
       </li>
 <li class="listitem">
-        <p>Added date/time selection for all date/time input fields #2576</p>
+        <p>add config options for acknowledgement notifications and expiry #3467 #3476 </p>
       </li>
 <li class="listitem">
-	      <p>Added host/service selection for commands, leaving out passive only checks on check reschedule in cmd.cgi #2697</p>
+        <p>add 'executed command' to extinfo.cfg linking to command expander #3901 </p>
       </li>
 <li class="listitem">
-	      <p>Added host/service group filter to notifications.cgi and history.cgi #2679</p>
+        <p>add process status to json response #3172 </p>
       </li>
 <li class="listitem">
-        <p>javascript refresh jumps to page top, not restoring previous scrolling position; add url param 'scroll=' #2855</p>
-      </li>
-<li class="listitem">
-        <p>add command to delete host downtime and all associated service downtimes (extinfo.cgi, status.cgi command drop down) #1572</p>
-      </li>
-<li class="listitem">
-        <p>Added a refresh button to tac.cgi in header mode #3164</p>
+        <p>add lighttp config examples #2253 </p>
       </li>
 </ul></div>
   </div>
@@ -133,13 +128,19 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-	      <p>fix insert on duplicate key with multiple unique keys marked unsafe in mysql &gt;= 5.5.24; rewrite all queries #3008</p>
+        <p>use transactions for large object dumps, opt-in via config #3527 </p>
       </li>
 <li class="listitem">
-        <p>fix redundant indexes in MySQL schema (thx Michael Renner) #3018</p>
+        <p>add socket queue proxy (reduce core reload time significanlty), opt-in via config #3533 </p>
       </li>
 <li class="listitem">
-        <p>re-add missing indexes from #1110 resolving performance issues on all supported rdbms #2618</p>
+        <p>oracle: change output columns to clob #3412 </p>
+      </li>
+<li class="listitem">
+	      <p>fix memory leaks in idomod/ido2db #3749 </p>
+      </li>
+<li class="listitem">
+	      <p>add workaround fix for num_rows_affected broken in libdbi/mariadb, returned ids are 0 #3728 </p>
       </li>
 </ul></div>
   </div>
@@ -151,59 +152,52 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>Permission of Cronks and categories editable in frontend</p>
+        <p>Revamped credential system, better grouping of permissions and performance #3715</p>
       </li>
 <li class="listitem">
-        <p>host- and servicename credentials</p>
+        <p>New and smaller Cronk menu design, showing the cronks as a list #3396</p>
       </li>
 <li class="listitem">
-        <p>new credential model reduces join overhead</p>
+        <p>New filtering window which allows detailed and combined filters #3268</p>
       </li>
 <li class="listitem">
-        <p>more space in grids due new event integration</p>
+        <p>Many small interface improvements #3511 #3430 #3896</p>
       </li>
 <li class="listitem">
-        <p>running downtimes view</p>
+        <p>New Apache configuration, making the .htaccess files obsolete #2759</p>
       </li>
 <li class="listitem">
-        <p>new beautiful statusmap</p>
+	      <p>Search in admin user- / group dialog #3909</p>
       </li>
 <li class="listitem">
-        <p>Code namespace organizing</p>
-      </li>
-<li class="listitem">
-        <p>many many bugfixes</p>
+        <p>PENDING are now shown for any new host or service in the database #2602 #3844</p>
       </li>
 </ul></div>
   </div>
 
   <div class="section" title="1.2.6. Icinga-Reporting">
 <div class="titlepage"><div><div><h3 class="title">
-<a name="web"></a>1.2.6. Icinga-Reporting</h3></div></div></div>
+<a name="reporting"></a>1.2.6. Icinga-Reporting</h3></div></div></div>
     
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>added new template design and corrected some template issues</p>
+	      <p>add AvailReportParser into contrib/ (standalone) #3978 </p>
       </li>
 <li class="listitem">
-        <p>deleted all weekly, monthly and yearly SLA reports and created a combined one</p>
+        <p>reorganize directory structure #3742 </p>
       </li>
 <li class="listitem">
-        <p>integrated SLA function for MySQL -&gt; Thanks to Thomas Gelf</p>
+        <p>fixed image expression in pnp4nagios template #3693 </p>
       </li>
 <li class="listitem">
-        <p>enable preselected timeranges in every report</p>
+        <p>fixed state replacement in morning report #3752 </p>
       </li>
 <li class="listitem">
-        <p>added servicegroup availability, morning report</p>
-      </li>
-<li class="listitem">
-        <p>added easy availability report for given host and dependant services</p>
+        <p>fixed rounding error with small numbers #3942 </p>
       </li>
 </ul></div>
   </div>
-
 
   <div class="section" title="1.2.7. Docs">
 <div class="titlepage"><div><div><h3 class="title">
@@ -212,16 +206,25 @@
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
 <li class="listitem">
-        <p>add a new stylesheet and rework docbook.xsl #3046</p>
+	      <p>add upgrade/troubleshooting notes about invisible icinga web cronks/modules after upgrade #3939 </p>
       </li>
 <li class="listitem">
-        <p>add tocs for all sections, add jquery toggle for toc #3193</p>
+        <p>make install-webconf-auth installs htpasswd.user with icingaadmin credentials #3964 </p>
       </li>
 <li class="listitem">
-        <p>create a dedicated page for packages and their customizations #2905</p>
+        <p>icinga web 1.9: new menu style (smaller icons) #3944 </p>
       </li>
 <li class="listitem">
-        <p>create a howto define a command, translate macros and testdrive plugins manually #2692</p>
+        <p>icinga web 1.9: new filtering methods #3947 </p>
+      </li>
+<li class="listitem">
+        <p>add userpreferences.xml to icinga web configs #3991 </p>
+      </li>
+<li class="listitem">
+        <p>add web gui comparison to beginners #3907</p>
+      </li>
+<li class="listitem">
+        <p>middle-clicking on TOC links doesn't open pages in new tab #3561 </p>
       </li>
 </ul></div>
   </div>

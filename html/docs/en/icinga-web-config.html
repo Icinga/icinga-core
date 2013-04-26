@@ -72,7 +72,7 @@ app/modules/AppKit/
 <a name="confogfileindex"></a>6.6.2. Index</h3></div></div></div>
     
 
-    <table border="1" id="idp12410016">
+    <table border="1" id="idp12410880">
       <caption>Table 6.1. Configuration files</caption>
 
       <tr>
@@ -202,6 +202,14 @@ app/modules/AppKit/
 
         <td>Default language, date and time formats and settings</td>
       </tr>
+
+      <tr>
+        <td>module.xml</td>
+
+        <td>app/modules/Appkit/config/</td>
+
+        <td>Overwrite user preferences using userpreferences.xml (in etc/conf.d)</td>
+      </tr>
     </table>
 
     <div class="itemizedlist"><ul class="itemizedlist" type="disc">
@@ -235,6 +243,9 @@ app/modules/AppKit/
       </li>
 <li class="listitem">
         <p><a class="link" href="icinga-web-config.html#configweb-timezone">Change default Timezone</a></p>
+      </li>
+<li class="listitem">
+        <p><a class="link" href="icinga-web-config.html#configweb-userprefs">Change user preferences</a></p>
       </li>
 <li class="listitem">
         <p><a class="link" href="icinga-web-config.html#moduleconfig" title="6.6.5. Module Configuration">Module Configuration</a></p>
@@ -836,6 +847,8 @@ app/modules/AppKit/
 
         <p>Make sure your webservers user has write access to the icinga pipe and make sure the icinga_pipe symbol is located in the
         readwrite or write section of your host (or defaults). Make sure the path is correct</p>
+
+        <p></p>
       </li></ul></div>
 
     <p><a name="configweb-timezone"></a> <span class="bold"><strong>Change Icinga-Web timezone</strong></span></p>
@@ -847,6 +860,11 @@ app/modules/AppKit/
 
     <pre class="programlisting">#&gt; vi app/modules/AppKit/config/module.xml
 &lt;ae:parameter name="date.timezone"&gt;GMT&lt;/ae:parameter&gt;</pre>
+
+    <p><a name="configweb-userprefs"></a> <span class="bold"><strong>Change user preferences</strong></span></p>
+
+    <p>The file <code class="filename">module.xml</code> contains several settings which can be overwritten by custom settings to be placed in
+    <code class="filename">userpreferences.xml</code> (in the <code class="filename">etc/config</code> folder).</p>
   </div>
 
   <div class="section" title="6.6.5. Module Configuration">
@@ -896,7 +914,8 @@ app/modules/AppKit/
         <p>You can also duplicate the provider to provide more authentication bases. You can split the auth into authentication and
         authorising parts if you want. If you have new providers, please share them and let the auth database grow!</p>
 
-        <p>Please store your custom authentication configuration in <code class="filename">auth.site.xml</code> !</p>
+        <p>Please store your custom authentication configuration in <code class="filename">auth.xml</code> (in the <code class="filename">etc/config</code>
+        folder)!</p>
       </li>
 <li class="listitem">
         <p><span class="bold"><strong>app/modules/Cronks</strong></span></p>
@@ -966,17 +985,17 @@ autoload.xml  config_handlers.xml  cronks.xml  module.xml  validators.xml</pre>
 
     <p>You need more information? Please have a look at our <a class="link" href="https://dev.icinga.org/projects/icinga-development/wiki/" target="_top">Development Wiki.</a></p>
 
-    <a class="indexterm" name="idp12620176"></a>
+    <a class="indexterm" name="idp12628288"></a>
 
-    <a class="indexterm" name="idp12621936"></a>
+    <a class="indexterm" name="idp12630048"></a>
 
-    <a class="indexterm" name="idp12623504"></a>
+    <a class="indexterm" name="idp12631616"></a>
 
-    <a class="indexterm" name="idp12625136"></a>
+    <a class="indexterm" name="idp12633248"></a>
 
-    <a class="indexterm" name="idp12626800"></a>
+    <a class="indexterm" name="idp12634912"></a>
 
-    <a class="indexterm" name="idp12628464"></a>
+    <a class="indexterm" name="idp12636576"></a>
   </div>
 </div>
 <div class="navfooter">

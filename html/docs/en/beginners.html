@@ -35,89 +35,75 @@
 </dl></div>
   
 
-  <p>Thanks for choosing Icinga! Icinga is quite powerful and
-  flexible and although you can see the first results in less than 30 minutes,
-  this is just the beginning of your journey into system monitoring.
-  Configuring it to your needs can take a lot of work depending on the number
-  of things to be monitored and the complexity of your environment. Once you
-  become familiar with how it works and what it can do for you, you'll never
-  want to be without it. :-) Here are some important things to keep in mind
-  for first-time Icinga users:</p>
+  <p>Thanks for choosing Icinga! Icinga is quite powerful and flexible and although you can see the first results in less
+  than 30 minutes, this is just the beginning of your journey into system monitoring. Configuring it to your needs can take a lot of work
+  depending on the number of things to be monitored and the complexity of your environment. Once you become familiar with how it works and
+  what it can do for you, you'll never want to be without it. :-) Here are some important things to keep in mind for first-time
+  Icinga users:</p>
 <div class="orderedlist"><ol class="orderedlist" type="1">
 <li class="listitem">
-        <p><span class="bold"><strong>Relax - it's going to take some
-        time.</strong></span> Don't expect to be able to get things working exactly
-        the way you want them right off the bat. It's not that easy. Setting
-        up Icinga can involve a bit of work - partly because of the
-        options that Icinga offers, partly because you need to know
-        what to monitor on your network (and how best to do it).</p>
+        <p><span class="bold"><strong>Relax - it's going to take some time.</strong></span> Don't expect to be able to get things working exactly
+        the way you want them right off the bat. It's not that easy. Setting up Icinga can involve a bit of work - partly because of
+        the options that Icinga offers, partly because you need to know what to monitor on your network (and how best to do
+        it).</p>
       </li>
 <li class="listitem">
-        <p><span class="bold"><strong>Use package instead of source
-        install.</strong></span> Meanwhile you will find packages for the most
-        important distributions. Please consider using one of them instead of
-        installing from source. It will save you some time. Please keep in
-        mind that the paths differ from the ones mentioned in this
-        documentation. For a detailed list of package specific locations,
-        check <a class="link" href="https://wiki.icinga.org/display/howtos/Package+Specific+Locations" target="_top">wiki
-        page</a>. For information on packages please take a look <a class="link" href="icinga_packages.html" title="2.7. Icinga Packages for Linux Distributions">here</a>.</p>
+        <p><span class="bold"><strong>Use package instead of source install.</strong></span> Meanwhile you will find packages for the most
+        important distributions. Please consider using one of them instead of installing from source. It will save you some time. Please
+        keep in mind that the paths differ from the ones mentioned in this documentation. For a detailed list of package specific locations,
+        check <a class="link" href="https://wiki.icinga.org/display/howtos/Package+Specific+Locations" target="_top">wiki page</a>. For information on
+        packages please take a look <a class="link" href="icinga_packages.html" title="2.7. Icinga Packages for Linux Distributions">here</a>.</p>
       </li>
 <li class="listitem">
-        <p><span class="bold"><strong>Use the Quickstart guides.</strong></span> If
-        you don't find a package or don't want to use if for whatever reason
-        then please use the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart</a>
-        instructions. The quickstart installation guide is designed to get
-        most new users up and running with a basic Icinga setup fairly
-        quickly. Within 20 minutes you can have Icinga installed and
-        monitoring your local system. Once that's complete, you can move on to
-        learning how to configure Icinga to do more.</p>
+        <p><span class="bold"><strong>Use the Quickstart guides.</strong></span> If you don't find a package or don't want to use if for whatever
+        reason then please use the <a class="link" href="quickstart.html" title="2.2. Quickstart Installation Guides">quickstart</a> instructions. The quickstart installation guide is designed
+        to get most new users up and running with a basic Icinga setup fairly quickly. Within 20 minutes you can have Icinga
+        installed and monitoring your local system. Once that's complete, you can move on to learning how to configure Icinga to do
+        more.</p>
       </li>
 <li class="listitem">
-        <p><span class="bold"><strong>Read the documentation.</strong></span>
-        Icinga can be tricky to configure when you've got a good grasp
-        of what's going on, and nearly impossible if you don't. Make sure you
-        read the documentation (particularly the sections on <a class="link" href="ch03.html" title="Chapter 3. Configuring Icinga">"Configuring Icinga"</a> and <a class="link" href="ch05.html" title="Chapter 5. The Basics">"The Basics"</a>). It is important to know how <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a> work. Take a look at the <a class="link" href="monitoring-overview.html#monitoring_overview">monitoring overview</a> as well. Save
-        the <a class="link" href="ch06.html" title="Chapter 6. User Interfaces">advanced topics</a> for when you've got a
-        good understanding of the basics.</p>
+        <p><span class="bold"><strong>Read the documentation.</strong></span> Icinga can be tricky to configure when you've got a good grasp
+        of what's going on, and nearly impossible if you don't. Make sure you read the documentation (particularly the sections on <a class="link" href="ch03.html" title="Chapter 3. Configuring Icinga">"Configuring Icinga"</a> and <a class="link" href="ch05.html" title="Chapter 5. The Basics">"The Basics"</a>). It is important to know how <a class="link" href="plugins.html" title="5.1. Icinga Plugins">plugins</a> work. Take a look at the <a class="link" href="monitoring-overview.html#monitoring_overview">monitoring overview</a> as well.
+        Save the <a class="link" href="ch06.html" title="Chapter 6. User Interfaces">advanced topics</a> for when you've got a good understanding of the basics.</p>
       </li>
 <li class="listitem">
-        <p><span class="bold"><strong>Understand the architecture.</strong></span>
-        Icinga Core ships with 2 GUIs, Icinga Classic UI and Icinga-Web.
-        Icinga Classic UI uses the native status and log file format, while Icinga-Web
-        requires IDOUtils with a database backend. Both GUIs can
-        co-exist on the same host below /icinga and /icinga-web. The
-        IDOUtils database is also a requirement for Icinga-Reporting based on
-        JasperReports Server which can be integrated into Icinga-Web as cronk. Check
-        <a class="link" href="ch12.html" title="Chapter 12. IDOUtils">IDOUtils chapter</a> for details on the
-        IDOUtils components involved. <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> are essential to your checks, as well
-        as <a class="link" href="ch10.html" title="Chapter 10. Additional software">addons</a> may enhance your setup.</p>
+        <p><span class="bold"><strong>Understand the architecture.</strong></span> Icinga Core ships with two GUIs, Icinga Classic UI and
+        Icinga-Web. Icinga Classic UI uses the native status and log file format, while Icinga-Web requires IDOUtils with a database backend.
+        Both GUIs can co-exist on the same host below /icinga and /icinga-web. The IDOUtils database is also a requirement for
+        Icinga-Reporting based on JasperReports Server which can be integrated into Icinga-Web as cronk. Check <a class="link" href="ch12.html" title="Chapter 12. IDOUtils">IDOUtils
+        chapter</a> for details on the IDOUtils components involved. <a class="link" href="plugins.html" title="5.1. Icinga Plugins">Plugins</a> are essential to your
+        checks, as well as <a class="link" href="ch10.html" title="Chapter 10. Additional software">addons</a> may enhance your setup.</p>
       </li>
 <li class="listitem">
-        <p><span class="bold"><strong>Seek the help of others.</strong></span> If
-        you've read the documentation, reviewed the sample config files, and
-        are still having problems, send an email message describing your
-        problems to the icinga-users mailing list. If you've done some
-        background reading and you provide a good problem description, odds
-        are that someone will give you some pointers on getting things working
-        properly. "good description" means to include details on your
-        operating system, the version of Icinga, as well as what you
-        tried and the results of it (preferably copy&amp;paste). More
-        information on subscribing to the mailing lists or searching the list
-        archives can be found at <a class="link" href="http://www.icinga.org/support/" target="_top">http://www.icinga.org/support/</a>.
-        Another source of information is the <a class="link" href="https://wiki.icinga.org/display/howtos/Home" target="_top">how to wiki
-        section</a>.</p>
+        <p><span class="bold"><strong>Seek the help of others.</strong></span> If you've read the documentation, reviewed the sample config files,
+        and are still having problems, send an email message describing your problems to the icinga-users mailing list. If you've done some
+        background reading and you provide a good problem description, odds are that someone will give you some pointers on getting things
+        working properly. "good description" means to include details on your operating system, the version of Icinga, as well as
+        what you tried and the results of it (preferably copy&amp;paste). More information on subscribing to the mailing lists or searching
+        the list archives can be found at <a class="link" href="http://www.icinga.org/support/" target="_top">http://www.icinga.org/support/</a>. Another source of
+        information is the <a class="link" href="https://wiki.icinga.org/display/howtos/Home" target="_top">how to wiki section</a>.</p>
       </li>
 </ol></div>
 
-    <div class="section" title="2.1.1. Icinga Overview">
+  <div class="section" title="2.1.1. Icinga Overview">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="icinga-overview"></a>2.1.1. Icinga Overview</h3></div></div></div>
   
 
   <p><span class="bold"><strong><a name="icinga_overview"></a>Overview</strong></span></p>
 
-  <p>This section should give you a short overview on what is included and what isn't. It might be incomplete but we're working on
-  that.</p>
+  <p>This section should give you a short overview on what is included and what isn't.</p>
+
+  <div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+    <p>The information is incomplete but we're working on that. The git-branch "<code class="uri"><a class="uri" href="https://git.icinga.org/?p=icinga-doc.git;a=shortlog;h=refs/heads/next" target="_top">next</a></code>" might be more up-to-date than this
+    documentation.</p>
+  </td></tr>
+</table></div>
 
   <p>Icinga consists of a core processing results from checks which are initiated by the core (<a class="link" href="activechecks.html" title="5.6. Active Checks">active
   checks</a>), or delivered from other machines (<a class="link" href="passivechecks.html" title="5.7. Passive Checks">passive checks</a>), deciding if <a class="link" href="notifications.html" title="5.11. Notifications">notifications</a> have to be sent, providing information by writing log files and showing it via a <a class="link" href="cgis.html" title="6.1. Icinga Classic UI: Information On The CGIs">web interface</a>, and several other tasks.</p>
@@ -147,12 +133,12 @@
   <a class="link" href="addons.html" title="10.1. Icinga Addons">addons</a> as well.</p>
 </div>
 
-    <div class="section" title="2.1.2. Icinga web GUI comparison">
+  <div class="section" title="2.1.2. Icinga web GUI comparison">
 <div class="titlepage"><div><div><h3 class="title">
 <a name="icinga_gui_comparison"></a>2.1.2. <a name="icinga-gui-comparison"></a>Icinga web GUI comparison</h3></div></div></div>
 <div class="toc"><dl>
-<dt><span class="section">2.1.2.1. <a href="beginners.html#idp180224">Icinga Classic Web</a></span></dt>
-<dt><span class="section">2.1.2.2. <a href="beginners.html#idp226288">Icinga New Web</a></span></dt>
+<dt><span class="section">2.1.2.1. <a href="beginners.html#idp182352">Icinga Classic Web</a></span></dt>
+<dt><span class="section">2.1.2.2. <a href="beginners.html#idp228416">Icinga New Web</a></span></dt>
 </dl></div>
   
 
@@ -162,7 +148,7 @@
 
   <div class="section" title="2.1.2.1. Icinga Classic Web">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="idp180224"></a>2.1.2.1. Icinga Classic Web</h4></div></div></div>
+<a name="idp182352"></a>2.1.2.1. Icinga Classic Web</h4></div></div></div>
     <a name="icinga_gui_classic"></a>
 
     
@@ -207,7 +193,7 @@
     <p>Because Icinga Classic Web receives continuous development, you can rest assured that any addons you are accostumed to use with
     Nagios can be used with Icinga too.</p>
 
-    <table border="1" id="idp192912">
+    <table border="1" id="idp195040">
       <caption>Table 2.1. Screenshots Icinga classic web</caption>
 
       <tr>
@@ -301,7 +287,7 @@
 
   <div class="section" title="2.1.2.2. Icinga New Web">
 <div class="titlepage"><div><div><h4 class="title">
-<a name="idp226288"></a>2.1.2.2. Icinga New Web</h4></div></div></div>
+<a name="idp228416"></a>2.1.2.2. Icinga New Web</h4></div></div></div>
     <a name="icinga_gui_new_web"></a>
 
     
@@ -370,7 +356,7 @@
       </li>
 </ul></div>
 
-    <table border="1" id="idp243152">
+    <table border="1" id="idp245280">
       <caption>Table 2.2. Screenshots Icinga new web</caption>
 
       <tr>
@@ -520,14 +506,14 @@
     </table>
   </div>
 
-  <a class="indexterm" name="idp297744"></a>
+  <a class="indexterm" name="idp299872"></a>
 
-  <a class="indexterm" name="idp298880"></a>
+  <a class="indexterm" name="idp301008"></a>
 
-  <a class="indexterm" name="idp296096"></a>
+  <a class="indexterm" name="idp298224"></a>
 </div>
 
-  <a class="indexterm" name="idp301840"></a>
+  <a class="indexterm" name="idp303968"></a>
 </div>
 <div class="navfooter">
 <hr>
