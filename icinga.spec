@@ -438,7 +438,7 @@ fi
 
 
 %changelog
-* Thu Apr 25 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.9.0-1
+* Tue May 07 2013 Michael Friedrich <michael.friedrich@netways.de> - 1.9.0-1
 - bump 1.9.0
 
 * Tue Mar 05 2013 Rene Koch <r.koch@ovido.at> - 1.8.4-5
