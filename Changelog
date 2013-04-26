@@ -56,6 +56,7 @@ ENHANCEMENTS
 * docs: icinga web 1.9: new menu style (smaller icons) #3944 - MF
 * docs: icinga web 1.9: new filtering methods #3947 - MF
 * docs: add userpreferences.xml to icinga web configs #3991 - WN
+* docs: add web gui comparison to beginners #3907 - WN
 
 
 FIXES
