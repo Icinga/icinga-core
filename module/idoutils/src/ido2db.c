@@ -1918,6 +1918,7 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf) {
 				break;
 			case IDO_API_ENDCONFIGDUMP:
 				idi->current_input_data = IDO2DB_INPUT_DATA_CONFIGDUMPEND;
+				syslog(LOG_USER | LOG_INFO, "Config dump completed");
 				break;
 
 				/* archived data */
