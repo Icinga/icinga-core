@@ -1611,6 +1611,8 @@ int ido2db_handle_client_connection(int sd, ido2db_proxy *proxy) {
 
 		io_since_last_commit += result;
 
+		ido2db_db_reconnect(&idi, IDO_TRUE);
+
 		result = IDO_OK;
 
 		if (!in_transaction)

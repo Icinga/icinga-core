@@ -374,10 +374,10 @@ int ido2db_db_deinit(ido2db_idi *idi) {
 /* connects to the database server  */
 /************************************/
 
-int ido2db_db_is_connected(ido2db_idi *idi) {
+int ido2db_db_is_connected(ido2db_idi *idi, int ping) {
 
 #ifdef USE_LIBDBI
-	if (!dbi_conn_ping(idi->dbinfo.dbi_conn))
+	if (ping && !dbi_conn_ping(idi->dbinfo.dbi_conn))
 		return IDO_FALSE;
 #endif
 
@@ -401,12 +401,12 @@ int ido2db_db_is_connected(ido2db_idi *idi) {
 	return IDO_TRUE;
 }
 
-int ido2db_db_reconnect(ido2db_idi *idi) {
+int ido2db_db_reconnect(ido2db_idi *idi, int ping) {
 
 	int result = IDO_OK;
 
 	/* check connection */
-	if (ido2db_db_is_connected(idi) == IDO_FALSE)
+	if (ido2db_db_is_connected(idi, ping) == IDO_FALSE)
 		idi->dbinfo.connected = IDO_FALSE;
 
 	/* try to reconnect... */
@@ -1168,7 +1168,7 @@ int ido2db_db_disconnect(ido2db_idi *idi) {
 
 
 	/* we're not connected... */
-	if (ido2db_db_is_connected(idi) == IDO_FALSE) {
+	if (ido2db_db_is_connected(idi, IDO_FALSE) == IDO_FALSE) {
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_disconnect() already disconnected\n");
 #ifdef USE_ORACLE
 		OCI_Cleanup();
@@ -2514,7 +2514,7 @@ int ido2db_db_query(ido2db_idi *idi, char *buf) {
 		return IDO_ERROR;
 
 	/* if we're not connected, try and reconnect... */
-	if (ido2db_db_reconnect(idi) == IDO_ERROR)
+	if (ido2db_db_reconnect(idi, IDO_FALSE) == IDO_ERROR)
 		return IDO_ERROR;
 
 
@@ -2613,7 +2613,7 @@ int ido2db_handle_db_error(ido2db_idi *idi) {
 		return IDO_ERROR;
 
 	/* we're not currently connected... */
-	if (ido2db_db_is_connected(idi) == IDO_TRUE)
+	if (ido2db_db_is_connected(idi, IDO_FALSE) == IDO_TRUE)
 		return IDO_OK;
 
 	ido2db_db_disconnect(idi);
