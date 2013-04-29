@@ -1160,7 +1160,7 @@ static void *ido2db_proxy_thread_proc(void *pargs) {
 				break;
 
 		time(&now);
-		if (ido2db_proxy_last_report < now - 15 && (size_left > 0 || size_right > 0)) {
+		if (ido2db_proxy_last_report < now && (size_left > 0 || size_right > 0)) {
 			syslog(LOG_INFO, "IDO2DB proxy stats (p=%p): left=%d, right=%d; iostats=%d\n", proxy, (int)size_left, (int)size_right, (int)(iostats + size_left + size_right) / 2);
 			ido2db_proxy_last_report = now;
 		}
