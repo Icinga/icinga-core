@@ -1801,7 +1801,7 @@ int ido2db_db_hello(ido2db_idi *idi) {
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_hello() get cached object ids\n");
 	/* get cached object ids... */
-	/*ido2db_get_cached_object_ids(idi);*/
+	ido2db_get_cached_object_ids(idi);
 
 	/* get latest times from various tables... */
 	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_program_status_time);
@@ -2120,7 +2120,7 @@ int ido2db_thread_db_hello(ido2db_idi *idi) {
 #endif /* Oracle ocilib specific */
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_thread_db_hello() get cached object ids\n");
 	/* get cached object ids... */
-	/*ido2db_get_cached_object_ids(idi);*/
+	ido2db_get_cached_object_ids(idi);
 
 	/* get latest times from various tables... */
 	ido2db_db_get_latest_data_time(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_PROGRAMSTATUS], "status_update_time", (unsigned long *) &idi->dbinfo.latest_program_status_time);

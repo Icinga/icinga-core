@@ -476,6 +476,7 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 	char *tmp1 = NULL;
 	char *tmp2 = NULL;
 #ifdef USE_LIBDBI
+	unsigned long offset, stride;
 	char *buf = NULL;
 #endif
 
@@ -486,37 +487,47 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 
 	/* find all the object definitions we already have */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id) == -1)
-		buf = NULL;
+	offset = 0;
+	stride = 2500;
 
-	if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
-		while (idi->dbinfo.dbi_result) {
-			if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
-				object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "object_id");
-				objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "objecttype_id");
+	for (;;) {
+		if (asprintf(&buf, "SELECT object_id, objecttype_id, name1, name2 FROM %s WHERE instance_id=%lu LIMIT %lu, %lu", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], idi->dbinfo.instance_id, offset, stride) == -1)
+			buf = NULL;
 
-				/* get string and free it later on */
-				if (asprintf(&tmp1, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name1")) == -1)
-					tmp1 = NULL;
-				if (asprintf(&tmp2, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name2")) == -1)
-					tmp2 = NULL;
+		if ((result = ido2db_db_query(idi, buf)) == IDO_OK) {
+			if (dbi_result_get_numrows(idi->dbinfo.dbi_result) == 0)
+				break;
 
-				ido2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
+			while (idi->dbinfo.dbi_result) {
+				if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+					object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "object_id");
+					objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "objecttype_id");
 
-				free(tmp1);
-				free(tmp2);
+					/* get string and free it later on */
+					if (asprintf(&tmp1, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name1")) == -1)
+						tmp1 = NULL;
+					if (asprintf(&tmp2, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name2")) == -1)
+						tmp2 = NULL;
 
-			} else {
-				dbi_result_free(idi->dbinfo.dbi_result);
-				idi->dbinfo.dbi_result = NULL;
+					ido2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
+
+					free(tmp1);
+					free(tmp2);
+
+				} else {
+					dbi_result_free(idi->dbinfo.dbi_result);
+					idi->dbinfo.dbi_result = NULL;
+				}
 			}
+		} else {
+			dbi_result_free(idi->dbinfo.dbi_result);
+			idi->dbinfo.dbi_result = NULL;
 		}
-	} else {
-		dbi_result_free(idi->dbinfo.dbi_result);
-		idi->dbinfo.dbi_result = NULL;
-	}
 
-	free(buf);
+		free(buf);
+
+		offset += stride;
+	}
 #endif
 
 #ifdef USE_PGSQL /* pgsql */
