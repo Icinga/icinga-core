@@ -878,8 +878,8 @@ int ido2db_set_all_objects_as_inactive(ido2db_idi *idi) {
 	return result;
 }
 
-int ido2db_set_object_as_active(ido2db_idi *idi, int object_type,
-                                unsigned long object_id) {
+
+int ido2db_set_object_as_active(ido2db_idi *idi, unsigned long object_id) {
 	int result = IDO_OK;
 #ifdef USE_LIBDBI
 	char *buf = NULL;
@@ -919,18 +919,10 @@ int ido2db_set_object_as_active(ido2db_idi *idi, int object_type,
 		return IDO_ERROR;
 
 
-	data[0] = (void *) &idi->dbinfo.instance_id;
-	data[1] = (void *) &object_type;
-	data[2] = (void *) &object_id;
+	data[0] = (void *) &object_id;
 
 
 	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_objects_update_active, MT(":X2"), (uint *) data[0])) {
-		return IDO_ERROR;
-	}
-	if (!OCI_BindInt(idi->dbinfo.oci_statement_objects_update_active, MT(":X3"), (int *) data[1])) {
-		return IDO_ERROR;
-	}
-	if (!OCI_BindUnsignedInt(idi->dbinfo.oci_statement_objects_update_active, MT(":X4"), (uint *) data[2])) {
 		return IDO_ERROR;
 	}
 
@@ -5548,7 +5540,7 @@ int ido2db_handle_hostdefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_HOST, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* get the timeperiod ids */
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_HOSTCHECKPERIOD], NULL, &check_timeperiod_id);
@@ -6082,7 +6074,7 @@ int ido2db_handle_hostgroupdefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOSTGROUP, idi->buffered_input[IDO_DATA_HOSTGROUPNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_HOSTGROUP, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -6390,7 +6382,7 @@ int ido2db_handle_servicedefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_HOST, idi->buffered_input[IDO_DATA_HOSTNAME], NULL, &host_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_SERVICE, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* get the timeperiod ids */
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_SERVICECHECKPERIOD], NULL, &check_timeperiod_id);
@@ -6793,7 +6785,7 @@ int ido2db_handle_servicegroupdefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_SERVICEGROUP, idi->buffered_input[IDO_DATA_SERVICEGROUPNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_SERVICEGROUP, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7319,7 +7311,7 @@ int ido2db_handle_commanddefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_COMMAND, idi->buffered_input[IDO_DATA_COMMANDNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_COMMAND, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7386,7 +7378,7 @@ int ido2db_handle_timeperiodefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, idi->buffered_input[IDO_DATA_TIMEPERIODNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_TIMEPERIOD, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7650,7 +7642,7 @@ int ido2db_handle_contactdefinition(ido2db_idi *idi) {
 	         &service_timeperiod_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_CONTACT, contact_id);
+	ido2db_set_object_as_active(idi, contact_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
@@ -7901,7 +7893,7 @@ int ido2db_handle_contactgroupdefinition(ido2db_idi *idi) {
 	result = ido2db_get_object_id_with_insert(idi, IDO2DB_OBJECTTYPE_CONTACTGROUP, idi->buffered_input[IDO_DATA_CONTACTGROUPNAME], NULL, &object_id);
 
 	/* flag the object as being active */
-	ido2db_set_object_as_active(idi, IDO2DB_OBJECTTYPE_CONTACTGROUP, object_id);
+	ido2db_set_object_as_active(idi, object_id);
 
 	/* add definition to db */
 	data[0] = (void *) &idi->dbinfo.instance_id;
