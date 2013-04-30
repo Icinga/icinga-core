@@ -628,11 +628,25 @@
 
         <p>This should be prepared:</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
+        <div class="itemizedlist">
+<div class="note" title="Note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="../images/note.png"></td>
+<th align="left">Note</th>
+</tr>
+<tr><td align="left" valign="top">
+            <p>The file <code class="filename">.htaccess</code> has been removed in 1.9 and the options have been moved to the Apache
+            configuration file.</p>
+          </td></tr>
+</table></div>
+<ul class="itemizedlist" type="circle"><li class="listitem">
             <p>mod_rewrite enabled, maybe you have to create a link:</p>
 
-            <pre class="screen"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
+            <p>
+              </p>
+<pre class="screen"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
+<p>
+            </p>
 
             <p>Using OpenSuSE or SLES you can use "a2enmod rewrite" to activate the module. If that doesn't work you have to edit the
             file "<code class="filename">/etc/sysconfig/apache2</code>". The module "rewrite" has to be appended to the line
@@ -641,58 +655,8 @@
             <p>Using Debian or Ubuntu "a2enmod rewrite" activates the module as well.</p>
 
             <p>The httpd of RHEL / Fedora / CentOS already supports rewriting so you don't have to change anything in this regard.</p>
-          </li>
-<li class="listitem">
-            <p>Any htaccess enabled alias settings</p>
-
-            <p>Edit your <code class="filename">.htaccess</code> in <code class="filename">/usr/local/icinga-web/pub</code>:</p>
-
-            <p>At line 14, change the RewriteBase direction to suit to your needs:</p>
-<pre class="programlisting"> DirectoryIndex index.php
-
- Options -MultiViews -Indexes +FollowSymLinks
- Order allow,deny
- Allow from all
-
- &lt;IfModule mod_rewrite.c&gt;
-    RewriteEngine On
-
-    # This depends on your path
-    # on independent hosts the base is '/'
-    RewriteBase /icinga-web/
-
-        # If the requested URL does not exist (it's likely an agavi route),
-        # pass it as path info to index.php, the Agavi dispatch script.
-        RewriteRule ^$ index.php?/ [QSA,L]
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteRule (.*) index.php?/$1 [QSA,L]
- &lt;/IfModule&gt;
-
- &lt;IfModule mod_deflate.c&gt;
-        SetOutputFilter DEFLATE
-
-        BrowserMatch ^Mozilla/4 gzip-only-text/html
-        BrowserMatch ^Mozilla/4\.0[678] no-gzip
-
-        BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
-        BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
-
-        Header append Vary User-Agent env=!dont-vary
- &lt;/IfModule&gt;
-
- &lt;IfDefine APACHE2&gt;
-        AcceptPathInf  On
- &lt;/IfDefine&gt;
-
- #&lt;IfModule mod_auth_basic.c&gt;
- #       AuthType Basic
- #       AuthName "My http basic auth realm"
- #       AuthUserFile /path/to/my/htusers
- #       require valid-user
- #&lt;/IfModule&gt;</pre>
-          </li>
-</ul></div>
+          </li></ul>
+</div>
 
         <p>Go to the webservers configuration directory. Look if the created config by <span class="bold"><strong>make
         install-apache-config</strong></span> suits to your configuration. Or create new aliases (maybe in
@@ -964,11 +928,11 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>If you have any updates on that please do not hesitate to report back! :-)</p>
 
-    <a class="indexterm" name="idp12346976"></a>
+    <a class="indexterm" name="idp12345056"></a>
 
-    <a class="indexterm" name="idp12348256"></a>
+    <a class="indexterm" name="idp12346336"></a>
 
-    <a class="indexterm" name="idp12349440"></a>
+    <a class="indexterm" name="idp12347520"></a>
   </div>
 </div>
 <div class="navfooter">
