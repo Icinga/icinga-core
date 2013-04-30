@@ -500,13 +500,16 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 
 			while (idi->dbinfo.dbi_result) {
 				if (dbi_result_next_row(idi->dbinfo.dbi_result)) {
+					char *name2;
+					
 					object_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "object_id");
 					objecttype_id = dbi_result_get_ulonglong(idi->dbinfo.dbi_result, "objecttype_id");
 
 					/* get string and free it later on */
 					if (asprintf(&tmp1, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name1")) == -1)
 						tmp1 = NULL;
-					if (asprintf(&tmp2, "%s", dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name2")) == -1)
+					name2 = dbi_result_get_string_copy(idi->dbinfo.dbi_result, "name2");
+					if (!name2 || asprintf(&tmp2, "%s", name2) == -1)
 						tmp2 = NULL;
 
 					ido2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
@@ -557,6 +560,7 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 	idi->dbinfo.oci_resultset = OCI_GetResultset(idi->dbinfo.oci_statement_objects_select_cached);
 
 	if (OCI_FetchNext(idi->dbinfo.oci_resultset)) {
+		char *name2;
 
 		ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_get_cached_object_ids() fetchnext ok\n");
 		object_id = OCI_GetUnsignedInt2(idi->dbinfo.oci_resultset, MT("id"));
@@ -565,7 +569,8 @@ int ido2db_get_cached_object_ids(ido2db_idi *idi) {
 		/* dirty little hack for mtext* <-> char* */
 		if (asprintf(&tmp1, "%s", OCI_GetString2(idi->dbinfo.oci_resultset, MT("name1"))) == -1)
 			tmp1 = NULL;
-		if (asprintf(&tmp2, "%s", OCI_GetString2(idi->dbinfo.oci_resultset, MT("name2"))) == -1)
+		name2 = OCI_GetString2(idi->dbinfo.oci_resultset, MT("name2"));
+		if (!name2 || asprintf(&tmp2, "%s", name2) == -1)
 			tmp2 = NULL;
 
 		ido2db_add_cached_object_id(idi, objecttype_id, tmp1, tmp2, object_id);
