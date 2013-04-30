@@ -27,6 +27,7 @@ ENHANCEMENTS
 * core: skip writing status.dat if explicitely set to /dev/null (e.g. when using alternate data retrieval methods like IDOUtils) (Andreas Ericsson, op5 Team) #3819 - MF
 * core: avoid writing objects.cache if set to /dev/null (Andreas Ericsson, op5 Team) #3819 - MF
 * core: increase performance on host->service relation counter (config reading, flapping) #3820 - MF
+* core: fix unable to exclude hostgroups when using nested hostgroups (Alexander Sulfrian) #2619 - MF
 
 * classic ui: increase performance with hash comparing hosts/services to show/filter #3722 - GB
 * classic ui: Add "set_expire_ack_by_default" to cgi configuration #3476 - CF
@@ -69,7 +70,6 @@ FIXES
 * core: fix triggered downtimes for child hosts are missing after icinga restart (thx Michael Lucka) #3390 - MF
 * core: fix services with empty hostgroups aren't processed even if it has host_name specified (allow_empty_hostgroups=1) (thx Viranch Metha) #3736 - MF
 * core: revamp USE_LTDL definitions in nebmods (Andreas Ericsson, op5 Team) #3817 - MF
-* core: fix unable to exclude hostgroups when using nested hostgroups (Alexander Sulfrian) #2619 - MF
 * core: fix checkresult reaper cleanup fails due to relative file path #3937 - MaF
 * core: do not export host/servicegroupmembers as environment macros in large installations #3859 - MF
 
@@ -128,6 +128,10 @@ CHANGES
 * core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510
 * core: refuse to start if neb modules fail to load #3812
 * core: notification type nr CUSTOM=8 and STALKING=9 (reflected in idoutils tables) #3818
+* core: using nested hostgroups you can exclude (!) hostgroup_members #2619
+* core: host/servicegroupmembers are not exported as environment macros #3859
+	** if enable_environment_macros=1
+	** and use_large_installation_tweaks=1
 
 * ido2db.cfg:
 	** use_transactions #3527
