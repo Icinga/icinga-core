@@ -625,11 +625,25 @@
 
         <p>Voraussetzungen:</p>
 
-        <div class="itemizedlist"><ul class="itemizedlist" type="circle">
-<li class="listitem">
+        <div class="itemizedlist">
+<div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
+<tr>
+<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
+<th align="left">Anmerkung</th>
+</tr>
+<tr><td align="left" valign="top">
+            <p>In 1.9 wurde die Datei <code class="filename">.htaccess</code> entfernt und die Optionen sind nun in der Apache-Konfiguration zu
+            finden.</p>
+          </td></tr>
+</table></div>
+<ul class="itemizedlist" type="circle"><li class="listitem">
             <p>mod_rewrite, vielleicht müssen Sie einen Verweis erstellen:</p>
 
-            <pre class="screen"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
+            <p>
+              </p>
+<pre class="screen"> #&gt; ln -s /etc/apache2/mods-available/rewrite.load /etc/apache2/mods-enabled/rewrite.load</pre>
+<p>
+            </p>
 
             <p>Bei OpenSuSE und SLES können Sie das Modul mit "a2enmod rewrite" aktivieren. Falls das nicht funktioniert, gibt es in der
             Datei <code class="filename">/etc/sysconfig/apache2</code> die Zeile "APACHE_MODULES=...", der das Modul "rewrite" hinzugefügt werden
@@ -638,57 +652,8 @@
             <p>Bei Debian und Ubuntu können Sie das Modul ebenfalls mit "a2enmod rewrite" aktivieren.</p>
 
             <p>Bei RHEL/Fedora/CentOS ist die Unterstützung bereits im httpd enthalten.</p>
-          </li>
-<li class="listitem">
-            <p>Über htaccess aktivierte Einstellungen</p>
-
-            <p>Editieren Sie die <code class="filename">.htaccess</code> unter <code class="filename">/usr/local/icinga-web/pub</code> und ändern Sie die
-            RewriteBase (ab Zeile 14): </p>
-<pre class="programlisting"> DirectoryIndex index.php
-
- Options -MultiViews -Indexes +FollowSymLinks
- Order allow,deny
- Allow from all
-
- &lt;IfModule mod_rewrite.c&gt;
-    RewriteEngine On
-
-    # This depends on your path
-    # on independent hosts the base is '/'
-    RewriteBase /icinga-web/
-
-        # If the requested URL does not exist (it's likely an agavi route),
-        # pass it as path info to index.php, the Agavi dispatch script.
-        RewriteRule ^$ index.php?/ [QSA,L]
-        RewriteCond %{REQUEST_FILENAME} !-f
-        RewriteCond %{REQUEST_FILENAME} !-d
-        RewriteRule (.*) index.php?/$1 [QSA,L]
- &lt;/IfModule&gt;
-
- &lt;IfModule mod_deflate.c&gt;
-        SetOutputFilter DEFLATE
-
-        BrowserMatch ^Mozilla/4 gzip-only-text/html
-        BrowserMatch ^Mozilla/4\.0[678] no-gzip
-
-        BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
-        BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
-
-        Header append Vary User-Agent env=!dont-vary
- &lt;/IfModule&gt;
-
- &lt;IfDefine APACHE2&gt;
-        AcceptPathInf  On
- &lt;/IfDefine&gt;
-
- #&lt;IfModule mod_auth_basic.c&gt;
- #       AuthType Basic
- #       AuthName "My http basic auth realm"
- #       AuthUserFile /path/to/my/htusers
- #       require valid-user
- #&lt;/IfModule&gt;</pre>
-          </li>
-</ul></div>
+          </li></ul>
+</div>
 
         <p>Bitte wechseln Sie in das Konfigurationsverzeichnis Ihres Webservers. Überprüfen Sie, ob die mit <span class="bold"><strong>make
         install-apache-config</strong></span> erstellte Konfiguration Ihren Anforderungen entspricht, oder erstellen Sie noch einen neuen Alias
@@ -970,9 +935,9 @@ Alias /icinga-web /usr/local/icinga-web/pub
 
     <p>Sofern Sie Fragen oder Updates haben, zögern Sie bitte nicht, uns diese mitzuteilen! :-)</p>
 
-    <a class="indexterm" name="idp12541280"></a>
+    <a class="indexterm" name="idp12540768"></a>
 
-    <a class="indexterm" name="idp12543728"></a>
+    <a class="indexterm" name="idp12541936"></a>
   </div>
 </div>
 <div class="navfooter">
