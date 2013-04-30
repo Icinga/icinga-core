@@ -952,9 +952,9 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Starting with Icinga 1.9 the command 'make install-webconf-auth' additionally installs the file <code class="filename">htpasswd.users</code> which contains
-      credentials for the user <span class="emphasis"><em>icingaadmin</em></span> so you can skip the following step. The password is
-      <span class="emphasis"><em>icingaadmin</em></span>.</p>
+      <p>Starting with Icinga 1.9 the command 'make install-webconf-auth' additionally installs the file
+      <code class="filename">htpasswd.users</code> which contains credentials for the user <span class="emphasis"><em>icingaadmin</em></span> so you can skip the
+      following step. The password is <span class="emphasis"><em>icingaadmin</em></span>.</p>
     </td></tr>
 </table></div>
 
@@ -1044,6 +1044,8 @@
     <pre class="screen"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
  #&gt; chcon -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/icinga.cmd</pre>
+
+    <p>Alternatively you may want to take a look at <a class="link" href="http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/" target="_top">http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/</a>.</p>
   </div>
 
   <div class="section" title="2.5.15. Start IDOUtils and Icinga">
@@ -1165,9 +1167,9 @@
     You'll no doubt want to monitor more than just your local machine, so check out the chapter on <a class="link" href="ch02.html" title="Chapter 2. Getting Started">"Getting
     Started"</a> about "Monitoring ..."</p>
 
-    <a class="indexterm" name="idp800864"></a>
+    <a class="indexterm" name="idp803968"></a>
 
-    <a class="indexterm" name="idp798784"></a>
+    <a class="indexterm" name="idp801888"></a>
   </div>
 </div>
 <div class="navfooter">

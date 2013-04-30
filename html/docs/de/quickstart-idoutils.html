@@ -963,9 +963,9 @@
 <th align="left">Anmerkung</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Ab Icinga 1.9 installiert der Befehl 'make install-webconf-auth' zusätzlich die Datei <code class="filename">htpasswd.users</code>, die
-      Anmeldeinformationen für den Benutzer <span class="emphasis"><em>icingaadmin</em></span> enthält, so dass Sie den nächsten Schritt überspringen können.
-      Das Passwort lautet <span class="emphasis"><em>icingaadmin</em></span>.</p>
+      <p>Ab Icinga 1.9 installiert der Befehl 'make install-webconf-auth' zusätzlich die Datei
+      <code class="filename">htpasswd.users</code>, die Anmeldeinformationen für den Benutzer <span class="emphasis"><em>icingaadmin</em></span> enthält, so dass Sie
+      den nächsten Schritt überspringen können. Das Passwort lautet <span class="emphasis"><em>icingaadmin</em></span>.</p>
     </td></tr>
 </table></div>
 
@@ -1065,6 +1065,9 @@
     <pre class="programlisting"> #&gt; chcon -R -t httpd_sys_script_exec_t /usr/local/icinga/sbin/
  #&gt; chcon -R -t httpd_sys_content_t /usr/local/icinga/share/
  #&gt; chcon -t httpd_sys_script_rw_t /usr/local/icinga/var/rw/icinga.cmd</pre>
+
+    <p>Eine alternative Vorgehensweise wird unter <a class="link" href="http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/" target="_top">http://www.linuxquestions.org/questions/blog/sag47-492023/selinux-and-icinga-34926/</a>
+    beschrieben (englisch).</p>
   </div>
 
   <div class="section" title="2.5.15. IDOUtils und Icinga starten">
@@ -1198,9 +1201,9 @@
     Zweifel mehr als nur Ihre lokale Maschine überwachen wollen, so dass Sie u.a. das folgende <a class="link" href="ch02.html" title="Kapitel 2. Los geht's">Kapitel </a> lesen
     sollten...</p>
 
-    <a class="indexterm" name="idp802848"></a>
+    <a class="indexterm" name="idp806288"></a>
 
-    <a class="indexterm" name="idp799600"></a>
+    <a class="indexterm" name="idp803504"></a>
   </div>
 </div>
 <div class="navfooter">
