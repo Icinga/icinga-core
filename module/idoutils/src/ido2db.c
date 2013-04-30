@@ -1707,6 +1707,8 @@ int ido2db_idi_init(ido2db_idi *idi) {
 	idi->data_end_time = 0L;
 	idi->tables_cleared = IDO_FALSE;
 
+	ido2db_db_txbuf_init(&(idi->txbuf));
+
 	/* initialize mbuf */
 	for (x = 0; x < IDO2DB_MAX_MBUF_ITEMS; x++) {
 		idi->mbuf[x].used_lines = 0;

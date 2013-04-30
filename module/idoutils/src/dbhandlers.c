@@ -878,6 +878,47 @@ int ido2db_set_all_objects_as_inactive(ido2db_idi *idi) {
 	return result;
 }
 
+int ido2db_set_objects_as_active(ido2db_idi *idi, unsigned long *object_ids, int count) {
+	int i, first, result;
+	char *buf;
+
+#ifdef USE_LIBDBI
+	buf = malloc(128 + 20 * count + 2);
+
+	snprintf(buf, 128, "UPDATE %s SET is_active='1' WHERE object_id IN (", ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS]);
+
+	first = 1;
+
+	for (i = 0; i < count; i++) {
+		if (!first)
+			strcat(buf, ",");
+		else
+			first = 0;
+
+		snprintf(buf + strlen(buf), 15, "%lu", object_ids[i]);
+	}
+
+	strcat(buf, ")");
+
+	result = ido2db_db_query(idi, buf);
+
+	dbi_result_free(idi->dbinfo.dbi_result);
+	idi->dbinfo.dbi_result = NULL;
+	free(buf);
+
+	return result;
+
+#else
+	result = IDO_OK;
+
+	for (i = 0; i < count; i++) {
+		if (ido2db_set_object_as_active(idi, object_ids[i]) != IDO_OK)
+			result = IDO_ERROR;
+	}
+#endif
+
+	return result;
+}
 
 int ido2db_set_object_as_active(ido2db_idi *idi, unsigned long object_id) {
 	int result = IDO_OK;
@@ -894,18 +935,7 @@ int ido2db_set_object_as_active(ido2db_idi *idi, unsigned long object_id) {
 
 	/* mark the object as being active */
 #ifdef USE_LIBDBI /* everything else will be libdbi */
-	if (asprintf(
-	            &buf,
-	            "UPDATE %s SET is_active='1' WHERE object_id=%lu",
-	            ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], object_id) == -1)
-		buf = NULL;
-
-	result = ido2db_db_query(idi, buf);
-
-	dbi_result_free(idi->dbinfo.dbi_result);
-	idi->dbinfo.dbi_result = NULL;
-	free(buf);
-
+	ido2db_db_txbuf_add_id_to_activate(&(idi->txbuf), object_id);
 #endif
 
 #ifdef USE_PGSQL /* pgsql */

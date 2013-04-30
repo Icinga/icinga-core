@@ -2904,6 +2904,31 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 	return IDO_OK;
 }
 
+void ido2db_db_txbuf_init(ido2db_txbuf *txbuf) {
+	txbuf->ids_to_activate = NULL;
+	txbuf->ids_to_activate_count = 0;
+}
+
+void ido2db_db_txbuf_add_id_to_activate(ido2db_txbuf *txbuf, unsigned long object_id) {
+	txbuf->ids_to_activate_count++;
+	txbuf->ids_to_activate = (unsigned long *)realloc(txbuf->ids_to_activate, txbuf->ids_to_activate_count * sizeof(unsigned long));
+	txbuf->ids_to_activate[txbuf->ids_to_activate_count - 1] = object_id;
+}
+
+void ido2db_db_txbuf_flush(ido2db_idi *idi, ido2db_txbuf *txbuf)
+{
+#ifdef USE_LIBDBI
+	if (txbuf->ids_to_activate_count > 0) {
+		ido2db_set_objects_as_active(idi, txbuf->ids_to_activate, txbuf->ids_to_activate_count);
+	}
+
+	txbuf->ids_to_activate_count = 0;
+
+	free(txbuf->ids_to_activate);
+	txbuf->ids_to_activate = NULL;
+#endif
+}
+
 int ido2db_db_tx_begin(ido2db_idi *idi) {
 #ifdef USE_LIBDBI
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_tx_begin()\n");
@@ -2914,6 +2939,7 @@ int ido2db_db_tx_begin(ido2db_idi *idi) {
 }
 
 int ido2db_db_tx_commit(ido2db_idi *idi) {
+	ido2db_db_txbuf_flush(idi, &(idi->txbuf));
 #ifdef USE_LIBDBI
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_tx_commit()\n");
 	return ido2db_db_query(idi, "COMMIT");
