@@ -1705,6 +1705,7 @@ int ido2db_idi_init(ido2db_idi *idi) {
 	idi->current_object_config_type = IDO2DB_CONFIGTYPE_ORIGINAL;
 	idi->data_start_time = 0L;
 	idi->data_end_time = 0L;
+	idi->tables_cleared = IDO_FALSE;
 
 	/* initialize mbuf */
 	for (x = 0; x < IDO2DB_MAX_MBUF_ITEMS; x++) {
@@ -1920,6 +1921,7 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf) {
 				break;
 			case IDO_API_ENDCONFIGDUMP:
 				idi->current_input_data = IDO2DB_INPUT_DATA_CONFIGDUMPEND;
+				idi->tables_cleared = IDO_FALSE;
 				syslog(LOG_USER | LOG_INFO, "Config dump completed");
 				break;
 

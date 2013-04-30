@@ -245,6 +245,7 @@ typedef struct ido2db_input_data_info_struct{
 	char *connect_type;
 	int current_input_section;
 	int current_input_data;
+	int tables_cleared;
 	/* ToDo change *_processed  to unsigned long long */
 	unsigned long bytes_processed;
 	unsigned long lines_processed;

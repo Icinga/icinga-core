@@ -896,9 +896,8 @@ int ido2db_set_object_as_active(ido2db_idi *idi, int object_type,
 #ifdef USE_LIBDBI /* everything else will be libdbi */
 	if (asprintf(
 	            &buf,
-	            "UPDATE %s SET is_active='1' WHERE instance_id=%lu AND objecttype_id=%d AND object_id=%lu",
-	            ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS],
-	            idi->dbinfo.instance_id, object_type, object_id) == -1)
+	            "UPDATE %s SET is_active='1' WHERE object_id=%lu",
+	            ido2db_db_tablenames[IDO2DB_DBTABLE_OBJECTS], object_id) == -1)
 		buf = NULL;
 
 	result = ido2db_db_query(idi, buf);
@@ -1493,6 +1492,8 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLESTATUS]);
 		}
 
+		idi->tables_cleared = IDO_FALSE;
+
 		if (ido2db_db_settings.clean_config_tables_on_core_startup == IDO_TRUE) { /* only if desired */
 			/* clear config data */
 
@@ -1556,6 +1557,7 @@ int ido2db_handle_processdata(ido2db_idi *idi) {
 			ido2db_db_clear_table(idi, ido2db_db_tablenames[IDO2DB_DBTABLE_CUSTOMVARIABLES]);
 
 
+			idi->tables_cleared = IDO_TRUE;
 		}
 
 		/* flag all objects as being inactive */
