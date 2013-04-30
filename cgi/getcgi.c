@@ -172,12 +172,13 @@ char **getcgivars(void) {
 			if (cgiinput != NULL) {
 				cgiinput[0] = '\x0';
 			}
-		} else
+		} else {
 			cgiinput = strdup(getenv("QUERY_STRING"));
 			if (cgiinput == NULL) {
 				printf("getcgivars(): Could not allocate memory for CGI input.\n");
 				exit(1);
 			}
+		}
 	}
 
 	else if (!strcmp(request_method, "POST") || !strcmp(request_method, "PUT")) {
@@ -217,6 +218,7 @@ char **getcgivars(void) {
 			exit(1);
 		}
 		cgiinput[content_length] = '\0';
+
 	} else {
 
 		printf("getcgivars(): Unsupported REQUEST_METHOD -> '%s'\n", request_method);
@@ -272,6 +274,7 @@ char **getcgivars(void) {
 		printf("getcgivars(): Could not allocate memory for name-value list.\n");
 		exit(1);
 	}
+
 	for (i = 0; i < paircount; i++) {
 
 		/* get the variable name preceding the equal (=) sign */
@@ -283,13 +286,14 @@ char **getcgivars(void) {
 				exit(1);
 			}
 			unescape_cgi_input(cgivars[i*2+1]);
-		} else
+
+		} else {
 			cgivars[i*2+1] = strdup("");
 			if(cgivars[i*2+1] == NULL) {
 				printf("getcgivars(): Could not allocate memory for empty cgi param value #%d.\n", i);
 				exit(1);
 			}
-			unescape_cgi_input(cgivars[i*2+1]);
+		}
 
 		/* get the variable value (or name/value of there was no real "pair" in the first place) */
 		cgivars[i*2] = strdup(pairlist[i]);

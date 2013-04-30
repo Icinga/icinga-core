@@ -89,6 +89,7 @@ FIXES
 * classic ui: fixed Command expansion problem with percentage signs #3929 - RB
 * classic ui: cleaned up the jquery-ui includes to allow debian pkg dependencies #3808 - RB
 * classic ui: fixed Trigger Time in Scheduled Downtime displaying 01-01-1970 01:00:00 when not triggered #3980 - RB
+* classic-ui: fixed host and service names are not allowed to have a '+' included #1843 - RB
 
 * idoutils: fix many memory leaks in ido2db on dbi_result_free and others (thx Klaus Wagner) #3406 - MF
 * idoutils: fix ido2db crashes when Oracle queries fail #3324 - GB
