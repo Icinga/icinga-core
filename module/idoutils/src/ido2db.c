@@ -87,8 +87,6 @@ int ido2db_debug_verbosity = IDO2DB_DEBUGV_BASIC;
 FILE *ido2db_debug_file_fp = NULL;
 unsigned long ido2db_max_debug_file_size = 0L;
 
-int enable_socket_queue = IDO_FALSE;
-
 int enable_sla = IDO_FALSE;
 int ido2db_debug_readable_timestamp = IDO_FALSE;
 
@@ -618,10 +616,6 @@ int ido2db_process_config_var(char *arg) {
 		enable_sla = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "debug_readable_timestamp")) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
-	} else if (!strcmp(var, "use_transactions")) {
-		ido2db_db_settings.use_transactions = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
-        } else if (!strcmp(var, "enable_socket_queue")) {
-                enable_socket_queue = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
         }
 	else if (!strcmp(var, "libdbi_driver_dir")) {
 		if ((libdbi_driver_dir = strdup(val)) == NULL)
@@ -665,7 +659,6 @@ int ido2db_initialize_variables(void) {
 	ido2db_db_settings.clean_config_tables_on_core_startup = IDO_TRUE;
 	ido2db_db_settings.oci_errors_to_syslog = DEFAULT_OCI_ERRORS_TO_SYSLOG;
 	ido2db_db_settings.oracle_trace_level = ORACLE_TRACE_LEVEL_OFF;
-	ido2db_db_settings.use_transactions = IDO_FALSE;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_initialize_variables() end\n");
 	return IDO_OK;
@@ -1268,22 +1261,20 @@ int ido2db_wait_for_connections(void) {
 
 			new_sd = accept(ido2db_sd, (ido2db_socket_type == IDO_SINK_TCPSOCKET) ? (struct sockaddr *)&client_address_i : (struct sockaddr *)&client_address_u, (socklen_t *)&client_address_length);
 
-			if (enable_socket_queue == IDO_TRUE) {
-				if (socketpair(AF_UNIX, SOCK_STREAM, PF_UNIX, fds) == 0) {
-					pthread_t tid;
+			if (socketpair(AF_UNIX, SOCK_STREAM, PF_UNIX, fds) == 0) {
+				pthread_t tid;
 
-					ido2db_proxy_args *pa = (ido2db_proxy_args *)malloc(sizeof(ido2db_proxy_args));
-					pa->fd_left = new_sd;
-					pa->fd_right = fds[0];
+				ido2db_proxy_args *pa = (ido2db_proxy_args *)malloc(sizeof(ido2db_proxy_args));
+				pa->fd_left = new_sd;
+				pa->fd_right = fds[0];
 
-					if (pthread_create(&tid, NULL, ido2db_proxy_thread_proc, pa) == 0) {
-						(void) pthread_detach(tid);
+				if (pthread_create(&tid, NULL, ido2db_proxy_thread_proc, pa) == 0) {
+					(void) pthread_detach(tid);
 
-						new_sd = fds[1];
-					} else {
-						close(fds[0]);
-						close(fds[1]);
-					}
+					new_sd = fds[1];
+				} else {
+					close(fds[0]);
+					close(fds[1]);
 				}
 			}
 
@@ -1542,12 +1533,11 @@ int ido2db_handle_client_connection(int sd) {
 		/* 2011-02-23 MF: only do that in a worker thread */
 		/* 2011-05-02 MF: redo it the old way */
 
-		if(ido2db_db_settings.use_transactions == IDO_TRUE) {
-			result = ido2db_db_tx_begin(&idi);
-		}
+		result = ido2db_db_tx_begin(&idi);
+
 		ido2db_check_for_client_input(&idi);
 
-		if (ido2db_db_settings.use_transactions == IDO_TRUE && result == IDO_OK) {
+		if (result == IDO_OK) {
 			if (ido2db_db_tx_commit(&idi) != IDO_OK) {
 				syslog(LOG_ERR, "IDO2DB commit failed. Some data may have been lost.\n");
 			}
