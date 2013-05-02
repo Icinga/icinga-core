@@ -72,6 +72,7 @@ FIXES
 * core: revamp USE_LTDL definitions in nebmods (Andreas Ericsson, op5 Team) #3817 - MF
 * core: fix checkresult reaper cleanup fails due to relative file path #3937 - MaF
 * core: do not export host/servicegroupmembers as environment macros in large installations #3859 - MF
+* core: set default permissions to icinga/ido2db binaries to 755 #3902 - GB
 
 * classic ui: fix cmd.cgi does not honor commandpipe location; overwrites from empty environment variable #3418 - MF
 * classic ui: fixed Double-listed host dependencies in host extinfo.cgi #3295 - RB
@@ -148,6 +149,7 @@ CHANGES
 	** sets cgi.cfg standalone_installation=1
 * install: add 'make classicui-standalone' and 'make install-classicui-standalone' #3963
 	** this will install classic ui standalone, if enabled
+* install: default permissions for icinga/ido2db binaries are now 755 #3902
 
 
 1.8.4 - 13/01/2013

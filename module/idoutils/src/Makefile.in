@@ -114,7 +114,7 @@ install:
 	@echo "Resuming with install..."
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(BINDIR)
 	$(INSTALL) -m 775 $(INSTALL_OPTS) -d $(DESTDIR)$(LIBDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) ido2db $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) log2ido $(DESTDIR)$(BINDIR)
-	$(INSTALL) -m 774 $(INSTALL_OPTS) idomod.so $(DESTDIR)$(LIBDIR)
+	$(INSTALL) -m 755 $(INSTALL_OPTS) ido2db $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 755 $(INSTALL_OPTS) log2ido $(DESTDIR)$(BINDIR)
+	$(INSTALL) -m 755 $(INSTALL_OPTS) idomod.so $(DESTDIR)$(LIBDIR)
 
