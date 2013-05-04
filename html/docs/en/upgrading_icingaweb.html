@@ -68,8 +68,12 @@
 <th align="left">Note</th>
 </tr>
 <tr><td align="left" valign="top">
-      <p>Since 1.9 the file <code class="filename">.htaccess</code> has been removed so you have to update your Apache configuration. Otherwise
-      you might run into problems.</p>
+      <p>Since 1.9 the file <code class="filename">.htaccess</code> has been removed and all Rewrite rules are now located in the main Apache
+      configuration.</p>
+      <p>Please update your Apache configuration <code class="code">icinga-web.conf</code> (etc/conf.d/icinga-web.conf in the source tarball) or
+      run <code class="code">make install-apache-config</code>.</p>
+      <p>When updating an existing installation the old <code class="code">.htaccess</code> files in <code class="code">/usr/local/icinga-web/pub/</code>
+      and <code class="code">/usr/local/icinga-web/pub/soap/</code> (or where you installed Icinga-Web) should be removed.</p>
     </td></tr>
 </table></div>
 
@@ -155,11 +159,11 @@
 
     <p>Unpack your tarball:</p>
 
-    <pre class="screen"> #&gt; tar xzvf icinga-web-1.8.3.tar.gz</pre>
+    <pre class="screen"> #&gt; tar xzvf icinga-web-1.9.0.tar.gz</pre>
 
     <p>Then change to the directory:</p>
 
-    <pre class="screen"> #&gt; cd icinga-web-1.8.3</pre>
+    <pre class="screen"> #&gt; cd icinga-web-1.9.0</pre>
 
     <p>Icinga-Web provides several configure options e.g.</p>
 
@@ -304,13 +308,13 @@
 
     <p>That's all.</p>
 
-    <a class="indexterm" name="idp12402192"></a>
+    <a class="indexterm" name="idp12405904"></a>
 
-    <a class="indexterm" name="idp12403472"></a>
+    <a class="indexterm" name="idp12406896"></a>
 
-    <a class="indexterm" name="idp12404928"></a>
+    <a class="indexterm" name="idp12408672"></a>
 
-    <a class="indexterm" name="idp12406016"></a>
+    <a class="indexterm" name="idp12409696"></a>
   </div>
 </div>
 <div class="navfooter">
