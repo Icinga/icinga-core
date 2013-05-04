@@ -15,6 +15,7 @@ UPGRADE NOTES
 1.9.0 - 07/05/2013
 
 NOTES
+* idoutils uses a socket queue and transactions for large object dumps! #3527 #3533
 * ido2db.cfg enable_sla is now deprecated! #3450
 
 ENHANCEMENTS
@@ -40,8 +41,8 @@ ENHANCEMENTS
 * classic ui: Made classic ui work standalone #3869 - RB
 * classic ui: add 'executed command' to extinfo.cgi linking to command expander #3901 - MF
 
-* idoutils: use transactions for large object dumps, opt-in config option #3527 - GB
-* idoutils: add experimental socket queue proxy; opt-in via config option #3533 - GB
+* idoutils: use transactions for large object dumps #3527 - GB
+* idoutils: add socket queue proxy addressing core reload problems #3533 - GB
 * idoutils: add more indexes for sla reporting #3649 - MF
 * idoutils: Oracle - change output fields to clob #3412 - TD
 
@@ -72,6 +73,7 @@ FIXES
 * core: revamp USE_LTDL definitions in nebmods (Andreas Ericsson, op5 Team) #3817 - MF
 * core: fix checkresult reaper cleanup fails due to relative file path #3937 - MaF
 * core: do not export host/servicegroupmembers as environment macros in large installations #3859 - MF
+* core: set default permissions to icinga/ido2db binaries to 755 #3902 - GB
 
 * classic ui: fix cmd.cgi does not honor commandpipe location; overwrites from empty environment variable #3418 - MF
 * classic ui: fixed Double-listed host dependencies in host extinfo.cgi #3295 - RB
@@ -121,6 +123,9 @@ FIXES
 
 CHANGES
 
+* idoutils: use transactions for large object dumps #3527
+* idoutils: add socket queue proxy addressing core reload problems #3533
+
 * icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
 * icinga.cfg - set status_file=/dev/null to disable its creation #3819
 * icinga.cfg - set object_cache_file=/dev/null to disable its creation #3819
@@ -134,9 +139,6 @@ CHANGES
 	** if enable_environment_macros=1
 	** and use_large_installation_tweaks=1
 
-* ido2db.cfg:
-	** use_transactions #3527
-	** enable_socket_queue #3533
 
 * icinga.spec: add idoutils as transitional package #3640
 
@@ -148,6 +150,7 @@ CHANGES
 	** sets cgi.cfg standalone_installation=1
 * install: add 'make classicui-standalone' and 'make install-classicui-standalone' #3963
 	** this will install classic ui standalone, if enabled
+* install: default permissions for icinga/ido2db binaries are now 755 #3902
 
 
 1.8.4 - 13/01/2013

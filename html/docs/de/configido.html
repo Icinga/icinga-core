@@ -1712,309 +1712,197 @@
     </td></tr>
 </table></div>
 
-    <p><a name="configido-use_transactions"></a> <span class="bold"><strong>Transaktionen aktivieren</strong></span></p>
-
-    <div class="informaltable">
-      <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p>Format:</p></td>
-<td><p><span class="bold"><strong>use_transactions=&lt;0|1&gt;</strong></span></p></td>
-</tr>
-<tr>
-<td><p>Example:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>use_transactions=0</strong></span>
-            </font></span></p></td>
-</tr>
-</tbody>
-</table>
-    </div>
-
-    <p>Diese Einstellung aktiviert SQL-Transaktionen während der Datenverarbeitng. Das ist sinnvoll beim Dump von Konfigurationsobjekten
-    und deren Beziehungen (Kontakte, etc.), beim normalen Betrieb wird es nicht viel ausmachen. Das Ziel ist ganz klar die
-    Reload-/Restart-Zeit zu reduzieren, wenn idomod die Konfigurationsdaten ausgibt, und dabei den Core blockiert..</p>
-
-    <p>Mögliche Werte sind:</p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-          <p>0 = disabled (Default)</p>
-        </li>
-<li class="listitem">
-          <p>1 = enabled</p>
-        </li>
-</ul></div>
-
-    <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
-<th align="left">Wichtig</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p>Dies benutzt BEGIN / COMMIT für die Transaktionen - stellen Sie sicher, dass Ihr RDBMS das unterstützt<span class="bold"><strong>.</strong></span></p>
-    </td></tr>
-</table></div>
-
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p>Diese Option ist verfügbar ab Icinga 1.9.</p>
-    </td></tr>
-</table></div>
-
-    <p><a name="configido-enable_socket_queue"></a> <span class="bold"><strong>Socket-Queue aktivieren</strong></span></p>
-
-    <div class="informaltable">
-      <table border="0">
-<colgroup>
-<col>
-<col>
-</colgroup>
-<tbody>
-<tr>
-<td><p>Format:</p></td>
-<td><p><span class="bold"><strong>enable_socket_queue=&lt;0|1&gt;</strong></span></p></td>
-</tr>
-<tr>
-<td><p>Example:</p></td>
-<td><p><span class="color"><font color="red"><span class="bold"><strong>enable_socket_queue=0</strong></span>
-            </font></span></p></td>
-</tr>
-</tbody>
-</table>
-    </div>
-
-    <p>Diese Option aktiviert eine Socket-Queue, die Daten vom IDO-Socket und den Daten(bank)-Aktionen weiterleitet.</p>
+    <a class="indexterm" name="idp17615136"></a>
 
-    <p>Mögliche Werte sind:</p>
-<div class="itemizedlist"><ul class="itemizedlist" type="disc">
-<li class="listitem">
-          <p>0 = disabled (Default)</p>
-        </li>
-<li class="listitem">
-          <p>1 = enabled</p>
-        </li>
-</ul></div>
+    <a class="indexterm" name="idp17616768"></a>
 
-    <div class="important" title="Wichtig" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Wichtig]" src="../images/important.png"></td>
-<th align="left">Wichtig</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p>Diese Einstellung ist hochgradig experimentell und kann zu Datenverlusten führen, wenn sie aktiviert ist. Das ist besonders
-      nachteilig bei der Ausgabe der Konfiguration während des Reload/Restart. Aktivieren Sie auf eigenes Risiko, und - falls Probleme
-      auftreten - geben Sie an, dass Sie diese Einstellung verändert haben. <span class="bold"><strong>Wir haben Sie gewarnt</strong></span><span class="bold"><strong>.</strong></span></p>
-    </td></tr>
-</table></div>
+    <a class="indexterm" name="idp17618432"></a>
 
-    <div class="note" title="Anmerkung" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note">
-<tr>
-<td rowspan="2" align="center" valign="top" width="25"><img alt="[Anmerkung]" src="../images/note.png"></td>
-<th align="left">Anmerkung</th>
-</tr>
-<tr><td align="left" valign="top">
-      <p>Diese Option ist verfügbar ab Icinga 1.9.</p>
-    </td></tr>
-</table></div>
+    <a class="indexterm" name="idp17620096"></a>
 
-    <a class="indexterm" name="idp17637552"></a>
+    <a class="indexterm" name="idp17621760"></a>
 
-    <a class="indexterm" name="idp17639344"></a>
+    <a class="indexterm" name="idp17623392"></a>
 
-    <a class="indexterm" name="idp17640912"></a>
+    <a class="indexterm" name="idp17625024"></a>
 
-    <a class="indexterm" name="idp17642672"></a>
+    <a class="indexterm" name="idp17626688"></a>
 
-    <a class="indexterm" name="idp17578400"></a>
+    <a class="indexterm" name="idp17628480"></a>
 
-    <a class="indexterm" name="idp17645504"></a>
+    <a class="indexterm" name="idp17630112"></a>
 
-    <a class="indexterm" name="idp17646896"></a>
+    <a class="indexterm" name="idp17631680"></a>
 
-    <a class="indexterm" name="idp17648288"></a>
+    <a class="indexterm" name="idp17633440"></a>
 
-    <a class="indexterm" name="idp17649680"></a>
+    <a class="indexterm" name="idp17635008"></a>
 
-    <a class="indexterm" name="idp17651072"></a>
+    <a class="indexterm" name="idp17636768"></a>
 
-    <a class="indexterm" name="idp17652640"></a>
+    <a class="indexterm" name="idp17638336"></a>
 
-    <a class="indexterm" name="idp17654032"></a>
+    <a class="indexterm" name="idp17639968"></a>
 
-    <a class="indexterm" name="idp17655744"></a>
+    <a class="indexterm" name="idp17641632"></a>
 
-    <a class="indexterm" name="idp17657440"></a>
+    <a class="indexterm" name="idp17643264"></a>
 
-    <a class="indexterm" name="idp17659008"></a>
+    <a class="indexterm" name="idp17579856"></a>
 
-    <a class="indexterm" name="idp17660480"></a>
+    <a class="indexterm" name="idp17645920"></a>
 
-    <a class="indexterm" name="idp17660608"></a>
+    <a class="indexterm" name="idp17647312"></a>
 
-    <a class="indexterm" name="idp17663648"></a>
+    <a class="indexterm" name="idp17648704"></a>
 
-    <a class="indexterm" name="idp17663776"></a>
+    <a class="indexterm" name="idp17650400"></a>
 
-    <a class="indexterm" name="idp17666960"></a>
+    <a class="indexterm" name="idp17651792"></a>
 
-    <a class="indexterm" name="idp17667088"></a>
+    <a class="indexterm" name="idp17653504"></a>
 
-    <a class="indexterm" name="idp17668688"></a>
+    <a class="indexterm" name="idp17655072"></a>
 
-    <a class="indexterm" name="idp17670384"></a>
+    <a class="indexterm" name="idp17656784"></a>
 
-    <a class="indexterm" name="idp17673424"></a>
+    <a class="indexterm" name="idp17658384"></a>
 
-    <a class="indexterm" name="idp17675200"></a>
+    <a class="indexterm" name="idp17659920"></a>
 
-    <a class="indexterm" name="idp17676832"></a>
+    <a class="indexterm" name="idp17661616"></a>
 
-    <a class="indexterm" name="idp17678432"></a>
+    <a class="indexterm" name="idp17663232"></a>
 
-    <a class="indexterm" name="idp17680064"></a>
+    <a class="indexterm" name="idp17664848"></a>
 
-    <a class="indexterm" name="idp17681712"></a>
+    <a class="indexterm" name="idp17666464"></a>
 
-    <a class="indexterm" name="idp17683376"></a>
+    <a class="indexterm" name="idp17668080"></a>
 
-    <a class="indexterm" name="idp17684976"></a>
+    <a class="indexterm" name="idp17669696"></a>
 
-    <a class="indexterm" name="idp17686608"></a>
+    <a class="indexterm" name="idp17671312"></a>
 
-    <a class="indexterm" name="idp17688304"></a>
+    <a class="indexterm" name="idp17672896"></a>
 
-    <a class="indexterm" name="idp17689920"></a>
+    <a class="indexterm" name="idp17674528"></a>
 
-    <a class="indexterm" name="idp17691536"></a>
+    <a class="indexterm" name="idp17676192"></a>
 
-    <a class="indexterm" name="idp17693152"></a>
+    <a class="indexterm" name="idp17677824"></a>
 
-    <a class="indexterm" name="idp17694736"></a>
+    <a class="indexterm" name="idp17679456"></a>
 
-    <a class="indexterm" name="idp17696368"></a>
+    <a class="indexterm" name="idp17681088"></a>
 
-    <a class="indexterm" name="idp17698032"></a>
+    <a class="indexterm" name="idp17682720"></a>
 
-    <a class="indexterm" name="idp17699664"></a>
+    <a class="indexterm" name="idp17684352"></a>
 
-    <a class="indexterm" name="idp17701296"></a>
+    <a class="indexterm" name="idp17685984"></a>
 
-    <a class="indexterm" name="idp17702928"></a>
+    <a class="indexterm" name="idp17687552"></a>
 
-    <a class="indexterm" name="idp17704560"></a>
+    <a class="indexterm" name="idp17689248"></a>
 
-    <a class="indexterm" name="idp17706192"></a>
+    <a class="indexterm" name="idp17690768"></a>
 
-    <a class="indexterm" name="idp17707824"></a>
+    <a class="indexterm" name="idp17692400"></a>
 
-    <a class="indexterm" name="idp17709392"></a>
+    <a class="indexterm" name="idp17694048"></a>
 
-    <a class="indexterm" name="idp17711088"></a>
+    <a class="indexterm" name="idp17695712"></a>
 
-    <a class="indexterm" name="idp17712608"></a>
+    <a class="indexterm" name="idp17697408"></a>
 
-    <a class="indexterm" name="idp17714240"></a>
+    <a class="indexterm" name="idp17698992"></a>
 
-    <a class="indexterm" name="idp17715888"></a>
+    <a class="indexterm" name="idp17700656"></a>
 
-    <a class="indexterm" name="idp17717520"></a>
+    <a class="indexterm" name="idp17702288"></a>
 
-    <a class="indexterm" name="idp17719184"></a>
+    <a class="indexterm" name="idp17703952"></a>
 
-    <a class="indexterm" name="idp17720816"></a>
+    <a class="indexterm" name="idp17705584"></a>
 
-    <a class="indexterm" name="idp17722480"></a>
+    <a class="indexterm" name="idp17707280"></a>
 
-    <a class="indexterm" name="idp17724144"></a>
+    <a class="indexterm" name="idp17708832"></a>
 
-    <a class="indexterm" name="idp17725808"></a>
+    <a class="indexterm" name="idp17710528"></a>
 
-    <a class="indexterm" name="idp17727472"></a>
+    <a class="indexterm" name="idp17712016"></a>
 
-    <a class="indexterm" name="idp17729104"></a>
+    <a class="indexterm" name="idp17713648"></a>
 
-    <a class="indexterm" name="idp17730768"></a>
+    <a class="indexterm" name="idp17715280"></a>
 
-    <a class="indexterm" name="idp17732400"></a>
+    <a class="indexterm" name="idp17717040"></a>
 
-    <a class="indexterm" name="idp17734032"></a>
+    <a class="indexterm" name="idp17718672"></a>
 
-    <a class="indexterm" name="idp17735664"></a>
+    <a class="indexterm" name="idp17720240"></a>
 
-    <a class="indexterm" name="idp17737296"></a>
+    <a class="indexterm" name="idp17722000"></a>
 
-    <a class="indexterm" name="idp17738928"></a>
+    <a class="indexterm" name="idp17723632"></a>
 
-    <a class="indexterm" name="idp17740496"></a>
+    <a class="indexterm" name="idp17725200"></a>
 
-    <a class="indexterm" name="idp17742128"></a>
+    <a class="indexterm" name="idp17726784"></a>
 
-    <a class="indexterm" name="idp17743792"></a>
+    <a class="indexterm" name="idp17728400"></a>
 
-    <a class="indexterm" name="idp17745424"></a>
+    <a class="indexterm" name="idp17730016"></a>
 
-    <a class="indexterm" name="idp17747088"></a>
+    <a class="indexterm" name="idp17731632"></a>
 
-    <a class="indexterm" name="idp17748720"></a>
+    <a class="indexterm" name="idp17733248"></a>
 
-    <a class="indexterm" name="idp17750384"></a>
+    <a class="indexterm" name="idp17734864"></a>
 
-    <a class="indexterm" name="idp17752048"></a>
+    <a class="indexterm" name="idp17736480"></a>
 
-    <a class="indexterm" name="idp17753712"></a>
+    <a class="indexterm" name="idp17738096"></a>
 
-    <a class="indexterm" name="idp17755376"></a>
+    <a class="indexterm" name="idp17739712"></a>
 
-    <a class="indexterm" name="idp17757040"></a>
+    <a class="indexterm" name="idp17741328"></a>
 
-    <a class="indexterm" name="idp17758704"></a>
+    <a class="indexterm" name="idp17742960"></a>
 
-    <a class="indexterm" name="idp17760368"></a>
+    <a class="indexterm" name="idp17744624"></a>
 
-    <a class="indexterm" name="idp17762032"></a>
+    <a class="indexterm" name="idp17746288"></a>
 
-    <a class="indexterm" name="idp17763664"></a>
+    <a class="indexterm" name="idp17747952"></a>
 
-    <a class="indexterm" name="idp17765296"></a>
+    <a class="indexterm" name="idp17749616"></a>
 
-    <a class="indexterm" name="idp17766960"></a>
+    <a class="indexterm" name="idp17751280"></a>
 
-    <a class="indexterm" name="idp17768624"></a>
+    <a class="indexterm" name="idp17752944"></a>
 
-    <a class="indexterm" name="idp17770288"></a>
+    <a class="indexterm" name="idp17754608"></a>
 
-    <a class="indexterm" name="idp17771952"></a>
+    <a class="indexterm" name="idp17756272"></a>
 
-    <a class="indexterm" name="idp17773616"></a>
+    <a class="indexterm" name="idp17757904"></a>
 
-    <a class="indexterm" name="idp17775280"></a>
+    <a class="indexterm" name="idp17759568"></a>
 
-    <a class="indexterm" name="idp17776944"></a>
+    <a class="indexterm" name="idp17761200"></a>
 
-    <a class="indexterm" name="idp17778608"></a>
+    <a class="indexterm" name="idp17762832"></a>
 
-    <a class="indexterm" name="idp17780112"></a>
+    <a class="indexterm" name="idp17764400"></a>
 
-    <a class="indexterm" name="idp17781504"></a>
+    <a class="indexterm" name="idp17765984"></a>
 
-    <a class="indexterm" name="idp17783136"></a>
+    <a class="indexterm" name="idp17767600"></a>
 
-    <a class="indexterm" name="idp17784704"></a>
-
-    <a class="indexterm" name="idp17786464"></a>
-
-    <a class="indexterm" name="idp17787856"></a>
-
-    <a class="indexterm" name="idp17787984"></a>
-
-    <a class="indexterm" name="idp17791216"></a>
+    <a class="indexterm" name="idp17769216"></a>
   </div>
 </div>
 <div class="navfooter">
