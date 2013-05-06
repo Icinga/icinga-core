@@ -7,16 +7,18 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 UPGRADE NOTES
 
 * for idoutils database upgrades, check the following for upgrade sql scripts
-	- module/idoutils/db/<yourrdbms>/upgrade/
+	- ${source}/module/idoutils/db/<yourrdbms>/upgrade/
 * for configuration file changes, check the following for added/removed config options
-	- core, classic ui: sample-config/updates/
-	- idoutils: module/idoutils/config/updates
+	- core, classic ui: ${source}/sample-config/updates/
+	- idoutils: ${source}/module/idoutils/config/updates
+* package locations may differ!
 
 1.9.0 - 07/05/2013
 
 NOTES
 * idoutils uses a socket queue and transactions for large object dumps! #3527 #3533
 * ido2db.cfg enable_sla is now deprecated! #3450
+* icinga.cfg event_profiling_enabled is now deprecated! #4054
 
 ENHANCEMENTS
 * core: increase performance with hash comparing hosts/services on config read #3722 - GB
@@ -123,12 +125,15 @@ FIXES
 
 CHANGES
 
+* ido2db.cfg: enable_sla is now deprecated! #3450
+* icinga.cfg: event_profiling_enabled is now deprecated! #4054
+
+* icinga.cfg: enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
+* icinga.cfg: set status_file=/dev/null to disable its creation #3819
+* icinga.cfg: set object_cache_file=/dev/null to disable its creation #3819
+
 * idoutils: use transactions for large object dumps #3527
 * idoutils: add socket queue proxy addressing core reload problems #3533
-
-* icinga.cfg - enable_state_based_escalation_ranges=0 (disabled if not set) fix for #3441
-* icinga.cfg - set status_file=/dev/null to disable its creation #3819
-* icinga.cfg - set object_cache_file=/dev/null to disable its creation #3819
 
 * core: -v param can be used more than once #3510
 * core: 'Warning: Host ... has no service associated with it!' now happens only in icinga -vv icinga.cfg #3510
