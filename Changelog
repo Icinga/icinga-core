@@ -7,10 +7,11 @@ Thanks to all contributers, testers and developers. Please read AUTHORS and THAN
 UPGRADE NOTES
 
 * for idoutils database upgrades, check the following for upgrade sql scripts
-	- module/idoutils/db/<yourrdbms>/upgrade/
+	- ${source}/module/idoutils/db/<yourrdbms>/upgrade/
 * for configuration file changes, check the following for added/removed config options
-	- core, classic ui: sample-config/updates/
-	- idoutils: module/idoutils/config/updates
+	- core, classic ui: ${source}/sample-config/updates/
+	- idoutils: ${source}/module/idoutils/config/updates
+* package locations may differ!
 
 1.9.0 - 07/05/2013
 
