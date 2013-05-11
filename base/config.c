@@ -252,7 +252,7 @@ int read_all_object_data(char *main_config_file) {
 	options = READ_ALL_OBJECT_DATA;
 
 	/* cache object definitions if we're up and running */
-	if (verify_config && test_scheduling == FALSE)
+	if (verify_config == FALSE && test_scheduling == FALSE)
 		cache = TRUE;
 
 	/* precache object definitions */
