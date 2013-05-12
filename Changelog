@@ -13,6 +13,13 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+
+1.9.1 - XX/XX/2013
+
+FIXES
+* core: fix objects.cache does not get updated on (re)start, but config verify (Christian Ruppert) #4155 - MF
+
+
 1.9.0 - 07/05/2013
 
 NOTES
