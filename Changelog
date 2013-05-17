@@ -13,6 +13,12 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.9.1 - ??/??/????
+
+FIXES
+* classic ui: fixed UNICODE characters in JSON output from getting discarded #4193 - RB
+
+
 1.9.0 - 07/05/2013
 
 NOTES

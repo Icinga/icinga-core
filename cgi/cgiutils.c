@@ -3295,7 +3295,7 @@ char *json_encode(char *input) {
 			encoded_string[j++] = 'n';
 
 		/* ignore control caracters */
-		} else if (input[i] < 32 || input[i] == 127) {
+		} else if ((input[i] > 1 && input[i] < 32) || input[i] == 127) {
 			continue;
 
 		} else
