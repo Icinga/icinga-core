@@ -21,6 +21,9 @@ FIXES
 * core: multiple idomod modules: only first gets data from registered callback functions #4199 - MF
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
 
+SUPPORT
+* fixed gcc warnings about unused vars and unused return values #3984 - RB
+
 CHANGES
 * core: multiple neb modules from same bin are copied to tmp with random name (again) #4199
 	** trick dlopen() to register callbacks for every neb module with different instance_name
