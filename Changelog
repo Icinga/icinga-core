@@ -11,6 +11,8 @@ UPGRADE NOTES
 * for configuration file changes, check the following for added/removed config options
 	- core, classic ui: sample-config/updates/
 	- idoutils: module/idoutils/config/updates
+* package locations may differ!
+
 
 1.8.5 - XX/XX/2013
 
@@ -24,6 +26,7 @@ FIXES
 
 * idoutils: idomod leaks memory on core reload #3749 - GB
 * idoutils: add workaround fix for num_rows_affected broken in libdbi/mariadb, returned ids are 0 #3728 - MF
+* idoutils: fix segfaults on reload with multiple neb modules of the same binary #4033 - MF
 
 * icinga.spec: add idoutils as transitional package (thx Stefan Marx, Michael Grüner) #3640 - MF
 * icinga.spec: fix double %{logdir}/gui/ definitions in icinga and icinga-gui (thx René Koch) #3802 - MF
