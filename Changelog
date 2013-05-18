@@ -13,6 +13,11 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.9.1 - XX/XX/2013
+
+FIXES
+* idoutils: fix segfaults on reload with multiple neb modules of the same binary #4033 - MF
+
 1.9.0 - 07/05/2013
 
 NOTES
