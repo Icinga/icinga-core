@@ -314,23 +314,23 @@ int main(int argc, char **argv) {
 
 			if (display_type == DISPLAY_HOST_HISTOGRAM) {
 #ifdef USE_TRENDS
-				printf("<a href='%s?host=%s&t1=%lu&t2=%lu&assumestateretention=%s'>View <b>Trends</b> For <b>This Host</b></a><br>\n", TRENDS_CGI, url_encode(host_name), t1, t2, (assume_state_retention == TRUE) ? "yes" : "no");
+				printf("<a href='%s?host=%s&amp;t1=%lu&amp;t2=%lu&amp;assumestateretention=%s'>View <b>Trends</b> For <b>This Host</b></a><br>\n", TRENDS_CGI, url_encode(host_name), t1, t2, (assume_state_retention == TRUE) ? "yes" : "no");
 #endif
-				printf("<a href='%s?host=%s&t1=%lu&t2=%lu&assumestateretention=%s&show_log_entries'>View <b>Availability Report</b> For <b>This Host</b></a><br>\n", AVAIL_CGI, url_encode(host_name), t1, t2, (assume_state_retention == TRUE) ? "yes" : "no");
+				printf("<a href='%s?host=%s&amp;t1=%lu&amp;t2=%lu&amp;assumestateretention=%s&amp;show_log_entries'>View <b>Availability Report</b> For <b>This Host</b></a><br>\n", AVAIL_CGI, url_encode(host_name), t1, t2, (assume_state_retention == TRUE) ? "yes" : "no");
 				printf("<a href='%s?host=%s'>View <b>Service Status Detail</b> For <b>This Host</b></a><br>\n", STATUS_CGI, url_encode(host_name));
-				printf("<a href='%s?type=%d&host=%s'>View <b>Information</b> For <b>This Host</b></a><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
+				printf("<a href='%s?type=%d&amp;host=%s'>View <b>Information</b> For <b>This Host</b></a><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
 				printf("<a href='%s?host=%s'>View <b>Alert History</b> For <b>This Host</b></a><br>\n", HISTORY_CGI, url_encode(host_name));
 				printf("<a href='%s?host=%s'>View <b>Notifications</b> For <b>This Host</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(host_name));
 			} else {
 #ifdef USE_TRENDS
 				printf("<a href='%s?host=%s", TRENDS_CGI, url_encode(host_name));
+				printf("&amp;service=%s&amp;t1=%lu&amp;t2=%lu&amp;assumestateretention=%s'>View <b>Trends</b> For <b>This Service</b></a><br>\n", url_encode(service_desc), t1, t2, (assume_state_retention == TRUE) ? "yes" : "no");
 #endif
-				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s'>View <b>Trends</b> For <b>This Service</b></a><br>\n", url_encode(service_desc), t1, t2, (assume_state_retention == TRUE) ? "yes" : "no");
 				printf("<a href='%s?host=%s", AVAIL_CGI, url_encode(host_name));
-				printf("&service=%s&t1=%lu&t2=%lu&assumestateretention=%s&show_log_entries'>View <b>Availability Report</b> For <b>This Service</b></a><br>\n", url_encode(service_desc), t1, t2, (assume_state_retention == TRUE) ? "yes" : "no");
-				printf("<a href='%s?type=%d&host=%s&service=%s'>View <b>Information</b> For <b>This Service</b></a><br>\n", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name), url_encode(service_desc));
-				printf("<a href='%s?host=%s&service=%s'>View <b>Alert History</b> For <b>This Service</b></a><br>\n", HISTORY_CGI, url_encode(host_name), url_encode(service_desc));
-				printf("<a href='%s?host=%s&service=%s'>View <b>Notifications</b> For <b>This Service</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(host_name), url_encode(service_desc));
+				printf("&amp;service=%s&amp;t1=%lu&amp;t2=%lu&amp;assumestateretention=%s&amp;show_log_entries'>View <b>Availability Report</b> For <b>This Service</b></a><br>\n", url_encode(service_desc), t1, t2, (assume_state_retention == TRUE) ? "yes" : "no");
+				printf("<a href='%s?type=%d&amp;host=%s&amp;service=%s'>View <b>Information</b> For <b>This Service</b></a><br>\n", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name), url_encode(service_desc));
+				printf("<a href='%s?host=%s&amp;service=%s'>View <b>Alert History</b> For <b>This Service</b></a><br>\n", HISTORY_CGI, url_encode(host_name), url_encode(service_desc));
+				printf("<a href='%s?host=%s&amp;service=%s'>View <b>Notifications</b> For <b>This Service</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(host_name), url_encode(service_desc));
 			}
 
 			printf("</td></tr>\n");
@@ -359,7 +359,7 @@ int main(int argc, char **argv) {
 
 			printf("<br>\n");
 
-			printf("<img src='%s%s' border='0' alt='%s Event Histogram' TITLE='%s Event Histogram'>\n", url_images_path, TRENDS_ICON, (display_type == DISPLAY_HOST_HISTOGRAM) ? "Host" : "Service", (display_type == DISPLAY_HOST_HISTOGRAM) ? "Host" : "Service");
+			printf("<img src='%s%s' border='0' alt='%s Event Histogram' title='%s Event Histogram'>\n", url_images_path, TRENDS_ICON, (display_type == DISPLAY_HOST_HISTOGRAM) ? "Host" : "Service", (display_type == DISPLAY_HOST_HISTOGRAM) ? "Host" : "Service");
 
 			printf("<br clear='all'>\n");
 
@@ -414,6 +414,7 @@ int main(int argc, char **argv) {
 			printf("</select>\n");
 			printf("</td></tr>\n");
 
+			printf("<tr><td>\n");
 			printf("<select name='breakdown'>\n");
 			printf("<option value='monthly' %s>Month\n", (breakdown_type == BREAKDOWN_MONTHLY) ? "selected" : "");
 			printf("<option value='dayofmonth' %s>Day of the Month\n", (breakdown_type == BREAKDOWN_DAY_OF_MONTH) ? "selected" : "");
@@ -507,11 +508,11 @@ int main(int argc, char **argv) {
 
 			printf("<br><br>\n");
 			printf("<div align='center'>\n");
-			printf("<img src='%s?createimage&t1=%lu&t2=%lu", HISTOGRAM_CGI, (unsigned long)t1, (unsigned long)t2);
-			printf("&host=%s", url_encode(host_name));
+			printf("<img src='%s?createimage&amp;t1=%lu&amp;t2=%lu", HISTOGRAM_CGI, (unsigned long)t1, (unsigned long)t2);
+			printf("&amp;host=%s", url_encode(host_name));
 			if (display_type == DISPLAY_SERVICE_HISTOGRAM)
-				printf("&service=%s", url_encode(service_desc));
-			printf("&breakdown=");
+				printf("&amp;service=%s", url_encode(service_desc));
+			printf("&amp;breakdown=");
 			if (breakdown_type == BREAKDOWN_MONTHLY)
 				printf("monthly");
 			else if (breakdown_type == BREAKDOWN_DAY_OF_MONTH)
@@ -520,11 +521,11 @@ int main(int argc, char **argv) {
 				printf("dayofweek");
 			else
 				printf("hourly");
-			printf("&assumestateretention=%s", (assume_state_retention == TRUE) ? "yes" : "no");
-			printf("&initialstateslogged=%s", (initial_states_logged == TRUE) ? "yes" : "no");
-			printf("&newstatesonly=%s", (new_states_only == TRUE) ? "yes" : "no");
-			printf("&graphevents=%d", graph_events);
-			printf("&graphstatetypes=%d", graph_statetypes);
+			printf("&amp;assumestateretention=%s", (assume_state_retention == TRUE) ? "yes" : "no");
+			printf("&amp;initialstateslogged=%s", (initial_states_logged == TRUE) ? "yes" : "no");
+			printf("&amp;newstatesonly=%s", (new_states_only == TRUE) ? "yes" : "no");
+			printf("&amp;graphevents=%d", graph_events);
+			printf("&amp;graphstatetypes=%d", graph_statetypes);
 			printf("' border='0' name='histogramimage'>\n");
 			printf("</div>\n");
 		}

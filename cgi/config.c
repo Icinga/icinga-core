@@ -913,7 +913,7 @@ void display_hosts(void) {
 		} else {
 			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<td class='%s'><a href='%s?type=services&search_string=%s^%%2E%%2A'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_host->name), html_encode(temp_host->name, FALSE));
+			printf("<td class='%s'><a href='%s?type=services&amp;search_string=%s^%%2E%%2A'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_host->name), html_encode(temp_host->name, FALSE));
 			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_host->alias, FALSE));
 			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_host->display_name, FALSE));
 			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_host->address, FALSE));
@@ -931,7 +931,7 @@ void display_hosts(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_hostsmember->host_name);
 			else
-				printf("<a href='%s?type=hosts&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
+				printf("<a href='%s?type=hosts&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
 		}
 
 		if (temp_host->parent_hosts == NULL)
@@ -995,14 +995,14 @@ void display_hosts(void) {
 			if (temp_host->host_check_command == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=command&host=%s&expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->host_check_command), html_encode(temp_host->host_check_command, FALSE));
+				printf("<a href='%s?type=command&amp;host=%s&amp;expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->host_check_command), html_encode(temp_host->host_check_command, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>", bg_class);
 			if (temp_host->check_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->check_period), html_encode(temp_host->check_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->check_period), html_encode(temp_host->check_period, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->obsess_over_host == TRUE) ? "Yes" : "No");
@@ -1035,7 +1035,7 @@ void display_hosts(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<a href='%s?type=contacts&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<a href='%s?type=contacts&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 		for (temp_contactgroupsmember = temp_host->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
 			contact++;
@@ -1047,7 +1047,7 @@ void display_hosts(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<a href='%s?type=contactgroups&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<a href='%s?type=contactgroups&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -1124,15 +1124,15 @@ void display_hosts(void) {
 			if (temp_host->notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&irem_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->notification_period), html_encode(temp_host->notification_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;irem_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->notification_period), html_encode(temp_host->notification_period, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>", bg_class);
 			if (temp_host->event_handler == NULL)
-				printf("&nbsp");
+				printf("&nbsp;");
 			else
 				/* printf("<a href='%s?type=commands&item_name=%s'>%s</a></td>\n",CONFIG_CGI,url_encode(strtok(temp_host->event_handler,"!")),html_encode(temp_host->event_handler,FALSE)); */
-				printf("<a href='%s?type=command&host=%s&expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->event_handler), html_encode(temp_host->event_handler, FALSE));
+				printf("<a href='%s?type=command&amp;host=%s&amp;expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->event_handler), html_encode(temp_host->event_handler, FALSE));
 
 			printf("</td>\n");
 
@@ -1480,7 +1480,7 @@ void display_hostgroups(void) {
 
 				if (temp_hostsmember != temp_hostgroup->members)
 					printf(", ");
-				printf("<a href='%s?type=hosts&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
+				printf("<a href='%s?type=hosts&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
 			}
 			printf("</td>\n");
 
@@ -1614,9 +1614,9 @@ void display_servicegroups(void) {
 			/* find all the services that are members of this servicegroup... */
 			for (temp_servicesmember = temp_servicegroup->members; temp_servicesmember != NULL; temp_servicesmember = temp_servicesmember->next) {
 
-				printf("%s<a href='%s?type=hosts&item_name=%s'>%s</a> / ", (temp_servicesmember == temp_servicegroup->members) ? "" : ", ", CONFIG_CGI, url_encode(temp_servicesmember->host_name), html_encode(temp_servicesmember->host_name, FALSE));
+				printf("%s<a href='%s?type=hosts&amp;item_name=%s'>%s</a> / ", (temp_servicesmember == temp_servicegroup->members) ? "" : ", ", CONFIG_CGI, url_encode(temp_servicesmember->host_name), html_encode(temp_servicesmember->host_name, FALSE));
 
-				printf("<a href='%s?type=services&item_name=%s^", CONFIG_CGI, url_encode(temp_servicesmember->host_name));
+				printf("<a href='%s?type=services&amp;item_name=%s^", CONFIG_CGI, url_encode(temp_servicesmember->host_name));
 				printf("%s'>%s</a>", url_encode(temp_servicesmember->service_description), html_encode(temp_servicesmember->service_description, FALSE));
 			}
 
@@ -1835,14 +1835,14 @@ void display_contacts(void) {
 			if (temp_contact->service_notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contact->service_notification_period), html_encode(temp_contact->service_notification_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contact->service_notification_period), html_encode(temp_contact->service_notification_period, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>\n", bg_class);
 			if (temp_contact->host_notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contact->host_notification_period), html_encode(temp_contact->host_notification_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contact->host_notification_period), html_encode(temp_contact->host_notification_period, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>", bg_class);
@@ -1859,7 +1859,7 @@ void display_contacts(void) {
 			} else if (content_type == CSV_CONTENT) {
 				printf("%s", temp_commandsmember->command);
 			} else {
-				printf("<a href='%s?type=command&expand=%s'>%s</a>", CONFIG_CGI, url_encode(temp_commandsmember->command), html_encode(temp_commandsmember->command, FALSE));
+				printf("<a href='%s?type=command&amp;expand=%s'>%s</a>", CONFIG_CGI, url_encode(temp_commandsmember->command), html_encode(temp_commandsmember->command, FALSE));
 			}
 
 			found = TRUE;
@@ -1890,7 +1890,7 @@ void display_contacts(void) {
 			} else if (content_type == CSV_CONTENT) {
 				printf("%s", temp_commandsmember->command);
 			} else {
-				printf("<a href='%s?type=command&expand=%s'>%s</a>", CONFIG_CGI, url_encode(temp_commandsmember->command), html_encode(temp_commandsmember->command, FALSE));
+				printf("<a href='%s?type=command&amp;expand=%s'>%s</a>", CONFIG_CGI, url_encode(temp_commandsmember->command), html_encode(temp_commandsmember->command, FALSE));
 			}
 
 			found = TRUE;
@@ -2031,7 +2031,7 @@ void display_contactgroups(void) {
 				if (temp_contactsmember != temp_contactgroup->members)
 					printf(", ");
 
-				printf("<a href='%s?type=contacts&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<a href='%s?type=contacts&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 			}
 			printf("</td>\n");
 			printf("</tr>\n");
@@ -2254,7 +2254,7 @@ void display_services(void) {
 
 			printf("<td class='%s'><a name='%s;", bg_class, url_encode(temp_service->host_name));
 			printf("%s'></a>", url_encode(temp_service->description));
-			printf("<a href='%s?type=hosts&item_name=%s'>%s</a></td>\n", CONFIG_CGI, url_encode(temp_service->host_name), html_encode(temp_service->host_name, FALSE));
+			printf("<a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", CONFIG_CGI, url_encode(temp_service->host_name), html_encode(temp_service->host_name, FALSE));
 
 			/* find a way to show display_name if set once */
 			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_service->description, FALSE));
@@ -2267,13 +2267,13 @@ void display_services(void) {
 
 			printf("<td class='%s'>%s</td>\n", bg_class, time_string[1]);
 
-			printf("<td class='%s'><a href='%s?type=command&host=%s&service=%s&expand=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(command_line), html_encode(command_line, FALSE));
+			printf("<td class='%s'><a href='%s?type=command&amp;host=%s&amp;service=%s&amp;expand=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(command_line), html_encode(command_line, FALSE));
 
 			printf("<td class='%s'>", bg_class);
 			if (temp_service->check_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_service->check_period), html_encode(temp_service->check_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_service->check_period), html_encode(temp_service->check_period, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->parallelize == TRUE) ? "Yes" : "No");
@@ -2309,7 +2309,7 @@ void display_services(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<a href='%s?type=contacts&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<a href='%s?type=contacts&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 
 		for (temp_contactgroupsmember = temp_service->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
@@ -2322,7 +2322,7 @@ void display_services(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<a href='%s?type=contactgroups&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<a href='%s?type=contactgroups&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -2404,13 +2404,13 @@ void display_services(void) {
 			if (temp_service->notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_service->notification_period), html_encode(temp_service->notification_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_service->notification_period), html_encode(temp_service->notification_period, FALSE));
 			printf("</td>\n");
 			printf("<td class='%s'>", bg_class);
 			if (temp_service->event_handler == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=command&host=%s&service=%s&expand=%s'>%s</a>", CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(temp_service->event_handler), html_encode(temp_service->event_handler, FALSE));
+				printf("<a href='%s?type=command&amp;host=%s&amp;service=%s&amp;expand=%s'>%s</a>", CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(temp_service->event_handler), html_encode(temp_service->event_handler, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->event_handler_enabled == TRUE) ? "Yes" : "No");
@@ -3104,14 +3104,14 @@ void display_servicedependencies(void) {
 		} else {
 			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<td class='%s'><a href='%s?type=hosts&item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name), html_encode(temp_sd->dependent_host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name), html_encode(temp_sd->dependent_host_name, FALSE));
 
-			printf("<td class='%s'><a href='%s?type=services&item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name));
+			printf("<td class='%s'><a href='%s?type=services&amp;item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name));
 			printf("%s'>%s</a></td>\n", url_encode(temp_sd->dependent_service_description), html_encode(temp_sd->dependent_service_description, FALSE));
 
-			printf("<td class='%s'><a href='%s?type=hosts&item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name), html_encode(temp_sd->host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name), html_encode(temp_sd->host_name, FALSE));
 
-			printf("<td class='%s'><a href='%s?type=services&item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name));
+			printf("<td class='%s'><a href='%s?type=services&amp;item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name));
 			printf("%s'>%s</a></td>\n", url_encode(temp_sd->service_description), html_encode(temp_sd->service_description, FALSE));
 
 			printf("<td class='%s'>%s</td>\n", bg_class, (temp_sd->dependency_type == NOTIFICATION_DEPENDENCY) ? "Notification" : "Check Execution");
@@ -3120,7 +3120,7 @@ void display_servicedependencies(void) {
 			if (temp_sd->dependency_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_sd->dependency_period), html_encode(temp_sd->dependency_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_sd->dependency_period), html_encode(temp_sd->dependency_period, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>", bg_class);
@@ -3246,9 +3246,9 @@ void display_serviceescalations(void) {
 		} else {
 			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<td class='%s'><a href='%s?type=hosts&item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_se->host_name), html_encode(temp_se->host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_se->host_name), html_encode(temp_se->host_name, FALSE));
 
-			printf("<td class='%s'><a href='%s?type=services&item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_se->host_name));
+			printf("<td class='%s'><a href='%s?type=services&amp;item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_se->host_name));
 			printf("%s'>%s</a></td>\n", url_encode(temp_se->description), html_encode(temp_se->description, FALSE));
 
 			printf("<td class='%s'>", bg_class);
@@ -3265,7 +3265,7 @@ void display_serviceescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<a href='%s?type=contacts&item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<a href='%s?type=contacts&amp;item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 		for (temp_contactgroupsmember = temp_se->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
 			contact++;
@@ -3277,7 +3277,7 @@ void display_serviceescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<a href='%s?type=contactgroups&item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<a href='%s?type=contactgroups&amp;item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -3370,7 +3370,7 @@ void display_serviceescalations(void) {
 			if (temp_se->escalation_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_se->escalation_period), html_encode(temp_se->escalation_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_se->escalation_period), html_encode(temp_se->escalation_period, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>", bg_class);
@@ -3490,9 +3490,9 @@ void display_hostdependencies(void) {
 		} else {
 			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<td class='%s'><a href='%s?type=hosts&item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->dependent_host_name), html_encode(temp_hd->dependent_host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->dependent_host_name), html_encode(temp_hd->dependent_host_name, FALSE));
 
-			printf("<td class='%s'><a href='%s?type=hosts&item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
 
 			printf("<td class='%s'>%s</td>\n", bg_class, (temp_hd->dependency_type == NOTIFICATION_DEPENDENCY) ? "Notification" : "Check Execution");
 
@@ -3500,7 +3500,7 @@ void display_hostdependencies(void) {
 			if (temp_hd->dependency_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hd->dependency_period), html_encode(temp_hd->dependency_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hd->dependency_period), html_encode(temp_hd->dependency_period, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>", bg_class);
@@ -3617,7 +3617,7 @@ void display_hostescalations(void) {
 		} else {
 			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<td class='%s'><a href='%s?type=hosts&item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_he->host_name), html_encode(temp_he->host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_he->host_name), html_encode(temp_he->host_name, FALSE));
 
 			printf("<td class='%s'>", bg_class);
 		}
@@ -3631,7 +3631,7 @@ void display_hostescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<a href='%s?type=contacts&item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<a href='%s?type=contacts&amp;item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 		for (temp_contactgroupsmember = temp_he->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
 			contact++;
@@ -3642,7 +3642,7 @@ void display_hostescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<a href='%s?type=contactgroups&item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<a href='%s?type=contactgroups&amp;item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -3719,7 +3719,7 @@ void display_hostescalations(void) {
 			if (temp_he->escalation_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_he->escalation_period), html_encode(temp_he->escalation_period, FALSE));
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_he->escalation_period), html_encode(temp_he->escalation_period, FALSE));
 			printf("</td>\n");
 
 			printf("<td class='%s'>", bg_class);
@@ -3942,7 +3942,7 @@ void display_cgiconfig(void) {
 				if (json_start == FALSE) \
 					printf(", "); \
 				json_start = FALSE; \
-				printf("<a href='%s?type=contact%ss&item_name=%s'>%s</a>", CONFIG_CGI, (strstr(#org_var, "contactgroup")) ? "group" : "", \
+				printf("<a href='%s?type=contact%ss&amp;item_name=%s'>%s</a>", CONFIG_CGI, (strstr(#org_var, "contactgroup")) ? "group" : "", \
 				(!strcmp(temp_ptr, "*")) ? "" : url_encode(temp_ptr), html_encode(temp_ptr, FALSE)); \
 			} \
 		} \
@@ -4388,7 +4388,7 @@ void display_command_expansion(void) {
 	}
 
 	printf("<tr class='dataEven'><td class='dataEven'>To expand:</td><td class='dataEven'><form\n");
-	printf("METHOD='GET' ACTION='%s'><input type='hidden' name='type' value='command'>\n", CONFIG_CGI);
+	printf("method='GET' action='%s'><input type='hidden' name='type' value='command'>\n", CONFIG_CGI);
 
 	if (hst != NULL)
 		printf("<input type='hidden' name='host' value='%s'>\n", host_name);

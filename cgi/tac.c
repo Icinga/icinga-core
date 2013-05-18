@@ -1781,8 +1781,6 @@ void display_tac_overview(void) {
 	}
 
 	if (display_header == TRUE) {
-		printf("<p align='left'>\n");
-
 		printf("<table border='0' align='left' width='100%%' cellspacing='4' cellpadding='0'>\n");
 		printf("<tr>\n");
 
@@ -1866,12 +1864,6 @@ void display_tac_overview(void) {
 		printf("</td>\n");
 		printf("</tr>\n");
 		printf("</table>\n");
-
-		printf("</td>\n");
-
-		printf("</tr>\n");
-		printf("</table>\n");
-		printf("</p>\n");
 	}
 
 	printf("<br clear='all'>\n");
@@ -1884,8 +1876,6 @@ void display_tac_overview(void) {
 
 
 	/******* OUTAGES ********/
-
-	printf("<p>\n");
 
 	printf("<table class='tac' width='125' cellspacing='4' cellpadding='0' border='0'>\n");
 
@@ -1926,8 +1916,6 @@ void display_tac_overview(void) {
 
 	printf("</tr>\n");
 	printf("</table>\n");
-
-	printf("</p>\n");
 
 	printf("</td>\n");
 
@@ -1973,7 +1961,7 @@ void display_tac_overview(void) {
 	printf("</tr>\n");
 	printf("<tr>\n");
 	printf("<td align='left' valign='middle' class='healthItem'>Service Health:</td>");
-	printf("<td valign='top' width=100 class='healthBar'><a href='%s?host=all&amp;style=detail&amp;servicestatustypes=%d'><img src='%s%s' border='0' width='%d' height='20' alt='%2.1f%% Health' title='%2.1f%% Health'></td>\n", STATUS_CGI, SERVICE_CRITICAL | SERVICE_WARNING | SERVICE_PENDING, url_images_path, service_health_image, (percent_service_health < 5.0) ? 5 : (int)percent_service_health, percent_service_health, percent_service_health);
+	printf("<td valign='top' width=100 class='healthBar'><a href='%s?host=all&amp;style=detail&amp;servicestatustypes=%d'><img src='%s%s' border='0' width='%d' height='20' alt='%2.1f%% Health' title='%2.1f%% Health'></a></td>\n", STATUS_CGI, SERVICE_CRITICAL | SERVICE_WARNING | SERVICE_PENDING, url_images_path, service_health_image, (percent_service_health < 5.0) ? 5 : (int)percent_service_health, percent_service_health, percent_service_health);
 	printf("</tr>\n");
 	printf("</table>\n");
 	printf("</td>\n");
@@ -1995,8 +1983,6 @@ void display_tac_overview(void) {
 
 
 	/******* HOSTS ********/
-
-	printf("<p>\n");
 
 	printf("<table class='tac' width='516' cellspacing='4' cellpadding='0' border='0'>\n");
 
@@ -2214,13 +2200,9 @@ void display_tac_overview(void) {
 	printf("</tr>\n");
 	printf("</table>\n");
 
-	printf("</p>\n");
-
 
 
 	/******* SERVICES ********/
-
-	printf("<p>\n");
 
 	printf("<table class='tac' width='641' cellspacing='4' cellpadding='0' border='0'>\n");
 
@@ -2748,18 +2730,12 @@ void display_tac_overview(void) {
 	printf("</table>\n");
 	printf("</td>\n");
 
-
-
 	printf("</tr>\n");
 	printf("</table>\n");
-
-	printf("</p>\n");
 
 
 
 	/******** CHECKS *********/
-
-	printf("<p>\n");
 
 	printf("<table class='tac' cellspacing='4' cellpadding='0' border='0'>\n");
 
@@ -2888,13 +2864,9 @@ void display_tac_overview(void) {
 
 	printf("</table>\n");
 
-	printf("</p>\n");
-
 
 
 	/******* MONITORING FEATURES ********/
-
-	printf("<p>\n");
 
 	printf("<table class='tac' cellspacing='4' cellpadding='0' border='0'>\n");
 
@@ -3002,13 +2974,8 @@ void display_tac_overview(void) {
 	printf("</table>\n");
 	printf("</td>\n");
 
-
 	printf("</tr>\n");
-
 	printf("</table>\n");
-
-	printf("</p>\n");
-
 
 	return;
 }

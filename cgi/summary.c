@@ -1719,13 +1719,13 @@ void display_recent_alerts(void) {
 
 			printf("<td class='data%s'>%s</td>", (odd) ? "Even" : "Odd", (temp_event->event_type == AE_HOST_ALERT) ? "Host Alert" : "Service Alert");
 
-			printf("<td class='data%s'><a href='%s?type=%d&host=%s'>%s</a></td>", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_event->host_name), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+			printf("<td class='data%s'><a href='%s?type=%d&amp;host=%s'>%s</a></td>", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_event->host_name), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
 
 			if (temp_event->event_type == AE_HOST_ALERT)
 				printf("<td class='data%s'>N/A</td>", (odd) ? "Even" : "Odd");
 			else {
-				printf("<td class='data%s'><a href='%s?type=%d&host=%s", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_event->host_name));
-				printf("&service=%s'>%s</a></td>", url_encode(temp_event->service_description), (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
+				printf("<td class='data%s'><a href='%s?type=%d&amp;host=%s", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_event->host_name));
+				printf("&amp;service=%s'>%s</a></td>", url_encode(temp_event->service_description), (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
 			}
 
 		}
@@ -2017,13 +2017,13 @@ void display_top_alerts(void) {
 
 			printf("<td class='data%s'>%s</td>", bgclass, (temp_producer->producer_type == AE_HOST_PRODUCER) ? "Host" : "Service");
 
-			printf("<td class='data%s'><a href='%s?type=%d&host=%s'>%s</a></td>", bgclass, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_producer->host_name), temp_producer->host_name);
+			printf("<td class='data%s'><a href='%s?type=%d&amp;host=%s'>%s</a></td>", bgclass, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_producer->host_name), temp_producer->host_name);
 
 			if (temp_producer->producer_type == AE_HOST_PRODUCER)
 				printf("<td class='data%s'>N/A</td>", bgclass);
 			else {
-				printf("<td class='data%s'><a href='%s?type=%d&host=%s", bgclass, EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_producer->host_name));
-				printf("&service=%s'>%s</a></td>", url_encode(temp_producer->service_description), temp_producer->service_description);
+				printf("<td class='data%s'><a href='%s?type=%d&amp;host=%s", bgclass, EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_producer->host_name));
+				printf("&amp;service=%s'>%s</a></td>", url_encode(temp_producer->service_description), temp_producer->service_description);
 			}
 
 			printf("<td class='data%s'>%d</td>", bgclass, temp_producer->total_alerts);

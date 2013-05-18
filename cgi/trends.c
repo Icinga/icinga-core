@@ -478,7 +478,7 @@ int main(int argc, char **argv) {
 
 			printf("<br>\n");
 
-			printf("<img src='%s%s' border='0' alt='%s State Trends' TITLE='%s State Trends'>\n", url_images_path, TRENDS_ICON, (display_type == DISPLAY_HOST_TRENDS) ? "Host" : "Service", (display_type == DISPLAY_HOST_TRENDS) ? "Host" : "Service");
+			printf("<img src='%s%s' border='0' alt='%s State Trends' title='%s State Trends'>\n", url_images_path, TRENDS_ICON, (display_type == DISPLAY_HOST_TRENDS) ? "Host" : "Service", (display_type == DISPLAY_HOST_TRENDS) ? "Host" : "Service");
 
 			printf("<br clear='all'>\n");
 

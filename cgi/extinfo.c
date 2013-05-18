@@ -627,7 +627,7 @@ int main(void) {
 				printf("<tr><td align='right'>\n");
 				printf("<a href='");
 				printf("%s", processed_string);
-				printf("' TARGET='%s'><img src='%s%s%s' border='0' alt='Perform Additional Actions On This Host' title='Perform Additional Actions On This Host'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, MU_iconstr, ACTION_ICON);
+				printf("' target='%s'><img src='%s%s%s' border='0' alt='Perform Additional Actions On This Host' title='Perform Additional Actions On This Host'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, MU_iconstr, ACTION_ICON);
 				printf("<br clear='all'><font size='-1'><i>Extra Actions</i></font><br clear='all'><br clear='all'>\n");
 				printf("</td></tr>\n");
 				END_MULTIURL_LOOP
@@ -640,7 +640,7 @@ int main(void) {
 				printf("<a href='");
 				printf("%s", processed_string);
 				/*print_extra_host_url(temp_host->name,temp_host->notes_url);*/
-				printf("' TARGET='%s'><img src='%s%s%s' border='0' alt='View Additional Notes For This Host' title='View Additional Notes For This Host'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, MU_iconstr, NOTES_ICON);
+				printf("' target='%s'><img src='%s%s%s' border='0' alt='View Additional Notes For This Host' title='View Additional Notes For This Host'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, MU_iconstr, NOTES_ICON);
 				printf("<br clear='all'><font size='-1'><i>Extra Notes</i></font><br clear='all'><br clear='all'>\n");
 				printf("</td></tr>\n");
 				END_MULTIURL_LOOP
@@ -658,7 +658,7 @@ int main(void) {
 				BEGIN_MULTIURL_LOOP
 				printf("<a href='");
 				printf("%s", processed_string);
-				printf("' TARGET='%s'><img src='%s%s%s' border='0' alt='Perform Additional Actions On This Service' title='Perform Additional Actions On This Service'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, MU_iconstr, ACTION_ICON);
+				printf("' target='%s'><img src='%s%s%s' border='0' alt='Perform Additional Actions On This Service' title='Perform Additional Actions On This Service'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, MU_iconstr, ACTION_ICON);
 				printf("<br clear='all'><font size='-1'><i>Extra Actions</i></font><br clear='all'><br clear='all'>\n");
 				END_MULTIURL_LOOP
 				free(processed_string);
@@ -668,7 +668,7 @@ int main(void) {
 				BEGIN_MULTIURL_LOOP
 				printf("<a href='");
 				printf("%s", processed_string);
-				printf("' TARGET='%s'><img src='%s%s%s' border='0' alt='View Additional Notes For This Service' title='View Additional Notes For This Service'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, MU_iconstr, NOTES_ICON);
+				printf("' target='%s'><img src='%s%s%s' border='0' alt='View Additional Notes For This Service' title='View Additional Notes For This Service'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, MU_iconstr, NOTES_ICON);
 				printf("<br clear='all'><font size='-1'><i>Extra Notes</i></font><br clear='all'><br clear='all'>\n");
 				END_MULTIURL_LOOP
 				free(processed_string);
@@ -683,7 +683,7 @@ int main(void) {
 				printf("<tr><td align='right'>\n");
 				printf("<a href='");
 				print_extra_hostgroup_url(temp_hostgroup->group_name, temp_hostgroup->action_url);
-				printf("' TARGET='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Hostgroup' title='Perform Additional Actions On This Hostgroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
+				printf("' target='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Hostgroup' title='Perform Additional Actions On This Hostgroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
 				printf("<br clear='all'><font size='-1'><i>Extra Actions</i></font><br clear='all'><br clear='all'>\n");
 				printf("</td></tr>\n");
 			}
@@ -691,7 +691,7 @@ int main(void) {
 				printf("<tr><td align='right'>\n");
 				printf("<a href='");
 				print_extra_hostgroup_url(temp_hostgroup->group_name, temp_hostgroup->notes_url);
-				printf("' TARGET='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Hostgroup' title='View Additional Notes For This Hostgroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
+				printf("' target='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Hostgroup' title='View Additional Notes For This Hostgroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
 				printf("<br clear='all'><font size='-1'><i>Extra Notes</i></font><br clear='all'><br clear='all'>\n");
 				printf("</td></tr>\n");
 			}
@@ -704,13 +704,13 @@ int main(void) {
 			if (temp_servicegroup->action_url != NULL && strcmp(temp_servicegroup->action_url, "")) {
 				printf("<a href='");
 				print_extra_servicegroup_url(temp_servicegroup->group_name, temp_servicegroup->action_url);
-				printf("' TARGET='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Servicegroup' title='Perform Additional Actions On This Servicegroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
+				printf("' target='%s'><img src='%s%s' border='0' alt='Perform Additional Actions On This Servicegroup' title='Perform Additional Actions On This Servicegroup'></a>\n", (action_url_target == NULL) ? "_blank" : action_url_target, url_images_path, ACTION_ICON);
 				printf("<br clear='all'><font size='-1'><i>Extra Actions</i></font><br clear='all'><br clear='all'>\n");
 			}
 			if (temp_servicegroup->notes_url != NULL && strcmp(temp_servicegroup->notes_url, "")) {
 				printf("<a href='");
 				print_extra_servicegroup_url(temp_servicegroup->group_name, temp_servicegroup->notes_url);
-				printf("' TARGET='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Servicegroup' title='View Additional Notes For This Servicegroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
+				printf("' target='%s'><img src='%s%s' border='0' alt='View Additional Notes For This Servicegroup' title='View Additional Notes For This Servicegroup'></a>\n", (notes_url_target == NULL) ? "_blank" : notes_url_target, url_images_path, NOTES_ICON);
 				printf("<br clear='all'><font size='-1'><i>Extra Notes</i></font><br clear='all'><br clear='all'>\n");
 			}
 			printf("</table>\n");
@@ -1241,65 +1241,65 @@ void show_process_info(void) {
 		printf("<table border='0' cellpadding='0' cellspacing='0' class='command'>\n");
 
 #ifndef DUMMY_INSTALL
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Shutdown the Icinga Process' TITLE='Shutdown the Icinga Process'></td><td class='command'><a href='%s?cmd_typ=%d'>Shutdown the Icinga process</a></td></tr>\n", url_images_path, STOP_ICON, CMD_CGI, CMD_SHUTDOWN_PROCESS);
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Restart the Icinga Process' TITLE='Restart the Icinga Process'></td><td class='command'><a href='%s?cmd_typ=%d'>Restart the Icinga process</a></td></tr>\n", url_images_path, RESTART_ICON, CMD_CGI, CMD_RESTART_PROCESS);
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Shutdown the Icinga Process' title='Shutdown the Icinga Process'></td><td class='command'><a href='%s?cmd_typ=%d'>Shutdown the Icinga process</a></td></tr>\n", url_images_path, STOP_ICON, CMD_CGI, CMD_SHUTDOWN_PROCESS);
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Restart the Icinga Process' title='Restart the Icinga Process'></td><td class='command'><a href='%s?cmd_typ=%d'>Restart the Icinga process</a></td></tr>\n", url_images_path, RESTART_ICON, CMD_CGI, CMD_RESTART_PROCESS);
 #endif
 
 		if (enable_notifications == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications' TITLE='Disable Notifications'></td><td class='command'><a href='%s?cmd_typ=%d'>Disable notifications</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_NOTIFICATIONS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications' title='Disable Notifications'></td><td class='command'><a href='%s?cmd_typ=%d'>Disable notifications</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_NOTIFICATIONS);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications' TITLE='Enable Notifications'></td><td class='command'><a href='%s?cmd_typ=%d'>Enable notifications</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_NOTIFICATIONS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications' title='Enable Notifications'></td><td class='command'><a href='%s?cmd_typ=%d'>Enable notifications</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_NOTIFICATIONS);
 
 		if (execute_service_checks == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Executing Service Checks' TITLE='Stop Executing Service Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop executing service checks</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_EXECUTING_SVC_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Executing Service Checks' title='Stop Executing Service Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop executing service checks</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_EXECUTING_SVC_CHECKS);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Executing Service Checks' TITLE='Start Executing Service Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Start executing service checks</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_EXECUTING_SVC_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Executing Service Checks' title='Start Executing Service Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Start executing service checks</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_EXECUTING_SVC_CHECKS);
 
 		if (accept_passive_service_checks == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Accepting Passive Service Checks' TITLE='Stop Accepting Passive Service Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop accepting passive service checks</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_ACCEPTING_PASSIVE_SVC_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Accepting Passive Service Checks' title='Stop Accepting Passive Service Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop accepting passive service checks</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_ACCEPTING_PASSIVE_SVC_CHECKS);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Accepting Passive Service Checks' TITLE='Start Accepting Passive Service Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Start accepting passive service checks</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_ACCEPTING_PASSIVE_SVC_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Accepting Passive Service Checks' title='Start Accepting Passive Service Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Start accepting passive service checks</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_ACCEPTING_PASSIVE_SVC_CHECKS);
 
 		if (execute_host_checks == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Executing Host Checks' TITLE='Stop Executing Host Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop executing host checks</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_EXECUTING_HOST_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Executing Host Checks' title='Stop Executing Host Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop executing host checks</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_EXECUTING_HOST_CHECKS);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Executing Host Checks' TITLE='Start Executing Host Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Start executing host checks</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_EXECUTING_HOST_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Executing Host Checks' title='Start Executing Host Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Start executing host checks</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_EXECUTING_HOST_CHECKS);
 
 		if (accept_passive_host_checks == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Accepting Passive Host Checks' TITLE='Stop Accepting Passive Host Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop accepting passive host checks</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Accepting Passive Host Checks' title='Stop Accepting Passive Host Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop accepting passive host checks</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_ACCEPTING_PASSIVE_HOST_CHECKS);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Accepting Passive Host Checks' TITLE='Start Accepting Passive Host Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Start accepting passive host checks</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Accepting Passive Host Checks' title='Start Accepting Passive Host Checks'></td><td class='command'><a href='%s?cmd_typ=%d'>Start accepting passive host checks</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_ACCEPTING_PASSIVE_HOST_CHECKS);
 
 		if (enable_event_handlers == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Event Handlers' TITLE='Disable Event Handlers'></td><td class='command'><a href='%s?cmd_typ=%d'>Disable event handlers</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_EVENT_HANDLERS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Event Handlers' title='Disable Event Handlers'></td><td class='command'><a href='%s?cmd_typ=%d'>Disable event handlers</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_EVENT_HANDLERS);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Event Handlers' TITLE='Enable Event Handlers'></td><td class='command'><a href='%s?cmd_typ=%d'>Enable event handlers</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_EVENT_HANDLERS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Event Handlers' title='Enable Event Handlers'></td><td class='command'><a href='%s?cmd_typ=%d'>Enable event handlers</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_EVENT_HANDLERS);
 
 		if (obsess_over_services == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Obsessing Over Services' TITLE='Stop Obsessing Over Services'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop obsessing over services</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_OBSESSING_OVER_SVC_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Obsessing Over Services' title='Stop Obsessing Over Services'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop obsessing over services</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_OBSESSING_OVER_SVC_CHECKS);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Obsessing Over Services' TITLE='Start Obsessing Over Services'></td><td class='command'><a href='%s?cmd_typ=%d'>Start obsessing over services</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_OBSESSING_OVER_SVC_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Obsessing Over Services' title='Start Obsessing Over Services'></td><td class='command'><a href='%s?cmd_typ=%d'>Start obsessing over services</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_OBSESSING_OVER_SVC_CHECKS);
 
 		if (obsess_over_hosts == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Obsessing Over Hosts' TITLE='Stop Obsessing Over Hosts'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop obsessing over hosts</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_OBSESSING_OVER_HOST_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Obsessing Over Hosts' title='Stop Obsessing Over Hosts'></td><td class='command'><a href='%s?cmd_typ=%d'>Stop obsessing over hosts</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_OBSESSING_OVER_HOST_CHECKS);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Obsessing Over Hosts' TITLE='Start Obsessing Over Hosts'></td><td class='command'><a href='%s?cmd_typ=%d'>Start obsessing over hosts</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_OBSESSING_OVER_HOST_CHECKS);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Obsessing Over Hosts' title='Start Obsessing Over Hosts'></td><td class='command'><a href='%s?cmd_typ=%d'>Start obsessing over hosts</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_OBSESSING_OVER_HOST_CHECKS);
 
 		if (enable_flap_detection == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Flap Detection' TITLE='Disable Flap Detection'></td><td class='command'><a href='%s?cmd_typ=%d'>Disable flap detection</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_FLAP_DETECTION);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Flap Detection' title='Disable Flap Detection'></td><td class='command'><a href='%s?cmd_typ=%d'>Disable flap detection</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_FLAP_DETECTION);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Flap Detection' TITLE='Enable Flap Detection'></td><td class='command'><a href='%s?cmd_typ=%d'>Enable flap detection</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_FLAP_DETECTION);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Flap Detection' title='Enable Flap Detection'></td><td class='command'><a href='%s?cmd_typ=%d'>Enable flap detection</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_FLAP_DETECTION);
 
 #ifdef PREDICT_FAILURES
 		if (enable_failure_prediction == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Failure Prediction' TITLE='Disable Failure Prediction'></td><td class='command'><a href='%s?cmd_typ=%d'>Disable failure prediction</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_FAILURE_PREDICTION);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Failure Prediction' title='Disable Failure Prediction'></td><td class='command'><a href='%s?cmd_typ=%d'>Disable failure prediction</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_FAILURE_PREDICTION);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Failure Prediction' TITLE='Enable Failure Prediction'></td><td class='command'><a href='%s?cmd_typ=%d'>Enable failure prediction</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_FAILURE_PREDICTION);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Failure Prediction' title='Enable Failure Prediction'></td><td class='command'><a href='%s?cmd_typ=%d'>Enable failure prediction</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_FAILURE_PREDICTION);
 #endif
 		if (process_performance_data == TRUE)
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Performance Data' TITLE='Disable Performance Data'></td><td class='command'><a href='%s?cmd_typ=%d'>Disable performance data</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_PERFORMANCE_DATA);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Performance Data' title='Disable Performance Data'></td><td class='command'><a href='%s?cmd_typ=%d'>Disable performance data</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_PERFORMANCE_DATA);
 		else
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Performance Data' TITLE='Enable Performance Data'></td><td class='command'><a href='%s?cmd_typ=%d'>Enable performance data</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_PERFORMANCE_DATA);
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Performance Data' title='Enable Performance Data'></td><td class='command'><a href='%s?cmd_typ=%d'>Enable performance data</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_PERFORMANCE_DATA);
 
 		printf("</table>\n");
 
@@ -1511,7 +1511,7 @@ void show_host_info(void) {
 			printf(" }\n");
 		}
 	} else {
-		printf("<table border='0' cellpadding='0' WIDTH='100%%' align='center'>\n");
+		printf("<table border='0' cellpadding='0' width='100%%' align='center'>\n");
 		printf("<tr>\n");
 
 		printf("<td align='center' valign='top' class='stateInfoPanel'>\n");
@@ -1559,7 +1559,7 @@ void show_host_info(void) {
 			else
 				printf("<tr><td class='dataVar'>Check Type:</td><td class='dataVal'>DISABLED</td></tr>\n");
 
-			printf("<tr><td class='dataVar' NOWRAP>Check Latency / Duration:</td><td class='dataVal'>");
+			printf("<tr><td class='dataVar' nowrap>Check Latency / Duration:</td><td class='dataVal'>");
 			if (temp_hoststatus->checks_enabled == TRUE)
 				printf("%.3f", temp_hoststatus->latency);
 			else
@@ -1646,72 +1646,72 @@ void show_host_info(void) {
 
 			printf("<table border='0' cellspacing='0' cellpadding='0' class='command'>\n");
 #ifdef USE_STATUSMAP
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Locate Host On Map' TITLE='Locate Host On Map'></td><td class='command'><a href='%s?host=%s'>Locate host on map</a></td></tr>\n", url_images_path, STATUSMAP_ICON, STATUSMAP_CGI, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Locate Host On Map' title='Locate Host On Map'></td><td class='command'><a href='%s?host=%s'>Locate host on map</a></td></tr>\n", url_images_path, STATUSMAP_ICON, STATUSMAP_CGI, url_encode(host_name));
 #endif
 			if (temp_hoststatus->checks_enabled == TRUE) {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Active Checks Of This Host' TITLE='Disable Active Checks Of This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Disable active checks of this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_CHECK, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Active Checks Of This Host' title='Disable Active Checks Of This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Disable active checks of this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_CHECK, url_encode(host_name));
 			} else
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Active Checks Of This Host' TITLE='Enable Active Checks Of This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable active checks of this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_CHECK, url_encode(host_name));
-			printf("<tr class='data'><td><img src='%s%s' border='0' alt='Re-schedule Next Host Check' TITLE='Re-schedule Next Host Check'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s%s'>Re-schedule the next check of this host</a></td></tr>\n", url_images_path, DELAY_ICON, CMD_CGI, CMD_SCHEDULE_HOST_CHECK, url_encode(host_name), (temp_hoststatus->checks_enabled == TRUE) ? "&amp;force_check" : "");
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Active Checks Of This Host' title='Enable Active Checks Of This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable active checks of this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_CHECK, url_encode(host_name));
+			printf("<tr class='data'><td><img src='%s%s' border='0' alt='Re-schedule Next Host Check' title='Re-schedule Next Host Check'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s%s'>Re-schedule the next check of this host</a></td></tr>\n", url_images_path, DELAY_ICON, CMD_CGI, CMD_SCHEDULE_HOST_CHECK, url_encode(host_name), (temp_hoststatus->checks_enabled == TRUE) ? "&amp;force_check" : "");
 
 			if (temp_hoststatus->accept_passive_host_checks == TRUE) {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Submit Passive Check Result For This Host' TITLE='Submit Passive Check Result For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Submit passive check result for this host</a></td></tr>\n", url_images_path, PASSIVE_ICON, CMD_CGI, CMD_PROCESS_HOST_CHECK_RESULT, url_encode(host_name));
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Accepting Passive Checks For This Host' TITLE='Stop Accepting Passive Checks For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Stop accepting passive checks for this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_PASSIVE_HOST_CHECKS, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Submit Passive Check Result For This Host' title='Submit Passive Check Result For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Submit passive check result for this host</a></td></tr>\n", url_images_path, PASSIVE_ICON, CMD_CGI, CMD_PROCESS_HOST_CHECK_RESULT, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Accepting Passive Checks For This Host' title='Stop Accepting Passive Checks For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Stop accepting passive checks for this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_PASSIVE_HOST_CHECKS, url_encode(host_name));
 			} else
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Accepting Passive Checks For This Host' TITLE='Start Accepting Passive Checks For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Start accepting passive checks for this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_PASSIVE_HOST_CHECKS, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Accepting Passive Checks For This Host' title='Start Accepting Passive Checks For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Start accepting passive checks for this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_PASSIVE_HOST_CHECKS, url_encode(host_name));
 
 			if (temp_hoststatus->obsess_over_host == TRUE)
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Obsessing Over This Host' TITLE='Stop Obsessing Over This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Stop obsessing over this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_OBSESSING_OVER_HOST, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Obsessing Over This Host' title='Stop Obsessing Over This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Stop obsessing over this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_OBSESSING_OVER_HOST, url_encode(host_name));
 			else
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Obsessing Over This Host' TITLE='Start Obsessing Over This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Start obsessing over this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_OBSESSING_OVER_HOST, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Obsessing Over This Host' title='Start Obsessing Over This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Start obsessing over this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_OBSESSING_OVER_HOST, url_encode(host_name));
 
 			if (temp_hoststatus->status == HOST_DOWN || temp_hoststatus->status == HOST_UNREACHABLE) {
 				if (temp_hoststatus->problem_has_been_acknowledged == FALSE)
-					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Acknowledge This Host Problem' TITLE='Acknowledge This Host Problem'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Acknowledge this host problem</a></td></tr>\n", url_images_path, ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_ACKNOWLEDGE_HOST_PROBLEM, url_encode(host_name));
+					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Acknowledge This Host Problem' title='Acknowledge This Host Problem'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Acknowledge this host problem</a></td></tr>\n", url_images_path, ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_ACKNOWLEDGE_HOST_PROBLEM, url_encode(host_name));
 				else
-					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Remove Problem Acknowledgement' TITLE='Remove Problem Acknowledgement'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Remove problem acknowledgement</a></td></tr>\n", url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_REMOVE_HOST_ACKNOWLEDGEMENT, url_encode(host_name));
+					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Remove Problem Acknowledgement' title='Remove Problem Acknowledgement'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Remove problem acknowledgement</a></td></tr>\n", url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_REMOVE_HOST_ACKNOWLEDGEMENT, url_encode(host_name));
 			}
 
 			if (temp_hoststatus->notifications_enabled == TRUE)
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For This Host' TITLE='Disable Notifications For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Disable notifications for this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_NOTIFICATIONS, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For This Host' title='Disable Notifications For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Disable notifications for this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_NOTIFICATIONS, url_encode(host_name));
 			else
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For This Host' TITLE='Enable Notifications For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable notifications for this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_NOTIFICATIONS, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For This Host' title='Enable Notifications For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable notifications for this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_NOTIFICATIONS, url_encode(host_name));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Send Custom Notification' TITLE='Send Custom Notification'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Send custom host notification</a></td></tr>\n", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_SEND_CUSTOM_HOST_NOTIFICATION, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Send Custom Notification' title='Send Custom Notification'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Send custom host notification</a></td></tr>\n", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_SEND_CUSTOM_HOST_NOTIFICATION, url_encode(host_name));
 
 			if (temp_hoststatus->status != HOST_UP)
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Delay Next Host Notification' TITLE='Delay Next Host Notification'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Delay next host notification</a></td></tr>\n", url_images_path, DELAY_ICON, CMD_CGI, CMD_DELAY_HOST_NOTIFICATION, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Delay Next Host Notification' title='Delay Next Host Notification'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Delay next host notification</a></td></tr>\n", url_images_path, DELAY_ICON, CMD_CGI, CMD_DELAY_HOST_NOTIFICATION, url_encode(host_name));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For This Host' TITLE='Schedule Downtime For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Schedule downtime for this host</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_HOST_DOWNTIME, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For This Host' title='Schedule Downtime For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Schedule downtime for this host</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_HOST_DOWNTIME, url_encode(host_name));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For This Host and All Services' TITLE='Schedule Downtime For This Host and All Services'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Schedule downtime for this host and all services</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_HOST_SVC_DOWNTIME, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For This Host and All Services' title='Schedule Downtime For This Host and All Services'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Schedule downtime for this host and all services</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_HOST_SVC_DOWNTIME, url_encode(host_name));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Remove Downtime(s) for this host and all services' TITLE='Remove Downtime(s) for this host and all services'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Remove Downtime(s) for this host and all services</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DEL_DOWNTIME_BY_HOST_NAME, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Remove Downtime(s) for this host and all services' title='Remove Downtime(s) for this host and all services'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Remove Downtime(s) for this host and all services</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DEL_DOWNTIME_BY_HOST_NAME, url_encode(host_name));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For All Services On This Host' TITLE='Disable Notifications For All Services On This Host'></td><td class='command' NOWRAP><a href='%s?cmd_typ=%d&amp;host=%s'>Disable notifications for all services on this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_SVC_NOTIFICATIONS, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For All Services On This Host' title='Disable Notifications For All Services On This Host'></td><td class='command' nowrap><a href='%s?cmd_typ=%d&amp;host=%s'>Disable notifications for all services on this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_SVC_NOTIFICATIONS, url_encode(host_name));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For All Services On This Host' TITLE='Enable Notifications For All Services On This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable notifications for all services on this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_SVC_NOTIFICATIONS, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For All Services On This Host' title='Enable Notifications For All Services On This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable notifications for all services on this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_SVC_NOTIFICATIONS, url_encode(host_name));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule A Check Of All Services On This Host' TITLE='Schedule A Check Of All Services On This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Schedule a check of all services on this host</a></td></tr>\n", url_images_path, DELAY_ICON, CMD_CGI, CMD_SCHEDULE_HOST_SVC_CHECKS, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule A Check Of All Services On This Host' title='Schedule A Check Of All Services On This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Schedule a check of all services on this host</a></td></tr>\n", url_images_path, DELAY_ICON, CMD_CGI, CMD_SCHEDULE_HOST_SVC_CHECKS, url_encode(host_name));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Checks Of All Services On This Host' TITLE='Disable Checks Of All Services On This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Disable checks of all services on this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_SVC_CHECKS, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Checks Of All Services On This Host' title='Disable Checks Of All Services On This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Disable checks of all services on this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_SVC_CHECKS, url_encode(host_name));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Checks Of All Services On This Host' TITLE='Enable Checks Of All Services On This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable checks of all services on this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_SVC_CHECKS, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Checks Of All Services On This Host' title='Enable Checks Of All Services On This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable checks of all services on this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_SVC_CHECKS, url_encode(host_name));
 
 			if (temp_hoststatus->event_handler_enabled == TRUE)
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Event Handler For This Host' TITLE='Disable Event Handler For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Disable event handler for this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_EVENT_HANDLER, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Event Handler For This Host' title='Disable Event Handler For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Disable event handler for this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_EVENT_HANDLER, url_encode(host_name));
 			else
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Event Handler For This Host' TITLE='Enable Event Handler For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable event handler for this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_EVENT_HANDLER, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Event Handler For This Host' title='Enable Event Handler For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable event handler for this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_EVENT_HANDLER, url_encode(host_name));
 			if (temp_hoststatus->flap_detection_enabled == TRUE)
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Flap Detection For This Host' TITLE='Disable Flap Detection For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Disable flap detection for this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_FLAP_DETECTION, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Flap Detection For This Host' title='Disable Flap Detection For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Disable flap detection for this host</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOST_FLAP_DETECTION, url_encode(host_name));
 			else
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Flap Detection For This Host' TITLE='Enable Flap Detection For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable flap detection for this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_FLAP_DETECTION, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Flap Detection For This Host' title='Enable Flap Detection For This Host'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>Enable flap detection for this host</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOST_FLAP_DETECTION, url_encode(host_name));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Add a new Host comment' TITLE='Add a new Host comment'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>", url_images_path, COMMENT_ICON, CMD_CGI, CMD_ADD_HOST_COMMENT, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Add a new Host comment' title='Add a new Host comment'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s'>", url_images_path, COMMENT_ICON, CMD_CGI, CMD_ADD_HOST_COMMENT, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("Add a new Host comment</a></td>");
 
 			/* allow modified attributes to be reset */
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Reset Modified Attributes' TITLE='Reset Modified Attributes'></td><td class='command'><a href='%s?cmd_typ=%d&amp;attr=%d&amp;host=%s'>", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_HOST_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Reset Modified Attributes' title='Reset Modified Attributes'></td><td class='command'><a href='%s?cmd_typ=%d&amp;attr=%d&amp;host=%s'>", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_HOST_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("Reset Modified Attributes</a></td>");
 
 			printf("</table>\n");
@@ -1945,7 +1945,7 @@ void show_service_info(void) {
 			printf(" }\n");
 		}
 	} else {
-		printf("<table border='0' cellpadding='0' cellspacing='0' WIDTH=100%%>\n");
+		printf("<table border='0' cellpadding='0' cellspacing='0' width=100%%>\n");
 		printf("<tr>\n");
 
 		printf("<td align='center' valign='top' class='stateInfoPanel'>\n");
@@ -1995,7 +1995,7 @@ void show_service_info(void) {
 			else
 				printf("<tr><td class='dataVar'>Check Type:</td><td class='dataVal'>DISABLED</td></tr>\n");
 
-			printf("<tr><td class='dataVar' NOWRAP>Check Latency / Duration:</td><td class='dataVal'>");
+			printf("<tr><td class='dataVar' nowrap>Check Latency / Duration:</td><td class='dataVal'>");
 			if (temp_svcstatus->checks_enabled == TRUE)
 				printf("%.3f", temp_svcstatus->latency);
 			else
@@ -2087,88 +2087,88 @@ void show_service_info(void) {
 
 			if (temp_svcstatus->checks_enabled) {
 
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Active Checks Of This Service' TITLE='Disable Active Checks Of This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_SVC_CHECK, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Active Checks Of This Service' title='Disable Active Checks Of This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_SVC_CHECK, url_encode(host_name));
 				printf("&amp;service=%s'>Disable active checks of this service</a></td></tr>\n", url_encode(service_desc));
 			} else {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Active Checks Of This Service' TITLE='Enable Active Checks Of This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_SVC_CHECK, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Active Checks Of This Service' title='Enable Active Checks Of This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_SVC_CHECK, url_encode(host_name));
 				printf("&amp;service=%s'>Enable active checks of this service</a></td></tr>\n", url_encode(service_desc));
 			}
-			printf("<tr class='data'><td><img src='%s%s' border='0' alt='Re-schedule Next Service Check' TITLE='Re-schedule Next Service Check'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DELAY_ICON, CMD_CGI, CMD_SCHEDULE_SVC_CHECK, url_encode(host_name));
+			printf("<tr class='data'><td><img src='%s%s' border='0' alt='Re-schedule Next Service Check' title='Re-schedule Next Service Check'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DELAY_ICON, CMD_CGI, CMD_SCHEDULE_SVC_CHECK, url_encode(host_name));
 			printf("&amp;service=%s%s'>Re-schedule the next check of this service</a></td></tr>\n", url_encode(service_desc), (temp_svcstatus->checks_enabled == TRUE) ? "&amp;force_check" : "");
 
 			if (temp_svcstatus->accept_passive_service_checks == TRUE) {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Submit Passive Check Result For This Service' TITLE='Submit Passive Check Result For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, PASSIVE_ICON, CMD_CGI, CMD_PROCESS_SERVICE_CHECK_RESULT, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Submit Passive Check Result For This Service' title='Submit Passive Check Result For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, PASSIVE_ICON, CMD_CGI, CMD_PROCESS_SERVICE_CHECK_RESULT, url_encode(host_name));
 				printf("&amp;service=%s'>Submit passive check result for this service</a></td></tr>\n", url_encode(service_desc));
 
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Accepting Passive Checks For This Service' TITLE='Stop Accepting Passive Checks For This Service'></td><td class='command' NOWRAP><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_PASSIVE_SVC_CHECKS, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Accepting Passive Checks For This Service' title='Stop Accepting Passive Checks For This Service'></td><td class='command' nowrap><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_PASSIVE_SVC_CHECKS, url_encode(host_name));
 				printf("&amp;service=%s'>Stop accepting passive checks for this service</a></td></tr>\n", url_encode(service_desc));
 			} else {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Accepting Passive Checks For This Service' TITLE='Start Accepting Passive Checks For This Service'></td><td class='command' NOWRAP><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_PASSIVE_SVC_CHECKS, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Accepting Passive Checks For This Service' title='Start Accepting Passive Checks For This Service'></td><td class='command' nowrap><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_PASSIVE_SVC_CHECKS, url_encode(host_name));
 				printf("&amp;service=%s'>Start accepting passive checks for this service</a></td></tr>\n", url_encode(service_desc));
 			}
 
 			if (temp_svcstatus->obsess_over_service == TRUE) {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Obsessing Over This Service' TITLE='Stop Obsessing Over This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_OBSESSING_OVER_SVC, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Stop Obsessing Over This Service' title='Stop Obsessing Over This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_STOP_OBSESSING_OVER_SVC, url_encode(host_name));
 				printf("&amp;service=%s'>Stop obsessing over this service</a></td></tr>\n", url_encode(service_desc));
 			} else {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Obsessing Over This Service' TITLE='Start Obsessing Over This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_OBSESSING_OVER_SVC, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Start Obsessing Over This Service' title='Start Obsessing Over This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_START_OBSESSING_OVER_SVC, url_encode(host_name));
 				printf("&amp;service=%s'>Start obsessing over this service</a></td></tr>\n", url_encode(service_desc));
 			}
 
 			if ((temp_svcstatus->status == SERVICE_WARNING || temp_svcstatus->status == SERVICE_UNKNOWN || temp_svcstatus->status == SERVICE_CRITICAL) && temp_svcstatus->state_type == HARD_STATE) {
 				if (temp_svcstatus->problem_has_been_acknowledged == FALSE) {
-					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Acknowledge This Service Problem' TITLE='Acknowledge This Service Problem'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_ACKNOWLEDGE_SVC_PROBLEM, url_encode(host_name));
+					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Acknowledge This Service Problem' title='Acknowledge This Service Problem'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_ACKNOWLEDGE_SVC_PROBLEM, url_encode(host_name));
 					printf("&amp;service=%s'>Acknowledge this service problem</a></td></tr>\n", url_encode(service_desc));
 				} else {
-					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Remove Problem Acknowledgement' TITLE='Remove Problem Acknowledgement'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_REMOVE_SVC_ACKNOWLEDGEMENT, url_encode(host_name));
+					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Remove Problem Acknowledgement' title='Remove Problem Acknowledgement'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, REMOVE_ACKNOWLEDGEMENT_ICON, CMD_CGI, CMD_REMOVE_SVC_ACKNOWLEDGEMENT, url_encode(host_name));
 					printf("&amp;service=%s'>Remove problem acknowledgement</a></td></tr>\n", url_encode(service_desc));
 				}
 			}
 			if (temp_svcstatus->notifications_enabled == TRUE) {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For This Service' TITLE='Disable Notifications For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_SVC_NOTIFICATIONS, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For This Service' title='Disable Notifications For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_SVC_NOTIFICATIONS, url_encode(host_name));
 				printf("&amp;service=%s'>Disable notifications for this service</a></td></tr>\n", url_encode(service_desc));
 				if (temp_svcstatus->status != SERVICE_OK) {
-					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Delay Next Service Notification' TITLE='Delay Next Service Notification'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DELAY_ICON, CMD_CGI, CMD_DELAY_SVC_NOTIFICATION, url_encode(host_name));
+					printf("<tr class='command'><td><img src='%s%s' border='0' alt='Delay Next Service Notification' title='Delay Next Service Notification'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DELAY_ICON, CMD_CGI, CMD_DELAY_SVC_NOTIFICATION, url_encode(host_name));
 					printf("&amp;service=%s'>Delay next service notification</a></td></tr>\n", url_encode(service_desc));
 				}
 			} else {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For This Service' TITLE='Enable Notifications For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_SVC_NOTIFICATIONS, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For This Service' title='Enable Notifications For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_SVC_NOTIFICATIONS, url_encode(host_name));
 				printf("&amp;service=%s'>Enable notifications for this service</a></td></tr>\n", url_encode(service_desc));
 			}
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Send Custom Notification' TITLE='Send Custom Notification'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_SEND_CUSTOM_SVC_NOTIFICATION, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Send Custom Notification' title='Send Custom Notification'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_SEND_CUSTOM_SVC_NOTIFICATION, url_encode(host_name));
 			printf("&amp;service=%s'>Send custom service notification</a></td></tr>\n", url_encode(service_desc));
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For This Service' TITLE='Schedule Downtime For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_SVC_DOWNTIME, url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For This Service' title='Schedule Downtime For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_SVC_DOWNTIME, url_encode(host_name));
 			printf("&amp;service=%s'>Schedule downtime for this service</a></td></tr>\n", url_encode(service_desc));
 
 			/*
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Cancel Scheduled Downtime For This Service' TITLE='Cancel Scheduled Downtime For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s",url_images_path,DOWNTIME_ICON,CMD_CGI,CMD_CANCEL_SVC_DOWNTIME,url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Cancel Scheduled Downtime For This Service' title='Cancel Scheduled Downtime For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s",url_images_path,DOWNTIME_ICON,CMD_CGI,CMD_CANCEL_SVC_DOWNTIME,url_encode(host_name));
 			printf("&amp;service=%s'>Cancel scheduled downtime for this service</a></td></tr>\n",url_encode(service_desc));
 			*/
 
 			if (temp_svcstatus->event_handler_enabled == TRUE) {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Event Handler For This Service' TITLE='Disable Event Handler For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_SVC_EVENT_HANDLER, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Event Handler For This Service' title='Disable Event Handler For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_SVC_EVENT_HANDLER, url_encode(host_name));
 				printf("&amp;service=%s'>Disable event handler for this service</a></td></tr>\n", url_encode(service_desc));
 			} else {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Event Handler For This Service' TITLE='Enable Event Handler For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_SVC_EVENT_HANDLER, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Event Handler For This Service' title='Enable Event Handler For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_SVC_EVENT_HANDLER, url_encode(host_name));
 				printf("&amp;service=%s'>Enable event handler for this service</a></td></tr>\n", url_encode(service_desc));
 			}
 
 			if (temp_svcstatus->flap_detection_enabled == TRUE) {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Flap Detection For This Service' TITLE='Disable Flap Detection For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_SVC_FLAP_DETECTION, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Flap Detection For This Service' title='Disable Flap Detection For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_SVC_FLAP_DETECTION, url_encode(host_name));
 				printf("&amp;service=%s'>Disable flap detection for this service</a></td></tr>\n", url_encode(service_desc));
 			} else {
-				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Flap Detection For This Service' TITLE='Enable Flap Detection For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_SVC_FLAP_DETECTION, url_encode(host_name));
+				printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Flap Detection For This Service' title='Enable Flap Detection For This Service'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_SVC_FLAP_DETECTION, url_encode(host_name));
 				printf("&amp;service=%s'>Enable flap detection for this service</a></td></tr>\n", url_encode(service_desc));
 			}
 
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Add a new Service comment' TITLE='Add a new Service comment'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, COMMENT_ICON, CMD_CGI, CMD_ADD_SVC_COMMENT, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Add a new Service comment' title='Add a new Service comment'></td><td class='command'><a href='%s?cmd_typ=%d&amp;host=%s", url_images_path, COMMENT_ICON, CMD_CGI, CMD_ADD_SVC_COMMENT, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("&amp;service=%s'>", (display_type == DISPLAY_COMMENTS) ? "" : url_encode(service_desc));
 			printf("Add a new Service comment</a></td>");
 
 			/* allow modified attributes to be reset */
-			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Reset Modified Attributes' TITLE='Reset Modified Attributes'></td><td class='command'><a href='%s?cmd_typ=%d&amp;attr=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_SVC_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
+			printf("<tr class='command'><td><img src='%s%s' border='0' alt='Reset Modified Attributes' title='Reset Modified Attributes'></td><td class='command'><a href='%s?cmd_typ=%d&amp;attr=%d&amp;host=%s", url_images_path, DISABLED_ICON, CMD_CGI, CMD_CHANGE_SVC_MODATTR, MODATTR_NONE, (display_type == DISPLAY_COMMENTS) ? "" : url_encode(host_name));
 			printf("&amp;service=%s'>", (display_type == DISPLAY_COMMENTS) ? "" : url_encode(service_desc));
 			printf("Reset Modified Attributes</a></td>");
 
@@ -2231,21 +2231,21 @@ void show_hostgroup_info(void) {
 
 		printf("<table border='0' cellspacing='0' cellpadding='0' class='command' align='center'>\n");
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For All Hosts In This Hostgroup' TITLE='Schedule Downtime For All Hosts In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Schedule downtime for all hosts in this hostgroup</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME, url_encode(hostgroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For All Hosts In This Hostgroup' title='Schedule Downtime For All Hosts In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Schedule downtime for all hosts in this hostgroup</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_HOSTGROUP_HOST_DOWNTIME, url_encode(hostgroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For All Services In This Hostgroup' TITLE='Schedule Downtime For All Services In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Schedule downtime for all services in this hostgroup</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME, url_encode(hostgroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For All Services In This Hostgroup' title='Schedule Downtime For All Services In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Schedule downtime for all services in this hostgroup</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_HOSTGROUP_SVC_DOWNTIME, url_encode(hostgroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For All Hosts In This Hostgroup' TITLE='Enable Notifications For All Hosts In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Enable notifications for all hosts in this hostgroup</a></td></tr>\n", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_ENABLE_HOSTGROUP_HOST_NOTIFICATIONS, url_encode(hostgroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For All Hosts In This Hostgroup' title='Enable Notifications For All Hosts In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Enable notifications for all hosts in this hostgroup</a></td></tr>\n", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_ENABLE_HOSTGROUP_HOST_NOTIFICATIONS, url_encode(hostgroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For All Hosts In This Hostgroup' TITLE='Disable Notifications For All Hosts In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Disable notifications for all hosts in this hostgroup</a></td></tr>\n", url_images_path, NOTIFICATIONS_DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOSTGROUP_HOST_NOTIFICATIONS, url_encode(hostgroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For All Hosts In This Hostgroup' title='Disable Notifications For All Hosts In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Disable notifications for all hosts in this hostgroup</a></td></tr>\n", url_images_path, NOTIFICATIONS_DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOSTGROUP_HOST_NOTIFICATIONS, url_encode(hostgroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For All Services In This Hostgroup' TITLE='Enable Notifications For All Services In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Enable notifications for all services in this hostgroup</a></td></tr>\n", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS, url_encode(hostgroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For All Services In This Hostgroup' title='Enable Notifications For All Services In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Enable notifications for all services in this hostgroup</a></td></tr>\n", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_ENABLE_HOSTGROUP_SVC_NOTIFICATIONS, url_encode(hostgroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For All Services In This Hostgroup' TITLE='Disable Notifications For All Services In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Disable notifications for all services in this hostgroup</a></td></tr>\n", url_images_path, NOTIFICATIONS_DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOSTGROUP_SVC_NOTIFICATIONS, url_encode(hostgroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For All Services In This Hostgroup' title='Disable Notifications For All Services In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Disable notifications for all services in this hostgroup</a></td></tr>\n", url_images_path, NOTIFICATIONS_DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOSTGROUP_SVC_NOTIFICATIONS, url_encode(hostgroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Active Checks Of All Services In This Hostgroup' TITLE='Enable Active Checks Of All Services In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Enable active checks of all services in this hostgroup</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOSTGROUP_SVC_CHECKS, url_encode(hostgroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Active Checks Of All Services In This Hostgroup' title='Enable Active Checks Of All Services In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Enable active checks of all services in this hostgroup</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_HOSTGROUP_SVC_CHECKS, url_encode(hostgroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Active Checks Of All Services In This Hostgroup' TITLE='Disable Active Checks Of All Services In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Disable active checks of all services in this hostgroup</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOSTGROUP_SVC_CHECKS, url_encode(hostgroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Active Checks Of All Services In This Hostgroup' title='Disable Active Checks Of All Services In This Hostgroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;hostgroup=%s'>Disable active checks of all services in this hostgroup</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_HOSTGROUP_SVC_CHECKS, url_encode(hostgroup_name));
 
 		printf("</table>\n");
 
@@ -2280,21 +2280,21 @@ void show_servicegroup_info() {
 
 		printf("<table border='1' cellspacing='0' cellpadding='0' class='command' align='center'>\n");
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For All Hosts In This Servicegroup' TITLE='Schedule Downtime For All Hosts In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Schedule downtime for all hosts in this servicegroup</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME, url_encode(servicegroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For All Hosts In This Servicegroup' title='Schedule Downtime For All Hosts In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Schedule downtime for all hosts in this servicegroup</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_SERVICEGROUP_HOST_DOWNTIME, url_encode(servicegroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For All Services In This Servicegroup' TITLE='Schedule Downtime For All Services In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Schedule downtime for all services in this servicegroup</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME, url_encode(servicegroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Schedule Downtime For All Services In This Servicegroup' title='Schedule Downtime For All Services In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Schedule downtime for all services in this servicegroup</a></td></tr>\n", url_images_path, DOWNTIME_ICON, CMD_CGI, CMD_SCHEDULE_SERVICEGROUP_SVC_DOWNTIME, url_encode(servicegroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For All Hosts In This Servicegroup' TITLE='Enable Notifications For All Hosts In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Enable notifications for all hosts in this servicegroup</a></td></tr>\n", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS, url_encode(servicegroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For All Hosts In This Servicegroup' title='Enable Notifications For All Hosts In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Enable notifications for all hosts in this servicegroup</a></td></tr>\n", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_ENABLE_SERVICEGROUP_HOST_NOTIFICATIONS, url_encode(servicegroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For All Hosts In This Servicegroup' TITLE='Disable Notifications For All Hosts In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Disable notifications for all hosts in this servicegroup</a></td></tr>\n", url_images_path, NOTIFICATIONS_DISABLED_ICON, CMD_CGI, CMD_DISABLE_SERVICEGROUP_HOST_NOTIFICATIONS, url_encode(servicegroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For All Hosts In This Servicegroup' title='Disable Notifications For All Hosts In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Disable notifications for all hosts in this servicegroup</a></td></tr>\n", url_images_path, NOTIFICATIONS_DISABLED_ICON, CMD_CGI, CMD_DISABLE_SERVICEGROUP_HOST_NOTIFICATIONS, url_encode(servicegroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For All Services In This Servicegroup' TITLE='Enable Notifications For All Services In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Enable notifications for all services in this servicegroup</a></td></tr>\n", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS, url_encode(servicegroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Notifications For All Services In This Servicegroup' title='Enable Notifications For All Services In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Enable notifications for all services in this servicegroup</a></td></tr>\n", url_images_path, NOTIFICATION_ICON, CMD_CGI, CMD_ENABLE_SERVICEGROUP_SVC_NOTIFICATIONS, url_encode(servicegroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For All Services In This Servicegroup' TITLE='Disable Notifications For All Services In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Disable notifications for all services in this servicegroup</a></td></tr>\n", url_images_path, NOTIFICATIONS_DISABLED_ICON, CMD_CGI, CMD_DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS, url_encode(servicegroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Notifications For All Services In This Servicegroup' title='Disable Notifications For All Services In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Disable notifications for all services in this servicegroup</a></td></tr>\n", url_images_path, NOTIFICATIONS_DISABLED_ICON, CMD_CGI, CMD_DISABLE_SERVICEGROUP_SVC_NOTIFICATIONS, url_encode(servicegroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Active Checks Of All Services In This Servicegroup' TITLE='Enable Active Checks Of All Services In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Enable active checks of all services in this servicegroup</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_SERVICEGROUP_SVC_CHECKS, url_encode(servicegroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Enable Active Checks Of All Services In This Servicegroup' title='Enable Active Checks Of All Services In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Enable active checks of all services in this servicegroup</a></td></tr>\n", url_images_path, ENABLED_ICON, CMD_CGI, CMD_ENABLE_SERVICEGROUP_SVC_CHECKS, url_encode(servicegroup_name));
 
-		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Active Checks Of All Services In This Servicegroup' TITLE='Disable Active Checks Of All Services In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Disable active checks of all services in this servicegroup</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_SERVICEGROUP_SVC_CHECKS, url_encode(servicegroup_name));
+		printf("<tr class='command'><td><img src='%s%s' border='0' alt='Disable Active Checks Of All Services In This Servicegroup' title='Disable Active Checks Of All Services In This Servicegroup'></td><td class='command'><a href='%s?cmd_typ=%d&amp;servicegroup=%s'>Disable active checks of all services in this servicegroup</a></td></tr>\n", url_images_path, DISABLED_ICON, CMD_CGI, CMD_DISABLE_SERVICEGROUP_SVC_CHECKS, url_encode(servicegroup_name));
 
 		printf("</table>\n");
 
@@ -3068,7 +3068,7 @@ void show_comments(int type) {
 			}
 			printf("<td name='comment_time'>%s</td><td name='comment_author'>%s</td><td name='comment_data'>%s</td><td name='comment_id'>%lu</td><td name='comment_persist'>%s</td><td name='comment_type'>%s</td><td name='comment_expire'>%s</td>", date_time, temp_comment->author, temp_comment->comment_data, temp_comment->comment_id, (temp_comment->persistent) ? "Yes" : "No", comment_type, (temp_comment->expires == TRUE) ? expire_time : "N/A");
 			if (is_authorized_for_comments_read_only(&current_authdata) == FALSE) {
-				printf("<td align='center'><a href='%s?cmd_typ=%d&amp;com_id=%lu'><img src='%s%s' border='0' alt='Delete This Comment' TITLE='Delete This Comment'></a>", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
+				printf("<td align='center'><a href='%s?cmd_typ=%d&amp;com_id=%lu'><img src='%s%s' border='0' alt='Delete This Comment' title='Delete This Comment'></a>", CMD_CGI, (type == HOST_COMMENT) ? CMD_DEL_HOST_COMMENT : CMD_DEL_SVC_COMMENT, temp_comment->comment_id, url_images_path, DELETE_ICON);
 				printf("<input type='checkbox' onClick=\"toggle_checkbox('comment_%lu','tableform%scomment');\" name='com_id' id='comment_%lu' value='%lu'></td>", temp_comment->comment_id, (type == HOST_COMMENT) ? "host" : "service", temp_comment->comment_id, temp_comment->comment_id);
 			}
 			printf("</tr>\n");
@@ -3380,7 +3380,7 @@ void show_downtime(int type) {
 			printf("</td>\n");
 			if (is_authorized_for_downtimes_read_only(&current_authdata) == FALSE) {
 				printf("<td align='center' class='%s'><a href='%s?cmd_typ=%d", bg_class, CMD_CGI, (type == HOST_DOWNTIME) ? CMD_DEL_HOST_DOWNTIME : CMD_DEL_SVC_DOWNTIME);
-				printf("&amp;down_id=%lu'><img src='%s%s' border='0' alt='Delete/Cancel This Scheduled Downtime Entry' TITLE='Delete/Cancel This Scheduled Downtime Entry'></a>", temp_downtime->downtime_id, url_images_path, DELETE_ICON);
+				printf("&amp;down_id=%lu'><img src='%s%s' border='0' alt='Delete/Cancel This Scheduled Downtime Entry' title='Delete/Cancel This Scheduled Downtime Entry'></a>", temp_downtime->downtime_id, url_images_path, DELETE_ICON);
 				printf("<input type='checkbox' onClick=\"toggle_checkbox('downtime_%lu','tableform%sdowntime');\" name='down_id' id='downtime_%lu' value='%lu'></td>", temp_downtime->downtime_id, (type == HOST_DOWNTIME) ? "host" : "service", temp_downtime->downtime_id, temp_downtime->downtime_id);
 			}
 			printf("</tr>\n");
@@ -3508,10 +3508,10 @@ void show_scheduling_queue(void) {
 			temp_url[sizeof(temp_url) - 1] = '\x0';
 		}
 
-		printf("<th class='queue'>Host&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (ascending)' TITLE='Sort by host name (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (descending)' TITLE='Sort by host name (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_HOSTNAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_HOSTNAME, url_images_path, DOWN_ARROW_ICON);
-		printf("<th class='queue'>Service&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by service name (ascending)' TITLE='Sort by service name (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by service name (descending)' TITLE='Sort by service name (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_SERVICENAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_SERVICENAME, url_images_path, DOWN_ARROW_ICON);
-		printf("<th class='queue'>Last Check&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by last check time (ascending)' TITLE='Sort by last check time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by last check time (descending)' TITLE='Sort by last check time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_LASTCHECKTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_LASTCHECKTIME, url_images_path, DOWN_ARROW_ICON);
-		printf("<th class='queue'>Next Check&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by next check time (ascending)' TITLE='Sort by next check time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by next check time (descending)' TITLE='Sort by next check time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_NEXTCHECKTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_NEXTCHECKTIME, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='queue'>Host&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (ascending)' title='Sort by host name (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by host name (descending)' title='Sort by host name (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_HOSTNAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_HOSTNAME, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='queue'>Service&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by service name (ascending)' title='Sort by service name (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by service name (descending)' title='Sort by service name (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_SERVICENAME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_SERVICENAME, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='queue'>Last Check&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by last check time (ascending)' title='Sort by last check time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by last check time (descending)' title='Sort by last check time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_LASTCHECKTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_LASTCHECKTIME, url_images_path, DOWN_ARROW_ICON);
+		printf("<th class='queue'>Next Check&nbsp;<a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by next check time (ascending)' title='Sort by next check time (ascending)'></a><a href='%s&amp;sorttype=%d&amp;sortoption=%d'><img src='%s%s' border='0' alt='Sort by next check time (descending)' title='Sort by next check time (descending)'></a></th>", temp_url, SORT_ASCENDING, SORT_NEXTCHECKTIME, url_images_path, UP_ARROW_ICON, temp_url, SORT_DESCENDING, SORT_NEXTCHECKTIME, url_images_path, DOWN_ARROW_ICON);
 		printf("<th class='queue'>Type</th><th class='queue'>Active Checks</th><th class='queue'>Actions</th></tr>\n");
 	}
 
@@ -3677,7 +3677,7 @@ void show_scheduling_queue(void) {
 				snprintf(action_link_enable_disable, sizeof(action_link_enable_disable) - 1, "%s?cmd_typ=%d&amp;host=%s", CMD_CGI, CMD_ENABLE_HOST_CHECK, url_encoded_host);
 			action_link_enable_disable[sizeof(action_link_enable_disable) - 1] = '\x0';
 
-			snprintf(action_link_schedule, sizeof(action_link_schedule) - 1, "%s?cmd_typ=%d&amp;host=%s%s", CMD_CGI, CMD_SCHEDULE_HOST_CHECK, url_encoded_host, (temp_hststatus->checks_enabled == TRUE) ? "&force_check" : "");
+			snprintf(action_link_schedule, sizeof(action_link_schedule) - 1, "%s?cmd_typ=%d&amp;host=%s%s", CMD_CGI, CMD_SCHEDULE_HOST_CHECK, url_encoded_host, (temp_hststatus->checks_enabled == TRUE) ? "&amp;force_check" : "");
 			action_link_schedule[sizeof(action_link_schedule) - 1] = '\x0';
 		}
 
@@ -3751,8 +3751,8 @@ void show_scheduling_queue(void) {
 
 			/* actions */
 			printf("<td align='center' class='queue%s'>", bgclass);
-			printf("<a href='%s'><img src='%s%s' border='0' alt='%s Active Checks Of This %s' TITLE='%s Active Checks Of This %s'></a>\n", action_link_enable_disable, url_images_path, (checks_enabled == TRUE) ? DISABLED_ICON : ENABLED_ICON, (checks_enabled == TRUE) ? "Disable" : "Enable", (temp_sortdata->is_service == TRUE) ? "Service" : "Host", (checks_enabled == TRUE) ? "Disable" : "Enable", (temp_sortdata->is_service == TRUE) ? "Service" : "Host");
-			printf("<a href='%s'><img src='%s%s' border='0' alt='Re-schedule This %s Check' TITLE='Re-schedule This %s Check'></a>", action_link_schedule, url_images_path, DELAY_ICON, (temp_sortdata->is_service == TRUE) ? "Service" : "Host", (temp_sortdata->is_service == TRUE) ? "Service" : "Host");
+			printf("<a href='%s'><img src='%s%s' border='0' alt='%s Active Checks Of This %s' title='%s Active Checks Of This %s'></a>\n", action_link_enable_disable, url_images_path, (checks_enabled == TRUE) ? DISABLED_ICON : ENABLED_ICON, (checks_enabled == TRUE) ? "Disable" : "Enable", (temp_sortdata->is_service == TRUE) ? "Service" : "Host", (checks_enabled == TRUE) ? "Disable" : "Enable", (temp_sortdata->is_service == TRUE) ? "Service" : "Host");
+			printf("<a href='%s'><img src='%s%s' border='0' alt='Re-schedule This %s Check' title='Re-schedule This %s Check'></a>", action_link_schedule, url_images_path, DELAY_ICON, (temp_sortdata->is_service == TRUE) ? "Service" : "Host", (temp_sortdata->is_service == TRUE) ? "Service" : "Host");
 
 			printf("</td></tr>\n");
 		}

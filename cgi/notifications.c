@@ -188,25 +188,25 @@ int main(void) {
 				if (find_all == FALSE)
 					printf("<a href='%s?host=%s'>View <b>Trends</b> For <b>This Host</b></a><br>\n", TRENDS_CGI, url_encode(query_host_name));
 #endif
-				printf("<a href='%s?type=%d&host=%s'>View <b>Information</b> For <b>This Host</b></a><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(query_host_name));
-				printf("<a href='%s?host=%s&show_log_entries'>View <b>Availability Report</b> For <b>This Host</b></a><br>\n", AVAIL_CGI, url_encode(query_host_name));
+				printf("<a href='%s?type=%d&amp;host=%s'>View <b>Information</b> For <b>This Host</b></a><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(query_host_name));
+				printf("<a href='%s?host=%s&amp;show_log_entries'>View <b>Availability Report</b> For <b>This Host</b></a><br>\n", AVAIL_CGI, url_encode(query_host_name));
 			} else if (query_type == DISPLAY_SERVICES) {
-				printf("<a href='%s?host=%s&", HISTORY_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
+				printf("<a href='%s?host=%s&amp;", HISTORY_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
 				printf("service=%s'>View <b>Alert History</b> For <b>This Service</b></a><br>\n", url_encode(query_svc_description));
 #ifdef USE_TRENDS
-				printf("<a href='%s?host=%s&", TRENDS_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
+				printf("<a href='%s?host=%s&amp;", TRENDS_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
 				printf("service=%s'>View <b>Trends</b> For <b>This Service</b></a><br>\n", url_encode(query_svc_description));
 #endif
-				printf("<a href='%s?type=%d&host=%s&service=%s'>View <b>Information</b> For <b>This Service</b></a><br>\n", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(query_host_name), url_encode(query_svc_description));
-				printf("<a href='%s?host=%s&service=%s&show_log_entries'>View <b>Availability Report</b> For <b>This Service</b></a><br>\n", AVAIL_CGI, url_encode(query_host_name), url_encode(query_svc_description));
+				printf("<a href='%s?type=%d&amp;host=%s&amp;service=%s'>View <b>Information</b> For <b>This Service</b></a><br>\n", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(query_host_name), url_encode(query_svc_description));
+				printf("<a href='%s?host=%s&amp;service=%s&amp;show_log_entries'>View <b>Availability Report</b> For <b>This Service</b></a><br>\n", AVAIL_CGI, url_encode(query_host_name), url_encode(query_svc_description));
 				printf("<a href='%s?host=%s'>View <b>Notifications</b> For <b>This Host</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(query_host_name));
 			} else if (query_type == DISPLAY_HOSTGROUPS) {
-				printf("<a href='%s?hostgroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
-				printf("<a href='%s?hostgroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
+				printf("<a href='%s?hostgroup=%s&amp;style=hostdetail'>View <b>Host Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
+				printf("<a href='%s?hostgroup=%s&amp;style=detail'>View <b>Service Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
 				printf("<a href='%s?hostgroup=%s'>View <b>Alert History</b> For <b>This Hostgroup</b></a><br>\n", HISTORY_CGI, url_encode(query_hostgroup_name));
 			} else if (query_type == DISPLAY_SERVICEGROUPS) {
-				printf("<a href='%s?servicegroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
-				printf("<a href='%s?servicegroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
+				printf("<a href='%s?servicegroup=%s&amp;style=hostdetail'>View <b>Host Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
+				printf("<a href='%s?servicegroup=%s&amp;style=detail'>View <b>Service Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
 				printf("<a href='%s?servicegroup=%s'>View <b>Alert History</b> For <b>This Servicegroup</b></a><br>\n", HISTORY_CGI, url_encode(query_servicegroup_name));
 			}
 			printf("</td></tr>\n");
@@ -328,7 +328,7 @@ int main(void) {
 		printf("</td></tr>\n");
 
 		/* submit Button */
-		printf("<tr><td><input type='submit' value='Update'></td><td align='right'><input type='reset' value='Reset' onClick=\"window.location.href='%s?order=new2old&timeperiod=singleday&limit=%d'\">&nbsp;</td></tr>\n", NOTIFICATIONS_CGI, result_limit);
+		printf("<tr><td><input type='submit' value='Update'></td><td align='right'><input type='reset' value='Reset' onClick=\"window.location.href='%s?order=new2old&amp;timeperiod=singleday&amp;limit=%d'\">&nbsp;</td></tr>\n", NOTIFICATIONS_CGI, result_limit);
 
 		printf("</table>\n");
 		printf("</form>\n");
@@ -998,13 +998,13 @@ void display_notifications(void) {
 				} else {
 					printf("<tr class='notifications%s'>\n", (odd) ? "Even" : "Odd");
 					if (temp_host != NULL)
-						printf("<td class='notifications%s'><a href='%s?type=%d&host=%s'>%s</a></td>\n", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name), displayed_host_name);
+						printf("<td class='notifications%s'><a href='%s?type=%d&amp;host=%s'>%s</a></td>\n", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name), displayed_host_name);
 					else
 						printf("<td class='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", displayed_host_name);
 					if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION) {
 						if (temp_service != NULL) {
-							printf("<td class='notifications%s'><a href='%s?type=%d&host=%s", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
-							printf("&service=%s'>%s</a></td>\n", url_encode(service_name), displayed_service_desc);
+							printf("<td class='notifications%s'><a href='%s?type=%d&amp;host=%s", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
+							printf("&amp;service=%s'>%s</a></td>\n", url_encode(service_name), displayed_service_desc);
 						} else
 							printf("<td class='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", displayed_service_desc);
 

@@ -2071,7 +2071,7 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 			printf("Update every %d seconds\n", refresh_rate);
 	}
 
-	printf("<br><a href='http://www.icinga.org' TARGET='_new' class='homepageURL'>%s %s</a> -\n", PROGRAM_NAME, PROGRAM_VERSION);
+	printf("<br><a href='http://www.icinga.org' target='_new' class='homepageURL'>%s %s</a> -\n", PROGRAM_NAME, PROGRAM_VERSION);
 
 	if (current_authdata != NULL)
 		printf("Logged in as <i>%s</i>\n", (!strcmp(current_authdata->username, "")) ? "?" : current_authdata->username);
@@ -2201,10 +2201,10 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 	printf("<td align='center' valign='middle' class='navBoxItem'>\n");
 	if (ts_end > ts_midnight) {
 		printf("Latest Archive<br>");
-		printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border='0' alt='Latest Archive' title='Latest Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_midnight - 86400, ts_midnight - 1, url_images_path, LEFT_ARROW_ICON);
+		printf("<a href='%s%sts_start=%lu&amp;ts_end=%lu'><img src='%s%s' border='0' alt='Latest Archive' title='Latest Archive'></a>", url, (strstr(url, "?")) ? "&amp;" : "?", ts_midnight - 86400, ts_midnight - 1, url_images_path, LEFT_ARROW_ICON);
 	} else {
 		printf("Earlier Archive<br>");
-		printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border='0' alt='Earlier Archive' title='Earlier Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_start - 86400, ts_start - 1, url_images_path, LEFT_ARROW_ICON);
+		printf("<a href='%s%sts_start=%lu&amp;ts_end=%lu'><img src='%s%s' border='0' alt='Earlier Archive' title='Earlier Archive'></a>", url, (strstr(url, "?")) ? "&amp;" : "?", ts_start - 86400, ts_start - 1, url_images_path, LEFT_ARROW_ICON);
 	}
 	printf("</td>\n");
 
@@ -2230,10 +2230,10 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 		printf("<td align='center' valign='middle' class='navBoxItem'>\n");
 		if (ts_end == ts_midnight) {
 			printf("Current Log<br>");
-			printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border='0' alt='Current Log' title='Current Log'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_midnight + 1, ts_midnight + 86400, url_images_path, RIGHT_ARROW_ICON);
+			printf("<a href='%s%sts_start=%lu&amp;ts_end=%lu'><img src='%s%s' border='0' alt='Current Log' title='Current Log'></a>", url, (strstr(url, "?")) ? "&amp;" : "?", ts_midnight + 1, ts_midnight + 86400, url_images_path, RIGHT_ARROW_ICON);
 		} else {
 			printf("More Recent Archive<br>");
-			printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border='0' alt='More Recent Archive' title='More Recent Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_end + 1, ts_end + 86400, url_images_path, RIGHT_ARROW_ICON);
+			printf("<a href='%s%sts_start=%lu&amp;ts_end=%lu'><img src='%s%s' border='0' alt='More Recent Archive' title='More Recent Archive'></a>", url, (strstr(url, "?")) ? "&amp;" : "?", ts_end + 1, ts_end + 86400, url_images_path, RIGHT_ARROW_ICON);
 		}
 		printf("</td>\n");
 	} else
@@ -2241,7 +2241,7 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 
 	printf("</tr>\n");
 
-	printf("<tr><td colspan='2'></td><td align='center' valign='middle'><input id='history-datepicker' type='hidden'><a href='#' onclick='$.datepicker._showDatepicker($('#history-datepicker')[0]); return false;'>Select a day ...</a></td><td colspan='2'></td></tr>\n");
+	printf("<tr><td colspan='2'></td><td align='center' valign='middle'><input id='history-datepicker' type='hidden'><a href='#' onclick=\"$.datepicker._showDatepicker($('#history-datepicker')[0]); return false;\">Select a day ...</a></td><td colspan='2'></td></tr>\n");
 
 	printf("</table>\n");
 
@@ -3319,16 +3319,16 @@ void print_comment_icon(char *host_name, char *svc_description) {
 	int saved_escape_html_tags_var = FALSE;
 
 	if (svc_description == NULL)
-		printf("<td align='center' valign='middle'><a href='%s?type=%d&host=%s'", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
+		printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
 	else {
-		printf("<td align='center' valign='middle'><a href='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
-		printf("&service=%s#comments'", url_encode(svc_description));
+		printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
+		printf("&amp;service=%s#comments'", url_encode(svc_description));
 	}
 	/* possible to implement a config option to show and hide comments tooltip in status.cgi */
 	/* but who wouldn't like to have these fancy tooltips ;-) */
 	if (TRUE) {
-		printf(" onMouseOver=\"return tooltip('<table border='0' width='100%%' height='100%%' cellpadding='3'>");
-		printf("<tr style='font-weight:bold;'><td width='10%%' nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td width='12%%'>Time</td><td>Author / Comment</td></tr>");
+		printf(" onMouseOver=\"return tooltip('<table border=0 width=100%% height=100%% cellpadding=3>");
+		printf("<tr style=font-weight:bold;><td width=10%% nowrap>Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td width=12%%>Time</td><td>Author / Comment</td></tr>");
 		for (temp_comment = get_first_comment_by_host(host_name); temp_comment != NULL; temp_comment = get_next_comment_by_host(host_name, temp_comment)) {
 			if ((svc_description == NULL && temp_comment->comment_type == HOST_COMMENT) || \
 			        (svc_description != NULL && temp_comment->comment_type == SERVICE_COMMENT && !strcmp(temp_comment->service_description, svc_description))) {
@@ -3396,7 +3396,7 @@ void print_comment_icon(char *host_name, char *svc_description) {
 				saved_escape_html_tags_var = escape_html_tags;
 				escape_html_tags = TRUE;
 
-				printf("<tr><td nowrap>%s</td><td nowrap>%s</td><td><span style='font-weight:bold;'>%s</span><br>%s</td></tr>", comment_entry_type, entry_time, html_encode(temp_comment->author, TRUE), html_encode(escaped_output_string, TRUE));
+				printf("<tr><td nowrap>%s</td><td nowrap>%s</td><td><span style=font-weight:bold;>%s</span><br>%s</td></tr>", comment_entry_type, entry_time, html_encode(temp_comment->author, TRUE), html_encode(escaped_output_string, TRUE));
 
 				escape_html_tags = saved_escape_html_tags_var;
 
@@ -3643,26 +3643,26 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 	printf("<div id='page_navigation' class='page_select_dd'>");
 
 	if (current_page != 1 || (result_limit != 0 && result_start != 1))
-		printf("<a href='%s%sstart=1&limit=%d' title='First Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<<'></a>\n", link, (strstr(link, "?")) ? "&" : "?", result_limit, url_images_path, FIRST_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=1&amp;limit=%d' title='First Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<<'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", result_limit, url_images_path, FIRST_PAGE_ACTIVE_ICON);
 	else
 		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16'>\n", url_images_path, FIRST_PAGE_INACTIVE_ICON);
 
 	if (current_page != 1)
-		printf("<a href='%s%sstart=%d&limit=%d' title='Previous Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<'></a>\n", link, (strstr(link, "?")) ? "&" : "?", previous_page, result_limit, url_images_path, PREVIOUS_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=%d&amp;limit=%d' title='Previous Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", previous_page, result_limit, url_images_path, PREVIOUS_PAGE_ACTIVE_ICON);
 	else
 		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16'>\n", url_images_path, PREVIOUS_PAGE_INACTIVE_ICON);
 
 	printf("<span style='vertical-align:middle; font-size:8pt;'> Page </span>");
 
 	/* with inline javascript to send new page on "Enter" */
-	printf("<input type='text' value='%d' style='width:30px; vertical-align:middle; border:1px #D0D0D0 solid;text-align:center; font-size:8pt;'", current_page);
-	printf("onkeydown='if (event.keyCode == 13) window.location.href = \"%s\" + \"%slimit=%d&start=\" + (((this.value -1) * %d) + 1) ;'>", link, (strstr(link, "?")) ? "&" : "?", result_limit, result_limit);
+	printf("<input type='text' value='%d' style='width:30px; vertical-align:middle; border:1px #D0D0D0 solid;text-align:center; font-size:8pt' ", current_page);
+	printf("onkeydown='if (event.keyCode == 13) window.location.href = \"%s\" + \"%slimit=%d&amp;start=\" + (((this.value -1) * %d) + 1) ;'>", link, (strstr(link, "?")) ? "&amp;" : "?", result_limit, result_limit);
 
 	printf("<span style='vertical-align:middle; font-size:8pt;'> of %d </span>", total_pages);
 
 	if (current_page != total_pages) {
-		printf("<a href='%s%sstart=%d&limit=%d' title='Next Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>'></a>\n", link, (strstr(link, "?")) ? "&" : "?", (result_start + result_limit), result_limit, url_images_path, NEXT_PAGE_ACTIVE_ICON);
-		printf("<a href='%s%sstart=%d&limit=%d' title='Last Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>>'></a>\n", link, (strstr(link, "?")) ? "&" : "?", ((total_pages - 1)*result_limit) + 1, result_limit, url_images_path, LAST_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=%d&amp;limit=%d' title='Next Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", (result_start + result_limit), result_limit, url_images_path, NEXT_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=%d&amp;limit=%d' title='Last Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>>'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", ((total_pages - 1)*result_limit) + 1, result_limit, url_images_path, LAST_PAGE_ACTIVE_ICON);
 	} else
 		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16'><img src='%s%s' style='vertical-align: middle;' height='16' width='16'>\n", url_images_path, NEXT_PAGE_INACTIVE_ICON, url_images_path, LAST_PAGE_INACTIVE_ICON);
 
@@ -3745,9 +3745,9 @@ void page_limit_selector(int result_start) {
 
 	/* display drop down menu to select result limit */
 	printf("<div class='page_select_dd'>\n");
-	printf("<select style='display:none; vertical-align:middle; width:140px;' name='limit' id='limit_dd_%d' class='result_limit_dd' onChange='if (this.value) window.location.href = \"%s\" + \"%slimit=\" + this.value ", id, link, (strstr(link, "?")) ? "&" : "?");
+	printf("<select style='display:none; vertical-align:middle; width:140px;' name='limit' id='limit_dd_%d' class='result_limit_dd' onChange='if (this.value) window.location.href = \"%s\" + \"%slimit=\" + this.value ", id, link, (strstr(link, "?")) ? "&amp;" : "?");
 	if (result_start != 0)
-		printf("+ \"&start=%d\"", result_start);
+		printf("+ \"&amp;start=%d\"", result_start);
 	printf(";'>\n");
 
 	if (result_limit == 0)

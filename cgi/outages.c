@@ -310,7 +310,7 @@ void display_network_outages(void) {
 	} else {
 		/* display the problem hosts... */
 
-		printf("<table border='0' cellspacing='0' cellpadding='0' align='center'><tr><td WIDTH='33%%'></td><td WIDTH='33%%'><div class='dataTitle'>Blocking Outages</div><td WIDTH='33%%'>");
+		printf("<table border='0' cellspacing='0' cellpadding='0' align='center'><tr><td width='33%%'></td><td width='33%%'><div class='dataTitle'>Blocking Outages</div><td width='33%%'>");
 
 		/* add export to csv link */
 		printf("<div style='padding-right:6px;' class='csv_export_link'>");
@@ -416,21 +416,21 @@ void display_network_outages(void) {
 			printf("<td class='%s'>%d</td>\n", bg_class, temp_hostoutage->affected_child_services);
 
 			printf("<td class='%s'>", bg_class);
-			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View status detail for this host' TITLE='View status detail for this host'></a>\n", STATUS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUS_DETAIL_ICON);
+			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View status detail for this host' title='View status detail for this host'></a>\n", STATUS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUS_DETAIL_ICON);
 #ifdef USE_STATUSMAP
-			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View status map for this host and its children' TITLE='View status map for this host and its children'></a>\n", STATUSMAP_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUSMAP_ICON);
+			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View status map for this host and its children' title='View status map for this host and its children'></a>\n", STATUSMAP_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUSMAP_ICON);
 #endif
 #ifdef USE_TRENDS
-			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View trends for this host' TITLE='View trends for this host'></a>\n", TRENDS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, TRENDS_ICON);
+			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View trends for this host' title='View trends for this host'></a>\n", TRENDS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, TRENDS_ICON);
 #endif
-			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View alert history for this host' TITLE='View alert history for this host'></a>\n", HISTORY_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, HISTORY_ICON);
-			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View notifications for this host' TITLE='View notifications for this host'></a>\n", NOTIFICATIONS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, NOTIFICATION_ICON);
+			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View alert history for this host' title='View alert history for this host'></a>\n", HISTORY_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, HISTORY_ICON);
+			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View notifications for this host' title='View notifications for this host'></a>\n", NOTIFICATIONS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, NOTIFICATION_ICON);
 
 			/* add Link to acknowledge all affected hosts */
 			printf("<a href='%s?cmd_typ=%d&host=%s", CMD_CGI, CMD_ACKNOWLEDGE_HOST_PROBLEM, url_encode(temp_hostoutage->hst->name));
 			for (temp_affected_host = temp_hostoutage->affected_hosts; temp_affected_host != NULL; temp_affected_host = temp_affected_host->next)
 				printf("&host=%s", url_encode(temp_affected_host->host_name));
-			printf("'><img src='%s%s' border='0' alt='Acknowledge All Affected Hosts' TITLE='Acknowledge All Affected Hosts'></a>\n", url_images_path, ACKNOWLEDGEMENT_ICON);
+			printf("'><img src='%s%s' border='0' alt='Acknowledge All Affected Hosts' title='Acknowledge All Affected Hosts'></a>\n", url_images_path, ACKNOWLEDGEMENT_ICON);
 
 			printf("</td>\n");
 
