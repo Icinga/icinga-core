@@ -90,6 +90,7 @@ typedef struct nebmodule_struct{
 	pthread_t       thread_id;
 #endif
 	struct nebmodule_struct *next;
+	char		*dl_file;
         }nebmodule;
 
 
