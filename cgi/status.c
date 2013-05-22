@@ -672,15 +672,136 @@ int main(void) {
 	if (get_result_limit == -1 && (content_type == JSON_CONTENT || content_type == CSV_CONTENT))
 		result_limit = 0;
 
+	/* keeps backwards compatibility with old search method */
+	if (navbar_search == TRUE && search_string == NULL && req_hosts[0].entry != NULL) {
+		group_style_type = STYLE_HOST_SERVICE_DETAIL;
+		search_string = strdup(req_hosts[0].entry);
+	}
 
-	/**
-	 *	check submitted data and create cgi_title
-	**/
-
-	/* keep backwards compatibility */
+	/* keep backwards compatibility with nostatusheader option */
 	if (nostatusheader_option == TRUE)
 		display_status_totals = FALSE;
 
+	/* allow service_filter only for status lists */
+	if (group_style_type == STYLE_SUMMARY || group_style_type == STYLE_GRID || group_style_type == STYLE_OVERVIEW)
+		my_free(service_filter);
+
+
+	/**
+	 *	filter status data if user searched for something
+	**/
+
+	/* see if user tried searching something */
+	if (search_string != NULL) {
+
+		/* build regex string */
+
+		/* allocate for 3 extra chars, ^, $ and \0 */
+		search_regex = malloc(sizeof(char) * (strlen(search_string) * 2 + 3));
+		len = strlen(search_string);
+		for (i = 0; i < len; i++, regex_i++) {
+			if (search_string[i] == '*') {
+				search_regex[regex_i++] = '.';
+				search_regex[regex_i] = '*';
+			} else
+				search_regex[regex_i] = search_string[i];
+		}
+
+		search_regex[regex_i] = '\0';
+
+		/* check and compile regex */
+		if (regcomp(&preg, search_regex, REG_ICASE | REG_NOSUB) == 0) {
+
+			/* regular expression is valid */
+
+			/* now look through all hosts to see which one matches */
+			for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
+				temp_hoststatus->search_matched = FALSE;
+
+				if ((temp_host = find_host(temp_hoststatus->host_name)) == NULL)
+					continue;
+
+				/* try to find a match */
+				if (regexec(&preg, temp_host->name, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_host->display_name, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_host->alias, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_host->address, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_host->address6, 0, NULL, 0) == 0) {
+
+					temp_hoststatus->search_matched = TRUE;
+					host_items_found = TRUE;
+				}
+			}
+
+			for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
+				temp_servicestatus->search_matched = FALSE;
+
+				/* find the service  */
+				temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
+
+				if (temp_service == NULL)
+					continue;
+
+				/* try to match on combination of host name and service description */
+				snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_service->host_name, temp_service->display_name);
+				host_service_name[sizeof(host_service_name) - 1] = '\x0';
+
+				/* try to find a match */
+				if (regexec(&preg, temp_service->description, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_service->display_name, 0, NULL, 0) == 0 || \
+				        regexec(&preg, temp_service->host_name, 0, NULL, 0) == 0 || \
+				        regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
+
+					temp_servicestatus->search_matched = TRUE;
+					service_items_found = TRUE;
+				}
+			}
+
+
+			/* if we didn't found anything until now we start looking for hostgroups and servicegroups */
+			if (host_items_found == FALSE && service_items_found == FALSE) {
+
+				/* try to find hostgroup */
+				found = FALSE;
+				for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
+					if (regexec(&preg, temp_hostgroup->group_name, 0, NULL, 0) == 0) {
+						req_hostgroups[num_req_hostgroups++].entry = strdup(temp_hostgroup->group_name);
+						display_type = DISPLAY_HOSTGROUPS;
+						show_all_hostgroups = FALSE;
+						found = TRUE;
+					}
+				}
+
+				/* if no hostgroup matched, try to find a serviegroup */
+				if (found == FALSE) {
+					for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
+						if (regexec(&preg, temp_servicegroup->group_name, 0, NULL, 0) == 0) {
+							req_servicegroups[num_req_servicegroups++].entry = strdup(temp_servicegroup->group_name);
+							display_type = DISPLAY_SERVICEGROUPS;
+							show_all_servicegroups = FALSE;
+						}
+					}
+				}
+			}
+		}
+
+		/* free regular expression */
+		regfree(&preg);
+		my_free(search_regex);
+
+		user_is_authorized_for_statusdata = TRUE;
+
+		/* check the search result and trigger the desired view */
+		if (host_items_found == TRUE && service_items_found == FALSE && group_style_type == STYLE_HOST_SERVICE_DETAIL)
+			group_style_type = STYLE_HOST_DETAIL;
+		else if (host_items_found == FALSE && service_items_found == TRUE && group_style_type == STYLE_HOST_SERVICE_DETAIL)
+			group_style_type = STYLE_SERVICE_DETAIL;
+	}
+
+
+	/**
+	 *	check submitted data, create url_parts and create cgi_title
+	**/
 
 	/* determine display of hosts */
 	if (req_hosts[0].entry != NULL) {
@@ -793,131 +914,6 @@ int main(void) {
 
 	my_free(cgi_title);
 
-
-	/**
-	 *	check some more submitted data
-	**/
-
-	/* keeps backwards compatibility with old search method */
-	if (navbar_search == TRUE && search_string == NULL && req_hosts[0].entry != NULL) {
-		group_style_type = STYLE_HOST_SERVICE_DETAIL;
-		search_string = strdup(req_hosts[0].entry);
-	}
-
-	/* allow service_filter only for status lists */
-	if (group_style_type == STYLE_SUMMARY || group_style_type == STYLE_GRID || group_style_type == STYLE_OVERVIEW)
-		my_free(service_filter);
-
-	/**
-	 *	filter status data if user searched for something
-	**/
-
-	/* see if user tried searching something */
-	if (search_string != NULL) {
-
-		/* build regex string */
-
-		/* allocate for 3 extra chars, ^, $ and \0 */
-		search_regex = malloc(sizeof(char) * (strlen(search_string) * 2 + 3));
-		len = strlen(search_string);
-		for (i = 0; i < len; i++, regex_i++) {
-			if (search_string[i] == '*') {
-				search_regex[regex_i++] = '.';
-				search_regex[regex_i] = '*';
-			} else
-				search_regex[regex_i] = search_string[i];
-		}
-
-		search_regex[regex_i] = '\0';
-
-		/* check and compile regex */
-		if (regcomp(&preg, search_regex, REG_ICASE | REG_NOSUB) == 0) {
-
-			/* regular expression is valid */
-
-			/* now look through all hosts to see which one matches */
-			for (temp_hoststatus = hoststatus_list; temp_hoststatus != NULL; temp_hoststatus = temp_hoststatus->next) {
-				temp_hoststatus->search_matched = FALSE;
-
-				if ((temp_host = find_host(temp_hoststatus->host_name)) == NULL)
-					continue;
-
-				/* try to find a match */
-				if (regexec(&preg, temp_host->name, 0, NULL, 0) == 0 || \
-				        regexec(&preg, temp_host->display_name, 0, NULL, 0) == 0 || \
-				        regexec(&preg, temp_host->alias, 0, NULL, 0) == 0 || \
-				        regexec(&preg, temp_host->address, 0, NULL, 0) == 0 || \
-				        regexec(&preg, temp_host->address6, 0, NULL, 0) == 0) {
-
-					temp_hoststatus->search_matched = TRUE;
-					host_items_found = TRUE;
-				}
-			}
-
-			for (temp_servicestatus = servicestatus_list; temp_servicestatus != NULL; temp_servicestatus = temp_servicestatus->next) {
-				temp_servicestatus->search_matched = FALSE;
-
-				/* find the service  */
-				temp_service = find_service(temp_servicestatus->host_name, temp_servicestatus->description);
-
-				if (temp_service == NULL)
-					continue;
-
-				/* try to match on combination of host name and service description */
-				snprintf(host_service_name, sizeof(host_service_name), "%s %s", temp_service->host_name, temp_service->display_name);
-				host_service_name[sizeof(host_service_name) - 1] = '\x0';
-
-				/* try to find a match */
-				if (regexec(&preg, temp_service->description, 0, NULL, 0) == 0 || \
-				        regexec(&preg, temp_service->display_name, 0, NULL, 0) == 0 || \
-				        regexec(&preg, temp_service->host_name, 0, NULL, 0) == 0 || \
-				        regexec(&preg, host_service_name, 0, NULL, 0) == 0) {
-
-					temp_servicestatus->search_matched = TRUE;
-					service_items_found = TRUE;
-				}
-			}
-
-
-			/* if didn't found anything until now we start looking for hostgroups and servicegroups */
-			if (host_items_found == FALSE && service_items_found == FALSE) {
-
-				/* try to find hostgroup */
-				found = FALSE;
-				for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
-					if (regexec(&preg, temp_hostgroup->group_name, 0, NULL, 0) == 0) {
-						req_hostgroups[num_req_hostgroups++].entry = strdup(temp_hostgroup->group_name);
-						display_type = DISPLAY_HOSTGROUPS;
-						show_all_hostgroups = FALSE;
-						found = TRUE;
-					}
-				}
-
-				/* if no hostgroup matched, try to find a serviegroup */
-				if (found == FALSE) {
-					for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
-						if (regexec(&preg, temp_servicegroup->group_name, 0, NULL, 0) == 0) {
-							req_servicegroups[num_req_servicegroups++].entry = strdup(temp_servicegroup->group_name);
-							display_type = DISPLAY_SERVICEGROUPS;
-							show_all_servicegroups = FALSE;
-						}
-					}
-				}
-			}
-		}
-
-		/* free regular expression */
-		regfree(&preg);
-		my_free(search_regex);
-
-		user_is_authorized_for_statusdata = TRUE;
-
-		/* check the search result and trigger the desired view */
-		if (host_items_found == TRUE && service_items_found == FALSE && group_style_type == STYLE_HOST_SERVICE_DETAIL)
-			group_style_type = STYLE_HOST_DETAIL;
-		else if (host_items_found == FALSE && service_items_found == TRUE && group_style_type == STYLE_HOST_SERVICE_DETAIL)
-			group_style_type = STYLE_SERVICE_DETAIL;
-	}
 
 	/* pre filter for service groups
 	   this way we mark all services which belong to a servicegroup we want to see once.

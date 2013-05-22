@@ -13,6 +13,11 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.9.2 - ??/??/????
+
+FIXES
+* classic ui: fixed searching hostgroup results in wrong 'all' view filter urls #4206 - RB
+
 1.9.1 - 22/05/2013
 
 FIXES
