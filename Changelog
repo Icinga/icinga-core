@@ -13,6 +13,11 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.10.0 - 24/10/2013
+
+FIXES
+* classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
+
 1.9.1 - 22/05/2013
 
 FIXES
@@ -120,9 +125,6 @@ FIXES
 
 * install: drop unused daemon-init-readhat script (spec uses daemon-init) #3402 - MF
 * install: fix broken configure ssl detection for idoutils on ubuntu/debian (Oliver Skibbe) #3413 - MF
-* install: fix ido2db initscript uses same chkconfig line as icinga (Dirk Götz) #3490 - MF
-* install: fix configure does not detect AIX6/7 properly #3895 - MF
-* install: fix STATEDIR creation during make install #3869 - MF
 
 * docs: add missing cmd_mod description in cgi params #3438 - MF
 * docs: search_string as cgi GET param works also for status.cgi #3451 - MF

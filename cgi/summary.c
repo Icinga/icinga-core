@@ -245,11 +245,11 @@ int main(int argc, char **argv) {
 	if (display_header == TRUE) {
 
 		/* begin top table */
-		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+		printf("<table border='0' width='100%%' cellspacing='0' cellpadding='0'>\n");
 		printf("<tr>\n");
 
 		/* left column of the first row */
-		printf("<td align=left valign=top width=33%%>\n");
+		printf("<td align='left' valign='top' width='33%%'>\n");
 
 		snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Alert Summary Report");
 		temp_buffer[sizeof(temp_buffer)-1] = '\x0';
@@ -258,11 +258,11 @@ int main(int argc, char **argv) {
 		printf("</td>\n");
 
 		/* center column of top row */
-		printf("<td align=center valign=top width=33%%>\n");
+		printf("<td align='center' valign='top' width='33%%'>\n");
 
 		if (generate_report == TRUE) {
 
-			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
+			printf("<div align='center' class='dataTitle'>\n");
 			if (display_type == REPORT_TOP_ALERTS)
 				printf("Top Alert Producers");
 			else if (display_type == REPORT_ALERT_TOTALS || display_type == REPORT_HOSTGROUP_ALERT_TOTALS || display_type == REPORT_SERVICEGROUP_ALERT_TOTALS || display_type == REPORT_HOST_ALERT_TOTALS || display_type == REPORT_SERVICE_ALERT_TOTALS)
@@ -277,34 +277,34 @@ int main(int argc, char **argv) {
 			else if (show_all_hosts == FALSE)
 				printf(" For Host '%s'", target_host_name);
 
-			printf("</DIV>\n");
+			printf("</div>\n");
 
-			printf("<BR>\n");
+			printf("<br>\n");
 
 			get_time_string(&t1, start_timestring, sizeof(start_timestring) - 1, SHORT_DATE_TIME);
 			get_time_string(&t2, end_timestring, sizeof(end_timestring) - 1, SHORT_DATE_TIME);
-			printf("<div align=center class='reportRange'>%s to %s</div>\n", start_timestring, end_timestring);
+			printf("<div align='center' class='reportRange'>%s to %s</div>\n", start_timestring, end_timestring);
 
 			get_time_breakdown((time_t)(t2 - t1), &days, &hours, &minutes, &seconds);
-			printf("<div align=center class='reportDuration'>Duration: %dd %dh %dm %ds</div>\n", days, hours, minutes, seconds);
+			printf("<div align='center' class='reportDuration'>Duration: %dd %dh %dm %ds</div>\n", days, hours, minutes, seconds);
 		}
 
 		printf("</td>\n");
 
 		/* right hand column of top row */
-		printf("<td align=right valign=bottom width=33%%>\n");
+		printf("<td align='right' valign='bottom' width='33%%'>\n");
 
 		if (generate_report == TRUE) {
 
-			printf("<table border=0>\n");
+			printf("<table border='0'>\n");
 
 			printf("<tr>\n");
-			printf("<td valign=top align=left class='optBoxTitle' colspan=2>Report Options Summary:</td>\n");
+			printf("<td valign='top' align='left' class='optBoxTitle' colspan='2'>Report Options Summary:</td>\n");
 			printf("</tr>\n");
 
 			printf("<tr>\n");
-			printf("<td valign=top align=left class='optBoxItem'>Alert Types:</td>\n");
-			printf("<td valign=top align=left class='optBoxValue'>\n");
+			printf("<td valign='top' align='left' class='optBoxItem'>Alert Types:</td>\n");
+			printf("<td valign='top' align='left' class='optBoxValue'>\n");
 			if (alert_types & AE_HOST_ALERT)
 				printf("Host");
 			if (alert_types & AE_SERVICE_ALERT)
@@ -313,8 +313,8 @@ int main(int argc, char **argv) {
 			printf("</tr>\n");
 
 			printf("<tr>\n");
-			printf("<td valign=top align=left class='optBoxItem'>State Types:</td>\n");
-			printf("<td valign=top align=left class='optBoxValue'>");
+			printf("<td valign='top' align='left' class='optBoxItem'>State Types:</td>\n");
+			printf("<td valign='top' align='left' class='optBoxValue'>");
 			if (state_types & AE_SOFT_STATE)
 				printf("Soft");
 			if (state_types & AE_HARD_STATE)
@@ -323,8 +323,8 @@ int main(int argc, char **argv) {
 			printf("</tr>\n");
 
 			printf("<tr>\n");
-			printf("<td valign=top align=left class='optBoxItem'>Host States:</td>\n");
-			printf("<td valign=top align=left class='optBoxValue'>");
+			printf("<td valign='top' align='left' class='optBoxItem'>Host States:</td>\n");
+			printf("<td valign='top' align='left' class='optBoxValue'>");
 			x = 0;
 			if (host_states & AE_HOST_UP) {
 				printf("Up");
@@ -342,8 +342,8 @@ int main(int argc, char **argv) {
 			printf("</tr>\n");
 
 			printf("<tr>\n");
-			printf("<td valign=top align=left class='optBoxItem'>Service States:</td>\n");
-			printf("<td valign=top align=left class='optBoxValue'>");
+			printf("<td valign='top' align='left' class='optBoxItem'>Service States:</td>\n");
+			printf("<td valign='top' align='left' class='optBoxValue'>");
 			x = 0;
 			if (service_states & AE_SERVICE_OK) {
 				printf("Ok");
@@ -365,7 +365,7 @@ int main(int argc, char **argv) {
 			printf("</tr>\n");
 
 			printf("<tr>\n");
-			printf("<td valign=top align=left colspan=2 class='optBoxItem'>\n");
+			printf("<td valign='top' align='left' colspan='2' class='optBoxItem'>\n");
 			printf("<form action='%s' method='GET'>\n", SUMMARY_CGI);
 			printf("<input type='submit' name='btnSubmit' value='Generate New Report'>\n");
 			printf("</form>\n");
@@ -402,89 +402,89 @@ int main(int argc, char **argv) {
 		end_day = t->tm_mday;
 		end_year = t->tm_year + 1900;
 
-		printf("<DIV ALIGN=CENTER CLASS='dateSelectTitle'>Standard Reports:</DIV>\n");
+		printf("<div align='center' class='dateSelectTitle'>Standard Reports:</div>\n");
 		printf("<form method=\"get\" action=\"%s\">\n", SUMMARY_CGI);
 
 		printf("<input type='hidden' name='report' value='1'>\n");
 
-		printf("<table border=0 cellpadding=5 align='center'>\n");
-		printf("<tr><td class='reportSelectSubTitle' align=right>Report Type:</td>\n");
+		printf("<table border='0' cellpadding='5' align='center'>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Report Type:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='standardreport'>\n");
-		printf("<option value=%d>25 Most Recent Hard Alerts\n", SREPORT_RECENT_ALERTS);
-		printf("<option value=%d>25 Most Recent Hard Host Alerts\n", SREPORT_RECENT_HOST_ALERTS);
-		printf("<option value=%d>25 Most Recent Hard Service Alerts\n", SREPORT_RECENT_SERVICE_ALERTS);
-		printf("<option value=%d>Top 25 Hard Host Alert Producers\n", SREPORT_TOP_HOST_ALERTS);
-		printf("<option value=%d>Top 25 Hard Service Alert Producers\n", SREPORT_TOP_SERVICE_ALERTS);
+		printf("<option value='%d'>25 Most Recent Hard Alerts\n", SREPORT_RECENT_ALERTS);
+		printf("<option value='%d'>25 Most Recent Hard Host Alerts\n", SREPORT_RECENT_HOST_ALERTS);
+		printf("<option value='%d'>25 Most Recent Hard Service Alerts\n", SREPORT_RECENT_SERVICE_ALERTS);
+		printf("<option value='%d'>Top 25 Hard Host Alert Producers\n", SREPORT_TOP_HOST_ALERTS);
+		printf("<option value='%d'>Top 25 Hard Service Alert Producers\n", SREPORT_TOP_SERVICE_ALERTS);
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td></td><td align=left class='dateSelectItem'><input type='submit' value='Create Summary Report!'></td></tr>\n");
+		printf("<tr><td></td><td align='left' class='dateSelectItem'><input type='submit' value='Create Summary Report!'></td></tr>\n");
 
 		printf("</table>\n");
 
 		printf("</form>\n");
 
 
-		printf("<DIV ALIGN=CENTER CLASS='dateSelectTitle'>Custom Report Options:</DIV>\n");
+		printf("<div align='center' class='dateSelectTitle'>Custom Report Options:</div>\n");
 
 		printf("<form method=\"get\" action=\"%s\">\n", SUMMARY_CGI);
 
 		printf("<input type='hidden' name='report' value='1'>\n");
 
-		printf("<table border=0 cellpadding=5 align='center'>\n");
+		printf("<table border='0' cellpadding='5' align='center'>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Report Type:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Report Type:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='displaytype'>\n");
-		printf("<option value=%d>Most Recent Alerts\n", REPORT_RECENT_ALERTS);
-		printf("<option value=%d>Alert Totals\n", REPORT_ALERT_TOTALS);
-		printf("<option value=%d>Alert Totals By Hostgroup\n", REPORT_HOSTGROUP_ALERT_TOTALS);
-		printf("<option value=%d>Alert Totals By Host\n", REPORT_HOST_ALERT_TOTALS);
-		printf("<option value=%d>Alert Totals By Servicegroup\n", REPORT_SERVICEGROUP_ALERT_TOTALS);
-		printf("<option value=%d>Alert Totals By Service\n", REPORT_SERVICE_ALERT_TOTALS);
-		printf("<option value=%d>Top Alert Producers\n", REPORT_TOP_ALERTS);
+		printf("<option value='%d'>Most Recent Alerts\n", REPORT_RECENT_ALERTS);
+		printf("<option value='%d'>Alert Totals\n", REPORT_ALERT_TOTALS);
+		printf("<option value='%d'>Alert Totals By Hostgroup\n", REPORT_HOSTGROUP_ALERT_TOTALS);
+		printf("<option value='%d'>Alert Totals By Host\n", REPORT_HOST_ALERT_TOTALS);
+		printf("<option value='%d'>Alert Totals By Servicegroup\n", REPORT_SERVICEGROUP_ALERT_TOTALS);
+		printf("<option value='%d'>Alert Totals By Service\n", REPORT_SERVICE_ALERT_TOTALS);
+		printf("<option value='%d'>Top Alert Producers\n", REPORT_TOP_ALERTS);
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
 		printf("<tr>");
-		printf("<td valign=top class='reportSelectSubTitle'>Report Period:</td>\n");
-		printf("<td valign=top align=left class='optBoxItem'>\n");
+		printf("<td valign='top' class='reportSelectSubTitle'>Report Period:</td>\n");
+		printf("<td valign='top' align='left' class='optBoxItem'>\n");
 		printf("<select name='timeperiod'>\n");
-		printf("<option value=today>Today\n");
-		printf("<option value=last24hours>Last 24 Hours\n");
-		printf("<option value=yesterday>Yesterday\n");
-		printf("<option value=thisweek>This Week\n");
-		printf("<option value=last7days SELECTED>Last 7 Days\n");
-		printf("<option value=lastweek>Last Week\n");
-		printf("<option value=thismonth>This Month\n");
-		printf("<option value=last31days>Last 31 Days\n");
-		printf("<option value=lastmonth>Last Month\n");
-		printf("<option value=thisyear>This Year\n");
-		printf("<option value=lastyear>Last Year\n");
-		printf("<option value=custom>* CUSTOM REPORT PERIOD *\n");
+		printf("<option value='today'>Today\n");
+		printf("<option value='last24hours'>Last 24 Hours\n");
+		printf("<option value='yesterday'>Yesterday\n");
+		printf("<option value='thisweek'>This Week\n");
+		printf("<option value='last7days' selected>Last 7 Days\n");
+		printf("<option value='lastweek'>Last Week\n");
+		printf("<option value='thismonth'>This Month\n");
+		printf("<option value='last31days'>Last 31 Days\n");
+		printf("<option value='lastmonth'>Last Month\n");
+		printf("<option value='thisyear'>This Year\n");
+		printf("<option value='lastyear'>Last Year\n");
+		printf("<option value='custom'>* CUSTOM REPORT PERIOD *\n");
 		printf("</select>\n");
 		printf("</td>\n");
 		printf("</tr>\n");
 
-		printf("<tr><td valign=top class='reportSelectSubTitle'>If Custom Report Period...</td></tr>\n");
+		printf("<tr><td valign='top' class='reportSelectSubTitle'>If Custom Report Period...</td></tr>\n");
 
 		printf("<tr>");
-		printf("<td valign=top class='reportSelectSubTitle'>Start Date (Inclusive):</td>\n");
-		printf("<td align=left valign=top class='reportSelectItem'>");
+		printf("<td valign='top' class='reportSelectSubTitle'>Start Date (Inclusive):</td>\n");
+		printf("<td align='left' valign='top' class='reportSelectItem'>");
 		printf("<select name='smon'>\n");
-		printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "SELECTED" : "");
-		printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "SELECTED" : "");
-		printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "SELECTED" : "");
-		printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "SELECTED" : "");
-		printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "SELECTED" : "");
-		printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "SELECTED" : "");
-		printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "SELECTED" : "");
-		printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "SELECTED" : "");
-		printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "SELECTED" : "");
-		printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "SELECTED" : "");
-		printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "SELECTED" : "");
-		printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "SELECTED" : "");
+		printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "selected" : "");
+		printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "selected" : "");
+		printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "selected" : "");
+		printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "selected" : "");
+		printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "selected" : "");
+		printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "selected" : "");
+		printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "selected" : "");
+		printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "selected" : "");
+		printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "selected" : "");
+		printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "selected" : "");
+		printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "selected" : "");
+		printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "selected" : "");
 		printf("</select>\n ");
 		printf("<input type='text' size='2' maxlength='2' name='sday' value='%d'> ", start_day);
 		printf("<input type='text' size='4' maxlength='4' name='syear' value='%d'>", start_year);
@@ -495,21 +495,21 @@ int main(int argc, char **argv) {
 		printf("</tr>\n");
 
 		printf("<tr>");
-		printf("<td valign=top class='reportSelectSubTitle'>End Date (Inclusive):</td>\n");
-		printf("<td align=left valign=top class='reportSelectItem'>");
+		printf("<td valign='top' class='reportSelectSubTitle'>End Date (Inclusive):</td>\n");
+		printf("<td align='left' valign='top' class='reportSelectItem'>");
 		printf("<select name='emon'>\n");
-		printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "SELECTED" : "");
-		printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "SELECTED" : "");
-		printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "SELECTED" : "");
-		printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "SELECTED" : "");
-		printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "SELECTED" : "");
-		printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "SELECTED" : "");
-		printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "SELECTED" : "");
-		printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "SELECTED" : "");
-		printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "SELECTED" : "");
-		printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "SELECTED" : "");
-		printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "SELECTED" : "");
-		printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "SELECTED" : "");
+		printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "selected" : "");
+		printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "selected" : "");
+		printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "selected" : "");
+		printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "selected" : "");
+		printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "selected" : "");
+		printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "selected" : "");
+		printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "selected" : "");
+		printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "selected" : "");
+		printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "selected" : "");
+		printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "selected" : "");
+		printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "selected" : "");
+		printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "selected" : "");
 		printf("</select>\n ");
 		printf("<input type='text' size='2' maxlength='2' name='eday' value='%d'> ", end_day);
 		printf("<input type='text' size='4' maxlength='4' name='eyear' value='%d'>", end_year);
@@ -519,9 +519,9 @@ int main(int argc, char **argv) {
 		printf("</td>\n");
 		printf("</tr>\n");
 
-		printf("<tr><td colspan=2><br></td></tr>\n");
+		printf("<tr><td colspan='2'><br></td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' valign=center>Limit To Hostgroup:</td><td align=left valign=center class='reportSelectItem'>\n");
+		printf("<tr><td class='reportSelectSubTitle' valign='middle'>Limit To Hostgroup:</td><td align='left' valign='middle' class='reportSelectItem'>\n");
 		printf("<select name='hostgroup'>\n");
 		printf("<option value='all'>** ALL HOSTGROUPS **\n");
 		for (temp_hostgroup = hostgroup_list; temp_hostgroup != NULL; temp_hostgroup = temp_hostgroup->next) {
@@ -531,7 +531,7 @@ int main(int argc, char **argv) {
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' valign=center>Limit To Servicegroup:</td><td align=left valign=center class='reportSelectItem'>\n");
+		printf("<tr><td class='reportSelectSubTitle' valign='middle'>Limit To Servicegroup:</td><td align='left' valign='middle' class='reportSelectItem'>\n");
 		printf("<select name='servicegroup'>\n");
 		printf("<option value='all'>** ALL SERVICEGROUPS **\n");
 		for (temp_servicegroup = servicegroup_list; temp_servicegroup != NULL; temp_servicegroup = temp_servicegroup->next) {
@@ -541,7 +541,7 @@ int main(int argc, char **argv) {
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' valign=center>Limit To Host:</td><td align=left valign=center class='reportSelectItem'>\n");
+		printf("<tr><td class='reportSelectSubTitle' valign='middle'>Limit To Host:</td><td align='left' valign='middle' class='reportSelectItem'>\n");
 		printf("<select name='host'>\n");
 		printf("<option value='all'>** ALL HOSTS **\n");
 
@@ -552,53 +552,53 @@ int main(int argc, char **argv) {
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Alert Types:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Alert Types:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='alerttypes'>\n");
-		printf("<option value=%d %s>Host and Service Alerts\n", AE_HOST_ALERT + AE_SERVICE_ALERT, (alert_types == AE_HOST_ALERT + AE_SERVICE_ALERT) ? "SELECTED" : "");
-		printf("<option value=%d %s>Host Alerts\n", AE_HOST_ALERT, (alert_types == AE_HOST_ALERT) ? "SELECTED" : "");
-		printf("<option value=%d %s>Service Alerts\n", AE_SERVICE_ALERT, (alert_types == AE_SERVICE_ALERT) ? "SELECTED" : "");
+		printf("<option value='%d' %s>Host and Service Alerts\n", AE_HOST_ALERT + AE_SERVICE_ALERT, (alert_types == AE_HOST_ALERT + AE_SERVICE_ALERT) ? "selected" : "");
+		printf("<option value='%d' %s>Host Alerts\n", AE_HOST_ALERT, (alert_types == AE_HOST_ALERT) ? "selected" : "");
+		printf("<option value='%d' %s>Service Alerts\n", AE_SERVICE_ALERT, (alert_types == AE_SERVICE_ALERT) ? "selected" : "");
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>State Types:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>State Types:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='statetypes'>\n");
-		printf("<option value=%d %s>Hard and Soft States\n", AE_HARD_STATE + AE_SOFT_STATE, (state_types == AE_HARD_STATE + AE_SOFT_STATE) ? "SELECTED" : "");
-		printf("<option value=%d %s>Hard States\n", AE_HARD_STATE, (state_types == AE_HARD_STATE) ? "SELECTED" : "");
-		printf("<option value=%d %s>Soft States\n", AE_SOFT_STATE, (state_types == AE_SOFT_STATE) ? "SELECTED" : "");
+		printf("<option value='%d' %s>Hard and Soft States\n", AE_HARD_STATE + AE_SOFT_STATE, (state_types == AE_HARD_STATE + AE_SOFT_STATE) ? "selected" : "");
+		printf("<option value='%d' %s>Hard States\n", AE_HARD_STATE, (state_types == AE_HARD_STATE) ? "selected" : "");
+		printf("<option value='%d' %s>Soft States\n", AE_SOFT_STATE, (state_types == AE_SOFT_STATE) ? "selected" : "");
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Host States:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Host States:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='hoststates'>\n");
-		printf("<option value=%d>All Host States\n", AE_HOST_UP + AE_HOST_DOWN + AE_HOST_UNREACHABLE);
-		printf("<option value=%d>Host Problem States\n", AE_HOST_DOWN + AE_HOST_UNREACHABLE);
-		printf("<option value=%d>Host Up States\n", AE_HOST_UP);
-		printf("<option value=%d>Host Down States\n", AE_HOST_DOWN);
-		printf("<option value=%d>Host Unreachable States\n", AE_HOST_UNREACHABLE);
+		printf("<option value='%d'>All Host States\n", AE_HOST_UP + AE_HOST_DOWN + AE_HOST_UNREACHABLE);
+		printf("<option value='%d'>Host Problem States\n", AE_HOST_DOWN + AE_HOST_UNREACHABLE);
+		printf("<option value='%d'>Host Up States\n", AE_HOST_UP);
+		printf("<option value='%d'>Host Down States\n", AE_HOST_DOWN);
+		printf("<option value='%d'>Host Unreachable States\n", AE_HOST_UNREACHABLE);
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Service States:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Service States:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<select name='servicestates'>\n");
-		printf("<option value=%d>All Service States\n", AE_SERVICE_OK + AE_SERVICE_WARNING + AE_SERVICE_UNKNOWN + AE_SERVICE_CRITICAL);
-		printf("<option value=%d>Service Problem States\n", AE_SERVICE_WARNING + AE_SERVICE_UNKNOWN + AE_SERVICE_CRITICAL);
-		printf("<option value=%d>Service Ok States\n", AE_SERVICE_OK);
-		printf("<option value=%d>Service Warning States\n", AE_SERVICE_WARNING);
-		printf("<option value=%d>Service Unknown States\n", AE_SERVICE_UNKNOWN);
-		printf("<option value=%d>Service Critical States\n", AE_SERVICE_CRITICAL);
+		printf("<option value='%d'>All Service States\n", AE_SERVICE_OK + AE_SERVICE_WARNING + AE_SERVICE_UNKNOWN + AE_SERVICE_CRITICAL);
+		printf("<option value='%d'>Service Problem States\n", AE_SERVICE_WARNING + AE_SERVICE_UNKNOWN + AE_SERVICE_CRITICAL);
+		printf("<option value='%d'>Service Ok States\n", AE_SERVICE_OK);
+		printf("<option value='%d'>Service Warning States\n", AE_SERVICE_WARNING);
+		printf("<option value='%d'>Service Unknown States\n", AE_SERVICE_UNKNOWN);
+		printf("<option value='%d'>Service Critical States\n", AE_SERVICE_CRITICAL);
 		printf("</select>\n");
 		printf("</td></tr>\n");
 
-		printf("<tr><td class='reportSelectSubTitle' align=right>Max List Items:</td>\n");
+		printf("<tr><td class='reportSelectSubTitle' align='right'>Max List Items:</td>\n");
 		printf("<td class='reportSelectItem'>\n");
 		printf("<input type='text' name='limit' size='3' maxlength='3' value='%d'>\n", item_limit);
 		printf("</td></tr>\n");
 
-		printf("<tr><td></td><td align=left class='dateSelectItem'><input type='submit' value='Create Summary Report!'></td></tr>\n");
+		printf("<tr><td></td><td align='left' class='dateSelectItem'><input type='submit' value='Create Summary Report!'></td></tr>\n");
 
 		printf("</table>\n");
 
@@ -1328,9 +1328,9 @@ void add_archived_event(int event_type, time_t time_stamp, int entry_type, int s
 
 #ifdef DEBUG
 	if (event_type == AE_HOST_ALERT)
-		printf("Adding host alert (%s) @ %lu<BR>\n", host_name, (unsigned long)time_stamp);
+		printf("Adding host alert (%s) @ %lu<br>\n", host_name, (unsigned long)time_stamp);
 	else
-		printf("Adding service alert (%s/%s) @ %lu<BR>\n", host_name, svc_description, (unsigned long)time_stamp);
+		printf("Adding service alert (%s/%s) @ %lu<br>\n", host_name, svc_description, (unsigned long)time_stamp);
 #endif
 
 	/* allocate memory for the new entry */
@@ -1548,10 +1548,10 @@ void display_report(void) {
 			printf("\n");
 		}
 	} else {
-		printf("<BR>\n");
+		printf("<br>\n");
 
-		printf("<table align=\"CENTER\" border=\"0\"><tr><td>");
-		printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>");
+		printf("<table align='center' border='0'><tr><td>");
+		printf("<div align='center' class='dataSubTitle'>");
 		if (display_type == REPORT_ALERT_TOTALS)
 			printf("Overall Totals");
 		if (display_type == REPORT_HOST_ALERT_TOTALS)
@@ -1563,7 +1563,7 @@ void display_report(void) {
 		if (display_type == REPORT_SERVICEGROUP_ALERT_TOTALS)
 			printf("Totals By Servicegroup");
 
-		printf("</DIV>\n");
+		printf("</div>\n");
 
 		/* add export to csv, json, link */
 		printf("<div class='csv_export_link'>");
@@ -1648,25 +1648,25 @@ void display_recent_alerts(void) {
 		printf("%sSTATE_TYPE%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sINFORMATION%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<BR>\n");
+		printf("<br>\n");
 
 		if (item_limit <= 0 || total_items <= item_limit || total_items == 0)
-			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying all %d matching alerts</DIV>\n", total_items);
+			printf("<div align='center' class='dataSubTitle'>Displaying all %d matching alerts</div>\n", total_items);
 		else
-			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying most recent %d of %d total matching alerts</DIV>\n", item_limit, total_items);
+			printf("<div align='center' class='dataSubTitle'>Displaying most recent %d of %d total matching alerts</div>\n", item_limit, total_items);
 
-		printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
+		printf("<table border='0' class='data' align='center'>\n");
 
-		printf("<TR><TD colspan='7'>");
+		printf("<tr><td colspan='7'>");
 		/* add export to csv, json, link */
 		printf("<div class='csv_export_link'>");
 		print_export_link(CSV_CONTENT, SUMMARY_CGI, NULL);
 		print_export_link(JSON_CONTENT, SUMMARY_CGI, NULL);
 		print_export_link(HTML_CONTENT, SUMMARY_CGI, NULL);
 		printf("</div>\n");
-		printf("</TD></TR>\n");
+		printf("</td></tr>\n");
 
-		printf("<TR><TH CLASS='data'>Time</TH><TH CLASS='data'>Alert Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>State</TH><TH CLASS='data'>State Type</TH><TH CLASS='data'>Information</TH></TR>\n");
+		printf("<tr><th class='data'>Time</th><th class='data'>Alert Type</th><th class='data'>Host</th><th class='data'>Service</th><th class='data'>State</th><th class='data'>State Type</th><th class='data'>Information</th></tr>\n");
 	}
 
 	sort_archive_states();
@@ -1713,19 +1713,19 @@ void display_recent_alerts(void) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_host->name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, (temp_event->event_type == AE_HOST_ALERT) ? "" : temp_service->description, csv_data_enclosure, csv_delimiter);
 		} else {
-			printf("<tr CLASS='data%s'>", (odd) ? "Even" : "Odd");
+			printf("<tr class='data%s'>", (odd) ? "Even" : "Odd");
 
-			printf("<td CLASS='data%s'>%s</td>", (odd) ? "Even" : "Odd", date_time);
+			printf("<td class='data%s'>%s</td>", (odd) ? "Even" : "Odd", date_time);
 
-			printf("<td CLASS='data%s'>%s</td>", (odd) ? "Even" : "Odd", (temp_event->event_type == AE_HOST_ALERT) ? "Host Alert" : "Service Alert");
+			printf("<td class='data%s'>%s</td>", (odd) ? "Even" : "Odd", (temp_event->event_type == AE_HOST_ALERT) ? "Host Alert" : "Service Alert");
 
-			printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s'>%s</a></td>", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_event->host_name), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
+			printf("<td class='data%s'><a href='%s?type=%d&amp;host=%s'>%s</a></td>", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_event->host_name), (temp_host->display_name != NULL) ? temp_host->display_name : temp_host->name);
 
 			if (temp_event->event_type == AE_HOST_ALERT)
-				printf("<td CLASS='data%s'>N/A</td>", (odd) ? "Even" : "Odd");
+				printf("<td class='data%s'>N/A</td>", (odd) ? "Even" : "Odd");
 			else {
-				printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_event->host_name));
-				printf("&service=%s'>%s</a></td>", url_encode(temp_event->service_description), (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
+				printf("<td class='data%s'><a href='%s?type=%d&amp;host=%s", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_event->host_name));
+				printf("&amp;service=%s'>%s</a></td>", url_encode(temp_event->service_description), (temp_service->display_name != NULL) ? temp_service->display_name : temp_service->description);
 			}
 
 		}
@@ -1774,18 +1774,18 @@ void display_recent_alerts(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_event->state_type == AE_SOFT_STATE) ? "SOFT" : "HARD", csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s\n", csv_data_enclosure, temp_event->event_info, csv_data_enclosure);
 		} else {
-			printf("<td CLASS='%s'>%s</td>", status_bgclass, status);
+			printf("<td class='%s'>%s</td>", status_bgclass, status);
 
-			printf("<td CLASS='data%s'>%s</td>", (odd) ? "Even" : "Odd", (temp_event->state_type == AE_SOFT_STATE) ? "SOFT" : "HARD");
+			printf("<td class='data%s'>%s</td>", (odd) ? "Even" : "Odd", (temp_event->state_type == AE_SOFT_STATE) ? "SOFT" : "HARD");
 
-			printf("<td CLASS='data%s'>%s</td>", (odd) ? "Even" : "Odd", temp_event->event_info);
+			printf("<td class='data%s'>%s</td>", (odd) ? "Even" : "Odd", temp_event->event_info);
 
 			printf("</tr>\n");
 		}
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1945,25 +1945,25 @@ void display_top_alerts(void) {
 		printf("%sSERVICE%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sTOTAL_ALERTS%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<BR>\n");
+		printf("<br>\n");
 
 		if (item_limit <= 0 || total_items <= item_limit || total_items == 0)
-			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying all %d matching alert producers</DIV>\n", total_items);
+			printf("<div align='center' class='dataSubTitle'>Displaying all %d matching alert producers</div>\n", total_items);
 		else
-			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Displaying top %d of %d total matching alert producers</DIV>\n", item_limit, total_items);
+			printf("<div align='center' class='dataSubTitle'>Displaying top %d of %d total matching alert producers</div>\n", item_limit, total_items);
 
-		printf("<TABLE BORDER=0 CLASS='data' align='center'>\n");
+		printf("<table border='0' class='data' align='center'>\n");
 
-		printf("<TR><TD colspan='5'>");
+		printf("<tr><td colspan='5'>");
 		/* add export to csv, json, link */
 		printf("<div class='csv_export_link'>");
 		print_export_link(CSV_CONTENT, SUMMARY_CGI, NULL);
 		print_export_link(JSON_CONTENT, SUMMARY_CGI, NULL);
 		print_export_link(HTML_CONTENT, SUMMARY_CGI, NULL);
 		printf("</div>\n");
-		printf("</TD></TR>\n");
+		printf("</td></tr>\n");
 
-		printf("<TR><TH CLASS='data'>Rank</TH><TH CLASS='data'>Producer Type</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>Service</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
+		printf("<tr><th class='data'>Rank</th><th class='data'>Producer Type</th><th class='data'>Host</th><th class='data'>Service</th><th class='data'>Total Alerts</th></tr>\n");
 	}
 
 
@@ -2011,29 +2011,29 @@ void display_top_alerts(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_producer->producer_type == AE_HOST_PRODUCER) ? "N/A" : temp_producer->service_description, csv_data_enclosure, csv_delimiter);
 			printf("%s%d%s\n", csv_data_enclosure, temp_producer->total_alerts, csv_data_enclosure);
 		} else {
-			printf("<tr CLASS='data%s'>", bgclass);
+			printf("<tr class='data%s'>", bgclass);
 
-			printf("<td CLASS='data%s'>#%d</td>", bgclass, current_item);
+			printf("<td class='data%s'>#%d</td>", bgclass, current_item);
 
-			printf("<td CLASS='data%s'>%s</td>", bgclass, (temp_producer->producer_type == AE_HOST_PRODUCER) ? "Host" : "Service");
+			printf("<td class='data%s'>%s</td>", bgclass, (temp_producer->producer_type == AE_HOST_PRODUCER) ? "Host" : "Service");
 
-			printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s'>%s</a></td>", bgclass, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_producer->host_name), temp_producer->host_name);
+			printf("<td class='data%s'><a href='%s?type=%d&amp;host=%s'>%s</a></td>", bgclass, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_producer->host_name), temp_producer->host_name);
 
 			if (temp_producer->producer_type == AE_HOST_PRODUCER)
-				printf("<td CLASS='data%s'>N/A</td>", bgclass);
+				printf("<td class='data%s'>N/A</td>", bgclass);
 			else {
-				printf("<td CLASS='data%s'><a href='%s?type=%d&host=%s", bgclass, EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_producer->host_name));
-				printf("&service=%s'>%s</a></td>", url_encode(temp_producer->service_description), temp_producer->service_description);
+				printf("<td class='data%s'><a href='%s?type=%d&amp;host=%s", bgclass, EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(temp_producer->host_name));
+				printf("&amp;service=%s'>%s</a></td>", url_encode(temp_producer->service_description), temp_producer->service_description);
 			}
 
-			printf("<td CLASS='data%s'>%d</td>", bgclass, temp_producer->total_alerts);
+			printf("<td class='data%s'>%d</td>", bgclass, temp_producer->total_alerts);
 
 			printf("</tr>\n");
 		}
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -2329,11 +2329,11 @@ void display_alerts(void) {
 			printf("\n");
 		}
 	} else {
-		printf("<BR>\n");
-		printf("<TABLE BORDER=1 CELLSPACING=0 CELLPADDING=0 CLASS='reportDataEven'><TR><TD>\n");
-		printf("<TABLE BORDER=0>\n");
+		printf("<br>\n");
+		printf("<table border='1' cellspacing='0' cellpadding='0' class='reportDataEven'><tr><td>\n");
+		printf("<table border='0'>\n");
 
-		printf("<TR><TD COLSPAN=2 ALIGN=CENTER CLASS='dataSubTitle'>");
+		printf("<tr><td colspan='2' align='center' class='dataSubTitle'>");
 		if (display_type == REPORT_HOST_ALERT_TOTALS)
 			printf("Host '%s' (%s)", target_host->name, target_host->alias);
 
@@ -2345,57 +2345,57 @@ void display_alerts(void) {
 
 		if (display_type == REPORT_SERVICEGROUP_ALERT_TOTALS)
 			printf("Servicegroup '%s' (%s)", target_servicegroup->group_name, target_servicegroup->alias);
-		printf("</TD></TR>\n");
+		printf("</td></tr>\n");
 
-		printf("<TR>\n");
+		printf("<tr>\n");
 
 		if (alert_types & AE_HOST_ALERT && display_type != REPORT_SERVICE_ALERT_TOTALS) {
 
-			printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
+			printf("<td align='center' valign='top'>\n");
 
-			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Host Alerts</DIV>\n");
+			printf("<div align='center' class='dataSubTitle'>Host Alerts</div>\n");
 
-			printf("<DIV ALIGN=CENTER>\n");
-			printf("<TABLE BORDER=0 CLASS='data'>\n");
-			printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
+			printf("<div align='center'>\n");
+			printf("<table border='0' class='data'>\n");
+			printf("<tr><th class='data'>State</th><th class='data'>Soft Alerts</th><th class='data'>Hard Alerts</th><th class='data'>Total Alerts</th></tr>\n");
 
-			printf("<TR CLASS='dataOdd'><TD CLASS='hostUP'>UP</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n", soft_host_up_alerts, hard_host_up_alerts, soft_host_up_alerts + hard_host_up_alerts);
-			printf("<TR CLASS='dataEven'><TD CLASS='hostDOWN'>DOWN</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n", soft_host_down_alerts, hard_host_down_alerts, soft_host_down_alerts + hard_host_down_alerts);
-			printf("<TR CLASS='dataOdd'><TD CLASS='hostUNREACHABLE'>UNREACHABLE</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n", soft_host_unreachable_alerts, hard_host_unreachable_alerts, soft_host_unreachable_alerts + hard_host_unreachable_alerts);
-			printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>All States</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'><B>%d</B></TD></TR>\n", soft_host_up_alerts + soft_host_down_alerts + soft_host_unreachable_alerts, hard_host_up_alerts + hard_host_down_alerts + hard_host_unreachable_alerts, soft_host_up_alerts + hard_host_up_alerts + soft_host_down_alerts + hard_host_down_alerts + soft_host_unreachable_alerts + hard_host_unreachable_alerts);
+			printf("<tr class='dataOdd'><td class='hostUP'>UP</td><td class='dataOdd'>%d</td><td class='dataOdd'>%d</td><td class='dataOdd'>%d</td></tr>\n", soft_host_up_alerts, hard_host_up_alerts, soft_host_up_alerts + hard_host_up_alerts);
+			printf("<tr class='dataEven'><td class='hostDOWN'>DOWN</td><td class='dataEven'>%d</td><td class='dataEven'>%d</td><td class='dataEven'>%d</td></tr>\n", soft_host_down_alerts, hard_host_down_alerts, soft_host_down_alerts + hard_host_down_alerts);
+			printf("<tr class='dataOdd'><td class='hostUNREACHABLE'>UNREACHABLE</td><td class='dataOdd'>%d</td><td class='dataOdd'>%d</td><td class='dataOdd'>%d</td></tr>\n", soft_host_unreachable_alerts, hard_host_unreachable_alerts, soft_host_unreachable_alerts + hard_host_unreachable_alerts);
+			printf("<tr class='dataEven'><td class='dataEven'>All States</td><td class='dataEven'>%d</td><td class='dataEven'>%d</td><td class='dataEven'><b>%d</b></td></tr>\n", soft_host_up_alerts + soft_host_down_alerts + soft_host_unreachable_alerts, hard_host_up_alerts + hard_host_down_alerts + hard_host_unreachable_alerts, soft_host_up_alerts + hard_host_up_alerts + soft_host_down_alerts + hard_host_down_alerts + soft_host_unreachable_alerts + hard_host_unreachable_alerts);
 
-			printf("</TABLE>\n");
-			printf("</DIV>\n");
+			printf("</table>\n");
+			printf("</div>\n");
 
-			printf("</TD>\n");
+			printf("</td>\n");
 		}
 
 		if (alert_types & AE_SERVICE_ALERT) {
 
-			printf("<TD ALIGN=CENTER VALIGN=TOP>\n");
+			printf("<td align='center' valign='top'>\n");
 
-			printf("<DIV ALIGN=CENTER CLASS='dataSubTitle'>Service Alerts</DIV>\n");
+			printf("<div align='center' class='dataSubTitle'>Service Alerts</div>\n");
 
-			printf("<DIV ALIGN=CENTER>\n");
-			printf("<TABLE BORDER=0 CLASS='data'>\n");
-			printf("<TR><TH CLASS='data'>State</TH><TH CLASS='data'>Soft Alerts</TH><TH CLASS='data'>Hard Alerts</TH><TH CLASS='data'>Total Alerts</TH></TR>\n");
+			printf("<div align='center'>\n");
+			printf("<table border='0' class='data'>\n");
+			printf("<tr><th class='data'>State</th><th class='data'>Soft Alerts</th><th class='data'>Hard Alerts</th><th class='data'>Total Alerts</th></tr>\n");
 
-			printf("<TR CLASS='dataOdd'><TD CLASS='serviceOK'>OK</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n", soft_service_ok_alerts, hard_service_ok_alerts, soft_service_ok_alerts + hard_service_ok_alerts);
-			printf("<TR CLASS='dataEven'><TD CLASS='serviceWARNING'>WARNING</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n", soft_service_warning_alerts, hard_service_warning_alerts, soft_service_warning_alerts + hard_service_warning_alerts);
-			printf("<TR CLASS='dataOdd'><TD CLASS='serviceUNKNOWN'>UNKNOWN</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD></TR>\n", soft_service_unknown_alerts, hard_service_unknown_alerts, soft_service_unknown_alerts + hard_service_unknown_alerts);
-			printf("<TR CLASS='dataEven'><TD CLASS='serviceCRITICAL'>CRITICAL</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD><TD CLASS='dataEven'>%d</TD></TR>\n", soft_service_critical_alerts, hard_service_critical_alerts, soft_service_critical_alerts + hard_service_critical_alerts);
-			printf("<TR CLASS='dataOdd'><TD CLASS='dataOdd'>All States</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'>%d</TD><TD CLASS='dataOdd'><B>%d</B></TD></TR>\n", soft_service_ok_alerts + soft_service_warning_alerts + soft_service_unknown_alerts + soft_service_critical_alerts, hard_service_ok_alerts + hard_service_warning_alerts + hard_service_unknown_alerts + hard_service_critical_alerts, soft_service_ok_alerts + soft_service_warning_alerts + soft_service_unknown_alerts + soft_service_critical_alerts + hard_service_ok_alerts + hard_service_warning_alerts + hard_service_unknown_alerts + hard_service_critical_alerts);
+			printf("<tr class='dataOdd'><td class='serviceOK'>OK</td><td class='dataOdd'>%d</td><td class='dataOdd'>%d</td><td class='dataOdd'>%d</td></tr>\n", soft_service_ok_alerts, hard_service_ok_alerts, soft_service_ok_alerts + hard_service_ok_alerts);
+			printf("<tr class='dataEven'><td class='serviceWARNING'>WARNING</td><td class='dataEven'>%d</td><td class='dataEven'>%d</td><td class='dataEven'>%d</td></tr>\n", soft_service_warning_alerts, hard_service_warning_alerts, soft_service_warning_alerts + hard_service_warning_alerts);
+			printf("<tr class='dataOdd'><td class='serviceUNKNOWN'>UNKNOWN</td><td class='dataOdd'>%d</td><td class='dataOdd'>%d</td><td class='dataOdd'>%d</td></tr>\n", soft_service_unknown_alerts, hard_service_unknown_alerts, soft_service_unknown_alerts + hard_service_unknown_alerts);
+			printf("<tr class='dataEven'><td class='serviceCRITICAL'>CRITICAL</td><td class='dataEven'>%d</td><td class='dataEven'>%d</td><td class='dataEven'>%d</td></tr>\n", soft_service_critical_alerts, hard_service_critical_alerts, soft_service_critical_alerts + hard_service_critical_alerts);
+			printf("<tr class='dataOdd'><td class='dataOdd'>All States</td><td class='dataOdd'>%d</td><td class='dataOdd'>%d</td><td class='dataOdd'><b>%d</b></td></tr>\n", soft_service_ok_alerts + soft_service_warning_alerts + soft_service_unknown_alerts + soft_service_critical_alerts, hard_service_ok_alerts + hard_service_warning_alerts + hard_service_unknown_alerts + hard_service_critical_alerts, soft_service_ok_alerts + soft_service_warning_alerts + soft_service_unknown_alerts + soft_service_critical_alerts + hard_service_ok_alerts + hard_service_warning_alerts + hard_service_unknown_alerts + hard_service_critical_alerts);
 
-			printf("</TABLE>\n");
-			printf("</DIV>\n");
+			printf("</table>\n");
+			printf("</div>\n");
 
-			printf("</TD>\n");
+			printf("</td>\n");
 		}
 
-		printf("</TR>\n");
+		printf("</tr>\n");
 
-		printf("</TABLE>\n");
-		printf("</TD></TR></TABLE>\n");
+		printf("</table>\n");
+		printf("</td></tr></table>\n");
 	}
 
 	return;

@@ -159,20 +159,20 @@ int main(void) {
 	if (display_header == TRUE) {
 
 		/* begin top table */
-		printf("<table border=0 width=100%%>\n");
+		printf("<table border='0' width='100%%'>\n");
 		printf("<tr>\n");
 
 		/* left column of the first row */
-		printf("<td align=left valign=top width=33%%>\n");
+		printf("<td align='left' valign='top' width='33%%'>\n");
 		display_info_table("Network Outages", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top row */
-		printf("<td align=center valign=top width=33%%>\n");
+		printf("<td align='center' valign='top' width='33%%'>\n");
 		printf("</td>\n");
 
 		/* right column of top row */
-		printf("<td align=right valign=bottom width=33%%>\n");
+		printf("<td align='right' valign='bottom' width='33%%'>\n");
 		printf("</td>\n");
 
 		/* end of top table */
@@ -310,20 +310,20 @@ void display_network_outages(void) {
 	} else {
 		/* display the problem hosts... */
 
-		printf("<TABLE BORDER=0 CELLSPACING=0 CELLPADDING=0 align='center'><TR><TD WIDTH='33%%'></TD><TD WIDTH='33%%'><DIV CLASS='dataTitle'>Blocking Outages</DIV><TD WIDTH='33%%'>");
+		printf("<table border='0' cellspacing='0' cellpadding='0' align='center'><tr><td width='33%%'></td><td width='33%%'><div class='dataTitle'>Blocking Outages</div><td width='33%%'>");
 
 		/* add export to csv link */
-		printf("<DIV style='padding-right:6px;' class='csv_export_link'>");
+		printf("<div style='padding-right:6px;' class='csv_export_link'>");
 		print_export_link(CSV_CONTENT, OUTAGES_CGI, NULL);
 		print_export_link(JSON_CONTENT, OUTAGES_CGI, NULL);
 		print_export_link(HTML_CONTENT, OUTAGES_CGI, NULL);
 
-		printf("</DIV></TD></TR></TABLE>\n");
+		printf("</div></td></tr></table>\n");
 
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Severity</TH><TH CLASS='data'>Host</TH><TH CLASS='data'>State</TH><TH CLASS='data'>Notes</TH><TH CLASS='data'>State Duration</TH><TH CLASS='data'># Hosts Affected</TH><TH CLASS='data'># Services Affected</TH><TH CLASS='data'>Actions</TH>\n");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Severity</th><th class='data'>Host</th><th class='data'>State</th><th class='data'>Notes</th><th class='data'>State Duration</th><th class='data'># Hosts Affected</th><th class='data'># Services Affected</th><th class='data'>Actions</th>\n");
+		printf("</tr>\n");
 	}
 
 	for (temp_hostoutagesort = hostoutagesort_list; temp_hostoutagesort != NULL; temp_hostoutagesort = temp_hostoutagesort->next) {
@@ -373,11 +373,11 @@ void display_network_outages(void) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_hostoutage->hst->name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, status, csv_data_enclosure, csv_delimiter);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'>%d</TD>\n", bg_class, temp_hostoutage->severity);
-			printf("<TD CLASS='%s'><A HREF='%s?type=%d&host=%s'>%s</A></TD>\n", bg_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_hostoutage->hst->name), (temp_hostoutage->hst->display_name != NULL) ? temp_hostoutage->hst->display_name : temp_hostoutage->hst->name);
-			printf("<TD CLASS='host%s'>%s</TD>\n", status, status);
+			printf("<td class='%s'>%d</td>\n", bg_class, temp_hostoutage->severity);
+			printf("<td class='%s'><a href='%s?type=%d&host=%s'>%s</a></td>\n", bg_class, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(temp_hostoutage->hst->name), (temp_hostoutage->hst->display_name != NULL) ? temp_hostoutage->hst->display_name : temp_hostoutage->hst->name);
+			printf("<td class='host%s'>%s</td>\n", status, status);
 		}
 
 		total_comments = number_of_host_comments(temp_hostoutage->hst->name);
@@ -389,7 +389,7 @@ void display_network_outages(void) {
 			if (total_comments > 0)
 				print_comment_icon(temp_hostoutage->hst->name, NULL);
 			else
-				printf("<TD CLASS='%s'>N/A</TD>\n", bg_class);
+				printf("<td class='%s'>N/A</td>\n", bg_class);
 		}
 
 
@@ -411,38 +411,38 @@ void display_network_outages(void) {
 			printf("%s%d%s%s", csv_data_enclosure, temp_hostoutage->affected_child_hosts, csv_data_enclosure, csv_delimiter);
 			printf("%s%d%s\n", csv_data_enclosure, temp_hostoutage->affected_child_services, csv_data_enclosure);
 		} else {
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, state_duration);
-			printf("<TD CLASS='%s'>%d</TD>\n", bg_class, temp_hostoutage->affected_child_hosts);
-			printf("<TD CLASS='%s'>%d</TD>\n", bg_class, temp_hostoutage->affected_child_services);
+			printf("<td class='%s'>%s</td>\n", bg_class, state_duration);
+			printf("<td class='%s'>%d</td>\n", bg_class, temp_hostoutage->affected_child_hosts);
+			printf("<td class='%s'>%d</td>\n", bg_class, temp_hostoutage->affected_child_services);
 
-			printf("<TD CLASS='%s'>", bg_class);
-			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status detail for this host' TITLE='View status detail for this host'></A>\n", STATUS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUS_DETAIL_ICON);
+			printf("<td class='%s'>", bg_class);
+			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View status detail for this host' title='View status detail for this host'></a>\n", STATUS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUS_DETAIL_ICON);
 #ifdef USE_STATUSMAP
-			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View status map for this host and its children' TITLE='View status map for this host and its children'></A>\n", STATUSMAP_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUSMAP_ICON);
+			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View status map for this host and its children' title='View status map for this host and its children'></a>\n", STATUSMAP_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, STATUSMAP_ICON);
 #endif
 #ifdef USE_TRENDS
-			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View trends for this host' TITLE='View trends for this host'></A>\n", TRENDS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, TRENDS_ICON);
+			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View trends for this host' title='View trends for this host'></a>\n", TRENDS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, TRENDS_ICON);
 #endif
-			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View alert history for this host' TITLE='View alert history for this host'></A>\n", HISTORY_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, HISTORY_ICON);
-			printf("<A HREF='%s?host=%s'><IMG SRC='%s%s' BORDER=0 ALT='View notifications for this host' TITLE='View notifications for this host'></A>\n", NOTIFICATIONS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, NOTIFICATION_ICON);
+			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View alert history for this host' title='View alert history for this host'></a>\n", HISTORY_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, HISTORY_ICON);
+			printf("<a href='%s?host=%s'><img src='%s%s' border='0' alt='View notifications for this host' title='View notifications for this host'></a>\n", NOTIFICATIONS_CGI, url_encode(temp_hostoutage->hst->name), url_images_path, NOTIFICATION_ICON);
 
 			/* add Link to acknowledge all affected hosts */
 			printf("<a href='%s?cmd_typ=%d&host=%s", CMD_CGI, CMD_ACKNOWLEDGE_HOST_PROBLEM, url_encode(temp_hostoutage->hst->name));
 			for (temp_affected_host = temp_hostoutage->affected_hosts; temp_affected_host != NULL; temp_affected_host = temp_affected_host->next)
 				printf("&host=%s", url_encode(temp_affected_host->host_name));
-			printf("'><img src='%s%s' border=0 ALT='Acknowledge All Affected Hosts' TITLE='Acknowledge All Affected Hosts'></a>\n", url_images_path, ACKNOWLEDGEMENT_ICON);
+			printf("'><img src='%s%s' border='0' alt='Acknowledge All Affected Hosts' title='Acknowledge All Affected Hosts'></a>\n", url_images_path, ACKNOWLEDGEMENT_ICON);
 
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("</TR>\n");
+			printf("</tr>\n");
 		}
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
-		printf("</TABLE>\n");
+		printf("</table>\n");
 
 		if (total_entries == 0)
-			printf("<DIV CLASS='itemTotalsTitle'>%d Blocking Outages Displayed</DIV>\n", total_entries);
+			printf("<div class='itemTotalsTitle'>%d Blocking Outages Displayed</div>\n", total_entries);
 	} else if (content_type == JSON_CONTENT) {
 		printf("\n]\n");
 	}

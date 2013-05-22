@@ -354,17 +354,17 @@ int main(void) {
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 		/* begin top table */
-		printf("<table border=0 width=100%%>\n");
+		printf("<table border='0' width='100%%'>\n");
 		printf("<tr>\n");
 
 		/* left column of the first row */
-		printf("<td align=left valign=top width=33%%>\n");
+		printf("<td align='left' valign='top' width='33%%'>\n");
 		display_info_table("Configuration", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* left column of the first row */
-		printf("<td align=left width=33%% style='vertical-align:bottom;'>\n");
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>");
+		printf("<td align='left' width='33%%' style='vertical-align:bottom;'>\n");
+		printf("<div align='center' class='dataTitle'>");
 
 		if (display_type == DISPLAY_HOSTS)			printf("Hosts");
 		else if (display_type == DISPLAY_HOSTGROUPS)		printf("Host Groups");
@@ -381,16 +381,16 @@ int main(void) {
 		else if (display_type == DISPLAY_MODULES)		printf("Modules");
 		else if (display_type == DISPLAY_CGICONFIG)		printf("CGI Config Setings");
 
-		printf("</DIV>\n");
+		printf("</div>\n");
 
 		if (search_string != NULL || item_name != NULL) {
 			saved_escape_html_tags_var = escape_html_tags;
 			escape_html_tags = TRUE;
 
 			if (item_name != NULL)
-				printf("<DIV align='center'>Displaying: '%s'</DIV>", html_encode(item_name, FALSE));
+				printf("<div align='center'>Displaying: '%s'</div>", html_encode(item_name, FALSE));
 			else if (search_regex_compile_failed == FALSE)
-				printf("<DIV align='center'>Filterd by Search String: '%s'</DIV>", html_encode(search_string, FALSE));
+				printf("<div align='center'>Filterd by Search String: '%s'</div>", html_encode(search_string, FALSE));
 			else
 				printf("<div class='errorMessage'>The regular expression '%s' is invalid!</div>", html_encode(search_string, FALSE));
 
@@ -407,18 +407,18 @@ int main(void) {
 		printf("</td>\n");
 
 		/* right hand column of top row */
-		printf("<td align=right valign=bottom width=33%%>\n");
+		printf("<td align='right' valign='bottom' width='33%%'>\n");
 
 		if (display_type != DISPLAY_NONE && is_authorized_for_configuration_information(&current_authdata)) {
 
 			printf("<form method=\"get\" action=\"%s\">\n", CONFIG_CGI);
-			printf("<table border=0>\n");
+			printf("<table border='0'>\n");
 
 			display_options();
 
 			if (display_type != DISPLAY_COMMAND_EXPANSION && display_type != DISPLAY_CGICONFIG) {
-				printf("<tr><td align=left class='reportSelectSubTitle'>Search (regex):</td></tr>\n");
-				printf("<tr><td align=left class='reportSelectItem'><input type='text' name='search_string' value='%s'></td></tr>\n", (search_string != NULL) ? escape_string(search_string): "");
+				printf("<tr><td align='left' class='reportSelectSubTitle'>Search (regex):</td></tr>\n");
+				printf("<tr><td align='left' class='reportSelectItem'><input type='text' name='search_string' value='%s'></td></tr>\n", (search_string != NULL) ? escape_string(search_string): "");
 			}
 
 			printf("<tr><td class='reportSelectItem'><input type='hidden' name='limit' value='%d'><input type='submit' value='Update'></td></tr>\n", result_limit);
@@ -535,13 +535,13 @@ int main(void) {
 
 			printf("<br><br>\n");
 
-			printf("<div align=center class='reportSelectTitle'>Select Type of Config Data You Wish To View</div>\n");
+			printf("<div align='center' class='reportSelectTitle'>Select Type of Config Data You Wish To View</div>\n");
 
 			printf("<br><br>\n");
 
 			printf("<form method=\"get\" action=\"%s\">\n", CONFIG_CGI);
 
-			printf("<table border=0 align='center'>\n");
+			printf("<table border='0' align='center'>\n");
 
 			display_options();
 
@@ -809,50 +809,50 @@ void display_hosts(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Host Name</TH>");
-		printf("<TH CLASS='data'>Alias/Description</TH>");
-		printf("<TH CLASS='data'>Display Name</TH>");
-		printf("<TH CLASS='data'>Address</TH>");
-		printf("<TH CLASS='data'>Address6</TH>");
-		printf("<TH CLASS='data'>Parent Hosts</TH>");
-		printf("<TH CLASS='data'>Max. Check Attempts</TH>");
-		printf("<TH CLASS='data'>Check Interval</TH>\n");
-		printf("<TH CLASS='data'>Retry Interval</TH>\n");
-		printf("<TH CLASS='data'>Host Check Command</TH>");
-		printf("<TH CLASS='data'>Check Period</TH>");
-		printf("<TH CLASS='data'>Obsess Over</TH>\n");
-		printf("<TH CLASS='data'>Enable Active Checks</TH>\n");
-		printf("<TH CLASS='data'>Enable Passive Checks</TH>\n");
-		printf("<TH CLASS='data'>Check Freshness</TH>\n");
-		printf("<TH CLASS='data'>Freshness Threshold</TH>\n");
-		printf("<TH CLASS='data'>Default Contacts/Groups</TH>\n");
-		printf("<TH CLASS='data'>Notification Interval</TH>");
-		printf("<TH CLASS='data'>First Notification Delay</TH>");
-		printf("<TH CLASS='data'>Notification Options</TH>");
-		printf("<TH CLASS='data'>Notification Period</TH>");
-		printf("<TH CLASS='data'>Event Handler</TH>");
-		printf("<TH CLASS='data'>Enable Event Handler</TH>");
-		printf("<TH CLASS='data'>Stalking Options</TH>\n");
-		printf("<TH CLASS='data'>Enable Flap Detection</TH>");
-		printf("<TH CLASS='data'>Low Flap Threshold</TH>");
-		printf("<TH CLASS='data'>High Flap Threshold</TH>");
-		printf("<TH CLASS='data'>Flap Detection Options</TH>\n");
-		printf("<TH CLASS='data'>Process Performance Data</TH>");
-		printf("<TH CLASS='data'>Enable Failure Prediction</TH>");
-		printf("<TH CLASS='data'>Failure Prediction Options</TH>");
-		printf("<TH CLASS='data'>Notes</TH>");
-		printf("<TH CLASS='data'>Notes URL</TH>");
-		printf("<TH CLASS='data'>Action URL</TH>");
-		printf("<TH CLASS='data'>2-D Coords</TH>");
-		printf("<TH CLASS='data'>3-D Coords</TH>");
-		printf("<TH CLASS='data'>Statusmap Image</TH>");
-		printf("<TH CLASS='data'>VRML Image</TH>");
-		printf("<TH CLASS='data'>Logo Image</TH>");
-		printf("<TH CLASS='data'>Image Alt</TH>");
-		printf("<TH CLASS='data'>Retention Options</TH>");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Host Name</th>");
+		printf("<th class='data'>Alias/Description</th>");
+		printf("<th class='data'>Display Name</th>");
+		printf("<th class='data'>Address</th>");
+		printf("<th class='data'>Address6</th>");
+		printf("<th class='data'>Parent Hosts</th>");
+		printf("<th class='data'>Max. Check Attempts</th>");
+		printf("<th class='data'>Check Interval</th>\n");
+		printf("<th class='data'>Retry Interval</th>\n");
+		printf("<th class='data'>Host Check Command</th>");
+		printf("<th class='data'>Check Period</th>");
+		printf("<th class='data'>Obsess Over</th>\n");
+		printf("<th class='data'>Enable Active Checks</th>\n");
+		printf("<th class='data'>Enable Passive Checks</th>\n");
+		printf("<th class='data'>Check Freshness</th>\n");
+		printf("<th class='data'>Freshness Threshold</th>\n");
+		printf("<th class='data'>Default Contacts/Groups</th>\n");
+		printf("<th class='data'>Notification Interval</th>");
+		printf("<th class='data'>First Notification Delay</th>");
+		printf("<th class='data'>Notification Options</th>");
+		printf("<th class='data'>Notification Period</th>");
+		printf("<th class='data'>Event Handler</th>");
+		printf("<th class='data'>Enable Event Handler</th>");
+		printf("<th class='data'>Stalking Options</th>\n");
+		printf("<th class='data'>Enable Flap Detection</th>");
+		printf("<th class='data'>Low Flap Threshold</th>");
+		printf("<th class='data'>High Flap Threshold</th>");
+		printf("<th class='data'>Flap Detection Options</th>\n");
+		printf("<th class='data'>Process Performance Data</th>");
+		printf("<th class='data'>Enable Failure Prediction</th>");
+		printf("<th class='data'>Failure Prediction Options</th>");
+		printf("<th class='data'>Notes</th>");
+		printf("<th class='data'>Notes URL</th>");
+		printf("<th class='data'>Action URL</th>");
+		printf("<th class='data'>2-D Coords</th>");
+		printf("<th class='data'>3-D Coords</th>");
+		printf("<th class='data'>Statusmap Image</th>");
+		printf("<th class='data'>VRML Image</th>");
+		printf("<th class='data'>Logo Image</th>");
+		printf("<th class='data'>Image Alt</th>");
+		printf("<th class='data'>Retention Options</th>");
+		printf("</tr>\n");
 	}
 
 	/* check all the hosts... */
@@ -911,14 +911,14 @@ void display_hosts(void) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_host->address6, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><a href='%s?type=services&search_string=%s^%%2E%%2A'>%s</a></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_host->name), html_encode(temp_host->name, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->alias, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->display_name, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->address, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_host->address6, FALSE));
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'><a href='%s?type=services&amp;search_string=%s^%%2E%%2A'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_host->name), html_encode(temp_host->name, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_host->alias, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_host->display_name, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_host->address, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_host->address6, FALSE));
+			printf("<td class='%s'>", bg_class);
 		}
 
 		for (temp_hostsmember = temp_host->parent_hosts; temp_hostsmember != NULL; temp_hostsmember = temp_hostsmember->next) {
@@ -931,7 +931,7 @@ void display_hosts(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_hostsmember->host_name);
 			else
-				printf("<a href='%s?type=hosts&item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
+				printf("<a href='%s?type=hosts&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
 		}
 
 		if (temp_host->parent_hosts == NULL)
@@ -985,42 +985,42 @@ void display_hosts(void) {
 			printf("%s%s", csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%d</TD>\n", bg_class, temp_host->max_attempts);
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, time_string[0]);
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, time_string[1]);
+			printf("<td class='%s'>%d</td>\n", bg_class, temp_host->max_attempts);
+			printf("<td class='%s'>%s</td>\n", bg_class, time_string[0]);
+			printf("<td class='%s'>%s</td>\n", bg_class, time_string[1]);
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_host->host_check_command == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=command&host=%s&expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->host_check_command), html_encode(temp_host->host_check_command, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=command&amp;host=%s&amp;expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->host_check_command), html_encode(temp_host->host_check_command, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_host->check_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_host->check_period), html_encode(temp_host->check_period, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->check_period), html_encode(temp_host->check_period, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->obsess_over_host == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->obsess_over_host == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->checks_enabled == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->checks_enabled == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->accept_passive_host_checks == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->accept_passive_host_checks == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->check_freshness == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->check_freshness == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_host->freshness_threshold == 0)
 				printf("Auto-determined value");
 			else
 				printf("%d seconds", temp_host->freshness_threshold);
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		/* find all the contacts for this host... */
@@ -1035,7 +1035,7 @@ void display_hosts(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<A HREF='%s?type=contacts&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<a href='%s?type=contacts&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 		for (temp_contactgroupsmember = temp_host->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
 			contact++;
@@ -1047,7 +1047,7 @@ void display_hosts(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<A HREF='%s?type=contactgroups&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<a href='%s?type=contactgroups&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -1066,10 +1066,10 @@ void display_hosts(void) {
 			printf("%s%s%s%s", csv_data_enclosure, time_string[1], csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->notification_interval == 0) ? "<i>No Re-notification</I>" : html_encode(time_string[0], FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, time_string[1]);
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("</td>\n");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->notification_interval == 0) ? "<i>No Re-notification</i>" : html_encode(time_string[0], FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, time_string[1]);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -1117,28 +1117,28 @@ void display_hosts(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_host->event_handler_enabled == TRUE) ? "Yes" : "No", csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 
 			if (temp_host->notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<a href='%s?type=timeperiods&irem_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->notification_period), html_encode(temp_host->notification_period, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=timeperiods&amp;irem_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_host->notification_period), html_encode(temp_host->notification_period, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_host->event_handler == NULL)
-				printf("&nbsp");
+				printf("&nbsp;");
 			else
-				/* printf("<a href='%s?type=commands&item_name=%s'>%s</a></TD>\n",CONFIG_CGI,url_encode(strtok(temp_host->event_handler,"!")),html_encode(temp_host->event_handler,FALSE)); */
-				printf("<a href='%s?type=command&host=%s&expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->event_handler), html_encode(temp_host->event_handler, FALSE));
+				/* printf("<a href='%s?type=commands&item_name=%s'>%s</a></td>\n",CONFIG_CGI,url_encode(strtok(temp_host->event_handler,"!")),html_encode(temp_host->event_handler,FALSE)); */
+				printf("<a href='%s?type=command&amp;host=%s&amp;expand=%s'>%s</a>", CONFIG_CGI, temp_host->name, url_encode(temp_host->event_handler), html_encode(temp_host->event_handler, FALSE));
 
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->event_handler_enabled == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->event_handler_enabled == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -1184,25 +1184,25 @@ void display_hosts(void) {
 				printf("%s%3.1f%%%s%s", csv_data_enclosure, temp_host->high_flap_threshold, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->flap_detection_enabled == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->flap_detection_enabled == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_host->low_flap_threshold == 0.0)
 				printf("Program-wide value");
 			else
 				printf("%3.1f%%", temp_host->low_flap_threshold);
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_host->high_flap_threshold == 0.0)
 				printf("Program-wide value");
 			else
 				printf("%3.1f%%", temp_host->high_flap_threshold);
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -1288,51 +1288,51 @@ void display_hosts(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_host->icon_image_alt == NULL) ? "" : temp_host->icon_image_alt, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->process_performance_data == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->process_performance_data == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->failure_prediction_enabled == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->failure_prediction_enabled == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->failure_prediction_options == NULL) ? "&nbsp;" : html_encode(temp_host->failure_prediction_options, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->failure_prediction_options == NULL) ? "&nbsp;" : html_encode(temp_host->failure_prediction_options, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->notes == NULL) ? "&nbsp;" : html_encode(temp_host->notes, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->notes == NULL) ? "&nbsp;" : html_encode(temp_host->notes, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->notes_url == NULL) ? "&nbsp;" : html_encode(temp_host->notes_url, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->notes_url == NULL) ? "&nbsp;" : html_encode(temp_host->notes_url, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->action_url == NULL) ? "&nbsp;" : html_encode(temp_host->action_url, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->action_url == NULL) ? "&nbsp;" : html_encode(temp_host->action_url, FALSE));
 
 			if (temp_host->have_2d_coords == FALSE)
-				printf("<TD CLASS='%s'>&nbsp;</TD>\n", bg_class);
+				printf("<td class='%s'>&nbsp;</td>\n", bg_class);
 			else
-				printf("<TD CLASS='%s'>%d,%d</TD>\n", bg_class, temp_host->x_2d, temp_host->y_2d);
+				printf("<td class='%s'>%d,%d</td>\n", bg_class, temp_host->x_2d, temp_host->y_2d);
 
 			if (temp_host->have_3d_coords == FALSE)
-				printf("<TD CLASS='%s'>&nbsp;</TD>\n", bg_class);
+				printf("<td class='%s'>&nbsp;</td>\n", bg_class);
 			else
-				printf("<TD CLASS='%s'>%.2f,%.2f,%.2f</TD>\n", bg_class, temp_host->x_3d, temp_host->y_3d, temp_host->z_3d);
+				printf("<td class='%s'>%.2f,%.2f,%.2f</td>\n", bg_class, temp_host->x_3d, temp_host->y_3d, temp_host->z_3d);
 
 			if (temp_host->statusmap_image == NULL)
-				printf("<TD CLASS='%s'>&nbsp;</TD>\n", bg_class);
+				printf("<td class='%s'>&nbsp;</td>\n", bg_class);
 			else
-				printf("<TD CLASS='%s' valign='center'><img src='%s%s' border='0' width='20' height='20'> %s</TD>\n", bg_class, url_logo_images_path, temp_host->statusmap_image, html_encode(temp_host->statusmap_image, FALSE));
+				printf("<td class='%s' valign='middle'><img src='%s%s' border='0' width='20' height='20'> %s</td>\n", bg_class, url_logo_images_path, temp_host->statusmap_image, html_encode(temp_host->statusmap_image, FALSE));
 
 			if (temp_host->vrml_image == NULL)
-				printf("<TD CLASS='%s'>&nbsp;</TD>\n", bg_class);
+				printf("<td class='%s'>&nbsp;</td>\n", bg_class);
 			else
-				printf("<TD CLASS='%s' valign='center'><img src='%s%s' border='0' width='20' height='20'> %s</TD>\n", bg_class, url_logo_images_path, temp_host->vrml_image, html_encode(temp_host->vrml_image, FALSE));
+				printf("<td class='%s' valign='middle'><img src='%s%s' border='0' width='20' height='20'> %s</td>\n", bg_class, url_logo_images_path, temp_host->vrml_image, html_encode(temp_host->vrml_image, FALSE));
 
 			if (temp_host->icon_image == NULL)
-				printf("<TD CLASS='%s'>&nbsp;</TD>\n", bg_class);
+				printf("<td class='%s'>&nbsp;</td>\n", bg_class);
 			else {
 				process_macros_r(mac, temp_host->icon_image, &processed_string, 0);
-				printf("<TD CLASS='%s' valign='center'><img src='%s%s' border='0' width='20' height='20'>%s</TD>\n", bg_class, url_logo_images_path, processed_string, html_encode(temp_host->icon_image, FALSE));
+				printf("<td class='%s' valign='middle'><img src='%s%s' border='0' width='20' height='20'>%s</td>\n", bg_class, url_logo_images_path, processed_string, html_encode(temp_host->icon_image, FALSE));
 				free(processed_string);
 			}
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_host->icon_image_alt == NULL) ? "&nbsp;" : html_encode(temp_host->icon_image_alt, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_host->icon_image_alt == NULL) ? "&nbsp;" : html_encode(temp_host->icon_image_alt, FALSE));
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -1352,12 +1352,12 @@ void display_hosts(void) {
 		else if (content_type == CSV_CONTENT)
 			printf("%s\n", csv_data_enclosure);
 		else
-			printf("</TD>\n</TR>\n");
+			printf("</td>\n</tr>\n");
 
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1381,15 +1381,15 @@ void display_hostgroups(void) {
 		printf("%sNotes URL%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sAction URL%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Group Name</TH>");
-		printf("<TH CLASS='data'>Description</TH>");
-		printf("<TH CLASS='data'>Host Members</TH>");
-		printf("<TH CLASS='data'>Notes</TH>");
-		printf("<TH CLASS='data'>Notes URL</TH>");
-		printf("<TH CLASS='data'>Action URL</TH>");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Group Name</th>");
+		printf("<th class='data'>Description</th>");
+		printf("<th class='data'>Host Members</th>");
+		printf("<th class='data'>Notes</th>");
+		printf("<th class='data'>Notes URL</th>");
+		printf("<th class='data'>Action URL</th>");
+		printf("</tr>\n");
 	}
 
 	/* check all the hostgroups... */
@@ -1467,35 +1467,35 @@ void display_hostgroups(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_hostgroup->notes_url == NULL) ? "" : temp_hostgroup->notes_url, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s\n", csv_data_enclosure, (temp_hostgroup->action_url == NULL) ? "" : temp_hostgroup->action_url, csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_hostgroup->group_name, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_hostgroup->group_name, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_hostgroup->alias, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_hostgroup->alias, FALSE));
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 
 			/* find all the hosts that are members of this hostgroup... */
 			for (temp_hostsmember = temp_hostgroup->members; temp_hostsmember != NULL; temp_hostsmember = temp_hostsmember->next) {
 
 				if (temp_hostsmember != temp_hostgroup->members)
 					printf(", ");
-				printf("<A HREF='%s?type=hosts&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
+				printf("<a href='%s?type=hosts&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hostsmember->host_name), html_encode(temp_hostsmember->host_name, FALSE));
 			}
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_hostgroup->notes == NULL) ? "&nbsp;" : html_encode(temp_hostgroup->notes, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_hostgroup->notes == NULL) ? "&nbsp;" : html_encode(temp_hostgroup->notes, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_hostgroup->notes_url == NULL) ? "&nbsp;" : html_encode(temp_hostgroup->notes_url, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_hostgroup->notes_url == NULL) ? "&nbsp;" : html_encode(temp_hostgroup->notes_url, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_hostgroup->action_url == NULL) ? "&nbsp;" : html_encode(temp_hostgroup->action_url, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_hostgroup->action_url == NULL) ? "&nbsp;" : html_encode(temp_hostgroup->action_url, FALSE));
 
-			printf("</TR>\n");
+			printf("</tr>\n");
 		}
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1520,15 +1520,15 @@ void display_servicegroups(void) {
 		printf("%sAction URL%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Group Name</TH>");
-		printf("<TH CLASS='data'>Description</TH>");
-		printf("<TH CLASS='data'>Service Members</TH>");
-		printf("<TH CLASS='data'>Notes</TH>");
-		printf("<TH CLASS='data'>Notes URL</TH>");
-		printf("<TH CLASS='data'>Action URL</TH>");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Group Name</th>");
+		printf("<th class='data'>Description</th>");
+		printf("<th class='data'>Service Members</th>");
+		printf("<th class='data'>Notes</th>");
+		printf("<th class='data'>Notes URL</th>");
+		printf("<th class='data'>Action URL</th>");
+		printf("</tr>\n");
 	}
 
 	/* check all the servicegroups... */
@@ -1603,37 +1603,37 @@ void display_servicegroups(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_servicegroup->notes_url == NULL) ? "" : temp_servicegroup->notes_url, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s\n", csv_data_enclosure, (temp_servicegroup->action_url == NULL) ? "" : temp_servicegroup->action_url, csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_servicegroup->group_name, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_servicegroup->group_name, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_servicegroup->alias, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_servicegroup->alias, FALSE));
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 
 			/* find all the services that are members of this servicegroup... */
 			for (temp_servicesmember = temp_servicegroup->members; temp_servicesmember != NULL; temp_servicesmember = temp_servicesmember->next) {
 
-				printf("%s<A HREF='%s?type=hosts&item_name=%s'>%s</A> / ", (temp_servicesmember == temp_servicegroup->members) ? "" : ", ", CONFIG_CGI, url_encode(temp_servicesmember->host_name), html_encode(temp_servicesmember->host_name, FALSE));
+				printf("%s<a href='%s?type=hosts&amp;item_name=%s'>%s</a> / ", (temp_servicesmember == temp_servicegroup->members) ? "" : ", ", CONFIG_CGI, url_encode(temp_servicesmember->host_name), html_encode(temp_servicesmember->host_name, FALSE));
 
-				printf("<A HREF='%s?type=services&item_name=%s^", CONFIG_CGI, url_encode(temp_servicesmember->host_name));
-				printf("%s'>%s</A>", url_encode(temp_servicesmember->service_description), html_encode(temp_servicesmember->service_description, FALSE));
+				printf("<a href='%s?type=services&amp;item_name=%s^", CONFIG_CGI, url_encode(temp_servicesmember->host_name));
+				printf("%s'>%s</a>", url_encode(temp_servicesmember->service_description), html_encode(temp_servicesmember->service_description, FALSE));
 			}
 
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_servicegroup->notes == NULL) ? "&nbsp;" : html_encode(temp_servicegroup->notes, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_servicegroup->notes == NULL) ? "&nbsp;" : html_encode(temp_servicegroup->notes, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_servicegroup->notes_url == NULL) ? "&nbsp;" : html_encode(temp_servicegroup->notes_url, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_servicegroup->notes_url == NULL) ? "&nbsp;" : html_encode(temp_servicegroup->notes_url, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_servicegroup->action_url == NULL) ? "&nbsp;" : html_encode(temp_servicegroup->action_url, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_servicegroup->action_url == NULL) ? "&nbsp;" : html_encode(temp_servicegroup->action_url, FALSE));
 
-			printf("</TR>\n");
+			printf("</tr>\n");
 		}
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1665,20 +1665,20 @@ void display_contacts(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<TABLE border='0' CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Contact Name</TH>");
-		printf("<TH CLASS='data'>Alias</TH>");
-		printf("<TH CLASS='data'>Email Address</TH>");
-		printf("<TH CLASS='data'>Pager Address/Number</TH>");
-		printf("<TH CLASS='data'>Service Notification Options</TH>");
-		printf("<TH CLASS='data'>Host Notification Options</TH>");
-		printf("<TH CLASS='data'>Service Notification Period</TH>");
-		printf("<TH CLASS='data'>Host Notification Period</TH>");
-		printf("<TH CLASS='data'>Service Notification Commands</TH>");
-		printf("<TH CLASS='data'>Host Notification Commands</TH>");
-		printf("<TH CLASS='data'>Retention Options</TH>");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Contact Name</th>");
+		printf("<th class='data'>Alias</th>");
+		printf("<th class='data'>Email Address</th>");
+		printf("<th class='data'>Pager Address/Number</th>");
+		printf("<th class='data'>Service Notification Options</th>");
+		printf("<th class='data'>Host Notification Options</th>");
+		printf("<th class='data'>Service Notification Period</th>");
+		printf("<th class='data'>Host Notification Period</th>");
+		printf("<th class='data'>Service Notification Commands</th>");
+		printf("<th class='data'>Host Notification Commands</th>");
+		printf("<th class='data'>Retention Options</th>");
+		printf("</tr>\n");
 	}
 
 	/* check all contacts... */
@@ -1737,14 +1737,14 @@ void display_contacts(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_contact->pager == NULL) ? "" : temp_contact->pager, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A NAME='%s'>%s</a></TD>\n", bg_class, url_encode(temp_contact->name), html_encode(temp_contact->name, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_contact->alias, FALSE));
-			printf("<TD CLASS='%s'><A HREF='mailto:%s'>%s</A></TD>\n", bg_class, (temp_contact->email == NULL) ? "&nbsp;" : url_encode(temp_contact->email), (temp_contact->email == NULL) ? "&nbsp;" : html_encode(temp_contact->email, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_contact->pager == NULL) ? "&nbsp;" : html_encode(temp_contact->pager, FALSE));
+			printf("<td class='%s'><a name='%s'>%s</a></td>\n", bg_class, url_encode(temp_contact->name), html_encode(temp_contact->name, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_contact->alias, FALSE));
+			printf("<td class='%s'><a href='mailto:%s'>%s</a></td>\n", bg_class, (temp_contact->email == NULL) ? "&nbsp;" : url_encode(temp_contact->email), (temp_contact->email == NULL) ? "&nbsp;" : html_encode(temp_contact->email, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_contact->pager == NULL) ? "&nbsp;" : html_encode(temp_contact->pager, FALSE));
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -1782,8 +1782,8 @@ void display_contacts(void) {
 			printf("%s%s", csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("</td>\n");
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -1829,23 +1829,23 @@ void display_contacts(void) {
 
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("</td>\n");
+			printf("<td class='%s'>", bg_class);
 
 			if (temp_contact->service_notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contact->service_notification_period), html_encode(temp_contact->service_notification_period, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contact->service_notification_period), html_encode(temp_contact->service_notification_period, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>\n", bg_class);
+			printf("<td class='%s'>\n", bg_class);
 			if (temp_contact->host_notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contact->host_notification_period), html_encode(temp_contact->host_notification_period, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contact->host_notification_period), html_encode(temp_contact->host_notification_period, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		found = FALSE;
@@ -1859,7 +1859,7 @@ void display_contacts(void) {
 			} else if (content_type == CSV_CONTENT) {
 				printf("%s", temp_commandsmember->command);
 			} else {
-				printf("<A HREF='%s?type=command&expand=%s'>%s</A>", CONFIG_CGI, url_encode(temp_commandsmember->command), html_encode(temp_commandsmember->command, FALSE));
+				printf("<a href='%s?type=command&amp;expand=%s'>%s</a>", CONFIG_CGI, url_encode(temp_commandsmember->command), html_encode(temp_commandsmember->command, FALSE));
 			}
 
 			found = TRUE;
@@ -1875,8 +1875,8 @@ void display_contacts(void) {
 			printf("%s%s", csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("</td>\n");
+			printf("<td class='%s'>", bg_class);
 		}
 
 		found = FALSE;
@@ -1890,7 +1890,7 @@ void display_contacts(void) {
 			} else if (content_type == CSV_CONTENT) {
 				printf("%s", temp_commandsmember->command);
 			} else {
-				printf("<A HREF='%s?type=command&expand=%s'>%s</A>", CONFIG_CGI, url_encode(temp_commandsmember->command), html_encode(temp_commandsmember->command, FALSE));
+				printf("<a href='%s?type=command&amp;expand=%s'>%s</a>", CONFIG_CGI, url_encode(temp_commandsmember->command), html_encode(temp_commandsmember->command, FALSE));
 			}
 
 			found = TRUE;
@@ -1905,8 +1905,8 @@ void display_contacts(void) {
 			printf("%s%s", csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("</td>\n");
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -1926,11 +1926,11 @@ void display_contacts(void) {
 		else if (content_type == CSV_CONTENT)
 			printf("%s\n", csv_data_enclosure);
 		else
-			printf("</TD>\n</TR>\n");
+			printf("</td>\n</tr>\n");
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -1952,12 +1952,12 @@ void display_contactgroups(void) {
 		printf("%sContact Members%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<TABLE BORDER=0 class='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Group Name</TH>\n");
-		printf("<TH CLASS='data'>Description</TH>\n");
-		printf("<TH CLASS='data'>Contact Members</TH>\n");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Group Name</th>\n");
+		printf("<th class='data'>Description</th>\n");
+		printf("<th class='data'>Contact Members</th>\n");
+		printf("</tr>\n");
 	}
 
 	/* check all the contact groups... */
@@ -2019,27 +2019,27 @@ void display_contactgroups(void) {
 			printf("%s\n", csv_data_enclosure);
 		} else {
 
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A NAME='%s'></A>%s</TD>\n", bg_class, url_encode(temp_contactgroup->group_name), html_encode(temp_contactgroup->group_name, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_contactgroup->alias, FALSE));
+			printf("<td class='%s'><a name='%s'></a>%s</td>\n", bg_class, url_encode(temp_contactgroup->group_name), html_encode(temp_contactgroup->group_name, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_contactgroup->alias, FALSE));
 
 			/* find all the contact who are members of this contact group... */
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			for (temp_contactsmember = temp_contactgroup->members; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {
 
 				if (temp_contactsmember != temp_contactgroup->members)
 					printf(", ");
 
-				printf("<A HREF='%s?type=contacts&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<a href='%s?type=contacts&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 			}
-			printf("</TD>\n");
-			printf("</TR>\n");
+			printf("</td>\n");
+			printf("</tr>\n");
 		}
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -2102,46 +2102,46 @@ void display_services(void) {
 		printf("%sRetention Options%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Host</TH>\n");
-		printf("<TH CLASS='data'>Description</TH>\n");
-		printf("<TH CLASS='data'>Display Name</TH>\n");
-		printf("<TH CLASS='data'>Max. Check Attempts</TH>\n");
-		printf("<TH CLASS='data'>Normal Check Interval</TH>\n");
-		printf("<TH CLASS='data'>Retry Check Interval</TH>\n");
-		printf("<TH CLASS='data'>Check Command</TH>\n");
-		printf("<TH CLASS='data'>Check Period</TH>\n");
-		printf("<TH CLASS='data'>Parallelize</TH>\n");
-		printf("<TH CLASS='data'>Volatile</TH>\n");
-		printf("<TH CLASS='data'>Obsess Over</TH>\n");
-		printf("<TH CLASS='data'>Enable Active Checks</TH>\n");
-		printf("<TH CLASS='data'>Enable Passive Checks</TH>\n");
-		printf("<TH CLASS='data'>Check Freshness</TH>\n");
-		printf("<TH CLASS='data'>Freshness Threshold</TH>\n");
-		printf("<TH CLASS='data'>Default Contacts/Groups</TH>\n");
-		printf("<TH CLASS='data'>Enable Notifications</TH>\n");
-		printf("<TH CLASS='data'>Notification Interval</TH>\n");
-		printf("<TH CLASS='data'>First Notification Delay</TH>\n");
-		printf("<TH CLASS='data'>Notification Options</TH>\n");
-		printf("<TH CLASS='data'>Notification Period</TH>\n");
-		printf("<TH CLASS='data'>Event Handler</TH>");
-		printf("<TH CLASS='data'>Enable Event Handler</TH>");
-		printf("<TH CLASS='data'>Stalking Options</TH>\n");
-		printf("<TH CLASS='data'>Enable Flap Detection</TH>");
-		printf("<TH CLASS='data'>Low Flap Threshold</TH>");
-		printf("<TH CLASS='data'>High Flap Threshold</TH>");
-		printf("<TH CLASS='data'>Flap Detection Options</TH>");
-		printf("<TH CLASS='data'>Process Performance Data</TH>");
-		printf("<TH CLASS='data'>Enable Failure Prediction</TH>");
-		printf("<TH CLASS='data'>Failure Prediction Options</TH>");
-		printf("<TH CLASS='data'>Notes</TH>");
-		printf("<TH CLASS='data'>Notes URL</TH>");
-		printf("<TH CLASS='data'>Action URL</TH>");
-		printf("<TH CLASS='data'>Logo Image</TH>");
-		printf("<TH CLASS='data'>Image Alt</TH>");
-		printf("<TH CLASS='data'>Retention Options</TH>");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Host</th>\n");
+		printf("<th class='data'>Description</th>\n");
+		printf("<th class='data'>Display Name</th>\n");
+		printf("<th class='data'>Max. Check Attempts</th>\n");
+		printf("<th class='data'>Normal Check Interval</th>\n");
+		printf("<th class='data'>Retry Check Interval</th>\n");
+		printf("<th class='data'>Check Command</th>\n");
+		printf("<th class='data'>Check Period</th>\n");
+		printf("<th class='data'>Parallelize</th>\n");
+		printf("<th class='data'>Volatile</th>\n");
+		printf("<th class='data'>Obsess Over</th>\n");
+		printf("<th class='data'>Enable Active Checks</th>\n");
+		printf("<th class='data'>Enable Passive Checks</th>\n");
+		printf("<th class='data'>Check Freshness</th>\n");
+		printf("<th class='data'>Freshness Threshold</th>\n");
+		printf("<th class='data'>Default Contacts/Groups</th>\n");
+		printf("<th class='data'>Enable Notifications</th>\n");
+		printf("<th class='data'>Notification Interval</th>\n");
+		printf("<th class='data'>First Notification Delay</th>\n");
+		printf("<th class='data'>Notification Options</th>\n");
+		printf("<th class='data'>Notification Period</th>\n");
+		printf("<th class='data'>Event Handler</th>");
+		printf("<th class='data'>Enable Event Handler</th>");
+		printf("<th class='data'>Stalking Options</th>\n");
+		printf("<th class='data'>Enable Flap Detection</th>");
+		printf("<th class='data'>Low Flap Threshold</th>");
+		printf("<th class='data'>High Flap Threshold</th>");
+		printf("<th class='data'>Flap Detection Options</th>");
+		printf("<th class='data'>Process Performance Data</th>");
+		printf("<th class='data'>Enable Failure Prediction</th>");
+		printf("<th class='data'>Failure Prediction Options</th>");
+		printf("<th class='data'>Notes</th>");
+		printf("<th class='data'>Notes URL</th>");
+		printf("<th class='data'>Action URL</th>");
+		printf("<th class='data'>Logo Image</th>");
+		printf("<th class='data'>Image Alt</th>");
+		printf("<th class='data'>Retention Options</th>");
+		printf("</tr>\n");
 	}
 
 	/* check all the services... */
@@ -2250,52 +2250,52 @@ void display_services(void) {
 
 		} else {
 
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A NAME='%s;", bg_class, url_encode(temp_service->host_name));
-			printf("%s'></A>", url_encode(temp_service->description));
-			printf("<A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", CONFIG_CGI, url_encode(temp_service->host_name), html_encode(temp_service->host_name, FALSE));
+			printf("<td class='%s'><a name='%s;", bg_class, url_encode(temp_service->host_name));
+			printf("%s'></a>", url_encode(temp_service->description));
+			printf("<a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", CONFIG_CGI, url_encode(temp_service->host_name), html_encode(temp_service->host_name, FALSE));
 
 			/* find a way to show display_name if set once */
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_service->description, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_service->description, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_service->display_name, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_service->display_name, FALSE));
 
-			printf("<TD CLASS='%s'>%d</TD>\n", bg_class, temp_service->max_attempts);
+			printf("<td class='%s'>%d</td>\n", bg_class, temp_service->max_attempts);
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, time_string[0]);
+			printf("<td class='%s'>%s</td>\n", bg_class, time_string[0]);
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, time_string[1]);
+			printf("<td class='%s'>%s</td>\n", bg_class, time_string[1]);
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=command&host=%s&service=%s&expand=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(command_line), html_encode(command_line, FALSE));
+			printf("<td class='%s'><a href='%s?type=command&amp;host=%s&amp;service=%s&amp;expand=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(command_line), html_encode(command_line, FALSE));
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_service->check_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_service->check_period), html_encode(temp_service->check_period, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_service->check_period), html_encode(temp_service->check_period, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->parallelize == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->parallelize == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->is_volatile != FALSE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->is_volatile != FALSE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->obsess_over_service == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->obsess_over_service == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->checks_enabled == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->checks_enabled == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->accept_passive_service_checks == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->accept_passive_service_checks == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->check_freshness == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->check_freshness == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_service->freshness_threshold == 0)
 				printf("Auto-determined value");
 			else
 				printf("%d seconds", temp_service->freshness_threshold);
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		contact = 0;
@@ -2309,7 +2309,7 @@ void display_services(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<A HREF='%s?type=contacts&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<a href='%s?type=contacts&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 
 		for (temp_contactgroupsmember = temp_service->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
@@ -2322,7 +2322,7 @@ void display_services(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<A HREF='%s?type=contactgroups&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<a href='%s?type=contactgroups&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -2343,11 +2343,11 @@ void display_services(void) {
 			printf("%s%s%s%s", csv_data_enclosure, time_string[1], csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->notifications_enabled == TRUE) ? "Yes" : "No");
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->notification_interval == 0) ? "<i>No Re-notification</i>" : html_encode(time_string[0], FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, time_string[1]);
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("</td>\n");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->notifications_enabled == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->notification_interval == 0) ? "<i>No Re-notification</i>" : html_encode(time_string[0], FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, time_string[1]);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -2399,23 +2399,23 @@ void display_services(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_service->event_handler_enabled == TRUE) ? "Yes" : "No", csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("</td>\n");
+			printf("<td class='%s'>", bg_class);
 			if (temp_service->notification_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_service->notification_period), html_encode(temp_service->notification_period, FALSE));
-			printf("</TD>\n");
-			printf("<TD CLASS='%s'>", bg_class);
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_service->notification_period), html_encode(temp_service->notification_period, FALSE));
+			printf("</td>\n");
+			printf("<td class='%s'>", bg_class);
 			if (temp_service->event_handler == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=command&host=%s&service=%s&expand=%s'>%s</A>", CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(temp_service->event_handler), html_encode(temp_service->event_handler, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=command&amp;host=%s&amp;service=%s&amp;expand=%s'>%s</a>", CONFIG_CGI, temp_service->host_name, temp_service->description, url_encode(temp_service->event_handler), html_encode(temp_service->event_handler, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->event_handler_enabled == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->event_handler_enabled == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -2476,25 +2476,25 @@ void display_services(void) {
 
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->flap_detection_enabled == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->flap_detection_enabled == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_service->low_flap_threshold == 0.0)
 				printf("Program-wide value");
 			else
 				printf("%3.1f%%", temp_service->low_flap_threshold);
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_service->high_flap_threshold == 0.0)
 				printf("Program-wide value");
 			else
 				printf("%3.1f%%", temp_service->high_flap_threshold);
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -2574,31 +2574,31 @@ void display_services(void) {
 
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->process_performance_data == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->process_performance_data == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->failure_prediction_enabled == TRUE) ? "Yes" : "No");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->failure_prediction_enabled == TRUE) ? "Yes" : "No");
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->failure_prediction_options == NULL) ? "&nbsp;" : html_encode(temp_service->failure_prediction_options, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->failure_prediction_options == NULL) ? "&nbsp;" : html_encode(temp_service->failure_prediction_options, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->notes == NULL) ? "&nbsp;" : html_encode(temp_service->notes, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->notes == NULL) ? "&nbsp;" : html_encode(temp_service->notes, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->notes_url == NULL) ? "&nbsp;" : html_encode(temp_service->notes_url, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->notes_url == NULL) ? "&nbsp;" : html_encode(temp_service->notes_url, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->action_url == NULL) ? "&nbsp;" : html_encode(temp_service->action_url, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->action_url == NULL) ? "&nbsp;" : html_encode(temp_service->action_url, FALSE));
 
 			if (temp_service->icon_image == NULL)
-				printf("<TD CLASS='%s'>&nbsp;</TD>\n", bg_class);
+				printf("<td class='%s'>&nbsp;</td>\n", bg_class);
 			else {
 				process_macros(temp_service->icon_image, &processed_string, 0);
-				printf("<TD CLASS='%s' valign='center'><img src='%s%s' border='0' width='20' height='20'> %s</TD>\n", bg_class, url_logo_images_path, processed_string, html_encode(temp_service->icon_image, FALSE));
+				printf("<td class='%s' valign='middle'><img src='%s%s' border='0' width='20' height='20'> %s</td>\n", bg_class, url_logo_images_path, processed_string, html_encode(temp_service->icon_image, FALSE));
 				free(processed_string);
 			}
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_service->icon_image_alt == NULL) ? "&nbsp;" : html_encode(temp_service->icon_image_alt, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_service->icon_image_alt == NULL) ? "&nbsp;" : html_encode(temp_service->icon_image_alt, FALSE));
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -2618,13 +2618,13 @@ void display_services(void) {
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s\n", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
-			printf("</TR>\n");
+			printf("</td>\n");
+			printf("</tr>\n");
 		}
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -2659,14 +2659,14 @@ void display_timeperiods(void) {
 		printf("%sTimes%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Name</TH>\n");
-		printf("<TH CLASS='data'>Alias/Description</TH>\n");
-		printf("<TH CLASS='data'>Exclusions</TH>\n");
-		printf("<TH CLASS='data'>Days/Dates</TH>\n");
-		printf("<TH CLASS='data'>Times</TH>\n");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Name</th>\n");
+		printf("<th class='data'>Alias/Description</th>\n");
+		printf("<th class='data'>Exclusions</th>\n");
+		printf("<th class='data'>Days/Dates</th>\n");
+		printf("<th class='data'>Times</th>\n");
+		printf("</tr>\n");
 	}
 
 	/* check all the time periods... */
@@ -2713,12 +2713,12 @@ void display_timeperiods(void) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_timeperiod->alias, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A NAME='%s'>%s</A></TD>\n", bg_class, url_encode(temp_timeperiod->name), html_encode(temp_timeperiod->name, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_timeperiod->alias, FALSE));
+			printf("<td class='%s'><a name='%s'>%s</a></td>\n", bg_class, url_encode(temp_timeperiod->name), html_encode(temp_timeperiod->name, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_timeperiod->alias, FALSE));
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		for (temp_timeperiodexclusion = temp_timeperiod->exclusions; temp_timeperiodexclusion != NULL; temp_timeperiodexclusion = temp_timeperiodexclusion->next) {
@@ -2730,7 +2730,7 @@ void display_timeperiods(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_timeperiodexclusion->timeperiod_name);
 			else
-				printf("<A HREF='#%s'>%s</A>", url_encode(temp_timeperiodexclusion->timeperiod_name), html_encode(temp_timeperiodexclusion->timeperiod_name, FALSE));
+				printf("<a href='#%s'>%s</a>", url_encode(temp_timeperiodexclusion->timeperiod_name), html_encode(temp_timeperiodexclusion->timeperiod_name, FALSE));
 		}
 
 		if (content_type == JSON_CONTENT) {
@@ -2740,8 +2740,8 @@ void display_timeperiods(void) {
 			printf("%s%s", csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("</td>\n");
+			printf("<td class='%s'>", bg_class);
 		}
 
 		line = 0;
@@ -2759,7 +2759,7 @@ void display_timeperiods(void) {
 						printf("%s%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 						printf("%s", csv_data_enclosure);
 					} else
-						printf("<TR><TD COLSPAN='3'></TD>\n<TD CLASS='%s'>", bg_class);
+						printf("<tr><td colspan='3'></td>\n<td class='%s'>", bg_class);
 				} else {
 					if (content_type == JSON_CONTENT)
 						printf("{ \"days_date\": \"");
@@ -2815,7 +2815,7 @@ void display_timeperiods(void) {
 					printf("%s%s", csv_data_enclosure, csv_delimiter);
 					printf("%s", csv_data_enclosure);
 				} else
-					printf("</TD>\n<TD CLASS='%s'>", bg_class);
+					printf("</td>\n<td class='%s'>", bg_class);
 
 				for (temp_timerange = temp_daterange->times; temp_timerange != NULL; temp_timerange = temp_timerange->next) {
 
@@ -2842,8 +2842,8 @@ void display_timeperiods(void) {
 				else if (content_type == CSV_CONTENT)
 					printf("%s\n", csv_data_enclosure);
 				else {
-					printf("</TD>\n");
-					printf("</TR>\n");
+					printf("</td>\n");
+					printf("</tr>\n");
 				}
 			}
 		}
@@ -2864,7 +2864,7 @@ void display_timeperiods(void) {
 					printf("%s%s%s%s", csv_data_enclosure, days[day], csv_data_enclosure, csv_delimiter);
 					printf("%s", csv_data_enclosure);
 				} else
-					printf("<TR><TD COLSPAN='3'></TD><TD CLASS='%s'>%s</TD><TD CLASS='%s'>", bg_class, days[day], bg_class);
+					printf("<tr><td colspan='3'></td><td class='%s'>%s</td><td class='%s'>", bg_class, days[day], bg_class);
 			} else {
 				if (content_type == JSON_CONTENT)
 					printf("{ \"days_date\": \"%s\",  \"time\": [ ", days[day]);
@@ -2872,7 +2872,7 @@ void display_timeperiods(void) {
 					printf("%s%s%s", days[day], csv_data_enclosure, csv_delimiter);
 					printf("%s", csv_data_enclosure);
 				} else
-					printf("%s</TD>\n<TD CLASS='%s'>", days[day], bg_class);
+					printf("%s</td>\n<td class='%s'>", days[day], bg_class);
 			}
 
 
@@ -2901,8 +2901,8 @@ void display_timeperiods(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s\n", csv_data_enclosure);
 			else {
-				printf("</TD>\n");
-				printf("</TR>\n");
+				printf("</td>\n");
+				printf("</tr>\n");
 			}
 		}
 
@@ -2915,14 +2915,14 @@ void display_timeperiods(void) {
 				printf("%s%s", csv_data_enclosure, csv_delimiter);
 				printf("%s%s\n", csv_data_enclosure, csv_data_enclosure);
 			} else {
-				printf("</TD>\n<TD></TD>\n");
-				printf("</TR>\n");
+				printf("</td>\n<td></td>\n");
+				printf("</tr>\n");
 			}
 		}
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -2942,8 +2942,8 @@ void display_commands(void) {
 		printf("%sCommand Line%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>Command Name</TH><TH CLASS='data'>Command Line</TH></TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr><th class='data'>Command Name</th><th class='data'>Command Line</th></tr>\n");
 	}
 
 	/* check all commands */
@@ -2988,17 +2988,17 @@ void display_commands(void) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_command->name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s\n", csv_data_enclosure, temp_command->command_line, csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A NAME='%s'></A>%s</TD>\n", bg_class, url_encode(temp_command->name), html_encode(temp_command->name, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_command->command_line, FALSE));
+			printf("<td class='%s'><a name='%s'></a>%s</td>\n", bg_class, url_encode(temp_command->name), html_encode(temp_command->name, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_command->command_line, FALSE));
 
-			printf("</TR>\n");
+			printf("</tr>\n");
 		}
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -3025,20 +3025,20 @@ void display_servicedependencies(void) {
 		printf("%sDependency Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDependency Failure Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data' COLSPAN=2>Dependent Service</TH>");
-		printf("<TH CLASS='data' COLSPAN=2>Master Service</TH>");
-		printf("</TR>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Host</TH>");
-		printf("<TH CLASS='data'>Service</TH>");
-		printf("<TH CLASS='data'>Host</TH>");
-		printf("<TH CLASS='data'>Service</TH>");
-		printf("<TH CLASS='data'>Dependency Type</TH>");
-		printf("<TH CLASS='data'>Dependency Period</TH>");
-		printf("<TH CLASS='data'>Dependency Failure Options</TH>");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data' colspan='2'>Dependent Service</th>");
+		printf("<th class='data' colspan='2'>Master Service</th>");
+		printf("</tr>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Host</th>");
+		printf("<th class='data'>Service</th>");
+		printf("<th class='data'>Host</th>");
+		printf("<th class='data'>Service</th>");
+		printf("<th class='data'>Dependency Type</th>");
+		printf("<th class='data'>Dependency Period</th>");
+		printf("<th class='data'>Dependency Failure Options</th>");
+		printf("</tr>\n");
 	}
 
 	/* check all the service dependencies... */
@@ -3102,28 +3102,28 @@ void display_servicedependencies(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_sd->dependency_period == NULL) ? "" : temp_sd->dependency_period, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name), html_encode(temp_sd->dependent_host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name), html_encode(temp_sd->dependent_host_name, FALSE));
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=services&item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name));
-			printf("%s'>%s</A></TD>\n", url_encode(temp_sd->dependent_service_description), html_encode(temp_sd->dependent_service_description, FALSE));
+			printf("<td class='%s'><a href='%s?type=services&amp;item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_sd->dependent_host_name));
+			printf("%s'>%s</a></td>\n", url_encode(temp_sd->dependent_service_description), html_encode(temp_sd->dependent_service_description, FALSE));
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name), html_encode(temp_sd->host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name), html_encode(temp_sd->host_name, FALSE));
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=services&item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name));
-			printf("%s'>%s</A></TD>\n", url_encode(temp_sd->service_description), html_encode(temp_sd->service_description, FALSE));
+			printf("<td class='%s'><a href='%s?type=services&amp;item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_sd->host_name));
+			printf("%s'>%s</a></td>\n", url_encode(temp_sd->service_description), html_encode(temp_sd->service_description, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_sd->dependency_type == NOTIFICATION_DEPENDENCY) ? "Notification" : "Check Execution");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_sd->dependency_type == NOTIFICATION_DEPENDENCY) ? "Notification" : "Check Execution");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_sd->dependency_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_sd->dependency_period), html_encode(temp_sd->dependency_period, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_sd->dependency_period), html_encode(temp_sd->dependency_period, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -3155,12 +3155,12 @@ void display_servicedependencies(void) {
 		else if (content_type == CSV_CONTENT)
 			printf("%s\n", csv_data_enclosure);
 		else
-			printf("</TD>\n</TR>\n");
+			printf("</td>\n</tr>\n");
 	}
 
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -3190,17 +3190,17 @@ void display_serviceescalations(void) {
 		printf("%sEscalation Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sEscalation Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Host</TH>");
-		printf("<TH CLASS='data'>Description</TH>");
-		printf("<TH CLASS='data'>Contacts/Groups</TH>");
-		printf("<TH CLASS='data'>First Notification</TH>");
-		printf("<TH CLASS='data'>Last Notification</TH>");
-		printf("<TH CLASS='data'>Notification Interval</TH>");
-		printf("<TH CLASS='data'>Escalation Period</TH>");
-		printf("<TH CLASS='data'>Escalation Options</TH>");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Host</th>");
+		printf("<th class='data'>Description</th>");
+		printf("<th class='data'>Contacts/Groups</th>");
+		printf("<th class='data'>First Notification</th>");
+		printf("<th class='data'>Last Notification</th>");
+		printf("<th class='data'>Notification Interval</th>");
+		printf("<th class='data'>Escalation Period</th>");
+		printf("<th class='data'>Escalation Options</th>");
+		printf("</tr>\n");
 	}
 
 	/* check all the service escalations... */
@@ -3244,14 +3244,14 @@ void display_serviceescalations(void) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_se->description, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_se->host_name), html_encode(temp_se->host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_se->host_name), html_encode(temp_se->host_name, FALSE));
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=services&item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_se->host_name));
-			printf("%s'>%s</A></TD>\n", url_encode(temp_se->description), html_encode(temp_se->description, FALSE));
+			printf("<td class='%s'><a href='%s?type=services&amp;item_name=%s^", bg_class, CONFIG_CGI, url_encode(temp_se->host_name));
+			printf("%s'>%s</a></td>\n", url_encode(temp_se->description), html_encode(temp_se->description, FALSE));
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		contact = 0;
@@ -3265,7 +3265,7 @@ void display_serviceescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<A HREF='%s?type=contacts&item_name=%s'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<a href='%s?type=contacts&amp;item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 		for (temp_contactgroupsmember = temp_se->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
 			contact++;
@@ -3277,7 +3277,7 @@ void display_serviceescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<A HREF='%s?type=contactgroups&item_name=%s'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<a href='%s?type=contactgroups&amp;item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -3314,12 +3314,12 @@ void display_serviceescalations(void) {
 			printf("%s%d, %d, %d, %d%s%s", csv_data_enclosure, temp_se->first_notification, temp_se->first_warning_notification, temp_se->first_critical_notification, temp_se->first_unknown_notification, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
+			printf("</td>\n");
 
 			/* state based escalation ranges */
-			printf("<TD CLASS='%s'>%d, %d, %d, %d</TD>\n", bg_class, temp_se->first_notification, temp_se->first_warning_notification, temp_se->first_critical_notification, temp_se->first_unknown_notification);
+			printf("<td class='%s'>%d, %d, %d, %d</td>\n", bg_class, temp_se->first_notification, temp_se->first_warning_notification, temp_se->first_critical_notification, temp_se->first_unknown_notification);
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		if (content_type != JSON_CONTENT) {
@@ -3357,23 +3357,23 @@ void display_serviceescalations(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_se->escalation_period == NULL) ? "" : temp_se->escalation_period, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_se->notification_interval == 0.0)
 				printf("Notify Only Once (No Re-notification)");
 			else
 				printf("%s", time_string);
-			printf("</TD>\n");
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_se->escalation_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_se->escalation_period), html_encode(temp_se->escalation_period, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_se->escalation_period), html_encode(temp_se->escalation_period, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -3401,11 +3401,11 @@ void display_serviceescalations(void) {
 		else if (content_type == CSV_CONTENT)
 			printf("%s\n", csv_data_enclosure);
 		else
-			printf("</TD>\n</TR>\n");
+			printf("</td>\n</tr>\n");
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -3428,14 +3428,14 @@ void display_hostdependencies(void) {
 		printf("%sDependency Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sDependency Failure Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Dependent Host</TH>");
-		printf("<TH CLASS='data'>Master Host</TH>");
-		printf("<TH CLASS='data'>Dependency Type</TH>");
-		printf("<TH CLASS='data'>Dependency Period</TH>");
-		printf("<TH CLASS='data'>Dependency Failure Options</TH>");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Dependent Host</th>");
+		printf("<th class='data'>Master Host</th>");
+		printf("<th class='data'>Dependency Type</th>");
+		printf("<th class='data'>Dependency Period</th>");
+		printf("<th class='data'>Dependency Failure Options</th>");
+		printf("</tr>\n");
 	}
 
 	/* check all the host dependencies... */
@@ -3488,22 +3488,22 @@ void display_hostdependencies(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_hd->dependency_period == NULL) ? "" : temp_hd->dependency_period, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->dependent_host_name), html_encode(temp_hd->dependent_host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->dependent_host_name), html_encode(temp_hd->dependent_host_name, FALSE));
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_hd->host_name), html_encode(temp_hd->host_name, FALSE));
 
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_hd->dependency_type == NOTIFICATION_DEPENDENCY) ? "Notification" : "Check Execution");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_hd->dependency_type == NOTIFICATION_DEPENDENCY) ? "Notification" : "Check Execution");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_hd->dependency_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_hd->dependency_period), html_encode(temp_hd->dependency_period, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_hd->dependency_period), html_encode(temp_hd->dependency_period, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -3532,11 +3532,11 @@ void display_hostdependencies(void) {
 		else if (content_type == CSV_CONTENT)
 			printf("%s\n", csv_data_enclosure);
 		else
-			printf("</TD>\n</TR>\n");
+			printf("</td>\n</tr>\n");
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -3565,16 +3565,16 @@ void display_hostescalations(void) {
 		printf("%sEscalation Period%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 		printf("%sEscalation Options%s\n", csv_data_enclosure, csv_data_enclosure);
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR>\n");
-		printf("<TH CLASS='data'>Host</TH>");
-		printf("<TH CLASS='data'>Contacts/Groups</TH>");
-		printf("<TH CLASS='data'>First Notification</TH>");
-		printf("<TH CLASS='data'>Last Notification</TH>");
-		printf("<TH CLASS='data'>Notification Interval</TH>");
-		printf("<TH CLASS='data'>Escalation Period</TH>");
-		printf("<TH CLASS='data'>Escalation Options</TH>");
-		printf("</TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr>\n");
+		printf("<th class='data'>Host</th>");
+		printf("<th class='data'>Contacts/Groups</th>");
+		printf("<th class='data'>First Notification</th>");
+		printf("<th class='data'>Last Notification</th>");
+		printf("<th class='data'>Notification Interval</th>");
+		printf("<th class='data'>Escalation Period</th>");
+		printf("<th class='data'>Escalation Options</th>");
+		printf("</tr>\n");
 	}
 
 	/* check all the host escalations... */
@@ -3615,11 +3615,11 @@ void display_hostescalations(void) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_he->host_name, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A HREF='%s?type=hosts&item_name=%s'>%s</A></TD>\n", bg_class, CONFIG_CGI, url_encode(temp_he->host_name), html_encode(temp_he->host_name, FALSE));
+			printf("<td class='%s'><a href='%s?type=hosts&amp;item_name=%s'>%s</a></td>\n", bg_class, CONFIG_CGI, url_encode(temp_he->host_name), html_encode(temp_he->host_name, FALSE));
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 		contact = 0;
 		for (temp_contactsmember = temp_he->contacts; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {
@@ -3631,7 +3631,7 @@ void display_hostescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactsmember->contact_name);
 			else
-				printf("<A HREF='%s?type=contacts&item_name=%s'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
+				printf("<a href='%s?type=contacts&amp;item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactsmember->contact_name), html_encode(temp_contactsmember->contact_name, FALSE));
 		}
 		for (temp_contactgroupsmember = temp_he->contact_groups; temp_contactgroupsmember != NULL; temp_contactgroupsmember = temp_contactgroupsmember->next) {
 			contact++;
@@ -3642,7 +3642,7 @@ void display_hostescalations(void) {
 			else if (content_type == CSV_CONTENT)
 				printf("%s", temp_contactgroupsmember->group_name);
 			else
-				printf("<A HREF='%s?type=contactgroups&item_name=%s'>%s</A>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
+				printf("<a href='%s?type=contactgroups&amp;item_name=%s'>%s</a>\n", CONFIG_CGI, url_encode(temp_contactgroupsmember->group_name), html_encode(temp_contactgroupsmember->group_name, FALSE));
 		}
 		if (contact == 0)
 			printf("%s", (content_type == CSV_CONTENT || content_type == JSON_CONTENT) ? "" : "&nbsp;");
@@ -3674,11 +3674,11 @@ void display_hostescalations(void) {
 			printf("%s%d, %d, %d%s%s", csv_data_enclosure, temp_he->first_notification, temp_he->first_down_notification, temp_he->first_unreachable_notification, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
+			printf("</td>\n");
 
 			/* state based escalation ranges */
-			printf("<TD CLASS='%s'>%d, %d, %d</TD>", bg_class, temp_he->first_notification, temp_he->first_down_notification, temp_he->first_unreachable_notification);
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>%d, %d, %d</td>", bg_class, temp_he->first_notification, temp_he->first_down_notification, temp_he->first_unreachable_notification);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		if (content_type != JSON_CONTENT) {
@@ -3712,17 +3712,17 @@ void display_hostescalations(void) {
 			printf("%s%s%s%s", csv_data_enclosure, (temp_he->escalation_period == NULL) ? "" : temp_he->escalation_period, csv_data_enclosure, csv_delimiter);
 			printf("%s", csv_data_enclosure);
 		} else {
-			printf("</TD>\n");
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, (temp_he->notification_interval == 0.0) ? "Notify Only Once (No Re-notification)" : time_string);
+			printf("</td>\n");
+			printf("<td class='%s'>%s</td>\n", bg_class, (temp_he->notification_interval == 0.0) ? "Notify Only Once (No Re-notification)" : time_string);
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 			if (temp_he->escalation_period == NULL)
 				printf("&nbsp;");
 			else
-				printf("<A HREF='%s?type=timeperiods&item_name=%s'>%s</A>", CONFIG_CGI, url_encode(temp_he->escalation_period), html_encode(temp_he->escalation_period, FALSE));
-			printf("</TD>\n");
+				printf("<a href='%s?type=timeperiods&amp;item_name=%s'>%s</a>", CONFIG_CGI, url_encode(temp_he->escalation_period), html_encode(temp_he->escalation_period, FALSE));
+			printf("</td>\n");
 
-			printf("<TD CLASS='%s'>", bg_class);
+			printf("<td class='%s'>", bg_class);
 		}
 
 		options = 0;
@@ -3746,11 +3746,11 @@ void display_hostescalations(void) {
 		else if (content_type == CSV_CONTENT)
 			printf("%s\n", csv_data_enclosure);
 		else
-			printf("</TD>\n</TR>\n");
+			printf("</td>\n</tr>\n");
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -3772,8 +3772,8 @@ void display_modules(void) {
 		printf("%sModule Args%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data'>\n");
-		printf("<TR><TH CLASS='data'>Module Name</TH><TH CLASS='data'>Module Type</TH><TH CLASS='data'>Module Path</TH><TH CLASS='data'>Module Args</TH></TR>\n");
+		printf("<table border='0' class='data'>\n");
+		printf("<tr><th class='data'>Module Name</th><th class='data'>Module Type</th><th class='data'>Module Path</th><th class='data'>Module Args</th></tr>\n");
 	}
 
 	/* check all modules */
@@ -3823,19 +3823,19 @@ void display_modules(void) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_module->path, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s\n", csv_data_enclosure, temp_module->args, csv_data_enclosure);
 		} else {
-			printf("<TR CLASS='%s'>\n", bg_class);
+			printf("<tr class='%s'>\n", bg_class);
 
-			printf("<TD CLASS='%s'><A NAME='%s'></A>%s</TD>\n", bg_class, url_encode(temp_module->name), html_encode(temp_module->name, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_module->type, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_module->path, FALSE));
-			printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_module->args, FALSE));
+			printf("<td class='%s'><a name='%s'></a>%s</td>\n", bg_class, url_encode(temp_module->name), html_encode(temp_module->name, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_module->type, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_module->path, FALSE));
+			printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_module->args, FALSE));
 
-			printf("</TR>\n");
+			printf("</tr>\n");
 		}
 	}
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -3881,12 +3881,12 @@ void display_cgiconfig(void) {
 	} else { \
 		odd = (odd == 0) ? 1 : 0; \
 		if (!strcmp(type, "bool")) { \
-			printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%d (%s)&nbsp;</TD><TD %s>&nbsp;%d (%s)&nbsp;</TD><TR>\n", \
+			printf("<tr class='%s'><td>&nbsp;%s&nbsp;</td><td>&nbsp;%d (%s)&nbsp;</td><td %s>&nbsp;%d (%s)&nbsp;</td><tr>\n", \
 			(odd == 0) ? "dataEven" : "dataOdd", #org_var + 4 , org_var, (org_var == 1) ? "TRUE" : "FALSE", \
-			(var != org_var) ? "CLASS='dataDiff'" : "" , var, (var == 1) ? "TRUE" : "FALSE"); \
+			(var != org_var) ? "class='dataDiff'" : "" , var, (var == 1) ? "TRUE" : "FALSE"); \
 		} else { \
-			printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%d&nbsp;</TD><TD %s>&nbsp;%d&nbsp;</TD><TR>\n", \
-			(odd == 0) ? "dataEven" : "dataOdd", #org_var + 4, org_var, (var != org_var) ? "CLASS='dataDiff'" : "" , var); \
+			printf("<tr class='%s'><td>&nbsp;%s&nbsp;</td><td>&nbsp;%d&nbsp;</td><td %s>&nbsp;%d&nbsp;</td><tr>\n", \
+			(odd == 0) ? "dataEven" : "dataOdd", #org_var + 4, org_var, (var != org_var) ? "class='dataDiff'" : "" , var); \
 		} \
 	}
 
@@ -3917,9 +3917,9 @@ void display_cgiconfig(void) {
 		printf("%s%s%s\n", csv_data_enclosure, var, csv_data_enclosure); \
 	} else { \
 		odd = (odd == 0) ? 1 : 0; \
-		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%s&nbsp;</TD><TD %s>&nbsp;%s&nbsp;</TD><TR>\n", \
+		printf("<tr class='%s'><td>&nbsp;%s&nbsp;</td><td>&nbsp;%s&nbsp;</td><td %s>&nbsp;%s&nbsp;</td><tr>\n", \
 		(odd == 0) ? "dataEven" : "dataOdd", #org_var + 4, (strlen(org_var) == 0) ? "&lt;EMPTY&gt;" : html_encode(org_var, FALSE), \
-		(!strcmp(var, org_var)) ? "" : "CLASS='dataDiff'", (strlen(var) == 0) ? "&lt;EMPTY&gt;" : html_encode(var, FALSE)); \
+		(!strcmp(var, org_var)) ? "" : "class='dataDiff'", (strlen(var) == 0) ? "&lt;EMPTY&gt;" : html_encode(var, FALSE)); \
 	}
 
 	/** @brief Macro to expand a config line with authentication information
@@ -3932,8 +3932,8 @@ void display_cgiconfig(void) {
 		PRINT_CONFIG_LINE_STRING(var,org_var) \
 	} else { \
 		odd = (odd == 0) ? 1 : 0; \
-		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%s&nbsp;</TD><TD %s>&nbsp;", (odd == 0) ? "dataEven" : "dataOdd", \
-		#org_var + 4, (strlen(org_var) == 0) ? "&lt;EMPTY&gt;" : html_encode(org_var, FALSE), (!strcmp(var, org_var)) ? "" : "CLASS='dataDiff'"); \
+		printf("<tr class='%s'><td>&nbsp;%s&nbsp;</td><td>&nbsp;%s&nbsp;</td><td %s>&nbsp;", (odd == 0) ? "dataEven" : "dataOdd", \
+		#org_var + 4, (strlen(org_var) == 0) ? "&lt;EMPTY&gt;" : html_encode(org_var, FALSE), (!strcmp(var, org_var)) ? "" : "class='dataDiff'"); \
 		if (strlen(var) == 0) { \
 			printf("&lt;EMPTY&gt;"); \
 		} else { \
@@ -3942,11 +3942,11 @@ void display_cgiconfig(void) {
 				if (json_start == FALSE) \
 					printf(", "); \
 				json_start = FALSE; \
-				printf("<A HREF='%s?type=contact%ss&item_name=%s'>%s</A>", CONFIG_CGI, (strstr(#org_var, "contactgroup")) ? "group" : "", \
+				printf("<a href='%s?type=contact%ss&amp;item_name=%s'>%s</a>", CONFIG_CGI, (strstr(#org_var, "contactgroup")) ? "group" : "", \
 				(!strcmp(temp_ptr, "*")) ? "" : url_encode(temp_ptr), html_encode(temp_ptr, FALSE)); \
 			} \
 		} \
-		printf("&nbsp;</TD><TR>\n"); \
+		printf("&nbsp;</td><tr>\n"); \
 	}
 
 	/** END MACRO declaration */
@@ -3960,8 +3960,8 @@ void display_cgiconfig(void) {
 		printf("%sCurrent Setting%s", csv_data_enclosure, csv_data_enclosure);
 		printf("\n");
 	} else {
-		printf("<TABLE BORDER=0 CLASS='data' cellpadding=2>\n");
-		printf("<TR><TH CLASS='data'>Config Option Name</TH><TH CLASS='data'>Default Setting</TH><TH CLASS='data'>Current Setting</TH></TR>\n");
+		printf("<table border='0' class='data' cellpadding='2'>\n");
+		printf("<tr><th class='data'>Config Option Name</th><th class='data'>Default Setting</th><th class='data'>Current Setting</th></tr>\n");
 	}
 
 
@@ -4006,21 +4006,21 @@ void display_cgiconfig(void) {
 		PRINT_CONFIG_LINE_INT(cgi_log_rotation_method, org_cgi_log_rotation_method, "int")
 	} else {
 		odd = (odd == 0) ? 1 : 0;
-		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD>", (odd == 0) ? "dataEven" : "dataOdd", "cgi_log_rotation_method");
-		printf("<TD>&nbsp;%d (", org_cgi_log_rotation_method);
+		printf("<tr class='%s'><td>&nbsp;%s&nbsp;</td>", (odd == 0) ? "dataEven" : "dataOdd", "cgi_log_rotation_method");
+		printf("<td>&nbsp;%d (", org_cgi_log_rotation_method);
 		if (org_cgi_log_rotation_method == LOG_ROTATION_HOURLY)       printf("HOURLY");
 		else if (org_cgi_log_rotation_method == LOG_ROTATION_DAILY)   printf("DAILY");
 		else if (org_cgi_log_rotation_method == LOG_ROTATION_WEEKLY)  printf("WEEKLY");
 		else if (org_cgi_log_rotation_method == LOG_ROTATION_MONTHLY) printf("MONTHLY");
 		else printf("NO ROTATION");
-		printf(")&nbsp;</TD><TD %s>", (org_cgi_log_rotation_method != cgi_log_rotation_method) ? "CLASS='dataDiff'" : "");
+		printf(")&nbsp;</td><td %s>", (org_cgi_log_rotation_method != cgi_log_rotation_method) ? "class='dataDiff'" : "");
 		printf("&nbsp;%d (", cgi_log_rotation_method);
 		if (cgi_log_rotation_method == LOG_ROTATION_HOURLY)       printf("HOURLY");
 		else if (cgi_log_rotation_method == LOG_ROTATION_DAILY)   printf("DAILY");
 		else if (cgi_log_rotation_method == LOG_ROTATION_WEEKLY)  printf("WEEKLY");
 		else if (cgi_log_rotation_method == LOG_ROTATION_MONTHLY) printf("MONTHLY");
 		else printf("NO ROTATION");
-		printf(")&nbsp;</TD><TR>\n");
+		printf(")&nbsp;</td><tr>\n");
 	}
 
 	PRINT_CONFIG_LINE_STRING(csv_delimiter, org_csv_delimiter)
@@ -4035,8 +4035,8 @@ void display_cgiconfig(void) {
 		PRINT_CONFIG_LINE_INT(default_statusmap_layout_method, org_default_statusmap_layout, "int")
 	} else {
 		odd = (odd == 0) ? 1 : 0;
-		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD>", (odd == 0) ? "dataEven" : "dataOdd", "default_statusmap_layout");
-		printf("<TD>&nbsp;%d (", org_default_statusmap_layout);
+		printf("<tr class='%s'><td>&nbsp;%s&nbsp;</td>", (odd == 0) ? "dataEven" : "dataOdd", "default_statusmap_layout");
+		printf("<td>&nbsp;%d (", org_default_statusmap_layout);
 		if (org_default_statusmap_layout == 0)      printf("User-defined coordinates");
 		else if (org_default_statusmap_layout == 1) printf("Depth layers");
 		else if (org_default_statusmap_layout == 2) printf("Collapsed tree");
@@ -4044,7 +4044,7 @@ void display_cgiconfig(void) {
 		else if (org_default_statusmap_layout == 4) printf("Circular");
 		else if (org_default_statusmap_layout == 5) printf("Circular (Marked Up)");
 		else printf("INVALID");
-		printf(")&nbsp;</TD><TD %s>", (org_default_statusmap_layout != default_statusmap_layout_method) ? "CLASS='dataDiff'" : "");
+		printf(")&nbsp;</td><td %s>", (org_default_statusmap_layout != default_statusmap_layout_method) ? "class='dataDiff'" : "");
 		printf("&nbsp;%d (", default_statusmap_layout_method);
 		if (default_statusmap_layout_method == 0)      printf("User-defined coordinates");
 		else if (default_statusmap_layout_method == 1) printf("Depth layers");
@@ -4053,7 +4053,7 @@ void display_cgiconfig(void) {
 		else if (default_statusmap_layout_method == 4) printf("Circular");
 		else if (default_statusmap_layout_method == 5) printf("Circular (Marked Up)");
 		else printf("INVALID");
-		printf(")&nbsp;</TD><TR>\n");
+		printf(")&nbsp;</td><tr>\n");
 	}
 
 	PRINT_CONFIG_LINE_INT(enable_splunk_integration, org_enable_splunk_integration, "bool")
@@ -4065,17 +4065,17 @@ void display_cgiconfig(void) {
 		PRINT_CONFIG_LINE_INT(extinfo_show_child_hosts, org_extinfo_show_child_hosts, "int")
 	} else {
 		odd = (odd == 0) ? 1 : 0;
-		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD>", (odd == 0) ? "dataEven" : "dataOdd", "extinfo_show_child_hosts");
-		printf("<TD>&nbsp;%d (", org_extinfo_show_child_hosts);
+		printf("<tr class='%s'><td>&nbsp;%s&nbsp;</td>", (odd == 0) ? "dataEven" : "dataOdd", "extinfo_show_child_hosts");
+		printf("<td>&nbsp;%d (", org_extinfo_show_child_hosts);
 		if (org_extinfo_show_child_hosts == SHOW_CHILD_HOSTS_IMMEDIATE) printf("IMMEDIATE ONLY");
 		else if (org_extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL)  printf("ALL");
 		else printf("NONE");
-		printf(")&nbsp;</TD><TD %s>", (org_extinfo_show_child_hosts != extinfo_show_child_hosts) ? "CLASS='dataDiff'" : "");
+		printf(")&nbsp;</td><td %s>", (org_extinfo_show_child_hosts != extinfo_show_child_hosts) ? "class='dataDiff'" : "");
 		printf("&nbsp;%d (", extinfo_show_child_hosts);
 		if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_IMMEDIATE) printf("IMMEDIATE ONLY");
 		else if (extinfo_show_child_hosts == SHOW_CHILD_HOSTS_ALL)  printf("ALL");
 		else printf("NONE");
-		printf(")&nbsp;</TD><TR>\n");
+		printf(")&nbsp;</td><tr>\n");
 	}
 
 	// first_day_of_week
@@ -4083,9 +4083,9 @@ void display_cgiconfig(void) {
 		PRINT_CONFIG_LINE_INT(week_starts_on_monday, org_first_day_of_week, "int")
 	} else {
 		odd = (odd == 0) ? 1 : 0;
-		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%d (%s)&nbsp;</TD><TD %s>&nbsp;%d (%s)&nbsp;</TD><TR>\n", \
+		printf("<tr class='%s'><td>&nbsp;%s&nbsp;</td><td>&nbsp;%d (%s)&nbsp;</td><td %s>&nbsp;%d (%s)&nbsp;</td><tr>\n", \
 		       (odd == 0) ? "dataEven" : "dataOdd", "first_day_of_week" , org_first_day_of_week, (org_first_day_of_week > 0) ? "MONDAY" : "SUNDAY", \
-		       (week_starts_on_monday != org_first_day_of_week) ? "CLASS='dataDiff'" : "" , week_starts_on_monday, (week_starts_on_monday == TRUE) ? "MONDAY" : "SUNDAY");
+		       (week_starts_on_monday != org_first_day_of_week) ? "class='dataDiff'" : "" , week_starts_on_monday, (week_starts_on_monday == TRUE) ? "MONDAY" : "SUNDAY");
 	}
 
 	PRINT_CONFIG_LINE_INT(highlight_table_rows, org_highlight_table_rows, "bool")
@@ -4108,9 +4108,9 @@ void display_cgiconfig(void) {
 		PRINT_CONFIG_LINE_INT(refresh_type, org_refresh_type,  "int")
 	} else {
 		odd = (odd == 0) ? 1 : 0;
-		printf("<TR CLASS='%s'><TD>&nbsp;%s&nbsp;</TD><TD>&nbsp;%d (%s)&nbsp;</TD><TD %s>&nbsp;%d (%s)&nbsp;</TD><TR>\n", \
+		printf("<tr class='%s'><td>&nbsp;%s&nbsp;</td><td>&nbsp;%d (%s)&nbsp;</td><td %s>&nbsp;%d (%s)&nbsp;</td><tr>\n", \
 		       (odd == 0) ? "dataEven" : "dataOdd", "refresh_type" , org_refresh_type, (org_refresh_type > 0) ? "JAVASCRIPT_REFRESH" : "HTTPHEADER_REFRESH", \
-		       (refresh_type != org_refresh_type) ? "CLASS='dataDiff'" : "" , refresh_type, (refresh_type > 0) ? "JAVASCRIPT_REFRESH" : "HTTPHEADER_REFRESH");
+		       (refresh_type != org_refresh_type) ? "class='dataDiff'" : "" , refresh_type, (refresh_type > 0) ? "JAVASCRIPT_REFRESH" : "HTTPHEADER_REFRESH");
 	}
 
 	PRINT_CONFIG_LINE_INT(result_limit, org_result_limit, "int")
@@ -4140,7 +4140,7 @@ void display_cgiconfig(void) {
 
 
 	if (content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("</TABLE>\n");
+		printf("</table>\n");
 	else if (content_type == JSON_CONTENT)
 		printf("\n]\n");
 
@@ -4196,11 +4196,11 @@ void display_command_expansion(void) {
 	svc = find_service(host_name, service_desc);
 
 	if (hst != NULL && svc == NULL)
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Command Expansion for host '%s'</DIV></P>\n", host_name);
+		printf("<p><div align='center' class='dataTitle'>Command Expansion for host '%s'</div></p>\n", host_name);
 	else if (hst != NULL && svc != NULL)
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Command Expansion for service '%s' on host '%s'</DIV></P>\n", service_desc, host_name);
+		printf("<p><div align='center' class='dataTitle'>Command Expansion for service '%s' on host '%s'</div></p>\n", service_desc, host_name);
 	else
-		printf("<P><DIV ALIGN=CENTER CLASS='dataTitle'>Command Expansion</DIV></P>\n");
+		printf("<p><div align='center' class='dataTitle'>Command Expansion</div></p>\n");
 
 	/* Parse to_expand into parts */
 	for (i = 0; i < MAX_COMMAND_ARGUMENTS; i++) command_args[i] = NULL;
@@ -4222,16 +4222,16 @@ void display_command_expansion(void) {
 			else trail_space[i] = 0;
 	}
 
-	printf("<TABLE BORDER=0 CLASS='data'>\n");
-	printf("<TR><TH CLASS='data'>Command Name</TH><TH CLASS='data'>Command Line</TH></TR>\n");
+	printf("<table border='0' class='data'>\n");
+	printf("<tr><th class='data'>Command Name</th><th class='data'>Command Line</th></tr>\n");
 
 	if ((*to_expand) != '\0') {
 		arg_count[0] = 0;
 
-		printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>To expand:</TD><TD CLASS='dataEven'>%s", escape_string(command_args[0]));
+		printf("<tr class='dataEven'><td class='dataEven'>To expand:</td><td class='dataEven'>%s", escape_string(command_args[0]));
 		for (i = 1; (i < MAX_COMMAND_ARGUMENTS) && command_args[i]; i++)
-			printf("!<FONT\n   COLOR='%s'>%s</FONT>", hash_color(i), escape_string(command_args[i]));
-		printf("\n</TD></TR>\n");
+			printf("!<font\n   color='%s'>%s</font>", hash_color(i), escape_string(command_args[i]));
+		printf("\n</td></tr>\n");
 
 		/* check all commands */
 		for (temp_command = command_list; temp_command != NULL; temp_command = temp_command->next) {
@@ -4248,17 +4248,17 @@ void display_command_expansion(void) {
 					bg_class = "dataOdd";
 				}
 
-				printf("<TR CLASS='%s'>\n", bg_class);
+				printf("<tr class='%s'>\n", bg_class);
 
-				printf("<TD CLASS='%s'><A NAME='%s'></A>%s</TD>\n", bg_class, url_encode(temp_command->name), html_encode(temp_command->name, FALSE));
-				printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(temp_command->command_line, FALSE));
+				printf("<td class='%s'><a name='%s'></a>%s</td>\n", bg_class, url_encode(temp_command->name), html_encode(temp_command->name, FALSE));
+				printf("<td class='%s'>%s</td>\n", bg_class, html_encode(temp_command->command_line, FALSE));
 
-				printf("</TR>\n<TR CLASS='%s'>\n", bg_class);
+				printf("</tr>\n<tr class='%s'>\n", bg_class);
 
 				for (i = 1; i < MAX_COMMAND_ARGUMENTS; i++) arg_count[i] = 0;
 
-				printf("<TD CLASS='%s' ALIGN='right'>-&gt;</TD>\n", bg_class);
-				printf("<TD CLASS='%s'>", bg_class);
+				printf("<td class='%s' align='right'>-&gt;</td>\n", bg_class);
+				printf("<td class='%s'>", bg_class);
 				strncpy(commandline, temp_command->command_line, MAX_COMMAND_BUFFER);
 				commandline[MAX_COMMAND_BUFFER - 1] = '\0';
 				for (c = commandline; c && (cc = strstr(c, "$"));) {
@@ -4267,17 +4267,17 @@ void display_command_expansion(void) {
 					strcat(commandline_pre_processed, c);
 					if ((*cc) == '$') {
 						/* Escaped '$' */
-						printf("<FONT COLOR='#444444'>$</FONT>");
+						printf("<font color='#444444'>$</font>");
 						c = (++cc);
 					} else if (strncmp("ARG", cc, 3)) {
 						/* Non-$ARGn$ macro */
 						c = strstr(cc, "$");
 						if (c)(*(c++)) = '\0';
-						printf("<FONT COLOR='#777777'>$%s%s</FONT>", html_encode(cc, FALSE), (c ? "$" : ""));
+						printf("<font color='#777777'>$%s%s</font>", html_encode(cc, FALSE), (c ? "$" : ""));
 						strcat(commandline_pre_processed, "$");
 						strcat(commandline_pre_processed, cc);
 						if (c) strcat(commandline_pre_processed, "$");
-						if (!c) printf("<FONT COLOR='#FF0000'> (not properly terminated)</FONT>");
+						if (!c) printf("<font color='#FF0000'> (not properly terminated)</font>");
 					} else {
 						/* $ARGn$ macro */
 						for (c = (cc += 3); isdigit(*c); c++) ;
@@ -4288,19 +4288,19 @@ void display_command_expansion(void) {
 								arg_count[i]++;
 								if (command_args[i]) {
 									if (*(command_args[i]) != '\0') {
-										printf("<FONT COLOR='%s'><B>%s%s%s</B></FONT>",
-										       hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<U>&zwj;" : ""),
-										       escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</U>" : ""));
+										printf("<font color='%s'><b>%s%s%s</b></font>",
+										       hash_color(i), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<u>&zwj;" : ""),
+										       escape_string(command_args[i]), ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</u>" : ""));
 										strcat(commandline_pre_processed, command_args[i]);
-									} else printf("<FONT COLOR='#0000FF'>(empty)</FONT>");
-								} else printf("<FONT COLOR='#0000FF'>(undefined)</FONT>");
-							} else printf("<FONT COLOR='#FF0000'>(not a valid $ARGn$ index: %u)</FONT>", i);
+									} else printf("<font color='#0000FF'>(empty)</font>");
+								} else printf("<font color='#0000FF'>(undefined)</font>");
+							} else printf("<font color='#FF0000'>(not a valid $ARGn$ index: %u)</font>", i);
 							if ((*c) != '\0') c++;
-							else printf("<FONT COLOR='#FF0000'> (not properly terminated)</FONT>");
+							else printf("<font color='#FF0000'> (not properly terminated)</font>");
 						} else {
 							/* Syntax err in index */
 							c = strstr(cc, "$");
-							printf("<FONT COLOR='#FF0000'>(not an $ARGn$ index: &quot;%s&quot;)</FONT>", html_encode(strtok(cc, "$"), FALSE));
+							printf("<font color='#FF0000'>(not an $ARGn$ index: &quot;%s&quot;)</font>", html_encode(strtok(cc, "$"), FALSE));
 							if (c) c++;
 						}
 					}
@@ -4311,23 +4311,23 @@ void display_command_expansion(void) {
 				}
 				commandline_pre_processed[MAX_COMMAND_BUFFER - 1] = '\0';
 
-				printf("</TD></TR>\n");
+				printf("</td></tr>\n");
 
 				for (i = 1; (i < MAX_COMMAND_ARGUMENTS) && (command_args[i]); i++) {
 					if (arg_count[i] == 0) {
-						printf("<TR CLASS='%s'><TD CLASS='%s' ALIGN='right'><FONT COLOR='#FF0000'>unused:</FONT></TD>\n", bg_class, bg_class);
-						printf("<TD CLASS='%s'>$ARG%u$=<FONT COLOR='%s'>%s%s%s</FONT></TD></TR>\n", bg_class, i, hash_color(i),
-						       ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<U>&zwj;" : ""), escape_string(command_args[i]),
-						       ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</U>" : ""));
+						printf("<tr class='%s'><td class='%s' align='right'><font color='#FF0000'>unused:</font></td>\n", bg_class, bg_class);
+						printf("<td class='%s'>$ARG%u$=<font color='%s'>%s%s%s</font></td></tr>\n", bg_class, i, hash_color(i),
+						       ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<u>&zwj;" : ""), escape_string(command_args[i]),
+						       ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</u>" : ""));
 					} else if (arg_count[i] > 1) {
-						printf("<TR CLASS='%s'><TD CLASS='%s' ALIGN='right'>used %u x:</TD>\n", bg_class, bg_class, i);
-						printf("<TD CLASS='%s'>$ARG%u$=<FONT COLOR='%s'>%s%s%s</FONT></TD></TR>\n", bg_class, i, hash_color(i),
-						       ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<U>&zwj;" : ""), escape_string(command_args[i]),
-						       ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</U>" : ""));
+						printf("<tr class='%s'><td class='%s' align='right'>used %u x:</td>\n", bg_class, bg_class, i);
+						printf("<td class='%s'>$ARG%u$=<font color='%s'>%s%s%s</font></td></tr>\n", bg_class, i, hash_color(i),
+						       ((lead_space[i] > 0) || (trail_space[i] > 0) ? "<u>&zwj;" : ""), escape_string(command_args[i]),
+						       ((lead_space[i] > 0) || (trail_space[i] > 0) ? "&zwj;</u>" : ""));
 					}
 					if ((lead_space[i] > 0) || (trail_space[i] > 0)) {
-						printf("<TR CLASS='%s'><TD CLASS='%s' ALIGN='right'><FONT COLOR='#0000FF'>dangling whitespace:</FONT></TD>\n", bg_class, bg_class);
-						printf("<TD CLASS='%s'>$ARG%u$=<FONT COLOR='#0000FF'>", bg_class, i);
+						printf("<tr class='%s'><td class='%s' align='right'><font color='#0000FF'>dangling whitespace:</font></td>\n", bg_class, bg_class);
+						printf("<td class='%s'>$ARG%u$=<font color='#0000FF'>", bg_class, i);
 						for (c = command_args[i], j = 0; c && isspace(*c); c++, j++)
 							if ((*c) == ' ')	printf("[SP]");
 							else if ((*c) == '\f')	printf("[FF]");
@@ -4336,9 +4336,9 @@ void display_command_expansion(void) {
 							else if ((*c) == '\t')	printf("[HT]");
 							else if ((*c) == '\v')	printf("[VT]");
 							else			printf("[0x%x]", *c);
-						printf("</FONT><FONT COLOR='%s'>", hash_color(i));
+						printf("</font><font color='%s'>", hash_color(i));
 						for (; c && ((*c) != '\0') && (j < strlen(command_args[i]) - trail_space[i]); c++, j++) putchar(*c);
-						printf("</FONT><FONT COLOR='#0000FF'>");
+						printf("</font><font color='#0000FF'>");
 						for (; c && ((*c) != '\0'); c++)
 							if ((*c) == ' ')	printf("[SP]");
 							else if ((*c) == '\f')	printf("[FF]");
@@ -4347,7 +4347,7 @@ void display_command_expansion(void) {
 							else if ((*c) == '\t')	printf("[HT]");
 							else if ((*c) == '\v')	printf("[VT]");
 							else			printf("[0x%x]", *c);
-						printf("</FONT></TD></TR>\n");
+						printf("</font></td></tr>\n");
 					}
 				}
 
@@ -4355,8 +4355,8 @@ void display_command_expansion(void) {
 				if (hst != NULL && svc == NULL && is_authorized_for_full_command_resolution(&current_authdata)) {
 					grab_host_macros_r(mac, hst);
 					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
-					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
-					printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
+					printf("<td class='%s'>Raw commandline</td>\n", bg_class);
+					printf("<td class='%s'>%s</td>\n", bg_class, html_encode(processed_command, FALSE));
 				}
 
 				/* service command */
@@ -4364,41 +4364,41 @@ void display_command_expansion(void) {
 					grab_host_macros_r(mac, hst);
 					grab_service_macros_r(mac, svc);
 					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
-					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
-					printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
+					printf("<td class='%s'>Raw commandline</td>\n", bg_class);
+					printf("<td class='%s'>%s</td>\n", bg_class, html_encode(processed_command, FALSE));
 				}
 
 				/* only command expansion w/o hosts and services given */
 				if (hst == NULL && svc == NULL && is_authorized_for_full_command_resolution(&current_authdata)) {
 					process_macros_r(mac, commandline_pre_processed, &processed_command, 0);
-					printf("<TD CLASS='%s'>Raw commandline</TD>\n", bg_class);
-					printf("<TD CLASS='%s'>%s</TD>\n", bg_class, html_encode(processed_command, FALSE));
+					printf("<td class='%s'>Raw commandline</td>\n", bg_class);
+					printf("<td class='%s'>%s</td>\n", bg_class, html_encode(processed_command, FALSE));
 				}
 
-				printf("</TR>\n<TR CLASS='%s'>\n", bg_class);
+				printf("</tr>\n<tr class='%s'>\n", bg_class);
 			}
 
 		}
 
 		if (!arg_count[0]) {
-			printf("<TR CLASS='dataOdd'><TD CLASS='dataOdd' ALIGN='right'><FONT\n");
-			printf("COLOR='#FF0000'>Error:</FONT></TD><TD CLASS='dataOdd'><FONT COLOR='#FF0000'>No\n");
-			printf("command &quot;%s&quot; found</FONT></TD></TR>\n", escape_string(command_args[0]));
+			printf("<tr class='dataOdd'><td class='dataOdd' align='right'><font\n");
+			printf("color='#FF0000'>Error:</font></td><td class='dataOdd'><font color='#FF0000'>No\n");
+			printf("command &quot;%s&quot; found</font></td></tr>\n", escape_string(command_args[0]));
 		}
 	}
 
-	printf("<TR CLASS='dataEven'><TD CLASS='dataEven'>To expand:</TD><TD CLASS='dataEven'><FORM\n");
-	printf("METHOD='GET' ACTION='%s'><INPUT TYPE='HIDDEN' NAME='type' VALUE='command'>\n", CONFIG_CGI);
+	printf("<tr class='dataEven'><td class='dataEven'>To expand:</td><td class='dataEven'><form\n");
+	printf("method='GET' action='%s'><input type='hidden' name='type' value='command'>\n", CONFIG_CGI);
 
 	if (hst != NULL)
-		printf("<INPUT TYPE='HIDDEN' NAME='host' VALUE='%s'>\n", host_name);
+		printf("<input type='hidden' name='host' value='%s'>\n", host_name);
 	if (svc != NULL)
-		printf("<INPUT TYPE='HIDDEN' NAME='service' VALUE='%s'>\n", service_desc);
+		printf("<input type='hidden' name='service' value='%s'>\n", service_desc);
 
-	printf("<INPUT TYPE='text' NAME='expand' SIZE='100%%' VALUE='%s'>\n", escape_string(to_expand));
-	printf("<INPUT TYPE='SUBMIT' VALUE='Go'></FORM></TD></TR>\n");
+	printf("<input type='text' name='expand' size='100%%' value='%s'>\n", escape_string(to_expand));
+	printf("<input type='submit' value='Go'></form></td></tr>\n");
 
-	printf("</TABLE>\n");
+	printf("</table>\n");
 
 	return;
 }
@@ -4406,24 +4406,24 @@ void display_command_expansion(void) {
 void display_options(void) {
 
 	if (display_type != DISPLAY_NONE)
-		printf("<tr><td align=left class='reportSelectSubTitle'>Object Type:</td></tr>\n");
-	printf("<tr><td align=left class='reportSelectItem'>");
+		printf("<tr><td align='left' class='reportSelectSubTitle'>Object Type:</td></tr>\n");
+	printf("<tr><td align='left' class='reportSelectItem'>");
 	printf("<select name='type'>\n");
-	printf("<option value='hosts' %s>Hosts\n", (display_type == DISPLAY_HOSTS) ? "SELECTED" : "");
-	printf("<option value='hostdependencies' %s>Host Dependencies\n", (display_type == DISPLAY_HOSTDEPENDENCIES) ? "SELECTED" : "");
-	printf("<option value='hostescalations' %s>Host Escalations\n", (display_type == DISPLAY_HOSTESCALATIONS) ? "SELECTED" : "");
-	printf("<option value='hostgroups' %s>Host Groups\n", (display_type == DISPLAY_HOSTGROUPS) ? "SELECTED" : "");
-	printf("<option value='services' %s>Services\n", (display_type == DISPLAY_SERVICES) ? "SELECTED" : "");
-	printf("<option value='servicegroups' %s>Service Groups\n", (display_type == DISPLAY_SERVICEGROUPS) ? "SELECTED" : "");
-	printf("<option value='servicedependencies' %s>Service Dependencies\n", (display_type == DISPLAY_SERVICEDEPENDENCIES) ? "SELECTED" : "");
-	printf("<option value='serviceescalations' %s>Service Escalations\n", (display_type == DISPLAY_SERVICEESCALATIONS) ? "SELECTED" : "");
-	printf("<option value='contacts' %s>Contacts\n", (display_type == DISPLAY_CONTACTS) ? "SELECTED" : "");
-	printf("<option value='contactgroups' %s>Contact Groups\n", (display_type == DISPLAY_CONTACTGROUPS) ? "SELECTED" : "");
-	printf("<option value='timeperiods' %s>Timeperiods\n", (display_type == DISPLAY_TIMEPERIODS) ? "SELECTED" : "");
-	printf("<option value='modules' %s>Modules\n", (display_type == DISPLAY_MODULES) ? "SELECTED" : "");
-	printf("<option value='commands' %s>Commands\n", (display_type == DISPLAY_COMMANDS) ? "SELECTED" : "");
-	printf("<option value='command' %s>Command Expansion\n", (display_type == DISPLAY_COMMAND_EXPANSION) ? "SELECTED" : "");
-	printf("<option value='cgiconfig' %s>CGI Config\n", (display_type == DISPLAY_CGICONFIG) ? "SELECTED" : "");
+	printf("<option value='hosts' %s>Hosts\n", (display_type == DISPLAY_HOSTS) ? "selected" : "");
+	printf("<option value='hostdependencies' %s>Host Dependencies\n", (display_type == DISPLAY_HOSTDEPENDENCIES) ? "selected" : "");
+	printf("<option value='hostescalations' %s>Host Escalations\n", (display_type == DISPLAY_HOSTESCALATIONS) ? "selected" : "");
+	printf("<option value='hostgroups' %s>Host Groups\n", (display_type == DISPLAY_HOSTGROUPS) ? "selected" : "");
+	printf("<option value='services' %s>Services\n", (display_type == DISPLAY_SERVICES) ? "selected" : "");
+	printf("<option value='servicegroups' %s>Service Groups\n", (display_type == DISPLAY_SERVICEGROUPS) ? "selected" : "");
+	printf("<option value='servicedependencies' %s>Service Dependencies\n", (display_type == DISPLAY_SERVICEDEPENDENCIES) ? "selected" : "");
+	printf("<option value='serviceescalations' %s>Service Escalations\n", (display_type == DISPLAY_SERVICEESCALATIONS) ? "selected" : "");
+	printf("<option value='contacts' %s>Contacts\n", (display_type == DISPLAY_CONTACTS) ? "selected" : "");
+	printf("<option value='contactgroups' %s>Contact Groups\n", (display_type == DISPLAY_CONTACTGROUPS) ? "selected" : "");
+	printf("<option value='timeperiods' %s>Timeperiods\n", (display_type == DISPLAY_TIMEPERIODS) ? "selected" : "");
+	printf("<option value='modules' %s>Modules\n", (display_type == DISPLAY_MODULES) ? "selected" : "");
+	printf("<option value='commands' %s>Commands\n", (display_type == DISPLAY_COMMANDS) ? "selected" : "");
+	printf("<option value='command' %s>Command Expansion\n", (display_type == DISPLAY_COMMAND_EXPANSION) ? "selected" : "");
+	printf("<option value='cgiconfig' %s>CGI Config\n", (display_type == DISPLAY_CGICONFIG) ? "selected" : "");
 	printf("</select>\n");
 	printf("</td></tr>\n");
 

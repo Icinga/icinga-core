@@ -180,24 +180,24 @@ int main(void) {
 		printf("<input type='hidden' name='limit' value='%d'>\n", result_limit);
 
 		/* begin top table */
-		printf("<table border=0 width=100%% cellpadding=0 cellspacing=0>\n");
+		printf("<table border='0' width='100%%' cellpadding='0' cellspacing='0'>\n");
 		printf("<tr>\n");
 
 		/* left column of top table - info box */
-		printf("<td align=left valign=top width=33%%>\n");
+		printf("<td align='left' valign='top' width='33%%'>\n");
 		display_info_table("Event Log", &current_authdata, daemon_check);
 		printf("</td>\n");
 
 		/* middle column of top table - log file navigation options */
-		printf("<td align=center valign=top width=33%%>\n");
+		printf("<td align='center' valign='top' width='33%%'>\n");
 		display_nav_table(ts_start, ts_end);
 		printf("</td>\n");
 
 		/* right hand column of top row */
-		printf("<td align=right valign=top width=33%%>\n");
+		printf("<td align='right' valign='top' width='33%%'>\n");
 
 		/* show filter */
-		printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='optBox' align=right><tr><td>\n");
+		printf("<table border='0' cellspacing='0' cellpadding='0' class='optBox' align='right'><tr><td>\n");
 		show_filter();
 		printf("</td></tr>\n");
 
@@ -665,7 +665,7 @@ void display_logentries() {
 
 		} else {
 			/* add export to csv, json, link */
-			printf("<table width='100%%' cellspacing=0 cellpadding=0 border=0><tr><td width='33%%'></td><td width='33%%' align=center nowrap>");
+			printf("<table width='100%%' cellspacing='0' cellpadding='0' border='0'><tr><td width='33%%'></td><td width='33%%' align='center' nowrap>");
 			printf("<div class='page_selector' id='log_page_selector'>\n");
 			printf("<div id='page_navigation_copy'></div>");
 			page_limit_selector(result_start);
@@ -678,7 +678,7 @@ void display_logentries() {
 			printf("</div></td></tr></table>");
 			printf("</div>\n");
 
-			printf("<DIV CLASS='logEntries'>\n");
+			printf("<div class='logEntries'>\n");
 		}
 
 		for (temp_entry = entry_list; temp_entry != NULL; temp_entry = temp_entry->next) {
@@ -810,16 +810,16 @@ void display_logentries() {
 			current_message_date[sizeof(current_message_date) - 1] = '\x0';
 
 			if (strcmp(last_message_date, current_message_date) != 0 && display_timebreaks == TRUE) {
-				printf("</DIV>\n");
-				printf("<BR>\n");
-				printf("<DIV>\n");
-				printf("<table border=0 width=99%% CLASS='dateTimeBreak' align=center><tr>");
-				printf("<td width=40%%><hr width=100%%></td>");
-				printf("<td align=center CLASS='dateTimeBreak'>%s</td>", current_message_date);
-				printf("<td width=40%%><hr width=100%%></td>");
+				printf("</div>\n");
+				printf("<br>\n");
+				printf("<div>\n");
+				printf("<table border='0' width='99%%' class='dateTimeBreak' align='center'><tr>");
+				printf("<td width=40%%><hr width='100%%'></td>");
+				printf("<td align='center' class='dateTimeBreak'>%s</td>", current_message_date);
+				printf("<td width=40%%><hr width='100%%'></td>");
 				printf("</tr></table>\n");
-				printf("</DIV>\n");
-				printf("<BR><DIV CLASS='logEntries'>\n");
+				printf("</div>\n");
+				printf("<br><div class='logEntries'>\n");
 				strncpy(last_message_date, current_message_date, sizeof(last_message_date));
 				last_message_date[sizeof(last_message_date) - 1] = '\x0';
 			}
@@ -849,13 +849,13 @@ void display_logentries() {
 				printf("%s%s%s\n", csv_data_enclosure, temp_entry->entry_text, csv_data_enclosure);
 			} else {
 				if (display_frills == TRUE)
-					printf("<img align=left src='%s%s' alt='%s' title='%s'>", url_images_path, image, image_alt, image_alt);
+					printf("<img align='left' src='%s%s' alt='%s' title='%s'>", url_images_path, image, image_alt, image_alt);
 				printf("[%s] %s", date_time, (temp_entry->entry_text == NULL) ? "" : html_encode(temp_entry->entry_text, FALSE));
 				if (enable_splunk_integration == TRUE) {
 					printf("&nbsp;&nbsp;&nbsp;");
 					display_splunk_generic_url(temp_entry->entry_text, 2);
 				}
-				printf("<br clear=all>\n");
+				printf("<br clear='all'>\n");
 			}
 
 			user_has_seen_something = TRUE;
@@ -863,7 +863,7 @@ void display_logentries() {
 
 		if (content_type != CSV_CONTENT && content_type != JSON_CONTENT) {
 			if (user_has_seen_something == TRUE) {
-				printf("</DIV><hr>\n");
+				printf("</div><hr>\n");
 				page_num_selector(result_start, total_entries, displayed_entries);
 			} else {
 				printf("<script type='text/javascript'>document.getElementById('log_page_selector').style.display='none';</script>");
@@ -875,7 +875,7 @@ void display_logentries() {
 	free_log_entries(&entry_list);
 
 	if (user_has_seen_something == FALSE && content_type != CSV_CONTENT && content_type != JSON_CONTENT)
-		printf("<DIV CLASS='warningMessage'>No log entries found!</DIV>");
+		printf("<div class='warningMessage'>No log entries found!</div>");
 
 	return;
 }
@@ -887,70 +887,70 @@ void show_filter(void) {
 	// escape all characters, otherwise they won't show up in search box
 	escape_html_tags = TRUE;
 
-	printf("<table border=0 cellspacing=0 cellpadding=0 width='100%%'>\n");
-	printf("<tr><td valign=top align=right style='padding-right:21.5em;'>Filters:&nbsp;&nbsp;");
-	printf("<img id='expand_image' src='%s%s' border=0 onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('display_filter').value = 'true'; document.getElementById('filters').style.display = ''; document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('display_filter').value = 'false'; document.getElementById('filters').style.display = 'none'; document.getElementById('expand_image').src = '%s%s'; }\">", url_images_path, (display_filter == TRUE) ? COLLAPSE_ICON : EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
+	printf("<table border='0' cellspacing='0' cellpadding='0' width='100%%'>\n");
+	printf("<tr><td valign='top' align='right' style='padding-right:21.5em;'>Filters:&nbsp;&nbsp;");
+	printf("<img id='expand_image' src='%s%s' border='0' onClick=\"if (document.getElementById('filters').style.display == 'none') { document.getElementById('display_filter').value = 'true'; document.getElementById('filters').style.display = ''; document.getElementById('expand_image').src = '%s%s'; } else { document.getElementById('display_filter').value = 'false'; document.getElementById('filters').style.display = 'none'; document.getElementById('expand_image').src = '%s%s'; }\">", url_images_path, (display_filter == TRUE) ? COLLAPSE_ICON : EXPAND_ICON, url_images_path, COLLAPSE_ICON, url_images_path, EXPAND_ICON);
 	printf("<input type='hidden' name='display_filter' id='display_filter' value='true'>\n");
 	printf("</td></tr></table>");
 
-	printf("<table id='filters' border=0 cellspacing=2 cellpadding=2 style='margin-bottom:0.5em;display:%s;'>\n", (display_filter == TRUE) ? "" : "none");
+	printf("<table id='filters' border='0' cellspacing='2' cellpadding='2' style='margin-bottom:0.5em;display:%s;'>\n", (display_filter == TRUE) ? "" : "none");
 
 	/* search box */
-	printf("<tr><td align=right width='10%%'>Search:</td>");
+	printf("<tr><td align='right' width='10%%'>Search:</td>");
 	printf("<td nowrap><input type='text' name='query_string' id='query_string' size='15' class='NavBarSearchItem' value='%s'>", (query_string == NULL) ? "" : html_encode(query_string, TRUE));
 	printf("&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type='button' value='Clear' onClick=\"document.getElementById('query_string').value = '';\"></td></tr>");
 
 	/* Order */
-	printf("<tr><td align=right>Order:</td>");
-	printf("<td nowrap><input type=radio name='order' value='new2old' %s> Newer Entries First&nbsp;&nbsp;| <input type=radio name='order' value='old2new' %s> Older Entries First</td></tr>", (reverse == TRUE) ? "" : "checked", (reverse == TRUE) ? "checked" : "");
+	printf("<tr><td align='right'>Order:</td>");
+	printf("<td nowrap><input type='radio' name='order' value='new2old' %s> Newer Entries First&nbsp;&nbsp;| <input type='radio' name='order' value='old2new' %s> Older Entries First</td></tr>", (reverse == TRUE) ? "" : "checked", (reverse == TRUE) ? "checked" : "");
 
 	/* Timeperiod */
-	printf("<tr><td align=left>Timeperiod:</td>");
-	printf("<td align=left>");
+	printf("<tr><td align='left'>Timeperiod:</td>");
+	printf("<td align='left'>");
 
 	printf("<select id='selecttp' name='timeperiod' onChange=\"var i=document.getElementById('selecttp').selectedIndex; if (document.getElementById('selecttp').options[i].value == 'custom') { document.getElementById('custtime').style.display = ''; } else { document.getElementById('custtime').style.display = 'none';}\">\n");
-	printf("<option value=singleday %s>Single Day\n", (timeperiod_type == TIMEPERIOD_SINGLE_DAY) ? "selected" : "");
-	printf("<option value=today %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "selected" : "");
-	printf("<option value=last24hours %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "selected" : "");
-	printf("<option value=thisweek %s>This Week\n", (timeperiod_type == TIMEPERIOD_THISWEEK) ? "selected" : "");
-	printf("<option value=last7days %s>Last 7 Days\n", (timeperiod_type == TIMEPERIOD_LAST7DAYS) ? "selected" : "");
-	printf("<option value=lastweek %s>Last Week\n", (timeperiod_type == TIMEPERIOD_LASTWEEK) ? "selected" : "");
-	printf("<option value=thismonth %s>This Month\n", (timeperiod_type == TIMEPERIOD_THISMONTH) ? "selected" : "");
-	printf("<option value=last31days %s>Last 31 Days\n", (timeperiod_type == TIMEPERIOD_LAST31DAYS) ? "selected" : "");
-	printf("<option value=lastmonth %s>Last Month\n", (timeperiod_type == TIMEPERIOD_LASTMONTH) ? "selected" : "");
-	printf("<option value=thisyear %s>This Year\n", (timeperiod_type == TIMEPERIOD_THISYEAR) ? "selected" : "");
-	printf("<option value=lastyear %s>Last Year\n", (timeperiod_type == TIMEPERIOD_LASTYEAR) ? "selected" : "");
-	printf("<option value=custom %s>* CUSTOM PERIOD *\n", (timeperiod_type == TIMEPERIOD_CUSTOM) ? "selected" : "");
+	printf("<option value='singleday' %s>Single Day\n", (timeperiod_type == TIMEPERIOD_SINGLE_DAY) ? "selected" : "");
+	printf("<option value='today' %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "selected" : "");
+	printf("<option value='last24hours' %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "selected" : "");
+	printf("<option value='thisweek' %s>This Week\n", (timeperiod_type == TIMEPERIOD_THISWEEK) ? "selected" : "");
+	printf("<option value='last7days' %s>Last 7 Days\n", (timeperiod_type == TIMEPERIOD_LAST7DAYS) ? "selected" : "");
+	printf("<option value='lastweek' %s>Last Week\n", (timeperiod_type == TIMEPERIOD_LASTWEEK) ? "selected" : "");
+	printf("<option value='thismonth' %s>This Month\n", (timeperiod_type == TIMEPERIOD_THISMONTH) ? "selected" : "");
+	printf("<option value='last31days' %s>Last 31 Days\n", (timeperiod_type == TIMEPERIOD_LAST31DAYS) ? "selected" : "");
+	printf("<option value='lastmonth' %s>Last Month\n", (timeperiod_type == TIMEPERIOD_LASTMONTH) ? "selected" : "");
+	printf("<option value='thisyear' %s>This Year\n", (timeperiod_type == TIMEPERIOD_THISYEAR) ? "selected" : "");
+	printf("<option value='lastyear' %s>Last Year\n", (timeperiod_type == TIMEPERIOD_LASTYEAR) ? "selected" : "");
+	printf("<option value='custom' %s>* CUSTOM PERIOD *\n", (timeperiod_type == TIMEPERIOD_CUSTOM) ? "selected" : "");
 	printf("</select>\n");
 	printf("<div id='custtime' style='display:%s;'>", (timeperiod_type == TIMEPERIOD_CUSTOM) ? "" : "none");
 
-	printf("<br><table border=0 cellspacing=0 cellpadding=0>\n");
+	printf("<br><table border='0' cellspacing='0' cellpadding='0'>\n");
 	get_time_string(&ts_start, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
-	printf("<tr><td>Start:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' class='timepicker' NAME='start_time' VALUE='%s' SIZE=\"25\"></td></tr>", buffer);
+	printf("<tr><td>Start:&nbsp;&nbsp;</td><td><input type='text' class='timepicker' name='start_time' value='%s' size='25'></td></tr>", buffer);
 
 	get_time_string(&ts_end, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
-	printf("<tr><td>End:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr></table></div>", buffer);
+	printf("<tr><td>End:&nbsp;&nbsp;</td><td><input type='text' class='timepicker' name='end_time' value='%s' size='25'></td></tr></table></div>", buffer);
 
 	printf("</td></tr>\n");
 
 	/* Filter Entry types */
 	printf("<tr><td>Entry Type:</td><td>\n");
-	printf("<table border=0 cellspacing=0 cellpadding=0>\n");
-	printf("<tr><td align=center>on</td><td align=center>off</td><td>Type</td></tr>\n");
-	printf("<tr><td><input type=radio name='noti' value=on %s></td><td><input type=radio name='noti' value=off %s></td><td>Notifications</td></tr>\n", (show_notifications == TRUE) ? "checked" : "", (show_notifications == FALSE) ? "checked" : "");
-	printf("<tr><td><input type=radio name='hst' value=on %s></td><td><input type=radio name='hst' value=off %s></td><td>Host Status</td></tr>\n", (show_host_status == TRUE) ? "checked" : "", (show_host_status == FALSE) ? "checked" : "");
-	printf("<tr><td><input type=radio name='sst' value=on %s></td><td><input type=radio name='sst' value=off %s></td><td>Service Status</td></tr>\n", (show_service_status == TRUE) ? "checked" : "", (show_service_status == FALSE) ? "checked" : "");
-	printf("<tr><td><input type=radio name='cmd' value=on %s></td><td><input type=radio name='cmd' value=off %s></td><td>External Commands</td></tr>\n", (show_external_commands == TRUE) ? "checked" : "", (show_external_commands == FALSE) ? "checked" : "");
-	printf("<tr><td><input type=radio name='sms' value=on %s></td><td><input type=radio name='sms' value=off %s></td><td>System Messages</td></tr>\n", (show_system_messages == TRUE) ? "checked" : "", (show_system_messages == FALSE) ? "checked" : "");
-	printf("<tr><td><input type=radio name='evh' value=on %s></td><td><input type=radio name='evh' value=off %s></td><td>Event Handler</td></tr>\n", (show_event_handler == TRUE) ? "checked" : "", (show_event_handler == FALSE) ? "checked" : "");
-	printf("<tr><td><input type=radio name='flp' value=on %s></td><td><input type=radio name='flp' value=off %s></td><td>Flapping</td></tr>\n", (show_flapping == TRUE) ? "checked" : "", (show_flapping == FALSE) ? "checked" : "");
-	printf("<tr><td><input type=radio name='dwn' value=on %s></td><td><input type=radio name='dwn' value=off %s></td><td>Downtime</td></tr>\n", (show_downtime == TRUE) ? "checked" : "", (show_downtime == FALSE) ? "checked" : "");
+	printf("<table border='0' cellspacing='0' cellpadding='0'>\n");
+	printf("<tr><td align='center'>on</td><td align='center'>off</td><td>Type</td></tr>\n");
+	printf("<tr><td><input type='radio' name='noti' value='on' %s></td><td><input type='radio' name='noti' value='off' %s></td><td>Notifications</td></tr>\n", (show_notifications == TRUE) ? "checked" : "", (show_notifications == FALSE) ? "checked" : "");
+	printf("<tr><td><input type='radio' name='hst' value='on' %s></td><td><input type='radio' name='hst' value='off' %s></td><td>Host Status</td></tr>\n", (show_host_status == TRUE) ? "checked" : "", (show_host_status == FALSE) ? "checked" : "");
+	printf("<tr><td><input type='radio' name='sst' value='on' %s></td><td><input type='radio' name='sst' value='off' %s></td><td>Service Status</td></tr>\n", (show_service_status == TRUE) ? "checked" : "", (show_service_status == FALSE) ? "checked" : "");
+	printf("<tr><td><input type='radio' name='cmd' value='on' %s></td><td><input type='radio' name='cmd' value='off' %s></td><td>External Commands</td></tr>\n", (show_external_commands == TRUE) ? "checked" : "", (show_external_commands == FALSE) ? "checked" : "");
+	printf("<tr><td><input type='radio' name='sms' value='on' %s></td><td><input type='radio' name='sms' value='off' %s></td><td>System Messages</td></tr>\n", (show_system_messages == TRUE) ? "checked" : "", (show_system_messages == FALSE) ? "checked" : "");
+	printf("<tr><td><input type='radio' name='evh' value='on' %s></td><td><input type='radio' name='evh' value='off' %s></td><td>Event Handler</td></tr>\n", (show_event_handler == TRUE) ? "checked" : "", (show_event_handler == FALSE) ? "checked" : "");
+	printf("<tr><td><input type='radio' name='flp' value='on' %s></td><td><input type='radio' name='flp' value='off' %s></td><td>Flapping</td></tr>\n", (show_flapping == TRUE) ? "checked" : "", (show_flapping == FALSE) ? "checked" : "");
+	printf("<tr><td><input type='radio' name='dwn' value='on' %s></td><td><input type='radio' name='dwn' value='off' %s></td><td>Downtime</td></tr>\n", (show_downtime == TRUE) ? "checked" : "", (show_downtime == FALSE) ? "checked" : "");
 
 	printf("</table>\n");
 	printf("</td></tr>\n");
 
 	/* submit Button */
-	printf("<tr><td><input type='submit' value='Apply'></td><td align=right><input type='reset' value='Reset' onClick=\"window.location.href='%s?order=new2old&timeperiod=singleday&limit=%d'\">&nbsp;</td></tr>\n", SHOWLOG_CGI, result_limit);
+	printf("<tr><td><input type='submit' value='Apply'></td><td align='right'><input type='reset' value='Reset' onClick=\"window.location.href='%s?order=new2old&timeperiod=singleday&limit=%d'\">&nbsp;</td></tr>\n", SHOWLOG_CGI, result_limit);
 
 	printf("</table>\n");
 

@@ -1247,7 +1247,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	printf("<html>\n");
 	printf("<head>\n");
 	printf("<link rel=\"shortcut icon\" href=\"%sfavicon.ico\" type=\"image/ico\">\n", url_images_path);
-	printf("<META HTTP-EQUIV='Pragma' CONTENT='no-cache'>\n");
+	printf("<meta http-equiv='Pragma' content='no-cache'>\n");
 	printf("<meta http-equiv=\"content-type\" content=\"text/html; charset=%s\">\n", http_charset);
 	printf("<title>%s</title>\n", cgi_title);
 
@@ -1270,10 +1270,10 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	}
 
 	if (cgi_id == TAC_CGI_ID && tac_header == TRUE) {
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, (show_tac_header == TRUE) ? TAC_HEADER_CSS : COMMON_CSS);
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_stylesheets_path, (show_tac_header == TRUE) ? TAC_HEADER_CSS : COMMON_CSS);
 	} else if (use_stylesheet) {
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, COMMON_CSS);
-		printf("<LINK REL='stylesheet' TYPE='text/css' HREF='%s%s'>\n", url_stylesheets_path, cgi_css);
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_stylesheets_path, COMMON_CSS);
+		printf("<link rel='stylesheet' type='text/css' href='%s%s'>\n", url_stylesheets_path, cgi_css);
 	}
 
 	// javascript refresh
@@ -1387,11 +1387,11 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 	printf("</head>\n");
 
 	if (cgi_id == STATUSMAP_CGI_ID)
-		printf("<body CLASS='%s' name='mappage' id='mappage'>\n", cgi_body_class);
+		printf("<body class='%s' name='mappage' id='mappage'>\n", cgi_body_class);
 	else if (cgi_id == TAC_CGI_ID && tac_header == FALSE)
-		printf("<body CLASS='%s' marginwidth=2 marginheight=2 topmargin=0 leftmargin=0 rightmargin=0>\n", cgi_body_class);
+		printf("<body class='%s' marginwidth='2' marginheight='2' topmargin='0' leftmargin='0' rightmargin='0'>\n", cgi_body_class);
 	else
-		printf("<body CLASS='%s'>\n", cgi_body_class);
+		printf("<body class='%s'>\n", cgi_body_class);
 
 	/* include user SSI header */
 	if (tac_header == FALSE)
@@ -1399,7 +1399,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 
 	/* this line was also in histogram.c, is this necessary??? */
 	if (cgi_id == HISTOGRAM_CGI_ID || cgi_id == STATUSMAP_CGI_ID || cgi_id == TRENDS_CGI_ID)
-		printf("<div id=\"popup\" style=\"position:absolute; z-index:1; visibility: hidden\"></div>\n");
+		printf("<div id='popup' style='position:absolute; z-index:1; visibility: hidden'></div>\n");
 
 	if (cgi_id == STATUS_CGI_ID || cgi_id == CMD_CGI_ID || cgi_id == OUTAGES_CGI_ID) {
 		printf("\n<script type='text/javascript' src='%s%s'>\n<!-- SkinnyTip (c) Elliott Brueggeman -->\n</script>\n", url_js_path, SKINNYTIP_JS);
@@ -1492,7 +1492,7 @@ void write_popup_code(int cgi_id) {
 	int x_offset = 3;
 	int y_offset = 3;
 
-	printf("<SCRIPT LANGUAGE='JavaScript' type='text/javascript'>\n");
+	printf("<script language='JavaScript' type='text/javascript'>\n");
 	printf("<!--\n");
 	printf("// JavaScript popup based on code originally found at http://www.helpmaster.com/htmlhelp/javascript/popjbpopup.htm\n");
 	printf("function showPopup(text, eventObj){\n");
@@ -1513,9 +1513,9 @@ void write_popup_code(int cgi_id) {
 	printf("var table = \"\";\n");
 
 	printf("if (document.all||document.documentElement){\n");
-	printf("table += \"<table bgcolor='%s' border=%d cellpadding=%d cellspacing=0>\";\n", background_color, border, padding);
+	printf("table += \"<table bgcolor='%s' border='%d' cellpadding='%d' cellspacing='0'>\";\n", background_color, border, padding);
 	printf("table += \"<tr><td>\";\n");
-	printf("table += \"<table cellspacing=0 cellpadding=%d>\";\n", padding);
+	printf("table += \"<table cellspacing='0' cellpadding='%d'\";\n", padding);
 	printf("table += \"<tr><td bgcolor='%s' class='popupText'>\" + text + \"</td></tr>\";\n", background_color);
 	printf("table += \"</table></td></tr></table>\"\n");
 	printf("document.popup.innerHTML = table;\n");
@@ -1533,7 +1533,7 @@ void write_popup_code(int cgi_id) {
 
 
 	printf("else{\n");
-	printf("table += \"<table cellpadding=%d border=%d cellspacing=0 bordercolor='%s'>\";\n", padding, border, border_color);
+	printf("table += \"<table cellpadding='%d' border='%d' cellspacing='0' bordercolor='%s'>\";\n", padding, border, border_color);
 	printf("table += \"<tr><td bgcolor='%s' class='popupText'>\" + text + \"</td></tr></table>\";\n", background_color);
 	printf("document.popup.document.open();\n");
 	printf("document.popup.document.write(table);\n");
@@ -1565,7 +1565,7 @@ void write_popup_code(int cgi_id) {
 	printf("}\n");
 	printf("//-->\n");
 
-	printf("</SCRIPT>\n");
+	printf("</script>\n");
 
 	return;
 }
@@ -1889,12 +1889,12 @@ char * html_encode(char *input, int escape_newlines) {
 		else if (((char)input[x] == (char)' ') || ((char)input[x] >= '0' && (char)input[x] <= '9') || ((char)input[x] >= 'A' && (char)input[x] <= 'Z') || ((char)input[x] >= (char)'a' && (char)input[x] <= (char)'z'))
 			str[y++] = input[x];
 
-		/* newlines turn to <BR> tags */
+		/* newlines turn to <br> tags */
 		else if (escape_newlines == TRUE && (char)input[x] == (char)'\n') {
-			strcpy(&str[y], "<BR>");
+			strcpy(&str[y], "<br>");
 			y += 4;
 		} else if (escape_newlines == TRUE && (char)input[x] == (char)'\\' && (char)input[x + 1] == (char)'n') {
-			strcpy(&str[y], "<BR>");
+			strcpy(&str[y], "<br>");
 			y += 4;
 			x++;
 		}
@@ -2047,9 +2047,9 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 	/* read program status */
 	result = read_all_status_data(main_config_file, READ_PROGRAM_STATUS);
 
-	printf("<TABLE CLASS='infoBox' BORDER=1 CELLSPACING=0 CELLPADDING=0>\n");
-	printf("<TR><TD CLASS='infoBox' nowrap>\n");
-	printf("<DIV CLASS='infoBoxTitle'>%s</DIV>\n", title);
+	printf("<table class='infoBox' border='1' cellspacing='0' cellpadding='0'>\n");
+	printf("<tr><td class='infoBox' nowrap>\n");
+	printf("<div class='infoBoxTitle'>%s</div>\n", title);
 
 	time(&current_time);
 	get_time_string(&current_time, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
@@ -2062,16 +2062,16 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 	/* display only if refresh is supported */
 	if (CGI_ID == EXTINFO_CGI_ID || CGI_ID == OUTAGES_CGI_ID || CGI_ID == STATUS_CGI_ID || CGI_ID == STATUSMAP_CGI_ID || CGI_ID == TAC_CGI_ID) {
 		if (CGI_ID == STATUS_CGI_ID && display_status_totals == TRUE)
-			printf("<BR>");
+			printf("<br>");
 		else
 			printf("- ");
 		if (refresh_type == JAVASCRIPT_REFRESH)
-			printf("<span id='refresh_text'>Refresh done......</span>&nbsp;<small><a href='#' onClick='icinga_toggle_refresh(); return false;'><span id='refresh_button'></span></a> <a href='#' onClick='icinga_do_refresh(); return false;'><img src='%s%s' border=0 style='margin-bottom:-2px;'></a></small>\n", url_images_path, RELOAD_ICON);
+			printf("<span id='refresh_text'>Refresh done......</span>&nbsp;<small><a href='#' onClick='icinga_toggle_refresh(); return false;'><span id='refresh_button'></span></a> <a href='#' onClick='icinga_do_refresh(); return false;'><img src='%s%s' border='0' style='margin-bottom:-2px;'></a></small>\n", url_images_path, RELOAD_ICON);
 		else
 			printf("Update every %d seconds\n", refresh_rate);
 	}
 
-	printf("<br><A HREF='http://www.icinga.org' TARGET='_new' CLASS='homepageURL'>%s %s</A> -\n", PROGRAM_NAME, PROGRAM_VERSION);
+	printf("<br><a href='http://www.icinga.org' target='_new' class='homepageURL'>%s %s</a> -\n", PROGRAM_NAME, PROGRAM_VERSION);
 
 	if (current_authdata != NULL)
 		printf("Logged in as <i>%s</i>\n", (!strcmp(current_authdata->username, "")) ? "?" : current_authdata->username);
@@ -2092,48 +2092,48 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 		dir_to_check[last] = '\x0';
 
 		if (!strcmp(cgi_log_file, "")) {
-			printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Logging is activated but no logfile is configured</DIV>");
+			printf("<div class='infoBoxBadProcStatus'>Warning: Logging is activated but no logfile is configured</div>");
 		} else {
 			if (access(dir_to_check, W_OK) != 0)
-				printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: No permission to write logfile to %s</DIV>", dir_to_check);
+				printf("<div class='infoBoxBadProcStatus'>Warning: No permission to write logfile to %s</div>", dir_to_check);
 		}
 		if (cgi_log_rotation_method != LOG_ROTATION_NONE) {
 			if (!strcmp(cgi_log_archive_path, ""))
-				printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Log rotation is configured but option \"cgi_log_archive_path\" isn't</DIV>");
+				printf("<div class='infoBoxBadProcStatus'>Warning: Log rotation is configured but option \"cgi_log_archive_path\" isn't</div>");
 			else {
 				if (access(cgi_log_archive_path, W_OK) != 0)
-					printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: No permission to write to \"cgi_log_archive_path\": %s</DIV>", cgi_log_archive_path);
+					printf("<div class='infoBoxBadProcStatus'>Warning: No permission to write to \"cgi_log_archive_path\": %s</div>", cgi_log_archive_path);
 			}
 		}
 		free(dir_to_check);
 	}
 
 	if (result == ERROR && daemon_check == TRUE)
-		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Could not read program status information!</DIV>");
+		printf("<div class='infoBoxBadProcStatus'>Warning: Could not read program status information!</div>");
 
 	else {
 		if (enable_notifications == FALSE) {
-			printf("<DIV CLASS='infoBoxBadProcStatus'>- Notifications are disabled");
+			printf("<div class='infoBoxBadProcStatus'>- Notifications are disabled");
 			if (disable_notifications_expire_time != 0)
 				printf(" until %s", disable_notif_expire_time);
-			printf("</DIV>");
+			printf("</div>");
 		}
 
 		if (execute_service_checks == FALSE)
-			printf("<DIV CLASS='infoBoxBadProcStatus'>- Service checks are disabled</DIV>");
+			printf("<div class='infoBoxBadProcStatus'>- Service checks are disabled</div>");
 	}
 
 	if (CGI_ID == CONFIG_CGI_ID && is_authorized_for_full_command_resolution(current_authdata)) {
 		if (access(resource_file, R_OK) != 0)
-			printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Could not read resource file, raw command line could be incomplete!</DIV>");
+			printf("<div class='infoBoxBadProcStatus'>Warning: Could not read resource file, raw command line could be incomplete!</div>");
 	}
 
 	/* must have missed 2 update intervals */
 	if (status_file_creation_time < (current_time - (2 * status_update_interval)))
-		printf("<DIV CLASS='infoBoxBadProcStatus'>Warning: Status data OUTDATED! Last status data update was %d seconds ago!</DIV>", (int)(current_time - status_file_creation_time));
+		printf("<div class='infoBoxBadProcStatus'>Warning: Status data OUTDATED! Last status data update was %d seconds ago!</div>", (int)(current_time - status_file_creation_time));
 
-	printf("</TD></TR>\n");
-	printf("</TABLE>\n");
+	printf("</td></tr>\n");
+	printf("</table>\n");
 
 	return;
 }
@@ -2196,22 +2196,22 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 	ts_midnight = mktime(t);
 
 	/* show table */
-	printf("<table border=0 cellspacing=0 cellpadding=0 CLASS='navBox'>\n");
+	printf("<table border='0' cellspacing='0' cellpadding='0' class='navBox'>\n");
 	printf("<tr>\n");
-	printf("<td align=center valign=center CLASS='navBoxItem'>\n");
+	printf("<td align='center' valign='middle' class='navBoxItem'>\n");
 	if (ts_end > ts_midnight) {
 		printf("Latest Archive<br>");
-		printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Latest Archive' title='Latest Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_midnight - 86400, ts_midnight - 1, url_images_path, LEFT_ARROW_ICON);
+		printf("<a href='%s%sts_start=%lu&amp;ts_end=%lu'><img src='%s%s' border='0' alt='Latest Archive' title='Latest Archive'></a>", url, (strstr(url, "?")) ? "&amp;" : "?", ts_midnight - 86400, ts_midnight - 1, url_images_path, LEFT_ARROW_ICON);
 	} else {
 		printf("Earlier Archive<br>");
-		printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Earlier Archive' title='Earlier Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_start - 86400, ts_start - 1, url_images_path, LEFT_ARROW_ICON);
+		printf("<a href='%s%sts_start=%lu&amp;ts_end=%lu'><img src='%s%s' border='0' alt='Earlier Archive' title='Earlier Archive'></a>", url, (strstr(url, "?")) ? "&amp;" : "?", ts_start - 86400, ts_start - 1, url_images_path, LEFT_ARROW_ICON);
 	}
 	printf("</td>\n");
 
-	printf("<td width=15></td>\n");
+	printf("<td width='15'></td>\n");
 
-	printf("<td align=center CLASS='navBoxDate'>\n");
-	printf("<DIV CLASS='navBoxTitle'>Log Navigation</DIV>\n");
+	printf("<td align='center' class='navBoxDate'>\n");
+	printf("<div class='navBoxTitle'>Log Navigation</div>\n");
 	get_time_string(&ts_start, date_time, (int)sizeof(date_time), LONG_DATE_TIME);
 	printf("%s", date_time);
 	printf("<br>to<br>");
@@ -2223,29 +2223,29 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 	}
 	printf("</td>\n");
 
-	printf("<td width=15></td>\n");
+	printf("<td width='15'></td>\n");
 
 	if (ts_end <= ts_midnight) {
 
-		printf("<td align=center valign=center CLASS='navBoxItem'>\n");
+		printf("<td align='center' valign='middle' class='navBoxItem'>\n");
 		if (ts_end == ts_midnight) {
 			printf("Current Log<br>");
-			printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='Current Log' title='Current Log'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_midnight + 1, ts_midnight + 86400, url_images_path, RIGHT_ARROW_ICON);
+			printf("<a href='%s%sts_start=%lu&amp;ts_end=%lu'><img src='%s%s' border='0' alt='Current Log' title='Current Log'></a>", url, (strstr(url, "?")) ? "&amp;" : "?", ts_midnight + 1, ts_midnight + 86400, url_images_path, RIGHT_ARROW_ICON);
 		} else {
 			printf("More Recent Archive<br>");
-			printf("<a href='%s%sts_start=%lu&ts_end=%lu'><img src='%s%s' border=0 alt='More Recent Archive' title='More Recent Archive'></a>", url, (strstr(url, "?")) ? "&" : "?", ts_end + 1, ts_end + 86400, url_images_path, RIGHT_ARROW_ICON);
+			printf("<a href='%s%sts_start=%lu&amp;ts_end=%lu'><img src='%s%s' border='0' alt='More Recent Archive' title='More Recent Archive'></a>", url, (strstr(url, "?")) ? "&amp;" : "?", ts_end + 1, ts_end + 86400, url_images_path, RIGHT_ARROW_ICON);
 		}
 		printf("</td>\n");
 	} else
-		printf("<td><img src='%s%s' border=0 width=75 height=1></td>\n", url_images_path, EMPTY_ICON);
+		printf("<td><img src='%s%s' border='0' width='75' height='1'></td>\n", url_images_path, EMPTY_ICON);
 
 	printf("</tr>\n");
 
-	printf("<tr><td colspan=2></td><td align=center valign=center><input id='history-datepicker' type='hidden'><a href='#' onclick=\"$.datepicker._showDatepicker($('#history-datepicker')[0]); return false;\">Select a day ...</a></td><td colspan=2></td></tr>\n");
+	printf("<tr><td colspan='2'></td><td align='center' valign='middle'><input id='history-datepicker' type='hidden'><a href='#' onclick=\"$.datepicker._showDatepicker($('#history-datepicker')[0]); return false;\">Select a day ...</a></td><td colspan='2'></td></tr>\n");
 
 	printf("</table>\n");
 
-	printf("<script type=\"text/javascript\">\n");
+	printf("<script type='text/javascript'>\n");
 	printf("$(function() {\n");
 	printf("\t$(\"#history-datepicker\").datepicker( \"setDate\", \"%lu000\" );\n",ts_start);
 	printf("});\n");
@@ -2454,26 +2454,26 @@ void cgi_config_file_error(char *config_file, int tac_header) {
 	}
 
 	if (tac_header == TRUE) {
-		printf("<P><STRONG><FONT COLOR='RED'>Error: Could not open CGI config file '%s' for reading!</FONT></STRONG></P>\n", config_file);
+		printf("<p><strong><font color='red'>Error: Could not open CGI config file '%s' for reading!</font></strong></p>\n", config_file);
 		return;
 	}
 
-	printf("<H1>Whoops!</H1>\n");
+	printf("<h1>Whoops!</h1>\n");
 
-	printf("<P><STRONG><FONT COLOR='RED'>Error: Could not open CGI config file '%s' for reading!</FONT></STRONG></P>\n", config_file);
+	printf("<p><strong><font color='red'>Error: Could not open CGI config file '%s' for reading!</font></strong></p>\n", config_file);
 
-	printf("<P>\n");
+	printf("<p>\n");
 	printf("Here are some things you should check in order to resolve this error:\n");
-	printf("</P>\n");
+	printf("</p>\n");
 
-	printf("<OL>\n");
-	printf("<LI>Make sure you've installed a CGI config file in its proper location. A sample CGI configuration file (named <b>cgi.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
-	printf("<LI>Make sure the user your web server is running as has permission to read the CGI config file.\n");
-	printf("</OL>\n");
+	printf("<ol>\n");
+	printf("<li>Make sure you've installed a CGI config file in its proper location. A sample CGI configuration file (named <b>cgi.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
+	printf("<li>Make sure the user your web server is running as has permission to read the CGI config file.\n");
+	printf("</ol>\n");
 
-	printf("<P>\n");
+	printf("<p>\n");
 	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
-	printf("</P>\n");
+	printf("</p>\n");
 
 	return;
 }
@@ -2496,26 +2496,26 @@ void main_config_file_error(char *config_file, int tac_header) {
 	}
 
 	if (tac_header == TRUE) {
-		printf("<P><STRONG><FONT COLOR='RED'>Error: Could not open main config file '%s' for reading!</FONT></STRONG></P>\n", config_file);
+		printf("<p><strong><font color='red'>Error: Could not open main config file '%s' for reading!</font></strong></p>\n", config_file);
 		return;
 	}
 
-	printf("<H1>Whoops!</H1>\n");
+	printf("<h1>Whoops!</h1>\n");
 
-	printf("<P><STRONG><FONT COLOR='RED'>Error: Could not open main config file '%s' for reading!</FONT></STRONG></P>\n", config_file);
+	printf("<p><strong><font color='red'>Error: Could not open main config file '%s' for reading!</font></strong></p>\n", config_file);
 
-	printf("<P>\n");
+	printf("<p>\n");
 	printf("Here are some things you should check in order to resolve this error:\n");
-	printf("</P>\n");
+	printf("</p>\n");
 
-	printf("<OL>\n");
-	printf("<LI>Make sure you've installed a main config file in its proper location. A sample main configuration file (named <b>icinga.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
-	printf("<LI>Make sure the user your web server has permission to read the main config file.\n");
-	printf("</OL>\n");
+	printf("<ol>\n");
+	printf("<li>Make sure you've installed a main config file in its proper location. A sample main configuration file (named <b>icinga.cfg</b>) can be found in the <b>sample-config/</b> subdirectory of the %s source code distribution.\n", PROGRAM_NAME);
+	printf("<li>Make sure the user your web server has permission to read the main config file.\n");
+	printf("</ol>\n");
 
-	printf("<P>\n");
+	printf("<p>\n");
 	printf("Make sure you read the documentation on installing and configuring %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
-	printf("</P>\n");
+	printf("</p>\n");
 
 	return;
 }
@@ -2539,27 +2539,26 @@ void object_data_error(int tac_header) {
 	}
 
 	if (tac_header == TRUE) {
-		printf("<P><STRONG><FONT COLOR='RED'>Error: Could not read object configuration data!</FONT></STRONG></P>\n");
+		printf("<p><strong><font color='red'>Error: Could not read object configuration data!</font></strong></p>\n");
 		return;
 	}
 
-	printf("<H1>Whoops!</H1>\n");
+	printf("<h1>Whoops!</h1>\n");
 
-	printf("<P><STRONG><FONT COLOR='RED'>Error: Could not read object configuration data!</FONT></STRONG></P>\n");
+	printf("<p><strong><font color='red'>Error: Could not read object configuration data!</font></strong></p>\n");
 
-	printf("<P>\n");
+	printf("<p>\n");
 	printf("Here are some things you should check in order to resolve this error:\n");
-	printf("</P>\n");
+	printf("</p>\n");
 
-	printf("<OL>\n");
-	printf("<LI>Make sure you set option <b>\"object_cache_file\"</b> in <b>\"%s\"</b> properly.\n", main_config_file);
-	printf("<LI>Verify configuration options using the <b>-v</b> command-line option to check for errors.\n");
-	printf("<LI>Check the %s log file for messages relating to startup or status data errors.\n", PROGRAM_NAME);
-	printf("</OL>\n");
+	printf("<ol>\n");
+	printf("<li>Verify configuration options using the <b>-v</b> command-line option to check for errors.\n");
+	printf("<li>Check the %s log file for messages relating to startup or status data errors.\n", PROGRAM_NAME);
+	printf("</ol>\n");
 
-	printf("<P>\n");
+	printf("<p>\n");
 	printf("Make sure you read the documentation on installing, configuring and running %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
-	printf("</P>\n");
+	printf("</p>\n");
 
 	return;
 }
@@ -2582,33 +2581,32 @@ void status_data_error(int tac_header) {
 	}
 
 	if (tac_header == TRUE) {
-		printf("<P><STRONG><FONT COLOR='RED'>Error: Could not read host and service status information!</FONT></STRONG></P>\n");
+		printf("<p><strong><font color='red'>Error: Could not read host and service status information!</font></strong></p>\n");
 		return;
 	}
 
-	printf("<H1>Whoops!</H1>\n");
+	printf("<h1>Whoops!</h1>\n");
 
-	printf("<P><STRONG><FONT COLOR='RED'>Error: Could not read host and service status information!</FONT></STRONG></P>\n");
+	printf("<p><strong><font color='red'>Error: Could not read host and service status information!</font></strong></p>\n");
 
-	printf("<P>\n");
+	printf("<p>\n");
 	printf("It seems that %s is not running or has not yet finished the startup procedure and then creating the status data file. If %s is indeed not running, this is a normal error message.\n", PROGRAM_NAME, PROGRAM_NAME);
 	printf("Please note that event broker modules and/or rdbms backends may slow down the overall (re)start and the cgis cannot retrieve any status information.");
-	printf("</P>\n");
+	printf("</p>\n");
 
-	printf("<P>\n");
+	printf("<p>\n");
 	printf("Things to check in order to resolve this error include:\n");
-	printf("</P>\n");
+	printf("</p>\n");
 
-	printf("<OL>\n");
-	printf("<LI>Make sure you set option <b>\"status_file\"</b> in <b>\"%s\"</b> properly.\n", main_config_file);
-	printf("<LI>Check the %s log file for messages relating to startup or status data errors.\n", PROGRAM_NAME);
-	printf("<LI>Always verify configuration options using the <b>-v</b> command-line option before starting or restarting %s!\n", PROGRAM_NAME);
-	printf("<LI>If using any event broker module for %s, look into their respective logs and/or on their behavior!\n", PROGRAM_NAME);
-	printf("</OL>\n");
+	printf("<ol>\n");
+	printf("<li>Check the %s log file for messages relating to startup or status data errors.\n", PROGRAM_NAME);
+	printf("<li>Always verify configuration options using the <b>-v</b> command-line option before starting or restarting %s!\n", PROGRAM_NAME);
+	printf("<li>If using any event broker module for %s, look into their respective logs and/or on their behavior!\n", PROGRAM_NAME);
+	printf("</ol>\n");
 
-	printf("<P>\n");
+	printf("<p>\n");
 	printf("Make sure you read the documentation on installing, configuring and running %s thoroughly before continuing.  If everything else fails, try sending a message to one of the mailing lists.  More information can be found at <a href='http://www.icinga.org'>http://www.icinga.org</a>.\n", PROGRAM_NAME);
-	printf("</P>\n");
+	printf("</p>\n");
 
 	return;
 }
@@ -2620,16 +2618,16 @@ void print_error(char *config_file, int error_type, int tac_header) {
 	if (content_type == HTML_CONTENT) {
 
 		if (tac_header == TRUE) {
-			printf("<DIV align='center'><DIV CLASS='errorBox' style='margin-top:0.7em;'>\n");
-			printf("<DIV CLASS='errorMessage' style=\"margin:0.1em\"><table width=100%% cellspacing=0 cellpadding=0 border=0><tr>");
-			printf("<td class='errorDescription' align=\"center\">");
+			printf("<div align='center'><div class='errorBox' style='margin-top:0.7em;'>\n");
+			printf("<div class='errorMessage' style='margin:0.1em'><table width='100%%' cellspacing='0' cellpadding='0' border='0'><tr>");
+			printf("<td class='errorDescription' align='center'>");
 		} else {
 			printf("\n<!-- Image \"stop.png\" has been taken from \"http://fedoraproject.org/wiki/Template:Admon/caution\" -->\n\n");
 
-			printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
-			printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55 valign=top>");
+			printf("<br><div align='center'><div class='errorBox'>\n");
+			printf("<div class='errorMessage'><table cellspacing='0' cellpadding='0' border='0'><tr><td width='55' valign='top'>");
 			if (error_type != ERROR_CGI_CFG_FILE)
-				printf("<img src=\"%s%s\" border=0>", url_images_path, CMD_STOP_ICON);
+				printf("<img src=\"%s%s\" border='0'>", url_images_path, CMD_STOP_ICON);
 
 			printf("</td><td class='errorDescription'>");
 		}
@@ -2651,8 +2649,8 @@ void print_error(char *config_file, int error_type, int tac_header) {
 	}
 
 	if (content_type == HTML_CONTENT) {
-		printf("</td></tr></table></DIV>\n");
-		printf("</DIV>\n");
+		printf("</td></tr></table></div>\n");
+		printf("</div>\n");
 	}
 	return;
 }
@@ -2747,21 +2745,21 @@ void print_generic_error_message(char *title, char *text, int returnlevels) {
 		else
 			printf("null\n}");
 	} else {
-		printf("<BR><DIV align='center'><DIV CLASS='errorBox'>\n");
-		printf("<DIV CLASS='errorMessage'><table cellspacing=0 cellpadding=0 border=0><tr><td width=55><img src=\"%s%s\" border=0></td>", url_images_path, CMD_STOP_ICON);
+		printf("<br><div align='center'><div class='errorBox'>\n");
+		printf("<div class='errorMessage'><table cellspacing='0' cellpadding='0' border='0'><tr><td width='55'><img src=\"%s%s\" border='0'></td>", url_images_path, CMD_STOP_ICON);
 
 		if (title != NULL && title[0] != '\x0')
-			printf("<td CLASS='errorMessage'>%s</td></tr></table></DIV>\n", title);
+			printf("<td class='errorMessage'>%s</td></tr></table></div>\n", title);
 
 		if (text != NULL && text[0] != '\x0')
-			printf("<DIV CLASS='errorDescription'>%s</DIV><br>", text);
+			printf("<div class='errorDescription'>%s</div><br>", text);
 
-		printf("</DIV>\n");
+		printf("</div>\n");
 
 		if (returnlevels != 0)
-			printf("<BR><input type='submit' value='Get me out of here' onClick='window.history.go(-%d);' class='submitButton'>\n", returnlevels);
+			printf("<br><input type='submit' value='Get me out of here' onClick='window.history.go(-%d);' class='submitButton'>\n", returnlevels);
 
-		printf("</DIV><BR>\n");
+		printf("</div><br>\n");
 	}
 
 	return;
@@ -2808,13 +2806,13 @@ void print_export_link(int content_type, char *cgi, char *add_to_url) {
 
 	/* print formatted link */
 	if (content_type == CSV_CONTENT)
-		printf("<a href='%s%scsvoutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border=0 alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT, EXPORT_CSV_ICON_ALT);
+		printf("<a href='%s%scsvoutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_CSV_ICON, EXPORT_CSV_ICON_ALT, EXPORT_CSV_ICON_ALT);
 	else if (content_type == JSON_CONTENT)
-		printf("<a href='%s%sjsonoutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border=0 alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT, EXPORT_JSON_ICON_ALT);
+		printf("<a href='%s%sjsonoutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_JSON_ICON, EXPORT_JSON_ICON_ALT, EXPORT_JSON_ICON_ALT);
 	else if (content_type == XML_CONTENT)
-		printf("<a href='%s%sxmloutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border=0 alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_XML_ICON, EXPORT_XML_ICON_ALT, EXPORT_XML_ICON_ALT);
+		printf("<a href='%s%sxmloutput' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, (strlen(stripped_query_string) != 0) ? "&" : "?", url_images_path, EXPORT_XML_ICON, EXPORT_XML_ICON_ALT, EXPORT_XML_ICON_ALT);
 	else
-		printf("<a href='%s' target='_blank'><img src='%s%s' style='vertical-align: middle;' border=0 alt='%s' title='%s'></a>\n", link, url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT, EXPORT_LINK_ICON_ALT);
+		printf("<a href='%s' target='_blank'><img src='%s%s' style='vertical-align: middle;' border='0' alt='%s' title='%s'></a>\n", link, url_images_path, EXPORT_LINK_ICON, EXPORT_LINK_ICON_ALT, EXPORT_LINK_ICON_ALT);
 
 	return;
 }
@@ -3321,10 +3319,10 @@ void print_comment_icon(char *host_name, char *svc_description) {
 	int saved_escape_html_tags_var = FALSE;
 
 	if (svc_description == NULL)
-		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s'", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
+		printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s'", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name));
 	else {
-		printf("<TD ALIGN=center valign=center><A HREF='%s?type=%d&host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
-		printf("&service=%s#comments'", url_encode(svc_description));
+		printf("<td align='center' valign='middle'><a href='%s?type=%d&amp;host=%s", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
+		printf("&amp;service=%s#comments'", url_encode(svc_description));
 	}
 	/* possible to implement a config option to show and hide comments tooltip in status.cgi */
 	/* but who wouldn't like to have these fancy tooltips ;-) */
@@ -3408,7 +3406,7 @@ void print_comment_icon(char *host_name, char *svc_description) {
 		/* under http://www.ebrueggeman.com/skinnytip/documentation.php#reference you can find the config options of skinnytip */
 		printf("</table>', '&nbsp;&nbsp;&nbsp;Comments', 'border:1, width:600, bordercolor:#333399, title_padding:2px, titletextcolor:#FFFFFF, backcolor:#CCCCFF');\" onMouseOut=\"return hideTip()\"");
 	}
-	printf("><IMG SRC='%s%s' BORDER=0 WIDTH=%d HEIGHT=%d></A></TD>", url_images_path, COMMENT_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
+	printf("><img src='%s%s' border='0' width='%d' height='%d'></a></td>", url_images_path, COMMENT_ICON, STATUS_ICON_WIDTH, STATUS_ICON_HEIGHT);
 
 	return;
 }
@@ -3645,26 +3643,26 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 	printf("<div id='page_navigation' class='page_select_dd'>");
 
 	if (current_page != 1 || (result_limit != 0 && result_start != 1))
-		printf("<a href='%s%sstart=1&limit=%d' title='First Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<<'></a>\n", link, (strstr(link, "?")) ? "&" : "?", result_limit, url_images_path, FIRST_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=1&amp;limit=%d' title='First Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<<'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", result_limit, url_images_path, FIRST_PAGE_ACTIVE_ICON);
 	else
 		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16'>\n", url_images_path, FIRST_PAGE_INACTIVE_ICON);
 
 	if (current_page != 1)
-		printf("<a href='%s%sstart=%d&limit=%d' title='Previous Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<'></a>\n", link, (strstr(link, "?")) ? "&" : "?", previous_page, result_limit, url_images_path, PREVIOUS_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=%d&amp;limit=%d' title='Previous Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='<'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", previous_page, result_limit, url_images_path, PREVIOUS_PAGE_ACTIVE_ICON);
 	else
 		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16'>\n", url_images_path, PREVIOUS_PAGE_INACTIVE_ICON);
 
 	printf("<span style='vertical-align:middle; font-size:8pt;'> Page </span>");
 
 	/* with inline javascript to send new page on "Enter" */
-	printf("<input type='text' value='%d' style='width:30px; vertical-align:middle; border:1px #D0D0D0 solid;text-align:center; font-size:8pt;'", current_page);
-	printf("onkeydown='if (event.keyCode == 13) window.location.href = \"%s\" + \"%slimit=%d&start=\" + (((this.value -1) * %d) + 1) ;'>", link, (strstr(link, "?")) ? "&" : "?", result_limit, result_limit);
+	printf("<input type='text' value='%d' style='width:30px; vertical-align:middle; border:1px #D0D0D0 solid;text-align:center; font-size:8pt' ", current_page);
+	printf("onkeydown='if (event.keyCode == 13) window.location.href = \"%s\" + \"%slimit=%d&amp;start=\" + (((this.value -1) * %d) + 1) ;'>", link, (strstr(link, "?")) ? "&amp;" : "?", result_limit, result_limit);
 
 	printf("<span style='vertical-align:middle; font-size:8pt;'> of %d </span>", total_pages);
 
 	if (current_page != total_pages) {
-		printf("<a href='%s%sstart=%d&limit=%d' title='Next Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>'></a>\n", link, (strstr(link, "?")) ? "&" : "?", (result_start + result_limit), result_limit, url_images_path, NEXT_PAGE_ACTIVE_ICON);
-		printf("<a href='%s%sstart=%d&limit=%d' title='Last Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>>'></a>\n", link, (strstr(link, "?")) ? "&" : "?", ((total_pages - 1)*result_limit) + 1, result_limit, url_images_path, LAST_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=%d&amp;limit=%d' title='Next Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", (result_start + result_limit), result_limit, url_images_path, NEXT_PAGE_ACTIVE_ICON);
+		printf("<a href='%s%sstart=%d&amp;limit=%d' title='Last Page'><img src='%s%s' style='vertical-align: middle;' height='16' width='16' alt='>>'></a>\n", link, (strstr(link, "?")) ? "&amp;" : "?", ((total_pages - 1)*result_limit) + 1, result_limit, url_images_path, LAST_PAGE_ACTIVE_ICON);
 	} else
 		printf("<img src='%s%s' style='vertical-align: middle;' height='16' width='16'><img src='%s%s' style='vertical-align: middle;' height='16' width='16'>\n", url_images_path, NEXT_PAGE_INACTIVE_ICON, url_images_path, LAST_PAGE_INACTIVE_ICON);
 
@@ -3747,9 +3745,9 @@ void page_limit_selector(int result_start) {
 
 	/* display drop down menu to select result limit */
 	printf("<div class='page_select_dd'>\n");
-	printf("<select style='display:none; vertical-align:middle; width:140px;' name='limit' id='limit_dd_%d' class='result_limit_dd' onChange='if (this.value) window.location.href = \"%s\" + \"%slimit=\" + this.value ", id, link, (strstr(link, "?")) ? "&" : "?");
+	printf("<select style='display:none; vertical-align:middle; width:140px;' name='limit' id='limit_dd_%d' class='result_limit_dd' onChange='if (this.value) window.location.href = \"%s\" + \"%slimit=\" + this.value ", id, link, (strstr(link, "?")) ? "&amp;" : "?");
 	if (result_start != 0)
-		printf("+ \"&start=%d\"", result_start);
+		printf("+ \"&amp;start=%d\"", result_start);
 	printf(";'>\n");
 
 	if (result_limit == 0)

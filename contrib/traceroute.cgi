@@ -74,10 +74,10 @@ print "Logged in as <i>$ENV{'REMOTE_USER'}</i><br>";
 print "</td></tr>";
 print "</table>";
 
-print "<p><div align=center class='statusTitle'>";
+print "<p><div align='center' class='statusTitle'>";
 print "Traceroute to Host $addr</div><p>\n";
 
-print "<table border=0 class='status'>\n";
+print "<table border='0' class='status'>\n";
 
 # read in icinga hosts
 #---------------------
@@ -162,7 +162,7 @@ while (<TRACEROUTE>) {
 	print "<td align=left class='$class'>\n";
 
 	if ($known_host) {
-	    print "<a href='$urlbase/cgi-bin/extinfo.cgi?type=1&host=$arr[1]'>";
+	    print "<a href='$urlbase/cgi-bin/extinfo.cgi?type=1&amp;host=$arr[1]'>";
 	    print "$arr[1]</a></td>\n";
 	} else {
 	    print "$arr[1]</td>\n";

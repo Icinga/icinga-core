@@ -348,11 +348,11 @@ int main(int argc, char **argv) {
 		old_t2 = t2;
 
 		/* begin top table */
-		printf("<table border=0 width=100%% cellspacing=0 cellpadding=0>\n");
+		printf("<table border='0' width='100%%' cellspacing='0' cellpadding='0'>\n");
 		printf("<tr>\n");
 
 		/* left column of the first row */
-		printf("<td align=left valign=top width=33%%>\n");
+		printf("<td align='left' valign='top' width='33%%'>\n");
 
 		if (display_type == DISPLAY_HOST_TRENDS)
 			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "Host State Trends");
@@ -427,8 +427,8 @@ int main(int argc, char **argv) {
 
 		if (display_type != DISPLAY_NO_TRENDS && input_type == GET_INPUT_NONE) {
 
-			printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
-			printf("<TR><TD CLASS='linkBox'>\n");
+			printf("<table border='1' cellpadding='0' cellspacing='0' class='linkBox'>\n");
+			printf("<tr><td class='linkBox'>\n");
 
 			if (display_type == DISPLAY_HOST_TRENDS) {
 				printf("<a href='%s?host=%s&t1=%lu&t2=%lu&includesoftstates=%s&assumestateretention=%s&assumeinitialstates=%s&assumestatesduringnotrunning=%s&initialassumedhoststate=%d&backtrack=%d&show_log_entries'>View <b>Availability Report</b> For <b>This Host</b></a><br>\n", AVAIL_CGI, url_encode(host_name), t1, t2, (include_soft_states == TRUE) ? "yes" : "no", (assume_state_retention == TRUE) ? "yes" : "no", (assume_initial_states == TRUE) ? "yes" : "no", (assume_states_during_notrunning == TRUE) ? "yes" : "no", initial_assumed_host_state, backtrack_archives);
@@ -451,14 +451,14 @@ int main(int argc, char **argv) {
 				printf("<a href='%s?host=%s&service=%s'>View <b>Notifications</b> For <b>This Service</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(host_name), url_encode(service_desc));
 			}
 
-			printf("</TD></TR>\n");
-			printf("</TABLE>\n");
+			printf("</td></tr>\n");
+			printf("</table>\n");
 		}
 
 		printf("</td>\n");
 
 		/* center column of top row */
-		printf("<td align=center valign=top width=33%%>\n");
+		printf("<td align='center' valign='top' width='33%%'>\n");
 
 		if (display_type != DISPLAY_NO_TRENDS && input_type == GET_INPUT_NONE) {
 
@@ -469,39 +469,39 @@ int main(int argc, char **argv) {
 			/* find the service */
 			temp_service = find_service(host_name, service_desc);
 
-			printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
+			printf("<div align='center' class='dataTitle'>\n");
 			if (display_type == DISPLAY_HOST_TRENDS)
 				printf("Host '%s'", (temp_host != NULL && temp_host->display_name != NULL) ? temp_host->display_name : host_name);
 			else if (display_type == DISPLAY_SERVICE_TRENDS)
 				printf("Service '%s' On Host '%s'", (temp_service != NULL && temp_service->display_name != NULL) ? temp_service->display_name : service_desc, (temp_host != NULL && temp_host->display_name != NULL) ? temp_host->display_name : host_name);
-			printf("</DIV>\n");
+			printf("</div>\n");
 
-			printf("<BR>\n");
+			printf("<br>\n");
 
-			printf("<IMG SRC='%s%s' BORDER=0 ALT='%s State Trends' TITLE='%s State Trends'>\n", url_images_path, TRENDS_ICON, (display_type == DISPLAY_HOST_TRENDS) ? "Host" : "Service", (display_type == DISPLAY_HOST_TRENDS) ? "Host" : "Service");
+			printf("<img src='%s%s' border='0' alt='%s State Trends' title='%s State Trends'>\n", url_images_path, TRENDS_ICON, (display_type == DISPLAY_HOST_TRENDS) ? "Host" : "Service", (display_type == DISPLAY_HOST_TRENDS) ? "Host" : "Service");
 
-			printf("<BR CLEAR=ALL>\n");
+			printf("<br clear='all'>\n");
 
 			get_time_string(&t1, start_timestring, sizeof(start_timestring) - 1, SHORT_DATE_TIME);
 			get_time_string(&t2, end_timestring, sizeof(end_timestring) - 1, SHORT_DATE_TIME);
-			printf("<div align=center class='reportRange'>%s to %s</div>\n", start_timestring, end_timestring);
+			printf("<div align='center' class='reportRange'>%s to %s</div>\n", start_timestring, end_timestring);
 
 			get_time_breakdown((time_t)(t2 - t1), &days, &hours, &minutes, &seconds);
-			printf("<div align=center class='reportDuration'>Duration: %dd %dh %dm %ds</div>\n", days, hours, minutes, seconds);
+			printf("<div align='center' class='reportDuration'>Duration: %dd %dh %dm %ds</div>\n", days, hours, minutes, seconds);
 		}
 
 		printf("</td>\n");
 
 		/* right hand column of top row */
-		printf("<td align=right valign=bottom width=33%%>\n");
+		printf("<td align='right' valign='bottom' width='33%%'>\n");
 
 		printf("<form method=\"GET\" action=\"%s\">\n", TRENDS_CGI);
-		printf("<table border=0 CLASS='optBox'>\n");
+		printf("<table border='0' class='optBox'>\n");
 
 		if (display_type != DISPLAY_NO_TRENDS && input_type == GET_INPUT_NONE) {
 
-			printf("<tr><td CLASS='optBoxItem' valign=top align=left>First assumed %s state:</td><td CLASS='optBoxItem' valign=top align=left>Backtracked archives:</td></tr>\n", (display_type == DISPLAY_HOST_TRENDS) ? "host" : "service");
-			printf("<tr><td CLASS='optBoxItem' valign=top align=left>");
+			printf("<tr><td class='optBoxItem' valign='top' align='left'>First assumed %s state:</td><td class='optBoxItem' valign='top' align='left'>Backtracked archives:</td></tr>\n", (display_type == DISPLAY_HOST_TRENDS) ? "host" : "service");
+			printf("<tr><td class='optBoxItem' valign='top' align='left'>");
 
 			if (display_popups == FALSE)
 				printf("<input type='hidden' name='nopopups' value=''>\n");
@@ -523,60 +523,60 @@ int main(int argc, char **argv) {
 			if (display_type == DISPLAY_HOST_TRENDS) {
 				printf("<input type='hidden' name='initialassumedservicestate' value='%d'>", initial_assumed_service_state);
 				printf("<select name='initialassumedhoststate'>\n");
-				printf("<option value=%d %s>Unspecified\n", AS_NO_DATA, (initial_assumed_host_state == AS_NO_DATA) ? "SELECTED" : "");
-				printf("<option value=%d %s>Current State\n", AS_CURRENT_STATE, (initial_assumed_host_state == AS_CURRENT_STATE) ? "SELECTED" : "");
-				printf("<option value=%d %s>Host Up\n", AS_HOST_UP, (initial_assumed_host_state == AS_HOST_UP) ? "SELECTED" : "");
-				printf("<option value=%d %s>Host Down\n", AS_HOST_DOWN, (initial_assumed_host_state == AS_HOST_DOWN) ? "SELECTED" : "");
-				printf("<option value=%d %s>Host Unreachable\n", AS_HOST_UNREACHABLE, (initial_assumed_host_state == AS_HOST_UNREACHABLE) ? "SELECTED" : "");
+				printf("<option value='%d' %s>Unspecified\n", AS_NO_DATA, (initial_assumed_host_state == AS_NO_DATA) ? "selected" : "");
+				printf("<option value='%d' %s>Current State\n", AS_CURRENT_STATE, (initial_assumed_host_state == AS_CURRENT_STATE) ? "selected" : "");
+				printf("<option value='%d' %s>Host Up\n", AS_HOST_UP, (initial_assumed_host_state == AS_HOST_UP) ? "selected" : "");
+				printf("<option value='%d' %s>Host Down\n", AS_HOST_DOWN, (initial_assumed_host_state == AS_HOST_DOWN) ? "selected" : "");
+				printf("<option value='%d' %s>Host Unreachable\n", AS_HOST_UNREACHABLE, (initial_assumed_host_state == AS_HOST_UNREACHABLE) ? "selected" : "");
 			} else {
 				printf("<input type='hidden' name='initialassumedhoststate' value='%d'>", initial_assumed_host_state);
 				printf("<select name='initialassumedservicestate'>\n");
-				printf("<option value=%d %s>Unspecified\n", AS_NO_DATA, (initial_assumed_service_state == AS_NO_DATA) ? "SELECTED" : "");
-				printf("<option value=%d %s>Current State\n", AS_CURRENT_STATE, (initial_assumed_service_state == AS_CURRENT_STATE) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Ok\n", AS_SVC_OK, (initial_assumed_service_state == AS_SVC_OK) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Warning\n", AS_SVC_WARNING, (initial_assumed_service_state == AS_SVC_WARNING) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Unknown\n", AS_SVC_UNKNOWN, (initial_assumed_service_state == AS_SVC_UNKNOWN) ? "SELECTED" : "");
-				printf("<option value=%d %s>Service Critical\n", AS_SVC_CRITICAL, (initial_assumed_service_state == AS_SVC_CRITICAL) ? "SELECTED" : "");
+				printf("<option value='%d' %s>Unspecified\n", AS_NO_DATA, (initial_assumed_service_state == AS_NO_DATA) ? "selected" : "");
+				printf("<option value='%d' %s>Current State\n", AS_CURRENT_STATE, (initial_assumed_service_state == AS_CURRENT_STATE) ? "selected" : "");
+				printf("<option value='%d' %s>Service Ok\n", AS_SVC_OK, (initial_assumed_service_state == AS_SVC_OK) ? "selected" : "");
+				printf("<option value='%d' %s>Service Warning\n", AS_SVC_WARNING, (initial_assumed_service_state == AS_SVC_WARNING) ? "selected" : "");
+				printf("<option value='%d' %s>Service Unknown\n", AS_SVC_UNKNOWN, (initial_assumed_service_state == AS_SVC_UNKNOWN) ? "selected" : "");
+				printf("<option value='%d' %s>Service Critical\n", AS_SVC_CRITICAL, (initial_assumed_service_state == AS_SVC_CRITICAL) ? "selected" : "");
 			}
 			printf("</select>\n");
-			printf("</td><td CLASS='optBoxItem' valign=top align=left>\n");
+			printf("</td><td class='optBoxItem' valign='top' align='left'>\n");
 			printf("<input type='text' name='backtrack' size='2' maxlength='2' value='%d'>\n", backtrack_archives);
 			printf("</td></tr>\n");
 
-			printf("<tr><td CLASS='optBoxItem' valign=top align=left>Report period:</td><td CLASS='optBoxItem' valign=top align=left>Zoom factor:</td></tr>\n");
-			printf("<tr><td CLASS='optBoxItem' valign=top align=left>\n");
+			printf("<tr><td class='optBoxItem' valign='top' align='left'>Report period:</td><td class='optBoxItem' valign='top' align='left'>Zoom factor:</td></tr>\n");
+			printf("<tr><td class='optBoxItem' valign='top' align='left'>\n");
 			printf("<select name='timeperiod'>\n");
 			printf("<option>[ Current time range ]\n");
-			printf("<option value=today %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "SELECTED" : "");
-			printf("<option value=last24hours %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "SELECTED" : "");
-			printf("<option value=yesterday %s>Yesterday\n", (timeperiod_type == TIMEPERIOD_YESTERDAY) ? "SELECTED" : "");
-			printf("<option value=thisweek %s>This Week\n", (timeperiod_type == TIMEPERIOD_THISWEEK) ? "SELECTED" : "");
-			printf("<option value=last7days %s>Last 7 Days\n", (timeperiod_type == TIMEPERIOD_LAST7DAYS) ? "SELECTED" : "");
-			printf("<option value=lastweek %s>Last Week\n", (timeperiod_type == TIMEPERIOD_LASTWEEK) ? "SELECTED" : "");
-			printf("<option value=thismonth %s>This Month\n", (timeperiod_type == TIMEPERIOD_THISMONTH) ? "SELECTED" : "");
-			printf("<option value=last31days %s>Last 31 Days\n", (timeperiod_type == TIMEPERIOD_LAST31DAYS) ? "SELECTED" : "");
-			printf("<option value=lastmonth %s>Last Month\n", (timeperiod_type == TIMEPERIOD_LASTMONTH) ? "SELECTED" : "");
-			printf("<option value=thisyear %s>This Year\n", (timeperiod_type == TIMEPERIOD_THISYEAR) ? "SELECTED" : "");
-			printf("<option value=lastyear %s>Last Year\n", (timeperiod_type == TIMEPERIOD_LASTYEAR) ? "SELECTED" : "");
+			printf("<option value='today' %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "selected" : "");
+			printf("<option value='last24hours' %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "selected" : "");
+			printf("<option value='yesterday' %s>Yesterday\n", (timeperiod_type == TIMEPERIOD_YESTERDAY) ? "selected" : "");
+			printf("<option value='thisweek' %s>This Week\n", (timeperiod_type == TIMEPERIOD_THISWEEK) ? "selected" : "");
+			printf("<option value='last7days' %s>Last 7 Days\n", (timeperiod_type == TIMEPERIOD_LAST7DAYS) ? "selected" : "");
+			printf("<option value='lastweek' %s>Last Week\n", (timeperiod_type == TIMEPERIOD_LASTWEEK) ? "selected" : "");
+			printf("<option value='thismonth' %s>This Month\n", (timeperiod_type == TIMEPERIOD_THISMONTH) ? "selected" : "");
+			printf("<option value='last31days' %s>Last 31 Days\n", (timeperiod_type == TIMEPERIOD_LAST31DAYS) ? "selected" : "");
+			printf("<option value='lastmonth' %s>Last Month\n", (timeperiod_type == TIMEPERIOD_LASTMONTH) ? "selected" : "");
+			printf("<option value='thisyear' %s>This Year\n", (timeperiod_type == TIMEPERIOD_THISYEAR) ? "selected" : "");
+			printf("<option value='lastyear' %s>Last Year\n", (timeperiod_type == TIMEPERIOD_LASTYEAR) ? "selected" : "");
 			if (display_type == DISPLAY_HOST_TRENDS)
-				printf("<option value=nextproblem %s>Next Host Problem\n", (timeperiod_type == TIMEPERIOD_NEXTPROBLEM) ? "SELECTED" : "");
+				printf("<option value='nextproblem' %s>Next Host Problem\n", (timeperiod_type == TIMEPERIOD_NEXTPROBLEM) ? "selected" : "");
 			else
-				printf("<option value=nextproblem %s>Next Service Problem\n", (timeperiod_type == TIMEPERIOD_NEXTPROBLEM) ? "SELECTED" : "");
+				printf("<option value='nextproblem' %s>Next Service Problem\n", (timeperiod_type == TIMEPERIOD_NEXTPROBLEM) ? "selected" : "");
 			printf("</select>\n");
-			printf("</td><td CLASS='optBoxItem' valign=top align=left>\n");
+			printf("</td><td class='optBoxItem' valign='top' align='left'>\n");
 			printf("<select name='zoom'>\n");
-			printf("<option value=%d selected>%d\n", zoom_factor, zoom_factor);
-			printf("<option value=+2>+2\n");
-			printf("<option value=+3>+3\n");
-			printf("<option value=+4>+4\n");
-			printf("<option value=-2>-2\n");
-			printf("<option value=-3>-3\n");
-			printf("<option value=-4>-4\n");
+			printf("<option value='%d' selected>%d\n", zoom_factor, zoom_factor);
+			printf("<option value='+2'>+2\n");
+			printf("<option value='+3'>+3\n");
+			printf("<option value='+4'>+4\n");
+			printf("<option value='-2'>-2\n");
+			printf("<option value='-3'>-3\n");
+			printf("<option value='-4'>-4\n");
 			printf("</select>\n");
 			printf("</td></tr>\n");
 
-			printf("<tr><td CLASS='optBoxItem' valign=top align=left>\n");
-			printf("</td><td CLASS='optBoxItem' valign=top align=left>\n");
+			printf("<tr><td class='optBoxItem' valign='top' align='left'>\n");
+			printf("</td><td class='optBoxItem' valign='top' align='left'>\n");
 			printf("<input type='submit' value='Update'>\n");
 			printf("</td></tr>\n");
 		}
@@ -780,9 +780,9 @@ int main(int argc, char **argv) {
 		/* print URL to image */
 		if (content_type == HTML_CONTENT) {
 
-			printf("<BR><BR>\n");
-			printf("<DIV ALIGN=CENTER>\n");
-			printf("<IMG SRC='%s?createimage&t1=%lu&t2=%lu", TRENDS_CGI, (unsigned long)t1, (unsigned long)t2);
+			printf("<br><br>\n");
+			printf("<div align='center'>\n");
+			printf("<img src='%s?createimage&t1=%lu&t2=%lu", TRENDS_CGI, (unsigned long)t1, (unsigned long)t2);
 			printf("&assumeinitialstates=%s", (assume_initial_states == TRUE) ? "yes" : "no");
 			printf("&assumestatesduringnotrunning=%s", (assume_states_during_notrunning == TRUE) ? "yes" : "no");
 			printf("&initialassumedhoststate=%d", initial_assumed_host_state);
@@ -795,8 +795,8 @@ int main(int argc, char **argv) {
 			if (backtrack_archives > 0)
 				printf("&backtrack=%d", backtrack_archives);
 			printf("&zoom=%d", zoom_factor);
-			printf("' BORDER=0 name='trendsimage' useMap='#trendsmap' width=%d>\n", image_width);
-			printf("</DIV>\n");
+			printf("' border='0' name='trendsimage' useMap='#trendsmap' width='%d'>\n", image_width);
+			printf("</div>\n");
 		}
 
 		if (content_type == IMAGE_CONTENT || (content_type == HTML_CONTENT && use_map == TRUE)) {
@@ -848,14 +848,14 @@ int main(int argc, char **argv) {
 		/* ask the user for what host they want a report for */
 		if (input_type == GET_INPUT_HOST_TARGET) {
 
-			printf("<DIV CLASS='reportSelectTitle'>Step 2: Select Host</DIV>\n");
+			printf("<div class='reportSelectTitle'>Step 2: Select Host</div>\n");
 
 			printf("<form method=\"GET\" action=\"%s\">\n", TRENDS_CGI);
 			printf("<input type='hidden' name='input' value='getoptions'>\n");
 
-			printf("<TABLE BORDER=0 cellspacing=0 cellpadding=10 align='center'>\n");
-			printf("<tr><td class='reportSelectSubTitle' valign=center>Host:</td>\n");
-			printf("<td class='reportSelectItem' valign=center>\n");
+			printf("<table border='0' cellspacing='0' cellpadding='10' align='center'>\n");
+			printf("<tr><td class='reportSelectSubTitle' valign='middle'>Host:</td>\n");
+			printf("<td class='reportSelectItem' valign='middle'>\n");
 			printf("<select name='host'>\n");
 
 			for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
@@ -870,19 +870,19 @@ int main(int argc, char **argv) {
 			printf("<input type='submit' value='Continue to Step 3'>\n");
 			printf("</td></tr>\n");
 
-			printf("</TABLE>\n");
+			printf("</table>\n");
 			printf("</form>\n");
 		}
 
 		/* ask the user for what service they want a report for */
 		else if (input_type == GET_INPUT_SERVICE_TARGET) {
 
-			printf("<DIV CLASS='reportSelectTitle'>Step 2: Select Service</DIV>\n");
+			printf("<div class='reportSelectTitle'>Step 2: Select Service</div>\n");
 
 			printf("<form method=\"POST\" action=\"%s\" name=\"serviceform\">\n", TRENDS_CGI);
 			printf("<input type='hidden' name='input' value='getoptions'>\n");
 
-			printf("<TABLE BORDER=0 cellpadding=5 align='center'>\n");
+			printf("<table border='0' cellpadding='5' align='center'>\n");
 			printf("<tr><td class='reportSelectSubTitle'>Service:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='hostservice'>\n");
@@ -900,7 +900,7 @@ int main(int argc, char **argv) {
 			printf("<input type='submit' value='Continue to Step 3'>\n");
 			printf("</td></tr>\n");
 
-			printf("</TABLE>\n");
+			printf("</table>\n");
 			printf("</form>\n");
 		}
 
@@ -915,50 +915,50 @@ int main(int argc, char **argv) {
 			end_day = t->tm_mday;
 			end_year = t->tm_year + 1900;
 
-			printf("<DIV CLASS='reportSelectTitle'>Step 3: Select Report Options</DIV>\n");
+			printf("<div class='reportSelectTitle'>Step 3: Select Report Options</div>\n");
 
 			printf("<form method=\"GET\" action=\"%s\">\n", TRENDS_CGI);
 			printf("<input type='hidden' name='host' value='%s'>\n", escape_string(host_name));
 			if (display_type == DISPLAY_SERVICE_TRENDS)
 				printf("<input type='hidden' name='service' value='%s'>\n", escape_string(service_desc));
 
-			printf("<TABLE BORDER=0 CELLPADDING=5 align='center'>\n");
-			printf("<tr><td class='reportSelectSubTitle' align=right>Report period:</td>\n");
+			printf("<table border='0' cellpadding='5' align='center'>\n");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>Report period:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='timeperiod'>\n");
-			printf("<option value=today>Today\n");
-			printf("<option value=last24hours>Last 24 Hours\n");
-			printf("<option value=yesterday>Yesterday\n");
-			printf("<option value=thisweek>This Week\n");
-			printf("<option value=last7days SELECTED>Last 7 Days\n");
-			printf("<option value=lastweek>Last Week\n");
-			printf("<option value=thismonth>This Month\n");
-			printf("<option value=last31days>Last 31 Days\n");
-			printf("<option value=lastmonth>Last Month\n");
-			printf("<option value=thisyear>This Year\n");
-			printf("<option value=lastyear>Last Year\n");
-			printf("<option value=custom>* CUSTOM REPORT PERIOD *\n");
+			printf("<option value='today'>Today\n");
+			printf("<option value='last24hours'>Last 24 Hours\n");
+			printf("<option value='yesterday'>Yesterday\n");
+			printf("<option value='thisweek'>This Week\n");
+			printf("<option value='last7days' selected>Last 7 Days\n");
+			printf("<option value='lastweek'>Last Week\n");
+			printf("<option value='thismonth'>This Month\n");
+			printf("<option value='last31days'>Last 31 Days\n");
+			printf("<option value='lastmonth'>Last Month\n");
+			printf("<option value='thisyear'>This Year\n");
+			printf("<option value='lastyear'>Last Year\n");
+			printf("<option value='custom'>* CUSTOM REPORT PERIOD *\n");
 			printf("</select>\n");
 			printf("</td></tr>\n");
 
-			printf("<tr><td valign=top class='reportSelectSubTitle'>If Custom Report Period...</td></tr>\n");
+			printf("<tr><td valign='top' class='reportSelectSubTitle'>If Custom Report Period...</td></tr>\n");
 
 			printf("<tr>");
-			printf("<td valign=top class='reportSelectSubTitle'>Start Date (Inclusive):</td>\n");
-			printf("<td align=left valign=top class='reportSelectItem'>");
+			printf("<td valign='top' class='reportSelectSubTitle'>Start Date (Inclusive):</td>\n");
+			printf("<td align='left' valign='top' class='reportSelectItem'>");
 			printf("<select name='smon'>\n");
-			printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "SELECTED" : "");
-			printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "SELECTED" : "");
-			printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "SELECTED" : "");
-			printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "SELECTED" : "");
-			printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "SELECTED" : "");
-			printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "SELECTED" : "");
-			printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "SELECTED" : "");
-			printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "SELECTED" : "");
-			printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "SELECTED" : "");
-			printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "SELECTED" : "");
-			printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "SELECTED" : "");
-			printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "SELECTED" : "");
+			printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "selected" : "");
+			printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "selected" : "");
+			printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "selected" : "");
+			printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "selected" : "");
+			printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "selected" : "");
+			printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "selected" : "");
+			printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "selected" : "");
+			printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "selected" : "");
+			printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "selected" : "");
+			printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "selected" : "");
+			printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "selected" : "");
+			printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "selected" : "");
 			printf("</select>\n ");
 			printf("<input type='text' size='2' maxlength='2' name='sday' value='%d'> ", start_day);
 			printf("<input type='text' size='4' maxlength='4' name='syear' value='%d'>", start_year);
@@ -969,21 +969,21 @@ int main(int argc, char **argv) {
 			printf("</tr>\n");
 
 			printf("<tr>");
-			printf("<td valign=top class='reportSelectSubTitle'>End Date (Inclusive):</td>\n");
-			printf("<td align=left valign=top class='reportSelectItem'>");
+			printf("<td valign='top' class='reportSelectSubTitle'>End Date (Inclusive):</td>\n");
+			printf("<td align='left' valign='top' class='reportSelectItem'>");
 			printf("<select name='emon'>\n");
-			printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "SELECTED" : "");
-			printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "SELECTED" : "");
-			printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "SELECTED" : "");
-			printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "SELECTED" : "");
-			printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "SELECTED" : "");
-			printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "SELECTED" : "");
-			printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "SELECTED" : "");
-			printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "SELECTED" : "");
-			printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "SELECTED" : "");
-			printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "SELECTED" : "");
-			printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "SELECTED" : "");
-			printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "SELECTED" : "");
+			printf("<option value='1' %s>January\n", (t->tm_mon == 0) ? "selected" : "");
+			printf("<option value='2' %s>February\n", (t->tm_mon == 1) ? "selected" : "");
+			printf("<option value='3' %s>March\n", (t->tm_mon == 2) ? "selected" : "");
+			printf("<option value='4' %s>April\n", (t->tm_mon == 3) ? "selected" : "");
+			printf("<option value='5' %s>May\n", (t->tm_mon == 4) ? "selected" : "");
+			printf("<option value='6' %s>June\n", (t->tm_mon == 5) ? "selected" : "");
+			printf("<option value='7' %s>July\n", (t->tm_mon == 6) ? "selected" : "");
+			printf("<option value='8' %s>August\n", (t->tm_mon == 7) ? "selected" : "");
+			printf("<option value='9' %s>September\n", (t->tm_mon == 8) ? "selected" : "");
+			printf("<option value='10' %s>October\n", (t->tm_mon == 9) ? "selected" : "");
+			printf("<option value='11' %s>November\n", (t->tm_mon == 10) ? "selected" : "");
+			printf("<option value='12' %s>December\n", (t->tm_mon == 11) ? "selected" : "");
 			printf("</select>\n ");
 			printf("<input type='text' size='2' maxlength='2' name='eday' value='%d'> ", end_day);
 			printf("<input type='text' size='4' maxlength='4' name='eyear' value='%d'>", end_year);
@@ -993,95 +993,95 @@ int main(int argc, char **argv) {
 			printf("</td>\n");
 			printf("</tr>\n");
 
-			printf("<tr><td colspan=2><br></td></tr>\n");
+			printf("<tr><td colspan='2'><br></td></tr>\n");
 
-			printf("<tr><td class='reportSelectSubTitle' align=right>Assume Initial States:</td>\n");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>Assume Initial States:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='assumeinitialstates'>\n");
-			printf("<option value=yes>Yes\n");
-			printf("<option value=no>No\n");
+			printf("<option value='yes'>Yes\n");
+			printf("<option value='no'>No\n");
 			printf("</select>\n");
 			printf("</td></tr>\n");
 
-			printf("<tr><td class='reportSelectSubTitle' align=right>Assume State Retention:</td>\n");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>Assume State Retention:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='assumestateretention'>\n");
-			printf("<option value=yes>Yes\n");
-			printf("<option value=no>No\n");
+			printf("<option value='yes'>Yes\n");
+			printf("<option value='no'>No\n");
 			printf("</select>\n");
 			printf("</td></tr>\n");
 
-			printf("<tr><td class='reportSelectSubTitle' align=right>Assume States During Program Downtime:</td>\n");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>Assume States During Program Downtime:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='assumestatesduringnotrunning'>\n");
-			printf("<option value=yes>Yes\n");
-			printf("<option value=no>No\n");
+			printf("<option value='yes'>Yes\n");
+			printf("<option value='no'>No\n");
 			printf("</select>\n");
 			printf("</td></tr>\n");
 
-			printf("<tr><td class='reportSelectSubTitle' align=right>Include Soft States:</td>\n");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>Include Soft States:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='includesoftstates'>\n");
-			printf("<option value=yes>Yes\n");
-			printf("<option value=no SELECTED>No\n");
+			printf("<option value='yes'>Yes\n");
+			printf("<option value='no' selected>No\n");
 			printf("</select>\n");
 			printf("</td></tr>\n");
 
-			printf("<tr><td class='reportSelectSubTitle' align=right>First Assumed %s State:</td>\n", (display_type == DISPLAY_HOST_TRENDS) ? "Host" : "Service");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>First Assumed %s State:</td>\n", (display_type == DISPLAY_HOST_TRENDS) ? "Host" : "Service");
 			printf("<td class='reportSelectItem'>\n");
 			if (display_type == DISPLAY_HOST_TRENDS) {
 				printf("<select name='initialassumedhoststate'>\n");
-				printf("<option value=%d>Unspecified\n", AS_NO_DATA);
-				printf("<option value=%d>Current State\n", AS_CURRENT_STATE);
-				printf("<option value=%d>Host Up\n", AS_HOST_UP);
-				printf("<option value=%d>Host Down\n", AS_HOST_DOWN);
-				printf("<option value=%d>Host Unreachable\n", AS_HOST_UNREACHABLE);
+				printf("<option value='%d'>Unspecified\n", AS_NO_DATA);
+				printf("<option value='%d'>Current State\n", AS_CURRENT_STATE);
+				printf("<option value='%d'>Host Up\n", AS_HOST_UP);
+				printf("<option value='%d'>Host Down\n", AS_HOST_DOWN);
+				printf("<option value='%d'>Host Unreachable\n", AS_HOST_UNREACHABLE);
 			} else {
 				printf("<select name='initialassumedservicestate'>\n");
-				printf("<option value=%d>Unspecified\n", AS_NO_DATA);
-				printf("<option value=%d>Current State\n", AS_CURRENT_STATE);
-				printf("<option value=%d>Service Ok\n", AS_SVC_OK);
-				printf("<option value=%d>Service Warning\n", AS_SVC_WARNING);
-				printf("<option value=%d>Service Unknown\n", AS_SVC_UNKNOWN);
-				printf("<option value=%d>Service Critical\n", AS_SVC_CRITICAL);
+				printf("<option value='%d'>Unspecified\n", AS_NO_DATA);
+				printf("<option value='%d'>Current State\n", AS_CURRENT_STATE);
+				printf("<option value='%d'>Service Ok\n", AS_SVC_OK);
+				printf("<option value='%d'>Service Warning\n", AS_SVC_WARNING);
+				printf("<option value='%d'>Service Unknown\n", AS_SVC_UNKNOWN);
+				printf("<option value='%d'>Service Critical\n", AS_SVC_CRITICAL);
 			}
 			printf("</select>\n");
 			printf("</td></tr>\n");
 
-			printf("<tr><td class='reportSelectSubTitle' align=right>Backtracked Archives (To Scan For Initial States):</td>\n");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>Backtracked Archives (To Scan For Initial States):</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<input type='text' name='backtrack' size='2' maxlength='2' value='%d'>\n", backtrack_archives);
 			printf("</td></tr>\n");
 
-			printf("<tr><td class='reportSelectSubTitle' align=right>Suppress image map:</td><td class='reportSelectItem'><input type='checkbox' name='nomap'></td></tr>");
-			printf("<tr><td class='reportSelectSubTitle' align=right>Suppress popups:</td><td class='reportSelectItem'><input type='checkbox' name='nopopups'></td></tr>\n");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>Suppress image map:</td><td class='reportSelectItem'><input type='checkbox' name='nomap'></td></tr>");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>Suppress popups:</td><td class='reportSelectItem'><input type='checkbox' name='nopopups'></td></tr>\n");
 
-			printf("<tr><td class='reportSelectSubTitle' align=right>Ignore daemon starts/restarts:</td><td class='reportSelectItem'><input type='checkbox' name='ignorerestart'></td></tr>\n");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>Ignore daemon starts/restarts:</td><td class='reportSelectItem'><input type='checkbox' name='ignorerestart'></td></tr>\n");
 
 			printf("<tr><td></td><td class='reportSelectItem'><input type='submit' value='Create Report'></td></tr>\n");
 
-			printf("</TABLE>\n");
+			printf("</table>\n");
 			printf("</form>\n");
 
 			/*
-			printf("<P><DIV ALIGN=CENTER CLASS='helpfulHint'>\n");
+			printf("<p><div align='center' class='helpfulHint'>\n");
 			printf("Note: Choosing the 'suppress image map' option will make the report run approximately twice as fast as it would otherwise, but it will prevent you from being able to zoom in on specific time periods.\n");
-			printf("</DIV></P>\n");
+			printf("</div></p>\n");
 			*/
 		}
 
 		/* as the user whether they want a graph for a host or service */
 		else {
-			printf("<DIV CLASS='reportSelectTitle'>Step 1: Select Report Type</DIV>\n");
+			printf("<div class='reportSelectTitle'>Step 1: Select Report Type</div>\n");
 
 			printf("<form method=\"GET\" action=\"%s\">\n", TRENDS_CGI);
-			printf("<TABLE BORDER=0 cellpadding=5 align='center'>\n");
+			printf("<table border='0' cellpadding='5' align='center'>\n");
 
-			printf("<tr><td class='reportSelectSubTitle' align=right>Type:</td>\n");
+			printf("<tr><td class='reportSelectSubTitle' align='right'>Type:</td>\n");
 			printf("<td class='reportSelectItem'>\n");
 			printf("<select name='input'>\n");
-			printf("<option value=gethost>Host\n");
-			printf("<option value=getservice>Service\n");
+			printf("<option value='gethost'>Host\n");
+			printf("<option value='getservice'>Service\n");
 			printf("</select>\n");
 			printf("</td></tr>\n");
 
@@ -1089,7 +1089,7 @@ int main(int argc, char **argv) {
 			printf("<input type='submit' value='Continue to Step 2'>\n");
 			printf("</td></tr>\n");
 
-			printf("</TABLE>\n");
+			printf("</table>\n");
 			printf("</form>\n");
 		}
 
@@ -1788,7 +1788,7 @@ void graph_all_trend_data(void) {
 
 	/* if we're creating the HTML, start map code... */
 	if (content_type == HTML_CONTENT)
-		printf("<MAP name='trendsmap'>\n");
+		printf("<map name='trendsmap'>\n");
 
 	last_as = NULL;
 	earliest_time = t2;
@@ -1797,7 +1797,7 @@ void graph_all_trend_data(void) {
 
 
 #ifdef DEBUG
-	printf("--- BEGINNING/MIDDLE SECTION ---<BR>\n");
+	printf("--- BEGINNING/MIDDLE SECTION ---<br>\n");
 #endif
 
 	/**********************************/
@@ -1874,7 +1874,7 @@ void graph_all_trend_data(void) {
 
 
 #ifdef DEBUG
-	printf("--- END SECTION ---<BR>\n");
+	printf("--- END SECTION ---<br>\n");
 #endif
 
 	/**********************************/
@@ -1910,7 +1910,7 @@ void graph_all_trend_data(void) {
 
 	/* if we're creating the HTML, close the map code */
 	if (content_type == HTML_CONTENT)
-		printf("</MAP>\n");
+		printf("</map>\n");
 
 	return;
 }
@@ -2121,7 +2121,7 @@ void graph_trend_data(int first_state, int last_state, time_t real_start_time, t
 			next_end_time = center_time - (((t2 - t1) / 2) * zoom_factor);
 		}
 
-		printf("<AREA shape='rect' ");
+		printf("<aREA shape='rect' ");
 
 		printf("coords='%d,%d,%d,%d' ", drawing_x_offset + start_pixel, drawing_y_offset + (drawing_height - height), drawing_x_offset + end_pixel, drawing_y_offset + drawing_height);
 
@@ -2158,7 +2158,7 @@ void graph_trend_data(int first_state, int last_state, time_t real_start_time, t
 			sanitize_plugin_output(state_info);
 
 			printf("onMouseOver='showPopup(\"");
-			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "<B><U>%s</U></B><BR><B>Time Range</B>: <I>%s</I> to <I>%s</I><BR><B>Duration</B>: <I>%dd %dh %dm %ds</I><BR><B>State Info</B>: <I>%s</I>", state_string, start_timestring, end_timestring, days, hours, minutes, seconds, (state_info == NULL) ? "N/A" : state_info);
+			snprintf(temp_buffer, sizeof(temp_buffer) - 1, "<b><u>%s</u></b><br><b>Time Range</b>: <i>%s</i> to <i>%s</i><br><b>Duration</b>: <i>%dd %dh %dm %ds</i><br><b>State Info</b>: <i>%s</i>", state_string, start_timestring, end_timestring, days, hours, minutes, seconds, (state_info == NULL) ? "N/A" : state_info);
 			temp_buffer[sizeof(temp_buffer)-1] = '\x0';
 			printf("%s", temp_buffer);
 			printf("\",event)' onMouseOut='hidePopup()'");

@@ -21,7 +21,7 @@ my $remote_user = 'REMOTE_USER=icingaadmin';
 
 
 $output = `ICINGA_CGI_CONFIG=etc/cgi.cfg $remote_user REQUEST_METHOD=GET $local_cgi`;
-like( $output, "/<P><DIV CLASS='errorMessage'>Error: No command was specified</DIV></P>/", "$local_cgi without params shows an error" );
+like( $output, "/<p><div class='errorMessage'>Error: No command was specified</div></p>/", "$local_cgi without params shows an error" );
 
 
 # Run many tests against commands which are not supportet by cmd.cgi

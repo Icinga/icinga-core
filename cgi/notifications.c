@@ -158,11 +158,11 @@ int main(void) {
 	if (display_header == TRUE) {
 
 		/* begin top table */
-		printf("<table border=0 width=100%%>\n");
+		printf("<table border='0' width='100%%'>\n");
 		printf("<tr>\n");
 
 		/* left column of top row */
-		printf("<td align=left valign=top width=33%%>\n");
+		printf("<td align='left' valign='top' width='33%%'>\n");
 
 		if (query_type == DISPLAY_SERVICES)
 			display_info_table("Service Notifications", &current_authdata, daemon_check);
@@ -179,8 +179,8 @@ int main(void) {
 			display_info_table("Contact Notifications", &current_authdata, daemon_check);
 
 		if (query_type == DISPLAY_HOSTS || query_type == DISPLAY_SERVICES || query_type == DISPLAY_HOSTGROUPS || query_type == DISPLAY_SERVICEGROUPS) {
-			printf("<TABLE BORDER=1 CELLPADDING=0 CELLSPACING=0 CLASS='linkBox'>\n");
-			printf("<TR><TD CLASS='linkBox'>\n");
+			printf("<table border='1' cellpadding='0' cellspacing='0' class='linkBox'>\n");
+			printf("<tr><td class='linkBox'>\n");
 			if (query_type == DISPLAY_HOSTS) {
 				printf("<a href='%s?host=%s'>View <b>Status Detail</b> For <b>%s</b></a><br>\n", STATUS_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name), (find_all == TRUE) ? "All Hosts" : "This Host");
 				printf("<a href='%s?host=%s'>View <b>Alert History</b> For <b>%s</b></a><br>\n", HISTORY_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name), (find_all == TRUE) ? "All Hosts" : "This Host");
@@ -188,37 +188,37 @@ int main(void) {
 				if (find_all == FALSE)
 					printf("<a href='%s?host=%s'>View <b>Trends</b> For <b>This Host</b></a><br>\n", TRENDS_CGI, url_encode(query_host_name));
 #endif
-				printf("<a href='%s?type=%d&host=%s'>View <b>Information</b> For <b>This Host</b></a><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(query_host_name));
-				printf("<a href='%s?host=%s&show_log_entries'>View <b>Availability Report</b> For <b>This Host</b></a><br>\n", AVAIL_CGI, url_encode(query_host_name));
+				printf("<a href='%s?type=%d&amp;host=%s'>View <b>Information</b> For <b>This Host</b></a><br>\n", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(query_host_name));
+				printf("<a href='%s?host=%s&amp;show_log_entries'>View <b>Availability Report</b> For <b>This Host</b></a><br>\n", AVAIL_CGI, url_encode(query_host_name));
 			} else if (query_type == DISPLAY_SERVICES) {
-				printf("<a href='%s?host=%s&", HISTORY_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
+				printf("<a href='%s?host=%s&amp;", HISTORY_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
 				printf("service=%s'>View <b>Alert History</b> For <b>This Service</b></a><br>\n", url_encode(query_svc_description));
 #ifdef USE_TRENDS
-				printf("<a href='%s?host=%s&", TRENDS_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
+				printf("<a href='%s?host=%s&amp;", TRENDS_CGI, (find_all == TRUE) ? "all" : url_encode(query_host_name));
 				printf("service=%s'>View <b>Trends</b> For <b>This Service</b></a><br>\n", url_encode(query_svc_description));
 #endif
-				printf("<a href='%s?type=%d&host=%s&service=%s'>View <b>Information</b> For <b>This Service</b></a><br>\n", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(query_host_name), url_encode(query_svc_description));
-				printf("<a href='%s?host=%s&service=%s&show_log_entries'>View <b>Availability Report</b> For <b>This Service</b></a><br>\n", AVAIL_CGI, url_encode(query_host_name), url_encode(query_svc_description));
+				printf("<a href='%s?type=%d&amp;host=%s&amp;service=%s'>View <b>Information</b> For <b>This Service</b></a><br>\n", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(query_host_name), url_encode(query_svc_description));
+				printf("<a href='%s?host=%s&amp;service=%s&amp;show_log_entries'>View <b>Availability Report</b> For <b>This Service</b></a><br>\n", AVAIL_CGI, url_encode(query_host_name), url_encode(query_svc_description));
 				printf("<a href='%s?host=%s'>View <b>Notifications</b> For <b>This Host</b></a><br>\n", NOTIFICATIONS_CGI, url_encode(query_host_name));
 			} else if (query_type == DISPLAY_HOSTGROUPS) {
-				printf("<a href='%s?hostgroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
-				printf("<a href='%s?hostgroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
+				printf("<a href='%s?hostgroup=%s&amp;style=hostdetail'>View <b>Host Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
+				printf("<a href='%s?hostgroup=%s&amp;style=detail'>View <b>Service Status Detail</b> For <b>This Hostgroup</b></a><br>\n", STATUS_CGI, url_encode(query_hostgroup_name));
 				printf("<a href='%s?hostgroup=%s'>View <b>Alert History</b> For <b>This Hostgroup</b></a><br>\n", HISTORY_CGI, url_encode(query_hostgroup_name));
 			} else if (query_type == DISPLAY_SERVICEGROUPS) {
-				printf("<a href='%s?servicegroup=%s&style=hostdetail'>View <b>Host Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
-				printf("<a href='%s?servicegroup=%s&style=detail'>View <b>Service Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
+				printf("<a href='%s?servicegroup=%s&amp;style=hostdetail'>View <b>Host Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
+				printf("<a href='%s?servicegroup=%s&amp;style=detail'>View <b>Service Status Detail</b> For <b>This Servicegroup</b></a><br>\n", STATUS_CGI, url_encode(query_servicegroup_name));
 				printf("<a href='%s?servicegroup=%s'>View <b>Alert History</b> For <b>This Servicegroup</b></a><br>\n", HISTORY_CGI, url_encode(query_servicegroup_name));
 			}
-			printf("</TD></TR>\n");
-			printf("</TABLE>\n");
+			printf("</td></tr>\n");
+			printf("</table>\n");
 		}
 
 		printf("</td>\n");
 
 		/* middle column of top row */
-		printf("<td align=center valign=top width=33%%>\n");
+		printf("<td align='center' valign='top' width='33%%'>\n");
 
-		printf("<DIV ALIGN=CENTER CLASS='dataTitle'>\n");
+		printf("<div align='center' class='dataTitle'>\n");
 		if (query_type == DISPLAY_SERVICES)
 			printf("Service '%s' on Host '%s'", query_svc_description, query_host_name);
 		else if (query_type == DISPLAY_HOSTS) {
@@ -236,15 +236,15 @@ int main(void) {
 			else
 				printf("Contact '%s'", html_encode(query_contact_name, TRUE));
 		}
-		printf("</DIV>\n");
-		printf("<BR>\n");
+		printf("</div>\n");
+		printf("<br>\n");
 
 		display_nav_table(ts_start, ts_end);
 
 		printf("</td>\n");
 
 		/* right hand column of top row */
-		printf("<td align=right valign=top width=33%%>\n");
+		printf("<td align='right' valign='top' width='33%%'>\n");
 
 		printf("<form method='GET' action='%s'>\n", NOTIFICATIONS_CGI);
 		if (query_type == DISPLAY_SERVICES) {
@@ -260,75 +260,75 @@ int main(void) {
 		printf("<input type='hidden' name='ts_end' value='%lu'>\n", ts_end);
 		printf("<input type='hidden' name='limit' value='%d'>\n", result_limit);
 
-		printf("<table border=0 CLASS='optBox'>\n");
+		printf("<table border='0' class='optBox'>\n");
 		printf("<tr>\n");
 		if (query_type == DISPLAY_SERVICES)
-			printf("<td align=left colspan=2 CLASS='optBoxItem'>Notification detail level for this service:</td>");
+			printf("<td align='left' colspan='2' class='optBoxItem'>Notification detail level for this service:</td>");
 		if (query_type == DISPLAY_HOSTGROUPS || query_type == DISPLAY_SERVICEGROUPS)
-			printf("<td align=left colspan=2 CLASS='optBoxItem'>Notification detail level for this %sgroup:</td>", (query_type == DISPLAY_HOSTGROUPS) ? "host" : "service");
+			printf("<td align='left' colspan='2' class='optBoxItem'>Notification detail level for this %sgroup:</td>", (query_type == DISPLAY_HOSTGROUPS) ? "host" : "service");
 		else
-			printf("<td align=left colspan=2 CLASS='optBoxItem'>Notification detail level for %s %s%s:</td>", (find_all == TRUE) ? "all" : "this", (query_type == DISPLAY_HOSTS) ? "host" : "contact", (find_all == TRUE) ? "s" : "");
+			printf("<td align='left' colspan='2' class='optBoxItem'>Notification detail level for %s %s%s:</td>", (find_all == TRUE) ? "all" : "this", (query_type == DISPLAY_HOSTS) ? "host" : "contact", (find_all == TRUE) ? "s" : "");
 		printf("</tr>\n");
 		printf("<tr><td></td>\n");
-		printf("<td align=left CLASS='optBoxItem'><select name='type'>\n");
-		printf("<option value=%d %s>All notifications\n", NOTIFICATION_ALL, (notification_options == NOTIFICATION_ALL) ? "selected" : "");
+		printf("<td align='left' class='optBoxItem'><select name='type'>\n");
+		printf("<option value='%d' %s>All notifications\n", NOTIFICATION_ALL, (notification_options == NOTIFICATION_ALL) ? "selected" : "");
 		if (query_type != DISPLAY_SERVICES) {
-			printf("<option value=%d %s>All service notifications\n", NOTIFICATION_SERVICE_ALL, (notification_options == NOTIFICATION_SERVICE_ALL) ? "selected" : "");
-			printf("<option value=%d %s>All host notifications\n", NOTIFICATION_HOST_ALL, (notification_options == NOTIFICATION_HOST_ALL) ? "selected" : "");
+			printf("<option value='%d' %s>All service notifications\n", NOTIFICATION_SERVICE_ALL, (notification_options == NOTIFICATION_SERVICE_ALL) ? "selected" : "");
+			printf("<option value='%d' %s>All host notifications\n", NOTIFICATION_HOST_ALL, (notification_options == NOTIFICATION_HOST_ALL) ? "selected" : "");
 		}
-		printf("<option value=%d %s>Service custom\n", NOTIFICATION_SERVICE_CUSTOM, (notification_options == NOTIFICATION_SERVICE_CUSTOM) ? "selected" : "");
-		printf("<option value=%d %s>Service acknowledgements\n", NOTIFICATION_SERVICE_ACK, (notification_options == NOTIFICATION_SERVICE_ACK) ? "selected" : "");
-		printf("<option value=%d %s>Service warning\n", NOTIFICATION_SERVICE_WARNING, (notification_options == NOTIFICATION_SERVICE_WARNING) ? "selected" : "");
-		printf("<option value=%d %s>Service unknown\n", NOTIFICATION_SERVICE_UNKNOWN, (notification_options == NOTIFICATION_SERVICE_UNKNOWN) ? "selected" : "");
-		printf("<option value=%d %s>Service critical\n", NOTIFICATION_SERVICE_CRITICAL, (notification_options == NOTIFICATION_SERVICE_CRITICAL) ? "selected" : "");
-		printf("<option value=%d %s>Service recovery\n", NOTIFICATION_SERVICE_RECOVERY, (notification_options == NOTIFICATION_SERVICE_RECOVERY) ? "selected" : "");
-		printf("<option value=%d %s>Service flapping\n", NOTIFICATION_SERVICE_FLAP, (notification_options == NOTIFICATION_SERVICE_FLAP) ? "selected" : "");
+		printf("<option value='%d' %s>Service custom\n", NOTIFICATION_SERVICE_CUSTOM, (notification_options == NOTIFICATION_SERVICE_CUSTOM) ? "selected" : "");
+		printf("<option value='%d' %s>Service acknowledgements\n", NOTIFICATION_SERVICE_ACK, (notification_options == NOTIFICATION_SERVICE_ACK) ? "selected" : "");
+		printf("<option value='%d' %s>Service warning\n", NOTIFICATION_SERVICE_WARNING, (notification_options == NOTIFICATION_SERVICE_WARNING) ? "selected" : "");
+		printf("<option value='%d' %s>Service unknown\n", NOTIFICATION_SERVICE_UNKNOWN, (notification_options == NOTIFICATION_SERVICE_UNKNOWN) ? "selected" : "");
+		printf("<option value='%d' %s>Service critical\n", NOTIFICATION_SERVICE_CRITICAL, (notification_options == NOTIFICATION_SERVICE_CRITICAL) ? "selected" : "");
+		printf("<option value='%d' %s>Service recovery\n", NOTIFICATION_SERVICE_RECOVERY, (notification_options == NOTIFICATION_SERVICE_RECOVERY) ? "selected" : "");
+		printf("<option value='%d' %s>Service flapping\n", NOTIFICATION_SERVICE_FLAP, (notification_options == NOTIFICATION_SERVICE_FLAP) ? "selected" : "");
 		if (query_type != DISPLAY_SERVICES) {
-			printf("<option value=%d %s>Host custom\n", NOTIFICATION_HOST_CUSTOM, (notification_options == NOTIFICATION_HOST_CUSTOM) ? "selected" : "");
-			printf("<option value=%d %s>Host acknowledgements\n", NOTIFICATION_HOST_ACK, (notification_options == NOTIFICATION_HOST_ACK) ? "selected" : "");
-			printf("<option value=%d %s>Host down\n", NOTIFICATION_HOST_DOWN, (notification_options == NOTIFICATION_HOST_DOWN) ? "selected" : "");
-			printf("<option value=%d %s>Host unreachable\n", NOTIFICATION_HOST_UNREACHABLE, (notification_options == NOTIFICATION_HOST_UNREACHABLE) ? "selected" : "");
-			printf("<option value=%d %s>Host recovery\n", NOTIFICATION_HOST_RECOVERY, (notification_options == NOTIFICATION_HOST_RECOVERY) ? "selected" : "");
-			printf("<option value=%d %s>Host flapping\n", NOTIFICATION_HOST_FLAP, (notification_options == NOTIFICATION_HOST_FLAP) ? "selected" : "");
+			printf("<option value='%d' %s>Host custom\n", NOTIFICATION_HOST_CUSTOM, (notification_options == NOTIFICATION_HOST_CUSTOM) ? "selected" : "");
+			printf("<option value='%d' %s>Host acknowledgements\n", NOTIFICATION_HOST_ACK, (notification_options == NOTIFICATION_HOST_ACK) ? "selected" : "");
+			printf("<option value='%d' %s>Host down\n", NOTIFICATION_HOST_DOWN, (notification_options == NOTIFICATION_HOST_DOWN) ? "selected" : "");
+			printf("<option value='%d' %s>Host unreachable\n", NOTIFICATION_HOST_UNREACHABLE, (notification_options == NOTIFICATION_HOST_UNREACHABLE) ? "selected" : "");
+			printf("<option value='%d' %s>Host recovery\n", NOTIFICATION_HOST_RECOVERY, (notification_options == NOTIFICATION_HOST_RECOVERY) ? "selected" : "");
+			printf("<option value='%d' %s>Host flapping\n", NOTIFICATION_HOST_FLAP, (notification_options == NOTIFICATION_HOST_FLAP) ? "selected" : "");
 		}
 		printf("</select></td>\n");
 		printf("</tr>\n");
 
 		/* Order */
-		printf("<tr><td align=right>Order:</td>");
-		printf("<td nowrap><input type=radio name='order' value='new2old' %s> Newer Entries First&nbsp;&nbsp;| <input type=radio name='order' value='old2new' %s> Older Entries First</td></tr>\n", (reverse == TRUE) ? "" : "checked", (reverse == TRUE) ? "checked" : "");
+		printf("<tr><td align='right'>Order:</td>");
+		printf("<td nowrap><input type='radio' name='order' value='new2old' %s> Newer Entries First&nbsp;&nbsp;| <input type='radio' name='order' value='old2new' %s> Older Entries First</td></tr>\n", (reverse == TRUE) ? "" : "checked", (reverse == TRUE) ? "checked" : "");
 
 		/* Timeperiod */
-		printf("<tr><td align=left>Timeperiod:</td>");
-		printf("<td align=left>\n");
+		printf("<tr><td align='left'>Timeperiod:</td>");
+		printf("<td align='left'>\n");
 
 		printf("<select id='selecttp' name='timeperiod' onChange=\"var i=document.getElementById('selecttp').selectedIndex; if (document.getElementById('selecttp').options[i].value == 'custom') { document.getElementById('custtime').style.display = ''; } else { document.getElementById('custtime').style.display = 'none';}\">\n");
-		printf("<option value=singleday %s>Single Day\n", (timeperiod_type == TIMEPERIOD_SINGLE_DAY) ? "selected" : "");
-		printf("<option value=today %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "selected" : "");
-		printf("<option value=last24hours %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "selected" : "");
-		printf("<option value=thisweek %s>This Week\n", (timeperiod_type == TIMEPERIOD_THISWEEK) ? "selected" : "");
-		printf("<option value=last7days %s>Last 7 Days\n", (timeperiod_type == TIMEPERIOD_LAST7DAYS) ? "selected" : "");
-		printf("<option value=lastweek %s>Last Week\n", (timeperiod_type == TIMEPERIOD_LASTWEEK) ? "selected" : "");
-		printf("<option value=thismonth %s>This Month\n", (timeperiod_type == TIMEPERIOD_THISMONTH) ? "selected" : "");
-		printf("<option value=last31days %s>Last 31 Days\n", (timeperiod_type == TIMEPERIOD_LAST31DAYS) ? "selected" : "");
-		printf("<option value=lastmonth %s>Last Month\n", (timeperiod_type == TIMEPERIOD_LASTMONTH) ? "selected" : "");
-		printf("<option value=thisyear %s>This Year\n", (timeperiod_type == TIMEPERIOD_THISYEAR) ? "selected" : "");
-		printf("<option value=lastyear %s>Last Year\n", (timeperiod_type == TIMEPERIOD_LASTYEAR) ? "selected" : "");
-		printf("<option value=custom %s>* CUSTOM PERIOD *\n", (timeperiod_type == TIMEPERIOD_CUSTOM) ? "selected" : "");
+		printf("<option value='singleday' %s>Single Day\n", (timeperiod_type == TIMEPERIOD_SINGLE_DAY) ? "selected" : "");
+		printf("<option value='today' %s>Today\n", (timeperiod_type == TIMEPERIOD_TODAY) ? "selected" : "");
+		printf("<option value='last24hours' %s>Last 24 Hours\n", (timeperiod_type == TIMEPERIOD_LAST24HOURS) ? "selected" : "");
+		printf("<option value='thisweek' %s>This Week\n", (timeperiod_type == TIMEPERIOD_THISWEEK) ? "selected" : "");
+		printf("<option value='last7days' %s>Last 7 Days\n", (timeperiod_type == TIMEPERIOD_LAST7DAYS) ? "selected" : "");
+		printf("<option value='lastweek' %s>Last Week\n", (timeperiod_type == TIMEPERIOD_LASTWEEK) ? "selected" : "");
+		printf("<option value='thismonth' %s>This Month\n", (timeperiod_type == TIMEPERIOD_THISMONTH) ? "selected" : "");
+		printf("<option value='last31days' %s>Last 31 Days\n", (timeperiod_type == TIMEPERIOD_LAST31DAYS) ? "selected" : "");
+		printf("<option value='lastmonth' %s>Last Month\n", (timeperiod_type == TIMEPERIOD_LASTMONTH) ? "selected" : "");
+		printf("<option value='thisyear' %s>This Year\n", (timeperiod_type == TIMEPERIOD_THISYEAR) ? "selected" : "");
+		printf("<option value='lastyear' %s>Last Year\n", (timeperiod_type == TIMEPERIOD_LASTYEAR) ? "selected" : "");
+		printf("<option value='custom' %s>* CUSTOM PERIOD *\n", (timeperiod_type == TIMEPERIOD_CUSTOM) ? "selected" : "");
 		printf("</select>\n");
 		printf("<div id='custtime' style='display:%s;'>", (timeperiod_type == TIMEPERIOD_CUSTOM) ? "" : "none");
 
-		printf("<br><table border=0 cellspacing=0 cellpadding=0>\n");
+		printf("<br><table border='0' cellspacing='0' cellpadding='0'>\n");
 		get_time_string(&ts_start, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
-		printf("<tr><td>Start:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' class='timepicker' NAME='start_time' VALUE='%s' SIZE=\"25\"></td></tr>", buffer);
+		printf("<tr><td>Start:&nbsp;&nbsp;</td><td><input type='text' class='timepicker' name='start_time' value='%s' size='25'></td></tr>", buffer);
 
 		get_time_string(&ts_end, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
-		printf("<tr><td>End:&nbsp;&nbsp;</td><td><INPUT TYPE='TEXT' class='timepicker' NAME='end_time' VALUE='%s' SIZE=\"25\"></td></tr></table></div>", buffer);
+		printf("<tr><td>End:&nbsp;&nbsp;</td><td><input type='text' class='timepicker' name='end_time' value='%s' size='25'></td></tr></table></div>", buffer);
 
 		printf("</td></tr>\n");
 
 		/* submit Button */
-		printf("<tr><td><input type='submit' value='Update'></td><td align=right><input type='reset' value='Reset' onClick=\"window.location.href='%s?order=new2old&timeperiod=singleday&limit=%d'\">&nbsp;</td></tr>\n", NOTIFICATIONS_CGI, result_limit);
+		printf("<tr><td><input type='submit' value='Update'></td><td align='right'><input type='reset' value='Reset' onClick=\"window.location.href='%s?order=new2old&amp;timeperiod=singleday&amp;limit=%d'\">&nbsp;</td></tr>\n", NOTIFICATIONS_CGI, result_limit);
 
 		printf("</table>\n");
 		printf("</form>\n");
@@ -731,11 +731,11 @@ void display_notifications(void) {
 			printf("%sNOTIFICATION_COMMAND%s%s", csv_data_enclosure, csv_data_enclosure, csv_delimiter);
 			printf("%sINFORMATION%s\n", csv_data_enclosure, csv_data_enclosure);
 		} else {
-			printf("<table border=0 CLASS='notifications' align='center'>\n");
+			printf("<table border='0' class='notifications' align='center'>\n");
 
 			/* add export to csv, json, link */
-			printf("<TR><TD colspan='7'>");
-			printf("<table width='100%%' cellspacing=0 cellpadding=0><tr><td width='33%%'></td><td width='33%%' nowrap>");
+			printf("<tr><td colspan='7'>");
+			printf("<table width='100%%' cellspacing='0' cellpadding='0'><tr><td width='33%%'></td><td width='33%%' nowrap>");
 			printf("<div class='page_selector'>\n");
 			printf("<div id='page_navigation_copy'></div>");
 			page_limit_selector(result_start);
@@ -748,13 +748,13 @@ void display_notifications(void) {
 			printf("</div></td></tr></table>");
 
 			printf("<tr>\n");
-			printf("<th CLASS='notifications'>Host</th>\n");
-			printf("<th CLASS='notifications'>Service</th>\n");
-			printf("<th CLASS='notifications'>Type</th>\n");
-			printf("<th CLASS='notifications'>Time</th>\n");
-			printf("<th CLASS='notifications'>Contact</th>\n");
-			printf("<th CLASS='notifications'>Notification Command</th>\n");
-			printf("<th CLASS='notifications'>Information</th>\n");
+			printf("<th class='notifications'>Host</th>\n");
+			printf("<th class='notifications'>Service</th>\n");
+			printf("<th class='notifications'>Type</th>\n");
+			printf("<th class='notifications'>Time</th>\n");
+			printf("<th class='notifications'>Contact</th>\n");
+			printf("<th class='notifications'>Notification Command</th>\n");
+			printf("<th class='notifications'>Information</th>\n");
 			printf("</tr>\n");
 		}
 
@@ -996,25 +996,25 @@ void display_notifications(void) {
 					printf("%s%s%s%s", csv_data_enclosure, method_name, csv_data_enclosure, csv_delimiter);
 					printf("%s%s%s\n", csv_data_enclosure, escape_newlines(temp_buffer), csv_data_enclosure);
 				} else {
-					printf("<tr CLASS='notifications%s'>\n", (odd) ? "Even" : "Odd");
+					printf("<tr class='notifications%s'>\n", (odd) ? "Even" : "Odd");
 					if (temp_host != NULL)
-						printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s'>%s</a></td>\n", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name), displayed_host_name);
+						printf("<td class='notifications%s'><a href='%s?type=%d&amp;host=%s'>%s</a></td>\n", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_HOST_INFO, url_encode(host_name), displayed_host_name);
 					else
-						printf("<td CLASS='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", displayed_host_name);
+						printf("<td class='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", displayed_host_name);
 					if (temp_entry->type == LOGENTRY_SERVICE_NOTIFICATION) {
 						if (temp_service != NULL) {
-							printf("<td CLASS='notifications%s'><a href='%s?type=%d&host=%s", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
-							printf("&service=%s'>%s</a></td>\n", url_encode(service_name), displayed_service_desc);
+							printf("<td class='notifications%s'><a href='%s?type=%d&amp;host=%s", (odd) ? "Even" : "Odd", EXTINFO_CGI, DISPLAY_SERVICE_INFO, url_encode(host_name));
+							printf("&amp;service=%s'>%s</a></td>\n", url_encode(service_name), displayed_service_desc);
 						} else
-							printf("<td CLASS='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", displayed_service_desc);
+							printf("<td class='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", displayed_service_desc);
 
 					} else
-						printf("<td CLASS='notifications%s'>N/A</td>\n", (odd) ? "Even" : "Odd");
-					printf("<td CLASS='notifications%s'>%s</td>\n", alert_level_class, alert_level);
-					printf("<td CLASS='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", date_time);
-					printf("<td CLASS='notifications%s'><a href='%s?type=contacts#%s'>%s</a></td>\n", (odd) ? "Even" : "Odd", CONFIG_CGI, url_encode(contact_name), contact_name);
-					printf("<td CLASS='notifications%s'><a href='%s?type=commands#%s'>%s</a></td>\n", (odd) ? "Even" : "Odd", CONFIG_CGI, url_encode(method_name), method_name);
-					printf("<td CLASS='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", html_encode(temp_buffer, FALSE));
+						printf("<td class='notifications%s'>N/A</td>\n", (odd) ? "Even" : "Odd");
+					printf("<td class='notifications%s'>%s</td>\n", alert_level_class, alert_level);
+					printf("<td class='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", date_time);
+					printf("<td class='notifications%s'><a href='%s?type=contacts#%s'>%s</a></td>\n", (odd) ? "Even" : "Odd", CONFIG_CGI, url_encode(contact_name), contact_name);
+					printf("<td class='notifications%s'><a href='%s?type=commands#%s'>%s</a></td>\n", (odd) ? "Even" : "Odd", CONFIG_CGI, url_encode(method_name), method_name);
+					printf("<td class='notifications%s'>%s</td>\n", (odd) ? "Even" : "Odd", html_encode(temp_buffer, FALSE));
 					printf("</tr>\n");
 				}
 				if (json_start == TRUE)
@@ -1029,7 +1029,7 @@ void display_notifications(void) {
 		printf("</table>\n");
 
 		if (total_notifications == 0) {
-			printf("<DIV CLASS='errorMessage' style='text-align:center;'>No notifications have been recorded");
+			printf("<div class='errorMessage' style='text-align:center;'>No notifications have been recorded");
 			if (find_all == FALSE) {
 				if (query_type == DISPLAY_SERVICES)
 					printf(" for this service");
@@ -1038,7 +1038,7 @@ void display_notifications(void) {
 				else
 					printf(" for this host");
 			}
-			printf(" in log files for selected date.</DIV>");
+			printf(" in log files for selected date.</div>");
 		}
 
 		page_num_selector(result_start, total_notifications, displayed_entries);

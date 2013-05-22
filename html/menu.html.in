@@ -36,29 +36,29 @@
 			<li class="menuli_style1"><a href="@cgiurl@/tac.cgi" target="main">Tactical Overview</a></li>
 			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?style=hostdetail" target="main">Host Detail</a></li>
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi" target="main">Service Detail</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&style=overview" target="main">Hostgroup Overview</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&style=summary" target="main">Hostgroup Summary</a></li>
-			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&style=overview" target="main">Servicegroup Overview</a></li>
-			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&style=summary" target="main">Servicegroup Summary</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&amp;style=overview" target="main">Hostgroup Overview</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?hostgroup=all&amp;style=summary" target="main">Hostgroup Summary</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&amp;style=overview" target="main">Servicegroup Overview</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicegroup=all&amp;style=summary" target="main">Servicegroup Summary</a></li>
 			<li class="menuli_style2"><a href="@cgiurl@/statusmap.cgi?host=all" target="main">Status Map</a></li>
 		</ul>
 		<h2>Problems</h2>
 		<ul>
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?servicestatustypes=28" target="main">Service Problems</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?servicestatustypes=28&hoststatustypes=3&serviceprops=2097162" target="main">Unhandled Services</a></li>
-			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?style=hostdetail&hoststatustypes=12" target="main">Host Problems</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?style=hostdetail&hoststatustypes=12&hostprops=2097162" target="main">Unhandled Hosts</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?servicestatustypes=28&amp;hoststatustypes=3&amp;serviceprops=2097162" target="main">Unhandled Services</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?style=hostdetail&amp;hoststatustypes=12" target="main">Host Problems</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?style=hostdetail&amp;hoststatustypes=12&amp;hostprops=2097162" target="main">Unhandled Hosts</a></li>
 			<li class="menuli_style1"><a href="@cgiurl@/status.cgi?allunhandledproblems" target="main">All Unhandled Problems</a></li>
 			<li class="menuli_style2"><a href="@cgiurl@/status.cgi?allproblems" target="main">All Problems</a></li>
 			<li class="menuli_style1"><a href="@cgiurl@/outages.cgi" target="main">Network Outages</a></li>
 		</ul>
 		<h2>System</h2>
 		<ul>
-			<li class="menuli_style1"><a href="@cgiurl@/extinfo.cgi?&type=3" target="main">Comments</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/extinfo.cgi?&type=6" target="main">Downtime</a></li>
-			<li class="menuli_style1"><a href="@cgiurl@/extinfo.cgi?&type=0" target="main">Process Info</a></li>
-			<li class="menuli_style2"><a href="@cgiurl@/extinfo.cgi?&type=4" target="main">Performance Info</a></li>
-			<li class="menuli_style1"><a href="@cgiurl@/extinfo.cgi?&type=7" target="main">Scheduling Queue</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/extinfo.cgi?type=3" target="main">Comments</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/extinfo.cgi?type=6" target="main">Downtime</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/extinfo.cgi?type=0" target="main">Process Info</a></li>
+			<li class="menuli_style2"><a href="@cgiurl@/extinfo.cgi?type=4" target="main">Performance Info</a></li>
+			<li class="menuli_style1"><a href="@cgiurl@/extinfo.cgi?type=7" target="main">Scheduling Queue</a></li>
 		</ul>
 		<h2>Reporting</h2>
 		<ul>

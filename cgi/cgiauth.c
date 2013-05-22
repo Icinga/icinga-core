@@ -223,7 +223,7 @@ int parse_authorization_config_file(char* filename, authdata* authinfo) {
 
 	/* Shibboleth environment variable */
 	if (getenv("entitlement") == NULL) {
-		//printf("<P><DIV CLASS='errorMessage'>Authorization information: entitlement variable is empty</DIV></P>");
+		//printf("<p><div class='errorMessage'>Authorization information: entitlement variable is empty</div></p>");
 		return ERROR;
 	}
 
