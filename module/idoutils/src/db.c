@@ -2905,18 +2905,24 @@ int ido2db_db_perform_maintenance(ido2db_idi *idi) {
 }
 
 int ido2db_db_tx_begin(ido2db_idi *idi) {
+	int result = IDO_ERROR;
 #ifdef USE_LIBDBI
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_tx_begin()\n");
-	return ido2db_db_query(idi, "BEGIN");
+	result = ido2db_db_query(idi, "BEGIN");
+	dbi_result_free(idi->dbinfo.dbi_result);
+	return result;
 #else /* USE_LIBDBI */
 	return IDO_OK;
 #endif /* USE_LIBDBI */
 }
 
 int ido2db_db_tx_commit(ido2db_idi *idi) {
+	int result = IDO_ERROR;
 #ifdef USE_LIBDBI
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2, "ido2db_db_tx_commit()\n");
-	return ido2db_db_query(idi, "COMMIT");
+	result = ido2db_db_query(idi, "COMMIT");
+	dbi_result_free(idi->dbinfo.dbi_result);
+	return result;
 #else /* USE_LIBDBI */
 	return IDO_OK;
 #endif /* USE_LIBDBI */
