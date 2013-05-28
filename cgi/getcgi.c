@@ -112,22 +112,22 @@ void unescape_cgi_input(char *input) {
 		if (input[x] == '\x0') {
 			break;
 
-		// RB 2013-04-07
-		// only allow hex conversion if '%' is follow by a valid character
+			// RB 2013-04-07
+			// only allow hex conversion if '%' is follow by a valid character
 		} else if (input[x] == '%' && (
-			// 0 - 9
-			(input[x+1] >= 48 && input[x+1] <= 57) ||
-			// A - F
-			(input[x+1] >= 65 && input[x+1] <= 70) ||
-			// a - f
-			(input[x+1] >= 97 && input[x+1] <= 102))
-			) {
+		               // 0 - 9
+		               (input[x+1] >= 48 && input[x+1] <= 57) ||
+		               // A - F
+		               (input[x+1] >= 65 && input[x+1] <= 70) ||
+		               // a - f
+		               (input[x+1] >= 97 && input[x+1] <= 102))
+		          ) {
 
 			input[y] = hex_to_char(&input[x+1]);
 			x += 2;
 
-		// RB 2011-09-08
-		// convert plus as well that it can bu used in service and host names
+			// RB 2011-09-08
+			// convert plus as well that it can bu used in service and host names
 		} else if (input[x] == '+') {
 			input[y] = ' ';
 		} else
@@ -249,7 +249,7 @@ char **getcgivars(void) {
 	nvpair = strtok(cgiinput, "&");
 	while (nvpair) {
 		pairlist[paircount] = strdup(nvpair);
-		if(pairlist[paircount++] == NULL) {
+		if (pairlist[paircount++] == NULL) {
 			printf("getcgivars(): Could not allocate memory for name-value pair element #%d.\n", paircount);
 			exit(1);
 		}
@@ -281,7 +281,7 @@ char **getcgivars(void) {
 		if ((eqpos = strchr(pairlist[i], '=')) != NULL) {
 			*eqpos = '\0';
 			cgivars[i*2+1] = strdup(eqpos + 1);
-			if(cgivars[i*2+1] == NULL) {
+			if (cgivars[i*2+1] == NULL) {
 				printf("getcgivars(): Could not allocate memory for cgi param value #%d.\n", i);
 				exit(1);
 			}
@@ -289,7 +289,7 @@ char **getcgivars(void) {
 
 		} else {
 			cgivars[i*2+1] = strdup("");
-			if(cgivars[i*2+1] == NULL) {
+			if (cgivars[i*2+1] == NULL) {
 				printf("getcgivars(): Could not allocate memory for empty cgi param value #%d.\n", i);
 				exit(1);
 			}
@@ -297,7 +297,7 @@ char **getcgivars(void) {
 
 		/* get the variable value (or name/value of there was no real "pair" in the first place) */
 		cgivars[i*2] = strdup(pairlist[i]);
-		if(cgivars[i*2] == NULL) {
+		if (cgivars[i*2] == NULL) {
 			printf("getcgivars(): Could not allocate memory for cgi param name #%d.\n", i);
 			exit(1);
 		}

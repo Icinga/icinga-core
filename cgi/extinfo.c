@@ -528,7 +528,7 @@ int main(void) {
 				for (temp_sd = servicedependency_list; temp_sd != NULL; temp_sd = temp_sd->next) {
 
 					if (!strcmp(temp_sd->dependent_service_description, temp_service->description) && !strcmp(temp_sd->dependent_host_name, temp_host->name)) {
-					        if (!(!strcmp(temp_sd->service_description, last_sd_svc_desc) && !strcmp(temp_sd->host_name, last_sd_hostname))) {
+						if (!(!strcmp(temp_sd->service_description, last_sd_svc_desc) && !strcmp(temp_sd->host_name, last_sd_hostname))) {
 							if (found == TRUE)
 								printf(", ");
 
@@ -1217,7 +1217,7 @@ void show_process_info(void) {
 		printf("<tr><td class='dataVar'>Performance Data Being Processed?</td><td class='dataVal'>%s</td></tr>\n", (process_performance_data == TRUE) ? "Yes" : "No");
 
 		/* Notifications disabled will expire? */
-		if(enable_notifications == TRUE && disable_notifications_expire_time > 0)
+		if (enable_notifications == TRUE && disable_notifications_expire_time > 0)
 			printf("<tr><td class='dataVar'>Notifications?</td><td class='dataVal'>%s</td></tr>\n", (process_performance_data == TRUE) ? "Yes" : "No");
 
 
@@ -3729,11 +3729,11 @@ void show_scheduling_queue(void) {
 			printf("<tr class='queue%s'>", bgclass);
 
 			/* Host */
-			printf("<td class='queue%s'><a href='%s?type=%d&amp;host=%s'>%s</a></td>", bgclass, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encoded_host, html_encode(host_display_name,TRUE));
+			printf("<td class='queue%s'><a href='%s?type=%d&amp;host=%s'>%s</a></td>", bgclass, EXTINFO_CGI, DISPLAY_HOST_INFO, url_encoded_host, html_encode(host_display_name, TRUE));
 
 			/* Service */
 			if (temp_sortdata->is_service == TRUE)
-				printf("<td class='queue%s'><a href='%s'>%s</a></td>", bgclass, service_link, html_encode(service_display_name,TRUE));
+				printf("<td class='queue%s'><a href='%s'>%s</a></td>", bgclass, service_link, html_encode(service_display_name, TRUE));
 			else
 				printf("<td class='queue%s'>&nbsp;</td>", bgclass);
 

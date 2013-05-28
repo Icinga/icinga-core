@@ -56,7 +56,7 @@ int check_escalation_condition(escalation_condition*);
 
 int dummy;	/* reduce compiler warnings */
 
-const char *notification_reason_name (unsigned int reason_type) {
+const char *notification_reason_name(unsigned int reason_type) {
 	static const char *names[] = {
 		"NORMAL", "ACKNOWLEDGEMENT",
 		"FLAPPINGSTART", "FLAPPINGSTOP", "FLAPPINGDISABLED",
@@ -163,7 +163,7 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 	}
 #endif
 
-	/* 2011-10-21 MF:  
+	/* 2011-10-21 MF:
 	   check viability before adding a contact
 	   to the notification list, requires type
 	   this prevents us from running through all
@@ -293,22 +293,22 @@ int service_notification(service *svc, int type, char *not_author, char *not_dat
 		my_free(mac.x[MACRO_SERVICEACKAUTHOR]);
 		my_free(mac.x[MACRO_SERVICEACKCOMMENT]);
 
-                /* this gets set in add_notification() */
-                my_free(mac.x[MACRO_NOTIFICATIONRECIPIENTS]);
+		/* this gets set in add_notification() */
+		my_free(mac.x[MACRO_NOTIFICATIONRECIPIENTS]);
 
-                /*
-                 * Clear all macros customized per contact that will
-                 * otherwise linger in memory now that we're done with
-                 * the notifications.
-                 */
-                clear_summary_macros_r(&mac);
-                clear_contact_macros_r(&mac);
-                clear_argv_macros_r(&mac);
+		/*
+		 * Clear all macros customized per contact that will
+		 * otherwise linger in memory now that we're done with
+		 * the notifications.
+		 */
+		clear_summary_macros_r(&mac);
+		clear_contact_macros_r(&mac);
+		clear_argv_macros_r(&mac);
 		clear_service_macros_r(&mac);
 		clear_host_macros_r(&mac);
 
-                /* this gets set in create_notification_list_from_service() */
-                my_free(mac.x[MACRO_NOTIFICATIONISESCALATED]);
+		/* this gets set in create_notification_list_from_service() */
+		my_free(mac.x[MACRO_NOTIFICATIONISESCALATED]);
 
 		if (type == NOTIFICATION_NORMAL) {
 
@@ -483,7 +483,7 @@ int check_service_notification_viability(service *svc, int type, int options) {
 	/***********************************************/
 	/*** SPECIAL CASE FOR STALKING NOTIFICATIONS ***/
 	/***********************************************/
-	
+
 	/* stalking notifications are good to go at this point, if enabled (this is done before reaching notifications) */
 	if (type == NOTIFICATION_STALKING) {
 		return OK;
@@ -708,7 +708,7 @@ int check_contact_service_notification_viability(contact *cntct, service *svc, i
 	/***********************************************/
 	/*** SPECIAL CASE FOR STALKING NOTIFICATIONS ***/
 	/***********************************************/
-	
+
 	/* stalking notifications are good to go at this point, if enabled (this is done before reaching notifications) */
 	if (type == NOTIFICATION_STALKING) {
 		return OK;
@@ -895,14 +895,14 @@ int notify_contact_of_service(icinga_macros *mac, contact *cntct, service *svc, 
 		}
 
 #ifdef USE_EVENT_BROKER
-                /* send data to event broker */
-                method_end_time.tv_sec = 0L;
-                method_end_time.tv_usec = 0L;
-                neb_result = broker_contact_notification_method_data(NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_NOTIFICATION, type, method_start_time, method_end_time, (void *)svc, cntct, temp_commandsmember->command, not_author, not_data, escalated, NULL);
-                if (NEBERROR_CALLBACKCANCEL == neb_result)
-                        break ;
-                else if (NEBERROR_CALLBACKOVERRIDE == neb_result)
-                        continue ;
+		/* send data to event broker */
+		method_end_time.tv_sec = 0L;
+		method_end_time.tv_usec = 0L;
+		neb_result = broker_contact_notification_method_data(NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE, NEBFLAG_NONE, NEBATTR_NONE, SERVICE_NOTIFICATION, type, method_start_time, method_end_time, (void *)svc, cntct, temp_commandsmember->command, not_author, not_data, escalated, NULL);
+		if (NEBERROR_CALLBACKCANCEL == neb_result)
+			break ;
+		else if (NEBERROR_CALLBACKOVERRIDE == neb_result)
+			continue ;
 #endif
 
 		/* run the notification command */
@@ -1206,8 +1206,8 @@ int create_notification_list_from_service(icinga_macros *mac, service *svc, int 
 				if (check_contact_service_notification_viability(temp_contact, svc, type, options) == OK)
 					add_notification(mac, temp_contact);
 				else
-					log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n",temp_contact->name);
-					
+					log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n", temp_contact->name);
+
 			}
 
 			log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Adding members of contact groups from service escalation(s) to notification list.\n");
@@ -1224,7 +1224,7 @@ int create_notification_list_from_service(icinga_macros *mac, service *svc, int 
 					if (check_contact_service_notification_viability(temp_contact, svc, type, options) == OK)
 						add_notification(mac, temp_contact);
 					else
-						log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n",temp_contact->name);
+						log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n", temp_contact->name);
 				}
 			}
 		}
@@ -1240,10 +1240,10 @@ int create_notification_list_from_service(icinga_macros *mac, service *svc, int 
 			if ((temp_contact = temp_contactsmember->contact_ptr) == NULL)
 				continue;
 			/* check now if the contact can be notified */
-                        if (check_contact_service_notification_viability(temp_contact, svc, type, options) == OK)
-                                add_notification(mac, temp_contact);
-                        else
-                                log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n",temp_contact->name);
+			if (check_contact_service_notification_viability(temp_contact, svc, type, options) == OK)
+				add_notification(mac, temp_contact);
+			else
+				log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n", temp_contact->name);
 		}
 
 		/* add all contacts that belong to contactgroups for this service */
@@ -1254,11 +1254,11 @@ int create_notification_list_from_service(icinga_macros *mac, service *svc, int 
 			for (temp_contactsmember = temp_contactgroup->members; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {
 				if ((temp_contact = temp_contactsmember->contact_ptr) == NULL)
 					continue;
-                        	/* check now if the contact can be notified */
-	                        if (check_contact_service_notification_viability(temp_contact, svc, type, options) == OK)
-	                                add_notification(mac, temp_contact);
-	                        else
-	                                log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n",temp_contact->name);
+				/* check now if the contact can be notified */
+				if (check_contact_service_notification_viability(temp_contact, svc, type, options) == OK)
+					add_notification(mac, temp_contact);
+				else
+					log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n", temp_contact->name);
 			}
 		}
 	}
@@ -1347,21 +1347,21 @@ int host_notification(host *hst, int type, char *not_author, char *not_data, int
 	}
 #endif
 
-        /* 2011-10-21 MF:  
-           check viability before adding a contact
-           to the notification list, requires type
-           this prevents us from running through all
-           the steps until notify_contact_of_host|service
-           is reached. furthermore the $NOTIFICATIONRECIPIENTS$
-           macro gets only populated with actual recipients,
-           not all contacts assigned to that host|service.
-           nice side effect - will resolve long lasting bug.
+	/* 2011-10-21 MF:
+	   check viability before adding a contact
+	   to the notification list, requires type
+	   this prevents us from running through all
+	   the steps until notify_contact_of_host|service
+	   is reached. furthermore the $NOTIFICATIONRECIPIENTS$
+	   macro gets only populated with actual recipients,
+	   not all contacts assigned to that host|service.
+	   nice side effect - will resolve long lasting bug.
 
-           note: checks against timeperiod will happen now(),
-           and not when the notification is actually being sent.
+	   note: checks against timeperiod will happen now(),
+	   and not when the notification is actually being sent.
 
-           original patch by Opsview Team
-        */
+	   original patch by Opsview Team
+	*/
 	create_notification_list_from_host(&mac, hst, options, &escalated, type);
 
 	/* XXX: crazy indent */
@@ -2008,14 +2008,14 @@ int notify_contact_of_host(icinga_macros *mac, contact *cntct, host *hst, int ty
 		}
 
 #ifdef USE_EVENT_BROKER
-                /* send data to event broker */
-                method_end_time.tv_sec = 0L;
-                method_end_time.tv_usec = 0L;
-                neb_result = broker_contact_notification_method_data(NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE, NEBFLAG_NONE, NEBATTR_NONE, HOST_NOTIFICATION, type, method_start_time, method_end_time, (void *)hst, cntct, temp_commandsmember->command, not_author, not_data, escalated, NULL);
-                if (NEBERROR_CALLBACKCANCEL == neb_result)
-                        break;
-                else if (NEBERROR_CALLBACKOVERRIDE == neb_result)
-                        continue;
+		/* send data to event broker */
+		method_end_time.tv_sec = 0L;
+		method_end_time.tv_usec = 0L;
+		neb_result = broker_contact_notification_method_data(NEBTYPE_CONTACTNOTIFICATIONMETHOD_EXECUTE, NEBFLAG_NONE, NEBATTR_NONE, HOST_NOTIFICATION, type, method_start_time, method_end_time, (void *)hst, cntct, temp_commandsmember->command, not_author, not_data, escalated, NULL);
+		if (NEBERROR_CALLBACKCANCEL == neb_result)
+			break;
+		else if (NEBERROR_CALLBACKOVERRIDE == neb_result)
+			continue;
 #endif
 
 		/* run the notification command */
@@ -2247,11 +2247,11 @@ int create_notification_list_from_host(icinga_macros *mac, host *hst, int option
 				for (temp_contactsmember = temp_contactgroup->members; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {
 					if ((temp_contact = temp_contactsmember->contact_ptr) == NULL)
 						continue;
-	                                /* check now if the contact can be notified */
-	                                if (check_contact_host_notification_viability(temp_contact, hst, type, options) == OK)
-	                                        add_notification(mac, temp_contact);
-	                                else
-	                                        log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n", temp_contact->name);
+					/* check now if the contact can be notified */
+					if (check_contact_host_notification_viability(temp_contact, hst, type, options) == OK)
+						add_notification(mac, temp_contact);
+					else
+						log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n", temp_contact->name);
 				}
 			}
 		}
@@ -2268,11 +2268,11 @@ int create_notification_list_from_host(icinga_macros *mac, host *hst, int option
 		for (temp_contactsmember = hst->contacts; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {
 			if ((temp_contact = temp_contactsmember->contact_ptr) == NULL)
 				continue;
-                        /* check now if the contact can be notified */
-                        if (check_contact_host_notification_viability(temp_contact, hst, type, options) == OK)
-                                add_notification(mac, temp_contact);
-                        else
-                                log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n", temp_contact->name);
+			/* check now if the contact can be notified */
+			if (check_contact_host_notification_viability(temp_contact, hst, type, options) == OK)
+				add_notification(mac, temp_contact);
+			else
+				log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n", temp_contact->name);
 		}
 
 		log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Adding members of contact groups for host to notification list.\n");
@@ -2286,11 +2286,11 @@ int create_notification_list_from_host(icinga_macros *mac, host *hst, int option
 			for (temp_contactsmember = temp_contactgroup->members; temp_contactsmember != NULL; temp_contactsmember = temp_contactsmember->next) {
 				if ((temp_contact = temp_contactsmember->contact_ptr) == NULL)
 					continue;
-	                        /* check now if the contact can be notified */
-	                        if (check_contact_host_notification_viability(temp_contact, hst, type, options) == OK)
-	                                add_notification(mac, temp_contact);
-	                        else
-	                                log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n", temp_contact->name);
+				/* check now if the contact can be notified */
+				if (check_contact_host_notification_viability(temp_contact, hst, type, options) == OK)
+					add_notification(mac, temp_contact);
+				else
+					log_debug_info(DEBUGL_NOTIFICATIONS, 2, "Not adding contact '%s'\n", temp_contact->name);
 			}
 		}
 	}

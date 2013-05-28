@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
 	driver = NULL;
 #endif
 #ifdef USE_ORACLE
-	unsigned int v1,v2;
+	unsigned int v1, v2;
 #endif
 
 	result = ido2db_process_arguments(argc, argv);
@@ -268,17 +268,17 @@ int main(int argc, char **argv) {
 	/* at this stage, is oci driver not loaded, but loading will be later in db_init.
 	 * check will try to init,read variables and cleanup afterwards
 	 */
-	if (OCI_Initialize(NULL,NULL,OCI_ENV_DEFAULT)) {
-	    v1=OCI_GetOCIRuntimeVersion();
-	    v2=OCI_GetOCICompileVersion();
-	    syslog(LOG_INFO, "OCILIB driver check OK(OCI Version:%u,CompileTime:%u)",
-	        v1,v2);
-	    /* we need to cleanup to succeed ido2db_db_init */
-	        OCI_Cleanup();
-	}else{
-	        printf("Cannot initialize OCILIB, exiting!\n");
-	        syslog(LOG_ERR,"Cannot initialize OCILIB, exiting!");
-	        exit (1);
+	if (OCI_Initialize(NULL, NULL, OCI_ENV_DEFAULT)) {
+		v1 = OCI_GetOCIRuntimeVersion();
+		v2 = OCI_GetOCICompileVersion();
+		syslog(LOG_INFO, "OCILIB driver check OK(OCI Version:%u,CompileTime:%u)",
+		       v1, v2);
+		/* we need to cleanup to succeed ido2db_db_init */
+		OCI_Cleanup();
+	} else {
+		printf("Cannot initialize OCILIB, exiting!\n");
+		syslog(LOG_ERR, "Cannot initialize OCILIB, exiting!");
+		exit(1);
 	}
 
 
@@ -299,9 +299,9 @@ int main(int argc, char **argv) {
 	/* open debug log */
 	ido2db_open_debug_log();
 
-        /* unlink leftover socket */
-        if (ido2db_socket_type == IDO_SINK_UNIXSOCKET)
-                unlink(ido2db_socket_name);
+	/* unlink leftover socket */
+	if (ido2db_socket_type == IDO_SINK_UNIXSOCKET)
+		unlink(ido2db_socket_name);
 
 	/* if we're running under inetd... */
 	if (ido2db_use_inetd == IDO_TRUE) {
@@ -616,8 +616,7 @@ int ido2db_process_config_var(char *arg) {
 		enable_sla = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
 	} else if (!strcmp(var, "debug_readable_timestamp")) {
 		ido2db_debug_readable_timestamp = (atoi(val) > 0) ? IDO_TRUE : IDO_FALSE;
-        }
-	else if (!strcmp(var, "libdbi_driver_dir")) {
+	} else if (!strcmp(var, "libdbi_driver_dir")) {
 		if ((libdbi_driver_dir = strdup(val)) == NULL)
 			return IDO_ERROR;
 	}
@@ -1757,7 +1756,7 @@ int ido2db_handle_client_input(ido2db_idi *idi, char *buf) {
 			idi->current_input_section = IDO2DB_INPUT_SECTION_DATA;
 
 			/* save connection info to DB , bail out if dbversion check was not ok*/
-			if(ido2db_db_hello(idi) == IDO_ERROR) {
+			if (ido2db_db_hello(idi) == IDO_ERROR) {
 				syslog(LOG_USER | LOG_INFO, "Error: Initial DB Handshake failed.  Disconnecting client...");
 				idi->disconnect_client = IDO_TRUE;
 				idi->ignore_client_data = IDO_TRUE;

@@ -1124,7 +1124,7 @@ void _get_next_valid_time(time_t pref_time, time_t current_time, time_t *valid_t
 	 */
 
 	/*
-	 * preferred time must be now or in the future 
+	 * preferred time must be now or in the future
 	 */
 	preferred_time = (pref_time < current_time) ? current_time : pref_time;
 
@@ -1138,7 +1138,7 @@ void _get_next_valid_time(time_t pref_time, time_t current_time, time_t *valid_t
 
 	/*
 	 * if the preferred time is valid in timeperiod, go with it
-	 * ithis is necessary because the code below won't catch 
+	 * ithis is necessary because the code below won't catch
 	 * exceptions where peferred day is last (or only) date in
 	 * timeperiod (date range) and last valid time has already
 	 * passed.
@@ -1184,7 +1184,7 @@ void get_earliest_time(time_t pref_time, time_t *valid_time, time_t current_time
 			*valid_time = earliest_time;
 	} else {
 		/*
-		 * first timeperiod exclusion hits here, alternating by 2 
+		 * first timeperiod exclusion hits here, alternating by 2
 		 */
 		get_min_invalid_time_per_timeperiod(pref_time, &earliest_time, current_time, tperiod);
 		if (*valid_time == 0)
@@ -1203,7 +1203,7 @@ void get_earliest_time(time_t pref_time, time_t *valid_time, time_t current_time
 	}
 	tperiod->exclusions = first_timeperiodexclusion;
 }
-	
+
 /*
  * _get_next_valid_time in Nagios
  */
@@ -1612,7 +1612,7 @@ void _get_next_valid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 }
 
 /*
- * for timeperiod exclusions, Icinga special from #459 
+ * for timeperiod exclusions, Icinga special from #459
  */
 void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, time_t current_time, timeperiod *tperiod) {
 	time_t preferred_time = (time_t)0L;
@@ -1680,17 +1680,17 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 	current_time_wday = t->tm_wday;
 
 #ifdef TEST_TIMEPERIODS_B
-	printf("PREF TIME:    %lu = %s",(unsigned long)preferred_time,ctime(&preferred_time));
-	printf("CURRENT TIME: %lu = %s",(unsigned long)current_time,ctime(&current_time));
-	printf("PREF YEAR:    %d, MON: %d, MDAY: %d, WDAY: %d\n",pref_time_year,pref_time_mon,pref_time_mday,pref_time_wday);
-	printf("CURRENT YEAR: %d, MON: %d, MDAY: %d, WDAY: %d\n",current_time_year,current_time_mon,current_time_mday,current_time_wday);
+	printf("PREF TIME:    %lu = %s", (unsigned long)preferred_time, ctime(&preferred_time));
+	printf("CURRENT TIME: %lu = %s", (unsigned long)current_time, ctime(&current_time));
+	printf("PREF YEAR:    %d, MON: %d, MDAY: %d, WDAY: %d\n", pref_time_year, pref_time_mon, pref_time_mday, pref_time_wday);
+	printf("CURRENT YEAR: %d, MON: %d, MDAY: %d, WDAY: %d\n", current_time_year, current_time_mon, current_time_mday, current_time_wday);
 #endif
 
 	/**** check exceptions (in this timeperiod definition) first ****/
 	for (daterange_type = 0; daterange_type < DATERANGE_TYPES; daterange_type++) {
 
 #ifdef TEST_TIMEPERIODS_B
-		printf("TYPE: %d\n",daterange_type);
+		printf("TYPE: %d\n", daterange_type);
 #endif
 
 		for (temp_daterange = tperiod->exceptions[daterange_type]; temp_daterange != NULL; temp_daterange = temp_daterange->next) {
@@ -1807,8 +1807,8 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 			}
 
 #ifdef TEST_TIMEPERIODS_B
-			printf("STARTTIME: %lu = %s",(unsigned long)start_time,ctime(&start_time));
-			printf("ENDTIME1: %lu = %s",(unsigned long)end_time,ctime(&end_time));
+			printf("STARTTIME: %lu = %s", (unsigned long)start_time, ctime(&start_time));
+			printf("ENDTIME1: %lu = %s", (unsigned long)end_time, ctime(&end_time));
 #endif
 
 			/* start date was bad, so skip this date range */
@@ -1904,7 +1904,7 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 					continue;
 
 				for (temp_timerange = temp_daterange->times; temp_timerange != NULL; temp_timerange = temp_timerange->next) {
-					
+
 					/* REMOVED
 					 * ranges with start/end of zero mean exlude this day
 					 * if(temp_timerange->range_start==0 && temp_timerange->range_end==0)
@@ -1915,8 +1915,8 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 					day_range_end = (time_t)(day_start + temp_timerange->range_end);
 
 #ifdef TEST_TIMEPERIODS_B
-					printf("  RANGE START: %lu (%lu) = %s",temp_timerange->range_start,(unsigned long)day_range_start,ctime(&day_range_start));
-					printf("  RANGE END:   %lu (%lu) = %s",temp_timerange->range_end,(unsigned long)day_range_end,ctime(&day_range_end));
+					printf("  RANGE START: %lu (%lu) = %s", temp_timerange->range_start, (unsigned long)day_range_start, ctime(&day_range_start));
+					printf("  RANGE END:   %lu (%lu) = %s", temp_timerange->range_end, (unsigned long)day_range_end, ctime(&day_range_end));
 #endif
 
 					/* range is out of bounds */
@@ -1924,12 +1924,12 @@ void get_min_invalid_time_per_timeperiod(time_t pref_time, time_t *valid_time, t
 						continue;
 
 					/* REMOVED
-                                         * preferred time occurs before range start, so use range start time as earliest potential time 
-                                         * if(day_range_start>=preferred_time)
-                                         *        potential_time=day_range_start;
-                                         * preferred time occurs between range start/end, so use preferred time as earliest potential time 
-                                         *else if(day_range_end>=preferred_time)
-                                         *        potential_time=preferred_time;
+					                     * preferred time occurs before range start, so use range start time as earliest potential time
+					                     * if(day_range_start>=preferred_time)
+					                     *        potential_time=day_range_start;
+					                     * preferred time occurs between range start/end, so use preferred time as earliest potential time
+					                     *else if(day_range_end>=preferred_time)
+					                     *        potential_time=preferred_time;
 					 */
 
 					potential_time = day_range_end;

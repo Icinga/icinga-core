@@ -432,16 +432,16 @@ int process_cgivars(void) {
 			command_type = atoi(variables[x]);
 		}
 
-                /* we found the attr */
-                else if (!strcmp(variables[x], "attr")) {
-                        x++;
-                        if (variables[x] == NULL) {
-                                error = TRUE;
-                                break;
-                        }
+		/* we found the attr */
+		else if (!strcmp(variables[x], "attr")) {
+			x++;
+			if (variables[x] == NULL) {
+				error = TRUE;
+				break;
+			}
 
-                        attr = strtoul(variables[x], NULL, 10);
-                }
+			attr = strtoul(variables[x], NULL, 10);
+		}
 
 		/* we found the command mode */
 		else if (!strcmp(variables[x], "cmd_mod")) {
@@ -811,12 +811,12 @@ void print_object_list(int list_type) {
 
 	printf("<script language='javascript' type=\"text/javascript\">\nchecked=false;\n");
 	printf("function checkAllBoxes() {\n"
-		"	checked = (checked == false) ? true : false;\n"
-		"	for (var i=0; i < %d; i++) {\n"
-		"		var checkboxes = document.getElementById(\"cb_\" + i);\n"
-		"		if (checkboxes != null ) { checkboxes.checked = checked; }\n"
-		"	}\n"
-		"}\n", NUMBER_OF_STRUCTS);
+	       "	checked = (checked == false) ? true : false;\n"
+	       "	for (var i=0; i < %d; i++) {\n"
+	       "		var checkboxes = document.getElementById(\"cb_\" + i);\n"
+	       "		if (checkboxes != null ) { checkboxes.checked = checked; }\n"
+	       "	}\n"
+	       "}\n", NUMBER_OF_STRUCTS);
 	printf("</script>\n");
 
 	printf("<table cellspacing='2' cellpadding='0' border='0' width='100%%'>\n");
@@ -841,17 +841,17 @@ void print_object_list(int list_type) {
 				continue;
 
 			if (strlen(commands[x].host_name) != 0 && (
-				command_type == CMD_SCHEDULE_HOST_CHECK ||
-				command_type == CMD_DISABLE_HOST_CHECK ||
-				command_type == CMD_SCHEDULE_SVC_CHECK ||
-				command_type == CMD_DISABLE_SVC_CHECK )) {
-				if((temp_hoststatus = find_hoststatus(commands[x].host_name)) != NULL) {
+			            command_type == CMD_SCHEDULE_HOST_CHECK ||
+			            command_type == CMD_DISABLE_HOST_CHECK ||
+			            command_type == CMD_SCHEDULE_SVC_CHECK ||
+			            command_type == CMD_DISABLE_SVC_CHECK)) {
+				if ((temp_hoststatus = find_hoststatus(commands[x].host_name)) != NULL) {
 					if (temp_hoststatus->checks_enabled == FALSE)
 						host_passive = TRUE;
 				}
 
-				if (list_type == PRINT_SERVICE_LIST && strlen(commands[x].description) != 0 ) {
-					if((temp_servicestatus = find_servicestatus(commands[x].host_name, commands[x].description)) != NULL) {
+				if (list_type == PRINT_SERVICE_LIST && strlen(commands[x].description) != 0) {
+					if ((temp_servicestatus = find_servicestatus(commands[x].host_name, commands[x].description)) != NULL) {
 						if (temp_servicestatus->checks_enabled == FALSE)
 							service_passive = TRUE;
 					}
@@ -870,18 +870,18 @@ void print_object_list(int list_type) {
 			/* hostname and service description are present */
 			if (strlen(commands[x].host_name) != 0  && strlen(commands[x].description) != 0) {
 				printf(">%s</td><td>%s",
-					escape_string(commands[x].host_name), escape_string(commands[x].description)
-				);
+				       escape_string(commands[x].host_name), escape_string(commands[x].description)
+				      );
 				if (service_passive == TRUE) {
 					printf("<img src='%s%s' align='right' border='0' style='padding-right:2px' alt='Passive' title='Passive Service'>",
-						url_images_path, PASSIVE_ICON
-					);
+					       url_images_path, PASSIVE_ICON
+					      );
 				}
-                                printf("</td>\n");
+				printf("</td>\n");
 
 				printf("<td align='center'><input type='checkbox' name='hostservice' id=\"cb_%d\" value='%s^%s' title=\"%s Service\" %s></td></tr>\n",
-					x, escape_string(commands[x].host_name), escape_string(commands[x].description),
-					(service_passive == FALSE) ? "Active" : "Passive", (service_passive == FALSE) ? "checked" : "");
+				       x, escape_string(commands[x].host_name), escape_string(commands[x].description),
+				       (service_passive == FALSE) ? "Active" : "Passive", (service_passive == FALSE) ? "checked" : "");
 			} else {
 				/* if hostname is empty print inputbox instead */
 				if (!strcmp(commands[x].host_name, ""))
@@ -904,15 +904,15 @@ void print_object_list(int list_type) {
 				printf(" style=\"font-weight:bold;\">Host:</td><td>%s", escape_string(commands[x].host_name));
 				if (host_passive == TRUE) {
 					printf("<img src='%s%s' align='right' border='0' style='padding-right:2px' alt='Passive' title='Passive Service'>",
-						url_images_path, PASSIVE_ICON
-					);
+					       url_images_path, PASSIVE_ICON
+					      );
 				}
-                                printf("</td>\n");
+				printf("</td>\n");
 
 				printf("<td align='center'><input type='checkbox' name='host' id=\"cb_%d\" value='%s' title=\"%s Host\" %s></td></tr>\n",
-					x, escape_string(commands[x].host_name),
-					(host_passive == FALSE) ? "Active" : "Passive", (host_passive == FALSE) ? "checked" : ""
-				);
+				       x, escape_string(commands[x].host_name),
+				       (host_passive == FALSE) ? "Active" : "Passive", (host_passive == FALSE) ? "checked" : ""
+				      );
 			}
 		} else if (list_type == PRINT_COMMENT_LIST) {
 			printf(" style=\"font-weight:bold;\">Comment ID:</td><td><input type='hidden' name='com_id' value='%lu'>%lu</td></tr>\n", multi_ids[x], multi_ids[x]);
@@ -1120,26 +1120,26 @@ void print_form_element(int element, int cmd) {
 		printf("</td><td align='left'><input type='text' class='timepicker' name='end_time' value='%s' size='25'></td></tr>\n", buffer);
 		break;
 
-        case PRINT_EXPIRE_DISABLE_NOTIFICATIONS:
+	case PRINT_EXPIRE_DISABLE_NOTIFICATIONS:
 
-                strcpy(help_text, "If you want to let the disabled notifications expire, check this option.");
+		strcpy(help_text, "If you want to let the disabled notifications expire, check this option.");
 
-                printf("<tr><td class=\"objectDescription descriptionleft\">Use Expire Time:");
-                print_help_box(help_text);
-                printf("</td><td align='left'>");
-                printf("<input type='checkbox' id='expire_checkbox' name='use_disabled_notif_end_time' onClick=\"if (document.getElementById('expire_checkbox').checked == true) document.getElementById('expired_date_row').style.display = ''; else document.getElementById('expired_date_row').style.display = 'none';\"></td></tr>\n");
+		printf("<tr><td class=\"objectDescription descriptionleft\">Use Expire Time:");
+		print_help_box(help_text);
+		printf("</td><td align='left'>");
+		printf("<input type='checkbox' id='expire_checkbox' name='use_disabled_notif_end_time' onClick=\"if (document.getElementById('expire_checkbox').checked == true) document.getElementById('expired_date_row').style.display = ''; else document.getElementById('expired_date_row').style.display = 'none';\"></td></tr>\n");
 
-                snprintf(help_text, sizeof(help_text), "Enter the expire date/time for disabled notifications. %s will automatically re-enable all notifications after this time expired.", PROGRAM_NAME);
-                help_text[sizeof(help_text)-1] = '\x0';
+		snprintf(help_text, sizeof(help_text), "Enter the expire date/time for disabled notifications. %s will automatically re-enable all notifications after this time expired.", PROGRAM_NAME);
+		help_text[sizeof(help_text)-1] = '\x0';
 
-                time(&t);
-                t += (unsigned long)default_expiring_disabled_notifications_duration;
-                get_time_string(&t, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
+		time(&t);
+		t += (unsigned long)default_expiring_disabled_notifications_duration;
+		get_time_string(&t, buffer, sizeof(buffer) - 1, SHORT_DATE_TIME);
 
-                printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
-                print_help_box(help_text);
-                printf("</td><td align='left'><input type='text' class='timepicker' name='end_time' value='%s' size='25'></td></tr>\n", buffer);
-                break;
+		printf("<tr id=\"expired_date_row\" style=\"display:none;\"><td class=\"objectDescription descriptionleft\">Expire Time:");
+		print_help_box(help_text);
+		printf("</td><td align='left'><input type='text' class='timepicker' name='end_time' value='%s' size='25'></td></tr>\n", buffer);
+		break;
 
 	case PRINT_FORCE_CHECK:
 
@@ -1372,9 +1372,9 @@ void request_command_data(int cmd) {
 		break;
 
 	case CMD_DEL_DOWNTIME_BY_HOST_NAME:
-                snprintf(help_text, sizeof(help_text), "This command is used to delete all downtimes for a host and all its services specified by the host name already supplied.");
+		snprintf(help_text, sizeof(help_text), "This command is used to delete all downtimes for a host and all its services specified by the host name already supplied.");
 		snprintf(action, sizeof(action), "Remove downtimes for all services for these hosts and the hosts themself");
-                break;
+		break;
 
 	case CMD_SCHEDULE_HOST_SVC_DOWNTIME:
 		snprintf(help_text, sizeof(help_text), "This command is used to schedule downtime for a particular host and all of its services.	During the specified downtime, %s will not send notifications out about the host. "
@@ -1496,11 +1496,11 @@ void request_command_data(int cmd) {
 		snprintf(action, sizeof(action), "Send a custom %s notification", (cmd == CMD_SEND_CUSTOM_HOST_NOTIFICATION) ? "host" : "service");
 		break;
 
-        case CMD_CHANGE_HOST_MODATTR:
+	case CMD_CHANGE_HOST_MODATTR:
 		snprintf(action, sizeof(action), "Reset modified attributes for Host(s).");
 		break;
 
-        case CMD_CHANGE_SVC_MODATTR:
+	case CMD_CHANGE_SVC_MODATTR:
 		snprintf(action, sizeof(action), "Reset modified attributes for Service(s).");
 		break;
 
@@ -1603,16 +1603,16 @@ void request_command_data(int cmd) {
 		break;
 
 	case CMD_DEL_DOWNTIME_BY_HOST_NAME:
-                print_object_list(PRINT_HOST_LIST);
+		print_object_list(PRINT_HOST_LIST);
 
-                print_form_element(PRINT_COMMON_HEADER, cmd);
+		print_form_element(PRINT_COMMON_HEADER, cmd);
 
-                if (enforce_comments_on_actions == TRUE) {
-                        print_form_element(PRINT_AUTHOR, cmd);
-                        print_form_element(PRINT_COMMENT_BOX, cmd);
-                }
+		if (enforce_comments_on_actions == TRUE) {
+			print_form_element(PRINT_AUTHOR, cmd);
+			print_form_element(PRINT_COMMENT_BOX, cmd);
+		}
 
-                break;
+		break;
 
 	case CMD_DELAY_SVC_NOTIFICATION:
 	case CMD_DELAY_HOST_NOTIFICATION:
@@ -1986,7 +1986,7 @@ void request_command_data(int cmd) {
 
 		break;
 
-        case CMD_CHANGE_HOST_MODATTR:
+	case CMD_CHANGE_HOST_MODATTR:
 		print_object_list(PRINT_HOST_LIST);
 		print_form_element(PRINT_COMMON_HEADER, cmd);
 		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">Modified Attributes:</td>");
@@ -1995,7 +1995,7 @@ void request_command_data(int cmd) {
 		printf("</td></tr>\n");
 		break;
 
-        case CMD_CHANGE_SVC_MODATTR:
+	case CMD_CHANGE_SVC_MODATTR:
 		print_object_list(PRINT_SERVICE_LIST);
 		print_form_element(PRINT_COMMON_HEADER, cmd);
 		printf("<tr class=\"statusEven\"><td width=\"50%%\" style=\"font-weight:bold;\">Modified Attributes:</td>");
@@ -2277,14 +2277,14 @@ void commit_command_data(int cmd) {
 	case CMD_START_OBSESSING_OVER_HOST_CHECKS:
 	case CMD_STOP_OBSESSING_OVER_HOST_CHECKS:
 
-                if (use_disabled_notif_end_time == TRUE && cmd == CMD_DISABLE_NOTIFICATIONS) {
+		if (use_disabled_notif_end_time == TRUE && cmd == CMD_DISABLE_NOTIFICATIONS) {
 
-                        time(&start_time);
+			time(&start_time);
 
-                        /* make sure we have end time if required */
-                        check_time_sanity(&e);
-                } else
-                        end_time = 0L;
+			/* make sure we have end time if required */
+			check_time_sanity(&e);
+		} else
+			end_time = 0L;
 
 		if (enforce_comments_on_actions == TRUE) {
 			check_comment_sanity(&e);
@@ -2422,30 +2422,30 @@ void commit_command_data(int cmd) {
 	case CMD_CHANGE_HOST_MODATTR:
 	case CMD_CHANGE_SVC_MODATTR:
 
-                for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
+		for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
 
-                        cmd_has_objects = TRUE;
+			cmd_has_objects = TRUE;
 
-                        if (commands[x].host_name == NULL)
-                                continue;
+			if (commands[x].host_name == NULL)
+				continue;
 
-                        /* see if the user is authorized to issue a command... */
-                        is_authorized[x] = FALSE;
-                        if (cmd == CMD_CHANGE_HOST_MODATTR) {
-                                temp_host = find_host(commands[x].host_name);
-                                if (is_authorized_for_host_commands(temp_host, &current_authdata) == TRUE)
-                                        is_authorized[x] = TRUE;
-                        } else {
-                                temp_service = find_service(commands[x].host_name, commands[x].description);
-                                if (is_authorized_for_service_commands(temp_service, &current_authdata) == TRUE)
-                                        is_authorized[x] = TRUE;
-                        }
+			/* see if the user is authorized to issue a command... */
+			is_authorized[x] = FALSE;
+			if (cmd == CMD_CHANGE_HOST_MODATTR) {
+				temp_host = find_host(commands[x].host_name);
+				if (is_authorized_for_host_commands(temp_host, &current_authdata) == TRUE)
+					is_authorized[x] = TRUE;
+			} else {
+				temp_service = find_service(commands[x].host_name, commands[x].description);
+				if (is_authorized_for_service_commands(temp_service, &current_authdata) == TRUE)
+					is_authorized[x] = TRUE;
+			}
 
 			/* do not allow other attributes than reset (0) */
 			if (attr != MODATTR_NONE) {
 				error[e++].message = strdup("You cannot change modified attributes other than reset them!");
 			}
-                }
+		}
 
 		break;
 
@@ -2821,7 +2821,7 @@ int commit_command(int cmd) {
 	case CMD_DISABLE_NOTIFICATIONS:
 		if (is_authorized[x]) {
 			/* we should expire the disabled notifications */
-			if(end_time > 0) {
+			if (end_time > 0) {
 				cmd = CMD_DISABLE_NOTIFICATIONS_EXPIRE_TIME;
 				submit_result[x] = cmd_submitf(cmd, "%lu;%lu", scheduled_time, end_time);
 				my_free(temp_buffer);
@@ -3092,20 +3092,20 @@ int commit_command(int cmd) {
 		}
 		break;
 
-        case CMD_CHANGE_HOST_MODATTR:
-                for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
-                        if (commands[x].host_name == NULL)
-                                continue;
+	case CMD_CHANGE_HOST_MODATTR:
+		for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
+			if (commands[x].host_name == NULL)
+				continue;
 
 			if (is_authorized[x])
 				submit_result[x] = cmd_submitf(cmd, "%s;%lu", commands[x].host_name, attr);
 		}
 		break;
 
-        case CMD_CHANGE_SVC_MODATTR:
-                for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
-                        if (commands[x].host_name == NULL)
-                                continue;
+	case CMD_CHANGE_SVC_MODATTR:
+		for (x = 0; x < NUMBER_OF_STRUCTS; x++) {
+			if (commands[x].host_name == NULL)
+				continue;
 			if (is_authorized[x])
 				submit_result[x] = cmd_submitf(cmd, "%s;%s;%lu", commands[x].host_name, commands[x].description, attr);
 		}

@@ -1169,7 +1169,7 @@ void document_header(int cgi_id, int use_stylesheet, char *cgi_title) {
 		result = read_all_status_data(main_config_file, READ_PROGRAM_STATUS);
 
 		/* total running time */
-		if ( program_start != 0L) {
+		if (program_start != 0L) {
 			get_time_breakdown(current_time - program_start, &days, &hours, &minutes, &seconds);
 			sprintf(run_time_string, "%dd %dh %dm %ds", days, hours, minutes, seconds);
 		} else {
@@ -2165,7 +2165,7 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 
 	/* get url options but filter out "ts_end", "ts_start" and "start" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
-		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+		if (strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
 			printf("display_nav_table(): Could not allocate memory for stripped_query_string\n");
 			exit(1);
 		}
@@ -2247,7 +2247,7 @@ void display_nav_table(time_t ts_start, time_t ts_end) {
 
 	printf("<script type='text/javascript'>\n");
 	printf("$(function() {\n");
-	printf("\t$(\"#history-datepicker\").datepicker( \"setDate\", \"%lu000\" );\n",ts_start);
+	printf("\t$(\"#history-datepicker\").datepicker( \"setDate\", \"%lu000\" );\n", ts_start);
 	printf("});\n");
 	printf("</script>\n");
 
@@ -2785,7 +2785,7 @@ void print_export_link(int content_type, char *cgi, char *add_to_url) {
 
 	/* just do stuff if some options are requested */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
-		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+		if (strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
 			printf("print_export_link(): Could not allocate memory for stripped_query_string\n");
 			exit(1);
 		}
@@ -3287,12 +3287,12 @@ char *json_encode(char *input) {
 			encoded_string[j++] = '\\';
 			encoded_string[j++] = input[i];
 
-		/* escape newlines */
+			/* escape newlines */
 		} else if ((char)input[i] == (char)'\n') {
 			encoded_string[j++] = '\\';
 			encoded_string[j++] = 'n';
 
-		/* ignore control caracters */
+			/* ignore control caracters */
 		} else if ((input[i] > 1 && input[i] < 32) || input[i] == 127) {
 			continue;
 
@@ -3582,10 +3582,10 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 
 	/* define base url */
 	switch (CGI_ID) {
-	/* not used in this case, cause status.cgi has a own page number selector function */
-	// case STATUS_CGI_ID:
-	// 	strcat(link, STATUS_CGI);
-	// 	break;
+		/* not used in this case, cause status.cgi has a own page number selector function */
+		// case STATUS_CGI_ID:
+		// 	strcat(link, STATUS_CGI);
+		// 	break;
 	case CONFIG_CGI_ID:
 		strcat(link, CONFIG_CGI);
 		break;
@@ -3608,7 +3608,7 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 
 	/* get url options but filter out "limit" and "status" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
-		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+		if (strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
 			printf("page_num_selector(): Could not allocate memory for stripped_query_string\n");
 			exit(1);
 		}
@@ -3725,7 +3725,7 @@ void page_limit_selector(int result_start) {
 
 	/* get url options but filter out "limit" and "status" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
-		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+		if (strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
 			printf("display_nav_table(): Could not allocate memory for stripped_query_string\n");
 			exit(1);
 		}

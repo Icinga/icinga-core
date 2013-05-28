@@ -74,33 +74,33 @@ static pthread_mutex_t debug_fp_lock;
  * to prevent extatic macro grabbing
  */
 static const char *service_state_name(int state) {
-        switch (state) {
-        case STATE_OK:
-                return "OK";
-        case STATE_WARNING:
-                return "WARNING";
-        case STATE_CRITICAL:
-                return "CRITICAL";
-        }
+	switch (state) {
+	case STATE_OK:
+		return "OK";
+	case STATE_WARNING:
+		return "WARNING";
+	case STATE_CRITICAL:
+		return "CRITICAL";
+	}
 
-        return "UNKNOWN";
+	return "UNKNOWN";
 }
 
 static const char *host_state_name(int state) {
-        switch (state) {
-        case HOST_UP:
-                return "UP";
-        case HOST_DOWN:
-                return "DOWN";
-        case HOST_UNREACHABLE:
-                return "UNREACHABLE";
-        }
+	switch (state) {
+	case HOST_UP:
+		return "UP";
+	case HOST_DOWN:
+		return "DOWN";
+	case HOST_UNREACHABLE:
+		return "UNREACHABLE";
+	}
 
-        return "(unknown)";
+	return "(unknown)";
 }
 
 static const char *state_type_name(int state_type) {
-        return state_type == HARD_STATE ? "HARD" : "SOFT";
+	return state_type == HARD_STATE ? "HARD" : "SOFT";
 }
 
 /*
@@ -390,21 +390,21 @@ int log_service_event(service *svc) {
 	/* either log only the output, or if enabled, add long_output */
 	if (log_long_plugin_output == TRUE && svc->long_plugin_output != NULL) {
 		dummy = asprintf(&temp_buffer, "SERVICE ALERT: %s;%s;%s;%s;%d;%s\\n%s\n",
-				svc->host_name, svc->description,
-				service_state_name(svc->current_state),
-				state_type_name(svc->state_type),
-				svc->current_attempt,
-				(svc->plugin_output == NULL) ? "" : svc->plugin_output,
-				svc->long_plugin_output
-				);
+		                 svc->host_name, svc->description,
+		                 service_state_name(svc->current_state),
+		                 state_type_name(svc->state_type),
+		                 svc->current_attempt,
+		                 (svc->plugin_output == NULL) ? "" : svc->plugin_output,
+		                 svc->long_plugin_output
+		                );
 	} else {
 		dummy = asprintf(&temp_buffer, "SERVICE ALERT: %s;%s;%s;%s;%d;%s\n",
-				svc->host_name, svc->description,
-				service_state_name(svc->current_state),
-				state_type_name(svc->state_type),
-				svc->current_attempt,
-				(svc->plugin_output == NULL) ? "" : svc->plugin_output
-				);
+		                 svc->host_name, svc->description,
+		                 service_state_name(svc->current_state),
+		                 state_type_name(svc->state_type),
+		                 svc->current_attempt,
+		                 (svc->plugin_output == NULL) ? "" : svc->plugin_output
+		                );
 	}
 
 	write_to_all_logs(temp_buffer, log_options);
@@ -430,21 +430,21 @@ int log_host_event(host *hst) {
 	/* either log only the output, or if enabled, add long_output */
 	if (log_long_plugin_output == TRUE && hst->long_plugin_output != NULL) {
 		dummy = asprintf(&temp_buffer, "HOST ALERT: %s;%s;%s;%d;%s\\n%s\n",
-				hst->name,
-				host_state_name(hst->current_state),
-				state_type_name(hst->state_type),
-				hst->current_attempt,
-				(hst->plugin_output == NULL) ? "" : hst->plugin_output,
-				hst->long_plugin_output
-				);
+		                 hst->name,
+		                 host_state_name(hst->current_state),
+		                 state_type_name(hst->state_type),
+		                 hst->current_attempt,
+		                 (hst->plugin_output == NULL) ? "" : hst->plugin_output,
+		                 hst->long_plugin_output
+		                );
 	} else {
 		dummy = asprintf(&temp_buffer, "HOST ALERT: %s;%s;%s;%d;%s\n",
-				hst->name,
-				host_state_name(hst->current_state),
-				state_type_name(hst->state_type),
-				hst->current_attempt,
-				(hst->plugin_output == NULL) ? "" : hst->plugin_output
-				);
+		                 hst->name,
+		                 host_state_name(hst->current_state),
+		                 state_type_name(hst->state_type),
+		                 hst->current_attempt,
+		                 (hst->plugin_output == NULL) ? "" : hst->plugin_output
+		                );
 	}
 
 	write_to_all_logs(temp_buffer, log_options);
@@ -466,13 +466,13 @@ int log_host_states(int type, time_t *timestamp) {
 	for (temp_host = host_list; temp_host != NULL; temp_host = temp_host->next) {
 
 		dummy = asprintf(&temp_buffer, "%s HOST STATE: %s;%s;%s;%d;%s\n",
-				(type == INITIAL_STATES) ? "INITIAL" : "CURRENT",
-				temp_host->name,
-				host_state_name(temp_host->current_state),
-				state_type_name(temp_host->state_type),
-				temp_host->current_attempt,
-				(temp_host->plugin_output == NULL) ? "" : temp_host->plugin_output
-				);
+		                 (type == INITIAL_STATES) ? "INITIAL" : "CURRENT",
+		                 temp_host->name,
+		                 host_state_name(temp_host->current_state),
+		                 state_type_name(temp_host->state_type),
+		                 temp_host->current_attempt,
+		                 (temp_host->plugin_output == NULL) ? "" : temp_host->plugin_output
+		                );
 
 		write_to_all_logs_with_timestamp(temp_buffer, NSLOG_INFO_MESSAGE, timestamp);
 
@@ -500,14 +500,14 @@ int log_service_states(int type, time_t *timestamp) {
 			continue;
 
 		dummy = asprintf(&temp_buffer, "%s SERVICE STATE: %s;%s;%s;%s;%d;%s\n",
-				(type == INITIAL_STATES) ? "INITIAL" : "CURRENT",
-				temp_service->host_name,
-				temp_service->description,
-				service_state_name(temp_service->current_state),
-				state_type_name(temp_service->state_type),
-				temp_service->current_attempt,
-				temp_service->plugin_output
-				);
+		                 (type == INITIAL_STATES) ? "INITIAL" : "CURRENT",
+		                 temp_service->host_name,
+		                 temp_service->description,
+		                 service_state_name(temp_service->current_state),
+		                 state_type_name(temp_service->state_type),
+		                 temp_service->current_attempt,
+		                 temp_service->plugin_output
+		                );
 
 		write_to_all_logs_with_timestamp(temp_buffer, NSLOG_INFO_MESSAGE, timestamp);
 

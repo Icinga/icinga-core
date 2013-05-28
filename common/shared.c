@@ -379,8 +379,7 @@ int hashfunc(const char *name1, const char *name2, int hashslots) {
 }
 
 int hc_compare(const char *field1, unsigned long hash1,
-	       const char *field2, unsigned long hash2)
-{
+               const char *field2, unsigned long hash2) {
 	if (field1 == field2)
 		return 0;
 

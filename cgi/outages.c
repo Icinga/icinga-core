@@ -690,7 +690,7 @@ void add_affected_host(char *host_name) {
 	affected_host *new_affected_host;
 	affected_host *temp_affected_host;
 
-	if (currently_checked_host->affected_hosts!=NULL) {
+	if (currently_checked_host->affected_hosts != NULL) {
 		for (temp_affected_host = currently_checked_host->affected_hosts; temp_affected_host != NULL; temp_affected_host = temp_affected_host->next) {
 			if (!strcmp(temp_affected_host->host_name, host_name))
 				return;

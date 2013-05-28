@@ -706,7 +706,7 @@ void display_notifications(void) {
 	}
 
 	if (status == READLOG_ERROR_MEMORY)
-			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
+		print_generic_error_message("Out of memory...", "showing all I could get!", 0);
 
 	if (status == READLOG_ERROR_FATAL) {
 		if (error_text != NULL) {
@@ -716,7 +716,7 @@ void display_notifications(void) {
 
 		return;
 
-	/* now we start displaying the notification entries */
+		/* now we start displaying the notification entries */
 	} else {
 		if (content_type == JSON_CONTENT) {
 			if (status != READLOG_OK)

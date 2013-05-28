@@ -205,11 +205,11 @@ int process_macros_r(icinga_macros *mac, char *input_buffer, char **output_buffe
 			if (result == ERROR) {
 				/* empty string still could mean that we hit the escaped $, so log an error in all other cases */
 				/* the error tells the user that the macro is valid, but value fetching contained error*/
-				if(strcmp(temp_buffer, "")) {
-					log_debug_info(DEBUGL_MACROS, 2, " Warning: Error grabbing macro '%s' value '%s'! Maybe used in the wrong scope? Check the docs.\n", temp_buffer, selected_macro ? selected_macro : "" );
+				if (strcmp(temp_buffer, "")) {
+					log_debug_info(DEBUGL_MACROS, 2, " Warning: Error grabbing macro '%s' value '%s'! Maybe used in the wrong scope? Check the docs.\n", temp_buffer, selected_macro ? selected_macro : "");
 #ifdef NSCORE
 					if (keep_unknown_macros == FALSE) {
-						logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Error grabbing macro '%s' value '%s'! Maybe used in the wrong scope? Check the docs.\n", temp_buffer, selected_macro ? selected_macro : "" );
+						logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Error grabbing macro '%s' value '%s'! Maybe used in the wrong scope? Check the docs.\n", temp_buffer, selected_macro ? selected_macro : "");
 					}
 #endif
 				}
@@ -2698,37 +2698,37 @@ int init_macros(void) {
 
 		switch (x) {
 			/* host/service output/perfdata and author/comment macros should get cleaned */
-			case MACRO_HOSTOUTPUT:
-			case MACRO_SERVICEOUTPUT:
-			case MACRO_HOSTPERFDATA:
-			case MACRO_SERVICEPERFDATA:
-			case MACRO_HOSTACKAUTHOR:
-			case MACRO_HOSTACKCOMMENT:
-			case MACRO_SERVICEACKAUTHOR:
-			case MACRO_SERVICEACKCOMMENT:
-			case MACRO_LONGHOSTOUTPUT:
-			case MACRO_LONGSERVICEOUTPUT:
-			case MACRO_HOSTGROUPNOTES:
-			case MACRO_SERVICEGROUPNOTES:
-				macro_keys[x].clean_options = (STRIP_ILLEGAL_MACRO_CHARS | ESCAPE_MACRO_CHARS);
-				break;
+		case MACRO_HOSTOUTPUT:
+		case MACRO_SERVICEOUTPUT:
+		case MACRO_HOSTPERFDATA:
+		case MACRO_SERVICEPERFDATA:
+		case MACRO_HOSTACKAUTHOR:
+		case MACRO_HOSTACKCOMMENT:
+		case MACRO_SERVICEACKAUTHOR:
+		case MACRO_SERVICEACKCOMMENT:
+		case MACRO_LONGHOSTOUTPUT:
+		case MACRO_LONGSERVICEOUTPUT:
+		case MACRO_HOSTGROUPNOTES:
+		case MACRO_SERVICEGROUPNOTES:
+			macro_keys[x].clean_options = (STRIP_ILLEGAL_MACRO_CHARS | ESCAPE_MACRO_CHARS);
+			break;
 
 			/* url macros should get cleaned */
-			case MACRO_HOSTACTIONURL:
-			case MACRO_HOSTNOTESURL:
-			case MACRO_SERVICEACTIONURL:
-			case MACRO_SERVICENOTESURL:
-			case MACRO_HOSTGROUPNOTESURL:
-			case MACRO_HOSTGROUPACTIONURL:
-			case MACRO_SERVICEGROUPNOTESURL:
-			case MACRO_SERVICEGROUPACTIONURL:
-				macro_keys[x].clean_options = URL_ENCODE_MACRO_CHARS;
-				break;
+		case MACRO_HOSTACTIONURL:
+		case MACRO_HOSTNOTESURL:
+		case MACRO_SERVICEACTIONURL:
+		case MACRO_SERVICENOTESURL:
+		case MACRO_HOSTGROUPNOTESURL:
+		case MACRO_HOSTGROUPACTIONURL:
+		case MACRO_SERVICEGROUPNOTESURL:
+		case MACRO_SERVICEGROUPACTIONURL:
+			macro_keys[x].clean_options = URL_ENCODE_MACRO_CHARS;
+			break;
 
 			/* by default, we do not clean anything */
-			default:
-				macro_keys[x].clean_options = 0;
-				break;
+		default:
+			macro_keys[x].clean_options = 0;
+			break;
 		}
 	}
 

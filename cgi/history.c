@@ -615,7 +615,7 @@ void show_history(void) {
 	}
 
 	if (status == READLOG_ERROR_MEMORY)
-			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
+		print_generic_error_message("Out of memory...", "showing all I could get!", 0);
 
 
 	if (status == READLOG_ERROR_FATAL) {
@@ -626,7 +626,7 @@ void show_history(void) {
 
 		return;
 
-	/* now we start displaying the log entries */
+		/* now we start displaying the log entries */
 	} else {
 
 		printf("<table width='100%%' cellspacing='0' cellpadding='0'><tr><td width='33%%'></td><td width='33%%' nowrap>");
