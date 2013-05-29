@@ -17,6 +17,8 @@ UPGRADE NOTES
 
 ENHANCEMENTS
 
+* contrib: add vim highlight script for Icinga syntax #4150 - LE
+
 FIXES
 * core: multiple idomod modules: only first gets data from registered callback functions #4199 - MF
 * classic ui: fixed Generated HTML code partly invalid #3608 - RB/Dakon
