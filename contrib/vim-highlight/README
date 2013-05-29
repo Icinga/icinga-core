@@ -1,0 +1,16 @@
+Icinga VIM Syntax Highlighting
+==============================
+
+Kudos to the original authors of the nagios.vim script. Modified by Lars Engels for Icinga.
+
+For local use
+~~~~~~~~~~~~~
+(modify your objects.cache path!)
+
+$ PREFIX=~/.vim
+
+$ mkdir -p $PREFIX/{syntax,ftdetect} 
+$ cp icinga.vim $PREFIX/syntax/
+$ cat > $PREFIX/ftdetect/icinga.vim << EOF
+au BufNewFile,BufRead /*etc/icinga/*.cfg,*sample-config/template-object/*.cfg{,.in},/var/icinga/objects.cache set filetype=icinga
+EOF
