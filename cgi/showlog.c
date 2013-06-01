@@ -638,7 +638,7 @@ void display_logentries() {
 	}
 
 	if (status == READLOG_ERROR_MEMORY)
-		print_generic_error_message("Out of memory...", "showing all I could get!", 0);
+			print_generic_error_message("Out of memory...", "showing all I could get!", 0);
 
 
 	if (status == READLOG_ERROR_FATAL) {
@@ -648,7 +648,7 @@ void display_logentries() {
 		}
 		user_has_seen_something = TRUE;
 
-		/* now we start displaying the log entries */
+	/* now we start displaying the log entries */
 	} else {
 
 		if (content_type == JSON_CONTENT) {

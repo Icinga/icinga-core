@@ -418,7 +418,7 @@ int main(void) {
 
 			if (display_type != DISPLAY_COMMAND_EXPANSION && display_type != DISPLAY_CGICONFIG) {
 				printf("<tr><td align='left' class='reportSelectSubTitle'>Search (regex):</td></tr>\n");
-				printf("<tr><td align='left' class='reportSelectItem'><input type='text' name='search_string' value='%s'></td></tr>\n", (search_string != NULL) ? escape_string(search_string) : "");
+				printf("<tr><td align='left' class='reportSelectItem'><input type='text' name='search_string' value='%s'></td></tr>\n", (search_string != NULL) ? escape_string(search_string): "");
 			}
 
 			printf("<tr><td class='reportSelectItem'><input type='hidden' name='limit' value='%d'><input type='submit' value='Update'></td></tr>\n", result_limit);
@@ -863,12 +863,12 @@ void display_hosts(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_host->name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_host->name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_host->display_name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_host->alias, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_host->address, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_host->address6, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -1400,9 +1400,9 @@ void display_hostgroups(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_hostgroup->group_name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_hostgroup->group_name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_hostgroup->alias, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -1539,9 +1539,9 @@ void display_servicegroups(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_servicegroup->group_name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_servicegroup->group_name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_servicegroup->alias, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -1689,10 +1689,10 @@ void display_contacts(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_contact->name, 0, NULL, 0) != 0 && \
-		        regexec(&search_preg, temp_contact->alias, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_contact->name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_contact->alias, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_contact->email, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -1729,7 +1729,7 @@ void display_contacts(void) {
 				printf("\"pager_number\": \"%s\", ", json_encode(temp_contact->pager));
 			printf("\"service_notification_options\": [");
 
-			/* print list in csv format */
+		/* print list in csv format */
 		} else if (content_type == CSV_CONTENT) {
 			printf("%s%s%s%s", csv_data_enclosure, temp_contact->name, csv_data_enclosure, csv_delimiter);
 			printf("%s%s%s%s", csv_data_enclosure, temp_contact->alias, csv_data_enclosure, csv_delimiter);
@@ -1968,9 +1968,9 @@ void display_contactgroups(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_contactgroup->group_name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_contactgroup->group_name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_contactgroup->alias, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -2156,11 +2156,11 @@ void display_services(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_service->description, 0, NULL, 0) != 0 && \
-		        regexec(&search_preg, temp_service->display_name, 0, NULL, 0) != 0 && \
-		        regexec(&search_preg, temp_service->host_name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_service->description, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_service->display_name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_service->host_name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, host_service_name, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -2677,9 +2677,9 @@ void display_timeperiods(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_timeperiod->name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_timeperiod->name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_timeperiod->alias, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -2954,9 +2954,9 @@ void display_commands(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_command->name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_command->name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_command->command_line, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -3053,9 +3053,9 @@ void display_servicedependencies(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, master_host_service_name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, master_host_service_name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, dependend_host_service_name, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -3208,9 +3208,9 @@ void display_serviceescalations(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_se->host_name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_se->host_name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_se->description, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -3443,9 +3443,9 @@ void display_hostdependencies(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_hd->dependent_host_name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_hd->dependent_host_name, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_hd->host_name, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -3583,7 +3583,7 @@ void display_hostescalations(void) {
 		/* try to find a match */
 		if (search_string != NULL && \
 		        regexec(&search_preg, temp_he->host_name, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;
@@ -3784,10 +3784,10 @@ void display_modules(void) {
 
 		/* try to find a match */
 		if (search_string != NULL && \
-		        regexec(&search_preg, temp_module->name, 0, NULL, 0) != 0 && \
-		        regexec(&search_preg, temp_module->path, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_module->name, 0, NULL, 0) != 0 && \
+			regexec(&search_preg, temp_module->path, 0, NULL, 0) != 0 && \
 		        regexec(&search_preg, temp_module->args, 0, NULL, 0) != 0)
-			continue;
+				continue;
 
 		if (result_limit != 0  && (((total_entries + 1) < result_start) || (total_entries >= ((result_start + result_limit) - 1)))) {
 			total_entries++;

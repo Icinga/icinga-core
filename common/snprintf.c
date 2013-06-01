@@ -131,7 +131,7 @@
 #undef HAVE_C99_VSNPRINTF
 #undef HAVE_ASPRINTF
 #undef HAVE_VASPRINTF
-#undef HAVE_VA_COPY
+#undef HAVE_VA_COPY 
 #endif
 
 

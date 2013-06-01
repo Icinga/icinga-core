@@ -370,7 +370,7 @@ void init_timing_loop(void) {
 			mult_factor = current_interleave_block + (interleave_block_index * total_interleave_blocks);
 
 			log_debug_info(DEBUGL_EVENTS, 2, "CIB (current_interleave_block): %d, IBI (interleave_block_index): %d, TIB (total_interleave_blocks): %d, SIF (service_interleave_factor): %d\n",
-			               current_interleave_block, interleave_block_index, total_interleave_blocks, scheduling_info.service_interleave_factor);
+					current_interleave_block, interleave_block_index, total_interleave_blocks, scheduling_info.service_interleave_factor);
 			log_debug_info(DEBUGL_EVENTS, 2, "Mult factor: %d\n", mult_factor);
 
 			/* set the preferred next check time for the service */
@@ -1589,8 +1589,8 @@ int handle_timed_event(timed_event *event) {
 			/* re-enable all notifications (triggers programstatus update for neb modules too) */
 			enable_all_notifications();
 
-			/* log that we will now expire disabled notifications */
-			logit(NSLOG_INFO_MESSAGE, TRUE, "Disabled Notifications expired. All Notifications re-enabled.\n");
+		        /* log that we will now expire disabled notifications */
+		        logit(NSLOG_INFO_MESSAGE, TRUE, "Disabled Notifications expired. All Notifications re-enabled.\n");
 		}
 
 		break;

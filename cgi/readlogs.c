@@ -249,11 +249,11 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 	}
 
 	/* initialize file data array */
-	for (i = 0; i < 10000; i++)
+	for (i=0;i<10000;i++)
 		files[i].file_name = NULL;
 
 	/* try to open log_archive_path, return if it fails */
-	if ((dirp = opendir(log_archive_path)) == NULL) {
+	if ((dirp=opendir(log_archive_path)) == NULL){
 
 		if (search_string != NULL)
 			regfree(&preg);
@@ -267,11 +267,11 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 	} else {
 
 		/* read every dir entry */
-		while ((dptr = readdir(dirp)) != NULL) {
+		while ((dptr=readdir(dirp)) != NULL) {
 
 			/* filter dir for icinga / nagios log files */
-			if ((strncmp("icinga-", dptr->d_name, 7) == 0 || strncmp("nagios-", dptr->d_name, 7) == 0) &&
-			        strstr(dptr->d_name, ".log") && strlen(dptr->d_name) == 24)
+			if ((strncmp("icinga-",dptr->d_name,7) == 0 || strncmp("nagios-",dptr->d_name,7) == 0 ) &&
+			    strstr(dptr->d_name, ".log") && strlen(dptr->d_name) == 24)
 				files[file_num++].file_name = strdup(dptr->d_name);
 		}
 		closedir(dirp);
@@ -281,16 +281,16 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 	qsort((void *)files, file_num, sizeof(struct file_data), sort_icinga_logfiles_by_name);
 
 	/* define which log files to use */
-	for (i = 0; i < file_num; i++) {
+	for (i=0; i< file_num; i++) {
 
 		/* first log file is always the current log file */
 		if (i == 0) {
-			strncpy(log_file_name, log_file, sizeof(log_file_name) - 1);
+			strncpy(log_file_name, log_file, sizeof(log_file_name) -1);
 			log_file_name[sizeof(log_file_name)-1] = '\x0';
 
-			/* return full path of logfile and store first timestamp of last file */
+		/* return full path of logfile and store first timestamp of last file */
 		} else {
-			snprintf(log_file_name, sizeof(log_file_name) - 1, "%s%s", log_archive_path, files[i].file_name);
+			snprintf(log_file_name, sizeof(log_file_name) -1, "%s%s",log_archive_path, files[i].file_name);
 			log_file_name[sizeof(log_file_name)-1] = '\x0';
 
 			last_timestamp = timestamp;
@@ -304,7 +304,7 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 			continue;
 
 		/* try to open log file, or throw error and try next log file */
-		if ((file = open(log_file_name, O_RDONLY)) < -1) {
+		if((file=open(log_file_name, O_RDONLY)) < -1) {
 
 			if (*error_text == NULL) {
 				dummy = asprintf(&temp_buffer, "Unable to open log file \"%s\" !!!", log_file_name);
@@ -318,7 +318,7 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 		}
 
 		/* read first 16 bytes to get first timestamp, or throw error if data is not 16 bytes log (empty file) */
-		if (read(file, ts_buffer, 16) != 16) {
+		if(read(file,ts_buffer,16) != 16) {
 
 			if (*error_text == NULL) {
 				dummy = asprintf(&temp_buffer, "Log file \"%s\" invalid! No timestamp found within first 16 bytes!", log_file_name);
@@ -350,14 +350,14 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 			in_range = FALSE;
 
 		/* keep file if in range */
-		if (in_range == TRUE) {
+		if(in_range == TRUE) {
 			files[i].file_name = strdup(log_file_name);
 			data_found = TRUE;
 		}
 	}
 
 	/* read all log files we found earlier in reverse order, starting with the oldest */
-	for (i = file_num; i >= 0; i--) {
+	for (i=file_num; i >= 0; i--) {
 
 		/* if file name is empty try next file */
 		if (files[i].file_name == NULL)
@@ -553,7 +553,7 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 		mmap_fclose(thefile);
 	}
 
-	for (i = 0; i < file_num; i++)
+	for (i=0; i< file_num;i++)
 		my_free(files[i].file_name);
 
 	if (search_string != NULL)
@@ -611,12 +611,12 @@ void free_log_entries(logentry **entry_list) {
 time_t get_backtrack_seconds(int backtrack_archives) {
 
 	if (log_rotation_method == LOG_ROTATION_MONTHLY)
-		return (60 * 60 * 24 * 31 * backtrack_archives);
+		return ( 60 * 60 * 24 * 31 * backtrack_archives);
 	else if (log_rotation_method == LOG_ROTATION_DAILY)
-		return (60 * 60 * 24  * backtrack_archives);
+		return ( 60 * 60 * 24  * backtrack_archives);
 	else if (log_rotation_method == LOG_ROTATION_HOURLY)
-		return (60 * 60 * backtrack_archives);
+		return ( 60 * 60 * backtrack_archives);
 	else	// LOG_ROTATION_WEEKLY
-		return (60 * 60 * 24 * 7 * backtrack_archives);
+		return ( 60 * 60 * 24 * 7 * backtrack_archives);
 
 }

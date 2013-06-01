@@ -152,15 +152,15 @@ int neb_free_module_list(void) {
 int neb_load_all_modules(void) {
 	nebmodule *temp_module = NULL;
 	int result = OK;
-	int errors = 0;
+    int errors = 0;
 
 	for (temp_module = neb_module_list; temp_module; temp_module = temp_module->next) {
 		result = neb_load_module(temp_module);
 
-		if (result != OK) {
-			logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Failed to load module '%s'.\n", temp_module->filename ? temp_module->filename : "(no file?)");
-			errors++;
-		}
+        if (result != OK) {
+            logit(NSLOG_RUNTIME_ERROR, TRUE, "Error: Failed to load module '%s'.\n", temp_module->filename ? temp_module->filename : "(no file?)");
+            errors++;
+        }
 	}
 
 	return errors ? ERROR : OK;
@@ -207,7 +207,7 @@ int neb_load_module(nebmodule *mod) {
 	 * other neb modules of the same binary.
 	 * check https://dev.icinga.org/issues/4199
 	 */
-	snprintf(output_file, sizeof(output_file) - 1, "%s/icinganebmodXXXXXX", temp_path);
+	snprintf(output_file, sizeof(output_file)-1, "%s/icinganebmodXXXXXX", temp_path);
 	dest_fd = mkstemp(output_file);
 	result = my_fdcopy(mod->filename, output_file, dest_fd);
 	close(dest_fd);
@@ -294,11 +294,11 @@ int neb_load_module(nebmodule *mod) {
 
 	/* locate the specific modules we know about (idomod, ...) and require minimum version, after calling nebmodule_init, this should be set */
 	/* check if module exports its title? */
-	if (mod->info[NEBMODULE_MODINFO_TITLE] != NULL) {
+	if(mod->info[NEBMODULE_MODINFO_TITLE] != NULL) {
 		/* check if we are going to load idomod, which we know about */
-		if (strstr(mod->info[NEBMODULE_MODINFO_TITLE], "IDOMOD") != NULL) {
+		if(strstr(mod->info[NEBMODULE_MODINFO_TITLE], "IDOMOD") != NULL) {
 			/* check if the version complies with the core's version, as they are tied together */
-			if (strcmp(mod->info[NEBMODULE_MODINFO_VERSION], PROGRAM_VERSION) != 0) {
+			if(strcmp(mod->info[NEBMODULE_MODINFO_VERSION], PROGRAM_VERSION) != 0) {
 				logit(NSLOG_RUNTIME_ERROR, FALSE, "Error: Module '%s' exports version '%s' different to core version '%s'.  Module will be unloaded.\n", mod->filename, mod->info[NEBMODULE_MODINFO_VERSION], PROGRAM_VERSION);
 				neb_unload_module(mod, NEBMODULE_FORCE_UNLOAD, NEBMODULE_ERROR_IDO_VERSION);
 				return ERROR;

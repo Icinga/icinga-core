@@ -411,7 +411,7 @@ int run_scheduled_service_check(service *svc, int check_options, double latency)
 	 * and can't conflict
 	 */
 	svc->next_check_event = NULL;
-
+	
 	/* attempt to run the check */
 	result = run_async_service_check(svc, check_options, latency, TRUE, TRUE, &time_is_valid, &preferred_time);
 
@@ -545,11 +545,11 @@ int run_async_service_check(service *svc, int check_options, double latency, int
 	/* send data to event broker */
 	neb_result = broker_service_check(NEBTYPE_SERVICECHECK_ASYNC_PRECHECK, NEBFLAG_NONE, NEBATTR_NONE, svc, SERVICE_CHECK_ACTIVE, start_time, end_time, svc->service_check_command, svc->latency, 0.0, 0, FALSE, 0, NULL, NULL);
 
-	if (neb_result == NEBERROR_CALLBACKCANCEL || neb_result == NEBERROR_CALLBACKOVERRIDE) {
-		log_debug_info(DEBUGL_CHECKS, 0, "Check of service '%s' on host '%s' was %s by a module\n",
-		               svc->description, svc->host_name,
-		               neb_result == NEBERROR_CALLBACKCANCEL ? "cancelled" : "overridden");
-	}
+    if (neb_result == NEBERROR_CALLBACKCANCEL || neb_result == NEBERROR_CALLBACKOVERRIDE) {
+        log_debug_info(DEBUGL_CHECKS, 0, "Check of service '%s' on host '%s' was %s by a module\n",
+                svc->description, svc->host_name,
+                neb_result == NEBERROR_CALLBACKCANCEL ? "cancelled" : "overridden");
+    }
 
 	/* neb module wants to cancel the service check - the check will be rescheduled for a later time by the scheduling logic */
 	if (neb_result == NEBERROR_CALLBACKCANCEL) {
@@ -1757,7 +1757,7 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			schedule_service_check(temp_service, temp_service->next_check, CHECK_OPTION_NONE);
 	}
 
-
+	
 	/* STALKING
 	 * if we're stalking this state type and state was
 	 * not already logged AND the plugin output changed
@@ -1775,11 +1775,11 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
-			/* should we notify all contacts ? */
-			if (stalking_notifications_for_services == TRUE)
-				service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
 
-			/* WARNING */
+		/* WARNING */
 		} else if ((temp_service->current_state == STATE_WARNING && temp_service->stalk_on_warning == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1788,10 +1788,10 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
-			/* should we notify all contacts ? */
-			if (stalking_notifications_for_services == TRUE)
-				service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
-			/* UNKNOWN */
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+		/* UNKNOWN */
 		} else if ((temp_service->current_state == STATE_UNKNOWN && temp_service->stalk_on_unknown == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1800,10 +1800,10 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
-			/* should we notify all contacts ? */
-			if (stalking_notifications_for_services == TRUE)
-				service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
-			/* CRITICAL */
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+		/* CRITICAL */
 		} else if ((temp_service->current_state == STATE_CRITICAL && temp_service->stalk_on_critical == TRUE)) {
 
 			log_service_event(temp_service);
@@ -1812,9 +1812,9 @@ int handle_async_service_check_result(service *temp_service, check_result *queue
 			if (stalking_event_handlers_for_services == TRUE)
 				handle_service_event(temp_service);
 
-			/* should we notify all contacts ? */
-			if (stalking_notifications_for_services == TRUE)
-				service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
+                        /* should we notify all contacts ? */
+                        if (stalking_notifications_for_services == TRUE)
+                                service_notification(temp_service, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
 		}
 	}
 
@@ -2152,9 +2152,9 @@ void check_for_orphaned_services(void) {
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: The check of service '%s' on host '%s' looks like it was orphaned (results never came back; last_check=%s; next_check=%s).  I'm scheduling an immediate check of the service...\n", temp_service->description, temp_service->host_name, ctime(&temp_service->last_check), ctime(&temp_service->next_check));
 
 			log_debug_info(DEBUGL_CHECKS, 1, "Service '%s' on host '%s' was orphaned, so we're scheduling an immediate check...\n", temp_service->description, temp_service->host_name);
-			log_debug_info(DEBUGL_CHECKS, 1, "  next_check=%lu (%s); last_check=%lu (%s);\n",
-			               temp_service->next_check, ctime(&temp_service->next_check),
-			               temp_service->last_check, ctime(&temp_service->last_check));
+            log_debug_info(DEBUGL_CHECKS, 1, "  next_check=%lu (%s); last_check=%lu (%s);\n",
+                    temp_service->next_check, ctime(&temp_service->next_check),
+                    temp_service->last_check, ctime(&temp_service->last_check));
 
 			/* decrement the number of running service checks */
 			if (currently_running_service_checks > 0)
@@ -2264,35 +2264,35 @@ int is_service_result_fresh(service *temp_service, time_t current_time, int log_
 	log_debug_info(DEBUGL_CHECKS, 2, "Freshness thresholds: service=%d, use=%d\n", temp_service->freshness_threshold, freshness_threshold);
 
 	/* calculate expiration time */
-	/*
+	/* 
 	 * CHANGED 11/10/05 EG
 	 * program start is only used in expiration time calculation
 	 * if > last check AND active checks are enabled, so active checks
-	 * can become stale immediately upon program startup
+	 * can become stale immediately upon program startup 
 	 */
 	/*
 	 * CHANGED 02/25/06 SG
 	 * passive checks also become stale, so remove dependence on active
-	 * check logic
+	 * check logic 
 	 */
 	if (temp_service->has_been_checked == FALSE)
 		expiration_time = (time_t)(event_start + freshness_threshold);
 	/*
-	 * CHANGED 06/19/07 EG
+	 * CHANGED 06/19/07 EG 
 	 * Per Ton's suggestion (and user requests), only use program start
 	 * time over last check if no specific threshold has been set by user.
 	 * Otheriwse use it.  Problems can occur if Icinga is restarted more
 	 * frequently that freshness threshold intervals (services never go stale).
 	 */
-	/*
-	 * CHANGED 10/07/07 EG
+	/* 
+	 * CHANGED 10/07/07 EG 
 	 * Only match next condition for services that have active checks
-	 * enabled...
+	 * enabled... 
 	 */
-	/*
+	/* 
 	 * CHANGED 10/07/07 EG
 	 * Added max_service_check_spread to expiration time as suggested
-	 * by Altinity
+	 * by Altinity 
 	 */
 	else if (temp_service->checks_enabled == TRUE && event_start > temp_service->last_check && temp_service->freshness_threshold == 0)
 		expiration_time = (time_t)(event_start + freshness_threshold + (max_service_check_spread * interval_length));
@@ -2375,7 +2375,7 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 	/* default is to use the new event */
 	use_original_event = FALSE;
 
-	/* fetch possible saved next check event */
+        /* fetch possible saved next check event */
 	temp_event = (timed_event *)hst->next_check_event;
 
 	/*
@@ -2431,7 +2431,7 @@ void schedule_host_check(host *hst, time_t check_time, int options) {
 		log_debug_info(DEBUGL_CHECKS, 2, "Scheduling new host check event for '%s' @ %s", hst->name, ctime(&check_time));
 
 		/* allocate memory for a new event item */
-		if ((new_event = (timed_event *)malloc(sizeof(timed_event))) == NULL) {
+		if((new_event = (timed_event *)malloc(sizeof(timed_event))) == NULL) {
 			logit(NSLOG_RUNTIME_WARNING, TRUE, "Warning: Could not reschedule check of host '%s'!\n", hst->name);
 			return;
 		}
@@ -2669,8 +2669,8 @@ int is_host_result_fresh(host *temp_host, time_t current_time, int log_this) {
 	log_debug_info(DEBUGL_CHECKS, 2, "Freshness thresholds: host=%d, use=%d\n", temp_host->freshness_threshold, freshness_threshold);
 
 	/* calculate expiration time */
-	/*
-	 * CHANGED 11/10/05 EG
+	/* 
+	 * CHANGED 11/10/05 EG 
 	 * program start is only used in expiration time calculation
 	 * if > last check AND active checks are enabled, so active checks
 	 * can become stale immediately upon program startup
@@ -2678,16 +2678,16 @@ int is_host_result_fresh(host *temp_host, time_t current_time, int log_this) {
 	if (temp_host->has_been_checked == FALSE)
 		expiration_time = (time_t)(event_start + freshness_threshold);
 	/*
-	 * CHANGED 06/19/07 EG
+	 * CHANGED 06/19/07 EG 
 	 * Per Ton's suggestion (and user requests), only use program start
 	 * time over last check if no specific threshold has been set by user.
 	 * Otheriwse use it.  Problems can occur if Icinga is restarted more
 	 * frequently that freshness threshold intervals (hosts never go stale).
 	 */
-	/*
-	 * CHANGED 10/07/07 EG
-	 * Added max_host_check_spread to expiration time as suggested by
-	 * Altinity
+	/* 
+	 * CHANGED 10/07/07 EG 
+	 * Added max_host_check_spread to expiration time as suggested by 
+	 * Altinity 
 	 */
 	else if (temp_host->checks_enabled == TRUE && event_start > temp_host->last_check && temp_host->freshness_threshold == 0)
 		expiration_time = (time_t)(event_start + freshness_threshold + (max_host_check_spread * interval_length));
@@ -2903,18 +2903,18 @@ int execute_sync_host_check_3x(host *hst) {
 	neb_result = broker_host_check(NEBTYPE_HOSTCHECK_SYNC_PRECHECK, NEBFLAG_NONE, NEBATTR_NONE, hst, HOST_CHECK_ACTIVE, hst->current_state, hst->state_type, start_time, end_time, hst->host_check_command, hst->latency, 0.0, host_check_timeout, FALSE, 0, NULL, NULL, NULL, NULL, NULL);
 
 	/*
-	 * neb module wants to cancel/override the host check
-	 * then return the current state of the host
-	 * NOTE: if a module does this, it must check the status of the host
-	 * and populate the data structures BEFORE it returns from the callback!
-	 */
+     * neb module wants to cancel/override the host check
+     * then return the current state of the host
+     * NOTE: if a module does this, it must check the status of the host
+     * and populate the data structures BEFORE it returns from the callback!
+     */
 	if (neb_result == NEBERROR_CALLBACKCANCEL || neb_result == NEBERROR_CALLBACKOVERRIDE) {
-		log_debug_info(DEBUGL_CHECKS, 0, "Check of host '%s' was %s by a module. Returning %d\n",
-		               hst->name,
-		               neb_result == NEBERROR_CALLBACKCANCEL ? "cancelled" : "overridden",
-		               hst->current_state);
+        log_debug_info(DEBUGL_CHECKS, 0, "Check of host '%s' was %s by a module. Returning %d\n",
+                hst->name,
+                neb_result == NEBERROR_CALLBACKCANCEL ? "cancelled" : "overridden",
+                hst->current_state);
 		return hst->current_state;
-	}
+    }
 
 #endif
 
@@ -3055,7 +3055,7 @@ int run_scheduled_host_check_3x(host *hst, int check_options, double latency) {
 	 * and can't conflict
 	 */
 	hst->next_check_event = NULL;
-
+	
 	/* attempt to run the check */
 	result = run_async_host_check_3x(hst, check_options, latency, TRUE, TRUE, &time_is_valid, &preferred_time);
 
@@ -4017,12 +4017,12 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 
 	/******************** POST-PROCESSING STUFF *********************/
 
-	/* STALKING
-	 * if we're stalking this state type and state was
-	 * not already logged AND the plugin output changed
-	 * since last check, log it or run event handlers or
-	 * notify now..
-	 */
+        /* STALKING
+         * if we're stalking this state type and state was
+         * not already logged AND the plugin output changed
+         * since last check, log it or run event handlers or
+         * notify now..
+         */
 
 	if (hst->last_state == hst->current_state && compare_strings(old_plugin_output, hst->plugin_output)) {
 
@@ -4038,8 +4038,8 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 			/* should we notify all contacts ? */
 			if (stalking_notifications_for_hosts == TRUE)
 				host_notification(hst, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
-
-			/* DOWN */
+				
+		/* DOWN */
 		} else if (hst->current_state == HOST_DOWN && hst->stalk_on_down == TRUE) {
 
 			log_host_event(hst);
@@ -4051,8 +4051,8 @@ int process_host_check_result_3x(host *hst, int new_state, char *old_plugin_outp
 			/* should we notify all contacts ? */
 			if (stalking_notifications_for_hosts == TRUE)
 				host_notification(hst, NOTIFICATION_STALKING, NULL, NULL, NOTIFICATION_OPTION_NONE);
-
-			/* UNREACHABLE */
+				
+		/* UNREACHABLE */
 		} else if (hst->current_state == HOST_UNREACHABLE && hst->stalk_on_unreachable == TRUE) {
 
 			log_host_event(hst);

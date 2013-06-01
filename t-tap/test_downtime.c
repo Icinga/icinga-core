@@ -234,7 +234,7 @@ main(int argc, char **argv) {
 
 	/* int schedule_downtime(int type, char *host_name, char *service_description, time_t entry_time, char *author, char *comment_data, time_t start_time, time_t end_time, int fixed, unsigned long triggered_by, unsigned long duration, unsigned long *new_downtime_id) { */
 	/*
-	    schedule_downtime(HOST_DOWNTIME, "host1", NULL, now, "user", "test comment", now, now+20, 0, 0, 10, &downtime_id);
+        schedule_downtime(HOST_DOWNTIME, "host1", NULL, now, "user", "test comment", now, now+20, 0, 0, 10, &downtime_id);
 	ok(downtime_id == 21L, "Got host1 downtime: %lu", downtime_id);
 	*/
 

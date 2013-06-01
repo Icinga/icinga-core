@@ -1820,14 +1820,14 @@ int idomod_broker_data(int event_type, void *data) {
 		es[6] = ido_escape_buffer(scdata->long_output);
 		es[7] = ido_escape_buffer(scdata->perf_data);
 
-		if (es[6] != NULL) {
-			if (strlen(es[6]) > IDOMOD_MAX_TEXT_LEN) {
+		if(es[6] != NULL) {
+			if(strlen(es[6]) > IDOMOD_MAX_TEXT_LEN) {
 				es[6][IDOMOD_MAX_TEXT_LEN] = '\0';
 			}
 		}
 
-		if (es[7] != NULL) {
-			if (strlen(es[7]) > IDOMOD_MAX_TEXT_LEN) {
+		if(es[7] != NULL) {
+			if(strlen(es[7]) > IDOMOD_MAX_TEXT_LEN) {
 				es[7][IDOMOD_MAX_TEXT_LEN] = '\0';
 			}
 		}
@@ -1910,14 +1910,14 @@ int idomod_broker_data(int event_type, void *data) {
 		es[5] = ido_escape_buffer(hcdata->long_output);
 		es[6] = ido_escape_buffer(hcdata->perf_data);
 
-		if (es[5] != NULL) {
-			if (strlen(es[5]) > IDOMOD_MAX_TEXT_LEN) {
+		if(es[5] != NULL) {
+			if(strlen(es[5]) > IDOMOD_MAX_TEXT_LEN) {
 				es[5][IDOMOD_MAX_TEXT_LEN] = '\0';
 			}
 		}
 
-		if (es[6] != NULL) {
-			if (strlen(es[6]) > IDOMOD_MAX_TEXT_LEN) {
+		if(es[6] != NULL) {
+			if(strlen(es[6]) > IDOMOD_MAX_TEXT_LEN) {
 				es[6][IDOMOD_MAX_TEXT_LEN] = '\0';
 			}
 		}
@@ -2199,8 +2199,8 @@ int idomod_broker_data(int event_type, void *data) {
 		         , (es[0] == NULL) ? "" : es[0]
 		         , IDO_DATA_GLOBALSERVICEEVENTHANDLER
 		         , (es[1] == NULL) ? "" : es[1]
-		         , IDO_DATA_DISABLED_NOTIFICATIONS_EXPIRE_TIME
-		         , psdata->disable_notifications_expire_time
+			 , IDO_DATA_DISABLED_NOTIFICATIONS_EXPIRE_TIME
+			 , psdata->disable_notifications_expire_time
 		         , IDO_API_ENDDATA
 		        );
 
@@ -2226,14 +2226,14 @@ int idomod_broker_data(int event_type, void *data) {
 		es[5] = ido_escape_buffer(temp_host->host_check_command);
 		es[6] = ido_escape_buffer(temp_host->check_period);
 
-		if (es[2] != NULL) {
-			if (strlen(es[2]) > IDOMOD_MAX_TEXT_LEN) {
+		if(es[2] != NULL) {
+			if(strlen(es[2]) > IDOMOD_MAX_TEXT_LEN) {
 				es[2][IDOMOD_MAX_TEXT_LEN] = '\0';
 			}
 		}
 
-		if (es[3] != NULL) {
-			if (strlen(es[3]) > IDOMOD_MAX_TEXT_LEN) {
+		if(es[3] != NULL) {
+			if(strlen(es[3]) > IDOMOD_MAX_TEXT_LEN) {
 				es[3][IDOMOD_MAX_TEXT_LEN] = '\0';
 			}
 		}
@@ -2397,14 +2397,14 @@ int idomod_broker_data(int event_type, void *data) {
 		es[6] = ido_escape_buffer(temp_service->service_check_command);
 		es[7] = ido_escape_buffer(temp_service->check_period);
 
-		if (es[3] != NULL) {
-			if (strlen(es[3]) > IDOMOD_MAX_TEXT_LEN) {
+		if(es[3] != NULL) {
+			if(strlen(es[3]) > IDOMOD_MAX_TEXT_LEN) {
 				es[3][IDOMOD_MAX_TEXT_LEN] = '\0';
 			}
 		}
 
-		if (es[4] != NULL) {
-			if (strlen(es[4]) > IDOMOD_MAX_TEXT_LEN) {
+		if(es[4] != NULL) {
+			if(strlen(es[4]) > IDOMOD_MAX_TEXT_LEN) {
 				es[4][IDOMOD_MAX_TEXT_LEN] = '\0';
 			}
 		}
@@ -3074,8 +3074,8 @@ int idomod_broker_data(int event_type, void *data) {
 		         , ackdata->persistent_comment
 		         , IDO_DATA_NOTIFYCONTACTS
 		         , ackdata->notify_contacts
-		         , IDO_DATA_END_TIME
-		         , ackdata->end_time
+			 , IDO_DATA_END_TIME
+			 , ackdata->end_time
 		         , IDO_API_ENDDATA
 		        );
 
@@ -3110,8 +3110,8 @@ int idomod_broker_data(int event_type, void *data) {
 		es[2] = ido_escape_buffer(schangedata->output);
 		es[3] = ido_escape_buffer(schangedata->long_output);
 
-		if (es[3] != NULL) {
-			if (strlen(es[3]) > IDOMOD_MAX_TEXT_LEN) {
+		if(es[3] != NULL) {
+			if(strlen(es[3]) > IDOMOD_MAX_TEXT_LEN) {
 				es[3][IDOMOD_MAX_TEXT_LEN] = '\0';
 			}
 		}

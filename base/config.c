@@ -352,8 +352,8 @@ int read_main_config_file(char *main_config_file) {
 			mac->x[MACRO_RESOURCEFILE] = (char *)strdup(value);
 
 			/* process the resource file */
-			if (read_resource_file(value) == ERROR) {
-				dummy = asprintf(&error_message, "Resource file parsing failed");
+			if(read_resource_file(value) == ERROR) {
+                                dummy = asprintf(&error_message, "Resource file parsing failed");
 				error = TRUE;
 				break;
 			}
@@ -1413,27 +1413,27 @@ int read_main_config_file(char *main_config_file) {
 			stalking_event_handlers_for_services = (atoi(value) > 0) ? TRUE : FALSE;
 		}
 
-		else if (!strcmp(variable, "stalking_notifications_for_hosts")) {
+                else if (!strcmp(variable, "stalking_notifications_for_hosts")) {
 
-			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "stalking_notifications_for_hosts");
-				error = TRUE;
-				break;
-			}
+                        if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+                                dummy = asprintf(&error_message, "stalking_notifications_for_hosts");
+                                error = TRUE;
+                                break;
+                        }
 
-			stalking_notifications_for_hosts = (atoi(value) > 0) ? TRUE : FALSE;
-		}
+                        stalking_notifications_for_hosts = (atoi(value) > 0) ? TRUE : FALSE;
+                }
 
-		else if (!strcmp(variable, "stalking_notifications_for_services")) {
+                else if (!strcmp(variable, "stalking_notifications_for_services")) {
 
-			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "stalking_notifications_for_services");
-				error = TRUE;
-				break;
-			}
+                        if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+                                dummy = asprintf(&error_message, "stalking_notifications_for_services");
+                                error = TRUE;
+                                break;
+                        }
 
-			stalking_notifications_for_services = (atoi(value) > 0) ? TRUE : FALSE;
-		}
+                        stalking_notifications_for_services = (atoi(value) > 0) ? TRUE : FALSE;
+                }
 
 		else if (!strcmp(variable, "external_command_buffer_slots"))
 			external_command_buffer_slots = atoi(value);
@@ -1457,30 +1457,30 @@ int read_main_config_file(char *main_config_file) {
 			allow_empty_hostgroup_assignment = (atoi(value) > 0) ? TRUE : FALSE;
 		}
 
-		else if (!strcmp(variable, "keep_unknown_macros")) {
+                else if (!strcmp(variable, "keep_unknown_macros")) {
 
-			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for check_service_freshness");
-				error = TRUE;
-				break;
-			}
+                        if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+                                dummy = asprintf(&error_message, "Illegal value for check_service_freshness");
+                                error = TRUE;
+                                break;
+                        }
 
-			keep_unknown_macros = (atoi(value) > 0) ? TRUE : FALSE;
-		}
+                        keep_unknown_macros = (atoi(value) > 0) ? TRUE : FALSE;
+                }
 
 		else if (!strcmp(variable, "max_check_result_list_items"))
 			max_check_result_list_items = strtoul(value, NULL, 0);
 
-		else if (!strcmp(variable, "enable_state_based_escalation_ranges")) {
+                else if (!strcmp(variable, "enable_state_based_escalation_ranges")) {
 
-			if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
-				dummy = asprintf(&error_message, "Illegal value for enable_state_based_escalation_ranges");
-				error = TRUE;
-				break;
-			}
+                        if (strlen(value) != 1 || value[0] < '0' || value[0] > '1') {
+                                dummy = asprintf(&error_message, "Illegal value for enable_state_based_escalation_ranges");
+                                error = TRUE;
+                                break;
+                        }
 
-			enable_state_based_escalation_ranges = (atoi(value) > 0) ? TRUE : FALSE;
-		}
+                        enable_state_based_escalation_ranges = (atoi(value) > 0) ? TRUE : FALSE;
+                }
 
 		/*** AUTH_FILE VARIABLE USED BY EMBEDDED PERL INTERPRETER ***/
 		else if (!strcmp(variable, "auth_file")) {
@@ -1828,7 +1828,8 @@ int pre_flight_check(void) {
 	if (illegal_output_chars == NULL) {
 		logit(NSLOG_VERIFICATION_WARNING, TRUE, "%s", "Warning: Nothing specified for illegal_macro_output_chars variable!\n");
 		warnings++;
-	} else {
+	}
+	else {
 		char *p;
 		for (p = illegal_output_chars; *p; p++) {
 			illegal_output_char_map[(int)*p] = 1;
@@ -2101,7 +2102,7 @@ int pre_flight_object_check(int *w, int *e) {
 		total_objects++;
 
 		/* make sure each host has at least one service associated with it */
-		if (temp_host->total_services == 0 && verify_config >= 2) {
+		if(temp_host->total_services == 0 && verify_config >= 2) {
 			logit(NSLOG_VERIFICATION_WARNING, TRUE, "Warning: Host '%s' has no services associated with it!", temp_host->name);
 			warnings++;
 		}

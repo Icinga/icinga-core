@@ -726,13 +726,13 @@ int main(int argc, char **argv, char **env) {
 #ifdef USE_EVENT_BROKER
 			/* load modules */
 			if (neb_load_all_modules() != OK) {
-				logit(NSLOG_CONFIG_ERROR, ERROR, "Error: NEB module loading failed. Aborting.\n");
+                logit(NSLOG_CONFIG_ERROR, ERROR, "Error: NEB module loading failed. Aborting.\n");
 
-				if (daemon_dumps_core)
-					neb_unload_all_modules(NEBMODULE_FORCE_UNLOAD, NEBMODULE_NEB_SHUTDOWN);
+                if (daemon_dumps_core)
+                    neb_unload_all_modules(NEBMODULE_FORCE_UNLOAD, NEBMODULE_NEB_SHUTDOWN);
 
-				exit(EXIT_FAILURE);
-			}
+                exit(EXIT_FAILURE);
+            }
 
 			/* send program data to broker */
 			broker_program_state(NEBTYPE_PROCESS_PRELAUNCH, NEBFLAG_NONE, NEBATTR_NONE, NULL);

@@ -25,7 +25,7 @@
  ***********************************************************************/
 
 /** @file tac.c
- *  @brief display a tactical monitoring overview and the tac header
+ *  @brief display a tactical monitoring overview and the tac header 
 **/
 
 /* #define DEBUG 1*/

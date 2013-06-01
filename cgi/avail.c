@@ -4947,7 +4947,7 @@ void display_host_availability(void) {
 
 		} else if (content_type == CSV_CONTENT) {
 
-			for (i = 0; i < hheader_num - 1 ; i++)
+			for (i = 0; i < hheader_num -1 ; i++)
 				printf("%s%s%s%s", csv_data_enclosure, hheader[i], csv_data_enclosure, csv_delimiter);
 
 			printf("\n");
@@ -5023,7 +5023,7 @@ void display_host_availability(void) {
 			printf("<host_availability>\n");
 		} else if (content_type == CSV_CONTENT) {
 
-			for (i = 0; i < hheader_num - 1; i++)
+			for (i = 0; i < hheader_num -1; i++)
 				printf("%s%s%s%s", csv_data_enclosure, hheader[i], csv_data_enclosure, csv_delimiter);
 
 			printf("\n");
@@ -5706,7 +5706,7 @@ void display_service_availability(void) {
 
 		} else if (content_type == CSV_CONTENT) {
 
-			for (i = 0; i < sheader_num - 2; i++)
+			for (i = 0; i < sheader_num -2; i++)
 				printf("%s%s%s%s", csv_data_enclosure, sheader[i], csv_data_enclosure, csv_delimiter);
 
 			printf("\n");
@@ -5803,7 +5803,7 @@ void display_service_availability(void) {
 			printf("<service_availability>\n");
 		} else if (content_type == CSV_CONTENT) {
 
-			for (i = 0; i < sheader_num - 2; i++)
+			for (i = 0; i < sheader_num -2; i++)
 				printf("%s%s%s%s", csv_data_enclosure, sheader[i], csv_data_enclosure, csv_delimiter);
 
 			printf("\n");

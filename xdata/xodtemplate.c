@@ -285,7 +285,8 @@ int xodtemplate_read_config_data(char *main_config_file, int options, int cache,
 				if (config_base_dir != NULL && val[0] != '/') {
 					dummy = asprintf(&config_file, "%s/%s", config_base_dir, temp_buffer);
 					my_free(temp_buffer);
-				} else
+				}
+				else
 					config_file = temp_buffer;
 
 				/* process the config file... */
@@ -305,7 +306,8 @@ int xodtemplate_read_config_data(char *main_config_file, int options, int cache,
 				if (config_base_dir != NULL && val[0] != '/') {
 					dummy = asprintf(&config_file, "%s/%s", config_base_dir, temp_buffer);
 					my_free(temp_buffer);
-				} else
+				}
+				else
 					config_file = temp_buffer;
 
 				/* strip trailing / if necessary */
@@ -4127,7 +4129,7 @@ int xodtemplate_duplicate_services(void) {
 		/* make host_name optional for services, only warn */
 		if (temp_service->host_name == NULL) {
 			/* allow_empty_hostgroup_assignment is not set, so actually warn the user about missing hostname attribute */
-			if (allow_empty_hostgroup_assignment == 0) {
+			if(allow_empty_hostgroup_assignment == 0) {
 				logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: No host_name found for service definition or used template (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_service->_config_file), temp_service->_start_line);
 				return ERROR;
 			} else {
@@ -4173,16 +4175,16 @@ int xodtemplate_duplicate_services(void) {
 		xodtemplate_unset_service_is_from_hostgroup(temp_service);
 
 		/* skip service definitions without enough data */
-		/* make host_name optional for services, only warn */
-		if (temp_service->host_name == NULL) {
-			/* allow_empty_hostgroup_assignment is not set, so actually warn the user about missing hostname attribute */
-			if (allow_empty_hostgroup_assignment == 0) {
-				logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: No host_name found for service definition or used template (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_service->_config_file), temp_service->_start_line);
-				return ERROR;
-			} else {
-				/* we can't let the object being added to skiplist and then erroring out with NULL'ed host_name in common/objects.c add_service() */
+                /* make host_name optional for services, only warn */
+                if (temp_service->host_name == NULL) {
+                        /* allow_empty_hostgroup_assignment is not set, so actually warn the user about missing hostname attribute */
+                        if(allow_empty_hostgroup_assignment == 0) {
+                                logit(NSLOG_CONFIG_WARNING, TRUE, "Warning: No host_name found for service definition or used template (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_service->_config_file), temp_service->_start_line);
+                                return ERROR;
+                        } else {
+                                /* we can't let the object being added to skiplist and then erroring out with NULL'ed host_name in common/objects.c add_service() */
 				continue;
-			}
+                        }
 		}
 
 		if (temp_service->service_description == NULL) {
@@ -4440,14 +4442,14 @@ int xodtemplate_duplicate_objects(void) {
 
 		/* get list of master host names */
 		master_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_hostdependency->hostgroup_name, temp_hostdependency->host_name, temp_hostdependency->_config_file, temp_hostdependency->_start_line);
-		if (master_hostlist == NULL && allow_empty_hostgroup_assignment == 0) {
+		if (master_hostlist == NULL && allow_empty_hostgroup_assignment==0) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand master hostgroups and/or hosts specified in host dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_hostdependency->_config_file), temp_hostdependency->_start_line);
 			return ERROR;
 		}
 
 		/* get list of dependent host names */
 		dependent_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_hostdependency->dependent_hostgroup_name, temp_hostdependency->dependent_host_name, temp_hostdependency->_config_file, temp_hostdependency->_start_line);
-		if (dependent_hostlist == NULL && allow_empty_hostgroup_assignment == 0) {
+		if (dependent_hostlist == NULL && allow_empty_hostgroup_assignment==0) {
 			logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand dependent hostgroups and/or hosts specified in host dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_hostdependency->_config_file), temp_hostdependency->_start_line);
 			xodtemplate_free_memberlist(&master_hostlist);
 			return ERROR;
@@ -4579,7 +4581,7 @@ int xodtemplate_duplicate_objects(void) {
 #endif
 
 			master_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_servicedependency->hostgroup_name, temp_servicedependency->host_name, temp_servicedependency->_config_file, temp_servicedependency->_start_line);
-			if (master_hostlist == NULL && allow_empty_hostgroup_assignment == 0) {
+			if (master_hostlist == NULL && allow_empty_hostgroup_assignment==0) {
 				logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand master hostgroups and/or hosts specified in service dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_servicedependency->_config_file), temp_servicedependency->_start_line);
 				return ERROR;
 			}
@@ -4771,7 +4773,7 @@ int xodtemplate_duplicate_objects(void) {
 		if (temp_servicedependency->dependent_host_name != NULL || temp_servicedependency->dependent_hostgroup_name != NULL) {
 
 			dependent_hostlist = xodtemplate_expand_hostgroups_and_hosts(temp_servicedependency->dependent_hostgroup_name, temp_servicedependency->dependent_host_name, temp_servicedependency->_config_file, temp_servicedependency->_start_line);
-			if (dependent_hostlist == NULL && allow_empty_hostgroup_assignment == 0) {
+			if (dependent_hostlist == NULL && allow_empty_hostgroup_assignment==0) {
 				logit(NSLOG_CONFIG_ERROR, TRUE, "Error: Could not expand dependent hostgroups and/or hosts specified in service dependency (config file '%s', starting on line %d)\n", xodtemplate_config_file_name(temp_servicedependency->_config_file), temp_servicedependency->_start_line);
 				return ERROR;
 			}
@@ -5275,7 +5277,7 @@ int xodtemplate_duplicate_hostescalation(xodtemplate_hostescalation *temp_hostes
 	new_hostescalation->first_notification = temp_hostescalation->first_notification;
 	new_hostescalation->last_notification = temp_hostescalation->last_notification;
 
-	/* state based escalation ranges */
+/* state based escalation ranges */
 	new_hostescalation->first_down_notification = temp_hostescalation->first_down_notification;
 	new_hostescalation->last_down_notification = temp_hostescalation->last_down_notification;
 	new_hostescalation->first_unreachable_notification = temp_hostescalation->first_unreachable_notification;
@@ -5284,7 +5286,7 @@ int xodtemplate_duplicate_hostescalation(xodtemplate_hostescalation *temp_hostes
 	new_hostescalation->have_first_notification = temp_hostescalation->have_first_notification;
 	new_hostescalation->have_last_notification = temp_hostescalation->have_last_notification;
 
-	/* state based escalation ranges */
+/* state based escalation ranges */
 	new_hostescalation->have_first_down_notification = temp_hostescalation->have_first_down_notification;
 	new_hostescalation->have_last_down_notification = temp_hostescalation->have_last_down_notification;
 	new_hostescalation->have_first_unreachable_notification = temp_hostescalation->have_first_unreachable_notification;
@@ -7774,7 +7776,7 @@ int xodtemplate_recombobulate_contactgroups(void) {
 
 	/* expand subgroup membership recursively */
 	for (temp_contactgroup = xodtemplate_contactgroup_list; temp_contactgroup; temp_contactgroup = temp_contactgroup->next)
-		if (xodtemplate_recombobulate_contactgroup_subgroups(temp_contactgroup, NULL) != OK)
+		if(xodtemplate_recombobulate_contactgroup_subgroups(temp_contactgroup, NULL) != OK)
 			return ERROR;
 
 
@@ -8086,7 +8088,8 @@ int xodtemplate_recombobulate_hostgroup_subgroups(xodtemplate_hostgroup *temp_ho
 				reject_item = TRUE;
 				buf++;
 				logit(NSLOG_CONFIG_ERROR, TRUE, "Warning: Excluding member group '%s' specified in hostgroup (config file '%s', starting on line %d)\n", buf, xodtemplate_config_file_name(temp_hostgroup->_config_file), temp_hostgroup->_start_line);
-			} else {
+			}
+			else {
 				reject_item = FALSE;
 			}
 

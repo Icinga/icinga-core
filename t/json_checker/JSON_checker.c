@@ -30,7 +30,7 @@ int main(int argc, char* argv[]) {
 	char json_text[RETURN_TEXT_LENGTH + 1];
 	long unsigned position = 0;
 	int started = 0;
-	int i = 0;
+	int i=0;
 	int char_since_newline = 0;
 	int error_position = 0;
 
@@ -57,7 +57,7 @@ int main(int argc, char* argv[]) {
 		}
 
 		/* needed to point at correct ERROR position */
-		if (next_char == '\n')
+		if ( next_char == '\n' )
 			char_since_newline = 0;
 		else
 			char_since_newline++;
@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
 		position++;
 
 		// skip HTML header
-		if (started == 0) {
+		if ( started == 0 ) {
 			if (next_char == '{')
 				started = 1;
 			else
@@ -74,22 +74,22 @@ int main(int argc, char* argv[]) {
 
 		/* check all characters */
 		if (!JSON_checker_char(jc, next_char)) {
-			fprintf(stderr, "JSON_checker_char: syntax error: at character \"%c\" at position \"%lu\"\nJSON TEXT:\n%s\n", (char)next_char, position, json_text);
+		    	fprintf(stderr, "JSON_checker_char: syntax error: at character \"%c\" at position \"%lu\"\nJSON TEXT:\n%s\n", (char)next_char, position, json_text);
 
 			/* point to position were error occurs */
 			if (char_since_newline > RETURN_TEXT_LENGTH)
-				error_position = RETURN_TEXT_LENGTH;
-			else
-				error_position = char_since_newline;
+					error_position = RETURN_TEXT_LENGTH;
+				else
+					error_position = char_since_newline;
 
 			if (error_position >= 18)
 				fprintf(stderr, "ERROR POSITION ");
 
-			for (i = 0; i < error_position - ((error_position >= 18) ? 16 : 1); i++)
-				fprintf(stderr, "%s", (error_position >= 18) ? "-" : " ");
+		    	for(i = 0; i < error_position - ((error_position >= 18) ? 16 : 1); i++)
+		    		fprintf(stderr, "%s", (error_position >= 18) ? "-" : " ");
 
-			fprintf(stderr, "^%s\n", (error_position >= 18) ? "" : "-- ERROR POSITION");
-			exit(1);
+		    	fprintf(stderr, "^%s\n", (error_position >= 18) ? "" : "-- ERROR POSITION");
+		    	exit(1);
 		}
 	}
 

@@ -1181,15 +1181,15 @@ static int sla_process_statechange_one(ido2db_idi *idi, unsigned long object_id,
 	int rc, i;
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-	                      "sla_process_statechange(%p, %lu, %lu, %lu, "
-	                      "%p, %p)\n", idi, object_id, start_time,
-	                      end_time, pstate_value, pstate_type);
+	                       "sla_process_statechange(%p, %lu, %lu, %lu, "
+	                       "%p, %p)\n", idi, object_id, start_time,
+	                       end_time, pstate_value, pstate_type);
 
 	rc = sla_query_states(idi, object_id, start_time, end_time,
 	                      &state_list);
 
 	ido2db_log_debug_info(IDO2DB_DEBUGL_PROCESSINFO, 2,
-	                      "sla_query_states(): %d\n", rc);
+	                     "sla_query_states(): %d\n", rc);
 
 	if (rc < 0)
 		return rc;

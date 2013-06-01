@@ -3822,11 +3822,11 @@ void disable_all_notifications_expire_time(int cmd, char *args) {
 	/* first arg is scheduled time, unused */
 	temp_ptr = my_strtok(args, ";");
 
-	exp_ptr = my_strtok(NULL, ";");
-	if (exp_ptr != NULL) {
-		/* This will be set to 0 if no expire_time is entered or data is bad */
-		disable_notifications_expire_time = strtoul(exp_ptr, &end_ptr, 10);
-	} else
+        exp_ptr = my_strtok(NULL, ";");
+        if (exp_ptr != NULL) {
+                /* This will be set to 0 if no expire_time is entered or data is bad */
+                disable_notifications_expire_time = strtoul(exp_ptr, &end_ptr, 10);
+        } else
 		return;
 
 	/* disable notifications */

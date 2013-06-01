@@ -1344,7 +1344,7 @@ int main(void) {
 				printf("<a href='%s?type=%d&amp;%s'>View <b>Commands</b> For <b>This %sgroup</b></a><br>\n", EXTINFO_CGI, (display_type == DISPLAY_HOSTGROUPS) ? DISPLAY_HOSTGROUP_INFO : DISPLAY_SERVICEGROUP_INFO, group_url, (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
 				if (is_authorized_for_configuration_information(&current_authdata) == TRUE) {
 					printf("<a href='%s?type=%sgroups&amp;item_name=%s'>View <b>Config</b> For <b>This %sgroup</b></a>\n", CONFIG_CGI, (display_type == DISPLAY_HOSTGROUPS) ? "host" : "service",
-					       url_encode((display_type == DISPLAY_HOSTGROUPS) ? req_hostgroups[0].entry : req_servicegroups[0].entry), (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
+						url_encode((display_type == DISPLAY_HOSTGROUPS) ? req_hostgroups[0].entry : req_servicegroups[0].entry), (display_type == DISPLAY_HOSTGROUPS) ? "Host" : "Service");
 				}
 			}
 		}
@@ -6944,7 +6944,7 @@ void status_page_num_selector(int local_result_start, int status_type) {
 
 	/* get url options but filter out "limit" and "status" */
 	if (getenv("QUERY_STRING") != NULL && strcmp(getenv("QUERY_STRING"), "")) {
-		if (strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
+		if(strlen(getenv("QUERY_STRING")) > MAX_INPUT_BUFFER) {
 			printf("status_page_num_selector(): Could not allocate memory for stripped_query_string\n");
 			exit(1);
 		}

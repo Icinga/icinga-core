@@ -5,18 +5,20 @@
 #include <stdio.h>
 
 
-int main() {
+int main()
+{
 	pid_t pid;
-
-
-	switch (pid = fork()) {
-	case 0:
-		/* Child  */
+	
+	
+	switch ( pid = fork() )
+	{
+        case 0:
+                /* Child  */
 		sleep(1000000);
 		exit(0);
-	default:
-		/* Parent */
+        default:
+                /* Parent */
 		printf("OK: foo bar baz\n");
-		exit(0);
-	}
-}
+         	exit(0);      
+        }
+} 

@@ -53,7 +53,7 @@ scheduled_downtime *scheduled_downtime_list = NULL;
  * where child downtimes are considered invalid when
  * looking up the parent
  * setting this to 1 could cause unresolvable issues.
- * the fix for child downtimes can be found in
+ * the fix for child downtimes can be found in 
  * downtime_compar()
  */
 int		   defer_downtime_sorting = 0;
@@ -165,7 +165,7 @@ int unschedule_downtime(int type, unsigned long downtime_id) {
 			svc->pending_flex_downtime--;
 	}
 
-	log_debug_info(DEBUGL_DOWNTIME, 0, "Cancelling %s downtime (id=%lu)\n", temp_downtime->type == HOST_DOWNTIME ? "host" : "service", temp_downtime->downtime_id);
+    log_debug_info(DEBUGL_DOWNTIME, 0, "Cancelling %s downtime (id=%lu)\n", temp_downtime->type == HOST_DOWNTIME ? "host" : "service", temp_downtime->downtime_id);
 
 	/* decrement the downtime depth variable and update status data if necessary */
 	if (temp_downtime->is_in_effect == TRUE) {
@@ -417,9 +417,9 @@ int handle_scheduled_downtime(scheduled_downtime *temp_downtime) {
 
 	/* have we come to the end of the scheduled downtime? */
 	if (temp_downtime->is_in_effect == TRUE && ( /* downtime needs to be in effect and ... */
-	            (temp_downtime->fixed == TRUE && current_time >= temp_downtime->end_time) || /* fixed downtime, endtime means end of downtime */
-	            (temp_downtime->fixed == FALSE && current_time >= (temp_downtime->trigger_time + temp_downtime->duration)) /* flexible downtime, endtime of downtime is trigger_time+duration */
-	        )) {
+		(temp_downtime->fixed == TRUE && current_time >= temp_downtime->end_time) || /* fixed downtime, endtime means end of downtime */
+		(temp_downtime->fixed == FALSE && current_time >= (temp_downtime->trigger_time+temp_downtime->duration)) /* flexible downtime, endtime of downtime is trigger_time+duration */
+	)){
 
 		if (temp_downtime->type == HOST_DOWNTIME)
 			log_debug_info(DEBUGL_DOWNTIME, 0, "Host '%s' ending %s scheduled downtime (id=%lu) with depth=%d, starttime=%lu, entrytime=%lu, triggertime=%lu, endtime=%lu, duration=%lu.\n", hst->name, (temp_downtime->fixed == TRUE) ? "fixed" : "flexible", temp_downtime->downtime_id, hst->scheduled_downtime_depth, temp_downtime->start_time, temp_downtime->entry_time, temp_downtime->trigger_time, temp_downtime->end_time, temp_downtime->duration);
