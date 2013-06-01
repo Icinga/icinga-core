@@ -948,7 +948,6 @@ int read_icinga_resource_file(char *resource_file) {
 	char *value = NULL;
 	char *temp_ptr = NULL;
 	mmapfile *thefile = NULL;
-	int current_line = 1;
 	int error = FALSE;
 	int user_index = 0;
 
@@ -965,8 +964,6 @@ int read_icinga_resource_file(char *resource_file) {
 		/* read the next line */
 		if ((input = mmap_fgets_multiline(thefile)) == NULL)
 			break;
-
-		current_line = thefile->current_line;
 
 		/* skip blank lines and comments */
 		if (input[0] == '#' || input[0] == '\x0' || input[0] == '\n' || input[0] == '\r')
@@ -2042,7 +2039,7 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 	char *dir_to_check = NULL;
 	time_t current_time;
 	int result;
-	int x, last = 0, dummy;
+	int x, last = 0;
 
 	/* read program status */
 	result = read_all_status_data(main_config_file, READ_PROGRAM_STATUS);
@@ -2079,7 +2076,7 @@ void display_info_table(char *title, authdata *current_authdata, int daemon_chec
 	/* add here every cgi_id which uses logging, this should limit the testing of write access to the necessary amount */
 	if (use_logging == TRUE && CGI_ID == CMD_CGI_ID) {
 
-		dummy = asprintf(&dir_to_check, "%s", cgi_log_file);
+		asprintf(&dir_to_check, "%s", cgi_log_file);
 
 		for (x = 0; x <= (int)strlen(dir_to_check); x++) {
 			/* end of string */
@@ -2865,7 +2862,7 @@ int rotate_cgi_log_file() {
 	int rename_result = 0;
 	int stat_result = -1;
 	struct stat log_file_stat;
-	int dummy, sub = 0, weekday;
+	int sub = 0, weekday;
 	time_t current_time, rotate_ts;
 
 	/* if there is no log arhive configured we don't do anything */
@@ -2920,7 +2917,7 @@ int rotate_cgi_log_file() {
 	// from here on file gets rotated.
 
 	/* get the archived filename to use */
-	dummy = asprintf(&log_archive, "%s/icinga-cgi-%02d-%02d-%d-%02d.log", cgi_log_archive_path, ts->tm_mon + 1, ts->tm_mday, ts->tm_year + 1900, ts->tm_hour);
+	asprintf(&log_archive, "%s/icinga-cgi-%02d-%02d-%d-%02d.log", cgi_log_archive_path, ts->tm_mon + 1, ts->tm_mday, ts->tm_year + 1900, ts->tm_hour);
 
 	/* rotate the log file */
 	rename_result = my_rename(cgi_log_file, log_archive);
@@ -2940,7 +2937,7 @@ int rotate_cgi_log_file() {
 
 	if (stat_result == 0) {
 		chmod(cgi_log_file, log_file_stat.st_mode);
-		dummy = chown(cgi_log_file, log_file_stat.st_uid, log_file_stat.st_gid);
+		chown(cgi_log_file, log_file_stat.st_uid, log_file_stat.st_gid);
 	}
 
 	my_free(log_archive);
@@ -3575,7 +3572,7 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 	char *temp_buffer;
 	int total_pages = 1;
 	int current_page = 1;
-	int next_page = 0;
+	//int next_page = 0;
 	int previous_page = 0;
 	int display_from = 0;
 	int display_to = 0;
@@ -3635,7 +3632,7 @@ void page_num_selector(int result_start, int total_entries, int displayed_entrie
 
 		current_page = (result_start / result_limit) + 1;
 		previous_page = (result_start - result_limit) > 0 ? (result_start - result_limit) : 0;
-		next_page = (result_start + result_limit) > total_entries ? result_start : (result_start + result_limit);
+		// next_page = (result_start + result_limit) > total_entries ? result_start : (result_start + result_limit);
 	}
 
 	/* links page select elements and counters */

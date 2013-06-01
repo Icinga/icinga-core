@@ -258,7 +258,6 @@ int xrddefault_save_state_information(void) {
 	scheduled_downtime *temp_downtime = NULL;
 	int x = 0;
 	int fd = 0;
-	int dummy; /* reduce compiler warnings */
 	unsigned long host_attribute_mask = 0L;
 	unsigned long service_attribute_mask = 0L;
 	unsigned long contact_attribute_mask = 0L;
@@ -279,7 +278,7 @@ int xrddefault_save_state_information(void) {
 	}
 
 	/* open a safe temp file for output */
-	dummy = asprintf(&temp_file, "%sXXXXXX", xrddefault_temp_file);
+	asprintf(&temp_file, "%sXXXXXX", xrddefault_temp_file);
 	if (temp_file == NULL)
 		return ERROR;
 	if ((fd = mkstemp(temp_file)) == -1)

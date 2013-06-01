@@ -290,15 +290,12 @@ unsigned long   max_check_result_list_items = DEFAULT_MAX_CHECK_RESULT_LIST_ITEM
 
 int		enable_state_based_escalation_ranges = FALSE;
 
-int dummy;	/* reduce compiler warnings */
-
 
 /* Following main() declaration required by older versions of Perl ut 5.00503 */
 int main(int argc, char **argv, char **env) {
 	int result;
 	int error = FALSE;
 	char *buffer = NULL;
-	char *dummy_c = NULL;
 	int display_license = FALSE;
 	int display_help = FALSE;
 	int c = 0;
@@ -483,7 +480,7 @@ int main(int argc, char **argv, char **env) {
 		}
 
 		/* get absolute path of current working directory */
-		dummy_c = getcwd(config_file, MAX_FILENAME_LENGTH);
+		getcwd(config_file, MAX_FILENAME_LENGTH);
 
 		/* append a forward slash */
 		strncat(config_file, "/", 1);
@@ -691,7 +688,7 @@ int main(int argc, char **argv, char **env) {
 			/* get program (re)start time and save as macro */
 			program_start = time(NULL);
 			my_free(mac->x[MACRO_PROCESSSTARTTIME]);
-			dummy = asprintf(&mac->x[MACRO_PROCESSSTARTTIME], "%lu", (unsigned long)program_start);
+			asprintf(&mac->x[MACRO_PROCESSSTARTTIME], "%lu", (unsigned long)program_start);
 
 			/* open debug log */
 			open_debug_log();
@@ -823,7 +820,7 @@ int main(int argc, char **argv, char **env) {
 					exit(ERROR);
 				}
 
-				dummy = asprintf(&buffer, "Finished daemonizing... (New PID=%d)\n", (int)getpid());
+				asprintf(&buffer, "Finished daemonizing... (New PID=%d)\n", (int)getpid());
 				write_to_all_logs(buffer, NSLOG_PROCESS_INFO);
 				my_free(buffer);
 
@@ -887,10 +884,10 @@ int main(int argc, char **argv, char **env) {
 			/* get event start time and save as macro */
 			event_start = time(NULL);
 			my_free(mac->x[MACRO_EVENTSTARTTIME]);
-			dummy = asprintf(&mac->x[MACRO_EVENTSTARTTIME], "%lu", (unsigned long)event_start);
+			asprintf(&mac->x[MACRO_EVENTSTARTTIME], "%lu", (unsigned long)event_start);
 
 			/* print event loop start */
-			dummy = asprintf(&buffer, "Event loop started...\n");
+			asprintf(&buffer, "Event loop started...\n");
 			write_to_all_logs(buffer, NSLOG_PROCESS_INFO);
 			my_free(buffer);
 
@@ -904,9 +901,9 @@ int main(int argc, char **argv, char **env) {
 			if (caught_signal == TRUE) {
 
 				if (sig_id == SIGHUP)
-					dummy = asprintf(&buffer, "Caught SIGHUP, restarting...\n");
+					asprintf(&buffer, "Caught SIGHUP, restarting...\n");
 				else if (sig_id != SIGSEGV)
-					dummy = asprintf(&buffer, "Caught SIG%s, shutting down...\n", sigs[sig_id]);
+					asprintf(&buffer, "Caught SIG%s, shutting down...\n", sigs[sig_id]);
 
 				write_to_all_logs(buffer, NSLOG_PROCESS_INFO);
 				my_free(buffer);

@@ -188,7 +188,6 @@ struct namedlist {
 int num_req_hosts = 0;					/**< number of requestes hosts GET/POST */
 int num_req_hostgroups = 0;				/**< number of requestes hostgroups GET/POST */
 int num_req_servicegroups = 0;				/**< number of requestes servicegroups GET/POST */
-int dummy = 0;						/**< dummy to catch asprintf return value */
 
 int show_all_hosts = TRUE;				/**< define if ALL hosts should be displayed */
 int show_all_hostgroups = TRUE;				/**< define if ALL hostgroups should be displayed */
@@ -692,28 +691,28 @@ int main(void) {
 				my_free(cgi_title);
 				req_hosts[0].entry = strdup("all");
 				req_hosts[1].entry = NULL;
-				dummy = asprintf(&url_hosts_part, "host=all");
+				asprintf(&url_hosts_part, "host=all");
 				break;
 			} else {
 				if (i != 0) {
 					strncpy(temp_buffer, cgi_title, sizeof(temp_buffer));
 					my_free(cgi_title);
 				}
-				dummy = asprintf(&cgi_title, "%s%s[%s]", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_hosts[i].entry, FALSE));
+				asprintf(&cgi_title, "%s%s[%s]", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_hosts[i].entry, FALSE));
 
 				if (i == 0)
-					dummy = asprintf(&url_hosts_part, "host=%s", url_encode(req_hosts[i].entry));
+					asprintf(&url_hosts_part, "host=%s", url_encode(req_hosts[i].entry));
 				else {
 					strncpy(temp_buffer, url_hosts_part, sizeof(temp_buffer));
 					my_free(url_hosts_part);
-					dummy = asprintf(&url_hosts_part, "%s&amp;host=%s", temp_buffer, url_encode(req_hosts[i].entry));
+					asprintf(&url_hosts_part, "%s&amp;host=%s", temp_buffer, url_encode(req_hosts[i].entry));
 				}
 			}
 		}
 	} else {
 		req_hosts[0].entry = strdup("all");
 		req_hosts[1].entry = NULL;
-		dummy = asprintf(&url_hosts_part, "host=all");
+		asprintf(&url_hosts_part, "host=all");
 	}
 
 	/* determine display of hostgroups */
@@ -726,28 +725,28 @@ int main(void) {
 				my_free(cgi_title);
 				req_hostgroups[0].entry = strdup("all");
 				req_hostgroups[1].entry = NULL;
-				dummy = asprintf(&url_hostgroups_part, "hostgroup=all");
+				asprintf(&url_hostgroups_part, "hostgroup=all");
 				break;
 			} else {
 				if (i != 0) {
 					strncpy(temp_buffer, cgi_title, sizeof(temp_buffer));
 					my_free(cgi_title);
 				}
-				dummy = asprintf(&cgi_title, "%s%s{%s}", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_hostgroups[i].entry, FALSE));
+				asprintf(&cgi_title, "%s%s{%s}", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_hostgroups[i].entry, FALSE));
 
 				if (i == 0)
-					dummy = asprintf(&url_hostgroups_part, "hostgroup=%s", url_encode(req_hostgroups[i].entry));
+					asprintf(&url_hostgroups_part, "hostgroup=%s", url_encode(req_hostgroups[i].entry));
 				else {
 					strncpy(temp_buffer, url_hostgroups_part, sizeof(temp_buffer));
 					my_free(url_hostgroups_part);
-					dummy = asprintf(&url_hostgroups_part, "%s&amp;hostgroup=%s", temp_buffer, url_encode(req_hostgroups[i].entry));
+					asprintf(&url_hostgroups_part, "%s&amp;hostgroup=%s", temp_buffer, url_encode(req_hostgroups[i].entry));
 				}
 			}
 		}
 	} else {
 		req_hostgroups[0].entry = strdup("all");
 		req_hostgroups[1].entry = NULL;
-		dummy = asprintf(&url_hostgroups_part, "hostgroup=all");
+		asprintf(&url_hostgroups_part, "hostgroup=all");
 	}
 
 	/* determine display of servicegroups */
@@ -760,28 +759,28 @@ int main(void) {
 				my_free(cgi_title);
 				req_servicegroups[0].entry = strdup("all");
 				req_servicegroups[1].entry = NULL;
-				dummy = asprintf(&url_servicegroups_part, "servicegroup=all");
+				asprintf(&url_servicegroups_part, "servicegroup=all");
 				break;
 			} else {
 				if (i != 0) {
 					strncpy(temp_buffer, cgi_title, sizeof(temp_buffer));
 					my_free(cgi_title);
 				}
-				dummy = asprintf(&cgi_title, "%s%s(%s)", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_servicegroups[i].entry, FALSE));
+				asprintf(&cgi_title, "%s%s(%s)", (i != 0) ? temp_buffer : "", (i != 0) ? ", " : "", html_encode(req_servicegroups[i].entry, FALSE));
 
 				if (i == 0)
-					dummy = asprintf(&url_servicegroups_part, "servicegroup=%s", url_encode(req_servicegroups[i].entry));
+					asprintf(&url_servicegroups_part, "servicegroup=%s", url_encode(req_servicegroups[i].entry));
 				else {
 					strncpy(temp_buffer, url_servicegroups_part, sizeof(temp_buffer));
 					my_free(url_servicegroups_part);
-					dummy = asprintf(&url_servicegroups_part, "%s&amp;servicegroup=%s", temp_buffer, url_encode(req_servicegroups[i].entry));
+					asprintf(&url_servicegroups_part, "%s&amp;servicegroup=%s", temp_buffer, url_encode(req_servicegroups[i].entry));
 				}
 			}
 		}
 	} else {
 		req_servicegroups[0].entry = strdup("all");
 		req_servicegroups[1].entry = NULL;
-		dummy = asprintf(&url_servicegroups_part, "servicegroup=all");
+		asprintf(&url_servicegroups_part, "servicegroup=all");
 	}
 
 
@@ -2105,7 +2104,6 @@ void show_host_status_totals(void) {
 
 /* display a detailed listing of the status of all services... */
 void show_service_detail(void) {
-	char *status = NULL;
 	char temp_buffer[MAX_INPUT_BUFFER];
 	char *temp_url = NULL;
 	char *processed_string = NULL;
@@ -2218,41 +2216,41 @@ void show_service_detail(void) {
 			style = strdup("detail");
 
 		if (search_string != NULL)
-			dummy = asprintf(&temp_url, "%s?search_string=%s&amp;sortobject=services", STATUS_CGI, url_encode(search_string));
+			asprintf(&temp_url, "%s?search_string=%s&amp;sortobject=services", STATUS_CGI, url_encode(search_string));
 		else if (display_all_unhandled_problems == TRUE || display_all_problems == TRUE)
-			dummy = asprintf(&temp_url, "%s?all%sproblems&amp;sortobject=services", STATUS_CGI, (display_all_unhandled_problems == TRUE) ? "unhandled" : "");
+			asprintf(&temp_url, "%s?all%sproblems&amp;sortobject=services", STATUS_CGI, (display_all_unhandled_problems == TRUE) ? "unhandled" : "");
 		else if (display_type == DISPLAY_HOSTS)
-			dummy = asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=services", STATUS_CGI, url_hosts_part, style);
+			asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=services", STATUS_CGI, url_hosts_part, style);
 		else if (display_type == DISPLAY_SERVICEGROUPS)
-			dummy = asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=services", STATUS_CGI, url_servicegroups_part, style);
+			asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=services", STATUS_CGI, url_servicegroups_part, style);
 		else
-			dummy = asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=services", STATUS_CGI, url_hostgroups_part, style);
+			asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=services", STATUS_CGI, url_hostgroups_part, style);
 
 		if (display_all_unhandled_problems == FALSE && display_all_problems == FALSE) {
 			if (service_status_types != all_service_status_types) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
-				dummy = asprintf(&temp_url, "%s&amp;servicestatustypes=%d", temp_buffer, service_status_types);
+				asprintf(&temp_url, "%s&amp;servicestatustypes=%d", temp_buffer, service_status_types);
 			}
 			if (host_status_types != all_host_status_types) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
-				dummy = asprintf(&temp_url, "%s&amp;hoststatustypes=%d", temp_buffer, host_status_types);
+				asprintf(&temp_url, "%s&amp;hoststatustypes=%d", temp_buffer, host_status_types);
 			}
 			if (service_properties != 0) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
-				dummy = asprintf(&temp_url, "%s&amp;serviceprops=%lu", temp_buffer, service_properties);
+				asprintf(&temp_url, "%s&amp;serviceprops=%lu", temp_buffer, service_properties);
 			}
 			if (host_properties != 0) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
-				dummy = asprintf(&temp_url, "%s&amp;hostprops=%lu", temp_buffer, host_properties);
+				asprintf(&temp_url, "%s&amp;hostprops=%lu", temp_buffer, host_properties);
 			}
 			if (service_filter != NULL) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
-				dummy = asprintf(&temp_url, "%s&amp;servicefilter=%s", temp_buffer, url_encode(service_filter));
+				asprintf(&temp_url, "%s&amp;servicefilter=%s", temp_buffer, url_encode(service_filter));
 			}
 		}
 
@@ -2385,7 +2383,6 @@ void show_service_detail(void) {
 		displayed_service_entries++;
 		total_service_entries++;
 
-		status = temp_status->status_string;
 		status_class = temp_status->status_string;
 		if (temp_status->status == SERVICE_PENDING) {
 			status_bg_class = (odd) ? "Even" : "Odd";
@@ -2742,7 +2739,6 @@ void show_service_detail(void) {
 
 /* display a detailed listing of the status of all hosts... */
 void show_host_detail(void) {
-	char *status = NULL;
 	char temp_buffer[MAX_INPUT_BUFFER];
 	char *temp_url = NULL;
 	char *processed_string = NULL;
@@ -2844,41 +2840,41 @@ void show_host_detail(void) {
 			style = strdup("hostdetail");
 
 		if (search_string != NULL)
-			dummy = asprintf(&temp_url, "%s?search_string=%s&amp;sortobject=hosts", STATUS_CGI, url_encode(search_string));
+			asprintf(&temp_url, "%s?search_string=%s&amp;sortobject=hosts", STATUS_CGI, url_encode(search_string));
 		else if (display_all_unhandled_problems == TRUE || display_all_problems == TRUE)
-			dummy = asprintf(&temp_url, "%s?all%sproblems&amp;sortobject=hosts", STATUS_CGI, (display_all_unhandled_problems == TRUE) ? "unhandled" : "");
+			asprintf(&temp_url, "%s?all%sproblems&amp;sortobject=hosts", STATUS_CGI, (display_all_unhandled_problems == TRUE) ? "unhandled" : "");
 		else if (display_type == DISPLAY_HOSTS)
-			dummy = asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=hosts", STATUS_CGI, url_hosts_part, style);
+			asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=hosts", STATUS_CGI, url_hosts_part, style);
 		else if (display_type == DISPLAY_SERVICEGROUPS)
-			dummy = asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=hosts", STATUS_CGI, url_servicegroups_part, style);
+			asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=hosts", STATUS_CGI, url_servicegroups_part, style);
 		else
-			dummy = asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=hosts", STATUS_CGI, url_hostgroups_part, style);
+			asprintf(&temp_url, "%s?%s&amp;style=%s&amp;sortobject=hosts", STATUS_CGI, url_hostgroups_part, style);
 
 		if (display_all_unhandled_problems == FALSE && display_all_problems == FALSE) {
 			if (service_status_types != all_service_status_types) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
-				dummy = asprintf(&temp_url, "%s&amp;servicestatustypes=%d", temp_buffer, service_status_types);
+				asprintf(&temp_url, "%s&amp;servicestatustypes=%d", temp_buffer, service_status_types);
 			}
 			if (host_status_types != all_host_status_types) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
-				dummy = asprintf(&temp_url, "%s&amp;hoststatustypes=%d", temp_buffer, host_status_types);
+				asprintf(&temp_url, "%s&amp;hoststatustypes=%d", temp_buffer, host_status_types);
 			}
 			if (service_properties != 0) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
-				dummy = asprintf(&temp_url, "%s&amp;serviceprops=%lu", temp_buffer, service_properties);
+				asprintf(&temp_url, "%s&amp;serviceprops=%lu", temp_buffer, service_properties);
 			}
 			if (host_properties != 0) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
-				dummy = asprintf(&temp_url, "%s&amp;hostprops=%lu", temp_buffer, host_properties);
+				asprintf(&temp_url, "%s&amp;hostprops=%lu", temp_buffer, host_properties);
 			}
 			if (service_filter != NULL) {
 				strncpy(temp_buffer, temp_url, sizeof(temp_buffer));
 				my_free(temp_url);
-				dummy = asprintf(&temp_url, "%s&amp;servicefilter=%s", temp_buffer, url_encode(service_filter));
+				asprintf(&temp_url, "%s&amp;servicefilter=%s", temp_buffer, url_encode(service_filter));
 			}
 		}
 
@@ -2964,8 +2960,6 @@ void show_host_detail(void) {
 
 		displayed_host_entries++;
 		total_host_entries++;
-
-		status = temp_statusdata->status_string;
 
 		if (temp_statusdata->status == HOST_PENDING) {
 			status_class = "PENDING";
@@ -5872,7 +5866,6 @@ int add_status_data(int status_type, void *data) {
 	int seconds;
 	int duration_error = FALSE;
 	int status = OK;
-	int dummy = 0;
 	int current_attempt = 0;
 	int is_flapping = FALSE;
 	int problem_has_been_acknowledged = FALSE;
@@ -6003,21 +5996,21 @@ int add_status_data(int status_type, void *data) {
 	if (status_show_long_plugin_output != FALSE && plugin_output_long != NULL) {
 		if (content_type == CSV_CONTENT || content_type == JSON_CONTENT) {
 			if (plugin_output_short != NULL)
-				dummy = asprintf(&plugin_output, "%s", escape_newlines(plugin_output_long));
+				asprintf(&plugin_output, "%s", escape_newlines(plugin_output_long));
 			else
-				dummy = asprintf(&plugin_output, "%s %s", plugin_output_short, escape_newlines(plugin_output_long));
+				asprintf(&plugin_output, "%s %s", plugin_output_short, escape_newlines(plugin_output_long));
 		} else
-			dummy = asprintf(&plugin_output, "%s<br>%s", (plugin_output_short == NULL) ? "" : html_encode(plugin_output_short, TRUE), html_encode(plugin_output_long, TRUE));
+			asprintf(&plugin_output, "%s<br>%s", (plugin_output_short == NULL) ? "" : html_encode(plugin_output_short, TRUE), html_encode(plugin_output_long, TRUE));
 	} else if (plugin_output_short != NULL) {
 		if (content_type == CSV_CONTENT || content_type == JSON_CONTENT)
-			dummy = asprintf(&plugin_output, "%s", plugin_output_short);
+			asprintf(&plugin_output, "%s", plugin_output_short);
 		else
-			dummy = asprintf(&plugin_output, "%s&nbsp;", html_encode(plugin_output_short, TRUE));
+			asprintf(&plugin_output, "%s&nbsp;", html_encode(plugin_output_short, TRUE));
 	} else {
 		if (content_type == CSV_CONTENT || content_type == JSON_CONTENT)
 			plugin_output = NULL;
 		else
-			dummy = asprintf(&plugin_output, "&nbsp;");
+			asprintf(&plugin_output, "&nbsp;");
 	}
 
 	/* allocating new memory */
@@ -6927,13 +6920,12 @@ void print_displayed_names(int style) {
 /******************************************************************/
 
 void status_page_num_selector(int local_result_start, int status_type) {
-
 	char link[MAX_INPUT_BUFFER] = "";
 	char stripped_query_string[MAX_INPUT_BUFFER] = "";
 	char *temp_buffer;
 	int total_pages = 1;
 	int current_page = 1;
-	int next_page = 0;
+//	int next_page = 0;
 	int previous_page = 0;
 	int display_total = 0;
 	int display_from = 0;
@@ -6971,7 +6963,7 @@ void status_page_num_selector(int local_result_start, int status_type) {
 
 		current_page = (result_start / result_limit) + 1;
 		previous_page = (result_start - result_limit) > 0 ? (result_start - result_limit) : 0;
-		next_page = (result_start + result_limit) > (total_host_entries + total_service_entries) ? result_start : (result_start + result_limit);
+//		next_page = (result_start + result_limit) > (total_host_entries + total_service_entries) ? result_start : (result_start + result_limit);
 	}
 
 	/* links page select elements and counters */

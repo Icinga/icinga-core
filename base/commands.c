@@ -89,8 +89,6 @@ extern pthread_t       worker_threads[TOTAL_WORKER_THREADS];
 extern circular_buffer external_command_buffer;
 extern int             external_command_buffer_slots;
 
-int dummy;	/* reduce compiler warnings */
-
 /******************************************************************/
 /****************** EXTERNAL COMMAND PROCESSING *******************/
 /******************************************************************/
@@ -737,7 +735,7 @@ int process_external_command1(char *cmd) {
 	update_check_stats(EXTERNAL_COMMAND_STATS, time(NULL));
 
 	/* log the external command */
-	dummy = asprintf(&temp_buffer, "EXTERNAL COMMAND: %s;%s\n", command_id, args);
+	asprintf(&temp_buffer, "EXTERNAL COMMAND: %s;%s\n", command_id, args);
 
 	if (command_type == CMD_PROCESS_SERVICE_CHECK_RESULT || command_type == CMD_PROCESS_HOST_CHECK_RESULT) {
 		/* passive checks are logged in checks.c as well, as some my bypass external commands by getting dropped in checkresults dir */
@@ -3811,7 +3809,6 @@ void disable_all_notifications(void) {
 }
 
 void disable_all_notifications_expire_time(int cmd, char *args) {
-	char *temp_ptr = NULL;
 	char *exp_ptr = NULL;
 	char *end_ptr = NULL;
 	struct tm *tm, tm_s;
@@ -3820,7 +3817,7 @@ void disable_all_notifications_expire_time(int cmd, char *args) {
 
 	/* extract expire time */
 	/* first arg is scheduled time, unused */
-	temp_ptr = my_strtok(args, ";");
+	my_strtok(args, ";");
 
         exp_ptr = my_strtok(NULL, ";");
         if (exp_ptr != NULL) {
@@ -5309,7 +5306,7 @@ void process_passive_checks(void) {
 
 	/* open a temp file for storing check result(s) */
 	old_umask = umask(new_umask);
-	dummy = asprintf(&checkresult_file, "%s/checkXXXXXX", temp_path);
+	asprintf(&checkresult_file, "%s/checkXXXXXX", temp_path);
 	checkresult_file_fd = mkstemp(checkresult_file);
 	umask(old_umask);
 

@@ -198,7 +198,6 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 	int in_range = FALSE;
 	int return_val = READLOG_OK;
 	int data_found = FALSE;
-	int dummy;
 	short keep_entry = TRUE;
 	time_t timestamp = 0L;
 	time_t last_timestamp = 0L;
@@ -258,7 +257,7 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 		if (search_string != NULL)
 			regfree(&preg);
 
-		dummy = asprintf(&temp_buffer, "Unable to open \"log_archive_path\" -> \"%s\"!!!", log_archive_path);
+		asprintf(&temp_buffer, "Unable to open \"log_archive_path\" -> \"%s\"!!!", log_archive_path);
 		*error_text = strdup(temp_buffer);
 		my_free(temp_buffer);
 
@@ -307,7 +306,7 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 		if((file=open(log_file_name, O_RDONLY)) < -1) {
 
 			if (*error_text == NULL) {
-				dummy = asprintf(&temp_buffer, "Unable to open log file \"%s\" !!!", log_file_name);
+				asprintf(&temp_buffer, "Unable to open log file \"%s\" !!!", log_file_name);
 				*error_text = strdup(temp_buffer);
 				my_free(temp_buffer);
 			}
@@ -321,7 +320,7 @@ int get_log_entries(logentry **entry_list, logfilter **filter_list, char **error
 		if(read(file,ts_buffer,16) != 16) {
 
 			if (*error_text == NULL) {
-				dummy = asprintf(&temp_buffer, "Log file \"%s\" invalid! No timestamp found within first 16 bytes!", log_file_name);
+				asprintf(&temp_buffer, "Log file \"%s\" invalid! No timestamp found within first 16 bytes!", log_file_name);
 				*error_text = strdup(temp_buffer);
 				my_free(temp_buffer);
 			}

@@ -2657,7 +2657,7 @@ int commit_command(int cmd) {
 	time_t scheduled_time;
 	time_t notification_time;
 	char *temp_buffer = NULL;
-	int x = 0, dummy;
+	int x = 0;
 
 	/* get the current time */
 	time(&current_time);
@@ -2899,7 +2899,7 @@ int commit_command(int cmd) {
 			if (is_authorized[x]) {
 				if (end_time > 0) {
 					cmd = CMD_ACKNOWLEDGE_HOST_PROBLEM_EXPIRE;
-					dummy = asprintf(&temp_buffer, "%s - The acknowledgement expires at: %s.", comment_data, end_time_string);
+					asprintf(&temp_buffer, "%s - The acknowledgement expires at: %s.", comment_data, end_time_string);
 					submit_result[x] = cmd_submitf(cmd, "%s;%d;%d;%d;%lu;%s;%s", commands[x].host_name, (sticky_ack == TRUE) ? ACKNOWLEDGEMENT_STICKY : ACKNOWLEDGEMENT_NORMAL, send_notification, persistent_comment, end_time, comment_author, temp_buffer);
 					my_free(temp_buffer);
 				} else
@@ -2915,7 +2915,7 @@ int commit_command(int cmd) {
 			if (is_authorized[x]) {
 				if (end_time > 0) {
 					cmd = CMD_ACKNOWLEDGE_SVC_PROBLEM_EXPIRE;
-					dummy = asprintf(&temp_buffer, "%s - The acknowledgement expires at: %s.", comment_data, end_time_string);
+					asprintf(&temp_buffer, "%s - The acknowledgement expires at: %s.", comment_data, end_time_string);
 					submit_result[x] = cmd_submitf(cmd, "%s;%s;%d;%d;%d;%lu;%s;%s", commands[x].host_name, commands[x].description, (sticky_ack == TRUE) ? ACKNOWLEDGEMENT_STICKY : ACKNOWLEDGEMENT_NORMAL, send_notification, persistent_comment, end_time, comment_author, temp_buffer);
 					my_free(temp_buffer);
 				} else
@@ -3122,7 +3122,6 @@ int commit_command(int cmd) {
 int write_command_to_file(char *cmd) {
 	char *buffer;
 	char *ip_address;
-	int dummy;
 	char *p;
 	FILE *fp;
 	struct stat statbuf;
@@ -3170,7 +3169,7 @@ int write_command_to_file(char *cmd) {
 		ip_address = strdup(getenv("REMOTE_ADDR"));
 
 		/* construct log entry */
-		dummy = asprintf(&buffer, "EXTERNAL COMMAND: %s;%s;%s", current_authdata.username, (ip_address != NULL) ? ip_address : "unknown remote address", p);
+		asprintf(&buffer, "EXTERNAL COMMAND: %s;%s;%s", current_authdata.username, (ip_address != NULL) ? ip_address : "unknown remote address", p);
 
 		/* write command to cgi log */
 		write_to_cgi_log(buffer);
@@ -3178,7 +3177,7 @@ int write_command_to_file(char *cmd) {
 		/* log comments if forced */
 		if (enforce_comments_on_actions == TRUE) {
 			my_free(buffer);
-			dummy = asprintf(&buffer, "FORCED COMMENT: %s;%s;%s;%s", current_authdata.username, (ip_address != NULL) ? ip_address : "unknown remote address", comment_author, comment_data);
+			asprintf(&buffer, "FORCED COMMENT: %s;%s;%s;%s", current_authdata.username, (ip_address != NULL) ? ip_address : "unknown remote address", comment_author, comment_data);
 			write_to_cgi_log(buffer);
 		}
 		my_free(buffer);
