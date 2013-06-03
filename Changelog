@@ -16,10 +16,12 @@ UPGRADE NOTES
 1.9.2 - XX/06/2013
 
 FIXES
+* core: fix bug with non-ASCII (> 127) illegal macro output characters on char-to-int cast (Jason Young) #4211 - MF
 
 * classic ui: fixed searching hostgroup results in wrong 'all' view filter urls #4206 - RB
 
 * idoutils: fix mysql: output/perfdata limits cut escaped string leaving '\' at the end (Yannik Charton) #4196 - MF
+
 
 1.9.1 - 22/05/2013
 
