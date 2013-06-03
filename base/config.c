@@ -1832,7 +1832,7 @@ int pre_flight_check(void) {
 	else {
 		char *p;
 		for (p = illegal_output_chars; *p; p++) {
-			illegal_output_char_map[(int)*p] = 1;
+			illegal_output_char_map[(unsigned char)*p] = 1;
 		}
 	}
 
