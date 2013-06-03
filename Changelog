@@ -13,6 +13,13 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.9.2 - XX/06/2013
+
+FIXES
+
+* classic ui: fix URL construction issue in icinga_reload_scroll_position() javascript (Karsten Sühring) #4233 - MF
+
+
 1.9.1 - 22/05/2013
 
 FIXES
