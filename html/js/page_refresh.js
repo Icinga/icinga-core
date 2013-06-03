@@ -51,6 +51,9 @@ function icinga_reload_scroll_position() {
 		url_c = url.replace(/[\?&]scroll=(\d+)/,'');
 
 		/* create new querystring and reload */
+		if (url_c.indexOf('?') === -1) {
+			url_c = url_c.replace(/&/,'?');
+		}
 		q = url_c.indexOf('?') === -1 ? '?' : '&';
 		window.location.href = url_c + q + 'scroll=' + scroll_pos;
 	}

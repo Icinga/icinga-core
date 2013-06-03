@@ -19,6 +19,7 @@ FIXES
 * core: fix bug with non-ASCII (> 127) illegal macro output characters on char-to-int cast (Jason Young) #4211 - MF
 
 * classic ui: fixed searching hostgroup results in wrong 'all' view filter urls #4206 - RB
+* classic ui: fix URL construction issue in icinga_reload_scroll_position() javascript (Karsten Sühring) #4233 - MF
 
 * idoutils: fix mysql: output/perfdata limits cut escaped string leaving '\' at the end (Yannik Charton) #4196 - MF
 
