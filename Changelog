@@ -13,6 +13,12 @@ UPGRADE NOTES
 	- idoutils: ${source}/module/idoutils/config/updates
 * package locations may differ!
 
+1.9.2 - XX/06/2013
+
+FIXES
+
+* idoutils: fix mysql: output/perfdata limits cut escaped string leaving '\' at the end (Yannik Charton) #4196 - MF
+
 1.9.1 - 22/05/2013
 
 FIXES
