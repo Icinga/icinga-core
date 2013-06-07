@@ -73,6 +73,7 @@ cfg_dir=@sysconfdir@/modules
 # when the config files are modified after Icinga starts.
 # If you explicitely set it to /dev/null the core will skip writing
 # the objects cache file entirely.
+# Note: This is a mandatory output for Icinga Classic UI to work properly.
 # Tip: Use that file to debug your configuration with fully resolved
 # objects like the core sees them.
 
@@ -117,6 +118,7 @@ resource_file=@sysconfdir@/resource.cfg
 # If you explicitely set it to /dev/null the core will skip writing
 # the status file entirely. This becomes handy when using other methods
 # for data retrieval (e.g. IDOUtils DB)
+# Note: This is a mandatory output for Icinga Classic UI to work properly.
 
 status_file=@STATEDIR@/status.dat
 
