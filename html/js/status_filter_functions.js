@@ -1,5 +1,11 @@
+// Written by Ricardo Bartels
+// Copyright (c) 2009-2013 Icinga Development Team (http://www.icinga.org)
 
 /****************** HOST AND SERVICE FILTER PROPERTIES  *******************/
+
+/*
+	Changes here must be represented in "includes/cgiutils.h"
+*/
 
 var SCHEDULED_DOWNTIME		= 1
 var NO_SCHEDULED_DOWNTIME	= 2
@@ -17,13 +23,28 @@ var NOTIFICATIONS_DISABLED	= 4096
 var NOTIFICATIONS_ENABLED	= 8192
 var PASSIVE_CHECKS_DISABLED	= 16384
 var PASSIVE_CHECKS_ENABLED	= 32768
-var PASSIVE_CHECK		= 65536
-var ACTIVE_CHECK		= 131072
 var HARD_STATE			= 262144
 var SOFT_STATE			= 524288
 var STATE_HANDLED		= 1048576
 var NOT_ALL_CHECKS_DISABLED	= 2097152
 
+/* <RANT>
+	<TITLE>  MOST ANNOYING BUG EVER  </TITLE>
+
+	in "includes/cgiutils.h" all property IDs for hosts and services are
+	the same, except for "FLAP_DETECTION". These are flipped.
+
+	Why in hell would you do that? How didn't you notice it before?
+	You could have changed it in an early release and now
+	everybody implemented this crap and changing it back would break
+	all implementations.
+
+	And for which insane reason got it implemented twice (hosts and services)
+	if name and value are always the same, except ..., you know?
+
+	RB
+
+</RANT> */
 
 /****************** HOST AND SERVICE STATUS TYPES *******************/
 
@@ -44,9 +65,12 @@ valid_service_status_types[16]	= "Critical";
 /****************** VAR DEFAULTS *******************/
 
 var filter_ids			= [ "host_status_types", "host_properties", "service_status_types", "service_properties" ];
-var fade_color_from 		= "#FFFE70";
-var fade_color_to 		= "#FFFFD5";
+var fade_color_from 		= "#FFFE50";		/* Color a changed filter fades from */
+var fade_color_to 		= "#FFFFC5";		/* Color a changed filter fades to */
 
+/*
+	Will be set in status.cgi during page load
+*/
 var all_host_status_types	= 0;
 var all_host_problems		= 0;
 var host_status_types		= 0;
@@ -61,12 +85,13 @@ var org_service_status_types	= 0;
 var org_service_properties	= 0;
 
 
-var filters_loaded		= false;
-var in_toggle			= false;
+var filters_loaded		= false;		/* initialize filter once after first click on "Set Filters" */
+var in_toggle			= false;		/* prevent an infinite loop in icinga_filter_toggle() */
 
 
 /****************** FUNCTIONS *******************/
 
+/* Adds or removes options=value from url string, set value to "null" to remove option from url */
 function icinga_update_url_option(url, option, new_value) {
 
 	var options = '';
@@ -156,6 +181,7 @@ function icinga_set_properties_text(filter) {
 		if (status_properties & EVENT_HANDLER_ENABLED)
 			return_properties_text.push("Event Handler Enabled");
 
+		/* It's flipped, I can't belive it */
 		if (filter == "host_properties") {
 			if (status_properties & FLAP_DETECTION_DISABLED)
 				return_properties_text.push("Flap Detection Disabled");
@@ -186,12 +212,6 @@ function icinga_set_properties_text(filter) {
 
 		if (status_properties & PASSIVE_CHECKS_ENABLED)
 			return_properties_text.push("Passive Checks Enabled");
-
-		if (status_properties & PASSIVE_CHECK)
-			return_properties_text.push("Passive Checks");
-
-		if (status_properties & ACTIVE_CHECK)
-			return_properties_text.push("Active Checks");
 
 		if (status_properties & HARD_STATE)
 			return_properties_text.push("In Hard State");
@@ -269,7 +289,7 @@ function icinga_set_status_properies(filter) {
 	else
 		document.getElementById("filter_" + t + "p_eventhandler_3").checked = true;
 
-	/* Again: worst bug EVER */
+	/* Again: most annoying bug EVER */
 	if (filter == "host_properties") {
 		if (status_properties & FLAP_DETECTION_ENABLED)
 			document.getElementById("filter_" + t + "p_flap_detection_1").checked = true;
@@ -320,6 +340,7 @@ function icinga_set_status_properies(filter) {
 	return;
 }
 
+/* read status types selected and update status type text */
 function icinga_update_status_types(filter) {
 
 	return_status_types = 0
@@ -341,6 +362,7 @@ function icinga_update_status_types(filter) {
 	return;
 }
 
+/* read status properties selected and update status properties text */
 function icinga_update_properties(filter) {
 	status_properties = 0;
 
@@ -368,6 +390,7 @@ function icinga_update_properties(filter) {
 	return;
 }
 
+/* load filters on first request */
 function icinga_load_filters(filter) {
 
 	if (filters_loaded)
@@ -375,6 +398,7 @@ function icinga_load_filters(filter) {
 
 	$(document).ready(function() {
 
+		/* initilize text and options set */
 		icinga_set_status_types_text("host_status_types");
 		icinga_set_status_types_checkboxes("host_status_types");
 
@@ -387,15 +411,20 @@ function icinga_load_filters(filter) {
 		icinga_set_properties_text("service_properties");
 		icinga_set_status_properies("service_properties");
 
+		/* initilize buttons */
 		$("[id=apply_button],#submit_button").button();
 		$("[id=radio]").buttonset();
 
+		/* keep submit button on same level as filer box */
 		$("#submit_button").css("z-index",$("#display_filters_box").css("z-index"));
 
 		filters_loaded = true;
 	});
+
+	return;
 }
 
+/* dye background of filter if filtger got changed */
 function icinga_changed_filter_coloring(section) {
 
 	var set_color = false;
@@ -423,19 +452,25 @@ function icinga_changed_filter_coloring(section) {
 	return;
 }
 
+/* open and close the different filter options boxes*/
 function icinga_filter_toggle(section) {
 
+	/* initilize filter on first load */
 	if (section == "display_filters")
 		icinga_load_filters();
 
 	/* close other box, before open the next one */
 	if(in_toggle == false) {
+
+		/* Don't hit here if try to close all other boxes */
 		in_toggle = true;
+
 		for (var i = 0, len = filter_ids.length; i < len; i++) {
 			if (filter_ids[i] != undefined && filter_ids[i] != section && document.getElementById(filter_ids[i] + "_box").style.display != 'none') {
 				icinga_filter_toggle(filter_ids[i]);
 			}
 		}
+
 		in_toggle = false;
 	}
 
@@ -445,26 +480,34 @@ function icinga_filter_toggle(section) {
 	if (section == "host_properties" || section == "service_properties")
 		icinga_update_properties(section);
 
+	/* check if filter got changed and add a bit of color if needed :D */
 	if (section != "display_filters")
 		icinga_changed_filter_coloring(section);
 
+	/* yes we toggle */
 	$( '#' + section + '_box' ).toggle( 'blind', {}, 150 );
 
+	/* reset counter to prevent the page from reloading to soon */
 	icinga_reset_counter();
 
-	// allways return false
+	/* allways return false */
 	return false;
 }
 
+/* apply all filter, update url, reload page with new url */
 function icinga_apply_new_filters() {
 
+	/* update status types and properties ahead of submission
+	   in case the use changed a option without using the "Apply" button */
 	icinga_update_status_types("host_status_types");
 	icinga_update_status_types("service_status_types");
 	icinga_update_properties("host_properties");
 	icinga_update_properties("service_properties");
 
-	url = window.location.href;
+	/* get current url */
+	var url = window.location.href;
 
+	/* manipulate url with new values */
 	if (host_properties == 0)
 		url = icinga_update_url_option(url, "hostprops", null);
 	else
@@ -485,9 +528,10 @@ function icinga_apply_new_filters() {
 	else
 		url = icinga_update_url_option(url, "servicestatustypes", service_status_types);
 
+	/* reload page with new values */
 	window.location.href = url;
 
-	return;
+	return false;
 }
 
 // EOF

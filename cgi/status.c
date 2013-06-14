@@ -6348,12 +6348,6 @@ int passes_host_properties_filter(hoststatus *temp_hoststatus) {
 	if ((host_properties & HOST_PASSIVE_CHECKS_ENABLED) && temp_hoststatus->accept_passive_host_checks == FALSE)
 		return FALSE;
 
-	if ((host_properties & HOST_PASSIVE_CHECK) && temp_hoststatus->check_type == HOST_CHECK_ACTIVE)
-		return FALSE;
-
-	if ((host_properties & HOST_ACTIVE_CHECK) && temp_hoststatus->check_type == HOST_CHECK_PASSIVE)
-		return FALSE;
-
 	if ((host_properties & HOST_HARD_STATE) && temp_hoststatus->state_type == SOFT_STATE)
 		return FALSE;
 
@@ -6421,12 +6415,6 @@ int passes_service_properties_filter(servicestatus *temp_servicestatus) {
 	if ((service_properties & SERVICE_PASSIVE_CHECKS_ENABLED) && temp_servicestatus->accept_passive_service_checks == FALSE)
 		return FALSE;
 
-	if ((service_properties & SERVICE_PASSIVE_CHECK) && temp_servicestatus->check_type == SERVICE_CHECK_ACTIVE)
-		return FALSE;
-
-	if ((service_properties & SERVICE_ACTIVE_CHECK) && temp_servicestatus->check_type == SERVICE_CHECK_PASSIVE)
-		return FALSE;
-
 	if ((service_properties & SERVICE_HARD_STATE) && temp_servicestatus->state_type == SOFT_STATE)
 		return FALSE;
 
@@ -6453,11 +6441,13 @@ int passes_service_properties_filter(servicestatus *temp_servicestatus) {
 /* shows service and host filters in use */
 void show_filters(void) {
 
+	/* don't allow filters for views with special pre defined filters */
 	if (display_all_unhandled_problems == TRUE || display_all_problems == TRUE)
 		return;
 
+
 	/* set status on properie values */
-	printf("<script type='text/javascript'>\n");
+	printf("<script language='javascript' type='text/javascript'>\n");
 
 	printf("all_host_status_types = %d;\n", all_host_status_types);
 	printf("all_host_problems = %d;\n", all_host_problems);
@@ -6477,17 +6467,17 @@ void show_filters(void) {
 	/* overwrite jQuery-UI button style */
 	printf("<style>.ui-button-text-only .ui-button-text { padding: 0em 1em; width: 5em;} </style>\n");
 
-	printf("<table border='0' cellspacing='5' cellpadding='0'><tr><td>\n");
-	printf("<a href='#' class='filterTitle' onClick=\"return icinga_filter_toggle('display_filters');\" title='Click To Modify'>&nbsp;&nbsp;Set Filters</a></td>\n");
+	printf("<table border='0' cellspacing='2' cellpadding='0'><tr><td>\n");
+	printf("<a href='#' class='filterTitle' onClick=\"return icinga_filter_toggle('display_filters');\">&nbsp;&nbsp;<span title='Click To Modify'>Set Filters</span></a></td>\n");
 	printf("<td><div id='display_filters_box' class='ui-widget-content ui-corner-all' style='display:none;'>\n");
 
 
-	/* host status filter */
-	printf("<table border='0' cellspacing='2' cellpadding='5'>\n");
+	/* host status filter entry */
+	printf("<table border='0' cellspacing='5' cellpadding='5'>\n");
 	printf("<tr><td valign='top' align='left' class='filterName' nowrap>Host Status Types:</td>\n");
-	printf("<td valign='top' align='left' class='filterValue' id='host_status_types_text_cell' title='Click To Modify' nowrap>\n");
+	printf("<td valign='top' align='left' class='filterValue ui-corner-all' id='host_status_types_text_cell' nowrap>\n");
 
-	/* Host status type options */
+	/* host status type options box */
 	printf("<div id='host_status_types_box' class='ui-widget-content ui-corner-all' style='display:none;'>\n");
 	printf("<table border='0' cellspacing='2' cellpadding='0'>\n");
 	printf("<tr><td align='left' class='filterName'>Pending</td><td><input id='host_status_types_%d' type='checkbox' value='%d'></td></tr>\n", HOST_PENDING, HOST_PENDING);
@@ -6498,14 +6488,15 @@ void show_filters(void) {
 	printf("</table>\n");
 	printf("</div>\n");
 
-	printf("<span id='host_status_types_text' onClick=\"return icinga_filter_toggle('host_status_types');\" style='cursor:pointer;'>UNSET</span></td></tr>\n");
+	/* host status filter text */
+	printf("<span id='host_status_types_text' onClick=\"return icinga_filter_toggle('host_status_types');\" style='cursor:pointer;' title='Click To Modify'>UNSET</span></td></tr>\n");
 
 
-	/* host propertie filter */
+	/* host propertie filter entry */
 	printf("<tr><td valign='top' align='left' class='filterName' nowrap>Host Properties:</td>\n");
-	printf("<td valign='top' align='left' class='filterValue' id='host_properties_text_cell' title='Click To Modify' nowrap>\n");
+	printf("<td valign='top' align='left' class='filterValue ui-corner-all' id='host_properties_text_cell' nowrap>\n");
 
-	/* Host properties options */
+	/* host properties options box */
 	printf("<div id='host_properties_box' class='ui-widget-content ui-corner-all' style='display:none;'>");
 	printf("<table border='0' cellspacing='2' cellpadding='0'>\n");
 
@@ -6581,13 +6572,15 @@ void show_filters(void) {
 	printf("</table>\n");
 	printf("</div>\n");
 
-	printf("<span id='host_properties_text' onClick=\"return icinga_filter_toggle('host_properties');\" style='cursor:pointer;'>UNSET</span></td></tr>\n");
+	/* host propertie filter text */
+	printf("<span id='host_properties_text' onClick=\"return icinga_filter_toggle('host_properties');\" style='cursor:pointer;' title='Click To Modify'>UNSET</span></td></tr>\n");
 
 
+	/* service status filter entry (only visible if services are displayed) */
 	printf("<tr style='display:%s;'><td valign='top' align='left' class='filterName' nowrap>Service Status Types:</td>\n", (group_style_type == STYLE_HOST_DETAIL) ? "none" : "");
-	printf("<td valign='top' align='left' class='filterValue' id='service_status_types_text_cell' title='Click To Modify' nowrap>\n");
+	printf("<td valign='top' align='left' class='filterValue ui-corner-all' id='service_status_types_text_cell' nowrap>\n");
 
-	/* Service status type options */
+	/* service status type options box */
 	printf("<div id='service_status_types_box' class='ui-widget-content ui-corner-all' style='display:none;'>\n");
 	printf("<table border='0' cellspacing='2' cellpadding='0'>\n");
 	printf("<tr><td align='left' class='filterName'>Pending</td><td><input id='service_status_types_%d' type='checkbox' value='%d'></td></tr>\n", SERVICE_PENDING, SERVICE_PENDING);
@@ -6599,12 +6592,15 @@ void show_filters(void) {
 	printf("</table>\n");
 	printf("</div>\n");
 
-	printf("<span id='service_status_types_text' onClick=\"return icinga_filter_toggle('service_status_types');\" style='cursor:pointer;'>UNSET</span></td></tr>\n");
+	/* service status filter text */
+	printf("<span id='service_status_types_text' onClick=\"return icinga_filter_toggle('service_status_types');\" style='cursor:pointer;' title='Click To Modify'>UNSET</span></td></tr>\n");
 
+
+	/* service propertie filter entry (only visible if services are displayed) */
 	printf("<tr style='display:%s;'><td valign='top' align='left' class='filterName' nowrap>Service Properties:</td>\n", (group_style_type == STYLE_HOST_DETAIL) ? "none" : "");
-	printf("<td valign='top' align='left' class='filterValue' id='service_properties_text_cell' title='Click To Modify' nowrap>\n");
+	printf("<td valign='top' align='left' class='filterValue ui-corner-all' id='service_properties_text_cell' nowrap>\n");
 
-	/* Service properties options */
+	/* service properties options box */
 	printf("<div id='service_properties_box' class='ui-widget-content ui-corner-all' style='display:none;'>");
 	printf("<table border='0' cellspacing='2' cellpadding='0'>\n");
 
@@ -6676,13 +6672,15 @@ void show_filters(void) {
 
 	printf("<tr><td style='height:10px; line-height:10px;'>&nbsp;</td><td>&nbsp;</td></tr>\n");
 
-	printf("<tr><td align='right' colspan='2'><button href='#' id='apply_button' onClick=\"return icinga_filter_toggle('service_properties');\">Apply</button></td></tr>\n");
+	printf("<tr><td align='right' colspan='2'><button id='apply_button' onClick=\"return icinga_filter_toggle('service_properties');\">Apply</button></td></tr>\n");
 	printf("</table>\n");
 	printf("</div>\n");
 
-	printf("<span id='service_properties_text' onClick=\"return icinga_filter_toggle('service_properties');\" style='cursor:pointer;'>UNSET</span></td></tr>\n");
+	/* service propertie filter text */
+	printf("<span id='service_properties_text' onClick=\"return icinga_filter_toggle('service_properties');\" style='cursor:pointer;' title='Click To Modify'>UNSET</span></td></tr>\n");
 
-	printf("<tr><td align='right' colspan='3'><button id='submit_button' onClick=\"icinga_apply_new_filters();\">Submit</button></td></tr>\n");
+	/* submit button */
+	printf("<tr><td align='right' colspan='3'><a href='#' id='submit_button' onClick=\"icinga_apply_new_filters();\">Submit</a></td></tr>\n");
 
 	printf("</table>\n");
 	printf("</div>\n");

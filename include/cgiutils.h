@@ -364,6 +364,10 @@ extern "C" {
 
 /****************** HOST AND SERVICE FILTER PROPERTIES  *******************/
 
+/*
+	Changes here must be represented in "html/js/status_filter_functions.js"
+*/
+
 #define HOST_SCHEDULED_DOWNTIME		1
 #define HOST_NO_SCHEDULED_DOWNTIME	2
 #define HOST_STATE_ACKNOWLEDGED		4
@@ -380,8 +384,8 @@ extern "C" {
 #define HOST_NOTIFICATIONS_ENABLED	8192
 #define HOST_PASSIVE_CHECKS_DISABLED	16384
 #define HOST_PASSIVE_CHECKS_ENABLED	32768
-#define HOST_PASSIVE_CHECK		65536
-#define HOST_ACTIVE_CHECK		131072
+//#define HOST_PASSIVE_CHECK		65536		/* unused, no idea why it got implented in first place */
+//#define HOST_ACTIVE_CHECK		131072		/* unused, no idea why it got implented in first place */
 #define HOST_HARD_STATE			262144
 #define HOST_SOFT_STATE			524288
 #define HOST_STATE_HANDLED		1048576
@@ -404,8 +408,8 @@ extern "C" {
 #define SERVICE_NOTIFICATIONS_ENABLED	8192
 #define SERVICE_PASSIVE_CHECKS_DISABLED	16384
 #define SERVICE_PASSIVE_CHECKS_ENABLED	32768
-#define SERVICE_PASSIVE_CHECK		65536
-#define SERVICE_ACTIVE_CHECK		131072
+//#define SERVICE_PASSIVE_CHECK		65536		/* unused, no idea why it got implented in first place */
+//#define SERVICE_ACTIVE_CHECK		131072		/* unused, no idea why it got implented in first place */
 #define SERVICE_HARD_STATE		262144
 #define SERVICE_SOFT_STATE		524288
 #define SERVICE_STATE_HANDLED		1048576
