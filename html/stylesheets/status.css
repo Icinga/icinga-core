@@ -14,10 +14,6 @@ td { font-size: 8pt; border: 0; }
 .infoBoxBadProcStatus { color: #ff3300; }
 a.homepageURL:Hover { color: #ff3300; }
 
-.filter { border: 0; }
-.filterTitle { font-size: 10pt; font-weight: bold; }
-.filterValue { color: #707677 }
-
 .statusTitle { text-align: center; font-weight: bold; font-size: 10pt; vertical-align: middle;}
 
 table.status { background-color: #fff; padding: 2px; border: 0; }
@@ -135,3 +131,17 @@ hostTotalsCommands a:hover { color: #fff; }
 .serviceUnimportantProblem { background-color: #ffcccc; color: #000; }
 
 .highlightRow { background-color: #BBC3BB; }
+
+.filterTitle { font-size: 10pt; font-weight: bold; }
+.filterName { font-size: 9pt; padding-top: 0.2em; padding-bottom: 0.2em; padding-right: 0.7em;}
+.filterValue { color: #707677; font-size: 9pt; padding-top: 0.2em; padding-bottom: 0.2em;}
+
+#display_filters_box,
+#host_status_types_box,
+#host_properties_box,
+#service_status_types_box,
+#service_properties_box { position: absolute; padding: 0.4em; margin-left: 0.5em; z-index: 101; }
+
+#display_filters_box { z-index: 100; padding-right: 1em; }
+
+#apply_button { margin-top:0.5em; }
